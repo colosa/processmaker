@@ -1327,7 +1327,9 @@ class GTest extends PHPUnit_Framework_TestCase
      */
     public function testSys_get_temp_dir()
     {
-        $this->assertEquals('/tmp',G::sys_get_temp_dir());
+        $tmpDir = G::sys_get_temp_dir();
+        $this->assertFileExists($tmpDir);
+        $this->assertTrue(is_writable($tmpDir));
     }
 
     /**
