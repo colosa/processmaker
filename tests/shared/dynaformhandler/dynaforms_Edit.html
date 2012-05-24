@@ -1,0 +1,63 @@
+<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>  
+
+  <div class="borderForm" style="padding-left: 0pt; padding-right: 0pt;">
+		<div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+		<div class="content" style="">
+	  <table width="99%" height="99%">
+      <tbody><tr>
+        <td valign="top">
+        <input class="notValidateThisFields" name="__notValidateThisFields__" id="__notValidateThisFields__" value="" type="hidden">
+        <input name="DynaformRequiredFields" id="DynaformRequiredFields" value="{$form_objectRequiredFields}" type="hidden">
+           <table border="0" cellpadding="0" cellspacing="0" width="100%" height="99%" >
+                                  <tbody><tr style="display: none;">
+              <td colspan="2">{$form.DYN_UID}</td>
+             </tr>
+                                              <tr style="display: none;">
+              <td colspan="2">{$form.ACTION}</td>
+             </tr>
+                                              <tr style="display: none;">
+              <td colspan="2">{$form.PRO_UID}</td>
+             </tr>
+                                               <tr>
+              <td class="FormTitle" colspan="2" align="">{$form.TITLE}</td>
+             </tr>
+             <tr id="pmtabledrop" style="display: none;">
+              <td class="FormLabel"  width="{$form_labelWidth}">{$ADD_TABLE}</td>
+              <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.ADD_TABLE} </td>  //-->
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.ADD_TABLE}</td> 
+              </tr>
+              <tr>
+              <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$DYN_TITLE}</td>
+              <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DYN_TITLE} </td>  //-->
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DYN_TITLE}</td> 
+              </tr>
+              <tr id='normalformdrop' style="display: none;">
+              <td class="FormLabel" width="{$form_labelWidth}">{$DYN_TYPE}</td>
+              <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DYN_TYPE} </td>  //-->
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DYN_TYPE}</td> 
+              </tr>
+                                                <tr>
+              <td class="FormLabel" width="{$form_labelWidth}">{$DYN_DESCRIPTION}</td>
+              <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DYN_DESCRIPTION} </td>  //-->
+              <td class="FormFieldContent"width="{$form_fieldContentWidth}">{$form.DYN_DESCRIPTION}</td> 
+              </tr>
+              <tr id="normalform" style="display: none;" ><td></td>
+              <td class="FormButton"  colspan="1" align="center">{$form.SAVE_DYNAFORM}&nbsp; &nbsp;{$form.SAVE_OPEN}&nbsp; &nbsp;{$form.BTN_CANCEL}</td>
+             </tr>
+             
+             <tr id="pmtableform" style="display: none;" ><td></td>
+              <td class="FormButton"  colspan="1" align="center">{$form.CONTINUE}&nbsp; &nbsp;{$form.BTN_CANCEL}</td>
+             </tr>
+           
+            </tbody></table>
+        </td>
+      </tr>
+    </tbody></table>
+    		</div>
+		<div class="boxBottom"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+  </div>
+                            <script type="text/javascript">
+    {$form.JS}
+  </script>
+  
+</form>

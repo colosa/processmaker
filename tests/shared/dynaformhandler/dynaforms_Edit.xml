@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dynaForm
+  name="dynaforms_Edit"
+  type="xmlform"
+  width="100%" enableTemplate="1" >
+
+<DYN_UID type="hidden" showInTable="0"/>
+<ACTION type="hidden" showInTable="0"/>
+<PRO_UID type="hidden" showInTable="0"/>
+
+<TITLE type="title" group="1">
+  <en>Dynaform Information</en>
+</TITLE>
+
+<ADD_TABLE type="dropdown" sqlConnection="dbarray" >
+  SELECT * FROM ADDITIONAL_TABLES
+  <en>Create from a PM Table</en>
+</ADD_TABLE>
+
+<DYN_TITLE type="text" maxlength="256" size ="48" required="1">
+  <en>Title</en>
+</DYN_TITLE>
+
+<DYN_TYPE type="dropdown" colWidth="80" align="center">
+  <en>Type
+  <option name="xmlform">Normal</option>
+  <option name="grid">Grid</option>
+  </en>
+</DYN_TYPE>
+
+<DYN_DESCRIPTION type="textarea" cols="45" rows="8" >
+  <en>Description</en>
+</DYN_DESCRIPTION>
+
+<CONTINUE type="button" onclick="assignVariables( this.form, false );">
+  <en>Save</en>
+</CONTINUE>
+
+<SAVE_DYNAFORM type="button" onclick="dynaformSave( this.form, false );">
+  <en>Save</en> 
+</SAVE_DYNAFORM>
+
+<SAVE_OPEN type="button" onclick="dynaformSave( this.form, true );">
+  <en><![CDATA[Save & Open]]></en>
+</SAVE_OPEN>
+
+<BTN_CANCEL type="button" onclick="cancel();">
+  <en>Cancel</en>
+</BTN_CANCEL>
+
+<JS type="javascript">
+<![CDATA[
+ 
+getField('DYN_TITLE').form.onsubmit = function() {return false;};
+
+  checkDynaformSource();
+  function checkDynaformSource(){
+  //alert('@#ACTION');
+  
+  if ('@#ACTION'=='normal'){
+   document.getElementById('normalform').style.display='';  
+   document.getElementById('normalformdrop').style.display='';  
+   document.getElementById('pmtableform').style.display='none';
+  } else {
+   document.getElementById('pmtableform').style.display='';
+   document.getElementById('pmtabledrop').style.display='';  
+   document.getElementById('normalform').style.display='none';
+   //document.getElementById('form[DYN_TYPE]').value = 'xmlform';
+  }
+    
+    /*if ('@#ACTION'=='normal'){
+        hideRow('ADD_TABLE');
+        hideRow('CONTINUE');
+        hideRow('PROCESS_VARIABLES');
+        hideRow('PRO_VAR_ASSIGN');
+    } else {
+        document.getElementById('form[DYN_TYPE]').value = 'xmlform';
+        hideRow('DYN_TYPE');
+    }*/
+  }
+leimnud.event.add(getField('DYN_TITLE'), 'blur', function() 
+{  
+String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
+document.getElementById('form[DYN_TITLE]').value = document.getElementById('form[DYN_TITLE]').value.trim();
+});
+
+  leimnud.event.add(document.getElementById('form[ADD_TABLE]'), 'change', setPMTableDynaformTitle);
+  function setPMTableDynaformTitle(){
+    if(document.getElementById('form[ADD_TABLE]').value!=''){
+        document.getElementById('form[DYN_TITLE]').value = document.getElementById('form[DYN_TITLE]').value + document.getElementById('form[ADD_TABLE]')[document.getElementById('form[ADD_TABLE]').selectedIndex].innerHTML;
+    }
+  }
+  var oPanel;
+  function assignVariables(){
+    //alert("test");
+
+    if(document.getElementById('form[ADD_TABLE]').value!=''){
+        table_uid = document.getElementById('form[ADD_TABLE]').value;
+       	oPanel = new leimnud.module.panel();
+      	oPanel.options = {
+            limit    : true,
+            size     : {w:450,h:350},
+            position : {x:0,y:0,center:true},
+            title    : '',
+            theme    : 'processmaker',
+            statusBar: false,
+            control  : {drag:false,resize:true,close:true},
+            fx       : {opacity:true,rolled:false,modal:true}
+        };
+        oPanel.make();
+        oPanel.loader.show();
+
+        var PRO_UID = document.getElementById('form[PRO_UID]').value;
+        var DYN_UID = document.getElementById('form[DYN_UID]').value;
+        var ADD_TABLE = document.getElementById('form[ADD_TABLE]').value;
+        var DYN_TITLE = document.getElementById('form[DYN_TITLE]').value;
+        var DYN_TYPE = document.getElementById('form[DYN_TYPE]').value;
+        var DYN_DESCRIPTION = document.getElementById('form[DYN_DESCRIPTION]').value;
+
+        //alert("pepe2");
+
+        oRPC = new leimnud.module.rpc.xmlhttp({
+            url    : '../dynaforms/dynaforms_AssignVariables',
+            method : 'POST',
+            args   : 'PRO_UID=' + PRO_UID + '&DYN_UID=' + DYN_UID + '&ADD_TABLE=' + ADD_TABLE + '&DYN_TITLE=' + DYN_TITLE + '&DYN_TYPE=' + DYN_TYPE + '&DYN_DESCRIPTION=' + DYN_DESCRIPTION
+        });
+        //alert("alert");
+        oRPC.callback = function(oRPC) {
+            oPanel.loader.hide();
+            var scs = oRPC.xmlhttp.responseText.extractScript();
+            oPanel.addContent(oRPC.xmlhttp.responseText);
+            scs.evalScript();
+        }.extend(this);
+        oRPC.make();
+        lastPopupWindow.remove();
+        
+        
+        //popupWindow('Assign Variable', '?PRO_UID=@%PRO_UID&TABLE_UID='+table_uid , 500, 300);
+    }
+  }
+  
+  function cancel(){
+    lastPopupWindow.remove();
+  }
+  
+]]>
+</JS>
+
+</dynaForm> 

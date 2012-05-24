@@ -37,21 +37,33 @@ class dynaFormHandler
   private $dom;
   private $root;
 
- /**
-   * Function constructor
+  /**
+   * Function __constructor
+   * 
    * @access public
    * @param  string $file
    * @return void
    */
- function __construct($file=null)
+  function __construct($file = null)
   {
-    if( !isset($file) ) 
+    if (!isset($file)) {
       throw new Exception('[Class dynaFormHandler] ERROR:  xml file was not set!!');
+    }
+    
     $this->xmlfile = $file;
     $this->load();
   }
 
-  function load(){
+  /**
+   * Function load
+   *
+   * Load the content of the xml file in the root attribute
+   * 
+   * @access public
+   * @return void
+   */
+  function load()
+  {
     $this->dom = new DOMDocument();
     $this->dom->preserveWhiteSpace = false;
     $this->dom->formatOutput = true;
@@ -65,13 +77,25 @@ class dynaFormHandler
     }
   }
 
-  function reload(){
+  /**
+   * Function reload
+   *
+   * Reload the content of the xml file in the root attribute
+   * 
+   * @access public
+   * @return void
+   */
+  function reload()
+  {
     $this->dom = NULL;
     $this->load();
   }
 
   /**
    * Function __cloneEmpty
+   *
+   * Deletes all nodes of the dynaForm node
+   * 
    * @access public
    * @return void
    */
@@ -88,9 +112,12 @@ class dynaFormHandler
 
   /**
    * Function toString
+   *
+   * Return the content of the xml file
+   * 
    * @access public
    * @param  string $op
-   * @return void
+   * @return string
    */
   function toString($op='')
   {
@@ -102,9 +129,12 @@ class dynaFormHandler
   
   /**
    * Function getNode
+   *
+   * Return the node $nodename
+   * 
    * @access public
    * @param  string $nodename
-   * @return void
+   * @return object
    */
   function getNode($nodename)
   {
@@ -112,7 +142,10 @@ class dynaFormHandler
   }
 
   /**
-   * Function getNode
+   * Function setNode
+   *
+   * Adds the node
+   * 
    * @access public
    * @param  object $node
    * @return object
@@ -123,15 +156,23 @@ class dynaFormHandler
     return $newnode;
   }
 
- /**
-  * Add Function
-  * @param string $name
-  * @param array $attributes
-  * @param array $childs
-  * @param array $childs_childs
-  * @return void
-  */
-  //attributes (String node-name, Array attributes(atribute-name =>attribute-value, ..., ...), Array childs(child-name=>child-content), Array Child-childs())
+  /**
+   * Function add
+   *
+   * Adds the node/nodes
+   * Attributes:
+   * - name
+   * - attributes(atributeName => attributeValue, ...)
+   * - childs(childName => childText, ...)
+   * - childs_childs(array("name" => childChildName, "value" => childChildValue, "attributes" => array(atributeName => attributeValue, ...)), ...)
+   *
+   * @access public
+   * @param string $name
+   * @param array $attributes
+   * @param array $childs
+   * @param array $childs_childs
+   * @return void
+   */
   function add($name, $attributes, $childs, $childs_childs=null)
   {
     $newnode = $this->root->appendChild($this->dom->createElement($name));
@@ -161,6 +202,15 @@ class dynaFormHandler
 
   /**
    * Function replace
+   *
+   * Replace the node by an new node
+   * Attributes:
+   * - node name replaced
+   * - new name
+   * - attributes(atributeName => attributeValue, ...)
+   * - childs(childName => childText, ...)
+   * - childs_childs(array("name" => childChildName, "value" => childChildValue, "attributes" => array(atributeName => attributeValue, ...)), ...)
+   *
    * @access public
    * @param string $replaced
    * @param string $name
@@ -193,7 +243,7 @@ class dynaFormHandler
         if( is_string($child_text) )
           $newnode_child->appendChild($this->dom->createTextNode($child_text));
         else if( is_array($child_text) && isset($child_text['cdata']) )
-          $newnode_child->appendChild($this->dom->createCDATASection($child_text));
+          $newnode_child->appendChild($this->dom->createCDATASection($child_text['cdata']));
         
         if($childs_childs != null and is_array($childs_childs)){
           foreach($childs_childs as $cc) {
@@ -211,11 +261,16 @@ class dynaFormHandler
     }
     $this->save();
   }
- /**
-  * Function save
-  * @param string $fname
-  * @return void
-  */
+
+  /**
+   * Function save
+   *
+   * Save the xml file, if $fname exists then save the file with the new name $fname
+   *
+   * @access public
+   * @param string $fname
+   * @return void
+   */
   function save($fname=null)
   {
     if( ! is_writable($this->xmlfile) ) {
@@ -230,10 +285,14 @@ class dynaFormHandler
     }
   }
 
-/**
-  * Function fixXmlFile
-  * @return void
-  */
+  /**
+   * Function fixXmlFile
+   *
+   * Removes empty lines from xml file
+   *
+   * @access public
+   * @return void
+   */
   function fixXmlFile()
   {
     $newxml = '';
@@ -246,24 +305,32 @@ class dynaFormHandler
     file_put_contents($this->xmlfile, $newxml);
   }
 
-/**
-  * Function setHeaderAttribute
-  * @param string $att_name
-  * @param string $att_value
-  * @return void
-  */
+  /**
+   * Function setHeaderAttribute
+   *
+   * Set new attribute in dynaForm node
+   * 
+   * @access public
+   * @param string $att_name
+   * @param string $att_value
+   * @return void
+   */
   function setHeaderAttribute($att_name, $att_value)
   {
     $this->root->setAttribute($att_name, $att_value);
     $this->save();
   }
 
-/**
-  * Function modifyHeaderAttribute
-  * @param string $att_name
-  * @param string $att_new_value
-  * @return void
-  */
+  /**
+   * Function modifyHeaderAttribute
+   *
+   * Modify attribute in dynaForm node
+   * 
+   * @access public
+   * @param string $att_name
+   * @param string $att_new_value
+   * @return void
+   */
   function modifyHeaderAttribute($att_name, $att_new_value)
   {
     $this->root->removeAttribute($att_name);
@@ -271,13 +338,17 @@ class dynaFormHandler
     $this->save();
   }
 
-/**
-  * Function updateAttribute
-  * @param string $node_name
-  * @param string $att_name
-  * @param string $att_new_value
-  * @return void
-  */
+  /**
+   * Function updateAttribute
+   *
+   * Updates the attribute of an node
+   *
+   * @access public
+   * @param string $node_name
+   * @param string $att_name
+   * @param string $att_new_value
+   * @return void
+   */
   function updateAttribute($node_name, $att_name, $att_new_value)
   {
     $xpath = new DOMXPath($this->dom);
@@ -288,11 +359,15 @@ class dynaFormHandler
     $this->save();
   }
 
-/**
-  * Function remove
-  * @param string $v
-  * @return void
-  */
+  /**
+   * Function remove
+   *
+   * Remove node/nodes
+   * 
+   * @access public
+   * @param string/array $v
+   * @return void
+   */
   function remove($v)
   {
     if(!is_array($v)){
@@ -318,11 +393,15 @@ class dynaFormHandler
     $this->save();
   }
   
-/**
-  * Function nodeExists
-  * @param string $node_name
-  * @return boolean
-  */
+  /**
+   * Function nodeExists
+   *
+   * Checks if a node exists
+   *
+   * @access public
+   * @param string $node_name
+   * @return boolean
+   */
   function nodeExists($node_name)
   {
     $xpath = new DOMXPath($this->dom);
@@ -336,11 +415,15 @@ class dynaFormHandler
   }
 
   //new features 
- /**
-  * Function moveUp
-  * @param string $selected_node
-  * @return void
-  */
+  /**
+   * Function moveUp
+   *
+   * Move up the node
+   * 
+   * @access public
+   * @param string $selected_node
+   * @return void
+   */
   function moveUp($selected_node)
   {
     /*DOMNode DOMNode::insertBefore  ( DOMNode $newnode  [, DOMNode $refnode  ] )
@@ -369,11 +452,15 @@ class dynaFormHandler
     $this->save();
   }
 
- /**
-  * Function moveDown
-  * @param string $selected_node
-  * @return void
-  */
+  /**
+   * Function moveDown
+   * 
+   * Move down the node
+   * 
+   * @access public
+   * @param string $selected_node
+   * @return void
+   */
   function moveDown($selected_node)
   {
     /*DOMNode DOMNode::insertBefore  ( DOMNode $newnode  [, DOMNode $refnode  ] )
@@ -410,11 +497,15 @@ class dynaFormHandler
     $this->save();
   }
   
- /**
-  * Function getFields
-  * @param array $aFilter
-  * @return array
-  */
+  /**
+   * Function getFields
+   *
+   * Return an array with all nodes filtered with $aFilter
+   *
+   * @access public
+   * @param array $aFilter
+   * @return array
+   */
   function getFields( $aFilter = Array() )
   {
     $xpath = new DOMXPath($this->dom);
@@ -447,11 +538,15 @@ class dynaFormHandler
     return  $aList;
   }
   
- /**
-  * Function getFieldNames
-  * @param array $aFilter
-  * @return array
-  */
+  /**
+   * Function getFieldNames
+   *
+   * Return an array with the nodes name filtered with $aFilter
+   *
+   * @access public
+   * @param array $aFilter
+   * @return array
+   */
   function getFieldNames( $aFilter = Array() )
   {
     $aList = $this->getFields($aFilter);
@@ -462,7 +557,21 @@ class dynaFormHandler
     return $aFieldNames;
   }
   
-  // 
+  /**
+   * Function addChilds
+   *
+   * Adds the node/nodes in the $name node
+   * Attributes:
+   * - name
+   * - childs(childName => childText, ...)
+   * - childs_childs(array("name" => childChildName, "value" => childChildValue, "attributes" => array(atributeName => attributeValue, ...)), ...)
+   * 
+   * @access public
+   * @param string $name
+   * @param string/array $childs
+   * @param array $childs_childs
+   * @return void
+   */
   function addChilds($name, $childs, $childs_childs=null)
   {
     //
@@ -512,7 +621,7 @@ class dynaFormHandler
       }
     } else {
       $text_node = $childs;
-      $newnode->appendChild($this->dom->createTextNode($text_node));
+      $element->appendChild($this->dom->createTextNode($text_node));
     }
     $this->save();
   }
@@ -537,6 +646,19 @@ class dynaFormHandler
       $xnode->appendChild($newNode);
   }
   
+  /**
+   * Function getArray
+   *
+   * Get an array with the definition of the node and the subnodes if exists
+   * Attributes:
+   * - node
+   * - attributes(atributeName, ...)
+   * 
+   * @access public
+   * @param object $node
+   * @param array $attributes
+   * @return array
+   */
   function getArray($node, $attributes = null)
   {
     $array = false;
@@ -559,7 +681,7 @@ class dynaFormHandler
 
     if ($node->hasChildNodes()) {
       if ($node->childNodes->length == 0)
-        $return;
+        return;
       else {
         foreach ($node->childNodes as $childNode) {
           $childNode->normalize();
