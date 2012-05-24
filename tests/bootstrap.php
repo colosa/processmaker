@@ -21,3 +21,16 @@ set_include_path(
     PATH_RBAC_CORE . PATH_SEPARATOR .
     get_include_path()
 );
+
+
+/* @translation
+*/
+global $translation;
+
+$translation = array( 'ABOUT' => 'About',
+                      'ACCOUNT_FROM' => 'Account From',
+                      'ADD_USERS_TO_DEPARTMENT' => 'Add users to department',
+                      'CANCELLED' => 'Canceled',
+                      'CANT_DEL_LANGUAGE' => 'This language cannot be deleted  because it  is currently being  used.',
+                      'CASES' => 'Cases'
+                    );

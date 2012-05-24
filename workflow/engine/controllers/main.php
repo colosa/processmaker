@@ -24,6 +24,10 @@ class Main extends Controller
 
   function index($httpData)
   {
+    $test = '<xml type="form"> <var1 value="value1"></var1> <var2>value2</var2> </form> </xml>';
+    $res = G::xmlParser($test);
+    G::pr($res);
+    die;
     global $RBAC;
     $RBAC->requirePermissions('PM_LOGIN');
     $meta = new stdClass;
