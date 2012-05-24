@@ -251,7 +251,7 @@ class G
       set_error_handler( $newCustomErrorHandler );
     }
     else {
-      set_error_handler( array("G", "customErrorHandler"));
+      set_error_handler( array("G", "i"));
     }
     return true;
     }
@@ -558,9 +558,7 @@ class G
    */
   function rm_dir($dirName) 
   {
-    if (!is_writable($dirName)) {
-      return false;
-    }
+    
 
     if (is_dir($dirName)) {
       foreach(glob($dirName . '/*') as $file) {
