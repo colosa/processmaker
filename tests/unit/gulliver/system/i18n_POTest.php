@@ -31,132 +31,117 @@ class i18n_POTest extends PHPUnit_Framework_TestCase
      * @todo   Implement testBuildInit().
      */
     public function testBuildInit()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    {      
+      G::loadClass('i18n_po');
+      $obj = new i18n_PO (PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po'); 
+      $obj->buildInit();
+      $vlineas = file(PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po');      
+      $this->assertEquals( trim($vlineas[0]), 'msgid ""');      
+      $this->assertEquals( trim($vlineas[1]), 'msgstr ""');
+      return $obj;
     }
 
     /**
+     * @depends testAddTranslation
      * @covers i18n_PO::readInit
      * @todo   Implement testReadInit().
      */
-    public function testReadInit()
+    public function testReadInit($obj)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+      $resp = $obj->readInit();
     }
 
     /**
+     * @depends testBuildInit
      * @covers i18n_PO::addHeader
      * @todo   Implement testAddHeader().
      */
-    public function testAddHeader()
+    public function testAddHeader($obj)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+      $obj->addHeader('Project-Id-Version','ProcessMaker (Branch 2.0-dev) 2.0.34.rc4-179-g5fa57e9');
+      $vlineas = file(PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po');      
+      $this->assertEquals( trim($vlineas[2]), '"Project-Id-Version: ProcessMaker (Branch 2.0-dev) 2.0.34.rc4-179-g5fa57e9\n"');
+      return $obj;
     }
 
     /**
+     * @depends testAddHeader
      * @covers i18n_PO::addTranslatorComment
      * @todo   Implement testAddTranslatorComment().
      */
-    public function testAddTranslatorComment()
+    public function testAddTranslatorComment($obj)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+      $obj->addTranslatorComment('COMMENT OF TRANSLATION');
+      $vlineas = file(PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po'); 
+      $this->assertEquals( trim($vlineas[4]), '# COMMENT OF TRANSLATION');
+      return $obj;
     }
 
     /**
+     * @depends testAddTranslatorComment
      * @covers i18n_PO::addExtractedComment
      * @todo   Implement testAddExtractedComment().
      */
-    public function testAddExtractedComment()
+    public function testAddExtractedComment($obj)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+      $obj->addTranslatorComment('COMMENT EXTRA OF TRANSLATION');
+      $vlineas = file(PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po'); 
+      $this->assertEquals( trim($vlineas[5]), '# COMMENT EXTRA OF TRANSLATION');
+      return $obj;
     }
 
     /**
+     * @depends testAddExtractedComment
      * @covers i18n_PO::addReference
      * @todo   Implement testAddReference().
      */
-    public function testAddReference()
+    public function testAddReference($obj)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+      $obj->addReference('REFERENCE');
+      $vlineas = file(PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po'); 
+      $this->assertEquals( trim($vlineas[6]), '#: REFERENCE');
+      return $obj;
     }
 
     /**
+     * @depends testAddReference
      * @covers i18n_PO::addFlag
      * @todo   Implement testAddFlag().
      */
-    public function testAddFlag()
+    public function testAddFlag($obj)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+      $obj->addFlag('FLAG');
+      $vlineas = file(PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po'); 
+      $this->assertEquals( trim($vlineas[7]), '#, FLAG');
+      return $obj;
     }
 
     /**
+     * @depends testAddFlag
      * @covers i18n_PO::addPreviousUntranslatedString
      * @todo   Implement testAddPreviousUntranslatedString().
      */
-    public function testAddPreviousUntranslatedString()
+    public function testAddPreviousUntranslatedString($obj)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+      $obj->addPreviousUntranslatedString('PREVIOUS UNTRANSLATED STRING');
+      $vlineas = file(PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po'); 
+      $this->assertEquals( trim($vlineas[8]), '#| PREVIOUS UNTRANSLATED STRING');
+      return $obj;        
     }
 
     /**
+     * @depends testAddPreviousUntranslatedString
      * @covers i18n_PO::addTranslation
      * @todo   Implement testAddTranslation().
      */
-    public function testAddTranslation()
+    public function testAddTranslation($obj)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers i18n_PO::_writeLine
-     * @todo   Implement test_writeLine().
-     */
-    public function test_writeLine()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers i18n_PO::_write
-     * @todo   Implement test_write().
-     */
-    public function test_write()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+      $obj->addTranslation('ID_TRANSLATION','MSG_TRANSLATION');
+      $vlineas = file(PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po'); 
+      $this->assertEquals( trim($vlineas[9]), 'msgid "ID_TRANSLATION"');
+      $this->assertEquals( trim($vlineas[10]), 'msgstr "MSG_TRANSLATION"');
+      return $obj;   
+    }   
 
     /**
      * @covers i18n_PO::prepare
@@ -164,23 +149,12 @@ class i18n_POTest extends PHPUnit_Framework_TestCase
      */
     public function testPrepare()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers i18n_PO::headerStroke
-     * @todo   Implement testHeaderStroke().
-     */
-    public function testHeaderStroke()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+      G::loadClass('i18n_po');
+      $obj = new i18n_PO (PATH_TRUNK.'/tests/shared/filesPO/processmaker.en.po'); 
+      $this->assertEquals(trim($obj->prepare('Content-Transfer-Encoding: 8bit\n \t \r', false)), 'Content-Transfer-Encoding: 8bit');
+      $this->assertEquals(trim($obj->prepare('Content-Transfer-Encoding: 8bit\n \t \r', true)), 'Content-Transfer-Encoding: 8bit\n \t \r');
+      return $obj; 
+    }     
 
     /**
      * @covers i18n_PO::getHeaders
@@ -188,22 +162,32 @@ class i18n_POTest extends PHPUnit_Framework_TestCase
      */
     public function testGetHeaders()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+      G::loadClass('i18n_po');
+      $obj = new i18n_PO (PATH_TRUNK.'/tests/shared/filesPO/processmakerHEAD.en.po'); 
+      $obj->readInit();
+      $this->assertNotEmpty($obj->getHeaders());
+      foreach ($obj->getHeaders() as $key => $value) {
+        if ($key == 'X-Poedit-Language')
+          $this->assertEquals('X-Poedit-Language',trim($key));
+      }
     }
 
     /**
      * @covers i18n_PO::getTranslation
-     * @todo   Implement testGetTranslation().
+     * @todo   Implement testGetT ranslation().
      */
     public function testGetTranslation()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+      G::loadClass('i18n_po');
+      $obj = new i18n_PO (PATH_TRUNK.'/tests/shared/filesPO/processmakerTRANSLATION.en.po'); 
+      $obj->readInit();
+      $this->assertNotEmpty($obj->getTranslation());   
+
+      // case1 $this->_fileLine is null
+      G::loadClass('i18n_po');
+      $obj = new i18n_PO (PATH_TRUNK.'/tests/shared/filesPO/processmakerCase1.en.po'); 
+      $obj->readInit();      
+      $this->assertEmpty($obj->getTranslation());
     }
 
     /**

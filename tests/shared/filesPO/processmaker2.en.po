@@ -1,0 +1,12 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ProcessMaker (Branch 2.0-dev) 2.0.34.rc4-179-g5fa57e9\n"
+
+# COMMENT OF TRANSLATION
+# COMMENT EXTRA OF TRANSLATION
+#: REFERENCE
+#, FLAG
+#| PREVIOUS UNTRANSLATED STRING
+msgid "ID_TRANSLATION"
+msgstr "MSG_TRANSLATION"
+

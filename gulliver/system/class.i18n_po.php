@@ -152,12 +152,12 @@ class i18n_PO
     $this->_writeLine('');
   }
   
-  function _writeLine($str)
+  Private function _writeLine($str)
   {
     $this->_write($str . "\n");
   }
   
-  function _write($str)
+  Private function _write($str)
   {
     fwrite($this->_fp, $str);
   }
@@ -179,7 +179,7 @@ class i18n_PO
     }
   }
   
-  function headerStroke()
+  private function headerStroke()
   {
     if( $this->_editingHeader ) {
       $this->_editingHeader = FALSE;
