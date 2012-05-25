@@ -1,0 +1,3 @@
+<?php
+$arrayXmlMessages['testClassG']=unserialize('a:1:{s:6:"CLASSG";s:4:"Test";}');
+?>

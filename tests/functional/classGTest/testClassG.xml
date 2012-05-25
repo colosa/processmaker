@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<dynaForm name="testClassG.xml" basedir="">test class G
+  <CLASSG>
+    <es>Prueba</es>
+    <en>Test</en>
+    <po>Test</po>
+  </CLASSG>
+</dynaForm>
