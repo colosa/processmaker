@@ -21,3 +21,4 @@ set_include_path(
     PATH_RBAC_CORE . PATH_SEPARATOR .
     get_include_path()
 );
+

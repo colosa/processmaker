@@ -1,0 +1,11 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ProcessMaker (Branch 2.0-dev) 2.0.34.rc4-179-g5fa57e9\n"
+
+# COMMENT OF TRANSLATION
+# Jap'iqmasiqa mana  juÃ±iyniyuq kashan kay raphipiqa.
+# Ø±ÙØ² Ø¹Ø¨ÙØ± Ø§Ø´ØªØ¨Ø§Ù Ø§Ø³Øª
+# Brugeren har ingen rettigheder pÃ¥ denne side.
+# ÙÙØ³ ÙØ¯Ù Ø§ÙÙØ³ØªØ®Ø¯Ù Ø­ÙÙÙ Ø¹ÙÙ ÙØ°Ù Ø§ÙØµÙØ­Ø©
+# ç¨æ·æ æ­¤é¡µæé
+# ÐÐµÐ¿ÑÐ°Ð²Ð¸Ð»ÑÐ½ÑÐ¹ Ð¿Ð°ÑÐ¾Ð»Ñ
