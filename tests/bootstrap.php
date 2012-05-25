@@ -22,9 +22,11 @@ set_include_path(
     get_include_path()
 );
 
-
 /* @translation
+*  Creation of the variable "translation" to test functions of the class "G".
+*  Functions: G::LoadTranslationObject, G::LoadTranslation
 */
+
 global $translation;
 
 $translation = array( 'ABOUT' => 'About',
@@ -34,3 +36,8 @@ $translation = array( 'ABOUT' => 'About',
                       'CANT_DEL_LANGUAGE' => 'This language cannot be deleted  because it  is currently being  used.',
                       'CASES' => 'Cases'
                     );
+
+/* @PATH_TESTCLASSG
+*  Creation of Path "PATH_TESTCLASSG" to call to test the class files "G".
+*/
+define('PATH_TESTCLASSG', PATH_TRUNK . 'gulliver' . PATH_SEP . 'system' . PATH_SEP . 'testClassG' . PATH_SEP);
