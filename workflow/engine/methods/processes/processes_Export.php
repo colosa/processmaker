@@ -88,8 +88,9 @@ try {
     G::RenderPage("publish", "raw");
   }
   else {
-    $xmlFrm = new xmlform();
-    $xmlFrm->parseFile(PATH_XMLFORM . "processes" . PATH_SEP . "processes_Export.xml" , SYS_LANG, true);
+    $xmlFrm = new XmlForm();
+    $xmlFrm->home = PATH_XMLFORM . "processes" . PATH_SEP;
+    $xmlFrm->parseFile("processes_Export.xml" , SYS_LANG, true);
   
     $Fields["xmlFrmFieldLabel"] = array(
       "title"    => $xmlFrm->fields["TITLE"]->label,
