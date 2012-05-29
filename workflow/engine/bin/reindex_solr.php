@@ -3,6 +3,19 @@
  * cron_single.php
  * @package workflow-engine-bin
  */
+
+//check script parameters
+//php reindex_solr.php workspacename [reindexall|reindexmissing]
+//var_dump($argv);
+if(count($argv) != 3 ){
+  print "Invalid command line arguments: \n syntax: php reindex_solr.php [workspace_name] [reindexall|reindexmissing] \n".
+  " Where reindexall : reindex all the database \n".
+  " reindexmissing: reindex only the missing records stored in database.\n";
+  die;
+}
+$workspaceName = $argv[1];
+$ScriptAction = $argv[2];
+
 ini_set ( 'display_errors', 1 );
 error_reporting ( E_ALL );
 ini_set ( 'memory_limit', '256M' ); // set enough memory for the script
@@ -84,7 +97,7 @@ print "PATH_CORE: " . PATH_CORE . "\n";
 
 // define the site name (instance name)
 if (! defined ( 'SYS_SYS' )) {
-  $sObject = $argv [1];
+  $sObject = $workspaceName;
   $sNow = ''; // $argv[2];
   $sFilter = '';
   
@@ -206,16 +219,27 @@ else {
 
 function processWorkspace() {
   global $sLastExecution;
+  global $ScriptAction;
   
   try {
     
     if (($solrConf = System::solrEnv (SYS_SYS)) !== false) {
       G::LoadClass ( 'AppSolr' );
+      print "Solr Configuration file: " . PATH_DATA_SITE . "env.ini\n";
+      print "solr_enabled: " . $solrConf ['solr_enabled'] . "\n";
+      print "solr_host: " . $solrConf ['solr_host'] . "\n";
+      print "solr_instance: " . $solrConf ['solr_instance'] . "\n";
+      
       $oAppSolr = new AppSolr ( $solrConf ['solr_enabled'], $solrConf ['solr_host'], $solrConf ['solr_instance'] );
-      $oAppSolr->reindexAllApplications ();
+      if($ScriptAction == "reindexall"){
+        $oAppSolr->reindexAllApplications ();
+      }
+      if($ScriptAction == "reindexmissing"){
+        $oAppSolr->synchronizePendingApplications();
+      }
     }
     else {
-      print "Incomplete Solr configuration.";
+      print "Incomplete Solr configuration. See configuration file: " . PATH_DATA_SITE . "env.ini";
     }
   
   }

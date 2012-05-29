@@ -52,6 +52,7 @@ if (!defined('PATH_HOME')) {
   G::LoadSystem('dvEditor');
   G::LoadSystem('table');
   G::LoadSystem('pagedTable');
+  G::LoadClass ( 'system' );
   require_once ( "propel/Propel.php" );
   require_once ( "creole/Creole.php" );
 }
@@ -154,7 +155,6 @@ if (!defined('SYS_SYS')) {
       fclose($oFile);
       Propel::init(PATH_CORE . 'config/_databases_.php');
       //Creole::registerDriver('dbarray', 'creole.contrib.DBArrayConnection');
-
 
       eprintln("Processing workspace: " . $sObject, 'green');
       try{

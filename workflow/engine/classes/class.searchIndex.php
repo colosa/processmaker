@@ -1,8 +1,12 @@
 <?php
 
-//$indexFields = array();
 
-
+/**
+ * Class used as interface to have access to the search index services
+ * 
+ * @author Herbert Saal Gutierrez
+ *
+ */
 Class BpmnEngine_Services_SearchIndex
 {
     private $solrIsEnabled  = false;

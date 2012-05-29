@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Interface to the Solr Search server 
+ * @author Herbert Saal Gutierrez
+ *
+ */
 class BpmnEngine_SearchIndexAccess_Solr {
   const SOLR_VERSION = '&version=2.2';
   private $solrIsEnabled = false;
@@ -61,7 +67,7 @@ class BpmnEngine_SearchIndexAccess_Solr {
   }
   
   /**
-   * Execute a query in base to Request data
+   * Execute a query in base to Requested data
    * @gearman = false
    * @rest = false
    * @background = false
@@ -112,7 +118,6 @@ class BpmnEngine_SearchIndexAccess_Solr {
     $solrIntruct .= $sort;
     $solrIntruct .= $filters;
     $solrIntruct .= $resultFormat;
-    
     // send query
     // search the cases in base to datatable parameters
     $handler = curl_init ( $solrIntruct );
@@ -196,7 +201,7 @@ class BpmnEngine_SearchIndexAccess_Solr {
   }
   
   /**
-   * Commit the changes since the last commit
+   * Rollback the changes since the last commit
    * @gearman = false
    * @rest = false
    * @background = false
@@ -230,7 +235,7 @@ class BpmnEngine_SearchIndexAccess_Solr {
   }
   
   /**
-   * Insert or Update document index
+   * Optimize Solr index
    * @gearman = false
    * @rest = false
    * @background = false
@@ -263,6 +268,12 @@ class BpmnEngine_SearchIndexAccess_Solr {
     }
   }
   
+  /**
+   * Return the list of the stored fields in Solr 
+   * @param string $workspace Solr instance name
+   * @throws Exception
+   * @return void|mixed array of field names
+   */
   function getListIndexedStoredFields($workspace) {
     if (! $this->solrIsEnabled)
       return;
