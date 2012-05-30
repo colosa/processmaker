@@ -1,25 +1,29 @@
 <?php
 require_once ('Base.php');
 
-class Entity_SolrQueryResult extends Entity_Base {
+class Entity_SolrQueryResult extends Entity_Base
+{
   public $sEcho = '';
   public $iTotalRecords = 0;
   public $iTotalDisplayRecords = 10;
   public $aaData = array (); // array of arrays of records to
-                                              // display
+                             // display
   
-  private function __construct() {
+  private function __construct()
+  {
   }
   
-  static function CreateEmpty() {
+  static function createEmpty()
+  {
     $obj = new Entity_SolrQueryResult ();
     return $obj;
   }
   
-  static function CreateForRequest($data) {
+  static function createForRequest($data)
+  {
     $obj = new Entity_SolrQueryResult ();
     
-    $obj->initializeObject ( $data );
+    $obj->initializeObject ($data);
     
     $requiredFields = array (
         'sEcho',
@@ -28,7 +32,7 @@ class Entity_SolrQueryResult extends Entity_Base {
         'aaData' 
     );
     
-    $obj->validateRequiredFields ( $requiredFields );
+    $obj->validateRequiredFields ($requiredFields);
     
     return $obj;
   }

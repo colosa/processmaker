@@ -1,7 +1,8 @@
 <?php
 require_once ('Base.php');
 
-class Entity_FacetRequest extends Entity_Base {
+class Entity_FacetRequest extends Entity_Base
+{
   public $workspace = '';
   public $searchText = '';
   public $facetFields = array ();
@@ -14,24 +15,27 @@ class Entity_FacetRequest extends Entity_Base {
   public $filters = array ();
   public $selectedFacetsString = '';
   
-  private function __construct() {
+  private function __construct()
+  {
   }
   
-  static function CreateEmpty() {
+  static function createEmpty()
+  {
     $obj = new Entity_FacetRequest ();
     return $obj;
   }
   
-  static function CreateForRequest($data) {
+  static function createForRequest($data)
+  {
     $obj = new Entity_FacetRequest ();
     
-    $obj->initializeObject ( $data );
+    $obj->initializeObject ($data);
     
     $requiredFields = array (
         "workspace" 
     );
     
-    $obj->validateRequiredFields ( $requiredFields );
+    $obj->validateRequiredFields ($requiredFields);
     
     return $obj;
   }

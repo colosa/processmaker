@@ -2,10 +2,8 @@
 require_once ('Base.php');
 
 /**
- *
- *
  * Facet group entity that represent a facet group
- * 
+ *
  * @property $facetGroupName: The name of the facet (field name in solr index)
  * @property $facetGroupPrintName: The print name of the facet (Human readable
  *           description)
@@ -16,32 +14,36 @@ require_once ('Base.php');
  * @author dev-HebertSaak
  *        
  */
-class Entity_FacetGroup extends Entity_Base {
+class Entity_FacetGroup extends Entity_Base
+{
   public $facetGroupName = '';
   public $facetGroupPrintName = '';
   public $facetGroupType = ''; // field, daterange, query
   public $facetGroupId = '';
   public $facetItems = array ();
   
-  private function __construct() {
+  private function __construct()
+  {
   }
   
-  static function CreateEmpty() {
+  static function createEmpty()
+  {
     $obj = new Entity_FacetGroup ();
     return $obj;
   }
   
-  static function CreateForInsert($data) {
+  static function createForInsert($data)
+  {
     $obj = new Entity_FacetGroup ();
     
-    $obj->initializeObject ( $data );
+    $obj->initializeObject ($data);
     
     $requiredFields = array (
         "facetGroupName",
         "facetItems" 
     );
     
-    $obj->validateRequiredFields ( $requiredFields );
+    $obj->validateRequiredFields ($requiredFields);
     
     return $obj;
   }
