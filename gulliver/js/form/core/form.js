@@ -2867,6 +2867,30 @@ var validateForm = function(sRequiredFields) {
     return false;
   }
   else {
+    var arrayForm = document.getElementsByTagName("form");
+    
+    for (var i = 0; i <= arrayForm.length - 1; i++) {
+      var frm = arrayForm[i];
+      
+      for (var i = 0; i <= frm.elements.length - 1; i++)  {
+        var elem = frm.elements[i];
+        
+        if (elem.type == "checkbox" && elem.disabled && elem.checked) {
+          var id = elem.id + "_";
+          
+          if (!document.getElementById(id)) {
+            var input   = document.createElement("input");
+            input.type  = "hidden";
+            input.id    = id;
+            input.name  = elem.name;
+            input.value = elem.value;
+          
+            frm.appendChild(input);
+          }
+        }
+      }
+    }
+    
     return true;
   }
 };
