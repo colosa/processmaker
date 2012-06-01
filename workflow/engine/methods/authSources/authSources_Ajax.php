@@ -95,11 +95,11 @@ try {
       global $G_PUBLISH;
       $G_PUBLISH = new Publisher();
       if ($aFields['AUTH_SOURCE_PROVIDER'] != 'ldap') {
-        $G_PUBLISH->AddContent('propeltable', 'paged-table', 'authSources/ldapSearchResults', $oCriteria,' ',array('Checkbox' => G::LoadTranslation('ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER')));
+        $G_PUBLISH->AddContent('propeltable', 'pagedTableLdap', 'authSources/ldapSearchResults', $oCriteria,' ',array('Checkbox' => G::LoadTranslation('ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER')));
       }
       else {
         if (file_exists(PATH_XMLFORM . 'authSources/' . $aFields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml')) {
-          $G_PUBLISH->AddContent('propeltable', 'paged-table', 'authSources/' . $aFields['AUTH_SOURCE_PROVIDER'] . 'SearchResults', $oCriteria,' ',array('Checkbox' => G::LoadTranslation('ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER')));
+          $G_PUBLISH->AddContent('propeltable', 'pagedTableLdap', 'authSources/' . $aFields['AUTH_SOURCE_PROVIDER'] . 'SearchResults', $oCriteria,' ',array('Checkbox' => G::LoadTranslation('ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER')));
         }
         else {
           $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showMessage', '', array('MESSAGE' => 'File: ' . $aFields['AUTH_SOURCE_PROVIDER'] . 'SearchResults.xml' . ' doesn\'t exist.'));
