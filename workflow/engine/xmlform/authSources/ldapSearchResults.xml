@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm width="90%" rowsPerPage="1000">
+<dynaForm menu="authSources/authSources_SearchUsersMenu" width="90%" rowsPerPage="1000">
 
-<Checkbox type="text" titleAlign="center" align="left" enableHtml="1" onclick="return false;">
+<Checkbox type="text" titleAlign="center" align="left" colWidth="20%" enableHtml="1" onclick="return false;">
   <en><![CDATA[<span id="spanSelectAll"></span>]]></en>
 </Checkbox>
 
-<FullName type="text" colWidth="20%" titleAlign="center" align="left">
+<FullName type="text" colWidth="15%" titleAlign="center" align="left">
   <en>Name</en>
 </FullName>
 
-<Email type="text" colWidth="20%" titleAlign="center" align="left">
+<Email type="text" colWidth="15%" titleAlign="center" align="left">
   <en><![CDATA[<span style="width:40px; display:block;">E-Mail</span>]]></en>
 </Email>
 
