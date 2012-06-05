@@ -651,19 +651,21 @@ class wsBase
       $fileTemplate = $pathEmail . $sTemplate;
       G::mk_dir( $pathEmail, 0777,true);
 
-      if ( ! file_exists ( $fileTemplate ) ) {
+      if (!file_exists($fileTemplate)) {
         $data['FILE_TEMPLATE'] = $fileTemplate;
-        $result = new wsResponse (28, G::LoadTranslation('ID_TEMPLATE_FILE_NOT_EXIST', SYS_LANG, $data) );
+        $result = new wsResponse(28, G::LoadTranslation('ID_TEMPLATE_FILE_NOT_EXIST', SYS_LANG, $data));
+        
         return $result;
       }
 
-      if ( $appFields == null ) {
-          $Fields = $oldFields['APP_DATA'];
+      if ($appFields == null) {
+        $Fields = $oldFields['APP_DATA'];
       } 
       else {
-        $Fields = $appFields;
+        $Fields = array_merge($oldFields['APP_DATA'], $appFields);
       }
-      $templateContents = file_get_contents ( $fileTemplate );
+      
+      $templateContents = file_get_contents($fileTemplate);
 
       //$sContent    = G::unhtmlentities($sContent);
       $iAux        = 0;
