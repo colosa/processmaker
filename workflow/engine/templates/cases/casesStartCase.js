@@ -122,13 +122,19 @@ Ext.onReady(function() {
         name: 'processName',
         allowBlank:false,
         value: '',
-        labelStyle: 'font-weight:bold;',
+        labelStyle : 'font-size:11px;',
+        style : {
+          fontSize:'11px'
+        },
         id:"processName"
       },
       {
         xtype: 'compositefield',
         fieldLabel: TRANSLATIONS.ID_TASK, 
-        labelStyle: 'font-weight:bold;',
+        labelStyle : 'font-size:11px;',
+        style : {
+          fontSize:'11px'
+        },
         items: [
           {
             xtype : 'button',
@@ -160,21 +166,30 @@ Ext.onReady(function() {
           name: 'processDescription',
           value: '',
           readOnly: true,
-          labelStyle: 'font-weight:bold;',
+          labelStyle : 'font-size:11px;',
+          style : {
+            fontSize:'11px'
+          },
           id:"processDescription"
         },{
           fieldLabel: TRANSLATIONS.ID_CATEGORY,
           name: 'processCategory',
           value: '',
           readOnly: true,
-          labelStyle: 'font-weight:bold;',
+          labelStyle : 'font-size:11px;',
+          style : {
+            fontSize:'11px'
+          },
           id:"processCategory"
         },
         {
           xtype: 'grid',
           fieldLabel: ' ',
           labelSeparator : '',
-          labelStyle: 'font-color:white;',
+          labelStyle : 'font-size:11px;',
+          style : {
+            fontSize:'11px'
+          },
           ds: processNumbers,
           cm: new Ext.grid.ColumnModel([
             {id:'inbox',header: TRANSLATIONS.ID_INBOX, width:70, sortable: false, locked:true, dataIndex: 'CASES_COUNT_TO_DO'},
@@ -190,7 +205,10 @@ Ext.onReady(function() {
         {
           fieldLabel: TRANSLATIONS.ID_CALENDAR, 
           name: 'calendarName',
-          labelStyle: 'font-weight:bold;',
+          labelStyle : 'font-size:11px;',
+          style : {
+            fontSize:'11px'
+          },
           id:"calendarName"
       },
       {
@@ -200,7 +218,10 @@ Ext.onReady(function() {
         disabled: true,
         readOnly: true,
         disabledClass:"",
-        labelStyle: 'font-weight:bold',
+        labelStyle : 'font-size:11px;',
+        style : {
+          fontSize:'11px'
+        },
         id:"calendarWorkDays",
         columns: 7,
         items: [
@@ -217,7 +238,10 @@ Ext.onReady(function() {
         xtype:'checkbox',
         fieldLabel: TRANSLATIONS.ID_DEBUG_MODE, 
         name: 'processDebug',
-        labelStyle: 'font-weight:bold;',
+        labelStyle : 'font-size:11px;',
+        style : {
+          fontSize:'11px'
+        },
         disabled: true,
         readOnly: true,
         id:"processDebug",
