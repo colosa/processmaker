@@ -78,6 +78,7 @@ Ext.onReady(function(){
                   if(uploader.getForm().isValid()){
                     uploader.getForm().submit({
                       url: 'languages_Import',
+                      waitTitle:'',
                       waitMsg: _('ID_UPLOADING_TRANSLATION_FILE'),
                       success: function(o, resp){
                         w.close();
