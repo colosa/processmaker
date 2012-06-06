@@ -25,8 +25,6 @@
 
 <JS type="javascript"><![CDATA[
 
-getField('btnImport').style.visibility = 'hidden';
-
 function disableEnterKey(e)
 {
   var key;
@@ -56,24 +54,16 @@ var searchUsers = function() {
   });
   oRPC.callback = function(rpc){
     document.getElementById('spanUsers').innerHTML = rpc.xmlhttp.responseText;
-    if (checkInfo()) {
-      getField('btnImport').style.visibility = 'visible';
-    }
-    else {
-      getField('btnImport').style.visibility = 'hidden';
-    }
     var scs = rpc.xmlhttp.responseText.extractScript();
     scs.evalScript();
-
   }.extend(this);
   oRPC.make();
-
 };
 
 function checkInfo() {
   var input_obj = document.getElementsByTagName("input");
   for (i = 0; i < input_obj.length; i++) {
-    if (input_obj.item(i).type == 'checkbox')
+    if (input_obj.item(i).type == 'checkbox' && input_obj.item(i).checked == true)
     {
       return true;
     }
@@ -82,20 +72,11 @@ function checkInfo() {
 }
 
 var importUsers = function(oForm) {
-  var bContinue = false;
-  var i = 0;
-  var oAux;
-  while (oAux = document.getElementById('aUsers[' + i + ']')) {
-    if (oAux.checked) {
-      bContinue = true;
-    }
-    i++;
-  }
-  if (bContinue) {
+  if (checkInfo()) {
     oForm.submit();
   }
   else {
-    //alert(666);
+    alert(_('ID_NO_SELECTION_WARNING'));
   }
 };
 
