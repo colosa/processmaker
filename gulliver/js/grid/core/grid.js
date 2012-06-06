@@ -90,8 +90,19 @@ var G_Grid = function(oForm, sGridName){
             j++;
           }
           break;
+        default:
+          while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
+            this.aElements.push(new G_Field(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
+                + this.aFields[i].sFieldName));
+            if (aFields[i].oProperties) {
+              this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.sMask;
+            }
+            j++;
+          }
+          break;
       }
     }
+    
     // Set dependent fields
     sw1 = false;
     if (this.allDependentFields == '') sw1 = true; //Check if dependent fields are setted.
