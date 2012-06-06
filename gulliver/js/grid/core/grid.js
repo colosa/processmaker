@@ -102,6 +102,7 @@ var G_Grid = function(oForm, sGridName){
           break;
       }
     }
+    
     // Set dependent fields
     sw1 = false;
     if (this.allDependentFields == '') sw1 = true; //Check if dependent fields are setted.
