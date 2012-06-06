@@ -304,7 +304,7 @@ class headPublisher {
 
   function getExtJsStylesheets($skinName){
     $script = "  <link rel='stylesheet' type='text/css' href='/css/$skinName.css' />\n";
-    $script .= "  <script type='text/javascript' src='/js/ext/translation.en.js'></script>\n";
+    $script .= "  <script type='text/javascript' src='/js/ext/translation.".SYS_LANG.".js'></script>\n";
 /*
     $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/ext-all-notheme.css' />\n";
     $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/" . $this->extJsSkin.".css' />\n";
