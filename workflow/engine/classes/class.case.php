@@ -73,7 +73,7 @@ class Cases {
     //get Solr initialization variables
     if(($solrConf = System::solrEnv()) !== false){
       G::LoadClass('AppSolr');
-      $appSolr = new AppSolr($solrConf['solr_enabled'], $solrConf['solr_host'], $solrConf['solr_instance']);
+      $this->appSolr = new AppSolr($solrConf['solr_enabled'], $solrConf['solr_host'], $solrConf['solr_instance']);
     }
   }
   
@@ -843,7 +843,6 @@ class Cases {
    */
 
   function updateCase($sAppUid, $Fields = array()) {
-      
     try {
       $aApplicationFields = $Fields['APP_DATA'];
       $Fields['APP_UID']         = $sAppUid;
@@ -929,7 +928,9 @@ class Cases {
       }
       //Update Solr Index
       if($this->appSolr != null)
+      {
         $this->appSolr->updateApplicationSearchIndex($sAppUid);
+      }
       
       return $Fields;
     } 

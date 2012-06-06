@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch 2.0-testing) dummy-119-g6a8c61e\n"
+"Project-Id-Version: ProcessMaker (Branch 2.0-experimental) dummy-126-g6fb2f2d\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-05-16 15:56:38\n"
+"PO-Revision-Date: 2012-05-31 19:14:21\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -3856,8 +3856,8 @@ msgstr "Field \"table\" is required"
 # TRANSLATION
 # JAVASCRIPT/ID_ASSIGN_RULES
 #: JAVASCRIPT/ID_ASSIGN_RULES
-msgid "Error: There is a problem with next tasks   of this process, one of them have manual   assignment.  Manual assignment shouldn't be   used with subprocesses"
-msgstr "Error: There is a problem with next tasks   of this process, one of them have manual   assignment.  Manual assignment shouldn't be   used with subprocesses"
+msgid "Error: There is a problem with the next tasks of this process. One of them has manual assignment. Manual assignment shouldn't be used with subprocesses"
+msgstr "Error: There is a problem with the next tasks of this process. One of them has manual assignment. Manual assignment shouldn't be used with subprocesses"
 
 # TRANSLATION
 # LABEL/ID_FIELD_INVALID
@@ -3880,8 +3880,8 @@ msgstr "Saved"
 # TRANSLATION
 # LABEL/ID_ASSIGN_RULES
 #: LABEL/ID_ASSIGN_RULES
-msgid "Error: There is a problem with next tasks  of this process, one of them have manual  assignment.  Manual assignment shouldn't be  used with subprocesses"
-msgstr "Error: There is a problem with next tasks  of this process, one of them have manual  assignment.  Manual assignment shouldn't be  used with subprocesses"
+msgid "[LABEL/ID_ASSIGN_RULES] Error: There is a problem with the next tasks of this process. One of them has manual assignment. Manual assignment shouldn't be used with subprocesses"
+msgstr "Error: There is a problem with the next tasks of this process. One of them has manual assignment. Manual assignment shouldn't be used with subprocesses"
 
 # TRANSLATION
 # LABEL/ID_SELECT_OPTION_TABLE
@@ -5572,8 +5572,8 @@ msgstr "Do you want to delete all selected processes?"
 # TRANSLATION
 # LABEL/ID_PROCESS_CANT_DELETE
 #: LABEL/ID_PROCESS_CANT_DELETE
-msgid "You can't delete the process \"{0}\" because  has {1} cases."
-msgstr "You can't delete the process \"{0}\" because  has {1} cases."
+msgid "You can't delete the process \"{0}\" because it has {1} cases."
+msgstr "You can't delete the process \"{0}\" because it has {1} cases."
 
 # TRANSLATION
 # LABEL/ID_FILE
@@ -5812,8 +5812,8 @@ msgstr "The root password has been updated  successfully!"
 # TRANSLATION
 # LABEL/ID_MESSAGE_ROOT_CHANGE_FAILURE
 #: LABEL/ID_MESSAGE_ROOT_CHANGE_FAILURE
-msgid "The root password has can't be updated !"
-msgstr "The root password has can't be updated !"
+msgid "The root password can't be updated!"
+msgstr "The root password can't be updated!"
 
 # TRANSLATION
 # LABEL/ID_LAN_TRANSLATOR
@@ -13498,7 +13498,7 @@ msgstr "Yes"
 # authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER
 # authSources/ldapEdit.xml
 #: text - AUTH_SOURCE_SEARCH_USER
-msgid "Search User"
+msgid "[authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER] Search User"
 msgstr "Search User"
 
 # authSources/ldapEdit.xml?AUTH_SOURCE_PASSWORD
@@ -15543,7 +15543,7 @@ msgstr "DATE"
 
 # cases/cases_MessagesView.xml?APP_MSG_BODY
 # cases/cases_MessagesView.xml
-#: html - APP_MSG_BODY
+#: text - APP_MSG_BODY
 msgid "[cases/cases_MessagesView.xml?APP_MSG_BODY] "
 msgstr ""
 
@@ -21538,6 +21538,42 @@ msgstr "Send Request"
 #: button - BCANCEL
 msgid "[login/forgotPassword.xml?BCANCEL] Cancel"
 msgstr "Cancel"
+
+# login/login (copy).xml?TITLE
+# login/login (copy).xml
+#: title - TITLE
+msgid "[login/login (copy).xml?TITLE] Login"
+msgstr "Login"
+
+# login/login (copy).xml?USR_USERNAME
+# login/login (copy).xml
+#: text - USR_USERNAME
+msgid "[login/login (copy).xml?USR_USERNAME] User"
+msgstr "User"
+
+# login/login (copy).xml?USR_PASSWORD
+# login/login (copy).xml
+#: password - USR_PASSWORD
+msgid "[login/login (copy).xml?USR_PASSWORD] Password"
+msgstr "Password"
+
+# login/login (copy).xml?USER_LANG
+# login/login (copy).xml
+#: dropdown - USER_LANG
+msgid "[login/login (copy).xml?USER_LANG] Language"
+msgstr "Language"
+
+# login/login (copy).xml?BSUBMIT
+# login/login (copy).xml
+#: submit - BSUBMIT
+msgid "[login/login (copy).xml?BSUBMIT] Login"
+msgstr "Login"
+
+# login/login (copy).xml?FORGOT_PASWORD_LINK
+# login/login (copy).xml
+#: link - FORGOT_PASWORD_LINK
+msgid "[login/login (copy).xml?FORGOT_PASWORD_LINK] Forgot Password"
+msgstr "Forgot Password"
 
 # login/login.xml?TITLE
 # login/login.xml

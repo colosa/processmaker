@@ -1,34 +1,38 @@
 <?php
 require_once ('Base.php');
 
-class Entity_SelectedFacetGroupItem extends Entity_Base {
+class Entity_SelectedFacetGroupItem extends Entity_Base
+{
   public $selectedFacetGroupName = '';
   public $selectedFacetGroupPrintName = '';
   public $selectedFacetItemName = '';
   public $selectedFacetItemPrintName = '';
   public $selectedFacetRemoveCondition = ''; // remove condition, string of
-                                               // selected facets without this
-                                               // facet
+                                             // selected facets without this
+                                             // facet
   
-  private function __construct() {
+  private function __construct()
+  {
   }
   
-  static function CreateEmpty() {
+  static function createEmpty()
+  {
     $obj = new Entity_SelectedFacetGroupItem ();
     return $obj;
   }
   
-  static function CreateForRequest($data) {
+  static function createForRequest($data)
+  {
     $obj = new Entity_SelectedFacetGroupItem ();
     
-    $obj->initializeObject ( $data );
+    $obj->initializeObject ($data);
     
     $requiredFields = array (
         "selectedFacetGroupName",
         "selectedFacetItemName" 
     );
     
-    $obj->validateRequiredFields ( $requiredFields );
+    $obj->validateRequiredFields ($requiredFields);
     
     return $obj;
   }

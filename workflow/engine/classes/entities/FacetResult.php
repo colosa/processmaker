@@ -1,23 +1,27 @@
 <?php
 require_once ('Base.php');
 
-class Entity_FacetResult extends Entity_Base {
+class Entity_FacetResult extends Entity_Base
+{
   public $aFacetGroups = array ();
   public $aSelectedFacetGroups = array ();
   public $sFilterText = '';
   
-  private function __construct() {
+  private function __construct()
+  {
   }
   
-  static function CreateEmpty() {
+  static function createEmpty()
+  {
     $obj = new Entity_FacetResult ();
     return $obj;
   }
   
-  static function CreateForRequest($data) {
+  static function createForRequest($data)
+  {
     $obj = new Entity_FacetResult ();
     
-    $obj->initializeObject ( $data );
+    $obj->initializeObject ($data);
     
     $requiredFields = array (
         "aFacetGroups",
@@ -25,7 +29,7 @@ class Entity_FacetResult extends Entity_Base {
         "sFilterText" 
     );
     
-    $obj->validateRequiredFields ( $requiredFields );
+    $obj->validateRequiredFields ($requiredFields);
     
     return $obj;
   }

@@ -1,25 +1,29 @@
 <?php
 require_once ('Base.php');
 
-class Entity_FacetInterfaceResult extends Entity_Base {
+class Entity_FacetInterfaceResult extends Entity_Base
+{
   // array of facetsgroups, array of Entity_SelectedFacetGroupItem, filter text
   
   public $aFacetGroup = array ();
   public $aSelectedFacetGroupItem = array ();
   public $sFilterText = '';
   
-  private function __construct() {
+  private function __construct()
+  {
   }
   
-  static function CreateEmpty() {
+  static function createEmpty()
+  {
     $obj = new Entity_FacetInterfaceResult ();
     return $obj;
   }
   
-  static function CreateForRequest($data) {
+  static function createForRequest($data)
+  {
     $obj = new Entity_FacetInterfaceResult ();
     
-    $obj->initializeObject ( $data );
+    $obj->initializeObject ($data);
     
     $requiredFields = array (
         "aFacetGroup",
@@ -27,7 +31,7 @@ class Entity_FacetInterfaceResult extends Entity_Base {
         "sFilterText" 
     );
     
-    $obj->validateRequiredFields ( $requiredFields );
+    $obj->validateRequiredFields ($requiredFields);
     
     return $obj;
   }
