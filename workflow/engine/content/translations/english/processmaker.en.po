@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch 2.0-experimental) dummy-126-g6fb2f2d\n"
+"Project-Id-Version: ProcessMaker (Branch 2.0-testing) 2.0.41-testing.4-24-g7733019\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-05-31 19:14:21\n"
+"PO-Revision-Date: 2012-06-06 17:41:22\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12451,6 +12451,48 @@ msgstr "Import Report Table"
 msgid "Displaying Report Tables {0} - {1} of {2}"
 msgstr "Displaying Report Tables {0} - {1} of {2}"
 
+# TRANSLATION
+# LABEL/ID_SKIN_EXCEPTION
+#: LABEL/ID_SKIN_EXCEPTION
+msgid "Skin Engine Exception"
+msgstr "Skin Engine Exception"
+
+# TRANSLATION
+# LABEL/ID_SKIN_LAYOUT_NOT_FOUND
+#: LABEL/ID_SKIN_LAYOUT_NOT_FOUND
+msgid "Layout not Found"
+msgstr "Layout not Found"
+
+# TRANSLATION
+# LABEL/ID_SKIN_INCORRECT_VERIFY_URL
+#: LABEL/ID_SKIN_INCORRECT_VERIFY_URL
+msgid "You're trying to get a resource from an incorrect skin, please verify your url."
+msgstr "You're trying to get a resource from an incorrect skin, please verify your url."
+
+# TRANSLATION
+# LABEL/ID_REDIRECT_URL
+#: LABEL/ID_REDIRECT_URL
+msgid "The System can try to redirect to the correct url. Try Now."
+msgstr "The System can try to redirect to the correct url. Try Now."
+
+# TRANSLATION
+# LABEL/ID_PASSWORD_TESTING
+#: LABEL/ID_PASSWORD_TESTING
+msgid "Testing password"
+msgstr "Testing password"
+
+# TRANSLATION
+# LABEL/ID_TRUE
+#: LABEL/ID_TRUE
+msgid "TRUE"
+msgstr "TRUE"
+
+# TRANSLATION
+# LABEL/ID_FALSE
+#: LABEL/ID_FALSE
+msgid "FALSE"
+msgstr "FALSE"
+
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
 #: text - ADD_TAB_NAME
@@ -13363,10 +13405,10 @@ msgstr "Import"
 msgid "[authSources/authSources_SearchUsers.xml?BTN_CANCEL] Cancel"
 msgstr "Cancel"
 
-# authSources/authSources_SearchUsers.xml?CheckboxSelectAll
-# authSources/authSources_SearchUsers.xml
-#: Checkbox - CheckboxSelectAll
-msgid "[authSources/authSources_SearchUsers.xml?CheckboxSelectAll] "
+# authSources/authSources_SearchUsersMenu.xml?SelectAll
+# authSources/authSources_SearchUsersMenu.xml
+#: link - SelectAll
+msgid "[authSources/authSources_SearchUsersMenu.xml?SelectAll] "
 msgstr ""
 
 # authSources/authSources_SelectType.xml?TITLE
@@ -13498,7 +13540,7 @@ msgstr "Yes"
 # authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER
 # authSources/ldapEdit.xml
 #: text - AUTH_SOURCE_SEARCH_USER
-msgid "[authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER] Search User"
+msgid "Search User"
 msgstr "Search User"
 
 # authSources/ldapEdit.xml?AUTH_SOURCE_PASSWORD
@@ -21538,42 +21580,6 @@ msgstr "Send Request"
 #: button - BCANCEL
 msgid "[login/forgotPassword.xml?BCANCEL] Cancel"
 msgstr "Cancel"
-
-# login/login (copy).xml?TITLE
-# login/login (copy).xml
-#: title - TITLE
-msgid "[login/login (copy).xml?TITLE] Login"
-msgstr "Login"
-
-# login/login (copy).xml?USR_USERNAME
-# login/login (copy).xml
-#: text - USR_USERNAME
-msgid "[login/login (copy).xml?USR_USERNAME] User"
-msgstr "User"
-
-# login/login (copy).xml?USR_PASSWORD
-# login/login (copy).xml
-#: password - USR_PASSWORD
-msgid "[login/login (copy).xml?USR_PASSWORD] Password"
-msgstr "Password"
-
-# login/login (copy).xml?USER_LANG
-# login/login (copy).xml
-#: dropdown - USER_LANG
-msgid "[login/login (copy).xml?USER_LANG] Language"
-msgstr "Language"
-
-# login/login (copy).xml?BSUBMIT
-# login/login (copy).xml
-#: submit - BSUBMIT
-msgid "[login/login (copy).xml?BSUBMIT] Login"
-msgstr "Login"
-
-# login/login (copy).xml?FORGOT_PASWORD_LINK
-# login/login (copy).xml
-#: link - FORGOT_PASWORD_LINK
-msgid "[login/login (copy).xml?FORGOT_PASWORD_LINK] Forgot Password"
-msgstr "Forgot Password"
 
 # login/login.xml?TITLE
 # login/login.xml
