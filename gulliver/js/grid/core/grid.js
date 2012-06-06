@@ -99,7 +99,7 @@ var G_Grid = function(oForm, sGridName){
             }
             j++;
           }
-          break;          
+          break;
       }
     }
     // Set dependent fields
