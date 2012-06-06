@@ -395,7 +395,7 @@ class NET
               @oci_close($link);
             } 
             else {
-              $this->error = "the user $this->db_user doesn't has privileges to run queries!";
+              $this->error = "the user $this->db_user doesn't have privileges to run queries!";
               $this->errstr = "NET::ORACLE->Couldn't execute any query on this server!";
               $this->errno = 40010;
             }
