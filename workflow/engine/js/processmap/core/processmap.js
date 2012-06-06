@@ -917,16 +917,18 @@ var processmap=function(){
               this.observers.lineas.unregister(deri.to[i].object.indexObserver);
             }
             if(deri.type===5 || deri.type===8)
-            {
+            { 
               var toTask = this.data.db.task[this.tools.getIndexOfUid(deri.to[i].task)];
-              toTask.object.inJoin = toTask.object.inJoin-1;
-              if(toTask.object.inJoin===0)
-              {
-                this.parent.dom.setStyle(toTask.object.elements.init,{
-                  backgroundPosition:"0 0",
-                  background:""
-                });
-              }
+              if (typeof(toTask) != 'undefined') {
+                toTask.object.inJoin = toTask.object.inJoin-1;
+                if(toTask.object.inJoin===0)
+                {
+                  this.parent.dom.setStyle(toTask.object.elements.init,{
+                    backgroundPosition:"0 0",
+                    background:""
+                  });
+                }  
+              }              
             }
           }
         }
@@ -2207,7 +2209,7 @@ var processmap=function(){
           iHeight = 350;
         break;
         case 4:
-          iWidth  = 500;
+          iWidth  = 600;
           iHeight = 350;
         break;
         case 5:
@@ -2227,7 +2229,7 @@ var processmap=function(){
         position:{x:50,y:50,center:true},
         title :G_STRINGS.ID_PROCESSMAP_WORKFLOW_PATTERNS+": "+task.label,
         theme :this.options.theme,
-        control :{close:true,resize:false},
+        control :{close:true,resize:true},
         fx  :{modal:true}
       };
       panel.make();
