@@ -85,7 +85,7 @@ Ext.onReady(function(){
           switch(data[i].id) {
             case 'STEPS':
               Ext.getCmp('casesStepTree').root.reload();
-              Ext.getCmp('stepsMenu').show();
+              Ext.getCmp('stepsMenu').enable();              
               break;
             case 'NOTES':
               Ext.getCmp('caseNotes').show();
@@ -137,6 +137,10 @@ Ext.onReady(function(){
               tb.add(menu);
           }
         }
+        
+        if (Ext.getCmp('stepsMenu').disabled === true) {
+          Ext.getCmp('stepsMenu').hide();  
+        }        
       },
       failure: function ( result, request) {
         Ext.MessageBox.alert('Failed', result.responseText);
@@ -266,7 +270,8 @@ Ext.onReady(function(){
         text:_('ID_SHOW_HIDE_CASES_STEPS')
       },
       iconCls: 'ICON_STEPS',
-      toggleHandler: togglePreview
+      toggleHandler: togglePreview,
+      disabled: true
     }, {
       id: 'informationMenu',
       text: _('ID_INFORMATION'),
@@ -302,7 +307,7 @@ Ext.onReady(function(){
   });
 
 
-  Ext.getCmp('stepsMenu').hide();
+  // Ext.getCmp('stepsMenu').hide();
   Ext.getCmp('caseNotes').hide();
   Ext.getCmp('informationMenu').hide();
   Ext.getCmp('actionMenu').hide();
