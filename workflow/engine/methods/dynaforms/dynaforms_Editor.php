@@ -91,3 +91,6 @@ if (($RBAC_Response=$RBAC->userCanAccess("PM_FACTORY"))!=1) return $RBAC_Respons
   $editor->_render();
 
 ?>
+<script type="text/javascript">
+  var jsMeta;
+</script>
