@@ -5582,7 +5582,22 @@ SELECT 'LABEL','ID_NODELETEOPTIONALL','en','You must add all the days that you h
 SELECT 'LABEL','ID_IMPORT_RT','en','Import Report Table','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_GRID_PAGE_DISPLAYING_REPORTABLES_MESSAGE','en','Displaying Report Tables {0} - {1} of {2}','2012-06-01' 
+  UNION ALL
+SELECT 'LABEL','ID_SKIN_EXCEPTION','en','Skin Engine Exception','2012-06-04' 
+  UNION ALL
+SELECT 'LABEL','ID_SKIN_LAYOUT_NOT_FOUND','en','Layout not Found','2012-06-04' 
+  UNION ALL
+SELECT 'LABEL','ID_SKIN_INCORRECT_VERIFY_URL','en','You''re trying to get a resource from an incorrect skin, please verify your url.','2012-06-04' 
+  UNION ALL
+SELECT 'LABEL','ID_REDIRECT_URL','en','The System can try to redirect to the correct url. Try Now.','2012-06-04' 
+  UNION ALL
+SELECT 'LABEL','ID_PASSWORD_TESTING','en','Testing password','2012-06-05' 
+  UNION ALL
+SELECT 'LABEL','ID_TRUE','en','TRUE','2012-06-06' 
+  UNION ALL
+SELECT 'LABEL','ID_FALSE','en','FALSE','2012-06-06' 
  ;
+;
 
 INSERT INTO ISO_LOCATION ([IC_UID],[IL_UID],[IL_NAME],[IL_NORMAL_NAME],[IS_UID]) 
 SELECT 'AD','','','',''  UNION ALL
