@@ -60,26 +60,41 @@ var G_Grid = function(oForm, sGridName){
             j++;
           }
           break;
+        
         case 'currency':
           while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
             this.aElements.push(new G_Currency(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
                 + this.aFields[i].sFieldName));
-            if (aFields[i].oProperties) {
-              this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.mask;
+            
+            if (this.aFields[i].oProperties) {
+              if (this.aFields[i].oProperties.comma_separator) {
+                this.aElements[this.aElements.length - 1].comma_separator = this.aFields[i].oProperties.comma_separator;
+              }
+              
+              this.aElements[this.aElements.length - 1].mask = this.aFields[i].oProperties.mask;
             }
+            
             j++;
           }
           break;
+        
         case 'percentage':
           while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
             this.aElements.push(new G_Percentage(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j
                 + '][' + this.aFields[i].sFieldName));
-            if (aFields[i].oProperties) {
-              this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.mask;
+            
+            if (this.aFields[i].oProperties) {
+              if (this.aFields[i].oProperties.comma_separator) {
+                this.aElements[this.aElements.length - 1].comma_separator = this.aFields[i].oProperties.comma_separator;
+              }
+              
+              this.aElements[this.aElements.length - 1].mask = this.aFields[i].oProperties.mask;
             }
+            
             j++;
           }
           break;
+        
         case 'dropdown':
           while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
             this.aElements.push(new G_DropDown(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
@@ -90,6 +105,7 @@ var G_Grid = function(oForm, sGridName){
             j++;
           }
           break;
+        
         default:
           while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
             this.aElements.push(new G_Field(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
@@ -99,7 +115,7 @@ var G_Grid = function(oForm, sGridName){
             }
             j++;
           }
-          break;          
+          break;
       }
     }
     // Set dependent fields

@@ -1365,7 +1365,7 @@ function G_Percentage( form, element, name )
   var me=this;
   this.parent = G_Text;
   this.parent( form, element, name);
-  this.validate = 'Int';
+  //this.validate = 'Int'; //Commented for allow enter the character '.'
   this.mType = 'percentage';
   this.mask= '###.##';
   this.comma_separator = ".";
@@ -1377,7 +1377,7 @@ function G_Currency( form, element, name )
   var me=this;
   this.parent = G_Text;
   this.parent( form, element, name);
-  //this.validate = 'Int';   //commented for allow enter the character '.'
+  //this.validate = 'Int'; //Commented for allow enter the character '.'
   this.mType = 'currency';
   this.mask= '_###,###,###,###,###;###,###,###,###,###.00';
   this.comma_separator = ".";
