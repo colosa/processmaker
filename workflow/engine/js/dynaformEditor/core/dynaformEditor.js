@@ -165,10 +165,11 @@ var dynaformEditor={
   {
     var field=getField("JS_LIST","dynaforms_JSEditor");
     var code=this.getJSCode();
-    
+    var meta=jsMeta;
+
     if (field.value)
     {
-      var res = this.ajax.set_javascript(this.A,field.value, encodeURIComponent(code));
+      var res = this.ajax.set_javascript(this.A,field.value, encodeURIComponent(code), meta);
       if (typeof(res["*message"])==="string")
       {
         G.alert(res["*message"]);
@@ -462,7 +463,7 @@ var dynaformEditor={
       if( field.options[j].value == '___pm_boot_strap___' ){
         field.remove(j);
       }
-    }
+    }    
     this.currentJS=field.value;
     var res=this.ajax.get_javascripts(this.A,field.value);
     if(field.value == ''){

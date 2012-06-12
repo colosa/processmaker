@@ -265,6 +265,7 @@ class dynaformEditor extends WebResource
     var DYNAFORM_URL="'.$Parameters['URL'].'";
     leimnud.event.add(window,"load",function(){ loadEditor(); });
     ');
+    $oHeadPublisher->addScriptCode(' var jsMeta;');
     G::RenderPage( "publish", 'blank' );
   }
 
@@ -664,8 +665,12 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
    * @param string $sCode
    * @return array
    */
-  function set_javascript($A,$fieldName,$sCode)
+  function set_javascript($A,$fieldName,$sCode,$meta)
   {
+    if ($fieldName == '___pm_boot_strap___') {
+      return 0;
+    }
+    
     $sCode = urldecode($sCode) ;
     try {
       $sCode = rtrim($sCode);
@@ -678,7 +683,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
       G::LoadSystem('dynaformhandler');
 
 		  $dynaform = new dynaFormHandler(PATH_DYNAFORM."{$file}.xml");
-      $dynaform->replace($fieldName, $fieldName, Array('type'=>'javascript', '#cdata'=>$sCode));
+      $dynaform->replace($fieldName, $fieldName, Array('type'=>'javascript', 'meta'=>$meta, '#cdata'=>$sCode));
 
       return 0;
     } catch(Exception $e) {
