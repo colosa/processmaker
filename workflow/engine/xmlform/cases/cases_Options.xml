@@ -29,7 +29,6 @@
 </MNU_SEARCH>-->
 <JS type="javascript">
 <![CDATA[
-getField('PAGED_TABLE_FAST_SEARCH').value = '';
 function casesDelete(app) {
   ajax_function('cases_Delete','','APP_UID='+encodeURIComponent(app));
   @#PAGED_TABLE_ID.refresh();
