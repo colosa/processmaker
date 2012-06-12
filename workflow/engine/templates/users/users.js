@@ -10,6 +10,7 @@ var infoMode;
 var global = {};
 var readMode;
 var canEdit = true;
+var flagPoliciesPassword = false;
 //var rendeToPage='document.body';
 global.IC_UID        = '';
 global.IS_UID        = '';
@@ -387,7 +388,7 @@ Ext.onReady(function() {
         xtype      : 'textfield',
         width      : 260,
         allowBlank : false
-      },
+      },      
       {
         id         : 'USR_USERNAME',
         fieldLabel : _('ID_USER_ID'),
@@ -449,7 +450,63 @@ Ext.onReady(function() {
         xtype      : 'textfield',
         inputType  : 'password',
         width      : 260,
-        allowBlank : allowBlackStatus
+        allowBlank : allowBlackStatus,
+        listeners: {
+          blur : function(ob)
+          {
+            var spanAjax = '<span style="font: 9px tahoma,arial,helvetica,sans-serif;">';
+            var imageAjax = '<img width="13" height="13" border="0" src="/images/ajax-loader.gif">';
+            var labelAjax = _('ID_PASSWORD_TESTING');
+
+            Ext.getCmp('passwordReview').setText(spanAjax + imageAjax + labelAjax + '</span>', false);
+            Ext.getCmp('passwordReview').setVisible(true);
+
+            var passwordText = this.getValue();
+
+            Ext.Ajax.request({
+              url    : 'usersAjax',
+              method:'POST',
+              params : {
+                'action'        : 'testPassword',
+                'PASSWORD_TEXT' : passwordText
+              },
+              success: function(r,o){      
+                var resp = Ext.util.JSON.decode(r.responseText);
+
+                if (resp.STATUS) {
+                  flagPoliciesPassword = true;
+                } else {
+                  flagPoliciesPassword = false;  
+                }
+                
+                Ext.getCmp('passwordReview').setText(resp.DESCRIPTION, false);                
+              },
+              failure: function () {
+                Ext.MessageBox.show({
+                  title: 'Error',
+                  msg: 'Failed to store data',
+                  buttons: Ext.MessageBox.OK,
+                  animEl: 'mb9',
+                  icon: Ext.MessageBox.ERROR
+                });
+              }
+            });
+
+            Ext.getCmp('passwordReview').setVisible(true);
+
+            if (Ext.getCmp('USR_CNF_PASS').getValue() != '') {
+              userExecuteEvent(document.getElementById('USR_CNF_PASS'), 'blur');
+            }
+
+          }
+        }
+      },
+      {
+        xtype: 'label', 
+        fieldLabel: ' ',
+        id:'passwordReview',
+        width: 300, 
+        labelSeparator: ''
       },
       {
         id         : 'USR_CNF_PASS',
@@ -457,7 +514,32 @@ Ext.onReady(function() {
         xtype      : 'textfield',
         inputType  : 'password',
         width      : 260,
-        allowBlank : allowBlackStatus
+        allowBlank : allowBlackStatus,
+        listeners: {
+          blur : function(ob)
+          {
+            var passwordText    = Ext.getCmp('USR_NEW_PASS').getValue();
+            var passwordConfirm = this.getValue();
+
+            if (passwordText != passwordConfirm) {
+              var spanErrorConfirm  = '<span style="color: red; font: 9px tahoma,arial,helvetica,sans-serif;">';
+              var imageErrorConfirm = '<img width="13" height="13" border="0" src="/images/delete.png">';
+              var labelErrorConfirm = _('ID_NEW_PASS_SAME_OLD_PASS');
+
+              Ext.getCmp('passwordConfirm').setText(spanErrorConfirm + imageErrorConfirm + labelErrorConfirm + '</span>', false);
+              Ext.getCmp('passwordConfirm').setVisible(true);
+            } else {
+              Ext.getCmp('passwordConfirm').setVisible(false);
+            }
+          }
+        }
+      },
+      {
+        xtype: 'label', 
+        fieldLabel: ' ',
+        id:'passwordConfirm',
+        width: 300, 
+        labelSeparator: ''
       }
      
     ]
@@ -776,7 +858,15 @@ Ext.onReady(function() {
   else {
     frmDetails.render(document.body);
   }
+
+  Ext.getCmp('passwordReview').setVisible(false);
+  Ext.getCmp('passwordConfirm').setVisible(false);
+
+  var spanAjax = '<span style="font: 9px tahoma,arial,helvetica,sans-serif;">';
+  var imageAjax = '<img width="13" height="13" border="0" src="/images/ajax-loader.gif">';
+  var labelAjax = _('ID_PASSWORD_TESTING');
   
+  Ext.getCmp('passwordReview').setText(spanAjax + imageAjax + labelAjax + '</span>', false);
 });
 
 function defineUserPanel()
@@ -815,6 +905,10 @@ function editUser()
 }
 function saveUser()
 {
+  if (flagPoliciesPassword != true) {
+    Ext.Msg.alert( _('ID_ERROR'), Ext.getCmp('passwordReview').html);
+    return false;
+  }
 
   var newPass  = frmDetails.getForm().findField('USR_NEW_PASS').getValue();
   var confPass = frmDetails.getForm().findField('USR_CNF_PASS').getValue();	
@@ -1049,4 +1143,15 @@ function loadUserView()
 
 }
 
-
+function userExecuteEvent (element,event) {
+  if ( document.createEventObject ) {
+    // IE
+    var evt = document.createEventObject();
+    return element.fireEvent('on'+event,evt)
+  } else {
+    // firefox + others
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent(event, true, true ); // event type,bubbling,cancelable
+    return !element.dispatchEvent(evt);
+  }
+}
