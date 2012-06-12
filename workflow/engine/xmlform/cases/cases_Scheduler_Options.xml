@@ -21,7 +21,6 @@
 
 
 <JS type="javascript"><![CDATA[
-getField('PAGED_TABLE_FAST_SEARCH').value = '';
 function $_GET(q,s) {
     s = (s) ? s : self.location.search;
     var re = new RegExp('&'+q+'=([^&]*)','i');

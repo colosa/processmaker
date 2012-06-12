@@ -10,7 +10,6 @@
 <fields_Order type="private" defaultValue="../dynaforms/fields_Order"/>
 <js type="javascript" replaceTags="1">
 <![CDATA[
-getField('PAGED_TABLE_FAST_SEARCH').value = '';
   var validatingForm;
   function fieldsAdd( type ){
     popupWindow('@G::LoadTranslation(ID_ADD) ' + type , '@G::encryptlink(@#fields_Edit)?A=@%URL&TYPE='+encodeURIComponent(type) , 510, 650, null,false,true);

@@ -10,7 +10,6 @@
 <messages_Delete type="private" defaultValue="../messages/messages_Delete"/>
 <PAGED_TABLE_ID type="private"/>
 <js type="javascript" replaceTags="1"><![CDATA[
-getField('PAGED_TABLE_FAST_SEARCH').value = '';
 var currentPagedTable = @#PAGED_TABLE_ID;
   function messagesAdd(){
 		popupWindow('@G::LoadTranslation(ID_ADD_MESSAGE)', '@G::encryptlink(@#messages_Edit)?PRO_UID=@%PRO_UID' , 500, 300 );

@@ -34,7 +34,6 @@
 
 <JS type="javascript" replaceTags="1">
 <![CDATA[
-  getField('PAGED_TABLE_FAST_SEARCH').value = '';
 /*
 	document.onkeypress=function(e){
 	var esIE=(document.all);

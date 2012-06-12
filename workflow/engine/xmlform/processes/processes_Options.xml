@@ -18,7 +18,6 @@
 
 <SEARCH_FILTER_FORM type="private"/>
 <JS type="javascript" replacetags="1"><![CDATA[
-getField('PAGED_TABLE_FAST_SEARCH').value = '';
 var panel;
 var panDel=function(link,uid)
 {

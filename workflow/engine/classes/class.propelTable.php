@@ -542,7 +542,7 @@ class propelTable
         $template = PATH_CORE . 'templates' . PATH_SEP . $menu->type . '.html';
         $menu->setValues($this->xmlForm->values);
         $menu->setValues(array( 'PAGED_TABLE_ID' => $this->id ));
-        $menu->setValues(array( 'PAGED_TABLE_FAST_SEARCH' => $this->fastSearch ));
+        //$menu->setValues(array( 'PAGED_TABLE_FAST_SEARCH' => $this->fastSearch ));
         if (isset($filterForm->name)) {
           $menu->setValues(array('SEARCH_FILTER_FORM' => $filterForm->name));
         }

@@ -7,8 +7,6 @@
 <PAGED_TABLE_ID type="private"/>
 
 <JS type="javascript" replaceTags="1">
-getField('PAGED_TABLE_FAST_SEARCH').value = '';
-
 function editCondition(uid, sStepTitle)
 {
   popupWindow('@G::LoadTranslation(ID_EDIT_CONDITIONS_OF_STEP)' + ': ' + sStepTitle, '@G::encryptLink(@#URL_CONDITIONS_EDIT)?UID='+ uid , 500, 216);

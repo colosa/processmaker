@@ -6,7 +6,5 @@
   <en>Advanced Search</en>
 </MNU_SEARCH>-->
 <SEARCH_FILTER_FORM type="private"/>
-<JS type="javascript">
-  getField('PAGED_TABLE_FAST_SEARCH').value = '';
-</JS>
+
 </dynaForm> 

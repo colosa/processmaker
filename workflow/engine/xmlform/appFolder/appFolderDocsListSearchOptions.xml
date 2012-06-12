@@ -16,7 +16,4 @@
 
 <PAGED_TABLE_ID type="private"/>
 
-<JS type="javascript">
-  getField('PAGED_TABLE_FAST_SEARCH').value = '';
-</JS>
 </dynaForm> 

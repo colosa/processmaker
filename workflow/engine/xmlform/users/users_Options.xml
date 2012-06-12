@@ -14,7 +14,6 @@
 <CONFIRM type="private"/>
 
 <JS type="javascript"><![CDATA[ 
-getField('PAGED_TABLE_FAST_SEARCH').value = '';
 var simpleUserDelete = function(sUser) {
   new leimnud.module.app.confirm().make({
   	label:'@#CONFIRM',
