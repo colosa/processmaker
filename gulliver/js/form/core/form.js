@@ -1157,9 +1157,11 @@ function G_Text( form, element, name)
     if (me.element.readOnly) {
       return true;
     }
-    if (( me.mType != 'currency' && me.mType != 'percentage') && (me.element.value.length > me.element.maxLength - 1)) {
+    
+    if ((me.mType != 'currency' && me.mType != 'percentage' && me.mType != 'date') && (me.element.value.length > me.element.maxLength - 1)) {
       return true;
     }
+    
     if (me.validate == 'Any' && me.mask == '') return true;
     //THIS FUNCTION HANDLE ALL KEYS EXCEPT BACKSPACE AND DELETE
     //keyCode = event.keyCode;
@@ -3232,6 +3234,40 @@ function hideRowsById(aFields){
       row.style.display='none';
     } 
   }
+}
+
+function dateSetMask(mask) {
+  if (mask != '') {
+    mask = stringReplace("%y", "yy", mask);
+    mask = stringReplace("%Y", "yyyy", mask);
+    
+    mask = stringReplace("%m", "mm", mask);
+    mask = stringReplace("%o", "mm", mask);
+    
+    mask = stringReplace("%d", "dd", mask);
+    mask = stringReplace("%e", "dd", mask);
+    
+    //In the function getCleanMask valid characters for an mask that does not
+    //is currency/percentage are: '0 ',' # ',' d ',' m ',' y ',' Y '.
+    //For hours, minutes and seconds replace this mask with '#'
+    mask = stringReplace("%H", "##", mask);
+    mask = stringReplace("%I", "##", mask);
+    mask = stringReplace("%k", "##", mask);
+    mask = stringReplace("%l", "##", mask);
+    
+    mask = stringReplace("%M", "##", mask);
+    mask = stringReplace("%S", "##", mask);
+    
+    mask = stringReplace("%j", "###", mask);
+  }
+  
+  return mask;
+}
+
+function stringReplace(strSearch, strReplace, str) {
+  var expression = eval("/" + strSearch + "/g");
+
+  return str.replace(expression, strReplace);
 }
 
 /* end file */
