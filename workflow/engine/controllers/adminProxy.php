@@ -962,14 +962,17 @@ class adminProxy extends HttpProxyController
         $namefile  = $formf['name'];
         $typefile  = $formf['type'];
         $errorfile = $formf['error'];
-        $tpnfile   = $formf['tmp_name'];
+        $tmpFile   = $formf['tmp_name'];
         $aMessage1 = array();
         $fileName  = trim(str_replace(' ', '_', $namefile));
         $fileName  = self::changeNamelogo($fileName);
-        G::uploadFile( $tpnfile, $dir . '/', 'tmp' . $fileName );
+        
+        G::uploadFile($tmpFile, $dir, 'tmp' . $fileName);
 
         try {
-          $typeMime = exif_imagetype($dir . '/'. 'tmp'.$fileName);
+          $arrayInfo = getimagesize($dir . '/' . 'tmp' . $fileName);
+          $typeMime  = $arrayInfo[2];
+          
           if ($typeMime == $allowedTypeArray['index' . base64_encode($_FILES['img']['type'])]) {
             $error = false;
             try {
@@ -989,7 +992,6 @@ class adminProxy extends HttpProxyController
         catch (Exception $e) {
           $failed = "3";
         }
-
       }
       else {
         $failed = "2";
