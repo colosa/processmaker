@@ -92,7 +92,10 @@ class MysqlPlatform extends DefaultPlatform {
 	 * @return     string
 	 */
 	public function escapeText($text) {
-		return mysql_real_escape_string($text);
+            $search = array("\x00", "\n", "\r", "\\", "'", "\"", "\x1a");
+            $replace = array("\\x00", "\\n", "\\r", "\\\\" ,"\'", "\\\"", "\\\x1a");
+            return str_replace($search, $replace, $text);	
+            //return mysql_real_escape_string($text);
 	}
 
 	/**
