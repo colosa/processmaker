@@ -86,29 +86,37 @@
           <!-- <a href="" title="_title / Home" accesskey="1" id="logo">_title</a> -->
 
           <ul class="nav primary-nav">
+            <!--
             <li class="account">
               <a class="menu user-actions active" href="#" onclick="redirect('home/appList?t=todo');" title="My Inbox">
                 <img alt="" src="/images/simplified/in-set-grey.png" id="inboxOp" />
+            -->
                 <!-- <span class="menu-label screen-name">new cases</span> -->
+            <!--
               </a>
             </li>
+            -->
 
-            {if $canStartCase neq false}
-            <li class="account">
-              <a class="menu user-actions" href="#" onclick="redirect('home/appList?t=draft');" title="My Drafts">
-                <img alt="" src="/images/simplified/folder-grey.png"  />
-              </a>
-            </li>
+            {if count($arrayMnuOption) > 0}
+              {foreach from=$arrayMnuOption key=index item=option}
+              <li class="account">
+                <a class="menu user-actions" href="javascript:;" onclick="redirect('{$option.url}');" title="{$option.label}">
+                  <img src="{$option.icon}" alt="" />
+                </a>
+              </li>
+              {/foreach}
+            {/if}
             
+            {if $canStartCase neq false && count($mnuNewCase) > 0}
             <li class="account">
-              <a class="menu user-actions" href="#" title="New Case" id="_new">
-                <img alt="" src="/images/simplified/plus-set-grey.png"/>
+              <a class="menu user-actions" href="javascript:;" title="{$mnuNewCase.label}" id="_new">
+                <img src="{$mnuNewCase.icon}" alt="" />
               </a>
 
               <ul class="menu-dropdown" style="width: 360px">
                 {foreach from=$processList key=id item=proc}
                 <li>
-                  <a href="#" onclick="appStart('{$proc.uid}', '{$proc.value}')" accesskey="s" title="" id="settings_link">{$proc.value}</a>
+                  <a href="javascript:;" onclick="appStart('{$proc.uid}', '{$proc.value}')" accesskey="s" title="" id="settings_link">{$proc.value}</a>
                 </li>
                 {/foreach}
               </ul>
@@ -118,7 +126,7 @@
 
           <ul class="nav secondary-nav">
             <li class="account">
-              <a class="menu user-photo" href="#">
+              <a class="menu user-photo" href="javascript:;">
                 <img alt="user_avatar_mini" height="24" src="users/users_ViewPhotoGrid?pUID={$usrUid}" width="24" />
                 <span class="menu-label screen-name">{$userName}</span>
               </a>
