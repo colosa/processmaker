@@ -41,4 +41,3 @@ $oHeadPublisher =& headPublisher::getSingleton();
 $oHeadPublisher->addExtJsScript('authSources/authSourceskindof', true);    //adding a javascript file .js
 $oHeadPublisher->assign('sprovider', $_GET['sprovider']);
 G::RenderPage('publish', 'extJs');
-G::RenderPage('publish','blank');
