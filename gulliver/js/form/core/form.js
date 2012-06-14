@@ -1140,8 +1140,8 @@ function G_Text( form, element, name)
         return true;
         break;
       default:
-        if ( (me.mType == 'currency') || (me.mType == 'percentage') || (me.validate == 'Real') || (me.validate == 'Int') ) {
-          if ( (pressKey >= 48 && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188) ) {
+        if ( (me.mType == 'date') || (me.mType == 'currency') || (me.mType == 'percentage') || (me.validate == 'Real') || (me.validate == 'Int') ) {
+          if ( (pressKey >= 96 && pressKey <= 105) || (pressKey >= 48 && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188) ) {
             return true;
           }
           else {
