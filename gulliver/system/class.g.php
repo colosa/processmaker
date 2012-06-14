@@ -987,7 +987,7 @@ class G
     }
     /* Fix to prevent use uxs skin outside siplified interface, 
      because that skin is not compatible with others interfaces*/
-    if ($SYS_SKIN == 'uxs' && $SYS_COLLECTION !== 'home') {
+    if ($SYS_SKIN == 'uxs' && $SYS_COLLECTION != 'home' && $SYS_COLLECTION != 'cases') {
       $SYS_SKIN = 'classic';
     }
 
