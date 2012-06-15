@@ -104,17 +104,29 @@ class PmTable
 
       default:
         require_once 'classes/model/DbSource.php';
-        $dbSource = DbSource::load($this->dataSource);
-        if (!is_object($dbSource)) {
+        $oDBSource = new DbSource();
+        $proUid    = $oDBSource->getValProUid($this->dataSource);
+        $dbSource  = $oDBSource->load($this->dataSource, $proUid);
+
+        if (is_object($dbSource)) {
+          $this->dbConfig->adapter= $dbSource->getDbsType();
+          $this->dbConfig->host   = $dbSource->getDbsServer();
+          $this->dbConfig->name   = $dbSource->getDbsDatabaseName();
+          $this->dbConfig->user   = $dbSource->getDbsUsername();
+          $this->dbConfig->passwd = $dbSource->getDbsPassword();
+          $this->dbConfig->port   = $dbSource->getDbsPort();
+        }
+        if (is_array($dbSource)) {
+          $this->dbConfig->adapter= $dbSource['DBS_TYPE'];
+          $this->dbConfig->host   = $dbSource['DBS_SERVER'];
+          $this->dbConfig->name   = $dbSource['DBS_DATABASE_NAME'];
+          $this->dbConfig->user   = $dbSource['DBS_USERNAME'];
+          $this->dbConfig->passwd = $dbSource['DBS_PASSWORD'] ;
+          $this->dbConfig->port   = $dbSource['DBS_PORT'];
+        }
+        else {
           throw new Exception("Db source with id $dbsUid does not exist!");
         }
-
-        $this->dbConfig->adapter= $dbSource->getDbsType();
-        $this->dbConfig->host   = $dbSource->getDbsServer();
-        $this->dbConfig->name   = $dbSource->getDbsDatabaseName();
-        $this->dbConfig->user   = $dbSource->getDbsUsername();
-        $this->dbConfig->passwd = $dbSource->getDbsPassword();
-        $this->dbConfig->port   = $dbSource->getDbsPort();
     }
   }
 
@@ -394,78 +406,193 @@ class PmTable
     $lines = file($this->dataDir . $this->dbConfig->adapter . PATH_SEP . 'schema.sql');
     $previous = NULL;
     $queryStack = array();
-    
+    $aDNS       =  $con->getDSN();
+    $dbEngine   = $aDNS["phptype"];
+
     foreach ($lines as $j => $line) {
-      $line = trim($line); // Remove comments from the script
-      
-      if (strpos($line, "--") === 0) {
-        $line = substr($line, 0, strpos($line, "--"));
-      }
+      switch($dbEngine) {
+        case 'mysql' :
+          $line = trim($line); // Remove comments from the script
 
-      if (empty($line)) {
-        continue;
-      }
-
-      if (strpos($line, "#") === 0) {
-        $line = substr($line, 0, strpos($line, "#"));
-      }
-
-      if (empty($line)) {
-        continue;
-      }
-
-      // Concatenate the previous line, if any, with the current
-      if ($previous) {
-        $line = $previous . " " . $line;
-      }
-      $previous = NULL;
-      
-      // If the current line doesnt end with ; then put this line together
-      // with the next one, thus supporting multi-line statements.
-      if (strrpos($line, ";") != strlen($line) - 1) {
-        $previous = $line;
-        continue;
-      }
-      
-      $line = substr($line, 0, strrpos($line, ";"));
-      
-      // just execute the drop and create table for target table nad not for others
-      if (stripos($line, 'CREATE TABLE') !== false || stripos($line, 'DROP TABLE') !== false) {
-        $isCreateForCurrentTable = preg_match('/CREATE\sTABLE\s[\'\"\`]{1}' . $this->tableName . '[\'\"\`]{1}/i', $line, $match);
-        if ($isCreateForCurrentTable) {
-          $queryStack['create'] = $line;
-        }
-        else {
-          $isDropForCurrentTable = preg_match('/DROP TABLE.*[\'\"\`]{1}' . $this->tableName . '[\'\"\`]{1}/i', $line, $match);
-          if ($isDropForCurrentTable) {
-            $queryStack['drop'] = $line;
+          if (strpos($line, "--") === 0) {
+            $line = substr($line, 0, strpos($line, "--"));
           }
-        }
+
+          if (empty($line)) {
+            continue;
+          }
+
+          if (strpos($line, "#") === 0) {
+            $line = substr($line, 0, strpos($line, "#"));
+          }
+
+          if (empty($line)) {
+            continue;
+          }
+
+          // Concatenate the previous line, if any, with the current
+          if ($previous) {
+            $line = $previous . " " . $line;
+          }
+          $previous = NULL;
+
+          // If the current line doesnt end with ; then put this line together
+          // with the next one, thus supporting multi-line statements.
+          if (strrpos($line, ";") != strlen($line) - 1) {
+            $previous = $line;
+            continue;
+          }
+
+          $line = substr($line, 0, strrpos($line, ";"));
+          // just execute the drop and create table for target table nad not for others
+          if (stripos($line, 'CREATE TABLE') !== false || stripos($line, 'DROP TABLE') !== false) {
+            $isCreateForCurrentTable = preg_match('/CREATE\sTABLE\s[\[\'\"\`]{1}' . $this->tableName . '[\]\'\"\`]{1}/i', $line, $match);
+            if ($isCreateForCurrentTable) {
+              $queryStack['create'] = $line;
+            }
+            else {
+              $isDropForCurrentTable = preg_match('/DROP TABLE.*[\[\'\"\`]{1}' . $this->tableName . '[\]\'\"\`]{1}/i', $line, $match);
+              if ($isDropForCurrentTable) {
+                $queryStack['drop'] = $line;
+              }
+            }
+          }
+          break;
+        case 'mssql' :
+          $line = trim($line); // Remove comments from the script
+
+          if (strpos($line, "--") === 0) {
+            $line = substr($line, 0, strpos($line, "--"));
+          }
+
+          if (empty($line)) {
+            continue;
+          }
+
+          if (strpos($line, "#") === 0) {
+            $line = substr($line, 0, strpos($line, "#"));
+          }
+
+          if (empty($line)) {
+            continue;
+          }
+
+          // Concatenate the previous line, if any, with the current
+          if ($previous) {
+            $line = $previous . " " . $line;
+          }
+          $previous = NULL;
+
+          // If the current line doesnt end with ; then put this line together
+          // with the next one, thus supporting multi-line statements.
+          if (strrpos($line, ";") != strlen($line) - 1) {
+            $previous = $line;
+            continue;
+          }
+
+          $line = substr($line, 0, strrpos($line, ";"));
+
+          if (strpos($line, $this->tableName) == false) {
+            continue;
+          }
+
+          $auxCreate = explode('CREATE', $line);
+          $auxDrop   = explode('IF EXISTS', $auxCreate['0']);
+
+          $queryStack['drop']   = 'IF EXISTS' . $auxDrop['1'];
+          $queryStack['create'] = 'CREATE' . $auxCreate['1'];
+
+          break;
+        case 'oracle' :
+          $line = trim($line);
+          if (empty($line)) {
+            continue;
+          }
+          switch(true) {
+            case preg_match("/^CREATE TABLE\s/i", $line):
+              if (strpos($line, $this->tableName) == true) {
+                $inCreate    = true;
+                $lineCreate .= $line . ' ';
+              }
+              break;
+            case preg_match("/ALTER TABLE\s/i", $line):
+              if (strpos($line, $this->tableName) == true) {
+                $inAlter    = true;
+                $lineAlter .= $line . ' ';
+              }
+              break;
+            case preg_match("/^DROP TABLE\s/i", $line):
+              if (strpos($line, $this->tableName) == true) {
+                $inDrop    = true;
+                $lineDrop .= $line . ' ';
+                if (strrpos($line, ";") > 0) {
+                  $queryStack['drop'] = $lineDrop;
+                  $inDrop             = false;
+                }
+              }
+              break;
+            default :
+              if ($inCreate) {
+                $lineCreate .= $line . ' ';
+                if (strrpos($line, ";") > 0) {
+                  $queryStack['create'] = $lineCreate;
+                  $inCreate             = false;
+                }
+              }
+              if ($inAlter) {
+                $lineAlter .= $line . ' ';
+                if (strrpos($line, ";") > 0) {
+                  $queryStack['alter'] = $lineAlter;
+                  $inAlter             = false;
+                }
+              }
+              if ($inDrop) {
+                $lineDrop .= $line . ' ';
+                if (strrpos($line, ";")>0) {
+                  $queryStack['drop'] = $lineDrop;
+                  $inDrop = false;
+                }
+              }
+          }
+          break;
       }
-    
+
     }
-    
-    if (isset($queryStack['create'])) {
-      // first at all we need to verify if we have a valid schema defined,
-      // so we verify that creating a dummy table 
-      $swapQuery = str_replace($this->tableName, $this->tableName . '_TMP', $queryStack['create']);
-      
-      // if there is a problem with user defined table schema executeQuery() will throw a sql exception 
-      $stmt->executeQuery($swapQuery);
-      
-      // if there was not problem above proceced deleting the dummy table and drop and create the target table
-      $stmt->executeQuery("DROP TABLE {$this->tableName}_TMP");
-      if (!isset($queryStack['drop'])) {
-        $queryStack['drop'] = "DROP TABLE {$this->tableName}";
+
+    if ($dbEngine == 'oracle') {
+      $queryStack['drop']   = substr($queryStack['drop'], 0, strrpos($queryStack['drop'], ";"));
+      $queryStack['create'] = substr($queryStack['create'], 0, strrpos($queryStack['create'], ";"));
+      $queryStack['alter']  = substr($queryStack['alter'], 0, strrpos($queryStack['alter'], ";"));
+      $queryIfExistTable    = "SELECT TABLE_NAME FROM USER_TABLES WHERE TABLE_NAME = '" . $this->tableName . "'";
+
+      $rs = $stmt->executeQuery($queryIfExistTable);
+      if ($rs->next()) {
+        $stmt->executeQuery($queryStack['drop']);
       }
-      if (!isset($queryStack['create'])) {
-        throw new Exception('A problem occurred resolving the schema to update for this table');
-      }
-      $stmt->executeQuery($queryStack['drop']);
       $stmt->executeQuery($queryStack['create']);
+      $stmt->executeQuery($queryStack['alter']);
     }
-    
-    
+    else {
+      if (isset($queryStack['create'])) {
+        // first at all we need to verify if we have a valid schema defined,
+        // so we verify that creating a dummy table
+        $swapQuery = str_replace($this->tableName, $this->tableName . '_TMP', $queryStack['create']);
+
+        // if there is a problem with user defined table schema executeQuery() will throw a sql exception
+        $stmt->executeQuery($swapQuery);
+
+        // if there was not problem above proceced deleting the dummy table and drop and create the target table
+        $stmt->executeQuery("DROP TABLE {$this->tableName}_TMP");
+        if (!isset($queryStack['drop'])) {
+          $queryStack['drop'] = "DROP TABLE {$this->tableName}";
+        }
+        if (!isset($queryStack['create'])) {
+          throw new Exception('A problem occurred resolving the schema to update for this table');
+        }
+        $stmt->executeQuery($queryStack['drop']);
+        $stmt->executeQuery($queryStack['create']);
+      }
+    }
   }
 
   public function upgradeDatabaseFor($dataSource, $tablesList = array())
