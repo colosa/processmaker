@@ -220,7 +220,7 @@ iframe::-webkit-scrollbar {
 /*  Top Level  */
 .xbreadcrumbs {
   background: #F0F0F0;
-  width: 100%;
+  width: 95%;
 }
 .xbreadcrumbs LI {
   padding: 5px;
@@ -525,6 +525,10 @@ PRE.code {
   text-shadow: 1px 1px 0 #FFFFFF;
   top: 1px;
   white-space: nowrap;
+}
+
+#signout-link img {
+  border: 0;
 }
 
 a.signout-link:hover {
