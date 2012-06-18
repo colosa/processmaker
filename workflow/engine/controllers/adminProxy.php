@@ -24,7 +24,7 @@
  */
 
 class adminProxy extends HttpProxyController
-{    
+{
   public function saveSystemConf($httpData)
   {
     G::loadClass('system');
@@ -34,7 +34,7 @@ class adminProxy extends HttpProxyController
 
     if (!file_exists($envFile) ) { // if ini file doesn't exists
       if (!is_writable(PATH_CONFIG)) {
-        throw new Exception('The enviroment config directory is not writable. <br/>Please give write permission to directory: /workflow/engine/config');    
+        throw new Exception('The enviroment config directory is not writable. <br/>Please give write permission to directory: /workflow/engine/config');
       }
       $content  = ";\r\n";
       $content .= "; ProcessMaker System Bootstrap Configuration\r\n";
@@ -44,7 +44,7 @@ class adminProxy extends HttpProxyController
     }
     else {
       if (!is_writable($envFile)) {
-        throw new Exception('The enviroment ini file file is not writable. <br/>Please give write permission to file: /workflow/engine/config/env.ini');    
+        throw new Exception('The enviroment ini file file is not writable. <br/>Please give write permission to file: /workflow/engine/config/env.ini');
       }
     }
 
@@ -71,7 +71,7 @@ class adminProxy extends HttpProxyController
       $updatedConf['memory_limit'] = $httpData->memory_limit;
     }
 
-  
+
     if ($updateRedirector) {
       if (!file_exists(PATH_HTML . 'index.html')) {
         throw new Exception('The index.html file is not writable on workflow/public_html directory.');
@@ -145,13 +145,13 @@ class adminProxy extends HttpProxyController
   function calendarValidate($httpData) {
     $httpData=array_unique((array)$httpData);
     $message = '';
-    $oldName = isset($_POST['oldName'])? $_POST['oldName']:'';    
-    
+    $oldName = isset($_POST['oldName'])? $_POST['oldName']:'';
+
     switch ($_POST['action']){
       case 'calendarName':
         require_once ('classes/model/CalendarDefinition.php');
         $oCalendar  = new CalendarDefinition();
-        $aCalendars = $oCalendar->getCalendarList(false,true); 
+        $aCalendars = $oCalendar->getCalendarList(false,true);
         $aCalendarDefinitions = end($aCalendars);
 
         foreach($aCalendarDefinitions as $aDefinitions) {
@@ -162,7 +162,7 @@ class adminProxy extends HttpProxyController
           }
           if ($aDefinitions['CALENDAR_NAME'] != $_POST['name']){
             $validated = true;
-          } 
+          }
           else {
             if ($aDefinitions['CALENDAR_NAME'] != $oldName) {
               $validated = false;
@@ -182,28 +182,29 @@ class adminProxy extends HttpProxyController
 
   function uxGroupUpdate($httpData)
   {
-    require_once 'classes/model/Groupwf.php';
-    $data = (array) G::json_decode($httpData->groups);
-
-    $group = GroupwfPeer::retrieveByPK($data['GRP_UID']);
-    $group->setGrpUx($data['GRP_UX']);
-    $group->save();
-
-    $g = new Groupwf();
-    //$row = $group->toArray(BasePeer::TYPE_FIELDNAME);
-    $row = $g->Load($group->getGrpUid());
-    $row['CON_VALUE'] = $row['GRP_TITLE'];
-
-    $uxList = self::getUxTypesList();
-    $row['GRP_UX'] = $uxList[$group->getGrpUx()];
-
-    return array('success' => true, 'message'=>'done', 'groups'=>$row);
+    G::LoadClass('groups');
+    $groups = new Groups();
+    $users = $groups->getUsersOfGroup($httpData->GRP_UID);
+    $success = true;
+    $usersAdmin = '';
+    foreach ($users as $user) {
+      if ($user['USR_ROLE'] == 'PROCESSMAKER_ADMIN' && ($httpData->GRP_UX == 'SIMPLIFIED' || $httpData->GRP_UX == 'SINGLE')) {
+        $success = false;
+        $usersAdmin .= $user['USR_FIRSTNAME'] . ' ' . $user['USR_LASTNAME'] . ', ';
+      }
+    }
+    if ($success) {
+      $group = GroupwfPeer::retrieveByPK($httpData->GRP_UID);
+      $group->setGrpUx($httpData->GRP_UX);
+      $group->save();
+    }
+    return array('success' => $success, 'users' => $usersAdmin);
   }
 
   function getUxTypesList($type = 'assoc')
   {
     $list = array();
-      
+
     if ($type == 'assoc') {
       $list = array(
         'NORMAL' => 'Normal',
@@ -224,11 +225,11 @@ class adminProxy extends HttpProxyController
     return $list;
   }
 
-  function calendarSave() 
-  {    
+  function calendarSave()
+  {
     //{ $_POST['BUSINESS_DAY']
     $businessDayArray = G::json_decode($_POST['BUSINESS_DAY']);
-    $businessDayFixArray = array();      
+    $businessDayFixArray = array();
     for($i=0;$i<sizeof($businessDayArray);$i++) {
       $businessDayFixArray[$i+1]['CALENDAR_BUSINESS_DAY'] = $businessDayArray[$i]->CALENDAR_BUSINESS_DAY;
       $businessDayFixArray[$i+1]['CALENDAR_BUSINESS_START'] = $businessDayArray[$i]->CALENDAR_BUSINESS_START;
@@ -236,57 +237,57 @@ class adminProxy extends HttpProxyController
     }
     $_POST['BUSINESS_DAY'] = $businessDayFixArray;
     //}
-    
+
     //{ $_POST['CALENDAR_WORK_DAYS']
     $calendarWorkDaysArray = G::json_decode($_POST['CALENDAR_WORK_DAYS']);
     $calendarWorkDaysFixArray = array();
     for($i=0;$i<sizeof($calendarWorkDaysArray);$i++) {
-      $calendarWorkDaysFixArray[$i] = $calendarWorkDaysArray[$i]."";        
+      $calendarWorkDaysFixArray[$i] = $calendarWorkDaysArray[$i]."";
     }
-    $_POST['CALENDAR_WORK_DAYS'] = $calendarWorkDaysFixArray;     
-    //} 
-    
+    $_POST['CALENDAR_WORK_DAYS'] = $calendarWorkDaysFixArray;
+    //}
+
     //{ $_POST['HOLIDAY']
     $holidayArray = G::json_decode($_POST['HOLIDAY']);
-    $holidayFixArray = array();      
+    $holidayFixArray = array();
     for($i=0;$i<sizeof($holidayArray);$i++) {
       $holidayFixArray[$i+1]['CALENDAR_HOLIDAY_NAME'] = $holidayArray[$i]->CALENDAR_HOLIDAY_NAME;
       $holidayFixArray[$i+1]['CALENDAR_HOLIDAY_START'] = $holidayArray[$i]->CALENDAR_HOLIDAY_START;
-      $holidayFixArray[$i+1]['CALENDAR_HOLIDAY_END'] = $holidayArray[$i]->CALENDAR_HOLIDAY_END; 
+      $holidayFixArray[$i+1]['CALENDAR_HOLIDAY_END'] = $holidayArray[$i]->CALENDAR_HOLIDAY_END;
     }
     $_POST['HOLIDAY'] = $holidayFixArray;
     //}
-    
-    //[ CALENDAR_STATUS BUSINESS_DAY_STATUS HOLIDAY_STATUS            
+
+    //[ CALENDAR_STATUS BUSINESS_DAY_STATUS HOLIDAY_STATUS
     if($_POST['BUSINESS_DAY_STATUS']=="INACTIVE") {
-      unset($_POST['BUSINESS_DAY_STATUS']);        
-    }      
+      unset($_POST['BUSINESS_DAY_STATUS']);
+    }
     if($_POST['HOLIDAY_STATUS']=="INACTIVE") {
-      unset($_POST['HOLIDAY_STATUS']);        
-    }      
+      unset($_POST['HOLIDAY_STATUS']);
+    }
     //]
-    
+
     $form = $_POST;
     G::LoadClass('calendar');
     $calendarObj=new calendar();
     $calendarObj->saveCalendarInfo($form);
-    
-    echo "{success: true}";      
+
+    echo "{success: true}";
   }
-  
+
   /**
    * getting the kind of the authentication source
    * @param object $params
    * @return array $data
    */
   function testingOption($params){
-    
-    $data['success'] = true; 
+
+    $data['success'] = true;
     $data['optionAuthS'] = $params->optionAuthS;
     return $data;
-    
+
   }// end testingOption function
-  
+
   /**
    * saving the authentication source data
    * @param object $params
@@ -333,19 +334,19 @@ class adminProxy extends HttpProxyController
       $RBAC->updateAuthSource($aFields);
     }
     $data=array();
-    $data['success'] = true; 
+    $data['success'] = true;
     return $data;
   }//end saveAuthSoruces function
-  
+
  /**
   * for Test email configuration
   * @autor Alvaro  <alvaro@colosa.com>
   */
   public function testConnection($params) {
-    
+
     G::LoadClass('net');
     G::LoadThirdParty('phpmailer', 'class.smtp');
-    
+
     if ($_POST['typeTest'] == 'MAIL')
     {
       define("SUCCESSFUL", 'SUCCESSFUL');
@@ -361,41 +362,41 @@ class adminProxy extends HttpProxyController
       $_POST['MESS_PASSWORD'] = '';
       $_POST['TO']            = $mail_to;
       $_POST['SMTPAuth']      = true;
-      
+
       try {
-        $resp = $this->sendTestMail();  
+        $resp = $this->sendTestMail();
       } catch (Exception $error) {
         $resp = new stdclass();
         $reps->status = false;
         $resp->msg = $error->getMessage();
       }
-      
+
       if($resp->status){
         echo '{"sendMail":true, "msg":"' . $resp->msg . '"}';
       } else {
         echo '{"sendMail":false, "msg":"' . $resp->msg . '"}';
       }
-      die;      
+      die;
     }
-    
-    $step = $_POST['step'];  
+
+    $step = $_POST['step'];
     $server = $_POST['server'];
-    $user = $_POST['user'];    
+    $user = $_POST['user'];
     $passwd = $_POST['passwd'];
     $passwdHide = $_POST['passwdHide'];
-    
+
     if (trim($passwdHide) != '') {
       $passwd = $passwdHide;
       $passwdHide = '';
     }
-    
+
     $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-    
+
     if (strpos( $passwdDec, 'hash:' ) !== false) {
-      list($hash, $pass) = explode(":", $passwdDec);   
+      list($hash, $pass) = explode(":", $passwdDec);
       $_POST['passwd'] = $pass;
     }
-    
+
     $port = $_POST['port'];
     $auth_required = $_POST['req_auth'];
     $UseSecureCon = $_POST['UseSecureCon'];
@@ -403,82 +404,82 @@ class adminProxy extends HttpProxyController
     $Mailto = $_POST['eMailto'];
     $SMTPSecure  = $_POST['UseSecureCon'];
 
-    $Server = new NET($server);     
+    $Server = new NET($server);
     $smtp = new SMTP;
-    
+
     $timeout = 10;
     $hostinfo = array();
     $srv=$_POST['server'];
-    
+
     switch ($step) {
       case 1:
         $this->success = $Server->getErrno() == 0;
         $this->msg = $this->result ? 'success' : $Server->error;
         break;
-      
+
       case 2:
         $Server->scannPort($port);
-        
+
         $this->success = $Server->getErrno() == 0; //'Successfull'.$smtp->status;
         $this->msg = $this->result ? '' : $Server->error;
         break;
-      
-      case 3:   //try to connect to host    
+
+      case 3:   //try to connect to host
         if (preg_match('/^(.+):([0-9]+)$/', $srv, $hostinfo)) {
           $server = $hostinfo[1];
           $port = $hostinfo[2];
         }
-        else { 
+        else {
           $host = $srv;
         }
-        
+
         $tls = (strtoupper($SMTPSecure) == 'tls');
-        $ssl = (strtoupper($SMTPSecure) == 'ssl');    
-        
+        $ssl = (strtoupper($SMTPSecure) == 'ssl');
+
         $this->success = $smtp->Connect(($ssl ? 'ssl://':'').$server, $port, $timeout);
         $this->msg = $this->result ? '' : $Server->error;
-        
+
         break;
-      
-      case 4:  //try login to host        
+
+      case 4:  //try login to host
         if($auth_required == 'true') {
-          try {	          
+          try {
             if (preg_match('/^(.+):([0-9]+)$/', $srv, $hostinfo)) {
               $server = $hostinfo[1];
               $port = $hostinfo[2];
             }
             else {
-              $server = $srv;	          
-            }           
+              $server = $srv;
+            }
             if (strtoupper($UseSecureCon)=='TLS') {
               $tls = 'tls';
             }
-            
+
             if (strtoupper($UseSecureCon)=='SSL') {
               $tls = 'ssl';
             }
-            
+
             $tls = (strtoupper($UseSecureCon) == 'tls');
             $ssl = (strtoupper($UseSecureCon) == 'ssl');
             $server = $_POST['server'];
-            
+
             if(strtoupper($UseSecureCon) == 'SSL') {
               $resp = $smtp->Connect(('ssl://').$server, $port, $timeout);
             }
             else {
               $resp = $smtp->Connect($server, $port, $timeout);
             }
-             
+
             if ($resp) {
               $hello = $_SERVER['SERVER_NAME'];
               $smtp->Hello($hello);
-              
-              if (strtoupper($UseSecureCon) == 'TLS') {                
+
+              if (strtoupper($UseSecureCon) == 'TLS') {
                 $smtp->Hello($hello);
               }
-           
-              if( $smtp->Authenticate($user, $passwd) ) { 
-                $this->success = true;                 
+
+              if( $smtp->Authenticate($user, $passwd) ) {
+                $this->success = true;
               }
               else {
                 $this->success = false;
@@ -492,7 +493,7 @@ class adminProxy extends HttpProxyController
           }
           catch (Exception $e) {
             $this->success = false;
-            $this->msg = $e->getMessage(); 
+            $this->msg = $e->getMessage();
           }
         }
         else {
@@ -500,10 +501,10 @@ class adminProxy extends HttpProxyController
           $this->msg = 'No authentication required!';
         }
         break;
-      
-      case 5:   //send a test mail    
+
+      case 5:   //send a test mail
         if($SendaTestMail == 'true') {
-          try {             
+          try {
             $_POST['FROM_NAME'] = 'Process Maker O.S. [Test mail]';
             $_POST['FROM_EMAIL'] = $user;
             $_POST['MESS_ENGINE'] = 'PHPMAILER';
@@ -512,73 +513,73 @@ class adminProxy extends HttpProxyController
             $_POST['MESS_ACCOUNT'] = $user;
             $_POST['MESS_PASSWORD'] = $passwd;
             $_POST['TO'] = $Mailto;
-            
-            if($auth_required == 'true') { 
+
+            if($auth_required == 'true') {
               $_POST['SMTPAuth'] = true;
             }
             else {
-              $_POST['SMTPAuth'] = false;                      
+              $_POST['SMTPAuth'] = false;
             }
-            
+
             if (strtolower($_POST["UseSecureCon"]) != "no") {
               $_POST["SMTPSecure"] = $_POST["UseSecureCon"];
             }
-            
+
             if ($_POST['UseSecureCon'] == 'ssl') {
               $_POST['MESS_SERVER'] = 'ssl://'.$_POST['MESS_SERVER'];
             }
-            
-            $resp = $this->sendTestMail();            
+
+            $resp = $this->sendTestMail();
             if ($resp->status == '1') {
-              $this->success=true;           
+              $this->success=true;
             }
             else {
               $this->success=false;
-              $this->msg=$smtp->error['error'];         
+              $this->msg=$smtp->error['error'];
             }
           }
           catch (Exception $e) {
             $this->success = false;
-            $this->msg = $e->getMessage();           
-          }          
+            $this->msg = $e->getMessage();
+          }
         }
         else {
           $this->success=true;
-          $this->msg='jump this step';         
+          $this->msg='jump this step';
         }
         break;
-    }   
+    }
   }
-  
+
  /**
   * for send email configuration
   * @autor Alvaro  <alvaro@colosa.com>
   */
   public function sendTestMail() {
-    
+
     global $G_PUBLISH;
     G::LoadClass("system");
     G::LoadClass('spool');
-        
+
     $sFrom    = ($_POST['FROM_NAME'] != '' ? $_POST['FROM_NAME'] . ' ' : '') . '<' . $_POST['FROM_EMAIL'] . '>';
     $sSubject = G::LoadTranslation('ID_MESS_TEST_SUBJECT');
     $msg      = G::LoadTranslation('ID_MESS_TEST_BODY');
-    
+
     switch ($_POST['MESS_ENGINE']) {
       case 'MAIL':
         $engine = G::LoadTranslation('ID_MESS_ENGINE_TYPE_1');
         break;
-      
+
       case 'PHPMAILER':
         $engine = G::LoadTranslation('ID_MESS_ENGINE_TYPE_2');
         break;
-      
+
       case 'OPENMAIL':
         $engine = G::LoadTranslation('ID_MESS_ENGINE_TYPE_3');
         break;
     }
-    
-    $sBodyPre  = new TemplatePower(PATH_TPL . 'admin' . PATH_SEP . 'email.tpl');    
+
+    $sBodyPre  = new TemplatePower(PATH_TPL . 'admin' . PATH_SEP . 'email.tpl');
     $sBodyPre->prepare();
     $sBodyPre->assign('server', $_SERVER['SERVER_NAME']);
     $sBodyPre->assign('date', date('H:i:s'));
@@ -586,7 +587,7 @@ class adminProxy extends HttpProxyController
     $sBodyPre->assign('engine', $engine);
     $sBodyPre->assign('msg', $msg);
     $sBody = $sBodyPre->getOutputContent();
-    
+
     $oSpool = new spoolRun();
     $oSpool->setConfig(
       array(
@@ -599,7 +600,7 @@ class adminProxy extends HttpProxyController
         'SMTPSecure'    => isset($_POST['SMTPSecure'])?$_POST['SMTPSecure']:'none'
       )
     );
-    
+
     $oSpool->create(
       array(
         'msg_uid'          => '',
@@ -618,10 +619,10 @@ class adminProxy extends HttpProxyController
         'app_msg_attach'=>'' // Added By Ankit
       )
     );
-    
-    $oSpool->sendMail();	
+
+    $oSpool->sendMail();
     $G_PUBLISH = new Publisher();
-    
+
     if ($oSpool->status == 'sent') {
       $o->status = true;
       $o->success = true;
@@ -632,36 +633,36 @@ class adminProxy extends HttpProxyController
       $o->success = false;
       $o->msg = $oSpool->error;
     }
-    return $o; 
+    return $o;
   }
-  
+
  /**
   * getting Save email configuration
   * @autor Alvaro  <alvaro@colosa.com>
   */
   public function saveConfiguration() {
-    
+
     require_once 'classes/model/Configuration.php';
-    
-    try {            
+
+    try {
       $oConfiguration = new Configuration();
       $aFields['MESS_PASSWORD']  = $_POST['passwd'];
-      
+
       if ($_POST['passwdHide'] != '') {
         $aFields['MESS_PASSWORD'] = $_POST['passwdHide'];
       }
-      
+
       $aFields['MESS_PASSWORD_HIDDEN'] = '';
       $aPasswd = G::decrypt($aFields['MESS_PASSWORD'],'EMAILENCRYPT');
-      
+
       if ((strpos( $aPasswd, 'hash:') !== true) && ($aFields['MESS_PASSWORD'] != '')) {   // for plain text
         $aFields['MESS_PASSWORD'] = 'hash:'.$aFields['MESS_PASSWORD'];
-        $aFields['MESS_PASSWORD'] = G::encrypt($aFields['MESS_PASSWORD'],'EMAILENCRYPT');    
+        $aFields['MESS_PASSWORD'] = G::encrypt($aFields['MESS_PASSWORD'],'EMAILENCRYPT');
       }
-      
+
       $aFields['MESS_ENABLED']             = isset($_POST['EnableEmailNotifications']) ? $_POST['EnableEmailNotifications'] : '';
       $aFields['MESS_ENABLED']             = ($aFields['MESS_ENABLED'] == 'true') ? '1' : $aFields['MESS_ENABLED'];
-      $aFields['MESS_ENGINE']              = $_POST['EmailEngine'];     
+      $aFields['MESS_ENGINE']              = $_POST['EmailEngine'];
       $aFields['MESS_SERVER']              = trim($_POST['server']);
       $aFields['MESS_RAUTH']               = isset($_POST['req_auth']) ? $_POST['req_auth'] : '';
       $aFields['MESS_RAUTH']               = ($aFields['MESS_RAUTH'] == 'true') ? '1' : $aFields['MESS_RAUTH'];
@@ -680,7 +681,7 @@ class adminProxy extends HttpProxyController
       $ProUid='';
       $UsrUid='';
       $AppUid='';
-      
+
       if($oConfiguration->exists($CfgUid, $ObjUid, $ProUid, $UsrUid, $AppUid)) {
         $oConfiguration->update(
           array(
@@ -693,7 +694,7 @@ class adminProxy extends HttpProxyController
           )
         );
         $this->success='true';
-        $this->msg='Saved';  
+        $this->msg='Saved';
       }
       else {
         $oConfiguration->create(
@@ -706,35 +707,35 @@ class adminProxy extends HttpProxyController
             'APP_UID'   => ''
           )
         );
-        $this->success='true'; 
-        $this->msg='Saved'; 
+        $this->success='true';
+        $this->msg='Saved';
       }
     }
-    catch (Exception $e) {      
+    catch (Exception $e) {
       $this->success= false;
-      $this->msg = $e->getMessage();     
+      $this->msg = $e->getMessage();
     }
   }
 
  /**
   * loadFields for email configuration
   * @autor Alvaro  <alvaro@colosa.com>
-  */  
+  */
   public function loadFields() {
-    
+
     G::loadClass('configuration');
-    
-    $oConfiguration = new Configurations();      
+
+    $oConfiguration = new Configurations();
     $oConfiguration->loadConfig($x, 'Emails','','','','');
     $fields = $oConfiguration->aConfig;
     if (count($fields) > 0) {
-      $this->success = (count($fields) > 0);    
+      $this->success = (count($fields) > 0);
       $passwd = $fields['MESS_PASSWORD'];
       $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
       if (strpos( $passwdDec, 'hash:' ) !== false) {
-        list($hash, $pass) = explode(":", $passwdDec);   
+        list($hash, $pass) = explode(":", $passwdDec);
         $fields['MESS_PASSWORD'] = $pass;
-      }    
+      }
     }
     $this->data = $fields;
   }
@@ -998,7 +999,7 @@ class adminProxy extends HttpProxyController
         $aMessage1 = array();
         $fileName  = trim(str_replace(' ', '_', $namefile));
         $fileName  = self::changeNamelogo($fileName);
-        
+
         G::uploadFile($tmpFile, $dir, 'tmp' . $fileName);
 
         try {
@@ -1009,7 +1010,7 @@ class adminProxy extends HttpProxyController
             $arrayInfo = getimagesize($dir . '/' . 'tmp' . $fileName);
             $typeMime  = $arrayInfo[2];
           }
-          
+
           if ($typeMime == $allowedTypeArray['index' . base64_encode($_FILES['img']['type'])]) {
             $error = false;
             try {
