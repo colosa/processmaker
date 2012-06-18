@@ -193,6 +193,7 @@ class AppSolr
     
     $swErrorInSearchText = false;
     $solrQueryResult = null;
+    $aPriorities = array('1'=>'VL', '2'=>'L', '3'=>'N', '4'=>'H', '5'=>'VH');
     
     $result = array ();
     $result ['totalCount'] = 0;
@@ -492,6 +493,7 @@ class AppSolr
           $aRow ['PREVIOUS_USR_UID'] = $row ['PREVIOUS_USR_UID'];
           $aRow ['TAS_UID'] = $row ['TAS_UID'];
           $aRow ['USR_UID'] = $userUid;
+          $aRow ['DEL_PRIORITY'] = G::LoadTranslation("ID_PRIORITY_{$aPriorities[$aRow['DEL_PRIORITY']]}");
           
           $rows [] = $aRow;
         }
@@ -957,9 +959,10 @@ class AppSolr
       return;
       
       // check if index server is available
-    if (! $this->isSolrEnabled) {
+    if (! $this->_solrIsEnabled) {
       // store update in table and return
       $this->applicationChangedUpdateSolrQueue ($appUID ['APP_UID'], 2); // delete
+      return;
     }
     
     $idQuery = "APP_UID:" . $appUID;
@@ -2002,7 +2005,12 @@ class AppSolr
     
     foreach ($aAppSolrQueue as $oAppSolrQueueEntity) {
       // call the syncronization function
-      $this->updateApplicationSearchIndex ($oAppSolrQueueEntity->appUid);
+      if($oAppSolrQueueEntity->appUpdated == 1){
+        $this->updateApplicationSearchIndex ($oAppSolrQueueEntity->appUid);
+      }
+      if($oAppSolrQueueEntity->appUpdated == 2){
+        $this->deleteApplicationSearchIndex ($oAppSolrQueueEntity->appUid);
+      }      
       $this->applicationChangedUpdateSolrQueue ($oAppSolrQueueEntity->appUid, 0);
     }
   }
@@ -2010,7 +2018,7 @@ class AppSolr
   /**
    * Get the total number of application records in database
    *
-   * @return application counter
+   * @return integer application counter
    */
   public function getCountApplicationsPMOS2()
   {
@@ -2022,6 +2030,20 @@ class AppSolr
     
     return $count;
   }
+  
+  /**
+   * Get the total number of application records in search index
+   *
+   * @return integer application counter
+   */
+  public function getCountApplicationsSearchIndex()
+  {
+    $searchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
+    // execute query
+    $count = $searchIndex->getNumberDocuments ($this->_solrInstance);
+  
+    return $count;
+  }  
   
   /**
    * Get a paginated list of application uids from database.

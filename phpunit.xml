@@ -17,7 +17,7 @@
         </testsuite>
     </testsuites>
 
-    <filter>
+<!--     <filter>
         <whitelist>
             <directory>./</directory>
             <exclude>
@@ -26,5 +26,9 @@
                 <directory>./rbac</directory>
             </exclude>
         </whitelist>
-    </filter>
+    </filter> -->
+    
+    <php>
+        <var name="SYS_SYS" value="herbert" />
+    </php>
 </phpunit>

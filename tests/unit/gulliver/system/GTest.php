@@ -780,7 +780,7 @@ class GTest extends PHPUnit_Framework_TestCase
      */
     public function testMySQLSintaxis()
     {
-        define('DB_ADAPTER', 'mysql');
+        //define('DB_ADAPTER', 'mysql');
         $this->assertTrue(G::MySQLSintaxis());
     }
 
