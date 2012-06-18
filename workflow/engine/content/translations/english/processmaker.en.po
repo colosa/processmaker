@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch 2.0-experimental) dummy-126-g6fb2f2d\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-83-g1eee9e8\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-05-31 19:14:21\n"
+"PO-Revision-Date: 2012-06-18 19:24:33\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -424,8 +424,8 @@ msgstr "Members"
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_DELETE_GROUP
 #: LABEL/ID_MSG_CONFIRM_DELETE_GROUP
-msgid "Draft"
-msgstr "Draft"
+msgid "Are you sure to delete this group?"
+msgstr "Are you sure to delete this group?"
 
 # TRANSLATION
 # LABEL/ID_INCORRECT_EMAIL
@@ -568,7 +568,7 @@ msgstr "Not sent"
 # TRANSLATION
 # LABEL/ID_DRAFT
 #: LABEL/ID_DRAFT
-msgid "[LABEL/ID_DRAFT] Draft"
+msgid "Draft"
 msgstr "Draft"
 
 # TRANSLATION
@@ -1060,14 +1060,14 @@ msgstr "Before Assignment"
 # TRANSLATION
 # LABEL/ID_BEFORE_DERIVATION
 #: LABEL/ID_BEFORE_DERIVATION
-msgid "Before Derivation"
-msgstr "Before Derivation"
+msgid "Before Routing"
+msgstr "Before Routing"
 
 # TRANSLATION
 # LABEL/ID_AFTER_DERIVATION
 #: LABEL/ID_AFTER_DERIVATION
-msgid "After Derivation"
-msgstr "After Derivation"
+msgid "After Routing"
+msgstr "After Routing"
 
 # TRANSLATION
 # LABEL/ID_BEFORE
@@ -1102,8 +1102,8 @@ msgstr "Enabled"
 # TRANSLATION
 # JAVASCRIPT/ID_NO_DERIVATIONS_DEFINED
 #: JAVASCRIPT/ID_NO_DERIVATIONS_DEFINED
-msgid "No derivations were defined."
-msgstr "No derivations were defined."
+msgid "No routings were defined."
+msgstr "No routings were defined."
 
 # TRANSLATION
 # LABEL/ID_ROWS
@@ -7954,8 +7954,8 @@ msgstr "Map Type"
 # TRANSLATION
 # LABEL/ID_DERIVATION_HISTORY
 #: LABEL/ID_DERIVATION_HISTORY
-msgid "Derivation History"
-msgstr "Derivation History"
+msgid "Routing History"
+msgstr "Routing History"
 
 # TRANSLATION
 # LABEL/ID_MESSAGES_HISTORY
@@ -12451,6 +12451,48 @@ msgstr "Import Report Table"
 msgid "Displaying Report Tables {0} - {1} of {2}"
 msgstr "Displaying Report Tables {0} - {1} of {2}"
 
+# TRANSLATION
+# LABEL/ID_SKIN_EXCEPTION
+#: LABEL/ID_SKIN_EXCEPTION
+msgid "Skin Engine Exception"
+msgstr "Skin Engine Exception"
+
+# TRANSLATION
+# LABEL/ID_SKIN_LAYOUT_NOT_FOUND
+#: LABEL/ID_SKIN_LAYOUT_NOT_FOUND
+msgid "Layout not Found"
+msgstr "Layout not Found"
+
+# TRANSLATION
+# LABEL/ID_SKIN_INCORRECT_VERIFY_URL
+#: LABEL/ID_SKIN_INCORRECT_VERIFY_URL
+msgid "You're trying to get a resource from an incorrect skin, please verify your url."
+msgstr "You're trying to get a resource from an incorrect skin, please verify your url."
+
+# TRANSLATION
+# LABEL/ID_REDIRECT_URL
+#: LABEL/ID_REDIRECT_URL
+msgid "The System can try to redirect to the correct url. Try Now."
+msgstr "The System can try to redirect to the correct url. Try Now."
+
+# TRANSLATION
+# LABEL/ID_PASSWORD_TESTING
+#: LABEL/ID_PASSWORD_TESTING
+msgid "Testing password"
+msgstr "Testing password"
+
+# TRANSLATION
+# LABEL/ID_TRUE
+#: LABEL/ID_TRUE
+msgid "TRUE"
+msgstr "TRUE"
+
+# TRANSLATION
+# LABEL/ID_FALSE
+#: LABEL/ID_FALSE
+msgid "FALSE"
+msgstr "FALSE"
+
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
 #: text - ADD_TAB_NAME
@@ -13363,10 +13405,10 @@ msgstr "Import"
 msgid "[authSources/authSources_SearchUsers.xml?BTN_CANCEL] Cancel"
 msgstr "Cancel"
 
-# authSources/authSources_SearchUsers.xml?CheckboxSelectAll
-# authSources/authSources_SearchUsers.xml
-#: Checkbox - CheckboxSelectAll
-msgid "[authSources/authSources_SearchUsers.xml?CheckboxSelectAll] "
+# authSources/authSources_SearchUsersMenu.xml?SelectAll
+# authSources/authSources_SearchUsersMenu.xml
+#: link - SelectAll
+msgid "[authSources/authSources_SearchUsersMenu.xml?SelectAll] "
 msgstr ""
 
 # authSources/authSources_SelectType.xml?TITLE
@@ -13498,7 +13540,7 @@ msgstr "Yes"
 # authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER
 # authSources/ldapEdit.xml
 #: text - AUTH_SOURCE_SEARCH_USER
-msgid "[authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER] Search User"
+msgid "Search User"
 msgstr "Search User"
 
 # authSources/ldapEdit.xml?AUTH_SOURCE_PASSWORD
@@ -17255,7 +17297,7 @@ msgstr "In Progress"
 # cases/cases_TransferHistory.xml
 #: dropdown - APP_TYPE -
 msgid "[cases/cases_TransferHistory.xml?APP_TYPE-]"
-msgstr "Derivated"
+msgstr "Routed"
 
 # cases/cases_TransferHistory.xml?APP_TYPE-REASSIGN
 # cases/cases_TransferHistory.xml
@@ -21539,42 +21581,6 @@ msgstr "Send Request"
 msgid "[login/forgotPassword.xml?BCANCEL] Cancel"
 msgstr "Cancel"
 
-# login/login (copy).xml?TITLE
-# login/login (copy).xml
-#: title - TITLE
-msgid "[login/login (copy).xml?TITLE] Login"
-msgstr "Login"
-
-# login/login (copy).xml?USR_USERNAME
-# login/login (copy).xml
-#: text - USR_USERNAME
-msgid "[login/login (copy).xml?USR_USERNAME] User"
-msgstr "User"
-
-# login/login (copy).xml?USR_PASSWORD
-# login/login (copy).xml
-#: password - USR_PASSWORD
-msgid "[login/login (copy).xml?USR_PASSWORD] Password"
-msgstr "Password"
-
-# login/login (copy).xml?USER_LANG
-# login/login (copy).xml
-#: dropdown - USER_LANG
-msgid "[login/login (copy).xml?USER_LANG] Language"
-msgstr "Language"
-
-# login/login (copy).xml?BSUBMIT
-# login/login (copy).xml
-#: submit - BSUBMIT
-msgid "[login/login (copy).xml?BSUBMIT] Login"
-msgstr "Login"
-
-# login/login (copy).xml?FORGOT_PASWORD_LINK
-# login/login (copy).xml
-#: link - FORGOT_PASWORD_LINK
-msgid "[login/login (copy).xml?FORGOT_PASWORD_LINK] Forgot Password"
-msgstr "Forgot Password"
-
 # login/login.xml?TITLE
 # login/login.xml
 #: title - TITLE
@@ -23300,8 +23306,8 @@ msgstr "- Default summary Dynaform -"
 # processes/processes_Edit.xml?PRO_DERIVATION_SCREEN_TPL
 # processes/processes_Edit.xml
 #: dropdown - PRO_DERIVATION_SCREEN_TPL
-msgid "Derivation Screen Template"
-msgstr "Derivation Screen Template"
+msgid "Routing Screen Template"
+msgstr "Routing Screen Template"
 
 # processes/processes_Edit.xml?PRO_DERIVATION_SCREEN_TPL-
 # processes/processes_Edit.xml
@@ -28808,8 +28814,8 @@ msgstr "Variable for Case priority"
 # tasks/tasks_Definition.xml?TAS_DERIVATION_SCREEN_TPL
 # tasks/tasks_Definition.xml
 #: dropdown - TAS_DERIVATION_SCREEN_TPL
-msgid "[tasks/tasks_Definition.xml?TAS_DERIVATION_SCREEN_TPL] Derivation Screen Template"
-msgstr "Derivation Screen Template"
+msgid "[tasks/tasks_Definition.xml?TAS_DERIVATION_SCREEN_TPL] Routing Screen Template"
+msgstr "Routing Screen Template"
 
 # tasks/tasks_Definition.xml?TAS_DERIVATION_SCREEN_TPL-
 # tasks/tasks_Definition.xml
@@ -29252,8 +29258,8 @@ msgstr "Edit"
 # tracker/tracker_Configuration.xml?CT_DERIVATION_HISTORY
 # tracker/tracker_Configuration.xml
 #: checkbox - CT_DERIVATION_HISTORY
-msgid "[tracker/tracker_Configuration.xml?CT_DERIVATION_HISTORY] Derivation History"
-msgstr "Derivation History"
+msgid "[tracker/tracker_Configuration.xml?CT_DERIVATION_HISTORY] Routing History"
+msgstr "Routing History"
 
 # tracker/tracker_Configuration.xml?CT_MESSAGE_HISTORY
 # tracker/tracker_Configuration.xml
@@ -29487,7 +29493,7 @@ msgstr "Cancelled"
 # tracker/tracker_TransferHistory.xml
 #: dropdown - APP_TYPE -
 msgid "[tracker/tracker_TransferHistory.xml?APP_TYPE-]"
-msgstr "Derivated"
+msgstr "Routed"
 
 # tracker/tracker_ViewAnyInputDocument.xml?FILENAME
 # tracker/tracker_ViewAnyInputDocument.xml

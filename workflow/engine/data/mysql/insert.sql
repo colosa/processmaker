@@ -3,7 +3,7 @@ INSERT INTO USERS (USR_UID,USR_USERNAME,USR_PASSWORD,USR_FIRSTNAME,USR_LASTNAME,
 
 INSERT INTO CONTENT (CON_CATEGORY,CON_PARENT,CON_ID,CON_LANG,CON_VALUE) VALUES
 ('ROL_NAME','','00000000000000000000000000000002','en','System Administrator'),
-('ROL_NAME','','00000000000000000000000000000003','en','Operator');
+('ROL_NAME','','00000000000000000000000000000003','en','Operator'),
 ('ROL_NAME','','00000000000000000000000000000004','en','Manager');
 
 INSERT INTO LANGUAGE (LAN_ID,LAN_NAME,LAN_NATIVE_NAME,LAN_DIRECTION,LAN_WEIGHT,LAN_ENABLED,LAN_CALENDAR) VALUES 
@@ -1456,7 +1456,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_START_CASE','en','New','2012-06-01') ,
 ( 'LABEL','ID_NEW_GROUP','en','New','2012-06-01') ,
 ( 'LABEL','ID_MEMBERS','en','Members','2012-06-01') ,
-( 'LABEL','ID_MSG_CONFIRM_DELETE_GROUP','en','Draft','2012-06-01') ,
+( 'LABEL','ID_MSG_CONFIRM_DELETE_GROUP','en','Are you sure to delete this group?','2012-06-11') ,
 ( 'LABEL','ID_INCORRECT_EMAIL','en','Your E-mail address is not valid.','2012-06-01') ,
 ( 'LABEL','ID_USER_NOT_REGISTERED','en','User not registered!','2012-06-01') ,
 ( 'LABEL','ID_USER_INACTIVE','en','User inactive!','2012-06-01') ,
@@ -1566,14 +1566,14 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_CANCEL','en','Cancel','2012-06-01') ,
 ( 'LABEL','ID_PROCESS_MAP','en','Process Map','2012-06-01') ,
 ( 'LABEL','ID_BEFORE_ASSIGNMENT','en','Before Assignment','2012-06-01') ,
-( 'LABEL','ID_BEFORE_DERIVATION','en','Before Derivation','2012-06-01') ,
-( 'LABEL','ID_AFTER_DERIVATION','en','After Derivation','2012-06-01') ,
+( 'LABEL','ID_BEFORE_DERIVATION','en','Before Routing','2012-06-18') ,
+( 'LABEL','ID_AFTER_DERIVATION','en','After Routing','2012-06-18') ,
 ( 'LABEL','ID_BEFORE','en','Before','2012-06-01') ,
 ( 'LABEL','ID_AFTER','en','After','2012-06-01') ,
 ( 'JAVASCRIPT','ID_TRANSFER_HISTORY','en','Transfer History','2012-06-01') ,
 ( 'LABEL','ID_TRANSFER_HISTORY','en','Transfer History','2012-06-01') ,
 ( 'LABEL','ID_ENABLED','en','Enabled','2012-06-01') ,
-( 'JAVASCRIPT','ID_NO_DERIVATIONS_DEFINED','en','No derivations were defined.','2012-06-01') ,
+( 'JAVASCRIPT','ID_NO_DERIVATIONS_DEFINED','en','No routings were defined.','2012-06-01') ,
 ( 'LABEL','ID_ROWS','en','Rows','2012-06-01') ,
 ( 'LABEL','ID_MEMBER','en','Member','2012-06-01') ,
 ( 'LABEL','ID_USER','en','User','2012-06-01') ,
@@ -2743,7 +2743,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_PROCESS_FILE_MANAGER','en','Process File Manager','2012-06-01') ,
 ( 'LABEL','ID_FAILURE','en','Failure','2012-06-01') ,
 ( 'LABEL','ID_MAP_TYPE','en','Map Type','2012-06-01') ,
-( 'LABEL','ID_DERIVATION_HISTORY','en','Derivation History','2012-06-01') ,
+( 'LABEL','ID_DERIVATION_HISTORY','en','Routing History','2012-06-18') ,
 ( 'LABEL','ID_MESSAGES_HISTORY','en','Messages History','2012-06-01') ,
 ( 'LABEL','ID_CASE_PROPERTIES_SAVE','en','Case Tracker Properties Saved Successfully','2012-06-01') ,
 ( 'LABEL','ID_CASE_TRACKERS','en','Case trackers','2012-06-01') ,
@@ -3510,7 +3510,15 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_3DAYSMINIMUM','en','3 days at least','2012-06-01') ,
 ( 'LABEL','ID_NODELETEOPTIONALL','en','You must add all the days that you have selected in work days, otherwise you should leave at least an "-- ALL --" option.','2012-06-01') ,
 ( 'LABEL','ID_IMPORT_RT','en','Import Report Table','2012-06-01') ,
-( 'LABEL','ID_GRID_PAGE_DISPLAYING_REPORTABLES_MESSAGE','en','Displaying Report Tables {0} - {1} of {2}','2012-06-01') ;
+( 'LABEL','ID_GRID_PAGE_DISPLAYING_REPORTABLES_MESSAGE','en','Displaying Report Tables {0} - {1} of {2}','2012-06-01') ,
+( 'LABEL','ID_SKIN_EXCEPTION','en','Skin Engine Exception','2012-06-04') ,
+( 'LABEL','ID_SKIN_LAYOUT_NOT_FOUND','en','Layout not Found','2012-06-04') ,
+( 'LABEL','ID_SKIN_INCORRECT_VERIFY_URL','en','You''re trying to get a resource from an incorrect skin, please verify your url.','2012-06-04') ,
+( 'LABEL','ID_REDIRECT_URL','en','The System can try to redirect to the correct url. Try Now.','2012-06-04') ,
+( 'LABEL','ID_PASSWORD_TESTING','en','Testing password','2012-06-05') ,
+( 'LABEL','ID_TRUE','en','TRUE','2012-06-06') ,
+( 'LABEL','ID_FALSE','en','FALSE','2012-06-06') ;
+;
 
 INSERT INTO ISO_LOCATION (IC_UID,IL_UID,IL_NAME,IL_NORMAL_NAME,IS_UID)  VALUES 
 ('AD','','',' ','') ,

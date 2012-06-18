@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dynaForm name="tracker_Configuration" width="100%" labelWidth="35%" enableTemplate="1">
- 
+
 <PRO_UID type="hidden"/>
 
 <CT_MAP_TYPE type="dropdown">
@@ -12,7 +12,7 @@
 </CT_STAGES_MAP_EDIT>
 
 <CT_DERIVATION_HISTORY type="checkbox" value="1">
-  <en>Derivation History</en>
+  <en>Routing History</en>
 </CT_DERIVATION_HISTORY>
 
 <CT_MESSAGE_HISTORY type="checkbox" value="1">

@@ -40,7 +40,7 @@
 
 <PRO_DERIVATION_SCREEN_TPL type="dropdown" sqlconnection="dbarray">
   SELECT FILE,NAME FROM _TEMPLATES1
-  <en>Derivation Screen Template
+  <en>Routing Screen Template
 	<option name="">- Default -</option>
   </en>
 </PRO_DERIVATION_SCREEN_TPL>
