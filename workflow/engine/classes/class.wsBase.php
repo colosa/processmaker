@@ -1699,7 +1699,12 @@ class wsBase
 
       $oUser     = new Users();
       $aUser     = $oUser->load($userId);
-      $sFromName = '"' . $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'] . '"';
+      
+      if (trim($aUser['USR_EMAIL'])=='') {  
+          $aUser['USR_EMAIL'] = 'info@'.$_SERVER['HTTP_HOST'];
+      }
+      
+      $sFromName = '"' . $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'] . '" <'.$aUser['USR_EMAIL'].'>';
       $oCase->sendNotifications($appdel['TAS_UID'], $nextDelegations, $appFields['APP_DATA'], $caseId, $delIndex, $sFromName);
 
       //Save data - Start
