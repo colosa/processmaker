@@ -88,8 +88,6 @@ $oHeadPublisher->addExtJsScript('users/usersGroups', false);    //adding a javas
 // $oHeadPublisher->addContent('users/usersGroups'); //adding a html file  .html.
 $oHeadPublisher->assign('USERS', $users);
 
-if ($ctab == 2) {
   $oHeadPublisher->assign('hasAuthPerm', ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1));  
-}
 
 G::RenderPage('publish', 'extJs');

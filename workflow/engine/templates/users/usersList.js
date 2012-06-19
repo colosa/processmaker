@@ -159,7 +159,7 @@ Ext.onReady(function(){
       deleteButton.enable();
         groupsButton.enable();
         //reassignButton.enable();
-        // authenticationButton.enable();
+        authenticationButton.enable();
         summaryButton.enable();
       },
       rowdeselect: function(sm){
@@ -167,7 +167,7 @@ Ext.onReady(function(){
       deleteButton.disable();
       groupsButton.disable();
       //reassignButton.disable();
-      //authenticationButton.disable();
+      authenticationButton.disable();
       summaryButton.disable();
       }
     }
@@ -354,7 +354,7 @@ Ext.onReady(function(){
     store: store,
     cm: cmodel,
     sm: smodel,
-    tbar: [newButton, '-',summaryButton,'-', editButton, deleteButton, '-', groupsButton, /* '-',authenticationButton, */ {xtype: 'tbfill'}, /* _('ID_AUTH_SOURCES')+': ',comboAuthSources,'-', */ searchText,clearTextButton,searchButton],
+    tbar: [newButton, '-',summaryButton,'-', editButton, deleteButton, '-', groupsButton,  '-',authenticationButton,  {xtype: 'tbfill'}, /* _('ID_AUTH_SOURCES')+': ',comboAuthSources,'-', */ searchText,clearTextButton,searchButton],
     bbar: bbarpaging,
     listeners: {
       rowdblclick : EditUserAction
