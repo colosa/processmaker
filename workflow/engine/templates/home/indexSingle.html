@@ -56,11 +56,15 @@
     <!-- start topbar -->
      
     <ul class="xbreadcrumbs" id="breadcrumbs-1">
-      {foreach from=$steps key=i item=step}
-        <li id="{$step.id}"{if $i eq "0"} class="current"{/if}>
-         <a{if $i eq "0"} class="home"{/if} href="{$step.url}" target="iframex">{$i+1}. {$step.title}</a>
-        </li>
-      {/foreach}
+      {if count($steps) > 0}
+        {foreach from=$steps key=i item=step}
+          <li id="{$step.id}"{if $i eq "0"} class="current"{/if}>
+           <a{if $i eq "0"} class="home"{/if} href="{$step.url}" target="iframex">{$i+1}. {$step.title}</a>
+          </li>
+        {/foreach}
+      {else}
+        <li></li>
+      {/if}
     </ul>
     
     <a id="signout-link" href="home/login" title="Sign out"><img src="/images/simplified/logout-grey.png" /></a>
