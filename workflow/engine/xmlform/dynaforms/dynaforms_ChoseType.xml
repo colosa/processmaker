@@ -15,7 +15,7 @@
 <DYN_SOURCE type="radiogroup" sqlConnection="dbarray" defaultvalue="normal">
   <en>Type
     <option name="normal">Blank Dynaform</option>
-    <option name="pmtable"> PM Table Dynaform</option>
+    <option name="pmtable">PM Table Dynaform</option>
   </en>
 </DYN_SOURCE>
 
