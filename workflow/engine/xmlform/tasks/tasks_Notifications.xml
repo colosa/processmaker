@@ -8,7 +8,7 @@
   <IFORM type="hidden"/>
   
   <SEND_EMAIL type="checkbox" value="TRUE" group="1">
-    <en>After routing notify the next assigned user(s).</en>
+    <en>After routing notify the next assigned user(s)</en>
   </SEND_EMAIL>
   
   <TAS_DEF_SUBJECT_MESSAGE type="text" size="50" required="1">
