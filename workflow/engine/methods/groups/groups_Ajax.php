@@ -123,6 +123,7 @@ switch ($_POST['action'])
     $result  = $data['rows'];
 
     $totalRows =  0;
+    $arrData   =  array(); 
     foreach ($result as $results) {
       $totalRows ++;
       $results['CON_VALUE'] = $results['GRP_TITLE'];

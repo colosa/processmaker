@@ -324,10 +324,7 @@ class Groupwf extends BaseGroupwf {
     $criteria->addSelectColumn(GroupwfPeer::GRP_UID);
     $criteria->addSelectColumn(GroupwfPeer::GRP_STATUS);    
     $criteria->addSelectColumn(GroupwfPeer::GRP_UX); 
-    $criteria->add(GroupwfPeer::GRP_STATUS, 'ACTIVE');
-
-    $criteriaCount = clone $criteria;
-
+    
     if($start != '')
       $criteria->setOffset($start);
 
@@ -373,19 +370,13 @@ class Groupwf extends BaseGroupwf {
         continue;
       }
     
+      $totalCount++;
+
       $group['GRP_TITLE'] = $grpTitle;
-      
       $aGroups[] = $group;
     }
 
-    $criteriaCount->clearSelectColumns();
-    $criteriaCount->addSelectColumn('COUNT(*) AS CNT');
-    $dt = ContentPeer::doSelectRS ($criteriaCount);
-    $dt->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-    $dt->next();
-    $row = $dt->getRow();
-    
-    return array('rows' => $aGroups, 'totalCount'=>$row ['CNT']);
+    return array('rows' => $aGroups, 'totalCount'=>$totalCount);
   }
 
  function filterGroup($filter,$start,$limit)
