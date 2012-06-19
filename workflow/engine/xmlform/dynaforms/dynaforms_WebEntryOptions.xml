@@ -3,7 +3,7 @@
 
 <PRO_UID type="private"/>
 
-<MNU_ASSIGN type="link" value="" link="#" onclick="webEntry_new(@QPRO_UID);return false;" colAlign="left" colWidth="50">
+<MNU_ASSIGN type="link" value="" link="#" onclick="webEntry_new(@QPRO_UID);return false;" colAlign="left" colWidth="100">
   <en>New</en>
 </MNU_ASSIGN>
 

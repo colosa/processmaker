@@ -7,7 +7,7 @@
 
 <TYPE type="private"/>
 
-<MNU_ASSIGN type="link" value="" link="#" onclick="popupWindow(&#039;Assign users group or user (Adhoc)&#039;, &#039;../users/users_Ajax?function=availableUsers&amp;sProcess=@#PROCESS&amp;sTask=@#TASK&amp;iType=@#TYPE&#039;, 500, 420);return false;" colAlign="left" colWidth="50">
+<MNU_ASSIGN type="link" value="" link="#" onclick="popupWindow(&#039;Assign users group or user (Adhoc)&#039;, &#039;../users/users_Ajax?function=availableUsers&amp;sProcess=@#PROCESS&amp;sTask=@#TASK&amp;iType=@#TYPE&#039;, 500, 420);return false;" colAlign="left" colWidth="100">
   <en>Assign</en>
 </MNU_ASSIGN>
 

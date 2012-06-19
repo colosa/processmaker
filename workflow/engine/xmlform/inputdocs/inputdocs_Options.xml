@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dynaForm type="xmlmenu">
 
-<MNU_ADD type="link" value="" link="#" onclick="inputdocsAdd(); return false;" colAlign="left" colWidth="35">
+<MNU_ADD type="link" value="" link="#" onclick="inputdocsAdd(); return false;" colAlign="left" colWidth="100">
   <en>New</en>
 </MNU_ADD>
 <PAGED_TABLE_ID type="private"/>

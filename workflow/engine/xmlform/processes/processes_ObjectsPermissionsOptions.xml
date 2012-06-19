@@ -3,7 +3,7 @@
 
 <PRO_UID type="private"/>
 
-<MNU_ADD type="link" value="" link="#" onclick="newObjectPermission(@@PRO_UID);return false;" colAlign="left" colWidth="45">
+<MNU_ADD type="link" value="" link="#" onclick="newObjectPermission(@@PRO_UID);return false;" colAlign="left" colWidth="100">
   <en>New</en>
 <es>Nuevo</es></MNU_ADD>
 

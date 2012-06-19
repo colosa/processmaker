@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dynaForm type="xmlmenu">
 
-<MNU_NEWEMPTY type="link" value="" link="#" onclick="showCreateEmptyOptions(event, @QMAIN_DIRECTORY);return false;" colAlign="left" colWidth="50px">
+<MNU_NEWEMPTY type="link" value="" link="#" onclick="showCreateEmptyOptions(event, @QMAIN_DIRECTORY);return false;" colAlign="left" colWidth="100">
 	<en>New</en>
 </MNU_NEWEMPTY>
 
-<MNU_UPLOAD type="link" value="" link="#" onclick="uploadFilesScreen(@QPRO_UID, @QMAIN_DIRECTORY, @QCURRENT_DIRECTORY);return false;" colAlign="left" colWidth="150px">
+<MNU_UPLOAD type="link" value="" link="#" onclick="uploadFilesScreen(@QPRO_UID, @QMAIN_DIRECTORY, @QCURRENT_DIRECTORY);return false;" colAlign="left" colWidth="100">
   <en>Upload</en>
 </MNU_UPLOAD>
 

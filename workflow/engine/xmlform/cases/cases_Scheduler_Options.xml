@@ -10,7 +10,7 @@
 
 <SEARCH_FILTER_FORM type="private"/>
 
-<MNU_ADD type="link" value="" link="javascript:newScheduler();" onclick="" colAlign="left" colWidth="35">
+<MNU_ADD type="link" value="" link="javascript:newScheduler();" onclick="" colAlign="left" colWidth="100">
   <en>New</en>
 </MNU_ADD>
 

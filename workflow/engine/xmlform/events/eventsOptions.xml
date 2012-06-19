@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dynaForm type="xmlmenu">
 
-<MNU_ADD type="link" value="" link="#" onclick="eventsNew(); return false;" colAlign="left" colWidth="60">
+<MNU_ADD type="link" value="" link="#" onclick="eventsNew(); return false;" colAlign="left" colWidth="100">
   <en>New</en>
 </MNU_ADD>
 
-<MNU_PENDING type="link" value="" link="#" onclick="eventsPending(); return false;" colAlign="left" colWidth="80">
+<MNU_PENDING type="link" value="" link="#" onclick="eventsPending(); return false;" colAlign="left" colWidth="100">
   <en>Pending</en>
 </MNU_PENDING>
 
-<MNU_COMPLETED type="link" value="" link="#" onclick="eventsCompleted(); return false;" colAlign="left" colWidth="80">
+<MNU_COMPLETED type="link" value="" link="#" onclick="eventsCompleted(); return false;" colAlign="left" colWidth="100">
   <en>Completed</en>
 </MNU_COMPLETED>
 

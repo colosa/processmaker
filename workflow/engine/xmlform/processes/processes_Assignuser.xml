@@ -3,7 +3,7 @@
 
 <PRO_UID type="private"/>
 
-<MNU_ASSIGN type="link" value="" link="#" onclick="availableProcessesUser(&#039;@#PRO_UID&#039;);return false;" colAlign="left" colWidth="50">
+<MNU_ASSIGN type="link" value="" link="#" onclick="availableProcessesUser(&#039;@#PRO_UID&#039;);return false;" colAlign="left" colWidth="100">
   <en>Assign</en>
 </MNU_ASSIGN>
 

@@ -3,7 +3,7 @@
 
 <DBS_UID type="private"/>
 
-<MNU_ADD type="link" value="" link="#" onclick="newDbConnection();return false;" colAlign="left" colWidth="45">
+<MNU_ADD type="link" value="" link="#" onclick="newDbConnection();return false;" colAlign="left" colWidth="100">
   <en>New</en>
 </MNU_ADD>
 
