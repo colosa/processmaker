@@ -30,18 +30,19 @@ class Installer extends Controller
   public function index($httpData) 
   {
     $step1_txt = 'If any of these items is not supported (marked as No) then please take actions to correct them.<br><br>' .
-                 'Failure to do so could lead to your ProcessMaker! installation not functioning correctly.<br><br>' .
+                 'Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br><br>' .
                  //'(*) MSSQL Support is optional.<br><br>' .
                  '(*) OpenSSL is optional.<br><br>' .
                  '(*) LDAP is optional.';
 
     $step2_txt = 'These settings are recommended for PHP in order to ensure full compatibility with ProcessMaker. <> ' .
                  'However, ProcessMaker still operate if your settings do not quite match the recommended';
-    $step3_txt = 'In order for ProcessMaker works correctly it needs to be able to access or write to certain files or directories.<br>' .
-                 'Please make sure to give write access on directories and all its subdirectories and files within that are listed below.';
-    $step4_txt = 'ProcessMaker stores all of its data in a database. This screen gives the installation program the information needed to create this database.<br><br>' .
-                 'If you are installing ProcessMaker on a remote web server, you will need to get this information from your Database Server.<br>';
-    $step5_txt = 'ProcessMaker uses a workspaces to store data. Please select a valid workspace name and credentials to log in it. ';
+    $step3_txt = 'In order for ProcessMaker to work correctly, it needs to be able read and write to certain directories and their files.<br>' .
+                 'Make sure to give read and write access to the directories listed below and all their subdirectories and files.';                 
+    $step4_txt = 'ProcessMaker stores all of its data in a database. Enter the address and port number used by the database. Also enter' .
+                 'the username and password of the database user who will set up the databases used by ProcessMaker<br>';
+    $step5_txt = 'ProcessMaker uses workspaces to store data in the database. Please enter a valid workspace name and a username and password to login'.
+                 ' as the administrator.';
     $step6_txt = 'xxx';
 
     $licenseContent = file_get_contents(PATH_TRUNK . 'LICENSE.txt');
