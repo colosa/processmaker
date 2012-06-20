@@ -32,7 +32,7 @@
 
 	
 
-    $width_content = '430px';
+    $width_content = '500px';
 	
 	$html =  '
 	<div class="boxTopBlue"><div class="a"></div><div class="b"></div><div class="c"></div></div>
@@ -46,12 +46,26 @@
 	<div class="boxBottomBlue"><div class="a"></div><div class="b"></div><div class="c"></div></div>';
 	
 	$rq = $_POST['req_val'];
-	foreach( $rq as  $field) {
-		$html .= "<table width='100%' cellspacing='0' cellpadding='0' border='1' style='border:0px;'>
+	foreach( $rq as $indexRq => $field) {
+    if ( is_array($field) ) {
+    	foreach ($field as $row => $fieldsRow) {
+    		foreach ($fieldsRow as $fieldGrid) {
+    			$html .= "<table width='100%' cellspacing='0' cellpadding='0' border='1' style='border:0px;'>
+					       <tr><td width='300px' class='treeNode' style='border:0px;background-color:transparent;'>
+					       	<font color=black>(*) The field <font color=blue><b>$fieldGrid</b></font> of the row 
+					       	<font color=blue><b>$row</b></font> in the grid 
+					       	<font color=blue><b>$indexRq</b></font> is required!</font>
+					       </td></tr>
+					       </table> ";
+    		}    		
+    	}
+    } else {
+      $html .= "<table width='100%' cellspacing='0' cellpadding='0' border='1' style='border:0px;'>
 			       <tr><td width='300px' class='treeNode' style='border:0px;background-color:transparent;'>
 			       	<font color=black>(*) The field <font color=blue><b>$field</b></font> is required!</font>
 			       </td></tr>
 			       </table> ";
+		}
 	}
 
     $netxpage = $_POST['next_step']['PAGE'];
@@ -65,7 +79,7 @@
     echo '<div class="grid" style="width:'.$width_content.'">
 	<div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
 	<div class="content" style="">
-		  <table >
+		  <table width="490px">
 	      <tbody><tr>
 	        <td valign="top">
 	           '.$html.'
