@@ -48,8 +48,19 @@ try {
 	$methodParameters = array_keys ( $methodObject->params );
 	$methodLink = isset ( $methodObject->info ['link'] ) && ($methodObject->info ['link'] != "") ? $methodObject->info ['link'] : "";
 	$methodreturnA = explode ( "|", $methodReturn );
-	$methodReturnLabel = isset ( $methodreturnA [3] ) ? $methodreturnA [3] : $methodReturn;
-	
+
+  $bReturnValue = true;
+  $displayMode  = 'display:block';
+  $methodreturnDescription = (trim(strtoupper($methodreturnA [3])) == strtoupper(G::LoadTranslation ( 'ID_NONE')) )? G::LoadTranslation ( 'ID_NOT_REQUIRED') : $methodreturnA [3];
+  $methodReturnLabel       = isset ( $methodreturnA [3] ) ? $methodreturnDescription : $methodReturn;
+  if ( (isset($methodreturnA[0]) && isset($methodreturnA[1])) && (trim(strtoupper($methodreturnA[0]) ) != strtoupper(G::LoadTranslation ( 'ID_NONE')) ) ) {
+    $methodReturnLabelRequired = (trim( $methodreturnA[1] ) != "" )? G::LoadTranslation ( "ID_REQUIRED_FIELD" ) : $methodreturnA[1];
+    $methodReturnLabel        .= "<br>" . trim( $methodReturnLabelRequired ) . " | " . trim($methodreturnA[0]);
+  }
+  else {
+    $bReturnValue = false;
+    $displayMode  = 'display:none';
+  }
 	$aParametersFun = $methodParameters; 
 	$triggerWizardTemplate = PATH_TPL . 'triggers' . PATH_SEP . 'triggers_EditWizard.html';
 	$template = new TemplatePower ( $triggerWizardTemplate );
@@ -79,7 +90,9 @@ try {
 	$template->assign ( 'DESCRIPTION_CONTENT', $_GET['TRI_DESCRIPTION'] );
 	$template->assign ( 'DETAILS_LABEL', G::LoadTranslation ( 'ID_DETAILS' ) );	
 	$template->assign ( 'RETURN_TITLE', G::LoadTranslation ( 'ID_TRIGGER_RETURN_TITLE' ) );
-	$template->assign ( 'RETURN_LABEL', G::LoadTranslation ( 'ID_TRIGGER_RETURN_LABEL' ) );
+  if ( $bReturnValue ) {
+    $template->assign ( 'RETURN_LABEL', G::LoadTranslation ( 'ID_TRIGGER_RETURN_LABEL' ) );
+  }
 	$template->assign ( 'RETURN_VALUE', $_GET['TRI_ANSWER'] );
 	$template->assign ( 'METHOD_LABEL', G::LoadTranslation ( 'ID_METHOD' ) );
 	$template->assign ( 'ROWS', sizeof ( $aParametersFun ) + 3 );
@@ -90,7 +103,8 @@ try {
 	$template->assign ( 'RETURN_DESCRIPTION', $methodReturnLabel );	
 	$template->assign ( 'ID_SAVE', G::LoadTranslation ( 'ID_SAVE' ) );
 	$template->assign ( 'ID_CANCEL', G::LoadTranslation ( 'ID_CANCEL' ) );
-	
+  $template->assign ( 'DISPLAY_MODE', $displayMode );
+
 	$sPMfunction = $sNameFun . " (";
 	$methodParametersOnlyNames = array ();
 	if (count ( $aParametersFun ) > 0) {
