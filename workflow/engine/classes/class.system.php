@@ -1022,9 +1022,11 @@ class System {
         if (empty($wsName)) {
           $uriParts = explode('/', getenv("REQUEST_URI"));
           
-          if (substr($uriParts[1], 0, 3 ) == 'sys') {
-            $wsName = substr($uriParts[1], 3);
-          }
+          if (isset($uriParts[1])) {
+            if (substr($uriParts[1], 0, 3 ) == 'sys') {
+              $wsName = substr($uriParts[1], 3);
+            }
+          } 
         }
         
         $wsIniFile = PATH_DB . $wsName . PATH_SEP . 'env.ini';
