@@ -32,6 +32,7 @@
   
   var storeUsersToReassign = new Ext.data.Store({
     remoteSort: false,
+    autoLoad:true,
     proxy : proxyUsersToReassignList,
     reader: readerUsersToReassignList,
     writer: writerUsersToReassignList,  // <-- plug a DataWriter into the store just as you would a Reader
@@ -63,11 +64,10 @@
     valueField    : 'userId',
     displayField  : 'userFullname',
     selectOnFocus : true,
-    typeAhead     : true,
+    typeAhead     : false,
     autocomplete  : true,
     hideTrigger   : Boolean,
-    alignTo : 'right',
-    selectOnFocus:true,
+    alignTo       : 'right',
     mode          : 'remote',
     triggerAction : 'all',
     emptyText     : _('ID_ENTER_SEARCH_TERM'),
