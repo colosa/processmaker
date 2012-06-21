@@ -967,6 +967,29 @@ switch(($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
 			echo $json->encode($aTypesID);
 		}
 	break;
+  case "previusJump":
+    require_once 'classes/model/Application.php';
+        
+    $oCriteria = new Criteria('workflow');
+    $response  = array( "success" => true );
+
+
+    $oCriteria->add(ApplicationPeer::APP_NUMBER, $_POST['appNumber']);
+    $oDataset = ApplicationPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
+    $aApplication = $oDataset->getRow();
+
+    if (is_array($aApplication)) {
+      $response['exists'] = true;
+    } else {
+      $response['exists'] = false;
+    }
+    
+    echo G::json_encode($response);
+  break;
+
+  
 	
 	default:
 		echo 'default';

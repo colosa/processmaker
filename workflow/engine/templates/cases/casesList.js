@@ -101,10 +101,28 @@ function openCase(){
 }
 
 function jumpToCase(appNumber){
-  params = 'APP_NUMBER=' + appNumber;
-  params += '&action=jump';
-  requestFile = '../cases/open';
-  redirect(requestFile + '?' + params);
+
+  //  Code add by Brayan Pereyra - cochalo
+  //  This ajax validate the appNumber exists
+  Ext.MessageBox.show({ msg: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
+  Ext.Ajax.request({
+    url: 'cases_Ajax',
+    success: function(response) {
+      var res = Ext.decode(response.responseText);
+      if (res.exists === true) {
+        params = 'APP_NUMBER=' + appNumber;
+        params += '&action=jump';
+        requestFile = '../cases/open';
+        redirect(requestFile + '?' + params);
+      } else {
+        Ext.MessageBox.hide();
+        var message = new Array();
+        message['CASE_NUMBER'] = appNumber;
+        msgBox(_('ID_INPUT_ERROR'), _('ID_CASE_DOES_NOT_EXIST_JS', appNumber), 'error');
+      }
+    },
+    params: {action:'previusJump', appNumber: appNumber}
+  });  
 }
 
 function deleteCase() {
