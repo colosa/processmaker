@@ -1,7 +1,8 @@
 <?php
 require_once ('Base.php');
 
-class Entity_SolrRequestData extends Entity_Base {
+class Entity_SolrRequestData extends Entity_Base
+{
   public $workspace = '';
   public $startAfter = 0;
   public $pageSize = 10;
@@ -9,32 +10,35 @@ class Entity_SolrRequestData extends Entity_Base {
   public $filterText = ''; // comma separated list of filters field:value
   public $numSortingCols = 0; // number of columns that are sorted
   public $sortableCols = array (); // array of booleans indicating if column is
-                                    // sortable (true, false)
+                                   // sortable (true, false)
   public $sortCols = array (); // array of indices of sorted columns index
-                                    // based in the total number of sorting cols
+                               // based in the total number of sorting cols
   public $sortDir = array (); // array of direction of sorting for each
-                                    // column (desc, asc)
+                              // column (desc, asc)
   public $includeCols = array ();
   public $resultFormat = 'xml'; // json, xml, php
   
-  private function __construct() {
+  private function __construct()
+  {
   }
   
-  static function CreateEmpty() {
+  static function createEmpty()
+  {
     $obj = new Entity_SolrRequestData ();
     return $obj;
   }
   
-  static function CreateForRequestPagination($data) {
+  static function createForRequestPagination($data)
+  {
     $obj = new Entity_SolrRequestData ();
     
-    $obj->initializeObject ( $data );
+    $obj->initializeObject ($data);
     
     $requiredFields = array (
         'workspace' 
     );
     
-    $obj->validateRequiredFields ( $requiredFields );
+    $obj->validateRequiredFields ($requiredFields);
     
     return $obj;
   }

@@ -90,9 +90,11 @@
 			 //alert( "Data Saved: " + httpResponse );
 		   }
 		});
+		fieldsHandlerSaveHidden();
 	}
 	
 	function fieldsHandlerSaveHidden(){
+		var responseMeta;
         e = $('input:checkbox');
         hidden_elements = '';
         for(i=0; i<e.length; i++){
@@ -105,11 +107,14 @@
 		$.ajax({
 		   type: "POST",
 		   url: "fieldsHandlerAjax",
+		   async: false,
 		   data: "request=saveHidden&hidden="+hidden_elements,
 		   success: function(httpResponse){
-			 //alert( "Data Saved: " + httpResponse );
-		   }
-		});		
+			 	responseMeta = httpResponse;
+			 }
+		});
+		return responseMeta;
+
 	}
 
 	function backImage(oImg,p){

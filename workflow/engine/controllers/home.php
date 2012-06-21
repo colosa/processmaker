@@ -86,7 +86,6 @@ class Home extends Controller
     G::loadClass('system');
     $sysConf = System::getSystemConfiguration(PATH_CONFIG . 'env.ini');
 
-
     //Get ProcessStatistics Info
     $start = 0;
     $limit = '';
@@ -101,7 +100,34 @@ class Home extends Controller
     }
 
     unset($processList[0]);
-
+    
+    //Get simplified options
+    global $G_TMP_MENU;
+    
+    $mnu = new Menu();
+    $mnu->load('simplified');
+    $arrayMnuOption = array();
+    $mnuNewCase     = array();
+    
+    if (!empty($mnu->Options)) {
+      foreach ($mnu->Options as $index => $value) {
+        $option = array(
+          'id'    => $mnu->Id[$index],
+          'url'   => $mnu->Options[$index],
+          'label' => $mnu->Labels[$index],
+          'icon'  => $mnu->Icons[$index],
+          'class' => $mnu->ElementClass[$index]
+        );
+        
+        if ($mnu->Id[$index] != 'S_NEW_CASE') {
+          $arrayMnuOption[] = $option;
+        }
+        else {
+          $mnuNewCase = $option;
+        }
+      }
+    }
+    
     $this->setView('home/index');
 
     $this->setVar('usrUid', $this->userID);
@@ -111,6 +137,8 @@ class Home extends Controller
     $this->setVar('userUxType', $this->userUxType);
     $this->setVar('clientBrowser', $this->clientBrowser['name']);
     $this->setVar('switchLink', $switchLink);
+    $this->setVar('arrayMnuOption', $arrayMnuOption);
+    $this->setVar('mnuNewCase', $mnuNewCase);
 
     $this->render();
   }

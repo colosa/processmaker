@@ -1,13 +1,44 @@
 <?php
-class BpmnEngine_SearchIndexAccess_Solr {
+/**
+ *
+ * ProcessMaker Open Source Edition
+ * Copyright (C) 2004 - 2012 Colosa Inc.23
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * For more information, contact Colosa Inc, 5304 Ventura Drive,
+ * Delray Beach, FL, 33484, USA, or email info@colosa.com.
+ *
+ */
+
+
+/**
+ * Interface to the Solr Search server 
+ * @author Herbert Saal Gutierrez
+ *
+ */
+class BpmnEngine_SearchIndexAccess_Solr
+{
   const SOLR_VERSION = '&version=2.2';
-  private $solrIsEnabled = false;
-  private $solrHost = "";
+  private $_solrIsEnabled = false;
+  private $_solrHost = "";
   
-  function __construct($solrIsEnabled = false, $solrHost = "") {
+  public function __construct($solrIsEnabled = false, $solrHost = "")
+  {
     // use the parameters to initialize class
-    $this->solrIsEnabled = $solrIsEnabled;
-    $this->solrHost = $solrHost;
+    $this->_solrIsEnabled = $solrIsEnabled;
+    $this->_solrHost = $solrHost;
   }
   
   /**
@@ -15,13 +46,14 @@ class BpmnEngine_SearchIndexAccess_Solr {
    * @gearman = false
    * @rest = false
    * @background = false
-   * 
+   *
    * @return bool
    */
-  function isEnabled() {
+  public function isEnabled()
+  {
     // verify solr server response
     
-    return $this->solrIsEnabled;
+    return $this->_solrIsEnabled;
   }
   
   /**
@@ -29,79 +61,81 @@ class BpmnEngine_SearchIndexAccess_Solr {
    * @gearman = false
    * @rest = false
    * @background = false
-   * 
+   *
    * @param
    *          workspace: workspace name
    * @return total
    */
-  function getNumberDocuments($workspace) {
-    if (! $this->solrIsEnabled)
+  public function getNumberDocuments($workspace)
+  {
+    if (! $this->_solrIsEnabled)
       return;
       // get configuration information in base to workspace parameter
       
     // get total number of documents in registry
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/select/?q=*:*";
     $solrIntruct .= self::SOLR_VERSION;
     $solrIntruct .= "&start=0&rows=0&echoParams=none&wt=json";
     
-    $handlerTotal = curl_init ( $solrIntruct );
-    curl_setopt ( $handlerTotal, CURLOPT_RETURNTRANSFER, true );
-    $responseTotal = curl_exec ( $handlerTotal );
-    curl_close ( $handlerTotal );
+    $handlerTotal = curl_init ($solrIntruct);
+    curl_setopt ($handlerTotal, CURLOPT_RETURNTRANSFER, true);
+    $responseTotal = curl_exec ($handlerTotal);
+    curl_close ($handlerTotal);
     
     // verify the result of solr
-    $responseSolrTotal = json_decode ( $responseTotal, true );
-    if ($responseSolrTotal['responseHeader']['status'] != 0) {
-      throw new Exception ( "Error returning the total number of documents in Solr." . $solrIntruct);
+    $responseSolrTotal = G::json_decode ($responseTotal);
+    if ($responseSolrTotal->responseHeader->status != 0) {
+      throw new Exception ("Error returning the total number of documents in Solr." . $solrIntruct);
     }
-    $numTotalDocs = $responseSolrTotal ['response'] ['numFound'];
+    $numTotalDocs = $responseSolrTotal->response->numFound;
     return $numTotalDocs;
   }
   
   /**
-   * Execute a query in base to Request data
+   * Execute a query in base to Requested data
    * @gearman = false
    * @rest = false
    * @background = false
-   * 
+   *
    * @return solr response
    */
-  function executeQuery($solrRequestData) {
-    if (! $this->solrIsEnabled)
+  public function executeQuery($solrRequestData)
+  {
+    if (! $this->_solrIsEnabled)
       return;
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
     $workspace = $solrRequestData->workspace;
     
     // format request
-    $query = empty ( $solrRequestData->searchText ) ? '*:*' : $solrRequestData->searchText;
-    $query = rawurlencode ( $query );
+    $query = empty ($solrRequestData->searchText) ? '*:*' : $solrRequestData->searchText;
+    $query = rawurlencode ($query);
     $start = '&start=' . $solrRequestData->startAfter;
     $rows = '&rows=' . $solrRequestData->pageSize;
     $fieldList = '';
     $cols = $solrRequestData->includeCols;
-    if (! empty ( $cols )) {
-      $fieldList = "&fl=" . implode ( ",", $cols );
+    if (! empty ($cols)) {
+      $fieldList = "&fl=" . implode (",", $cols);
     }
     $sort = '';
     if ($solrRequestData->numSortingCols > 0) {
       $sort = '&sort=';
-      for($i = 0; $i < $solrRequestData->numSortingCols; $i ++) {
+      for ($i = 0; $i < $solrRequestData->numSortingCols; $i ++) {
         $sort .= $solrRequestData->sortCols [$i] . "%20" . $solrRequestData->sortDir [$i] . ",";
       }
       
-      $sort = substr_replace ( $sort, "", - 1 );
+      $sort = substr_replace ($sort, "", - 1);
     }
-    $resultFormat = empty ( $solrRequestData->resultFormat ) ? '' : '&wt=' . $solrRequestData->resultFormat;
+    $resultFormat = empty ($solrRequestData->resultFormat) ? '' : '&wt=' . $solrRequestData->resultFormat;
     $filters = '';
-    $aFilters = explode ( ',', $solrRequestData->filterText );
-    foreach ( $aFilters as $value ) {
-      $filters .= '&fq=' . urlencode ( $value );
+    $aFilters = explode (',', $solrRequestData->filterText);
+    foreach ($aFilters as $value) {
+      $filters .= '&fq=' . urlencode ($value);
     }
     
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/select/?q=$query";
     $solrIntruct .= "&echoParams=none";
@@ -112,18 +146,17 @@ class BpmnEngine_SearchIndexAccess_Solr {
     $solrIntruct .= $sort;
     $solrIntruct .= $filters;
     $solrIntruct .= $resultFormat;
-    
     // send query
     // search the cases in base to datatable parameters
-    $handler = curl_init ( $solrIntruct );
-    curl_setopt ( $handler, CURLOPT_RETURNTRANSFER, true );
-    $response = curl_exec ( $handler );
-    curl_close ( $handler );
-
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec ($handler);
+    curl_close ($handler);
+    
     // decode
-    $responseSolr = json_decode ( $response, true );
-    if ($responseSolr['responseHeader']['status'] != 0) {
-      throw new Exception ( "Error executing query to Solr." . $solrIntruct);
+    $responseSolr = G::json_decode ($response);
+    if ($responseSolr->responseHeader->status != 0) {
+      throw new Exception ("Error executing query to Solr." . $solrIntruct);
     }
     
     return $responseSolr;
@@ -134,31 +167,32 @@ class BpmnEngine_SearchIndexAccess_Solr {
    * @gearman = false
    * @rest = false
    * @background = false
-   * 
+   *
    * @return solr response
    */
-  function updateDocument($solrUpdateDocument) {
-    if (! $this->solrIsEnabled)
+  public function updateDocument($solrUpdateDocument)
+  {
+    if (! $this->_solrIsEnabled)
       return;
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $solrUpdateDocument->workspace;
     $solrIntruct .= "/update";
-
-    $handler = curl_init ( $solrIntruct );
-    curl_setopt ( $handler, CURLOPT_RETURNTRANSFER, true );
-    curl_setopt ( $handler, CURLOPT_HTTPHEADER, array (
-        'Content-type:application/xml' 
-    ) ); // -H
-    curl_setopt ( $handler, CURLOPT_BINARYTRANSFER, TRUE ); // --data-binary
-    curl_setopt ( $handler, CURLOPT_POSTFIELDS, $solrUpdateDocument->document ); // data
-    $response = curl_exec ( $handler );
-    curl_close ( $handler );
     
-    $swOk = strpos ( $response, '<int name="status">0</int>' );
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
+        'Content-type:application/xml' 
+    )); // -H
+    curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
+    curl_setopt ($handler, CURLOPT_POSTFIELDS, $solrUpdateDocument->document); // data
+    $response = curl_exec ($handler);
+    curl_close ($handler);
+    
+    $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ( "Error updating document in Solr." . $solrIntruct);
+      throw new Exception ("Error updating document in Solr." . $solrIntruct);
     }
   }
   
@@ -167,120 +201,132 @@ class BpmnEngine_SearchIndexAccess_Solr {
    * @gearman = false
    * @rest = false
    * @background = false
-   * 
+   *
    * @return solr response
    */
-  function commitChanges($workspace) {
-    if (! $this->solrIsEnabled)
+  public function commitChanges($workspace)
+  {
+    if (! $this->_solrIsEnabled)
       return;
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
     
-    $handler = curl_init ( $solrIntruct );
-    curl_setopt ( $handler, CURLOPT_RETURNTRANSFER, true );
-    curl_setopt ( $handler, CURLOPT_HTTPHEADER, array (
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
         'Content-type:application/xml' 
-    ) ); // -H
-    curl_setopt ( $handler, CURLOPT_BINARYTRANSFER, TRUE ); // --data-binary
-    curl_setopt ( $handler, CURLOPT_POSTFIELDS, "<commit/>" ); // data
-    $response = curl_exec ( $handler );
-    curl_close ( $handler );
+    )); // -H
+    curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
+    curl_setopt ($handler, CURLOPT_POSTFIELDS, "<commit/>"); // data
+    $response = curl_exec ($handler);
+    curl_close ($handler);
     
-    $swOk = strpos ( $response, '<int name="status">0</int>' );
+    $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ( "Error commiting changes in Solr." . $solrIntruct);
+      throw new Exception ("Error commiting changes in Solr." . $solrIntruct);
     }
   }
   
   /**
-   * Commit the changes since the last commit
+   * Rollback the changes since the last commit
    * @gearman = false
    * @rest = false
    * @background = false
-   * 
+   *
    * @return solr response
    */
-  function rollbackChanges($workspace) {
-    if (! $this->solrIsEnabled)
+  public function rollbackChanges($workspace)
+  {
+    if (! $this->_solrIsEnabled)
       return;
     
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
     
-    $handler = curl_init ( $solrIntruct );
-    curl_setopt ( $handler, CURLOPT_RETURNTRANSFER, true );
-    curl_setopt ( $handler, CURLOPT_HTTPHEADER, array (
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
         'Content-type:application/xml' 
-    ) ); // -H
-    curl_setopt ( $handler, CURLOPT_BINARYTRANSFER, TRUE ); // --data-binary
-    curl_setopt ( $handler, CURLOPT_POSTFIELDS, "<rollback/>" ); // data
-    $response = curl_exec ( $handler );
-    curl_close ( $handler );
+    )); // -H
+    curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
+    curl_setopt ($handler, CURLOPT_POSTFIELDS, "<rollback/>"); // data
+    $response = curl_exec ($handler);
+    curl_close ($handler);
     
-    $swOk = strpos ( $response, '<int name="status">0</int>' );
+    $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ( "Error rolling back changes in Solr." . $solrIntruct);
+      throw new Exception ("Error rolling back changes in Solr." . $solrIntruct);
     }
   }
   
   /**
-   * Insert or Update document index
+   * Optimize Solr index
    * @gearman = false
    * @rest = false
    * @background = false
-   * 
+   *
    * @return solr response
    */
-  function optimizeChanges($workspace) {
-    if (! $this->solrIsEnabled)
+  public function optimizeChanges($workspace)
+  {
+    if (! $this->_solrIsEnabled)
       return;
     
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
     
-    $handler = curl_init ( $solrIntruct );
-    curl_setopt ( $handler, CURLOPT_RETURNTRANSFER, true );
-    curl_setopt ( $handler, CURLOPT_HTTPHEADER, array (
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
         'Content-type:application/xml' 
-    ) ); // -H
-    curl_setopt ( $handler, CURLOPT_BINARYTRANSFER, TRUE ); // --data-binary
-    curl_setopt ( $handler, CURLOPT_POSTFIELDS, "<optimize/>" ); // data
-    $response = curl_exec ( $handler );
-    curl_close ( $handler );
+    )); // -H
+    curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
+    curl_setopt ($handler, CURLOPT_POSTFIELDS, "<optimize/>"); // data
+    $response = curl_exec ($handler);
+    curl_close ($handler);
     
-    $swOk = strpos ( $response, '<int name="status">0</int>' );
+    $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ( "Error optimizing changes in Solr." . $solrIntruct);
+      throw new Exception ("Error optimizing changes in Solr." . $solrIntruct);
     }
   }
   
-  function getListIndexedStoredFields($workspace) {
-    if (! $this->solrIsEnabled)
+  /**
+   * Return the list of the stored fields in Solr
+   * 
+   * @param string $workspace
+   *          Solr instance name
+   * @throws Exception
+   * @return void mixed of field names
+   */
+  public function getListIndexedStoredFields($workspace)
+  {
+    if (! $this->_solrIsEnabled)
       return;
     
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/admin/luke?numTerms=0&wt=json";
     
-    $handler = curl_init ( $solrIntruct );
-    curl_setopt ( $handler, CURLOPT_RETURNTRANSFER, true );
-    $response = curl_exec ( $handler );
-    curl_close ( $handler );
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec ($handler);
+    curl_close ($handler);
     // decode
-    $responseSolr = json_decode ( $response, true );
-    if ($responseSolr['responseHeader']['status'] != 0) {
-      throw new Exception ( "Error getting index fields in Solr." . $solrIntruct);
+    $responseSolr = G::json_decode ($response);
+    if ($responseSolr->responseHeader->status != 0) {
+      throw new Exception ("Error getting index fields in Solr." . $solrIntruct);
     }
     return $responseSolr;
   }
@@ -290,34 +336,35 @@ class BpmnEngine_SearchIndexAccess_Solr {
    * @gearman = false
    * @rest = false
    * @background = false
-   * 
+   *
    * @return solr response
    */
-  function deleteAllDocuments($workspace) {
-    if (! $this->solrIsEnabled)
+  public function deleteAllDocuments($workspace)
+  {
+    if (! $this->_solrIsEnabled)
       return;
       // $registry = Zend_Registry::getInstance();
     
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
     
-    $handler = curl_init ( $solrIntruct );
-    curl_setopt ( $handler, CURLOPT_RETURNTRANSFER, true );
-    curl_setopt ( $handler, CURLOPT_HTTPHEADER, array (
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
         'Content-type:application/xml' 
-    ) ); // -H
-    curl_setopt ( $handler, CURLOPT_BINARYTRANSFER, TRUE ); // --data-binary
-    curl_setopt ( $handler, CURLOPT_POSTFIELDS, "<delete><query>*:*</query></delete>" ); // data
-    $response = curl_exec ( $handler );
+    )); // -H
+    curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
+    curl_setopt ($handler, CURLOPT_POSTFIELDS, "<delete><query>*:*</query></delete>"); // data
+    $response = curl_exec ($handler);
     
-    curl_close ( $handler );
+    curl_close ($handler);
     
-    $swOk = strpos ( $response, '<int name="status">0</int>' );
+    $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ( "Error deleting all documents in Solr." . $solrIntruct);
+      throw new Exception ("Error deleting all documents in Solr." . $solrIntruct);
     }
   }
   
@@ -326,45 +373,47 @@ class BpmnEngine_SearchIndexAccess_Solr {
    * @gearman = false
    * @rest = false
    * @background = false
-   * 
+   *
    * @return solr response
    */
-  function deleteDocument($workspace, $idQuery) {
-    if (! $this->solrIsEnabled)
+  public function deleteDocument($workspace, $idQuery)
+  {
+    if (! $this->_solrIsEnabled)
       return;
       // $registry = Zend_Registry::getInstance();
     
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
     
-    $handler = curl_init ( $solrIntruct );
-    curl_setopt ( $handler, CURLOPT_RETURNTRANSFER, true );
-    curl_setopt ( $handler, CURLOPT_HTTPHEADER, array (
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
         'Content-type:application/xml' 
-    ) ); // -H
-    curl_setopt ( $handler, CURLOPT_BINARYTRANSFER, TRUE ); // --data-binary
-    curl_setopt ( $handler, CURLOPT_POSTFIELDS, "<delete><query>" . $idQuery . "</query></delete>" ); // data
-    $response = curl_exec ( $handler );
+    )); // -H
+    curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
+    curl_setopt ($handler, CURLOPT_POSTFIELDS, "<delete><query>" . $idQuery . "</query></delete>"); // data
+    $response = curl_exec ($handler);
     
-    curl_close ( $handler );
+    curl_close ($handler);
     
-    $swOk = strpos ( $response, '<int name="status">0</int>' );
+    $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ( "Error deleting document in Solr." . $solrIntruct);
+      throw new Exception ("Error deleting document in Solr." . $solrIntruct);
     }
   }
   
   /**
    * Execute a query in base to Request data
-   * 
+   *
    * @param Entity_FacetRequest $facetRequestEntity          
    * @return solr response: list of facets array
    */
-  function getFacetsList($facetRequest) {
-    if (! $this->solrIsEnabled)
+  public function getFacetsList($facetRequest)
+  {
+    if (! $this->_solrIsEnabled)
       return;
     
     $solrIntruct = '';
@@ -372,22 +421,22 @@ class BpmnEngine_SearchIndexAccess_Solr {
     $workspace = $facetRequest->workspace;
     
     // format request
-    $query = empty ( $facetRequest->searchText ) ? '*:*' : $facetRequest->searchText;
-    $query = rawurlencode ( $query );
+    $query = empty ($facetRequest->searchText) ? '*:*' : $facetRequest->searchText;
+    $query = rawurlencode ($query);
     $start = '&start=0';
     $rows = '&rows=0';
     $facets = '&facet=on&facet.mincount=1&facet.limit=20'; // enable facet and
                                                            // only return facets
                                                            // with minimun one
                                                            // instance
-    foreach ( $facetRequest->facetFields as $value ) {
+    foreach ($facetRequest->facetFields as $value) {
       $facets .= '&facet.field=' . $value;
     }
-    foreach ( $facetRequest->facetQueries as $value ) {
+    foreach ($facetRequest->facetQueries as $value) {
       $facets .= '&facet.query=' . $value;
     }
-    if (! empty ( $facetRequest->facetDates )) {
-      foreach ( $facetRequest->facetDates as $value ) {
+    if (! empty ($facetRequest->facetDates)) {
+      foreach ($facetRequest->facetDates as $value) {
         $facets .= '&facet.date=' . $value;
       }
       $facets .= '&facet.date.start=' . $facetRequest->facetDatesStart;
@@ -395,14 +444,14 @@ class BpmnEngine_SearchIndexAccess_Solr {
       $facets .= '&facet.date.gap=' . $facetRequest->facetDateGap;
     }
     $filters = '';
-    foreach ( $facetRequest->filters as $value ) {
+    foreach ($facetRequest->filters as $value) {
       $filters .= '&fq=' . $value;
     }
     // echo "<pre>";
     
     $resultFormat = '&wt=json';
     
-    $solrIntruct = (substr($this->solrHost, -1) == "/")?$this->solrHost:$this->solrHost . "/";
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/select/?q=$query";
     $solrIntruct .= "&echoParams=none";
@@ -415,15 +464,15 @@ class BpmnEngine_SearchIndexAccess_Solr {
     
     // send query
     // search the cases in base to datatable parameters
-    $handler = curl_init ( $solrIntruct );
-    curl_setopt ( $handler, CURLOPT_RETURNTRANSFER, true );
-    $response = curl_exec ( $handler );
-    curl_close ( $handler );
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec ($handler);
+    curl_close ($handler);
     
     // decode
-    $responseSolr = json_decode ( $response, true );
-    if ($responseSolr['responseHeader']['status'] != 0) {
-      throw new Exception ( "Error getting faceted list from Solr." . $solrIntruct);
+    $responseSolr = G::json_decode ($response);
+    if ($responseSolr->responseHeader->status != 0) {
+      throw new Exception ("Error getting faceted list from Solr." . $solrIntruct);
     }
     
     return $responseSolr;

@@ -700,7 +700,6 @@ Ext.onReady( function() {
  
     
     new Ext.Viewport({
-      autoScroll : true,
       layout: 'fit',
       items: [
          {

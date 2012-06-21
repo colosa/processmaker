@@ -254,43 +254,46 @@ function pauseCase($sApplicationUID = '', $iDelegation = 0, $sUserUID = '', $sUn
  * @return array or string | $Resultquery | Result | Result of the query | If executing a SELECT statement, it returns an array of associative arrays
  *
  */
-function executeQuery($SqlStatement, $DBConnectionUID = 'workflow') {
+function executeQuery($SqlStatement, $DBConnectionUID = 'workflow', $aParameter = array()) {
+  $con = Propel::getConnection($DBConnectionUID);
+  $con->begin();
   try {
     $statement = trim($SqlStatement);
     $statement = str_replace('(', '', $statement);
-    $con = Propel::getConnection($DBConnectionUID);
-    $con->begin();
 
     $result = false;
+   if (getEngineDataBaseName($con) != 'oracle' ) {
+     switch(true) {
+        case preg_match("/^(SELECT|EXECUTE|EXEC|SHOW|DESCRIBE|EXPLAIN|BEGIN)\s/i", $statement):
+          $rs = $con->executeQuery($SqlStatement);
+          $con->commit();
 
-    switch(true) {
-      case preg_match("/^SELECT\s/i", $statement):
-      case preg_match("/^EXECUTE\s/i", $statement):
-        $rs = $con->executeQuery($SqlStatement);
-        $con->commit();
-
-        $result = Array();
-        $i=1;
-        while ($rs->next()) {
-          $result[$i++] = $rs->getRow();
-        }
-        break;
-      case preg_match("/^INSERT\s/i", $statement):
-        $rs = $con->executeUpdate($SqlStatement);
-        $con->commit();
-        //$result = $lastId->getId();
-        $result = 1;
-        break;
-      case preg_match("/^UPDATE\s/i", $statement):
-        $rs = $con->executeUpdate($SqlStatement);
-        $con->commit();
-        $result =  $con->getUpdateCount();
-        break;
-      case preg_match("/^DELETE\s/i", $statement):
-        $rs = $con->executeUpdate($SqlStatement);
-        $con->commit();
-        $result =  $con->getUpdateCount();
-        break;
+          $result = Array();
+          $i      = 1;
+          while ($rs->next()) {
+            $result[$i++] = $rs->getRow();
+          }
+          break;
+        case preg_match("/^INSERT\s/i", $statement):
+          $rs = $con->executeUpdate($SqlStatement);
+          $con->commit();
+          //$result = $lastId->getId();
+          $result = 1;
+          break;
+        case preg_match("/^UPDATE\s/i", $statement):
+          $rs = $con->executeUpdate($SqlStatement);
+          $con->commit();
+          $result =  $con->getUpdateCount();
+          break;
+        case preg_match("/^DELETE\s/i", $statement):
+          $rs = $con->executeUpdate($SqlStatement);
+          $con->commit();
+          $result =  $con->getUpdateCount();
+          break;
+      }
+    }
+    else {
+      $result = executeQueryOci($SqlStatement, $con, $aParameter);
     }
 
     return $result;

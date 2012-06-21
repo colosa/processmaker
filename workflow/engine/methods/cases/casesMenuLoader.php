@@ -184,21 +184,35 @@
   }
   
   function getAllCounters() {
-  	$userUid = ( isset($_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '' ) ? $_SESSION['USER_LOGGED'] : null;
+    $userUid = ( isset($_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '' ) ? $_SESSION['USER_LOGGED'] : null;
     $oAppCache = new AppCacheView();
-    //$aTypes = Array('to_do', 'draft', 'cancelled', 'sent', 'paused', 'completed','selfservice','to_revise','to_reassign');
     $aTypes = Array();
     $aTypes['to_do']       = 'CASES_INBOX';
     $aTypes['draft']       = 'CASES_DRAFT';
-    $aTypes['cancelled']   = 'CASES_CANCELLED'; 
-    $aTypes['sent']        = 'CASES_SENT'; 
-    $aTypes['paused']      = 'CASES_PAUSED'; 
+    $aTypes['cancelled']   = 'CASES_CANCELLED';
+    $aTypes['sent']        = 'CASES_SENT';
+    $aTypes['paused']      = 'CASES_PAUSED';
     $aTypes['completed']   = 'CASES_COMPLETED';
     $aTypes['selfservice'] = 'CASES_SELFSERVICE';
     //$aTypes['to_revise']   = 'CASES_TO_REVISE';
     //$aTypes['to_reassign'] = 'CASES_TO_REASSIGN';
     
-    $aCount = $oAppCache->getAllCounters( array_keys($aTypes), $userUid );
+    if ((($solrConf = System::solrEnv()) !== false)) {
+      G::LoadClass ( 'AppSolr' );
+      $ApplicationSolrIndex = new AppSolr ($solrConf['solr_enabled'], $solrConf['solr_host'], $solrConf['solr_instance']);
+      
+      $aCount = $ApplicationSolrIndex->getCasesCount ( $userUid );
+      
+      //get paused count
+      $aCountMissing = $oAppCache->getAllCounters( array('paused', 'completed', 'cancelled'), $userUid );
+      
+      $aCount = array_merge($aCount, $aCountMissing);
+    }
+    else {
+      
+      $aCount = $oAppCache->getAllCounters( array_keys($aTypes), $userUid );
+      
+    }
 
     $response = Array();
     $i = 0;

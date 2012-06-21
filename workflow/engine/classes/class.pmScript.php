@@ -631,3 +631,108 @@ function registerError($iType, $sError, $iLine, $sCode)
   $sType = ($iType == 1 ? 'ERROR' : 'FATAL');
   $_SESSION['TRIGGER_DEBUG']['ERRORS'][][$sType] = $sError . ($iLine > 0 ? ' (line ' . $iLine .  ')' : '') . ':<br /><br />' . $sCode;
 }
+
+/**
+ * Obtain engine Data Base name
+ *
+ * @param type $connection
+ * @return type
+ */
+function getEngineDataBaseName($connection)
+{
+  $aDNS =  $connection->getDSN();
+  return $aDNS["phptype"];
+}
+
+/**
+ * Execute Queries for Oracle Database
+ *
+ * @param type $sql
+ * @param type $connection
+ */
+function executeQueryOci($sql, $connection, $aParameter = array())
+{
+
+  $aDNS      = $connection->getDSN();
+  $sUsername = $aDNS["username"];
+  $sPassword = $aDNS["password"];
+  $sHostspec = $aDNS["hostspec"];
+  $sDatabse  = $aDNS["database"];
+  $sPort     = $aDNS["port"];
+
+  if ($sPort != "1521") { // if not default port
+    $conn = oci_connect($sUsername, $sPassword, $sHostspec . ":" . $sPort . "/" . $sDatabse);
+  }
+  else {
+    $conn = oci_connect($sUsername, $sPassword, $sHostspec . "/" . $sDatabse);
+  }
+
+  if (!$conn) {
+    $e = oci_error();
+    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+    return $e;
+  }
+
+  switch(true) {
+    case preg_match("/^(SELECT|SHOW|DESCRIBE|DESC)\s/i", $sql):
+      $stid = oci_parse($conn, $sql);
+      if (count($aParameter) > 0) {
+        foreach ($aParameter as $key => $val) {
+          oci_bind_by_name($stid, $key, $val);
+        }
+      }
+      oci_execute($stid, OCI_DEFAULT);
+
+      $result = Array();
+      $i      = 1;
+      while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+        $result[$i++] = $row;
+      }
+      oci_free_statement($stid);
+      oci_close($conn);
+      return $result;
+      break;
+    case preg_match("/^(INSERT|UPDATE|DELETE)\s/i", $sql):
+      $stid       = oci_parse($conn, $sql);
+      $isValid    = true;
+      if (count($aParameter) > 0){
+        foreach ($aParameter as $key => $val) {
+          oci_bind_by_name($stid, $key, $val);
+        }
+      }
+      $objExecute = oci_execute($stid, OCI_DEFAULT);
+      if ($objExecute) {
+        oci_commit($conn);
+      }
+      else {
+        oci_rollback($conn);
+        $isValid = false;
+      }
+      oci_free_statement($stid);
+      oci_close($conn);
+      if ($isValid) {
+        return true;
+      }
+      else {
+        return oci_error();
+      }
+      break;
+    default:
+      // Stored procedures
+      $stid = oci_parse($conn, $sql);
+      $aParameterRet = array();
+      if (count($aParameter) > 0){
+        foreach ($aParameter as $key => $val) {
+          $aParameterRet[$key] = $val;
+          // The third parameter ($aParameterRet[$key]) returned a value by reference.
+          oci_bind_by_name($stid, $key, $aParameterRet[$key]);
+        }
+      }
+      $objExecute = oci_execute($stid, OCI_DEFAULT);
+      oci_free_statement($stid);
+      oci_close($conn);
+      return $aParameterRet;
+      break;
+  }
+
+}

@@ -175,7 +175,7 @@ class Dynaform extends BaseDynaform {
 
         $con->commit();
         $sXml  = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
-        $sXml .= '<dynaForm type="' . $this->getDynType() . '" name="' . $this->getProUid() . '/' . $this->getDynUid() . '" width="500" enabletemplate="0" mode="edit">'."\n";
+        $sXml .= '<dynaForm type="' . $this->getDynType() . '" name="' . $this->getProUid() . '/' . $this->getDynUid() . '" width="500" enabletemplate="0" mode="">'."\n";
         $sXml .= '</dynaForm>';
         G::verifyPath(PATH_DYNAFORM . $this->getProUid(), true);
         $oFile = fopen(PATH_DYNAFORM . $this->getProUid() . '/' . $this->getDynUid() . '.xml', 'w');

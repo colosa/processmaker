@@ -14,7 +14,7 @@
 SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
 </PME_VALIDATE_NAME>
 
-<PME_CODE type="textarea" cols="47" rows="12" defaultvalue="" style="overflow:scroll">
+<PME_CODE type="textarea" cols="47" rows="11" defaultvalue="" style="overflow:scroll">
   <en>Code</en>
 </PME_CODE>
 
@@ -28,6 +28,18 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
 
 <PME_JS type="javascript"><![CDATA[
 getField('PME_CODE').style.font='8pt Courier';
+
+if (navigator.appName != "Microsoft Internet Explorer") {
+  try {
+    var oAllPs = document.querySelectorAll("div.panel_content___processmaker");
+    oAllPs[1].style.height = "330px";
+  }
+  catch(e) {
+    // nothing to do
+  }
+}
+
+
 var fieldForm="javascript";
 var fieldName=getField("PME_XMLNODE_NAME",fieldForm);
 var savedFieldName=fieldName.value;
@@ -39,8 +51,8 @@ function cancel(){
 }
 
 var jsEditorPrompt = CodeMirror.fromTextArea('form[PME_CODE]', {
-  height: "200px",
-  width: "440px",
+  height: "170px",
+  width: "430px",
   parserfile: ["tokenizejavascript.js", "parsejavascript.js"],
   stylesheet: ["css/jscolors.css"],
   path: "js/",

@@ -182,7 +182,7 @@ var showProcessMap = function ()
     scs.evalScript();
     oLeyendsPanel = new leimnud.module.panel();
     oLeyendsPanel.options = {
-      size  :{w:160,h:140},
+      size  :{w:160,h:155},
       position:{x:((document.body.clientWidth * 95) / 100) - ((document.body.clientWidth * 95) / 100 - (((document.body.clientWidth * 95) / 100) - 160)),y:45,center:false},
       title :G_STRINGS.ID_COLOR_LEYENDS,
       theme :"processmaker",

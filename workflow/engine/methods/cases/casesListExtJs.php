@@ -31,7 +31,7 @@
   $confReassignList = getReassignList();
 
   // evaluates an action and the configuration for the list that will be rendered
-  $config       = getAdditionalFields($action, $confCasesList);
+  $config       = getAdditionalFields($action);
   $columns      = $config['caseColumns'];
   $readerFields = $config['caseReaderFields'];
   $reassignColumns      = $confReassignList['caseColumns'];
@@ -738,55 +738,42 @@
    * @param  String $action
    * @return Array $config
    */
-function getAdditionalFields($action, $confCasesList){
-  $caseColumns = array();
-  $caseReaderFields = array();
 
-  if ( !empty($confCasesList) && !empty($confCasesList['second']['data']) ) {
-    foreach($confCasesList['second']['data'] as $fieldData){
-      if ( $fieldData['fieldType']!='key' ) {
-        $label = $fieldData['label'];
-        $caseColumns[]      = array( 'header' => $label, 'dataIndex' => $fieldData['name'], 'width' => $fieldData['width'], 'align' => $fieldData['align'] );
-        $caseReaderFields[] = array( 'name'   => $fieldData['name'] );
-      }
-    }
-    return array ( 'caseColumns' => $caseColumns, 'caseReaderFields' => $caseReaderFields, 'rowsperpage' => $confCasesList['rowsperpage'], 'dateformat' => $confCasesList['dateformat'] );
-  }
-  else {  //seems this is only in case this user dont have the configuration for this action.
-    switch ( $action ) {
-      case 'draft' :
-        $config = getDraft();
-        break;
-      case 'simple_search':
-      case 'search' :
-        $config = getSearch();
-        break;
-      case 'participated' :
-      case 'sent' :
-        $config = getParticipated();
-        break;
-      case 'unassigned' :
-        $config = getUnassigned();
-        break;
-      case 'paused' :
-        $config = getPaused();
-        break;
-      case 'to_revise' :
-        $config = getToRevise();
-        break;
-      case 'to_reassign' :
-        $config = getToReassign();
-        break;
-      case 'gral' :
-        $config = getGeneral();
-        break;
-      case 'todo' :
-      default :
-        $action = 'todo';
-        $config = getToDo();
+function getAdditionalFields($action){
+  switch ( $action ) {
+    case 'draft' :
+      $config = getDraft();
       break;
-    }
-    return $config;
+    case 'simple_search':
+    case 'search' :
+      $config = getSearch();
+      break;
+    case 'participated' :
+    case 'sent' :
+      $config = getParticipated();
+      break;
+    case 'unassigned' :
+      $config = getUnassigned();
+      break;
+    case 'paused' :
+      $config = getPaused();
+      break;
+    case 'to_revise' :
+      $config = getToRevise();
+      break;
+    case 'to_reassign' :
+      $config = getToReassign();
+      break;
+    case 'gral' :
+      $config = getGeneral();
+      break;
+    case 'todo' :
+    default :
+      $action = 'todo';
+      $config = getToDo();
+    break;
   }
+  
+  return $config;
 }
 

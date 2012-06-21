@@ -54,7 +54,6 @@
 </MNU_SEARCH>-->
 <JS type="javascript">
 <![CDATA[
-getField('PAGED_TABLE_FAST_SEARCH').value = '';
 param = getURLParam("filtertit");
 selectionHighlight(param);
 

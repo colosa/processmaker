@@ -987,7 +987,7 @@ class G
     }
     /* Fix to prevent use uxs skin outside siplified interface, 
      because that skin is not compatible with others interfaces*/
-    if ($SYS_SKIN == 'uxs' && $SYS_COLLECTION !== 'home') {
+    if ($SYS_SKIN == 'uxs' && $SYS_COLLECTION != 'home' && $SYS_COLLECTION != 'cases') {
       $SYS_SKIN = 'classic';
     }
 
@@ -3275,22 +3275,27 @@ $output = $outputHeader.$output;
    */
   function emailAddress($sEmail){
     $o = new stdClass();
+    
     if( strpos($sEmail, '<') !== false ) {
       preg_match('/([\"\w@\.-_\s]*\s*)?(<(\w+[\.-]?\w+]*@\w+([\.-]?\w+)*\.\w{2,3})+>)/', $sEmail, $matches);
-      g::pr($matches);
+      
       if( isset($matches[1]) && $matches[3]){
         $o->email = $matches[3];
         $o->name = $matches[1];
+        
         return $o;
       }
+
       return false;
-    } else {
+    } 
+    else {
       preg_match('/\w+[\.-]?\w+]*@\w+([\.-]?\w+)*\.\w{2,3}+/', $sEmail, $matches);
       if( isset($matches[0]) ){
         $o->email = $matches[0];
         $o->name = '';
         return $o;
       }
+      
       return false;
     }
   }

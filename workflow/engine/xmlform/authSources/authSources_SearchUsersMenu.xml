@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dynaForm type="xmlmenu">
+
+<SelectAll type="link" value='[SELECT-ALL]' link="#" onclick="selectAll(); return false;" colAlign="left" colWidth="100">
+  <en></en>
+</SelectAll>
+<PAGE type="hidden" value="1"/>
+<PAGED_TABLE_ID type="private"/>
+
+<js type="javascript" replaceTags="1"><![CDATA[
+
+function selectAll(){
+  var oAux;
+  var i = 0;
+  var input_obj = document.getElementsByTagName("input");
+  if (document.getElementById("form[SelectAll]").innerHTML == '[SELECT-ALL]') {
+    document.getElementById("form[SelectAll]").innerHTML = '[DESELECT-ALL]';
+    for (i = 0; i < input_obj.length; i++) {
+      if (input_obj.item(i).type == 'checkbox')
+      {
+        input_obj.item(i).checked = true;
+      }
+    }
+  }
+  else
+  {
+    document.getElementById("form[SelectAll]").innerHTML = '[SELECT-ALL]';
+    for (i = 0; i < input_obj.length; i++) {
+      if (input_obj.item(i).type == 'checkbox')
+      {
+        input_obj.item(i).checked = false;
+      }
+    }
+  }
+}
+]]></js>
+</dynaForm> 

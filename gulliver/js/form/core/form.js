@@ -1140,8 +1140,8 @@ function G_Text( form, element, name)
         return true;
         break;
       default:
-        if ( (me.mType == 'currency') || (me.mType == 'percentage') || (me.validate == 'Real') || (me.validate == 'Int') ) {
-          if ( (pressKey >= 48 && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188) ) {
+        if ( (me.mType == 'date') || (me.mType == 'currency') || (me.mType == 'percentage') || (me.validate == 'Real') || (me.validate == 'Int') ) {
+          if ( (pressKey >= 96 && pressKey <= 105) || (pressKey >= 48 && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188) ) {
             return true;
           }
           else {
@@ -1157,9 +1157,11 @@ function G_Text( form, element, name)
     if (me.element.readOnly) {
       return true;
     }
-    if (( me.mType != 'currency' && me.mType != 'percentage') && (me.element.value.length > me.element.maxLength - 1)) {
+    
+    if ((me.mType != 'currency' && me.mType != 'percentage' && me.mType != 'date') && (me.element.value.length > me.element.maxLength - 1)) {
       return true;
     }
+    
     if (me.validate == 'Any' && me.mask == '') return true;
     //THIS FUNCTION HANDLE ALL KEYS EXCEPT BACKSPACE AND DELETE
     //keyCode = event.keyCode;
@@ -1365,7 +1367,7 @@ function G_Percentage( form, element, name )
   var me=this;
   this.parent = G_Text;
   this.parent( form, element, name);
-  this.validate = 'Int';
+  //this.validate = 'Int'; //Commented for allow enter the character '.'
   this.mType = 'percentage';
   this.mask= '###.##';
   this.comma_separator = ".";
@@ -1377,7 +1379,7 @@ function G_Currency( form, element, name )
   var me=this;
   this.parent = G_Text;
   this.parent( form, element, name);
-  //this.validate = 'Int';   //commented for allow enter the character '.'
+  //this.validate = 'Int'; //Commented for allow enter the character '.'
   this.mType = 'currency';
   this.mask= '_###,###,###,###,###;###,###,###,###,###.00';
   this.comma_separator = ".";
@@ -2867,6 +2869,30 @@ var validateForm = function(sRequiredFields) {
     return false;
   }
   else {
+    var arrayForm = document.getElementsByTagName("form");
+    
+    for (var i = 0; i <= arrayForm.length - 1; i++) {
+      var frm = arrayForm[i];
+      
+      for (var i = 0; i <= frm.elements.length - 1; i++)  {
+        var elem = frm.elements[i];
+        
+        if (elem.type == "checkbox" && elem.disabled && elem.checked) {
+          var id = elem.id + "_";
+          
+          if (!document.getElementById(id)) {
+            var input   = document.createElement("input");
+            input.type  = "hidden";
+            input.id    = id;
+            input.name  = elem.name;
+            input.value = elem.value;
+          
+            frm.appendChild(input);
+          }
+        }
+      }
+    }
+    
     return true;
   }
 };
@@ -3208,6 +3234,40 @@ function hideRowsById(aFields){
       row.style.display='none';
     } 
   }
+}
+
+function dateSetMask(mask) {
+  if (mask != '') {
+    mask = stringReplace("%y", "yy", mask);
+    mask = stringReplace("%Y", "yyyy", mask);
+    
+    mask = stringReplace("%m", "mm", mask);
+    mask = stringReplace("%o", "mm", mask);
+    
+    mask = stringReplace("%d", "dd", mask);
+    mask = stringReplace("%e", "dd", mask);
+    
+    //In the function getCleanMask valid characters for an mask that does not
+    //is currency/percentage are: '0 ',' # ',' d ',' m ',' y ',' Y '.
+    //For hours, minutes and seconds replace this mask with '#'
+    mask = stringReplace("%H", "##", mask);
+    mask = stringReplace("%I", "##", mask);
+    mask = stringReplace("%k", "##", mask);
+    mask = stringReplace("%l", "##", mask);
+    
+    mask = stringReplace("%M", "##", mask);
+    mask = stringReplace("%S", "##", mask);
+    
+    mask = stringReplace("%j", "###", mask);
+  }
+  
+  return mask;
+}
+
+function stringReplace(strSearch, strReplace, str) {
+  var expression = eval("/" + strSearch + "/g");
+
+  return str.replace(expression, strReplace);
 }
 
 /* end file */

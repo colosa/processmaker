@@ -14,6 +14,7 @@ if ( $postMaxSize < $uploadMaxSize ) $uploadMaxSize = $postMaxSize;
 
 $oHeadPublisher =& headPublisher::getSingleton(); 
 $oHeadPublisher->addExtJsScript('users/users', true );    //adding a javascript file .js
-$oHeadPublisher->assign('USR_UID', $_GET['USR_UID']);    
+$oHeadPublisher->assign('USR_UID', $_GET['USR_UID']);
+$oHeadPublisher->assign('MODE', $_GET['MODE']);
 $oHeadPublisher->assign('MAX_FILES_SIZE', ' (' . $UPLOAD_MAX_SIZE . ') ');
 G::RenderPage('publish', 'extJs');  

@@ -88,8 +88,9 @@
 				if( $o->nodeExists('___pm_boot_strap___') ){	
 					$o->remove('___pm_boot_strap___');
 				}
-				$o->add('___pm_boot_strap___', Array('type'=>'javascript', "meta"=>G::encrypt($hidden_items_tmp, 'dynafieldsHandler')), "/*$msg*/ $hStr");
-				
+				$metaEncrypt = G::encrypt($hidden_items_tmp, 'dynafieldsHandler');
+				$o->add('___pm_boot_strap___', Array('type'=>'javascript', "meta"=>$metaEncrypt), "/*$msg*/ $hStr");
+				echo $metaEncrypt;
 			} else { //we must to remove the boot strap node;
 				$o->remove('___pm_boot_strap___');
 			}

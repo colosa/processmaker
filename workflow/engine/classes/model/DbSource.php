@@ -103,6 +103,18 @@ class DbSource extends BaseDbSource
         }
     }
 
+  public function getValProUid($Uid)
+  {
+      $oCriteria = new Criteria('workflow');
+      $oCriteria->clearSelectColumns();
+      $oCriteria->addSelectColumn(DbSourcePeer::PRO_UID);
+      $oCriteria->add(DbSourcePeer::DBS_UID, $Uid);
+      $result = DbSourcePeer::doSelectRS($oCriteria);
+      $result->next();
+      $aRow = $result->getRow();
+      return $aRow[0];
+  }
+
   function Exists ( $Uid, $ProUID ) {
     try {
       $oPro = DbSourcePeer::retrieveByPk( $Uid, $ProUID );

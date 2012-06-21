@@ -89,9 +89,11 @@ class AppCacheView extends BaseAppCacheView {
     else {
       $Criteria = $this->addPMFieldsToCriteria('todo');
     }
+    $Criteria->addSelectColumn(AppCacheViewPeer::TAS_UID);
+    $Criteria->addSelectColumn(AppCacheViewPeer::PRO_UID);
+
     $Criteria->add (AppCacheViewPeer::APP_STATUS, "TO_DO" , CRITERIA::EQUAL );
     $Criteria->add (AppCacheViewPeer::USR_UID, $userUid);
-
     $Criteria->add (AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL);
     $Criteria->add (AppCacheViewPeer::APP_THREAD_STATUS, 'OPEN');
     $Criteria->add (AppCacheViewPeer::DEL_THREAD_STATUS, 'OPEN');

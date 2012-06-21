@@ -398,7 +398,7 @@ var Conditional = function(DYN_UID){
 
         if(this.canSave){
             if( saving != true ){
-                bResult = (result)? 'TRUE': 'FALSE';
+                bResult = (result)? _('ID_TRUE'): _('ID_FALSE');
                 oResultDiv = document.getElementById("ResultMessageTD");
                 oResultDiv.style.display = 'block';
                 oResultDiv.style.backgroundColor = '#BFCCC5';

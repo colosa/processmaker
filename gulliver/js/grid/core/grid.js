@@ -7,7 +7,19 @@ var G_Grid = function(oForm, sGridName){
   this.oGrid = document.getElementById(this.sGridName);
   this.onaddrow = function(iRow){};
   this.ondeleterow = function(){};
-  
+  this.executeEvent = function (element,event) {
+    if ( document.createEventObject ) {
+      // IE
+      var evt = document.createEventObject();
+      return element.fireEvent('on'+event,evt)
+    } else {
+      // firefox + others
+      var evt = document.createEvent("HTMLEvents");
+      evt.initEvent(event, true, true ); // event type,bubbling,cancelable
+      return !element.dispatchEvent(evt);
+    }
+  };
+
   this.aFields = [];
   this.aElements = [];
   this.aFunctions = [];
@@ -48,29 +60,55 @@ var G_Grid = function(oForm, sGridName){
             j++;
           }
           break;
+        
         case 'currency':
           while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
             this.aElements.push(new G_Currency(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
                 + this.aFields[i].sFieldName));
-            if (aFields[i].oProperties) {
-              this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.mask;
+            
+            if (this.aFields[i].oProperties) {
+              if (this.aFields[i].oProperties.comma_separator) {
+                this.aElements[this.aElements.length - 1].comma_separator = this.aFields[i].oProperties.comma_separator;
+              }
+              
+              this.aElements[this.aElements.length - 1].mask = this.aFields[i].oProperties.mask;
             }
+            
             j++;
           }
           break;
+        
         case 'percentage':
           while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
             this.aElements.push(new G_Percentage(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j
                 + '][' + this.aFields[i].sFieldName));
+            
+            if (this.aFields[i].oProperties) {
+              if (this.aFields[i].oProperties.comma_separator) {
+                this.aElements[this.aElements.length - 1].comma_separator = this.aFields[i].oProperties.comma_separator;
+              }
+              
+              this.aElements[this.aElements.length - 1].mask = this.aFields[i].oProperties.mask;
+            }
+            
+            j++;
+          }
+          break;
+        
+        case 'dropdown':
+          while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
+            this.aElements.push(new G_DropDown(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
+                + this.aFields[i].sFieldName));
             if (aFields[i].oProperties) {
-              this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.mask;
+              this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.sMask;
             }
             j++;
           }
           break;
-        case 'dropdown':
+        
+        default:
           while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
-            this.aElements.push(new G_DropDown(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
+            this.aElements.push(new G_Field(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
                 + this.aFields[i].sFieldName));
             if (aFields[i].oProperties) {
               this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.sMask;
@@ -868,6 +906,7 @@ var G_Grid = function(oForm, sGridName){
   this.evaluateFormula = function(oEvent, oDOM, oField) {
     oDOM = (oDOM ? oDOM : oEvent.target || window.event.srcElement);
     var aAux, sAux, i, oAux;
+    var domId = oDOM.id;
     var oContinue = true;
     aAux = oDOM.name.split('][');
     sAux = oField.sFormula.replace(/\+|\-|\*|\/|\(|\)|\[|\]|\{|\}|\%|\$/g, ' ');
@@ -889,6 +928,7 @@ var G_Grid = function(oForm, sGridName){
       }
     }
     eval("if (!document.getElementById('" + aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + "]')) { oContinue = false; }");
+    
     if (oContinue) {
       //we're selecting the mask to put in the field with the formula
       for (i = 0; i < this.aFields.length; i++) {
@@ -898,24 +938,52 @@ var G_Grid = function(oForm, sGridName){
       }
       if(maskformula!=''){
         maskDecimal=maskformula.split(";");
+        
         if(maskDecimal.length > 1) {
           maskDecimal=maskDecimal[1].split(".");
         } else {
-          maskDecimal=maskformula.split(".");
+          maskDecimal=maskformula.split(".");          
         }
-        maskToPut=maskDecimal[1].length;
-      }else{
-        maskToPut=0;        
+          
+        if(typeof maskDecimal[1] != 'undefined') {
+          maskToPut=maskDecimal[1].length;  
+        } else {
+          maskToPut=0;
+        }
+
+      } else {
+        maskToPut=0;
       }
-      var symbol = document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value.replace(/[0-9.\s]/g,'');
-      var bkp = document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value;
-      eval("document.getElementById('" + aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + "]').value = (" + sAux + ').toFixed('+maskToPut+');');
+
+      // clean the field and load mask execute event keypress 
+      document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value = '';
+      this.executeEvent(document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']'), 'keypress');
       
+      // execute formula and set decimal
+      eval("document.getElementById('" + aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + "]').value = (" + sAux + ').toFixed('+maskToPut+');');
+
+      // trim value 
+      document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value = document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value.replace(/^\s*|\s*$/g,"");
+      
+      // set '' to field if response is NaN 
       if (document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value =='NaN')
         document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value = '';      
       
-      document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value = symbol+' '+document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value;      
+      // save var symbol the response
+      var symbol = document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value.replace(/[0-9.\s]/g,'');
+      this.executeEvent(document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']'), 'keypress');
+
+      // replace symbol - for ''
+      document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value = document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value.replace('-',''); 
       
+      // set var symbol
+      document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value = symbol+''+document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value;  
+
+      // return focus the field typed
+      if (typeof document.getElementById(domId) != 'undefined') {
+        document.getElementById(domId).focus();
+      }
+
       if (this.aFunctions.length > 0) {
         for (i = 0; i < this.aFunctions.length; i++) {
           oAux = document.getElementById('form[' + this.sGridName + '][' + aAux[1] + '][' + this.aFunctions[i].sFieldName + ']');

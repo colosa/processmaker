@@ -147,37 +147,18 @@ class LDAP
         $sKeyword .= '*';
       }
     }
-    $sFilter  = '(&';
-    if (count($aAuthSource['AUTH_SOURCE_OBJECT_CLASSES']) > 0) {
-      $sFilter .= '(|';
-      $aObjects = explode("\n", $aAuthSource['AUTH_SOURCE_OBJECT_CLASSES']);
-      foreach ($aObjects as $sObject) {
-        $sFilter .= '(objectClass=' . trim($sObject) . ')';
-      }
-      $sFilter .= ')';
+    $sFilter  = '(&(|(objectClass=*))';
+    
+    if ( isset( $aAuthSource['AUTH_SOURCE_DATA']['LDAP_TYPE']) && $aAuthSource['AUTH_SOURCE_DATA']['LDAP_TYPE'] == 'ad' ) {
+      $sFilter = "(&(|(objectClass=*))(|(samaccountname=$sKeyword)(userprincipalname=$sKeyword))(objectCategory=person))";
     }
-    if (count($aAuthSource['AUTH_SOURCE_ATTRIBUTES']) > 0) {
-      $sFilter .= '(|';
-      $aAttributes = explode("\n", $aAuthSource['AUTH_SOURCE_ATTRIBUTES']);
-      foreach ($aAttributes as $sObject) {
-        $sObject = trim($sObject);
-        if ($sObject != '') {
-          $sFilter .= '(' . trim($sObject) . '=' . $sKeyword . ')';
-        }
-      }
-      $sFilter .= ')';
-    }
-    // note added by gustavo cruz gustavo-at-colosa.com
-    // code added in order to add the data of the aditional filter field
-    // the nature of the filter and the correct use will be explained in a
-    // future blog post
-    $sFilter .= isset($aAuthSource['AUTH_SOURCE_DATA']['AUTH_SOURCE_ADDITIONAL_FILTER'])
-                ? $aAuthSource['AUTH_SOURCE_DATA']['AUTH_SOURCE_ADDITIONAL_FILTER'] :'' ;
-    $sFilter .= ')';
+    else
+      $sFilter = "(&(|(objectClass=*))(|(uid=$sKeyword)(cn=$sKeyword)))";
 
-//      G::pr($sFilter);
+    //G::pr($sFilter);
     $aUsers  = array();
-    $oSearch = @ldap_search($oLink, $aAuthSource['AUTH_SOURCE_BASE_DN'], $sFilter);
+    $oSearch = @ldap_search($oLink, $aAuthSource['AUTH_SOURCE_BASE_DN'], $sFilter, array('dn','uid','samaccountname', 'cn','givenname','sn','mail','userprincipalname','objectcategory', 'manager'));
+    
     if ($oError = @ldap_errno($oLink)) {
       return $aUsers;
     }

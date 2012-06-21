@@ -43,21 +43,7 @@
 
   function setCurrent(id) 
   {
-    fireEvent(document.getElementById(id), 'click');
-  }
-
-  function fireEvent(element,event){
-    if (document.createEventObject){
-      // dispatch for IE
-      var evt = document.createEventObject();
-      return element.fireEvent('on'+event,evt)
-    }
-    else{
-      // dispatch for firefox + others
-      var evt = document.createEvent("HTMLEvents");
-      evt.initEvent(event, true, true ); // event type,bubbling,cancelable
-      return !element.dispatchEvent(evt);
-    }
+    $('#' + id).trigger('click');
   }
 
   </script>
@@ -67,7 +53,7 @@
 <body onload="resize()" onresize="resize()" > 
   <div style="top:40px;"/>
   <div id="global-nav-2" class="global-nav-2">
-    <!-- start topbar --> 
+    <!-- start topbar -->
      
     <ul class="xbreadcrumbs" id="breadcrumbs-1">
       {foreach from=$steps key=i item=step}
@@ -79,7 +65,7 @@
     
     <a id="signout-link" href="home/login" title="Sign out"><img src="/images/simplified/logout-grey.png" /></a>
     
-    <!-- end topbar -->     
+    <!-- end topbar -->
   </div>
   
   <iframe id="iframex" name="iframex" src="{$default_url}" width="100%" height="800" scrolling="yes" frameborder="0"></iframe>
@@ -92,7 +78,6 @@
 
   {literal}
   <script type="text/javascript">
-    console.log($(window).width());
     $(document).ready(function() {
       $('#breadcrumbs-1').xBreadcrumbs({ collapsible: ($(window).width() < 500 ?  true : false)});
     });

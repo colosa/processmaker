@@ -8,38 +8,63 @@ Ext.onReady(function(){
     listeners: {
       check: function(EnableEmailNotifications, checked) {
         if(checked) {
-          loadfields();
           combo.setVisible(true);
-          combo.getEl().up('.x-form-item').setDisplayed(true); // show label 
-          Ext.getCmp('Server').setVisible(true);
-          Ext.getCmp('Server').getEl().up('.x-form-item').setDisplayed(true); // show label            
-          Ext.getCmp('Port').setVisible(true);
-          Ext.getCmp('Port').getEl().up('.x-form-item').setDisplayed(true);  
-          Ext.getCmp('RequireAuthentication').setVisible(true);
-          Ext.getCmp('RequireAuthentication').getEl().up('.x-form-item').setDisplayed(true); 
-          Ext.getCmp('AccountFrom').setVisible(true);
-          Ext.getCmp('AccountFrom').getEl().up('.x-form-item').setDisplayed(true); 
-          Ext.getCmp('Password').setVisible(false);
-          Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false); 
-          Ext.getCmp('SendaTestMail').setVisible(true);   
+          combo.getEl().up('.x-form-item').setDisplayed(true); // show label
+
+          if (Ext.getCmp('EmailEngine').getValue()== 'MAIL') { 
+            Ext.getCmp('Server').setVisible(false);
+            Ext.getCmp('Server').getEl().up('.x-form-item').setDisplayed(false); // hide label   
+            Ext.getCmp('Port').setVisible(false);
+            Ext.getCmp('Port').getEl().up('.x-form-item').setDisplayed(false);  
+            Ext.getCmp('RequireAuthentication').setVisible(false); 
+            Ext.getCmp('RequireAuthentication').getEl().up('.x-form-item').setDisplayed(false);
+            Ext.getCmp('AccountFrom').setVisible(false);
+            Ext.getCmp('AccountFrom').getEl().up('.x-form-item').setDisplayed(false);
+            Ext.getCmp('Password').setVisible(false);
+            Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
+
+            Ext.getCmp('UseSecureConnection').setVisible(false); 
+            Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(false);
+          } else {
+            Ext.getCmp('Server').setVisible(true);
+            Ext.getCmp('Server').getEl().up('.x-form-item').setDisplayed(true); // hide label
+            Ext.getCmp('Port').setVisible(true);
+            Ext.getCmp('Port').getEl().up('.x-form-item').setDisplayed(true);
+            Ext.getCmp('RequireAuthentication').setVisible(true);
+            Ext.getCmp('RequireAuthentication').getEl().up('.x-form-item').setDisplayed(true);
+            Ext.getCmp('AccountFrom').setVisible(true);
+            Ext.getCmp('AccountFrom').getEl().up('.x-form-item').setDisplayed(true);
+            
+            if (Ext.getCmp('RequireAuthentication').getValue() === true)
+            {
+              Ext.getCmp('Password').setVisible(true);
+              Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(true);
+            } else {
+              Ext.getCmp('Password').setVisible(false);
+              Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
+            }
+
+            if(!Ext.getCmp('UseSecureConnection').getValue()) {
+              Ext.getCmp('UseSecureConnection').setValue('No');
+            }
+      
+            Ext.getCmp('UseSecureConnection').setVisible(true); 
+            Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(true);
+          }
+
+          Ext.getCmp('SendaTestMail').setVisible(true);
           Ext.getCmp('SendaTestMail').getEl().up('.x-form-item').setDisplayed(true);
-	  
-          if(Ext.getCmp('SendaTestMail').checked) {     
-            Ext.getCmp('eMailto').setVisible(true); 
-            Ext.getCmp('eMailto').getEl().up('.x-form-item').setDisplayed(true);                       
+    
+          if(Ext.getCmp('SendaTestMail').checked) {
+            Ext.getCmp('eMailto').setVisible(true);
+            Ext.getCmp('eMailto').getEl().up('.x-form-item').setDisplayed(true);
           }
           else {         
-            Ext.getCmp('eMailto').setVisible(false); 
+            Ext.getCmp('eMailto').setVisible(false);
             Ext.getCmp('eMailto').getEl().up('.x-form-item').setDisplayed(false);
             Ext.getCmp('eMailto').setValue(' ');
           }
-	  
-          if(!Ext.getCmp('UseSecureConnection').getValue()) {
-            Ext.getCmp('UseSecureConnection').setValue('No');          
-          }
-	  
-          Ext.getCmp('UseSecureConnection').setVisible(true); 
-          Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(true);         
+          
         } 
         else {
           combo.setVisible(false);
@@ -57,7 +82,7 @@ Ext.onReady(function(){
           Ext.getCmp('SendaTestMail').setVisible(false);  
           Ext.getCmp('SendaTestMail').getEl().up('.x-form-item').setDisplayed(false);
           
-	   if (Ext.getCmp('SendaTestMail').getValue().checked) {
+          if (Ext.getCmp('SendaTestMail').getValue().checked) {
             Ext.getCmp('eMailto').setVisible(true);
             Ext.getCmp('eMailto').setVisible(true);               
             Ext.getCmp('eMailto').setValue('');
@@ -98,33 +123,50 @@ Ext.onReady(function(){
     displayField:'EmailEngine', 
     mode: 'local',      
     triggerAction: 'all',
+    value: 'PHPMAILER',
     disabled : true,    
     listeners: {
       select: function(combo, value) {
         if (Ext.getCmp('EmailEngine').getValue()== 'MAIL') { 
-	  Ext.getCmp('Server').setVisible(false);
-	  Ext.getCmp('Server').getEl().up('.x-form-item').setDisplayed(false); // hide label   
-	  Ext.getCmp('Port').setVisible(false);
-	  Ext.getCmp('Port').getEl().up('.x-form-item').setDisplayed(false);  
-	  Ext.getCmp('RequireAuthentication').setVisible(false); 
-	  Ext.getCmp('RequireAuthentication').getEl().up('.x-form-item').setDisplayed(false);
-	  Ext.getCmp('AccountFrom').setVisible(false);
-	  Ext.getCmp('AccountFrom').getEl().up('.x-form-item').setDisplayed(false);              
-	  Ext.getCmp('Password').setVisible(false);
-	  Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);             
+          Ext.getCmp('Server').setVisible(false);
+          Ext.getCmp('Server').getEl().up('.x-form-item').setDisplayed(false); // hide label   
+          Ext.getCmp('Port').setVisible(false);
+          Ext.getCmp('Port').getEl().up('.x-form-item').setDisplayed(false);  
+          Ext.getCmp('RequireAuthentication').setVisible(false); 
+          Ext.getCmp('RequireAuthentication').getEl().up('.x-form-item').setDisplayed(false);
+          Ext.getCmp('AccountFrom').setVisible(false);
+          Ext.getCmp('AccountFrom').getEl().up('.x-form-item').setDisplayed(false);
+          Ext.getCmp('Password').setVisible(false);
+          Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
+
+          Ext.getCmp('UseSecureConnection').setVisible(false); 
+          Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(false);
+        } else {
+          Ext.getCmp('Server').setVisible(true);
+          Ext.getCmp('Server').getEl().up('.x-form-item').setDisplayed(true); // hide label
+          Ext.getCmp('Port').setVisible(true);
+          Ext.getCmp('Port').getEl().up('.x-form-item').setDisplayed(true);
+          Ext.getCmp('RequireAuthentication').setVisible(true);
+          Ext.getCmp('RequireAuthentication').getEl().up('.x-form-item').setDisplayed(true);
+          Ext.getCmp('AccountFrom').setVisible(true);
+          Ext.getCmp('AccountFrom').getEl().up('.x-form-item').setDisplayed(true);
+          
+          if (Ext.getCmp('RequireAuthentication').getValue() === true)
+          {
+            Ext.getCmp('Password').setVisible(true);
+            Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(true);
+          } else {
+            Ext.getCmp('Password').setVisible(false);
+            Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
+          }
+
+          if(!Ext.getCmp('UseSecureConnection').getValue()) {
+            Ext.getCmp('UseSecureConnection').setValue('No');
+          }
+    
+          Ext.getCmp('UseSecureConnection').setVisible(true); 
+          Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(true);
         }
-	else {
-	  Ext.getCmp('Server').setVisible(true);
-	  Ext.getCmp('Server').getEl().up('.x-form-item').setDisplayed(true); // hide label   
-	  Ext.getCmp('Port').setVisible(true);
-	  Ext.getCmp('Port').getEl().up('.x-form-item').setDisplayed(true);  
-	  Ext.getCmp('RequireAuthentication').setVisible(true); 
-	  Ext.getCmp('RequireAuthentication').getEl().up('.x-form-item').setDisplayed(true);
-	  Ext.getCmp('AccountFrom').setVisible(true);
-	  Ext.getCmp('AccountFrom').getEl().up('.x-form-item').setDisplayed(true);              
-	  Ext.getCmp('Password').setVisible(false);
-	  Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);             
-        }         	  
       }
     } 
   });
@@ -183,14 +225,14 @@ Ext.onReady(function(){
         //blankText: 'Server',
         width: 200,
         allowBlank: false,
-        disabled : true,        
-	listeners : {
-	  'change': {
+        disabled : true,
+        listeners : {
+          'change': {
             fn:function() {
               Ext.getCmp('PasswordHide').setValue('');
-	      Ext.getCmp('Password').setValue('');
+              Ext.getCmp('Password').setValue('');
             }
-          }	 
+          }
         }
       },
       {
@@ -201,7 +243,7 @@ Ext.onReady(function(){
         emptyText : null,
         width: 40,
         maxLength: 3,
-        disabled : true,        
+        disabled : true,
         allowBlank: false
       },    
       {
@@ -211,39 +253,38 @@ Ext.onReady(function(){
         name:'RequireAuthentication',
         validateMessage: 'You really should do it.',
         validateField: true,
-        disabled : true,        
+        disabled : true,
         handler: function() {
           if (this.checked) {
-	    Ext.getCmp('Password').setVisible(true);    
-            Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(true); 
-	  }
-	  else {
-	    Ext.getCmp('Password').setVisible(false);    
+            Ext.getCmp('Password').setVisible(true);
+            Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(true);
+          } else {
+            Ext.getCmp('Password').setVisible(false);
             Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
-	    Ext.getCmp('Password').setValue('');	    
-	  }
-        } 
+            Ext.getCmp('Password').setValue('');
+          }
+        }
       },
       {
-        xtype: 'textfield',    
+        xtype: 'textfield',
         fieldLabel: _('ACCOUNT_FROM'),//'Account From',
         id:'AccountFrom',
         name:'AccountFrom',
         vtype:'email',
         width: 200,
-        disabled : true,        
+        disabled : true,
         allowBlank: false
       },
       {
-        xtype: 'textfield',   
+        xtype: 'textfield',
         fieldLabel: _('ID_PASSWORD'),//'PasswordHidden',
         id:'PasswordHide',
         name:'PasswordHide',
-        inputType: 'PasswordHide',      
+        inputType: 'PasswordHide',
         width: 200,
-	hidden: true,
-	hideLabel: true,
-        disabled : true,        
+        hidden: true,
+        hideLabel: true,
+        disabled : true,
         allowBlank: true
       },
       {
@@ -255,12 +296,12 @@ Ext.onReady(function(){
         width: 200,
         allowBlank: true,
         disabled : true,        
-	listeners : {          
-	  'change' : function() {
-	   if (Ext.getCmp('Password').getValue() != '') {
+        listeners : {
+          'change' : function() {
+            if (Ext.getCmp('Password').getValue() != '') {
               Ext.getCmp('PasswordHide').setValue('');
-	    }
-	  }
+            }
+          }
         } 
       },
       {
@@ -319,31 +360,74 @@ Ext.onReady(function(){
         var res = Ext.decode(r.responseText);
         if (! res.data) 
           return;
-	if (res.success) { 
+        if (res.success) {
           Ext.getCmp('EnableEmailNotifications').setValue(res.data.MESS_ENABLED);
           Ext.getCmp('EmailEngine').setValue(res.data.MESS_ENGINE);
-          Ext.getCmp('Server').setValue(res.data.MESS_SERVER);
-          Ext.getCmp('Port').setValue(res.data.MESS_PORT);
-          Ext.getCmp('RequireAuthentication').setValue(res.data.MESS_RAUTH);
-          Ext.getCmp('AccountFrom').setValue(res.data.MESS_ACCOUNT);
-          Ext.getCmp('Password').setValue(res.data.MESS_PASSWORD);
-					Ext.getCmp('PasswordHide').setValue(Ext.getCmp('Password').getValue());				 
+
+          if (Ext.getCmp('EmailEngine').getValue()== 'MAIL') { 
+            Ext.getCmp('Server').setVisible(false);
+            Ext.getCmp('Server').getEl().up('.x-form-item').setDisplayed(false); // hide label   
+            Ext.getCmp('Port').setVisible(false);
+            Ext.getCmp('Port').getEl().up('.x-form-item').setDisplayed(false);  
+            Ext.getCmp('RequireAuthentication').setVisible(false); 
+            Ext.getCmp('RequireAuthentication').getEl().up('.x-form-item').setDisplayed(false);
+            Ext.getCmp('AccountFrom').setVisible(false);
+            Ext.getCmp('AccountFrom').getEl().up('.x-form-item').setDisplayed(false);
+            Ext.getCmp('Password').setVisible(false);
+            Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
+
+            Ext.getCmp('UseSecureConnection').setVisible(false); 
+            Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(false);
+          } else {
+            Ext.getCmp('Server').setVisible(true);
+            Ext.getCmp('Server').getEl().up('.x-form-item').setDisplayed(true); // hide label
+            Ext.getCmp('Port').setVisible(true);
+            Ext.getCmp('Port').getEl().up('.x-form-item').setDisplayed(true);
+            Ext.getCmp('RequireAuthentication').setVisible(true);
+            Ext.getCmp('RequireAuthentication').getEl().up('.x-form-item').setDisplayed(true);
+            Ext.getCmp('AccountFrom').setVisible(true);
+            Ext.getCmp('AccountFrom').getEl().up('.x-form-item').setDisplayed(true);
+            
+            if (Ext.getCmp('RequireAuthentication').getValue() === true)
+            {
+              Ext.getCmp('Password').setVisible(true);
+              Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(true);
+            } else {
+              Ext.getCmp('Password').setVisible(false);
+              Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
+            }
+
+            if(!Ext.getCmp('UseSecureConnection').getValue()) {
+              Ext.getCmp('UseSecureConnection').setValue('No');
+            }
+      
+            Ext.getCmp('UseSecureConnection').setVisible(true); 
+            Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(true);
+
+            Ext.getCmp('Server').setValue(res.data.MESS_SERVER);
+            Ext.getCmp('Port').setValue(res.data.MESS_PORT);
+            Ext.getCmp('RequireAuthentication').setValue(res.data.MESS_RAUTH);
+            Ext.getCmp('AccountFrom').setValue(res.data.MESS_ACCOUNT);
+            Ext.getCmp('Password').setValue(res.data.MESS_PASSWORD);
+            Ext.getCmp('PasswordHide').setValue(Ext.getCmp('Password').getValue());
+
+            if (res.data.SMTPSecure == 'none') {
+              Ext.getCmp('UseSecureConnection').setValue('No');
+            }
+            else {
+              Ext.getCmp('UseSecureConnection').setValue(res.data.SMTPSecure);
+            }
+          }
+          
           Ext.getCmp('SendaTestMail').setValue(res.data.MESS_TRY_SEND_INMEDIATLY);          
           
-	  if(!res.data.MAIL_TO) {
+          if(!res.data.MAIL_TO) {
             Ext.getCmp('eMailto').setValue(' ');
           }
           else {
             Ext.getCmp('eMailto').setValue(res.data.MAIL_TO);
           }
-	  
-          if (res.data.SMTPSecure == 'none') {
-            Ext.getCmp('UseSecureConnection').setValue('No'); 
-          }
-          else {
-            Ext.getCmp('UseSecureConnection').setValue(res.data.SMTPSecure); 
-          }        
-        }	
+        } 
       }
     });
   }
@@ -487,7 +571,7 @@ var testConnForm = new Ext.FormPanel({
       text:_('ID_DONE'),
       id: 'done',
       handler: function(){
-        testEmailWindow.hide();	      
+        testEmailWindow.hide();       
       }
     }
   ]
@@ -496,9 +580,9 @@ var testConnForm = new Ext.FormPanel({
 var testEmailWindow = new Ext.Window({ 
   width: 470,    
   closable:false,
-  autoHeight: true,
-  layout: 'fit',
   plain: true,
+  autoHeight: true,
+  layout: 'fit',  
   y: 82,
   items: testConnForm
 });
@@ -546,62 +630,127 @@ var UnEditMethod = function()
 }
 var testMethod = function()
 {
-  if((Ext.getCmp('Port').getValue()==null)||(Ext.getCmp('Port').getValue()=='')) {
-    Ext.getCmp('Port').setValue('25');
+  var typeTest = Ext.getCmp('EmailEngine').getValue();
+  switch (typeTest)
+  {
+    case 'MAIL':
+      Ext.MessageBox.show({
+        msg: _('ID_LOADING'),
+        progressText: 'Saving...',
+        width:300,
+        wait:true,
+        waitConfig: {interval:200},
+        animEl: 'mb7'
+      });
+
+      params = {
+        typeTest  : 'MAIL',
+        request   : 'mailTestMail_Show',
+        mail_to   : Ext.getCmp('eMailto').getValue(),
+        send_test_mail  : 'yes'
+      };
+
+      Ext.Ajax.request({
+        url: '../adminProxy/testConnection',
+        method:'POST',
+        params: params,
+        waitMsg: _('ID_LOADING'),
+        success: function(r,o) {
+          Ext.MessageBox.hide();
+          var resp = Ext.util.JSON.decode(r.responseText);
+          if (resp.sendMail === true) {
+            Ext.MessageBox.show({
+              title: 'Correct test mail',
+              msg: resp.msg,
+              buttons: Ext.MessageBox.OK,
+              animEl: 'mb9',
+              icon: Ext.MessageBox.INFO
+            });
+            Ext.getCmp('SaveChanges').enable();
+          } else {
+            Ext.MessageBox.show({
+              title: 'Error',
+              msg: resp.msg,
+              buttons: Ext.MessageBox.OK,
+              animEl: 'mb9',
+              icon: Ext.MessageBox.ERROR
+            });
+            Ext.getCmp('SaveChanges').disable();
+          }
+        },
+        failure: function () {
+          Ext.MessageBox.show({
+            title: 'Error',
+            msg: 'Error in connection',
+            buttons: Ext.MessageBox.OK,
+            animEl: 'mb9',
+            icon: Ext.MessageBox.ERROR
+          });
+          Ext.getCmp('SaveChanges').disable();
+        }
+      });
+      break;
+    case 'PHPMAILER':
+      if((Ext.getCmp('Port').getValue()==null)||(Ext.getCmp('Port').getValue()=='')) {
+        Ext.getCmp('Port').setValue('25');
+      }
+      
+      if (Ext.getCmp('RequireAuthentication').checked){
+        if (Ext.getCmp('Password').getValue()=='') {  
+          if (Ext.getCmp('PasswordHide').getValue()=='') {
+            PMExt.warning(_('ID_WARNING'),_('ID_PASSWD_REQUIRED'));
+            return false;
+          }    
+        }
+      }  
+      var x                   = Ext.getCmp('UseSecureConnection').getValue();
+      var UseSecureConnection = x.getGroupValue();
+      var count=0;
+      var create=true;
+      
+      params = {
+        typeTest      : 'PHPMAILER',
+        server        : Ext.getCmp('Server').getValue(),         
+        user          : Ext.getCmp('AccountFrom').getValue(),
+        passwd        : Ext.getCmp('Password').getValue(),
+        passwdHide    : Ext.getCmp('PasswordHide').getValue(),
+        port          : Ext.getCmp('Port').getValue(),
+        req_auth      : Ext.getCmp('RequireAuthentication').getValue(),
+        UseSecureCon  : UseSecureConnection,
+        SendaTestMail : Ext.getCmp('SendaTestMail').getValue() ,
+        eMailto       : Ext.getCmp('eMailto').getValue(),
+        login         : Ext.getCmp('AccountFrom').getValue()    
+      };  
+        
+      Ext.getCmp('step1').setText('<span id="rstep1"></span>  '+_('RESOLVING_NAME')+' <b>'+params.server+'</b>', false);
+      Ext.getCmp('step2').setText('<span id="rstep2"></span>  '+_('ID_CHECK_PORT')+' <b>'+params.port+'</b>',false);
+      Ext.getCmp('step3').setText('<span id="rstep3"></span>  '+_('ESTABLISHING_CON_HOST')+' <b>'+params.server+':'+params.port+'</b>',false);
+      Ext.getCmp('step4').setText('<span id="rstep4"></span>  '+_('LOGIN_AS')+' [<b>'+params.login+'</b>] '+_('ID_ON')+' '+params.server+' '+_('SMTP_SERVER')+' <b>',false);  
+      Ext.getCmp('step5').setText('<span id="rstep5"></span>  '+_('SENDING_TEST_EMAIL')+' [<b>'+params.eMailto +'</b>]...<b>', false);
+      
+      Ext.getCmp('step1').setVisible(false);
+      Ext.getCmp('step2').setVisible(false);
+      Ext.getCmp('step3').setVisible(false);
+      Ext.getCmp('step4').setVisible(false);
+      Ext.getCmp('step5').setVisible(false);
+      Ext.getCmp('result1').setVisible(false);
+      Ext.getCmp('result2').setVisible(false);
+      Ext.getCmp('result3').setVisible(false);
+      Ext.getCmp('result4').setVisible(false);
+      Ext.getCmp('result5').setVisible(false);
+      
+      Ext.getCmp('done').enable();    
+      Ext.getCmp('SaveChanges').disable();
+      
+      Ext.getCmp('EMailFields').disable();
+      testEmailWindow.show();
+      Ext.getCmp('EMailFields').enable();
+
+      execTest(1);
+      break;
   }
-  
-  if (Ext.getCmp('RequireAuthentication').checked){
-    if (Ext.getCmp('Password').getValue()=='') {  
-      if (Ext.getCmp('PasswordHide').getValue()=='') {
-        PMExt.warning(_('ID_WARNING'),_('ID_PASSWD_REQUIRED'));
-        return false;
-      }    
-    }
-  }  
-  var x                   = Ext.getCmp('UseSecureConnection').getValue();
-  var UseSecureConnection = x.getGroupValue();
-  var count=0;
-  var create=true;
-  
-  params = {		    
-    server         : Ext.getCmp('Server').getValue(),         
-    user           : Ext.getCmp('AccountFrom').getValue(),
-    passwd         : Ext.getCmp('Password').getValue(),
-    passwdHide     : Ext.getCmp('PasswordHide').getValue(),
-    port           : Ext.getCmp('Port').getValue(),
-    req_auth       : Ext.getCmp('RequireAuthentication').getValue(),
-    UseSecureCon   : UseSecureConnection,
-    SendaTestMail  : Ext.getCmp('SendaTestMail').getValue() ,
-    eMailto        : Ext.getCmp('eMailto').getValue(),
-    login          : Ext.getCmp('AccountFrom').getValue()    
-  };  
-    
-  Ext.getCmp('step1').setText('<span id="rstep1"></span>  '+_('RESOLVING_NAME')+' <b>'+params.server+'</b>', false);
-  Ext.getCmp('step2').setText('<span id="rstep2"></span>  '+_('ID_CHECK_PORT')+' <b>'+params.port+'</b>',false);
-  Ext.getCmp('step3').setText('<span id="rstep3"></span>  '+_('ESTABLISHING_CON_HOST')+' <b>'+params.server+':'+params.port+'</b>',false);
-  Ext.getCmp('step4').setText('<span id="rstep4"></span>  '+_('LOGIN_AS')+' [<b>'+params.login+'</b>] '+_('ID_ON')+' '+params.server+' '+_('SMTP_SERVER')+' <b>',false);  
-  Ext.getCmp('step5').setText('<span id="rstep5"></span>  '+_('SENDING_TEST_EMAIL')+' [<b>'+params.eMailto +'</b>]...<b>', false);
-  
-  Ext.getCmp('step1').setVisible(false);
-  Ext.getCmp('step2').setVisible(false);
-  Ext.getCmp('step3').setVisible(false);
-  Ext.getCmp('step4').setVisible(false);
-  Ext.getCmp('step5').setVisible(false);
-  Ext.getCmp('result1').setVisible(false);
-  Ext.getCmp('result2').setVisible(false);
-  Ext.getCmp('result3').setVisible(false);
-  Ext.getCmp('result4').setVisible(false);
-  Ext.getCmp('result5').setVisible(false);
-  
-  Ext.getCmp('done').enable();    
-  Ext.getCmp('SaveChanges').disable();
-  
-  testEmailWindow.show();
-  
-  execTest(1);  
-  
   return true;
-}  
+};
   
 function execTest(step) {
   
@@ -619,29 +768,29 @@ function execTest(step) {
     url: '../adminProxy/testConnection',
     method:'POST',
     params: params,
-    waitMsg: _('ID_UPLOADING_PROCESS_FILE'),   
+    waitMsg: _('ID_UPLOADING_PROCESS_FILE'),
     success: function(r,o){      
       var resp = Ext.util.JSON.decode(r.responseText);
       
-      if (resp.success) {                     	
-	img = '/images/dialog-ok-apply.png';
-	Ext.getCmp('SaveChanges').enable();
+      if (resp.success) {
+        img = '/images/dialog-ok-apply.png';
+        Ext.getCmp('SaveChanges').enable();
       }
       else {
-	img = '/images/delete.png';
-	Ext.getCmp('SaveChanges').disable();		
+        img = '/images/delete.png';
+        Ext.getCmp('SaveChanges').disable();    
       }
       
       document.getElementById('rstep'+step).innerHTML = '<img width="13" height="13" border="0" src="'+img+'">';      
 
       if(resp.msg) {
-	document.getElementById('result'+step).innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#FF0000;">'+resp.msg+'</span>';
-        Ext.getCmp('result'+step).setVisible(true);		 
+        document.getElementById('result'+step).innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#FF0000;">'+resp.msg+'</span>';
+        Ext.getCmp('result'+step).setVisible(true);    
       }
       
       execTest(step+1);      
     }
-  });  
+  });
 } 
   
 saveMethod=function() { 

@@ -14,9 +14,6 @@
 <CONFIRM type="private"/>
 
 <JS type="javascript"><![CDATA[
-
-getField('PAGED_TABLE_FAST_SEARCH').value = '';
-
 PROCESS_REQUEST_FILE = '../roles/roles_Ajax';
 PROCESS_REQUEST_FILE_USER = '../roles/roles_AddUser';
 

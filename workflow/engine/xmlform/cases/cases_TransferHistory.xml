@@ -29,7 +29,7 @@
 </DEL_FINISH_DATE>
 
 <APP_TYPE type="dropdown" colWidth="100" colAlign="center" titleAlign="center">
-  <en>Action<option name="PAUSE">Paused</option><option name="CANCEL">Cancelled</option><option name="IN_PROGRESS">In Progress</option><option name="">Derivated</option><option name="REASSIGN">Reassigned</option></en>
+  <en>Action<option name="PAUSE">Paused</option><option name="CANCEL">Cancelled</option><option name="IN_PROGRESS">In Progress</option><option name="">Routed</option><option name="REASSIGN">Reassigned</option></en>
 </APP_TYPE>
 
 <APP_ENABLE_ACTION_DATE type="text" colWidth="100" colAlign="center" titleAlign="center">
@@ -43,4 +43,4 @@
 
 <CASE_HISTORY type="link" colWidth="100" value="@G::LoadTranslation(ID_DYNAFORM_HISTORY)" link="javascript:dynaformHistory(&#039;@#PRO_UID&#039;,&#039;@#APP_UID&#039;,&#039;@#TAS_UID&#039;);"/>
 
-</dynaForm>  
+</dynaForm>

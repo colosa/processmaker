@@ -27,12 +27,24 @@
     ws_open ();
     $result = ws_newCase ( '{processUid}', '{taskUid}', convertFormToWSObjects($_POST['form']) );
     
-    if( $result->status_code == 0 ) {
+    if ($result->status_code == 0) {
       $caseId = $result->caseId;
-    $caseNr = $result->caseNumber;
-    {USR_VAR}
-    
-    #save files
+      $caseNr = $result->caseNumber;
+      
+      {USR_VAR}
+      
+      if ($USR_UID == -1) {
+        G::LoadClass("sessions");
+        
+        global $sessionId;
+        
+        $sessions = new Sessions();
+        $session  = $sessions->getSessionUser($sessionId);
+        
+        $USR_UID = $session["USR_UID"];
+      }
+      
+      //Save files
       if ( isset($_FILES['form']) ) {
         foreach ($_FILES['form']['name'] as $sFieldName => $vValue) {
           if ( $_FILES['form']['error'][$sFieldName] == 0 ){

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <dynaForm name="cases_TransferHistory" width="100%">
 <TAS_TITLE type="text" colWidth="140">
   <en>Task</en>
@@ -29,7 +29,7 @@
 </DEL_FINISH_DATE>
 
 <APP_TYPE type="dropdown" colWidth="100" colAlign="center" titleAlign="center">
-  <en>Action<option name="PAUSE">Paused</option><option name="CANCEL">Cancelled</option><option name="">Derivated</option></en>
+  <en>Action<option name="PAUSE">Paused</option><option name="CANCEL">Cancelled</option><option name="">Routed</option></en>
 </APP_TYPE>
 
 </dynaForm>

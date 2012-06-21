@@ -69,11 +69,17 @@
 	
 	foreach($elements as $node_name=>$node){
 		if( $node_name == "___pm_boot_strap___"){
-			$boot_strap = $elements[$node_name];
+      $boot_strap = $elements[$node_name];
 			$hidden_fields = G::decrypt($boot_strap['__ATTRIBUTES__']['meta'], 'dynafieldsHandler');
 			//echo $hidden_fields;
 			$hidden_fields_list = explode(',', $hidden_fields);
 			unset($elements[$node_name]);
+
+      ?>
+      <script>
+        parent.jsMeta = "<? echo $boot_strap['__ATTRIBUTES__']['meta'] ?>";
+      </script>
+      <?php
 		}
 	} 
 ?>
@@ -112,7 +118,7 @@
 				<tr>
 					<td width="7%">
 						<?php if($node['__ATTRIBUTES__']['type'] != 'javascript' && $dynaformType != 'grid') {?>
-						<input id="chk@<?php echo $node_name?>" type="checkbox" onclick="fieldsHandlerSaveHidden()" <?php echo $checked?> />
+						<input id="chk@<?php echo $node_name?>" type="checkbox" onclick="parent.jsMeta = fieldsHandlerSaveHidden();" <?php echo $checked?> />
 						<?php } else {?>
 						&nbsp;
 						<?php }?>

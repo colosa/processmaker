@@ -23,112 +23,69 @@
   <en>Cancel</en>
 </BTN_CANCEL>
 
-<CheckboxSelectAll type="Checkbox">
-  <en></en>
-</CheckboxSelectAll>
-
 <JS type="javascript"><![CDATA[
-getField('CheckboxSelectAll').style.visibility = 'hidden';
 
 function disableEnterKey(e)
 {
-     var key;
-     if(window.event)
-          key = window.event.keyCode;     //IE
-     else
-          key = e.which;     //firefox
+  var key;
+  if(window.event)
+    key = window.event.keyCode;     //IE
+  else
+    key = e.which;     //firefox
 
-     if(key == 13) {
-          searchUsers();
-          e.cancelBubble = true;
-          e.returnValue = false;
-          if (e.stopPropagation) {
-             e.stopPropagation();
-             e.preventDefault();
-          }
-          return false;
-     } else {
-          return true;
-     }
+  if(key == 13) {
+    searchUsers();
+    e.cancelBubble = true;
+    e.returnValue = false;
+    if (e.stopPropagation) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    return false;
+  } else {
+    return true;
+  }
 }
 
-getField('btnImport').style.visibility = 'hidden';
 var searchUsers = function() {
   var oRPC = new leimnud.module.rpc.xmlhttp({
-    url : 'authSources_Ajax',
-    args: 'action=searchUsers&sUID=' + getField('AUTH_SOURCE_UID').value + '&sKeyword=' + getField('KEYWORD').value
+    url     : 'authSources_Ajax',
+    args    : 'action=searchUsers&sUID=' + getField('AUTH_SOURCE_UID').value + "&sKeyword=" + getField('KEYWORD').value
   });
   oRPC.callback = function(rpc){
     document.getElementById('spanUsers').innerHTML = rpc.xmlhttp.responseText;
-    if (document.getElementById('aUsers[0]')) {
-      getField('btnImport').style.visibility = 'visible';
-      getField('CheckboxSelectAll').style.visibility = 'visible';
-      document.getElementById("AgeLabel").innerHTML = '[SELECT-ALL]';
-    }
-    else {
-      getField('btnImport').style.visibility = 'hidden';
-    }
     var scs = rpc.xmlhttp.responseText.extractScript();
     scs.evalScript();
-
   }.extend(this);
   oRPC.make();
-
 };
 
-var importUsers = function(oForm) {
-  var bContinue = false;
-  var i = 0;
-  var oAux;
-  while (oAux = document.getElementById('aUsers[' + i + ']')) {
-    if (oAux.checked) {
-      bContinue = true;
+function checkInfo() {
+  var input_obj = document.getElementsByTagName("input");
+  for (i = 0; i < input_obj.length; i++) {
+    if (input_obj.item(i).type == 'checkbox' && input_obj.item(i).checked == true)
+    {
+      return true;
     }
-    i++;
   }
-  if (bContinue) {
+  return false;
+}
+
+var importUsers = function(oForm) {
+  if (checkInfo()) {
     oForm.submit();
   }
   else {
-    //alert(666);
-  }
-};
-
-var selectAll = function(bChecked) {
-  var oAux;
-  var i = 0;
-  while (oAux = document.getElementById('aUsers[' + i + ']')) {
-    oAux.checked = true;
-    i++;
+    alert(_('ID_NO_SELECTION_WARNING'));
   }
 };
 
 function cancel(){
-    window.location = 'authSources_List';
+  window.location = 'authSources_List';
 }
 
 leimnud.event.add(getField('KEYWORD'), 'keypress', function(event) {
   return disableEnterKey(event);
-});
-leimnud.event.add(getField('CheckboxSelectAll'), 'click', function() {
-  var oAux;
-  var i = 0;
-  if (document.getElementById('form[CheckboxSelectAll]').checked)
-  {
-    document.getElementById("AgeLabel").innerHTML = '[DESELECT-ALL]';
-    while (oAux = document.getElementById('aUsers[' + i + ']')) {
-      oAux.checked = true;
-      i++;
-    }
-  }
-  else
-  {
-    document.getElementById("AgeLabel").innerHTML = '[SELECT-ALL]';
-    while (oAux = document.getElementById('aUsers[' + i + ']')) {
-      oAux.checked = false;
-      i++;
-    }
-  }
 });
 
 ]]></JS>

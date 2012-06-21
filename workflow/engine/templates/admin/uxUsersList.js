@@ -20,16 +20,16 @@ var dateFormat;
 Ext.onReady(function(){
   Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
   Ext.QuickTips.init();
-  
+
   fullNameFormat = CONFIG.fullNameFormat;
   dateFormat = CONFIG.dateFormat;
   pageSize = parseInt(CONFIG.pageSize);
-    
+
   searchButton = new Ext.Action({
     text: _('ID_SEARCH'),
     handler: DoSearch
   });
-    
+
   searchText = new Ext.form.TextField ({
     id: 'searchTxt',
     ctCls:'pm_search_text_field',
@@ -48,13 +48,13 @@ Ext.onReady(function(){
       }
     }
   });
-    
+
   clearTextButton = new Ext.Action({
     text: 'X',
      ctCls:'pm_search_x_button',
      handler: GridByDefault
   });
-    
+
   smodel = new Ext.grid.RowSelectionModel({
     singleSelect: true,
      listeners:{
@@ -113,7 +113,7 @@ Ext.onReady(function(){
     writer: writer,  // <-- plug a DataWriter into the store just as you would a Reader
     autoSave: true // <-- false would delay executing create, update, destroy requests until specifically told to do so with some [save] buton.
   });
-    
+
   comboPageSize = new Ext.form.ComboBox({
     typeAhead     : false,
     mode          : 'local',
@@ -135,9 +135,9 @@ Ext.onReady(function(){
       }
     }
   });
-    
+
   comboPageSize.setValue(pageSize);
-  
+
   bbarpaging = new Ext.PagingToolbar({
     pageSize: pageSize,
      store: store,
@@ -146,7 +146,7 @@ Ext.onReady(function(){
      emptyMsg: _('ID_GRID_PAGE_NO_USERS_MESSAGE'),
      items: ['-',_('ID_PAGE_SIZE')+':',comboPageSize]
   });
-    
+
   cmodel = new Ext.grid.ColumnModel({
     columns: [
       {id:'USR_UID', dataIndex: 'USR_UID', hidden:true, hideable:false},
@@ -186,7 +186,7 @@ Ext.onReady(function(){
       }
     ]
   });
-    
+
   usersGrid = new Ext.grid.EditorGridPanel({
     title: 'Users',
     //region: 'center',
@@ -211,7 +211,7 @@ Ext.onReady(function(){
     bbar: bbarpaging,
     listeners: {
       rowdblclick: function(){
-        
+
       }
     },
     view: new Ext.grid.GroupingView({
@@ -223,10 +223,7 @@ Ext.onReady(function(){
   // GROUPS
   var proxyGroups = new Ext.data.HttpProxy({
     api: {
-      read : '../groups/groups_Ajax?action=groupsList',
-      //create : 'app.php/users/create',
-      update: '../adminProxy/uxGroupUpdate'//,
-      //destroy: 'app.php/users/destroy'
+      read: '../groups/groups_Ajax?action=groupsList'
     }
   });
 
@@ -250,14 +247,11 @@ Ext.onReady(function(){
       writeAllFields: false
   });
 
-  storeGroups = new Ext.data.GroupingStore( {
-    // proxy: new Ext.data.HttpProxy({
-    //   url: '../groups/groups_Ajax?action=groupsList'
-    // }),
+  storeGroups = new Ext.data.GroupingStore({
     proxy: proxyGroups,
     reader: readerGroups,
     writer: writerGroups,  // <-- plug a DataWriter into the store just as you would a Reader
-    autoSave: true // <-- false would delay executing create, update, destroy requests until specifically told to do so with some [save] buton.
+    autoSave: false // <-- false would delay executing create, update, destroy requests until specifically told to do so with some [save] buton.
   });
 
   cmodelGroups = new Ext.grid.ColumnModel({
@@ -285,22 +279,31 @@ Ext.onReady(function(){
           editable: false,
           store: new Ext.data.ArrayStore({
             fields: ['id', 'name'],
-            data : uxTypes 
+            data : uxTypes
           }),
           listeners: {
-            select: function(a, b) {                            
-              var uidGroup = groupsGrid.getSelectionModel().selection['record'].data['GRP_UID'];                           
+            select: function(a, b) {
               Ext.Ajax.request({
-                url: '../users/users_Ajax?function=usersAdminGroupExtJS',                
-                params: { GRP_UID: uidGroup }, 
-                success: function(result, request) {          
-                  var res = Ext.decode(result.responseText);
-                  if ((res.reponse == 'true') && (Ext.getCmp('GRP_UXCombo').getValue()!='SWITCHABLE') && (Ext.getCmp('GRP_UXCombo').getValue()!='NORMAL')) {
-                    PMExt.warning(_('ID_WARNING'), _('ID_ADMINS_CANT_USE_UXS')+'<br/> <b>'+_('ID_USERS_LIST')+':</b> '+res.users);
-                    Ext.getCmp('GRP_UXCombo').setValue('NORMAL');
+                url: '../adminProxy/uxGroupUpdate',
+                params: {GRP_UID: groupsGrid.getSelectionModel().selection['record'].data['GRP_UID'],
+                         GRP_UX:  Ext.getCmp('GRP_UXCombo').getValue()},
+                success: function(result, request) {
+                  var response = Ext.decode(result.responseText);
+                  if (!response.success) {
+                    a.setValue('NORMAL');
+                    PMExt.warning(_('ID_WARNING'), _('ID_ADMINS_CANT_USE_UXS') + '<br/> <b>' + _('ID_USERS_LIST') + ':</b> ' + response.users);
+                  }
+                  else {
+                    a.fireEvent('blur');
                   }
                 }
-              });              
+              });
+            },
+            specialkey: function (f, e) {
+              if (e.getKey() == e.ENTER) {
+                return false;
+              }
+              return true;
             }
           }
         })
@@ -344,7 +347,7 @@ Ext.onReady(function(){
     text: _('ID_SEARCH'),
     handler: DoSearchGroups
   });
-    
+
   var searchTextGroups = new Ext.form.TextField ({
     id: 'searchTxtGroups',
     ctCls:'pm_search_text_field',
@@ -359,7 +362,7 @@ Ext.onReady(function(){
       }
     }
   });
-    
+
   var clearTextButtonGroups = new Ext.Action({
     text: 'X',
      ctCls:'pm_search_x_button',
@@ -367,7 +370,7 @@ Ext.onReady(function(){
   });
 
   groupsGrid = new Ext.grid.EditorGridPanel({
-    title : _('ID_GROUPS'),  
+    title : _('ID_GROUPS'),
     //region: 'center',
     layout: 'fit',
     id: 'groupsGrid',
@@ -435,7 +438,7 @@ render_status = function(v){
 //Render Due Date
 render_duedate = function(v,x,s){
   if (s.data.DUE_DATE_OK)
-    return _DF(v);  
+    return _DF(v);
   else
     return '<font color="red">' + _DF(v) + '</font>';
 };
@@ -452,7 +455,7 @@ GridByDefault = function(){
 
 //Do Search Function
 DoSearch = function(){
-  usersGrid.store.load({params: {textFilter: searchText.getValue()}});  
+  usersGrid.store.load({params: {textFilter: searchText.getValue()}});
 };
 
 GridByDefaultGroups = function(){
@@ -462,7 +465,7 @@ GridByDefaultGroups = function(){
 
 //Do Search Function
 DoSearchGroups = function(){
-  groupsGrid.store.load({params: {textFilter: Ext.getCmp('searchTxtGroups').getValue()}});  
+  groupsGrid.store.load({params: {textFilter: Ext.getCmp('searchTxtGroups').getValue()}});
 };
 
 

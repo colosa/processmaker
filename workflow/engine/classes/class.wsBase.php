@@ -651,19 +651,21 @@ class wsBase
       $fileTemplate = $pathEmail . $sTemplate;
       G::mk_dir( $pathEmail, 0777,true);
 
-      if ( ! file_exists ( $fileTemplate ) ) {
+      if (!file_exists($fileTemplate)) {
         $data['FILE_TEMPLATE'] = $fileTemplate;
-        $result = new wsResponse (28, G::LoadTranslation('ID_TEMPLATE_FILE_NOT_EXIST', SYS_LANG, $data) );
+        $result = new wsResponse(28, G::LoadTranslation('ID_TEMPLATE_FILE_NOT_EXIST', SYS_LANG, $data));
+        
         return $result;
       }
 
-      if ( $appFields == null ) {
-          $Fields = $oldFields['APP_DATA'];
+      if ($appFields == null) {
+        $Fields = $oldFields['APP_DATA'];
       } 
       else {
-        $Fields = $appFields;
+        $Fields = array_merge($oldFields['APP_DATA'], $appFields);
       }
-      $templateContents = file_get_contents ( $fileTemplate );
+      
+      $templateContents = file_get_contents($fileTemplate);
 
       //$sContent    = G::unhtmlentities($sContent);
       $iAux        = 0;
@@ -1246,6 +1248,16 @@ class wsBase
   */
   public function newCase($processId, $userId, $taskId, $variables) {
     try {
+      //GET, POST & $_SESSION Vars
+      //Unset any variable, because we are starting a new case
+      if (isset($_SESSION['APPLICATION']))   unset($_SESSION['APPLICATION']);
+      if (isset($_SESSION['PROCESS']))       unset($_SESSION['PROCESS']);
+      if (isset($_SESSION['TASK']))          unset($_SESSION['TASK']);
+      if (isset($_SESSION['INDEX']))         unset($_SESSION['INDEX']);
+      if (isset($_SESSION['USER_LOGGED']))   unset($_SESSION['USER_LOGGED']);
+      //if (isset($_SESSION['USR_USERNAME']))  unset($_SESSION['USR_USERNAME']);
+      //if (isset($_SESSION['STEP_POSITION'])) unset($_SESSION['STEP_POSITION']);
+      
       $Fields = array();
       if ( is_array($variables) && count($variables)>0 ) {
         $Fields = $variables;
@@ -1284,10 +1296,19 @@ class wsBase
         $result = new wsResponse (14, G::loadTranslation ('ID_TASK_INVALID_USER_NOT_ASSIGNED_TASK'));
         return $result;
       }
-
-      $case      = $oCase->startCase($taskId, $userId);
-      $caseId    = $case['APPLICATION'];
-      $caseNr    = $case['CASE_NUMBER'];
+      
+      $case = $oCase->startCase($taskId, $userId);
+      
+      $_SESSION['APPLICATION']   = $case['APPLICATION'];
+      $_SESSION['PROCESS']       = $case['PROCESS'];
+      $_SESSION['TASK']          = $taskId;
+      $_SESSION['INDEX']         = $case['INDEX'];
+      $_SESSION['USER_LOGGED']   = $userId;
+      //$_SESSION['USR_USERNAME']  = $case['USR_USERNAME'];
+      //$_SESSION['STEP_POSITION'] = 0;
+      
+      $caseId = $case['APPLICATION'];
+      $caseNr = $case['CASE_NUMBER'];
 
       $oldFields = $oCase->loadCase( $caseId );
 

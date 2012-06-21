@@ -25,11 +25,22 @@ var oUploadFilesPanel;
 var oUploadFilesPanel;
 var uploadFilesScreen = function(PRO_UID, MAIN_DIRECTORY, CURRENT_DIRECTORY) {
 
-  var swNavigator;
+  var swNavigator; 
   if(navigator.appName=='Microsoft Internet Explorer'){
-   swNavigator='ie'
-   wd=350;
-   hg=200;
+    var rv = '';
+    if (new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null) {
+      rv = parseFloat(RegExp.$1);    
+    }
+    
+    if (rv >= 9) {
+      swNavigator='ie9+'; 
+    }
+    else { 
+      swNavigator='ie';
+    }
+    
+    wd = 420;
+    hg = 170;
   } else {
    swNavigator='wknormal';
    wd=420;

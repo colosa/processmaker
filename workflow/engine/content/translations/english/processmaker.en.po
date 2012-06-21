@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch 2.0-testing) dummy-119-g6a8c61e\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-83-g1eee9e8\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-05-16 15:56:38\n"
+"PO-Revision-Date: 2012-06-18 19:24:33\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -424,8 +424,8 @@ msgstr "Members"
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_DELETE_GROUP
 #: LABEL/ID_MSG_CONFIRM_DELETE_GROUP
-msgid "Draft"
-msgstr "Draft"
+msgid "Are you sure to delete this group?"
+msgstr "Are you sure to delete this group?"
 
 # TRANSLATION
 # LABEL/ID_INCORRECT_EMAIL
@@ -568,7 +568,7 @@ msgstr "Not sent"
 # TRANSLATION
 # LABEL/ID_DRAFT
 #: LABEL/ID_DRAFT
-msgid "[LABEL/ID_DRAFT] Draft"
+msgid "Draft"
 msgstr "Draft"
 
 # TRANSLATION
@@ -1060,14 +1060,14 @@ msgstr "Before Assignment"
 # TRANSLATION
 # LABEL/ID_BEFORE_DERIVATION
 #: LABEL/ID_BEFORE_DERIVATION
-msgid "Before Derivation"
-msgstr "Before Derivation"
+msgid "Before Routing"
+msgstr "Before Routing"
 
 # TRANSLATION
 # LABEL/ID_AFTER_DERIVATION
 #: LABEL/ID_AFTER_DERIVATION
-msgid "After Derivation"
-msgstr "After Derivation"
+msgid "After Routing"
+msgstr "After Routing"
 
 # TRANSLATION
 # LABEL/ID_BEFORE
@@ -1102,8 +1102,8 @@ msgstr "Enabled"
 # TRANSLATION
 # JAVASCRIPT/ID_NO_DERIVATIONS_DEFINED
 #: JAVASCRIPT/ID_NO_DERIVATIONS_DEFINED
-msgid "No derivations were defined."
-msgstr "No derivations were defined."
+msgid "No routings were defined."
+msgstr "No routings were defined."
 
 # TRANSLATION
 # LABEL/ID_ROWS
@@ -3856,8 +3856,8 @@ msgstr "Field \"table\" is required"
 # TRANSLATION
 # JAVASCRIPT/ID_ASSIGN_RULES
 #: JAVASCRIPT/ID_ASSIGN_RULES
-msgid "Error: There is a problem with next tasks   of this process, one of them have manual   assignment.  Manual assignment shouldn't be   used with subprocesses"
-msgstr "Error: There is a problem with next tasks   of this process, one of them have manual   assignment.  Manual assignment shouldn't be   used with subprocesses"
+msgid "Error: There is a problem with the next tasks of this process. One of them has manual assignment. Manual assignment shouldn't be used with subprocesses"
+msgstr "Error: There is a problem with the next tasks of this process. One of them has manual assignment. Manual assignment shouldn't be used with subprocesses"
 
 # TRANSLATION
 # LABEL/ID_FIELD_INVALID
@@ -3880,8 +3880,8 @@ msgstr "Saved"
 # TRANSLATION
 # LABEL/ID_ASSIGN_RULES
 #: LABEL/ID_ASSIGN_RULES
-msgid "Error: There is a problem with next tasks  of this process, one of them have manual  assignment.  Manual assignment shouldn't be  used with subprocesses"
-msgstr "Error: There is a problem with next tasks  of this process, one of them have manual  assignment.  Manual assignment shouldn't be  used with subprocesses"
+msgid "[LABEL/ID_ASSIGN_RULES] Error: There is a problem with the next tasks of this process. One of them has manual assignment. Manual assignment shouldn't be used with subprocesses"
+msgstr "Error: There is a problem with the next tasks of this process. One of them has manual assignment. Manual assignment shouldn't be used with subprocesses"
 
 # TRANSLATION
 # LABEL/ID_SELECT_OPTION_TABLE
@@ -5572,8 +5572,8 @@ msgstr "Do you want to delete all selected processes?"
 # TRANSLATION
 # LABEL/ID_PROCESS_CANT_DELETE
 #: LABEL/ID_PROCESS_CANT_DELETE
-msgid "You can't delete the process \"{0}\" because  has {1} cases."
-msgstr "You can't delete the process \"{0}\" because  has {1} cases."
+msgid "You can't delete the process \"{0}\" because it has {1} cases."
+msgstr "You can't delete the process \"{0}\" because it has {1} cases."
 
 # TRANSLATION
 # LABEL/ID_FILE
@@ -5812,8 +5812,8 @@ msgstr "The root password has been updated  successfully!"
 # TRANSLATION
 # LABEL/ID_MESSAGE_ROOT_CHANGE_FAILURE
 #: LABEL/ID_MESSAGE_ROOT_CHANGE_FAILURE
-msgid "The root password has can't be updated !"
-msgstr "The root password has can't be updated !"
+msgid "The root password can't be updated!"
+msgstr "The root password can't be updated!"
 
 # TRANSLATION
 # LABEL/ID_LAN_TRANSLATOR
@@ -7954,8 +7954,8 @@ msgstr "Map Type"
 # TRANSLATION
 # LABEL/ID_DERIVATION_HISTORY
 #: LABEL/ID_DERIVATION_HISTORY
-msgid "Derivation History"
-msgstr "Derivation History"
+msgid "Routing History"
+msgstr "Routing History"
 
 # TRANSLATION
 # LABEL/ID_MESSAGES_HISTORY
@@ -12451,6 +12451,48 @@ msgstr "Import Report Table"
 msgid "Displaying Report Tables {0} - {1} of {2}"
 msgstr "Displaying Report Tables {0} - {1} of {2}"
 
+# TRANSLATION
+# LABEL/ID_SKIN_EXCEPTION
+#: LABEL/ID_SKIN_EXCEPTION
+msgid "Skin Engine Exception"
+msgstr "Skin Engine Exception"
+
+# TRANSLATION
+# LABEL/ID_SKIN_LAYOUT_NOT_FOUND
+#: LABEL/ID_SKIN_LAYOUT_NOT_FOUND
+msgid "Layout not Found"
+msgstr "Layout not Found"
+
+# TRANSLATION
+# LABEL/ID_SKIN_INCORRECT_VERIFY_URL
+#: LABEL/ID_SKIN_INCORRECT_VERIFY_URL
+msgid "You're trying to get a resource from an incorrect skin, please verify your url."
+msgstr "You're trying to get a resource from an incorrect skin, please verify your url."
+
+# TRANSLATION
+# LABEL/ID_REDIRECT_URL
+#: LABEL/ID_REDIRECT_URL
+msgid "The System can try to redirect to the correct url. Try Now."
+msgstr "The System can try to redirect to the correct url. Try Now."
+
+# TRANSLATION
+# LABEL/ID_PASSWORD_TESTING
+#: LABEL/ID_PASSWORD_TESTING
+msgid "Testing password"
+msgstr "Testing password"
+
+# TRANSLATION
+# LABEL/ID_TRUE
+#: LABEL/ID_TRUE
+msgid "TRUE"
+msgstr "TRUE"
+
+# TRANSLATION
+# LABEL/ID_FALSE
+#: LABEL/ID_FALSE
+msgid "FALSE"
+msgstr "FALSE"
+
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
 #: text - ADD_TAB_NAME
@@ -13363,10 +13405,10 @@ msgstr "Import"
 msgid "[authSources/authSources_SearchUsers.xml?BTN_CANCEL] Cancel"
 msgstr "Cancel"
 
-# authSources/authSources_SearchUsers.xml?CheckboxSelectAll
-# authSources/authSources_SearchUsers.xml
-#: Checkbox - CheckboxSelectAll
-msgid "[authSources/authSources_SearchUsers.xml?CheckboxSelectAll] "
+# authSources/authSources_SearchUsersMenu.xml?SelectAll
+# authSources/authSources_SearchUsersMenu.xml
+#: link - SelectAll
+msgid "[authSources/authSources_SearchUsersMenu.xml?SelectAll] "
 msgstr ""
 
 # authSources/authSources_SelectType.xml?TITLE
@@ -15543,7 +15585,7 @@ msgstr "DATE"
 
 # cases/cases_MessagesView.xml?APP_MSG_BODY
 # cases/cases_MessagesView.xml
-#: html - APP_MSG_BODY
+#: text - APP_MSG_BODY
 msgid "[cases/cases_MessagesView.xml?APP_MSG_BODY] "
 msgstr ""
 
@@ -17255,7 +17297,7 @@ msgstr "In Progress"
 # cases/cases_TransferHistory.xml
 #: dropdown - APP_TYPE -
 msgid "[cases/cases_TransferHistory.xml?APP_TYPE-]"
-msgstr "Derivated"
+msgstr "Routed"
 
 # cases/cases_TransferHistory.xml?APP_TYPE-REASSIGN
 # cases/cases_TransferHistory.xml
@@ -23264,8 +23306,8 @@ msgstr "- Default summary Dynaform -"
 # processes/processes_Edit.xml?PRO_DERIVATION_SCREEN_TPL
 # processes/processes_Edit.xml
 #: dropdown - PRO_DERIVATION_SCREEN_TPL
-msgid "Derivation Screen Template"
-msgstr "Derivation Screen Template"
+msgid "Routing Screen Template"
+msgstr "Routing Screen Template"
 
 # processes/processes_Edit.xml?PRO_DERIVATION_SCREEN_TPL-
 # processes/processes_Edit.xml
@@ -28772,8 +28814,8 @@ msgstr "Variable for Case priority"
 # tasks/tasks_Definition.xml?TAS_DERIVATION_SCREEN_TPL
 # tasks/tasks_Definition.xml
 #: dropdown - TAS_DERIVATION_SCREEN_TPL
-msgid "[tasks/tasks_Definition.xml?TAS_DERIVATION_SCREEN_TPL] Derivation Screen Template"
-msgstr "Derivation Screen Template"
+msgid "[tasks/tasks_Definition.xml?TAS_DERIVATION_SCREEN_TPL] Routing Screen Template"
+msgstr "Routing Screen Template"
 
 # tasks/tasks_Definition.xml?TAS_DERIVATION_SCREEN_TPL-
 # tasks/tasks_Definition.xml
@@ -29216,8 +29258,8 @@ msgstr "Edit"
 # tracker/tracker_Configuration.xml?CT_DERIVATION_HISTORY
 # tracker/tracker_Configuration.xml
 #: checkbox - CT_DERIVATION_HISTORY
-msgid "[tracker/tracker_Configuration.xml?CT_DERIVATION_HISTORY] Derivation History"
-msgstr "Derivation History"
+msgid "[tracker/tracker_Configuration.xml?CT_DERIVATION_HISTORY] Routing History"
+msgstr "Routing History"
 
 # tracker/tracker_Configuration.xml?CT_MESSAGE_HISTORY
 # tracker/tracker_Configuration.xml
@@ -29451,7 +29493,7 @@ msgstr "Cancelled"
 # tracker/tracker_TransferHistory.xml
 #: dropdown - APP_TYPE -
 msgid "[tracker/tracker_TransferHistory.xml?APP_TYPE-]"
-msgstr "Derivated"
+msgstr "Routed"
 
 # tracker/tracker_ViewAnyInputDocument.xml?FILENAME
 # tracker/tracker_ViewAnyInputDocument.xml

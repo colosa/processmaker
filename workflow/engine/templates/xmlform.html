@@ -133,7 +133,9 @@
           {elseif ($field->type==='date')}
             myForm.aElements[i] = new G_Date(myForm, myForm.element.elements['form[{$name}]'],'{$name}');
             myForm.aElements[i].setAttributes({$field->getAttributes()});
-            myForm.aElements[i].mask = 'yyyy-mm-dd';
+            if (myForm.aElements[i].mask) {literal}{{/literal}
+              myForm.aElements[i].mask = dateSetMask(myForm.aElements[i].mask);
+            {literal}}{/literal}
             {$field->attachEvents("myForm.aElements[i].element")}
           {elseif ($field->type==='hidden')}
             myForm.aElements[i] = new G_Text(myForm, myForm.element.elements['form[{$name}]'],'{$name}');
