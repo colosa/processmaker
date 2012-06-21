@@ -25,7 +25,7 @@
  */
 
 /**
- * spoolRun - brief send email from the spool database, and see if we have all the addresses we send to. 
+ * spoolRun - brief send email from the spool database, and see if we have all the addresses we send to.
  * @author Ian K Armstrong <ika@[REMOVE_THESE_CAPITALS]openmail.cc>
  * @copyright Copyright (c) 2007, Ian K Armstrong
  * @license http://www.opensource.org/licenses/gpl-3.0.html GNU Public License
@@ -37,11 +37,11 @@
  * =========
  *
  * 24-03-2010   Erik A.O. <erik@colosa.com>
- * class: the $ExceptionCode and $aWarnings class attributes were added    
+ * class: the $ExceptionCode and $aWarnings class attributes were added
  * function handleFrom(): Validations for invalid data for {$this->fileData['from_email']} were added
  * function resendEmails(): handler for warnings was added and fixes
  * function getWarnings(): added
- * function sendMail(): now is handling the exception 
+ * function sendMail(): now is handling the exception
  */
 
 require_once ('classes/model/AppMessage.php');
@@ -57,13 +57,13 @@ class spoolRun {
   private $spool_id;
   public  $status;
   public  $error;
-  
+
   private $ExceptionCode = Array (); //Array to define the Expetion codes
   private $aWarnings = Array (); //Array to store the warning that were throws by the class
 
   private $longMailEreg;
   private $mailEreg;
-  
+
 
   /**
    * Class constructor - iniatilize default values
@@ -76,7 +76,7 @@ class spoolRun {
     $this->spool_id = '';
     $this->status = 'pending';
     $this->error = '';
-    
+
     $this->ExceptionCode['FATAL']   = 1;
     $this->ExceptionCode['WARNING'] = 2;
     $this->ExceptionCode['NOTICE']  = 3;
@@ -84,7 +84,7 @@ class spoolRun {
     $this->longMailEreg = '/(.*)(<([\w\-\.]+@[\w\-_\.]+\.\w{2,3})+>)/';
     $this->mailEreg     = '/^([\w\-_\.]+@[\w\-_\.]+\.\w{2,3}+)$/';
   }
-  
+
   /**
    * get all files into spool in a list
    * @param none
@@ -92,11 +92,11 @@ class spoolRun {
    */
   public function getSpoolFilesList() {
     $sql = "SELECT * FROM APP_MESSAGE WHERE APP_MSG_STATUS ='pending'";
-    
+
     $con = Propel::getConnection("workflow");
     $stmt = $con->prepareStatement($sql);
     $rs = $stmt->executeQuery();
-    
+
     while( $rs->next() ) {
       $this->spool_id = $rs->getString('APP_MSG_UID');
       $this->fileData['subject'] = $rs->getString('APP_MSG_SUBJECT');
@@ -122,7 +122,7 @@ class spoolRun {
       $this->sendMail();
     }
   }
-  
+
   /**
    * create a msg record for spool
    * @param array $aData
@@ -130,16 +130,16 @@ class spoolRun {
    */
   public function create($aData) {
     $sUID = $this->db_insert($aData);
-    
+
     $aData['app_msg_date'] = isset($aData['app_msg_date']) ? $aData['app_msg_date'] : '';
-    
+
     if( isset($aData['app_msg_status']) ) {
       $this->status = strtolower($aData['app_msg_status']);
     }
-    
+
     $this->setData($sUID, $aData['app_msg_subject'], $aData['app_msg_from'], $aData['app_msg_to'], $aData['app_msg_body'], $aData['app_msg_date'], $aData['app_msg_cc'], $aData['app_msg_bcc'], $aData['app_msg_template'], $aData['app_msg_attach']);
   }
-  
+
   /**
    * set configuration
    * @param array $aConfig
@@ -148,13 +148,13 @@ class spoolRun {
   public function setConfig($aConfig) {
     $this->config = $aConfig;
   }
-  
+
   /**
    * set email parameters
    * @param string $sAppMsgUid, $sSubject, $sFrom, $sTo, $sBody, $sDate, $sCC, $sBCC, $sTemplate
    * @return none
    */
-  public function setData($sAppMsgUid, $sSubject, $sFrom, $sTo, $sBody, $sDate = '', $sCC = '', $sBCC = '', $sTemplate = '', $aAttachment = '') {
+  public function setData($sAppMsgUid, $sSubject, $sFrom, $sTo, $sBody, $sDate = '', $sCC = '', $sBCC = '', $sTemplate = '', $aAttachment = array()) {
     $this->spool_id = $sAppMsgUid;
     $this->fileData['subject'] = $sSubject;
     $this->fileData['from'] = $sFrom;
@@ -164,8 +164,9 @@ class spoolRun {
     $this->fileData['cc'] = $sCC;
     $this->fileData['bcc'] = $sBCC;
     $this->fileData['template'] = $sTemplate;
-    $this->fileData['attachments'] = ($aAttachment)? $aAttachment:array();
-    
+    $this->fileData['attachments'] = is_array($aAttachment) ? $aAttachment : ($aAttachment != '' ? explode(',', $aAttachment) : array());
+    $this->fileData['envelope_to'] = array();
+
     if( $this->config['MESS_ENGINE'] == 'OPENMAIL' ) {
       if( $this->config['MESS_SERVER'] != '' ) {
         if( ($sAux = @gethostbyaddr($this->config['MESS_SERVER'])) ) {
@@ -178,7 +179,7 @@ class spoolRun {
       }
     }
   }
-  
+
   /**
    * send mail
    * @param none
@@ -195,7 +196,7 @@ class spoolRun {
       throw $e;
     }
   }
-  
+
   /**
    * update the status to spool
    * @param none
@@ -207,44 +208,44 @@ class spoolRun {
     $oAppMessage->setappMsgsenddate(date('Y-m-d H:i:s'));
     $oAppMessage->save();
   }
-  
+
   /**
-   * handle the email that was set in "TO" parameter 
+   * handle the email that was set in "TO" parameter
    * @param none
    * @return boolean true or exception
    */
   private function handleFrom() {
-    if( strpos($this->fileData['from'], '<') !== false ) {      
+    if( strpos($this->fileData['from'], '<') !== false ) {
       //to validate complex email address i.e. Erik A. O <erik@colosa.com>
       preg_match($this->longMailEreg, $this->fileData['from'], $matches);
       if( isset($matches[1]) && $matches[1] != '' ) {
         //drop the " characters if they exist
         $this->fileData['from_name'] = trim(str_replace('"', '', $matches[1]));
-      } 
+      }
       else { //if the from name was not set
         $this->fileData['from_name'] = '';
       }
-       
+
       if( ! isset($matches[3]) ) {
         throw new Exception('Invalid email address in FROM parameter (' . $this->fileData['from'] . ')', $this->ExceptionCode['WARNING']);
       }
-      
+
       $this->fileData['from_email'] = trim($matches[3]);
-    } 
+    }
     else {
       //to validate simple email address i.e. erik@colosa.com
       preg_match($this->mailEreg, $this->fileData['from'], $matches);
-      
+
       if( ! isset($matches[0]) ) {
         throw new Exception('Invalid email address in FROM parameter (' . $this->fileData['from'] . ')', $this->ExceptionCode['WARNING']);
       }
-      
+
       $this->fileData['from_name'] = '';
       $this->fileData['from_email'] = $matches[0];
     }
-  
+
   }
-  
+
   /**
    * handle all recipients to compose the mail
    * @param none
@@ -255,9 +256,9 @@ class spoolRun {
     $holdcc = array ();
     $holdbcc = array ();
     $text = trim($this->fileData['to']);
-    
+
     $textcc ='';
-    $textbcc='';    
+    $textbcc='';
     if( isset($this->fileData['cc']) && trim($this->fileData['cc']) != '' ) {
       $textcc = trim($this->fileData['cc']);
     }
@@ -265,10 +266,10 @@ class spoolRun {
     if( isset($this->fileData['bcc']) && trim($this->fileData['bcc']) != '' ) {
       $textbcc = trim($this->fileData['bcc']);
     }
-    
+
     if( false !== (strpos($text, ',')) ) {
       $hold = explode(',', $text);
-      
+
       foreach( $hold as $val ) {
         if( strlen($val) > 0 ) {
           $this->fileData['envelope_to'][] = "$val";
@@ -279,7 +280,7 @@ class spoolRun {
     } else {
       $this->fileData['envelope_to'] = Array();
     }
-    
+
     //CC
     if( false !== (strpos($textcc, ',')) ) {
       $holdcc = explode(',', $textcc);
@@ -294,7 +295,7 @@ class spoolRun {
     } else {
       $this->fileData['envelope_cc'] = Array();
     }
-    
+
     //BCC
     if( false !== (strpos($textbcc, ',')) ) {
       $holdbcc = explode(',', $textbcc);
@@ -306,13 +307,13 @@ class spoolRun {
       }
     } else if($textbcc != '') {
       $this->fileData['envelope_bcc'][] = "$textbcc";
-    } else { 
+    } else {
       $this->fileData['envelope_bcc'] = Array();
     }
 
 
   }
-  
+
   /**
    * handle and compose the email content and parameters
    * @param none
@@ -332,7 +333,7 @@ class spoolRun {
           $passwd = $this->config['MESS_PASSWORD'];
           $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
           if (strpos( $passwdDec, 'hash:' ) !== false) {
-    	      list($hash, $pass) = explode(":", $passwdDec);   
+    	      list($hash, $pass) = explode(":", $passwdDec);
     	      $this->config['MESS_PASSWORD'] = $pass;
           }
           $oPHPMailer->Password = $this->config['MESS_PASSWORD'];
@@ -355,7 +356,7 @@ class spoolRun {
               $oPHPMailer->AddAddress($sEmail);
             }
           }
-          
+
           $oPHPMailer->IsHTML(true);
           if( $oPHPMailer->Send() ) {
             $this->error = '';
@@ -370,8 +371,8 @@ class spoolRun {
           $oPHPMailer = new PHPMailer(true);
           $oPHPMailer->Mailer = 'smtp';
           $oPHPMailer->SMTPAuth = (isset($this->config['SMTPAuth']) ? $this->config['SMTPAuth'] : '');
-          
-          
+
+
           /**
            * Posible Options for SMTPSecure are: "", "ssl" or "tls"
            */
@@ -386,30 +387,30 @@ class spoolRun {
           $passwd = $this->config['MESS_PASSWORD'];
           $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
           if (strpos( $passwdDec, 'hash:' ) !== false) {
-    	      list($hash, $pass) = explode(":", $passwdDec);   
+    	      list($hash, $pass) = explode(":", $passwdDec);
     	      $this->config['MESS_PASSWORD'] = $pass;
           }
           $oPHPMailer->Password = $this->config['MESS_PASSWORD'];
           $oPHPMailer->From = $this->fileData['from_email'];
-          $oPHPMailer->FromName = utf8_decode($this->fileData['from_name']);          
+          $oPHPMailer->FromName = utf8_decode($this->fileData['from_name']);
           $msSubject = $this->fileData['subject'];
           if(!(mb_detect_encoding($msSubject, "UTF-8") == "UTF-8")) {
             $msSubject = utf8_encode($msSubject);
           }
-          $oPHPMailer->Subject = $msSubject;          
+          $oPHPMailer->Subject = $msSubject;
           $msBody = $this->fileData['body'];
           if(!(mb_detect_encoding($msBody, "UTF-8") == "UTF-8")) {
             $msBody = utf8_encode($msBody);
-          }            
+          }
           $oPHPMailer->Body = $msBody;
-          
+
           if(is_array($this->fileData['attachments'])){
             foreach($this->fileData['attachments'] as $key => $fileAttach){
               $oPHPMailer->AddAttachment($fileAttach, is_int($key) ? '' : $key);
             }
           }
           foreach( $this->fileData['envelope_to'] as $sEmail ) {
-            $evalMail = strpos($sEmail, '<');            
+            $evalMail = strpos($sEmail, '<');
             if( strpos($sEmail, '<') !== false ) {
               preg_match($this->longMailEreg, $sEmail, $matches);
               $sTo = trim($matches[3]);
@@ -419,7 +420,7 @@ class spoolRun {
               $oPHPMailer->AddAddress($sEmail);
             }
           }
-          
+
           //CC
           foreach( $this->fileData['envelope_cc'] as $sEmail ) {
             $evalMail = strpos($sEmail, '<');
@@ -433,7 +434,7 @@ class spoolRun {
               $oPHPMailer->AddCC($sEmail);
             }
           }
-          
+
           //BCC
           foreach( $this->fileData['envelope_bcc'] as $sEmail ) {
             $evalMail = strpos($sEmail, '<');
@@ -448,7 +449,7 @@ class spoolRun {
             }
           }
 
-          
+
           $oPHPMailer->IsHTML(true);
           if( $oPHPMailer->Send() ) {
             $this->error = '';
@@ -468,11 +469,11 @@ class spoolRun {
           $send->setServer($this->config['MESS_SERVER']);
           $send->setPort($this->config['MESS_PORT']);
           $send->setUsername($this->config['MESS_ACCOUNT']);
-          
+
           $passwd = $this->config['MESS_PASSWORD'];
           $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
           if (strpos( $passwdDec, 'hash:' ) !== false) {
-    	      list($hash, $pass) = explode(":", $passwdDec);   
+    	      list($hash, $pass) = explode(":", $passwdDec);
     	      $this->config['MESS_PASSWORD'] = $pass;
           }
           $send->setPassword($this->config['MESS_PASSWORD']);
@@ -491,7 +492,7 @@ class spoolRun {
       }
     }
   }
-  
+
   /**
    * try resend the emails from spool
    * @param none
@@ -499,43 +500,43 @@ class spoolRun {
    */
   function resendEmails() {
     require_once ("classes/model/Configuration.php");
-    
+
     $oConfiguration = new Configuration();
-    
+
     $aConfiguration = $oConfiguration->load("Emails", "", "", "", "");
-    
+
     $aConfiguration = unserialize($aConfiguration["CFG_VALUE"]);
     $passwd = $aConfiguration["MESS_PASSWORD"];
     $passwdDec = G::decrypt($passwd,"EMAILENCRYPT");
-    
+
     if (strpos($passwdDec, "hash:") !== false) {
       list($hash, $pass) = explode(":", $passwdDec);
       $aConfiguration["MESS_PASSWORD"] = $pass;
     }
-    
+
     if ($aConfiguration["MESS_ENABLED"] == "1") {
       $this->setConfig(array(
-        "MESS_ENGINE" => $aConfiguration["MESS_ENGINE"], 
-        "MESS_SERVER" => $aConfiguration["MESS_SERVER"], 
-        "MESS_PORT"   => $aConfiguration["MESS_PORT"], 
-        "MESS_ACCOUNT"  => $aConfiguration["MESS_ACCOUNT"], 
+        "MESS_ENGINE" => $aConfiguration["MESS_ENGINE"],
+        "MESS_SERVER" => $aConfiguration["MESS_SERVER"],
+        "MESS_PORT"   => $aConfiguration["MESS_PORT"],
+        "MESS_ACCOUNT"  => $aConfiguration["MESS_ACCOUNT"],
         "MESS_PASSWORD" => $aConfiguration["MESS_PASSWORD"],
         "SMTPAuth"   => $aConfiguration["MESS_RAUTH"],
         "SMTPSecure" => $aConfiguration["SMTPSecure"]
       ));
-      
+
       ///////
       require_once ("classes/model/AppMessage.php");
-      
+
       $oCriteria = new Criteria('workflow');
       $oCriteria->add(AppMessagePeer::APP_MSG_STATUS, 'sent', Criteria::NOT_EQUAL);
       $oDataset = AppMessagePeer::doSelectRS($oCriteria);
       $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-      
+
       while( $oDataset->next() ) {
         $aRow = $oDataset->getRow();
         try {
-          $this->setData($aRow['APP_MSG_UID'], $aRow['APP_MSG_SUBJECT'], $aRow['APP_MSG_FROM'], $aRow['APP_MSG_TO'], $aRow['APP_MSG_BODY']);
+          $this->setData($aRow['APP_MSG_UID'], $aRow['APP_MSG_SUBJECT'], $aRow['APP_MSG_FROM'], $aRow['APP_MSG_TO'], $aRow['APP_MSG_BODY'], date('Y-m-d H:i:s'), $aRow['APP_MSG_CC'], $aRow['APP_MSG_BCC'], $aRow['APP_MSG_TEMPLATE'], $aRow['APP_MSG_ATTACH']);
           $this->sendMail();
         } catch( Exception $oException ) {
           if( $oException->getCode() == $this->ExceptionCode['WARNING'] ) {
@@ -548,11 +549,11 @@ class spoolRun {
       }
     }
   }
-  
+
   /**
    * gets all warnings
    * @param none
-   * @return string $this->aWarnings 
+   * @return string $this->aWarnings
    */
   function getWarnings() {
     if( sizeof($this->aWarnings) != 0 ) {
@@ -560,7 +561,7 @@ class spoolRun {
     }
     return false;
   }
-  
+
   /**
     * db_insert
     *
