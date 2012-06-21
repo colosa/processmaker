@@ -556,7 +556,7 @@ switch($_POST['action'])
     } else {
       $color = 'green';
       $img = '/images/dialog-ok-apply.png';
-      $aFields['DESCRIPTION'] .= G::LoadTranslation('ID_PASSWORD_COMPLIES_POLICIES') . '</span>';
+      $aFields['DESCRIPTION'] = G::LoadTranslation('ID_PASSWORD_COMPLIES_POLICIES') . '</span>';
       $aFields['STATUS'] = true;  
     }
     $span = '<span style="color: ' . $color . '; font: 9px tahoma,arial,helvetica,sans-serif;">';

@@ -32,7 +32,10 @@ Ext.onReady(function() {
     }
     
   });
-
+  
+  if (MODE == 'edit')
+    flagPoliciesPassword = true;
+    
   //EDIT MODE
   if (USR_UID != '') {
     allowBlackStatus = true;
