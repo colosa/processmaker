@@ -403,7 +403,7 @@ DoNothing = function(){};
 
 //Open New User Form
 NewUserAction = function(){
-  location.href = 'usersNew';
+  location.href = 'usersNew?MODE=new';
 };
 
 //Delete User Action
@@ -469,7 +469,7 @@ SummaryTabOpen = function(){
 EditUserAction = function(){
   var uid = infoGrid.getSelectionModel().getSelected();
   if (uid) {
-    location.href = 'usersEdit?USR_UID=' + uid.data.USR_UID+'&USR_AUTH_SOURCE=' + uid.data.USR_AUTH_SOURCE;
+    location.href = 'usersEdit?USR_UID=' + uid.data.USR_UID+'&USR_AUTH_SOURCE=' + uid.data.USR_AUTH_SOURCE+'&MODE=edit';
   }
 };
 
