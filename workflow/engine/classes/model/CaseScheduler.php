@@ -293,7 +293,7 @@ class CaseScheduler extends BaseCaseScheduler {
 
   }
 
-  function caseSchedulerCron($date) {
+  function caseSchedulerCron($date), &$log=array() {
 
     G::LoadClass ( 'dates' );
     require_once ('classes/model/LogCasesScheduler.php');
@@ -462,6 +462,7 @@ class CaseScheduler extends BaseCaseScheduler {
 
                   $caseId = $result->caseId;
                   $caseNumber = $result->caseNumber;
+                  $log[]=$caseNumber. ' was created!, ProcessID: '.$aRow['PRO_UID'];
                   $paramsLog ['WS_CREATE_CASE_STATUS'] = "Case " . $caseNumber . " " . strip_tags ( $result->message );
                   $paramsLogResult = 'SUCCESS';
 
@@ -584,6 +585,7 @@ class CaseScheduler extends BaseCaseScheduler {
                 eprintln("OK+ CASE #{$result->caseNumber} was created!", 'green');
                 $caseId = $result->caseId;
                 $caseNumber = $result->caseNumber;
+                $log[]=$caseNumber. ' was created!, ProcessID: '.$aRow['PRO_UID'];
                 $paramsLog ['WS_CREATE_CASE_STATUS'] = "Case " . $caseNumber . " " . strip_tags ( $result->message );
                 $paramsLogResult = 'SUCCESS';
 

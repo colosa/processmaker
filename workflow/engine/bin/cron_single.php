@@ -320,6 +320,10 @@ function executeScheduledCases($sNow=null){
     $sNow = isset($sNow)? $sNow: date('Y-m-d H:i:s');
     $oCaseScheduler = new CaseScheduler;
     $oCaseScheduler->caseSchedulerCron($sNow);
+    $log = array();
+    foreach ($log as $value){
+     saveLog('executeScheduledCases', 'action', "OK Case# $value");
+    }
     setExecutionResultMessage('DONE');
   } catch(Exception $oError){
     setExecutionResultMessage('WITH ERRORS', 'error');
