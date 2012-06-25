@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 ini_set('memory_limit', '128M');
 
 if (!defined('SYS_LANG')) {
-	define('SYS_LANG', 'en');
+  define('SYS_LANG', 'en');
 }
 
 if (!defined('PATH_HOME')) {
@@ -169,7 +169,7 @@ if (!defined('SYS_SYS')) {
   unlink(PATH_CORE . 'config/_databases_.php');
 }
 else {
-	processWorkspace();
+  processWorkspace();
 }
 
 //finally update the file
@@ -206,8 +206,8 @@ function resendEmails() {
     $aSpoolWarnings = $oSpool->getWarnings();
     if( $aSpoolWarnings !== false ) {
        foreach($aSpoolWarnings as $sWarning){
-       	 print('MAIL SPOOL WARNING: ' . $sWarning."\n");
-       	 saveLog('resendEmails', 'warning', 'MAIL SPOOL WARNING: ' . $sWarning);
+         print('MAIL SPOOL WARNING: ' . $sWarning."\n");
+         saveLog('resendEmails', 'warning', 'MAIL SPOOL WARNING: ' . $sWarning);
        }
     }
     setExecutionResultMessage('DONE');
@@ -289,6 +289,8 @@ function executeEvents($sLastExecution, $sNow=null) {
   
   global $sFilter;
   global $sNow;
+  $log  = array();
+
   if($sFilter!='' && strpos($sFilter, 'events') === false) return false;
 
   setExecutionMessage("Executing events");
@@ -296,7 +298,10 @@ function executeEvents($sLastExecution, $sNow=null) {
   try {      
     $oAppEvent = new AppEvent();
     saveLog('executeEvents', 'action', "Executing Events $sLastExecution, $sNow ");
-    $n = $oAppEvent->executeEvents($sNow);
+    $n = $oAppEvent->executeEvents($sNow, false, $log);
+    foreach ($log as $value) {
+      saveLog('executeEvents', 'action', "Execute Events : $value, $sNow ");
+    }
     setExecutionMessage("|- End Execution events");
     setExecutionResultMessage("Processed $n");
     //saveLog('executeEvents', 'action', $res );
@@ -312,6 +317,8 @@ function executeScheduledCases($sNow=null){
   try{
     global $sFilter;
     global $sNow;
+    $log  = array();
+
     if($sFilter!='' && strpos($sFilter, 'scheduler') === false) return false;
   
     setExecutionMessage("Executing the scheduled starting cases");
@@ -319,10 +326,11 @@ function executeScheduledCases($sNow=null){
   
     $sNow = isset($sNow)? $sNow: date('Y-m-d H:i:s');
     $oCaseScheduler = new CaseScheduler;
-    $oCaseScheduler->caseSchedulerCron($sNow);
-    $log = array();
-    foreach ($log as $value){
-     saveLog('executeScheduledCases', 'action', "OK Case# $value");
+
+    $oCaseScheduler->caseSchedulerCron($sNow, $log);
+    
+    foreach ($log as $value) {
+      saveLog('executeScheduledCases', 'action', "OK Case# $value");
     }
     setExecutionResultMessage('DONE');
   } catch(Exception $oError){
