@@ -293,7 +293,7 @@ class CaseScheduler extends BaseCaseScheduler {
 
   }
 
-  function caseSchedulerCron($date), &$log=array() {
+  function caseSchedulerCron($date, &$log=array()) {
 
     G::LoadClass ( 'dates' );
     require_once ('classes/model/LogCasesScheduler.php');
