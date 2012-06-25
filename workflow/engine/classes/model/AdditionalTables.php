@@ -320,7 +320,10 @@ class AdditionalTables extends BaseAdditionalTables {
   function getAllData($sUID, $start=NULL, $limit=NULL, $keyOrderUppercase = true)
   {
     $addTab = new AdditionalTables();
-    $aData = $addTab->load($sUID, true);
+    $aData  = $addTab->load($sUID, true);
+    if (! isset($_SESSION['PROCESS'])) {
+      $_SESSION["PROCESS"] = $aData['PRO_UID']; 
+    }
     $aData['DBS_UID'] = $aData['DBS_UID'] ? $aData['DBS_UID'] : 'workflow';
     $sPath = PATH_DB . SYS_SYS . PATH_SEP . 'classes' . PATH_SEP;
     $sClassName = ($aData['ADD_TAB_CLASS_NAME'] != '' ? $aData['ADD_TAB_CLASS_NAME'] : $this->getPHPName($aData['ADD_TAB_NAME']));

@@ -109,6 +109,9 @@ class pmTablesProxy extends HttpProxyController
    */
   public function getDbConnectionsList()
   {
+    if (! isset($_SESSION['PROCESS'])) {
+      $_SESSION['PROCESS'] = $_POST['PRO_UID'];      
+    }
     G::LoadClass ( 'dbConnections');
     $proUid = $_POST['PRO_UID'];
     $dbConn = new DbConnections();
