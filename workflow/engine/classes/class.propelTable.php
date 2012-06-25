@@ -786,6 +786,7 @@ var popupHeight<?php echo '='.$this->popupHeight?>;
     //unset($this->dbc);
     //unset($this->ses);
     $_SESSION['pagedTable['.$this->id.']']= serialize($this);
+    $this->fastSearch = '';
     return;
   }
   /**
