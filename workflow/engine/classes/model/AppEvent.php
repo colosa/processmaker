@@ -180,7 +180,7 @@ class AppEvent extends BaseAppEvent {
     }
   }
 
-  function executeEvents($sNow, $debug=false) {
+  function executeEvents($sNow, $debug=false, &$log=array()) {
 
     require_once 'classes/model/Configuration.php';
     require_once 'classes/model/Triggers.php';
@@ -240,8 +240,9 @@ class AppEvent extends BaseAppEvent {
           require_once 'classes/model/Application.php';
           $oApp = ApplicationPeer::retrieveByPk($aRow['APP_UID']);
           $oEv  = EventPeer::retrieveByPk($aRow['EVN_UID']);
-          
-          println("\nOK+ event \"".$oEv->getEvnDescription()."\" with ID {$aRow['EVN_UID']} was found");
+          $log[]  = 'Event ' . $oEv->getEvnDescription() . ' with ID ' . $aRow['EVN_UID'];
+
+          println("\nOK+ event \"".$oEv->getEvnDescription()."\" with ID {} was found");
           println(" - PROCESS................".$aRow['PRO_UID']);
           println(" - APPLICATION............".$aRow['APP_UID']." CASE #".$oApp->getAppNumber());
           println(" - ACTION DATE............".$aRow['APP_EVN_ACTION_DATE']);
@@ -251,6 +252,7 @@ class AppEvent extends BaseAppEvent {
         
         if ($aRow['TRI_UID'] == '') {
           //a rare case when the tri_uid is not set.
+          $log[]  = " (!) Any trigger was set................................SKIPPED and will be CLOSED";
           if($debug) println(" (!) Any trigger was set................................SKIPPED and will be CLOSED");
           $oAppEvent->setAppEvnStatus('CLOSE');
           $oAppEvent->save();
@@ -260,6 +262,7 @@ class AppEvent extends BaseAppEvent {
         $oTrigger = TriggersPeer::retrieveByPk($aRow['TRI_UID']);
         if( !is_object($oTrigger) ){
           //the trigger record doesn't exist..
+          $log[]  = ' (!) The trigger ' . $aRow['TRI_UID'] . ' ' . $oTrigger->getTriTitle() . " doesn't exist.......SKIPPED and will be CLOSED";
           if($debug) println(" (!) The trigger {$aRow['TRI_UID']} {$oTrigger->getTriTitle()} doesn't exist.......SKIPPED and will be CLOSED");
           $oAppEvent->setAppEvnStatus('CLOSE');
           $oAppEvent->save();
@@ -276,6 +279,7 @@ class AppEvent extends BaseAppEvent {
         $oAppEvent->setAppEvnLastExecutionDate(date('Y-m-d H:i:s'));
         
         if( sizeof($_SESSION['TRIGGER_DEBUG']['ERRORS']) == 0 ){
+          $log[]  = ' - The trigger ' . $oTrigger->getTriTitle() . ' was executed successfully!';
           if($debug) println(" - The trigger '{$oTrigger->getTriTitle()}' was executed successfully!");
           //g::pr($aFields);
           $aFields['APP_DATA'] = $oPMScript->aFields;
@@ -283,6 +287,7 @@ class AppEvent extends BaseAppEvent {
           $oAppEvent->setAppEvnStatus('CLOSE');
         } else {
           if($debug) {
+            $log[]  = ' - The trigger ' . $aRow['TRI_UID'] . ' throw some errors!';
             println(" - The trigger {$aRow['TRI_UID']} throw some errors!");
             print_r($_SESSION['TRIGGER_DEBUG']['ERRORS']);
           }
@@ -297,6 +302,7 @@ class AppEvent extends BaseAppEvent {
       return $c;
     }
     catch (Exception $oError) {
+      $log[]  = ' Error execute event : ' . $oError->getMessage();
       die($oError->getMessage());
       return  $oError->getMessage();
     }
