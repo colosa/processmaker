@@ -116,7 +116,8 @@ Ext.onReady(function(){
         if( searchTxt == '' ){
           store.setBaseParam( 'processName', '');
         }
-        store.load({params:{category: filter, start : 0 , limit : 25 }});
+        
+        store.load({params: {category: filter, start: 0, limit: 25}});
       }}
     })
 /*  storePageSize = new Ext.data.SimpleStore({
@@ -294,8 +295,8 @@ Ext.onReady(function(){
         ctCls:'pm_search_x_button',
         handler: function(){
           //store.setBaseParam( 'category', '<reset>');
-          store.setBaseParam( 'processName', '');
-          store.load({params:{start : 0 , limit : '' }});
+          store.setBaseParam('processName', '');
+          store.load({params: {start: 0, limit: 25}});
           Ext.getCmp('searchTxt').setValue('');
           //comboCategory.setValue('');
           //store.reload();
@@ -307,7 +308,7 @@ Ext.onReady(function(){
     ],
     // paging bar on the bottom
     bbar: new Ext.PagingToolbar({
-        pageSize: 15,
+        pageSize: 25,
         store: store,
         displayInfo: true,
         displayMsg: 'Displaying Processes {0} - {1} of {2}',
@@ -337,7 +338,7 @@ Ext.onReady(function(){
     }
   });
 
-  processesGrid.store.load({params: {"function":"languagesList"}});
+  processesGrid.store.load({params: {"function": "languagesList", "start": 0, "limit": 25}});
   processesGrid.addListener('rowcontextmenu', onMessageContextMenu,this);
   processesGrid.on('rowcontextmenu', function (grid, rowIndex, evt) {
     var sm = grid.getSelectionModel();
@@ -522,9 +523,9 @@ function doSearch(){
   if(comboCategory.getValue() == '')
     store.setBaseParam( 'category', '<reset>');
   filter = Ext.getCmp('searchTxt').getValue();
-  
   store.setBaseParam('processName', filter);
-  store.load({params:{processName: filter, start : 0 , limit : 25 }});
+  
+  store.load({params:{processName: filter, start: 0 , limit: 25}});
 }
 
 editProcess = function(){
