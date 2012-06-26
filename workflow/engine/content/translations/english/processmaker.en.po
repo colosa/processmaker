@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-83-g1eee9e8\n"
+"Project-Id-Version: ProcessMaker (Branch 2.0-testing) 2.0.42-testing.1-20-g0472cc3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-06-18 19:24:33\n"
+"PO-Revision-Date: 2012-06-26 16:40:09\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12492,6 +12492,48 @@ msgstr "TRUE"
 #: LABEL/ID_FALSE
 msgid "FALSE"
 msgstr "FALSE"
+
+# TRANSLATION
+# LABEL/ID_INSTRUCTIONS_TEXT
+#: LABEL/ID_INSTRUCTIONS_TEXT
+msgid "To assign a case it should be selected from the grid and then on the Search enter a name to do the user search to whom the case will be reasigned and then select one from the list."
+msgstr "To assign a case it should be selected from the grid and then on the Search enter a name to do the user search to whom the case will be reasigned and then select one from the list."
+
+# TRANSLATION
+# LABEL/ID_CONFIRM_TO_REASSIGN
+#: LABEL/ID_CONFIRM_TO_REASSIGN
+msgid "There are cases which are not reassigned to a user. Do you like to continue?"
+msgstr "There are cases which are not reassigned to a user. Do you like to continue?"
+
+# TRANSLATION
+# LABEL/ID_USERNAME_TESTING
+#: LABEL/ID_USERNAME_TESTING
+msgid "Verifying username availability"
+msgstr "Verifying username availability"
+
+# TRANSLATION
+# LABEL/ID_USERNAME_CORRECT
+#: LABEL/ID_USERNAME_CORRECT
+msgid "Available Username"
+msgstr "Available Username"
+
+# TRANSLATION
+# LABEL/ID_SENDMAIL_NOT_INSTALLED
+#: LABEL/ID_SENDMAIL_NOT_INSTALLED
+msgid "An error has occured, please verify on which server \"SendMail\" has been installed or any other mail service, and if it has been configured correctly."
+msgstr "An error has occured, please verify on which server \"SendMail\" has been installed or any other mail service, and if it has been configured correctly."
+
+# TRANSLATION
+# LABEL/ID_INSTRUCTIONS
+#: LABEL/ID_INSTRUCTIONS
+msgid "Instructions"
+msgstr "Instructions"
+
+# TRANSLATION
+# LABEL/ID_NOT_REQUIRED
+#: LABEL/ID_NOT_REQUIRED
+msgid "Not Required"
+msgstr "Not Required"
 
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
