@@ -1277,7 +1277,7 @@ class AppSolr
     }
     
     // get the serialized fields
-    if (! empty ($documentData ['APP_DATA'])) {
+    if (! empty ($documentData ['APP_DATA']) && $documentData ['APP_DATA'] != "N;" ) {
       
       $UnSerializedCaseData = unserialize ($documentData ['APP_DATA']);
       
