@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dynaForm name="cases_Scheduler_NewOptions" type="xmlmenu">
-<MNU type="link" value="" link="javascript:backToList();"  colAlign="left" colWidth="80">
+<MNU type="link" value="" link="javascript:backToList();"  colAlign="left" colWidth="150">
   <en>Back to list</en>
 </MNU>
 </dynaForm>  
