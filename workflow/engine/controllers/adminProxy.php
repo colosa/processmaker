@@ -362,20 +362,21 @@ class adminProxy extends HttpProxyController
       $_POST['MESS_PASSWORD'] = '';
       $_POST['TO']            = $mail_to;
       $_POST['SMTPAuth']      = true;
-
+      
       try {
         $resp = $this->sendTestMail();
       } catch (Exception $error) {
         $resp = new stdclass();
-        $reps->status = false;
+        $resp->status = false;
         $resp->msg = $error->getMessage();
       }
 
-      if($resp->status){
-        echo '{"sendMail":true, "msg":"' . $resp->msg . '"}';
-      } else {
-        echo '{"sendMail":false, "msg":"' . $resp->msg . '"}';
-      }
+      $response = array('success' => $resp->status);
+      
+      if ($resp->status == false)
+        $response['msg'] = G::LoadTranslation('ID_SENDMAIL_NOT_INSTALLED');
+      
+      echo G::json_encode($response);
       die;
     }
 
