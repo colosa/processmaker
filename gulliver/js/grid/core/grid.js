@@ -71,7 +71,8 @@ var G_Grid = function(oForm, sGridName){
                 this.aElements[this.aElements.length - 1].comma_separator = this.aFields[i].oProperties.comma_separator;
               }
               
-              this.aElements[this.aElements.length - 1].mask = this.aFields[i].oProperties.mask;
+              this.aElements[this.aElements.length - 1].validate = this.aFields[i].oProperties.validate;
+              this.aElements[this.aElements.length - 1].mask     = this.aFields[i].oProperties.mask;
             }
             
             j++;
@@ -88,7 +89,8 @@ var G_Grid = function(oForm, sGridName){
                 this.aElements[this.aElements.length - 1].comma_separator = this.aFields[i].oProperties.comma_separator;
               }
               
-              this.aElements[this.aElements.length - 1].mask = this.aFields[i].oProperties.mask;
+              this.aElements[this.aElements.length - 1].validate = this.aFields[i].oProperties.validate;
+              this.aElements[this.aElements.length - 1].mask     = this.aFields[i].oProperties.mask;
             }
             
             j++;
