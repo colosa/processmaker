@@ -1,7 +1,25 @@
 <?php
 /**
- * cron_single.php
- * @package workflow-engine-bin
+ *
+ * ProcessMaker Open Source Edition
+ * Copyright (C) 2004 - 2012 Colosa Inc.23
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * For more information, contact Colosa Inc, 5304 Ventura Drive,
+ * Delray Beach, FL, 33484, USA, or email info@colosa.com.
+ *
  */
 
 // check script parameters
@@ -38,13 +56,13 @@ if (! defined ('PATH_HOME')) {
   array_pop ($docuroot);
   $pathOutTrunk = implode (PATH_SEP, $docuroot) . PATH_SEP;
   // to do: check previous algorith for Windows $pathTrunk = "c:/home/";
-  
+
   define ('PATH_HOME', $pathhome);
   define ('PATH_TRUNK', $pathTrunk);
   define ('PATH_OUTTRUNK', $pathOutTrunk);
-  
+
   require_once (PATH_HOME . 'engine' . PATH_SEP . 'config' . PATH_SEP . 'paths.php');
-  
+
   G::LoadThirdParty ('pear/json', 'class.json');
   G::LoadThirdParty ('smarty/libs', 'Smarty.class');
   G::LoadSystem ('error');
@@ -98,19 +116,19 @@ if (! defined ('SYS_SYS')) {
   $sObject = $workspaceName;
   $sNow = ''; // $argv[2];
   $sFilter = '';
-  
+
   for ($i = 3; $i < count ($argv); $i++) {
     $sFilter .= ' ' . $argv [$i];
   }
-  
+
   $oDirectory = dir (PATH_DB);
-  
+
   if (is_dir (PATH_DB . $sObject)) {
     saveLog ('main', 'action', "checking folder " . PATH_DB . $sObject);
     if (file_exists (PATH_DB . $sObject . PATH_SEP . 'db.php')) {
-      
+
       define ('SYS_SYS', $sObject);
-      
+
       // ****************************************
       // read initialize file
       require_once PATH_HOME . 'engine' . PATH_SEP . 'classes' . PATH_SEP . 'class.system.php';
@@ -118,16 +136,16 @@ if (! defined ('SYS_SYS')) {
       define ('MEMCACHED_ENABLED', $config ['memcached']);
       define ('MEMCACHED_SERVER', $config ['memcached_server']);
       define ('TIME_ZONE', $config ['time_zone']);
-      
+
       date_default_timezone_set (TIME_ZONE);
       print "TIME_ZONE: " . TIME_ZONE . "\n";
       print "MEMCACHED_ENABLED: " . MEMCACHED_ENABLED . "\n";
       print "MEMCACHED_SERVER: " . MEMCACHED_SERVER . "\n";
       // ****************************************
-      
+
       include_once (PATH_HOME . 'engine' . PATH_SEP . 'config' . PATH_SEP . 'paths_installed.php');
       include_once (PATH_HOME . 'engine' . PATH_SEP . 'config' . PATH_SEP . 'paths.php');
-      
+
       // ***************** PM Paths DATA **************************
       define ('PATH_DATA_SITE', PATH_DATA . 'sites/' . SYS_SYS . '/');
       define ('PATH_DOCUMENT', PATH_DATA_SITE . 'files/');
@@ -137,7 +155,7 @@ if (! defined ('SYS_SYS')) {
       define ('PATH_DYNAFORM', PATH_DATA_SITE . 'xmlForms/');
       define ('PATH_IMAGES_ENVIRONMENT_FILES', PATH_DATA_SITE . 'usersFiles' . PATH_SEP);
       define ('PATH_IMAGES_ENVIRONMENT_USERS', PATH_DATA_SITE . 'usersPhotographies' . PATH_SEP);
-      
+
       // server info file
       if (is_file (PATH_DATA_SITE . PATH_SEP . '.server_info')) {
         $SERVER_INFO = file_get_contents (PATH_DATA_SITE . PATH_SEP . '.server_info');
@@ -149,10 +167,10 @@ if (! defined ('SYS_SYS')) {
       else {
         eprintln ("WARNING! No server info found!", 'red');
       }
-      
+
       // read db configuration
       $sContent = file_get_contents (PATH_DB . $sObject . PATH_SEP . 'db.php');
-      
+
       $sContent = str_replace ('<?php', '', $sContent);
       $sContent = str_replace ('<?', '', $sContent);
       $sContent = str_replace ('?>', '', $sContent);
@@ -160,7 +178,7 @@ if (! defined ('SYS_SYS')) {
       $sContent = str_replace ("('", "$", $sContent);
       $sContent = str_replace ("',", '=', $sContent);
       $sContent = str_replace (");", ';', $sContent);
-      
+
       eval ($sContent);
       $dsn = $DB_ADAPTER . '://' . $DB_USER . ':' . $DB_PASS . '@' . $DB_HOST . '/' . $DB_NAME;
       $dsnRbac = $DB_ADAPTER . '://' . $DB_RBAC_USER . ':' . $DB_RBAC_PASS . '@' . $DB_RBAC_HOST . '/' . $DB_RBAC_NAME;
@@ -192,14 +210,14 @@ if (! defined ('SYS_SYS')) {
       fclose ($oFile);
       Propel::init (PATH_CORE . 'config/_databases_.php');
       // Creole::registerDriver('dbarray', 'creole.contrib.DBArrayConnection');
-      
+
       eprintln ("Processing workspace: " . $sObject, 'green');
       try {
         processWorkspace ();
       }
       catch (Exception $e) {
         echo $e->getMessage ();
-        eprintln ("Probelm in workspace: " . $sObject . ' it was omitted.', 'red');
+        eprintln ("Problem in workspace: " . $sObject . ' it was omitted.', 'red');
       }
       eprintln ();
       unlink (PATH_CORE . 'config/_databases_.php');
@@ -219,16 +237,16 @@ function processWorkspace()
 {
   global $sLastExecution;
   global $ScriptAction;
-  
+
   try {
-    
+
     if (($solrConf = System::solrEnv (SYS_SYS)) !== false) {
       G::LoadClass ('AppSolr');
       print "Solr Configuration file: " . PATH_DATA_SITE . "env.ini\n";
       print "solr_enabled: " . $solrConf ['solr_enabled'] . "\n";
       print "solr_host: " . $solrConf ['solr_host'] . "\n";
       print "solr_instance: " . $solrConf ['solr_instance'] . "\n";
-      
+
       $oAppSolr = new AppSolr ($solrConf ['solr_enabled'], $solrConf ['solr_host'], $solrConf ['solr_instance']);
       if ($ScriptAction == "reindexall") {
         $oAppSolr->reindexAllApplications ();
@@ -240,7 +258,7 @@ function processWorkspace()
     else {
       print "Incomplete Solr configuration. See configuration file: " . PATH_DATA_SITE . "env.ini";
     }
-  
+
   }
   catch (Exception $oError) {
     saveLog ("main", "error", "Error processing workspace : " . $oError->getMessage () . "\n");
@@ -254,7 +272,7 @@ function saveLog($sSource, $sType, $sDescription)
     if ($isDebug)
       print date ('H:i:s') . " ($sSource) $sType $sDescription <br>\n";
     @fwrite ($oFile, date ('Y-m-d H:i:s') . '(' . $sSource . ') ' . $sDescription . "\n");
-    
+
     G::verifyPath (PATH_DATA . 'log' . PATH_SEP, true);
     if ($sType == 'action') {
       $oFile = @fopen (PATH_DATA . 'log' . PATH_SEP . 'cron.log', 'a+');
@@ -275,7 +293,7 @@ function setExecutionMessage($m)
   $len = strlen ($m);
   $linesize = 60;
   $rOffset = $linesize - $len;
-  
+
   eprint ("* $m");
   for ($i = 0; $i < $rOffset; $i++)
     eprint ('.');

@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2012 Colosa Inc.23
  *
@@ -19,7 +19,7 @@
  *
  * For more information, contact Colosa Inc, 5304 Ventura Drive,
  * Delray Beach, FL, 33484, USA, or email info@colosa.com.
- * 
+ *
  */
 
 require_once "classes/model/Application.php";
@@ -41,7 +41,7 @@ require_once "classes/model/AppSolrQueue.php";
  * Invalid search text for Solr exception
  *
  * @author Herbert Saal Gutierrez
- *        
+ *
  */
 class InvalidIndexSearchTextException extends Exception
 {
@@ -52,7 +52,7 @@ class InvalidIndexSearchTextException extends Exception
     // make sure everything is assigned properly
     parent::__construct ($message, $code);
   }
-  
+
   // custom string representation of object
   public function __toString()
   {
@@ -64,7 +64,7 @@ class InvalidIndexSearchTextException extends Exception
  * Application without Delegations exception
  *
  * @author Herbert Saal Gutierrez
- * 
+ *
  * @category Colosa
  * @copyright Copyright (c) 2005-2011 Colosa Inc. (http://www.colosa.com)
  */
@@ -77,7 +77,7 @@ class ApplicationWithoutDelegationRecordsException extends Exception
     // make sure everything is assigned properly
     parent::__construct ($message, $code);
   }
-  
+
   // custom string representation of object
   public function __toString()
   {
@@ -99,7 +99,7 @@ class AppSolr
   private $_solrIsEnabled = false;
   private $_solrHost = "";
   private $_solrInstance = "";
-  
+
   public function __construct($SolrEnabled, $SolrHost, $SolrInstance)
   {
     // define solr availability
@@ -107,16 +107,16 @@ class AppSolr
     $this->_solrHost = $SolrHost;
     $this->_solrInstance = $SolrInstance;
   }
-  
+
   /**
-   * Return if the Solr functionality is enabled. 
+   * Return if the Solr functionality is enabled.
    * @return boolean true:enabled functionality, false:disabled functionality
    */
   public function isSolrEnabled()
   {
     return $this->_solrIsEnabled;
   }
-  
+
   /**
    * Gets the information of Grids using Solr server.
    *
@@ -161,7 +161,7 @@ class AppSolr
    */
   public function getAppGridData($userUid, $start = null, $limit = null, $action = null, $filter = null, $search = null, $process = null, $user = null, $status = null, $type = null, $dateFrom = null, $dateTo = null, $callback = null, $dir = null, $sort = 'APP_CACHE_VIEW.APP_NUMBER', $doCount = false)
   {
-    
+
     $callback = isset ($callback) ? $callback : 'stcCallback1001';
     $dir = isset ($dir) ? $dir : 'DESC'; // direction of sort column
                                            // (ASC, DESC)
@@ -190,21 +190,21 @@ class AppSolr
     $dateFrom = isset ($dateFrom) ? $dateFrom : ''; // filter by
                                                       // DEL_DELEGATE_DATE
     $dateTo = isset ($dateTo) ? $dateTo : ''; // filter by DEL_DELEGATE_DATE
-    
+
     $swErrorInSearchText = false;
     $solrQueryResult = null;
     $aPriorities = array('1'=>'VL', '2'=>'L', '3'=>'N', '4'=>'H', '5'=>'VH');
-    
+
     $result = array ();
     $result ['totalCount'] = 0;
     $result ['data'] = array ();
     $result ['success'] = false;
     $result ['message'] = "Error description.";
-    
+
     G::LoadClass ('searchIndex');
-    
+
     try {
-      
+
       // the array of data that must be returned with placeholders
       $columsToInclude = array (
           'APP_CREATE_DATE',
@@ -236,7 +236,7 @@ class AppSolr
           '',
           'PRO_UID',
           '',
-          '' 
+          ''
       );
       // create pagination data
       $solrSearchText = "";
@@ -244,11 +244,11 @@ class AppSolr
       $sortCols = array ();
       $sortDir = array ();
       $numSortingCols = 0;
-      
+
       // define sort conditions, default APP_NUMBER, desc
       // only one column is sorted
       $dir = strtolower ($dir);
-      
+
       if (! empty ($sort)) {
         switch ($sort) {
           case 'APP_CACHE_VIEW.APP_NUMBER' :
@@ -281,7 +281,7 @@ class AppSolr
         }
         $numSortingCols ++;
       }
-      
+
       // get del_index field
       $delIndexDynaField = "";
       // process filter
@@ -334,34 +334,34 @@ class AppSolr
         $solrSearchText .= "(APP_UNASSIGNED_USERS:" . $userUid;
         if (count ($userGroups) > 0) {
           $solrSearchText .= " OR ";
-          
+
           foreach ($userGroups as $group) {
             $solrSearchText .= "APP_UNASSIGNED_GROUPS:" . $group ['GRP_UID'] . " OR ";
           }
-          
+
           // remove last OR in condition
           if ($solrSearchText != '')
             $solrSearchText = substr_replace ($solrSearchText, "", - 4);
         }
         $solrSearchText .= ") AND ";
-        
+
         $delIndexDynaField = "APP_UNASSIGNED_USER_GROUP_DEL_INDEX_" . trim ($userUid) . '_txt';
       }
-      
+
       // remove last AND in condition
       if ($solrSearchText != '')
         $solrSearchText = substr_replace ($solrSearchText, "", - 5);
-        
+
         // add parenthesis to Solr search text
       if ($solrSearchText != "")
         $solrSearchText = "(" . $solrSearchText . ")";
-        
+
         // create query string, add query conditions
       if ($search != '') {
         // format search string
         // return exception in case of invalid text
         $search = $this->getSearchText ($search);
-        
+
         if ($solrSearchText != "" && $search != "")
           $solrSearchText .= " AND ";
         if ($search != "")
@@ -369,9 +369,9 @@ class AppSolr
       }
       // add del_index dynamic field to list of resulting columns
       $columsToInclude = array_merge ($columsToInclude, array (
-          $delIndexDynaField 
+          $delIndexDynaField
       ));
-      
+
       // if is a counter no records are returned
       if ($doCount) {
         $start = 0;
@@ -379,7 +379,7 @@ class AppSolr
         $numSortingCols = 0;
         $columsToInclude = array ();
       }
-      
+
       $data = array (
           'workspace' => $this->_solrInstance, // solr instance
           'startAfter' => intval ($start),
@@ -392,15 +392,15 @@ class AppSolr
           'sortCols' => $sortCols,
           'sortDir' => $sortDir,
           'includeCols' => $columsToInclude,
-          'resultFormat' => 'json' 
+          'resultFormat' => 'json'
       );
-      
+
       $solrRequestData = Entity_SolrRequestData::createForRequestPagination ($data);
       // use search index to return list of cases
       $searchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
       // execute query
       $solrQueryResult = $searchIndex->getDataTablePaginatedList ($solrRequestData);
-      
+
       // complete return data, complete list of columns in grid
       $resultColumns = array (
           "APP_CREATE_DATE",
@@ -432,9 +432,9 @@ class AppSolr
           "PREVIOUS_USR_UID",
           "PRO_UID",
           "TAS_UID",
-          "USR_UID" 
+          "USR_UID"
       );
-      
+
       $rows = array ();
       // number of found records
       $result ['totalCount'] = $solrQueryResult->iTotalDisplayRecords;
@@ -464,14 +464,14 @@ class AppSolr
           $solrdate = $data [0];
           $localDate = date ('Y-m-d H:i:s', strtotime ($solrdate));
           $aRow ['APP_CREATE_DATE'] = $localDate;
-          
+
           $solrdate = $data [12];
           $localDate = date ('Y-m-d H:i:s', strtotime ($solrdate));
           $aRow ['APP_UPDATE_DATE'] = $localDate;
-          
+
           // get delegation data from DB
           $row = $this->getAppDelegationData ($appUID, $delIndex);
-          
+
           $aRow ['APP_FINISH_DATE'] = null;
           $aRow ['APP_CURRENT_USER'] = $row ['USR_NAME'] . " " . $row ['USR_LAST'];
           $aRow ['APP_DEL_PREVIOUS_USER'] = $row ['USR_PREV_NAME'] . " " . $row ['USR_PREV_LAST'];
@@ -494,7 +494,7 @@ class AppSolr
           $aRow ['TAS_UID'] = $row ['TAS_UID'];
           $aRow ['USR_UID'] = $userUid;
           $aRow ['DEL_PRIORITY'] = G::LoadTranslation("ID_PRIORITY_{$aPriorities[$aRow['DEL_PRIORITY']]}");
-          
+
           $rows [] = $aRow;
         }
       }
@@ -502,9 +502,9 @@ class AppSolr
       $result ['success'] = true;
       $result ['result'] = true;
       $result ['message'] = "";
-      
+
       return $result;
-    
+
     } // end try
     catch ( InvalidIndexSearchTextException $e ) {
       // return empty result with description of error
@@ -517,7 +517,7 @@ class AppSolr
       return $result;
     }
   }
-  
+
   /**
    * Get the array of counters of cases
    *
@@ -527,30 +527,30 @@ class AppSolr
   public function getCasesCount($userUid)
   {
     $casesCount = array ();
-    
+
     // get number of records in todo list
-    $data = $this->getAppGridData ($userUid, 0, 0, 'todo', null, null, null, null, null, 
+    $data = $this->getAppGridData ($userUid, 0, 0, 'todo', null, null, null, null, null,
         null, null, null, null, null, null, true);
     $casesCount ['to_do'] = $data ['totalCount'];
     // get number of records in participated list
-    $data = $this->getAppGridData ($userUid, 0, 0, 'sent', null, null, null, null, null, 
+    $data = $this->getAppGridData ($userUid, 0, 0, 'sent', null, null, null, null, null,
         null, null, null, null, null, null, true);
     $casesCount ['sent'] = $data ['totalCount'];
     // get number of records in draft list
-    $data = $this->getAppGridData ($userUid, 0, 0, 'draft', null, null, null, null, null, 
+    $data = $this->getAppGridData ($userUid, 0, 0, 'draft', null, null, null, null, null,
         null, null, null, null, null, null, true);
     $casesCount ['draft'] = $data ['totalCount'];
     // get number of records in unassigned list
-    $data = $this->getAppGridData ($userUid, 0, 0, 'unassigned', null, null, null, null, 
+    $data = $this->getAppGridData ($userUid, 0, 0, 'unassigned', null, null, null, null,
         null, null, null, null, null, null, null, true);
     $casesCount ['selfservice'] = $data ['totalCount'];
-    
+
     return $casesCount;
   }
-  
+
   /**
    * Get the user groups
-   * @param string $usrUID the user identifier 
+   * @param string $usrUID the user identifier
    * @return array of user groups
    */
   public function getUserGroups($usrUID)
@@ -559,7 +559,7 @@ class AppSolr
     $rows = $gu->getAllUserGroups ($usrUID);
     return $rows;
   }
-  
+
   /**
    * Get the application delegation record from database
    *
@@ -571,24 +571,24 @@ class AppSolr
    */
   public function getAppDelegationData($appUID, $delIndex)
   {
-    
+
     $c = new Criteria ();
-    
+
     $c->addSelectColumn (AppDelegationPeer::APP_UID);
     $c->addSelectColumn (AppDelegationPeer::DEL_INDEX);
-    
+
     $c->addAsColumn ('USR_NAME', 'u.USR_FIRSTNAME');
     $c->addAsColumn ('USR_LAST', 'u.USR_LASTNAME');
-    
+
     $c->addAsColumn ('USR_PREV_NAME', 'uprev.USR_FIRSTNAME');
     $c->addAsColumn ('USR_PREV_LAST', 'uprev.USR_LASTNAME');
     $c->addAsColumn ('PREVIOUS_USR_UID', 'uprev.USR_UID');
-    
+
     $c->addAsColumn ('APP_TAS_TITLE', 'ctastitle.CON_VALUE');
     $c->addAsColumn ('APP_THREAD_STATUS', 'at.APP_THREAD_STATUS');
-    
+
     $c->addSelectColumn (AppDelegationPeer::APP_OVERDUE_PERCENTAGE);
-    
+
     $c->addSelectColumn (AppDelegationPeer::DEL_DELAYED);
     $c->addSelectColumn (AppDelegationPeer::DEL_DELAY_DURATION);
     $c->addSelectColumn (AppDelegationPeer::DEL_DELEGATE_DATE);
@@ -599,76 +599,76 @@ class AppSolr
     $c->addSelectColumn (AppDelegationPeer::DEL_TASK_DUE_DATE);
     $c->addSelectColumn (AppDelegationPeer::DEL_THREAD_STATUS);
     $c->addSelectColumn (AppDelegationPeer::TAS_UID);
-    
+
     $c->addAlias ('u', 'USERS');
     $c->addAlias ('uprev', 'USERS');
     $c->addAlias ('adprev', 'APP_DELEGATION');
     $c->addAlias ('ctastitle', 'CONTENT');
     $c->addAlias ('at', 'APP_THREAD');
-    
+
     $aConditions = array ();
     $aConditions [] = array (
         AppDelegationPeer::USR_UID,
-        'u.USR_UID' 
+        'u.USR_UID'
     );
     $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
-    
+
     $aConditions = array ();
     $aConditions [] = array (
         AppDelegationPeer::APP_UID,
-        'adprev.APP_UID' 
+        'adprev.APP_UID'
     );
     $aConditions [] = array (
         AppDelegationPeer::DEL_PREVIOUS,
-        'adprev.DEL_INDEX' 
+        'adprev.DEL_INDEX'
     );
     $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
-    
+
     $aConditions = array ();
     $aConditions [] = array (
         AppDelegationPeer::TAS_UID,
-        'ctastitle.CON_ID' 
+        'ctastitle.CON_ID'
     );
     $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
-    
+
     $aConditions = array ();
     $aConditions [] = array (
         'adprev.USR_UID',
-        'uprev.USR_UID' 
+        'uprev.USR_UID'
     );
     $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
-    
+
     $aConditions = array ();
     $aConditions [] = array (
         AppDelegationPeer::APP_UID,
-        'at.APP_UID' 
+        'at.APP_UID'
     );
     $aConditions [] = array (
         AppDelegationPeer::DEL_THREAD,
-        'at.APP_THREAD_INDEX' 
+        'at.APP_THREAD_INDEX'
     );
     $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
-    
+
     $c->add (AppDelegationPeer::APP_UID, $appUID);
     $c->add (AppDelegationPeer::DEL_INDEX, $delIndex);
-    
+
     $c->add ('ctastitle.CON_CATEGORY', 'TAS_TITLE');
     $c->add ('ctastitle.CON_LANG', 'en');
-    
+
     $rs = AppDelegationPeer::doSelectRS ($c);
     $rs->setFetchmode (ResultSet::FETCHMODE_ASSOC);
     // echo $c->toString();
     $rs->next ();
     $row = $rs->getRow ();
-    
+
     return $row;
   }
-  
+
   /**
    * return the correct search text for solr.
    * if a field is included only search in this field.
    *
-   * @param string $plainSearchText          
+   * @param string $plainSearchText
    * @return string formated Solr search string.
    */
   public function getSearchText($plainSearchText)
@@ -676,7 +676,7 @@ class AppSolr
     $formattedSearchText = "";
     // if an error is found in string null is returned
     $includeToken = true;
-    
+
     // prepare string to separate and join parentesis
     // " " => " "
     $count = 1;
@@ -687,7 +687,7 @@ class AppSolr
     $plainSearchText = preg_replace ('/\s\[\s/', '[', $plainSearchText);
     $plainSearchText = preg_replace ('/\s\]\s/', '] ', $plainSearchText);
     $plainSearchText = preg_replace ('/\s"\s/', '" ', $plainSearchText);
-    
+
     // print "format search string: " . $plainSearchText . "\n";
     // format
     // 1: plain text that is used to search in text field: concat field
@@ -700,33 +700,33 @@ class AppSolr
     // ex: date search => APP_CREATE_DATE:[2012-03-12T00:00:00Z TO
     // 2012-04-12T00:00:00Z]
     // ex: phrase => TEXT:"This is a lazy dog"
-    
+
     // search the first
-    
+
     // cache the index fields
     G::LoadClass ('PMmemcached');
     $oMemcache = PMmemcached::getSingleton ($this->_solrInstance);
     $ListFieldsInfo = $oMemcache->get ('Solr_Index_Fields');
     if (! $ListFieldsInfo) {
       G::LoadClass ('searchIndex');
-      
+
       $searchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
       // execute query
       $ListFieldsInfo = $searchIndex->getIndexFields ($this->_solrInstance);
-      
+
       // cache
       $oMemcache->set ('Solr_Index_Fields', $ListFieldsInfo);
-    
+
     }
-    
+
     $tok = strtok ($plainSearchText, " ");
-    
+
     while ($tok !== false) {
       $fieldName = substr ($tok, 0, strpos ($tok, ":")); // strstr ( $tok,
                                                              // ":",
                                                              // true ); php 5.3
       $searchText = strstr ($tok, ":");
-      
+
       // verify if there's a field definition
       if ($fieldName === false) {
         // it's not a field
@@ -744,7 +744,7 @@ class AppSolr
           $includeToken = false;
           throw new InvalidIndexSearchTextException ("Invalid search text, verify the syntax. Expected format = {variable_name}:{search_text}");
         }
-        
+
         // field name found
         // search index field name
         $indexFieldName = "";
@@ -758,7 +758,7 @@ class AppSolr
           $includeToken = false;
           throw new InvalidIndexSearchTextException ("Invalid search text, variable not found.");
         }
-        
+
         // The token is part of a phrase, date or a word?
         if ($searchText [1] == "[" || $searchText [1] == "\"") { //
                                                                  // expecting
@@ -769,7 +769,7 @@ class AppSolr
                                                                  // the end of
                                                                  // the
                                                                  // phrase
-                                                                 
+
           // the phrase is complete?
           if ($searchText [1] == "[" && $searchText [strlen ($searchText) - 1] == "]") {
             // complete phrase ok, the date must be validated
@@ -810,7 +810,7 @@ class AppSolr
             }
           }
         }
-        
+
         // validate phrase in case of date
         if (($searchText [1] == "[")) {
           // validate date range format
@@ -823,10 +823,10 @@ class AppSolr
             // convert to SOlr format
             $fromDateOriginal = $matches [1];
             $fromDate = $matches [1];
-            
+
             $toDateOriginal = $matches [2];
             $toDate = $matches [2];
-            
+
             if ($fromDateOriginal != '*') {
               // TODO complete date creation
               // list($year, $month, $day) = sscanf($fromDateOriginal,
@@ -843,7 +843,7 @@ class AppSolr
               // $toDateDatetime = new DateTime($toDateOriginal);
               // $toDateDatetime = date_create_from_format ( 'Y-m-d',
               // $toDateOriginal );
-              $toDate = gmdate ("Y-m-d\T00:00:00\Z", strtotime ($fromDateOriginal));
+              $toDate = gmdate ("Y-m-d\T00:00:00\Z", strtotime ($toDateOriginal));
             }
             $searchText = ":[" . $fromDate . " TO " . $toDate . "]";
           }
@@ -851,14 +851,14 @@ class AppSolr
             throw new InvalidIndexSearchTextException ("Invalid search text. Expected date interval format => {variable_name}:[YYYY-MM-DD TO YYYY-MM-DD]");
           }
         }
-        
+
         $formattedSearchText .= $indexFieldName . $searchText;
         $includeToken = true;
       }
-      
+
       if ($includeToken)
         $formattedSearchText .= " AND ";
-        
+
         // next token
       $tok = strtok (" ");
     }
@@ -866,7 +866,7 @@ class AppSolr
     $formattedSearchText = substr_replace ($formattedSearchText, "", - 5);
     return $formattedSearchText;
   }
-  
+
   /**
    * Get all the application delegation records from database
    *
@@ -877,28 +877,28 @@ class AppSolr
   public function getApplicationDelegationsIndex($appUID)
   {
     $delIndexes = array ();
-    
+
     $c = new Criteria ();
-    
+
     $c->addSelectColumn (AppDelegationPeer::DEL_INDEX);
     $c->add (AppDelegationPeer::APP_UID, $appUID);
-    
+
     $rs = AppDelegationPeer::doSelectRS ($c);
     $rs->setFetchmode (ResultSet::FETCHMODE_ASSOC);
-    
+
     $rs->next ();
     $row = $rs->getRow ();
-    
+
     while (is_array ($row)) {
       $delIndexes [] = $row ['DEL_INDEX'];
       $rs->next ();
       $row = $rs->getRow ();
     }
-    
+
     return $delIndexes;
-  
+
   }
-  
+
   /**
    * Update the information of the specified applications in Solr
    *
@@ -910,13 +910,13 @@ class AppSolr
   {
     if (empty ($aaAPPUIDs))
       return;
-    
+
     if (! is_array ($aaAPPUIDs)) {
       // convert to array
       $APPUID = $aaAPPUIDs;
       $aaAPPUIDs = array ();
       $aaAPPUIDs [] = array (
-          'APP_UID' => $APPUID 
+          'APP_UID' => $APPUID
       );
     }
     // check if index server is available
@@ -928,25 +928,25 @@ class AppSolr
     }
     // create XML document
     $xmlDoc = $this->createSolrXMLDocument ($aaAPPUIDs);
-    
+
     // update document
     $data = array (
         'workspace' => $this->_solrInstance,
-        'document' => $xmlDoc 
+        'document' => $xmlDoc
     );
-    
+
     $oSolrUpdateDocument = Entity_SolrUpdateDocument::createForRequest ($data);
-    
+
     G::LoadClass ('searchIndex');
-    
+
     $oSearchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
-    
+
     $oSearchIndex->updateIndexDocument ($oSolrUpdateDocument);
-    
+
     // commit changes
     $oSearchIndex->commitIndexChanges ($this->_solrInstance);
   }
-  
+
   /**
    * Delete the specified application record from Solr
    *
@@ -957,26 +957,26 @@ class AppSolr
   {
     if (empty ($appUID))
       return;
-      
+
       // check if index server is available
     if (! $this->_solrIsEnabled) {
       // store update in table and return
       $this->applicationChangedUpdateSolrQueue ($appUID ['APP_UID'], 2); // delete
       return;
     }
-    
+
     $idQuery = "APP_UID:" . $appUID;
-    
+
     G::LoadClass ('searchIndex');
-    
+
     $oSearchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
-    
+
     $oSearchIndex->deleteDocumentFromIndex ($this->_solrInstance, $idQuery);
-    
+
     // commit changes
     $oSearchIndex->commitIndexChanges ($this->_solrInstance);
   }
-  
+
   /**
    * Create XML data in Solr format of the specified applications
    * this function uses the buildSearchIndexDocumentPMOS2 function to create
@@ -1014,20 +1014,20 @@ class AppSolr
       $participatedUsersCompletedByUser = $result [10];
       $unassignedUsers = $result [11];
       $unassignedGroups = $result [12];
-      
+
       // create document
-      $xmlDoc .= $this->buildSearchIndexDocumentPMOS2 ($documentInformation, $dynaformFieldTypes, 
-          $lastUpdateDate, $maxPriority, $assignedUsers, $assignedUsersRead, $assignedUsersUnread, 
-          $draftUser, $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser, 
+      $xmlDoc .= $this->buildSearchIndexDocumentPMOS2 ($documentInformation, $dynaformFieldTypes,
+          $lastUpdateDate, $maxPriority, $assignedUsers, $assignedUsersRead, $assignedUsersUnread,
+          $draftUser, $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser,
           $unassignedUsers, $unassignedGroups);
-    
+
     }
-    
+
     $xmlDoc .= "</add>\n";
-    
+
     return $xmlDoc;
   }
-  
+
   /**
    * build Solr index document xml for an application
    * @gearman = false
@@ -1061,7 +1061,7 @@ class AppSolr
    *          [in] array $unassignedGroups array of unassigned groups UIDs
    * @param
    *          [out] xml xml document
-   *          
+   *
    *          $xmlDoc .= buildSearchIndexDocumentPMOS2($documentInformation,
    *          $dynaformFieldTypes,
    *          $lastUpdateDate, $maxPriority,
@@ -1071,39 +1071,39 @@ class AppSolr
    *          $participatedUsersCompletedByUser,
    *          $unassignedUsers, $unassignedGroups);*
    */
-  public function buildSearchIndexDocumentPMOS2($documentData, $dynaformFieldTypes, $lastUpdateDate, 
-    $maxPriority, $assignedUsers, $assignedUsersRead, $assignedUsersUnread, $draftUser, 
-    $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser, 
+  public function buildSearchIndexDocumentPMOS2($documentData, $dynaformFieldTypes, $lastUpdateDate,
+    $maxPriority, $assignedUsers, $assignedUsersRead, $assignedUsersUnread, $draftUser,
+    $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser,
     $unassignedUsers, $unassignedGroups)
   {
     // build xml document
-    
+
     $writer = new XMLWriter ();
     $writer->openMemory ();
     $writer->setIndent (4);
-    
+
     $writer->startElement ("doc");
-    
+
     $writer->startElement ("field");
     $writer->writeAttribute ('name', 'APP_UID');
     $writer->text ($documentData ['APP_UID']);
     $writer->endElement ();
-    
+
     $writer->startElement ("field");
     $writer->writeAttribute ('name', 'APP_NUMBER');
     $writer->text ($documentData ['APP_NUMBER']);
     $writer->endElement ();
-    
+
     $writer->startElement ("field");
     $writer->writeAttribute ('name', 'APP_STATUS');
     $writer->text ($documentData ['APP_STATUS']);
     $writer->endElement ();
-    
+
     $writer->startElement ("field");
     $writer->writeAttribute ('name', 'PRO_UID');
     $writer->text ($documentData ['PRO_UID']);
     $writer->endElement ();
-    
+
     if (! empty ($documentData ['APP_TITLE'])) {
       $writer->startElement ("field");
       $writer->writeAttribute ('name', 'APP_TITLE');
@@ -1116,13 +1116,13 @@ class AppSolr
       $writer->text ("");
       $writer->endElement ();
     }
-    
+
     if (! empty ($documentData ['PRO_TITLE'])) {
       $writer->startElement ("field");
       $writer->writeAttribute ('name', 'APP_PRO_TITLE');
       $writer->text ($documentData ['PRO_TITLE']);
       $writer->endElement ();
-    
+
     }
     else {
       $writer->startElement ("field");
@@ -1130,47 +1130,47 @@ class AppSolr
       $writer->text ("");
       $writer->endElement ();
     }
-    
+
     $writer->startElement ("field");
     $writer->writeAttribute ('name', 'APP_CREATE_DATE');
     // convert date to UTC with gmdate
     $writer->text (gmdate ("Y-m-d\TH:i:s\Z", strtotime ($documentData ['APP_CREATE_DATE'])));
     $writer->endElement ();
-    
+
     $writer->startElement ("field");
     $writer->writeAttribute ('name', 'DEL_LAST_UPDATE_DATE');
     // convert date to UTC with gmdate
     $writer->text (gmdate ("Y-m-d\TH:i:s\Z", strtotime ($lastUpdateDate)));
     $writer->endElement ();
-    
+
     $writer->startElement ("field");
     $writer->writeAttribute ('name', 'DEL_MAX_PRIORITY');
     $writer->text ($maxPriority);
     $writer->endElement ();
-    
+
     if (is_array ($assignedUsers) && ! empty ($assignedUsers)) {
       foreach ($assignedUsers as $userUID) {
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_ASSIGNED_USERS');
         $writer->text ($userUID ['USR_UID']);
         $writer->endElement ();
-        
+
         // add dynamic field for del_index information
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_ASSIGNED_USER_DEL_INDEX_' . trim ($userUID ['USR_UID']) . '_txt');
         $writer->text ($userUID ['DEL_INDEX']);
         $writer->endElement ();
-      
+
       }
     }
-    
+
     if (is_array ($assignedUsersRead) && ! empty ($assignedUsersRead)) {
       foreach ($assignedUsersRead as $userUID) {
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_ASSIGNED_USERS_READ');
         $writer->text ($userUID ['USR_UID']);
         $writer->endElement ();
-        
+
         // add dynamic field for del_index information
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_ASSIGNED_USER_READ_DEL_INDEX_' . trim ($userUID ['USR_UID']) . '_txt');
@@ -1178,14 +1178,14 @@ class AppSolr
         $writer->endElement ();
       }
     }
-    
+
     if (is_array ($assignedUsersUnread) && ! empty ($assignedUsersUnread)) {
       foreach ($assignedUsersUnread as $userUID) {
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_ASSIGNED_USERS_UNREAD');
         $writer->text ($userUID ['USR_UID']);
         $writer->endElement ();
-        
+
         // add dynamic field for del_index information
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_ASSIGNED_USER_UNREAD_DEL_INDEX_' . trim ($userUID ['USR_UID']) . '_txt');
@@ -1193,21 +1193,21 @@ class AppSolr
         $writer->endElement ();
       }
     }
-    
+
     if (! empty ($draftUser)) {
       $writer->startElement ("field");
       $writer->writeAttribute ('name', 'APP_DRAFT_USER');
       $writer->text ($draftUser ['USR_UID']);
       $writer->endElement ();
     }
-    
+
     if (is_array ($participatedUsers) && ! empty ($participatedUsers)) {
       foreach ($participatedUsers as $userUID) {
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_PARTICIPATED_USERS');
         $writer->text ($userUID ['USR_UID']);
         $writer->endElement ();
-        
+
         // add dynamic field for del_index information
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_PARTICIPATED_USER_DEL_INDEX_' . trim ($userUID ['USR_UID']) . '_txt');
@@ -1215,14 +1215,14 @@ class AppSolr
         $writer->endElement ();
       }
     }
-    
+
     if (is_array ($participatedUsersStartedByUser) && ! empty ($participatedUsersStartedByUser)) {
       foreach ($participatedUsersStartedByUser as $userUID) {
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_PARTICIPATED_USERS_STARTED');
         $writer->text ($userUID ['USR_UID']);
         $writer->endElement ();
-        
+
         // add dynamic field for del_index information
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_PARTICIPATED_USER_STARTED_DEL_INDEX_' . trim ($userUID ['USR_UID']) . '_txt');
@@ -1230,14 +1230,14 @@ class AppSolr
         $writer->endElement ();
       }
     }
-    
+
     if (is_array ($participatedUsersCompletedByUser) && ! empty ($participatedUsersCompletedByUser)) {
       foreach ($participatedUsersCompletedByUser as $userUID) {
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_PARTICIPATED_USERS_COMPLETED');
         $writer->text ($userUID ['USR_UID']);
         $writer->endElement ();
-        
+
         // add dynamic field for del_index information
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_PARTICIPATED_USER_COMPLETED_DEL_INDEX_' . trim ($userUID ['USR_UID']) . '_txt');
@@ -1245,14 +1245,14 @@ class AppSolr
         $writer->endElement ();
       }
     }
-    
+
     if (is_array ($unassignedUsers) && ! empty ($unassignedUsers)) {
       foreach ($unassignedUsers as $userUID) {
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_UNASSIGNED_USERS');
         $writer->text ($userUID ['USR_UID']);
         $writer->endElement ();
-        
+
         // add dynamic field for del_index information
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_UNASSIGNED_USER_GROUP_DEL_INDEX_' . trim ($userUID ['USR_UID']) . '_txt');
@@ -1260,14 +1260,14 @@ class AppSolr
         $writer->endElement ();
       }
     }
-    
+
     if (is_array ($unassignedGroups) && ! empty ($unassignedGroups)) {
       foreach ($unassignedGroups as $groupUID) {
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_UNASSIGNED_GROUPS');
         $writer->text ($groupUID ['USR_UID']);
         $writer->endElement ();
-        
+
         // add dynamic field for del_index information
         $writer->startElement ("field");
         $writer->writeAttribute ('name', 'APP_UNASSIGNED_USER_GROUP_DEL_INDEX_' . trim ($userUID ['USR_UID']) . '_txt');
@@ -1275,17 +1275,17 @@ class AppSolr
         $writer->endElement ();
       }
     }
-    
+
     // get the serialized fields
-    if (! empty ($documentData ['APP_DATA'])) {
-      
+    if (! empty ($documentData ['APP_DATA']) && $documentData ['APP_DATA'] != "N;" ) {
+
       $UnSerializedCaseData = unserialize ($documentData ['APP_DATA']);
-      
+
       if ($UnSerializedCaseData === false) {
         $UnSerializedCaseData = preg_replace ('!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $documentData ['APP_DATA']); // utf8_encode
         $UnSerializedCaseData = unserialize ($UnSerializedCaseData);
       }
-      
+
       if (! $UnSerializedCaseData) {
         // error unserializing
         throw new Exception ("Unserialize APP_DATA error. APP_UID: " . $documentData ['APP_UID']);
@@ -1392,12 +1392,12 @@ class AppSolr
         } // foreach unserialized data
       }
     } // empty APP_DATA
-    
+
     $writer->endElement (); // end /doc
-    
+
     return $writer->outputMemory (true);
   }
-  
+
   /**
    * Search records in specified application delegation data
    *
@@ -1422,7 +1422,7 @@ class AppSolr
   public function getApplicationIndexData($AppUID)
   {
     G::LoadClass ('memcached');
-    
+
     // get all the application data
     $allAppDbData = $this->getApplicationDelegationData ($AppUID);
     // check if the application record was found
@@ -1431,18 +1431,18 @@ class AppSolr
     if (empty ($allAppDbData) || ! isset ($allAppDbData [0])) {
       throw new ApplicationWithoutDelegationRecordsException ("Application without delegation records. APP_UID: " . $AppUID);
     }
-    
+
     // copy the application information
     $documentInformation = $allAppDbData [0];
-    
+
     // get the last delegate date using the del_delegate_date
     $index = $this->aaGetMaximun ($allAppDbData, 'DEL_DELEGATE_DATE', 'DATE');
-    
+
     $lastUpdateDate = $allAppDbData [$index] ['DEL_DELEGATE_DATE'];
-    
+
     // get the delegate with max priority => minimun value
     $index2 = $this->aaGetMinimun ($allAppDbData, 'DEL_PRIORITY', 'NUMBER', 'DEL_THREAD_STATUS', 'OPEN');
-    
+
     if ($index2 == null) {
       // get the last priority
       $maxPriority = $allAppDbData [$index] ['DEL_PRIORITY'];
@@ -1450,92 +1450,92 @@ class AppSolr
     else {
       $maxPriority = $allAppDbData [$index2] ['DEL_PRIORITY'];
     }
-    
+
     $assignedUsers = array ();
     $indexes = $this->aaSearchRecords ($allAppDbData, array (
         'DEL_THREAD_STATUS' => 'OPEN',
         'DEL_FINISH_DATE' => 'NULL',
         'APP_STATUS' => 'TO_DO',
-        'APP_THREAD_STATUS' => 'OPEN' 
+        'APP_THREAD_STATUS' => 'OPEN'
     ));
     foreach ($indexes as $index) {
       $assignedUsers [] = array (
           'USR_UID' => $allAppDbData [$index] ['USR_UID'],
-          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX'] 
+          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX']
       );
     }
-    
+
     $assignedUsersRead = array ();
     $indexes = $this->aaSearchRecords ($allAppDbData, array (
         'DEL_THREAD_STATUS' => 'OPEN',
         'DEL_FINISH_DATE' => 'NULL',
         'APP_STATUS' => 'TO_DO',
         'APP_THREAD_STATUS' => 'OPEN',
-        'DEL_INIT_DATE' => 'NOTNULL' 
+        'DEL_INIT_DATE' => 'NOTNULL'
     ));
     foreach ($indexes as $index) {
       $assignedUsersRead [] = array (
           'USR_UID' => $allAppDbData [$index] ['USR_UID'],
-          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX'] 
+          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX']
       );
     }
-    
+
     $assignedUsersUnread = array ();
     $indexes = $this->aaSearchRecords ($allAppDbData, array (
         'DEL_THREAD_STATUS' => 'OPEN',
         'DEL_FINISH_DATE' => 'NULL',
         'APP_STATUS' => 'TO_DO',
         'APP_THREAD_STATUS' => 'OPEN',
-        'DEL_INIT_DATE' => 'NULL' 
+        'DEL_INIT_DATE' => 'NULL'
     ));
     foreach ($indexes as $index) {
       $assignedUsersUnread [] = array (
           'USR_UID' => $allAppDbData [$index] ['USR_UID'],
-          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX'] 
+          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX']
       );
     }
-    
+
     $draftUser = array ();
     $indexes = $this->aaSearchRecords ($allAppDbData, array (
         'DEL_THREAD_STATUS' => 'OPEN',
         'DEL_FINISH_DATE' => 'NULL',
         'APP_STATUS' => 'DRAFT',
-        'APP_THREAD_STATUS' => 'OPEN' 
+        'APP_THREAD_STATUS' => 'OPEN'
     ));
     if (! empty ($indexes)) {
       $draftUser = array (
           'USR_UID' => $allAppDbData [$indexes [0]] ['USR_UID'],
-          'DEL_INDEX' => $allAppDbData [$indexes [0]] ['DEL_INDEX'] 
+          'DEL_INDEX' => $allAppDbData [$indexes [0]] ['DEL_INDEX']
       );
     }
-    
+
     $participatedUsers = array ();
     foreach ($allAppDbData as $row) {
       $participatedUsers [] = array (
           'USR_UID' => $row ['USR_UID'],
-          'DEL_INDEX' => $row ['DEL_INDEX'] 
+          'DEL_INDEX' => $row ['DEL_INDEX']
       );
     }
-    
+
     $participatedUsersStartedByUser = array ();
     $indexes = $this->aaSearchRecords ($allAppDbData, array (
-        'DEL_INDEX' => '1' 
+        'DEL_INDEX' => '1'
     ));
     foreach ($indexes as $index) {
       $participatedUsersStartedByUser [] = array (
           'USR_UID' => $allAppDbData [$index] ['USR_UID'],
-          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX'] 
+          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX']
       );
     }
-    
+
     $participatedUsersCompletedByUser = array ();
     $indexes = $this->aaSearchRecords ($allAppDbData, array (
-        'APP_STATUS' => 'COMPLETED' 
+        'APP_STATUS' => 'COMPLETED'
     ));
     foreach ($indexes as $index) {
       $participatedUsersCompletedByUser [] = array (
           'USR_UID' => $allAppDbData [$index] ['USR_UID'],
-          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX'] 
+          'DEL_INDEX' => $allAppDbData [$index] ['DEL_INDEX']
       );
     }
     // search information of unassigned users
@@ -1547,9 +1547,9 @@ class AppSolr
       $oMemcache = PMmemcached::getSingleton ($this->_solrInstance);
       $unassignedUsersGroups = $oMemcache->get ($row ['PRO_UID'] . "_" . $row ['TAS_UID']);
       if (! $unassignedUsersGroups) {
-        
+
         $unassignedUsersGroups = $this->getTaskUnassignedUsersGroupsData ($row ['PRO_UID'], $row ['TAS_UID']);
-        
+
         // add del_index
         foreach ($unassignedUsersGroups as $i => $newRow) {
           $unassignedUsersGroups [$i] ['DEL_INDEX'] = $row ['DEL_INDEX'];
@@ -1557,7 +1557,7 @@ class AppSolr
         // store in cache
         $oMemcache->set ($row ['PRO_UID'] . "_" . $row ['TAS_UID'], $unassignedUsersGroups);
       }
-      
+
       // copy list of unassigned users and groups
       $unassignedUsers = array ();
       $unassignedGroups = array ();
@@ -1565,17 +1565,17 @@ class AppSolr
         if ($unassignedUserGroup ['TU_RELATION'] == 1) {
           $unassignedUsers [] = array (
               'USR_UID' => $unassignedUserGroup ['USR_UID'],
-              'DEL_INDEX' => $unassignedUserGroup ['DEL_INDEX'] 
+              'DEL_INDEX' => $unassignedUserGroup ['DEL_INDEX']
           );
         }
         elseif ($unassignedUserGroup ['TU_RELATION'] == 2) {
           $unassignedGroups [] = array (
               'USR_UID' => $unassignedUserGroup ['USR_UID'],
-              'DEL_INDEX' => $unassignedUserGroup ['DEL_INDEX'] 
+              'DEL_INDEX' => $unassignedUserGroup ['DEL_INDEX']
           );
         }
       }
-    
+
     }
     // Get DataTypes of dynaforms
     // use cache array to store the dynaform variables per process
@@ -1596,7 +1596,7 @@ class AppSolr
           $dynaformFields [] = $dyn->getFields ();
         }
       }
-      
+
       foreach ($dynaformFields as $aDynFormFields) {
         foreach ($aDynFormFields as $field) {
           // create array of fields and types
@@ -1614,7 +1614,7 @@ class AppSolr
       // create cache of dynaformfields
       $oMemcache->set ($documentInformation ['PRO_UID'], $dynaformFieldTypes);
     }
-    
+
     // return result values
     $result = array (
         $documentInformation,
@@ -1629,12 +1629,12 @@ class AppSolr
         $participatedUsersStartedByUser,
         $participatedUsersCompletedByUser,
         $unassignedUsers,
-        $unassignedGroups 
+        $unassignedGroups
     );
-    
+
     return $result;
   }
-  
+
   /**
    * Find the maximun value of the specified column in the array and return the
    * row index
@@ -1651,7 +1651,7 @@ class AppSolr
    *          the condition
    * @return integer The index of the maximun record in array
    */
-  public function aaGetMaximun($arr, $column, $columnType = 'STRING', 
+  public function aaGetMaximun($arr, $column, $columnType = 'STRING',
       $columnCondition = "", $condition = "")
   {
     // get first value
@@ -1681,7 +1681,7 @@ class AppSolr
     }
     return $index;
   }
-  
+
   /**
    * Get minimum of array of arrays
    *
@@ -1697,7 +1697,7 @@ class AppSolr
    *          the condition
    * @return Ambigous <NULL, unknown> Index of the minimun value found
    */
-  public function aaGetMinimun($arr, $column, $columnType = 'STRING', 
+  public function aaGetMinimun($arr, $column, $columnType = 'STRING',
       $columnCondition = "", $condition = "")
   {
     // get first value
@@ -1721,14 +1721,14 @@ class AppSolr
           if ((strtotime ($row [$column]) <= strtotime ($auxValue)) && (($columnCondition == "") || ($row [$columnCondition] == $condition))) {
             $auxValue = $row [$column];
             $index = $i;
-          
+
           }
           break;
       }
     }
     return $index;
   }
-  
+
   /**
    * Search array of indexes that fullfill the conditions
    *
@@ -1782,7 +1782,7 @@ class AppSolr
     }
     return $indexes;
   }
-  
+
   /**
    * Get application and delegation data from database
    *
@@ -1792,11 +1792,11 @@ class AppSolr
    */
   public function getApplicationDelegationData($AppUID)
   {
-    
+
     $allAppDbData = array ();
-    
+
     $c = new Criteria ();
-    
+
     $c->addSelectColumn (ApplicationPeer::APP_UID);
     $c->addSelectColumn (ApplicationPeer::APP_NUMBER);
     $c->addSelectColumn (ApplicationPeer::APP_STATUS);
@@ -1805,10 +1805,10 @@ class AppSolr
     $c->addSelectColumn (ApplicationPeer::APP_FINISH_DATE);
     $c->addSelectColumn (ApplicationPeer::APP_UPDATE_DATE);
     $c->addSelectColumn (ApplicationPeer::APP_DATA);
-    
+
     $c->addAsColumn ('APP_TITLE', 'capp.CON_VALUE');
     $c->addAsColumn ('PRO_TITLE', 'cpro.CON_VALUE');
-    
+
     $c->addSelectColumn ('ad.DEL_INDEX');
     $c->addSelectColumn ('ad.DEL_PREVIOUS');
     $c->addSelectColumn ('ad.TAS_UID');
@@ -1828,67 +1828,67 @@ class AppSolr
     $c->addSelectColumn ('ad.DEL_FINISHED');
     $c->addSelectColumn ('ad.DEL_DELAYED');
     $c->addSelectColumn ('ad.APP_OVERDUE_PERCENTAGE');
-    
+
     $c->addSelectColumn ('at.APP_THREAD_INDEX');
     $c->addSelectColumn ('at.APP_THREAD_PARENT');
     $c->addSelectColumn ('at.APP_THREAD_STATUS');
-    
+
     $c->addAlias ('capp', 'CONTENT');
     $c->addAlias ('cpro', 'CONTENT');
     $c->addAlias ('ad', 'APP_DELEGATION');
     $c->addAlias ('at', 'APP_THREAD');
-    
+
     $aConditions = array ();
     $aConditions [] = array (
         ApplicationPeer::APP_UID,
-        'capp.CON_ID' 
+        'capp.CON_ID'
     );
     $aConditions [] = array (
         'capp.CON_CATEGORY',
-        DBAdapter::getStringDelimiter () . 'APP_TITLE' . DBAdapter::getStringDelimiter () 
+        DBAdapter::getStringDelimiter () . 'APP_TITLE' . DBAdapter::getStringDelimiter ()
     );
     $aConditions [] = array (
         'capp.CON_LANG',
-        DBAdapter::getStringDelimiter () . 'en' . DBAdapter::getStringDelimiter () 
+        DBAdapter::getStringDelimiter () . 'en' . DBAdapter::getStringDelimiter ()
     );
     $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
-    
+
     $aConditions = array ();
     $aConditions [] = array (
         ApplicationPeer::PRO_UID,
-        'cpro.CON_ID' 
+        'cpro.CON_ID'
     );
     $aConditions [] = array (
         'cpro.CON_CATEGORY',
-        DBAdapter::getStringDelimiter () . 'PRO_TITLE' . DBAdapter::getStringDelimiter () 
+        DBAdapter::getStringDelimiter () . 'PRO_TITLE' . DBAdapter::getStringDelimiter ()
     );
     $aConditions [] = array (
         'cpro.CON_LANG',
-        DBAdapter::getStringDelimiter () . 'en' . DBAdapter::getStringDelimiter () 
+        DBAdapter::getStringDelimiter () . 'en' . DBAdapter::getStringDelimiter ()
     );
     $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
-    
+
     $c->addJoin (ApplicationPeer::APP_UID, 'ad.APP_UID', Criteria::JOIN);
-    
+
     $aConditions = array ();
     $aConditions [] = array (
         'ad.APP_UID',
-        'at.APP_UID' 
+        'at.APP_UID'
     );
     $aConditions [] = array (
         'ad.DEL_THREAD',
-        'at.APP_THREAD_INDEX' 
+        'at.APP_THREAD_INDEX'
     );
     $c->addJoinMC ($aConditions, Criteria::JOIN);
-    
+
     $c->add (ApplicationPeer::APP_UID, $AppUID);
-    
+
     $rs = ApplicationPeer::doSelectRS ($c);
     $rs->setFetchmode (ResultSet::FETCHMODE_ASSOC);
-    
+
     $rs->next ();
     $row = $rs->getRow ();
-    
+
     while (is_array ($row)) {
       $allAppDbData [] = $row;
       $rs->next ();
@@ -1896,7 +1896,7 @@ class AppSolr
     }
     return $allAppDbData;
   }
-  
+
   /**
    * Get the list of groups of unassigned users of the specified task from
    * database
@@ -1910,41 +1910,41 @@ class AppSolr
   public function getTaskUnassignedUsersGroupsData($ProUID, $TaskUID)
   {
     $unassignedUsersGroups = array ();
-    
+
     $c = new Criteria ();
-    
+
     $c->addSelectColumn (TaskUserPeer::USR_UID);
     $c->addSelectColumn (TaskUserPeer::TU_RELATION);
-    
+
     $aConditions = array ();
     $aConditions [] = array (
         TaskPeer::TAS_UID,
-        TaskUserPeer::TAS_UID 
+        TaskUserPeer::TAS_UID
     );
     $aConditions [] = array (
         TaskPeer::TAS_ASSIGN_TYPE,
-        DBAdapter::getStringDelimiter () . 'SELF_SERVICE' . DBAdapter::getStringDelimiter () 
+        DBAdapter::getStringDelimiter () . 'SELF_SERVICE' . DBAdapter::getStringDelimiter ()
     );
     $c->addJoinMC ($aConditions, Criteria::JOIN);
-    
+
     $c->add (TaskPeer::PRO_UID, $ProUID);
     $c->add (TaskPeer::TAS_UID, $TaskUID);
-    
+
     $rs = TaskPeer::doSelectRS ($c);
     $rs->setFetchmode (ResultSet::FETCHMODE_ASSOC);
     // echo $c->toString();
     $rs->next ();
     $row = $rs->getRow ();
-    
+
     while (is_array ($row)) {
       $unassignedUsersGroups [] = $row;
       $rs->next ();
       $row = $rs->getRow ();
     }
-    
+
     return $unassignedUsersGroups;
   }
-  
+
   /**
    * Get the list of dynaform file names associated with the specified process
    * from database
@@ -1956,27 +1956,27 @@ class AppSolr
   public function getProcessDynaformFileNames($ProUID)
   {
     $dynaformFileNames = array ();
-    
+
     $c = new Criteria ();
-    
+
     $c->addSelectColumn (DynaformPeer::DYN_FILENAME);
-    
+
     $c->add (DynaformPeer::PRO_UID, $ProUID);
-    
+
     $rs = DynaformPeer::doSelectRS ($c);
     $rs->setFetchmode (ResultSet::FETCHMODE_ASSOC);
     $rs->next ();
     $row = $rs->getRow ();
-    
+
     while (is_array ($row)) {
       $dynaformFileNames [] = $row;
       $rs->next ();
       $row = $rs->getRow ();
     }
-    
+
     return $dynaformFileNames;
   }
-  
+
   /**
    * Store a flag indicating if the application was updated in database
    * table APP_SOLR_QUEUE
@@ -1989,10 +1989,10 @@ class AppSolr
   public function applicationChangedUpdateSolrQueue($AppUid, $updated)
   {
     $oAppSolrQueue = new AppSolrQueue ();
-    
+
     $oAppSolrQueue->createUpdate ($AppUid, $updated);
   }
-  
+
   /**
    * Update application records in Solr that are stored in APP_SOLR_QUEUE table
    */
@@ -2000,9 +2000,9 @@ class AppSolr
   {
     // check table of pending updates
     $oAppSolrQueue = new AppSolrQueue ();
-    
+
     $aAppSolrQueue = $oAppSolrQueue->getListUpdatedApplications ();
-    
+
     foreach ($aAppSolrQueue as $oAppSolrQueueEntity) {
       // call the syncronization function
       if($oAppSolrQueueEntity->appUpdated == 1){
@@ -2010,11 +2010,11 @@ class AppSolr
       }
       if($oAppSolrQueueEntity->appUpdated == 2){
         $this->deleteApplicationSearchIndex ($oAppSolrQueueEntity->appUid);
-      }      
+      }
       $this->applicationChangedUpdateSolrQueue ($oAppSolrQueueEntity->appUid, 0);
     }
   }
-  
+
   /**
    * Get the total number of application records in database
    *
@@ -2023,14 +2023,14 @@ class AppSolr
   public function getCountApplicationsPMOS2()
   {
     $c = new Criteria ();
-    
+
     $c->addSelectColumn (ApplicationPeer::APP_UID);
-    
+
     $count = ApplicationPeer::doCount ($c);
-    
+
     return $count;
   }
-  
+
   /**
    * Get the total number of application records in search index
    *
@@ -2041,10 +2041,10 @@ class AppSolr
     $searchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
     // execute query
     $count = $searchIndex->getNumberDocuments ($this->_solrInstance);
-  
+
     return $count;
-  }  
-  
+  }
+
   /**
    * Get a paginated list of application uids from database.
    *
@@ -2056,16 +2056,16 @@ class AppSolr
    */
   public function getPagedApplicationUids($skip, $pagesize)
   {
-    
+
     $c = new Criteria ();
-    
+
     $c->addSelectColumn (ApplicationPeer::APP_UID);
     $c->setOffset ($skip);
     $c->setLimit ($pagesize);
-    
+
     $rs = ApplicationPeer::doSelectRS ($c);
     $rs->setFetchmode (ResultSet::FETCHMODE_ASSOC);
-    
+
     $rs->next ();
     $row = $rs->getRow ();
     $appUIds = array ();
@@ -2076,7 +2076,7 @@ class AppSolr
     }
     return $appUIds;
   }
-  
+
   /**
    * Reindex all the application records in Solr server
    * update applications in groups of 1000
@@ -2096,16 +2096,16 @@ class AppSolr
     // $numRows = 15;
     for ($skip = 0; $skip <= $numRows;) {
       $aaAPPUIds = $this->getPagedApplicationUids ($skip, $trunk);
-      
+
       printf ("Indexing %d to %d \n", $skip, $skip + $trunk);
       $initTimeDoc = microtime (true);
       $this->updateApplicationSearchIndex ($aaAPPUIds);
-      
+
       $curTimeDoc = gmdate ('H:i:s', (microtime (true) - $initTimeDoc));
       printf ("Indexing document time: %s \n", $curTimeDoc);
       $skip += $trunk;
     }
-    
+
     $curTimeDoc = gmdate ('H:i:s', (microtime (true) - $initTimeAll));
     printf ("Total reindex time: %s \n", $curTimeDoc);
   }
