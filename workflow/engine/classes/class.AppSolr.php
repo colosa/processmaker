@@ -843,7 +843,7 @@ class AppSolr
               // $toDateDatetime = new DateTime($toDateOriginal);
               // $toDateDatetime = date_create_from_format ( 'Y-m-d',
               // $toDateOriginal );
-              $toDate = gmdate ("Y-m-d\T00:00:00\Z", strtotime ($fromDateOriginal));
+              $toDate = gmdate ("Y-m-d\T00:00:00\Z", strtotime ($toDateOriginal));
             }
             $searchText = ":[" . $fromDate . " TO " . $toDate . "]";
           }
