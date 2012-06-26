@@ -171,7 +171,7 @@ class Home extends Controller
     
     $steps    = $apps->getSteps($lastApp['APP_UID'], $lastApp['DEL_INDEX'], $lastApp['TAS_UID'], $lastApp['PRO_UID']);
     $lastStep = array_pop($steps);
-    $lastStep['title'] = 'Finish';
+    $lastStep['title'] = G::LoadTranslation('ID_FINISH');
     $steps[] = $lastStep;
 
     $this->setView('home/indexSingle');
