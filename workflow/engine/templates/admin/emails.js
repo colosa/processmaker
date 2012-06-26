@@ -167,6 +167,7 @@ Ext.onReady(function(){
           Ext.getCmp('UseSecureConnection').setVisible(true); 
           Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(true);
         }
+        Ext.getCmp('SaveChanges').disable();
       }
     } 
   });
@@ -576,6 +577,62 @@ var testConnForm = new Ext.FormPanel({
     }
   ]
 });
+
+var testConnFormMail = new Ext.FormPanel({
+  collapsible: false,
+  maximizable: true,
+  width:445,    
+  autoHeight:true,
+  frame:true,
+  autoDestroy : true,
+  monitorValid : true,
+  plain: true,
+  waitMsgTarget: true,    
+  items:[{
+    xtype  : 'fieldset',
+    layout : 'form',
+    id:'testConnFieldMail',
+    title: _('TESTING_EMAIL_CONF'),//'Testing email configuration',
+    labelWidth:20,
+    items : [
+      {
+        xtype: 'label', fieldLabel: ' ', 
+        id:'step11', width: 300, 
+        labelSeparator:''
+      },
+      {
+        xtype: 'label', fieldLabel: '     ', 
+        id:'result11', 
+        width: 300, 
+        labelSeparator:'',
+        style : 'font-size: 11px;'
+      },
+      {
+        xtype: 'label', 
+        fieldLabel: ' ', 
+        id:'step12', 
+        width: 300, 
+        labelSeparator:''
+      },
+      {
+        xtype: 'label', fieldLabel: '     ', 
+        id:'result12', 
+        width: 300, 
+        labelSeparator:'',
+        style : 'font-size: 11px;'
+      }
+    ]
+  }],
+  buttons: [    
+    {
+      text:_('ID_DONE'),
+      id: 'doneMail',
+      handler: function(){
+        testEmailWindowMail.hide();       
+      }
+    }
+  ]
+});
   
 var testEmailWindow = new Ext.Window({ 
   width: 470,    
@@ -585,6 +642,16 @@ var testEmailWindow = new Ext.Window({
   layout: 'fit',  
   y: 82,
   items: testConnForm
+});
+
+var testEmailWindowMail = new Ext.Window({ 
+  width: 470,    
+  closable:false,
+  plain: true,
+  autoHeight: true,
+  layout: 'fit',  
+  y: 82,
+  items: testConnFormMail
 });
 
 var params;
@@ -634,61 +701,43 @@ var testMethod = function()
   switch (typeTest)
   {
     case 'MAIL':
-      Ext.MessageBox.show({
-        msg: _('ID_LOADING'),
-        progressText: 'Saving...',
-        width:300,
-        wait:true,
-        waitConfig: {interval:200},
-        animEl: 'mb7'
-      });
+      if (  Ext.getCmp('SendaTestMail').getValue() == true && 
+            ( Ext.getCmp('eMailto').getValue() == '' || 
+              /^[0-9a-z_\-\.]+@[0-9a-z\-\.]+\.[a-z]{2,4}$/i.test(Ext.getCmp('eMailto').getValue()) != true ) ) {
+        Ext.MessageBox.show({
+          title: 'Error',
+          msg: '"Mail to" does not contain a valid email address format.',
+          buttons: Ext.MessageBox.OK,
+          animEl: 'mb9',
+          icon: Ext.MessageBox.ERROR
+        });
+
+        return false;
+      }
 
       params = {
         typeTest  : 'MAIL',
         request   : 'mailTestMail_Show',
-        mail_to   : Ext.getCmp('eMailto').getValue(),
+        mail_to   : 'admin@processmaker.com',        
         send_test_mail  : 'yes'
       };
 
-      Ext.Ajax.request({
-        url: '../adminProxy/testConnection',
-        method:'POST',
-        params: params,
-        waitMsg: _('ID_LOADING'),
-        success: function(r,o) {
-          Ext.MessageBox.hide();
-          var resp = Ext.util.JSON.decode(r.responseText);
-          if (resp.sendMail === true) {
-            Ext.MessageBox.show({
-              title: 'Correct test mail',
-              msg: resp.msg,
-              buttons: Ext.MessageBox.OK,
-              animEl: 'mb9',
-              icon: Ext.MessageBox.INFO
-            });
-            Ext.getCmp('SaveChanges').enable();
-          } else {
-            Ext.MessageBox.show({
-              title: 'Error',
-              msg: resp.msg,
-              buttons: Ext.MessageBox.OK,
-              animEl: 'mb9',
-              icon: Ext.MessageBox.ERROR
-            });
-            Ext.getCmp('SaveChanges').disable();
-          }
-        },
-        failure: function () {
-          Ext.MessageBox.show({
-            title: 'Error',
-            msg: 'Error in connection',
-            buttons: Ext.MessageBox.OK,
-            animEl: 'mb9',
-            icon: Ext.MessageBox.ERROR
-          });
-          Ext.getCmp('SaveChanges').disable();
-        }
-      });
+      Ext.getCmp('step11').setText('<span id="rstep11"></span>  '+_('LOGIN_VERIFY_MSG')+' <b> Mail Transport Agent </b>', false);
+      Ext.getCmp('step12').setText('<span id="rstep12"></span>  '+_('SENDING_TEST_EMAIL')+' [<b>'+ Ext.getCmp('eMailto').getValue() +'</b>]...<b>', false);
+      
+      Ext.getCmp('step11').setVisible(false);
+      Ext.getCmp('step12').setVisible(false);
+      Ext.getCmp('result11').setVisible(false);
+      Ext.getCmp('result12').setVisible(false);
+      
+      Ext.getCmp('doneMail').enable();    
+      Ext.getCmp('SaveChanges').disable();
+      
+      Ext.getCmp('EMailFields').disable();
+      testEmailWindowMail.show();
+      Ext.getCmp('EMailFields').enable();
+
+      execTest(11);
       break;
     case 'PHPMAILER':
       if((Ext.getCmp('Port').getValue()==null)||(Ext.getCmp('Port').getValue()=='')) {
@@ -755,15 +804,19 @@ var testMethod = function()
 function execTest(step) {
   
   if (step == 6) return false;
+  if (step == 13) return false;
   
   if ((step == 5) && (params.SendaTestMail == false))
     return false;
-  
+  if ((step == 12) && (Ext.getCmp('SendaTestMail').getValue() != true))
+    return false;
+
   document.getElementById('rstep'+step).innerHTML = '<img width="13" height="13" border="0" src="/images/ajax-loader.gif">';
-  Ext.getCmp('step'+step).setVisible(true); 
+  Ext.getCmp('step'+step).setVisible(true);
   
   params.step = step;
-  
+  params.mail_to = (params.step == 12) ? Ext.getCmp('eMailto').getValue() : params.mail_to;
+
   Ext.Ajax.request({
     url: '../adminProxy/testConnection',
     method:'POST',
@@ -778,20 +831,20 @@ function execTest(step) {
       }
       else {
         img = '/images/delete.png';
-        Ext.getCmp('SaveChanges').disable();    
+        Ext.getCmp('SaveChanges').disable();
       }
       
       document.getElementById('rstep'+step).innerHTML = '<img width="13" height="13" border="0" src="'+img+'">';      
 
       if(resp.msg) {
         document.getElementById('result'+step).innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#FF0000;">'+resp.msg+'</span>';
-        Ext.getCmp('result'+step).setVisible(true);    
+        Ext.getCmp('result'+step).setVisible(true);
       }
       
-      execTest(step+1);      
+      execTest(step+1);
     }
   });
-} 
+}
   
 saveMethod=function() { 
   var x = Ext.getCmp('UseSecureConnection').getValue();
