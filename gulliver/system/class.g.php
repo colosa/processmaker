@@ -988,7 +988,8 @@ class G
     /* Fix to prevent use uxs skin outside siplified interface, 
      because that skin is not compatible with others interfaces*/
     if ($SYS_SKIN == 'uxs' && $SYS_COLLECTION != 'home' && $SYS_COLLECTION != 'cases') {
-      $SYS_SKIN = 'classic';
+      $config = System::getSystemConfiguration();
+      $SYS_SKIN = $config['default_skin'];
     }
 
     define("SYS_LANG", $SYS_LANG);
