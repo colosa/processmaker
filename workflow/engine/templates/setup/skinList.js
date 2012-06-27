@@ -38,7 +38,7 @@ new Ext.KeyMap(document, [
     //iGrid = Ext.getCmp('infoGrid');
     //rowSelected = iGrid.getSelectionModel().getSelected();
     //if (rowSelected){
-      
+
     //}
   }
 }
@@ -60,25 +60,25 @@ var classicSkin = '00000000000000000000000000000001';
 
 Ext.onReady(function(){
   Ext.QuickTips.init();
-  
+
   pageSize = parseInt(CONFIG.pageSize);
-  
+
   newButton = new Ext.Action({
     text: _('ID_NEW'),
     iconCls: 'button_menu_ext ss_sprite  ss_add',
     disabled: false,
     handler: newSkin
   });
-  
-  
+
+
   deleteButton = new Ext.Action({
     text: _('ID_DELETE'),
     iconCls: 'button_menu_ext ss_sprite  ss_delete',
     handler: deleteSkin,
     disabled: true
   });
-  
-  
+
+
   importButton = new Ext.Action({
     text: _('ID_IMPORT'),
     iconCls: 'button_menu_ext ss_sprite ss_building_add',
@@ -92,16 +92,16 @@ Ext.onReady(function(){
     handler: exportSkin,
     disabled: true
   });
-  
+
   searchButton = new Ext.Action({
     text: _('ID_SEARCH'),
     handler: DoSearch
   });
-  
+
   contextMenu = new Ext.menu.Menu({
     items: [exportButton,deleteButton]
   });
-  
+
   searchText = new Ext.form.TextField ({
     id: 'searchTxt',
     ctCls:'pm_search_text_field',
@@ -120,14 +120,14 @@ Ext.onReady(function(){
       }
     }
   });
-  
+
   clearTextButton = new Ext.Action({
     text: 'X',
     ctCls:'pm_search_x_button',
     handler: GridByDefault
   });
-  
-  
+
+
   smodel = new Ext.grid.RowSelectionModel({
     singleSelect: true,
     listeners:{
@@ -162,7 +162,7 @@ Ext.onReady(function(){
       url: 'skin_Ajax?action=skinList'
     })
   });
-  
+
   store = new Ext.data.GroupingStore( {
     proxy : new Ext.data.HttpProxy({
       url: 'skin_Ajax?action=skinList'
@@ -205,7 +205,7 @@ Ext.onReady(function(){
       ]
     })
   });
-  
+
   cmodel = new Ext.grid.ColumnModel({
     defaults: {
       width: 50,
@@ -255,16 +255,16 @@ Ext.onReady(function(){
       align:'center',
       renderer: showdate
     }
-    
+
     ]
   });
-  
+
   storePageSize = new Ext.data.SimpleStore({
     fields: ['size'],
     data: [['20'],['30'],['40'],['50'],['100']],
     autoLoad: true
   });
-  
+
   comboPageSize = new Ext.form.ComboBox({
     typeAhead     : false,
     mode          : 'local',
@@ -282,9 +282,9 @@ Ext.onReady(function(){
       }
     }
   });
-  
+
   comboPageSize.setValue(pageSize);
-  
+
   bbarpaging = new Ext.PagingToolbar({
     pageSize: pageSize,
     store: store,
@@ -293,8 +293,8 @@ Ext.onReady(function(){
     emptyMsg: _('ID_GRID_PAGE_NO_SKIN_MESSAGE')//,
   //items: ['-',_('ID_PAGE_SIZE')+':',comboPageSize]
   });
-  
-  
+
+
   infoGrid = new Ext.grid.GridPanel({
     region: 'center',
     layout: 'fit',
@@ -321,7 +321,7 @@ Ext.onReady(function(){
     bbar: bbarpaging,
     listeners: {
       rowdblclick: function(grid, n,e){
-        rowSelected = infoGrid.getSelectionModel().getSelected();        
+        rowSelected = infoGrid.getSelectionModel().getSelected();
         if((rowSelected.data.SKIN_FOLDER_ID)&&((rowSelected.data.SKIN_FOLDER_ID!=""))){
           viewport.getEl().mask(_('ID_SKIN_SWITCHING'));
           changeSkin(rowSelected.data.SKIN_FOLDER_ID,SYS_SKIN);
@@ -333,21 +333,21 @@ Ext.onReady(function(){
       groupTextTpl: '{text}'
     })
   });
-  
-  infoGrid.on('rowcontextmenu', 
+
+  infoGrid.on('rowcontextmenu',
     function (grid, rowIndex, evt) {
       var sm = grid.getSelectionModel();
       sm.selectRow(rowIndex, sm.isSelected(rowIndex));
     },
     this
     );
-  
+
   infoGrid.on('contextmenu', function(evt){
     evt.preventDefault();
   }, this);
   infoGrid.addListener('rowcontextmenu',onMessageContextMenu, this);
   infoGrid.store.load();
-  
+
   viewport = new Ext.Viewport({
     layout: 'fit',
     autoScroll: false,
@@ -400,7 +400,7 @@ newSkin = function(){
       id:"newform",
       fileUpload:true,
       labelWidth:100,
-      url:'skin_Ajax',      
+      url:'skin_Ajax',
       frame:false,
       items:[
       {
@@ -414,10 +414,10 @@ newSkin = function(){
         vtype:'alphanum',
         listeners: {
           keyup:function(a,b,c){
-            
+
             Ext.getCmp('newform').getForm().findField('skinFolder').setValue(a.getValue().toLowerCase());
           }
-             
+
         }
       },
       {
@@ -498,7 +498,7 @@ newSkin = function(){
             },
             scope: Ext.getCmp("newform"),
             // add some vars to the request, similar to hidden fields
-            params: {             
+            params: {
               action: "newSkin",
               requestType: "xmlhttprequest"
             }
@@ -589,7 +589,7 @@ importSkin = function(){
             success: function(form, action) {
 
               store.reload();
-                     
+
               Ext.getCmp("importDialog").destroy();
               PMExt.notify(_('ID_SKINS'),_('ID_SKIN_SUCCESS_IMPORTED'));
             },
@@ -601,7 +601,7 @@ importSkin = function(){
                 return;
               }
               Ext.MessageBox.alert("error", action.result.error);
-                     
+
             },
             scope: Ext.getCmp("uploadform"),
             // add some vars to the request, similar to hidden fields
@@ -626,7 +626,7 @@ importSkin = function(){
 
   });
   // importDialog.doLayout();
-  
+
   // recalculate
   // Window size
   //importDialog.syncSize();
@@ -650,7 +650,7 @@ exportSkin = function(){
       success: function(r,o){
         viewport.getEl().unmask();
         var resp = Ext.util.JSON.decode(r.responseText);
-        if (resp.success){                    
+        if (resp.success){
           try {
             Ext.destroy(Ext.get('downloadIframe'));
           }
@@ -741,7 +741,26 @@ UpdatePageConfig = function(pageSize){
 };
 
 function changeSkin(newSkin,currentSkin){
-  currentLocation=top.location.href;
-  newLocation = currentLocation.replace("/"+currentSkin+"/","/"+newSkin+"/");
-  top.location.href=newLocation;
+  Ext.Ajax.request({
+      url: 'clearCompiledAjax',
+      params: {
+        htmlCache: true
+      },
+      success: function(r, o){
+        var response = Ext.util.JSON.decode(r.responseText);
+        if (response.success) {
+          currentLocation = top.location.href;
+          newLocation = currentLocation.replace("/" + currentSkin + "/", "/" + newSkin + "/");
+          top.location.href = newLocation;
+        }
+        else {
+          viewport.getEl().unmask();
+          PMExt.error(_('ID_SKINS'), response.message);
+        }
+      },
+      failure: function(r, o){
+        viewport.getEl().unmask();
+        PMExt.error(_('ID_SKINS'), o.result.error);
+      }
+    });
 }
