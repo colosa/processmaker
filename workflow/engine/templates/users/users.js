@@ -11,6 +11,7 @@ var global = {};
 var readMode;
 var canEdit = true;
 var flagPoliciesPassword = false;
+var flagValidateUsername = false;
 //var rendeToPage='document.body';
 global.IC_UID        = '';
 global.IS_UID        = '';
@@ -397,7 +398,69 @@ Ext.onReady(function() {
         fieldLabel : _('ID_USER_ID'),
         xtype      : 'textfield',
         width      : 260,
-        allowBlank : false
+        allowBlank : false,
+        listeners: {
+          blur : function(ob)
+          {
+            // trim
+            this.value = this.getValue().replace(/^\s+|\s+$/g,"");
+            document.getElementById('USR_USERNAME').value = this.getValue().replace(/^\s+|\s+$/g,"");
+            
+            Ext.getCmp('saveB').disable();
+            Ext.getCmp('cancelB').disable();
+
+            var spanAjax  = '<span style="font: 9px tahoma,arial,helvetica,sans-serif;">';
+            var imageAjax = '<img width="13" height="13" border="0" src="/images/ajax-loader.gif">';
+            var labelAjax = _('ID_USERNAME_TESTING');
+
+            Ext.getCmp('usernameReview').setText(spanAjax + imageAjax + labelAjax + '</span>', false);
+            Ext.getCmp('usernameReview').setVisible(true);
+
+            var usernameText = this.getValue();
+
+            Ext.Ajax.request({
+              url    : 'usersAjax',
+              method : 'POST',
+              params : {
+                'action'       : 'testUsername',
+                'NEW_USERNAME' : usernameText
+              },
+              success: function(r,o){      
+                var resp = Ext.util.JSON.decode(r.responseText);
+
+                if (resp.exists) {
+                  flagValidateUsername = false;
+                } else {
+                  flagValidateUsername = true;  
+                }
+                
+                Ext.getCmp('usernameReview').setText(resp.descriptionText, false);
+                Ext.getCmp('saveB').enable();
+                Ext.getCmp('cancelB').enable();
+              },
+              failure: function () {
+                Ext.MessageBox.show({
+                  title: 'Error',
+                  msg: 'Failed to store data',
+                  buttons: Ext.MessageBox.OK,
+                  animEl: 'mb9',
+                  icon: Ext.MessageBox.ERROR
+                });
+                Ext.getCmp('saveB').enable();
+                Ext.getCmp('cancelB').enable();
+              }
+            });
+
+            Ext.getCmp('usernameReview').setVisible(true);
+          }
+        }
+      },
+      {
+        xtype: 'label', 
+        fieldLabel: ' ',
+        id:'usernameReview',
+        width: 300, 
+        labelSeparator: ''
       },
       {
         id         : 'USR_EMAIL',
@@ -872,12 +935,17 @@ Ext.onReady(function() {
 
   Ext.getCmp('passwordReview').setVisible(false);
   Ext.getCmp('passwordConfirm').setVisible(false);
+  Ext.getCmp('usernameReview').setVisible(false);
 
-  var spanAjax = '<span style="font: 9px tahoma,arial,helvetica,sans-serif;">';
+  var spanAjax  = '<span style="font: 9px tahoma,arial,helvetica,sans-serif;">';
   var imageAjax = '<img width="13" height="13" border="0" src="/images/ajax-loader.gif">';
   var labelAjax = _('ID_PASSWORD_TESTING');
-  
+
   Ext.getCmp('passwordReview').setText(spanAjax + imageAjax + labelAjax + '</span>', false);
+
+  var labelAjax = _('ID_USERNAME_TESTING');
+
+  Ext.getCmp('usernameReview').setText(spanAjax + imageAjax + labelAjax + '</span>', false);
 });
 
 function defineUserPanel()
@@ -916,8 +984,21 @@ function editUser()
 }
 function saveUser()
 {
+  if (flagValidateUsername != true) {
+    if ( Ext.getCmp('USR_USERNAME').getValue() == '') {
+      Ext.Msg.alert( _('ID_ERROR'), _('ID_MSG_ERROR_USR_USERNAME'));
+    } else {
+      Ext.Msg.alert( _('ID_ERROR'), Ext.getCmp('usernameReview').html);
+    }
+    return false;
+  }
+
   if (flagPoliciesPassword != true) {
-    Ext.Msg.alert( _('ID_ERROR'), Ext.getCmp('passwordReview').html);
+    if ( Ext.getCmp('USR_NEW_PASS').getValue() == '') {
+      Ext.Msg.alert( _('ID_ERROR'), _('ID_PASSWD_REQUIRED'));
+    } else {
+      Ext.Msg.alert( _('ID_ERROR'), Ext.getCmp('passwordReview').html);
+    }
     return false;
   }
 
