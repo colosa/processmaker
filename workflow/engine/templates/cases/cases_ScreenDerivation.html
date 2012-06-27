@@ -130,9 +130,9 @@
             <tr>
               <td colspan="2" align="center">
                 {if $data.NEXT_TASK.TAS_ASSIGN_TYPE neq '' && not $data.NEXT_TASK.ROU_FINISH_FLAG }
-                <input type="submit" class='module_app_button___gray' name="btnContinue" id="btnContinue" value="{$CONTINUE_WITH_OPTION} {$id} ">
+                <input type="submit" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$CONTINUE_WITH_OPTION} {$id} " onclick="return clickButton(this);">
                 {/if} {if $data.NEXT_TASK.TAS_ASSIGN_TYPE neq '' && $data.NEXT_TASK.ROU_FINISH_FLAG }
-                <input type="submit" class='module_app_button___gray' name="btnContinue" id="btnContinue" value="{$FINISH_WITH_OPTION} {$id} ">
+                <input type="submit" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$FINISH_WITH_OPTION} {$id} " onclick="return clickButton(this);">
                   {$data.NEXT_TASK.TAS_ASSIGN_TYPE}
                 {/if}
               </td>
@@ -144,14 +144,14 @@
             {if $PROCESS.ERROR eq '' && $PROCESS.ROU_TYPE neq 'SELECT' && ! $PROCESS.ROU_FINISH_FLAG }
             <tr>
               <td colspan="2" align="center">
-                <input type="button" class='module_app_button___gray' name="btnContinue" id="btnContinue" value="{$CONTINUE}" {$PROCESS.DISABLED} />        
+                <input type="submit" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$CONTINUE}" {$PROCESS.DISABLED} onclick="return clickButton(this);">       
               </td>
             </tr>
             {/if}
             {if $PROCESS.ERROR eq '' && $PROCESS.ROU_TYPE neq 'SELECT' && $PROCESS.ROU_FINISH_FLAG }
             <tr>
               <td colspan="2" align="center">
-                <input type="submit" class='module_app_button___gray' name="btnContinue" id="btnContinue" value="{$FINISH}">
+                <input type="submit" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$FINISH}" onclick="return clickButton(this);">
               </td>
             </tr>
             {/if}
@@ -173,44 +173,127 @@
 </div>
 
 <script>
-  {literal}  
-  var validateSubmitForm = function() {
-    var submitsForm = document.getElementsByTagName("input");
+  // deviration type
+  var rouType = '{$PROCESS.ROU_TYPE}';  
+  {literal}
+  
+  // option select
+  var optionSelect = "";
+
+  /**
+   * @name clickButton
+   * @description verify the option select in button 
+   * @access public
+   * @param obj [object: button, submit]
+   * @return boolean
+   * @author Brayan Pereyra - Cochalo <brayan@colosa.com>
+   */
+  var clickButton  = function(obj) {
+    disabledButton();
+
+    var nameButton = obj.name;
+    var pos        = nameButton.lastIndexOf("_");
+    optionSelect   = nameButton.substr(pos+1);
+
+    return true;
+  };
+
+  /**
+   * @name disabledButton
+   * @description disable all button type submit
+   * @access public
+   * @return boolean
+   * @author Brayan Pereyra - Cochalo <brayan@colosa.com>
+   */
+  var disabledButton = function() {
+    var submitsForm  = document.getElementsByTagName("input");
     
     for (var i = 0 ; i <= submitsForm.length ; i++) {
       if (typeof(submitsForm[i]) != 'undefined' && submitsForm[i].type == 'submit') {
         submitsForm[i].disabled = true;
       }
     }
+
     return true;
   };
 
-  leimnud.event.add(document.getElementById('btnContinue'), 'click', function() {
-  validateSubmitForm();
-  i=0, sw=true;
-  var frmFields =document.getElementById('frmDerivation');
-
-  while (i < frmFields.length && sw) {
-    if(frmFields[i].type=="select-one"){
-      if(frmFields[i].value==""){
-        sw = false; break;
+  /**
+   * @name disabledButton
+   * @description enable all button type submit
+   * @access public
+   * @return boolean
+   * @author Brayan Pereyra - Cochalo <brayan@colosa.com>
+   */
+  var enabledButton = function() {
+    var submitsForm = document.getElementsByTagName("input");
+    
+    for (var i = 0 ; i <= submitsForm.length ; i++) {
+      if (typeof(submitsForm[i]) != 'undefined' && submitsForm[i].type == 'submit') {
+        submitsForm[i].disabled = false;
       }
     }
-    i++;
-  }
 
-  if(!sw) {
-    alert(G_STRINGS.ID_ASSIGN_CASE_TO_USER);
-    return false;
-  }
+    return true;
+  };
+
+  /**
+   * @name validateSubmitForm
+   * @description validate value select
+   * @access public
+   * @return boolean
+   * @author Brayan Pereyra - Cochalo <brayan@colosa.com>
+   */
+  var validateSubmitForm = function() {
+    disabledButton();
+    var flagSelect = false;
+
+    // verify type of derivation
+    if (rouType == 'PARALLEL') {
+      // verify all value select 
+      var selectsForm = document.getElementsByTagName("select");
+      for (var i = 0 ; i <= selectsForm.length ; i++) {
+        if (typeof(selectsForm[i]) != 'undefined') {
+          var vtext = new input(selectsForm[i]);
+          if (selectsForm[i].value == '') {
+            flagSelect = true;
+            vtext.failed();            
+          } else {
+            vtext.passed();
+          }
+        }
+      }
+
+      if (flagSelect) {
+        enabledButton();
+        alert(G_STRINGS.ID_ASSIGN_CASE_TO_USER);
+        return false;
+      }
+    } else {
+      var selectId = "form[TASKS]["+optionSelect+"][USR_UID]";
+      
+      if (typeof(document.getElementById(selectId)) != 'undefined') {
+        var vtext  = new input(document.getElementById(selectId));
+
+        // verify value select the option select
+        if (document.getElementById(selectId).value == '') {
+          enabledButton();
+          vtext.failed();
+          alert(G_STRINGS.ID_ASSIGN_CASE_TO_USER);
+          return false;
+        } else {
+          vtext.passed();
+        }
+      }
+    }
+    
+
+    {/literal}
+    setNestedProperty(this, Array('disabled'), 'true');
+    setNestedProperty(this, Array('value'), '{$PROCESSING_MESSAGE}');
+    {literal}
+
+    return true;
+  };
+
   {/literal}
-  setNestedProperty(this, Array('disabled'), 'true');
-  setNestedProperty(this, Array('value'), '{$PROCESSING_MESSAGE}');
-  {literal}
-  var client = getBrowserClient();
-  if (client.browser == "msie" || client.browser == "safari" || client.browser == "firefox") {
-    document.frmDerivation.submit();
-  }
-}.extend(document.getElementById('btnContinue'))); {/literal}
 </script>
-
