@@ -1,5 +1,5 @@
 <div id="publisherContent[1]" style="margin: 0px;" align="center">
-<form name="frmDerivation" id="frmDerivation" action="cases_Derivate" method="POST" class="formDefault" style="margin: 0px;">
+<form name="frmDerivation" id="frmDerivation" action="cases_Derivate" method="POST" class="formDefault" style="margin: 0px;" onsubmit="return validateSubmitForm();">
   <input type="hidden" name="form[ROU_TYPE]" id="form[ROU_TYPE]" value="{$PROCESS.ROU_TYPE}">
   <div class="borderForm" style="width: 500px; padding-left: 0; padding-right: 0; border-width: 1;">
     <div class="boxTop">
@@ -54,7 +54,7 @@
             </tr>
 
             {if $PROCESS.ROU_TYPE eq 'SELECT'}
-            <form name="frmDerivation{$id}" id="frmDerivation{$id}" action="cases_Derivate" method="POST" class="formDefault" method="post" style="margin: 0px;"><input type="hidden" name="form[ROU_TYPE]" id="form[ROU_TYPE]" value="{$PROCESS.ROU_TYPE}">
+            <form name="frmDerivation{$id}" id="frmDerivation{$id}" action="cases_Derivate" method="POST" class="formDefault" method="post" style="margin: 0px;" onsubmit="return validateSubmitForm();"><input type="hidden" name="form[ROU_TYPE]" id="form[ROU_TYPE]" value="{$PROCESS.ROU_TYPE}">
             <tr>
               <td class="FormLabel" width="100">{$OPTION_LABEL} {$id}:</td>
               <td class="FormFieldContent">{$data.ROU_CONDITION }</td>
@@ -173,7 +173,20 @@
 </div>
 
 <script>
-  {literal}leimnud.event.add(document.getElementById('btnContinue'), 'click', function() {
+  {literal}  
+  var validateSubmitForm = function() {
+    var submitsForm = document.getElementsByTagName("input");
+    
+    for (var i = 0 ; i <= submitsForm.length ; i++) {
+      if (typeof(submitsForm[i]) != 'undefined' && submitsForm[i].type == 'submit') {
+        submitsForm[i].disabled = true;
+      }
+    }
+    return true;
+  };
+
+  leimnud.event.add(document.getElementById('btnContinue'), 'click', function() {
+  validateSubmitForm();
   i=0, sw=true;
   var frmFields =document.getElementById('frmDerivation');
 
