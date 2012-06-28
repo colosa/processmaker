@@ -1869,10 +1869,23 @@ function PMFGetNextAssignedUser ($application, $task) {
   }
 }
 
-//new functions by Erik
+/**
+ * @method
+ *
+ * Returns a list or user.
+ *
+ * @name PMFGetUserEmailAddress
+ * @label PMFGet User Email Address
+ *
+ * @param string(32) or Array | $id | Case ID | Id of the case
+ * @param string(32) | $APP_UID or null | Application ID | Id of the Application
+ * @param string(32) | $prefix or default value 'usr' | prefix | Id of the task
+ * @return array | $aRecipient | Array of the Recipient  | Return an Array of the Recipient
+ *
+ */
+function PMFGetUserEmailAddress($id, $APP_UID = null, $prefix='usr')
+{
 
-function PMFGetUserEmailAddress($id, $APP_UID=null, $prefix='usr') {
-  
   require_once 'classes/model/UsersPeer.php';
   require_once 'classes/model/AppDelegation.php';
   G::LoadClass('case');
@@ -1997,7 +2010,22 @@ function PMFGetUserEmailAddress($id, $APP_UID=null, $prefix='usr') {
   }
 }
 
-function PMFGetCaseNotes ($applicationID, $type = 'array',$userUid = '') {
+/**
+ * @method
+ *
+ * Get of the cases notes an application.
+ *
+ * @name PMFGetCaseNotes
+ * @label Get of the cases notes an application.
+ *
+ * @param string(32) | $applicationID | Application ID | ID of the Application
+ * @param string(32) | $type or default value 'array' | type of the return value | type of the return value (array, object, string)
+ * @param string(32) | $userUid default value empty string | User ID | Id of the User
+ * @return array, object or string | $response | Array of the response  | Return an Array or Object or String
+ *
+ */
+function PMFGetCaseNotes ($applicationID, $type = 'array', $userUid = '')
+{
   G::LoadClass('case');
   $response = Cases::getCaseNotes($applicationID, $type, $userUid);
   return $response;
