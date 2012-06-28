@@ -563,6 +563,40 @@ switch($_POST['action'])
     $gif = '<img width="13" height="13" border="0" src="' . $img . '">';
     $aFields['DESCRIPTION'] =  $span . $gif . $aFields['DESCRIPTION'];    
     print(G::json_encode($aFields));
+    break;  
+  case 'testUsername';
+    require_once 'classes/model/Users.php';
+    $_POST['NEW_USERNAME'] = trim($_POST['NEW_USERNAME']);
+
+    $response  = array( "success" => true );
+
+    $oCriteria = new Criteria();
+    $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
+    $oCriteria->add(UsersPeer::USR_USERNAME, $_POST['NEW_USERNAME']);
+    $oDataset = UsersPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
+    $aRow = $oDataset->getRow();
+
+    if (is_array($aRow) || $_POST['NEW_USERNAME'] == '') {
+      $color  = 'red';
+      $img    = '/images/delete.png';
+      $dataVar['USER_ID'] = $_POST['NEW_USERNAME'];
+      $text   = G::LoadTranslation('ID_USERNAME_ALREADY_EXISTS', $dataVar);
+      $text   = ($_POST['NEW_USERNAME'] == '') ? G::LoadTranslation('ID_MSG_ERROR_USR_USERNAME') : $text;
+      $response['exists'] = true;      
+    } else {
+      $color  = 'green';
+      $img    = '/images/dialog-ok-apply.png';
+      $text   = G::LoadTranslation('ID_USERNAME_CORRECT');
+      $response['exists'] = false;      
+    }
+
+    
+    $span = '<span style="color: ' . $color . '; font: 9px tahoma,arial,helvetica,sans-serif;">';
+    $gif  = '<img width="13" height="13" border="0" src="' . $img . '">';
+    $response['descriptionText'] = $span . $gif . $text . '</span>';
+    echo G::json_encode($response);
     break;
-  
+
 }
