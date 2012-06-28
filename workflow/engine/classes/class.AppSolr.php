@@ -728,7 +728,7 @@ class AppSolr
       $searchText = strstr ($tok, ":");
 
       // verify if there's a field definition
-      if ($fieldName === false) {
+      if ($fieldName === false || $fieldName == "") {
         // it's not a field
         // the token is not a field
         // add it completelly
