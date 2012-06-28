@@ -143,8 +143,10 @@ if (($RBAC_Response=$RBAC->userCanAccess("PM_FACTORY"))!=1) return $RBAC_Respons
 
   $attributes = $_POST['form'];
   
-  $attributes['HINT'] = addslashes($attributes['HINT']);
-  $attributes['HINT'] = htmlspecialchars($attributes['HINT'], ENT_QUOTES, "UTF-8");
+  if (isset($attributes['HINT'])) {
+    $attributes['HINT'] = addslashes($attributes['HINT']);
+    $attributes['HINT'] = htmlspecialchars($attributes['HINT'], ENT_QUOTES, "UTF-8");
+  }
   
   if (isset($attributes['CODE'])) $attributes['XMLNODE_VALUE'] = ($attributes['CODE']);
 
