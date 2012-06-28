@@ -509,12 +509,30 @@ class Form extends XmlForm
    */
   function validateRequiredFields($dataFields, $noRequired = array())
   {
-    $requiredFields     = array();
-    $notPassedFields    = array();
+    $requiredFields = array();
+    $notPassedFields = array();
     $skippedFieldsTypes = array('javascript', 'checkbox', 'yesno', 'submit', 'button', 'title', 'subtitle',
                                 'button', 'submit', 'reset', 'hidden', 'link');
+    $requiredFieldsGrids = array();
+    $grids = array();
     
     foreach ($this->fields as $field) {
+      // verify fields in grids
+      if($field->type == 'grid') {
+        array_push($grids, $field->name);
+        foreach ($field->fields as $fieldGrid) {
+          if (is_object($fieldGrid) && isset($fieldGrid->required) && $fieldGrid->required) {
+            if (!in_array($fieldGrid->type, $skippedFieldsTypes)) {
+              if ( !(is_array($requiredFieldsGrids[$field->name])) ) {
+                $requiredFieldsGrids[$field->name] = array();
+              }
+              array_push($requiredFieldsGrids[$field->name], $fieldGrid->name);
+            }
+          }
+        }
+      }
+
+      // verify fields the form
       if (is_object($field) && isset($field->required) && $field->required) {
         if (!in_array($field->type, $skippedFieldsTypes)) {
           array_push($requiredFields, $field->name);
@@ -523,12 +541,25 @@ class Form extends XmlForm
     }
 
     foreach($dataFields as $dataFieldName => $dataField) {
+      if (in_array($dataFieldName, $grids)) {
+        foreach ($dataField as $indexGrid => $dataGrid) {
+          foreach ($dataGrid as $fieldGridName => $fieldGridValue) {
+            if (in_array($fieldGridName, $requiredFieldsGrids[$dataFieldName]) && !in_array($fieldGridName, $noRequired) && trim($fieldGridValue) == '') {
+              if ( !(is_array($notPassedFields[$dataFieldName])) ) {
+                $notPassedFields[$dataFieldName] = array();
+              }
+              $notPassedFields[$dataFieldName][$indexGrid][] = $fieldGridName;
+            }
+          }
+        }
+      }
+      
       //verify if the requiered field is in $requiredFields array
       if (in_array($dataFieldName, $requiredFields) && !in_array($dataFieldName, $noRequired) && trim($dataField) == '') {
         $notPassedFields[] = $dataFieldName;
       }
     }
-
+    
     return count($notPassedFields) > 0 ? $notPassedFields : false;
   }
   

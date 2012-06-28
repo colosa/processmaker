@@ -2551,10 +2551,10 @@ var validateGridForms = function(invalidFields){
 
   for(j=0; j<grids.length; j++){
 
-    // check all the input fields in the grid
     fields = grids[j].getElementsByTagName('input');
-    // labels = ;
     for(i=0; i<fields.length; i++){
+
+      var vtext = new input(fields[i]);
       if (fields[i].getAttribute("pm:required")=="1"&&fields[i].value==''){
         $label = fields[i].name.split("[");
         $labelPM = fields[i].getAttribute("pm:label");
@@ -2564,32 +2564,50 @@ var validateGridForms = function(invalidFields){
           $fieldName = $labelPM + " " + $label[2].split("]")[0];
         }
         fieldGridName = $label[1] + "[" + $label[2] + "[" + $label[3].split("]")[0];
-        //$fieldName = labels[i].innerHTML.replace('*','') + " " + $label[2].split("]")[0];
-
-        if (!notValidateThisFields.inArray(fieldGridName))
+        
+        if (!notValidateThisFields.inArray(fieldGridName)) {
           invalidFields.push($fieldName);
+        }
+
+        vtext.failed();
+      } else {
+        vtext.passed();
       }
     }
 
     textAreas = grids[j].getElementsByTagName('textarea');
     for(i=0; i<textAreas.length; i++){
+
+      var vtext = new input(textAreas[i]);
       if (textAreas[i].getAttribute("pm:required")=="1"&&textAreas[i].value==''){
         $label = textAreas[i].name.split("[");
         $fieldName = $label[3].split("]")[0]+ " " + $label[2].split("]")[0];
         fieldGridName = $label[1] + "[" + $label[2] + "[" + $label[3].split("]")[0];
-        if (!notValidateThisFields.inArray(fieldGridName))
+        if (!notValidateThisFields.inArray(fieldGridName)) {
           invalidFields.push($fieldName);
+        }
+
+        vtext.failed();
+      } else {
+        vtext.passed();
       }
     }
 
     dropdowns = grids[j].getElementsByTagName('select');
     for(i=0; i<dropdowns.length; i++){
+
+      var vtext = new input(dropdowns[i]);
       if (dropdowns[i].getAttribute("pm:required")=="1"&&dropdowns[i].value==''){
         $label = dropdowns[i].name.split("[");
         $fieldName = $label[3].split("]")[0]+ " " + $label[2].split("]")[0];
         fieldGridName = $label[1] + "[" + $label[2] + "[" + $label[3].split("]")[0];
-        if (!notValidateThisFields.inArray(fieldGridName))
+        if (!notValidateThisFields.inArray(fieldGridName)) {
           invalidFields.push($fieldName);
+        }
+
+        vtext.failed();
+      } else {
+        vtext.passed();
       }
     }
   }
@@ -2607,6 +2625,87 @@ var validateGridForms = function(invalidFields){
  **/
 
 var validateForm = function(sRequiredFields) {
+  
+  // The code add Brayan Pereyra - Cochalo :
+  // This part add to firefox 13 and ie 9, in event submit the object leminud and input disappeared
+  if (typeof(leimnud) == 'undefined') {
+    var leimnud = new maborak();
+    leimnud.make({
+      zip:true,
+      inGulliver:true,
+      modules :"dom,abbr,rpc,drag,drop,app,panel,fx,grid,xmlform,validator,dashboard",
+      files :""
+    });
+  }
+  
+  // The code add Brayan Pereyra - Cochalo : 
+  // This part add to firefox 13 and ie 9, in event submit the object leminud and input disappeared
+  if (typeof(input) == 'undefined') {
+    var input = function(options)
+    {
+      this.make=function(options)
+      {
+        this.input = (options && options.tagName)?$(options):(new this.parent.module.dom.create("input",{
+          className:"module_app_input___gray",
+          type :"text",
+          value :options.label || "",
+          maxLength :options.maxlength || "30"
+        }.concat(options.properties || {}),(options.style || {})));
+
+        this.input.disable=function()
+        {
+          this.input.disabled=true;
+          this.input.className=this.input.className+" module_app_inputDisabled___gray";
+          return this.input;
+        }.extend(this);
+        this.input.enable=function()
+        {
+          this.input.disabled=false;
+          this.input.className=this.input.className.split(" ")[0];
+          return this.input;
+        }.extend(this);
+        this.input.passed=function()
+        {
+          if ('\v'=='v') { //verify if is internet explorer
+            this.input.className="module_app_inputPassed_ie___gray "+((this.input.className.split(' ')[1]) || '');
+          } else {
+            this.input.className="module_app_inputPassed___gray "+((this.input.className.split(' ')[1]) || '');
+          }
+          return this.input;
+        }.extend(this);
+        this.input.normal=function()
+        {
+          this.input.className=this.input.className+" "+((this.input.className.split(' ')[1]) || '');
+          return this.input;
+        }.extend(this);
+        this.input.failed=function()
+        {
+          if ('\v'=='v') { //verify if is internet explorer
+            this.input.className="module_app_inputFailed_ie___gray "+((this.input.className.split(' ')[1]) || '');
+          } else {
+            this.input.className="module_app_inputFailed___gray "+((this.input.className.split(' ')[1]) || '');  
+          }
+
+          return this.input;
+        }.extend(this);
+
+        return this.input;
+      };
+      this.mouseover=function()
+      {
+        this.input.className="module_app_input___gray module_app_inputHover___gray";
+        return false;
+      };
+      this.mouseout=function()
+      {
+        this.input.className="module_app_input___gray";
+        return false;
+      };
+      this.expand();
+      return this.make(options || {});
+    };
+  }
+
   /**
    *  replacing the %27 code by " character (if exists), this solve the problem that " broke the properties definition into a html
    *  i.ei <form onsubmit="myaction(MyjsString)" ...   with var MyjsString = "some string that is into a variable, so this broke the html";
@@ -2621,10 +2720,9 @@ var validateForm = function(sRequiredFields) {
   aRequiredFields = eval(sRequiredFields);
 
   var sMessage = '';
-  var invalid_fields = Array();
-
+  var invalid_fields   = Array();
   var fielEmailInvalid = Array();
-
+  
       for (var i = 0; i < aRequiredFields.length; i++) {
         aRequiredFields[i].label=(aRequiredFields[i].label=='')?aRequiredFields[i].name:aRequiredFields[i].label;
 
