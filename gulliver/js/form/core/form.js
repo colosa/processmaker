@@ -1122,6 +1122,7 @@ function G_Text( form, element, name)
     if (me.validate == 'Any' && me.mask == '') return true;
     //pressKey = event.keyCode;
     pressKey = window.event ? window.event.keyCode : event.which;
+
     switch(pressKey){
       case 8: case 46:  //BACKSPACE OR DELETE
       case 35: case 36: //HOME OR END
@@ -1140,8 +1141,8 @@ function G_Text( form, element, name)
         return true;
         break;
       default:
-        if ( (me.mType == 'date') || (me.mType == 'currency') || (me.mType == 'percentage') || (me.validate == 'Real') || (me.validate == 'Int') ) {
-          if ( (pressKey >= 96 && pressKey <= 105) || (pressKey >= 48 && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188) ) {
+        if (me.mType == 'date' || me.mType == 'currency' || me.mType == 'percentage' || me.validate == 'Real' || me.validate == 'Int') {
+          if ((48 <= pressKey && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188) || (96 <= pressKey && pressKey <= 111)) {
             return true;
           }
           else {
