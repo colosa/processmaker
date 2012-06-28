@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch 2.0-testing) 2.0.42-testing.1-20-g0472cc3\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-171-gaa700de\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-06-26 16:40:09\n"
+"PO-Revision-Date: 2012-06-28 17:16:17\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12522,6 +12522,24 @@ msgstr "Available Username"
 #: LABEL/ID_SENDMAIL_NOT_INSTALLED
 msgid "An error has occured, please verify on which server \"SendMail\" has been installed or any other mail service, and if it has been configured correctly."
 msgstr "An error has occured, please verify on which server \"SendMail\" has been installed or any other mail service, and if it has been configured correctly."
+
+# TRANSLATION
+# LABEL/ID_PPP_MINIMUM_LENGTH
+#: LABEL/ID_PPP_MINIMUM_LENGTH
+msgid "[LABEL/ID_PPP_MINIMUM_LENGTH] Minimum length"
+msgstr "Minimum length"
+
+# TRANSLATION
+# LABEL/ID_PPP_MAXIMUM_LENGTH
+#: LABEL/ID_PPP_MAXIMUM_LENGTH
+msgid "[LABEL/ID_PPP_MAXIMUM_LENGTH] Maximum length"
+msgstr "Maximum length"
+
+# TRANSLATION
+# LABEL/ID_PASSWORD_COMPLIES_POLICIES
+#: LABEL/ID_PASSWORD_COMPLIES_POLICIES
+msgid "The password complies with the security policies."
+msgstr "The password complies with the security policies."
 
 # TRANSLATION
 # LABEL/ID_INSTRUCTIONS
@@ -28886,8 +28904,8 @@ msgstr "Case Description"
 # tasks/tasks_Notifications.xml?SEND_EMAIL
 # tasks/tasks_Notifications.xml
 #: checkbox - SEND_EMAIL
-msgid "[tasks/tasks_Notifications.xml?SEND_EMAIL] After routing notify the next assigned user(s)."
-msgstr "After routing notify the next assigned user(s)."
+msgid "[tasks/tasks_Notifications.xml?SEND_EMAIL] After routing notify the next assigned user(s)"
+msgstr "After routing notify the next assigned user(s)"
 
 # tasks/tasks_Notifications.xml?TAS_DEF_SUBJECT_MESSAGE
 # tasks/tasks_Notifications.xml
@@ -33106,6 +33124,12 @@ msgstr "Field Name"
 #: dropdown - PME_XMLGRID
 msgid "[dynaforms/fields/grid.xml?PME_XMLGRID] Grid"
 msgstr "Grid"
+
+# dynaforms/fields/grid.xml?PME_XMLGRID-0
+# dynaforms/fields/grid.xml
+#: dropdown - PME_XMLGRID - 0
+msgid "[dynaforms/fields/grid.xml?PME_XMLGRID-0]"
+msgstr "- Select a Grid-"
 
 # dynaforms/fields/grid.xml?PME_ADDROW
 # dynaforms/fields/grid.xml
