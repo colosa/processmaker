@@ -1277,12 +1277,14 @@ function G_Text( form, element, name)
       }
       if (keyValid){
         //APPLY MASK
+        if ((me.validate == "Login" || me.validate == "NodeName") && me.mask == "") return true;
         if (pressKey == 46){
           me.applyMask(256); //This code send [.] period to the mask
         }
         else{
           me.applyMask(pressKey);
         }
+
         if (updateOnChange) me.sendOnChange();
       }
 
@@ -1336,13 +1338,7 @@ function G_Text( form, element, name)
             this.element.value = this.element.value.toLowerCase();
             break;
         }
-      }
-      if (this.validate == 'NodeName') {
-        var pat = /^[a-z\_](.)[a-z\d\_]{1,255}$/i;
-        if(!pat.test(this.element.value)) {
-          this.element.value = '_' + this.element.value;
-        }
-      }
+      }      
     }.extend(this);
   }
 
@@ -3127,10 +3123,21 @@ function dynaformVerifyFieldName(){
 
 function verifyFieldName1(){
   var newFieldName=fieldName.value;
+  var msj = G_STRINGS.DYNAFIELD_ALREADY_EXIST;
   var validatedFieldName=getField("PME_VALIDATE_NAME",fieldForm).value;
   var dField = new input(getField('PME_XMLNODE_NAME'));
 
   var valid=(newFieldName!=='')&&(((newFieldName!==savedFieldName)&&(validatedFieldName===''))||((newFieldName===savedFieldName)));
+  if (newFieldName.length == 0) {
+    valid = false;
+    msj   = G_STRINGS.DYNAFIELD_EMPTY;
+  }
+
+  if (!(isNaN(parseInt(newFieldName.substr(0,1))))) {
+    valid = false;
+    msj   = ', '+G_STRINGS.DYNAFIELD_NODENAME_NUMBER;
+  }
+
   if (valid){
     dField.passed();
     getField("PME_ACCEPT",fieldForm).disabled=false;
@@ -3138,7 +3145,7 @@ function verifyFieldName1(){
     getField("PME_ACCEPT",fieldForm).disabled=true;
     dField.failed();
     new leimnud.module.app.alert().make({
-      label: G_STRINGS.DYNAFIELD_ALREADY_EXIST
+      label: msj
     });
     dField.focus();
   }

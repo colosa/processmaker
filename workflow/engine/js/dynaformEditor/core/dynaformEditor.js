@@ -590,21 +590,41 @@ function getElementByPMClass(__class){
 
   function fieldsSave( form ) {
 
-    var str = document.getElementById('form[PME_XMLNODE_NAME]').value;
-    str.split(" ").length;
+    var str    = document.getElementById('form[PME_XMLNODE_NAME]').value;
+    var dField = new input(getField('PME_XMLNODE_NAME'));
+
     if(str.split(" ").length>=2){
-      msgBox(G_STRINGS.ID_EMPTY_NODENAME,"alert");
+      msgBox(G_STRINGS.ID_EMPTY_NODENAME, "alert");
+      dField.failed();
+      dField.focus();
+      return;
+    }
+
+    if (str.length == 0) {
+      msgBox(G_STRINGS.DYNAFIELD_EMPTY, "alert");
+      dField.failed();
+      dField.focus();
       return;
     }
     
+    if (!(isNaN(parseInt(str.substr(0,1))))) {
+      msgBox(G_STRINGS.DYNAFIELD_NODENAME_NUMBER, "alert");
+      dField.failed();
+      dField.focus();
+      return;
+    }
+
     if (pme_validating) {
       validatingForm=form;
+      dField.passed();
       setTimeout('fieldsSave(validatingForm);',100);
       return;
     }
+    
     if (!G.getObject(form).verifyRequiredFields()){
       return;
     }
+    
     //processbar.style.display = '';
     var res=ajax_post( form.action, form, 'POST' , null , false );
     currentPopupWindow.remove();
