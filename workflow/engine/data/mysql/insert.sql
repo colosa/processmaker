@@ -3518,7 +3518,18 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_PASSWORD_TESTING','en','Testing password','2012-06-05') ,
 ( 'LABEL','ID_TRUE','en','TRUE','2012-06-06') ,
 ( 'LABEL','ID_FALSE','en','FALSE','2012-06-06') ;
-;
+INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE )  VALUES 
+
+( 'LABEL','ID_INSTRUCTIONS_TEXT','en','To assign a case it should be selected from the grid and then on the Search enter a name to do the user search to whom the case will be reasigned and then select one from the list.','2012-06-21') ,
+( 'LABEL','ID_CONFIRM_TO_REASSIGN','en','There are cases which are not reassigned to a user. Do you like to continue?','2012-06-21') ,
+( 'LABEL','ID_USERNAME_TESTING','en','Verifying username availability','2012-06-25') ,
+( 'LABEL','ID_USERNAME_CORRECT','en','Available Username','2012-06-25') ,
+( 'LABEL','ID_SENDMAIL_NOT_INSTALLED','en','An error has occured, please verify on which server "SendMail" has been installed or any other mail service, and if it has been configured correctly.','2012-06-26') ,
+( 'LABEL','ID_PPP_MINIMUM_LENGTH','en','Minimum length','2012-06-28') ,
+( 'LABEL','ID_PPP_MAXIMUM_LENGTH','en','Maximum length','2012-06-28') ,
+( 'LABEL','ID_PASSWORD_COMPLIES_POLICIES','en','The password complies with the security policies.','2012-06-28') ,
+( 'LABEL','ID_INSTRUCTIONS','en','Instructions','2012-06-21') ,
+( 'LABEL','ID_NOT_REQUIRED','en','Not Required','2012-06-20') ;
 
 INSERT INTO ISO_LOCATION (IC_UID,IL_UID,IL_NAME,IL_NORMAL_NAME,IS_UID)  VALUES 
 ('AD','','',' ','') ,
