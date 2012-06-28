@@ -1065,10 +1065,10 @@ class G
         $configurationFile = G::ExpandPath( "skinEngine" ).'base'.PATH_SEP.'config.xml';
       }
       else {
-        $configurationFile = G::ExpandPath( "skinEngine" ) . $skinName . PATH_SEP . 'config.xml';
+        $configurationFile = PATH_CUSTOM_SKINS . $skinName . PATH_SEP . 'config.xml';
         
         if (!is_file($configurationFile)) {
-          $configurationFile = PATH_CUSTOM_SKINS . $skinName . PATH_SEP . 'config.xml';
+          $configurationFile = G::ExpandPath( "skinEngine" ) . $skinName . PATH_SEP . 'config.xml';
         }
       }
 
