@@ -1012,7 +1012,7 @@
       <input message="xs0:getCaseNotesRequest"/>
       <output message="xs0:getCaseNotesResponse"/>
     </operation>
-    
+
     <operation name="removeUserFromGroup">
       <input message="xs0:removeUserFromGroupRequest"/>
       <output message="xs0:pmResponse"/>
@@ -1021,7 +1021,7 @@
   <binding name="ProcessMakerServiceSoap" type="xs0:ProcessMakerServiceSoap">
     <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <operation name="login">
-      <soap12:operation soapAction="http://www.processmaker.comlogin" soapActionRequired="true" style="document"/>
+      <soap12:operation soapAction="http://www.processmaker.com/login" soapActionRequired="true" style="document"/>
       <input>
         <soap12:body use="literal"/>
       </input>
@@ -1308,7 +1308,7 @@
         <soap12:body use="literal"/>
       </output>
     </operation>
-    
+
     <operation name="removeUserFromGroup">
       <soap12:operation soapAction="urn:removeUserFromGroup" soapActionRequired="true" style="document"/>
       <input>
