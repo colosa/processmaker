@@ -33,18 +33,6 @@
 
   <JS type="javascript"><![CDATA[
   
-  /* Recovery data */
-  if (aTaskFlag[6])
-  {
-    getField('SEND_EMAIL').checked    = (oTaskData.SEND_EMAIL == 'TRUE' ? true : false);
-    getField('TAS_DEF_MESSAGE').value = oTaskData.TAS_DEF_MESSAGE;
-  }
-  else
-  {
-    saveDataTaskTemporal(7);
-    aTaskFlag[6] = true;
-  }
-
   if (@@TAS_SEND_LAST_EMAIL == 'TRUE')
   {
     getField('SEND_EMAIL').checked = true;
@@ -66,36 +54,105 @@
     hideRowById('TAS_DEF_MESSAGE_TEMPLATE');
   }
 
-  leimnud.event.add(getField('SEND_EMAIL'), 'click', function() {
-    var oAux = document.getElementById('form[TAS_DEF_MESSAGE]');
-    if (!document.getElementById('form[SEND_EMAIL]').checked)
-    {
-      hideRowById('TAS_DEF_SUBJECT_MESSAGE');
-      hideRowById('TAS_DEF_MESSAGE');
-      hideRowById('TAS_DEF_MESSAGE_TEMPLATE');
-      hideRowById('TAS_DEF_MESSAGE_TYPE');
-    }
-    else
-    {
-      showRowById('TAS_DEF_SUBJECT_MESSAGE');
-      if (getField('TAS_DEF_MESSAGE_TYPE').value == 'template'){
-        hideRowById('TAS_DEF_MESSAGE');
-        showRowById('TAS_DEF_MESSAGE_TEMPLATE');
+  /* Recovery data */
+  if (aTaskFlag[6])
+  {
+    getField('SEND_EMAIL').checked    = (oTaskData.SEND_EMAIL == 'TRUE' ? true : false);
+    getField('TAS_DEF_MESSAGE').value = oTaskData.TAS_DEF_MESSAGE;
+    getField('TAS_DEF_SUBJECT_MESSAGE').value = oTaskData.TAS_DEF_SUBJECT_MESSAGE;
+    getField('TAS_DEF_MESSAGE_TYPE').value = oTaskData.TAS_DEF_MESSAGE_TYPE;
+    getField('TAS_DEF_MESSAGE_TEMPLATE').value = oTaskData.TAS_DEF_MESSAGE_TEMPLATE;
+    clickSendEmail();
+
+    if (getField('SEND_EMAIL').checked == true) {
+      var fieldEval = new input(getField('TAS_DEF_SUBJECT_MESSAGE'));
+      if (getField('TAS_DEF_SUBJECT_MESSAGE').value.trim() == '') {
+        fieldEval.failed();
+        new leimnud.module.app.alert().make( {
+          label : G_STRINGS.ID_SUBJECT_FIELD_REQUIRED
+        });      
       } else {
-        showRowById('TAS_DEF_MESSAGE');
-        hideRowById('TAS_DEF_MESSAGE_TEMPLATE');
+        fieldEval.passed();
       }
-      showRowById('TAS_DEF_MESSAGE_TYPE');
+      switch ( getField('TAS_DEF_MESSAGE_TYPE').value ) {
+        case 'text' :
+          var vmesn = new input(getField('TAS_DEF_MESSAGE'));
+          if (getField('TAS_DEF_MESSAGE').value.trim() == '' ) {
+            new leimnud.module.app.alert().make( {
+              label : G_STRINGS.ID_MESSAGE_FIELD_REQUIRED
+            });
+            vmesn.failed();
+          } else {
+            vmesn.passed();
+          }
+          break;
+        case 'template' :
+          var vmesn = new input(getField('TAS_DEF_MESSAGE_TEMPLATE'));
+          if (getField('TAS_DEF_MESSAGE_TEMPLATE').value.trim() == '' ){
+            new leimnud.module.app.alert().make( {
+              label : G_STRINGS.ID_TEMPLATE_FIELD_REQUIRED
+            });
+            vmesn.failed();
+          } else {
+            vmesn.passed();
+          }
+          break;
+      }
     }
+  }
+  else
+  {
+    saveDataTaskTemporal(7);
+    aTaskFlag[6] = true;
+  }
+
+  leimnud.event.add(getField('SEND_EMAIL'), 'click', function() {
+    clickSendEmail();
   });
   
   leimnud.event.add(getField('TAS_DEF_MESSAGE_TYPE'), 'change', function() {
-    if (this.value == 'text') {
+    if (getField('TAS_DEF_MESSAGE_TYPE').value == 'text') {
       showRowById('TAS_DEF_MESSAGE');
       hideRowById('TAS_DEF_MESSAGE_TEMPLATE');
     } else {
       showRowById('TAS_DEF_MESSAGE_TEMPLATE');
       hideRowById('TAS_DEF_MESSAGE');
+    }
+  });
+
+  leimnud.event.add(getField('TAS_DEF_SUBJECT_MESSAGE'), 'change', function() {
+    var fieldEval = new input(getField('TAS_DEF_SUBJECT_MESSAGE'));
+    if (getField('TAS_DEF_SUBJECT_MESSAGE').value.trim() == '') {
+      fieldEval.failed();
+      new leimnud.module.app.alert().make( {
+        label : G_STRINGS.ID_SUBJECT_FIELD_REQUIRED
+      });
+    } else {
+      fieldEval.passed();
+    }
+  });
+
+  leimnud.event.add(getField('TAS_DEF_MESSAGE'), 'change', function() {
+    var fieldEval = new input(getField('TAS_DEF_MESSAGE'));
+    if (getField('TAS_DEF_MESSAGE').value.trim() == '') {
+      fieldEval.failed();
+      new leimnud.module.app.alert().make( {
+        label : G_STRINGS.ID_MESSAGE_FIELD_REQUIRED
+      });
+    } else {
+      fieldEval.passed();
+    }
+  });
+
+  leimnud.event.add(getField('TAS_DEF_MESSAGE_TEMPLATE'), 'change', function() {
+    var fieldEval = new input(getField('TAS_DEF_MESSAGE_TEMPLATE'));
+    if (getField('TAS_DEF_MESSAGE_TEMPLATE').value.trim() == '') {
+      fieldEval.failed();
+      new leimnud.module.app.alert().make( {
+        label : G_STRINGS.ID_TEMPLATE_FIELD_REQUIRED
+      });
+    } else {
+      fieldEval.passed();
     }
   });
 
@@ -152,6 +209,29 @@
   	  }
   	}
   	_oVarsPanel_.remove();
+  };
+
+  var clickSendEmail = function() {
+    var oAux = document.getElementById('form[TAS_DEF_MESSAGE]');
+    if (!document.getElementById('form[SEND_EMAIL]').checked)
+    {
+      hideRowById('TAS_DEF_SUBJECT_MESSAGE');
+      hideRowById('TAS_DEF_MESSAGE');
+      hideRowById('TAS_DEF_MESSAGE_TEMPLATE');
+      hideRowById('TAS_DEF_MESSAGE_TYPE');
+    }
+    else
+    {
+      showRowById('TAS_DEF_SUBJECT_MESSAGE');
+      if (getField('TAS_DEF_MESSAGE_TYPE').value == 'template'){
+        hideRowById('TAS_DEF_MESSAGE');
+        showRowById('TAS_DEF_MESSAGE_TEMPLATE');
+      } else {
+        showRowById('TAS_DEF_MESSAGE');
+        hideRowById('TAS_DEF_MESSAGE_TEMPLATE');
+      }
+      showRowById('TAS_DEF_MESSAGE_TYPE');
+    }
   };
 
   ]]></JS>
