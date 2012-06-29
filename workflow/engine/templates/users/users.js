@@ -9,6 +9,7 @@ var box;
 var infoMode;
 var global = {};
 var readMode;
+var usernameText;
 var canEdit = true;
 var flagPoliciesPassword = false;
 var flagValidateUsername = false;
@@ -416,40 +417,9 @@ Ext.onReady(function() {
             Ext.getCmp('usernameReview').setText(spanAjax + imageAjax + labelAjax + '</span>', false);
             Ext.getCmp('usernameReview').setVisible(true);
 
-            var usernameText = this.getValue();
+            usernameText = this.getValue();
 
-            Ext.Ajax.request({
-              url    : 'usersAjax',
-              method : 'POST',
-              params : {
-                'action'       : 'testUsername',
-                'NEW_USERNAME' : usernameText
-              },
-              success: function(r,o){      
-                var resp = Ext.util.JSON.decode(r.responseText);
-
-                if (resp.exists) {
-                  flagValidateUsername = false;
-                } else {
-                  flagValidateUsername = true;  
-                }
-                
-                Ext.getCmp('usernameReview').setText(resp.descriptionText, false);
-                Ext.getCmp('saveB').enable();
-                Ext.getCmp('cancelB').enable();
-              },
-              failure: function () {
-                Ext.MessageBox.show({
-                  title: 'Error',
-                  msg: 'Failed to store data',
-                  buttons: Ext.MessageBox.OK,
-                  animEl: 'mb9',
-                  icon: Ext.MessageBox.ERROR
-                });
-                Ext.getCmp('saveB').enable();
-                Ext.getCmp('cancelB').enable();
-              }
-            });
+            validateUserName();
 
             Ext.getCmp('usernameReview').setVisible(true);
           }
@@ -982,9 +952,49 @@ function editUser()
     frmSumary.hide();
     frmDetails.show();
 }
+
+function validateUserName() {
+  Ext.Ajax.request({
+    url    : 'usersAjax',
+    method : 'POST',
+    params : {
+      'action'       : 'testUsername',
+      'USR_UID'      : USR_UID,
+      'NEW_USERNAME' : usernameText
+    },
+    success: function(r,o){      
+      var resp = Ext.util.JSON.decode(r.responseText);
+
+      if (resp.exists) {
+        flagValidateUsername = false;
+        Ext.getCmp('saveB').disable();
+        usernameText = '';
+      } else {
+        flagValidateUsername = true;
+      }
+      
+      Ext.getCmp('usernameReview').setText(resp.descriptionText, false);
+      Ext.getCmp('saveB').enable();
+      Ext.getCmp('cancelB').enable();
+    },
+    failure: function () {
+      Ext.MessageBox.show({
+        title: 'Error',
+        msg: 'Failed to store data',
+        buttons: Ext.MessageBox.OK,
+        animEl: 'mb9',
+        icon: Ext.MessageBox.ERROR
+      });
+      Ext.getCmp('saveB').enable();
+      Ext.getCmp('cancelB').enable();
+    }
+  });
+}
+
 function saveUser()
 {
   if (flagValidateUsername != true) {
+    validateUserName();
     if ( Ext.getCmp('USR_USERNAME').getValue() == '') {
       Ext.Msg.alert( _('ID_ERROR'), _('ID_MSG_ERROR_USR_USERNAME'));
     } else {
