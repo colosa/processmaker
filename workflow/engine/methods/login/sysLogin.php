@@ -137,7 +137,7 @@ G::RenderPage ( "publish" );
     // note added by carlos pacha carlos[at]colosa[dot]com pckrlos[at]gmail[dot]com
     // the following lines of code are getting the hight of panel. Related 8021 bug
     var hightpnl= 424;
-    var varjs = "<?=  isset($_POST['form']['USER_ENV'])?$_POST['form']['USER_ENV']:''; ?>";
+    var varjs = "<?php echo isset($_POST['form']['USER_ENV'])?$_POST['form']['USER_ENV']:''; ?>";
     if(varjs !=' ')
       hightpnl= 330;
     
