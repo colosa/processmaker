@@ -451,6 +451,10 @@ public function kgetassigType($pro_uid, $tas){
   
   function update($fields)
   {
+    ini_set("max_execution_time", 0);
+    
+    require_once ("classes/model/AppCacheView.php");
+    
     $con = Propel::getConnection(TaskPeer::DATABASE_NAME);
     try
     {
@@ -471,6 +475,74 @@ public function kgetassigType($pro_uid, $tas){
         $result=$this->save();
         $result=($result==0)?($contentResult>0?1:0):$result;
         $con->commit();
+        
+        if ($result == 1 && array_key_exists("TAS_DEF_TITLE", $fields)) {
+          //Get cases
+          $criteriaAPPCV = new Criteria("workflow");
+          
+          $criteriaAPPCV->setDistinct();
+          $criteriaAPPCV->addSelectColumn(AppCacheViewPeer::APP_UID);
+          $criteriaAPPCV->add(AppCacheViewPeer::TAS_UID, $fields["TAS_UID"]);
+          
+          $rsCriteriaAPPCV = AppCacheViewPeer::doSelectRS($criteriaAPPCV);
+          $rsCriteriaAPPCV->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+          
+          while ($rsCriteriaAPPCV->next()) {
+            $row = $rsCriteriaAPPCV->getRow();
+            
+            $appcv_application_uid = $row["APP_UID"];
+            
+            //Get DEL_INDEX_MAX
+            $criteria = new Criteria("workflow");
+            
+            $criteria->addAsColumn("DEL_INDEX_MAX", "MAX(" . AppCacheViewPeer::DEL_INDEX . ")");
+            $criteria->add(AppCacheViewPeer::APP_UID, $appcv_application_uid);
+            
+            $rsCriteria = AppCacheViewPeer::doSelectRS($criteria);
+            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            
+            $rsCriteria->next();
+            $row = $rsCriteria->getRow();
+            
+            $appcvDelIndexMax = $row["DEL_INDEX_MAX"];
+            
+            //Current task?
+            $criteria = new Criteria("workflow");
+            
+            $criteria->addSelectColumn(AppCacheViewPeer::APP_UID);
+            $criteria->add(AppCacheViewPeer::APP_UID, $appcv_application_uid);
+            $criteria->add(AppCacheViewPeer::DEL_INDEX, $appcvDelIndexMax);
+            $criteria->add(AppCacheViewPeer::TAS_UID, $fields["TAS_UID"]);
+            
+            $rsCriteria = AppCacheViewPeer::doSelectRS($criteria);
+            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            
+            if ($rsCriteria->next()) {
+              $appTitle = $fields["TAS_DEF_TITLE"];
+              
+              $app = new Application();
+              $arrayAppField = $app->Load($appcv_application_uid);
+              
+              $appTitle    = (!empty($appTitle))? $appTitle : "#" . $arrayAppField["APP_NUMBER"];
+              $appTitleNew = G::replaceDataField($appTitle, unserialize($arrayAppField["APP_DATA"]));
+              
+              if (isset($arrayAppField["APP_TITLE"]) && $arrayAppField["APP_TITLE"] != $appTitleNew) {
+                //Updating the value in content, where...
+                $criteria1 = new Criteria("workflow");
+                $criteria1->add(ContentPeer::CON_CATEGORY, "APP_TITLE");
+                $criteria1->add(ContentPeer::CON_ID, $appcv_application_uid);
+                $criteria1->add(ContentPeer::CON_LANG, SYS_LANG);
+                
+                //Update set
+                $criteria2 = new Criteria("workflow");
+                $criteria2->add(ContentPeer::CON_VALUE, $appTitleNew);
+                
+                BasePeer::doUpdate($criteria1, $criteria2, Propel::getConnection("workflow"));
+              }
+            }
+          }
+        }
+        
         return $result;
       }
       else
