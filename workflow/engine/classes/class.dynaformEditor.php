@@ -465,7 +465,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
       $script = null;
       $fileTmp = G::decrypt($A , URL_KEY);
       $form = new Form($fileTmp, PATH_DYNAFORM, SYS_LANG, true);
-      
+
       //Navigation Bar
       $form->fields = G::array_merges(
         array("__DYNAFORM_OPTIONS" => new XmlForm_Field_XmlMenu(
@@ -486,14 +486,14 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
       //Loads the stored HTML or the default Template if
       //it doesn't exist.
       $filename = substr($form->fileName, 0, -3) . ($form->type === "xmlform" ? "" : "." . $form->type) . "html";
-      
+
       if (!file_exists($filename)) {
         $html = $form->printTemplate($form->template, $script);
       }
       else {
         $html = implode("", file($filename));
       }
-      
+
       /*
        * It adds the new fields automatically at the bottom of the form.
        * TODO: �TOP OR BOTTOM?
@@ -527,7 +527,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
         self::_setTmpData($tmp);
       //$html=str_replace('{$form_className}','formDefault', $html );
         $html=str_replace('{$form_className}','formDefault', $aAux[0] . '</form>' );
-        
+
         return $html;
     }
     catch (Exception $e) {
@@ -544,7 +544,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
     $script  = null;
     $fileTmp = G::decrypt($A, URL_KEY);
     $form    = new Form($fileTmp, PATH_DYNAFORM, SYS_LANG, true);
-    
+
     //Navigation Bar
     $form->fields = G::array_merges(
       array("__DYNAFORM_OPTIONS" => new XmlForm_Field_XmlMenu(
@@ -561,7 +561,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
       ),
       $form->fields
     );
-    
+
     $form->enableTemplate = false;
     $html = $form->printTemplate( $form->template , $script );
     $html = str_replace('{$form_className}','formDefault', $html );
@@ -571,7 +571,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
     $fp=fopen(PATH_DYNAFORM  . $fileTmp . '.html','w');
     fwrite($fp, $html);
     fclose($fp);
-    
+
     return $html;
   }
 
@@ -665,12 +665,12 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
    * @param string $sCode
    * @return array
    */
-  function set_javascript($A,$fieldName,$sCode,$meta)
+  function set_javascript($A,$fieldName,$sCode,$meta='')
   {
     if ($fieldName == '___pm_boot_strap___') {
       return 0;
     }
-    
+
     $sCode = urldecode($sCode) ;
     try {
       $sCode = rtrim($sCode);
