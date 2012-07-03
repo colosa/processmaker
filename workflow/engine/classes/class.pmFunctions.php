@@ -33,6 +33,9 @@
 // License: LGPL, see LICENSE
 ////////////////////////////////////////////////////
 
+if (!class_exists('PMScript')) {
+    G::LoadClass('pmScript');
+}
 
 /**
  * ProcessMaker has made a number of its PHP functions available be used in triggers and conditions.
@@ -391,9 +394,9 @@ function evaluateFunction($aGrid, $sExpresion) {
  */
 function WSLogin($user, $pass, $endpoint = "") {
   $client = WSOpen(true);
-  
+
   $params = array("userid" => $user, "password" => $pass);
-  
+
   $result = $client->__soapCall("login", array($params));
 
   if ($result->status_code == 0) {
@@ -405,21 +408,21 @@ function WSLogin($user, $pass, $endpoint = "") {
     /*
     if (isset($_SESSION["WS_SESSION_ID"]))
       return $_SESSION["WS_SESSION_ID"] = $result->message;
-    else 
+    else
       return $result->message;
     */
-    
+
     $_SESSION["WS_SESSION_ID"] = $result->message;
-      
+
     return $result->message;
   }
   else {
     if (isset($_SESSION["WS_SESSION_ID"])) {
       unset($_SESSION["WS_SESSION_ID"]);
     }
-    
+
     $wp = (trim($pass) != "")? "YES" : "NO";
-    
+
     throw new Exception("WSAccess denied! for user $user with password $wp");
   }
 }
@@ -442,11 +445,11 @@ function WSOpen($force = false) {
     if (!isset($_SESSION["WS_END_POINT"])) {
       $defaultEndpoint = "http://" . $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . "/sys" . SYS_SYS . "/en/classic/services/wsdl2";
     }
-    
+
     $endpoint = isset($_SESSION["WS_END_POINT"])? $_SESSION["WS_END_POINT"] : $defaultEndpoint;
-    
+
     $client = new SoapClient($endpoint);
-    
+
     return $client;
   }
   else {
@@ -471,12 +474,12 @@ function WSTaskCase($caseId) {
 
   $sessionId = $_SESSION["WS_SESSION_ID"];
   $params = array("sessionId" => $sessionId, "caseId" => $caseId);
-  
+
   $result = $client->__soapCall("taskCase", array($params));
-  
+
   $rows = array();
   $i = 0;
-  
+
   if (isset($result->taskCases)) {
     //Processing when it is an array
     if (is_array($result->taskCases)) {
@@ -493,7 +496,7 @@ function WSTaskCase($caseId) {
       }
     }
   }
-  
+
   return $rows;
 }
 /**
@@ -514,12 +517,12 @@ function WSTaskList() {
 
   $sessionId = $_SESSION["WS_SESSION_ID"];
   $params = array("sessionId" => $sessionId);
-  
+
   $result = $client->__soapCall("TaskList", array($params));
-  
+
   $rows = array();
   $i = 0;
-  
+
   if (isset($result->tasks)) {
     //Processing when it is an array
     if (is_array($result->tasks)) {
@@ -536,7 +539,7 @@ function WSTaskList() {
       }
     }
   }
-  
+
   return $rows;
 }
 /**
@@ -556,12 +559,12 @@ function WSUserList() {
 
   $sessionId = $_SESSION["WS_SESSION_ID"];
   $params = array("sessionId" => $sessionId);
-  
+
   $result = $client->__soapCall("UserList", array($params));
-  
+
   $rows = array();
   $i = 0;
-  
+
   if (isset($result->users)) {
     //Processing when it is an array
     if (is_array($result->users)) {
@@ -578,7 +581,7 @@ function WSUserList() {
       }
     }
   }
-  
+
   return $rows;
 }
 /**
@@ -598,12 +601,12 @@ function WSGroupList() {
 
   $sessionId = $_SESSION["WS_SESSION_ID"];
   $params = array("sessionId" => $sessionId);
-  
+
   $result = $client->__soapCall("GroupList", array($params));
 
   $rows = array();
   $i = 0;
-  
+
   if (isset($result->groups)) {
     //Processing when it is an array
     if (is_array($result->groups)) {
@@ -620,7 +623,7 @@ function WSGroupList() {
       }
     }
   }
-  
+
   return $rows;
 }
 
@@ -641,12 +644,12 @@ function WSRoleList() {
 
   $sessionId = $_SESSION["WS_SESSION_ID"];
   $params = array("sessionId" => $sessionId);
-  
+
   $result = $client->__soapCall("RoleList", array($params));
-  
+
   $rows = array();
   $i = 0;
-  
+
   if (isset($result->roles)) {
     //Processing when it is an array
     if (is_array($result->roles)) {
@@ -663,7 +666,7 @@ function WSRoleList() {
       }
     }
   }
-  
+
   return $rows;
 }
 /**
@@ -684,12 +687,12 @@ function WSCaseList() {
 
   $sessionId = $_SESSION["WS_SESSION_ID"];
   $params = array("sessionId" => $sessionId);
-  
+
   $result = $client->__soapCall("CaseList", array($params));
 
   $rows = array();
   $i = 0;
-  
+
   if (isset($result->cases)) {
     //Processing when it is an array
     if (is_array($result->cases)) {
@@ -706,7 +709,7 @@ function WSCaseList() {
       }
     }
   }
-  
+
   return $rows;
 }
 /**
@@ -726,12 +729,12 @@ function WSProcessList() {
 
   $sessionId = $_SESSION["WS_SESSION_ID"];
   $params = array("sessionId" => $sessionId);
-  
+
   $result = $client->__soapCall("ProcessList", array($params));
 
   $rows = array();
   $i = 0;
-  
+
   if (isset($result->processes)) {
     //Processing when it is an array
     if (is_array($result->processes)) {
@@ -748,7 +751,7 @@ function WSProcessList() {
       }
     }
   }
-  
+
   return $rows;
 }
 /**
@@ -764,7 +767,7 @@ function WSProcessList() {
  *
  */
 //private function to get current email configuration
-function getEmailConfiguration() 
+function getEmailConfiguration()
 {
   G::loadClass('system');
   return System::getEmailConfiguration();
@@ -791,7 +794,7 @@ function getEmailConfiguration()
  * @return int | $result | result | Result of sending email
  *
  */
-//@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value. 
+//@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value.
 function PMFSendMessage($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields = array(), $aAttachment = array()) {
 
   G::LoadClass('wsBase');
@@ -800,7 +803,7 @@ function PMFSendMessage($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplat
 
   if ( $result->status_code == 0) {
     return 1;
-  } 
+  }
   else {
     return 0;
   }
@@ -825,27 +828,27 @@ function PMFSendMessage($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplat
  */
 function WSSendVariables($caseId, $name1, $value1, $name2, $value2) {
   $client = WSOpen();
-  
+
   $sessionId = $_SESSION["WS_SESSION_ID"];
 
   $v1 = new stdClass();
   $v1->name = $name1;
   $v1->value = $value1;
- 
+
   $v2 = new stdClass();
   $v2->name = $name2;
   $v2->value = $value2;
-  
+
   $variables = array($v1, $v2);
-  
+
   $params = array("sessionId" => $sessionId, "caseId" => $caseId, "variables" => $variables);
-  
+
   $result = $client->__soapCall("SendVariables", array($params));
 
   $fields["status_code"] = $result->status_code;
   $fields["message"]     = $result->message;
   $fields["time_stamp"]  = $result->timestamp;
-  
+
   return $fields;
 }
 /**
@@ -865,17 +868,17 @@ function WSSendVariables($caseId, $name1, $value1, $name2, $value2) {
  */
 function WSDerivateCase($caseId, $delIndex) {
   $client = WSOpen();
-  
+
   $sessionId = $_SESSION["WS_SESSION_ID"];
 
   $params = array("sessionId" => $sessionId, "caseId" => $caseId, "delIndex" => $delIndex);
-  
+
   $result = $client->__soapCall("DerivateCase", array($params));
 
   $fields["status_code"] = $result->status_code;
   $fields["message"]     = $result->message;
   $fields["time_stamp"]  = $result->timestamp;
-  
+
   return $fields;
 }
 /**
@@ -898,21 +901,21 @@ function WSDerivateCase($caseId, $delIndex) {
  */
 function WSNewCaseImpersonate($processId, $userId, $name1, $value1, $name2, $value2) {
   $client = WSOpen();
-  
+
   $sessionId = $_SESSION["WS_SESSION_ID"];
 
   $v1 = new stdClass();
   $v1->name = $name1;
   $v1->value = $value1;
- 
+
   $v2 = new stdClass();
   $v2->name = $name2;
   $v2->value = $value2;
-  
+
   $variables = array($v1, $v2);
 
   $params = array("sessionId" => $sessionId, "processId" => $processId, "userId" => $userId, "variables" => $variables);
-  
+
   $result = $client->__soapCall("NewCaseImpersonate", array($params));
 
   $fields["status_code"] = $result->status_code;
@@ -949,15 +952,15 @@ function WSNewCase($processId, $taskId, $name1, $value1, $name2, $value2) {
   $v1 = new stdClass();
   $v1->name = $name1;
   $v1->value = $value1;
- 
+
   $v2 = new stdClass();
   $v2->name = $name2;
   $v2->value = $value2;
-  
+
   $variables = array($v1, $v2);
 
   $params = array("sessionId" => $sessionId, "processId" => $processId, "taskId" => $taskId, "variables" => $variables);
-  
+
   $result = $client->__soapCall("NewCase", array($params));
 
   $fields["status_code"] = $result->status_code;
@@ -965,7 +968,7 @@ function WSNewCase($processId, $taskId, $name1, $value1, $name2, $value2) {
   $fields["time_stamp"]  = $result->timestamp;
   $fields["case_id"]     = $result->caseId;
   $fields["case_number"] = $result->caseNumber;
-  
+
   return $fields;
 }
 /**
@@ -985,17 +988,17 @@ function WSNewCase($processId, $taskId, $name1, $value1, $name2, $value2) {
  */
 function WSAssignUserToGroup($userId, $groupId) {
   $client = WSOpen();
-  
+
   $sessionId = $_SESSION["WS_SESSION_ID"];
 
   $params = array("sessionId" => $sessionId, "userId" => $userId, "groupId" => $groupId);
-  
+
   $result = $client->__soapCall("AssignUserToGroup", array($params));
 
   $fields["status_code"] = $result->status_code;
   $fields["message"]     = $result->message;
   $fields["time_stamp"]  = $result->timestamp;
-  
+
   return $fields;
 }
 /**
@@ -1018,16 +1021,16 @@ function WSAssignUserToGroup($userId, $groupId) {
  */
 function WSCreateUser($userId, $password, $firstname, $lastname, $email, $role) {
   $client = WSOpen();
-  
+
   $sessionId = $_SESSION["WS_SESSION_ID"];
   $params = array("sessionId" => $sessionId, "userId" => $userId, "firstname" => $firstname, "lastname" => $lastname, "email" => $email, "role" => $role, "password" => $password);
-  
+
   $result = $client->__soapCall("CreateUser", array($params));
 
   $fields["status_code"] = $result->status_code;
   $fields["message"]     = $result->message;
   $fields["time_stamp"]  = $result->timestamp;
-  
+
   return $fields;
 }
 /**
@@ -1162,7 +1165,7 @@ function PMFGenerateOutputDocument($outputID, $sApplication = null, $index = nul
   $oCase = new Cases();
   $oCase->thisIsTheCurrentUser($sApplication, $index, $sUserLogged, '', 'cases_List');
 
-  //require_once 'classes/model/OutputDocument.php';	
+  //require_once 'classes/model/OutputDocument.php';
   $oOutputDocument = new OutputDocument();
   $aOD = $oOutputDocument->load($outputID);
   $Fields = $oCase->loadCase( $sApplication );
@@ -1228,7 +1231,7 @@ function PMFGenerateOutputDocument($outputID, $sApplication = null, $index = nul
       $oAppDocument = new AppDocument();
       $oAppDocument->update($aFields);
       $sDocUID = $aRow['APP_DOC_UID'];
-    }else{ 
+    }else{
      //we are creating the appdocument row
      //create
       if($lastDocVersion==0) $lastDocVersion++;
@@ -1542,7 +1545,7 @@ function PMFDerivateCase($caseId, $delIndex, $bExecuteTriggersBeforeAssignment =
  */
 function PMFNewCaseImpersonate($processId, $userId, $variables) {
   G::LoadClass("wsBase");
-  
+
   $ws = new wsBase();
   $result = $ws->newCaseImpersonate($processId, $userId, $variables);
 
@@ -1901,7 +1904,7 @@ function PMFGetUserEmailAddress($id, $APP_UID = null, $prefix='usr')
   //recipient to store the email addresses
   $aRecipient = Array();
   $aItems = Array();
-  
+
   /*
    * First at all the $id user input can be by example erik@colosa.com
    * 2. this $id param can be a array by example Array('000000000001', '000000000002')  in this case $prefix is necessary
@@ -1922,7 +1925,7 @@ function PMFGetUserEmailAddress($id, $APP_UID = null, $prefix='usr')
       array_push($aItems, $id);
     }
   }
-  
+
   foreach ($aItems as $sItem) {
     //cleaning for blank spaces into each array item
     $sItem = trim($sItem);
@@ -1966,7 +1969,7 @@ function PMFGetUserEmailAddress($id, $APP_UID = null, $prefix='usr')
             array_push($aRecipient, $sID);
           }
         }
-        
+
         break;
 
       case 'grp':
@@ -1989,7 +1992,7 @@ function PMFGetUserEmailAddress($id, $APP_UID = null, $prefix='usr')
         $oCase = new Cases();
         $aFields = $oCase->loadCase($APP_UID);
         $aFields['APP_DATA'] = array_merge($aFields['APP_DATA'], G::getSystemConstants());
-        
+
         //to validate email address
         if( isset($aFields['APP_DATA'][$sID]) && G::emailAddress($aFields['APP_DATA'][$sID]) ) {
           array_push($aRecipient, $aFields['APP_DATA'][$sID]);
@@ -2001,7 +2004,7 @@ function PMFGetUserEmailAddress($id, $APP_UID = null, $prefix='usr')
   switch($retType){
     case 'array':
       return $aRecipient;
-    
+
     case 'string':
       return implode(',', $aRecipient);
 
