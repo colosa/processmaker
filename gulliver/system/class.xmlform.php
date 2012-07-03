@@ -4569,11 +4569,15 @@ class xmlformTemplate extends Smarty
       $result [$k] = G::replaceDataField ( $form->fields [$k]->label, $form->values );
       if (! is_array ( $value )) {
         if ($form->type == 'grid') {
-          $therow = isset($form->values[$form->name]) ? count($form->values[$form->name]) : $therow;
-          $aAux = array ();
-         // $index = ($therow >count ( $form->owner->values [$form->name] ))? $therow : count($form->owner->values [$form->name] );
-          for($i = 0; $i < $therow; $i ++) {
-            $aAux [] = '';
+          $aAux = array();
+          if ($therow == -1) {
+            for($i = 0; $i < count($form->values[$form->name]); $i++) {
+              $aAux [] = '';
+            }
+          } else {
+            for($i = 0; $i < $therow; $i++) {
+              $aAux [] = '';
+            }
           }
           $result ['form'] [$k] = $form->fields [$k]->renderGrid ( $aAux, $form );
         } else {
