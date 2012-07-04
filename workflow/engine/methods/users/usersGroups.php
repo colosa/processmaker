@@ -1,4 +1,5 @@
 <?php
+
 /**
  * usersGroups.php
  *
@@ -22,33 +23,34 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-if (($RBAC_Response=$RBAC->userCanAccess("PM_LOGIN"))!=1) return $RBAC_Response;
+if (($RBAC_Response = $RBAC->userCanAccess("PM_LOGIN")) != 1) {
+    return $RBAC_Response;
+}
 global $RBAC;
 
 $access = $RBAC->userCanAccess('PM_USERS');
-if( $access != 1 ){
-  switch ($access)
-  {
-  	case -1:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	case -2:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	default:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;  	
-  }
+if ($access != 1) {
+    switch ($access) {
+        case -1:
+            G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+            G::header('location: ../login/login');
+            die;
+            break;
+        case -2:
+            G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
+            G::header('location: ../login/login');
+            die;
+            break;
+        default:
+            G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+            G::header('location: ../login/login');
+            die;
+            break;
+    }
 }
-$G_MAIN_MENU            = 'processmaker';
-$G_SUB_MENU             = 'users';
-$G_ID_MENU_SELECTED     = 'USERS';
+$G_MAIN_MENU = 'processmaker';
+$G_SUB_MENU = 'users';
+$G_ID_MENU_SELECTED = 'USERS';
 $G_ID_SUB_MENU_SELECTED = 'USERS';
 
 $G_PUBLISH = new Publisher;
@@ -69,10 +71,16 @@ $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 $oDataset->next();
 $aRow = $oDataset->getRow();
 
-switch($_REQUEST['type']){
-	case 'summary': $ctab = 0; break;
-	case 'group': $ctab = 1; break;
-	case 'auth': $ctab = 2; break;
+switch ($_REQUEST['type']) {
+    case 'summary':
+        $ctab = 0;
+        break;
+    case 'group':
+        $ctab = 1;
+        break;
+    case 'auth':
+        $ctab = 2;
+        break;
 }
 
 $users = Array();
@@ -83,11 +91,12 @@ $users['USR_USERNAME'] = $aRow['USR_USERNAME'];
 $users['fullNameFormat'] = $Config['fullNameFormat'];
 $users['CURRENT_TAB'] = $ctab;
 
-$oHeadPublisher =& headPublisher::getSingleton();
+$oHeadPublisher = & headPublisher::getSingleton();
 $oHeadPublisher->addExtJsScript('users/usersGroups', false);    //adding a javascript file .js
 // $oHeadPublisher->addContent('users/usersGroups'); //adding a html file  .html.
 $oHeadPublisher->assign('USERS', $users);
 
-  $oHeadPublisher->assign('hasAuthPerm', ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1));  
+$oHeadPublisher->assign('hasAuthPerm', ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1));
 
 G::RenderPage('publish', 'extJs');
+ 
