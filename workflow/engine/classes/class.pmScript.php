@@ -1,4 +1,5 @@
 <?php
+
 /**
  * class.pmScript.php
  * @package workflow.engine.ProcessMaker
@@ -32,21 +33,20 @@
 ////////////////////////////////////////////////////
 
 /**
- * PMScript - PMScript class 
+ * PMScript - PMScript class
  * @author Julio Cesar Laura Avenda�o <juliocesar@colosa.com>
  * last modify 2008.08.13 by Erik Amaru Ortiz <erik@colosa.com>
  * last modify comment was added and adapted the catch errors
  * @copyright 2007 COLOSA
  */
-
-function __autoload($sClassName) 
+function __autoload($sClassName)
 {
-  if (defined('SYS_SYS')) {
-    $sPath  = PATH_DB . SYS_SYS . PATH_SEP . 'classes' . PATH_SEP;
-    if (file_exists($sPath . $sClassName . '.php')) {
-      require_once $sPath . $sClassName . '.php';
+    if (defined('SYS_SYS')) {
+        $sPath = PATH_DB . SYS_SYS . PATH_SEP . 'classes' . PATH_SEP;
+        if (file_exists($sPath . $sClassName . '.php')) {
+            require_once $sPath . $sClassName . '.php';
+        }
     }
-  }
 }
 
 //Start - Custom functions
@@ -54,31 +54,32 @@ G::LoadClass('pmFunctions');
 //End - Custom functions
 //call plugin
 if (class_exists('folderData')) {
-  //$folderData = new folderData($sProUid, $proFields['PRO_TITLE'], $sAppUid, $Fields['APP_TITLE'], $sUsrUid);
-  $oPluginRegistry = &PMPluginRegistry::getSingleton();
-  $aAvailablePmFunctions = $oPluginRegistry->getPmFunctions();
-  foreach ($aAvailablePmFunctions as $key => $class ) {
-    $filePlugin = PATH_PLUGINS . $class . PATH_SEP . 'classes' . PATH_SEP . 'class.pmFunctions.php';
-    if ( file_exists ( $filePlugin ) )
-      include_once( $filePlugin);
-  }
+    //$folderData = new folderData($sProUid, $proFields['PRO_TITLE'], $sAppUid, $Fields['APP_TITLE'], $sUsrUid);
+    $oPluginRegistry = &PMPluginRegistry::getSingleton();
+    $aAvailablePmFunctions = $oPluginRegistry->getPmFunctions();
+    foreach ($aAvailablePmFunctions as $key => $class) {
+        $filePlugin = PATH_PLUGINS . $class . PATH_SEP . 'classes' . PATH_SEP . 'class.pmFunctions.php';
+        if (file_exists($filePlugin)) {
+            include_once( $filePlugin);
+        }
+    }
 }
 //end plugin
-
 //Add External Triggers
-$dir=G::ExpandPath( "classes" ).'triggers';
-$filesArray=array();
-if (file_exists($dir)){
-  if ($handle = opendir($dir)) {
-      while (false !== ($file = readdir($handle))) {
-          if(($file!=".")&&($file!="..")){ 
-            $extFile =explode(".",$file);
-            if($extFile[sizeof($extFile)-1] == 'php')
-              include_once( $dir.PATH_SEP.$file);
-          }
-      }
-      closedir($handle);
-  }
+$dir = G::ExpandPath("classes") . 'triggers';
+$filesArray = array();
+if (file_exists($dir)) {
+    if ($handle = opendir($dir)) {
+        while (false !== ($file = readdir($handle))) {
+            if (($file != ".") && ($file != "..")) {
+                $extFile = explode(".", $file);
+                if ($extFile[sizeof($extFile) - 1] == 'php') {
+                    include_once( $dir . PATH_SEP . $file);
+                }
+            }
+        }
+        closedir($handle);
+    }
 }
 
 /**
@@ -88,406 +89,453 @@ if (file_exists($dir)){
  */
 class PMScript
 {
-  /**
-   * Original fields
-   */
-  var $aOriginalFields = array();
 
-  /**
-   * Fields to use
-   */
-  var $aFields = array();
+    /**
+     * Original fields
+     */
+    public $aOriginalFields = array();
 
-  /**
-   * Script
-   */
-  var $sScript = '';
+    /**
+     * Fields to use
+     */
+    public $aFields = array();
 
-  /**
-   * Error has happened?
-   */
-  var $bError = false;
+    /**
+     * Script
+     */
+    public $sScript = '';
 
-  /**
-   * Affected fields
-   */
-  var $affected_fields;
-  
- /**
-   * Constructor of the class PMScript
-   * @return void
-   */
-  function PMScript()
-  {
-    $this->aFields['__ERROR__'] = 'none';
-  }
-  
- /**
-  * Set the fields to use
-  * @param array $aFields
-  * @return void
-  */
-  function setFields($aFields = array())
-  {
-    if (!is_array($aFields)) {
-      $aFields = array();
+    /**
+     * Error has happened?
+     */
+    public $bError = false;
+
+    /**
+     * Affected fields
+     */
+    public $affected_fields;
+
+    /**
+     * Constructor of the class PMScript
+     * @return void
+     */
+    public function PMScript()
+    {
+        $this->aFields['__ERROR__'] = 'none';
     }
-    $this->aOriginalFields = $this->aFields = $aFields;
-  }
 
- /**
-  * Set the current script
-  * @param string $sScript
-  * @return void
-  */
-  function setScript($sScript = '')
-  {
-    $this->sScript = $sScript;
-  }
-
- /**
-  * Verify the syntax
-  * @param string $sScript
-  * @return boolean
-  */
-  function validSyntax($sScript)
-  {
-    return true;
-  }
-
-
-  function executeAndCatchErrors($sScript, $sCode) {
-    ob_start('handleFatalErrors');
-    set_error_handler('handleErrors');
-    $_SESSION['_CODE_'] = $sCode;
-    eval($sScript);
-    unset($_SESSION['_CODE_']);
-    ob_end_flush();
-  }
-
-  /**
-   * Execute the current script
-   * @return void
-   */
-  function execute()
-  {
-    $sScript = "";
-    $iAux    = 0;
-    $bEqual  = false;
-    $iOcurrences = preg_match_all('/\@(?:([\@\%\#\?\$\=])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*(?:[\\\\][\w\W])?)*)\))((?:\s*\[[\'"]?\w+[\'"]?\])+)?/', $this->sScript, $aMatch, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
-    if ($iOcurrences){
-      for($i = 0; $i < $iOcurrences; $i++){
-        $sAux = substr($this->sScript, $iAux, $aMatch[0][$i][1] - $iAux);
-        if (!$bEqual){
-          if (strpos($sAux, '==') !== false){
-            $bEqual = false;
-          }
-          else {
-            if (strpos($sAux, '=') !== false){
-              $bEqual = true;
-            }
-          }
+    /**
+     * Set the fields to use
+     * @param array $aFields
+     * @return void
+     */
+    public function setFields($aFields=array())
+    {
+        if (!is_array($aFields)) {
+            $aFields = array();
         }
-        if ($bEqual){
-          if (strpos($sAux, ';') !== false){
-            $bEqual = false;
-          }
-        }
-        if ($bEqual) {
-          if (!isset($aMatch[5][$i][0])) {
-            eval("if (!isset(\$this->aFields['" . $aMatch[2][$i][0] . "'])) { \$this->aFields['" . $aMatch[2][$i][0] . "'] = null; }");
-          }
-          else {
-            eval("if (!isset(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")) { \$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . " = null; }");
-          }
-        }
-        $sScript .= $sAux;
-        $iAux     = $aMatch[0][$i][1] + strlen($aMatch[0][$i][0]);
-        switch ($aMatch[1][$i][0])
-        { case '@':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmToString(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              }
-              else {
-                $sScript .= "pmToString(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-          case '%':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmToInteger(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              } 
-              else {
-                $sScript .= "pmToInteger(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-          case '#':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmToFloat(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              }
-              else {
-                $sScript .= "pmToFloat(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-          case '?':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmToUrl(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              }
-              else {
-                $sScript .= "pmToUrl(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-          case '$':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmSqlEscape(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              }
-              else {
-                $sScript .= "pmSqlEscape(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-          case '=':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-        }
-        $this->affected_fields[] = $aMatch[2][$i][0];
-      }
+        $this->aOriginalFields = $this->aFields = $aFields;
     }
-    $sScript .= substr($this->sScript, $iAux);
-    $sScript  = "try {\n" . $sScript . "\n} catch (Exception \$oException) {\n  \$this->aFields['__ERROR__'] = utf8_encode(\$oException->getMessage());\n}";
-    //echo '<pre>-->'; print_r($this->aFields); echo '<---</pre>';
-    $this->executeAndCatchErrors($sScript, $this->sScript);
-    for($i=0; $i<count($this->affected_fields); $i++){
-      $_SESSION['TRIGGER_DEBUG']['DATA'][] = Array(
-        'key' => $this->affected_fields[$i],
-        'value' => isset($this->aFields[$this->affected_fields[$i]]) ? $this->aFields[$this->affected_fields[$i]] : ''
-      );
-    }
-    //echo '<pre>-->'; print_r($_SESSION['TRIGGER_DEBUG']['DATA']); echo '<---</pre>';
-  }
 
-  /**
-   * Evaluate the current script
-   * @return void
-   */
-  function evaluate()
-  {
-    $bResult = null;
-    $sScript = '';
-    $iAux    = 0;
-    $bEqual  = false;
-    $variableIsDefined = true;
-    $iOcurrences = preg_match_all('/\@(?:([\@\%\#\?\$\=])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*(?:[\\\\][\w\W])?)*)\))((?:\s*\[[\'"]?\w+[\'"]?\])+)?/', $this->sScript, $aMatch, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
-    if ($iOcurrences){
-      for($i = 0; $i < $iOcurrences; $i++){
-        // if the variables for that condition has not been previously defined then $variableIsDefined is set to false
-        if (!isset($this->aFields[$aMatch[2][$i][0]])){
-//          $variableIsDefined = false;
-          $this->aFields[$aMatch[2][$i][0]] = '';
-        }
-        $sAux = substr($this->sScript, $iAux, $aMatch[0][$i][1] - $iAux);
-        if (!$bEqual){
-          if (strpos($sAux, '=') !== false){
-            $bEqual = true;
-          }
-        }
-        if ($bEqual){
-          if (strpos($sAux, ';') !== false)
-          {
-            $bEqual = false;
-          }
-        }
-        $sScript .= $sAux;
-        $iAux     = $aMatch[0][$i][1] + strlen($aMatch[0][$i][0]);
-        switch ($aMatch[1][$i][0]){
-          case '@':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmToString(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              }
-              else {
-                $sScript .= "pmToString(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-          case '%':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmToInteger(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              }
-              else {
-                $sScript .= "pmToInteger(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-          case '#':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmToFloat(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              }
-              else {
-                $sScript .= "pmToFloat(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-          break;
-          case '?':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmToUrl(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              }
-              else {
-                $sScript .= "pmToUrl(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-          case '$':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "pmSqlEscape(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
-              }
-              else {
-                $sScript .= "pmSqlEscape(\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0] . ")";
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-          case '=':
-            if ($bEqual){
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            else{
-              if (!isset($aMatch[5][$i][0])) {
-                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
-              }
-              else {
-                $sScript .= "\$this->aFields" . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
-              }
-            }
-            break;
-        }
-      }
+    /**
+     * Set the current script
+     * @param string $sScript
+     * @return void
+     */
+    public function setScript($sScript='')
+    {
+        $this->sScript = $sScript;
     }
-    $sScript .= substr($this->sScript, $iAux);
-    $sScript  = '$bResult = ' . $sScript . ';';
-    // checks if the syntax is valid or if the variables in that condition has been previously defined
-    if ($this->validSyntax($sScript)&&$variableIsDefined){
-      $this->bError = false;
-      eval($sScript);
+
+    /**
+     * Verify the syntax
+     * @param string $sScript
+     * @return boolean
+     */
+    public function validSyntax($sScript)
+    {
+        return true;
     }
-    else{
-//      echo "<script> alert('".G::loadTranslation('MSG_CONDITION_NOT_DEFINED')."'); </script>";
-   	  G::SendTemporalMessage('MSG_CONDITION_NOT_DEFINED', 'error', 'labels');
-      $this->bError = true;
+
+    public function executeAndCatchErrors($sScript, $sCode)
+    {
+        ob_start('handleFatalErrors');
+        set_error_handler('handleErrors');
+        $_SESSION['_CODE_'] = $sCode;
+        eval($sScript);
+        unset($_SESSION['_CODE_']);
+        ob_end_flush();
     }
-    return $bResult;
-  }
+
+    /**
+     * Execute the current script
+     * @return void
+     */
+    public function execute()
+    {
+        $sScript = "";
+        $iAux = 0;
+        $bEqual = false;
+        $iOcurrences = preg_match_all(  '/\@(?:([\@\%\#\?\$\=])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]'
+                                      . '*(?:[\\\\][\w\W])?)*)\))((?:\s*\[[\'"]?\w+[\'"]?\])+)?/',
+                                      $this->sScript, $aMatch, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+        if ($iOcurrences) {
+            for ($i = 0; $i < $iOcurrences; $i++) {
+                $sAux = substr($this->sScript, $iAux, $aMatch[0][$i][1] - $iAux);
+                if (!$bEqual) {
+                    if (strpos($sAux, '==') !== false) {
+                        $bEqual = false;
+                    } else {
+                        if (strpos($sAux, '=') !== false) {
+                            $bEqual = true;
+                        }
+                    }
+                }
+                if ($bEqual) {
+                    if (strpos($sAux, ';') !== false) {
+                        $bEqual = false;
+                    }
+                }
+                if ($bEqual) {
+                    if (!isset($aMatch[5][$i][0])) {
+                        eval("if (!isset(\$this->aFields['" . $aMatch[2][$i][0] . "'])) { \$this->aFields['"
+                              . $aMatch[2][$i][0] . "'] = null; }");
+                    } else {
+                        eval( "if (!isset(\$this->aFields"
+                              . (isset($aMatch[2][$i][0])
+                              ? "['" . $aMatch[2][$i][0] . "']"
+                              : '') . $aMatch[5][$i][0] . ")) { \$this->aFields"
+                                . (isset($aMatch[2][$i][0]) ? "['" . $aMatch[2][$i][0]
+                                . "']" : '') . $aMatch[5][$i][0] . " = null; }");
+                    }
+                }
+                $sScript .= $sAux;
+                $iAux = $aMatch[0][$i][1] + strlen($aMatch[0][$i][0]);
+                switch ($aMatch[1][$i][0]) {
+                    case '@':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmToString(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmToString(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '%':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmToInteger(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmToInteger(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '#':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmToFloat(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmToFloat(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '?':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmToUrl(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmToUrl(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '$':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmSqlEscape(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmSqlEscape(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '=':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                }
+                $this->affected_fields[] = $aMatch[2][$i][0];
+            }
+        }
+        $sScript .= substr($this->sScript, $iAux);
+        $sScript = "try {\n" . $sScript . "\n} catch (Exception \$oException) {\n "
+                 . " \$this->aFields['__ERROR__'] = utf8_encode(\$oException->getMessage());\n}";
+        //echo '<pre>-->'; print_r($this->aFields); echo '<---</pre>';
+        $this->executeAndCatchErrors($sScript, $this->sScript);
+        for ($i = 0; $i < count($this->affected_fields); $i++) {
+            $_SESSION['TRIGGER_DEBUG']['DATA'][] = Array(
+                'key' => $this->affected_fields[$i],
+                'value' => isset($this->aFields[$this->affected_fields[$i]])
+                           ? $this->aFields[$this->affected_fields[$i]]
+                           : ''
+            );
+        }
+        //echo '<pre>-->'; print_r($_SESSION['TRIGGER_DEBUG']['DATA']); echo '<---</pre>';
+    }
+
+    /**
+     * Evaluate the current script
+     * @return void
+     */
+    public function evaluate()
+    {
+        $bResult = null;
+        $sScript = '';
+        $iAux = 0;
+        $bEqual = false;
+        $variableIsDefined = true;
+        $iOcurrences = preg_match_all('/\@(?:([\@\%\#\?\$\=])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]'
+                                    . '*(?:[\\\\][\w\W])?)*)\))((?:\s*\[[\'"]?\w+[\'"]?\])+)?/',
+                                      $this->sScript, $aMatch, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+        if ($iOcurrences) {
+            for ($i = 0; $i < $iOcurrences; $i++) {
+                // if the variables for that condition has not been previously defined then $variableIsDefined
+                // is set to false
+                if (!isset($this->aFields[$aMatch[2][$i][0]])) {
+                    // $variableIsDefined = false;
+                    $this->aFields[$aMatch[2][$i][0]] = '';
+                }
+                $sAux = substr($this->sScript, $iAux, $aMatch[0][$i][1] - $iAux);
+                if (!$bEqual) {
+                    if (strpos($sAux, '=') !== false) {
+                        $bEqual = true;
+                    }
+                }
+                if ($bEqual) {
+                    if (strpos($sAux, ';') !== false) {
+                        $bEqual = false;
+                    }
+                }
+                $sScript .= $sAux;
+                $iAux = $aMatch[0][$i][1] + strlen($aMatch[0][$i][0]);
+                switch ($aMatch[1][$i][0]) {
+                    case '@':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmToString(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmToString(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '%':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmToInteger(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmToInteger(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '#':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmToFloat(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmToFloat(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '?':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmToUrl(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmToUrl(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '$':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "pmSqlEscape(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
+                            } else {
+                                $sScript .= "pmSqlEscape(\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0] . ")";
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                    case '=':
+                        if ($bEqual) {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        } else {
+                            if (!isset($aMatch[5][$i][0])) {
+                                $sScript .= "\$this->aFields['" . $aMatch[2][$i][0] . "']";
+                            } else {
+                                $sScript .= "\$this->aFields"
+                                          . (isset($aMatch[2][$i][0])
+                                          ? "['" . $aMatch[2][$i][0] . "']"
+                                          : '') . $aMatch[5][$i][0];
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        $sScript .= substr($this->sScript, $iAux);
+        $sScript = '$bResult = ' . $sScript . ';';
+        // checks if the syntax is valid or if the variables in that condition has been previously defined
+        if ($this->validSyntax($sScript) && $variableIsDefined) {
+            $this->bError = false;
+            eval($sScript);
+        } else {
+            // echo "<script> alert('".G::loadTranslation('MSG_CONDITION_NOT_DEFINED')."'); </script>";
+            G::SendTemporalMessage('MSG_CONDITION_NOT_DEFINED', 'error', 'labels');
+            $this->bError = true;
+        }
+        return $bResult;
+    }
 }
 
 //Start - Private functions
@@ -499,7 +547,7 @@ class PMScript
  */
 function pmToString($vValue)
 {
-    return (string)$vValue;
+    return (string) $vValue;
 }
 
 /**
@@ -509,7 +557,7 @@ function pmToString($vValue)
  */
 function pmToInteger($vValue)
 {
-  return (int)$vValue;
+    return (int) $vValue;
 }
 
 /**
@@ -519,7 +567,7 @@ function pmToInteger($vValue)
  */
 function pmToFloat($vValue)
 {
-  return (float)$vValue;
+    return (float) $vValue;
 }
 
 /**
@@ -529,7 +577,7 @@ function pmToFloat($vValue)
  */
 function pmToUrl($vValue)
 {
-  return urlencode($vValue);
+    return urlencode($vValue);
 }
 
 /**
@@ -539,18 +587,18 @@ function pmToUrl($vValue)
  */
 function pmSqlEscape($vValue)
 {
-  return G::sqlEscape($vValue);
+    return G::sqlEscape($vValue);
 }
 
 //End - Private functions
 
 
 
-/***************************************************************************
-* Error handler
-* author: Julio Cesar Laura Avenda�o <juliocesar@colosa.com>
-* date: 2009-10-01
-***************************************************************************/
+/* * *************************************************************************
+ * Error handler
+ * author: Julio Cesar Laura Avenda�o <juliocesar@colosa.com>
+ * date: 2009-10-01
+ * ************************************************************************* */
 /*
  * Convert to data base escaped string
  * @param string $errno
@@ -559,15 +607,15 @@ function pmSqlEscape($vValue)
  * @param string $errline
  * @return void
  */
-function handleErrors($errno, $errstr, $errfile, $errline) 
+function handleErrors($errno, $errstr, $errfile, $errline)
 {
-  if ($errno != '' && ($errno != 8) && ($errno != 2048)) {
-    if( isset($_SESSION['_CODE_']) ){
-    $sCode = $_SESSION['_CODE_'];
-    unset($_SESSION['_CODE_']);
-    registerError(1, $errstr, $errline - 1, $sCode);
+    if ($errno != '' && ($errno != 8) && ($errno != 2048)) {
+        if (isset($_SESSION['_CODE_'])) {
+            $sCode = $_SESSION['_CODE_'];
+            unset($_SESSION['_CODE_']);
+            registerError(1, $errstr, $errline - 1, $sCode);
+        }
     }
-  }
 }
 
 /*
@@ -575,49 +623,56 @@ function handleErrors($errno, $errstr, $errfile, $errline)
  * @param variant $buffer
  * @return buffer
  */
-function handleFatalErrors($buffer) 
+
+function handleFatalErrors($buffer)
 {
-  if (preg_match('/(error<\/b>:)(.+)(<br)/', $buffer, $regs)) {
-    $err = preg_replace('/<.*?>/', '', $regs[2]);
-    $aAux = explode(' in ', $err);
-    $sCode = $_SESSION['_CODE_'];
-    unset($_SESSION['_CODE_']);
-    registerError(2, $aAux[0], 0, $sCode);
-    if (strpos($_SERVER['REQUEST_URI'], '/cases/cases_Step') !== false) {
-      if (strpos($_SERVER['REQUEST_URI'], '&ACTION=GENERATE') !== false) {
-        G::LoadClass('case');
-        $oCase = new Cases();
-        $aNextStep = $oCase->getNextStep($_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION']);
-        if($_SESSION['TRIGGER_DEBUG']['ISSET']) {
-          $_SESSION['TRIGGER_DEBUG']['TIME'] = 'AFTER';
-          $_SESSION['TRIGGER_DEBUG']['BREAKPAGE'] = $aNextStep['PAGE'];
-          $aNextStep['PAGE'] = $aNextStep['PAGE'].'&breakpoint=triggerdebug';
+    if (preg_match('/(error<\/b>:)(.+)(<br)/', $buffer, $regs)) {
+        $err = preg_replace('/<.*?>/', '', $regs[2]);
+        $aAux = explode(' in ', $err);
+        $sCode = $_SESSION['_CODE_'];
+        unset($_SESSION['_CODE_']);
+        registerError(2, $aAux[0], 0, $sCode);
+        if (strpos($_SERVER['REQUEST_URI'], '/cases/cases_Step') !== false) {
+            if (strpos($_SERVER['REQUEST_URI'], '&ACTION=GENERATE') !== false) {
+                G::LoadClass('case');
+                $oCase = new Cases();
+                $aNextStep = $oCase->getNextStep($_SESSION['PROCESS'],
+                                                 $_SESSION['APPLICATION'],
+                                                 $_SESSION['INDEX'],
+                                                 $_SESSION['STEP_POSITION']);
+                if ($_SESSION['TRIGGER_DEBUG']['ISSET']) {
+                    $_SESSION['TRIGGER_DEBUG']['TIME'] = 'AFTER';
+                    $_SESSION['TRIGGER_DEBUG']['BREAKPAGE'] = $aNextStep['PAGE'];
+                    $aNextStep['PAGE'] = $aNextStep['PAGE'] . '&breakpoint=triggerdebug';
+                }
+                G::header('Location: ' . $aNextStep['PAGE']);
+                die;
+            }
+            $_SESSION['_NO_EXECUTE_TRIGGERS_'] = 1;
+            G::header('Location: ' . $_SERVER['REQUEST_URI']);
+            die;
+        } else {
+            G::LoadClass('case');
+            $oCase = new Cases();
+            $aNextStep = $oCase->getNextStep($_SESSION['PROCESS'],
+                                             $_SESSION['APPLICATION'],
+                                             $_SESSION['INDEX'],
+                                             $_SESSION['STEP_POSITION']);
+            if ($_SESSION['TRIGGER_DEBUG']['ISSET']) {
+                $_SESSION['TRIGGER_DEBUG']['TIME'] = 'AFTER';
+                $_SESSION['TRIGGER_DEBUG']['BREAKPAGE'] = $aNextStep['PAGE'];
+                $aNextStep['PAGE'] = $aNextStep['PAGE'] . '&breakpoint=triggerdebug';
+            }
+            if (strpos($aNextStep['PAGE'], 'TYPE=ASSIGN_TASK&UID=-1') !== false) {
+                G::SendMessageText('Fatal error in trigger', 'error');
+            }
+            G::header('Location: ' . $aNextStep['PAGE']);
+            die;
         }
-        G::header('Location: ' . $aNextStep['PAGE']);
-        die;
-      }
-      $_SESSION['_NO_EXECUTE_TRIGGERS_'] = 1;
-      G::header('Location: ' . $_SERVER['REQUEST_URI']);
-      die;
     }
-    else {
-      G::LoadClass('case');
-      $oCase = new Cases();
-      $aNextStep = $oCase->getNextStep($_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION']);
-      if($_SESSION['TRIGGER_DEBUG']['ISSET']) {
-        $_SESSION['TRIGGER_DEBUG']['TIME'] = 'AFTER';
-        $_SESSION['TRIGGER_DEBUG']['BREAKPAGE'] = $aNextStep['PAGE'];
-        $aNextStep['PAGE'] = $aNextStep['PAGE'].'&breakpoint=triggerdebug';
-      }
-      if (strpos($aNextStep['PAGE'], 'TYPE=ASSIGN_TASK&UID=-1') !== false) {
-        G::SendMessageText('Fatal error in trigger', 'error');
-      }
-      G::header('Location: ' . $aNextStep['PAGE']);
-      die;
-    }
-  }
-  return $buffer;
+    return $buffer;
 }
+
 /*
  * Register Error
  * @param string $iType
@@ -626,10 +681,12 @@ function handleFatalErrors($buffer)
  * @param string $sCode
  * @return void
  */
-function registerError($iType, $sError, $iLine, $sCode) 
+
+function registerError($iType, $sError, $iLine, $sCode)
 {
-  $sType = ($iType == 1 ? 'ERROR' : 'FATAL');
-  $_SESSION['TRIGGER_DEBUG']['ERRORS'][][$sType] = $sError . ($iLine > 0 ? ' (line ' . $iLine .  ')' : '') . ':<br /><br />' . $sCode;
+    $sType = ($iType == 1 ? 'ERROR' : 'FATAL');
+    $_SESSION['TRIGGER_DEBUG']['ERRORS'][][$sType] = $sError . ($iLine > 0 ? ' (line ' . $iLine . ')' : '')
+                                                  . ':<br /><br />' . $sCode;
 }
 
 /**
@@ -640,8 +697,8 @@ function registerError($iType, $sError, $iLine, $sCode)
  */
 function getEngineDataBaseName($connection)
 {
-  $aDNS =  $connection->getDSN();
-  return $aDNS["phptype"];
+    $aDNS = $connection->getDSN();
+    return $aDNS["phptype"];
 }
 
 /**
@@ -650,89 +707,87 @@ function getEngineDataBaseName($connection)
  * @param type $sql
  * @param type $connection
  */
-function executeQueryOci($sql, $connection, $aParameter = array())
+function executeQueryOci($sql, $connection, $aParameter=array())
 {
 
-  $aDNS      = $connection->getDSN();
-  $sUsername = $aDNS["username"];
-  $sPassword = $aDNS["password"];
-  $sHostspec = $aDNS["hostspec"];
-  $sDatabse  = $aDNS["database"];
-  $sPort     = $aDNS["port"];
+    $aDNS = $connection->getDSN();
+    $sUsername = $aDNS["username"];
+    $sPassword = $aDNS["password"];
+    $sHostspec = $aDNS["hostspec"];
+    $sDatabse = $aDNS["database"];
+    $sPort = $aDNS["port"];
 
-  if ($sPort != "1521") { // if not default port
-    $conn = oci_connect($sUsername, $sPassword, $sHostspec . ":" . $sPort . "/" . $sDatabse);
-  }
-  else {
-    $conn = oci_connect($sUsername, $sPassword, $sHostspec . "/" . $sDatabse);
-  }
+    if ($sPort != "1521") {
+        // if not default port
+        $conn = oci_connect($sUsername, $sPassword, $sHostspec . ":" . $sPort . "/" . $sDatabse);
+    } else {
+        $conn = oci_connect($sUsername, $sPassword, $sHostspec . "/" . $sDatabse);
+    }
 
-  if (!$conn) {
-    $e = oci_error();
-    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-    return $e;
-  }
+    if (!$conn) {
+        $e = oci_error();
+        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        return $e;
+    }
 
-  switch(true) {
-    case preg_match("/^(SELECT|SHOW|DESCRIBE|DESC)\s/i", $sql):
-      $stid = oci_parse($conn, $sql);
-      if (count($aParameter) > 0) {
-        foreach ($aParameter as $key => $val) {
-          oci_bind_by_name($stid, $key, $val);
-        }
-      }
-      oci_execute($stid, OCI_DEFAULT);
+    switch (true) {
+        case preg_match("/^(SELECT|SHOW|DESCRIBE|DESC)\s/i", $sql):
+            $stid = oci_parse($conn, $sql);
+            if (count($aParameter) > 0) {
+                foreach ($aParameter as $key => $val) {
+                    oci_bind_by_name($stid, $key, $val);
+                }
+            }
+            oci_execute($stid, OCI_DEFAULT);
 
-      $result = Array();
-      $i      = 1;
-      while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
-        $result[$i++] = $row;
-      }
-      oci_free_statement($stid);
-      oci_close($conn);
-      return $result;
-      break;
-    case preg_match("/^(INSERT|UPDATE|DELETE)\s/i", $sql):
-      $stid       = oci_parse($conn, $sql);
-      $isValid    = true;
-      if (count($aParameter) > 0){
-        foreach ($aParameter as $key => $val) {
-          oci_bind_by_name($stid, $key, $val);
-        }
-      }
-      $objExecute = oci_execute($stid, OCI_DEFAULT);
-      if ($objExecute) {
-        oci_commit($conn);
-      }
-      else {
-        oci_rollback($conn);
-        $isValid = false;
-      }
-      oci_free_statement($stid);
-      oci_close($conn);
-      if ($isValid) {
-        return true;
-      }
-      else {
-        return oci_error();
-      }
-      break;
-    default:
-      // Stored procedures
-      $stid = oci_parse($conn, $sql);
-      $aParameterRet = array();
-      if (count($aParameter) > 0){
-        foreach ($aParameter as $key => $val) {
-          $aParameterRet[$key] = $val;
-          // The third parameter ($aParameterRet[$key]) returned a value by reference.
-          oci_bind_by_name($stid, $key, $aParameterRet[$key]);
-        }
-      }
-      $objExecute = oci_execute($stid, OCI_DEFAULT);
-      oci_free_statement($stid);
-      oci_close($conn);
-      return $aParameterRet;
-      break;
-  }
-
+            $result = Array();
+            $i = 1;
+            while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                $result[$i++] = $row;
+            }
+            oci_free_statement($stid);
+            oci_close($conn);
+            return $result;
+            break;
+        case preg_match("/^(INSERT|UPDATE|DELETE)\s/i", $sql):
+            $stid = oci_parse($conn, $sql);
+            $isValid = true;
+            if (count($aParameter) > 0) {
+                foreach ($aParameter as $key => $val) {
+                    oci_bind_by_name($stid, $key, $val);
+                }
+            }
+            $objExecute = oci_execute($stid, OCI_DEFAULT);
+            if ($objExecute) {
+                oci_commit($conn);
+            } else {
+                oci_rollback($conn);
+                $isValid = false;
+            }
+            oci_free_statement($stid);
+            oci_close($conn);
+            if ($isValid) {
+                return true;
+            } else {
+                return oci_error();
+            }
+            break;
+        default:
+            // Stored procedures
+            $stid = oci_parse($conn, $sql);
+            $aParameterRet = array();
+            if (count($aParameter) > 0) {
+                foreach ($aParameter as $key => $val) {
+                    $aParameterRet[$key] = $val;
+                    // The third parameter ($aParameterRet[$key]) returned a value by reference.
+                    oci_bind_by_name($stid, $key, $aParameterRet[$key]);
+                }
+            }
+            $objExecute = oci_execute($stid, OCI_DEFAULT);
+            oci_free_statement($stid);
+            oci_close($conn);
+            return $aParameterRet;
+            break;
+    }
 }
+ 
