@@ -24,9 +24,9 @@
  */
 global $RBAC;
 if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') != 1) {
-  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-	G::header('location: ../login/login');
-	die;
+    G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+    G::header('location: ../login/login');
+    die;
 }
 
 $G_MAIN_MENU            = 'processmaker';
@@ -41,3 +41,4 @@ $oHeadPublisher =& headPublisher::getSingleton();
 $oHeadPublisher->addExtJsScript('authSources/authSourceskindof', true);    //adding a javascript file .js
 $oHeadPublisher->assign('sprovider', $_GET['sprovider']);
 G::RenderPage('publish', 'extJs');
+
