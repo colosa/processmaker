@@ -53,8 +53,12 @@ try {
 
     $bReturnValue = true;
     $displayMode  = 'display:block';
-    $methodreturnDescription = (trim(strtoupper($methodreturnA [3])) == strtoupper(G::LoadTranslation ( 'ID_NONE')) )
-                             ? G::LoadTranslation ( 'ID_NOT_REQUIRED') : $methodreturnA [3];
+    $methodreturnDescription = "";
+    if (isset($methodreturnA[3])) {
+        $methodreturnDescription = (trim(strtoupper($methodreturnA [3])) == strtoupper(G::LoadTranslation ('ID_NONE')))
+                                 ? G::LoadTranslation ( 'ID_NOT_REQUIRED')
+                                 : $methodreturnA [3];
+    }
     $methodReturnLabel       = isset ( $methodreturnA [3] ) ? $methodreturnDescription : $methodReturn;
     if ( (isset($methodreturnA[0]) && isset($methodreturnA[1]))
         && (trim(strtoupper($methodreturnA[0]) ) != strtoupper(G::LoadTranslation ( 'ID_NONE')) ) ) {

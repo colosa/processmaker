@@ -2094,3 +2094,4 @@ function PMFGetCaseNotes ($applicationID, $type='array', $userUid='')
     $response = Cases::getCaseNotes($applicationID, $type, $userUid);
     return $response;
 }
+ 
