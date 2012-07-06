@@ -222,45 +222,48 @@ class Home extends Controller
     $this->render();
   }
 
-  public function getAppsData($type, $start=null, $limit=null)
-  {
-    require_once ( "classes/model/AppNotes.php" );
-    G::LoadClass('applications');
+    public function getAppsData($type, $start=null, $limit=null)
+    {
+        require_once ( "classes/model/AppNotes.php" );
+        G::LoadClass('applications');
 
-    $apps = new Applications();
-    $appNotes = new AppNotes();
+        $apps = new Applications();
+        $appNotes = new AppNotes();
 
-    $start = empty($start) ? $this->appListStart : $start;
-    $limit = empty($limit) ? $this->appListLimit : $limit;
+        $start = empty($start) ? $this->appListStart : $start;
+        $limit = empty($limit) ? $this->appListLimit : $limit;
 
-    $notesStart = 0;
-    $notesLimit = 4;
+        $notesStart = 0;
+        $notesLimit = 4;
 
-    $cases = $apps->getAll($this->userID, $start, $limit, $type);
-    //g::pr($cases['data']); die;
+        $cases = $apps->getAll($this->userID, $start, $limit, $type);
+        //g::pr($cases['data']); die;
 
-    // formating & complitting apps data with 'Notes'
-    foreach ($cases['data'] as $i => $row) {
-      // Formatting
-      $appTitle = str_replace('#', '', $row['APP_TITLE']);
+        // formating & complitting apps data with 'Notes'
+        foreach ($cases['data'] as $i => $row) {
+            // Formatting
+            $appTitle = str_replace('#', '', $row['APP_TITLE']);
 
-      if (is_numeric($appTitle)) {
-        $cases['data'][$i]['APP_TITLE'] = G::LoadTranslation('ID_CASE'). ' ' . $appTitle;
-      }
+            if (is_numeric($appTitle)) {
+                $cases['data'][$i]['APP_TITLE'] = G::LoadTranslation('ID_CASE'). ' ' . $appTitle;
+            }
 
-      $cases['data'][$i]['DEL_DELEGATE_DATE']     = G::getformatedDate($row['DEL_DELEGATE_DATE'], 'M d, yyyy - h:i:s');
-      $cases['data'][$i]['APP_DEL_PREVIOUS_USER'] = ucwords($row['APP_DEL_PREVIOUS_USER']);
-
-      // Completting with Notes
-      $notes = $appNotes->getNotesList($row['APP_UID'], '', $notesStart, $notesLimit);
-      $notes = $notes['array'];
-      
-      $cases['data'][$i]['NOTES_COUNT'] = $notes['totalCount'];
-      $cases['data'][$i]['NOTES_LIST']  = $notes['notes'];
+            if (isset($row['DEL_DELEGATE_DATE'])) {
+                $cases['data'][$i]['DEL_DELEGATE_DATE'] = G::getformatedDate($row['DEL_DELEGATE_DATE'],
+                    'M d, yyyy - h:i:s');
+            }
+            if (isset($row['APP_DEL_PREVIOUS_USER'])) {
+                $cases['data'][$i]['APP_DEL_PREVIOUS_USER'] = ucwords($row['APP_DEL_PREVIOUS_USER']);
+            }
+            // Completting with Notes
+            $notes = $appNotes->getNotesList($row['APP_UID'], '', $notesStart, $notesLimit);
+            $notes = $notes['array'];
+            
+            $cases['data'][$i]['NOTES_COUNT'] = $notes['totalCount'];
+            $cases['data'][$i]['NOTES_LIST']  = $notes['notes'];
+        }
+        return $cases;
     }
-
-    return $cases;
-  }
 
   public function startCase($httpData)
   {
