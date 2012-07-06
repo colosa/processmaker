@@ -1613,7 +1613,7 @@ class XmlForm_Field_Currency extends XmlForm_Field_SimpleText {
     $onkeypress = G::replaceDataField ( $this->onkeypress, $owner->values );
 
     $html = '';
-    $currency = preg_replace( '/([#,.])/', '',$this->mask);
+    $currency = preg_replace( '/([_;#,.])/', '',$this->mask);
     if (! $value) $value= $currency;
 
     if ($this->renderMode == 'edit'){ //EDIT MODE
@@ -1662,7 +1662,7 @@ class XmlForm_Field_Currency extends XmlForm_Field_SimpleText {
 
     foreach ( $values as $v ) {
       $html = '';
-      $currency = preg_replace( '/([#,.])/', '',$this->mask);
+      $currency = preg_replace( '/([_;#,.])/', '',$this->mask);
       if (! $v) $v= $currency;
       if ($this->renderMode === 'edit'){ //EDIT MODE
         $readOnlyText = ($this->readOnly == 1 || $this->readOnly == '1') ? 'readOnly="readOnly"' : '';
