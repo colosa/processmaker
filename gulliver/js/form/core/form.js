@@ -1122,6 +1122,7 @@ function G_Text( form, element, name)
     if (me.validate == 'Any' && me.mask == '') return true;
     //pressKey = event.keyCode;
     pressKey = window.event ? window.event.keyCode : event.which;
+    
     switch(pressKey){
       case 8: case 46:  //BACKSPACE OR DELETE
       case 35: case 36: //HOME OR END
@@ -1140,8 +1141,8 @@ function G_Text( form, element, name)
         return true;
         break;
       default:
-        if ( (me.mType == 'date') || (me.mType == 'currency') || (me.mType == 'percentage') || (me.validate == 'Real') || (me.validate == 'Int') ) {
-          if ( (pressKey >= 96 && pressKey <= 105) || (pressKey >= 48 && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188) ) {
+        if (me.mType == 'date' || me.mType == 'currency' || me.mType == 'percentage' || me.validate == 'Real' || me.validate == 'Int') {
+          if ((48 <= pressKey && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188) || (96 <= pressKey && pressKey <= 111)) {
             return true;
           }
           else {
@@ -1276,12 +1277,14 @@ function G_Text( form, element, name)
       }
       if (keyValid){
         //APPLY MASK
+        if ((me.validate == "Login" || me.validate == "NodeName") && me.mask == "") return true;
         if (pressKey == 46){
           me.applyMask(256); //This code send [.] period to the mask
         }
         else{
           me.applyMask(pressKey);
         }
+
         if (updateOnChange) me.sendOnChange();
       }
 
@@ -1335,13 +1338,7 @@ function G_Text( form, element, name)
             this.element.value = this.element.value.toLowerCase();
             break;
         }
-      }
-      if (this.validate == 'NodeName') {
-        var pat = /^[a-z\_](.)[a-z\d\_]{1,255}$/i;
-        if(!pat.test(this.element.value)) {
-          this.element.value = '_' + this.element.value;
-        }
-      }
+      }      
     }.extend(this);
   }
 
@@ -3126,10 +3123,21 @@ function dynaformVerifyFieldName(){
 
 function verifyFieldName1(){
   var newFieldName=fieldName.value;
+  var msj = _('DYNAFIELD_ALREADY_EXIST');
   var validatedFieldName=getField("PME_VALIDATE_NAME",fieldForm).value;
   var dField = new input(getField('PME_XMLNODE_NAME'));
 
   var valid=(newFieldName!=='')&&(((newFieldName!==savedFieldName)&&(validatedFieldName===''))||((newFieldName===savedFieldName)));
+  if (newFieldName.length == 0) {
+    valid = false;
+    msj   = _('DYNAFIELD_EMPTY');
+  }
+
+  if (!(isNaN(parseInt(newFieldName.substr(0,1))))) {
+    valid = false;
+    msj   = _('DYNAFIELD_NODENAME_NUMBER');
+  }
+
   if (valid){
     dField.passed();
     getField("PME_ACCEPT",fieldForm).disabled=false;
@@ -3137,7 +3145,7 @@ function verifyFieldName1(){
     getField("PME_ACCEPT",fieldForm).disabled=true;
     dField.failed();
     new leimnud.module.app.alert().make({
-      label: G_STRINGS.DYNAFIELD_ALREADY_EXIST
+      label: msj
     });
     dField.focus();
   }

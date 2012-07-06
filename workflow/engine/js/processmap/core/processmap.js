@@ -1571,7 +1571,19 @@ var processmap=function(){
           {simage:"/images/properties.png",text:G_STRINGS.ID_PROCESSMAP_PROPERTIES,launch:this.parent.closure({instance:this,method:function(index){
             var panel;
             var iForm=function(panel,index,ifo){
-              saveDataTaskTemporal(ifo);
+              //saveDataTaskTemporal(ifo);
+              if(typeof(panel.flag) == 'undefined') {
+                if (!saveDataTaskTemporal(ifo)) {
+                  var tabPass = panel.tabSelected;
+                  panel.tabSelected = panel.tabLastSelected;
+                  panel.tabLastSelected = tabPass;
+                  panel.flag = true;
+                  panel.makeTab();
+                  return false;
+                }                
+              }
+              delete panel.flag;
+
               panel.command(panel.loader.show);
               var r = new this.parent.module.rpc.xmlhttp({
                 url:this.options.dataServer,

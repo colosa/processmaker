@@ -182,8 +182,9 @@ if (($RBAC_Response=$RBAC->userCanAccess("PM_FACTORY"))!=1) return $RBAC_Respons
 
     
     if( isset($Fields['PME_HINT']) ) {
-      $Fields['PME_HINT'] = str_replace("\'", "'", $Fields['PME_HINT']);
-      $Fields['PME_HINT'] = str_replace("&amp;", "&", $Fields['PME_HINT']);
+      $Fields['PME_HINT'] = stripslashes($Fields['PME_HINT']);
+      $Fields['PME_HINT'] = htmlspecialchars_decode($Fields['PME_HINT']);
+      $Fields['PME_HINT'] = str_replace("&#039;", "'", $Fields['PME_HINT']);
     }
 
     if (file_exists( PATH_XMLFORM . 'dynaforms/fields/' . $type . '.xml')) {

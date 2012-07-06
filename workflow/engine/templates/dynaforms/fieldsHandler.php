@@ -195,7 +195,7 @@
 		var client_window = parent.getClientWindowSize(); 
 		h = client_window.height;
 		h1 = (h / 100) * 92;
-		window.parent.popupWindow('', "fields_Edit?A=<?=$_SESSION['Current_Dynafom']['Parameters']['URL']?>&XMLNODE_NAME="+ uid , 600, h1);
+		window.parent.popupWindow('', "fields_Edit?A=<?php echo $_SESSION['Current_Dynafom']['Parameters']['URL']?>&XMLNODE_NAME="+ uid , 600, h1);
 		
 	}
 	
@@ -206,7 +206,7 @@
 				$.ajax({
 				   type: "POST",
 				   url: "fields_Delete",
-				   data: 'A=<?=$_SESSION['Current_Dynafom']['Parameters']['URL']?>&XMLNODE_NAME='+uid,
+				   data: 'A=<?php echo $_SESSION['Current_Dynafom']['Parameters']['URL']?>&XMLNODE_NAME='+uid,
 				   success: function(httpResponse){
 						window.parent.dynaformEditor.refreshFieldsList();
 				   }

@@ -58,9 +58,9 @@ if($RBAC->userCanAccess('PM_SETUP') != 1 && $RBAC->userCanAccess('PM_FACTORY') !
   var oAux = document.getElementById("publisherContent[0]");
   oAux.id = "publisherContent[666]";
   var currentGroup=false;
-  
+
   function webServicesSetup(){
-    popupWindow('' , '<?=$link_Edit?>' , 500 , 225 );
+    popupWindow('' , '<?php echo $link_Edit ?>' , 500 , 225 );
   }
    
   function showFormWS( uid, element ){
@@ -134,7 +134,7 @@ if($RBAC->userCanAccess('PM_SETUP') != 1 && $RBAC->userCanAccess('PM_FACTORY') !
   }
   
   function refreshTree(){
-    tree.refresh( document.getElementById("publisherContent[666]") , '<?=$link_List?>');
+    tree.refresh( document.getElementById("publisherContent[666]") , '<?php echo $link_List ?>');
   }
 
   function showDetails(){

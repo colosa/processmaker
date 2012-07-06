@@ -93,11 +93,11 @@ class SkinEngine
 
     //Based on requested Skin look if there is any registered with that name
     if (strtolower($this->mainSkin) != "classic") {
-      if (is_dir($this->skinsBasePath . $this->mainSkin)) { // check this skin on core skins path
-        $skinObject = $this->skinsBasePath . $this->mainSkin;
-      }
-      else if (defined('PATH_CUSTOM_SKINS') && is_dir(PATH_CUSTOM_SKINS . $this->mainSkin)) { // check this skin on user skins path
+      if (defined('PATH_CUSTOM_SKINS') && is_dir(PATH_CUSTOM_SKINS . $this->mainSkin)) { // check this skin on user skins path
         $skinObject = PATH_CUSTOM_SKINS . $this->mainSkin;
+      }
+      else if (is_dir($this->skinsBasePath . $this->mainSkin)) { // check this skin on core skins path
+        $skinObject = $this->skinsBasePath . $this->mainSkin;
       }
       else { //Skin doesn't exist
         $this->mainSkin = "classic";

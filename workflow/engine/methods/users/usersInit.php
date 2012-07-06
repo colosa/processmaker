@@ -32,4 +32,5 @@ $oHeadPublisher->assign('USR_UID', $aFields['USR_UID']);
 $oHeadPublisher->assign('infoMode', true);
 $oHeadPublisher->assign('canEdit', $canEdit);
 $oHeadPublisher->assign('MAX_FILES_SIZE', ' (' . $UPLOAD_MAX_SIZE . ') ');
+$oHeadPublisher->assign('MODE', '');
 G::RenderPage('publish', 'extJs');

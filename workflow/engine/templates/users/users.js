@@ -9,8 +9,11 @@ var box;
 var infoMode;
 var global = {};
 var readMode;
+var usernameText;
+var previousUsername = '';
 var canEdit = true;
 var flagPoliciesPassword = false;
+var flagValidateUsername = false;
 //var rendeToPage='document.body';
 global.IC_UID        = '';
 global.IS_UID        = '';
@@ -19,23 +22,23 @@ global.aux           = '';
 Ext.onReady(function() {
   Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
   Ext.QuickTips.init();
-    
+
   box = new Ext.BoxComponent({
     width          : 100,
     height         : 80,
     fieldLabel     : '&nbsp',
     labelSeparator : '&nbsp',
     autoEl         : {
-      tag   : 'img', 
+      tag   : 'img',
       src   : 'users_ViewPhotoGrid?h=' + Math.random() +'&pUID=' + USR_UID + '',
-      align : 'left' 
+      align : 'left'
     }
-    
+
   });
-  
-  if (MODE == 'edit')
+
+  if (MODE == 'edit' || MODE == '')
     flagPoliciesPassword = true;
-    
+
   //EDIT MODE
   if (USR_UID != '') {
     allowBlackStatus = true;
@@ -50,16 +53,16 @@ Ext.onReady(function() {
       readMode = true;
       box.setVisible(false);
       box.disable();
-        
+
     }
     else
     {
       displayPreferences = 'display:none;';
       loadUserData();
       readMode = false;
-      canEdit  = false;      
-    }			
-      
+      canEdit  = false;
+    }
+
   }
   else {
       allowBlackStatus=false;
@@ -72,7 +75,7 @@ Ext.onReady(function() {
 
 
   profileFields = new Ext.form.FieldSet({
-    title : _('ID_PROFILE'),  
+    title : _('ID_PROFILE'),
     items : [
     box,
     {
@@ -88,12 +91,12 @@ Ext.onReady(function() {
         }
 
       },{
-        xtype      : 'label', 
+        xtype      : 'label',
         id         : 'lblMaxFileSize',
         fieldLabel : _('ID_MAX_FILE_SIZE'),
         text       : MAX_FILES_SIZE,
         width      : 400
-        
+
       }
 /*
       ,{
@@ -110,7 +113,7 @@ Ext.onReady(function() {
       }
 */
 
-    ]    
+    ]
   });
   storeCountry = new Ext.data.Store( {
         proxy : new Ext.data.HttpProxy( {
@@ -141,11 +144,11 @@ Ext.onReady(function() {
       mode          : 'local',
       listeners : {
         select : function(combo,record,index){
-          global.IC_UID = this.getValue(); 
+          global.IC_UID = this.getValue();
           comboRegion.store.removeAll();
           comboLocation.store.removeAll();
-          comboRegion.clearValue();     
-          storeRegion.load({          
+          comboRegion.clearValue();
+          storeRegion.load({
               params : {
                   action : 'stateList',
                   IC_UID : global.IC_UID
@@ -161,7 +164,7 @@ Ext.onReady(function() {
   storeCountry.load({
     params : {"action" : "countryList"}
   });
-  
+
   storeRegion  = new Ext.data.Store( {
     proxy : new Ext.data.HttpProxy( {
       url    : 'usersAjax',
@@ -171,7 +174,7 @@ Ext.onReady(function() {
       fields : [ {
         name : 'IS_UID'
       }, {
-        name : 'IS_NAME' 
+        name : 'IS_NAME'
       } ]
     })
   });
@@ -192,18 +195,18 @@ Ext.onReady(function() {
     listeners : {
       select : function(combo, record, index) {
         global.IS_UID = this.getValue();
-        comboLocation.enable();         
-        comboLocation.clearValue();     
-        storelocation.load({          
+        comboLocation.enable();
+        comboLocation.clearValue();
+        storelocation.load({
           params : {
             action : 'locationList',
             IC_UID : global.IC_UID,
-            IS_UID : global.IS_UID 
-          }  
+            IS_UID : global.IS_UID
+          }
         });
         comboLocation.store.on('load', function(store) {
           comboLocation.setValue('');
-        });      
+        });
       }
     }
   });
@@ -234,13 +237,13 @@ Ext.onReady(function() {
     autocomplete  : true,
     typeAhead     : true,
     mode          : 'local'
-    
+
   });
-  
+
   comboReplacedBy = new Ext.form.ComboBox({
     fieldLabel    : _('ID_REPLACED_BY'),
     hiddenName    : 'USR_REPLACED_BY',
-    id            : 'USR_REPLACED_BY',   
+    id            : 'USR_REPLACED_BY',
     store         : new Ext.data.Store( {
       proxy : new Ext.data.HttpProxy( {
         url : 'usersAjax',
@@ -255,11 +258,11 @@ Ext.onReady(function() {
         } ]
       }),
       autoLoad:true
-    }),    
+    }),
     valueField    : 'USR_UID',
     displayField  : 'USER_FULLNAME',
     emptyText     : TRANSLATIONS.ID_SELECT,
-    width         : 180, 
+    width         : 180,
     selectOnFocus : true,
     editable      : false,
     triggerAction: 'all',
@@ -299,7 +302,7 @@ Ext.onReady(function() {
       }),
       autoLoad : true
     }),
-    
+
     valueField    : 'CALENDAR_UID',
     displayField  : 'CALENDAR_NAME',
     emptyText     : TRANSLATIONS.ID_SELECT,
@@ -309,7 +312,7 @@ Ext.onReady(function() {
     allowBlank    : false,
     triggerAction : 'all',
     mode          : 'local'
-    
+
   });
   comboCalendar.store.on('load', function(store) {
     comboCalendar.setValue(store.getAt(0).get('CALENDAR_UID'));
@@ -318,7 +321,7 @@ Ext.onReady(function() {
   var status = new Ext.data.SimpleStore({
     fields : ['USR_STATUS', 'status'],
     data   : [['ACTIVE', 'ACTIVE'], ['INACTIVE', 'INACTIVE'], ['VACATION', 'ON VACATION']]
-  });  
+  });
   comboStatus = new Ext.form.ComboBox({
     xtype         : 'combo',
     name          : 'status',
@@ -337,7 +340,7 @@ Ext.onReady(function() {
     readOnly      : readMode
   });
 
-  
+
   comboRole = new Ext.form.ComboBox({
     fieldLabel    : _('ID_ROLE'),
     hiddenName    : 'USR_ROLE',
@@ -358,7 +361,7 @@ Ext.onReady(function() {
       }),
       autoLoad : true
     }),
-    
+
     valueField    : 'ROL_UID',
     displayField  : 'ROL_CODE',
     emptyText     : TRANSLATIONS.ID_SELECT,
@@ -368,36 +371,67 @@ Ext.onReady(function() {
     allowBlank    : false,
     triggerAction : 'all',
     mode          : 'local'
-    
-   
+
+
   });
   comboRole.store.on('load',function(store) {
       comboRole.setValue(store.getAt(0).get('ROL_UID'));
   })
 
   informationFields = new Ext.form.FieldSet({
-    title : _('ID_PERSONAL_INFORMATION'),  
+    title : _('ID_PERSONAL_INFORMATION'),
     items : [
       {
         id         : 'USR_FIRSTNAME',
-        fieldLabel : _('ID_FIRSTNAME'), 
+        fieldLabel : _('ID_FIRSTNAME'),
         xtype      : 'textfield',
         width      : 260,
         allowBlank : false
-      },      
+      },
       {
         id         : 'USR_LASTNAME',
         fieldLabel : _('ID_LASTNAME'),
         xtype      : 'textfield',
         width      : 260,
         allowBlank : false
-      },      
+      },
       {
         id         : 'USR_USERNAME',
         fieldLabel : _('ID_USER_ID'),
         xtype      : 'textfield',
         width      : 260,
-        allowBlank : false
+        allowBlank : false,
+        listeners: {
+          blur : function(ob)
+          {
+            // trim
+            this.value = this.getValue().replace(/^\s+|\s+$/g,"");
+            document.getElementById('USR_USERNAME').value = this.getValue().replace(/^\s+|\s+$/g,"");
+
+            Ext.getCmp('saveB').disable();
+            Ext.getCmp('cancelB').disable();
+
+            var spanAjax  = '<span style="font: 9px tahoma,arial,helvetica,sans-serif;">';
+            var imageAjax = '<img width="13" height="13" border="0" src="/images/ajax-loader.gif">';
+            var labelAjax = _('ID_USERNAME_TESTING');
+
+            Ext.getCmp('usernameReview').setText(spanAjax + imageAjax + labelAjax + '</span>', false);
+            Ext.getCmp('usernameReview').setVisible(true);
+
+            usernameText = this.getValue();
+
+            validateUserName();
+
+            Ext.getCmp('usernameReview').setVisible(true);
+          }
+        }
+      },
+      {
+        xtype: 'label',
+        fieldLabel: ' ',
+        id:'usernameReview',
+        width: 300,
+        labelSeparator: ''
       },
       {
         id         : 'USR_EMAIL',
@@ -420,7 +454,7 @@ Ext.onReady(function() {
         fieldLabel : _('ID_ZIP_CODE'),
         xtype      : 'textfield',
         width      : 260
-      },      
+      },
       comboCountry,
       comboRegion,
       comboLocation,
@@ -475,15 +509,15 @@ Ext.onReady(function() {
                 'action'        : 'testPassword',
                 'PASSWORD_TEXT' : passwordText
               },
-              success: function(r,o){      
+              success: function(r,o){
                 var resp = Ext.util.JSON.decode(r.responseText);
 
                 if (resp.STATUS) {
                   flagPoliciesPassword = true;
                 } else {
-                  flagPoliciesPassword = false;  
+                  flagPoliciesPassword = false;
                 }
-                
+
                 Ext.getCmp('passwordReview').setText(resp.DESCRIPTION, false);
                 Ext.getCmp('saveB').enable();
                 Ext.getCmp('cancelB').enable();
@@ -511,10 +545,10 @@ Ext.onReady(function() {
         }
       },
       {
-        xtype: 'label', 
+        xtype: 'label',
         fieldLabel: ' ',
         id:'passwordReview',
-        width: 300, 
+        width: 300,
         labelSeparator: ''
       },
       {
@@ -544,13 +578,13 @@ Ext.onReady(function() {
         }
       },
       {
-        xtype: 'label', 
+        xtype: 'label',
         fieldLabel: ' ',
         id:'passwordConfirm',
-        width: 300, 
+        width: 300,
         labelSeparator: ''
       }
-     
+
     ]
   });
 
@@ -572,7 +606,7 @@ Ext.onReady(function() {
         } ]
       }),
       autoLoad : true
-    }),    
+    }),
     valueField    : 'id',
     displayField  : 'name',
     emptyText     : TRANSLATIONS.ID_SELECT,
@@ -603,7 +637,7 @@ Ext.onReady(function() {
         } ]
       }),
       autoLoad : true
-    }),    
+    }),
     valueField    : 'id',
     displayField  : 'name',
     emptyText     : TRANSLATIONS.ID_SELECT,
@@ -625,7 +659,7 @@ Ext.onReady(function() {
         xtype : 'hidden',
         name  : 'PREF_DEFAULT_LANG',
         value : ''
-      },      
+      },
       comboDefaultMainMenuOption,
       comboDefaultCasesMenuOption
     ]
@@ -660,28 +694,28 @@ Ext.onReady(function() {
         id     : 'saveB',
         handler: saveUser
 
-      
+
       },
-      {     
+      {
         text    : _('ID_CANCEL'),
         id      : 'cancelB',
         handler : function(){
-          if (!infoMode) {  
+          if (!infoMode) {
             location.href = 'users_List';
           }
           else{
             frmDetails.hide();
             frmSumary.show();
           }
-          //location.href = 'users_List'; 
+          //location.href = 'users_List';
         }
         //hidden:readMode
       }
     ]
-    
+
   });
-  
-  
+
+
   //USERS SUMMARY
   box2 = new Ext.BoxComponent({
     width: 100,
@@ -689,12 +723,12 @@ Ext.onReady(function() {
     fieldLabel     : '&nbsp',
     labelSeparator : '&nbsp',
     autoEl         : {
-      tag   : 'img', 
-      src   : 'users_ViewPhotoGrid?h=' + Math.random() +'&pUID=' + USR_UID + '', 
+      tag   : 'img',
+      src   : 'users_ViewPhotoGrid?h=' + Math.random() +'&pUID=' + USR_UID + '',
       align : 'left'}
   });
   profileFields2 = new Ext.form.FieldSet({
-    title : _('ID_PROFILE'),  
+    title : _('ID_PROFILE'),
     items : [
       box2
     ]
@@ -704,15 +738,15 @@ Ext.onReady(function() {
     items : [
       {
         id         : 'USR_FIRSTNAME2',
-        fieldLabel : _('ID_FIRSTNAME'), 
+        fieldLabel : _('ID_FIRSTNAME'),
         xtype      : 'label',
         width      : 260
-      },      
+      },
       {
         id         : 'USR_LASTNAME2',
         fieldLabel : _('ID_LASTNAME'),
         xtype      : 'label',
-        width      : 260 
+        width      : 260
       },
       {
         id         : 'USR_USERNAME2',
@@ -724,7 +758,7 @@ Ext.onReady(function() {
         id         : 'USR_EMAIL2',
         fieldLabel : _('ID_EMAIL'),
         xtype      : 'label',
-        width      : 260       
+        width      : 260
       },
       {
         xtype      : 'label',
@@ -832,10 +866,10 @@ Ext.onReady(function() {
       }
     ]
   });
-    
+
   frmSumary = new Ext.FormPanel({
     id            : 'frmSumary',
-    labelWidth    : 320,    
+    labelWidth    : 320,
     labelAlign    : 'right',
     autoScroll    : true,
     fileUpload    : true,
@@ -857,7 +891,7 @@ Ext.onReady(function() {
         handler : editUser,
         hidden  : canEdit
       }
-     
+
     ]
 
   });
@@ -872,17 +906,22 @@ Ext.onReady(function() {
 
   Ext.getCmp('passwordReview').setVisible(false);
   Ext.getCmp('passwordConfirm').setVisible(false);
+  Ext.getCmp('usernameReview').setVisible(false);
 
-  var spanAjax = '<span style="font: 9px tahoma,arial,helvetica,sans-serif;">';
+  var spanAjax  = '<span style="font: 9px tahoma,arial,helvetica,sans-serif;">';
   var imageAjax = '<img width="13" height="13" border="0" src="/images/ajax-loader.gif">';
   var labelAjax = _('ID_PASSWORD_TESTING');
-  
+
   Ext.getCmp('passwordReview').setText(spanAjax + imageAjax + labelAjax + '</span>', false);
+
+  var labelAjax = _('ID_USERNAME_TESTING');
+
+  Ext.getCmp('usernameReview').setText(spanAjax + imageAjax + labelAjax + '</span>', false);
 });
 
 function defineUserPanel()
 {
-  
+
   var isIE           = ( navigator.userAgent.indexOf('MSIE')>0 ) ? true : false;
   var eDivPanel      = document.createElement("div");
   var eDivUsersPanel = document.createElement("div");
@@ -914,15 +953,77 @@ function editUser()
     frmSumary.hide();
     frmDetails.show();
 }
+
+function validateUserName() {
+  Ext.Ajax.request({
+    url    : 'usersAjax',
+    method : 'POST',
+    params : {
+      'action'       : 'testUsername',
+      'USR_UID'      : USR_UID,
+      'NEW_USERNAME' : usernameText
+    },
+    success: function(r,o){
+      var resp = Ext.util.JSON.decode(r.responseText);
+
+      if (resp.exists) {
+        flagValidateUsername = false;
+        Ext.getCmp('saveB').disable();
+        usernameText = '';
+      } else {
+        flagValidateUsername = true;
+      }
+
+      Ext.getCmp('usernameReview').setText(resp.descriptionText, false);
+      Ext.getCmp('saveB').enable();
+      Ext.getCmp('cancelB').enable();
+    },
+    failure: function () {
+      Ext.MessageBox.show({
+        title: 'Error',
+        msg: 'Failed to store data',
+        buttons: Ext.MessageBox.OK,
+        animEl: 'mb9',
+        icon: Ext.MessageBox.ERROR
+      });
+      Ext.getCmp('saveB').enable();
+      Ext.getCmp('cancelB').enable();
+    }
+  });
+}
+
 function saveUser()
 {
-  if (flagPoliciesPassword != true) {
-    Ext.Msg.alert( _('ID_ERROR'), Ext.getCmp('passwordReview').html);
+  if (Ext.getCmp('USR_USERNAME').getValue() != '') {
+    if (previousUsername != '') {
+      if (Ext.getCmp('USR_USERNAME').getValue() != previousUsername) {
+	    if (!flagValidateUsername) {
+		  Ext.Msg.alert( _('ID_ERROR'), Ext.getCmp('usernameReview').html);
+		  return false;
+		}
+	  }
+    } else {
+      if (!flagValidateUsername) {
+        Ext.Msg.alert( _('ID_ERROR'), Ext.getCmp('usernameReview').html);
+        return false;
+      }
+    }
+  } else {
+    Ext.Msg.alert( _('ID_ERROR'), _('ID_MSG_ERROR_USR_USERNAME'));
+    return false;
+  }
+
+  if (!flagPoliciesPassword) {
+    if (Ext.getCmp('USR_NEW_PASS').getValue() == '') {
+      Ext.Msg.alert( _('ID_ERROR'), _('ID_PASSWD_REQUIRED'));
+    } else {
+      Ext.Msg.alert( _('ID_ERROR'), Ext.getCmp('passwordReview').html);
+    }
     return false;
   }
 
   var newPass  = frmDetails.getForm().findField('USR_NEW_PASS').getValue();
-  var confPass = frmDetails.getForm().findField('USR_CNF_PASS').getValue();	
+  var confPass = frmDetails.getForm().findField('USR_CNF_PASS').getValue();
   if (confPass === newPass) {
     Ext.getCmp('frmDetails').getForm().submit( {
 
@@ -935,7 +1036,7 @@ function saveUser()
       waitMsg : _('ID_SAVING_PROCESS'),
       timeout : 36000,
       success : function(obj, resp) {
-        if (!infoMode) { 
+        if (!infoMode) {
           location.href = 'users_List';
         }
         else {
@@ -967,8 +1068,8 @@ function saveUser()
   else
     Ext.Msg.alert( _('ID_ERROR'), _('ID_PASSWORDS_DONT_MATCH'));
 }
- 
- 
+
+
 // Load data for Edit mode
 function loadUserData()
 {
@@ -978,12 +1079,12 @@ function loadUserData()
       'action' : 'userData',
       USR_UID  : USR_UID
     },
-    waitMsg : _('ID_UPLOADING_PROCESS_FILE'), 
-    success : function(r,o){			
+    waitMsg : _('ID_UPLOADING_PROCESS_FILE'),
+    success : function(r,o){
       var data = Ext.util.JSON.decode(r.responseText);
 
       Ext.getCmp('frmDetails').getForm().setValues({
-        USR_FIRSTNAME : data.user.USR_FIRSTNAME, 
+        USR_FIRSTNAME : data.user.USR_FIRSTNAME,
         USR_LASTNAME  : data.user.USR_LASTNAME,
         USR_USERNAME  : data.user.USR_USERNAME,
         USR_EMAIL     : data.user.USR_EMAIL,
@@ -994,8 +1095,8 @@ function loadUserData()
         USR_DUE_DATE  : data.user.USR_DUE_DATE,
         USR_STATUS    : data.user.USR_STATUS
       })
-      
-        
+
+
       storeCountry.load({
           params : {
             action : 'countryList'
@@ -1013,23 +1114,23 @@ function loadUserData()
         params : {
           action : 'locationList',
           IC_UID : data.user.USR_COUNTRY,
-          IS_UID : data.user.USR_CITY 
-        }  
+          IS_UID : data.user.USR_CITY
+        }
       });
       comboCountry.store.on('load',function(store) {
         comboCountry.setValue(data.user.USR_COUNTRY);
       });
       global.IC_UID = data.user.USR_COUNTRY;
-     
+
       comboRegion.store.on('load',function(store) {
         comboRegion.setValue(data.user.USR_CITY);
       });
-      
+
       global.IS_UID = data.user.USR_CITY;
       comboLocation.store.on('load',function(store) {
         comboLocation.setValue(data.user.USR_LOCATION);
       });
-   
+
       comboReplacedBy.store.on('load',function(store) {
         comboReplacedBy.setValue(data.user.USR_REPLACED_BY);
       });
@@ -1039,7 +1140,9 @@ function loadUserData()
       comboCalendar.store.on('load',function(store) {
         comboCalendar.setValue(data.user.USR_CALENDAR);
       });
-        
+
+      previousUsername = Ext.getCmp('USR_USERNAME').getValue();
+
     },
 
     failure : function(r, o) {
@@ -1056,12 +1159,12 @@ function loadUserView()
       'action' : 'userData',
       USR_UID  : USR_UID
     },
-    waitMsg : _('ID_UPLOADING_PROCESS_FILE'), 
-    success : function(r,o){			
+    waitMsg : _('ID_UPLOADING_PROCESS_FILE'),
+    success : function(r,o){
       var data = Ext.util.JSON.decode(r.responseText);
-      
+
       Ext.getCmp('frmDetails').getForm().setValues({
-        USR_FIRSTNAME : data.user.USR_FIRSTNAME, 
+        USR_FIRSTNAME : data.user.USR_FIRSTNAME,
         USR_LASTNAME  : data.user.USR_LASTNAME,
         USR_USERNAME  : data.user.USR_USERNAME,
         USR_EMAIL     : data.user.USR_EMAIL,
@@ -1078,19 +1181,19 @@ function loadUserView()
       Ext.getCmp('USR_EMAIL2').setText(data.user.USR_EMAIL);
       Ext.getCmp('USR_ADDRESS2').setText(data.user.USR_ADDRESS);
       Ext.getCmp('USR_ZIP_CODE2').setText(data.user.USR_ZIP_CODE);
-      
+
       Ext.getCmp('USR_COUNTRY2').setText(data.user.USR_COUNTRY_NAME);
       Ext.getCmp('USR_CITY2').setText(data.user.USR_CITY_NAME);
       Ext.getCmp('USR_LOCATION2').setText(data.user.USR_LOCATION_NAME);
-      
+
       Ext.getCmp('USR_PHONE2').setText(data.user.USR_PHONE);
       Ext.getCmp('USR_POSITION2').setText(data.user.USR_POSITION);
       Ext.getCmp('USR_REPLACED_BY2').setText(data.user.REPLACED_NAME);
       Ext.getCmp('USR_DUE_DATE2').setText(data.user.USR_DUE_DATE);
       Ext.getCmp('USR_STATUS2').setText(data.user.USR_STATUS);
       Ext.getCmp('USR_ROLE2').setText(data.user.USR_ROLE);
-      
-      
+
+
       Ext.getCmp('PREF_DEFAULT_MAIN_MENU_OPTION2').setText(data.user.MENUSELECTED_NAME);
       Ext.getCmp('PREF_DEFAULT_CASES_MENUSELECTED2').setText(data.user.CASES_MENUSELECTED_NAME);
 
@@ -1111,23 +1214,23 @@ function loadUserView()
         params : {
           action : 'locationList',
           IC_UID : data.user.USR_COUNTRY,
-          IS_UID : data.user.USR_CITY 
-        }  
+          IS_UID : data.user.USR_CITY
+        }
       });
       comboCountry.store.on('load',function(store) {
         comboCountry.setValue(data.user.USR_COUNTRY);
       });
       global.IC_UID = data.user.USR_COUNTRY;
-     
+
       comboRegion.store.on('load',function(store) {
         comboRegion.setValue(data.user.USR_CITY);
       });
-      
+
       global.IS_UID = data.user.USR_CITY;
       comboLocation.store.on('load',function(store) {
         comboLocation.setValue(data.user.USR_LOCATION);
       });
-           
+
       comboReplacedBy.store.on('load',function(store) {
         comboReplacedBy.setValue(data.user.USR_REPLACED_BY);
       });
@@ -1137,7 +1240,7 @@ function loadUserView()
       comboCalendar.store.on('load',function(store) {
         comboCalendar.setValue(data.user.USR_CALENDAR);
       });
-       
+
       //for preferences on the configurations table
       comboDefaultMainMenuOption.store.on('load',function(store) {
         comboDefaultMainMenuOption.setValue(data.user.PREF_DEFAULT_MENUSELECTED);
@@ -1146,6 +1249,8 @@ function loadUserView()
         //comboDefaultCasesMenuOption.setValue('');
         comboDefaultCasesMenuOption.setValue(data.user.PREF_DEFAULT_CASES_MENUSELECTED);
       });
+
+      previousUsername = Ext.getCmp('USR_USERNAME').getValue();
     },
     failure:function(r,o) {
       //viewport.getEl().unmask();

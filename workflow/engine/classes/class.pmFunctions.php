@@ -33,6 +33,9 @@
 // License: LGPL, see LICENSE
 ////////////////////////////////////////////////////
 
+if (!class_exists('PMScript')) {
+    G::LoadClass('pmScript');
+}
 
 /**
  * ProcessMaker has made a number of its PHP functions available be used in triggers and conditions.
@@ -58,8 +61,9 @@
  * @return date | $date | Current Date (Y-m-d) | It returns the current date as a string value.
  *
  */
-function getCurrentDate() {
-  return G::CurDate('Y-m-d');
+function getCurrentDate()
+{
+    return G::CurDate('Y-m-d');
 }
 /**
  * @method
@@ -74,8 +78,9 @@ function getCurrentDate() {
  * @return time | $time | Current Time (H:i:s)| The function returns the current time as a string.
  *
  */
-function getCurrentTime() {
-  return G::CurDate('H:i:s');
+function getCurrentTime()
+{
+    return G::CurDate('H:i:s');
 }
 /**
  * @method
@@ -90,15 +95,15 @@ function getCurrentTime() {
  * @return array | $userInfo | User Info | An associative array with Information
  *
  */
-function userInfo($user_uid) {
-  try {
-    require_once 'classes/model/Users.php';
-    $oUser = new Users();
-    return $oUser->getAllInformation($user_uid);
-  }
-  catch (Exception $oException) {
-    throw $oException;
-  }
+function userInfo($user_uid)
+{
+    try {
+        require_once 'classes/model/Users.php';
+        $oUser = new Users();
+        return $oUser->getAllInformation($user_uid);
+    } catch (Exception $oException) {
+        throw $oException;
+    }
 }
 /**
  * @method
@@ -113,8 +118,9 @@ function userInfo($user_uid) {
  * @return string | $TextC | Text Converted | Returns a string with the text converted into upper case letters.
  *
  */
-function upperCase($sText) {
-  return G::toUpper($sText);
+function upperCase($sText)
+{
+    return G::toUpper($sText);
 }
 /**
  * @method
@@ -129,8 +135,9 @@ function upperCase($sText) {
  * @return string | $TextC | Text Converted | Returns a string with the text converted into lower case letters.
  *
  */
-function lowerCase($sText) {
-  return G::toLower($sText);
+function lowerCase($sText)
+{
+    return G::toLower($sText);
 }
 /**
  * @method
@@ -146,8 +153,9 @@ function lowerCase($sText) {
  * @return string | $TextC | Text Converted | It returns the introduced text with the first letter capitalized in each word and the subsequent letters into lowercase letters
  *
  */
-function capitalize($sText) {
-  return G::capitalizeWords($sText);
+function capitalize($sText)
+{
+    return G::capitalizeWords($sText);
 }
 /**
  * @method
@@ -164,15 +172,16 @@ function capitalize($sText) {
  * @return string | $formatDate | Date whit format | It returns the passed date according to the given date format.
  *
  */
-function formatDate($date, $format='', $lang='en') {
-  if( !isset($date) or $date == '') {
-    throw new Exception('function:formatDate::Bad param');
-  }
-  try {
-    return G::getformatedDate($date, $format, $lang);
-  } catch (Exception $oException) {
-    throw $oException;
-  }
+function formatDate($date, $format='', $lang='en')
+{
+    if ( !isset($date) or $date == '') {
+        throw new Exception('function:formatDate::Bad param');
+    }
+    try {
+        return G::getformatedDate($date, $format, $lang);
+    } catch (Exception $oException) {
+        throw $oException;
+    }
 }
 /**
  * @method
@@ -188,21 +197,24 @@ function formatDate($date, $format='', $lang='en') {
  * @return string | $literaDate | Literal date | It returns the literal date as a string value.
  *
  */
-function literalDate($date, $lang = 'en') {
-  if( !isset($date) or $date == '' ) {
-    throw new Exception('function:formatDate::Bad param');
-  }
-  try {
-    switch($lang) {
-      case 'en': $ret = G::getformatedDate($date, 'M d,yyyy', $lang);
-        break;
-      case 'es': $ret = G::getformatedDate($date, 'd de M de yyyy', $lang);
-        break;
+function literalDate($date, $lang='en')
+{
+    if ( !isset($date) or $date == '' ) {
+        throw new Exception('function:formatDate::Bad param');
     }
-    return $ret;
-  } catch (Exception $oException) {
-    throw $oException;
-  }
+    try {
+        switch ($lang) {
+            case 'en':
+                $ret = G::getformatedDate($date, 'M d,yyyy', $lang);
+                break;
+            case 'es':
+                $ret = G::getformatedDate($date, 'd de M de yyyy', $lang);
+                break;
+        }
+        return $ret;
+    } catch (Exception $oException) {
+        throw $oException;
+    }
 }
 /**
  * @method
@@ -220,24 +232,25 @@ function literalDate($date, $lang = 'en') {
  * @return None  | $none | None | None
  *
  */
-function pauseCase($sApplicationUID = '', $iDelegation = 0, $sUserUID = '', $sUnpauseDate = null) {//var_dump($sApplicationUID, $iDelegation, $sUserUID, $sUnpauseDate);die(':|');
-  try {
-    if ($sApplicationUID == '') {
-      throw new Exception('The application UID cannot be empty!');
+function pauseCase($sApplicationUID='', $iDelegation=0, $sUserUID='', $sUnpauseDate=null)
+{
+    //var_dump($sApplicationUID, $iDelegation, $sUserUID, $sUnpauseDate);die(':|');
+    try {
+        if ($sApplicationUID == '') {
+            throw new Exception('The application UID cannot be empty!');
+        }
+        if ($iDelegation == 0) {
+            throw new Exception('The delegation index cannot be 0!');
+        }
+        if ($sUserUID == '') {
+            throw new Exception('The user UID cannot be empty!');
+        }
+        G::LoadClass('case');
+        $oCase = new Cases();
+        $oCase->pauseCase($sApplicationUID, $iDelegation, $sUserUID, $sUnpauseDate);
+    } catch (Exception $oException) {
+        throw $oException;
     }
-    if ($iDelegation == 0) {
-      throw new Exception('The delegation index cannot be 0!');
-    }
-    if ($sUserUID == '') {
-      throw new Exception('The user UID cannot be empty!');
-    }
-    G::LoadClass('case');
-    $oCase = new Cases();
-    $oCase->pauseCase($sApplicationUID, $iDelegation, $sUserUID, $sUnpauseDate);
-  }
-  catch (Exception $oException) {
-    throw $oException;
-  }
 }
 /**
  * @method
@@ -254,53 +267,53 @@ function pauseCase($sApplicationUID = '', $iDelegation = 0, $sUserUID = '', $sUn
  * @return array or string | $Resultquery | Result | Result of the query | If executing a SELECT statement, it returns an array of associative arrays
  *
  */
-function executeQuery($SqlStatement, $DBConnectionUID = 'workflow', $aParameter = array()) {
-  $con = Propel::getConnection($DBConnectionUID);
-  $con->begin();
-  try {
-    $statement = trim($SqlStatement);
-    $statement = str_replace('(', '', $statement);
+function executeQuery($SqlStatement, $DBConnectionUID='workflow', $aParameter=array())
+{
+    $con = Propel::getConnection($DBConnectionUID);
+    $con->begin();
+    try {
+        $statement = trim($SqlStatement);
+        $statement = str_replace('(', '', $statement);
 
-    $result = false;
-   if (getEngineDataBaseName($con) != 'oracle' ) {
-     switch(true) {
-        case preg_match("/^(SELECT|EXECUTE|EXEC|SHOW|DESCRIBE|EXPLAIN|BEGIN)\s/i", $statement):
-          $rs = $con->executeQuery($SqlStatement);
-          $con->commit();
+        $result = false;
+        if (getEngineDataBaseName($con) != 'oracle' ) {
+            switch(true) {
+                case preg_match("/^(SELECT|EXECUTE|EXEC|SHOW|DESCRIBE|EXPLAIN|BEGIN)\s/i", $statement):
+                    $rs = $con->executeQuery($SqlStatement);
+                    $con->commit();
 
-          $result = Array();
-          $i      = 1;
-          while ($rs->next()) {
-            $result[$i++] = $rs->getRow();
-          }
-          break;
-        case preg_match("/^INSERT\s/i", $statement):
-          $rs = $con->executeUpdate($SqlStatement);
-          $con->commit();
-          //$result = $lastId->getId();
-          $result = 1;
-          break;
-        case preg_match("/^UPDATE\s/i", $statement):
-          $rs = $con->executeUpdate($SqlStatement);
-          $con->commit();
-          $result =  $con->getUpdateCount();
-          break;
-        case preg_match("/^DELETE\s/i", $statement):
-          $rs = $con->executeUpdate($SqlStatement);
-          $con->commit();
-          $result =  $con->getUpdateCount();
-          break;
-      }
+                    $result = Array();
+                    $i      = 1;
+                    while ($rs->next()) {
+                        $result[$i++] = $rs->getRow();
+                    }
+                    break;
+                case preg_match("/^INSERT\s/i", $statement):
+                    $rs = $con->executeUpdate($SqlStatement);
+                    $con->commit();
+                    //$result = $lastId->getId();
+                    $result = 1;
+                    break;
+                case preg_match("/^UPDATE\s/i", $statement):
+                    $rs = $con->executeUpdate($SqlStatement);
+                    $con->commit();
+                    $result =  $con->getUpdateCount();
+                    break;
+                case preg_match("/^DELETE\s/i", $statement):
+                    $rs = $con->executeUpdate($SqlStatement);
+                    $con->commit();
+                    $result =  $con->getUpdateCount();
+                    break;
+            }
+        } else {
+            $result = executeQueryOci($SqlStatement, $con, $aParameter);
+        }
+
+        return $result;
+    } catch (SQLException $sqle) {
+        $con->rollback();
+        throw $sqle;
     }
-    else {
-      $result = executeQueryOci($SqlStatement, $con, $aParameter);
-    }
-
-    return $result;
-  } catch (SQLException $sqle) {
-    $con->rollback();
-    throw $sqle;
-  }
 }
 /**
  * @method
@@ -317,28 +330,29 @@ function executeQuery($SqlStatement, $DBConnectionUID = 'workflow', $aParameter 
  * @return array | $dataM | Grid Sorted | Grid sorted
  *
  */
-function orderGrid($dataM, $field, $ord = 'ASC') {
-  if(!is_array($dataM) or !isset($field) or $field=='') {
-    throw new Exception('function:orderGrid Error!, bad parameters found!');
-  }
-  for($i=1; $i <= count($dataM)-1; $i++) {
-    for($j=$i+1; $j <= count($dataM); $j++) {
-      if(strtoupper($ord) == 'ASC') {
-        if(strtolower($dataM[$j][$field]) < strtolower($dataM[$i][$field])) {
-          $swap  = $dataM[$i];
-          $dataM[$i] = $dataM[$j];
-          $dataM[$j] = $swap;
-        }
-      } else {
-        if($dataM[$j][$field] > $dataM[$i][$field]) {
-          $swap  = $dataM[$i];
-          $dataM[$i] = $dataM[$j];
-          $dataM[$j] = $swap;
-        }
-      }
+function orderGrid($dataM, $field, $ord='ASC')
+{
+    if (!is_array($dataM) or !isset($field) or $field=='') {
+        throw new Exception('function:orderGrid Error!, bad parameters found!');
     }
-  }
-  return $dataM;
+    for ($i=1; $i <= count($dataM)-1; $i++) {
+        for ($j=$i+1; $j <= count($dataM); $j++) {
+            if (strtoupper($ord) == 'ASC') {
+                if (strtolower($dataM[$j][$field]) < strtolower($dataM[$i][$field])) {
+                    $swap  = $dataM[$i];
+                    $dataM[$i] = $dataM[$j];
+                    $dataM[$j] = $swap;
+                }
+            } else {
+                if ($dataM[$j][$field] > $dataM[$i][$field]) {
+                    $swap  = $dataM[$i];
+                    $dataM[$i] = $dataM[$j];
+                    $dataM[$j] = $swap;
+                }
+            }
+        }
+    }
+    return $dataM;
 }
 /**
  * @method
@@ -354,23 +368,24 @@ function orderGrid($dataM, $field, $ord = 'ASC') {
  * @return array | $aGrid | Grid | Grid with executed operation
  *
  */
-function evaluateFunction($aGrid, $sExpresion) {
-  $sExpresion = str_replace('Array','$this->aFields', $sExpresion);
-  $sExpresion .= ';';
-  G::LoadClass('pmScript');
-  $pmScript = new PMScript();
-  $pmScript->setScript($sExpresion);
+function evaluateFunction($aGrid, $sExpresion)
+{
+    $sExpresion = str_replace('Array','$this->aFields', $sExpresion);
+    $sExpresion .= ';';
+    G::LoadClass('pmScript');
+    $pmScript = new PMScript();
+    $pmScript->setScript($sExpresion);
 
-  for($i=1; $i<=count($aGrid); $i++) {
-    $aFields = $aGrid[$i];
+    for ($i=1; $i<=count($aGrid); $i++) {
+        $aFields = $aGrid[$i];
 
-    $pmScript->setFields($aFields);
+        $pmScript->setFields($aFields);
 
-    $pmScript->execute();
+        $pmScript->execute();
 
-    $aGrid[$i] = $pmScript->aFields;
-  }
-  return $aGrid;
+        $aGrid[$i] = $pmScript->aFields;
+    }
+    return $aGrid;
 }
 
 /** Web Services Functions **/
@@ -389,39 +404,39 @@ function evaluateFunction($aGrid, $sExpresion) {
  * @return string | $unique ID | Unique Id |The unique ID for the initiated session.
  *
  */
-function WSLogin($user, $pass, $endpoint = "") {
-  $client = WSOpen(true);
-  
-  $params = array("userid" => $user, "password" => $pass);
-  
-  $result = $client->__soapCall("login", array($params));
+function WSLogin($user, $pass, $endpoint="")
+{
+    $client = WSOpen(true);
 
-  if ($result->status_code == 0) {
-    if ($endpoint != "") {
-      if (isset($_SESSION["WS_SESSION_ID"])) {
-        $_SESSION["WS_END_POINT"] = $endpoint;
-      }
+    $params = array("userid" => $user, "password" => $pass);
+
+    $result = $client->__soapCall("login", array($params));
+
+    if ($result->status_code == 0) {
+        if ($endpoint != "") {
+            if (isset($_SESSION["WS_SESSION_ID"])) {
+                $_SESSION["WS_END_POINT"] = $endpoint;
+            }
+        }
+        /*
+        if (isset($_SESSION["WS_SESSION_ID"]))
+        return $_SESSION["WS_SESSION_ID"] = $result->message;
+        else
+        return $result->message;
+        */
+
+        $_SESSION["WS_SESSION_ID"] = $result->message;
+
+        return $result->message;
+    } else {
+        if (isset($_SESSION["WS_SESSION_ID"])) {
+            unset($_SESSION["WS_SESSION_ID"]);
+        }
+
+        $wp = (trim($pass) != "")? "YES" : "NO";
+
+        throw new Exception("WSAccess denied! for user $user with password $wp");
     }
-    /*
-    if (isset($_SESSION["WS_SESSION_ID"]))
-      return $_SESSION["WS_SESSION_ID"] = $result->message;
-    else 
-      return $result->message;
-    */
-    
-    $_SESSION["WS_SESSION_ID"] = $result->message;
-      
-    return $result->message;
-  }
-  else {
-    if (isset($_SESSION["WS_SESSION_ID"])) {
-      unset($_SESSION["WS_SESSION_ID"]);
-    }
-    
-    $wp = (trim($pass) != "")? "YES" : "NO";
-    
-    throw new Exception("WSAccess denied! for user $user with password $wp");
-  }
 }
 /**
  * @method
@@ -437,21 +452,22 @@ function WSLogin($user, $pass, $endpoint = "") {
  * @return Object Client | $client | SoapClient object | A SoapClient object. If unable to establish a connection, returns NULL.
  *
  */
-function WSOpen($force = false) {
-  if (isset($_SESSION["WS_SESSION_ID"]) || $force) {
-    if (!isset($_SESSION["WS_END_POINT"])) {
-      $defaultEndpoint = "http://" . $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . "/sys" . SYS_SYS . "/en/classic/services/wsdl2";
+function WSOpen($force=false)
+{
+    if (isset($_SESSION["WS_SESSION_ID"]) || $force) {
+        if (!isset($_SESSION["WS_END_POINT"])) {
+            $defaultEndpoint = "http://" . $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"]
+                             . "/sys" . SYS_SYS . "/en/classic/services/wsdl2";
+        }
+
+        $endpoint = isset($_SESSION["WS_END_POINT"])? $_SESSION["WS_END_POINT"] : $defaultEndpoint;
+
+        $client = new SoapClient($endpoint);
+
+        return $client;
+    } else {
+        throw new Exception("WS session is not open");
     }
-    
-    $endpoint = isset($_SESSION["WS_END_POINT"])? $_SESSION["WS_END_POINT"] : $defaultEndpoint;
-    
-    $client = new SoapClient($endpoint);
-    
-    return $client;
-  }
-  else {
-    throw new Exception("WS session is not open");
-  }
 }
 /**
  * @method
@@ -466,35 +482,35 @@ function WSOpen($force = false) {
  * @return array | $rows | Array of tasks open | An array of tasks in the indicated case which have open delegations.
  *
  */
-function WSTaskCase($caseId) {
-  $client = WSOpen();
+function WSTaskCase($caseId)
+{
+    $client = WSOpen();
 
-  $sessionId = $_SESSION["WS_SESSION_ID"];
-  $params = array("sessionId" => $sessionId, "caseId" => $caseId);
-  
-  $result = $client->__soapCall("taskCase", array($params));
-  
-  $rows = array();
-  $i = 0;
-  
-  if (isset($result->taskCases)) {
-    //Processing when it is an array
-    if (is_array($result->taskCases)) {
-      foreach ($result->taskCases as $key => $obj) {
-        $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
-        $i = $i + 1;
-      }
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+    $params = array("sessionId" => $sessionId, "caseId" => $caseId);
+
+    $result = $client->__soapCall("taskCase", array($params));
+
+    $rows = array();
+    $i = 0;
+
+    if (isset($result->taskCases)) {
+        //Processing when it is an array
+        if (is_array($result->taskCases)) {
+            foreach ($result->taskCases as $key => $obj) {
+                $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
+                $i = $i + 1;
+            }
+        } else {
+            //Processing when it is an object //1 row
+            if (is_object($result->taskCases)) {
+                $rows[$i] = array("guid" => $result->taskCases->guid, "name" => $result->taskCases->name);
+                $i = $i + 1;
+            }
+        }
     }
-    else {
-      //Processing when it is an object //1 row
-      if (is_object($result->taskCases)) {
-        $rows[$i] = array("guid" => $result->taskCases->guid, "name" => $result->taskCases->name);
-        $i = $i + 1;
-      }
-    }
-  }
-  
-  return $rows;
+
+    return $rows;
 }
 /**
  * @method
@@ -509,35 +525,35 @@ function WSTaskCase($caseId) {
  * @return array | $rows |List of tasks | This function returns a list of tasks
  *
  */
-function WSTaskList() {
-  $client = WSOpen();
+function WSTaskList()
+{
+    $client = WSOpen();
 
-  $sessionId = $_SESSION["WS_SESSION_ID"];
-  $params = array("sessionId" => $sessionId);
-  
-  $result = $client->__soapCall("TaskList", array($params));
-  
-  $rows = array();
-  $i = 0;
-  
-  if (isset($result->tasks)) {
-    //Processing when it is an array
-    if (is_array($result->tasks)) {
-      foreach ($result->tasks as $key => $obj) {
-        $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
-        $i = $i + 1;
-      }
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+    $params = array("sessionId" => $sessionId);
+
+    $result = $client->__soapCall("TaskList", array($params));
+
+    $rows = array();
+    $i = 0;
+
+    if (isset($result->tasks)) {
+        //Processing when it is an array
+        if (is_array($result->tasks)) {
+            foreach ($result->tasks as $key => $obj) {
+                $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
+                $i = $i + 1;
+            }
+        } else {
+            //Processing when it is an object //1 row
+            if (is_object($result->tasks)) {
+                $rows[$i] = array("guid" => $result->tasks->guid, "name" => $result->tasks->name);
+                $i = $i + 1;
+            }
+        }
     }
-    else {
-      //Processing when it is an object //1 row
-      if (is_object($result->tasks)) {
-        $rows[$i] = array("guid" => $result->tasks->guid, "name" => $result->tasks->name);
-        $i = $i + 1;
-      }
-    }
-  }
-  
-  return $rows;
+
+    return $rows;
 }
 /**
  * @method
@@ -551,35 +567,35 @@ function WSTaskList() {
  * @return array | $rows | List | List of Active users in the workspace
  *
  */
-function WSUserList() {
-  $client = WSOpen();
+function WSUserList()
+{
+    $client = WSOpen();
 
-  $sessionId = $_SESSION["WS_SESSION_ID"];
-  $params = array("sessionId" => $sessionId);
-  
-  $result = $client->__soapCall("UserList", array($params));
-  
-  $rows = array();
-  $i = 0;
-  
-  if (isset($result->users)) {
-    //Processing when it is an array
-    if (is_array($result->users)) {
-      foreach ($result->users as $key => $obj) {
-        $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
-        $i = $i + 1;
-      }
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+    $params = array("sessionId" => $sessionId);
+
+    $result = $client->__soapCall("UserList", array($params));
+
+    $rows = array();
+    $i = 0;
+
+    if (isset($result->users)) {
+        //Processing when it is an array
+        if (is_array($result->users)) {
+            foreach ($result->users as $key => $obj) {
+                $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
+                $i = $i + 1;
+            }
+        } else {
+            //Processing when it is an object //1 row
+            if (is_object($result->users)) {
+                $rows[$i] = array("guid" => $result->users->guid, "name" => $result->users->name);
+                $i = $i + 1;
+            }
+        }
     }
-    else {
-      //Processing when it is an object //1 row
-      if (is_object($result->users)) {
-        $rows[$i] = array("guid" => $result->users->guid, "name" => $result->users->name);
-        $i = $i + 1;
-      }
-    }
-  }
-  
-  return $rows;
+
+    return $rows;
 }
 /**
  * @method
@@ -593,35 +609,35 @@ function WSUserList() {
  * @return array | $rows | List | List of active groups in the workspace
  *
  */
-function WSGroupList() {
-  $client = WSOpen();
+function WSGroupList()
+{
+    $client = WSOpen();
 
-  $sessionId = $_SESSION["WS_SESSION_ID"];
-  $params = array("sessionId" => $sessionId);
-  
-  $result = $client->__soapCall("GroupList", array($params));
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+    $params = array("sessionId" => $sessionId);
 
-  $rows = array();
-  $i = 0;
-  
-  if (isset($result->groups)) {
-    //Processing when it is an array
-    if (is_array($result->groups)) {
-      foreach ($result->groups as $key => $obj) {
-        $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
-        $i = $i + 1;
-      }
+    $result = $client->__soapCall("GroupList", array($params));
+
+    $rows = array();
+    $i = 0;
+
+    if (isset($result->groups)) {
+        //Processing when it is an array
+        if (is_array($result->groups)) {
+            foreach ($result->groups as $key => $obj) {
+                $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
+                $i = $i + 1;
+            }
+        } else {
+            //Processing when it is an object //1 row
+            if (is_object($result->groups)) {
+                $rows[$i] = array("guid" => $result->groups->guid, "name" => $result->groups->name);
+                $i = $i + 1;
+            }
+        }
     }
-    else {
-      //Processing when it is an object //1 row
-      if (is_object($result->groups)) {
-        $rows[$i] = array("guid" => $result->groups->guid, "name" => $result->groups->name);
-        $i = $i + 1;
-      }
-    }
-  }
-  
-  return $rows;
+
+    return $rows;
 }
 
 /**
@@ -636,35 +652,35 @@ function WSGroupList() {
  * @return array | $rows | List | List of roles in the workspace
  *
  */
-function WSRoleList() {
-  $client = WSOpen();
+function WSRoleList()
+{
+    $client = WSOpen();
 
-  $sessionId = $_SESSION["WS_SESSION_ID"];
-  $params = array("sessionId" => $sessionId);
-  
-  $result = $client->__soapCall("RoleList", array($params));
-  
-  $rows = array();
-  $i = 0;
-  
-  if (isset($result->roles)) {
-    //Processing when it is an array
-    if (is_array($result->roles)) {
-      foreach ($result->roles as $key => $obj) {
-        $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
-        $i = $i + 1;
-      }
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+    $params = array("sessionId" => $sessionId);
+
+    $result = $client->__soapCall("RoleList", array($params));
+
+    $rows = array();
+    $i = 0;
+
+    if (isset($result->roles)) {
+        //Processing when it is an array
+        if (is_array($result->roles)) {
+            foreach ($result->roles as $key => $obj) {
+                $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
+                $i = $i + 1;
+            }
+        } else {
+            //Processing when it is an object //1 row
+            if (is_object($result->roles)) {
+                $rows[$i] = array("guid" => $result->roles->guid, "name" => $result->roles->name);
+                $i = $i + 1;
+            }
+        }
     }
-    else {
-      //Processing when it is an object //1 row
-      if (is_object($result->roles)) {
-        $rows[$i] = array("guid" => $result->roles->guid, "name" => $result->roles->name);
-        $i = $i + 1;
-      }
-    }
-  }
-  
-  return $rows;
+
+    return $rows;
 }
 /**
  * @method
@@ -679,35 +695,35 @@ function WSRoleList() {
  * @return array | $rows | List of the cases |It returns a list of cases
  *
  */
-function WSCaseList() {
-  $client = WSOpen();
+function WSCaseList()
+{
+    $client = WSOpen();
 
-  $sessionId = $_SESSION["WS_SESSION_ID"];
-  $params = array("sessionId" => $sessionId);
-  
-  $result = $client->__soapCall("CaseList", array($params));
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+    $params = array("sessionId" => $sessionId);
 
-  $rows = array();
-  $i = 0;
-  
-  if (isset($result->cases)) {
-    //Processing when it is an array
-    if (is_array($result->cases)) {
-      foreach ($result->cases as $key => $obj) {
-        $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
-        $i = $i + 1;
-      }
+    $result = $client->__soapCall("CaseList", array($params));
+
+    $rows = array();
+    $i = 0;
+
+    if (isset($result->cases)) {
+        //Processing when it is an array
+        if (is_array($result->cases)) {
+            foreach ($result->cases as $key => $obj) {
+                $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
+                $i = $i + 1;
+            }
+        } else {
+            //Processing when it is an object //1 row
+            if (is_object($result->cases)) {
+                $rows[$i] = array("guid" => $result->cases->guid, "name" => $result->cases->name);
+                $i = $i + 1;
+            }
+        }
     }
-    else {
-      //Processing when it is an object //1 row
-      if (is_object($result->cases)) {
-        $rows[$i] = array("guid" => $result->cases->guid, "name" => $result->cases->name);
-        $i = $i + 1;
-      }
-    }
-  }
-  
-  return $rows;
+
+    return $rows;
 }
 /**
  * @method
@@ -721,35 +737,35 @@ function WSCaseList() {
  * @return array | $rows | List of processes | A list of processes
  *
  */
-function WSProcessList() {
-  $client = WSOpen();
+function WSProcessList()
+{
+    $client = WSOpen();
 
-  $sessionId = $_SESSION["WS_SESSION_ID"];
-  $params = array("sessionId" => $sessionId);
-  
-  $result = $client->__soapCall("ProcessList", array($params));
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+    $params = array("sessionId" => $sessionId);
 
-  $rows = array();
-  $i = 0;
-  
-  if (isset($result->processes)) {
-    //Processing when it is an array
-    if (is_array($result->processes)) {
-      foreach ($result->processes as $key => $obj) {
-        $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
-        $i = $i + 1;
-      }
+    $result = $client->__soapCall("ProcessList", array($params));
+
+    $rows = array();
+    $i = 0;
+
+    if (isset($result->processes)) {
+        //Processing when it is an array
+        if (is_array($result->processes)) {
+            foreach ($result->processes as $key => $obj) {
+                $rows[$i] = array("guid" => $obj->guid, "name" => $obj->name);
+                $i = $i + 1;
+            }
+        } else {
+            //Processing when it is an object //1 row
+            if (is_object($result->processes)) {
+                $rows[$i] = array("guid" => $result->processes->guid, "name" => $result->processes->name);
+                $i = $i + 1;
+            }
+        }
     }
-    else {
-      //Processing when it is an object //1 row
-      if (is_object($result->processes)) {
-        $rows[$i] = array("guid" => $result->processes->guid, "name" => $result->processes->name);
-        $i = $i + 1;
-      }
-    }
-  }
-  
-  return $rows;
+
+    return $rows;
 }
 /**
  * @method
@@ -764,10 +780,10 @@ function WSProcessList() {
  *
  */
 //private function to get current email configuration
-function getEmailConfiguration() 
+function getEmailConfiguration()
 {
-  G::loadClass('system');
-  return System::getEmailConfiguration();
+    G::loadClass('system');
+    return System::getEmailConfiguration();
 }
 
 /**
@@ -791,19 +807,19 @@ function getEmailConfiguration()
  * @return int | $result | result | Result of sending email
  *
  */
-//@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value. 
-function PMFSendMessage($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields = array(), $aAttachment = array()) {
+//@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value.
+function PMFSendMessage($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields=array(), $aAttachment=array())
+{
 
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->sendMessage($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields, $aAttachment);
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->sendMessage($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields, $aAttachment);
 
-  if ( $result->status_code == 0) {
-    return 1;
-  } 
-  else {
-    return 0;
-  }
+    if ( $result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 /**
  * @method
@@ -823,30 +839,31 @@ function PMFSendMessage($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplat
  * @return array | $fields | WS Response Associative Array: | The function returns a WS Response associative array.
  *
  */
-function WSSendVariables($caseId, $name1, $value1, $name2, $value2) {
-  $client = WSOpen();
-  
-  $sessionId = $_SESSION["WS_SESSION_ID"];
+function WSSendVariables($caseId, $name1, $value1, $name2, $value2)
+{
+    $client = WSOpen();
 
-  $v1 = new stdClass();
-  $v1->name = $name1;
-  $v1->value = $value1;
- 
-  $v2 = new stdClass();
-  $v2->name = $name2;
-  $v2->value = $value2;
-  
-  $variables = array($v1, $v2);
-  
-  $params = array("sessionId" => $sessionId, "caseId" => $caseId, "variables" => $variables);
-  
-  $result = $client->__soapCall("SendVariables", array($params));
+    $sessionId = $_SESSION["WS_SESSION_ID"];
 
-  $fields["status_code"] = $result->status_code;
-  $fields["message"]     = $result->message;
-  $fields["time_stamp"]  = $result->timestamp;
-  
-  return $fields;
+    $v1 = new stdClass();
+    $v1->name = $name1;
+    $v1->value = $value1;
+
+    $v2 = new stdClass();
+    $v2->name = $name2;
+    $v2->value = $value2;
+
+    $variables = array($v1, $v2);
+
+    $params = array("sessionId" => $sessionId, "caseId" => $caseId, "variables" => $variables);
+
+    $result = $client->__soapCall("SendVariables", array($params));
+
+    $fields["status_code"] = $result->status_code;
+    $fields["message"]     = $result->message;
+    $fields["time_stamp"]  = $result->timestamp;
+
+    return $fields;
 }
 /**
  * @method
@@ -863,20 +880,21 @@ function WSSendVariables($caseId, $name1, $value1, $name2, $value2) {
  * @return array | $fields | WS Response Associative Array | A WS Response associative array.
  *
  */
-function WSDerivateCase($caseId, $delIndex) {
-  $client = WSOpen();
-  
-  $sessionId = $_SESSION["WS_SESSION_ID"];
+function WSDerivateCase($caseId, $delIndex)
+{
+    $client = WSOpen();
 
-  $params = array("sessionId" => $sessionId, "caseId" => $caseId, "delIndex" => $delIndex);
-  
-  $result = $client->__soapCall("DerivateCase", array($params));
+    $sessionId = $_SESSION["WS_SESSION_ID"];
 
-  $fields["status_code"] = $result->status_code;
-  $fields["message"]     = $result->message;
-  $fields["time_stamp"]  = $result->timestamp;
-  
-  return $fields;
+    $params = array("sessionId" => $sessionId, "caseId" => $caseId, "delIndex" => $delIndex);
+
+    $result = $client->__soapCall("DerivateCase", array($params));
+
+    $fields["status_code"] = $result->status_code;
+    $fields["message"]     = $result->message;
+    $fields["time_stamp"]  = $result->timestamp;
+
+    return $fields;
 }
 /**
  * @method
@@ -896,32 +914,36 @@ function WSDerivateCase($caseId, $delIndex) {
  * @return array | $fields | WS Response Associative Array | A WS Response associative array.
  *
  */
-function WSNewCaseImpersonate($processId, $userId, $name1, $value1, $name2, $value2) {
-  $client = WSOpen();
-  
-  $sessionId = $_SESSION["WS_SESSION_ID"];
+function WSNewCaseImpersonate($processId, $userId, $name1, $value1, $name2, $value2)
+{
+    $client = WSOpen();
 
-  $v1 = new stdClass();
-  $v1->name = $name1;
-  $v1->value = $value1;
- 
-  $v2 = new stdClass();
-  $v2->name = $name2;
-  $v2->value = $value2;
-  
-  $variables = array($v1, $v2);
+    $sessionId = $_SESSION["WS_SESSION_ID"];
 
-  $params = array("sessionId" => $sessionId, "processId" => $processId, "userId" => $userId, "variables" => $variables);
-  
-  $result = $client->__soapCall("NewCaseImpersonate", array($params));
+    $v1 = new stdClass();
+    $v1->name = $name1;
+    $v1->value = $value1;
 
-  $fields["status_code"] = $result->status_code;
-  $fields["message"]     = $result->message;
-  $fields["time_stamp"]  = $result->timestamp;
-  $fields["case_id"]     = $result->caseId;
-  $fields["case_number"] = $result->caseNumber;
+    $v2 = new stdClass();
+    $v2->name = $name2;
+    $v2->value = $value2;
 
-  return $fields;
+    $variables = array($v1, $v2);
+
+    $params = array("sessionId" => $sessionId,
+                     "processId" => $processId,
+                     "userId"    => $userId,
+                     "variables" => $variables);
+
+    $result = $client->__soapCall("NewCaseImpersonate", array($params));
+
+    $fields["status_code"] = $result->status_code;
+    $fields["message"]     = $result->message;
+    $fields["time_stamp"]  = $result->timestamp;
+    $fields["case_id"]     = $result->caseId;
+    $fields["case_number"] = $result->caseNumber;
+
+    return $fields;
 }
 /**
  * @method
@@ -942,31 +964,35 @@ function WSNewCaseImpersonate($processId, $userId, $name1, $value1, $name2, $val
  * @return array | $fields | WS array | A WS Response associative array.
  *
  */
-function WSNewCase($processId, $taskId, $name1, $value1, $name2, $value2) {
-  $client = WSOpen();
-  $sessionId = $_SESSION["WS_SESSION_ID"];
+function WSNewCase($processId, $taskId, $name1, $value1, $name2, $value2)
+{
+    $client = WSOpen();
+    $sessionId = $_SESSION["WS_SESSION_ID"];
 
-  $v1 = new stdClass();
-  $v1->name = $name1;
-  $v1->value = $value1;
- 
-  $v2 = new stdClass();
-  $v2->name = $name2;
-  $v2->value = $value2;
-  
-  $variables = array($v1, $v2);
+    $v1 = new stdClass();
+    $v1->name = $name1;
+    $v1->value = $value1;
 
-  $params = array("sessionId" => $sessionId, "processId" => $processId, "taskId" => $taskId, "variables" => $variables);
-  
-  $result = $client->__soapCall("NewCase", array($params));
+    $v2 = new stdClass();
+    $v2->name = $name2;
+    $v2->value = $value2;
 
-  $fields["status_code"] = $result->status_code;
-  $fields["message"]     = $result->message;
-  $fields["time_stamp"]  = $result->timestamp;
-  $fields["case_id"]     = $result->caseId;
-  $fields["case_number"] = $result->caseNumber;
-  
-  return $fields;
+    $variables = array($v1, $v2);
+
+    $params = array("sessionId" => $sessionId,
+                    "processId"  => $processId,
+                    "taskId"     => $taskId,
+                    "variables"  => $variables);
+
+    $result = $client->__soapCall("NewCase", array($params));
+
+    $fields["status_code"] = $result->status_code;
+    $fields["message"]     = $result->message;
+    $fields["time_stamp"]  = $result->timestamp;
+    $fields["case_id"]     = $result->caseId;
+    $fields["case_number"] = $result->caseNumber;
+
+    return $fields;
 }
 /**
  * @method
@@ -983,20 +1009,21 @@ function WSNewCase($processId, $taskId, $name1, $value1, $name2, $value2) {
  * @return array | $fields | WS array |A WS Response associative array.
  *
  */
-function WSAssignUserToGroup($userId, $groupId) {
-  $client = WSOpen();
-  
-  $sessionId = $_SESSION["WS_SESSION_ID"];
+function WSAssignUserToGroup($userId, $groupId)
+{
+    $client = WSOpen();
 
-  $params = array("sessionId" => $sessionId, "userId" => $userId, "groupId" => $groupId);
-  
-  $result = $client->__soapCall("AssignUserToGroup", array($params));
+    $sessionId = $_SESSION["WS_SESSION_ID"];
 
-  $fields["status_code"] = $result->status_code;
-  $fields["message"]     = $result->message;
-  $fields["time_stamp"]  = $result->timestamp;
-  
-  return $fields;
+    $params = array("sessionId" => $sessionId, "userId" => $userId, "groupId" => $groupId);
+
+    $result = $client->__soapCall("AssignUserToGroup", array($params));
+
+    $fields["status_code"] = $result->status_code;
+    $fields["message"]     = $result->message;
+    $fields["time_stamp"]  = $result->timestamp;
+
+    return $fields;
 }
 /**
  * @method
@@ -1016,19 +1043,26 @@ function WSAssignUserToGroup($userId, $groupId) {
  * @return array | $fields | WS array | A WS Response associative array.
  *
  */
-function WSCreateUser($userId, $password, $firstname, $lastname, $email, $role) {
-  $client = WSOpen();
-  
-  $sessionId = $_SESSION["WS_SESSION_ID"];
-  $params = array("sessionId" => $sessionId, "userId" => $userId, "firstname" => $firstname, "lastname" => $lastname, "email" => $email, "role" => $role, "password" => $password);
-  
-  $result = $client->__soapCall("CreateUser", array($params));
+function WSCreateUser($userId, $password, $firstname, $lastname, $email, $role)
+{
+    $client = WSOpen();
 
-  $fields["status_code"] = $result->status_code;
-  $fields["message"]     = $result->message;
-  $fields["time_stamp"]  = $result->timestamp;
-  
-  return $fields;
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+    $params = array("sessionId" => $sessionId,
+                    "userId"    => $userId,
+                    "firstname" => $firstname,
+                    "lastname"  => $lastname,
+                    "email"     => $email,
+                    "role"      => $role,
+                    "password"  => $password);
+
+    $result = $client->__soapCall("CreateUser", array($params));
+
+    $fields["status_code"] = $result->status_code;
+    $fields["message"]     = $result->message;
+    $fields["time_stamp"]  = $result->timestamp;
+
+    return $fields;
 }
 /**
  * @method
@@ -1042,16 +1076,16 @@ function WSCreateUser($userId, $password, $firstname, $lastname, $email, $role) 
  * @return string | $userId | Sesion ID | The unique ID for the current active session.
  *
  */
-function WSGetSession() {
-  if (isset($_SESSION["WS_SESSION_ID"])) {
-    return $_SESSION["WS_SESSION_ID"];
-  }
-  else {
-    throw new Exception("SW session is not open!");
-  }
+function WSGetSession()
+{
+    if (isset($_SESSION["WS_SESSION_ID"])) {
+        return $_SESSION["WS_SESSION_ID"];
+    } else {
+        throw new Exception("SW session is not open!");
+    }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** Local Services Functions **/
 
@@ -1070,17 +1104,17 @@ function WSGetSession() {
  */
 function PMFTaskCase($caseId) #its test was successfull
 {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->taskCase($caseId);
-  $rows = Array();
-  $i = 1;
-  if(isset ($result)) {
-    foreach ( $result as $item) {
-      $rows[$i++] = $item;
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->taskCase($caseId);
+    $rows = Array();
+    $i = 1;
+    if (isset ($result)) {
+        foreach ($result as $item) {
+            $rows[$i++] = $item;
+        }
     }
-  }
-  return $rows;
+    return $rows;
 }
 /**
  * @method
@@ -1097,17 +1131,17 @@ function PMFTaskCase($caseId) #its test was successfull
  */
 function PMFTaskList($userId) #its test was successfull
 {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->taskList($userId);
-  $rows = Array();
-  $i = 1;
-  if(isset ($result)) {
-    foreach ( $result as $item) {
-      $rows[$i++] = $item;
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->taskList($userId);
+    $rows = Array();
+    $i = 1;
+    if (isset ($result)) {
+        foreach ($result as $item) {
+            $rows[$i++] = $item;
+        }
     }
-  }
-  return $rows;
+    return $rows;
 }
 /**
  * @method
@@ -1123,17 +1157,17 @@ function PMFTaskList($userId) #its test was successfull
  */
 function PMFUserList() #its test was successfull
 {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->userList();
-  $rows = Array();
-  $i = 1;
-  if(isset ($result)) {
-    foreach ( $result as $item) {
-      $rows[$i++] = $item;
+    G::LoadClass('wsBase');
+    $ws     = new wsBase ();
+    $result = $ws->userList();
+    $rows   = Array();
+    $i      = 1;
+    if (isset ($result)) {
+        foreach ($result as $item) {
+            $rows[$i++] = $item;
+        }
     }
-  }
-  return $rows;
+    return $rows;
 }
 /**
  * @method
@@ -1147,215 +1181,236 @@ function PMFUserList() #its test was successfull
  * @return none | $none | None | None
  *
  */
-function PMFGenerateOutputDocument($outputID, $sApplication = null, $index = null, $sUserLogged = null) {
-  if(!$sApplication){
-    $sApplication = $_SESSION['APPLICATION'];
-  }
-  if(!$index){
-    $index = $_SESSION['INDEX'];
-  }
-  if(!$sUserLogged){
-    $sUserLogged = $_SESSION['USER_LOGGED'];
-  }
-
-  G::LoadClass('case');
-  $oCase = new Cases();
-  $oCase->thisIsTheCurrentUser($sApplication, $index, $sUserLogged, '', 'cases_List');
-
-  //require_once 'classes/model/OutputDocument.php';	
-  $oOutputDocument = new OutputDocument();
-  $aOD = $oOutputDocument->load($outputID);
-  $Fields = $oCase->loadCase( $sApplication );
-  //The $_GET['UID'] variable is used when a process executes.
-  //$_GET['UID']=($aOD['OUT_DOC_VERSIONING'])?$_GET['UID']:$aOD['OUT_DOC_UID'];
-  //$sUID = ($aOD['OUT_DOC_VERSIONING'])?$_GET['UID']:$aOD['OUT_DOC_UID'];
-  $sFilename = preg_replace('[^A-Za-z0-9_]', '_', G::replaceDataField($aOD['OUT_DOC_FILENAME'], $Fields['APP_DATA']));
-  require_once 'classes/model/AppFolder.php';
-  require_once 'classes/model/AppDocument.php';
-
-  //Get the Custom Folder ID (create if necessary)
-  $oFolder=new AppFolder();
-  //$aOD['OUT_DOC_DESTINATION_PATH'] = ($aOD['OUT_DOC_DESTINATION_PATH']=='')?PATH_DOCUMENT . $_SESSION['APPLICATION'] . PATH_SEP . 'outdocs'. PATH_SEP:$aOD['OUT_DOC_DESTINATION_PATH'];
-  $folderId=$oFolder->createFromPath($aOD['OUT_DOC_DESTINATION_PATH'], $sApplication);
-  //Tags
-  $fileTags=$oFolder->parseTags($aOD['OUT_DOC_TAGS'], $sApplication);
-
-  //Get last Document Version and apply versioning if is enabled
-  $oAppDocument= new AppDocument();
-  $lastDocVersion=$oAppDocument->getLastDocVersion($outputID, $sApplication);
-
-  $oCriteria = new Criteria('workflow');
-  $oCriteria->add(AppDocumentPeer::APP_UID,      $sApplication);
-  //$oCriteria->add(AppDocumentPeer::DEL_INDEX,    $index);
-  $oCriteria->add(AppDocumentPeer::DOC_UID,      $outputID);
-  $oCriteria->add(AppDocumentPeer::DOC_VERSION,  $lastDocVersion);
-  $oCriteria->add(AppDocumentPeer::APP_DOC_TYPE, 'OUTPUT');
-  $oDataset = AppDocumentPeer::doSelectRS($oCriteria);
-  $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-  $oDataset->next();
-
-  if(($aOD['OUT_DOC_VERSIONING'])&&($lastDocVersion!=0)){//Create new Version of current output
-    $lastDocVersion++;
-    if ($aRow = $oDataset->getRow()) {
-      $aFields = array('APP_DOC_UID'         => $aRow['APP_DOC_UID'],
-                       'APP_UID'             => $sApplication,
-                       'DEL_INDEX'           => $index,
-                       'DOC_UID'             => $outputID,
-                       'DOC_VERSION'         => $lastDocVersion+1,
-                       'USR_UID'             => $sUserLogged,
-                       'APP_DOC_TYPE'        => 'OUTPUT',
-                       'APP_DOC_CREATE_DATE' => date('Y-m-d H:i:s'),
-                       'APP_DOC_FILENAME'    => $sFilename,
-                       'FOLDER_UID'          => $folderId,
-                       'APP_DOC_TAGS'        => $fileTags);
-      $oAppDocument = new AppDocument();
-      $oAppDocument->create($aFields);
-      $sDocUID = $aRow['APP_DOC_UID'];
+function PMFGenerateOutputDocument($outputID, $sApplication=null, $index=null, $sUserLogged=null)
+{
+    if (!$sApplication) {
+        $sApplication = $_SESSION['APPLICATION'];
     }
-  }else{//No versioning so Update a current Output or Create new if no exist
-    if ($aRow = $oDataset->getRow()) { //Update
-      $aFields = array('APP_DOC_UID'         => $aRow['APP_DOC_UID'],
-                       'APP_UID'             => $sApplication,
-                       'DEL_INDEX'           => $index,
-                       'DOC_UID'             => $outputID,
-                       'DOC_VERSION'         => $lastDocVersion,
-                       'USR_UID'             => $sUserLogged,
-                       'APP_DOC_TYPE'        => 'OUTPUT',
-                       'APP_DOC_CREATE_DATE' => date('Y-m-d H:i:s'),
-                       'APP_DOC_FILENAME'    => $sFilename,
-                       'FOLDER_UID'          => $folderId,
-                       'APP_DOC_TAGS'        => $fileTags);
-      $oAppDocument = new AppDocument();
-      $oAppDocument->update($aFields);
-      $sDocUID = $aRow['APP_DOC_UID'];
-    }else{ 
-     //we are creating the appdocument row
-     //create
-      if($lastDocVersion==0) $lastDocVersion++;
-      $aFields = array('APP_UID'             => $sApplication,
-                   'DEL_INDEX'           => $index,
-                   'DOC_UID'             => $outputID,
-                   'DOC_VERSION'         => $lastDocVersion,
-                   'USR_UID'             => $sUserLogged,
-                   'APP_DOC_TYPE'        => 'OUTPUT',
-                   'APP_DOC_CREATE_DATE' => date('Y-m-d H:i:s'),
-                   'APP_DOC_FILENAME'    => $sFilename,
-                   'FOLDER_UID'          => $folderId,
-                   'APP_DOC_TAGS'        => $fileTags);
-      $oAppDocument = new AppDocument();
-      $aFields['APP_DOC_UID']=$sDocUID = $oAppDocument->create($aFields);
+    if (!$index) {
+        $index = $_SESSION['INDEX'];
     }
-  }
-  $sFilename = $aFields['APP_DOC_UID']. "_".$lastDocVersion;
+    if (!$sUserLogged) {
+        $sUserLogged = $_SESSION['USER_LOGGED'];
+    }
 
-  $pathOutput = PATH_DOCUMENT . $sApplication . PATH_SEP . 'outdocs'. PATH_SEP ;//G::pr($sFilename);die;
-  G::mk_dir ( $pathOutput );
+    G::LoadClass('case');
+    $oCase = new Cases();
+    $oCase->thisIsTheCurrentUser($sApplication, $index, $sUserLogged, '', 'cases_List');
 
-  $aProperties = array();
+    //require_once 'classes/model/OutputDocument.php';
+    $oOutputDocument = new OutputDocument();
+    $aOD = $oOutputDocument->load($outputID);
+    $Fields = $oCase->loadCase( $sApplication );
+    //The $_GET['UID'] variable is used when a process executes.
+    //$_GET['UID']=($aOD['OUT_DOC_VERSIONING'])?$_GET['UID']:$aOD['OUT_DOC_UID'];
+    //$sUID = ($aOD['OUT_DOC_VERSIONING'])?$_GET['UID']:$aOD['OUT_DOC_UID'];
+    $sFilename = preg_replace('[^A-Za-z0-9_]', '_', G::replaceDataField($aOD['OUT_DOC_FILENAME'], $Fields['APP_DATA']));
+    require_once 'classes/model/AppFolder.php';
+    require_once 'classes/model/AppDocument.php';
 
-  if(!isset($aOD['OUT_DOC_MEDIA']))
-    $aOD['OUT_DOC_MEDIA'] = 'Letter';
-  if(!isset($aOD['OUT_DOC_LEFT_MARGIN']))
-    $aOD['OUT_DOC_LEFT_MARGIN'] = '15';
-  if(!isset($aOD['OUT_DOC_RIGHT_MARGIN']))
-    $aOD['OUT_DOC_RIGHT_MARGIN'] = '15';
-  if(!isset($aOD['OUT_DOC_TOP_MARGIN']))
-    $aOD['OUT_DOC_TOP_MARGIN'] = '15';
-  if(!isset($aOD['OUT_DOC_BOTTOM_MARGIN']))
-    $aOD['OUT_DOC_BOTTOM_MARGIN'] = '15';
+    //Get the Custom Folder ID (create if necessary)
+    $oFolder=new AppFolder();
+    //$aOD['OUT_DOC_DESTINATION_PATH'] = ($aOD['OUT_DOC_DESTINATION_PATH']=='')?PATH_DOCUMENT
+    //      . $_SESSION['APPLICATION'] . PATH_SEP . 'outdocs'. PATH_SEP:$aOD['OUT_DOC_DESTINATION_PATH'];
+    $folderId=$oFolder->createFromPath($aOD['OUT_DOC_DESTINATION_PATH'], $sApplication);
+    //Tags
+    $fileTags=$oFolder->parseTags($aOD['OUT_DOC_TAGS'], $sApplication);
 
-  $aProperties['media']=$aOD['OUT_DOC_MEDIA'];
-  $aProperties['margins']=array('left' => $aOD['OUT_DOC_LEFT_MARGIN'], 'right' => $aOD['OUT_DOC_RIGHT_MARGIN'], 'top' => $aOD['OUT_DOC_TOP_MARGIN'], 'bottom' => $aOD['OUT_DOC_BOTTOM_MARGIN'],);
-  $oOutputDocument->generate( $outputID, $Fields['APP_DATA'], $pathOutput, $sFilename, $aOD['OUT_DOC_TEMPLATE'], (boolean)$aOD['OUT_DOC_LANDSCAPE'], $aOD['OUT_DOC_GENERATE'] );
+    //Get last Document Version and apply versioning if is enabled
+    $oAppDocument= new AppDocument();
+    $lastDocVersion=$oAppDocument->getLastDocVersion($outputID, $sApplication);
 
-  //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
-  //G::LoadClass('plugin');
-  $oPluginRegistry =& PMPluginRegistry::getSingleton();
-  if ( $oPluginRegistry->existsTrigger ( PM_UPLOAD_DOCUMENT ) && class_exists ('uploadDocumentData' ) ) {
-    $triggerDetail=$oPluginRegistry->getTriggerInfo( PM_UPLOAD_DOCUMENT );
-    $aFields['APP_DOC_PLUGIN']=$triggerDetail->sNamespace;
+    $oCriteria = new Criteria('workflow');
+    $oCriteria->add(AppDocumentPeer::APP_UID,      $sApplication);
+    //$oCriteria->add(AppDocumentPeer::DEL_INDEX,    $index);
+    $oCriteria->add(AppDocumentPeer::DOC_UID,      $outputID);
+    $oCriteria->add(AppDocumentPeer::DOC_VERSION,  $lastDocVersion);
+    $oCriteria->add(AppDocumentPeer::APP_DOC_TYPE, 'OUTPUT');
+    $oDataset = AppDocumentPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
 
-    $oAppDocument1 = new AppDocument();
-    $oAppDocument1->update($aFields);
+    if (($aOD['OUT_DOC_VERSIONING'])&&($lastDocVersion!=0)) {
+        //Create new Version of current output
+        $lastDocVersion++;
+        if ($aRow = $oDataset->getRow()) {
+            $aFields = array('APP_DOC_UID'         => $aRow['APP_DOC_UID'],
+                             'APP_UID'             => $sApplication,
+                             'DEL_INDEX'           => $index,
+                             'DOC_UID'             => $outputID,
+                             'DOC_VERSION'         => $lastDocVersion+1,
+                             'USR_UID'             => $sUserLogged,
+                             'APP_DOC_TYPE'        => 'OUTPUT',
+                             'APP_DOC_CREATE_DATE' => date('Y-m-d H:i:s'),
+                             'APP_DOC_FILENAME'    => $sFilename,
+                             'FOLDER_UID'          => $folderId,
+                             'APP_DOC_TAGS'        => $fileTags);
+            $oAppDocument = new AppDocument();
+            $oAppDocument->create($aFields);
+            $sDocUID = $aRow['APP_DOC_UID'];
+        }
+    } else {
+        ////No versioning so Update a current Output or Create new if no exist
+        if ($aRow = $oDataset->getRow()) {
+            //Update
+            $aFields = array('APP_DOC_UID'         => $aRow['APP_DOC_UID'],
+                            'APP_UID'             => $sApplication,
+                            'DEL_INDEX'           => $index,
+                            'DOC_UID'             => $outputID,
+                            'DOC_VERSION'         => $lastDocVersion,
+                            'USR_UID'             => $sUserLogged,
+                            'APP_DOC_TYPE'        => 'OUTPUT',
+                            'APP_DOC_CREATE_DATE' => date('Y-m-d H:i:s'),
+                            'APP_DOC_FILENAME'    => $sFilename,
+                            'FOLDER_UID'          => $folderId,
+                            'APP_DOC_TAGS'        => $fileTags);
+            $oAppDocument = new AppDocument();
+            $oAppDocument->update($aFields);
+            $sDocUID = $aRow['APP_DOC_UID'];
+        } else {
+            //we are creating the appdocument row
+            //create
+            if ($lastDocVersion==0) {
+                $lastDocVersion++;
+            }
+            $aFields = array('APP_UID'             => $sApplication,
+                        'DEL_INDEX'           => $index,
+                        'DOC_UID'             => $outputID,
+                        'DOC_VERSION'         => $lastDocVersion,
+                        'USR_UID'             => $sUserLogged,
+                        'APP_DOC_TYPE'        => 'OUTPUT',
+                        'APP_DOC_CREATE_DATE' => date('Y-m-d H:i:s'),
+                        'APP_DOC_FILENAME'    => $sFilename,
+                        'FOLDER_UID'          => $folderId,
+                        'APP_DOC_TAGS'        => $fileTags);
+            $oAppDocument = new AppDocument();
+            $aFields['APP_DOC_UID']=$sDocUID = $oAppDocument->create($aFields);
+        }
+    }
+    $sFilename = $aFields['APP_DOC_UID']. "_".$lastDocVersion;
 
-    $sPathName = PATH_DOCUMENT . $sApplication . PATH_SEP;
+    $pathOutput = PATH_DOCUMENT . $sApplication . PATH_SEP . 'outdocs'. PATH_SEP ;//G::pr($sFilename);die;
+    G::mk_dir ( $pathOutput );
 
-    $oData['APP_UID']   = $sApplication;
-    $oData['ATTACHMENT_FOLDER'] = true;
-    switch($aOD['OUT_DOC_GENERATE']){
-    case "BOTH":
-      $documentData = new uploadDocumentData (
+    $aProperties = array();
+
+    if (!isset($aOD['OUT_DOC_MEDIA'])) {
+        $aOD['OUT_DOC_MEDIA'] = 'Letter';
+    }
+    if (!isset($aOD['OUT_DOC_LEFT_MARGIN'])) {
+        $aOD['OUT_DOC_LEFT_MARGIN'] = '15';
+    }
+    if (!isset($aOD['OUT_DOC_RIGHT_MARGIN'])) {
+        $aOD['OUT_DOC_RIGHT_MARGIN'] = '15';
+    }
+    if (!isset($aOD['OUT_DOC_TOP_MARGIN'])) {
+        $aOD['OUT_DOC_TOP_MARGIN'] = '15';
+    }
+    if (!isset($aOD['OUT_DOC_BOTTOM_MARGIN'])) {
+        $aOD['OUT_DOC_BOTTOM_MARGIN'] = '15';
+    }
+
+
+    $aProperties['media'] = $aOD['OUT_DOC_MEDIA'];
+    $aProperties['margins'] = array('left'  => $aOD['OUT_DOC_LEFT_MARGIN'],
+                                    'right'  => $aOD['OUT_DOC_RIGHT_MARGIN'],
+                                    'top'    => $aOD['OUT_DOC_TOP_MARGIN'],
+                                    'bottom' => $aOD['OUT_DOC_BOTTOM_MARGIN']);
+    $oOutputDocument->generate( $outputID, $Fields['APP_DATA'], $pathOutput, $sFilename, $aOD['OUT_DOC_TEMPLATE'],
+                                (boolean)$aOD['OUT_DOC_LANDSCAPE'], $aOD['OUT_DOC_GENERATE'] );
+
+    //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
+    //G::LoadClass('plugin');
+    $oPluginRegistry =& PMPluginRegistry::getSingleton();
+    if ( $oPluginRegistry->existsTrigger ( PM_UPLOAD_DOCUMENT ) && class_exists ('uploadDocumentData' ) ) {
+        $triggerDetail=$oPluginRegistry->getTriggerInfo( PM_UPLOAD_DOCUMENT );
+        $aFields['APP_DOC_PLUGIN']=$triggerDetail->sNamespace;
+
+        $oAppDocument1 = new AppDocument();
+        $oAppDocument1->update($aFields);
+
+        $sPathName = PATH_DOCUMENT . $sApplication . PATH_SEP;
+
+        $oData['APP_UID']   = $sApplication;
+        $oData['ATTACHMENT_FOLDER'] = true;
+        switch ($aOD['OUT_DOC_GENERATE']) {
+            case "BOTH":
+                $documentData = new uploadDocumentData (
                     $sApplication,
                     $sUserLogged,
                     $pathOutput . $sFilename . '.pdf',
                     $sFilename. '.pdf',
                     $sDocUID,
                     $oAppDocument->getDocVersion()
-                    );
+                );
 
-      $documentData->sFileType = "PDF";
-      $documentData->bUseOutputFolder = true;
-      $uploadReturn=$oPluginRegistry->executeTriggers ( PM_UPLOAD_DOCUMENT , $documentData );
-      if($uploadReturn){//Only delete if the file was saved correctly
-        unlink ( $pathOutput . $sFilename. '.pdf' );
-      }
+                $documentData->sFileType = "PDF";
+                $documentData->bUseOutputFolder = true;
+                $uploadReturn=$oPluginRegistry->executeTriggers ( PM_UPLOAD_DOCUMENT , $documentData );
+                if ($uploadReturn) {
+                    //Only delete if the file was saved correctly
+                    unlink ( $pathOutput . $sFilename. '.pdf' );
+                }
 
 
 
-      $documentData = new uploadDocumentData (
+                $documentData = new uploadDocumentData (
                     $sApplication,
                     $sUserLogged,
                     $pathOutput . $sFilename . '.doc',
                     $sFilename. '.doc',
                     $sDocUID,
                     $oAppDocument->getDocVersion()
-                    );
+                );
 
-      $documentData->sFileType = "DOC";
-      $documentData->bUseOutputFolder = true;
-      $uploadReturn=$oPluginRegistry->executeTriggers ( PM_UPLOAD_DOCUMENT , $documentData );
-      if($uploadReturn){//Only delete if the file was saved correctly
-        unlink ( $pathOutput . $sFilename. '.doc' );
-      }
+                $documentData->sFileType = "DOC";
+                $documentData->bUseOutputFolder = true;
+                $uploadReturn = $oPluginRegistry->executeTriggers ( PM_UPLOAD_DOCUMENT , $documentData );
+                if ($uploadReturn) {
+                    //Only delete if the file was saved correctly
+                    unlink ( $pathOutput . $sFilename. '.doc' );
+                }
 
-    break;
-    case "PDF":
-      $documentData = new uploadDocumentData (
+                break;
+            case "PDF":
+                $documentData = new uploadDocumentData (
                     $sApplication,
                     $sUserLogged,
                     $pathOutput . $sFilename . '.pdf',
                     $sFilename. '.pdf',
                     $sDocUID,
                     $oAppDocument->getDocVersion()
-                    );
+                );
 
 
-      $documentData->sFileType = "PDF";
-      $documentData->bUseOutputFolder = true;
-      $uploadReturn=$oPluginRegistry->executeTriggers ( PM_UPLOAD_DOCUMENT , $documentData );
-      if($uploadReturn){//Only delete if the file was saved correctly
-      	unlink ( $pathOutput . $sFilename. '.pdf' );
-      }
-    break;
-    case "DOC":
-      $documentData = new uploadDocumentData (
+                $documentData->sFileType = "PDF";
+                $documentData->bUseOutputFolder = true;
+                $uploadReturn=$oPluginRegistry->executeTriggers ( PM_UPLOAD_DOCUMENT , $documentData );
+                if ($uploadReturn) {
+                    //Only delete if the file was saved correctly
+                    unlink ( $pathOutput . $sFilename. '.pdf' );
+                }
+                break;
+            case "DOC":
+                $documentData = new uploadDocumentData (
                     $sApplication,
                     $sUserLogged,
                     $pathOutput . $sFilename . '.doc',
                     $sFilename. '.doc',
                     $sDocUID,
                     $oAppDocument->getDocVersion()
-                    );
+                );
 
-      $documentData->sFileType = "DOC";
-      $documentData->bUseOutputFolder = true;
-      $uploadReturn=$oPluginRegistry->executeTriggers ( PM_UPLOAD_DOCUMENT , $documentData );
-      if($uploadReturn){//Only delete if the file was saved correctly
-      	unlink ( $pathOutput . $sFilename. '.doc' );
-      }
-    break;
+                $documentData->sFileType = "DOC";
+                $documentData->bUseOutputFolder = true;
+                $uploadReturn=$oPluginRegistry->executeTriggers ( PM_UPLOAD_DOCUMENT , $documentData );
+                if ($uploadReturn) {
+                    //Only delete if the file was saved correctly
+                    unlink ( $pathOutput . $sFilename. '.doc' );
+                }
+                break;
+        }
     }
-  }
 }
 /**
  * @method
@@ -1371,17 +1426,17 @@ function PMFGenerateOutputDocument($outputID, $sApplication = null, $index = nul
  */
 function PMFGroupList() #its test was successfull
 {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->groupList();
-  $rows = Array();
-  $i = 1;
-  if(isset ($result)) {
-    foreach ( $result as $item) {
-      $rows[$i++] = $item;
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->groupList();
+    $rows = Array();
+    $i = 1;
+    if (isset ($result)) {
+        foreach ($result as $item) {
+            $rows[$i++] = $item;
+        }
     }
-  }
-  return $rows;
+    return $rows;
 }
 
 /**
@@ -1398,17 +1453,17 @@ function PMFGroupList() #its test was successfull
  */
 function PMFRoleList() #its test was successfull
 {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->roleList();
-  $rows = Array();
-  $i = 1;
-  if(isset ($result)) {
-    foreach ( $result as $item) {
-      $rows[$i++] = $item;
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->roleList();
+    $rows = Array();
+    $i = 1;
+    if (isset ($result)) {
+        foreach ($result as $item) {
+            $rows[$i++] = $item;
+        }
     }
-  }
-  return $rows;
+    return $rows;
 }
 /**
  * @method
@@ -1425,17 +1480,17 @@ function PMFRoleList() #its test was successfull
  */
 function PMFCaseList($userId) #its test was successfull
 {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->caseList($userId);
-  $rows = Array();
-  $i = 1;
-  if(isset ($result)) {
-    foreach ( $result as $item) {
-      $rows[$i++] = $item;
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->caseList($userId);
+    $rows = Array();
+    $i = 1;
+    if (isset ($result)) {
+        foreach ($result as $item) {
+            $rows[$i++] = $item;
+        }
     }
-  }
-  return $rows;
+    return $rows;
 }
 /**
  * @method
@@ -1451,17 +1506,17 @@ function PMFCaseList($userId) #its test was successfull
  */
 function PMFProcessList() #its test was successfull
 {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->processList();
-  $rows = Array();
-  $i = 1;
-  if(isset ($result)) {
-    foreach ( $result as $item) {
-      $rows[$i++] = $item;
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->processList();
+    $rows = Array();
+    $i = 1;
+    if (isset ($result)) {
+        foreach ($result as $item) {
+            $rows[$i++] = $item;
+        }
     }
-  }
-  return $rows;
+    return $rows;
 }
 
 /**
@@ -1478,16 +1533,17 @@ function PMFProcessList() #its test was successfull
  * @return int | $result | Result of send variables | Returns 1 if the variables were sent successfully to the case; otherwise, returns 0 if an error occurred.
  *
  */
-function PMFSendVariables($caseId, $variables) {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
+function PMFSendVariables($caseId, $variables)
+{
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
 
-  $result = $ws->sendVariables($caseId, $variables);
-  if($result->status_code == 0) {
-    return 1;
-  } else {
-    return 0;
-  }
+    $result = $ws->sendVariables($caseId, $variables);
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 /**
  * @method
@@ -1505,24 +1561,24 @@ function PMFSendVariables($caseId, $variables) {
  * @return int | $result | Result of Derivate case | Returns 1 if new case was derivated (routed) successfully; otherwise, returns 0 if an error occurred.
  *
  */
-function PMFDerivateCase($caseId, $delIndex, $bExecuteTriggersBeforeAssignment = false, $sUserLogged = null) {
-  if(!$sUserLogged) {
-    $sUserLogged = $_SESSION['USER_LOGGED'];
-  }
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->derivateCase($sUserLogged, $caseId, $delIndex, $bExecuteTriggersBeforeAssignment);//var_dump($result);die;
-  if (isset($result->status_code)) {
-    return $result->status_code;
-  }
-  else {
-    return 0;
-  }
-  if($result->status_code == 0) {
-    return 1;
-  } else {
-    return 0;
-  }
+function PMFDerivateCase($caseId, $delIndex, $bExecuteTriggersBeforeAssignment=false, $sUserLogged=null)
+{
+    if (!$sUserLogged) {
+        $sUserLogged = $_SESSION['USER_LOGGED'];
+    }
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->derivateCase($sUserLogged, $caseId, $delIndex, $bExecuteTriggersBeforeAssignment);
+    if (isset($result->status_code)) {
+        return $result->status_code;
+    } else {
+        return 0;
+    }
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 /**
  * @method
@@ -1540,18 +1596,18 @@ function PMFDerivateCase($caseId, $delIndex, $bExecuteTriggersBeforeAssignment =
  * @return int | $result | Result | Returns 1 if new case was created successfully; otherwise, returns 0 if an error occurred.
  *
  */
-function PMFNewCaseImpersonate($processId, $userId, $variables) {
-  G::LoadClass("wsBase");
-  
-  $ws = new wsBase();
-  $result = $ws->newCaseImpersonate($processId, $userId, $variables);
+function PMFNewCaseImpersonate($processId, $userId, $variables)
+{
+    G::LoadClass("wsBase");
 
-  if ($result->status_code == 0) {
-    return $result->caseId;
-  }
-  else {
-    return 0;
-  }
+    $ws = new wsBase();
+    $result = $ws->newCaseImpersonate($processId, $userId, $variables);
+
+    if ($result->status_code == 0) {
+        return $result->caseId;
+    } else {
+        return 0;
+    }
 }
 /**
  * @method
@@ -1569,17 +1625,18 @@ function PMFNewCaseImpersonate($processId, $userId, $variables) {
  * @return string | $idNewCase | Case ID | If an error occured, it returns the integer zero. Otherwise, it returns a string with the case UID of the new case.
  *
  */
-function PMFNewCase($processId, $userId, $taskId, $variables) {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
+function PMFNewCase($processId, $userId, $taskId, $variables)
+{
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
 
-  $result = $ws->newCase($processId, $userId,$taskId, $variables);
+    $result = $ws->newCase($processId, $userId,$taskId, $variables);
 
-  if($result->status_code == 0) {
-    return $result->caseId;
-  } else {
-    return 0;
-  }
+    if ($result->status_code == 0) {
+        return $result->caseId;
+    } else {
+        return 0;
+    }
 }
 /**
  * @method
@@ -1595,16 +1652,17 @@ function PMFNewCase($processId, $userId, $taskId, $variables) {
  * @return int | $result | Result of the assignment | Returns 1 if the user was successfully assigned to the group; otherwise, returns 0.
  *
  */
-function PMFAssignUserToGroup($userId, $groupId) {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->assignUserToGroup($userId, $groupId);
+function PMFAssignUserToGroup($userId, $groupId)
+{
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->assignUserToGroup($userId, $groupId);
 
-  if($result->status_code == 0) {
-    return 1;
-  } else {
-    return 0;
-  }
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 /**
  * @method
@@ -1624,16 +1682,17 @@ function PMFAssignUserToGroup($userId, $groupId) {
  * @return int | $result | Result of the creation | Returns 1 if the new user was created successfully; otherwise, returns 0 if an error occurred.
  *
  */
-function PMFCreateUser($userId, $password, $firstname, $lastname, $email, $role) {
-  G::LoadClass('wsBase');
-  $ws = new wsBase ();
-  $result = $ws->createUser($userId, $firstname, $lastname, $email, $role, $password);
+function PMFCreateUser($userId, $password, $firstname, $lastname, $email, $role)
+{
+    G::LoadClass('wsBase');
+    $ws = new wsBase ();
+    $result = $ws->createUser($userId, $firstname, $lastname, $email, $role, $password);
 
-  if($result->status_code == 0) {
-    return 1;
-  } else {
-    return 0;
-  }
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 /**
  * @method
@@ -1650,8 +1709,9 @@ function PMFCreateUser($userId, $password, $firstname, $lastname, $email, $role)
  * @return string | $generateString | Generated string | The generated string of random characters.
  *
  */
-function generateCode ( $iDigits = 4, $sType = 'NUMERIC' ) {
-  return G::generateCode ($iDigits, $sType );
+function generateCode($iDigits=4, $sType='NUMERIC')
+{
+    return G::generateCode ($iDigits, $sType );
 }
 
 /**
@@ -1669,22 +1729,22 @@ function generateCode ( $iDigits = 4, $sType = 'NUMERIC' ) {
  * @return int | $result | Result | If successful, returns zero, otherwise a non-zero error number.
  *
  */
-function setCaseTrackerCode($sApplicationUID, $sCode, $sPIN = '') {
-  if ($sCode != '') {
-    G::LoadClass('case');
-    $oCase   = new Cases();
-    $aFields = $oCase->loadCase($sApplicationUID);
-    $aFields['APP_PROC_CODE'] = $sCode;
-    if ($sPIN != '') {
-      $aFields['APP_DATA']['PIN'] = $sPIN;
-      $aFields['APP_PIN']         = md5($sPIN);
+function setCaseTrackerCode($sApplicationUID, $sCode, $sPIN='')
+{
+    if ($sCode != '') {
+        G::LoadClass('case');
+        $oCase   = new Cases();
+        $aFields = $oCase->loadCase($sApplicationUID);
+        $aFields['APP_PROC_CODE'] = $sCode;
+        if ($sPIN != '') {
+            $aFields['APP_DATA']['PIN'] = $sPIN;
+            $aFields['APP_PIN']         = md5($sPIN);
+        }
+        $oCase->updateCase($sApplicationUID, $aFields);
+        return 1;
+    } else {
+        return 0;
     }
-    $oCase->updateCase($sApplicationUID, $aFields);
-    return 1;
-  }
-  else {
-    return 0;
-  }
 }
 /**
  * @method
@@ -1700,15 +1760,17 @@ function setCaseTrackerCode($sApplicationUID, $sCode, $sPIN = '') {
  * @return none | $none | None | None
  *
  */
-function jumping ( $caseId, $delIndex ) {
-  try {
-    $x = PMFDerivateCase($caseId, $delIndex);
-    if($x==0)
-      G::SendTemporalMessage('ID_NOT_DERIVATED', 'error', 'labels');
-  } catch (Exception $oException) {
-    G::SendTemporalMessage('ID_NOT_DERIVATED', 'error', 'labels');
-  }
-  G::header('Location: cases_List');
+function jumping ($caseId, $delIndex)
+{
+    try {
+        $x = PMFDerivateCase($caseId, $delIndex);
+        if ($x == 0) {
+            G::SendTemporalMessage('ID_NOT_DERIVATED', 'error', 'labels');
+        }
+    } catch (Exception $oException) {
+        G::SendTemporalMessage('ID_NOT_DERIVATED', 'error', 'labels');
+    }
+    G::header('Location: cases_List');
 }
 /**
  * @method
@@ -1727,13 +1789,14 @@ function jumping ( $caseId, $delIndex ) {
  * @return string | $label | Label of the specified option | A string holding the label of the specified option or NULL if the specified option does not exist.
  *
  */
-function PMFgetLabelOption($PROCESS, $DYNAFORM_UID, $FIELD_NAME, $FIELD_SELECTED_ID) {
-  $G_FORM = new Form ("{$PROCESS}/{$DYNAFORM_UID}", PATH_DYNAFORM, SYS_LANG, false);
-  if( isset($G_FORM->fields[$FIELD_NAME]->option[$FIELD_SELECTED_ID]) ) {
-    return $G_FORM->fields[$FIELD_NAME]->option[$FIELD_SELECTED_ID];
-  } else {
-    return null;
-  }
+function PMFgetLabelOption($PROCESS, $DYNAFORM_UID, $FIELD_NAME, $FIELD_SELECTED_ID)
+{
+    $G_FORM = new Form ("{$PROCESS}/{$DYNAFORM_UID}", PATH_DYNAFORM, SYS_LANG, false);
+    if ( isset($G_FORM->fields[$FIELD_NAME]->option[$FIELD_SELECTED_ID]) ) {
+        return $G_FORM->fields[$FIELD_NAME]->option[$FIELD_SELECTED_ID];
+    } else {
+        return null;
+    }
 }
 /**
  * @method
@@ -1753,60 +1816,62 @@ function PMFgetLabelOption($PROCESS, $DYNAFORM_UID, $FIELD_NAME, $FIELD_SELECTED
  * @return none | $none | None | None
  *
  */
-function PMFRedirectToStep($sApplicationUID, $iDelegation, $sStepType, $sStepUid) {
-  $iDelegation = intval($iDelegation);
-  require_once 'classes/model/AppDelegation.php';
-  $oCriteria = new Criteria('workflow');
-  $oCriteria->addSelectColumn(AppDelegationPeer::TAS_UID);
-  $oCriteria->add(AppDelegationPeer::APP_UID, $sApplicationUID);
-  $oCriteria->add(AppDelegationPeer::DEL_INDEX, $iDelegation);
-  $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
-  $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-  $oDataset->next();
-  global $oPMScript;
-  $aRow = $oDataset->getRow();
-  if ($aRow) {
-    require_once 'classes/model/Step.php';
-    $oStep = new Step();
-    $oTheStep = $oStep->loadByType($aRow['TAS_UID'], $sStepType, $sStepUid);
-    $bContinue = true;
-    G::LoadClass('case');
-    $oCase = new Cases();
-    $aFields = $oCase->loadCase($sApplicationUID);
-    if ($oTheStep->getStepCondition() != '') {
-      G::LoadClass('pmScript');
-      $pmScript = new PMScript();
-      $pmScript->setFields($aFields['APP_DATA']);
-      $pmScript->setScript($oTheStep->getStepCondition());
-      $bContinue = $pmScript->evaluate();
+function PMFRedirectToStep($sApplicationUID, $iDelegation, $sStepType, $sStepUid)
+{
+    $iDelegation = intval($iDelegation);
+    require_once 'classes/model/AppDelegation.php';
+    $oCriteria = new Criteria('workflow');
+    $oCriteria->addSelectColumn(AppDelegationPeer::TAS_UID);
+    $oCriteria->add(AppDelegationPeer::APP_UID, $sApplicationUID);
+    $oCriteria->add(AppDelegationPeer::DEL_INDEX, $iDelegation);
+    $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
+    global $oPMScript;
+    $aRow = $oDataset->getRow();
+    if ($aRow) {
+        require_once 'classes/model/Step.php';
+        $oStep = new Step();
+        $oTheStep = $oStep->loadByType($aRow['TAS_UID'], $sStepType, $sStepUid);
+        $bContinue = true;
+        G::LoadClass('case');
+        $oCase = new Cases();
+        $aFields = $oCase->loadCase($sApplicationUID);
+        if ($oTheStep->getStepCondition() != '') {
+            G::LoadClass('pmScript');
+            $pmScript = new PMScript();
+            $pmScript->setFields($aFields['APP_DATA']);
+            $pmScript->setScript($oTheStep->getStepCondition());
+            $bContinue = $pmScript->evaluate();
+        }
+        if ($bContinue) {
+            switch ($oTheStep->getStepTypeObj()) {
+                case 'DYNAFORM':
+                    $sAction = 'EDIT';
+                    break;
+                case 'OUTPUT_DOCUMENT':
+                    $sAction = 'GENERATE';
+                    break;
+                case 'INPUT_DOCUMENT':
+                    $sAction = 'ATTACH';
+                    break;
+                case 'EXTERNAL':
+                    $sAction = 'EDIT';
+                    break;
+                case 'MESSAGE':
+                    $sAction = '';
+                    break;
+            }
+            // save data
+            if (!is_null($oPMScript)) {
+                $aFields['APP_DATA'] = $oPMScript->aFields;
+                $oCase->updateCase($sApplicationUID,$aFields);
+            }
+            G::header('Location: ' . 'cases_Step?TYPE=' . $sStepType . '&UID=' . $sStepUid
+                    . '&POSITION=' . $oTheStep->getStepPosition() . '&ACTION=' . $sAction);
+            die;
+        }
     }
-    if ($bContinue) {
-      switch ($oTheStep->getStepTypeObj()) {
-        case 'DYNAFORM':
-          $sAction = 'EDIT';
-          break;
-        case 'OUTPUT_DOCUMENT':
-          $sAction = 'GENERATE';
-          break;
-        case 'INPUT_DOCUMENT':
-          $sAction = 'ATTACH';
-          break;
-        case 'EXTERNAL':
-          $sAction = 'EDIT';
-          break;
-        case 'MESSAGE':
-          $sAction = '';
-          break;
-      }
-      // save data
-      if (!is_null($oPMScript)) {
-        $aFields['APP_DATA'] = $oPMScript->aFields;
-        $oCase->updateCase($sApplicationUID,$aFields);
-      }
-      G::header('Location: ' . 'cases_Step?TYPE=' . $sStepType . '&UID=' . $sStepUid . '&POSITION=' . $oTheStep->getStepPosition() . '&ACTION=' . $sAction);
-      die;
-    }
-  }
 }
 
 /**
@@ -1822,51 +1887,51 @@ function PMFRedirectToStep($sApplicationUID, $iDelegation, $sStepType, $sStepUid
  * @return array | $array | List of users | Return a list of users
  *
  */
-function PMFGetNextAssignedUser ($application, $task) {
+function PMFGetNextAssignedUser ($application, $task)
+{
 
-  require_once 'classes/model/AppDelegation.php';
-  require_once 'classes/model/Task.php';
-  require_once 'classes/model/TaskUser.php';
-  require_once 'classes/model/Users.php';
-  require_once 'classes/model/Groupwf.php';
-  require_once 'classes/model/GroupUser.php';
+    require_once 'classes/model/AppDelegation.php';
+    require_once 'classes/model/Task.php';
+    require_once 'classes/model/TaskUser.php';
+    require_once 'classes/model/Users.php';
+    require_once 'classes/model/Groupwf.php';
+    require_once 'classes/model/GroupUser.php';
 
-  $oTask = new Task();
-  $TaskFields = $oTask->load ($task);
-  $typeTask = $TaskFields ['TAS_ASSIGN_TYPE'];
+    $oTask = new Task();
+    $TaskFields = $oTask->load ($task);
+    $typeTask = $TaskFields ['TAS_ASSIGN_TYPE'];
 
-  if($typeTask == 'BALANCED')
-  {
+    if ($typeTask == 'BALANCED') {
 
-    G::LoadClass('derivation');
-    $oDerivation = new Derivation();
-    $aDeriv = $oDerivation->prepareInformation(
-                       array( 'USER_UID'  => $_SESSION['USER_LOGGED'],
-                              'APP_UID'   => $application,
-                              'DEL_INDEX' => $_SESSION['INDEX'])
-                       );
+        G::LoadClass('derivation');
+        $oDerivation = new Derivation();
+        $aDeriv = $oDerivation->prepareInformation(
+                        array( 'USER_UID'  => $_SESSION['USER_LOGGED'],
+                                'APP_UID'   => $application,
+                                'DEL_INDEX' => $_SESSION['INDEX'])
+                        );
 
-    foreach($aDeriv as $derivation){
+        foreach ($aDeriv as $derivation) {
 
-      $aUser = array(
-              'USR_UID'      => $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_UID'],
-              'USR_USERNAME' => $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_USERNAME'],
-              'USR_FIRSTNAME'=> $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_FIRSTNAME'],
-              'USR_LASTNAME' => $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_LASTNAME'],
-              'USR_EMAIL'    => $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_EMAIL']
-      );
-      $aUsers[] = $aUser;
+            $aUser = array(
+                'USR_UID'      => $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_UID'],
+                'USR_USERNAME' => $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_USERNAME'],
+                'USR_FIRSTNAME'=> $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_FIRSTNAME'],
+                'USR_LASTNAME' => $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_LASTNAME'],
+                'USR_EMAIL'    => $derivation['NEXT_TASK']['USER_ASSIGNED']['USR_EMAIL']
+            );
+            $aUsers[] = $aUser;
+        }
+
+        if (count($aUsers) == 1) {
+            return $aUser;
+        } else {
+            return $aUsers;
+        }
+
+    } else {
+        return false;
     }
-
-    if(count($aUsers) == 1)
-      return $aUser;
-    else
-      return $aUsers;
-
-  } else
-  {
-    return false;
-  }
 }
 
 /**
@@ -1883,131 +1948,130 @@ function PMFGetNextAssignedUser ($application, $task) {
  * @return array | $aRecipient | Array of the Recipient  | Return an Array of the Recipient
  *
  */
-function PMFGetUserEmailAddress($id, $APP_UID = null, $prefix='usr')
+function PMFGetUserEmailAddress($id, $APP_UID=null, $prefix='usr')
 {
 
-  require_once 'classes/model/UsersPeer.php';
-  require_once 'classes/model/AppDelegation.php';
-  G::LoadClass('case');
+    require_once 'classes/model/UsersPeer.php';
+    require_once 'classes/model/AppDelegation.php';
+    G::LoadClass('case');
 
-  if( is_string($id) && trim($id) == "" ){
-    return false;
-  }
-  if( is_array($id) && count($id) == 0 ){
-    return false;
-  }
-
-
-  //recipient to store the email addresses
-  $aRecipient = Array();
-  $aItems = Array();
-  
-  /*
-   * First at all the $id user input can be by example erik@colosa.com
-   * 2. this $id param can be a array by example Array('000000000001', '000000000002')  in this case $prefix is necessary
-   * 3. this same param can be a array by example Array('usr|000000000001', 'usr|-1', 'grp|2245141479413131441')
-   */
-
-  /*
-   * The second thing is that the return type will be configurated depend of the input type (using $retType)
-   */
-  if( is_array($id) ){
-    $aItems = $id;
-    $retType = 'array';
-  } else {
-    $retType = 'string';
-    if( strpos($id, ",") !== false ){
-      $aItems = explode(',', $id);
-    } else {
-      array_push($aItems, $id);
+    if ( is_string($id) && trim($id) == "" ) {
+        return false;
     }
-  }
-  
-  foreach ($aItems as $sItem) {
-    //cleaning for blank spaces into each array item
-    $sItem = trim($sItem);
-    if( strpos($sItem, "|") !== false ){
-      //explode the parameter because  always will be compose with pipe separator to indicate the type (user or group) and the target mai
-      list($sType, $sID) = explode('|', $sItem);
-      $sType = trim($sType);
-      $sID   = trim($sID);
-    } else {
-      $sType = $prefix;
-      $sID = $sItem;
+    if ( is_array($id) && count($id) == 0 ) {
+        return false;
     }
 
-    switch($sType) {
-      case 'ext':
-        if( G::emailAddress($sID) ) {
-          array_push($aRecipient, $sID);
-        }
-      break;
-      case 'usr':
-        if ($sID == '-1') { // -1: Cuurent user, load from user record
-          if( isset($APP_UID) ){
-            $oAppDelegation = new AppDelegation;
-            $aAppDel = $oAppDelegation->getLastDeleration($APP_UID);
-            if(isset($aAppDel)){
-              $oUserRow = UsersPeer::retrieveByPK($aAppDel['USR_UID']);
-              if( isset($oUserRow) ){
-                $sID = $oUserRow->getUsrEmail();
-              } else {
-                throw new Exception('User with ID '.$oAppDelegation->getUsrUid(). 'doesn\'t exist');
-              }
-              if( G::emailAddress($sID) ) {
-                array_push($aRecipient, $sID);
-              }
-            }
-          }
+    //recipient to store the email addresses
+    $aRecipient = Array();
+    $aItems = Array();
+
+    /*
+    * First at all the $id user input can be by example erik@colosa.com
+    * 2.this $id param can be a array by example Array('000000000001','000000000002') in this case $prefix is necessary
+    * 3.this same param can be a array by example Array('usr|000000000001', 'usr|-1', 'grp|2245141479413131441')
+    */
+
+    /*
+    * The second thing is that the return type will be configurated depend of the input type (using $retType)
+    */
+    if ( is_array($id) ) {
+        $aItems = $id;
+        $retType = 'array';
+    } else {
+        $retType = 'string';
+        if ( strpos($id, ",") !== false ) {
+            $aItems = explode(',', $id);
         } else {
-          $oUserRow = UsersPeer::retrieveByPK($sID);
-          $sID = $oUserRow->getUsrEmail();
-          if( G::emailAddress($sID) ) {
-            array_push($aRecipient, $sID);
-          }
+            array_push($aItems, $id);
         }
-        
-        break;
-
-      case 'grp':
-        G::LoadClass('groups');
-        $oGroups = new Groups();
-        $oCriteria = $oGroups->getUsersGroupCriteria($sID);
-        $oDataset = GroupwfPeer::doSelectRS($oCriteria);
-        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-        while ($oDataset->next()) {
-          $aGroup = $oDataset->getRow();
-          //to validate email address
-          if( G::emailAddress($aGroup['USR_EMAIL']) ) {
-            array_push($aRecipient, $aGroup['USR_EMAIL']);
-          }
-        }
-
-        break;
-
-      case 'dyn':
-        $oCase = new Cases();
-        $aFields = $oCase->loadCase($APP_UID);
-        $aFields['APP_DATA'] = array_merge($aFields['APP_DATA'], G::getSystemConstants());
-        
-        //to validate email address
-        if( isset($aFields['APP_DATA'][$sID]) && G::emailAddress($aFields['APP_DATA'][$sID]) ) {
-          array_push($aRecipient, $aFields['APP_DATA'][$sID]);
-        }
-        break;
     }
-  }
 
-  switch($retType){
-    case 'array':
-      return $aRecipient;
-    
-    case 'string':
-      return implode(',', $aRecipient);
+    foreach ($aItems as $sItem) {
+        //cleaning for blank spaces into each array item
+        $sItem = trim($sItem);
+        if ( strpos($sItem, "|") !== false ) {
+            // explode the parameter because  always will be compose with pipe separator to indicate
+            // the type (user or group) and the target mai
+            list($sType, $sID) = explode('|', $sItem);
+            $sType = trim($sType);
+            $sID   = trim($sID);
+        } else {
+            $sType = $prefix;
+            $sID = $sItem;
+        }
 
-    default:
-      return $aRecipient;
-  }
+        switch ($sType) {
+            case 'ext':
+                if ( G::emailAddress($sID) ) {
+                    array_push($aRecipient, $sID);
+                }
+                break;
+            case 'usr':
+                if ($sID == '-1') {
+                    // -1: Curent user, load from user record
+                    if ( isset($APP_UID) ) {
+                        $oAppDelegation = new AppDelegation;
+                        $aAppDel = $oAppDelegation->getLastDeleration($APP_UID);
+                        if (isset($aAppDel)) {
+                            $oUserRow = UsersPeer::retrieveByPK($aAppDel['USR_UID']);
+                            if ( isset($oUserRow) ) {
+                                $sID = $oUserRow->getUsrEmail();
+                            } else {
+                                throw new Exception('User with ID '.$oAppDelegation->getUsrUid(). 'doesn\'t exist');
+                            }
+                            if ( G::emailAddress($sID) ) {
+                                array_push($aRecipient, $sID);
+                            }
+                        }
+                    }
+                } else {
+                    $oUserRow = UsersPeer::retrieveByPK($sID);
+                    $sID = $oUserRow->getUsrEmail();
+                    if ( G::emailAddress($sID) ) {
+                        array_push($aRecipient, $sID);
+                    }
+                }
+
+                break;
+            case 'grp':
+                G::LoadClass('groups');
+                $oGroups = new Groups();
+                $oCriteria = $oGroups->getUsersGroupCriteria($sID);
+                $oDataset = GroupwfPeer::doSelectRS($oCriteria);
+                $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                while ($oDataset->next()) {
+                    $aGroup = $oDataset->getRow();
+                    //to validate email address
+                    if ( G::emailAddress($aGroup['USR_EMAIL']) ) {
+                        array_push($aRecipient, $aGroup['USR_EMAIL']);
+                    }
+                }
+
+                break;
+            case 'dyn':
+                $oCase = new Cases();
+                $aFields = $oCase->loadCase($APP_UID);
+                $aFields['APP_DATA'] = array_merge($aFields['APP_DATA'], G::getSystemConstants());
+
+                //to validate email address
+                if ( isset($aFields['APP_DATA'][$sID]) && G::emailAddress($aFields['APP_DATA'][$sID]) ) {
+                    array_push($aRecipient, $aFields['APP_DATA'][$sID]);
+                }
+                break;
+        }
+    }
+
+    switch ($retType) {
+        case 'array':
+            return $aRecipient;
+            break;
+        case 'string':
+            return implode(',', $aRecipient);
+            break;
+        default:
+            return $aRecipient;
+    }
 }
 
 /**
@@ -2024,9 +2088,10 @@ function PMFGetUserEmailAddress($id, $APP_UID = null, $prefix='usr')
  * @return array, object or string | $response | Array of the response  | Return an Array or Object or String
  *
  */
-function PMFGetCaseNotes ($applicationID, $type = 'array', $userUid = '')
+function PMFGetCaseNotes ($applicationID, $type='array', $userUid='')
 {
-  G::LoadClass('case');
-  $response = Cases::getCaseNotes($applicationID, $type, $userUid);
-  return $response;
+    G::LoadClass('case');
+    $response = Cases::getCaseNotes($applicationID, $type, $userUid);
+    return $response;
 }
+ 

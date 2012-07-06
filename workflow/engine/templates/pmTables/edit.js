@@ -284,7 +284,14 @@ Ext.onReady(function(){
   });
   //row editor for table columns grid
   editor = new Ext.ux.grid.RowEditor({
-      saveText: _("ID_UPDATE")
+    saveText: _("ID_UPDATE"),
+    listeners: {
+      canceledit: function(grid,obj){
+        if ( grid.record.data.field_label == '' && grid.record.data.field_name == '') {
+          store.remove(grid.record);
+        }
+      }
+    }
   });
 
   editor.on({

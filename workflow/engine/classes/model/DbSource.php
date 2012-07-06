@@ -1,4 +1,5 @@
 <?php
+
 /**
  * DbSource.php
  * @package    workflow.engine.classes.model
@@ -23,10 +24,8 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-
 require_once 'classes/model/Content.php';
 require_once 'classes/model/om/BaseDbSource.php';
-
 
 /**
  * Skeleton subclass for representing a row from the 'DB_SOURCE' table.
@@ -52,16 +51,17 @@ class DbSource extends BaseDbSource
      * Get the rep_tab_title column value.
      * @return     string
      */
-    public function getDBSourceDescription() {
-      if ( $this->getDbsUid() == "" ) {
-        throw ( new Exception( "Error in getDBSourceDescription, the getDbsUid() can't be blank") );
-      }
-      $lang = defined ( 'SYS_LANG' ) ? SYS_LANG : 'en';
-      $this->db_source_description = Content::load ( 'DBS_DESCRIPTION', '', $this->getDbsUid(), $lang );
-      return $this->db_source_description;
+    public function getDBSourceDescription()
+    {
+        if ($this->getDbsUid() == "") {
+            throw ( new Exception("Error in getDBSourceDescription, the getDbsUid() can't be blank") );
+        }
+        $lang = defined('SYS_LANG') ? SYS_LANG : 'en';
+        $this->db_source_description = Content::load('DBS_DESCRIPTION', '', $this->getDbsUid(), $lang);
+        return $this->db_source_description;
     }
 
-    function getCriteriaDBSList($sProcessUID)
+    public function getCriteriaDBSList($sProcessUID)
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
         $oCriteria = new Criteria('workflow');
@@ -95,46 +95,44 @@ class DbSource extends BaseDbSource
                 $this->setNew(false);
                 return $aFields;
             } else {
-        throw(new Exception( "The row '$Uid'/'$ProUID' in table DbSource doesn't exist!" ));
+                throw(new Exception("The row '$Uid'/'$ProUID' in table DbSource doesn't exist!"));
             }
-        }
-        catch (exception $oError) {
+        } catch (exception $oError) {
             throw ($oError);
         }
     }
 
-  public function getValProUid($Uid)
-  {
-      $oCriteria = new Criteria('workflow');
-      $oCriteria->clearSelectColumns();
-      $oCriteria->addSelectColumn(DbSourcePeer::PRO_UID);
-      $oCriteria->add(DbSourcePeer::DBS_UID, $Uid);
-      $result = DbSourcePeer::doSelectRS($oCriteria);
-      $result->next();
-      $aRow = $result->getRow();
-      return $aRow[0];
-  }
+    public function getValProUid($Uid)
+    {
+        $oCriteria = new Criteria('workflow');
+        $oCriteria->clearSelectColumns();
+        $oCriteria->addSelectColumn(DbSourcePeer::PRO_UID);
+        $oCriteria->add(DbSourcePeer::DBS_UID, $Uid);
+        $result = DbSourcePeer::doSelectRS($oCriteria);
+        $result->next();
+        $aRow = $result->getRow();
+        return $aRow[0];
+    }
 
-  function Exists ( $Uid, $ProUID ) {
-    try {
-      $oPro = DbSourcePeer::retrieveByPk( $Uid, $ProUID );
-      if (is_object($oPro) && get_class ($oPro) == 'DbSource' ) {
-        return true;
-      }
-      else {
-        return false;
-      }
+    public function Exists($Uid, $ProUID)
+    {
+        try {
+            $oPro = DbSourcePeer::retrieveByPk($Uid, $ProUID);
+            if (is_object($oPro) && get_class($oPro) == 'DbSource') {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $oError) {
+            throw($oError);
+        }
     }
-    catch (Exception $oError) {
-      throw($oError);
-    }
-  }
 
     public function update($fields)
     {
-      if( $fields['DBS_ENCODE'] == '0'){
-        unset($fields['DBS_ENCODE']);
-      }
+        if ($fields['DBS_ENCODE'] == '0') {
+            unset($fields['DBS_ENCODE']);
+        }
         $con = Propel::getConnection(DbSourcePeer::DATABASE_NAME);
         try {
             $con->begin();
@@ -148,14 +146,13 @@ class DbSource extends BaseDbSource
                 $con->rollback();
                 throw (new Exception("Failed Validation in class " . get_class($this) . "."));
             }
-        }
-        catch (exception $e) {
+        } catch (exception $e) {
             $con->rollback();
             throw ($e);
         }
     }
 
-    function remove($DbsUid, $ProUID )
+    public function remove($DbsUid, $ProUID)
     {
         $con = Propel::getConnection(DbSourcePeer::DATABASE_NAME);
         try {
@@ -165,30 +162,31 @@ class DbSource extends BaseDbSource
             // note added by gustavo cruz gustavo-at-colosa-dot-com
             // we assure that the _delete attribute must be set to false
             // if a record exists in the database with that uid.
-            if ($this->Exists($DbsUid, $ProUID)){
+            if ($this->Exists($DbsUid, $ProUID)) {
                 $this->setDeleted(false);
             }
             $result = $this->delete();
             $con->commit();
             return $result;
-        }
-        catch (exception $e) {
+        } catch (exception $e) {
             $con->rollback();
             throw ($e);
         }
     }
 
-    function create($aData)
+    public function create($aData)
     {
-      if( $aData['DBS_ENCODE'] == '0'){
-        unset($aData['DBS_ENCODE']);
-      }
+        if ($aData['DBS_ENCODE'] == '0') {
+            unset($aData['DBS_ENCODE']);
+        }
         $con = Propel::getConnection(DbSourcePeer::DATABASE_NAME);
         try {
-            if ( isset ( $aData['DBS_UID'] ) && $aData['DBS_UID']== '' )
-              unset ( $aData['DBS_UID'] );
-            if ( !isset ( $aData['DBS_UID'] ) )
-              $aData['DBS_UID'] = G::generateUniqueID();
+            if (isset($aData['DBS_UID']) && $aData['DBS_UID'] == '') {
+                unset($aData['DBS_UID']);
+            }
+            if (!isset($aData['DBS_UID'])) {
+                $aData['DBS_UID'] = G::generateUniqueID();
+            }
             $this->fromArray($aData, BasePeer::TYPE_FIELDNAME);
             if ($this->validate()) {
                 $result = $this->save();
@@ -199,11 +197,11 @@ class DbSource extends BaseDbSource
             }
             $con->commit();
             return $this->getDbsUid();
-        }
-        catch (exception $e) {
+        } catch (exception $e) {
             $con->rollback();
             throw ($e);
         }
     }
-
-} // DbSource
+}
+// DbSource
+ 

@@ -21,6 +21,17 @@ var saveDataTaskTemporal = function(iForm)
         oTaskData.TAS_START       = (getField('TAS_START').checked ? 'TRUE' : 'FALSE');
         oTaskData.TAS_PRIORITY_VARIABLE = getField('TAS_PRIORITY_VARIABLE').value;
         oTaskData.TAS_DERIVATION_SCREEN_TPL = getField('TAS_DERIVATION_SCREEN_TPL').value;
+
+        var fieldEval = new input(getField('TAS_TITLE'));
+        if (getField('TAS_TITLE').value.trim() == '') {
+          fieldEval.failed();
+          new leimnud.module.app.alert().make( {
+            label : _('ID_NAME_TAS_TITLE_REQUIRE')
+          });
+          return false;
+        } else {
+          fieldEval.passed();
+        }
       break;
       case 2:
       case '2':
@@ -65,6 +76,17 @@ var saveDataTaskTemporal = function(iForm)
         oTaskData.TAS_TYPE_DAY     = getField('TAS_TYPE_DAY').value;
         oTaskData.TAS_CALENDAR     = getField('TAS_CALENDAR').value;
         oTaskData.TAS_TRANSFER_FLY = (getField('TAS_TRANSFER_FLY').checked ? 'TRUE' : 'FALSE');
+
+        var fieldEval = new input(getField('TAS_DURATION'));
+        if (getField('TAS_DURATION').value.trim() == '') {
+          fieldEval.failed();
+          new leimnud.module.app.alert().make( {
+            label : _('ID_TAS_DURATION_REQUIRE')
+          });
+          return false;
+        } else {
+          fieldEval.passed();
+        }
       break;
       case 4:
       case '4':
@@ -91,41 +113,56 @@ var saveDataTaskTemporal = function(iForm)
       case 7:
       case '7':
         if ( getField('SEND_EMAIL') != null && (typeof (getField('SEND_EMAIL')) != 'undefined' ) ) {
+          oTaskData.SEND_EMAIL                = getField('SEND_EMAIL').checked ? 'TRUE' : 'FALSE';
+          oTaskData.TAS_DEF_MESSAGE_TYPE      = getField('TAS_DEF_MESSAGE_TYPE').value;
+          oTaskData.TAS_DEF_MESSAGE           = getField('TAS_DEF_MESSAGE').value.replace(re, "@amp@");
+          oTaskData.TAS_DEF_SUBJECT_MESSAGE   = getField('TAS_DEF_SUBJECT_MESSAGE').value;
+          oTaskData.TAS_DEF_MESSAGE_TEMPLATE  = getField('TAS_DEF_MESSAGE_TEMPLATE').value;
+
           // validate fields TAS_DEF_SUBJECT_MESSAGE, TAS_DEF_MESSAGE
           if (getField('SEND_EMAIL').checked) {
+            var fieldEval = new input(getField('TAS_DEF_SUBJECT_MESSAGE'));
             if (getField('TAS_DEF_SUBJECT_MESSAGE').value.trim() == '') {
+              fieldEval.failed();
               new leimnud.module.app.alert().make( {
                 label : G_STRINGS.ID_SUBJECT_FIELD_REQUIRED
               });
               return false;
+            } else {
+              fieldEval.passed();
             }
-            switch ( getField('TAS_DEF_MESSAGE_TYPE').value ) {
+            switch (getField('TAS_DEF_MESSAGE_TYPE').value) {
               case 'text' :
+                var vmesn = new input(getField('TAS_DEF_MESSAGE'));
                 if (getField('TAS_DEF_MESSAGE').value.trim() == '' ) {
+                  vmesn.failed();
                   new leimnud.module.app.alert().make( {
                     label : G_STRINGS.ID_MESSAGE_FIELD_REQUIRED
                   });
                   return false;
+                } else {
+                  vmesn.passed();
                 }
                 break;
               case 'template' :
-                if (getField('TAS_DEF_MESSAGE_TEMPLATE').value.trim() == '' ){
+                var vmesn = new input(getField('TAS_DEF_MESSAGE_TEMPLATE'));
+                if (getField('TAS_DEF_MESSAGE_TEMPLATE').value.trim() == ''){
+                  vmesn.failed();
                   new leimnud.module.app.alert().make( {
                     label : G_STRINGS.ID_TEMPLATE_FIELD_REQUIRED
                   });
                   return false;
+                } else {
+                  vmesn.passed();
                 }
                 break;
             }
         }
-        if(typeof getField('SEND_EMAIL') != 'undefined' )
+
+        if(typeof getField('SEND_EMAIL') != 'undefined')
           oTaskData.SEND_EMAIL      = getField('SEND_EMAIL').checked ? 'TRUE' : 'FALSE';
         else
           oTaskData.SEND_EMAIL      = 'FALSE';
-        oTaskData.TAS_DEF_MESSAGE = getField('TAS_DEF_MESSAGE').value.replace(re, "@amp@");
-        oTaskData.TAS_DEF_SUBJECT_MESSAGE  = getField('TAS_DEF_SUBJECT_MESSAGE').value.replace(re, "@amp@");
-        oTaskData.TAS_DEF_MESSAGE_TYPE     = getField('TAS_DEF_MESSAGE_TYPE').value;
-        oTaskData.TAS_DEF_MESSAGE_TEMPLATE = getField('TAS_DEF_MESSAGE_TEMPLATE').value;
       }
       break;
     }
@@ -141,45 +178,73 @@ var saveDataTaskTemporal = function(iForm)
 var saveTaskData = function(oForm, iForm, iType)
 {
   iLastTab = iForm;
-  if ( !saveDataTaskTemporal(iForm)) {
+
+  if (!saveDataTaskTemporal(iForm)) {
     return false;
   }
-  oTaskData.TAS_UID = getField('TAS_UID').value;
- /* while (oTaskData.TAS_TITLE.charAt(0)==' '){
-		oTaskData.TAS_TITLE = oTaskData.TAS_TITLE.substring(1,oTaskData.TAS_TITLE.length) ;
-	}    */
-	oTaskData.TAS_TITLE=oTaskData.TAS_TITLE.trim();
-  if(oTaskData.TAS_TITLE==''){
-	  alert(G_STRINGS.ID_REQ_TITLE );
-	  return false;
-	}
 
-  var sParameters = 'function=saveTaskData';
+  oTaskData.TAS_UID = getField("TAS_UID").value;
+
+  /*
+  while (oTaskData.TAS_TITLE.charAt(0)==" "){
+  oTaskData.TAS_TITLE = oTaskData.TAS_TITLE.substring(1,oTaskData.TAS_TITLE.length) ;
+  }
+  */
+
+  oTaskData.TAS_TITLE = oTaskData.TAS_TITLE.trim();
+
+  if (oTaskData.TAS_TITLE == "") {
+    alert(G_STRINGS.ID_REQ_TITLE );
+
+    return false;
+  }
+
+  //Set AJAX
+  var sParameters = "function=saveTaskData";
+
   var oRPC = new leimnud.module.rpc.xmlhttp({
-    url   : '../tasks/tasks_Ajax',
-    async : false,
-    method: 'POST',
-    args  : sParameters + '&oData=' + oTaskData.toJSONString()
+    url: "../tasks/tasks_Ajax",
+    method: "POST",
+    args: sParameters + "&oData=" + oTaskData.toJSONString()
   });
+
+  oRPC.callback = function (rpc) {
+    var res = rpc.xmlhttp.responseText.parseJSON();
+
+    if (oTaskData.TAS_TITLE) {
+      Pm.data.db.task[getField("INDEX").value].label = Pm.data.db.task[getField("INDEX").value].object.elements.label.innerHTML = oTaskData.TAS_TITLE.replace(re2, "&amp;");
+    }
+
+    if (oTaskData.TAS_START) {
+      oTaskData.TAS_START = ((oTaskData.TAS_START == "TRUE")? true : false);
+      Pm.data.render.setTaskINI({task: oTaskData.TAS_UID, value: oTaskData.TAS_START});
+    }
+
+    try {
+      var option = {
+        label: changesSavedLabel
+      }
+
+      switch (res.status) {
+          case "CRONCL":
+              option = {
+                label: changesSavedLabel + "<br /><br />" + _("APP_TITLE_CASE_LABEL_UPDATE"),
+                width: 350,
+                height: 175
+              }
+              break;
+      }
+
+      new leimnud.module.app.info().make(option);
+    }
+    catch (e) {
+      //No show confirmation
+    }
+
+    Pm.tmp.propertiesPanel.remove();
+  }.extend(this);
+
   oRPC.make();
-  if (oTaskData.TAS_TITLE)
-  {
-    Pm.data.db.task[getField('INDEX').value].label = Pm.data.db.task[getField('INDEX').value].object.elements.label.innerHTML = oTaskData.TAS_TITLE.replace(re2, "&amp;");
-  }
-  if (oTaskData.TAS_START)
-  {
-    oTaskData.TAS_START = (oTaskData.TAS_START == 'TRUE' ? true : false);
-    Pm.data.render.setTaskINI({task: oTaskData.TAS_UID, value: oTaskData.TAS_START});
-  }
-  try {
-    new leimnud.module.app.info().make( {
-      label: changesSavedLabel
-    });
-  }
-  catch (e) {
-    // No show confirmation
-  }
-  Pm.tmp.propertiesPanel.remove();
 };
 
 var showTriggers = function(sStep, sType)

@@ -23,6 +23,7 @@ switch($_POST['action'])
     $c->add(IsoSubdivisionPeer::IC_UID, $country, Criteria::EQUAL);    
     $locations = IsoSubdivisionPeer::doSelect($c);
 
+    $oData = Array();
     foreach( $locations as $rowid => $row ) {
       if (($row->getISUid() != '') && ($row->getISName() != ''))
         $oData[] = Array('IS_UID' => $row->getISUid(), 'IS_NAME' => $row->getISName());  
@@ -39,6 +40,7 @@ switch($_POST['action'])
     $c->add(IsoLocationPeer::IS_UID, $state, Criteria::EQUAL); 
     $locations = IsoLocationPeer::doSelect($c);
 
+    $oData = Array();
     foreach ( $locations as $rowid => $row ) {
       if (($row->getILUid() != '') && ($row->getILName() != ''))
         $oData[] = Array('IL_UID' => $row->getILUid(), 'IL_NAME' => $row->getILName());  
@@ -563,6 +565,45 @@ switch($_POST['action'])
     $gif = '<img width="13" height="13" border="0" src="' . $img . '">';
     $aFields['DESCRIPTION'] =  $span . $gif . $aFields['DESCRIPTION'];    
     print(G::json_encode($aFields));
+    break;  
+  case 'testUsername';
+    require_once 'classes/model/Users.php';
+    $_POST['NEW_USERNAME'] = trim($_POST['NEW_USERNAME']);
+    $USR_UID = isset($_POST['USR_UID'])? $_POST['USR_UID'] : '';
+
+    $response  = array( "success" => true );
+
+    $oCriteria = new Criteria();
+    $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
+
+    $oCriteria->add(UsersPeer::USR_USERNAME, $_POST['NEW_USERNAME']);
+    if ($USR_UID != '') {
+      $oCriteria->add(UsersPeer::USR_UID, array($_POST['USR_UID']), Criteria::NOT_IN);
+    }
+    $oDataset = UsersPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
+    $aRow = $oDataset->getRow();
+
+    if (is_array($aRow) || $_POST['NEW_USERNAME'] == '') {
+      $color  = 'red';
+      $img    = '/images/delete.png';
+      $dataVar['USER_ID'] = $_POST['NEW_USERNAME'];
+      $text   = G::LoadTranslation('ID_USERNAME_ALREADY_EXISTS', $dataVar);
+      $text   = ($_POST['NEW_USERNAME'] == '') ? G::LoadTranslation('ID_MSG_ERROR_USR_USERNAME') : $text;
+      $response['exists'] = true;
+    } else {
+      $color  = 'green';
+      $img    = '/images/dialog-ok-apply.png';
+      $text   = G::LoadTranslation('ID_USERNAME_CORRECT');
+      $response['exists'] = false;
+    }
+
+    
+    $span = '<span style="color: ' . $color . '; font: 9px tahoma,arial,helvetica,sans-serif;">';
+    $gif  = '<img width="13" height="13" border="0" src="' . $img . '">';
+    $response['descriptionText'] = $span . $gif . $text . '</span>';
+    echo G::json_encode($response);
     break;
-  
+
 }

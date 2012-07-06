@@ -693,6 +693,7 @@ leimnud.Package.Public({
 		this.makeTab=function(dynamic)
 		{
 			if(this.loading===true){return false;}
+			
 			var thm = this.tab.display==="vertical"?"":"H";
 			var tb =this.elements.tabOptions[this.tabSelected];
 			tb.className="panel_tabOptionSelected"+thm+"___"+this.getTheme("tabOptionSelected");
@@ -775,6 +776,11 @@ leimnud.Package.Public({
 				}
 				this.parent.dom.setStyle(tls,this.setStyle.tabOption || {});
 			}
+			if (typeof(this.flag) != "undefined") {
+				delete this.flag;
+				return true;
+			}
+
 			this.parent.dom.setStyle(tb,this.setStyle.tabOptionSelected || {});
 			if(!this.tab.options[this.tabSelected].noClear)
 			{

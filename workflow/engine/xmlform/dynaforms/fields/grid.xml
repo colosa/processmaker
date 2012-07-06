@@ -16,7 +16,7 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
 
 <PME_XMLGRID type="dropdown"><![CDATA[
 SELECT DYN_FILENAME, C.CON_VALUE FROM DYNAFORM LEFT JOIN CONTENT C ON (DYN_UID=C.CON_ID AND C.CON_LANG=@@SYS_LANG AND C.CON_CATEGORY="DYN_TITLE") WHERE DYN_TYPE="grid" AND PRO_UID=@@PME_PRO_UID
-  ]]><en>Grid</en>
+  ]]><en>Grid <option name="0">- Select a Grid- </option></en>
 </PME_XMLGRID>
 
 <PME_ADDROW type="checkbox" falseValue="0" value="1" defaultvalue="1">
@@ -31,7 +31,7 @@ SELECT DYN_FILENAME, C.CON_VALUE FROM DYNAFORM LEFT JOIN CONTENT C ON (DYN_UID=C
   <en>Cancel</en>
 </BTN_CANCEL>
 
-<PME_ACCEPT type="button" onclick="fieldsSave( this.form );">
+<PME_ACCEPT type="button" onclick="checkGrid( this.form );">
   <en>Save</en>
 </PME_ACCEPT>
 
@@ -47,5 +47,15 @@ leimnud.event.add(fieldName, 'change', {method:dynaformVerifyFieldName, instance
 function cancel(){
     currentPopupWindow.remove();
 }
+
+function checkGrid (form) {
+  if (getField('PME_XMLGRID').value != 0) {
+    fieldsSave(form);
+  }
+  else {
+    alert("@G::LoadTranslation(ID_SELECT_GRID)");
+  }
+}
+
 ]]></PME_JS>
-</dynaForm>  
+</dynaForm>

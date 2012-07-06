@@ -12,20 +12,24 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
    * @var AppSolr
    */
   protected $object;
-  
+
   /**
    * Sets up the fixture, for example, opens a network connection.
    * This method is called before each test is executed.
    */
   protected function setUp()
   {
-    // get Solr initialization variables
-    if (($solrConf = System::solrEnv (SYS_SYS)) !== false) {
+      // get Solr initialization variables
+      // get Solr initialization variables
+      $solrConf = array(
+          'solr_enabled' => 1,
+          'solr_host' =>  'localhost',
+          'solr_instance' =>  'os'
+      );
       G::LoadClass ('AppSolr');
       $this->object = new AppSolr ($solrConf ['solr_enabled'], $solrConf ['solr_host'], $solrConf ['solr_instance']);
-    }
   }
-  
+
   /**
    * Tears down the fixture, for example, closes a network connection.
    * This method is called after a test is executed.
@@ -33,7 +37,7 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
   protected function tearDown()
   {
   }
-  
+
   /**
    * @covers AppSolr::isSolrEnabled
    */
@@ -44,7 +48,7 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
     $result = $this->object->isSolrEnabled ();
     $this->assertEquals ($result, true, "Assert error testIsSolrEnabled");
   }
-  
+
   /**
    * @covers AppSolr::reindexAllApplications
    * executed first to copy all the application records to the search server
@@ -54,7 +58,7 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
   {
       $this->object->reindexAllApplications ();
   }
-  
+
   /**
    * @covers AppSolr::getCountApplicationsPMOS2
    *
@@ -65,11 +69,11 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
     $result = $this->object->getCountApplicationsPMOS2 ();
     $this->assertGreaterThan (0, $result, "Assert error testGetCountApplicationsPMOS2");
     print "Applications count: " . $result . "\n";
-  
+
     return $result;
   }
-  
-  
+
+
   /**
    * @covers AppSolr::getPagedApplicationUids
    *
@@ -78,19 +82,19 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
   public function testGetPagedApplicationUids($totalNumApplications)
   {
     $pagesize = 2;
-  
+
     $aAppUids = $this->object->getPagedApplicationUids(0, $pagesize);
-  
+
     if($totalNumApplications >= $pagesize){
       $this->assertCount(2, $aAppUids, 'Error returned paginated list of AppUids');
     }
     else{
       $this->assertGreaterThan(0, $aAppUids, 'No AppUids found');
     }
-  
+
     return $aAppUids;
-  }  
-  
+  }
+
   /**
    * @covers AppSolr::getAppGridData
    *
@@ -98,7 +102,7 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
    */
   public function testGetAppGridData()
   {
-    //$userUid, $start = null, $limit = null, $action = null, $filter = null, $search = null, $process = null, $user = null, 
+    //$userUid, $start = null, $limit = null, $action = null, $filter = null, $search = null, $process = null, $user = null,
     //$status = null, $type = null, $dateFrom = null, $dateTo = null, $callback = null, $dir = null, $sort = 'APP_CACHE_VIEW.APP_NUMBER', $doCount = false
     $userUid = '00000000000000000000000000000001'; //admin user
     $start = 0;
@@ -106,7 +110,7 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
     $action = 'todo';
     $sort = 'APP_NUMBER';
     $dir = 'ASC';
-    $result = $this->object->getAppGridData ($userUid, $start, $limit, $action, null, null, null, null, 
+    $result = $this->object->getAppGridData ($userUid, $start, $limit, $action, null, null, null, null,
         null, null, null, null, null, $dir, $sort, false);
     print_r($result);
     if(!$result ['success']){
@@ -115,13 +119,13 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
     if(!$result ['result']){
       $this->assertCount(0, $result ['data'], 'Returned data when not success reported');
     }
-    
+
     //verify the number of returned rows
     print 'count results: ' . count($result ['data']);
     //$this->assertGreaterThan($result ['totalCount'], count($result ['data']), 'The returned records are less than the total');
-    
 
-    
+
+
     //test all the views
     $userUid = '00000000000000000000000000000001'; //admin user
     $start = 0;
@@ -130,9 +134,9 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
     $sort = 'APP_NUMBER';
     $dir = 'ASC';
     $result = $this->object->getAppGridData ($userUid, $start, $limit, $action, null, null, null, null,
-        null, null, null, null, null, $dir, $sort, false);    
+        null, null, null, null, null, $dir, $sort, false);
 
-  
+
     $userUid = '00000000000000000000000000000001'; //admin user
     $start = 0;
     $limit = 20;
@@ -150,12 +154,12 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
     $dir = 'ASC';
     $result = $this->object->getAppGridData ($userUid, $start, $limit, $action, null, null, null, null,
         null, null, null, null, null, $dir, $sort, false);
-    
+
     //test search functionality
-    
-    
+
+
   }
-  
+
   /**
    * @covers AppSolr::getCasesCount
    *
@@ -164,10 +168,10 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
   {
     $userUid = '00000000000000000000000000000001';
     $result = $this->object->getCasesCount($userUid);
-    print_r($result); 
+    print_r($result);
     $this->assertNotEmpty($result, 'Empty array of counters');
   }
-  
+
   /**
    * @covers AppSolr::updateApplicationSearchIndex
    *
@@ -175,11 +179,11 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
    */
   public function testUpdateApplicationSearchIndex($aAppUids)
   {
-    
+
     $this->object->updateApplicationSearchIndex($aAppUids);
-    
-  }  
-  
+
+  }
+
   /**
    * @covers AppSolr::deleteApplicationSearchIndex
    *
@@ -188,22 +192,22 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
   public function testDeleteApplicationSearchIndex($aAppUids)
   {
     $appUID = $aAppUids[0]['APP_UID'];
-    
+
     $count = $this->object->getCountApplicationsSearchIndex();
     $this->object->deleteApplicationSearchIndex($appUID);
     $count2 = $this->object->getCountApplicationsSearchIndex();
-    
+
     $this->assertEquals($count, $count2 + 1, 'Error deleting application in search index');
-    
+
     //leave index as in the beginning
     $this->object->reindexAllApplications();
-    
+
     $count3 = $this->object->getCountApplicationsSearchIndex();
-    
+
     $this->assertEquals($count, $count3, 'Error restoring deleted application in search index');
   }
-  
-  
+
+
   /**
    * @covers AppSolr::applicationChangedUpdateSolrQueue
    *
@@ -212,12 +216,12 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
   public function testApplicationChangedUpdateSolrQueue($aAppUids)
   {
     $appUID = $aAppUids[0]['APP_UID'];
-    
+
     //mark application for deletion
     $this->object->applicationChangedUpdateSolrQueue($appUID, 2); //to delete
-    
+
   }
-  
+
   /**
    * @covers AppSolr::synchronizePendingApplications
    *
@@ -227,22 +231,22 @@ class AppSolrTest extends PHPUnit_Framework_TestCase
   {
     //count number of indexed applications
     $count = $this->object->getCountApplicationsSearchIndex();
-    
-    print "Total applications:" . $count;  
+
+    print "Total applications:" . $count;
     //delete application marked in previous test
     $this->object->synchronizePendingApplications();
-    
+
     $count2 = $this->object->getCountApplicationsSearchIndex();
     print "Total applications deleted record:" . $count2;
-    
+
     $this->assertEquals($count, $count2 + 1, 'Error synchronizing applications in search index');
-    
+
     //leave index as in the beginning
     $this->object->reindexAllApplications();
-    
+
     $count3 = $this->object->getCountApplicationsSearchIndex();
-    
+
     $this->assertEquals($count, $count3, 'Error restoring deleted application in search index');
   }
-  
+
 }
