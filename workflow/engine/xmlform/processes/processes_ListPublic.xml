@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm name="Objectpm" width="100%" type="pagedtable" menu="">
+<dynaForm name="Objectpm" menu="processes/processes_ListPublicMenu" width="100%" type="pagedtable">
 
 <title type="text" colWidth="160">
   <en>Title</en>

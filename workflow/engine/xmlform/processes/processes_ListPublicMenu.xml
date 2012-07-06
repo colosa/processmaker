@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dynaForm type="xmlmenu">
+
+<BackList type="link" link="../processes/mainInit" colAlign="left" colWidth="100">
+  <en>Back</en>
+</BackList>
+<PAGE type="hidden" value="1"/>
+<PAGED_TABLE_ID type="private"/>
+
+</dynaForm> 
