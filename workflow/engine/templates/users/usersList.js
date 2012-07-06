@@ -58,65 +58,65 @@ var storeAuthSources;
 Ext.onReady(function(){
   Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
   Ext.QuickTips.init();
-  
+
   fullNameFormat = CONFIG.fullNameFormat;
   dateFormat = CONFIG.dateFormat;
   pageSize = parseInt(CONFIG.pageSize);
-  
+
   newButton = new Ext.Action({
     text: _('ID_NEW'),
      iconCls: 'button_menu_ext ss_sprite  ss_add',
      handler: NewUserAction
   });
-    
+
   summaryButton = new Ext.Action({
     text: _('ID_SUMMARY'),
      iconCls: 'button_menu_ext ss_sprite  ss_table',
      handler: SummaryTabOpen,
-    disabled: true  
+    disabled: true
   });
-    
+
   editButton = new Ext.Action({
     text: _('ID_EDIT'),
      iconCls: 'button_menu_ext ss_sprite  ss_pencil',
      handler: EditUserAction,
-     disabled: true  
+     disabled: true
   });
-    
+
   deleteButton = new Ext.Action({
     text: _('ID_DELETE'),
      iconCls: 'button_menu_ext ss_sprite  ss_delete',
      handler: DeleteUserAction,
      disabled: true
   });
-    
+
   groupsButton = new Ext.Action({
      text: _('ID_GROUPS'),
      iconCls: 'button_menu_ext ss_sprite ss_group_add',
      handler: UsersGroupPage,
      disabled: true
   });
-    
+
 //    reassignButton = new Ext.Action({
 //      text: _('ID_REASSIGN_CASES'),
 //      iconCls: 'button_menu_ext ss_sprite ss_arrow_rotate_clockwise',
 //      handler: DoNothing,
 //      disabled: true
 //    });
-    
+
   authenticationButton = new Ext.Action({
      text: _('ID_AUTHENTICATION'),
     iconCls: 'button_menu_ext ss_sprite ss_key',
      handler: AuthUserPage,
      disabled: true
   });
-    
-    
+
+
   searchButton = new Ext.Action({
     text: _('ID_SEARCH'),
     handler: DoSearch
   });
-  
+
   contextMenuConfig = new Array();
   contextMenuConfig.push(editButton);
   contextMenuConfig.push(deleteButton);
@@ -125,7 +125,7 @@ Ext.onReady(function(){
   contextMenuConfig.push('-');
   contextMenuConfig.push(summaryButton);
   contextMenu = new Ext.menu.Menu(contextMenuConfig);
-    
+
   searchText = new Ext.form.TextField ({
     id: 'searchTxt',
     ctCls:'pm_search_text_field',
@@ -144,13 +144,13 @@ Ext.onReady(function(){
       }
     }
   });
-    
+
   clearTextButton = new Ext.Action({
     text: 'X',
      ctCls:'pm_search_x_button',
      handler: GridByDefault
   });
-    
+
   smodel = new Ext.grid.RowSelectionModel({
     singleSelect: true,
      listeners:{
@@ -246,13 +246,13 @@ Ext.onReady(function(){
       ]
     })
   });
-    
+
   storePageSize = new Ext.data.SimpleStore({
     fields: ['size'],
      data: [['20'],['30'],['40'],['50'],['100']],
      autoLoad: true
   });
-    
+
   comboPageSize = new Ext.form.ComboBox({
     typeAhead     : false,
     mode          : 'local',
@@ -270,9 +270,9 @@ Ext.onReady(function(){
       }
     }
   });
-    
+
   comboPageSize.setValue(pageSize);
-  
+
   storeAuthSources = new Ext.data.GroupingStore({
     autoLoad: true,
     proxy : new Ext.data.HttpProxy({
@@ -286,7 +286,7 @@ Ext.onReady(function(){
       ]
     })
   });
-  
+
   comboAuthSources = new Ext.form.ComboBox({
     mode: 'local',
     triggerAction: 'all',
@@ -304,7 +304,7 @@ Ext.onReady(function(){
       }
     }
   });
-  
+
   bbarpaging = new Ext.PagingToolbar({
     pageSize: pageSize,
      store: store,
@@ -313,28 +313,27 @@ Ext.onReady(function(){
      emptyMsg: _('ID_GRID_PAGE_NO_USERS_MESSAGE'),
      items: ['-',_('ID_PAGE_SIZE')+':',comboPageSize]
   });
-    
+
   cmodel = new Ext.grid.ColumnModel({
     defaults: {
-      width: 50,
-      sortable: true
+      width: 50
     },
     columns: [
-      {id:'USR_UID', dataIndex: 'USR_UID', hidden:true, hideable:false},
-      //{header: '', dataIndex: 'USR_UID', width: 30, align:'center', sortable: false, renderer: photo_user},
-      {header: _('ID_USER_NAME'), dataIndex: 'USR_USERNAME', width: 90, hidden:false, align:'left'},
-      {header: _('ID_FULL_NAME'), dataIndex: 'USR_USERNAME', width: 175, align:'left', renderer: full_name},
-      {header: _('ID_EMAIL'), dataIndex: 'USR_EMAIL', width: 120, hidden: true, align: 'left'},
-      {header: _('ID_STATUS'), dataIndex: 'USR_STATUS', width: 50, hidden: false, align: 'center', renderer: render_status},
-      {header: _('ID_ROLE'), dataIndex: 'USR_ROLE', width: 180, hidden:false, align:'left'},
-      {header: _('ID_DEPARTMENT'), dataIndex: 'DEP_TITLE', width: 150, hidden:true, align:'left'},
-      {header: _('ID_LAST_LOGIN'), dataIndex: 'LAST_LOGIN', width: 108, hidden:false, align:'center', renderer: render_lastlogin},
+      {id: 'USR_UID', dataIndex: 'USR_UID', hidden: true, hideable: false},
+      //{header: '', dataIndex: 'USR_UID', width: 30, align: 'center', renderer: photo_user},
+      {header: _('ID_USER_NAME'), dataIndex: 'USR_USERNAME', width: 90, align: 'left', sortable: true},
+      {header: _('ID_FULL_NAME'), dataIndex: 'USR_USERNAME', width: 175, align: 'left', renderer: full_name},
+      {header: _('ID_EMAIL'), dataIndex: 'USR_EMAIL', width: 120, hidden: true, align: 'left', sortable: true},
+      {header: _('ID_STATUS'), dataIndex: 'USR_STATUS', width: 50, align: 'center', renderer: render_status, sortable: true},
+      {header: _('ID_ROLE'), dataIndex: 'USR_ROLE', width: 150, align:'left', sortable: true},
+      {header: _('ID_DEPARTMENT'), dataIndex: 'DEP_TITLE', width: 150, hidden: true, align: 'left'},
+      {header: _('ID_LAST_LOGIN'), dataIndex: 'LAST_LOGIN', width: 108, align: 'center', renderer: render_lastlogin},
       {header: _('ID_AUTHENTICATION_SOURCE'), dataIndex: 'USR_AUTH_SOURCE', width: 108, hidden: true, align: 'left'},
-      {header: _('ID_CASES_NUM'), dataIndex: 'TOTAL_CASES', width: 45, hidden:false, align:'right', sortable: true ,sortType: 'asInt'},
-      {header: _('ID_DUE_DATE'), dataIndex: 'USR_DUE_DATE', width: 108, hidden:false, align:'center', renderer: render_duedate}
+      {header: _('ID_CASES_NUM'), dataIndex: 'TOTAL_CASES', width: 75, align:'right', sortType: 'asInt'},
+      {header: _('ID_DUE_DATE'), dataIndex: 'USR_DUE_DATE', width: 108, align:'center', renderer: render_duedate, sortable: true}
     ]
   });
-    
+
   infoGrid = new Ext.grid.GridPanel({
     region: 'center',
      layout: 'fit',
@@ -364,22 +363,22 @@ Ext.onReady(function(){
       groupTextTpl: '{text}'
     })
   });
-    
-  infoGrid.on('rowcontextmenu', 
+
+  infoGrid.on('rowcontextmenu',
     function (grid, rowIndex, evt) {
       var sm = grid.getSelectionModel();
       sm.selectRow(rowIndex, sm.isSelected(rowIndex));
     },
     this
   );
-    
-  infoGrid.on('contextmenu', 
+
+  infoGrid.on('contextmenu',
     function (evt) {
       evt.preventDefault();
     },
     this
   );
-    
+
   infoGrid.addListener('rowcontextmenu',onMessageContextMenu,this);
 
   infoGrid.store.load();
@@ -422,20 +421,20 @@ DeleteUserAction = function(){
       response = Ext.util.JSON.decode(res.responseText);
       if (response.candelete){
       if (response.hashistory){
-        Ext.Msg.confirm(_('ID_CONFIRM'), _('ID_USERS_DELETE_WITH_HISTORY'), 
+        Ext.Msg.confirm(_('ID_CONFIRM'), _('ID_USERS_DELETE_WITH_HISTORY'),
         function(btn){
           if (btn=='yes') DeleteUser(uid.data.USR_UID);
         }
         );
       }else{
-        Ext.Msg.confirm(_('ID_CONFIRM'), _('ID_MSG_CONFIRM_DELETE_USER'), 
+        Ext.Msg.confirm(_('ID_CONFIRM'), _('ID_MSG_CONFIRM_DELETE_USER'),
         function(btn){
           if (btn=='yes') DeleteUser(uid.data.USR_UID);
           }
         );
         }
       }else{
-      PMExt.error(_('ID_USERS'), _('ID_MSG_CANNOT_DELETE_USER'));  
+      PMExt.error(_('ID_USERS'), _('ID_MSG_CANNOT_DELETE_USER'));
       }
     },
     failure: function(r,o){
@@ -505,7 +504,7 @@ render_status = function(v){
 //Render Due Date
 render_duedate = function(v,x,s){
   if (s.data.DUE_DATE_OK)
-    return _DF(v);  
+    return _DF(v);
   else
     return '<font color="red">' + _DF(v) + '</font>';
 };
@@ -522,7 +521,7 @@ GridByDefault = function(){
 
 //Do Search Function
 DoSearch = function(){
-  infoGrid.store.load({params: {textFilter: searchText.getValue()}});  
+  infoGrid.store.load({params: {textFilter: searchText.getValue()}});
 };
 
 //Delete User Function
