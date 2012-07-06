@@ -1,5 +1,5 @@
 <div id="publisherContent[1]" style="margin: 0px;" align="center">
-<form name="frmDerivation" id="frmDerivation" action="cases_Derivate" method="POST" class="formDefault" style="margin: 0px;" onsubmit="return validateSubmitForm();">
+<form name="frmDerivation" id="frmDerivation" action="cases_Derivate" method="POST" class="formDefault" style="margin: 0px;">
   <input type="hidden" name="form[ROU_TYPE]" id="form[ROU_TYPE]" value="{$PROCESS.ROU_TYPE}">
   <div class="borderForm" style="width: 500px; padding-left: 0; padding-right: 0; border-width: 1;">
     <div class="boxTop">
@@ -54,7 +54,7 @@
             </tr>
 
             {if $PROCESS.ROU_TYPE eq 'SELECT'}
-            <form name="frmDerivation{$id}" id="frmDerivation{$id}" action="cases_Derivate" method="POST" class="formDefault" method="post" style="margin: 0px;" onsubmit="return validateSubmitForm();"><input type="hidden" name="form[ROU_TYPE]" id="form[ROU_TYPE]" value="{$PROCESS.ROU_TYPE}">
+            <form name="frmDerivation{$id}" id="frmDerivation{$id}" action="cases_Derivate" method="POST" class="formDefault" method="post" style="margin: 0px;"><input type="hidden" name="form[ROU_TYPE]" id="form[ROU_TYPE]" value="{$PROCESS.ROU_TYPE}">
             <tr>
               <td class="FormLabel" width="100">{$OPTION_LABEL} {$id}:</td>
               <td class="FormFieldContent">{$data.ROU_CONDITION }</td>
@@ -130,9 +130,9 @@
             <tr>
               <td colspan="2" align="center">
                 {if $data.NEXT_TASK.TAS_ASSIGN_TYPE neq '' && not $data.NEXT_TASK.ROU_FINISH_FLAG }
-                <input type="submit" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$CONTINUE_WITH_OPTION} {$id} " onclick="return clickButton(this);">
+                <input type="button" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$CONTINUE_WITH_OPTION} {$id} " onclick="return clickButton(this);">
                 {/if} {if $data.NEXT_TASK.TAS_ASSIGN_TYPE neq '' && $data.NEXT_TASK.ROU_FINISH_FLAG }
-                <input type="submit" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$FINISH_WITH_OPTION} {$id} " onclick="return clickButton(this);">
+                <input type="button" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$FINISH_WITH_OPTION} {$id} " onclick="return clickButton(this);">
                   {$data.NEXT_TASK.TAS_ASSIGN_TYPE}
                 {/if}
               </td>
@@ -144,14 +144,14 @@
             {if $PROCESS.ERROR eq '' && $PROCESS.ROU_TYPE neq 'SELECT' && ! $PROCESS.ROU_FINISH_FLAG }
             <tr>
               <td colspan="2" align="center">
-                <input type="submit" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$CONTINUE}" {$PROCESS.DISABLED} onclick="return clickButton(this);">       
+                <input type="button" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$CONTINUE}" {$PROCESS.DISABLED} onclick="return clickButton(this);">       
               </td>
             </tr>
             {/if}
             {if $PROCESS.ERROR eq '' && $PROCESS.ROU_TYPE neq 'SELECT' && $PROCESS.ROU_FINISH_FLAG }
             <tr>
               <td colspan="2" align="center">
-                <input type="submit" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$FINISH}" onclick="return clickButton(this);">
+                <input type="button" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$FINISH}" onclick="return clickButton(this);">
               </td>
             </tr>
             {/if}
@@ -194,7 +194,9 @@
     var nameButton = obj.name;
     var pos        = nameButton.lastIndexOf("_");
     optionSelect   = nameButton.substr(pos+1);
-
+    if (validateSubmitForm()) {
+      obj.form.submit();
+    }
     return true;
   };
 
@@ -209,7 +211,7 @@
     var submitsForm  = document.getElementsByTagName("input");
     
     for (var i = 0 ; i <= submitsForm.length ; i++) {
-      if (typeof(submitsForm[i]) != 'undefined' && submitsForm[i].type == 'submit') {
+      if (typeof(submitsForm[i]) != 'undefined' && submitsForm[i].type == 'button') {
         submitsForm[i].disabled = true;
       }
     }
@@ -228,7 +230,7 @@
     var submitsForm = document.getElementsByTagName("input");
     
     for (var i = 0 ; i <= submitsForm.length ; i++) {
-      if (typeof(submitsForm[i]) != 'undefined' && submitsForm[i].type == 'submit') {
+      if (typeof(submitsForm[i]) != 'undefined' && submitsForm[i].type == 'button') {
         submitsForm[i].disabled = false;
       }
     }
@@ -271,7 +273,7 @@
     } else {
       var selectId = "form[TASKS]["+optionSelect+"][USR_UID]";
       
-      if (typeof(document.getElementById(selectId)) != 'undefined') {
+      if (typeof(document.getElementById(selectId)) != 'undefined' && document.getElementById(selectId) != null) {
         var vtext  = new input(document.getElementById(selectId));
 
         // verify value select the option select
