@@ -196,11 +196,16 @@ Ext.onReady(function() {
             {id:'draft',header: TRANSLATIONS.ID_DRAFT, width:70,  sortable: false, locked:true,  dataIndex: 'CASES_COUNT_DRAFT'},
             {id:'completed',header: TRANSLATIONS.ID_COMPLETED, width:70,  sortable: false, locked:true, dataIndex: 'CASES_COUNT_COMPLETED'},
             {id:'canceled',header: TRANSLATIONS.ID_CANCELLED, width:70,  sortable: false, locked:true,  dataIndex: 'CASES_COUNT_CANCELLED'},
-            {id:'totalCases',header: TRANSLATIONS.ID_TOTAL_CASES, width:70,  sortable: false, locked:true , dataIndex: 'CASES_COUNT'}
+            {id:'totalCases',header: TRANSLATIONS.ID_TOTAL_CASES, width:80,  sortable: false, locked:true , dataIndex: 'CASES_COUNT'}
           ]),
           height: 49,
           width: 355,
-          border: true
+          border: true,
+          stripeRows: false,
+          viewConfig: {
+            forceFit:true,
+            scrollOffset: 0
+          }
         },
         {
           fieldLabel: TRANSLATIONS.ID_CALENDAR, 
