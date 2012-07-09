@@ -158,7 +158,11 @@ Ext.onReady(function(){
         {name : 'DAS_INS_UPDATE_DATE'},
         {name : 'DAS_INS_STATUS_LABEL'}
       ]
-    })
+    }),
+    sortInfo: {
+        field: 'DAS_INS_TITLE',
+        direction: 'ASC'
+    }
   });
 
   cmodel = new Ext.grid.ColumnModel({
