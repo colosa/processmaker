@@ -3054,12 +3054,10 @@ var saveForm = function(oObject) {
  **/
 
 var validateURL = function (url){
-  //var regexp = /https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_\.]*(\?\S+)?)?)?/;
-  if (regexp.test('https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_\.]*(\?\S+)?)?)?')){
+  var regexp = /http?s?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_\.]*(\?\S+)?)?)?/;
+  if (regexp.test(url)) {
     return true;
-  }
-  else
-  {
+  } else {
     return false;
   }
 };
@@ -3081,8 +3079,12 @@ var validateURL = function (url){
 
 var saveAndRedirectForm = function(oObject, oLocation) {
   saveForm(oObject);
-  if (validateURL(oLocation)){
-    document.location.href = oLocation;
+  if (validateURL(oLocation)) {
+    if (typeof(parent) != "undefined") {
+      parent.location.href = oLocation;
+    } else {
+      document.location.href = oLocation;
+    }
   }
 };
 
