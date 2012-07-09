@@ -179,22 +179,7 @@ Ext.onReady(function(){
     region: 'center',
     margins: '0 0 0 0',
     useArrows : true,
-    tbar: [
-      {
-        xtype: 'tbfill'
-      },
-      {
-        id:'refreshNotifiers',
-        xtype: 'tbbutton',
-        cls: 'x-btn-icon',
-        icon: '/images/refresh.gif',
-        /*text: 'Reload notifiers',*/
-        handler: function(){
-          updateCasesTree();
-          updateCasesView();
-        }
-      }
-    ],
+
     animate:true,
     autoScroll: true,
     rootVisible: false,
@@ -322,11 +307,13 @@ Ext.onReady(function(){
     collapsible: true,
     collapseMode: 'mini',
     margins: '0 0 0 2',
+
     items: [
       treeMenuItems,
       treeMenuItemDetail
     ]
   });
+  mainMenu.setTitle('<a href="#"><img id="refreshNotifiers" src="/images/refresh.gif" onClick="updateCasesTree(); updateCasesView();" /></a>');
 
   /**
    * Triggers Panel
@@ -556,7 +543,7 @@ function updateCasesView() {
 
 function updateCasesTree() {
   //treeMenuItems.root.reload();
-  Ext.getCmp('refreshNotifiers').setIcon('/images/ext/default/grid/loading.gif');
+  document.getElementById('refreshNotifiers').src = '/images/ext/default/grid/loading.gif';
 
   itemsTypes = Array('CASES_INBOX', 'CASES_DRAFT', 'CASES_CANCELLED', 'CASES_SENT', 'CASES_PAUSED', 'CASES_COMPLETED','CASES_SELFSERVICE');
   if(currentSelectedTreeMenuItem){
@@ -586,7 +573,7 @@ function updateCasesTree() {
         }
         else continue;
       }
-      Ext.getCmp('refreshNotifiers').setIcon('/images/refresh.gif');
+      document.getElementById('refreshNotifiers').src = '/images/refresh.gif';
 
     },
     failure: function(){},
