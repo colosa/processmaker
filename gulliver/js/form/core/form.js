@@ -2435,12 +2435,14 @@ function contractSubtitle( subTitle ){
   }
 }
 function expandSubtitle( subTitle ){
-  subTitle=getRow(subTitle);
-  var c=subTitle.cells[0].className;
-  var a=subTitle.rowIndex;
-  var t=subTitle.parentNode;
-  for(var i=a+1,m=t.rows.length;i<m;i++){
-    if (t.rows[i].cells.length==1) break;
+  subTitle = getRow(subTitle);
+  var c = subTitle.cells[0].className;
+  var a = subTitle.rowIndex;
+  var t = subTitle.parentNode;
+  for (var i=a+1,m=t.rows.length; i<m; i++) {
+    if (t.rows[i].cells.length==1) {
+      break;
+    }
     t.rows[i].style.display='';
     var aAux = getControlsInTheRow(t.rows[i]);
     for (var j = 0; j < aAux.length; j++) {
@@ -2448,8 +2450,8 @@ function expandSubtitle( subTitle ){
     }
   }
 }
-function contractExpandSubtitle(subTitle){
-  subTitle=getRow(subTitle);
+function contractExpandSubtitle(subTitleName){
+  subTitle=getRow(subTitleName);
   var c=subTitle.cells[0].className;
   var a=subTitle.rowIndex;
   var t=subTitle.parentNode;
@@ -2460,8 +2462,8 @@ function contractExpandSubtitle(subTitle){
       contracted=true;
     }
   }
-  if (contracted) expandSubtitle(subTitle);
-  else contractSubtitle(subTitle);
+  if (contracted) expandSubtitle(subTitleName);
+  else contractSubtitle(subTitleName);
 }
 
 var getControlsInTheRow = function(oRow) {
