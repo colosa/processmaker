@@ -99,13 +99,26 @@ function expandNode(){
 
     $rootFolder = "/";
     
-    if($_POST ['node']=="") $_POST ['node'] ="/";
-    if($_POST ['node']=="root") $_POST ['node'] ="/";
+    if ($_POST ['node']=="") {
+      $_POST ['node'] ="/";
+    }
+
+    if ($_POST ['node']=="root") {
+      $_POST ['node'] ="/";
+    }
     
-    if(!(isset($_POST['sendWhat']))) $_POST['sendWhat']="both";
+    if (!(isset($_POST['sendWhat']))) {
+      $_POST['sendWhat']="both";
+    }
+
+    if (isset($_POST['renderTree'])) {
+      $limit = 1000000;
+    }
+
     $totalItems=0;
     $totalFolders=0;
     $totalDocuments=0;
+    
     if(($_POST['sendWhat']=="dirs")||($_POST['sendWhat']=="both")){
         $folderListObj = $oPMFolder->getFolderList ( $_POST ['node'] != 'root' ? $_POST ['node'] == 'NA' ? "" : $_POST ['node'] : $rootFolder, $limit, $start );
         //G::pr($folderListObj);

@@ -1617,7 +1617,8 @@ var documentsTab = {
       dataUrl : '../appFolder/appFolderAjax.php',
       baseParams : {
         action : 'expandNode',
-        sendWhat : 'dirs'
+        sendWhat : 'dirs',
+        renderTree : 1
       }
     }),
     containerScroll : true,
