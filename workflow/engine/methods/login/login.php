@@ -23,153 +23,185 @@
  *
  */
 
+$aFields = array();
 
-  if (! isset ( $_GET ['u'] )) {
-    $aFields ['URL'] = '';
-  }
-  else {
-    $aFields ['URL'] = urldecode ( $_GET ['u'] );
-  }
-  if (! isset ( $_SESSION ['G_MESSAGE'] )) {
-    $_SESSION ['G_MESSAGE'] = '';
-  }
-  if (! isset ( $_SESSION ['G_MESSAGE_TYPE'] )) {
-    $_SESSION ['G_MESSAGE_TYPE'] = '';
-  }
+if (!isset($_GET['u'])) {
+    $aFields['URL'] = '';
+} else {
+    $aFields['URL'] = urldecode($_GET['u']);
+}
 
-  $msg = $_SESSION ['G_MESSAGE'];
-  $msgType = $_SESSION ['G_MESSAGE_TYPE'];
+if (!isset($_SESSION['G_MESSAGE'])) {
+    $_SESSION['G_MESSAGE'] = '';
+}
 
-  if (! isset ( $_SESSION ['FAILED_LOGINS'] )) {
-    $_SESSION ['FAILED_LOGINS'] = 0;
-  }
-  $sFailedLogins = $_SESSION ['FAILED_LOGINS'];
+if (!isset($_SESSION['G_MESSAGE_TYPE'])) {
+    $_SESSION['G_MESSAGE_TYPE'] = '';
+}
 
-  require_once 'classes/model/LoginLog.php';
+$msg = $_SESSION['G_MESSAGE'];
+$msgType = $_SESSION['G_MESSAGE_TYPE'];
 
-  $aFields ['LOGIN_VERIFY_MSG'] = G::loadTranslation ( 'LOGIN_VERIFY_MSG' );
+if (!isset($_SESSION['FAILED_LOGINS'])) {
+    $_SESSION['FAILED_LOGINS'] = 0;
+}
 
-  if ( isset ($_SESSION ['USER_LOGGED']) ) {
-  //close the session, if the current session_id was used in PM.
-    $oCriteria = new Criteria ( 'workflow' );
-    $oCriteria->add ( LoginLogPeer::LOG_SID, session_id () );
-    $oCriteria->add ( LoginLogPeer::USR_UID, isset ( $_SESSION ['USER_LOGGED'] ) ? $_SESSION ['USER_LOGGED'] : '-' );
-    $oCriteria->add ( LoginLogPeer::LOG_STATUS, 'ACTIVE' );
-    $oCriteria->add ( LoginLogPeer::LOG_END_DATE, NULL, Criteria::ISNULL );
-    $oDataset = LoginLogPeer::doSelectRS ( $oCriteria );
-    $oDataset->setFetchmode ( ResultSet::FETCHMODE_ASSOC );
-    $oDataset->next ();
-    $aRow = $oDataset->getRow ();
+$sFailedLogins = $_SESSION['FAILED_LOGINS'];
+
+require_once 'classes/model/LoginLog.php';
+
+$aFields['LOGIN_VERIFY_MSG'] = G::loadTranslation('LOGIN_VERIFY_MSG');
+
+if (isset ($_SESSION['USER_LOGGED'])) {
+    //close the session, if the current session_id was used in PM.
+    $oCriteria = new Criteria('workflow');
+
+    $oCriteria->add(LoginLogPeer::LOG_SID, session_id());
+    $oCriteria->add(LoginLogPeer::USR_UID, isset($_SESSION['USER_LOGGED']) ? $_SESSION['USER_LOGGED'] : '-');
+    $oCriteria->add(LoginLogPeer::LOG_STATUS, 'ACTIVE');
+    $oCriteria->add(LoginLogPeer::LOG_END_DATE, null, Criteria::ISNULL);
+
+    $oDataset = LoginLogPeer::doSelectRS($oCriteria);
+
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
+
+    $aRow = $oDataset->getRow();
+
     if ($aRow) {
-      if ($aRow ['LOG_STATUS'] != 'CLOSED' && $aRow ['LOG_END_DATE'] == NULL) {
-        $weblog = new LoginLog ( );
-        $aLog ['LOG_UID'] = $aRow ['LOG_UID'];
-        $aLog ['LOG_STATUS'] = 'CLOSED';
-        $aLog ['LOG_IP'] = $aRow ['LOG_IP'];
-        $aLog ['LOG_SID'] = session_id ();
-        $aLog ['LOG_INIT_DATE'] = $aRow ['LOG_INIT_DATE'];
-        $aLog ['LOG_END_DATE'] = date ( 'Y-m-d H:i:s' );
-        $aLog ['LOG_CLIENT_HOSTNAME'] = $aRow ['LOG_CLIENT_HOSTNAME'];
-        $aLog ['USR_UID'] = $aRow ['USR_UID'];
-        $weblog->update ( $aLog );
-      }
+        if ($aRow['LOG_STATUS'] != 'CLOSED' && $aRow['LOG_END_DATE'] == null) {
+            $weblog = new LoginLog();
+
+            $aLog['LOG_UID'] = $aRow['LOG_UID'];
+            $aLog['LOG_STATUS'] = 'CLOSED';
+            $aLog['LOG_IP'] = $aRow['LOG_IP'];
+            $aLog['LOG_SID'] = session_id();
+            $aLog['LOG_INIT_DATE'] = $aRow['LOG_INIT_DATE'];
+            $aLog['LOG_END_DATE'] = date('Y-m-d H:i:s');
+            $aLog['LOG_CLIENT_HOSTNAME'] = $aRow['LOG_CLIENT_HOSTNAME'];
+            $aLog['USR_UID'] = $aRow['USR_UID'];
+
+            $weblog->update($aLog);
+        }
     }
-  }
-  else {
+} else {
     // Execute SSO trigger
     $pluginRegistry =& PMPluginRegistry::getSingleton();
     if (defined('PM_SINGLE_SIGN_ON')) {
-      if ($pluginRegistry->existsTrigger(PM_SINGLE_SIGN_ON)) {
-        if ($pluginRegistry->executeTriggers(PM_SINGLE_SIGN_ON, null)) {
-          // Start new session
-          @session_destroy();
-          session_start();
-          session_regenerate_id();
-          // Authenticate
-          require_once 'authentication.php';
-          die();
+        if ($pluginRegistry->existsTrigger(PM_SINGLE_SIGN_ON)) {
+            if ($pluginRegistry->executeTriggers(PM_SINGLE_SIGN_ON, null)) {
+                // Start new session
+                @session_destroy();
+                session_start();
+                session_regenerate_id();
+
+                // Authenticate
+                require_once 'authentication.php';
+
+                die();
+            }
         }
-      }
     }
-  }
-  //end log
+}
+//end log
 
-  //start new session
-  @session_destroy ();
-  session_start ();
-  session_regenerate_id ();
+//start new session
+@session_destroy();
+session_start();
+session_regenerate_id();
 
-  if (strlen ( $msg ) > 0) {
-    $_SESSION ['G_MESSAGE'] = $msg;
-  }
-  if (strlen ( $msgType ) > 0) {
-    $_SESSION ['G_MESSAGE_TYPE'] = $msgType;
-  }
-  $_SESSION ['FAILED_LOGINS'] = $sFailedLogins;
+if (strlen($msg) > 0) {
+    $_SESSION['G_MESSAGE'] = $msg;
+}
+if (strlen($msgType) > 0) {
+    $_SESSION['G_MESSAGE_TYPE'] = $msgType;
+}
 
-  //translation
-  $Translations = G::getModel("Translation");
-  $translationsTable = $Translations->getTranslationEnvironments();
+$_SESSION['FAILED_LOGINS'] = $sFailedLogins;
 
-  $availableLangArray = array ();
-  $availableLangArray [] = array ('LANG_ID' => 'char', 'LANG_NAME' => 'char' );
-  foreach ( $translationsTable as $locale ) {
+//translation
+$Translations = G::getModel("Translation");
+$translationsTable = $Translations->getTranslationEnvironments();
+
+$availableLangArray = array ();
+$availableLangArray [] = array ('LANG_ID' => 'char', 'LANG_NAME' => 'char' );
+foreach ($translationsTable as $locale) {
     $row['LANG_ID'] = $locale['LOCALE'];
-    if( $locale['COUNTRY'] != '.' )
-      $row['LANG_NAME'] = $locale['LANGUAGE'] . ' (' . (ucwords(strtolower($locale['COUNTRY']))) . ')';
-    else
-      $row['LANG_NAME'] = $locale['LANGUAGE'];
+
+    if ($locale['COUNTRY'] != '.') {
+        $row['LANG_NAME'] = $locale['LANGUAGE'] . ' (' . (ucwords(strtolower($locale['COUNTRY']))) . ')';
+    } else {
+        $row['LANG_NAME'] = $locale['LANGUAGE'];
+    }
 
     $availableLangArray [] = $row;
-  }
-  global $_DBArray;
-  $_DBArray ['langOptions'] = $availableLangArray;
+}
 
-  $G_PUBLISH = new Publisher ( );
-  $G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/login', '', $aFields, SYS_URI . 'login/authentication.php' );
-  G::LoadClass ( 'serverConfiguration' );
+global $_DBArray;
+$_DBArray ['langOptions'] = $availableLangArray;
 
-  //get the serverconf singleton, and check if we can send the heartbeat
-  $oServerConf = & serverConf::getSingleton ();
+G::LoadClass('configuration');
 
-  $sflag = $oServerConf->getHeartbeatProperty('HB_OPTION','HEART_BEAT_CONF');
-  $sflag = (trim($sflag)!='')?$sflag:'1';
+$oConf = new Configurations();
+$oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
+$aFields['USER_LANG'] = isset($oConf->aConfig['login_defaultLanguage'])
+                        ? $oConf->aConfig['login_defaultLanguage']
+                        : 'en';
 
-  //get date of next beat
-  $nextBeatDate = $oServerConf->getHeartbeatProperty('HB_NEXT_BEAT_DATE','HEART_BEAT_CONF');
-  $sflag = 1;
-  //if flag to send heartbeat is enabled, and it is time to send heartbeat, sent it using asynchronous beat.
-  if( ($sflag=="1") && ((strtotime ( "now" ) > $nextBeatDate) || is_null($nextBeatDate) ) ){
+$G_PUBLISH = new Publisher();
+$G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/login', '', $aFields, SYS_URI . 'login/authentication.php');
+G::LoadClass('serverConfiguration');
+
+//get the serverconf singleton, and check if we can send the heartbeat
+$oServerConf = & serverConf::getSingleton();
+
+$sflag = $oServerConf->getHeartbeatProperty('HB_OPTION', 'HEART_BEAT_CONF');
+$sflag = (trim($sflag) != '') ? $sflag : '1';
+
+//get date of next beat
+$nextBeatDate = $oServerConf->getHeartbeatProperty('HB_NEXT_BEAT_DATE', 'HEART_BEAT_CONF');
+$sflag = 1;
+
+//if flag to send heartbeat is enabled, and it is time to send heartbeat, sent it using asynchronous beat.
+if (($sflag == "1") && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {
     $oHeadPublisher =& headPublisher::getSingleton();
     //To do: we need to change to ExtJs
-    $oHeadPublisher->addScriptCode( 'var flagHeartBeat = 1; ');
-  }
-  else
-    $oHeadPublisher->addScriptCode( 'var flagHeartBeat = 0; ');
+    $oHeadPublisher->addScriptCode('var flagHeartBeat = 1;');
+} else {
+    $oHeadPublisher->addScriptCode('var flagHeartBeat = 0;');
+}
 
-  //check if we show the panel with the getting started info
+//check if we show the panel with the getting started info
 
-  require_once 'classes/model/Configuration.php';
-  $oConfiguration = new Configuration ( );
-  $oCriteria = new Criteria ( 'workflow' );
-  $oCriteria->add ( ConfigurationPeer::CFG_UID, 'getStarted' );
-  $oCriteria->add ( ConfigurationPeer::OBJ_UID, '' );
-  $oCriteria->add ( ConfigurationPeer::CFG_VALUE, '1' );
-  $oCriteria->add ( ConfigurationPeer::PRO_UID, '' );
-  $oCriteria->add ( ConfigurationPeer::USR_UID, '' );
-  $oCriteria->add ( ConfigurationPeer::APP_UID, '' );
-  $flagGettingStarted =  ConfigurationPeer::doCount ( $oCriteria );
-  if( $flagGettingStarted == 0 ) {
-    $oHeadPublisher->addScriptCode( 'var flagGettingStarted = 1; ');
-  }
-  else
-    $oHeadPublisher->addScriptCode( 'var flagGettingStarted = 0; ');
+require_once 'classes/model/Configuration.php';
+$oConfiguration = new Configuration ( );
+$oCriteria = new Criteria ( 'workflow' );
+$oCriteria->add(ConfigurationPeer::CFG_UID, 'getStarted');
+$oCriteria->add(ConfigurationPeer::OBJ_UID, '');
+$oCriteria->add(ConfigurationPeer::CFG_VALUE, '1');
+$oCriteria->add(ConfigurationPeer::PRO_UID, '');
+$oCriteria->add(ConfigurationPeer::USR_UID, '');
+$oCriteria->add(ConfigurationPeer::APP_UID, '');
+$flagGettingStarted =  ConfigurationPeer::doCount($oCriteria);
+if ($flagGettingStarted == 0) {
+    $oHeadPublisher->addScriptCode('var flagGettingStarted = 1;');
+} else {
+    $oHeadPublisher->addScriptCode('var flagGettingStarted = 0;');
+}
 
-  G::loadClass('configuration');
-  $oConf = new Configurations;
-  $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS','');
+$dummy = '';
 
-  $flagForgotPassword = isset($oConf->aConfig['login_enableForgotPassword'])? $oConf->aConfig['login_enableForgotPassword']: 'off';
-  $oHeadPublisher->addScriptCode("var flagForgotPassword = '$flagForgotPassword';");
+G::loadClass('configuration');
 
-  G::RenderPage ( "publish" );
+$oConf = new Configurations();
+
+$oConf->loadConfig($dummy, 'ENVIRONMENT_SETTINGS', '');
+
+$flagForgotPassword = isset($oConf->aConfig['login_enableForgotPassword'])
+                      ? $oConf->aConfig['login_enableForgotPassword']
+                      : 'off';
+
+$oHeadPublisher->addScriptCode("var flagForgotPassword = '$flagForgotPassword';");
+
+G::RenderPage('publish');
+

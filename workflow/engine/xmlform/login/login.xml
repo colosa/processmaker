@@ -1,54 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dynaForm name="login" version="1.0" basedir="" xmlform_type="NORMAL" width="400px" enabletemplate="1">
-  <TITLE type="title">
-    <en>Login</en>
-  </TITLE>
-  <USR_USERNAME type="text" size="30" maxlength="50" validate="Any">
-    <en>User</en>
-  </USR_USERNAME>
-  <USR_PASSWORD type="password" size="30" maxlength="32">
-    <en>Password</en>
-  </USR_PASSWORD>
-  <USER_LANG type="dropdown" sqlconnection="dbarray">
-  SELECT LANG_ID, LANG_NAME FROM langOptions
-    <en>Language</en>
-  </USER_LANG>
-  <URL type="hidden"/>
-  <LOGIN_VERIFY_MSG type="private" showInTable="0"/>
-  <BSUBMIT type="submit">
-    <en>Login</en>
-  </BSUBMIT>
-  
-  <FORGOT_PASWORD_LINK type="link" link="forgotPassword" onclick="" colAlign="right" colWidth="135" style="display:none;">
-    <en>Forgot Password</en>    
-  </FORGOT_PASWORD_LINK>
-  
-
-
-  <JS type="javascript"><![CDATA[
+<TITLE type="title">
+  <en>Login</en>
+</TITLE>
+<USR_USERNAME type="text" size="30" maxlength="50" validate="Any">
+  <en>User</en>
+</USR_USERNAME>
+<USR_PASSWORD type="password" size="30" maxlength="32">
+  <en>Password</en>
+</USR_PASSWORD>
+<USER_LANG type="dropdown" sqlconnection="dbarray">
+SELECT LANG_ID, LANG_NAME FROM langOptions
+  <en>Language</en>
+</USER_LANG>
+<URL type="hidden"/>
+<LOGIN_VERIFY_MSG type="private" showInTable="0"/>
+<BSUBMIT type="submit">
+  <en>Login</en>
+</BSUBMIT>
+<FORGOT_PASWORD_LINK type="link" link="forgotPassword" onclick="" colAlign="right" colWidth="135" style="display:none;">
+  <en>Forgot Password</en>
+</FORGOT_PASWORD_LINK>
+<JS type="javascript">
+<![CDATA[
 // enable/disable forgot password link
-if(flagForgotPassword == 'on' || flagForgotPassword == '1')
+if(flagForgotPassword == 'on' || flagForgotPassword == '1') {
   document.getElementById("form[FORGOT_PASWORD_LINK]").style.display = 'block';//hideRowById('FORGOT_PASWORD_LINK');
-  
+}
+
 var panel;
 
-function processHbInfo(){
-  ajax_server="../services/processHeartBeat_Ajax.php";
-  parameters="action=processInformation";
-  method="POST";
-  callback="";
-  asynchronous=true;
-  ajax_post(ajax_server, parameters, method, callback, asynchronous );
+function processHbInfo() {
+  ajax_server = "../services/processHeartBeat_Ajax.php";
+  parameters = "action=processInformation";
+  method = "POST";
+  callback = "";
+  asynchronous = true;
+  ajax_post(ajax_server, parameters, method, callback, asynchronous);
 };
 
-function showGettingStarted () {
+function showGettingStarted() {
   panel = new leimnud.module.panel();
-  panel.options={
-    size  :{w:620,h:500},
-    position:{x:50,y:50,center:true},
-    control :{close:true,resize:false},fx:{modal:true},
-    statusBar:false,
-    fx  :{shadow:true,modal:true}
+  panel.options = {
+    size: {w:620,h:500},
+    position: {x:50,y:50,center:true},
+    control: {close:true,resize:false},fx:{modal:true},
+    statusBar: false,
+    fx: {shadow:true,modal:true}
   };
   panel.make();
   panel.loader.show();
@@ -56,7 +54,7 @@ function showGettingStarted () {
     url:"../services/login_getStarted.php",
     method:"POST"
   });
-  r.callback=function(rpc) {
+  r.callback = function(rpc) {
     panel.loader.hide();
     panel.addContent(rpc.xmlhttp.responseText);
   };
@@ -64,12 +62,12 @@ function showGettingStarted () {
 };
 
 var saveConfig = function() {
-  if(document.getElementById("getStarted").checked==true) {
+  if (document.getElementById("getStarted").checked == true) {
     var oRPC = new leimnud.module.rpc.xmlhttp({
-      url   : '../login/login_Ajax',
-      async : false,
+      url: '../login/login_Ajax',
+      async: false,
       method: 'POST',
-      args  : 'function=getStarted_save'
+      args: 'function=getStarted_save'
     });
     oRPC.make();
   }
@@ -77,24 +75,28 @@ var saveConfig = function() {
 }
 
 var dynaformOnload = function() {
-  setFocus (getField ('USR_USERNAME'));  
-  if (flagHeartBeat) processHbInfo();
-  if (flagGettingStarted) showGettingStarted();
+  setFocus(getField('USR_USERNAME'));
+  if (flagHeartBeat) {
+    processHbInfo();
+  }
+  if (flagGettingStarted) {
+    showGettingStarted();
+  }
 };
 
 var openInfoPanel = function() {
   var oInfoPanel = new leimnud.module.panel();
   oInfoPanel.options = {
-    size    :{w:500,h:424},
-    position:{x:0,y:0,center:true},
-    title   :'@G::LoadTranslation(ID_SYSTEM_INFO)',
-    theme   :'processmaker',
-    control :{
-      close :true,
-      drag  :false
+    size: {w:500,h:424},
+    position: {x:0,y:0,center:true},
+    title: '@G::LoadTranslation(ID_SYSTEM_INFO)',
+    theme: 'processmaker',
+    control: {
+      close: true,
+      drag: false
     },
     fx:{
-      modal:true
+      modal: true
     }
   };
   oInfoPanel.setStyle = {modal: {
@@ -102,38 +104,27 @@ var openInfoPanel = function() {
   }};
   oInfoPanel.make();
   var oRPC = new leimnud.module.rpc.xmlhttp({
-    url   : '../login/dbInfo',
-    async : false,
+    url: '../login/dbInfo',
+    async: false,
     method: 'POST',
-    args  : ''
+    args: ''
   });
   oRPC.make();
   oInfoPanel.addContent(oRPC.xmlhttp.responseText);
 };
 
-leimnud.event.add(document.getElementById('form[BSUBMIT]'), 'click', function() { 
+leimnud.event.add(document.getElementById('form[BSUBMIT]'), 'click', function() {
   setNestedProperty(this, Array('disabled'), 'true');
   setNestedProperty(this, Array('value'), @@LOGIN_VERIFY_MSG);
-  lang = getField('USER_LANG').value;
-  createCookie('pmos_generik', '{"lang":"'+lang+'"}', 365);
-    
+
   var client = getBrowserClient();
-    
-  if (client.browser != "firefox"){ 
+
+  if (client.browser != "firefox") {
     document.login.submit();
-  } 
-}.extend(document.getElementById('form[BSUBMIT]'))); 
-  
-try{
-  c = new String(readCookie('pmos_generik'));
-  o = eval("("+c+")");
-  if( o != null){
-    getField('USER_LANG').value = o.lang; 
   }
-} 
-catch(e){}
+}.extend(document.getElementById('form[BSUBMIT]')));
 
-]]></JS>
-
+]]>
+</JS>
 
 </dynaForm>
