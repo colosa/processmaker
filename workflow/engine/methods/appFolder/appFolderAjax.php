@@ -103,6 +103,7 @@ function expandNode(){
     if($_POST ['node']=="root") $_POST ['node'] ="/";
     
     if(!(isset($_POST['sendWhat']))) $_POST['sendWhat']="both";
+    if(isset($_POST['renderTree'])) $limit = 1000000;
     $totalItems=0;
     $totalFolders=0;
     $totalDocuments=0;
