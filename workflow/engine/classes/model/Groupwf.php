@@ -322,61 +322,51 @@ class Groupwf extends BaseGroupwf {
     $totalCount = 0;
     $criteria = new Criteria('workflow');
     $criteria->addSelectColumn(GroupwfPeer::GRP_UID);
-    $criteria->addSelectColumn(GroupwfPeer::GRP_STATUS);    
-    $criteria->addSelectColumn(GroupwfPeer::GRP_UX); 
+    $criteria->addJoin(GroupwfPeer::GRP_UID, ContentPeer::CON_ID, Criteria::LEFT_JOIN);
+    $criteria->add(ContentPeer::CON_CATEGORY,'GRP_TITLE');
+    $criteria->add(ContentPeer::CON_LANG,SYS_LANG);
+    $criteria->addAscendingOrderByColumn(ContentPeer::CON_VALUE);
+
+    if ($search) {
+      $criteria->add(ContentPeer::CON_VALUE,'%'.$search.'%',Criteria::LIKE);
+    }
+
+    $totalRows = GroupwfPeer::doCount($criteria);
+
+    $criteria = new Criteria('workflow');
+    $criteria->addSelectColumn(GroupwfPeer::GRP_UID);    
+    $criteria->addSelectColumn(GroupwfPeer::GRP_STATUS);
+    $criteria->addSelectColumn(GroupwfPeer::GRP_UX);
+    $criteria->addAsColumn('GRP_TITLE',ContentPeer::CON_VALUE);
+    $criteria->addSelectColumn(ContentPeer::CON_VALUE, 'COCHALO');
+    $criteria->addJoin(GroupwfPeer::GRP_UID, ContentPeer::CON_ID, Criteria::LEFT_JOIN);
+    $criteria->add(ContentPeer::CON_CATEGORY,'GRP_TITLE');
+    $criteria->add(ContentPeer::CON_LANG,SYS_LANG);
+    $criteria->addAscendingOrderByColumn(ContentPeer::CON_VALUE);
     
-    if($start != '')
+    if ($start != '') {
       $criteria->setOffset($start);
+    }
 
-    if($limit != '')
+    if ($limit != '') {
       $criteria->setLimit($limit);
+    }      
 
+    if ($search) {
+      $criteria->add(ContentPeer::CON_VALUE,'%'.$search.'%',Criteria::LIKE);
+    }
+    
     $oDataset = GroupwfPeer::doSelectRS ( $criteria );
     $oDataset->setFetchmode ( ResultSet::FETCHMODE_ASSOC );
     $processes = Array();
     $uids=array();
     $groups = array();
     $aGroups = array();
-    while( $oDataset->next() ) {
+    while( $oDataset->next() ) {      
       $groups[] = $oDataset->getRow();
-      $uids[]   = $groups[sizeof($groups)-1]['GRP_UID'];
     }
 
-    // for labels of groups 
-    $groupDetails = Array();
-    $c = new Criteria('workflow');    
-    $c->add ( ContentPeer::CON_LANG, defined('SYS_LANG')?SYS_LANG:'en', Criteria::EQUAL );
-    $c->add ( ContentPeer::CON_ID, $uids, Criteria::IN );
-
-    $dt = ContentPeer::doSelectRS ($c);
-    $dt->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-
-    while( $dt->next() ) {
-      $row = $dt->getRow();
-      $groupDetails[$row['CON_ID']] [$row['CON_CATEGORY']] = $row['CON_VALUE'];
-    }
-    
-  // foreach all groups
-   
-    foreach( $groups as $group ) {
-      $grpTitle = isset($groupDetails[$group['GRP_UID']]) && isset($groupDetails[$group['GRP_UID']]['GRP_TITLE']) ? $groupDetails[$group['GRP_UID']]['GRP_TITLE'] : '';    
-      if ( trim($grpTitle) == '') { // if not, then load the record to generate content for current language
-        $grpData   = $this->load($group['GRP_UID']);
-        $grpTitle  = $grpData['GRP_TITLE'];      
-      }
-
-      //filtering by $processName
-      if( isset($search) && $search != '' && stripos($grpTitle, $search) === false){
-        continue;
-      }
-    
-      $totalCount++;
-
-      $group['GRP_TITLE'] = $grpTitle;
-      $aGroups[] = $group;
-    }
-
-    return array('rows' => $aGroups, 'totalCount'=>$totalCount);
+    return array('rows' => $groups, 'totalCount'=>$totalRows);    
   }
 
  function filterGroup($filter,$start,$limit)
