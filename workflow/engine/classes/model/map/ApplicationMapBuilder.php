@@ -88,7 +88,7 @@ class ApplicationMapBuilder {
 
 		$tMap->addColumn('APP_INIT_DATE', 'AppInitDate', 'int', CreoleTypes::TIMESTAMP, true, null);
 
-		$tMap->addColumn('APP_FINISH_DATE', 'AppFinishDate', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('APP_FINISH_DATE', 'AppFinishDate', 'int', CreoleTypes::TIMESTAMP, false, null);
 
 		$tMap->addColumn('APP_UPDATE_DATE', 'AppUpdateDate', 'int', CreoleTypes::TIMESTAMP, true, null);
 

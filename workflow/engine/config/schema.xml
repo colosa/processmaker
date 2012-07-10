@@ -33,7 +33,7 @@
     <column name="APP_CUR_USER" type="VARCHAR" size="32" required="true" default=""/>
     <column name="APP_CREATE_DATE" type="TIMESTAMP" required="true"/>
     <column name="APP_INIT_DATE" type="TIMESTAMP" required="true"/>
-    <column name="APP_FINISH_DATE" type="TIMESTAMP" required="true"/>
+    <column name="APP_FINISH_DATE" type="TIMESTAMP" required="false"/>
     <column name="APP_UPDATE_DATE" type="TIMESTAMP" required="true"/>
     <column name="APP_DATA" type="LONGVARCHAR" required="true"/>
     <column name="APP_PIN" type="VARCHAR" size="32" required="true" default=""/>
@@ -1172,7 +1172,7 @@
     <column name="TAS_EVN_UID" type="VARCHAR" size="32" required="true" default=""/>
     <column name="TAS_BOUNDARY" type="VARCHAR" size="32" required="true" default=""/>
     <column name="TAS_DERIVATION_SCREEN_TPL" type="VARCHAR" size="128" default="" required="false"/>
-    
+
     <validator column="TAS_TYPE">
       <rule name="validValues" value="NORMAL|ADHOC|SUBPROCESS|HIDDEN" message="Please select a valid value for TAS_TYPE."/>
     </validator>
