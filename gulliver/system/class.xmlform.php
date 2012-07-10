@@ -124,11 +124,19 @@ class XmlForm_Field {
     $this->options = (isset ( $this->option )) ? $this->option : array ();
     //Sql Options : cause warning because values are not setted yet.
     //if ($this->sql!=='') $this->executeSQL();
-    //maybe $ownerMode is not defined..
-    $ownerMode = isset ( $owner->mode ) ? $owner->mode : 'edit';
-    if ($this->mode === '')
-      $this->mode = $ownerMode !== '' ? $ownerMode : 'edit';
-    $this->modeForGrid = $this->mode ;
+    if (isset($owner)) {
+        if (isset($owner->mode)) {
+            $ownerMode = $owner->mode;
+        } else {
+            $ownerMode = '';
+        }
+    } else {
+        $ownerMode = '';
+    }
+    if ($ownerMode != '') {
+        $this->mode = $ownerMode;
+    }
+    $this->modeForGrid = $this->mode;
   }
 
   /**
@@ -3196,10 +3204,22 @@ class XmlForm_Field_Grid extends XmlForm_Field
   function renderGrid($values, $owner = NULL, $therow = -1)
   {
     $this->id = $this->owner->id . $this->name;
-    $using_template = "grid";
+    $using_template = 'grid';
 
-    if( $this->mode == 'view' || $this->modeGrid === 'view' ){
-      $using_template = "grid_view";
+    if (isset($this->mode)) {
+        $ownerMode = $this->mode;
+    } else {
+        $ownerMode = '';
+    }
+
+    if ($ownerMode != '') {
+        $this->mode = $ownerMode;
+    }
+
+    $this->modeForGrid = $this->mode;
+
+    if ($this->mode == 'view') {
+      $using_template = 'grid_view';
     }
 
     $tpl = new xmlformTemplate ( $this, PATH_CORE . "templates/{$using_template}.html" );
