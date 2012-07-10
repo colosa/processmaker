@@ -77,16 +77,16 @@
             ct        : true,
             hideMenu  : false
           }
-          
+
           pm.make();
-          
+
           ///////
           var pnlLegend = new leimnud.module.panel();
-          
+
           pnlLegend.options = {
-            size: {w: 160, h: 140},
+            size: {w: 260, h: 140},
             position: {
-              x: ((document.body.clientWidth * 95) / 100) - ((document.body.clientWidth * 95) / 100 - (((document.body.clientWidth * 95) / 100) - 160)),
+              x: ((document.body.clientWidth * 95) / 100) - ((document.body.clientWidth * 95) / 100 - (((document.body.clientWidth * 95) / 100) - 260)),
               y: 175,
               center: false
             },
@@ -96,29 +96,29 @@
             control: {resize: false, roll: false, drag: true, close: false},
             fx: {modal: false, opacity: false, blinkToFront: true, fadeIn: false, drag: false}
           };
-          
+
           pnlLegend.setStyle = {
             content: {overflow: "hidden"}
           };
-          
+
           pnlLegend.events = {
             remove: function () { delete(pnlLegend); }.extend(this)
           };
-          
+
           pnlLegend.make();
           pnlLegend.loader.show();
-          
+
           ///////
           var rpcRequest = new leimnud.module.rpc.xmlhttp({
             url : "tracker_Ajax",
             args: "action=processMapLegend"
           });
-          
+
           rpcRequest.callback = function (rpc) {
             pnlLegend.loader.hide();
             pnlLegend.addContent(rpc.xmlhttp.responseText);
           }.extend(this);
-          
+
           rpcRequest.make();
         });');
       G::RenderPage('publish');
