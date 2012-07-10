@@ -136,6 +136,9 @@ class XmlForm_Field {
     if ($ownerMode != '') {
         $this->mode = $ownerMode;
     }
+    if ($this->mode == '') {
+        $this->mode = 'edit';
+    }
     $this->modeForGrid = $this->mode;
   }
 
@@ -3214,6 +3217,10 @@ class XmlForm_Field_Grid extends XmlForm_Field
 
     if ($ownerMode != '') {
         $this->mode = $ownerMode;
+    }
+
+    if ($this->mode == '') {
+        $this->mode = 'edit';
     }
 
     $this->modeForGrid = $this->mode;
