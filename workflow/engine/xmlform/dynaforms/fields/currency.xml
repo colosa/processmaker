@@ -106,24 +106,13 @@ var savedFieldName=fieldName.value;
 var pme_validating;
 fieldName.focus();
 fieldName.select();
-leimnud.event.add(fieldName, 'change', {method:verifyFieldName, instance:fieldName, event:true});
+leimnud.event.add(fieldName, 'change', {method:dynaformVerifyFieldName, instance:fieldName, event:true});
 leimnud.event.add(fieldVal, 'change', {method:checkVal, instance:fieldVal, event:true});
 leimnud.event.add(fieldMask, 'change', {method:checkVal, instance:fieldMask, event:true});
 function verifyFieldName(){
   pme_validating=true;
   setTimeout('verifyFieldName1();',0);
   return true;
-}
-function verifyFieldName1(){
-  var newFieldName=fieldName.value;
-  var validatedFieldName=getField("PME_VALIDATE_NAME",fieldForm).value;
-  var valid=(newFieldName!=='')&&(((newFieldName!==savedFieldName)&&(validatedFieldName===''))||((newFieldName===savedFieldName)));
-  if (valid)
-    getField("PME_ACCEPT",fieldForm).disabled=false;
-  else
-    getField("PME_ACCEPT",fieldForm).disabled=true;
-  pme_validating=false;
-  return valid;
 }
 
 var dyntype="@#PME_DYN_TYPE";
