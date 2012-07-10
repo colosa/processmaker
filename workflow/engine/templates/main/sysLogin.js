@@ -203,10 +203,10 @@ Login.initComponents = function()
     }),
     listeners     : {
       afterrender : function() {
-        if (defaultLang == '') return;
+        if (sysLang == '') return;
 
         var store = languagesCmb.getStore();
-        var i = store.findExact('id', defaultLang, 0);
+        var i = store.findExact('id', sysLang, 0);
         if (i > -1) {
           Ext.getCmp('language').setValue(store.getAt(i).data.id);
           Ext.getCmp('language').setRawValue(store.getAt(i).data.name);

@@ -321,6 +321,7 @@ class Main extends Controller
     $availableLangArray = $this->getLanguagesList();
 
     $this->includeExtJSLib('ux/virtualkeyboard');
+    $this->setJSVar('sysLang', SYS_LANG);
     $this->includeExtJS('main/sysLogin');
 
     $this->setVar('logo_company', $this->getCompanyLogo());

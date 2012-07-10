@@ -110,6 +110,7 @@ $_DBArray ['availableWorkspace'] = $availableWorkspaceArray;
 $_SESSION ['_DBArray'] = $_DBArray;
 
 $aField ['LOGIN_VERIFY_MSG'] = G::loadTranslation ( 'LOGIN_VERIFY_MSG' );
+$aField['USER_LANG'] = SYS_LANG;
 //Get Server Configuration
 G::LoadClass ( 'serverConfiguration' );
 $oServerConf = & serverConf::getSingleton ();
