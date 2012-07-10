@@ -186,12 +186,17 @@
   $array['CASE'] = G::LoadTranslation('ID_CASE');
   $array['TITLE'] = G::LoadTranslation('ID_TITLE');
 
+  $noShowTitle = 0;
+  if(isset($oProcessFieds['PRO_SHOW_MESSAGE'])) {
+      $noShowTitle = $oProcessFieds['PRO_SHOW_MESSAGE'];
+  }
 
   switch ($_GET['TYPE'])
   {
     case 'DYNAFORM':
-      $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
-
+      if($noShowTitle == 0) {
+        $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
+      }
       if (!$aPreviousStep) {
         $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = '';
       }
@@ -225,8 +230,9 @@
       break;
 
     case 'INPUT_DOCUMENT':
-      $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
-
+      if($noShowTitle == 0) {
+        $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
+      }
       $oInputDocument = new InputDocument();
       $Fields = $oInputDocument->load($_GET['UID']);
       if (!$aPreviousStep) {
@@ -617,8 +623,9 @@
           die;
           break;
        case 'VIEW':
-          $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
-
+          if($noShowTitle == 0) {
+            $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
+          }
           require_once 'classes/model/AppDocument.php';
           $oAppDocument = new AppDocument();
           $lastVersion=$oAppDocument->getLastAppDocVersion($_GET['DOC'],$_SESSION['APPLICATION']);
@@ -975,8 +982,9 @@
 */
       break;
     case 'EXTERNAL':
-      $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
-
+      if($noShowTitle == 0) {
+        $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
+      }
       $oPluginRegistry = &PMPluginRegistry::getSingleton();
       $externalSteps   = $oPluginRegistry->getSteps();
 

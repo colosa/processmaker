@@ -1,4 +1,5 @@
 <?php
+
 /**
  * tracker_ViewMap.php
  *
@@ -22,40 +23,51 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
+/*
+ * dynaforms & documents for Case Tracker
+ *
+ * @author Everth S. Berrios Morales <everth@colosa.com>
+ *
+ */
+if (!isset($_SESSION['PROCESS'])) {
+    G::header('location: login');
+}
+$G_MAIN_MENU        = 'caseTracker';
+$G_ID_MENU_SELECTED = 'DYNADOC';
 
-   /*
-   * dynaforms & documents for Case Tracker
-   *
-   * @author Everth S. Berrios Morales <everth@colosa.com>
-   *
-   */
-	if (!isset($_SESSION['PROCESS']))
-  {
-	  G::header('location: login');
-  }
-	$G_MAIN_MENU            = 'caseTracker';
-  $G_ID_MENU_SELECTED     = 'DYNADOC';
+G::LoadClass('processMap');
+$oProcessMap = new processMap();
 
-  G::LoadClass('processMap');
-  $oProcessMap = new processMap();
+G::LoadClass('case');
+$oCase = new Cases();
 
-  G::LoadClass('case');
-	$oCase = new Cases();
-	$aFields = $oCase->loadCase($_SESSION['APPLICATION']);
-	if (isset($aFields['TITLE'])) {
-	  $aFields['APP_TITLE'] = $aFields['TITLE'];
-	}
-	if ($aFields['APP_PROC_CODE'] != '') {
-	  $aFields['APP_NUMBER'] = $aFields['APP_PROC_CODE'];
-	}
-  $aFields['CASE']  = G::LoadTranslation('ID_CASE');
-  $aFields['TITLE'] = G::LoadTranslation('ID_TITLE');
+$idProcess = $_SESSION['PROCESS'];
+$oProcess = new Process();
+$aProcessFieds = $oProcess->load($idProcess);
+$noShowTitle = 0;
+if (isset($aProcessFieds['PRO_SHOW_MESSAGE'])) {
+    $noShowTitle = $aProcessFieds['PRO_SHOW_MESSAGE'];
+}
 
-  $G_PUBLISH = new Publisher();
-  $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $aFields);
-  $G_PUBLISH->AddContent('propeltable', 'paged-table', 'tracker/tracker_DynaDocs', $oProcessMap->getCaseTrackerObjectsCriteria($_SESSION['PROCESS']), array('VIEW'=>G::LoadTranslation('ID_VIEW')));
-	
-	
-    
-	
-	G::RenderPage('publish');
+$aFields = $oCase->loadCase($_SESSION['APPLICATION']);
+if (isset($aFields['TITLE'])) {
+    $aFields['APP_TITLE'] = $aFields['TITLE'];
+}
+if ($aFields['APP_PROC_CODE'] != '') {
+    $aFields['APP_NUMBER'] = $aFields['APP_PROC_CODE'];
+}
+$aFields['CASE'] = G::LoadTranslation('ID_CASE');
+$aFields['TITLE'] = G::LoadTranslation('ID_TITLE');
+
+$G_PUBLISH = new Publisher();
+if ($noShowTitle == 0) {
+    $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $aFields);
+}
+$G_PUBLISH->AddContent( 'propeltable',
+                        'paged-table',
+                        'tracker/tracker_DynaDocs',
+                        $oProcessMap->getCaseTrackerObjectsCriteria($_SESSION['PROCESS']),
+                        array('VIEW' => G::LoadTranslation('ID_VIEW')));
+
+G::RenderPage('publish');
+

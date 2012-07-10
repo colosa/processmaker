@@ -1,4 +1,5 @@
 <?php
+
 /**
  * tracker_Messages.php
  *
@@ -22,35 +23,48 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
+/*
+ * History messages for Case Tracker
+ *
+ * @author Everth S. Berrios Morales <everth@colosa.com>
+ *
+ */
+if (!isset($_SESSION['PROCESS'])) {
+    G::header('location: login');
+}
+$G_MAIN_MENU = 'caseTracker';
+$G_ID_MENU_SELECTED = 'MESSAGES';
 
-   /*
-   * History messages for Case Tracker
-   *
-   * @author Everth S. Berrios Morales <everth@colosa.com>
-   *
-   */
-	if (!isset($_SESSION['PROCESS']))
-  {
-	  G::header('location: login');
-  }
-	$G_MAIN_MENU            = 'caseTracker';
-  $G_ID_MENU_SELECTED     = 'MESSAGES';
+$oHeadPublisher->addScriptFile('/jscore/tracker/tracker.js');
 
-  $oHeadPublisher->addScriptFile('/jscore/tracker/tracker.js');
+G::LoadClass('case');
+$oCase = new Cases();
+$aFields = $oCase->loadCase($_SESSION['APPLICATION']);
 
-  G::LoadClass('case');
-	$oCase = new Cases();
-	$aFields = $oCase->loadCase($_SESSION['APPLICATION']);
-	if (isset($aFields['TITLE'])) {
-	  $aFields['APP_TITLE'] = $aFields['TITLE'];
-	}
-	if ($aFields['APP_PROC_CODE'] != '') {
-	  $aFields['APP_NUMBER'] = $aFields['APP_PROC_CODE'];
-	}
-  $aFields['CASE']  = G::LoadTranslation('ID_CASE');
-  $aFields['TITLE'] = G::LoadTranslation('ID_TITLE');
+$idProcess = $_SESSION['PROCESS'];
+$oProcess = new Process();
+$aProcessFieds = $oProcess->load($idProcess);
+$noShowTitle = 0;
+if (isset($aProcessFieds['PRO_SHOW_MESSAGE'])) {
+    $noShowTitle = $aProcessFieds['PRO_SHOW_MESSAGE'];
+}
 
-  $G_PUBLISH = new Publisher();
-  $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $aFields);
-	$G_PUBLISH->AddContent('propeltable', 'paged-table', 'tracker/tracker_Messages', Cases::getHistoryMessagesTracker($_SESSION['APPLICATION']), array('VIEW'=>G::LoadTranslation('ID_VIEW')));
-	G::RenderPage('publish');
+if (isset($aFields['TITLE'])) {
+    $aFields['APP_TITLE'] = $aFields['TITLE'];
+}
+if ($aFields['APP_PROC_CODE'] != '') {
+    $aFields['APP_NUMBER'] = $aFields['APP_PROC_CODE'];
+}
+$aFields['CASE'] = G::LoadTranslation('ID_CASE');
+$aFields['TITLE'] = G::LoadTranslation('ID_TITLE');
+
+$G_PUBLISH = new Publisher();
+if ($noShowTitle == 0) {
+    $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $aFields);
+}
+$G_PUBLISH->AddContent( 'propeltable',
+                        'paged-table',
+                        'tracker/tracker_Messages',
+                        Cases::getHistoryMessagesTracker($_SESSION['APPLICATION']),
+                        array('VIEW' => G::LoadTranslation('ID_VIEW')));
+G::RenderPage('publish');

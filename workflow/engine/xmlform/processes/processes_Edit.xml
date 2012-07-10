@@ -50,6 +50,10 @@
   <en>Debug</en>
 </PRO_DEBUG>
 
+<PRO_SHOW_MESSAGE type="checkbox" value="1" falsevalue="0" defaultvalue="1" labelonright="0">
+  <en>Hide the case number and the case title in the steps</en>
+</PRO_SHOW_MESSAGE>
+
 <BTN_CANCEL type="button" onclick="cancel();">
   <en>Cancel</en>
 </BTN_CANCEL>
