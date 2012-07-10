@@ -19,7 +19,7 @@ var changeVariables = function(varType,proUid,field,symbol,target) {
       url   : '../controls/varsAjaxByType',
       async : true,
       method: 'POST',
-      args  : "type="+varType+"&sProcess="+proUid+"&sFieldName="+field+"&sSymbol="+symbol+"&bIncMulSelFields=1"
+      args  : "type="+varType+"&sProcess="+proUid+"&sFieldName="+field+"&sSymbol="+symbol+"&bIncMulSelFields=0"
     });
 
     oRPC.callback = function(rpc){

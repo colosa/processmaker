@@ -361,7 +361,7 @@ class XmlForm_Field_hours extends XmlForm_Field_SimpleText
   * @parameter boolean $bSystemVars
   * @return array
   */
-  function getDynaformsVars($sProcessUID, $bSystemVars = true, $bIncMulSelFields = false)
+  function getDynaformsVars($sProcessUID, $bSystemVars = true, $bIncMulSelFields = 0)
   {
     $aFields = array();
     $aFieldsNames = array();
@@ -375,7 +375,7 @@ class XmlForm_Field_hours extends XmlForm_Field_SimpleText
     }
     $aInvalidTypes = array('title', 'subtitle', 'link', 'file', 'button', 'reset', 'submit', 'javascript');
     $aMultipleSelectionFields = array('listbox', 'checkgroup', 'grid');
-    if (!$bIncMulSelFields) {
+    if ($bIncMulSelFields != 0) {
       $aInvalidTypes = array_merge($aInvalidTypes, $aMultipleSelectionFields);
     }
     require_once 'classes/model/Dynaform.php';
@@ -395,7 +395,7 @@ class XmlForm_Field_hours extends XmlForm_Field_SimpleText
               if (!in_array($k, $aFieldsNames)) {
                 $aFields[] = array('sName' => $k,
                                    'sType' => $v->type,
-                                   'sLabel'=> $v->label
+                                   'sLabel'=> ($v->type != 'grid' ? $v->label : '[ ' . G::LoadTranslation('ID_GRID') . ' ]')
                                   );
                 $aFieldsNames[] = $k;
               }

@@ -23,7 +23,7 @@
  *
  */
 G::LoadClass('xmlfield_InputPM');
-$aFields = getDynaformsVars($_POST['sProcess'], true, isset($_POST['bIncMulSelFields']) ? (boolean)$_POST['bIncMulSelFields'] : false);
+$aFields = getDynaformsVars($_POST['sProcess'], true, isset($_POST['bIncMulSelFields']) ? $_POST['bIncMulSelFields'] : 0);
 
 $sHTML = '<select name="_Var_Form_" id="_Var_Form_" size="' . count($aFields) . '" style="width:100%;' . (! isset($_POST['sNoShowLeyend']) ? 'height:50%;' : '') . '" ondblclick="insertFormVar(\'' . $_POST['sFieldName'] . '\', this.value);">';
 foreach ( $aFields as $aField ) {
