@@ -905,11 +905,17 @@ function G_Text( form, element, name)
 
   this.replaceMask = function(value, cursor, mask, type, comma){
     switch(type){
-      case 'currency': case 'percentage':
+      case 'currency':
+      case 'percentage':
         dir = 'reverse';
         break;
       default:
-        dir = 'forward';
+        if (me.mType == 'text' && me.validate == 'Real') {
+          dir = 'reverse';
+        } else {
+          dir = 'forward';  
+        }
+        
         break;
     }
     return G.ApplyMask(value, mask, cursor, dir, comma);
@@ -942,7 +948,7 @@ function G_Text( form, element, name)
     aMask = me.mask.split('');
     maskOut = '';
     for(i=0; i < aMask.length; i++){
-      if (me.mType == 'currency' || me.mType == 'percentage'){
+      if (me.mType == 'currency' || me.mType == 'percentage' || (me.mType == 'text' && me.validate == 'Real')){
         switch(aMask[i]){
           case '0': case '#':
             maskOut += aMask[i];
@@ -1224,6 +1230,18 @@ function G_Text( form, element, name)
           }
           else {
             patron = /[0-9,\.]/;
+          }
+
+          if (me.mType == 'text') {
+            me.comma_separator = '';
+            patron = /[0-9\-]/;
+            txtRealMask = me.mask.split('');
+            for (p=0; p < txtRealMask.length; p++) {
+              if (txtRealMask[p] != '#') {
+                me.comma_separator = txtRealMask[p];
+                break;
+              }
+            }
           }
 
           key = String.fromCharCode(pressKey);
