@@ -60,6 +60,14 @@ Ext.onReady(function(){
             changeSettings();
           }
         }
+      },
+      {
+        xtype: 'panel',
+        anchor: '100%',
+        bodyStyle:'padding:5px',
+        frame: true,
+        height: 'auto',
+        html: _('ID_MESSAGE_LOGIN')
       }
     ],
     buttons : [saveButton]

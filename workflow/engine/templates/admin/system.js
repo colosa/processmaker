@@ -82,7 +82,7 @@ Ext.onReady(function(){
       }
     }
   });
-  
+
   cmbTimeZone.setValue(sysConf.time_zone);
 
   saveButton = new Ext.Action({
@@ -90,12 +90,10 @@ Ext.onReady(function(){
     disabled : true,
     handler : saveSettings
   });
-  
-  xfields = new Ext.form.FieldSet({
+
+  xfieldsUp = new Ext.form.FieldSet({
     title: _('ID_SYSTEM_SETTINGS'),
     items : [
-      cmbSkins,
-      cmbLang,
       cmbTimeZone,
       {
         xtype: 'numberfield',
@@ -109,23 +107,26 @@ Ext.onReady(function(){
             changeSettings();
           }
         }
-      }/*,
-      {
-        name: 'forgotPasswd',
-        xtype: 'checkbox',
-        checked: false, //forgotPasswd,
-        fieldLabel: _('ID_ENABLE_FOTGOT_PASSWORD'),
-        listeners:{
-          check:function(){
-            changeSettings();
-          }
-        }
-      }*/
-    ],
-    buttons : [saveButton]
+      }
+    ]
   });
 
-  
+  xfieldsBelow = new Ext.form.FieldSet({
+    title: '',
+    items : [
+      cmbSkins,
+      cmbLang,
+      {
+        xtype: 'panel',
+        anchor: '100%',
+        bodyStyle:'padding:5px',
+        frame: true,
+        height: 'auto',
+        html: _('ID_MESSAGE_SYSTEM')+" "+_('ID_MESSAGE_SYSTEM2')
+      }
+    ]
+  });
+
   var frm = new Ext.FormPanel({
     title: '&nbsp',
     id:'frm',
@@ -133,7 +134,7 @@ Ext.onReady(function(){
     width:460,
     labelAlign:'right',
     autoScroll: true,
-    bodyStyle:'padding:2px',
+    bodyStyle:'padding:5px',
     waitMsgTarget : true,
     frame: true,
     
@@ -142,7 +143,8 @@ Ext.onReady(function(){
       msgTarget: 'side',
       align:'center'
     },
-    items:[ xfields ]
+    items:[ xfieldsUp, xfieldsBelow ],
+    buttons : [saveButton]
    
   });
   //render to process-panel
