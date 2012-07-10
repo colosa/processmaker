@@ -1473,7 +1473,7 @@ class wsBase
             $oCase = new Cases();
             $oTask = new Tasks();
             $startingTasks = $oCase->getStartCases($userId);
-            array_shift ($startingTasks); //remove the first row, the header row
+            array_shift($startingTasks); //remove the first row, the header row
             $founded            = '';
             $tasksInThisProcess = 0;
             $validTaskId        = $taskId;
@@ -1567,40 +1567,29 @@ class wsBase
                 return $result;
             }
 
-            $oProcesses = new Processes();
-            $pro        = $oProcesses->processExists($processId);
+            $processes = new Processes();
 
-            if (!$pro) {
+            if (!$processes->processExists($processId)) {
                 $result = new wsResponse(11, G::loadTranslation('ID_INVALID_PROCESS') . " " . $processId . "!!");
+
+                return $result;
+            }
+
+            $user = new Users();
+
+            if (!$user->userExists($userId)) {
+                $result = new wsResponse(11, G::loadTranslation('ID_USER_NOT_REGISTERED') . " " . $userId . "!!");
 
                 return $result;
             }
 
             $oCase = new Cases();
 
-            $tasks = $oProcesses->getStartingTaskForUser($processId, $userId);
-            $numTasks = count($tasks);
+            $arrayTask = $processes->getStartingTaskForUser($processId, null);
+            $numTasks  = count($arrayTask);
 
             if ($numTasks == 1) {
-                $oTask = new Tasks();
-                $very = $oTask->verifyUsertoTask($userId, $tasks[0]['TAS_UID']);
-
-                if (is_array($very)) {
-                    if ($very['TU_RELATION'] == 2) {
-                        $group = $groups->getUsersOfGroup($tasks[0]['TAS_UID']);
-
-                        if (!is_array($group)) {
-                            $result = new wsResponse(14, G::loadTranslation('ID_USER_NOT_ASSIGNED_TASK'));
-
-                            return $result;
-                        }
-                    }
-                } else {
-                    $result = new wsResponse(14, G::loadTranslation('ID_USER_NOT_ASSIGNED_TASK'));
-                    return $result;
-                }
-
-                $case       = $oCase->startCase($tasks[0]['TAS_UID'], $userId);
+                $case       = $oCase->startCase($arrayTask[0]['TAS_UID'], $userId);
                 $caseId     = $case['APPLICATION'];
                 $caseNumber = $case['CASE_NUMBER'];
 
@@ -2535,4 +2524,3 @@ class wsBase
         }
     }
 }
-
