@@ -545,7 +545,7 @@ function popupWindow ( title , url, width, height, callbackFn , autoSizeWidth, a
   		  if (autoSizeHeight)
     		  myPanel.resize({h:myPanel.elements.content.childNodes[0].clientHeight+panelNonContentHeight});
   	  } catch (e) {
-  	    alert(':(');
+  	    alert(_('ID_MSG_AJAX_FAILURE'));
   	  }
   		delete newdiv;
   		delete myScripts;
@@ -618,7 +618,7 @@ function popupWindowObject ( title , url, width, height, callbackFn , autoSizeWi
   		  if (autoSizeHeight)
     		  myPanel.resize({h:myPanel.elements.content.childNodes[0].clientHeight+panelNonContentHeight});
   	  } catch (e) {
-  	    alert(':(');
+  	    alert(_('ID_MSG_AJAX_FAILURE'));
   	  }
   		delete newdiv;
   		delete myScripts;
