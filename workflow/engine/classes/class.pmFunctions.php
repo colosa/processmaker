@@ -1040,21 +1040,27 @@ function WSAssignUserToGroup($userId, $groupId)
  * @param string(32) | $lastname | Lastname of the new user | The last name(s) of the new user, which can be up to 50 characters long.
  * @param string(32) | $email | Email the new user | The e-mail of the new user, which can be up to 100 characters long.
  * @param string(32) | $role | Rol of the new user | The role of the new user, such as 'PROCESSMAKER_ADMIN' and 'PROCESSMAKER_OPERATOR'.
+ * @param string(32) | $dueDate=null | Expiration date | Optional parameter. The expiration date must be a string in the format 'yyyy-mm-dd'.
+ * @param string(32) | $status=null | Status of the new user | Optional parameter. The user's status, such as 'ACTIVE', 'INACTIVE' or 'VACATION'.
  * @return array | $fields | WS array | A WS Response associative array.
  *
  */
-function WSCreateUser($userId, $password, $firstname, $lastname, $email, $role)
+function WSCreateUser($userId, $password, $firstname, $lastname, $email, $role, $dueDate=null, $status=null)
 {
     $client = WSOpen();
 
     $sessionId = $_SESSION["WS_SESSION_ID"];
-    $params = array("sessionId" => $sessionId,
-                    "userId"    => $userId,
-                    "firstname" => $firstname,
-                    "lastname"  => $lastname,
-                    "email"     => $email,
-                    "role"      => $role,
-                    "password"  => $password);
+    $params = array(
+        "sessionId" => $sessionId,
+        "userId"    => $userId,
+        "firstname" => $firstname,
+        "lastname"  => $lastname,
+        "email"     => $email,
+        "role"      => $role,
+        "password"  => $password,
+        "dueDate"   => $dueDate,
+        "status"    => $status
+    );
 
     $result = $client->__soapCall("CreateUser", array($params));
 
@@ -1679,14 +1685,17 @@ function PMFAssignUserToGroup($userId, $groupId)
  * @param string(32) | $lastname | Lastname of the new user | The last name of the user, which can be up to 50 characters long.
  * @param string(32) | $email | Email the new user | The email of the new user, which can be up to 100 characters long.
  * @param string(32) | $role | Rol of the new user | The role of the new user such as 'PROCESSMAKER_ADMIN' or 'PROCESSMAKER_OPERATOR'.
+ * @param string(32) | $dueDate=null | Expiration date | Optional parameter. The expiration date must be a string in the format 'yyyy-mm-dd'.
+ * @param string(32) | $status=null | Status of the new user | Optional parameter. The user's status, such as 'ACTIVE', 'INACTIVE' or 'VACATION'.
  * @return int | $result | Result of the creation | Returns 1 if the new user was created successfully; otherwise, returns 0 if an error occurred.
  *
  */
-function PMFCreateUser($userId, $password, $firstname, $lastname, $email, $role)
+function PMFCreateUser($userId, $password, $firstname, $lastname, $email, $role, $dueDate=null, $status=null)
 {
     G::LoadClass('wsBase');
-    $ws = new wsBase ();
-    $result = $ws->createUser($userId, $firstname, $lastname, $email, $role, $password);
+
+    $ws = new wsBase();
+    $result = $ws->createUser($userId, $firstname, $lastname, $email, $role, $password, $dueDate, $status);
 
     if ($result->status_code == 0) {
         return 1;
@@ -2094,4 +2103,3 @@ function PMFGetCaseNotes ($applicationID, $type='array', $userUid='')
     $response = Cases::getCaseNotes($applicationID, $type, $userUid);
     return $response;
 }
- 

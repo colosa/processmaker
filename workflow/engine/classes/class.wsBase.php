@@ -922,17 +922,19 @@ class wsBase
 
     /**
      * creates a new user
-     * @param  string sessionId : The session ID
-     * @param  string userId    : The username for the new user.
-     * @param  string firstname : The user's first name.
-     * @param  string lastname  : The user's last name.
-     * @param  string email     : The user's email address.
-     * @param  string role      : The user's role, such as 'PROCESSMAKER_ADMIN' or 'PROCESSMAKER_OPERATOR'.
-     * @param  string password  : The user's password  such as 'Be@gle2'(It will be automatically encrypted
-     *                            with an MD5 hash).
+     * @param string sessionId : The session ID.
+     * @param string userId    : The username for the new user.
+     * @param string firstname : The user's first name.
+     * @param string lastname  : The user's last name.
+     * @param string email     : The user's email address.
+     * @param string role      : The user's role, such as 'PROCESSMAKER_ADMIN' or 'PROCESSMAKER_OPERATOR'.
+     * @param string password  : The user's password  such as 'Be@gle2'(It will be automatically encrypted
+     *                           with an MD5 hash).
+     * @param string dueDate   : Optional parameter. The expiration date must be a string in the format 'yyyy-mm-dd'.
+     * @param string status    : Optional parameter. The user's status, such as 'ACTIVE', 'INACTIVE' or 'VACATION'.
      * @return $result will return an object
      */
-    public function createUser($userId, $firstname, $lastname, $email, $role, $password)
+    public function createUser($userId, $firstname, $lastname, $email, $role, $password, $dueDate=null, $status=null)
     {
         try {
             if ($userId == '') {
@@ -990,21 +992,45 @@ class wsBase
                 $strRole = $role;
             }
 
-            $aData['USR_USERNAME']    = $userId;
-            $aData['USR_PASSWORD']    = md5($password);
-            $aData['USR_FIRSTNAME']   = $firstname;
-            $aData['USR_LASTNAME']    = $lastname;
-            $aData['USR_EMAIL']       = $email;
-            $aData['USR_DUE_DATE']    = mktime(0, 0, 0, date("m"), date("d"), date("Y") + 1);
-            $aData['USR_CREATE_DATE'] = date('Y-m-d H:i:s');
-            $aData['USR_UPDATE_DATE'] = date('Y-m-d H:i:s');
-            $aData['USR_STATUS']      = 1;
+            if ($dueDate != null) {
+                if (!preg_match("/^(\d{4})-(\d{2})-(\d{2})$/", $dueDate, $matches)) {
+                    $result = new wsCreateUserResponse(5, G::loadTranslation("ID_INVALID_DATA") . ", $dueDate");
 
-            $sUserUID = $RBAC->createUser($aData,  $strRole );
+                    return $result;
+                } else {
+                    $mktimeDueDate = mktime(0, 0, 0, intval($matches[2]), intval($matches[3]), intval($matches[1]));
+                }
+            } else {
+                $mktimeDueDate = mktime(0, 0, 0, date("m"), date("d"), date("Y") + 1);
+            }
 
+            if ($status != null) {
+                if ($status != "ACTIVE" && $status != "INACTIVE" && $status != "VACATION") {
+                    $result = new wsCreateUserResponse(5, G::loadTranslation("ID_INVALID_DATA") . ", $status");
+
+                    return $result;
+                }
+            } else {
+                $status = "ACTIVE";
+            }
+
+            $aData['USR_USERNAME']     = $userId;
+            $aData['USR_PASSWORD']     = md5($password);
+            $aData['USR_FIRSTNAME']    = $firstname;
+            $aData['USR_LASTNAME']     = $lastname;
+            $aData['USR_EMAIL']        = $email;
+            $aData['USR_DUE_DATE']     = $mktimeDueDate;
+            $aData['USR_CREATE_DATE']  = date('Y-m-d H:i:s');
+            $aData['USR_UPDATE_DATE']  = date('Y-m-d H:i:s');
+            $aData['USR_BIRTHDAY']     = date('Y-m-d');
+            $aData['USR_AUTH_USER_DN'] = '';
+            $aData['USR_STATUS']       = ($status == 'ACTIVE')? 1 : 0;
+
+            $sUserUID = $RBAC->createUser($aData, $strRole);
+
+            $aData['USR_STATUS']      = $status;
             $aData['USR_UID']         = $sUserUID;
             $aData['USR_PASSWORD']    = md5($sUserUID);
-            $aData['USR_STATUS']      = 'ACTIVE';
             $aData['USR_COUNTRY']     = '';
             $aData['USR_CITY']        = '';
             $aData['USR_LOCATION']    = '';
@@ -1012,9 +1038,9 @@ class wsBase
             $aData['USR_PHONE']       = '';
             $aData['USR_ZIP_CODE']    = '';
             $aData['USR_POSITION']    = '';
-            $aData['USR_RESUME']      = '';
-            $aData['USR_BIRTHDAY']    = date('Y-m-d');
+            //$aData['USR_RESUME']
             $aData['USR_ROLE']        = $strRole ;
+            //$aData['USR_REPLACED_BY']
 
             $oUser = new Users();
             $oUser->create($aData);

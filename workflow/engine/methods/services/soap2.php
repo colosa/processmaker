@@ -701,9 +701,19 @@ function CreateUser($params)
         return $result;
     }
 
-    $ws = new wsBase ();
-    $res = $ws->createUser( $params->userId, $params->firstname,
-        $params->lastname, $params->email, $params->role, $params->password);
+    $ws = new wsBase();
+
+    $res = $ws->createUser(
+        $params->userId,
+        $params->firstname,
+        $params->lastname,
+        $params->email,
+        $params->role,
+        $params->password,
+        ((isset($params->dueDate))? $params->dueDate : null),
+        ((isset($params->status))? $params->status : null)
+    );
+
     return  $res;
 }
 
@@ -923,4 +933,3 @@ $server->addFunction("importProcessFromLibrary");
 $server->addFunction("removeUserFromGroup");
 $server->addFunction("getCaseNotes");
 $server->handle();
-
