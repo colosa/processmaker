@@ -334,6 +334,7 @@ function G_Text( form, element, name)
   this.mType   = 'text';
   this.parent = G_Field;
   this.browser = {};
+  this.comma_separator = ".";
 
   this.checkBrowser = function(){
     var nVer = navigator.appVersion;
@@ -1026,7 +1027,7 @@ function G_Text( form, element, name)
       }
       if (newCursor < 0)  newCursor = 0;
       if (keyCode != 8 && keyCode != 46 && keyCode != 35 && keyCode != 36 && keyCode != 37 && keyCode != 39){
-        testData = dataWOMask.result;
+        testData = dataWOMask.result;        
         tamData = testData.length;
         cleanMask = me.getCleanMask();
         tamMask = cleanMask.length;
@@ -1044,6 +1045,7 @@ function G_Text( form, element, name)
 
         }
       }
+      
       switch(action){
         case 'mask': case 'move':
           dataNewMask = me.replaceMasks(newValue, newCursor);
@@ -1232,19 +1234,6 @@ function G_Text( form, element, name)
             patron = /[0-9,\.]/;
           }
 
-          if (me.mType == 'text') {
-            me.comma_separator = '';
-            patron = /[0-9\-]/;
-            txtRealMask = me.mask.split('');
-            p = txtRealMask.length - 1;
-            for ( ; p >= 0; p--) {
-              if (txtRealMask[p] != '#' && txtRealMask[p] != '%' && txtRealMask[p] != ' ') {
-                me.comma_separator = txtRealMask[p];
-                break;
-              }
-            }
-          }
-
           key = String.fromCharCode(pressKey);
           keyValid = patron.test(key);
           keyValid = keyValid || (pressKey == 45);
@@ -1352,55 +1341,58 @@ function G_Text( form, element, name)
           }
         }
 
-        var countDecimal = 0;
-        txtRealMask = me.mask.split('');
-        p = txtRealMask.length - 1;
-        for ( ; p >= 0; p--) {
-          if (txtRealMask[p] == '#') {
-            countDecimal++;
-          }
-          if (txtRealMask[p] == separatorField) {
-            break;
-          }
-        }
-
-        var decimalString = '';
-        var pluginDecimal = '';
-        var numberSet = me.element.value.split(separatorField);
-        
-        if (typeof(numberSet[1]) == 'undefined') {
-          var decimalSet = '';
-          var newInt = '';
-          var newPluginDecimal = '';
-          var decimalCade = numberSet[0].split('');
-          for (p = 0; p < decimalCade.length; p++) {
-            if (!isNaN(parseFloat(decimalCade[p])) && isFinite(decimalCade[p])) {
-              newInt += decimalCade[p];
-            } else {
-              newPluginDecimal += decimalCade[p];
+        var partsMaskSep = me.mask.split(separatorField);
+        if (partsMaskSep.length == 2) {
+          var countDecimal = 0;
+          txtRealMask = me.mask.split('');
+          p = txtRealMask.length - 1;
+          for ( ; p >= 0; p--) {
+            if (txtRealMask[p] == '#') {
+              countDecimal++;
+            }
+            if (txtRealMask[p] == separatorField) {
+              break;
             }
           }
-          numberSet[0] = newInt;
-          numberSet[1] = newPluginDecimal;
-        }
 
-        var decimalSet = numberSet[1];
-        var decimalCade = decimalSet.split('');
-        var countDecimalNow = 0;
-        for (p = 0; p < decimalCade.length; p++) {
-          if (!isNaN(parseFloat(decimalCade[p])) && isFinite(decimalCade[p])) {
-            countDecimalNow++;
-            decimalString += decimalCade[p];
-          } else {
-            pluginDecimal += decimalCade[p];
+          var decimalString = '';
+          var pluginDecimal = '';
+          var numberSet = me.element.value.split(separatorField);
+          
+          if (typeof(numberSet[1]) == 'undefined') {
+            var decimalSet = '';
+            var newInt = '';
+            var newPluginDecimal = '';
+            var decimalCade = numberSet[0].split('');
+            for (p = 0; p < decimalCade.length; p++) {
+              if ((!isNaN(parseFloat(decimalCade[p])) && isFinite(decimalCade[p])) || (decimalCade[p] == ',') || (decimalCade[p] == '.') ) {
+                newInt += decimalCade[p];
+              } else {
+                newPluginDecimal += decimalCade[p];
+              }
+            }
+            numberSet[0] = newInt;
+            numberSet[1] = newPluginDecimal;
           }
-        }
 
-        if(countDecimalNow < countDecimal) {
-          for(; countDecimalNow < countDecimal; countDecimalNow++) {
-            decimalString += '0';
-          }          
-          me.element.value = numberSet[0] + separatorField + decimalString + pluginDecimal;
+          var decimalSet = numberSet[1];
+          var decimalCade = decimalSet.split('');
+          var countDecimalNow = 0;
+          for (p = 0; p < decimalCade.length; p++) {
+            if (!isNaN(parseFloat(decimalCade[p])) && isFinite(decimalCade[p])) {
+              countDecimalNow++;
+              decimalString += decimalCade[p];
+            } else {
+              pluginDecimal += decimalCade[p];
+            }
+          }
+
+          if(countDecimalNow < countDecimal) {
+            for(; countDecimalNow < countDecimal; countDecimalNow++) {
+              decimalString += '0';
+            }          
+            me.element.value = numberSet[0] + separatorField + decimalString + pluginDecimal;
+          }
         }
       }
 

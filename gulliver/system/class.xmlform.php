@@ -968,6 +968,7 @@ class XmlForm_Field_Text extends XmlForm_Field_SimpleText
   var $function         = '';
   var $replaceTags      = 0;
   var $renderMode       = '';
+  var $comma_separator = '.';
 
 
   /**
@@ -1012,6 +1013,7 @@ class XmlForm_Field_Text extends XmlForm_Field_SimpleText
       $html .= 'onkeypress="'.$this->htmlentities($onkeypress, ENT_COMPAT, 'utf-8').'" ';
       $html .= $this->NSDefaultValue().' ';
       $html .= $this->NSRequiredValue().' ';
+      $html .= 'pm:decimal_separator="' + $this->comma_separator + '" ';
       $html .= '/>';
     }else{ //VIEW MODE
       $html .= $this->htmlentities($value, ENT_QUOTES, 'utf-8');
