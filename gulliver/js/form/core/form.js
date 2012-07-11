@@ -905,11 +905,17 @@ function G_Text( form, element, name)
 
   this.replaceMask = function(value, cursor, mask, type, comma){
     switch(type){
-      case 'currency': case 'percentage':
+      case 'currency':
+      case 'percentage':
         dir = 'reverse';
         break;
       default:
-        dir = 'forward';
+        if (me.mType == 'text' && me.validate == 'Real') {
+          dir = 'reverse';
+        } else {
+          dir = 'forward';  
+        }
+        
         break;
     }
     return G.ApplyMask(value, mask, cursor, dir, comma);
@@ -942,7 +948,7 @@ function G_Text( form, element, name)
     aMask = me.mask.split('');
     maskOut = '';
     for(i=0; i < aMask.length; i++){
-      if (me.mType == 'currency' || me.mType == 'percentage'){
+      if (me.mType == 'currency' || me.mType == 'percentage' || (me.mType == 'text' && me.validate == 'Real')){
         switch(aMask[i]){
           case '0': case '#':
             maskOut += aMask[i];
@@ -1226,6 +1232,19 @@ function G_Text( form, element, name)
             patron = /[0-9,\.]/;
           }
 
+          if (me.mType == 'text') {
+            me.comma_separator = '';
+            patron = /[0-9\-]/;
+            txtRealMask = me.mask.split('');
+            p = txtRealMask.length - 1;
+            for ( ; p >= 0; p--) {
+              if (txtRealMask[p] != '#' && txtRealMask[p] != '%' && txtRealMask[p] != ' ') {
+                me.comma_separator = txtRealMask[p];
+                break;
+              }
+            }
+          }
+
           key = String.fromCharCode(pressKey);
           keyValid = patron.test(key);
           keyValid = keyValid || (pressKey == 45);
@@ -1313,7 +1332,77 @@ function G_Text( form, element, name)
     {
       var evt = event || window.event;
       var keyPressed = evt.which || evt.keyCode;
-      me.putFormatNumber(keyPressed);
+      //me.putFormatNumber(keyPressed);
+      
+      if ( (me.mask != '') &&  (  (me.mType == 'currency') || (me.mType == 'percentage') ||
+                                  ((me.validate == "Real") && (me.mType == 'text')) ) && 
+          (me.mask.indexOf('-')==-1) && (me.element.value != '') ) {
+
+        var separatorField = ",";
+        if (typeof(me.comma_separator) != 'undefined') {
+          separatorField = me.comma_separator;
+        } else {
+          txtRealMask = me.mask.split('');
+          p = txtRealMask.length - 1;
+          for ( ; p >= 0; p--) {
+            if (txtRealMask[p] != '#' && txtRealMask[p] != '%' && txtRealMask[p] != ' ') {
+              separatorField = txtRealMask[p];
+              break;
+            }
+          }
+        }
+
+        var countDecimal = 0;
+        txtRealMask = me.mask.split('');
+        p = txtRealMask.length - 1;
+        for ( ; p >= 0; p--) {
+          if (txtRealMask[p] == '#') {
+            countDecimal++;
+          }
+          if (txtRealMask[p] == separatorField) {
+            break;
+          }
+        }
+
+        var decimalString = '';
+        var pluginDecimal = '';
+        var numberSet = me.element.value.split(separatorField);
+        
+        if (typeof(numberSet[1]) == 'undefined') {
+          var decimalSet = '';
+          var newInt = '';
+          var newPluginDecimal = '';
+          var decimalCade = numberSet[0].split('');
+          for (p = 0; p < decimalCade.length; p++) {
+            if (!isNaN(parseFloat(decimalCade[p])) && isFinite(decimalCade[p])) {
+              newInt += decimalCade[p];
+            } else {
+              newPluginDecimal += decimalCade[p];
+            }
+          }
+          numberSet[0] = newInt;
+          numberSet[1] = newPluginDecimal;
+        }
+
+        var decimalSet = numberSet[1];
+        var decimalCade = decimalSet.split('');
+        var countDecimalNow = 0;
+        for (p = 0; p < decimalCade.length; p++) {
+          if (!isNaN(parseFloat(decimalCade[p])) && isFinite(decimalCade[p])) {
+            countDecimalNow++;
+            decimalString += decimalCade[p];
+          } else {
+            pluginDecimal += decimalCade[p];
+          }
+        }
+
+        if(countDecimalNow < countDecimal) {
+          for(; countDecimalNow < countDecimal; countDecimalNow++) {
+            decimalString += '0';
+          }          
+          me.element.value = numberSet[0] + separatorField + decimalString + pluginDecimal;
+        }
+      }
 
       if(this.validate=="Email")
       {
