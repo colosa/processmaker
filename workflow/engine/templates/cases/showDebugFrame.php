@@ -38,8 +38,9 @@ $aFields = $oApp->loadCase($_SESSION['APPLICATION']);
 $aStoredVarNames = array_keys($aFields['APP_DATA']);
 
 $aVariables = Array();
-for($i=0; $i<count($_SESSION['TRIGGER_DEBUG']['DATA']); $i++) {
-  $aVariables[$_SESSION['TRIGGER_DEBUG']['DATA'][$i]['key']] = $_SESSION['TRIGGER_DEBUG']['DATA'][$i]['value'];
+
+for ($i=0; $i<count($_SESSION['TRIGGER_DEBUG']['DATA']); $i++) {
+    $aVariables[$_SESSION['TRIGGER_DEBUG']['DATA'][$i]['key']] = $_SESSION['TRIGGER_DEBUG']['DATA'][$i]['value'];
 }
 
 $aVariables = array_merge($aFields['APP_DATA'], $aVariables);
@@ -47,37 +48,37 @@ ksort($aVariables);
 
 //triggers
 
-
-if( isset($_SESSION['TRIGGER_DEBUG']['info']) ) {
-  $aTriggers = $_SESSION['TRIGGER_DEBUG']['info'];
+if (isset($_SESSION['TRIGGER_DEBUG']['info'])) {
+    $aTriggers = $_SESSION['TRIGGER_DEBUG']['info'];
 } else {
-  $aTriggers[0] = $_SESSION['TRIGGER_DEBUG'];
+    $aTriggers[0] = $_SESSION['TRIGGER_DEBUG'];
 }
 
-foreach($aTriggers as $aTrigger) {
-  $triggers_name = Array();
-  $triggers_code = Array();
+foreach ($aTriggers as $aTrigger) {
+    $triggers_name = Array();
+    $triggers_code = Array();
 
-  $t_time = $aTrigger['TIME'];
-  if($aTrigger['NUM_TRIGGERS'] != 0) {
-    $triggers_onfly = $aTrigger['NUM_TRIGGERS']." trigger(s) was executed <font color='#641213'><b>".strtolower($aTrigger['TIME'])."</b></font><br/>";
+    $t_time = $aTrigger['TIME'];
+    if ($aTrigger['NUM_TRIGGERS'] != 0) {
+        $triggers_onfly = $aTrigger['NUM_TRIGGERS']." trigger(s) was executed <font color='#641213'><b>".
+            strtolower($aTrigger['TIME'])."</b></font><br/>";
 
-    $cnt = 0;
-    if(isset($aTrigger['TRIGGERS_NAMES'])) {
-      foreach($aTrigger['TRIGGERS_NAMES'] as $name) {
-        $t_code = $aTrigger['TRIGGERS_VALUES'][$cnt]['TRI_WEBBOT'];
-        //$t_code = str_replace('"', '\'',$t_code);
-        //$t_code = addslashes($t_code);
-        $t_code = Only1br($t_code);
+        $cnt = 0;
+        if (isset($aTrigger['TRIGGERS_NAMES'])) {
+            foreach ($aTrigger['TRIGGERS_NAMES'] as $name) {
+                $t_code = $aTrigger['TRIGGERS_VALUES'][$cnt]['TRI_WEBBOT'];
+                //$t_code = str_replace('"', '\'',$t_code);
+                //$t_code = addslashes($t_code);
+                $t_code = Only1br($t_code);
 
-        $triggers_name[] = $name;
-        $triggers_code[] = $t_code;
-        $cnt++;
-      }
+                $triggers_name[] = $name;
+                $triggers_code[] = $t_code;
+                $cnt++;
+            }
+        }
+    } else {
+        $triggers_onfly = " No triggers found <font color='#641213'><b>".strtolower($t_time)."</b></font>";
     }
-  } else {
-    $triggers_onfly = " No triggers found <font color='#641213'><b>".strtolower($t_time)."</b></font>";
-  }
 }
 
 //errors
@@ -85,13 +86,14 @@ $DEBUG_POST =  array_unique($_SESSION['TRIGGER_DEBUG']['ERRORS']);
 
 /////
 
-function Only1br($string) {
-  return preg_replace("/(\r\n)+|(\n|\r)+/", "<br />", $string);
+function Only1br($string)
+{
+    return preg_replace("/(\r\n)+|(\n|\r)+/", "<br />", $string);
 }
 
 ?>
-<style>
 
+<style>
   table.pmdebugger{
     border: 1px solid #777;
     padding: 0;
@@ -121,10 +123,12 @@ function Only1br($string) {
     padding: 3px;
     overflow: auto;
   }
+
   #debugger_triggers{
     padding: 3px;
     overflow: auto;
   }
+
   #debugger_errors{
     padding: 3px;
     overflow: auto;
@@ -137,10 +141,11 @@ function Only1br($string) {
     font-family: monospace;
   }
 </style>
+
 <script>
   function toggle(id){
     var o = document.getElementById(id);
-    if( o.style.display != 'block'){
+    if(o.style.display != 'block'){
       o.style.display = 'block';
       newimg = new Image();
       newimg.src = '/images/pin-dn-on.gif';
@@ -161,28 +166,36 @@ function Only1br($string) {
   <table width='100%' cellspacing='0' cellpadding='0' border='1' style='border:0px;'>
     <tr>
       <td width='410px' class='treeNode' style='border:0px;background-color:transparent;'>
-        <font color='#0B58B6'><?php= $triggers_onfly?></font><br/>
-        <?php if( sizeof($triggers_name) > 0 ) {?>
+        <font color='#0B58B6'><?php echo $triggers_onfly; ?></font><br/>
+        <?php if (sizeof($triggers_name) > 0) {?>
         <table class="pmdebugger" width="100%">
           <tr>
-            <td width="5" class="pmdebuggerHeader">#</td><td class="pmdebuggerHeader">Name</td><td class="pmdebuggerHeader">&nbsp;</td>
+            <td width="5" class="pmdebuggerHeader">#</td>
+            <td class="pmdebuggerHeader">Name</td>
+            <td class="pmdebuggerHeader">&nbsp;</td>
           </tr>
-            <?php foreach($triggers_name as $k=>$trigger) {?>
+    <?php
+    foreach ($triggers_name as $k => $trigger) {?>
           <tr>
-            <td>&nbsp;<?php =($k+1)?>&nbsp;</td>
+            <td>&nbsp;<?php echo ($k+1); ?>&nbsp;</td>
             <td>
-              &nbsp;<?php= $trigger?>
-              <div id='trigger_<?php= $k?>' class='ui-accordion-header ui-helper-reset ui-state-active ui-corner-all data_view'><?php=$triggers_code[$k]?></div>
+              &nbsp;<?php echo $trigger; ?>
+              <div id='trigger_<?php echo $k; ?>'
+                class='ui-accordion-header ui-helper-reset ui-state-active ui-corner-all data_view'>
+                <?php echo $triggers_code[$k]; ?>
+              </div>
             </td>
             <td valign="top" width="5">
-              <a href='#' onclick="toggle('trigger_<?php=$k?>'); return false;">
-                <img id='img_trigger_<?php=$k?>' src='/images/pin-up-on.gif' border='0'>
+              <a href='#' onclick="toggle('trigger_<?php echo $k; ?>'); return false;">
+                <img id='img_trigger_<?php echo $k; ?>' src='/images/pin-up-on.gif' border='0'>
               </a>
             </td>
           </tr>
-              <?php } ?>
+    <?php
+    } ?>
         </table>
-          <?php } ?>
+          <?php
+} ?>
       </td>
     </tr>
   </table>
@@ -195,67 +208,83 @@ function Only1br($string) {
     <tr>
       <td class="pmdebuggerHeader">Name</td><td class="pmdebuggerHeader">Value</td>
     </tr>
-    <?php foreach($aVariables as $sName=>$aVariable) {?>
+<?php
+foreach ($aVariables as $sName => $aVariable) {?>
     <tr>
-        <?php if( is_array($aVariable) ) {?>
-      <td valign="top"><font color="blue">&nbsp;<?=$sName?></font></td>
-          <?php } else {?>
-      <td>&nbsp;<?php =$sName?></td>
-          <?php }?>
+    <?php
+    if (is_array($aVariable)) {?>
+        <td valign="top"><font color="blue">&nbsp;<?php
+        echo $sName; ?></font></td>
+        <?php
+    } else {?>
+        <td>&nbsp;<?php echo $sName; ?></td>
+        <?php
+    }?>
       <td><?php echo expandVarView($aVariable, $sName)?></td>
     </tr>
-      <?php }?>
+    <?php
+}?>
   </table>
 </div>
 
 <!---->
-<?php if( count($DEBUG_POST) > 0 ) {?>
-<div class="ui-widget-header ui-corner-all" width="50%" align="center">Errors</div>
-<div id="debugger_errors" class="ui-accordion-header ui-helper-reset ui-state-active ui-corner-all" align="left">
 
-    <?php  for($i=0; $i<count($DEBUG_POST); $i++) {
-      if(isset($DEBUG_POST[$i]['ERROR']) and $DEBUG_POST[$i]['ERROR'] != '') {?>
-  <span class='treeNode'>
-    <font color='red'>Error </font>
-    <font color='#0B58B6'><?php=str_replace('<br />', '',$DEBUG_POST[$i]['ERROR'])?></font>
-  </span><br/>
-        <?php}
+<?php
+if (count($DEBUG_POST) > 0) {?>
+    <div class="ui-widget-header ui-corner-all" width="50%" align="center">Errors</div>
+    <div id="debugger_errors" class="ui-accordion-header ui-helper-reset ui-state-active ui-corner-all" align="left">
+
+    <?php
+    for ($i=0; $i<count($DEBUG_POST); $i++) {
+        if (isset($DEBUG_POST[$i]['ERROR']) and $DEBUG_POST[$i]['ERROR'] != '') {?>
+            <span class='treeNode'>
+            <font color='red'>Error </font>
+            <font color='#0B58B6'><?php echo str_replace('<br />', '',$DEBUG_POST[$i]['ERROR']);?></font>
+            </span><br/>
+            <?php
+        }
     }
-    for($i=0; $i<count($DEBUG_POST); $i++) { ?>
-      <?php if(isset($DEBUG_POST[$i]['FATAL']) and $DEBUG_POST[$i]['FATAL'] != '') { ?>
-  <span class='treeNode'>
-    <font color='red'>Fatal error </font>
-    <font color='#0B58B6'> <?php=str_replace('<br />', '',$DEBUG_POST[$i]['FATAL'])?></font>
-  </span><br/>
-        <?php }
+    for ($i=0; $i<count($DEBUG_POST); $i++) { ?>
+        <?php
+        if (isset($DEBUG_POST[$i]['FATAL']) and $DEBUG_POST[$i]['FATAL'] != '') {?>
+            <span class='treeNode'>
+            <font color='red'>Fatal error </font>
+            <font color='#0B58B6'> <?php echo str_replace('<br />', '',$DEBUG_POST[$i]['FATAL']); ?></font>
+            </span><br/>
+            <?php
+        }
     }
-  } else { ?>
-  <div class="ui-widget-header ui-corner-all" width="50%" align="center">No errors reported</div>
-    <?php}?>
+} else { ?>
+    <div class="ui-widget-header ui-corner-all" width="50%" align="center">No errors reported</div>
+    <?php
+}?>
 </div>
 
 <!---->
 
-<?php if(isset($_POST['NextStep'])) {?>
-<input type="button" value="Continue" class="module_app_button___gray" onclick="javascript:location.href='<?php= $_POST['NextStep']?>'">
-  <?php}?>
+<?php if (isset($_POST['NextStep'])) {?>
+    <input type="button" value="Continue" class="module_app_button___gray" onclick="javascript:location.href='
+    <?php echo $_POST['NextStep']; ?>'">
+    <?php
+}?>
 
 
 <?php
 
-function expandVarView($a, $name) {
-  if( is_array($a) ) {
-    echo "<a href='#' onclick=\"toggle('data_view_{$name}'); return false;\"><img id='img_data_view_{$name}' src='/images/pin-up-on.gif' border='0'></a><div id='data_view_{$name}' class='data_view'><table class='pmdebugger' width='100%'>";
-    foreach($a as $k=>$v) {
-      echo "<tr><td valign='top'>&nbsp;$k</td><td>";
-      expandVarView($v, "{$name}_{$k}");
-      echo "</td></tr>";
+function expandVarView($a, $name)
+{
+    if (is_array($a)) {
+        echo "<a href='#' onclick=\"toggle('data_view_{$name}'); return false;\">
+            <img id='img_data_view_{$name}' src='/images/pin-up-on.gif' border='0'></a>
+            <div id='data_view_{$name}' class='data_view'><table class='pmdebugger' width='100%'>";
+        foreach ($a as $k => $v) {
+            echo "<tr><td valign='top'>&nbsp;$k</td><td>";
+            expandVarView($v, "{$name}_{$k}");
+            echo "</td></tr>";
+        }
+        echo "</table><div>";
+    } else {
+        echo ($a=='')? '&nbsp;': "&nbsp;$a";
     }
-    echo "</table><div>";
-  } else {
-    echo ($a=='')? '&nbsp;': "&nbsp;$a";
-  }
-
 }
 
-?>
