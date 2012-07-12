@@ -53,10 +53,11 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
   <en>Sql</en>
 </PME_XMLNODE_VALUE>
 
-<PME_OPTIONS type="grid" xmlgrid="dynaforms/fields/_options" editRow="" deleteRow="1" insertRow="1" sqlconnection="XMLDB">
-
+<PME_SUBTITLE4 type="subtitle">
   <en>Options</en>
-</PME_OPTIONS>
+</PME_SUBTITLE4>
+
+<PME_OPTIONS type="grid" xmlgrid="dynaforms/fields/_options" editRow="" deleteRow="1" insertRow="1" sqlconnection="XMLDB" />
 
 <BTN_CANCEL type="button" onclick="cancel();">
   <en>Cancel</en>
@@ -79,4 +80,4 @@ function cancel(){
     currentPopupWindow.remove();
 }
 ]]></PME_JS>
-</dynaForm>  
+</dynaForm>

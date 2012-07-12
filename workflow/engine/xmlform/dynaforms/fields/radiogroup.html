@@ -1,4 +1,4 @@
-<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>  
+<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>
  <div class="borderForm" style="padding-left: 0pt; padding-right: 0pt;">
 		<div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
 		<div class="content" style="">
@@ -23,7 +23,7 @@
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$PME_XMLNODE_NAME}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.PME_XMLNODE_NAME} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_XMLNODE_NAME}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_XMLNODE_NAME}</td>
               </tr>
                                               <tr style="display: none;">
               <td colspan="2">{$form.PME_XMLNODE_NAME_OLD}</td>
@@ -34,7 +34,7 @@
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$PME_LABEL}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.PME_LABEL} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_LABEL}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_LABEL}</td>
               </tr>
                                                <tr>
               <td class="FormTitle" colspan="2" align="">{$form.PME_SUBTITLE3}</td>
@@ -42,17 +42,17 @@
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$PME_REQUIRED}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.PME_REQUIRED} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_REQUIRED}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_REQUIRED}</td>
               </tr>
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$PME_DEFAULTVALUE}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.PME_DEFAULTVALUE} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_DEFAULTVALUE}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_DEFAULTVALUE}</td>
               </tr>
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$PME_HINT}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.PME_HINT} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_HINT}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_HINT}</td>
               </tr>
                                                <tr>
               <td class="FormTitle" colspan="2" align="">{$form.PME_SUBTITLE}</td>
@@ -60,7 +60,7 @@
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$PME_MODE}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.PME_MODE} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_MODE}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_MODE}</td>
               </tr>
                                                <tr>
               <td class="FormTitle" colspan="2" align="">{$form.PME_SUBTITLE2}</td>
@@ -68,12 +68,15 @@
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$PME_SQLCONNECTION}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.PME_SQLCONNECTION} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_SQLCONNECTION}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_SQLCONNECTION}</td>
               </tr>
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$PME_XMLNODE_VALUE}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.PME_XMLNODE_VALUE} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_XMLNODE_VALUE}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.PME_XMLNODE_VALUE}</td>
+              </tr>
+              <tr>
+                <td class="FormTitle" colspan="2" align="">{$form.PME_SUBTITLE4}</td>
               </tr>
                                                <tr>
               <td colspan="2">{$form.PME_OPTIONS}</td>
@@ -91,5 +94,5 @@
                                             <script type="text/javascript">
     {$form.PME_JS}
   </script>
-  
-</form>	
+
+</form>

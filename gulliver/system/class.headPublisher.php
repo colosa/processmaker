@@ -283,6 +283,10 @@ class headPublisher {
     $head = '';
     $head .= "  <script type='text/javascript' src='/js/ext/ext-base.js'></script>\n";
     $head .= "  <script type='text/javascript' src='/js/ext/ext-all.js'></script>\n";
+    $aux = explode('-', strtolower(SYS_LANG));
+    if (($aux[0] != 'en') && file_exists(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'ext' . PATH_SEP . 'locale' . PATH_SEP . 'ext-lang-' . $aux[0] . '.js')) {
+      $head .= "  <script type='text/javascript' src='/js/ext/locale/ext-lang-" . $aux[0] . ".js'></script>\n";
+    }
 
     // enabled for particular use
     $head .= $this->getExtJsLibraries();

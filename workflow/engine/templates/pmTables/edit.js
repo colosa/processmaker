@@ -100,7 +100,7 @@ Ext.onReady(function(){
     listeners:{
       selectionchange: function(sm){
           switch(sm.getCount()){
-            case 0: 
+            case 0:
               //Ext.getCmp('removeButton').disable();
               Ext.getCmp('editColumn').disable();
               Ext.getCmp('removeColumn').disable();
@@ -110,7 +110,7 @@ Ext.onReady(function(){
               Ext.getCmp('removeColumn').enable();
               break;
             default:
-              //Ext.getCmp('removeButton').enable(); 
+              //Ext.getCmp('removeButton').enable();
               Ext.getCmp('editColumn').disable();
               Ext.getCmp('removeColumn').enable();
               break;
@@ -303,7 +303,7 @@ Ext.onReady(function(){
       //if a column was set as PK so can't be null
       if (row.get('field_key') == true) {
         row.data.field_null = false;
-        
+
       }
       row.commit();
     }
@@ -359,7 +359,7 @@ Ext.onReady(function(){
               if (typeof(cindex) != "undefined") {
                 for(var i = 0; i < rows.length; i++) {
                   //skipping primary keys, we can't reorder
-                  if (rows[i].data.field_key ) 
+                  if (rows[i].data.field_key )
                     continue;
 
                   var srcIndex = ds.indexOfId(rows[i].id);
@@ -587,13 +587,13 @@ Ext.onReady(function(){
 
   southPanel = new Ext.FormPanel({
     region: 'south',
-    buttons:[ 
+    buttons:[
       {
         text: TABLE === false ? _("ID_CREATE") : _("ID_UPDATE"),
         handler: function() {
           if (TABLE === false || dataNumRows == 0) {
             createReportTable();
-          } 
+          }
           else {
             PMExt.confirm(_('ID_CONFIRM'), _('ID_PMTABLE_SAVE_AND_DATA_LOST'), createReportTable);
           }
@@ -622,7 +622,7 @@ Ext.onReady(function(){
 
     loadTableRowsFromArray(TABLE.FIELDS);
   }
-  
+
   if (dataNumRows > 0) {
     var tpl = new Ext.Template(
         '<div id="fb" style="border: 1px solid #FF0000; background-color:#FFAAAA; display:none; padding:15px; color:#000000; font-size:12px;">'+
@@ -638,13 +638,13 @@ Ext.onReady(function(){
 
 });
 
-// actions 
+// actions
 
 function createReportTable()
 {
   var tableName        = Ext.getCmp('REP_TAB_NAME').getValue().trim();
   var tableDescription = Ext.getCmp('REP_TAB_DSC').getValue().trim();
-  
+
   //validate table name
   if (tableName == '') {
     Ext.getCmp('REP_TAB_NAME').focus();
@@ -792,7 +792,7 @@ function _showDebugWin(content)
     y: 0,
     html: '<pre>' + content + '</pre>'
   });
-  
+
   dbgWin.show();
 }
 
@@ -811,7 +811,7 @@ function addColumn() {
     field_null : 1
   });
   var len = assignedGrid.getStore().data.length;
-  
+
   editor.stopEditing();
   store.insert(len, row);
   assignedGrid.getView().refresh();

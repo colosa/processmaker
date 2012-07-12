@@ -723,15 +723,15 @@ Ext.onReady(function(){
     comboDbConnections.getStore().reload({params:{PRO_UID : PRO_UID}});
     if (Ext.getCmp('REP_TAB_TYPE').getValue() == 'GRID') {
       gridsListStore.reload({params:{PRO_UID : PRO_UID}});
-    } 
-    
+    }
+
     if (TABLE === false) {
       loadFieldNormal();
     } //else if(typeof avFieldsList != 'undefined')
       //loadAvFieldsFromArray(avFieldsList);
-    
+
   } else {
-    
+
   }
 
   DDLoadFields();

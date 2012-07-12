@@ -7,7 +7,7 @@
 var availableGrid;
 
 var assignedGrid;
-var editor; // row editor for assignedGrid 
+var editor; // row editor for assignedGrid
 var store;  // store for assignedGrid
 
 //buttons define
@@ -34,7 +34,7 @@ Ext.onReady(function(){
       root: 'rows',
       totalProperty: 'count',
       fields : [
-        {name : 'FIELD_UID'}, 
+        {name : 'FIELD_UID'},
         {name : 'FIELD_NAME'},
         {name : '_index'},
         {name : '_isset'}
@@ -172,7 +172,7 @@ Ext.onReady(function(){
               }
             }
           }
-      }, 
+      },
       {
         text: 'X',
         ctCls:'pm_search_x_button',
@@ -181,7 +181,7 @@ Ext.onReady(function(){
           filterAvFields();
         }
       }, {
-        text: 'Filter',
+        text: _('ID_FILTER'),
         handler: function(){
           filterAvFields();
         }
@@ -203,7 +203,7 @@ Ext.onReady(function(){
       selectionchange: function(sm){
           switch(sm.getCount()){
             case 0:
-              Ext.getCmp('removeButton').disable(); 
+              Ext.getCmp('removeButton').disable();
               Ext.getCmp('removeColumn').disable();
               break;
             case 1:
@@ -235,15 +235,15 @@ Ext.onReady(function(){
         id: 'uid',
         dataIndex: 'uid',
         hidden: true
-      }, 
-      {        
+      },
+      {
         dataIndex: '_index',
         hidden: true
-      }, 
+      },
       {
         dataIndex: '_isset',
         hidden: true
-      }, 
+      },
       {
           id: 'field_uid',
           dataIndex: 'field_uid',
@@ -450,7 +450,7 @@ Ext.onReady(function(){
               if (typeof(cindex) != "undefined") {
                 for(var i = 0; i < rows.length; i++) {
                   //skipping primary keys, we can't reorder
-                  if (rows[i].data.field_key ) 
+                  if (rows[i].data.field_key )
                     continue;
 
                   var srcIndex = ds.indexOfId(rows[i].id);
@@ -598,7 +598,7 @@ Ext.onReady(function(){
         if (TABLE !== false) { // is editing
           defaultValue = TABLE.DBS_UID;
           comboDbConnections.setDisabled(true);
-        } 
+        }
         else {
           defaultValue = 'workflow';
         }
@@ -608,7 +608,7 @@ Ext.onReady(function(){
         if (i > -1){
           comboDbConnections.setValue(this.getAt(i).data.DBS_UID);
           comboDbConnections.setRawValue(this.getAt(i).data.DBS_NAME);
-        } 
+        }
         else {
           // DB COnnection deleted
           Ext.Msg.alert( _('ID_ERROR'), _('ID_DB_CONNECTION_NOT_EXIST') );
@@ -744,9 +744,9 @@ Ext.onReady(function(){
 
           // loading available fields
           //loadAvFieldsFromArray(avFieldsList);
-          //if (TABLE.ADD_TAB_TYPE == 'GRID') 
+          //if (TABLE.ADD_TAB_TYPE == 'GRID')
             //loadFieldsGrids();
-          //else 
+          //else
           if (TABLE.ADD_TAB_TYPE == 'NORMAL')
             loadFieldNormal();
 
@@ -847,7 +847,7 @@ Ext.onReady(function(){
     },
     items: items
   }
-  
+
   var frmDetails = new Ext.FormPanel(frmDetailsConfig);
 
   southPanel = new Ext.FormPanel({
@@ -882,13 +882,13 @@ Ext.onReady(function(){
     comboDbConnections.getStore().reload({params:{PRO_UID : PRO_UID}});
     if (Ext.getCmp('REP_TAB_TYPE').getValue() == 'GRID') {
       gridsListStore.reload({params:{PRO_UID : PRO_UID}});
-    } 
-    
+    }
+
     if (TABLE === false) {
       if(TABLE.ADD_TAB_TYPE != 'GRID')
         loadFieldNormal();
     }
-    
+
   }
 
   DDLoadFields();
@@ -1037,7 +1037,7 @@ function addColumn()
     field_null  : 1
   });
   var len = assignedGrid.getStore().data.length;
-  
+
   editor.stopEditing();
   store.insert(len, row);
   assignedGrid.getView().refresh();
@@ -1081,12 +1081,12 @@ AssignAllFieldsAction = function(){
 
 //RevomeALLButton Functionality
 RemoveAllFieldsAction = function(){
-  
+
   if (store.getCount() > 100) {
     PMExt.info(_('ID_NOTICE'), _('ID_ACTION_DISABLED_TO_LOW_PERFORMANCE_1') + _('ID_ACTION_DISABLED_TO_LOW_PERFORMANCE_2') );
     return ;
   }
-  
+
   var allRows = Ext.getCmp('assignedGrid').getStore();
   var records = new Array();
   if (allRows.getCount() > 0) {
@@ -1115,7 +1115,7 @@ loadFieldNormal = function(){
 loadFieldsGrids = function(){
   var available = Ext.getCmp('availableGrid');
   available.store.removeAll();
-  
+
   available.store.load({
     params: {
       action: "getDynafields",
@@ -1242,9 +1242,9 @@ function unsetReportFields(records) {
       ix = records[i].data['_index'] != '' ? records[i].data['_index'] : records[i].data['field_dyn']
       indexes.push(ix);
     } else {
-      if ( records[i].data['field_name'] == 'APP_UID' 
+      if ( records[i].data['field_name'] == 'APP_UID'
         || records[i].data['field_name'] == 'APP_NUMBER'
-        || records[i].data['field_name'] == 'ROW') 
+        || records[i].data['field_name'] == 'ROW')
       {
         records[i] = null;
       }

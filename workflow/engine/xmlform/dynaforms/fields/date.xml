@@ -120,19 +120,19 @@ function masks(e){
   oPanel.options = {
     size        : {w:400, h:370},
     position    : {x:e.clientX, y:e.clientY-300, center:false},
-    title       : 'Masks List',
+    title       : _('ID_MASKS_LIST'),
     statusBar   : false,
     control     : {resize:false,roll:false,drag:true},
     fx          : {modal:true,opacity:true,blinkToFront:false,fadeIn:false,drag:true}
   };
   oPanel.make();
-  
+
   var oRPC = new leimnud.module.rpc.xmlhttp({url : '../dynaforms/datemask'});
   oRPC.callback = function(rpc) {
     oPanel.addContent(rpc.xmlhttp.responseText);
   }.extend(this);
   oRPC.make();
-  
+
   return false;
 }
 
@@ -223,7 +223,7 @@ function validDate() {
     if(getField('PME_BEFOREDATE').value == ''){
       msgBox('@G::LoadTranslation(ID_SEL_BEFORE_DATE)', "alert");
       return false;
-    } 
+    }
 
     if(getField('PME_AFTERDATE').value == ''){
       msgBox('@G::LoadTranslation(ID_SEL_AFTER_DATE)', "alert");
@@ -234,7 +234,7 @@ function validDate() {
     if(getField('PME_STARTDATE').value == ''){
       msgBox('@G::LoadTranslation(ID_SEL_START_DATE)', "alert");
       return false;
-    } 
+    }
 
     if(getField('PME_ENDDATE').value == ''){
       msgBox('@G::LoadTranslation(ID_SEL_END_DATE)', "alert");
@@ -246,4 +246,4 @@ function validDate() {
 }
 
 ]]></PME_JS>
-</dynaForm>  
+</dynaForm>
