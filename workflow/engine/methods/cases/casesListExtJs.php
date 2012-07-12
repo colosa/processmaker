@@ -31,7 +31,7 @@
   $confReassignList = getReassignList();
 
   // evaluates an action and the configuration for the list that will be rendered
-  $config       = getAdditionalFields($action);
+  $config       = getAdditionalFields($action, (class_exists('enterprisePlugin') ? $confCasesList : array()));
   $columns      = $config['caseColumns'];
   $readerFields = $config['caseReaderFields'];
   $reassignColumns      = $confReassignList['caseColumns'];
@@ -198,7 +198,7 @@
     $cProcess->addSelectColumn(AppCacheViewPeer::PRO_UID);
     $cProcess->addSelectColumn(AppCacheViewPeer::APP_PRO_TITLE);
     $cProcess->setDistinct(AppCacheViewPeer::PRO_UID);
-    
+
     $oDataset = AppCacheViewPeer::doSelectRS($cProcess);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $oDataset->next();
@@ -697,7 +697,7 @@
     $caseColumns[] = array( 'header' => 'Reassigned Uid',                    'dataIndex' => 'APP_REASSIGN_USER_UID','width' => 120, 'hidden'=> true, 'hideable'=> false );
     $caseColumns[] = array( 'header' => 'Reassigned Uid',                    'dataIndex' => 'TAS_UID',              'width' => 120, 'hidden'=> true, 'hideable'=> false );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_REASSIGN_TO'),'dataIndex' => 'APP_REASSIGN_USER',    'width' => 170 );
- 
+
     $caseReaderFields = array();
     $caseReaderFields[] = array( 'name' => 'APP_NUMBER' );
     $caseReaderFields[] = array( 'name' => 'APP_TITLE' );
@@ -739,41 +739,54 @@
    * @return Array $config
    */
 
-function getAdditionalFields($action){
-  switch ( $action ) {
-    case 'draft' :
-      $config = getDraft();
-      break;
-    case 'simple_search':
-    case 'search' :
-      $config = getSearch();
-      break;
-    case 'participated' :
-    case 'sent' :
-      $config = getParticipated();
-      break;
-    case 'unassigned' :
-      $config = getUnassigned();
-      break;
-    case 'paused' :
-      $config = getPaused();
-      break;
-    case 'to_revise' :
-      $config = getToRevise();
-      break;
-    case 'to_reassign' :
-      $config = getToReassign();
-      break;
-    case 'gral' :
-      $config = getGeneral();
-      break;
-    case 'todo' :
-    default :
-      $action = 'todo';
-      $config = getToDo();
-    break;
+function getAdditionalFields($action, $confCasesList=array()) {
+  if (!empty($confCasesList) && !empty($confCasesList['second']['data'])) {// For the case list builder in the enterprise plugin
+    $caseColumns = array();
+    $caseReaderFields = array();
+
+    foreach($confCasesList['second']['data'] as $fieldData) {
+      if ($fieldData['fieldType'] != 'key') {
+        $label = $fieldData['label'];
+        $caseColumns[] = array('header' => $label, 'dataIndex' => $fieldData['name'], 'width' => $fieldData['width'], 'align' => $fieldData['align']);
+        $caseReaderFields[] = array('name' => $fieldData['name']);
+      }
+    }
+    return array('caseColumns' => $caseColumns, 'caseReaderFields' => $caseReaderFields, 'rowsperpage' => $confCasesList['rowsperpage'], 'dateformat' => $confCasesList['dateformat']);
+  } else {
+    switch ($action) {
+      case 'draft' :
+        $config = getDraft();
+        break;
+      case 'simple_search':
+      case 'search' :
+        $config = getSearch();
+        break;
+      case 'participated' :
+      case 'sent' :
+        $config = getParticipated();
+        break;
+      case 'unassigned' :
+        $config = getUnassigned();
+        break;
+      case 'paused' :
+        $config = getPaused();
+        break;
+      case 'to_revise' :
+        $config = getToRevise();
+        break;
+      case 'to_reassign' :
+        $config = getToReassign();
+        break;
+      case 'gral' :
+        $config = getGeneral();
+        break;
+      case 'todo' :
+      default :
+        $action = 'todo';
+        $config = getToDo();
+        break;
+    }
+    return $config;
   }
-  
-  return $config;
 }
 
