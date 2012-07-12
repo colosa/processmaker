@@ -219,49 +219,52 @@ var processmap=function(){
             textAlign:"center"
            });
                var dr1 = document.createElement("img");
-               dr1.src = this.options.images_dir+"0.gif";
-               dr1.title = G_STRINGS.ID_PROCESSMAP_SEQUENTIAL;
+               dr1.src = this.options.images_dir + "0.gif";
+               dr1.title = _("ID_PROCESSMAP_SEQUENTIAL");
                div.appendChild(dr1);
-               //dr1.style.marginTop=7;
+               //dr1.style.marginTop = 7;
                //div.appendChild(document.createElement("p"));
-               var dr2 = document.createElement("img");
-               //dr2.style.marginTop=7;
-               dr2.src = this.options.images_dir+"1.gif";
-               dr2.title = G_STRINGS.ID_PROCESSMAP_SELECTION;
 
+               var dr2 = document.createElement("img");
+               //dr2.style.marginTop = 7;
+               dr2.src = this.options.images_dir + "1.gif";
+               dr2.title = _("ID_PROCESSMAP_SELECTION");
                div.appendChild(dr2);
                //div.appendChild(document.createElement("p"));
+
                var dr3 = document.createElement("img");
-               dr3.src = this.options.images_dir+"2.gif";
-               dr3.title = G_STRINGS.ID_PROCESSMAP_EVALUATION;
-               //dr3.style.marginTop=7;
+               dr3.src = this.options.images_dir + "2.gif";
+               dr3.title = _("ID_PROCESSMAP_EVALUATION");
+               //dr3.style.marginTop = 7;
                div.appendChild(dr3);
                //div.appendChild(document.createElement("p"));
+
                var dr4 = document.createElement("img");
-               dr4.src = this.options.images_dir+"3.gif";
-               dr4.title = G_STRINGS.ID_PROCESSMAP_PARALLEL_FORK;
-               //dr4.style.marginTop=7;
+               dr4.src = this.options.images_dir + "3.gif";
+               dr4.title = _("ID_PROCESSMAP_PARALLEL_FORK");
+               //dr4.style.marginTop = 7;
                div.appendChild(dr4);
                //div.appendChild(document.createElement("p"));
+
                var dr5 = document.createElement("img");
-               dr5.src = this.options.images_dir+"4.gif";
-               dr5.title = G_STRINGS.ID_PROCESSMAP_PARALLEL_EVALUATION_FORK;
-               //dr5.style.marginTop=7;
+               dr5.src = this.options.images_dir + "4.gif";
+               dr5.title = _("ID_PROCESSMAP_PARALLEL_EVALUATION_FORK");
+               //dr5.style.marginTop = 7;
                div.appendChild(dr5);
 
                var dr6 = document.createElement("img");
-               dr6.src = this.options.images_dir+"5.gif";
-               dr6.title = G_STRINGS.ID_PROCESSMAP_PARALLEL_JOIN;
+               dr6.src = this.options.images_dir + "5.gif";
+               dr6.title = _("ID_PROCESSMAP_PARALLEL_JOIN");
                div.appendChild(dr6);
 
                var fin = document.createElement("img");
-               fin.src = this.options.images_dir+"6.gif";
-               fin.title = G_STRINGS.ID_END_OF_PROCESS;
+               fin.src = this.options.images_dir + "6.gif";
+               fin.title = _("ID_END_OF_PROCESS");
                div.appendChild(fin);
 
                var ini = document.createElement("img");
-               ini.src = this.options.images_dir+"7.gif";
-               ini.title = "Starting task";
+               ini.src = this.options.images_dir + "7.gif";
+               ini.title = _("ID_START_TASK");
                div.appendChild(ini);
 
              /*var dis = document.createElement("img");
@@ -917,7 +920,7 @@ var processmap=function(){
               this.observers.lineas.unregister(deri.to[i].object.indexObserver);
             }
             if(deri.type===5 || deri.type===8)
-            { 
+            {
               var toTask = this.data.db.task[this.tools.getIndexOfUid(deri.to[i].task)];
               if (typeof(toTask) != 'undefined') {
                 toTask.object.inJoin = toTask.object.inJoin-1;
@@ -927,8 +930,8 @@ var processmap=function(){
                     backgroundPosition:"0 0",
                     background:""
                   });
-                }  
-              }              
+                }
+              }
             }
           }
         }
@@ -1350,7 +1353,7 @@ var processmap=function(){
         var menu = new this.parent.module.app.menuRight();
         var textMenu = G_STRINGS.ID_PROCESSMAP_USERS_AND_GROUPS_ADHOC;
         var lengthText = textMenu.length * 0.60;
-        
+
         menu.make({
           target: a,
           width: (3 + lengthText) + "em",
@@ -1513,7 +1516,7 @@ var processmap=function(){
           },args:index})},
           {image:"/images/delete.png",text:G_STRINGS.ID_PROCESSMAP_DELETE_TASK,launch:this.parent.closure({instance:this,method:function(index){
             var data = this.data.db.task[index];
-            
+
             var r = new leimnud.module.rpc.xmlhttp({
               url: this.options.dataServer,
               args: "action=taskCases&data=" + {
@@ -1523,7 +1526,7 @@ var processmap=function(){
             r.callback = function (rpc) {
               var rs = rpc.xmlhttp.responseText.parseJSON();
               var casesNumRec = rs.casesNumRec;
-              
+
               if (casesNumRec == 0) {
                 new this.parent.module.app.confirm().make({
                   label: G_STRINGS.ID_PROCESSMAP_CONFIRM_DELETE_TASK + " " + data.label,
@@ -1547,14 +1550,14 @@ var processmap=function(){
                 var msg = _("ID_TASK_CANT_DELETE");
                 msg = msg.replace("{0}", data.label);
                 msg = msg.replace("{1}", casesNumRec);
-              
+
                 new this.parent.module.app.info().make({label: msg});
               }
             }.extend(this);
             r.make();
-            
+
             return;
-            
+
             if(confirm(G_STRINGS.ID_PROCESSMAP_CONFIRM_DELETE_TASK+" "+ data.label))
             {
               data.object.drag.flush();
@@ -1580,7 +1583,7 @@ var processmap=function(){
                   panel.flag = true;
                   panel.makeTab();
                   return false;
-                }                
+                }
               }
               delete panel.flag;
 

@@ -20,7 +20,7 @@ Ext.onReady(function(){
     items: [
       {
         xtype: 'tbbutton',
-        text : 'Three Columns',
+        text : _("ID_DASHBOARD_BTNCOLUMNS3"),
         handler : function(a) {
           var vp = Ext.getCmp('viewportDashboard');
           var pd = Ext.getCmp('portalDashboard');
@@ -40,7 +40,7 @@ Ext.onReady(function(){
       },
       {
         xtype: 'tbbutton',
-        text : 'Two Columns',
+        text : _("ID_DASHBOARD_BTNCOLUMNS2"),
         handler : function(a) {
           var vp = Ext.getCmp('viewportDashboard');
           var pd = Ext.getCmp('portalDashboard');
