@@ -158,7 +158,7 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle)
           height : 40,
           growMin: 40,
           growMax: 80,
-          maxLengthText  : 150,
+          maxLengthText  : 500,
           allowBlank     :true,
           selectOnFocus  :true,
           enableKeyEvents: true,
@@ -172,7 +172,7 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle)
     rowtbar: [
       [
         '->',
-        '<span id="countChar">150</span>',
+        '<span id="countChar">500</span>',
         ' ',
         {
           id: 'sendBtn',
@@ -230,10 +230,10 @@ function updateTextCtr(body, event) {
   ctr = document.getElementById('countChar').innerHTML;
 
   text = Ext.getCmp('caseNoteText').getValue();
-  maxLength = 150;
+  maxLength = 500;
 
   if (text.length > maxLength) {
-    Ext.getCmp('caseNoteText').setValue(Ext.getCmp('caseNoteText').getValue().substr(0,150));
+    Ext.getCmp('caseNoteText').setValue(Ext.getCmp('caseNoteText').getValue().substr(0,500));
   }
   else {
     document.getElementById('countChar').innerHTML = maxLength - text.length;
@@ -267,7 +267,7 @@ function newNoteHandler()
     document.getElementById('countChar').style.display = 'block';
     Ext.getCmp('caseNoteText').focus();
     Ext.getCmp('caseNoteText').reset();
-    document.getElementById('countChar').innerHTML = '150';
+    document.getElementById('countChar').innerHTML = '500';
     caseNotesWindow.doLayout();
   }
 
