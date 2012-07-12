@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-83-g1eee9e8\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-335-g266130f\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-06-18 19:24:33\n"
+"PO-Revision-Date: 2012-07-12 14:34:13\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -9466,14 +9466,14 @@ msgstr "Disable"
 # TRANSLATION
 # LABEL/ID_YES_VALUE
 #: LABEL/ID_YES_VALUE
-msgid "YES"
-msgstr "YES"
+msgid "[LABEL/ID_YES_VALUE] Yes"
+msgstr "Yes"
 
 # TRANSLATION
 # LABEL/ID_NO_VALUE
 #: LABEL/ID_NO_VALUE
-msgid "NO"
-msgstr "NO"
+msgid "[LABEL/ID_NO_VALUE] No"
+msgstr "No"
 
 # TRANSLATION
 # LABEL/ID_ACTIVE_USERS
@@ -10786,8 +10786,8 @@ msgstr "Caps Lock is On"
 # TRANSLATION
 # LABEL/ID_ENABLE_VIRTUAL_KEYBOARD
 #: LABEL/ID_ENABLE_VIRTUAL_KEYBOARD
-msgid "Enable Virtual Keyboard"
-msgstr "Enable Virtual Keyboard"
+msgid "Enable Virtual Keyboard (Only uxmodern skin)"
+msgstr "Enable Virtual Keyboard (Only uxmodern skin)"
 
 # TRANSLATION
 # LABEL/ID_DEFAULT_LANGUAGE
@@ -12492,6 +12492,192 @@ msgstr "TRUE"
 #: LABEL/ID_FALSE
 msgid "FALSE"
 msgstr "FALSE"
+
+# TRANSLATION
+# LABEL/ID_INSTRUCTIONS_TEXT
+#: LABEL/ID_INSTRUCTIONS_TEXT
+msgid "To assign a case it should be selected from the grid and then on the Search enter a name to do the user search to whom the case will be reasigned and then select one from the list."
+msgstr "To assign a case it should be selected from the grid and then on the Search enter a name to do the user search to whom the case will be reasigned and then select one from the list."
+
+# TRANSLATION
+# LABEL/ID_CONFIRM_TO_REASSIGN
+#: LABEL/ID_CONFIRM_TO_REASSIGN
+msgid "There are cases which are not reassigned to a user. Do you like to continue?"
+msgstr "There are cases which are not reassigned to a user. Do you like to continue?"
+
+# TRANSLATION
+# LABEL/ID_USERNAME_TESTING
+#: LABEL/ID_USERNAME_TESTING
+msgid "Verifying username availability"
+msgstr "Verifying username availability"
+
+# TRANSLATION
+# LABEL/ID_USERNAME_CORRECT
+#: LABEL/ID_USERNAME_CORRECT
+msgid "Available Username"
+msgstr "Available Username"
+
+# TRANSLATION
+# LABEL/ID_SENDMAIL_NOT_INSTALLED
+#: LABEL/ID_SENDMAIL_NOT_INSTALLED
+msgid "An error has occured, please verify on which server \"SendMail\" has been installed or any other mail service, and if it has been configured correctly."
+msgstr "An error has occured, please verify on which server \"SendMail\" has been installed or any other mail service, and if it has been configured correctly."
+
+# TRANSLATION
+# LABEL/ID_PPP_MINIMUM_LENGTH
+#: LABEL/ID_PPP_MINIMUM_LENGTH
+msgid "[LABEL/ID_PPP_MINIMUM_LENGTH] Minimum length"
+msgstr "Minimum length"
+
+# TRANSLATION
+# LABEL/ID_PPP_MAXIMUM_LENGTH
+#: LABEL/ID_PPP_MAXIMUM_LENGTH
+msgid "[LABEL/ID_PPP_MAXIMUM_LENGTH] Maximum length"
+msgstr "Maximum length"
+
+# TRANSLATION
+# LABEL/ID_PASSWORD_COMPLIES_POLICIES
+#: LABEL/ID_PASSWORD_COMPLIES_POLICIES
+msgid "The password complies with the security policies."
+msgstr "The password complies with the security policies."
+
+# TRANSLATION
+# LABEL/ID_INSTRUCTIONS
+#: LABEL/ID_INSTRUCTIONS
+msgid "Instructions"
+msgstr "Instructions"
+
+# TRANSLATION
+# LABEL/ID_NOT_REQUIRED
+#: LABEL/ID_NOT_REQUIRED
+msgid "Not Required"
+msgstr "Not Required"
+
+# TRANSLATION
+# LABEL/DYNAFIELD_ALREADY_EXIST
+#: LABEL/DYNAFIELD_ALREADY_EXIST
+msgid "[LABEL/DYNAFIELD_ALREADY_EXIST] The field name already exists!"
+msgstr "The field name already exists!"
+
+# TRANSLATION
+# LABEL/DYNAFIELD_EMPTY
+#: LABEL/DYNAFIELD_EMPTY
+msgid "The name field is empty"
+msgstr "The name field is empty"
+
+# TRANSLATION
+# LABEL/DYNAFIELD_NODENAME_NUMBER
+#: LABEL/DYNAFIELD_NODENAME_NUMBER
+msgid "The field name should not start with a number"
+msgstr "The field name should not start with a number"
+
+# TRANSLATION
+# LABEL/ID_EMPTY_NODENAME
+#: LABEL/ID_EMPTY_NODENAME
+msgid "[LABEL/ID_EMPTY_NODENAME] The name field is empty"
+msgstr "The name field is empty"
+
+# TRANSLATION
+# LABEL/ID_TAS_DURATION_REQUIRE
+#: LABEL/ID_TAS_DURATION_REQUIRE
+msgid "Duration task required"
+msgstr "Duration task required"
+
+# TRANSLATION
+# LABEL/ID_NAME_TAS_TITLE_REQUIRE
+#: LABEL/ID_NAME_TAS_TITLE_REQUIRE
+msgid "Task title required"
+msgstr "Task title required"
+
+# TRANSLATION
+# LABEL/APP_TITLE_CASE_LABEL_UPDATE
+#: LABEL/APP_TITLE_CASE_LABEL_UPDATE
+msgid "The System has detected that the changes on case labels will affect more than 1000 records, so the work will be scheduled by the cron to perform the update the next time the cron will run."
+msgstr "The System has detected that the changes on case labels will affect more than 1000 records, so the work will be scheduled by the cron to perform the update the next time the cron will run."
+
+# TRANSLATION
+# LABEL/ID_MESSAGE_LOGIN
+#: LABEL/ID_MESSAGE_LOGIN
+msgid "The default language that is configured in this place is for the \"dropdown\" of the languages that are displaying on the login screen, this configuration is set for each workspace."
+msgstr "The default language that is configured in this place is for the \"dropdown\" of the languages that are displaying on the login screen, this configuration is set for each workspace."
+
+# TRANSLATION
+# LABEL/ID_MESSAGE_SYSTEM
+#: LABEL/ID_MESSAGE_SYSTEM
+msgid "The language that is set by default applies directly when the domain is entered (eg.- http://127.0.0.1:8081), the system reads the configuration and redirects the link to the selected language"
+msgstr "The language that is set by default applies directly when the domain is entered (eg.- http://127.0.0.1:8081), the system reads the configuration and redirects the link to the selected language"
+
+# TRANSLATION
+# LABEL/ID_MESSAGE_SYSTEM2
+#: LABEL/ID_MESSAGE_SYSTEM2
+msgid "(eg.- http://127.0.0.1:8081/sys/en/classic/login/login), it should be emphasized that this configuration is for all environments."
+msgstr "(eg.- http://127.0.0.1:8081/sys/en/classic/login/login), it should be emphasized that this configuration is for all environments."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAP_SEQUENTIAL
+#: LABEL/ID_PROCESSMAP_SEQUENTIAL
+msgid "[LABEL/ID_PROCESSMAP_SEQUENTIAL] Sequential"
+msgstr "Sequential"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAP_SELECTION
+#: LABEL/ID_PROCESSMAP_SELECTION
+msgid "[LABEL/ID_PROCESSMAP_SELECTION] Selection"
+msgstr "Selection"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAP_EVALUATION
+#: LABEL/ID_PROCESSMAP_EVALUATION
+msgid "[LABEL/ID_PROCESSMAP_EVALUATION] Evaluation"
+msgstr "Evaluation"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAP_PARALLEL_FORK
+#: LABEL/ID_PROCESSMAP_PARALLEL_FORK
+msgid "[LABEL/ID_PROCESSMAP_PARALLEL_FORK] Parallel (fork)"
+msgstr "Parallel (fork)"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAP_PARALLEL_JOIN
+#: LABEL/ID_PROCESSMAP_PARALLEL_JOIN
+msgid "[LABEL/ID_PROCESSMAP_PARALLEL_JOIN] Parallel (join)"
+msgstr "Parallel (join)"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAP_PARALLEL_EVALUATION_FORK
+#: LABEL/ID_PROCESSMAP_PARALLEL_EVALUATION_FORK
+msgid "[LABEL/ID_PROCESSMAP_PARALLEL_EVALUATION_FORK] Parallel by Evaluation (fork)"
+msgstr "Parallel by Evaluation (fork)"
+
+# TRANSLATION
+# LABEL/ID_MASKS_LIST
+#: LABEL/ID_MASKS_LIST
+msgid "Masks List"
+msgstr "Masks List"
+
+# TRANSLATION
+# LABEL/ID_DASHBOARD_BTNCOLUMNS2
+#: LABEL/ID_DASHBOARD_BTNCOLUMNS2
+msgid "Two columns"
+msgstr "Two columns"
+
+# TRANSLATION
+# LABEL/ID_DASHBOARD_BTNCOLUMNS3
+#: LABEL/ID_DASHBOARD_BTNCOLUMNS3
+msgid "Three columns"
+msgstr "Three columns"
+
+# TRANSLATION
+# LABEL/ID_FILTER
+#: LABEL/ID_FILTER
+msgid "[LABEL/ID_FILTER] Filter"
+msgstr "Filter"
+
+# TRANSLATION
+# LABEL/ID_DOCUMENT_TYPE
+#: LABEL/ID_DOCUMENT_TYPE
+msgid "PM Type"
+msgstr "PM Type"
 
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
@@ -23321,6 +23507,12 @@ msgstr "- Default -"
 msgid "[processes/processes_Edit.xml?PRO_DEBUG] Debug"
 msgstr "Debug"
 
+# processes/processes_Edit.xml?PRO_SHOW_MESSAGE
+# processes/processes_Edit.xml
+#: checkbox - PRO_SHOW_MESSAGE
+msgid "Hide the case number and the case title in the steps"
+msgstr "Hide the case number and the case title in the steps"
+
 # processes/processes_Edit.xml?BTN_CANCEL
 # processes/processes_Edit.xml
 #: button - BTN_CANCEL
@@ -23872,6 +24064,12 @@ msgstr "Update Date"
 #: link - LINK
 msgid "[processes/processes_ListPublic.xml?LINK] "
 msgstr ""
+
+# processes/processes_ListPublicMenu.xml?BackList
+# processes/processes_ListPublicMenu.xml
+#: link - BackList
+msgid "[processes/processes_ListPublicMenu.xml?BackList] Back"
+msgstr "Back"
 
 # processes/processes_New.xml?TITLE1
 # processes/processes_New.xml
@@ -28844,8 +29042,8 @@ msgstr "Case Description"
 # tasks/tasks_Notifications.xml?SEND_EMAIL
 # tasks/tasks_Notifications.xml
 #: checkbox - SEND_EMAIL
-msgid "[tasks/tasks_Notifications.xml?SEND_EMAIL] After routing notify the next assigned user(s)."
-msgstr "After routing notify the next assigned user(s)."
+msgid "[tasks/tasks_Notifications.xml?SEND_EMAIL] After routing notify the next assigned user(s)"
+msgstr "After routing notify the next assigned user(s)"
 
 # tasks/tasks_Notifications.xml?TAS_DEF_SUBJECT_MESSAGE
 # tasks/tasks_Notifications.xml
@@ -32459,6 +32657,12 @@ msgstr "(none)"
 msgid "Sql"
 msgstr "Sql"
 
+# dynaforms/fields/checkgroup.xml?PME_SUBTITLE4
+# dynaforms/fields/checkgroup.xml
+#: subtitle - PME_SUBTITLE4
+msgid "[dynaforms/fields/checkgroup.xml?PME_SUBTITLE4] Options"
+msgstr "Options"
+
 # dynaforms/fields/checkgroup.xml?BTN_CANCEL
 # dynaforms/fields/checkgroup.xml
 #: button - BTN_CANCEL
@@ -32750,7 +32954,7 @@ msgstr "<b>Mask: </b>%Y=Year, %m=Month, %d=Day"
 # dynaforms/fields/date.xml?PME_SUBTITLE3xl
 # dynaforms/fields/date.xml
 #: link - PME_SUBTITLE3xl
-msgid "Masks List"
+msgid "[dynaforms/fields/date.xml?PME_SUBTITLE3xl] Masks List"
 msgstr "Masks List"
 
 # dynaforms/fields/date.xml?PME_MASK
@@ -32975,6 +33179,12 @@ msgstr "(none)"
 msgid "[dynaforms/fields/dropdown.xml?PME_XMLNODE_VALUE] Sql"
 msgstr "Sql"
 
+# dynaforms/fields/dropdown.xml?PME_SUBTITLE4
+# dynaforms/fields/dropdown.xml
+#: subtitle - PME_SUBTITLE4
+msgid "[dynaforms/fields/dropdown.xml?PME_SUBTITLE4] Options"
+msgstr "Options"
+
 # dynaforms/fields/dropdown.xml?BTN_CANCEL
 # dynaforms/fields/dropdown.xml
 #: button - BTN_CANCEL
@@ -33065,6 +33275,12 @@ msgstr "Field Name"
 msgid "[dynaforms/fields/grid.xml?PME_XMLGRID] Grid"
 msgstr "Grid"
 
+# dynaforms/fields/grid.xml?PME_XMLGRID-0
+# dynaforms/fields/grid.xml
+#: dropdown - PME_XMLGRID - 0
+msgid "[dynaforms/fields/grid.xml?PME_XMLGRID-0]"
+msgstr "- Select a Grid-"
+
 # dynaforms/fields/grid.xml?PME_ADDROW
 # dynaforms/fields/grid.xml
 #: checkbox - PME_ADDROW
@@ -33106,24 +33322,6 @@ msgstr "Field Name"
 #: text - PME_DEFAULTVALUE
 msgid "[dynaforms/fields/hidden.xml?PME_DEFAULTVALUE] Default Value"
 msgstr "Default Value"
-
-# dynaforms/fields/hidden.xml?PME_MODE
-# dynaforms/fields/hidden.xml
-#: dropdown - PME_MODE
-msgid "[dynaforms/fields/hidden.xml?PME_MODE] Mode"
-msgstr "Mode"
-
-# dynaforms/fields/hidden.xml?PME_MODE-edit
-# dynaforms/fields/hidden.xml
-#: dropdown - PME_MODE - edit
-msgid "[dynaforms/fields/hidden.xml?PME_MODE-edit]"
-msgstr "Edit"
-
-# dynaforms/fields/hidden.xml?PME_MODE-view
-# dynaforms/fields/hidden.xml
-#: dropdown - PME_MODE - view
-msgid "[dynaforms/fields/hidden.xml?PME_MODE-view]"
-msgstr "View"
 
 # dynaforms/fields/hidden.xml?PME_SUBTITLE2
 # dynaforms/fields/hidden.xml
@@ -33376,6 +33574,12 @@ msgstr "(none)"
 #: textarea - PME_XMLNODE_VALUE
 msgid "[dynaforms/fields/listbox.xml?PME_XMLNODE_VALUE] Sql"
 msgstr "Sql"
+
+# dynaforms/fields/listbox.xml?PME_SUBTITLE4
+# dynaforms/fields/listbox.xml
+#: subtitle - PME_SUBTITLE4
+msgid "[dynaforms/fields/listbox.xml?PME_SUBTITLE4] Options"
+msgstr "Options"
 
 # dynaforms/fields/listbox.xml?BTN_CANCEL
 # dynaforms/fields/listbox.xml
@@ -33766,6 +33970,12 @@ msgstr "(none)"
 #: textarea - PME_XMLNODE_VALUE
 msgid "[dynaforms/fields/radiogroup.xml?PME_XMLNODE_VALUE] Sql"
 msgstr "Sql"
+
+# dynaforms/fields/radiogroup.xml?PME_SUBTITLE4
+# dynaforms/fields/radiogroup.xml
+#: subtitle - PME_SUBTITLE4
+msgid "[dynaforms/fields/radiogroup.xml?PME_SUBTITLE4] Options"
+msgstr "Options"
 
 # dynaforms/fields/radiogroup.xml?BTN_CANCEL
 # dynaforms/fields/radiogroup.xml
