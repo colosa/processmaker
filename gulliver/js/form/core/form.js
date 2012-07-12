@@ -930,6 +930,7 @@ function G_Text( form, element, name)
       mask = aMasks[m];
       type = me.mType;
       comma_sep = me.comma_separator;
+      comma_sep = (comma_sep == '') ? '.' : comma_sep;
       aResults.push(me.replaceMask(newValue, newCursor, mask, type, comma_sep));
     }
     minIndex = 0;
