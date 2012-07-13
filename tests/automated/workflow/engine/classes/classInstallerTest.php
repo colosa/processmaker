@@ -1,4 +1,5 @@
 <?php
+
 require_once PATH_TRUNK . 'gulliver/thirdparty/smarty/libs/Smarty.class.php';
 require_once PATH_TRUNK . 'gulliver/system/class.xmlform.php';
 require_once PATH_TRUNK . 'gulliver/system/class.xmlDocument.php';
