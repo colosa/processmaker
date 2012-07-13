@@ -22,7 +22,7 @@ try {
 
   $userUid = (isset ( $_SESSION ['USER_LOGGED'] ) && $_SESSION ['USER_LOGGED'] != '') ? $_SESSION ['USER_LOGGED'] : null;
   
-  if ((($solrConf = System::solrEnv()) !== false) && $action != 'paused') {
+  if (($action == 'todo' || $action == 'draft' || $action == 'sent' || $action == 'selfservice' || $action == 'unassigned' || $action == 'search') && (($solrConf = System::solrEnv()) !== false)) {
     G::LoadClass ( 'AppSolr' );
     $ApplicationSolrIndex = new AppSolr ($solrConf['solr_enabled'], $solrConf['solr_host'], $solrConf['solr_instance']);
     
