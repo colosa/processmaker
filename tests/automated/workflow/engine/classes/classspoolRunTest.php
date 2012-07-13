@@ -44,7 +44,7 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('spoolRun');
-        $this->assertTrue( count($methods) == 9);
+        $this->assertTrue(count($methods) == 9);
     }
 
     /**
@@ -54,7 +54,7 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function test__construct()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('__construct', $methods), 'exists method __construct');
+        $this->assertTrue(in_array('__construct', $methods), 'exists method __construct');
         $r = new ReflectionMethod('spoolRun', '__construct');
         $params = $r->getParameters();
     }
@@ -66,7 +66,7 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function testgetSpoolFilesList()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getSpoolFilesList', $methods), 'exists method getSpoolFilesList');
+        $this->assertTrue(in_array('getSpoolFilesList', $methods), 'exists method getSpoolFilesList');
         $r = new ReflectionMethod('spoolRun', 'getSpoolFilesList');
         $params = $r->getParameters();
     }
@@ -78,12 +78,12 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function testcreate()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('create', $methods), 'exists method create');
+        $this->assertTrue(in_array('create', $methods), 'exists method create');
         $r = new ReflectionMethod('spoolRun', 'create');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'aData');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional() == false);
+        $this->assertTrue($params[0]->getName() == 'aData');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == false);
     }
 
     /**
@@ -93,12 +93,12 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function testsetConfig()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('setConfig', $methods), 'exists method setConfig');
+        $this->assertTrue(in_array('setConfig', $methods), 'exists method setConfig');
         $r = new ReflectionMethod('spoolRun', 'setConfig');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'aConfig');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional() == false);
+        $this->assertTrue($params[0]->getName() == 'aConfig');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == false);
     }
 
     /**
@@ -108,44 +108,44 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function testsetData()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('setData', $methods), 'exists method setData');
+        $this->assertTrue(in_array('setData', $methods), 'exists method setData');
         $r = new ReflectionMethod('spoolRun', 'setData');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'sAppMsgUid');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional() == false);
-        $this->assertTrue( $params[1]->getName() == 'sSubject');
-        $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional() == false);
-        $this->assertTrue( $params[2]->getName() == 'sFrom');
-        $this->assertTrue( $params[2]->isArray() == false);
-        $this->assertTrue( $params[2]->isOptional() == false);
-        $this->assertTrue( $params[3]->getName() == 'sTo');
-        $this->assertTrue( $params[3]->isArray() == false);
-        $this->assertTrue( $params[3]->isOptional() == false);
-        $this->assertTrue( $params[4]->getName() == 'sBody');
-        $this->assertTrue( $params[4]->isArray() == false);
-        $this->assertTrue( $params[4]->isOptional() == false);
-        $this->assertTrue( $params[5]->getName() == 'sDate');
-        $this->assertTrue( $params[5]->isArray() == false);
-        $this->assertTrue( $params[5]->isOptional() == true);
-        $this->assertTrue( $params[5]->getDefaultValue() == '');
-        $this->assertTrue( $params[6]->getName() == 'sCC');
-        $this->assertTrue( $params[6]->isArray() == false);
-        $this->assertTrue( $params[6]->isOptional() == true);
-        $this->assertTrue( $params[6]->getDefaultValue() == '');
-        $this->assertTrue( $params[7]->getName() == 'sBCC');
-        $this->assertTrue( $params[7]->isArray() == false);
-        $this->assertTrue( $params[7]->isOptional() == true);
-        $this->assertTrue( $params[7]->getDefaultValue() == '');
-        $this->assertTrue( $params[8]->getName() == 'sTemplate');
-        $this->assertTrue( $params[8]->isArray() == false);
-        $this->assertTrue( $params[8]->isOptional() == true);
-        $this->assertTrue( $params[8]->getDefaultValue() == '');
-        $this->assertTrue( $params[9]->getName() == 'aAttachment');
-        $this->assertTrue( $params[9]->isArray() == false);
-        $this->assertTrue( $params[9]->isOptional() == true);
-        $this->assertTrue( $params[9]->getDefaultValue() == array());
+        $this->assertTrue($params[0]->getName() == 'sAppMsgUid');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == false);
+        $this->assertTrue($params[1]->getName() == 'sSubject');
+        $this->assertTrue($params[1]->isArray() == false);
+        $this->assertTrue($params[1]->isOptional() == false);
+        $this->assertTrue($params[2]->getName() == 'sFrom');
+        $this->assertTrue($params[2]->isArray() == false);
+        $this->assertTrue($params[2]->isOptional() == false);
+        $this->assertTrue($params[3]->getName() == 'sTo');
+        $this->assertTrue($params[3]->isArray() == false);
+        $this->assertTrue($params[3]->isOptional() == false);
+        $this->assertTrue($params[4]->getName() == 'sBody');
+        $this->assertTrue($params[4]->isArray() == false);
+        $this->assertTrue($params[4]->isOptional() == false);
+        $this->assertTrue($params[5]->getName() == 'sDate');
+        $this->assertTrue($params[5]->isArray() == false);
+        $this->assertTrue($params[5]->isOptional() == true);
+        $this->assertTrue($params[5]->getDefaultValue() == '');
+        $this->assertTrue($params[6]->getName() == 'sCC');
+        $this->assertTrue($params[6]->isArray() == false);
+        $this->assertTrue($params[6]->isOptional() == true);
+        $this->assertTrue($params[6]->getDefaultValue() == '');
+        $this->assertTrue($params[7]->getName() == 'sBCC');
+        $this->assertTrue($params[7]->isArray() == false);
+        $this->assertTrue($params[7]->isOptional() == true);
+        $this->assertTrue($params[7]->getDefaultValue() == '');
+        $this->assertTrue($params[8]->getName() == 'sTemplate');
+        $this->assertTrue($params[8]->isArray() == false);
+        $this->assertTrue($params[8]->isOptional() == true);
+        $this->assertTrue($params[8]->getDefaultValue() == '');
+        $this->assertTrue($params[9]->getName() == 'aAttachment');
+        $this->assertTrue($params[9]->isArray() == false);
+        $this->assertTrue($params[9]->isOptional() == true);
+        $this->assertTrue($params[9]->getDefaultValue() == array());
     }
 
     /**
@@ -155,7 +155,7 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function testsendMail()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('sendMail', $methods), 'exists method sendMail');
+        $this->assertTrue(in_array('sendMail', $methods), 'exists method sendMail');
         $r = new ReflectionMethod('spoolRun', 'sendMail');
         $params = $r->getParameters();
     }
@@ -167,7 +167,7 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function testresendEmails()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('resendEmails', $methods), 'exists method resendEmails');
+        $this->assertTrue(in_array('resendEmails', $methods), 'exists method resendEmails');
         $r = new ReflectionMethod('spoolRun', 'resendEmails');
         $params = $r->getParameters();
     }
@@ -179,7 +179,7 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function testgetWarnings()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getWarnings', $methods), 'exists method getWarnings');
+        $this->assertTrue(in_array('getWarnings', $methods), 'exists method getWarnings');
         $r = new ReflectionMethod('spoolRun', 'getWarnings');
         $params = $r->getParameters();
     }
@@ -191,12 +191,12 @@ class classspoolRunTest extends PHPUnit_Framework_TestCase
     public function testdb_insert()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('db_insert', $methods), 'exists method db_insert');
+        $this->assertTrue(in_array('db_insert', $methods), 'exists method db_insert');
         $r = new ReflectionMethod('spoolRun', 'db_insert');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'db_spool');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional() == false);
+        $this->assertTrue($params[0]->getName() == 'db_spool');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == false);
     }
 }
 
