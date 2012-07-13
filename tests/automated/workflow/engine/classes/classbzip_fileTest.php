@@ -26,7 +26,7 @@ class classbzip_fileTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new bzip_file();
+        $this->object = new bzip_file('bzipfile.bzip');
     }
 
     /**
@@ -38,12 +38,13 @@ class classbzip_fileTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('bzip_file');        $this->assertTrue( count($methods) == 18);
+        $methods = get_class_methods('bzip_file');
+        $this->assertTrue(count($methods) == 18);
     }
 
     /**
@@ -53,13 +54,13 @@ class classbzip_fileTest extends PHPUnit_Framework_TestCase
     public function testbzip_file()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('bzip_file', $methods ), 'exists method bzip_file' );
+        $this->assertTrue(in_array('bzip_file', $methods), 'exists method bzip_file');
         $r = new ReflectionMethod('bzip_file', 'bzip_file');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'name');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+        $this->assertTrue($params[0]->getName() == 'name');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional () == false);
+    }
 
     /**
     * @covers bzip_file::create_bzip
@@ -68,10 +69,10 @@ class classbzip_fileTest extends PHPUnit_Framework_TestCase
     public function testcreate_bzip()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('create_bzip', $methods ), 'exists method create_bzip' );
+        $this->assertTrue(in_array('create_bzip', $methods), 'exists method create_bzip');
         $r = new ReflectionMethod('bzip_file', 'create_bzip');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers bzip_file::open_archive
@@ -80,9 +81,9 @@ class classbzip_fileTest extends PHPUnit_Framework_TestCase
     public function testopen_archive()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('open_archive', $methods ), 'exists method open_archive' );
+        $this->assertTrue(in_array('open_archive', $methods), 'exists method open_archive');
         $r = new ReflectionMethod('bzip_file', 'open_archive');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 
