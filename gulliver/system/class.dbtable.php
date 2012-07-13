@@ -1,7 +1,7 @@
 <?php
 /**
  * class.dbtable.php
- * @package gulliver.system 
+ * @package gulliver.system
  *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2011 Colosa Inc.
@@ -85,7 +85,7 @@ class DBTable
       $dberror = PEAR::raiseError(null, DB_ERROR_OBJECT_NOT_DEFINED, null, 'null',
         "You tried to call to a DBTable function without create an instance of DBConnection",
         'G_Error', true);
-      DBconnection::logError( $dberror );
+      //DBconnection::logError( $dberror );
       return $dberror;
     }
     $this->is_new = true;
@@ -254,7 +254,7 @@ class DBTable
     $strValues = "";
     if( defined('DB_ADAPTER'))
       $DBEngine = DB_ADAPTER;
-    else 
+    else
       $DBEngine = 'mysql';
     foreach( $this->Fields as $field => $val ) {
       $strFields .= $field . ",";
@@ -294,7 +294,7 @@ class DBTable
 
     if(defined('DB_ADAPTER'))
       $DBEngine = DB_ADAPTER;
-    else 
+    else
       $DBEngine = 'mysql';
 
     foreach ( $this->table_keys as $k => $v ) $remainKeys[ $v ] = false;
@@ -369,7 +369,7 @@ class DBTable
     $remainKeys = array();
     if(defined('DB_ADAPTER'))
       $DBEngine = DB_ADAPTER;
-    else 
+    else
       $DBEngine = 'mysql';
     foreach ( $this->table_keys as $k => $v ) $remainKeys[ $v ] = false;
 

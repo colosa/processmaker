@@ -68,7 +68,7 @@ class RBAC
 
   static private $instance = NULL;
 
-  private function __construct() {
+  public function __construct() {
   }
 
   /**

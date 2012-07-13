@@ -13,6 +13,8 @@ define('PATH_TRUNK', realpath(__DIR__ . '/../') . PATH_SEP);
 define('PATH_HOME',  PATH_TRUNK . 'workflow' . PATH_SEP);
 
 define('SYS_SYS', $GLOBALS['SYS_SYS']);
+define('SYS_LANG', $GLOBALS['SYS_LANG']);
+define('SYS_SKIN', $GLOBALS['SYS_SKIN']);
 
 require  PATH_HOME . 'engine' . PATH_SEP . 'config' . PATH_SEP . 'paths.php';
 

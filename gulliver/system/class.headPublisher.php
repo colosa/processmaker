@@ -84,7 +84,7 @@ class headPublisher {
    * @return string
    */
 
-  private function __construct() {
+  public function __construct() {
     $this->addScriptFile ( "/js/maborak/core/maborak.js" );
   }
 

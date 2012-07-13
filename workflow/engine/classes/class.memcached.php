@@ -26,7 +26,7 @@
 
 /**
  * The ProcessMaker memcached class
- * 
+ *
  * @package workflow.engine.ProcessMaker
  */
 
@@ -35,16 +35,16 @@ class PMmemcached {
   const ONE_HOUR = 3600;
   const TWO_HOURS = 7200;
   const EIGHT_HOURS = 28800;
-  
+
   var $version;
   var $mem;
   var $connected = false;
   var $enabled = false;
   var $supported = false;
-  
+
   private static $instance = NULL;
-  
-  private function __construct($workspace) {
+
+  public function __construct($workspace) {
     $this->enabled = MEMCACHED_ENABLED;
     $this->connected = false;
     $this->workspace = $workspace;
@@ -77,14 +77,14 @@ class PMmemcached {
         $this->mem = new FileCache ( $cacheFolder );
       }
     }
-    
+
     if (! MEMCACHED_ENABLED) {
       $this->connected = false;
       return false;
     }
-  
+
   }
-  
+
   /**
    * to get singleton instance
    *
@@ -97,15 +97,15 @@ class PMmemcached {
     }
     return self::$instance;
   }
-  
+
   public function __clone() {
     throw new Exception ( "Clone is not allowed." );
   }
-  
+
   public function __wakeup() {
     throw new Exception ( "Deserializing is not allowed." );
   }
-  
+
   function set($key, $object, $timeout = 0) {
     if (! $this->connected)
       return false;
@@ -114,43 +114,43 @@ class PMmemcached {
     else
       $this->mem->set ( $this->workspace . '_' . $key, $object );
   }
-  
+
   function get($key) {
     if (! $this->connected)
       return false;
     return $this->mem->get ( $this->workspace . '_' . $key );
   }
-  
+
   function add($key, $value) {
     if ((! $this->connected) || ($this->class == 'filecache'))
       return false;
     return $this->mem->add ( $this->workspace . '_' . $key, $value );
   }
-  
+
   function increment($key, $value) {
     if ((! $this->connected) || ($this->class == 'filecache'))
       return false;
     return $this->mem->increment ( $this->workspace . '_' . $key, $value );
   }
-  
+
   function delete($key) {
     if ((! $this->connected) || ($this->class == 'filecache'))
       return false;
     return $this->mem->delete ( $this->workspace . '_' . $key );
   }
-  
+
   function flush() {
     if ((! $this->connected) || ($this->class == 'filecache'))
       return false;
     return $this->mem->flush ();
   }
-  
+
   function getStats() {
     if ((! $this->connected) || ($this->class == 'filecache'))
       return false;
     return $status = $this->mem->getStats ();
   }
-  
+
   function printDetails() {
     if ((! $this->connected) || ($this->class == 'filecache'))
       return false;
@@ -164,16 +164,16 @@ class PMmemcached {
     echo "<tr><td>Number of connection structures allocated by the server </td><td>" . $status ["connection_structures"] . "</td></tr>";
     echo "<tr><td>Cumulative number of retrieval requests </td><td>" . $status ["cmd_get"] . "</td></tr>";
     echo "<tr><td> Cumulative number of storage requests </td><td>" . $status ["cmd_set"] . "</td></tr>";
-    
+
     $percCacheHit = (( real ) $status ["get_hits"] / ( real ) $status ["cmd_get"] * 100);
     $percCacheHit = round ( $percCacheHit, 3 );
     $percCacheMiss = 100 - $percCacheHit;
-    
+
     echo "<tr><td>Number of keys that have been requested and found present </td><td>" . $status ["get_hits"] . " ($percCacheHit%)</td></tr>";
     echo "<tr><td>Number of items that have been requested and not found </td><td>" . $status ["get_misses"] . "($percCacheMiss%)</td></tr>";
-    
+
     $MBRead = ( real ) $status ["bytes_read"] / (1024 * 1024);
-    
+
     echo "<tr><td>Total number of bytes read by this server from network </td><td>" . $MBRead . " Mega Bytes</td></tr>";
     $MBWrite = ( real ) $status ["bytes_written"] / (1024 * 1024);
     echo "<tr><td>Total number of bytes sent by this server to network </td><td>" . $MBWrite . " Mega Bytes</td></tr>";

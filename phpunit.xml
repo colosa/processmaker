@@ -12,7 +12,10 @@
          bootstrap="tests/bootstrap.php"
 >
     <testsuites>
-        <testsuite name="ProcessMaker Test Suite">
+        <testsuite name="automated">
+            <directory>./tests/automated/</directory>
+        </testsuite>
+        <testsuite name="unit">
             <directory>./tests/unit/</directory>
         </testsuite>
     </testsuites>
@@ -27,9 +30,11 @@
             </exclude>
         </whitelist>
     </filter> -->
-    
+
     <php>
         <var name="SYS_SYS" value="os" />
+        <var name="SYS_LANG" value="en" />
+        <var name="SYS_SKIN" value="classic" />
     </php>
 
     <logging>
@@ -38,5 +43,5 @@
             lowUpperBound="10" highLowerBound="20"/>
         <log type="coverage-clover" target="build/logs/clover.xml"/>
         <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
-    </logging>                                      
+    </logging>
 </phpunit>

@@ -18,7 +18,7 @@ class RestClient {
      /**
       * Private Constructor, sets default options
       */
-     private function __construct() {
+     public function __construct() {
          $this->curl = curl_init();
          curl_setopt($this->curl,CURLOPT_RETURNTRANSFER,true);
          curl_setopt($this->curl,CURLOPT_AUTOREFERER,true); // This make sure will follow redirects
