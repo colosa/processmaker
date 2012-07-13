@@ -66,7 +66,7 @@ class classloginInfoTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($params[1]->isOptional () == false);
         $this->assertTrue($params[2]->getName() == 'lSession');
         $this->assertTrue($params[2]->isArray() == false);
-        $this->assertTrue($params[2]->isOptional () == false);
+        $this->assertTrue($params[2]->isOptional() == false);
     }
 }
 
