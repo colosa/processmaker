@@ -26,7 +26,7 @@ class classApplicationWithoutDelegationRecordsExceptionTest extends PHPUnit_Fram
     */
     protected function setUp()
     {
-        $this->object = new ApplicationWithoutDelegationRecordsException();
+        $this->object = new ApplicationWithoutDelegationRecordsException('message');
     }
 
     /**
@@ -43,7 +43,8 @@ class classApplicationWithoutDelegationRecordsExceptionTest extends PHPUnit_Fram
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('ApplicationWithoutDelegationRecordsException');        $this->assertTrue( count($methods) == 8);
+        $methods = get_class_methods('ApplicationWithoutDelegationRecordsException');
+        $this->assertTrue( count($methods) == 8);
     }
 
     /**
@@ -63,7 +64,7 @@ class classApplicationWithoutDelegationRecordsExceptionTest extends PHPUnit_Fram
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers ApplicationWithoutDelegationRecordsException::__toString
@@ -75,6 +76,6 @@ class classApplicationWithoutDelegationRecordsExceptionTest extends PHPUnit_Fram
         $this->assertTrue( in_array('__toString', $methods ), 'exists method __toString' );
         $r = new ReflectionMethod('ApplicationWithoutDelegationRecordsException', '__toString');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 

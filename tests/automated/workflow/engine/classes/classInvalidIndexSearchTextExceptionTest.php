@@ -26,7 +26,7 @@ class classInvalidIndexSearchTextExceptionTest extends PHPUnit_Framework_TestCas
     */
     protected function setUp()
     {
-        $this->object = new InvalidIndexSearchTextException();
+        $this->object = new InvalidIndexSearchTextException('message');
     }
 
     /**
@@ -43,7 +43,8 @@ class classInvalidIndexSearchTextExceptionTest extends PHPUnit_Framework_TestCas
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('InvalidIndexSearchTextException');        $this->assertTrue( count($methods) == 8);
+        $methods = get_class_methods('InvalidIndexSearchTextException');
+        $this->assertTrue( count($methods) == 8);
     }
 
     /**
@@ -63,7 +64,7 @@ class classInvalidIndexSearchTextExceptionTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers InvalidIndexSearchTextException::__toString
@@ -75,6 +76,6 @@ class classInvalidIndexSearchTextExceptionTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( in_array('__toString', $methods ), 'exists method __toString' );
         $r = new ReflectionMethod('InvalidIndexSearchTextException', '__toString');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 
