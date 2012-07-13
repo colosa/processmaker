@@ -26,7 +26,10 @@ class classXmlForm_Field_popupOptionTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_popupOption();
+        $attributes = array("type" => "input");
+        $xmlNode    = new Xml_Node("node1", "type1", "value1", $attributes);
+
+        $this->object = new XmlForm_Field_popupOption($xmlNode);
     }
 
     /**
@@ -38,12 +41,13 @@ class classXmlForm_Field_popupOptionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_popupOption');        $this->assertTrue( count($methods) == 24);
+        $methods = get_class_methods('XmlForm_Field_popupOption');
+        $this->assertTrue(count($methods) == 24);
     }
 
     /**
@@ -56,6 +60,6 @@ class classXmlForm_Field_popupOptionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getEvents', $methods ), 'exists method getEvents' );
         $r = new ReflectionMethod('XmlForm_Field_popupOption', 'getEvents');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 
