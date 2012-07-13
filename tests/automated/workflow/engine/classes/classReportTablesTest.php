@@ -43,7 +43,8 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('ReportTables');        $this->assertTrue( count($methods) == 11);
+        $methods = get_class_methods('ReportTables');
+        $this->assertTrue( count($methods) == 11);
     }
 
     /**
@@ -60,7 +61,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers ReportTables::dropTable
@@ -79,7 +80,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'report');
-    } 
+    }
 
     /**
     * @covers ReportTables::createTable
@@ -105,12 +106,12 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'aFields');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
-        $this->assertTrue( $params[3]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[3]->getDefaultValue() == array());
         $this->assertTrue( $params[4]->getName() == 'bDefaultFields');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers ReportTables::populateTable
@@ -136,7 +137,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'aFields');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
-        $this->assertTrue( $params[3]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[3]->getDefaultValue() == array());
         $this->assertTrue( $params[4]->getName() == 'sProcessUid');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
@@ -145,7 +146,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == true);
         $this->assertTrue( $params[5]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers ReportTables::getTableVars
@@ -164,7 +165,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers ReportTables::deleteReportTable
@@ -179,7 +180,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sRepTabUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ReportTables::getSplitDate
@@ -197,7 +198,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'mask');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ReportTables::getFormatDate
@@ -215,7 +216,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sMask');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ReportTables::updateTables
@@ -239,7 +240,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'aFields');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ReportTables::tableExist
@@ -251,7 +252,7 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('tableExist', $methods ), 'exists method tableExist' );
         $r = new ReflectionMethod('ReportTables', 'tableExist');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers ReportTables::chooseDB
@@ -266,6 +267,6 @@ class classReportTablesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'TabConnectionk');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
+}
 
-  } 
