@@ -26,7 +26,7 @@ class classtar_fileTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new tar_file();
+        $this->object = new tar_file('name');
     }
 
     /**
@@ -43,7 +43,8 @@ class classtar_fileTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('tar_file');        $this->assertTrue( count($methods) == 16);
+        $methods = get_class_methods('tar_file');
+        $this->assertTrue( count($methods) == 16);
     }
 
     /**
@@ -59,7 +60,7 @@ class classtar_fileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers tar_file::create_tar
@@ -71,7 +72,7 @@ class classtar_fileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('create_tar', $methods ), 'exists method create_tar' );
         $r = new ReflectionMethod('tar_file', 'create_tar');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers tar_file::extract_files
@@ -83,7 +84,7 @@ class classtar_fileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('extract_files', $methods ), 'exists method extract_files' );
         $r = new ReflectionMethod('tar_file', 'extract_files');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers tar_file::open_archive
@@ -95,6 +96,6 @@ class classtar_fileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('open_archive', $methods ), 'exists method open_archive' );
         $r = new ReflectionMethod('tar_file', 'open_archive');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 
