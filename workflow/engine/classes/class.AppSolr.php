@@ -66,7 +66,7 @@ class InvalidIndexSearchTextException extends Exception
  * @author Herbert Saal Gutierrez
  * 
  * @category Colosa
- * @copyright Copyright (c) 2005-2011 Colosa Inc. (http://www.colosa.com)
+ * @copyright Copyright (c) 2005-2012 Colosa Inc. (http://www.colosa.com)
  */
 class ApplicationWithoutDelegationRecordsException extends Exception
 {
@@ -78,6 +78,31 @@ class ApplicationWithoutDelegationRecordsException extends Exception
     parent::__construct ($message, $code);
   }
   
+  // custom string representation of object
+  public function __toString()
+  {
+    return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+  }
+}
+
+/**
+ * Application APP_DATA could not be unserialized exception
+ *
+ * @author Herbert Saal Gutierrez
+ *
+ * @category Colosa
+ * @copyright Copyright (c) 2005-2012 Colosa Inc. (http://www.colosa.com)
+ */
+class ApplicationAPP_DATAUnserializeException extends Exception
+{
+  // Redefine the exception so message isn't optional
+  public function __construct($message, $code = 0)
+  {
+    // some code
+    // make sure everything is assigned properly
+    parent::__construct ($message, $code);
+  }
+
   // custom string representation of object
   public function __toString()
   {
@@ -1015,11 +1040,23 @@ class AppSolr
       $unassignedUsers = $result [11];
       $unassignedGroups = $result [12];
       
-      // create document
-      $xmlDoc .= $this->buildSearchIndexDocumentPMOS2 ($documentInformation, $dynaformFieldTypes, 
-          $lastUpdateDate, $maxPriority, $assignedUsers, $assignedUsersRead, $assignedUsersUnread, 
-          $draftUser, $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser, 
-          $unassignedUsers, $unassignedGroups);
+      try {
+        // create document
+        $xmlDoc .= $this->buildSearchIndexDocumentPMOS2 ($documentInformation, $dynaformFieldTypes, 
+            $lastUpdateDate, $maxPriority, $assignedUsers, $assignedUsersRead, $assignedUsersUnread, 
+            $draftUser, $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser, 
+            $unassignedUsers, $unassignedGroups);
+      }
+      catch ( ApplicationAPP_DATAUnserializeException $e ) {
+        // exception trying to get application information
+        
+        //print $e->message +" \n";
+        //$fh = fopen("./UnserializeError_APP_DATA".".txt", 'a') or die("can't open file");
+        //fwrite($fh, $e->message . "\n");
+        //fclose($fh);
+        // skip and continue with the next application
+        continue;
+      }
     
     }
     
@@ -1288,7 +1325,7 @@ class AppSolr
       
       if (! $UnSerializedCaseData) {
         // error unserializing
-        throw new Exception ("Unserialize APP_DATA error. APP_UID: " . $documentData ['APP_UID']);
+        throw new ApplicationAPP_DATAUnserializeException ("Could not unserialize APP_DATA of APP_UID: " . $documentData ['APP_UID']);
       }
       else {
         foreach ($UnSerializedCaseData as $k => $value) {
@@ -1390,7 +1427,7 @@ class AppSolr
             }
           }
         } // foreach unserialized data
-      }
+      }// else unserialize APP_DATA
     } // empty APP_DATA
     
     $writer->endElement (); // end /doc
