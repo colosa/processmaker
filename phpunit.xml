@@ -12,8 +12,8 @@
          bootstrap="tests/bootstrap.php"
 >
     <testsuites>
-        <testsuite name="automated">
-            <directory>./tests/automated/</directory>
+        <testsuite name="automated processmaker only">
+            <directory>./tests/automated/workflow/engine</directory>
         </testsuite>
         <testsuite name="unit">
             <directory>./tests/unit/</directory>
