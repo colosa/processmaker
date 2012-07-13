@@ -163,6 +163,7 @@ function parsingFile ( $folder, $entry )
           fprintf ( $fp, "    */\n" );
           fprintf ( $fp, "    public function testNumberOfMethodsInThisClass()\n");
           fprintf ( $fp, "    {\n");
+          fprintf ( $fp, "        \$methods = get_class_methods('%s');", $className );
           fprintf ( $fp, "        \$this->assertTrue( count(\$methods) == %s);\n", count($methods) );
           fprintf ( $fp, "    }\n");
           fprintf ( $fp, "\n");
@@ -244,7 +245,7 @@ function parsingFile ( $folder, $entry )
             fprintf ( $fp, "        \$this->assertTrue( \$params[$key]->getDefaultValue() == '%s');\n", $param->getDefaultValue() );
         }
     }
-    fprintf ( $fp, "        \$this->markTestIncomplete('This test has not been implemented yet.');\n\n");
+//    fprintf ( $fp, "        \$this->markTestIncomplete('This test has not been implemented yet.');\n\n");
 
 
     fprintf ( $fp, "    } \n\n" );
