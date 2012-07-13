@@ -1,4 +1,5 @@
 <?php
+
 require_once PATH_TRUNK . 'gulliver/thirdparty/smarty/libs/Smarty.class.php';
 require_once PATH_TRUNK . 'gulliver/system/class.xmlform.php';
 require_once PATH_TRUNK . 'gulliver/system/class.xmlDocument.php';
@@ -26,7 +27,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new workspaceTools();
+        $this->object = new workspaceTools('$workspaceName');
     }
 
     /**
@@ -43,7 +44,8 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('workspaceTools');        $this->assertTrue( count($methods) == 27);
+        $methods = get_class_methods('workspaceTools');
+        $this->assertTrue( count($methods) == 27);
     }
 
     /**
@@ -59,7 +61,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'workspaceName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers workspaceTools::workspaceExists
@@ -71,7 +73,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('workspaceExists', $methods ), 'exists method workspaceExists' );
         $r = new ReflectionMethod('workspaceTools', 'workspaceExists');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers workspaceTools::upgrade
@@ -87,7 +89,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers workspaceTools::getDBInfo
@@ -99,7 +101,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getDBInfo', $methods ), 'exists method getDBInfo' );
         $r = new ReflectionMethod('workspaceTools', 'getDBInfo');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers workspaceTools::resetDBInfo
@@ -118,7 +120,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers workspaceTools::getDBCredentials
@@ -133,7 +135,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dbName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers workspaceTools::initPropel
@@ -149,7 +151,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers workspaceTools::upgradeTranslation
@@ -165,7 +167,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers workspaceTools::close
@@ -177,7 +179,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('close', $methods ), 'exists method close' );
         $r = new ReflectionMethod('workspaceTools', 'close');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers workspaceTools::getSchema
@@ -189,7 +191,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getSchema', $methods ), 'exists method getSchema' );
         $r = new ReflectionMethod('workspaceTools', 'getSchema');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers workspaceTools::upgradeCacheView
@@ -205,7 +207,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers workspaceTools::upgradePluginsDatabase
@@ -217,7 +219,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('upgradePluginsDatabase', $methods ), 'exists method upgradePluginsDatabase' );
         $r = new ReflectionMethod('workspaceTools', 'upgradePluginsDatabase');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers workspaceTools::upgradeDatabase
@@ -233,7 +235,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers workspaceTools::upgradeSchema
@@ -252,7 +254,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers workspaceTools::upgradeData
@@ -264,7 +266,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('upgradeData', $methods ), 'exists method upgradeData' );
         $r = new ReflectionMethod('workspaceTools', 'upgradeData');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers workspaceTools::updateThisRegistry
@@ -279,7 +281,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'data');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers workspaceTools::getMetadata
@@ -291,7 +293,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getMetadata', $methods ), 'exists method getMetadata' );
         $r = new ReflectionMethod('workspaceTools', 'getMetadata');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers workspaceTools::printSysInfo
@@ -303,7 +305,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('printSysInfo', $methods ), 'exists method printSysInfo' );
         $r = new ReflectionMethod('workspaceTools', 'printSysInfo');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers workspaceTools::printInfo
@@ -319,7 +321,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers workspaceTools::printMetadata
@@ -335,7 +337,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers workspaceTools::exportDatabase
@@ -350,7 +352,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'path');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers workspaceTools::createBackup
@@ -369,7 +371,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers workspaceTools::backup
@@ -388,7 +390,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers workspaceTools::restoreLegacy
@@ -403,7 +405,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'directory');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers workspaceTools::getBackupInfo
@@ -418,7 +420,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'filename');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers workspaceTools::dirPerms
@@ -442,7 +444,7 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'perms');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers workspaceTools::restore
@@ -468,6 +470,6 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '1');
-    } 
+    }
+}
 
-  } 
