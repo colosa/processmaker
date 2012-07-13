@@ -26,7 +26,7 @@ class classFileCacheTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new FileCache();
+        $this->object = new FileCache(null);
     }
 
     /**
@@ -38,12 +38,13 @@ class classFileCacheTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('FileCache');        $this->assertTrue( count($methods) == 4);
+        $methods = get_class_methods('FileCache');
+        $this->assertTrue(count($methods) == 4);
     }
 
     /**
@@ -59,7 +60,7 @@ class classFileCacheTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dir');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers FileCache::get
@@ -78,7 +79,7 @@ class classFileCacheTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '3600');
-    } 
+    }
 
     /**
     * @covers FileCache::set
@@ -96,7 +97,7 @@ class classFileCacheTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'data');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers FileCache::clear
@@ -111,6 +112,6 @@ class classFileCacheTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'key');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
+}
 
-  } 

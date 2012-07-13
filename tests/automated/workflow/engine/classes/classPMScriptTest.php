@@ -38,12 +38,13 @@ class classPMScriptTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('PMScript');        $this->assertTrue( count($methods) == 7);
+        $methods = get_class_methods('PMScript');
+        $this->assertTrue(count($methods) == 7);
     }
 
     /**
@@ -56,7 +57,7 @@ class classPMScriptTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('PMScript', $methods ), 'exists method PMScript' );
         $r = new ReflectionMethod('PMScript', 'PMScript');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMScript::setFields
@@ -68,11 +69,11 @@ class classPMScriptTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('setFields', $methods ), 'exists method setFields' );
         $r = new ReflectionMethod('PMScript', 'setFields');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'aFields');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue($params[0]->getName() == 'aFields');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional () == true);
+        $this->assertTrue($params[0]->getDefaultValue() == array());
+    }
 
     /**
     * @covers PMScript::setScript
@@ -88,7 +89,7 @@ class classPMScriptTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers PMScript::validSyntax
@@ -103,7 +104,7 @@ class classPMScriptTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sScript');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMScript::executeAndCatchErrors
@@ -121,7 +122,7 @@ class classPMScriptTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sCode');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMScript::execute
@@ -133,7 +134,7 @@ class classPMScriptTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('execute', $methods ), 'exists method execute' );
         $r = new ReflectionMethod('PMScript', 'execute');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMScript::evaluate
@@ -145,6 +146,6 @@ class classPMScriptTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('evaluate', $methods ), 'exists method evaluate' );
         $r = new ReflectionMethod('PMScript', 'evaluate');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 
