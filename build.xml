@@ -102,8 +102,9 @@
    <arg value="--report=checkstyle" />
    <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
    <arg value="--standard=PSR2" />
+   <arg value="--l" />
    <arg path="${basedir}/workflow/engine/methods/login" />
-   <arg path="${basedir}/workflow/engine/methods/services" />
+   <arg path="${basedir}/workflow/engine/classes" />
   </exec>
  </target>
 
