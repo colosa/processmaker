@@ -26,7 +26,7 @@ class classcssFileTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new cssFile();
+        $this->object = new cssFile('sNamespace', 'sCssFile');
     }
 
     /**
@@ -38,12 +38,13 @@ class classcssFileTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('cssFile');        $this->assertTrue( count($methods) == 1);
+        $methods = get_class_methods('cssFile');
+        $this->assertTrue( count($methods) == 1);
     }
 
     /**
@@ -62,6 +63,6 @@ class classcssFileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sCssFile');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
+}
 
-  } 
