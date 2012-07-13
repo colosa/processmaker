@@ -26,7 +26,9 @@ class classXmlForm_Field_GridTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_Grid();
+        $attributes = array('type'=>'input');
+        $fieldNode = new Xml_Node('testField', 'type', 'value', $attributes);
+        $this->object = new XmlForm_Field_Grid($fieldNode,'param', 'param');
     }
 
     /**
@@ -38,7 +40,7 @@ class classXmlForm_Field_GridTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -65,7 +67,7 @@ class classXmlForm_Field_GridTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'home');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Grid::parseFile
@@ -83,7 +85,7 @@ class classXmlForm_Field_GridTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'language');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Grid::render
@@ -102,7 +104,7 @@ class classXmlForm_Field_GridTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Grid::renderGrid
@@ -125,7 +127,7 @@ class classXmlForm_Field_GridTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '-1');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Grid::flipValues
@@ -140,6 +142,6 @@ class classXmlForm_Field_GridTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'values');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

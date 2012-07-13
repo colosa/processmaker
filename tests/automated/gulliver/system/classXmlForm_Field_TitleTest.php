@@ -26,7 +26,9 @@ class classXmlForm_Field_TitleTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_Title();
+        $attributes = array('type'=>'input');
+        $fieldNode = new Xml_Node('testField', 'type', 'value', $attributes);
+        $this->object = new XmlForm_Field_Title($fieldNode);
     }
 
     /**
@@ -38,7 +40,7 @@ class classXmlForm_Field_TitleTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -62,7 +64,7 @@ class classXmlForm_Field_TitleTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'owner');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Title::validateValue
@@ -77,6 +79,6 @@ class classXmlForm_Field_TitleTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'value');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

@@ -26,7 +26,9 @@ class classXmlForm_Field_HTMLTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_HTML();
+        $attributes = array('type'=>'input');
+        $fieldNode = new Xml_Node('testField', 'type', 'value', $attributes);
+        $this->object = new XmlForm_Field_HTML($fieldNode);
     }
 
     /**
@@ -38,7 +40,7 @@ class classXmlForm_Field_HTMLTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -63,7 +65,7 @@ class classXmlForm_Field_HTMLTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_HTML::attachEvents
@@ -78,6 +80,6 @@ class classXmlForm_Field_HTMLTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'element');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

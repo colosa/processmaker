@@ -26,7 +26,9 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field();
+        $attributes = array('type'=>'input');
+        $fieldNode = new Xml_Node('testField', 'type', 'value', $attributes);
+        $this->object = new XmlForm_Field($fieldNode);
     }
 
     /**
@@ -38,7 +40,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -71,7 +73,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::validateValue
@@ -86,7 +88,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'value');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::executeSQL
@@ -105,7 +107,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '-1');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::htmlentities
@@ -128,7 +130,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == 'utf-8');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::render
@@ -144,7 +146,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::renderGrid
@@ -172,7 +174,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '-1');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::renderTable
@@ -196,7 +198,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::dependentOf
@@ -208,7 +210,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('dependentOf', $methods ), 'exists method dependentOf' );
         $r = new ReflectionMethod('XmlForm_Field', 'dependentOf');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::mask
@@ -226,7 +228,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::getAttributes
@@ -238,7 +240,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAttributes', $methods ), 'exists method getAttributes' );
         $r = new ReflectionMethod('XmlForm_Field', 'getAttributes');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::getEvents
@@ -250,7 +252,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getEvents', $methods ), 'exists method getEvents' );
         $r = new ReflectionMethod('XmlForm_Field', 'getEvents');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::attachEvents
@@ -265,7 +267,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'elementRef');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::createXmlNode
@@ -281,7 +283,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::updateXmlNode
@@ -300,7 +302,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::getXmlAttributes
@@ -316,7 +318,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::maskValue
@@ -334,7 +336,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'owner');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::cloneObject
@@ -346,7 +348,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('cloneObject', $methods ), 'exists method cloneObject' );
         $r = new ReflectionMethod('XmlForm_Field', 'cloneObject');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::getPMTableValue
@@ -361,7 +363,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oOwner');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::NSRequiredValue
@@ -377,7 +379,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::NSGridLabel
@@ -393,7 +395,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::NSDefaultValue
@@ -409,7 +411,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::NSGridType
@@ -425,7 +427,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::NSDependentFields
@@ -441,7 +443,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field::renderHint
@@ -453,6 +455,6 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('renderHint', $methods ), 'exists method renderHint' );
         $r = new ReflectionMethod('XmlForm_Field', 'renderHint');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

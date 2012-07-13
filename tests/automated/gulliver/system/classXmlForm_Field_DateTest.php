@@ -26,7 +26,9 @@ class classXmlForm_Field_DateTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_Date();
+        $attributes = array('type'=>'input');
+        $fieldNode = new Xml_Node('testField', 'type', 'value', $attributes);
+        $this->object = new XmlForm_Field_Date($fieldNode);
     }
 
     /**
@@ -38,7 +40,7 @@ class classXmlForm_Field_DateTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -59,7 +61,7 @@ class classXmlForm_Field_DateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'date');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Date::isvalidBeforeFormat
@@ -74,7 +76,7 @@ class classXmlForm_Field_DateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'date');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Date::calculateBeforeFormat
@@ -92,7 +94,7 @@ class classXmlForm_Field_DateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sign');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Date::render
@@ -112,7 +114,7 @@ class classXmlForm_Field_DateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Date::renderGrid
@@ -136,7 +138,7 @@ class classXmlForm_Field_DateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Date::__draw_widget
@@ -158,6 +160,6 @@ class classXmlForm_Field_DateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
-  } 
+  }

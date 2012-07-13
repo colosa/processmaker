@@ -15,9 +15,11 @@
         <testsuite name="automated">
             <directory>./tests/automated/</directory>
         </testsuite>
+<!--
         <testsuite name="unit">
             <directory>./tests/unit/</directory>
         </testsuite>
+-->
     </testsuites>
 
 <!--     <filter>

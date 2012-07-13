@@ -26,7 +26,9 @@ class classXmlForm_Field_XmlformTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_Xmlform();
+        $attributes = array('type'=>'input');
+        $fieldNode = new Xml_Node('testField', 'type', 'value', $attributes);
+        $this->object = new XmlForm_Field_Xmlform($fieldNode,'lang','home','owner');
     }
 
     /**
@@ -38,7 +40,7 @@ class classXmlForm_Field_XmlformTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -65,7 +67,7 @@ class classXmlForm_Field_XmlformTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'home');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Xmlform::parseFile
@@ -83,7 +85,7 @@ class classXmlForm_Field_XmlformTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'language');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_Xmlform::render
@@ -98,6 +100,6 @@ class classXmlForm_Field_XmlformTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'values');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

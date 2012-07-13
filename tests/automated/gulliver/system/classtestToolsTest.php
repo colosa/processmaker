@@ -38,7 +38,7 @@ class classtestToolsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -71,7 +71,7 @@ class classtestToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->getName() == 'importFile');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers testTools::importLocalDB
@@ -86,7 +86,7 @@ class classtestToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'importFile');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers testTools::callMethod
@@ -110,7 +110,7 @@ class classtestToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'SESSION');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers testTools::arrayAppend
@@ -128,7 +128,7 @@ class classtestToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'appendFrom');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers testTools::arrayDelete
@@ -143,7 +143,7 @@ class classtestToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'array');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers testTools::replaceVariables
@@ -161,8 +161,8 @@ class classtestToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'ExternalVariables');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == Array());
+    }
 
     /**
     * @covers testTools::findValue
@@ -180,6 +180,6 @@ class classtestToolsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'obj');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

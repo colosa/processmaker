@@ -26,7 +26,9 @@ class classXmlForm_Field_CaptionPercentageTest extends PHPUnit_Framework_TestCas
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_CaptionPercentage();
+        $attributes = array('type'=>'input');
+        $fieldNode = new Xml_Node('testField', 'type', 'value', $attributes);
+        $this->object = new XmlForm_Field_CaptionPercentage($fieldNode);
     }
 
     /**
@@ -38,7 +40,7 @@ class classXmlForm_Field_CaptionPercentageTest extends PHPUnit_Framework_TestCas
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -60,6 +62,6 @@ class classXmlForm_Field_CaptionPercentageTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
-  } 
+  }
