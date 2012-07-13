@@ -26,7 +26,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new Cases();
+        $this->object = new Cases('appUid');
     }
 
     /**
@@ -43,7 +43,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('Cases');        $this->assertTrue( count($methods) == 96);
+        $methods = get_class_methods('Cases');
+        $this->assertTrue( count($methods) == 96);
     }
 
     /**
@@ -56,7 +57,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__construct', $methods ), 'exists method __construct' );
         $r = new ReflectionMethod('Cases', '__construct');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Cases::canStartCase
@@ -72,7 +73,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::getStartCases
@@ -88,7 +89,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::getStartCasesPerType
@@ -106,7 +107,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'typeView');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getSelfServiceTasks
@@ -122,7 +123,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::isSelfService
@@ -140,7 +141,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'TAS_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::loadCase
@@ -159,7 +160,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers Cases::loadCaseByNumber
@@ -174,7 +175,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sCaseNumber');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::refreshCaseLabel
@@ -195,7 +196,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sLabel');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::refreshCaseTitleAndDescription
@@ -204,7 +205,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testrefreshCaseTitleAndDescription()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('refreshCaseTitleAndDescription', $methods ), 'exists method refreshCaseTitleAndDescription' );
+        $this->assertTrue( in_array('refreshCaseTitleAndDescription', $methods ),
+            'exists method refreshCaseTitleAndDescription' );
         $r = new ReflectionMethod('Cases', 'refreshCaseTitleAndDescription');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
@@ -213,7 +215,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aAppData');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::newRefreshCaseTitleAndDescription
@@ -222,7 +224,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testnewRefreshCaseTitleAndDescription()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('newRefreshCaseTitleAndDescription', $methods ), 'exists method newRefreshCaseTitleAndDescription' );
+        $this->assertTrue( in_array('newRefreshCaseTitleAndDescription', $methods ),
+            'exists method newRefreshCaseTitleAndDescription' );
         $r = new ReflectionMethod('Cases', 'newRefreshCaseTitleAndDescription');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
@@ -234,7 +237,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'aAppData');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::refreshCaseTitle
@@ -252,7 +255,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aAppData');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::refreshCaseDescription
@@ -270,7 +273,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aAppData');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::refreshCaseStatusCode
@@ -288,7 +291,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aAppData');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::arrayRecursiveDiff
@@ -306,7 +309,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aArray2');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::updateCase
@@ -324,8 +327,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'Fields');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers Cases::removeCase
@@ -340,7 +343,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::setDelInitDate
@@ -358,7 +361,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'iDelIndex');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::setCatchUser
@@ -379,7 +382,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'usrId');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::GetOpenThreads
@@ -394,7 +397,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getSiblingThreads
@@ -412,7 +415,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'iDelIndex');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getOpenSiblingThreads
@@ -436,7 +439,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sCurrentTask');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::searchOpenPreviousTasks
@@ -457,8 +460,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'aPreviousTasks');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
-        $this->assertTrue( $params[2]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[2]->getDefaultValue() == array());
+    }
 
     /**
     * @covers Cases::getReviewedTasks
@@ -476,7 +479,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sAppUid');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::CountTotalPreviousTasks
@@ -491,7 +494,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sTasUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getOpenNullDelegations
@@ -509,7 +512,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sTasUid');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::isRouteOpen
@@ -527,7 +530,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sTasUid');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::newAppDelegation
@@ -568,7 +571,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[8]->isArray() == false);
         $this->assertTrue( $params[8]->isOptional () == true);
         $this->assertTrue( $params[8]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::updateAppDelegation
@@ -589,7 +592,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'iAppThreadIndex');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::GetAllDelegations
@@ -604,7 +607,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::GetAllThreads
@@ -619,7 +622,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::updateAppThread
@@ -640,7 +643,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'iNewDelIndex');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::closeAppThread
@@ -658,7 +661,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'iAppThreadIndex');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::closeAllThreads
@@ -673,7 +676,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::newAppThread
@@ -694,7 +697,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'iAppParent');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::closeAllDelegations
@@ -709,7 +712,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::CloseCurrentDelegation
@@ -727,7 +730,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'iDelIndex');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::ReactivateCurrentDelegation
@@ -736,7 +739,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testReactivateCurrentDelegation()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('ReactivateCurrentDelegation', $methods ), 'exists method ReactivateCurrentDelegation' );
+        $this->assertTrue( in_array('ReactivateCurrentDelegation', $methods ),
+            'exists method ReactivateCurrentDelegation' );
         $r = new ReflectionMethod('Cases', 'ReactivateCurrentDelegation');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
@@ -745,7 +749,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'iDelegation');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::startCase
@@ -767,7 +771,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::getNextStep
@@ -795,7 +799,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers Cases::getPreviousStep
@@ -823,7 +827,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers Cases::getNextSupervisorStep
@@ -845,7 +849,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == 'DYNAFORM');
-    } 
+    }
 
     /**
     * @covers Cases::getPreviousSupervisorStep
@@ -854,7 +858,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetPreviousSupervisorStep()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getPreviousSupervisorStep', $methods ), 'exists method getPreviousSupervisorStep' );
+        $this->assertTrue( in_array('getPreviousSupervisorStep', $methods ),
+            'exists method getPreviousSupervisorStep' );
         $r = new ReflectionMethod('Cases', 'getPreviousSupervisorStep');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
@@ -867,7 +872,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == 'DYNAFORM');
-    } 
+    }
 
     /**
     * @covers Cases::getTransferHistoryCriteria
@@ -876,13 +881,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetTransferHistoryCriteria()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getTransferHistoryCriteria', $methods ), 'exists method getTransferHistoryCriteria' );
+        $this->assertTrue( in_array('getTransferHistoryCriteria', $methods ),
+            'exists method getTransferHistoryCriteria' );
         $r = new ReflectionMethod('Cases', 'getTransferHistoryCriteria');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::prepareCriteriaForToDo
@@ -897,7 +903,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sUIDUserLogged');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getConditionCasesList
@@ -925,7 +931,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::loadCaseInCurrentDelegation
@@ -934,13 +940,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testloadCaseInCurrentDelegation()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('loadCaseInCurrentDelegation', $methods ), 'exists method loadCaseInCurrentDelegation' );
+        $this->assertTrue( in_array('loadCaseInCurrentDelegation', $methods ),
+            'exists method loadCaseInCurrentDelegation' );
         $r = new ReflectionMethod('Cases', 'loadCaseInCurrentDelegation');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'APP_UID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::loadCaseByDelegation
@@ -958,7 +965,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'delIndex');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::ThrowUnpauseDaemon
@@ -973,7 +980,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'today');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::UnpauseRoutedCasesWithPauseFlagEnabled
@@ -982,13 +989,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testUnpauseRoutedCasesWithPauseFlagEnabled()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('UnpauseRoutedCasesWithPauseFlagEnabled', $methods ), 'exists method UnpauseRoutedCasesWithPauseFlagEnabled' );
+        $this->assertTrue( in_array('UnpauseRoutedCasesWithPauseFlagEnabled', $methods ),
+            'exists method UnpauseRoutedCasesWithPauseFlagEnabled' );
         $r = new ReflectionMethod('Cases', 'UnpauseRoutedCasesWithPauseFlagEnabled');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'usrLogged');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getApplicationUIDByNumber
@@ -997,13 +1005,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetApplicationUIDByNumber()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getApplicationUIDByNumber', $methods ), 'exists method getApplicationUIDByNumber' );
+        $this->assertTrue( in_array('getApplicationUIDByNumber', $methods ),
+            'exists method getApplicationUIDByNumber' );
         $r = new ReflectionMethod('Cases', 'getApplicationUIDByNumber');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'iApplicationNumber');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getCurrentDelegation
@@ -1023,7 +1032,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::loadTriggers
@@ -1047,7 +1056,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sTriggerType');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::executeTriggers
@@ -1074,8 +1083,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->getName() == 'aFields');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
-        $this->assertTrue( $params[4]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[4]->getDefaultValue() == array());
+    }
 
     /**
     * @covers Cases::getTriggerNames
@@ -1090,7 +1099,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'triggers');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getInputDocumentsCriteria
@@ -1099,7 +1108,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetInputDocumentsCriteria()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getInputDocumentsCriteria', $methods ), 'exists method getInputDocumentsCriteria' );
+        $this->assertTrue( in_array('getInputDocumentsCriteria', $methods ),
+            'exists method getInputDocumentsCriteria' );
         $r = new ReflectionMethod('Cases', 'getInputDocumentsCriteria');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sApplicationUID');
@@ -1115,7 +1125,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::getInputDocumentsCriteriaToRevise
@@ -1124,13 +1134,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetInputDocumentsCriteriaToRevise()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getInputDocumentsCriteriaToRevise', $methods ), 'exists method getInputDocumentsCriteriaToRevise' );
+        $this->assertTrue( in_array('getInputDocumentsCriteriaToRevise', $methods ),
+            'exists method getInputDocumentsCriteriaToRevise' );
         $r = new ReflectionMethod('Cases', 'getInputDocumentsCriteriaToRevise');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sApplicationUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getOutputDocumentsCriteriaToRevise
@@ -1139,13 +1150,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetOutputDocumentsCriteriaToRevise()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getOutputDocumentsCriteriaToRevise', $methods ), 'exists method getOutputDocumentsCriteriaToRevise' );
+        $this->assertTrue( in_array('getOutputDocumentsCriteriaToRevise', $methods ),
+            'exists method getOutputDocumentsCriteriaToRevise' );
         $r = new ReflectionMethod('Cases', 'getOutputDocumentsCriteriaToRevise');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sApplicationUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getCriteriaProcessCases
@@ -1163,7 +1175,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'PRO_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::pauseCase
@@ -1188,7 +1200,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::unpauseCase
@@ -1209,7 +1221,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sUserUID');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::cancelCase
@@ -1230,7 +1242,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'user_logged');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::reactivateCase
@@ -1251,7 +1263,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'user_logged');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::reassignCase
@@ -1279,7 +1291,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == 'REASSIGN');
-    } 
+    }
 
     /**
     * @covers Cases::getAllDynaformsStepsToRevise
@@ -1288,13 +1300,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetAllDynaformsStepsToRevise()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getAllDynaformsStepsToRevise', $methods ), 'exists method getAllDynaformsStepsToRevise' );
+        $this->assertTrue( in_array('getAllDynaformsStepsToRevise', $methods ),
+            'exists method getAllDynaformsStepsToRevise' );
         $r = new ReflectionMethod('Cases', 'getAllDynaformsStepsToRevise');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'APP_UID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getAllInputsStepsToRevise
@@ -1303,13 +1316,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetAllInputsStepsToRevise()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getAllInputsStepsToRevise', $methods ), 'exists method getAllInputsStepsToRevise' );
+        $this->assertTrue( in_array('getAllInputsStepsToRevise', $methods ),
+            'exists method getAllInputsStepsToRevise' );
         $r = new ReflectionMethod('Cases', 'getAllInputsStepsToRevise');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'APP_UID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getAllUploadedDocumentsCriteria
@@ -1318,7 +1332,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetAllUploadedDocumentsCriteria()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getAllUploadedDocumentsCriteria', $methods ), 'exists method getAllUploadedDocumentsCriteria' );
+        $this->assertTrue( in_array('getAllUploadedDocumentsCriteria', $methods ),
+            'exists method getAllUploadedDocumentsCriteria' );
         $r = new ReflectionMethod('Cases', 'getAllUploadedDocumentsCriteria');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
@@ -1333,7 +1348,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sUserUID');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getAllGeneratedDocumentsCriteria
@@ -1342,7 +1357,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetAllGeneratedDocumentsCriteria()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getAllGeneratedDocumentsCriteria', $methods ), 'exists method getAllGeneratedDocumentsCriteria' );
+        $this->assertTrue( in_array('getAllGeneratedDocumentsCriteria', $methods ),
+            'exists method getAllGeneratedDocumentsCriteria' );
         $r = new ReflectionMethod('Cases', 'getAllGeneratedDocumentsCriteria');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
@@ -1357,7 +1373,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sUserUID');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getallDynaformsCriteria
@@ -1381,7 +1397,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sUserUID');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::sendNotifications
@@ -1412,7 +1428,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == true);
         $this->assertTrue( $params[5]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::getAllObjects
@@ -1436,7 +1452,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'USR_UID');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getAllObjectsFrom
@@ -1464,7 +1480,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::verifyCaseTracker
@@ -1482,7 +1498,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'pin');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::caseTrackerPermissions
@@ -1497,7 +1513,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'PRO_UID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::verifyTable
@@ -1509,7 +1525,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('verifyTable', $methods ), 'exists method verifyTable' );
         $r = new ReflectionMethod('Cases', 'verifyTable');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Cases::getAllUploadedDocumentsCriteriaTracker
@@ -1518,7 +1534,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetAllUploadedDocumentsCriteriaTracker()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getAllUploadedDocumentsCriteriaTracker', $methods ), 'exists method getAllUploadedDocumentsCriteriaTracker' );
+        $this->assertTrue( in_array('getAllUploadedDocumentsCriteriaTracker', $methods ),
+            'exists method getAllUploadedDocumentsCriteriaTracker' );
         $r = new ReflectionMethod('Cases', 'getAllUploadedDocumentsCriteriaTracker');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
@@ -1530,7 +1547,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sDocUID');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getAllGeneratedDocumentsCriteriaTracker
@@ -1539,7 +1556,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetAllGeneratedDocumentsCriteriaTracker()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getAllGeneratedDocumentsCriteriaTracker', $methods ), 'exists method getAllGeneratedDocumentsCriteriaTracker' );
+        $this->assertTrue( in_array('getAllGeneratedDocumentsCriteriaTracker', $methods ),
+            'exists method getAllGeneratedDocumentsCriteriaTracker' );
         $r = new ReflectionMethod('Cases', 'getAllGeneratedDocumentsCriteriaTracker');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
@@ -1551,7 +1569,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sDocUID');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getHistoryMessagesTracker
@@ -1560,13 +1578,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetHistoryMessagesTracker()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getHistoryMessagesTracker', $methods ), 'exists method getHistoryMessagesTracker' );
+        $this->assertTrue( in_array('getHistoryMessagesTracker', $methods ),
+            'exists method getHistoryMessagesTracker' );
         $r = new ReflectionMethod('Cases', 'getHistoryMessagesTracker');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sApplicationUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getHistoryMessagesTrackerExt
@@ -1575,13 +1594,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetHistoryMessagesTrackerExt()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getHistoryMessagesTrackerExt', $methods ), 'exists method getHistoryMessagesTrackerExt' );
+        $this->assertTrue( in_array('getHistoryMessagesTrackerExt', $methods ),
+            'exists method getHistoryMessagesTrackerExt' );
         $r = new ReflectionMethod('Cases', 'getHistoryMessagesTrackerExt');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sApplicationUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getHistoryMessagesTrackerView
@@ -1590,7 +1610,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetHistoryMessagesTrackerView()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getHistoryMessagesTrackerView', $methods ), 'exists method getHistoryMessagesTrackerView' );
+        $this->assertTrue( in_array('getHistoryMessagesTrackerView', $methods ),
+            'exists method getHistoryMessagesTrackerView' );
         $r = new ReflectionMethod('Cases', 'getHistoryMessagesTrackerView');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sApplicationUID');
@@ -1599,7 +1620,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'Msg_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getAllObjectsFromProcess
@@ -1608,7 +1629,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetAllObjectsFromProcess()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getAllObjectsFromProcess', $methods ), 'exists method getAllObjectsFromProcess' );
+        $this->assertTrue( in_array('getAllObjectsFromProcess', $methods ),
+            'exists method getAllObjectsFromProcess' );
         $r = new ReflectionMethod('Cases', 'getAllObjectsFromProcess');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'PRO_UID');
@@ -1618,7 +1640,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '%');
-    } 
+    }
 
     /**
     * @covers Cases::executeTriggersAfterExternal
@@ -1627,7 +1649,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testexecuteTriggersAfterExternal()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('executeTriggersAfterExternal', $methods ), 'exists method executeTriggersAfterExternal' );
+        $this->assertTrue( in_array('executeTriggersAfterExternal', $methods ),
+            'exists method executeTriggersAfterExternal' );
         $r = new ReflectionMethod('Cases', 'executeTriggersAfterExternal');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sProcess');
@@ -1648,8 +1671,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->getName() == 'aNewData');
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == true);
-        $this->assertTrue( $params[5]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[5]->getDefaultValue() == array());
+    }
 
     /**
     * @covers Cases::thisIsTheCurrentUser
@@ -1678,7 +1701,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::getCriteriaUsersCases
@@ -1696,7 +1719,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'USR_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getAdvancedSearch
@@ -1741,7 +1764,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[10]->getName() == 'aSupervisor');
         $this->assertTrue( $params[10]->isArray() == false);
         $this->assertTrue( $params[10]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getConditionCasesCount
@@ -1760,7 +1783,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::getAllConditionCasesCount
@@ -1769,7 +1792,8 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetAllConditionCasesCount()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getAllConditionCasesCount', $methods ), 'exists method getAllConditionCasesCount' );
+        $this->assertTrue( in_array('getAllConditionCasesCount', $methods ),
+            'exists method getAllConditionCasesCount' );
         $r = new ReflectionMethod('Cases', 'getAllConditionCasesCount');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'types');
@@ -1779,7 +1803,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::userParticipatedInCase
@@ -1797,7 +1821,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sUIDUserLogged');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getCurrentDelegationCase
@@ -1813,7 +1837,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Cases::clearCaseSessionData
@@ -1825,7 +1849,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('clearCaseSessionData', $methods ), 'exists method clearCaseSessionData' );
         $r = new ReflectionMethod('Cases', 'clearCaseSessionData');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Cases::jumpToCase
@@ -1840,7 +1864,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'APP_NUMBER');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::discriminateCases
@@ -1855,7 +1879,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::GetAllOpenDelegation
@@ -1870,7 +1894,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getUsersToReassign
@@ -1888,7 +1912,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'USR_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getUsersParticipatedInCase
@@ -1897,13 +1921,14 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testgetUsersParticipatedInCase()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getUsersParticipatedInCase', $methods ), 'exists method getUsersParticipatedInCase' );
+        $this->assertTrue( in_array('getUsersParticipatedInCase', $methods ),
+            'exists method getUsersParticipatedInCase' );
         $r = new ReflectionMethod('Cases', 'getUsersParticipatedInCase');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sAppUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Cases::getCaseNotes
@@ -1926,6 +1951,6 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
+}
 
-  } 
