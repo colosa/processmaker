@@ -43,7 +43,8 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('PmTable');        $this->assertTrue( count($methods) == 26);
+        $methods = get_class_methods('PmTable');
+        $this->assertTrue( count($methods) == 26);
     }
 
     /**
@@ -60,7 +61,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers PmTable::setColumns
@@ -75,7 +76,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'columns');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PmTable::setDataSource
@@ -90,7 +91,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dbsUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PmTable::resolveDbSource
@@ -105,7 +106,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dbsUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PmTable::getDataSource
@@ -117,7 +118,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getDataSource', $methods ), 'exists method getDataSource' );
         $r = new ReflectionMethod('PmTable', 'getDataSource');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::getDbConfig
@@ -129,7 +130,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getDbConfig', $methods ), 'exists method getDbConfig' );
         $r = new ReflectionMethod('PmTable', 'getDbConfig');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::setAlterTable
@@ -144,7 +145,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'value');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PmTable::build
@@ -156,7 +157,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('build', $methods ), 'exists method build' );
         $r = new ReflectionMethod('PmTable', 'build');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::buildModelFor
@@ -174,7 +175,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'tablesList');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PmTable::prepare
@@ -190,7 +191,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers PmTable::loadSchema
@@ -202,7 +203,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('loadSchema', $methods ), 'exists method loadSchema' );
         $r = new ReflectionMethod('PmTable', 'loadSchema');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::buildSchema
@@ -214,7 +215,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('buildSchema', $methods ), 'exists method buildSchema' );
         $r = new ReflectionMethod('PmTable', 'buildSchema');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::remove
@@ -226,7 +227,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('remove', $methods ), 'exists method remove' );
         $r = new ReflectionMethod('PmTable', 'remove');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::removeFromSchema
@@ -238,7 +239,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('removeFromSchema', $methods ), 'exists method removeFromSchema' );
         $r = new ReflectionMethod('PmTable', 'removeFromSchema');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::removeModelFiles
@@ -250,7 +251,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('removeModelFiles', $methods ), 'exists method removeModelFiles' );
         $r = new ReflectionMethod('PmTable', 'removeModelFiles');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::dropTable
@@ -266,7 +267,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers PmTable::saveSchema
@@ -278,7 +279,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('saveSchema', $methods ), 'exists method saveSchema' );
         $r = new ReflectionMethod('PmTable', 'saveSchema');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::preparePropelIniFile
@@ -290,7 +291,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('preparePropelIniFile', $methods ), 'exists method preparePropelIniFile' );
         $r = new ReflectionMethod('PmTable', 'preparePropelIniFile');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::upgradeDatabase
@@ -302,7 +303,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('upgradeDatabase', $methods ), 'exists method upgradeDatabase' );
         $r = new ReflectionMethod('PmTable', 'upgradeDatabase');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::upgradeDatabaseFor
@@ -320,8 +321,8 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'tablesList');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers PmTable::hasAutoIncrementPKey
@@ -333,7 +334,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('hasAutoIncrementPKey', $methods ), 'exists method hasAutoIncrementPKey' );
         $r = new ReflectionMethod('PmTable', 'hasAutoIncrementPKey');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::getPropelSupportedColumnTypes
@@ -342,10 +343,11 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
     public function testgetPropelSupportedColumnTypes()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getPropelSupportedColumnTypes', $methods ), 'exists method getPropelSupportedColumnTypes' );
+        $this->assertTrue( in_array('getPropelSupportedColumnTypes', $methods ),
+            'exists method getPropelSupportedColumnTypes' );
         $r = new ReflectionMethod('PmTable', 'getPropelSupportedColumnTypes');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::toCamelCase
@@ -360,7 +362,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PmTable::phingbuildModel
@@ -372,7 +374,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('phingbuildModel', $methods ), 'exists method phingbuildModel' );
         $r = new ReflectionMethod('PmTable', 'phingbuildModel');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::phingbuildSql
@@ -384,7 +386,7 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('phingbuildSql', $methods ), 'exists method phingbuildSql' );
         $r = new ReflectionMethod('PmTable', 'phingbuildSql');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PmTable::callPhing
@@ -406,11 +408,11 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'options');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
-        $this->assertTrue( $params[2]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[2]->getDefaultValue() == array());
         $this->assertTrue( $params[3]->getName() == 'verbose');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '1');
-    } 
+    }
+}
 
-  } 
