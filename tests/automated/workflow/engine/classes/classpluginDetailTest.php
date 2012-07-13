@@ -26,7 +26,7 @@ class classpluginDetailTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new pluginDetail();
+        $this->object = new pluginDetail("enterprise", "enterpriseplugin", __FILE__);
     }
 
     /**
@@ -38,12 +38,13 @@ class classpluginDetailTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('pluginDetail');        $this->assertTrue( count($methods) == 1);
+        $methods = get_class_methods('pluginDetail');
+        $this->assertTrue(count($methods) == 1);
     }
 
     /**
@@ -55,36 +56,37 @@ class classpluginDetailTest extends PHPUnit_Framework_TestCase
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('__construct', $methods ), 'exists method __construct' );
         $r = new ReflectionMethod('pluginDetail', '__construct');
-        $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'sNamespace');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-        $this->assertTrue( $params[1]->getName() == 'sClassName');
-        $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == false);
-        $this->assertTrue( $params[2]->getName() == 'sFilename');
-        $this->assertTrue( $params[2]->isArray() == false);
-        $this->assertTrue( $params[2]->isOptional () == false);
-        $this->assertTrue( $params[3]->getName() == 'sFriendlyName');
-        $this->assertTrue( $params[3]->isArray() == false);
-        $this->assertTrue( $params[3]->isOptional () == true);
-        $this->assertTrue( $params[3]->getDefaultValue() == '');
-        $this->assertTrue( $params[4]->getName() == 'sPluginFolder');
-        $this->assertTrue( $params[4]->isArray() == false);
-        $this->assertTrue( $params[4]->isOptional () == true);
-        $this->assertTrue( $params[4]->getDefaultValue() == '');
-        $this->assertTrue( $params[5]->getName() == 'sDescription');
-        $this->assertTrue( $params[5]->isArray() == false);
-        $this->assertTrue( $params[5]->isOptional () == true);
-        $this->assertTrue( $params[5]->getDefaultValue() == '');
-        $this->assertTrue( $params[6]->getName() == 'sSetupPage');
-        $this->assertTrue( $params[6]->isArray() == false);
-        $this->assertTrue( $params[6]->isOptional () == true);
-        $this->assertTrue( $params[6]->getDefaultValue() == '');
-        $this->assertTrue( $params[7]->getName() == 'iVersion');
-        $this->assertTrue( $params[7]->isArray() == false);
-        $this->assertTrue( $params[7]->isOptional () == true);
-        $this->assertTrue( $params[7]->getDefaultValue() == '0');
-    } 
 
-  } 
+        $params = $r->getParameters();
+        $this->assertTrue($params[0]->getName() == 'sNamespace');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional () == false);
+        $this->assertTrue($params[1]->getName() == 'sClassName');
+        $this->assertTrue($params[1]->isArray() == false);
+        $this->assertTrue($params[1]->isOptional () == false);
+        $this->assertTrue($params[2]->getName() == 'sFilename');
+        $this->assertTrue($params[2]->isArray() == false);
+        $this->assertTrue($params[2]->isOptional () == false);
+        $this->assertTrue($params[3]->getName() == 'sFriendlyName');
+        $this->assertTrue($params[3]->isArray() == false);
+        $this->assertTrue($params[3]->isOptional () == true);
+        $this->assertTrue($params[3]->getDefaultValue() == '');
+        $this->assertTrue($params[4]->getName() == 'sPluginFolder');
+        $this->assertTrue($params[4]->isArray() == false);
+        $this->assertTrue($params[4]->isOptional () == true);
+        $this->assertTrue($params[4]->getDefaultValue() == '');
+        $this->assertTrue($params[5]->getName() == 'sDescription');
+        $this->assertTrue($params[5]->isArray() == false);
+        $this->assertTrue($params[5]->isOptional () == true);
+        $this->assertTrue($params[5]->getDefaultValue() == '');
+        $this->assertTrue($params[6]->getName() == 'sSetupPage');
+        $this->assertTrue($params[6]->isArray() == false);
+        $this->assertTrue($params[6]->isOptional () == true);
+        $this->assertTrue($params[6]->getDefaultValue() == '');
+        $this->assertTrue($params[7]->getName() == 'iVersion');
+        $this->assertTrue($params[7]->isArray() == false);
+        $this->assertTrue($params[7]->isOptional() == true);
+        $this->assertTrue($params[7]->getDefaultValue() == '0');
+    }
+}
+

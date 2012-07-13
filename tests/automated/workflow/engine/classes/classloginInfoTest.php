@@ -26,7 +26,7 @@ class classloginInfoTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new loginInfo();
+        $this->object = new loginInfo(null, null, null);
     }
 
     /**
@@ -38,12 +38,13 @@ class classloginInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('loginInfo');        $this->assertTrue( count($methods) == 1);
+        $methods = get_class_methods('loginInfo');
+        $this->assertTrue(count($methods) == 1);
     }
 
     /**
@@ -55,16 +56,17 @@ class classloginInfoTest extends PHPUnit_Framework_TestCase
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('__construct', $methods ), 'exists method __construct' );
         $r = new ReflectionMethod('loginInfo', '__construct');
-        $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'lName');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-        $this->assertTrue( $params[1]->getName() == 'lPassword');
-        $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == false);
-        $this->assertTrue( $params[2]->getName() == 'lSession');
-        $this->assertTrue( $params[2]->isArray() == false);
-        $this->assertTrue( $params[2]->isOptional () == false);
-    } 
 
-  } 
+        $params = $r->getParameters();
+        $this->assertTrue($params[0]->getName() == 'lName');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional () == false);
+        $this->assertTrue($params[1]->getName() == 'lPassword');
+        $this->assertTrue($params[1]->isArray() == false);
+        $this->assertTrue($params[1]->isOptional () == false);
+        $this->assertTrue($params[2]->getName() == 'lSession');
+        $this->assertTrue($params[2]->isArray() == false);
+        $this->assertTrue($params[2]->isOptional () == false);
+    }
+}
+
