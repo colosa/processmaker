@@ -26,7 +26,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new PMmemcached();
+        $this->object = new PMmemcached('workflow');
     }
 
     /**
@@ -38,12 +38,13 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('PMmemcached');        $this->assertTrue( count($methods) == 12);
+        $methods = get_class_methods('PMmemcached');
+        $this->assertTrue( count($methods) == 12);
     }
 
     /**
@@ -59,7 +60,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMmemcached::getSingleton
@@ -74,7 +75,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMmemcached::__clone
@@ -86,7 +87,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__clone', $methods ), 'exists method __clone' );
         $r = new ReflectionMethod('PMmemcached', '__clone');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMmemcached::__wakeup
@@ -98,7 +99,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__wakeup', $methods ), 'exists method __wakeup' );
         $r = new ReflectionMethod('PMmemcached', '__wakeup');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMmemcached::set
@@ -120,7 +121,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers PMmemcached::get
@@ -135,7 +136,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'key');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMmemcached::add
@@ -153,7 +154,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMmemcached::increment
@@ -171,7 +172,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMmemcached::delete
@@ -186,7 +187,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'key');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMmemcached::flush
@@ -198,7 +199,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('flush', $methods ), 'exists method flush' );
         $r = new ReflectionMethod('PMmemcached', 'flush');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMmemcached::getStats
@@ -210,7 +211,7 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getStats', $methods ), 'exists method getStats' );
         $r = new ReflectionMethod('PMmemcached', 'getStats');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMmemcached::printDetails
@@ -222,6 +223,6 @@ class classPMmemcachedTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('printDetails', $methods ), 'exists method printDetails' );
         $r = new ReflectionMethod('PMmemcached', 'printDetails');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 
