@@ -26,7 +26,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new archive();
+        $this->object = new archive('name');
     }
 
     /**
@@ -43,7 +43,8 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('archive');        $this->assertTrue( count($methods) == 12);
+        $methods = get_class_methods('archive');
+        $this->assertTrue( count($methods) == 12);
     }
 
     /**
@@ -59,7 +60,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers archive::set_options
@@ -74,7 +75,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'options');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers archive::create_archive
@@ -86,7 +87,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('create_archive', $methods ), 'exists method create_archive' );
         $r = new ReflectionMethod('archive', 'create_archive');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers archive::add_data
@@ -101,7 +102,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'data');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers archive::make_list
@@ -113,7 +114,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('make_list', $methods ), 'exists method make_list' );
         $r = new ReflectionMethod('archive', 'make_list');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers archive::add_files
@@ -128,7 +129,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'list');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers archive::exclude_files
@@ -143,7 +144,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'list');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers archive::store_files
@@ -158,7 +159,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'list');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers archive::list_files
@@ -173,7 +174,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'list');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers archive::parse_dir
@@ -188,7 +189,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dirname');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers archive::sort_files
@@ -206,7 +207,7 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'b');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers archive::download_file
@@ -218,6 +219,6 @@ class classarchiveTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('download_file', $methods ), 'exists method download_file' );
         $r = new ReflectionMethod('archive', 'download_file');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 
