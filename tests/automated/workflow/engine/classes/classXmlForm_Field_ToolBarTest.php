@@ -57,7 +57,7 @@ class classXmlForm_Field_ToolBarTest extends PHPUnit_Framework_TestCase
     public function testXmlForm_Field_ToolBar()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('XmlForm_Field_ToolBar', $methods ), 'exists method XmlForm_Field_ToolBar' );
+        $this->assertTrue( in_array('XmlForm_Field_ToolBar', $methods), 'exists method XmlForm_Field_ToolBar' );
         $r = new ReflectionMethod('XmlForm_Field_ToolBar', 'XmlForm_Field_ToolBar');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'xmlNode');
