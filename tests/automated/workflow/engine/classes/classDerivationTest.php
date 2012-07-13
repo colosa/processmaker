@@ -38,12 +38,13 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('Derivation');        $this->assertTrue( count($methods) == 13);
+        $methods = get_class_methods('Derivation');
+        $this->assertTrue(count($methods) == 13);
     }
 
     /**
@@ -59,7 +60,7 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Derivation::getRouteCondition
@@ -74,7 +75,7 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Derivation::GetAppParentIndex
@@ -89,7 +90,7 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Derivation::getAllUsersFromAnyTask
@@ -104,7 +105,7 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sTasUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Derivation::getUsersFullNameFromArray
@@ -113,13 +114,14 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
     public function testgetUsersFullNameFromArray()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getUsersFullNameFromArray', $methods ), 'exists method getUsersFullNameFromArray' );
+        $this->assertTrue(in_array('getUsersFullNameFromArray', $methods), 'exists method getUsersFullNameFromArray');
         $r = new ReflectionMethod('Derivation', 'getUsersFullNameFromArray');
+
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'aUsers');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+        $this->assertTrue($params[0]->getName() == 'aUsers');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == false);
+    }
 
     /**
     * @covers Derivation::getNextAssignedUser
@@ -130,11 +132,12 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('getNextAssignedUser', $methods ), 'exists method getNextAssignedUser' );
         $r = new ReflectionMethod('Derivation', 'getNextAssignedUser');
+
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'tasInfo');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+        $this->assertTrue($params[0]->getName() == 'tasInfo');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == false);
+    }
 
     /**
     * @covers Derivation::getDenpendentUser
@@ -145,11 +148,12 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('getDenpendentUser', $methods ), 'exists method getDenpendentUser' );
         $r = new ReflectionMethod('Derivation', 'getDenpendentUser');
+
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'USR_UID');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+        $this->assertTrue($params[0]->getName() == 'USR_UID');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == false);
+    }
 
     /**
     * @covers Derivation::setTasLastAssigned
@@ -160,14 +164,15 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('setTasLastAssigned', $methods ), 'exists method setTasLastAssigned' );
         $r = new ReflectionMethod('Derivation', 'setTasLastAssigned');
+
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'tasUid');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-        $this->assertTrue( $params[1]->getName() == 'usrUid');
-        $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+        $this->assertTrue($params[0]->getName() == 'tasUid');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == false);
+        $this->assertTrue($params[1]->getName() == 'usrUid');
+        $this->assertTrue($params[1]->isArray() == false);
+        $this->assertTrue($params[1]->isOptional() == false);
+    }
 
     /**
     * @covers Derivation::derivate
@@ -178,16 +183,17 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('derivate', $methods ), 'exists method derivate' );
         $r = new ReflectionMethod('Derivation', 'derivate');
+
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'currentDelegation');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
-        $this->assertTrue( $params[1]->getName() == 'nextDelegations');
-        $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue($params[0]->getName() == 'currentDelegation');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == true);
+        $this->assertTrue($params[0]->getDefaultValue() == array());
+        $this->assertTrue($params[1]->getName() == 'nextDelegations');
+        $this->assertTrue($params[1]->isArray() == false);
+        $this->assertTrue($params[1]->isOptional() == true);
+        $this->assertTrue($params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers Derivation::doDerivation
@@ -212,7 +218,7 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Derivation::verifyIsCaseChild
@@ -227,7 +233,7 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sApplicationUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Derivation::getDerivatedCases
@@ -245,7 +251,7 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sDelIndexParent');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Derivation::getGrpUser
@@ -260,6 +266,6 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
+}
 
-  } 
