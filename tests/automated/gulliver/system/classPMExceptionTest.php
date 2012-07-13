@@ -26,7 +26,8 @@ class classPMExceptionTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new PMException();
+        $message= 'PHPUnit test';
+        $this->object = new PMException($message );
     }
 
     /**
@@ -38,12 +39,13 @@ class classPMExceptionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('PMException');        $this->assertTrue( count($methods) == 8);
+        $methods = get_class_methods('PMException');
+        $this->assertTrue( count($methods) == 9);
     }
 
     /**
@@ -67,7 +69,7 @@ class classPMExceptionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers PMException::__toString
@@ -79,6 +81,6 @@ class classPMExceptionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__toString', $methods ), 'exists method __toString' );
         $r = new ReflectionMethod('PMException', '__toString');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

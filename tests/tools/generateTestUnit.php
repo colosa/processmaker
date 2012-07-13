@@ -42,7 +42,7 @@ require_once ROOT_PATH . 'gulliver/system/class.dbconnection.php';
 
 //parsingFolder('gulliver/system', 'class.form.php class.objectTemplate.php class.tree.php class.xmlform.php class.filterForm.php');
 parsingFolder('gulliver/system', 'class.database_mssql.php class.database_mysql.php class.htmlArea.php ' .
-    'class.dbconnection.php class.dbrecordset.php class.dbsession.php class.soapNtlm.php' );
+    'class.dbconnection.php class.dbrecordset.php class.dbsession.php class.soapNtlm.php class.webResource.php' );
 parsingFolder('workflow/engine/classes',
     'class.xmlfield_Image.php class.groupUser.php class.group.php class.system.php ' .
     'class.ArrayPeer.php class.ArrayPeer.php class.BasePeer.php class.dbConnections.php class.webdav.php');

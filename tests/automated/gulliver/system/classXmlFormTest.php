@@ -38,7 +38,7 @@ class classXmlFormTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -65,7 +65,7 @@ class classXmlFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'forceParse');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm::setValues
@@ -80,8 +80,8 @@ class classXmlFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'newValues');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[0]->getDefaultValue() == Array());
+    }
 
     /**
     * @covers XmlForm::render
@@ -99,7 +99,7 @@ class classXmlFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'scriptContent');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm::cloneObject
@@ -111,6 +111,6 @@ class classXmlFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('cloneObject', $methods ), 'exists method cloneObject' );
         $r = new ReflectionMethod('XmlForm', 'cloneObject');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

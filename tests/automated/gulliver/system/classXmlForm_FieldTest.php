@@ -161,7 +161,7 @@ class classXmlForm_FieldTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'values');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[0]->getDefaultValue() == Array());
         $this->assertTrue( $params[1]->getName() == 'owner');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);

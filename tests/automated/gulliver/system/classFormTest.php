@@ -26,7 +26,9 @@ class classFormTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new Form();
+        $file='login/login';
+        $home=PATH_TRUNK . 'workflow/engine/xmlform/';
+        $this->object = new Form($file, $home);
     }
 
     /**
@@ -38,7 +40,7 @@ class classFormTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -56,7 +58,7 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('setDefaultValues', $methods ), 'exists method setDefaultValues' );
         $r = new ReflectionMethod('Form', 'setDefaultValues');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Form::Form
@@ -87,7 +89,7 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Form::printTemplate
@@ -105,7 +107,7 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'scriptContent');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Form::render
@@ -123,7 +125,7 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'scriptContent');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Form::setValues
@@ -138,8 +140,8 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'newValues');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[0]->getDefaultValue() == array());
+    }
 
     /**
     * @covers Form::getFields
@@ -158,7 +160,7 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '-1');
-    } 
+    }
 
     /**
     * @covers Form::validatePost
@@ -170,7 +172,7 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('validatePost', $methods ), 'exists method validatePost' );
         $r = new ReflectionMethod('Form', 'validatePost');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Form::validateArray
@@ -185,7 +187,7 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'newValues');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Form::getVars
@@ -201,7 +203,7 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers Form::validateRequiredFields
@@ -219,8 +221,8 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'noRequired');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers Form::validateFields
@@ -235,6 +237,6 @@ class classFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'data');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

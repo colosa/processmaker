@@ -26,7 +26,9 @@ class classfilterFormTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new filterForm();
+        $template = 'login/login';
+        $scriptContent = '';
+        $this->object = new filterForm($template, &$scriptContent);
     }
 
     /**
@@ -38,7 +40,7 @@ class classfilterFormTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -62,6 +64,6 @@ class classfilterFormTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'scriptContent');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

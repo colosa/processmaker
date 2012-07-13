@@ -38,7 +38,7 @@ class classdatabase_baseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -59,24 +59,24 @@ class classdatabase_baseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sType');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'DB_ADAPTER');
+        $this->assertTrue( $params[0]->getDefaultValue() == DB_ADAPTER);
         $this->assertTrue( $params[1]->getName() == 'sServer');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'DB_HOST');
+        $this->assertTrue( $params[1]->getDefaultValue() == DB_HOST);
         $this->assertTrue( $params[2]->getName() == 'sUser');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
-        $this->assertTrue( $params[2]->getDefaultValue() == 'DB_USER');
+        $this->assertTrue( $params[2]->getDefaultValue() == DB_USER);
         $this->assertTrue( $params[3]->getName() == 'sPass');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
-        $this->assertTrue( $params[3]->getDefaultValue() == 'DB_PASS');
+        $this->assertTrue( $params[3]->getDefaultValue() == DB_PASS);
         $this->assertTrue( $params[4]->getName() == 'sDataBase');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
-        $this->assertTrue( $params[4]->getDefaultValue() == 'DB_NAME');
-    } 
+        $this->assertTrue( $params[4]->getDefaultValue() == DB_NAME);
+    }
 
     /**
     * @covers database_base::generateDropTableSQL
@@ -91,7 +91,7 @@ class classdatabase_baseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sTable');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers database_base::generateCreateTableSQL
@@ -109,7 +109,7 @@ class classdatabase_baseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aColumns');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers database_base::generateDropColumnSQL
@@ -127,7 +127,7 @@ class classdatabase_baseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sColumn');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers database_base::generateAddColumnSQL
@@ -148,7 +148,7 @@ class classdatabase_baseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'aParameters');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers database_base::generateChangeColumnSQL
@@ -169,7 +169,7 @@ class classdatabase_baseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'aParameters');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers database_base::executeQuery
@@ -184,7 +184,7 @@ class classdatabase_baseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sQuery');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers database_base::close
@@ -196,6 +196,6 @@ class classdatabase_baseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('close', $methods ), 'exists method close' );
         $r = new ReflectionMethod('database_base', 'close');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

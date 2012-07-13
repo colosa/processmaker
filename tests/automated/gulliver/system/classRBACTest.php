@@ -38,7 +38,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -56,7 +56,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__construct', $methods ), 'exists method __construct' );
         $r = new ReflectionMethod('RBAC', '__construct');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers RBAC::getSingleton
@@ -68,7 +68,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getSingleton', $methods ), 'exists method getSingleton' );
         $r = new ReflectionMethod('RBAC', 'getSingleton');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers RBAC::initRBAC
@@ -80,7 +80,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('initRBAC', $methods ), 'exists method initRBAC' );
         $r = new ReflectionMethod('RBAC', 'initRBAC');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers RBAC::loadUserRolePermission
@@ -98,7 +98,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sUser');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::checkAutomaticRegister
@@ -116,7 +116,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'strPass');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::VerifyWithOtherAuthenticationSource
@@ -143,7 +143,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->getName() == 'strPass');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::VerifyLogin
@@ -161,7 +161,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'strPass');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::verifyUser
@@ -176,7 +176,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strUser');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::verifyUserId
@@ -191,7 +191,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strUserId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::userCanAccess
@@ -206,7 +206,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'perm');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::createUser
@@ -221,12 +221,12 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[0]->getDefaultValue() == Array());
         $this->assertTrue( $params[1]->getName() == 'sRolCode');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::updateUser
@@ -241,12 +241,12 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[0]->getDefaultValue() == array());
         $this->assertTrue( $params[1]->getName() == 'sRolCode');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::assignRoleToUser
@@ -266,7 +266,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::removeRolesFromUser
@@ -282,7 +282,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::changeUserStatus
@@ -302,7 +302,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'ACTIVE');
-    } 
+    }
 
     /**
     * @covers RBAC::removeUser
@@ -318,7 +318,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::load
@@ -333,7 +333,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'uid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::createPermision
@@ -348,7 +348,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sCode');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::listAllRoles
@@ -364,7 +364,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == 'PROCESSMAKER');
-    } 
+    }
 
     /**
     * @covers RBAC::getAllRoles
@@ -380,7 +380,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == 'PROCESSMAKER');
-    } 
+    }
 
     /**
     * @covers RBAC::getAllRolesFilter
@@ -401,7 +401,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'filter');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::listAllPermissions
@@ -417,7 +417,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == 'PROCESSMAKER');
-    } 
+    }
 
     /**
     * @covers RBAC::createRole
@@ -432,7 +432,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::removeRole
@@ -447,7 +447,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'ROL_UID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::verifyNewRole
@@ -462,7 +462,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'code');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::updateRole
@@ -477,7 +477,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'fields');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::loadById
@@ -492,7 +492,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'ROL_UID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::getRoleUsers
@@ -511,7 +511,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::getAllUsersByRole
@@ -523,7 +523,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllUsersByRole', $methods ), 'exists method getAllUsersByRole' );
         $r = new ReflectionMethod('RBAC', 'getAllUsersByRole');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers RBAC::getAllUsersByDepartment
@@ -535,7 +535,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllUsersByDepartment', $methods ), 'exists method getAllUsersByDepartment' );
         $r = new ReflectionMethod('RBAC', 'getAllUsersByDepartment');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers RBAC::getRoleCode
@@ -550,7 +550,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'ROL_UID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::deleteUserRole
@@ -568,7 +568,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'USR_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::getAllUsers
@@ -587,7 +587,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::assignUserToRole
@@ -602,7 +602,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::getRolePermissions
@@ -621,7 +621,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::getAllPermissions
@@ -644,7 +644,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::assignPermissionRole
@@ -659,7 +659,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::assignPermissionToRole
@@ -677,7 +677,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sPermissionUID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::deletePermissionRole
@@ -695,7 +695,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'PER_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::numUsersWithRole
@@ -710,7 +710,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'ROL_UID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::createSystem
@@ -725,7 +725,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sCode');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::verifyByCode
@@ -740,7 +740,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sCode');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::getAllAuthSources
@@ -752,7 +752,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllAuthSources', $methods ), 'exists method getAllAuthSources' );
         $r = new ReflectionMethod('RBAC', 'getAllAuthSources');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers RBAC::getAllAuthSourcesByUser
@@ -764,7 +764,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllAuthSourcesByUser', $methods ), 'exists method getAllAuthSourcesByUser' );
         $r = new ReflectionMethod('RBAC', 'getAllAuthSourcesByUser');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers RBAC::getAuthenticationSources
@@ -786,7 +786,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers RBAC::getAuthSource
@@ -801,7 +801,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::createAuthSource
@@ -816,7 +816,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::updateAuthSource
@@ -831,7 +831,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::removeAuthSource
@@ -846,7 +846,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::getAllUsersByAuthSource
@@ -858,7 +858,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllUsersByAuthSource', $methods ), 'exists method getAllUsersByAuthSource' );
         $r = new ReflectionMethod('RBAC', 'getAllUsersByAuthSource');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers RBAC::getListUsersByAuthSource
@@ -873,7 +873,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aSource');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::searchUsers
@@ -891,7 +891,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sKeyword');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::requirePermissions
@@ -906,7 +906,7 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'permissions');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers RBAC::cleanSessionFiles
@@ -922,6 +922,6 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '72');
-    } 
+    }
 
-  } 
+  }

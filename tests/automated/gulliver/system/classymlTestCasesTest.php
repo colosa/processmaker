@@ -26,7 +26,10 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new ymlTestCases();
+        $testCaseFile = "";
+        $testDomain ="";
+        $testLime = "";
+        $this->object = new ymlTestCases( $testCaseFile, &$testDomain, &$testLime);
     }
 
     /**
@@ -38,7 +41,7 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -65,7 +68,7 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'testLime');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlTestCases::load
@@ -84,8 +87,8 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'fields');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers ymlTestCases::addToPlan
@@ -105,7 +108,7 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers ymlTestCases::run
@@ -123,7 +126,7 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'fields');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
         $this->assertTrue( $params[2]->getName() == 'count');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
@@ -132,7 +135,7 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers ymlTestCases::runSingle
@@ -150,8 +153,8 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'fields');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers ymlTestCases::runMultiple
@@ -169,7 +172,7 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'fields');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
         $this->assertTrue( $params[2]->getName() == 'count');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
@@ -178,6 +181,6 @@ class classymlTestCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '0');
-    } 
+    }
 
-  } 
+  }

@@ -26,7 +26,8 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new dynaFormHandler();
+        $file=PATH_TRUNK . 'workflow/engine/xmlform/login/login.xml';
+        $this->object = new dynaFormHandler($file);
     }
 
     /**
@@ -38,7 +39,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -60,7 +61,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::load
@@ -72,7 +73,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('load', $methods ), 'exists method load' );
         $r = new ReflectionMethod('dynaFormHandler', 'load');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::reload
@@ -84,7 +85,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('reload', $methods ), 'exists method reload' );
         $r = new ReflectionMethod('dynaFormHandler', 'reload');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::__cloneEmpty
@@ -96,7 +97,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__cloneEmpty', $methods ), 'exists method __cloneEmpty' );
         $r = new ReflectionMethod('dynaFormHandler', '__cloneEmpty');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::toString
@@ -112,7 +113,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::getNode
@@ -127,7 +128,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'nodename');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::setNode
@@ -142,7 +143,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'node');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::add
@@ -167,7 +168,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::replace
@@ -196,7 +197,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::save
@@ -212,7 +213,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::fixXmlFile
@@ -224,7 +225,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('fixXmlFile', $methods ), 'exists method fixXmlFile' );
         $r = new ReflectionMethod('dynaFormHandler', 'fixXmlFile');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::setHeaderAttribute
@@ -242,7 +243,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'att_value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::modifyHeaderAttribute
@@ -260,7 +261,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'att_new_value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::updateAttribute
@@ -281,7 +282,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'att_new_value');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::remove
@@ -296,7 +297,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'v');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::nodeExists
@@ -311,7 +312,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'node_name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::moveUp
@@ -326,7 +327,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'selected_node');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::moveDown
@@ -341,7 +342,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'selected_node');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::getFields
@@ -356,8 +357,8 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aFilter');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[0]->getDefaultValue() == array());
+    }
 
     /**
     * @covers dynaFormHandler::getFieldNames
@@ -372,8 +373,8 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aFilter');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[0]->getDefaultValue() == array());
+    }
 
     /**
     * @covers dynaFormHandler::addChilds
@@ -395,7 +396,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::addOrUpdateChild
@@ -419,7 +420,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'childAttributes');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaFormHandler::getArray
@@ -438,6 +439,6 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
-  } 
+  }

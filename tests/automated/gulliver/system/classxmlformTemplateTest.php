@@ -26,7 +26,9 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new xmlformTemplate();
+        $form = '';
+        $templateFile = '';
+        $this->object = new xmlformTemplate(&$form, $templateFile);
     }
 
     /**
@@ -38,7 +40,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -62,7 +64,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'templateFile');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers xmlformTemplate::printTemplate
@@ -81,7 +83,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'smarty');
-    } 
+    }
 
     /**
     * @covers xmlformTemplate::printJavaScript
@@ -96,7 +98,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'form');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers xmlformTemplate::printJSFile
@@ -111,7 +113,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'form');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers xmlformTemplate::getFields
@@ -130,7 +132,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '-1');
-    } 
+    }
 
     /**
     * @covers xmlformTemplate::printObject
@@ -149,7 +151,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '-1');
-    } 
+    }
 
     /**
     * @covers xmlformTemplate::_get_template
@@ -170,7 +172,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'smarty_obj');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers xmlformTemplate::_get_timestamp
@@ -191,7 +193,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'smarty_obj');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers xmlformTemplate::_get_secure
@@ -209,7 +211,7 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'smarty_obj');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers xmlformTemplate::_get_trusted
@@ -227,6 +229,6 @@ class classxmlformTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'smarty_obj');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

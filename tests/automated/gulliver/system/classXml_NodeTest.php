@@ -26,7 +26,11 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new Xml_Node();
+        $name = '';
+        $type = '';
+        $value = '';
+        $attributes = array();
+        $this->object = new Xml_Node($name, $type, $value, $attributes = array());
     }
 
     /**
@@ -38,7 +42,7 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -68,8 +72,8 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'attributes');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
-        $this->assertTrue( $params[3]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[3]->getDefaultValue() == array());
+    }
 
     /**
     * @covers Xml_Node::addAttribute
@@ -87,7 +91,7 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Xml_Node::addChildNode
@@ -102,7 +106,7 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'childNode');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Xml_Node::toTree
@@ -114,7 +118,7 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('toTree', $methods ), 'exists method toTree' );
         $r = new ReflectionMethod('Xml_Node', 'toTree');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Xml_Node::toArray
@@ -130,7 +134,7 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Xml_Node::findNode
@@ -145,7 +149,7 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'xpath');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Xml_Node::getXML
@@ -157,7 +161,7 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getXML', $methods ), 'exists method getXML' );
         $r = new ReflectionMethod('Xml_Node', 'getXML');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Xml_Node::getCDATAValue
@@ -169,6 +173,6 @@ class classXml_NodeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getCDATAValue', $methods ), 'exists method getCDATAValue' );
         $r = new ReflectionMethod('Xml_Node', 'getCDATAValue');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

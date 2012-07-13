@@ -38,7 +38,7 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -67,8 +67,8 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'arrKeys');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
-        $this->assertTrue( $params[2]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[2]->getDefaultValue() == array( 'UID' ));
+    }
 
     /**
     * @covers DBTable::setTo
@@ -90,8 +90,8 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'arrKeys');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
-        $this->assertTrue( $params[2]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[2]->getDefaultValue() == array( 'UID' ));
+    }
 
     /**
     * @covers DBTable::loadEmpty
@@ -103,7 +103,7 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('loadEmpty', $methods ), 'exists method loadEmpty' );
         $r = new ReflectionMethod('DBTable', 'loadEmpty');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers DBTable::loadWhere
@@ -118,7 +118,7 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strWhere');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers DBTable::load
@@ -130,7 +130,7 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('load', $methods ), 'exists method load' );
         $r = new ReflectionMethod('DBTable', 'load');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers DBTable::nextvalPGSql
@@ -145,7 +145,7 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'seq');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers DBTable::insert
@@ -157,7 +157,7 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('insert', $methods ), 'exists method insert' );
         $r = new ReflectionMethod('DBTable', 'insert');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers DBTable::update
@@ -169,7 +169,7 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('update', $methods ), 'exists method update' );
         $r = new ReflectionMethod('DBTable', 'update');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers DBTable::save
@@ -181,7 +181,7 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('save', $methods ), 'exists method save' );
         $r = new ReflectionMethod('DBTable', 'save');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers DBTable::delete
@@ -193,7 +193,7 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('delete', $methods ), 'exists method delete' );
         $r = new ReflectionMethod('DBTable', 'delete');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers DBTable::next
@@ -205,6 +205,6 @@ class classDBTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('next', $methods ), 'exists method next' );
         $r = new ReflectionMethod('DBTable', 'next');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

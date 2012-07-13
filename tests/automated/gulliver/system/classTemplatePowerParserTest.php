@@ -26,7 +26,9 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new TemplatePowerParser();
+        $tpl_file='';
+        $type='';
+        $this->object = new TemplatePowerParser($tpl_file, $type);
     }
 
     /**
@@ -38,7 +40,7 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -62,7 +64,7 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'type');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers TemplatePowerParser::__errorAlert
@@ -77,7 +79,7 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'message');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers TemplatePowerParser::__prepare
@@ -89,7 +91,7 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__prepare', $methods ), 'exists method __prepare' );
         $r = new ReflectionMethod('TemplatePowerParser', '__prepare');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers TemplatePowerParser::__cleanUp
@@ -101,7 +103,7 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__cleanUp', $methods ), 'exists method __cleanUp' );
         $r = new ReflectionMethod('TemplatePowerParser', '__cleanUp');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers TemplatePowerParser::__prepareTemplate
@@ -119,7 +121,7 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'type');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers TemplatePowerParser::__parseTemplate
@@ -140,7 +142,7 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'initdev');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers TemplatePowerParser::version
@@ -152,7 +154,7 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('version', $methods ), 'exists method version' );
         $r = new ReflectionMethod('TemplatePowerParser', 'version');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers TemplatePowerParser::assignInclude
@@ -174,6 +176,6 @@ class classTemplatePowerParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '0');
-    } 
+    }
 
-  } 
+  }

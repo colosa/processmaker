@@ -38,7 +38,7 @@ class classTreeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -60,7 +60,7 @@ class classTreeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Tree::addChild
@@ -81,8 +81,8 @@ class classTreeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'attributes');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
-        $this->assertTrue( $params[2]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[2]->getDefaultValue() == Array());
+    }
 
     /**
     * @covers Tree::printPlus
@@ -94,7 +94,7 @@ class classTreeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('printPlus', $methods ), 'exists method printPlus' );
         $r = new ReflectionMethod('Tree', 'printPlus');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Tree::printLabel
@@ -106,7 +106,7 @@ class classTreeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('printLabel', $methods ), 'exists method printLabel' );
         $r = new ReflectionMethod('Tree', 'printLabel');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Tree::printContent
@@ -118,7 +118,7 @@ class classTreeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('printContent', $methods ), 'exists method printContent' );
         $r = new ReflectionMethod('Tree', 'printContent');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Tree::render
@@ -130,6 +130,6 @@ class classTreeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('render', $methods ), 'exists method render' );
         $r = new ReflectionMethod('Tree', 'render');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

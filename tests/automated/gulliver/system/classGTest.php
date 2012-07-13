@@ -38,7 +38,7 @@ class classGTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -56,7 +56,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('is_https', $methods ), 'exists method is_https' );
         $r = new ReflectionMethod('G', 'is_https');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::array_fill_value
@@ -71,7 +71,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'arr');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[0]->getDefaultValue() == array());
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
@@ -80,7 +80,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::generate_password
@@ -96,7 +96,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '8');
-    } 
+    }
 
     /**
     * @covers G::array_concat
@@ -108,7 +108,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('array_concat', $methods ), 'exists method array_concat' );
         $r = new ReflectionMethod('G', 'array_concat');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::var_compare
@@ -126,7 +126,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'varN');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::var_probe
@@ -138,7 +138,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('var_probe', $methods ), 'exists method var_probe' );
         $r = new ReflectionMethod('G', 'var_probe');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::getVersion
@@ -150,7 +150,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getVersion', $methods ), 'exists method getVersion' );
         $r = new ReflectionMethod('G', 'getVersion');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::getIpAddress
@@ -162,7 +162,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getIpAddress', $methods ), 'exists method getIpAddress' );
         $r = new ReflectionMethod('G', 'getIpAddress');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::getMacAddress
@@ -174,7 +174,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getMacAddress', $methods ), 'exists method getMacAddress' );
         $r = new ReflectionMethod('G', 'getMacAddress');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::microtime_float
@@ -186,7 +186,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('microtime_float', $methods ), 'exists method microtime_float' );
         $r = new ReflectionMethod('G', 'microtime_float');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::setFatalErrorHandler
@@ -202,7 +202,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::setErrorHandler
@@ -218,7 +218,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::fatalErrorHandler
@@ -233,7 +233,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'buffer');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::customErrorHandler
@@ -260,7 +260,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->getName() == 'context');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::showErrorSource
@@ -284,7 +284,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'line');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::customErrorLog
@@ -308,7 +308,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'line');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::verboseError
@@ -338,7 +338,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->getName() == 'context');
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::encrypt
@@ -356,7 +356,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'key');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::decrypt
@@ -374,7 +374,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'key');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::lookup
@@ -389,7 +389,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'target');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::mk_dir
@@ -408,7 +408,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '511');
-    } 
+    }
 
     /**
     * @covers G::rm_dir
@@ -423,7 +423,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dirName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::verifyPath
@@ -442,7 +442,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::expandPath
@@ -458,7 +458,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::LoadSystem
@@ -473,7 +473,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strClass');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::LoadSystemExist
@@ -488,7 +488,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strClass');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::RenderPage
@@ -516,7 +516,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::LoadSkin
@@ -531,7 +531,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strSkinName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::LoadInclude
@@ -546,7 +546,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strInclude');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::LoadAllModelClasses
@@ -558,7 +558,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('LoadAllModelClasses', $methods ), 'exists method LoadAllModelClasses' );
         $r = new ReflectionMethod('G', 'LoadAllModelClasses');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::LoadAllPluginModelClasses
@@ -570,7 +570,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('LoadAllPluginModelClasses', $methods ), 'exists method LoadAllPluginModelClasses' );
         $r = new ReflectionMethod('G', 'LoadAllPluginModelClasses');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::LoadTemplate
@@ -585,7 +585,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strTemplateName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::LoadClassRBAC
@@ -600,7 +600,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strClass');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::LoadClass
@@ -615,7 +615,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'strClass');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::LoadThirdParty
@@ -633,7 +633,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sFile');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::encryptlink
@@ -648,7 +648,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'url');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::parseURI
@@ -666,8 +666,8 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'config');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers G::strip_slashes
@@ -682,7 +682,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'vVar');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::logTimeByPage
@@ -694,7 +694,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('logTimeByPage', $methods ), 'exists method logTimeByPage' );
         $r = new ReflectionMethod('G', 'logTimeByPage');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::streamCSSBigFile
@@ -709,7 +709,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'filename');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::streamJSTranslationFile
@@ -728,7 +728,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'en');
-    } 
+    }
 
     /**
     * @covers G::streamFile
@@ -751,7 +751,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::trimSourceCodeFile
@@ -766,7 +766,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'filename');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::sendHeaders
@@ -793,7 +793,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::virtualURI
@@ -814,7 +814,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'realPath');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::createUID
@@ -832,7 +832,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'id');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::getUIDName
@@ -851,7 +851,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::formatNumber
@@ -870,7 +870,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'latin');
-    } 
+    }
 
     /**
     * @covers G::formatDate
@@ -893,7 +893,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::getformatedDate
@@ -916,7 +916,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::arrayDiff
@@ -934,7 +934,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'array2');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::complete_field
@@ -955,7 +955,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'tipo');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::sqlEscape
@@ -973,8 +973,8 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'DBEngine');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'DB_ADAPTER');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == DB_ADAPTER);
+    }
 
     /**
     * @covers G::MySQLSintaxis
@@ -986,7 +986,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('MySQLSintaxis', $methods ), 'exists method MySQLSintaxis' );
         $r = new ReflectionMethod('G', 'MySQLSintaxis');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::replaceDataField
@@ -1008,7 +1008,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == 'mysql');
-    } 
+    }
 
     /**
     * @covers G::loadLanguageFile
@@ -1031,7 +1031,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::registerLabel
@@ -1049,7 +1049,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'label');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::LoadMenuXml
@@ -1064,7 +1064,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'msgID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::SendMessageXml
@@ -1086,7 +1086,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == 'labels');
-    } 
+    }
 
     /**
     * @covers G::SendTemporalMessage
@@ -1120,7 +1120,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == true);
         $this->assertTrue( $params[5]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::SendMessage
@@ -1142,7 +1142,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == 'labels');
-    } 
+    }
 
     /**
     * @covers G::SendMessageText
@@ -1160,7 +1160,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'strType');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::LoadMessage
@@ -1179,7 +1179,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'messages');
-    } 
+    }
 
     /**
     * @covers G::LoadXmlLabel
@@ -1198,7 +1198,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'labels');
-    } 
+    }
 
     /**
     * @covers G::LoadMessageXml
@@ -1217,7 +1217,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'labels');
-    } 
+    }
 
     /**
     * @covers G::LoadTranslationObject
@@ -1233,7 +1233,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == 'en');
-    } 
+    }
 
     /**
     * @covers G::LoadTranslation
@@ -1256,7 +1256,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::getTranslations
@@ -1275,7 +1275,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'en');
-    } 
+    }
 
     /**
     * @covers G::LoadArrayFile
@@ -1291,7 +1291,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::expandUri
@@ -1306,7 +1306,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'methodPage');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::genericForceLogin
@@ -1328,7 +1328,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == 'login/login');
-    } 
+    }
 
     /**
     * @covers G::capitalize
@@ -1343,7 +1343,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'string');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::toUpper
@@ -1358,7 +1358,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sText');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::toLower
@@ -1373,7 +1373,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sText');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::http_build_query
@@ -1396,7 +1396,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::header
@@ -1411,7 +1411,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'parameter');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::forceLogin
@@ -1431,7 +1431,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::add_slashes
@@ -1446,7 +1446,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'val_old');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::uploadFile
@@ -1471,7 +1471,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '438');
-    } 
+    }
 
     /**
     * @covers G::resizeImage
@@ -1496,7 +1496,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::array_merges
@@ -1508,7 +1508,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('array_merges', $methods ), 'exists method array_merges' );
         $r = new ReflectionMethod('G', 'array_merges');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::array_merge_2
@@ -1526,7 +1526,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'array_i');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::generateUniqueID
@@ -1538,7 +1538,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('generateUniqueID', $methods ), 'exists method generateUniqueID' );
         $r = new ReflectionMethod('G', 'generateUniqueID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::generateCode
@@ -1558,7 +1558,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == 'NUMERIC');
-    } 
+    }
 
     /**
     * @covers G::verifyUniqueID
@@ -1573,7 +1573,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'uid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::is_utf8
@@ -1588,7 +1588,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'string');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::CurDate
@@ -1604,7 +1604,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::getSystemConstants
@@ -1620,7 +1620,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::capitalizeWords
@@ -1635,7 +1635,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'text');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::unhtmlentities
@@ -1650,7 +1650,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'string');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::xmlParser
@@ -1665,7 +1665,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'string');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::_del_p
@@ -1680,7 +1680,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'ary');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::ary2xml
@@ -1703,7 +1703,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::ins2ary
@@ -1724,7 +1724,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'pos');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::evalJScript
@@ -1739,7 +1739,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'c');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::inflect
@@ -1761,8 +1761,8 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'map');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
-        $this->assertTrue( $params[2]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[2]->getDefaultValue() == array());
+    }
 
     /**
     * @covers G::pr
@@ -1777,7 +1777,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'var');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::dump
@@ -1792,7 +1792,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'var');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::stripCDATA
@@ -1807,7 +1807,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'string');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::sys_get_temp_dir
@@ -1819,7 +1819,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('sys_get_temp_dir', $methods ), 'exists method sys_get_temp_dir' );
         $r = new ReflectionMethod('G', 'sys_get_temp_dir');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::PMWSCompositeResponse
@@ -1837,7 +1837,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'prop');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::emailAddress
@@ -1852,7 +1852,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sEmail');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::json_encode
@@ -1867,7 +1867,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'Json');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::json_decode
@@ -1882,7 +1882,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'Json');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::isHttpRequest
@@ -1894,7 +1894,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('isHttpRequest', $methods ), 'exists method isHttpRequest' );
         $r = new ReflectionMethod('G', 'isHttpRequest');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::sendMail
@@ -1921,7 +1921,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->getName() == 'body');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::envelopEmailAddresses
@@ -1936,7 +1936,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'address');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::gettype
@@ -1951,7 +1951,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'var');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::removeComments
@@ -1966,7 +1966,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'buffer');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::getMemoryUsage
@@ -1978,7 +1978,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getMemoryUsage', $methods ), 'exists method getMemoryUsage' );
         $r = new ReflectionMethod('G', 'getMemoryUsage');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::getFormatUserList
@@ -1996,7 +1996,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aUserInfo');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::getModel
@@ -2011,7 +2011,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'model');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::is_rwritable
@@ -2030,7 +2030,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '*');
-    } 
+    }
 
     /**
     * @covers G::rglob
@@ -2054,7 +2054,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::browser_detection
@@ -2077,7 +2077,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::get_os_data
@@ -2098,7 +2098,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'pv_version_number');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::get_item_version
@@ -2124,7 +2124,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::get_set_count
@@ -2143,7 +2143,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers G::check_is_mobile
@@ -2158,7 +2158,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'pv_browser_user_agent');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::get_mobile_data
@@ -2173,7 +2173,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'pv_browser_user_agent');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::getBrowser
@@ -2185,7 +2185,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getBrowser', $methods ), 'exists method getBrowser' );
         $r = new ReflectionMethod('G', 'getBrowser');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::script_time
@@ -2197,7 +2197,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('script_time', $methods ), 'exists method script_time' );
         $r = new ReflectionMethod('G', 'script_time');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers G::getDirectorySize
@@ -2216,7 +2216,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers G::getCacheFileNameByPattern
@@ -2234,7 +2234,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'pattern');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::getCheckSum
@@ -2249,7 +2249,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'files');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::parse_ini_string
@@ -2264,7 +2264,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'string');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::disableEnableINIvariable
@@ -2282,7 +2282,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'variable');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::setINIvariable
@@ -2303,7 +2303,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'value');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::write_php_ini
@@ -2321,7 +2321,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'array');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::verifyWriteAccess
@@ -2336,7 +2336,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'resources');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::renderTemplate
@@ -2354,8 +2354,8 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'data');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers G::parseTemplate
@@ -2373,8 +2373,8 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'data');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers G::update_php_ini
@@ -2392,7 +2392,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'array');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers G::is_writable_r
@@ -2410,7 +2410,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'noWritableFiles');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
-  } 
+  }

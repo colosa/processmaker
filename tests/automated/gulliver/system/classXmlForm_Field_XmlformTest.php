@@ -28,7 +28,8 @@ class classXmlForm_Field_XmlformTest extends PHPUnit_Framework_TestCase
     {
         $attributes = array('type'=>'input');
         $fieldNode = new Xml_Node('testField', 'type', 'value', $attributes);
-        $this->object = new XmlForm_Field_Xmlform($fieldNode,'lang','home','owner');
+        $file = PATH_TRUNK . 'workflow/engine/xmlform/login/login';
+        $this->object = new XmlForm_Field_Xmlform($fieldNode,'lang',$file,'owner');
     }
 
     /**

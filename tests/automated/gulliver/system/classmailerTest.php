@@ -38,7 +38,7 @@ class classmailerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -56,7 +56,7 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('instanceMailer', $methods ), 'exists method instanceMailer' );
         $r = new ReflectionMethod('mailer', 'instanceMailer');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers mailer::arpaEMAIL
@@ -71,7 +71,7 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'address');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers mailer::sendTemplate
@@ -106,7 +106,7 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->getName() == 'Fields');
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == true);
-        $this->assertTrue( $params[5]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[5]->getDefaultValue() == Array());
         $this->assertTrue( $params[6]->getName() == 'templateFile');
         $this->assertTrue( $params[6]->isArray() == false);
         $this->assertTrue( $params[6]->isOptional () == true);
@@ -114,7 +114,7 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[7]->getName() == 'attachs');
         $this->assertTrue( $params[7]->isArray() == false);
         $this->assertTrue( $params[7]->isOptional () == true);
-        $this->assertTrue( $params[7]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[7]->getDefaultValue() == Array());
         $this->assertTrue( $params[8]->getName() == 'plainText');
         $this->assertTrue( $params[8]->isArray() == false);
         $this->assertTrue( $params[8]->isOptional () == true);
@@ -123,7 +123,7 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[9]->isArray() == false);
         $this->assertTrue( $params[9]->isOptional () == true);
         $this->assertTrue( $params[9]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers mailer::sendHtml
@@ -158,7 +158,7 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->getName() == 'Fields');
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == true);
-        $this->assertTrue( $params[5]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[5]->getDefaultValue() == Array());
         $this->assertTrue( $params[6]->getName() == 'content');
         $this->assertTrue( $params[6]->isArray() == false);
         $this->assertTrue( $params[6]->isOptional () == true);
@@ -166,7 +166,7 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[7]->getName() == 'attachs');
         $this->assertTrue( $params[7]->isArray() == false);
         $this->assertTrue( $params[7]->isOptional () == true);
-        $this->assertTrue( $params[7]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[7]->getDefaultValue() == Array());
         $this->assertTrue( $params[8]->getName() == 'plainText');
         $this->assertTrue( $params[8]->isArray() == false);
         $this->assertTrue( $params[8]->isOptional () == true);
@@ -175,7 +175,7 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[9]->isArray() == false);
         $this->assertTrue( $params[9]->isOptional () == true);
         $this->assertTrue( $params[9]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers mailer::sendText
@@ -214,8 +214,8 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[6]->getName() == 'attachs');
         $this->assertTrue( $params[6]->isArray() == false);
         $this->assertTrue( $params[6]->isOptional () == true);
-        $this->assertTrue( $params[6]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[6]->getDefaultValue() == Array());
+    }
 
     /**
     * @covers mailer::replaceFields
@@ -230,12 +230,12 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'Fields');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
+        $this->assertTrue( $params[0]->getDefaultValue() == Array());
         $this->assertTrue( $params[1]->getName() == 'content');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers mailer::html2text
@@ -247,6 +247,6 @@ class classmailerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('html2text', $methods ), 'exists method html2text' );
         $r = new ReflectionMethod('mailer', 'html2text');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

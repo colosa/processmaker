@@ -26,7 +26,8 @@ class classobjectTemplateTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new objectTemplate();
+        $templateFile = '';
+        $this->object = new objectTemplate($templateFile);
     }
 
     /**
@@ -38,12 +39,13 @@ class classobjectTemplateTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('objectTemplate');        $this->assertTrue( count($methods) == 60);
+        $methods = get_class_methods('objectTemplate');
+        $this->assertTrue( count($methods) == 60);
     }
 
     /**
@@ -59,7 +61,7 @@ class classobjectTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'templateFile');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers objectTemplate::printObject
@@ -74,6 +76,6 @@ class classobjectTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'object');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

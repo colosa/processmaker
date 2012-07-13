@@ -38,7 +38,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -56,7 +56,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('ymlDomain', $methods ), 'exists method ymlDomain' );
         $r = new ReflectionMethod('ymlDomain', 'ymlDomain');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers ymlDomain::addDomain
@@ -71,7 +71,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'domainName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlDomain::addDomainValue
@@ -89,7 +89,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlDomain::exists
@@ -104,7 +104,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'domainName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlDomain::get
@@ -119,7 +119,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'resource');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlDomain::name2keys
@@ -134,7 +134,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'resource');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlDomain::load
@@ -149,7 +149,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'resource');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlDomain::find
@@ -167,7 +167,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'where');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlDomain::getNode
@@ -185,7 +185,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'from');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlDomain::plainArray
@@ -200,7 +200,7 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'array');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers ymlDomain::arrayAppend
@@ -218,6 +218,6 @@ class classymlDomainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'appendFrom');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

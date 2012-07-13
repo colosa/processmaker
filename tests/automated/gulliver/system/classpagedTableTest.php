@@ -38,7 +38,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -56,7 +56,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('analizeSql', $methods ), 'exists method analizeSql' );
         $r = new ReflectionMethod('pagedTable', 'analizeSql');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers pagedTable::prepareQuery
@@ -68,7 +68,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('prepareQuery', $methods ), 'exists method prepareQuery' );
         $r = new ReflectionMethod('pagedTable', 'prepareQuery');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers pagedTable::setupFromXmlform
@@ -83,7 +83,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'xmlForm');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers pagedTable::count
@@ -95,7 +95,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('count', $methods ), 'exists method count' );
         $r = new ReflectionMethod('pagedTable', 'count');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers pagedTable::renderTitle
@@ -107,7 +107,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('renderTitle', $methods ), 'exists method renderTitle' );
         $r = new ReflectionMethod('pagedTable', 'renderTitle');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers pagedTable::renderField
@@ -128,7 +128,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'result');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers pagedTable::defaultStyle
@@ -140,7 +140,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('defaultStyle', $methods ), 'exists method defaultStyle' );
         $r = new ReflectionMethod('pagedTable', 'defaultStyle');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers pagedTable::renderTable
@@ -156,7 +156,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers pagedTable::printForm
@@ -174,7 +174,7 @@ class classpagedTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'data');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == Array());
+    }
 
-  } 
+  }

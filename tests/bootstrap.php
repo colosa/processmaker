@@ -15,7 +15,16 @@ define('PATH_HOME',  PATH_TRUNK . 'workflow' . PATH_SEP);
 define('SYS_SYS', $GLOBALS['SYS_SYS']);
 define('SYS_LANG', $GLOBALS['SYS_LANG']);
 define('SYS_SKIN', $GLOBALS['SYS_SKIN']);
+define('DB_ADAPTER', $GLOBALS['DB_ADAPTER']);
+define('DB_NAME', $GLOBALS['DB_NAME']);
+define('DB_USER', $GLOBALS['DB_USER']);
+define('DB_PASS', $GLOBALS['DB_PASS']);
+define('DB_HOST', $GLOBALS['DB_HOST']);
+define('PATH_C', PATH_TRUNK . 'tmp' );
+define('PATH_SMARTY_C', PATH_TRUNK . 'tmp' );
+define('PATH_SMARTY_CACHE', PATH_TRUNK . 'tmp' );
 
+mkdir (PATH_C);
 require  PATH_HOME . 'engine' . PATH_SEP . 'config' . PATH_SEP . 'paths.php';
 
 set_include_path(
@@ -29,7 +38,7 @@ set_include_path(
 // perpare propel env.
 require_once "propel/Propel.php";
 require_once "creole/Creole.php";
-
+require_once "pear/Net/JSON.php";
 Propel::init( PATH_CORE . "config/databases.php" );
 
 //initialize required classes

@@ -26,7 +26,8 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new i18n_PO();
+        $file='';
+        $this->object = new i18n_PO($file);
     }
 
     /**
@@ -38,7 +39,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -59,7 +60,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'file');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::buildInit
@@ -71,7 +72,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('buildInit', $methods ), 'exists method buildInit' );
         $r = new ReflectionMethod('i18n_PO', 'buildInit');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers i18n_PO::readInit
@@ -83,7 +84,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('readInit', $methods ), 'exists method readInit' );
         $r = new ReflectionMethod('i18n_PO', 'readInit');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers i18n_PO::addHeader
@@ -101,7 +102,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::addTranslatorComment
@@ -116,7 +117,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'str');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::addExtractedComment
@@ -131,7 +132,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'str');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::addReference
@@ -146,7 +147,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'str');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::addFlag
@@ -161,7 +162,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'str');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::addPreviousUntranslatedString
@@ -176,7 +177,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'str');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::addTranslation
@@ -194,7 +195,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'msgstr');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::_writeLine
@@ -209,7 +210,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'str');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::_write
@@ -224,7 +225,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'str');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers i18n_PO::prepare
@@ -243,7 +244,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers i18n_PO::headerStroke
@@ -255,7 +256,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('headerStroke', $methods ), 'exists method headerStroke' );
         $r = new ReflectionMethod('i18n_PO', 'headerStroke');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers i18n_PO::getHeaders
@@ -267,7 +268,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getHeaders', $methods ), 'exists method getHeaders' );
         $r = new ReflectionMethod('i18n_PO', 'getHeaders');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers i18n_PO::getTranslation
@@ -279,7 +280,7 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getTranslation', $methods ), 'exists method getTranslation' );
         $r = new ReflectionMethod('i18n_PO', 'getTranslation');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers i18n_PO::__destruct
@@ -291,6 +292,6 @@ class classi18n_POTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__destruct', $methods ), 'exists method __destruct' );
         $r = new ReflectionMethod('i18n_PO', '__destruct');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }
