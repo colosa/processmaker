@@ -26,7 +26,7 @@ class classgzip_fileTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new gzip_file();
+        $this->object = new gzip_file('name');
     }
 
     /**
@@ -43,7 +43,8 @@ class classgzip_fileTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('gzip_file');        $this->assertTrue( count($methods) == 18);
+        $methods = get_class_methods('gzip_file');
+        $this->assertTrue( count($methods) == 18);
     }
 
     /**
@@ -59,7 +60,7 @@ class classgzip_fileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers gzip_file::create_gzip
@@ -71,7 +72,7 @@ class classgzip_fileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('create_gzip', $methods ), 'exists method create_gzip' );
         $r = new ReflectionMethod('gzip_file', 'create_gzip');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers gzip_file::open_archive
@@ -83,6 +84,6 @@ class classgzip_fileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('open_archive', $methods ), 'exists method open_archive' );
         $r = new ReflectionMethod('gzip_file', 'open_archive');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 
