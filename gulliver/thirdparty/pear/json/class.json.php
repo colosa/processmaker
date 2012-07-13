@@ -59,38 +59,45 @@
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_SLICE',   1);
-
+if ( !defined('SERVICES_JSON_SLICE')) {
+    define('SERVICES_JSON_SLICE',   1);
+}
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
+if ( !defined('SERVICES_JSON_IN_STR')) {
 define('SERVICES_JSON_IN_STR',  2);
-
+}
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_ARR',  3);
-
+if ( !defined('SERVICES_JSON_IN_ARR')) {
+    define('SERVICES_JSON_IN_ARR',  3);
+}
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_OBJ',  4);
-
+if ( !defined('SERVICES_JSON_IN_OBJ')) {
+    define('SERVICES_JSON_IN_OBJ',  4);
+}
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_CMT', 5);
-
+if ( !defined('SERVICES_JSON_IN_CMT')) {
+    define('SERVICES_JSON_IN_CMT', 5);
+}
 /**
  * Behavior switch for Services_JSON::decode()
  */
-define('SERVICES_JSON_LOOSE_TYPE', 16);
-
+if ( !defined('SERVICES_JSON_LOOSE_TYPE')) {
+    define('SERVICES_JSON_LOOSE_TYPE', 16);
+}
 /**
  * Behavior switch for Services_JSON::decode()
  */
-define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
-
+if ( !defined('SERVICES_JSON_SUPPRESS_ERRORS')) {
+    define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
+}
 /**
  * Converts to and from JSON format.
  *
@@ -112,6 +119,10 @@ define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
  * $value = $json->decode($input);
  * </code>
  */
+
+if (class_exists ('Services_JSON') ) {
+    return;
+}
 class Services_JSON
 {
    /**
