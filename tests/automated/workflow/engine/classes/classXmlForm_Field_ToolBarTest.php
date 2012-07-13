@@ -26,7 +26,10 @@ class classXmlForm_Field_ToolBarTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_ToolBar();
+        $attributes = array("type" => "input");
+        $xmlNode    = new Xml_Node("node1", "type1", "value1", $attributes);
+
+        $this->object = new XmlForm_Field_ToolBar($xmlNode, "en", null, null);
     }
 
     /**
@@ -38,12 +41,13 @@ class classXmlForm_Field_ToolBarTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_ToolBar');        $this->assertTrue( count($methods) == 25);
+        $methods = get_class_methods('XmlForm_Field_ToolBar');
+        $this->assertTrue(count($methods) == 25);
     }
 
     /**
@@ -68,7 +72,7 @@ class classXmlForm_Field_ToolBarTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'owner');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_ToolBar::render
@@ -77,12 +81,13 @@ class classXmlForm_Field_ToolBarTest extends PHPUnit_Framework_TestCase
     public function testrender()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('render', $methods ), 'exists method render' );
+        $this->assertTrue(in_array('render', $methods ), 'exists method render' );
         $r = new ReflectionMethod('XmlForm_Field_ToolBar', 'render');
-        $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'value');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-    } 
 
-  } 
+        $params = $r->getParameters();
+        $this->assertTrue($params[0]->getName() == 'value');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional() == false);
+    }
+}
+

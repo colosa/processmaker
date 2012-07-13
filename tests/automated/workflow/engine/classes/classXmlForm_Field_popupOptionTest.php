@@ -57,7 +57,7 @@ class classXmlForm_Field_popupOptionTest extends PHPUnit_Framework_TestCase
     public function testgetEvents()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('getEvents', $methods ), 'exists method getEvents' );
+        $this->assertTrue(in_array('getEvents', $methods ), 'exists method getEvents' );
         $r = new ReflectionMethod('XmlForm_Field_popupOption', 'getEvents');
         $params = $r->getParameters();
     }
