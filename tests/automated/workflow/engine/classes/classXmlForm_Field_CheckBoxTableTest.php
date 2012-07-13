@@ -42,7 +42,7 @@ class classXmlForm_Field_CheckBoxTableTest extends PHPUnit_Framework_TestCase
 
     /**
      * This is the default method to test, if the class still having
-     * the same number of methods.
+     * the same number of methods..
     */
     public function testNumberOfMethodsInThisClass()
     {
