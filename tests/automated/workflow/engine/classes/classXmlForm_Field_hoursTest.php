@@ -26,7 +26,10 @@ class classXmlForm_Field_hoursTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_hours();
+        $attributes = array("type" => "input");
+        $xmlNode    = new Xml_Node("node1", "type1", "value1", $attributes);
+
+        $this->object = new XmlForm_Field_hours($xmlNode);
     }
 
     /**
@@ -38,12 +41,13 @@ class classXmlForm_Field_hoursTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_hours');        $this->assertTrue( count($methods) == 24);
+        $methods = get_class_methods('XmlForm_Field_hours');
+        $this->assertTrue(count($methods) == 24);
     }
 
     /**
@@ -64,7 +68,7 @@ class classXmlForm_Field_hoursTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_hours::renderGrid
@@ -82,7 +86,7 @@ class classXmlForm_Field_hoursTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'owner');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XmlForm_Field_hours::attachEvents
@@ -97,6 +101,6 @@ class classXmlForm_Field_hoursTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'element');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
+}
 
-  } 

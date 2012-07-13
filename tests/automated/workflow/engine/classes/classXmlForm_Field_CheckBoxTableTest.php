@@ -26,7 +26,10 @@ class classXmlForm_Field_CheckBoxTableTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XmlForm_Field_CheckBoxTable();
+        $attributes = array("type" => "input");
+        $xmlNode    = new Xml_Node("node1", "type1", "value1", $attributes);
+
+        $this->object = new XmlForm_Field_CheckBoxTable($xmlNode);
     }
 
     /**
@@ -38,12 +41,13 @@ class classXmlForm_Field_CheckBoxTableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_CheckBoxTable');        $this->assertTrue( count($methods) == 24);
+        $methods = get_class_methods('XmlForm_Field_CheckBoxTable');
+        $this->assertTrue(count($methods) == 24);
     }
 
     /**
@@ -53,17 +57,18 @@ class classXmlForm_Field_CheckBoxTableTest extends PHPUnit_Framework_TestCase
     public function testrender()
     {
         $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('render', $methods ), 'exists method render' );
+        $this->assertTrue(in_array('render', $methods), 'exists method render');
         $r = new ReflectionMethod('XmlForm_Field_CheckBoxTable', 'render');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'value');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == '');
-        $this->assertTrue( $params[1]->getName() == 'owner');
-        $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
 
-  } 
+        $this->assertTrue($params[0]->getName() == 'value');
+        $this->assertTrue($params[0]->isArray() == false);
+        $this->assertTrue($params[0]->isOptional () == true);
+        $this->assertTrue($params[0]->getDefaultValue() == '');
+        $this->assertTrue($params[1]->getName() == 'owner');
+        $this->assertTrue($params[1]->isArray() == false);
+        $this->assertTrue($params[1]->isOptional () == true);
+        $this->assertTrue($params[1]->getDefaultValue() == '');
+    }
+}
+
