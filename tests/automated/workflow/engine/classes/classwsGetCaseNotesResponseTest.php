@@ -26,7 +26,7 @@ class classwsGetCaseNotesResponseTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new wsGetCaseNotesResponse();
+        $this->object = new wsGetCaseNotesResponse(0, 'message', array());
     }
 
     /**
@@ -38,12 +38,13 @@ class classwsGetCaseNotesResponseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('wsGetCaseNotesResponse');        $this->assertTrue( count($methods) == 1);
+        $methods = get_class_methods('wsGetCaseNotesResponse');
+        $this->assertTrue( count($methods) == 1);
     }
 
     /**
@@ -65,6 +66,6 @@ class classwsGetCaseNotesResponseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'notes');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
+}
 
-  } 
