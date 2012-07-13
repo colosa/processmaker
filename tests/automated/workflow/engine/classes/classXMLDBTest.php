@@ -43,7 +43,8 @@ class classXMLDBTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XMLDB');        $this->assertTrue( count($methods) == 2);
+        $methods = get_class_methods('XMLDB');
+        $this->assertTrue( count($methods) == 2);
     }
 
     /**
@@ -62,8 +63,8 @@ class classXMLDBTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'options');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
 
     /**
     * @covers XMLDB::isError
@@ -78,6 +79,6 @@ class classXMLDBTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'result');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
+}
 
-  } 
