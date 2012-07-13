@@ -26,7 +26,8 @@ class classJrmlTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new Jrml();
+        $array = array('sql'=>'', 'type'=> array());
+        $this->object = new Jrml($array);
     }
 
     /**
@@ -43,7 +44,8 @@ class classJrmlTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('Jrml');        $this->assertTrue( count($methods) == 7);
+        $methods = get_class_methods('Jrml');
+        $this->assertTrue( count($methods) == 7);
     }
 
     /**
@@ -59,8 +61,8 @@ class classJrmlTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'data');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[0]->getDefaultValue() == array());
+    }
 
     /**
     * @covers Jrml::get_md
@@ -72,7 +74,7 @@ class classJrmlTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('get_md', $methods ), 'exists method get_md' );
         $r = new ReflectionMethod('Jrml', 'get_md');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Jrml::get_header
@@ -84,7 +86,7 @@ class classJrmlTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('get_header', $methods ), 'exists method get_header' );
         $r = new ReflectionMethod('Jrml', 'get_header');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Jrml::get_column_header
@@ -96,7 +98,7 @@ class classJrmlTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('get_column_header', $methods ), 'exists method get_column_header' );
         $r = new ReflectionMethod('Jrml', 'get_column_header');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Jrml::get_detail
@@ -108,7 +110,7 @@ class classJrmlTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('get_detail', $methods ), 'exists method get_detail' );
         $r = new ReflectionMethod('Jrml', 'get_detail');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Jrml::get_footer
@@ -120,7 +122,7 @@ class classJrmlTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('get_footer', $methods ), 'exists method get_footer' );
         $r = new ReflectionMethod('Jrml', 'get_footer');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Jrml::export
@@ -132,6 +134,6 @@ class classJrmlTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('export', $methods ), 'exists method export' );
         $r = new ReflectionMethod('Jrml', 'export');
         $params = $r->getParameters();
-    } 
+    }
+}
 
-  } 
