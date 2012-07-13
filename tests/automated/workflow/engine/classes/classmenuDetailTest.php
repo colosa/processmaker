@@ -26,7 +26,7 @@ class classmenuDetailTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new menuDetail();
+        $this->object = new menuDetail('nameSpace', 'menuId', 'fileName');
     }
 
     /**
@@ -43,7 +43,8 @@ class classmenuDetailTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('menuDetail');        $this->assertTrue( count($methods) == 1);
+        $methods = get_class_methods('menuDetail');
+        $this->assertTrue( count($methods) == 1);
     }
 
     /**
@@ -65,6 +66,6 @@ class classmenuDetailTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sFilename');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
+}
 
-  } 
