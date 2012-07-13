@@ -26,7 +26,8 @@ class classfolderDataTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new folderData();
+        $this->object = new folderData('$sProcessUid', '$sProcessTitle', '$sApplicationUid',
+            '$sApplicationTitle', '$sUserUid', '$sUserLogin', '$sUserFullName');
     }
 
     /**
@@ -43,7 +44,8 @@ class classfolderDataTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('folderData');        $this->assertTrue( count($methods) == 1);
+        $methods = get_class_methods('folderData');
+        $this->assertTrue( count($methods) == 1);
     }
 
     /**
@@ -79,6 +81,6 @@ class classfolderDataTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[6]->isArray() == false);
         $this->assertTrue( $params[6]->isOptional () == true);
         $this->assertTrue( $params[6]->getDefaultValue() == '');
-    } 
+    }
+}
 
-  } 
