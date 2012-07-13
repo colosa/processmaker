@@ -131,7 +131,8 @@ public function canStartCase($sUIDUser = '')
    * @return $rows
    */
 
-  function getStartCases($sUIDUser = '') {
+  public function getStartCases($sUIDUser = '')
+  {
     $rows[] = array('uid' => 'char', 'value' => 'char');
     $tasks = array();
 
@@ -220,7 +221,8 @@ public function canStartCase($sUIDUser = '')
    * @return $rows
    */
 
-  function getStartCasesPerType($sUIDUser = '', $typeView) {
+  public function getStartCasesPerType($sUIDUser = '', $typeView)
+  {
 
     $rows[] = array('uid' => 'char', 'value' => 'char');
     $tasks = array();
@@ -337,7 +339,8 @@ public function canStartCase($sUIDUser = '')
    * @return $rows
    */
 
-  function getSelfServiceTasks($sUIDUser = '') {
+  public function getSelfServiceTasks($sUIDUser = '')
+  {
     $rows[] = array('uid' => '', 'value' => '');
     $tasks = array();
 
@@ -420,7 +423,8 @@ public function canStartCase($sUIDUser = '')
     return $rows;
   }
 
-  function isSelfService($USR_UID, $TAS_UID){
+  public function isSelfService($USR_UID, $TAS_UID)
+  {
     $tasks = $this->getSelfServiceTasks($USR_UID);
 
     foreach( $tasks as $key => $val ) {
@@ -438,7 +442,8 @@ public function canStartCase($sUIDUser = '')
    * @return Fields
    */
 
-  function loadCase($sAppUid, $iDelIndex = 0) {
+  public function loadCase($sAppUid, $iDelIndex = 0)
+  {
     try {
       $oApp = new Application;
       $aFields = $oApp->Load($sAppUid);
@@ -523,7 +528,8 @@ public function canStartCase($sUIDUser = '')
    * @return $aCases
    */
 
-  function loadCaseByNumber($sCaseNumber) {
+  public function loadCaseByNumber($sCaseNumber)
+  {
     //('SELECT * FROM APP_DELEGATION WHERE APP_PROC_CODE="'.$sCaseNumber.'" ');
     try {
       $aCases = array();
@@ -563,7 +569,8 @@ public function canStartCase($sUIDUser = '')
    * @return $appLabel
    */
 
-  function refreshCaseLabel($sAppUid, $aAppData, $sLabel) {
+  public function refreshCaseLabel($sAppUid, $aAppData, $sLabel)
+  {
     $getAppLabel = "getApp$sLabel";
     $getTasDef = "getTasDef$sLabel";
     $oApplication = new Application;
@@ -600,7 +607,8 @@ public function canStartCase($sUIDUser = '')
    * @return $res
    */
 
-  function refreshCaseTitleAndDescription($sAppUid, $aAppData) {
+  public function refreshCaseTitleAndDescription($sAppUid, $aAppData)
+  {
     $res['APP_TITLE'] = null;
     $res['APP_DESCRIPTION'] = null;
     //$res['APP_PROC_CODE']   = null;
@@ -675,7 +683,8 @@ public function canStartCase($sUIDUser = '')
    * @return $res
    */
 
-  function newRefreshCaseTitleAndDescription($sAppUid, $fields, $aAppData) {
+  public function newRefreshCaseTitleAndDescription($sAppUid, $fields, $aAppData)
+  {
     $res = array();
 
     $lang = defined('SYS_LANG') ? SYS_LANG : 'en';
@@ -772,7 +781,8 @@ public function canStartCase($sUIDUser = '')
    * @access public
    * @return $appLabel
    */
-  function refreshCaseTitle($sAppUid, $aAppData) {
+  public function refreshCaseTitle($sAppUid, $aAppData)
+  {
     return $this->refreshCaseLabel($sAppUid, $aAppData, "Title");
   }
 
@@ -786,7 +796,8 @@ public function canStartCase($sUIDUser = '')
    * @access public
    * @return $appLabel
    */
-  function refreshCaseDescription($sAppUid, $aAppData) {
+  public function refreshCaseDescription($sAppUid, $aAppData)
+  {
     return $this->refreshCaseLabel($sAppUid, $aAppData, "Description");
   }
 
@@ -800,7 +811,8 @@ public function canStartCase($sUIDUser = '')
    * @access public
    * @return $appLabel
    */
-  function refreshCaseStatusCode($sAppUid, $aAppData) {
+  public function refreshCaseStatusCode($sAppUid, $aAppData)
+  {
     return $this->refreshCaseLabel($sAppUid, $aAppData, "ProcCode");
   }
 
@@ -814,7 +826,8 @@ public function canStartCase($sUIDUser = '')
    * @access public
    * @return $appLabel
    */
-  function arrayRecursiveDiff($aArray1, $aArray2) {
+  public function arrayRecursiveDiff($aArray1, $aArray2)
+  {
     $aReturn = array();
 
     foreach ($aArray1 as $mKey => $mValue) {
@@ -846,7 +859,8 @@ public function canStartCase($sUIDUser = '')
    * @return Fields
    */
 
-  function updateCase($sAppUid, $Fields = array()) {
+  public function updateCase($sAppUid, $Fields = array())
+  {
     try {
       $aApplicationFields = $Fields['APP_DATA'];
       $Fields['APP_UID']         = $sAppUid;
@@ -951,7 +965,8 @@ public function canStartCase($sUIDUser = '')
    * @return Fields
    */
 
-  function removeCase($sAppUid) {
+  public function removeCase($sAppUid)
+  {
 
     try {
       $oApplication = new Application();
@@ -1027,7 +1042,8 @@ public function canStartCase($sUIDUser = '')
    * @return Fields
    */
 
-  function setDelInitDate($sAppUid, $iDelIndex) {
+  public function setDelInitDate($sAppUid, $iDelIndex)
+  {
     try {
       $oAppDel = AppDelegationPeer::retrieveByPk($sAppUid, $iDelIndex);
       $oAppDel->setDelInitDate("now");
@@ -1051,7 +1067,8 @@ public function canStartCase($sUIDUser = '')
    * @return Fields
    */
 
-  function setCatchUser($sAppUid, $iDelIndex, $usrId) {
+  public function setCatchUser($sAppUid, $iDelIndex, $usrId)
+  {
     try {
       $oAppDel = AppDelegationPeer::retrieveByPk($sAppUid, $iDelIndex);
       $oAppDel->setDelInitDate("now");
@@ -1074,7 +1091,8 @@ public function canStartCase($sUIDUser = '')
    * @return $row (number of APP_DELEGATION rows)
    */
 
-  function GetOpenThreads($sAppUid) {
+  public function GetOpenThreads($sAppUid)
+  {
     //('SELECT * FROM APP_DELEGATION WHERE APP_UID="'.$currentDelegation['APP_UID'].'" AND DEL_THREAD_STATUS="OPEN"');
     try {
       $c = new Criteria();
@@ -1100,7 +1118,8 @@ public function canStartCase($sUIDUser = '')
    * @return $aThreads
    */
 
-  function getSiblingThreads($sAppUid, $iDelIndex) {
+  public function getSiblingThreads($sAppUid, $iDelIndex)
+  {
     try {
       //get the parent thread
       $c = new Criteria();
@@ -1145,7 +1164,8 @@ public function canStartCase($sUIDUser = '')
    * @return $aThreads
    */
 
-  function getOpenSiblingThreads($sNextTask, $sAppUid, $iDelIndex, $sCurrentTask) {
+  public function getOpenSiblingThreads($sNextTask, $sAppUid, $iDelIndex, $sCurrentTask)
+  {
     try {
       //Get all tasks that are previous to my NextTask, we want to know if there are pending task for my nexttask
       //we need to filter only seq joins going to my next task
@@ -1185,7 +1205,8 @@ public function canStartCase($sUIDUser = '')
    * @return $aThreads
    */
 
-  function searchOpenPreviousTasks($taskUid, $sAppUid, $aPreviousTasks = array()) {
+  public function searchOpenPreviousTasks($taskUid, $sAppUid, $aPreviousTasks = array())
+  {
     //in this array we are storing all open delegation rows.
     $aTaskReviewed = array();
 
@@ -1257,7 +1278,7 @@ public function canStartCase($sUIDUser = '')
    * @return array within the open & closed tasks
    *         false -> when has not any delegation started for that task
    */
-  function getReviewedTasks($taskUid, $sAppUid)
+  public function getReviewedTasks($taskUid, $sAppUid)
   {
     $openTasks = $closedTasks = array();
 
@@ -1297,7 +1318,8 @@ public function canStartCase($sUIDUser = '')
    * @return $row[0]
    */
 
-  function CountTotalPreviousTasks($sTasUid) {
+  public function CountTotalPreviousTasks($sTasUid)
+  {
     //SELECT * FROM ROUTE WHERE ROU_NEXT_TASK="44756CDAC1BF4F";
     try {
       $c = new Criteria();
@@ -1322,7 +1344,8 @@ public function canStartCase($sUIDUser = '')
    * @return $pendingDel
    */
 
-  function getOpenNullDelegations($sAppUid, $sTasUid) {
+  public function getOpenNullDelegations($sAppUid, $sTasUid)
+  {
     $pendingDel = array();
     //PRINT "getOpenNullDelegations ( $sAppUid, $sTasUid ) ";
     //SELECT D.*,R.* FROM ROUTE R LEFT JOIN APP_DELEGATION D ON (R.TAS_UID=D.TAS_UID)
@@ -1388,7 +1411,8 @@ public function canStartCase($sUIDUser = '')
    * @return true or false
    */
 
-  function isRouteOpen($sAppUid, $sTasUid) {
+  public function isRouteOpen($sAppUid, $sTasUid)
+  {
     try {
       $c = new Criteria();
       $c->clearSelectColumns();
@@ -1465,7 +1489,8 @@ public function canStartCase($sUIDUser = '')
    * @return void
    */
 
-  function newAppDelegation($sProUid, $sAppUid, $sTasUid, $sUsrUid, $sPrevious, $iPriority, $sDelType, $iAppThreadIndex = 1, $nextDel=null) {
+  public function newAppDelegation($sProUid, $sAppUid, $sTasUid, $sUsrUid, $sPrevious, $iPriority, $sDelType, $iAppThreadIndex = 1, $nextDel=null)
+  {
     try {
       $appDel = new AppDelegation();
       $result = $appDel->createAppDelegation($sProUid, $sAppUid, $sTasUid, $sUsrUid, $iAppThreadIndex, $iPriority, false, $sPrevious, $nextDel);
@@ -1491,7 +1516,8 @@ public function canStartCase($sUIDUser = '')
    * @return true
    */
 
-  function updateAppDelegation($sAppUid, $iDelIndex, $iAppThreadIndex) {
+  public function updateAppDelegation($sAppUid, $iDelIndex, $iAppThreadIndex)
+  {
 
     try {
       $appDelegation = new AppDelegation();
@@ -1519,7 +1545,8 @@ public function canStartCase($sUIDUser = '')
    * @return $aDelegations
    */
 
-  function GetAllDelegations($sAppUid) {
+  public function GetAllDelegations($sAppUid)
+  {
     //('SELECT * FROM APP_DELEGATION WHERE APP_UID="'.$currentDelegation['APP_UID'].'" ');
     try {
       $aDelegations = array();
@@ -1548,7 +1575,8 @@ public function canStartCase($sUIDUser = '')
    * @return $aThreads
    */
 
-  function GetAllThreads($sAppUid) {
+  public function GetAllThreads($sAppUid)
+  {
     //('SELECT * FROM APP_DELEGATION WHERE APP_UID="'.$currentDelegation['APP_UID'].'" ');
     try {
       $aThreads = array();
@@ -1579,7 +1607,8 @@ public function canStartCase($sUIDUser = '')
    * @return $iNewDelIndex;
    */
 
-  function updateAppThread($sAppUid, $iAppThreadIndex, $iNewDelIndex) {
+  public function updateAppThread($sAppUid, $iAppThreadIndex, $iNewDelIndex)
+  {
     try {
       /// updating the DEL_INDEX value in the APP_THREAD
       $con = Propel::getConnection('workflow');
@@ -1619,7 +1648,8 @@ public function canStartCase($sUIDUser = '')
    * @return true
    */
 
-  function closeAppThread($sAppUid, $iAppThreadIndex) {
+  public function closeAppThread($sAppUid, $iAppThreadIndex)
+  {
     try {
       $appThread = new AppThread();
       $aData = array();
@@ -1642,7 +1672,8 @@ public function canStartCase($sUIDUser = '')
    * @return void
    */
 
-  function closeAllThreads($sAppUid) {
+  public function closeAllThreads($sAppUid)
+  {
     try {
       //Execute('UPDATE APP_DELEGATION SET DEL_THREAD_STATUS="CLOSED" WHERE APP_UID="$sAppUid" AND DEL_THREAD_STATUS="OPEN"');
       $c = new Criteria();
@@ -1679,7 +1710,8 @@ public function canStartCase($sUIDUser = '')
 
    */
 
-  function newAppThread($sAppUid, $iNewDelIndex, $iAppParent) {
+  public function newAppThread($sAppUid, $iNewDelIndex, $iAppParent)
+  {
     try {
       $appThread = new AppThread();
       $result = $appThread->createAppThread($sAppUid, $iNewDelIndex, $iAppParent);
@@ -1700,7 +1732,8 @@ public function canStartCase($sUIDUser = '')
    * @return
    */
 
-  function closeAllDelegations($sAppUid) {
+  public function closeAllDelegations($sAppUid)
+  {
     try {
       //Execute('UPDATE APP_DELEGATION SET DEL_THREAD_STATUS="CLOSED" WHERE APP_UID="$sAppUid" AND DEL_THREAD_STATUS="OPEN"');
       $c = new Criteria();
@@ -1735,7 +1768,8 @@ public function canStartCase($sUIDUser = '')
    * @return Fields
    */
 
-  function CloseCurrentDelegation($sAppUid, $iDelIndex) {
+  public function CloseCurrentDelegation($sAppUid, $iDelIndex)
+  {
     try {
       //Execute('UPDATE APP_DELEGATION SET DEL_THREAD_STATUS="CLOSED" WHERE APP_UID="$sAppUid" AND DEL_THREAD_STATUS="OPEN"');
       $c = new Criteria();
@@ -1773,7 +1807,8 @@ public function canStartCase($sUIDUser = '')
    * @return Fields
    */
 
-  function ReactivateCurrentDelegation($sAppUid, $iDelegation) {
+  public function ReactivateCurrentDelegation($sAppUid, $iDelegation)
+  {
     try {
       $c = new Criteria();
       $c->add(AppDelegationPeer::APP_UID, $sAppUid);
@@ -1807,7 +1842,8 @@ public function canStartCase($sUIDUser = '')
    * @return Fields
    */
 
-  function startCase($sTasUid, $sUsrUid, $isSubprocess=false) {
+  public function startCase($sTasUid, $sUsrUid, $isSubprocess=false)
+  {
     if ($sTasUid != '') {
 
         try {
@@ -1883,7 +1919,8 @@ public function canStartCase($sUIDUser = '')
    * @return array
    */
 
-  function getNextStep($sProUid = '', $sAppUid = '', $iDelIndex = 0, $iPosition = 0) {
+  public function getNextStep($sProUid = '', $sAppUid = '', $iDelIndex = 0, $iPosition = 0)
+  {
     G::LoadClass('pmScript');
     $oPMScript = new PMScript();
     $oApplication = new Application();
@@ -1986,7 +2023,8 @@ public function canStartCase($sUIDUser = '')
    * @return array
    */
 
-  function getPreviousStep($sProUid = '', $sAppUid = '', $iDelIndex = 0, $iPosition = 0) {
+  public function getPreviousStep($sProUid = '', $sAppUid = '', $iDelIndex = 0, $iPosition = 0)
+  {
     //Note: Depreciated, delete in the future
     G::LoadClass('pmScript');
     $oPMScript = new PMScript();
@@ -2095,7 +2133,8 @@ public function canStartCase($sUIDUser = '')
    * @return $aNextStep
    */
 
-  function getNextSupervisorStep($sProcessUID, $iPosition, $sType = 'DYNAFORM') {
+  public function getNextSupervisorStep($sProcessUID, $iPosition, $sType = 'DYNAFORM')
+  {
     $iPosition += 1;
     $oCriteria = new Criteria();
     $oCriteria->add(StepSupervisorPeer::PRO_UID, $sProcessUID);
@@ -2129,7 +2168,8 @@ public function canStartCase($sUIDUser = '')
    * @return $aNextStep
    */
 
-  function getPreviousSupervisorStep($sProcessUID, $iPosition, $sType = 'DYNAFORM') {
+  public function getPreviousSupervisorStep($sProcessUID, $iPosition, $sType = 'DYNAFORM')
+  {
     $iPosition -= 1;
     if ($iPosition > 0) {
       $oCriteria = new Criteria();
@@ -2165,7 +2205,8 @@ public function canStartCase($sUIDUser = '')
    * @return array
    */
 
-  function getTransferHistoryCriteria($sAppUid) {
+  public function getTransferHistoryCriteria($sAppUid)
+  {
     $c = new Criteria('workflow');
     $c->addAsColumn('TAS_TITLE', 'TAS_TITLE.CON_VALUE');
     $c->addSelectColumn(UsersPeer::USR_FIRSTNAME);
@@ -2267,7 +2308,8 @@ public function canStartCase($sUIDUser = '')
    * @return array
    */
 
-  function prepareCriteriaForToDo($sUIDUserLogged) {
+  public function prepareCriteriaForToDo($sUIDUserLogged)
+  {
 // NEW QUERY
     $c = new Criteria('workflow');
     //$gf->clearSelectColumns();DEL_INIT_DATE
@@ -2323,7 +2365,8 @@ public function canStartCase($sUIDUser = '')
    * @param string $aAdditionalFilter
    * @return array
    */
-  function getConditionCasesList($sTypeList = 'all', $sUIDUserLogged = '', $ClearSession=true, $aAdditionalFilter=null) {
+  public function getConditionCasesList($sTypeList = 'all', $sUIDUserLogged = '', $ClearSession=true, $aAdditionalFilter=null)
+  {
     $c = new Criteria('workflow');
     $c->clearSelectColumns();
     $c->addSelectColumn(ApplicationPeer::APP_UID);
@@ -2746,7 +2789,8 @@ public function canStartCase($sUIDUser = '')
    * @return array
    */
 
-  function loadCaseInCurrentDelegation($APP_UID) {
+  public function loadCaseInCurrentDelegation($APP_UID)
+  {
     $c = new Criteria('workflow');
     $c->clearSelectColumns();
     $c->addSelectColumn(ApplicationPeer::APP_UID);
@@ -2835,7 +2879,8 @@ public function canStartCase($sUIDUser = '')
    * @author gustavo cruz
    * @return array
    */
-  function loadCaseByDelegation($appUid, $delIndex) {
+  public function loadCaseByDelegation($appUid, $delIndex)
+  {
     $c = new Criteria('workflow');
     $c->clearSelectColumns();
     $c->addSelectColumn(ApplicationPeer::APP_UID);
@@ -2923,7 +2968,8 @@ public function canStartCase($sUIDUser = '')
    * Description: This method set all cases with the APP_DISABLE_ACTION_DATE for today
    * @return void
    */
-  function ThrowUnpauseDaemon($today) {
+  public function ThrowUnpauseDaemon($today)
+  {
     $today = ($today==date('Y-m-d'))?date('Y-m-d'):$today;
     $c = new Criteria('workflow');
     $c->clearSelectColumns();
