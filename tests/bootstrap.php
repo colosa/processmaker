@@ -20,6 +20,8 @@ define('DB_NAME', $GLOBALS['DB_NAME']);
 define('DB_USER', $GLOBALS['DB_USER']);
 define('DB_PASS', $GLOBALS['DB_PASS']);
 define('DB_HOST', $GLOBALS['DB_HOST']);
+define('PATH_DB', $GLOBALS['PATH_DB']);
+define('PATH_DATA', $GLOBALS['PATH_DATA']);
 define('PATH_C', PATH_TRUNK . 'tmp/' );
 define('PATH_SMARTY_C', PATH_TRUNK . 'tmp/' );
 define('PATH_SMARTY_CACHE', PATH_TRUNK . 'tmp/' );

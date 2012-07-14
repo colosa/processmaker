@@ -26,7 +26,10 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new AppSolr();
+        $SolrEnabled = false;
+        $SolrHost = 'localhost';
+        $SolrInstance = '';
+        $this->object = new AppSolr($SolrEnabled, $SolrHost, $SolrInstance);
     }
 
     /**
@@ -38,12 +41,13 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('AppSolr');        $this->assertTrue( count($methods) == 25);
+        $methods = get_class_methods('AppSolr');
+        $this->assertTrue( count($methods) == 25);
     }
 
     /**
@@ -65,7 +69,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'SolrInstance');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::isSolrEnabled
@@ -77,7 +81,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('isSolrEnabled', $methods ), 'exists method isSolrEnabled' );
         $r = new ReflectionMethod('AppSolr', 'isSolrEnabled');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers AppSolr::getAppGridData
@@ -152,7 +156,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[15]->isArray() == false);
         $this->assertTrue( $params[15]->isOptional () == true);
         $this->assertTrue( $params[15]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers AppSolr::getCasesCount
@@ -167,7 +171,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'userUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::getUserGroups
@@ -182,7 +186,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'usrUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::getAppDelegationData
@@ -200,7 +204,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'delIndex');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::getSearchText
@@ -215,7 +219,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'plainSearchText');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::getApplicationDelegationsIndex
@@ -230,7 +234,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'appUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::updateApplicationSearchIndex
@@ -245,7 +249,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aaAPPUIDs');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::deleteApplicationSearchIndex
@@ -260,7 +264,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'appUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::createSolrXMLDocument
@@ -275,7 +279,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aaAPPUIDs');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::buildSearchIndexDocumentPMOS2
@@ -326,7 +330,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[12]->getName() == 'unassignedGroups');
         $this->assertTrue( $params[12]->isArray() == false);
         $this->assertTrue( $params[12]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::getApplicationIndexData
@@ -341,7 +345,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'AppUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::aaGetMaximun
@@ -371,7 +375,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers AppSolr::aaGetMinimun
@@ -401,7 +405,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers AppSolr::aaSearchRecords
@@ -419,7 +423,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'andColumnsConditions');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::getApplicationDelegationData
@@ -434,7 +438,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'AppUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::getTaskUnassignedUsersGroupsData
@@ -452,7 +456,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'TaskUID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::getProcessDynaformFileNames
@@ -467,7 +471,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'ProUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::applicationChangedUpdateSolrQueue
@@ -485,7 +489,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'updated');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::synchronizePendingApplications
@@ -497,7 +501,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('synchronizePendingApplications', $methods ), 'exists method synchronizePendingApplications' );
         $r = new ReflectionMethod('AppSolr', 'synchronizePendingApplications');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers AppSolr::getCountApplicationsPMOS2
@@ -509,7 +513,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getCountApplicationsPMOS2', $methods ), 'exists method getCountApplicationsPMOS2' );
         $r = new ReflectionMethod('AppSolr', 'getCountApplicationsPMOS2');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers AppSolr::getCountApplicationsSearchIndex
@@ -521,7 +525,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getCountApplicationsSearchIndex', $methods ), 'exists method getCountApplicationsSearchIndex' );
         $r = new ReflectionMethod('AppSolr', 'getCountApplicationsSearchIndex');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers AppSolr::getPagedApplicationUids
@@ -539,7 +543,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'pagesize');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers AppSolr::reindexAllApplications
@@ -551,6 +555,6 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('reindexAllApplications', $methods ), 'exists method reindexAllApplications' );
         $r = new ReflectionMethod('AppSolr', 'reindexAllApplications');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

@@ -26,7 +26,10 @@ class classcalendarTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new calendar();
+        $userUid = '';
+        $proUid  = '';
+        $tasUid  = '';
+        //$this->object = new calendar($userUid, $proUid, $tasUid);
     }
 
     /**
@@ -38,12 +41,13 @@ class classcalendarTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('calendar');        $this->assertTrue( count($methods) == 56);
+        $methods = get_class_methods('calendar');
+        $this->assertTrue( count($methods) == 56);
     }
 
     /**
@@ -52,7 +56,8 @@ class classcalendarTest extends PHPUnit_Framework_TestCase
     */
     public function testcalendar()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('calendar');
         $this->assertTrue( in_array('calendar', $methods ), 'exists method calendar' );
         $r = new ReflectionMethod('calendar', 'calendar');
         $params = $r->getParameters();
@@ -68,7 +73,7 @@ class classcalendarTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers calendar::addCalendarLog
@@ -76,14 +81,15 @@ class classcalendarTest extends PHPUnit_Framework_TestCase
     */
     public function testaddCalendarLog()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('calendar');
         $this->assertTrue( in_array('addCalendarLog', $methods ), 'exists method addCalendarLog' );
         $r = new ReflectionMethod('calendar', 'addCalendarLog');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'msg');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers calendar::setupCalendar
@@ -91,7 +97,8 @@ class classcalendarTest extends PHPUnit_Framework_TestCase
     */
     public function testsetupCalendar()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('calendar');
         $this->assertTrue( in_array('setupCalendar', $methods ), 'exists method setupCalendar' );
         $r = new ReflectionMethod('calendar', 'setupCalendar');
         $params = $r->getParameters();
@@ -104,7 +111,7 @@ class classcalendarTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'tasUid');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers calendar::getNextValidBusinessHoursRange
@@ -112,7 +119,8 @@ class classcalendarTest extends PHPUnit_Framework_TestCase
     */
     public function testgetNextValidBusinessHoursRange()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('calendar');
         $this->assertTrue( in_array('getNextValidBusinessHoursRange', $methods ), 'exists method getNextValidBusinessHoursRange' );
         $r = new ReflectionMethod('calendar', 'getNextValidBusinessHoursRange');
         $params = $r->getParameters();
@@ -122,6 +130,6 @@ class classcalendarTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'time');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

@@ -42,6 +42,8 @@
         <var name="DB_NAME" value="wf_os" />
         <var name="DB_USER" value="root" />
         <var name="DB_PASS" value="password" />
+        <var name="PATH_DB" value="tests/shared/" />
+        <var name="PATH_DATA" value="tests/shared/" />
     </php>
 
     <logging>

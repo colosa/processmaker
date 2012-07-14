@@ -26,7 +26,7 @@ class classzip_fileTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new zip_file();
+        $this->object = new zip_file('filezip');
     }
 
     /**
@@ -38,12 +38,13 @@ class classzip_fileTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('zip_file');        $this->assertTrue( count($methods) == 14);
+        $methods = get_class_methods('zip_file');
+        $this->assertTrue( count($methods) == 14);
     }
 
     /**
@@ -59,7 +60,7 @@ class classzip_fileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers zip_file::create_zip
@@ -71,6 +72,6 @@ class classzip_fileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('create_zip', $methods ), 'exists method create_zip' );
         $r = new ReflectionMethod('zip_file', 'create_zip');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

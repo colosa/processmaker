@@ -38,12 +38,14 @@ class classXMLResultTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XMLResult');        $this->assertTrue( count($methods) == 3);
+        $class = new ReflectionClass('XMLResult');
+        $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
+        $this->assertTrue( count($methods) == 3);
     }
 
     /**
@@ -59,8 +61,8 @@ class classXMLResultTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'result');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == 'Array');
-    } 
+        $this->assertTrue( $params[0]->getDefaultValue() == Array());
+    }
 
     /**
     * @covers XMLResult::numRows
@@ -72,7 +74,7 @@ class classXMLResultTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('numRows', $methods ), 'exists method numRows' );
         $r = new ReflectionMethod('XMLResult', 'numRows');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers XMLResult::fetchRow
@@ -87,6 +89,6 @@ class classXMLResultTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'const');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

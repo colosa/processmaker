@@ -26,7 +26,12 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new dynaformEditorAjax();
+        $post = '';
+        $_SERVER['REQUEST_URI'] = '';
+        //disabling the instance of this method,
+        //because it is calling Headers, and there is no way
+        //to phpunit avoid the headers for the moment.
+        //$this->object = new dynaformEditorAjax($post);
     }
 
     /**
@@ -38,12 +43,13 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('dynaformEditorAjax');        $this->assertTrue( count($methods) == 28);
+        $methods = get_class_methods('dynaformEditorAjax');
+        $this->assertTrue( count($methods) == 28);
     }
 
     /**
@@ -52,14 +58,15 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testdynaformEditorAjax()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('dynaformEditorAjax', $methods ), 'exists method dynaformEditorAjax' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'dynaformEditorAjax');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'post');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::_run
@@ -67,14 +74,15 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function test_run()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('_run', $methods ), 'exists method _run' );
         $r = new ReflectionMethod('dynaformEditorAjax', '_run');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'post');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::render_preview
@@ -82,14 +90,15 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testrender_preview()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('render_preview', $methods ), 'exists method render_preview' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'render_preview');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'A');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::render_htmledit
@@ -97,14 +106,15 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testrender_htmledit()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('render_htmledit', $methods ), 'exists method render_htmledit' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'render_htmledit');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'A');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::get_htmlcode
@@ -112,14 +122,15 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testget_htmlcode()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('get_htmlcode', $methods ), 'exists method get_htmlcode' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'get_htmlcode');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'A');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::restore_html
@@ -127,14 +138,15 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testrestore_html()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('restore_html', $methods ), 'exists method restore_html' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'restore_html');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'A');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::set_htmlcode
@@ -142,7 +154,8 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testset_htmlcode()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('set_htmlcode', $methods ), 'exists method set_htmlcode' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'set_htmlcode');
         $params = $r->getParameters();
@@ -152,7 +165,7 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'htmlcode');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::get_xmlcode
@@ -160,14 +173,15 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testget_xmlcode()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('get_xmlcode', $methods ), 'exists method get_xmlcode' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'get_xmlcode');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'A');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::set_xmlcode
@@ -175,7 +189,8 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testset_xmlcode()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('set_xmlcode', $methods ), 'exists method set_xmlcode' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'set_xmlcode');
         $params = $r->getParameters();
@@ -185,7 +200,7 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'xmlcode');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::get_javascripts
@@ -193,7 +208,8 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testget_javascripts()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('get_javascripts', $methods ), 'exists method get_javascripts' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'get_javascripts');
         $params = $r->getParameters();
@@ -203,7 +219,7 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'fieldName');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::set_javascript
@@ -211,7 +227,8 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testset_javascript()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('set_javascript', $methods ), 'exists method set_javascript' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'set_javascript');
         $params = $r->getParameters();
@@ -228,7 +245,7 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::get_properties
@@ -236,7 +253,8 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testget_properties()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('get_properties', $methods ), 'exists method get_properties' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'get_properties');
         $params = $r->getParameters();
@@ -246,7 +264,7 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'DYN_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::set_properties
@@ -254,7 +272,8 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testset_properties()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('set_properties', $methods ), 'exists method set_properties' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'set_properties');
         $params = $r->getParameters();
@@ -267,7 +286,7 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'getFields');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::get_enabletemplate
@@ -275,14 +294,15 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testget_enabletemplate()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('get_enabletemplate', $methods ), 'exists method get_enabletemplate' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'get_enabletemplate');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'A');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::set_enabletemplate
@@ -290,7 +310,8 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testset_enabletemplate()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('set_enabletemplate', $methods ), 'exists method set_enabletemplate' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'set_enabletemplate');
         $params = $r->getParameters();
@@ -300,7 +321,7 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::save
@@ -308,7 +329,8 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testsave()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('save', $methods ), 'exists method save' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'save');
         $params = $r->getParameters();
@@ -318,7 +340,7 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'DYN_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::close
@@ -326,22 +348,25 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
     */
     public function testclose()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('close', $methods ), 'exists method close' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'close');
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'A');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers dynaformEditorAjax::is_modified
     * @todo   Implement testis_modified().
+    * @ run InSeparateProcess
     */
     public function testis_modified()
     {
-        $methods = get_class_methods($this->object);
+        //$methods = get_class_methods($this->object);
+        $methods = get_class_methods('dynaformEditorAjax');
         $this->assertTrue( in_array('is_modified', $methods ), 'exists method is_modified' );
         $r = new ReflectionMethod('dynaformEditorAjax', 'is_modified');
         $params = $r->getParameters();
@@ -351,6 +376,6 @@ class classdynaformEditorAjaxTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'DYN_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

@@ -26,7 +26,8 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new XMLConnection();
+        $file = PATH_TRUNK . 'workflow/engine/xmlform/login/login.xml';
+        $this->object = new XMLConnection($file);
     }
 
     /**
@@ -38,12 +39,13 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XMLConnection');        $this->assertTrue( count($methods) == 11);
+        $methods = get_class_methods('XMLConnection');
+        $this->assertTrue( count($methods) == 11);
     }
 
     /**
@@ -59,7 +61,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'file');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XMLConnection::query
@@ -74,7 +76,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sql');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XMLConnection::sqlLike
@@ -92,7 +94,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'b');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XMLConnection::expandFields
@@ -110,7 +112,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'fieldsList');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XMLConnection::fetchNode
@@ -125,7 +127,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'node');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XMLConnection::fetchChildren
@@ -140,7 +142,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'node');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XMLConnection::disconnect
@@ -152,7 +154,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('disconnect', $methods ), 'exists method disconnect' );
         $r = new ReflectionMethod('XMLConnection', 'disconnect');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers XMLConnection::sqlWhereLike
@@ -167,7 +169,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'match');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XMLConnection::sqlString
@@ -182,7 +184,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'match');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XMLConnection::insertRow
@@ -200,7 +202,7 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'values');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers XMLConnection::updateRow
@@ -218,6 +220,6 @@ class classXMLConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'values');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

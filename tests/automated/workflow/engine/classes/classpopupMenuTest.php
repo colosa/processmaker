@@ -26,7 +26,9 @@ class classpopupMenuTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new popupMenu();
+        $tableId  = 'login/login';
+        $tableFields = '';
+        $this->object = new popupMenu($tableId, $tableFields);
     }
 
     /**
@@ -38,12 +40,13 @@ class classpopupMenuTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('popupMenu');        $this->assertTrue( count($methods) == 14);
+        $methods = get_class_methods('popupMenu');
+        $this->assertTrue( count($methods) == 14);
     }
 
     /**
@@ -62,6 +65,6 @@ class classpopupMenuTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'tableFields');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

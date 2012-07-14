@@ -26,7 +26,10 @@ class classtriggerDetailTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new triggerDetail();
+        $sNamespace = '';
+        $sTriggerId = '';
+        $sTriggerName = '';
+        $this->object = new triggerDetail($sNamespace, $sTriggerId, $sTriggerName);
     }
 
     /**
@@ -38,12 +41,13 @@ class classtriggerDetailTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('triggerDetail');        $this->assertTrue( count($methods) == 1);
+        $methods = get_class_methods('triggerDetail');
+        $this->assertTrue( count($methods) == 1);
     }
 
     /**
@@ -65,6 +69,6 @@ class classtriggerDetailTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sTriggerName');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

@@ -26,7 +26,7 @@ class classwsGetVariableResponseTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->object = new wsGetVariableResponse();
+        $this->object = new wsGetVariableResponse('status','message','variables');
     }
 
     /**
@@ -38,12 +38,13 @@ class classwsGetVariableResponseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('wsGetVariableResponse');        $this->assertTrue( count($methods) == 1);
+        $methods = get_class_methods('wsGetVariableResponse');
+        $this->assertTrue( count($methods) == 1);
     }
 
     /**
@@ -65,6 +66,6 @@ class classwsGetVariableResponseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'variables');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }
