@@ -1455,31 +1455,43 @@ class wsBase
     public function newCase($processId, $userId, $taskId, $variables)
     {
         try {
-            //GET, POST & $_SESSION Vars
+            $originalValues = array();
+
             //Unset any variable, because we are starting a new case
             if (isset($_SESSION['APPLICATION'])) {
+                $originalValues['APPLICATION'] = $_SESSION['APPLICATION'];
                 unset($_SESSION['APPLICATION']);
             }
 
             if (isset($_SESSION['PROCESS'])) {
+                $originalValues['PROCESS'] = $_SESSION['PROCESS'];
                 unset($_SESSION['PROCESS']);
             }
 
             if (isset($_SESSION['TASK'])) {
+                $originalValues['TASK'] = $_SESSION['TASK'];
                 unset($_SESSION['TASK']);
             }
 
             if (isset($_SESSION['INDEX'])) {
+                $originalValues['INDEX'] = $_SESSION['INDEX'];
                 unset($_SESSION['INDEX']);
             }
 
             if (isset($_SESSION['USER_LOGGED'])) {
+                $originalValues['USER_LOGGED'] = $_SESSION['USER_LOGGED'];
                 unset($_SESSION['USER_LOGGED']);
             }
 
-            //if (isset($_SESSION['USR_USERNAME']))  unset($_SESSION['USR_USERNAME']);
+            if (isset($_SESSION['USR_USERNAME'])) {
+                $originalValues['USR_USERNAME'] = $_SESSION['USR_USERNAME'];
+                unset($_SESSION['USR_USERNAME']);
+            }
 
-            //if (isset($_SESSION['STEP_POSITION'])) unset($_SESSION['STEP_POSITION']);
+            if (isset($_SESSION['STEP_POSITION'])) {
+                $originalValues['STEP_POSITION'] = $_SESSION['STEP_POSITION'];
+                unset($_SESSION['STEP_POSITION']);
+            }
 
             $Fields = array();
 
@@ -1541,8 +1553,8 @@ class wsBase
             $_SESSION['TASK']          = $taskId;
             $_SESSION['INDEX']         = $case['INDEX'];
             $_SESSION['USER_LOGGED']   = $userId;
-            //$_SESSION['USR_USERNAME']  = $case['USR_USERNAME'];
-            //$_SESSION['STEP_POSITION'] = 0;
+            $_SESSION['USR_USERNAME']  = $case['USR_USERNAME'];
+            $_SESSION['STEP_POSITION'] = 0;
 
             $caseId = $case['APPLICATION'];
             $caseNr = $case['CASE_NUMBER'];
@@ -1552,6 +1564,31 @@ class wsBase
             $oldFields['APP_DATA'] = array_merge($oldFields['APP_DATA'], $Fields);
 
             $up_case = $oCase->updateCase($caseId, $oldFields);
+
+            //Restore original values
+            if (isset($originalValues['APPLICATION'])) {
+                $_SESSION['APPLICATION'] = $originalValues['APPLICATION'];
+            }
+
+            if (isset($originalValues['PROCESS'])) {
+                $_SESSION['PROCESS'] = $originalValues['PROCESS'];
+            }
+
+            if (isset($originalValues['TASK'])) {
+                $_SESSION['TASK'] = $originalValues['TASK'];
+            }
+
+            if (isset($originalValues['INDEX'])) {
+                $_SESSION['INDEX'] = $originalValues['INDEX'];
+            }
+
+            if (isset($originalValues['USR_USERNAME'])) {
+                $_SESSION['USR_USERNAME'] = $originalValues['USR_USERNAME'];
+            }
+
+            if (isset($originalValues['STEP_POSITION'])) {
+                $_SESSION['STEP_POSITION'] = $originalValues['STEP_POSITION'];
+            }
 
             $result = new wsResponse(0, G::loadTranslation('ID_STARTED_SUCCESSFULLY'));
             $result->caseId     = $caseId;
