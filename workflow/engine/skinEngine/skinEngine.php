@@ -1,7 +1,7 @@
 <?php
 /**
  * Class SkinEngine
- * 
+ *
  * This class load and dispatch the main systems layouts
  * @author Erik Amaru Ortiz <erik@colosa.com>
  * @author Hugo Loza
@@ -62,7 +62,7 @@ class SkinEngine
       $this->forceTemplateCompile = true; //Only save in session the main SKIN
 
       if (isset($_SESSION['currentSkin']) && $_SESSION['currentSkin'] != $this->skin) {
-        $this->forceTemplateCompile = true; 
+        $this->forceTemplateCompile = true;
       }
       $_SESSION['currentSkin'] = SYS_SKIN;
     }
@@ -77,7 +77,7 @@ class SkinEngine
     }
 
     $this->mainSkin = $_SESSION['currentSkin'];
-    
+
 
     $skinObject = null;
 
@@ -105,12 +105,12 @@ class SkinEngine
     }
 
     //This should have an XML definition and a layout html
-    if ($skinObject && file_exists($skinObject . PATH_SEP . 'config.xml') 
+    if ($skinObject && file_exists($skinObject . PATH_SEP . 'config.xml')
       && file_exists($skinObject . PATH_SEP . 'layout.html')) {
 
       $configurationFile = $skinObject . PATH_SEP . 'config.xml';
       $layoutFile        = $skinObject . PATH_SEP . 'layout.html';
-      
+
       if (file_exists($skinObject . PATH_SEP . 'layout-blank.html')){
         $layoutFileBlank = $skinObject . PATH_SEP . 'layout-blank.html';
       }
@@ -150,12 +150,12 @@ class SkinEngine
   public function dispatch()
   {
     $skinMethod = '_' . strtolower($this->skin);
-    
+
     try {
       if (!method_exists($this, $skinMethod)) {
         $skinMethod = '_default';
       }
-      
+
       $this->$skinMethod();
     }
     catch (Exception $e) {
@@ -172,7 +172,7 @@ class SkinEngine
           else {
             $url = '../main/login';
           }
-          
+
           $link = '<a href="'.$url.'">Try Now</a>';
 
           $data['exception_notes'][] = G::LoadTranslation('ID_REDIRECT_URL'). $link;
@@ -306,7 +306,7 @@ class SkinEngine
 
     if (isset($G_ENABLE_BLANK_SKIN) && $G_ENABLE_BLANK_SKIN) {
       $smarty->display($layoutFileBlank['basename']);
-    } 
+    }
     else {
       $header = '';
 
@@ -317,7 +317,7 @@ class SkinEngine
       }
 
       $footer = '';
-      
+
       if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {
         if (DB_SYSTEM_INFORMATION == 1) {
           $footer = "<a href=\"#\" onclick=\"openInfoPanel();return false;\" class=\"FooterLink\">| " . G::LoadTranslation('ID_SYSTEM_INFO') . " |</a><br />";
@@ -375,7 +375,7 @@ class SkinEngine
       if (class_exists('PMPluginRegistry')) {
         $oPluginRegistry = &PMPluginRegistry::getSingleton();
         $sCompanyLogo = $oPluginRegistry->getCompanyLogo('/images/processmaker.logo.jpg');
-      } 
+      }
       else {
         $sCompanyLogo = '/images/processmaker.logo.jpg';
       }
@@ -412,14 +412,14 @@ class SkinEngine
         $oHeadPublisher->title = isset($_SESSION['USR_USERNAME']) ? '(' . $_SESSION['USR_USERNAME'] . ' ' . G::LoadTranslation('ID_IN') . ' ' . SYS_SYS . ')' : '';
         $header = $oHeadPublisher->printHeader();
       }
-      
+
       $footer = '';
-      
+
       if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {
         if ( defined('SYS_SYS') ) {
           $footer = "<a href=\"#\" onclick=\"openInfoPanel();return false;\" class=\"FooterLink\">| " . G::LoadTranslation('ID_SYSTEM_INFO') . " |</a><br />";
         }
-        $footer .= "<br />Copyright � 2003-2008 Colosa, Inc. All rights reserved.";
+        $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " Colosa, Inc. All rights reserved.";
       }
 
       //menu
@@ -466,7 +466,7 @@ class SkinEngine
     $oHeadPublisher =& headPublisher::getSingleton();
 
     $smarty = new Smarty();
-    
+
     $smarty->compile_dir  = PATH_SMARTY_C;
     $smarty->cache_dir    = PATH_SMARTY_CACHE;
     $smarty->config_dir   = PATH_THIRDPARTY . 'smarty/configs';
@@ -485,31 +485,31 @@ class SkinEngine
     $viewFile = isset($contentFiles[0]) ? $contentFiles[0] : '';
 
     if (empty($this->layout)) {
-      $smarty->template_dir  = PATH_TPL; 
+      $smarty->template_dir  = PATH_TPL;
       $tpl = $viewFile . '.html';
     }
     else {
       $smarty->template_dir = $this->layoutFile['dirname'];
-      $tpl = 'layout-'.$this->layout.'.html'; 
+      $tpl = 'layout-'.$this->layout.'.html';
       //die($smarty->template_dir.PATH_SEP.$tpl);
 
       if (!file_exists($smarty->template_dir . PATH_SEP . $tpl)) {
         $e = new Exception("Layout $tpl does not exist!", SE_LAYOUT_NOT_FOUND);
         $e->layoutFile = $smarty->template_dir . PATH_SEP . $tpl;
-        
+
         throw $e;
       }
       $smarty->assign('_content_file', $viewFile);
     }
 
     if (strpos($viewFile, '.') === false) {
-      $viewFile .= '.html'; 
+      $viewFile .= '.html';
     }
 
     foreach ($viewVars as $key => $value) {
-      $smarty->assign($key, $value);  
+      $smarty->assign($key, $value);
     }
-    
+
     if (defined('DEBUG') && DEBUG ) {
       $smarty->force_compile = true;
     }
@@ -531,7 +531,7 @@ class SkinEngine
     global $G_SUB_MENU_SELECTED;
     global $G_ID_MENU_SELECTED;
     global $G_ID_SUB_MENU_SELECTED;
-    
+
     if (! defined('DB_SYSTEM_INFORMATION')) {
       define('DB_SYSTEM_INFORMATION', 1);
     }
@@ -550,7 +550,7 @@ class SkinEngine
     G::LoadClass('serverConfiguration');
     $oServerConf =& serverConf::getSingleton();
     $extSkin = $oServerConf->getProperty("extSkin");
-    
+
     if(!$extSkin) {
       $extSkin = array();
     }
@@ -574,9 +574,9 @@ class SkinEngine
         $header = $oHeadPublisher->printHeader();
         $header .= $oHeadPublisher->getExtJsStylesheets($this->cssFileName);
       }
-      
+
       $footer = '';
-      
+
       if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {
         if (DB_SYSTEM_INFORMATION == 1) {
           $footer = "<a href=\"#\" onclick=\"openInfoPanel();return false;\" class=\"FooterLink\">| " . G::LoadTranslation('ID_SYSTEM_INFO') . " |</a><br />";
@@ -641,10 +641,10 @@ class SkinEngine
       $smarty->assign('footer', $footer);
       $smarty->assign('tpl_menu', PATH_TEMPLATE . 'menu.html');
       $smarty->assign('tpl_submenu', PATH_TEMPLATE . 'submenu.html');
-      
+
       G::LoadClass( 'replacementLogo' );
       $oLogoR = new replacementLogo();
-      
+
       if(defined("SYS_SYS")){
         $aFotoSelect = $oLogoR->getNameLogo((isset($_SESSION['USER_LOGGED']))?$_SESSION['USER_LOGGED']:'');
 
