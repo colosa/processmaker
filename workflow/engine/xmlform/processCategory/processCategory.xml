@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm name="ProcessCategory" width="600" mode="edit" enableTemplate="0" border="0">
+<dynaForm name="processCategory" width="600" mode="edit" enableTemplate="0" border="0">
 
 <title1 type="title" >
-  <en>ProcessCategory form</en>
+  <en>ProcessCateCategory form</en>
 </title1>
 
 <CATEGORY_UID type="text" size='32' maxlength='32' >
-  <en>Gory Uid
-  </en>
+  <en>Category UID</en>
 </CATEGORY_UID>
 
 <CATEGORY_PARENT type="text" size='32' maxlength='32' >
-  <en>Gory Parent
-  </en>
+  <en>Category Parent</en>
 </CATEGORY_PARENT>
 
 <CATEGORY_NAME type="text" size='60' maxlength='100' >
-  <en>Gory Name
-  </en>
+  <en>Category Name</en>
 </CATEGORY_NAME>
 
 <CATEGORY_ICON type="text" size='60' maxlength='100' >
-  <en>Gory Icon
-  </en>
+  <en>Category Icon</en>
 </CATEGORY_ICON>
 
-
 <BTN_SUBMIT type="submit" >
-  <en>save</en>
+  <en>Save</en>
 </BTN_SUBMIT>
 
 </dynaForm>
