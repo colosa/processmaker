@@ -705,11 +705,11 @@
       $aFields['FINISH']               = G::LoadTranslation('ID_FINISH');
       $aFields['CONTINUE_WITH_OPTION'] = G::LoadTranslation('ID_CONTINUE_WITH_OPTION');
       $aFields['FINISH_WITH_OPTION']   = G::LoadTranslation('ID_FINISH_WITH_OPTION');
-      $aFields['TAS_TIMING_TITLE']     = 'Timing Control';
-      $aFields['TAS_DURATION']         = 'Task Duration';
-      $aFields['TAS_TIMEUNIT']         = 'Task Unit';
-      $aFields['TAS_TYPE_DAY']         = 'Count Days By';
-      $aFields['TAS_CALENDAR']         = 'Calendar';
+      $aFields['TAS_TIMING_TITLE']     = G::LoadTranslation('ID_TIMING_CONTROL');
+      $aFields['TAS_DURATION']         = G::LoadTranslation('ID_TASK_DURATION');
+      $aFields['TAS_TIMEUNIT']         = G::LoadTranslation('ID_TIME_UNIT');
+      $aFields['TAS_TYPE_DAY']         = G::LoadTranslation('ID_COUNT_DAYS');
+      $aFields['TAS_CALENDAR']         = G::LoadTranslation('ID_CALENDAR');
 
       $aFields['TASK'] = $oDerivation->prepareInformation(array(
         'USER_UID'  => $_SESSION['USER_LOGGED'],
