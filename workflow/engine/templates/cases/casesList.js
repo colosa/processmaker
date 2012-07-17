@@ -1599,13 +1599,14 @@ Ext.onReady ( function() {
     text: _('ID_REASSIGN'),
     handler: function(){
       var rs = storeReassignCases.getModifiedRecords();
-      
       if (rs.length < storeReassignCases.totalLength) {
         Ext.Msg.confirm( _('ID_CONFIRM'), _('ID_CONFIRM_TO_REASSIGN'), function (btn, text) {
           if ( btn == 'yes' ) {
             ExecReassign();
           }
         })
+      } else {
+        ExecReassign();
       }
     }
   });
