@@ -25,7 +25,7 @@
 
 //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
-G::LoadClass('tree');
+G::LoadClass ( 'tree' );
 
 $wsSessionId = '';
 if (isset ( $_SESSION ['WS_SESSION_ID'] )) {
@@ -42,7 +42,7 @@ if (isset ( $_GET ['x'] )) {
     }
 } else {
     if (! isset ( $_SESSION ['END_POINT'] )) {
-        //$wsdl = 'http://'.$_SERVER['HTTP_HOST'].'/sys'.SYS_SYS.'/en/green/services/wsdl';
+        //$wsdl = 'http://'.$_SERVER['HTTP_HOST'].'/sys'.SYS_SYS.'/en/classic/services/wsdl';
         $wsdl = 'http://' . $_SERVER ['HTTP_HOST'];
         $workspace = SYS_SYS;
     } else {
@@ -51,8 +51,8 @@ if (isset ( $_GET ['x'] )) {
     }
 }
 
-$defaultEndpoint =  'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS .
-                    '/en/green/services/wsdl2';
+$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS .
+'/en/classic/services/wsdl2';
 
 $wsdl = isset ( $_SESSION ['END_POINT'] ) ? $_SESSION ['END_POINT'] : $defaultEndpoint;
 
@@ -73,13 +73,12 @@ $tree->value = '
     </div>
     <div class="boxBottomBlue"><div class="a"></div><div class="b"></div><div class="c"></div></div>
     
-      <div class="userGroupLink">
-          <a href="#" onclick="showDetails();return false;">' . G::LoadTranslation ( 'ID_DETAILS_WEBSERVICES' ) .
-          '</a> &nbsp;
-          <a href="#" onclick="webServicesSetup();return false;">' . G::LoadTranslation ( 'ID_SETUP_WEBSERVICES' ) .
-          '</a>
-      </div>
-      
+    <div class="userGroupLink">
+        <a href="#" onclick="showDetails();return false;">' . G::LoadTranslation ( 'ID_DETAILS_WEBSERVICES' ) .
+        '</a> &nbsp;
+        <a href="#" onclick="webServicesSetup();return false;">' . G::LoadTranslation ( 'ID_SETUP_WEBSERVICES' ) . '</a>
+    </div>
+    
     ';
 
 $tree->showSign = false;
@@ -102,6 +101,7 @@ $allWebservices [] = 'UserList';
 $allWebservices [] = 'TaskList';
 $allWebservices [] = 'TriggerList';
 $allWebservices [] = 'InputDocumentList';
+$allWebservices [] = 'SendFiles';
 $allWebservices [] = 'InputDocumentProcessList';
 $allWebservices [] = 'OutputDocumentList';
 $allWebservices [] = 'RemoveDocument';
@@ -117,8 +117,8 @@ foreach ($allWebservices as $ws) {
     $htmlGroup = '';
     $htmlGroup .= "<table cellspacing='0' cellpadding='0' border='1' style='border:0px;'>";
     $htmlGroup .= "<tr>";
-    $htmlGroup .= "<td width='250px' class='treeNode' style='border:0px;background-color:transparent;'>";
-    $htmlGroup .= "{$WS_TITLE}</td>";
+    $htmlGroup .= "<td width='250px' class='treeNode' style='border:0px;background-color:transparent;'>".
+    "{$WS_TITLE}</td>";
     $htmlGroup .= "<td class='treeNode' style='border:0px;background-color:transparent;'>";
 
     if ($WS_TITLE !='SendFiles') {
@@ -130,7 +130,6 @@ foreach ($allWebservices as $ws) {
             $htmlGroup .= "[<a href='#' onclick=\"showUploadFilesForm();return false;\">{$ID_TEST}</a>]";
         }
     }
-
     $htmlGroup .= "</td></tr></table>";
 
     $ch = & $tree->addChild ( $ws, $htmlGroup, array ('nodeType' => 'child' ) );

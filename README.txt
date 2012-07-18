@@ -325,7 +325,7 @@ For example, if installed on the local machine at port 8080, then use:
  http://localhost:8080 
    
 The web browser should be redirected to the address:
- http://IP-ADDRESS/sys/en/green/login
+ http://IP-ADDRESS/sys/en/classic/login
 
 2. The installation configuration page should appear to setup ProcessMaker. 
 (If the default Apache page appears, then disable it and restart Apache.)

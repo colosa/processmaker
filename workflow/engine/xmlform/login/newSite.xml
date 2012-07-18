@@ -43,131 +43,131 @@
     var ed = new Array();
     leimnud.event.add(window,'load',function(){
     data={
-		name:new input(getField('NW_TITLE')).setStyle({fontWeight:'bold'}),
-		submit:new button(getField('NW_SUB')),
-		ao_db_wf:new input(getField('AO_DB_WF')),
-		ao_db_rb:new input(getField('AO_DB_RB')),
-		ao_db_rp:new input(getField('AO_DB_RP')),
-		ao_db_drop:getField('AO_DB_DROP'),
-		ao_admin:new input(getField('NW_USERNAME')),
-		ao_admin_pass1:new input(getField('NW_PASSWORD')),
-		ao_admin_pass2:new input(getField('NW_PASSWORD2')),
-		action:getField('ACTION')
-	};
-	data.reset = data.submit.parentNode.insertBefore(new button(G_STRINGS.ID_RESET, function()
-	{
-		ed('enable');
-		data.submit.value='Test';
-		data.action.value='test';
-		return false;
-	},false,{type:'reset'}),data.submit);
-	
-	/*data.goto = data.submit.parentNode.appendChild(new button('Open workspace',function()
-	{
-		window.location="/sys"+data.name.value+"/en/green/login/login";
-		return false;
-	},{fontWeight:'bold'},{type:'reset'})).disable();
-	*/
-	
+        name:new input(getField('NW_TITLE')).setStyle({fontWeight:'bold'}),
+        submit:new button(getField('NW_SUB')),
+        ao_db_wf:new input(getField('AO_DB_WF')),
+        ao_db_rb:new input(getField('AO_DB_RB')),
+        ao_db_rp:new input(getField('AO_DB_RP')),
+        ao_db_drop:getField('AO_DB_DROP'),
+        ao_admin:new input(getField('NW_USERNAME')),
+        ao_admin_pass1:new input(getField('NW_PASSWORD')),
+        ao_admin_pass2:new input(getField('NW_PASSWORD2')),
+        action:getField('ACTION')
+    };
+    data.reset = data.submit.parentNode.insertBefore(new button(G_STRINGS.ID_RESET, function()
+    {
+        ed('enable');
+        data.submit.value='Test';
+        data.action.value='test';
+        return false;
+    },false,{type:'reset'}),data.submit);
+    
+    /*data.goto = data.submit.parentNode.appendChild(new button('Open workspace',function()
+    {
+        window.location="/sys"+data.name.value+"/en/classic/login/login";
+        return false;
+    },{fontWeight:'bold'},{type:'reset'})).disable();
+    */
+    
 
-	data.loader= data.submit.parentNode.appendChild(new DOM('img',{src:'/images/classic/loader_B.gif'},{width:22,height:22,position:'relative',display:'block'}));
-	data.loader.setStyle({visibility:'hidden'});
+    data.loader= data.submit.parentNode.appendChild(new DOM('img',{src:'/images/classic/loader_B.gif'},{width:22,height:22,position:'relative',display:'block'}));
+    data.loader.setStyle({visibility:'hidden'});
 
   ed = function(mod)
-	{
-		data.name[mod]();
-		data.ao_db_wf[mod]();
-		data.ao_db_rb[mod]();
-		data.ao_db_rp[mod]();
-		data.ao_admin[mod]();
-		data.ao_admin_pass1[mod]();
-		data.ao_admin_pass2[mod]();
-		data.ao_db_drop.disabled=(mod=='enable')?false:true;
-	};
+    {
+        data.name[mod]();
+        data.ao_db_wf[mod]();
+        data.ao_db_rb[mod]();
+        data.ao_db_rp[mod]();
+        data.ao_admin[mod]();
+        data.ao_admin_pass1[mod]();
+        data.ao_admin_pass2[mod]();
+        data.ao_db_drop.disabled=(mod=='enable')?false:true;
+    };
 
-	data.name.focus();
-	leimnud.event.add(data.name,'keyup',function(){
-		var v = data.name.value;
-		data.ao_db_wf.value='wf_'+v;
-		data.ao_db_rb.value='rb_'+v;
-		data.ao_db_rp.value='rp_'+v;
-	});
-	data.submit.onmouseup=function()
-	{
-		ed('disable');
-	};
-	//data.name.passed();
-	
+    data.name.focus();
+    leimnud.event.add(data.name,'keyup',function(){
+        var v = data.name.value;
+        data.ao_db_wf.value='wf_'+v;
+        data.ao_db_rb.value='rb_'+v;
+        data.ao_db_rp.value='rp_'+v;
+    });
+    data.submit.onmouseup=function()
+    {
+        ed('disable');
+    };
+    //data.name.passed();
+    
   });
-  	function redirectLogin(){
-		location.href="/sys"+data.name.value+"/en/green/login/login";
-	}
+    function redirectLogin(){
+        location.href="/sys"+data.name.value+"/en/classic/login/login";
+    }
 
-  	var status_in_progress=function(form)
-	{
-		data.loader.setStyle({visibility:'visible'});
-		data.submit.disable();
-		if(data.action.value=='create')
-		{
-			data.reset.disable();
-		}
-	};
-	var status_create=function(rpc)
-	{
-		data.loader.setStyle({visibility:'hidden'});
-		try{var rp=rpc.xmlhttp.responseText.parseJSON();}catch(e){var rp={result:{}};}
-		ed('enable');
-		data.name[(rp.result.name['status'])?'passed':'failed']().title=rp.result.name['message'];
-		data.ao_db_wf[(rp.result.database.ao.ao_db_wf['status'])?'passed':'failed']().title=rp.result.database.ao.ao_db_wf.message;
+    var status_in_progress=function(form)
+    {
+        data.loader.setStyle({visibility:'visible'});
+        data.submit.disable();
+        if(data.action.value=='create')
+        {
+            data.reset.disable();
+        }
+    };
+    var status_create=function(rpc)
+    {
+        data.loader.setStyle({visibility:'hidden'});
+        try{var rp=rpc.xmlhttp.responseText.parseJSON();}catch(e){var rp={result:{}};}
+        ed('enable');
+        data.name[(rp.result.name['status'])?'passed':'failed']().title=rp.result.name['message'];
+        data.ao_db_wf[(rp.result.database.ao.ao_db_wf['status'])?'passed':'failed']().title=rp.result.database.ao.ao_db_wf.message;
 
 
 
-		data.ao_db_rb[(rp.result.database.ao.ao_db_rb['status'])?'passed':'failed']().title=rp.result.database.ao.ao_db_rb.message;
-		data.ao_db_rp[(rp.result.database.ao.ao_db_rp['status'])?'passed':'failed']().title=rp.result.database.ao.ao_db_rp.message;
-		data.ao_admin[(rp.result.admin.username)?'passed':'failed']().title=(rp.result.admin.username)?'OK':'PASSED';
-		data.ao_admin_pass1[(rp.result.admin.password)?'passed':'failed']().title=(rp.result.admin.password)?'OK':'PASSED';
-		data.ao_admin_pass2[(rp.result.admin.password)?'passed':'failed']().title=(rp.result.admin.password)?'OK':'PASSED';
-		data.name.focus();
-		data.submit.enable();
+        data.ao_db_rb[(rp.result.database.ao.ao_db_rb['status'])?'passed':'failed']().title=rp.result.database.ao.ao_db_rb.message;
+        data.ao_db_rp[(rp.result.database.ao.ao_db_rp['status'])?'passed':'failed']().title=rp.result.database.ao.ao_db_rp.message;
+        data.ao_admin[(rp.result.admin.username)?'passed':'failed']().title=(rp.result.admin.username)?'OK':'PASSED';
+        data.ao_admin_pass1[(rp.result.admin.password)?'passed':'failed']().title=(rp.result.admin.password)?'OK':'PASSED';
+        data.ao_admin_pass2[(rp.result.admin.password)?'passed':'failed']().title=(rp.result.admin.password)?'OK':'PASSED';
+        data.name.focus();
+        data.submit.enable();
 
-		if(rp.created)
-		{
-			ed('disable');
-			data.submit.value=G_STRINGS.ID_CREATE;
-			data.submit.setStyle({fontWeight:'bold'});
-			data.action.value='create';
-		}
-		else
-		{
-			data.submit.setStyle({fontWeight:'normal'});
-		}
-		if(rp.created && rp.result['action']=='create')
-		{
-			var confirm = new leimnud.module.app.confirm().make({
-		  		label: G_STRINGS.NEW_SITE_SUCCESS +" "+ data.name.value +"<br/>"+ G_STRINGS.NEW_SITE_SUCCESS_CONFIRM+"<br/>"+ G_STRINGS.NEW_SITE_SUCCESS_CONFIRMNOTE,
-		    	action: function(){
+        if(rp.created)
+        {
+            ed('disable');
+            data.submit.value=G_STRINGS.ID_CREATE;
+            data.submit.setStyle({fontWeight:'bold'});
+            data.action.value='create';
+        }
+        else
+        {
+            data.submit.setStyle({fontWeight:'normal'});
+        }
+        if(rp.created && rp.result['action']=='create')
+        {
+            var confirm = new leimnud.module.app.confirm().make({
+                label: G_STRINGS.NEW_SITE_SUCCESS +" "+ data.name.value +"<br/>"+ G_STRINGS.NEW_SITE_SUCCESS_CONFIRM+"<br/>"+ G_STRINGS.NEW_SITE_SUCCESS_CONFIRMNOTE,
+                action: function(){
 
-		    	parent.parent.window.location="/sys"+data.name.value+"/en/green/login/login";
+                parent.parent.window.location="/sys"+data.name.value+"/en/classic/login/login";
 
-		 /*  	   if (typeof(window.parent.admToolsContent) != 'undefined'){
+         /*        if (typeof(window.parent.admToolsContent) != 'undefined'){
 
-					 parent.parent.window.location="/sys"+data.name.value+"/en/green/login/login";
-					} else {
-					    setTimeout('redirectLogin()', 1000);
-					}*/
-				}.extend(this),
-				cancel: function(){
+                     parent.parent.window.location="/sys"+data.name.value+"/en/classic/login/login";
+                    } else {
+                        setTimeout('redirectLogin()', 1000);
+                    }*/
+                }.extend(this),
+                cancel: function(){
 
-					//window.location="../install/newSite?type=blank";
-				},
-				width:380,
-				height:140
-		  	});
+                    //window.location="../install/newSite?type=blank";
+                },
+                width:380,
+                height:140
+            });
 
-			data.goto.enable();
-			data.submit.disable();
-			data.reset.disable();
-		}
-	};
+            data.goto.enable();
+            data.submit.disable();
+            data.reset.disable();
+        }
+    };
 ]]></JS>
-</dynaForm>    
+</dynaForm>

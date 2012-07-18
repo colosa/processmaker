@@ -29,12 +29,14 @@
  * @author MaBoRaK
  * @version 0.1
  */
-if($_POST && isset($_POST['phpinfo'])) {
+if ($_POST && isset($_POST['phpinfo'])) {
     phpinfo();
     die();
 }
 echo '<?xml version="1.0" encoding="UTF-8" ?>';
 ?>
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -43,7 +45,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>';
    <script type='text/javascript' src='/js/maborak/core/maborak.js'></script>
    <link rel="stylesheet" type="text/css" href="/js/maborak/samples/style.css" />
 
-   <script type='text/javascript' src='/sys/en/green/install/install.js'></script>
+   <script type='text/javascript' src='/sys/en/classic/install/install.js'></script>
    <script type='text/javascript'>
    var ifr;
    var forceCssLoad = true;
@@ -204,5 +206,4 @@ padding-left:10px;
 //exec("mkdir /var/www/html/asas",$console);
 ?>
 </body>
-
 </html>
