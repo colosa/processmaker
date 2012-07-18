@@ -1357,19 +1357,26 @@ function G_Text( form, element, name)
           }
 
           var decimalString = '';
+          var pluginAfter = '';
           var pluginDecimal = '';
           var numberSet = me.element.value.split(separatorField);
 
           if (typeof(numberSet[1]) == 'undefined') {
             var decimalSet = '';
             var newInt = '';
+            var flagAfter = true;
             var newPluginDecimal = '';
             var decimalCade = numberSet[0].split('');
             for (p = 0; p < decimalCade.length; p++) {
               if ((!isNaN(parseFloat(decimalCade[p])) && isFinite(decimalCade[p])) || (decimalCade[p] == ',') || (decimalCade[p] == '.') ) {
                 newInt += decimalCade[p];
+                flagAfter = false;
               } else {
-                newPluginDecimal += decimalCade[p];
+                if (flagAfter) {
+                  pluginAfter += decimalCade[p];
+                } else {
+                  newPluginDecimal += decimalCade[p];
+                }
               }
             }
             numberSet[0] = newInt;
@@ -1392,7 +1399,7 @@ function G_Text( form, element, name)
             for(; countDecimalNow < countDecimal; countDecimalNow++) {
               decimalString += '0';
             }
-            me.element.value = numberSet[0] + separatorField + decimalString + pluginDecimal;
+            me.element.value = pluginAfter + numberSet[0] + separatorField + decimalString + pluginDecimal;
           }
         }
       }
