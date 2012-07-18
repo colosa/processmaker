@@ -914,9 +914,9 @@ function G_Text( form, element, name)
         if (me.mType == 'text' && me.validate == 'Real') {
           dir = 'reverse';
         } else {
-          dir = 'forward';  
+          dir = 'forward';
         }
-        
+
         break;
     }
     return G.ApplyMask(value, mask, cursor, dir, comma);
@@ -1028,7 +1028,7 @@ function G_Text( form, element, name)
       }
       if (newCursor < 0)  newCursor = 0;
       if (keyCode != 8 && keyCode != 46 && keyCode != 35 && keyCode != 36 && keyCode != 37 && keyCode != 39){
-        testData = dataWOMask.result;        
+        testData = dataWOMask.result;
         tamData = testData.length;
         cleanMask = me.getCleanMask();
         tamMask = cleanMask.length;
@@ -1046,7 +1046,7 @@ function G_Text( form, element, name)
 
         }
       }
-      
+
       switch(action){
         case 'mask': case 'move':
           dataNewMask = me.replaceMasks(newValue, newCursor);
@@ -1131,11 +1131,11 @@ function G_Text( form, element, name)
     if (me.validate == 'Any' && me.mask == '') return true;
     //pressKey = event.keyCode;
     pressKey = window.event ? window.event.keyCode : event.which;
-    
+
     switch(pressKey){
       case 8: case 46:  //BACKSPACE OR DELETE
       case 35: case 36: //HOME OR END
-      case 37: case 38: case 39: case 40: // ARROW KEYS        
+      case 37: case 38: case 39: case 40: // ARROW KEYS
         if (me.validate == 'NodeName' && ((pressKey == 8) || (pressKey == 46))) {
           return true;
         }
@@ -1279,7 +1279,7 @@ function G_Text( form, element, name)
               lang  :(typeof(me.language)!=='undefined')? me.language:"en"
             });
             keyValid = k.result();
-          }          
+          }
           break;
         default:
           var k = new leimnud.module.validator({
@@ -1323,9 +1323,9 @@ function G_Text( form, element, name)
       var evt = event || window.event;
       var keyPressed = evt.which || evt.keyCode;
       //me.putFormatNumber(keyPressed);
-      
+
       if ( (me.mask != '') &&  (  (me.mType == 'currency') || (me.mType == 'percentage') ||
-                                  ((me.validate == "Real") && (me.mType == 'text')) ) && 
+                                  ((me.validate == "Real") && (me.mType == 'text')) ) &&
           (me.mask.indexOf('-')==-1) && (me.element.value != '') ) {
 
         var separatorField = ",";
@@ -1359,7 +1359,7 @@ function G_Text( form, element, name)
           var decimalString = '';
           var pluginDecimal = '';
           var numberSet = me.element.value.split(separatorField);
-          
+
           if (typeof(numberSet[1]) == 'undefined') {
             var decimalSet = '';
             var newInt = '';
@@ -1391,7 +1391,7 @@ function G_Text( form, element, name)
           if(countDecimalNow < countDecimal) {
             for(; countDecimalNow < countDecimal; countDecimalNow++) {
               decimalString += '0';
-            }          
+            }
             me.element.value = numberSet[0] + separatorField + decimalString + pluginDecimal;
           }
         }
@@ -1427,7 +1427,7 @@ function G_Text( form, element, name)
             this.element.value = this.element.value.toLowerCase();
             break;
         }
-      }      
+      }
     }.extend(this);
   }
 
@@ -3437,37 +3437,37 @@ function hideRowsById(aFields){
 
 function dateSetMask(mask) {
   if (mask != '') {
-    mask = stringReplace("%y", "yy", mask);
-    mask = stringReplace("%Y", "yyyy", mask);
+    mask = strReplace("%y", "yy", mask);
+    mask = strReplace("%Y", "yyyy", mask);
 
-    mask = stringReplace("%m", "mm", mask);
-    mask = stringReplace("%o", "mm", mask);
+    mask = strReplace("%m", "mm", mask);
+    mask = strReplace("%o", "mm", mask);
 
-    mask = stringReplace("%d", "dd", mask);
-    mask = stringReplace("%e", "dd", mask);
+    mask = strReplace("%d", "dd", mask);
+    mask = strReplace("%e", "dd", mask);
 
     //In the function getCleanMask valid characters for an mask that does not
     //is currency/percentage are: '0 ',' # ',' d ',' m ',' y ',' Y '.
     //For hours, minutes and seconds replace this mask with '#'
-    mask = stringReplace("%H", "##", mask);
-    mask = stringReplace("%I", "##", mask);
-    mask = stringReplace("%k", "##", mask);
-    mask = stringReplace("%l", "##", mask);
+    mask = strReplace("%H", "##", mask);
+    mask = strReplace("%I", "##", mask);
+    mask = strReplace("%k", "##", mask);
+    mask = strReplace("%l", "##", mask);
 
-    mask = stringReplace("%M", "##", mask);
-    mask = stringReplace("%S", "##", mask);
+    mask = strReplace("%M", "##", mask);
+    mask = strReplace("%S", "##", mask);
 
-    mask = stringReplace("%j", "###", mask);
+    mask = strReplace("%j", "###", mask);
   }
 
   return mask;
 }
 
-function stringReplace(strSearch, strReplace, str) {
-  var expression = eval("/" + strSearch + "/g");
+function strReplace(strs, strr, str)
+{
+    var expresion = eval("/" + strs + "/g");
 
-  return str.replace(expression, strReplace);
+    return str.replace(expresion, strr);
 }
 
 /* end file */
-
