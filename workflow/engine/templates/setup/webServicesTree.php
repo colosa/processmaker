@@ -72,13 +72,13 @@ $tree->value = '
     </table>
     </div>
     <div class="boxBottomBlue"><div class="a"></div><div class="b"></div><div class="c"></div></div>
-    
+
     <div class="userGroupLink">
         <a href="#" onclick="showDetails();return false;">' . G::LoadTranslation ( 'ID_DETAILS_WEBSERVICES' ) .
         '</a> &nbsp;
         <a href="#" onclick="webServicesSetup();return false;">' . G::LoadTranslation ( 'ID_SETUP_WEBSERVICES' ) . '</a>
     </div>
-    
+
     ';
 
 $tree->showSign = false;
@@ -101,7 +101,6 @@ $allWebservices [] = 'UserList';
 $allWebservices [] = 'TaskList';
 $allWebservices [] = 'TriggerList';
 $allWebservices [] = 'InputDocumentList';
-$allWebservices [] = 'SendFiles';
 $allWebservices [] = 'InputDocumentProcessList';
 $allWebservices [] = 'OutputDocumentList';
 $allWebservices [] = 'RemoveDocument';
