@@ -53,6 +53,7 @@ class serverConf {
   var $logins;
   private $lanDirection;
   private $lanLanguage;
+  public $workspaces = array();
 
 
   public function __construct() {
