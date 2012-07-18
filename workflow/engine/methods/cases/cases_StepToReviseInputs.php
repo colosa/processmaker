@@ -63,24 +63,26 @@ $G_ID_SUB_MENU_SELECTED = 'CASES_TO_REVISE';
 $oHeadPublisher =& headPublisher::getSingleton();
 //  Check if these code needs to be removed since the interface ar now moving to ExtJS
 $oHeadPublisher->addScriptCode('
-  var Cse = {};
-  Cse.panels = {};
-  var leimnud = new maborak();
-  leimnud.make();
-  leimnud.Package.Load("rpc,drag,drop,panel,app,validator,fx,dom,abbr",{Instance:leimnud,Type:"module"});
-  leimnud.Package.Load("json",{Type:"file"});
-  leimnud.Package.Load("cases",{Type:"file",Absolute:true,Path:"/jscore/cases/core/cases.js"});
-  leimnud.Package.Load("cases_Step",{Type:"file",Absolute:true,Path:"/jscore/cases/core/cases_Step.js"});
-  leimnud.Package.Load("processmap",{Type:"file",Absolute:true,Path:"/jscore/processmap/core/processmap.js"});
-  leimnud.exec(leimnud.fix.memoryLeak);
-  leimnud.event.add(window,"load",function(){
-	  '.(isset($_SESSION['showCasesWindow'])?'try{'.$_SESSION['showCasesWindow'].'}catch(e){}':'').'
+    var Cse = {};
+    Cse.panels = {};
+    var leimnud = new maborak();
+    leimnud.make();
+    leimnud.Package.Load("rpc,drag,drop,panel,app,validator,fx,dom,abbr",{Instance:leimnud,Type:"module"});
+    leimnud.Package.Load("json",{Type:"file"});
+    leimnud.Package.Load("cases",{Type:"file",Absolute:true,Path:"/jscore/cases/core/cases.js"});
+    leimnud.Package.Load("cases_Step",{Type:"file",Absolute:true,Path:"/jscore/cases/core/cases_Step.js"});
+    leimnud.Package.Load("processmap",{Type:"file",Absolute:true,Path:"/jscore/processmap/core/processmap.js"});
+    leimnud.exec(leimnud.fix.memoryLeak);
+    leimnud.event.add(window,"load",function(){
+        '.(isset($_SESSION['showCasesWindow'])?'try{'.$_SESSION['showCasesWindow'].'}catch(e){}':'').'
 });
   ');
 //  Check if these code needs to be removed since the interface ar now moving to ExtJS
-  $G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
+$G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
 
-if(!isset($_GET['position'])) $_GET['position'] = 1;
+if (!isset($_GET['position'])) {
+    $_GET['position'] = 1;
+}
 
 $_SESSION['STEP_POSITION'] = (int)$_GET['position'];
 $oCase = new Cases();
@@ -88,56 +90,66 @@ $Fields = $oCase->loadCase($_SESSION['APPLICATION']);
 
 $G_PUBLISH = new Publisher;
 
-if(!isset($_GET['ex'])) $_GET['ex']=0;
+if (!isset($_GET['ex'])) {
+    $_GET['ex']=0;
+}
 
 if (!isset($_GET['INP_DOC_UID'])) {
-  G::LoadClass('case');
-  $oCase         = new Cases();
-  $G_PUBLISH->AddContent('propeltable', 'paged-table', 'cases/cases_InputdocsListToRevise', $oCase->getInputDocumentsCriteriaToRevise($_SESSION['APPLICATION']), '');
-}
-else {
-  $oInputDocument = new InputDocument();
-  $Fields = $oInputDocument->load($_GET['INP_DOC_UID']);
-  //Obtain previous and next step - Start
-  try {
-    $aNextStep = $oCase->getNextSupervisorStep($_SESSION['PROCESS'], $_SESSION['STEP_POSITION'], $_GET['type']);
-    $aPreviousStep = $oCase->getPreviousSupervisorStep($_SESSION['PROCESS'], $_SESSION['STEP_POSITION'], $_GET['type']);
-    if (!$aPreviousStep) {
-      $Fields['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = '';
+    G::LoadClass('case');
+    $oCase         = new Cases();
+    $G_PUBLISH->AddContent('propeltable', 'paged-table', 'cases/cases_InputdocsListToRevise',
+        $oCase->getInputDocumentsCriteriaToRevise($_SESSION['APPLICATION']), '');
+} else {
+    $oInputDocument = new InputDocument();
+    $Fields = $oInputDocument->load($_GET['INP_DOC_UID']);
+    //Obtain previous and next step - Start
+    try {
+        $aNextStep = $oCase->getNextSupervisorStep($_SESSION['PROCESS'], $_SESSION['STEP_POSITION'], $_GET['type']);
+        $aPreviousStep = $oCase->getPreviousSupervisorStep($_SESSION['PROCESS'], $_SESSION['STEP_POSITION'],
+            $_GET['type']);
+        if (!$aPreviousStep) {
+            $Fields['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = '';
+        } else {
+            $Fields['__DYNAFORM_OPTIONS']['PREVIOUS_STEP'] =
+                'cases_StepToReviseInputs?type=INPUT_DOCUMENT&INP_DOC_UID='. $aNextStep['UID'].'&position='.
+                    $aNextStep['POSITION'].'&APP_UID='.$_GET['APP_UID'].'&DEL_INDEX='. $_GET['DEL_INDEX'];
+            $Fields['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = G::loadTranslation("ID_PREVIOUS_STEP");
+        }
+        $Fields['__DYNAFORM_OPTIONS']['NEXT_STEP'] = 'cases_StepToReviseInputs?type=INPUT_DOCUMENT&INP_DOC_UID='.
+            $aNextStep['UID'].'&position='.$aNextStep['POSITION'].'&APP_UID='.$_GET['APP_UID'].'&DEL_INDEX='.
+            $_GET['DEL_INDEX'];
+    } catch (exception $e) {
+        //
     }
-    else {
-      $Fields['__DYNAFORM_OPTIONS']['PREVIOUS_STEP'] = 'cases_StepToReviseInputs?type=INPUT_DOCUMENT&INP_DOC_UID='.$aNextStep['UID'].'&position='.$aNextStep['POSITION'].'&APP_UID='.$_GET['APP_UID'].'&DEL_INDEX='.$_GET['DEL_INDEX'];
-      $Fields['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = G::loadTranslation("ID_PREVIOUS_STEP");
+
+    switch ($Fields['INP_DOC_FORM_NEEDED']) {
+        case 'REAL':
+            $Fields['TYPE_LABEL'] = G::LoadTranslation('ID_NEW');
+            $sXmlForm = 'cases/cases_AttachInputDocument2';
+            break;
+        case 'VIRTUAL':
+            $Fields['TYPE_LABEL'] = G::LoadTranslation('ID_ATTACH');
+            $sXmlForm = 'cases/cases_AttachInputDocument1';
+            break;
+        case 'VREAL':
+            $Fields['TYPE_LABEL'] = G::LoadTranslation('ID_ATTACH');
+            $sXmlForm = 'cases/cases_AttachInputDocument3';
+            break;
     }
-    $Fields['__DYNAFORM_OPTIONS']['NEXT_STEP'] = 'cases_StepToReviseInputs?type=INPUT_DOCUMENT&INP_DOC_UID='.$aNextStep['UID'].'&position='.$aNextStep['POSITION'].'&APP_UID='.$_GET['APP_UID'].'&DEL_INDEX='.$_GET['DEL_INDEX'];
-  }
-  catch (exception $e) {
-
-  }
-
-  switch ($Fields['INP_DOC_FORM_NEEDED']) {
-    case 'REAL':
-      $Fields['TYPE_LABEL'] = G::LoadTranslation('ID_NEW');
-      $sXmlForm = 'cases/cases_AttachInputDocument2';
-      break;
-    case 'VIRTUAL':
-      $Fields['TYPE_LABEL'] = G::LoadTranslation('ID_ATTACH');
-      $sXmlForm = 'cases/cases_AttachInputDocument1';
-      break;
-    case 'VREAL':
-      $Fields['TYPE_LABEL'] = G::LoadTranslation('ID_ATTACH');
-      $sXmlForm = 'cases/cases_AttachInputDocument3';
-      break;
-  }
-  $Fields['MESSAGE1'] = G::LoadTranslation('ID_PLEASE_ENTER_COMMENTS');
-  $Fields['MESSAGE2'] = G::LoadTranslation('ID_PLEASE_SELECT_FILE');
-  $docName = $Fields['INP_DOC_TITLE'];
-  $Fields['NEXT_STEP_LABEL'] = G::loadtranslation('ID_NEXT_STEP');
-  $Fields['PREVIOUS_STEP_LABEL'] = G::loadtranslation('ID_PREVIOUS_STEP');
-  $oHeadPublisher->addScriptCode('var documentName=\'Reviewing Input Document<br>'.$docName.'\';');
-//  $G_PUBLISH->AddContent('xmlform', 'xmlform', $sXmlForm, '', $Fields, 'cases_SupervisorSaveDocument?UID=' . $_GET['INP_DOC_UID'] . '&APP_UID=' . $_GET['APP_UID'] . '&position=' . $_GET['position']);
-  $G_PUBLISH->AddContent('propeltable', 'cases/paged-table-inputDocuments', 'cases/cases_ToReviseInputdocsList', $oCase->getInputDocumentsCriteria($_SESSION['APPLICATION'], $_SESSION['INDEX'], $_GET['INP_DOC_UID']), array_merge(array('DOC_UID'=>$_GET['INP_DOC_UID']),$Fields));//$aFields
-//  $G_PUBLISH->AddContent('propeltable', 'cases/paged-table-inputDocuments', 'cases/cases_InputdocsList', $oCase->getInputDocumentsCriteria($_SESSION['APPLICATION']));//$aFields
+    $Fields['MESSAGE1'] = G::LoadTranslation('ID_PLEASE_ENTER_COMMENTS');
+    $Fields['MESSAGE2'] = G::LoadTranslation('ID_PLEASE_SELECT_FILE');
+    $docName = $Fields['INP_DOC_TITLE'];
+    $Fields['NEXT_STEP_LABEL'] = G::loadtranslation('ID_NEXT_STEP');
+    $Fields['PREVIOUS_STEP_LABEL'] = G::loadtranslation('ID_PREVIOUS_STEP');
+    $oHeadPublisher->addScriptCode('var documentName=\'Reviewing Input Document<br>'.$docName.'\';');
+    //  $G_PUBLISH->AddContent('xmlform', 'xmlform', $sXmlForm, '', $Fields, 'cases_SupervisorSaveDocument?UID=' .
+    //$_GET['INP_DOC_UID'] . '&APP_UID=' . $_GET['APP_UID'] . '&position=' . $_GET['position']);
+    $G_PUBLISH->AddContent('propeltable', 'cases/paged-table-inputDocuments', 'cases/cases_ToReviseInputdocsList',
+        $oCase->getInputDocumentsCriteria($_SESSION['APPLICATION'], $_SESSION['INDEX'], $_GET['INP_DOC_UID']),
+        array_merge(array('DOC_UID'=>$_GET['INP_DOC_UID']),$Fields));
+    //$aFields
+    //  $G_PUBLISH->AddContent('propeltable', 'cases/paged-table-inputDocuments', 'cases/cases_InputdocsList',
+    //$oCase->getInputDocumentsCriteria($_SESSION['APPLICATION']));//$aFields
 }
 
 G::RenderPage('publish', 'blank');

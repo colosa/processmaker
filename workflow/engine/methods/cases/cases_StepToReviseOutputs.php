@@ -69,12 +69,16 @@ leimnud.event.add(window,"load",function(){
 ');
 $G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
 $oCase = new Cases();
-$G_PUBLISH->AddContent('propeltable', 'paged-table', 'cases/cases_OutputdocsListToRevise', $oCase->getOutputDocumentsCriteriaToRevise($_SESSION['APPLICATION']), '');
+$G_PUBLISH->AddContent('propeltable', 'paged-table', 'cases/cases_OutputdocsListToRevise',
+    $oCase->getOutputDocumentsCriteriaToRevise($_SESSION['APPLICATION']), '');
 G::RenderPage('publish', 'blank');
 
-if(!isset($_GET['ex'])) $_GET['ex']=0;
-
+if (!isset($_GET['ex'])) {
+    $_GET['ex']=0;
+}
 ?>
+
+
 <script type="text/javascript">
 /*------------------------------ To Revise Routines ---------------------------*/
 //Deprecated Section since the interface are now movig to ExtJS
