@@ -57,7 +57,21 @@ try {
   	      $sOutput = $oProcessMap->load($oData->uid);
   	    }
   	    else {
-  	    	$sOutput = $oProcessMap->load($oData->uid, true, $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['TASK']);
+          if ($_SESSION['TASK'] != -1) {
+            $taskUid = $_SESSION['TASK'];            
+          } else {
+            $c = new Criteria('workflow');
+            $c->clearSelectColumns();
+            $c->addSelectColumn(AppDelegationPeer::TAS_UID);
+            $c->add(AppDelegationPeer::APP_UID, $_SESSION['APPLICATION']);
+            $c->add(AppDelegationPeer::DEL_INDEX, $_SESSION['INDEX']);
+            $oDataset = AppDelegationPeer::doSelectRs($c);
+            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            $oDataset->next();
+            $aData = $oDataset->getRow();
+            $taskUid = isset($aData['TAS_UID']) ? $aData['TAS_UID'] : -1;
+          }
+  	    	$sOutput = $oProcessMap->load($oData->uid, true, $_SESSION['APPLICATION'], $_SESSION['INDEX'], $taskUid);
   	    }
   	  }
   	break;
