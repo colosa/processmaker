@@ -99,7 +99,6 @@ $allWebservices [] = 'UserList';
 $allWebservices [] = 'TaskList';
 $allWebservices [] = 'TriggerList';
 $allWebservices [] = 'InputDocumentList';
-$allWebservices [] = 'SendFiles';
 $allWebservices [] = 'InputDocumentProcessList';
 $allWebservices [] = 'OutputDocumentList';
 $allWebservices [] = 'RemoveDocument';
