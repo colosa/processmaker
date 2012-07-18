@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm type="xmlform" name="webservices" width="500" mode="edit" border="0" enableTemplate="0" height="150px">
+<dynaForm type="xmlform" name="webservices" width="500" mode="edit" border="0" enableTemplate="0" height="190px">
 
 <SESSION_ID type="text" size="36" maxlength="32">
   <en>Session Id</en>
