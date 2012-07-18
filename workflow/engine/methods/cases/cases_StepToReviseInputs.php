@@ -149,56 +149,17 @@ G::RenderPage('publish', 'blank');
 //Deprecated Section since the interface are now movig to ExtJS
 function setSelect()
 {
-	var ex=<?=$_GET['ex']?>;
-
-	try{
-		for(i=1; i<50; i++)
-		{
-			if(i == ex){
-				document.getElementById('focus'+i).innerHTML = '<img src="/images/bulletButton.gif" />';
-			}
-			else{
-				document.getElementById('focus'+i).innerHTML = '';
-			}
-		}
-	} catch (e){
-		return 0;
-	}
+    var ex=<?=$_GET['ex']?>;
+    try {
+        for (i=1; i<50; i++) {
+            if (i == ex) {
+                document.getElementById('focus'+i).innerHTML = '<img src="/images/bulletButton.gif" />';
+            } else {
+                document.getElementById('focus'+i).innerHTML = '';
+            }
+        }
+    } catch (e){
+        return 0;
+    }
 }
-
-function toRevisePanel(APP_UID,DEL_INDEX)
-{
-	oPanel = new leimnud.module.panel();
-	oPanel.options = {
-	    size	:{w:250,h:450},
-	  	position:{x:0,y:0},
-	  	title	:'',
-	  	theme	:"processmaker",
-	  	statusBar:false,
-	  	control	:{resize:false,roll:false,close:false,drag:true},
-	    fx	:{modal:false,opacity:true,blinkToFront:false,fadeIn:false,drag:true}
-  	};
-  	oPanel.events = {
-  		remove: function() { delete(oPanel); }.extend(this)
-  	};
-	oPanel.make();
-	oPanel.loader.show();
-
-	var oRPC = new leimnud.module.rpc.xmlhttp({
-	  	url : 'cases_Ajax',
-	  	method:'post',
-	  	args: 'action=toRevisePanel&APP_UID='+APP_UID+'&DEL_INDEX='+DEL_INDEX
-  	});
-    oRPC.callback = function(rpc) {
-	  	oPanel.loader.hide();
-	  	oPanel.addContent(rpc.xmlhttp.responseText);
-	  	//setSelect();
-
-  	}.extend(this);
-	oRPC.make();
-}
-//Deprecated Section since the interface are now movig to ExtJS
-//Remove this Jscript code
-//toRevisePanel('<?=$_GET['APP_UID']?>','<?=$_GET['DEL_INDEX']?>');
-
 </script>
