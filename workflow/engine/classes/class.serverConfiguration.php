@@ -53,9 +53,10 @@ class serverConf {
   var $logins;
   private $lanDirection;
   private $lanLanguage;
-  
+  public $workspaces = array();
 
-  private function __construct() {
+
+  public function __construct() {
     $this->filePath = PATH_DATA . 'srvConf.singleton';
   }
 
@@ -140,7 +141,7 @@ class serverConf {
   function getProperty($propertyName) {
     if (isset ( $this->_aProperties [$propertyName] )) {
       return $this->_aProperties [$propertyName];
-    } 
+    }
     else {
       return null;
     }
@@ -158,7 +159,7 @@ class serverConf {
 
     if ( isset ($this->workspaces[SYS_SYS]) && !isset ($this->workspaces[SYS_SYS]['WSP_LOGINS']) )
       $this->workspaces[SYS_SYS]['WSP_LOGINS'] = 1;
-    
+
     $this->saveSingleton ();
   }
 
@@ -175,7 +176,7 @@ class serverConf {
 
     if (isset ( $this->_aWSapces [$wsName] )) { //Enable WS
       unset ( $this->_aWSapces [$wsName] );
-    } 
+    }
     else {
       $this->_aWSapces [$wsName] = 'disabled';
     }
@@ -330,7 +331,7 @@ class serverConf {
     }
   }
   }
-  
+
 
   /**
    * Get the value of language direction property
@@ -343,9 +344,9 @@ class serverConf {
   	}
     if( defined('SYS_LANG') ) {
     	//if we already have the landirection for this language, just return from serverConf
-    	if ( $this->lanLanguage == SYS_LANG ) 
+    	if ( $this->lanLanguage == SYS_LANG )
     	  return $this->lanDirection;
-    	
+
     	//if not , we need to query Database, in order to get the direction
     	$this->lanDirection = 'L';  //default value;
     	$this->lanLanguage = SYS_LANG;
@@ -357,7 +358,7 @@ class serverConf {
            $this->lanDirection = strtoupper($aLang['LAN_DIRECTION']);
         }
         $this->saveSingleton();
-      } 
+      }
       catch(Exception $e){
         $this->lanDirection = 'L';
       }
@@ -387,7 +388,7 @@ class serverConf {
       unset ( $this->_aHeartbeatConfig [$workspace][$propertyName] );
     $this->saveSingleton ();
   }
-  
+
   /**
    * Returns the value of a defined property. If it doesn't exist then returns null
    * @param string $propertyName
