@@ -64,7 +64,7 @@
 	
 	/*data.goto = data.submit.parentNode.appendChild(new button('Open workspace',function()
 	{
-		window.location="/sys"+data.name.value+"/en/green/login/login";
+		window.location="/sys"+data.name.value+"/en/classic/login/login";
 		return false;
 	},{fontWeight:'bold'},{type:'reset'})).disable();
 	*/
@@ -100,7 +100,7 @@
 	
   });
   	function redirectLogin(){
-		location.href="/sys"+data.name.value+"/en/green/login/login";
+		location.href="/sys"+data.name.value+"/en/classic/login/login";
 	}
 
   	var status_in_progress=function(form)
@@ -147,11 +147,11 @@
 		  		label: G_STRINGS.NEW_SITE_SUCCESS +" "+ data.name.value +"<br/>"+ G_STRINGS.NEW_SITE_SUCCESS_CONFIRM+"<br/>"+ G_STRINGS.NEW_SITE_SUCCESS_CONFIRMNOTE,
 		    	action: function(){
 
-		    	parent.parent.window.location="/sys"+data.name.value+"/en/green/login/login";
+		    	parent.parent.window.location="/sys"+data.name.value+"/en/classic/login/login";
 
 		 /*  	   if (typeof(window.parent.admToolsContent) != 'undefined'){
 
-					 parent.parent.window.location="/sys"+data.name.value+"/en/green/login/login";
+					 parent.parent.window.location="/sys"+data.name.value+"/en/classic/login/login";
 					} else {
 					    setTimeout('redirectLogin()', 1000);
 					}*/

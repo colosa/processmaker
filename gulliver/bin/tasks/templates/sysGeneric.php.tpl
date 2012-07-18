@@ -123,7 +123,7 @@ $docuroot = explode ( PATH_SEP , $_SERVER['DOCUMENT_ROOT'] );
       require_once('sysUnnamed.php'); die;
     	break;
     case 'sysNamed' :
-      header('location : ' . $_SERVER['REQUEST_URI'] . 'en/green/login/login' );
+      header('location : ' . $_SERVER['REQUEST_URI'] . 'en/classic/login/login' );
       die;
 	    break;
     case 'jsMethod' :

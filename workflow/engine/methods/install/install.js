@@ -572,7 +572,7 @@ var installer=function()
 	this.installation=function(rpc)
 	{
 /*		var r = new leimnud.module.rpc.xmlhttp({
-			url	:"/sysworkflow/en/green/tools/updateTranslation",
+			url	:"/sysworkflow/en/classic/tools/updateTranslation",
 			method	:"GET"
 		});
 		r.callback=function(rpc)
@@ -608,7 +608,7 @@ var installer=function()
 			this.options.buttong.value="Finish Installation";
 			this.options.buttong.onmouseup=function()
 			{
-				window.location = "/sysworkflow/en/green/login/login";
+				window.location = "/sysworkflow/en/classic/login/login";
 			}.extend(this);
 			tdS.appendChild(this.options.buttong);
 			this.buttonFun(this.options.buttong);

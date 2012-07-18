@@ -191,7 +191,7 @@ else if($action==="install")
 	*
 	*	4.2 Update translation from this url (background)
 	*
-	*		http://ProcessmakerHostname/sysworkflow/en/green/tools/updateTranslation
+	*		http://ProcessmakerHostname/sysworkflow/en/classic/tools/updateTranslation
 	*
  	*
  	*
@@ -325,22 +325,22 @@ else if($action==="install")
 	fclose( $fp );
 
 	/* Update languages */
-	$update = file_get_contents("http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/sysworkflow/en/green/tools/updateTranslation");
+	$update = file_get_contents("http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/sysworkflow/en/classic/tools/updateTranslation");
 	$logger->log("Update language      => ".((!$update)?$update:"OK"));
 	
 	/* Heartbeat Enable/Disable */
 	if(!isset($dataClient->heartbeatEnabled)) $dataClient->heartbeatEnabled=true;
-	$update = file_get_contents("http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/sysworkflow/en/green/install/heartbeatStatus?status=".$dataClient->heartbeatEnabled);
+	$update = file_get_contents("http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/sysworkflow/en/classic/install/heartbeatStatus?status=".$dataClient->heartbeatEnabled);
 	$logger->log("Heartbeat Status     => ".str_replace("<br>","\n",$update));
 	
 	/* Autoinstall Process */
-	$update = file_get_contents("http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/sysworkflow/en/green/install/autoinstallProcesses");
+	$update = file_get_contents("http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/sysworkflow/en/classic/install/autoinstallProcesses");
 	if (trim(str_replace("<br>","",$update)) == "")
 		$update = "Nothing to do.";
 	$logger->log("Process AutoInstall  => ".str_replace("<br>","\n",$update));
 	
 	/* Autoinstall Plugins */
-	$update = file_get_contents("http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/sysworkflow/en/green/install/autoinstallPlugins");
+	$update = file_get_contents("http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/sysworkflow/en/classic/install/autoinstallPlugins");
 	if (trim(str_replace("<br>","",$update)) == "")
 		$update = "Nothing to do.";
 	$logger->log("Plugin AutoInstall   => ".str_replace("<br>","\n",$update));

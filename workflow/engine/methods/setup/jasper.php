@@ -62,7 +62,7 @@
   if ( $formatReport == RUN_OUTPUT_FORMAT_HTML) {
     //$pageReport = isset ( $_GET['page'] ) ? $_GET['page'] : 1;
     //$output_params[RUN_OUTPUT_PAGE] = $pageReport;
-    //$output_params[RUN_OUTPUT_IMAGES_URI] = '/sysos/en/green/';
+    //$output_params[RUN_OUTPUT_IMAGES_URI] = '/sysos/'. SYS_LANG. '/classic';
   }
  
   $result = $oJasper->ws_runReport($currentUri, $report_params,  $output_params, $attachments);

@@ -87,7 +87,7 @@ switch ($_POST ['action']) {
 		$_SESSION ['_DBArray'] = $_DBArray;
 		
 		if (! isset ( $_SESSION ['END_POINT'] )) {
-			//$wsdl = 'http://'.$_SERVER['HTTP_HOST'].'/sys'.SYS_SYS.'/en/green/services/wsdl';
+			//$wsdl = 'http://'.$_SERVER['HTTP_HOST'].'/sys'.SYS_SYS. '/'. SYS_LANG .'/classic/services/wsdl';
 			$wsdl = 'http://' . $_SERVER ['HTTP_HOST'];
 			$workspace = SYS_SYS;
 		} else {
@@ -95,7 +95,7 @@ switch ($_POST ['action']) {
 			$workspace = $_SESSION ['WS_WORKSPACE'];
 		}
 		
-		$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/en/green/services/wsdl2';
+		$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/'. SYS_LANG .'/classic/services/wsdl2';
 		
 		$wsdl = isset ( $_SESSION ['END_POINT'] ) ? $_SESSION ['END_POINT'] : $defaultEndpoint;
 		
@@ -137,7 +137,7 @@ switch ($_POST ['action']) {
 		if (isset ( $_POST ["epr"] )) {
 			$_SESSION ['END_POINT'] = $_POST ["epr"];
 		}
-		$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/en/green/services/wsdl2';
+		$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/'. SYS_LANG .'/classic/services/wsdl2';
 		
 		$endpoint = isset ( $_SESSION ['END_POINT'] ) ? $_SESSION ['END_POINT'] : $defaultEndpoint;
 		
@@ -1269,7 +1269,7 @@ case "removeUserFromGroup" :
                                 $del_index = 1;
 
                                 function sendFile($FILENAME, $USR_UID, $APP_UID, $DEL_INDEX = 1, $DOC_UID = NULL, $title = NULL, $comment = NULL) {
-                                    $defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/en/green/services/upload';
+                                    $defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/'. SYS_LANG .'/classic/services/upload';
                                     $upload = isset ( $_SESSION ['END_POINT'] ) ? $_SESSION ['END_POINT'] : $defaultEndpoint;
 
                                     $DOC_UID = ($DOC_UID != NULL) ? $DOC_UID : - 1;

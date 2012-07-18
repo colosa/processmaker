@@ -363,7 +363,7 @@ class CaseScheduler extends BaseCaseScheduler {
       if ($sActualDataHour < $dActualSysHour) {
         $_PORT = (SERVER_PORT != '80') ? ':' . SERVER_PORT : '';
 
-        $defaultEndpoint = 'http://' . SERVER_NAME . $_PORT . '/sys' . SYS_SYS . '/en/green/services/wsdl2';
+        $defaultEndpoint = 'http://' . SERVER_NAME . $_PORT . '/sys' . SYS_SYS . '/'.SYS_LANG.'/classic/services/wsdl2';
         println(" - Connecting webservice: $defaultEndpoint");
 
         $user = $aRow ["SCH_DEL_USER_NAME"];
@@ -532,8 +532,8 @@ class CaseScheduler extends BaseCaseScheduler {
 
         $_PORT = (isset($_SERVER ['SERVER_PORT']) && $_SERVER ['SERVER_PORT'] != '80') ? ':' . $_SERVER ['SERVER_PORT'] : '';
 
-        //$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_PORT . '/sys' . SYS_SYS . '/en/green/services/wsdl2';
-        $defaultEndpoint = 'http://' . SERVER_NAME . $_PORT . '/sys' . SYS_SYS . '/en/green/services/wsdl2';
+        //$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_PORT . '/sys' . SYS_SYS .'/'.SYS_LANG.'/classic/green/services/wsdl2';
+        $defaultEndpoint = 'http://' . SERVER_NAME . $_PORT . '/sys' . SYS_SYS . '/'.SYS_LANG.'/classic/services/wsdl2';
         println(" - Connecting webservice: $defaultEndpoint");
         $user = $aRow ["SCH_DEL_USER_NAME"];
         $pass = $aRow ["SCH_DEL_USER_PASS"];

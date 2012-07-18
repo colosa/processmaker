@@ -41,18 +41,17 @@ if (isset ( $_GET ['x'] )) {
         $workspace = '';
     }
 } else {
-    if (! isset ( $_SESSION ['END_POINT'] )) {
-        //$wsdl = 'http://'.$_SERVER['HTTP_HOST'].'/sys'.SYS_SYS.'/en/green/services/wsdl';
-        $wsdl = 'http://' . $_SERVER ['HTTP_HOST'];
-        $workspace = SYS_SYS;
-    } else {
-        $wsdl = $_SESSION ['END_POINT'];
-        $workspace = $_SESSION ['WS_WORKSPACE'];
-    }
+	if (! isset ( $_SESSION ['END_POINT'] )) {
+		//$wsdl = 'http://'.$_SERVER['HTTP_HOST'].'/sys'.SYS_SYS.'/en/classic/services/wsdl';
+		$wsdl = 'http://' . $_SERVER ['HTTP_HOST'];
+		$workspace = SYS_SYS;
+	} else {
+		$wsdl = $_SESSION ['END_POINT'];
+		$workspace = $_SESSION ['WS_WORKSPACE'];
+	}
 }
 
-$defaultEndpoint =  'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS .
-                    '/en/green/services/wsdl2';
+$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/en/classic/services/wsdl2';
 
 $wsdl = isset ( $_SESSION ['END_POINT'] ) ? $_SESSION ['END_POINT'] : $defaultEndpoint;
 
@@ -72,14 +71,14 @@ $tree->value = '
     </table>
     </div>
     <div class="boxBottomBlue"><div class="a"></div><div class="b"></div><div class="c"></div></div>
-    
+
       <div class="userGroupLink">
           <a href="#" onclick="showDetails();return false;">' . G::LoadTranslation ( 'ID_DETAILS_WEBSERVICES' ) .
           '</a> &nbsp;
           <a href="#" onclick="webServicesSetup();return false;">' . G::LoadTranslation ( 'ID_SETUP_WEBSERVICES' ) .
           '</a>
       </div>
-      
+
     ';
 
 $tree->showSign = false;

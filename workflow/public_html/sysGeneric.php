@@ -233,7 +233,7 @@
         die;
         break;
       case 'sysNamed' :
-        header('location : ' . $_SERVER['REQUEST_URI'] . 'en/green/login/login' ); 
+        header('location : ' . $_SERVER['REQUEST_URI'] . '/' .SYS_LANG. '/classic/login/login' ); 
         die;
         break;
       case 'jsMethod' :

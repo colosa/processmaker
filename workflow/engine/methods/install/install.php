@@ -43,7 +43,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>';
    <script type='text/javascript' src='/js/maborak/core/maborak.js'></script>
    <link rel="stylesheet" type="text/css" href="/js/maborak/samples/style.css" />
 
-   <script type='text/javascript' src='/sys/en/green/install/install.js'></script>
+   <script type='text/javascript' src='/sys/en/classic/install/install.js'></script>
    <script type='text/javascript'>
    var ifr;
    var forceCssLoad = true;
