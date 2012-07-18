@@ -3444,37 +3444,37 @@ function hideRowsById(aFields){
 
 function dateSetMask(mask) {
   if (mask != '') {
-    mask = strReplace("%y", "yy", mask);
-    mask = strReplace("%Y", "yyyy", mask);
+    mask = stringReplace("%y", "yy", mask);
+    mask = stringReplace("%Y", "yyyy", mask);
 
-    mask = strReplace("%m", "mm", mask);
-    mask = strReplace("%o", "mm", mask);
+    mask = stringReplace("%m", "mm", mask);
+    mask = stringReplace("%o", "mm", mask);
 
-    mask = strReplace("%d", "dd", mask);
-    mask = strReplace("%e", "dd", mask);
+    mask = stringReplace("%d", "dd", mask);
+    mask = stringReplace("%e", "dd", mask);
 
     //In the function getCleanMask valid characters for an mask that does not
     //is currency/percentage are: '0 ',' # ',' d ',' m ',' y ',' Y '.
     //For hours, minutes and seconds replace this mask with '#'
-    mask = strReplace("%H", "##", mask);
-    mask = strReplace("%I", "##", mask);
-    mask = strReplace("%k", "##", mask);
-    mask = strReplace("%l", "##", mask);
+    mask = stringReplace("%H", "##", mask);
+    mask = stringReplace("%I", "##", mask);
+    mask = stringReplace("%k", "##", mask);
+    mask = stringReplace("%l", "##", mask);
 
-    mask = strReplace("%M", "##", mask);
-    mask = strReplace("%S", "##", mask);
+    mask = stringReplace("%M", "##", mask);
+    mask = stringReplace("%S", "##", mask);
 
-    mask = strReplace("%j", "###", mask);
+    mask = stringReplace("%j", "###", mask);
   }
 
   return mask;
 }
 
-function strReplace(strs, strr, str)
+function stringReplace(strSearch, stringReplace, str)
 {
-    var expresion = eval("/" + strs + "/g");
+    var expression = eval("/" + strSearch + "/g");
 
-    return str.replace(expresion, strr);
+    return str.replace(expression, stringReplace);
 }
 
 /* end file */

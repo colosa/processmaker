@@ -213,7 +213,7 @@ var G_Grid = function(oForm, sGridName){
     txt = txt.replace('/>', '');
     txt = txt.replace('>', '');
 
-    var strAux = strReplace(' ', '', txt);
+    var strAux = stringReplace(' ', '', txt);
     strAux = strAux.toLowerCase();
 
     var sw_display = (strAux.indexOf('display:none') > 0)? true : false;
@@ -229,7 +229,7 @@ var G_Grid = function(oForm, sGridName){
 
       if (pos > 0) {
         strAux2 = strAux.substr(0, pos);
-        strAux3 = strReplace(' ', '__%SPACE__', strAux2)
+        strAux3 = stringReplace(' ', '__%SPACE__', strAux2)
 
         arrayElemTxt[i] = strAux.replace(strAux2, strAux3);
       }
@@ -247,8 +247,8 @@ var G_Grid = function(oForm, sGridName){
         if (arrayElemTxt[i].indexOf('=') > 0) {
             aVals    = arrayElemTxt[i].split('=');
             aVals[0] = aVals[0].toLowerCase();
-            aVals[1] = strReplace('"', '', aVals[1])
-            aVals[1] = strReplace('__%SPACE__', ' ', aVals[1])
+            aVals[1] = stringReplace('"', '', aVals[1])
+            aVals[1] = stringReplace('__%SPACE__', ' ', aVals[1])
 
             if (aVals[0] != 'id' && aVals[0] != 'name' && aVals[0] != 'class' && aVals[0] != 'style') {
                 arrayAttribute.push(aVals[0]);
