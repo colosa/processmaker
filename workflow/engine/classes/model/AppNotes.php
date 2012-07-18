@@ -15,64 +15,65 @@ require_once 'classes/model/om/BaseAppNotes.php';
  */
 class AppNotes extends BaseAppNotes {
 
-  function getNotesList($appUid, $usrUid = '', $start = '', $limit = '') {
-    require_once ( "classes/model/Users.php" );
+    function getNotesList($appUid, $usrUid='', $start='', $limit='')
+    {
+        require_once ("classes/model/Users.php");
 
-    G::LoadClass('ArrayPeer');
+        G::LoadClass('ArrayPeer');
 
-    $Criteria = new Criteria('workflow');
-    $Criteria->clearSelectColumns();
+        $Criteria = new Criteria('workflow');
+        $Criteria->clearSelectColumns();
 
-    $Criteria->addSelectColumn(AppNotesPeer::APP_UID);
-    $Criteria->addSelectColumn(AppNotesPeer::USR_UID);
-    $Criteria->addSelectColumn(AppNotesPeer::NOTE_DATE);
-    $Criteria->addSelectColumn(AppNotesPeer::NOTE_CONTENT);
-    $Criteria->addSelectColumn(AppNotesPeer::NOTE_TYPE);
-    $Criteria->addSelectColumn(AppNotesPeer::NOTE_AVAILABILITY);
-    $Criteria->addSelectColumn(AppNotesPeer::NOTE_ORIGIN_OBJ);
-    $Criteria->addSelectColumn(AppNotesPeer::NOTE_AFFECTED_OBJ1);
-    $Criteria->addSelectColumn(AppNotesPeer::NOTE_AFFECTED_OBJ2);
-    $Criteria->addSelectColumn(AppNotesPeer::NOTE_RECIPIENTS);
-    $Criteria->addSelectColumn(UsersPeer::USR_USERNAME);
-    $Criteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
-    $Criteria->addSelectColumn(UsersPeer::USR_LASTNAME);
-    $Criteria->addSelectColumn(UsersPeer::USR_EMAIL);
+        $Criteria->addSelectColumn(AppNotesPeer::APP_UID);
+        $Criteria->addSelectColumn(AppNotesPeer::USR_UID);
+        $Criteria->addSelectColumn(AppNotesPeer::NOTE_DATE);
+        $Criteria->addSelectColumn(AppNotesPeer::NOTE_CONTENT);
+        $Criteria->addSelectColumn(AppNotesPeer::NOTE_TYPE);
+        $Criteria->addSelectColumn(AppNotesPeer::NOTE_AVAILABILITY);
+        $Criteria->addSelectColumn(AppNotesPeer::NOTE_ORIGIN_OBJ);
+        $Criteria->addSelectColumn(AppNotesPeer::NOTE_AFFECTED_OBJ1);
+        $Criteria->addSelectColumn(AppNotesPeer::NOTE_AFFECTED_OBJ2);
+        $Criteria->addSelectColumn(AppNotesPeer::NOTE_RECIPIENTS);
+        $Criteria->addSelectColumn(UsersPeer::USR_USERNAME);
+        $Criteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+        $Criteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+        $Criteria->addSelectColumn(UsersPeer::USR_EMAIL);
 
-    $Criteria->addJoin(AppNotesPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+        $Criteria->addJoin(AppNotesPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
 
-    $Criteria->add(appNotesPeer::APP_UID, $appUid, CRITERIA::EQUAL);
-    
-    if ($usrUid != '') {
-      $Criteria->add(appNotesPeer::USR_UID, $usrUid, CRITERIA::EQUAL);
+        $Criteria->add(appNotesPeer::APP_UID, $appUid, CRITERIA::EQUAL);
+
+        if ($usrUid != '') {
+            $Criteria->add(appNotesPeer::USR_UID, $usrUid, CRITERIA::EQUAL);
+        }
+
+        $Criteria->addDescendingOrderByColumn(AppNotesPeer::NOTE_DATE);
+
+        $response = array();
+        $totalCount = AppNotesPeer::doCount($Criteria);
+        $response['totalCount'] = $totalCount;
+        $response['notes'] = array();
+
+        if ($start != '') {
+            $Criteria->setLimit($limit);
+            $Criteria->setOffset($start);
+        }
+
+        $oDataset = appNotesPeer::doSelectRS($Criteria);
+        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $oDataset->next();
+
+        while ($aRow = $oDataset->getRow()) {
+            $aRow['NOTE_CONTENT'] = stripslashes($aRow['NOTE_CONTENT']);
+            $response['notes'][] = $aRow;
+            $oDataset->next();
+        }
+
+        $result['criteria'] = $Criteria;
+        $result['array'] = $response;
+
+        return $result;
     }
-
-    $Criteria->addDescendingOrderByColumn(AppNotesPeer::NOTE_DATE);
-
-    $response = array();
-    $totalCount = AppNotesPeer::doCount($Criteria);
-    $response['totalCount'] = $totalCount;
-    $response['notes'] = array();
-
-    if ($start != '') {
-      $Criteria->setLimit($limit);
-      $Criteria->setOffset($start);
-    }
-
-    $oDataset = appNotesPeer::doSelectRS($Criteria);
-    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-    $oDataset->next();
-
-    while ($aRow = $oDataset->getRow()) {
-
-      $response['notes'][] = $aRow;
-      $oDataset->next();
-    }
-
-    $result['criteria'] = $Criteria;
-    $result['array'] = $response;
-
-    return $result;
-  }
 
 
   function postNewNote($appUid, $usrUid, $noteContent, $notify=true, $noteAvalibility="PUBLIC", $noteRecipients="", $noteType="USER", $noteDate="now") {
