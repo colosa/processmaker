@@ -1774,7 +1774,11 @@ class wsBase
                 $appFields = $oCase->loadCase($caseId, $delIndex);
             }
 
-            $appFields['APP_DATA']['APPLICATION'] = $caseId;
+            $appFields["APP_DATA"]["APPLICATION"] = $caseId;
+
+            if (!isset($_SESSION["PROCESS"])) {
+                $_SESSION["PROCESS"] = $appFields["APP_DATA"]["PROCESS"];
+            }
 
             if ($bExecuteTriggersBeforeAssignment) {
                 //Execute triggers before assignment
@@ -1803,7 +1807,7 @@ class wsBase
                         }
                         //##############################################################################################
 
-                        $oPMScript->setFields( $appFields['APP_DATA'] );
+                        $oPMScript->setFields($appFields['APP_DATA']);
                         $bExecute = true;
 
                         if ($aTrigger['ST_CONDITION'] !== '') {
@@ -1814,6 +1818,7 @@ class wsBase
                         if ($bExecute) {
                             $oPMScript->setScript($aTrigger['TRI_WEBBOT']);
                             $oPMScript->execute();
+
                             $varTriggers .= "<br/><b>-= Before Assignment =-</b><br/>" . nl2br(
                                 htmlentities($aTrigger['TRI_WEBBOT'], ENT_QUOTES)
                             ) . "<br/>";
@@ -1861,6 +1866,7 @@ class wsBase
                     if ($bExecute) {
                         $oPMScript->setScript($aTrigger['TRI_WEBBOT']);
                         $oPMScript->execute();
+
                         $oTrigger = TriggersPeer::retrieveByPk($aTrigger['TRI_UID']);
                         $varTriggers .= "&nbsp;- " . nl2br(htmlentities($oTrigger->getTriTitle(), ENT_QUOTES)) ."<br/>";
                         //$appFields = $oCase->loadCase( $caseId );
@@ -1987,6 +1993,7 @@ class wsBase
                     if ($bExecute) {
                         $oPMScript->setScript($aTrigger['TRI_WEBBOT']);
                         $oPMScript->execute();
+
                         $oTrigger = TriggersPeer::retrieveByPk($aTrigger['TRI_UID']);
                         $varTriggers .= "&nbsp;- ".nl2br(htmlentities($oTrigger->getTriTitle(), ENT_QUOTES)) . "<br/>";
                         //$appFields = $oCase->loadCase($caseId);
@@ -2145,10 +2152,15 @@ class wsBase
                 }
             }
 
-            //load data
+            //Load data
             $oCase     = new Cases();
             $appFields = $oCase->loadCase($caseId);
-            $appFields['APP_DATA']['APPLICATION'] = $caseId;
+
+            $appFields["APP_DATA"]["APPLICATION"] = $caseId;
+
+            if (!isset($_SESSION["PROCESS"])) {
+                $_SESSION["PROCESS"] = $appFields["APP_DATA"]["PROCESS"];
+            }
 
             //executeTrigger
             $aTriggers = array();
@@ -2161,6 +2173,7 @@ class wsBase
 
             if (is_array($row) && $row['TRI_TYPE'] == 'SCRIPT' ) {
                 $aTriggers[] = $row;
+
                 $oPMScript = new PMScript();
                 $oPMScript->setFields($appFields['APP_DATA']);
                 $oPMScript->setScript($row['TRI_WEBBOT']);
