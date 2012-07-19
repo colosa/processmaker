@@ -274,13 +274,9 @@ class Derivation
         $oUser = UsersPeer::retrieveByPK( $row['USR_UID'] );
         if( $oUser->getUsrStatus() == 'ACTIVE' ){
           $users[$row['USR_UID']] = $row['USR_UID'];
-        } else if($oUser->getUsrStatus() == 'VACATION'){
-          //this a litle hook for this issue,...
-          //TODO if the user in getUsrReplacedBy() is not assignet to the same task,. will have problems,....
-          $UsrReplace = $oUser->getUsrReplacedBy();
-          if( trim($UsrReplace) != ''){
-            //$users[$UsrReplace] = $UsrReplace;
-          }
+        } else {
+          $UsrReplace = $this->replaceUser($row['USR_UID']);
+          $users[$UsrReplace] = $UsrReplace;
         }
       }
       $rs->next();
@@ -394,7 +390,7 @@ class Derivation
            $variable  = str_replace ( '@@', '', $nextAssignedTask['TAS_ASSIGN_VARIABLE'] );
            if ( isset ( $AppFields['APP_DATA'][$variable] ) ) {
              if ($AppFields['APP_DATA'][$variable] != '') {
-               $value      = $AppFields['APP_DATA'][$variable];
+               $value = $this->replaceUser($AppFields['APP_DATA'][$variable]);
                $userFields = $this->getUsersFullNameFromArray ($value);
                if (is_null($userFields)) {
                  throw ( new Exception("Task doesn't have a valid user in variable $variable.") ) ;
@@ -420,6 +416,7 @@ class Derivation
 
            //get the report_to user & its full info
            $useruid = $this->getDenpendentUser($tasInfo['USER_UID']);
+           $useruid = $this->replaceUser($useruid);
            
            if (isset($useruid) && $useruid != '') {
              $userFields = $this->getUsersFullNameFromArray($useruid);
@@ -1033,6 +1030,26 @@ class Derivation
        return $aGrp;
       //var_dump($aDerivation);
       //die;
+  }
+  
+  function replaceUser($useruid)
+  {
+    $oUser = UsersPeer::retrieveByPK($useruid);
+
+    while ($oUser->getUsrStatus() === 'VACATION')
+    {
+      $UsrReplace = $oUser->getUsrReplacedBy();
+
+      if (trim($UsrReplace) != '')
+      {
+        $useruid = $UsrReplace;
+        $oUser = UsersPeer::retrieveByPK($useruid);
+      } else {
+        $useruid = '';
+        return $useruid;
+      }
+    }
+    return $useruid;
   }
 
 }
