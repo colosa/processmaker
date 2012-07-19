@@ -24,6 +24,7 @@
  */
 
 G::LoadClass('case');
+G::LoadClass('FullNameFormat');
 $oCase = new Cases();
 
 //if($RBAC->userCanAccess('PM_ALLCASES') < 0) {
@@ -153,7 +154,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
         $oUser = new Users();
         try {
             $aUser = $oUser->load($aFields['PRO_CREATE_USER']);
-            $aFields['PRO_AUTHOR'] = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'];
+            $aFields['PRO_AUTHOR'] = FullNameFormat::getFullName($aUser);
         } catch (Exception $oError) {
             $aFields['PRO_AUTHOR'] = '(USER DELETED)';
         }
@@ -239,7 +240,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
         $aFields = array();
         $aFields['TASK'] = $sTitle;
         $aFields['USER'] = ($aRow['USR_UID'] != null ?
-                                $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'] :
+                                FullNameFormat::getFullName($aRow) :
                                 G::LoadTranslation('ID_NONE'));
         $aFields['INIT_DATE'] = ($aRow['DEL_INIT_DATE'] != null ?
                                     $aRow['DEL_INIT_DATE'] :
@@ -275,7 +276,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
                 G::LoadClass('user');
                 $oUser = new User(new DBConnection());
                 $oUser->load($_POST['USR_UID']);
-                echo    $oUser->Fields['USR_FIRSTNAME'] . ' ' . $oUser->Fields['USR_LASTNAME'] .
+                echo    FullNameFormat::getFullName($oUser->Fields) .
                         '<input type="hidden" name="form[TASKS][1][USR_UID]" id="form[TASKS][1][USR_UID]" value="' .
                         $_POST['USR_UID'] . '">';
                 break;
@@ -342,7 +343,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
                     G::LoadClass('user');
                     $oUser = new User(new DBConnection());
                     $oUser->load($sUser);
-                    echo $oUser->Fields['USR_FIRSTNAME'] . ' ' . $oUser->Fields['USR_LASTNAME'] .
+                    echo FullNameFormat::getFullName($oUser->Fields) .
                          '<input type="hidden" name="form[TASKS][1][USR_UID]" id="form[TASKS][1][USR_UID]" value="' .
                          $sUser . '">';
                 } else {
@@ -523,7 +524,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
         try {
             $oUser = new Users();
             $aUser = $oUser->load($oAppDocument->Fields['USR_UID']);
-            $Fields['CREATOR'] = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'];
+            $Fields['CREATOR'] = FullNameFormat::getFullName($aUser);
         } catch (Exception $e) {
             $Fields['CREATOR'] = '***';
         }
@@ -679,7 +680,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
         require_once 'classes/model/Users.php';
         $oUser = new Users();
         $aUser = $oUser->load($aFields['USR_UID']);
-        $aFields['CREATOR'] = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'];
+        $aFields['CREATOR'] = FullNameFormat::getFullName($aUser);
         $aFields['VIEW'] = G::LoadTranslation('ID_OPEN');
         $aFields['FILE1'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=doc&random=' . rand();
         $aFields['FILE2'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=pdf&random=' . rand();
@@ -896,8 +897,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
                 foreach ($aCaseUsers as $aCaseUser) {
                     if ($aCaseUser['USR_UID'] != $sReassignFromUser) {
                         $aCaseUserRecord = $oUser->load($aCaseUser['USR_UID']);
-                        $aUsersInvolved[$aCaseUser['USR_UID']] =    $aCaseUserRecord['USR_FIRSTNAME'] . ' ' .
-                                                                    $aCaseUserRecord['USR_LASTNAME'];
+                        $aUsersInvolved[$aCaseUser['USR_UID']] =    FullNameFormat::getFullName($aCaseUserRecord);
                                                                     // . ' (' . $aCaseUserRecord['USR_USERNAME'] . ')';
                     }
                 }
@@ -907,8 +907,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
             foreach ($aCaseUsers as $aCaseUser) {
                 if ($aCaseUser['USR_UID'] != $sReassignFromUser) {
                     $aCaseUserRecord = $oUser->load($aCaseUser['USR_UID']);
-                    $aUsersInvolved[$aCaseUser['USR_UID']] =    $aCaseUserRecord['USR_FIRSTNAME'] . ' ' .
-                                                                $aCaseUserRecord['USR_LASTNAME'];
+                    $aUsersInvolved[$aCaseUser['USR_UID']] =    FullNameFormat::getFullName($aCaseUserRecord);
                                                                 // . ' (' . $aCaseUserRecord['USR_USERNAME'] . ')';
                 }
             }
@@ -979,7 +978,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
                 $aUser  = $oUser->load($aCaseUpdated['USR_UID']);
                 $sText .= $aCaseUpdated['APP_PRO_TITLE'] .' - '. ' Case: ' . $aCaseUpdated['APP_NUMBER'] . '# (' .
                             $aCaseUpdated['APP_TAS_TITLE'] . ') <b> => Reassigned to => </b> <font color="blue">' .
-                            $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'] . ' [' . $aUser['USR_USERNAME'] .
+                            FullNameFormat::getFullName($aUser) . ' [' . $aUser['USR_USERNAME'] .
                             ']' . '</font><br />';
             }
 

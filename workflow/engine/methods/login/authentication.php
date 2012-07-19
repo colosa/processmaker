@@ -153,7 +153,8 @@ try {
     $aUser = $RBAC->userObj->load($_SESSION['USER_LOGGED']);
     $RBAC->loadUserRolePermission($RBAC->sSystem, $_SESSION['USER_LOGGED']);
     //$rol = $RBAC->rolesObj->load($RBAC->aUserInfo['PROCESSMAKER']['ROLE']['ROL_UID']);
-    $_SESSION['USR_FULLNAME'] = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'];
+    G::LoadClass('FullNameFormat');
+    $_SESSION['USR_FULLNAME'] = FullNameFormat::getFullName($aUser);
     //$_SESSION['USR_ROLENAME'] = $rol['ROL_NAME'];
 
     unset($_SESSION['FAILED_LOGINS']);
