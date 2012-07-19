@@ -406,8 +406,16 @@ class AdditionalTables extends BaseAdditionalTables
             $stmt = $oConnection->createStatement();
             require_once $sPath . $sClassName . '.php';
             $sKeys = '';
+            $keysAutoIncrement = 0;
+            $keyUIDAutoIncrement = '';
             foreach ($aData['FIELDS'] as $aField) {
                 if ($aField['FLD_KEY'] == 1) {
+                    if ($aField['FLD_AUTO_INCREMENT'] == 1) {
+                        if ($keysAutoIncrement == 0) {
+                            $keyUIDAutoIncrement = $aField['FLD_NAME'];
+                        }
+                        $keysAutoIncrement++;
+                    }
                     $vValue = $aFields[$aField['FLD_NAME']];
                     eval('$' . $aField['FLD_NAME'] . ' = $vValue;');
                     $sKeys .= '$' . $aField['FLD_NAME'] . ',';
@@ -421,7 +429,16 @@ class AdditionalTables extends BaseAdditionalTables
                 }
             }
             if ($oClass->validate()) {
-                $iResult = $oClass->save();
+                $iResult = $oClass->save();                
+                if ($keysAutoIncrement == 1 && $aFields[$keyUIDAutoIncrement] == '' && isset($_SESSION['APPLICATION']) && $_SESSION['APPLICATION'] != '') {
+                    G::LoadClass('case');
+                    $oCaseKeyAuto = new Cases();
+                    $newId = $oClass->getId();
+                    $aFields = $oCaseKeyAuto->loadCase($_SESSION['APPLICATION']);
+                    $aFields['APP_DATA'][$keyUIDAutoIncrement] = $newId;
+                    $_POST['form'][$keyUIDAutoIncrement] = $newId;
+                    $oCaseKeyAuto->updateCase($_SESSION['APPLICATION'], $aFields);
+                }
             }
             return true;
         } catch (Exception $oError) {

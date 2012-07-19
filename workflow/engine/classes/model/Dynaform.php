@@ -270,10 +270,30 @@ class Dynaform extends BaseDynaform {
         $attributes = array('XMLNODE_NAME_OLD' => '', 'XMLNODE_NAME' => $pmConnectionName, 'TYPE' => 'pmconnection', 'PMTABLE' => $pmTableUid, 'KEYS'=>$keys);
         $fieldXML->Save($attributes, $labels, $options);
       }
+
+      $keyRequered = '';
+      $countKeys = 0;
+      while ($res->next()) {
+        if ($res->get('Key') != '') {
+          $countKeys++;
+        }
+        if ($res->get('Extra') == 'auto_increment') {          
+          $keyRequered .= $res->get('Field');
+        }
+      }
+
+      $dbh =  Propel::getConnection(AdditionalTablesPeer::DATABASE_NAME);
+      $sth = $dbh->createStatement();
+      $res = $sth->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
       while ($res->next()){
         // if(strtoupper($res->get('Null'))=='NO') {
-        if(strtoupper($res->get($oDataBase->getFieldNull() ))=='NO'){  
-          $required = '1';
+        if(strtoupper($res->get($oDataBase->getFieldNull() ))=='NO'){
+          if ($countKeys == 1 && $res->get('Field') == $keyRequered) {
+            $required = '0';
+          } else {
+            $required = '1';
+          }
         } else {
           $required = '0';
         }
