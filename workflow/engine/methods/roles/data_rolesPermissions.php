@@ -35,8 +35,8 @@ if ($RBAC->permissionsObj->loadByCode('PM_CANCELCASE') === false) {
     $RBAC->permissionsObj->create(array('PER_CODE' => 'PM_CANCELCASE', 'PER_CREATE_DATE' => date('Y-m-d H:i:s')));
 }
 
-if ($TYPE_DATA=='list') $oDataset = $RBAC->getRolePermissions($ROL_UID,$filter);
-if ($TYPE_DATA=='show') $oDataset = $RBAC->getAllPermissions($ROL_UID,$RBAC->sSystem,$filter);
+if ($TYPE_DATA=='list') $oDataset = $RBAC->getRolePermissions($ROL_UID, $filter, 1);
+if ($TYPE_DATA=='show') $oDataset = $RBAC->getAllPermissions($ROL_UID, $RBAC->sSystem, $filter, 1);
 
 $rows = Array();
 while($oDataset->next()){
