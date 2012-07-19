@@ -58,7 +58,9 @@ if ( $RBAC->userCanAccess('PM_REASSIGNCASE') == 1 ) {
   $G_TMP_MENU->AddIdRawOption('CASES_TO_REASSIGN', 'casesListExtJs?action=to_reassign', G::LoadTranslation('ID_TO_REASSIGN'),         'reassing.png'   );
 }
 
-$G_TMP_MENU->AddIdRawOption('CASES_FOLDERS',     'casesStartPage?action=documents',       G::LoadTranslation('ID_FOLDERS'),            'folderV2.gif','','blockHeaderNoChild'         );
+if ($RBAC->userCanAccess('PM_FOLDERS_VIEW') == 1) {
+    $G_TMP_MENU->AddIdRawOption('CASES_FOLDERS',     'casesStartPage?action=documents',       G::LoadTranslation('ID_FOLDERS'),            'folderV2.gif','','blockHeaderNoChild'         );
+}
 
 
 
