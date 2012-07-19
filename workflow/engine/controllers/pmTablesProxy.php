@@ -259,7 +259,12 @@ class pmTablesProxy extends HttpProxyController
 
                 // VALIDATIONS
                 if ($columns[$i]->field_autoincrement) {
-                    if ($columns[$i]->field_type !== 'INTEGER') {
+                    $typeCol = $columns[$i]->field_type;
+                    if (!   ($typeCol === 'INTEGER' ||
+                            $typeCol === 'TINYINT'  ||
+                            $typeCol === 'SMALLINT' ||
+                            $typeCol === 'BIGINT')
+                        ) {
                         $columns[$i]->field_autoincrement = false;
                     }
                 }
