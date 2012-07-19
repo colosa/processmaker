@@ -203,7 +203,7 @@ if($limit != 0){
     return $folderArray;
   }
 
-  function getFolderContent($folderID, $docIdFilter = array(), $keyword = NULL, $searchType = NULL, $limit=0, $start=0) {
+  function getFolderContent($folderID, $docIdFilter = array(), $keyword = NULL, $searchType = NULL, $limit=0, $start=0, $user='') {
     require_once ("classes/model/AppDocument.php");
     require_once ("classes/model/InputDocument.php");
     require_once ("classes/model/OutputDocument.php");
@@ -229,6 +229,31 @@ if($limit != 0){
       $oCriteria->add ( AppDocumentPeer::APP_DOC_TAGS, "%" . $keyword . "%", CRITERIA::LIKE );
     }
 
+    if ($user != '') {
+        require_once ("classes/model/AppDelegation.php");
+        $criteria = new Criteria ();
+        $criteria->addSelectColumn (AppDelegationPeer::APP_UID);
+        $criteria->setDistinct();
+
+        $conditions = array ();
+        $conditions [] = array (AppDelegationPeer::APP_UID, AppDocumentPeer::APP_UID);
+        $conditions [] = array (AppDelegationPeer::DEL_INDEX, AppDocumentPeer::DEL_INDEX);
+
+        $criteria->addJoinMC($conditions, Criteria::LEFT_JOIN);
+
+        $criteria->add(AppDelegationPeer::USR_UID, $user);
+
+        $rs2 = AppDocumentPeer::doSelectRS($criteria);
+
+        $rs2->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $data = array();
+        while ($rs2->next()) {
+            $row = $rs2->getRow();
+            $data[] = $row['APP_UID'];
+        }
+        $oCriteria->add ( AppDocumentPeer::APP_UID, $data, CRITERIA::IN );
+    }
+
     $oCase->verifyTable ();
 
 
@@ -246,7 +271,6 @@ if($limit != 0){
 
 
     $rs = AppDocumentPeer::doSelectRS ( $oCriteria );
-   
     $rs->setFetchmode ( ResultSet::FETCHMODE_ASSOC );
     $rs->next ();
     $filesResult = array ();

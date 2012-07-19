@@ -120,7 +120,9 @@ function expandNode(){
     $totalDocuments=0;
     
     if(($_POST['sendWhat']=="dirs")||($_POST['sendWhat']=="both")){
-        $folderListObj = $oPMFolder->getFolderList ( $_POST ['node'] != 'root' ? $_POST ['node'] == 'NA' ? "" : $_POST ['node'] : $rootFolder, $limit, $start );
+        
+        
+        $folderListObj = $oPMFolder->getFolderList ( $_POST ['node'] != 'root' ? $_POST ['node'] == 'NA' ? "" : $_POST ['node'] : $rootFolder, $limit, $start);
         //G::pr($folderListObj);
         $folderList=$folderListObj['folders'];
         $totalFolders=$folderListObj['totalFoldersCount'];
@@ -128,14 +130,14 @@ function expandNode(){
 
 //        G::pr($folderListObj);
     }
-    if(($_POST['sendWhat']=="files")||($_POST['sendWhat']=="both")){
-        $folderContentObj = $oPMFolder->getFolderContent ( $_POST ['node'] != 'root' ? $_POST ['node'] == 'NA' ? "" : $_POST ['node'] : $rootFolder, array(), NULL, NULL, $limit, $start );
-        //G::pr($folderContentObj);
+    if (($_POST['sendWhat'] == "files")||($_POST['sendWhat'] == "both")) {
+        global $RBAC;
+        $user = ($RBAC->userCanAccess('PM_ALLCASES') == 1)? '' : $_SESSION['USER_LOGGED'];
+        $folderContentObj = $oPMFolder->getFolderContent ( $_POST ['node'] != 'root' ? $_POST ['node'] == 'NA' ? "" : $_POST ['node'] : $rootFolder, array(), NULL, NULL, $limit, $start, $user);
         $folderContent=$folderContentObj['documents'];
         $totalDocuments=$folderContentObj['totalDocumentsCount'];
         $totalItems+=count($folderContent);
-
-//G::pr($folderContent);
+        //G::pr($folderContent);
     }
 //    G::pr($folderList);
 //var_dump(isset($folderList));
