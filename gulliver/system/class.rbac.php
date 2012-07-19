@@ -738,8 +738,8 @@ class RBAC
   * @param  string $ROL_UID
   * @return $this->rolesObj->getRolePermissions
   */
-  function getRolePermissions($ROL_UID, $filter=''){
-  return $this->rolesObj->getRolePermissions($ROL_UID,$filter);
+  function getRolePermissions($ROL_UID, $filter='', $status=null){
+  return $this->rolesObj->getRolePermissions($ROL_UID, $filter, $status);
   }
 
   /**
@@ -752,8 +752,8 @@ class RBAC
   * @param  string $PER_SYSTEM
   * @return $this->rolesObj->getAllPermissions
   */
-  function getAllPermissions($ROL_UID,$PER_SYSTEM="",$filter=''){
-      return $this->rolesObj->getAllPermissions($ROL_UID,$PER_SYSTEM,$filter);
+  function getAllPermissions($ROL_UID, $PER_SYSTEM="", $filter='', $status=null){
+      return $this->rolesObj->getAllPermissions($ROL_UID, $PER_SYSTEM, $filter, $status);
   }
 
   /**
