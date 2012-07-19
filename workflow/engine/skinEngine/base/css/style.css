@@ -830,6 +830,7 @@ form.formSearch .Record
 {
 	color:#2078A8;
 	text-decoration:none;
+	white-space: nowrap;
 }
 .pagedTableDefault, .pagedTableDefault .headerContent .tableOption a:hover
 {
@@ -882,6 +883,7 @@ font-weight:bold;
 	text-decoration: none;
 	padding-left: 5px;
 	font: bold 11px Tahoma,sans-serif, MiscFixed;
+	white-space: nowrap;
 }
 .pagedTableDefault .pagedTable a:hover
 {
@@ -960,6 +962,7 @@ font-weight:bold;
 }
 .pagedTableDefault .pagedTable .RowLink a{
 	display:block;
+	white-space: nowrap;
 }
 
 A.firstPage {
