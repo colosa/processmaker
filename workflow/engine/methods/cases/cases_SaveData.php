@@ -138,16 +138,7 @@ try {
       }
     }
   }
-  // saving the data ina pm table in case that is a new record
-  if (!empty($newValues)) {
-    $id = key($newValues);
-    while (strlen($id) < 3) {
-      $id = '_' . $id;
-    }
-    if (! $oAdditionalTables->updateDataInTable( $oForm->fields [$oForm->fields[$id]->pmconnection]->pmtable, $newValues) ) {//<--This is to know if it is a new registry on the PM Table
-      $oAdditionalTables->saveDataInTable( $oForm->fields [$oForm->fields[$id]->pmconnection]->pmtable, $newValues);
-    }
-  }
+
   //save data
   $aData = array ();
   $aData ['APP_NUMBER']       = $Fields ['APP_NUMBER'];
@@ -161,6 +152,15 @@ try {
   $aData ['PRO_UID']          = $_SESSION ['PROCESS'];
 
   $oCase->updateCase ( $_SESSION ['APPLICATION'], $aData );
+
+  // saving the data ina pm table in case that is a new record
+  if (!empty($newValues)) {
+    $id = key($newValues);
+    if (! $oAdditionalTables->updateDataInTable( $oForm->fields [$oForm->fields[$id]->pmconnection]->pmtable, $newValues) ) {//<--This is to know if it is a new registry on the PM Table
+      $oAdditionalTables->saveDataInTable( $oForm->fields [$oForm->fields[$id]->pmconnection]->pmtable, $newValues);
+    }
+  }
+  
   //save files
   require_once 'classes/model/AppDocument.php';
   if (isset ( $_FILES ['form'] )) {
