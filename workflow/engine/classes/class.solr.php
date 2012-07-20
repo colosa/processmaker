@@ -87,7 +87,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     // verify the result of solr
     $responseSolrTotal = G::json_decode ($responseTotal);
     if ($responseSolrTotal->responseHeader->status != 0) {
-      throw new Exception ("Error returning the total number of documents in Solr." . $solrIntruct);
+      throw new Exception ("Error returning the total number of documents in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
     $numTotalDocs = $responseSolrTotal->response->numFound;
     return $numTotalDocs;
@@ -156,7 +156,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     // decode
     $responseSolr = G::json_decode ($response);
     if ($responseSolr->responseHeader->status != 0) {
-      throw new Exception ("Error executing query to Solr." . $solrIntruct);
+      throw new Exception ("Error executing query to Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
     
     return $responseSolr;
@@ -192,7 +192,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ("Error updating document in Solr." . $solrIntruct);
+      throw new Exception ("Error updating document in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
   
@@ -226,7 +226,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ("Error commiting changes in Solr." . $solrIntruct);
+      throw new Exception ("Error commiting changes in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
   
@@ -261,7 +261,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ("Error rolling back changes in Solr." . $solrIntruct);
+      throw new Exception ("Error rolling back changes in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
   
@@ -296,7 +296,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ("Error optimizing changes in Solr." . $solrIntruct);
+      throw new Exception ("Error optimizing changes in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
   
@@ -326,7 +326,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     // decode
     $responseSolr = G::json_decode ($response);
     if ($responseSolr->responseHeader->status != 0) {
-      throw new Exception ("Error getting index fields in Solr." . $solrIntruct);
+      throw new Exception ("Error getting index fields in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
     return $responseSolr;
   }
@@ -364,7 +364,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ("Error deleting all documents in Solr." . $solrIntruct);
+      throw new Exception ("Error deleting all documents in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
   
@@ -401,7 +401,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
-      throw new Exception ("Error deleting document in Solr." . $solrIntruct);
+      throw new Exception ("Error deleting document in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
   
@@ -472,7 +472,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     // decode
     $responseSolr = G::json_decode ($response);
     if ($responseSolr->responseHeader->status != 0) {
-      throw new Exception ("Error getting faceted list from Solr." . $solrIntruct);
+      throw new Exception ("Error getting faceted list from Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
     
     return $responseSolr;

@@ -463,6 +463,7 @@ class AppSolr
       $rows = array ();
       // number of found records
       $result ['totalCount'] = $solrQueryResult->iTotalDisplayRecords;
+
       // complete the missing data to display it in the grid.
       foreach ($solrQueryResult->aaData as $i => $data) {
         // complete empty values
@@ -478,6 +479,9 @@ class AppSolr
           elseif ($action == 'search') {
             // get all the indexes
             $delIndexes = $this->getApplicationDelegationsIndex ($appUID);
+          }
+	  else {
+            $delIndexes = array();
           }
         }
         foreach ($delIndexes as $delIndex) {
@@ -953,7 +957,7 @@ class AppSolr
     }
     // create XML document
     $xmlDoc = $this->createSolrXMLDocument ($aaAPPUIDs);
-    
+
     // update document
     $data = array (
         'workspace' => $this->_solrInstance,
@@ -965,11 +969,18 @@ class AppSolr
     G::LoadClass ('searchIndex');
     
     $oSearchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
-    
-    $oSearchIndex->updateIndexDocument ($oSolrUpdateDocument);
-    
-    // commit changes
-    $oSearchIndex->commitIndexChanges ($this->_solrInstance);
+
+    try{
+      $oSearchIndex->updateIndexDocument ($oSolrUpdateDocument);
+      // commit changes
+      $oSearchIndex->commitIndexChanges ($this->_solrInstance);
+    } catch(Exception $ex)
+    {
+	//print "Excepcion indexing data: " . $ex->getMessage() . "\n"; die;
+        $fh = fopen("./SolrIndexErrors.txt", 'a') or die("can't open file to store Solr index errors.");
+        fwrite($fh, $ex->getMessage());
+        fclose($fh);
+    }
   }
   
   /**
@@ -1016,7 +1027,7 @@ class AppSolr
     // search data from DB
     $xmlDoc = "<?xml version='1.0' encoding='UTF-8'?>\n";
     $xmlDoc .= "<add>\n";
-    // echo "APP Uids to index \n";
+
     foreach ($aaAPPUIDs as $aAPPUID) {
       try {
         $result = $this->getApplicationIndexData ($aAPPUID ['APP_UID']);
@@ -1039,7 +1050,7 @@ class AppSolr
       $participatedUsersCompletedByUser = $result [10];
       $unassignedUsers = $result [11];
       $unassignedGroups = $result [12];
-      
+
       try {
         // create document
         $xmlDoc .= $this->buildSearchIndexDocumentPMOS2 ($documentInformation, $dynaformFieldTypes, 
@@ -1049,11 +1060,9 @@ class AppSolr
       }
       catch ( ApplicationAPP_DATAUnserializeException $e ) {
         // exception trying to get application information
-        
-        //print $e->message +" \n";
-        //$fh = fopen("./UnserializeError_APP_DATA".".txt", 'a') or die("can't open file");
-        //fwrite($fh, $e->message . "\n");
-        //fclose($fh);
+        $fh = fopen("./SolrIndexErrors.txt", 'a') or die("can't open file to store Solr index errors.");
+        fwrite($fh, $e->getMessage());
+        fclose($fh);
         // skip and continue with the next application
         continue;
       }
@@ -1061,7 +1070,6 @@ class AppSolr
     }
     
     $xmlDoc .= "</add>\n";
-    
     return $xmlDoc;
   }
   
@@ -1282,7 +1290,7 @@ class AppSolr
         $writer->endElement ();
       }
     }
-    
+
     if (is_array ($unassignedUsers) && ! empty ($unassignedUsers)) {
       foreach ($unassignedUsers as $userUID) {
         $writer->startElement ("field");
@@ -1312,7 +1320,7 @@ class AppSolr
         $writer->endElement ();
       }
     }
-    
+
     // get the serialized fields
     if (! empty ($documentData ['APP_DATA']) && $documentData ['APP_DATA'] != "N;" ) {
       
@@ -1325,7 +1333,7 @@ class AppSolr
       
       if (! $UnSerializedCaseData) {
         // error unserializing
-        throw new ApplicationAPP_DATAUnserializeException ("Could not unserialize APP_DATA of APP_UID: " . $documentData ['APP_UID']);
+	throw new ApplicationAPP_DATAUnserializeException ("Could not unserialize APP_DATA of APP_UID: " . $documentData ['APP_UID']);
       }
       else {
         foreach ($UnSerializedCaseData as $k => $value) {
@@ -1339,8 +1347,14 @@ class AppSolr
                   $typeSufix = '_t';
                   break;
                 case 'Int' :
-                  $typeSufix = '_ti';
-                  $value = intval ($value);
+		  if(intval ($value) > 2147483647) {
+                    $typeSufix = '_tl'; //for long values
+                    $value = intval ($value);
+		  }
+		  else {
+		    $typeSufix = '_ti'; 
+                    $value = intval ($value);
+		  }
                   break;
                 case 'Real' :
                   $typeSufix = '_td';
@@ -1383,6 +1397,7 @@ class AppSolr
                   break;
                 case 'currency' :
                   $typeSufix = '_td';
+		  $value = floatval ($value);
                   break;
                 case 'percentage' :
                   $typeSufix = '_t';
@@ -1459,7 +1474,7 @@ class AppSolr
   public function getApplicationIndexData($AppUID)
   {
     G::LoadClass ('memcached');
-    
+
     // get all the application data
     $allAppDbData = $this->getApplicationDelegationData ($AppUID);
     // check if the application record was found
@@ -1471,7 +1486,7 @@ class AppSolr
     
     // copy the application information
     $documentInformation = $allAppDbData [0];
-    
+
     // get the last delegate date using the del_delegate_date
     $index = $this->aaGetMaximun ($allAppDbData, 'DEL_DELEGATE_DATE', 'DATE');
     
@@ -1620,15 +1635,18 @@ class AppSolr
     // All the datatypes of the process => all variables in all dynaforms in the
     // process
     $dynaformFieldTypes = array ();
+
     // get cache instance
     $oMemcache = PMmemcached::getSingleton ($this->_solrInstance);
     $dynaformFieldTypes = $oMemcache->get ($documentInformation ['PRO_UID']);
     if (! $dynaformFieldTypes) {
+
       G::LoadClass ('dynaformhandler');
       $dynaformFileNames = $this->getProcessDynaformFileNames ($documentInformation ['PRO_UID']);
       $dynaformFields = array ();
-      foreach ($dynaformFileNames as $dynaformFileName) {
-        if (file_exists (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml')) {
+	foreach ($dynaformFileNames as $dynaformFileName) {
+          if (file_exists (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
+             filesize(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') >0 ) {
           $dyn = new dynaFormHandler (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml');
           $dynaformFields [] = $dyn->getFields ();
         }
@@ -1651,7 +1669,6 @@ class AppSolr
       // create cache of dynaformfields
       $oMemcache->set ($documentInformation ['PRO_UID'], $dynaformFieldTypes);
     }
-    
     // return result values
     $result = array (
         $documentInformation,
