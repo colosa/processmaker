@@ -28,8 +28,31 @@ define('PATH_TRUNK',    $pathTrunk);
 define('PATH_OUTTRUNK', $pathOutTrunk);
 
 require_once (PATH_HOME . 'engine' . PATH_SEP . 'config' . PATH_SEP . 'paths.php');
+require_once PATH_CORE . 'classes' . PATH_SEP . 'class.system.php';
 
-//default values  
+$config = System::getSystemConfiguration();
+
+$e_all  = defined('E_DEPRECATED') ? E_ALL  & ~E_DEPRECATED : E_ALL;
+$e_all  = defined('E_STRICT')     ? $e_all & ~E_STRICT     : $e_all;
+$e_all  = $config['debug']        ? $e_all                 : $e_all & ~E_NOTICE;
+
+// Do not change any of these settings directly, use env.ini instead
+ini_set('display_errors', $config['debug']);
+ini_set('error_reporting', $e_all);
+ini_set('short_open_tag', 'On');
+ini_set('default_charset', "UTF-8");
+ini_set('memory_limit', $config['memory_limit']);
+ini_set('soap.wsdl_cache_enabled', $config['wsdl_cache']);
+ini_set('date.timezone', $config['time_zone']);
+
+define ('DEBUG_SQL_LOG', $config['debug_sql']);
+define ('DEBUG_TIME_LOG', $config['debug_time']);
+define ('DEBUG_CALENDAR_LOG', $config['debug_calendar']);
+define ('MEMCACHED_ENABLED',  $config['memcached']);
+define ('MEMCACHED_SERVER',   $config['memcached_server']);
+define ('TIME_ZONE', $config['time_zone']);
+
+//default values
 $bCronIsRunning = false;
 $sLastExecution = '';
 if ( file_exists(PATH_DATA . 'cron') ) {
@@ -46,7 +69,7 @@ $WS = '';
 $argsx = '';
 $sDate = '';
 for($i=1; $i<count($argv); $i++){
-  
+
   if( strpos($argv[$i], '+d') !== false){
     $sDate = substr($argv[$i],2);
   } else if( strpos($argv[$i], '+w') !== false){
