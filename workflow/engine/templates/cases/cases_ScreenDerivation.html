@@ -174,7 +174,8 @@
 
 <script>
   // deviration type
-  var rouType = '{$PROCESS.ROU_TYPE}';  
+  var rouType = '{$PROCESS.ROU_TYPE}';
+  var userHidden = '{$data.NEXT_TASK.USR_HIDDEN_FIELD}';
   {literal}
   
   // option select
@@ -250,7 +251,7 @@
     var flagSelect = false;
 
     // verify type of derivation
-    if (rouType == 'PARALLEL') {
+    if (rouType == 'PARALLEL' || rouType == 'PARALLEL-BY-EVALUATION') {
       // verify all value select 
       var selectsForm = document.getElementsByTagName("select");
       for (var i = 0 ; i <= selectsForm.length ; i++) {
@@ -273,7 +274,7 @@
     } else {
       var selectId = "form[TASKS]["+optionSelect+"][USR_UID]";
       
-      if (typeof(document.getElementById(selectId)) != 'undefined' && document.getElementById(selectId) != null) {
+      if (typeof(document.getElementById(selectId)) != 'undefined' && document.getElementById(selectId) != null && userHidden == '') {
         var vtext  = new input(document.getElementById(selectId));
 
         // verify value select the option select
