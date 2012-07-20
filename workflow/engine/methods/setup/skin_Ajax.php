@@ -45,7 +45,14 @@ function skinList()
 {
     G::loadClass('system');
 
-    $skinListArray = System::getSkingList();
+    $skinList = System::getSkingList();
+
+    foreach ($skinList['skins'] as $key => $value) {
+        if ($value['SKIN_FOLDER_ID'] != 'simplified' && $value['SKIN_FOLDER_ID'] != 'uxs') {
+            $skinListArray['skins'][] = $value;
+        }
+    }
+    $skinListArray['currentSkin'] = $skinList['currentSkin'];
     echo G::json_encode($skinListArray);
 }
 

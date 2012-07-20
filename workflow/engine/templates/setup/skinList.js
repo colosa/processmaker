@@ -750,7 +750,19 @@ function changeSkin(newSkin,currentSkin){
         var response = Ext.util.JSON.decode(r.responseText);
         if (response.success) {
           currentLocation = top.location.href;
-          newLocation = currentLocation.replace("/" + currentSkin + "/", "/" + newSkin + "/");
+          if (currentSkin.substring(0,2) != 'ux') {
+            if (newSkin.substring(0,2) == 'ux') {
+              newLocation = currentLocation.replace("/" + currentSkin + "/setup/", "/" + newSkin + "/");
+            } else {
+              newLocation = currentLocation.replace("/" + currentSkin + "/", "/" + newSkin + "/");
+            }
+          } else {
+            if (newSkin.substring(0,2) == 'ux') {
+              newLocation = currentLocation.replace("/" + currentSkin + "/", "/" + newSkin + "/");
+            } else {
+              newLocation = currentLocation.replace("/" + currentSkin + "/", "/" + newSkin + "/setup/");
+            }
+          }
           top.location.href = newLocation;
         }
         else {
