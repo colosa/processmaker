@@ -436,7 +436,9 @@ class AdditionalTables extends BaseAdditionalTables
                     $newId = $oClass->getId();
                     $aFields = $oCaseKeyAuto->loadCase($_SESSION['APPLICATION']);
                     $aFields['APP_DATA'][$keyUIDAutoIncrement] = $newId;
-                    $_POST['form'][$keyUIDAutoIncrement] = $newId;
+                    if (isset($_POST['form'])) {
+                        $_POST['form'][$keyUIDAutoIncrement] = $newId;    
+                    }
                     $oCaseKeyAuto->updateCase($_SESSION['APPLICATION'], $aFields);
                 }
             }
