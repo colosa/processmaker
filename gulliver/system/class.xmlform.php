@@ -1120,7 +1120,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
   var $replaceTags           = 0;
 
   var $ajaxServer            = '../gulliver/genericAjax';
-  var $maxresults;
+  var $maxresults            = '6';
   var $savelabel             = 1;
   var $shownoresults;
   var $callback              = '';
@@ -1242,17 +1242,57 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
           $depValues = '+';
         }
 
-        $sOptions  = 'script: function (input) {var inputValue = base64_encode(getField(\''. $this->name .'_label\').value); return "'.$this->ajaxServer.'?request=suggest&json=true&limit='.$this->maxresults.'&hash='.$hash.'&dependentFieldsKeys=' . $sResultKeys . '&dependentFieldsValue="'.$depValues.'"&input="+inputValue+"&inputEnconde64=enable"; },';
+        $sOptions  = 'script: function (input) { ';
+        $sOptions .= '  var inputValue = base64_encode(getField(\''. $this->name .'_label\').value); ';
+
+        $sOptions .= '  return "' . $this->ajaxServer . '?request=suggest&json=true&limit=' . $this->maxresults ;
+        $sOptions .= '&hash=' . $hash . '&dependentFieldsKeys=' . $sResultKeys . '&dependentFieldsValue="';
+        $sOptions .= $depValues . '"&input="+inputValue+"&inputEnconde64=enable"; ';
+        $sOptions .= '},';
         $sOptions .= 'json: true,';
         $sOptions .= 'limit: '.$this->maxresults.',';
         // $sOptions .= 'varname: "input",';
-        $sOptions .= 'shownoresults: '.($this->shownoresults?'true':'false').',';
+        $sOptions .= 'shownoresults: ' . ($this->shownoresults ? 'true' : 'false') . ',';
         $sOptions .= 'maxresults: '.$this->maxresults.',';
         $sOptions .= 'chache: true,';
 
-        $setValue = ($this->savelabel == '1')? 'obj.value': 'obj.id';
+        $setValue = ($this->savelabel == '1') ? 'obj.value' : 'obj.id';
 
-        $sOptions .= 'callback: function(obj){'.$sCallBack.'; getField("'. $this->name. '").value = obj.id; return false;}';
+        $sOptions .= 'callback: function(obj){';
+
+        $sOptions .= ' var jField = { ' . $this->name . ' : obj.id };';
+        $sOptions .= ' var sField = "["+ encodeURIComponent(jField.toJSONString()) + "]"; ';
+        $sOptions .= $sCallBack . '; getField("' . $this->name . '").value = obj.id;';
+
+        $sOptions .= 'var response = ajax_function("../gulliver/defaultAjaxDynaform", "reloadField", ';
+        $sOptions .= '               "form=' . $owner->id . '&fields=" + sField, "POST"); ';
+
+        $sOptions .= 'if (response.substr(0,1) === \'[\') { ';
+        $sOptions .= '  var newcont; ';
+        $sOptions .= '  eval(\'newcont=\' + response + \';\'); ';
+        $sOptions .= '  for(var i = 0; i<newcont.length; i++) { ';
+        $sOptions .= '    var j = getField(newcont[i].name); ';
+        $sOptions .= '    getField(newcont[i].name).value = newcont[i].value; ';
+        $sOptions .= '    if (newcont[i].content.type == \'dropdown\') { ';
+
+        $sOptions .= '      for (ni = 0; ni < newcont[i].content.options.length; ni++ ){ ';
+        $sOptions .= '        getField(newcont[i].name).options.remove(ni); ';
+        $sOptions .= '      } ';
+
+        $sOptions .= '      for (ni = 0; ni < newcont[i].content.options.length; ni++ ){ ';
+        $sOptions .= '        var opt = document.createElement("OPTION"); ';
+        $sOptions .= '        opt.value = newcont[i].content.options[ni].key; ';
+        $sOptions .= '        opt.text  = newcont[i].content.options[ni].value; ';
+        $sOptions .= '        getField(newcont[i].name).options.add(opt); ';
+        $sOptions .= '      } ';
+        $sOptions .= '    } ';
+
+        $sOptions .= '  } ';
+        $sOptions .= '} else { ';
+        $sOptions .= '  alert(\'Invalid response: \' + response); ' ;
+        $sOptions .= '} ';
+
+        $sOptions .= 'return false; }';
 
         $str .= '<script type="text/javascript">';
         $str .= 'var as_json = new bsn.AutoSuggest(\'form[' . $this->name . '_label]\', {'.$sOptions.'});';
