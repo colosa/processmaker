@@ -731,7 +731,7 @@ function executeQueryOci($sql, $connection, $aParameter=array())
     }
 
     switch (true) {
-        case preg_match("/^(SELECT|SHOW|DESCRIBE|DESC)\s/i", $sql):
+        case preg_match("/^(SELECT|SHOW|DESCRIBE|DESC|WITH)\s/i", $sql):
             $stid = oci_parse($conn, $sql);
             if (count($aParameter) > 0) {
                 foreach ($aParameter as $key => $val) {
