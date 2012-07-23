@@ -34,7 +34,7 @@ class Event extends BaseEvent {
    * @var        string
    */
   protected $evn_description = '';
-
+  
   /**
    * Get the evn_description column value.
    * @return     string
@@ -623,18 +623,11 @@ class Event extends BaseEvent {
 
   function createAppEvents($PRO_UID, $APP_UID, $DEL_INDEX, $TAS_UID){
     $aRows = Array();
-    $aEventsRows = $this->getBy($PRO_UID, Array('TAS_UID'=>$TAS_UID));
+    $aEventsRows = $this->getBy($PRO_UID, $TAS_UID);
     if( $aEventsRows !== false ){
       $aRows = array_merge($aRows, $aEventsRows);
     }
-
-    $aEventsRows = $this->getBy($PRO_UID, Array('EVN_TAS_UID_FROM'=>$TAS_UID));
-    if( $aEventsRows !== false ){
-      $aRows = array_merge($aRows, $aEventsRows);
-    }
-
     foreach($aRows as $aData){
-
       // if the events has a condition
       if( trim($aData['EVN_CONDITIONS']) != '' ) {
           G::LoadClass('case');
@@ -691,7 +684,63 @@ class Event extends BaseEvent {
     }
   }
 
-  function getBy($PRO_UID, $aFilers){
+  function verifyTaskbetween($PRO_UID, $taskFrom, $taskTo, $taskVerify) {
+    $criteria = new Criteria('workflow');
+    $criteria->addSelectColumn(RoutePeer::ROU_NEXT_TASK);
+  
+    $criteria->add(RoutePeer::PRO_UID, $PRO_UID);
+    $criteria->add(RoutePeer::TAS_UID, $taskFrom);
+
+    $dataset = RoutePeer::doSelectRs($criteria);
+    $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+    if ($dataset->next()) {
+      $routeData = $dataset->getRow();
+      switch ($routeData['ROU_NEXT_TASK']) {
+        case $taskVerify:
+          return true;
+          break;
+        case $taskTo:
+        case '-1':
+          return false;
+          break;          
+        default:
+          return $this->verifyTaskbetween($PRO_UID, $routeData['ROU_NEXT_TASK'], $taskTo, $taskVerify);
+          break;
+      }
+    }
+  }
+
+  function getBy($PRO_UID, $taskUid){
+
+    $oCriteria = new Criteria('workflow');
+    $oCriteria->addSelectColumn(EventPeer::EVN_UID);
+    $oCriteria->addSelectColumn(EventPeer::EVN_TAS_UID_FROM );
+    $oCriteria->addSelectColumn(EventPeer::EVN_TAS_UID_TO );
+    
+    $oCriteria->add(EventPeer::EVN_STATUS, 'ACTIVE');
+    $oCriteria->add(EventPeer::EVN_ACTION, '', Criteria::NOT_EQUAL);
+    $oCriteria->add(EventPeer::PRO_UID, $PRO_UID, Criteria::EQUAL);
+
+    $oDataset = EventPeer::doSelectRs($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+    $eventsTask = array();
+    while ($oDataset->next()) {
+      $aDataEvent = $oDataset->getRow();
+
+      if ($taskUid == $aDataEvent['EVN_TAS_UID_FROM'] || $taskUid == $aDataEvent['EVN_TAS_UID_TO']) {
+        $eventsTask[] = $aDataEvent['EVN_UID'];
+      } else {
+        $flag = $this->verifyTaskbetween($PRO_UID, $aDataEvent['EVN_TAS_UID_FROM'], $aDataEvent['EVN_TAS_UID_TO'], $taskUid);
+        if ($flag) {
+          $eventsTask[] = $aDataEvent['EVN_UID'];
+        }
+      }
+    }
+
+    $aRows = Array();
+    if (count($eventsTask) > 0) {
       $oCriteria = new Criteria('workflow');
       $oCriteria->addSelectColumn(EventPeer::EVN_UID);
       $oCriteria->addSelectColumn(EventPeer::PRO_UID);
@@ -709,29 +758,16 @@ class Event extends BaseEvent {
       $oCriteria->addSelectColumn(EventPeer::EVN_ACTION_PARAMETERS);
       $oCriteria->addSelectColumn(EventPeer::TRI_UID);
 
-      $oCriteria->add(EventPeer::EVN_STATUS, 'ACTIVE');
-      $oCriteria->add(EventPeer::EVN_ACTION, '', Criteria::NOT_EQUAL);
-      foreach($aFilers as $sFilter=>$sValue){
-        switch($sFilter){
-          case 'TAS_UID':
-            $oCriteria->add(EventPeer::TAS_UID, $sValue, Criteria::EQUAL);
-            break;
-          case 'EVN_TAS_UID_FROM':
-            $oCriteria->add(EventPeer::EVN_TAS_UID_FROM, $sValue, Criteria::EQUAL);
-            break;
-          case 'EVN_TAS_UID_TO':
-            $oCriteria->add(EventPeer::EVN_TAS_UID_TO, $sValue, Criteria::EQUAL);
-            break;
-        }
-      }
+      $oCriteria->add(EventPeer::EVN_UID, (array)$eventsTask, Criteria::IN);
 
       $oDataset = EventPeer::doSelectRs($oCriteria);
       $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-
-      $aRows = Array();
+      
       while($oDataset->next()) $aRows[]= $oDataset->getRow();
+    }
+    
 
-      return (count($aRows) > 0)? $aRows: false;
+    return (count($aRows) > 0)? $aRows: false;
   }
 
   function getAppEvents($APP_UID, $DEL_INDEX){
