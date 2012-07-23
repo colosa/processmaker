@@ -193,12 +193,12 @@ if (($RBAC_Response=$RBAC->userCanAccess("PM_FACTORY"))!=1) return $RBAC_Respons
 <script>
   var toolbar = document.getElementById('fields_Toolbar')
   var fieldsList = document.getElementById('dynaformEditor[0]')
-  var tableHeight=<?= $config['FieldsList']['height'] ?>;
-  var tableWidth=<?= $config['FieldsList']['width'] ?>;
-  var toolbarTop=<?= $config['Toolbar']['top'] ?>;
-  var toolbarLeft=<?= $config['Toolbar']['left'] ?>;
-  var fieldsListTop=<?= $config['FieldsList']['top'] ?>//(toolbarTop+toolbar.clientHeight+44+8 );
-  var fieldsListLeft=<?= $config['FieldsList']['left'] ?>;
+  var tableHeight=<?php echo $config['FieldsList']['height'] ?>;
+  var tableWidth=<?php echo $config['FieldsList']['width'] ?>;
+  var toolbarTop=<?php echo $config['Toolbar']['top'] ?>;
+  var toolbarLeft=<?php echo $config['Toolbar']['left'] ?>;
+  var fieldsListTop=<?php echo $config['FieldsList']['top'] ?>//(toolbarTop+toolbar.clientHeight+44+8 );
+  var fieldsListLeft=<?php echo $config['FieldsList']['left'] ?>;
   mainPanel.elements.headerBar.style.backgroundColor='#CBDAEF';
   mainPanel.elements.headerBar.style.borderBottom='1px solid #808080';
   mainPanel.elements.headerBar.appendChild(toolbar);

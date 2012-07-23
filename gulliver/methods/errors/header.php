@@ -12,7 +12,7 @@
     <td width="20px" align="center">&nbsp;</td>
     <td width="100px" align="center" scope="col"><img src="/js/common/core/images/default_logo.gif"></td>
     <td width="45%" scope="col">&nbsp;</td>
-    <td width="35%" class="mxbOnlineText" scope="col"><?= $ERROR_TEXT ?></td>
+    <td width="35%" class="mxbOnlineText" scope="col"><?php echo $ERROR_TEXT ?></td>
   </tr>
   <tr>
     <td height="12" colspan="4" align="center" bgcolor="#336699" scope="col"></td>
@@ -22,8 +22,8 @@
 <br />
 <table width="70%" border="0" align="center" cellpadding="0" cellspacing="0" class="mainCopy">
   <tr>
-    <td width="15%" align="left" scope="col"><span class="mxbOnlineTextBlue"><?= $ERROR_TEXT ?> </span><br />
-    <?= $ERROR_DESCRIPTION ?>
+    <td width="15%" align="left" scope="col"><span class="mxbOnlineTextBlue"><?php echo $ERROR_TEXT ?> </span><br />
+    <?php echo $ERROR_DESCRIPTION ?>
   </tr>
 </table>
 </body>

@@ -40,7 +40,7 @@ if (($RBAC_Response=$RBAC->userCanAccess("PM_SETUP"))!=1) return $RBAC_Response;
     
     if((DESCRIPTION.value == ""))   
     {
-    	alert ("<?= G::LoadTranslation("ID_MSG_ERROR_LANGUAGE_DESCRIPTION")?>"); 
+        alert ("<?php echo G::LoadTranslation("ID_MSG_ERROR_LANGUAGE_DESCRIPTION")?>");
     	DESCRIPTION.focus();
     	return;
     }

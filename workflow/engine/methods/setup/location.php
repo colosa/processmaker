@@ -70,21 +70,21 @@ G::RenderPage( 'publish' );
 ?>
 
 <script language="javascript">
-rowNumber=<?=$r?>;
+rowNumber=<?php echo $r?>;
 attachFunctionEventOnChange(document.getElementById('form[USR_CITY]'),changeRegion);
 attachFunctionEventOnChange(document.getElementById('form[USR_COUNTRY]'),changeRegion);
 function changeCity()
 {
 	var country=document.getElementById('form[USR_COUNTRY]');
 	var city=document.getElementById('form[USR_CITY]');
-	ajax_function('<?=G::encryptLink('cityAjax.php')?>','changeCity','row='+rowNumber+'&country='+encodeURIComponent(country.value)+'&city='+encodeURIComponent(city.value));
+	ajax_function('<?php echo G::encryptLink('cityAjax.php')?>','changeCity','row='+rowNumber+'&country='+encodeURIComponent(country.value)+'&city='+encodeURIComponent(city.value));
 }
 function addLocation()
 {
 	var lr = document.getElementById('lastRow');
 	var city=document.getElementById('form[USR_CITY]');
 	if (newLocation.value=='') return;
-	lr.outerHTML=ajax_function('<?=G::encryptLink('cityAjax.php')?>','newLocation','row='+rowNumber+'&location='+encodeURIComponent(newLocation.value)+'&city='+encodeURIComponent(city.value));
+	lr.outerHTML=ajax_function('<?php echo G::encryptLink('cityAjax.php')?>','newLocation','row='+rowNumber+'&location='+encodeURIComponent(newLocation.value)+'&city='+encodeURIComponent(city.value));
 	rowNumber++;
 	newLocation.value='';
 }
@@ -92,7 +92,7 @@ function deleteLocation(locat)
 {
 	var lr = document.getElementById('DIV_LOCATIONS');
 	var city=document.getElementById('form[USR_CITY]');
-	lr.innerHTML=ajax_function('<?=G::encryptLink('cityAjax.php')?>','delLocation','row='+rowNumber+'&uid='+encodeURIComponent(locat)+'&city='+encodeURIComponent(city.value));
+	lr.innerHTML=ajax_function('<?php echo G::encryptLink('cityAjax.php')?>','delLocation','row='+rowNumber+'&uid='+encodeURIComponent(locat)+'&city='+encodeURIComponent(city.value));
 	rowNumber--;
 }
 function changeRegion()
@@ -105,23 +105,23 @@ function changeRegion()
 	{
 		var city=document.getElementById('form[USR_CITY]');
 		var lr = document.getElementById('DIV_LOCATIONS');
-		lr.innerHTML=ajax_function('<?=G::encryptLink('cityAjax.php')?>','changeRegion','city='+encodeURIComponent(city.value));
-		rowNumber=ajax_function('<?=G::encryptLink('cityAjax.php')?>','getRowRegion','city='+encodeURIComponent(city.value));
+		lr.innerHTML=ajax_function('<?php echo G::encryptLink('cityAjax.php')?>','changeRegion','city='+encodeURIComponent(city.value));
+		rowNumber=ajax_function('<?php echo G::encryptLink('cityAjax.php')?>','getRowRegion','city='+encodeURIComponent(city.value));
 	}
 }
 function changeCities()
 {
 	var country=document.getElementById('form[USR_COUNTRY]');
 	var lr = document.getElementById('DIV_LOCATIONS');
-	lr.innerHTML=ajax_function('<?=G::encryptLink('cityAjax.php')?>','changecities','country='+encodeURIComponent(country.value));
-	rowNumber=ajax_function('<?=G::encryptLink('cityAjax.php')?>','getRowCities','country='+encodeURIComponent(country.value));
+	lr.innerHTML=ajax_function('<?php echo G::encryptLink('cityAjax.php')?>','changecities','country='+encodeURIComponent(country.value));
+	rowNumber=ajax_function('<?php echo G::encryptLink('cityAjax.php')?>','getRowCities','country='+encodeURIComponent(country.value));
 }
 function addCity()
 {
 	var lr = document.getElementById('lastRow');
 	var country=document.getElementById('form[USR_COUNTRY]');
 	if (newCity.value=='') return;
-	lr.outerHTML=ajax_function('<?=G::encryptLink('cityAjax.php')?>','addCity','row='+rowNumber+'&city='+encodeURIComponent(newCity.value)+'&country='+encodeURIComponent(country.value));
+	lr.outerHTML=ajax_function('<?php echo G::encryptLink('cityAjax.php')?>','addCity','row='+rowNumber+'&city='+encodeURIComponent(newCity.value)+'&country='+encodeURIComponent(country.value));
 	rowNumber++;
 	newCity.value='';
 	//Refresh the city's dropdown
@@ -135,7 +135,7 @@ function deleteCity(locat)
 {
 	var lr = document.getElementById('DIV_LOCATIONS');
 	var country=document.getElementById('form[USR_COUNTRY]');
-	lr.innerHTML=ajax_function('<?=G::encryptLink('cityAjax.php')?>','delCity','row='+rowNumber+'&uid='+encodeURIComponent(locat)+'&country='+encodeURIComponent(country.value));
+	lr.innerHTML=ajax_function('<?php echo G::encryptLink('cityAjax.php')?>','delCity','row='+rowNumber+'&uid='+encodeURIComponent(locat)+'&country='+encodeURIComponent(country.value));
 	rowNumber--;
 	//Refresh the city's dropdown
 	attachFunctionEventOnChange(document.getElementById('form[USR_CITY]'),null);

@@ -58,18 +58,18 @@ function RefreshDependentFields(ObjectName, Fields, InitValue) {
 
         if(FldObj){
         	if(FldObj.type == 'text'){
-        		refillText( Fields[i],'<?=$serverAjax?>', 'function=text&field=' + Fields[i] + '&parent=' + ObjectName + '&value=' + TheObject.value + '<?=$Dynaform?>'+ '&application=' + '<?=$appid?>'+ '&Dynaform=' + '<?=$Dynaform?>' );
+                refillText( Fields[i],'<?php echo $serverAjax?>', 'function=text&field=' + Fields[i] + '&parent=' + ObjectName + '&value=' + TheObject.value + '<?php echo $Dynaform?>'+ '&application=' + '<?php echo $appid?>'+ '&Dynaform=' + '<?php echo $Dynaform?>' );
         	}
         	if(FldObj.type == 'hidden'){
-        		refillText( Fields[i],'<?=$serverAjax?>', 'function=text&field=' + Fields[i] + '&parent=' + ObjectName + '&value=' + TheObject.value + '<?=$Dynaform?>'+ '&application=' + '<?=$appid?>'+ '&Dynaform=' + '<?=$Dynaform?>' );
+                refillText( Fields[i],'<?php echo $serverAjax?>', 'function=text&field=' + Fields[i] + '&parent=' + ObjectName + '&value=' + TheObject.value + '<?php echo $Dynaform?>'+ '&application=' + '<?php echo $appid?>'+ '&Dynaform=' + '<?php echo $Dynaform?>' );
         	}
         	
         	if(FldObj.type == 'select-one') {
-        		refillDropdown( Fields[i],'<?=$serverAjax?>', 'function=dropdown&field=' + Fields[i] + '&parent=' + ObjectName + '&value=' + TheObject.value + '<?=$Dynaform?>'+ '&application=' + '<?=$appid?>'+ '&Dynaform=' + '<?=$Dynaform?>'+ '&InitValue=' + InitValue , InitValue);
+                refillDropdown( Fields[i],'<?php echo $serverAjax?>', 'function=dropdown&field=' + Fields[i] + '&parent=' + ObjectName + '&value=' + TheObject.value + '<?php echo $Dynaform?>'+ '&application=' + '<?php echo $appid?>'+ '&Dynaform=' + '<?php echo $Dynaform?>'+ '&InitValue=' + InitValue , InitValue);
         	}
         }else{
         	if(DivObj)
-        		refillCaption( Fields[i],'<?=$serverAjax?>', 'function=text&field=' + Fields[i] + '&parent=' + ObjectName + '&value=' + TheObject.value + '<?=$Dynaform?>'+ '&application=' + '<?=$appid?>'+ '&Dynaform=' + '<?=$Dynaform?>' );
+                refillCaption( Fields[i],'<?php echo $serverAjax?>', 'function=text&field=' + Fields[i] + '&parent=' + ObjectName + '&value=' + TheObject.value + '<?php echo $Dynaform?>'+ '&application=' + '<?php echo $appid?>'+ '&Dynaform=' + '<?php echo $Dynaform?>' );
         }
       }
     }
@@ -111,7 +111,7 @@ else
     break;
   }
 ?>
-  myDatePicker.displayDateFormat = '<?=$TheDateFormat?>';
+  myDatePicker.displayDateFormat = '<?php echo $TheDateFormat?>';
   myDatePicker.fieldName  = fieldName;
 	myDatePicker.loadSkin('win2k');
 	myDatePicker.daysNumChars = 2;

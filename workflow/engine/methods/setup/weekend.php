@@ -72,7 +72,7 @@ function on_submit(myForm)
 		days+=','+cb.id;
 		values+=','+cb.checked;
 	}
-	ajax_function('<?=G::encryptLink('weekendAjax.php');?>','setDays','days='+days+'&values='+values);
+	ajax_function('<?php echo G::encryptLink('weekendAjax.php');?>','setDays','days='+days+'&values='+values);
 	document.location.reload(true);
 }
 function ajax_function(ajax_server, funcion, parameters)

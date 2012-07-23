@@ -77,7 +77,7 @@
 
       ?>
       <script>
-        parent.jsMeta = "<? echo $boot_strap['__ATTRIBUTES__']['meta'] ?>";
+        parent.jsMeta = "<?php echo $boot_strap['__ATTRIBUTES__']['meta'] ?>";
       </script>
       <?php
 		}

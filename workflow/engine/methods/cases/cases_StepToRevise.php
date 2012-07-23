@@ -153,7 +153,7 @@ if (!isset($_GET['ex'])) {
 // DEPRECATED this JS section is marked for removal
 function setSelect()
 {
-  var ex=<?=$_GET['ex']?>;
+  var ex=<?php echo $_GET['ex']?>;
   try {
     for(i=1; i<50; i++) {
       if (i == ex) {

@@ -26,7 +26,7 @@
 <title>Redirector</title>
 <meta http-equiv="PRAGMA" content="NO-CACHE" />
 <meta http-equiv="CACHE-CONTROL" content="NO-STORE" />
-<meta http-equiv="REFRESH" content="0;URL=<?= $COMPLETE_URI ?>" />
+<meta http-equiv="REFRESH" content="0;URL=<?php echo $COMPLETE_URI ?>" />
 </head>
 <body bgcolor="White">
 </body>

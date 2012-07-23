@@ -28,9 +28,9 @@
 
 <h1>demo de buscador</h1>
 <form method=post action="buscador2.php">
-<input type=hidden name=ticket value="<?= $frm['ticket'] ?>" >
-<input type=hidden name=tipo value="<?= $frm['tipo'] ?>" >
-Buscador tipo : <?= $frm['tipo'] ?><br>
+<input type=hidden name=ticket value="<?php echo $frm['ticket'] ?>" >
+<input type=hidden name=tipo value="<?php echo $frm['tipo'] ?>" >
+Buscador tipo : <?php echo $frm['tipo'] ?><br>
 
 <table><tr><td>
 	curso</td><td>
