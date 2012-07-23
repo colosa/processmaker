@@ -928,7 +928,7 @@ class OutputDocument extends BaseOutputDocument
         try {
             $oObj = OutputDocumentPeer::retrieveByPk( $sUid );
 
-            if (is_object($oObj) && get_class ($oObj) == 'OutputDocument' ) {
+            if (is_object($oObj) && get_class ($oObj) == 'OutputDocument') {
                 return true;
             } else {
                 return false;
