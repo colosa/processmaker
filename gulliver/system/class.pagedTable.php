@@ -916,22 +916,22 @@ class pagedTable
         }
 ?>
 <script language='JavaScript' >
-var <?=$this->id?><?=($this->name != '' ? '='.$this->name : '')?>=new G_PagedTable();
-<?=$this->id?>.id<?='="'. addslashes($this->id) . '"'?>;
-<?=$this->id?>.name<?='="'. addslashes($this->name) . '"'?>;
-<?=$this->id?>.ajaxUri<?='="'. addslashes($this->ajaxServer) . '?ptID='.$this->id.'"'?>;
-<?=$this->id?>.currentOrder<?='="'. addslashes($this->orderBy) . '"'?>;
-<?=$this->id?>.currentFilter;
-<?=$this->id?>.currentPage<?='='. $this->currentPage?>;
-<?=$this->id?>.totalRows<?='='.$this->query->count()?>;
-<?=$this->id?>.rowsPerPage<?='='.$this->rowsPerPage?>;
-<?=$this->id?>.popupPage<?='="'. addslashes($this->popupPage) . '?ptID='.$this->id.'"'?>;
-<?=$this->id?>.onUpdateField<?='="'. addslashes($this->onUpdateField) . '"'?>;
-<?=$this->id?>.shownFields<?='='.$this->shownFields ?>;
+var <?php echo $this->id?><?php echo ($this->name != '' ? '='.$this->name : '')?>=new G_PagedTable();
+<?php echo $this->id?>.id<?php echo '="'. addslashes($this->id) . '"'?>;
+<?php echo $this->id?>.name<?php echo '="'. addslashes($this->name) . '"'?>;
+<?php echo $this->id?>.ajaxUri<?php echo '="'. addslashes($this->ajaxServer) . '?ptID='.$this->id.'"'?>;
+<?php echo $this->id?>.currentOrder<?php echo '="'. addslashes($this->orderBy) . '"'?>;
+<?php echo $this->id?>.currentFilter;
+<?php echo $this->id?>.currentPage<?php echo '='. $this->currentPage?>;
+<?php echo $this->id?>.totalRows<?php echo '='.$this->query->count()?>;
+<?php echo $this->id?>.rowsPerPage<?php echo '='.$this->rowsPerPage?>;
+<?php echo $this->id?>.popupPage<?php echo '="'. addslashes($this->popupPage) . '?ptID='.$this->id.'"'?>;
+<?php echo $this->id?>.onUpdateField<?php echo '="'. addslashes($this->onUpdateField) . '"'?>;
+<?php echo $this->id?>.shownFields<?php echo '='.$this->shownFields ?>;
 
 var panelPopup;
-var popupWidth<?='='.$this->popupWidth?>;
-var popupHeight<?='='.$this->popupHeight?>;
+var popupWidth<?php echo '='.$this->popupWidth?>;
+var popupHeight<?php echo '='.$this->popupHeight?>;
 </script>
 <?php
     }

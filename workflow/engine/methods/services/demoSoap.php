@@ -67,7 +67,7 @@ a.krumo-name {
 	<ul class="krumo-node krumo-first">
 	  <div class="krumo-element" >
 			End Point <input type="text" size="80" maxlength="160" name="epr" 
-          value="<?= $endpoint ?>" >
+          value="<?php echo $endpoint ?>" >
 			<input type="submit" value="change endpoint" name="action">
 	  </div>
 	</ul>
@@ -238,17 +238,17 @@ a.krumo-name {
 	  <div class="krumo-element" >
 			status_code
 			(<em class="krumo-type">Integer</em>)
-			<strong class="krumo-integer"><?= $result->error->number ?></strong> 
+			<strong class="krumo-integer"><?php echo $result->error->number ?></strong>
 	  </div>
 	  <div class="krumo-element" >
 			message
 			(<em class="krumo-type">string</em>)
-			<strong class="krumo-integer"><?= $result->error->name ?></strong> 
+			<strong class="krumo-integer"><?php echo $result->error->name ?></strong>
 	  </div>
 	  <div class="krumo-element" >
 			timestamp
 			(<em class="krumo-type">string</em>)
-			<strong class="krumo-integer"><?= $result->error->description ?></strong> 
+			<strong class="krumo-integer"><?php echo $result->error->description ?></strong>
 	  </div>
     </li>
 	</ul>

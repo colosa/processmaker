@@ -161,7 +161,7 @@ G::RenderPage('publish', 'blank');
 //Deprecated Section since the interface are now movig to ExtJS
 function setSelect()
 {
-    var ex=<?=$_GET['ex']?>;
+    var ex=<?php echo $_GET['ex']?>;
     try {
         for (i=1; i<50; i++) {
             if (i == ex) {

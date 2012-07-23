@@ -111,8 +111,8 @@
 
 //print date('Y-m-d', $start_date ) . " $dtmin_value $dtmax_value ";
 ?>
-<input type='hidden' name='dtmin_value' id='dtmin_value' value='<?= $dtmin_value ?>' >
-<input type='hidden' name='dtmax_value' id='dtmax_value' value='<?= $dtmax_value ?>' >
+<input type='hidden' name='dtmin_value' id='dtmin_value' value='<?php echo $dtmin_value ?>' >
+<input type='hidden' name='dtmax_value' id='dtmax_value' value='<?php echo $dtmax_value ?>' >
 <table style='font-family:Arial;size:8pt;' cellspacing="0" border="0" width="250px">
 <tr><td bgcolor="#4682B4" align='center'>
 <table cellspacing="1" cellpadding="2" border="0" width="100%">
@@ -120,19 +120,19 @@
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr>
 	<td align="right" width='50'>
-		<a href="#" onclick="set_datetime('<?= $dt_prev_year ?>'); return false; "><img src="<?= $prevYear; ?>" width="16" height="16" border="0" alt="previous year"></a>
-		<a href="#" onclick="set_datetime('<?= $dt_prev_month ?>'); return false; "><img src="<?= $prevMonth; ?>" width="16" height="16" border="0" alt="previous month"></a>
+		<a href="#" onclick="set_datetime('<?php echo $dt_prev_year ?>'); return false; "><img src="<?php echo $prevYear; ?>" width="16" height="16" border="0" alt="previous year"></a>
+		<a href="#" onclick="set_datetime('<?php echo $dt_prev_month ?>'); return false; "><img src="<?php echo $prevMonth; ?>" width="16" height="16" border="0" alt="previous month"></a>
 	</td>
 
 	<td align="center" width="150">
-		<font color="#ffffff"><?= $ARR_MONTHS[ $dt_currentMonth - 1 ] . ' ' . $dt_currentYear ?></font>
+		<font color="#ffffff"><?php echo $ARR_MONTHS[ $dt_currentMonth - 1 ] . ' ' . $dt_currentYear ?></font>
 	</td>
 
 	<td align="left" width='50'>
-		<a href="#" onclick="set_datetime('<?= $dt_next_month ?>'); return false; ">
-		<img src="<?= $nextMonth; ?>" width="16" height="16" border="0" alt="next month"></a>
-		<a href="#" onclick="set_datetime('<?= $dt_next_year ?>'); return false; ">
-		<img src="<?= $nextYear; ?>" width="16" height="16" border="0" alt="next year"></a>
+		<a href="#" onclick="set_datetime('<?php echo $dt_next_month ?>'); return false; ">
+		<img src="<?php echo $nextMonth; ?>" width="16" height="16" border="0" alt="next month"></a>
+		<a href="#" onclick="set_datetime('<?php echo $dt_next_year ?>'); return false; ">
+		<img src="<?php echo $nextYear; ?>" width="16" height="16" border="0" alt="next year"></a>
 	</td>
 </tr>
 </table></td></tr>
