@@ -47,7 +47,7 @@ class G
     else
       return false;
   }
-  
+
   /**
    * Fill array values (recursive)
    * @author maborak <maborak@maborak.com>
@@ -74,7 +74,7 @@ class G
     }
     return $arr;
   }
-  
+
   /**
    * Generate Password Random
    * @author maborak <maborak@maborak.com>
@@ -96,7 +96,7 @@ class G
     }
     return $password;
   }
-  
+
   /**
    * Array concat
    * array_concat(ArrayToConcat,ArrayOriginal);
@@ -192,7 +192,7 @@ class G
     }
     return $ip;
   }
-  
+
   /**
    * getMacAddress
    * @return string $mac
@@ -324,11 +324,11 @@ class G
             G::customErrorLog ($type, $msg, $file, $line);
             break;
     }
-  
+
     if (defined ("ERROR_SHOW_SOURCE_CODE") && ERROR_SHOW_SOURCE_CODE && $errno <> E_STRICT  )
     G::showErrorSource ($type, $msg, $file, $line);
   }
-  
+
   /**
    * Function showErrorSource
    * @author David S. Callizaya S. <davidsantos@colosa.com>
@@ -430,7 +430,7 @@ class G
    */
   /*public static*/ function verboseError ($type, $errno, $msg, $file, $line, $context) {
     global $SERVER_ADMIN;
-  
+
     print "<h1>Error!</h1>";
     print "An error occurred while executing this script. Please
           contact the <a href=mailto:$SERVER_ADMIN>$SERVER_ADMIN</a> to
@@ -531,7 +531,7 @@ class G
   }
 
   /***************  path functions *****************/
-  
+
   function mk_dir( $strPath, $rights = 0777)
   {
     $folder_path = array($strPath);
@@ -541,7 +541,7 @@ class G
           && dirname(end($folder_path)) != '.'
           && dirname(end($folder_path)) != '')
       array_push($folder_path, dirname(end($folder_path))); //var_dump($folder_path); die;
-      
+
     while($parent_folder_path = array_pop($folder_path))
       if(!@is_dir($parent_folder_path))
         if(!@mkdir($parent_folder_path, $rights))
@@ -556,7 +556,7 @@ class G
    *
    * @return void
    */
-  function rm_dir($dirName) 
+  function rm_dir($dirName)
   {
     if (!is_writable($dirName)) {
       return false;
@@ -569,7 +569,7 @@ class G
 
           if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
             exec('DEL /F /S /Q %' . $dirName . '%', $res);
-          else 
+          else
             @rmdir($file);
         }
         else {
@@ -840,7 +840,7 @@ class G
         include( $file );
     }
   }
-  
+
   /**
    * Function LoadClassRBAC
    * @author David S. Callizaya S. <davidsantos@colosa.com>
@@ -874,7 +874,7 @@ class G
       return require_once( $classfile );
     }
   }
-  
+
   /**
    * Loads a Class. If the class is not defined by the aplication, it
    * attempt to load the class from gulliver.system
@@ -985,7 +985,7 @@ class G
     while ( count ( $URI_VARS ) > 0 && $exit == 0) {
       $SYS_TARGET .= '/' . array_shift($URI_VARS);
     }
-    /* Fix to prevent use uxs skin outside siplified interface, 
+    /* Fix to prevent use uxs skin outside siplified interface,
      because that skin is not compatible with others interfaces*/
     if ($SYS_SKIN == 'uxs' && $SYS_COLLECTION != 'home' && $SYS_COLLECTION != 'cases') {
       $config = System::getSystemConfiguration();
@@ -1020,15 +1020,15 @@ class G
     return $vVar;
   }
 
-  /** 
-   * function to calculate the time used to render a page  
+  /**
+   * function to calculate the time used to render a page
    */
-  function logTimeByPage() 
+  function logTimeByPage()
   {
     if (!defined(PATH_DATA)) {
       return false;
     }
-    
+
     $serverAddr = $_SERVER['SERVER_ADDR'];
     global $startingTime;
     $endTime =  microtime(true);
@@ -1049,12 +1049,12 @@ class G
   function streamCSSBigFile( $filename )
   {
       header('Content-Type: text/css');
-         
+
       //First get Skin info
       $filenameParts = explode("-",$filename);
       $skinName      = $filenameParts[0];
       $skinVariant   = "skin";
-      
+
       if(isset($filenameParts[1])) {
         $skinVariant = strtolower($filenameParts[1]);
       }
@@ -1066,7 +1066,7 @@ class G
       }
       else {
         $configurationFile = PATH_CUSTOM_SKINS . $skinName . PATH_SEP . 'config.xml';
-        
+
         if (!is_file($configurationFile)) {
           $configurationFile = G::ExpandPath( "skinEngine" ) . $skinName . PATH_SEP . 'config.xml';
         }
@@ -1078,12 +1078,12 @@ class G
       $baseSkinDirectory=dirname($configurationFile);
       $directorySize=G::getDirectorySize($baseSkinDirectory);
       $mtime=$directorySize['maxmtime'];
-      
-      
+
+
 
       //if userAgent (BROWSER) is MSIE we need special headers to avoid MSIE behaivor.
       //$userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
-      
+
       $gmt_mtime = gmdate("D, d M Y H:i:s", $mtime ) . " GMT";
       header('Pragma: cache');
       header('ETag: "' . md5 ($mtime . $filename ) . '"' );
@@ -1176,7 +1176,7 @@ class G
               $output .= file_get_contents ( $baseSkinDirectory . PATH_SEP.'css'.PATH_SEP.$cssFileInfo['__ATTRIBUTES__']['file'] );
           }
       }
-      
+
       //Remove comments..
       $regex = array(
 "`^([\t\s]+)`ism"=>'',
@@ -1187,7 +1187,7 @@ class G
 );
 $output = preg_replace(array_keys($regex),$regex,$output);
 $output = $outputHeader.$output;
-      
+
       return $output;
   }
 
@@ -1238,7 +1238,7 @@ $output = $outputHeader.$output;
         exit();
       }
     }
-    
+
     return JSMin::minify ( 'var TRANSLATIONS = ' . G::json_encode($translation) . ';' );
   }
 
@@ -1259,7 +1259,7 @@ $output = $outputHeader.$output;
     $typearray = explode ( '.', basename( $file) );
     $typefile  = $typearray[ count($typearray) -1 ];
     $filename  = $file;
-    
+
     //trick to generate the translation.language.js file , merging two files and then minified the content.
     if ( strtolower ($typefile ) == 'js' && $typearray[0] == 'translation' ) {
     	$output = G::streamJSTranslationFile ($filename, $typearray[1]);
@@ -1327,7 +1327,7 @@ $output = $outputHeader.$output;
       if( strpos($file, 'gulliver') !== false ){
         list($path, $filename) = explode('gulliver', $file);
       }
-      
+
       $_SESSION['phpFileNotFound'] = $file;
       G::header("location: /errors/error404.php?l=".$_SERVER['REQUEST_URI']);
     }
@@ -1346,8 +1346,8 @@ $output = $outputHeader.$output;
               $pathJs . 'ext/mootools.js',
               $pathJs . 'ext/moocanvas.js'
             ));
-            
-            $cf = $cachePath . "ext-draw2d-cache.$checksum.js"; 
+
+            $cf = $cachePath . "ext-draw2d-cache.$checksum.js";
             $cfStored = G::getCacheFileNameByPattern($cachePath, 'ext-draw2d-cache.*.js');
             //error_log("draw2d.js ".$checksum ."==". $cfStored['checksum']);
             if(is_file($cfStored['filename']) && $checksum == $cfStored['checksum']) {
@@ -1355,7 +1355,7 @@ $output = $outputHeader.$output;
             } else {
               if (is_file($cfStored['filename']))
                 @unlink($cfStored['filename']);
-              
+
               $output .= JSMin::minify ( file_get_contents ( $pathJs . 'ext/wz_jsgraphics.js' ) );
               $output .= JSMin::minify ( file_get_contents ( $pathJs . 'ext/mootools.js' ) );
               $output .= JSMin::minify ( file_get_contents ( $pathJs . 'ext/moocanvas.js' ) );
@@ -1373,7 +1373,7 @@ $output = $outputHeader.$output;
               $pathJs . 'ext/ux.statusbar/ext-statusbar.js',
               $pathJs . 'ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js'
             ));
-            
+
             $cfStored = G::getCacheFileNameByPattern($cachePath, 'ext-all-cache.*.js');
             $cf = PATH_C . 'ExtJs' . PATH_SEP . "ext-all-cache.$checksum.js";
             if(is_file($cfStored['filename']) && $checksum == $cfStored['checksum']) {
@@ -1381,7 +1381,7 @@ $output = $outputHeader.$output;
             } else {
               if (is_file($cfStored['filename']))
                 @unlink($cfStored['filename']);
-              
+
               $output .= file_get_contents ( $pathJs . 'ext/ext-all.js' ); //already minified
               $output .= file_get_contents ( $pathJs . 'ext/ux/ux-all.js' ); //already minified
               $output .= JSMin::minify ( file_get_contents ( $pathJs . 'ext/pmos-common.js' ) );
@@ -1389,7 +1389,7 @@ $output = $outputHeader.$output;
               $output .= JSMin::minify ( file_get_contents ( $pathJs . 'ext/ux.locationbar/Ext.ux.LocationBar.js' ) );
               $output .= JSMin::minify ( file_get_contents ( $pathJs . 'ext/ux.statusbar/ext-statusbar.js' ) );
               $output .= JSMin::minify ( file_get_contents ( $pathJs . 'ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js' ) );
-              
+
               file_put_contents($cf, $output);
             }
             break;
@@ -1527,7 +1527,7 @@ $output = $outputHeader.$output;
       header("Expires: " . gmdate("D, d M Y H:i:s", time () + 60*10 ) . " GMT"); //ten minutes
       return;
     }
-    
+
     if (!$download) {
 
       header('Pragma: cache');
@@ -1608,7 +1608,7 @@ $output = $outputHeader.$output;
     $e=str_replace(array('+','/','='),array('__','_','___'),base64_encode($e));
     return $e;
   }
-  
+
   /**
    * (Create an encrypted unique identificator based on $id and the selected scope id.) ^-1
    * getUIDName
@@ -1627,7 +1627,7 @@ $output = $outputHeader.$output;
     $e=substr( $e , strlen($scope) );
     return $e;
   }
-  
+
   /* formatNumber
    *
    * @author David Callizaya <calidavidx21@yahoo.com.ar>
@@ -1643,7 +1643,7 @@ $output = $outputHeader.$output;
     }
     return $snum;
   }
-  
+
   /* Returns a date formatted according to the given format string
    * @author David Callizaya <calidavidx21@hotmail.com>
    * @param string $format     The format of the outputted date string
@@ -1665,14 +1665,14 @@ $output = $outputHeader.$output;
     $ARR_MONTHS['es'] = array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
     // English months
     $ARR_MONTHS['en'] = array("January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December");
-    
-    
+
+
     // Spanish days
     $ARR_WEEKDAYS['es'] = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
     // English days
     $ARR_WEEKDAYS['en'] = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-    
-    
+
+
 
     if ($lang=='fa')
       $number='persian';
@@ -1899,7 +1899,7 @@ $output = $outputHeader.$output;
         return addslashes(stripslashes($sqlString));
     }
   }
-  
+
   /**
    * Function MySQLSintaxis
    * @access public
@@ -1970,14 +1970,14 @@ $output = $outputHeader.$output;
           //Call function
           if (($match[1][$r][0]==='')&&($match[2][$r][0]==='')&&($match[3][$r][0]!=='')) {
             eval('$strAux = ' . $match[3][$r][0] . '(\'' . addcslashes(G::replaceDataField(stripslashes($match[4][$r][0]),$result),'\\\'') . '\');');
-            
+
             if ($match[3][$r][0] == "G::LoadTranslation") {
               $arraySearch  = array("'");
               $arrayReplace = array("\\'");
-            
+
               $strAux = str_replace($arraySearch, $arrayReplace, $strAux);
             }
-            
+
             $__textoEval .= $strAux; continue;
           }
           //Non-quoted
@@ -2079,7 +2079,7 @@ $output = $outputHeader.$output;
     G::registerLabel($msgID,$arrayXmlMessages[$file][$msgID]);
     $_SESSION['G_MESSAGE'] = nl2br ($arrayXmlMessages[$file][$msgID]);
   }
-  
+
   /**
    * SendTemporalMessage
    *
@@ -2233,30 +2233,30 @@ $output = $outputHeader.$output;
   function LoadTranslationObject($lang = SYS_LANG){
     $defaultTranslations = Array();
     $foreignTranslations = Array();
-    
+
     //if the default translations table doesn't exist we can't proceed
     if( ! is_file(PATH_LANGUAGECONT . 'translation.en') )
       return NULL;
-    
+
     //load the translations table
     require_once ( PATH_LANGUAGECONT . 'translation.en' );
     $defaultTranslations = $translation;
-    
+
     //if some foreign language was requested and its translation file exists
     if( $lang != 'en' && file_exists(PATH_LANGUAGECONT . 'translation.' . $lang) ){
       require_once ( PATH_LANGUAGECONT . 'translation.' . $lang ); //load the foreign translations table
       $foreignTranslations = $translation;
     }
-    
+
     global $translation;
     if( defined("SHOW_UNTRANSLATED_AS_TAG") && SHOW_UNTRANSLATED_AS_TAG != 0 )
       $translation = $foreignTranslations;
     else
       $translation = array_merge($defaultTranslations, $foreignTranslations);
-    
+
     return true;
   }
-  
+
   /**
    * Function LoadTranslation
    * @author Aldo Mauricio Veliz Valenzuela. <mauricio@colosa.com>
@@ -2275,16 +2275,16 @@ $output = $outputHeader.$output;
       $data = $lang;
       $lang = SYS_LANG;
     }
-    
+
     if ( isset ( $translation[$msgID] ) ){
       $translationString = preg_replace("[\n|\r|\n\r]", ' ', $translation[$msgID]);
-    
+
       if( isset($data) && is_array($data) ) {
         foreach($data as $label=>$value) {
           $translationString = str_replace('{'.$label.'}', $value, $translationString);
         }
       }
-      
+
       return $translationString;
     } else {
       if( defined("UNTRANSLATED_MARK") ) {
@@ -2313,7 +2313,7 @@ $output = $outputHeader.$output;
     foreach( $msgIDs as $mID ) {
       $translations[$mID] = self::LoadTranslation($mID , $lang);
     }
-    
+
     return $translations;
   }
   /**
@@ -2408,7 +2408,7 @@ $output = $outputHeader.$output;
       die;
     }
   }
-  
+
   /**
    * capitalize
    *
@@ -2440,7 +2440,7 @@ $output = $outputHeader.$output;
   {
     return strtoupper($sText);
   }
-  
+
   /**
    * toLower
    *
@@ -2451,7 +2451,7 @@ $output = $outputHeader.$output;
   {
     return strtolower($sText);
   }
-  
+
   /**
    * http_build_query
    *
@@ -2845,67 +2845,82 @@ $output = $outputHeader.$output;
   }
 
 
-  /**
-   * Return date in Y-m-d format
-   *
-   * @author Fernando Ontiveros Lira <fernando@colosa.com>
-   * @access public
-   * @return void
-   */
-  function CurDate($sFormat = '')
-  {
-    $sFormat = ( $sFormat != '' )? $sFormat: 'Y-m-d H:i:s';
-    return date($sFormat);
-  }
+    /**
+     * Return date in Y-m-d format
+     *
+     * @author Fernando Ontiveros Lira <fernando@colosa.com>
+     * @access public
+     * @return void
+     */
+    function CurDate($sFormat='')
+    {
+        $sFormat = ($sFormat != '')? $sFormat : 'Y-m-d H:i:s';
 
-  /*
-   * Return the System defined constants and Application variables
-   *   Constants: SYS_*
-   *   Sessions : USER_* , URS_*
-   */
-  function getSystemConstants($params = null)
-  {
-    $t1 = G::microtime_float();
-    $sysCon = array();
-    if (defined("SYS_LANG")) $sysCon["SYS_LANG"] = SYS_LANG;
-    if (defined("SYS_SKIN")) $sysCon["SYS_SKIN"] = SYS_SKIN;
-    if (defined("SYS_SYS"))  $sysCon["SYS_SYS"]  = SYS_SYS;
-
-    $sysCon["APPLICATION"]  = (isset($_SESSION["APPLICATION"]))?  $_SESSION["APPLICATION"]  : "";
-    $sysCon["PROCESS"]      = (isset($_SESSION["PROCESS"]))?      $_SESSION["PROCESS"]      : "";
-    $sysCon["TASK"]         = (isset($_SESSION["TASK"]))?         $_SESSION["TASK"]         : "";
-    $sysCon["INDEX"]        = (isset($_SESSION["INDEX"]))?        $_SESSION["INDEX"]        : "";
-    $sysCon["USER_LOGGED"]  = (isset($_SESSION["USER_LOGGED"]))?  $_SESSION["USER_LOGGED"]  : "";
-    $sysCon["USR_USERNAME"] = (isset($_SESSION["USR_USERNAME"]))? $_SESSION["USR_USERNAME"] : "";
-    
-    //###############################################################################################
-    // Added for compatibility betweek aplication called from web Entry that uses just WS functions
-    //###############################################################################################
-    
-    if ($params != null) {
-      switch ($params->option) {
-        case "STORED SESSION":
-          if (isset($params->SID)) {
-            G::LoadClass("sessions");
-            $oSessions = new Sessions($params->SID);
-            $sysCon = array_merge($sysCon, $oSessions->getGlobals());
-          }
-          break;
-      }
-      
-      if (isset($params->appData) && is_array($params->appData)) {
-        $sysCon["APPLICATION"]  = $params->appData["APPLICATION"];
-        $sysCon["PROCESS"]      = $params->appData["PROCESS"];
-        $sysCon["TASK"]         = $params->appData["TASK"];
-        $sysCon["INDEX"]        = $params->appData["INDEX"];
-        $sysCon["USER_LOGGED"]  = $params->appData["USER_LOGGED"];
-        $sysCon["USR_USERNAME"] = $params->appData["USR_USERNAME"];
-      }
+        return date($sFormat);
     }
-    
-    return $sysCon;
-  }
 
+    /**
+     * Return the System defined constants and Application variables
+     *   Constants: SYS_*
+     *   Sessions : USER_* , URS_*
+     */
+    function getSystemConstants($params=null)
+    {
+        $t1 = G::microtime_float();
+        $sysCon = array();
+
+        if (defined("SYS_LANG")) {
+            $sysCon["SYS_LANG"] = SYS_LANG;
+        }
+
+        if (defined("SYS_SKIN")) {
+            $sysCon["SYS_SKIN"] = SYS_SKIN;
+        }
+
+        if (defined("SYS_SYS")) {
+            $sysCon["SYS_SYS"] = SYS_SYS;
+        }
+
+        $sysCon["APPLICATION"]  = (isset($_SESSION["APPLICATION"]))?  $_SESSION["APPLICATION"]  : "";
+        $sysCon["PROCESS"]      = (isset($_SESSION["PROCESS"]))?      $_SESSION["PROCESS"]      : "";
+        $sysCon["TASK"]         = (isset($_SESSION["TASK"]))?         $_SESSION["TASK"]         : "";
+        $sysCon["INDEX"]        = (isset($_SESSION["INDEX"]))?        $_SESSION["INDEX"]        : "";
+        $sysCon["USER_LOGGED"]  = (isset($_SESSION["USER_LOGGED"]))?  $_SESSION["USER_LOGGED"]  : "";
+        $sysCon["USR_USERNAME"] = (isset($_SESSION["USR_USERNAME"]))? $_SESSION["USR_USERNAME"] : "";
+
+        //###############################################################################################
+        // Added for compatibility betweek aplication called from web Entry that uses just WS functions
+        //###############################################################################################
+
+        if ($params != null) {
+            if (isset($params->option)) {
+                switch ($params->option) {
+                    case "STORED SESSION":
+                        if (isset($params->SID)) {
+                            G::LoadClass("sessions");
+
+                            $oSessions = new Sessions($params->SID);
+                            $sysCon = array_merge($sysCon, $oSessions->getGlobals());
+                        }
+                        break;
+                }
+            }
+
+            if (isset($params->appData) && is_array($params->appData)) {
+                $sysCon["APPLICATION"] = $params->appData["APPLICATION"];
+                $sysCon["PROCESS"]     = $params->appData["PROCESS"];
+                $sysCon["TASK"]        = $params->appData["TASK"];
+                $sysCon["INDEX"]       = $params->appData["INDEX"];
+
+                if (empty($sysCon["USER_LOGGED"])) {
+                    $sysCon["USER_LOGGED"]  = $params->appData["USER_LOGGED"];
+                    $sysCon["USR_USERNAME"] = $params->appData["USR_USERNAME"];
+                }
+            }
+        }
+
+        return $sysCon;
+    }
 
   /*
    * Return the Friendly Title for a string, capitalize every word and remove spaces
@@ -3179,7 +3194,7 @@ $output = $outputHeader.$output;
     preg_match_all('/<!\[cdata\[(.*?)\]\]>/is', $string, $matches);
     return str_replace($matches[0], $matches[1], $string);
   }
-  
+
   /**
    * Get the temporal directory path on differents O.S.  i.e. /temp -> linux, C:/Temp -> win
    * @author <erik@colosa.com>
@@ -3211,7 +3226,7 @@ $output = $outputHeader.$output;
       return sys_get_temp_dir();
     }
   }
-  
+
   /**
    * Get the content of a compose pmos web service response
    * Returns an array when has a valid reponse, if the response is invalid returns an object containing a status_code and message properties.
@@ -3220,16 +3235,16 @@ $output = $outputHeader.$output;
    */
   function PMWSCompositeResponse($oResp, $prop) {
     $Resp = new stdClass();
-    
+
     if( is_object($oResp) && isset($oResp->{$prop}) ){
       $list = $oResp->{$prop};
-      
+
       if( is_object($list) ){
         $aList[0] = $list;
       } else {
         $aList = $list;
       }
-      
+
       $result = true;
       if( is_array($aList) ){
         foreach($aList as $item){
@@ -3242,7 +3257,7 @@ $output = $outputHeader.$output;
         $Resp->status_code = -1;
         $Resp->message = "Bad respose type for ({$prop})";
       }
-      
+
       if( $result ){
         //verifing if the response has a composite response into a guid value of the first row.
         $tmp = explode(' ', trim($aList[0]->guid));
@@ -3252,7 +3267,7 @@ $output = $outputHeader.$output;
         } else {
           return $aList;
         }
-           
+
       } else {
         $Resp->status_code = -2;
         $Resp->message = "Bad respose, the response has not a uniform struct.";
@@ -3265,7 +3280,7 @@ $output = $outputHeader.$output;
     }
     return $Resp;
   }
-    
+
   /**
    * Validate and emai address in complete forms,
    *
@@ -3276,19 +3291,19 @@ $output = $outputHeader.$output;
    */
   function emailAddress($sEmail){
     $o = new stdClass();
-    
+
     if( strpos($sEmail, '<') !== false ) {
       preg_match('/([\"\w@\.-_\s]*\s*)?(<(\w+[\.-]?\w+]*@\w+([\.-]?\w+)*\.\w{2,3})+>)/', $sEmail, $matches);
-      
+
       if( isset($matches[1]) && $matches[3]){
         $o->email = $matches[3];
         $o->name = $matches[1];
-        
+
         return $o;
       }
 
       return false;
-    } 
+    }
     else {
       preg_match('/\w+[\.-]?\w+]*@\w+([\.-]?\w+)*\.\w{2,3}+/', $sEmail, $matches);
       if( isset($matches[0]) ){
@@ -3296,11 +3311,11 @@ $output = $outputHeader.$output;
         $o->name = '';
         return $o;
       }
-      
+
       return false;
     }
   }
-  
+
   /**
    * JSON encode
    *
@@ -3315,7 +3330,7 @@ $output = $outputHeader.$output;
       return $oJSON->encode($Json);
     }
   }
-  
+
   /**
    * JSON decode
    *
@@ -3330,7 +3345,7 @@ $output = $outputHeader.$output;
       return $oJSON->decode($Json);
     }
   }
-  
+
   /**
    * isHttpRequest
    *
@@ -3342,21 +3357,21 @@ $output = $outputHeader.$output;
     }
     return false;
   }
-  
+
   /**
    * Send a mail using phpmailer
    * this method use the global smtp server connection stored on Configuration table
    * this information is retrieved by the PMFunction getEmailConfiguration()
-   *  
+   *
    * @author Erik Amaru Ortiz <erik@colosa.com>
    * @param string $from address that is sending the email
-   * @param string $fromName name of sender 
+   * @param string $fromName name of sender
    * @param mixed $address the possibles values are:
    *        string
    *        array('email1', 'some name <email2>')
    *        array('to'=>array('email1', 'some name <email2>'), 'cc'=>array(...), 'bcc'=>array(...))
    * @param string $subject contains the email subject
-   * @param string $body contains the email body (text plain or html) 
+   * @param string $body contains the email body (text plain or html)
    * @return mixed boolean or string : if the email was sent successfully returns true, otherwise returns a string within error message
    */
   function sendMail($from, $fromName, $address, $subject, $body)
@@ -3365,12 +3380,12 @@ $output = $outputHeader.$output;
     G::LoadClass("pmFunctions");
     G::LoadThirdParty('phpmailer', 'class.phpmailer');
     $setup = getEmailConfiguration();
-    
-    if (count($setup) == 0 || !isset($setup['MESS_ENGINE']) || !isset($setup['MESS_SERVER']) 
+
+    if (count($setup) == 0 || !isset($setup['MESS_ENGINE']) || !isset($setup['MESS_SERVER'])
         || !isset($setup['MESS_ENABLED']) || !isset($setup['MESS_RAUTH']) || $setup['MESS_SERVER'] == '') {
       return G::LoadTranslation('ID_EMAIL_ENGINE_IS_NOT_CONFIGURED');
     }
-    
+
     if (!$setup['MESS_ENABLED']) {
       return G::LoadTranslation('ID_EMAIL_ENGINE_IS_NOT_ENABLED');
     }
@@ -3388,7 +3403,7 @@ $output = $outputHeader.$output;
     $mail->Body = $body;
     $mail->IsHTML (true);
     $mail->IsSMTP();
-    $mail->Host = $setup['MESS_SERVER'];    
+    $mail->Host = $setup['MESS_SERVER'];
     $mail->Port = $setup['MESS_PORT'];
     $mail->SMTPAuth = isset($setup['MESS_RAUTH']) && $setup['MESS_RAUTH'] ? true : false;
     $mail->Username = $setup['MESS_ACCOUNT'];
@@ -3396,7 +3411,7 @@ $output = $outputHeader.$output;
     $mail->SMTPSecure = $setup['SMTPSecure'];
 
     $emailAddressList = G::envelopEmailAddresses($address);
-    
+
     foreach ($emailAddressList['to'] as $emails) {
       $mail->AddAddress($emails[0], $emails[1]);
     }
@@ -3406,18 +3421,18 @@ $output = $outputHeader.$output;
     foreach ($emailAddressList['bcc'] as $emails) {
        $mail->AddBCC($emails[0], $emails[1]);
     }
-    
+
     return $mail->Send() ? true : $mail->ErrorInfo;
   }
-  
+
   /**
    * Envelope a emails collection from a string or array
-   * @author Erik Amaru Ortiz <erik@colosa.com> 
+   * @author Erik Amaru Ortiz <erik@colosa.com>
    * @param mixed $address the possibles values are:
    *        string
    *        array('email1', 'some name <email2>')
    *        array('to'=>array('email1', 'some name <email2>'), 'cc'=>array(...), 'bcc'=>array(...))
-   * @return array contains: 
+   * @return array contains:
    *                 array(
    *                    'to' => array('email@host.com', 'some name or empty string', array('email@host.com', '..'), ...),
    *                    'cc' => array('email@host.com', 'some name or empty string', ...),
@@ -3431,13 +3446,13 @@ $output = $outputHeader.$output;
     $emailAddressList['cc'] = array();
     $emailAddressList['bcc'] = array();
     $ereg = '/([\"\w\W\s]*\s*)?(<([\w\-\.]+@[\.-\w]+\.\w{2,3})+>)/';
-    
+
     if (!is_array($address)) {
-      if (preg_match($ereg, $address, $match)) 
+      if (preg_match($ereg, $address, $match))
         $emailAddressList['to'][] = array($match[3], $match[1]);
       else
         $emailAddressList['to'][] = array($address, '');
-    } 
+    }
     else {
       foreach ($address as $type => $emails) {
         if (!is_array($emails)) {
@@ -3477,10 +3492,10 @@ $output = $outputHeader.$output;
         }
       }
     }
-    
+
     return $emailAddressList;
   }
-    
+
   /**
    * Get the type of a variable
    * Returns the type of the PHP variable var.
@@ -3493,7 +3508,7 @@ $output = $outputHeader.$output;
         case is_null($var):
           $type='NULL';
           break;
-           
+
         case is_bool($var):
           $type='boolean';
           break;
@@ -3546,7 +3561,7 @@ $output = $outputHeader.$output;
   }
 
   function getFormatUserList($format, $aUserInfo){
-  	
+
    	switch($format){
      case '@firstName @lastName':
      $infoUser = str_replace('@firstName', $aUserInfo['USR_FIRSTNAME'], $format);
@@ -3589,7 +3604,7 @@ $output = $outputHeader.$output;
     require_once "classes/model/$model.php";
     return new $model();
   }
-  
+
   /**
    * Recursive Is writeable function
    *
@@ -3608,7 +3623,7 @@ $output = $outputHeader.$output;
     }
     return true;
   }
-  
+
   /**
    * Recursive version of glob php standard function
    *
@@ -3642,13 +3657,13 @@ function browser_detection( $which_test, $test_excludes='', $external_ua_string=
 	G::script_time(); // set script timer to start timing
 
 	static $a_full_assoc_data, $a_mobile_data, $a_moz_data, $a_webkit_data, $b_dom_browser, $b_repeat, $b_safe_browser, $browser_name, $browser_number, $browser_math_number, $browser_user_agent, $browser_working, $ie_version, $mobile_test, $moz_number, $moz_rv, $moz_rv_full, $moz_release_date, $moz_type, $os_number, $os_type, $true_ie_number, $ua_type, $webkit_type, $webkit_type_number;
-	
+
 	// switch off the optimization for external ua string testing.
 	if ( $external_ua_string )
 	{
 		$b_repeat = false;
 	}
-	
+
 	/*
 	this makes the test only run once no matter how many times you call it since
 	all the variables are filled on the first run through, it's only a matter of
@@ -3773,7 +3788,7 @@ function browser_detection( $which_test, $test_excludes='', $external_ua_string=
 			array( 'ibrowse', false, 'ibrowse', 'bbro' ),// amiga browser
 			array( 'icab', false, 'icab', 'bro' ),// mac browser
 			array( 'crazy browser', true, 'ie', 'bro' ),// uses ie rendering engine
-	
+
 			// search engine spider bots:
 			array( 'bingbot', false, 'bing', 'bot' ),// bing
 			array( 'exabot', false, 'exabot', 'bot' ),// exabot
@@ -3804,24 +3819,24 @@ function browser_detection( $which_test, $test_excludes='', $external_ua_string=
 			array( 'answerbus', false, 'answerbus', 'bot' ),// http://www.answerbus.com/, web questions
 			array( 'sohu-search', false, 'sohu', 'bot' ),// chinese media company, search component
 			array( 'iltrovatore-setaccio', false, 'il-set', 'bot' ),
-	
+
 			// various http utility libaries
 			array( 'w3c_validator', false, 'w3c', 'lib' ), // uses libperl, make first
 			array( 'wdg_validator', false, 'wdg', 'lib' ), //
 			array( 'libwww-perl', false, 'libwww-perl', 'lib' ),
 			array( 'jakarta commons-httpclient', false, 'jakarta', 'lib' ),
 			array( 'python-urllib', false, 'python-urllib', 'lib' ),
-	
+
 			// download apps
 			array( 'getright', false, 'getright', 'dow' ),
 			array( 'wget', false, 'wget', 'dow' ),// open source downloader, obeys robots.txt
-	
+
 			// netscape 4 and earlier tests, put last so spiders don't get caught
 			array( 'mozilla/4.', false, 'ns', 'bbro' ),
 			array( 'mozilla/3.', false, 'ns', 'bbro' ),
 			array( 'mozilla/2.', false, 'ns', 'bbro' )
 		);
-	
+
 		//array( '', false ); // browser array template
 
 		/*
@@ -3995,7 +4010,7 @@ function browser_detection( $which_test, $test_excludes='', $external_ua_string=
 							G::get_set_count( 'set', 0 );
 							$browser_number = G::get_item_version( $browser_user_agent, 'version/' );
 						}
-						
+
 						if ( $browser_number < 5 )// opera 4 wasn't very useable.
 						{
 							$b_safe_browser = false;
@@ -4046,7 +4061,7 @@ function browser_detection( $which_test, $test_excludes='', $external_ua_string=
 				break;
 			}
 		}
-		
+
 		//assigns defaults if the browser was not found in the loop test
 		if ( !$b_success )
 		{
@@ -4065,7 +4080,7 @@ function browser_detection( $which_test, $test_excludes='', $external_ua_string=
 			if ( $browser_name && preg_match( '/[^0-9][a-z]*-*\ *[a-z]*\ *[a-z]*/', $browser_name, $a_unhandled_browser ) )
 			{
 				$browser_name = $a_unhandled_browser[0];
-				
+
 				if ( $browser_name == 'blackberry' )
 				{
 					G::get_set_count( 'set', 0 );
@@ -4117,7 +4132,7 @@ function browser_detection( $which_test, $test_excludes='', $external_ua_string=
 	This is where you return values based on what parameter you used to call the function
 	$which_test is the passed parameter in the initial browser_detection('os') for example returns
 	the os version only.
-	
+
 	Update deprecated parameter names to new names
 	*/
 	switch ( $which_test )
@@ -4241,7 +4256,7 @@ function get_os_data ( $pv_browser_string, $pv_browser_name, $pv_version_number 
 	$a_linux_process = array ( 'i386', 'i586', 'i686' );// not use currently
 	// note, order of os very important in os array, you will get failed ids if changed
 	$a_os_types = array( 'android', 'blackberry', 'iphone', 'palmos', 'palmsource', 'symbian', 'beos', 'os2', 'amiga', 'webtv', 'mac', 'nt', 'win', $a_unix_types, $a_linux_distros );
-	
+
 	//os tester
 	$i_count = count( $a_os_types );
 	for ( $i = 0; $i < $i_count; $i++ )
@@ -4255,7 +4270,7 @@ function get_os_data ( $pv_browser_string, $pv_browser_name, $pv_version_number 
 		if ( !is_array( $os_working_data ) && strstr( $pv_browser_string, $os_working_data ) && !strstr( $pv_browser_string, "linux" ) )
 		{
 			$os_working_type = $os_working_data;
-			
+
 			switch ( $os_working_type )
 			{
 				// most windows now uses: NT X.Y syntax
@@ -4532,7 +4547,7 @@ function check_is_mobile( $pv_browser_user_agent )
 			break;
 		}
 	}
-	
+
 	return $mobile_working_test;
 }
 
@@ -4550,7 +4565,7 @@ function get_mobile_data( $pv_browser_user_agent )
 	$mobile_os_number = '';
 	$mobile_server = '';
 	$mobile_server_number = '';
-	
+
 	// browsers, show it as a handheld, but is not the os
 	$a_mobile_browser = array( 'avantgo', 'blazer', 'elaine', 'eudoraweb', 'iemobile',  'minimo', 'mobile safari', 'mobileexplorer', 'opera mobi', 'opera mini', 'netfront', 'opwv', 'polaris', 'semc-browser', 'up.browser', 'webpro', 'wms pie', 'xiino' );
 	/*
@@ -4564,7 +4579,7 @@ function get_mobile_data( $pv_browser_user_agent )
 	ipad 'cpu os' is how the real os number is handled
 	*/
 	$a_mobile_os = array( 'android', 'epoc', 'cpu os', 'iphone os', 'palmos', 'palmsource', 'windows phone os', 'windows ce', 'symbianos', 'symbian os', 'symbian', 'webos', 'linux armv'  );
-	
+
 	// sometimes there is just no other id for the unit that the CTS type service/server
 	$a_mobile_server = array( 'astel', 'docomo', 'novarra-vision', 'portalmmm', 'reqwirelessweb', 'vodafone' );
 
@@ -4644,7 +4659,7 @@ function get_mobile_data( $pv_browser_user_agent )
     elseif (preg_match('/windows|win32/i', $u_agent)) {
         $platform = 'windows';
     }
-   
+
     // Next get the name of the useragent yes seperately and for good reason
     if(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent))
     {
@@ -4676,12 +4691,12 @@ function get_mobile_data( $pv_browser_user_agent )
         $bname = 'Netscape';
         $ub = "Netscape";
     }
-   
+
     // finally get the correct version number
     $known = array('Version', $ub, 'other');
     $pattern = '#(?P<browser>' . join('|', $known) . ')[/ ]+(?P<version>[0-9.|a-zA-Z.]*)#';
     @preg_match_all($pattern, $u_agent, $matches);
-   
+
     // see how many we have
     $i = count($matches['browser']);
     if ($i != 1) {
@@ -4697,10 +4712,10 @@ function get_mobile_data( $pv_browser_user_agent )
     else {
         $version= $matches['version'][0];
     }
-   
+
     // check if we have a number
     if ($version==null || $version=="") {$version="?";}
-   
+
     return array(
         'userAgent' => $u_agent,
         'name'      => strtolower($ub),
@@ -4760,12 +4775,12 @@ function getDirectorySize($path,$maxmtime=0)
         {
           $totalsize += filesize ($nextpath);
           $totalcount++;
-          
-          
+
+
           $mtime = filemtime($nextpath);
           if($mtime>$maxmtime) $maxmtime=$mtime;
-          
-          
+
+
         }
       }
     }
@@ -4775,19 +4790,19 @@ function getDirectorySize($path,$maxmtime=0)
   $total['count'] = $totalcount;
   $total['dircount'] = $dircount;
   $total['maxmtime'] = $maxmtime;
-   
+
   return $total;
 }
 
   /**
    * Get checksum from multiple files
-   * @author erik amaru ortiz <erik@colosa.com> 
+   * @author erik amaru ortiz <erik@colosa.com>
    */
-  function getCacheFileNameByPattern($path, $pattern) 
+  function getCacheFileNameByPattern($path, $pattern)
   {
     if ($file = glob($path . $pattern))
       preg_match('/[a-f0-9]{32}/', $file[0], $match);
-    else 
+    else
       $file[0] = '';
     return array('filename'=>$file[0], 'checksum'=>(isset($match[0])? $match[0]: ''));
   }
@@ -4795,19 +4810,19 @@ function getDirectorySize($path,$maxmtime=0)
 
   /**
    * Get checksum from multiple files
-   * @author erik amaru ortiz <erik@colosa.com> 
+   * @author erik amaru ortiz <erik@colosa.com>
    */
-  function getCheckSum($files) 
-  { 
+  function getCheckSum($files)
+  {
     G::LoadClass('system');
     $key = System::getVersion();
-    
+
     if (!is_array($files)) {
       $tmp = $files;
       $files = array();
       $files[0] = $tmp;
     }
-    
+
     $checkSum = '';
     foreach ($files as $file) {
       if (is_file($file))
@@ -4815,7 +4830,7 @@ function getDirectorySize($path,$maxmtime=0)
     }
     return md5($checkSum.$key);
   }
-  
+
   /**
    * parse_ini_string
      Define parse_ini_string if it doesn't exist.
@@ -4825,22 +4840,22 @@ function getDirectorySize($path,$maxmtime=0)
   function parse_ini_string($string){
     if( function_exists('parse_ini_string') ) {
       return parse_ini_string($string);
-    } 
+    }
     else {
       $array = Array();
       $lines = explode("\n", $string );
-       
+
       foreach( $lines as $line ) {
         $statement = preg_match( "/^(?!;)(?P<key>[\w+\.\-]+?)\s*=\s*(?P<value>.+?)\s*$/", $line, $match );
         if( $statement ) {
           $key    = $match[ 'key' ];
           $value  = $match[ 'value' ];
-               
+
           //Remove quote
           if( preg_match( "/^\".*\"$/", $value ) || preg_match( "/^'.*'$/", $value ) ) {
             $value = mb_substr( $value, 1, mb_strlen( $value ) - 2 );
           }
-               
+
           $array[ $key ] = $value;
         }
       }
@@ -4860,7 +4875,7 @@ function getDirectorySize($path,$maxmtime=0)
       $line = fgets($fp);
       $found = false;
       $buffer = null;
-      
+
       while ( !feof($fp) ) {
        	$config = G::parse_ini_string($line);
         if ( isset($config[$variable] )) {
@@ -4870,19 +4885,19 @@ function getDirectorySize($path,$maxmtime=0)
         }
         else {
          	$buffer .= trim($line) . "\n";
-        }  
+        }
         $line = fgets($fp);
       }
       fclose($fp);
       if ( !$found ) $buffer .= sprintf("\n%s = 1 \n", $variable );
-          
+
       @file_put_contents( $inifile, $buffer);
     }
     else {
       $contents = file_put_contents($inifile, sprintf("\n%s = 1\n", $variable));
     }
   }
-		
+
   /**
    * set a variable in ini file
   */
@@ -4892,7 +4907,7 @@ function getDirectorySize($path,$maxmtime=0)
       $line = fgets($fp);
       $found = false;
       $buffer = null;
-      
+
       while ( !feof($fp) ) {
        	$config = G::parse_ini_string($line);
         if ( isset($config[$variable] )) {
@@ -4902,12 +4917,12 @@ function getDirectorySize($path,$maxmtime=0)
         }
         else {
          	$buffer .= trim($line) . "\n";
-        }  
+        }
         $line = fgets($fp);
       }
       fclose($fp);
       if ( !$found ) $buffer .= sprintf("\n%s = %s \n", $variable, $value );
-          
+
       file_put_contents( $inifile, $buffer);
     }
     else {
@@ -4964,7 +4979,7 @@ function getDirectorySize($path,$maxmtime=0)
       throw new Exception('System constant (PATH_THIRDPARTY) is not defined!');
     }
 
-    require_once PATH_THIRDPARTY . 'smarty/libs/Smarty.class.php'; 
+    require_once PATH_THIRDPARTY . 'smarty/libs/Smarty.class.php';
     $fInfo = pathinfo($template);
 
     $tplExists = true;
@@ -5025,7 +5040,7 @@ function getDirectorySize($path,$maxmtime=0)
   function parseTemplate($template, $data=array())
   {
     $content = '';
-    
+
     ob_start();
     G::renderTemplate($template, $data);
     $content = ob_get_contents();
@@ -5046,11 +5061,11 @@ function getDirectorySize($path,$maxmtime=0)
   {
     $iniLines = array();
     $iniContent = array();
-    
+
     if (file_exists($file) && !is_writable($file)) {
       throw new Exception("File $file, is not writable.");
     }
-    
+
     if (file_exists($file)) {
       $iniContent = file($file);
     }
@@ -5063,21 +5078,21 @@ function getDirectorySize($path,$maxmtime=0)
       if (is_array($setting) && count($setting) > 0) {
         list($key, ) = array_keys($setting);
 
-        if (isset($array[$key])) {          
+        if (isset($array[$key])) {
           $value = $array[$key];
           $line = "$key = ".(is_numeric($value) ? $value : '"'.$value.'"');
           $line .= isset($lineParts[1]) ? ' ;' . $lineParts[1] : '';
           unset($array[$key]);
-          
+
           $lastComment = array_pop($iniLines);
           if (strpos($lastComment, "Setting $key") === false) {
-            $iniLines[] = $lastComment; 
+            $iniLines[] = $lastComment;
           }
 
           $iniLines[] = ";Setting $key - Updated by System on " . date('D d M, Y H:i:s');
         }
       }
-      $iniLines[] = $line; 
+      $iniLines[] = $line;
     }
 
     // inserting new values
@@ -5104,14 +5119,14 @@ function getDirectorySize($path,$maxmtime=0)
    * @param $noWritableFiles (alternative) array passed by reference to store all no-writable files
    * @return bool true if all files inside a directory path are writable, false in another case
    */
-  function is_writable_r($path, &$noWritableFiles = array()) 
-  { 
+  function is_writable_r($path, &$noWritableFiles = array())
+  {
     if (is_writable($path)){
       if (!is_dir($path))
         return true;
 
       $list = glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR .'*');
-      
+
       $sw = true;
       foreach ($list as $f) {
         if (!G::is_writable_r($f, $noWritableFiles)) {
@@ -5123,8 +5138,8 @@ function getDirectorySize($path,$maxmtime=0)
     }
     else {
       if (!in_array($path, $noWritableFiles))
-        $noWritableFiles[] = $path; 
-      
+        $noWritableFiles[] = $path;
+
       return false;
     }
   }
@@ -5204,11 +5219,12 @@ function eprintln($s="", $c=null){
     }
     print "$s\n";
   }
-  
-  
+
+
 }
 
 function __($msgID , $lang = SYS_LANG, $data = null)
 {
   return G::LoadTranslation($msgID, $lang, $data);
 }
+
