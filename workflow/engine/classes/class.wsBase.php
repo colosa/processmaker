@@ -1724,7 +1724,7 @@ class wsBase
             $oAppDel = new AppDelegation();
             $appdel  = $oAppDel->Load($caseId, $delIndex);
 
-            if ($userId!=$appdel['USR_UID']) {
+            if ($userId != $appdel['USR_UID']) {
                 $result = new wsResponse(17, G::loadTranslation('ID_CASE_ASSIGNED_ANOTHER_USER'));
 
                 return $result;
@@ -1782,7 +1782,7 @@ class wsBase
 
             if ($bExecuteTriggersBeforeAssignment) {
                 //Execute triggers before assignment
-                $aTriggers = $oCase->loadTriggers($appdel['TAS_UID'], 'ASSIGN_TASK', -1, 'BEFORE' );
+                $aTriggers = $oCase->loadTriggers($appdel['TAS_UID'], 'ASSIGN_TASK', -1, 'BEFORE');
 
                 if (count($aTriggers) > 0) {
                     $oPMScript = new PMScript();
@@ -1791,22 +1791,18 @@ class wsBase
                         //$appFields = $oCase->loadCase( $caseId );
                         //$appFields['APP_DATA']['APPLICATION'] = $caseId;
 
-                        //@Neyek #######################################################################################
-                        if (!$this->stored_system_variables) {
-                            $appFields["APP_DATA"] = array_merge($appFields["APP_DATA"], G::getSystemConstants());
-                        } else {
-                            $oParams = new stdClass();
-                            $oParams->option  = "STORED SESSION";
-                            $oParams->SID     = $this->wsSessionId;
-                            $oParams->appData = $appFields["APP_DATA"];
+                        //Set variables
+                        $params = new stdClass();
+                        $params->appData = $appFields["APP_DATA"];
 
-                            $appFields["APP_DATA"] = array_merge(
-                                $appFields["APP_DATA"],
-                                G::getSystemConstants($oParams)
-                            );
+                        if ($this->stored_system_variables) {
+                            $params->option = "STORED SESSION";
+                            $params->SID    = $this->wsSessionId;
                         }
-                        //##############################################################################################
 
+                        $appFields["APP_DATA"] = array_merge($appFields["APP_DATA"], G::getSystemConstants($params));
+
+                        //PMScript
                         $oPMScript->setFields($appFields['APP_DATA']);
                         $bExecute = true;
 
@@ -1825,36 +1821,36 @@ class wsBase
 
                             //$appFields = $oCase->loadCase( $caseId );
                             $appFields['APP_DATA'] = $oPMScript->aFields;
-                            $oCase->updateCase ( $caseId, $appFields );
+                            $oCase->updateCase($caseId, $appFields);
                         }
                     }
                 }
             }
 
             //Execute triggers before derivation
-            $aTriggers = $oCase->loadTriggers($appdel['TAS_UID'], 'ASSIGN_TASK', -2, 'BEFORE' );
+            $aTriggers = $oCase->loadTriggers($appdel['TAS_UID'], 'ASSIGN_TASK', -2, 'BEFORE');
 
             if (count($aTriggers) > 0) {
-                $oPMScript = new PMScript();
                 $varTriggers .= "<b>-= Before Derivation =-</b><br/>";
+
+                $oPMScript = new PMScript();
 
                 foreach ($aTriggers as $aTrigger) {
                     //$appFields = $oCase->loadCase( $caseId );
                     //$appFields['APP_DATA']['APPLICATION'] = $caseId;
 
-                    //@Neyek ###########################################################################################
-                    if (!$this->stored_system_variables) {
-                        $appFields["APP_DATA"] = array_merge($appFields["APP_DATA"], G::getSystemConstants());
-                    } else {
-                        $oParams = new stdClass();
-                        $oParams->option  = "STORED SESSION";
-                        $oParams->SID     = $this->wsSessionId;
-                        $oParams->appData = $appFields["APP_DATA"];
+                    //Set variables
+                    $params = new stdClass();
+                    $params->appData = $appFields["APP_DATA"];
 
-                        $appFields["APP_DATA"] = array_merge($appFields["APP_DATA"], G::getSystemConstants($oParams));
+                    if ($this->stored_system_variables) {
+                        $params->option = "STORED SESSION";
+                        $params->SID    = $this->wsSessionId;
                     }
-                    //##################################################################################################
 
+                    $appFields["APP_DATA"] = array_merge($appFields["APP_DATA"], G::getSystemConstants($params));
+
+                    //PMScript
                     $oPMScript->setFields($appFields['APP_DATA']);
                     $bExecute = true;
 
@@ -1878,7 +1874,7 @@ class wsBase
             }
 
             $oDerivation = new Derivation();
-            $derive  = $oDerivation->prepareInformation($aData);
+            $derive = $oDerivation->prepareInformation($aData);
 
             if (isset($derive[1])) {
                 if ($derive[1]['ROU_TYPE'] == 'SELECT') {
@@ -1933,7 +1929,7 @@ class wsBase
             //$oCase->updateCase ( $caseId, $appFields );
             //Save data - End
 
-            $row  = array();
+            $row = array();
             $oCriteria = new Criteria('workflow');
             $del = DBAdapter::getStringDelimiter();
             $oCriteria->addSelectColumn(RoutePeer::ROU_TYPE);
@@ -1957,29 +1953,30 @@ class wsBase
                 'ROU_TYPE'   => $row[0]['ROU_TYPE']
             );
 
-            $oDerivation->derivate( $aCurrentDerivation, $nextDelegations );
+            $oDerivation->derivate($aCurrentDerivation, $nextDelegations);
             $appFields = $oCase->loadCase($caseId);
 
+            //Execute triggers after derivation
             $aTriggers = $oCase->loadTriggers($appdel['TAS_UID'], 'ASSIGN_TASK', -2, 'AFTER');
 
             if (count($aTriggers) > 0) {
-                $oPMScript = new PMScript();
                 //$appFields['APP_DATA']['APPLICATION'] = $caseId;
 
-                //@Neyek #############################################################################################
-                if (!$this->stored_system_variables) {
-                    $appFields["APP_DATA"] = array_merge($appFields["APP_DATA"], G::getSystemConstants());
-                } else {
-                    $oParams = new stdClass();
-                    $oParams->option  = "STORED SESSION";
-                    $oParams->SID     = $this->wsSessionId;
-                    $oParams->appData = $appFields["APP_DATA"];
+                //Set variables
+                $params = new stdClass();
+                $params->appData = $appFields["APP_DATA"];
 
-                    $appFields["APP_DATA"] = array_merge($appFields["APP_DATA"], G::getSystemConstants($oParams));
+                if ($this->stored_system_variables) {
+                    $params->option = "STORED SESSION";
+                    $params->SID    = $this->wsSessionId;
                 }
-                //####################################################################################################
 
-                $oPMScript->setFields( $appFields['APP_DATA'] );
+                $appFields["APP_DATA"] = array_merge($appFields["APP_DATA"], G::getSystemConstants($params));
+
+                //PMScript
+                $oPMScript = new PMScript();
+                $oPMScript->setFields($appFields['APP_DATA']);
+
                 $varTriggers .= "<b>-= After Derivation =-</b><br/>";
 
                 foreach ($aTriggers as $aTrigger) {
