@@ -156,8 +156,9 @@ class DataBaseMaintenance
     if( isset($dbname) ) {
       $this->dbName = $dbname;
     }
-    
+
     $this->link = mysql_connect($this->host, $this->user, $this->passwd);
+    @mysql_query("SET NAMES 'utf8';");
     if( ! $this->link ) {
       throw new Exception("Couldn't connect to host {$this->host} with user {$this->user}");
     }
