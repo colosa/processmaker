@@ -671,36 +671,31 @@ class G
     $G_SKIN = $strSkin;
 
     try {
-      $file = G::ExpandPath( "skinEngine" ) . "skinEngine.php";
+      $file = G::ExpandPath('skinEngine') . 'skinEngine.php';
       include $file;
-
       $skinEngine = new SkinEngine($G_TEMPLATE, $G_SKIN, $G_CONTENT);
       $skinEngine->setLayout($layout);
       $skinEngine->dispatch();
-    }
-    catch ( Exception $e ) {
-      $aMessage['MESSAGE'] = $e->getMessage();
+    } catch (Exception $e) {
       global $G_PUBLISH;
-      global $G_MAIN_MENU;
-      global $G_SUB_MENU;
-      $G_MAIN_MENU = '';
-      $G_SUB_MENU  = '';
-      //$G_PUBLISH          = new Publisher;
-
-      //remove the login.js script
+      if (is_null($G_PUBLISH)) {
+        $G_PUBLISH = new Publisher();
+      }
+      if (count($G_PUBLISH->Parts) == 1) {
+        array_shift($G_PUBLISH->Parts);
+      }
       global $oHeadPublisher;
-      if ( count ( $G_PUBLISH->Parts ) == 1 )
-      array_shift ( $G_PUBLISH->Parts );
       $leimnudInitString = $oHeadPublisher->leimnudInitString;
-      //restart the oHeadPublisher
       $oHeadPublisher->clearScripts();
-      //add the missing components, and go on.
       $oHeadPublisher->leimnudInitString = $leimnudInitString;
-      $oHeadPublisher->addScriptFile("/js/maborak/core/maborak.js");
-
-      $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showMessage', null, $aMessage );
-      G::LoadSkin( 'green' );
-      die;
+      $oHeadPublisher->addScriptFile('/js/maborak/core/maborak.js');
+      $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showMessage', null, array('MESSAGE' => $e->getMessage()));
+      if (class_exists('SkinEngine')) {
+        $skinEngine = new SkinEngine('publish', 'blank', '');
+        $skinEngine->dispatch();
+      } else {
+        die($e->getMessage());
+      }
     }
   }
 
