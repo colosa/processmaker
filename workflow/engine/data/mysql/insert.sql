@@ -3032,7 +3032,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_HOME_LISTS_DATE_FORMAT','en','Date format on Lists','2012-06-01') ,
 ( 'LABEL','ID_HOME_LISTS_ROWS_PER_PAGE','en','Rows per page on Lists','2012-06-01') ,
 ( 'LABEL','ID_HOME_COLLAPSE_RIGHT_PANEL','en','Collapse right panel when a Case is open','2012-06-01') ,
-( 'LABEL','ID_HOME_SETTINGS','en','Home Settings','2012-06-01') ,
+( 'LABEL','ID_HOME_SETTINGS','en','Home Settings','2012-07-19') ,
 ( 'LABEL','ID_ENVIRONMENT','en','Environment','2012-06-01') ,
 ( 'LABEL','ID_CURLFUN_ISUNDEFINED','en','The process was not downloaded, because the curl     extension for php is not installed','2012-06-01') ,
 ( 'LABEL','ID_RATING','en','Rating','2012-06-01') ,
@@ -3550,7 +3550,9 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_DASHBOARD_BTNCOLUMNS2','en','Two columns','2012-07-12') ,
 ( 'LABEL','ID_DASHBOARD_BTNCOLUMNS3','en','Three columns','2012-07-12') ,
 ( 'LABEL','ID_FILTER','en','Filter','2012-07-12') ,
-( 'LABEL','ID_DOCUMENT_TYPE','en','PM Type','2012-07-12') ;
+( 'LABEL','ID_DOCUMENT_TYPE','en','PM Type','2012-07-12') ,
+( 'LABEL','ID_TIMING_CONTROL','en','Timing Control','2012-07-17') ,
+( 'LABEL','ID_CASE_DOES_NOT_EXIST_JS','en','Case {0} does not exist','2012-07-19') ;
 
 INSERT INTO ISO_LOCATION (IC_UID,IL_UID,IL_NAME,IL_NORMAL_NAME,IS_UID)  VALUES 
 ('AD','','',' ','') ,

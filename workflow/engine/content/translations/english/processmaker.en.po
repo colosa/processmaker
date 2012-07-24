@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-335-g266130f\n"
+"Project-Id-Version: ProcessMaker (Branch 2.0-testing) 2.0.43-testing.3-83-g04389be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-07-12 14:34:13\n"
+"PO-Revision-Date: 2012-07-23 23:03:29\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12679,6 +12679,18 @@ msgstr "Filter"
 msgid "PM Type"
 msgstr "PM Type"
 
+# TRANSLATION
+# LABEL/ID_TIMING_CONTROL
+#: LABEL/ID_TIMING_CONTROL
+msgid "Timing Control"
+msgstr "Timing Control"
+
+# TRANSLATION
+# LABEL/ID_CASE_DOES_NOT_EXIST_JS
+#: LABEL/ID_CASE_DOES_NOT_EXIST_JS
+msgid "Case {0} does not exist"
+msgstr "Case {0} does not exist"
+
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
 #: text - ADD_TAB_NAME
@@ -23150,38 +23162,38 @@ msgstr "Save"
 # processCategory/processCategory.xml?title1
 # processCategory/processCategory.xml
 #: title - title1
-msgid "ProcessCategory form"
-msgstr "ProcessCategory form"
+msgid "Process Category form"
+msgstr "Process Category form"
 
 # processCategory/processCategory.xml?CATEGORY_UID
 # processCategory/processCategory.xml
 #: text - CATEGORY_UID
-msgid "Gory Uid"
-msgstr "Gory Uid"
+msgid "Category UID"
+msgstr "Category UID"
 
 # processCategory/processCategory.xml?CATEGORY_PARENT
 # processCategory/processCategory.xml
 #: text - CATEGORY_PARENT
-msgid "Gory Parent"
-msgstr "Gory Parent"
+msgid "Category Parent"
+msgstr "Category Parent"
 
 # processCategory/processCategory.xml?CATEGORY_NAME
 # processCategory/processCategory.xml
 #: text - CATEGORY_NAME
-msgid "Gory Name"
-msgstr "Gory Name"
+msgid "[processCategory/processCategory.xml?CATEGORY_NAME] Category Name"
+msgstr "Category Name"
 
 # processCategory/processCategory.xml?CATEGORY_ICON
 # processCategory/processCategory.xml
 #: text - CATEGORY_ICON
-msgid "Gory Icon"
-msgstr "Gory Icon"
+msgid "Category Icon"
+msgstr "Category Icon"
 
 # processCategory/processCategory.xml?BTN_SUBMIT
 # processCategory/processCategory.xml
 #: submit - BTN_SUBMIT
-msgid "[processCategory/processCategory.xml?BTN_SUBMIT] save"
-msgstr "save"
+msgid "[processCategory/processCategory.xml?BTN_SUBMIT] Save"
+msgstr "Save"
 
 # processCategory/processCategoryDelete.xml?title1
 # processCategory/processCategoryDelete.xml
