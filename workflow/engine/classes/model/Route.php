@@ -2,10 +2,10 @@
 /**
  * Route.php
  * @package    workflow.engine.classes.model
- *  
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2011 Colosa Inc.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -15,13 +15,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd., 
+ *
+ * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
+ *
  */
 
 require_once 'classes/model/om/BaseRoute.php';
@@ -78,12 +78,12 @@ class Route extends BaseRoute {
       $oRoute           = new Route();
 
       // validating default values
-      $aData['ROU_TO_LAST_USER'] = $this->validateValue($aData['ROU_TO_LAST_USER'], array('TRUE', 'FALSE'), 'FALSE');
-      $aData['ROU_OPTIONAL']     = $this->validateValue($aData['ROU_OPTIONAL'], array('TRUE', 'FALSE'), 'FALSE');
-      $aData['ROU_SEND_EMAIL']   = $this->validateValue($aData['ROU_SEND_EMAIL'], array('TRUE', 'FALSE'), 'TRUE');
+      $aData['ROU_TO_LAST_USER'] = $this->validateValue(isset($aData['ROU_TO_LAST_USER']) ? $aData['ROU_TO_LAST_USER'] : '', array('TRUE', 'FALSE'), 'FALSE');
+      $aData['ROU_OPTIONAL']     = $this->validateValue(isset($aData['ROU_OPTIONAL']) ? $aData['ROU_OPTIONAL'] : '', array('TRUE', 'FALSE'), 'FALSE');
+      $aData['ROU_SEND_EMAIL']   = $this->validateValue(isset($aData['ROU_SEND_EMAIL']) ? $aData['ROU_SEND_EMAIL']: '', array('TRUE', 'FALSE'), 'TRUE');
 
       $oRoute->fromArray($aData, BasePeer::TYPE_FIELDNAME);
-      
+
       if ($oRoute->validate()) {
         $oConnection->begin();
         $iResult = $oRoute->save();
@@ -127,7 +127,7 @@ class Route extends BaseRoute {
         if (isset($aData['ROU_SEND_EMAIL'])) {
           $aData['ROU_SEND_EMAIL']   = $this->validateValue($aData['ROU_SEND_EMAIL'], array('TRUE', 'FALSE'), 'TRUE');
         }
-        
+
         $oRoute->fromArray($aData, BasePeer::TYPE_FIELDNAME);
         if ($oRoute->validate()) {
           $oConnection->begin();
@@ -180,7 +180,7 @@ class Route extends BaseRoute {
       throw($oError);
     }
   }
-  
+
   function routeExists ( $sRouUid ) {
     $con = Propel::getConnection(RoutePeer::DATABASE_NAME);
     try {
@@ -203,7 +203,7 @@ class Route extends BaseRoute {
    * @param $value string - value to test
    * @param $validValues array - list of valid values
    * @param $default string default value, if the tested value is not valid the default value is returned
-   * @return the tested and accepted value 
+   * @return the tested and accepted value
    */
   function validateValue($value, $validValues, $default)
   {

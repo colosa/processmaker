@@ -810,6 +810,15 @@ function getEmailConfiguration()
 //@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value.
 function PMFSendMessage($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields=array(), $aAttachment=array())
 {
+    global $oPMScript;
+
+    if (isset($oPMScript->aFields) && is_array($oPMScript->aFields)) {
+        if (is_array($aFields)) {
+            $aFields = array_merge($oPMScript->aFields, $aFields);
+        } else {
+            $aFields = $oPMScript->aFields;
+        }
+    }
 
     G::LoadClass('wsBase');
     $ws = new wsBase ();
