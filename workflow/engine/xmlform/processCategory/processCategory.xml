@@ -2,7 +2,7 @@
 <dynaForm name="processCategory" width="600" mode="edit" enableTemplate="0" border="0">
 
 <title1 type="title" >
-  <en>ProcessCateCategory form</en>
+  <en>Process Category form</en>
 </title1>
 
 <CATEGORY_UID type="text" size='32' maxlength='32' >
