@@ -58,6 +58,8 @@ class Home extends Controller
     $this->setVar('usr', $data['u']);
     $this->setVar('pwd', $data['p']);
     $this->setVar('skin', $skin);
+    echo "<br><br>Este es el template<br><br>";
+    echo $template;
 
     $this->setView("home/$template");
     
@@ -193,6 +195,7 @@ class Home extends Controller
     switch ($httpData->t) {
       case 'todo'  : $title = 'My Inbox'; break;
       case 'draft' : $title = 'My Drafts'; break;
+      case 'unassigned' : $title = 'Unassigned Inbox'; break;
       default: $title = ucwords($httpData->t);
     }
 
@@ -209,7 +212,7 @@ class Home extends Controller
     $this->setVar('appListStart', $this->appListLimit);
     $this->setVar('appListLimit', 10);
     $this->setVar('listType', $httpData->t);
-
+//print_r($this->render());
     $this->render();
   }
 
