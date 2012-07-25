@@ -921,92 +921,68 @@ class wsBase
     }
 
     /**
-     * creates a new user
+     * Create an new user
      * @param string sessionId : The session ID.
-     * @param string userId    : The username for the new user.
-     * @param string firstname : The user's first name.
-     * @param string lastname  : The user's last name.
+     * @param string userName  : The username for the new user.
+     * @param string firstName : The user's first name.
+     * @param string lastName  : The user's last name.
      * @param string email     : The user's email address.
-     * @param string role      : The user's role, such as 'PROCESSMAKER_ADMIN' or 'PROCESSMAKER_OPERATOR'.
-     * @param string password  : The user's password  such as 'Be@gle2'(It will be automatically encrypted
+     * @param string role      : The user's role, such as "PROCESSMAKER_ADMIN" or "PROCESSMAKER_OPERATOR".
+     * @param string password  : The user's password  such as "Be@gle2" (It will be automatically encrypted
      *                           with an MD5 hash).
-     * @param string dueDate   : Optional parameter. The expiration date must be a string in the format 'yyyy-mm-dd'.
-     * @param string status    : Optional parameter. The user's status, such as 'ACTIVE', 'INACTIVE' or 'VACATION'.
+     * @param string dueDate   : Optional parameter. The expiration date must be a string in the format "yyyy-mm-dd".
+     * @param string status    : Optional parameter. The user's status, such as "ACTIVE", "INACTIVE" or "VACATION".
      * @return $result will return an object
      */
-    public function createUser($userId, $firstname, $lastname, $email, $role, $password, $dueDate=null, $status=null)
+    public function createUser($userName, $firstName, $lastName, $email, $role, $password, $dueDate=null, $status=null)
     {
         try {
-            if ($userId == '') {
-                $result = new wsCreateUserResponse(25, G::loadTranslation ('ID_USERNAME_REQUIRED'));
-
-                return $result;
-            }
-
-            if ($password == '') {
-                $result = new wsCreateUserResponse(26, G::loadTranslation ('ID_PASSWD_REQUIRED'));
-
-                return $result;
-            }
-
-            if ($firstname == '') {
-                $result = new wsCreateUserResponse(27, G::loadTranslation ('ID_MSG_ERROR_USR_FIRSTNAME'));
-
-                return $result;
-            }
-
-            if (strlen($password) > 20) {
-                $result = new wsCreateUserResponse(28, G::loadTranslation ('ID_PASSWORD_SURPRASES'), '');
-                return $result;
-            }
-
             global $RBAC;
+
             $RBAC->initRBAC();
 
-            $user = $RBAC->verifyUser($userId);
-            if ($user == 1) {
-                $data['USER_ID'] = $userId;
-                $result = new wsCreateUserResponse(
-                    7,
-                    G::loadTranslation('ID_USERNAME_ALREADY_EXISTS', SYS_LANG, $data),
-                    ''
-                );
+            if (empty($userName)) {
+                $result = new wsCreateUserResponse(25, G::loadTranslation("ID_USERNAME_REQUIRED"), null);
 
                 return $result;
             }
 
-            $rol = $RBAC->loadById($role);
+            if (empty($firstName)) {
+                $result = new wsCreateUserResponse(27, G::loadTranslation("ID_MSG_ERROR_USR_FIRSTNAME"), null);
 
-            if (is_array($rol)) {
-                $strRole = $rol['ROL_CODE'];
-            } else {
-                $very_rol = $RBAC->verifyByCode($role);
-
-                if ($very_rol == 0) {
-                    $data['ROLE'] = $role;
-                    $result = new wsResponse(6, G::loadTranslation('ID_INVALID_ROLE', SYS_LANG, $data));
-
-                    return $result;
-                }
-
-                $strRole = $role;
+                return $result;
             }
 
-            if ($dueDate != null) {
-                if (!preg_match("/^(\d{4})-(\d{2})-(\d{2})$/", $dueDate, $matches)) {
-                    $result = new wsCreateUserResponse(5, G::loadTranslation("ID_INVALID_DATA") . ", $dueDate");
+            if (empty($password)) {
+                $result = new wsCreateUserResponse(26, G::loadTranslation("ID_PASSWD_REQUIRED"), null);
+
+                return $result;
+            }
+
+            $mktimeDueDate = 0;
+
+            if (!empty($dueDate)) {
+                if (!preg_match("/^(\d{4})-(\d{2})-(\d{2})$/", $dueDate, $arrayMatch)) {
+                    $result = new wsCreateUserResponse(-1, G::loadTranslation("ID_INVALID_DATA") . " $dueDate", null);
 
                     return $result;
                 } else {
-                    $mktimeDueDate = mktime(0, 0, 0, intval($matches[2]), intval($matches[3]), intval($matches[1]));
+                    $mktimeDueDate = mktime(
+                        0,
+                        0,
+                        0,
+                        intval($arrayMatch[2]),
+                        intval($arrayMatch[3]),
+                        intval($arrayMatch[1])
+                    );
                 }
             } else {
                 $mktimeDueDate = mktime(0, 0, 0, date("m"), date("d"), date("Y") + 1);
             }
 
-            if ($status != null) {
+            if (!empty($status)) {
                 if ($status != "ACTIVE" && $status != "INACTIVE" && $status != "VACATION") {
-                    $result = new wsCreateUserResponse(5, G::loadTranslation("ID_INVALID_DATA") . ", $status");
+                    $result = new wsCreateUserResponse(-1, G::loadTranslation("ID_INVALID_DATA") . " $status", null);
 
                     return $result;
                 }
@@ -1014,51 +990,277 @@ class wsBase
                 $status = "ACTIVE";
             }
 
-            $aData['USR_USERNAME']     = $userId;
-            $aData['USR_PASSWORD']     = md5($password);
-            $aData['USR_FIRSTNAME']    = $firstname;
-            $aData['USR_LASTNAME']     = $lastname;
-            $aData['USR_EMAIL']        = $email;
-            $aData['USR_DUE_DATE']     = $mktimeDueDate;
-            $aData['USR_CREATE_DATE']  = date('Y-m-d H:i:s');
-            $aData['USR_UPDATE_DATE']  = date('Y-m-d H:i:s');
-            $aData['USR_BIRTHDAY']     = date('Y-m-d');
-            $aData['USR_AUTH_USER_DN'] = '';
-            $aData['USR_STATUS']       = ($status == 'ACTIVE')? 1 : 0;
+            $arrayRole = $RBAC->loadById($role);
+            $strRole = null;
 
-            $sUserUID = $RBAC->createUser($aData, $strRole);
+            if (is_array($arrayRole)) {
+                $strRole = $arrayRole["ROL_CODE"];
+            } else {
+                $strRole = $role;
 
-            $aData['USR_STATUS']      = $status;
-            $aData['USR_UID']         = $sUserUID;
-            $aData['USR_PASSWORD']    = md5($sUserUID);
-            $aData['USR_COUNTRY']     = '';
-            $aData['USR_CITY']        = '';
-            $aData['USR_LOCATION']    = '';
-            $aData['USR_ADDRESS']     = '';
-            $aData['USR_PHONE']       = '';
-            $aData['USR_ZIP_CODE']    = '';
-            $aData['USR_POSITION']    = '';
-            //$aData['USR_RESUME']
-            $aData['USR_ROLE']        = $strRole ;
-            //$aData['USR_REPLACED_BY']
+                if ($RBAC->verifyByCode($role) == 0) {
+                    $data = array();
+                    $data["ROLE"] = $role;
 
-            $oUser = new Users();
-            $oUser->create($aData);
+                    $result = new wsCreateUserResponse(6, G::loadTranslation("ID_INVALID_ROLE", SYS_LANG, $data), null);
 
-            $data['FIRSTNAME'] = $firstname;
-            $data['LASTNAME'] = $lastname;
-            $data['USER_ID'] = $userId;
-            $res = new wsResponse(0, G::loadTranslation('ID_USER_CREATED_SUCCESSFULLY', SYS_LANG, $data));
+                    return $result;
+                }
+            }
+
+            if (strlen($password) > 20) {
+                $result = new wsCreateUserResponse(-1, G::loadTranslation("ID_PASSWORD_SURPRASES"), null);
+
+                return $result;
+            }
+
+            if ($RBAC->verifyUser($userName) == 1) {
+                $data = array();
+                $data["USER_ID"] = $userName;
+
+                $result = new wsCreateUserResponse(
+                    7,
+                    G::loadTranslation("ID_USERNAME_ALREADY_EXISTS", SYS_LANG, $data),
+                    null
+                );
+
+                return $result;
+            }
+
+            //Set fields
+            $arrayData = array();
+
+            $arrayData["USR_USERNAME"]     = $userName;
+            $arrayData["USR_PASSWORD"]     = md5($password);
+            $arrayData["USR_FIRSTNAME"]    = $firstName;
+            $arrayData["USR_LASTNAME"]     = $lastName;
+            $arrayData["USR_EMAIL"]        = $email;
+            $arrayData["USR_DUE_DATE"]     = $mktimeDueDate;
+            $arrayData["USR_CREATE_DATE"]  = date("Y-m-d H:i:s");
+            $arrayData["USR_UPDATE_DATE"]  = date("Y-m-d H:i:s");
+            $arrayData["USR_BIRTHDAY"]     = date("Y-m-d");
+            $arrayData["USR_AUTH_USER_DN"] = "";
+            $arrayData["USR_STATUS"]       = ($status == "ACTIVE")? 1 : 0;
+
+            $userUid = $RBAC->createUser($arrayData, $strRole);
+
+            $arrayData["USR_UID"]      = $userUid;
+            $arrayData["USR_STATUS"]   = $status;
+            //$arrayData["USR_PASSWORD"] = md5($userUid);
+            $arrayData["USR_COUNTRY"]  = "";
+            $arrayData["USR_CITY"]     = "";
+            $arrayData["USR_LOCATION"] = "";
+            $arrayData["USR_ADDRESS"]  = "";
+            $arrayData["USR_PHONE"]    = "";
+            $arrayData["USR_ZIP_CODE"] = "";
+            $arrayData["USR_POSITION"] = "";
+            //$arrayData["USR_RESUME"]
+            $arrayData["USR_ROLE"]     = $strRole ;
+            //$arrayData["USR_REPLACED_BY"]
+
+            $user = new Users();
+            $user->create($arrayData);
+
+            //Response
+            $data = array();
+            $data["FIRSTNAME"] = $firstName;
+            $data["LASTNAME"] = $lastName;
+            $data["USER_ID"] = $userName;
+
+            $res = new wsResponse(0, G::loadTranslation("ID_USER_CREATED_SUCCESSFULLY", SYS_LANG, $data));
+
             $result = array(
-                'status_code' => $res->status_code,
-                'message'     => $res->message,
-                'userUID'     => $sUserUID,
-                'timestamp'   => $res->timestamp
+                "status_code" => $res->status_code,
+                "message"     => $res->message,
+                "userUID"     => $userUid,
+                "timestamp"   => $res->timestamp
             );
 
             return $result;
         } catch (Exception $e) {
-            $result = wsCreateUserResponse(100 , $e->getMessage(), '');
+            $result = wsCreateUserResponse(100 , $e->getMessage(), null);
+
+            return $result;
+        }
+    }
+
+    /**
+     * Update user
+     * @param string userUid   : The user UID.
+     * @param string userName  : The username for the user.
+     * @param string firstName : Optional parameter. The user's first name.
+     * @param string lastName  : Optional parameter. The user's last name.
+     * @param string email     : Optional parameter. The user's email address.
+     * @param string dueDate   : Optional parameter. The expiration date must be a string in the format "yyyy-mm-dd".
+     * @param string status    : Optional parameter. The user's status, such as "ACTIVE", "INACTIVE" or "VACATION".
+     * @param string role      : Optional parameter. The user's role, such
+     *                           as "PROCESSMAKER_ADMIN" or "PROCESSMAKER_OPERATOR".
+     * @param string password  : Optional parameter. The user's password such as "Be@gle2" (It will be automatically
+     *                           encrypted with an MD5 hash).
+     * @return $result will return an object
+     */
+    public function updateUser(
+        $userUid,
+        $userName,
+        $firstName=null,
+        $lastName=null,
+        $email=null,
+        $dueDate=null,
+        $status=null,
+        $role=null,
+        $password=null
+    ) {
+        try {
+            global $RBAC;
+
+            $RBAC->initRBAC();
+
+            if (empty($userUid)) {
+                $result = new wsResponse(25, G::LoadTranslation("ID_REQUIRED_FIELD") . " userUid");
+
+                return $result;
+            }
+
+            if (empty($userName)) {
+                $result = new wsResponse(25, G::LoadTranslation("ID_USERNAME_REQUIRED"));
+
+                return $result;
+            }
+
+            if ($RBAC->verifyUserId($userUid) == 0) {
+                $result = new wsResponse(3, G::loadTranslation("ID_USER_NOT_REGISTERED_SYSTEM"));
+
+                return $result;
+            }
+
+            $mktimeDueDate = 0;
+
+            if (!empty($dueDate)) {
+                if (!preg_match("/^(\d{4})-(\d{2})-(\d{2})$/", $dueDate, $arrayMatch)) {
+                    $result = new wsResponse(-1, G::LoadTranslation("ID_INVALID_DATA") . " $dueDate");
+
+                    return $result;
+                } else {
+                    $mktimeDueDate = mktime(
+                        0,
+                        0,
+                        0,
+                        intval($arrayMatch[2]),
+                        intval($arrayMatch[3]),
+                        intval($arrayMatch[1])
+                    );
+                }
+            }
+
+            if (!empty($status)) {
+                if ($status != "ACTIVE" && $status != "INACTIVE" && $status != "VACATION") {
+                    $result = new wsResponse(-1, G::LoadTranslation("ID_INVALID_DATA") . " $status");
+
+                    return $result;
+                }
+            }
+
+            $strRole = null;
+
+            if (!empty($role)) {
+                $arrayRole = $RBAC->loadById($role);
+
+                if (is_array($arrayRole)) {
+                    $strRole = $arrayRole["ROL_CODE"];
+                } else {
+                    $strRole = $role;
+
+                    if ($RBAC->verifyByCode($role) == 0) {
+                        $data = array();
+                        $data["ROLE"] = $role;
+
+                        $result = new wsResponse(6, G::LoadTranslation("ID_INVALID_ROLE", SYS_LANG, $data));
+
+                        return $result;
+                    }
+                }
+            }
+
+            if (!empty($password) && strlen($password) > 20) {
+                $result = new wsResponse(-1, G::LoadTranslation("ID_PASSWORD_SURPRASES"));
+
+                return $result;
+            }
+
+            $criteria = new Criteria();
+            $criteria->addSelectColumn(UsersPeer::USR_UID);
+            $criteria->add(UsersPeer::USR_USERNAME, $userName);
+            $criteria->add(UsersPeer::USR_UID, $userUid, Criteria::NOT_EQUAL);
+            $rs = UsersPeer::doSelectRS($criteria);
+
+            if ($rs->next()) {
+                $data = array();
+                $data["USER_ID"] = $userName;
+
+                $result = new wsResponse(7, G::LoadTranslation("ID_USERNAME_ALREADY_EXISTS", SYS_LANG, $data));
+
+                return $result;
+            }
+
+            //Set fields
+            $arrayData = array();
+
+            $arrayData["USR_UID"]      = $userUid;
+            $arrayData["USR_USERNAME"] = $userName;
+
+            if (!empty($firstName)) {
+                $arrayData["USR_FIRSTNAME"] = $firstName;
+            }
+
+            if (!empty($lastName)) {
+                $arrayData["USR_LASTNAME"] = $lastName;
+            }
+
+            if (!empty($email)) {
+                $arrayData["USR_EMAIL"] = $email;
+            }
+
+            if ($mktimeDueDate != 0) {
+                $arrayData["USR_DUE_DATE"] = $mktimeDueDate;
+            }
+
+            $arrayData["USR_UPDATE_DATE"]  = date("Y-m-d H:i:s");
+
+            if (!empty($status)) {
+                $arrayData["USR_STATUS"] = $status;
+            }
+
+            if ($strRole != null) {
+                $arrayData["USR_ROLE"] = $strRole;
+            }
+
+            if (!empty($password)) {
+                $arrayData["USR_PASSWORD"] = md5($password);
+            }
+
+            //Update user
+            if ($strRole != null) {
+                $RBAC->updateUser($arrayData, $strRole);
+            } else {
+                $RBAC->updateUser($arrayData);
+            }
+
+            $user = new Users();
+            $user->update($arrayData);
+
+            //Response
+            //$res = new wsResponse(0, G::LoadTranslation("ID_OBJECT_UPDATE"));
+            $res = new wsResponse(0, G::LoadTranslation("ID_UPDATED_SUCCESSFULLY"));
+
+            $result = array(
+                "status_code" => $res->status_code,
+                "message"     => $res->message,
+                "timestamp"   => $res->timestamp
+            );
+
+            return $result;
+        } catch (Exception $e) {
+            $result = wsResponse(100, $e->getMessage());
 
             return $result;
         }

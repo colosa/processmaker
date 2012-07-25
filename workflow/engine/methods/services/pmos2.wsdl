@@ -198,6 +198,31 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="updateUserRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="sessionId" type="xs:string"/>
+            <xs:element name="userUid" type="xs:string"/>
+            <xs:element name="userName" type="xs:string"/>
+            <xs:element name="firstName" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+            <xs:element name="lastName" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+            <xs:element name="email" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+            <xs:element name="dueDate" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+            <xs:element name="status" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+            <xs:element name="role" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+            <xs:element name="password" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updateUserResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="status_code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="timestamp" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="createGroupRequest">
         <xs:complexType>
           <xs:sequence>
@@ -761,6 +786,12 @@
   <message name="createUserResponse">
     <part name="parameters" element="xs0:createUserResponse"/>
   </message>
+  <message name="updateUserRequest">
+    <part name="parameters" element="xs0:updateUserRequest"/>
+  </message>
+  <message name="updateUserResponse">
+    <part name="parameters" element="xs0:updateUserResponse"/>
+  </message>
   <message name="createGroupRequest">
     <part name="parameters" element="xs0:createGroupRequest"/>
   </message>
@@ -921,6 +952,10 @@
     <operation name="createUser">
       <input message="xs0:createUserRequest"/>
       <output message="xs0:createUserResponse"/>
+    </operation>
+    <operation name="updateUser">
+      <input message="xs0:updateUserRequest"/>
+      <output message="xs0:updateUserResponse"/>
     </operation>
     <operation name="createGroup">
       <input message="xs0:createGroupRequest"/>
@@ -1096,6 +1131,15 @@
     </operation>
     <operation name="createUser">
       <soap12:operation soapAction="urn:createUser" soapActionRequired="true" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="updateUser">
+      <soap12:operation soapAction="urn:updateUser" soapActionRequired="true" style="document"/>
       <input>
         <soap12:body use="literal"/>
       </input>

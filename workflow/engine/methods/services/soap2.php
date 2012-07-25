@@ -810,6 +810,37 @@ function CreateUser($params)
     return $res;
 }
 
+function updateUser($params)
+{
+    $result = isValidSession($params->sessionId);
+
+    if ($result->status_code != 0) {
+        return $result;
+    }
+
+    if (ifPermission($params->sessionId, "PM_USERS") == 0) {
+        $result = new wsResponse(2, "You do not have privileges");
+
+        return $result;
+    }
+
+    $ws = new wsBase();
+
+    $result = $ws->updateUser(
+        $params->userUid,
+        $params->userName,
+        ((isset($params->firstName))? $params->firstName : null),
+        ((isset($params->lastName))? $params->lastName : null),
+        ((isset($params->email))? $params->email : null),
+        ((isset($params->dueDate))? $params->dueDate : null),
+        ((isset($params->status))? $params->status : null),
+        ((isset($params->role))? $params->role : null),
+        ((isset($params->password))? $params->password : null)
+    );
+
+    return $result;
+}
+
 function CreateGroup($params)
 {
     $vsResult = isValidSession($params->sessionId);
@@ -1062,6 +1093,7 @@ $server->addFunction("AssignUserToDepartment");
 $server->addFunction("CreateGroup");
 $server->addFunction("CreateDepartment");
 $server->addFunction("CreateUser");
+$server->addFunction("updateUser");
 $server->addFunction("getCaseInfo");
 $server->addFunction("TaskList");
 $server->addFunction("TaskCase");

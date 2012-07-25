@@ -1034,6 +1034,7 @@ function WSAssignUserToGroup($userId, $groupId)
 
     return $fields;
 }
+
 /**
  * @method
  *
@@ -1048,9 +1049,9 @@ function WSAssignUserToGroup($userId, $groupId)
  * @param string(32) | $firstname | Firstname of the new user | The first name(s) of the new user, which can be up to 50 characters long.
  * @param string(32) | $lastname | Lastname of the new user | The last name(s) of the new user, which can be up to 50 characters long.
  * @param string(32) | $email | Email the new user | The e-mail of the new user, which can be up to 100 characters long.
- * @param string(32) | $role | Rol of the new user | The role of the new user, such as 'PROCESSMAKER_ADMIN' and 'PROCESSMAKER_OPERATOR'.
- * @param string(32) | $dueDate=null | Expiration date | Optional parameter. The expiration date must be a string in the format 'yyyy-mm-dd'.
- * @param string(32) | $status=null | Status of the new user | Optional parameter. The user's status, such as 'ACTIVE', 'INACTIVE' or 'VACATION'.
+ * @param string(32) | $role | Rol of the new user | The role of the new user, such as "PROCESSMAKER_ADMIN" and "PROCESSMAKER_OPERATOR".
+ * @param string(32) | $dueDate=null | Expiration date | Optional parameter. The expiration date must be a string in the format "yyyy-mm-dd".
+ * @param string(32) | $status=null | Status of the new user | Optional parameter. The user's status, such as "ACTIVE", "INACTIVE" or "VACATION".
  * @return array | $fields | WS array | A WS Response associative array.
  *
  */
@@ -1059,6 +1060,7 @@ function WSCreateUser($userId, $password, $firstname, $lastname, $email, $role, 
     $client = WSOpen();
 
     $sessionId = $_SESSION["WS_SESSION_ID"];
+
     $params = array(
         "sessionId" => $sessionId,
         "userId"    => $userId,
@@ -1079,6 +1081,65 @@ function WSCreateUser($userId, $password, $firstname, $lastname, $email, $role, 
 
     return $fields;
 }
+
+/**
+ * @method
+ *
+ * Update an user in ProcessMaker.
+ *
+ * @name WSUpdateUser
+ * @label WS Update User
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#WSUpdateUser.28.29
+ *
+ * @param string(32) | $userUid | User UID | The user UID.
+ * @param string(32) | $userName | User ID | The username for the user.
+ * @param string(32) | $firstName=null | Firstname of the user | Optional parameter. The first name of the user, which can be up to 50 characters long.
+ * @param string(32) | $lastName=null | Lastname of the user | Optional parameter. The last name of the user, which can be up to 50 characters long.
+ * @param string(32) | $email=null | Email the user | Optional parameter. The email of the user, which can be up to 100 characters long.
+ * @param string(32) | $dueDate=null | Expiration date | Optional parameter. The expiration date must be a string in the format "yyyy-mm-dd".
+ * @param string(32) | $status=null | Status of the user | Optional parameter. The user's status, such as "ACTIVE", "INACTIVE" or "VACATION".
+ * @param string(32) | $role=null | Rol of the user | The role of the user such as "PROCESSMAKER_ADMIN" or "PROCESSMAKER_OPERATOR".
+ * @param string(32) | $password=null | Password of the user | The password of the user, which can be up to 32 characters long.
+ * @return array | $fields | WS array | A WS Response associative array.
+ *
+ */
+function WSUpdateUser(
+    $userUid,
+    $userName,
+    $firstName=null,
+    $lastName=null,
+    $email=null,
+    $dueDate=null,
+    $status=null,
+    $role=null,
+    $password=null
+) {
+    $client = WSOpen();
+
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+
+    $params = array(
+        "sessionId" => $sessionId,
+        "userUid"   => $userUid,
+        "userName"  => $userName,
+        "firstName" => $firstName,
+        "lastName"  => $lastName,
+        "email"     => $email,
+        "dueDate"   => $dueDate,
+        "status"    => $status,
+        "role"      => $role,
+        "password"  => $password
+    );
+
+    $result = $client->__soapCall("updateUser", array($params));
+
+    $fields["status_code"] = $result->status_code;
+    $fields["message"]     = $result->message;
+    $fields["time_stamp"]  = $result->timestamp;
+
+    return $fields;
+}
+
 /**
  * @method
  *
@@ -1679,6 +1740,7 @@ function PMFAssignUserToGroup($userId, $groupId)
         return 0;
     }
 }
+
 /**
  * @method
  *
@@ -1689,13 +1751,13 @@ function PMFAssignUserToGroup($userId, $groupId)
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFCreateUser.28.29
  *
  * @param string(32) | $userId | User ID | The username for the new user.
- * @param string(32) | $password | Password of the new user  | The password of the new user, which can be up to 32 characters long.
+ * @param string(32) | $password | Password of the new user | The password of the new user, which can be up to 32 characters long.
  * @param string(32) | $firstname | Firstname of the new user | The first name of the user, which can be up to 50 characters long.
  * @param string(32) | $lastname | Lastname of the new user | The last name of the user, which can be up to 50 characters long.
  * @param string(32) | $email | Email the new user | The email of the new user, which can be up to 100 characters long.
- * @param string(32) | $role | Rol of the new user | The role of the new user such as 'PROCESSMAKER_ADMIN' or 'PROCESSMAKER_OPERATOR'.
- * @param string(32) | $dueDate=null | Expiration date | Optional parameter. The expiration date must be a string in the format 'yyyy-mm-dd'.
- * @param string(32) | $status=null | Status of the new user | Optional parameter. The user's status, such as 'ACTIVE', 'INACTIVE' or 'VACATION'.
+ * @param string(32) | $role | Rol of the new user | The role of the new user such as "PROCESSMAKER_ADMIN" or "PROCESSMAKER_OPERATOR".
+ * @param string(32) | $dueDate=null | Expiration date | Optional parameter. The expiration date must be a string in the format "yyyy-mm-dd".
+ * @param string(32) | $status=null | Status of the new user | Optional parameter. The user's status, such as "ACTIVE", "INACTIVE" or "VACATION".
  * @return int | $result | Result of the creation | Returns 1 if the new user was created successfully; otherwise, returns 0 if an error occurred.
  *
  */
@@ -1712,6 +1774,51 @@ function PMFCreateUser($userId, $password, $firstname, $lastname, $email, $role,
         return 0;
     }
 }
+
+/**
+ * @method
+ *
+ * Update a user with the given data.
+ *
+ * @name PMFUpdateUser
+ * @label PMF Update User
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFUpdateUser.28.29
+ *
+ * @param string(32) | $userUid | User UID | The user UID.
+ * @param string(32) | $userName | User ID | The username for the user.
+ * @param string(32) | $firstName=null | Firstname of the user | Optional parameter. The first name of the user, which can be up to 50 characters long.
+ * @param string(32) | $lastName=null | Lastname of the user | Optional parameter. The last name of the user, which can be up to 50 characters long.
+ * @param string(32) | $email=null | Email the user | Optional parameter. The email of the user, which can be up to 100 characters long.
+ * @param string(32) | $dueDate=null | Expiration date | Optional parameter. The expiration date must be a string in the format "yyyy-mm-dd".
+ * @param string(32) | $status=null | Status of the user | Optional parameter. The user's status, such as "ACTIVE", "INACTIVE" or "VACATION".
+ * @param string(32) | $role=null | Rol of the user | The role of the user such as "PROCESSMAKER_ADMIN" or "PROCESSMAKER_OPERATOR".
+ * @param string(32) | $password=null | Password of the user | The password of the user, which can be up to 32 characters long.
+ * @return int | $result | Result of the update | Returns 1 if the user is updated successfully; otherwise, returns 0 if an error occurred.
+ *
+ */
+function PMFUpdateUser(
+    $userUid,
+    $userName,
+    $firstName=null,
+    $lastName=null,
+    $email=null,
+    $dueDate=null,
+    $status=null,
+    $role=null,
+    $password=null
+) {
+    G::LoadClass("wsBase");
+
+    $ws = new wsBase();
+    $result = $ws->updateUser($userUid, $userName, $firstName, $lastName, $email, $dueDate, $status, $role, $password);
+
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 /**
  * @method
  *
