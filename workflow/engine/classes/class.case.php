@@ -4452,10 +4452,15 @@ class Cases
                     $aConfiguration = unserialize($aConfiguration["CFG_VALUE"]);
                     $passwd = $aConfiguration["MESS_PASSWORD"];
                     $passwdDec = G::decrypt($passwd, "EMAILENCRYPT");
-                    if (strpos($passwdDec, "hash:") !== false) {
-                        list($hash, $pass) = explode(":", $passwdDec);
-                        $passwd = $pass;
-                    }
+                    $auxPass = explode('hash:', $passwdDec);
+		            if (count($auxPass) > 1) {
+                        if (count($auxPass) == 2) {
+                            $passwd = $auxPass[1];
+                        } else {
+                            array_shift($auxPass);
+                            $passwd = implode('', $auxPass);
+                        }
+		            }
                     $aConfiguration["MESS_PASSWORD"] = $passwd;
                 } else {
                     $aConfiguration = array();

@@ -24,113 +24,113 @@
  */
 
   $actionAjax = isset($_REQUEST['actionAjax'])?$_REQUEST['actionAjax']: null;
-  
 
 
-                     
+
+
     if($actionAjax=='messageHistoryGridList_JXP'){
-      
+
       G::LoadClass('case');
       G::LoadClass("BasePeer" );
-      
-      global $G_PUBLISH;    
+
+      global $G_PUBLISH;
       $oCase = new Cases();
-      
+
       $appMessageArray = $oCase->getHistoryMessagesTrackerExt($_SESSION['APPLICATION']);
-      
+
       $result = new stdClass();
       $aProcesses = Array();
-      
+
       $totalCount = 0;
-        foreach( $appMessageArray as $index => $value){        
-          $appMessageArray[$index]['ID_MESSAGE'] = $appMessageArray[$index]['APP_UID'].'_'.$appMessageArray[$index]['APP_MSG_UID'];        
+        foreach( $appMessageArray as $index => $value){
+          $appMessageArray[$index]['ID_MESSAGE'] = $appMessageArray[$index]['APP_UID'].'_'.$appMessageArray[$index]['APP_MSG_UID'];
           $aProcesses[] = $appMessageArray[$index];
           $totalCount++;
         }
-        
-        
+
+
       $newDir = '/tmp/test/directory';
       $r = G::verifyPath ( $newDir );
       $r->data = $aProcesses;
       $r->totalCount = $totalCount;
-      
 
-      
+
+
       echo G::json_encode($r);
     }
     if($actionAjax=='showHistoryMessage'){
-    
+
 ?>
       <link rel="stylesheet" type="text/css" href="/css/classic.css" />
       <style type="text/css">
         html{
-          color:black !important; 
+          color:black !important;
         }
          body{
-          color:black !important; 
+          color:black !important;
         }
       </style>
       <script language="Javascript">
         //!Code that simulated reload library javascript maborak
-        var leimnud = {};        
+        var leimnud = {};
         leimnud.exec = "";
         leimnud.fix = {};
         leimnud.fix.memoryLeak  = "";
         leimnud.browser = {};
         leimnud.browser.isIphone  = "";
         leimnud.iphone = {};
-        leimnud.iphone.make = function(){};      
-        function ajax_function(ajax_server, funcion, parameters, method){          
+        leimnud.iphone.make = function(){};
+        function ajax_function(ajax_server, funcion, parameters, method){
         }
         //!
       </script>
 <?php
-    
+
       G::LoadClass('case');
       $oCase = new Cases();
 
       $_POST["APP_UID"] = $_REQUEST["APP_UID"];
       $_POST['APP_MSG_UID'] = $_REQUEST["APP_MSG_UID"];
-     
+
       $G_PUBLISH = new Publisher();
       $oCase = new Cases();
-  
+
       $G_PUBLISH->AddContent('xmlform', 'xmlform', 'cases/cases_MessagesView', '', $oCase->getHistoryMessagesTrackerView($_POST['APP_UID'], $_POST['APP_MSG_UID']));
-      
-      
-?>      
+
+
+?>
         <script language="javascript">
 <?php
       global $G_FORM;
 ?>
-          function loadForm_<?php echo $G_FORM->id;?>(parametro1){          
+          function loadForm_<?php echo $G_FORM->id;?>(parametro1){
           }
         </script>
 <?php
 
-      G::RenderPage('publish', 'raw');    
+      G::RenderPage('publish', 'raw');
     }
-    
+
     if($actionAjax=='sendMailMessage_JXP'){
       //!dataSystem
-      $errorMessage = "";      
-      try{      
+      $errorMessage = "";
+      try{
         //!dataInput
         $_POST['APP_UID'] = $_REQUEST['APP_UID'];
         $_POST['APP_MSG_UID'] = $_REQUEST['APP_MSG_UID'];
-        
-        
+
+
         G::LoadClass('case');
         $oCase = new Cases();
-        
-            
+
+
         require_once 'classes/model/Configuration.php';
         G::LoadClass('spool');
-    
+
         $oCase = new Cases();
         $data = $oCase->getHistoryMessagesTrackerView($_POST['APP_UID'], $_POST['APP_MSG_UID']);
         //print_r($data);
-    
+
         $oConfiguration = new Configuration();
         $sDelimiter = DBAdapter::getStringDelimiter();
         $oCriteria = new Criteria('workflow');
@@ -151,13 +151,19 @@
           }
         }
         $passwd = $aConfiguration['MESS_PASSWORD'];
-    $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-    if (strpos( $passwdDec, 'hash:' ) !== false) {
-    	list($hash, $pass) = explode(":", $passwdDec);   
-    	$aConfiguration['MESS_PASSWORD'] = $pass;
-    }
-    
-    
+        $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
+        $auxPass = explode('hash:', $passwdDec);
+		if (count($auxPass) > 1) {
+            if (count($auxPass) == 2) {
+                $passwd = $auxPass[1];
+            } else {
+                array_shift($auxPass);
+                $passwd = implode('', $auxPass);
+            }
+		}
+        $aConfiguration['MESS_PASSWORD'] = $passwd;
+
+
         $oSpool = new spoolRun();
         $oSpool->setConfig(array(
           'MESS_ENGINE'	=>	$aConfiguration['MESS_ENGINE'],
@@ -167,7 +173,7 @@
           'MESS_PASSWORD'	=>	$passwd,
           'SMTPAuth'		=>	$aConfiguration['MESS_RAUTH']
         ));
-    
+
         $oSpool->create(array(
           'msg_uid'		=>	$data['MSG_UID'],
           'app_uid'		=>	$data['APP_UID'],
@@ -184,16 +190,16 @@
           'app_msg_status'=>	'pending'
         ));
         $oSpool->sendMail();
-      
+
       }
       catch(Exception $e){
-      
+
         $errorMessage = $e->getMessage();
       }
-      
-      echo $errorMessage;
-      
-    }   
-    
 
- 
+      echo $errorMessage;
+
+    }
+
+
+

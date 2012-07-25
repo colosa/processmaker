@@ -86,7 +86,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
         $oHeadPublisher->addScriptCode('
             var pb=leimnud.dom.capture("tag.body 0");
             Pm=new processmap();
-    
+
             var params = "{\"uid\":\"' . $_SESSION['PROCESS'] . '\",\"mode\":false,\"ct\":false}";
             // maximun x and y position
             var xPos = 0;
@@ -99,7 +99,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
                 method: "POST",
                 args  : "action=load&data="+params
             });
-            
+
             // make the ajax call
             oRPC.make();
             var response = eval(\'(\' + oRPC.xmlhttp.responseText + \')\');
@@ -849,12 +849,18 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
             'MESS_PASSWORD'    =>    $aConfiguration['MESS_PASSWORD'],
             'SMTPAuth'        =>    $aConfiguration['MESS_RAUTH']
         ));
-        $passwd = $oSpool['MESS_PASSWORD'];
+        $passwd = $oSpool->config['MESS_PASSWORD'];
         $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-        if (strpos( $passwdDec, 'hash:' ) !== false) {
-            list($hash, $pass) = explode(":", $passwdDec);
-            $oSpool['MESS_PASSWORD'] = $pass;
-        }
+        $auxPass = explode('hash:', $passwdDec);
+		if (count($auxPass) > 1) {
+            if (count($auxPass) == 2) {
+                $passwd = $auxPass[1];
+            } else {
+                array_shift($auxPass);
+                $passwd = implode('', $auxPass);
+            }
+		}
+        $oSpool->config['MESS_PASSWORD'] = $passwd;
         $oSpool->create(array(
             'msg_uid'        =>    $data['MSG_UID'],
             'app_uid'        =>    $data['APP_UID'],

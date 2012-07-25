@@ -18,9 +18,9 @@ if($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL']
     G::header('location: forgotPassword');
     die;
   }
-  
+
   $newPass = G::generate_password();
-  
+
   $aData['USR_UID']      = $userData['USR_UID'];
   $aData['USR_PASSWORD'] = md5($newPass);
 /* **Save after sending the mail
@@ -66,6 +66,19 @@ if($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL']
     'SMTPSecure'    => $aSetup['SMTPSecure']
   ));
 
+  $passwd = $oSpool->config['MESS_PASSWORD'];
+  $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
+  $auxPass = explode('hash:', $passwdDec);
+  if (count($auxPass) > 1) {
+    if (count($auxPass) == 2) {
+        $passwd = $auxPass[1];
+    } else {
+        array_shift($auxPass);
+        $passwd = implode('', $auxPass);
+    }
+  }
+  $oSpool->config['MESS_PASSWORD'] = $passwd;
+
   $oSpool->create(array(
     'msg_uid'          => '',
     'app_uid'          => '',
@@ -80,7 +93,7 @@ if($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL']
     'app_msg_attach'   => '',
     'app_msg_template' => '',
     'app_msg_status'   => 'pending',
-    'app_msg_attach'=>'' 
+    'app_msg_attach'=>''
   ));
 
   try {

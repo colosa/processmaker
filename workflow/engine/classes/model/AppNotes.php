@@ -62,7 +62,7 @@ class AppNotes extends BaseAppNotes {
         $oDataset = appNotesPeer::doSelectRS($Criteria);
         $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $oDataset->next();
-  
+
         while ($aRow = $oDataset->getRow()) {
             $aRow['NOTE_CONTENT'] = stripslashes($aRow['NOTE_CONTENT']);
             $response['notes'][] = $aRow;
@@ -147,12 +147,18 @@ class AppNotes extends BaseAppNotes {
         $aConfiguration = $oConfiguration->load('Emails', '', '', '', '');
         if ($aConfiguration['CFG_VALUE'] != '') {
           $aConfiguration = unserialize($aConfiguration['CFG_VALUE']);
-          $passwd = $aConfiguration['MESS_PASSWORD'];           
+          $passwd = $aConfiguration['MESS_PASSWORD'];
           $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-          if (strpos( $passwdDec, 'hash:' ) !== false) {
-            list($hash, $pass) = explode(":", $passwdDec);   
-            $aConfiguration['MESS_PASSWORD'] = $pass;
-          }
+          $auxPass = explode('hash:', $passwdDec);
+		  if (count($auxPass) > 1) {
+              if (count($auxPass) == 2) {
+                  $passwd = $auxPass[1];
+              } else {
+                  array_shift($auxPass);
+                  $passwd = implode('', $auxPass);
+              }
+		  }
+          $aConfiguration['MESS_PASSWORD'] = $passwd;
         } else {
           $aConfiguration = array();
         }
@@ -195,7 +201,7 @@ class AppNotes extends BaseAppNotes {
       }
 
         $sSubject = G::replaceDataField($configNoteNotification['subject'], $aFields);
-      
+
 
       //erik: new behaviour for messages
       //G::loadClass('configuration');
@@ -220,7 +226,7 @@ class AppNotes extends BaseAppNotes {
 
       G::LoadClass('spool');
       $oUser = new Users();
-      
+
         $recipientsArray=explode(",",$noteRecipients);
 
         foreach($recipientsArray as $recipientUid){
@@ -255,7 +261,7 @@ class AppNotes extends BaseAppNotes {
           if (($aConfiguration['MESS_BACKGROUND'] == '') || ($aConfiguration['MESS_TRY_SEND_INMEDIATLY'] == '1')) {
             $oSpool->sendMail();
           }
-        
+
         }
 
       //Send derivation notification - End

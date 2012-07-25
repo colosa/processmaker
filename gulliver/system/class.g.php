@@ -3387,10 +3387,16 @@ $output = $outputHeader.$output;
 
     $passwd    = $setup['MESS_PASSWORD'];
     $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-    if (strpos( $passwdDec, 'hash:' ) !== false) {
-      list($hash, $pass) = explode(":", $passwdDec);
-      $setup['MESS_PASSWORD'] = $pass;
+    $auxPass = explode('hash:', $passwdDec);
+    if (count($auxPass) > 1) {
+        if (count($auxPass) == 2) {
+            $passwd = $auxPass[1];
+        } else {
+            array_shift($auxPass);
+            $passwd = implode('', $auxPass);
+        }
     }
+    $setup['MESS_PASSWORD'] = $passwd;
     $mail = new PHPMailer(true);
     $mail->From = $from != '' && $from ? $from : $setup['MESS_ACCOUNT'];
     $mail->FromName = $fromName;

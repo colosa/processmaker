@@ -362,7 +362,7 @@ class adminProxy extends HttpProxyController
       $_POST['MESS_PASSWORD'] = '';
       $_POST['TO']            = $mail_to;
       $_POST['SMTPAuth']      = true;
-      
+
       try {
         $resp = $this->sendTestMail();
       } catch (Exception $error) {
@@ -372,10 +372,10 @@ class adminProxy extends HttpProxyController
       }
 
       $response = array('success' => $resp->status);
-      
+
       if ($resp->status == false)
         $response['msg'] = G::LoadTranslation('ID_SENDMAIL_NOT_INSTALLED');
-      
+
       echo G::json_encode($response);
       die;
     }
@@ -392,11 +392,16 @@ class adminProxy extends HttpProxyController
     }
 
     $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-
-    if (strpos( $passwdDec, 'hash:' ) !== false) {
-      list($hash, $pass) = explode(":", $passwdDec);
-      $_POST['passwd'] = $pass;
-    }
+    $auxPass = explode('hash:', $passwdDec);
+	if (count($auxPass) > 1) {
+        if (count($auxPass) == 2) {
+            $passwd = $auxPass[1];
+        } else {
+            array_shift($auxPass);
+            $passwd = implode('', $auxPass);
+        }
+	}
+    $_POST['passwd'] = $passwd;
 
     $port = $_POST['port'];
     $auth_required = $_POST['req_auth'];
@@ -654,9 +659,20 @@ class adminProxy extends HttpProxyController
       }
 
       $aFields['MESS_PASSWORD_HIDDEN'] = '';
-      $aPasswd = G::decrypt($aFields['MESS_PASSWORD'],'EMAILENCRYPT');
+      $passwd = $aFields['MESS_PASSWORD'];
+      $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
+      $auxPass = explode('hash:', $passwdDec);
+      if (count($auxPass) > 1) {
+          if (count($auxPass) == 2) {
+              $passwd = $auxPass[1];
+          } else {
+              array_shift($auxPass);
+              $passwd = implode('', $auxPass);
+          }
+      }
+      $aFields['MESS_PASSWORD'] = $passwd;
 
-      if ((strpos( $aPasswd, 'hash:') !== true) && ($aFields['MESS_PASSWORD'] != '')) {   // for plain text
+      if ($aFields['MESS_PASSWORD'] != '') {   // for plain text
         $aFields['MESS_PASSWORD'] = 'hash:'.$aFields['MESS_PASSWORD'];
         $aFields['MESS_PASSWORD'] = G::encrypt($aFields['MESS_PASSWORD'],'EMAILENCRYPT');
       }
@@ -733,10 +749,16 @@ class adminProxy extends HttpProxyController
       $this->success = (count($fields) > 0);
       $passwd = $fields['MESS_PASSWORD'];
       $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-      if (strpos( $passwdDec, 'hash:' ) !== false) {
-        list($hash, $pass) = explode(":", $passwdDec);
-        $fields['MESS_PASSWORD'] = $pass;
+      $auxPass = explode('hash:', $passwdDec);
+      if (count($auxPass) > 1) {
+          if (count($auxPass) == 2) {
+              $passwd = $auxPass[1];
+          } else {
+              array_shift($auxPass);
+              $passwd = implode('', $auxPass);
+          }
       }
+      $fields['MESS_PASSWORD'] = $passwd;
     }
     $this->data = $fields;
   }
