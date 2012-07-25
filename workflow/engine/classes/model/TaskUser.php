@@ -96,7 +96,7 @@ class TaskUser extends BaseTaskUser {
         return $iResult;
       }
       else {
-        throw(new Exception('This row doesn\'t exists!'));
+        throw(new Exception('This row does not exist!'));
       }
     }
     catch (Exception $oError) {

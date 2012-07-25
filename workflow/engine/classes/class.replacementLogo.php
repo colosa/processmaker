@@ -63,7 +63,7 @@ class replacementLogo {
         $infoupload = "Return Code: " . $errorfile . "<br />";
       } else {
         if (file_exists ( $dirUpload . $namefile )) {
-          $infoupload = $namefile . " already exists. ";
+          $infoupload = $namefile . " already exist. ";
         } else {
           move_uploaded_file ( $tpnfile, $dirUpload . $namefile );
           $infoupload = "Stored in: " . $dirUpload . $namefile;

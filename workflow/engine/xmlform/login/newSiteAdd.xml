@@ -19,7 +19,7 @@
   <en>Report Database:</en>
 </AO_DB_RP>
 <AO_DB_DROP type="checkbox">
-  <en>Drop database if exists</en>
+  <en>Drop database if exist</en>
 </AO_DB_DROP>
 <WS type="subtitle">
   <en>Workspace Administrator</en>

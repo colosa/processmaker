@@ -43,7 +43,7 @@ class AuthenticationSource extends BaseAuthenticationSource {
   	    return $aFields;
       }
       else {
-        throw(new Exception('This row doesn\'t exists!'));
+        throw(new Exception('This row doesn\'t exist!'));
       }
     }
     catch (Exception $oError) {
@@ -109,7 +109,7 @@ class AuthenticationSource extends BaseAuthenticationSource {
   	    }
       }
       else {
-        throw(new Exception('This row doesn\'t exists!'));
+        throw(new Exception('This row doesn\'t exist!'));
       }
     }
     catch (Exception $oError) {
@@ -133,7 +133,7 @@ class AuthenticationSource extends BaseAuthenticationSource {
         return $iResult;
       }
       else {
-        throw(new Exception('This row doesn\'t exists!'));
+        throw(new Exception('This row doesn\'t exist!'));
       }
     }
     catch (Exception $oError) {

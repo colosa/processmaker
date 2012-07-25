@@ -14,7 +14,7 @@
 </FILENAME>
 
 <OVERWRITE type="checkbox">
-  <en>Overwrite if exists</en>
+  <en>Overwrite if exist</en>
 </OVERWRITE>
 
 <SAVE type="button" onclick="verifyFile(this.form);">

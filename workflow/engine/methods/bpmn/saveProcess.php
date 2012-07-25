@@ -38,7 +38,7 @@ try{
       else{
         $result = array(); 
         $result['status_code'] = $idProcess;
-        $result['message']     = "the process don't exists";
+        $result['message']     = "the process does not exist";
         $result['timestamp']   = date('Y-m-d H:i:s');
         echo G::json_encode($result);
         die;

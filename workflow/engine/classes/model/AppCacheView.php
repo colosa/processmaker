@@ -1042,7 +1042,7 @@ class AppCacheView extends BaseAppCacheView
         $filenameSql = $this->pathToAppCacheFiles . 'app_cache_view_insert.sql';
 
         if (!file_exists($filenameSql)) {
-            throw (new Exception("file app_cache_view_insert.sql doesn't exists "));
+            throw (new Exception("file app_cache_view_insert.sql does not exist "));
         }
 
         $sql = explode(';', file_get_contents($filenameSql));
@@ -1095,7 +1095,7 @@ class AppCacheView extends BaseAppCacheView
             $filenameSql = $this->pathToAppCacheFiles . 'triggerAppDelegationInsert.sql';
 
             if (!file_exists($filenameSql)) {
-                throw (new Exception("file triggerAppDelegationInsert.sql doesn't exists "));
+                throw (new Exception("file triggerAppDelegationInsert.sql does not exist "));
             }
 
             $sql = file_get_contents($filenameSql);
@@ -1142,7 +1142,7 @@ class AppCacheView extends BaseAppCacheView
             $filenameSql = $this->pathToAppCacheFiles . '/triggerAppDelegationUpdate.sql';
 
             if (!file_exists($filenameSql)) {
-                throw (new Exception("file triggerAppDelegationUpdate.sql doesn't exists "));
+                throw (new Exception("file triggerAppDelegationUpdate.sql does not exist "));
             }
 
             $sql = file_get_contents($filenameSql);

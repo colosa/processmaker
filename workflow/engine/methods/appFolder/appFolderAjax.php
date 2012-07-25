@@ -8,7 +8,7 @@ if (! isset ($_REQUEST ['action'])) {
 }
 if (! function_exists ($_REQUEST ['action'])) {
     $res ['success'] = false;
-    $res ['message'] = 'The requested action doesn\'t exists';
+    $res ['message'] = 'The requested action does not exist';
     print G::json_encode ($res);
     die ();
 }

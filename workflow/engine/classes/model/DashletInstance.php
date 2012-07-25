@@ -95,7 +95,7 @@ class DashletInstance extends BaseDashletInstance {
         return $result;
       }
       else {
-        throw new Exception('Error trying to delete: The row "' .  $dasInsUid. '" not exists.');
+        throw new Exception('Error trying to delete: The row "' .  $dasInsUid. '" does not exist.');
       }
     }
     catch (Exception $error) {

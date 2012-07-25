@@ -192,7 +192,7 @@ function createZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName, $co
     if ($sXmlArray) {
         return "Folder Created succesfully";
     } else {
-        return "A folder with name " . $folderName . " already exists.";
+        return "A folder with name " . $folderName . " already exist.";
     }
 }
 

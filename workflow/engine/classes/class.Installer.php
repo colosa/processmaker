@@ -125,7 +125,7 @@ class Installer
           'password'=>((trim($this->options['admin']['password'])=='')?false:true)
         )
     );
-    $result['name']['message'] = ($result['isset'])?'Workspace already exists':$result['name']['message'];
+    $result['name']['message'] = ($result['isset'])?'Workspace already exist':$result['name']['message'];
     $result['name']['status']  = ($result['isset'])?false:$result['name']['status'];
     //print_r($result);
     return Array(

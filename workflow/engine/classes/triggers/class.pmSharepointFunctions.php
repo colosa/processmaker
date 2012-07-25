@@ -281,7 +281,7 @@ function getDWSFolderItems($sharepointServer, $auth,$dwsname, $strFolderUrl) {
   if(isset($result))
         return $result;
   else
-       return "Folder does not exists";
+       return "Folder does not exist";
 }
 
 /**

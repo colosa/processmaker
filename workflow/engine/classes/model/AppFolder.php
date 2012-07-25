@@ -42,7 +42,7 @@ class AppFolder extends BaseAppFolder {
     $oDataset->next ();
     if ($aRow = $oDataset->getRow ()) {//Folder exist, then return the ID
       $response['success']=false;
-      $response['message']=$response['error']="Can't create folder <br /> A folder with same name already exists. <br /> $folderName";
+      $response['message']=$response['error']="Can't create folder <br /> A folder with same name already exist. <br /> $folderName";
       $response['folderUID']=$aRow ['FOLDER_UID'];
       //return ($aRow ['FOLDER_UID']);
       return ($response);

@@ -183,7 +183,7 @@ class Dashboard extends Controller {
         $result->additionalFields = PMDashlet::getAdditionalFields($dashletFields['DAS_CLASS']);
       }
       else {
-        throw new Exception('Dashlet "' . $data->DAS_UID . '" not exists.');
+        throw new Exception('Dashlet "' . $data->DAS_UID . '" does not exist.');
       }
     }
     catch (Exception $error) {

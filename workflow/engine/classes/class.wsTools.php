@@ -1011,9 +1011,9 @@ class workspaceTools {
       $workspace = new workspaceTools($workspaceName);
       if ($workspace->workspaceExists())
         if ($overwrite)
-          CLI::logging(CLI::warning("> Workspace $workspaceName already exists, overwriting!") . "\n");
+          CLI::logging(CLI::warning("> Workspace $workspaceName already exist, overwriting!") . "\n");
         else
-          throw new Exception("Destination workspace already exists (use -o to overwrite)");
+          throw new Exception("Destination workspace already exist (use -o to overwrite)");
 
       if (file_exists($workspace->path))
         G::rm_dir($workspace->path);

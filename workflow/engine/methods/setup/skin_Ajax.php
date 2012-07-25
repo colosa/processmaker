@@ -9,7 +9,7 @@ if (!isset($_REQUEST ['action'])) {
 }
 if (!function_exists($_REQUEST ['action'])) {
     $res ['success'] = false;
-    $res ['error']=$res ['message'] = 'The requested action doesn\'t exists';
+    $res ['error']=$res ['message'] = 'The requested action does not exist';
 
     print G::json_encode($res);
     die ();
@@ -17,7 +17,7 @@ if (!function_exists($_REQUEST ['action'])) {
 $restrictedFunctions=array('copy_skin_folder','addTarFolder');
 if (in_array($_REQUEST ['action'],$restrictedFunctions)) {
     $res ['success'] = false;
-    $res ['error']=$res ['message'] = 'The requested action doesn\'t exists *';
+    $res ['error']=$res ['message'] = 'The requested action does not exist *';
     print G::json_encode($res);
     die ();
 }

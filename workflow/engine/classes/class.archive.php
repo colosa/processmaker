@@ -83,7 +83,7 @@ class archive
       $pwd = getcwd();
       chdir($this->options['basedir']);
       if ($this->options['overwrite'] == 0 && file_exists($this->options['name'] . ($this->options['type'] == "gzip" || $this->options['type'] == "bzip" ? ".tmp" : ""))){
-        $this->error[] = "File {$this->options['name']} already exists.";
+        $this->error[] = "File {$this->options['name']} already exist.";
         chdir($pwd);
         return 0;
       }
@@ -465,7 +465,7 @@ class tar_file extends archive
             mkdir($file['name'], 0775);
         }
         else if ($this->options['overwrite'] == 0 && file_exists($file['name'])){
-          $this->error[] = "{$file['name']} already exists.";
+          $this->error[] = "{$file['name']} already exist.";
           continue;
         }
         else if ($file['type'] == 2){

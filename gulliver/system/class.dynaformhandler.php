@@ -469,7 +469,7 @@ class dynaFormHandler
     $xpath = new DOMXPath($this->dom);
     $nodeList = @$xpath->query("/dynaForm/$name");
     if( ! $nodeList ){
-      throw new Exception("Error trying get the field dynaform $name, maybe it doesn't exists in {$this->xmlfile}");
+      throw new Exception("Error trying get the field dynaform $name, maybe it doesn't exist in {$this->xmlfile}");
     }
     
     if( $nodeList->length == 0 ) {
