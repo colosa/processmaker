@@ -27,47 +27,56 @@
 /* Permissions */
 switch ($RBAC->userCanAccess('PM_CASES'))
 {
-  case -2:
-    G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-    G::header('location: ../login/login');
-    die;
-    break;
-  case -1:
-    G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-    G::header('location: ../login/login');
-    die;
-    break;
+    case -2:
+        G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
+        G::header('location: ../login/login');
+        die;
+        break;
+    case -1:
+        G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+        G::header('location: ../login/login');
+        die;
+        break;
 }
 
 
-  if ( isset ( $_POST['form']['BTN_CANCEL'] ) ) {
+if (isset($_POST['form']['BTN_CANCEL'])) {
     header ( "Location: ../cases/main");
     die;
-  }
+}
 
-  /* Includes */
-  G::LoadClass('case');
+/* Includes */
+G::LoadClass('case');
 
-  $oCase = new Cases();
-  $sAppUid   = $_SESSION['APPLICATION'];
-  $iDelIndex = $_SESSION['INDEX'];
+$oCase = new Cases();
+$sAppUid   = $_SESSION['APPLICATION'];
+$iDelIndex = $_SESSION['INDEX'];
 
-  $oAppDelegation = new AppDelegation();
-  $aDelegation = $oAppDelegation->load($sAppUid, $iDelIndex);
-        
-  //if there are no user in the delegation row, this case is still in selfservice
-  if ( $aDelegation['USR_UID'] == "" ) {
+$oAppDelegation = new AppDelegation();
+$aDelegation = $oAppDelegation->load($sAppUid, $iDelIndex);
+
+//if there are no user in the delegation row, this case is still in selfservice
+if ( $aDelegation['USR_UID'] == "" ) {
     $oCase->setCatchUser( $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['USER_LOGGED'] );
-  }
-  else {
+} else {
     G::SendMessageText(G::LoadTranslation('ID_CASE_ALREADY_DERIVATED'), 'error');
-  }
+}
 
-  die('<script type="text/javascript">
+$validation = (SYS_SKIN != 'uxs')? 'true' : 'false';
+
+die('<script type="text/javascript">
+  if ('.$validation.') {
       if (window.parent.frames.length != 0) {
-        parent.location = "open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] . '&action=unassigned";
+          parent.location = "open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] .
+          '&action=unassigned";
+      } else {
+          window.location = "../cases/cases_Open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' .
+          $_SESSION['INDEX'] . '&action=unassigned";
       }
-      else {
-        window.location = "../cases/cases_Open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] . '&action=unassigned";
-      }
-      </script>');
+  } else {
+      window.location = "../cases/cases_Open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' .
+      $_SESSION['INDEX'] . '&action=unassigned";
+  }
+  </script>'
+);
+
