@@ -60,7 +60,6 @@ class Home extends Controller
     $this->setVar('skin', $skin);
 
     $this->setView("home/$template");
-    
     $this->render();
   }
 
@@ -167,8 +166,7 @@ class Home extends Controller
     $_SESSION['APPLICATION'] = $lastApp['APP_UID'];
     $_SESSION['PROCESS'] = $lastApp['PRO_UID'];
     $_SESSION['TASK'] = $lastApp['TAS_UID'];
-    
-    
+
     $steps    = $apps->getSteps($lastApp['APP_UID'], $lastApp['DEL_INDEX'], $lastApp['TAS_UID'], $lastApp['PRO_UID']);
     $lastStep = array_pop($steps);
     $lastStep['title'] = G::LoadTranslation('ID_FINISH');
@@ -184,34 +182,43 @@ class Home extends Controller
     $this->render();
   }
 
-  public function appList($httpData)
-  {
-    // setting default list applications types [default: todo]
-    $httpData->t = isset($httpData->t)? $httpData->t : 'todo';
+    public function appList($httpData)
+    {
+        // setting default list applications types [default: todo]
+        $httpData->t = isset($httpData->t)? $httpData->t : 'todo';
 
-    // setting main list title
-    switch ($httpData->t) {
-      case 'todo'  : $title = 'My Inbox'; break;
-      case 'draft' : $title = 'My Drafts'; break;
-      default: $title = ucwords($httpData->t);
+        // setting main list title
+        switch ($httpData->t) {
+            case 'todo':
+                $title = 'My Inbox';
+                break;
+            case 'draft':
+                $title = 'My Drafts';
+                break;
+            case 'unassigned':
+                $title = 'Unassigned Inbox';
+                break;
+            default:
+              $title = ucwords($httpData->t);
+              break;
+        }
+
+        // getting apps data
+        $cases = $this->getAppsData($httpData->t);
+
+        // settings html template
+        $this->setView('home/appList');
+
+        // settings vars and rendering
+        $this->setVar('cases', $cases['data']);
+        $this->setVar('cases_count', $cases['totalCount']);
+        $this->setVar('title', $title);
+        $this->setVar('appListStart', $this->appListLimit);
+        $this->setVar('appListLimit', 10);
+        $this->setVar('listType', $httpData->t);
+
+        $this->render();
     }
-
-    // getting apps data
-    $cases = $this->getAppsData($httpData->t);
-
-    // settings html template
-    $this->setView('home/appList');
-    
-    // settings vars and rendering
-    $this->setVar('cases', $cases['data']);
-    $this->setVar('cases_count', $cases['totalCount']);
-    $this->setVar('title', $title);
-    $this->setVar('appListStart', $this->appListLimit);
-    $this->setVar('appListLimit', 10);
-    $this->setVar('listType', $httpData->t);
-
-    $this->render();
-  }
 
   public function getApps($httpData)
   {
