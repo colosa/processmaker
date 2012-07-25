@@ -177,38 +177,100 @@ function deleteCase() {
 
 function pauseCase(date){
   rowModel = grid.getSelectionModel().getSelected();
-  unpauseDate = date.format('Y-m-d');
 
-  Ext.Msg.confirm(
-    _('ID_CONFIRM'),
-    _('ID_PAUSE_CASE_TO_DATE') +' '+date.format('M j, Y')+'?',
-    function(btn, text){
-      if ( btn == 'yes' ) {
-        Ext.MessageBox.show({ msg: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
-        Ext.Ajax.request({
-          url: 'cases_Ajax',
-          success: function(response) {
-            try {
-              parent.updateCasesView();
-            }
-            catch (e) {
-              // Nothing to do
-            }
-            Ext.MessageBox.hide();
-            try {
-              parent.updateCasesTree();
-            }
-            catch (e) {
-              // Nothing to do
-            }
-            Ext.MessageBox.hide();
-          },
-          params: {action:'pauseCase', unpausedate:unpauseDate, APP_UID:rowModel.data.APP_UID, DEL_INDEX: rowModel.data.DEL_INDEX}
-        });
+  if(rowModel) {
+    unpauseDate = date.format('Y-m-d');
+    var msgPause =  new Ext.Window({
+      //layout:'fit',
+      width:500,
+      plain: true,
+      modal: true,
+      title: _('ID_CONFIRM'),
 
-      }
-    }
-  );
+      items: [
+        new Ext.FormPanel({
+          labelAlign: 'top',
+          labelWidth: 75,
+          border: false,
+          frame: true,
+          items: [
+              {
+                html: '<div align="center" style="font: 14px tahoma,arial,helvetica,sans-serif">' + _('ID_PAUSE_CASE_TO_DATE') +' '+date.format('M j, Y')+'? </div> <br/>'
+              },
+              {
+                xtype: 'textarea',
+                id: 'noteReason',
+                fieldLabel: _('ID_CASE_PAUSE_REASON'),
+                name: 'noteReason',
+                width: 450,
+                height: 50
+              },
+              {
+                id: 'notifyReason',
+                xtype:'checkbox',
+                name: 'notifyReason',
+                hideLabel: true,
+                boxLabel: _('ID_NOTIFY_USERS_CASE'),
+              }
+          ],
+
+          buttonAlign: 'center',
+
+          buttons: [{
+              text: 'Ok',
+              handler: function(){
+                  if (Ext.getCmp('noteReason').getValue() != '') {
+                    var noteReasonTxt = _('ID_CASE_PAUSE_LABEL_NOTE') + ' ' + Ext.getCmp('noteReason').getValue();
+                  } else {
+                    var noteReasonTxt = '';
+                  }
+                  var notifyReasonVal = Ext.getCmp('notifyReason').getValue() == true ? 1 : 0;
+                  
+                  Ext.MessageBox.show({ msg: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
+                  Ext.Ajax.request({
+                    url: 'cases_Ajax',
+                    success: function(response) {
+                      try {
+                        parent.updateCasesView();
+                      }
+                      catch (e) {
+                        // Nothing to do
+                      }
+                      Ext.MessageBox.hide();
+                      try {
+                        parent.updateCasesTree();
+                      }
+                      catch (e) {
+                        // Nothing to do
+                      }
+                      Ext.MessageBox.hide();
+                      msgPause.close();
+                    },
+                    params: {action:'pauseCase', unpausedate:unpauseDate, APP_UID:rowModel.data.APP_UID, DEL_INDEX: rowModel.data.DEL_INDEX, NOTE_REASON: noteReasonTxt, NOTIFY_PAUSE: notifyReasonVal}
+                  });
+              }
+          },{
+              text: 'Cancel', //COCHATRA
+              handler: function(){
+                  msgPause.close();
+              }
+          }]
+        })
+      ]
+    });
+    msgPause.show(this);
+    
+  } else {
+    Ext.Msg.show({
+      title:'',
+      msg: _('ID_NO_SELECTION_WARNING'),
+      buttons: Ext.Msg.INFO,
+      fn: function(){},
+      animEl: 'elId',
+      icon: Ext.MessageBox.INFO,
+      buttons: Ext.MessageBox.OK
+    });
+  }
 }
 
 

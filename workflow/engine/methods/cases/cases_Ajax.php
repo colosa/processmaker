@@ -401,6 +401,15 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
         G::RenderPage('publish', 'raw');
         break;
     case 'pauseCase':
+        // Save the note pause reason
+        if ($_POST['NOTE_REASON'] != '') {
+            require_once ( "classes/model/AppNotes.php" );
+            $appNotes = new AppNotes();
+            $noteContent = addslashes($_POST['NOTE_REASON']);
+            $result = $appNotes->postNewNote($_POST['APP_UID'], $_SESSION['USER_LOGGED'], $noteContent, $_POST['NOTIFY_PAUSE']);
+        }
+        // End save
+
         $unpauseDate = $_POST['unpausedate'];
         $oCase = new Cases();
         if (isset($_POST['APP_UID']) && isset($_POST['DEL_INDEX'])) {

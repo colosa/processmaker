@@ -465,23 +465,77 @@ Ext.onReady(function(){
 
   Actions.cancelCase = function()
   {
-    PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_CANCEL_CASE'), function(){
-      Ext.Ajax.request({
-        url : 'ajaxListener' ,
-        params : {action : 'cancelCase'},
-        success: function ( result, request ) {
-          try {
-            parent.notify('', 'The case ' + parent._CASE_TITLE + ' was cancelled!');
-          }
-          catch (e) {
-          }
-          location.href = 'casesListExtJs';
-        },
-        failure: function ( result, request) {
-          Ext.MessageBox.alert('Failed', result.responseText);
-        }
-      });
+    var msgCancel =  new Ext.Window({
+      width:500,
+      plain: true,
+      modal: true,
+      title: _('ID_CONFIRM'),
+      items: [
+        new Ext.FormPanel({
+          labelAlign: 'top',
+          labelWidth: 75,
+          border: false,
+          frame: true,
+          items: [
+            {
+              html: '<div align="center" style="font: 14px tahoma,arial,helvetica,sans-serif">' + _('ID_CONFIRM_CANCEL_CASE')+'? </div> <br/>'
+            },
+            {
+              xtype: 'textarea',
+              id: 'noteReason',
+              fieldLabel: _('ID_CASE_CANCEL_REASON'),
+              name: 'noteReason',
+              width: 450,
+              height: 50
+            },
+            {
+              id: 'notifyReason',
+              xtype:'checkbox',
+              name: 'notifyReason',
+              hideLabel: true,
+              boxLabel: _('ID_NOTIFY_USERS_CASE'),
+            }
+          ],
+
+          buttonAlign: 'center',
+
+          buttons: [{
+            text: 'Ok',
+            handler: function(){
+              if (Ext.getCmp('noteReason').getValue() != '') {
+                var noteReasonTxt = _('ID_CASE_CANCEL_LABEL_NOTE') + ' ' + Ext.getCmp('noteReason').getValue();
+              } else {
+                var noteReasonTxt = '';
+              }
+              var notifyReasonVal = Ext.getCmp('notifyReason').getValue() == true ? 1 : 0;
+              
+              Ext.MessageBox.show({ msg: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
+              Ext.Ajax.request({
+                url : 'ajaxListener' ,
+                params : {action : 'cancelCase', NOTE_REASON: noteReasonTxt, NOTIFY_PAUSE: notifyReasonVal},
+                success: function ( result, request ) {
+                  try {
+                    parent.notify('', 'The case ' + parent._CASE_TITLE + ' was cancelled!');
+                  }
+                  catch (e) {
+                  }
+                  location.href = 'casesListExtJs';
+                },
+                failure: function ( result, request) {
+                  Ext.MessageBox.alert('Failed', result.responseText);
+                }
+              });
+            }
+          },{
+            text: 'Cancel',
+            handler: function(){
+                msgCancel.close();
+            }
+          }]
+        })
+      ]
     });
+    msgCancel.show(this);
   }
 
   Actions.getUsersToReassign = function()
@@ -602,10 +656,11 @@ Ext.onReady(function(){
 
     var fieldset = {
       xtype : 'fieldset',
-      autoHeight  : true,
+      labelWidth: 150,
+      //autoHeight  : true,
       defaults    : {
         width : 170,
-        xtype:'label',
+        xtype:'label',        
         labelStyle : 'padding: 0px;',
         style: 'font-weight: bold'
       },
@@ -620,7 +675,21 @@ Ext.onReady(function(){
           allowBlank: false,
           value: filterDate,
           minValue: filterDate
-        })
+        }),
+        {
+          xtype: 'textarea',
+          id: 'noteReason',
+          fieldLabel: _('ID_CASE_PAUSE_REASON'),
+          name: 'noteReason',
+          width: 170,
+          height: 50
+        },
+        {
+          id: 'notifyReason',
+          xtype:'checkbox',
+          name: 'notifyReason',
+          fieldLabel: _('ID_NOTIFY_USERS_CASE'),
+        }
       ],
       buttons : [
         {
@@ -640,7 +709,7 @@ Ext.onReady(function(){
     var frm = new Ext.FormPanel( {
       id: 'unpauseFrm',
       labelAlign : 'right',
-      bodyStyle : 'padding:5px 5px 0',
+      //bodyStyle : 'padding:5px 5px 0',
       width : 250,
       items : [fieldset]
     });
@@ -648,8 +717,8 @@ Ext.onReady(function(){
 
     var win = new Ext.Window({
       title: 'Pause Case',
-      width: 340,
-      height: 170,
+      width: 370,
+      height: 230,
       layout:'fit',
       autoScroll:true,
       modal: true,
@@ -661,6 +730,13 @@ Ext.onReady(function(){
 
   Actions.pauseCase = function()
   {
+    if (Ext.getCmp('noteReason').getValue() != '') {
+      var noteReasonTxt = _('ID_CASE_PAUSE_LABEL_NOTE') + ' ' + Ext.getCmp('noteReason').getValue();
+    } else {
+      var noteReasonTxt = '';
+    }
+    var notifyReasonVal = Ext.getCmp('notifyReason').getValue() == true ? 1 : 0;
+    var paramsNote = '&NOTE_REASON=' + noteReasonTxt + '&NOTIFY_PAUSE=' + notifyReasonVal;
 
     var unpauseDate = Ext.getCmp('unpauseDate').getValue();
     if( unpauseDate == '') {
@@ -672,7 +748,7 @@ Ext.onReady(function(){
     unpauseDate = unpauseDate.format('Y-m-d');
 
     Ext.getCmp('unpauseFrm').getForm().submit({
-      url:'ajaxListener?action=pauseCase&unpauseDate=' + unpauseDate,
+      url:'ajaxListener?action=pauseCase&unpauseDate=' + unpauseDate + paramsNote,
       waitMsg:'Pausing Case '+parent._CASE_TITLE+'...',
       timeout : 36000,
       success : function(res, req) {

@@ -440,6 +440,15 @@ class Ajax
       $DEL_INDEX = $_SESSION['INDEX'];
     }
 
+    // Save the note pause reason
+    if ($_POST['NOTE_REASON'] != '') {
+        require_once ( "classes/model/AppNotes.php" );
+        $appNotes = new AppNotes();
+        $noteContent = addslashes($_POST['NOTE_REASON']);
+        $appNotes->postNewNote($APP_UID, $_SESSION['USER_LOGGED'], $noteContent, $_POST['NOTIFY_PAUSE']);
+    }
+    // End save
+
     if( $multiple ) {
       foreach($appUids as $i=>$appUid)
         $oCase->cancelCase($appUid, $delIndexes[$i], $_SESSION['USER_LOGGED']);
@@ -496,6 +505,15 @@ class Ajax
         $APP_UID   = $_SESSION['APPLICATION'];
         $DEL_INDEX = $_SESSION['INDEX'];
       }
+
+      // Save the note pause reason
+      if ($_REQUEST['NOTE_REASON'] != '') {
+          require_once ( "classes/model/AppNotes.php" );
+          $appNotes = new AppNotes();
+          $noteContent = addslashes($_REQUEST['NOTE_REASON']);
+          $appNotes->postNewNote($APP_UID, $_SESSION['USER_LOGGED'], $noteContent, $_REQUEST['NOTIFY_PAUSE']);
+      }
+      // End save
 
       $oCase->pauseCase($APP_UID, $DEL_INDEX, $_SESSION['USER_LOGGED'], $unpauseDate);
       $app = new Application();
