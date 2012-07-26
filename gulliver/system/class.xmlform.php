@@ -1275,7 +1275,8 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
         $sOptions .= '    getField(newcont[i].name).value = newcont[i].value; ';
         $sOptions .= '    if (newcont[i].content.type == \'dropdown\') { ';
 
-        $sOptions .= '      for (ni = 0; ni < newcont[i].content.options.length; ni++ ){ ';
+        $sOptions .= '      fieldLength = getField(newcont[i].name).options.length; ';
+        $sOptions .= '      for (ni = 0; ni < fieldLength; ni++ ){ ';
         $sOptions .= '        getField(newcont[i].name).options.remove(ni); ';
         $sOptions .= '      } ';
 
