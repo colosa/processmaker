@@ -272,17 +272,19 @@ function getFolderChildren($alfrescoServerUrl, $folderId,  $user, $pwd) {
  * @param string | $docType | Type of document to be Uploaded
  * @param string | $user | Valid Admin username to connect to Alfresco server
  * @param string | $pwd | Valid Admin password to connect to Alfresco server
+ * @param string | $ubicacion | Path of document to be Uploaded
  *
  * @return string | $result | Response
  *
  */
-function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docType, $user, $pwd) {
+function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docType, $user, $pwd, $ubicacion = '') {
     $filep          =  fopen($fileSource,"r");
     $fileLength     =  filesize($fileSource);
     $fileContent    =  fread($filep,$fileLength);
     $fileContent    =  base64_encode($fileContent);
 
-    $alfresco_url = "$alfrescoServerUrl/s/cmis/p/Sites/children";
+    $ubicacion = ($ubicacion != '') ? $ubicacion . PATH_SEP : $ubicacion;
+    $alfresco_url = "$alfrescoServerUrl/s/cmis/p/Sites/" . $ubicacion . "children";
     $xmlData = array();
     $xmlData = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:cmisra="http://docs.oasis-open.org/ns/cmis/restatom/200908/" xmlns:cmis="http://docs.oasis-open.org/ns/cmis/core/200908/"><title>'.$title.'</title><summary>'.$description.'</summary><content type="application/'.$docType.'">'.$fileContent.'</content><cmisra:object><cmis:properties><cmis:propertyId propertyDefinitionId="cmis:objectTypeId"><cmis:value>cmis:document</cmis:value></cmis:propertyId></cmis:properties></cmisra:object></entry>';
 
