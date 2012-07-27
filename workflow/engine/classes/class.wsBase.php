@@ -2286,6 +2286,16 @@ class wsBase
                     $taskName = '';
                 }
 
+                // execute events
+                $eventPro = $_SESSION["PROCESS"];
+                $eventApp = $caseId;
+                $eventInd = $aAppDel['DEL_INDEX'];
+                $eventTas = $aAppDel['TAS_UID'];
+
+                $oEvent = new Event();
+                $oEvent->createAppEvents($eventPro, $eventApp, $eventInd, $eventTas);
+                // end events
+
                 $currentUser = new stdClass();
                 $currentUser->userId    = $aAppDel['USR_UID'];
                 $currentUser->userName  = $currentUserName;
