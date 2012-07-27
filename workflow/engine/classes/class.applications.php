@@ -27,6 +27,7 @@ class Applications
     require_once ( "classes/model/AdditionalTables.php" );
     require_once ( "classes/model/AppDelay.php" );
     require_once ( "classes/model/Fields.php" );
+    require_once ( "classes/model/Users.php" );
 
     //$userUid = ( isset($_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '' ) ? $_SESSION['USER_LOGGED'] : null; <-- passed by param
     $oAppCache = new AppCacheView();
@@ -96,6 +97,11 @@ class Applications
         $CriteriaCount = $oAppCache->getToDoCountCriteria($userUid);
       break;
     }
+
+    // $Criteria->addJoin(AppCacheViewPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+    $Criteria->addJoin(AppCacheViewPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+    $Criteria->addSelectColumn(UsersPeer::USR_FIRSTNAME );
+    $Criteria->addSelectColumn(UsersPeer::USR_LASTNAME );
 
     if ( !is_array($confCasesList) ) {
         $rows = $this->getDefaultFields( $action );
@@ -313,7 +319,7 @@ class Applications
     $oDataset = AppCacheViewPeer::doSelectRS($Criteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $oDataset->next();
-        
+
     $result = array();
     $result['totalCount'] = $totalCount;
     $rows = array();
@@ -387,7 +393,9 @@ class Applications
      $fields['APP_PRO_TITLE']           = array( 'name' => 'APP_PRO_TITLE'  ,         'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_APP_PRO_TITLE') ,         'width' => 140, 'align' => 'left');
      $fields['APP_TAS_TITLE']           = array( 'name' => 'APP_TAS_TITLE'  ,         'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_APP_TAS_TITLE') ,         'width' => 140, 'align' => 'left');
      $fields['APP_DEL_PREVIOUS_USER']   = array( 'name' => 'APP_DEL_PREVIOUS_USER'  , 'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_APP_DEL_PREVIOUS_USER') , 'width' => 120, 'align' => 'left');
-     $fields['APP_CURRENT_USER']        = array( 'name' => 'APP_CURRENT_USER'       , 'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_APP_CURRENT_USER')  ,     'width' => 120, 'align' => 'left');
+     $fields['APP_CURRENT_USER']        = array( 'name' => 'APP_CURRENT_USER'       , 'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_APP_CURRENT_USER')      ,'width' => 120, 'align' => 'left');
+     $fields['USR_FIRSTNAME']           = array( 'name' => 'USR_FIRSTNAME'          , 'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_APP_CURRENT_USER')      , 'width' => 120, 'align' => 'left');
+     $fields['USR_LASTNAME']            = array( 'name' => 'USR_LASTNAME'           , 'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_APP_CURRENT_USER')      , 'width' => 120, 'align' => 'left');
      $fields['DEL_TASK_DUE_DATE']       = array( 'name' => 'DEL_TASK_DUE_DATE'      , 'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_DEL_TASK_DUE_DATE') ,     'width' => 100, 'align' => 'left');
      $fields['APP_UPDATE_DATE']         = array( 'name' => 'APP_UPDATE_DATE'        , 'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_APP_UPDATE_DATE') ,       'width' => 100, 'align' => 'left');
      $fields['DEL_PRIORITY']            = array( 'name' => 'DEL_PRIORITY'           , 'fieldType' => 'case field' , 'label' => G::loadTranslation('ID_CASESLIST_DEL_PRIORITY')    ,       'width' => 80,  'align' => 'left');
@@ -459,6 +467,8 @@ class Applications
         $rows[] = $fields['APP_CURRENT_USER'];
         $rows[] = $fields['APP_UPDATE_DATE'];
         $rows[] = $fields['APP_STATUS'];
+        $rows[] = $fields['USR_FIRSTNAME'];
+        $rows[] = $fields['USR_LASTNAME'];
         break;
       case 'unassigned' :  //#, Case, task, process, completed by user, finish date
         $fields = $this->setDefaultFields();

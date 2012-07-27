@@ -475,22 +475,32 @@ Ext.onReady ( function() {
     return '<img src="/images/ext/default/s.gif" class="x-tree-node-icon ICON_CASES_NOTES" unselectable="off" id="extdd-17" onClick="openCaseNotesWindow(\''+appUid+'\', true, \''+title+'\')">';
   }
 
+  //Render Full Name
+  full_name = function(v,x,s){
+      return _FNF(v, s.data.USR_FIRSTNAME, s.data.USR_LASTNAME);
+  };
+
   for(var i = 0, len = columns.length; i < len; i++){
     var c = columns[i];
     c.renderer = columnRenderer;
-    if( c.dataIndex == 'DEL_TASK_DUE_DATE') c.renderer = dueDate;
-    if( c.dataIndex == 'APP_UPDATE_DATE')   c.renderer = showDate;
-    if( c.id == 'deleteLink')               c.renderer = deleteLink;
-    if( c.id == 'viewLink')                 c.renderer = viewLink;
-    if( c.id == 'unpauseLink')              c.renderer = unpauseLink;
-    if( c.dataIndex == 'CASE_SUMMARY')      c.renderer = renderSummary;
-    if( c.dataIndex == 'CASE_NOTES_COUNT')  c.renderer = renderNote;
+    if( c.dataIndex == 'DEL_TASK_DUE_DATE')     c.renderer = dueDate;
+    if( c.dataIndex == 'APP_UPDATE_DATE')       c.renderer = showDate;
+    if( c.id == 'deleteLink')                   c.renderer = deleteLink;
+    if( c.id == 'viewLink')                     c.renderer = viewLink;
+    if( c.id == 'unpauseLink')                  c.renderer = unpauseLink;
+    if( c.dataIndex == 'CASE_SUMMARY')          c.renderer = renderSummary;
+    if( c.dataIndex == 'CASE_NOTES_COUNT')      c.renderer = renderNote;
+    if( c.dataIndex == 'APP_DEL_PREVIOUS_USER') c.renderer = full_name;
+    if( c.dataIndex == 'APP_CURRENT_USER')      c.renderer = full_name;
   }
 
   //adding the hidden field DEL_INIT_DATE
   readerFields.push ( {name: "DEL_INIT_DATE"});
   readerFields.push ( {name: "APP_UID"});
   readerFields.push ( {name: "DEL_INDEX"});
+
+  readerFields.push ( {name: "USR_FIRSTNAME"});
+  readerFields.push ( {name: "USR_LASTNAME"});
 
   for (i=0; i<columns.length; i++) {
     if (columns[i].dataIndex == 'USR_UID') {
