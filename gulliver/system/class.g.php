@@ -2404,25 +2404,17 @@ $output = $outputHeader.$output;
     }
   }
 
-  /**
-   * capitalize
-   *
-   * @param  string $string
-   *
-   * @return string $string
-   */
-  function capitalize($string)
-  {
-    $capitalized = '';
-    $singleWords = preg_split( "/\W+/m" , $string );
-    for($r=0; $r < sizeof($singleWords) ; $r++ ) {
-      @$string = substr($string , 0 , $singleWords[$r][1]) .
-      strtoupper( substr($singleWords[$r][0], 0,1) ) .
-      strtolower( substr($singleWords[$r][0], 1) ) .
-      substr( $string , $singleWords[$r][1] + strlen($singleWords[$r][0]) );
+    /**
+     * capitalize
+     *
+     * @param  string $string
+     *
+     * @return string $string
+     */
+    function capitalize($string)
+    {
+        return ucfirst($string);
     }
-    return $string;
-  }
 
   /**
    * toUpper
@@ -2917,37 +2909,14 @@ $output = $outputHeader.$output;
         return $sysCon;
     }
 
-  /*
-   * Return the Friendly Title for a string, capitalize every word and remove spaces
-   *   param : text string
-   */
-  function capitalizeWords( $text )
-  {
-    /*$result = '';
-     $space = true;
-     for ( $i = 0; $i < strlen ( $text); $i++ ) {
-     $car = strtolower ( $text[$i] );
-     if ( strpos( "abcdefghijklmnopqrstuvwxyz1234567890", $car ) !== false ) {
-     if ($space ) $car = strtoupper ( $car );
-     $result .= $car;
-     $space  = false;
-     }
-     else
-     $space = true;
-     }
-     return $result;*/
-    if (function_exists('mb_detect_encoding')) {
-      if (strtoupper(mb_detect_encoding($text)) == 'UTF-8') {
-        $text = utf8_encode($text);
-      }
+    /*
+     * Return the Friendly Title for a string, capitalize every word and remove spaces
+     *   param : text string
+     */
+    function capitalizeWords( $text )
+    {
+        return ucwords($text);
     }
-    if(function_exists('mb_ucwords')) {
-      return mb_ucwords($text);
-    }
-    else {
-      return mb_convert_case($text, MB_CASE_TITLE, "UTF-8");
-    }
-  }
 
   /**
    * unhtmlentities
