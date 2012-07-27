@@ -1557,22 +1557,20 @@ td.x-cnotes-label {
 }
 
 .x-pm-license-notification {
-  background-color: #a7bec5;
-  background-image: -moz-linear-gradient(#fff, #a7bec5);
-  background: -webkit-linear-gradient(#fff,#a7bec5);
-
-  font: 8pt Tahoma,sans-serif,MiscFixed;
-  color:#fff;
-  text-align: center;
+  background-color: #EFEFEF;
+  border: 1px solid #B2B2B2;
+  border-radius: 5px;
+  color:#848484;
+  font-family: Tahoma, sans-serif, MiscFixed;
+  font-size: 10px;
+  font-weight:bold;
   height:20px;
-  padding: 3px 10px 3px 10px;
-
-  border-radius: 4px 4px 4px 4px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  line-height:20px;
+  text-decoration:none;
+  padding: 6px 15px;
 }
 
 .x-pm-license-notification a {
-  font: 8pt Tahoma,sans-serif,MiscFixed;
-  color: #fff;
-  text-decoration: none;
+  color:#848484;
+text-decoration: none;
 }
