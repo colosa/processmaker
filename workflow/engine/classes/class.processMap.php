@@ -31,6 +31,7 @@ G::LoadClass('groups');
 G::LoadClass('tasks');
 G::LoadClass('xmlfield_InputPM');
 G::LoadClass('calendar');
+G::LoadClass('FullNameFormat');
 
 
 require_once 'classes/model/AppDelegation.php';
@@ -1110,7 +1111,7 @@ class processMap {
       $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
       $oDataset->next();
       while ($aRow = $oDataset->getRow()) {
-        $aUsers [] = array('LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'], 'TAS_UID' => $aRow ['TAS_UID'], 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $aRow ['TU_TYPE'], 'TU_RELATION' => $aRow ['TU_RELATION']);
+        $aUsers [] = array('LABEL' => FullNameFormat::getFullName($aRow), 'TAS_UID' => $aRow ['TAS_UID'], 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $aRow ['TU_TYPE'], 'TU_RELATION' => $aRow ['TU_RELATION']);
         $oDataset->next();
       }
       global $_DBArray;
@@ -1179,7 +1180,7 @@ class processMap {
       $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
       $oDataset->next();
       while ($aRow = $oDataset->getRow()) {
-        $aUsers [] = array('LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'], 'TAS_UID' => $sTaskUID, 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $iType, 'TU_RELATION' => 1);
+        $aUsers [] = array('LABEL' => FullNameFormat::getFullName($aRow), 'TAS_UID' => $sTaskUID, 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $iType, 'TU_RELATION' => 1);
         $oDataset->next();
       }
       global $_DBArray;
@@ -3285,7 +3286,7 @@ class processMap {
       if ($aRow ['OP_USER_RELATION'] == 1) {
         $oUser = new Users ( );
         $aFields = $oUser->load($aRow ['USR_UID']);
-        $sUserGroup = $aFields ['USR_FIRSTNAME'] . ' ' . $aFields ['USR_LASTNAME'] . ' (' . $aFields ['USR_USERNAME'] . ')';
+        $sUserGroup = FullNameFormat::getFullName($aFields) . ' (' . $aFields ['USR_USERNAME'] . ')';
       } else {
         $oGroup = new Groupwf ( );
         if ($aRow ['USR_UID'] != '') {
@@ -3449,7 +3450,7 @@ class processMap {
       if ($aRow ['OP_USER_RELATION'] == 1) {
         $oUser = new Users ( );
         $aFields = $oUser->load($aRow ['USR_UID']);
-        $sUserGroup = $aFields ['USR_FIRSTNAME'] . ' ' . $aFields ['USR_LASTNAME'] . ' (' . $aFields ['USR_USERNAME'] . ')';
+        $sUserGroup = FullNameFormat::getFullName($aFields) . ' (' . $aFields ['USR_USERNAME'] . ')';
       } else {
         $oGroup = new Groupwf ( );
         if ($aRow ['USR_UID'] != '') {
@@ -3568,7 +3569,7 @@ class processMap {
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $oDataset->next();
     while ($aRow = $oDataset->getRow()) {
-      $aUsersGroups [] = array('UID' => '1|' . $aRow ['USR_UID'], 'LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'] . ' (' . $aRow ['USR_USERNAME'] . ')');
+      $aUsersGroups [] = array('UID' => '1|' . $aRow ['USR_UID'], 'LABEL' => FullNameFormat::getFullName($aRow) . ' (' . $aRow ['USR_USERNAME'] . ')');
       $oDataset->next();
     }
     $aAllObjects = array();
@@ -3707,7 +3708,7 @@ class processMap {
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $oDataset->next();
     while ($aRow = $oDataset->getRow()) {
-      $aUsersGroups [] = array('UID' => '1|' . $aRow ['USR_UID'], 'LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'] . ' (' . $aRow ['USR_USERNAME'] . ')');
+      $aUsersGroups [] = array('UID' => '1|' . $aRow ['USR_UID'], 'LABEL' => FullNameFormat::getFullName($aRow) . ' (' . $aRow ['USR_USERNAME'] . ')');
       $oDataset->next();
     }
 
@@ -4886,7 +4887,7 @@ class processMap {
       $oDataset->setFetchmode ( ResultSet::FETCHMODE_ASSOC );
       $oDataset->next ();
       while ( $aRow = $oDataset->getRow () ) {
-        $aUsers [] = array ('LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'], 'TAS_UID' => $aRow ['TAS_UID'], 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $aRow ['TU_TYPE'], 'TU_RELATION' => $aRow ['TU_RELATION'] );
+        $aUsers [] = array ('LABEL' => FullNameFormat::getFullName($aRow), 'TAS_UID' => $aRow ['TAS_UID'], 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $aRow ['TU_TYPE'], 'TU_RELATION' => $aRow ['TU_RELATION'] );
         $oDataset->next ();
       }
       global $_DBArray;
@@ -4962,7 +4963,7 @@ class processMap {
       $oDataset->setFetchmode ( ResultSet::FETCHMODE_ASSOC );
       $oDataset->next ();
       while ( $aRow = $oDataset->getRow () ) {
-        $aUsers [] = array ('LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'], 'TAS_UID' => $sTaskUID, 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $iType, 'TU_RELATION' => 1 );
+        $aUsers [] = array ('LABEL' => FullNameFormat::getFullName($aRow), 'TAS_UID' => $sTaskUID, 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $iType, 'TU_RELATION' => 1 );
         $oDataset->next ();
       }
       global $_DBArray;
@@ -6160,7 +6161,7 @@ class processMap {
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $oDataset->next();
     while ($aRow = $oDataset->getRow()) {
-      $aUsersGroups [] = array('UID' => '1|' . $aRow ['USR_UID'], 'LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'] . ' (' . $aRow ['USR_USERNAME'] . ')');
+      $aUsersGroups [] = array('UID' => '1|' . $aRow ['USR_UID'], 'LABEL' => FullNameFormat::getFullName($aRow) . ' (' . $aRow ['USR_USERNAME'] . ')');
       $oDataset->next();
     }
     $aAllObjects = array();
@@ -6520,7 +6521,7 @@ class processMap {
       $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
       $oDataset->next();
       while ($aRow = $oDataset->getRow()) {
-        $aUsers [] = array('LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'], 'TAS_UID' => $sTaskUID, 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $iType, 'TU_RELATION' => 1);
+        $aUsers [] = array('LABEL' => FullNameFormat::getFullName($aRow), 'TAS_UID' => $sTaskUID, 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $iType, 'TU_RELATION' => 1);
         $oDataset->next();
       }
       global $_DBArray;
@@ -6597,7 +6598,7 @@ function getExtTaskUsersAdHocCriteria($start, $limit,$sTaskUID = '', $iType = 1)
       $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
       $oDataset->next();
       while ($aRow = $oDataset->getRow()) {
-        $aUsers [] = array('LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'], 'TAS_UID' => $aRow ['TAS_UID'], 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $aRow ['TU_TYPE'], 'TU_RELATION' => $aRow ['TU_RELATION']);
+        $aUsers [] = array('LABEL' => FullNameFormat::getFullName($aRow), 'TAS_UID' => $aRow ['TAS_UID'], 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $aRow ['TU_TYPE'], 'TU_RELATION' => $aRow ['TU_RELATION']);
         $oDataset->next();
       }
       global $_DBArray;

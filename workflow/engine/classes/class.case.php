@@ -59,6 +59,7 @@ require_once ("classes/model/Users.php");
 require_once ("classes/model/AppHistory.php");
 
 G::LoadClass('pmScript');
+G::LoadClass('FullNameFormat');
 
 /**
  * A Cases object where you can do start, load, update, refresh about cases
@@ -510,7 +511,12 @@ class Cases
                 $uFields = $oUser->toArray(BasePeer::TYPE_FIELDNAME);
                 //$aFields['TITLE'] = $oApp->getAppTitle();
                 $aFields['TITLE'] = $aFields['APP_TITLE'];
-                $aFields['CREATOR'] = $oUser->getUsrFirstname() . ' ' . $oUser->getUsrLastname();
+                $aFields['CREATOR'] = FullNameFormat::getFullName(
+                  array(
+                    'USR_LASTNAME' => $oUser->getUsrLastname(),
+                    'USR_FIRSTNAME' => $oUser->getUsrFirstname()
+                  )
+                );
                 $aFields['CREATE_DATE'] = $oApp->getAppCreateDate();
                 $aFields['UPDATE_DATE'] = $oApp->getAppUpdateDate();
             } catch (Exception $oError) {
@@ -540,7 +546,12 @@ class Cases
                 try {
                     $oCurUser = new Users();
                     $oCurUser->load($aAppDel['USR_UID']);
-                    $aFields['CURRENT_USER'] = $oCurUser->getUsrFirstname() . ' ' . $oCurUser->getUsrLastname();
+                    $aFields['CURRENT_USER'] = FullNameFormat::getFullName(
+                      array(
+                        'USR_LASTNAME' => $oUser->getUsrLastname(),
+                        'USR_FIRSTNAME' => $oUser->getUsrFirstname()
+                      )
+                    );
                 } catch (Exception $oError) {
                     $aFields['CURRENT_USER'] = '';
                 }
@@ -3290,7 +3301,7 @@ class Cases
 
                 if ($aRow['USR_UID'] != -1) {
                     $aUser = $oUser->load($aRow['USR_UID']);
-                    $aFields['CREATOR'] = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'];
+                    $aFields['CREATOR'] = FullNameFormat::getFullName($aUser);
                 } else {
                     $aFields['CREATOR'] = '***';
                 }
@@ -3936,7 +3947,7 @@ class Cases
             $lastVersion = $oAppDocument->getLastAppDocVersion($aRow['APP_DOC_UID'], $sApplicationUID);
             try {
                 $aAux1 = $oUser->load($aAux['USR_UID']);
-                $sUser = $aAux1['USR_FIRSTNAME'] . ' ' . $aAux1['USR_LASTNAME'];
+                $sUser = FullNameFormat::getFullName($aAux1);
             } catch (Exception $oException) {
                 //$sUser = '(USER DELETED)';
                 $sUser = '***';
@@ -4022,7 +4033,7 @@ class Cases
             $lastVersion = $oAppDocument->getLastAppDocVersion($aRow['APP_DOC_UID'], $sApplicationUID);
             try {
                 $aAux1 = $oUser->load($aAux['USR_UID']);
-                $sUser = $aAux1['USR_FIRSTNAME'] . ' ' . $aAux1['USR_LASTNAME'];
+                $sUser = FullNameFormat::getFullName($aAux1);
             } catch (Exception $oException) {
                 $sUser = '***';
             }
@@ -4535,7 +4546,7 @@ class Cases
                     $aUser = $oUser->load($aTask['USR_UID']);
                     $sTo = (
                         (($aUser['USR_FIRSTNAME'] != '') || ($aUser['USR_LASTNAME'] != '')) ?
-                            $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'] . ' ' : '') .
+                            FullNameFormat::getFullName($aUser) . ' ' : '') .
                         '<' . $aUser['USR_EMAIL'] . '>';
                     $oSpool = new spoolRun();
                     $oSpool->setConfig(array(
@@ -5421,7 +5432,7 @@ class Cases
                     $aData = $oDataset->getRow();
                     G::SendMessageText(
                         G::LoadTranslation('ID_CASE_IS_CURRENTLY_WITH_ANOTHER_USER') . ': ' .
-                        $aData['USR_FIRSTNAME'] . ' ' . $aData['USR_LASTNAME'] .
+                        FullNameFormat::getFullName($aData) .
                         ' (' . $aData['USR_USERNAME'] . ')', 'error'
                     );
                     G::header('Location: ' . $sURL);
@@ -5450,8 +5461,8 @@ class Cases
                     $aData = $oDataset->getRow();
                     die('<strong>' .
                         G::LoadTranslation('ID_CASE_ALREADY_DERIVATED') . ': ' .
-                        $aData['USR_FIRSTNAME'] . ' ' .
-                        $aData['USR_LASTNAME'] . ' (' . $aData['USR_USERNAME'] . ')</strong>'
+                        FullNameFormat::getFullName($aData) .
+                        ' (' . $aData['USR_USERNAME'] . ')</strong>'
                     );
                 } else {
                     $c->add(AppDelegationPeer::DEL_FINISH_DATE, null, Criteria::ISNULL);
@@ -5908,7 +5919,7 @@ class Cases
                     $response = array();
                     foreach ($appNotes['array']['notes'] as $key => $value) {
                         $list = array();
-                        $list['FULL_NAME'] = $value['USR_FIRSTNAME']." ".$value['USR_LASTNAME'];
+                        $list['FULL_NAME'] = FullNameFormat::getFullName($value);
                         foreach ($value as $keys => $value) {
                             if ($keys != 'USR_FIRSTNAME' && $keys != 'USR_LASTNAME' && $keys != 'USR_EMAIL') {
                                 $list[$keys] = $value;
@@ -5920,7 +5931,7 @@ class Cases
                 case 'object':
                     $response = new stdclass();
                     foreach ($appNotes['array']['notes'] as $key => $value) {
-                        $response->$key->FULL_NAME = $value['USR_FIRSTNAME']." ".$value['USR_LASTNAME'];
+                        $response->$key->FULL_NAME = FullNameFormat::getFullName($value);
                         foreach ($value as $keys => $value) {
                             if ($keys != 'USR_FIRSTNAME' && $keys != 'USR_LASTNAME' && $keys != 'USR_EMAIL') {
                                 $response->$key->$keys = $value;
@@ -5931,8 +5942,7 @@ class Cases
                 case 'string':
                     $response = '';
                     foreach ($appNotes['array']['notes'] as $key => $value) {
-                        $response .=  $value['USR_FIRSTNAME']." ".
-                            $value['USR_LASTNAME']." ".
+                        $response .=  FullNameFormat::getFullName($value)." ".
                             "(".$value['USR_USERNAME'].")".
                             " ".$value['NOTE_CONTENT']." "." (".$value['NOTE_DATE']." ) ".
                             " \n";
