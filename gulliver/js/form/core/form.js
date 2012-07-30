@@ -328,10 +328,10 @@ function G_DropDown( form, element, name )
 }
 G_DropDown.prototype=new G_Field();
 
-function G_Text( form, element, name)
+function G_Text(form, element, name)
 {
-  var me      = this;
-  this.mType   = 'text';
+  var me = this;
+  this.mType = "text";
   this.parent = G_Field;
   this.browser = {};
   this.comma_separator = ".";
@@ -1130,8 +1130,8 @@ function G_Text( form, element, name)
     }
     //THIS FUNCTION HANDLE BACKSPACE AND DELETE KEYS
     if (me.validate == 'Any' && me.mask == '') return true;
-    //pressKey = event.keyCode;
-    pressKey = window.event ? window.event.keyCode : event.which;
+
+    var pressKey = (window.event)? window.event.keyCode : event.which;
 
     switch(pressKey){
       case 8: case 46:  //BACKSPACE OR DELETE
@@ -1177,35 +1177,58 @@ function G_Text( form, element, name)
     }
 
     if (me.validate == 'Any' && me.mask == '') return true;
+
     //THIS FUNCTION HANDLE ALL KEYS EXCEPT BACKSPACE AND DELETE
     //keyCode = event.keyCode;
-    keyCode = window.event ? window.event.keyCode : event.which;
+    var keyCode = (window.event)? window.event.keyCode : event.which;
+
     if (navigator.userAgent.indexOf('MSIE') != -1) { // Microsoft Internet Explorer
       if (keyCode == 0) return true;
     }
-    switch(keyCode){
-      case 9: case 13:
-        return true;
-        break;
+
+    switch (keyCode) {
+        case 9:
+        case 13:
+            return true;
+            break;
     }
-    validShiftKey = ( (me.mType == 'currency') || (me.mType == 'percentage')
-                    || (me.validate == 'Real') || (me.validate == 'Int') )
-                    ? false
-                    : true;
+
+    var swShiftKey = (
+        (me.mType == 'currency') || (me.mType == 'percentage') || (me.validate == 'Real') || (me.validate == 'Int')
+    )? false : true;
+
     if (window.event) {
-      if (window.event.altKey) return true;
-      if (window.event.ctrlKey) return true;
-      if (window.event.shiftKey) return validShiftKey;
-    }
-    else {
-      if (event.altKey) return true;
-      if (event.ctrlKey) return true;
-      if (event.shiftKey) return validShiftKey;
+        if (window.event.altKey) {
+            return true;
+        }
+
+        if (window.event.ctrlKey) {
+            return true;
+        }
+
+        //Commented for accept characters with AZERTY keyboard
+        //if (window.event.shiftKey) {
+        //    return swShiftKey;
+        //}
+    } else {
+        if (event.altKey) {
+            return true;
+        }
+
+        if (event.ctrlKey) {
+            return true;
+        }
+
+        //Commented for accept characters with AZERTY keyboard
+        //if (event.shiftKey) {
+        //    return swShiftKey;
+        //}
     }
 
     me.checkBrowser();
-//    if ((me.browser.name == 'Firefox') && (keyCode == 8 || keyCode == 46)){
-    if ((me.browser.name == 'Firefox') && (keyCode == 8 ) && (me.validate != 'NodeName')){
+
+    //if ((me.browser.name == 'Firefox') && (keyCode == 8 || keyCode == 46)) {
+    if ((me.browser.name == 'Firefox') && (keyCode == 8) && (me.validate != 'NodeName')) {
       if (me.browser.name == 'Chrome' || me.browser.name == 'Safari'){
         event.returnValue = false;
       }
@@ -1215,11 +1238,14 @@ function G_Text( form, element, name)
     }
     else{
       //pressKey = window.event ? event.keyCode : event.which;
-      pressKey = window.event ? window.event.keyCode : event.which;
+      var pressKey = (window.event)? window.event.keyCode : event.which;
+
       if (me.mType == 'date') me.validate = 'Int';
+
       keyValid = true;
       updateOnChange = true;
-      switch(me.validate){
+
+      switch (me.validate) {
         case 'Any':
           keyValid = true;
           break;
@@ -1292,6 +1318,7 @@ function G_Text( form, element, name)
 
           break;
       }
+
       if (keyValid){
         //APPLY MASK
         if ((me.validate == "Login" || me.validate == "NodeName") && me.mask == "") return true;
@@ -1445,18 +1472,20 @@ function G_Text( form, element, name)
   }
 
   if (!element) return;
+
   if (!window.event){
-    //THIS ASSIGN FUNCTIONS FOR FIREFOX/MOZILLA
-      this.element.onkeydown = this.handleKeyDown;
-      this.element.onkeypress  = this.handleKeyPress;
-      this.element.onchange = this.updateDepententFields;
+      //THIS ASSIGN FUNCTIONS FOR FIREFOX/MOZILLA
+      this.element.onkeydown  = this.handleKeyDown;
+      this.element.onkeypress = this.handleKeyPress;
+      this.element.onchange   = this.updateDepententFields;
       //this.element.onblur = this.handleOnChange;
-    }else{
-    //THIS ASSIGN FUNCTIONS FOR IE/CHROME
-    leimnud.event.add(this.element,'keydown',this.handleKeyDown);
-    leimnud.event.add(this.element,'keypress',this.handleKeyPress);
-    leimnud.event.add(this.element,'change',this.updateDepententFields);
+  } else {
+      //THIS ASSIGN FUNCTIONS FOR IE/CHROME
+      leimnud.event.add(this.element, 'keydown', this.handleKeyDown);
+      leimnud.event.add(this.element, 'keypress', this.handleKeyPress);
+      leimnud.event.add(this.element, 'change', this.updateDepententFields);
   }
+
   //leimnud.event.add(this.element,'change',this.updateDepententFields);
 };
 G_Text.prototype=new G_Field();
