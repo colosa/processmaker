@@ -613,11 +613,7 @@ PMTableData = function()
 {
   var row = Ext.getCmp('infoGrid').getSelectionModel().getSelected();
   var type = row.get('PRO_UID');
-  if ((Ext.isIE8) ||(Ext.isIE7)){
-    var url = 'pmTables/data?id='+row.get('ADD_TAB_UID')+'&type='+row.get('TYPE');
-    PopupCenter(url, 's', 800, 410);
-    return false;
-  }
+
   //location.href = 'pmTables/data?id='+row.get('ADD_TAB_UID');
   if (row.get('TYPE') != '') {
     PMExt.info(_('ID_INFO'), _('ID_DATA_LIST_NOT_AVAILABLE_FOR_OLDVER'));
@@ -625,10 +621,10 @@ PMTableData = function()
   }
 
   win = new Ext.Window({
-    layout:'fit',
-    width:700,
+    layout: 'fit',
+    width: 700,
+    height: 400,
     title: ((type != '')? _('ID_REPORT_TABLE') : _('ID_PMTABLE')) +': '+ row.get('ADD_TAB_NAME'),
-    height:500,
     modal: true,
     maximizable: true,
     constrain: true,
@@ -645,6 +641,7 @@ PMTableData = function()
       }
     }
   });
+
   win.show();
 };
 

@@ -23,9 +23,9 @@ var processmap=function(){
           Wx = (lanzado=='dynaforms' || lanzado=='triggers' || lanzado=='outputs') ?600 : 500;
           Hx = 460;
 
-          if(lanzado=='reportTables'){
-            Wx = _client.width-20; //900;
-            Hx = _client.height-15; //600;
+          if (lanzado == "reportTables") {
+            Wx = _client.width - 30;
+            Hx = _client.height - 15;
           }
 
           var bbk = {
@@ -157,16 +157,32 @@ var processmap=function(){
                 r.make();
               }.extend(this),
               reportTables:function(){
-                var panel = this.panels.buildingBlocks;
-                panel.addContentTitle('');
-                panel.clearContent();
-                var iframe=document.createElement('iframe');
-                iframe.setAttribute('id','reportTablesIframe');
-                iframe.src = '../pmTables?PRO_UID=' + this.options.uid;
-                iframe.style.border='0px';
-                iframe.style.width=_client.width-36;//'886px';
-                iframe.style.height=_client.height-60;//'564px';
-                panel.addContent(iframe);
+                  var url = "../pmTables?PRO_UID=" + this.options.uid;
+                  var isIE = (navigator.userAgent.toLowerCase().indexOf("msie") != -1)? 1 : 0;
+
+                  if (isIE == 1) {
+                      this.panels.buildingBlocks.remove();
+
+                      //var w = _client.width - 20;
+                      //var h = _client.height - 300;
+                      var w = screen.width - 150;
+                      var h = screen.height - 300;
+
+                      var windowAux = window.open(url, "reportTable", "width=" + w + ", height=" + h + ", resizable=no, toolbar=no, menubar=no, scrollbars=yes, status=no, location=no, left=" + ((screen.width / 2) - (w / 2)) + ", top=" + ((screen.height / 2) - (h / 2) + 50));
+                  } else {
+                      var panel = this.panels.buildingBlocks;
+                      panel.addContentTitle("");
+                      panel.clearContent();
+
+                      var iframe = document.createElement("iframe");
+                      iframe.setAttribute("id", "reportTablesIframe");
+                      iframe.src = url;
+                      iframe.frameBorder = 0;
+                      iframe.style.width  = _client.width - 40;
+                      iframe.style.height = _client.height - 70;
+
+                      panel.addContent(iframe);
+                  }
               }.extend(this),
               dynaforms:function(){
                 var panel = this.panels.buildingBlocks;
