@@ -1474,7 +1474,7 @@ SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_USER','en','Do you want to delete this use
   UNION ALL
 SELECT 'LABEL','ID_USERS_LIST','en','Users','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_USER_REGISTERED','en','User name already exists','2012-06-01' 
+SELECT 'LABEL','ID_USER_REGISTERED','en','User name already exist','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_MSG_ERROR_USR_USERNAME','en','User name required!','2012-06-01' 
   UNION ALL
@@ -1876,7 +1876,7 @@ INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_U
 
 SELECT 'LABEL','ID_PLEASE_ENTER_REQUIRED_FIELDS','en','Please enter the required fields','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_TABLE_ALREADY_EXISTS','en','Table already exists','2012-06-01' 
+SELECT 'LABEL','ID_TABLE_ALREADY_EXISTS','en','Table already exist','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_LANGUAGES','en','Language','2012-06-01' 
   UNION ALL
@@ -2320,7 +2320,7 @@ SELECT 'LABEL','ID_DATA','en','Data','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_SAVE_CHANGES','en','Save Changes','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CLASS_ALREADY_EXISTS','en','Class already exists','2012-06-01' 
+SELECT 'LABEL','ID_CLASS_ALREADY_EXISTS','en','Class already exists','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_FIELD_KEY_TABLE','en','Please select one or more fields to be primary keys.','2012-06-01' 
   UNION ALL
@@ -3156,7 +3156,7 @@ SELECT 'JAVASCRIPT','ID_EXIST_PROCESS','en','There is a process with the same na
   UNION ALL
 SELECT 'JAVASCRIPT','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same name in  this process. It is not saving','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CLASS_TABLE_DOESNT_EXIST','en','This Class Table doesn''t exists!','2012-06-01' 
+SELECT 'LABEL','ID_CLASS_TABLE_DOESNT_EXIST','en','This Class Table doesn''t exist!','2012-07-25' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_EXIST_INPUTDOCUMENT','en','There is an Input Document with the same  name in  this process. It is not saving','2012-06-01' 
   UNION ALL
@@ -3184,7 +3184,7 @@ SELECT 'LABEL','PENTAHO_LABEL_CONFIGURATION','en','Configuration','2012-06-01'
   UNION ALL
 SELECT 'LABEL','PENTAHO_LABEL_DATASOURCE','en','Datasource Name','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','PENTAHO_LABEL_DB_EXISTS','en','Datasource already exists','2012-06-01' 
+SELECT 'LABEL','PENTAHO_LABEL_DB_EXISTS','en','Datasource already exist','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','PENTAHO_LABEL_DB_SUCCESS','en','Datasource created successfully','2012-06-01' 
   UNION ALL
@@ -3222,7 +3222,7 @@ SELECT 'LABEL','PENTAHO_LABEL_USER_CREATE','en','Create user in Pentaho','2012-0
   UNION ALL
 SELECT 'LABEL','PENTAHO_LABEL_USER_CREATED','en','User created successfully','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','PENTAHO_LABEL_USER_EXIST','en','User already exists','2012-06-01' 
+SELECT 'LABEL','PENTAHO_LABEL_USER_EXIST','en','User already exist','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','PENTAHO_LABEL_USER_NAME','en','User Name','2012-06-01' 
   UNION ALL
@@ -3380,7 +3380,7 @@ SELECT 'LABEL','ID_CACHE_SUBTITLE_SETUP_DB','en','Setup MySql Root Password','20
   UNION ALL
 SELECT 'LABEL','ID_CACHE_BTN_SETUP_PASSWRD','en','Setup Password','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CALENDAR_INVALID_NAME','en','The calendar name already exists!','2012-06-01' 
+SELECT 'LABEL','ID_CALENDAR_INVALID_NAME','en','The calendar name already exists!','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_DELETE_TABLE_COLLECTION','en','Do you want to delete this collection?','2012-06-01' 
   UNION ALL
@@ -3640,7 +3640,7 @@ SELECT 'LABEL','ID_EXECUTION_HOUR','en','Execution Hour','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_EXECUTION_STATUS','en','Execution Status','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_GROUP_NAME_EXISTS','en','Group name already exists!','2012-06-01' 
+SELECT 'LABEL','ID_MSG_GROUP_NAME_EXISTS','en','Group name already exists!','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_GROUPS_SUCCESS_DELETE','en','Your group has been deleted correctly.','2012-06-01' 
   UNION ALL
@@ -3678,7 +3678,7 @@ SELECT 'LABEL','ID_REASSIGNMENT_SUCCESS','en','The case #{APP_NUMBER} was reassi
   UNION ALL
 SELECT 'LABEL','ID_REASSIGN_CONFIRM','en','Are you sure to reassign the current case?','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CASE_PAUSED_SUCCESSFULLY','en','The Case {APP_NUMBER} was paused successfully and   ir will be unpused on date {UNPAUSE_DATE}','2012-06-01' 
+SELECT 'LABEL','ID_CASE_PAUSED_SUCCESSFULLY','en','The Case {APP_NUMBER} was paused successfully and it will be unpaused on date {UNPAUSE_DATE}','2012-07-26' 
   UNION ALL
 SELECT 'LABEL','ID_VACATION','en','Vacation','2012-06-01' 
   UNION ALL
@@ -3806,7 +3806,7 @@ SELECT 'LABEL','ID_CASES_STEPS','en','Cases Steps','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_SHOW_HIDE_CASES_STEPS','en','Show or hide the Cases Steps','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_PROCESSTITLE_ALREADY_EXISTS','en','The Process Title "{PRO_TITLE}" already exists!','2012-06-01' 
+SELECT 'LABEL','ID_PROCESSTITLE_ALREADY_EXISTS','en','The Process Title "{PRO_TITLE}" already exist!','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_CREATE','en','Create','2012-06-01' 
   UNION ALL
@@ -3830,7 +3830,7 @@ SELECT 'LABEL','ID_NEW_SUB_DEPARTMENT','en','New Sub-Department','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_DEPARTMENT_SUCCESS_NEW','en','Department has been created correctly.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_DEPARTMENT_EXISTS','en','Department name already exists.','2012-06-01' 
+SELECT 'LABEL','ID_DEPARTMENT_EXISTS','en','Department name already exists.','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_DEPARTMENT_SUCCESS_UPDATE','en','Department has been updated correctly.','2012-06-01' 
   UNION ALL
@@ -3858,7 +3858,7 @@ SELECT 'LABEL','ID_LOADING_GRID','en','Loading...','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_NEW_CATEGORY','en','Create New Category','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CATEGORY_EXISTS','en','Category name already exists.','2012-06-01' 
+SELECT 'LABEL','ID_CATEGORY_EXISTS','en','Category name already exists.','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_CATEGORY_SUCCESS_UPDATE','en','Process category has been updated correctly.','2012-06-01' 
   UNION ALL
@@ -3880,7 +3880,7 @@ SELECT 'LABEL','ID_CASE_LIST','en','Case List','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_SAMPLES','en','Samples','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_PROCESSNAME_ALREADY_EXISTS','en','The Process Name already exists!','2012-06-01' 
+SELECT 'LABEL','ID_PROCESSNAME_ALREADY_EXISTS','en','The Process Name already exist!','2012-07-25' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_ROLES_CAN_NOT_DELETE','en','This role cannot be deleted while it still  has some assigned users.','2012-06-01' 
   UNION ALL
@@ -4396,7 +4396,7 @@ SELECT 'LABEL','ID_SET_SUPERVISOR','en','Set Supervisor','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_SET_SUPERVISOR_SUCCESS','en','Supervisor assigned correctly','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_ROLE_EXISTS','en','Role Code already exists.','2012-06-01' 
+SELECT 'LABEL','ID_ROLE_EXISTS','en','Role Code already exist.','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_DEBUG_PANEL_TITLE','en','ProcessMaker Debugger','2012-06-01' 
   UNION ALL
@@ -4592,7 +4592,7 @@ SELECT 'LABEL','ID_IMPORT_PROCESS','en','Import Process','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_UPLOADING_PROCESS_FILE','en','Uploading the process file...','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_IMPORT_ALREADY_EXISTS','en','The process you are trying to import already exists. Please select one of the following options to continue:','2012-06-01' 
+SELECT 'LABEL','ID_IMPORT_ALREADY_EXISTS','en','The process you are trying to import already exist. Please select one of the following options to continue:','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_DEBUG_MESSAGE','en','Debug Messages','2012-06-01' 
   UNION ALL
@@ -4908,7 +4908,7 @@ SELECT 'LABEL','ID_MSG_CANNOT_EXPORT_SKIN','en','Can''t export skin. Server Erro
   UNION ALL
 SELECT 'LABEL','ID_NEW_SKIN','en','New Skin','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_SKIN_ALREADY_EXISTS','en','Skin already exists','2012-06-01' 
+SELECT 'LABEL','ID_SKIN_ALREADY_EXISTS','en','Skin already exist','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_SKIN_BASE','en','Base skin','2012-06-01' 
   UNION ALL
@@ -4916,7 +4916,7 @@ SELECT 'LABEL','ID_SKIN_CONFIGURATION_MISSING','en','Missing skin configuration 
   UNION ALL
 SELECT 'LABEL','ID_SKIN_CREATING','en','Generating Skin','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_SKIN_DOESNT_EXIST','en','Skin doesn''t exists','2012-06-01' 
+SELECT 'LABEL','ID_SKIN_DOESNT_EXIST','en','Skin does not exist','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_SKIN_ERROR_EXTRACTING','en','Error extracting skin','2012-06-01' 
   UNION ALL
@@ -5214,7 +5214,7 @@ SELECT 'LABEL','ID_FILE_CONTAIN_CLASS_PLUGIN','en','The file {filename} doesn''t
   UNION ALL
 SELECT 'LABEL','ID_RECENT_VERSION_PLUGIN','en','A recent version of this plugin was already installed.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_FILE_PLUGIN_NOT_EXISTS','en','File ''{pluginFile}'' doesn''t exists','2012-06-01' 
+SELECT 'LABEL','ID_FILE_PLUGIN_NOT_EXISTS','en','File ''{pluginFile}'' does not exist','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_CREATING_TABLE','en','Creating table, please wait...','2012-06-01' 
   UNION ALL
@@ -5270,7 +5270,7 @@ SELECT 'LABEL','ID_TEMPLATE_FILE_NOT_EXIST','en','Template file ''{FILE_TEMPLATE
   UNION ALL
 SELECT 'LABEL','ID_MESSAGE_SENT','en','message sent','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CASE_DOES_NOT_EXIST','en','Case {CASE_NUMBER} does not exist','2012-06-01' 
+SELECT 'LABEL','ID_CASE_DOES_NOT_EXIST','en','Case {CASE_NUMBER} does not exists','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_COMMAND_EXECUTED_SUCCESSFULLY','en','Command executed successfully','2012-06-01' 
  ;
@@ -5282,7 +5282,7 @@ SELECT 'LABEL','ID_PASSWD_REQUIRED','en','Password is required','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_PASSWORD_SURPRASES','en','Password surprases the maximun length allowed','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_USERNAME_ALREADY_EXISTS','en','Username ''{USER_ID}'' already exists','2012-06-01' 
+SELECT 'LABEL','ID_USERNAME_ALREADY_EXISTS','en','Username ''{USER_ID}'' already exist','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_INVALID_ROLE','en','Invalid role ''{ROLE}''','2012-06-01' 
   UNION ALL
@@ -5304,7 +5304,7 @@ SELECT 'LABEL','ID_COMMAND_EXECUTED_SUCCESSFULY','en','command executed successf
   UNION ALL
 SELECT 'LABEL','ID_USER_NOT_REGISTERED_GROUP','en','User not registered in the group','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_USER_ALREADY_EXISTS_GROUP','en','User already exists in the group','2012-06-01' 
+SELECT 'LABEL','ID_USER_ALREADY_EXISTS_GROUP','en','User already exist in the group','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_DEPARTMENT_NOT_REGISTERED_SYSTEM','en','Department {DEP_ID} is not registered in the system','2012-06-01' 
   UNION ALL
@@ -5398,7 +5398,7 @@ SELECT 'LABEL','ID_ADMINS_CANT_USE_UXS','en','Administrators users cannot use th
   UNION ALL
 SELECT 'LABEL','ID_IMPORT_PMT','en','Import PM Table','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_OVERWRITE_EXIST','en','Overwrite if exists?','2012-06-01' 
+SELECT 'LABEL','ID_OVERWRITE_EXIST','en','Overwrite if exist?','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_SELECT_PM_FILE','en','Select a .pmt file','2012-06-01' 
   UNION ALL
@@ -5482,7 +5482,7 @@ SELECT 'LABEL','ID_RBAC_DATABASE','en','Rbac Database','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_REPORT_DATABASE','en','Report Database','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_DROP_DATABASE_EXISTS','en','Drop database if exists','2012-06-01' 
+SELECT 'LABEL','ID_DROP_DATABASE_EXISTS','en','Drop database if exist','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','ID_WORKSPACE_ADMINISTRATOR','en','Workspace Administrator','2012-06-01' 
   UNION ALL
@@ -5620,7 +5620,7 @@ SELECT 'LABEL','ID_INSTRUCTIONS','en','Instructions','2012-06-21'
   UNION ALL
 SELECT 'LABEL','ID_NOT_REQUIRED','en','Not Required','2012-06-20' 
   UNION ALL
-SELECT 'LABEL','DYNAFIELD_ALREADY_EXIST','en','The field name already exists!','2012-06-28' 
+SELECT 'LABEL','DYNAFIELD_ALREADY_EXIST','en','The field name already exists!','2012-07-25' 
   UNION ALL
 SELECT 'LABEL','DYNAFIELD_EMPTY','en','The name field is empty','2012-06-28' 
   UNION ALL
