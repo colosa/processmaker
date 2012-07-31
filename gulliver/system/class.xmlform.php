@@ -2303,10 +2303,43 @@ class XmlForm_Field_File extends XmlForm_Field {
    * @return string
    */
   function render($value = NULL) {
+    $permission = false;
+    $url = '';
+    if (isset($_SESSION['APPLICATION']) && isset($_SESSION['USER_LOGGED']) && isset($_SESSION['TASK']) && $this->mode == 'view') {
+        require_once ("classes/model/AppDocument.php");
+        G::LoadClass('case');
+        $case = new Cases();
+        $fields = $case->loadCase($_SESSION['APPLICATION']);
+        $sProcessUID = $fields['PRO_UID'];
+        $permissions = $case->getAllObjects($sProcessUID, $_SESSION['APPLICATION'], $_SESSION['TASK'], $_SESSION['USER_LOGGED']);
+
+        $criteria = new Criteria();
+        $criteria->add(AppDocumentPeer::APP_DOC_UID, $permissions['INPUT_DOCUMENTS'], Criteria::IN);
+        $criteria->addDescendingOrderByColumn(AppDocumentPeer::APP_DOC_CREATE_DATE);
+        $dataset = AppDocumentPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $dataset->next();
+        $sw = 0;
+        while (($aRow = $dataset->getRow()) && $sw == 0) {
+            if ($aRow['DOC_UID'] == $this->input) {
+                $sw = 1;
+                $permission = true;
+                $url = (G::is_https() ? 'https://' : 'http://') .
+                $_SERVER['HTTP_HOST'].dirname($_SERVER['REQUEST_URI']).'/cases_ShowDocument?a='.
+                $aRow['APP_DOC_UID'].'&v='.$aRow['DOC_VERSION'];
+            }
+            $dataset->next();
+        }
+    }
+
     $mode = ($this->mode == 'view') ? ' disabled="disabled"' : '';
     if($this->mode == 'view'){
       $displayStyle = 'display:none;';
-      $html = $value.'<input class="module_app_input___gray_file" ' . $mode .'style='.$displayStyle .' id="form[' . $this->name . ']" name="form[' . $this->name . ']" type=\'file\' value=\'' . $value . '\' />';
+      if ($permission) {
+        $html = '<a href='.$url.'>'.$value.'<input class="module_app_input___gray_file" ' . $mode .'style='.$displayStyle .' id="form[' . $this->name . ']" name="form[' . $this->name . ']" type=\'file\' value=\'' . $value . '\' /></a>';
+      } else {
+        $html = $value.'<input class="module_app_input___gray_file" ' . $mode .'style='.$displayStyle .' id="form[' . $this->name . ']" name="form[' . $this->name . ']" type=\'file\' value=\'' . $value . '\' />';
+      }
     }
     else{
       $html = '<input class="module_app_input___gray_file" ' . $mode . 'id="form[' . $this->name . ']" name="form[' . $this->name . ']" type=\'file\' value=\'' . $value . '\'/>';
