@@ -3,7 +3,7 @@
  * App controller
  * @author Erik Amaru Ortiz <erik@colosa.com, aortiz.erik@gmail.com>
  * @herits Controller
- * @access public
+ * @access public 
  */
 
 class AppProxy extends HttpProxyController
@@ -89,6 +89,7 @@ class AppProxy extends HttpProxyController
       $noteRecipientsList[] = $key;
     }
     $noteRecipients = implode(",", $noteRecipientsList);
+    $noteContent = stripslashes($noteContent);
 
     $appNotes->sendNoteNotification($appUid, $usrUid, $noteContent, $noteRecipients);
   }
