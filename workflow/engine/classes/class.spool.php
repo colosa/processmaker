@@ -52,7 +52,7 @@ require_once ('classes/model/AppMessage.php');
 
 
 class spoolRun {
-  private $config;
+  public  $config;
   private $fileData;
   private $spool_id;
   public  $status;
@@ -321,64 +321,35 @@ class spoolRun {
    */
   private function handleMail() {
     if( count($this->fileData['envelope_to']) > 0 ) {
-      switch( $this->config['MESS_ENGINE'] ) {
+      switch ($this->config['MESS_ENGINE']) {
         case 'MAIL':
-          G::LoadThirdParty('phpmailer', 'class.phpmailer');
-          $oPHPMailer = new PHPMailer();
-          $oPHPMailer->Mailer = 'mail';
-          $oPHPMailer->SMTPAuth = (isset($this->config['SMTPAuth']) ? $this->config['SMTPAuth'] : '');
-          $oPHPMailer->Host = $this->config['MESS_SERVER'];
-          $oPHPMailer->Port = $this->config['MESS_PORT'];
-          $oPHPMailer->Username = $this->config['MESS_ACCOUNT'];
-          $passwd = $this->config['MESS_PASSWORD'];
-          $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-          if (strpos( $passwdDec, 'hash:' ) !== false) {
-    	      list($hash, $pass) = explode(":", $passwdDec);
-    	      $this->config['MESS_PASSWORD'] = $pass;
-          }
-          $oPHPMailer->Password = $this->config['MESS_PASSWORD'];
-          $oPHPMailer->From = $this->fileData['from_email'];
-          $oPHPMailer->FromName = utf8_decode($this->fileData['from_name']);
-          $oPHPMailer->Subject = utf8_decode($this->fileData['subject']);
-          $oPHPMailer->Body = utf8_decode($this->fileData['body']);
-          if(is_array($this->fileData['attachments'])){
-            foreach($this->fileData['attachments'] as $key => $fileAttach){
-              $oPHPMailer->AddAttachment($fileAttach, is_int($key) ? '' : $key);
-            }
-          }
-          foreach( $this->fileData['envelope_to'] as $sEmail ) {
-            if( strpos($sEmail, '<') !== false ) {
-              preg_match($this->longMailEreg, $sEmail, $matches);
-              $sTo = trim($matches[3]);
-              $sToName = trim($matches[1]);
-              $oPHPMailer->AddAddress($sTo, $sToName);
-            } else {
-              $oPHPMailer->AddAddress($sEmail);
-            }
-          }
-
-          $oPHPMailer->IsHTML(true);
-          if( $oPHPMailer->Send() ) {
-            $this->error = '';
-            $this->status = 'sent';
-          } else {
-            $this->error = $oPHPMailer->ErrorInfo;
-            $this->status = 'failed';
-          }
-          break;
         case 'PHPMAILER':
           G::LoadThirdParty('phpmailer', 'class.phpmailer');
-          $oPHPMailer = new PHPMailer(true);
-          $oPHPMailer->Mailer = 'smtp';
+
+          switch($this->config['MESS_ENGINE']) {
+              case 'MAIL':
+                  $oPHPMailer = new PHPMailer();
+                  $oPHPMailer->Mailer = 'mail';
+                  break;
+              case 'PHPMAILER':
+                  $oPHPMailer = new PHPMailer(true);
+                  $oPHPMailer->Mailer = 'smtp';
+                  break;
+          }
+
           $oPHPMailer->SMTPAuth = (isset($this->config['SMTPAuth']) ? $this->config['SMTPAuth'] : '');
 
-
-          /**
-           * Posible Options for SMTPSecure are: "", "ssl" or "tls"
-           */
-          if (isset($this->config['SMTPSecure']) && preg_match('/^(ssl|tls)$/', $this->config['SMTPSecure'])) {
-            $oPHPMailer->SMTPSecure = $this->config['SMTPSecure'];
+          switch($this->config['MESS_ENGINE']) {
+              case 'MAIL':
+                  break;
+              case 'PHPMAILER':
+                  //Posible Options for SMTPSecure are: "", "ssl" or "tls"
+                  if (isset($this->config['SMTPSecure']) && preg_match('/^(ssl|tls)$/', $this->config['SMTPSecure'])) {
+                      $oPHPMailer->SMTPSecure = $this->config['SMTPSecure'];
+                  }
+                  break;
           }
+
           $oPHPMailer->CharSet = "UTF-8";
           $oPHPMailer->Encoding = "8bit";
           $oPHPMailer->Host = $this->config['MESS_SERVER'];
@@ -386,22 +357,36 @@ class spoolRun {
           $oPHPMailer->Username = $this->config['MESS_ACCOUNT'];
           $passwd = $this->config['MESS_PASSWORD'];
           $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-          if (strpos( $passwdDec, 'hash:' ) !== false) {
-    	      list($hash, $pass) = explode(":", $passwdDec);
-    	      $this->config['MESS_PASSWORD'] = $pass;
+          $auxPass = explode('hash:', $passwdDec);
+
+          if (count($auxPass) > 1) {
+              if (count($auxPass) == 2) {
+                  $passwd = $auxPass[1];
+              } else {
+                  array_shift($auxPass);
+                  $passwd = implode('', $auxPass);
+              }
           }
+
+          $this->config['MESS_PASSWORD'] = $passwd;
           $oPHPMailer->Password = $this->config['MESS_PASSWORD'];
           $oPHPMailer->From = $this->fileData['from_email'];
           $oPHPMailer->FromName = utf8_decode($this->fileData['from_name']);
+
           $msSubject = $this->fileData['subject'];
+
           if(!(mb_detect_encoding($msSubject, "UTF-8") == "UTF-8")) {
             $msSubject = utf8_encode($msSubject);
           }
+
           $oPHPMailer->Subject = $msSubject;
+
           $msBody = $this->fileData['body'];
+
           if(!(mb_detect_encoding($msBody, "UTF-8") == "UTF-8")) {
             $msBody = utf8_encode($msBody);
           }
+
           $oPHPMailer->Body = $msBody;
 
           if(is_array($this->fileData['attachments'])){
@@ -409,8 +394,8 @@ class spoolRun {
               $oPHPMailer->AddAttachment($fileAttach, is_int($key) ? '' : $key);
             }
           }
-          foreach( $this->fileData['envelope_to'] as $sEmail ) {
-            $evalMail = strpos($sEmail, '<');
+
+          foreach ($this->fileData['envelope_to'] as $sEmail) {
             if( strpos($sEmail, '<') !== false ) {
               preg_match($this->longMailEreg, $sEmail, $matches);
               $sTo = trim($matches[3]);
@@ -422,10 +407,8 @@ class spoolRun {
           }
 
           //CC
-          foreach( $this->fileData['envelope_cc'] as $sEmail ) {
-            $evalMail = strpos($sEmail, '<');
-
-            if( strpos($sEmail, '<') !== false ) {
+          foreach ($this->fileData['envelope_cc'] as $sEmail) {
+            if(strpos($sEmail, '<') !== false) {
               preg_match($this->longMailEreg, $sEmail, $matches);
               $sTo = trim($matches[3]);
               $sToName = trim($matches[1]);
@@ -436,10 +419,8 @@ class spoolRun {
           }
 
           //BCC
-          foreach( $this->fileData['envelope_bcc'] as $sEmail ) {
-            $evalMail = strpos($sEmail, '<');
-
-            if( strpos($sEmail, '<') !== false ) {
+          foreach ($this->fileData['envelope_bcc'] as $sEmail) {
+            if(strpos($sEmail, '<') !== false) {
               preg_match($this->longMailEreg, $sEmail, $matches);
               $sTo = trim($matches[3]);
               $sToName = trim($matches[1]);
@@ -449,14 +430,14 @@ class spoolRun {
             }
           }
 
-
           $oPHPMailer->IsHTML(true);
-          if( $oPHPMailer->Send() ) {
-            $this->error = '';
-            $this->status = 'sent';
+
+          if($oPHPMailer->Send()) {
+              $this->error = '';
+              $this->status = 'sent';
           } else {
-            $this->error = $oPHPMailer->ErrorInfo;
-            $this->status = 'failed';
+              $this->error = $oPHPMailer->ErrorInfo;
+              $this->status = 'failed';
           }
           break;
         case 'OPENMAIL':
@@ -472,10 +453,18 @@ class spoolRun {
 
           $passwd = $this->config['MESS_PASSWORD'];
           $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-          if (strpos( $passwdDec, 'hash:' ) !== false) {
-    	      list($hash, $pass) = explode(":", $passwdDec);
-    	      $this->config['MESS_PASSWORD'] = $pass;
+          $auxPass = explode('hash:', $passwdDec);
+
+          if (count($auxPass) > 1) {
+              if (count($auxPass) == 2) {
+                  $passwd = $auxPass[1];
+              } else {
+                  array_shift($auxPass);
+                  $passwd = implode('', $auxPass);
+              }
           }
+
+          $this->config['MESS_PASSWORD'] = $passwd;
           $send->setPassword($this->config['MESS_PASSWORD']);
           $send->setReturnPath($this->fileData['from_email']);
           $send->setHeaders($header);
@@ -508,11 +497,18 @@ class spoolRun {
     $aConfiguration = unserialize($aConfiguration["CFG_VALUE"]);
     $passwd = $aConfiguration["MESS_PASSWORD"];
     $passwdDec = G::decrypt($passwd,"EMAILENCRYPT");
+    $auxPass = explode('hash:', $passwdDec);
 
-    if (strpos($passwdDec, "hash:") !== false) {
-      list($hash, $pass) = explode(":", $passwdDec);
-      $aConfiguration["MESS_PASSWORD"] = $pass;
+    if (count($auxPass) > 1) {
+        if (count($auxPass) == 2) {
+            $passwd = $auxPass[1];
+        } else {
+            array_shift($auxPass);
+            $passwd = implode('', $auxPass);
+        }
     }
+
+    $aConfiguration["MESS_PASSWORD"] = $passwd;
 
     if ($aConfiguration["MESS_ENABLED"] == "1") {
       $this->setConfig(array(

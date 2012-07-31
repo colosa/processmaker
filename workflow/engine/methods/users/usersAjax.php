@@ -4,29 +4,29 @@ global $RBAC;
 
 switch($_POST['action'])
 {
-  case 'countryList' :   
+  case 'countryList' :
     require_once ("classes/model/IsoCountry.php");
     $c = new Criteria();
-    $c->add(IsoCountryPeer::IC_UID, NULL, Criteria::ISNOTNULL);    
-    
+    $c->add(IsoCountryPeer::IC_UID, NULL, Criteria::ISNOTNULL);
+
     $countries = IsoCountryPeer::doSelect($c);
     foreach ( $countries as $rowid => $row ) {
-      $oData[] = Array('IC_UID'=>$row->getICUid(),'IC_NAME'=>$row->getICName());  
+      $oData[] = Array('IC_UID'=>$row->getICUid(),'IC_NAME'=>$row->getICName());
     }
     print(G::json_encode($oData));
     break;
-  
+
   case 'stateList' :
     require_once ("classes/model/IsoSubdivision.php");
     $c       = new Criteria();
-    $country = $_POST['IC_UID'];        
-    $c->add(IsoSubdivisionPeer::IC_UID, $country, Criteria::EQUAL);    
+    $country = $_POST['IC_UID'];
+    $c->add(IsoSubdivisionPeer::IC_UID, $country, Criteria::EQUAL);
     $locations = IsoSubdivisionPeer::doSelect($c);
 
     $oData = Array();
     foreach( $locations as $rowid => $row ) {
       if (($row->getISUid() != '') && ($row->getISName() != ''))
-        $oData[] = Array('IS_UID' => $row->getISUid(), 'IS_NAME' => $row->getISName());  
+        $oData[] = Array('IS_UID' => $row->getISUid(), 'IS_NAME' => $row->getISName());
     }
     print(G::json_encode($oData));
     break;
@@ -37,13 +37,13 @@ switch($_POST['action'])
     $country = $_POST['IC_UID'];
     $state   = $_POST['IS_UID'];
     $c->add(IsoLocationPeer::IC_UID, $country, Criteria::EQUAL);
-    $c->add(IsoLocationPeer::IS_UID, $state, Criteria::EQUAL); 
+    $c->add(IsoLocationPeer::IS_UID, $state, Criteria::EQUAL);
     $locations = IsoLocationPeer::doSelect($c);
 
     $oData = Array();
     foreach ( $locations as $rowid => $row ) {
       if (($row->getILUid() != '') && ($row->getILName() != ''))
-        $oData[] = Array('IL_UID' => $row->getILUid(), 'IL_NAME' => $row->getILName());  
+        $oData[] = Array('IL_UID' => $row->getILUid(), 'IL_NAME' => $row->getILName());
     }
     print(G::json_encode($oData));
     break;
@@ -55,7 +55,7 @@ switch($_POST['action'])
     $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
     $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
     $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
-    $oCriteria->add(UsersPeer::USR_STATUS,'ACTIVE');    
+    $oCriteria->add(UsersPeer::USR_STATUS,'ACTIVE');
     $oDataset = UsersPeer::doSelectRS($oCriteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -85,7 +85,7 @@ switch($_POST['action'])
     $calendarObj = $calendar->getCalendarList ( true, true );
     $oData[]     = array('CALENDAR_UID' => '', 'CALENDAR_NAME' => '- None -');
     foreach ( $calendarObj ['array'] as $rowid => $row ) {
-      if ($rowid > 0)      
+      if ($rowid > 0)
         $oData[] = array('CALENDAR_UID' => $row['CALENDAR_UID'], 'CALENDAR_NAME' => $row['CALENDAR_NAME']);
     }
     print(G::json_encode($oData));
@@ -96,7 +96,7 @@ switch($_POST['action'])
     $rolesData = $roles->getAllRoles();
     foreach( $rolesData as $rowid => $row ) {
        $oData[] = array('ROL_UID' => $row['ROL_CODE'],'ROL_CODE' => $row['ROL_CODE']);
-    }  
+    }
     print(G::json_encode($oData));
     break;
   case 'saveUser' :
@@ -109,7 +109,7 @@ switch($_POST['action'])
       else {
         $form['USR_UID'] = '';
       }
-/*     
+/*
       if ( isset($_FILES['USR_RESUME']['name']) ) {
         if ($_FILES['USR_RESUME']['tmp_name'] != '') {
           $form['USR_RESUME'] = $_FILES['USR_RESUME']['name'];
@@ -134,7 +134,7 @@ switch($_POST['action'])
       if (!isset($form['USR_AUTH_USER_DN'])) {
         $form['USR_AUTH_USER_DN'] = '';
       }
-  
+
       if ($form['USR_UID'] == '') {
         $aData['USR_USERNAME']     = $form['USR_USERNAME'];
         $aData['USR_PASSWORD']     = $form['USR_PASSWORD'];
@@ -170,7 +170,7 @@ switch($_POST['action'])
 
         if ($_FILES['USR_PHOTO']['error'] != 1) {
           //print (PATH_IMAGES_ENVIRONMENT_USERS);
-          if ($_FILES['USR_PHOTO']['tmp_name'] != '') {          
+          if ($_FILES['USR_PHOTO']['tmp_name'] != '') {
             G::uploadFile($_FILES['USR_PHOTO']['tmp_name'], PATH_IMAGES_ENVIRONMENT_USERS, $sUserUID . '.gif');
           }
         }
@@ -200,25 +200,25 @@ switch($_POST['action'])
         $aData['USR_USERNAME'] = $form['USR_USERNAME'];
 
         if (isset($form['USR_PASSWORD'])) {
-           
+
           if ($form['USR_PASSWORD'] != '') {
             $aData['USR_PASSWORD'] = $form['USR_PASSWORD'];
             require_once 'classes/model/UsersProperties.php';
             $oUserProperty = new UsersProperties();
             $aUserProperty = $oUserProperty->loadOrCreateIfNotExists($form['USR_UID'], array('USR_PASSWORD_HISTORY' => serialize(array(md5($form['USR_PASSWORD'])))));
-            
+
             $memKey = 'rbacSession' . session_id();
-            $memcache = & PMmemcached::getSingleton(defined('SYS_SYS') ? SYS_SYS : '');      
+            $memcache = & PMmemcached::getSingleton(defined('SYS_SYS') ? SYS_SYS : '');
             if ( ($RBAC->aUserInfo = $memcache->get($memKey)) === false ) {
               $RBAC->loadUserRolePermission($RBAC->sSystem, $_SESSION['USER_LOGGED'] );
-              $memcache->set( $memKey, $RBAC->aUserInfo, PMmemcached::EIGHT_HOURS );    
+              $memcache->set( $memKey, $RBAC->aUserInfo, PMmemcached::EIGHT_HOURS );
             }
             if( $RBAC->aUserInfo[ 'PROCESSMAKER' ]['ROLE']['ROL_CODE']=='PROCESSMAKER_ADMIN'){
               $aUserProperty['USR_LAST_UPDATE_DATE'] = date('Y-m-d H:i:s');
               $aUserProperty['USR_LOGGED_NEXT_TIME'] = 1;
               $oUserProperty->update($aUserProperty);
             }
-            
+
             $aErrors = $oUserProperty->validatePassword($form['USR_NEW_PASS'], $aUserProperty['USR_LAST_UPDATE_DATE'], 0);
 
 
@@ -269,9 +269,10 @@ switch($_POST['action'])
                 $sDescription = G::LoadTranslation('ID_POLICY_ALERT').':<br /><br />';
                 $sDescription .= ' - ' . G::LoadTranslation('PASSWORD_HISTORY').': ' . PPP_PASSWORD_HISTORY . '<br />';
                 $sDescription .= '<br />' . G::LoadTranslation('ID_PLEASE_CHANGE_PASSWORD_POLICY').'';
-                G::SendMessageText($sDescription, 'warning');
-                G::header('Location: ' . $_SERVER['HTTP_REFERER']);
-                die;   
+                $result->success = false;
+                $result->msg   = $sDescription;
+                print(G::json_encode($result));
+                die();
               }
 
               if (count($aHistory) >= PPP_PASSWORD_HISTORY) {
@@ -336,7 +337,7 @@ switch($_POST['action'])
           $result->success   = false;
           $result->fileError = true;
           print(G::json_encode($result));
-          die;        
+          die;
         }
 /*
         if ($_FILES['USR_RESUME']['error'] != 1) {
@@ -367,7 +368,7 @@ switch($_POST['action'])
 
         /*UPDATING SESSION VARIABLES*/
         $aUser = $RBAC->userObj->load($_SESSION['USER_LOGGED']);
-        //$_SESSION['USR_FULLNAME'] = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME']; 
+        //$_SESSION['USR_FULLNAME'] = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'];
 
         $oConf->aConfig = $aConf;
         $oConf->saveConfig('USER_PREFERENCES', '', '',$_SESSION['USER_LOGGED']);
@@ -379,16 +380,16 @@ switch($_POST['action'])
         $aUser                    = $RBAC->userObj->load($_SESSION['USER_LOGGED']);
         $_SESSION['USR_FULLNAME'] = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'];
       }
-      
-      
+
+
       //Save Calendar assigment
       if ((isset($form['USR_CALENDAR']))) {
-        //Save Calendar ID for this user       
-        G::LoadClass("calendar");  
+        //Save Calendar ID for this user
+        G::LoadClass("calendar");
         $calendarObj = new Calendar();
         $calendarObj->assignCalendarTo($aData['USR_UID'], $form['USR_CALENDAR'], 'USER');
       }
-      $result->success = true;  
+      $result->success = true;
       print(G::json_encode($result));
     }catch (Exception $e) {
       $result->success = false;
@@ -396,7 +397,7 @@ switch($_POST['action'])
       print(G::json_encode($result));
     }
     break;
-  
+
   case 'userData':
     require_once 'classes/model/Users.php';
     $_SESSION['CURRENT_USER'] = $_POST['USR_UID'];
@@ -412,7 +413,7 @@ switch($_POST['action'])
 
     #verifying if it has any preferences on the configurations table
     G::loadClass('configuration');
-    $oConf = new Configurations; 
+    $oConf = new Configurations;
     $oConf->loadConfig($x, 'USER_PREFERENCES', '', '', $_SESSION['USER_LOGGED'], '');
 
     $aFields['PREF_DEFAULT_MENUSELECTED']='';
@@ -442,7 +443,7 @@ switch($_POST['action'])
     }else{
       $replaced_by = '';
     }
-    $aFields['REPLACED_NAME'] = $replaced_by;   
+    $aFields['REPLACED_NAME'] = $replaced_by;
     if ($aFields['PREF_DEFAULT_MENUSELECTED'] != ''){
       $menuSelected = '';
       foreach ( $RBAC->aUserInfo['PROCESSMAKER']['PERMISSIONS'] as $permission ) {
@@ -454,7 +455,7 @@ switch($_POST['action'])
                $menuSelected = strtoupper(G::LoadTranslation('ID_SETUP'));
             break;
             case 'PM_CASES' :
-              $menuSelected = strtoupper(G::LoadTranslation('ID_CASES'));           
+              $menuSelected = strtoupper(G::LoadTranslation('ID_CASES'));
             break;
             case 'PM_FACTORY' :
               $menuSelected = strtoupper(G::LoadTranslation('ID_APPLICATIONS'));
@@ -463,12 +464,12 @@ switch($_POST['action'])
         }
       }
     }
-    $aFields['MENUSELECTED_NAME'] =  $menuSelected;    
+    $aFields['MENUSELECTED_NAME'] =  $menuSelected;
     $oMenu = new Menu();
     $oMenu->load('cases');
     if ($aFields['PREF_DEFAULT_CASES_MENUSELECTED'] != ''){
       foreach($oMenu->Id as $i => $item){
-  
+
         if ($aFields['PREF_DEFAULT_CASES_MENUSELECTED'] == $item)
           $casesMenuSelected =$oMenu->Labels[$i];
       }
@@ -484,18 +485,18 @@ switch($_POST['action'])
     print(G::json_encode($result));
     break;
 
-  case 'defaultMainMenuOptionList';    
-    foreach($RBAC->aUserInfo['PROCESSMAKER']['PERMISSIONS'] as $permission){      
+  case 'defaultMainMenuOptionList';
+    foreach($RBAC->aUserInfo['PROCESSMAKER']['PERMISSIONS'] as $permission){
       switch($permission['PER_CODE']){
-        case 'PM_USERS':  
-        case 'PM_SETUP':  
-           $rows[] = Array('id'=>'PM_SETUP', 'name'=>strtoupper(G::LoadTranslation('ID_SETUP'))); 
+        case 'PM_USERS':
+        case 'PM_SETUP':
+           $rows[] = Array('id'=>'PM_SETUP', 'name'=>strtoupper(G::LoadTranslation('ID_SETUP')));
         break;
-        case 'PM_CASES':  
-           $rows[] = Array('id'=>'PM_CASES', 'name'=>strtoupper(G::LoadTranslation('ID_CASES'))); 
+        case 'PM_CASES':
+           $rows[] = Array('id'=>'PM_CASES', 'name'=>strtoupper(G::LoadTranslation('ID_CASES')));
         break;
-        case 'PM_FACTORY':  
-           $rows[] = Array('id'=>'PM_FACTORY', 'name'=>strtoupper(G::LoadTranslation('ID_APPLICATIONS'))); 
+        case 'PM_FACTORY':
+           $rows[] = Array('id'=>'PM_FACTORY', 'name'=>strtoupper(G::LoadTranslation('ID_APPLICATIONS')));
         break;
       }
     }
@@ -505,7 +506,7 @@ switch($_POST['action'])
 
     $oMenu = new Menu();
     $oMenu->load('cases');
-    
+
     foreach($oMenu->Id as $i=>$item){
       if( $oMenu->Types[$i] != 'blockHeader' ){
         $rowsCasesMenu[] = Array('id'=>$item, 'name' => $oMenu->Labels[$i]);
@@ -531,7 +532,7 @@ switch($_POST['action'])
       }
       $aFields = array();
       $aFields['DESCRIPTION'] = G::LoadTranslation('ID_POLICY_ALERT').':<br />';
-      
+
       foreach ($aErrors as $sError)  {
         switch ($sError) {
           case 'ID_PPP_MINIMUM_LENGTH':
@@ -559,13 +560,13 @@ switch($_POST['action'])
       $color = 'green';
       $img = '/images/dialog-ok-apply.png';
       $aFields['DESCRIPTION'] = G::LoadTranslation('ID_PASSWORD_COMPLIES_POLICIES') . '</span>';
-      $aFields['STATUS'] = true;  
+      $aFields['STATUS'] = true;
     }
     $span = '<span style="color: ' . $color . '; font: 9px tahoma,arial,helvetica,sans-serif;">';
     $gif = '<img width="13" height="13" border="0" src="' . $img . '">';
-    $aFields['DESCRIPTION'] =  $span . $gif . $aFields['DESCRIPTION'];    
+    $aFields['DESCRIPTION'] =  $span . $gif . $aFields['DESCRIPTION'];
     print(G::json_encode($aFields));
-    break;  
+    break;
   case 'testUsername';
     require_once 'classes/model/Users.php';
     $_POST['NEW_USERNAME'] = trim($_POST['NEW_USERNAME']);
@@ -599,7 +600,7 @@ switch($_POST['action'])
       $response['exists'] = false;
     }
 
-    
+
     $span = '<span style="color: ' . $color . '; font: 9px tahoma,arial,helvetica,sans-serif;">';
     $gif  = '<img width="13" height="13" border="0" src="' . $img . '">';
     $response['descriptionText'] = $span . $gif . $text . '</span>';

@@ -66,7 +66,7 @@ switch ($request) {
     define("FAILED", 'FAILED');
     $varaux = preg_match("([^//]*$)", $_POST['srv'], $regs);
     if($regs)
-    	$srv = $regs[0];      
+    	$srv = $regs[0];
     else
       $srv  = $_POST['srv'];
 
@@ -74,10 +74,16 @@ switch ($request) {
     $user  = $_POST['account'];
     $passwd = $_POST['passwd'];
     $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
-    if (strpos( $passwdDec, 'hash:' ) !== false) {
-    	list($hash, $pass) = explode(":", $passwdDec);   
-    	$_POST['passwd'] = $pass;
+    $auxPass = explode('hash:', $passwdDec);
+    if (count($auxPass) > 1) {
+        if (count($auxPass) == 2) {
+            $passwd = $auxPass[1];
+        } else {
+            array_shift($auxPass);
+            $passwd = implode('', $auxPass);
+        }
     }
+    $_POST['passwd'] = $passwd;
     $step  = $_POST['step'];
     $auth_required  = $_POST['auth_required'];
     $send_test_mail = $_POST['send_test_mail'];
@@ -87,7 +93,7 @@ switch ($request) {
 
     $Server = new NET($srv);
     $smtp = new SMTP;
- 
+
     switch ($step) {
       case 1:
         if ($Server->getErrno() == 0) {
@@ -112,7 +118,7 @@ switch ($request) {
       #try to connect to host
       case 3:
         $hostinfo = array();
-          
+
         if (preg_match('/^(.+):([0-9]+)$/', $srv, $hostinfo)) {
           $host = $hostinfo[1];
           $port = $hostinfo[2];
@@ -122,23 +128,23 @@ switch ($request) {
 
         $tls = ($SMTPSecure == 'tls');
         $ssl = ($SMTPSecure == 'ssl');
-        
+
         $resp = $smtp->Connect(($ssl ? 'ssl://':'').$host, $port, $timeout);
         if ($resp) {
           print(SUCCESSFUL.','.$smtp->status);
         } else {
           print(FAILED.','.$smtp->error['error']);
         }
-      
+
       break;
 
       #try login to host
 
       case 4:
-        if($auth_required == 'yes') { 
+        if($auth_required == 'yes') {
           try {
             $hostinfo = array();
-            
+
             if (preg_match('/^(.+):([0-9]+)$/', $srv, $hostinfo)) {
               $host = $hostinfo[1];
               $port = $hostinfo[2];
@@ -148,7 +154,7 @@ switch ($request) {
 
             $tls = ($SMTPSecure == 'tls');
             $ssl = ($SMTPSecure == 'ssl');
-            
+
             $resp = $smtp->Connect(($ssl ? 'ssl://':'').$host, $port, $timeout);
             if ($resp) {
 
@@ -163,13 +169,13 @@ switch ($request) {
                 //We must resend HELO after tls negotiation
                 $smtp->Hello($hello);
               }
-              
+
               if( $smtp->Authenticate($user, $passwd ) ) {
                 print(SUCCESSFUL.','.$smtp->status);
               } else {
                 print(FAILED.','.$smtp->error['error']);
               }
-              
+
             } else {
               print(FAILED.','.$smtp->error['error']);
             }
@@ -209,7 +215,7 @@ switch ($request) {
           } catch (Exception $e) {
             print(FAILED.','.$e->getMessage());
           }
-          
+
         } else {
           print('jump this step');
         }
@@ -251,6 +257,18 @@ function sendTestMail() {
   G::LoadClass('spool');
   $oSpool = new spoolRun();
 
+  $passwd = $_POST['MESS_PASSWORD'];
+  $passwdDec = G::decrypt($passwd,'EMAILENCRYPT');
+  $auxPass = explode('hash:', $passwdDec);
+	if (count($auxPass) > 1) {
+      if (count($auxPass) == 2) {
+          $passwd = $auxPass[1];
+      } else {
+          array_shift($auxPass);
+          $passwd = implode('', $auxPass);
+      }
+	}
+  $_POST['MESS_PASSWORD'] = $passwd;
 
   $oSpool->setConfig( array(
     'MESS_ENGINE'   => $_POST['MESS_ENGINE'],
