@@ -4,7 +4,7 @@
  * pmTablesProxy
  * @author Erik Amaru Ortiz <erik@colosa.com, aortiz.erik@gmail.com>
  * @inherits HttpProxyController
- * @access public
+ * @access public 
  */
 require_once 'classes/model/AdditionalTables.php';
 
@@ -219,11 +219,20 @@ class pmTablesProxy extends HttpProxyController
             $repTabClassName = $oAdditionalTables->getPHPName($data['REP_TAB_NAME']);
             $columns = $data['columns'];
 
-            // Reserved Words
+            // Reserved Words Table
             $reservedWords = array(
                 'ALTER', 'CLOSE', 'COMMIT', 'CREATE', 'DECLARE', 'DELETE', 'DROP', 'FETCH', 'FUNCTION', 'GRANT',
                 'INDEX', 'INSERT', 'OPEN', 'REVOKE', 'ROLLBACK', 'SELECT', 'SYNONYM', 'TABLE', 'UPDATE', 'VIEW',
                 'APP_UID', 'ROW', 'PMTABLE'
+            );
+
+            // Reserved Words Field
+            $reservedWordsPhp = array(
+                'case', 'catch', 'cfunction', 'class', 'clone', 'const', 'continue', 'declare', 'default',
+                'do', 'else', 'elseif', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile',
+                'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements',
+                'interface', 'instanceof', 'private', 'namespace', 'new', 'old_function', 'or', 'throw',
+                'protected', 'public', 'static', 'switch', 'xor', 'try', 'use', 'var', 'while'
             );
 
             // verify if exists.
@@ -247,6 +256,9 @@ class pmTablesProxy extends HttpProxyController
 
             //backward compatility
             foreach ($columns as $i => $column) {
+                if (in_array(strtolower($columns[$i]->field_name), $reservedWordsPhp)) {
+                    throw new Exception(G::loadTranslation('ID_PMTABLE_INVALID_NAME', array($columns[$i]->field_name)));
+                }
                 switch ($column->field_type) {
                     case 'INT': $columns[$i]->field_type = 'INTEGER';
                         break;
