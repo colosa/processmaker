@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch 2.0-testing) 2.0.43-testing.3-83-g04389be\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-635-g3a1ca52\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-07-23 23:03:29\n"
+"PO-Revision-Date: 2012-07-31 18:31:54\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -274,8 +274,8 @@ msgstr "Users"
 # TRANSLATION
 # LABEL/ID_USER_REGISTERED
 #: LABEL/ID_USER_REGISTERED
-msgid "User name already exists"
-msgstr "User name already exists"
+msgid "User name already exist"
+msgstr "User name already exist"
 
 # TRANSLATION
 # LABEL/ID_MSG_ERROR_USR_USERNAME
@@ -1462,8 +1462,8 @@ msgstr "Please enter the required fields"
 # TRANSLATION
 # LABEL/ID_TABLE_ALREADY_EXISTS
 #: LABEL/ID_TABLE_ALREADY_EXISTS
-msgid "Table already exists"
-msgstr "Table already exists"
+msgid "Table already exist"
+msgstr "Table already exist"
 
 # TRANSLATION
 # LABEL/ID_LANGUAGES
@@ -5260,8 +5260,8 @@ msgstr "There is a Dynaform with the same name in  this process. It is not savin
 # TRANSLATION
 # LABEL/ID_CLASS_TABLE_DOESNT_EXIST
 #: LABEL/ID_CLASS_TABLE_DOESNT_EXIST
-msgid "This Class Table doesn't exists!"
-msgstr "This Class Table doesn't exists!"
+msgid "This Class Table doesn't exist!"
+msgstr "This Class Table doesn't exist!"
 
 # TRANSLATION
 # JAVASCRIPT/ID_EXIST_INPUTDOCUMENT
@@ -5338,8 +5338,8 @@ msgstr "Datasource Name"
 # TRANSLATION
 # LABEL/PENTAHO_LABEL_DB_EXISTS
 #: LABEL/PENTAHO_LABEL_DB_EXISTS
-msgid "Datasource already exists"
-msgstr "Datasource already exists"
+msgid "Datasource already exist"
+msgstr "Datasource already exist"
 
 # TRANSLATION
 # LABEL/PENTAHO_LABEL_DB_SUCCESS
@@ -5452,8 +5452,8 @@ msgstr "User created successfully"
 # TRANSLATION
 # LABEL/PENTAHO_LABEL_USER_EXIST
 #: LABEL/PENTAHO_LABEL_USER_EXIST
-msgid "User already exists"
-msgstr "User already exists"
+msgid "User already exist"
+msgstr "User already exist"
 
 # TRANSLATION
 # LABEL/PENTAHO_LABEL_USER_NAME
@@ -6802,8 +6802,8 @@ msgstr "Are you sure to reassign the current case?"
 # TRANSLATION
 # LABEL/ID_CASE_PAUSED_SUCCESSFULLY
 #: LABEL/ID_CASE_PAUSED_SUCCESSFULLY
-msgid "The Case {APP_NUMBER} was paused successfully and   ir will be unpused on date {UNPAUSE_DATE}"
-msgstr "The Case {APP_NUMBER} was paused successfully and   ir will be unpused on date {UNPAUSE_DATE}"
+msgid "The Case {APP_NUMBER} was paused successfully and it will be unpaused on date {UNPAUSE_DATE}"
+msgstr "The Case {APP_NUMBER} was paused successfully and it will be unpaused on date {UNPAUSE_DATE}"
 
 # TRANSLATION
 # LABEL/ID_VACATION
@@ -7186,8 +7186,8 @@ msgstr "Show or hide the Cases Steps"
 # TRANSLATION
 # LABEL/ID_PROCESSTITLE_ALREADY_EXISTS
 #: LABEL/ID_PROCESSTITLE_ALREADY_EXISTS
-msgid "The Process Title \"{PRO_TITLE}\" already exists!"
-msgstr "The Process Title \"{PRO_TITLE}\" already exists!"
+msgid "The Process Title \"{PRO_TITLE}\" already exist!"
+msgstr "The Process Title \"{PRO_TITLE}\" already exist!"
 
 # TRANSLATION
 # LABEL/ID_CREATE
@@ -7402,8 +7402,8 @@ msgstr "Samples"
 # TRANSLATION
 # LABEL/ID_PROCESSNAME_ALREADY_EXISTS
 #: LABEL/ID_PROCESSNAME_ALREADY_EXISTS
-msgid "The Process Name already exists!"
-msgstr "The Process Name already exists!"
+msgid "The Process Name already exist!"
+msgstr "The Process Name already exist!"
 
 # TRANSLATION
 # JAVASCRIPT/ID_ROLES_CAN_NOT_DELETE
@@ -8932,8 +8932,8 @@ msgstr "Supervisor assigned correctly"
 # TRANSLATION
 # LABEL/ID_ROLE_EXISTS
 #: LABEL/ID_ROLE_EXISTS
-msgid "Role Code already exists."
-msgstr "Role Code already exists."
+msgid "Role Code already exist."
+msgstr "Role Code already exist."
 
 # TRANSLATION
 # LABEL/ID_DEBUG_PANEL_TITLE
@@ -9514,8 +9514,8 @@ msgstr "Uploading the process file..."
 # TRANSLATION
 # LABEL/ID_IMPORT_ALREADY_EXISTS
 #: LABEL/ID_IMPORT_ALREADY_EXISTS
-msgid "The process you are trying to import already exists. Please select one of the following options to continue:"
-msgstr "The process you are trying to import already exists. Please select one of the following options to continue:"
+msgid "The process you are trying to import already exist. Please select one of the following options to continue:"
+msgstr "The process you are trying to import already exist. Please select one of the following options to continue:"
 
 # TRANSLATION
 # LABEL/ID_DEBUG_MESSAGE
@@ -10450,8 +10450,8 @@ msgstr "New Skin"
 # TRANSLATION
 # LABEL/ID_SKIN_ALREADY_EXISTS
 #: LABEL/ID_SKIN_ALREADY_EXISTS
-msgid "Skin already exists"
-msgstr "Skin already exists"
+msgid "Skin already exist"
+msgstr "Skin already exist"
 
 # TRANSLATION
 # LABEL/ID_SKIN_BASE
@@ -10474,8 +10474,8 @@ msgstr "Generating Skin"
 # TRANSLATION
 # LABEL/ID_SKIN_DOESNT_EXIST
 #: LABEL/ID_SKIN_DOESNT_EXIST
-msgid "Skin doesn't exists"
-msgstr "Skin doesn't exists"
+msgid "Skin does not exist"
+msgstr "Skin does not exist"
 
 # TRANSLATION
 # LABEL/ID_SKIN_ERROR_EXTRACTING
@@ -11356,8 +11356,8 @@ msgstr "A recent version of this plugin was already installed."
 # TRANSLATION
 # LABEL/ID_FILE_PLUGIN_NOT_EXISTS
 #: LABEL/ID_FILE_PLUGIN_NOT_EXISTS
-msgid "File '{pluginFile}' doesn't exists"
-msgstr "File '{pluginFile}' doesn't exists"
+msgid "File '{pluginFile}' does not exist"
+msgstr "File '{pluginFile}' does not exist"
 
 # TRANSLATION
 # LABEL/ID_CREATING_TABLE
@@ -11524,8 +11524,8 @@ msgstr "message sent"
 # TRANSLATION
 # LABEL/ID_CASE_DOES_NOT_EXIST
 #: LABEL/ID_CASE_DOES_NOT_EXIST
-msgid "Case {CASE_NUMBER} does not exist"
-msgstr "Case {CASE_NUMBER} does not exist"
+msgid "Case {CASE_NUMBER} does not exists"
+msgstr "Case {CASE_NUMBER} does not exists"
 
 # TRANSLATION
 # LABEL/ID_COMMAND_EXECUTED_SUCCESSFULLY
@@ -11554,8 +11554,8 @@ msgstr "Password surprases the maximun length allowed"
 # TRANSLATION
 # LABEL/ID_USERNAME_ALREADY_EXISTS
 #: LABEL/ID_USERNAME_ALREADY_EXISTS
-msgid "Username '{USER_ID}' already exists"
-msgstr "Username '{USER_ID}' already exists"
+msgid "Username '{USER_ID}' already exist"
+msgstr "Username '{USER_ID}' already exist"
 
 # TRANSLATION
 # LABEL/ID_INVALID_ROLE
@@ -11620,8 +11620,8 @@ msgstr "User not registered in the group"
 # TRANSLATION
 # LABEL/ID_USER_ALREADY_EXISTS_GROUP
 #: LABEL/ID_USER_ALREADY_EXISTS_GROUP
-msgid "User already exists in the group"
-msgstr "User already exists in the group"
+msgid "User already exist in the group"
+msgstr "User already exist in the group"
 
 # TRANSLATION
 # LABEL/ID_DEPARTMENT_NOT_REGISTERED_SYSTEM
@@ -11902,8 +11902,8 @@ msgstr "Import PM Table"
 # TRANSLATION
 # LABEL/ID_OVERWRITE_EXIST
 #: LABEL/ID_OVERWRITE_EXIST
-msgid "Overwrite if exists?"
-msgstr "Overwrite if exists?"
+msgid "Overwrite if exist?"
+msgstr "Overwrite if exist?"
 
 # TRANSLATION
 # LABEL/ID_SELECT_PM_FILE
@@ -12148,8 +12148,8 @@ msgstr "Report Database"
 # TRANSLATION
 # LABEL/ID_DROP_DATABASE_EXISTS
 #: LABEL/ID_DROP_DATABASE_EXISTS
-msgid "Drop database if exists"
-msgstr "Drop database if exists"
+msgid "Drop database if exist"
+msgstr "Drop database if exist"
 
 # TRANSLATION
 # LABEL/ID_WORKSPACE_ADMINISTRATOR
@@ -13120,8 +13120,8 @@ msgstr "File"
 # additionalTables/additionalTablesToImport.xml?OVERWRITE
 # additionalTables/additionalTablesToImport.xml
 #: checkbox - OVERWRITE
-msgid "Overwrite if exists"
-msgstr "Overwrite if exists"
+msgid "Overwrite if exist"
+msgstr "Overwrite if exist"
 
 # additionalTables/additionalTablesToImport.xml?SAVE
 # additionalTables/additionalTablesToImport.xml
@@ -21854,8 +21854,8 @@ msgstr "Report Database:"
 # login/newSite.xml?AO_DB_DROP
 # login/newSite.xml
 #: checkbox - AO_DB_DROP
-msgid "[login/newSite.xml?AO_DB_DROP] Drop database if exists"
-msgstr "Drop database if exists"
+msgid "[login/newSite.xml?AO_DB_DROP] Drop database if exist"
+msgstr "Drop database if exist"
 
 # login/newSite.xml?WS
 # login/newSite.xml
@@ -21926,8 +21926,8 @@ msgstr "Report Database:"
 # login/newSiteAdd.xml?AO_DB_DROP
 # login/newSiteAdd.xml
 #: checkbox - AO_DB_DROP
-msgid "[login/newSiteAdd.xml?AO_DB_DROP] Drop database if exists"
-msgstr "Drop database if exists"
+msgid "[login/newSiteAdd.xml?AO_DB_DROP] Drop database if exist"
+msgstr "Drop database if exist"
 
 # login/newSiteAdd.xml?WS
 # login/newSiteAdd.xml
@@ -23222,7 +23222,7 @@ msgstr "Cancel"
 # processCategory/processCategoryEdit.xml?title1
 # processCategory/processCategoryEdit.xml
 #: title - title1
-msgid "Process Category form"
+msgid "[processCategory/processCategoryEdit.xml?title1] Process Category form"
 msgstr "Process Category form"
 
 # processCategory/processCategoryEdit.xml?CATEGORY_NAME
@@ -23846,8 +23846,8 @@ msgstr "<div align=\"center\">Importing Existing Process</div>"
 # processes/processes_ImportExisting.xml?TITLE1
 # processes/processes_ImportExisting.xml
 #: subtitle - TITLE1
-msgid "[processes/processes_ImportExisting.xml?TITLE1] The process you are trying to import already exists. Please select one of the following options to continue:"
-msgstr "The process you are trying to import already exists. Please select one of the following options to continue:"
+msgid "[processes/processes_ImportExisting.xml?TITLE1] The process you are trying to import already exist. Please select one of the following options to continue:"
+msgstr "The process you are trying to import already exist. Please select one of the following options to continue:"
 
 # processes/processes_ImportExisting.xml?IMPORT_OPTION
 # processes/processes_ImportExisting.xml
@@ -23894,8 +23894,8 @@ msgstr "<div align=\"center\">Importing Existing Process</div>"
 # processes/processes_ImportExistingXpdl.xml?TITLE1
 # processes/processes_ImportExistingXpdl.xml
 #: subtitle - TITLE1
-msgid "[processes/processes_ImportExistingXpdl.xml?TITLE1] The process you are trying to import already exists. Please select one of the following options to continue:"
-msgstr "The process you are trying to import already exists. Please select one of the following options to continue:"
+msgid "[processes/processes_ImportExistingXpdl.xml?TITLE1] The process you are trying to import already exist. Please select one of the following options to continue:"
+msgstr "The process you are trying to import already exist. Please select one of the following options to continue:"
 
 # processes/processes_ImportExistingXpdl.xml?IMPORT_OPTION
 # processes/processes_ImportExistingXpdl.xml
@@ -24542,8 +24542,8 @@ msgstr "<div align=\"center\">Importing Groups</div>"
 # processes/processes_ValidatingGroups.xml?TITLE1
 # processes/processes_ValidatingGroups.xml
 #: subtitle - TITLE1
-msgid "Some of the groups that are you trying to import, already exists. Please select one of the following options to continue:"
-msgstr "Some of the groups that are you trying to import, already exists. Please select one of the following options to continue:"
+msgid "Some of the groups that are you trying to import, already exist. Please select one of the following options to continue:"
+msgstr "Some of the groups that are you trying to import, already exist. Please select one of the following options to continue:"
 
 # processes/processes_ValidatingGroups.xml?GROUP_IMPORT_OPTION
 # processes/processes_ValidatingGroups.xml
