@@ -89,6 +89,7 @@ class AppProxy extends HttpProxyController
       $noteRecipientsList[] = $key;
     }
     $noteRecipients = implode(",", $noteRecipientsList);
+    $noteContent = stripslashes($noteContent);
 
     $appNotes->sendNoteNotification($appUid, $usrUid, $noteContent, $noteRecipients);
   }
