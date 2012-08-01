@@ -3552,7 +3552,12 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_FILTER','en','Filter','2012-07-12') ,
 ( 'LABEL','ID_DOCUMENT_TYPE','en','PM Type','2012-07-12') ,
 ( 'LABEL','ID_TIMING_CONTROL','en','Timing Control','2012-07-17') ,
-( 'LABEL','ID_CASE_DOES_NOT_EXIST_JS','en','Case {0} does not exist','2012-07-19') ;
+( 'LABEL','ID_CASE_DOES_NOT_EXIST_JS','en','Case {0} does not exist','2012-07-19') ,
+( 'LABEL','ID_CASE_PAUSE_REASON','en','Reason of the pause of case','2012-08-01') ,
+( 'LABEL','ID_NOTIFY_USERS_CASE','en','Notify users of case','2012-08-01') ,
+( 'LABEL','ID_CASE_PAUSE_LABEL_NOTE','en','The Case paused. By the reason:','2012-08-01') ,
+( 'LABEL','ID_CASE_CANCEL_REASON','en','Reason of the cancel of case','2012-08-01') ,
+( 'LABEL','ID_CASE_CANCEL_LABEL_NOTE','en','The Case canceled. By the reason:','2012-08-01') ;
 
 INSERT INTO ISO_LOCATION (IC_UID,IL_UID,IL_NAME,IL_NORMAL_NAME,IS_UID)  VALUES 
 ('AD','','',' ','') ,

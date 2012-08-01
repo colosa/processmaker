@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-635-g3a1ca52\n"
+"Project-Id-Version: ProcessMaker (Branch 2.0-testing) 2.0.43-testing.4-10-gb493668\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-07-31 18:31:54\n"
+"PO-Revision-Date: 2012-08-01 10:50:13\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12691,6 +12691,36 @@ msgstr "Timing Control"
 msgid "Case {0} does not exist"
 msgstr "Case {0} does not exist"
 
+# TRANSLATION
+# LABEL/ID_CASE_PAUSE_REASON
+#: LABEL/ID_CASE_PAUSE_REASON
+msgid "Reason of the pause of case"
+msgstr "Reason of the pause of case"
+
+# TRANSLATION
+# LABEL/ID_NOTIFY_USERS_CASE
+#: LABEL/ID_NOTIFY_USERS_CASE
+msgid "Notify users of case"
+msgstr "Notify users of case"
+
+# TRANSLATION
+# LABEL/ID_CASE_PAUSE_LABEL_NOTE
+#: LABEL/ID_CASE_PAUSE_LABEL_NOTE
+msgid "The Case paused. By the reason:"
+msgstr "The Case paused. By the reason:"
+
+# TRANSLATION
+# LABEL/ID_CASE_CANCEL_REASON
+#: LABEL/ID_CASE_CANCEL_REASON
+msgid "Reason of the cancel of case"
+msgstr "Reason of the cancel of case"
+
+# TRANSLATION
+# LABEL/ID_CASE_CANCEL_LABEL_NOTE
+#: LABEL/ID_CASE_CANCEL_LABEL_NOTE
+msgid "The Case canceled. By the reason:"
+msgstr "The Case canceled. By the reason:"
+
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
 #: text - ADD_TAB_NAME
@@ -21854,7 +21884,7 @@ msgstr "Report Database:"
 # login/newSite.xml?AO_DB_DROP
 # login/newSite.xml
 #: checkbox - AO_DB_DROP
-msgid "[login/newSite.xml?AO_DB_DROP] Drop database if exist"
+msgid "Drop database if exist"
 msgstr "Drop database if exist"
 
 # login/newSite.xml?WS
@@ -23846,7 +23876,7 @@ msgstr "<div align=\"center\">Importing Existing Process</div>"
 # processes/processes_ImportExisting.xml?TITLE1
 # processes/processes_ImportExisting.xml
 #: subtitle - TITLE1
-msgid "[processes/processes_ImportExisting.xml?TITLE1] The process you are trying to import already exist. Please select one of the following options to continue:"
+msgid "The process you are trying to import already exist. Please select one of the following options to continue:"
 msgstr "The process you are trying to import already exist. Please select one of the following options to continue:"
 
 # processes/processes_ImportExisting.xml?IMPORT_OPTION
