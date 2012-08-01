@@ -39,6 +39,8 @@ class ProcessProxy extends HttpProxyController
     require_once 'classes/model/Task.php';
     G::LoadClass('processMap');
     $oProcessMap = new ProcessMap();
+
+    $httpData->PRO_TITLE = trim($httpData->PRO_TITLE);
     
     if( ! isset($httpData->PRO_UID) ) {
     
