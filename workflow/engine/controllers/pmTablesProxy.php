@@ -470,7 +470,7 @@ class pmTablesProxy extends HttpProxyController
         if ($codification == 'base64') {
             $rows = unserialize(base64_decode($httpData->rows));
         } else {
-            $rows = G::json_decode(stripslashes($httpData->rows));
+            $rows = G::json_decode($httpData->rows);
         }
 
         try {
