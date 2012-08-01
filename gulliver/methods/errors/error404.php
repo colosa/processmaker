@@ -27,7 +27,7 @@
  if ( isset ( $_SESSION['phpFileNotFound'] ) )
    $uri = $_SESSION['phpFileNotFound'];
  else if ( isset ( $_GET['l'] ) )
-   $uri = $_GET['l'];
+   $uri = htmlentities($_GET['l'], ENT_QUOTES, "UTF-8");
  else
    $uri = 'undefined';
   
