@@ -1019,6 +1019,27 @@ function G_Text(form, element, name)
           }
           action = 'move';
           break;
+        case 45:
+          if (me.mType == 'currency') {
+            newValue  = currentValue.substring(0, currentValue.length);
+            for (var numI = 0; newValue.length > numI; numI++) {
+              var campVal = newValue[numI];
+              if ((typeof(campVal) === 'number' || typeof(campVal) === 'string') && (campVal !== '') && (!isNaN(campVal))) {
+                newValue = currentValue.substring(0, numI-1);
+                newValue += '-' + currentValue.substring(numI);
+                numI = newValue.length + 1;
+                newCursor = cursorStart+1;
+              } else {
+                if (campVal == '-') {
+                  newValue = currentValue.substring(0, numI-1);
+                  newValue += currentValue.substring(numI+1);
+                  newCursor = cursorStart-1;
+                  numI = newValue.length + 1;
+                }
+              }
+            }
+          }
+          break;
         default:
           newKey = String.fromCharCode(keyCode);
           newValue  = currentValue.substring(0, cursorStart);
@@ -1039,15 +1060,28 @@ function G_Text(form, element, name)
           tamMask = aux[0].length;
           sw = true;
         }
-        if (tamData >= tamMask){
-          if (sw && !swPeriod && testData.indexOf(me.comma_separator) == -1){
-            action = 'none';
+        if (tamData >= tamMask){          
+          var minusExi;
+          for (var numI = 0; newValue.length > numI; numI++) {
+            var campVal = newValue[numI];
+            if ((typeof(campVal) === 'number' || typeof(campVal) === 'string') && (campVal !== '') && (!isNaN(campVal))) {
+              minusExi = false;
+            } else {
+              if (campVal == '-') {
+                minusExi = true;
+                numI = newValue.length + 1;
+              }
+            }
           }
-          if (!sw) action = 'none';
-
+          
+          if (!(keyCode == 45 || (minusExi && tamMask >= tamData))) {
+            if (sw && !swPeriod && testData.indexOf(me.comma_separator) == -1){
+              action = 'none';
+            }
+            if (!sw) action = 'none';
+          }
         }
-      }
-
+      }      
       switch(action){
         case 'mask': case 'move':
           dataNewMask = me.replaceMasks(newValue, newCursor);
@@ -1749,7 +1783,7 @@ function G()
     _aNum = num.split('');
     for (var d=0; d < _aNum.length; d++){
       switch(_aNum[d]){
-        case '0': case '1': case '2': case '3': case '4':
+        case '-': case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9': case _DEC:
           _num = _num + _aNum[d];
           break;
@@ -1940,14 +1974,22 @@ function G()
                 break;
               case ',': case '.':
                 if (pMask[p] != __DECIMAL_SEP){
-                  if (pNum.length > 0){
+                  if (pNum.length > 0 && pNum[0] != '-'){
                     _cout += pMask[p];
                   }
                 }
                 break;
               default:
-                 _cout += pMask[p];
+                if (pNum.length > 0 && pNum[0] == '-') {
+                  key = pNum.shift();
+                  _cout += key;
+                }
+                _cout += pMask[p];
             }
+          }
+          if (pNum.length > 0 && pNum[0] == '-') {
+            key = pNum.shift();
+            _cout += key;
           }
           if (sw_c && sw_d){
             myOut = _dout + __DECIMAL_SEP + _cout;
