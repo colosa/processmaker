@@ -445,6 +445,7 @@ class processMap {
 
         //If the function returns a DEFAULT calendar it means that this object doesn't have assigned any calendar
         $aFields['PRO_CALENDAR'] = $calendarInfo ['CALENDAR_APPLIED'] != 'DEFAULT' ? $calendarInfo ['CALENDAR_UID'] : "";
+        $aFields['SYS_LANG'] = SYS_LANG;
 
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher ( );

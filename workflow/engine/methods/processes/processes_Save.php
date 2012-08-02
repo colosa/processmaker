@@ -53,6 +53,8 @@ switch($function){
       $_POST['form']['PRO_UID'] = $_GET['PRO_UID'];
     }
 
+    $_POST['form']['PRO_TITLE'] = trim($_POST['form']['PRO_TITLE']);
+
     G::LoadClass('processMap');
     $oProcessMap = new ProcessMap();
     if (!isset($_POST['form']['PRO_UID'])) {
