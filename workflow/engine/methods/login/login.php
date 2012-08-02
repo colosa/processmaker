@@ -160,7 +160,6 @@ $sflag = (trim($sflag) != '') ? $sflag : '1';
 
 //get date of next beat
 $nextBeatDate = $oServerConf->getHeartbeatProperty('HB_NEXT_BEAT_DATE', 'HEART_BEAT_CONF');
-$sflag = 1;
 
 //if flag to send heartbeat is enabled, and it is time to send heartbeat, sent it using asynchronous beat.
 if (($sflag == "1") && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {

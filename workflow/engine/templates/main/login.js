@@ -72,6 +72,9 @@ var Login = function() {
       if (flagGettingStarted) {
         this.gettingStartedWindow.show();
       }
+      if (flagHeartBeat) {
+        processHbInfo();
+      }
     }
   }
 }();
@@ -372,6 +375,19 @@ Login.initComponents = function()
     ]
   });
   //Ext.getCmp('login-form').hide();
+}
+
+processHbInfo = function() {
+  Ext.Ajax.request({
+    url : '../services/processHeartBeat_Ajax' ,
+    params : {action:'processInformation'},
+    success: function ( result, request ) {
+      //console.info("");
+    },
+    failure: function ( result, request) {
+      //Ext.MessageBox.alert(_('ID_FAILED'), result.responseText);
+    }
+  });
 }
 
 Login.forgotPassword = function()
