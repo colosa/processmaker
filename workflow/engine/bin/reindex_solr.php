@@ -23,14 +23,51 @@
  */
 
 // check script parameters
-// php reindex_solr.php workspacename [reindexall|reindexmissing]
+// php reindex_solr.php workspacename [reindexall|reindexmissing|optimizeindex] [-skip 1005] [-reindextrunksize 1000]
 // var_dump($argv);
-if (count ($argv) != 3) {
-  print "Invalid command line arguments: \n syntax: php reindex_solr.php [workspace_name] [reindexall|reindexmissing] \n" . " Where reindexall : reindex all the database \n" . " reindexmissing: reindex only the missing records stored in database.\n";
+//(count ($argv) == 4) || ((count ($argv) == 5) && ($argv [3] != '-skip'))
+$commandLineSyntaxMsg = "Invalid command line arguments: \n " .
+  "syntax: ".
+  "php reindex_solr.php [workspace_name] [reindexall|reindexmissing|optimizeindex] [-skip {record_number}] [-reindextrunksize {trunk_size}]\n" . 
+  " Where \n".
+  "       reindexall : reindex all the database. \n" . 
+  "       reindexmissing: reindex only the missing records stored in database. \n".
+  "                     (records defined in APP_SOLR_QUEUE table are required)\n" .
+  "       optimizeindex: optimize the changes in the search index. (used to get faster results) \n" .
+  " Optional Options: \n" .
+  " -skip {record_number}: used to skip a number of records. \n ex: -skip 10000 //skips the first 10000 records. \n" .
+  " -reindextrunksize {trunk_size}: specify the number of records sent to index each time. \n ex: -reindextrunksize 100 //(default = 1000) \n Reduce the trunk if using big documents, and memory is not enough. \n"; 
+
+if ( (count ($argv) < 3) || ((count ($argv) % 2) == 0) || 
+    ($argv [2] != 'reindexall' && $argv [2] != 'reindexmissing' && $argv [2] != 'optimizeindex')) {    
+  print $commandLineSyntaxMsg;
   die ();
 }
 $workspaceName = $argv [1];
 $ScriptAction = $argv [2];
+$SkipRecords = 0;
+$TrunkSize = 1000;
+//3 5 7
+if(count ($argv) > 3) {
+  for($argNumber = 3 ; $argNumber < count ($argv) ; $argNumber += 2) {
+    if(($argv [$argNumber] == '-skip' || $argv [$argNumber] == '-reindextrunksize')) {
+      //get options
+      if($argv [$argNumber] == '-skip') {
+        //use skip option
+        $SkipRecords = intval($argv [$argNumber + 1]);
+      }
+      if($argv [$argNumber] == '-reindextrunksize') {
+        //use skip option
+        $TrunkSize = intval($argv [$argNumber + 1]);
+      }  
+    }
+    else {
+      print $commandLineSyntaxMsg;
+      die ();
+    }
+  }
+}
+
 
 ini_set ('display_errors', 1);
 error_reporting (E_ALL);
@@ -237,6 +274,8 @@ function processWorkspace()
 {
   global $sLastExecution;
   global $ScriptAction;
+  global $SkipRecords;
+  global $TrunkSize;
   
   try {
     
@@ -249,10 +288,13 @@ function processWorkspace()
       
       $oAppSolr = new AppSolr ($solrConf ['solr_enabled'], $solrConf ['solr_host'], $solrConf ['solr_instance']);
       if ($ScriptAction == "reindexall") {
-        $oAppSolr->reindexAllApplications ();
+        $oAppSolr->reindexAllApplications ($SkipRecords, $TrunkSize);
       }
       if ($ScriptAction == "reindexmissing") {
         $oAppSolr->synchronizePendingApplications ();
+      }
+      if ($ScriptAction == "optimizeindex") {
+        $oAppSolr->optimizeSearchIndex ();
       }
     }
     else {

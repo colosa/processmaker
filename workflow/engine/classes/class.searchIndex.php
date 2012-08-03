@@ -332,6 +332,20 @@ class BpmnEngine_Services_SearchIndex
   }
   
   /**
+   * Optimize index changes
+   * @param string $workspace
+   */
+  public function optimizeIndexChanges($workspace)
+  {
+    G::LoadClass ('solr');
+  
+    $solr = new BpmnEngine_SearchIndexAccess_Solr ($this->_solrIsEnabled, $this->_solrHost);
+  
+    // commit
+    $solr->optimizeChanges ($workspace);
+  }  
+  
+  /**
    * Call Solr server to return the list of paginated pages.
    * @param FacetRequest $solrRequestData
    * @return Entity_SolrQueryResult

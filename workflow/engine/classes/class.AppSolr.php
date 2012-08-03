@@ -86,6 +86,31 @@ class ApplicationWithoutDelegationRecordsException extends Exception
 }
 
 /**
+ * Dynaform file corrupt
+ *
+ * @author Herbert Saal Gutierrez
+ *
+ * @category Colosa
+ * @copyright Copyright (c) 2005-2012 Colosa Inc. (http://www.colosa.com)
+ */
+class ApplicationWithCorruptDynaformException extends Exception
+{
+  // Redefine the exception so message isn't optional
+  public function __construct($message, $code = 0)
+  {
+    // some code
+    // make sure everything is assigned properly
+    parent::__construct ($message, $code);
+  }
+
+  // custom string representation of object
+  public function __toString()
+  {
+    return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+  }
+}
+
+/**
  * Application APP_DATA could not be unserialized exception
  *
  * @author Herbert Saal Gutierrez
@@ -219,6 +244,7 @@ class AppSolr
     $swErrorInSearchText = false;
     $solrQueryResult = null;
     $aPriorities = array('1'=>'VL', '2'=>'L', '3'=>'N', '4'=>'H', '5'=>'VH');
+    $delegationIndexes = array();
     
     $result = array ();
     $result ['totalCount'] = 0;
@@ -321,30 +347,30 @@ class AppSolr
       if ($userUid != null && $action == 'todo') {
         if ($filter == 'read') {
           $solrSearchText .= "APP_ASSIGNED_USERS_READ:" . $userUid . " AND ";
-          $delIndexDynaField = "APP_ASSIGNED_USER_READ_DEL_INDEX_" . trim ($userUid) . '_txt';
+          $delegationIndexes[] = "APP_ASSIGNED_USER_READ_DEL_INDEX_" . trim ($userUid) . '_txt'; 
         }
         elseif ($filter == 'unread') {
           $solrSearchText .= "APP_ASSIGNED_USERS_UNREAD:" . $userUid . " AND ";
-          $delIndexDynaField = "APP_ASSIGNED_USER_UNREAD_DEL_INDEX_" . trim ($userUid) . '_txt';
+          $delegationIndexes[] = "APP_ASSIGNED_USER_UNREAD_DEL_INDEX_" . trim ($userUid) . '_txt';
         }
         else {
           $solrSearchText .= "APP_ASSIGNED_USERS:" . $userUid . " AND ";
-          $delIndexDynaField = "APP_ASSIGNED_USER_DEL_INDEX_" . trim ($userUid) . '_txt';
+          $delegationIndexes[] = "APP_ASSIGNED_USER_DEL_INDEX_" . trim ($userUid) . '_txt';
         }
       }
       // participated, add condition
       if ($userUid != null && $action == 'sent') {
         if ($filter == 'started') {
           $solrSearchText .= "APP_PARTICIPATED_USERS_STARTED:" . $userUid . " AND ";
-          $delIndexDynaField = "APP_PARTICIPATED_USER_STARTED_DEL_INDEX_" . trim ($userUid) . '_txt';
+          $delegationIndexes[] = "APP_PARTICIPATED_USER_STARTED_DEL_INDEX_" . trim ($userUid) . '_txt';
         }
         elseif ($filter == 'completed') {
           $solrSearchText .= "APP_PARTICIPATED_USERS_COMPLETED:" . $userUid . " AND ";
-          $delIndexDynaField = "APP_PARTICIPATED_USER_COMPLETED_DEL_INDEX_" . trim ($userUid) . '_txt';
+          $delegationIndexes[] = "APP_PARTICIPATED_USER_COMPLETED_DEL_INDEX_" . trim ($userUid) . '_txt';
         }
         else {
           $solrSearchText .= "APP_PARTICIPATED_USERS:" . $userUid . " AND ";
-          $delIndexDynaField = "APP_PARTICIPATED_USER_DEL_INDEX_" . trim ($userUid) . '_txt';
+          $delegationIndexes[] = "APP_PARTICIPATED_USER_DEL_INDEX_" . trim ($userUid) . '_txt';
         }
       }
       // draft, add condition
@@ -356,6 +382,7 @@ class AppSolr
       if ($userUid != null && $action == 'unassigned') {
         // get the list of groups to which belongs the user.
         $userGroups = $this->getUserGroups ($userUid);
+
         $solrSearchText .= "(APP_UNASSIGNED_USERS:" . $userUid;
         if (count ($userGroups) > 0) {
           $solrSearchText .= " OR ";
@@ -370,7 +397,10 @@ class AppSolr
         }
         $solrSearchText .= ") AND ";
         
-        $delIndexDynaField = "APP_UNASSIGNED_USER_GROUP_DEL_INDEX_" . trim ($userUid) . '_txt';
+        $delegationIndexes[] = "APP_UNASSIGNED_USER_GROUP_DEL_INDEX_" . trim ($userUid) . '_txt';
+        foreach ($userGroups as $group) {
+          $delegationIndexes[] = "APP_UNASSIGNED_USER_GROUP_DEL_INDEX_" . trim ($group ['GRP_UID']) . '_txt';
+        }        
       }
       
       // remove last AND in condition
@@ -392,10 +422,9 @@ class AppSolr
         if ($search != "")
           $solrSearchText .= "(" . $search . ")";
       }
-      // add del_index dynamic field to list of resulting columns
-      $columsToInclude = array_merge ($columsToInclude, array (
-          $delIndexDynaField 
-      ));
+      // add del_index dynamic fields to list of resulting columns
+      // the fields begin in the 30th column and more 
+      $columsToInclude = array_merge ($columsToInclude, $delegationIndexes);
       
       // if is a counter no records are returned
       if ($doCount) {
@@ -419,6 +448,7 @@ class AppSolr
           'includeCols' => $columsToInclude,
           'resultFormat' => 'json' 
       );
+      
       
       $solrRequestData = Entity_SolrRequestData::createForRequestPagination ($data);
       // use search index to return list of cases
@@ -465,13 +495,24 @@ class AppSolr
       $result ['totalCount'] = $solrQueryResult->iTotalDisplayRecords;
 
       // complete the missing data to display it in the grid.
+      $delIndexes = array(); //store all the delegation indexes
       foreach ($solrQueryResult->aaData as $i => $data) {
+        //initialize array
+        $delIndexes = array();
         // complete empty values
         $appUID = $data [11];
-        $delIndexes = $data [30];
+        //get all the delindexes
+        for($i = 30 ; $i < count($data) ; $i++) {
+          if (is_array ($data [$i])) {
+            foreach($data [$i] as $delIndex){
+              $delIndexes[] = $delIndex;
+            }
+          }
+        }
         // verify if the delindex is an array
-        // if is not an array all the indexed must be returned
-        if (! is_array ($delIndexes)) {
+        // if is not check different types of repositories
+        // the delegation index must always be defined.
+        if (count($delIndexes) == 0) {
           // if is draft
           if ($action == 'draft') {
             $delIndexes [] = 1; // the first default index
@@ -480,9 +521,14 @@ class AppSolr
             // get all the indexes
             $delIndexes = $this->getApplicationDelegationsIndex ($appUID);
           }
-	  else {
-            $delIndexes = array();
+          else {
+            //error an index must always be defined
+            print "Delegation not defined\n";
           }
+          /*
+          elseif ($action == 'unassigned'){
+            $delIndexes = $this->getApplicationDelegationsIndex ($appUID);
+          }*/
         }
         foreach ($delIndexes as $delIndex) {
           $aRow = array ();
@@ -535,14 +581,14 @@ class AppSolr
       return $result;
     
     } // end try
-    catch ( InvalidIndexSearchTextException $e ) {
+    catch ( InvalidIndexSearchTextException $ex ) {
       // return empty result with description of error
       $result = array ();
       $result ['totalCount'] = 0;
       $result ['data'] = array ();
       $result ['success'] = true;
       $result ['result'] = false;
-      $result ['message'] = $e->getMessage ();
+      $result ['message'] = $ex->getMessage ();
       return $result;
     }
   }
@@ -928,6 +974,7 @@ class AppSolr
   
   }
   
+  
   /**
    * Update the information of the specified applications in Solr
    *
@@ -954,6 +1001,7 @@ class AppSolr
       foreach ($aaAPPUIDs as $aAPPUID) {
         $this->applicationChangedUpdateSolrQueue ($aAPPUID ['APP_UID'], true);
       }
+      return;
     }
     // create XML document
     $xmlDoc = $this->createSolrXMLDocument ($aaAPPUIDs);
@@ -974,8 +1022,8 @@ class AppSolr
       $oSearchIndex->updateIndexDocument ($oSolrUpdateDocument);
       // commit changes
       $oSearchIndex->commitIndexChanges ($this->_solrInstance);
-    } catch(Exception $ex)
-    {
+    } 
+    catch(Exception $ex) {
 	//print "Excepcion indexing data: " . $ex->getMessage() . "\n"; die;
         $fh = fopen("./SolrIndexErrors.txt", 'a') or die("can't open file to store Solr index errors.");
         fwrite($fh, $ex->getMessage());
@@ -1032,11 +1080,27 @@ class AppSolr
       try {
         $result = $this->getApplicationIndexData ($aAPPUID ['APP_UID']);
       }
-      catch ( ApplicationWithoutDelegationRecordsException $e ) {
+      catch ( ApplicationWithoutDelegationRecordsException $ex ) {
         // exception trying to get application information
         // skip and continue with the next application
+        $fh = fopen("./SolrIndexErrors.txt", 'a') or die("can't open file to store Solr index errors.");
+        fwrite($fh, $ex->getMessage());
+        fclose($fh);        
         continue;
       }
+      catch( ApplicationWithCorruptDynaformException $ex) {
+        $fh = fopen("./SolrIndexErrors.txt", 'a') or die("can't open file to store Solr index errors.");
+        fwrite($fh, $ex->getMessage());
+        fclose($fh);
+        continue;        
+      }
+      catch (Exception $ex) {
+        $fh = fopen("./SolrIndexErrors.txt", 'a') or die("can't open file to store Solr index errors.");
+        fwrite($fh, "getApplicationIndexData " . $aAPPUID . ":" . $ex->getMessage() . "\n");
+        fclose($fh);
+        continue;        
+      }
+      
       $documentInformation = $result [0];
       $dynaformFieldTypes = $result [1];
       $lastUpdateDate = $result [2];
@@ -1058,12 +1122,18 @@ class AppSolr
             $draftUser, $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser, 
             $unassignedUsers, $unassignedGroups);
       }
-      catch ( ApplicationAPP_DATAUnserializeException $e ) {
+      catch ( ApplicationAPP_DATAUnserializeException $ex ) {
         // exception trying to get application information
         $fh = fopen("./SolrIndexErrors.txt", 'a') or die("can't open file to store Solr index errors.");
-        fwrite($fh, $e->getMessage());
+        fwrite($fh, $ex->getMessage());
         fclose($fh);
         // skip and continue with the next application
+        continue;
+      }
+      catch (Exception $ex) {
+        $fh = fopen("./SolrIndexErrors.txt", 'a') or die("can't open file to store Solr index errors.");
+        fwrite($fh, "buildSearchIndexDocumentPMOS2 " . $aAPPUID . ":" . $ex->getMessage() . "\n");
+        fclose($fh);
         continue;
       }
     
@@ -1315,8 +1385,8 @@ class AppSolr
         
         // add dynamic field for del_index information
         $writer->startElement ("field");
-        $writer->writeAttribute ('name', 'APP_UNASSIGNED_USER_GROUP_DEL_INDEX_' . trim ($userUID ['USR_UID']) . '_txt');
-        $writer->text ($userUID ['DEL_INDEX']);
+        $writer->writeAttribute ('name', 'APP_UNASSIGNED_USER_GROUP_DEL_INDEX_' . trim ($groupUID ['USR_UID']) . '_txt');
+        $writer->text ($groupUID ['DEL_INDEX']);
         $writer->endElement ();
       }
     }
@@ -1333,7 +1403,7 @@ class AppSolr
       
       if (! $UnSerializedCaseData) {
         // error unserializing
-	throw new ApplicationAPP_DATAUnserializeException ("Could not unserialize APP_DATA of APP_UID: " . $documentData ['APP_UID']);
+        throw new ApplicationAPP_DATAUnserializeException ("Could not unserialize APP_DATA of APP_UID: " . $documentData ['APP_UID'] . "\n");
       }
       else {
         foreach ($UnSerializedCaseData as $k => $value) {
@@ -1347,14 +1417,14 @@ class AppSolr
                   $typeSufix = '_t';
                   break;
                 case 'Int' :
-		  if(intval ($value) > 2147483647) {
+                  if(intval ($value) > 2147483647) {
                     $typeSufix = '_tl'; //for long values
                     $value = intval ($value);
-		  }
-		  else {
-		    $typeSufix = '_ti'; 
+                  }
+                  else {
+                    $typeSufix = '_ti'; 
                     $value = intval ($value);
-		  }
+                  }
                   break;
                 case 'Real' :
                   $typeSufix = '_td';
@@ -1397,7 +1467,7 @@ class AppSolr
                   break;
                 case 'currency' :
                   $typeSufix = '_td';
-		  $value = floatval ($value);
+                  $value = floatval ($value);
                   break;
                 case 'percentage' :
                   $typeSufix = '_t';
@@ -1481,7 +1551,7 @@ class AppSolr
     // this case occurs when the application doesn't have related delegation
     // records.
     if (empty ($allAppDbData) || ! isset ($allAppDbData [0])) {
-      throw new ApplicationWithoutDelegationRecordsException ("Application without delegation records. APP_UID: " . $AppUID);
+      throw new ApplicationWithoutDelegationRecordsException ("Application without delegation records. APP_UID: " . $AppUID . "\n");
     }
     
     // copy the application information
@@ -1593,33 +1663,42 @@ class AppSolr
     // search information of unassigned users
     // the unassigned users are the self service users and groups.
     // the self service users are defined in the TASKs of the PROCESS.
-    foreach ($allAppDbData as $row) {
+    $unassignedUsers = array ();
+    $unassignedGroups = array ();    
+    //filter only the delegations that are in selfservice status
+    // `USR_UID` = '' AND `DEL_FINISH_DATE` IS NULL
+    $indexes = $this->aaSearchRecords ($allAppDbData, array (
+        'USR_UID' => 'NULL',
+        'DEL_FINISH_DATE' => 'NULL',
+        'APP_THREAD_STATUS' => 'OPEN'
+    ));
+    foreach ($indexes as $index) {
       $unassignedUsersGroups = array ();
       // use cache
       $oMemcache = PMmemcached::getSingleton ($this->_solrInstance);
-      $unassignedUsersGroups = $oMemcache->get ($row ['PRO_UID'] . "_" . $row ['TAS_UID']);
+      $unassignedUsersGroups = $oMemcache->get ($allAppDbData [$index] ['PRO_UID'] . "_" . $allAppDbData [$index] ['TAS_UID']);
       if (! $unassignedUsersGroups) {
         
-        $unassignedUsersGroups = $this->getTaskUnassignedUsersGroupsData ($row ['PRO_UID'], $row ['TAS_UID']);
+        $unassignedUsersGroups = $this->getTaskUnassignedUsersGroupsData ($allAppDbData [$index] ['PRO_UID'], $allAppDbData [$index] ['TAS_UID']);
         
-        // add del_index
+        // if the task has unassigned users or groups add del_index of delegation 
         foreach ($unassignedUsersGroups as $i => $newRow) {
-          $unassignedUsersGroups [$i] ['DEL_INDEX'] = $row ['DEL_INDEX'];
+          $unassignedUsersGroups [$i] ['DEL_INDEX'] = $allAppDbData [$index] ['DEL_INDEX'];
         }
         // store in cache
-        $oMemcache->set ($row ['PRO_UID'] . "_" . $row ['TAS_UID'], $unassignedUsersGroups);
+        $oMemcache->set ($allAppDbData [$index] ['PRO_UID'] . "_" . $allAppDbData [$index] ['TAS_UID'], $unassignedUsersGroups);
       }
       
       // copy list of unassigned users and groups
-      $unassignedUsers = array ();
-      $unassignedGroups = array ();
       foreach ($unassignedUsersGroups as $unassignedUserGroup) {
+        //unassigned users
         if ($unassignedUserGroup ['TU_RELATION'] == 1) {
           $unassignedUsers [] = array (
               'USR_UID' => $unassignedUserGroup ['USR_UID'],
               'DEL_INDEX' => $unassignedUserGroup ['DEL_INDEX'] 
           );
         }
+        //unassigned groups
         elseif ($unassignedUserGroup ['TU_RELATION'] == 2) {
           $unassignedGroups [] = array (
               'USR_UID' => $unassignedUserGroup ['USR_UID'],
@@ -1644,11 +1723,16 @@ class AppSolr
       G::LoadClass ('dynaformhandler');
       $dynaformFileNames = $this->getProcessDynaformFileNames ($documentInformation ['PRO_UID']);
       $dynaformFields = array ();
-	foreach ($dynaformFileNames as $dynaformFileName) {
+      foreach ($dynaformFileNames as $dynaformFileName) {
           if (file_exists (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
              filesize(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') >0 ) {
           $dyn = new dynaFormHandler (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml');
           $dynaformFields [] = $dyn->getFields ();
+        }
+        if (file_exists (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
+             filesize(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') == 0 )  {
+          
+          throw new ApplicationWithCorruptDynaformException("Application with corrupt dynaform. APP_UID: " . $AppUID . "\n");
         }
       }
       
@@ -1787,10 +1871,10 @@ class AppSolr
    * Search array of indexes that fullfill the conditions
    *
    * @param
-   *          array o arrays $arr contains the arrays that are searched
+   *          array of arrays $arr contains the arrays that are searched
    * @param array $andColumnsConditions
    *          contain the conditions that must fullfill 'Column'=>'Condition'
-   * @return array array of indexes with the found records
+   * @return array of indexes with the found records
    */
   public function aaSearchRecords($arr, $andColumnsConditions)
   {
@@ -2092,11 +2176,28 @@ class AppSolr
    */
   public function getCountApplicationsSearchIndex()
   {
+    G::LoadClass ('searchIndex');
+    
     $searchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
     // execute query
     $count = $searchIndex->getNumberDocuments ($this->_solrInstance);
   
     return $count;
+  }
+  
+  /**
+   * Optimize the records in search index
+   *
+   * @return 
+   */
+  public function optimizeSearchIndex()
+  {
+    G::LoadClass ('searchIndex');
+    
+    $searchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
+    // execute query
+    $searchIndex->optimizeIndexChanges ($this->_solrInstance);
+  
   }  
   
   /**
@@ -2135,9 +2236,9 @@ class AppSolr
    * Reindex all the application records in Solr server
    * update applications in groups of 1000
    */
-  public function reindexAllApplications()
+  public function reindexAllApplications($SkipRecords = 0, $indexTrunkSize = 1000)
   {
-    $trunk = 1000;
+    $trunk = $indexTrunkSize;
     // delete all documents to begin reindex
     // deleteAllDocuments();
     // commitChanges();
@@ -2147,8 +2248,8 @@ class AppSolr
     print "Total number of records: " . $numRows . "\n";
     //
     $initTimeAll = microtime (true);
-    // $numRows = 15;
-    for ($skip = 0; $skip <= $numRows;) {
+
+    for ($skip = $SkipRecords; $skip <= $numRows;) {
       $aaAPPUIds = $this->getPagedApplicationUids ($skip, $trunk);
       
       printf ("Indexing %d to %d \n", $skip, $skip + $trunk);
@@ -2162,6 +2263,7 @@ class AppSolr
     
     $curTimeDoc = gmdate ('H:i:s', (microtime (true) - $initTimeAll));
     printf ("Total reindex time: %s \n", $curTimeDoc);
+    printf ("Reindex completed successfully!!.\n");
   }
 
 }
