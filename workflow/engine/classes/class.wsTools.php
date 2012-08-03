@@ -968,10 +968,16 @@ class workspaceTools {
     $backup = new Archive_Tar($filename);
     //Get a temporary directory in the upgrade directory
     $tempDirectory = PATH_DATA . "upgrade/" . basename(tempnam(__FILE__, ''));
-    mkdir($tempDirectory);
+    $parentDirectory = PATH_DATA . "upgrade";
+    if (is_writable($parentDirectory)) {
+        mkdir($tempDirectory);
+    } else {
+        throw new Exception("Could not create directory:" . $parentDirectory);
+    }
     //Extract all backup files, including database scripts and workspace files
-    if (!$backup->extract($tempDirectory))
-       throw new Exception("Could not extract backup");
+    if (!$backup->extract($tempDirectory)) {
+        throw new Exception("Could not extract backup");
+    }
     //Search for metafiles in the new standard (the old standard would contain
     //txt files).
     $metaFiles = glob($tempDirectory . "/*.meta");
@@ -1015,9 +1021,9 @@ class workspaceTools {
         else
           throw new Exception("Destination workspace already exist (use -o to overwrite)");
 
-      if (file_exists($workspace->path))
+      if (file_exists($workspace->path)) {
         G::rm_dir($workspace->path);
-
+      }
       foreach ($metadata->directories as $dir) {
         CLI::logging("+> Restoring directory '$dir'\n");
 

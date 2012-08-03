@@ -563,14 +563,21 @@ class G
     }
 
     if (is_dir($dirName)) {
-      foreach(glob($dirName . '/*') as $file) {
+      foreach(glob($dirName . '/{,.}*', GLOB_BRACE) as $file) {
+        if ( $file == $dirName . '/.' || $file == $dirName . '/..') {
+            continue;
+        }
         if(is_dir($file)) {
           G::rm_dir($file);
 
-          if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
-            exec('DEL /F /S /Q %' . $dirName . '%', $res);
-          else
+          if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $dirNameWin = str_replace('/','\\' ,$dirName);
+            exec('DEL /F /S /Q ' . $dirNameWin . '', $res);
+            exec('RD /S /Q ' . $dirNameWin . '', $res);
+          } else {
             @rmdir($file);
+          }
+
         }
         else {
           @unlink($file);
