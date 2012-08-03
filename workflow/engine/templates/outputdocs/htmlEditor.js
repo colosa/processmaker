@@ -1,14 +1,97 @@
+function setGridHtml(outdocHtml, swEdit)
+{
+    var outdocHtmlAux = outdocHtml;
+
+    outdocHtmlAux = stringReplace("\\x0A", "(n /)", outdocHtmlAux); //\n 10
+    outdocHtmlAux = stringReplace("\\x0D", "(r /)", outdocHtmlAux); //\r 13
+    outdocHtmlAux = stringReplace("\\x09", "(t /)", outdocHtmlAux); //\t  9
+
+    var arrayMatch1 = [];
+    var outdocHtmlAux1 = "";
+    var strHtml = "";
+
+    ///////
+    outdocHtmlAux1 = outdocHtmlAux;
+    strHtml = "";
+
+    //@>
+    if (swEdit == 1) {
+        while ((arrayMatch1 = /^(.*)<tr>[\(\)nrt\s\/]*<td>[\(\)nrt\s\/]*(@>[a-zA-Z\_]\w*)[\(\)nrt\s\/]*<\/td>[\(\)nrt\s\/]*<\/tr>(.*)$/ig.exec(outdocHtmlAux1))) {
+            outdocHtmlAux1 = arrayMatch1[1];
+            strHtml = arrayMatch1[2] + arrayMatch1[3] + strHtml;
+        }
+    } else {
+        while ((arrayMatch1 = /^(.*<table.*>.*)(@>[a-zA-Z\_]\w*)(.*<\/table>.*)$/ig.exec(outdocHtmlAux1))) {
+            outdocHtmlAux1 = arrayMatch1[1];
+            strHtml = "<tr><td>" + arrayMatch1[2] + "</td></tr>" + arrayMatch1[3] + strHtml;
+        }
+    }
+
+    strHtml = outdocHtmlAux1 + strHtml;
+
+    ///////
+    outdocHtmlAux1 = strHtml;
+    strHtml = "";
+
+    //@< //Copy of @>
+    if (swEdit == 1) {
+        while ((arrayMatch1 = /^(.*)<tr>[\(\)nrt\s\/]*<td>[\(\)nrt\s\/]*(@<[a-zA-Z\_]\w*)[\(\)nrt\s\/]*<\/td>[\(\)nrt\s\/]*<\/tr>(.*)$/ig.exec(outdocHtmlAux1))) {
+            outdocHtmlAux1 = arrayMatch1[1];
+            strHtml = arrayMatch1[2] + arrayMatch1[3] + strHtml;
+        }
+    } else {
+        while ((arrayMatch1 = /^(.*<table.*>.*)(@<[a-zA-Z\_]\w*)(.*<\/table>.*)$/ig.exec(outdocHtmlAux1))) {
+            outdocHtmlAux1 = arrayMatch1[1];
+            strHtml = "<tr><td>" + arrayMatch1[2] + "</td></tr>" + arrayMatch1[3] + strHtml;
+        }
+    }
+
+    strHtml = outdocHtmlAux1 + strHtml;
+
+    ///////
+    strHtml = stringReplace("\\(n \\/\\)", "\n", strHtml);
+    strHtml = stringReplace("\\(r \\/\\)", "\r", strHtml);
+    strHtml = stringReplace("\\(t \\/\\)", "\t", strHtml);
+
+    outdocHtml = strHtml;
+
+    return outdocHtml;
+}
+
+function setHtml(outdocHtml, swEdit)
+{
+    if (outdocHtml.indexOf("@>") > 0 || outdocHtml.indexOf("@&gt;") > 0) {
+        if (swEdit == 1) {
+            outdocHtml = stringReplace("@&gt;", "@>", outdocHtml);
+            outdocHtml = stringReplace("@&lt;", "@<", outdocHtml);
+
+            outdocHtml = setGridHtml(outdocHtml, swEdit);
+        } else {
+            outdocHtml = setGridHtml(outdocHtml, swEdit);
+
+            outdocHtml = stringReplace("@>", "@&gt;", outdocHtml);
+            outdocHtml = stringReplace("@<", "@&lt;", outdocHtml);
+        }
+    }
+
+    return outdocHtml;
+}
+
+
+
+
+
 var importOption;
 
 Ext.onReady(function(){
-
   Ext.QuickTips.init();
 
   // turn on validation errors beside the field globally
   Ext.form.Field.prototype.msgTarget = 'side';
 
   var bd = Ext.getBody();
-    
+  var sourceEdit = 0;
+
   importOption = new Ext.Action({
     text: _('ID_LOAD_FROM_FILE'),
     iconCls: 'silk-add',
@@ -22,7 +105,7 @@ Ext.onReady(function(){
         autoScroll: false,
         maximizable: false,
         resizable: false,
-        
+
         items: [
           new Ext.FormPanel({
             /*renderTo: 'form-panel',*/
@@ -58,25 +141,21 @@ Ext.onReady(function(){
                     uploader.getForm().submit({
                       url: 'outputdocs_Ajax?action=setTemplateFile',
                       waitMsg: _('ID_UPLOADING_FILE'),
-                      success: function(o, resp){
+                      success: function (o, resp) {
                         w.close();
-                        
-                        Ext.Ajax.request({
-                          url: 'outputdocs_Ajax?action=getTemplateFile&r='+Math.random(),
-                          success: function(response){
-                            txtParse = response.responseText;
-                            if ((txtParse.indexOf('@>')>0)||(txtParse.indexOf('@&gt;')>0)){
-                              txtParse = txtParse.replace('@<','@&lt;');
-                              response.responseText = txtParse;
-                            }
-                            Ext.getCmp('OUT_DOC_TEMPLATE').setValue(response.responseText);
-                            if(Ext.getCmp('OUT_DOC_TEMPLATE').getValue(response.responseText)=='')
-                              Ext.Msg.alert(_('ID_ALERT_MESSAGE'), _('ID_INVALID_FILE'));
-                          },
-                          failure: function(){},
-                          params: {request: 'getRows'}
-                        });
 
+                        Ext.Ajax.request({
+                            url: "outputdocs_Ajax?action=getTemplateFile&r=" + Math.random(),
+                            success: function (response) {
+                                Ext.getCmp("OUT_DOC_TEMPLATE").setValue(setHtml(response.responseText, sourceEdit));
+
+                                if (Ext.getCmp("OUT_DOC_TEMPLATE").getValue() == "") {
+                                    Ext.Msg.alert(_("ID_ALERT_MESSAGE"), _("ID_INVALID_FILE"));
+                                }
+                            },
+                            failure: function () {},
+                            params: {request: "getRows"}
+                        });
                       },
                       failure: function(o, resp){
                         w.close();
@@ -99,7 +178,7 @@ Ext.onReady(function(){
       w.show();
     }
   });
-  
+
 
     var top = new Ext.FormPanel({
         labelAlign: 'top',
@@ -116,36 +195,17 @@ Ext.onReady(function(){
             height:300,
             anchor:'98%',
             listeners: {
-              editmodechange: function(he,b){
-                txtParse = he.getRawValue();
-                if (!b){
-                  if ((txtParse.indexOf('@>')>0)||(txtParse.indexOf('@&gt;')>0)){
-                    txtParse = txtParse.replace('@<','@&lt;');
-                    he.setValue(txtParse);
-                  }
-                }
+              editmodechange: function (he, srcEdit) {
+                sourceEdit = (srcEdit == true)? 1 : 0;
+
+                he.setValue(setHtml(he.getRawValue(), sourceEdit));
               },
-              beforepush: function(he, h){
-                txtParse = h;
-                if ((txtParse.indexOf('@>')>0)||(txtParse.indexOf('@&gt;')>0)){
-                  if (txtParse.indexOf('@<')>0){
-                    txtParse = txtParse.replace('@<','@&lt;');
-                    he.setValue(txtParse);
-                  }
-                  //return false;
-                }
-              }//,
-//              beforesync: function(he, h){
-//                alert(h);
-//                txtParse = h;
-//                if ((txtParse.indexOf('@>')>0)||(txtParse.indexOf('@&gt;')>0)){
-//                  if (txtParse.indexOf('@<')>0){
-//                    txtParse = txtParse.replace('@<','@&lt;');
-//                    he.setValue(txtParse);
-//                  }
-//                  //return false;
-//                }
-//              }
+              beforepush: function (he, outdocHtml) {
+                  //
+              }
+              //,
+              //beforesync: function (he, h) {
+              //}
             }
         }],
 
@@ -153,24 +213,24 @@ Ext.onReady(function(){
           text: _('ID_SAVE'),
           handler: function(){
             Ext.Ajax.request({
-              url: 'outputdocs_Save',
-              success: function(response){
-                Ext.Msg.show({
-                  title: '',
-                  msg: _('ID_SAVED_SUCCESSFULLY'),
-                  fn: function(){},
-                  animEl: 'elId',
-                  icon: Ext.MessageBox.INFO,
-                  buttons: Ext.MessageBox.OK
-                });
-              },
-              failure: function(){},
-              params: {
-                'form[OUT_DOC_UID]': OUT_DOC_UID,
-                'form[OUT_DOC_TEMPLATE]':Ext.getCmp('OUT_DOC_TEMPLATE').getValue()
-              }
+                url: "outputdocs_Save",
+                success: function (response) {
+                    Ext.Msg.show({
+                        title: "",
+                        msg: _("ID_SAVED_SUCCESSFULLY"),
+                        fn: function () {},
+                        animEl: "elId",
+                        icon: Ext.MessageBox.INFO,
+                        buttons: Ext.MessageBox.OK
+                    });
+                },
+                failure: function () {},
+                params: {
+                  "form[OUT_DOC_UID]": OUT_DOC_UID,
+                  "form[OUT_DOC_TEMPLATE]": setHtml(Ext.getCmp("OUT_DOC_TEMPLATE").getValue(), 1)
+                }
             });
-          }  
+          }
         },{
           text: _('ID_CANCEL'),
           handler: function(){
@@ -184,18 +244,14 @@ Ext.onReady(function(){
     });
 
     top.render(document.body);
-    
-    Ext.Ajax.request({
-      url: 'outputdocs_Ajax?action=loadTemplateContent&r='+Math.random(),
-      success: function(response){
-        Ext.getCmp('OUT_DOC_TEMPLATE').setValue(response.responseText);                            
-      },
-      failure: function(){},
-      params: {OUT_DOC_UID: OUT_DOC_UID}
-    });
 
+    Ext.Ajax.request({
+        url: "outputdocs_Ajax?action=loadTemplateContent&r=" + Math.random(),
+        success: function(response){
+            Ext.getCmp("OUT_DOC_TEMPLATE").setValue(setHtml(response.responseText, 0));
+        },
+        failure: function () {},
+        params: {OUT_DOC_UID: OUT_DOC_UID}
+    });
 });
 
-//function _(ID){
-//  return TRANSLATIONS[ID];
-//}

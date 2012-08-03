@@ -509,8 +509,12 @@ class OutputDocument extends BaseOutputDocument
         $aProperties=array()
     ) {
         if (($sUID != '') && is_array($aFields) && ($sPath != '')) {
-            $sContent      = G::unhtmlentities($sContent);
-            $strContentAux = str_replace(array("\n", "\r", "\t"), array(null, null, null), $sContent);
+            $nrt     = array("\n",    "\r",    "\t");
+            $nrthtml = array("(n /)", "(r /)", "(t /)");
+
+            $sContent = G::unhtmlentities($sContent);
+
+            $strContentAux = str_replace($nrt, $nrthtml, $sContent);
 
             $iOcurrences = preg_match_all('/\@(?:([\>])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*(?:[\\\\][\w\W])?)*)\))((?:\s*\[[\'"]?\w+[\'"]?\])+)?/', $strContentAux, $arrayMatch1, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
 
@@ -553,6 +557,8 @@ class OutputDocument extends BaseOutputDocument
                     $strContentAux = $strContentAux1 . $strContentAux;
                 }
             }
+
+            $strContentAux = str_replace($nrthtml, $nrt, $strContentAux);
 
             $sContent = $strContentAux;
 

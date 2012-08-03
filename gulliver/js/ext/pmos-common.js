@@ -1,6 +1,6 @@
 PMExtJSCommon = function() {
   this.version = '1.8';
-  
+
   this.notify_time_out = 3;
 
   this.confirm = function(title, msg, fnYes, fnNo)
@@ -16,9 +16,9 @@ PMExtJSCommon = function() {
         setTimeout(fnYes, 0)
       else if( fnNo != undefined )
         setTimeout(fnNo, 0)
-    });      
+    });
   }
-  
+
   this.info = function(title, msg, fn) {
     Ext.MessageBox.show({
       title: title,
@@ -65,12 +65,12 @@ PMExtJSCommon = function() {
       icon: Ext.MessageBox.ERROR
     });
   }
-  
+
   this.notify = function(title, msg, type, time)
   {
     Ext.msgBoxSlider.msg(title, msg, type, time);
   }
-  
+
   this.getBrowser = function()
   {
     var browsersList = new Array("opera", "msie", "firefox", "chrome", "safari");
@@ -78,12 +78,12 @@ PMExtJSCommon = function() {
     var name = 'Unknown';
     var version = '';
     var screen = {
-      width  : Ext.getBody().getViewSize().width, 
+      width  : Ext.getBody().getViewSize().width,
       height : Ext.getBody().getViewSize().height
     };
-    
+
     var so = Ext.isLinux ? 'Linux' : ( Ext.isWindows ? 'Windows' :  (Ext.isMac ? 'Mac OS' : 'Unknown') );
-    
+
     for (var i = 0; i < browsersList.length; i++){
       if ((name == "") && (browserMeta.indexOf(browsersList[i]) != -1)){
         name = browsersList[i];
@@ -91,7 +91,7 @@ PMExtJSCommon = function() {
         break;
       }
     }
-      
+
     return {name:name, version:version, screen: screen}
   }
 
@@ -100,7 +100,7 @@ PMExtJSCommon = function() {
     var labelColumnWidth = 170;
     var valueColumnWidth = 350;
     params = params || {};
-    
+
     if(typeof columnsSize != 'undefined') {
       labelColumnWidth = columnsSize[0] || labelColumnWidth;
       valueColumnWidth = columnsSize[1] || valueColumnWidth;
@@ -124,7 +124,7 @@ PMExtJSCommon = function() {
         dataIndex : 'label',
         renderer: function(v){return '<b><font color="#465070">'+v+'</font></b>'},
         align: 'right'
-      }, 
+      },
       {
         width : valueColumnWidth,
         dataIndex : 'value'
@@ -133,7 +133,7 @@ PMExtJSCommon = function() {
         dataIndex : 'section'
       }],
       autoHeight : true,
-      columnLines: true,    
+      columnLines: true,
       trackMouseOver:false,
       disableSelection:true,
       view: new Ext.grid.GroupingView({
@@ -171,7 +171,7 @@ PMExtJSCommon = function() {
     }
   }
 
-} 
+}
 var PMExt = new PMExtJSCommon();
 
 
@@ -198,7 +198,7 @@ Ext.msgBoxSlider = function(){
       }
       //msgCt.alignTo(document, 'br-br');
       //msgCt.alignTo(document, "br-br", [-20, -20]);
-      
+
       var s = String.format.apply(String, Array.prototype.slice.call(arguments, 1));
       var m = Ext.DomHelper.append(msgCt, {html:createBox(title, s)}, true);
       m.setWidth(400 );
@@ -207,7 +207,7 @@ Ext.msgBoxSlider = function(){
 
       type = typeof type != 'undefined' ? type : '';
       time = typeof time != 'undefined' ? time : PMExt.notify_time_out;
-      
+
       switch(type) {
         case 'alert':
         case 'warning':
@@ -222,7 +222,7 @@ Ext.msgBoxSlider = function(){
         case 'info':
           image = '/images/info.png';
           break;
-        case 'success':  
+        case 'success':
         case 'ok':
           image = '/images/select-icon.png';
           break;
@@ -244,7 +244,7 @@ Ext.msgBoxSlider = function(){
     },
 
     msgTopCenter : function(type, title, format, time) {
-      if (typeof remove == 'undefined') 
+      if (typeof remove == 'undefined')
         remove : true;
 
       time =  typeof time != 'undefined' ? time : PMExt.notify_time_out;
@@ -252,7 +252,7 @@ Ext.msgBoxSlider = function(){
       if( ! msgCt ) {
           msgCt = Ext.DomHelper.insertFirst(document.body, {id:'msg-div', style:'position:absolute'}, true);
       }
-      
+
       var s = String.format.apply(String, Array.prototype.slice.call(arguments, 2));
       var m = Ext.DomHelper.append(msgCt, {html:createBox(title, s)}, true);
       m.setWidth(400 );
@@ -273,7 +273,7 @@ Ext.msgBoxSlider = function(){
         case 'info':
           image = '/images/info.png';
           break;
-        case 'success':  
+        case 'success':
         case 'ok':
           image = '/images/select-icon.png';
           break;
@@ -318,7 +318,7 @@ Ext.msgBoxSlider = function(){
     };
 }();*/
 
-/** 
+/**
  * Translator function for internationalization
  */
 function _()
@@ -328,20 +328,20 @@ function _()
 
   if( typeof TRANSLATIONS != 'undefined' && TRANSLATIONS) {
     if( typeof TRANSLATIONS[argv[0]] != 'undefined' ) {
-      if (argc > 1) {        
+      if (argc > 1) {
         trn = TRANSLATIONS[argv[0]];
         for (i = 1; i < argv.length; i++) {
           trn = trn.replace('{'+(i-1)+'}', argv[i]);
         }
       }
       else {
-        trn = TRANSLATIONS[argv[0]]; 
+        trn = TRANSLATIONS[argv[0]];
       }
-    } 
+    }
     else {
       trn = '**' + argv[0] + '**';
     }
-  } 
+  }
   else {
     PMExt.error('Processmaker JS Core Error', 'The TRANSLATIONS global object is not loaded!');
     trn = '';
@@ -349,18 +349,18 @@ function _()
   return trn;
 }
 
-/** 
+/**
  * Environment Formats function for full name
  */
 function _FNF(USER_NAME, FIRST_NAME, LAST_NAME, FN_FORMAT)
-{  
+{
   if (typeof FORMATS != 'undefined') {
     FN_FORMAT = FORMATS.format;
   }
   else {
     FN_FORMAT = '(@lastName, @firstName) @userName';
   }
-  
+
   var aux = FN_FORMAT;
   aux = aux.replace('@userName',USER_NAME);
   aux = aux.replace('@firstName',FIRST_NAME);
@@ -368,13 +368,13 @@ function _FNF(USER_NAME, FIRST_NAME, LAST_NAME, FN_FORMAT)
   return aux;
 }
 
-/** 
+/**
  * Environment Formats function for date
  */
 function _DF(DATE_TIME, D_FORMAT)
 {
     function LZ(x){return(x<0||x>9?"":"0")+x;}
-    
+
     if(typeof D_FORMAT == 'undefined'){
       if (typeof FORMATS != 'undefined') {
         D_FORMAT = FORMATS.dateFormat;
@@ -388,7 +388,7 @@ function _DF(DATE_TIME, D_FORMAT)
       if (DATE_TIME == '')
         return '';
       else
-        return '**' + DATE_TIME + '**'; 
+        return '**' + DATE_TIME + '**';
     }
 
     var arrD = DATE_TIME.split(' ');
@@ -400,8 +400,8 @@ function _DF(DATE_TIME, D_FORMAT)
     else {
       var arrH = new Array(0,0,0);
     }
-    
-    
+
+
     var MONTH_NAMES=new Array(_('ID_MONTH_1'),_('ID_MONTH_2'),_('ID_MONTH_3'),_('ID_MONTH_4'),_('ID_MONTH_5'),_('ID_MONTH_6'),_('ID_MONTH_7'),
       _('ID_MONTH_8'),_('ID_MONTH_9'),_('ID_MONTH_10'),_('ID_MONTH_11'),_('ID_MONTH_12'),_('ID_MONTH_ABB_1'),_('ID_MONTH_ABB_2'),
       _('ID_MONTH_ABB_3'),_('ID_MONTH_ABB_4'),_('ID_MONTH_ABB_5'),_('ID_MONTH_ABB_6'),_('ID_MONTH_ABB_7'),_('ID_MONTH_ABB_8'),
@@ -418,7 +418,7 @@ function _DF(DATE_TIME, D_FORMAT)
     var H=date.getHours();
     var m=date.getMinutes();
     var s=date.getSeconds();
-    
+
     var values = new Object();
     values['Y'] = y;
     values['y'] = y.substring(2, 4);
@@ -442,14 +442,14 @@ function _DF(DATE_TIME, D_FORMAT)
     if (H>11) values['A'] = 'PM'; else values['A'] = 'AM';
     if (typeof FORMATS == 'undefined') values['T'] = '**';
     else values['T'] = FORMATS.TimeZone;
-    
+
     var aDate = D_FORMAT.split('');
     var aux = '';
-    
+
     var xParts = new Array('Y','y','F','M','m','n','d','j','D','l','G','H','g','h','i','s','a','A','T');
     for (var i=0; i < aDate.length; i++){
        if (xParts.indexOf(aDate[i])==-1){
-         aux = aux + aDate[i]; 
+         aux = aux + aDate[i];
        }
        else{
          aux = aux + values[aDate[i]];
@@ -480,5 +480,15 @@ String.prototype.trim = function() {
 
 String.prototype.nl2br = function () {
   return this.replace(/\n/g,'<br />');
+}
+
+/**
+ * String Replace function, if StrSearch has special characters "(", "[", must be escape "\\(", "\\[".
+ */
+function stringReplace(strSearch, stringReplace, str)
+{
+    var expression = eval("/" + strSearch + "/g");
+
+    return str.replace(expression, stringReplace);
 }
 
