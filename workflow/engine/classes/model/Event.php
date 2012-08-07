@@ -715,6 +715,7 @@ class Event extends BaseEvent {
 
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn(EventPeer::EVN_UID);
+    $oCriteria->addSelectColumn(EventPeer::TAS_UID  );
     $oCriteria->addSelectColumn(EventPeer::EVN_TAS_UID_FROM );
     $oCriteria->addSelectColumn(EventPeer::EVN_TAS_UID_TO );
     
@@ -729,7 +730,7 @@ class Event extends BaseEvent {
     while ($oDataset->next()) {
       $aDataEvent = $oDataset->getRow();
 
-      if ($taskUid == $aDataEvent['EVN_TAS_UID_FROM'] || $taskUid == $aDataEvent['EVN_TAS_UID_TO']) {
+      if ($taskUid == $aDataEvent['TAS_UID'] || $taskUid == $aDataEvent['EVN_TAS_UID_FROM'] || $taskUid == $aDataEvent['EVN_TAS_UID_TO']) {
         $eventsTask[] = $aDataEvent['EVN_UID'];
       } else {
         $flag = $this->verifyTaskbetween($PRO_UID, $aDataEvent['EVN_TAS_UID_FROM'], $aDataEvent['EVN_TAS_UID_TO'], $taskUid);
