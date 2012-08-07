@@ -1242,6 +1242,17 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
           $depValues = '+';
         }
 
+        $aDepFields = array();
+        $count = 0;
+        if ($this->dependentFields !== '') {
+            $sqlDepField = $owner->fields[$this->dependentFields]->sql;
+            $count = preg_match_all('/\@(?:([\@\%\#\=\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/',
+                    $sqlDepField, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+            for ($cnt = 0; $cnt < $count; $cnt++) {
+                $aDepFields[$cnt] = $match[2][$cnt][0];
+            }
+        }
+
         $sOptions  = 'script: function (input) { ';
         $sOptions .= '  var inputValue = base64_encode(getField(\''. $this->name .'_label\').value); ';
 
@@ -1251,7 +1262,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
         $sOptions .= '},';
         $sOptions .= 'json: true,';
         $sOptions .= 'limit: '.$this->maxresults.',';
-        // $sOptions .= 'varname: "input",';
+
         $sOptions .= 'shownoresults: ' . ($this->shownoresults ? 'true' : 'false') . ',';
         $sOptions .= 'maxresults: '.$this->maxresults.',';
         $sOptions .= 'chache: true,';
@@ -1260,8 +1271,20 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
 
         $sOptions .= 'callback: function(obj){';
 
-        $sOptions .= ' var jField = { ' . $this->name . ' : obj.id };';
+        $sOptions .= ' var jField = { };';
+        $sOptions .= ' var sField = "[]"; ';
+        if ($count > 0) {
+            for ($cnt = 0; $cnt < $count; $cnt++ ) {
+                $sOptions .= 'if ( "' . $this->name . '" == "' . $aDepFields[$cnt] . '" ) {';
+                $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = obj.id;';
+                $sOptions .= '} else { ';
+                $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = getField(\'' . $aDepFields[$cnt] . '\').value; ';
+                $sOptions .= '}';
+            }
+        }
+
         $sOptions .= ' var sField = "["+ encodeURIComponent(jField.toJSONString()) + "]"; ';
+
         $sOptions .= $sCallBack . '; getField("' . $this->name . '").value = obj.id;';
 
         $sOptions .= 'var response = ajax_function("../gulliver/defaultAjaxDynaform", "reloadField", ';
@@ -1279,6 +1302,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
         $sOptions .= '      for (ni = 0; ni < fieldLength; ni++ ){ ';
         $sOptions .= '        getField(newcont[i].name).options.remove(ni); ';
         $sOptions .= '      } ';
+        $sOptions .= '      getField(newcont[i].name).length = 0; ';
 
         $sOptions .= '      for (ni = 0; ni < newcont[i].content.options.length; ni++ ){ ';
         $sOptions .= '        var opt = document.createElement("OPTION"); ';
