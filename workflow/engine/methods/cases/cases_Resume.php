@@ -58,7 +58,7 @@
     /*if (strtoupper($Fields['APP_STATUS']) != 'COMPLETED') {
       $oCase->thisIsTheCurrentUser($_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['USER_LOGGED'], 'SHOW_MESSAGE');
     }*/
-    $aMessage['MESSAGE'] = G::LoadTranslation('ID_NO_PERMISSION_NO_PARTICIPATED  ');
+    $aMessage['MESSAGE'] = G::LoadTranslation('ID_NO_PERMISSION_NO_PARTICIPATED');
     $G_PUBLISH = new Publisher();
     $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showMessage', '', $aMessage);
     G::RenderPage('publishBlank', 'blank');
