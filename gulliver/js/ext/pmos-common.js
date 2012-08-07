@@ -410,7 +410,7 @@ function _DF(DATE_TIME, D_FORMAT)
       _('ID_WEEKDAY_6'),_('ID_WEEKDAY_ABB_0'),_('ID_WEEKDAY_ABB_1'),_('ID_WEEKDAY_ABB_2'),_('ID_WEEKDAY_ABB_3'),_('ID_WEEKDAY_ABB_4'),
       _('ID_WEEKDAY_ABB_5'),_('ID_WEEKDAY_ABB_6'));
 
-    var date = new Date(arrF[0],parseInt(arrF[1])-1,arrF[2],arrH[0],arrH[1],arrH[2],0);
+    var date = new Date(arrF[0],parseFloat(arrF[1])-1,arrF[2],arrH[0],arrH[1],arrH[2],0);
     var y=date.getFullYear()+'';
     var M=date.getMonth()+1;
     var d=date.getDate();
