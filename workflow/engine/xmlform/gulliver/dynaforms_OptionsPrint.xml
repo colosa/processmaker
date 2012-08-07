@@ -6,7 +6,8 @@
 <PREVIOUS_ACTION type="private"/>
 <NEXT_ACTION type="private"/>
 <PHPSESSID type="private"/>
-<PRINT_PREVIEW_ACTION type="private" defaultValue="../cases/cases_PrintView?PHPSESSID=@#PHPSESSID"/>
+<DYNUIDPRINT type="private"/>
+<PRINT_PREVIEW_ACTION type="private" defaultValue="../cases/cases_PrintView?PHPSESSID=@#PHPSESSID&amp;DYNUIDPRINT=@#DYNUIDPRINT"/>
 <MNUP type="print" colWidth="20" title="" value='' colAlign="left" link="@#PRINT_PREVIEW_ACTION" width="800" height="600" left="0" top="0" resizable="1">
   <en>Print form</en>
 </MNUP>

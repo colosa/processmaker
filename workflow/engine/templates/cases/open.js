@@ -688,7 +688,7 @@ Ext.onReady(function(){
           id: 'notifyReason',
           xtype:'checkbox',
           name: 'notifyReason',
-          fieldLabel: _('ID_NOTIFY_USERS_CASE'),
+          fieldLabel: _('ID_NOTIFY_USERS_CASE')
         }
       ],
       buttons : [

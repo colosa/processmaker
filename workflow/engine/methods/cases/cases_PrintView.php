@@ -27,10 +27,18 @@ try {
     require_once 'classes/model/Dynaform.php';
     require_once 'classes/model/Process.php';
 
-
+    $currentDynUid = '';
+   if (isset($_GET['DYNUIDPRINT']) && $_GET['DYNUIDPRINT'] != '') {
+        $currentDynUid = $_GET['DYNUIDPRINT'];
+    } elseif (isset($_SESSION['DYN_UID_PRINT'])) {
+        $currentDynUid = $_SESSION['DYN_UID_PRINT'];
+    } elseif (isset($_SESSION['CURRENT_DYN_UID'])) {
+        $currentDynUid = $_SESSION['CURRENT_DYN_UID'];
+    }
 
     $oDynaform = new Dynaform();
-    $aDyn      = $oDynaform->load($_SESSION['CURRENT_DYN_UID']);
+    $aDyn      = $oDynaform->load($currentDynUid);
+    
     G::LoadClass('case');
     $oCase = new Cases();
 
@@ -75,9 +83,7 @@ try {
     $array['PROCESS'] = G::LoadTranslation('ID_PROCESS');
     $array['DATELABEL'] = G::LoadTranslation('DATE_LABEL');
 
-    $aDyn['DYN_UID'] = (isset($_SESSION['DYN_UID_PRINT']) && $_SESSION['DYN_UID_PRINT'] != '')
-                       ? $_SESSION['DYN_UID_PRINT']
-                       : $aDyn['DYN_UID'];
+    $aDyn['DYN_UID'] = $currentDynUid;
     if ($noShowTitle == 0) {
         $G_PUBLISH->AddContent('smarty', 'cases/cases_PrintViewTitle', '', '', $array);
     }
