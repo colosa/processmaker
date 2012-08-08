@@ -302,7 +302,11 @@ class headPublisher {
     //$head .= $this->getExtJsStylesheets();
     $head .= $this->getExtJsScripts();
     $head .= $this->getExtJsVariablesScript();
-
+    
+    if (SYS_LANG == 'ar' || SYS_LANG == 'he' || SYS_LANG == 'en') {
+    	$head .= "  <script type='text/javascript' src='/js/ext/extjs_rtl.js'></script>\n";
+    }
+    
     return $head;
   }
 
