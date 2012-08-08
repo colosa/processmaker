@@ -66,7 +66,7 @@ class Users extends BaseUsers {
       throw($e);
     }
   }
-  
+
 public function userExists($UsrUid)
   {
     try {
@@ -83,7 +83,7 @@ public function userExists($UsrUid)
       return false;
     }
   }
-  
+
   public function load($UsrUid)
   {
     try {
@@ -134,38 +134,40 @@ public function userExists($UsrUid)
     }
   }
 
-  public function loadDetailed($UsrUid)
-  {
-    try {
-      $result = array();
-      $oUser = UsersPeer::retrieveByPK( $UsrUid );
-      if (!is_null($oUser))       {
+    public function loadDetailed($UsrUid)
+    {
+        try {
+            $result = array();
+            $oUser = UsersPeer::retrieveByPK($UsrUid);
 
-        $aFields = $oUser->toArray(BasePeer::TYPE_FIELDNAME);
-        $this->fromArray($aFields,BasePeer::TYPE_FIELDNAME);
-        $this->setNew(false);
+            if (!is_null($oUser)) {
+                $aFields = $oUser->toArray(BasePeer::TYPE_FIELDNAME);
+                $this->fromArray($aFields,BasePeer::TYPE_FIELDNAME);
+                $this->setNew(false);
 
-        $aIsoCountry     = IsoCountry::findById($aFields['USR_COUNTRY']);
-        $aIsoSubdivision = IsoSubdivision::findById($aFields['USR_COUNTRY'], $aFields['USR_CITY']);
-        $aIsoLocation    = IsoLocation::findById($aFields['USR_COUNTRY'], $aFields['USR_CITY'], $aFields['USR_LOCATION']);
+                $aIsoCountry     = IsoCountry::findById($aFields['USR_COUNTRY']);
+                $aIsoSubdivision = IsoSubdivision::findById($aFields['USR_COUNTRY'], $aFields['USR_CITY']);
+                $aIsoLocation    = IsoLocation::findById(
+                    $aFields['USR_COUNTRY'],
+                    $aFields['USR_CITY'],
+                    $aFields['USR_LOCATION']
+                );
 
-        $aFields['USR_COUNTRY_NAME']  = $aIsoCountry['IC_NAME'];
-        $aFields['USR_CITY_NAME']     = $aIsoSubdivision['IS_NAME'];
-        $aFields['USR_LOCATION_NAME'] = $aIsoLocation['IL_NAME'];
+                $aFields['USR_COUNTRY_NAME']  = (!empty($aIsoCountry['IC_NAME']))?     $aIsoCountry['IC_NAME'] : '';
+                $aFields['USR_CITY_NAME']     = (!empty($aIsoSubdivision['IS_NAME']))? $aIsoSubdivision['IS_NAME'] : '';
+                $aFields['USR_LOCATION_NAME'] = (!empty($aIsoLocation['IL_NAME']))?    $aIsoLocation['IL_NAME'] : '';
 
-        $result = $aFields;
+                $result = $aFields;
 
-        return $result;
-      }
-      else {
-//        return $result;
-        throw(new Exception( "The row '" . $UsrUid . "' in table USER doesn't exist!" ));
-      }
+                return $result;
+            } else {
+                //return $result;
+                throw (new Exception("The row '" . $UsrUid . "' in table USER doesn't exist!"));
+            }
+        } catch (Exception $oError) {
+            throw ($oError);
+        }
     }
-    catch (Exception $oError) {
-      throw($oError);
-    }
-  }
 
   public function update($fields)
   {
@@ -224,7 +226,7 @@ public function userExists($UsrUid)
     $c->add(UsersPeer::USR_USERNAME, $sUsername);
     return $c;
   }
-  
+
   function loadByUsernameInArray($sUsername){
     echo $sUsername;
     $c  = $this->loadByUsername($sUsername);
@@ -278,7 +280,7 @@ public function userExists($UsrUid)
     $aRet['duedate']    = $aFields['USR_DUE_DATE'];
     $aRet['country']    = $Crow['IC_NAME'];
     $aRet['city']     = $Srow['IS_NAME'];
-    
+
 
     return $aRet;
   }
@@ -286,7 +288,7 @@ public function userExists($UsrUid)
     throw $oException;
   }
   }
-  
+
   function getAvailableUsersCriteria($sGroupUID = '')
   {
     try {
@@ -307,7 +309,7 @@ public function userExists($UsrUid)
 
   /**
    * Get all Active users
-   * 
+   *
    * @return array of all active users
    */
   function getAll($start=null, $limit=null, $search=null)
@@ -349,12 +351,12 @@ public function userExists($UsrUid)
 
     if( is_array($rowCount) )
       $totalCount = $rowCount[0];
-    
+
     if( $start )
       $criteria->setOffset($start);
     if( $limit )
       $criteria->setLimit($limit);
-      
+
     $rs = UsersPeer::doSelectRS($criteria);
     $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 

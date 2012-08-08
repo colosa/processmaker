@@ -443,15 +443,17 @@ switch($_POST['action'])
     }else{
       $replaced_by = '';
     }
+
     $aFields['REPLACED_NAME'] = $replaced_by;
+
+    $menuSelected = '';
+
     if ($aFields['PREF_DEFAULT_MENUSELECTED'] != ''){
-      $menuSelected = '';
       foreach ( $RBAC->aUserInfo['PROCESSMAKER']['PERMISSIONS'] as $permission ) {
         if($aFields['PREF_DEFAULT_MENUSELECTED']==$permission['PER_CODE']){
           switch($permission['PER_CODE']){
             case 'PM_USERS' :
             case 'PM_SETUP' :
-
                $menuSelected = strtoupper(G::LoadTranslation('ID_SETUP'));
             break;
             case 'PM_CASES' :
@@ -464,9 +466,13 @@ switch($_POST['action'])
         }
       }
     }
+
     $aFields['MENUSELECTED_NAME'] =  $menuSelected;
+
     $oMenu = new Menu();
     $oMenu->load('cases');
+    $casesMenuSelected = '';
+
     if ($aFields['PREF_DEFAULT_CASES_MENUSELECTED'] != ''){
       foreach($oMenu->Id as $i => $item){
 
@@ -474,9 +480,7 @@ switch($_POST['action'])
           $casesMenuSelected =$oMenu->Labels[$i];
       }
     }
-    else {
-      $casesMenuSelected = '';
-    }
+
     $aFields['CASES_MENUSELECTED_NAME'] = $casesMenuSelected;
 
     $result->success = true;
