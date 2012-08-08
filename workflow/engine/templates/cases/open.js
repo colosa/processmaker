@@ -227,7 +227,7 @@ Ext.onReady(function(){
         defaults:{autoScroll: true},
         defaultType:"iframepanel",
         activeTab: 0,
-
+        enableTabScroll: true,
         //defaults: Ext.apply({}, Ext.isGecko? {style:{position:'absolute'},hideMode:'visibility'}:false),
 
         items:[{
