@@ -1175,10 +1175,24 @@ class G
 
           if(((in_array($browserName, $enabledBrowsers))||(in_array('ALL', $enabledBrowsers)))&&(!(in_array($browserName, $disabledBrowsers)))){
               //G::pr($cssFileInfo['__ATTRIBUTES__']['file']);
-              $output .= file_get_contents ( $baseSkinDirectory . PATH_SEP.'css'.PATH_SEP.$cssFileInfo['__ATTRIBUTES__']['file'] );
+			if($cssFileInfo['__ATTRIBUTES__']['file'] == 'rtl.css') {
+				G::LoadClass('serverConfiguration');
+          		$oServerConf =& serverConf::getSingleton();
+          		if (!(defined(SYS_LANG))) {
+          			$syss = explode('://', $_SERVER['HTTP_REFERER']);
+          			$sysObjets =  explode('/', $syss['1']);
+          			$sysLang = $sysObjets['2'];
+          		} else {
+          			$sysLang = SYS_LANG;
+          		}
+          		if ($oServerConf->isRtl($sysLang)) {
+          			$output .= file_get_contents ( $baseSkinDirectory . PATH_SEP.'css'.PATH_SEP.$cssFileInfo['__ATTRIBUTES__']['file'] );
+          		}
+          	} else {
+          		$output .= file_get_contents ( $baseSkinDirectory . PATH_SEP.'css'.PATH_SEP.$cssFileInfo['__ATTRIBUTES__']['file'] );
+          	}
           }
       }
-
       //Remove comments..
       $regex = array(
 "`^([\t\s]+)`ism"=>'',

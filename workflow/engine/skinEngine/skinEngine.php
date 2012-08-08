@@ -240,13 +240,41 @@ class SkinEngine
 
       $templateFile = $this->layoutFile['dirname'] . PATH_SEP . $this->layoutFileExtjs['basename'];
     }
-
+	
     $template = new TemplatePower($templateFile);
     $template->prepare();
     $template->assign('header', $header);
     $template->assign('styles', $styles);
     $template->assign('bodyTemplate', $body);
+    
+    // verify is RTL
+    $oServerConf =& serverConf::getSingleton();
+    if ($oServerConf->isRtl(SYS_LANG)) {
+    	$template->assign('dirBody', 'dir="RTL"');    	
+    }
+    // end verify
 
+    // verify is IE
+    $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+    $meta = '';
+    $iexplores = array(
+      'IE=10' => '(MSIE 10\.[0-9]+)',
+      'IE=9' => '(MSIE 9\.[0-9]+)',
+      'IE=8' => '(MSIE 8\.[0-9]+)',
+      'IE=7' => '(MSIE 7\.[0-9]+)',
+      'IE=6' => '(MSIE 6\.[0-9]+)'
+    );
+      
+    foreach ($iexplores as $browser => $pattern) {
+      if (preg_match('/'.$pattern.'/', $_SERVER['HTTP_USER_AGENT'])) {
+        $doctype = '';
+        $meta = '<meta http-equiv="X-UA-Compatible" content="'. $browser .'"/>';        
+      }
+    }
+    // end verify
+    	
+    $template->assign('meta', $meta);
+    $template->assign('doctype', $doctype);
     echo $template->getOutputContent();
   }
 

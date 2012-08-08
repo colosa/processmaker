@@ -11,40 +11,45 @@
 	</information>
 	<cssFiles>
 		<skin>
-			<cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+		    <cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="form.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
 			<cssFile file="xmlcolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="jscolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</skin>
 		<blank>
-			<cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+		    <cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="form.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
+			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</blank>
 		<raw>
 		</raw>
 		<submenu>
-			<cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="form.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
+			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</submenu>
 		<tracker>
-			<cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="form.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
+			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</tracker>
 		<extjs>
-			<cssFile file="xtheme-gray.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="xtheme-gray.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="pmos-xtheme-gray.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>				
 			<cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
 			<cssFile file="xmlcolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="jscolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</extjs>
 	</cssFiles>
 </skinConfiguration>
