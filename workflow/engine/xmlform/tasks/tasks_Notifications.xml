@@ -28,7 +28,7 @@
 
   <TAS_DEF_MESSAGE_TEMPLATE type="dropdown" sqlconnection="dbarray">
   SELECT FILE,NAME FROM _TEMPLATES1
-  <en>Template<option name="">- None -</option></en>
+  <en>Template<option name="alert_message.html">- None -</option></en>
   </TAS_DEF_MESSAGE_TEMPLATE>
 
   <JS type="javascript"><![CDATA[
@@ -87,15 +87,6 @@
           }
           break;
         case 'template' :
-          var vmesn = new input(getField('TAS_DEF_MESSAGE_TEMPLATE'));
-          if (getField('TAS_DEF_MESSAGE_TEMPLATE').value.trim() == ''){
-            new leimnud.module.app.alert().make( {
-              label : G_STRINGS.ID_TEMPLATE_FIELD_REQUIRED
-            });
-            vmesn.failed();
-          } else {
-            vmesn.passed();
-          }
           break;
       }
     }

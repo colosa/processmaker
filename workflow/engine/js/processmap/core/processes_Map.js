@@ -145,16 +145,6 @@ var saveDataTaskTemporal = function(iForm)
                 }
                 break;
               case 'template' :
-                var vmesn = new input(getField('TAS_DEF_MESSAGE_TEMPLATE'));
-                if (getField('TAS_DEF_MESSAGE_TEMPLATE').value.trim() == ''){
-                  vmesn.failed();
-                  new leimnud.module.app.alert().make( {
-                    label : G_STRINGS.ID_TEMPLATE_FIELD_REQUIRED
-                  });
-                  return false;
-                } else {
-                  vmesn.passed();
-                }
                 break;
             }
         }
