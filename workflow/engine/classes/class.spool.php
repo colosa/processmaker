@@ -204,6 +204,10 @@ class spoolRun {
    */
   private function updateSpoolStatus() {
     $oAppMessage = AppMessagePeer::retrieveByPK($this->spool_id);
+    if (is_array($this->fileData['attachments'])) {
+        $attachment = implode(",", $this->fileData['attachments']);
+        $oAppMessage->setappMsgAttach($attachment);
+    }
     $oAppMessage->setappMsgstatus($this->status);
     $oAppMessage->setappMsgsenddate(date('Y-m-d H:i:s'));
     $oAppMessage->save();
@@ -391,7 +395,9 @@ class spoolRun {
 
           if(is_array($this->fileData['attachments'])){
             foreach($this->fileData['attachments'] as $key => $fileAttach){
-              $oPHPMailer->AddAttachment($fileAttach, is_int($key) ? '' : $key);
+              if (file_exists($fileAttach)) {
+                $oPHPMailer->AddAttachment($fileAttach, is_int($key) ? '' : $key);
+              }
             }
           }
 
