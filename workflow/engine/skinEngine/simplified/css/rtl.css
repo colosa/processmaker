@@ -20,6 +20,24 @@ ul#pm_menu {
 .nav primary-nav{float:right !important;}
 .nav secondary-nav{float:left !important;}
 
+
+div.topbar ul.secondary-nav {
+    margin-left: 8px;
+    float: left;
+}
+div.topbar ul.primary-nav {
+    margin-right: 5px;
+    float: right;
+}
+
+div.topbar ul.primary-nav li ul {
+    right: 0;
+}
+div.topbar ul.secondary-nav li ul {
+    left: 0 !important;
+}
+
+
 a.options-tool {
     color: #FFFFFF;
     float: left;

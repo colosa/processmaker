@@ -9,10 +9,11 @@
 		<createDate>2012-01-17</createDate>		
 		<modifiedDate>2012-01-17</modifiedDate>
 	</information>
-	<cssFiles>
+	<cssFiles>		
 		<skin>
 			<cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="topbar.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</skin>
 	</cssFiles>
 </skinConfiguration>
