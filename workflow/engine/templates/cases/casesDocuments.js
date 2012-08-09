@@ -72,6 +72,36 @@ streamFilefromPM=function(fileStream) {
   });
 };
 
+function nodeRootCreate()
+{
+    var node = new Ext.tree.AsyncTreeNode({
+        id: "root",
+        text: "/",
+        draggable: false,
+        expanded: true,
+        cls: "folder",
+
+        listeners: {
+            beforeload: function (nodeRoot) {
+                nodeRoot.setIcon("");
+            },
+            load: function (nodeRoot) {
+                nodeRoot.setIcon("/images/ext/default/tree/folder.gif");
+            },
+            expand: function (nodeRoot) {
+                if (nodeRoot.hasChildNodes()) {
+                    nodeRoot.setIcon("/images/ext/default/tree/folder-open.gif");
+                }
+            },
+            collapse: function (nodeRoot) {
+                nodeRoot.setIcon("/images/ext/default/tree/folder.gif");
+            }
+        }
+    });
+
+    return node;
+}
+
 
 function chDir( directory, loadGridOnly ) {
     // console.info("**** Changing Directory: "+directory+" --
@@ -458,8 +488,6 @@ function openActionDialog( caller, action ) {
 }
 
 function handleCallback(requestParams, node) {
-  // console.log("handleCallback "+requestParams +" -- "+node);
-  // console.trace();
   var conn = new Ext.data.Connection();
 
   conn.request({
@@ -492,6 +520,15 @@ function handleCallback(requestParams, node) {
           }
         } else {
           Ext.Msg.alert( 'Failure', json.error );
+        }
+
+        if (options.params.option == "directory") {
+            switch (options.params.action) {
+                case "delete":
+                case "rename":
+                    Ext.getCmp("dirTreePanel").setRootNode(nodeRootCreate());
+                    break;
+            }
         }
       }
       else {
@@ -546,27 +583,25 @@ function getRequestParams() {
 * Function for actions, which don't require a form like download,
 * extraction, deletion etc.
 */
-function deleteFiles(btn) {
+function deleteFiles(btn)
+{
+    if (btn != "yes") {
+        return;
+    }
 
-  if( btn != 'yes') {
-    return;
-  }
-  requestParams = getRequestParams();
-  requestParams.action = 'delete';
-  handleCallback(requestParams);
-  if(requestParams.option=='documents'){
-    datastore.sendWhat = 'files';
-    loadDir();
-  } else {
-    var root1 = new Ext.tree.AsyncTreeNode({
-      text : '/',
-      draggable : false,
-      expanded : true,
-      id : 'root'
-    });
-    Ext.getCmp('dirTreePanel').setRootNode(root1);
-  }
+    requestParams = getRequestParams();
+    requestParams.action = "delete";
+
+    handleCallback(requestParams);
+
+    if (requestParams.option == "documents") {
+        datastore.sendWhat = "files";
+        loadDir();
+    } else {
+        //Ext.getCmp("dirTreePanel").setRootNode(nodeRootCreate());
+    }
 }
+
 function extractArchive(btn) {
   if( btn != 'yes') {
     return;
@@ -575,24 +610,21 @@ function extractArchive(btn) {
   requestParams.action = 'extract';
   handleCallback(requestParams);
 }
-function deleteDir( btn, node ) {
-  if( btn != 'yes') {
-    return;
-  }
-  requestParams          = getRequestParams();
-  requestParams.dir      = datastore.directory.substring( 0, datastore.directory.lastIndexOf('/'));
-  requestParams.selitems = Array( node.id.replace( /_RRR_/g, '/' ) );
-  requestParams.action   = 'delete';
-  handleCallback(requestParams, node);
 
-  var root1 = new Ext.tree.AsyncTreeNode({
-    text : '/',
-    draggable : false,
-    expanded : true,
-    id : 'root'
-  });
-  Ext.getCmp('dirTreePanel').setRootNode(root1);
+function deleteDir(btn, node)
+{
+    if (btn != "yes") {
+        return;
+    }
 
+    requestParams          = getRequestParams();
+    requestParams.dir      = datastore.directory.substring(0, datastore.directory.lastIndexOf("/"));
+    requestParams.selitems = Array(node.id.replace(/_RRR_/g, "/"));
+    requestParams.action   = "delete";
+
+    handleCallback(requestParams, node);
+
+    //Ext.getCmp("dirTreePanel").setRootNode(nodeRootCreate());
 }
 
 Ext.msgBoxSlider = function(){
@@ -1605,10 +1637,11 @@ var documentsTab = {
     animate : true,
     tools:[
     {
-      id:'refresh',
-      handler:function() {
-        Ext.getCmp('dirTreePanel').getRootNode().reload();
-      }
+        id: "refresh",
+        handler: function () {
+            //Ext.getCmp("dirTreePanel").getRootNode().reload();
+            Ext.getCmp("dirTreePanel").setRootNode(nodeRootCreate());
+        }
     }
     ],
     // rootVisible: false,
@@ -1663,13 +1696,7 @@ var documentsTab = {
       }
     },
 
-    root : new Ext.tree.AsyncTreeNode({
-      text : '/',
-      draggable : false,
-      expanded : true,
-      cls: 'folder',
-      id : 'root'
-    })
+    root: nodeRootCreate()
   },
   {
     layout : "border",
