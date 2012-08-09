@@ -1178,7 +1178,7 @@ class G
 			if($cssFileInfo['__ATTRIBUTES__']['file'] == 'rtl.css') {
 				G::LoadClass('serverConfiguration');
           		$oServerConf =& serverConf::getSingleton();
-          		if (!(defined(SYS_LANG))) {
+          		if (!(defined('SYS_LANG'))) {
           			$syss = explode('://', $_SERVER['HTTP_REFERER']);
           			$sysObjets =  explode('/', $syss['1']);
           			$sysLang = $sysObjets['2'];
