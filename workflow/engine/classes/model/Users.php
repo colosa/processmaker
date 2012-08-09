@@ -153,9 +153,9 @@ public function userExists($UsrUid)
                     $aFields['USR_LOCATION']
                 );
 
-                $aFields['USR_COUNTRY_NAME']  = (!empty($aIsoCountry['IC_NAME']))?     $aIsoCountry['IC_NAME'] : '';
-                $aFields['USR_CITY_NAME']     = (!empty($aIsoSubdivision['IS_NAME']))? $aIsoSubdivision['IS_NAME'] : '';
-                $aFields['USR_LOCATION_NAME'] = (!empty($aIsoLocation['IL_NAME']))?    $aIsoLocation['IL_NAME'] : '';
+                $aFields['USR_COUNTRY_NAME']  = $aIsoCountry['IC_NAME'];
+                $aFields['USR_CITY_NAME']     = $aIsoSubdivision['IS_NAME'];
+                $aFields['USR_LOCATION_NAME'] = $aIsoLocation['IL_NAME'];
 
                 $result = $aFields;
 
