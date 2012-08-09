@@ -510,11 +510,13 @@ class Cases
                 $uFields = $oUser->toArray(BasePeer::TYPE_FIELDNAME);
                 //$aFields['TITLE'] = $oApp->getAppTitle();
                 $aFields['TITLE'] = $aFields['APP_TITLE'];
+                $aFields['DESCRIPTION'] = $aFields['APP_DESCRIPTION'];
                 $aFields['CREATOR'] = $oUser->getUsrFirstname() . ' ' . $oUser->getUsrLastname();
                 $aFields['CREATE_DATE'] = $oApp->getAppCreateDate();
                 $aFields['UPDATE_DATE'] = $oApp->getAppUpdateDate();
             } catch (Exception $oError) {
                 $aFields['TITLE'] = $oApp->getAppTitle();
+                $aFields['DESCRIPTION'] = '';
                 $aFields['CREATOR'] = '(USER_DELETED)';
                 $aFields['CREATE_DATE'] = $oApp->getAppCreateDate();
                 $aFields['UPDATE_DATE'] = $oApp->getAppUpdateDate();
