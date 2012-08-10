@@ -173,8 +173,11 @@ try {
         $_POST['NextStep'] = $loc;
         $G_PUBLISH->AddContent('view', 'cases/showDebugFrameLoader');
         $G_PUBLISH->AddContent('view', 'cases/showDebugFrameBreaker');
+        $_SESSION['TRIGGER_DEBUG']['ISSET'] == 0;
         G::RenderPage('publish', 'blank');
         exit();
+    } else {
+      unset($_SESSION['TRIGGER_DEBUG']);
     }
 
   G::header("location: $loc");
