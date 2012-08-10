@@ -37,6 +37,6 @@
 
 <VERSION_HISTORY type="link" colWidth="1" value="@#VERSIONHISTORY_LABEL" link="javascript:inputDocumentVersionHistory(&#039;@#DOC_UID&#039;,&#039;@#APP_DOC_UID&#039;);"/>
 
-<DELETE type="link" colWidth="25" value="@#ID_DELETE" link="cases_DeleteDocument?TYPE=INPUT&amp;DOC=@#APP_DOC_UID&amp;VERSION=@#DOC_VERSION" onclick="return confirm(&#039;@#CONFIRM&#039;);"><en></en></DELETE>
+<DELETE type="link" colWidth="25" value="@#ID_DELETE" link="cases_DeleteDocumentToRevise?TYPE=INPUT&amp;DOC=@#APP_DOC_UID&amp;VERSION=@#DOC_VERSION" onclick="return confirm(&#039;@#CONFIRM&#039;);"><en></en></DELETE>
 
 </dynaForm>

@@ -1,0 +1,145 @@
+<!-- START BLOCK : headBlock -->
+<table cellpadding="0" cellspacing="0" border="0"><tr><td>
+<div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+<div class="pagedTableDefault">
+	<table id="pagedtable[{pagedTable_Id}]" name="pagedtable[{pagedTable_Name}]" border="0" cellspacing="0" cellpadding="0" class="Default">
+<tr >
+	<td valign="top">
+
+
+	  <div  style="width:100%">
+
+	  <span class='subtitle'>{title}</span>
+	  <center><span id="mainlabel" class="SelectedMenu"></span></center><br/>
+
+
+
+
+	  <table cellspacing="0" cellpadding="0" width="100%" border="0">
+		<!-- START BLOCK : headerBlock -->
+      <tr><td class="headerContent">{content}</td></tr>
+		<!-- END BLOCK : headerBlock -->
+    </table>
+    <table id="table[{pagedTable_Id}]" name="table[{pagedTable_Name}]"  cellspacing="0" cellpadding="0" width="100%" class="pagedTable">
+    <!-- END BLOCK : headBlock -->
+    <!-- START BLOCK : contentBlock -->
+    <script type="text/javascript">{pagedTable_JS}</script>
+    <tr>
+		<!-- START BLOCK : headers -->
+		<td class="pagedTableHeader"><img style="{displaySeparator}" src="/js/maborak/core/images/separatorTable.gif" /></td>
+		<td width="{width}" style="{align}" class="pagedTableHeader" >
+			<a href="{href}" onclick="{onclick}{onsort}">{header}</a>
+		</td>
+  	<!-- END BLOCK : headers -->
+    </tr>
+
+<!-- START IGNORE -->
+<script type="text/javascript">
+document.getElementById('mainlabel').innerHTML = documentName;
+</script>
+<!-- END IGNORE -->
+
+ <!-- START BLOCK : row -->
+
+ <!-- START BLOCK : rowMaster -->
+	<tr class='{masterRowClass}' id="{masterRowName}">
+    <!-- START BLOCK : fieldMaster -->
+      <td class="pagedTableHeader1"><a href="#" ><img src="/images/minus.gif" onClick="toggleMasterDetailGroup('table[{pagedTable_Name}]','{masterRowName}',this);return false;" border="0"></a><b>{value1}</b></td><td class="pagedTableHeader1" {alignAttr}><b>{value}</b>&nbsp;</td>
+    <!-- END BLOCK : fieldMaster -->
+    </tr>
+<!-- END BLOCK : rowMaster -->
+
+ 	<tr class='{class}' onmouseover="setRowClass(this, 'RowPointer' )" onmouseout="setRowClass(this, '{class}')" name="{rowName}" id="{rowName}">
+    <!-- START BLOCK : field -->
+      <td{classAttr}></td><td{classAttr}{alignAttr}>{value}</td>
+    <!-- END BLOCK : field -->
+    </tr>
+<!-- END BLOCK : row -->
+
+
+  	<!-- START BLOCK : rowTag -->
+  	<!-- END BLOCK : rowTag -->
+
+  	<!-- START BLOCK : norecords -->
+    <tr class='Row2'>
+      <td nowrap colspan="{columnCount}" align='center' >&nbsp;
+        {noRecordsFound}<br>&nbsp;
+   		</td>
+    </tr>
+  	<!-- END BLOCK : norecords -->
+
+  	<!-- START BLOCK : bottomFooter -->
+
+    <tr>
+      <td nowrap colspan="{columnCount}">
+	      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	      	<tr class="pagedTableFooter">
+	      		<td width="110px" style="{indexStyle}">
+	       			{labels:ID_ROWS}&nbsp;{firstRow}-{lastRow}/{totalRows}&nbsp;
+	    			</td>
+				    <!--<td style="text-align:center;{fastSearchStyle}"><!--{labels:ID_SEARCH}
+				    	<input type="text" class="FormField" onkeypress="if (event.keyCode===13){pagedTableId}.doFastSearch(this.value);if (event.keyCode===13)return false;" value="{fastSearchValue}" onfocus="this.select();" size="10" style="{fastSearchStyle}"/>
+				    </td>-->
+				    <td style="text-align:center;">
+				    	{first}{prev}{next}{last}
+				    </td>
+	    			<td width="60px" style="text-align:right;padding-right:8px;{indexStyle}">{labels:ID_PAGE}&nbsp;{currentPage}/{totalPages}</td>
+	    		</tr>
+	   		</table>
+   		</td>
+    </tr>
+  	<!-- END BLOCK : bottomFooter -->
+    <!-- END BLOCK : contentBlock -->
+<!-- START BLOCK : closeBlock -->
+    </table>
+
+  </td>
+</tr>
+</table>
+</div>
+<div class="boxBottom"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+</td></tr></table>
+<!-- END BLOCK : closeBlock -->
+<!-- START IGNORE -->
+
+<script type="text/javascript">
+
+function toggleMasterDetailGroup(tablename,groupName,imgicon){
+	groupNameArray=groupName.split(",");
+	table=getElementByName(tablename);
+	var rows = table.getElementsByTagName('tr');
+	for(i=0;i<rows.length;i++){
+		if(rows[i].id!=""){
+			currentRowArray=rows[i].id.split(",");
+			sw=false;
+			//alert(groupNameArray);
+			//alert(currentRowArray);
+			tempVar=currentRowArray[0].split("_MD_");
+			if(tempVar[0]==""){
+				if(currentRowArray.length>groupNameArray.length){
+					currentRowArray[0]=tempVar[1];
+				}
+			}
+			for(j=0;j<groupNameArray.length;j++){
+				if(currentRowArray[j]==groupNameArray[j]){
+					sw=true;
+				}else{
+					sw=false;
+				}
+			}
+			if(sw){
+				if (rows[i].style.display == '') {
+					rows[i].style.display = 'none';
+					imgicon.src="/images/plus_red.gif";
+				}else{
+					rows[i].style.display = '';
+					imgicon.src="/images/minus.gif";
+				}
+			}
+		}
+	}
+}
+document.getElementById('mainlabel').innerHTML = documentName;
+
+</script>
+<!-- END IGNORE -->

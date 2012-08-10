@@ -102,26 +102,6 @@ if (!isset($_GET['INP_DOC_UID'])) {
 } else {
     $oInputDocument = new InputDocument();
     $Fields = $oInputDocument->load($_GET['INP_DOC_UID']);
-    //Obtain previous and next step - Start
-    try {
-        $aNextStep = $oCase->getNextSupervisorStep($_SESSION['PROCESS'], $_SESSION['STEP_POSITION'], $_GET['type']);
-        $aPreviousStep = $oCase->getPreviousSupervisorStep($_SESSION['PROCESS'], $_SESSION['STEP_POSITION'],
-            $_GET['type']);
-        if (!$aPreviousStep) {
-            $Fields['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = '';
-        } else {
-            $Fields['__DYNAFORM_OPTIONS']['PREVIOUS_STEP'] =
-                'cases_StepToReviseInputs?type=INPUT_DOCUMENT&INP_DOC_UID='. $aNextStep['UID'].'&position='.
-                    $aNextStep['POSITION'].'&APP_UID='.$_GET['APP_UID'].'&DEL_INDEX='. $_GET['DEL_INDEX'];
-            $Fields['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = G::loadTranslation("ID_PREVIOUS_STEP");
-        }
-        $Fields['__DYNAFORM_OPTIONS']['NEXT_STEP'] = 'cases_StepToReviseInputs?type=INPUT_DOCUMENT&INP_DOC_UID='.
-            $aNextStep['UID'].'&position='.$aNextStep['POSITION'].'&APP_UID='.$_GET['APP_UID'].'&DEL_INDEX='.
-            $_GET['DEL_INDEX'];
-    } catch (exception $e) {
-        //
-    }
-
     switch ($Fields['INP_DOC_FORM_NEEDED']) {
         case 'REAL':
             $Fields['TYPE_LABEL'] = G::LoadTranslation('ID_NEW');
@@ -139,12 +119,10 @@ if (!isset($_GET['INP_DOC_UID'])) {
     $Fields['MESSAGE1'] = G::LoadTranslation('ID_PLEASE_ENTER_COMMENTS');
     $Fields['MESSAGE2'] = G::LoadTranslation('ID_PLEASE_SELECT_FILE');
     $docName = $Fields['INP_DOC_TITLE'];
-    $Fields['NEXT_STEP_LABEL'] = G::loadtranslation('ID_NEXT_STEP');
-    $Fields['PREVIOUS_STEP_LABEL'] = G::loadtranslation('ID_PREVIOUS_STEP');
     $oHeadPublisher->addScriptCode('var documentName=\'Reviewing Input Document<br>'.$docName.'\';');
     //  $G_PUBLISH->AddContent('xmlform', 'xmlform', $sXmlForm, '', $Fields, 'cases_SupervisorSaveDocument?UID=' .
     //$_GET['INP_DOC_UID'] . '&APP_UID=' . $_GET['APP_UID'] . '&position=' . $_GET['position']);
-    $G_PUBLISH->AddContent('propeltable', 'cases/paged-table-inputDocuments', 'cases/cases_ToReviseInputdocsList',
+    $G_PUBLISH->AddContent('propeltable', 'cases/paged-table-inputDocumentsToRevise', 'cases/cases_ToReviseInputdocsList',
         $oCase->getInputDocumentsCriteria($_SESSION['APPLICATION'], $_SESSION['INDEX'], $_GET['INP_DOC_UID']),
         array_merge(array('DOC_UID'=>$_GET['INP_DOC_UID']),$Fields));
     //$aFields

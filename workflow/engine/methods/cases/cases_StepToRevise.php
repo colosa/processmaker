@@ -105,24 +105,8 @@ if (isset($_GET['type'])) {
     $sType = '';
 }
 
-try {
-    $aNextStep = $oCase->getNextSupervisorStep($_SESSION['PROCESS'], $_SESSION['STEP_POSITION'], $sType);
-    $aPreviousStep = $oCase->getPreviousSupervisorStep($_SESSION['PROCESS'], $_SESSION['STEP_POSITION'], $sType);
-} catch (exception $e) {
-    G::SendTemporalMessage($e->getMessage(), 'error', 'string');
-}
-
-if (!$aPreviousStep) {
-    $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = '';
-} else {
-    $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['PREVIOUS_STEP'] = 'cases_StepToRevise?type=DYNAFORM&DYN_UID='.
-        $aPreviousStep['UID'].'&position='.$aPreviousStep['POSITION'].'&APP_UID='.$_GET['APP_UID'].'&DEL_INDEX='.
-        $_GET['DEL_INDEX'];
-    $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = G::loadTranslation("ID_PREVIOUS_STEP");
-}
-
-$Fields['APP_DATA']['__DYNAFORM_OPTIONS']['NEXT_STEP'] = 'cases_StepToRevise?type=DYNAFORM&DYN_UID='.$aNextStep['UID'].
-    '&position='.$aNextStep['POSITION'].'&APP_UID='.$_GET['APP_UID'].'&DEL_INDEX='.$_GET['DEL_INDEX'];
+$Fields['APP_DATA']['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = '';
+$Fields['APP_DATA']['__DYNAFORM_OPTIONS']['NEXT_STEP_LABEL'] = '';
 
 
 /** Added By erik
@@ -147,7 +131,6 @@ if (!isset($_GET['ex'])) {
 }
 ?>
 
-
 <script>
 /*------------------------------ To Revise Routines ---------------------------*/
 // DEPRECATED this JS section is marked for removal
@@ -167,5 +150,3 @@ function setSelect()
   }
 }
 </script>
-
-
