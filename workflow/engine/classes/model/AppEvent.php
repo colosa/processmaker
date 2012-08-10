@@ -188,10 +188,10 @@ class AppEvent extends BaseAppEvent {
 
     $debug = 1;
     $oCase = new Cases();
-      
+
     try {
       $oCriteria = new Criteria('workflow');
-    
+
       $oCriteria->addSelectColumn(AppEventPeer::APP_UID);
       $oCriteria->addSelectColumn(AppEventPeer::DEL_INDEX);
       $oCriteria->addSelectColumn(AppEventPeer::EVN_UID);
@@ -204,13 +204,14 @@ class AppEvent extends BaseAppEvent {
       $oCriteria->addSelectColumn(EventPeer::TRI_UID);
       $oCriteria->addSelectColumn(EventPeer::EVN_ACTION_PARAMETERS);
       $oCriteria->addSelectColumn(EventPeer::EVN_RELATED_TO);
+      $oCriteria->addSelectColumn(AppDelegationPeer::TAS_UID);
       $oCriteria->addSelectColumn(AppDelegationPeer::USR_UID);
       $oCriteria->addSelectColumn(AppDelegationPeer::DEL_TASK_DUE_DATE);
       $oCriteria->addSelectColumn(AppDelegationPeer::DEL_FINISH_DATE);
 
 
       $oCriteria->addJoin(AppEventPeer::EVN_UID, EventPeer::EVN_UID, Criteria::JOIN);
-      
+
       $aConditions   = array();
       array_push($aConditions, Array(AppEventPeer::APP_UID,   AppDelegationPeer::APP_UID));
       array_push($aConditions, Array(AppEventPeer::DEL_INDEX, AppDelegationPeer::DEL_INDEX));
@@ -249,7 +250,7 @@ class AppEvent extends BaseAppEvent {
           println(" - ATTEMPTS...............".$aRow['APP_EVN_ATTEMPTS']);
           println(" - INTERVAL WITH TASKS....".$aRow['EVN_RELATED_TO']);
         }
-        
+
         if ($aRow['TRI_UID'] == '') {
           //a rare case when the tri_uid is not set.
           $log[]  = " (!) Any trigger was set................................SKIPPED and will be CLOSED";
@@ -269,15 +270,21 @@ class AppEvent extends BaseAppEvent {
           continue;
         }
 
+        global $oPMScript;
         $oPMScript = new PMScript();
 
+        $task = new Task();
+        $taskFields = $task->Load($aRow['TAS_UID']);
+        $aFields['APP_DATA']['APP_NUMBER'] = $aFields['APP_NUMBER'];
+        $aFields['APP_DATA']['TAS_TITLE'] = $taskFields['TAS_TITLE'];
+        $aFields['APP_DATA']['DEL_TASK_DUE_DATE'] = $aRow['DEL_TASK_DUE_DATE'];
         $oPMScript->setFields($aFields['APP_DATA']);
         $oPMScript->setScript($oTrigger->getTriWebbot());
-        
+
         $oPMScript->execute();
 
         $oAppEvent->setAppEvnLastExecutionDate(date('Y-m-d H:i:s'));
-        
+
         if( sizeof($_SESSION['TRIGGER_DEBUG']['ERRORS']) == 0 ){
           $log[]  = ' - The trigger ' . $oTrigger->getTriTitle() . ' was executed successfully!';
           if($debug) println(" - The trigger '{$oTrigger->getTriTitle()}' was executed successfully!");
@@ -307,7 +314,7 @@ class AppEvent extends BaseAppEvent {
       return  $oError->getMessage();
     }
   }
-  
+
   function close($APP_UID, $DEL_INDEX){
     $aRow = $this->load($APP_UID, $DEL_INDEX);
     $aRow['APP_EVN_STATUS'] = 'CLOSE';
