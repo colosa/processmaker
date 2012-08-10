@@ -37,10 +37,10 @@ switch ($_POST['action'])
     $G_PUBLISH = new Publisher();
     //$G_PUBLISH->AddContent('xmlform', 'xmlform', 'groups/groups_UsersListTitle', '', array('GRP_NAME' => $aFields['GRP_TITLE']));
     $G_PUBLISH->AddContent('propeltable', 'groups/paged-table2', 'groups/groups_UsersList', $oGroups->getUsersGroupCriteria($_POST['sGroupUID']), array('GRP_UID' => $_POST['sGroupUID'], 'GRP_NAME' => $aFields['GRP_TITLE']));
-    
+
     $oHeadPublisher =& headPublisher::getSingleton();
     $oHeadPublisher->addScriptCode("groupname=\"{$aFields["GRP_TITLE"]}\";");
-    
+
     G::RenderPage('publish', 'raw');
   break;
 
@@ -54,7 +54,7 @@ switch ($_POST['action'])
     G::LoadClass('groups');
     $oGroup = new Groups();
     $aUsers=explode(',', $_POST['aUsers']);
-    
+
     for($i=0; $i<count($aUsers); $i++)
     {
       $oGroup->addUserToGroup($_POST['GRP_UID'], $aUsers[$i]);
@@ -104,34 +104,34 @@ switch ($_POST['action'])
     $env = $co->getConfiguration('ENVIRONMENT_SETTINGS', '');
     $limit_size = isset($config['pageSize']) ? $config['pageSize'] : 20;
     $start   = isset($_REQUEST['start'])  ? $_REQUEST['start'] : 0;
-    $limit   = isset($_REQUEST['limit'])  ? $_REQUEST['limit'] : $limit_size; 
+    $limit   = isset($_REQUEST['limit'])  ? $_REQUEST['limit'] : $limit_size;
     $filter = isset($_REQUEST['textFilter']) ? $_REQUEST['textFilter'] : '';
-     
-    global $RBAC; 
+
+    global $RBAC;
     if ($limit == $start) $limit = $limit +$limit ;
     $tasks = new TaskUser();
     $aTask = $tasks->getCountAllTaksByGroups();
-    
+
     $members = new GroupUser();
     $aMembers = $members->getCountAllUsersByGroup();
 
     require_once PATH_CONTROLLERS . 'adminProxy.php';
     $uxList = adminProxy::getUxTypesList();
-    
-    $groups = new Groupwf();    
+
+    $groups = new Groupwf();
     $data = $groups->getAllGroup($start,$limit,$filter);
     $result  = $data['rows'];
 
     $totalRows =  0;
-    $arrData   =  array(); 
+    $arrData   =  array();
     foreach ($result as $results) {
       $totalRows ++;
-      $results['CON_VALUE'] = $results['GRP_TITLE'];
+      $results['CON_VALUE'] = str_replace(array("<", ">"), array("&lt;", "&gt;"), $results['GRP_TITLE']);
       $results['GRP_TASKS'] = isset($aTask[$results['GRP_UID']]) ? $aTask[$results['GRP_UID']] : 0;
-      $results['GRP_USERS'] = isset($aMembers[$results['GRP_UID']]) ? $aMembers[$results['GRP_UID']] : 0;     
-      $arrData[] = $results;         
+      $results['GRP_USERS'] = isset($aMembers[$results['GRP_UID']]) ? $aMembers[$results['GRP_UID']] : 0;
+      $arrData[] = $results;
     }
-    
+
     $result = new StdClass();
     $result->success = true;
     $result->groups = $arrData;
@@ -150,7 +150,7 @@ switch ($_POST['action'])
     $aRow = $oDataset->getRow();
     $response = ($aRow) ? 'true' : 'false';
     echo $response;
-    break; 
+    break;
   case 'saveNewGroup':
     G::LoadClass('groups');
     $newGroup['GRP_UID'] = '';
@@ -324,7 +324,7 @@ switch ($_POST['action'])
     G::LoadClass('groups');
     $oGroup = new Groups();
     foreach ($uUIDs as $USR_UID){
-      $oGroup->addUserToGroup($GRP_UID, $USR_UID);    
+      $oGroup->addUserToGroup($GRP_UID, $USR_UID);
     }
     break;
   case 'deleteUsersToGroupsMultiple':
@@ -333,7 +333,7 @@ switch ($_POST['action'])
     G::LoadClass('groups');
     $oGroup = new Groups();
     foreach ($uUIDs as $USR_UID){
-      $oGroup->removeUserOfGroup($GRP_UID, $USR_UID);    
+      $oGroup->removeUserOfGroup($GRP_UID, $USR_UID);
     }
     break;
   case 'updatePageSize':

@@ -40,7 +40,7 @@ waitLoading.show = function() {
 };
 waitLoading.hide = function() {
   Ext.getBody().unmask();
-};    
+};
 
 var treePanel;
 var rootNode;
@@ -97,7 +97,7 @@ Ext.onReady(function() {
           deleteButton.disable();
         }else{
           if (node.attributes.leaf){
-            deleteButton.enable();	
+            deleteButton.enable();
           }else{
             deleteButton.disable();
           }
@@ -126,7 +126,7 @@ Ext.onReady(function() {
 
   newForm = new Ext.FormPanel({
     url: 'departments_Ajax?request=saveNewDepartment',
-    frame: true, 	
+    frame: true,
     items:[
            {xtype: 'textfield', name: 'parent', hidden: true},
            {xtype: 'textfield', fieldLabel: _('ID_DEPARTMENT_NAME'), name: 'dep_name', width: 230, allowBlank: false}
@@ -141,36 +141,36 @@ Ext.onReady(function() {
 
   editForm = new Ext.FormPanel({
     url: 'departments_Ajax?request=saveEditDepartment',
-    frame: true, 	
+    frame: true,
     items:[
            {xtype: 'textfield', name: 'dep_uid', hidden: true},
            {xtype: 'textfield', name: 'dep_parent', hidden: true},
            {xtype: 'textfield', fieldLabel: _('ID_DEPARTMENT_NAME'), name: 'dep_name', width: 230, allowBlank: false},
            {
-             xtype: 'combo', 
-             fieldLabel: _('ID_STATUS'), 
+             xtype: 'combo',
+             fieldLabel: _('ID_STATUS'),
              hiddenName: 'status',
              typeAhead: true,
-             mode: 'local', 
-             store: comboStatusStore, 
-             displayField: 'value', 
+             mode: 'local',
+             store: comboStatusStore,
+             displayField: 'value',
              valueField:'id',
-             allowBlank: false, 
+             allowBlank: false,
              triggerAction: 'all',
              emptyText: _('ID_SELECT_STATUS'),
              selectOnFocus:true
            }
            ,
            {
-             xtype: 'combo', 
-             fieldLabel: 'Manager', 
+             xtype: 'combo',
+             fieldLabel: 'Manager',
              hiddenName: 'manager',
              typeAhead: true,
-             mode: 'local', 
-             store: comboDepManager, 
-             displayField: 'USR_VALUE', 
+             mode: 'local',
+             store: comboDepManager,
+             displayField: 'USR_VALUE',
              valueField:'USR_UID',
-             allowBlank: true, 
+             allowBlank: true,
              triggerAction: 'all',
              emptyText: '',
              selectOnFocus:true
@@ -289,15 +289,15 @@ CloseWindow = function(){
   Ext.getCmp('w').hide();
 };
 SaveNewDepartment = function(){
-  waitLoading.show();      
+  waitLoading.show();
   var dep_node = Ext.getCmp('treePanel').getSelectionModel().getSelectedNode();
   if (dep_node) dep_node.unselect();
   var dep_name = newForm.getForm().findField('dep_name').getValue();
-  dep_name = dep_name.trim();      
+  dep_name = dep_name.trim();
   if (dep_name==''){
-    waitLoading.hide();        
+    waitLoading.hide();
     return;
-  }       
+  }
   var dep_parent = newForm.getForm().findField('parent').getValue();
   Ext.Ajax.request({
     url: 'departments_Ajax',
@@ -319,7 +319,7 @@ SaveNewDepartment = function(){
             newForm.getForm().findField('dep_name').reset();
             CloseWindow();
             PMExt.notify(_('ID_DEPARTMENTS'), _('ID_DEPARTMENT_SUCCESS_NEW'));
-          }, 
+          },
           failure: function(r,o){
             waitLoading.hide();
             DoNothing();
@@ -327,7 +327,7 @@ SaveNewDepartment = function(){
         });
       }else{
         waitLoading.hide();
-        PMExt.error(_('ID_DEPARTMENTS'), _('ID_DEPARTMENT_EXISTS')); 
+        PMExt.error(_('ID_DEPARTMENTS'), _('ID_DEPARTMENT_EXISTS'));
       }
     },
     failure: function(resp, opt){
@@ -366,13 +366,13 @@ SaveEditDepartment = function(){
             newForm.getForm().findField('dep_name').reset();
             CloseWindow();
             PMExt.notify(_('ID_DEPARTMENTS'), _('ID_DEPARTMENT_SUCCESS_UPDATE'));
-          }, 
+          },
           failure: function(r,o){
             DoNothing();
           }
         });
       }else{
-        PMExt.error(_('ID_DEPARTMENTS'), _('ID_DEPARTMENT_EXISTS')); 
+        PMExt.error(_('ID_DEPARTMENTS'), _('ID_DEPARTMENT_EXISTS'));
       }
     },
     failure: function(resp, opt){
@@ -384,9 +384,12 @@ SaveEditDepartment = function(){
 //Edit Department Action
 EditDepartmentAction = function(){
   var dep_node = Ext.getCmp('treePanel').getSelectionModel().getSelectedNode();
+  var strName = stringReplace("&lt;", "<", dep_node.attributes.DEP_TITLE);
+  strName = stringReplace("&gt;", ">", strName);
+
   editForm.getForm().findField('dep_uid').setValue(dep_node.attributes.DEP_UID);
   editForm.getForm().findField('dep_parent').setValue(dep_node.attributes.DEP_PARENT);
-  editForm.getForm().findField('dep_name').setValue(dep_node.attributes.DEP_TITLE);
+  editForm.getForm().findField('dep_name').setValue(strName);
   editForm.getForm().findField('status').setValue(dep_node.attributes.DEP_STATUS);
   editForm.getForm().findField('manager').getStore().addListener('load',function(s,r,o){
     editForm.getForm().findField('manager').setValue(dep_node.attributes.DEP_MANAGER);
@@ -417,9 +420,9 @@ DeleteDepartmentAction = function(){
     success: function(r,o){
       viewport.getEl().unmask();
       var response = Ext.util.JSON.decode(r.responseText);
-      if (response.success){   
+      if (response.success){
 
-        Ext.Msg.confirm(_('ID_DEPARTMENTS'), _('ID_CONFIRM_DELETE_DEPARTMENT'), 
+        Ext.Msg.confirm(_('ID_DEPARTMENTS'), _('ID_CONFIRM_DELETE_DEPARTMENT'),
             function(btn, text){
           if (btn=='yes'){
             viewport.getEl().mask(_('ID_PROCESSING'));
@@ -427,7 +430,7 @@ DeleteDepartmentAction = function(){
               url: 'departments_Ajax',
               params: {action: 'deleteDepartment', DEP_UID: DEP_UID},
               success: function(r,o){
-                viewport.getEl().unmask();  
+                viewport.getEl().unmask();
                 treePanel.getRootNode().reload();
                 newSubButton.disable();
                 editButton.disable();
@@ -436,9 +439,9 @@ DeleteDepartmentAction = function(){
                 PMExt.notify(_('ID_DEPARTMENTS'), _('ID_DEPARTMENT_SUCCESS_DELETE'));
               },
               failure: function(r,o){
-                viewport.getEl().unmask(); 
+                viewport.getEl().unmask();
               }
-            }); 
+            });
           }
         });
 

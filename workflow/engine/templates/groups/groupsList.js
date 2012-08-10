@@ -4,7 +4,7 @@
  */
 
 //Keyboard Events
-new Ext.KeyMap(document, 
+new Ext.KeyMap(document,
     [
      {
        key: Ext.EventObject.F5,
@@ -76,7 +76,7 @@ Ext.onReady(function(){
     text: _('ID_EDIT'),
     iconCls: 'button_menu_ext ss_sprite  ss_pencil',
     handler: EditGroupWindow,
-    disabled: true  
+    disabled: true
   });
 
   deleteButton = new Ext.Action({
@@ -155,22 +155,22 @@ Ext.onReady(function(){
     items:[
            {xtype: 'textfield', fieldLabel: _('ID_GROUP_NAME'), name: 'name', width: 200, allowBlank: false},
            {
-             xtype: 'combo', 
+             xtype: 'combo',
              id : 'status',
              name : 'status',
-             fieldLabel: _('ID_STATUS'), 
+             fieldLabel: _('ID_STATUS'),
              hiddenName: 'status',
              typeAhead: true,
-             mode: 'local', 
-             store: comboStatusStore, 
-             listeners   : {  
-                 beforerender: function(status){  
-                   status.setValue('ACTIVE');                
-                 } 
+             mode: 'local',
+             store: comboStatusStore,
+             listeners   : {
+                 beforerender: function(status){
+                   status.setValue('ACTIVE');
+                 }
              },
-             displayField: 'value', 
+             displayField: 'value',
              valueField:'value',
-             allowBlank: false, 
+             allowBlank: false,
              triggerAction: 'all',
              emptyText: _('ID_SELECT_STATUS'),
              selectOnFocus:true
@@ -189,18 +189,18 @@ Ext.onReady(function(){
            {xtype: 'textfield', name: 'grp_uid', hidden: true},
            {xtype: 'textfield', fieldLabel: _('ID_GROUP_NAME'), name: 'name', width: 200, allowBlank: false},
            {
-             xtype: 'combo', 
-             fieldLabel: _('ID_STATUS'), 
+             xtype: 'combo',
+             fieldLabel: _('ID_STATUS'),
              hiddenName: 'status',
              typeAhead: true,
-             mode: 'local', 
-             store: comboStatusStore,  
-             displayField: 'value', 
+             mode: 'local',
+             store: comboStatusStore,
+             displayField: 'value',
              valueField:'value',
-             allowBlank: false, 
+             allowBlank: false,
              triggerAction: 'all',
              emptyText: _('ID_SELECT_STATUS'),
-             selectOnFocus:true             
+             selectOnFocus:true
            }
            ],
            buttons: [
@@ -208,7 +208,7 @@ Ext.onReady(function(){
                      {text: _('ID_CANCEL'), handler: CloseWindow}
                      ]
   });
-  
+
   store = new Ext.data.GroupingStore( {
     proxy : new Ext.data.HttpProxy({
       url: 'groups_Ajax?action=groupsList'
@@ -314,7 +314,7 @@ Ext.onReady(function(){
     })
   });
 
-  infoGrid.on('rowcontextmenu', 
+  infoGrid.on('rowcontextmenu',
       function (grid, rowIndex, evt) {
     var sm = grid.getSelectionModel();
     sm.selectRow(rowIndex, sm.isSelected(rowIndex));
@@ -369,7 +369,7 @@ GridByDefault = function(){
 
 //Do Search Function
 DoSearch = function(){
-  infoGrid.store.load({params: {textFilter: searchText.getValue()}});  
+  infoGrid.store.load({params: {textFilter: searchText.getValue()}});
 };
 
 //Close Popup Window
@@ -431,9 +431,12 @@ SaveNewGroup = function(){
 
 //Open Edit Group Form
 EditGroupWindow = function(){
-  rowSelected = infoGrid.getSelectionModel().getSelected();
+  var rowSelected = infoGrid.getSelectionModel().getSelected();
+  var strName = stringReplace("&lt;", "<", rowSelected.data.CON_VALUE);
+  strName = stringReplace("&gt;", ">", strName);
+
   editForm.getForm().findField('grp_uid').setValue(rowSelected.data.GRP_UID);
-  editForm.getForm().findField('name').setValue(rowSelected.data.CON_VALUE);
+  editForm.getForm().findField('name').setValue(strName);
   editForm.getForm().findField('status').setValue(rowSelected.data.GRP_STATUS);
   w = new Ext.Window({
     autoHeight: true,
@@ -456,7 +459,7 @@ SaveEditGroupAction = function(){
     if (rowSelected.data.CON_VALUE.toUpperCase() == group.toUpperCase()){
       SaveEditGroup();
     }else{
-      CheckGroupName(group, SaveEditGroup, DuplicateGroupName);  
+      CheckGroupName(group, SaveEditGroup, DuplicateGroupName);
     }
   }
 };
