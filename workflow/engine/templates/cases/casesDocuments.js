@@ -72,7 +72,9 @@ streamFilefromPM=function(fileStream) {
   });
 };
 
-function nodeRootCreate()
+var swHandleCallbackRootNodeLoad = 0;
+
+function rootNodeCreate()
 {
     var node = new Ext.tree.AsyncTreeNode({
         id: "root",
@@ -522,13 +524,9 @@ function handleCallback(requestParams, node) {
           Ext.Msg.alert( 'Failure', json.error );
         }
 
-        if (options.params.option == "directory") {
-            switch (options.params.action) {
-                case "delete":
-                case "rename":
-                    Ext.getCmp("dirTreePanel").setRootNode(nodeRootCreate());
-                    break;
-            }
+        if (swHandleCallbackRootNodeLoad == 1) {
+            Ext.getCmp("dirTreePanel").setRootNode(rootNodeCreate());
+            swHandleCallbackRootNodeLoad = 0;
         }
       }
       else {
@@ -592,14 +590,19 @@ function deleteFiles(btn)
     requestParams = getRequestParams();
     requestParams.action = "delete";
 
+    if (!(requestParams.option == "documents")) {
+        swHandleCallbackRootNodeLoad = 1;
+    }
+
     handleCallback(requestParams);
 
     if (requestParams.option == "documents") {
         datastore.sendWhat = "files";
         loadDir();
-    } else {
-        //Ext.getCmp("dirTreePanel").setRootNode(nodeRootCreate());
     }
+    //else {
+    //    Ext.getCmp("dirTreePanel").setRootNode(rootNodeCreate());
+    //}
 }
 
 function extractArchive(btn) {
@@ -622,9 +625,11 @@ function deleteDir(btn, node)
     requestParams.selitems = Array(node.id.replace(/_RRR_/g, "/"));
     requestParams.action   = "delete";
 
+    swHandleCallbackRootNodeLoad = 1;
+
     handleCallback(requestParams, node);
 
-    //Ext.getCmp("dirTreePanel").setRootNode(nodeRootCreate());
+    //Ext.getCmp("dirTreePanel").setRootNode(rootNodeCreate());
 }
 
 Ext.msgBoxSlider = function(){
@@ -1640,7 +1645,7 @@ var documentsTab = {
         id: "refresh",
         handler: function () {
             //Ext.getCmp("dirTreePanel").getRootNode().reload();
-            Ext.getCmp("dirTreePanel").setRootNode(nodeRootCreate());
+            Ext.getCmp("dirTreePanel").setRootNode(rootNodeCreate());
         }
     }
     ],
@@ -1696,7 +1701,7 @@ var documentsTab = {
       }
     },
 
-    root: nodeRootCreate()
+    root: rootNodeCreate()
   },
   {
     layout : "border",
