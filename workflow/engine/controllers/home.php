@@ -49,7 +49,7 @@ class Home extends Controller
     $data     = isset($httpData->d) ? unserialize(base64_decode($httpData->d)) : '';
     $template = $this->clientBrowser['name'] == 'msie' ? 'login_ie' : 'login_standard';
     $skin     = $this->clientBrowser['name'] == 'msie' ? $this->lastSkin : 'simplified';
-    
+
     if (!is_array($data)) {
       $data = array('u'=>'', 'p'=>'', 'm'=>'');
     }
@@ -60,7 +60,6 @@ class Home extends Controller
     $this->setVar('skin', $skin);
 
     $this->setView("home/$template");
-    
     $this->render();
   }
 
@@ -100,15 +99,15 @@ class Home extends Controller
     }
 
     unset($processList[0]);
-    
+
     //Get simplified options
     global $G_TMP_MENU;
-    
+
     $mnu = new Menu();
     $mnu->load('simplified');
     $arrayMnuOption = array();
     $mnuNewCase     = array();
-    
+
     if (!empty($mnu->Options)) {
       foreach ($mnu->Options as $index => $value) {
         $option = array(
@@ -118,7 +117,7 @@ class Home extends Controller
           'icon'  => $mnu->Icons[$index],
           'class' => $mnu->ElementClass[$index]
         );
-        
+
         if ($mnu->Id[$index] != 'S_NEW_CASE') {
           $arrayMnuOption[] = $option;
         }
@@ -127,7 +126,7 @@ class Home extends Controller
         }
       }
     }
-    
+
     $this->setView('home/index');
 
     $this->setVar('usrUid', $this->userID);
@@ -147,7 +146,7 @@ class Home extends Controller
   {
     require_once 'classes/model/Step.php';
     G::LoadClass('applications');
-    
+
     $apps = new Applications();
     $step = new Step;
 
@@ -167,8 +166,7 @@ class Home extends Controller
     $_SESSION['APPLICATION'] = $lastApp['APP_UID'];
     $_SESSION['PROCESS'] = $lastApp['PRO_UID'];
     $_SESSION['TASK'] = $lastApp['TAS_UID'];
-    
-    
+
     $steps    = $apps->getSteps($lastApp['APP_UID'], $lastApp['DEL_INDEX'], $lastApp['TAS_UID'], $lastApp['PRO_UID']);
     $lastStep = array_pop($steps);
     $lastStep['title'] = G::LoadTranslation('ID_FINISH');
@@ -184,34 +182,43 @@ class Home extends Controller
     $this->render();
   }
 
-  public function appList($httpData)
-  {
-    // setting default list applications types [default: todo]
-    $httpData->t = isset($httpData->t)? $httpData->t : 'todo';
+    public function appList($httpData)
+    {
+        // setting default list applications types [default: todo]
+        $httpData->t = isset($httpData->t)? $httpData->t : 'todo';
 
-    // setting main list title
-    switch ($httpData->t) {
-      case 'todo'  : $title = 'My Inbox'; break;
-      case 'draft' : $title = 'My Drafts'; break;
-      default: $title = ucwords($httpData->t);
+        // setting main list title
+        switch ($httpData->t) {
+            case 'todo':
+                $title = 'My Inbox';
+                break;
+            case 'draft':
+                $title = 'My Drafts';
+                break;
+            case 'unassigned':
+                $title = 'Unassigned Inbox';
+                break;
+            default:
+              $title = ucwords($httpData->t);
+              break;
+        }
+
+        // getting apps data
+        $cases = $this->getAppsData($httpData->t);
+
+        // settings html template
+        $this->setView('home/appList');
+
+        // settings vars and rendering
+        $this->setVar('cases', $cases['data']);
+        $this->setVar('cases_count', $cases['totalCount']);
+        $this->setVar('title', $title);
+        $this->setVar('appListStart', $this->appListLimit);
+        $this->setVar('appListLimit', 10);
+        $this->setVar('listType', $httpData->t);
+
+        $this->render();
     }
-
-    // getting apps data
-    $cases = $this->getAppsData($httpData->t);
-
-    // settings html template
-    $this->setView('home/appList');
-    
-    // settings vars and rendering
-    $this->setVar('cases', $cases['data']);
-    $this->setVar('cases_count', $cases['totalCount']);
-    $this->setVar('title', $title);
-    $this->setVar('appListStart', $this->appListLimit);
-    $this->setVar('appListLimit', 10);
-    $this->setVar('listType', $httpData->t);
-
-    $this->render();
-  }
 
   public function getApps($httpData)
   {
@@ -258,7 +265,7 @@ class Home extends Controller
             // Completting with Notes
             $notes = $appNotes->getNotesList($row['APP_UID'], '', $notesStart, $notesLimit);
             $notes = $notes['array'];
-            
+
             $cases['data'][$i]['NOTES_COUNT'] = $notes['totalCount'];
             $cases['data'][$i]['NOTES_LIST']  = $notes['notes'];
         }
@@ -270,14 +277,19 @@ class Home extends Controller
     G::LoadClass('case');
     $case  = new Cases();
     $aData = $case->startCase($httpData->id, $_SESSION['USER_LOGGED']);
-    
+
     $_SESSION['APPLICATION']   = $aData['APPLICATION'];
     $_SESSION['INDEX']         = $aData['INDEX'];
     $_SESSION['PROCESS']       = $aData['PROCESS'];
     $_SESSION['TASK']          = $httpData->id;
     $_SESSION['STEP_POSITION'] = 0;
     $_SESSION['CASES_REFRESH'] = true;
-        
+
+    // Execute Events
+    require_once 'classes/model/Event.php';
+    $event = new Event();
+    $event->createAppEvents($_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['TASK']);
+
     $oCase = new Cases();
     $aNextStep = $oCase->getNextStep($_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION']);
     //../cases/cases_Open?APP_UID={$APP.APP_UID}&DEL_INDEX={$APP.DEL_INDEX}&action=todo

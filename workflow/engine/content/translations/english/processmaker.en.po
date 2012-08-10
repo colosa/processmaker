@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch 2.0-testing) 2.0.43-testing.4-10-gb493668\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-720-g843d0ac\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-08-01 10:50:13\n"
+"PO-Revision-Date: 2012-08-10 16:39:34\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12721,6 +12721,24 @@ msgstr "Reason of the cancel of case"
 msgid "The Case canceled. By the reason:"
 msgstr "The Case canceled. By the reason:"
 
+# TRANSLATION
+# LABEL/MIME_DES_DOCX
+#: LABEL/MIME_DES_DOCX
+msgid "[LABEL/MIME_DES_DOCX] Word Document"
+msgstr "Word Document"
+
+# TRANSLATION
+# LABEL/MIME_DES_XLSX
+#: LABEL/MIME_DES_XLSX
+msgid "[LABEL/MIME_DES_XLSX] Excel Document"
+msgstr "Excel Document"
+
+# TRANSLATION
+# LABEL/ID_PROCESSED
+#: LABEL/ID_PROCESSED
+msgid "Processed"
+msgstr "Processed"
+
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
 #: text - ADD_TAB_NAME
@@ -16201,6 +16219,12 @@ msgstr "Task Due Date"
 msgid "[cases/cases_Resume.xml?DEL_FINISH_DATE] Finish Date"
 msgstr "Finish Date"
 
+# cases/cases_Resume.xml?DESCRIPTION
+# cases/cases_Resume.xml
+#: text - DESCRIPTION
+msgid "[cases/cases_Resume.xml?DESCRIPTION] Case Description"
+msgstr "Case Description"
+
 # cases/cases_Scheduler_Edit.xml?GENERAL_INF
 # cases/cases_Scheduler_Edit.xml
 #: title - GENERAL_INF
@@ -16248,12 +16272,6 @@ msgstr "Properties"
 #: text - SCH_NAME
 msgid "[cases/cases_Scheduler_Edit.xml?SCH_NAME] Description"
 msgstr "Description"
-
-# cases/cases_Scheduler_Edit.xml?PRO_UID
-# cases/cases_Scheduler_Edit.xml
-#: dropdown - PRO_UID
-msgid "[cases/cases_Scheduler_Edit.xml?PRO_UID] Process"
-msgstr "Process"
 
 # cases/cases_Scheduler_Edit.xml?TAS_UID
 # cases/cases_Scheduler_Edit.xml
@@ -21884,7 +21902,7 @@ msgstr "Report Database:"
 # login/newSite.xml?AO_DB_DROP
 # login/newSite.xml
 #: checkbox - AO_DB_DROP
-msgid "Drop database if exist"
+msgid "[login/newSite.xml?AO_DB_DROP] Drop database if exist"
 msgstr "Drop database if exist"
 
 # login/newSite.xml?WS
@@ -23489,6 +23507,12 @@ msgstr "Process Information"
 msgid "[processes/processes_Edit.xml?PRO_TITLE] Title"
 msgstr "Title"
 
+# processes/processes_Edit.xml?PRO_VALIDATE_TITLE
+# processes/processes_Edit.xml
+#: text - PRO_VALIDATE_TITLE
+msgid "[processes/processes_Edit.xml?PRO_VALIDATE_TITLE] Title"
+msgstr "Title"
+
 # processes/processes_Edit.xml?PRO_DESCRIPTION
 # processes/processes_Edit.xml
 #: textarea - PRO_DESCRIPTION
@@ -23876,7 +23900,7 @@ msgstr "<div align=\"center\">Importing Existing Process</div>"
 # processes/processes_ImportExisting.xml?TITLE1
 # processes/processes_ImportExisting.xml
 #: subtitle - TITLE1
-msgid "The process you are trying to import already exist. Please select one of the following options to continue:"
+msgid "[processes/processes_ImportExisting.xml?TITLE1] The process you are trying to import already exist. Please select one of the following options to continue:"
 msgstr "The process you are trying to import already exist. Please select one of the following options to continue:"
 
 # processes/processes_ImportExisting.xml?IMPORT_OPTION
@@ -29123,11 +29147,11 @@ msgstr "Message"
 msgid "[tasks/tasks_Notifications.xml?TAS_DEF_MESSAGE_TEMPLATE] Template"
 msgstr "Template"
 
-# tasks/tasks_Notifications.xml?TAS_DEF_MESSAGE_TEMPLATE-
+# tasks/tasks_Notifications.xml?TAS_DEF_MESSAGE_TEMPLATE-alert_message.html
 # tasks/tasks_Notifications.xml
-#: dropdown - TAS_DEF_MESSAGE_TEMPLATE -
-msgid "[tasks/tasks_Notifications.xml?TAS_DEF_MESSAGE_TEMPLATE-]"
-msgstr "- None -"
+#: dropdown - TAS_DEF_MESSAGE_TEMPLATE - alert_message.html
+msgid "[tasks/tasks_Notifications.xml?TAS_DEF_MESSAGE_TEMPLATE-alert_message.html]"
+msgstr "-- Default --"
 
 # tasks/tasks_Owner.xml?TAS_OWNER_APP
 # tasks/tasks_Owner.xml

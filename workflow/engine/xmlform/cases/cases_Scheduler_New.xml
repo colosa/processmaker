@@ -80,7 +80,7 @@
 </SELECT_1>
 <!--
 <SCH_DAYS_PERFORM_TASK type="radiogroup" defaultValue="1" required="0" mode="edit" options="Array">
-<en>Perform this task 
+<en>Perform this task
 <option name="1">Every Day</option>
 
 <option name="2">Weekdays</option>
@@ -104,7 +104,7 @@
 <en>Every</en>
 </SCH_EVERY_DAYS>
 <SCH_WEEK_DAYS type="checkgroup" required="0" mode="edit" options="Array" COLS="2" defaultvalue="" hint="" sqlconnection="" readonly="0" savelabel="0">
-<en>Select the day(s) of the week below 
+<en>Select the day(s) of the week below
 		<option name="1">Monday</option>
 		<option name="2">Tuesday</option>
 		<option name="3">Wednesday</option>
@@ -112,7 +112,7 @@
 </SCH_WEEK_DAYS>
 
 <SCH_WEEK_DAYS_2 type="checkgroup" required="0" mode="edit" options="Array" defaultvalue="" hint="" sqlconnection="" readonly="0" savelabel="0">
-<en> 
+<en>
 		<option name="5">Friday</option>
 		<option name="6">Saturday</option>
 		<option name="7">Sunday</option></en>
@@ -152,7 +152,7 @@
 </en>
 </SCH_START_DAY_OPT_2_DAYS_WEEK>
 <SCH_MONTHS type="checkgroup" mode="edit" options="Array">
-<en>Of the month(s) 
+<en>Of the month(s)
 <option name="1">Jan</option>
 <option name="2">Feb</option>
 <option name="3">Mar</option>
@@ -229,7 +229,7 @@
 <en>Cancel</en>
 </BTNCANCEL>
 
-<SHOW_HIDE_JS type="javascript"><![CDATA[ 
+<SHOW_HIDE_JS type="javascript"><![CDATA[
 hideAll();
 hideProperties();
 
@@ -267,8 +267,8 @@ function showProperties(){
     document.getElementById('form[EDIT_USER]').style.display='';
     document.getElementById('form[PERFORM_TASK]').style.display='';
     document.getElementById('form[SELECT_TIME_DAY]').style.display='';
-    
-    
+
+
 
 }
 
@@ -279,15 +279,15 @@ contractSubtitle('SELECT_PLUGIN');
 	contractSubtitle('SELECT_1');
 	contractSubtitle('SELECT_2');
 	contractSubtitle('SELECT_3');
-        
+
 	getField('SAVE').disabled=true;
 	// document.getElementById('form[SELECT_TIME_DAY]').style.display='none';
 	document.getElementById('form[SELECT_DATE]').style.display='none';
 	document.getElementById('form[SELECT_1]').style.display='none';
 	document.getElementById('form[SELECT_2]').style.display='none';
 	document.getElementById('form[SELECT_3]').style.display='none';
-	
-	
+
+
 }
 
 function showPluginSelection(opt,pro_uid) {
@@ -297,15 +297,15 @@ var oRPCProcess = new leimnud.module.rpc.xmlhttp({
             url   : '../cases/cases_SchedulerGetPlugins',
             async : true,
             method: 'POST',
-            args  : "action=pluginCaseSchedulerForm&selectedOption="+opt+"&pro_uid="+pro_uid            
+            args  : "action=pluginCaseSchedulerForm&selectedOption="+opt+"&pro_uid="+pro_uid
        });
        oRPCProcess.callback = function(rpc){
        //alert(rpc.xmlhttp.responseText);
        if(rpc.xmlhttp.responseText!=""){
-        
+
         document.getElementById("pluginsListContent").innerHTML = rpc.xmlhttp.responseText;
        }
-                
+
        }.extend(this);
 
        oRPCProcess.make();
@@ -316,7 +316,7 @@ function showSelection(opt) {
 	if (opt!=0) {
     expandSubtitle('SELECT_TIME_DAY');
     getField('SAVE').disabled=false;
-    
+
     var oRPCProcess = new leimnud.module.rpc.xmlhttp({
             url   : '../cases/cases_SchedulerGetPlugins',
             async : true,
@@ -331,11 +331,11 @@ function showSelection(opt) {
         expandSubtitle('SELECT_PLUGIN');
         document.getElementById("pluginsListDropdown").innerHTML = rpc.xmlhttp.responseText;
        }
-                
+
        }.extend(this);
 
        oRPCProcess.make();
-    
+
 	} else {
     contractSubtitle('SELECT_TIME_DAY');
     getField('SAVE').disabled=true;
@@ -396,7 +396,7 @@ function showSelection(opt) {
 leimnud.event.add(getField('SCH_OPTION'), 'change', function() {
 		var opt = getField('SCH_OPTION').value;
 		showSelection(opt);
-		
+
 });
 
 leimnud.event.add(getField('SCH_START_DAY][1'), 'click', function() {
@@ -439,7 +439,7 @@ leimnud.event.add(getField('SCH_EVERY_DAYS'), 'change', function() {
 		days = getField('SCH_EVERY_DAYS').value;
 		if(!(days>=1 && days<=52) ) {
 			msgBox('Weeks must be between 1 and 52', 'alert');
-			getField('SCH_EVERY_DAYS').value = ''; 
+			getField('SCH_EVERY_DAYS').value = '';
 		}
 });
 
@@ -447,7 +447,7 @@ leimnud.event.add(getField('SCH_START_DAY_OPT_1'), 'change', function() {
 		days = getField('SCH_START_DAY_OPT_1').value;
 		if(!(days>=1 && days<=31) ) {
 			msgBox('The days must be between 1 and 31', 'alert');
-			getField('SCH_START_DAY_OPT_1').value = '1'; 
+			getField('SCH_START_DAY_OPT_1').value = '1';
 		}
 });
 
@@ -455,12 +455,12 @@ leimnud.event.add(getField('SCH_START_TIME'), 'keyup', function() {
   if (getField('SCH_START_TIME').value.charAt(0)) {
     if (isNaN(getField('SCH_START_TIME').value.charAt(0)) == true) {
       getField('SCH_START_TIME').value = getField('SCH_START_TIME').value.slice(0, -1);
-    }    
+    }
   }
   if (getField('SCH_START_TIME').value.charAt(1)) {
     if (isNaN(getField('SCH_START_TIME').value.charAt(1)) == true) {
       getField('SCH_START_TIME').value = getField('SCH_START_TIME').value.slice(0, -1);
-    }    
+    }
   }
   var oVar = getField('SCH_START_TIME').value.charAt(2);
   if (isNaN(oVar) == true) {
@@ -471,7 +471,7 @@ leimnud.event.add(getField('SCH_START_TIME'), 'keyup', function() {
       if (isNaN(getField('SCH_START_TIME').value.charAt(4)) == true) {
         getField('SCH_START_TIME').value = getField('SCH_START_TIME').value.slice(0, -1);
       }
-    }  
+    }
   }
 });
 
@@ -487,8 +487,8 @@ leimnud.event.add(getField('SCH_START_TIME'), 'change', function() {
         //getField('SCH_REPEAT_UNTIL').focus();
         getField('SAVE').focus();
 
-    } 
-    if(parties[1]>59){ 
+    }
+    if(parties[1]>59){
         msgBox('The minutes can not be greater than 59', 'alert');
         getField('SCH_START_TIME').value='';
         //getField('SCH_REPEAT_UNTIL').value='';
@@ -522,7 +522,7 @@ function case_userSchedulerValidate(username, password) {
      msgBox(G_STRINGS.ID_CASE_SCHEDULER_VALIDATE_ALERT, "alert");
      return false;
      }
-     
+
     var oRPC = new leimnud.module.rpc.xmlhttp({
        	    url   : '../cases/cases_SchedulerValidateUser',
              async : true,
@@ -556,19 +556,18 @@ function case_userSchedulerValidate(username, password) {
        });
 
        oRPCProcess.callback = function(rpc){
-            document.getElementById("processListDropdown").innerHTML = rpc.xmlhttp.responseText;
             if (getField('PRO_UID')!=null){
                 var process_uid = getField('PRO_UID').value;
             } else {
                 var process_uid = gup('PRO_UID');
             }
             loadTasksDropdown(process_uid,user_uid);
-                
+
        }.extend(this);
 
        oRPCProcess.make();
 
-       
+
       }.extend(this);
     oRPC.make();
 
@@ -625,7 +624,7 @@ endDate   = new Date(endDate[0],endDate[1],endDate[2]);
                     requiredFields = requiredFields + 'Weekdays,';
                     validFields = false;
                 }
-            
+
         break;
         // weekly
         case '2':
@@ -666,7 +665,7 @@ endDate   = new Date(endDate[0],endDate[1],endDate[2]);
                     monthIdOne = 'form[SCH_MONTHS]['+month+']';
                     monthIdTwo = 'form[SCH_MONTHS_2]['+(month+4)+']';
                     monthIdThree = 'form[SCH_MONTHS_3]['+(month+8)+']';
-                    
+
                     if (document.getElementById(monthIdOne).checked==true||document.getElementById(monthIdTwo).checked==true||document.getElementById(monthIdThree).checked==true){
                         validFields = true;
                         break;
@@ -687,9 +686,9 @@ endDate   = new Date(endDate[0],endDate[1],endDate[2]);
         break;
         //run once
         case '4':
-           
+
                 validFields = true;
-           
+
         break;
         default:
             validFields = false;
@@ -761,7 +760,7 @@ function collapseAdvancedOptions(){
         //contractSubtitle('ADVANCED_4');
         document.getElementById('EditLogAdvancedOptions').innerHTML = 'hidden';
         document.getElementById('checkAdvanced').checked = false;
-        
+
         //document.getElementById('form[SCH_END_DATE]').value = '';
         document.getElementById('form[SCH_END_DATE][div]').innerHTML = '';
         document.getElementById('form[SCH_REPEAT_TASK_CHK]').checked = false;
