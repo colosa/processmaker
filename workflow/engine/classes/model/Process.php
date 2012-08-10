@@ -411,6 +411,9 @@ class Process extends BaseProcess {
             $oPro->setProDescription( $aData['PRO_DESCRIPTION'] );
           $res = $oPro->save();
           $con->commit();
+
+          $this->memcachedDelete();
+
           return $res;
         }
         else {
@@ -490,6 +493,9 @@ class Process extends BaseProcess {
         $this->setProDescription (  'Default Process Description' );
 
       $con->commit();
+
+      $this->memcachedDelete();
+
       return $this->getProUid();
     }
     else {
@@ -788,4 +794,3 @@ function ordProcessByProTitle($a, $b){
 
 
 }
-
