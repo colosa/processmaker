@@ -49,7 +49,7 @@ class Home extends Controller
     $data     = isset($httpData->d) ? unserialize(base64_decode($httpData->d)) : '';
     $template = $this->clientBrowser['name'] == 'msie' ? 'login_ie' : 'login_standard';
     $skin     = $this->clientBrowser['name'] == 'msie' ? $this->lastSkin : 'simplified';
-    
+
     if (!is_array($data)) {
       $data = array('u'=>'', 'p'=>'', 'm'=>'');
     }
@@ -99,15 +99,15 @@ class Home extends Controller
     }
 
     unset($processList[0]);
-    
+
     //Get simplified options
     global $G_TMP_MENU;
-    
+
     $mnu = new Menu();
     $mnu->load('simplified');
     $arrayMnuOption = array();
     $mnuNewCase     = array();
-    
+
     if (!empty($mnu->Options)) {
       foreach ($mnu->Options as $index => $value) {
         $option = array(
@@ -117,7 +117,7 @@ class Home extends Controller
           'icon'  => $mnu->Icons[$index],
           'class' => $mnu->ElementClass[$index]
         );
-        
+
         if ($mnu->Id[$index] != 'S_NEW_CASE') {
           $arrayMnuOption[] = $option;
         }
@@ -126,7 +126,7 @@ class Home extends Controller
         }
       }
     }
-    
+
     $this->setView('home/index');
 
     $this->setVar('usrUid', $this->userID);
@@ -146,7 +146,7 @@ class Home extends Controller
   {
     require_once 'classes/model/Step.php';
     G::LoadClass('applications');
-    
+
     $apps = new Applications();
     $step = new Step;
 
@@ -265,7 +265,7 @@ class Home extends Controller
             // Completting with Notes
             $notes = $appNotes->getNotesList($row['APP_UID'], '', $notesStart, $notesLimit);
             $notes = $notes['array'];
-            
+
             $cases['data'][$i]['NOTES_COUNT'] = $notes['totalCount'];
             $cases['data'][$i]['NOTES_LIST']  = $notes['notes'];
         }
@@ -277,14 +277,19 @@ class Home extends Controller
     G::LoadClass('case');
     $case  = new Cases();
     $aData = $case->startCase($httpData->id, $_SESSION['USER_LOGGED']);
-    
+
     $_SESSION['APPLICATION']   = $aData['APPLICATION'];
     $_SESSION['INDEX']         = $aData['INDEX'];
     $_SESSION['PROCESS']       = $aData['PROCESS'];
     $_SESSION['TASK']          = $httpData->id;
     $_SESSION['STEP_POSITION'] = 0;
     $_SESSION['CASES_REFRESH'] = true;
-        
+
+    // Execute Events
+    require_once 'classes/model/Event.php';
+    $event = new Event();
+    $event->createAppEvents($_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['TASK']);
+
     $oCase = new Cases();
     $aNextStep = $oCase->getNextStep($_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION']);
     //../cases/cases_Open?APP_UID={$APP.APP_UID}&DEL_INDEX={$APP.DEL_INDEX}&action=todo

@@ -1,6 +1,6 @@
-<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>  
+<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>
  <div class="borderForm" style="width:{$form_width}; padding-left:0; padding-right:0; border-width:{$form_border};">
- 
+
   <div class="borderForm" style="padding-left: 0pt; padding-right: 0pt;">
 		<div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
 		<div class="content" style="">
@@ -61,7 +61,7 @@
               </tr>
               <tr>
               <td class="FormLabel" width="{$form_labelWidth}" style=""></td>
-              <td class="FormFieldContent"><div id="processLabel"></div><div style="display:none;" id="processListDropdown">{$form.PRO_UID}</div></td>
+              <td class="FormFieldContent">{$form.PRO_UID}</td>
               </tr>
               <tr>
               <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$TAS_UID}</td>
@@ -104,7 +104,7 @@
                 <span>{$form.SELECT_DATE}</span>
                                 </td>
              </tr>
-              
+
                                               <tr>
               <td class="FormSubTitle" colspan="2" id="form[SELECT_1]" align="">
                 <span>{$form.SELECT_1}</span>
@@ -142,7 +142,7 @@
 														<td style="vertical-align: top"> {$form.SCH_WEEK_DAYS_2} {$SCH_WEEK_DAYS_2} </td>
 													</tr>
 												</table>
-              	
+
               </td>
               </tr>
                                               <tr>
@@ -156,15 +156,15 @@
               	<table style="width: 100%">
 													<tr>
 														<td style="width: 20%">{$form.SCH_START_DAY}</td>
-														<td> {$SCH_START_DAY_OPT_1} {$form.SCH_START_DAY_OPT_1} <br/> 
-															{$SCH_START_DAY_OPT_2_WEEKS} {$SCH_START_DAY_OPT_2_DAYS_WEEK} 
-															{$form.SCH_START_DAY_OPT_2_WEEKS} {$form.SCH_START_DAY_OPT_2_DAYS_WEEK} <br/> 
+														<td> {$SCH_START_DAY_OPT_1} {$form.SCH_START_DAY_OPT_1} <br/>
+															{$SCH_START_DAY_OPT_2_WEEKS} {$SCH_START_DAY_OPT_2_DAYS_WEEK}
+															{$form.SCH_START_DAY_OPT_2_WEEKS} {$form.SCH_START_DAY_OPT_2_DAYS_WEEK} <br/>
 														</td>
 													</tr>
 												</table>
               </td>
-              
-              
+
+
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}"> </td>
               <td class="FormFieldContent"> </td>
@@ -177,7 +177,7 @@
               <td class="FormLabel" width="{$form_labelWidth}"> </td>
               <td class="FormFieldContent"> </td>
               </tr>
-              
+
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$SCH_MONTHS}</td>
               <td class="FormFieldContent">
@@ -190,7 +190,7 @@
 												</table>
               </td>
               </tr>
-              
+
 
                                                <tr>
               <td style="display:none;" class="FormLabel" width="{$form_labelWidth}"><br></td>
@@ -211,7 +211,7 @@
               <td class="FormLabel" width="{$form_labelWidth}"></td>
               <td class="FormFieldContent"></td>
               </tr>
-<!--               
+<!--
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$SCH_REPEAT_UNTIL}</td>
               <td class="FormFieldContent">{$form.SCH_REPEAT_UNTIL}</td>
@@ -220,13 +220,13 @@
               <td class="FormLabel" width="{$form_labelWidth}"><br></td>
               <td>{$form.SCH_REPEAT_STOP_IF_RUNNING}</td>
              </tr>
- -->             
+ -->
  <tr>
               <td class="FormSubTitle" colspan="2" id="form[SELECT_PLUGIN]" align="">
                 <span>{$form.SELECT_PLUGIN}</span>
               </td>
               </tr>
-               <tr>              
+               <tr>
               <td  colspan="2">
                 <div id="pluginsListDropdown">{$form.CASE_SH_PLUGIN_UID}</div>
                 <div id="pluginsListContent"></div>
@@ -249,7 +249,6 @@
   <script type="text/javascript">
     {$form.SHOW_HIDE_JS}
   </script>
-  
+
   </div>
   </form>
-  

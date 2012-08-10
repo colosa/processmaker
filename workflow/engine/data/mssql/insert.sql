@@ -5675,6 +5675,12 @@ SELECT 'LABEL','ID_CASE_PAUSE_LABEL_NOTE','en','The Case paused. By the reason:'
 SELECT 'LABEL','ID_CASE_CANCEL_REASON','en','Reason of the cancel of case','2012-08-01' 
   UNION ALL
 SELECT 'LABEL','ID_CASE_CANCEL_LABEL_NOTE','en','The Case canceled. By the reason:','2012-08-01' 
+  UNION ALL
+SELECT 'LABEL','MIME_DES_DOCX','en','Word Document','2012-08-07' 
+  UNION ALL
+SELECT 'LABEL','MIME_DES_XLSX','en','Excel Document','2012-08-07' 
+  UNION ALL
+SELECT 'LABEL','ID_PROCESSED','en','Processed','2012-08-10' 
  ;
 
 INSERT INTO ISO_LOCATION ([IC_UID],[IL_UID],[IL_NAME],[IL_NORMAL_NAME],[IS_UID]) 
