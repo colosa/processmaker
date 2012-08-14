@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm width="100%" rowsPerPage="5">
+<dynaForm width="450" rowsPerPage="10">
   <id type="private" showInTable="0"/>
-  <name type="text" width="350" titleAlign="left" align="left">
-    <en>Var. name</en>
+  <name type="text" width="200" titleAlign="left" align="left" enableHtml="1">
+    <en>Variable</en>
   </name>
-  <dynaform type="text" colWidth="350" titleAlign="left" align="left">
-    <en>Dynaform</en>
-  </dynaform>
-  <ASSIGN type="link" colWidth="40" value="@G::LoadTranslation(ID_ASSIGN)" link="#" onclick="e.toAdd(@qid, @qname, &#039;dyn&#039;);return false;"/>
-</dynaForm> 
+  <label type="text" width="250" titleAlign="left" align="left">
+    <en>Label</en>
+  </label>
+</dynaForm>

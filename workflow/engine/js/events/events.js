@@ -46,18 +46,18 @@ var EventCompose = function(t){
 
 	this.ie = document.all ? true : false;
 	this.target = t;
-	
+
 	this.set= function(v){
-		this.taget = v; 
+		this.taget = v;
 	}
 
 	this.add=function(){
-		
+
 		this.deselectAll();
 		o = getField(this.target);
 		val = getField(this.target+'_SIMPLEADD').value;
-		
-		
+
+
 		if(this.exists(val)) {
 			new leimnud.module.app.alert().make({label: G_STRINGS.EVENT_EMAILEXISTS});
 			return false;
@@ -69,21 +69,21 @@ var EventCompose = function(t){
 			new leimnud.module.app.alert().make({label: G_STRINGS.ID_INVALID_EMAIL});
 			return false;
 		}
-		
+
 		id = val;
 		id = id.replace('"', '&quote;');
 		id = id.replace('"', '&quote;');
-		
-		
+
+
 		var newOption = new Option(val, "ext|"+id);
 		newOption.selected=true;
 		o.options[o.options.length] = newOption;
-		
+
 		getField(this.target+'_SIMPLEADD').value = '';
 		return false;
 	}
 	this.showUsers=function(e){
-	
+
 		oPanel = new leimnud.module.panel();
 		oPanel.options = {
 		  	size	:{w:400,h:310},
@@ -111,9 +111,9 @@ var EventCompose = function(t){
 	  	}.extend(this);
 		oRPC.make();
 	}
-	
+
 	this.showGroups=function(e){
-	
+
 		oPanel = new leimnud.module.panel();
 		oPanel.options = {
 		  	size	:{w:350,h:310},
@@ -141,12 +141,12 @@ var EventCompose = function(t){
 	  	}.extend(this);
 		oRPC.make();
 	}
-	
+
 	this.showDynavars=function(e){
-		
+
 		oPanel = new leimnud.module.panel();
 		oPanel.options = {
-		  	size	:{w:350,h:310},
+		  	size	:{w:450,h:400},
 		  	position:{x:e.clientX,y:e.clientY,center:false},
 		  	title	:'',
 		  	theme	:"processmaker",
@@ -174,25 +174,25 @@ var EventCompose = function(t){
 	this.pos=function(e){
 		var u = ie ? event.clientY + document.documentElement.scrollTop : e.pageY;
 		var l = ie ? event.clientX + document.documentElement.scrollLeft : e.pageX;
-		
+
 		return 0;
 	}
 	this.toAdd= function(id, value, prefix){
-		
+
 		if(this.exists(id)) {
 			new leimnud.module.app.alert().make({label: G_STRINGS.EVENT_EMAILEXISTS});
 			return false;
 		}
-	
+
 		this.deselectAll();
 		o = getField(this.target);
-		
+
 		if(prefix == 'dyn'){
 			var newOption = new Option('@#'+value, prefix+"|"+id);
 		} else {
 			var newOption = new Option(value, prefix+"|"+id);
 		}
-		
+
 		newOption.selected=true;
 		o.options[o.options.length] = newOption;
 	}
@@ -208,17 +208,17 @@ var EventCompose = function(t){
 	    }
 	    o.options.length = 0;
 	    for(i=0; i<Options.length; i++){
-	    	
+
 	    	if(!Options[i].selected){
 				//var newOption = new Option(id, value);
 				o.options[c++] = Options[i]; //newOption;
-			}		    
+			}
 	    }
 	    if(o.options.length>0){
 	    	o.options[o.options.length-1].selected = true;
 	    }
-	    
-	} 
+
+	}
 	this.deselectAll= function(){
 		var o = getField(this.target);
 		for(i=0; i<o.options.length; i++){
@@ -250,5 +250,5 @@ var EventCompose = function(t){
 		  }
 		}
 	}
-	
+
 }
