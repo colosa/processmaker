@@ -455,7 +455,7 @@ class pmTablesProxy extends HttpProxyController
                 $primaryKeysValues[] = isset($row[$key['FLD_NAME']]) ? $row[$key['FLD_NAME']] : '';
             }
 
-            $result['rows'][$i]['__index__'] = G::encrypt(implode('-', $primaryKeysValues), 'pmtable');
+            $result['rows'][$i]['__index__'] = G::encrypt(implode(',', $primaryKeysValues), 'pmtable');
         }
 
         return $result;
@@ -514,7 +514,7 @@ class pmTablesProxy extends HttpProxyController
                     throw new Exception('Error trying insert into "' . $table['ADD_TAB_NAME'] . "\"\n" . $msg);
                 }
 
-                $index = G::encrypt(implode('-', $primaryKeysValues), 'pmtable');
+                $index = G::encrypt(implode(',', $primaryKeysValues), 'pmtable');
             } else {
                 $toSave = false;
             }
@@ -1183,7 +1183,7 @@ class pmTablesProxy extends HttpProxyController
     public function _dataUpdate($row, $primaryKeys)
     {
         $keys = G::decrypt($row['__index__'], 'pmtable');
-        $keys = explode('-', $keys);
+        $keys = explode(',', $keys);
         unset($row['__index__']);
 
         $params = array();
@@ -1229,7 +1229,7 @@ class pmTablesProxy extends HttpProxyController
     {
         $row = G::decrypt($row, 'pmtable');
         $row = str_replace('"', '', $row);
-        $keys = explode('-', $row);
+        $keys = explode(',', $row);
         $params = array();
         foreach ($keys as $key) {
             $params[] = is_numeric($key) ? $key : "'$key'";
