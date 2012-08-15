@@ -11,7 +11,7 @@ a, img {
     margin: 0;
 }
 
-img { 
+img {
     border: 0 none;
 }
 
@@ -830,6 +830,7 @@ form.formSearch .Record
 {
 	color:#2078A8;
 	text-decoration:none;
+	white-space:nowrap;
 }
 .pagedTableDefault, .pagedTableDefault .headerContent .tableOption a:hover
 {
@@ -882,6 +883,7 @@ font-weight:bold;
 	text-decoration: none;
 	padding-left: 5px;
 	font: bold 11px Tahoma,sans-serif, MiscFixed;
+	white-space:nowrap;
 }
 .pagedTableDefault .pagedTable a:hover
 {
@@ -960,6 +962,7 @@ font-weight:bold;
 }
 .pagedTableDefault .pagedTable .RowLink a{
 	display:block;
+	white-space:nowrap;
 }
 
 A.firstPage {
@@ -1555,14 +1558,14 @@ div.autosuggest div.as_footer
 	position: relative;
 	height: 0px;
 	padding: 0 6px;
-	
+
 	background-position: top right;
 	background-repeat: no-repeat;
 	overflow: hidden;
 }
 div.autosuggest div.as_footer
 {
-	
+
 }
 
 div.autosuggest div.as_header div.as_corner,
@@ -1573,13 +1576,13 @@ div.autosuggest div.as_footer div.as_corner
 	left: 0;
 	height: 6px;
 	width: 6px;
-	
+
 	background-position: top left;
 	background-repeat: no-repeat;
 }
 div.autosuggest div.as_footer div.as_corner
 {
-	
+
 }
 div.autosuggest div.as_header div.as_bar,
 div.autosuggest div.as_footer div.as_bar
@@ -1651,14 +1654,14 @@ div.autosuggest ul li.as_highlight a
 {
 	color: #000;
 	background-color: #D1DEDF;   /* erik -- hover*/
-	
+
 	background-position: bottom right;
 	background-repeat: no-repeat;
 }
 
 div.autosuggest ul li.as_highlight a span
 {
-	
+
 	background-position: bottom left;
 	background-repeat: no-repeat;
 }
@@ -1689,7 +1692,7 @@ div.autosuggest ul li.as_highlight a .tl
 div.autosuggest ul li.as_highlight a .tr
 {
 	right: 0;
-	
+
 	background-position: bottom right;
 }
 
@@ -3122,7 +3125,7 @@ ul#pm_submenu a{
 }
 ul#pm_submenu a img{
   float:left;
-  max-height: 18px; 
+  max-height: 18px;
 }
 ul#pm_submenu li.SelectedSubMenu,ul#pm_submenu li:hover{
   background-color: #CCC;
@@ -3170,7 +3173,7 @@ button.x-btn-text:focus,.x-combo-selected{
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
-    
+
     background: -moz-linear-gradient(white, #E1E1E1) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#E1E1E1));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#E1E1E1'); /* IE6,IE7 */
@@ -3213,7 +3216,7 @@ button.x-btn-text:focus,.x-combo-selected{
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
-    
+
     background: -moz-linear-gradient(white, #E1E1E1) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#E1E1E1));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#E1E1E1'); /* IE6,IE7 */
@@ -3261,7 +3264,7 @@ button.x-btn-text:focus,.x-combo-selected{
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#829AA8), to(#405A6A));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#829AA8', endColorstr='#405A6A'); /* IE6,IE7 */
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#829AA8', endColorstr='#405A6A')"; /* IE8 */
-    
+
     border-color: #677C89 #677C89 #6B808D;
     border-radius: 3px 3px 0 0;
     border-style: solid;
