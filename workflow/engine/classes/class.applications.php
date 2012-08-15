@@ -19,7 +19,7 @@ class Applications
     $type     = isset($type)   ? $type: 'extjs';
     $dateFrom = isset($dateFrom)? $dateFrom : '';
     $dateTo   = isset($dateTo)  ? $dateTo : '';
-    
+
     G::LoadClass("BasePeer" );
     G::LoadClass ( 'configuration' );
     require_once ( "classes/model/AppCacheView.php" );
@@ -31,7 +31,7 @@ class Applications
 
     //$userUid = ( isset($_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '' ) ? $_SESSION['USER_LOGGED'] : null; <-- passed by param
     $oAppCache = new AppCacheView();
-    
+
     //get data configuration
     $conf = new Configurations();
     $confCasesList = $conf->getConfiguration('casesList',($action=='search'||$action=='simple_search')?'sent':$action );
@@ -98,10 +98,20 @@ class Applications
       break;
     }
 
-    // $Criteria->addJoin(AppCacheViewPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
-    $Criteria->addJoin(AppCacheViewPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
-    $Criteria->addSelectColumn(UsersPeer::USR_FIRSTNAME );
-    $Criteria->addSelectColumn(UsersPeer::USR_LASTNAME );
+    $Criteria->addAlias('CU', 'USERS');
+    $Criteria->addJoin(AppCacheViewPeer::USR_UID, 'CU.USR_UID', Criteria::LEFT_JOIN);
+    $Criteria->addAsColumn('USR_FIRSTNAME', 'CU.USR_FIRSTNAME');
+    $Criteria->addAsColumn('USR_LASTNAME', 'CU.USR_LASTNAME');
+    $Criteria->addAsColumn('USR_USERNAME', 'CU.USR_USERNAME');
+
+    // Fix for previous user
+    if ($action == 'todo' || $action == 'selfservice' || $action =='unassigned' || $action == 'paused' || $action == 'to_revise') {
+        $Criteria->addAlias('PU', 'USERS');
+        $Criteria->addJoin(AppCacheViewPeer::PREVIOUS_USR_UID, 'PU.USR_UID', Criteria::LEFT_JOIN);
+        $Criteria->addAsColumn('PREVIOUS_USR_FIRSTNAME', 'PU.USR_FIRSTNAME');
+        $Criteria->addAsColumn('PREVIOUS_USR_LASTNAME', 'PU.USR_LASTNAME');
+        $Criteria->addAsColumn('PREVIOUS_USR_USERNAME', 'PU.USR_USERNAME');
+    }
 
     if ( !is_array($confCasesList) ) {
         $rows = $this->getDefaultFields( $action );
@@ -155,14 +165,14 @@ class Applications
       $CriteriaCount->add (AppCacheViewPeer::DEL_DELEGATE_DATE, $dateTo, Criteria::LESS_EQUAL );
     }
 
-    //add the filter 
+    //add the filter
     if ( $filter != '' ) {
       switch ( $filter ) {
           case 'read' :
             $Criteria->add      (AppCacheViewPeer::DEL_INIT_DATE, null, Criteria::ISNOTNULL);
             $CriteriaCount->add (AppCacheViewPeer::DEL_INIT_DATE, null, Criteria::ISNOTNULL);
           break;
-      case 'unread' : 
+      case 'unread' :
             $Criteria->add      (AppCacheViewPeer::DEL_INIT_DATE, null, Criteria::ISNULL);
             $CriteriaCount->add (AppCacheViewPeer::DEL_INIT_DATE, null, Criteria::ISNULL);
           break;
@@ -175,7 +185,7 @@ class Applications
             $CriteriaCount->add (AppCacheViewPeer::APP_STATUS, 'COMPLETED', Criteria::EQUAL);
           break;
       }
-    }  
+    }
 
     //add the search filter
     if ( $search != '' ) {
@@ -245,7 +255,7 @@ class Applications
     //here we count how many records exists for this criteria.
     //BUT there are some special cases, and if we dont optimize them the server will crash.
     $doCountAlreadyExecuted = false;
-    //case 1. when the SEARCH action is selected and none filter, search criteria is defined, 
+    //case 1. when the SEARCH action is selected and none filter, search criteria is defined,
     //we need to count using the table APPLICATION, because APP_CACHE_VIEW takes 3 seconds
 
     if ( $action == 'search' && $filter == '' && $search == '' && $process == '' && $status == '' && $dateFrom == '' && $dateTo == '') {
@@ -282,7 +292,7 @@ class Applications
 
     }
 
-    //add sortable options    
+    //add sortable options
     if ( $sort != '' ) {
       if ( $dir == 'DESC' )
         $Criteria->addDescendingOrderByColumn( $sort );
@@ -290,7 +300,7 @@ class Applications
         $Criteria->addAscendingOrderByColumn( $sort );
     }
 
-    //limit the results according the interface    
+    //limit the results according the interface
       $Criteria->setLimit( $limit );
       $Criteria->setOffset( $start );
 
@@ -327,7 +337,7 @@ class Applications
     $index = $start;
     while($aRow = $oDataset->getRow()){
       //$aRow = $oAppCache->replaceRowUserData($aRow);
-      
+
       /* For participated cases, we want the last step in the case, not only
        * the last step this user participated. To do that we get every case
        * information again for the last step. (This could be solved by a subquery,
@@ -349,14 +359,14 @@ class Applications
           if (array_key_exists($col, $newData))
             $aRow[$col] = $newData[$col];
         }
-        
+
         $maxDataset->close();
       }
-      
+
       if (!isset($aRow['APP_CURRENT_USER']))
         $aRow['APP_CURRENT_USER'] = "[Unassigned]";
-      
-      // replacing the status data with their respective translation 
+
+      // replacing the status data with their respective translation
       if( isset($aRow['APP_STATUS']) ){
         $aRow['APP_STATUS'] = G::LoadTranslation("ID_{$aRow['APP_STATUS']}");
       }
@@ -365,17 +375,17 @@ class Applications
       if( isset($aRow['DEL_PRIORITY']) ){
         $aRow['DEL_PRIORITY'] = G::LoadTranslation("ID_PRIORITY_{$aPriorities[$aRow['DEL_PRIORITY']]}");
       }
-      
+
       $rows[] = $aRow;
       $oDataset->next();
     }
 
     $result['data'] = $rows;
-    
+
     return $result;
   }
 
-    
+
  //TODO: Encapsulates these and another default generation functions inside a class
   /**
    * generate all the default fields
@@ -631,7 +641,7 @@ class Applications
 
     G::LoadClass('pmScript');
     G::LoadClass('case');
-    
+
     $steps = Array();
     $case = new Cases;
     $step = new Step;
@@ -661,7 +671,7 @@ class Applications
 
       if (trim($caseStep->getStepCondition()) != '') { // if it has a condition
         $pmScript->setScript($caseStep->getStepCondition());
-        
+
         if (!$pmScript->evaluate()) { //evaluate
           //evaluated false, jump & continue with the others steps
           continue;
@@ -689,18 +699,18 @@ class Applications
           $outputDoc = $appDocument->getObject($appUid, $index, $caseStep->getStepUidObj(), 'OUTPUT');
 
           $stepItem['title']    = $oDocument->getOutDocTitle();
-                    
+
           if ($outputDoc['APP_DOC_UID']) {
-            $stepItem['url'] = "cases/cases_Step?UID=$stepUid&TYPE=$stepType&POSITION=$stepPosition&ACTION=VIEW&DOC={$outputDoc['APP_DOC_UID']}"; 
+            $stepItem['url'] = "cases/cases_Step?UID=$stepUid&TYPE=$stepType&POSITION=$stepPosition&ACTION=VIEW&DOC={$outputDoc['APP_DOC_UID']}";
           }
           else {
-            $stepItem['url'] = "cases/cases_Step?UID=$stepUid&TYPE=$stepType&POSITION=$stepPosition&ACTION=GENERATE";         
+            $stepItem['url'] = "cases/cases_Step?UID=$stepUid&TYPE=$stepType&POSITION=$stepPosition&ACTION=GENERATE";
           }
           break;
 
         case 'INPUT_DOCUMENT':
           $oDocument = InputDocumentPeer::retrieveByPK($stepUid);
-          
+
           $stepItem['title'] = $oDocument->getInpDocTitle();
           $stepItem['url']  = "cases/cases_Step?UID=$stepUid&TYPE=$stepType&POSITION=$stepPosition&ACTION=ATTACH";
           break;
@@ -708,11 +718,11 @@ class Applications
         case 'EXTERNAL':
           $stepTitle       = 'unknown ' . $caseStep->getStepUidObj();
           $oPluginRegistry = PMPluginRegistry::getSingleton();
-    
+
           $externalStep      = $externalSteps[$caseStep->getStepUidObj()];
           $stepItem['id']    = $externalStep->sStepId;
           $stepItem['title'] = $externalStep->sStepTitle;
-          $stepItem['url']   = "cases/cases_Step?UID={$externalStep->sStepId}&TYPE=EXTERNAL&POSITION=$stepPosition&ACTION=EDIT";          
+          $stepItem['url']   = "cases/cases_Step?UID={$externalStep->sStepId}&TYPE=EXTERNAL&POSITION=$stepPosition&ACTION=EDIT";
         break;
       }
 
@@ -725,8 +735,8 @@ class Applications
     $stepItem['type']  = '';
     $stepItem['title'] = G::LoadTranslation('ID_ASSIGN_TASK');
     $stepItem['url']   = "cases/cases_Step?TYPE=ASSIGN_TASK&UID=-1&POSITION=10000&ACTION=ASSIGN";
-    
-    $steps[] = $stepItem;    
+
+    $steps[] = $stepItem;
 
     return $steps;
   }

@@ -123,7 +123,7 @@ function jumpToCase(appNumber){
       }
     },
     params: {action:'previusJump', appNumber: appNumber}
-  });  
+  });
 }
 
 function deleteCase() {
@@ -226,7 +226,7 @@ function pauseCase(date){
                     var noteReasonTxt = '';
                   }
                   var notifyReasonVal = Ext.getCmp('notifyReason').getValue() == true ? 1 : 0;
-                  
+
                   Ext.MessageBox.show({ msg: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
                   Ext.Ajax.request({
                     url: 'cases_Ajax',
@@ -260,7 +260,7 @@ function pauseCase(date){
       ]
     });
     msgPause.show(this);
-    
+
   } else {
     Ext.Msg.show({
       title:'',
@@ -459,9 +459,14 @@ Ext.onReady ( function() {
   }
 
   function dueDate(value, p, r){
-    var myDate = convertDate( value );
-    var myColor =  (myDate < new Date()) ? " color:red;" : 'color:green;';
-    return String.format("<span style='{1}'>{0}</span>", myDate.dateFormat(FORMATS.casesListDateFormat), myColor );
+    if (value) {
+      var myDate = convertDate( value );
+      var myColor =  (myDate < new Date()) ? " color:red;" : 'color:green;';
+      return String.format("<span style='{1}'>{0}</span>", myDate.dateFormat(FORMATS.casesListDateFormat), myColor );
+    }
+    else {
+        return '';
+    }
   }
 
   var renderSummary = function (val, p, r) {
@@ -477,8 +482,22 @@ Ext.onReady ( function() {
   }
 
   //Render Full Name
-  full_name = function(v,x,s){
-      return _FNF(v, s.data.USR_FIRSTNAME, s.data.USR_LASTNAME);
+  full_name = function(v, x, s) {
+      if (s.data.USR_UID) {
+        return _FNF(s.data.USR_USERNAME, s.data.USR_FIRSTNAME, s.data.USR_LASTNAME);
+      }
+      else {
+        return '';
+      }
+  };
+
+  previous_full_name = function(v, x, s) {
+      if (s.data.PREVIOUS_USR_UID) {
+        return _FNF(s.data.PREVIOUS_USR_USERNAME, s.data.PREVIOUS_USR_FIRSTNAME, s.data.PREVIOUS_USR_LASTNAME);
+      }
+      else {
+        return '';
+      }
   };
 
   for(var i = 0, len = columns.length; i < len; i++){
@@ -491,7 +510,7 @@ Ext.onReady ( function() {
     if( c.id == 'unpauseLink')                  c.renderer = unpauseLink;
     if( c.dataIndex == 'CASE_SUMMARY')          c.renderer = renderSummary;
     if( c.dataIndex == 'CASE_NOTES_COUNT')      c.renderer = renderNote;
-    if( c.dataIndex == 'APP_DEL_PREVIOUS_USER') c.renderer = full_name;
+    if( c.dataIndex == 'APP_DEL_PREVIOUS_USER') c.renderer = previous_full_name;
     if( c.dataIndex == 'APP_CURRENT_USER')      c.renderer = full_name;
   }
 
@@ -502,6 +521,7 @@ Ext.onReady ( function() {
 
   readerFields.push ( {name: "USR_FIRSTNAME"});
   readerFields.push ( {name: "USR_LASTNAME"});
+  readerFields.push ( {name: "USR_USERNAME"});
 
   for (i=0; i<columns.length; i++) {
     if (columns[i].dataIndex == 'USR_UID') {
@@ -576,7 +596,7 @@ Ext.onReady ( function() {
       //storeReassignCases.reload();
     }
   });
-  
+
   var ExecReassign = function () {
     newPopUp.hide();
     var rs = storeReassignCases.getModifiedRecords();
@@ -615,7 +635,7 @@ Ext.onReady ( function() {
       params: { APP_UIDS:ids, data:Ext.util.JSON.encode(sv), selected:true }
     });
   }
-  
+
 
 
   // Create HttpProxy instance, all CRUD requests will be directed to single proxy url.
@@ -1097,12 +1117,12 @@ Ext.onReady ( function() {
           optionMenuDelete.setDisabled(false);
         }
         break;
-      default: 
+      default:
         if( rows.length == 0 ) {
           optionMenuOpen.setDisabled(true);
         }
         else {
-          optionMenuOpen.setDisabled(false); 
+          optionMenuOpen.setDisabled(false);
         }
     }
   }
@@ -1589,7 +1609,7 @@ Ext.onReady ( function() {
     id: 'casesGrid',
     store: storeCases,
     cm: cm,
-    
+
     sm: new Ext.grid.RowSelectionModel({
       selectSingle: false,
       listeners:{
@@ -1612,7 +1632,7 @@ Ext.onReady ( function() {
     listeners: {
       rowdblclick: openCase,
       render: function(){
-        
+
         //this.loadMask = new Ext.LoadMask(this.body, {msg:TRANSLATIONS.LABEL_GRID_LOADING});
         //this.ownerCt.doLayout();
       }
@@ -1662,7 +1682,7 @@ Ext.onReady ( function() {
     store: storeReassignCases,
     cm: reassignCm,
 
-    autoHeight: true,   
+    autoHeight: true,
     viewConfig: {
       forceFit:true
     }
@@ -1683,7 +1703,7 @@ Ext.onReady ( function() {
       }
     }
   });
-  
+
 var gridForm = new Ext.FormPanel({
         id: 'reassign-form',
         frame: true,
@@ -1691,7 +1711,7 @@ var gridForm = new Ext.FormPanel({
         //title: 'Company data',
         bodyStyle:'padding:5px',
         width: 750,
-        
+
 
         layout: 'column',    // Specifies that the items will now be arranged in columns
         items: [{
@@ -1717,7 +1737,7 @@ var gridForm = new Ext.FormPanel({
                 border : true,
 
                 listeners: {
-                  
+
                     click: function() {
                         rows = this.getSelectionModel().getSelections();
                         var application = '';
@@ -1730,16 +1750,16 @@ var gridForm = new Ext.FormPanel({
                                application = rows[i].get('APP_UID');
                             }
                         } else {
-                                                        
+
                         }
                         comboUsersToReassign.clearValue();
                         storeUsersToReassign.removeAll();
                         storeUsersToReassign.setBaseParam('application',application);
-                             
+
                         storeUsersToReassign.load();
                         //alert(record.USERS);
                     } // Allow rows to be rendered.
-              
+
                 }
             }
         },{
@@ -1752,7 +1772,7 @@ var gridForm = new Ext.FormPanel({
             autoHeight: true,
             bodyStyle: Ext.isIE ? 'text-align: left;padding:0 0 5px 15px;' : 'text-align: left; padding:10px 5px;',
             border: false,
-            //style: {                
+            //style: {
             //    "margin-left": "10px", // when you add custom margin in IE 6...
             //    "margin-right": Ext.isIE6 ? (Ext.isStrict ? "-10px" : "-13px") : "0"  // you have to adjust for it somewhere else
             //},
@@ -1908,7 +1928,7 @@ function reassign(){
     }
     storeReassignCases.setBaseParam( 'APP_UIDS', ids);
     storeReassignCases.load();
-    
+
     newPopUp.show();
     comboUsersToReassign.disable();
 
