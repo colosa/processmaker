@@ -21,6 +21,18 @@ var processNumbers = new Ext.data.ArrayStore({
 var processNumbersData = [[0,0,0,0,0]];
 Docs = {};
 
+var infoCase = new Ext.form.FormPanel({
+    xtype: 'panel',
+    region : 'center',
+    width : '100%',
+    labelAlign: 'right',
+    waitMsgTarget: true,
+    layout:'form',
+    bodyStyle:'padding:25px',
+    height: 'auto',
+    html: _('ID_CASES_NOT_START')
+});
+
 Ext.onReady(function() {
   var newCaseTree = new Ext.ux.MaskTree({
     id: 'startCaseTreePanel',
@@ -91,14 +103,24 @@ Ext.onReady(function() {
       }
     ],
     listeners : {
-      dblclick : function(n) {
-        openCaseA(n);
-      },
-      click : function(n) {
-        showDetailsA(n);
-      }
+        dblclick : function(n) {
+            openCaseA(n);
+        },
+        click : function(n) {
+            showDetailsA(n);
+        },
+        load: function(node){
+            if (node.childNodes.length == 0)
+            {
+                infoCase.show();
+            } else {
+                newCaseTree.show();
+            }
+        }
     }
   });
+  
+
 
   var details = {
     xtype:'form',
@@ -254,13 +276,14 @@ Ext.onReady(function() {
       }
     ]
   }
-  
-  Ext.QuickTips.init();
-  
-  var viewport = new Ext.Viewport({
-    layout : 'border',
-    items : [newCaseTree, details]
-  });
+
+    Ext.QuickTips.init();
+
+    newCaseTree.hide();infoCase.hide();
+    var viewport = new Ext.Viewport({
+        layout : 'border',
+        items : [ infoCase , newCaseTree,  details]
+    });
 
   //routine to hide the debug panel if it is open
   if( typeof parent != 'undefined' ){
