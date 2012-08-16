@@ -4345,11 +4345,14 @@ class XmlForm
     $parsedFilePath = defined ( 'PATH_C' ) ? ( defined('SYS_SYS') ? PATH_C . 'ws' . PATH_SEP . SYS_SYS . PATH_SEP: PATH_C ) : PATH_DATA;
     $parsedFilePath .= 'xmlform/' . substr ( $parsedFile, strlen ( $this->home ) );
 
+    // Improvement for the js cache - Start
+    $realPath = substr(realpath($this->fileName), strlen(realpath($this->home)), - 4);
+    $filesToDelete = substr((defined('PATH_C') ? PATH_C : PATH_DATA) . 'xmlform/', 0, - 1) . $realPath . '.*.js';
+    $auxPath = explode(PATH_SEP, $realPath);
+    $auxPath[count($auxPath) - 1] = $auxPath[count($auxPath) - 1] . '.' . md5(filemtime($this->fileName));
+    $realPath = implode(PATH_SEP, $auxPath);
+    // Improvement for the js cache - End
     $this->parsedFile = $parsedFilePath;
-    //Note that scriptFile must be public URL.
-    $realPath = substr ( realpath ( $this->fileName ), strlen ( realpath ( $this->home ) ), - 4 );
-    if (substr ( $realPath, 0, 1 ) != PATH_SEP)
-      $realPath = PATH_SEP . $realPath;
     $this->scriptURL = '/jsform' . $realPath . '.js';
     $this->scriptFile = substr ( (defined ( 'PATH_C' ) ? PATH_C : PATH_DATA) . 'xmlform/', 0, - 1 ) . substr ( $this->scriptURL, 7 );
     $this->id = G::createUID ( '', substr ( $this->fileName, strlen ( $this->home ) ) );
@@ -4357,6 +4360,9 @@ class XmlForm
 
     $newVersion = false;
     if ($forceParse || ((! file_exists ( $this->parsedFile )) || (filemtime ( $filename ) > filemtime ( $this->parsedFile )) || (filemtime ( __FILE__ ) > filemtime ( $this->parsedFile ))) || (! file_exists ( $this->scriptFile )) || (filemtime ( $filename ) > filemtime ( $this->scriptFile ))) {
+      foreach (glob($filesToDelete) as $fileToDelete) {
+          @unlink($fileToDelete);
+      }
       $this->tree = new Xml_Document ( );
       $this->tree->parseXmlFile ( $filename );
       //$this->tree->unsetParent();
