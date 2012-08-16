@@ -1167,9 +1167,12 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
         'size'  => '"'.$this->size.'"',
     );
 
-    $storeEntry = '';
-    if($this->store_new_entry){
-      $storeEntry = 'onchange="storeEntry(this, \''.$this->sqlConnection.'\', \''.$this->table.'\', \''.$this->primary_key.'\', \''.$this->primary_key_type.'\', \''.$this->field.'\')"';
+    $storeEntry = null;
+    $storeEntryData = ", storeEntryData: [0]";
+
+    if ($this->store_new_entry) {
+        $storeEntry = ' title="' . G::LoadTranslation("ID_FIELD_DYNAFORM_SUGGEST_INPUT_TITLE") . '"';
+        $storeEntryData = ", storeEntryData: [1, \"form[". $this->name . "_label]\", \"" . $this->sqlConnection . "\", \"" . $this->table . "\", \"" . $this->primary_key . "\", \"" . $this->primary_key_type . "\", \"" . $this->field . "\"]";
     }
 
     $formVariableValue    = '';
@@ -1269,10 +1272,11 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
 
         $setValue = ($this->savelabel == '1') ? 'obj.value' : 'obj.id';
 
-        $sOptions .= 'callback: function(obj){';
-
+        $sOptions .= 'callback: function (obj) { ';
+        $sOptions .= 'if (typeof obj != "undefined") { ';
         $sOptions .= ' var jField = { };';
         $sOptions .= ' var sField = "[]"; ';
+
         if ($count > 0) {
             for ($cnt = 0; $cnt < $count; $cnt++ ) {
                 $sOptions .= 'if ( "' . $this->name . '" == "' . $aDepFields[$cnt] . '" ) {';
@@ -1286,7 +1290,6 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
         $sOptions .= ' var sField = "["+ encodeURIComponent(jField.toJSONString()) + "]"; ';
 
         $sOptions .= $sCallBack . '; getField("' . $this->name . '").value = obj.id;';
-
         $sOptions .= 'var response = ajax_function("../gulliver/defaultAjaxDynaform", "reloadField", ';
         $sOptions .= '               "form=' . $owner->id . '&fields=" + sField, "POST"); ';
 
@@ -1316,11 +1319,12 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
         $sOptions .= '} else { ';
         $sOptions .= '  alert(\'Invalid response: \' + response); ' ;
         $sOptions .= '} ';
-
-        $sOptions .= 'return false; }';
+        $sOptions .= '} ';
+        $sOptions .= 'return false; ';
+        $sOptions .= '}';
 
         $str .= '<script type="text/javascript">';
-        $str .= 'var as_json = new bsn.AutoSuggest(\'form[' . $this->name . '_label]\', {'.$sOptions.'});';
+        $str .= 'var as_json = new bsn.AutoSuggest(\'form[' . $this->name . '_label]\', {' . $sOptions . $storeEntryData . '});';
         $str .= '</script>';
 
         return $str;

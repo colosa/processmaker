@@ -1785,8 +1785,8 @@ function highlightRow(o, color){
  * @Param <none>
  * @Return <none>
  */
-String.prototype.trim = function() {
-	return this.replace(/^\s+|\s+get/g,"");
+String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, "");
 }
 
 function clearCalendar(id){
@@ -2114,6 +2114,16 @@ function _()
   return trn;
 }
 
+/**
+ * String Replace function, if StrSearch has special characters "(", "[", must be escape "\\(", "\\[".
+ */
+function stringReplace(strSearch, stringReplace, str)
+{
+    var expression = eval("/" + strSearch + "/g");
+
+    return str.replace(expression, stringReplace);
+}
+
 var mb_strlen = function(str) {
     var len = 0;
     for (var i = 0; i < str.length; i++) {
@@ -2121,3 +2131,4 @@ var mb_strlen = function(str) {
     }
     return len;
 };
+

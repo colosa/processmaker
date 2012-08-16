@@ -1,14 +1,13 @@
 /*
- * Data base connection javascript routines 
- * @Author Erik Amatu Ortiz <erik@colosa.com> 
+ * Data base connection javascript routines
+ * @Author Erik Amatu Ortiz <erik@colosa.com>
  * @Update date May 20th, 2009
  */
 
 var PROCESS_REQUEST_FILE = '../dbConnections/dbConnectionsAjax';
 
-String.prototype.trim = function()
-{
-	return this.replace(/^\s+|\s+get/g,"");
+String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, "");
 }
 
 var oPanel;
@@ -86,7 +85,7 @@ function saveEditDBConnection()
 	if( getField('DBS_PORT').value.trim() == '' || getField('DBS_PORT').value.trim() == '0' ) {
 		onChangeType();
 	}
-	
+
 	var dbs_uid = currentEditDBS_UID;
 	var type 	= $('form[DBS_TYPE]').value;
 	var server	= $('form[DBS_SERVER]').value;
@@ -375,16 +374,16 @@ function validateFields()
 	if( getField('DBS_PORT').value.trim() == '' || getField('DBS_PORT').value.trim() == '0' ) {
 		onChangeType();
 	}
-	
+
 	var res = true;
 	var o = new input(getField('DBS_SERVER'));
 	if($('form[DBS_SERVER]').value == '') {
 		//new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_MSG4});
 		o.failed();
 		res = false;
-	} else 
+	} else
 		o.passed();
-	
+
 	var o = new input(getField('DBS_DATABASE_NAME'));
 	if($('form[DBS_DATABASE_NAME]').value == '') {
 		//new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_MSG5});
@@ -392,7 +391,7 @@ function validateFields()
 		res = false;
 	} else
 		o.passed();
-	
+
 	var o = new input(getField('DBS_USERNAME'));
 	if($('form[DBS_USERNAME]').value == '') {
 		//new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_MSG6});
@@ -400,22 +399,22 @@ function validateFields()
 		res = false;
 	} else
 		o.passed();
-	
+
 	/*var o = new input(getField('DBS_PORT'));
 	if($('form[DBS_PORT]').value == '') {
 		o.failed();
 		res = false;
 	} else
 		o.passed();*/
-	
+
 	var o = new input(getField('DBS_TYPE'));
 	if($('form[DBS_TYPE]').value == '0') {
 		o.failed();
 		res = false;
 	} else
 		o.passed();
-	
-	oType = getField('DBS_TYPE');	
+
+	oType = getField('DBS_TYPE');
 	if( oType.value != 'mssql' && oType.value != 'oracle' ){
 		var o = new input(getField('DBS_ENCODE'));
 		if($('form[DBS_ENCODE]').value == '0') {
@@ -425,7 +424,7 @@ function validateFields()
 			o.passed();
 	}
 
-	
+
 	if(!res){
 		new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_ALERT});
 	}
@@ -434,7 +433,7 @@ function validateFields()
 
 var onChangeType = function() {
     var oAux = getField('DBS_PORT');
-    
+
 	switch(getField('DBS_TYPE').value) {
 		case 'mysql':
 		    oAux.value = '3306';
@@ -451,11 +450,11 @@ var onChangeType = function() {
 		default:
 			oAux.value = '';
 	}
-    
+
 };
 
 function showEncodes(pre){
-	oType = getField('DBS_TYPE');	
+	oType = getField('DBS_TYPE');
 	//if( oType.value != 'mssql' && oType.value != 'oracle' ){
 	if( oType.value != 'oracle' ){
 		showRowById('DBS_ENCODE');
@@ -465,29 +464,29 @@ function showEncodes(pre){
 			res = false;
 		} else
 			o.passed();
-		
+
 		var o = getField('DBS_TYPE');
-		
+
 		var oRPC = new leimnud.module.rpc.xmlhttp({
 	  		url : PROCESS_REQUEST_FILE,
 	  		args: 'action=showEncodes&engine='+o.value
 	  	});
-	
+
 	  	oRPC.callback = function(rpc){
 	  		var oEnc = getField('DBS_ENCODE');
 			response = eval('{'+oRPC.xmlhttp.responseText+'}');
-			
+
 			oEnc.options.length = 0;
 			//set news
 			for(i=0; i<response.length; i++){
 				var newOption = new Option(response[i][1], response[i][0]);
 				oEnc.options[i] = newOption;
 			}
-			
+
 			if(pre != null)
 				oEnc.value = pre;
-		
-			
+
+
 			var o = new input(getField('DBS_ENCODE'));
 			if($('form[DBS_ENCODE]').value == '0') {
 				o.failed();
@@ -500,5 +499,3 @@ function showEncodes(pre){
 		hideRowById('DBS_ENCODE');
 	}
 }
-
- 

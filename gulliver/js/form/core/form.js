@@ -1060,7 +1060,7 @@ function G_Text(form, element, name)
           tamMask = aux[0].length;
           sw = true;
         }
-        if (tamData >= tamMask){          
+        if (tamData >= tamMask){
           var minusExi;
           for (var numI = 0; newValue.length > numI; numI++) {
             var campVal = newValue[numI];
@@ -1073,7 +1073,7 @@ function G_Text(form, element, name)
               }
             }
           }
-          
+
           if (!(keyCode == 45 || (minusExi && tamMask >= tamData))) {
             if (sw && !swPeriod && testData.indexOf(me.comma_separator) == -1){
               action = 'none';
@@ -1081,7 +1081,7 @@ function G_Text(form, element, name)
             if (!sw) action = 'none';
           }
         }
-      }      
+      }
       switch(action){
         case 'mask': case 'move':
           dataNewMask = me.replaceMasks(newValue, newCursor);
@@ -3547,11 +3547,5 @@ function dateSetMask(mask) {
   return mask;
 }
 
-function stringReplace(strSearch, stringReplace, str)
-{
-    var expression = eval("/" + strSearch + "/g");
-
-    return str.replace(expression, stringReplace);
-}
-
 /* end file */
+

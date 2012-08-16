@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $request = isset($_POST['request'])? $_POST['request']: null;
 if( !isset($request) ){
@@ -9,18 +9,18 @@ if( isset($request) ){
     case 'deleteGridRowOnDynaform':
       // This code is to update the SESSION variable for dependent fields in grids
       $oFields = array();
-      if (!defined('XMLFORM_AJAX_PATH')) define('XMLFORM_AJAX_PATH',PATH_XMLFORM);      
+      if (!defined('XMLFORM_AJAX_PATH')) define('XMLFORM_AJAX_PATH',PATH_XMLFORM);
       ksort($_SESSION[$_POST['formID']][$_POST['gridname']]);
-      $initialKey = 1;          
+      $initialKey = 1;
       foreach ($_SESSION[$_POST['formID']][$_POST['gridname']] as $key => $value) {
-        if ($key != $_POST['rowpos']) {            
+        if ($key != $_POST['rowpos']) {
           $oFields[$initialKey] = $value;
-          $initialKey++;            
+          $initialKey++;
         }
       }
       unset($_SESSION[$_POST['formID']][$_POST['gridname']]);
-      $_SESSION[$_POST['formID']][$_POST['gridname']] = $oFields; 
-      
+      $_SESSION[$_POST['formID']][$_POST['gridname']] = $oFields;
+
     /*  if( isset($_SESSION['APPLICATION']) ){
         G::LoadClass('case');
         $oApp= new Cases();
@@ -31,9 +31,9 @@ if( isset($request) ){
           $oFields[$initialKey] = $value;
           $initialKey++;
           $aFields['APP_DATA'][$_POST['gridname']] = $oFields;
-        }        
+        }
         $oApp->updateCase($_SESSION['APPLICATION'], $aFields);
-      } 
+      }
 */
     break;
     /** widgets **/
@@ -41,8 +41,8 @@ if( isset($request) ){
 
       try {
         if(isset($_GET["inputEnconde64"])) {
-          $_GET['input'] = base64_decode($_GET['input']);		
-        } 
+          $_GET['input'] = base64_decode($_GET['input']);
+        }
         $sData = base64_decode(str_rot13($_GET['hash']));
         list($SQL, $DB_UID) = explode('@|', $sData);
         // Remplace values for dependent fields
@@ -57,7 +57,7 @@ if( isset($request) ){
 
         $parser = new PHPSQLParser($SQL);
         // Verif parsed array
-        // print_r($parser->parsed); 
+        // print_r($parser->parsed);
         $SQL = queryModified($parser->parsed, $_GET['input']);
 
         $aRows = Array();
@@ -130,7 +130,7 @@ if( isset($request) ){
           $arr = array();
           $aReplace = array("(\r\n)", "(\n\r)", "(\n)", "(\r)");
           for ($i=0;$i<count($aResults);$i++) {
-            $arr[] = "{\"id\": \"".$aResults[$i]['id']."\", \"value\": \"". html_entity_decode(preg_replace($aReplace, "", $aResults[$i]['value']))."\", \"info\": \"".$aResults[$i]['info']."\"}";		
+            $arr[] = "{\"id\": \"".$aResults[$i]['id']."\", \"value\": \"". html_entity_decode(preg_replace($aReplace, "", $aResults[$i]['value']))."\", \"info\": \"".$aResults[$i]['info']."\"}";
           }
           echo implode(", ", $arr);
           echo "]}";
@@ -168,12 +168,14 @@ if( isset($request) ){
         }
 
         $rs = $con->executeQuery("INSERT INTO {$_GET['table']} ({$_GET['pk']}, {$_GET['fld']}) VALUES ('$gKey', '{$_GET['value']}');");
-        echo '{status:0, message:"success"}';
-      }catch( Exception $e){
+
+        echo "{status: 1, message: \"success\"}";
+      } catch (Exception $e) {
         $err = $e->getMessage();
         //$err = eregi_replace("[\n|\r|\n\r]", ' ', $err);
-        $err = preg_replace("[\n|\r|\n\r]", ' ', $err); // Made compatible to PHP 5.3
-        echo '{result:1, message:"'.$err.'"}';
+        $err = preg_replace("[\n|\r|\n\r]", " ", $err); //Made compatible to PHP 5.3
+
+        echo "{status: 0, message: \"" . $err . "\"}";
       }
       break;
   }
@@ -213,31 +215,31 @@ function sortByChar($aRows, $charSel)
  * Converts a SQL array parsing to a SQL string.
  * @param string $sqlParsed
  * @param string $inputSel default value empty string
- * @return string 
+ * @return string
  */
-function queryModified($sqlParsed, $inputSel = "") 
+function queryModified($sqlParsed, $inputSel = "")
 {
 
   if(!empty($sqlParsed['SELECT'])) {
-    
+
     $sqlSelect = "SELECT ";
     $aSelect   = $sqlParsed['SELECT'];
 
     $sFieldSel = (count($aSelect)>1 ) ? $aSelect[1]['base_expr'] : $aSelect[0]['base_expr'];
     foreach($aSelect as $key => $value ) {
-      if($key != 0) 
+      if($key != 0)
         $sqlSelect .= ", ";
       $sAlias    = str_replace("`","", $aSelect[$key]['alias']);
       $sBaseExpr = $aSelect[$key]['base_expr'];
       switch($aSelect[$key]['expr_type']){
         case 'colref' : if($sAlias === $sBaseExpr)
                            $sqlSelect .= $sAlias;
-                         else 
+                         else
                            $sqlSelect .= $sBaseExpr . ' AS ' . $sAlias;
                          break;
-        case 'expression' : if($sAlias === $sBaseExpr) 
+        case 'expression' : if($sAlias === $sBaseExpr)
                            $sqlSelect .= $sBaseExpr;
-                         else 
+                         else
                            $sqlSelect .= $sBaseExpr . ' AS ' . $sAlias;
                          break;
         case 'subquery' : if(strpos($sAlias, $sBaseExpr,0) != 0)
@@ -245,9 +247,9 @@ function queryModified($sqlParsed, $inputSel = "")
                          else
                            $sqlSelect .= $sBaseExpr . " AS " . $sAlias;
                          break;
-        case 'operator' : $sqlSelect .= $sBaseExpr; 
+        case 'operator' : $sqlSelect .= $sBaseExpr;
                          break;
-        default        : $sqlSelect .= $sBaseExpr; 
+        default        : $sqlSelect .= $sBaseExpr;
                          break;
       }
     }
@@ -260,7 +262,7 @@ function queryModified($sqlParsed, $inputSel = "")
           if($key == 0) {
             $sqlFrom .= $aFrom[$key]['table'] . (($aFrom[$key]['table'] == $aFrom[$key]['alias'])?"" : " " . $aFrom[$key]['alias']);
           } else {
-            $sqlFrom .= " " . (($aFrom[$key]['join_type']=='JOIN')?"INNER": $aFrom[$key]['join_type']) . " JOIN " . $aFrom[$key]['table'] 
+            $sqlFrom .= " " . (($aFrom[$key]['join_type']=='JOIN')?"INNER": $aFrom[$key]['join_type']) . " JOIN " . $aFrom[$key]['table']
                      . (($aFrom[$key]['table'] == $aFrom[$key]['alias'])?"" : " " . $aFrom[$key]['alias']) . " " . $aFrom[$key]['ref_type'] . " " . $aFrom[$key]['ref_clause'] ;
           }
 
@@ -271,48 +273,48 @@ function queryModified($sqlParsed, $inputSel = "")
     if(!empty($sqlParsed['WHERE'])){
       $sqlWhere = " WHERE ";
       $aWhere   = $sqlParsed['WHERE'];
-      foreach($aWhere as $key => $value ){  
+      foreach($aWhere as $key => $value ){
         $sqlWhere .= $value['base_expr'] . " ";
       }
       $sqlWhere .= " AND " . $sFieldSel . " LIKE '%". $inputSel . "%'";
-    } 
+    }
     else {
       $sqlWhere = " WHERE " . $sFieldSel . " LIKE '%". $inputSel ."%' ";
     }
 
     $sqlGroupBy = "";
-    if(!empty($sqlParsed['GROUP'])){ 
+    if(!empty($sqlParsed['GROUP'])){
       $sqlGroupBy = "GROUP BY ";
       $aGroup     = $sqlParsed['GROUP'];
-      foreach($aGroup as $key => $value ){  
-        if($key != 0) 
+      foreach($aGroup as $key => $value ){
+        if($key != 0)
           $sqlGroupBy .= ", ";
         if($value['direction'] == 'ASC' )
           $sqlGroupBy .= $value['base_expr'];
-        else 
+        else
           $sqlGroupBy .= $value['base_expr'] . " " . $value['direction'];
       }
     }
 
     $sqlHaving = "";
-    if(!empty($sqlParsed['HAVING'])){ 
+    if(!empty($sqlParsed['HAVING'])){
       $sqlHaving = "HAVING ";
       $aHaving   = $sqlParsed['HAVING'];
-      foreach($aHaving as $key => $value ){  
+      foreach($aHaving as $key => $value ){
         $sqlHaving .= $value['base_expr'] . " ";
       }
     }
 
     $sqlOrderBy = "";
-    if(!empty($sqlParsed['ORDER'])){ 
+    if(!empty($sqlParsed['ORDER'])){
       $sqlOrderBy = "ORDER BY ";
       $aOrder     = $sqlParsed['ORDER'];
-      foreach($aOrder as $key => $value ){  
-        if($key != 0) 
+      foreach($aOrder as $key => $value ){
+        if($key != 0)
           $sqlOrderBy .= ", ";
         if($value['direction'] == 'ASC' )
           $sqlOrderBy .= $value['base_expr'];
-        else 
+        else
           $sqlOrderBy .= $value['base_expr'] . " " . $value['direction'];
       }
     } else {
@@ -320,7 +322,7 @@ function queryModified($sqlParsed, $inputSel = "")
     }
 
     $sqlLimit  = "";
-    if(!empty($sqlParsed['LIMIT'])){ 
+    if(!empty($sqlParsed['LIMIT'])){
       $sqlLimit  = "LIMIT ". $sqlParsed['LIMIT']['start'] . ", " . $sqlParsed['LIMIT']['end'];
     }
 
@@ -329,15 +331,15 @@ function queryModified($sqlParsed, $inputSel = "")
   if(!empty($sqlParsed['CALL'])){
     $sCall = "CALL ";
     $aCall = $sqlParsed['CALL'];
-    foreach($aCall as $key => $value ){  
+    foreach($aCall as $key => $value ){
       $sCall .= $value . " ";
-    } 
+    }
     return $sCall;
   }
   if(!empty($sqlParsed['EXECUTE'])){
     $sCall = "EXECUTE ";
     $aCall = $sqlParsed['EXECUTE'];
-    foreach($aCall as $key => $value ){  
+    foreach($aCall as $key => $value ){
       $sCall .= $value . " ";
     }
     return $sCall;
@@ -345,7 +347,7 @@ function queryModified($sqlParsed, $inputSel = "")
   if(!empty($sqlParsed[''])){
     $sCall = "";
     $aCall = $sqlParsed[''];
-    foreach($aCall as $key => $value ){  
+    foreach($aCall as $key => $value ){
       $sCall .= $value . " ";
     }
     return $sCall;

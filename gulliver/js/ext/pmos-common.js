@@ -473,9 +473,8 @@ Ext.util.Format.capitalize = (function(){
 /**
  * left and right delete the blank characteres (String prototype)
  */
-String.prototype.trim = function() {
-  return this.replace(/^\s+|\s+get/g,"");
-  //return Ext.util.Format.trim(this);
+String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, "");
 }
 
 String.prototype.nl2br = function () {

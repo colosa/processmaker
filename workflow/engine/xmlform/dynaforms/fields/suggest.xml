@@ -53,7 +53,7 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
 select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE	XMLNODE_NAME <> @@PME_XMLNODE_NAME AND XMLNODE_NAME <> "" AND ( TYPE="text" or TYPE="textarea" or TYPE="dropdown" or TYPE="listbox" or TYPE="hidden" or TYPE="suggest")
   ]]><en>Dependent Fields<option name="">(none)</option></en>
 </PME_DEPENDENTFIELDS>
- 
+
 <PME_HINT type="textarea" cols="44" rows="1">
   <en>Hint</en>
 </PME_HINT>
@@ -140,39 +140,44 @@ select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE	XMLNODE_NAME <> @@
   <en>Save</en>
 </PME_ACCEPT>
 
-<PME_JS type="javascript"><![CDATA[
+<PME_JS type="javascript">
+    <![CDATA[
+    var fieldForm = "text";
+    var fieldName = getField("PME_XMLNODE_NAME", fieldForm);
+    var savedFieldName = fieldName.value;
+    var pme_validating;
 
-	var fieldForm="text"; 
-	var fieldName=getField("PME_XMLNODE_NAME",fieldForm);
-	var savedFieldName=fieldName.value;
-	var pme_validating;
-	fieldName.focus();
-	fieldName.select();
-	
-	leimnud.event.add(fieldName, 'change', {method:dynaformVerifyFieldName, instance:fieldName, event:true});
-  var dyntype="@#PME_DYN_TYPE";
+    fieldName.focus();
+    fieldName.select();
 
+    leimnud.event.add(fieldName, "change", {method: dynaformVerifyFieldName, instance: fieldName, event: true});
 
-  storeNewEntriesOptions(getField('PME_STORE_NEW_ENTRY'));
-  leimnud.event.add(getField('PME_STORE_NEW_ENTRY'), 'click', function(){
-    storeNewEntriesOptions(this);
-  });
+    var dyntype = "@#PME_DYN_TYPE";
 
+    storeNewEntriesOptions(getField("PME_STORE_NEW_ENTRY"));
 
-  function storeNewEntriesOptions(o){
-    if(o.checked){
-      showRowById('PME_PRIMARY_KEY');
-      getTablesNames();
-      getTableFields()
-      getField('PME_TABLE').value = getField('PME_TABLE_DATA').value.trim();
-      getField('PME_PRIMARY_KEY').value = getField('PME_PRIMARY_KEY_DATA').value.trim();
-      getField('PME_PRIMARY_KEY_TYPE').value = getField('PME_PRIMARY_KEY_TYPE_DATA').value.trim();
-    } else {
-      hideRowById('PME_PRIMARY_KEY');
-      
+    leimnud.event.add(
+        getField("PME_STORE_NEW_ENTRY"),
+        "click",
+        function ()
+        {
+            storeNewEntriesOptions(getField("PME_STORE_NEW_ENTRY"));
+        }
+    );
+
+    function storeNewEntriesOptions(o)
+    {
+        if (o.checked) {
+            showRowById("PME_PRIMARY_KEY");
+            getTablesNames();
+            getTableFields()
+            getField("PME_TABLE").value = getField("PME_TABLE_DATA").value.trim();
+            getField("PME_PRIMARY_KEY").value = getField("PME_PRIMARY_KEY_DATA").value.trim();
+            getField("PME_PRIMARY_KEY_TYPE").value = getField("PME_PRIMARY_KEY_TYPE_DATA").value.trim();
+        } else {
+            hideRowById("PME_PRIMARY_KEY");
+        }
     }
-  }
-
 
   leimnud.event.add(getField('PME_XMLNODE_VALUE'), 'keyup', function(){
     getTablesNames();
@@ -198,9 +203,15 @@ select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE	XMLNODE_NAME <> @@
     getField('PME_PRIMARY_KEY_TYPE_DATA').value = this.value.trim();
   });
 
-  function getTablesNames(){
-    var s0 = getField('PME_XMLNODE_VALUE').value;
-    var s = getField('PME_XMLNODE_VALUE').value.toUpperCase();
+  function getTablesNames() {
+    var strSql = getField("PME_XMLNODE_VALUE").value;
+
+    strSql = stringReplace("\\x0A", " ", strSql); //\n 10
+    strSql = stringReplace("\\x0D", " ", strSql); //\r 13
+    strSql = stringReplace("\\x09", " ", strSql); //\t  9
+
+    var s0 = strSql;
+    var s  = strSql.toUpperCase();
 
     p1 = s.indexOf(" FROM ");
     if(p1 > 0){
@@ -218,7 +229,7 @@ select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE	XMLNODE_NAME <> @@
       ss = s0.substring(p1, p2);
       ss = ss.replace("FROM", "").trim();
       ss = ss.replace("from", "").trim();
-      
+
       aTables = ss.split(',');
 
       otable = getField('PME_TABLE');
@@ -230,16 +241,26 @@ select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE	XMLNODE_NAME <> @@
       var newOption = new Option("", "0");
       otable.options[0] = newOption;
 
-      for(i=0; i<aTables.length; i++){
-        var newOption = new Option(aTables[i], aTables[i]);
-        otable.options[i+1] = newOption;
+      var t = "";
+
+      for (var i = 0; i <= aTables.length - 1; i++) {
+          t = aTables[i].trim();
+
+          var newOption = new Option(t, t);
+          otable.options[i + 1] = newOption;
       }
     }
   }
 
-  function getTableFields(){
-    var s0 = getField('PME_XMLNODE_VALUE').value;
-    var s = getField('PME_XMLNODE_VALUE').value.toUpperCase();
+  function getTableFields() {
+    var strSql = getField("PME_XMLNODE_VALUE").value;
+
+    strSql = stringReplace("\\x0A", " ", strSql); //\n 10
+    strSql = stringReplace("\\x0D", " ", strSql); //\r 13
+    strSql = stringReplace("\\x09", " ", strSql); //\t  9
+
+    var s0 = strSql;
+    var s  = strSql.toUpperCase();
 
     p1 = s.indexOf("SELECT ");
     if(p1 >= 0){
@@ -258,9 +279,13 @@ select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE	XMLNODE_NAME <> @@
       var newOption = new Option("", "0");
       otable.options[0] = newOption;
 
-      for(i=0; i<aTables.length; i++){
-        var newOption = new Option(aTables[i], aTables[i]);
-        otable.options[i+1] = newOption;
+      var t = "";
+
+      for (var i = 0; i <= aTables.length - 1; i++) {
+          t = aTables[i].trim();
+
+          var newOption = new Option(t, t);
+          otable.options[i + 1] = newOption;
       }
     }
   }
@@ -283,4 +308,4 @@ function cancel(){
 }
 
 ]]></PME_JS>
-</dynaForm>  
+</dynaForm>

@@ -5,7 +5,7 @@
 var PROCESS_REQUEST_FILE = '../setup/emails_Ajax';
 var oPanel;
 
-function verifyFields(oForm) { 
+function verifyFields(oForm) {
 	switch (getField('MESS_ENGINE').value) {
     case 'PHPMAILER':
       verifyPassword = 0;
@@ -25,7 +25,7 @@ function verifyFields(oForm) {
         } else {
           if ($('form[MESS_RAUTH]').checked) {
             oAuxP = $('form[MESS_PASSWORD]').value;
-            oAuxPH = $('form[MESS_PASSWORD_HIDDEN]').value;					
+            oAuxPH = $('form[MESS_PASSWORD_HIDDEN]').value;
             if ((oAuxP == '')&&(oAuxPH == '')) {
               new leimnud.module.app.alert().make({
                 label : G_STRINGS.ID_PASSWORD_REQUIRED
@@ -82,18 +82,18 @@ function testConnection() {
 	  params += '&passwd=' + getField('MESS_PASSWORD').value;
 	}
 	else {
-	  params += '&passwd=' + getField('MESS_PASSWORD_HIDDEN').value;  
+	  params += '&passwd=' + getField('MESS_PASSWORD_HIDDEN').value;
 	}
 	params += '&auth_required='+ (getField('MESS_RAUTH').checked ? 'yes' : 'no');
 	params += '&send_test_mail='+ (getField('MESS_TEST_MAIL').checked ? 'yes' : 'no');
 	params += '&mail_to=' + $('form[MESS_TEST_MAIL_TO]').value;
-	
+
 	if(getField('SMTPSecure][ssl').checked) {
 	  params +='&SMTPSecure=ssl';
 	} else if(getField('SMTPSecure][tls').checked) {
 	  params +='&SMTPSecure=tls';
 	} else {
-	  params +='&SMTPSecure='; 
+	  params +='&SMTPSecure=';
 	}
 
 	oPanel = new leimnud.module.panel();
@@ -111,10 +111,10 @@ function testConnection() {
 			delete (oPanel);
 		}.extend(this)
 	};
-	
+
 	oPanel.make();
 	oPanel.loader.show();
-	
+
 	var oRPC = new leimnud.module.rpc.xmlhttp({
 		url : PROCESS_REQUEST_FILE,
 		args : 'request=init&' + params
@@ -168,7 +168,7 @@ function testConnectionMail() {
 var resultset = true;
 function testSMTPHost(step, params) {
 	$("test_" + step).style.display = "block";
-	
+
 	var requestfile = PROCESS_REQUEST_FILE;
 	var uri = 'request=testConnection&step=' + step +'&'+ params;
 
@@ -222,9 +222,10 @@ function cancelTestConnection() {
 }
 
 // /************* Adds routines *************///
-String.prototype.trim = function() {
-	return this.replace(/^\s+|\s+get/g, "");
+String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, "");
 }
+
 function $(id) {
 	return document.getElementById(id);
 }
@@ -277,12 +278,12 @@ function initSet() {
 }
 
 var verifyData = function(oForm) {
-  
+
 	if (getField('MESS_ENABLED').checked) {
     if (getField('MESS_RAUTH').checked) {
       if (getField('MESS_PASSWORD') == '') {
     	  getField('MESS_PASSWORD').value = getField('MESS_PASSWORD_HIDDEN').value;
-      }	
+      }
     }
 		switch (getField('MESS_ENGINE').value) {
 		case 'PHPMAILER':
