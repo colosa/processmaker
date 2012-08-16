@@ -2,7 +2,7 @@
 /**
  * Dynaform.php
  * @package    workflow.engine.classes.model
- * 
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2011 Colosa Inc.
  *
@@ -81,7 +81,7 @@ class Dynaform extends BaseDynaform {
     if ($this->dyn_title !== $v || $v === '') {
       $this->dyn_title = $v;
       $lang = defined ( 'SYS_LANG') ? SYS_LANG : 'en';
- 
+
       $res = Content::addContent( 'DYN_TITLE', '', $this->getDynUid(), $lang, $this->dyn_title );
     }
 
@@ -127,7 +127,7 @@ class Dynaform extends BaseDynaform {
     if ($this->dyn_description !== $v || $v === '') {
       $this->dyn_description = $v;
       $lang = defined ( 'SYS_LANG') ? SYS_LANG : 'en';
-     
+
       $res = Content::addContent( 'DYN_DESCRIPTION', '', $this->getDynUid(), $lang, $this->dyn_description );
     }
 
@@ -175,7 +175,7 @@ class Dynaform extends BaseDynaform {
 
         $con->commit();
         $sXml  = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
-        $sXml .= '<dynaForm type="' . $this->getDynType() . '" name="' . $this->getProUid() . '/' . $this->getDynUid() . '" width="500" enabletemplate="0" mode="">'."\n";
+        $sXml .= '<dynaForm type="' . $this->getDynType() . '" name="' . $this->getProUid() . '/' . $this->getDynUid() . '" width="500" enabletemplate="0" mode="" nextstepsave="prompt">'."\n";
         $sXml .= '</dynaForm>';
         G::verifyPath(PATH_DYNAFORM . $this->getProUid(), true);
         $oFile = fopen(PATH_DYNAFORM . $this->getProUid() . '/' . $this->getDynUid() . '.xml', 'w');
@@ -200,7 +200,7 @@ class Dynaform extends BaseDynaform {
   /**
    *
    * Creates a Dynaform based on a PMTable
-   * 
+   *
    * @name       createFromPMTable
    * @author     gustavo cruz gustavo[at]colosa[dot]com
    * @param      array $aData  Fields with :
@@ -252,7 +252,7 @@ class Dynaform extends BaseDynaform {
       } else {
         $sql = 'DESC '.$addTabName;
       }
-      
+
       $dbh =  Propel::getConnection(AdditionalTablesPeer::DATABASE_NAME);
       $sth = $dbh->createStatement();
       $res = $sth->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
@@ -277,7 +277,7 @@ class Dynaform extends BaseDynaform {
         if ($res->get('Key') != '') {
           $countKeys++;
         }
-        if ($res->get('Extra') == 'auto_increment') {          
+        if ($res->get('Extra') == 'auto_increment') {
           $keyRequered .= $res->get('Field');
         }
       }
@@ -474,7 +474,7 @@ class Dynaform extends BaseDynaform {
       throw($oError);
     }
   }
-  
+
   function getDynaformContent( $dynaformUid) {
     $content = '';
     $fields = $this->Load ( $dynaformUid);
@@ -482,9 +482,9 @@ class Dynaform extends BaseDynaform {
     if (file_exists( $filename )) {
       $content = file_get_contents ( $filename );
     }
-    
+
     return $content;
-  }    
+  }
 
   function getDynaformFields( $dynaformUid) {
     $content = '';
@@ -493,10 +493,10 @@ class Dynaform extends BaseDynaform {
     if (file_exists( $filename )) {
       $content = file_get_contents ( $filename );
     }
-    
+
     $G_FORM = new xmlform ( $fields['DYN_FILENAME'] , PATH_DYNAFORM );
     $G_FORM->parseFile( $filename , SYS_LANG, true );
-    
+
     return $G_FORM->fields;
   }
 
