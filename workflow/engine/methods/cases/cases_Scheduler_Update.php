@@ -46,7 +46,6 @@ try {
   if (empty($_POST)) {
   	die('The information sended is empty!');
   }
-  
 	$aData['SCH_UID']    = $_POST['form']['SCH_UID'];  
 	$aData['SCH_NAME']   = $_POST['form']['SCH_NAME'];
 	$aData['PRO_UID']    = $_POST['form']['PRO_UID'];
@@ -162,7 +161,7 @@ try {
             $aData['SCH_END_DATE'] = $_POST['form']['SCH_END_DATE'];
         }
 // if the start date has changed then recalculate the next run time
-	if ($_POST['form']['SCH_START_DATE']==$_POST['form']['PREV_SCH_START_DATE']){
+	if ($_POST['form']['SCH_START_DATE']==$_POST['form']['PREV_SCH_START_DATE']) {
             $recalculateDate = false;
         } else {
             $recalculateDate = true;
@@ -177,7 +176,7 @@ try {
 //        var_dump($recalculateTime);
 //        die();
         $nActualTime = $_POST['form']['SCH_START_TIME'];
-        if(($sOption!='1') && ($sOption!='4'))  {
+        if(($sOption!='1') && ($sOption!='4') && ($sOption!='5'))  {
                 if ($sStartDay==''){
                     $sStartDay = date('Y-m-d');
                 }
@@ -230,6 +229,18 @@ try {
 //                var_dump($recalculateTime);
 //                var_dump($aData['SCH_TIME_NEXT_RUN']);
 //                die;
+            if ($sOption=='5') {
+                $date = $oCaseScheduler->getSchLastRunTime();
+                if ($date == null) {
+                    $date = $oCaseScheduler->getSchStartTime();
+                }
+                $date = strtotime($date);
+                $nextRun = $_POST['form']['SCH_REPEAT_EVERY']*60*60;
+                $aData['SCH_REPEAT_EVERY'] = $_POST['form']['SCH_REPEAT_EVERY'];
+                $date += $nextRun;
+                $date = date("Y-m-d H:i", $date );
+                $aData['SCH_TIME_NEXT_RUN'] = $date;
+            }
         }
 
 	if(!empty($_POST['form']['SCH_REPEAT_TASK_CHK'])){

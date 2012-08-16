@@ -482,6 +482,8 @@ function saveLog($sSource, $sType, $sDescription)
 
         G::verifyPath(PATH_DATA . 'log' . PATH_SEP, true);
 
+        //setExecutionMessage( PATH_DATA."log".PATH_SEP);
+
         if ($sType == 'action') {
             $oFile = @fopen(PATH_DATA . 'log' . PATH_SEP . 'cron.log', 'a+');
         } else {
