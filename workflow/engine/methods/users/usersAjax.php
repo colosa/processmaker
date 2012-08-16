@@ -56,6 +56,9 @@ switch($_POST['action'])
     $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
     $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
     $oCriteria->add(UsersPeer::USR_STATUS,'ACTIVE');
+    if (isset($_POST['USR_UID'])) {
+        $oCriteria->add(UsersPeer::USR_UID, $_POST['USR_UID'], Criteria::NOT_EQUAL);
+    }
     $oDataset = UsersPeer::doSelectRS($oCriteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 

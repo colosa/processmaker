@@ -125,7 +125,7 @@ class Derivation
           $aDerivation['NEXT_TASK']['TAS_DEF_PROC_CODE']     = '';
           $aDerivation['NEXT_TASK']['TAS_PARENT']            = '';
           $aDerivation['NEXT_TASK']['TAS_TRANSFER_FLY']            = '';
-          
+
           switch ($aDerivation['ROU_NEXT_TASK']) {
             case -1: $aDerivation['NEXT_TASK']['TAS_TITLE'] = G::LoadTranslation('ID_END_OF_PROCESS');
                      break;
@@ -274,12 +274,10 @@ class Derivation
         $oUser = UsersPeer::retrieveByPK( $row['USR_UID'] );
         if( $oUser->getUsrStatus() == 'ACTIVE' ){
           $users[$row['USR_UID']] = $row['USR_UID'];
-        } else if($oUser->getUsrStatus() == 'VACATION'){
-          //this a litle hook for this issue,...
-          //TODO if the user in getUsrReplacedBy() is not assignet to the same task,. will have problems,....
-          $UsrReplace = $oUser->getUsrReplacedBy();
-          if( trim($UsrReplace) != ''){
-            //$users[$UsrReplace] = $UsrReplace;
+        } else {
+          $userUID = $this->checkReplacedByUser($oUser);
+          if ($userUID != '') {
+            $users[$userUID] = $userUID;
           }
         }
       }
@@ -321,7 +319,7 @@ class Derivation
     else {
       $oCriteria = new Criteria();
       $oCriteria->add(UsersPeer::USR_UID, $aUsers);
-      
+
       if (UsersPeer::doCount($oCriteria) < 1) {
         return null;
       }
@@ -394,7 +392,7 @@ class Derivation
            $variable  = str_replace ( '@@', '', $nextAssignedTask['TAS_ASSIGN_VARIABLE'] );
            if ( isset ( $AppFields['APP_DATA'][$variable] ) ) {
              if ($AppFields['APP_DATA'][$variable] != '') {
-               $value      = $AppFields['APP_DATA'][$variable];
+               $value      = $this->checkReplacedByUser($AppFields['APP_DATA'][$variable]);
                $userFields = $this->getUsersFullNameFromArray ($value);
                if (is_null($userFields)) {
                  throw ( new Exception("Task doesn't have a valid user in variable $variable.") ) ;
@@ -419,12 +417,12 @@ class Derivation
            $userFields['USR_EMAIL']     = '';
 
            //get the report_to user & its full info
-           $useruid = $this->getDenpendentUser($tasInfo['USER_UID']);
-           
+           $useruid = $this->getDenpendentUser($this->checkReplacedByUser($tasInfo['USER_UID']));
+
            if (isset($useruid) && $useruid != '') {
              $userFields = $this->getUsersFullNameFromArray($useruid);
            }
-           
+
            // if there is no report_to user info, throw an exception indicating this
            if (!isset($userFields) || $userFields['USR_UID'] == '') {
              throw ( new Exception(G::LoadTranslation('ID_MSJ_REPORSTO')));// "The current user does not have a valid Reports To user.  Please contact administrator.") ) ;
@@ -555,7 +553,7 @@ class Derivation
           $iAppThreadIndex = $appFields['DEL_THREAD'];
           $this->case->closeAppThread ( $currentDelegation['APP_UID'], $iAppThreadIndex);
           break;
-        
+
         default:
           // get all siblingThreads
           //if($currentDelegation['TAS_ASSIGN_TYPE'] == 'STATIC_MI')
@@ -574,22 +572,22 @@ class Derivation
                 $sMIcompleteVar = $aData['APP_DATA'][str_replace('@@', '', $currentDelegation['TAS_MI_COMPLETE_VARIABLE'])];
               else
                 $sMIcompleteVar = $aData['APP_DATA']['TAS_MI_COMPLETE_VARIABLE'];
-              
+
               $discriminateThread = $sMIinstanceVar - $sMIcompleteVar;
-              
+
               // -1 because One App Delegation is closed by above Code
               if($discriminateThread == count($siblingThreads))
                 $canDerivate =true;
               else
                 $canDerivate =false;
               break;
-              
+
             default:
               if ( $currentDelegation['ROU_TYPE'] == 'SEC-JOIN') {
                 $siblingThreads = $this->case->getOpenSiblingThreads(
-                  $nextDel['TAS_UID'], 
-                  $currentDelegation['APP_UID'], 
-                  $currentDelegation['DEL_INDEX'], 
+                  $nextDel['TAS_UID'],
+                  $currentDelegation['APP_UID'],
+                  $currentDelegation['DEL_INDEX'],
                   $currentDelegation['TAS_UID'],
                   $currentDelegation['ROU_TYPE']
                 );
@@ -641,26 +639,26 @@ class Derivation
     $appFields['APP_STATUS'] = $currentDelegation['APP_STATUS'];
     /* Start Block : Count the open threads of $currentDelegation['APP_UID'] */
     $openThreads = $this->case->GetOpenThreads( $currentDelegation['APP_UID'] );
-    
+
     ///////
     $sw = 0;
-    
+
     if ($openThreads == 0) {
       //Close case
       $appFields["APP_STATUS"]      = "COMPLETED";
       $appFields["APP_FINISH_DATE"] = "now";
       $this->verifyIsCaseChild($currentDelegation["APP_UID"]);
-      
+
       $sw = 1;
     }
-    
+
     if (isset($iNewDelIndex)) {
       $appFields["DEL_INDEX"] = $iNewDelIndex;
       $appFields["TAS_UID"]   = $nextDel["TAS_UID"];
-      
+
       $sw = 1;
     }
-    
+
     if ($sw == 1) {
       //Start Block : UPDATES APPLICATION
       $this->case->updateCase($currentDelegation["APP_UID"], $appFields);
@@ -673,7 +671,7 @@ class Derivation
   {
     $iAppThreadIndex = $appFields['DEL_THREAD'];
     $delType = 'NORMAL';
-    
+
     if (is_numeric($nextDel['DEL_PRIORITY'])) {
       $nextDel['DEL_PRIORITY'] = (isset($nextDel['DEL_PRIORITY']) ? ($nextDel['DEL_PRIORITY'] >= 1 && $nextDel['DEL_PRIORITY'] <= 5 ? $nextDel['DEL_PRIORITY'] : '3') : '3');
     }
@@ -686,12 +684,12 @@ class Derivation
         // Create new delegation depending on the no of users in the group
         $iNewAppThreadIndex = $appFields['DEL_THREAD'];
         $this->case->closeAppThread ( $currentDelegation['APP_UID'], $iAppThreadIndex);
-        
+
         foreach($nextDel['NEXT_TASK']['USER_ASSIGNED'] as $key=>$aValue){
           //Incrementing the Del_thread First so that new delegation has new del_thread
           $iNewAppThreadIndex += 1;
           //Creating new delegation according to users in group
-          $iMIDelIndex = $this->case->newAppDelegation( 
+          $iMIDelIndex = $this->case->newAppDelegation(
             $appFields['PRO_UID'],
             $currentDelegation['APP_UID'],
             $nextDel['TAS_UID'],
@@ -732,7 +730,7 @@ class Derivation
       }
 
       $iAppThreadIndex = $appFields['DEL_THREAD'];
-      
+
       switch ( $currentDelegation['ROU_TYPE'] ) {
         case 'PARALLEL' :
         case 'PARALLEL-BY-EVALUATION' :
@@ -741,12 +739,12 @@ class Derivation
           $this->case->updateAppDelegation ( $currentDelegation['APP_UID'], $iNewDelIndex, $iNewThreadIndex  );
           //print " this->case->updateAppDelegation ( " . $currentDelegation['APP_UID'] .", " . $iNewDelIndex ." , " .  $iNewThreadIndex . " )<br>";
           break;
-        
+
         case 'DISCRIMINATOR':
           if($currentDelegation['ROU_OPTIONAL'] == 'TRUE') {
             $this->case->discriminateCases($currentDelegation);
           } //No Break, executing Default Condition
-        
+
         default :
           switch ($currentDelegation['TAS_ASSIGN_TYPE']) {
             case 'CANCEL_MI':
@@ -776,7 +774,7 @@ class Derivation
 
         $aOldFields['APP_DATA']   = array_merge($aOldFields['APP_DATA'], $aNewFields);
         $aOldFields['APP_STATUS'] = 'TO_DO';
-        
+
         $this->case->updateCase($aNewCase['APPLICATION'], $aOldFields);
         //Create a registry in SUB_APPLICATION table
         $aSubApplication = array('APP_UID'           => $aNewCase['APPLICATION'],
@@ -796,11 +794,11 @@ class Derivation
         $oSubApplication->create($aSubApplication);
         //Update the AppDelegation to execute the update trigger
         $AppDelegation = AppDelegationPeer::retrieveByPK($aNewCase['APPLICATION'], $aNewCase['INDEX']);
-      
-        // note added by krlos pacha carlos[at]colosa[dot]com   
-        // the following line of code was commented because it is related to the 6878 bug              
+
+        // note added by krlos pacha carlos[at]colosa[dot]com
+        // the following line of code was commented because it is related to the 6878 bug
         //$AppDelegation->setDelInitDate("+1 second");
-        
+
         $AppDelegation->save();
         //If not is SYNCHRONOUS derivate one more time
 
@@ -1031,8 +1029,28 @@ class Derivation
             $aData[$aKey] = $userid;
          }
        return $aGrp;
-      //var_dump($aDerivation);
-      //die;
+  }
+
+  function checkReplacedByUser($user)
+  {
+      if (get_class($user) != 'Users') {
+          $userInstance = UsersPeer::retrieveByPK($user);
+      } else {
+          $userInstance = $user;
+      }
+      if (!is_object($userInstance)) {
+        throw new Exception("The user with the UID '$user' doesn't exist.");
+      }
+      if ($userInstance->getUsrStatus() == 'ACTIVE') {
+          return $userInstance->getUsrUid();
+      } else {
+          $userReplace = trim($userInstance->getUsrReplacedBy());
+          if ($userReplace != '') {
+              return $this->checkReplacedByUser(UsersPeer::retrieveByPK($userReplace));
+          } else {
+              return '';
+          }
+      }
   }
 
 }
