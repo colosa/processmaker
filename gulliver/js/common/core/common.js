@@ -925,11 +925,11 @@ function get_xmlhttp() {
   	xmlhttp = false;
   	if ( window.ActiveXObject )
       xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-  } 
+  }
   catch (e) {
     try {
       xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    } 
+    }
     catch (E) {
       xmlhttp = false;
     }
@@ -1231,47 +1231,47 @@ var radios = document.getElementById('form[' + field + ']');
 
 /* @author Alvaro Campos Sanchez
  */
-function validDate(TheField, Required) {  
+function validDate(TheField, Required) {
 
      var date = TheField.split("-");
      var date1 = date[0];
      var date2 = date[1];
      var date3 = date[2];
      var TheDay,TheMonth,TheYear;
-     
+
      if ((date1.length==4)&&(!TheYear))
       TheYear = date1;
      if (date1.length==2)
-       if ((date1>0)&&(date1<=12)&&(!TheMonth)) 
+       if ((date1>0)&&(date1<=12)&&(!TheMonth))
          TheMonth = date1;
-       else 
-         if ((date1>0)&&(date1<=31)&&(!TheDay)) 
+       else
+         if ((date1>0)&&(date1<=31)&&(!TheDay))
            TheDay = date1;
          else
            TheYear = date1;
-       
+
      if ((date2.length==4)&&(!TheYear))
        TheYear = date2;
      if (date2.length==2)
-       if ((date2>0)&&(date2<=12)&&(!TheMonth)) 
+       if ((date2>0)&&(date2<=12)&&(!TheMonth))
          TheMonth = date2;
-       else 
-         if ((date2>0)&&(date2<=31)&&(!TheDay)) 
+       else
+         if ((date2>0)&&(date2<=31)&&(!TheDay))
            TheDay = date2;
          else
-           TheYear = date2;  
-    
+           TheYear = date2;
+
      if((date3.length==4)&&(!TheYear))
        TheYear = date3;
      if (date3.length==2)
-       if ((date3>0)&&(date3<=12)&&(!TheMonth)) 
+       if ((date3>0)&&(date3<=12)&&(!TheMonth))
          TheMonth = date3;
-       else 
-         if ((date3>0)&&(date3<=31)&&(!TheDay)) 
+       else
+         if ((date3>0)&&(date3<=31)&&(!TheDay))
            TheDay = date3;
          else
-           TheYear = date3;   
-       
+           TheYear = date3;
+
      if (!TheYear || !TheMonth || !TheDay)
        return false;
      if ((Required)||(Required=='true'))
@@ -1283,9 +1283,9 @@ function validDate(TheField, Required) {
      if ((TheMonth != 02)&&(TheMonth < 13)&&(TheMonth > 0))
        if (TheDay > 30)
          return false;
- 
+
  return true;
-   
+
 }
 
 /* @author David S. Callizaya S.
@@ -1363,34 +1363,34 @@ function dynaformSetFocus(){
  * @Author alvaro <alvaro@colosa.com, alvaro.cs@live.com>
  * @return false
  */
-function idSet(name){   
+function idSet(name){
   var inputs = document.getElementsByTagName('input');
   if(inputs.length > 0){
     for(i in inputs){
-      id = inputs[i].id;      
+      id = inputs[i].id;
       if(id == "form["+name+"_label]"){
- 
+
          if(inputs[i].value.trim())
-           var valueLabel = inputs[i].value; 
+           var valueLabel = inputs[i].value;
        else
-           var valueLabel = "Empty"; 
-      } 
-      
+           var valueLabel = "Empty";
+      }
+
       if(id == "form["+name+"]"){
-        try {     
+        try {
           if(valueLabel !="Empty"){
             if (! inputs[i].value)
-              inputs[i].value =  valueLabel; 
-          }else 
-             inputs[i].value =  ""; 
-            
+              inputs[i].value =  valueLabel;
+          }else
+             inputs[i].value =  "";
+
         } catch (e) {
           //nothing
         }
-      }      
+      }
     }
-  } 
-  return false; 
+  }
+  return false;
 }
 
 /**
@@ -1406,8 +1406,8 @@ function idSet(name){
  * @Return (string) the parsed string with htmlentities at the string passed such as parameter
  */
 function htmlentities (string, quote_style, charset, double_encode) {
-    // Convert all applicable characters to HTML entities  
-    // 
+    // Convert all applicable characters to HTML entities
+    //
     // version: 1109.2015
     // discuss at: http://phpjs.org/functions/htmlentities    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
     // +    revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -1421,31 +1421,31 @@ function htmlentities (string, quote_style, charset, double_encode) {
     // *     example 1: htmlentities('Kevin & van Zonneveld');
     // *     returns 1: 'Kevin &amp; van Zonneveld'
     // *     example 2: htmlentities("foo'bar","ENT_QUOTES");
-    // *     returns 2: 'foo&#039;bar'    
-    var hash_map = get_html_translation_table('HTML_ENTITIES', quote_style), symbol = ''; 
+    // *     returns 2: 'foo&#039;bar'
+    var hash_map = get_html_translation_table('HTML_ENTITIES', quote_style), symbol = '';
 
     string = string == null ? '' : string + '';
- 
-    if (!hash_map) {        
+
+    if (!hash_map) {
       return false;
     }
-    
+
     if (quote_style && quote_style === 'ENT_QUOTES') {
         hash_map["'"] = '&#039;';    }
-    
+
     if (!!double_encode || double_encode == null) {
         for (symbol in hash_map) {
-            if (hash_map.hasOwnProperty(symbol)) {   
+            if (hash_map.hasOwnProperty(symbol)) {
               string = string.split(symbol).join(hash_map[symbol]);
             }
         }
     } else {
-        string = string.replace(/([\s\S]*?)(&(?:#\d+|#x[\da-f]+|[a-zA-Z][\da-z]*);|$)/g, function (ignore, text, entity) {            
+        string = string.replace(/([\s\S]*?)(&(?:#\d+|#x[\da-f]+|[a-zA-Z][\da-z]*);|$)/g, function (ignore, text, entity) {
           for (symbol in hash_map) {
             if (hash_map.hasOwnProperty(symbol)) {
               text = text.split(symbol).join(hash_map[symbol]);
             }
-          }            
+          }
           return text + entity;
         });
     }
@@ -1470,7 +1470,7 @@ function utf8_encode (argString) {
 	}
 	else {
 	  enc = String.fromCharCode((c1 >> 12) | 224) + String.fromCharCode(((c1 >> 6) & 63) | 128) + String.fromCharCode((c1 & 63) | 128);
-	}            
+	}
 	if (enc !== null) {
 	    if (end > start) {
 	      utftext += string.slice(start, end);
@@ -1478,34 +1478,34 @@ function utf8_encode (argString) {
 	  utftext += enc;
 	  start = end = n + 1;
 	}
-    } 
+    }
     if (end > start) {
       utftext += string.slice(start, stringl);
     }
   return utftext;
-} 
+}
 function base64_encode (data) {
   var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
   var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
   ac = 0,
   enc = "",
-  tmp_arr = [];        
+  tmp_arr = [];
     if (!data) {
       return data;
-    } 
-  data = utf8_encode(data + '');      
-    do { 
+    }
+  data = utf8_encode(data + '');
+    do {
       o1 = data.charCodeAt(i++);
       o2 = data.charCodeAt(i++);
-      o3 = data.charCodeAt(i++); 
-      bits = o1 << 16 | o2 << 8 | o3;   
+      o3 = data.charCodeAt(i++);
+      bits = o1 << 16 | o2 << 8 | o3;
       h1 = bits >> 18 & 0x3f;
       h2 = bits >> 12 & 0x3f;
       h3 = bits >> 6 & 0x3f;
-      h4 = bits & 0x3f;  
+      h4 = bits & 0x3f;
       tmp_arr[ac++] = b64.charAt(h1) + b64.charAt(h2) + b64.charAt(h3) + b64.charAt(h4);
-    } while (i < data.length); 
-  enc = tmp_arr.join(''); 
+    } while (i < data.length);
+  enc = tmp_arr.join('');
     switch (data.length % 3) {
       case 1:
 	enc = enc.slice(0, -2) + '==';
@@ -1513,13 +1513,13 @@ function base64_encode (data) {
       case 2:
 	enc = enc.slice(0, -1) + '=';
       break;
-    } 
+    }
   return enc;
 }
 
 function get_html_translation_table (table, quote_style) {
-    // Returns the internal translation table used by htmlspecialchars and htmlentities  
-    // 
+    // Returns the internal translation table used by htmlspecialchars and htmlentities
+    //
     // version: 1109.2015
     // discuss at: http://phpjs.org/functions/get_html_translation_table    // +   original by: Philip Peterson
     // +    revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -1541,19 +1541,19 @@ function get_html_translation_table (table, quote_style) {
     var constMappingTable = {},
         constMappingQuoteStyle = {};
     var useTable = {},
-        useQuoteStyle = {}; 
+        useQuoteStyle = {};
     // Translate arguments
     constMappingTable[0] = 'HTML_SPECIALCHARS';
     constMappingTable[1] = 'HTML_ENTITIES';
     constMappingQuoteStyle[0] = 'ENT_NOQUOTES';    constMappingQuoteStyle[2] = 'ENT_COMPAT';
     constMappingQuoteStyle[3] = 'ENT_QUOTES';
- 
+
     useTable = !isNaN(table) ? constMappingTable[table] : table ? table.toUpperCase() : 'HTML_SPECIALCHARS';
-    useQuoteStyle = !isNaN(quote_style) ? constMappingQuoteStyle[quote_style] : quote_style ? quote_style.toUpperCase() : 'ENT_COMPAT'; 
+    useQuoteStyle = !isNaN(quote_style) ? constMappingQuoteStyle[quote_style] : quote_style ? quote_style.toUpperCase() : 'ENT_COMPAT';
     if (useTable !== 'HTML_SPECIALCHARS' && useTable !== 'HTML_ENTITIES') {
         throw new Error("Table: " + useTable + ' not supported');
         // return false;
-    } 
+    }
     entities['38'] = '&amp;';
     if (useTable === 'HTML_ENTITIES') {
         entities['160'] = '&nbsp;';
@@ -1633,7 +1633,7 @@ function get_html_translation_table (table, quote_style) {
         entities['253'] = '&yacute;';
         entities['254'] = '&thorn;';
         entities['255'] = '&yuml;';
-    } 
+    }
     if (useQuoteStyle !== 'ENT_NOQUOTES') {
         entities['34'] = '&quot;';
     }
@@ -1641,13 +1641,13 @@ function get_html_translation_table (table, quote_style) {
     }
     entities['60'] = '&lt;';
     entities['62'] = '&gt;';
-  
+
     // ascii decimals to real symbols
     for (decimal in entities) {
         if (entities.hasOwnProperty(decimal)) {
             hash_map[String.fromCharCode(decimal)] = entities[decimal];        }
     }
- 
+
     return hash_map;
 }
 
@@ -1892,22 +1892,22 @@ function PMOS_TemporalMessage(timeToHide){
 
 /**
  * fast messagesbox
- * 
+ *
  * @Param msg (string) : your message
  * @Param type (string): {alert|info|confirm}
- * @Param type (string):  xcallback, callback function name to execute after at user click on Accept  
+ * @Param type (string):  xcallback, callback function name to execute after at user click on Accept
  * @Author <erik@colosa.com>
  */
 
 function msgBox(msg, type, callbackAccept, callbackCancel){
-	
+
 	//setting default type
 	type = typeof(type) != 'undefined'? type: 'info';
-	
+
 	//setting up the callback action
 	acceptEv = typeof(callbackAccept) != 'undefined'? callbackAccept: false;
 	cancelEv = typeof(callbackCancel) != 'undefined'? callbackCancel: false;
-	
+
 	switch(type){
 		case 'alert':
 		    new leimnud.module.app.alert().make({
@@ -1954,9 +1954,9 @@ function msgBox(msg, type, callbackAccept, callbackCancel){
 				  }.extend(this)
 			  });
 			}
-			break;	
+			break;
 	}
-	
+
 }
 
 
@@ -1966,8 +1966,8 @@ function executeEvent(id, ev){
 			document.getElementById(id).checked = true;
 			if(document.getElementById(id).onclick){
 				try{
-					document.getElementById(id).onclick(); 
-			    }catch(e){} 
+					document.getElementById(id).onclick();
+			    }catch(e){}
 			}
 			break;
 	}
@@ -2002,7 +2002,7 @@ function getClientWindowSize() {
 
 function popUp(URL, width, height, left, top, resizable) {
     window.open(URL, '', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=1,resizable='+resizable+',width='+width+',height='+height+',left = '+left+',top = '+top+'');
-}    
+}
 
 /**
  * Alias for tedious large definition for ajax object - By Erik A.O. <erik@colosa.com>
@@ -2016,12 +2016,12 @@ function removeValue(id){
     document.getElementById('form['+id+']').value = '';
   else if( document.getElementById(id) )
     document.getElementById(id).value = '';
-    
+
   fireEvent(document.getElementById(id), 'change');
 }
 
 function datePicker4(obj, id, mask, startDate, endDate, showTIme, idIsoDate)
-{  
+{
   if (showTIme=='false') {
     showTIme = false;
   }
@@ -2063,7 +2063,7 @@ function fireEvent(element, event)
   }
 }
 
-function elementAttributesNS(e, ns) 
+function elementAttributesNS(e, ns)
 {
   if (!this.__namespaceRegexps)
     this.__namespaceRegexps = {};
@@ -2083,7 +2083,7 @@ function elementAttributesNS(e, ns)
   return result;
 }
 
-/** 
+/**
  * Translator function for internationalization
  */
 function _()
@@ -2093,23 +2093,31 @@ function _()
 
   if( typeof TRANSLATIONS != 'undefined' && TRANSLATIONS) {
     if( typeof TRANSLATIONS[argv[0]] != 'undefined' ) {
-      if (argc > 1) {        
+      if (argc > 1) {
         trn = TRANSLATIONS[argv[0]];
         for (i = 1; i < argv.length; i++) {
           trn = trn.replace('{'+(i-1)+'}', argv[i]);
         }
       }
       else {
-        trn = TRANSLATIONS[argv[0]]; 
+        trn = TRANSLATIONS[argv[0]];
       }
-    } 
+    }
     else {
       trn = '**' + argv[0] + '**';
     }
-  } 
+  }
   else {
     PMExt.error('Processmaker JS Core Error', 'The TRANSLATIONS global object is not loaded!');
     trn = '';
   }
   return trn;
 }
+
+var mb_strlen = function(str) {
+    var len = 0;
+    for (var i = 0; i < str.length; i++) {
+        len += str.charCodeAt(i) < 0 || str.charCodeAt(i) > 255 ? 2 : 1;
+    }
+    return len;
+};

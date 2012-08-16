@@ -1368,7 +1368,7 @@ var processmap=function(){
         /* Change label End */
         var menu = new this.parent.module.app.menuRight();
         var textMenu = G_STRINGS.ID_PROCESSMAP_USERS_AND_GROUPS_ADHOC;
-        var lengthText = textMenu.length * 0.60;
+        var lengthText = mb_strlen(textMenu) * 0.60;
 
         menu.make({
           target: a,
