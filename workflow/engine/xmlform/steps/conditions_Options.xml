@@ -9,15 +9,15 @@
 <JS type="javascript" replaceTags="1">
 function editCondition(uid, sStepTitle)
 {
-  popupWindow('@G::LoadTranslation(ID_EDIT_CONDITIONS_OF_STEP)' + ': ' + sStepTitle, '@G::encryptLink(@#URL_CONDITIONS_EDIT)?UID='+ uid , 500, 216);
+    popupWindow("@G::LoadTranslation(ID_EDIT_CONDITIONS_OF_STEP)" + ": " + sStepTitle, "@G::encryptLink(@#URL_CONDITIONS_EDIT)?UID=" + uid , 535, 240);
 }
 
 function saveCondition(oForm)
 {
-  ajax_post(oForm.action, oForm, 'POST');
-  currentPopupWindow.remove();
-  @#PAGED_TABLE_ID.refresh();
+    ajax_post(oForm.action, oForm, "POST");
+    currentPopupWindow.remove();
+    @#PAGED_TABLE_ID.refresh();
 }
 </JS>
 
-</dynaForm>  
+</dynaForm>

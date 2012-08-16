@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm name="dynaforms_Edit" type="xmlform" width="98%" labelWidth="62px">
+<dynaForm name="dynaforms_Edit" type="xmlform" width="98%" labelWidth="400px">
 
 <STEP_UID type="hidden" showInTable="0"/>
 
@@ -7,7 +7,7 @@
 
 <TAS_UID type="hidden" showInTable="0"/>
 
-<STEP_CONDITION type="textareapm" cols="62" rows="5" showVars="1" process="@#PRO_UID">
+<STEP_CONDITION type="textareapm" cols="50" rows="5" showVars="1" process="@#PRO_UID">
   <en>Condition</en>
 </STEP_CONDITION>
 
@@ -71,4 +71,4 @@ var insertFormVar = function(sFieldName, sValue) {
 
 ]]></JS>
 
-</dynaForm>  
+</dynaForm>
