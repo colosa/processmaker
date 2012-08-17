@@ -58,7 +58,7 @@ if ($RBAC->userCanAccess('PM_SETUP') == 1) {
   $G_TMP_MENU->AddIdRawOption('PM_TABLES', '../pmTables', G::LoadTranslation('ID_ADDITIONAL_TABLES'), 'icon-tables.png','', 'settings');
 
   $G_TMP_MENU->AddIdRawOption('WEBSERVICES', 'webServices', G::LoadTranslation('ID_WEB_SERVICES'), 'icon-webservices.png', '', 'settings');
-  $G_TMP_MENU->AddIdRawOption('LOG_CASE_SCHEDULER', '../cases/cases_Scheduler_Log', G::LoadTranslation('ID_LOG_CASE_SCHEDULER'), "icon-logs-list.png",'', 'settings');
+  //$G_TMP_MENU->AddIdRawOption('LOG_CASE_SCHEDULER', '../cases/cases_Scheduler_Log', G::LoadTranslation('ID_LOG_CASE_SCHEDULER'), "icon-logs-list.png",'', 'settings');
   $G_TMP_MENU->AddIdRawOption('LOGIN', 'loginSettings', G::LoadTranslation('LOGIN'), "",'', 'settings');
   $G_TMP_MENU->AddIdRawOption('DASHBOARD', '../dashboard/dashletsList', ucfirst(G::LoadTranslation('ID_DASHBOARD')), '', '', 'settings');
 }
@@ -80,6 +80,11 @@ if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1) {
   $G_TMP_MENU->AddIdRawOption('AUTHSOURCES', '../authSources/authSources_List', G::LoadTranslation('ID_AUTH_SOURCES'), '', '', 'users');
   $G_TMP_MENU->AddIdRawOption('UX', '../admin/uxList', G::LoadTranslation('ID_USER_EXPERIENCE'), '', '', 'users');
   $G_TMP_MENU->AddIdRawOption('SYSTEM', '../admin/system', G::LoadTranslation('ID_SYSTEM'), '', '', 'settings');
+}
+
+if ($RBAC->userCanAccess('PM_SETUP') == 1) {
+    $G_TMP_MENU->AddIdRawOption('EVENT', '../events/eventList', G::LoadTranslation('ID_EVENTS'), '', '', 'logs');
+    $G_TMP_MENU->AddIdRawOption('LOG_CASE_SCHEDULER', '../cases/cases_Scheduler_Log', G::LoadTranslation('ID_LOG_CASE_SCHEDULER'), "icon-logs-list.png",'', 'logs');
 }
 
 

@@ -63,17 +63,19 @@ try {
   $sOption = $_POST['form']['SCH_OPTION'];
   $aData['SCH_OPTION']        = $sOption;
 
-  if ($_POST['form']['SCH_START_DATE']!=''){
-    $sDateTmp = $_POST['form']['SCH_START_DATE'];
-  } else {
-    $sDateTmp = date('Y-m-d');
-  }
-  $sTimeTmp = $_POST['form']['SCH_START_TIME'];
-  $aData['SCH_START_TIME']    = date('Y-m-d', strtotime($sDateTmp)) . ' ' . date('H:i:s', strtotime($sTimeTmp));
-  $aData['SCH_START_DATE']    = date('Y-m-d', strtotime($sDateTmp)) . ' ' . date('H:i:s', strtotime($sTimeTmp));
 
-  $nActualTime = $_POST['form']['SCH_START_TIME']; // time();
-  // $nActualDate = date("Y-m-d  H:i:s", $nActualTime);
+
+    if ($_POST['form']['SCH_START_DATE']!=''){
+          $sDateTmp = $_POST['form']['SCH_START_DATE'];
+    } else {
+          $sDateTmp = date('Y-m-d');
+    }
+    $sTimeTmp = $_POST['form']['SCH_START_TIME'];
+    $aData['SCH_START_TIME']    = date('Y-m-d', strtotime($sDateTmp)) . ' ' . date('H:i:s', strtotime($sTimeTmp));
+    $aData['SCH_START_DATE']    = date('Y-m-d', strtotime($sDateTmp)) . ' ' . date('H:i:s', strtotime($sTimeTmp));
+    
+    $nActualTime = $_POST['form']['SCH_START_TIME']; // time();
+    // $nActualDate = date("Y-m-d  H:i:s", $nActualTime);
 
   $sValue = '';
   $sDaysPerformTask = '';
@@ -161,7 +163,8 @@ try {
       	
 
   }
-  if(($sOption!='1') && ($sOption!='4'))  {
+  echo "<br>sOption: ".$sOption;
+  if(($sOption!='1') && ($sOption!='4') && ($sOption!='5') )  {
     if ($sStartDay==''){
       $sStartDay = date('Y-m-d');
     }
@@ -190,8 +193,17 @@ try {
       $aData['SCH_END_DATE'] = $aData['SCH_START_TIME'];
     }
     $aData['SCH_TIME_NEXT_RUN'] = $aData['SCH_START_TIME'];
+    if ($sOption == 5) {
+        $aData['SCH_START_TIME'] = time();
+        $aData['SCH_START_DATE'] = $aData['SCH_START_TIME'];
+        $nextRun = $_POST['form']['SCH_REPEAT_EVERY']*60*60;
+        $aData['SCH_REPEAT_EVERY'] = $_POST['form']['SCH_REPEAT_EVERY'];
+        $date = $aData['SCH_START_TIME'];
+        $date += $nextRun;
+        $date = date("Y-m-d H:i", $date );
+        $aData['SCH_TIME_NEXT_RUN'] = $date;
+    }
   }
-
   if(trim($_POST['form']['SCH_END_DATE'])!=''){
     $aData['SCH_END_DATE'] = $_POST['form']['SCH_END_DATE'];
   }

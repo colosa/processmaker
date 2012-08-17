@@ -346,6 +346,8 @@ class CaseScheduler extends BaseCaseScheduler {
         case '4' :
           $aRow ['SCH_STATE'] = 'PROCESSED';
           break;
+        case '5' :
+          break;
 
       }
 
@@ -505,7 +507,7 @@ class CaseScheduler extends BaseCaseScheduler {
         $newCaseLog->saveLogParameters ( $paramsLog );
         $newCaseLog->save ();
 
-        if ($sOption != '4') {
+        if ($sOption != '4' && $sOption != '5') {
           $nSchLastRunTime = $sActualTime;
 
           $dEstimatedDate = $this->updateNextRun ( $sOption, $sValue, $sActualTime, $sDaysPerformTask, $sWeeks, $sStartDay, $sMonths );
@@ -521,12 +523,14 @@ class CaseScheduler extends BaseCaseScheduler {
 
           $nSchTimeNextRun = $dEstimatedDate;
           $this->updateDate ( $sSchedulerUid, $nSchTimeNextRun, $nSchLastRunTime );
-        } else {
+        } elseif($sOption != '5'){
           $Fields = $this->Load ( $sSchedulerUid );
           $Fields ['SCH_LAST_STATE'] = $aRow ['SCH_STATE'];
           $Fields ['SCH_LAST_RUN_TIME'] = $Fields ['SCH_TIME_NEXT_RUN'];
           $Fields ['SCH_STATE'] = 'PROCESSED';
           $this->Update ( $Fields );
+        } else {
+          
         }
       } else if ($sActualDataHour == $dActualSysHour && $sActualDataMinutes <= $dActualSysMinutes) {
 
@@ -629,7 +633,7 @@ class CaseScheduler extends BaseCaseScheduler {
         $newCaseLog->saveLogParameters ( $paramsLog );
         $newCaseLog->save ();
 
-        if ($sOption != '4') {
+        if ($sOption != '4' && $sOption != '5') {
           $nSchLastRunTime = $sActualTime;
 
           $dEstimatedDate = $this->updateNextRun ( $sOption, $sValue, $sActualTime, $sDaysPerformTask, $sWeeks, $sStartDay, $sMonths );
@@ -646,12 +650,24 @@ class CaseScheduler extends BaseCaseScheduler {
           $nSchTimeNextRun = $dEstimatedDate;
            
           $this->updateDate ( $sSchedulerUid, $nSchTimeNextRun, $nSchLastRunTime );
-        } else {
+        } elseif ($sOption != '5'){
           $Fields = $this->Load ( $sSchedulerUid );
           $Fields ['SCH_LAST_STATE'] = $aRow ['SCH_STATE'];
           $Fields ['SCH_LAST_RUN_TIME'] = $Fields ['SCH_TIME_NEXT_RUN'];
           $Fields ['SCH_STATE'] = 'PROCESSED';
           $this->Update ( $Fields );
+        } else {
+          $nSchLastRunTime = $sActualTime;
+          $Fields = $this->Load ( $sSchedulerUid );
+          $Fields ['SCH_LAST_RUN_TIME'] = $Fields ['SCH_TIME_NEXT_RUN'];
+
+          $nSchTimeNextRun = strtotime($Fields ['SCH_TIME_NEXT_RUN']);
+          $nextRun = $Fields ['SCH_REPEAT_EVERY']*60*60;
+          $nSchTimeNextRun += $nextRun;
+          $nSchTimeNextRun = date("Y-m-d H:i", $nSchTimeNextRun );
+                
+                
+          $this->updateDate ( $sSchedulerUid, $nSchTimeNextRun, $nSchLastRunTime );
         }
       }
 

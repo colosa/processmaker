@@ -56,6 +56,7 @@
 <option name="2">Weekly</option>
 <option name="3">Monthly</option>
 <option name="4">One time only</option>
+<option name="5">Every</option>
 </en>
 </SCH_OPTION>
 
@@ -63,7 +64,7 @@
 <en>Select the date and time for case(s) to be initiated.</en>
 </SELECT_TIME_DAY>
 
-<SCH_START_TIME type="text" maxlength="5" validate="Any" mask="##:##" required="1" readonly="0" size="5" mode="edit" strto="" dependentfields=""  defaultvalue="" hint="" formula="" function=""  sqlconnection="" savelabel="0">
+<SCH_START_TIME type="text" maxlength="5" validate="Any" mask="##:##" required="0" readonly="0" size="5" mode="edit" strto="" dependentfields=""  defaultvalue="" hint="" formula="" function=""  sqlconnection="" savelabel="0">
 <en>Execution time</en>
 </SCH_START_TIME>
 
@@ -103,6 +104,7 @@
 <SCH_EVERY_DAYS type="text" maxlength="2" defaultValue="1" validate="Int" required="0" readonly="0" size="2" mode="edit">
 <en>Every</en>
 </SCH_EVERY_DAYS>
+
 <SCH_WEEK_DAYS type="checkgroup" required="0" mode="edit" options="Array" COLS="2" defaultvalue="" hint="" sqlconnection="" readonly="0" savelabel="0">
 <en>Select the day(s) of the week below
 		<option name="1">Monday</option>
@@ -198,9 +200,16 @@
 <SCH_REPEAT_TASK_CHK type="checkbox" value="On" falsevalue="Off" defaultvalue="Off" labelonright="1" enablehtml="1">
 <en>Repeat Task</en>
 </SCH_REPEAT_TASK_CHK>
-<SCH_REPEAT_EVERY type="text" maxlength="4" validate="Int" required="0" readonly="0" size="4" mode="edit">
-<en>Every</en>
+<!--<SCH_REPEAT_EVERY type="text" maxlength="4" validate="Int" required="0" readonly="0" size="4" mode="edit">-->
+<!--<en>Every</en>-->
+<!--</SCH_REPEAT_EVERY>-->
+<SCH_REPEAT_EVERY type="text" maxlength="5" validate="Real" mask="##.##" required="0" readonly="0" size="5" mode="edit">
+<en>Execute every</en>
 </SCH_REPEAT_EVERY>
+<!--<SCH_REPEAT_EVERY type="text" maxlength="5" validate="Any" mask="##:##" required="0" readonly="0" size="5" mode="edit" strto="" dependentfields=""  defaultvalue_sel="empty" hint="" formula="" function=""  sqlconnection="" savelabel="0">-->
+<!--<en>Every</en>-->
+<!--</SCH_REPEAT_EVERY>-->
+<!--SCH_START_TIME-->
 
 <SCH_ADVANCED type="hidden" >
 <en></en>
@@ -286,7 +295,8 @@ contractSubtitle('SELECT_PLUGIN');
 	document.getElementById('form[SELECT_1]').style.display='none';
 	document.getElementById('form[SELECT_2]').style.display='none';
 	document.getElementById('form[SELECT_3]').style.display='none';
-
+    document.getElementById('startTime').style.display='none';
+    document.getElementById('everyTime').style.display='none';
 
 }
 
@@ -352,7 +362,10 @@ function showSelection(opt) {
       contractSubtitle('SELECT_3');
       //document.getElementById('form[ADVANCED_4]').style.display='';
       //expandSubtitle('ADVANCED_4');
+      
       document.getElementById('endDateTable').style.display='';
+      document.getElementById('startTime').style.display='';
+      document.getElementById('everyTime').style.display='none';
     break;
 		case '2' : // Weekly
       contractSubtitle('SELECT_DATE');
@@ -361,8 +374,11 @@ function showSelection(opt) {
       contractSubtitle('SELECT_3');
       //document.getElementById('form[ADVANCED_4]').style.display='';
       hideRow('SCH_EVERY_DAYS');
-      document.getElementById('endDateTable').style.display='';
       //expandSubtitle('ADVANCED_4');
+      
+      document.getElementById('endDateTable').style.display='';
+      document.getElementById('startTime').style.display='';
+      document.getElementById('everyTime').style.display='none';
     break;
 		case '3' : // Monthly
       contractSubtitle('SELECT_DATE');
@@ -376,20 +392,36 @@ function showSelection(opt) {
       getField('SCH_START_DAY_OPT_2_WEEKS').style.display="none";
       getField('SCH_START_DAY_OPT_2_DAYS_WEEK').disabled=true;
       getField('SCH_START_DAY_OPT_2_DAYS_WEEK').style.display="none";
+      
       document.getElementById('endDateTable').style.display='';
+      document.getElementById('startTime').style.display='';
+      document.getElementById('everyTime').style.display='none';
       //expandSubtitle('ADVANCED_4');
     break;
-		case '4' : // One time only
+    case '4' : // One time only
       expandSubtitle('SELECT_DATE');
       contractSubtitle('SELECT_1');
       contractSubtitle('SELECT_2');
       contractSubtitle('SELECT_3');
+      
       document.getElementById('endDateTable').style.display='none';
+      document.getElementById('startTime').style.display='';
+      document.getElementById('everyTime').style.display='none';
       //document.getElementById('form[ADVANCED_4]').style.display='';
 
       //expandSubtitle('ADVANCED_4');
     break;
-		}
+    case '5' : // Every
+      contractSubtitle('SELECT_DATE');
+      contractSubtitle('SELECT_1');
+      contractSubtitle('SELECT_2');
+      contractSubtitle('SELECT_3');
+      
+      document.getElementById('endDateTable').style.display='none';
+      document.getElementById('startTime').style.display='none';
+      document.getElementById('everyTime').style.display='';
+    break;
+  }
 }
 
 
@@ -493,6 +525,24 @@ leimnud.event.add(getField('SCH_START_TIME'), 'change', function() {
         getField('SCH_START_TIME').value='';
         //getField('SCH_REPEAT_UNTIL').value='';
         //getField('SCH_REPEAT_UNTIL').focus();
+        getField('SAVE').focus();
+    }
+});
+
+leimnud.event.add(getField('SCH_REPEAT_EVERY'), 'change', function() {
+    hours = getField('SCH_REPEAT_EVERY').value;
+    answer = hours;
+    var parties = answer.split('.');
+
+    if(parties[0]>23){
+        msgBox(G_STRINGS.ID_SCHEDULER_CANT_PUT_TIME, 'alert');
+        getField('SCH_REPEAT_EVERY').value='';
+        getField('SAVE').focus();
+
+    }
+    if(parties[1]>99){
+        msgBox('The minutes can not be greater than 99', 'alert');
+        getField('SCH_REPEAT_EVERY').value='';
         getField('SAVE').focus();
     }
 });
@@ -606,13 +656,20 @@ endDate   = new Date(endDate[0],endDate[1],endDate[2]);
     // for time format hh:mm
     var regExpString = "([0-1]\\d|2[0-3]):([0-5]\\d)";
     var timeRegexp = new RegExp(regExpString);
-    if (!timeRegexp.test(document.getElementById('form[SCH_START_TIME]').value)){
-      msgBox('The time format is invalid','alert');
-      return false;
-    }
-    if (document.getElementById('form[SCH_START_TIME]').value==''){
-        requiredFields = requiredFields + 'Execution Time,';
-        validFields = false;
+    if (document.getElementById('form[SCH_OPTION]').value != 5) {
+      if (!timeRegexp.test(document.getElementById('form[SCH_START_TIME]').value)){
+        msgBox('The time format is invalid','alert');
+        return false;
+      }
+      if (document.getElementById('form[SCH_START_TIME]').value==''){
+          requiredFields = requiredFields + 'Execution Time,';
+          validFields = false;
+      }
+    } else {
+      if (document.getElementById('form[SCH_REPEAT_EVERY]').value==''){
+          requiredFields = requiredFields + 'Every,';
+          validFields = false;
+      }
     }
     switch(document.getElementById('form[SCH_OPTION]').value){
         // daily
@@ -690,6 +747,12 @@ endDate   = new Date(endDate[0],endDate[1],endDate[2]);
                 validFields = true;
 
         break;
+        //run every
+        case '5':
+
+                validFields = true;
+
+        break;
         default:
             validFields = false;
         break;
@@ -745,8 +808,8 @@ leimnud.event.add(getField('SCH_REPEAT_TASK_CHK'), 'click', function() {
 		// enable(getField('SCH_REPEAT_UNTIL'));
 		// enable(getField('SCH_REPEAT_STOP_IF_RUNNING'));
 	}	else {
-		disable(getField('SCH_REPEAT_EVERY'));
-		disable(getField('SCH_REPEAT_EVERY_OPT'));
+		<!--disable(getField('SCH_REPEAT_EVERY'));-->
+		<!--disable(getField('SCH_REPEAT_EVERY_OPT'));-->
 		// disable(getField('SCH_REPEAT_UNTIL'));
 		// disable(getField('SCH_REPEAT_STOP_IF_RUNNING'));
 	}

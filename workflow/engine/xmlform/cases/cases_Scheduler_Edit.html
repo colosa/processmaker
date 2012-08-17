@@ -96,8 +96,30 @@
               </td>
               </tr>
               <tr>
-              <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font> {$SCH_START_TIME} </td>
-              <td class="FormFieldContent">{$form.SCH_START_TIME}</td>
+              <td class="FormSubTitle" colspan="2" id="form[SELECT_EVERY]" align="">
+                <span>{$form.SELECT_EVERY}</span>
+              </td>
+              </tr>
+              <tr>
+              <tr>
+                <td  colspan="2" align="center">
+                <table id="startTime" border="0" style="width: 100%">
+                    <tr>
+                        <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font> {$SCH_START_TIME}</td>
+                        <td class="FormFieldContent">{$form.SCH_START_TIME} format 24 hrs. (HH:MM) </td>
+                    </tr>
+                </table>
+                </td>
+              </tr>
+              <tr>
+                <td  colspan="2" align="center">
+                <table id="everyTime" border="0" style="width: 100%">
+                    <tr>
+                        <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font> {$SCH_REPEAT_EVERY}</td>
+                        <td class="FormFieldContent">{$form.SCH_REPEAT_EVERY} hour(s). </td>
+                    </tr>
+                </table>
+                </td>
               </tr>
               <tr>
               <td class="FormSubTitle" colspan="2" id="form[SELECT_DATE]" align="">
@@ -197,11 +219,11 @@
               <td style="display:none;">{$form.SCH_REPEAT_TASK_CHK}</td>
              </tr>
                                                 <tr>
-              <td style="display:none;" class="FormLabel" width="{$form_labelWidth}">{$SCH_REPEAT_EVERY}</td>
+              <!--<td style="display:none;" class="FormLabel" width="{$form_labelWidth}">{$SCH_REPEAT_EVERY}</td>-->
               <td style="display:none;" class="FormFieldContent">
               	<table style="width: 100%" style="display:none;">
 													<tr>
-														<td style="width: 30%"> {$form.SCH_REPEAT_EVERY} </td>
+														<!--<td style="width: 30%"> {$form.SCH_REPEAT_EVERY} </td>-->
 														<td > {$form.SCH_REPEAT_EVERY_OPT} {$SCH_REPEAT_EVERY_OPT} </td>
 													</tr>
 												</table>

@@ -5,22 +5,10 @@
   <en>New</en>
 </MNU_ADD>
 
-<MNU_PENDING type="link" value="" link="#" onclick="eventsPending(); return false;" colAlign="left" colWidth="100">
-  <en>Pending</en>
-</MNU_PENDING>
-
-<MNU_COMPLETED type="link" value="" link="#" onclick="eventsCompleted(); return false;" colAlign="left" colWidth="100">
-  <en>Completed</en>
-</MNU_COMPLETED>
-
 <PRO_UID type="private"/>
 <EVN_TYPE type="private"/>
 
 <eventsNew type="private" defaultValue="../events/eventsNew"/>
-
-<eventsPending type="private" defaultValue="../events/eventsPending"/>
-
-<eventsCompleted type="private" defaultValue="../events/eventsCompleted"/>
 
 <eventsEdit type="private" defaultValue="../events/eventsEdit"/>
 
@@ -45,14 +33,6 @@ var triggerSave = function (form){
   
 var eventsNew = function() {
   popupWindow('@G::LoadTranslation(ID_NEW_EVENT)', '@G::encryptlink(@#eventsNew)?PRO_UID=@%PRO_UID&EVN_TYPE=@%EVN_TYPE' , 540, 500);
-};
-
-var eventsPending = function() {
-  popupWindow('@G::LoadTranslation(ID_PENDING)', '@G::encryptlink(@#eventsPending)?PRO_UID=@%PRO_UID&EVN_TYPE=@%EVN_TYPE' , 800, 400);
-};
-
-var eventsCompleted = function() {
-  popupWindow('@G::LoadTranslation(ID_COMPLETED)', '@G::encryptlink(@#eventsCompleted)?PRO_UID=@%PRO_UID&EVN_TYPE=@%EVN_TYPE' , 800, 400);
 };
 
 var eventsEdit = function(sUID) {

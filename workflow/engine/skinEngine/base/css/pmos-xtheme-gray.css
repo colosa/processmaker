@@ -769,6 +769,12 @@ antes funcionaba.
 	background-position:0 -17011px !important;
 }
 
+.ICON_EVENT{
+	/*ss_table_gear*/
+	background-image:url( /images/icons_silk/sprites.png) !important;
+	background-position:0 -15517px !important;
+}
+
 .ICON_PROCESS_CATEGORY{
 	/*ss_sitemap_color*/
 	background-image:url( /images/icons_silk/sprites.png) !important;
