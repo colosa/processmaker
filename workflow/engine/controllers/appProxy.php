@@ -19,10 +19,10 @@ class AppProxy extends HttpProxyController
   {
     require_once ( "classes/model/AppNotes.php" );
     $appUid = null;
-    
+
     if (isset($httpData->appUid) && trim($httpData->appUid) != "") {
       $appUid = $httpData->appUid;
-    } 
+    }
     else {
       if (isset($_SESSION['APPLICATION'])) {
         $appUid = $_SESSION['APPLICATION'];
@@ -36,7 +36,7 @@ class AppProxy extends HttpProxyController
     $usrUid   = isset($_SESSION['USER_LOGGED']) ? $_SESSION['USER_LOGGED'] : "";
     $appNotes = new AppNotes();
     $response = $appNotes->getNotesList($appUid, '', $httpData->start, $httpData->limit);
-    
+
     return $response['array'];
   }
 
@@ -45,16 +45,16 @@ class AppProxy extends HttpProxyController
    * @param string $httpData->appUid (optional, if it is not passed try use $_SESSION['APPLICATION'])
    * @return array containg the case notes
    */
-  function postNote($httpData) 
+  function postNote($httpData)
   {
     //extract(getExtJSParams());
     if (isset($httpData->appUid) && trim($httpData->appUid) != "") {
       $appUid = $httpData->appUid;
-    } 
+    }
     else {
       $appUid = $_SESSION['APPLICATION'];
     }
-    
+
     if (!isset($appUid)) {
       throw new Exception('Can\'t resolve the Apllication ID for this request.');
     }
@@ -67,10 +67,10 @@ class AppProxy extends HttpProxyController
 
     $result = $appNotes->postNewNote($appUid, $usrUid, $noteContent, false);
 
-    // Disabling the controller response because we handle a special behavior
+    //Disabling the controller response because we handle a special behavior
     $this->setSendResponse(false);
 
-    //send the response to client
+    //Send the response to client
     @ini_set('implicit_flush', 1);
     ob_start();
     echo G::json_encode($result);
@@ -79,26 +79,31 @@ class AppProxy extends HttpProxyController
     @ob_end_flush();
     ob_implicit_flush(1);
 
-    //send notification in background
-    $noteRecipientsList = array();
-    G::LoadClass('case');
-    $oCase = new Cases();
+    //Send notification in background
+    if (intval($httpData->swSendMail) == 1) {
+        G::LoadClass("case");
 
-    $p = $oCase->getUsersParticipatedInCase($appUid);
-    foreach($p['array'] as $key => $userParticipated){
-      $noteRecipientsList[] = $key;
+        $oCase = new Cases();
+
+        $p = $oCase->getUsersParticipatedInCase($appUid);
+        $noteRecipientsList = array();
+
+        foreach ($p["array"] as $key => $userParticipated) {
+            $noteRecipientsList[] = $key;
+        }
+
+        $noteRecipients = implode(",", $noteRecipientsList);
+        $noteContent = stripslashes($noteContent);
+
+        $appNotes->sendNoteNotification($appUid, $usrUid, $noteContent, $noteRecipients);
     }
-    $noteRecipients = implode(",", $noteRecipientsList);
-    $noteContent = stripslashes($noteContent);
-
-    $appNotes->sendNoteNotification($appUid, $usrUid, $noteContent, $noteRecipients);
   }
 
   /**
    * request to open the case summary
    * @param string $httpData->appUid
    * @param string $httpData->delIndex
-   * @return object bool $result->succes, string $result->message(is an exception was thrown), string $result->dynUid 
+   * @return object bool $result->succes, string $result->message(is an exception was thrown), string $result->dynUid
    */
   function requestOpenSummary($httpData)
   {
@@ -125,7 +130,7 @@ class AppProxy extends HttpProxyController
     $applicationFields = $case->loadCase($httpData->appUid, $httpData->delIndex);
     $process = new Process();
     $processData = $process->load($applicationFields['PRO_UID']);
-    
+
     if (isset($processData['PRO_DYNAFORMS']['PROCESS'])) {
       $this->dynUid = $processData['PRO_DYNAFORMS']['PROCESS'];
     }
@@ -141,7 +146,7 @@ class AppProxy extends HttpProxyController
 
   /**
    * get the case summary data
-   * @param string $httpData->appUid 
+   * @param string $httpData->appUid
    * @param string $httpData->delIndex
    * @return array containg the case summary data
    */
@@ -186,7 +191,7 @@ class AppProxy extends HttpProxyController
     // note added by krlos pacha carlos[at]colosa[dot]com
     //getting this field if it doesn't exist. Related 7994 bug
     $taskData['TAS_TITLE'] = (array_key_exists('TAS_TITLE', $taskData))?$taskData['TAS_TITLE']:Content::Load("TAS_TITLE", "", $applicationFields['TAS_UID'], SYS_LANG);
-    
+
     $data[] = array('label'=>$labels['TAS_TITLE'] ,         'value' => $taskData['TAS_TITLE'],                 'section'=>$labels['TITLE2']);
     $data[] = array('label'=>$labels['CURRENT_USER'] ,      'value' => $currentUser,                           'section'=>$labels['TITLE2']);
     $data[] = array('label'=>$labels['DEL_DELEGATE_DATE'] , 'value' => $applicationFields['DEL_DELEGATE_DATE'],'section'=>$labels['TITLE2']);
@@ -199,3 +204,4 @@ class AppProxy extends HttpProxyController
   }
 
 }
+

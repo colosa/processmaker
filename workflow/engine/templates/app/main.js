@@ -5,6 +5,8 @@ var appUid;
 var title;
 var summaryWindowOpened = false;
 
+var toolTipChkSendMail;
+
 function closeCaseNotesWindow(){
   if(Ext.get("caseNotesWindowPanel")){
     Ext.get("caseNotesWindowPanel").destroy();
@@ -119,7 +121,7 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle)
   caseNotesWindow = new Ext.Window({
     title: _('ID_CASES_NOTES'), //Title of the Window
     id: 'caseNotesWindowPanel', //ID of the Window Panel
-    width:300, //Width of the Window
+    width: 350, //Width of the Window
     resizable: true, //Resize of the Window, if false - it cannot be resized
     closable: true, //Hide close button of the Window
     modal: modalSw, //When modal:true it make the window modal and mask everything behind it when displayed
@@ -153,7 +155,7 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle)
           xtype  : 'textarea',
           id     : 'caseNoteText',
           name   : 'caseNoteText',
-          width  : 280,
+          width  : 330,
           grow   : true,
           height : 40,
           growMin: 40,
@@ -171,6 +173,13 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle)
       ],
     rowtbar: [
       [
+        {
+            xtype: "checkbox",
+            id: "chkSendMail",
+            name: "chkSendMail",
+            checked: true,
+            boxLabel: _("ID_CASE_NOTES_LABEL_SEND")
+        },
         '->',
         '<span id="countChar">500</span>',
         ' ',
@@ -220,6 +229,14 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle)
     }
   });
 
+  toolTipChkSendMail = new Ext.ToolTip({
+      dismissDelay: 3000, //auto hide after 3 seconds
+      title: _("ID_CASE_NOTES_HINT_SEND"),
+      //html "",
+      //text: "",
+      width: 200
+  });
+
   newNoteAreaActive = false;
   caseNotesWindow.show();
   newNoteHandler();
@@ -253,17 +270,21 @@ function newNoteHandler()
     Ext.getCmp('addCancelBtn').setIcon('/images/comment_add.gif');
 
     caseNotesWindow.getTopToolbar().hide();
-    Ext.getCmp('sendBtn').hide();
+    Ext.getCmp("chkSendMail").hide();
+    Ext.getCmp("sendBtn").hide();
     document.getElementById('countChar').style.display = 'none';
     caseNotesWindow.doLayout();
   }
   else {
+    toolTipChkSendMail.initTarget("chkSendMail");
+
     Ext.getCmp('addCancelBtn').setText('');
     Ext.getCmp('addCancelBtn').setTooltip({title: _('ID_CASES_NOTES_CANCEL')});
     Ext.getCmp('addCancelBtn').setIcon('/images/cancel.png');
 
     caseNotesWindow.getTopToolbar().show();
-    Ext.getCmp('sendBtn').show();
+    Ext.getCmp("chkSendMail").show();
+    Ext.getCmp("sendBtn").show();
     document.getElementById('countChar').style.display = 'block';
     Ext.getCmp('caseNoteText').focus();
     Ext.getCmp('caseNoteText').reset();
@@ -290,8 +311,9 @@ function sendNote()
   Ext.Ajax.request({
     url : '../appProxy/postNote' ,
     params : {
-      appUid  : appUid,
-      noteText: noteText
+      appUid: appUid,
+      noteText: noteText,
+      swSendMail: (Ext.getCmp("chkSendMail").checked == true)? 1 : 0
     },
     success: function ( result, request ) {
       var data = Ext.util.JSON.decode(result.responseText);
@@ -427,7 +449,7 @@ var openSummaryWindow = function(appUid, delIndex)
       summaryWindowOpened = false;
     },
     failure: function (result, request) {
-      summaryWindowOpened = false;      
+      summaryWindowOpened = false;
     }
   });
 }
@@ -463,3 +485,4 @@ Ext.Panel.prototype.onRender = function(ct, position) {
         }
     }
 }
+
