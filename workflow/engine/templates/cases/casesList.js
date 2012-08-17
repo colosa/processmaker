@@ -1503,23 +1503,23 @@ Ext.onReady ( function() {
   ];
 
   var toolbarToReassign = [
-    optionMenuOpen,
-    '-',
-    btnSelectAll,
-    btnUnSelectAll,
-    '-',
-    btnReassign,
-    '->',
-    'user',
-    comboAllUsers,
-    '-',
-    _('ID_PROCESS'),
-    comboProcess,
-    textSearch,
-    resetSearchButton,
-    btnSearch,
-    ' ',
-    ' '
+      optionMenuOpen,
+      "-",
+      btnSelectAll,
+      btnUnSelectAll,
+      "-",
+      btnReassign,
+      "->",
+      _("ID_USER"),
+      comboAllUsers,
+      "-",
+      _("ID_PROCESS"),
+      comboProcess,
+      textSearch,
+      resetSearchButton,
+      btnSearch,
+      " ",
+      " "
   ];
 
   var toolbarSent = [
@@ -1792,11 +1792,52 @@ var gridForm = new Ext.FormPanel({
         //renderTo: bd
     });
 
+    //Manually trigger the data store load
+    switch (action) {
+        case "draft":
+            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("search", textSearch.getValue());
+            break;
+        case "sent":
+            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("status", comboStatus.store.getAt(0).get(comboStatus.valueField));
+            storeCases.setBaseParam("search", textSearch.getValue());
+            break;
+        case "to_revise":
+            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("search", textSearch.getValue());
+            break;
+        case "to_reassign":
+            storeCases.setBaseParam("user", comboAllUsers.store.getAt(0).get(comboAllUsers.valueField));
+            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("search", textSearch.getValue());
+            break;
+        case "search":
+            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("status", comboStatus.store.getAt(0).get(comboStatus.valueField));
+            storeCases.setBaseParam("user", comboUser.store.getAt(0).get(comboUser.valueField));
+            storeCases.setBaseParam("search", textSearch.getValue());
+            storeCases.setBaseParam("dateFrom", dateFrom.getValue());
+            storeCases.setBaseParam("dateTo", dateTo.getValue());
+            break;
+        case "unassigned":
+            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("search", textSearch.getValue());
+            break;
+        case "gral":
+            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("search", textSearch.getValue());
+            break;
+        default:
+            //todo
+            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("search", textSearch.getValue());
+            break;
+    }
 
-    // manually trigger the data store load
-    storeCases.setBaseParam( 'action', action );
-    storeCases.setBaseParam( 'start',  0 );
-    storeCases.setBaseParam( 'limit',  pageSize );
+    storeCases.setBaseParam("action", action);
+    storeCases.setBaseParam("start", 0);
+    storeCases.setBaseParam("limit", pageSize);
     storeCases.load();
     //newPopUp.add(reassignGrid);
     newPopUp.add(gridForm);
@@ -1902,8 +1943,12 @@ var gridForm = new Ext.FormPanel({
   catch (e) {
     // Nothing to do
   }
-  comboStatus.setValue('');
-  comboProcess.setValue('');
+
+  comboProcess.setValue("");
+  comboStatus.setValue("");
+  comboUser.setValue("CURRENT_USER");
+  comboAllUsers.setValue("CURRENT_USER");
+
   // hidding the buttons for the reassign
 //  if (action=='to_reassign'){
 //    btnSelectAll.hide();
@@ -2016,3 +2061,4 @@ function msgBox(title, msg, type){
     buttons: Ext.MessageBox.OK
   });
 }
+
