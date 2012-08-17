@@ -4347,6 +4347,9 @@ class XmlForm
 
     // Improvement for the js cache - Start
     $realPath = substr(realpath($this->fileName), strlen(realpath($this->home)), - 4);
+    if (substr($realPath, 0, 1) != PATH_SEP) {
+        $realPath = PATH_SEP . $realPath;
+    }
     $filesToDelete = substr((defined('PATH_C') ? PATH_C : PATH_DATA) . 'xmlform/', 0, - 1) . $realPath . '.*.js';
     $auxPath = explode(PATH_SEP, $realPath);
     $auxPath[count($auxPath) - 1] = $auxPath[count($auxPath) - 1] . '.' . md5(filemtime($this->fileName));
