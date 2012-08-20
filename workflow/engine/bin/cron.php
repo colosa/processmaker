@@ -68,8 +68,9 @@ else {
 $WS = '';
 $argsx = '';
 $sDate = '';
-for($i=1; $i<count($argv); $i++){
+$dateSystem = date("Y-m-d H:i:s");
 
+for ($i = 1; $i <= count($argv) - 1; $i++) {
   if( strpos($argv[$i], '+d') !== false){
     $sDate = substr($argv[$i],2);
   } else if( strpos($argv[$i], '+w') !== false){
@@ -79,12 +80,11 @@ for($i=1; $i<count($argv); $i++){
   }
 }
 
-
 //if $sDate is not set, so take the system time
-if($sDate!=''){
-  eprintln("[Applying date filter: $sDate]");
+if ($sDate != "") {
+    eprintln("[Applying date filter: $sDate]");
 } else {
-  $sDate = date('Y-m-d H:i:s');
+    $sDate = $dateSystem;
 }
 
 
@@ -97,14 +97,14 @@ if( $WS=='' ){
 
         if (file_exists(PATH_DB . $sObject . PATH_SEP . 'db.php')) {
           $cws++;
-          system("php -f \"".dirname(__FILE__).PATH_SEP."cron_single.php\" $sObject \"$sDate\" $argsx", $retval);
+          system("php -f \"".dirname(__FILE__).PATH_SEP."cron_single.php\" $sObject \"$sDate\" \"$dateSystem\" $argsx", $retval);
         }
       }
     }
   }
 } else {
   $cws = 1;
-  system("php -f \"".dirname(__FILE__).PATH_SEP."cron_single.php\" $WS \"$sDate\" $argsx", $retval);
+  system("php -f \"".dirname(__FILE__).PATH_SEP."cron_single.php\" $WS \"$sDate\" \"$dateSystem\" $argsx", $retval);
 }
 eprintln("Finished $cws workspaces processed.");
 

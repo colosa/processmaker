@@ -488,124 +488,150 @@ class spoolRun {
     }
   }
 
-  /**
-   * try resend the emails from spool
-   * @param none
-   * @return none or exception
-   */
-  function resendEmails() {
-    require_once ("classes/model/Configuration.php");
+    /**
+     * try resend the emails from spool
+     * @param string $dateResend
+     * @return none or exception
+     */
+    public function resendEmails($dateResend=null)
+    {
+        require_once ("classes/model/Configuration.php");
 
-    $oConfiguration = new Configuration();
+        $oConfiguration = new Configuration();
 
-    $aConfiguration = $oConfiguration->load("Emails", "", "", "", "");
+        $aConfiguration = $oConfiguration->load("Emails", "", "", "", "");
 
-    $aConfiguration = unserialize($aConfiguration["CFG_VALUE"]);
-    $passwd = $aConfiguration["MESS_PASSWORD"];
-    $passwdDec = G::decrypt($passwd,"EMAILENCRYPT");
-    $auxPass = explode('hash:', $passwdDec);
+        $aConfiguration = unserialize($aConfiguration["CFG_VALUE"]);
+        $passwd = $aConfiguration["MESS_PASSWORD"];
+        $passwdDec = G::decrypt($passwd,"EMAILENCRYPT");
+        $auxPass   = explode("hash:", $passwdDec);
 
-    if (count($auxPass) > 1) {
-        if (count($auxPass) == 2) {
-            $passwd = $auxPass[1];
-        } else {
-            array_shift($auxPass);
-            $passwd = implode('', $auxPass);
+        if (count($auxPass) > 1) {
+            if (count($auxPass) == 2) {
+                $passwd = $auxPass[1];
+            } else {
+                array_shift($auxPass);
+                $passwd = implode("", $auxPass);
+            }
+        }
+
+        $aConfiguration["MESS_PASSWORD"] = $passwd;
+
+        if ($aConfiguration["MESS_ENABLED"] == "1") {
+            require_once ("classes/model/AppMessage.php");
+
+            $this->setConfig(array(
+                "MESS_ENGINE" => $aConfiguration["MESS_ENGINE"],
+                "MESS_SERVER" => $aConfiguration["MESS_SERVER"],
+                "MESS_PORT"   => $aConfiguration["MESS_PORT"],
+                "MESS_ACCOUNT"  => $aConfiguration["MESS_ACCOUNT"],
+                "MESS_PASSWORD" => $aConfiguration["MESS_PASSWORD"],
+                "SMTPAuth"   => $aConfiguration["MESS_RAUTH"],
+                "SMTPSecure" => $aConfiguration["SMTPSecure"]
+            ));
+
+            $criteria = new Criteria("workflow");
+            $criteria->add(AppMessagePeer::APP_MSG_STATUS, "sent", Criteria::NOT_EQUAL);
+
+            if ($dateResend != null) {
+                $criteria->add(AppMessagePeer::APP_MSG_DATE, $dateResend, Criteria::GREATER_EQUAL);
+            }
+
+            $rsCriteria = AppMessagePeer::doSelectRS($criteria);
+            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+            while ($rsCriteria->next()) {
+                $row = $rsCriteria->getRow();
+
+                try {
+                    $this->setData(
+                        $row["APP_MSG_UID"],
+                        $row["APP_MSG_SUBJECT"],
+                        $row["APP_MSG_FROM"],
+                        $row["APP_MSG_TO"],
+                        $row["APP_MSG_BODY"],
+                        date("Y-m-d H:i:s"),
+                        $row["APP_MSG_CC"],
+                        $row["APP_MSG_BCC"],
+                        $row["APP_MSG_TEMPLATE"],
+                        $row["APP_MSG_ATTACH"]
+                    );
+
+                    $this->sendMail();
+                } catch (Exception $e) {
+                    $strAux = "Spool::resendEmails(): Using " .
+                              $aConfiguration["MESS_ENGINE"] .
+                              " for APP_MGS_UID=" .
+                              $row["APP_MSG_UID"] .
+                              " -> With message: " .
+                              $e->getMessage();
+
+                    if ($e->getCode() == $this->ExceptionCode["WARNING"]) {
+                        array_push($this->aWarnings, $strAux);
+                        continue;
+                    } else {
+                        throw $e;
+                    }
+                }
+            }
         }
     }
 
-    $aConfiguration["MESS_PASSWORD"] = $passwd;
-
-    if ($aConfiguration["MESS_ENABLED"] == "1") {
-      $this->setConfig(array(
-        "MESS_ENGINE" => $aConfiguration["MESS_ENGINE"],
-        "MESS_SERVER" => $aConfiguration["MESS_SERVER"],
-        "MESS_PORT"   => $aConfiguration["MESS_PORT"],
-        "MESS_ACCOUNT"  => $aConfiguration["MESS_ACCOUNT"],
-        "MESS_PASSWORD" => $aConfiguration["MESS_PASSWORD"],
-        "SMTPAuth"   => $aConfiguration["MESS_RAUTH"],
-        "SMTPSecure" => $aConfiguration["SMTPSecure"]
-      ));
-
-      ///////
-      require_once ("classes/model/AppMessage.php");
-
-      $oCriteria = new Criteria('workflow');
-      $oCriteria->add(AppMessagePeer::APP_MSG_STATUS, 'sent', Criteria::NOT_EQUAL);
-      $oDataset = AppMessagePeer::doSelectRS($oCriteria);
-      $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-
-      while( $oDataset->next() ) {
-        $aRow = $oDataset->getRow();
-        try {
-          $this->setData($aRow['APP_MSG_UID'], $aRow['APP_MSG_SUBJECT'], $aRow['APP_MSG_FROM'], $aRow['APP_MSG_TO'], $aRow['APP_MSG_BODY'], date('Y-m-d H:i:s'), $aRow['APP_MSG_CC'], $aRow['APP_MSG_BCC'], $aRow['APP_MSG_TEMPLATE'], $aRow['APP_MSG_ATTACH']);
-          $this->sendMail();
-        } catch( Exception $oException ) {
-          if( $oException->getCode() == $this->ExceptionCode['WARNING'] ) {
-            array_push($this->aWarnings, 'Spool::resendEmails(): Using ' . $aConfiguration['MESS_ENGINE'] . ' for APP_MGS_UID=' . $aRow['APP_MSG_UID'] . ' -> With message: ' . $oException->getMessage());
-            continue;
-          } else {
-            throw $oException;
-          }
+    /**
+     * gets all warnings
+     * @param none
+     * @return string $this->aWarnings
+     */
+    public function getWarnings()
+    {
+        if (sizeof($this->aWarnings) != 0) {
+            return $this->aWarnings;
         }
-      }
-    }
-  }
 
-  /**
-   * gets all warnings
-   * @param none
-   * @return string $this->aWarnings
-   */
-  function getWarnings() {
-    if( sizeof($this->aWarnings) != 0 ) {
-      return $this->aWarnings;
+        return false;
     }
-    return false;
-  }
 
-  /**
-    * db_insert
-    *
-    * @param  array  $db_spool
-    * @return string $sUID;
-    */
+    /**
+     * db_insert
+     *
+     * @param  array  $db_spool
+     * @return string $sUID;
+     */
     public function db_insert($db_spool)
     {
-      $sUID  = G::generateUniqueID();
-      $spool = new AppMessage();
-      $spool->setAppMsgUid($sUID);
-      $spool->setMsgUid($db_spool['msg_uid']);
-      $spool->setAppUid($db_spool['app_uid']);
-      $spool->setDelIndex($db_spool['del_index']);
-      $spool->setAppMsgType($db_spool['app_msg_type']);
-      $spool->setAppMsgSubject($db_spool['app_msg_subject']);
-      $spool->setAppMsgFrom($db_spool['app_msg_from']);
-      $spool->setAppMsgTo($db_spool['app_msg_to']);
-      $spool->setAppMsgBody($db_spool['app_msg_body']);
-      $spool->setAppMsgDate(date('Y-m-d H:i:s'));
-      $spool->setAppMsgCc($db_spool['app_msg_cc']);
-      $spool->setAppMsgBcc($db_spool['app_msg_bcc']);
-      $spool->setappMsgAttach($db_spool['app_msg_attach']);
-      $spool->setAppMsgTemplate($db_spool['app_msg_template']);
-      $spool->setAppMsgStatus($db_spool['app_msg_status']);
-      $spool->setAppMsgSendDate(date('Y-m-d H:i:s')); // Add by Ankit
+        $sUID  = G::generateUniqueID();
+        $spool = new AppMessage();
+        $spool->setAppMsgUid($sUID);
+        $spool->setMsgUid($db_spool['msg_uid']);
+        $spool->setAppUid($db_spool['app_uid']);
+        $spool->setDelIndex($db_spool['del_index']);
+        $spool->setAppMsgType($db_spool['app_msg_type']);
+        $spool->setAppMsgSubject($db_spool['app_msg_subject']);
+        $spool->setAppMsgFrom($db_spool['app_msg_from']);
+        $spool->setAppMsgTo($db_spool['app_msg_to']);
+        $spool->setAppMsgBody($db_spool['app_msg_body']);
+        $spool->setAppMsgDate(date('Y-m-d H:i:s'));
+        $spool->setAppMsgCc($db_spool['app_msg_cc']);
+        $spool->setAppMsgBcc($db_spool['app_msg_bcc']);
+        $spool->setappMsgAttach($db_spool['app_msg_attach']);
+        $spool->setAppMsgTemplate($db_spool['app_msg_template']);
+        $spool->setAppMsgStatus($db_spool['app_msg_status']);
+        $spool->setAppMsgSendDate(date('Y-m-d H:i:s')); // Add by Ankit
 
-      if(!$spool->validate()) {
-        $errors       = $spool->getValidationFailures();
-        $this->status = 'error';
+        if (!$spool->validate()) {
+            $errors = $spool->getValidationFailures();
+            $this->status = 'error';
 
-        foreach($errors as $key => $value) {
-          echo "Validation error - " . $value->getMessage($key) . "\n";
+            foreach ($errors as $key => $value) {
+                echo "Validation error - " . $value->getMessage($key) . "\n";
+            }
+        } else {
+            //echo "Saving - validation ok\n";
+            $this->status = 'success';
+            $spool->save();
         }
-      }
-      else {
-              //echo "Saving - validation ok\n";
-        $this->status = 'success';
-              $spool->save();
-      }
-      return $sUID;
 
+        return $sUID;
     }
 }
-?>
+

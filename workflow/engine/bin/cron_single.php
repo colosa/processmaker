@@ -115,9 +115,10 @@ if (file_exists(PATH_DATA . 'cron')) {
 if (!defined('SYS_SYS')) {
     $sObject = $argv[1];
     $sNow    = $argv[2];
+    $dateSystem = $argv[3];
     $sFilter = '';
 
-    for ($i = 3; $i < count($argv); $i++) {
+    for ($i = 4; $i <= count($argv) - 1; $i++) {
         $sFilter .= ' ' . $argv[$i];
     }
 
@@ -244,35 +245,54 @@ function processWorkspace()
 function resendEmails()
 {
     global $sFilter;
+    global $sNow;
+    global $dateSystem;
 
-    if ($sFilter != '' && strpos($sFilter, 'emails') === false) {
+    if ($sFilter != "" && strpos($sFilter, "emails") === false) {
         return false;
     }
 
     setExecutionMessage("Resending emails");
 
     try {
-        G::LoadClass('spool');
+        G::LoadClass("spool");
+
+        $dateResend = $sNow;
+
+        if ($sNow == $dateSystem) {
+            $arrayDateSystem = getdate(strtotime($dateSystem));
+
+            $mktDateSystem = mktime(
+                $arrayDateSystem["hours"],
+                $arrayDateSystem["minutes"],
+                $arrayDateSystem["seconds"],
+                $arrayDateSystem["mon"],
+                $arrayDateSystem["mday"],
+                $arrayDateSystem["year"]
+            );
+
+            $dateResend = date("Y-m-d H:i:s", $mktDateSystem - (7 * 24 * 60 * 60));
+        }
 
         $oSpool = new spoolRun();
-        $oSpool->resendEmails();
+        $oSpool->resendEmails($dateResend);
 
-        saveLog('resendEmails', 'action', 'Resending Emails', "c");
+        saveLog("resendEmails", "action", "Resending Emails", "c");
 
         $aSpoolWarnings = $oSpool->getWarnings();
 
-        if ( $aSpoolWarnings !== false ) {
+        if ($aSpoolWarnings !== false) {
             foreach ($aSpoolWarnings as $sWarning) {
-                print('MAIL SPOOL WARNING: ' . $sWarning."\n");
-                saveLog('resendEmails', 'warning', 'MAIL SPOOL WARNING: ' . $sWarning);
+                print("MAIL SPOOL WARNING: " . $sWarning."\n");
+                saveLog("resendEmails", "warning", "MAIL SPOOL WARNING: " . $sWarning);
             }
         }
 
-        setExecutionResultMessage('DONE');
-    } catch (Exception $oError) {
-        setExecutionResultMessage('WITH ERRORS', 'error');
-        eprintln("  '-".$oError->getMessage(), 'red');
-        saveLog('resendEmails', 'error', 'Error Resending Emails: ' . $oError->getMessage());
+        setExecutionResultMessage("DONE");
+    } catch (Exception $e) {
+        setExecutionResultMessage("WITH ERRORS", "error");
+        eprintln("  '-" . $e->getMessage(), "red");
+        saveLog("resendEmails", "error", "Error Resending Emails: " . $e->getMessage());
     }
 }
 
@@ -426,6 +446,12 @@ function executeScheduledCases($sNow=null)
 
 function executeUpdateAppTitle()
 {
+    global $sFilter;
+
+    if ($sFilter != "" && strpos($sFilter, "update-case-labels") === false) {
+        return false;
+    }
+
     try {
         $criteriaConf = new Criteria("workflow");
 
