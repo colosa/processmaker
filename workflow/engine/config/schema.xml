@@ -2174,6 +2174,7 @@
     <column name="EVN_TAS_UID_FROM" type="VARCHAR" size="32" required="false" default=""/>
     <column name="EVN_TAS_UID_TO" type="VARCHAR" size="32" required="false" default=""/>
     <column name="EVN_TAS_ESTIMATED_DURATION" type="DOUBLE" required="false" default="0"/>
+    <column name="EVN_TIME_UNIT" type="VARCHAR" size="10" required="true" default="DAYS"/>
     <column name="EVN_WHEN" type="DOUBLE" required="true" default="0"/>
     <column name="EVN_MAX_ATTEMPTS" type="TINYINT" required="true" default="3"/>
     <column name="EVN_ACTION" type="VARCHAR" size="50" required="true" default=""/>

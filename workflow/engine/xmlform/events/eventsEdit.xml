@@ -53,6 +53,10 @@ SELECT TAS_UID, TAS_TITLE FROM tasks
   <en>Estimated Task duration</en>
 </EVN_TAS_ESTIMATED_DURATION>
 
+<EVN_TIME_UNIT type="dropdown" required="1">
+  <en> <option name="DAYS">Days</option><option name="HOURS">Hours</option></en>
+</EVN_TIME_UNIT>
+
 <EVN_WHEN type="text" size="4" maxlength="4" validate="Real" required="1" defaultvalue="1">
   <en>days</en>
 </EVN_WHEN>
@@ -114,6 +118,7 @@ var onGraphChange = function(oForm) {
   oWhenOccurs = getField('EVN_WHEN_OCCURS');
   oStatus     = getField('EVN_STATUS');
   oWhen       = getField('EVN_WHEN');
+  timeUnit    = getField('EVN_TIME_UNIT');
   oEstimated  = getField('EVN_TAS_ESTIMATED_DURATION');
 
   query = "";
@@ -132,6 +137,7 @@ var onGraphChange = function(oForm) {
     query = query + "&s=i";
 
   query = query + "&w=" + oWhen.value;
+  query = query + "&t=" + timeUnit.value;
   query = query + "&e=" + oEstimated.value;
 
   var x = document.getElementsByName('theImage');
@@ -143,6 +149,7 @@ leimnud.event.add(getField('EVN_RELATED_TO'), 'change', onChangeRelatedTo);
 leimnud.event.add(getField('EVN_WHEN_OCCURS'), 'change', onGraphChange);
 leimnud.event.add(getField('EVN_WHEN'), 'keyup', onGraphChange);
 leimnud.event.add(getField('EVN_STATUS'), 'change', onGraphChange);
+leimnud.event.add(getField('EVN_TIME_UNIT'), 'change', onGraphChange);
 leimnud.event.add(getField('EVN_TAS_ESTIMATED_DURATION'), 'keyup', onGraphChange);
 
 onChangeRelatedTo();
