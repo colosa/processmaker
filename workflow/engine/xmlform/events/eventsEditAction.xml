@@ -19,6 +19,8 @@
 
 <EVN_TAS_ESTIMATED_DURATION type="hidden"/>
 
+<EVN_TIME_UNIT type="hidden"/>
+
 <EVN_WHEN_OCCURS type="hidden"/>
 
 <EVN_STATUS type="hidden"/>

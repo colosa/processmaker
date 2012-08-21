@@ -23,6 +23,7 @@ var eventsNewAction = function(oForm) {
             + '&EVN_TAS_UID_FROM=' + getField('EVN_TAS_UID_FROM').value
             + '&EVN_TAS_UID_TO=' + getField('EVN_TAS_UID_TO').value
             + '&EVN_TAS_ESTIMATED_DURATION=' + getField('EVN_TAS_ESTIMATED_DURATION').value
+            + '&EVN_TIME_UNIT=' + getField('EVN_TIME_UNIT').value
             + '&EVN_ACTION=' + getField('EVN_ACTION').value
             + '&EVN_CONDITIONS=' + getField('EVN_CONDITIONS').value
             + '&TRI_UID=' + getField('TRI_UID').value

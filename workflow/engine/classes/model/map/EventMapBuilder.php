@@ -82,6 +82,8 @@ class EventMapBuilder {
 
 		$tMap->addColumn('EVN_TAS_ESTIMATED_DURATION', 'EvnTasEstimatedDuration', 'double', CreoleTypes::DOUBLE, false, null);
 
+		$tMap->addColumn('EVN_TIME_UNIT', 'EvnTimeUnit', 'string', CreoleTypes::VARCHAR, true, 10);
+
 		$tMap->addColumn('EVN_WHEN', 'EvnWhen', 'double', CreoleTypes::DOUBLE, true, null);
 
 		$tMap->addColumn('EVN_MAX_ATTEMPTS', 'EvnMaxAttempts', 'int', CreoleTypes::TINYINT, true, null);
