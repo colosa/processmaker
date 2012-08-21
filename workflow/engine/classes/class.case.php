@@ -4631,16 +4631,26 @@ class Cases
         //permissions per user
         $oCriteria = new Criteria('workflow');
         $oCriteria->add(
-            $oCriteria->getNewCriterion(ObjectPermissionPeer::USR_UID, $USR_UID)->
-            addOr($oCriteria->getNewCriterion(ObjectPermissionPeer::USR_UID, ''))
+          $oCriteria->getNewCriterion(ObjectPermissionPeer::USR_UID, $USR_UID)->addOr(
+            $oCriteria->getNewCriterion(ObjectPermissionPeer::USR_UID, '')->addOr(
+              $oCriteria->getNewCriterion(ObjectPermissionPeer::USR_UID, '0')
+            )
+          )
         );
         $oCriteria->add(ObjectPermissionPeer::PRO_UID, $PRO_UID);
         $oCriteria->add(ObjectPermissionPeer::OP_ACTION, $ACTION);
         $oCriteria->add(
-            $oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, $TAS_UID)->
-            addOr($oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, '')->
-            addOr($oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, ''))->
-            addOr($oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, 'ALL')))
+            $oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, $TAS_UID)->addOr(
+              $oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, '')->addOr(
+                $oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, '0')
+              )
+            )->addOr(
+              $oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, 'ALL')->addOr(
+                $oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, '')->addOr(
+                  $oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, '0')
+                )
+              )
+            )
         );
         $rs = ObjectPermissionPeer::doSelectRS($oCriteria);
         $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
@@ -4665,10 +4675,17 @@ class Cases
             $oCriteria->add(ObjectPermissionPeer::PRO_UID, $PRO_UID);
             $oCriteria->add(ObjectPermissionPeer::OP_ACTION, $ACTION);
             $oCriteria->add(
-                $oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, $TAS_UID)->
-                addOr($oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, '')->
-                addOr($oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, ''))->
-                addOr($oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, 'ALL')))
+                $oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, $TAS_UID)->addOr(
+                  $oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, '')->addOr(
+                    $oCriteria->getNewCriterion(ObjectPermissionPeer::TAS_UID, '0')
+                  )
+                )->addOr(
+                  $oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, 'ALL')->addOr(
+                    $oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, '')->addOr(
+                      $oCriteria->getNewCriterion(ObjectPermissionPeer::OP_CASE_STATUS, '0')
+                    )
+                  )
+                )
             );
             $rs = ObjectPermissionPeer::doSelectRS($oCriteria);
             $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
@@ -4690,7 +4707,7 @@ class Cases
 
             // here!,. we should verify $PARTICIPATE
             $sw_participate = false; // must be false for default
-            if (($row['OP_CASE_STATUS'] != 'COMPLETED') && ($row['OP_CASE_STATUS'] != '')) {
+            if (($row['OP_CASE_STATUS'] != 'COMPLETED') && ($row['OP_CASE_STATUS'] != '') && ($row['OP_CASE_STATUS'] != '0')) {
                 if ($PARTICIPATE == 1) {
                     $oCriteriax = new Criteria('workflow');
                     $oCriteriax->add(AppDelegationPeer::USR_UID, $USR_UID);
@@ -4772,7 +4789,7 @@ class Cases
                                 $oCriteria->add(StepPeer::TAS_UID, $TASK_SOURCE);
                             }
                         }
-                        if ($O_UID != '') {
+                        if ($O_UID != '' && $O_UID != '0') {
                             $oCriteria->add(DynaformPeer::DYN_UID, $O_UID);
                         }
                         $oCriteria->addJoin(ApplicationPeer::PRO_UID, StepPeer::PRO_UID);
@@ -4809,7 +4826,7 @@ class Cases
                                 $oCriteria->add(AppDelegationPeer::TAS_UID, $TASK_SOURCE);
                             }
                         }
-                        if ($O_UID != '') {
+                        if ($O_UID != '' && $O_UID != '0') {
                             $oCriteria->add(AppDocumentPeer::DOC_UID, $O_UID);
                         }
                         if ($obj_type == 'INPUT') {

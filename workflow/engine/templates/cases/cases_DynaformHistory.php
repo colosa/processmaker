@@ -1,10 +1,10 @@
 <?php
 /**
  * cases_DynaformHistory.php
- *  
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2008 Colosa Inc.23
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -14,13 +14,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd., 
+ *
+ * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
+ *
  */
 
 $tpl = new TemplatePower( PATH_TPL . 'cases/cases_DynaformHistory.html' );
@@ -34,7 +34,7 @@ $Fields = $oCase->loadCase($_SESSION['APPLICATION']);
 $historyData=array();
 $historyDataAux=array();
 require_once 'classes/model/AppHistory.php';
-$appHistory = new AppHistory();	    
+$appHistory = new AppHistory();
 $c=$appHistory->getDynaformHistory($_REQUEST['PRO_UID'],$_REQUEST['TAS_UID'],$_REQUEST['APP_UID'],$_REQUEST['DYN_UID']);
 
 $oDataset = ArrayBasePeer::doSelectRs ( $c);
@@ -47,7 +47,7 @@ while ($aRow = $oDataset->getRow()) {
 
     $changedValues=unserialize($aRow['HISTORY_DATA']);
     $tableName="_TCHANGE_".$changeCount;
-    $historyDataAux[$tableName]=$changedValues;    
+    $historyDataAux[$tableName]=$changedValues;
     $oDataset->next();
 }
 
@@ -57,7 +57,7 @@ foreach($historyData as $key => $value){
     $tableName="_TCHANGE_".$changeCount;
     $changeCountA=$changeCount+1;
     $tableNameA="_TCHANGE_".$changeCountA;
-    
+
     if(isset($historyData[$tableNameA])){
         //$historyData[$key]=array_merge($historyData[$tableNameA],$value);
         //Array merge recursive doesn't work. So here is an own procedure
@@ -74,11 +74,11 @@ foreach($historyData as $key => $value){
                     }
                 }
             }
-            
+
         }
     }
-    
-    
+
+
     $changeCount--;
 }
 
@@ -92,44 +92,44 @@ $changeCount=0;
 
 while ($aRow = $oDataset->getRow()) {
     $changeCount++;
-   
-    
+
+
     $changedValues=unserialize($aRow['HISTORY_DATA']);
-    
+
     $tpl->newBlock( "DYNLOG" );
     $tableName="_TCHANGE_".$changeCount;
     $changeCountA=$changeCount+1;
     $tableNameA="_TCHANGE_".$changeCountA;
-    
-    $tpl->assign( "dynTitle" , $aRow['DYN_TITLE'] );
+
+    $tpl->assign( "dynTitle" , addslashes($aRow['DYN_TITLE']) );
     $tpl->assign( "dynDate" , $aRow['HISTORY_DATE'] );
-    $tpl->assign( "dynUser" , $aRow['USR_NAME'] );
+    $tpl->assign( "dynUser" , addslashes($aRow['USR_NAME']) );
     $tpl->assign( "changes" , G::LoadTranslation("ID_CHANGES") );
     $tpl->assign( "dynUID" , $aRow['DYN_UID'] );
     $tpl->assign( "tablename" , $tableName );
 
-    
+
     $tpl->assign( "viewForm" , G::LoadTranslation("ID_VIEW") );
     $tpl->assign( "dynaform" , G::LoadTranslation("ID_DYNAFORM") );
     $tpl->assign( "date" , G::LoadTranslation("ID_DATE") );
     $tpl->assign( "user" , G::LoadTranslation("ID_USER") );
-    
+
     $tpl->assign( "fieldNameLabel" , G::LoadTranslation("ID_FIELD_NAME") );
     $tpl->assign( "previousValuesLabel" , G::LoadTranslation("ID_PREV_VALUES") );
     $tpl->assign( "currentValuesLabel" , G::LoadTranslation("ID_CURRENT_VALUES") );
-    
-    
-    
-    
+
+
+
+
     $count=0;
     foreach($changedValues as $key =>$value){
         if(($value!=NULL)&&(!is_array($value))){
-            
+
             $tpl->newBlock( "FIELDLOG" );
-            $tpl->assign( "fieldName" , $key );            
-            $tpl->assign( "previous" , isset($historyData[$tableNameA][$key])?$historyData[$tableNameA][$key]:"" );            
+            $tpl->assign( "fieldName" , $key );
+            $tpl->assign( "previous" , isset($historyData[$tableNameA][$key])?$historyData[$tableNameA][$key]:"" );
             $tpl->assign( "actual" , $value );
-            $count++;            
+            $count++;
         }
         if(is_array($value)){
             foreach($value as $key1 =>$value1){
@@ -144,13 +144,13 @@ while ($aRow = $oDataset->getRow()) {
                     }
                 }
             }
-        }           
+        }
     }
     $tpl->gotoBlock( "DYNLOG" );
-    
+
     $tpl->assign( "dynChanges" , G::LoadTranslation("ID_FIELDS_CHANGED_NUMBER")." (".$count.")" );
     $tpl->assign( "count" , $count+1 );
-    
+
     $oDataset->next();
 
 }
@@ -161,7 +161,7 @@ if(!isset($changedValues)){
 
   $_SESSION['HISTORY_DATA']=serialize($historyData);
   $tpl->gotoBlock( "_ROOT" );
-  
+
 	$tpl->printToScreen();
 
 ?>

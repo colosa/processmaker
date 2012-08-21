@@ -224,6 +224,7 @@ class Groups
   		$oCriteria = new Criteria('workflow');
         $oCriteria->addSelectColumn(GroupwfPeer::GRP_UID);
         $oCriteria->addSelectColumn(GroupwfPeer::GRP_STATUS);
+        $oCriteria->addSelectColumn(GroupwfPeer::GRP_LDAP_DN);
         $oCriteria->addSelectColumn(ContentPeer::CON_VALUE);
         $oCriteria->addJoin(GroupUserPeer::GRP_UID, GroupwfPeer::GRP_UID, Criteria::LEFT_JOIN);
         $oCriteria->addJoin(GroupwfPeer::GRP_UID, ContentPeer::CON_ID, Criteria::LEFT_JOIN);
