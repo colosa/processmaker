@@ -15,11 +15,17 @@
   $s    = isset( $_GET['s'] ) ? $_GET['s'] : 'a';
   if ( $s != 'a' ) $s = 'i';
 
+  //timeUnit
+  $timeunit    =  isset( $_GET['t'] ) ? $_GET['t'] : 'Days';
+  $timeunit = ucfirst(strtolower($timeunit));
+  
   //estimated
-  $estimated    = abs( isset( $_GET['e'] ) ? $_GET['e'] : '1' );
+  $estimated    = abs( isset( $_GET['e'] ) ? (($timeunit == 'Hours')? round($_GET['e']/24,2):$_GET['e']) : '1' );
+  
 
   //when
   $when    = isset( $_GET['w'] ) ? $_GET['w'] : '0';
+  
   
   $im  = imagecreate($w,$h);
   $bg  = imagecolorallocate ($im, 0xFF, 0xFF, 0xFF);
@@ -135,7 +141,7 @@
   imageline($im, 15, $h-19 , $w -15, $h-19, $red);
   imageline($im, $w - 23, $h-23 , $w -15, $h-19, $red);
   imageline($im, $w - 23, $h-15 , $w -15, $h-19, $red);
-  imagestring ($im, 2, $w -30 , $h -37, 'days', $red);
+  imagestring ($im, 2, $w -30 , $h -37, 'Days', $red);
 
   if ( $estimated ==  0  ) {
   	$s = 'i';
