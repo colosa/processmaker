@@ -31,6 +31,9 @@ G::LoadClass('case');
 $oCase = new Cases();
 $Fields = $oCase->loadCase($_SESSION['APPLICATION']);
 
+// Load form info
+$form = new Form($_REQUEST['PRO_UID'] . PATH_SEP . $_REQUEST['DYN_UID'], PATH_DYNAFORM, SYS_LANG, false);
+
 $historyData=array();
 $historyDataAux=array();
 require_once 'classes/model/AppHistory.php';
@@ -114,7 +117,7 @@ while ($aRow = $oDataset->getRow()) {
     $tpl->assign( "date" , G::LoadTranslation("ID_DATE") );
     $tpl->assign( "user" , G::LoadTranslation("ID_USER") );
 
-    $tpl->assign( "fieldNameLabel" , G::LoadTranslation("ID_FIELD_NAME") );
+    $tpl->assign( "fieldNameLabel" , G::LoadTranslation("ID_FIELDS") );
     $tpl->assign( "previousValuesLabel" , G::LoadTranslation("ID_PREV_VALUES") );
     $tpl->assign( "currentValuesLabel" , G::LoadTranslation("ID_CURRENT_VALUES") );
 
@@ -124,9 +127,14 @@ while ($aRow = $oDataset->getRow()) {
     $count=0;
     foreach($changedValues as $key =>$value){
         if(($value!=NULL)&&(!is_array($value))){
-
+            if (isset($form->fields[$key])) {
+                $label = $form->fields[$key]->label . ' (' . $key . ')';
+            }
+            else {
+                $label = $key;
+            }
             $tpl->newBlock( "FIELDLOG" );
-            $tpl->assign( "fieldName" , $key );
+            $tpl->assign( "fieldName" , $label );
             $tpl->assign( "previous" , isset($historyData[$tableNameA][$key])?$historyData[$tableNameA][$key]:"" );
             $tpl->assign( "actual" , $value );
             $count++;
@@ -134,10 +142,15 @@ while ($aRow = $oDataset->getRow()) {
         if(is_array($value)){
             foreach($value as $key1 =>$value1){
                 if(is_array($value1)){
-                    foreach($value1 as $key2 =>$value2){
-                    	$name=$key."[".$key1."]"."[".$key2."]";
+                    foreach($value1 as $key2 =>$value2) {
+                    	if (isset($form->fields[$key]->fields[$key2])) {
+                            $label = $form->fields[$key]->fields[$key2]->label . ' (' . $key . '[' . $key1 . '][' . $key2 . '])';
+                        }
+                        else {
+                            $label = $key . '[' . $key1 . ']' . '[' . $key2 . ']';
+                        }
                         $tpl->newBlock( "FIELDLOG" );
-                        $tpl->assign( "fieldName" , $name );
+                        $tpl->assign( "fieldName" , $label );
                         $tpl->assign( "previous" , isset($historyData[$tableNameA][$key][$key1][$key2])?$historyData[$tableNameA][$key][$key1][$key2]:"" );
                         $tpl->assign( "actual" , $value2 );
                         $count++;
