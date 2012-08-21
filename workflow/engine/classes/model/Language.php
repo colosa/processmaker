@@ -42,8 +42,8 @@ require_once 'classes/model/Translation.php';
  * @package    workflow.engine.classes.model
  */
 class Language extends BaseLanguage {
-  
-  function load($sLanUid) 
+
+  function load($sLanUid)
   {
     try {
       $oRow = LanguagePeer::retrieveByPK($sLanUid);
@@ -62,7 +62,7 @@ class Language extends BaseLanguage {
     }
   }
 
-  function update($aFields) 
+  function update($aFields)
   {
     $oConnection = Propel::getConnection(LanguagePeer::DATABASE_NAME);
     try {
@@ -92,18 +92,18 @@ class Language extends BaseLanguage {
     $oCriteria->addSelectColumn(LanguagePeer::LAN_NAME);
     $oCriteria->add(LanguagePeer::LAN_ENABLED , '1');
     $oCriteria->addDescendingOrderByColumn(LanguagePeer::LAN_WEIGHT);
-    
+
     $oDataset = ContentPeer::doSelectRS($oCriteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-    
+
     $oContent = new Content();
     $rows = Array();
-    while ($oDataset->next()) 
+    while ($oDataset->next())
       array_push($rows, $oDataset->getRow());
-    
+
     return $rows;
   }
-  
+
   function findById($LAN_ID)
   {
     $oCriteria = new Criteria('workflow');
@@ -114,7 +114,7 @@ class Language extends BaseLanguage {
     $oDataset->next();
     return $oDataset->getRow();
   }
-  
+
   function findByLanName($LAN_NAME)
   {
     $oCriteria = new Criteria('workflow');
@@ -126,14 +126,14 @@ class Language extends BaseLanguage {
     $oDataset->next();
     return $oDataset->getRow();
   }
-  
+
   /*
   * Import a language file
-  * 
+  *
   * @author Erik Amaru Ortiz <erik@colosa.com, aortiz.erik@gmail>
   * @param string $sLanguageFile
   * @param string $bXml
-  * @return void 
+  * @return void
   */
   public function import($sLanguageFile, $updateXml = true, $updateDB = true)
   {
@@ -142,16 +142,16 @@ class Language extends BaseLanguage {
       $POFile = new i18n_PO($sLanguageFile);
       $POFile->readInit();
       $POHeaders = $POFile->getHeaders();
-      
+
       /*getting the PO Language definition*/
       $langName = $POHeaders['X-Poedit-Language'];
       //find the lang id
       $language = new Language();
       $langRecord = $language->findByLanName($langName);
-      
+
       if( ! isset($langRecord['LAN_ID']) ) //if the language doesn't exist abort
         throw new Exception('The .po file has a invalid X-Poedit-Language definition!');
-      
+
       $languageID = $langRecord['LAN_ID'];
 
       /*getting the PO Language definition*/
@@ -169,21 +169,21 @@ class Language extends BaseLanguage {
       } else {
         $LOCALE = $languageID;
       }
-      
+
       $oTranslation = new Translation();
       $countItems = 0;
       $countItemsSuccess = 0;
       $errorMsg = '';
-      
+
       while( $rowTranslation = $POFile->getTranslation() ) {
 
         $countItems++;
-        
+
         if ( ! isset($POFile->translatorComments[0]) || ! isset($POFile->translatorComments[1]) || ! isset($POFile->references[0]) ) {
           throw new Exception('The .po file doesn\'t have valid directives for Processmaker!');
         }
 
-         foreach($POFile->translatorComments as $a=>$aux){   
+         foreach($POFile->translatorComments as $a=>$aux){
           $aux = trim($aux);
           if ( $aux == 'TRANSLATION')
             $identifier = $aux;
@@ -194,16 +194,16 @@ class Language extends BaseLanguage {
             if ($var[0]=='JAVASCRIPT')
               $context = $aux;
           }
-          if (preg_match('/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml\?)/', $aux, $match)) 
+          if (preg_match('/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml\?)/', $aux, $match))
             $identifier = $aux;
           else{
-            if (preg_match('/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml$)/', $aux, $match)) 
-            $context = $aux;            
+            if (preg_match('/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml$)/', $aux, $match))
+            $context = $aux;
           }
         }
-        
-        $reference  = $POFile->references[0]; 
- 
+
+        $reference  = $POFile->references[0];
+
         // it is a Sql insert on TRANSLATIONS TAble
         if( $identifier == 'TRANSLATION') {
           if ($updateDB) {
@@ -220,32 +220,32 @@ class Language extends BaseLanguage {
               $errorMsg .= $id .': ' . $result['message'] . "\n";
             }
           }
-        } 
-        // is a Xml update 
+        }
+        // is a Xml update
         else if( $updateXml ) {
-      
+
           $xmlForm = $context;
           //erik: expresion to prevent and hable correctly dropdown values like -1, -2 etc.
           preg_match('/^([\w_]+)\s-\s([\w_]+)\s*-*\s*([\w\W]*)$/', $reference, $match);
-          
+
           if( ! file_exists(PATH_XMLFORM . $xmlForm) ) {
             $errorMsg .= 'file doesn\'t exist: ' . PATH_XMLFORM . $xmlForm . "\n";
             continue;
           }
 
           if (count($match) < 4) {
-            $near = isset($rowTranslation['msgid']) ? $rowTranslation['msgid'] : 
+            $near = isset($rowTranslation['msgid']) ? $rowTranslation['msgid'] :
                    (isset($rowTranslation['msgstr']) ? $rowTranslation['msgstr'] : '');
             $errorMsg .= "Invalid Translation reference: \"$reference\",  near -> ".$near."\n";
             continue;
           }
-          
+
           G::LoadSystem('dynaformhandler');
           $dynaform = new dynaFormHandler(PATH_XMLFORM . $xmlForm);
           $fieldName = $match[2];
 
           $codes = explode('-', $reference);
-          
+
           if( sizeof($codes) == 2 ) { //is a normal node
             $dynaform->addChilds($fieldName, Array($LOCALE=>stripcslashes(str_replace(chr(10), '', $rowTranslation['msgstr']))));
           } else if( sizeof($codes) > 2 ) { //is a node child for a language node
@@ -259,18 +259,18 @@ class Language extends BaseLanguage {
           $countItemsSuccess++;
         }
       }
-     
-      
+
+
       $oLanguage = new Language();
       $oLanguage->update(array('LAN_ID' => $languageID, 'LAN_ENABLED' => '1'));
 
       $trn = new Translation();
       $trn->generateFileTranslation($LOCALE);
       $trn->addTranslationEnvironment($LOCALE, $POHeaders, $countItemsSuccess);
-      
+
       $content = new Content();
       $content->regenerateContent($languageID);
-      
+
       //fill the results
       $results = new stdClass();
       $results->recordsCount        = $countItems;
@@ -278,7 +278,7 @@ class Language extends BaseLanguage {
       $results->lang                = $languageID;
       $results->headers             = $POHeaders;
       $results->errMsg              = $errorMsg;
-      
+
       return $results;
     }
     catch (Exception $oError) {
@@ -289,7 +289,7 @@ class Language extends BaseLanguage {
   //export
   function export()
   {
-    //G::LoadThirdParty('pear', 'Benchmark/Timer'); 
+    //G::LoadThirdParty('pear', 'Benchmark/Timer');
     G::LoadSystem('i18n_po');
     G::LoadClass("system");
 
@@ -327,7 +327,7 @@ class Language extends BaseLanguage {
 
     if( ! isset($langRecord['LAN_NAME']) )
       throw new Exception("Language Target ID \"{$LAN_ID}\" doesn't exist!");
-      
+
     $sLanguage = $langRecord['LAN_NAME'];
 
     //setting headers
@@ -348,7 +348,7 @@ class Language extends BaseLanguage {
     //export translation
 
     $aLabels = array();
-    $aMsgids = array();
+    $aMsgids = array('' => true);
 
     // selecting all translations records of base language 'en' on TRANSLATIONS table
     $oCriteria = new Criteria('workflow');
@@ -369,7 +369,7 @@ class Language extends BaseLanguage {
       $c->add(TranslationPeer::TRN_LANG, $_GET['LOCALE']);
       $ds = TranslationPeer::doSelectRS($c);
       $ds->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-      
+
       while ($ds->next()) {
         $row = $ds->getRow();
         $targetLangRecords[$row['TRN_CATEGORY'].'/'.$row['TRN_ID']] = $row['TRN_VALUE'];
@@ -377,24 +377,24 @@ class Language extends BaseLanguage {
     }
 
 
-    // get the respective translation for each english label 
+    // get the respective translation for each english label
     while ($oDataset->next()) {
       $aRow1 = $oDataset->getRow();
       $trnCategory = trim($aRow1['TRN_CATEGORY']);
-      
+
 
       # Validation, validate that the TRN_CATEGORY contains valid characteres
       preg_match("/^[0-9a-zA-Z_-]+/", $trnCategory, $sTestResult);
 
       // IF the translations id "TRN_ID" has invalid characteres or has not accepted categories
-      if ($sTestResult[0] !== $trnCategory || ($trnCategory != 'LABEL' && $trnCategory != 'JAVASCRIPT'))  { 
+      if ($sTestResult[0] !== $trnCategory || ($trnCategory != 'LABEL' && $trnCategory != 'JAVASCRIPT'))  {
           $oTranslation = new Translation;
           $oTranslation->remove($aRow1['TRN_CATEGORY'], $aRow1['TRN_ID'], 'en'); //remove not accepted translations
           continue; //jump to next iteration
       }
 
 
-      
+
 
       // retrieve the translation for the target language
       if( $LAN_ID != 'en' ){ // only if it is different language than base language 'en'
@@ -408,10 +408,10 @@ class Language extends BaseLanguage {
         $msgstr = $aRow1['TRN_VALUE'];
       }
 
-    
+
       $msgid = trim($aRow1['TRN_VALUE']);
       $msgstr = trim($msgstr);
-          
+
       if ( isset($aMsgids[$msgid]) ) {
         $msgid = '[' . $aRow1['TRN_CATEGORY'] . '/' . $aRow1['TRN_ID'] . '] ' . $msgid;
       }
@@ -419,7 +419,7 @@ class Language extends BaseLanguage {
       $poFile->addTranslatorComment('TRANSLATION');
       $poFile->addTranslatorComment($aRow1['TRN_CATEGORY'] . '/' . $aRow1['TRN_ID']);
       $poFile->addReference($aRow1['TRN_CATEGORY'] . '/' . $aRow1['TRN_ID']);
-      
+
       $poFile->addTranslation(stripcslashes($msgid), stripcslashes($msgstr));
       $aMsgids[$msgid] = true;
     }
@@ -428,7 +428,7 @@ class Language extends BaseLanguage {
 
     //now find labels in xmlforms
     /************/
-    $aExceptionFields = array('', 'javascript', 'hidden', 'phpvariable', 'private', 'toolbar', 'xmlmenu', 'toolbutton', 'cellmark', 'grid');
+    $aExceptionFields = array('', 'javascript', 'hidden', 'phpvariable', 'private', 'toolbar', 'xmlmenu', 'toolbutton', 'cellmark', 'grid', 'CheckboxTable');
 
     //find all xml files into PATH_XMLFORM
     $aXMLForms        = glob(PATH_XMLFORM . '*/*.xml');
@@ -445,22 +445,22 @@ class Language extends BaseLanguage {
     foreach ($aXMLForms as $xmlFormPath) {
       $xmlFormFile = str_replace( chr(92), '/', $xmlFormPath);
       $xmlFormFile = str_replace( PATH_XMLFORM, '', $xmlFormPath);
-      
+
       $dynaForm = new dynaFormHandler($xmlFormPath);
-      
+
       $dynaNodes = $dynaForm->getFields();
 
       //get all fields of each xmlform
       foreach ($dynaNodes as $oNode) {
-        
+
         $sNodeName = $oNode->nodeName;
-        //$arrayNode = $dynaForm->getArray($oNode, Array('type', $_BASE_LANG, $_BASE_LANG)); 
+        //$arrayNode = $dynaForm->getArray($oNode, Array('type', $_BASE_LANG, $_BASE_LANG));
         $arrayNode = $dynaForm->getArray($oNode);
         //if has not native language translation
-        if( ! isset($arrayNode[$_BASE_LANG]) || ! isset($arrayNode['type']) || ( isset($arrayNode['type']) && in_array($arrayNode['type'], $aExceptionFields)) ){ 
+        if( ! isset($arrayNode[$_BASE_LANG]) || ! isset($arrayNode['type']) || ( isset($arrayNode['type']) && in_array($arrayNode['type'], $aExceptionFields)) ){
           continue; //just continue with the next node
         }
-        
+
         // Getting the Base Origin Text
         if( ! is_array($arrayNode[$_BASE_LANG]) )
           $originNodeText = trim($arrayNode[$_BASE_LANG]);
@@ -468,7 +468,7 @@ class Language extends BaseLanguage {
           $langNode = $arrayNode[$_BASE_LANG][0];
           $originNodeText = $langNode['__nodeText__'];
         }
-       
+
         // Getting the Base Target Text
         if( isset($arrayNode[$_TARGET_LANG]) ) {
           if( ! is_array($arrayNode[$_TARGET_LANG]) )
@@ -480,34 +480,34 @@ class Language extends BaseLanguage {
         } else {
           $targetNodeText = $originNodeText;
         }
-        
+
         $nodeName = $arrayNode['__nodeName__'];
         $nodeType = $arrayNode['type'];
-       
+
         $msgid = $originNodeText;
-        
+
         // if the nodeName already exists in the po file, we need to create other msgid
         if( isset($aMsgids[$msgid]) )
           $msgid = '[' . $xmlFormFile . '?' . $nodeName . '] ' . $originNodeText;
-        
+
         $poFile->addTranslatorComment($xmlFormFile . '?' . $nodeName);
         $poFile->addTranslatorComment($xmlFormFile);
         $poFile->addReference($nodeType . ' - ' . $nodeName);
         $poFile->addTranslation(stripslashes($msgid), stripslashes($targetNodeText));
-        
+
         $aMsgids[$msgid] = true;
-        
+
         //if this node has options child nodes
         if( isset($arrayNode[$_BASE_LANG]) && isset($arrayNode[$_BASE_LANG][0]) && isset($arrayNode[$_BASE_LANG][0]['option']) ){
-          
+
           $originOptionNode = $arrayNode[$_BASE_LANG][0]['option']; //get the options
-          
+
           $targetOptionExists = false;
           if( isset($arrayNode[$_TARGET_LANG]) && isset($arrayNode[$_TARGET_LANG][0]) && isset($arrayNode[$_TARGET_LANG][0]['option']) ) {
             $targetOptionNode = $arrayNode[$_TARGET_LANG][0]['option'];
             $targetOptionExists = true;
-          } 
-          
+          }
+
           if ( ! is_array($originOptionNode) ){
             if( is_string($originOptionNode) ){
               $poFile->addTranslatorComment($xmlFormFile . '?' . $nodeName . '-'. $originOptionNode);
@@ -519,7 +519,7 @@ class Language extends BaseLanguage {
             foreach( $originOptionNode as $optionNode ) {
               $optionName = $optionNode['name'];
               $originOptionValue = $optionNode['__nodeText__'];
-              
+
               if( $targetOptionExists ){
 
                 $targetOptionValue = getMatchDropdownOptionValue($optionName, $targetOptionNode);
@@ -529,8 +529,8 @@ class Language extends BaseLanguage {
               } else {
                 $targetOptionValue = $originOptionValue;
               }
-              
-              $msgid = '[' . $xmlFormFile . '?' . $nodeName  . '-' . $optionName . ']';          
+
+              $msgid = '[' . $xmlFormFile . '?' . $nodeName  . '-' . $optionName . ']';
               $poFile->addTranslatorComment($xmlFormFile . '?' . $nodeName . '-'. $optionName);
               $poFile->addTranslatorComment($xmlFormFile);
               $poFile->addReference($nodeType . ' - ' . $nodeName . ' - ' . $optionName);
@@ -539,22 +539,22 @@ class Language extends BaseLanguage {
           }
         }
       } //end foreach
-      
+
     }
 
     //
     //$timer->setMarker('end xml files processed');
     //$profiling = $timer->getProfiling();
-    //$timer->stop(); $timer->display(); 
+    //$timer->stop(); $timer->display();
     //echo G::getMemoryUsage();
     //die;
     //g::pr($profiling);
 
     G::streamFile($sPOFile, true);
 
-   
+
   }
-  
+
 } // Language
 
 
