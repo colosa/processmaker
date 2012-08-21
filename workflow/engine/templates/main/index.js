@@ -76,6 +76,7 @@ Main.configureComponents = function()
     xtype:"tabpanel",
     id: 'mainTabPanel',
     defaultType:"iframepanel",
+    enableTabScroll: true,
     activeTab: activeTab != '' ? activeTab : 0
   });
   
