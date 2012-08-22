@@ -1248,11 +1248,14 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
         $aDepFields = array();
         $count = 0;
         if ($this->dependentFields !== '') {
-            $sqlDepField = $owner->fields[$this->dependentFields]->sql;
-            $count = preg_match_all('/\@(?:([\@\%\#\=\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/',
-                    $sqlDepField, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
-            for ($cnt = 0; $cnt < $count; $cnt++) {
-                $aDepFields[$cnt] = $match[2][$cnt][0];
+            $dependentFields = explode(",",$this->dependentFields);
+            foreach ($dependentFields as $keyDependent => $valueDependent) {
+                $sqlDepField = $owner->fields[$valueDependent]->sql;
+                $count = preg_match_all('/\@(?:([\@\%\#\=\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/',
+                        $sqlDepField, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+                for ($cnt = 0; $cnt < $count; $cnt++) {
+                    $aDepFields[$cnt] = $match[2][$cnt][0];
+                }
             }
         }
 
