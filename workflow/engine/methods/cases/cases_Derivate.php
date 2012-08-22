@@ -166,7 +166,7 @@ try {
   }
     //Triggers After
     if (isset($_SESSION['TRIGGER_DEBUG']['ISSET'])) {
-        if ($_SESSION['TRIGGER_DEBUG']['ISSET'] == 1 && $_SESSION['TRIGGER_DEBUG']['NUM_TRIGGERS'] > 0) {
+        if ($_SESSION['TRIGGER_DEBUG']['ISSET'] == 1 ) {
             $oTemplatePower = new TemplatePower(PATH_TPL . 'cases/cases_Step.html');
             $oTemplatePower->prepare();
             $G_PUBLISH = new Publisher;
