@@ -165,19 +165,21 @@ try {
     $loc = $aNextStep['PAGE'];
   }
     //Triggers After
-    if ( isset($_SESSION['TRIGGER_DEBUG']['ISSET']) == 1) {
-        $oTemplatePower = new TemplatePower(PATH_TPL . 'cases/cases_Step.html');
-        $oTemplatePower->prepare();
-        $G_PUBLISH = new Publisher;
-        $G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
-        $_POST['NextStep'] = $loc;
-        $G_PUBLISH->AddContent('view', 'cases/showDebugFrameLoader');
-        $G_PUBLISH->AddContent('view', 'cases/showDebugFrameBreaker');
-        $_SESSION['TRIGGER_DEBUG']['ISSET'] == 0;
-        G::RenderPage('publish', 'blank');
-        exit();
-    } else {
-      unset($_SESSION['TRIGGER_DEBUG']);
+    if (isset($_SESSION['TRIGGER_DEBUG']['ISSET'])) {
+        if ($_SESSION['TRIGGER_DEBUG']['ISSET'] == 1 && $_SESSION['TRIGGER_DEBUG']['NUM_TRIGGERS'] > 0) {
+            $oTemplatePower = new TemplatePower(PATH_TPL . 'cases/cases_Step.html');
+            $oTemplatePower->prepare();
+            $G_PUBLISH = new Publisher;
+            $G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
+            $_POST['NextStep'] = $loc;
+            $G_PUBLISH->AddContent('view', 'cases/showDebugFrameLoader');
+            $G_PUBLISH->AddContent('view', 'cases/showDebugFrameBreaker');
+            $_SESSION['TRIGGER_DEBUG']['ISSET'] == 0;
+            G::RenderPage('publish', 'blank');
+            exit();
+        } else {
+            unset($_SESSION['TRIGGER_DEBUG']);
+        }
     }
 
   G::header("location: $loc");
