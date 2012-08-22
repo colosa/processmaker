@@ -2796,86 +2796,6 @@ var validateGridForms = function(invalidFields){
  **/
 
 var validateForm = function(sRequiredFields) {
-  // The code add Brayan Pereyra - Cochalo :
-  // This part add to firefox 13 and ie 9, in event submit the object leminud and input disappeared
-  if (typeof(leimnud) == 'undefined') {
-    var leimnud = new maborak();
-    leimnud.make({
-      zip:true,
-      inGulliver:true,
-      modules :"dom,abbr,rpc,drag,drop,app,panel,fx,grid,xmlform,validator,dashboard",
-      files :""
-    });
-  }
-
-  // The code add Brayan Pereyra - Cochalo :
-  // This part add to firefox 13 and ie 9, in event submit the object leminud and input disappeared
-  if (typeof(input) == 'undefined') {
-    var input = function(options)
-    {
-      this.make=function(options)
-      {
-        this.input = (options && options.tagName)?$(options):(new this.parent.module.dom.create("input",{
-          className:"module_app_input___gray",
-          type  :"text",
-          value :options.label || "",
-          maxLength :options.maxlength || "30"
-        }.concat(options.properties || {}),(options.style || {})));
-
-        this.input.disable=function()
-        {
-          this.input.disabled=true;
-          this.input.className=this.input.className+" module_app_inputDisabled___gray";
-          return this.input;
-        }.extend(this);
-        this.input.enable=function()
-        {
-          this.input.disabled=false;
-          this.input.className=this.input.className.split(" ")[0];
-          return this.input;
-        }.extend(this);
-        this.input.passed=function()
-        {
-          if ('\v'=='v') {  //verify if is internet explorer
-            this.input.className="module_app_inputPassed_ie___gray "+((this.input.className.split(' ')[1]) || '');
-          } else {
-            this.input.className="module_app_inputPassed___gray "+((this.input.className.split(' ')[1]) || '');
-          }
-          return this.input;
-        }.extend(this);
-        this.input.normal=function()
-        {
-          this.input.className=this.input.className+" "+((this.input.className.split(' ')[1]) || '');
-          return this.input;
-        }.extend(this);
-        this.input.failed=function()
-        {
-          if ('\v'=='v') {  //verify if is internet explorer
-            this.input.className="module_app_inputFailed_ie___gray "+((this.input.className.split(' ')[1]) || '');
-          } else {
-            this.input.className="module_app_inputFailed___gray "+((this.input.className.split(' ')[1]) || '');
-          }
-
-          return this.input;
-        }.extend(this);
-
-        return this.input;
-      };
-      this.mouseover=function()
-      {
-        this.input.className="module_app_input___gray module_app_inputHover___gray";
-        return false;
-      };
-      this.mouseout=function()
-      {
-        this.input.className="module_app_input___gray";
-        return false;
-      };
-      this.expand();
-      return this.make(options || {});
-    };
-  }
-
   /**
    *  replacing the %27 code by " character (if exists), this solve the problem that " broke the properties definition into a html
    *  i.ei <form onsubmit="myaction(MyjsString)" ...   with var MyjsString = "some string that is into a variable, so this broke the html";
@@ -2916,7 +2836,7 @@ var validateForm = function(sRequiredFields) {
           {
             switch(aRequiredFields[i].type) {
               case 'suggest':
-                var vtext1 = new input(getField(aRequiredFields[i].name+'_suggest'));
+                var vtext1 = new input(getField(aRequiredFields[i].name+'_label'));
                 if(getField(aRequiredFields[i].name).value==''){
                   invalid_fields.push(aRequiredFields[i].label);
                   vtext1.failed();
