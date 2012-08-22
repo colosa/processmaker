@@ -199,8 +199,8 @@
               {name : 'CASES_COUNT', type:'float'},
               {name : 'APP_TYPE'},
               {name : 'DEL_FINISH_DATE'},
-              {name : 'APP_ENABLE_ACTION_DATE', type:'float'},
-              {name : 'APP_DISABLE_ACTION_DATE', type:'float'}
+              {name : 'APP_ENABLE_ACTION_DATE'},
+              {name : 'APP_DISABLE_ACTION_DATE'}
             ]
           }
         )
