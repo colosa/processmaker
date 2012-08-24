@@ -5,7 +5,6 @@
 var processesGrid;
 var store;
 var comboCategory;
-
 new Ext.KeyMap(document, {
   key: Ext.EventObject.F5,
   fn: function(keycode, e) {
@@ -257,11 +256,12 @@ function activeDeactive(){
         //Ext.MessageBox.alert('Success', 'Data return from the server: '+ result.responseText);
         var site = '';
         if (SYS_SKIN.substring(0,2) == 'ux') {
-            site = PROCESSMAKER_URL
+            site = PROCESSMAKER_URL + '/main?st=admin&s='+parent._NODE_SELECTED;
         } else {
-            site = PROCESSMAKER_URL + "/setup";
+            site = PROCESSMAKER_URL + "/setup/main?s="+parent._NODE_SELECTED;
         }
-        parent.parent.location.href = site +'/main?s='+parent._NODE_SELECTED;
+        parent.parent.location.href = site
+
         return;
 
         store.reload();
