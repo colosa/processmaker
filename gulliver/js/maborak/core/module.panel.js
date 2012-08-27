@@ -693,7 +693,7 @@ leimnud.Package.Public({
 		this.makeTab=function(dynamic)
 		{
 			if(this.loading===true){return false;}
-			
+
 			var thm = this.tab.display==="vertical"?"":"H";
 			var tb =this.elements.tabOptions[this.tabSelected];
 			tb.className="panel_tabOptionSelected"+thm+"___"+this.getTheme("tabOptionSelected");
@@ -1506,7 +1506,7 @@ leimnud.Package.Public({
 							paddingLeft:((this.tab.display==="vertical")?15:5),
 							paddingTop:((this.tab.display==="vertical")?5:4),
 							//width:this.tab.optWidth-((this.tab.display==="vertical")?this.tab.diffWidthBugPadding:10),
-							width:((this.tab.widthFixed)?this.tab.optWidth-((this.tab.display==="vertical")?this.tab.diffWidthBugPadding:10):"auto"),
+							width:((this.tab.widthFixed)?this.tab.optWidth-((this.tab.display==="vertical")?this.tab.diffWidthBugPadding:10):(typeof(mb_strlen) !== 'undefined' ? (mb_strlen(this.tab.options[i].title || '') * 0.60) + 'em' : 'auto')),
 							//height:this.tab.optHeight-((this.tab.display==="vertical")?((this.parent.browser.isIE)?0:10):0),
 							//height:this.tab.optHeight-((this.parent.browser.isIE)?0:10),
 							position:"absolute",
