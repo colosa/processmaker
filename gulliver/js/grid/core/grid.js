@@ -39,98 +39,94 @@ var G_Grid = function(oForm, sGridName){
   };
 
   //Begin SetFields ---------------------------------------------------------------------
-  this.setFields = function(aFields, iRow) {
+  this.setFields = function (aFields, iRow)
+  {
+    var tableGrid = document.getElementById(this.sGridName);
+    var element;
+    var elementName = "";
+    var i = 0;
+    var j = 0;
+
     this.aFields = aFields;
-    var i, j, k, aAux, oAux, sDependentFields;
-    for (i = 0; i < this.aFields.length; i++) {
-      j = iRow || 1;
-      switch (this.aFields[i].sType) {
-        case 'text':
-          while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')){
-            this.aElements.push(
-                new G_Text(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
-                    + this.aFields[i].sFieldName));
-            this.aElements[this.aElements.length - 1].validate = this.aFields[i].oProperties.validate;
-            if(this.aFields[i].oProperties.strTo) {
-              this.aElements[this.aElements.length - 1].strTo = this.aFields[i].oProperties.strTo;
+
+    for (i = iRow || 1; i <= tableGrid.rows.length - 2; i++) {
+        for (j = 0; j <= this.aFields.length - 1; j++) {
+            elementName = this.sGridName + "][" + i + "][" + this.aFields[j].sFieldName;
+
+            if ((element = document.getElementById("form[" + elementName + "]"))) {
+                switch (this.aFields[j].sType) {
+                    case "text":
+                        this.aElements.push(new G_Text(oForm, element, elementName));
+                        this.aElements[this.aElements.length - 1].validate = this.aFields[j].oProperties.validate;
+
+                        if (this.aFields[j].oProperties.strTo) {
+                            this.aElements[this.aElements.length - 1].strTo = this.aFields[j].oProperties.strTo;
+                        }
+
+                        if (this.aFields[j].oProperties) {
+                            this.aElements[this.aElements.length - 1].mask = this.aFields[j].oProperties.mask;
+                        }
+                        break;
+                    case "currency":
+                        this.aElements.push(new G_Currency(oForm, element, elementName));
+
+                        if (this.aFields[j].oProperties) {
+                            if (this.aFields[j].oProperties.comma_separator) {
+                                this.aElements[this.aElements.length - 1].comma_separator = this.aFields[j].oProperties.comma_separator;
+                            }
+
+                            this.aElements[this.aElements.length - 1].validate = this.aFields[j].oProperties.validate;
+                            this.aElements[this.aElements.length - 1].mask     = this.aFields[j].oProperties.mask;
+                        }
+                        break;
+                    case "percentage":
+                        this.aElements.push(new G_Percentage(oForm, element, elementName));
+
+                        if (this.aFields[j].oProperties) {
+                            if (this.aFields[j].oProperties.comma_separator) {
+                                this.aElements[this.aElements.length - 1].comma_separator = this.aFields[j].oProperties.comma_separator;
+                            }
+
+                            this.aElements[this.aElements.length - 1].validate = this.aFields[j].oProperties.validate;
+                            this.aElements[this.aElements.length - 1].mask     = this.aFields[j].oProperties.mask;
+                        }
+                        break;
+                    case "dropdown":
+                        this.aElements.push(new G_DropDown(oForm, element, elementName));
+
+                        if (this.aFields[j].oProperties) {
+                            this.aElements[this.aElements.length - 1].mask = this.aFields[j].oProperties.sMask;
+                        }
+                        break;
+                    default:
+                        this.aElements.push(new G_Field(oForm, element, elementName));
+
+                        if (this.aFields[j].oProperties) {
+                            this.aElements[this.aElements.length - 1].mask = this.aFields[j].oProperties.sMask;
+                        }
+                        break;
+                }
             }
-            if (aFields[i].oProperties) {
-              this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.mask;
-            }
-            j++;
-          }
-          break;
-
-        case 'currency':
-          while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
-            this.aElements.push(new G_Currency(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
-                + this.aFields[i].sFieldName));
-
-            if (this.aFields[i].oProperties) {
-              if (this.aFields[i].oProperties.comma_separator) {
-                this.aElements[this.aElements.length - 1].comma_separator = this.aFields[i].oProperties.comma_separator;
-              }
-
-              this.aElements[this.aElements.length - 1].validate = this.aFields[i].oProperties.validate;
-              this.aElements[this.aElements.length - 1].mask     = this.aFields[i].oProperties.mask;
-            }
-
-            j++;
-          }
-          break;
-
-        case 'percentage':
-          while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
-            this.aElements.push(new G_Percentage(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j
-                + '][' + this.aFields[i].sFieldName));
-
-            if (this.aFields[i].oProperties) {
-              if (this.aFields[i].oProperties.comma_separator) {
-                this.aElements[this.aElements.length - 1].comma_separator = this.aFields[i].oProperties.comma_separator;
-              }
-
-              this.aElements[this.aElements.length - 1].validate = this.aFields[i].oProperties.validate;
-              this.aElements[this.aElements.length - 1].mask     = this.aFields[i].oProperties.mask;
-            }
-
-            j++;
-          }
-          break;
-
-        case 'dropdown':
-          while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
-            this.aElements.push(new G_DropDown(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
-                + this.aFields[i].sFieldName));
-            if (aFields[i].oProperties) {
-              this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.sMask;
-            }
-            j++;
-          }
-          break;
-
-        default:
-          while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
-            this.aElements.push(new G_Field(oForm, document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']'), this.sGridName + '][' + j + ']['
-                + this.aFields[i].sFieldName));
-            if (aFields[i].oProperties) {
-              this.aElements[this.aElements.length - 1].mask = aFields[i].oProperties.sMask;
-            }
-            j++;
-          }
-          break;
-      }
-    }
-    // Set dependent fields
-    sw1 = false;
-    if (this.allDependentFields == '') sw1 = true; //Check if dependent fields are setted.
-    for (i = 0; i < this.aFields.length; i++) {
-      j = iRow || 1;
-      while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + this.aFields[i].sFieldName + ']')) {
-        if (aFields[i].oProperties.dependentFields != '') {
-          this.setDependents(j, this.getElementByName(j, this.aFields[i].sFieldName), aFields[i].oProperties.dependentFields, sw1);
         }
-        j++;
-      }
+    }
+
+    //Set dependent fields
+    var sw = false;
+
+    if (this.allDependentFields == "") {
+        sw = true; //Check if dependent fields are setted.
+    }
+
+    for (j = 0; j <= this.aFields.length - 1; j++) {
+        i = iRow || 1;
+
+        while ((element = document.getElementById("form[" + this.sGridName + "][" + i + "][" + this.aFields[j].sFieldName + "]"))) {
+            if (this.aFields[j].oProperties.dependentFields != "") {
+                this.setDependents(i, this.getElementByName(i, this.aFields[j].sFieldName), aFields[j].oProperties.dependentFields, sw);
+            }
+
+            i = i + 1;
+        }
     }
   };
   //End Set Fields --------------------------------------------------------
@@ -201,88 +197,148 @@ var G_Grid = function(oForm, sGridName){
     }
   };
 
-  ////////////////////////////////////////////////////////////////////////
+  this.cloneElement = function (element)
+  {
+    //input, textarea, select
 
-  this.cloneInput = function(oNewObject){
-    var txt = oNewObject.parentNode.innerHTML;
-    var xClass = 'module_app_input___gray';
+    var strHtml = element.parentNode.innerHTML;
+    var tag = new String(element.nodeName);
+    var arrayMatch = [];
+    var arrayAux1  = [];
+    var arrayAux2  = [];
+    var strHtmlAux = "";
+    var strAux     = "";
+    var i = 0;
 
-    txt = txt.replace('input', '');
-    txt = txt.replace('INPUT', '');
-    txt = txt.replace('<', '');
-    txt = txt.replace('/>', '');
-    txt = txt.replace('>', '');
+    strHtml = stringReplace("\\x0A", "", strHtml); //\n 10
+    strHtml = stringReplace("\\x0D", "", strHtml); //\r 13
+    strHtml = stringReplace("\\x09", "", strHtml); //\t  9
 
-    var strAux = stringReplace(' ', '', txt);
-    strAux = strAux.toLowerCase();
-
-    var sw_display = (strAux.indexOf('display:none') > 0)? true : false;
-
-    var arrayElemTxt = txt.split('="');
-    var pos = 0;
-    var strAux2 = '';
-    var strAux3 = '';
-
-    for (var i = 0; i <= arrayElemTxt.length - 1; i++) {
-      strAux = arrayElemTxt[i];
-      pos = strAux.indexOf('"');
-
-      if (pos > 0) {
-        strAux2 = strAux.substr(0, pos);
-        strAux3 = stringReplace(' ', '__%SPACE__', strAux2)
-
-        arrayElemTxt[i] = strAux.replace(strAux2, strAux3);
-      }
+    if ((arrayMatch = eval("/^.*(<" + tag + ".*id=\"" + element.id + "\".*>).*$/i").exec(strHtml))) {
+        strHtml = arrayMatch[1];
     }
 
-    txt = arrayElemTxt.join('="');
+    strHtml = stringReplace("<" + tag, "", strHtml);
+    strHtml = stringReplace("<" + tag.toLowerCase(), "", strHtml);
+    strHtml = stringReplace("\\/>.*", "", strHtml);
+    strHtml = stringReplace(">.*", "", strHtml);
 
-    arrayElemTxt = txt.split(' ');
+    ///////
+    strHtmlAux = strHtml;
+    strAux = "";
 
-    var arrayAttribute = [];
-    var arrayAttributeValue = [];
-    var strStyle = '';
+    while ((arrayMatch = /^(.*)(".*")(.*)$/g.exec(strHtmlAux))) {
+        strHtmlAux = arrayMatch[1];
+        strAux = stringReplace(" ", "__SPACE__", arrayMatch[2]) + arrayMatch[3] + strAux;
+    }
 
-    for (var i = 0; i <= arrayElemTxt.length - 1; i++) {
-        if (arrayElemTxt[i].indexOf('=') > 0) {
-            aVals    = arrayElemTxt[i].split('=');
-            aVals[0] = aVals[0].toLowerCase();
-            aVals[1] = stringReplace('"', '', aVals[1])
-            aVals[1] = stringReplace('__%SPACE__', ' ', aVals[1])
+    strAux = strHtmlAux + strAux;
 
-            if (aVals[0] != 'id' && aVals[0] != 'name' && aVals[0] != 'class' && aVals[0] != 'style') {
-                arrayAttribute.push(aVals[0]);
-                arrayAttributeValue.push(aVals[1]);
-            } else {
-                if (aVals[0] == 'style') {
-                    strStyle = aVals[1];
-                }
-            }
+    strHtml = strAux;
+
+    ///////
+    if (/^.*read[oO]nly.*$/.test(strHtml)) {
+        if (!(/^.*read[oO]nly\=.*$/.test(strHtml))) {
+            strHtml = stringReplace("read[oO]nly", "readonly=\"\"", strHtml);
         }
     }
 
-    strStyle = ((sw_display)? "display: none;" : "") + strStyle;
-
-    var newField = document.createElement("input");
-
-    newField.setAttribute("id", oNewObject.id);
-    newField.setAttribute("name", oNewObject.id);
-    newField.className = xClass;
-    newField.style.cssText = strStyle;
-
-    if (oNewObject.disabled) {
-        newField.disabled = true;
+    if (/^.*disabled.*$/.test(strHtml)) {
+        if (!(/^.*disabled\=.*$/.test(strHtml))) {
+            strHtml = stringReplace("disabled", "disabled=\"\"", strHtml);
+        }
     }
 
-    if (oNewObject.readOnly) {
-        newField.readOnly = true;
+    if (/^.*checked.*$/i.test(strHtml)) {
+        strHtml = stringReplace("CHECKED", "checked", strHtml);
+
+        if (!(/^.*checked\=.*$/.test(strHtml))) {
+            strHtml = stringReplace("checked", "checked=\"\"", strHtml);
+        }
     }
 
-    for (var i = 0; i <= arrayAttribute.length - 1; i++) {
-        newField.setAttribute(arrayAttribute[i], arrayAttributeValue[i]);
+    ///////
+    var arrayAttribute = [];
+    var a = "";
+    var v = "";
+    arrayAux1 = strHtml.split(" ");
+
+    for (i = 0; i <= arrayAux1.length - 1; i++) {
+        arrayAux2 = arrayAux1[i].split("=");
+
+        if (typeof arrayAux2[1] != "undefined") {
+            a = arrayAux2[0].trim();
+            v = stringReplace("\\\"", "", arrayAux2[1]);
+
+            v = stringReplace("__SPACE__", " ", v);
+
+            arrayAttribute.push([a, v]);
+        }
     }
 
-    return newField;
+    ///////
+    var newElement = document.createElement(tag.toLowerCase());
+
+    for (i = 0; i <= arrayAttribute.length - 1; i++) {
+        a = arrayAttribute[i][0];
+        v = arrayAttribute[i][1];
+
+        switch (a.toLowerCase()) {
+            case "id":
+            case "name":
+                newElement.setAttribute("id", element.id);
+                newElement.setAttribute("name", element.id);
+                break;
+            case "class":
+                newElement.className = v;
+                break;
+            case "style":
+                newElement.style.cssText = ((/^.*display\s*:\s*none.*$/i.test(strHtml))? "display: none;" : "") + v;
+                break;
+            case "disabled":
+                if (element.disabled) {
+                    newElement.disabled = true;
+                }
+                break;
+            case "readonly":
+                if (element.readOnly) {
+                    newElement.readOnly = true;
+                }
+                break;
+            case "checked":
+                if (element.checked) {
+                    newElement.checked = true;
+                }
+                break;
+            default:
+                newElement.setAttribute(a, v);
+                break;
+        }
+    }
+
+    switch (tag.toLowerCase()) {
+        case "input":
+        case "textarea":
+            newElement.value = element.value;
+            break;
+        case "select":
+            if (element.options.length > 0) {
+                var pos = 0;
+
+                for (i = 0; i <= element.options.length - 1; i++) {
+                    if (element.options[i].selected) {
+                        pos = i;
+                    }
+
+                    newElement.options[i] = new Option(element.options[i].text, element.options[i].value, element.options[i].defaultSelected);
+                }
+
+                newElement.options[pos].selected = true;
+            }
+            break;
+    }
+
+    return newElement;
   };
 
   this.addGridRow = function() {
@@ -323,14 +379,18 @@ var G_Grid = function(oForm, sGridName){
               aObjects[0].id = newID;
               aObjects[0].name = newID;
               attributes = elementAttributesNS(aObjects[0], 'pm');
-              if (attributes.defaultvalue != '' && typeof attributes.defaultvalue != 'undefined'){
-                defaultValue = attributes.defaultvalue;
-              }else{
-                defaultValue = '';
+
+              if (typeof attributes.defaultvalue != "undefined" && attributes.defaultvalue != "") {
+                  defaultValue = attributes.defaultvalue;
+              } else {
+                  defaultValue = "";
               }
+
               for(n=0; n < aObjects.length; n++){
                 switch(aObjects[n].type){
                   case 'text': //TEXTBOX, CURRENCY, PERCENTAGE, DATEPICKER
+                    aObjects[n].className = "module_app_input___gray";
+
                     tags = oNewRow.getElementsByTagName('td')[i].getElementsByTagName('a');
                     if (tags.length == 2){ //DATEPICKER
                       //Copy Images
@@ -363,39 +423,37 @@ var G_Grid = function(oForm, sGridName){
                       a2.id = datePickerTriggerId;
                       a2.innerHTML = img2;
                       oNewRow.getElementsByTagName('td')[i].appendChild(a2);
+                      
                       //Load DatePicker Trigger
                       datePicker4("", newID, attributes.mask, attributes.start, attributes.end, attributes.time);
-                      if(defaultValue=='today'){
-                    	  attributesValue = elementAttributesNS(aObjects[0], '');
-                    	  aObjects[n].value=attributesValue.value;
-                      }else
-                         aObjects[n].value = defaultValue;
+
+                      aObjects[n].value = defaultValue;
                     }else{
                       if (_BROWSER.name == 'msie' && aObjects.length==1){ //Clone new input element if browser is IE
-                        var oNewOBJ = this.cloneInput(aObjects[n]);
+                        var oNewOBJ = this.cloneElement(aObjects[n]);
                         oNewOBJ.value = defaultValue;
                         var parentGG = aObjects[n].parentNode;
                         parentGG.removeChild(aObjects[n]);
                         parentGG.appendChild(oNewOBJ);
                       }else{
-                        if ((attributes.gridtype) && (attributes.gridtype=='currency')) {
-                          var attributesCurrency = elementAttributesNS(aObjects[0], '');
-                          aObjects[n].value = attributesCurrency.value.replace(/[.,0-9\s]/g,'');;
+                        if ((attributes.gridtype) && attributes.gridtype == "currency") {
+                            var attributesCurrency = elementAttributesNS(aObjects[n], "");
+                            aObjects[n].value = attributesCurrency.value.replace(/[.,0-9\s]/g, "");
+                        } else {
+                            aObjects[n].value = defaultValue;
                         }
-                        else
-                          aObjects[n].value = defaultValue;
                       }
                     }
                     break;
                   case 'checkbox': //CHECKBOX
-                    if (_BROWSER.name != 'msie'){
-                      attributesFalse = elementAttributesNS(aObjects[0], '');
-                      if((defaultValue === attributesFalse.falsevalue) || (defaultValue===''))
-                        aObjects[n].checked = false;
-                      else
-                        aObjects[n].checked = true;
-                    }
-                    break;
+                      var attributeCheckBox = elementAttributesNS(aObjects[n], "");
+
+                      if (defaultValue == "" || (typeof attributeCheckBox.falseValue != "undefined" && defaultValue == attributeCheckBox.falseValue) || (typeof attributeCheckBox.falsevalue != "undefined" && defaultValue == attributeCheckBox.falsevalue)) {
+                          aObjects[n].checked = false;
+                      } else {
+                          aObjects[n].checked = true;
+                      }
+                      break;
                   case 'hidden': //HIDDEN
                     if ((attributes.gridtype != 'yesno' && attributes.gridtype != 'dropdown') || typeof attributes.gridtype == 'undefined')
                       aObjects[n].value = defaultValue;
@@ -414,6 +472,8 @@ var G_Grid = function(oForm, sGridName){
           case 'textarea': //TEXTAREA
             aObjects = oNewRow.getElementsByTagName('td')[i].getElementsByTagName('textarea');
             if (aObjects){
+              aObjects[0].className = "module_app_input___gray";
+
               newID = aObjects[0].id.replace(/\[1\]/g, '\[' + currentRow + '\]');
               aObjects[0].id = newID;
               aObjects[0].name = newID;
@@ -623,38 +683,44 @@ var G_Grid = function(oForm, sGridName){
     }
   };
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////
-  this.deleteGridRow = function(sRow, bWithoutConfirm){
-    if (typeof bWithoutConfirm == 'undefined') bWithoutConfirm = false;
-    //var i, iRow, iRowAux, oAux, ooAux;
-    if (this.oGrid.rows.length == 3) {
-      new leimnud.module.app.alert().make( {
-        label : G_STRINGS.ID_MSG_NODELETE_GRID_ITEM
-      });
-      return false;
-    }
-    if (bWithoutConfirm){
-      this.deleteRowWC(this,sRow);
-    }else{
-      new leimnud.module.app.confirm().make( {
-        label : G_STRINGS.ID_MSG_DELETE_GRID_ITEM,
-        action : function() {
-          this.deleteRowWC(this,sRow);
-        }.extend(this)
-      });
-    }
+  this.deleteGridRow = function (sRow, bWithoutConfirm)
+  {
+      if (typeof bWithoutConfirm == "undefined") {
+          bWithoutConfirm = false;
+      }
+
+      if (this.oGrid.rows.length == 3) {
+          new leimnud.module.app.alert().make({
+              label: G_STRINGS.ID_MSG_NODELETE_GRID_ITEM
+          });
+
+          return false;
+      }
+
+      if (bWithoutConfirm) {
+          this.deleteRowWC(this, sRow);
+      } else {
+          new leimnud.module.app.confirm().make({
+              label: G_STRINGS.ID_MSG_DELETE_GRID_ITEM,
+              action: function ()
+                {
+                    this.deleteRowWC(this, sRow);
+                }.extend(this)
+          });
+      }
   };
 
-  this.deleteRowWC = function(oObj, aRow){
-    sRow = new String(aRow);
-    sRow = sRow.replace('[', '');
-    sRow = sRow.replace(']', '');
-    iRow = Number(sRow);
-
-    deleteRowOnDynaform(oObj, iRow);
+  this.deleteRowWC = function (oObj, aRow)
+  {
+    var sRow = new String(aRow);
+    sRow = sRow.replace("[", "");
+    sRow = sRow.replace("]", "");
+    var iRow = Number(sRow);
+    var iRowAux = iRow + 1;
     var lastItem = oObj.oGrid.rows.length - 2;
 
-    iRowAux = iRow + 1;
+    deleteRowOnDynaform(oObj, iRow);
+
     while (iRowAux <= (lastItem)) {
       for (i = 1; i < oObj.oGrid.rows[iRowAux - 1].cells.length; i++) {
         var oCell1 = oObj.oGrid.rows[iRowAux - 1].cells[i];
@@ -668,6 +734,7 @@ var G_Grid = function(oForm, sGridName){
                 aObjects1[0].checked = aObjects2[0].checked;
               }
               aObjects1[0].value = aObjects2[0].value;
+              aObjects1[0].className = aObjects2[0].className;
             }
 
             aObjects = oCell1.getElementsByTagName('div');
@@ -712,6 +779,7 @@ var G_Grid = function(oForm, sGridName){
                 aObjects1[0].options[j] = optn;
               }
               aObjects1[0].value = vValue;
+              aObjects1[0].className = aObjects2[0].className;
             }
             break;
           case '<texta':
@@ -719,6 +787,7 @@ var G_Grid = function(oForm, sGridName){
             aObjects2 = oCell2.getElementsByTagName('textarea');
             if (aObjects1 && aObjects2) {
               aObjects1[0].value = aObjects2[0].value;
+              aObjects1[0].className = aObjects2[0].className;
             }
             break;
           default:
@@ -733,68 +802,81 @@ var G_Grid = function(oForm, sGridName){
       }
       iRowAux++;
     }
+
+    //Delete row
     this.oGrid.deleteRow(lastItem);
 
-    for (i=0; i < this.aFields.length; i++){
-      this.aElements.pop();
+    var i = 0;
+
+    for (i = 0; i <= this.aFields.length - 1; i++) {
+        this.aElements.pop();
     }
+
+    //Recalculate functions if are declared
+    var element;
 
     if (oObj.aFunctions.length > 0) {
-      for (i = 0; i < oObj.aFunctions.length; i++) {
-        oAux = document.getElementById('form[' + oObj.sGridName + '][1][' + oObj.aFunctions[i].sFieldName + ']');
-        if (oAux) {
-          switch (oObj.aFunctions[i].sFunction) {
-            case 'sum':
-              oObj.sum(false, oAux);
-              break;
-            case 'avg':
-              oObj.avg(false, oAux);
-              break;
-          }
+        for (i = 0; i <= oObj.aFunctions.length - 1; i++) {
+            element = document.getElementById("form[" + oObj.sGridName + "][1][" + oObj.aFunctions[i].sFieldName + "]");
+
+            if (element) {
+                switch (oObj.aFunctions[i].sFunction) {
+                    case "sum":
+                        oObj.sum(false, element);
+                        break;
+                    case "avg":
+                        oObj.avg(false, element);
+                        break;
+                }
+            }
         }
-      }
     }
 
-  //Fires OnAddRow Event
+    //Fires OnAddRow Event
     if (oObj.ondeleterow) {
-      oObj.ondeleterow(iRow);
+        oObj.ondeleterow(iRow);
     }
   };
 
   ///////////////////////////////////////////////////////////////////////////////////
 
-  this.assignFunctions = function(aFields, sEvent, iRow) {
-    iRow = iRow || 1;
-    var i, j, oAux;
-    for (i = 0; i < aFields.length; i++) {
-      j = iRow;
-      while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + aFields[i].sFieldName + ']')) {
-        switch (aFields[i].sFunction) {
-          case 'sum':
-            leimnud.event.add(oAux, sEvent, {
-              method : this.sum,
-              instance : this,
-              event : true
-            });
-            break;
-          case 'avg':
-            leimnud.event.add(oAux, sEvent, {
-              method : this.avg,
-              instance : this,
-              event : true
-            });
-            break;
-          default:
-            leimnud.event.add(oAux, sEvent, {
-              method : aFields[i].sFunction,
-              instance : this,
-              event : true
-            });
-          break;
-        }
-        j++;
+  this.assignFunctions = function (aFields, sEvent, iRow)
+  {
+      var element;
+      var i = 0;
+      var j = 0;
+
+      for (j = 0; j <= aFields.length - 1; j++) {
+          i = iRow || 1;
+
+          while ((element = document.getElementById("form[" + this.sGridName + "][" + i + "][" + aFields[j].sFieldName + "]"))) {
+              switch (aFields[j].sFunction) {
+                  case "sum":
+                      leimnud.event.add(element, sEvent, {
+                          method: this.sum,
+                          instance: this,
+                          event: true
+                      });
+                      break;
+                  case "avg":
+                      leimnud.event.add(element, sEvent, {
+                          method: this.avg,
+                          instance: this,
+                          event: true
+                      });
+                      break;
+                  default:
+                      leimnud.event.add(element, sEvent, {
+                          method: aFields[j].sFunction,
+                          instance: this,
+                          event: true
+                      });
+                      break;
+              }
+
+              i = i + 1;
+          }
       }
-    }
   };
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -882,7 +964,7 @@ var G_Grid = function(oForm, sGridName){
     i = 1;
     fTotal = 0;
     aAux[2] = aAux[2].replace(']', '');
-    while (oAux = this.getElementByName(i, aAux[2])) {
+    while ((oAux = this.getElementByName(i, aAux[2]))) {
       if ( oAux.value() != "" ) {
         fTotal += parseFloat(G.getValue(oAux.value().trim() ));
       }
@@ -916,21 +998,26 @@ var G_Grid = function(oForm, sGridName){
 
   /////////////////////////////////////////////////////////////////////////////////////////
 
-  this.assignFormulas = function(aFields, sEvent, iRow) {
-    iRow = iRow || 1;
-    var i, j, oAux;
-    for (i = 0; i < aFields.length; i++) {
-      j = iRow;
-      while (oAux = document.getElementById('form[' + this.sGridName + '][' + j + '][' + aFields[i].sDependentOf + ']')) {
-        leimnud.event.add(oAux, sEvent, {
-          method : this.evaluateFormula,
-          instance : this,
-          args : [ oAux, aFields[i] ],
-          event : true
-        });
-        j++;
+  this.assignFormulas = function (aFields, sEvent, iRow)
+  {
+      var element;
+      var i = 0
+      var j = 0;
+
+      for (j = 0; j <= aFields.length - 1; j++) {
+          i = iRow || 1;
+
+          while ((element = document.getElementById("form[" + this.sGridName + "][" + i + "][" + aFields[j].sDependentOf + "]"))) {
+              leimnud.event.add(element, sEvent, {
+                  method: this.evaluateFormula,
+                  instance: this,
+                  args: [element, aFields[j]],
+                  event: true
+              });
+
+              i = i + 1;
+          }
       }
-    }
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1068,7 +1155,7 @@ var G_Grid = function(oForm, sGridName){
      * Dynaform - by Nyeke <erik@colosa.com
      */
 
-    deleteRowOnDybaform(this, iRow);
+    deleteRowOnDynaform(this, iRow);
 
     iRowAux = iRow + 1;
     while (iRowAux <= (this.oGrid.rows.length - 2)) {

@@ -3350,10 +3350,14 @@ class XmlForm_Field_Grid extends XmlForm_Field
       for ($c=1; $c <= $therow; $c++){
         if ($c == $therow){
           $xValues[$therow] = $aRow;
-        }else{
-          foreach ($aRow as $key=>$value){
-            $xValues[$c][$key] = '';
-          }
+        } else {
+            if (is_array($aRow)) {
+                foreach ($aRow as $key => $value){
+                    $xValues[$c][$key] = "";
+                }
+            } else {
+                //
+            }
         }
       }
       $values = $xValues;
@@ -3394,22 +3398,29 @@ class XmlForm_Field_Grid extends XmlForm_Field
     return $tpl->printObject ( $this, $therow );
   }
 
-  /**
-   * Change the columns for rows and rows to columns
-   * @param <array> $values
-   * @return <array>
-   */
-  function flipValues($values) {
-    $flipped = array ();
-    foreach ( $values as $rowKey => $row ) {
-      foreach ( $row as $colKey => $cell ) {
-        if (! isset ( $flipped [$colKey] ) || ! is_array ( $flipped [$colKey] ))
-          $flipped [$colKey] = array ();
-        $flipped [$colKey] [$rowKey] = $cell;
-      }
+    /**
+     * Change the columns for rows and rows to columns
+     * @param <array> $arrayData
+     * @return <array>
+     */
+    public function flipValues($arrayData)
+    {
+        $flipped = array();
+
+        foreach ($arrayData as $rowIndex => $rowValue) {
+            if (is_array($rowValue)) {
+                foreach ($rowValue as $colIndex => $colValue) {
+                    if (!isset($flipped[$colIndex]) || !is_array($flipped[$colIndex])) {
+                        $flipped[$colIndex] = array();
+                    }
+
+                    $flipped[$colIndex][$rowIndex] = $colValue;
+                }
+            }
+        }
+
+        return $flipped;
     }
-    return $flipped;
-  }
 }
 
 /**
@@ -3696,6 +3707,10 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
       $mask = $this->mask;
     } else {
       $mask = '%Y-%m-%d'; //set default
+    }
+
+    if ($this->defaultValue == "today") {
+        $defaultValue = masktophp($mask);
     }
 
     if( strpos($mask, '%') === false ) {

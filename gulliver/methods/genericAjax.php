@@ -7,19 +7,28 @@ if( !isset($request) ){
 if( isset($request) ){
   switch($request){
     case 'deleteGridRowOnDynaform':
-      // This code is to update the SESSION variable for dependent fields in grids
-      $oFields = array();
-      if (!defined('XMLFORM_AJAX_PATH')) define('XMLFORM_AJAX_PATH',PATH_XMLFORM);
-      ksort($_SESSION[$_POST['formID']][$_POST['gridname']]);
-      $initialKey = 1;
-      foreach ($_SESSION[$_POST['formID']][$_POST['gridname']] as $key => $value) {
-        if ($key != $_POST['rowpos']) {
-          $oFields[$initialKey] = $value;
-          $initialKey++;
-        }
+      //This code is to update the SESSION variable for dependent fields in grids
+
+      if (!defined("XMLFORM_AJAX_PATH")) {
+          define("XMLFORM_AJAX_PATH", PATH_XMLFORM);
       }
-      unset($_SESSION[$_POST['formID']][$_POST['gridname']]);
-      $_SESSION[$_POST['formID']][$_POST['gridname']] = $oFields;
+
+      if (is_array($_SESSION[$_POST["formID"]][$_POST["gridname"]])) {
+          ksort($_SESSION[$_POST["formID"]][$_POST["gridname"]]);
+          $oFields = array();
+          $initialKey = 1;
+
+          foreach ($_SESSION[$_POST["formID"]][$_POST["gridname"]] as $key => $value) {
+              if ($key != $_POST["rowpos"]) {
+                  $oFields[$initialKey] = $value;
+                  $initialKey++;
+              }
+          }
+
+          unset($_SESSION[$_POST["formID"]][$_POST["gridname"]]);
+
+          $_SESSION[$_POST["formID"]][$_POST["gridname"]] = $oFields;
+      }
 
     /*  if( isset($_SESSION['APPLICATION']) ){
         G::LoadClass('case');
