@@ -205,9 +205,9 @@ class Main extends Controller
         //if flag to send heartbeat is enabled, and it is time to send heartbeat, sent it using asynchronous beat.
         if (($sflag == "1") && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {
             //To do: we need to change to ExtJs
-            $this->setJSVar('flagHeartBeat', ($flagHeartBeat == 1));
+            $this->setJSVar('flagHeartBeat', ($flagHeartBeat = 1));
         } else {
-            $this->setJSVar('flagHeartBeat', ($flagHeartBeat == 0));
+            $this->setJSVar('flagHeartBeat', ($flagHeartBeat = 0));
         }
 
         //check if we show the panel with the getting started info
