@@ -195,7 +195,6 @@ class Main extends Controller
         G::LoadClass ('serverConfiguration');
 
         $oServerConf = & serverConf::getSingleton ();
-        $flagHeartBeat = '';
         $sflag = $oServerConf->getHeartbeatProperty('HB_OPTION', 'HEART_BEAT_CONF');
         $sflag = (trim($sflag) != '') ? $sflag : '1';
 
@@ -205,9 +204,9 @@ class Main extends Controller
         //if flag to send heartbeat is enabled, and it is time to send heartbeat, sent it using asynchronous beat.
         if (($sflag == "1") && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {
             //To do: we need to change to ExtJs
-            $this->setJSVar('flagHeartBeat', ($flagHeartBeat == 1));
+            $this->setJSVar('flagHeartBeat', 1);
         } else {
-            $this->setJSVar('flagHeartBeat', ($flagHeartBeat == 0));
+            $this->setJSVar('flagHeartBeat', 0);
         }
 
         //check if we show the panel with the getting started info
@@ -222,9 +221,9 @@ class Main extends Controller
         $oCriteria->add (ConfigurationPeer::APP_UID, '');
         $flagGettingStarted =  ConfigurationPeer::doCount ($oCriteria);
         if ($flagGettingStarted == 0) {
-            $this->setJSVar('flagGettingStarted', ($flagGettingStarted == 1));
+            $this->setJSVar('flagGettingStarted', 1);
         } else {
-            $this->setJSVar('flagGettingStarted', ($flagGettingStarted == 0));
+            $this->setJSVar('flagGettingStarted', 0);
         }
 
         G::loadClass('configuration');
