@@ -13,7 +13,7 @@
 {if ($form->addRow) }
    <table class='Record'>
      <tr><td></td>
-      <td><img id="form[{$form->name}][bullet]" src="/images/bulletButton.gif" />&nbsp;<a id="form[{$form->name}][addLink]" class="GridLink" href="#" value="Insert" onclick="form_{$form->owner->id}.getElementByName('{$form->name}').addGridRow();return false;">{$form->NewLabel}</a></td>
+      <td><img id="form[{$form->name}][bullet]" src="/images/bulletButton.gif" />&nbsp;<a id="form[{$form->name}][addLink]" class="GridLink" href="javascript:;" value="Insert" onclick="form_{$form->owner->id}.getElementByName('{$form->name}').addGridRow(); return false;">{$form->NewLabel}</a></td>
      </tr>
    </table>
 {/if}
@@ -37,7 +37,7 @@
       <td style="white-space:nowrap;">{$field->field}</td>
 {/foreach}
 {if $form->deleteRow == '1' }
-      <td align="center"><A class="GridLink" href="#" onclick="form_{$form->owner->id}.getElementByName('{$form->name}').deleteGridRow('[{literal}{$smarty.section.row.index+1}{/literal}]');return false;">{$form->DeleteLabel}</A>&nbsp;</td>
+      <td align="center"><A class="GridLink" href="javascript:;" onclick="form_{$form->owner->id}.getElementByName('{$form->name}').deleteGridRow('[{literal}{$smarty.section.row.index+1}{/literal}]'); return false;">{$form->DeleteLabel}</A>&nbsp;</td>
 {/if}
 {if ($form->editRow=='1')}
       <td>edit"{$form->editRow}"</td>
