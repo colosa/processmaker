@@ -31,7 +31,7 @@ class Main extends Controller
 
         // setting variables for template
         $this->setVar('logo_company', $this->getCompanyLogo());
-        $this->setVar('userfullname', $this->getUserFullName());
+        $this->setVar('userfullname', htmlentities($this->getUserFullName(), ENT_QUOTES, 'UTF-8') );
         $this->setVar('user', isset($_SESSION['USR_USERNAME']) ? $_SESSION['USR_USERNAME'] : '');
         $this->setVar('pipe', isset($_SESSION['USR_USERNAME']) ? ' | ' : '');
         $this->setVar('rolename', $this->getUserRole());

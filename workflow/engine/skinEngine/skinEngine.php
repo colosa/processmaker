@@ -635,7 +635,7 @@ class SkinEngine
         $smarty->assign('switch_interface', $switch_interface);
         $smarty->assign('switch_interface_label', G::LoadTranslation('ID_SWITCH_INTERFACE'));
 
-        $smarty->assign('userfullname', isset($_SESSION['USR_FULLNAME']) ? $_SESSION['USR_FULLNAME'] : '');
+        $smarty->assign('userfullname', isset($_SESSION['USR_FULLNAME']) ? htmlentities($_SESSION['USR_FULLNAME'] , ENT_QUOTES, 'UTF-8'): '');
         $smarty->assign('user', isset($_SESSION['USR_USERNAME']) ? '(' . $_SESSION['USR_USERNAME'] . ')' : '');
         $smarty->assign('rolename', isset($_SESSION['USR_ROLENAME']) ? $_SESSION['USR_ROLENAME'] . '' : '');
         $smarty->assign('pipe', isset($_SESSION['USR_USERNAME']) ? ' | ' : '');

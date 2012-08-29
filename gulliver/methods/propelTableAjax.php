@@ -71,7 +71,7 @@
 
   $fastSearch = get_ajax_value('fastSearch');
   if (isset($fastSearch)) {
-    $ntable->fastSearch= urldecode($fastSearch);
+    $ntable->fastSearch= htmlentities(urldecode($fastSearch), ENT_QUOTES, 'UTF-8');
     $page = 1;
   }
 
