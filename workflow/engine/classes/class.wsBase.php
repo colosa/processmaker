@@ -864,6 +864,7 @@ class wsBase
             $result->processId           = $aRows['PRO_UID'];
             $result->processName         = $processName;
             $result->createDate          = $aRows['CREATE_DATE'];
+            $result->updateDate          = $aRows['UPDATE_DATE'];
 
             //now fill the array of AppDelegationPeer
             $oCriteria = new Criteria('workflow');

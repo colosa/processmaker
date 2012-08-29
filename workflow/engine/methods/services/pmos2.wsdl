@@ -476,6 +476,7 @@
             <xs:element name="processId" minOccurs="0" type="xs:string"/>
             <xs:element name="processName" minOccurs="0" type="xs:string"/>
             <xs:element name="createDate" minOccurs="0" type="xs:string"/>
+            <xs:element name="updateDate" minOccurs="0" type="xs:string"/>
             <xs:element name="currentUsers" minOccurs="0" maxOccurs="unbounded" type="xs0:getCaseInfoStruct"/>
           </xs:sequence>
         </xs:complexType>
