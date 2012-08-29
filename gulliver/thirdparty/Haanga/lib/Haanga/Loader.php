@@ -1,6 +1,6 @@
 <?php
 
-spl_autoload_register(function ($class) {
+  function hanga_anonymous($class) {
     /*
         This array has a map of (class => file)
     */
@@ -72,23 +72,23 @@ spl_autoload_register(function ($class) {
 
     // deps {{{
     static $deps    = array (
-  'haanga_extension_filter' => 
+  'haanga_extension_filter' =>
   array (
     0 => 'haanga_extension',
   ),
-  'haanga_extension_filter_translation' => 
+  'haanga_extension_filter_translation' =>
   array (
     0 => 'haanga_extension_filter_trans',
   ),
-  'haanga_extension_tag' => 
+  'haanga_extension_tag' =>
   array (
     0 => 'haanga_extension',
   ),
-  'hg_parser' => 
+  'hg_parser' =>
   array (
     0 => 'haanga_compiler_parser',
   ),
-  'haanga_compiler_runtime' => 
+  'haanga_compiler_runtime' =>
   array (
     0 => 'haanga_compiler',
   ),
@@ -112,6 +112,7 @@ spl_autoload_register(function ($class) {
     }
 
     return false;
-});
+}
+spl_autoload_register( "hanga_anonymous" );
 
 

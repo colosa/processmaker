@@ -9,7 +9,7 @@
  * @author    Erik Amaru Ortiz <aortiz.erik@gmail.com>
  */
 
-include dirname(__FILE__) . '/../../../gulliver/Core/Bootstrap.php';
+include dirname(__FILE__) . '/../../../gulliver/core/Bootstrap.php';
 include dirname(__FILE__) . '/../../../workflow/engine/PmBootstrap.php';
 
 $config = array(

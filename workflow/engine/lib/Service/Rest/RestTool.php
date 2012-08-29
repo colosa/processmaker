@@ -87,7 +87,7 @@ class Service_Rest_RestTool
             $configIniStr .= "[$table]\n";
             $configIniStr .= "  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE\n";
             $configIniStr .= "  ALLOW_METHODS = GET\n";
-            $configIniStr .= "  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.\n";
+            $configIniStr .= "  ; Params to set columns that should be exposed, you can use wildcard '*' to specify all columns.\n";
             $configIniStr .= "  EXPOSE_COLUMNS_GET  = *\n";
             $configIniStr .= "  EXPOSE_COLUMNS_POST = ".$strColumns."\n";
             $configIniStr .= "  EXPOSE_COLUMNS_PUT  = ".$strColumns."\n";
