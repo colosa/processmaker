@@ -2892,7 +2892,7 @@ class Processes {
               $fsFileName    = intval( $sIdentifier );      //reading the size of $filename
               if ( $fsFileName > 0 )
                   $sFileName    = fread( $fp, $fsFileName );    //reading filename string
-              $fsContent = intval( fread ( $fp, 9));      //reading the size of $Content
+              $fsContent = function_exists('mb_strlen') ? mb_strlen(fread($fp, 9)) : strlen(fread($fp, 9));      //reading the size of $Content
               if ( $fsContent > 0 ) {
                 $fileContent   = fread( $fp, $fsContent );    //reading string $XmlContent
                 $newFileName = $pathMailTem . $sFileName;
@@ -2912,7 +2912,7 @@ class Processes {
               $fsFileName    = intval( $sIdentifier );      //reading the size of $filename
               if ( $fsFileName > 0 )
                   $sFileName    = fread( $fp, $fsFileName );    //reading filename string
-              $fsContent = intval( fread ( $fp, 9));      //reading the size of $Content
+              $fsContent = function_exists('mb_strlen') ? mb_strlen(fread($fp, 9)) : strlen(fread($fp, 9));      //reading the size of $Content
               if ( $fsContent > 0 ) {
                 $fileContent   = fread( $fp, $fsContent );    //reading string $XmlContent
                 $newFileName = $pathPublic . $sFileName;
