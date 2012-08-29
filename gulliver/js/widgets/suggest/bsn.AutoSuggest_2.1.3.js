@@ -323,13 +323,6 @@ _b.AutoSuggest.prototype.createList = function(arr)
 	//
 	var div = _b.DOM.cE("div", {id:this.idAs, className:this.oP.className});
 
-	var hcorner = _b.DOM.cE("div", {className:"as_corner"});
-	var hbar = _b.DOM.cE("div", {className:"as_bar"});
-	var header = _b.DOM.cE("div", {className:"as_header"});
-	header.appendChild(hcorner);
-	header.appendChild(hbar);
-	div.appendChild(header);
-
 	// create and populate ul
 	//
 	var ul = _b.DOM.cE("ul", {id:"as_ul"});
@@ -391,27 +384,34 @@ _b.AutoSuggest.prototype.createList = function(arr)
     Static_AutosuggestResponseData.results.length = 0;
 	}
 
+ul.style.cssText = "zoom: 1; padding-top: 4px;";
 
-	div.appendChild( ul );
-
-
-	var fcorner = _b.DOM.cE("div", {className:"as_corner"});
-	var fbar = _b.DOM.cE("div", {className:"as_bar"});
-	var footer = _b.DOM.cE("div", {className:"as_footer"});
-	footer.appendChild(fcorner);
-	footer.appendChild(fbar);
-	div.appendChild(footer);
+div.appendChild(ul);
 
 	// get position of target textfield
 	// position holding div below it
 	// set width of holding div to width of field
 	//
-	var pos = _b.DOM.getPos(this.fld);
 
-	div.style.left 		= pos.x + "px";
-	div.style.top 		= ( pos.y + this.fld.offsetHeight + this.oP.offsety ) + "px";
-	div.style.width 	= this.fld.offsetWidth + "px";
-  div.style.height  = 250;
+var pos = _b.DOM.getPos(this.fld);
+
+var divPosX = pos.x - 3;
+var divPosY = pos.y - 4;
+var divW = this.fld.offsetWidth;
+var divH = 250;
+
+if (navigator.userAgent.toLowerCase().indexOf("msie") != -1) {
+    var divPosX = pos.x - 2;
+    var divPosY = pos.y - 4;
+    var divW = this.fld.offsetWidth + 5;
+    //divH = 250;
+}
+
+div.style.left = divPosX + "px";
+div.style.top  = (divPosY + this.fld.offsetHeight + this.oP.offsety) + "px";
+div.style.width  = divW + "px";
+div.style.height = divH + "px";
+
 	// set mouseover functions for div
 	// when mouse pointer leaves div, set a timeout to remove the list after an interval
 	// when mouse enters div, kill the timeout so the list won't be removed
