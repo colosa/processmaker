@@ -97,21 +97,6 @@ require_once ("classes/model/AppEvent.php");
 require_once ("classes/model/CaseScheduler.php");
 //G::loadClass("pmScript");
 
-//default values
-$bCronIsRunning = false;
-$sLastExecution = '';
-
-if (file_exists(PATH_DATA . 'cron')) {
-    $arrayAux = unserialize(trim(@file_get_contents(PATH_DATA . 'cron')));
-    $bCronIsRunning = (boolean)($arrayAux['bCronIsRunning']);
-    $sLastExecution = $arrayAux['sLastExecution'];
-} else {
-    //if not exists the file, just create a new one with current date
-    $arrayAux = array('bCronIsRunning' => '1', 'sLastExecution' => date('Y-m-d H:i:s'));
-
-    @file_put_contents(PATH_DATA . 'cron', serialize($arrayAux));
-}
-
 if (!defined('SYS_SYS')) {
     $sObject = $argv[1];
     $sNow    = $argv[2];
@@ -221,9 +206,9 @@ if (!defined('SYS_SYS')) {
     processWorkspace();
 }
 
-//finally update the file
-$arrayAux = array('bCronIsRunning' => '0', 'sLastExecution' => date('Y-m-d H:i:s'));
-@file_put_contents(PATH_DATA . 'cron', serialize($arrayAux));
+
+
+
 
 function processWorkspace()
 {
