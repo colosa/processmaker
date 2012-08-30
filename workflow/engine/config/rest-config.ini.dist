@@ -1,626 +1,532 @@
-; -= ProcessMaker RestFul services configuration =-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;             -= ProcessMaker RestFul services configuration =-                ;
+;                                                                              ;
+; On this configuration file you can customize the Processmaker Rest Service.  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; On this configuration file you can customize some aspects to expose on rest service.
-; Configure what methods (GET,POST,PUT,DELETE) should be exposed by ProcessMaker Rest server.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Rest Service Configuration ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+enable_service = true
+
+; add headers to rest server responses
+[HEADERS]
+  ; Enable this header to allow "Cross Domain AJAX" requests;
+  ; This works because processmaker is handling correctly requests with method 'OPTIONS'
+  ; that automatically is sent by a client using XmlHttpRequest or similar.
+  ;Access-Control-Allow-Origin = *
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; DB Tables Crud generation Config ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; This configuration section is used by ./rest-gen command to build the Rest Crud Api
+;
+; Configure what methods GET, POST, PUT, DELETE should be exposed.
 ; Configure for each table/method what columns sould be exposed.
+;
+; Configuration for each table must starts with a section like:
+; [TABLE:<table-name>]
+;
+; inside of each section there are two config keys:
+;
+; "ALLOW_METHODS" -> Use this param to set allowed methods (separeted by a single space).
+; Complete example:
+;   ALLOW_METHODS = GET POST PUT DELETE
+;
+; The others params are: "EXPOSE_COLUMNS_GET", "EXPOSE_COLUMNS_POST" and "EXPOSE_COLUMNS_PUT"
+; this params are used to configure the columns that should be exposed;
+; wildcard '*' can be used to speccify all columns.
+;
+; Example:
+;
+;[TABLE:MY_TABLE]
+;  ALLOW_METHODS = GET POST PUT DELETE
+;  EXPOSE_COLUMNS_GET  = *
+;  EXPOSE_COLUMNS_POST = FIELD1 FIELD2 FIELD3 FIELD4
+;  EXPOSE_COLUMNS_PUT  = FIELD1 FIELD2 FIELD3
+;
 
-;Rest Api for table APPLICATION with (16) columns.
-[APPLICATION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APPLICATION' with 16 columns.
+[TABLE:APPLICATION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID APP_NUMBER APP_PARENT APP_STATUS PRO_UID APP_PROC_STATUS APP_PROC_CODE APP_PARALLEL APP_INIT_USER APP_CUR_USER APP_CREATE_DATE APP_INIT_DATE APP_FINISH_DATE APP_UPDATE_DATE APP_DATA APP_PIN
   EXPOSE_COLUMNS_PUT  = APP_UID APP_NUMBER APP_PARENT APP_STATUS PRO_UID APP_PROC_STATUS APP_PROC_CODE APP_PARALLEL APP_INIT_USER APP_CUR_USER APP_CREATE_DATE APP_INIT_DATE APP_FINISH_DATE APP_UPDATE_DATE APP_DATA APP_PIN
 
-;Rest Api for table APP_DELEGATION with (22) columns.
-[APP_DELEGATION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_DELEGATION' with 22 columns.
+[TABLE:APP_DELEGATION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID DEL_INDEX DEL_PREVIOUS PRO_UID TAS_UID USR_UID DEL_TYPE DEL_THREAD DEL_THREAD_STATUS DEL_PRIORITY DEL_DELEGATE_DATE DEL_INIT_DATE DEL_TASK_DUE_DATE DEL_FINISH_DATE DEL_DURATION DEL_QUEUE_DURATION DEL_DELAY_DURATION DEL_STARTED DEL_FINISHED DEL_DELAYED DEL_DATA APP_OVERDUE_PERCENTAGE
   EXPOSE_COLUMNS_PUT  = APP_UID DEL_INDEX DEL_PREVIOUS PRO_UID TAS_UID USR_UID DEL_TYPE DEL_THREAD DEL_THREAD_STATUS DEL_PRIORITY DEL_DELEGATE_DATE DEL_INIT_DATE DEL_TASK_DUE_DATE DEL_FINISH_DATE DEL_DURATION DEL_QUEUE_DURATION DEL_DELAY_DURATION DEL_STARTED DEL_FINISHED DEL_DELAYED DEL_DATA APP_OVERDUE_PERCENTAGE
 
-;Rest Api for table APP_DOCUMENT with (14) columns.
-[APP_DOCUMENT]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_DOCUMENT' with 14 columns.
+[TABLE:APP_DOCUMENT]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_DOC_UID DOC_VERSION APP_UID DEL_INDEX DOC_UID USR_UID APP_DOC_TYPE APP_DOC_CREATE_DATE APP_DOC_INDEX FOLDER_UID APP_DOC_PLUGIN APP_DOC_TAGS APP_DOC_STATUS APP_DOC_STATUS_DATE
   EXPOSE_COLUMNS_PUT  = APP_DOC_UID DOC_VERSION APP_UID DEL_INDEX DOC_UID USR_UID APP_DOC_TYPE APP_DOC_CREATE_DATE APP_DOC_INDEX FOLDER_UID APP_DOC_PLUGIN APP_DOC_TAGS APP_DOC_STATUS APP_DOC_STATUS_DATE
 
-;Rest Api for table APP_MESSAGE with (16) columns.
-[APP_MESSAGE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_MESSAGE' with 16 columns.
+[TABLE:APP_MESSAGE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_MSG_UID MSG_UID APP_UID DEL_INDEX APP_MSG_TYPE APP_MSG_SUBJECT APP_MSG_FROM APP_MSG_TO APP_MSG_BODY APP_MSG_DATE APP_MSG_CC APP_MSG_BCC APP_MSG_TEMPLATE APP_MSG_STATUS APP_MSG_ATTACH APP_MSG_SEND_DATE
   EXPOSE_COLUMNS_PUT  = APP_MSG_UID MSG_UID APP_UID DEL_INDEX APP_MSG_TYPE APP_MSG_SUBJECT APP_MSG_FROM APP_MSG_TO APP_MSG_BODY APP_MSG_DATE APP_MSG_CC APP_MSG_BCC APP_MSG_TEMPLATE APP_MSG_STATUS APP_MSG_ATTACH APP_MSG_SEND_DATE
 
-;Rest Api for table APP_OWNER with (3) columns.
-[APP_OWNER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_OWNER' with 3 columns.
+[TABLE:APP_OWNER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID OWN_UID USR_UID
   EXPOSE_COLUMNS_PUT  = APP_UID OWN_UID USR_UID
 
-;Rest Api for table CONFIGURATION with (6) columns.
-[CONFIGURATION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'CONFIGURATION' with 6 columns.
+[TABLE:CONFIGURATION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = CFG_UID OBJ_UID CFG_VALUE PRO_UID USR_UID APP_UID
   EXPOSE_COLUMNS_PUT  = CFG_UID OBJ_UID CFG_VALUE PRO_UID USR_UID APP_UID
 
-;Rest Api for table CONTENT with (5) columns.
-[CONTENT]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'CONTENT' with 5 columns.
+[TABLE:CONTENT]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = CON_CATEGORY CON_PARENT CON_ID CON_LANG CON_VALUE
   EXPOSE_COLUMNS_PUT  = CON_CATEGORY CON_PARENT CON_ID CON_LANG CON_VALUE
 
-;Rest Api for table DEPARTMENT with (7) columns.
-[DEPARTMENT]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'DEPARTMENT' with 7 columns.
+[TABLE:DEPARTMENT]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = DEP_UID DEP_PARENT DEP_MANAGER DEP_LOCATION DEP_STATUS DEP_REF_CODE DEP_LDAP_DN
   EXPOSE_COLUMNS_PUT  = DEP_UID DEP_PARENT DEP_MANAGER DEP_LOCATION DEP_STATUS DEP_REF_CODE DEP_LDAP_DN
 
-;Rest Api for table DYNAFORM with (4) columns.
-[DYNAFORM]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'DYNAFORM' with 4 columns.
+[TABLE:DYNAFORM]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = DYN_UID PRO_UID DYN_TYPE DYN_FILENAME
   EXPOSE_COLUMNS_PUT  = DYN_UID PRO_UID DYN_TYPE DYN_FILENAME
 
-;Rest Api for table GROUPWF with (4) columns.
-[GROUPWF]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'GROUPWF' with 4 columns.
+[TABLE:GROUPWF]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = GRP_UID GRP_STATUS GRP_LDAP_DN GRP_UX
   EXPOSE_COLUMNS_PUT  = GRP_UID GRP_STATUS GRP_LDAP_DN GRP_UX
 
-;Rest Api for table GROUP_USER with (2) columns.
-[GROUP_USER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'GROUP_USER' with 2 columns.
+[TABLE:GROUP_USER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = GRP_UID USR_UID
   EXPOSE_COLUMNS_PUT  = GRP_UID USR_UID
 
-;Rest Api for table HOLIDAY with (3) columns.
-[HOLIDAY]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'HOLIDAY' with 3 columns.
+[TABLE:HOLIDAY]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = HLD_UID HLD_DATE HLD_DESCRIPTION
   EXPOSE_COLUMNS_PUT  = HLD_UID HLD_DATE HLD_DESCRIPTION
 
-;Rest Api for table INPUT_DOCUMENT with (8) columns.
-[INPUT_DOCUMENT]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'INPUT_DOCUMENT' with 8 columns.
+[TABLE:INPUT_DOCUMENT]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = INP_DOC_UID PRO_UID INP_DOC_FORM_NEEDED INP_DOC_ORIGINAL INP_DOC_PUBLISHED INP_DOC_VERSIONING INP_DOC_DESTINATION_PATH INP_DOC_TAGS
   EXPOSE_COLUMNS_PUT  = INP_DOC_UID PRO_UID INP_DOC_FORM_NEEDED INP_DOC_ORIGINAL INP_DOC_PUBLISHED INP_DOC_VERSIONING INP_DOC_DESTINATION_PATH INP_DOC_TAGS
 
-;Rest Api for table ISO_COUNTRY with (3) columns.
-[ISO_COUNTRY]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'ISO_COUNTRY' with 3 columns.
+[TABLE:ISO_COUNTRY]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = IC_UID IC_NAME IC_SORT_ORDER
   EXPOSE_COLUMNS_PUT  = IC_UID IC_NAME IC_SORT_ORDER
 
-;Rest Api for table ISO_LOCATION with (5) columns.
-[ISO_LOCATION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'ISO_LOCATION' with 5 columns.
+[TABLE:ISO_LOCATION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = IC_UID IL_UID IL_NAME IL_NORMAL_NAME IS_UID
   EXPOSE_COLUMNS_PUT  = IC_UID IL_UID IL_NAME IL_NORMAL_NAME IS_UID
 
-;Rest Api for table ISO_SUBDIVISION with (3) columns.
-[ISO_SUBDIVISION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'ISO_SUBDIVISION' with 3 columns.
+[TABLE:ISO_SUBDIVISION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = IC_UID IS_UID IS_NAME
   EXPOSE_COLUMNS_PUT  = IC_UID IS_UID IS_NAME
 
-;Rest Api for table LANGUAGE with (7) columns.
-[LANGUAGE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'LANGUAGE' with 7 columns.
+[TABLE:LANGUAGE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = LAN_ID LAN_NAME LAN_NATIVE_NAME LAN_DIRECTION LAN_WEIGHT LAN_ENABLED LAN_CALENDAR
   EXPOSE_COLUMNS_PUT  = LAN_ID LAN_NAME LAN_NATIVE_NAME LAN_DIRECTION LAN_WEIGHT LAN_ENABLED LAN_CALENDAR
 
-;Rest Api for table LEXICO with (4) columns.
-[LEXICO]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'LEXICO' with 4 columns.
+[TABLE:LEXICO]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = LEX_TOPIC LEX_KEY LEX_VALUE LEX_CAPTION
   EXPOSE_COLUMNS_PUT  = LEX_TOPIC LEX_KEY LEX_VALUE LEX_CAPTION
 
-;Rest Api for table OUTPUT_DOCUMENT with (19) columns.
-[OUTPUT_DOCUMENT]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'OUTPUT_DOCUMENT' with 19 columns.
+[TABLE:OUTPUT_DOCUMENT]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = OUT_DOC_UID PRO_UID OUT_DOC_LANDSCAPE OUT_DOC_MEDIA OUT_DOC_LEFT_MARGIN OUT_DOC_RIGHT_MARGIN OUT_DOC_TOP_MARGIN OUT_DOC_BOTTOM_MARGIN OUT_DOC_GENERATE OUT_DOC_TYPE OUT_DOC_CURRENT_REVISION OUT_DOC_FIELD_MAPPING OUT_DOC_VERSIONING OUT_DOC_DESTINATION_PATH OUT_DOC_TAGS OUT_DOC_PDF_SECURITY_ENABLED OUT_DOC_PDF_SECURITY_OPEN_PASSWORD OUT_DOC_PDF_SECURITY_OWNER_PASSWORD OUT_DOC_PDF_SECURITY_PERMISSIONS
   EXPOSE_COLUMNS_PUT  = OUT_DOC_UID PRO_UID OUT_DOC_LANDSCAPE OUT_DOC_MEDIA OUT_DOC_LEFT_MARGIN OUT_DOC_RIGHT_MARGIN OUT_DOC_TOP_MARGIN OUT_DOC_BOTTOM_MARGIN OUT_DOC_GENERATE OUT_DOC_TYPE OUT_DOC_CURRENT_REVISION OUT_DOC_FIELD_MAPPING OUT_DOC_VERSIONING OUT_DOC_DESTINATION_PATH OUT_DOC_TAGS OUT_DOC_PDF_SECURITY_ENABLED OUT_DOC_PDF_SECURITY_OPEN_PASSWORD OUT_DOC_PDF_SECURITY_OWNER_PASSWORD OUT_DOC_PDF_SECURITY_PERMISSIONS
 
-;Rest Api for table PROCESS with (25) columns.
-[PROCESS]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'PROCESS' with 25 columns.
+[TABLE:PROCESS]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = PRO_UID PRO_PARENT PRO_TIME PRO_TIMEUNIT PRO_STATUS PRO_TYPE_DAY PRO_TYPE PRO_ASSIGNMENT PRO_SHOW_MAP PRO_SHOW_MESSAGE PRO_SHOW_DELEGATE PRO_SHOW_DYNAFORM PRO_CATEGORY PRO_SUB_CATEGORY PRO_INDUSTRY PRO_UPDATE_DATE PRO_CREATE_DATE PRO_CREATE_USER PRO_HEIGHT PRO_WIDTH PRO_TITLE_X PRO_TITLE_Y PRO_DEBUG PRO_DYNAFORMS PRO_DERIVATION_SCREEN_TPL
   EXPOSE_COLUMNS_PUT  = PRO_UID PRO_PARENT PRO_TIME PRO_TIMEUNIT PRO_STATUS PRO_TYPE_DAY PRO_TYPE PRO_ASSIGNMENT PRO_SHOW_MAP PRO_SHOW_MESSAGE PRO_SHOW_DELEGATE PRO_SHOW_DYNAFORM PRO_CATEGORY PRO_SUB_CATEGORY PRO_INDUSTRY PRO_UPDATE_DATE PRO_CREATE_DATE PRO_CREATE_USER PRO_HEIGHT PRO_WIDTH PRO_TITLE_X PRO_TITLE_Y PRO_DEBUG PRO_DYNAFORMS PRO_DERIVATION_SCREEN_TPL
 
-;Rest Api for table PROCESS_OWNER with (2) columns.
-[PROCESS_OWNER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'PROCESS_OWNER' with 2 columns.
+[TABLE:PROCESS_OWNER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = OWN_UID PRO_UID
   EXPOSE_COLUMNS_PUT  = OWN_UID PRO_UID
 
-;Rest Api for table REPORT_TABLE with (8) columns.
-[REPORT_TABLE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'REPORT_TABLE' with 8 columns.
+[TABLE:REPORT_TABLE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = REP_TAB_UID PRO_UID REP_TAB_NAME REP_TAB_TYPE REP_TAB_GRID REP_TAB_CONNECTION REP_TAB_CREATE_DATE REP_TAB_STATUS
   EXPOSE_COLUMNS_PUT  = REP_TAB_UID PRO_UID REP_TAB_NAME REP_TAB_TYPE REP_TAB_GRID REP_TAB_CONNECTION REP_TAB_CREATE_DATE REP_TAB_STATUS
 
-;Rest Api for table REPORT_VAR with (5) columns.
-[REPORT_VAR]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'REPORT_VAR' with 5 columns.
+[TABLE:REPORT_VAR]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = REP_VAR_UID PRO_UID REP_TAB_UID REP_VAR_NAME REP_VAR_TYPE
   EXPOSE_COLUMNS_PUT  = REP_VAR_UID PRO_UID REP_TAB_UID REP_VAR_NAME REP_VAR_TYPE
 
-;Rest Api for table ROUTE with (17) columns.
-[ROUTE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'ROUTE' with 17 columns.
+[TABLE:ROUTE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = ROU_UID ROU_PARENT PRO_UID TAS_UID ROU_NEXT_TASK ROU_CASE ROU_TYPE ROU_CONDITION ROU_TO_LAST_USER ROU_OPTIONAL ROU_SEND_EMAIL ROU_SOURCEANCHOR ROU_TARGETANCHOR ROU_TO_PORT ROU_FROM_PORT ROU_EVN_UID GAT_UID
   EXPOSE_COLUMNS_PUT  = ROU_UID ROU_PARENT PRO_UID TAS_UID ROU_NEXT_TASK ROU_CASE ROU_TYPE ROU_CONDITION ROU_TO_LAST_USER ROU_OPTIONAL ROU_SEND_EMAIL ROU_SOURCEANCHOR ROU_TARGETANCHOR ROU_TO_PORT ROU_FROM_PORT ROU_EVN_UID GAT_UID
 
-;Rest Api for table STEP with (8) columns.
-[STEP]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'STEP' with 8 columns.
+[TABLE:STEP]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = STEP_UID PRO_UID TAS_UID STEP_TYPE_OBJ STEP_UID_OBJ STEP_CONDITION STEP_POSITION STEP_MODE
   EXPOSE_COLUMNS_PUT  = STEP_UID PRO_UID TAS_UID STEP_TYPE_OBJ STEP_UID_OBJ STEP_CONDITION STEP_POSITION STEP_MODE
 
-;Rest Api for table STEP_TRIGGER with (6) columns.
-[STEP_TRIGGER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'STEP_TRIGGER' with 6 columns.
+[TABLE:STEP_TRIGGER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = STEP_UID TAS_UID TRI_UID ST_TYPE ST_CONDITION ST_POSITION
   EXPOSE_COLUMNS_PUT  = STEP_UID TAS_UID TRI_UID ST_TYPE ST_CONDITION ST_POSITION
 
-;Rest Api for table SWIMLANES_ELEMENTS with (8) columns.
-[SWIMLANES_ELEMENTS]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'SWIMLANES_ELEMENTS' with 8 columns.
+[TABLE:SWIMLANES_ELEMENTS]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = SWI_UID PRO_UID SWI_TYPE SWI_X SWI_Y SWI_WIDTH SWI_HEIGHT SWI_NEXT_UID
   EXPOSE_COLUMNS_PUT  = SWI_UID PRO_UID SWI_TYPE SWI_X SWI_Y SWI_WIDTH SWI_HEIGHT SWI_NEXT_UID
 
-;Rest Api for table TASK with (41) columns.
-[TASK]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'TASK' with 41 columns.
+[TABLE:TASK]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = PRO_UID TAS_UID TAS_TYPE TAS_DURATION TAS_DELAY_TYPE TAS_TEMPORIZER TAS_TYPE_DAY TAS_TIMEUNIT TAS_ALERT TAS_PRIORITY_VARIABLE TAS_ASSIGN_TYPE TAS_ASSIGN_VARIABLE TAS_MI_INSTANCE_VARIABLE TAS_MI_COMPLETE_VARIABLE TAS_ASSIGN_LOCATION TAS_ASSIGN_LOCATION_ADHOC TAS_TRANSFER_FLY TAS_LAST_ASSIGNED TAS_USER TAS_CAN_UPLOAD TAS_VIEW_UPLOAD TAS_VIEW_ADDITIONAL_DOCUMENTATION TAS_CAN_CANCEL TAS_OWNER_APP STG_UID TAS_CAN_PAUSE TAS_CAN_SEND_MESSAGE TAS_CAN_DELETE_DOCS TAS_SELF_SERVICE TAS_START TAS_TO_LAST_USER TAS_SEND_LAST_EMAIL TAS_DERIVATION TAS_POSX TAS_POSY TAS_WIDTH TAS_HEIGHT TAS_COLOR TAS_EVN_UID TAS_BOUNDARY TAS_DERIVATION_SCREEN_TPL
   EXPOSE_COLUMNS_PUT  = PRO_UID TAS_UID TAS_TYPE TAS_DURATION TAS_DELAY_TYPE TAS_TEMPORIZER TAS_TYPE_DAY TAS_TIMEUNIT TAS_ALERT TAS_PRIORITY_VARIABLE TAS_ASSIGN_TYPE TAS_ASSIGN_VARIABLE TAS_MI_INSTANCE_VARIABLE TAS_MI_COMPLETE_VARIABLE TAS_ASSIGN_LOCATION TAS_ASSIGN_LOCATION_ADHOC TAS_TRANSFER_FLY TAS_LAST_ASSIGNED TAS_USER TAS_CAN_UPLOAD TAS_VIEW_UPLOAD TAS_VIEW_ADDITIONAL_DOCUMENTATION TAS_CAN_CANCEL TAS_OWNER_APP STG_UID TAS_CAN_PAUSE TAS_CAN_SEND_MESSAGE TAS_CAN_DELETE_DOCS TAS_SELF_SERVICE TAS_START TAS_TO_LAST_USER TAS_SEND_LAST_EMAIL TAS_DERIVATION TAS_POSX TAS_POSY TAS_WIDTH TAS_HEIGHT TAS_COLOR TAS_EVN_UID TAS_BOUNDARY TAS_DERIVATION_SCREEN_TPL
 
-;Rest Api for table TASK_USER with (4) columns.
-[TASK_USER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'TASK_USER' with 4 columns.
+[TABLE:TASK_USER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = TAS_UID USR_UID TU_TYPE TU_RELATION
   EXPOSE_COLUMNS_PUT  = TAS_UID USR_UID TU_TYPE TU_RELATION
 
-;Rest Api for table TRANSLATION with (5) columns.
-[TRANSLATION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'TRANSLATION' with 5 columns.
+[TABLE:TRANSLATION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = TRN_CATEGORY TRN_ID TRN_LANG TRN_VALUE TRN_UPDATE_DATE
   EXPOSE_COLUMNS_PUT  = TRN_CATEGORY TRN_ID TRN_LANG TRN_VALUE TRN_UPDATE_DATE
 
-;Rest Api for table TRIGGERS with (5) columns.
-[TRIGGERS]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'TRIGGERS' with 5 columns.
+[TABLE:TRIGGERS]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = TRI_UID PRO_UID TRI_TYPE TRI_WEBBOT TRI_PARAM
   EXPOSE_COLUMNS_PUT  = TRI_UID PRO_UID TRI_TYPE TRI_WEBBOT TRI_PARAM
 
-;Rest Api for table USERS with (26) columns.
-[USERS]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'USERS' with 26 columns.
+[TABLE:USERS]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = USR_UID USR_USERNAME USR_PASSWORD USR_FIRSTNAME USR_LASTNAME USR_EMAIL USR_DUE_DATE USR_CREATE_DATE USR_UPDATE_DATE USR_STATUS USR_COUNTRY USR_CITY USR_LOCATION USR_ADDRESS USR_PHONE USR_FAX USR_CELLULAR USR_ZIP_CODE DEP_UID USR_POSITION USR_RESUME USR_BIRTHDAY USR_ROLE USR_REPORTS_TO USR_REPLACED_BY USR_UX
   EXPOSE_COLUMNS_PUT  = USR_UID USR_USERNAME USR_PASSWORD USR_FIRSTNAME USR_LASTNAME USR_EMAIL USR_DUE_DATE USR_CREATE_DATE USR_UPDATE_DATE USR_STATUS USR_COUNTRY USR_CITY USR_LOCATION USR_ADDRESS USR_PHONE USR_FAX USR_CELLULAR USR_ZIP_CODE DEP_UID USR_POSITION USR_RESUME USR_BIRTHDAY USR_ROLE USR_REPORTS_TO USR_REPLACED_BY USR_UX
 
-;Rest Api for table APP_THREAD with (5) columns.
-[APP_THREAD]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_THREAD' with 5 columns.
+[TABLE:APP_THREAD]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID APP_THREAD_INDEX APP_THREAD_PARENT APP_THREAD_STATUS DEL_INDEX
   EXPOSE_COLUMNS_PUT  = APP_UID APP_THREAD_INDEX APP_THREAD_PARENT APP_THREAD_STATUS DEL_INDEX
 
-;Rest Api for table APP_DELAY with (14) columns.
-[APP_DELAY]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_DELAY' with 14 columns.
+[TABLE:APP_DELAY]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_DELAY_UID PRO_UID APP_UID APP_THREAD_INDEX APP_DEL_INDEX APP_TYPE APP_STATUS APP_NEXT_TASK APP_DELEGATION_USER APP_ENABLE_ACTION_USER APP_ENABLE_ACTION_DATE APP_DISABLE_ACTION_USER APP_DISABLE_ACTION_DATE APP_AUTOMATIC_DISABLED_DATE
   EXPOSE_COLUMNS_PUT  = APP_DELAY_UID PRO_UID APP_UID APP_THREAD_INDEX APP_DEL_INDEX APP_TYPE APP_STATUS APP_NEXT_TASK APP_DELEGATION_USER APP_ENABLE_ACTION_USER APP_ENABLE_ACTION_DATE APP_DISABLE_ACTION_USER APP_DISABLE_ACTION_DATE APP_AUTOMATIC_DISABLED_DATE
 
-;Rest Api for table PROCESS_USER with (4) columns.
-[PROCESS_USER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'PROCESS_USER' with 4 columns.
+[TABLE:PROCESS_USER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = PU_UID PRO_UID USR_UID PU_TYPE
   EXPOSE_COLUMNS_PUT  = PU_UID PRO_UID USR_UID PU_TYPE
 
-;Rest Api for table SESSION with (7) columns.
-[SESSION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'SESSION' with 7 columns.
+[TABLE:SESSION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = SES_UID SES_STATUS USR_UID SES_REMOTE_IP SES_INIT_DATE SES_DUE_DATE SES_END_DATE
   EXPOSE_COLUMNS_PUT  = SES_UID SES_STATUS USR_UID SES_REMOTE_IP SES_INIT_DATE SES_DUE_DATE SES_END_DATE
 
-;Rest Api for table DB_SOURCE with (9) columns.
-[DB_SOURCE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'DB_SOURCE' with 9 columns.
+[TABLE:DB_SOURCE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = DBS_UID PRO_UID DBS_TYPE DBS_SERVER DBS_DATABASE_NAME DBS_USERNAME DBS_PASSWORD DBS_PORT DBS_ENCODE
   EXPOSE_COLUMNS_PUT  = DBS_UID PRO_UID DBS_TYPE DBS_SERVER DBS_DATABASE_NAME DBS_USERNAME DBS_PASSWORD DBS_PORT DBS_ENCODE
 
-;Rest Api for table STEP_SUPERVISOR with (5) columns.
-[STEP_SUPERVISOR]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'STEP_SUPERVISOR' with 5 columns.
+[TABLE:STEP_SUPERVISOR]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = STEP_UID PRO_UID STEP_TYPE_OBJ STEP_UID_OBJ STEP_POSITION
   EXPOSE_COLUMNS_PUT  = STEP_UID PRO_UID STEP_TYPE_OBJ STEP_UID_OBJ STEP_POSITION
 
-;Rest Api for table OBJECT_PERMISSION with (11) columns.
-[OBJECT_PERMISSION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'OBJECT_PERMISSION' with 11 columns.
+[TABLE:OBJECT_PERMISSION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = OP_UID PRO_UID TAS_UID USR_UID OP_USER_RELATION OP_TASK_SOURCE OP_PARTICIPATE OP_OBJ_TYPE OP_OBJ_UID OP_ACTION OP_CASE_STATUS
   EXPOSE_COLUMNS_PUT  = OP_UID PRO_UID TAS_UID USR_UID OP_USER_RELATION OP_TASK_SOURCE OP_PARTICIPATE OP_OBJ_TYPE OP_OBJ_UID OP_ACTION OP_CASE_STATUS
 
-;Rest Api for table CASE_TRACKER with (4) columns.
-[CASE_TRACKER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'CASE_TRACKER' with 4 columns.
+[TABLE:CASE_TRACKER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = PRO_UID CT_MAP_TYPE CT_DERIVATION_HISTORY CT_MESSAGE_HISTORY
   EXPOSE_COLUMNS_PUT  = PRO_UID CT_MAP_TYPE CT_DERIVATION_HISTORY CT_MESSAGE_HISTORY
 
-;Rest Api for table CASE_TRACKER_OBJECT with (6) columns.
-[CASE_TRACKER_OBJECT]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'CASE_TRACKER_OBJECT' with 6 columns.
+[TABLE:CASE_TRACKER_OBJECT]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = CTO_UID PRO_UID CTO_TYPE_OBJ CTO_UID_OBJ CTO_CONDITION CTO_POSITION
   EXPOSE_COLUMNS_PUT  = CTO_UID PRO_UID CTO_TYPE_OBJ CTO_UID_OBJ CTO_CONDITION CTO_POSITION
 
-;Rest Api for table STAGE with (5) columns.
-[STAGE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'STAGE' with 5 columns.
+[TABLE:STAGE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = STG_UID PRO_UID STG_POSX STG_POSY STG_INDEX
   EXPOSE_COLUMNS_PUT  = STG_UID PRO_UID STG_POSX STG_POSY STG_INDEX
 
-;Rest Api for table SUB_PROCESS with (12) columns.
-[SUB_PROCESS]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'SUB_PROCESS' with 12 columns.
+[TABLE:SUB_PROCESS]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = SP_UID PRO_UID TAS_UID PRO_PARENT TAS_PARENT SP_TYPE SP_SYNCHRONOUS SP_SYNCHRONOUS_TYPE SP_SYNCHRONOUS_WAIT SP_VARIABLES_OUT SP_VARIABLES_IN SP_GRID_IN
   EXPOSE_COLUMNS_PUT  = SP_UID PRO_UID TAS_UID PRO_PARENT TAS_PARENT SP_TYPE SP_SYNCHRONOUS SP_SYNCHRONOUS_TYPE SP_SYNCHRONOUS_WAIT SP_VARIABLES_OUT SP_VARIABLES_IN SP_GRID_IN
 
-;Rest Api for table SUB_APPLICATION with (9) columns.
-[SUB_APPLICATION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'SUB_APPLICATION' with 9 columns.
+[TABLE:SUB_APPLICATION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID APP_PARENT DEL_INDEX_PARENT DEL_THREAD_PARENT SA_STATUS SA_VALUES_OUT SA_VALUES_IN SA_INIT_DATE SA_FINISH_DATE
   EXPOSE_COLUMNS_PUT  = APP_UID APP_PARENT DEL_INDEX_PARENT DEL_THREAD_PARENT SA_STATUS SA_VALUES_OUT SA_VALUES_IN SA_INIT_DATE SA_FINISH_DATE
 
-;Rest Api for table LOGIN_LOG with (8) columns.
-[LOGIN_LOG]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'LOGIN_LOG' with 8 columns.
+[TABLE:LOGIN_LOG]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = LOG_UID LOG_STATUS LOG_IP LOG_SID LOG_INIT_DATE LOG_END_DATE LOG_CLIENT_HOSTNAME USR_UID
   EXPOSE_COLUMNS_PUT  = LOG_UID LOG_STATUS LOG_IP LOG_SID LOG_INIT_DATE LOG_END_DATE LOG_CLIENT_HOSTNAME USR_UID
 
-;Rest Api for table USERS_PROPERTIES with (4) columns.
-[USERS_PROPERTIES]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'USERS_PROPERTIES' with 4 columns.
+[TABLE:USERS_PROPERTIES]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = USR_UID USR_LAST_UPDATE_DATE USR_LOGGED_NEXT_TIME USR_PASSWORD_HISTORY
   EXPOSE_COLUMNS_PUT  = USR_UID USR_LAST_UPDATE_DATE USR_LOGGED_NEXT_TIME USR_PASSWORD_HISTORY
 
-;Rest Api for table ADDITIONAL_TABLES with (16) columns.
-[ADDITIONAL_TABLES]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'ADDITIONAL_TABLES' with 16 columns.
+[TABLE:ADDITIONAL_TABLES]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = ADD_TAB_UID ADD_TAB_NAME ADD_TAB_CLASS_NAME ADD_TAB_DESCRIPTION ADD_TAB_SDW_LOG_INSERT ADD_TAB_SDW_LOG_UPDATE ADD_TAB_SDW_LOG_DELETE ADD_TAB_SDW_LOG_SELECT ADD_TAB_SDW_MAX_LENGTH ADD_TAB_SDW_AUTO_DELETE ADD_TAB_PLG_UID DBS_UID PRO_UID ADD_TAB_TYPE ADD_TAB_GRID ADD_TAB_TAG
   EXPOSE_COLUMNS_PUT  = ADD_TAB_UID ADD_TAB_NAME ADD_TAB_CLASS_NAME ADD_TAB_DESCRIPTION ADD_TAB_SDW_LOG_INSERT ADD_TAB_SDW_LOG_UPDATE ADD_TAB_SDW_LOG_DELETE ADD_TAB_SDW_LOG_SELECT ADD_TAB_SDW_MAX_LENGTH ADD_TAB_SDW_AUTO_DELETE ADD_TAB_PLG_UID DBS_UID PRO_UID ADD_TAB_TYPE ADD_TAB_GRID ADD_TAB_TAG
 
-;Rest Api for table FIELDS with (15) columns.
-[FIELDS]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'FIELDS' with 15 columns.
+[TABLE:FIELDS]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = FLD_UID ADD_TAB_UID FLD_INDEX FLD_NAME FLD_DESCRIPTION FLD_TYPE FLD_SIZE FLD_NULL FLD_AUTO_INCREMENT FLD_KEY FLD_FOREIGN_KEY FLD_FOREIGN_KEY_TABLE FLD_DYN_NAME FLD_DYN_UID FLD_FILTER
   EXPOSE_COLUMNS_PUT  = FLD_UID ADD_TAB_UID FLD_INDEX FLD_NAME FLD_DESCRIPTION FLD_TYPE FLD_SIZE FLD_NULL FLD_AUTO_INCREMENT FLD_KEY FLD_FOREIGN_KEY FLD_FOREIGN_KEY_TABLE FLD_DYN_NAME FLD_DYN_UID FLD_FILTER
 
-;Rest Api for table SHADOW_TABLE with (7) columns.
-[SHADOW_TABLE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'SHADOW_TABLE' with 7 columns.
+[TABLE:SHADOW_TABLE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = SHD_UID ADD_TAB_UID SHD_ACTION SHD_DETAILS USR_UID APP_UID SHD_DATE
   EXPOSE_COLUMNS_PUT  = SHD_UID ADD_TAB_UID SHD_ACTION SHD_DETAILS USR_UID APP_UID SHD_DATE
 
-;Rest Api for table EVENT with (20) columns.
-[EVENT]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'EVENT' with 20 columns.
+[TABLE:EVENT]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = EVN_UID PRO_UID EVN_STATUS EVN_WHEN_OCCURS EVN_RELATED_TO TAS_UID EVN_TAS_UID_FROM EVN_TAS_UID_TO EVN_TAS_ESTIMATED_DURATION EVN_TIME_UNIT EVN_WHEN EVN_MAX_ATTEMPTS EVN_ACTION EVN_CONDITIONS EVN_ACTION_PARAMETERS TRI_UID EVN_POSX EVN_POSY EVN_TYPE TAS_EVN_UID
   EXPOSE_COLUMNS_PUT  = EVN_UID PRO_UID EVN_STATUS EVN_WHEN_OCCURS EVN_RELATED_TO TAS_UID EVN_TAS_UID_FROM EVN_TAS_UID_TO EVN_TAS_ESTIMATED_DURATION EVN_TIME_UNIT EVN_WHEN EVN_MAX_ATTEMPTS EVN_ACTION EVN_CONDITIONS EVN_ACTION_PARAMETERS TRI_UID EVN_POSX EVN_POSY EVN_TYPE TAS_EVN_UID
 
-;Rest Api for table GATEWAY with (7) columns.
-[GATEWAY]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'GATEWAY' with 7 columns.
+[TABLE:GATEWAY]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = GAT_UID PRO_UID TAS_UID GAT_NEXT_TASK GAT_X GAT_Y GAT_TYPE
   EXPOSE_COLUMNS_PUT  = GAT_UID PRO_UID TAS_UID GAT_NEXT_TASK GAT_X GAT_Y GAT_TYPE
 
-;Rest Api for table APP_EVENT with (7) columns.
-[APP_EVENT]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_EVENT' with 7 columns.
+[TABLE:APP_EVENT]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID DEL_INDEX EVN_UID APP_EVN_ACTION_DATE APP_EVN_ATTEMPTS APP_EVN_LAST_EXECUTION_DATE APP_EVN_STATUS
   EXPOSE_COLUMNS_PUT  = APP_UID DEL_INDEX EVN_UID APP_EVN_ACTION_DATE APP_EVN_ATTEMPTS APP_EVN_LAST_EXECUTION_DATE APP_EVN_STATUS
 
-;Rest Api for table APP_CACHE_VIEW with (30) columns.
-[APP_CACHE_VIEW]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_CACHE_VIEW' with 30 columns.
+[TABLE:APP_CACHE_VIEW]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID DEL_INDEX APP_NUMBER APP_STATUS USR_UID PREVIOUS_USR_UID TAS_UID PRO_UID DEL_DELEGATE_DATE DEL_INIT_DATE DEL_TASK_DUE_DATE DEL_FINISH_DATE DEL_THREAD_STATUS APP_THREAD_STATUS APP_TITLE APP_PRO_TITLE APP_TAS_TITLE APP_CURRENT_USER APP_DEL_PREVIOUS_USER DEL_PRIORITY DEL_DURATION DEL_QUEUE_DURATION DEL_DELAY_DURATION DEL_STARTED DEL_FINISHED DEL_DELAYED APP_CREATE_DATE APP_FINISH_DATE APP_UPDATE_DATE APP_OVERDUE_PERCENTAGE
   EXPOSE_COLUMNS_PUT  = APP_UID DEL_INDEX APP_NUMBER APP_STATUS USR_UID PREVIOUS_USR_UID TAS_UID PRO_UID DEL_DELEGATE_DATE DEL_INIT_DATE DEL_TASK_DUE_DATE DEL_FINISH_DATE DEL_THREAD_STATUS APP_THREAD_STATUS APP_TITLE APP_PRO_TITLE APP_TAS_TITLE APP_CURRENT_USER APP_DEL_PREVIOUS_USER DEL_PRIORITY DEL_DURATION DEL_QUEUE_DURATION DEL_DELAY_DURATION DEL_STARTED DEL_FINISHED DEL_DELAYED APP_CREATE_DATE APP_FINISH_DATE APP_UPDATE_DATE APP_OVERDUE_PERCENTAGE
 
-;Rest Api for table DIM_TIME_DELEGATE with (8) columns.
-[DIM_TIME_DELEGATE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'DIM_TIME_DELEGATE' with 8 columns.
+[TABLE:DIM_TIME_DELEGATE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = TIME_ID MONTH_ID QTR_ID YEAR_ID MONTH_NAME MONTH_DESC QTR_NAME QTR_DESC
   EXPOSE_COLUMNS_PUT  = TIME_ID MONTH_ID QTR_ID YEAR_ID MONTH_NAME MONTH_DESC QTR_NAME QTR_DESC
 
-;Rest Api for table DIM_TIME_COMPLETE with (8) columns.
-[DIM_TIME_COMPLETE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'DIM_TIME_COMPLETE' with 8 columns.
+[TABLE:DIM_TIME_COMPLETE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = TIME_ID MONTH_ID QTR_ID YEAR_ID MONTH_NAME MONTH_DESC QTR_NAME QTR_DESC
   EXPOSE_COLUMNS_PUT  = TIME_ID MONTH_ID QTR_ID YEAR_ID MONTH_NAME MONTH_DESC QTR_NAME QTR_DESC
 
-;Rest Api for table APP_HISTORY with (9) columns.
-[APP_HISTORY]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_HISTORY' with 9 columns.
+[TABLE:APP_HISTORY]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID DEL_INDEX PRO_UID TAS_UID DYN_UID USR_UID APP_STATUS HISTORY_DATE HISTORY_DATA
   EXPOSE_COLUMNS_PUT  = APP_UID DEL_INDEX PRO_UID TAS_UID DYN_UID USR_UID APP_STATUS HISTORY_DATE HISTORY_DATA
 
-;Rest Api for table APP_FOLDER with (5) columns.
-[APP_FOLDER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_FOLDER' with 5 columns.
+[TABLE:APP_FOLDER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = FOLDER_UID FOLDER_PARENT_UID FOLDER_NAME FOLDER_CREATE_DATE FOLDER_UPDATE_DATE
   EXPOSE_COLUMNS_PUT  = FOLDER_UID FOLDER_PARENT_UID FOLDER_NAME FOLDER_CREATE_DATE FOLDER_UPDATE_DATE
 
-;Rest Api for table FIELD_CONDITION with (8) columns.
-[FIELD_CONDITION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'FIELD_CONDITION' with 8 columns.
+[TABLE:FIELD_CONDITION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = FCD_UID FCD_FUNCTION FCD_FIELDS FCD_CONDITION FCD_EVENTS FCD_EVENT_OWNERS FCD_STATUS FCD_DYN_UID
   EXPOSE_COLUMNS_PUT  = FCD_UID FCD_FUNCTION FCD_FIELDS FCD_CONDITION FCD_EVENTS FCD_EVENT_OWNERS FCD_STATUS FCD_DYN_UID
 
-;Rest Api for table LOG_CASES_SCHEDULER with (10) columns.
-[LOG_CASES_SCHEDULER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'LOG_CASES_SCHEDULER' with 10 columns.
+[TABLE:LOG_CASES_SCHEDULER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = LOG_CASE_UID PRO_UID TAS_UID USR_NAME EXEC_DATE EXEC_HOUR RESULT SCH_UID WS_CREATE_CASE_STATUS WS_ROUTE_CASE_STATUS
   EXPOSE_COLUMNS_PUT  = LOG_CASE_UID PRO_UID TAS_UID USR_NAME EXEC_DATE EXEC_HOUR RESULT SCH_UID WS_CREATE_CASE_STATUS WS_ROUTE_CASE_STATUS
 
-;Rest Api for table CASE_SCHEDULER with (25) columns.
-[CASE_SCHEDULER]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'CASE_SCHEDULER' with 25 columns.
+[TABLE:CASE_SCHEDULER]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = SCH_UID SCH_DEL_USER_NAME SCH_DEL_USER_PASS SCH_DEL_USER_UID SCH_NAME PRO_UID TAS_UID SCH_TIME_NEXT_RUN SCH_LAST_RUN_TIME SCH_STATE SCH_LAST_STATE USR_UID SCH_OPTION SCH_START_TIME SCH_START_DATE SCH_DAYS_PERFORM_TASK SCH_EVERY_DAYS SCH_WEEK_DAYS SCH_START_DAY SCH_MONTHS SCH_END_DATE SCH_REPEAT_EVERY SCH_REPEAT_UNTIL SCH_REPEAT_STOP_IF_RUNNING CASE_SH_PLUGIN_UID
   EXPOSE_COLUMNS_PUT  = SCH_UID SCH_DEL_USER_NAME SCH_DEL_USER_PASS SCH_DEL_USER_UID SCH_NAME PRO_UID TAS_UID SCH_TIME_NEXT_RUN SCH_LAST_RUN_TIME SCH_STATE SCH_LAST_STATE USR_UID SCH_OPTION SCH_START_TIME SCH_START_DATE SCH_DAYS_PERFORM_TASK SCH_EVERY_DAYS SCH_WEEK_DAYS SCH_START_DAY SCH_MONTHS SCH_END_DATE SCH_REPEAT_EVERY SCH_REPEAT_UNTIL SCH_REPEAT_STOP_IF_RUNNING CASE_SH_PLUGIN_UID
 
-;Rest Api for table CALENDAR_DEFINITION with (7) columns.
-[CALENDAR_DEFINITION]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'CALENDAR_DEFINITION' with 7 columns.
+[TABLE:CALENDAR_DEFINITION]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = CALENDAR_UID CALENDAR_NAME CALENDAR_CREATE_DATE CALENDAR_UPDATE_DATE CALENDAR_WORK_DAYS CALENDAR_DESCRIPTION CALENDAR_STATUS
   EXPOSE_COLUMNS_PUT  = CALENDAR_UID CALENDAR_NAME CALENDAR_CREATE_DATE CALENDAR_UPDATE_DATE CALENDAR_WORK_DAYS CALENDAR_DESCRIPTION CALENDAR_STATUS
 
-;Rest Api for table CALENDAR_BUSINESS_HOURS with (4) columns.
-[CALENDAR_BUSINESS_HOURS]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'CALENDAR_BUSINESS_HOURS' with 4 columns.
+[TABLE:CALENDAR_BUSINESS_HOURS]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = CALENDAR_UID CALENDAR_BUSINESS_DAY CALENDAR_BUSINESS_START CALENDAR_BUSINESS_END
   EXPOSE_COLUMNS_PUT  = CALENDAR_UID CALENDAR_BUSINESS_DAY CALENDAR_BUSINESS_START CALENDAR_BUSINESS_END
 
-;Rest Api for table CALENDAR_HOLIDAYS with (4) columns.
-[CALENDAR_HOLIDAYS]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'CALENDAR_HOLIDAYS' with 4 columns.
+[TABLE:CALENDAR_HOLIDAYS]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = CALENDAR_UID CALENDAR_HOLIDAY_NAME CALENDAR_HOLIDAY_START CALENDAR_HOLIDAY_END
   EXPOSE_COLUMNS_PUT  = CALENDAR_UID CALENDAR_HOLIDAY_NAME CALENDAR_HOLIDAY_START CALENDAR_HOLIDAY_END
 
-;Rest Api for table CALENDAR_ASSIGNMENTS with (3) columns.
-[CALENDAR_ASSIGNMENTS]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'CALENDAR_ASSIGNMENTS' with 3 columns.
+[TABLE:CALENDAR_ASSIGNMENTS]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = OBJECT_UID CALENDAR_UID OBJECT_TYPE
   EXPOSE_COLUMNS_PUT  = OBJECT_UID CALENDAR_UID OBJECT_TYPE
 
-;Rest Api for table PROCESS_CATEGORY with (4) columns.
-[PROCESS_CATEGORY]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'PROCESS_CATEGORY' with 4 columns.
+[TABLE:PROCESS_CATEGORY]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = CATEGORY_UID CATEGORY_PARENT CATEGORY_NAME CATEGORY_ICON
   EXPOSE_COLUMNS_PUT  = CATEGORY_UID CATEGORY_PARENT CATEGORY_NAME CATEGORY_ICON
 
-;Rest Api for table APP_NOTES with (10) columns.
-[APP_NOTES]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_NOTES' with 10 columns.
+[TABLE:APP_NOTES]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID USR_UID NOTE_DATE NOTE_CONTENT NOTE_TYPE NOTE_AVAILABILITY NOTE_ORIGIN_OBJ NOTE_AFFECTED_OBJ1 NOTE_AFFECTED_OBJ2 NOTE_RECIPIENTS
   EXPOSE_COLUMNS_PUT  = APP_UID USR_UID NOTE_DATE NOTE_CONTENT NOTE_TYPE NOTE_AVAILABILITY NOTE_ORIGIN_OBJ NOTE_AFFECTED_OBJ1 NOTE_AFFECTED_OBJ2 NOTE_RECIPIENTS
 
-;Rest Api for table DASHLET with (8) columns.
-[DASHLET]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'DASHLET' with 8 columns.
+[TABLE:DASHLET]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = DAS_UID DAS_CLASS DAS_TITLE DAS_DESCRIPTION DAS_VERSION DAS_CREATE_DATE DAS_UPDATE_DATE DAS_STATUS
   EXPOSE_COLUMNS_PUT  = DAS_UID DAS_CLASS DAS_TITLE DAS_DESCRIPTION DAS_VERSION DAS_CREATE_DATE DAS_UPDATE_DATE DAS_STATUS
 
-;Rest Api for table DASHLET_INSTANCE with (8) columns.
-[DASHLET_INSTANCE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'DASHLET_INSTANCE' with 8 columns.
+[TABLE:DASHLET_INSTANCE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = DAS_INS_UID DAS_UID DAS_INS_OWNER_TYPE DAS_INS_OWNER_UID DAS_INS_ADDITIONAL_PROPERTIES DAS_INS_CREATE_DATE DAS_INS_UPDATE_DATE DAS_INS_STATUS
   EXPOSE_COLUMNS_PUT  = DAS_INS_UID DAS_UID DAS_INS_OWNER_TYPE DAS_INS_OWNER_UID DAS_INS_ADDITIONAL_PROPERTIES DAS_INS_CREATE_DATE DAS_INS_UPDATE_DATE DAS_INS_STATUS
 
-;Rest Api for table APP_SOLR_QUEUE with (2) columns.
-[APP_SOLR_QUEUE]
-  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE
+;Table 'APP_SOLR_QUEUE' with 2 columns.
+[TABLE:APP_SOLR_QUEUE]
   ALLOW_METHODS = GET
-  ; Params to set columns that should be exposed, you can use wildcard '*' to speccify all columns.
   EXPOSE_COLUMNS_GET  = *
   EXPOSE_COLUMNS_POST = APP_UID APP_UPDATED
   EXPOSE_COLUMNS_PUT  = APP_UID APP_UPDATED

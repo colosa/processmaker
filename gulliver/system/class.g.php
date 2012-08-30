@@ -5169,7 +5169,7 @@ function getDirectorySize($path,$maxmtime=0)
      *
      * @author  Erik Amaru Ortiz <aortiz.erik@gmail.com>
      */
-    public function dispatchRestService($uri)
+    public function dispatchRestService($uri, $config = array())
     {
         require_once 'restler/restler.php';
 
@@ -5177,9 +5177,9 @@ function getDirectorySize($path,$maxmtime=0)
         $rest->setSupportedFormats('JsonFormat', 'XmlFormat');
 
         // getting all services class
-        $srvClasses = glob(PATH_SERVICES_REST . '*.php');
+        $srvClasses  = glob(PATH_SERVICES_REST . '*.php');
         $crudClasses = glob(PATH_SERVICES_REST . 'crud/*.php');
-        $srvClasses = array_merge($srvClasses, $crudClasses);
+        $srvClasses  = array_merge($srvClasses, $crudClasses);
 
         // hook to get rest api classes from plugins
         if ( class_exists( 'PMPluginRegistry' ) ) {
@@ -5219,22 +5219,44 @@ function getDirectorySize($path,$maxmtime=0)
         // resolving the class for current request
         $uriPart = explode('/', $uri);
         $requestedClass = '';
+
         if (isset($uriPart[1])) {
             $requestedClass = ucfirst($uriPart[1]);
         }
-
         if (class_exists('Services_Rest_' . $requestedClass)) {
             $namespace = 'Services_Rest_';
         } elseif (class_exists('Plugin_Services_Rest_' . $requestedClass)) {
             $namespace = 'Plugin_Services_Rest_';
         } else {
-          $namespace = '';
+            $namespace = '';
         }
         // end resolv.
+
+        // Send additional headers (if exists) configured on rest-config.ini
+        if (array_key_exists('HEADERS', $config)) {
+            foreach ($config['HEADERS'] as $name => $value) {
+                header("$name: $value");
+            }
+        }
+
+        // to handle a request with "OPTIONS" method
+        if (! empty($namespace) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            $reflClass = new ReflectionClass($namespace . $requestedClass);
+
+            // if the rest class has not a "options" method
+            if (! $reflClass->hasMethod('options')) {
+                header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS, HEADERS');
+                header('Access-Control-Allow-Headers: authorization, content-type');
+                header("Access-Control-Allow-Credentials", "false");
+                header('Access-Control-Max-Age: 60');
+                exit();
+            }
+        }
 
         // override global REQUEST_URI to pass to Restler library
         $_SERVER['REQUEST_URI'] = '/' . strtolower($namespace) . ltrim($uri, '/');
 
+        // handle the rest request
         $rest->handle();
     }
 }

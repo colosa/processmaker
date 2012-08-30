@@ -9,63 +9,91 @@
  * @author    Erik Amaru Ortiz <aortiz.erik@gmail.com>
  */
 
-include dirname(__FILE__) . '/../../../gulliver/core/Bootstrap.php';
-include dirname(__FILE__) . '/../../../workflow/engine/PmBootstrap.php';
+$basePath = realpath(dirname(__FILE__) . '/../../../');
+include $basePath . '/gulliver/core/Bootstrap.php';
+include $basePath . '/workflow/engine/PmBootstrap.php';
 
-$config = array(
-    'path_trunk' => realpath(dirname(__FILE__) . '/../../../')
-);
-
-$bootstrap = new PmBootstrap($config);
+$bootstrap = new PmBootstrap(array('path_trunk' => $basePath));
 $bootstrap->registerClasses();
 $bootstrap->configure();
 
 if (! isset($argv[1])) {
-    $help = '$>' . $argv[0] . " [option] [plugin-name]\n";
-    $help .= "Avalaibles options:\n";
-    $help .= "    build-api  : Build Crud Rest API from ProcessMaker or a plugin.\n";
-    $help .= "    gen-ini    : Generates the rest config ini file.\n";
-    $help .= "* [plugin-name] : (Optional) to specify create crud api for a determiated plugin.\n\n";
+    $help = <<<EOT
+Usage: {$argv[0]} [build-crud] [gen-ini] [-p <plugin name>] [-w <workspace name>]
+
+Options:
+    build-crud : Task, build Rest Crud API.
+    gen-ini    : Task, generates the rest config ini file.
+    -p         : Especify a plugin to set as enviroment to perform the tasks.
+    -w         : Especify a workspace to set as enviroment to perform the tasks.
+
+EOT;
 
     echo $help;
     exit(0);
 }
 
 $restTool = new Service_Rest_RestTool();
+$restTool->setBasePath(PATH_CORE);
 
 try {
     switch ($argv[1]) {
-        case 'build-api':
-            if (isset($argv[2])) {
-                // attemp create rest api from a plugin
-                if (! is_dir(PATH_PLUGINS . $argv[2]))  {
-                    throw new Exception(sprintf("Plugin '%s' doesn't exist.", $argv[2]));
-                }
-
-                $restTool->setBasePath(PATH_PLUGINS . $argv[2] . PATH_SEP);
-            }
-
-            $restTool->buildApi();
-            break;
-
+        case 'build-crud':
         case 'gen-ini':
-            if (file_exists(PATH_CONFIG . '/rest-config.ini')) {
-                echo "The file 'rest-config.ini' already exits, overwrite (Y/n)? ";
-                $resp = trim(fgets(STDIN));
+            if (isset($argv[2])) {
+                if (! isset($argv[3])) {
+                    throw new Exception("Missing option, need especify a valid argument after option '{$argv[2]}'");
+                }
 
-                if (strtolower($resp) != 'y') {
-                    echo "Skipped\n";
-                    exit(0);
+                switch ($argv[2]) {
+                    case '-p':
+                        // attempt create rest api from a plugin
+                        if (! is_dir(PATH_PLUGINS . $argv[3]))  {
+                            throw new Exception(sprintf("Plugin '%s' doesn't exist.", $argv[3]));
+                        }
+
+                        $restTool->setBasePath($optPath = PATH_PLUGINS . $argv[3] . PATH_SEP);
+                        break;
+
+                    case '-w':
+                        // attempt create rest api from a plugin
+                        if (! is_dir(PATH_DATA . 'sites' . PATH_SEP . $argv[3]))  {
+                            throw new Exception(sprintf("Workspace '%s' doesn't exist.", $argv[3]));
+                        }
+
+                        $path = PATH_DATA . 'sites' . PATH_SEP . $argv[3] . PATH_SEP;
+                        $restTool->setBasePath($path);
+                        $restTool->setConfigFile($path . 'rest-config.ini');
+                        $restTool->setDbXmlSchemaFile(PATH_CONFIG . 'schema.xml');
+                        break;
+
+                    default:
+                        throw new Exception(sprintf("Invalid option '%s'", $argv[2]));
                 }
             }
 
-            echo "Generating config ini file ... ";
+            $restTool->init();
 
-            $genFile = $restTool->buildConfigIni();
+            if ($argv[1] == 'build-crud') {
+                $restTool->buildCrudApi();
+            } else {
+                if (file_exists(PATH_CONFIG . '/rest-config.ini')) {
+                    echo "The file 'rest-config.ini' already exits, overwrite (Y/n)? ";
+                    $resp = trim(fgets(STDIN));
 
-            echo "DONE!\n";
-            echo "File generated: $genFile\n\n";
+                    if (strtolower($resp) != 'y') {
+                        echo "Skipped\n";
+                        exit(0);
+                    }
+                }
 
+                echo "Generating config ini file ... ";
+
+                $genFile = $restTool->buildConfigIni();
+
+                echo "DONE!\n";
+                echo "File generated: $genFile\n\n";
+            }
             break;
 
         default:
@@ -73,5 +101,5 @@ try {
             break;
     }
 } catch (Exception $e) {
-    echo $e->getMessage() . "\n";
+    Service_Rest_RestTool::out($e->getMessage(), 'error');
 }

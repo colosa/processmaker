@@ -2,54 +2,123 @@
 /**
  * Class Service_Rest_RestTool
  *
- * This tool generate a rest-config.ini file and build rest crud api for 'Restler' lib.
+ * This tool generates a rest-config.ini file and build rest crud api for 'Restler' lib.
+ * Class since: Aug 22, 2012
  *
  * @author Erik Amaru Ortiz <aortiz.erik@gmail.com>
  */
 class Service_Rest_RestTool
 {
+    /**
+     * Stores absolute file path of rest configuration ini file (rest-config.ini)
+     * @var string
+     */
     protected $configFile = '';
+
+    /**
+     * Stores configuration loaded from configuration ini file
+     * @var array
+     */
     protected $config = array();
+
+    /**
+     * Stores absolute filename patgh of database xml schema
+     * @var string
+     */
     protected $dbXmlSchemaFile = '';
+
+    /**
+     * Stores information of pmos tables
+     * @var array
+     */
     protected $dbInfo = array();
+
+    /**
+     * Stores obsolute base path to output generated files
+     * @var string
+     */
     protected $basePath = '';
 
-    public function __construct()
+    /**
+     * Init method to initialize the class after previous configurations
+     */
+    public function init()
     {
-        $this->basePath        = PATH_CORE;
-        $this->dbXmlSchemaFile = 'config/schema.xml';
-        $this->configFile      = 'config/rest-config.ini';
+        self::out('ProcessMaker Rest Crud Api Generator Tool v1.0', 'success', true);
+        echo PHP_EOL;
+
+        // configuring paths by default if there were not configured before.
+        if (empty($this->dbXmlSchemaFile)) {
+            $this->dbXmlSchemaFile = $this->basePath . 'config/schema.xml';
+        }
+        if (empty($this->configFile)) {
+            $this->configFile = $this->basePath . 'config/rest-config.ini';
+        }
     }
 
-    public function setBasePath($path)
+    public function setConfigFile($configFile)
     {
-        $this->basePath = $path;
+        $this->configFile = $configFile;
     }
 
+    public function setDbXmlSchemaFile($dbXmlSchemaFile)
+    {
+        $this->dbXmlSchemaFile = $dbXmlSchemaFile;
+    }
+
+    public function setBasePath($basePath)
+    {
+        $this->basePath = $basePath;
+    }
+
+    /**
+     * Load rest ini. configuration
+     */
     protected function loadConfig()
     {
-        $configFile = $this->basePath . $this->configFile;
-
-        if (! file_exists($configFile)) {
-            throw new Exception(sprintf("Runtime Error: Configuration file '%s' doesn't exist!", $configFile));
+        if (! file_exists($this->configFile)) {
+            throw new Exception(sprintf("Runtime Error: Configuration file '%s' doesn't exist!", $this->configFile));
         }
 
-        $this->config = @parse_ini_file($configFile, true);
+        self::out('Loading config from: ', 'info', false);
+        echo  $this->configFile . "\n";
+
+        $config = @parse_ini_file($this->configFile, true);
+
+        // parse composed sections names like [TABLE:SOME_TABLE]
+        foreach ($config as $key => $value) {
+            $sectionParts = explode(':', $key);
+
+            if (count($sectionParts) == 2 && strtolower($sectionParts[0]) == 'table') {
+                $this->config['_tables'][$sectionParts[1]] = $value;
+            } else {
+                $this->config[$key] = $value;
+            }
+        }
     }
 
+    /**
+     * Load db schema from xml file
+     */
     protected function loadDbXmlSchema()
     {
-        $dbXmlSchemaFile = $this->basePath . $this->dbXmlSchemaFile;
-
-        if (! file_exists($dbXmlSchemaFile)) {
-            throw new Exception(sprintf("Runtime Error: Configuration file '%s' doesn't exist!", $dbXmlSchemaFile));
+        if (! file_exists($this->dbXmlSchemaFile)) {
+            throw new Exception(sprintf(
+                "Runtime Error: Configuration file '%s' doesn't exist!", $this->dbXmlSchemaFile
+            ));
         }
 
+        self::out('Loading Xml Schema from: ', 'info', false);
+        echo  $this->dbXmlSchemaFile . "\n";
+
         $doc = new Xml_DOMDocumentExtended();
-        $doc->load($dbXmlSchemaFile);
+        $doc->load($this->dbXmlSchemaFile);
+
+        // dump to array
         $data = $doc->toArray();
         $tables = $data['database']['table'];
 
+        // process just relevant information
         foreach ($tables as $table) {
             $this->dbInfo[$table['@name']]['pKeys'] = array();
             $this->dbInfo[$table['@name']]['columns'] = array();
@@ -69,25 +138,73 @@ class Service_Rest_RestTool
         }
     }
 
+    /**
+     * Build Rest configuration file
+     * @param  string $filename configutaion filename to be generated
+     */
     public function buildConfigIni($filename = '')
     {
         $this->loadDbXmlSchema();
 
         $configFile    = empty($filename) ? $this->basePath . $this->configFile : $filename;
-        $configIniStr  = "; -= ProcessMaker RestFul services configuration =-\n";
-        $configIniStr .= "\n";
-        $configIniStr .= "; On this configuration file you can customize some aspects to expose on rest service.\n";
-        $configIniStr .= "; Configure what methods (GET,POST,PUT,DELETE) should be exposed by ProcessMaker Rest server.\n";
-        $configIniStr .= "; Configure for each table/method what columns sould be exposed.\n";
-        $configIniStr .= "\n";
+        $configIniStr  = <<<EOT
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;             -= ProcessMaker RestFul services configuration =-                ;
+;                                                                              ;
+; On this configuration file you can customize the Processmaker Rest Service.  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Rest Service Configuration ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+enable_service = true
+
+; add headers to rest server responses
+[HEADERS]
+  ; Enable this header to allow "Cross Domain AJAX" requests;
+  ; This works because processmaker is handling correctly requests with method 'OPTIONS'
+  ; that automatically is sent by a client using XmlHttpRequest or similar.
+  ;Access-Control-Allow-Origin = *
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; DB Tables Crud generation Config ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; This configuration section is used by ./rest-gen command to build the Rest Crud Api
+;
+; Configure what methods GET, POST, PUT, DELETE should be exposed.
+; Configure for each table/method what columns sould be exposed.
+;
+; Configuration for each table must starts with a section like:
+; [TABLE:<table-name>]
+;
+; inside of each section there are two config keys:
+;
+; "ALLOW_METHODS" -> Use this param to set allowed methods (separeted by a single space).
+; Complete example:
+;   ALLOW_METHODS = GET POST PUT DELETE
+;
+; The others params are: "EXPOSE_COLUMNS_GET", "EXPOSE_COLUMNS_POST" and "EXPOSE_COLUMNS_PUT"
+; this params are used to configure the columns that should be exposed;
+; wildcard '*' can be used to speccify all columns.
+;
+; Example:
+;
+;[TABLE:MY_TABLE]
+;  ALLOW_METHODS = GET POST PUT DELETE
+;  EXPOSE_COLUMNS_GET  = *
+;  EXPOSE_COLUMNS_POST = FIELD1 FIELD2 FIELD3 FIELD4
+;  EXPOSE_COLUMNS_PUT  = FIELD1 FIELD2 FIELD3
+;
+EOT;
+        $configIniStr .= "\n\n";
 
         foreach ($this->dbInfo as $table => $columns) {
             $strColumns    = implode(' ', $columns['columns']);
-            $configIniStr .= ";Rest Api for table $table with (".count($columns['columns']).") columns.\n";
-            $configIniStr .= "[$table]\n";
-            $configIniStr .= "  ; Param to set allowed methods (separeted by a single space). Complete example: ALLOW_METHODS = GET POST PUT DELETE\n";
+            $configIniStr .= ";Table '$table' with ".count($columns['columns'])." columns.\n";
+            $configIniStr .= "[TABLE:$table]\n";
             $configIniStr .= "  ALLOW_METHODS = GET\n";
-            $configIniStr .= "  ; Params to set columns that should be exposed, you can use wildcard '*' to specify all columns.\n";
             $configIniStr .= "  EXPOSE_COLUMNS_GET  = *\n";
             $configIniStr .= "  EXPOSE_COLUMNS_POST = ".$strColumns."\n";
             $configIniStr .= "  EXPOSE_COLUMNS_PUT  = ".$strColumns."\n";
@@ -99,7 +216,10 @@ class Service_Rest_RestTool
         return $configFile;
     }
 
-    public function buildApi()
+    /**
+     * Build Rest Crud Api
+     */
+    public function buildCrudApi()
     {
         /**
          * load configuration from /engine/config/rest-config.ini and
@@ -107,6 +227,23 @@ class Service_Rest_RestTool
          */
         $this->loadConfig();
         $this->loadDbXmlSchema();
+
+        self::out('Output folder: ', 'info', false);
+        echo $this->basePath . "services/rest/crud";
+
+        if (! is_dir($this->basePath . "services/rest/crud/")) {
+            G::mk_dir($this->basePath . "services/rest/crud/");
+            echo ' (created)';
+        }
+
+        echo "\n\n";
+
+        if (! is_writable($this->basePath . "services/rest/crud/")) {
+            throw new Exception(fprintf(
+                "Runtime Error: Output folder '%s' is not writable.",
+                $this->basePath . "services/rest/crud/"
+            ));
+        }
 
         Haanga::configure(array(
             'template_dir' => dirname(__FILE__) . '/templates/',
@@ -121,11 +258,11 @@ class Service_Rest_RestTool
             )
         ));
 
-        foreach ($this->config as $table => $conf) {
+        $c = 0;
+        foreach ($this->config['_tables'] as $table => $conf) {
             $classname = self::camelize($table, 'class');
             $allowedMethods = explode(' ', $conf['ALLOW_METHODS']);
             $methods = '';
-            //$allowedMethods = array('DELETE');
 
             foreach ($allowedMethods as $method) {
                 // validation for a valid method
@@ -231,11 +368,22 @@ class Service_Rest_RestTool
                 'methods' => $methods
             ), true);
 
-            echo "saving $classname.php\n";
+            //echo "File #$c - $classname.php saved!\n";
+            ++$c;
             file_put_contents($this->basePath . "services/rest/crud/$classname.php", $classContent);
         }
+
+        printf("Done, generated %s Rest Class Files.\n\n", self::out("($c)", 'success', false, true));
     }
 
+    /**
+     * Camilize a string
+     * Example: some_underscored_string to SomeUnderscoredString
+     *
+     * @param  string $str  string to camelze
+     * @param  string $type if the type is 'var' do not capitalize the first character.
+     * @return string       camelized string
+     */
     protected static function camelize($str, $type = 'var')
     {
         if (is_array($str)) {
@@ -253,6 +401,16 @@ class Service_Rest_RestTool
         return $str;
     }
 
+    /**
+     * Try convert a string to its native variable type
+     * Example:
+     * for a string 'true' => true
+     * for a string 'false' => false
+     * for a string '1.0' => 1.0
+     *
+     * @param  string $value string to try cast to its native variable type
+     * @return mixed         value converted to its native type, if wasn't possible the same string will be returned
+     */
     protected static function cast($value)
     {
         if ($value === 'true') {
@@ -264,6 +422,40 @@ class Service_Rest_RestTool
         }
 
         return $value;
+    }
+
+    /**
+     * colorize output
+     */
+    static public function out($text, $color = null, $newLine = true, $ret = false)
+    {
+        if (DIRECTORY_SEPARATOR == '\\') {
+            $hasColorSupport = false !== getenv('ANSICON');
+        } else {
+            $hasColorSupport = true;
+        }
+
+        $styles = array(
+            'success' => "\033[0;32m%s\033[0m",
+            'error' => "\033[31;31m%s\033[0m",
+            'info' => "\033[33;33m%s\033[0m"
+        );
+
+        $format = '%s';
+
+        if (isset($styles[$color]) && $hasColorSupport) {
+            $format = $styles[$color];
+        }
+
+        if ($newLine) {
+            $format .= PHP_EOL;
+        }
+
+        if ($ret) {
+            return sprintf($format, $text);
+        } else {
+            printf($format, $text);
+        }
     }
 }
 

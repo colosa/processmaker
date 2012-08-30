@@ -423,6 +423,28 @@
   define('SERVER_NAME',  $_SERVER ['SERVER_NAME']);
   define('SERVER_PORT',  $_SERVER ['SERVER_PORT']);
 
+  // verify configuration for rest service
+  if ($isRestRequest) {
+      // disable until confirm that rest is enabled & configured on rest-config.ini file
+      $isRestRequest = false;
+      $confFile = '';
+
+      // try load and getting rest configuration
+      if (file_exists(PATH_DATA_SITE . 'rest-config.ini')) {
+          $confFile = PATH_DATA_SITE . 'rest-config.ini';
+      } elseif (file_exists(PATH_CONFIG . 'rest-config.ini')) {
+          $confFile = PATH_CONFIG . 'rest-config.ini';
+      }
+
+      if (! empty($confFile) && $restConfig = @parse_ini_file($confFile, true)) {
+          if (array_key_exists('enable_service', $restConfig)) {
+              if ($restConfig['enable_service'] == 'true' || $restConfig['enable_service'] == '1') {
+                  $isRestRequest = true; // rest service enabled
+              }
+          }
+      }
+  }
+
   // load Plugins base class
   G::LoadClass('plugin');
 
@@ -575,10 +597,6 @@
         $isControllerCall = true;
       }
     }
-    // var_dump(SYS_SYS);
-    // var_dump(SYS_TARGET);
-    // var_dump($isRestRequest);
-    // die;
 
     if (!$isControllerCall && ! file_exists($phpFile) && ! $isRestRequest) {
       $_SESSION['phpFileNotFound'] = $_SERVER['REQUEST_URI'];
@@ -707,7 +725,7 @@
       $controller->setHttpRequestData($_REQUEST);
       $controller->call($controllerAction);
     } elseif ($isRestRequest) {
-      G::dispatchRestService(SYS_TARGET);
+      G::dispatchRestService(SYS_TARGET, $restConfig);
     } else {
       require_once $phpFile;
     }
