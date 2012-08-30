@@ -193,38 +193,38 @@ class Main extends Controller
         $availableLangArray = $this->getLanguagesList();
 
         G::LoadClass ('serverConfiguration');
+        if (($nextBeatDate = $this->memcache->get('nextBeatDate')) === false) {
+            //get the serverconf singleton, and check if we can send the heartbeat
+            $oServerConf = & serverConf::getSingleton ();
+            $sflag = $oServerConf->getHeartbeatProperty('HB_OPTION','HEART_BEAT_CONF');
+            $sflag = (trim($sflag)!='')? $sflag : '1';
+            //get date of next beat
+            $nextBeatDate = $oServerConf->getHeartbeatProperty('HB_NEXT_BEAT_DATE','HEART_BEAT_CONF');
+            $this->memcache->set('nextBeatDate', $nextBeatDate, 1*3600);
+        }
 
-        $oServerConf = & serverConf::getSingleton ();
-        $sflag = $oServerConf->getHeartbeatProperty('HB_OPTION', 'HEART_BEAT_CONF');
-        $sflag = (trim($sflag) != '') ? $sflag : '1';
-
-        //get date of next beat
-        $nextBeatDate = $oServerConf->getHeartbeatProperty('HB_NEXT_BEAT_DATE', 'HEART_BEAT_CONF');
-
-        //if flag to send heartbeat is enabled, and it is time to send heartbeat, sent it using asynchronous beat.
-        if (($sflag == "1") && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {
+        if (($sflag == 1) && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {
             //To do: we need to change to ExtJs
             $this->setJSVar('flagHeartBeat', 1);
         } else {
             $this->setJSVar('flagHeartBeat', 0);
         }
 
-        //check if we show the panel with the getting started info
-        require_once 'classes/model/Configuration.php';
-        $oConfiguration = new Configuration ();
-        $oCriteria = new Criteria ('workflow');
-        $oCriteria->add (ConfigurationPeer::CFG_UID, 'getStarted');
-        $oCriteria->add (ConfigurationPeer::OBJ_UID, '');
-        $oCriteria->add (ConfigurationPeer::CFG_VALUE, '1');
-        $oCriteria->add (ConfigurationPeer::PRO_UID, '');
-        $oCriteria->add (ConfigurationPeer::USR_UID, '');
-        $oCriteria->add (ConfigurationPeer::APP_UID, '');
-        $flagGettingStarted =  ConfigurationPeer::doCount ($oCriteria);
-        if ($flagGettingStarted == 0) {
-            $this->setJSVar('flagGettingStarted', 1);
-        } else {
-            $this->setJSVar('flagGettingStarted', 0);
+        if (($flagGettingStarted = $this->memcache->get('flagGettingStarted')) === false) {
+            require_once 'classes/model/Configuration.php';
+            $oConfiguration = new Configuration ();
+            $oCriteria = new Criteria ('workflow');
+            $oCriteria->add (ConfigurationPeer::CFG_UID, 'getStarted');
+            $oCriteria->add (ConfigurationPeer::OBJ_UID, '');
+            $oCriteria->add (ConfigurationPeer::CFG_VALUE, '1');
+            $oCriteria->add (ConfigurationPeer::PRO_UID, '');
+            $oCriteria->add (ConfigurationPeer::USR_UID, '');
+            $oCriteria->add (ConfigurationPeer::APP_UID, '');
+            $flagGettingStarted =  ConfigurationPeer::doCount ($oCriteria);
+            $this->memcache->set('flagGettingStarted', $flagGettingStarted, 8*3600) ;
         }
+
+        $this->setJSVar('flagGettingStarted', ($flagGettingStarted == 0));
 
         G::loadClass('configuration');
         $oConf = new Configurations;
