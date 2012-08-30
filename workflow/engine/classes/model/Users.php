@@ -238,56 +238,87 @@ public function userExists($UsrUid)
     return $row;
   }
 
-  function getAllInformation($UsrUid)
-  {
-  if( !isset($UsrUid) or $UsrUid == '' ) {
-    throw new Exception('$UsrUid is empty.');
-  }
-  try {
+    public function getAllInformation($userUid)
+    {
+        if (!isset($userUid) || $userUid == "") {
+            throw (new Exception("$userUid is empty."));
+        }
 
-    require_once 'classes/model/IsoCountry.php';
-    require_once 'classes/model/IsoLocation.php';
-    require_once 'classes/model/IsoSubdivision.php';
-    require_once 'classes/model/Language.php';
+        try {
+            require_once ("classes/model/IsoCountry.php");
+            require_once ("classes/model/IsoLocation.php");
+            require_once ("classes/model/IsoSubdivision.php");
+            require_once ("classes/model/Language.php");
 
-    $aFields = $this->load($UsrUid);
-    $c = new Criteria('workflow');
-    $c->add(IsoCountryPeer::IC_UID, $aFields['USR_COUNTRY']);
-    $rs = IsoCountryPeer::doSelectRS($c);
-    $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-    $rs->next();
-    $Crow = $rs->getRow();
+            G::LoadClass("calendar");
 
-    $c->clearSelectColumns();
-    $c->add(IsoSubdivisionPeer::IC_UID, $aFields['USR_COUNTRY']);
-    $c->add(IsoSubdivisionPeer::IS_UID, $aFields['USR_CITY']);
-    $rs = IsoSubdivisionPeer::doSelectRS($c);
-    $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-    $rs->next();
-    $Srow = $rs->getRow();
+            $aFields = $this->load($userUid);
 
-    $aRet['username']   = $aFields['USR_USERNAME'];
-    $aRet['firstname']  = $aFields['USR_FIRSTNAME'];
-    $aRet['lastname'] = $aFields['USR_LASTNAME'];
-    $aRet['mail']     = $aFields['USR_EMAIL'];
-    $aRet['status']   = $aFields['USR_STATUS'];
-    $aRet['address']  = $aFields['USR_ADDRESS'];
-    $aRet['phone']    = $aFields['USR_PHONE'];
-    $aRet['fax']    = $aFields['USR_FAX'];
-    $aRet['cellular']   = $aFields['USR_CELLULAR'];
-    $aRet['birthday']   = $aFields['USR_BIRTHDAY'];
-    $aRet['position']     = $aFields['USR_POSITION'];
-    $aRet['duedate']    = $aFields['USR_DUE_DATE'];
-    $aRet['country']    = $Crow['IC_NAME'];
-    $aRet['city']     = $Srow['IS_NAME'];
+            $c = new Criteria("workflow");
+            $c->add(IsoCountryPeer::IC_UID, $aFields["USR_COUNTRY"]);
+            $rs = IsoCountryPeer::doSelectRS($c);
+            $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            $rs->next();
+            $rowC = $rs->getRow();
 
+            $c->clearSelectColumns();
+            $c->add(IsoSubdivisionPeer::IC_UID, $aFields["USR_COUNTRY"]);
+            $c->add(IsoSubdivisionPeer::IS_UID, $aFields["USR_CITY"]);
+            $rs = IsoSubdivisionPeer::doSelectRS($c);
+            $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            $rs->next();
+            $rowS = $rs->getRow();
 
-    return $aRet;
-  }
-  catch (Exception $oException) {
-    throw $oException;
-  }
-  }
+            $c->clearSelectColumns();
+            $c->add(IsoLocationPeer::IC_UID, $aFields["USR_COUNTRY"]);
+            $c->add(IsoLocationPeer::IL_UID, $aFields["USR_LOCATION"]);
+            $rs = IsoLocationPeer::doSelectRS($c);
+            $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            $rs->next();
+            $rowL = $rs->getRow();
+
+            //Calendar
+            $calendar = new Calendar();
+            $calendarInfo = $calendar->getCalendarFor($userUid, $userUid, $userUid);
+            $aFields["USR_CALENDAR"] = ($calendarInfo["CALENDAR_APPLIED"] != "DEFAULT")? $calendarInfo["CALENDAR_UID"] : "";
+
+            //Photo
+            $pathPhoto = PATH_IMAGES_ENVIRONMENT_USERS . $userUid . ".gif";
+
+            if (!file_exists($pathPhoto)) {
+                $pathPhoto = PATH_HOME . "public_html" . PATH_SEP . "images" . PATH_SEP . "user.gif";
+            }
+
+            //Data
+            $arrayData = array();
+            $arrayData["username"]  = $aFields["USR_USERNAME"];
+            $arrayData["firstname"] = $aFields["USR_FIRSTNAME"];
+            $arrayData["lastname"]  = $aFields["USR_LASTNAME"];
+            $arrayData["mail"]      = $aFields["USR_EMAIL"];
+            $arrayData["address"]   = $aFields["USR_ADDRESS"];
+            $arrayData["zipcode"]   = $aFields["USR_ZIP_CODE"];
+            $arrayData["country"]   = $rowC["IC_NAME"];
+            $arrayData["state"]     = $rowS["IS_NAME"];
+            $arrayData["location"]  = $rowL["IL_NAME"];
+            $arrayData["phone"]     = $aFields["USR_PHONE"];
+            $arrayData["fax"]       = $aFields["USR_FAX"];
+            $arrayData["cellular"]  = $aFields["USR_CELLULAR"];
+            $arrayData["birthday"]  = $aFields["USR_BIRTHDAY"];
+            $arrayData["position"]  = $aFields["USR_POSITION"];
+            $arrayData["replacedby"] = $aFields["USR_REPLACED_BY"];
+            $arrayData["duedate"]    = $aFields["USR_DUE_DATE"];
+            $arrayData["calendar"]   = $aFields["USR_CALENDAR"];
+            $arrayData["status"]     = $aFields["USR_STATUS"];
+            $arrayData["department"] = $aFields["DEP_UID"];
+            $arrayData["reportsto"]  = $aFields["USR_REPORTS_TO"];
+            $arrayData["userexperience"] = $aFields["USR_UX"];
+            $arrayData["photo"]          = $pathPhoto;
+
+            return $arrayData;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 
   function getAvailableUsersCriteria($sGroupUID = '')
   {
