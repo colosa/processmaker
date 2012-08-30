@@ -5169,7 +5169,7 @@ function getDirectorySize($path,$maxmtime=0)
      *
      * @author  Erik Amaru Ortiz <aortiz.erik@gmail.com>
      */
-    public function dispatchRestService($uri, $config = array())
+    public function dispatchRestService($uri, $config, $apiClassesPath = '')
     {
         require_once 'restler/restler.php';
 
@@ -5177,18 +5177,38 @@ function getDirectorySize($path,$maxmtime=0)
         $rest->setSupportedFormats('JsonFormat', 'XmlFormat');
 
         // getting all services class
-        $srvClasses  = glob(PATH_SERVICES_REST . '*.php');
-        $crudClasses = glob(PATH_SERVICES_REST . 'crud/*.php');
-        $srvClasses  = array_merge($srvClasses, $crudClasses);
-
-        // hook to get rest api classes from plugins
-        if ( class_exists( 'PMPluginRegistry' ) ) {
-            $pluginRegistry = & PMPluginRegistry::getSingleton();
-            $pluginClasses = $pluginRegistry->getRegisteredRestClassFiles();
-            $srvClasses = array_merge($srvClasses, $pluginClasses);
+        $restClasses = array();
+        $restClassesList = G::rglob('*', 0, PATH_CORE . 'services/');
+        foreach ($restClassesList as $classFile) {
+            if (substr($classFile, -4) === '.php') {
+                $restClasses[str_replace('.php', '', basename($classFile))] = $classFile;
+            }
         }
 
-        foreach ($srvClasses as $classFile) {
+        if (! empty($apiClassesPath)) {
+            $pluginRestClasses = array();
+            $restClassesList = G::rglob('*', 0, $apiClassesPath . 'services/');
+            foreach ($restClassesList as $classFile) {
+                if (substr($classFile, -4) === '.php') {
+                    $pluginRestClasses[str_replace('.php', '', basename($classFile))] = $classFile;
+                }
+            }
+            $restClasses = array_merge($restClasses, $pluginRestClasses);
+        }
+
+
+        // hook to get rest api classes from plugins
+        if (class_exists('PMPluginRegistry')) {
+            $pluginRegistry = & PMPluginRegistry::getSingleton();
+            $pluginClasses = $pluginRegistry->getRegisteredRestClassFiles();
+            $restClasses = array_merge($restClasses, $pluginClasses);
+        }
+
+        foreach ($restClasses as $classFile) {
+            if (! file_exists($classFile)) {
+                continue;
+            }
+
             require_once $classFile;
             $namespace = 'Services_Rest_';
             $className = str_replace('.php', '', basename($classFile));

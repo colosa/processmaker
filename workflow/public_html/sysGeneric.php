@@ -428,14 +428,15 @@
       // disable until confirm that rest is enabled & configured on rest-config.ini file
       $isRestRequest = false;
       $confFile = '';
+      $restApiClassPath = '';
 
       // try load and getting rest configuration
       if (file_exists(PATH_DATA_SITE . 'rest-config.ini')) {
           $confFile = PATH_DATA_SITE . 'rest-config.ini';
+          $restApiClassPath = PATH_DATA_SITE;
       } elseif (file_exists(PATH_CONFIG . 'rest-config.ini')) {
           $confFile = PATH_CONFIG . 'rest-config.ini';
       }
-
       if (! empty($confFile) && $restConfig = @parse_ini_file($confFile, true)) {
           if (array_key_exists('enable_service', $restConfig)) {
               if ($restConfig['enable_service'] == 'true' || $restConfig['enable_service'] == '1') {
@@ -725,7 +726,7 @@
       $controller->setHttpRequestData($_REQUEST);
       $controller->call($controllerAction);
     } elseif ($isRestRequest) {
-      G::dispatchRestService(SYS_TARGET, $restConfig);
+      G::dispatchRestService(SYS_TARGET, $restConfig, $restApiClassPath);
     } else {
       require_once $phpFile;
     }
