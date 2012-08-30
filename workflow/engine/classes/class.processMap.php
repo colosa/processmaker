@@ -3551,29 +3551,39 @@ class processMap {
    * @return boolean  true
    */
   function newObjectPermission($sProcessUID) {
-    $aUsersGroups = array();
-    $aUsersGroups [] = array('UID' => 'char', 'LABEL' => 'char');
+    $usersGroups = '<select pm:dependent="0" pm:label="' . G::LoadTranslation('ID_GROUP_USERS') . '" name="form[GROUP_USER]" id="form[GROUP_USER]" class="module_app_input___gray">';
     $start = '';
     $limit = '';
     $filter = '';
     $groups = new Groupwf();
     $result = $groups->getAllGroup($start,$limit,$filter);
-    foreach ($result['rows'] as $results) {
-      $aUsersGroups [] = array('UID' => '2|' . $results ['GRP_UID'], 'LABEL' => $results ['GRP_TITLE'] . ' (' . G::LoadTranslation('ID_GROUP') . ')');
+    if (count($result['rows']) > 0) {
+      $usersGroups .= '<optgroup label="' . G::LoadTranslation('ID_GROUPS') . '">';
+      foreach ($result['rows'] as $results) {
+        $usersGroups .= '<option value="2|' . $results ['GRP_UID'] . '">' . htmlentities($results ['GRP_TITLE'], ENT_QUOTES, 'UTF-8') . '</option>';
+      }
+      $usersGroups .= '</optgroup>';
     }
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn(UsersPeer::USR_UID);
     $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
     $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
     $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+    $oCriteria->addAscendingOrderByColumn(UsersPeer::USR_FIRSTNAME);
+    $oCriteria->addAscendingOrderByColumn(UsersPeer::USR_LASTNAME);
     $oCriteria->add(UsersPeer::USR_STATUS, 'ACTIVE');
     $oDataset = UsersPeer::doSelectRS($oCriteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $oDataset->next();
-    while ($aRow = $oDataset->getRow()) {
-      $aUsersGroups [] = array('UID' => '1|' . $aRow ['USR_UID'], 'LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'] . ' (' . $aRow ['USR_USERNAME'] . ')');
-      $oDataset->next();
+    if ($oDataset->getRecordCount() > 0) {
+      $usersGroups .= '<optgroup label="' . G::LoadTranslation('ID_USERS') . '">';
+      while ($aRow = $oDataset->getRow()) {
+        $usersGroups .= '<option value="1|' . $aRow ['USR_UID'] . '">' . htmlentities($aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'] . ' (' . $aRow ['USR_USERNAME'] . ')', ENT_QUOTES, 'UTF-8') . '</option>';
+        $oDataset->next();
+      }
+      $usersGroups .= '</optgroup>';
     }
+    $usersGroups .= '</select>';
     $aAllObjects = array();
     $aAllObjects [] = array('UID' => 'char', 'LABEL' => 'char');
     $aAllDynaforms = array();
@@ -3617,7 +3627,6 @@ class processMap {
     }
     global $_DBArray;
     $_DBArray = (isset($_SESSION ['_DBArray']) ? $_SESSION ['_DBArray'] : '');
-    $_DBArray ['usersGroups'] = $aUsersGroups;
     $_DBArray ['allObjects'] = $aAllObjects;
     $_DBArray ['allDynaforms'] = $aAllDynaforms;
     $_DBArray ['allInputs'] = $aAllInputs;
@@ -3625,7 +3634,7 @@ class processMap {
     $_SESSION ['_DBArray'] = $_DBArray;
     global $G_PUBLISH;
     $G_PUBLISH = new Publisher ( );
-    $G_PUBLISH->AddContent('xmlform', 'xmlform', 'processes/processes_NewObjectPermission', '', array('LANG' => SYS_LANG, 'PRO_UID' => $sProcessUID, 'ID_DELETE' => G::LoadTranslation('ID_DELETE')), 'processes_SaveObjectPermission');
+    $G_PUBLISH->AddContent('xmlform', 'xmlform', 'processes/processes_NewObjectPermission', '', array('GROUP_USER' => $usersGroups, 'LANG' => SYS_LANG, 'PRO_UID' => $sProcessUID, 'ID_DELETE' => G::LoadTranslation('ID_DELETE')), 'processes_SaveObjectPermission');
     G::RenderPage('publish', 'raw');
     return true;
   }
@@ -3661,7 +3670,6 @@ class processMap {
     $aFields ['PRO_UID'] = $aRows ['PRO_UID'];
     $aFields ['OP_CASE_STATUS'] = $aRows ['OP_CASE_STATUS'];
     $aFields ['TAS_UID'] = $aRows ['TAS_UID'];
-    $aFields ['GROUP_USER'] = $user;
     $aFields ['OP_TASK_SOURCE'] = $aRows ['OP_TASK_SOURCE'];
     $aFields ['OP_PARTICIPATE'] = $aRows ['OP_PARTICIPATE'];
     $aFields ['OP_OBJ_TYPE'] = $aRows ['OP_OBJ_TYPE'];
@@ -3682,8 +3690,7 @@ class processMap {
         break;
     }
 
-    $aUsersGroups = array();
-    $aUsersGroups [] = array('UID' => 'char', 'LABEL' => 'char');
+    $usersGroups = '<select pm:dependent="0" pm:label="' . G::LoadTranslation('ID_GROUP_USERS') . '" name="form[GROUP_USER]" id="form[GROUP_USER]" class="module_app_input___gray">';
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn(GroupwfPeer::GRP_UID);
     $oCriteria->addAsColumn('GRP_TITLE', ContentPeer::CON_VALUE);
@@ -3693,12 +3700,17 @@ class processMap {
     $aConditions [] = array(ContentPeer::CON_LANG, DBAdapter::getStringDelimiter () . SYS_LANG . DBAdapter::getStringDelimiter ());
     $oCriteria->addJoinMC($aConditions, Criteria::LEFT_JOIN);
     $oCriteria->add(GroupwfPeer::GRP_STATUS, 'ACTIVE');
+    $oCriteria->addAscendingOrderByColumn('GRP_TITLE');
     $oDataset = GroupwfPeer::doSelectRS($oCriteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $oDataset->next();
-    while ($aRow = $oDataset->getRow()) {
-      $aUsersGroups [] = array('UID' => '2|' . $aRow ['GRP_UID'], 'LABEL' => $aRow ['GRP_TITLE'] . ' (' . G::LoadTranslation('ID_GROUP') . ')');
-      $oDataset->next();
+    if ($oDataset->getRecordCount() > 0) {
+      $usersGroups .= '<optgroup label="' . G::LoadTranslation('ID_GROUPS') . '">';
+      while ($aRow = $oDataset->getRow()) {
+        $usersGroups .= '<option value="2|' . $aRow ['GRP_UID'] . '"' . ('2|' . $aRow ['GRP_UID'] == $user ? ' selected="selected"' : '') . '>' . htmlentities($aRow ['GRP_TITLE'], ENT_QUOTES, 'UTF-8') . '</option>';
+        $oDataset->next();
+      }
+      $usersGroups .= '</optgroup>';
     }
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn(UsersPeer::USR_UID);
@@ -3706,12 +3718,18 @@ class processMap {
     $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
     $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
     $oCriteria->add(UsersPeer::USR_STATUS, 'ACTIVE');
+    $oCriteria->addAscendingOrderByColumn(UsersPeer::USR_FIRSTNAME);
+    $oCriteria->addAscendingOrderByColumn(UsersPeer::USR_LASTNAME);
     $oDataset = UsersPeer::doSelectRS($oCriteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $oDataset->next();
-    while ($aRow = $oDataset->getRow()) {
-      $aUsersGroups [] = array('UID' => '1|' . $aRow ['USR_UID'], 'LABEL' => $aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'] . ' (' . $aRow ['USR_USERNAME'] . ')');
-      $oDataset->next();
+    if ($oDataset->getRecordCount() > 0) {
+      $usersGroups .= '<optgroup label="' . G::LoadTranslation('ID_USERS') . '">';
+      while ($aRow = $oDataset->getRow()) {
+        $usersGroups .= '<option value="1|' . $aRow ['USR_UID'] . '"' . ('1|' . $aRow ['USR_UID'] == $user ? ' selected="selected"' : '') . '>' . htmlentities($aRow ['USR_FIRSTNAME'] . ' ' . $aRow ['USR_LASTNAME'] . ' (' . $aRow ['USR_USERNAME'] . ')', ENT_QUOTES, 'UTF-8') . '</option>';
+        $oDataset->next();
+      }
+      $usersGroups .= '</optgroup>';
     }
 
     $aAllObjects = array();
@@ -3755,16 +3773,17 @@ class processMap {
     }
     global $_DBArray;
     $_DBArray = (isset($_SESSION ['_DBArray']) ? $_SESSION ['_DBArray'] : '');
-    $_DBArray ['usersGroups'] = $aUsersGroups;
     $_DBArray ['allObjects'] = $aAllObjects;
     $_DBArray ['allDynaforms'] = $aAllDynaforms;
     $_DBArray ['allInputs'] = $aAllInputs;
     $_DBArray ['allOutputs'] = $aAllOutputs;
     $_SESSION ['_DBArray'] = $_DBArray;
 
-    global $G_PUBLISH;
-    $G_PUBLISH = new Publisher ( );
+    $aFields['GROUP_USER'] = $usersGroups;
+    $aFields['ID_DELETE'] = G::LoadTranslation('ID_DELETE');
 
+    global $G_PUBLISH;
+    $G_PUBLISH = new Publisher();
     $G_PUBLISH->AddContent('xmlform', 'xmlform', 'processes/processes_EditObjectPermission', '', $aFields, 'processes_SaveEditObjectPermission');
     G::RenderPage('publish', 'raw');
   }

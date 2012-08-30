@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm name="processes_EditObjectPermission" width="100%">
+<dynaForm name="processes_EditObjectPermission" width="100%" enableTemplate="1">
 <TITLE type="title">
   <en>Edit Specific Permission</en>
-<es><![CDATA[Nuevo permiso específico]]></es></TITLE>
+</TITLE>
 <LANG type="private"/>
 <PRO_UID type="hidden"/>
 <OP_UID type="hidden"/>
@@ -13,109 +13,201 @@
   <option name="DRAFT">DRAFT</option>
   <option name="TO_DO">TO_DO</option>
   <option name="PAUSED">PAUSED</option>
-  <option name="COMPLETED">COMPLETED</option></en>
-  <es>Estado del Caso
-  <option name="">Todas las tareas</option>
-  </es>  
+  <option name="COMPLETED">COMPLETED</option>
+  </en>
 </OP_CASE_STATUS>
 
-<TAS_UID type="dropdown" mode="edit"><![CDATA[
-SELECT TAS_UID, CON_VALUE AS TAS_TITLE FROM TASK LEFT JOIN CONTENT ON (TAS_UID = CON_ID AND CON_CATEGORY = 'TAS_TITLE' AND CON_LANG = @@LANG) WHERE PRO_UID = @@PRO_UID AND TAS_TYPE = 'NORMAL' ORDER BY TAS_TITLE
-  ]]><en>Target Task<option name="">All Tasks</option></en>
+<TAS_UID type="dropdown" mode="edit">
+  <![CDATA[SELECT TAS_UID, CON_VALUE AS TAS_TITLE FROM TASK LEFT JOIN CONTENT ON (TAS_UID = CON_ID AND CON_CATEGORY = 'TAS_TITLE' AND CON_LANG = @@LANG) WHERE PRO_UID = @@PRO_UID AND TAS_TYPE = 'NORMAL' ORDER BY TAS_TITLE]]>
+  <en>Target Task
+    <option name="">All Tasks</option>
+  </en>
 </TAS_UID>
 
-<GROUP_USER type="dropdown" mode="edit" sqlConnection="dbarray">
-SELECT * FROM usersGroups
+<GROUP_USER type="text" mode="view">
   <en>Group or User</en>
 </GROUP_USER>
 
-<OP_TASK_SOURCE type="dropdown" mode="edit"><![CDATA[
-SELECT TAS_UID, CON_VALUE AS TAS_TITLE FROM TASK LEFT JOIN CONTENT ON (TAS_UID = CON_ID AND CON_CATEGORY = 'TAS_TITLE' AND CON_LANG = @@LANG) WHERE PRO_UID = @@PRO_UID AND TAS_TYPE = 'NORMAL' ORDER BY TAS_TITLE
-  ]]><en>Origin Task<option name="">All Tasks</option></en>
+<GROUP_USER_DROPDOWN type="title" mode="view" enableHtml="1" label="@#GROUP_USER" />
+
+<OP_TASK_SOURCE type="dropdown" mode="edit">
+  <![CDATA[SELECT TAS_UID, CON_VALUE AS TAS_TITLE FROM TASK LEFT JOIN CONTENT ON (TAS_UID = CON_ID AND CON_CATEGORY = 'TAS_TITLE' AND CON_LANG = @@LANG) WHERE PRO_UID = @@PRO_UID AND TAS_TYPE = 'NORMAL' ORDER BY TAS_TITLE]]><en>Origin Task<option name="">All Tasks</option></en>
 </OP_TASK_SOURCE>
 
 <OP_PARTICIPATE type="yesno" defaultvalue="1" mode="edit">
   <en>Participation required?</en>
 </OP_PARTICIPATE>
-
 <OP_OBJ_TYPE type="dropdown" mode="edit" dependentfields="OP_OBJ_UID">
   <en>Type
-  <option name="ANY">All</option>
-  <option name="DYNAFORM">Dynaform</option>
-  <option name="INPUT">Input Document</option>
-  <option name="OUTPUT">Output Document</option></en>
+    <option name="ANY">All</option>
+    <option name="DYNAFORM">Dynaform</option>
+    <option name="INPUT">Input Document</option>
+    <option name="OUTPUT">Output Document</option>
+  </en>
 </OP_OBJ_TYPE>
 <ALL type="dropdown" mode="edit" sqlConnection="dbarray">
-SELECT * FROM allObjects
-  <en>Object<option name="">All</option></en>
+  SELECT * FROM allObjects
+  <en>Object
+    <option name="">All</option>
+  </en>
 </ALL>
 <DYNAFORMS type="dropdown" mode="edit" sqlConnection="dbarray">
-SELECT * FROM allDynaforms
+  SELECT * FROM allDynaforms
   <en>DynaForm<option name="">All</option></en>
 </DYNAFORMS>
 <INPUTS type="dropdown" mode="edit" sqlConnection="dbarray">
-SELECT * FROM allInputs
+  SELECT * FROM allInputs
   <en>Input Document<option name="">All</option></en>
 </INPUTS>
 <OUTPUTS type="dropdown" mode="edit" sqlConnection="dbarray">
-SELECT * FROM allOutputs
+  SELECT * FROM allOutputs
   <en>Output Document<option name="">All</option></en>
 </OUTPUTS>
 <OP_ACTION type="dropdown" mode="edit">
-  <en>Permission<option name="VIEW">View</option><option name="BLOCK">Block</option></en>
+  <en>Permission<option name="VIEW">View</option><option name="BLOCK">Block</option><option name="DELETE">Delete</option></en>
 </OP_ACTION>
+
 <CREATE type="button" onclick="saveObjectPermission(this.form);">
   <en>Save</en>
 </CREATE>
 <ID_DELETE type="private"/>
 <JS type="javascript"><![CDATA[
+var aOptions = [];
+var getOptions = function() {
+  var oAux = getField('OP_ACTION');
+  for (var i = 0; i < oAux.options.length; i++) {
+    if (oAux.options[i].value != 'DELETE') {
+      aOptions.push({label:oAux.options[i].text, value: oAux.options[i].value});
+    }
+  }
+};
+var rebuildOptionsWhenLoad = function(sType) {
+  var selectedValue = getField('OP_ACTION').value;
+  switch (sType) {
+    case 'INPUT':
+    case 'OUTPUT':
+      var oAux = getField('OP_ACTION');
+      while (oAux.options.length) {
+        oAux.remove(0);
+      }
+      for (var i = 0; i < aOptions.length; i++) {
+        var oOption = document.createElement('OPTION');
+        oOption.value = aOptions[i].value;
+        oOption.text = aOptions[i].label;
+        if (oOption.value == selectedValue) {
+          oOption.selected = true;
+        }
+        oAux.options.add(oOption);
+      }
+      var oOption = document.createElement('OPTION');
+      oOption.value = 'DELETE';
+      oOption.text = '@#ID_DELETE';
+      if (oOption.value == selectedValue) {
+        oOption.selected = true;
+      }
+      oAux.options.add(oOption);
+    break
+    default:
+      var oAux = getField('OP_ACTION');
+      while (oAux.options.length) {
+        oAux.remove(0);
+      }
+      for (var i = 0; i < aOptions.length; i++) {
+        var oOption = document.createElement('OPTION');
+        oOption.value = aOptions[i].value;
+        oOption.text = aOptions[i].label;
+        if (oOption.value == selectedValue) {
+          oOption.selected = true;
+        }
+        oAux.options.add(oOption);
+      }
+    break;
+  }
+  oAux.value = selectedValue;
+};
+var rebuildOptions = function(sType) {
+  switch (sType) {
+    case 'INPUT':
+    case 'OUTPUT':
+      var oAux = getField('OP_ACTION');
+      while (oAux.options.length) {
+        oAux.remove(0);
+      }
+      for (var i = 0; i < aOptions.length; i++) {
+        var oOption = document.createElement('OPTION');
+        oOption.value = aOptions[i].value;
+        oOption.text = aOptions[i].label;
+        oAux.options.add(oOption);
+      }
+      var oOption = document.createElement('OPTION');
+      oOption.value = 'DELETE';
+      oOption.text = '@#ID_DELETE';
+      oAux.options.add(oOption);
+    break
+    default:
+      var oAux = getField('OP_ACTION');
+      while (oAux.options.length) {
+        oAux.remove(0);
+      }
+      for (var i = 0; i < aOptions.length; i++) {
+        var oOption = document.createElement('OPTION');
+        oOption.value = aOptions[i].value;
+        oOption.text = aOptions[i].label;
+        oAux.options.add(oOption);
+      }
+    break;
+  }
+};
 if(getField('OP_OBJ_TYPE').value=='ANY')
  { hideRowById('ALL' );
-   hideRowById( 'DYNAFORMS' ); 
-   hideRowById( 'INPUTS' ); 
-	 hideRowById( 'OUTPUTS' ); 
+   hideRowById( 'DYNAFORMS' );
+   hideRowById( 'INPUTS' );
+	 hideRowById( 'OUTPUTS' );
  }
 if(getField('OP_OBJ_TYPE').value=='DYNAFORM')
- { hideRowById( 'ALL' ); 
-   hideRowById( 'INPUTS' ); 
-	 hideRowById( 'OUTPUTS' ); 
+ { hideRowById( 'ALL' );
+   hideRowById( 'INPUTS' );
+	 hideRowById( 'OUTPUTS' );
  }
 if(getField('OP_OBJ_TYPE').value=='INPUT')
  { hideRowById( 'ALL' );
-   hideRowById( 'DYNAFORMS' ); 
-	 hideRowById( 'OUTPUTS' ); 
+   hideRowById( 'DYNAFORMS' );
+	 hideRowById( 'OUTPUTS' );
  }
 if(getField('OP_OBJ_TYPE').value=='OUTPUT')
  { hideRowById( 'ALL' );
-   hideRowById( 'DYNAFORMS' ); 
-	 hideRowById( 'INPUTS' ); 
+   hideRowById( 'DYNAFORMS' );
+	 hideRowById( 'INPUTS' );
  }
+ getOptions();
+ rebuildOptionsWhenLoad(getField('OP_OBJ_TYPE').value);
 
 leimnud.event.add(document.getElementById('form[OP_OBJ_TYPE]'), 'change', function() {
 	if(getField('OP_OBJ_TYPE').value=='DYNAFORM')
-	 { hideRowById( 'ALL' ); 
-	   hideRowById( 'INPUTS' ); 
-		 hideRowById( 'OUTPUTS' ); 
-		 showRowById( 'DYNAFORMS' ); 
+	 { hideRowById( 'ALL' );
+	   hideRowById( 'INPUTS' );
+		 hideRowById( 'OUTPUTS' );
+		 showRowById( 'DYNAFORMS' );
 	 }
 	if(getField('OP_OBJ_TYPE').value=='INPUT')
 	 { hideRowById( 'ALL' );
-	   hideRowById( 'DYNAFORMS' ); 
-		 hideRowById( 'OUTPUTS' ); 
-		 showRowById( 'INPUTS' ); 
+	   hideRowById( 'DYNAFORMS' );
+		 hideRowById( 'OUTPUTS' );
+		 showRowById( 'INPUTS' );
 	 }
 	if(getField('OP_OBJ_TYPE').value=='OUTPUT')
 	 { hideRowById( 'ALL' );
-	   hideRowById( 'DYNAFORMS' ); 
-		 hideRowById( 'INPUTS' ); 
-		 showRowById( 'OUTPUTS' ); 
+	   hideRowById( 'DYNAFORMS' );
+		 hideRowById( 'INPUTS' );
+		 showRowById( 'OUTPUTS' );
 	 }
 	if(getField('OP_OBJ_TYPE').value=='ANY')
    { hideRowById('ALL' );
-     hideRowById( 'DYNAFORMS' ); 
-     hideRowById( 'INPUTS' ); 
-	   hideRowById( 'OUTPUTS' ); 
+     hideRowById( 'DYNAFORMS' );
+     hideRowById( 'INPUTS' );
+	   hideRowById( 'OUTPUTS' );
    }
+   rebuildOptions(getField('OP_OBJ_TYPE').value);
 });
 
 leimnud.event.add(document.getElementById('form[OP_CASE_STATUS]'), 'change', function() {
@@ -123,15 +215,15 @@ leimnud.event.add(document.getElementById('form[OP_CASE_STATUS]'), 'change', fun
   var origin = document.getElementById('form[OP_TASK_SOURCE]');
   var participate = document.getElementById('form[OP_PARTICIPATE]');
   if (document.getElementById('form[OP_CASE_STATUS]').value=='COMPLETED')
-  {    
-     hideRowById(target); 
-		 hideRowById(origin); 
+  {
+     hideRowById(target);
+		 hideRowById(origin);
 		 hideRowById(participate);
-  }  
+  }
   else
-  {     
-     showRowById(target); 
-		 showRowById(origin); 
+  {
+     showRowById(target);
+		 showRowById(origin);
 		 showRowById(participate);
   }
 });
