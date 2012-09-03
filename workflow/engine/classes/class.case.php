@@ -2964,7 +2964,7 @@ class Cases
      * Description: This method set all cases with the APP_DISABLE_ACTION_DATE for today
      * @return void
      */
-    public function ThrowUnpauseDaemon($today)
+    public function ThrowUnpauseDaemon($today, $cron=0)
     {
         $today = ($today==date('Y-m-d'))?date('Y-m-d'):$today;
         $c = new Criteria('workflow');
@@ -2983,7 +2983,14 @@ class Cases
         $d = AppDelayPeer::doSelectRS($c);
         $d->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $d->next();
+
         while ($aRow = $d->getRow()) {
+            if ($cron == 1) {
+                $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+                $arrayCron["processcTimeStart"] = time();
+                @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+            }
+
             $this->unpauseCase($aRow['APP_UID'], $aRow['APP_DEL_INDEX'], 'System Daemon');
             $d->next();
         }

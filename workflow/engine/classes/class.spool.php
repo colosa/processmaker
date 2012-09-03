@@ -493,7 +493,7 @@ class spoolRun {
      * @param string $dateResend
      * @return none or exception
      */
-    public function resendEmails($dateResend=null)
+    public function resendEmails($dateResend=null, $cron=0)
     {
         require_once ("classes/model/Configuration.php");
 
@@ -541,6 +541,12 @@ class spoolRun {
             $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
             while ($rsCriteria->next()) {
+                if ($cron == 1) {
+                    $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+                    $arrayCron["processcTimeStart"] = time();
+                    @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+                }
+
                 $row = $rsCriteria->getRow();
 
                 try {

@@ -160,7 +160,7 @@ class AppEvent extends BaseAppEvent {
             $aConditions[] = array(AppDelegationPeer::PRO_UID, 'C4.CON_ID');
             $aConditions[] = array('C4.CON_CATEGORY', $del . 'PRO_TITLE' . $del);
             $aConditions[] = array('C4.CON_LANG', $del . SYS_LANG . $del);
-            
+
             $oCriteria->addJoinMC($aConditions, Criteria::LEFT_JOIN);
             $oCriteria->add(AppEventPeer::EVN_UID, '', Criteria::NOT_EQUAL);
             if($sProcessUid != ''){
@@ -188,7 +188,7 @@ class AppEvent extends BaseAppEvent {
         }
     }
 
-  function executeEvents($sNow, $debug=false, &$log=array()) {
+  public function executeEvents($sNow, $debug=false, &$log=array(), $cron=0) {
 
     require_once 'classes/model/Configuration.php';
     require_once 'classes/model/Triggers.php';
@@ -236,6 +236,11 @@ class AppEvent extends BaseAppEvent {
 
       $c = 0;
       while ($oDataset->next()){
+        if ($cron == 1) {
+            $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+            $arrayCron["processcTimeStart"] = time();
+            @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+        }
 
         $c++;
         $aRow = $oDataset->getRow();

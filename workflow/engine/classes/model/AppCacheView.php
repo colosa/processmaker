@@ -1377,7 +1377,7 @@ class AppCacheView extends BaseAppCacheView
         return $aRows;
     }
 
-    public function appTitleByTaskCaseLabelUpdate($taskUid, $lang)
+    public function appTitleByTaskCaseLabelUpdate($taskUid, $lang, $cron=0)
     {
         $taskDefTitle = null;
 
@@ -1409,6 +1409,12 @@ class AppCacheView extends BaseAppCacheView
         $rsCriteriaAPPCV->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
         while ($rsCriteriaAPPCV->next()) {
+            if ($cron == 1) {
+                $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+                $arrayCron["processcTimeStart"] = time();
+                @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+            }
+
             $row = $rsCriteriaAPPCV->getRow();
 
             $appcvAppUid = $row["APP_UID"];

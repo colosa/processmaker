@@ -284,7 +284,7 @@ class AppDelegation extends BaseAppDelegation {
     return ( $date1 - $date2 ) / 3600;
   }
 
-  function calculateDuration()
+  public function calculateDuration($cron=0)
   {
     try {
       //patch  rows with initdate = null and finish_date
@@ -304,6 +304,12 @@ class AppDelegation extends BaseAppDelegation {
       $row = $rs->getRow();
 
       while (is_array($row)) {
+        if ($cron == 1) {
+            $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+            $arrayCron["processcTimeStart"] = time();
+            @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+        }
+
         $oAppDel = AppDelegationPeer::retrieveByPk($row['APP_UID'], $row['DEL_INDEX'] );
         if ( isset ($row['DEL_FINISH_DATE']) )
           $oAppDel->setDelInitDate($row['DEL_FINISH_DATE']);
@@ -354,6 +360,12 @@ class AppDelegation extends BaseAppDelegation {
 
       $now = strtotime ( 'now' );
       while ( is_array($row) ) {
+        if ($cron == 1) {
+            $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+            $arrayCron["processcTimeStart"] = time();
+            @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+        }
+
         $fTaskDuration = $row['TAS_DURATION'];
         $iDelegateDate = strtotime ( $row['DEL_DELEGATE_DATE'] );
         $iInitDate     = strtotime ( $row['DEL_INIT_DATE'] );

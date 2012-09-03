@@ -97,21 +97,6 @@ require_once ("classes/model/AppEvent.php");
 require_once ("classes/model/CaseScheduler.php");
 //G::loadClass("pmScript");
 
-//default values
-$bCronIsRunning = false;
-$sLastExecution = '';
-
-if (file_exists(PATH_DATA . 'cron')) {
-    $arrayAux = unserialize(trim(@file_get_contents(PATH_DATA . 'cron')));
-    $bCronIsRunning = (boolean)($arrayAux['bCronIsRunning']);
-    $sLastExecution = $arrayAux['sLastExecution'];
-} else {
-    //if not exists the file, just create a new one with current date
-    $arrayAux = array('bCronIsRunning' => '1', 'sLastExecution' => date('Y-m-d H:i:s'));
-
-    @file_put_contents(PATH_DATA . 'cron', serialize($arrayAux));
-}
-
 if (!defined('SYS_SYS')) {
     $sObject = $argv[1];
     $sNow    = $argv[2];
@@ -221,9 +206,9 @@ if (!defined('SYS_SYS')) {
     processWorkspace();
 }
 
-//finally update the file
-$arrayAux = array('bCronIsRunning' => '0', 'sLastExecution' => date('Y-m-d H:i:s'));
-@file_put_contents(PATH_DATA . 'cron', serialize($arrayAux));
+
+
+
 
 function processWorkspace()
 {
@@ -275,7 +260,7 @@ function resendEmails()
         }
 
         $oSpool = new spoolRun();
-        $oSpool->resendEmails($dateResend);
+        $oSpool->resendEmails($dateResend, 1);
 
         saveLog("resendEmails", "action", "Resending Emails", "c");
 
@@ -311,7 +296,7 @@ function unpauseApplications()
         G::LoadClass('case');
 
         $oCases = new Cases();
-        $oCases->ThrowUnpauseDaemon($sNow);
+        $oCases->ThrowUnpauseDaemon($sNow, 1);
 
         setExecutionResultMessage('DONE');
         saveLog('unpauseApplications', 'action', 'Unpausing Applications');
@@ -348,6 +333,11 @@ function executePlugins()
                 $oPlugin = new $className();
 
                 if (method_exists($oPlugin, 'executeCron')) {
+                    $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+                    $arrayCron["processcTimeProcess"] = 60;
+                    $arrayCron["processcTimeStart"]   = time();
+                    @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+
                     $oPlugin->executeCron();
                     setExecutionMessage("Executing Plugins");
                     setExecutionResultMessage('DONE');
@@ -369,7 +359,7 @@ function calculateDuration()
 
     try {
         $oAppDelegation = new AppDelegation();
-        $oAppDelegation->calculateDuration();
+        $oAppDelegation->calculateDuration(1);
 
         setExecutionResultMessage('DONE');
         saveLog('calculateDuration', 'action', 'Calculating Duration');
@@ -397,9 +387,13 @@ function executeEvents($sLastExecution, $sNow=null)
     try {
         $oAppEvent = new AppEvent();
         saveLog('executeEvents', 'action', "Executing Events $sLastExecution, $sNow ");
-        $n = $oAppEvent->executeEvents($sNow, false, $log);
+        $n = $oAppEvent->executeEvents($sNow, false, $log, 1);
 
         foreach ($log as $value) {
+            $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+            $arrayCron["processcTimeStart"] = time();
+            @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+
             saveLog('executeEvents', 'action', "Execute Events : $value, $sNow ");
         }
 
@@ -431,9 +425,13 @@ function executeScheduledCases($sNow=null)
         $sNow = isset($sNow)? $sNow : date('Y-m-d H:i:s');
 
         $oCaseScheduler = new CaseScheduler();
-        $oCaseScheduler->caseSchedulerCron($sNow, $log);
+        $oCaseScheduler->caseSchedulerCron($sNow, $log, 1);
 
         foreach ($log as $value) {
+            $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+            $arrayCron["processcTimeStart"] = time();
+            @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+
             saveLog('executeScheduledCases', 'action', "OK Case# $value");
         }
 
@@ -473,7 +471,7 @@ function executeUpdateAppTitle()
 
             //Update case labels
             $appcv = new AppCacheView();
-            $appcv->appTitleByTaskCaseLabelUpdate($taskUid, $lang);
+            $appcv->appTitleByTaskCaseLabelUpdate($taskUid, $lang, 1);
 
             //Delete record
             $criteria = new Criteria("workflow");
@@ -550,4 +548,3 @@ function setExecutionResultMessage($m, $t='')
 
     eprintln("[$m]", $c);
 }
-
