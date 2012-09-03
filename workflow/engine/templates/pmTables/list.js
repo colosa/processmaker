@@ -515,6 +515,10 @@ ImportPMTable = function(){
           fieldLabel: '',
           boxLabel: _('ID_OVERWRITE_EXIST'), // 'Overwrite if exists?',
           name: 'form[OVERWRITE]'
+        }, {
+          xtype: "hidden",
+          name: "form[PRO_UID]",
+          value: (typeof PRO_UID == "string" && PRO_UID != "")? PRO_UID : ""
         }],
         buttons: [{
             text: _('ID_UPLOAD'),

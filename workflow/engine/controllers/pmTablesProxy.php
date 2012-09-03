@@ -840,7 +840,13 @@ class pmTablesProxy extends HttpProxyController
                         $tableData->REP_TAB_NAME = $contentSchema['ADD_TAB_NAME'];
                         $tableData->REP_TAB_DSC = $contentSchema['ADD_TAB_DESCRIPTION'];
                         $tableData->REP_TAB_CONNECTION = $contentSchema['DBS_UID'];
-                        $tableData->PRO_UID = isset($contentSchema['PRO_UID']) ? $contentSchema['PRO_UID'] : '';
+
+                        if (isset($_POST["form"]["PRO_UID"]) && !empty($_POST["form"]["PRO_UID"])) {
+                            $tableData->PRO_UID = $_POST["form"]["PRO_UID"];
+                        } else {
+                            $tableData->PRO_UID = isset($contentSchema["PRO_UID"])? $contentSchema["PRO_UID"] : "";
+                        }
+
                         $tableData->REP_TAB_TYPE = isset($contentSchema['ADD_TAB_TYPE'])
                                                    ? $contentSchema['ADD_TAB_TYPE'] : '';
                         $tableData->REP_TAB_GRID = isset($contentSchema['ADD_TAB_GRID'])
@@ -1581,4 +1587,4 @@ class pmTablesProxy extends HttpProxyController
         return $aFields;
     }
 }
- 
+
