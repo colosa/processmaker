@@ -3,8 +3,7 @@ var showCaseNavigatorPanel;
 var hideCaseNavigatorPanel;
 var informationMenu;
 var caseMenuOpen = false;
-var toReviseTreeOpen = false;
-var menuSelectedTitle = Array();
+var menuSelectedTitle = [];
 var _ENV_CURRENT_DATE;
 var winTree;
 
@@ -23,69 +22,70 @@ ActionTabFrameGlobal.tabTitle = '';
 ActionTabFrameGlobal.tabData = '';
 
 Ext.onReady(function(){
+  openToRevisePanel = function() {
+    var treeToRevise = new Ext.tree.TreePanel({
+      title: treeToReviseTitle,
+      width: 250,
+      height: 250,
+      userArrows: true,
+      animate: true,
+      autoScroll: true,
+      rootVisible: false,
+      dataUrl: casesPanelUrl,
+      root: {
+        nodeType: 'async',
+        text    : 'To Revise',
+        id      : 'node-root'
+      },
+      listeners: {
+        render: function() {
+          this.expandAll();
+        }
+      }
+    });
+
+    if (typeof(winTree) == 'undefined') {
+      winTree = new Ext.Window({
+        id          : 'toReviseWindow',
+        width       : 220,
+        height      : 300,
+        el          : 'toReviseTree',
+        collapsible : true,
+        plain       : true,
+        x           : 100,
+        y           : 100,
+        constrain   : true,
+        items       : [treeToRevise]
+      });
+    }
+  };
+
   Ext.QuickTips.init();
   showCaseNavigatorPanel = function(app_status) {
-
-    if (typeof(treeToReviseTitle) != 'undefined'){
-      var treeToRevise = new Ext.tree.TreePanel({
-        title: treeToReviseTitle,
-        width: 250,
-        height: 250,
-        userArrows: true,
-        animate: true,
-        autoScroll: true,
-        rootVisible: false,
-        dataUrl: casesPanelUrl,
-        root: {
-            nodeType : 'async',
-            text     : 'To Revise',
-            id       : 'node-root'
-        },
-        listeners: {
-            render: function() {
-                this.expandAll();
-            }
-        }
-      });
-
-      if (typeof(winTree) == 'undefined') {
-        winTree = new Ext.Window({
-          id          : 'toReviseWindow',
-          width       : 220,
-          height      : 300,
-          el          : 'toReviseTree',
-          collapsible : true,
-          plain       : true,
-          x           : 100,
-          y           : 100,
-          closable    : false,
-          constrain   : true,
-          items       : [treeToRevise]
-        });
-      }
-
-      if (!toReviseTreeOpen){
-        winTree.show(this);
-        toReviseTreeOpen = true;
-      }
+    if (typeof(treeToReviseTitle) != 'undefined') {
+      openToRevisePanel();
     }
 
-    if( caseMenuOpen )
+    if (caseMenuOpen) {
       return false;
-    else
+    }
+    else {
       caseMenuOpen = true;
+    }
 
     //get the menu
     Ext.Ajax.request({
       url : 'ajaxListener',
       params : {action : 'getCaseMenu', app_status:app_status},
       success: function ( result, request ) {
-        var data = Ext.util.JSON.decode(result.responseText);        
+        var data = Ext.util.JSON.decode(result.responseText);
         for(i=0; i<data.length; i++) {
           switch(data[i].id) {
             case 'STEPS':
-              Ext.getCmp('casesStepTree').root.reload();
-              Ext.getCmp('stepsMenu').enable();              
+              if (typeof(treeToReviseTitle) == 'undefined') {
+                Ext.getCmp('casesStepTree').root.reload();
+              }
+              Ext.getCmp('stepsMenu').enable();
               break;
             case 'NOTES':
               Ext.getCmp('caseNotes').show();
@@ -137,10 +137,10 @@ Ext.onReady(function(){
               tb.add(menu);
           }
         }
-        
+
         if (Ext.getCmp('stepsMenu').disabled === true) {
-          Ext.getCmp('stepsMenu').hide();  
-        }        
+          Ext.getCmp('stepsMenu').hide();
+        }
       },
       failure: function ( result, request) {
         Ext.MessageBox.alert('Failed', result.responseText);
@@ -158,40 +158,55 @@ Ext.onReady(function(){
   }
 
   function togglePreview(btn, pressed){
-    var preview = Ext.getCmp('navPanelWest');
-    preview[pressed ? 'show' : 'hide']();
-    Ext.getCmp('navPanel').ownerCt.doLayout();
+    if (typeof(treeToReviseTitle) == 'undefined') {
+      var preview = Ext.getCmp('navPanelWest');
+      preview[pressed ? 'show' : 'hide']();
+      Ext.getCmp('navPanel').ownerCt.doLayout();
+    }
+    else {
+      if (winTree.isVisible()) {
+        winTree.hide();
+      }
+      else  {
+        winTree.show();
+      }
+    }
   }
 
-  var casesStepTree = new Ext.tree.TreePanel({
-    id: 'casesStepTree',
-    autoWidth: true,
-    userArrows: true,
-    animate: true,
-    autoScroll: true,
-    dataUrl: 'ajaxListener?action=steps',
-    rootVisible: false,
-    containerScroll: true,
-    border: false,
-    root: {
-      nodeType: 'async'
-    },
-
-    listeners: {
-      render: function() {
-        this.getRootNode().expand();
+  if (typeof(treeToReviseTitle) == 'undefined') {
+    var casesStepTree = new Ext.tree.TreePanel({
+      id: 'casesStepTree',
+      autoWidth: true,
+      userArrows: true,
+      animate: true,
+      autoScroll: true,
+      dataUrl: 'ajaxListener?action=steps',
+      rootVisible: false,
+      containerScroll: true,
+      border: false,
+      root: {
+        nodeType: 'async'
       },
-      click: function(tp) {
-        if( tp.attributes.url ){
-          document.getElementById('openCaseFrame').src = tp.attributes.url;
-        }
-      } 
-    }
-  })
 
-  var loader = casesStepTree.getLoader();
-  loader.on("load", setNodeini);    
-  
+      listeners: {
+        render: function() {
+          this.getRootNode().expand();
+        },
+        click: function(tp) {
+          if( tp.attributes.url ){
+            document.getElementById('openCaseFrame').src = tp.attributes.url;
+          }
+        }
+      }
+    })
+
+    var loader = casesStepTree.getLoader();
+    loader.on("load", setNodeini);
+  }
+  else {
+    var casesStepTree = {};
+  }
+
   function setNodeini()
   {
     setNode(idfirstform);
@@ -508,7 +523,7 @@ Ext.onReady(function(){
                 var noteReasonTxt = '';
               }
               var notifyReasonVal = Ext.getCmp('notifyReason').getValue() == true ? 1 : 0;
-              
+
               Ext.MessageBox.show({ msg: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
               Ext.Ajax.request({
                 url : 'ajaxListener' ,
@@ -660,7 +675,7 @@ Ext.onReady(function(){
       //autoHeight  : true,
       defaults    : {
         width : 170,
-        xtype:'label',        
+        xtype:'label',
         labelStyle : 'padding: 0px;',
         style: 'font-weight: bold'
       },
@@ -855,7 +870,7 @@ Ext.onReady(function(){
 
   //
   Actions.tabFrame = function(name)
-  {  
+  {
     tabId = name + 'MenuOption';
     var uri = 'ajaxListener?action=' + name;
     var TabPanel = Ext.getCmp('caseTabPanel');
@@ -879,47 +894,47 @@ Ext.onReady(function(){
     var uri = 'ajaxListener?action=' + name;
 
     if (name.indexOf("changeLogTab") != -1) {
-      var uri = 'ajaxListener?action=' + 'changeLogTab';		
+      var uri = 'ajaxListener?action=' + 'changeLogTab';
       //!historyGridListChangeLogGlobal
       historyGridListChangeLogGlobal.idHistory = historyGridListChangeLogGlobal.idHistory;
-      historyGridListChangeLogGlobal.tasTitle = historyGridListChangeLogGlobal.tasTitle;		
+      historyGridListChangeLogGlobal.tasTitle = historyGridListChangeLogGlobal.tasTitle;
       //dataSystem
       idHistory = historyGridListChangeLogGlobal.idHistory;
       var tasTitle = historyGridListChangeLogGlobal.tasTitle;
       menuSelectedTitle[name] = tasTitle;
       Actions[name];
       uri += "&idHistory="+idHistory;
-    }	
+    }
 
     if (name.indexOf("dynaformViewFromHistory") != -1) {
       var uri = 'ajaxListener?action=' + 'dynaformViewFromHistory';
-      uri += '&DYN_UID='+historyGridListChangeLogGlobal.viewIdDin+'&HISTORY_ID='+historyGridListChangeLogGlobal.viewIdHistory;	 
+      uri += '&DYN_UID='+historyGridListChangeLogGlobal.viewIdDin+'&HISTORY_ID='+historyGridListChangeLogGlobal.viewIdHistory;
       menuSelectedTitle[name] = 'View('+dynTitle+' '+historyGridListChangeLogGlobal.dynDate+')';
     }
 
     if (name.indexOf("previewMessage") != -1) {
       var uri = 'caseMessageHistory_Ajax?actionAjax=' + 'showHistoryMessage';
-      var tabNameArray = tabName.split('_');		
+      var tabNameArray = tabName.split('_');
       var APP_UID = tabNameArray[1];
-      var APP_MSG_UID = tabNameArray[2];		
+      var APP_MSG_UID = tabNameArray[2];
       uri += '&APP_UID='+APP_UID+'&APP_MSG_UID='+APP_MSG_UID;
       menuSelectedTitle[tabName] = tabTitle;
     }
 
     if (name.indexOf("previewMessage") != -1) {
       var uri = 'caseMessageHistory_Ajax?actionAjax=' + 'showHistoryMessage';
-      var tabNameArray = tabName.split('_');		
+      var tabNameArray = tabName.split('_');
       var APP_UID = tabNameArray[1];
-      var APP_MSG_UID = tabNameArray[2];		
+      var APP_MSG_UID = tabNameArray[2];
       uri += '&APP_UID='+APP_UID+'&APP_MSG_UID='+APP_MSG_UID;
       menuSelectedTitle[tabName] = tabTitle;
     }
 
     if (name.indexOf("sendMailMessage") != -1) {
       var uri = 'caseMessageHistory_Ajax?actionAjax=' + 'sendMailMessage_JXP';
-      var tabNameArray = tabName.split('_');	
+      var tabNameArray = tabName.split('_');
       var APP_UID = tabNameArray[1];
-      var APP_MSG_UID = tabNameArray[2];	
+      var APP_MSG_UID = tabNameArray[2];
       uri += '&APP_UID='+APP_UID+'&APP_MSG_UID='+APP_MSG_UID;
       menuSelectedTitle[tabName] = tabTitle;
     }
@@ -930,18 +945,18 @@ Ext.onReady(function(){
 
     if (name.indexOf("historyDynaformGridHistory") != -1) {
       var historyDynaformGridHistoryGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
-      var tabTitle = ActionTabFrameGlobal.tabTitle;			
+      var tabTitle = ActionTabFrameGlobal.tabTitle;
       var PRO_UID = historyDynaformGridHistoryGlobal.PRO_UID;
       var APP_UID = historyDynaformGridHistoryGlobal.APP_UID;
       var TAS_UID = historyDynaformGridHistoryGlobal.TAS_UID;
-      var DYN_UID = historyDynaformGridHistoryGlobal.DYN_UID;			
-      var DYN_TITLE = historyDynaformGridHistoryGlobal.DYN_TITLE;			
+      var DYN_UID = historyDynaformGridHistoryGlobal.DYN_UID;
+      var DYN_TITLE = historyDynaformGridHistoryGlobal.DYN_TITLE;
       var uri = 'casesHistoryDynaformPage_Ajax?actionAjax=showDynaformListHistory';
       uri += '&PRO_UID='+PRO_UID+'&APP_UID='+APP_UID+'&TAS_UID='+TAS_UID+'&DYN_UID='+DYN_UID;
-      menuSelectedTitle[name] = tabTitle;		
+      menuSelectedTitle[name] = tabTitle;
     }
 
-    if (name.indexOf("dynaformChangeLogViewHistory") != -1) {		
+    if (name.indexOf("dynaformChangeLogViewHistory") != -1) {
       var showDynaformHistoryGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
       var tabTitle = ActionTabFrameGlobal.tabTitle;
       var dynUID = showDynaformHistoryGlobal.dynUID;
@@ -977,7 +992,7 @@ Ext.onReady(function(){
 
     if( tab ) {
       TabPanel.setActiveTab(tabId);
-    } 
+    }
     else {
       TabPanel.add({
         id: tabId,
@@ -1057,8 +1072,8 @@ Ext.onReady(function(){
       store: store,
       tbar:[
         {
-          text:_('ID_ASSIGN'), 
-          iconCls: 'silk-add', 
+          text:_('ID_ASSIGN'),
+          iconCls: 'silk-add',
           icon: '/images/cases-selfservice.png',
           handler: assignAdHocUser
         }
@@ -1096,7 +1111,7 @@ Ext.onReady(function(){
           if( data.success ) {
             CloseWindow();
             location.href = 'casesListExtJs';
-          } 
+          }
           else {
             PMExt.error(_('ID_ERROR'), data.msg);
           }
@@ -1125,6 +1140,6 @@ Ext.onReady(function(){
     if (!node) {
       return false;
     }
-    
+
     node.select();
   }
