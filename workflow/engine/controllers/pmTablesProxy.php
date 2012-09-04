@@ -235,6 +235,8 @@ class pmTablesProxy extends HttpProxyController
                 'protected', 'public', 'static', 'switch', 'xor', 'try', 'use', 'var', 'while'
             );
 
+            $reservedWordsSql = G::reservedWordsSql();
+
             // verify if exists.
             if ($data['REP_TAB_UID'] == '' || (isset($httpData->forceUid) && $httpData->forceUid)) {
                 //new report table
@@ -249,16 +251,23 @@ class pmTablesProxy extends HttpProxyController
                     throw new Exception(G::loadTranslation('ID_PMTABLE_ALREADY_EXISTS', array($data['REP_TAB_NAME'])));
                 }
 
-                if (in_array(strtoupper($data['REP_TAB_NAME']), $reservedWords)) {
-                    throw new Exception(G::loadTranslation('ID_PMTABLE_INVALID_NAME', array($data['REP_TAB_NAME'])));
+                if (in_array(strtoupper($data["REP_TAB_NAME"]), $reservedWords) ||
+                    in_array(strtoupper($data["REP_TAB_NAME"]), $reservedWordsSql)
+                ) {
+                    throw (new Exception(G::LoadTranslation("ID_PMTABLE_INVALID_NAME", array($data["REP_TAB_NAME"]))));
                 }
             }
 
             //backward compatility
             foreach ($columns as $i => $column) {
-                if (in_array(strtolower($columns[$i]->field_name), $reservedWordsPhp)) {
-                    throw new Exception(G::loadTranslation('ID_PMTABLE_INVALID_NAME', array($columns[$i]->field_name)));
+                if (in_array(strtoupper($columns[$i]->field_name), $reservedWordsSql) ||
+                    in_array(strtolower($columns[$i]->field_name), $reservedWordsPhp)
+                ) {
+                    throw (new Exception(
+                        G::LoadTranslation("ID_PMTABLE_INVALID_FIELD_NAME", array($columns[$i]->field_name))
+                    ));
                 }
+
                 switch ($column->field_type) {
                     case 'INT': $columns[$i]->field_type = 'INTEGER';
                         break;

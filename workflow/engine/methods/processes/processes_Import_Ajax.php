@@ -24,6 +24,42 @@
  */
   ini_set('max_execution_time', '0');
 
+
+
+
+
+function reservedWordsSqlValidate($data)
+{
+    $arrayAux = array();
+    $reservedWordsSql = G::reservedWordsSql();
+
+    foreach ($data->reportTables as $rptIndex => $rptValue) {
+        if (in_array(strtoupper($rptValue["REP_TAB_NAME"]), $reservedWordsSql)) {
+            $arrayAux[] = $rptValue["REP_TAB_NAME"];
+        }
+    }
+
+    if (count($arrayAux) > 0) {
+        throw (new Exception(G::LoadTranslation("ID_PMTABLE_INVALID_NAME", array(implode(", ", $arrayAux)))));
+    }
+
+    $arrayAux = array();
+
+    foreach ($data->reportTablesVars as $rptIndex => $rptValue) {
+        if (in_array(strtoupper($rptValue["REP_VAR_NAME"]), $reservedWordsSql)) {
+            $arrayAux[] = $rptValue["REP_VAR_NAME"];
+        }
+    }
+
+    if (count($arrayAux) > 0) {
+        throw (new Exception(G::LoadTranslation("ID_PMTABLE_INVALID_FIELD_NAME", array(implode(", ", $arrayAux)))));
+    }
+}
+
+
+
+
+
   $action = isset($_REQUEST['ajaxAction']) ? $_REQUEST['ajaxAction'] : null;
 
   $result               = new stdClass();
@@ -36,9 +72,9 @@
       $processFileType   = $_REQUEST["processFileType"];
       $oProcess          = new stdClass();
       $oData             = new stdClass();
-      
+
       $isCorrectTypeFile = 1;
-      
+
       if ( isset($_FILES['form']['type']['PROCESS_FILENAME']) ) {
         $allowedExtensions = array($processFileType);
         $allowedExtensions = array( 'xpdl', 'bpmn', 'pm');
@@ -83,7 +119,7 @@
           G::uploadFile($tempName, $path, $filename );
         }
       }
-            
+
       //importing a bpmn diagram, using external class to do it.
       if ($processFileType == "bpmn") {
         G::LoadClass('bpmnExport');
@@ -92,7 +128,7 @@
         die;
       }
 
-      //if file is a .pm or .xpdl file continues normally the importing    
+      //if file is a .pm or .xpdl file continues normally the importing
       if ($processFileType == "pm") {
         $oData = $oProcess->getProcessData ( $path . $filename  );
       }
@@ -100,14 +136,16 @@
         $oData = $oProcess->getProcessDataXpdl ( $path . $filename  );
       }
 
-      //!Upload file        
+      reservedWordsSqlValidate($oData);
+
+      //!Upload file
       $Fields['PRO_FILENAME']  = $filename;
       $Fields['IMPORT_OPTION'] = 2;
-      
+
       $sProUid = $oData->process['PRO_UID'];
-      
+
       $oData->process['PRO_UID_OLD'] = $sProUid;
-      
+
       if ( $oProcess->processExists ( $sProUid ) ) {
         $result->ExistProcessInDatabase = 1;
       }
@@ -133,10 +171,10 @@
       else {
         if ( !($oProcess->checkExistingGroups($oData->groupwfs) > 0) ) {
           $result->ExistGroupsInDatabase = 0;
-        }            
-      }            
+        }
+      }
       //!respect of the groups
-            
+
       if ($result->ExistProcessInDatabase == 0 && $result->ExistGroupsInDatabase == 0){
         if ($processFileType == "pm") {
           $oProcess->createProcessFromData ($oData, $path . $filename );
@@ -148,7 +186,7 @@
         }
       }
 
-      //!data ouput  
+      //!data ouput
       $result->sNewProUid  = $sProUid;
       $result->proFileName =  $Fields['PRO_FILENAME'];
     }
@@ -158,9 +196,9 @@
       $result->success      = true;
     }
   }
-  
+
   if ($action == "uploadFileNewProcessExist") {
-    try {    
+    try {
       $option          = $_REQUEST["IMPORT_OPTION"];
       $filename        = $_REQUEST["PRO_FILENAME"];
       $processFileType = $_REQUEST["processFileType"];
@@ -188,13 +226,15 @@
       }
 
       $path = PATH_DOCUMENT . 'input' . PATH_SEP ;
-      
+
       if ($processFileType == "pm"){
         $oData = $oProcess->getProcessData ( $path . $filename  );
       }
       else {
         $oData = $oProcess->getProcessDataXpdl ( $path . $filename  );
       }
+
+      reservedWordsSqlValidate($oData);
 
       $Fields['PRO_FILENAME'] = $filename;
       $sProUid                = $oData->process['PRO_UID'];
@@ -214,12 +254,12 @@
         }
         $result->ExistGroupsInDatabase = 0;
       }
-      else {        
+      else {
         if ( !($oProcess->checkExistingGroups($oData->groupwfs) > 0) ) {
           $result->ExistGroupsInDatabase = 0;
-        }            
+        }
       }
-      
+
       if ($result->ExistGroupsInDatabase == 0) {
         //Update the current Process, overwriting all tasks and steps
         if ( $option == 1 ) {
@@ -253,7 +293,7 @@
               $oData->tasks = array();
             }
             $tasks =  $oData->tasks;
-            $oProcess->createProcessFromDataXpdl ($oData,$tasks);                   
+            $oProcess->createProcessFromDataXpdl ($oData,$tasks);
           }
         }
 
@@ -272,12 +312,12 @@
             if ( !isset( $oData->tasks) ) {
               $oData->tasks = array();
             }
-            $tasks =  $oData->tasks;                      
+            $tasks =  $oData->tasks;
             $oProcess->createProcessFromDataXpdl ($oData,$tasks);
           }
         }
       }
-      
+
       //!data ouput
       $result->fileName              = $filename;
       $result->importOption          = $option;
