@@ -45,29 +45,27 @@ $endpoint = $http . $_SERVER['HTTP_HOST'] . '/sys' . SYS_SYS . '/' . SYS_LANG . 
 $user = $sWS_USER;
 $pass = $sWS_PASS;
 
-$params = array ('userid' => $user, 'password' => $pass );
-$result = $client->__SoapCall ( 'login', array ($params ) );
+$params = array('userid' => $user, 'password' => $pass);
+$result = $client->__SoapCall('login', array($params));
 
+if ($result->status_code == 0) {
+  if (!class_exists('Users')) {
+     require ("classes/model/UsersPeer.php");
+  }
+  $oCriteria = new Criteria('workflow');
+  $oCriteria->addSelectColumn('USR_UID');
+  $oCriteria->add(UsersPeer::USR_USERNAME, $sWS_USER);
+  $resultSet = UsersPeer::doSelectRS($oCriteria);
+  $resultSet->next();
+  $user_id = $resultSet->getRow();
+  $result->message = $user_id[0];
 
+  G::LoadClass('case');
+  $caseInstance = new Cases();
+  if (!$caseInstance->canStartCase($result->message, $_REQUEST['PRO_UID'])) {
+    $result->status_code = -1000;
+    $result->message = G::LoadTranslation('ID_USER_CASES_NOT_START');
+  }
+}
 
-$fields ['status_code'] = $result->status_code;
-$fields ['message'] = 'ProcessMaker WebService version: ' . $result->version . "\n" . $result->message;
-$fields ['version'] = $result->version;
-$fields ['time_stamp'] = $result->timestamp;
-$messageCode = $result->message;
-if($result->status_code == 0){
-   if(!class_exists('Users')) {
-      require ("classes/model/UsersPeer.php");
-   }
-
-   $oCriteria = new Criteria('workflow');
-   $oCriteria->addSelectColumn('USR_UID');
-   $oCriteria->add(UsersPeer::USR_USERNAME, $sWS_USER);
-   $resultSet = UsersPeer::doSelectRS($oCriteria);
-   $resultSet->next();
-   $user_id = $resultSet->getRow();
-
-       $messageCode = $user_id[0];
-   }
-echo ($messageCode);
-?>
+die(G::json_encode($result));

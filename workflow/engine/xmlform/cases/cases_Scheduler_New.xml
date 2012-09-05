@@ -9,7 +9,7 @@
 </GENERAL_INF>
 
 <PROPERTIES_INF type="subtitle" enablehtml="1">
-<en>Enter the username and password for the user who will be assigned to the initial task in the case(s).</en>
+<en>Enter the username and password of the user who will be assigned to the initial task in the case.</en>
 </PROPERTIES_INF>
 
 <SCH_UID type="hidden" >
@@ -362,7 +362,7 @@ function showSelection(opt) {
       contractSubtitle('SELECT_3');
       //document.getElementById('form[ADVANCED_4]').style.display='';
       //expandSubtitle('ADVANCED_4');
-      
+
       document.getElementById('endDateTable').style.display='';
       document.getElementById('startTime').style.display='';
       document.getElementById('everyTime').style.display='none';
@@ -375,7 +375,7 @@ function showSelection(opt) {
       //document.getElementById('form[ADVANCED_4]').style.display='';
       hideRow('SCH_EVERY_DAYS');
       //expandSubtitle('ADVANCED_4');
-      
+
       document.getElementById('endDateTable').style.display='';
       document.getElementById('startTime').style.display='';
       document.getElementById('everyTime').style.display='none';
@@ -392,7 +392,7 @@ function showSelection(opt) {
       getField('SCH_START_DAY_OPT_2_WEEKS').style.display="none";
       getField('SCH_START_DAY_OPT_2_DAYS_WEEK').disabled=true;
       getField('SCH_START_DAY_OPT_2_DAYS_WEEK').style.display="none";
-      
+
       document.getElementById('endDateTable').style.display='';
       document.getElementById('startTime').style.display='';
       document.getElementById('everyTime').style.display='none';
@@ -403,7 +403,7 @@ function showSelection(opt) {
       contractSubtitle('SELECT_1');
       contractSubtitle('SELECT_2');
       contractSubtitle('SELECT_3');
-      
+
       document.getElementById('endDateTable').style.display='none';
       document.getElementById('startTime').style.display='';
       document.getElementById('everyTime').style.display='none';
@@ -416,7 +416,7 @@ function showSelection(opt) {
       contractSubtitle('SELECT_1');
       contractSubtitle('SELECT_2');
       contractSubtitle('SELECT_3');
-      
+
       document.getElementById('endDateTable').style.display='none';
       document.getElementById('startTime').style.display='none';
       document.getElementById('everyTime').style.display='';
@@ -564,8 +564,6 @@ leimnud.event.add(getField('SCH_OPTION][4'), 'change', function() {
 */
 
 function case_userSchedulerValidate(username, password) {
-    //G.alert(username);
-    //G.alert(password);
     var user_uid;
 
     if(username=='' || password==''){
@@ -577,26 +575,20 @@ function case_userSchedulerValidate(username, password) {
        	    url   : '../cases/cases_SchedulerValidateUser',
              async : true,
              method: 'POST',
-             args  : "USERNAME="+username+"&PASSWORD="+password
+             args  : "USERNAME="+username+"&PASSWORD="+password+"&PRO_UID="+$_GET('PRO_UID')
     });
 
     oRPC.callback = function(rpc){
-       //msgBox(rpc.xmlhttp.responseText,"alert");
-       sresponse = rpc.xmlhttp.responseText;
+       sresponse = rpc.xmlhttp.responseText.parseJSON();
 
-       switch(sresponse){
-       case "User does not have access to the system":
-       case "Wrong password":
-       case "User inactive!":
-         msgBox(rpc.xmlhttp.responseText,"alert");
+       if (sresponse.status_code != 0) {
+         msgBox(sresponse.message, "alert");
          getField('BTNCANCEL').focus();
          return false;
-         break
-        }
+       }
 
-       getField('SCH_USER_UID').value = rpc.xmlhttp.responseText;
-       user_uid = rpc.xmlhttp.responseText;
-       //alert(user_uid);
+       getField('SCH_USER_UID').value = sresponse.message;
+       user_uid = sresponse.message;
 
        var oRPCProcess = new leimnud.module.rpc.xmlhttp({
        	    url   : '../cases/cases_SchedulerGetProcesses',

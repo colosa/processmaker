@@ -83,7 +83,7 @@ class Cases
      * @param string $sUIDUser
      * @return boolean
     */
-    public function canStartCase($sUIDUser = '')
+    public function canStartCase($sUIDUser = '', $processUid = '')
     {
         $c = new Criteria();
         $c->clearSelectColumns();
@@ -93,6 +93,9 @@ class Cases
         $c->add(ProcessPeer::PRO_STATUS, 'ACTIVE');
         $c->add(TaskPeer::TAS_START, 'TRUE');
         $c->add(TaskUserPeer::USR_UID, $sUIDUser);
+        if ($processUid != '') {
+          $c->add(TaskPeer::PRO_UID, $processUid);
+        }
 
         $rs = TaskPeer::doSelectRS($c);
         $rs->next();
@@ -115,6 +118,9 @@ class Cases
         $c->add(ProcessPeer::PRO_STATUS, 'ACTIVE');
         $c->add(TaskPeer::TAS_START, 'TRUE');
         $c->add(TaskUserPeer::USR_UID, $aGroups, Criteria::IN);
+        if ($processUid != '') {
+          $c->add(TaskPeer::PRO_UID, $processUid);
+        }
 
         $rs = TaskPeer::doSelectRS($c);
         $rs->next();

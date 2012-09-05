@@ -103,6 +103,7 @@ class wsBase
             $uid = $RBAC->VerifyLogin($userid , $password);
 
             switch ($uid) {
+                case '':
                 case -1: //The user doesn't exist
                     $wsResponse = new wsResponse(3, G::loadTranslation('ID_USER_NOT_REGISTERED'));
                     break;
@@ -116,7 +117,7 @@ class wsBase
                     break;
             }
 
-            if ($uid < 0 ) {
+            if ($uid < 0 || $uid == '') {
                 throw (new Exception(serialize($wsResponse)));
             }
 
