@@ -46,12 +46,10 @@ if( $access != 1 ){
 }
 $processUID = $_GET['PRO_UID'];
 
-//if ( isset($_SESSION['PROCESSMAP']) && $_SESSION['PROCESSMAP'] == 'BPMN' ) {
-//  header ( "Location: ../bpmn/processmap?PRO_UID=". $processUID );
-//}
-
 $_SESSION['PROCESS'] = $processUID;
 $_SESSION['PROCESSMAP'] = 'LEIMNUD';
+
+G::LoadClass('processMap');
 
 $oTemplatePower = new TemplatePower(PATH_TPL . 'processes/processes_Map.html');
 $oTemplatePower->prepare();
@@ -66,9 +64,8 @@ $G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
 
 $oHeadPublisher =& headPublisher::getSingleton();
 $oHeadPublisher->addScriptFile('/jscore/dbConnections/main.js');
-
-//$oHeadPublisher->addScriptFile('/htmlarea/editor.js');
-$oHeadPublisher->addScriptCode( '
+$oHeadPublisher->addScriptCode('
+    var maximunX = ' . processMap::getMaximunTaskX($processUID) . ';
 	var leimnud = new maborak();
 	leimnud.make();
 	leimnud.Package.Load("rpc,drag,drop,panel,app,validator,fx,dom,abbr",{Instance:leimnud,Type:"module"});
@@ -91,7 +88,7 @@ $oHeadPublisher->addScriptCode( '
 		}
 		Pm.make();
 	});
-	var changesSavedLabel = "' . addslashes(G::LoadTranslation('ID_SAVED_SUCCESSFULLY')) . '";' );
+	var changesSavedLabel = "' . addslashes(G::LoadTranslation('ID_SAVED_SUCCESSFULLY')) . '";');
 
 if( ! isset($_GET['raw']) )
     G::RenderPage('publish', 'green-submenu');

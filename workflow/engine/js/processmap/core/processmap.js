@@ -855,6 +855,10 @@ var processmap=function(){
         this.observers.menu.register(this.parent.closure({instance:this.menu,method:this.menu.remove}),this.menu);
         }
         this.data.render.task();
+        if (maximunX > this.options.size.w && document.getElementById('pm_separator_div')) {
+          var pm_separator_div = document.getElementById('pm_separator_div');
+          pm_separator_div.style.width = maximunX + 200;
+        }
       },
       task:function()
         {
@@ -2384,6 +2388,7 @@ processmap.prototype={
       sep.className = "pm_separatorOff___"+this.options.theme;
       this.menuRolled=false;
       var dse = document.createElement("div");
+      dse.id = 'pm_separator_div';
       dse.className = "pm_separatorDOff___"+this.options.theme;
       sep.appendChild(dse);
       sep.onmouseup=function()
@@ -2457,8 +2462,7 @@ processmap.prototype={
 
     this.panels.editor.options={
       limit:true,
-//      size:{w:this.options.size.w,h:this.options.size.h},
-      size:{w:this.options.size.w,h:heightPanel},
+      size:{w:(maximunX > this.options.size.w ? maximunX + 200 : this.options.size.w),h:heightPanel},
       position:{x:200,y:0,centerX:true},
       title:"",
       titleBar:false,

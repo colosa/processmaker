@@ -6905,4 +6905,18 @@ function saveExtEvents($oData)
     return $aIDocs;
   }
 
+  function getMaximunTaskX($processUid) {
+      $criteria = new Criteria('workflow');
+      $criteria->addSelectColumn('MAX(TAS_POSX) AS MAX_X');
+      $criteria->add(TaskPeer::PRO_UID, $processUid);
+
+      $dataset = TaskPeer::doSelectRS($criteria);
+      $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+      $dataset->next();
+
+      $row = $dataset->getRow();
+
+      return (int)$row['MAX_X'];
+  }
+
 }
