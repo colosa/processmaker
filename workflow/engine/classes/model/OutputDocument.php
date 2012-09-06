@@ -709,6 +709,7 @@ class OutputDocument extends BaseOutputDocument
                 fwrite($oFile, $sContent);
                 fclose($oFile);
 
+                define("MAX_FREE_FRACTION", 1);
                 define('PATH_OUTPUT_FILE_DIRECTORY', PATH_HTML . 'files/' . $_SESSION['APPLICATION'] . '/outdocs/');
                 G::verifyPath(PATH_OUTPUT_FILE_DIRECTORY, true);
                 require_once (PATH_THIRDPARTY . 'html2ps_pdf/config.inc.php');
