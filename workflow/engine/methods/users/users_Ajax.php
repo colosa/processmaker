@@ -151,21 +151,21 @@ try {
       }
       break;
 
-    //This case is used to check if any of the user group has as role 'PROCESSMAKER_ADMIN',  
+    //This case is used to check if any of the user group has as role 'PROCESSMAKER_ADMIN',
     case 'usersAdminGroupExtJS':
       G::LoadClass('groups');
       $oGroup = new Groups();
-      $aGroup = $oGroup->getUsersOfGroup($_POST['GRP_UID']);       
+      $aGroup = $oGroup->getUsersOfGroup($_POST['GRP_UID']);
       $responseUser = 'false';
       $usersAdmin = '';
-      foreach ($aGroup as $iIndex => $aValues) {         
+      foreach ($aGroup as $iIndex => $aValues) {
         if ($aValues['USR_ROLE'] == 'PROCESSMAKER_ADMIN') {
           $responseUser = 'true';
-          $usersAdmin .= $aValues['USR_FIRSTNAME'] . ' ' . $aValues['USR_LASTNAME'].', ';  
+          $usersAdmin .= $aValues['USR_FIRSTNAME'] . ' ' . $aValues['USR_LASTNAME'].', ';
         }
       }
       $usersAdmin = substr($usersAdmin, 0, -2);
-      
+
       $result = new stdClass();
       $result->reponse = $responseUser;
       $result->users = $usersAdmin;
@@ -178,7 +178,7 @@ try {
       $USR_UID = $_POST['uUID'];
       $total = 0;
       $history = 0;
-      $c = $oProcessMap->getCriteriaUsersCases('TO_DO', $USR_UID);  
+      $c = $oProcessMap->getCriteriaUsersCases('TO_DO', $USR_UID);
       $total += ApplicationPeer::doCount($c);
       $c = $oProcessMap->getCriteriaUsersCases('DRAFT', $USR_UID);
       $total += ApplicationPeer::doCount($c);
@@ -210,6 +210,23 @@ try {
        $aFields['USR_STATUS'] = 'CLOSED';
        $aFields['USR_USERNAME'] = '';
        $oUser->update($aFields);
+       break;
+    case 'changeUserStatus':
+       $response = new stdclass();
+       if (isset($_REQUEST['USR_UID']) && isset($_REQUEST['NEW_USR_STATUS'])) {
+         $RBAC->changeUserStatus($_REQUEST['USR_UID'], $_REQUEST['NEW_USR_STATUS']);
+         require_once 'classes/model/Users.php';
+         $userInstance = new Users();
+         $userData = $userInstance->load($_REQUEST['USR_UID']);
+         $userData['USR_STATUS'] = $_REQUEST['NEW_USR_STATUS'];
+         $userInstance->update($userData);
+         $response->status = 'OK';
+       }
+       else {
+         $response->status = 'ERROR';
+         $response->message = 'USR_UID and NEW_USR_STATUS parameters are required.';
+       }
+       die(G::json_encode($response));
        break;
     case 'availableGroups':
        G::LoadClass('groups');
@@ -243,7 +260,7 @@ try {
        G::LoadClass('groups');
       $oGroup = new Groups();
        foreach ($gUIDs as $GRP_UID){
-        $oGroup->addUserToGroup($GRP_UID, $USR_UID);    
+        $oGroup->addUserToGroup($GRP_UID, $USR_UID);
        }
        break;
     case 'deleteGroupsToUserMultiple':
@@ -252,7 +269,7 @@ try {
        G::LoadClass('groups');
       $oGroup = new Groups();
        foreach ($gUIDs as $GRP_UID){
-        $oGroup->removeUserOfGroup($GRP_UID, $USR_UID);    
+        $oGroup->removeUserOfGroup($GRP_UID, $USR_UID);
        }
        break;
     case 'authSources':
@@ -299,7 +316,7 @@ try {
         $arr = Array();
         $arr['AUTH_SOURCE_NAME'] = 'ProcessMaker (MYSQL)';
         $arr['AUTH_SOURCE_PROVIDER'] = 'MYSQL';
-        $aFields = $arr;  
+        $aFields = $arr;
       }
       $res = Array();
       $res['data'] = $oCriteria;
@@ -322,7 +339,7 @@ try {
         $aData['USR_AUTH_TYPE']   = $aFields['AUTH_SOURCE_PROVIDER'];
         $aData['UID_AUTH_SOURCE'] = $auth_uid;
       }
-      if (isset($_POST['auth_dn'])){ 
+      if (isset($_POST['auth_dn'])){
          $auth_dn = $_POST['auth_dn'];
        }else{
          $auth_dn = "";
@@ -342,7 +359,7 @@ try {
       $config = $co->getConfiguration('usersList', 'pageSize','',$_SESSION['USER_LOGGED']);
       $limit_size = isset($config['pageSize']) ? $config['pageSize'] : 20;
       $start   = isset($_REQUEST['start'])  ? $_REQUEST['start'] : 0;
-      $limit   = isset($_REQUEST['limit'])  ? $_REQUEST['limit'] : $limit_size; 
+      $limit   = isset($_REQUEST['limit'])  ? $_REQUEST['limit'] : $limit_size;
       $filter = isset($_REQUEST['textFilter']) ? $_REQUEST['textFilter'] : '';
       $auths = isset($_REQUEST['auths']) ? $_REQUEST['auths'] : '';
       $sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : '';
@@ -398,7 +415,7 @@ try {
 //          $tmpL = $tmpL->addOr($oCriteria->getNewCriterion(UsersPeer::USR_UID, $aUsers[$i],Criteria::EQUAL));
 //        }else{
 //          $uList = $oCriteria->getNewCriterion(UsersPeer::USR_UID, $aUsers[$i],Criteria::EQUAL);
-//          $tmpL = $uList; 
+//          $tmpL = $uList;
 //          $sw_add = true;
 //        }
 //      }
@@ -469,8 +486,8 @@ try {
        $aTypes = Array();
       $aTypes['to_do']       = 'CASES_INBOX';
       $aTypes['draft']       = 'CASES_DRAFT';
-      $aTypes['cancelled']   = 'CASES_CANCELLED'; 
-      $aTypes['sent']        = 'CASES_SENT'; 
+      $aTypes['cancelled']   = 'CASES_CANCELLED';
+      $aTypes['sent']        = 'CASES_SENT';
       $aTypes['paused']      = 'CASES_PAUSED';
       $aTypes['completed']   = 'CASES_COMPLETED';
       $aTypes['selfservice'] = 'CASES_SELFSERVICE';

@@ -40,6 +40,7 @@ var viewport;
 var smodel;
 var newButton;
 var editButton;
+var changeStatusButton;
 var deleteButton;
 var summaryButton;
 var groupsButton;
@@ -81,6 +82,14 @@ Ext.onReady(function(){
      iconCls: 'button_menu_ext ss_sprite  ss_pencil',
      handler: EditUserAction,
      disabled: true
+  });
+
+  changeStatusButton = new Ext.Button({
+    text: _('ID_STATUS'),
+    icon: '',
+    iconCls: 'silk-add',
+    handler: changeStatusCheck,
+    disabled: true
   });
 
   deleteButton = new Ext.Action({
@@ -155,8 +164,9 @@ Ext.onReady(function(){
     singleSelect: true,
      listeners:{
        rowselect: function(sm){
-      editButton.enable();
-      deleteButton.enable();
+        editButton.enable();
+        changeStatusButton.enable();
+        deleteButton.enable();
         groupsButton.enable();
         //reassignButton.enable();
         authenticationButton.enable();
@@ -164,11 +174,14 @@ Ext.onReady(function(){
       },
       rowdeselect: function(sm){
         editButton.disable();
-      deleteButton.disable();
-      groupsButton.disable();
-      //reassignButton.disable();
-      authenticationButton.disable();
-      summaryButton.disable();
+        changeStatusButton.setIcon('');
+        changeStatusButton.setText(_('ID_STATUS'));
+        changeStatusButton.disable();
+        deleteButton.disable();
+        groupsButton.disable();
+        //reassignButton.disable();
+        authenticationButton.disable();
+        summaryButton.disable();
       }
     }
   });
@@ -353,10 +366,24 @@ Ext.onReady(function(){
     store: store,
     cm: cmodel,
     sm: smodel,
-    tbar: [newButton, '-',summaryButton,'-', editButton, deleteButton, '-', groupsButton,  '-',authenticationButton,  {xtype: 'tbfill'}, /* _('ID_AUTH_SOURCES')+': ',comboAuthSources,'-', */ searchText,clearTextButton,searchButton],
+    tbar: [newButton, '-',summaryButton,'-', editButton, changeStatusButton, deleteButton, '-', groupsButton,  '-',authenticationButton,  {xtype: 'tbfill'}, searchText,clearTextButton,searchButton],
     bbar: bbarpaging,
     listeners: {
-      rowdblclick : EditUserAction
+      rowdblclick : EditUserAction,
+      render: function() {
+        infoGrid.getSelectionModel().on('rowselect', function() {
+          var rowSelected = infoGrid.getSelectionModel().getSelected();
+          changeStatusButton.enable();
+          if (rowSelected.data.USR_STATUS == 'ACTIVE') {
+            changeStatusButton.setIcon('/images/deactivate.png');
+            changeStatusButton.setText(_('ID_DISABLE'));
+          }
+          else {
+            changeStatusButton.setIcon('/images/activate.png');
+            changeStatusButton.setText(_('ID_ENABLE'));
+          }
+        });
+      }
     },
     view: new Ext.grid.GroupingView({
       forceFit:true,
@@ -403,6 +430,61 @@ DoNothing = function(){};
 //Open New User Form
 NewUserAction = function(){
   location.href = 'usersNew?MODE=new';
+};
+
+//Change user status
+changeStatus = function(userUid, newUsrStatus) {
+  viewport.getEl().mask(_('ID_PROCESSING'));
+  Ext.Ajax.request({
+    url: 'users_Ajax',
+    params: {'function': 'changeUserStatus', USR_UID: userUid, NEW_USR_STATUS: newUsrStatus},
+    success: function(res, opt) {
+      viewport.getEl().unmask();
+      changeStatusButton.disable();
+      changeStatusButton.setIcon('');
+      changeStatusButton.setText(_('ID_STATUS'));
+      DoSearch();
+    },
+    failure: DoNothing
+  });
+};
+
+//Check change user status
+changeStatusCheck = function() {
+  var row = infoGrid.getSelectionModel().getSelected();
+  if (row) {
+    if (row.data.USR_UID == user_admin){
+      Ext.Msg.alert(_('ID_USERS'), _('ID_CANNOT_CHANGE_STATUS_ADMIN_USER'));
+    }
+    else {
+      viewport.getEl().mask(_('ID_PROCESSING'));
+      Ext.Ajax.request({
+        url: 'users_Ajax',
+        params: {'function': 'canDeleteUser', uUID: row.data.USR_UID},
+        success: function(res, opt) {
+          viewport.getEl().unmask();
+          response = Ext.util.JSON.decode(res.responseText);
+          if (!response.candelete && row.data.USR_STATUS == 'ACTIVE') {
+            Ext.Msg.confirm(_('ID_CONFIRM'), _('ID_USERS_HAS_ASSIGNED_CASES'), function(btn) {
+              if (btn == 'yes') {
+                changeStatus(row.data.USR_UID, row.data.USR_STATUS == 'ACTIVE' ? 'INACTIVE' : 'ACTIVE');
+              }
+              else {
+                viewport.getEl().unmask();
+              }
+            });
+          }
+          else {
+            changeStatus(row.data.USR_UID, row.data.USR_STATUS == 'ACTIVE' ? 'INACTIVE' : 'ACTIVE');
+          }
+        },
+        failure: function(r, o) {
+          viewport.getEl().unmask();
+          DoNothing();
+        }
+      });
+    }
+  }
 };
 
 //Delete User Action
