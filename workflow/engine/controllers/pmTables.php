@@ -169,10 +169,27 @@ class pmTables extends Controller
         break;
       }
     }
-
     return $repTabPluginPermissions;
   }
 
-}
+    /**
+     * reportPermissionForm pmtable
+     * @param string $httpData->ADD_TAB_UID
+     * @param string $httpData->ADD_TAB_NAME
+     */
+    public function rptPermissionList($httpData)
+    {
+        $this->setJSVar('ADD_TAB_NAME', $httpData->ADD_TAB_NAME);
+        $this->setJSVar('ADD_TAB_UID', $httpData->ADD_TAB_UID);
+        $this->setJSVar('PRO_UID', $httpData->PRO_UID);
 
+        $this->includeExtJS('pmReports/rptPermissionList', false);
+        $this->includeExtJS('pmReports/reportPermissionForm', false);
+        $this->setView('pmReports/reportPermissionForm');
+        $this->setView('pmReports/rptPermissionList');
+
+        G::RenderPage('publish', 'extJs');
+    }
+
+}
 
