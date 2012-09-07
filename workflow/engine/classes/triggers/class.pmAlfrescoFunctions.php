@@ -223,7 +223,6 @@ function getCheckedoutFiles($alfrescoServerUrl, $user, $pwd) {
    $sXmlArray = trim($sXmlArray);
    $xXmlArray = simplexml_load_string($sXmlArray);
    $aXmlArray = @G::json_decode(@G::json_encode($xXmlArray),1);
-   var_dump($aXmlArray);
 
    return $alfresco_res;
 }
@@ -251,8 +250,6 @@ function getFolderChildren($alfrescoServerUrl, $folderId,  $user, $pwd) {
     $sXmlArray = trim($sXmlArray);
     $xXmlArray = simplexml_load_string($sXmlArray);
     $aXmlArray = @G::json_decode(@G::json_encode($xXmlArray),1);
-    //var_dump($aXmlArray);
-    var_dump($aXmlArray);
 
     return $aXmlArray;
 }
@@ -293,6 +290,6 @@ function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docTy
     $sXmlArray = trim($sXmlArray);
     $xXmlArray = simplexml_load_string($sXmlArray);
     $aXmlArray = @G::json_decode(@G::json_encode($xXmlArray),1);
-    var_dump($aXmlArray);
+
     return $aXmlArray;
 }
