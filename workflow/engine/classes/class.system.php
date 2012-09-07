@@ -21,20 +21,20 @@
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
+ *
  */
 
 /**
  * class system for workflow mantanance routines
- * 
+ *
  * author Erik A.O.<erik@colosa.com>
  * date May 12th, 2010
  * @package workflow.engine.classes
- * 
+ *
  */
 
 class System {
-  
+
   var $sFilename;
   var $sFilesList;
   var $sUpgradeFileList;
@@ -82,13 +82,13 @@ class System {
     }
     return $aWorkspaces;
   }
-  
+
   /**
-   * Get the ProcessMaker version. If version-pmos.php is not found, try to 
+   * Get the ProcessMaker version. If version-pmos.php is not found, try to
    * retrieve the version from git.
    *
    * @author Alexandre Rosenfeld <alexandre@colosa.com>
-   * @return string system 
+   * @return string system
    */
   public static function getVersion() {
     if (! defined ( 'PM_VERSION' )) {
@@ -103,7 +103,7 @@ class System {
     }
     return PM_VERSION;
   }
-  
+
   /**
    * Get the branch and tag information from a git repository.
    *
@@ -122,12 +122,12 @@ class System {
     return false;
   }
 
-  /** 
+  /**
   * Get system information
   *
-  * param 
+  * param
   * @return array with system information
-  */ 
+  */
   public static function getSysInfo() {
     $ipe = explode(" ", $_SERVER['SSH_CONNECTION']);
 
@@ -190,7 +190,7 @@ class System {
         $items = array_merge($items, $add);
       }
     }
-    
+
     return $items;
   }
 
@@ -217,16 +217,16 @@ class System {
     return $result;
   }
 
-  /** 
+  /**
   * This function checks files to do updated to pm
   *
-  * 
+  *
   * @name verifyFileForUpgrade
   *
-  * param 
+  * param
   * @return boolean
-  */ 
-  function verifyFileForUpgrade() 
+  */
+  function verifyFileForUpgrade()
   {
    $upgradeFilename = isset($_FILES['form']['name']['UPGRADE_FILENAME']) ? $_FILES['form']['name']['UPGRADE_FILENAME'] : '';
    $tempFilename    = isset($_FILES['form']['tmp_name']['UPGRADE_FILENAME']) ? $_FILES['form']['tmp_name']['UPGRADE_FILENAME'] : '';
@@ -240,23 +240,23 @@ class System {
    }
    return true;
   }
-  
-  /** 
+
+  /**
   * This function gets files to do updated to pm
   *
-  * 
+  *
   * @name getUpgradedFilesList
   *
-  * param 
+  * param
   * @return void
   */
-  function getUpgradedFilesList() 
+  function getUpgradedFilesList()
   {
    G::LoadClass('archive');
    $this->sFilesList = new gzip_file($this->sFilename);
    $this->sFilesList->set_options(array (
-     'basedir'   => dirname($this->sFilename), 
-     'overwrite' => 1 
+     'basedir'   => dirname($this->sFilename),
+     'overwrite' => 1
    ));
    $this->sFilesList->extract_files();
     if( count($this->sFilesList->error) > 0 ) {
@@ -270,14 +270,14 @@ class System {
      throw new Exception('The uploaded file is an invalid patch file.');
    }
   }
-  
-  /** 
+
+  /**
   * This function checks to do updated for boot
   *
-  * 
+  *
   * @name verifyForBootstrapUpgrade
   *
-  * param 
+  * param
   * @return boolean
   */
   function verifyForBootstrapUpgrade()
@@ -290,17 +290,17 @@ class System {
    }
    return false;
   }
-  
-  /** 
+
+  /**
   * This function updates to the files
   *
-  * 
+  *
   * @name upgrade
   *
-  * param 
+  * param
   * @return array
   */
-  function upgrade() 
+  function upgrade()
   {
    //get special files
    $sListFile         = '';
@@ -319,52 +319,52 @@ class System {
         $sSchemaRBACFile = $sFile;
       }
     }
-    
+
     //files.lst
     if( basename($sFile) == 'files.lst' ) {
       $this->sUpgradeFileList = $sFile;
     }
-    
+
     //files.lst
     if( basename($sFile) == 'patch.version.txt' ) {
       $sPatchVersionFile = $sFile;
     }
-    
+
     //files.rev.txt
     if( substr(basename($sFile), 0, 6) == 'files.' && substr(basename($sFile), - 4) == '.txt' ) {
       $sCheckListFile = $sFile;
     }
-    
+
     //po files
     $sExtension = substr($sFile, strrpos($sFile, '.') + 1, strlen($sFile));
     if( $sExtension == 'po' ) {
       $sPoFile = $sFile;
     }
    }
-   
+
    $pmVersion = explode('-', self::getVersion());
    array_shift($pmVersion);
    $patchVersion = explode('-', $this->sRevision);
-   
+
    if( $sPatchVersionFile != '' && file_exists($sPatchVersionFile) ) {
     $this->sRevision = file_get_contents($sPatchVersionFile);
     $patchVersion    = explode('-', $this->sRevision);
    }
-   
+
    if( ! file_exists(PATH_DATA . 'log' . PATH_SEP) ) {
      G::mk_dir(PATH_DATA . 'log' . PATH_SEP);
    }
-   
+
    //empty query log
    $sqlLog = PATH_DATA . 'log' . PATH_SEP . "query.log";
    $fp     = fopen($sqlLog, "w+");
    fwrite($fp, "");
    fclose($fp);
-   
+
    $aEnvironmentsUpdated = array ();
    $aEnvironmentsDiff    = array ();
    $aErrors              = array ();
-   
+
    //now will verify each folder and file has permissions to write and add files.
    if( $this->sUpgradeFileList != '' ) {
     $bCopySchema = true;
@@ -389,13 +389,13 @@ class System {
         $parentDir = implode('/', $auxDir);
         if( ! is_dir($parentDir) ) {
           //throw (new Exception("File $parentDir is an invalid directory."));
-          G::mk_dir($parentDir);   
+          G::mk_dir($parentDir);
         }
         if( ! is_writable($parentDir) ) {
           throw (new Exception("Directory $parentDir is not writable."));
         }
        }
-      } else { 
+      } else {
        //delete unused files
        if( file_exists($targetFileName) && ! is_writable($targetFileName) ) {
          throw (new Exception("File $targetFileName is not writable."));
@@ -424,7 +424,7 @@ class System {
      }
     }
    }
-   
+
    //processing list file files.lst
    if( $this->sUpgradeFileList != '' ) {
      $bCopySchema = true;
@@ -469,7 +469,7 @@ class System {
        }
      }
    }
-   
+
   //end files copied.
   $missedFiles   = '';
   $distinctFiles = '';
@@ -497,27 +497,27 @@ class System {
     }
     fclose($fp);
   }
-   
+
   if( $missed > 0 )
      $aErrors[] = "Warning: there are $missed missed files. ";
   $aErrors[] = $missedFiles;
-   
+
   if( $distinct > 0 ) {
    $aErrors[] = "Warning: there are $distinct files with differences. ";
    $aErrors[] = $distinctFiles;
   }
-   
-  //now include the files and classes needed for upgrade databases, dont move this files, because we 
+
+  //now include the files and classes needed for upgrade databases, dont move this files, because we
   //are getting the last files in this point.  Even the files was in the patch we will take the new ones.
   include PATH_METHODS . PATH_SEP . 'setup' . PATH_SEP . 'upgrade_RBAC.php';
   G::LoadClass('languages');
   G::LoadSystem('database_mysql');
-  
+
   $bForceXml        = true;
   $bParseSchema     = true;
   $bParseSchemaRBAC = true;
   $oDirectory       = dir(PATH_DB);
-  
+
   //count db.php files ( workspaces )
   $aWorkspaces = array ();
   while( ($sObject = $oDirectory->read()) ) {
@@ -532,20 +532,20 @@ class System {
   $aUpgradeData['bForceXmlPoFile'] = true;
   $aUpgradeData['sSchemaFile']     = $sSchemaFile;
   $aUpgradeData['sSchemaRBACFile'] = $sSchemaRBACFile;
-  
+
   file_put_contents(PATH_DATA . 'log' . PATH_SEP . "upgrade.data.bin", serialize($aUpgradeData));
-  
+
   $sSchemaFile     = '';
   $sPoFile         = '';
   $sSchemaRBACFile = '';
-  
+
   $oDirectory = dir(PATH_DB);
   while( ($sObject = $oDirectory->read()) ) {
     if( is_dir(PATH_DB . $sObject) && substr($sObject, 0, 1) != '.' ) {
       if( file_exists(PATH_DB . $sObject . PATH_SEP . 'db.php') ) {
-        
+
         eval($this->getDatabaseCredentials(PATH_DB . $sObject . PATH_SEP . 'db.php'));
-      
+
       }
       $aEnvironmentsUpdated[] = $sObject;
       $aEnvironmentsDiff[] = $sObject;
@@ -553,7 +553,7 @@ class System {
   }
   $oDirectory->close();
   @unlink(PATH_CORE . 'config/_databases_.php');
-  
+
   //clean up smarty directory
   $oDirectory = dir(PATH_SMARTY_C);
   while( $sFilename = $oDirectory->read() ) {
@@ -561,21 +561,21 @@ class System {
       @unlink(PATH_SMARTY_C . PATH_SEP . $sFilename);
     }
   }
-  
+
   //clean up xmlform folders
   $sDir = PATH_C . 'xmlform';
   if( file_exists($sDir) && is_dir($sDir) ) {
     $oDirectory = dir($sDir);
     while( $sObjectName = $oDirectory->read() ) {
       if( ($sObjectName != '.') && ($sObjectName != '..') ) {
-        if( is_dir($sDir . PATH_SEP . $sObjectName) ) {
-          $this->rm_dir($sDir . PATH_SEP . $sObjectName);
+        if (is_dir($sDir . PATH_SEP . $sObjectName)) {
+            G::rm_dir($sDir . PATH_SEP . $sObjectName);
         }
       }
     }
     $oDirectory->close();
   }
-  
+
   //changing the PM_VERSION according the patch file name
   $oFile = fopen(PATH_METHODS . 'login/version-pmos.php', 'w+');
   if( isset($this->sRevision) && $this->sRevision != '' ) {
@@ -587,73 +587,35 @@ class System {
   $ver               = explode("-", $this->sRevision);
   $this->aErrors     = $aErrors;
   $this->aWorkspaces = $aWorkspaces;
-  
+
   return $ver;
   }
-  
-  /** 
-  * This function does to clean up to the upgrate directory
-  *
-  * 
-  * @name cleanupUpgradeDirectory
-  *
-  * param 
-  * @return array
-  */
-  function cleanupUpgradeDirectory() 
-  {
-    $this->rm_dir(PATH_DATA . 'upgrade' . PATH_SEP . 'processmaker');
-  }
- 
-  /** 
-  * This function removes a directory
-  *
-  * 
-  * @name rm_dir
-  *
-  * @param string $dirName
-  * @return void
-  */ 
-  function rm_dir($dirName)
-  {
-   if( empty($dirName) ) {
-     return;
-   }
-   if( file_exists($dirName) ) {
-    if( ! is_readable($dirName) ) {
-      throw (new Exception("directory '$dirName' is not readable"));
+
+    /**
+    * This function does to clean up to the upgrate directory
+    *
+    *
+    * @name cleanupUpgradeDirectory
+    *
+    * param
+    * @return array
+    */
+    public function cleanupUpgradeDirectory()
+    {
+        G::rm_dir(PATH_DATA . "upgrade" . PATH_SEP . "processmaker");
     }
-    $dir = dir($dirName);
-    while( $file = $dir->read() ) {
-     if( $file != '.' && $file != '..' ) {
-      if( is_dir($dirName . PATH_SEP . $file) ) {
-        $this->rm_dir($dirName . PATH_SEP . $file);
-      } else {
-        //@unlink($dirName. PATH_SEP .$file) or die('File '.$dirName. PATH_SEP .$file.' couldn\'t be deleted!');
-        @unlink($dirName . PATH_SEP . $file);
-      }
-     }
-    }
-    
-    $folder = opendir($dirName . PATH_SEP . $file);
-    closedir($folder);
-    @rmdir($dirName . PATH_SEP . $file);
-   } else {
-     //
-   }
-  }
-  
-  /** 
+
+  /**
   * This function creates a directory
   *
-  * 
+  *
   * @name pm_copy
   *
   * @param string $source
   * @param string $target
   * @return void
   */
-  function pm_copy($source, $target) 
+  function pm_copy($source, $target)
   {
     if( ! is_dir(dirname($target)) ) {
       G::mk_dir(dirname($target));
@@ -663,17 +625,17 @@ class System {
       krumo($target);
     }
   }
-  
-  /** 
+
+  /**
   * This function gets info about db
   *
-  * 
+  *
   * @name getDatabaseCredentials
   *
   * @param string $dbFile
   * @return $sContent
   */
-  function getDatabaseCredentials($dbFile) 
+  function getDatabaseCredentials($dbFile)
   {
     $sContent = file_get_contents($dbFile);
     $sContent = str_replace('<?php', '', $sContent);
@@ -743,7 +705,7 @@ class System {
 
         /* Get the field type. Propel uses VARCHAR if nothing else is specified */
         $type = $oColumn->hasAttribute('type') ? strtoupper($oColumn->getAttribute('type')) : "VARCHAR";
-        
+
         /* Convert type to MySQL type according to Propel */
         if (array_key_exists($type, $mysqlTypes))
           $type = $mysqlTypes[$type];
@@ -757,7 +719,7 @@ class System {
 
         if ($size)
           $type = "$type($size)";
-        
+
         $required = $oColumn->hasAttribute('required') ? $oColumn->getAttribute('required') : NULL;
         /* Convert $required to a bool */
         $required = (in_array (strtolower ($required), array('1', 'true')));
@@ -769,7 +731,7 @@ class System {
         $primaryKey = (in_array (strtolower ($primaryKey), array('1', 'true')));
         if ($primaryKey)
           $aPrimaryKeys[] = $sColumName;
-        
+
         $aSchema[$sTableName][$sColumName] = array(
             'Field' => $sColumName,
             'Type' => $type,
@@ -914,7 +876,7 @@ class System {
   }
 
 
-  function getEmailConfiguration() 
+  function getEmailConfiguration()
   {
     G::LoadClass('configuration');
     $conf = new Configurations();
@@ -949,23 +911,23 @@ class System {
     //Read and parse each Configuration File
     foreach ($customSkins as $key => $configInformation) {
       $folderId = basename(dirname($configInformation));
-      
+
       if ($folderId == 'base') {
         $folderId = 'classic';
       }
 
       $xmlConfiguration = file_get_contents($configInformation);
       $xmlConfigurationObj = G::xmlParser($xmlConfiguration);
-      
+
       if (isset($xmlConfigurationObj->result['skinConfiguration'])) {
         $skinInformationArray = $skinFilesArray = $xmlConfigurationObj->result['skinConfiguration']['__CONTENT__']['information']['__CONTENT__'];
         $res = array();
         $res['SKIN_FOLDER_ID'] = strtolower($folderId);
-        
+
         foreach ($skinInformationArray as $keyInfo => $infoValue) {
           $res['SKIN_' . strtoupper($keyInfo)] = $infoValue['__VALUE__'];
         }
-        
+
         $skinListArray['skins'][] = $res;
       }
     }
@@ -988,7 +950,7 @@ class System {
              * Only get timezones explicitely not part of "Others".
              * @see http://www.php.net/manual/en/timezones.others.php
              */
-            if ( preg_match( '/^(America|Antartica|Arctic|Asia|Atlantic|Africa|Europe|Indian|Pacific)\//', $zone['timezone_id'] ) 
+            if ( preg_match( '/^(America|Antartica|Arctic|Asia|Atlantic|Africa|Europe|Indian|Pacific)\//', $zone['timezone_id'] )
                     && $zone['timezone_id']) {
                 $cities[$zone['timezone_id']][] = $key;
             }
@@ -999,7 +961,7 @@ class System {
     foreach( $cities as $key => $value )
         $cities[$key] = join( ', ', $value);
 
-    // Only keep one city (the first and also most important) for each set of possibilities. 
+    // Only keep one city (the first and also most important) for each set of possibilities.
     $cities = array_unique( $cities );
 
     // Sort by area/city name.
@@ -1037,13 +999,13 @@ class System {
 
     if (isset($_SESSION['PROCESSMAKER_ENV'])) {
       $md5 = array();
-      
-      if ($readGlobalIniFile) 
+
+      if ($readGlobalIniFile)
         $md5[] = md5_file($globalIniFile);
-      
+
       if ($readWsIniFile)
         $md5[] = md5_file($wsIniFile);
-      
+
       $hash = implode('-', $md5);
 
       if ($_SESSION['PROCESSMAKER_ENV_HASH'] === $hash) {
@@ -1071,27 +1033,27 @@ class System {
     if ($readGlobalIniFile && ($globalConf = @parse_ini_file($globalIniFile)) !== false) {
       $config = array_merge($config, $globalConf);
     }
-    
+
     // Workspace environment configuration
     if ($readWsIniFile && ($wsConf = @parse_ini_file($wsIniFile)) !== false) {
       $config = array_merge($config, $wsConf);
     }
-  
+
     // validation debug config, only binary value is valid; debug = 1, to enable
     $config['debug'] = $config['debug'] == 1 ? 1 : 0;
 
     $md5 = array();
-    if ($readGlobalIniFile) 
+    if ($readGlobalIniFile)
       $md5[] = md5_file($globalIniFile);
-    
+
     if ($readWsIniFile)
       $md5[] = md5_file($wsIniFile);
-    
+
     $hash = implode('-', $md5);
 
     $_SESSION['PROCESSMAKER_ENV']      = $config;
     $_SESSION['PROCESSMAKER_ENV_HASH'] = $hash;
-    
+
     return $config;
   }
 
@@ -1117,14 +1079,14 @@ class System {
       $newUrl = 'sys/'.$conf['lang'].'/'.$conf['skin'].'/login/login';
 
       $newMetaStr = str_replace($match[1], $newUrl, $match[0]);
-      $newContent = str_replace($match[0], $newMetaStr, $content);   
-    
+      $newContent = str_replace($match[0], $newMetaStr, $content);
+
       $result = (@file_put_contents(PATH_HTML . 'index.html', $newContent) !== false);
     }
 
     return $result;
   }
-  
+
   function solrEnv($sysName = '')
   {
     if (empty($sysName)) {
@@ -1133,11 +1095,11 @@ class System {
     else {
       $conf = System::getSystemConfiguration('', '', $sysName);
     }
-    
+
     if (!isset($conf['solr_enabled']) || !isset($conf['solr_host']) || !isset($conf['solr_instance'])) {
       return false;
     }
-    
+
     if ($conf['solr_enabled']) {
       return array(
         'solr_enabled' => $conf['solr_enabled'],
@@ -1145,8 +1107,8 @@ class System {
         'solr_instance' =>  $conf['solr_instance']
       );
     }
-    
+
     return false;
   }
-  
+
 }// end System class

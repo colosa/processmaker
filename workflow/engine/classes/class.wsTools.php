@@ -936,6 +936,8 @@ class workspaceTools {
       workspaceTools::printInfo((array)$workspaceData);
 
     }
+
+    G::rm_dir($tempDirectory);
   }
 
   static public function dirPerms($filename, $owner, $group, $perms) {
