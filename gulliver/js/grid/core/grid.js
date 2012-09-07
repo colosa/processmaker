@@ -932,10 +932,12 @@ var G_Grid = function(oForm, sGridName){
       if (aAux[2] == nnName[2] && j <= (this.oGrid.rows.length-2)){
         oAux=this.getElementByName(j, nnName[2]);
         var oAux2 = oAux.value().replace(/[$|a-zA-Z\s]/g,'');
-        if ( (oAux != null) && (oAux.value().trim() != '') && (oAux2)) {
-          fTotal += parseFloat(G.getValue(oAux.value()));
+
+        if ((oAux != null) && (oAux.value().trim() != "") && (oAux2)) {
+            fTotal = fTotal + parseFloat(G.getValue(oAux));
         }
-        j++;
+
+        j = j + 1;
       }
     }
     /*
@@ -964,13 +966,16 @@ var G_Grid = function(oForm, sGridName){
     i = 1;
     fTotal = 0;
     aAux[2] = aAux[2].replace(']', '');
+
     while ((oAux = this.getElementByName(i, aAux[2]))) {
-      if ( oAux.value() != "" ) {
-        fTotal += parseFloat(G.getValue(oAux.value().trim() ));
+      if (oAux.value().trim() != "") {
+          fTotal = fTotal + parseFloat(G.getValue(oAux));
       }
+
       sMask = oAux.mask;
-      i++;
+      i = i + 1;
     }
+
     i--;
     if (fTotal > 0) {
       fTotal = (fTotal / i).toFixed(2);

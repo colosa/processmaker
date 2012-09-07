@@ -2215,21 +2215,32 @@ function G()
  };
 
   //Gets number without mask
-  this.getValue = function(masked_num){
-    var __DECIMAL_SEP = '.';
-    var xNum = masked_num.split('');
-    _num = '';
-    for (u=0; u < xNum.length; u++){
-      switch(xNum[u]){
-        case '0': case '1': case '2': case '3': case '4':
-        case '5': case '6': case '7': case '8': case '9': case __DECIMAL_SEP:
-          _num += xNum[u];
-          break;
-      }
-    }
-    return _num;
-  };
+  this.getValue = function (elem) {
+      var arrayNum = elem.value().split("");
+      var num = "";
 
+      for (var i = 0; i <= arrayNum.length - 1; i++) {
+          switch (arrayNum[i]) {
+              case "0":
+              case "1":
+              case "2":
+              case "3":
+              case "4":
+              case "5":
+              case "6":
+              case "7":
+              case "8":
+              case "9":
+                  num = num + arrayNum[i];
+                  break;
+              case elem.comma_separator:
+                  num = num + ".";
+                  break;
+          }
+      }
+
+      return num;
+  };
 
   //DEPRECATED
   this.toMask2 = function (num, mask, cursor)
