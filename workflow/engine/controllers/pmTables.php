@@ -169,10 +169,7 @@ class pmTables extends Controller
         break;
       }
     }
-
     return $repTabPluginPermissions;
   }
-
 }
-
 
