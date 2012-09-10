@@ -4440,9 +4440,12 @@ class Cases
      * @param string $sFrom
      * @return void
     */
-    public function sendNotifications($sCurrentTask, $aTasks, $aFields, $sApplicationUID, $iDelegation, $sFrom = '')
+    public function sendNotifications($sCurrentTask, $aTasks, $aFields, $sApplicationUID, $iDelegation, $sFrom="")
     {
         try {
+            $applicationData = $this->loadCase($sApplicationUID);
+            $aFields["APP_NUMBER"] = $applicationData["APP_NUMBER"];
+
             $oConfiguration = new Configuration();
             $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria('workflow');
@@ -4528,57 +4531,153 @@ class Cases
             $oConf->loadConfig($x, 'TAS_EXTRA_PROPERTIES', $aTaskInfo['TAS_UID'], '', '');
             $conf = $oConf->aConfig;
 
-            if (isset($conf['TAS_DEF_MESSAGE_TYPE']) && isset($conf['TAS_DEF_MESSAGE_TEMPLATE'])
-                && $conf['TAS_DEF_MESSAGE_TYPE'] == 'template' && $conf['TAS_DEF_MESSAGE_TEMPLATE'] != '') {
+            $pathEmail    = PATH_DATA_SITE . "mailTemplates" . PATH_SEP . $aTaskInfo["PRO_UID"] . PATH_SEP;
+            $swtplDefault = 0;
+            $sBody = null;
 
-                $pathEmail = PATH_DATA_SITE . 'mailTemplates' . PATH_SEP . $aTaskInfo['PRO_UID'] . PATH_SEP;
-                $fileTemplate = $pathEmail . $conf['TAS_DEF_MESSAGE_TEMPLATE'];
+            if (isset($conf["TAS_DEF_MESSAGE_TYPE"]) &&
+                isset($conf["TAS_DEF_MESSAGE_TEMPLATE"]) &&
+                $conf["TAS_DEF_MESSAGE_TYPE"] == "template" &&
+                $conf["TAS_DEF_MESSAGE_TEMPLATE"] != ""
+            ) {
+                if ($conf["TAS_DEF_MESSAGE_TEMPLATE"] == "alert_message.html") {
+                    $swtplDefault = 1;
+                }
 
-                if ( ! file_exists ( $fileTemplate ) ) {
-                    throw new Exception("Template file '$fileTemplate' does not exist.");
+                $fileTemplate = $pathEmail . $conf["TAS_DEF_MESSAGE_TEMPLATE"];
+
+                if (!file_exists($fileTemplate)) {
+                    throw (new Exception("Template file \"$fileTemplate\" does not exist."));
                 }
 
                 $sBody = G::replaceDataField(file_get_contents($fileTemplate), $aFields);
             } else {
-                $sBody = nl2br(G::replaceDataField($aTaskInfo['TAS_DEF_MESSAGE'], $aFields));
+                $sBody = nl2br(G::replaceDataField($aTaskInfo["TAS_DEF_MESSAGE"], $aFields));
             }
 
-            G::LoadClass('spool');
+            G::LoadClass("tasks");
+            G::LoadClass("groups");
+            G::LoadClass("spool");
+
+            $task  = new Tasks();
+            $group = new Groups();
             $oUser = new Users();
+
             foreach ($aTasks as $aTask) {
-                if (isset($aTask['USR_UID'])) {
-                    $aUser = $oUser->load($aTask['USR_UID']);
-                    $sTo = (
-                        (($aUser['USR_FIRSTNAME'] != '') || ($aUser['USR_LASTNAME'] != '')) ?
-                            $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'] . ' ' : '') .
-                        '<' . $aUser['USR_EMAIL'] . '>';
+                $sTo = null;
+                $sCc = null;
+
+                switch ($aTask["TAS_ASSIGN_TYPE"]) {
+                    case "SELF_SERVICE":
+                        if ($swtplDefault == 1) {
+                            G::verifyPath($pathEmail, true); //Create if it does not exist
+                            $fileTemplate = $pathEmail . "unassignedMessage.html";
+
+                            if (!file_exists($fileTemplate)) {
+                                @copy(PATH_TPL . "mails" . PATH_SEP . "unassignedMessage.html", $fileTemplate);
+                            }
+
+                            $sBody = G::replaceDataField(file_get_contents($fileTemplate), $aFields);
+                        }
+
+                        if (isset($aTask["TAS_UID"]) && !empty($aTask["TAS_UID"])) {
+                            $arrayTaskUser = array();
+
+                            $arrayAux1 = $task->getGroupsOfTask($aTask["TAS_UID"], 1);
+
+                            foreach ($arrayAux1 as $arrayGroup) {
+                                $arrayAux2 = $group->getUsersOfGroup($arrayGroup["GRP_UID"]);
+
+                                foreach ($arrayAux2 as $arrayUser) {
+                                    $arrayTaskUser[] = $arrayUser["USR_UID"];
+                                }
+                            }
+
+                            $arrayAux1 = $task->getUsersOfTask($aTask["TAS_UID"], 1);
+
+                            foreach ($arrayAux1 as $arrayUser) {
+                                $arrayTaskUser[] = $arrayUser["USR_UID"];
+                            }
+
+                            $criteria = new Criteria("workflow");
+
+                            $criteria->addSelectColumn(UsersPeer::USR_UID);
+                            $criteria->addSelectColumn(UsersPeer::USR_USERNAME);
+                            $criteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+                            $criteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+                            $criteria->addSelectColumn(UsersPeer::USR_EMAIL);
+                            $criteria->add(UsersPeer::USR_UID, $arrayTaskUser, Criteria::IN);
+                            $rsCriteria = UsersPeer::doSelectRs($criteria);
+                            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+                            $to = null;
+                            $cc = null;
+                            $sw = 1;
+
+                            while ($rsCriteria->next()) {
+                                $row = $rsCriteria->getRow();
+
+                                $toAux = (
+                                    (($row["USR_FIRSTNAME"] != "") || ($row["USR_LASTNAME"] != ""))?
+                                    $row["USR_FIRSTNAME"] . " " . $row["USR_LASTNAME"] . " " : ""
+                                ) . "<" . $row["USR_EMAIL"] . ">";
+
+                                if ($sw == 1) {
+                                    $to = $toAux;
+                                    $sw = 0;
+                                } else {
+                                    $cc = $cc . (($cc != null)? "," : null) . $toAux;
+                                }
+                            }
+
+                            $sTo = $to;
+                            $sCc = $cc;
+                        }
+                        break;
+                    default:
+                        if (isset($aTask["USR_UID"]) && !empty($aTask["USR_UID"])) {
+                            $aUser = $oUser->load($aTask["USR_UID"]);
+
+                            $sTo = (
+                                (($aUser["USR_FIRSTNAME"] != "") || ($aUser["USR_LASTNAME"] != ""))?
+                                $aUser["USR_FIRSTNAME"] . " " . $aUser["USR_LASTNAME"] . " " : ""
+                            ) . "<" . $aUser["USR_EMAIL"] . ">";
+                        }
+                        break;
+                }
+
+                if ($sTo != null) {
                     $oSpool = new spoolRun();
+
                     $oSpool->setConfig(array(
-                        'MESS_ENGINE' => $aConfiguration['MESS_ENGINE'],
-                        'MESS_SERVER'   => $aConfiguration['MESS_SERVER'],
-                        'MESS_PORT'     => $aConfiguration['MESS_PORT'],
-                        'MESS_ACCOUNT'  => $aConfiguration['MESS_ACCOUNT'],
-                        'MESS_PASSWORD' => $aConfiguration['MESS_PASSWORD'],
-                        'SMTPAuth'      => $aConfiguration['MESS_RAUTH'] == '1' ? true : false,
-                        'SMTPSecure'    => isset($aConfiguration['SMTPSecure']) ? $aConfiguration['SMTPSecure'] : ''
+                        "MESS_ENGINE"   => $aConfiguration["MESS_ENGINE"],
+                        "MESS_SERVER"   => $aConfiguration["MESS_SERVER"],
+                        "MESS_PORT"     => $aConfiguration["MESS_PORT"],
+                        "MESS_ACCOUNT"  => $aConfiguration["MESS_ACCOUNT"],
+                        "MESS_PASSWORD" => $aConfiguration["MESS_PASSWORD"],
+                        "SMTPAuth"      => ($aConfiguration["MESS_RAUTH"] == "1")? true : false,
+                        "SMTPSecure"    => (isset($aConfiguration["SMTPSecure"]))? $aConfiguration["SMTPSecure"] : ""
                     ));
+
                     $oSpool->create(array(
-                        'msg_uid' => '',
-                        'app_uid' => $sApplicationUID,
-                        'del_index' => $iDelegation,
-                        'app_msg_type' => 'DERIVATION',
-                        'app_msg_subject' => $sSubject,
-                        'app_msg_from' => $sFrom,
-                        'app_msg_to' => $sTo,
-                        'app_msg_body' => $sBody,
-                        'app_msg_cc' => '',
-                        'app_msg_bcc' => '',
-                        'app_msg_attach' => '',
-                        'app_msg_template' => '',
-                        'app_msg_status' => 'pending'
+                        "msg_uid"   => "",
+                        "app_uid"   => $sApplicationUID,
+                        "del_index" => $iDelegation,
+                        "app_msg_type"    => "DERIVATION",
+                        "app_msg_subject" => $sSubject,
+                        "app_msg_from"    => $sFrom,
+                        "app_msg_to"   => $sTo,
+                        "app_msg_body" => $sBody,
+                        "app_msg_cc"   => $sCc,
+                        "app_msg_bcc"  => "",
+                        "app_msg_attach"   => "",
+                        "app_msg_template" => "",
+                        "app_msg_status"   => "pending"
                     ));
-                    if (($aConfiguration['MESS_BACKGROUND'] == '') ||
-                        ($aConfiguration['MESS_TRY_SEND_INMEDIATLY'] == '1')) {
+
+                    if (($aConfiguration["MESS_BACKGROUND"] == "") ||
+                        ($aConfiguration["MESS_TRY_SEND_INMEDIATLY"] == "1")
+                    ) {
                         $oSpool->sendMail();
                     }
                 }

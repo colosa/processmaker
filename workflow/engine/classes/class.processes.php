@@ -3468,44 +3468,48 @@ class Processes {
     return $result;
   }
 
-  function getProcessFiles($proUid, $type)
-  {
-    $filesList = array();
+    public function getProcessFiles($proUid, $type)
+    {
+        $filesList = array();
 
-    switch ($type) {
-      case 'mail': case 'email':
-        $basePath = PATH_DATA_MAILTEMPLATES;
-        break;
+        switch ($type) {
+            case "mail":
+            case "email":
+                $basePath = PATH_DATA_MAILTEMPLATES;
+                break;
+            case "public":
+                $basePath = PATH_DATA_PUBLIC;
+                break;
+            default:
+                throw new Exception("Unknow Process Files Type \"$type\".");
+                break;
+        }
 
-      case 'public':
-        $basePath = PATH_DATA_PUBLIC;
-        break;
+        $dir = $basePath . $proUid . PATH_SEP;
 
-      default:
-        throw new Exception("Unknow Process Files Type '$type'.");
+        G::verifyPath($dir, true); //Create if it does not exist
+
+        //Creating the default template (if not exists)
+        if (!file_exists($dir . "alert_message.html")) {
+            @copy(PATH_TPL . "mails" . PATH_SEP . "alert_message.html", $dir . "alert_message.html");
+        }
+
+        if (!file_exists($dir . "unassignedMessage.html")) {
+            @copy(PATH_TPL . "mails" . PATH_SEP . "unassignedMessage.html", $dir . "unassignedMessage.html");
+        }
+
+        $files = glob($dir . "*.*");
+
+        foreach ($files as $file) {
+            $fileName = basename($file);
+
+            if ($fileName != "alert_message.html" && $fileName != "unassignedMessage.html") {
+                $filesList[] = array("filepath" => $file, "filename" => $fileName);
+            }
+        }
+
+        return $filesList;
     }
-
-    $dir = $basePath . $proUid . PATH_SEP;
-
-    G::verifyPath($dir, true); // create if it does not exist.
-
-    // creating the default template (if not exists)
-    if (!file_exists($dir . 'alert_message.html')) {
-      @copy(PATH_TPL . 'mails' . PATH_SEP . 'alert_message.html', $dir . 'alert_message.html');
-    }
-
-    $files = glob($dir . '*.*');
-
-    foreach ($files as $file) {
-      $fileName = basename($file);
-
-      if ($fileName !== 'alert_message.html') {
-        $filesList[] = array('filepath' => $file, 'filename' => $fileName);
-      }
-    }
-
-    return $filesList;
-  }
 
 }//end class processes
 
