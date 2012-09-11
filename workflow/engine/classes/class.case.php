@@ -30,24 +30,28 @@ require_once ("classes/model/AppCacheView.php");
 require_once ("classes/model/AppDelay.php");
 require_once ("classes/model/AppDelegation.php");
 require_once ("classes/model/AppDocument.php");
+require_once ("classes/model/AppEvent.php");
+require_once ("classes/model/AppHistory.php");
 require_once ("classes/model/AppMessage.php");
+require_once ("classes/model/AppNotes.php");
+require_once ("classes/model/AppOwner.php");
+require_once ("classes/model/AppSolrQueue.php");
 require_once ("classes/model/AppThread.php");
 require_once ("classes/model/CaseTracker.php");
 require_once ("classes/model/CaseTrackerObject.php");
-require_once ('classes/model/Configuration.php');
+require_once ("classes/model/Configuration.php");
 require_once ("classes/model/Content.php");
 require_once ("classes/model/DbSource.php");
 require_once ("classes/model/Dynaform.php");
 require_once ("classes/model/InputDocument.php");
 require_once ("classes/model/Language.php");
-require_once ('classes/model/AppMessage.php');
 require_once ("classes/model/ObjectPermission.php");
 require_once ("classes/model/OutputDocument.php");
 require_once ("classes/model/Process.php");
 require_once ("classes/model/ProcessUser.php");
 require_once ("classes/model/ReportTable.php");
 require_once ("classes/model/ReportVar.php");
-require_once ('classes/model/Route.php');
+require_once ("classes/model/Route.php");
 require_once ("classes/model/Step.php");
 require_once ("classes/model/StepSupervisor.php");
 require_once ("classes/model/StepTrigger.php");
@@ -56,9 +60,8 @@ require_once ("classes/model/Task.php");
 require_once ("classes/model/TaskUser.php");
 require_once ("classes/model/Triggers.php");
 require_once ("classes/model/Users.php");
-require_once ("classes/model/AppHistory.php");
 
-G::LoadClass('pmScript');
+G::LoadClass("pmScript");
 
 /**
  * A Cases object where you can do start, load, update, refresh about cases
@@ -1003,9 +1006,9 @@ class Cases
     public function removeCase($sAppUid)
     {
         try {
-            $oApplication = new Application();
             $oAppDelegation = new AppDelegation();
             $oAppDocument = new AppDocument();
+
             //Delete the delegations of a application
             $oCriteria2 = new Criteria('workflow');
             $oCriteria2->add(AppDelegationPeer::APP_UID, $sAppUid);
@@ -1038,6 +1041,27 @@ class Cases
             $oCriteria2 = new Criteria('workflow');
             $oCriteria2->add(AppThreadPeer::APP_UID, $sAppUid);
             AppThreadPeer::doDelete($oCriteria2);
+            //Delete the events from a application
+            $criteria = new Criteria("workflow");
+            $criteria->add(AppEventPeer::APP_UID, $sAppUid);
+            AppEventPeer::doDelete($criteria);
+            //Delete the histories from a application
+            $criteria = new Criteria("workflow");
+            $criteria->add(AppHistoryPeer::APP_UID, $sAppUid);
+            AppHistoryPeer::doDelete($criteria);
+            //Delete the notes from a application
+            $criteria = new Criteria("workflow");
+            $criteria->add(AppNotesPeer::APP_UID, $sAppUid);
+            AppNotesPeer::doDelete($criteria);
+            //Delete the owners from a application
+            $criteria = new Criteria("workflow");
+            $criteria->add(AppOwnerPeer::APP_UID, $sAppUid);
+            AppOwnerPeer::doDelete($criteria);
+            //Delete the SolrQueue from a application
+            $criteria = new Criteria("workflow");
+            $criteria->add(AppSolrQueuePeer::APP_UID, $sAppUid);
+            AppSolrQueuePeer::doDelete($criteria);
+
             //Before delete verify if is a child case
             $oCriteria2 = new Criteria('workflow');
             $oCriteria2->add(SubApplicationPeer::APP_UID, $sAppUid);
@@ -1054,8 +1078,10 @@ class Cases
             $oCriteria2 = new Criteria('workflow');
             $oCriteria2->add(SubApplicationPeer::APP_PARENT, $sAppUid);
             SubApplicationPeer::doDelete($oCriteria2);
-            $oApp = new Application;
-            $result = $oApp->remove($sAppUid);
+
+            //Delete record of the APPLICATION table (trigger: delete records of the APP_CACHE_VIEW table)
+            $application = new Application();
+            $result = $application->remove($sAppUid);
 
             //delete application from index
             if ($this->appSolr != null) {

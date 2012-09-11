@@ -1062,6 +1062,46 @@ function ifPermission($sessionId, $permission)
     return $sw;
 }
 
+function deleteCase($params)
+{
+    $result = isValidSession($params->sessionId);
+
+    if ($result->status_code != 0) {
+        return $result;
+    }
+
+    if (ifPermission($params->sessionId, "PM_CASES") == 0) {
+        $result = new wsResponse(2, "You do not have privileges");
+
+        return $result;
+    }
+
+    $ws = new wsBase();
+    $result = $ws->deleteCase($params->caseUid);
+
+    return $result;
+}
+
+function cancelCase($params)
+{
+    $result = isValidSession($params->sessionId);
+
+    if ($result->status_code != 0) {
+        return $result;
+    }
+
+    if (ifPermission($params->sessionId, "PM_CASES") == 0) {
+        $result = new wsResponse(2, "You do not have privileges");
+
+        return $result;
+    }
+
+    $ws = new wsBase();
+    $result = $ws->cancelCase($params->caseUid, $params->delIndex, $params->userUid);
+
+    return $result;
+}
+
 
 
 
@@ -1102,5 +1142,7 @@ $server->addFunction("systemInformation");
 $server->addFunction("importProcessFromLibrary");
 $server->addFunction("removeUserFromGroup");
 $server->addFunction("getCaseNotes");
+$server->addFunction("deleteCase");
+$server->addFunction("cancelCase");
 $server->handle();
 

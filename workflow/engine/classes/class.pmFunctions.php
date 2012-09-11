@@ -770,11 +770,10 @@ function WSProcessList()
 /**
  * @method
  *
- * Returns a list of processes in the current workspace.
+ * Returns Email configuration.
  *
  * @name getEmailConfiguration
- * @label WS Get Email Configuration
- *
+ * @label Get Email Configuration
  *
  * @return array | $aFields | Array |Get current email configuration
  *
@@ -1161,6 +1160,78 @@ function WSGetSession()
     }
 }
 
+/**
+ * @method
+ *
+ * Delete a specified case.
+ *
+ * @name WSDeleteCase
+ * @label WS Delete Case
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#WSDeleteCase.28.29
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @return array | $response | WS array | A WS Response associative array.
+ *
+ */
+function WSDeleteCase($caseUid)
+{
+    $client = WSOpen();
+
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+
+    $params = array(
+        "sessionId" => $sessionId,
+        "caseUid"   => $caseUid
+    );
+
+    $result = $client->__soapCall("deleteCase", array($params));
+
+    $response = array();
+    $response["status_code"] = $result->status_code;
+    $response["message"]     = $result->message;
+    $response["time_stamp"]  = $result->timestamp;
+
+    return $response;
+}
+
+/**
+ * @method
+ *
+ * Cancel a specified case.
+ *
+ * @name WSCancelCase
+ * @label WS Cancel Case
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#WSCancelCase.28.29
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
+ * @param string(32) | $userUid | ID user | The unique ID of the user who will cancel the case.
+ * @return array | $response | WS array | A WS Response associative array.
+ *
+ */
+function WSCancelCase($caseUid, $delIndex, $userUid)
+{
+    $client = WSOpen();
+
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+
+    $params = array(
+        "sessionId" => $sessionId,
+        "caseUid"   => $caseUid,
+        "delIndex"  => $delIndex,
+        "userUid"   => $userUid
+    );
+
+    $result = $client->__soapCall("cancelCase", array($params));
+
+    $response = array();
+    $response["status_code"] = $result->status_code;
+    $response["message"]     = $result->message;
+    $response["time_stamp"]  = $result->timestamp;
+
+    return $response;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** Local Services Functions **/
@@ -1178,7 +1249,7 @@ function WSGetSession()
  * @return array | $rows | List of tasks | A list of tasks
  *
  */
-function PMFTaskCase($caseId) #its test was successfull
+function PMFTaskCase($caseId) //its test was successfull
 {
     G::LoadClass('wsBase');
     $ws = new wsBase ();
@@ -1205,7 +1276,7 @@ function PMFTaskCase($caseId) #its test was successfull
  * @return array | $rows | List of tasks | An array of tasks
  *
  */
-function PMFTaskList($userId) #its test was successfull
+function PMFTaskList($userId) //its test was successfull
 {
     G::LoadClass('wsBase');
     $ws = new wsBase ();
@@ -1231,7 +1302,7 @@ function PMFTaskList($userId) #its test was successfull
  * @return array | $rows | List of users | An array of users
  *
  */
-function PMFUserList() #its test was successfull
+function PMFUserList() //its test was successfull
 {
     G::LoadClass('wsBase');
     $ws     = new wsBase ();
@@ -1500,7 +1571,7 @@ function PMFGenerateOutputDocument($outputID, $sApplication=null, $index=null, $
  * @return array | $rows | List of groups | An array of groups
  *
  */
-function PMFGroupList() #its test was successfull
+function PMFGroupList() //its test was successfull
 {
     G::LoadClass('wsBase');
     $ws = new wsBase ();
@@ -1527,7 +1598,7 @@ function PMFGroupList() #its test was successfull
  * @return array | $rows | List of roles | This function returns an array of roles
  *
  */
-function PMFRoleList() #its test was successfull
+function PMFRoleList() //its test was successfull
 {
     G::LoadClass('wsBase');
     $ws = new wsBase ();
@@ -1554,7 +1625,7 @@ function PMFRoleList() #its test was successfull
  * @return array | $rows | List of cases | A list of cases
  *
  */
-function PMFCaseList($userId) #its test was successfull
+function PMFCaseList($userId) //its test was successfull
 {
     G::LoadClass('wsBase');
     $ws = new wsBase ();
@@ -1580,7 +1651,7 @@ function PMFCaseList($userId) #its test was successfull
  * @return array | $rows | Lis ot Processes | An array of tasks in the indicated case which have open delegations
  *
  */
-function PMFProcessList() #its test was successfull
+function PMFProcessList() //its test was successfull
 {
     G::LoadClass('wsBase');
     $ws = new wsBase ();
@@ -2205,7 +2276,7 @@ function PMFGetUserEmailAddress($id, $APP_UID=null, $prefix='usr')
  * Get of the cases notes an application.
  *
  * @name PMFGetCaseNotes
- * @label Get of the cases notes an application.
+ * @label PMF Get of the cases notes an application.
  *
  * @param string(32) | $applicationID | Application ID | ID of the Application
  * @param string(32) | $type or default value 'array' | type of the return value | type of the return value (array, object, string)
@@ -2218,5 +2289,59 @@ function PMFGetCaseNotes ($applicationID, $type='array', $userUid='')
     G::LoadClass('case');
     $response = Cases::getCaseNotes($applicationID, $type, $userUid);
     return $response;
+}
+
+/**
+ * @method
+ *
+ * Delete a specified case.
+ *
+ * @name PMFDeleteCase
+ * @label PMF Delete a specified case.
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @return int | $result | Result of the elimination | Returns 1 if the case is delete successfully; otherwise, returns 0 if an error occurred.
+ *
+ */
+function PMFDeleteCase($caseUid)
+{
+    G::LoadClass("wsBase");
+
+    $ws = new wsBase();
+    $result = $ws->deleteCase($caseUid);
+
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * @method
+ *
+ * Cancel a specified case.
+ *
+ * @name PMFCancelCase
+ * @label PMF Cancel a specified case.
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
+ * @param string(32) | $userUid | ID user | The unique ID of the user who will cancel the case.
+ * @return int | $result | Result of the cancelation | Returns 1 if the case is cancel successfully; otherwise, returns 0 if an error occurred.
+ *
+ */
+function PMFCancelCase($caseUid, $delIndex, $userUid)
+{
+    G::LoadClass("wsBase");
+
+    $ws = new wsBase();
+    $result = $ws->cancelCase($caseUid, $delIndex, $userUid);
+
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 

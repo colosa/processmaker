@@ -2815,5 +2815,87 @@ class wsBase
             return $result;
         }
     }
+
+    /**
+     * Delete case
+     * @param string caseUid : ID of the case.
+     * @return $result will return an object
+     */
+    public function deleteCase($caseUid)
+    {
+        try {
+            if (empty($caseUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " caseUid");
+
+                return $result;
+            }
+
+            $case = new Cases();
+            $case->removeCase($caseUid);
+
+            //Response
+            $res = new wsResponse(0, G::LoadTranslation("ID_COMMAND_EXECUTED_SUCCESSFULLY"));
+
+            $result = array(
+                "status_code" => $res->status_code,
+                "message"     => $res->message,
+                "timestamp"   => $res->timestamp
+            );
+
+            return $result;
+        } catch (Exception $e) {
+            $result = wsResponse(100, $e->getMessage());
+
+            return $result;
+        }
+    }
+
+    /**
+     * Cancel case
+     * @param string caseUid  : ID of the case.
+     * @param int    delIndex : Delegation index of the case.
+     * @param string userUid  : The unique ID of the user who will cancel the case.
+     * @return $result will return an object
+     */
+    public function cancelCase($caseUid, $delIndex, $userUid)
+    {
+        try {
+            if (empty($caseUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " caseUid");
+
+                return $result;
+            }
+
+            if (empty($delIndex)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " delIndex");
+
+                return $result;
+            }
+
+            if (empty($userUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " userUid");
+
+                return $result;
+            }
+
+            $case = new Cases();
+            $case->cancelCase($caseUid, $delIndex, $userUid);
+
+            //Response
+            $res = new wsResponse(0, G::LoadTranslation("ID_COMMAND_EXECUTED_SUCCESSFULLY"));
+
+            $result = array(
+                "status_code" => $res->status_code,
+                "message"     => $res->message,
+                "timestamp"   => $res->timestamp
+            );
+
+            return $result;
+        } catch (Exception $e) {
+            $result = wsResponse(100, $e->getMessage());
+
+            return $result;
+        }
+    }
 }
 

@@ -725,8 +725,45 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="deleteCaseRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="sessionId" type="xs:string"/>
+            <xs:element name="caseUid" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteCaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="status_code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="timestamp" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="cancelCaseRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="sessionId" type="xs:string"/>
+            <xs:element name="caseUid" type="xs:string"/>
+            <xs:element name="delIndex" type="xs:string"/>
+            <xs:element name="userUid" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="cancelCaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="status_code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="timestamp" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
   </types>
+
   <message name="loginRequest">
     <part name="parameters" element="xs0:login"/>
   </message>
@@ -913,10 +950,22 @@
   <message name="getCaseNotesResponse">
     <part name="parameters" element="xs0:getCaseNotesResponse"/>
   </message>
-
   <message name="removeUserFromGroupRequest">
     <part name="parameters" element="xs0:removeUserFromGroupRequest"/>
   </message>
+    <message name="deleteCaseRequest">
+    <part name="parameters" element="xs0:deleteCaseRequest"/>
+  </message>
+  <message name="deleteCaseResponse">
+    <part name="parameters" element="xs0:deleteCaseResponse"/>
+  </message>
+  <message name="cancelCaseRequest">
+    <part name="parameters" element="xs0:cancelCaseRequest"/>
+  </message>
+  <message name="cancelCaseResponse">
+    <part name="parameters" element="xs0:cancelCaseResponse"/>
+  </message>
+
   <portType name="ProcessMakerServiceSoap">
     <operation name="login">
       <input message="xs0:loginRequest"/>
@@ -1050,12 +1099,20 @@
       <input message="xs0:getCaseNotesRequest"/>
       <output message="xs0:getCaseNotesResponse"/>
     </operation>
-
     <operation name="removeUserFromGroup">
       <input message="xs0:removeUserFromGroupRequest"/>
       <output message="xs0:pmResponse"/>
     </operation>
+    <operation name="deleteCase">
+      <input message="xs0:deleteCaseRequest"/>
+      <output message="xs0:deleteCaseResponse"/>
+    </operation>
+    <operation name="cancelCase">
+      <input message="xs0:cancelCaseRequest"/>
+      <output message="xs0:cancelCaseResponse"/>
+    </operation>
   </portType>
+
   <binding name="ProcessMakerServiceSoap" type="xs0:ProcessMakerServiceSoap">
     <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <operation name="login">
@@ -1355,7 +1412,6 @@
         <soap12:body use="literal"/>
       </output>
     </operation>
-
     <operation name="removeUserFromGroup">
       <soap12:operation soapAction="urn:removeUserFromGroup" soapActionRequired="true" style="document"/>
       <input>
@@ -1365,7 +1421,26 @@
         <soap12:body use="literal"/>
       </output>
     </operation>
+    <operation name="deleteCase">
+      <soap12:operation soapAction="urn:deleteCase" soapActionRequired="true" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="cancelCase">
+      <soap12:operation soapAction="urn:cancelCase" soapActionRequired="true" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
   </binding>
+
   <service name="ProcessMakerService">
     <documentation>ProcessMaker Web Service</documentation>
     <port name="ProcessMakerServiceSoap" binding="xs0:ProcessMakerServiceSoap">
