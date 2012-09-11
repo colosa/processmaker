@@ -135,16 +135,23 @@ return $alfrescoMessage;
  *
  */
 function createFolder($alfrescoServerUrl, $parentFolder, $folderName, $user, $pwd) {
-  //$domapi_url = "http://localhost:8086/alfresco/service/api/path/workspace/SpacesStore/9ee86211-cc3c-4348-beb0-5320635c2dcb/children";
-    $parentFolder = "$parentFolder/";
+    $name = explode("/", $folderName);
+    $init = substr($parentFolder,0,1);
+    $parentFolder = ($init == "/")? substr($parentFolder, 1)."/": $parentFolder."/";
     $alfresco_url = "$alfrescoServerUrl/s/cmis/p/".$parentFolder."children";
     $xmlData = array();
-    $xmlData = '<?xml version="1.0" encoding="utf-8"?>'.'<entry xmlns="http://www.w3.org/2005/Atom" xmlns:cmisra="http://docs.oasis-open.org/ns/cmis/restatom/200908/" xmlns:cmis="http://docs.oasis-open.org/ns/cmis/core/200908/">'.'<title>'.$folderName.'</title>'.'<cmisra:object>'.'<cmis:properties>'.'<cmis:propertyId propertyDefinitionId="cmis:objectTypeId"><cmis:value>cmis:folder</cmis:value></cmis:propertyId>'.'</cmis:properties>'.'</cmisra:object>'.'</entry>';
+    $xmlData = '<?xml version="1.0" encoding="utf-8"?>'.'<entry xmlns="http://www.w3.org/2005/Atom" xmlns:cmisra="http://docs.oasis-open.org/ns/cmis/restatom/200908/" xmlns:cmis="http://docs.oasis-open.org/ns/cmis/core/200908/">'.'<title>'.$name[0].'</title>'.'<cmisra:object>'.'<cmis:properties>'.'<cmis:propertyId propertyDefinitionId="cmis:objectTypeId"><cmis:value>cmis:folder</cmis:value></cmis:propertyId>'.'</cmis:properties>'.'</cmisra:object>'.'</entry>';
     $alfresco_exec = RestClient::post($alfresco_url,$xmlData,$user,$pwd,"application/atom+xml");
     $alfrescoMessage = $alfresco_exec->getResponseMessage();
-    if($alfrescoMessage === 'Created')
+    $folderName = substr(strstr($folderName, "/"),1);
+    $parentFolder = $parentFolder."".$name[0];
+
+    if ($folderName != null) {
+        createFolder($alfrescoServerUrl, $parentFolder, $folderName, $user, $pwd);
+    }
+    if($alfrescoMessage === 'Created') {
         return "The Folder has been Created";
-    else{
+    } else {
         return $alfrescoMessage;
     }
 }
@@ -279,8 +286,12 @@ function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docTy
     $fileLength     =  filesize($fileSource);
     $fileContent    =  fread($filep,$fileLength);
     $fileContent    =  base64_encode($fileContent);
+    
+    if ($path != '') {
+        createFolder($alfrescoServerUrl, 'Sites', $path, $user, $pwd);
+        $path = $path . PATH_SEP;
+    }
 
-    $path = ($path != '') ? $path . PATH_SEP : $path;
     $alfresco_url = "$alfrescoServerUrl/s/cmis/p/Sites/" . $path . "children";
     $xmlData = array();
     $xmlData = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:cmisra="http://docs.oasis-open.org/ns/cmis/restatom/200908/" xmlns:cmis="http://docs.oasis-open.org/ns/cmis/core/200908/"><title>'.$title.'</title><summary>'.$description.'</summary><content type="application/'.$docType.'">'.$fileContent.'</content><cmisra:object><cmis:properties><cmis:propertyId propertyDefinitionId="cmis:objectTypeId"><cmis:value>cmis:document</cmis:value></cmis:propertyId></cmis:properties></cmisra:object></entry>';
