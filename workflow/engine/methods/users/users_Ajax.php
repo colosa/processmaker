@@ -475,15 +475,15 @@ try {
        echo '{success: true}';
        break;
     case 'summaryUserData':
-       require_once 'classes/model/Users.php';
-       require_once 'classes/model/Department.php';
-       require_once 'classes/model/AppCacheView.php';
-       G::LoadClass('configuration');
-       $oUser = new Users();
-       // $data = $oUser->load($_REQUEST['USR_UID']);
-       $data = $oUser->loadDetailed($_REQUEST['USR_UID']);
-       $oAppCache = new AppCacheView();
-       $aTypes = Array();
+      require_once 'classes/model/Users.php';
+      require_once 'classes/model/Department.php';
+      require_once 'classes/model/AppCacheView.php';
+      G::LoadClass('configuration');
+      $oUser = new Users();
+      $data = $oUser->loadDetailed($_REQUEST['USR_UID']);
+      $data['USR_STATUS'] = G::LoadTranslation('ID_' . $data['USR_STATUS']);
+      $oAppCache = new AppCacheView();
+      $aTypes = Array();
       $aTypes['to_do']       = 'CASES_INBOX';
       $aTypes['draft']       = 'CASES_DRAFT';
       $aTypes['cancelled']   = 'CASES_CANCELLED';

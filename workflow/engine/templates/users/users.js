@@ -344,7 +344,7 @@ Ext.onReady(function () {
 
   var status = new Ext.data.SimpleStore({
       fields: ["USR_STATUS", "status"],
-      data: [["ACTIVE", "ACTIVE"], ["INACTIVE", "INACTIVE"], ["VACATION", "ON VACATION"]]
+      data: [["ACTIVE", _("ID_ACTIVE")], ["INACTIVE", _("ID_INACTIVE")], ["VACATION", _("ID_VACATION")]]
   });
 
   var comboStatus = new Ext.form.ComboBox({
