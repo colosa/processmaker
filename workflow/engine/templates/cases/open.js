@@ -55,7 +55,8 @@ Ext.onReady(function(){
         x           : 100,
         y           : 100,
         constrain   : true,
-        items       : [treeToRevise]
+        items       : [treeToRevise],
+        closeAction : 'hide'
       });
     }
   };

@@ -56,7 +56,7 @@ class AppCacheView extends BaseAppCacheView
                 break;
             case 'sent':
                 $criteria = $this->getSentCountCriteria($userUid);
-                return AppCacheViewPeer::doCount($criteria, true);
+                //return AppCacheViewPeer::doCount($criteria, true);
                 break;
             case 'selfservice':
                 $criteria = $this->getUnassignedCountCriteria($userUid);
@@ -207,12 +207,13 @@ class AppCacheView extends BaseAppCacheView
      */
     public function getSentCountCriteria($userUid)
     {
-        $criteria = new Criteria('workflow');
+        /*$criteria = new Criteria('workflow');
         $criteria = $this->addPMFieldsToCriteria('sent');
 
         $criteria->add(AppCacheViewPeer::USR_UID, $userUid);
 
-        return $criteria;
+        return $criteria;*/
+        return $this->getSentListCriteria($userUid);
     }
 
     /**
@@ -226,9 +227,11 @@ class AppCacheView extends BaseAppCacheView
 
         //$criteria->addAsColumn('MAX_DEL_INDEX', 'MAX(' . AppDelegationPeer::DEL_INDEX . ')');
         //$criteria->addJoin(AppCacheViewPeer::APP_UID , AppDelegationPeer::APP_UID, Criteria::LEFT_JOIN);
-        $criteria->add(AppCacheViewPeer::USR_UID, $userUid);
-        $criteria->addGroupByColumn(AppCacheViewPeer::APP_UID);
+        //$criteria->add(AppCacheViewPeer::USR_UID, $userUid);
+        //$criteria->addGroupByColumn(AppCacheViewPeer::APP_UID);
         //$criteria->addGroupByColumn(AppCacheViewPeer::APP_);
+        $criteria->add(AppCacheViewPeer::PREVIOUS_USR_UID, $userUid);
+        $criteria->add(AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL);
 
         return $criteria;
     }
@@ -571,10 +574,11 @@ class AppCacheView extends BaseAppCacheView
     public function getSearchCountCriteria()
     {
         //$criteria = new Criteria('workflow');
-        $criteria = $this->addPMFieldsToCriteria('sent');
+        //$criteria = $this->addPMFieldsToCriteria('sent');
 
-        return $criteria;
+        //return $criteria;
         //return $this->getSearchCriteria(true);
+        return $this->getSearchListCriteria();
     }
 
     public function getSearchAllCount()

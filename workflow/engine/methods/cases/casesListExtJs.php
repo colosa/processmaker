@@ -430,6 +430,9 @@
     $caseReaderFields[] = array( 'name' => 'APP_UID' );
     $caseReaderFields[] = array( 'name' => 'USR_UID' );
     $caseReaderFields[] = array( 'name' => 'PREVIOUS_USR_UID' );
+    $caseReaderFields[] = array( 'name' => 'PREVIOUS_USR_FIRSTNAME' );
+    $caseReaderFields[] = array( 'name' => 'PREVIOUS_USR_LASTNAME' );
+    $caseReaderFields[] = array( 'name' => 'PREVIOUS_USR_USERNAME' );
     $caseReaderFields[] = array( 'name' => 'APP_NUMBER' );
     $caseReaderFields[] = array( 'name' => 'APP_STATUS' );
     $caseReaderFields[] = array( 'name' => 'DEL_INDEX' );

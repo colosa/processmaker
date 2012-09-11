@@ -215,6 +215,8 @@ class Ajax
     global $G_TABLE;
     global $RBAC;
 
+    G::LoadClass('processMap');
+
     $oTemplatePower = new TemplatePower(PATH_TPL . 'processes/processes_Map.html');
     $oTemplatePower->prepare();
     $G_PUBLISH = new Publisher();
@@ -224,6 +226,7 @@ class Ajax
 
     //$oHeadPublisher->addScriptfile('/jscore/processmap/core/processmap.js');
     $oHeadPublisher->addScriptCode('
+    var maximunX = ' . processMap::getMaximunTaskX($_SESSION['PROCESS']) . ';
     window.onload = function(){
       var pb=leimnud.dom.capture("tag.body 0");
       Pm=new processmap();

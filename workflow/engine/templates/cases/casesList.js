@@ -852,7 +852,7 @@ Ext.onReady ( function() {
       'select': function() {
         filterProcess = comboAllUsers.value;
 
-        if (filterProcess==''){
+        /*if (filterProcess==''){
           btnSelectAll.hide();
           btnUnSelectAll.hide();
           btnReassign.hide();
@@ -861,7 +861,7 @@ Ext.onReady ( function() {
           btnSelectAll.show();
           btnUnSelectAll.show();
           btnReassign.show();
-        }
+        }*/
         storeCases.setBaseParam( 'user', filterProcess);
         storeCases.load({params:{user: filterProcess, start : 0 , limit : pageSize}});
       }},
@@ -1741,6 +1741,8 @@ var gridForm = new Ext.FormPanel({
                     click: function() {
                         rows = this.getSelectionModel().getSelections();
                         var application = '';
+                        var task = '';
+                        var currentUser = '';
                         comboUsersToReassign.disable();
                         if( rows.length > 0 ) {
                           comboUsersToReassign.enable();
@@ -1748,13 +1750,17 @@ var gridForm = new Ext.FormPanel({
                             for(i=0; i<rows.length; i++) {
                                // filtering duplicate tasks
                                application = rows[i].get('APP_UID');
+                               task = rows[i].get('TAS_UID');
+                               currentUser = rows[i].get('USR_UID');
                             }
                         } else {
 
                         }
                         comboUsersToReassign.clearValue();
                         storeUsersToReassign.removeAll();
-                        storeUsersToReassign.setBaseParam('application',application);
+                        storeUsersToReassign.setBaseParam('application', application);
+                        storeUsersToReassign.setBaseParam('task', task);
+                        storeUsersToReassign.setBaseParam('currentUser', currentUser);
 
                         storeUsersToReassign.load();
                         //alert(record.USERS);

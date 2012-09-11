@@ -53,6 +53,7 @@ switch (($aCaseTracker['CT_MAP_TYPE'])) {
         break;
     case 'PROCESSMAP':
         G::LoadClass('case');
+        G::LoadClass('processMap');
         $oCase = new Cases();
         $aFields = $oCase->loadCase($_SESSION['APPLICATION']);
         if (isset($aFields['TITLE'])) {
@@ -72,6 +73,7 @@ switch (($aCaseTracker['CT_MAP_TYPE'])) {
         $G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
         $oHeadPublisher = & headPublisher::getSingleton();
         $oHeadPublisher->addScriptCode('
+        var maximunX = ' . processMap::getMaximunTaskX($_SESSION['PROCESS']) . ';
         leimnud.event.add(window,"load",function(){
           var pb = leimnud.dom.capture("tag.body 0");
           pm = new processmap();

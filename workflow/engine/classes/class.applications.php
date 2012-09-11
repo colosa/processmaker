@@ -105,7 +105,7 @@ class Applications
     $Criteria->addAsColumn('USR_USERNAME', 'CU.USR_USERNAME');
 
     // Fix for previous user
-    if ($action == 'todo' || $action == 'selfservice' || $action =='unassigned' || $action == 'paused' || $action == 'to_revise') {
+    if ($action == 'todo' || $action == 'selfservice' || $action =='unassigned' || $action == 'paused' || $action == 'to_revise' || $action == 'sent') {
         $Criteria->addAlias('PU', 'USERS');
         $Criteria->addJoin(AppCacheViewPeer::PREVIOUS_USR_UID, 'PU.USR_UID', Criteria::LEFT_JOIN);
         $Criteria->addAsColumn('PREVIOUS_USR_FIRSTNAME', 'PU.USR_FIRSTNAME');
@@ -305,7 +305,7 @@ class Applications
       $Criteria->setOffset( $start );
 
 
-    /*
+
     // this is the optimal way or query to render the cases search list
     // fixing the bug related to the wrong data displayed in the list
     if ( $action == 'search' ) {
@@ -323,7 +323,6 @@ class Applications
       $params = array ( $maxDelIndexList );
 
     }
-    */
 
     //execute the query
     $oDataset = AppCacheViewPeer::doSelectRS($Criteria);
@@ -344,7 +343,7 @@ class Applications
        * but Propel might not support it and subqueries can be slower for larger
        * datasets).
        */
-      if ($action == 'sent' || $action == 'search') {
+      /*if ($action == 'sent' || $action == 'search') {
         $maxCriteria = new Criteria('workflow');
         $maxCriteria->add(AppCacheViewPeer::APP_UID, $aRow['APP_UID'], Criteria::EQUAL);
         $maxCriteria->addDescendingOrderByColumn(AppCacheViewPeer::DEL_INDEX);
@@ -361,7 +360,7 @@ class Applications
         }
 
         $maxDataset->close();
-      }
+      }*/
 
       if (!isset($aRow['APP_CURRENT_USER']))
         $aRow['APP_CURRENT_USER'] = "[Unassigned]";

@@ -46,7 +46,7 @@ function array_sort($array, $on, $order=SORT_ASC, $query='')
         foreach ($sortable_array as $k => $v) {
             if ($query==''){
                 $new_array[] = $array[$k];
-            } 
+            }
             else {
               if ( preg_match("/".$query."/i", $array[$k]['userFullname']) ) {
                 $new_array[] = $array[$k];
@@ -57,11 +57,11 @@ function array_sort($array, $on, $order=SORT_ASC, $query='')
     return $new_array;
 }
 //  $APP_UIDS          = explode(',', $_POST['APP_UID']);
-  
+
   $appUid = isset($_POST['application']) ? $_POST['application'] : '';
 //  $processUid = isset($_POST['process'])     ? $_POST['process'] : '';
-//  $TaskUid    = isset($_POST['task'])        ? $_POST['task'] : '';
-	$sReassignFromUser = isset($_POST['user']) ? $_POST['user'] : '';
+  $TaskUid    = isset($_POST['task'])        ? $_POST['task'] : '';
+	$sReassignFromUser = isset($_POST['currentUser']) ? $_POST['currentUser'] : '';
 
         G::LoadClass('tasks');
         G::LoadClass('groups');
@@ -76,25 +76,25 @@ function array_sort($array, $on, $order=SORT_ASC, $query='')
         $aCasesList = Array();
 
 //        foreach ( $APP_UIDS as $APP_UID ) {
-        	  $aCase  = $oCases->loadCaseInCurrentDelegation($appUid);
-            
+        	  //$aCase  = $oCases->loadCaseInCurrentDelegation($appUid);
+
             $aUsersInvolved = Array();
-            $aCaseGroups = $oTasks->getGroupsOfTask($aCase['TAS_UID'], 1);            
-            $oConf = new Configurations; 
+            $aCaseGroups = $oTasks->getGroupsOfTask($TaskUid, 1);
+            $oConf = new Configurations;
             $ConfEnv= $oConf->getFormats();
             foreach ( $aCaseGroups as $aCaseGroup ) {
               $aCaseUsers = $oGroups->getUsersOfGroup($aCaseGroup['GRP_UID']);
               foreach ( $aCaseUsers as $aCaseUser ) {
                 if ( $aCaseUser['USR_UID'] != $sReassignFromUser ) {
                   $aCaseUserRecord = $oUser->load($aCaseUser['USR_UID']);
-                  $sCaseUser = G::getFormatUserList ($ConfEnv['format'],$aCaseUserRecord);    
+                  $sCaseUser = G::getFormatUserList ($ConfEnv['format'],$aCaseUserRecord);
 //                        $aUsersInvolved[] = array ( 'userUid' => $aCaseUser['USR_UID'] , 'userFullname' => $aCaseUserRecord['USR_FIRSTNAME'] . ' ' . $aCaseUserRecord['USR_LASTNAME']); // . ' (' . $aCaseUserRecord['USR_USERNAME'] . ')';
                   $aUsersInvolved[] = array ( 'userUid' => $aCaseUser['USR_UID'] , 'userFullname' => $sCaseUser); // . ' (' . $aCaseUserRecord['USR_USERNAME'] . ')';
                 }
               }
             }
 
-            $aCaseUsers = $oTasks->getUsersOfTask($aCase['TAS_UID'], 1);
+            $aCaseUsers = $oTasks->getUsersOfTask($TaskUid, 1);
             foreach ( $aCaseUsers as $aCaseUser ) {
                 if ( $aCaseUser['USR_UID'] != $sReassignFromUser ) {
                     $aCaseUserRecord = $oUser->load($aCaseUser['USR_UID']);
@@ -105,7 +105,7 @@ function array_sort($array, $on, $order=SORT_ASC, $query='')
             }
 //            $oTmp = new stdClass();
 //            $oTmp->items = $aUsersInvolved;
-        $result = array();        
-        $aUsersInvolved = array_sort($aUsersInvolved,'userFullname',SORT_ASC, $query);   
+        $result = array();
+        $aUsersInvolved = array_sort($aUsersInvolved,'userFullname',SORT_ASC, $query);
         $result['data'] = $aUsersInvolved;
         print G::json_encode( $result ) ;

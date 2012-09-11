@@ -78,12 +78,14 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
         G::RenderPage('publish', 'raw');
         break;
     case 'showProcessMap':
+        G::LoadClass('processMap');
         $oTemplatePower = new TemplatePower(PATH_TPL . 'processes/processes_Map.html');
         $oTemplatePower->prepare();
         $G_PUBLISH = new Publisher();
         $G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
         $oHeadPublisher = & headPublisher::getSingleton();
         $oHeadPublisher->addScriptCode('
+            var maximunX = ' . processMap::getMaximunTaskX($_SESSION['PROCESS']) . ';
             var pb=leimnud.dom.capture("tag.body 0");
             Pm=new processmap();
 
