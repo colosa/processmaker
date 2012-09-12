@@ -909,13 +909,29 @@ function documentVersionHistory()
     G::RenderPage ('publish', 'raw');
 }
 
+function overwriteFile ($node, $fileName) {
+    global $RBAC;
+    require_once ("classes/model/AppFolder.php");
+    require_once ("classes/model/AppDocument.php");
+    $appDocument = new AppDocument();
+    $pMFolder = new AppFolder();
+    $user = ($RBAC->userCanAccess('PM_ALLCASES') == 1) ? '' : $_SESSION['USER_LOGGED'];
+    $folderContentObj = $pMFolder->getFolderContent ($node, array(), null, null, '', '', $user);
+    foreach ($folderContentObj['documents'] as $key => $value) {
+        if ($folderContentObj['documents'][$key]['APP_DOC_FILENAME'] == $fileName) {
+            $appDocument->remove(trim($folderContentObj['documents'][$key]['APP_DOC_UID']), $folderContentObj['documents'][$key]['DOC_VERSION']);
+        }
+    }
+}
+
 function uploadExternalDocument()
 {
     $response['action']=$_POST['action']. " - ".$_POST['option'];
     $response['error']="error";
     $response['message']="error";
     $response['success']=false;
-    if (isset($_POST["confirm"]) && $_POST["confirm"]=="true") {
+    $overwrite = (isset($_REQUEST['overwrite_files'])) ? $_REQUEST['overwrite_files'] : false;
+    if (isset($_POST["confirm"]) && $_POST["confirm"] == "true") {
         //G::pr($_FILES);
         if (isset($_FILES['uploadedFile'])) {
             $uploadedInstances=count($_FILES['uploadedFile']['name']);
@@ -923,6 +939,12 @@ function uploadExternalDocument()
             $sw_error_exists=isset($_FILES['uploadedFile']['error']);
             $emptyInstances=0;
             $quequeUpload=array();
+            //overwrite files
+            if ($overwrite) {
+                for ($i=0; $i<$uploadedInstances; $i++) {
+                    overwriteFile($_REQUEST['dir'], stripslashes($_FILES['uploadedFile']['name'][$i]));
+                }
+            }
             // upload files & check for errors
             for ($i=0; $i<$uploadedInstances; $i++) {
                 $errors[$i] = null;
