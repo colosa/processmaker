@@ -343,7 +343,7 @@ Ext.onReady(function () {
   });
 
   var status = new Ext.data.SimpleStore({
-      fields: ["USR_STATUS", "status"],
+      fields: ["USR_STATUS_VALUE", "status"],
       data: [["ACTIVE", _("ID_ACTIVE")], ["INACTIVE", _("ID_INACTIVE")], ["VACATION", _("ID_VACATION")]]
   });
 
@@ -356,7 +356,7 @@ Ext.onReady(function () {
     mode          : 'local',
     store         : status,
     displayField  : 'status',
-    valueField    : 'USR_STATUS',
+    valueField    : 'USR_STATUS_VALUE',
     width         : 120,
     typeAhead     : true,
     triggerAction : 'all',
