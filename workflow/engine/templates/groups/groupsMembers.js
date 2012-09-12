@@ -485,7 +485,17 @@ RemoveAllUsersAction = function(){
 
 //Function DoSearch Available
 DoSearchA = function(){
-  availableGrid.store.load({params: {textFilter: searchTextA.getValue()}});
+    numPage = parseInt(bbarpagingAvailable.getPageData().activePage);
+    availableGrid.store.load(
+        {params: {textFilter: searchTextA.getValue()},
+        callback: function (r, options, success) {
+        total = parseInt(bbarpagingAvailable.getPageData().total);
+        if (((numPage-1)*pageSize) >= total) {
+            numPage--;
+        }
+        availableGrid.getBottomToolbar().changePage(numPage);
+        }
+        });
 };
 
 //Function DoSearch Assigned
