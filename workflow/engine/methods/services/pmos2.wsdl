@@ -761,6 +761,45 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="pauseCaseRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="sessionId" type="xs:string"/>
+            <xs:element name="caseUid" type="xs:string"/>
+            <xs:element name="delIndex" type="xs:string"/>
+            <xs:element name="userUid" type="xs:string"/>
+            <xs:element name="unpauseDate" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="pauseCaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="status_code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="timestamp" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="unpauseCaseRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="sessionId" type="xs:string"/>
+            <xs:element name="caseUid" type="xs:string"/>
+            <xs:element name="delIndex" type="xs:string"/>
+            <xs:element name="userUid" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="unpauseCaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="status_code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="timestamp" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
   </types>
 
@@ -965,6 +1004,18 @@
   <message name="cancelCaseResponse">
     <part name="parameters" element="xs0:cancelCaseResponse"/>
   </message>
+  <message name="pauseCaseRequest">
+    <part name="parameters" element="xs0:pauseCaseRequest"/>
+  </message>
+  <message name="pauseCaseResponse">
+    <part name="parameters" element="xs0:pauseCaseResponse"/>
+  </message>
+  <message name="unpauseCaseRequest">
+    <part name="parameters" element="xs0:unpauseCaseRequest"/>
+  </message>
+  <message name="unpauseCaseResponse">
+    <part name="parameters" element="xs0:unpauseCaseResponse"/>
+  </message>
 
   <portType name="ProcessMakerServiceSoap">
     <operation name="login">
@@ -1110,6 +1161,14 @@
     <operation name="cancelCase">
       <input message="xs0:cancelCaseRequest"/>
       <output message="xs0:cancelCaseResponse"/>
+    </operation>
+    <operation name="pauseCase">
+      <input message="xs0:pauseCaseRequest"/>
+      <output message="xs0:pauseCaseResponse"/>
+    </operation>
+    <operation name="unpauseCase">
+      <input message="xs0:unpauseCaseRequest"/>
+      <output message="xs0:unpauseCaseResponse"/>
     </operation>
   </portType>
 
@@ -1432,6 +1491,24 @@
     </operation>
     <operation name="cancelCase">
       <soap12:operation soapAction="urn:cancelCase" soapActionRequired="true" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="pauseCase">
+      <soap12:operation soapAction="urn:pauseCase" soapActionRequired="true" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="unpauseCase">
+      <soap12:operation soapAction="urn:unpauseCase" soapActionRequired="true" style="document"/>
       <input>
         <soap12:body use="literal"/>
       </input>

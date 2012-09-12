@@ -219,42 +219,6 @@ function literalDate($date, $lang='en')
 /**
  * @method
  *
- * Pauses a specified case.
- *
- * @name pauseCase
- * @label Pause Case
- * @link  http://wiki.processmaker.com/index.php/ProcessMaker_Functions#pauseCase.28.29
- *
- * @param string(32) | $sApplicationUID= "" | ID of the case | The unique ID of the case. The UID of the current case can be found in the system variable @@APPLICATION.
- * @param string(32) | $iDelegation = 0| Delegation index of the case | The delegation index of the current task in the case.
- * @param string(32) | $sUserUID = ""| ID user | The unique ID of the user who will pause the case.
- * @param string(32) | $sUnpauseDate = null  | Date | Optional parameter. The date in the format 'yyyy-mm-dd' indicating when to unpause the case.
- * @return None  | $none | None | None
- *
- */
-function pauseCase($sApplicationUID='', $iDelegation=0, $sUserUID='', $sUnpauseDate=null)
-{
-    //var_dump($sApplicationUID, $iDelegation, $sUserUID, $sUnpauseDate);die(':|');
-    try {
-        if ($sApplicationUID == '') {
-            throw new Exception('The application UID cannot be empty!');
-        }
-        if ($iDelegation == 0) {
-            throw new Exception('The delegation index cannot be 0!');
-        }
-        if ($sUserUID == '') {
-            throw new Exception('The user UID cannot be empty!');
-        }
-        G::LoadClass('case');
-        $oCase = new Cases();
-        $oCase->pauseCase($sApplicationUID, $iDelegation, $sUserUID, $sUnpauseDate);
-    } catch (Exception $oException) {
-        throw $oException;
-    }
-}
-/**
- * @method
- *
  * Executes a SQL statement in a database connection or in one of ProcessMaker's
  * internal databases.
  *
@@ -1223,6 +1187,84 @@ function WSCancelCase($caseUid, $delIndex, $userUid)
     );
 
     $result = $client->__soapCall("cancelCase", array($params));
+
+    $response = array();
+    $response["status_code"] = $result->status_code;
+    $response["message"]     = $result->message;
+    $response["time_stamp"]  = $result->timestamp;
+
+    return $response;
+}
+
+/**
+ * @method
+ *
+ * Pauses a specified case.
+ *
+ * @name WSPauseCase
+ * @label WS Pause Case
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#WSPauseCase.28.29
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
+ * @param string(32) | $userUid | ID user | The unique ID of the user who will pause the case.
+ * @param string(32) | $unpauseDate=null | Date | Optional parameter. The date in the format "yyyy-mm-dd" indicating when to unpause the case.
+ * @return array | $response | WS array | A WS Response associative array.
+ *
+ */
+function WSPauseCase($caseUid, $delIndex, $userUid, $unpauseDate=null)
+{
+    $client = WSOpen();
+
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+
+    $params = array(
+        "sessionId"   => $sessionId,
+        "caseUid"     => $caseUid,
+        "delIndex"    => $delIndex,
+        "userUid"     => $userUid,
+        "unpauseDate" => $unpauseDate
+    );
+
+    $result = $client->__soapCall("pauseCase", array($params));
+
+    $response = array();
+    $response["status_code"] = $result->status_code;
+    $response["message"]     = $result->message;
+    $response["time_stamp"]  = $result->timestamp;
+
+    return $response;
+}
+
+/**
+ * @method
+ *
+ * Unpause a specified case.
+ *
+ * @name WSUnpauseCase
+ * @label WS Unpause Case
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#WSUnpauseCase.28.29
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
+ * @param string(32) | $userUid | ID user | The unique ID of the user who will unpause the case.
+ * @return array | $response | WS array | A WS Response associative array.
+ *
+ */
+function WSUnpauseCase($caseUid, $delIndex, $userUid)
+{
+    $client = WSOpen();
+
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+
+    $params = array(
+        "sessionId" => $sessionId,
+        "caseUid"   => $caseUid,
+        "delIndex"  => $delIndex,
+        "userUid"   => $userUid
+    );
+
+    $result = $client->__soapCall("unpauseCase", array($params));
 
     $response = array();
     $response["status_code"] = $result->status_code;
@@ -2337,6 +2379,63 @@ function PMFCancelCase($caseUid, $delIndex, $userUid)
 
     $ws = new wsBase();
     $result = $ws->cancelCase($caseUid, $delIndex, $userUid);
+
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * @method
+ *
+ * Pauses a specified case.
+ *
+ * @name PMFPauseCase
+ * @label PMF Pauses a specified case.
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
+ * @param string(32) | $userUid | ID user | The unique ID of the user who will pause the case.
+ * @param string(32) | $unpauseDate=null | Date | Optional parameter. The date in the format "yyyy-mm-dd" indicating when to unpause the case.
+ * @return int | $result | Result of the pause | Returns 1 if the case is paused successfully; otherwise, returns 0 if an error occurred.
+ *
+ */
+function PMFPauseCase($caseUid, $delIndex, $userUid, $unpauseDate=null)
+{
+    G::LoadClass("wsBase");
+
+    $ws = new wsBase();
+    $result = $ws->pauseCase($caseUid, $delIndex, $userUid, $unpauseDate);
+
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * @method
+ *
+ * Unpause a specified case.
+ *
+ * @name PMFUnpauseCase
+ * @label PMF Unpause a specified case.
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
+ * @param string(32) | $userUid | ID user | The unique ID of the user who will unpause the case.
+ * @return int | $result | Result of the unpause | Returns 1 if the case is unpause successfully; otherwise, returns 0 if an error occurred.
+ *
+ */
+function PMFUnpauseCase($caseUid, $delIndex, $userUid)
+{
+    G::LoadClass("wsBase");
+
+    $ws = new wsBase();
+    $result = $ws->unpauseCase($caseUid, $delIndex, $userUid);
 
     if ($result->status_code == 0) {
         return 1;

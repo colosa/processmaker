@@ -2897,5 +2897,111 @@ class wsBase
             return $result;
         }
     }
+
+    /**
+     * Pause case
+     * @param string caseUid     : ID of the case.
+     * @param int    delIndex    : Delegation index of the case.
+     * @param string userUid     : The unique ID of the user who will pause the case.
+     * @param string unpauseDate : Optional parameter. The date in the format "yyyy-mm-dd" indicating when to unpause
+     *                             the case.
+     * @return $result will return an object
+     */
+    public function pauseCase($caseUid, $delIndex, $userUid, $unpauseDate=null)
+    {
+        try {
+            if (empty($caseUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " caseUid");
+
+                return $result;
+            }
+
+            if (empty($delIndex)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " delIndex");
+
+                return $result;
+            }
+
+            if (empty($userUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " userUid");
+
+                return $result;
+            }
+
+            if (!empty($unpauseDate)) {
+                if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $unpauseDate)) {
+                    $result = new wsResponse(100, G::LoadTranslation("ID_INVALID_DATA") . " $unpauseDate");
+
+                    return $result;
+                }
+            }
+
+            $case = new Cases();
+            $case->pauseCase($caseUid, $delIndex, $userUid, $unpauseDate);
+
+            //Response
+            $res = new wsResponse(0, G::LoadTranslation("ID_COMMAND_EXECUTED_SUCCESSFULLY"));
+
+            $result = array(
+                "status_code" => $res->status_code,
+                "message"     => $res->message,
+                "timestamp"   => $res->timestamp
+            );
+
+            return $result;
+        } catch (Exception $e) {
+            $result = wsResponse(100, $e->getMessage());
+
+            return $result;
+        }
+    }
+
+    /**
+     * Unpause case
+     * @param string caseUid  : ID of the case.
+     * @param int    delIndex : Delegation index of the case.
+     * @param string userUid  : The unique ID of the user who will unpause the case.
+     * @return $result will return an object
+     */
+    public function unpauseCase($caseUid, $delIndex, $userUid)
+    {
+        try {
+            if (empty($caseUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " caseUid");
+
+                return $result;
+            }
+
+            if (empty($delIndex)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " delIndex");
+
+                return $result;
+            }
+
+            if (empty($userUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " userUid");
+
+                return $result;
+            }
+
+            $case = new Cases();
+            $case->unpauseCase($caseUid, $delIndex, $userUid);
+
+            //Response
+            $res = new wsResponse(0, G::LoadTranslation("ID_COMMAND_EXECUTED_SUCCESSFULLY"));
+
+            $result = array(
+                "status_code" => $res->status_code,
+                "message"     => $res->message,
+                "timestamp"   => $res->timestamp
+            );
+
+            return $result;
+        } catch (Exception $e) {
+            $result = wsResponse(100, $e->getMessage());
+
+            return $result;
+        }
+    }
 }
 

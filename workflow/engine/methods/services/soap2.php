@@ -1102,6 +1102,52 @@ function cancelCase($params)
     return $result;
 }
 
+function pauseCase($params)
+{
+    $result = isValidSession($params->sessionId);
+
+    if ($result->status_code != 0) {
+        return $result;
+    }
+
+    if (ifPermission($params->sessionId, "PM_CASES") == 0) {
+        $result = new wsResponse(2, "You do not have privileges");
+
+        return $result;
+    }
+
+    $ws = new wsBase();
+
+    $result = $ws->pauseCase(
+        $params->caseUid,
+        $params->delIndex,
+        $params->userUid,
+        ((isset($params->unpauseDate))? $params->unpauseDate : null)
+    );
+
+    return $result;
+}
+
+function unpauseCase($params)
+{
+    $result = isValidSession($params->sessionId);
+
+    if ($result->status_code != 0) {
+        return $result;
+    }
+
+    if (ifPermission($params->sessionId, "PM_CASES") == 0) {
+        $result = new wsResponse(2, "You do not have privileges");
+
+        return $result;
+    }
+
+    $ws = new wsBase();
+    $result = $ws->unpauseCase($params->caseUid, $params->delIndex, $params->userUid);
+
+    return $result;
+}
+
 
 
 
@@ -1144,5 +1190,7 @@ $server->addFunction("removeUserFromGroup");
 $server->addFunction("getCaseNotes");
 $server->addFunction("deleteCase");
 $server->addFunction("cancelCase");
+$server->addFunction("pauseCase");
+$server->addFunction("unpauseCase");
 $server->handle();
 
