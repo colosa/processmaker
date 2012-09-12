@@ -1053,6 +1053,7 @@ function saveUser()
   var confPass = frmDetails.getForm().findField('USR_CNF_PASS').getValue();
 
   if (confPass === newPass) {
+    Ext.getCmp('USR_STATUS').setDisabled(readMode);
     Ext.getCmp('frmDetails').getForm().submit({
       url    : 'usersAjax',
       params : {
