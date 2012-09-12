@@ -149,6 +149,7 @@ class AppSolr
   private $_solrIsEnabled = false;
   private $_solrHost = "";
   private $_solrInstance = "";
+  private $debug = false; //false
   
   public function __construct($SolrEnabled, $SolrHost, $SolrInstance)
   {
@@ -255,6 +256,10 @@ class AppSolr
     G::LoadClass ('searchIndex');
     
     try {
+      if($this->debug)
+      {      
+        $this->initTimeAll = microtime (true);
+      }
       
       // the array of data that must be returned with placeholders
       $columsToInclude = array (
@@ -403,6 +408,20 @@ class AppSolr
         }        
       }
       
+      //search action
+      if ($action == 'search' && $dateFrom != "" && $dateTo != "") {
+        $fromDate = date ("Y-m-d", strtotime ($dateFrom));
+        $toDate = date ("Y-m-d", strtotime ($dateTo));
+                
+        $searchDateOriginal = "DEL_LAST_UPDATE_DATE:[" . $fromDate . " TO " . $toDate . "]";
+        //FechaRegistro:[2011-04-15 TO 2011-04-30]
+        
+        $searchDateFormatedSolr = $this->getSearchText ($searchDateOriginal);
+        
+        $solrSearchText .= "(" . $searchDateFormatedSolr . ") AND ";
+        
+      }
+      
       // remove last AND in condition
       if ($solrSearchText != '')
         $solrSearchText = substr_replace ($solrSearchText, "", - 5);
@@ -449,13 +468,26 @@ class AppSolr
           'resultFormat' => 'json' 
       );
       
-      
       $solrRequestData = Entity_SolrRequestData::createForRequestPagination ($data);
       // use search index to return list of cases
       $searchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
       // execute query
       $solrQueryResult = $searchIndex->getDataTablePaginatedList ($solrRequestData);
       
+      if($this->debug)
+      {
+        $this->afterSolrQueryTime = microtime (true);
+      }
+      //return inmediatelly
+      if ($doCount) {
+        $result ['totalCount'] = $solrQueryResult->iTotalDisplayRecords;
+        $result ['data'] = array();
+        $result ['success'] = true;
+        $result ['result'] = true;
+        $result ['message'] = "";
+        
+        return $result;
+      }
       // complete return data, complete list of columns in grid
       $resultColumns = array (
           "APP_CREATE_DATE",
@@ -494,6 +526,18 @@ class AppSolr
       // number of found records
       $result ['totalCount'] = $solrQueryResult->iTotalDisplayRecords;
 
+      //get all the data from database
+      $appUids = array();
+      foreach ($solrQueryResult->aaData as $i => $data) {
+        $appUids[] = $data [11];
+      }
+      
+      $aaappsDBData = $this->getListApplicationDelegationData ($appUids);
+      
+      if($this->debug)
+      {
+        $this->afterDbQueryTime = microtime (true);
+      }
       // complete the missing data to display it in the grid.
       $delIndexes = array(); //store all the delegation indexes
       foreach ($solrQueryResult->aaData as $i => $data) {
@@ -530,6 +574,8 @@ class AppSolr
             $delIndexes = $this->getApplicationDelegationsIndex ($appUID);
           }*/
         }
+        //remove duplicated
+        $delIndexes = array_unique($delIndexes);
         foreach ($delIndexes as $delIndex) {
           $aRow = array ();
           foreach ($resultColumns as $j => $columnName) {
@@ -545,7 +591,16 @@ class AppSolr
           $aRow ['APP_UPDATE_DATE'] = $localDate;
           
           // get delegation data from DB
-          $row = $this->getAppDelegationData ($appUID, $delIndex);
+          //filter data from db
+          $indexes = $this->aaSearchRecords ($aaappsDBData, array (
+              'APP_UID' => $appUID,
+              'DEL_INDEX' => $delIndex
+          ));
+          
+          foreach ($indexes as $index) {
+            $row = $aaappsDBData [$index];
+          }          
+          //$row = $this->getAppDelegationData ($appUID, $delIndex);
           
           $aRow ['APP_FINISH_DATE'] = null;
           $aRow ['APP_CURRENT_USER'] = $row ['USR_NAME'] . " " . $row ['USR_LAST'];
@@ -577,6 +632,18 @@ class AppSolr
       $result ['success'] = true;
       $result ['result'] = true;
       $result ['message'] = "";
+      
+      /*********************************************/
+      if($this->debug)
+      {
+        $this->afterPrepareResultTime = microtime (true);
+        
+        $fh = fopen("SolrSearchTime.txt", 'a') or die("can't open file to store Solr search time.");
+        //fwrite($fh, sprintf("Solr Query time: %s DB Query time: %s Prepare result time: %s \n", gmdate ('H:i:s:u', ($this->afterSolrQueryTime - $this->initTimeAll)), gmdate ('H:i:s:u', ($this->afterDbQueryTime - $this->afterSolrQueryTime)), gmdate ('H:i:s:u', ($this->afterPrepareResultTime - $this->afterDbQueryTime))  ));
+        fwrite($fh, sprintf("Solr Query time: %s DB Query time: %s Prepare result time: %s Total:%s \r\n", ($this->afterSolrQueryTime - $this->initTimeAll), ($this->afterDbQueryTime - $this->afterSolrQueryTime), ($this->afterPrepareResultTime - $this->afterDbQueryTime), ($this->afterPrepareResultTime - $this->initTimeAll)  ));
+        fclose($fh);
+      } 
+      /***************************************/     
       
       return $result;
     
@@ -635,6 +702,115 @@ class AppSolr
     return $rows;
   }
   
+  /**
+   * Get the application delegation record from database
+   *
+   * @param string $aappUIDs
+   *          array of Application identifiers
+   * @return array of arrays with delegation information.
+   */
+  public function getListApplicationDelegationData($aappUIDs)
+  {
+  
+    $c = new Criteria ();
+  
+    $c->addSelectColumn (AppDelegationPeer::APP_UID);
+    $c->addSelectColumn (AppDelegationPeer::DEL_INDEX);
+  
+    $c->addAsColumn ('USR_NAME', 'u.USR_FIRSTNAME');
+    $c->addAsColumn ('USR_LAST', 'u.USR_LASTNAME');
+  
+    $c->addAsColumn ('USR_PREV_NAME', 'uprev.USR_FIRSTNAME');
+    $c->addAsColumn ('USR_PREV_LAST', 'uprev.USR_LASTNAME');
+    $c->addAsColumn ('PREVIOUS_USR_UID', 'uprev.USR_UID');
+  
+    $c->addAsColumn ('APP_TAS_TITLE', 'ctastitle.CON_VALUE');
+    $c->addAsColumn ('APP_THREAD_STATUS', 'at.APP_THREAD_STATUS');
+  
+    $c->addSelectColumn (AppDelegationPeer::APP_OVERDUE_PERCENTAGE);
+  
+    $c->addSelectColumn (AppDelegationPeer::DEL_DELAYED);
+    $c->addSelectColumn (AppDelegationPeer::DEL_DELAY_DURATION);
+    $c->addSelectColumn (AppDelegationPeer::DEL_DELEGATE_DATE);
+    $c->addSelectColumn (AppDelegationPeer::DEL_DURATION);
+    $c->addSelectColumn (AppDelegationPeer::DEL_FINISH_DATE);
+    $c->addSelectColumn (AppDelegationPeer::DEL_INIT_DATE);
+    $c->addSelectColumn (AppDelegationPeer::DEL_QUEUE_DURATION);
+    $c->addSelectColumn (AppDelegationPeer::DEL_TASK_DUE_DATE);
+    $c->addSelectColumn (AppDelegationPeer::DEL_THREAD_STATUS);
+    $c->addSelectColumn (AppDelegationPeer::TAS_UID);
+  
+    $c->addAlias ('u', 'USERS');
+    $c->addAlias ('uprev', 'USERS');
+    $c->addAlias ('adprev', 'APP_DELEGATION');
+    $c->addAlias ('ctastitle', 'CONTENT');
+    $c->addAlias ('at', 'APP_THREAD');
+  
+    $aConditions = array ();
+    $aConditions [] = array (
+        AppDelegationPeer::USR_UID,
+        'u.USR_UID'
+    );
+    $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
+  
+    $aConditions = array ();
+    $aConditions [] = array (
+        AppDelegationPeer::APP_UID,
+        'adprev.APP_UID'
+    );
+    $aConditions [] = array (
+        AppDelegationPeer::DEL_PREVIOUS,
+        'adprev.DEL_INDEX'
+    );
+    $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
+  
+    $aConditions = array ();
+    $aConditions [] = array (
+        AppDelegationPeer::TAS_UID,
+        'ctastitle.CON_ID'
+    );
+    $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
+  
+    $aConditions = array ();
+    $aConditions [] = array (
+        'adprev.USR_UID',
+        'uprev.USR_UID'
+    );
+    $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
+  
+    $aConditions = array ();
+    $aConditions [] = array (
+        AppDelegationPeer::APP_UID,
+        'at.APP_UID'
+    );
+    $aConditions [] = array (
+        AppDelegationPeer::DEL_THREAD,
+        'at.APP_THREAD_INDEX'
+    );
+    $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
+  
+    $c->add (AppDelegationPeer::APP_UID, $aappUIDs, Criteria::IN );
+    //$c->add (AppDelegationPeer::DEL_INDEX, $delIndex);
+  
+    $c->add ('ctastitle.CON_CATEGORY', 'TAS_TITLE');
+    $c->add ('ctastitle.CON_LANG', 'en');
+  
+    $rs = AppDelegationPeer::doSelectRS ($c);
+    $rs->setFetchmode (ResultSet::FETCHMODE_ASSOC);
+    // echo $c->toString();
+    $rs->next ();
+    $row = $rs->getRow ();
+    
+    $appDataRows = array ();
+    while (is_array ($row)) {
+      $appDataRows [] = $row;
+      $rs->next ();
+      $row = $rs->getRow ();
+    }    
+  
+    return $appDataRows;
+  }
+    
   /**
    * Get the application delegation record from database
    *
@@ -789,6 +965,7 @@ class AppSolr
       // execute query
       $ListFieldsInfo = $searchIndex->getIndexFields ($this->_solrInstance);
       
+      //var_dump($ListFieldsInfo);
       // cache
       $oMemcache->set ('Solr_Index_Fields', $ListFieldsInfo);
     
@@ -874,14 +1051,8 @@ class AppSolr
             }
             if (! $found) {
               // error invalid text
-              throw new InvalidIndexSearchTextException ("Invalid search text. The date or phase is not completed"); // Expected
-                                                                                                                         // date
-                                                                                                                         // interval
-                                                                                                                         // format
-                                                                                                                         // =>
-                                                                                                                         // {variable_name}:[YYYY-MM-DDThh:mm:ssZ
-                                                                                                                         // TO
-                                                                                                                         // YYYY-MM-DDThh:mm:ssZ]
+              // Expected date interval format => {variable_name}:[YYYY-MM-DDThh:mm:ssZ TO YYYY-MM-DDThh:mm:ssZ]
+              throw new InvalidIndexSearchTextException ("Invalid search text. The date or phase is not completed"); 
             }
           }
         }
@@ -918,7 +1089,7 @@ class AppSolr
               // $toDateDatetime = new DateTime($toDateOriginal);
               // $toDateDatetime = date_create_from_format ( 'Y-m-d',
               // $toDateOriginal );
-              $toDate = gmdate ("Y-m-d\T00:00:00\Z", strtotime ($toDateOriginal));
+              $toDate = gmdate ("Y-m-d\T23:59:59.999\Z", strtotime ($toDateOriginal));
             }
             $searchText = ":[" . $fromDate . " TO " . $toDate . "]";
           }
@@ -1003,9 +1174,18 @@ class AppSolr
       }
       return;
     }
+    
+    if($this->debug)
+    {
+      $this->beforeCreateSolrXMLDocTime = microtime (true);
+    }    
     // create XML document
     $xmlDoc = $this->createSolrXMLDocument ($aaAPPUIDs);
-
+    
+    if($this->debug)
+    {
+      $this->afterCreateSolrXMLDocTime = microtime (true);
+    }
     // update document
     $data = array (
         'workspace' => $this->_solrInstance,
@@ -1020,15 +1200,30 @@ class AppSolr
 
     try{
       $oSearchIndex->updateIndexDocument ($oSolrUpdateDocument);
+      
+      if($this->debug)
+      {
+        $this->afterUpdateSolrXMLDocTime = microtime (true);
+      }      
       // commit changes
       $oSearchIndex->commitIndexChanges ($this->_solrInstance);
+      
     } 
     catch(Exception $ex) {
-	//print "Excepcion indexing data: " . $ex->getMessage() . "\n"; die;
+      //print "Excepcion indexing data: " . $ex->getMessage() . "\n"; die;
         $fh = fopen("./SolrIndexErrors.txt", 'a') or die("can't open file to store Solr index errors.");
         fwrite($fh, $ex->getMessage());
         fclose($fh);
     }
+    if($this->debug)
+    {
+      $this->afterCommitSolrDocTime = microtime (true);
+    
+      $fh = fopen("SolrIndexTime.txt", 'a') or die("can't open file to store Solr index time.");
+      //fwrite($fh, sprintf("Solr Query time: %s DB Query time: %s Prepare result time: %s \n", gmdate ('H:i:s:u', ($this->afterSolrQueryTime - $this->initTimeAll)), gmdate ('H:i:s:u', ($this->afterDbQueryTime - $this->afterSolrQueryTime)), gmdate ('H:i:s:u', ($this->afterPrepareResultTime - $this->afterDbQueryTime))  ));
+      fwrite($fh, sprintf("Solr Create XML Document time: %s Update Solr Document time: %s Commit Solr Changes time: %s Total:%s \r\n", ($this->afterCreateSolrXMLDocTime - $this->beforeCreateSolrXMLDocTime), ($this->afterUpdateSolrXMLDocTime - $this->afterCreateSolrXMLDocTime), ($this->afterCommitSolrDocTime - $this->afterUpdateSolrXMLDocTime), ($this->afterCommitSolrDocTime - $this->beforeCreateSolrXMLDocTime)  ));
+      fclose($fh);
+    }    
   }
   
   /**
@@ -1072,13 +1267,59 @@ class AppSolr
    */
   public function createSolrXMLDocument($aaAPPUIDs)
   {
+    if($this->debug)
+    {
+      $this->getApplicationDataDBTime = 0;
+      $this->getBuilXMLDocTime = 0;
+    }
     // search data from DB
     $xmlDoc = "<?xml version='1.0' encoding='UTF-8'?>\n";
     $xmlDoc .= "<add>\n";
-
+    
+    //get all application data from DB of all applications and delegations
+    $aAPPUIDs = array();
+    foreach($aaAPPUIDs as $aAPPUID) {
+      $aAPPUIDs[] =$aAPPUID ['APP_UID'];
+    }
+    if($this->debug)
+    {
+      $this->beforeGetApplicationDataDBTime = microtime (true);
+    }
+    $aaAllAppDelData = $this->getListApplicationUpdateDelegationData($aAPPUIDs);
+    if($this->debug)
+    {
+      $this->afterGetApplicationDataDBTime = microtime (true);
+    
+      $this->getApplicationDataDBTime = $this->afterGetApplicationDataDBTime - $this->beforeGetApplicationDataDBTime;
+    }
     foreach ($aaAPPUIDs as $aAPPUID) {
       try {
-        $result = $this->getApplicationIndexData ($aAPPUID ['APP_UID']);
+        
+        if($this->debug)
+        {
+          $this->beforePrepareApplicationDataDBTime = microtime (true);
+        }        
+        //filter data, include all the rows of the application
+        // get delegation data from DB
+        $aaAppData = array();
+        //filter data from db
+        $indexes = $this->aaSearchRecords ($aaAllAppDelData, array (
+            'APP_UID' => $aAPPUID ['APP_UID']
+        ));
+        
+        foreach ($indexes as $index) {
+          $aaAppData[] = $aaAllAppDelData [$index];
+        }        
+                
+        $result = $this->getApplicationIndexData ($aAPPUID ['APP_UID'], $aaAppData);
+        
+        if($this->debug)
+        {
+          $this->afterPrepareApplicationDataDBTime = microtime (true);
+        
+          $this->getPreparedApplicationDataDBTime = $this->afterPrepareApplicationDataDBTime - $this->beforePrepareApplicationDataDBTime;
+        }
+        
       }
       catch ( ApplicationWithoutDelegationRecordsException $ex ) {
         // exception trying to get application information
@@ -1116,11 +1357,19 @@ class AppSolr
       $unassignedGroups = $result [12];
 
       try {
+        
         // create document
         $xmlDoc .= $this->buildSearchIndexDocumentPMOS2 ($documentInformation, $dynaformFieldTypes, 
             $lastUpdateDate, $maxPriority, $assignedUsers, $assignedUsersRead, $assignedUsersUnread, 
             $draftUser, $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser, 
             $unassignedUsers, $unassignedGroups);
+        
+        if($this->debug)
+        {
+          $this->afterBuilXMLDocTime = microtime (true);
+          
+          $this->getBuilXMLDocTime += $this->afterBuilXMLDocTime - $this->afterGetApplicationDataDBTime; 
+        }        
       }
       catch ( ApplicationAPP_DATAUnserializeException $ex ) {
         // exception trying to get application information
@@ -1140,6 +1389,14 @@ class AppSolr
     }
     
     $xmlDoc .= "</add>\n";
+    
+    if($this->debug)
+    {
+      $fh = fopen("SolrIndexTime.txt", 'a') or die("can't open file to store Solr index time.");
+      fwrite($fh, sprintf("Get Data DB time: %s Prepare DB data Time: %s Create XML file time: %s \r\n", $this->getApplicationDataDBTime, $this->getPreparedApplicationDataDBTime, $this->getBuilXMLDocTime ));
+      fclose($fh);
+    }
+        
     return $xmlDoc;
   }
   
@@ -1525,6 +1782,8 @@ class AppSolr
    *
    * @param string $AppUID
    *          application identifier
+   * @param string $allAppDbData
+   *          array of rows (array) with application data
    * @throws ApplicationWithoutDelegationRecordsException
    * @return array array of arrays with the following information(
    *         $documentInformation,
@@ -1541,12 +1800,12 @@ class AppSolr
    *         $unassignedUsers,
    *         $unassignedGroups
    */
-  public function getApplicationIndexData($AppUID)
+  public function getApplicationIndexData($AppUID, $allAppDbData)
   {
     G::LoadClass ('memcached');
 
     // get all the application data
-    $allAppDbData = $this->getApplicationDelegationData ($AppUID);
+    //$allAppDbData = $this->getApplicationDelegationData ($AppUID);
     // check if the application record was found
     // this case occurs when the application doesn't have related delegation
     // records.
@@ -1719,17 +1978,16 @@ class AppSolr
     $oMemcache = PMmemcached::getSingleton ($this->_solrInstance);
     $dynaformFieldTypes = $oMemcache->get ($documentInformation ['PRO_UID']);
     if (! $dynaformFieldTypes) {
-
       G::LoadClass ('dynaformhandler');
       $dynaformFileNames = $this->getProcessDynaformFileNames ($documentInformation ['PRO_UID']);
       $dynaformFields = array ();
       foreach ($dynaformFileNames as $dynaformFileName) {
-          if (file_exists (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
+          if (is_file(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
              filesize(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') >0 ) {
           $dyn = new dynaFormHandler (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml');
           $dynaformFields [] = $dyn->getFields ();
         }
-        if (file_exists (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
+        if (is_file(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
              filesize(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') == 0 )  {
           
           throw new ApplicationWithCorruptDynaformException("Application with corrupt dynaform. APP_UID: " . $AppUID . "\n");
@@ -2034,6 +2292,120 @@ class AppSolr
     }
     return $allAppDbData;
   }
+  
+  /**
+   * Get application and delegation data from database
+   *
+   * @param string $aAppUID
+   *          array of application identifiers
+   * @return array of array of records from database
+   */
+  public function getListApplicationUpdateDelegationData($aaAppUIDs)
+  {
+  
+    $allAppDbData = array ();
+  
+    $c = new Criteria ();
+  
+    $c->addSelectColumn (ApplicationPeer::APP_UID);
+    $c->addSelectColumn (ApplicationPeer::APP_NUMBER);
+    $c->addSelectColumn (ApplicationPeer::APP_STATUS);
+    $c->addSelectColumn (ApplicationPeer::PRO_UID);
+    $c->addSelectColumn (ApplicationPeer::APP_CREATE_DATE);
+    $c->addSelectColumn (ApplicationPeer::APP_FINISH_DATE);
+    $c->addSelectColumn (ApplicationPeer::APP_UPDATE_DATE);
+    $c->addSelectColumn (ApplicationPeer::APP_DATA);
+  
+    $c->addAsColumn ('APP_TITLE', 'capp.CON_VALUE');
+    $c->addAsColumn ('PRO_TITLE', 'cpro.CON_VALUE');
+  
+    $c->addSelectColumn ('ad.DEL_INDEX');
+    $c->addSelectColumn ('ad.DEL_PREVIOUS');
+    $c->addSelectColumn ('ad.TAS_UID');
+    $c->addSelectColumn ('ad.USR_UID');
+    $c->addSelectColumn ('ad.DEL_TYPE');
+    $c->addSelectColumn ('ad.DEL_THREAD');
+    $c->addSelectColumn ('ad.DEL_THREAD_STATUS');
+    $c->addSelectColumn ('ad.DEL_PRIORITY');
+    $c->addSelectColumn ('ad.DEL_DELEGATE_DATE');
+    $c->addSelectColumn ('ad.DEL_INIT_DATE');
+    $c->addSelectColumn ('ad.DEL_TASK_DUE_DATE');
+    $c->addSelectColumn ('ad.DEL_FINISH_DATE');
+    $c->addSelectColumn ('ad.DEL_DURATION');
+    $c->addSelectColumn ('ad.DEL_QUEUE_DURATION');
+    $c->addSelectColumn ('ad.DEL_DELAY_DURATION');
+    $c->addSelectColumn ('ad.DEL_STARTED');
+    $c->addSelectColumn ('ad.DEL_FINISHED');
+    $c->addSelectColumn ('ad.DEL_DELAYED');
+    $c->addSelectColumn ('ad.APP_OVERDUE_PERCENTAGE');
+  
+    $c->addSelectColumn ('at.APP_THREAD_INDEX');
+    $c->addSelectColumn ('at.APP_THREAD_PARENT');
+    $c->addSelectColumn ('at.APP_THREAD_STATUS');
+  
+    $c->addAlias ('capp', 'CONTENT');
+    $c->addAlias ('cpro', 'CONTENT');
+    $c->addAlias ('ad', 'APP_DELEGATION');
+    $c->addAlias ('at', 'APP_THREAD');
+  
+    $aConditions = array ();
+    $aConditions [] = array (
+        ApplicationPeer::APP_UID,
+        'capp.CON_ID'
+    );
+    $aConditions [] = array (
+        'capp.CON_CATEGORY',
+        DBAdapter::getStringDelimiter () . 'APP_TITLE' . DBAdapter::getStringDelimiter ()
+    );
+    $aConditions [] = array (
+        'capp.CON_LANG',
+        DBAdapter::getStringDelimiter () . 'en' . DBAdapter::getStringDelimiter ()
+    );
+    $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
+  
+    $aConditions = array ();
+    $aConditions [] = array (
+        ApplicationPeer::PRO_UID,
+        'cpro.CON_ID'
+    );
+    $aConditions [] = array (
+        'cpro.CON_CATEGORY',
+        DBAdapter::getStringDelimiter () . 'PRO_TITLE' . DBAdapter::getStringDelimiter ()
+    );
+    $aConditions [] = array (
+        'cpro.CON_LANG',
+        DBAdapter::getStringDelimiter () . 'en' . DBAdapter::getStringDelimiter ()
+    );
+    $c->addJoinMC ($aConditions, Criteria::LEFT_JOIN);
+  
+    $c->addJoin (ApplicationPeer::APP_UID, 'ad.APP_UID', Criteria::JOIN);
+  
+    $aConditions = array ();
+    $aConditions [] = array (
+        'ad.APP_UID',
+        'at.APP_UID'
+    );
+    $aConditions [] = array (
+        'ad.DEL_THREAD',
+        'at.APP_THREAD_INDEX'
+    );
+    $c->addJoinMC ($aConditions, Criteria::JOIN);
+  
+    $c->add (ApplicationPeer::APP_UID, $aaAppUIDs, Criteria::IN);
+  
+    $rs = ApplicationPeer::doSelectRS ($c);
+    $rs->setFetchmode (ResultSet::FETCHMODE_ASSOC);
+  
+    $rs->next ();
+    $row = $rs->getRow ();
+  
+    while (is_array ($row)) {
+      $allAppDbData [] = $row;
+      $rs->next ();
+      $row = $rs->getRow ();
+    }
+    return $allAppDbData;
+  }  
   
   /**
    * Get the list of groups of unassigned users of the specified task from

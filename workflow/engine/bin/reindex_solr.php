@@ -28,7 +28,7 @@
 //(count ($argv) == 4) || ((count ($argv) == 5) && ($argv [3] != '-skip'))
 $commandLineSyntaxMsg = "Invalid command line arguments: \n " .
   "syntax: ".
-  "php reindex_solr.php [workspace_name] [reindexall|reindexmissing|optimizeindex] [-skip {record_number}] [-reindextrunksize {trunk_size}]\n" . 
+  "php reindex_solr.php [workspace_name] [reindexall|reindexmissing|optimizeindex|reindexone] [-skip {record_number}] [-reindextrunksize {trunk_size}] [-appuid {APP_UID}]\n" . 
   " Where \n".
   "       reindexall : reindex all the database. \n" . 
   "       reindexmissing: reindex only the missing records stored in database. \n".
@@ -39,7 +39,7 @@ $commandLineSyntaxMsg = "Invalid command line arguments: \n " .
   " -reindextrunksize {trunk_size}: specify the number of records sent to index each time. \n ex: -reindextrunksize 100 //(default = 1000) \n Reduce the trunk if using big documents, and memory is not enough. \n"; 
 
 if ( (count ($argv) < 3) || ((count ($argv) % 2) == 0) || 
-    ($argv [2] != 'reindexall' && $argv [2] != 'reindexmissing' && $argv [2] != 'optimizeindex')) {    
+    ($argv [2] != 'reindexall' && $argv [2] != 'reindexmissing' && $argv [2] != 'optimizeindex'  && $argv [2] != 'reindexone')) {    
   print $commandLineSyntaxMsg;
   die ();
 }
@@ -47,10 +47,11 @@ $workspaceName = $argv [1];
 $ScriptAction = $argv [2];
 $SkipRecords = 0;
 $TrunkSize = 1000;
+$appUid = "";
 //3 5 7
 if(count ($argv) > 3) {
   for($argNumber = 3 ; $argNumber < count ($argv) ; $argNumber += 2) {
-    if(($argv [$argNumber] == '-skip' || $argv [$argNumber] == '-reindextrunksize')) {
+    if(($argv [$argNumber] == '-skip' || $argv [$argNumber] == '-reindextrunksize' || $argv [$argNumber] == '-appuid')) {
       //get options
       if($argv [$argNumber] == '-skip') {
         //use skip option
@@ -59,7 +60,11 @@ if(count ($argv) > 3) {
       if($argv [$argNumber] == '-reindextrunksize') {
         //use skip option
         $TrunkSize = intval($argv [$argNumber + 1]);
-      }  
+      }
+      if($argv [$argNumber] == '-appuid') {
+        //use skip option
+        $appUid = $argv [$argNumber + 1];
+      }      
     }
     else {
       print $commandLineSyntaxMsg;
@@ -276,6 +281,7 @@ function processWorkspace()
   global $ScriptAction;
   global $SkipRecords;
   global $TrunkSize;
+  global $appUid;
   
   try {
     
@@ -295,6 +301,12 @@ function processWorkspace()
       }
       if ($ScriptAction == "optimizeindex") {
         $oAppSolr->optimizeSearchIndex ();
+      }
+      if($ScriptAction == "reindexone"){
+        if($appUid == ""){
+          print "Missing -appuid parameter. please complete it with this option.\n";
+        }
+        $oAppSolr->updateApplicationSearchIndex ($appUid);
       }
     }
     else {
