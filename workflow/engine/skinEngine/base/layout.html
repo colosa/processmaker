@@ -19,7 +19,7 @@
                   {if $user_logged neq ''}
                     {$msgVer}<label class="textBlue">{$userfullname} <a href="../users/myInfo">{$user}</a> | </label>
                     {if $switch_interface}
-                    <label class="textBlue"><a href="../../uxs/home">{$switch_interface_label}</a> | </label>                   
+                    <label class="textBlue"><a href="../../uxs/home">{$switch_interface_label}</a> | </label>
                     {/if}
                     <a href="{$linklogout}" class="tableOption">{$logout}</a>&nbsp;&nbsp;<br/>
                     <label class="textBlack"><b>{$rolename}</b> {$workspace_label} <b><u>{$workspace}</u></b> &nbsp; &nbsp; <br/>
@@ -65,7 +65,6 @@
           </table>
         </td>
       </tr>
-      {if $footer neq ''}
       <tr height="100%">
         <td height="100%">
           <div class="Footer">
@@ -73,7 +72,6 @@
           </div>
         </td>
       </tr>
-      {/if}
     </table>
   </body>
 </html>
