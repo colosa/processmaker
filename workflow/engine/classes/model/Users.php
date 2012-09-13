@@ -228,13 +228,11 @@ public function userExists($UsrUid)
   }
 
   function loadByUsernameInArray($sUsername){
-    echo $sUsername;
     $c  = $this->loadByUsername($sUsername);
     $rs = UsersPeer::doSelectRS($c);
     $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $rs->next();
     $row = $rs->getRow();
-    print_r($row);
     return $row;
   }
 

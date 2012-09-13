@@ -60,12 +60,15 @@ try {
             //The user is inactive
             case -3:
                 require_once 'classes/model/Users.php';
-                $user = new Users;
+                $user = new Users();
                 $aUser = $user->loadByUsernameInArray($usr);
 
                 switch ($aUser['USR_STATUS']) {
                     case 'VACATION':
-                        $errLabel = 'ID_USER_ONVACATION';
+                        $uid = $aUser['USR_UID'];
+                        $RBAC->changeUserStatus($uid, 1);
+                        $aUser['USR_STATUS'] = 'ACTIVE';
+                        $user->update($aUser);
                         break;
                     case 'INACTIVE':
                         $errLabel = 'ID_USER_INACTIVE';

@@ -214,7 +214,7 @@ try {
     case 'changeUserStatus':
        $response = new stdclass();
        if (isset($_REQUEST['USR_UID']) && isset($_REQUEST['NEW_USR_STATUS'])) {
-         $RBAC->changeUserStatus($_REQUEST['USR_UID'], $_REQUEST['NEW_USR_STATUS']);
+         $RBAC->changeUserStatus($_REQUEST['USR_UID'], ($_REQUEST['NEW_USR_STATUS'] == 'ACTIVE' ? 1 : 0));
          require_once 'classes/model/Users.php';
          $userInstance = new Users();
          $userData = $userInstance->load($_REQUEST['USR_UID']);
