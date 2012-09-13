@@ -406,7 +406,6 @@ switch($_POST['action'])
     $_SESSION['CURRENT_USER'] = $_POST['USR_UID'];
     $oUser                    = new Users();
     $aFields                  = $oUser->loadDetailed($_POST['USR_UID']);
-    $aFields['USR_STATUS']    = G::LoadTranslation('ID_' . $aFields['USR_STATUS']);
 
     //Load Calendar options and falue for this user
     G::LoadClass ( 'calendar' );

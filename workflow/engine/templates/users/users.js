@@ -1161,7 +1161,7 @@ function loadUserData()
                 USR_POSITION  : data.user.USR_POSITION,
                 USR_DUE_DATE  : data.user.USR_DUE_DATE,
                 USR_STATUS    : data.user.USR_STATUS
-            })
+            });
 
             if (infoMode) {
                 Ext.getCmp("USR_FIRSTNAME2").setText(data.user.USR_FIRSTNAME);
@@ -1179,7 +1179,7 @@ function loadUserData()
                 Ext.getCmp("USR_POSITION2").setText(data.user.USR_POSITION);
                 Ext.getCmp("USR_REPLACED_BY2").setText(data.user.REPLACED_NAME);
                 Ext.getCmp("USR_DUE_DATE2").setText(data.user.USR_DUE_DATE);
-                Ext.getCmp("USR_STATUS2").setText(data.user.USR_STATUS);
+                Ext.getCmp("USR_STATUS2").setText(_('ID_' + data.user.USR_STATUS));
                 Ext.getCmp("USR_ROLE2").setText(data.user.USR_ROLE);
 
                 Ext.getCmp("PREF_DEFAULT_MAIN_MENU_OPTION2").setText(data.user.MENUSELECTED_NAME);
