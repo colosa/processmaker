@@ -217,7 +217,7 @@ class UsersProperties extends BaseUsersProperties
     $urlUx = $this->_getUXSkinVariant();
     if (empty($url) && !empty($urlUx)) {
       $_SESSION['_defaultUserLocation'] = $url;
-      $url = $urlUx;  
+      $url = $urlUx;
     }
 
     if (empty($url)) {
@@ -261,9 +261,45 @@ class UsersProperties extends BaseUsersProperties
     $url = '';
 
     if (substr(SYS_SKIN, 0, 2) == 'ux' && SYS_SKIN != 'uxs') {
-      $url = '/sys' .  SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/main';
+        $url = '/sys' .  SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/main';
+        global $RBAC;
+        G::loadClass('configuration');
+        $oConf = new Configurations;
+        $oConf->loadConfig($x, 'USER_PREFERENCES','','',$_SESSION['USER_LOGGED'],'');
+        if ( sizeof($oConf->aConfig) > 0) {
+            if ($oConf->aConfig['DEFAULT_MENU'] == 'PM_USERS') {
+                $oConf->aConfig['DEFAULT_MENU'] = 'PM_SETUP';
+            }
+            switch ($oConf->aConfig['DEFAULT_MENU']) {
+                case 'PM_SETUP':
+                    if ($RBAC->userCanAccess('PM_SETUP') == 1) {
+                        $getUrl = 'admin';
+                    }
+                    break;
+                case 'PM_FACTORY':
+                    if ($RBAC->userCanAccess('PM_FACTORY') == 1) {
+                        $getUrl = 'designer';
+                    }
+                    break;
+                case 'PM_CASES':
+                    if ($RBAC->userCanAccess('PM_CASES') == 1) {
+                        $getUrl = 'home';
+                    }
+                    break;
+                case 'PM_USERS':
+                    if ($RBAC->userCanAccess('PM_USERS') == 1) {
+                        $getUrl = 'admin';
+                    }
+                    break;
+                case 'PM_DASHBOARD':
+                    if ($RBAC->userCanAccess('PM_DASHBOARD') == 1) {
+                        $getUrl = 'dashboard';
+                    }
+                    break;
+            }
+            $url = $url."?st=".$getUrl;
+        }
     }
-
     return $url;
   }
 
@@ -351,39 +387,37 @@ class UsersProperties extends BaseUsersProperties
     
     if( sizeof($oConf->aConfig) > 0) { // this user has a configuration record
       // backward compatibility, because now, we don't have user and dashboard menu.
-      if ($oConf->aConfig['DEFAULT_MENU'] == 'PM_USERS')     
-        $oConf->aConfig['DEFAULT_MENU'] = 'PM_SETUP';
-      
-      if ($oConf->aConfig['DEFAULT_MENU'] == 'PM_DASHBOARD') 
-        $oConf->aConfig['DEFAULT_MENU'] = 'PM_SETUP';
-      
-      switch($oConf->aConfig['DEFAULT_MENU']) {
-        case 'PM_SETUP':
-          if ($RBAC->userCanAccess('PM_SETUP') == 1) {
-            $url = 'setup/main';
-          }
-          break;
-        case 'PM_FACTORY':
-          if ($RBAC->userCanAccess('PM_FACTORY') == 1) {
-            $url = 'processes/main';
-          }
-          break;
-        case 'PM_CASES':
-          if ($RBAC->userCanAccess('PM_CASES') == 1) {
-            $url = 'cases/main';
-          }
-          break;
-        case 'PM_USERS':
-          if ($RBAC->userCanAccess('PM_USERS') == 1) {
-            $url = 'setup/main';
-          }
-          break;
-        case 'PM_DASHBOARD':
-          if ($RBAC->userCanAccess('PM_DASHBOARD') == 1) {
-            $url = 'dashboard/dashboard';
-          }
-          break;
-      }
+        if ($oConf->aConfig['DEFAULT_MENU'] == 'PM_USERS') {
+            $oConf->aConfig['DEFAULT_MENU'] = 'PM_SETUP';
+        }
+        
+        switch ($oConf->aConfig['DEFAULT_MENU']) {
+            case 'PM_SETUP':
+                if ($RBAC->userCanAccess('PM_SETUP') == 1) {
+                    $url = 'setup/main';
+                }
+                break;
+            case 'PM_FACTORY':
+                if ($RBAC->userCanAccess('PM_FACTORY') == 1) {
+                    $url = 'processes/main';
+                }
+                break;
+            case 'PM_CASES':
+                if ($RBAC->userCanAccess('PM_CASES') == 1) {
+                    $url = 'cases/main';
+                }
+                break;
+            case 'PM_USERS':
+                if ($RBAC->userCanAccess('PM_USERS') == 1) {
+                    $url = 'setup/main';
+                }
+                break;
+            case 'PM_DASHBOARD':
+                if ($RBAC->userCanAccess('PM_DASHBOARD') == 1) {
+                    $url = 'dashboard/main';
+                }
+                break;
+        }
     }
 
     if (empty($url)) {

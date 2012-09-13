@@ -672,6 +672,14 @@ Ext.onReady(function () {
     mode          : "local"
   });
 
+    comboDefaultCasesMenuOption.disable();
+    comboDefaultMainMenuOption.on('select',function(cmb,record,index) {
+        comboDefaultCasesMenuOption.disable();
+        if (record.get('id') == 'PM_CASES') {
+            comboDefaultCasesMenuOption.enable();
+        }
+    },this);
+
   var preferencesFields = new Ext.form.FieldSet({
     title : _('ID_PREFERENCES'),
     // for display or not a preferences FieldSet

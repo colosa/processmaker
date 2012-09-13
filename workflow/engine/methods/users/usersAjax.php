@@ -358,7 +358,7 @@ switch($_POST['action'])
         /* Saving preferences */
         $def_lang       = $form['PREF_DEFAULT_LANG'];
         $def_menu       = $form['PREF_DEFAULT_MENUSELECTED'];
-        $def_cases_menu = $form['PREF_DEFAULT_CASES_MENUSELECTED'];
+        $def_cases_menu = isset($form['PREF_DEFAULT_CASES_MENUSELECTED']) ? $form['PREF_DEFAULT_CASES_MENUSELECTED'] : '';
 
         G::loadClass('configuration');
 
@@ -451,24 +451,28 @@ switch($_POST['action'])
 
     $menuSelected = '';
 
-    if ($aFields['PREF_DEFAULT_MENUSELECTED'] != ''){
-      foreach ( $RBAC->aUserInfo['PROCESSMAKER']['PERMISSIONS'] as $permission ) {
-        if($aFields['PREF_DEFAULT_MENUSELECTED']==$permission['PER_CODE']){
-          switch($permission['PER_CODE']){
-            case 'PM_USERS' :
-            case 'PM_SETUP' :
-               $menuSelected = strtoupper(G::LoadTranslation('ID_SETUP'));
-            break;
-            case 'PM_CASES' :
-              $menuSelected = strtoupper(G::LoadTranslation('ID_CASES'));
-            break;
-            case 'PM_FACTORY' :
-              $menuSelected = strtoupper(G::LoadTranslation('ID_APPLICATIONS'));
-            break;
-          }
+    if ($aFields['PREF_DEFAULT_MENUSELECTED'] != '') {
+        foreach ( $RBAC->aUserInfo['PROCESSMAKER']['PERMISSIONS'] as $permission ) {
+            if ($aFields['PREF_DEFAULT_MENUSELECTED']==$permission['PER_CODE']) {
+                switch ($permission['PER_CODE']) {
+                    case 'PM_USERS' :
+                    case 'PM_SETUP' :
+                        $menuSelected = strtoupper(G::LoadTranslation('ID_SETUP'));
+                        break;
+                    case 'PM_CASES' :
+                        $menuSelected = strtoupper(G::LoadTranslation('ID_CASES'));
+                        break;
+                    case 'PM_FACTORY' :
+                        $menuSelected = strtoupper(G::LoadTranslation('ID_APPLICATIONS'));
+                        break;
+                    case 'PM_DASHBOARD':
+                        $menuSelected = strtoupper(G::LoadTranslation('ID_DASHBOARD'));
+                        break;
+                }
+            }
         }
-      }
     }
+    
 
     $aFields['MENUSELECTED_NAME'] =  $menuSelected;
 
@@ -508,6 +512,9 @@ switch($_POST['action'])
         break;
         case 'PM_FACTORY':
            $rows[] = Array('id'=>'PM_FACTORY', 'name'=>strtoupper(G::LoadTranslation('ID_APPLICATIONS')));
+        break;
+        case 'PM_DASHBOARD':
+           $rows[] = Array('id'=>'PM_DASHBOARD', 'name'=>strtoupper(G::LoadTranslation('ID_DASHBOARD')));
         break;
       }
     }
