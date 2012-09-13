@@ -455,7 +455,7 @@ DeletePMTable = function() {
       if (btn == "yes") {
         Ext.Msg.show({
           title : '',
-          msg : _('ID_REMOVING_SELECTD_TABLES'),
+          msg : _('ID_REMOVING_SELECTED_TABLES'),
           wait:true,
           waitConfig: {interval:500}
         });
