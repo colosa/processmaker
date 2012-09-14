@@ -203,7 +203,6 @@ class headPublisher {
 
     $this->addScriptFile ( "/js/widgets/js-calendar/unicode-letter.js" );
     $this->addScriptFile ( "/js/widgets/js-calendar/lang/".$sysLang.".js" );
-    $this->addScriptFile ( "/js/widgets/js-calendar/lang/en.js" );
 
     $head = '';
     $head .= '<TITLE>' . $this->title . "</TITLE>\n";
