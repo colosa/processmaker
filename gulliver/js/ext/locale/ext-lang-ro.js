@@ -288,6 +288,13 @@ if(Ext.grid.PropertyColumnModel){
   });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Salva";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Anula";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Salva";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Anula";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "Trage pentru redimensionare.",

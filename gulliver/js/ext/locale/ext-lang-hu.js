@@ -289,6 +289,13 @@ if(Ext.grid.PropertyColumnModel){
   });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Kivéve";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Töröl";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Kivéve";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Töröl";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
   Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
     splitTip            : "Átméretezés húzásra.",

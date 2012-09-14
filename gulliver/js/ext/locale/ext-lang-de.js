@@ -298,6 +298,13 @@ if(Ext.grid.PropertyColumnModel){
   });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Speichern";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Abbrechen";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Speichern";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Abbrechen";
+}
+
 if(Ext.grid.BooleanColumn){
    Ext.apply(Ext.grid.BooleanColumn.prototype, {
       trueText  : "wahr",

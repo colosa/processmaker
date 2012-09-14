@@ -173,6 +173,13 @@ if(Ext.grid.PropertyColumnModel){
    });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "lưu";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "hủy bỏ";
+  Ext.ux.grid.RowEditor.prototype.saveText = "lưu";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "hủy bỏ";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "Kéo giữ chuột để thay đổi kích thước.",

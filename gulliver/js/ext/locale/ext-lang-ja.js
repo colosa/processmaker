@@ -289,6 +289,13 @@ if(Ext.grid.PropertyColumnModel){
   });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "保存";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "キャンセル";
+  Ext.ux.grid.RowEditor.prototype.saveText = "保存";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "キャンセル";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
   Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
     splitTip            : "ドラッグするとリサイズできます。",

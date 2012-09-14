@@ -295,6 +295,13 @@ if(Ext.grid.PropertyColumnModel){
    });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Salvar";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Cancelar";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Salvar";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Cancelar";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "Arraste para redimensionar.",

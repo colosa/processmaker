@@ -170,6 +170,13 @@ if(Ext.grid.PropertyColumnModel){
     });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "保存";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "取消";
+  Ext.ux.grid.RowEditor.prototype.saveText = "保存";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "取消";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
     Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
        splitTip            : "拖曳縮放大小.",

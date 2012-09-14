@@ -169,6 +169,13 @@ if(Ext.grid.PropertyColumnModel){
    });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Shrani";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Nadoknaditi";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Shrani";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Nadoknaditi";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "Potegni za razširitev.",

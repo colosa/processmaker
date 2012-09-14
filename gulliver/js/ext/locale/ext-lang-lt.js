@@ -277,7 +277,7 @@ if(Ext.form.HtmlEditor){
 if(Ext.form.BasicForm){
   Ext.form.BasicForm.prototype.waitTitle = "Palaukite...";
 }
-  
+
 if(Ext.grid.GridView){
   Ext.apply(Ext.grid.GridView.prototype, {
     sortAscText  : "Rūšiuoti didėjančia tvarka",
@@ -304,6 +304,13 @@ if(Ext.grid.PropertyColumnModel){
   });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Išgelbėti";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Atšaukti";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Išgelbėti";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Atšaukti";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
   Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
     splitTip            : "Patraukite juostelę.",
@@ -320,13 +327,13 @@ if(Ext.form.TimeField){
     altFormats : "g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|ha|gA|h a|g a|g A|gi|hi|gia|hia|g|H"
   });
 }
-			
+
 if(Ext.form.CheckboxGroup){
   Ext.apply(Ext.form.CheckboxGroup.prototype, {
     blankText : "Jūs turite padaryti bent vieną pasirinkimą šioje grupėje"
   });
 }
-	
+
 if(Ext.form.RadioGroup){
   Ext.apply(Ext.form.RadioGroup.prototype, {
       blankText : "Jūs turite padaryti bent vieną pasirinkimą šioje grupėje"

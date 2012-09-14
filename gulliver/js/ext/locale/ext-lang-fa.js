@@ -265,6 +265,13 @@ if(Ext.grid.PropertyColumnModel){
    });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "ذخیره";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "لغو کردن";
+  Ext.ux.grid.RowEditor.prototype.saveText = "ذخیره";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "لغو کردن";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "درگ برای تغییر اندازه.",

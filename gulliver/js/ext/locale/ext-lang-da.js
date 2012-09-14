@@ -8,8 +8,8 @@
  * Danish translation
  * By JohnF
  * 04-09-2007, 05:28 AM
- * 
- * Extended and modified by Karl Krukow, 
+ *
+ * Extended and modified by Karl Krukow,
  * December, 2007.
  */
 
@@ -112,7 +112,7 @@ if(Ext.DatePicker){
       disabledDaysText  : "",
       disabledDatesText : "",
       monthNames        : Date.monthNames,
-      dayNames          : Date.dayNames,      
+      dayNames          : Date.dayNames,
       nextText          : 'Næste måned (Ctrl + højre piltast)',
       prevText          : 'Forrige måned (Ctrl + venstre piltast)',
       monthYearText     : 'Vælg en måned (Ctrl + op/ned pil for at ændre årstal)',
@@ -287,6 +287,13 @@ if(Ext.grid.PropertyColumnModel){
       valueText  : "Værdi",
       dateFormat : "j/m/Y"
    });
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Gem";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Annuller";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Gem";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Annuller";
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){

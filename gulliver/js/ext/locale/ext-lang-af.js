@@ -177,6 +177,13 @@ if(Ext.grid.PropertyColumnModel){
     });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Slaan";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Kanselleer";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Slaan";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Kanselleer";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
     Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
        splitTip            : "Trek om grootte aan te pas.",

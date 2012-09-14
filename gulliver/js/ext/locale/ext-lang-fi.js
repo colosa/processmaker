@@ -295,6 +295,13 @@ if(Ext.grid.PropertyColumnModel){
   });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Tallenna";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Peruuta";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Tallenna";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Peruuta";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
   Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
     splitTip            : "Muuta kokoa vetämällä.",

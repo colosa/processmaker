@@ -303,6 +303,13 @@ if(Ext.grid.PropertyColumnModel){
    });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Uložit";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Zrušit";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Uložit";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Zrušit";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "Tahem změnit velikost.",

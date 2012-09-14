@@ -259,6 +259,13 @@ if(Ext.grid.PropertyColumnModel){
    });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "저장";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "취소";
+  Ext.ux.grid.RowEditor.prototype.saveText = "저장";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "취소";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "크기변경을 위해 드래그하세요.",

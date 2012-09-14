@@ -285,6 +285,13 @@ if(Ext.grid.PropertyColumnModel){
   });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "להציל";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "לבטל";
+  Ext.ux.grid.RowEditor.prototype.saveText = "להציל";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "לבטל";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
   Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
     splitTip            : ".���� ������ ����",

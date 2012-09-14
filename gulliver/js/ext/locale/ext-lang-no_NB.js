@@ -8,7 +8,7 @@
  *
  * Norwegian translation (Bokmål: no-NB)
  * By Tore Kjørsvik 21-January-2008
- *  
+ *
  */
 
 Ext.UpdateManager.defaults.indicatorText = '<div class="loading-indicator">Laster...</div>';
@@ -285,6 +285,13 @@ if(Ext.grid.PropertyColumnModel){
     valueText  : "Verdi",
     dateFormat : "d.m.Y"
   });
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Lagre";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Avbryt";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Lagre";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Avbryt";
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){

@@ -305,6 +305,13 @@ if(Ext.grid.PropertyColumnModel){
   });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "экономить";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "отменить";
+  Ext.ux.grid.RowEditor.prototype.saveText = "экономить";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "отменить";
+}
+
 if(Ext.SplitLayoutRegion){
   Ext.apply(Ext.SplitLayoutRegion.prototype, {
     splitTip            : "Тяните для изменения размера.",

@@ -8,7 +8,7 @@
  * Simplified Chinese translation
  * By DavidHu
  * 09 April 2007
- * 
+ *
  * update by andy_ghg
  * 2009-10-22 15:00:57
  */
@@ -253,6 +253,13 @@ if(Ext.grid.PropertyColumnModel){
       valueText  : "值",
       dateFormat : "y年m月d日"
    });
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "保存";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "取消";
+  Ext.ux.grid.RowEditor.prototype.saveText = "保存";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "取消";
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){

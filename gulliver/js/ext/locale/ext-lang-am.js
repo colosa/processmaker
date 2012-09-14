@@ -72,7 +72,7 @@ Date.monthNumbers = {
   "ሚያዚያ" : 7,
   "ግንቦት" : 8,
   "ሰኔ" : 9,
-  "ሐምሌ" : 10,  
+  "ሐምሌ" : 10,
   "ነሃሴ" : 11,
   "ጷግሜ" : 12
 };
@@ -307,6 +307,13 @@ if(Ext.grid.PropertyColumnModel){
     trueText: "እሙን",
     falseText: "ሐሰት"
   });
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "አዳነ";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "አፈረሰ";
+  Ext.ux.grid.RowEditor.prototype.saveText = "አዳነ";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "አፈረሰ";
 }
 
 if(Ext.grid.BooleanColumn){

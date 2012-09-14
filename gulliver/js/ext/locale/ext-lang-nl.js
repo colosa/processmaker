@@ -294,6 +294,13 @@ if(Ext.grid.PropertyColumnModel){
   });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Besparen";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Annuleren";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Besparen";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Annuleren";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
   Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
     splitTip: 'Sleep om grootte aan te passen.',

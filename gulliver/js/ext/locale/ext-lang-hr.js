@@ -12,7 +12,7 @@
  * By Stjepan at gmail dot com (utf8 encoding)
  * 17 May 2008
  */
- 
+
 Ext.UpdateManager.defaults.indicatorText = '<div class="loading-indicator">Učitavanje...</div>';
 
 if(Ext.View){
@@ -119,7 +119,7 @@ if(Ext.DatePicker){
       todayTip          : "{0} (Razmaknica)",
       format            : "d.m.y",
       okText            : "&#160;U redu&#160;",
-      cancelText        : "Odustani",      
+      cancelText        : "Odustani",
       startDay 		: 1
    });
 }
@@ -286,6 +286,13 @@ if(Ext.grid.PropertyColumnModel){
       valueText  : "Vrijednost",
       dateFormat : "d.m.Y"
    });
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Spasiti";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Otkazati";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Spasiti";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Otkazati";
 }
 
 if(Ext.layout.BorderLayout.SplitRegion){

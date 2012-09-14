@@ -167,6 +167,13 @@ if(Ext.grid.PropertyColumnModel){
    });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Αποθήκευση";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Ακύρωση";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Αποθήκευση";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Ακύρωση";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "Óýñåôå ãéá áëëáãÞ ìåãÝèïõò.",

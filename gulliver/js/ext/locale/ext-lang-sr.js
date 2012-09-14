@@ -172,6 +172,13 @@ if(Ext.grid.PropertyColumnModel){
    });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "уштедети";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "отказати";
+  Ext.ux.grid.RowEditor.prototype.saveText = "уштедети";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "отказати";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "Povući za izmenu veličine.",

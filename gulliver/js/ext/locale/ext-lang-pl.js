@@ -88,7 +88,7 @@ Date.getShortDayName = function(day) {
 		case 2: return 'wt';
 		case 3: return 'śr';
 		case 4: return 'czw';
-		case 5: return 'pt';				
+		case 5: return 'pt';
 		case 6: return 'sob';
                 default: return '';
 	}
@@ -294,6 +294,13 @@ if(Ext.grid.PropertyColumnModel){
 	    valueText	: "Wartość",
 		dateFormat	: "Y-m-d"
 	});
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Uratować";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Anulować";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Uratować";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Anulować";
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){

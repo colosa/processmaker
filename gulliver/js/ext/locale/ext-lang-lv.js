@@ -169,6 +169,13 @@ if(Ext.grid.PropertyColumnModel){
    });
 }
 
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Glābt";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Atsaukt";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Glābt";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Atsaukt";
+}
+
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
       splitTip            : "Velc, lai mainītu izmēru.",

@@ -8,7 +8,7 @@
  * List compiled by mystix on the extjs.com forums.
  * Thank you Mystix!
  */
- 
+
  /*  Slovak Translation by Michal Thomka
   *  14 April 2007
   */
@@ -172,6 +172,13 @@ if(Ext.grid.PropertyColumnModel){
       valueText  : "Hodnota",
       dateFormat : "d.m.Y"
    });
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Ustriehnuť";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Odhlásiť";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Ustriehnuť";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Odhlásiť";
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){

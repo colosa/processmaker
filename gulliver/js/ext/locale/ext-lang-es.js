@@ -9,7 +9,7 @@
  * Revised by efege, 2007-04-15.
  * Revised by Rafaga2k 10-01-2007 (mm/dd/yyyy)
  * Revised by FeDe 12-13-2007 (mm/dd/yyyy)
- * Synchronized with 2.2 version of ext-lang-en.js (provided by Condor 8 aug 2008) 
+ * Synchronized with 2.2 version of ext-lang-en.js (provided by Condor 8 aug 2008)
  *     by halkon_polako 14-aug-2008
  */
 
@@ -287,6 +287,13 @@ if(Ext.grid.PropertyColumnModel){
     valueText  : "Valor",
     dateFormat : "j/m/Y"
   });
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Guardar";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Cancelar";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Guardar";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Cancelar";
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){

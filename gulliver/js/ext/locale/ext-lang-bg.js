@@ -9,7 +9,7 @@
  *
  * By Георги Костадинов, Калгари, Канада
  * 10 October 2007
- * By Nedko Penev 
+ * By Nedko Penev
  * 26 October 2007
  *
  * (utf-8 encoding)
@@ -269,6 +269,13 @@ if(Ext.grid.PropertyColumnModel){
     valueText  : "Стойност",
     dateFormat : "d.m.Y"
   });
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Запази";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Отказ";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Запази";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Отказ";
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){

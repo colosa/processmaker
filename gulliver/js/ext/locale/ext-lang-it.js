@@ -8,7 +8,7 @@
  * Italian translation
  * By eric_void
  * 04-10-2007, 11:25 AM
- * Updated by Federico Grilli 21/12/2007 
+ * Updated by Federico Grilli 21/12/2007
  */
 
 Ext.UpdateManager.defaults.indicatorText = '<div class="loading-indicator">Caricamento in corso...</div>';
@@ -287,6 +287,13 @@ if(Ext.grid.PropertyColumnModel){
       valueText  : "Valore",
       dateFormat : "j/m/Y"
    });
+}
+
+if (Ext.ux.grid.RowEditor) {
+  Ext.ux.grid.RowEditor.prototype.saveBtnText = "Salvare";
+  Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Annullare";
+  Ext.ux.grid.RowEditor.prototype.saveText = "Salvare";
+  Ext.ux.grid.RowEditor.prototype.cancelText = "Annullare";
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
