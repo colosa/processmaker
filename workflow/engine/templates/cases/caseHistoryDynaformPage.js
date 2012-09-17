@@ -1,9 +1,9 @@
 /*
  * @author: Douglas Medrano
- * May 03, 2011 
- */ 
+ * May 03, 2011
+ */
     md5 = function(s,raw,hexcase,chrsz){
-      raw = raw || false;	
+      raw = raw || false;
       hexcase = hexcase || false;
       chrsz = chrsz || 8;
         function safe_add(x, y){
@@ -29,7 +29,7 @@
         function md5_ii(a, b, c, d, x, s, t){
          return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
         }
-       
+
         function core_md5(x, len){
           x[len >> 5] |= 0x80 << ((len) % 32);
           x[(((len + 64) >>> 9) << 4) + 14] = len;
@@ -129,7 +129,7 @@
             }
           return str;
         }
-        
+
         function binl2hex(binarray){
           var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
           var str = "";
@@ -140,30 +140,30 @@
         }
       return (raw ? binl2str(core_md5(str2binl(s), s.length * chrsz)) : binl2hex(core_md5(str2binl(s), s.length * chrsz))	);
     };
-    
+
     function ajaxPostRequest(url, callback_function, id){
       var d = new Date();
       var time = d.getTime();
       url= url + '&nocachetime='+time;
-      var return_xml=false;    
+      var return_xml=false;
       var http_request = false;
-      
+
         if (window.XMLHttpRequest){ // Mozilla, Safari,...
           http_request = new XMLHttpRequest();
             if (http_request.overrideMimeType){
-              http_request.overrideMimeType('text/xml'); 
+              http_request.overrideMimeType('text/xml');
             }
         }
         else if (window.ActiveXObject){// IE
           try{
             http_request = new ActiveXObject("Msxml2.XMLHTTP");
-          } 
+          }
           catch (e){
               try{
                 http_request = new ActiveXObject("Microsoft.XMLHTTP");
               }
               catch (e){
-               
+
               }
           }
         }
@@ -171,17 +171,17 @@
           alert('This browser is not supported.');
           return false;
         }
-        
+
         http_request.onreadystatechange = function(){
             if (http_request.readyState == 4){
                 if (http_request.status == 200){
                     if (return_xml){
                       eval(callback_function + '(http_request.responseXML)');
                     }
-                    else{		               	
-                      eval(callback_function + '(http_request.responseText, \''+id+'\')');			
+                    else{
+                      eval(callback_function + '(http_request.responseText, \''+id+'\')');
                     }
-                } 
+                }
                 else{
                   alert('Error found on request:(Code: ' + http_request.status + ')');
                 }
@@ -189,8 +189,8 @@
         }
       http_request.open('GET', url, true);
       http_request.send(null);
-    }   
- 
+    }
+
   var processesGrid;
   var store;
 
@@ -202,7 +202,7 @@
           table.style.display = '';
         }
     }
-    
+
     new Ext.KeyMap(
       document,
       {
@@ -225,90 +225,90 @@
     Ext.onReady(function(){
       Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
       Ext.QuickTips.init();
-      
+
       historyDynaformGrid();
-    
+
     });
-  
+
   var historyDynaformGridPreviewGlobal = {};
       historyDynaformGridPreviewGlobal.DYN_UID = '';
       historyDynaformGridPreviewGlobal.DYN_TITLE = '';
-  
-  function historyDynaformGridPreview(){    
+
+  function historyDynaformGridPreview(){
     //historyDynaformGridPreviewGlobalSystem
     var DYN_UID = historyDynaformGridPreviewGlobal.DYN_UID;
     var DYN_TITLE = historyDynaformGridPreviewGlobal.DYN_TITLE;
-    
+
     var tabData = Ext.util.JSON.encode(historyDynaformGridPreviewGlobal);
     var tabName = 'historyDynaformGridPreview_'+DYN_UID;
     var tabTitle = 'Preview('+DYN_TITLE+')';
-    
-    window.parent.ActionTabFrameGlobal.tabData = tabData;    
+
+    window.parent.ActionTabFrameGlobal.tabData = tabData;
     window.parent.ActionTabFrameGlobal.tabName = tabName;
     window.parent.ActionTabFrameGlobal.tabTitle = tabTitle;
-    
+
     window.parent.Actions.tabFrame(tabName);
-  }  
+  }
   var historyDynaformGridHistoryGlobal = {};
       historyDynaformGridHistoryGlobal.PRO_UID = '';
       historyDynaformGridHistoryGlobal.APP_UID = '';
       historyDynaformGridHistoryGlobal.TAS_UID = '';
       historyDynaformGridHistoryGlobal.DYN_UID = '';
       historyDynaformGridHistoryGlobal.DYN_TITLE = '';
-  
+
   function historyDynaformGridHistory(){
     //historyDynaformGridGlobal
-    historyDynaformGridGlobal.ref = historyDynaformGridGlobal.ref;    
+    historyDynaformGridGlobal.ref = historyDynaformGridGlobal.ref;
     //!historyDynaformGridGlobalSystem
     var ref = historyDynaformGridGlobal.ref;
-    
+
     //historyDynaformGridHistoryGlobalSystem
     var PRO_UID = historyDynaformGridHistoryGlobal.PRO_UID;
     var APP_UID = historyDynaformGridHistoryGlobal.APP_UID;
     var TAS_UID = historyDynaformGridHistoryGlobal.TAS_UID;
     var DYN_UID = historyDynaformGridHistoryGlobal.DYN_UID;
-    var DYN_TITLE = historyDynaformGridHistoryGlobal.DYN_TITLE;   
+    var DYN_TITLE = historyDynaformGridHistoryGlobal.DYN_TITLE;
 
-    
+
     var idUnique = md5(PRO_UID+APP_UID+TAS_UID+DYN_UID);
-   console.log(window.content);
-    
+   //console.log(window.content);
+
     var tabData = Ext.util.JSON.encode(historyDynaformGridHistoryGlobal);
     var tabName = 'historyDynaformGridHistory_'+idUnique;
     var tabTitle = 'Change Log('+DYN_TITLE+')';
-    
-    window.parent.ActionTabFrameGlobal.tabData = tabData;    
+
+    window.parent.ActionTabFrameGlobal.tabData = tabData;
     window.parent.ActionTabFrameGlobal.tabName = tabName;
-    window.parent.ActionTabFrameGlobal.tabTitle = tabTitle;                       
-    //window.parent.Actions.tabFrame('showDynaformListHistory'+"&PRO_UID="+ PRO_UID +"&APP_UID="+ APP_UID+"&TAS_UID="+ TAS_UID+"&DYN_UID="+ DYN_UID); 
+    window.parent.ActionTabFrameGlobal.tabTitle = tabTitle;
+    //window.parent.Actions.tabFrame('showDynaformListHistory'+"&PRO_UID="+ PRO_UID +"&APP_UID="+ APP_UID+"&TAS_UID="+ TAS_UID+"&DYN_UID="+ DYN_UID);
     window.parent.Actions.tabFrame(tabName);
   }
-  
+
   historyDynaformGridGlobal = {};
-  
+
   function historyDynaformGrid(){
-  
+
     //dataGlobalConstructor
     historyDynaformGridGlobal.ref = 'casesHistoryDynaformPage_Ajax.php';
-  
+
     //dataGlobal
     historyDynaformGridGlobal.ref = historyDynaformGridGlobal.ref;
-    
+
     //!dataSystemGlobal
     var ref = historyDynaformGridGlobal.ref;
-    
+
     //!dataSystem
     var url = ref+'?actionAjax=historyDynaformGrid_Ajax';
-    
-    
-  
+
+
+
       store = new Ext.data.GroupingStore({
         proxy : new Ext.data.HttpProxy
         (
           {
             url: url
           }
-        ),    
+        ),
         reader : new Ext.data.JsonReader
         (
           {
@@ -319,26 +319,26 @@
               {name : 'PRO_UID'},
               {name : 'APP_UID'},
               {name : 'TAS_UID'},
-              {name : 'DYN_UID'},              
-              {name : 'DYN_TITLE'}              
+              {name : 'DYN_UID'},
+              {name : 'DYN_TITLE'}
             ]
           }
-        ) 
+        )
       });
-    
+
       var expander = new Ext.ux.grid.RowExpander({
         tpl : new Ext.Template(
           '<p><b>'+TRANSLATIONS.ID_PRO_DESCRIPTION+':</b> {PRO_DESCRIPTION}</p><br>'
         )
       });
-  
-  
+
+
       startDateRender = function(v){
         var dateString = "-";
           if(v!="-"){
-            dateString = _DF(v,"m/d/Y H:i:s");      
+            dateString = _DF(v,"m/d/Y H:i:s");
           }
-        return dateString;    
+        return dateString;
       }
       escapeHtml = function(v){
         var pre = document.createElement('pre');
@@ -346,7 +346,7 @@
         pre.appendChild(text);
         return pre.innerHTML;
       }
-    
+
       actionRenderingTranslation = function(v){
         var actionTranslate = "";
         if(v=="PAUSE"){
@@ -363,11 +363,11 @@
         }
         else if(v==""||v==null){
           actionTranslate = _("ID_DERIVATED");
-        }  
+        }
         return actionTranslate;
       };
-    
-    
+
+
       var processesGrid = new Ext.grid.GridPanel({
         region: 'center',
         layout: 'fit',
@@ -383,53 +383,53 @@
         frame:false,
         //plugins: expander,
         cls : 'grid_with_checkbox',
-        columnLines: true,    
+        columnLines: true,
         viewConfig: {
           forceFit:true
-        },    
+        },
         cm: new Ext.grid.ColumnModel({
           defaults: {
               width: 200,
               sortable: true
-          },    
+          },
           columns:
           [
             {id:'PRO_UID', dataIndex: 'PRO_UID', hidden:true, hideable:false},
             {id:'APP_UID', dataIndex: 'APP_UID', hidden:true, hideable:false},
             {id:'TAS_UID', dataIndex: 'TAS_UID', hidden:true, hideable:false},
-            {id:'DYN_UID', dataIndex: 'DYN_UID', hidden:true, hideable:false},           
+            {id:'DYN_UID', dataIndex: 'DYN_UID', hidden:true, hideable:false},
             {header: _("ID_TITLE_FIELD"), dataIndex: 'DYN_TITLE', width: 70}
           ]
         }),
         store: store,
         tbar:[
           {
-          
+
             text:_("ID_DYNAFORM_HISTORY"),
             id:'sendMailMessageFormRadioId',
             iconCls: 'button_menu_ext',
             icon: '/images/ext/gray/shapes/hourglass.png',
-            handler: function(){            
-            
+            handler: function(){
+
               var rowSelected = processesGrid.getSelectionModel().getSelected();
-            
-                if( rowSelected ){   
+
+                if( rowSelected ){
                   //!dataGrid
-                  
-                  //historyDynaformGridGlobal construct                 
+
+                  //historyDynaformGridGlobal construct
                   historyDynaformGridHistoryGlobal.PRO_UID   = rowSelected.data.PRO_UID;
                   historyDynaformGridHistoryGlobal.APP_UID   = rowSelected.data.APP_UID;
                   historyDynaformGridHistoryGlobal.TAS_UID   = rowSelected.data.TAS_UID;
                   historyDynaformGridHistoryGlobal.DYN_UID   = rowSelected.data.DYN_UID;
                   historyDynaformGridHistoryGlobal.DYN_TITLE = rowSelected.data.DYN_TITLE;
-                  
+
                   var PRO_UID = historyDynaformGridHistoryGlobal.PRO_UID;
                   var APP_UID = historyDynaformGridHistoryGlobal.APP_UID;
                   var TAS_UID = historyDynaformGridHistoryGlobal.TAS_UID;
                   var DYN_UID = historyDynaformGridHistoryGlobal.DYN_UID;
                   var DYN_TITLE = historyDynaformGridHistoryGlobal.DYN_TITLE;
-                  
-                  historyDynaformGridHistory();            
+
+                  historyDynaformGridHistory();
                 }
                 else{
                   Ext.Msg.show({
@@ -441,11 +441,11 @@
                     icon: Ext.MessageBox.INFO,
                     buttons: Ext.MessageBox.OK
 
-                  });                            
+                  });
                 }
-            
-            
-            
+
+
+
             },
             disabled:false
           },
@@ -457,21 +457,21 @@
             id:'viewMailMessageFormRadioId',
             iconCls: 'button_menu_ext',
             icon: '/images/documents/_filefind.png',
-            handler: function(){            
+            handler: function(){
               var rowSelected = processesGrid.getSelectionModel().getSelected();
-               
-                if( rowSelected ){                
+
+                if( rowSelected ){
 
                   //!historyDynaformGridPreviewGlobal|Constructor
                   historyDynaformGridPreviewGlobal.DYN_UID = rowSelected.data.DYN_UID;
                   historyDynaformGridPreviewGlobal.DYN_TITLE = rowSelected.data.DYN_TITLE;
-                
+
 
                   var DYN_UID = historyDynaformGridPreviewGlobal.DYN_UID;
                   var DYN_TITLE = historyDynaformGridPreviewGlobal.DYN_TITLE;
-                  
+
                   historyDynaformGridPreview();
-            
+
                 }
                 else{
                   Ext.Msg.show({
@@ -482,9 +482,9 @@
                     animEl: 'elId',
                     icon: Ext.MessageBox.INFO,
                     buttons: Ext.MessageBox.OK
-                  });                            
+                  });
                 }
-            
+
             },
             disabled:false
           },
@@ -504,16 +504,16 @@
           rowdblclick: emptyReturn,
           render: function(){
             this.loadMask = new Ext.LoadMask(this.body, {msg:'Loading...'});
-            processesGrid.getSelectionModel().on('rowselect', function(){        
+            processesGrid.getSelectionModel().on('rowselect', function(){
               var rowSelected = processesGrid.getSelectionModel().getSelected();
-              
+
             });
           }
         }
       });
-  
+
     processesGrid.store.load({params: {"function":"languagesList"}});
-    
+
       processesGrid.store.on(
         'load',
         function()
@@ -525,16 +525,16 @@
           single: true
         }
       );
-      
+
     processesGrid.addListener('rowcontextmenu', emptyReturn,this);
     processesGrid.on('rowcontextmenu', function (grid, rowIndex, evt) {
       var sm = grid.getSelectionModel();
       sm.selectRow(rowIndex, sm.isSelected(rowIndex));
-      
+
       var rowSelected = Ext.getCmp('processesGrid').getSelectionModel().getSelected();
       var activator = Ext.getCmp('activator2');
       var debug = Ext.getCmp('debug');
-      
+
       if( rowSelected.data.PRO_STATUS == 'ACTIVE' ){
         activator.setIconClass('icon-deactivate');
         activator.setText(TRANSLATIONS.ID_DEACTIVATE);
@@ -542,7 +542,7 @@
         activator.setIconClass('icon-activate');
         activator.setText(TRANSLATIONS.ID_ACTIVATE);
       }
-  
+
       if( rowSelected.data.PRO_DEBUG == 1){
         debug.setIconClass('icon-debug-disabled');
         debug.setText(_('ID_DISABLE_DEBUG'));
@@ -551,14 +551,14 @@
         debug.setText(_('ID_ENABLE_DEBUG'));
       }
     }, this);
-    
+
     processesGrid.on('contextmenu', function (evt) {
       evt.preventDefault();
     }, this);
-    
+
     function emptyReturn(){
     }
-    
+
     var viewport = new Ext.Viewport({
       layout: 'border',
       autoScroll: true,

@@ -1021,7 +1021,7 @@ function G_Text(form, element, name)
           break;
         case 45:
           if (me.mType == 'currency') {
-            newValue  = currentValue.substring(0, currentValue.length);
+            newValue = currentValue.substring(0, currentValue.length).split('');
             for (var numI = 0; newValue.length > numI; numI++) {
               var campVal = newValue[numI];
               if ((typeof(campVal) === 'number' || typeof(campVal) === 'string') && (campVal !== '') && (!isNaN(campVal))) {
@@ -1037,6 +1037,9 @@ function G_Text(form, element, name)
                   numI = newValue.length + 1;
                 }
               }
+            }
+            if (newValue.join) {
+              newValue = newValue.join('');
             }
           }
           break;

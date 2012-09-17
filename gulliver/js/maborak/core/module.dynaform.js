@@ -127,7 +127,7 @@ leimnud.Package.Public({
         	if(this.options.editor.showed===true && this.options.editor.selected==b)
         	{
         		if(b=='xml')
-        		{        			
+        		{
         			//this.options.buttons.template.disabled=false;
         			//this.options.buttons.xml.disabled=true;
         			this.options.buttons.xml.className="dbo";
@@ -154,8 +154,8 @@ leimnud.Package.Public({
         		{
         			//this.options.buttons.template.disabled=false;
         			//this.options.buttons.xml.disabled=true;
-        			this.options.window.textarea.value=this.xmlform.serialize().sReplace('><','>\n<');        			
-        			
+        			this.options.window.textarea.value=this.xmlform.serialize().sReplace('><','>\n<');
+
         			this.options.buttons.xml.dv='1';
         			this.options.buttons.template.dv='0';
         			this.options.buttons.xml.className="dbo";
@@ -241,11 +241,11 @@ leimnud.Package.Public({
             this.tplSetPoints({
                 html:t
             });
-            
+
             this.tplSetDropables();
-            
-            
-            
+
+
+
             this.menu_root = new this.parent.module.app.menuRight();
 			this.options.observers['menu'].register(this.menu_root.remove,this.menu_root);
             this.menu_root.make({
@@ -468,12 +468,12 @@ leimnud.Package.Public({
 								//alert(this.tmp.t.value+":"+this.tmp.n.value+":"+this.tmp.v.value)
 							}.extend(this);
 							this.options.panel.add.elements.statusBarButtons[1].onmouseup=this.options.panel.add.remove;
-							
+
 							/*g = window.event?evt:g;
 							this.add_element(this.unique_name(),true,{group:g,type:"other",ufo:7676});*/
-							
-							
-							
+
+
+
 						}.extend(this,this.isPoint(dom))},
 						{text:'New section',launch:this.add_section.args(dom)},
 		   		        {separator:true},
@@ -487,13 +487,13 @@ leimnud.Package.Public({
 			*/
 			principal:function(dom)
 			{
-				
+
 			}
 		}.expand(this);
 		this.group={
 			elements:[
 				{text:'New Element',launch:function(){
-					console.log(this)
+					//console.log(this)
 				}.extend(this)},
 			]
 		};
@@ -603,7 +603,7 @@ leimnud.Package.Public({
 									{
 										this.tmp.pr[i].passed();
 										s.push(v);
-									}									
+									}
 								}
 								if(r)
 								{
@@ -644,7 +644,7 @@ leimnud.Package.Public({
 									//alert(this.tmp.p.length);
 									this.add_element(this.tmp.n.value.trim(),true,{group:this.tmp.g,type:this.tmp.t.value}.concat(a));
 									this.options.panel.add.remove();*/
-								
+
 								//alert(this.tmp.t.value+":"+this.tmp.n.value+":"+this.tmp.v.value)
 							}.extend(this);
 		};
@@ -721,7 +721,7 @@ leimnud.Package.Public({
 						}
 					}
 					catch(e){
-					
+
 					}
 					this.xmlform.tag_edit(t,db_uid,this.sync_xml_node.args(db_uid));
 					return false;
@@ -787,7 +787,7 @@ leimnud.Package.Public({
 				this.options.drag.phantom.make();
 				this.options.drag.phantom.onInit(event,0);
 					//return false;
-			return false;		
+			return false;
 		};
 		this.reorder_element=function(event,db_uid)
 		{
@@ -827,7 +827,7 @@ leimnud.Package.Public({
 				this.options.drag.phantom.make();
 				this.options.drag.phantom.onInit(event,0);
 					//return false;
-			
+
 			return false;
 		};
 		this.sync_xml_node=function(data,db_uid)
@@ -838,11 +838,11 @@ leimnud.Package.Public({
 		};
 		this.sync_dom=function(db_uid,obj)
 		{
-			
+
 		};
 		this.register_groups_drop=function(group)
 		{
-			
+
 		};
 		this.register_elements_drop=function(group)
 		{
@@ -914,7 +914,7 @@ leimnud.Package.Public({
 				}
 				else
 				{
-					
+
 				}
 
 			}
@@ -955,10 +955,10 @@ leimnud.Package.Public({
 				else
 				{
 					insertRowIn	= drop.selected;
-					begin		= true;				
+					begin		= true;
 				}
 				var t = this.db[drop.elements[insertRowIn].value];
-//				t.parentNode.insertBefore(new DOM('input').replace(this.db[db_uid]));	
+//				t.parentNode.insertBefore(new DOM('input').replace(this.db[db_uid]));
 				var n = t.before(new DOM('div')).replace(this.db[db_uid]);
 				drag.flush();
 				new this.parent.module.fx.move().make({
@@ -995,7 +995,7 @@ leimnud.Package.Public({
 				this.phantom_static.remove();
 				delete this.phantom_static;
 			}
-			
+
 		};
 		/* Contar elementos en grupo */
 
@@ -1092,7 +1092,7 @@ leimnud.Package.Public({
 			{
 				if(get){return ['size','maxlength','defaultvalue','required','dependentfields','linkfield','other_attribute'];}
 				options={
-					
+
 				}.concat(options || {});
 				var pd;
 				this.options.points[options.group].append(
@@ -1108,7 +1108,7 @@ leimnud.Package.Public({
 			{
 				if(get){return ['other1','other2','other_attribute'];}
 				options={
-					
+
 				}.concat(options || {});
 				var pd;
 				this.options.points[options.group].append(
@@ -1124,7 +1124,7 @@ leimnud.Package.Public({
 			{
 				if(get){return ['other_attribute'];}
 				options={
-					
+
 				}.concat(options || {});
 				var pd;
 				this.options.points[options.group].append(

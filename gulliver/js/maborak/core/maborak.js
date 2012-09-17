@@ -72,7 +72,7 @@ var maborak = function(forceCssLoad){
 		/* create Stylesheet BEGIN  */
 		//erik: Now the core css is available just by demand
 		if (this.forceCssLoad === true) {
-			console.log('cargo css');
+			//console.log('cargo css');
 			var st	=$dce('link');
 			st.rel	='stylesheet';
 			st.type	='text/css';
@@ -756,7 +756,7 @@ var maborak = function(forceCssLoad){
 				this.serializeToString=function(xml){
 					return xml.xml || xml.outerHTML || "Error XMLSerializer";
 				};
-			};	
+			};
 		}
 	};
 	/**
@@ -1114,11 +1114,11 @@ var maborak = function(forceCssLoad){
 		{
 			this.options	=	{
 				zip:false
-			}.concat(options || {});			
+			}.concat(options || {});
 			if(arguments.length<2 || !this.check()){return false;}
 			this.toLoad = ((this.options.Absolute===true)?this.options.Path:file).split(",");
 			if(this.type === 'module' && (this.options.zip===true || this.parent.options.zip===true))
-			{				
+			{
 				var tl = [];
 				for (var i = this.toLoad.length; i > 0; i--)
 				{
@@ -1618,7 +1618,7 @@ var maborak = function(forceCssLoad){
 					};
 					if(!DOM){return position;}
 					//var m = parseInt(this.parent.dom.getStyle(DOM,"margin"),10) || 0;
-					
+
 					position.x=parseInt(DOM.offsetLeft,10);
 					position.y=parseInt(DOM.offsetTop,10);
 					//alert(DOM.offsetParent);
@@ -1884,9 +1884,9 @@ var maborak = function(forceCssLoad){
 				return [window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop];
 			};
 			this.getPageSize = function()
-				{	        
-				    var xScroll, yScroll;					
-					if (window.innerHeight && window.scrollMaxY) {	
+				{
+				    var xScroll, yScroll;
+					if (window.innerHeight && window.scrollMaxY) {
 						xScroll = window.innerWidth + window.scrollMaxX;
 						yScroll = window.innerHeight + window.scrollMaxY;
 					} else if (document.body.scrollHeight > document.body.offsetHeight){ // all but Explorer Mac
@@ -1896,12 +1896,12 @@ var maborak = function(forceCssLoad){
 						xScroll = document.body.offsetWidth;
 						yScroll = document.body.offsetHeight;
 					}
-					
+
 					var windowWidth, windowHeight;
-					
+
 					if (self.innerHeight) {	// all except Explorer
 						if(document.documentElement.clientWidth){
-							windowWidth = document.documentElement.clientWidth; 
+							windowWidth = document.documentElement.clientWidth;
 						} else {
 							windowWidth = self.innerWidth;
 						}
@@ -1913,21 +1913,21 @@ var maborak = function(forceCssLoad){
 					} else if (document.body) { // other Explorers
 						windowWidth = document.body.clientWidth;
 						windowHeight = document.body.clientHeight;
-					}	
-					
+					}
+
 					// for small pages with total height less then height of the viewport
 					if(yScroll < windowHeight){
 						pageHeight = windowHeight;
-					} else { 
+					} else {
 						pageHeight = yScroll;
 					}
-				
+
 					// for small pages with total width less then width of the viewport
-					if(xScroll < windowWidth){	
-						pageWidth = xScroll;		
+					if(xScroll < windowWidth){
+						pageWidth = xScroll;
 					} else {
 						pageWidth = windowWidth;
-					}			
+					}
 					return [pageWidth,pageHeight];
 				};
 			this.serializer = this.parent.factory(function(DOM,obj)
@@ -2000,7 +2000,7 @@ var maborak = function(forceCssLoad){
 						}
 					}
 					return this.serialized;
-				};				
+				};
 				this.select = function()
 				{
 					for(var i=0;i<this.DOM.length;i++)

@@ -237,7 +237,7 @@ leimnud.Package.Public({
 							if(this.drop.selected!==false)
 							{
                                 var inp = this.drop.elements[this.drop.selected].value;
-                                console.log(this.options.panel[inp]);
+                                //console.log(this.options.panel[inp]);
 								//console.info("========================");
 								//console.info(i+":"+this.drop.selected);
 								//console.info(this.drop.elements[this.drop.selected].value);

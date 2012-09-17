@@ -1,14 +1,14 @@
 var wizard;
 
-// Extend timeout for all Ext.Ajax.requests to 90 seconds.  
-// Ext.Ajax is a singleton, this statement will extend the timeout  
-// for all subsequent Ext.Ajax calls.  
+// Extend timeout for all Ext.Ajax.requests to 90 seconds.
+// Ext.Ajax is a singleton, this statement will extend the timeout
+// for all subsequent Ext.Ajax calls.
 Ext.Ajax.timeout = 4 * 60 * 1000;
 
 Ext.onReady(function(){
-    
-    Ext.QuickTips.init();   
-    
+
+    Ext.QuickTips.init();
+
     wizard = new Ext.ux.Wiz({
       height: 520,
       width : 780,
@@ -35,10 +35,10 @@ Ext.onReady(function(){
         finish: finishInstallation
       }
     });
-    
+
     // show the wizard
     wizard.show();
-}); 
+});
 
 function finishInstallation()
 {
@@ -63,15 +63,15 @@ function finishInstallation()
 
         //setTimeout("_redirect('"+response.url+"')", 3000);
         // Ext.Msg.alert(
-        //   'ProcessMaker was successfully installed', 
-        //   'Workspace "' + Ext.getCmp('workspace').getValue() + '" was installed correctly now you will be redirected to your new workspace.', 
+        //   'ProcessMaker was successfully installed',
+        //   'Workspace "' + Ext.getCmp('workspace').getValue() + '" was installed correctly now you will be redirected to your new workspace.',
         //   function() {_redirectwindow.location = response.url;}
         // );
       }
       else {
         PMExt.error('ERROR', response.message, function(){
           if (response.canRedirect) {
-            _redirect(response.uri); 
+            _redirect(response.uri);
           }
         })
       }
@@ -101,7 +101,7 @@ function finishInstallation()
 }
 
 function _redirect(_uri){
-  console.log('redirecting:: '+_uri);
+  //console.log('redirecting:: '+_uri);
   window.location = _uri;
 }
 
