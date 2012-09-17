@@ -673,11 +673,10 @@ function exportProcess() {
       success: function (response, opts) {
         myMask.hide();
 
-        ///////
         var dataResponse = eval("(" + response.responseText + ")"); //json
         var url = window.location.href;
 
-        window.open(url.substring(0, url.lastIndexOf("/") + 1) + dataResponse.FILENAME_LINK, "_blank");
+        window.location = url.substring(0, url.lastIndexOf("/") + 1) + dataResponse.FILENAME_LINK;
       },
 
       failure: function (response, opts) {
