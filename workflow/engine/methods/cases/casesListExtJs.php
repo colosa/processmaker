@@ -81,21 +81,24 @@
   //get values for the comboBoxes
   $processes = getProcessArray($action, $userUid );
   $status    = getStatusArray($action, $userUid );
+  $category  = getCategoryArray();
   $users     = getUserArray($action, $userUid );
   $allUsers  = getAllUsersArray($action);
 
-  $oHeadPublisher->assign( 'reassignReaderFields',  $reassignReaderFields );  //sending the fields to get from proxy
-  $oHeadPublisher->addExtJsScript('cases/reassignList', false );
-  $oHeadPublisher->assign( 'pageSize',      $pageSize ); //sending the page size
-  $oHeadPublisher->assign( 'columns',       $columns );                       //sending the columns to display in grid
-  $oHeadPublisher->assign( 'readerFields',  $readerFields );                  //sending the fields to get from proxy
-  $oHeadPublisher->assign( 'reassignColumns',       $reassignColumns );       //sending the columns to display in grid
-  $oHeadPublisher->assign( 'action',        $action );                        //sending the fields to get from proxy
-  $oHeadPublisher->assign( 'PMDateFormat',  $dateFormat );          //sending the fields to get from proxy
-  $oHeadPublisher->assign( 'statusValues',  $status );                        //sending the columns to display in grid
-  $oHeadPublisher->assign( 'processValues', $processes);                      //sending the columns to display in grid
-  $oHeadPublisher->assign( 'userValues',    $users);                          //sending the columns to display in grid
-  $oHeadPublisher->assign( 'allUsersValues',$allUsers);                       //sending the columns to display in grid
+  $oHeadPublisher->assign('reassignReaderFields',  $reassignReaderFields ); //sending the fields to get from proxy
+  $oHeadPublisher->addExtJsScript('cases/reassignList', false);
+  $oHeadPublisher->assign('pageSize',      $pageSize);                      //sending the page size
+  $oHeadPublisher->assign('columns',       $columns);                       //sending the columns to display in grid
+  $oHeadPublisher->assign('readerFields',  $readerFields);                  //sending the fields to get from proxy
+  $oHeadPublisher->assign('reassignColumns',       $reassignColumns);       //sending the columns to display in grid
+  $oHeadPublisher->assign('action',        $action);                        //sending the action to make
+  $oHeadPublisher->assign('PMDateFormat',  $dateFormat);                    //sending the fields to get from proxy
+  $oHeadPublisher->assign('statusValues',  $status);                        //Sending the listing of status
+  $oHeadPublisher->assign('processValues', $processes);                     //Sending the listing of processes
+  $oHeadPublisher->assign('solrConf', System::solrEnv());                   //Sending the status of solar 
+  $oHeadPublisher->assign('categoryValues', $category);                     //Sending the listing of categories
+  $oHeadPublisher->assign('userValues',    $users);                         //Sending the listing of users
+  $oHeadPublisher->assign('allUsersValues',$allUsers);                      //Sending the listing of all users
 
 
 
@@ -240,6 +243,25 @@
     }
     return $users;
   }
+
+    function getCategoryArray () {
+        global $oAppCache;
+        require_once 'classes/model/ProcessCategory.php';
+        $category[] = array("", G::LoadTranslation("ID_ALL_CATEGORIES"));
+
+        $criteria = new Criteria('workflow');
+        $criteria->addSelectColumn(ProcessCategoryPeer::CATEGORY_UID);
+        $criteria->addSelectColumn(ProcessCategoryPeer::CATEGORY_NAME);
+        $dataset = ProcessCategoryPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $dataset->next();
+
+        while ($row = $dataset->getRow()) {
+            $category[] = array( $row['CATEGORY_UID'], $row['CATEGORY_NAME']);
+            $dataset->next();
+        }
+        return $category;
+    }
 
   function getAllUsersArray ( $action ) {
     global $oAppCache;
