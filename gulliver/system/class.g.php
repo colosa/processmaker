@@ -1442,8 +1442,8 @@ $output = $outputHeader.$output;
           case 'maborak.js' :
             $oHeadPublisher =& headPublisher::getSingleton();
             foreach ( $oHeadPublisher->maborakFiles as $fileJS ) {
-              //$output .= JSMin::minify ( file_get_contents ( $fileJS ) );
-              $output .= G::trimSourceCodeFile ($fileJS );
+              $output .= JSMin::minify ( file_get_contents ( $fileJS ) );
+              //$output .= G::trimSourceCodeFile ($fileJS );
             }
             break;
           case 'maborak.loader.js':
@@ -1454,8 +1454,8 @@ $output = $outputHeader.$output;
             }
             break;
           default :
-            $output = file_get_contents ( $filename ) ;
-            //$output = JSMin::minify ( file_get_contents ( $filename ) );
+            //$output = file_get_contents ( $filename ) ;
+            $output = JSMin::minify ( file_get_contents ( $filename ) );
             //$output = G::trimSourceCodeFile ($filename );
         }
         print $output;
