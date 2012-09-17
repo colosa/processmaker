@@ -3,7 +3,7 @@
 class Applications
 {
 
-  public function getAll($userUid, $start=null, $limit=null, $action=null, $filter=null, $search=null, $process=null, $user=null, $status=null, $type=null, $dateFrom=null, $dateTo=null, $callback=null, $dir=null, $sort='APP_CACHE_VIEW.APP_NUMBER')
+  public function getAll($userUid, $start=null, $limit=null, $action=null, $filter=null, $search=null, $process=null, $user=null, $status=null, $type=null, $dateFrom=null, $dateTo=null, $callback=null, $dir=null, $sort='APP_CACHE_VIEW.APP_NUMBER', $category=null)
   {
     $callback = isset($callback) ? $callback : 'stcCallback1001';
     $dir      = isset($dir)    ? $dir    : 'DESC';
@@ -13,6 +13,7 @@ class Applications
     $filter   = isset($filter) ? $filter : '';
     $search   = isset($search) ? $search : '';
     $process  = isset($process)? $process : '';
+    $category  = isset($category)? $category : '';
     $user     = isset($user)    ? $user : '';
     $status   = isset($status) ? strtoupper($status) : '';
     $action   = isset($action) ? $action : 'todo';
@@ -28,6 +29,7 @@ class Applications
     require_once ( "classes/model/AppDelay.php" );
     require_once ( "classes/model/Fields.php" );
     require_once ( "classes/model/Users.php" );
+    require_once ( "classes/model/Process.php" );
 
     //$userUid = ( isset($_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '' ) ? $_SESSION['USER_LOGGED'] : null; <-- passed by param
     $oAppCache = new AppCacheView();
@@ -125,14 +127,22 @@ class Applications
       $CriteriaCount->add (AppCacheViewPeer::PRO_UID, $process, Criteria::EQUAL );
     }
 
+    // add the category filter
+    if ($category != '') {
+        $Criteria->addAlias('CP', 'PROCESS');
+        $Criteria->add('CP.PRO_CATEGORY', $category, Criteria::EQUAL );
+        $Criteria->addJoin(AppCacheViewPeer::PRO_UID, 'CP.PRO_UID', Criteria::LEFT_JOIN);
+        $Criteria->addAsColumn('CATEGORY_UID', 'CP.PRO_CATEGORY');
+    }
+
     // add the user filter
     if ( $user != '' ) {
-      $Criteria->add      (AppCacheViewPeer::USR_UID, $user, Criteria::EQUAL );
+      $Criteria->add(AppCacheViewPeer::USR_UID, $user, Criteria::EQUAL );
       $CriteriaCount->add (AppCacheViewPeer::USR_UID, $user, Criteria::EQUAL );
     }
 
     if ( $status != '' ) {
-      $Criteria->add      (AppCacheViewPeer::APP_STATUS, $status, Criteria::EQUAL );
+      $Criteria->add(AppCacheViewPeer::APP_STATUS, $status, Criteria::EQUAL );
       $CriteriaCount->add (AppCacheViewPeer::APP_STATUS, $status, Criteria::EQUAL );
     }
 
@@ -258,8 +268,12 @@ class Applications
     //case 1. when the SEARCH action is selected and none filter, search criteria is defined,
     //we need to count using the table APPLICATION, because APP_CACHE_VIEW takes 3 seconds
 
-    if ( $action == 'search' && $filter == '' && $search == '' && $process == '' && $status == '' && $dateFrom == '' && $dateTo == '') {
+    if ( $action == 'search' && $filter == '' && $search == '' && $process == '' && $status == '' && $dateFrom == '' && $dateTo == '' && $category == '') {
       $totalCount = $oAppCache->getSearchAllCount();
+      $doCountAlreadyExecuted = true;
+    }
+    if ( $category != '' ) {
+      $totalCount = $oAppCache->getSearchCountCriteria();
       $doCountAlreadyExecuted = true;
     }
 
@@ -289,7 +303,6 @@ class Applications
         }
       }
       $totalCount = AppCacheViewPeer::doCount( $CriteriaCount, $distinct );
-
     }
 
     //add sortable options
@@ -312,6 +325,7 @@ class Applications
       $oDatasetIndex = AppCacheViewPeer::doSelectRS( $Criteria );
       $oDatasetIndex->setFetchmode( ResultSet::FETCHMODE_ASSOC );
       $oDatasetIndex->next();
+      $maxDelIndexList = array();
       // a list of MAX_DEL_INDEXES is required in order to validate the right row
       while($aRow = $oDatasetIndex->getRow()){
         $maxDelIndexList[] = $aRow['MAX_DEL_INDEX'];

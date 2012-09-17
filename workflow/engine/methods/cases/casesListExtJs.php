@@ -79,23 +79,26 @@
   $oAppCache->confCasesList = $confCasesList;
 
   //get values for the comboBoxes
-  $processes = getProcessArray($action, $userUid );
+  $processes[] = array ( '', G::LoadTranslation('ID_ALL_PROCESS'));
   $status    = getStatusArray($action, $userUid );
+  $category  = getCategoryArray();
   $users     = getUserArray($action, $userUid );
   $allUsers  = getAllUsersArray($action);
 
-  $oHeadPublisher->assign( 'reassignReaderFields',  $reassignReaderFields );  //sending the fields to get from proxy
-  $oHeadPublisher->addExtJsScript('cases/reassignList', false );
-  $oHeadPublisher->assign( 'pageSize',      $pageSize ); //sending the page size
-  $oHeadPublisher->assign( 'columns',       $columns );                       //sending the columns to display in grid
-  $oHeadPublisher->assign( 'readerFields',  $readerFields );                  //sending the fields to get from proxy
-  $oHeadPublisher->assign( 'reassignColumns',       $reassignColumns );       //sending the columns to display in grid
-  $oHeadPublisher->assign( 'action',        $action );                        //sending the fields to get from proxy
-  $oHeadPublisher->assign( 'PMDateFormat',  $dateFormat );          //sending the fields to get from proxy
-  $oHeadPublisher->assign( 'statusValues',  $status );                        //sending the columns to display in grid
-  $oHeadPublisher->assign( 'processValues', $processes);                      //sending the columns to display in grid
-  $oHeadPublisher->assign( 'userValues',    $users);                          //sending the columns to display in grid
-  $oHeadPublisher->assign( 'allUsersValues',$allUsers);                       //sending the columns to display in grid
+  $oHeadPublisher->assign('reassignReaderFields',  $reassignReaderFields ); //sending the fields to get from proxy
+  $oHeadPublisher->addExtJsScript('cases/reassignList', false);
+  $oHeadPublisher->assign('pageSize',      $pageSize);                      //sending the page size
+  $oHeadPublisher->assign('columns',       $columns);                       //sending the columns to display in grid
+  $oHeadPublisher->assign('readerFields',  $readerFields);                  //sending the fields to get from proxy
+  $oHeadPublisher->assign('reassignColumns',       $reassignColumns);       //sending the columns to display in grid
+  $oHeadPublisher->assign('action',        $action);                        //sending the action to make
+  $oHeadPublisher->assign('PMDateFormat',  $dateFormat);                    //sending the fields to get from proxy
+  $oHeadPublisher->assign('statusValues',  $status);                        //Sending the listing of status
+  $oHeadPublisher->assign('processValues', $processes);                     //Sending the listing of processes
+  $oHeadPublisher->assign('solrConf', System::solrEnv());                   //Sending the status of solar 
+  $oHeadPublisher->assign('categoryValues', $category);                     //Sending the listing of categories
+  $oHeadPublisher->assign('userValues',    $users);                         //Sending the listing of users
+  $oHeadPublisher->assign('allUsersValues',$allUsers);                      //Sending the listing of all users
 
 
 
@@ -121,95 +124,6 @@
   $oHeadPublisher->addContent( 'cases/casesListExtJs'); //adding a html file  .html.
   $oHeadPublisher->assign('FORMATS',$c->getFormats());
   G::RenderPage('publish', 'extJs');
-
-  //functions to fill the comboboxes in the case list page
-  function getProcessArray ( $action, $userUid ) {
-  	global $oAppCache;
-    $processes = Array();
-    $processes[] = array ( '', G::LoadTranslation('ID_ALL_PROCESS') );
-
-//get the list based in the action provided
-
-  // G::pr($action);die;
-    switch ( $action ) {
-      case 'draft' :
-           $cProcess      = $oAppCache->getDraftListCriteria($userUid); //fast enough
-           break;
-      case 'sent' :
-           $cProcess      = $oAppCache->getSentListProcessCriteria ($userUid); // fast enough
-           break;
-      case 'simple_search':
-      case 'search' :
-           //in search action, the query to obtain all process is too slow, so we need to query directly to
-           //process and content tables, and for that reason we need the current language in AppCacheView.
-           G::loadClass('configuration');
-           $oConf = new Configurations;
-           $oConf->loadConfig($x, 'APP_CACHE_VIEW_ENGINE','','','','');
-           $appCacheViewEngine = $oConf->aConfig;
-           $lang   = isset($appCacheViewEngine['LANG']) ? $appCacheViewEngine['LANG'] : 'en';
-
-           $cProcess      = new Criteria('workflow');
-           $cProcess->clearSelectColumns ( );
-           $cProcess->addSelectColumn ( ProcessPeer::PRO_UID );
-           $cProcess->addSelectColumn ( ContentPeer::CON_VALUE );
-           $del = DBAdapter::getStringDelimiter();
-           $conds = array();
-           $conds[] = array(ProcessPeer::PRO_UID,      ContentPeer::CON_ID );
-           $conds[] = array(ContentPeer::CON_CATEGORY, $del . 'PRO_TITLE' . $del);
-           $conds[] = array(ContentPeer::CON_LANG,     $del . $lang . $del);
-           $cProcess->addJoinMC($conds, Criteria::LEFT_JOIN);
-           $cProcess->add(ProcessPeer::PRO_STATUS, 'ACTIVE');
-           $oDataset = ProcessPeer::doSelectRS($cProcess);
-           $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-           $oDataset->next();
-
-           while($aRow = $oDataset->getRow()){
-             $processes[] = array ( $aRow['PRO_UID'], $aRow['CON_VALUE'] );
-             $oDataset->next();
-           }
-
-           return $processes;
-           break;
-      case 'unassigned' :
-           $cProcess      = $oAppCache->getUnassignedListCriteria($userUid);
-           break;
-      case 'paused' :
-           $cProcess      = $oAppCache->getPausedListCriteria($userUid);
-           break;
-      case 'to_revise' :
-           $cProcess      = $oAppCache->getToReviseListCriteria($userUid);
-           break;
-      case 'to_reassign' :
-           $cProcess      = $oAppCache->getToReassignListCriteria();
-           $cProcess->addAscendingOrderByColumn(AppCacheViewPeer::APP_PRO_TITLE);
-           break;
-      case 'gral' :
-           $cProcess      = $oAppCache->getGeneralListCriteria();
-           $cProcess->addAscendingOrderByColumn(AppCacheViewPeer::APP_PRO_TITLE);
-           break;
-      case 'todo' :
-      default:
-           $cProcess      = $oAppCache->getToDoListCriteria($userUid); //fast enough
-      break;
-    }
-
-    //get the processes for this user in this action
-    $cProcess->clearSelectColumns();
-    $cProcess->addSelectColumn(AppCacheViewPeer::PRO_UID);
-    $cProcess->addSelectColumn(AppCacheViewPeer::APP_PRO_TITLE);
-    $cProcess->setDistinct(AppCacheViewPeer::PRO_UID);
-
-    $oDataset = AppCacheViewPeer::doSelectRS($cProcess);
-    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-    $oDataset->next();
-
-    while($aRow = $oDataset->getRow()){
-      $processes[] = array ( $aRow['PRO_UID'], $aRow['APP_PRO_TITLE'] );
-      $oDataset->next();
-    }
-
-    return $processes;
-  }
 
   function getUserArray ( $action, $userUid ) {
   	global $oAppCache;
@@ -240,6 +154,25 @@
     }
     return $users;
   }
+
+    function getCategoryArray () {
+        global $oAppCache;
+        require_once 'classes/model/ProcessCategory.php';
+        $category[] = array("", G::LoadTranslation("ID_ALL_CATEGORIES"));
+
+        $criteria = new Criteria('workflow');
+        $criteria->addSelectColumn(ProcessCategoryPeer::CATEGORY_UID);
+        $criteria->addSelectColumn(ProcessCategoryPeer::CATEGORY_NAME);
+        $dataset = ProcessCategoryPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $dataset->next();
+
+        while ($row = $dataset->getRow()) {
+            $category[] = array( $row['CATEGORY_UID'], $row['CATEGORY_NAME']);
+            $dataset->next();
+        }
+        return $category;
+    }
 
   function getAllUsersArray ( $action ) {
     global $oAppCache;

@@ -7,6 +7,7 @@ $start = isset($_POST["start"])? $_POST["start"] : "0";
 $limit = isset($_POST["limit"])? $_POST["limit"] : "25";
 $filter  = isset($_POST ["filter"])? $_POST["filter"] : "";
 $process = isset($_POST["process"])? $_POST["process"] : "";
+$category = isset($_POST["category"])? $_POST["category"] : "";
 $status  = isset($_POST["status"])? strtoupper($_POST["status"]) : "";
 $user    = isset($_POST["user"])? $_POST["user"] : "";
 $search  = isset($_POST["search"])? $_POST["search"] : "";
@@ -74,7 +75,8 @@ try {
             $dateTo,
             $callback,
             $dir,
-            $sort
+            $sort,
+            $category
         );
 
         $result = G::json_encode($data);

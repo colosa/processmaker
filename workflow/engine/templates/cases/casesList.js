@@ -394,6 +394,7 @@ Ext.onReady ( function() {
 
   var ids = '';
   var filterProcess = '';
+  var filterCategory = '';
   var filterUser    = '';
   var caseIdToDelete = '';
   var caseIdToUnpause = '';
@@ -792,6 +793,21 @@ Ext.onReady ( function() {
           '<span> {APP_PRO_TITLE}</span>',
       '</div></tpl>'
   );
+  
+    Ext.Ajax.request({
+        url : 'casesList_Ajax' ,
+        params : {actionAjax : 'processListExtJs',
+        action: action,
+        CATEGORY_UID: filterCategory},
+        success: function ( result, request ) {
+            processValues = Ext.util.JSON.decode(result.responseText);
+            comboProcess.getStore().removeAll();
+            comboProcess.getStore().loadData(processValues);
+        },
+        failure: function ( result, request) {
+            Ext.MessageBox.alert('Failed', result.responseText);
+        }
+    });
 
   var comboProcess = new Ext.form.ComboBox({
     width         : 200,
@@ -867,6 +883,53 @@ Ext.onReady ( function() {
       }},
     iconCls: 'no-icon'  //use iconCls if placing within menu to shift to right side of menu
   });
+
+    var comboCategory = new Ext.form.ComboBox({
+        width           : 200,
+        boxMaxWidth     : 200,
+        editable        : true,
+        displayField    : 'CATEGORY_NAME',
+        valueField      : 'CATEGORY_UID',
+        forceSelection  : false,
+        emptyText       : _('ID_PROCESS_NO_CATEGORY'),
+        selectOnFocus   : true,
+        typeAhead       : true,
+        mode            : 'local',
+        autocomplete    : true,
+        triggerAction   : 'all',
+
+        store         : new Ext.data.ArrayStore({
+          fields : ['CATEGORY_UID','CATEGORY_NAME'],
+          data   : categoryValues
+        }),
+        listeners:{
+          scope: this,
+          'select': function() {
+            
+            filterCategory = comboCategory.value;
+            storeCases.setBaseParam('category', filterCategory);
+            storeCases.setBaseParam('process', '');
+            storeCases.load({params:{category: filterCategory, start : 0 , limit : pageSize}});
+            
+            Ext.Ajax.request({
+                url : 'casesList_Ajax' ,
+                params : {actionAjax : 'processListExtJs',
+                action: action,
+                CATEGORY_UID: filterCategory},
+                success: function ( result, request ) {
+                    var data = Ext.util.JSON.decode(result.responseText);
+                    comboProcess.getStore().removeAll();
+                    comboProcess.getStore().loadData( data );
+                    comboProcess.setValue('');
+                    
+                },
+                failure: function ( result, request) {
+                    Ext.MessageBox.alert('Failed', result.responseText);
+                }
+            });
+          }},
+        iconCls: 'no-icon'
+    });
 
   var btnSelectAll = new Ext.Button ({
     text: _('CHECK_ALL'),
@@ -1392,6 +1455,8 @@ Ext.onReady ( function() {
     width: 120,
     value: ''
   });
+  
+  var optionCategory = (solrConf != true) ?  [ _('ID_CATEGORY'), comboCategory, '-'] : [''] ;
 
   var toolbarTodo = [
     optionMenuOpen,
@@ -1408,6 +1473,7 @@ Ext.onReady ( function() {
     '-',
     btnAll,
     '->', // begin using the right-justified button container
+    optionCategory,
     _('ID_PROCESS'),
     comboProcess,
     '-',
@@ -1429,6 +1495,7 @@ Ext.onReady ( function() {
     '-',
     btnAll,
     '->', // begin using the right-justified button container
+    optionCategory,
     _('ID_PROCESS'),
     comboProcess,
     '-',
@@ -1450,6 +1517,7 @@ Ext.onReady ( function() {
     '-',
     btnAll,
     '->', // begin using the right-justified button container
+    optionCategory,
     _('ID_PROCESS'),
     comboProcess,
     '-',
@@ -1473,6 +1541,7 @@ Ext.onReady ( function() {
       menu: menuItems
     },
     '->',
+    optionCategory,
     _('ID_PROCESS'),
     comboProcess,
     '-',
@@ -1489,6 +1558,7 @@ Ext.onReady ( function() {
   var toolbarToRevise = [
     optionMenuOpen,
     '->', // begin using the right-justified button container
+    optionCategory,
     _('ID_PROCESS'),
     comboProcess,
     '-',
@@ -1513,6 +1583,7 @@ Ext.onReady ( function() {
       _("ID_USER"),
       comboAllUsers,
       "-",
+      optionCategory,
       _("ID_PROCESS"),
       comboProcess,
       textSearch,
@@ -1530,6 +1601,7 @@ Ext.onReady ( function() {
     '-',
     btnAll,
     '->', // begin using the right-justified button container
+    optionCategory,
     _('ID_PROCESS'),
     comboProcess,
     '-',
@@ -1545,6 +1617,8 @@ Ext.onReady ( function() {
     ' ',
     ' '
   ];
+  
+  
 
   var toolbarSearch = [
       ' ',
@@ -1560,8 +1634,7 @@ Ext.onReady ( function() {
           storeCases.setBaseParam('dateTo', dateTo.getValue());
           storeCases.load({params:{ start : 0 , limit : pageSize }});
         }
-      }),
-      '-'
+      })
     ];
 
   var firstToolbarSearch = new Ext.Toolbar({
@@ -1571,6 +1644,7 @@ Ext.onReady ( function() {
     items: [
       optionMenuOpen,
       '->',
+      optionCategory,
       _('ID_PROCESS'),
       comboProcess,
       '-',
@@ -1801,25 +1875,25 @@ var gridForm = new Ext.FormPanel({
     //Manually trigger the data store load
     switch (action) {
         case "draft":
-            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("process", '');
             storeCases.setBaseParam("search", textSearch.getValue());
             break;
         case "sent":
-            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("process", '');
             storeCases.setBaseParam("status", comboStatus.store.getAt(0).get(comboStatus.valueField));
             storeCases.setBaseParam("search", textSearch.getValue());
             break;
         case "to_revise":
-            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("process", '');
             storeCases.setBaseParam("search", textSearch.getValue());
             break;
         case "to_reassign":
             storeCases.setBaseParam("user", comboAllUsers.store.getAt(0).get(comboAllUsers.valueField));
-            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("process", '');
             storeCases.setBaseParam("search", textSearch.getValue());
             break;
         case "search":
-            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("process", '');
             storeCases.setBaseParam("status", comboStatus.store.getAt(0).get(comboStatus.valueField));
             storeCases.setBaseParam("user", comboUser.store.getAt(0).get(comboUser.valueField));
             storeCases.setBaseParam("search", textSearch.getValue());
@@ -1827,16 +1901,16 @@ var gridForm = new Ext.FormPanel({
             storeCases.setBaseParam("dateTo", dateTo.getValue());
             break;
         case "unassigned":
-            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("process", '');
             storeCases.setBaseParam("search", textSearch.getValue());
             break;
         case "gral":
-            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("process", '');
             storeCases.setBaseParam("search", textSearch.getValue());
             break;
         default:
             //todo
-            storeCases.setBaseParam("process", comboProcess.store.getAt(0).get(comboProcess.valueField));
+            storeCases.setBaseParam("process", '');
             storeCases.setBaseParam("search", textSearch.getValue());
             break;
     }

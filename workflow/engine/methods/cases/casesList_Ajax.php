@@ -28,20 +28,118 @@
     require_once 'classes/model/AppDelay.php';
     require_once 'classes/model/Process.php';
     require_once 'classes/model/Task.php';
+    
+    require_once ( "classes/model/AppCacheView.php" );
+    require_once ( "classes/model/AppDelegation.php" );
+    require_once ( "classes/model/AdditionalTables.php" );
+    require_once ( "classes/model/AppDelay.php" );
     G::LoadClass('case');
 
   $actionAjax = isset($_REQUEST['actionAjax'])?$_REQUEST['actionAjax']: null;
   
-  
-    if($actionAjax=="getUsersToReassign"){
-    
-      $_SESSION['TASK'] = $_REQUEST['TAS_UID'];
-      $case = new Cases();
-      $result->data = $case->getUsersToReassign($_SESSION['TASK'], $_SESSION['USER_LOGGED']);
-      
-      print G::json_encode($result);
+    if ($actionAjax == "processListExtJs") {
+        $action = isset($_REQUEST['action']) ? $_REQUEST['action']: null;
+        $categoryUid = isset($_REQUEST['CATEGORY_UID']) ? $_REQUEST['CATEGORY_UID'] : null;
+        $userUid = ( isset($_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '' ) ? $_SESSION['USER_LOGGED'] : null;
+
+        global $oAppCache;
+        $oAppCache = new AppCacheView();
+        $processes = Array();
+        $processes[] = array ( '', G::LoadTranslation('ID_ALL_PROCESS') );
+
+        //get the list based in the action provided
+        switch ( $action ) {
+            case 'draft':
+                $cProcess = $oAppCache->getDraftListCriteria($userUid); //fast enough
+                break;
+            case 'sent':
+                $cProcess = $oAppCache->getSentListProcessCriteria ($userUid); // fast enough
+                break;
+            case 'simple_search':
+            case 'search':
+                //in search action, the query to obtain all process is too slow, so we need to query directly to
+                //process and content tables, and for that reason we need the current language in AppCacheView.
+                G::loadClass('configuration');
+                $oConf = new Configurations;
+                $oConf->loadConfig($x, 'APP_CACHE_VIEW_ENGINE','','','','');
+                $appCacheViewEngine = $oConf->aConfig;
+                $lang   = isset($appCacheViewEngine['LANG']) ? $appCacheViewEngine['LANG'] : 'en';
+
+                $cProcess = new Criteria('workflow');
+                $cProcess->clearSelectColumns ( );
+                $cProcess->addSelectColumn ( ProcessPeer::PRO_UID );
+                $cProcess->addSelectColumn ( ContentPeer::CON_VALUE );
+                if ($categoryUid) {
+                    $cProcess->add (ProcessPeer::PRO_CATEGORY, $categoryUid);
+                }
+                $del = DBAdapter::getStringDelimiter();
+                $conds = array();
+                $conds[] = array(ProcessPeer::PRO_UID, ContentPeer::CON_ID );
+                $conds[] = array(ContentPeer::CON_CATEGORY, $del . 'PRO_TITLE' . $del);
+                $conds[] = array(ContentPeer::CON_LANG, $del . $lang . $del);
+                $cProcess->addJoinMC($conds, Criteria::LEFT_JOIN);
+                $cProcess->add(ProcessPeer::PRO_STATUS, 'ACTIVE');
+                $oDataset = ProcessPeer::doSelectRS($cProcess);
+                $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                $oDataset->next();
+
+                while ($aRow = $oDataset->getRow()) {
+                    $processes[] = array ( $aRow['PRO_UID'], $aRow['CON_VALUE'] );
+                    $oDataset->next();
+                }
+                return print G::json_encode($processes);
+                break;
+            case 'unassigned':
+                $cProcess = $oAppCache->getUnassignedListCriteria($userUid);
+                break;
+            case 'paused':
+                $cProcess = $oAppCache->getPausedListCriteria($userUid);
+                break;
+            case 'to_revise':
+                $cProcess = $oAppCache->getToReviseListCriteria($userUid);
+                break;
+            case 'to_reassign':
+                $cProcess = $oAppCache->getToReassignListCriteria();
+                $cProcess->addAscendingOrderByColumn(AppCacheViewPeer::APP_PRO_TITLE);
+                break;
+            case 'gral':
+                $cProcess = $oAppCache->getGeneralListCriteria();
+                $cProcess->addAscendingOrderByColumn(AppCacheViewPeer::APP_PRO_TITLE);
+                break;
+            case 'todo':
+            default:
+                $cProcess = $oAppCache->getToDoListCriteria($userUid); //fast enough
+                break;
+        }
+        //get the processes for this user in this action
+        $cProcess->clearSelectColumns();
+        $cProcess->addSelectColumn(AppCacheViewPeer::PRO_UID);
+        $cProcess->addSelectColumn(AppCacheViewPeer::APP_PRO_TITLE);
+        $cProcess->setDistinct(AppCacheViewPeer::PRO_UID);
+        if ($categoryUid) {
+            $cProcess->addAlias('CP', 'PROCESS');
+            $cProcess->add('CP.PRO_CATEGORY', $categoryUid, Criteria::EQUAL );
+            $cProcess->addJoin(AppCacheViewPeer::PRO_UID, 'CP.PRO_UID', Criteria::LEFT_JOIN);
+            $cProcess->addAsColumn('CATEGORY_UID', 'CP.PRO_CATEGORY');
+        }
+        $oDataset = AppCacheViewPeer::doSelectRS($cProcess);
+        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $oDataset->next();
+
+        while ($aRow = $oDataset->getRow()) {
+            $processes[] = array ( $aRow['PRO_UID'], $aRow['APP_PRO_TITLE'] );
+            $oDataset->next();
+        }
+        return print G::json_encode($processes);
     }
-    if($actionAjax=='reassignCase'){
+
+    if ($actionAjax=="getUsersToReassign") {
+        $_SESSION['TASK'] = $_REQUEST['TAS_UID'];
+        $case = new Cases();
+        $result->data = $case->getUsersToReassign($_SESSION['TASK'], $_SESSION['USER_LOGGED']);
+        print G::json_encode($result);
+    }
+    if ($actionAjax=='reassignCase') {
     
       $APP_UID = $_REQUEST["APP_UID"];
       $DEL_INDEX = $_REQUEST["DEL_INDEX"];
