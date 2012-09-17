@@ -81,6 +81,7 @@
   //get values for the comboBoxes
   $processes = getProcessArray($action, $userUid );
   $status    = getStatusArray($action, $userUid );
+  $category  = getCategoryArray();
   $users     = getUserArray($action, $userUid );
   $allUsers  = getAllUsersArray($action);
 
@@ -91,9 +92,11 @@
   $oHeadPublisher->assign( 'readerFields',  $readerFields );                  //sending the fields to get from proxy
   $oHeadPublisher->assign( 'reassignColumns',       $reassignColumns );       //sending the columns to display in grid
   $oHeadPublisher->assign( 'action',        $action );                        //sending the fields to get from proxy
-  $oHeadPublisher->assign( 'PMDateFormat',  $dateFormat );          //sending the fields to get from proxy
+  $oHeadPublisher->assign( 'PMDateFormat',  $dateFormat );                    //sending the fields to get from proxy
   $oHeadPublisher->assign( 'statusValues',  $status );                        //sending the columns to display in grid
   $oHeadPublisher->assign( 'processValues', $processes);                      //sending the columns to display in grid
+  $oHeadPublisher->assign( 'solrConf', System::solrEnv());                      //sending the columns to display in grid
+  $oHeadPublisher->assign( 'categoryValues', $category);                      //sending the columns to display in grid
   $oHeadPublisher->assign( 'userValues',    $users);                          //sending the columns to display in grid
   $oHeadPublisher->assign( 'allUsersValues',$allUsers);                       //sending the columns to display in grid
 
@@ -240,6 +243,25 @@
     }
     return $users;
   }
+
+    function getCategoryArray () {
+        global $oAppCache;
+        require_once 'classes/model/ProcessCategory.php';
+        $category[] = array("", G::LoadTranslation("ID_ALL_CATEGORIES"));
+
+        $criteria = new Criteria('workflow');
+        $criteria->addSelectColumn(ProcessCategoryPeer::CATEGORY_UID);
+        $criteria->addSelectColumn(ProcessCategoryPeer::CATEGORY_NAME);
+        $dataset = ProcessCategoryPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $dataset->next();
+
+        while ($row = $dataset->getRow()) {
+            $category[] = array( $row['CATEGORY_UID'], $row['CATEGORY_NAME']);
+            $dataset->next();
+        }
+        return $category;
+    }
 
   function getAllUsersArray ( $action ) {
     global $oAppCache;
