@@ -201,9 +201,11 @@ class Main extends Controller
             //get date of next beat
             $nextBeatDate = $oServerConf->getHeartbeatProperty('HB_NEXT_BEAT_DATE','HEART_BEAT_CONF');
             $this->memcache->set('nextBeatDate', $nextBeatDate, 1*3600);
+        } else {
+            $sflag = '1';
         }
 
-        if (($sflag == 1) && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {
+        if (($sflag == '1') && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {
             //To do: we need to change to ExtJs
             $this->setJSVar('flagHeartBeat', 1);
         } else {

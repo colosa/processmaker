@@ -32,7 +32,9 @@ $oCase = new Cases();
 $Fields = $oCase->loadCase($_SESSION['APPLICATION']);
 
 // Load form info
-$form = new Form($_REQUEST['PRO_UID'] . PATH_SEP . $_REQUEST['DYN_UID'], PATH_DYNAFORM, SYS_LANG, false);
+if (isset($_REQUEST['DYN_UID']) && $_REQUEST['DYN_UID'] != '') {
+  $form = new Form($_REQUEST['PRO_UID'] . PATH_SEP . $_REQUEST['DYN_UID'], PATH_DYNAFORM, SYS_LANG, false);
+}
 
 $historyData=array();
 $historyDataAux=array();
@@ -127,7 +129,7 @@ while ($aRow = $oDataset->getRow()) {
     $count=0;
     foreach($changedValues as $key =>$value){
         if(($value!=NULL)&&(!is_array($value))){
-            if (isset($form->fields[$key])) {
+            if (isset($form) && isset($form->fields[$key])) {
                 $label = $form->fields[$key]->label . ' (' . $key . ')';
             }
             else {
@@ -143,7 +145,7 @@ while ($aRow = $oDataset->getRow()) {
             foreach($value as $key1 =>$value1){
                 if(is_array($value1)){
                     foreach($value1 as $key2 =>$value2) {
-                    	if (isset($form->fields[$key]->fields[$key2])) {
+                    	if (isset($form) && isset($form->fields[$key]->fields[$key2])) {
                             $label = $form->fields[$key]->fields[$key2]->label . ' (' . $key . '[' . $key1 . '][' . $key2 . '])';
                         }
                         else {
