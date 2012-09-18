@@ -563,7 +563,16 @@ class AppSolr
           }
           elseif ($action == 'search') {
             // get all the indexes
-            $delIndexes = $this->getApplicationDelegationsIndex ($appUID);
+
+            //$delIndexes = $this->getApplicationDelegationsIndex ($appUID);
+            $indexes = $this->aaSearchRecords ($aaappsDBData, array (
+                'APP_UID' => $appUID
+            ));
+            
+            foreach ($indexes as $index) {
+              $delIndexes[] = $aaappsDBData [$index]['DEL_INDEX'];
+            }
+
           }
           else {
             //error an index must always be defined
@@ -599,6 +608,14 @@ class AppSolr
           
           foreach ($indexes as $index) {
             $row = $aaappsDBData [$index];
+          }          
+          
+          if(!isset($row))
+          {
+            $fh = fopen("SolrAppWhitoutDelIndex.txt", 'a') or die("can't open file to store Solr search time.");
+            fwrite($fh, sprintf("Solr AppUid: %s DelIndex: %s not found.\r\n", $appUID, $delIndex));
+            fclose($fh);
+            continue;
           }          
           //$row = $this->getAppDelegationData ($appUID, $delIndex);
           
