@@ -115,8 +115,7 @@ abstract class ".$this->getClassname()."
      */
     protected function addClassClose(&$script)
     {
-        $script .= "
-}
+        $script .= "}
 
 ";
         $this->addStaticMapBuilderRegistration($script);
@@ -407,14 +406,14 @@ if (Propel::isInit()) {
     /** A key representing a particular subclass */
     const CLASSKEY_".strtoupper($child->getKey())." = '" . $child->getKey() . "';
 ";
-                    
+
     if (strtoupper($child->getClassname()) != strtoupper($child->getKey())) {
         $script .= "
     /** A key representing a particular subclass */
     const CLASSKEY_".strtoupper($child->getClassname())." = '" . $child->getKey() . "';
 ";
     }
-    
+
     $script .= "
     /** A class that can be returned by this peer. */
     const CLASSNAME_".strtoupper($child->getKey())." = '". $childBuilder->getClasspath() . "';
@@ -985,7 +984,7 @@ if (Propel::isInit()) {
      * @param      mixed \$values Criteria or ".$table->getPhpName()." object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      Connection \$con the connection to use
-     * @return     int  The number of affected rows (if supported by underlying database driver).  
+     * @return     int  The number of affected rows (if supported by underlying database driver).
      *             This includes CASCADE-related rows
      *              if supported by native driver or if emulated using Propel.
      * @throws     PropelException Any exceptions caught during processing will be
@@ -1428,7 +1427,7 @@ if (Propel::isInit()) {
             $script .= "* @param $cptype $".$clo."
        ";
        }
-       $script .= "     * @param      Connection \$con
+       $script .= " * @param      Connection \$con
      * @return     ".$table->getPhpName()."
      */
     public static function ".$this->getRetrieveMethodName()."(";
@@ -1452,7 +1451,8 @@ if (Propel::isInit()) {
         \$v = ".$this->getPeerClassname()."::doSelect(\$criteria, \$con);
 
         return !empty(\$v) ? \$v[0] : null;
-    }";
+    }
+";
     }
 
     /**
