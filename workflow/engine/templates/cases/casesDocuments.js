@@ -288,7 +288,7 @@ function openActionDialog( caller, action ) {
     uploadDocument:1,
     search:1
   };
-  if( dontNeedSelection[action] == null  || selectedRows.length < 1 ) {
+  if( dontNeedSelection[action] == null && selectedRows.length < 1 ) {
     Ext.Msg.alert( 'Error',TRANSLATIONS.ID_NO_ITEMS_SELECTED);
     return false;
   }
@@ -1897,7 +1897,7 @@ var documentsTab = {
         // console.log("tried to gtet selection model");
         tsm.on('selectionchange',
           handleNodeClick);
-        
+
 
 
         // create the editor for the directory
