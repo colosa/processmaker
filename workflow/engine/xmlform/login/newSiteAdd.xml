@@ -19,7 +19,7 @@
   <en>Report Database:</en>
 </AO_DB_RP>
 <AO_DB_DROP type="checkbox">
-  <en>Drop database if exist</en>
+  <en>Drop database if exists</en>
 </AO_DB_DROP>
 <WS type="subtitle">
   <en>Workspace Administrator</en>
@@ -59,7 +59,7 @@
 </NW_SUB>
 
 <JS type="JavaScript"><![CDATA[
-	
+
 	var data={
 		name:new input(getField('NW_TITLE')).setStyle({fontWeight:'bold'}),
 		submit:new button(getField('NW_SUB')),
@@ -79,14 +79,14 @@
 		data.action.value='test';
 		return false;
 	},false,{type:'reset'}),data.submit);
-	
+
 	/*data.goto = data.submit.parentNode.appendChild(new button('Open workspace',function()
 	{
 		window.location="/sys"+data.name.value+"/en/classic/login/login";
 		return false;
 	},{fontWeight:'bold'},{type:'reset'})).disable();
 	*/
-	
+
 
 	data.loader= data.submit.parentNode.appendChild(new DOM('img',{src:'/images/classic/loader_B.gif'},{width:22,height:22,position:'relative',display:'block'}));
 	data.loader.setStyle({visibility:'hidden'});
@@ -128,7 +128,7 @@
 		data.ao_admin_pass2[(rp.result.admin.password)?'passed':'failed']().title=(rp.result.admin.password)?'OK':'PASSED';
 		data.name.focus();
 		data.submit.enable();
-		
+
 		if(rp.created)
 		{
 			ed('disable');
@@ -146,10 +146,10 @@
 		  		label: G_STRINGS.NEW_SITE_SUCCESS +" "+ data.name.value +"<br/>"+ G_STRINGS.NEW_SITE_SUCCESS_CONFIRM+"<br/>"+ G_STRINGS.NEW_SITE_SUCCESS_CONFIRMNOTE,
 		    	action: function(){
 		    	    if (typeof(window.parent.admToolsContent) != 'undefined'){
-		    	  
+
 					    parent.window.location="/sys"+data.name.value+"/en/classic/login/login";
 					} else {
-						
+
 					    setTimeout('redirectLogin()', 1000);
 					}
 				}.extend(this),
@@ -159,7 +159,7 @@
 				width:380,
 				height:140
 		  	});
-			  	
+
 			data.goto.enable();
 			data.submit.disable();
 			data.reset.disable();
@@ -177,9 +177,9 @@
 		ed('disable');
 	};
 	//data.name.passed();
-	
+
 	function redirectLogin(){
 		location.href="/sys"+data.name.value+"/en/classic/login/login";
 	}
 ]]></JS>
-</dynaForm>  
+</dynaForm>
