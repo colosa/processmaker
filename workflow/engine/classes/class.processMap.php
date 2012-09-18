@@ -371,8 +371,6 @@ class processMap {
 	      $oPM->taskOptions[]=$taskOption;
       }
 
-      $_SESSION['PROCESS'] = $sProcessUID;
-
       $oJSON = new Services_JSON();
       return $oJSON->encode($oPM);
     } catch (Exception $oError) {
