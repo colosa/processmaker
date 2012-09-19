@@ -192,7 +192,10 @@ class Main extends Controller
 
         $availableLangArray = $this->getLanguagesList();
 
-        G::LoadClass ('serverConfiguration');
+        G::LoadClass("serverConfiguration");
+
+        $sflag = 0;
+
         if (($nextBeatDate = $this->memcache->get('nextBeatDate')) === false) {
             //get the serverconf singleton, and check if we can send the heartbeat
             $oServerConf = & serverConf::getSingleton ();

@@ -2219,30 +2219,7 @@ function G()
 
   //Gets number without mask
   this.getValue = function (elem) {
-      var arrayNum = elem.value().split("");
-      var num = "";
-
-      for (var i = 0; i <= arrayNum.length - 1; i++) {
-          switch (arrayNum[i]) {
-              case "0":
-              case "1":
-              case "2":
-              case "3":
-              case "4":
-              case "5":
-              case "6":
-              case "7":
-              case "8":
-              case "9":
-                  num = num + arrayNum[i];
-                  break;
-              case elem.comma_separator:
-                  num = num + ".";
-                  break;
-          }
-      }
-
-      return num;
+      return getNumericValue(elem.value(), ((typeof elem.comma_separator != "undefined")? elem.comma_separator : ""));
   };
 
   //DEPRECATED
@@ -3085,13 +3062,13 @@ var validateForm = function(sRequiredFields) {
           var id = elem.id + "_";
 
           if (!document.getElementById(id)) {
-            var input2   = document.createElement("input");
-            input2.type  = "hidden";
-            input2.id    = id;
-            input2.name  = elem.name;
-            input2.value = elem.value;
+              var inputAux   = document.createElement("input");
+              inputAux.type  = "hidden";
+              inputAux.id    = id;
+              inputAux.name  = elem.name;
+              inputAux.value = elem.value;
 
-            frm.appendChild(input2);
+              frm.appendChild(inputAux);
           }
         }
       }
@@ -3303,135 +3280,36 @@ function sumaformu(ee,fma,mask){
       }
 
       for(i_elements=0;i_elements < objectsWithFormula.length; i_elements++){
-
-
         for(i_elements2=0;i_elements2 < objectsWithFormula[i_elements].theElements.length;i_elements2++){
           if(objectsWithFormula[i_elements].theElements[i_elements2]==myId)
           {
+              var formula = objectsWithFormula[i_elements].fma;
+              var ans = objectsWithFormula[i_elements].ee;
+              var theelemts = objectsWithFormula[i_elements].theElements;
 
-            //calValue(afma,nfma,ee,mask);
+              //Evaluate the formula and replace the value in field
+              for (var i = 0; i <= theelemts.length - 1; i++) {
+                  var elem = getField(theelemts[i]);
+                  var elemAttribute = elementAttributesNS(elem, "pm");
+                  var elemValue = getNumericValue(elem.value, ((typeof elemAttribute.decimal_separator != "undefined")? elemAttribute.decimal_separator : ""));
 
-            formula = objectsWithFormula[i_elements].fma;
-            ans = objectsWithFormula[i_elements].ee;
-            theelemts=objectsWithFormula[i_elements].theElements;
-
-            nfk = '';
-             //to replace the field for the value and to evaluate the formula
-            var symbol = mask.replace(/[0-9.#,-_\s]/g,'');
-            for (var i=0; i < theelemts.length; i++){
-              if(!isnumberk(theelemts[i])){//alert(getField(theelemts[i]).name);
-                val = (getField(theelemts[i]).value == '')? 0 : getField(theelemts[i]).value.replace(/[$a-zA-Z\s]/g,'');
-                formula=formula.replace(theelemts[i],val);
+                  formula = formula.replace(theelemts[i], ((elemValue == "")? 0 : parseFloat(elemValue)));
               }
-            }
-            if (isnumberk(getField(theelemts['0']).value))
-              getField(theelemts['0']).value =  symbol+ ' '+getField(theelemts['0']).value;
 
-            var rstop=eval(formula);
-            if(mask!=''){
-              putmask(rstop,mask,ans);
-            }else{
-              ans.value=rstop;
-            }
+              var result = eval(formula);
 
+              if (mask != "") {
+                  var elemAttribute = elementAttributesNS(ans, "pm");
+
+                  putFieldNumericValue(ans, result, mask, ((typeof elemAttribute.decimal_separator != "undefined")? elemAttribute.decimal_separator : ""));
+              } else {
+                  ans.value = result;
+              }
           }
         }
       }
     });
   }
-}
-
-function calValue(afma,nfma,ans,mask){
-  theelemts=nfma.split(" ");
-  //to replace the field for the value and to evaluate the formula
-  for (var i=0; i < theelemts.length; i++){
-    if(!isnumberk(theelemts[i])){//alert(getField(theelemts[i]).name);
-      if(getField(theelemts[i]).value){
-        nfk=afma.replace(theelemts[i],getField(theelemts[i]).value);
-        afma=nfk;
-      }
-    }
-  }
-
-  //ans.value=eval(nfk);
-  var rstop=eval(nfk);
-  if(mask!=''){
-    putmask(rstop,mask,ans);
-  }else{
-    //alert('without mask');
-    ans.value=rstop;
-  }
-
-}
-
-function isnumberk(texto){
-  var numberk="0123456789.";
-  var letters="abcdefghijklmnopqrstuvwxyz";
-  var i=0;
-  var sw=1;
-
-  //for(var i=0; i<texto.length; i++){
-  while(i++ < texto.length && sw==1){
-    if (numberk.indexOf(texto.charAt(i),0)==-1){
-      sw=0;
-    }
-  }
-  return sw;
-}
-
-
-function putmask(numb,mask,ans){
-  var nnum='';
-  var i=0;
-  var j=0;
-
-  maskDecimal=mask.split(";");
-  if(maskDecimal.length > 1) {
-    maskDecimal=maskDecimal[1].split(".");
-  } else {
-    maskDecimal=mask.split(".");
-  }
-  numDecimal=maskDecimal[1].length;
-
-  ans.value=numb.toFixed(numDecimal);
-  var symbol = mask.replace(/[0-9.#,-_\s]/g,'');
-  if (isnumberk(ans.value)) ans.value = symbol+' '+ans.value;
-  return;
-  var nnum='',i=0,j=0;
-  //we get the number of digits
-  cnumb=numb.toString();
-  cd = parseInt(Math.log(numb)/Math.LN10+1);
-  //now we're runing the mask and cd
-  fnb=cnumb.split(".");
-  maskp=mask.split(";");
-  mask = (maskp.length > 1)? maskp[1]:mask;
-  while(i < numb.toString().length && j < mask.length){
-    //alert(cnumb.charAt(i)+' ** '+mask.charAt(i));
-    switch(mask.charAt(j)){
-      case '#':
-        if(cnumb.charAt(i)!='.') {
-          nnum+=cnumb.charAt(i).toString();
-          i++;
-        }
-        break;
-
-      case '.':
-        nnum+=mask.charAt(j).toString();
-        i=cd+1;
-        cd=i +4;
-        break;
-
-      default:
-        //alert(mask.charAt(i));
-        nnum+=mask.charAt(j).toString();
-        break;
-    }
-
-    j++;
-  }
-
-  ans.value=nnum;
-
 }
 
 function showRowsById(aFields){
@@ -3481,5 +3359,125 @@ function dateSetMask(mask) {
   return mask;
 }
 
-/* end file */
+function putFieldNumericValue(elem, num, mask, decimalSeparator)
+{
+    var strNum = num.toString();
+    var arrayAux = [];
+
+    var maskNumber  = "";
+    var maskDecimal = "";
+
+    if (decimalSeparator != "" && mask.indexOf(decimalSeparator) != -1) {
+        arrayAux = mask.split(decimalSeparator);
+
+        maskNumber  = arrayAux[0];
+        maskDecimal = arrayAux[1];
+    } else {
+        maskNumber  = mask;
+        maskDecimal = "";
+    }
+
+    var n = "";
+    var d = "";
+
+    if (strNum.indexOf(".") != -1) {
+        arrayAux = strNum.split(".");
+
+        n = arrayAux[0];
+        d = arrayAux[1];
+    } else {
+        n = strNum;
+        d = "";
+    }
+
+    var i = 0;
+    var cont = 0;
+    var pos = maskNumber.indexOf("#");
+
+    if (pos != -1) {
+        var mask1 = maskNumber.substring(0, pos);
+
+        var strAux = maskNumber.split("").reverse().join("");
+        cont = 0;
+        pos = 0;
+
+        for (i = 0; i <= strAux.length - 1; i++) {
+            if (strAux.charAt(i) == "#") {
+                cont = cont + 1;
+
+                if (cont == n.length) {
+                    pos = i;
+                    break;
+                }
+            }
+        }
+
+        var mask2 = strAux.substring(0, pos + 1);
+        mask2 = mask2.split("").reverse().join("");
+
+        maskNumber = mask1 + mask2;
+    }
+
+    var newNumber  = putStringMask(n.split("").reverse().join(""), maskNumber.split("").reverse().join(""));
+    var newDecimal = putStringMask(d, maskDecimal);
+
+    newNumber = newNumber.split("").reverse().join("");
+
+    elem.value = newNumber + decimalSeparator + newDecimal;
+}
+
+function putStringMask(str, mask)
+{
+    var newStr = "";
+    var i1 = 0;
+    var i2 = 0;
+
+    for (i1 = 0; i1 <= mask.length - 1; i1++) {
+        switch (mask.charAt(i1)) {
+            case "#":
+                if (i2 <= str.length - 1) {
+                    newStr = newStr + str.charAt(i2);
+
+                    i2 = i2 + 1;
+                } else {
+                    newStr = newStr + "0";
+                }
+                break;
+
+            default:
+                newStr = newStr + mask.charAt(i1);
+                break;
+        }
+    }
+
+    return newStr;
+}
+
+function getNumericValue(val, decimalSeparator)
+{
+    var arrayNum = val.split("");
+    var num = "";
+
+    for (var i = 0; i <= arrayNum.length - 1; i++) {
+        switch (arrayNum[i]) {
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+                num = num + arrayNum[i];
+                break;
+            case decimalSeparator:
+                num = num + ".";
+                break;
+        }
+    }
+
+    return num;
+}
 

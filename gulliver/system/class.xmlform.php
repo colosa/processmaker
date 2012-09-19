@@ -1013,7 +1013,7 @@ class XmlForm_Field_Text extends XmlForm_Field_SimpleText
       $html .= 'onkeypress="'.$this->htmlentities($onkeypress, ENT_COMPAT, 'utf-8').'" ';
       $html .= $this->NSDefaultValue().' ';
       $html .= $this->NSRequiredValue().' ';
-      $html .= 'pm:decimal_separator="' + $this->comma_separator + '" ';
+      $html .= 'pm:decimal_separator="' . $this->comma_separator . '" ';
       $html .= '/>';
     }else{ //VIEW MODE
       $html .= $this->htmlentities($value, ENT_QUOTES, 'utf-8');
@@ -1713,7 +1713,7 @@ class XmlForm_Field_Currency extends XmlForm_Field_SimpleText {
        $html .= $this->NSDefaultValue().' ';
        $html .= $this->NSRequiredValue().' ';
        $html .= $this->NSGridType().' ';
-       $html .= 'pm:decimal_separator="'.$this->comma_separator.'" ';
+       $html .= 'pm:decimal_separator="' . $this->comma_separator . '" ';
        $html .= '/>';
     }else{ //VIEW MODE
        $html .= $this->htmlentities($value, ENT_COMPAT, 'utf-8');
@@ -1829,7 +1829,7 @@ class XmlForm_Field_Percentage extends XmlForm_Field_SimpleText {
        $html .= 'onkeypress="'.$this->htmlentities($onkeypress, ENT_COMPAT, 'utf-8').'" ';
        $html .= $this->NSDefaultValue().' ';
        $html .= $this->NSRequiredValue().' ';
-       $html .= 'pm:decimal_separator="' + $this->comma_separator + '" ';
+       $html .= 'pm:decimal_separator="' . $this->comma_separator . '" ';
        $html .= '/>';
     }else{ //VIEW MODE
        $html .= $this->htmlentities($value, ENT_COMPAT, 'utf-8');
