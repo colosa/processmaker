@@ -273,7 +273,7 @@ Ext.onReady(function () {
           method: "POST"
       }),
 
-      baseParams: {"action": "usersList", "USR_UID": USR_UID},
+      baseParams: {"action": "usersList", "USR_UID": USR_UID, "addNone": 1},
 
       reader: new Ext.data.JsonReader({
           fields: [

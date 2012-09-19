@@ -69,6 +69,9 @@ switch($_POST['action'])
     $defaultOption = isset($oConf->aConfig['format']) ? $oConf->aConfig['format'] : '';
 
     $aUserInfo = array();
+    if (isset($_POST['addNone']) && $_POST['addNone'] == '1') {
+        $aUserInfo[] = array('USR_UID' => '', 'USER_FULLNAME' => '- ' . G::LoadTranslation('ID_NONE') . ' -');
+    }
     while ( $oDataset->next()) {
       $aRow1 = $oDataset->getRow();
 
@@ -472,7 +475,7 @@ switch($_POST['action'])
             }
         }
     }
-    
+
 
     $aFields['MENUSELECTED_NAME'] =  $menuSelected;
 
