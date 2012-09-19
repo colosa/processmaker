@@ -71,6 +71,21 @@ class adminProxy extends HttpProxyController
       $updatedConf['memory_limit'] = $httpData->memory_limit;
     }
 
+    if ($sysConf['proxy_host'] != $httpData->proxy_host) {
+      $updatedConf['proxy_host'] = $httpData->proxy_host;
+    }
+
+    if ($sysConf['proxy_port'] != $httpData->proxy_port) {
+      $updatedConf['proxy_port'] = $httpData->proxy_port;
+    }
+
+    if ($sysConf['proxy_user'] != $httpData->proxy_user) {
+      $updatedConf['proxy_user'] = $httpData->proxy_user;
+    }
+
+    if ($sysConf['proxy_pass'] != $httpData->proxy_pass) {
+      $updatedConf['proxy_pass'] = G::encrypt($httpData->proxy_pass, 'proxy_pass');
+    }
 
     if ($updateRedirector) {
       if (!file_exists(PATH_HTML . 'index.html')) {

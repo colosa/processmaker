@@ -3334,7 +3334,21 @@ class Processes {
     global $client;
     $endpoint = PML_WSDL_URL;
     $sessionId = '';
-    $client = new SoapClient( $endpoint );
+    $proxy = array();
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      $proxy['proxy_host'] = $sysConf['proxy_host'];
+      if ($sysConf['proxy_port'] != '') {
+        $proxy['proxy_port'] = $sysConf['proxy_port'];
+      }
+      if ($sysConf['proxy_user'] != '') {
+        $proxy['proxy_login'] = $sysConf['proxy_user'];
+      }
+      if ($sysConf['proxy_pass'] != '') {
+        $proxy['proxy_password'] = $sysConf['proxy_pass'];
+      }
+    }
+    $client = new SoapClient($endpoint, $proxy);
 
     $params = array('userid'=>$user, 'password'=>$pass );
     $result = $client->__SoapCall('login', array($params));
@@ -3359,10 +3373,24 @@ class Processes {
     $endpoint = PML_WSDL_URL;
     $sessionId = '';
     ini_set("soap.wsdl_cache_enabled", "0"); // enabling WSDL cache
-    try{
-    $client = @new SoapClient( $endpoint );
-    }catch (Exception $e){
-    throw ( new Exception ( $e->message ) );
+    try {
+        $proxy = array();
+        $sysConf = System::getSystemConfiguration();
+        if ($sysConf['proxy_host'] != '') {
+          $proxy['proxy_host'] = $sysConf['proxy_host'];
+          if ($sysConf['proxy_port'] != '') {
+            $proxy['proxy_port'] = $sysConf['proxy_port'];
+          }
+          if ($sysConf['proxy_user'] != '') {
+            $proxy['proxy_login'] = $sysConf['proxy_user'];
+          }
+          if ($sysConf['proxy_pass'] != '') {
+            $proxy['proxy_password'] = $sysConf['proxy_pass'];
+          }
+        }
+        $client = @new SoapClient($endpoint, $proxy);
+    } catch (Exception $e) {
+        throw ( new Exception ( $e->message ) );
     }
 
 
@@ -3378,7 +3406,21 @@ class Processes {
     global $client;
 
     $endpoint = PML_WSDL_URL;
-    $client = new SoapClient( $endpoint );
+    $proxy = array();
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      $proxy['proxy_host'] = $sysConf['proxy_host'];
+      if ($sysConf['proxy_port'] != '') {
+        $proxy['proxy_port'] = $sysConf['proxy_port'];
+      }
+      if ($sysConf['proxy_user'] != '') {
+        $proxy['proxy_login'] = $sysConf['proxy_user'];
+      }
+      if ($sysConf['proxy_pass'] != '') {
+        $proxy['proxy_password'] = $sysConf['proxy_pass'];
+      }
+    }
+    $client = new SoapClient($endpoint, $proxy);
 
     $sessionId = '';
     $params = array('sessionId'=>$sessionId );
@@ -3433,7 +3475,21 @@ class Processes {
     global $client;
 
     $endpoint = PML_WSDL_URL;
-    $client = new SoapClient( $endpoint );
+    $proxy = array();
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      $proxy['proxy_host'] = $sysConf['proxy_host'];
+      if ($sysConf['proxy_port'] != '') {
+        $proxy['proxy_port'] = $sysConf['proxy_port'];
+      }
+      if ($sysConf['proxy_user'] != '') {
+        $proxy['proxy_login'] = $sysConf['proxy_user'];
+      }
+      if ($sysConf['proxy_pass'] != '') {
+        $proxy['proxy_password'] = $sysConf['proxy_pass'];
+      }
+    }
+    $client = new SoapClient($endpoint, $proxy);
 
     $sessionId = '';
     $params = array('sessionId'=>$sessionId , 'processId'=>  $proId);

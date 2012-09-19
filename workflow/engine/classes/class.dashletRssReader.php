@@ -32,8 +32,36 @@ class dashletRssReader implements DashletInterface {
   }
 
   public function render ($width = 300) {
-    $self->url = $this->urlFrom;
-    $self->rss = @simplexml_load_file($self->url);
+    $pCurl = curl_init();
+    curl_setopt($pCurl, CURLOPT_URL, $this->urlFrom);
+    curl_setopt($pCurl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($pCurl, CURLOPT_FOLLOWLOCATION, false);
+    curl_setopt($pCurl, CURLOPT_AUTOREFERER, true);
+    //To avoid SSL error
+    curl_setopt($pCurl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($pCurl, CURLOPT_SSL_VERIFYPEER, 0);
+
+    //To avoid timeouts
+    curl_setopt($pCurl, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($pCurl, CURLOPT_TIMEOUT, 20);
+
+    curl_setopt($pCurl, CURLOPT_NOPROGRESS, false);
+    curl_setopt($pCurl, CURLOPT_VERBOSE, true);
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($pCurl, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($pCurl, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($pCurl, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($pCurl, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
+    $self->rss = @simplexml_load_string(curl_exec($pCurl));
     if($self->rss)
     {
       $index= 0;

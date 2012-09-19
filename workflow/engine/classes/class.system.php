@@ -1010,6 +1010,7 @@ class System {
 
       if ($_SESSION['PROCESSMAKER_ENV_HASH'] === $hash) {
         $_SESSION['PROCESSMAKER_ENV']['from_cache'] = 1;
+        $_SESSION['PROCESSMAKER_ENV_HASH']['proxy_pass'] = G::decrypt($_SESSION['PROCESSMAKER_ENV_HASH']['proxy_pass'], 'proxy_pass');
         return $_SESSION['PROCESSMAKER_ENV'];
       }
     }
@@ -1026,7 +1027,11 @@ class System {
       'memcached'        => 0,
       'memcached_server' => '',
       'default_skin'     => 'classic',
-      'default_lang'     => 'en'
+      'default_lang'     => 'en',
+      'proxy_host'       => '',
+      'proxy_port'       => '',
+      'proxy_user'       => '',
+      'proxy_pass'       => ''
     );
 
     // read the global env.ini configuration file
@@ -1041,6 +1046,10 @@ class System {
 
     // validation debug config, only binary value is valid; debug = 1, to enable
     $config['debug'] = $config['debug'] == 1 ? 1 : 0;
+
+    if ($config['proxy_pass'] != '') {
+      $config['proxy_pass'] = G::decrypt($config['proxy_pass'], 'proxy_pass');
+    }
 
     $md5 = array();
     if ($readGlobalIniFile)

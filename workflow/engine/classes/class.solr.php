@@ -24,7 +24,7 @@
 
 
 /**
- * Interface to the Solr Search server 
+ * Interface to the Solr Search server
  * @author Herbert Saal Gutierrez
  *
  */
@@ -33,14 +33,14 @@ class BpmnEngine_SearchIndexAccess_Solr
   const SOLR_VERSION = '&version=2.2';
   private $_solrIsEnabled = false;
   private $_solrHost = "";
-  
+
   public function __construct($solrIsEnabled = false, $solrHost = "")
   {
     // use the parameters to initialize class
     $this->_solrIsEnabled = $solrIsEnabled;
     $this->_solrHost = $solrHost;
   }
-  
+
   /**
    * Verify if the Solr service is available
    * @gearman = false
@@ -52,10 +52,10 @@ class BpmnEngine_SearchIndexAccess_Solr
   public function isEnabled()
   {
     // verify solr server response
-    
+
     return $this->_solrIsEnabled;
   }
-  
+
   /**
    * Returns the total number of indexed documents
    * @gearman = false
@@ -71,19 +71,33 @@ class BpmnEngine_SearchIndexAccess_Solr
     if (! $this->_solrIsEnabled)
       return;
       // get configuration information in base to workspace parameter
-      
+
     // get total number of documents in registry
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/select/?q=*:*";
     $solrIntruct .= self::SOLR_VERSION;
     $solrIntruct .= "&start=0&rows=0&echoParams=none&wt=json";
-    
+
     $handlerTotal = curl_init ($solrIntruct);
     curl_setopt ($handlerTotal, CURLOPT_RETURNTRANSFER, true);
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handlerTotal, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handlerTotal, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handlerTotal, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handlerTotal, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $responseTotal = curl_exec ($handlerTotal);
     curl_close ($handlerTotal);
-    
+
     // verify the result of solr
     $responseSolrTotal = G::json_decode ($responseTotal);
     if ($responseSolrTotal->responseHeader->status != 0) {
@@ -92,7 +106,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     $numTotalDocs = $responseSolrTotal->response->numFound;
     return $numTotalDocs;
   }
-  
+
   /**
    * Execute a query in base to Requested data
    * @gearman = false
@@ -108,7 +122,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
     $workspace = $solrRequestData->workspace;
-    
+
     // format request
     $query = empty ($solrRequestData->searchText) ? '*:*' : $solrRequestData->searchText;
     $query = rawurlencode ($query);
@@ -125,7 +139,7 @@ class BpmnEngine_SearchIndexAccess_Solr
       for ($i = 0; $i < $solrRequestData->numSortingCols; $i ++) {
         $sort .= $solrRequestData->sortCols [$i] . "%20" . $solrRequestData->sortDir [$i] . ",";
       }
-      
+
       $sort = substr_replace ($sort, "", - 1);
     }
     $resultFormat = empty ($solrRequestData->resultFormat) ? '' : '&wt=' . $solrRequestData->resultFormat;
@@ -134,7 +148,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     foreach ($aFilters as $value) {
       $filters .= '&fq=' . urlencode ($value);
     }
-    
+
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/select/?q=$query";
@@ -150,18 +164,32 @@ class BpmnEngine_SearchIndexAccess_Solr
     // search the cases in base to datatable parameters
     $handler = curl_init ($solrIntruct);
     curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $response = curl_exec ($handler);
     curl_close ($handler);
-    
+
     // decode
     $responseSolr = G::json_decode ($response);
     if ($responseSolr->responseHeader->status != 0) {
       throw new Exception ("Error executing query to Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
-    
+
     return $responseSolr;
   }
-  
+
   /**
    * Insert or Update document index
    * @gearman = false
@@ -179,23 +207,37 @@ class BpmnEngine_SearchIndexAccess_Solr
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $solrUpdateDocument->workspace;
     $solrIntruct .= "/update";
-    
+
     $handler = curl_init ($solrIntruct);
     curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
     curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
-        'Content-type:application/xml' 
+        'Content-type:application/xml'
     )); // -H
     curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
     curl_setopt ($handler, CURLOPT_POSTFIELDS, $solrUpdateDocument->document); // data
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $response = curl_exec ($handler);
     curl_close ($handler);
-    
+
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
       throw new Exception ("Error updating document in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
-  
+
   /**
    * Commit the changes since the last commit
    * @gearman = false
@@ -213,23 +255,37 @@ class BpmnEngine_SearchIndexAccess_Solr
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
-    
+
     $handler = curl_init ($solrIntruct);
     curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
     curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
-        'Content-type:application/xml' 
+        'Content-type:application/xml'
     )); // -H
     curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
     curl_setopt ($handler, CURLOPT_POSTFIELDS, "<commit/>"); // data
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $response = curl_exec ($handler);
     curl_close ($handler);
-    
+
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
       throw new Exception ("Error commiting changes in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
-  
+
   /**
    * Rollback the changes since the last commit
    * @gearman = false
@@ -242,29 +298,43 @@ class BpmnEngine_SearchIndexAccess_Solr
   {
     if (! $this->_solrIsEnabled)
       return;
-    
+
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
-    
+
     $handler = curl_init ($solrIntruct);
     curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
     curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
-        'Content-type:application/xml' 
+        'Content-type:application/xml'
     )); // -H
     curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
     curl_setopt ($handler, CURLOPT_POSTFIELDS, "<rollback/>"); // data
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $response = curl_exec ($handler);
     curl_close ($handler);
-    
+
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
       throw new Exception ("Error rolling back changes in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
-  
+
   /**
    * Optimize Solr index
    * @gearman = false
@@ -277,32 +347,46 @@ class BpmnEngine_SearchIndexAccess_Solr
   {
     if (! $this->_solrIsEnabled)
       return;
-    
+
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
-    
+
     $handler = curl_init ($solrIntruct);
     curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
     curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
-        'Content-type:application/xml' 
+        'Content-type:application/xml'
     )); // -H
     curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
     curl_setopt ($handler, CURLOPT_POSTFIELDS, "<optimize/>"); // data
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $response = curl_exec ($handler);
     curl_close ($handler);
-    
+
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
       throw new Exception ("Error optimizing changes in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
-  
+
   /**
    * Return the list of the stored fields in Solr
-   * 
+   *
    * @param string $workspace
    *          Solr instance name
    * @throws Exception
@@ -312,15 +396,29 @@ class BpmnEngine_SearchIndexAccess_Solr
   {
     if (! $this->_solrIsEnabled)
       return;
-    
+
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/admin/luke?numTerms=0&wt=json";
-    
+
     $handler = curl_init ($solrIntruct);
     curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $response = curl_exec ($handler);
     curl_close ($handler);
     // decode
@@ -330,7 +428,7 @@ class BpmnEngine_SearchIndexAccess_Solr
     }
     return $responseSolr;
   }
-  
+
   /**
    * Delete all documents from index
    * @gearman = false
@@ -344,30 +442,44 @@ class BpmnEngine_SearchIndexAccess_Solr
     if (! $this->_solrIsEnabled)
       return;
       // $registry = Zend_Registry::getInstance();
-    
+
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
-    
+
     $handler = curl_init ($solrIntruct);
     curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
     curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
-        'Content-type:application/xml' 
+        'Content-type:application/xml'
     )); // -H
     curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
     curl_setopt ($handler, CURLOPT_POSTFIELDS, "<delete><query>*:*</query></delete>"); // data
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $response = curl_exec ($handler);
-    
+
     curl_close ($handler);
-    
+
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
       throw new Exception ("Error deleting all documents in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
-  
+
   /**
    * Delete specified documents from index
    * @gearman = false
@@ -381,45 +493,59 @@ class BpmnEngine_SearchIndexAccess_Solr
     if (! $this->_solrIsEnabled)
       return;
       // $registry = Zend_Registry::getInstance();
-    
+
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/update";
-    
+
     $handler = curl_init ($solrIntruct);
     curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
     curl_setopt ($handler, CURLOPT_HTTPHEADER, array (
-        'Content-type:application/xml' 
+        'Content-type:application/xml'
     )); // -H
     curl_setopt ($handler, CURLOPT_BINARYTRANSFER, TRUE); // --data-binary
     curl_setopt ($handler, CURLOPT_POSTFIELDS, "<delete><query>" . $idQuery . "</query></delete>"); // data
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $response = curl_exec ($handler);
-    
+
     curl_close ($handler);
-    
+
     $swOk = strpos ($response, '<int name="status">0</int>');
     if (! $swOk) {
       throw new Exception ("Error deleting document in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
   }
-  
+
   /**
    * Execute a query in base to Request data
    *
-   * @param Entity_FacetRequest $facetRequestEntity          
+   * @param Entity_FacetRequest $facetRequestEntity
    * @return solr response: list of facets array
    */
   public function getFacetsList($facetRequest)
   {
     if (! $this->_solrIsEnabled)
       return;
-    
+
     $solrIntruct = '';
     // get configuration information in base to workspace parameter
     $workspace = $facetRequest->workspace;
-    
+
     // format request
     $query = empty ($facetRequest->searchText) ? '*:*' : $facetRequest->searchText;
     $query = rawurlencode ($query);
@@ -448,9 +574,9 @@ class BpmnEngine_SearchIndexAccess_Solr
       $filters .= '&fq=' . $value;
     }
     // echo "<pre>";
-    
+
     $resultFormat = '&wt=json';
-    
+
     $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
     $solrIntruct .= $workspace;
     $solrIntruct .= "/select/?q=$query";
@@ -461,20 +587,34 @@ class BpmnEngine_SearchIndexAccess_Solr
     $solrIntruct .= $facets;
     $solrIntruct .= $filters;
     $solrIntruct .= $resultFormat;
-    
+
     // send query
     // search the cases in base to datatable parameters
     $handler = curl_init ($solrIntruct);
     curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     $response = curl_exec ($handler);
     curl_close ($handler);
-    
+
     // decode
     $responseSolr = G::json_decode ($response);
     if ($responseSolr->responseHeader->status != 0) {
       throw new Exception ("Error getting faceted list from Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
-    
+
     return $responseSolr;
   }
 }

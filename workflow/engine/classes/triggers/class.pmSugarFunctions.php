@@ -16,6 +16,27 @@
 ////////////////////////////////////////////////////
 
 
+function getSoapClientOptions() {
+  $options = array('trace' => 1);
+
+  //Apply proxy settings
+  $sysConf = System::getSystemConfiguration();
+  if ($sysConf['proxy_host'] != '') {
+    $options['proxy_host'] = $sysConf['proxy_host'];
+    if ($sysConf['proxy_port'] != '') {
+      $options['proxy_port'] = $sysConf['proxy_port'];
+    }
+    if ($sysConf['proxy_user'] != '') {
+      $options['proxy_login'] = $sysConf['proxy_user'];
+    }
+    if ($sysConf['proxy_pass'] != '') {
+      $options['proxy_password'] = $sysConf['proxy_pass'];
+    }
+  }
+
+  return $options;
+}
+
 /**
  * This collection of triggers allows to interact by getting and sending information to SugarCRM
  * @class pmSugar
@@ -25,7 +46,7 @@
  */
 
 function sugarLogin($sugarSoap, $user, $password) {
-  $client = new SoapClient ( $sugarSoap, array ('trace' => 1 ) );
+  $client = new SoapClient ( $sugarSoap, getSoapClientOptions() );
   $auth_array = array ('user_auth' => array ('user_name' => $user, 'password' => md5 ( $password ), 'version' => '1.0' ) );
   $login_results = $client->__SoapCall ( 'login', $auth_array );
 
@@ -67,7 +88,7 @@ function objectToArray($object) {
 
 function GetSugarEntry($sugarSoap, $user, $password, $module, $id, $selectFields, $linkNameToFieldsArray, $resultType = 'array') {
     $sessionId = sugarLogin ( $sugarSoap, $user, $password );
-    $client = new SoapClient ( $sugarSoap, array ('trace' => 1 ) );
+    $client = new SoapClient ( $sugarSoap, getSoapClientOptions() );
     $request_array = array ('session' => $sessionId, 'module_name' => $module, 'id' => $id,
             'select_fields' => $select_fields, 'link_name_to_fields_array' => $linkNameToFieldsArray);
     $sugarEntry = $client->__SoapCall ( 'get_entry', $request_array );
@@ -103,7 +124,7 @@ function GetSugarEntry($sugarSoap, $user, $password, $module, $id, $selectFields
 
 function GetSugarEntries($sugarSoap, $user, $password, $module, $query, $orderBy, $selectedFields, $maxResults, $resultType="array") {
   $sessionId = sugarLogin ( $sugarSoap, $user, $password );
-  $client = new SoapClient ( $sugarSoap, array ('trace' => 1 ) );
+  $client = new SoapClient ( $sugarSoap, getSoapClientOptions() );
   $request_array = array ('session' => $sessionId, 'module_name' => $module, 'query' => $query, 'order_by' => $orderBy, 'offset'=>"", 'select_fields'=>"", 'max_result'=>$maxResults );
   $sugarEntriesO = $client->__SoapCall ( 'get_entry_list', $request_array );
 
@@ -266,7 +287,7 @@ function CreateSugarAccount($sugarSoap, $user, $password, $name,  $resultType="a
 
   $module = "Accounts";
   $sessionId = sugarLogin ( $sugarSoap, $user, $password );
-  $client = new SoapClient ( $sugarSoap, array ('trace' => 1 ) );
+  $client = new SoapClient ( $sugarSoap, getSoapClientOptions() );
   $request_array = array ('session' => $sessionId, 'module_name' => $module, 'name_value_list' => array(
             array("name" => 'name', "value" => $name )
             ) );
@@ -315,7 +336,7 @@ function CreateSugarContact($sugarSoap, $user, $password, $first_name, $last_nam
     );
 */
   $sessionId = sugarLogin ( $sugarSoap, $user, $password );
-  $client = new SoapClient ( $sugarSoap, array ('trace' => 1 ) );
+  $client = new SoapClient ( $sugarSoap, getSoapClientOptions() );
 
   $request_array = array ('session' => $sessionId, 'module_name' => $module, array(
             array("name" => 'first_name',"value" => $first_name),
@@ -374,7 +395,7 @@ function CreateSugarOpportunity($sugarSoap, $user, $password, $name,$account_id,
         );*/
 
   $sessionId = sugarLogin ( $sugarSoap, $user, $password );
-  $client = new SoapClient ( $sugarSoap, array ('trace' => 1 ) );
+  $client = new SoapClient ( $sugarSoap, getSoapClientOptions() );
 
   $request_array = array ('session' => $sessionId, 'module_name' => $module, 'name_value_list' =>array(
                       array('name' => 'name','value' => $name),
@@ -423,7 +444,7 @@ function CreateSugarLeads($sugarSoap, $user, $password, $first_name, $last_name,
 
   $module = "Leads";
   $sessionId = sugarLogin ( $sugarSoap, $user, $password );
-  $client = new SoapClient ( $sugarSoap, array ('trace' => 1 ) );
+  $client = new SoapClient ( $sugarSoap, getSoapClientOptions() );
 
   $request_array = array ('session' => $sessionId, 'module_name' => $module, array(
             array("name" => 'first_name',"value" => $first_name),

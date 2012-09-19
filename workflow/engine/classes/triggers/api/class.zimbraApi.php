@@ -191,6 +191,19 @@ class Zimbra {
         curl_setopt($this->_curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($this->_curl, CURLOPT_SSL_VERIFYHOST, false);
 
+        //Apply proxy settings
+        $sysConf = System::getSystemConfiguration();
+        if ($sysConf['proxy_host'] != '') {
+          curl_setopt($this->_curl, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+          if ($sysConf['proxy_port'] != '') {
+            curl_setopt($this->_curl, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+          }
+          if ($sysConf['proxy_user'] != '') {
+            curl_setopt($this->_curl, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+          }
+          curl_setopt($this->_curl, CURLOPT_HTTPHEADER, array('Expect:'));
+        }
+
         $preauth = $this->getPreAuth($this->_username);
         $header = '<context xmlns="urn:zimbraAccount' . (($this->_admin) ? 'Admin' : '') . '"><session/></context>';
 
@@ -970,7 +983,7 @@ class Zimbra {
         $role = $unserializeOp1['role'];
         $location = $unserializeOp1['location'];
         $ptst = $unserializeOp1['ptst'];
-        
+
         $dateFormat=$allDay=="1"?"Ymd":"Ymd\THis";
         $startDate = date($dateFormat,strtotime($unserializeOp1['startDate']));
         $endDate = date($dateFormat,strtotime($unserializeOp1['endDate']));

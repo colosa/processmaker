@@ -51,10 +51,21 @@ function file_get_conditional_contents($szURL){
     curl_setopt ( $pCurl, CURLOPT_CONNECTTIMEOUT, 10 );
     curl_setopt ( $pCurl, CURLOPT_TIMEOUT, 20 );
 
-    curl_setopt ( $pCurl, CURLOPT_NOPROGRESS, FALSE);
-    curl_setopt ( $pCurl, CURLOPT_VERBOSE, TRUE);
+    curl_setopt ( $pCurl, CURLOPT_NOPROGRESS, false);
+    curl_setopt ( $pCurl, CURLOPT_VERBOSE, true);
 
-
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($pCurl, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($pCurl, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($pCurl, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($pCurl, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
 
     $szContents = curl_exec($pCurl);
     $aInfo = curl_getinfo($pCurl);
@@ -244,6 +255,19 @@ function buildData(){
     //To avoid timeouts
     curl_setopt ( $ch, CURLOPT_CONNECTTIMEOUT, 10 );
     curl_setopt ( $ch, CURLOPT_TIMEOUT, 20 );
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($ch, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($ch, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($ch, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
 
     $response = curl_exec ( $ch );
     $curl_session = curl_getinfo($ch, CURLINFO_HTTP_CODE);

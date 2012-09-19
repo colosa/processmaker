@@ -197,6 +197,22 @@ class soapNtlm {
     curl_setopt($this->ch, CURLOPT_HTTPAUTH, CURLAUTH_NTLM);
     //curl_setopt($this->ch, CURLOPT_USERPWD, $this->options['auth']); // Hugo's code
     curl_setopt($this->ch, CURLOPT_USERPWD, $this->getuser().':'.$this->getpassword());// Ankit's code
+
+    //Apply proxy settings
+    if (class_exists('System')) {
+      $sysConf = System::getSystemConfiguration();
+      if ($sysConf['proxy_host'] != '') {
+        curl_setopt($this->ch, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+        if ($sysConf['proxy_port'] != '') {
+          curl_setopt($this->ch, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+        }
+        if ($sysConf['proxy_user'] != '') {
+          curl_setopt($this->ch, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+        }
+        curl_setopt($this->ch, CURLOPT_HTTPHEADER, array('Expect:'));
+      }
+    }
+
     echo $this->buffer = curl_exec($this->ch);
 
     //echo "[NTLMStream::createBuffer] buffer size : " . strlen($this->buffer) . "bytes<br>";
@@ -229,6 +245,22 @@ class NTLMSoapClient extends SoapClient {
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_NTLM);
     //curl_setopt($ch, CURLOPT_USERPWD, $this->options['auth']); //Hugo's Code
     curl_setopt($ch, CURLOPT_USERPWD, $this->user.':'.$this->password); //Ankit's Code
+
+    //Apply proxy settings
+    if (class_exists('System')) {
+      $sysConf = System::getSystemConfiguration();
+      if ($sysConf['proxy_host'] != '') {
+        curl_setopt($ch, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+        if ($sysConf['proxy_port'] != '') {
+          curl_setopt($ch, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+        }
+        if ($sysConf['proxy_user'] != '') {
+          curl_setopt($ch, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+        }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
+      }
+    }
+
     $response = curl_exec($ch);
 
     return $response;

@@ -42,6 +42,20 @@
  */
 function executeTalendWebservice($wsdl,$params=array(),  $message){
   $client = new SoapClient($wsdl,array('trace' => 1));
+
+  //Apply proxy settings
+  $sysConf = System::getSystemConfiguration();
+  if ($sysConf['proxy_host'] != '') {
+    curl_setopt($client, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+    if ($sysConf['proxy_port'] != '') {
+      curl_setopt($client, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+    }
+    if ($sysConf['proxy_user'] != '') {
+      curl_setopt($client, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+    }
+    curl_setopt($client, CURLOPT_HTTPHEADER, array('Expect:'));
+  }
+
   $params[0]="";
   foreach($params as $paramO){
     $params[]="--context_param".$paramO[0]."=".$paramO[1];

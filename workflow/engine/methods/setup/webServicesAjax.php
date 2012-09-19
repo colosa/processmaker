@@ -25,7 +25,7 @@
 ini_set ( "soap.wsdl_cache_enabled", "0" ); // enabling WSDL cache
 
 G::LoadClass ( 'ArrayPeer' );
-if($RBAC->userCanAccess('PM_SETUP') != 1 && $RBAC->userCanAccess('PM_FACTORY') != 1){	
+if($RBAC->userCanAccess('PM_SETUP') != 1 && $RBAC->userCanAccess('PM_FACTORY') != 1){
   G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
   //G::header('location: ../login/login');
   die;
@@ -53,13 +53,13 @@ switch ($_POST ['action']) {
 			G::RenderPage ( 'publish', 'raw' );
 		}
 		break;
-	
+
 	case 'showDetails' :
 		G::LoadClass ( 'groups' );
-		
+
 		$dbc = new DBConnection ( );
 		$ses = new DBSession ( $dbc );
-		
+
 		if (! isset ( $_SESSION ['END_POINT'] )) {
 			$aFields ['WS_HOST'] = $_SERVER ['HTTP_HOST'];
 			$aFields ['WS_WORKSPACE'] = SYS_SYS;
@@ -76,16 +76,16 @@ switch ($_POST ['action']) {
 			$aAux = explode ( '/', $aAux [1] );
 			$aFields ['WS_WORKSPACE'] = substr ( $aAux [1], 3 );
 		}
-		
+
 		$rows [] = array ('uid' => 'char', 'name' => 'char', 'age' => 'integer', 'balance' => 'float' );
 		$rows [] = array ('uid' => 'http', 'name' => 'http' );
 		$rows [] = array ('uid' => 'https', 'name' => 'https' );
-		
+
 		global $_DBArray;
   	    $_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
 		$_DBArray ['protocol'] = $rows;
 		$_SESSION ['_DBArray'] = $_DBArray;
-		
+
 		if (! isset ( $_SESSION ['END_POINT'] )) {
 			//$wsdl = 'http://'.$_SERVER['HTTP_HOST'].'/sys'.SYS_SYS. '/'. SYS_LANG .'/classic/services/wsdl';
 			$wsdl = 'http://' . $_SERVER ['HTTP_HOST'];
@@ -94,25 +94,25 @@ switch ($_POST ['action']) {
 			$wsdl = $_SESSION ['END_POINT'];
 			$workspace = $_SESSION ['WS_WORKSPACE'];
 		}
-		
+
 		$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/'. SYS_LANG .'/classic/services/wsdl2';
-		
+
 		$wsdl = isset ( $_SESSION ['END_POINT'] ) ? $_SESSION ['END_POINT'] : $defaultEndpoint;
-		
+
 		$wsSessionId = '';
 		if (isset ( $_SESSION ['WS_SESSION_ID'] )) {
 			$wsSessionId = $_SESSION ['WS_SESSION_ID'];
 		}
-		
+
 		$aFields ['WSDL'] = $wsdl;
 		$aFields ['OS'] = $workspace;
 		$aFields ['WSID'] = $wsSessionId;
-		
+
 		$G_PUBLISH = new Publisher ( );
 		$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/webServicesDetails', '', $aFields, 'webServicesSetupSave' );
-		
+
 		G::RenderPage ( "publish", "raw" );
-		
+
 		break;
         case 'showUploadFilesForm':
             global $G_PUBLISH;
@@ -124,7 +124,7 @@ switch ($_POST ['action']) {
 
 			$G_PUBLISH = new Publisher ( );
 			$fields ['SESSION_ID'] = isset ( $_SESSION ['WS_SESSION_ID'] ) ? $_SESSION ['WS_SESSION_ID'] : '';
-			$fields ['ACTION'] = 'wsSendFiles';                       
+			$fields ['ACTION'] = 'wsSendFiles';
 			$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', $xmlform, '', $fields, '../setup/webServicesAjax');
 			G::RenderPage ( 'publish', 'blank' );
 		}
@@ -138,12 +138,29 @@ switch ($_POST ['action']) {
 			$_SESSION ['END_POINT'] = $_POST ["epr"];
 		}
 		$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/'. SYS_LANG .'/classic/services/wsdl2';
-		
+
 		$endpoint = isset ( $_SESSION ['END_POINT'] ) ? $_SESSION ['END_POINT'] : $defaultEndpoint;
-		
+
 		$sessionId = isset ( $_SESSION ['SESSION_ID'] ) ? $_SESSION ['SESSION_ID'] : '';
-		@$client = new SoapClient ( $endpoint );
-		
+
+		//Apply proxy settings
+        $proxy = array();
+        $sysConf = System::getSystemConfiguration();
+        if ($sysConf['proxy_host'] != '') {
+          $proxy['proxy_host'] = $sysConf['proxy_host'];
+          if ($sysConf['proxy_port'] != '') {
+            $proxy['proxy_port'] = $sysConf['proxy_port'];
+          }
+          if ($sysConf['proxy_user'] != '') {
+            $proxy['proxy_login'] = $sysConf['proxy_user'];
+          }
+          if ($sysConf['proxy_pass'] != '') {
+            $proxy['proxy_password'] = $sysConf['proxy_pass'];
+          }
+        }
+
+		@$client = new SoapClient($endpoint, $proxy);
+
 		switch ($action) {
 			case "Login" :
 				$user = $frm ["USER_ID"];
@@ -165,13 +182,13 @@ switch ($_POST ['action']) {
 			case "ProcessList" :
 				$sessionId = $frm ["SESSION_ID"];
 				$params = array ('sessionId' => $sessionId );
-				
+
 				$wsResponse = $client->__SoapCall ( 'ProcessList', array ($params ) );
 				$result = G::PMWSCompositeResponse($wsResponse, 'processes');
-				
+
 				$G_PUBLISH = new Publisher();
 				$rows [] = array ('guid' => 'char', 'name' => 'char' );
-				
+
 				if( is_array($result) ){
 					foreach ( $result as $key => $item ) {
 						if (isset ( $item->item ))
@@ -194,14 +211,14 @@ switch ($_POST ['action']) {
 							if (isset ( $item->name ))
 								$name = $item->name;
 						}
-						
+
 						$rows [] = array ('guid' => $guid, 'name' => $name );
 					}
-					global $_DBArray; 
+					global $_DBArray;
         	   		$_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
     				$_DBArray ['process'] = $rows;
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'process' );
     				$c->addAscendingOrderByColumn ( 'name' );
@@ -213,7 +230,7 @@ switch ($_POST ['action']) {
     				$fields ['time_stamp']  = date("Y-m-d H:i:s");
     				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				}
-      			
+
 				G::RenderPage ( 'publish', 'raw' );
 				break;
 			case "RoleList" :
@@ -221,12 +238,12 @@ switch ($_POST ['action']) {
 				$params = array ('sessionId' => $sessionId );
 				$wsResponse = $client->__SoapCall ( 'RoleList', array ($params ) );
 				$result = G::PMWSCompositeResponse($wsResponse, 'roles');
-				
+
 				$G_PUBLISH = new Publisher ();
-				
+
 				$rows [] = array ('guid' => 'char', 'name' => 'char');
 				if ( is_array ( $result )){
-					
+
 					foreach ( $result as $key => $item ) {
 						if (isset ( $item->item ))
 							foreach ( $item->item as $index => $val ) {
@@ -248,14 +265,14 @@ switch ($_POST ['action']) {
 							if (isset ( $item->name ))
 								$name = $item->name;
 						}
-						
+
 						$rows [] = array ('guid' => $guid, 'name' => $name );
 					}
 					global $_DBArray;
         	  		$_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
     				$_DBArray ['role'] = $rows;
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
     				G::LoadClass ( 'ArrayPeer' );
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'role' );
@@ -268,16 +285,16 @@ switch ($_POST ['action']) {
     				$fields ['time_stamp']  = date("Y-m-d H:i:s");
     				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				}
-      			
+
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-				
+
 			case "GroupList" :
 				$sessionId = $frm ["SESSION_ID"];
 				$params = array ('sessionId' => $sessionId );
 				$wsResponse = $client->__SoapCall ( 'GroupList', array ($params ) );
 				$result = G::PMWSCompositeResponse($wsResponse, 'groups');
-				
+
 				$G_PUBLISH = new Publisher ( );
 				$rows [] = array ('guid' => 'char', 'name' => 'char' );
 				if (is_array ( $result )){
@@ -302,14 +319,14 @@ switch ($_POST ['action']) {
 							if (isset ( $item->name ))
 								$name = $item->name;
 						}
-						
+
 						$rows [] = array ('guid' => $guid, 'name' => $name );
 					}
 					global $_DBArray;
         	  		$_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
     				$_DBArray ['group'] = $rows;
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
     				G::LoadClass ( 'ArrayPeer' );
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'group' );
@@ -322,20 +339,20 @@ switch ($_POST ['action']) {
     				$fields ['time_stamp']  = date("Y-m-d H:i:s");
     				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				}
-      			
+
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-				
+
 			case "CaseList" :
 				$sessionId = $frm ["SESSION_ID"];
 				$params = array ('sessionId' => $sessionId );
 				$wsResponse = $client->__SoapCall ( 'CaseList', array ($params ) );
-				
+
 				$G_PUBLISH = new Publisher ( );
 				$rows [] = array ('guid' => 'char', 'name' => 'char', 'status' => 'char', 'delIndex' => 'char' );
-				
+
 				$result = G::PMWSCompositeResponse($wsResponse, 'cases');
-				
+
 				if ( is_array( $result )) {
 					foreach ( $result as $key => $item ) {
 						if (isset ( $item->item ))
@@ -359,7 +376,7 @@ switch ($_POST ['action']) {
 									$status = $val->value;
 								if ($val->key == 'delIndex')
 									$delIndex = $val->value;
-							} 
+							}
 					    else {
 							if (isset ( $item->guid ))
 								$guid = $item->guid;
@@ -369,23 +386,23 @@ switch ($_POST ['action']) {
 								$status = $item->status;
 							if (isset ( $item->delIndex ))
 								$delIndex = $item->delIndex;
-						
-					    }	
+
+					    }
 					    $rows [] = array ('guid' => $guid, 'name' => $name, 'status' => $status, 'delIndex' => $delIndex );
-					
+
 		            }
-		            
+
 		            global $_DBArray;
           		    $_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
         			$_DBArray ['case'] = $rows;
         			$_SESSION ['_DBArray'] = $_DBArray;
-        			
+
         			G::LoadClass ( 'ArrayPeer' );
         			$c = new Criteria ( 'dbarray' );
         			$c->setDBArrayTable ( 'case' );
-        			//$c->addAscendingOrderByColumn ( 'name' ); 
+        			//$c->addAscendingOrderByColumn ( 'name' );
         			$G_PUBLISH->AddContent ( 'propeltable', 'paged-table', 'setup/wsrCaseList', $c );
-				
+
 		        } else if( is_object($result) ){
 		            $_SESSION ['WS_SESSION_ID'] = '';
 		            $fields ['status_code'] = $result->status_code;
@@ -393,18 +410,18 @@ switch ($_POST ['action']) {
     				$fields ['time_stamp']  = date("Y-m-d H:i:s");
     				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 		        }
-			        
+
 				G::RenderPage ( 'publish', 'raw' );
 			break;
-  			
 
-      case "UnassignedCaseList" :                 
+
+      case "UnassignedCaseList" :
 
       $sessionId = $frm ["SESSION_ID"];
-      $params = array ('sessionId' => $sessionId );                                               
+      $params = array ('sessionId' => $sessionId );
 
       $wsResponse = $client->__SoapCall ( 'UnassignedCaseList', array ($params ));
-      
+
       $G_PUBLISH = new Publisher ( );
       $rows [] = array ('guid' => 'char', 'name' => 'char', 'delIndex' => 'char' );
       $result = G::PMWSCompositeResponse($wsResponse, 'cases');
@@ -416,7 +433,7 @@ switch ($_POST ['action']) {
             if ($val->key == 'guid')
              $guid = $val->value;
             if ($val->key == 'name')
-              $name = $val->value;                                                                                           
+              $name = $val->value;
             if ($val->key == 'delIndex')
               $delIndex = $val->value;
           }
@@ -425,18 +442,18 @@ switch ($_POST ['action']) {
             if ($val->key == 'guid')
              $guid = $val->value;
             if ($val->key == 'name')
-             $name = $val->value;                                                                                                 
+             $name = $val->value;
             if ($val->key == 'delIndex')
              $delIndex = $val->value;
-          } 
+          }
           else {
             if (isset ( $item->guid ))
             $guid = $item->guid;
             if (isset ( $item->name ))
-            $name = $item->name;                                                                                                
+            $name = $item->name;
             if (isset ( $item->delIndex ))
             $delIndex = $item->delIndex;
-          }	
+          }
           $rows [] = array ('guid' => $guid, 'name' => $name,  'delIndex' => $delIndex );
         }
 
@@ -447,10 +464,10 @@ switch ($_POST ['action']) {
 
         G::LoadClass ( 'ArrayPeer' );
         $c = new Criteria ( 'dbarray' );
-        $c->setDBArrayTable ( 'case' );         
+        $c->setDBArrayTable ( 'case' );
         $G_PUBLISH->AddContent ( 'propeltable', 'paged-table', 'setup/wsrUnassignedCaseList', $c );
 
-      } 
+      }
         else if( is_object($result) ){
           $_SESSION ['WS_SESSION_ID'] = '';
           $fields ['status_code'] = $result->status_code;
@@ -461,17 +478,17 @@ switch ($_POST ['action']) {
 
       G::RenderPage ( 'publish', 'raw' );
       break;
-	
+
 			case "UserList" :
 				$sessionId = $frm ["SESSION_ID"];
 				$params = array ('sessionId' => $sessionId );
 				$wsResponse = $client->__SoapCall ( 'UserList', array ($params ) );
 				$result = G::PMWSCompositeResponse($wsResponse, 'users');
-				
+
 				$G_PUBLISH = new Publisher();
 				$rows [] = array ('guid' => 'char', 'name' => 'char' );
 				if (is_array ( $result )){
-					
+
 					foreach ( $result as $key => $item ) {
 						if (isset ( $item->item ))
 							foreach ( $item->item as $index => $val ) {
@@ -493,22 +510,22 @@ switch ($_POST ['action']) {
 							if (isset ( $item->name ))
 								$name = $item->name;
 						}
-						
+
 						$rows [] = array ('guid' => $guid, 'name' => $name );
 					}
-					
-			    
+
+
           			global $_DBArray;
         	  		$_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
     				$_DBArray ['user'] = $rows;
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
     				G::LoadClass ( 'ArrayPeer' );
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'user' );
     				$c->addAscendingOrderByColumn ( 'name' );
     				$G_PUBLISH->AddContent ( 'propeltable', 'paged-table', 'setup/wsrUserList', $c );
-    				
+
 				} else if( is_object($result) ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 		            $fields ['status_code'] = $result->status_code;
@@ -518,7 +535,7 @@ switch ($_POST ['action']) {
 		        }
     			G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "SendMessage" :
         require_once('classes/model/Application.php');
 				$sessionId = $frm ["SESSION_ID"];
@@ -545,7 +562,7 @@ switch ($_POST ['action']) {
                           'caseId' => $caseId,
                           'from' => $from,
                           'to' => $to,
-                          'cc' => $cc, 
+                          'cc' => $cc,
                           'bcc' => $bcc,
                           'subject' => $subject,
                           'template' => 'tempTemplate.hml' );
@@ -554,20 +571,20 @@ switch ($_POST ['action']) {
 				$fields ['status_code'] = $result->status_code;
 				$fields ['message'] = $result->message;
 				$fields ['time_stamp'] = $result->timestamp;
-				
+
 		        if( $result->status_code == 9 ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 				}
-				
+
 				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "SendVariables" :
 				$sessionId = $frm ["SESSION_ID"];
 				$caseId = $frm ["CASE_ID"];
 				$variables = Array();
-				
+
 				$o = new stdClass();
 				$o->name = $frm ["NAME1"];
 				$o->value = $frm ["VALUE1"];
@@ -576,66 +593,66 @@ switch ($_POST ['action']) {
 				$o->name = $frm ["NAME2"];
 				$o->value = $frm ["VALUE2"];
 				array_push($variables, $o);
-				
+
 				$params = array ('sessionId' => $sessionId, 'caseId' => $caseId, 'variables' => $variables );
 				$result = $client->__SoapCall ( 'SendVariables', array ($params ) );
 				$G_PUBLISH = new Publisher();
 				$fields ['status_code'] = $result->status_code;
 				$fields ['message'] = $result->message;
 				$fields ['time_stamp'] = $result->timestamp;
-				
+
 				if( $result->status_code == 9 ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 				}
-				
+
 				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "DerivateCase" :
 				$sessionId = $frm ["SESSION_ID"];
 				$caseId = $frm ["CASE_ID"];
 				$delIndex = $frm ["DEL_INDEX"];
-				
+
 				$params = array ('sessionId' => $sessionId, 'caseId' => $caseId, 'delIndex' => $delIndex );
 				$result = $client->__SoapCall ( 'RouteCase', array ($params ) );
 				$G_PUBLISH = new Publisher ( );
 				$fields ['status_code'] = $result->status_code;
 				$fields ['message'] = $result->message;
 				$fields ['time_stamp'] = $result->timestamp;
-				
+
 		        if( $result->status_code == 9 ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 				}
-				
+
 				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "ReassignCase" :
 				$sessionId = $frm ["SESSION_ID"];
 				$caseId = $frm ["CASE_ID"];
 				$delIndex = $frm ["DEL_INDEX"];
 				$userIdSource = $frm ['USERIDSOURCE'];
 				$userIdTarget = $frm ['USERIDTARGET'];
-				
+
 				$params = array ('sessionId' => $sessionId, 'caseId' => $caseId, 'delIndex' => $delIndex, 'userIdSource' => $userIdSource, 'userIdTarget' => $userIdTarget );
 				$result = $client->__SoapCall ( 'reassignCase', array ($params ) );
-				
+
 				$G_PUBLISH = new Publisher ( );
 				$fields ['status_code'] = $result->status_code;
 				$fields ['message'] = $result->message;
 				$fields ['time_stamp'] = $result->timestamp;
-				
+
 		        if( $result->status_code == 9 ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 				}
-				
+
 				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				G::RenderPage ( 'publish', 'raw' );
-				
+
 				break;
-			
+
 			case "NewCaseImpersonate" :
 				$sessionId = $frm ["SESSION_ID"];
 				$processId = $frm ["PROCESS_ID"];
@@ -653,15 +670,15 @@ switch ($_POST ['action']) {
 				$fields ['status_code'] = $result->status_code;
 				$fields ['message'] = $result->message;
 				$fields ['time_stamp'] = $result->timestamp;
-				
+
 		        if( $result->status_code == 9 ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 				}
-				
+
 				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "NewCase" :
 				$sessionId = $frm ["SESSION_ID"];
 				$processId = $frm ["PROCESS_ID"];
@@ -693,7 +710,7 @@ switch ($_POST ['action']) {
 				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "AssignUserToGroup" :
 				$sessionId = $frm ["SESSION_ID"];
 				$userId = $frm ["USER_ID"];
@@ -704,15 +721,15 @@ switch ($_POST ['action']) {
 				$fields ['status_code'] = $result->status_code;
 				$fields ['message'] = $result->message;
 				$fields ['time_stamp'] = $result->timestamp;
-				
+
 		        if( $result->status_code == 9 ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 				}
-				
+
 				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "CreateUser" :
 				$sessionId = $frm ["SESSION_ID"];
 				$userId = $frm ["USER_ID"];
@@ -721,33 +738,33 @@ switch ($_POST ['action']) {
 				$email = $frm ["EMAIL"];
 				$role = $frm ["ROLE"];
 				$password = $frm ["PASSWORD"];
-				
+
 				$params = array ('sessionId' => $sessionId, 'userId' => $userId, 'firstname' => $firstname, 'lastname' => $lastname, 'email' => $email, 'role' => $role, 'password' => $password );
 				$result = $client->__SoapCall ( 'CreateUser', array ($params ) );
 				$G_PUBLISH = new Publisher ( );
 				$fields ['status_code'] = $result->status_code;
 				$fields ['message'] = $result->message;
 				$fields ['time_stamp'] = $result->timestamp;
-				
+
 		        if( $result->status_code == 9 ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 				}
-				
+
 				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "TaskList" :
 				$sessionId = $frm ["SESSION_ID"];
 				$params = array ('sessionId' => $sessionId );
 				$wsResponse = $client->__SoapCall ( 'TaskList', array ($params ) );
 				$result = G::PMWSCompositeResponse($wsResponse, 'tasks');
-				
+
 				$G_PUBLISH = new Publisher ( );
 				$rows [] = array ('guid' => 'char', 'name' => 'char' );
-				
+
 				if (is_array ( $result )){
-					
+
 					foreach ( $result as $key => $item ) {
 						if (isset ( $item->item ))
 							foreach ( $item->item as $index => $val ) {
@@ -769,14 +786,14 @@ switch ($_POST ['action']) {
 							if (isset ( $item->name ))
 								$name = $item->name;
 						}
-						
+
 						$rows [] = array ('guid' => $guid, 'name' => $name );
 					}
           			global $_DBArray;
         	  		$_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
     				$_DBArray ['task'] = $rows;
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
     				G::LoadClass ( 'ArrayPeer' );
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'task' );
@@ -791,17 +808,17 @@ switch ($_POST ['action']) {
 		        }
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "TriggerList" :
 				$sessionId = $frm ["SESSION_ID"];
 				$params = array ('sessionId' => $sessionId );
-				
+
 				$wsResponse = $client->__SoapCall ( 'triggerList', array ($params ) );
 				$result = G::PMWSCompositeResponse($wsResponse, 'triggers');
-				
+
 				$G_PUBLISH = new Publisher ();
 				$rows [] = array ('guid' => 'char', 'name' => 'char', 'processId' => 'char' );
-				
+
 				if (is_array ( $result )){
 					foreach ( $result as $key => $item ) {
 						if (isset ( $item->item ))
@@ -832,29 +849,29 @@ switch ($_POST ['action']) {
 						}
 						$rows [] = array ('guid' => $guid, 'name' => $name, 'processId' => $processId );
 					}
-				
+
           			global $_DBArray;
         	  		$_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
-    
+
                     foreach ( $rows as $key => $row ) {
                     	$proId = $row['processId'];
-                    	if ( isset ($_DBArray ['process']) && is_array ($_DBArray ['process']) ) 
+                    	if ( isset ($_DBArray ['process']) && is_array ($_DBArray ['process']) )
                         foreach ( $_DBArray ['process'] as $pkey => $prow ) {
                       	  if ( $proId == $prow['guid'] ) {
                       	    $rows[ $key ]['processId'] = $prow['name'];
-                          }        	  
+                          }
                         }
                     }
-                    
+
     				$_DBArray ['triggers'] = $rows;
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
     				G::LoadClass ( 'ArrayPeer' );
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'triggers' );
     				$c->addAscendingOrderByColumn ( 'name' );
     				$G_PUBLISH->AddContent ( 'propeltable', 'paged-table', 'setup/wsrTriggerList', $c );
-    				
+
 				} else if ( is_object($result) ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 		            $fields ['status_code'] = $result->status_code;
@@ -862,20 +879,20 @@ switch ($_POST ['action']) {
     				$fields ['time_stamp']  = date("Y-m-d H:i:s");
     				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 		        }
-				
+
 				G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "InputDocumentList" :
 				$caseId = $frm ["CASE_ID"];
 				$sessionId = $frm ["SESSION_ID"];
 				$params = array ('sessionId' => $sessionId, 'caseId' => $caseId );
-				
+
 				$wsResponse = $client->__SoapCall ( 'InputDocumentList', array ($params ) );
-				
+
 				//g::pr($wsResponse);
 				$result = G::PMWSCompositeResponse($wsResponse, 'documents');
-				
+
 				$G_PUBLISH = new Publisher ( );
 				$rows [] = array ('guid' => 'char', 'name' => 'char', 'processId' => 'char' );
 
@@ -937,33 +954,33 @@ switch ($_POST ['action']) {
 							if (isset ( $item->link ))
 								$link = $item->link;
 						}
-						$rows [] = array ('guid' => $guid, 'filename' => $filename, 'docId' => $docId, 'version' => $version, 
+						$rows [] = array ('guid' => $guid, 'filename' => $filename, 'docId' => $docId, 'version' => $version,
 					                  'createDate' => $createDate, 'createBy' => $createBy, 'type' => $type, 'link' => $link );
 					}
-					
+
           			global $_DBArray;
         	  		$_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
     				$_DBArray ['inputDocument'] = $rows;
     				$documentArray = array();
     				$documentArray[] = array ('guid' => 'char', 'filename' => 'char' );
-    				if ( isset($_DBArray ['inputDocument']) ) 
+    				if ( isset($_DBArray ['inputDocument']) )
     					foreach ( $_DBArray ['inputDocument'] as $key => $val )
     					  if ( $key != 0 && isset ($val['filename']) )
         				  $documentArray[] = array ('guid' => $val['guid'], 'filename' => $val['filename'] );
-    				if ( isset($_DBArray ['outputDocument']) ) 
+    				if ( isset($_DBArray ['outputDocument']) )
     					foreach ( $_DBArray ['outputDocument'] as $key => $val )
     					  if ( $key != 0 && isset ($val['filename']) )
                     $documentArray[] = array ('guid' => $val['guid'], 'filename' => $val['filename'] );
     				$_DBArray ['documents'] = $documentArray;
     				$_DBArray ['WS_TMP_CASE_UID'] = $frm ["CASE_ID"];
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
     				G::LoadClass ( 'ArrayPeer' );
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'inputDocument' );
     				$c->addAscendingOrderByColumn ( 'name' );
     				$G_PUBLISH->AddContent ( 'propeltable', 'paged-table', 'setup/wsrInputDocumentList', $c );
-    				
+
 				} else if ( is_object($result) ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 		            $fields ['status_code'] = $result->status_code;
@@ -972,17 +989,17 @@ switch ($_POST ['action']) {
     				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 		        }
     			G::RenderPage ( 'publish', 'raw' );
-    			
+
 				break;
 
 			case "InputDocumentProcessList" :
 				$processId = $frm ["PROCESS_ID"];
 				$sessionId = $frm ["SESSION_ID"];
 				$params = array ('sessionId' => $sessionId, 'processId' => $processId );
-				
+
 				$wsResponse = $client->__SoapCall ( 'InputDocumentProcessList', array ($params ) );
 				$result = G::PMWSCompositeResponse($wsResponse, 'documents');
-				
+
 				$G_PUBLISH = new Publisher();
 				$rows [] = array ('guid' => 'char', 'name' => 'char', 'description' => 'char' );
 				if (is_array ( $result )){
@@ -1019,7 +1036,7 @@ switch ($_POST ['action']) {
         	  		$_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
     				$_DBArray ['inputDocuments'] = $rows;
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
     				G::LoadClass ( 'ArrayPeer' );
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'inputDocuments' );
@@ -1031,24 +1048,24 @@ switch ($_POST ['action']) {
     				$fields ['message']     =  $result->message;
     				$fields ['time_stamp']  = date("Y-m-d H:i:s");
     				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
-		        }	
+		        }
     			G::RenderPage ( 'publish', 'raw' );
 				break;
-			
-			
+
+
 			case "OutputDocumentList" :
 				$caseId = $frm ["CASE_ID"];
 				$sessionId = $frm ["SESSION_ID"];
 				$params = array ('sessionId' => $sessionId, 'caseId' => $caseId );
-				
+
 				$wsResponse = $client->__SoapCall ( 'outputDocumentList', array ($params ) );
 				$result = G::PMWSCompositeResponse($wsResponse, 'documents');
-				
+
 				$G_PUBLISH = new Publisher ( );
 				$rows = array();
 				$rows [] = array ('guid' => 'char', 'name' => 'char' );
 				if (is_array ( $result )){
-				
+
 					foreach ( $result as $key => $item ) {
 						if (isset ( $item->item ))
 							foreach ( $item->item as $index => $val ) {
@@ -1106,7 +1123,7 @@ switch ($_POST ['action']) {
 							if (isset ( $item->link ))
 								$link = $item->link;
 						}
-						$rows [] = array ('guid' => $guid, 'filename' => $filename, 'docId' => $docId, 'version' => $version, 
+						$rows [] = array ('guid' => $guid, 'filename' => $filename, 'docId' => $docId, 'version' => $version,
 					                  'createDate' => $createDate, 'createBy' => $createBy, 'type' => $type, 'link' => $link );
 					}
           			global $_DBArray;
@@ -1114,17 +1131,17 @@ switch ($_POST ['action']) {
     				$_DBArray ['outputDocument'] = $rows;
     				$documentArray = array();
     				$documentArray[] = array ('guid' => 'char', 'filename' => 'char' );
-    				if ( isset($_DBArray ['inputDocument']) ) 
+    				if ( isset($_DBArray ['inputDocument']) )
     					foreach ( $_DBArray ['inputDocument'] as $key => $val )
     					  if ( $key != 0 && isset ($val['filename']) )
         				  $documentArray[] = array ('guid' => $val['guid'], 'filename' => $val['filename'] );
-    				if ( isset($_DBArray ['outputDocument']) ) 
+    				if ( isset($_DBArray ['outputDocument']) )
     					foreach ( $_DBArray ['outputDocument'] as $key => $val )
     					  if ( $key != 0 && isset ($val['filename']) )
                     $documentArray[] = array ('guid' => $val['guid'], 'filename' => $val['filename'] );
     				$_DBArray ['documents'] = $documentArray;
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
     				G::LoadClass ( 'ArrayPeer' );
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'outputDocument' );
@@ -1137,7 +1154,7 @@ switch ($_POST ['action']) {
     				$fields ['time_stamp']  = date("Y-m-d H:i:s");
     				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 		        }
-		        
+
 				G::RenderPage ( 'publish', 'raw' );
 				break;
 //add removeUserFromGroup
@@ -1167,11 +1184,11 @@ case "removeUserFromGroup" :
 				$fields ['status_code'] = $result->status_code;
 				$fields ['message'] = $result->message;
 				$fields ['time_stamp'] = $result->timestamp;
-		        
+
 				if( $result->status_code == 9 ){
 				    $_SESSION ['WS_SESSION_ID'] = '';
 				}
-				
+
 				$G_PUBLISH = new Publisher ( );
 				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 				G::RenderPage ( 'publish', 'raw' );
@@ -1180,16 +1197,16 @@ case "removeUserFromGroup" :
 			case "TaskCase" :
 				$sessionId = $frm ["SESSION_ID"];
 				$caseId = $frm ["CASE_ID"];
-				
+
 				$params = array ('sessionId' => $sessionId, 'caseId' => $caseId );
 				$wsResponse = $client->__SoapCall ( 'TaskCase', array ($params ) );
 				$result = G::PMWSCompositeResponse($wsResponse, 'taskCases');
-				
+
 				$G_PUBLISH = new Publisher ( );
 				$rows [] = array ('guid' => 'char', 'name' => 'char' );
-				
+
 				if (is_array ( $result )){
-			
+
 					foreach ( $result as $key => $item ) {
 						if (isset ( $item->item ))
 							foreach ( $item->item as $index => $val ) {
@@ -1211,15 +1228,15 @@ case "removeUserFromGroup" :
 							if (isset ( $item->name ))
 								$name = $item->name;
 						}
-						
+
 						$rows [] = array ('guid' => $guid, 'name' => $name );
 					}
-				
+
           			global $_DBArray;
         	  		$_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
     				$_DBArray ['taskCases'] = $rows;
     				$_SESSION ['_DBArray'] = $_DBArray;
-    				
+
                                 G::LoadClass ( 'ArrayPeer' );
     				$c = new Criteria ( 'dbarray' );
     				$c->setDBArrayTable ( 'taskCases' );
@@ -1232,10 +1249,10 @@ case "removeUserFromGroup" :
     				$fields ['time_stamp']  = date("Y-m-d H:i:s");
     				$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
 		        }
-		        
+
     			G::RenderPage ( 'publish', 'raw' );
 				break;
-			
+
 			case "wsSendFiles" :
                                 if ( isset($_FILES['form']) ) {
                                     foreach ($_FILES['form']['name'] as $sFieldName => $vValue) {

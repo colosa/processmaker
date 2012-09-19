@@ -383,25 +383,39 @@ function uploadZimbraFile($ServerUrl, $username, $preAuthKey, $folderName, $file
     curl_setopt ($ch, CURLOPT_NOPROGRESS, false);
     curl_setopt ($ch, CURLOPT_VERBOSE, true);
     curl_setopt ($ch, CURLOPT_HTTPHEADER,$header_array);
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($ch, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($ch, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($ch, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
     if( ! $response = curl_exec($ch))
     {
        return "Upload error. Connection Error";
     }
-    
+
     //G::pr($response);
-    
+
     $header_size = curl_getinfo($ch,CURLINFO_HEADER_SIZE);
     $result['header'] = substr($response, 0, $header_size);
     $result['body'] = substr( $response, $header_size );
     $result['http_code'] = curl_getinfo($ch,CURLINFO_HTTP_CODE);
     $result['last_url'] = curl_getinfo($ch,CURLINFO_EFFECTIVE_URL);
-    
+
     $aString = array();
     $aExplode = explode(",", $result['body']);
     $uploadID = substr($aExplode[2], 1, -2);
-    
+
     curl_close($ch);
-    
+
        // gettin FOlder ID
 
     $FolderResult = $oZimbraObj->getFolder($folderName);
