@@ -791,8 +791,8 @@ class wsBase
             $sBody = G::replaceDataField( $templateContents, $Fields);
             $hasEmailFrom = preg_match('/(.+)@(.+)\.(.+)/', $sFrom, $match);
 
-            if (!$hasEmailFrom) {
-                $sFrom = $aSetup['MESS_ACCOUNT'];
+            if (!$hasEmailFrom || strtolower($sFrom) != strtolower($aSetup['MESS_ACCOUNT'])) {
+                $sFrom = '"' . stripslashes($sFrom) . '" <' . $aSetup['MESS_ACCOUNT'] . ">";
             }
 
             $messageArray = array(
