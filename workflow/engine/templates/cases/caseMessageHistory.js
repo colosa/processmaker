@@ -1,31 +1,31 @@
 /*
  * @author: Douglas Medrano
- * May 03, 2011 
+ * May 03, 2011
  */
 
-    function onResizeIframe(idIframe){  
-      window.parent.tabIframeWidthFix2(idIframe);  
+    function onResizeIframe(idIframe){
+      window.parent.tabIframeWidthFix2(idIframe);
     }
-   
+
     previewMessage = function() {
-      var rowSelected =  Ext.getCmp('processesGrid').getSelectionModel().getSelected();  
+      var rowSelected =  Ext.getCmp('processesGrid').getSelectionModel().getSelected();
       if (rowSelected) {
         windowMessage = new Ext.Window({
-          title: '',  
-          width: 600,  
-          height: 420,      
-          border: false,		
+          title: '',
+          width: 600,
+          height: 420,
+          border: false,
           layout : 'fit',
           items:
           [
-            {  
+            {
               xtype: 'form',
-              frame: true,     
-              border: false,  
+              frame: true,
+              border: false,
               defaults: {
                 width: 150
               },
-              items: [  
+              items: [
                 {
                   xtype: 'textfield',
                   fieldLabel: _("ID_FROM"),
@@ -61,12 +61,12 @@
                   readOnly: true,
                   name: 'Status'
                 },
-                {                
-                  name : 'body', 
-                  id:'body',               
+                {
+                  name : 'body',
+                  id:'body',
                   hideLabel:true,
-                  xtype: 'htmleditor',  
-                  autoScroll: true, 
+                  xtype: 'htmleditor',
+                  autoScroll: true,
                   readOnly: true,
                   x: 1,
                   y: 1,
@@ -79,20 +79,20 @@
                   enableLists:false,
                   enableSourceEdit:false,
                   anchor: '100%',
-                  height: 260		
+                  height: 260
                 }
-              ]  
-            }  
-          ]      
+              ]
+            }
+          ]
         });
-        
+
         //load fields from rowSelect
         Ext.getCmp('From').setValue(rowSelected.data.APP_MSG_FROM);
-        Ext.getCmp('To').setValue(rowSelected.data.APP_MSG_TO);   
-        Ext.getCmp('Subjet').setValue(rowSelected.data.APP_MSG_SUBJECT); 
+        Ext.getCmp('To').setValue(rowSelected.data.APP_MSG_TO);
+        Ext.getCmp('Subjet').setValue(rowSelected.data.APP_MSG_SUBJECT);
         Ext.getCmp('date').setValue(rowSelected.data.APP_MSG_DATE);
-        Ext.getCmp('body').setValue(rowSelected.data.APP_MSG_BODY);   
-        
+        Ext.getCmp('body').setValue(rowSelected.data.APP_MSG_BODY);
+
         //show windows message
         windowMessage.show(windowMessage);
       }
@@ -105,33 +105,33 @@
           animEl: 'elId',
           icon: Ext.MessageBox.INFO,
           buttons: Ext.MessageBox.OK
-        });                            
+        });
       }
     }
-    
+
     function ajaxPostRequest(url, callback_function, id){
       var d = new Date();
       var time = d.getTime();
       url= url + '&nocachetime='+time;
-      var return_xml=false;    
+      var return_xml=false;
       var http_request = false;
-      
+
         if (window.XMLHttpRequest){ // Mozilla, Safari,...
           http_request = new XMLHttpRequest();
             if (http_request.overrideMimeType){
-              http_request.overrideMimeType('text/xml'); 
+              http_request.overrideMimeType('text/xml');
             }
         }
         else if (window.ActiveXObject){// IE
           try{
             http_request = new ActiveXObject("Msxml2.XMLHTTP");
-          } 
+          }
           catch (e){
               try{
                 http_request = new ActiveXObject("Microsoft.XMLHTTP");
               }
               catch (e){
-               
+
               }
           }
         }
@@ -139,17 +139,17 @@
           alert('This browser is not supported.');
           return false;
         }
-        
+
         http_request.onreadystatechange = function(){
             if (http_request.readyState == 4){
                 if (http_request.status == 200){
                     if (return_xml){
                       eval(callback_function + '(http_request.responseXML)');
                     }
-                    else{		               	
-                      eval(callback_function + '(http_request.responseText, \''+id+'\')');			
+                    else{
+                      eval(callback_function + '(http_request.responseText, \''+id+'\')');
                     }
-                } 
+                }
                 else{
                   alert('Error found on request:(Code: ' + http_request.status + ')');
                 }
@@ -157,8 +157,8 @@
         }
       http_request.open('GET', url, true);
       http_request.send(null);
-    }   
- 
+    }
+
   var processesGrid;
   var store;
 var ActionTabFrameGlobal = '';
@@ -170,7 +170,7 @@ var ActionTabFrameGlobal = '';
           table.style.display = '';
         }
     }
-    
+
     new Ext.KeyMap(
       document,
       {
@@ -193,31 +193,31 @@ var ActionTabFrameGlobal = '';
     Ext.onReady(function(){
       Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
       Ext.QuickTips.init();
-      
+
       messageHistoryGridList();
-    
-    });  
-  
-    //!historyGridList|  
+
+    });
+
+    //!historyGridList|
     //!!historyGridList|changeLog
     function historyGridListChangeLogPanelBody_RSP(resp,id){
-      var historyGridListChangeLogPanel_id_ = Ext.getCmp('historyGridListChangeLogPanel_id');    
-      historyGridListChangeLogPanel_id_.show();      
+      var historyGridListChangeLogPanel_id_ = Ext.getCmp('historyGridListChangeLogPanel_id');
+      historyGridListChangeLogPanel_id_.show();
       var historyGridListChangeLogPanelBody_= document.getElementById('historyGridListChangeLogPanelBody_JXP');
-      historyGridListChangeLogPanelBody_.innerHTML= resp;  
+      historyGridListChangeLogPanelBody_.innerHTML= resp;
     }
-  
+
     function historyGridListChangeLogPanelBody_JXP(){
       //!historyGridListChangeLogGlobal
       historyGridListChangeLogGlobal.idHistory = historyGridListChangeLogGlobal.idHistory;
-      
+
       //dataSystem
       var idHistory = historyGridListChangeLogGlobal.idHistory;
-      
+
       var url = "caseHistory_Ajax.php?actionAjax=historyGridListChangeLogPanelBody_JXP&idHistory="+idHistory;
       ajaxPostRequest(url,'historyGridListChangeLogPanelBody_RSP');
     }
-  
+
     function historyGridListChangeLogPanel(){
         var w = new Ext.Window({
           //draggable: Ext.util.Draggable,
@@ -242,19 +242,19 @@ var ActionTabFrameGlobal = '';
               value:'uploadFileNewProcess'
             }
           ]
-        });  
-      historyGridListChangeLogPanelBody_JXP();    
-    }  
-  
+        });
+      historyGridListChangeLogPanelBody_JXP();
+    }
+
   var historyGridListChangeLogGlobal = {};
   historyGridListChangeLogGlobal.idHistory ='';
-  
+
     function historyGridListChangeLog(){
-      
-      historyGridListChangeLogGlobal.idHistory = historyGridListChangeLogGlobal.idHistory;             
+
+      historyGridListChangeLogGlobal.idHistory = historyGridListChangeLogGlobal.idHistory;
       var rowSelected = processesGrid.getSelectionModel().getSelected();
-        if( rowSelected ){        
-          var idHistory = rowSelected.data.ID_HISTORY;          
+        if( rowSelected ){
+          var idHistory = rowSelected.data.ID_HISTORY;
           historyGridListChangeLogGlobal.idHistory = idHistory;
           historyGridListChangeLogPanel();
         }
@@ -269,15 +269,14 @@ var ActionTabFrameGlobal = '';
               buttons: Ext.MessageBox.OK
             });
         }
-      
+
     }
   //!!historyGridList|changeLog
-  
+
   function caseMessageHistory_RSP(response,id){
+    messageHistoryGridListMask.hide();
     if(response==""){
-    
-      messageHistoryGridListMask.hide();
-    
+
       Ext.Msg.show({
         title:'',
         msg: _('ID_MAIL_SENT_SUCCESSFULLY'),
@@ -287,23 +286,23 @@ var ActionTabFrameGlobal = '';
         icon: Ext.MessageBox.INFO,
         buttons: Ext.MessageBox.OK
       });
-      
-      
 
-      
-      
-      
-      
+
+
+
+
+
+
       Ext.destroy(Ext.getCmp('processesGrid'));
-      
-      messageHistoryGridList();    
+
+      messageHistoryGridList();
     }
-    else{    
+    else{
       alert(response);
     }
   }
 
-  
+
   function messageHistoryGridList(){
       store = new Ext.data.GroupingStore({
         proxy : new Ext.data.HttpProxy
@@ -311,8 +310,8 @@ var ActionTabFrameGlobal = '';
           {
             url: 'caseMessageHistory_Ajax.php?actionAjax=messageHistoryGridList_JXP'
           }
-        ),       
-    
+        ),
+
         reader : new Ext.data.JsonReader
         (
           {
@@ -327,26 +326,26 @@ var ActionTabFrameGlobal = '';
               {name : 'APP_MSG_FROM'},
               {name : 'APP_MSG_TO'},
               {name : 'APP_MSG_STATUS'},
-	      {name : 'APP_MSG_BODY'} 
-              
+	      {name : 'APP_MSG_BODY'}
+
             ]
           }
-        ) 
+        )
       });
-    
+
       var expander = new Ext.ux.grid.RowExpander({
         tpl : new Ext.Template(
           '<p><b>'+TRANSLATIONS.ID_PRO_DESCRIPTION+':</b> {PRO_DESCRIPTION}</p><br>'
         )
       });
-  
-  
+
+
       startDateRender = function(v){
         var dateString = "-";
           if(v!="-"){
-            dateString = _DF(v,"m/d/Y H:i:s");      
+            dateString = _DF(v,"m/d/Y H:i:s");
           }
-        return dateString;    
+        return dateString;
       }
       escapeHtml = function(v){
         var pre = document.createElement('pre');
@@ -354,7 +353,7 @@ var ActionTabFrameGlobal = '';
         pre.appendChild(text);
         return pre.innerHTML;
       }
-    
+
       actionRenderingTranslation = function(v){
         var actionTranslate = "";
         if(v=="PAUSE"){
@@ -371,11 +370,11 @@ var ActionTabFrameGlobal = '';
         }
         else if(v==""||v==null){
           actionTranslate = _("ID_DERIVATED");
-        }  
+        }
         return actionTranslate;
       };
-    
-    
+
+
       var processesGrid = new Ext.grid.GridPanel({
         region: 'center',
         layout: 'fit',
@@ -391,20 +390,20 @@ var ActionTabFrameGlobal = '';
         frame:false,
         //plugins: expander,
         cls : 'grid_with_checkbox',
-        columnLines: true,        
+        columnLines: true,
         viewConfig: {
           forceFit:true
-        },    
+        },
         cm: new Ext.grid.ColumnModel({
           defaults: {
               width: 200,
               sortable: true
-          },    
+          },
           columns: [
             //expander,
             {id:'ID_MESSAGE', dataIndex: 'ID_MESSAGE', hidden:true, hideable:false},
             {header: _("ID_TYPE"), dataIndex: 'APP_MSG_TYPE', width: 70},
-            {header: _("ID_DATE_LABEL"), dataIndex: 'APP_MSG_DATE', width: 60, renderer: startDateRender}, 
+            {header: _("ID_DATE_LABEL"), dataIndex: 'APP_MSG_DATE', width: 60, renderer: startDateRender},
             {header: _("ID_SUBJECT"), dataIndex: 'APP_MSG_SUBJECT', width: 60},
             {header: _("ID_FROM"), dataIndex: 'APP_MSG_FROM', width: 60, renderer: escapeHtml},
             {header: _("ID_TO"), dataIndex: 'APP_MSG_TO', width: 60, renderer: escapeHtml},
@@ -418,54 +417,54 @@ var ActionTabFrameGlobal = '';
             id:'sendMailMessageFormRadioId',
             iconCls: 'button_menu_ext',
             icon: '/images/mail-send16x16.png',
-            handler: function(){            
-            
+            handler: function(){
+
               var rowSelected = processesGrid.getSelectionModel().getSelected();
-            
-                if( rowSelected ){   
+
+                if( rowSelected ){
                   //!dataGrid
-                  
-                  
+
+
                   // Show a dialog using config options:
                   Ext.Msg.show({
                     title:'',
                     msg: _('ID_ARE_YOU_SURE_RESEND')+"?",
                     buttons: Ext.Msg.OKCANCEL,
                     icon: Ext.MessageBox.QUESTION,
-                    fn: function(btn, text){                    
+                    fn: function(btn, text){
                       if(btn=='ok'){
-                        //!dataGrid      
-                        var idMessage = rowSelected.data.ID_MESSAGE;            
+                        //!dataGrid
+                        var idMessage = rowSelected.data.ID_MESSAGE;
                         var subjectMessage = rowSelected.data.APP_MSG_SUBJECT;
                         var dateMessage = rowSelected.data.APP_MSG_DATE;
-                        
+
                         var tabName = 'sendMailMessage_'+idMessage;
                         var tabTitle = 'Resend('+subjectMessage+' '+dateMessage+')';
-                        
+
                         ActionTabFrameGlobal.tabName = tabName;
-                        ActionTabFrameGlobal.tabTitle = tabTitle;                       
-            
+                        ActionTabFrameGlobal.tabTitle = tabTitle;
+
                         //window.parent.Actions.tabFrame(tabName);
-                        var tabNameArray = tabName.split('_');                        
+                        var tabNameArray = tabName.split('_');
                         var APP_UID = tabNameArray[1];
                         var APP_MSG_UID = tabNameArray[2];
-                        
-                        
+
+
                         messageHistoryGridListMask = new Ext.LoadMask(Ext.getBody(), {msg:_('ID_LOADING')});
                         messageHistoryGridListMask.show();
 
 
-                       
+
                         var url = "caseMessageHistory_Ajax.php?actionAjax=sendMailMessage_JXP&APP_UID="+APP_UID+"&APP_MSG_UID="+APP_MSG_UID;
-                        ajaxPostRequest(url,'caseMessageHistory_RSP');                        
-                        
-                      
+                        ajaxPostRequest(url,'caseMessageHistory_RSP');
+
+
                       }
-                      
+
                     },
                     animEl: 'elId'
                   });
-            
+
                 }
                 else{
                   Ext.Msg.show({
@@ -477,14 +476,14 @@ var ActionTabFrameGlobal = '';
                     icon: Ext.MessageBox.INFO,
                     buttons: Ext.MessageBox.OK
 
-                  });                            
+                  });
                 }
-            
-            
-            
+
+
+
             },
             disabled:false
-          },           
+          },
           {
             xtype: 'tbseparator'
           },
@@ -495,9 +494,9 @@ var ActionTabFrameGlobal = '';
             icon: '/images/documents/_filefind.png',
             handler: function(){
 	      var rowSelected = processesGrid.getSelectionModel().getSelected();
-	      
+
 	      if (rowSelected) {
-                previewMessage();		
+                previewMessage();
 	      }
 	      else {
 		Ext.Msg.show({
@@ -508,8 +507,8 @@ var ActionTabFrameGlobal = '';
 		  animEl: 'elId',
 		  icon: Ext.MessageBox.INFO,
 		  buttons: Ext.MessageBox.OK
-		});                            
-	      }            
+		});
+	      }
             },
             disabled:false
           },
@@ -529,16 +528,16 @@ var ActionTabFrameGlobal = '';
           rowdblclick: previewMessage,
           render: function(){
             this.loadMask = new Ext.LoadMask(this.body, {msg:'Loading...'});
-            processesGrid.getSelectionModel().on('rowselect', function(){        
+            processesGrid.getSelectionModel().on('rowselect', function(){
               var rowSelected = processesGrid.getSelectionModel().getSelected();
-              
+
             });
           }
         }
       });
-  
+
     processesGrid.store.load({params: {"function":"languagesList"}});
-    
+
       processesGrid.store.on(
         'load',
         function()
@@ -550,16 +549,16 @@ var ActionTabFrameGlobal = '';
           single: true
         }
       );
-      
+
     processesGrid.addListener('rowcontextmenu', emptyReturn,this);
     processesGrid.on('rowcontextmenu', function (grid, rowIndex, evt) {
       var sm = grid.getSelectionModel();
       sm.selectRow(rowIndex, sm.isSelected(rowIndex));
-      
+
       var rowSelected = Ext.getCmp('processesGrid').getSelectionModel().getSelected();
       var activator = Ext.getCmp('activator2');
       var debug = Ext.getCmp('debug');
-      
+
       if( rowSelected.data.PRO_STATUS == 'ACTIVE' ){
         activator.setIconClass('icon-deactivate');
         activator.setText(TRANSLATIONS.ID_DEACTIVATE);
@@ -567,7 +566,7 @@ var ActionTabFrameGlobal = '';
         activator.setIconClass('icon-activate');
         activator.setText(TRANSLATIONS.ID_ACTIVATE);
       }
-  
+
       if( rowSelected.data.PRO_DEBUG == 1){
         debug.setIconClass('icon-debug-disabled');
         debug.setText(_('ID_DISABLE_DEBUG'));
@@ -576,22 +575,22 @@ var ActionTabFrameGlobal = '';
         debug.setText(_('ID_ENABLE_DEBUG'));
       }
     }, this);
-    
+
     processesGrid.on('contextmenu', function (evt) {
       evt.preventDefault();
     }, this);
-    
-    
-  
-  
-    
+
+
+
+
+
     function emptyReturn(){
 
     }
-    
-        
-  
-  
+
+
+
+
     var viewport = new Ext.Viewport({
       layout: 'border',
       autoScroll: true,
@@ -601,6 +600,6 @@ var ActionTabFrameGlobal = '';
     });
   }
   //!historyGridList|
-  
-  
+
+
 
