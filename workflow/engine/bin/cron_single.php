@@ -218,10 +218,10 @@ function processWorkspace()
         resendEmails();
         unpauseApplications();
         calculateDuration();
-        executePlugins();
         executeEvents($sLastExecution);
         executeScheduledCases();
         executeUpdateAppTitle();
+        executePlugins();
     } catch (Exception $oError) {
         saveLog("main", "error", "Error processing workspace : " . $oError->getMessage() . "\n");
     }
