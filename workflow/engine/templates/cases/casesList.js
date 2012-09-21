@@ -668,8 +668,6 @@ Ext.onReady ( function() {
   var proxyReassignCasesList = new Ext.data.HttpProxy({
     api: {
       read    : 'proxyReassignCasesList'
-      //create  : 'proxySaveReassignCasesList',
-      //update  : 'proxySaveReassignCasesList',
       //destroy : 'proxyReassignCasesList'
     }
   });
@@ -793,7 +791,7 @@ Ext.onReady ( function() {
           '<span> {APP_PRO_TITLE}</span>',
       '</div></tpl>'
   );
-  
+
     Ext.Ajax.request({
         url : 'casesList_Ajax' ,
         params : {actionAjax : 'processListExtJs',
@@ -905,12 +903,12 @@ Ext.onReady ( function() {
         listeners:{
           scope: this,
           'select': function() {
-            
+
             filterCategory = comboCategory.value;
             storeCases.setBaseParam('category', filterCategory);
             storeCases.setBaseParam('process', '');
             storeCases.load({params:{category: filterCategory, start : 0 , limit : pageSize}});
-            
+
             Ext.Ajax.request({
                 url : 'casesList_Ajax' ,
                 params : {actionAjax : 'processListExtJs',
@@ -921,7 +919,7 @@ Ext.onReady ( function() {
                     comboProcess.getStore().removeAll();
                     comboProcess.getStore().loadData( data );
                     comboProcess.setValue('');
-                    
+
                 },
                 failure: function ( result, request) {
                     Ext.MessageBox.alert('Failed', result.responseText);
@@ -1455,7 +1453,7 @@ Ext.onReady ( function() {
     width: 120,
     value: ''
   });
-  
+
   var optionCategory = (solrConf != true) ?  [ _('ID_CATEGORY'), comboCategory, '-'] : [''] ;
 
   var toolbarTodo = [
@@ -1617,8 +1615,8 @@ Ext.onReady ( function() {
     ' ',
     ' '
   ];
-  
-  
+
+
 
   var toolbarSearch = [
       ' ',
