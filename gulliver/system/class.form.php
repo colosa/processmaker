@@ -284,7 +284,7 @@ class Form extends XmlForm
    */
   function validatePost()
   {
-    $_POST['form']=$this->validateFields($_POST['form']);    
+    $_POST['form']=$this->validateFields($_POST['form']);
     return $_POST['form']=$this->validateArray($_POST['form']);
   }
 
@@ -297,7 +297,7 @@ class Form extends XmlForm
    * @return array
    */
   function validateArray($newValues)
-  {    
+  {
     $values = array();
     foreach($this->fields as $k => $v) {
       if (($v->type != 'submit')) {
@@ -316,7 +316,7 @@ class Form extends XmlForm
                 break;
 
               case 'checkgroup':
-                
+
               case 'listbox':
                 if ( is_array($newValues[$k]) ) {
                   $values[$k] = $values["{$k}_label"] = '';
@@ -330,27 +330,27 @@ class Form extends XmlForm
 
                     if (isset($v->options[$value])){
                       $values["{$k}_label"] .= ($i != 0 ? '|': '') . $v->options[$value];
-                    } 
+                    }
                     else { // if hasn't options try execute a sql sentence
                       $query = G::replaceDataField($this->fields[$k]->sql,$newValues);
-                      
+
                       if ($query != '') { // execute just if a query was set, it should be not empty
                         //we do the query to the external connection and we've got the label
                         $con = Propel::getConnection($this->fields[$k]->sqlConnection!=""?$this->fields[$k]->sqlConnection:"workflow");//use default connection workflow if connection is not defined. Same as Dynaforms
-                        
+
                         $stmt = $con->prepareStatement($query);
                         $rs = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
 
                         while ($rs->next()) {
                           list($rowId, $rowContent) = array_values($rs->getRow());//This to be sure that the array is numeric. Some cases when is DBArray result it returns an associative. By JHL
-                          
+
                           if ($value == $rowId){
                             $values["{$k}_label"] .= ($i != 0 ? '|': '') . $rowContent;
                             break;
                           }
                         }
                       }
-                      
+
                     }
                   }
                   $newValues["{$k}_label"] = isset($values["{$k}_label"]) ? $values["{$k}_label"] : '';
@@ -365,10 +365,10 @@ class Form extends XmlForm
 
                 if (isset($v->options[$newValues[$k]])){
                   $values["{$k}_label"] = $newValues["{$k}_label"] = $v->options[$newValues[$k]];
-                } 
+                }
                 else {
                   $query = G::replaceDataField($this->fields[$k]->sql,$newValues);
-                  
+
                   // execute just if a query was set, it should be not empty
                   if(trim($query) == '') {
                   	continue; //if it is  empty string skip it
@@ -408,7 +408,7 @@ class Form extends XmlForm
                             $query = G::replaceDataField($this->fields[$k]->fields[$kk]->sql,$values[$k][$j]);
                             $con = Propel::getConnection($this->fields[$k]->fields[$kk]->sqlConnection!=""?$this->fields[$k]->fields[$kk]->sqlConnection:"workflow");
                             $stmt = $con->prepareStatement($query);
-                            
+
                             // execute just if a query was set, it should be not empty
                             if(trim($query) == '') {
                               continue; //if it is  empty string skip it
@@ -509,13 +509,16 @@ class Form extends XmlForm
    */
   function validateRequiredFields($dataFields, $noRequired = array())
   {
-    $requiredFields     = array();    
+    if (!is_array($noRequired)) {
+      $noRequired = array();
+    }
+    $requiredFields     = array();
     $notPassedFields    = array();
     $skippedFieldsTypes = array('javascript', 'checkbox', 'yesno', 'submit', 'button', 'title', 'subtitle',
                                 'button', 'submit', 'reset', 'hidden', 'link');
     $requiredFieldsGrids = array();
     $grids = array();
-    
+
     foreach ($this->fields as $field) {
       // verify fields in grids
       if($field->type == 'grid') {
@@ -543,46 +546,49 @@ class Form extends XmlForm
     foreach($dataFields as $dataFieldName => $dataField) {
       if (in_array($dataFieldName, $grids)) {
         foreach ($dataField as $indexGrid => $dataGrid) {
-          foreach ($dataGrid as $fieldGridName => $fieldGridValue) {                       
+          foreach ($dataGrid as $fieldGridName => $fieldGridValue) {
+            if (!is_array($requiredFieldsGrids[$dataFieldName])) {
+              $requiredFieldsGrids[$dataFieldName] = array();
+            }
             if (in_array($fieldGridName, $requiredFieldsGrids[$dataFieldName]) && !in_array($fieldGridName, $noRequired) && trim($fieldGridValue) == '') {
               if ( !(is_array($notPassedFields[$dataFieldName])) ) {
                 $notPassedFields[$dataFieldName] = array();
               }
-              $notPassedFields[$dataFieldName][$indexGrid][] = $fieldGridName;              
+              $notPassedFields[$dataFieldName][$indexGrid][] = $fieldGridName;
             }
           }
         }
       }
-      
+
       //verify if the requiered field is in $requiredFields array
       if (in_array($dataFieldName, $requiredFields) && !in_array($dataFieldName, $noRequired) && trim($dataField) == '') {
         $notPassedFields[] = $dataFieldName;
       }
     }
-    
+
     return count($notPassedFields) > 0 ? $notPassedFields : false;
   }
-  
+
   function validateFields($data) {
     $values = array();
     $excludeTypes = array('submit', 'file');
     foreach($this->fields as $k => $v) {
-      if (!in_array($v->type, $excludeTypes)) {                
-        switch($v->type) {          
-          case 'checkbox':   
+      if (!in_array($v->type, $excludeTypes)) {
+        switch($v->type) {
+          case 'checkbox':
             $data[$v->name] = isset($data[$v->name])? $data[$v->name] : $v->falseValue;
             break;
           case 'grid':
              $i = 0 ;
-             foreach ($data[$v->name] as $dataGrid) {              
+             foreach ($data[$v->name] as $dataGrid) {
              $i++;
-               foreach ($v->fields as $dataGridInt) {                          
+               foreach ($v->fields as $dataGridInt) {
                  switch($dataGridInt->type) {
-                   case 'checkbox':   
+                   case 'checkbox':
                      $data[$v->name][$i][$dataGridInt->name] = isset($data[$v->name][$i][$dataGridInt->name])? $data[$v->name][$i][$dataGridInt->name] : $dataGridInt->falseValue;
                      break;
-                 }                
-               }               
+                 }
+               }
              }
             break;
           default:
@@ -590,5 +596,5 @@ class Form extends XmlForm
       }
     }
     return $data;
-  } 
+  }
 }
