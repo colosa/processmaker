@@ -574,7 +574,7 @@ class Process extends BaseProcess {
       return 0;
   }
 
-  function getAllProcesses($start, $limit, $category=NULL, $processName=NULL) {
+  function getAllProcesses($start, $limit, $category=NULL, $processName=NULL, $counters = true) {
     require_once PATH_RBAC . "model/RbacUsers.php";
     require_once "classes/model/ProcessCategory.php";
     require_once "classes/model/Users.php";
@@ -617,7 +617,9 @@ class Process extends BaseProcess {
       $oCriteria->setLimit($limit);
 
     //execute a query to obtain numbers, how many cases there are by process
-    $casesCnt = $this->getCasesCountInAllProcesses();
+    if ($counters) {
+      $casesCnt = $this->getCasesCountInAllProcesses();
+    }
 
     //execute the query
     $oDataset = ProcessPeer::doSelectRS ( $oCriteria );
@@ -667,10 +669,12 @@ class Process extends BaseProcess {
         continue;
       }
 
-      $casesCountTotal = 0;
-      if( isset($casesCnt[$process['PRO_UID']]) ) {
-        foreach($casesCnt[$process['PRO_UID']] as $item) {
-          $casesCountTotal += $item;
+      if ($counters) {
+        $casesCountTotal = 0;
+        if( isset($casesCnt[$process['PRO_UID']]) ) {
+          foreach($casesCnt[$process['PRO_UID']] as $item) {
+            $casesCountTotal += $item;
+          }
         }
       }
 
@@ -703,11 +707,13 @@ class Process extends BaseProcess {
       $process['PRO_DEBUG_LABEL']       = ($process['PRO_DEBUG']=="1")? G::LoadTranslation('ID_ON'): G::LoadTranslation('ID_OFF');
       $process['PRO_STATUS_LABEL']      = $process ['PRO_STATUS'] == 'ACTIVE'? G::LoadTranslation ('ID_ACTIVE'): G::LoadTranslation('ID_INACTIVE');
       $process['PRO_CREATE_USER_LABEL'] = $userOwner;
-      $process['CASES_COUNT_TO_DO']     = (isset($casesCnt[$process['PRO_UID']]['TO_DO'])?     $casesCnt[$process['PRO_UID']]['TO_DO']:     0);
-      $process['CASES_COUNT_COMPLETED'] = (isset($casesCnt[$process['PRO_UID']]['COMPLETED'])? $casesCnt[$process['PRO_UID']]['COMPLETED']: 0);
-      $process['CASES_COUNT_DRAFT']     = (isset($casesCnt[$process['PRO_UID']]['DRAFT'])?     $casesCnt[$process['PRO_UID']]['DRAFT']:     0);
-      $process['CASES_COUNT_CANCELLED'] = (isset($casesCnt[$process['PRO_UID']]['CANCELLED'])? $casesCnt[$process['PRO_UID']]['CANCELLED']: 0);
-      $process['CASES_COUNT']           = $casesCountTotal;
+      if ($counters) {
+        $process['CASES_COUNT_TO_DO']     = (isset($casesCnt[$process['PRO_UID']]['TO_DO'])?     $casesCnt[$process['PRO_UID']]['TO_DO']:     0);
+        $process['CASES_COUNT_COMPLETED'] = (isset($casesCnt[$process['PRO_UID']]['COMPLETED'])? $casesCnt[$process['PRO_UID']]['COMPLETED']: 0);
+        $process['CASES_COUNT_DRAFT']     = (isset($casesCnt[$process['PRO_UID']]['DRAFT'])?     $casesCnt[$process['PRO_UID']]['DRAFT']:     0);
+        $process['CASES_COUNT_CANCELLED'] = (isset($casesCnt[$process['PRO_UID']]['CANCELLED'])? $casesCnt[$process['PRO_UID']]['CANCELLED']: 0);
+        $process['CASES_COUNT']           = $casesCountTotal;
+      }
 
       unset( $process['PRO_CREATE_USER']);
 

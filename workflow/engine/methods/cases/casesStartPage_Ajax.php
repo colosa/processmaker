@@ -29,7 +29,7 @@ function getProcessList() {
   //Get ProcessStatistics Info
   $start = 0;
   $limit = '';
-  $proData = $oProcess->getAllProcesses($start, $limit);
+  $proData = $oProcess->getAllProcesses($start, $limit, null, null, false);
 
   $bCanStart = $oCase->canStartCase ( $_SESSION ['USER_LOGGED'] );
   if ($bCanStart) {

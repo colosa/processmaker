@@ -8,17 +8,6 @@ Ext.FlashComponent.EXPRESS_INSTALL_URL = '/images/expressinstall.swf';
 
 var conn = new Ext.data.Connection();
 
-var processNumbers = new Ext.data.ArrayStore({
-    fields: [
-       {name: 'CASES_COUNT_TO_DO', type: 'integer'},
-       {name: 'CASES_COUNT_DRAFT', type: 'integer'},
-       {name: 'CASES_COUNT_COMPLETED', type: 'integer'},
-       {name: 'CASES_COUNT_CANCELLED', type: 'integer'},
-       {name: 'CASES_COUNT', type: 'integer'}
-    ]
-});
-
-var processNumbersData = [[0,0,0,0,0]];
 Docs = {};
 
 var infoCase = new Ext.form.FormPanel({
@@ -54,7 +43,7 @@ Ext.onReady(function() {
         xtype : 'textfield',
         name : 'processesFilter',
         id : 'processesFilter',
-        emptyText : _('ID_FIND_A_PROCESS'), 
+        emptyText : _('ID_FIND_A_PROCESS'),
         enableKeyEvents : true,
         listeners : {
           render : function(f) {
@@ -79,14 +68,14 @@ Ext.onReady(function() {
         }
       }, ' ', ' ', {
         iconCls : 'icon-expand-all',
-        tooltip :  _('ID_EXPAND_ALL'), 
+        tooltip :  _('ID_EXPAND_ALL'),
         handler : function() {
           Ext.getCmp("startCaseTreePanel").root.expand(true);
         },
         scope : this
       }, '-', {
         iconCls : 'icon-collapse-all',
-        tooltip : _('ID_COLLAPSE_ALL'), 
+        tooltip : _('ID_COLLAPSE_ALL'),
         handler : function() {
           Ext.getCmp("startCaseTreePanel").root.collapse(true);
         },
@@ -119,13 +108,13 @@ Ext.onReady(function() {
         }
     }
   });
-  
+
 
 
   var details = {
     xtype:'form',
     id : 'process-detail-panel',
-    region : 'east',      
+    region : 'east',
     split : true,
     width : 450,
     style : {
@@ -152,7 +141,7 @@ Ext.onReady(function() {
       },
       {
         xtype: 'compositefield',
-        fieldLabel: TRANSLATIONS.ID_TASK, 
+        fieldLabel: TRANSLATIONS.ID_TASK,
         labelStyle : 'font-size:11px;',
         style : {
           fontSize:'11px'
@@ -205,32 +194,7 @@ Ext.onReady(function() {
           id:"processCategory"
         },
         {
-          xtype: 'grid',
-          fieldLabel: ' ',
-          labelSeparator : '',
-          labelStyle : 'font-size:11px;',
-          style : {
-            fontSize:'11px'
-          },
-          ds: processNumbers,
-          cm: new Ext.grid.ColumnModel([
-            {id:'inbox',header: TRANSLATIONS.ID_INBOX, width:70, sortable: false, locked:true, dataIndex: 'CASES_COUNT_TO_DO'},
-            {id:'draft',header: TRANSLATIONS.ID_DRAFT, width:70,  sortable: false, locked:true,  dataIndex: 'CASES_COUNT_DRAFT'},
-            {id:'completed',header: TRANSLATIONS.ID_COMPLETED, width:70,  sortable: false, locked:true, dataIndex: 'CASES_COUNT_COMPLETED'},
-            {id:'canceled',header: TRANSLATIONS.ID_CANCELLED, width:70,  sortable: false, locked:true,  dataIndex: 'CASES_COUNT_CANCELLED'},
-            {id:'totalCases',header: TRANSLATIONS.ID_TOTAL_CASES, width:80,  sortable: false, locked:true , dataIndex: 'CASES_COUNT'}
-          ]),
-          height: 49,
-          width: 355,
-          border: true,
-          stripeRows: false,
-          viewConfig: {
-            forceFit:true,
-            scrollOffset: 0
-          }
-        },
-        {
-          fieldLabel: TRANSLATIONS.ID_CALENDAR, 
+          fieldLabel: TRANSLATIONS.ID_CALENDAR,
           name: 'calendarName',
           labelStyle : 'font-size:11px;',
           style : {
@@ -240,7 +204,7 @@ Ext.onReady(function() {
       },
       {
         xtype:'checkboxgroup',
-        fieldLabel: TRANSLATIONS.ID_WORKING_DAYS, 
+        fieldLabel: TRANSLATIONS.ID_WORKING_DAYS,
         name: 'calendarWorkDays',
         disabled: true,
         readOnly: true,
@@ -260,10 +224,10 @@ Ext.onReady(function() {
           {boxLabel: TRANSLATIONS.ID_FRI, name: '5',disabledClass:""},
           {boxLabel: TRANSLATIONS.ID_SAT, name: '6',disabledClass:""}
         ]
-      }, 
+      },
       {
         xtype:'checkbox',
-        fieldLabel: TRANSLATIONS.ID_DEBUG_MODE, 
+        fieldLabel: TRANSLATIONS.ID_DEBUG_MODE,
         name: 'processDebug',
         labelStyle : 'font-size:11px;',
         style : {
@@ -303,7 +267,7 @@ Ext.onReady(function() {
 function openCaseA(n){
   if (n.attributes.optionType == "startProcess") {
     Ext.Msg.show({
-      title : '', 
+      title : '',
       msg : TRANSLATIONS.ID_STARTING_NEW_CASE  + '<br><br><b>' + n.attributes.text + '</b>',
       wait:true,
       waitConfig: {interval:500}
@@ -316,12 +280,12 @@ function openCaseA(n){
         taskId : n.attributes.tas_uid
       },
       success : function(response) {
-        
-        try { 
+
+        try {
           var res = Ext.util.JSON.decode(response.responseText);
           if (res.openCase) {
               window.location = res.openCase.PAGE;
-          } 
+          }
           else {
             Ext.Msg.show({
               title : TRANSLATIONS.ID_ERROR_CREATING_NEW_CASE, // 'Error creating a new Case',
@@ -330,9 +294,9 @@ function openCaseA(n){
               icon : Ext.MessageBox.ERROR,
               buttons : Ext.Msg.OK
             });
-          }            
-        } 
-        catch(e) {            
+          }
+        }
+        catch(e) {
           Ext.Msg.show({
             title : TRANSLATIONS.ID_ERROR_CREATING_NEW_CASE, // 'Error creating a new Case',
             msg : 'JSON Decode Error:<br /><textarea cols="50" rows="2">'
@@ -343,7 +307,7 @@ function openCaseA(n){
         }
       },
       failure : function() {
-        Ext.Msg.alert(TRANSLATIONS.ID_ERROR, TRANSLATIONS.ID_UNABLE_START_CASE); 
+        Ext.Msg.alert(TRANSLATIONS.ID_ERROR, TRANSLATIONS.ID_UNABLE_START_CASE);
       }
     });
   }
@@ -378,15 +342,6 @@ function showDetailsA(selectedNode) {
       totalInbox : otherAttributes.totalInbox
 
     });
-
-    processNumbersData = [[
-      otherAttributes.CASES_COUNT_TO_DO,
-      otherAttributes.CASES_COUNT_DRAFT,
-      otherAttributes.CASES_COUNT_COMPLETED,
-      otherAttributes.CASES_COUNT_CANCELLED,
-      otherAttributes.CASES_COUNT
-    ]];
-    processNumbers.loadData(processNumbersData);
 
   } else {
     //detailEl.update('');
