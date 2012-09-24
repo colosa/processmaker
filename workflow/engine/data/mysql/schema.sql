@@ -29,7 +29,8 @@ CREATE TABLE `APPLICATION`
 	`APP_DATA` MEDIUMTEXT  NOT NULL,
 	`APP_PIN` VARCHAR(32) default '' NOT NULL,
 	PRIMARY KEY (`APP_UID`),
-	KEY `indexApp`(`PRO_UID`, `APP_STATUS`, `APP_UID`)
+	KEY `indexApp`(`PRO_UID`, `APP_STATUS`, `APP_UID`),
+	KEY `indexAppNumber`(`APP_NUMBER`)
 )ENGINE=MyISAM  DEFAULT CHARSET='utf8' COMMENT='The application';
 #-----------------------------------------------------------------------------
 #-- APP_DELEGATION
