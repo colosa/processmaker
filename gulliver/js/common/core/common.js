@@ -2132,3 +2132,16 @@ var mb_strlen = function(str) {
     return len;
 };
 
+var stripNonNumeric = function (str) {
+   str += ''; //force str to be a string
+   var rgx = /^\d|\.|-$/;
+   var out = '';
+   for (var i = 0; i < str.length; i++) {
+      if (rgx.test(str.charAt(i))) {
+         if (!((str.charAt(i) == '.' && out.indexOf('.') != -1) || (str.charAt(i) == '-' && out.length != 0 ))) {
+            out += str.charAt(i);
+         }
+      }
+   }
+   return out;
+};
