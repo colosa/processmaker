@@ -259,7 +259,9 @@ EOT;
         ));
 
         $c = 0;
-        foreach ($this->config['_tables'] as $table => $conf) {
+        //print_r ($this->config);die;
+        //foreach ($this->config['_tables'] as $table => $conf) {
+        foreach ($this->config as $table => $conf) {
             $classname = self::camelize($table, 'class');
             $allowedMethods = explode(' ', $conf['ALLOW_METHODS']);
             $methods = '';

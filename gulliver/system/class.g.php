@@ -5204,11 +5204,12 @@ function getDirectorySize($path,$maxmtime=0)
             $restClasses = array_merge($restClasses, $pluginClasses);
         }
 
-        foreach ($restClasses as $classFile) {
-            if (! file_exists($classFile)) {
+        foreach ($restClasses as $key => $classFile) {
+            if ( !file_exists($classFile) ) {
+                unset($restClasses[$key]);
                 continue;
             }
-
+            //load the file, and check if exist the class inside it.
             require_once $classFile;
             $namespace = 'Services_Rest_';
             $className = str_replace('.php', '', basename($classFile));
@@ -5219,22 +5220,23 @@ function getDirectorySize($path,$maxmtime=0)
 
                 // Couldn't resolve the class name, just skipp it
                 if (! class_exists($namespace . $className)) {
+                    unset($restClasses[$key]);
                     continue;
                 }
             }
-
-            $className = $namespace . $className;
-            $reflClass = new ReflectionClass($className);
-
-            // verify if there is an auth class implementing 'iAuthenticate' that wasn't from plugin
+            // verify if there is an auth class implementing 'iAuthenticate'
+            $classNameAuth = $namespace . $className;
+            $reflClass = new ReflectionClass($classNameAuth);
+            // that wasn't from plugin
             if ($reflClass->implementsInterface('iAuthenticate') && $namespace != 'Plugin_Services_Rest_') {
                 // auth class found, set as restler authentication class handler
-                $rest->addAuthenticationClass($className);
+                $rest->addAuthenticationClass($classNameAuth);
             } else {
                 // add api class
-                $rest->addAPIClass($className);
+                $rest->addAPIClass($classNameAuth);
             }
         }
+        //end foreach rest class
 
         // resolving the class for current request
         $uriPart = explode('/', $uri);

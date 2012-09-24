@@ -164,6 +164,7 @@ class Restler
         415 => 'Unsupported Media Type',
         416 => 'Requested Range Not Satisfiable',
         417 => 'Expectation Failed',
+        417 => 'Record not found',
         500 => 'Internal Server Error',
         501 => 'Not Implemented',
         502 => 'Bad Gateway',
@@ -380,6 +381,7 @@ class Restler
                         }
                     }
                 }
+
                 $this->applyClassMetadata(get_class($this->request_format),
                 $this->request_format, $o);
                 $pre_process = '_' . $this->request_format->getExtension() . '_'
@@ -695,7 +697,7 @@ class Restler
             //echo PHP_EOL.$url.' = '.$this->url.PHP_EOL;
             $call = (object) $call;
             if (strstr($url, ':')) {
-                $regex = preg_replace('/\\\:([^\/]+)/', '(?P<$1>[^/]+)',
+                $regex = preg_replace('/\\\:([^\/]*)/', '(?P<$1>[^/]*)',
                                       preg_quote($url));
                 if (preg_match(":^$regex$:i", $this->url, $matches)) {
                     foreach ($matches as $arg => $match) {
@@ -713,8 +715,6 @@ class Restler
             }
         }
         if ($found) {
-            //echo PHP_EOL."Found $url ";
-            //print_r($call);
             $p = $call->defaults;
             foreach ($call->arguments as $key => $value) {
                 //echo "$key => $value \n";
