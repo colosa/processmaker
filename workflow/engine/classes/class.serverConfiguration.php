@@ -213,7 +213,7 @@ class serverConf {
 
   /**
    * Will return a list of all WS in this system and their related information.
-   * @uses getWorkspaceInfo
+   * @uses getWSList
    * param
    * @return array
    */
@@ -226,7 +226,6 @@ class serverConf {
           if (($file != ".") && ($file != "..")) {
             if (file_exists ( PATH_DB . $file . '/db.php' )) { //print $file."/db.php <hr>";
               $statusl = ($this->isWSDisabled ( $file )) ? 'DISABLED' : 'ENABLED';
-              //$wsInfo = $this->getWorkspaceInfo ( $file );
               if(isset($this->aWSinfo[$file])){
                 $wsInfo = $this->aWSinfo[$file];
               }else{

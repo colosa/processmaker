@@ -212,7 +212,14 @@ try {
     /**end log**/
 
     //************** background processes, here we are putting some back office routines **********
-    $oServerConf->setWsInfo(SYS_SYS,$oServerConf->getWorkspaceInfo(SYS_SYS) );
+    $heartBeatNWIDate = $oServerConf->getHeartbeatProperty('HB_NEXT_GWI_DATE','HEART_BEAT_CONF');
+    if (is_null($heartBeatNWIDate)) {
+      $heartBeatNWIDate = time();
+    }
+    if (time() >= $heartBeatNWIDate) {
+      $oServerConf->setWsInfo(SYS_SYS, $oServerConf->getWorkspaceInfo(SYS_SYS));
+      $oServerConf->setHeartbeatProperty('HB_NEXT_GWI_DATE', strtotime('+1 day'), 'HEART_BEAT_CONF');
+    }
 
     //**** defining and saving server info, this file has the values of the global array $_SERVER ****
     //this file is useful for command line environment (no Browser), I mean for triggers, crons and other executed over command line

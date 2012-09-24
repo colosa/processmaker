@@ -53,6 +53,10 @@ CREATE TABLE [APPLICATION]
 
 CREATE INDEX [indexApp] ON [APPLICATION] ([PRO_UID],[APP_STATUS],[APP_UID]);
 
+CREATE INDEX [indexAppNumber] ON [APPLICATION] ([APP_NUMBER]);
+
+CREATE INDEX [indexAppStatus] ON [APPLICATION] ([APP_STATUS]);
+
 /* ---------------------------------------------------------------------- */
 /* APP_DELEGATION											*/
 /* ---------------------------------------------------------------------- */
