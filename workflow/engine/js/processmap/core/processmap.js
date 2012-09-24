@@ -1540,6 +1540,7 @@ var processmap=function(){
             var r = new leimnud.module.rpc.xmlhttp({
               url: this.options.dataServer,
               args: "action=taskCases&data=" + {
+                pro_uid: this.options.uid,
                 task_uid: data.uid
               }.toJSONString()
             });
