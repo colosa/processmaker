@@ -793,10 +793,17 @@ antes funcionaba.
 	background-image:url( /images/icons_silk/sprites.png) !important;
 	background-position:0 -17011px !important;
 }
+
 .ICON_EVENT{
 	/*ss_table_gear*/
 	background-image:url( /images/icons_silk/sprites.png) !important;
 	background-position:0 -15517px !important;
+}
+
+.ICON_CRON {
+    /*ss_time*/
+    background-image: url(/images/icons_silk/sprites.png) !important;
+    background-position: 0 -16939px !important;
 }
 
 .ICON_PROCESS_CATEGORY{
@@ -1029,7 +1036,7 @@ antes funcionaba.
 }
 
 table.x-pm-headerbar td, table th {
-  padding-left: 10px;  
+  padding-left: 10px;
 }
 
 .headerRightSection
@@ -1530,7 +1537,7 @@ td.x-cnotes-label {
   background: none repeat scroll 0 0 #32405a;
   background-image: url("/images/canvastile_bg2.jpg");
 }
-#loading-message 
+#loading-message
 {
   padding-left: 10px !important;
   color: #fff;
@@ -1542,7 +1549,7 @@ td.x-cnotes-label {
   position: absolute;
   bottom  : 0;
 }
-.x-pm-footer-text 
+.x-pm-footer-text
 {
   color: #fff;
   font: 8pt Tahoma,sans-serif,MiscFixed;
@@ -1551,7 +1558,7 @@ td.x-cnotes-label {
   padding-left: 3px;
   padding-right: 3px;
 }
-.x-pm-footer-advisetext 
+.x-pm-footer-advisetext
 {
   color: #fff;
   font: 6pt Tahoma,sans-serif,MiscFixed;

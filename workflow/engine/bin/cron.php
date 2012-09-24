@@ -53,7 +53,7 @@ define ('MEMCACHED_ENABLED',  $config['memcached']);
 define ('MEMCACHED_SERVER',   $config['memcached_server']);
 define ('TIME_ZONE', $config['time_zone']);
 
-//Default values
+//Cron status
 $bCronIsRunning = false;
 $sLastExecution = null;
 $processcTimeProcess = 0;
@@ -133,3 +133,4 @@ if (!$bCronIsRunning) {
 } else {
     eprintln("The cron is running, please wait for it to finish.\nStarted in $sLastExecution");
 }
+
