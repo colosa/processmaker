@@ -212,9 +212,10 @@ if (!defined('SYS_SYS')) {
 
 function processWorkspace()
 {
-    global $sLastExecution;
-
     try {
+        global $sObject;
+        global $sLastExecution;
+
         resendEmails();
         unpauseApplications();
         calculateDuration();
@@ -444,13 +445,13 @@ function executeScheduledCases($sNow=null)
 
 function executeUpdateAppTitle()
 {
-    global $sFilter;
-
-    if ($sFilter != "" && strpos($sFilter, "update-case-labels") === false) {
-        return false;
-    }
-
     try {
+        global $sFilter;
+
+        if ($sFilter != "" && strpos($sFilter, "update-case-labels") === false) {
+            return false;
+        }
+
         $criteriaConf = new Criteria("workflow");
 
         $criteriaConf->addSelectColumn(ConfigurationPeer::OBJ_UID);
@@ -496,27 +497,21 @@ function executeUpdateAppTitle()
 function saveLog($sSource, $sType, $sDescription)
 {
     try {
+        global $sObject;
         global $isDebug;
 
         if ($isDebug) {
-            print date('H:i:s') ." ($sSource) $sType $sDescription <br />\n";
+            print date("H:i:s") . " ($sSource) $sType $sDescription <br />\n";
         }
 
-        @fwrite($oFile, date('Y-m-d H:i:s') . '(' . $sSource . ') ' . $sDescription . "\n");
-
-        G::verifyPath(PATH_DATA . 'log' . PATH_SEP, true);
+        G::verifyPath(PATH_DATA . "log" . PATH_SEP, true);
 
         //setExecutionMessage( PATH_DATA."log".PATH_SEP);
 
-        if ($sType == 'action') {
-            $oFile = @fopen(PATH_DATA . 'log' . PATH_SEP . 'cron.log', 'a+');
-        } else {
-            $oFile = @fopen(PATH_DATA . 'log' . PATH_SEP . 'cronError.log', 'a+');
-        }
-
-        @fwrite($oFile, date('Y-m-d H:i:s') . '(' . $sSource . ') ' . $sDescription . "\n");
+        $oFile = @fopen(PATH_DATA . "log" . PATH_SEP . "cron.log", "a+");
+        @fwrite($oFile, date("Y-m-d H:i:s") . " | $sObject | " . $sSource . " | $sType | " . $sDescription . "\n");
         @fclose($oFile);
-    } catch (Exception $oError) {
+    } catch (Exception $e) {
         //CONTINUE
     }
 }
@@ -548,3 +543,4 @@ function setExecutionResultMessage($m, $t='')
 
     eprintln("[$m]", $c);
 }
+

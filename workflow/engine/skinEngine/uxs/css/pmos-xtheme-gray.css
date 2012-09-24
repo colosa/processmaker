@@ -772,6 +772,12 @@ antes funcionaba.
 	background-position:0 -15517px !important;
 }
 
+.ICON_CRON {
+    /*ss_time*/
+    background-image: url(/images/icons_silk/sprites.png) !important;
+    background-position: 0 -16939px !important;
+}
+
 .ICON_PROCESS_CATEGORY{
 	/*ss_sitemap_color*/
 	background-image:url( /images/icons_silk/sprites.png) !important;
