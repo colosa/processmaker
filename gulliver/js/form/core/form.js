@@ -2741,7 +2741,12 @@ var validateGridForms = function(invalidFields){
       var vtext = new input(textAreas[i]);
       if (textAreas[i].getAttribute("pm:required")=="1"&&textAreas[i].value==''){
         $label = textAreas[i].name.split("[");
-        $fieldName = $label[3].split("]")[0]+ " " + $label[2].split("]")[0];
+        $labelPM = textAreas[i].getAttribute("pm:label");
+        if ($labelPM == '' || $labelPM == null){
+          $fieldName = $label[3].split("]")[0]+ " " + $label[2].split("]")[0];
+        }else{
+          $fieldName = $labelPM + " " + $label[2].split("]")[0];
+        }
         fieldGridName = $label[1] + "[" + $label[2] + "[" + $label[3].split("]")[0];
 
         if (!notValidateThisFields.inArray(fieldGridName)) {
@@ -2760,7 +2765,12 @@ var validateGridForms = function(invalidFields){
 
       if (dropdowns[i].getAttribute("pm:required")=="1"&&dropdowns[i].value==''){
         $label = dropdowns[i].name.split("[");
-        $fieldName = $label[3].split("]")[0]+ " " + $label[2].split("]")[0];
+        $labelPM = dropdowns[i].getAttribute("pm:label");
+        if ($labelPM == '' || $labelPM == null){
+          $fieldName = $label[3].split("]")[0]+ " " + $label[2].split("]")[0];
+        }else{
+          $fieldName = $labelPM + " " + $label[2].split("]")[0];
+        }
         fieldGridName = $label[1] + "[" + $label[2] + "[" + $label[3].split("]")[0];
 
         if (!notValidateThisFields.inArray(fieldGridName)) {
