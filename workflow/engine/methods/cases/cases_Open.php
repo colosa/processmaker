@@ -94,7 +94,7 @@ try {
         require_once (PATH_METHODS . 'cases' . PATH_SEP . 'cases_Resume.php');
         exit;
       }
-      
+
       /**
        * these routine is to verify if the case was acceded from advaced search list
        */
@@ -107,11 +107,11 @@ try {
         $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $oDataset->next();
         $aData = $oDataset->getRow();
-    
+
 
         if ( $aData['USR_UID'] != $_SESSION['USER_LOGGED']  &&
-             $aData['USR_UID'] != ""  //distinct "" for selfservice 
-        ) { 
+             $aData['USR_UID'] != ""  //distinct "" for selfservice
+        ) {
         //so we show just the resume
             $_SESSION['alreadyDerivated'] = true;
             //the case is paused show only the resume
@@ -125,7 +125,7 @@ try {
             exit;
         }
       }
-      
+
 
       //proceed and try to open the case
       $oAppDelegation = new AppDelegation();
@@ -139,6 +139,7 @@ try {
         $_SESSION['PROCESS']       = $aFields['PRO_UID'];
         $_SESSION['TASK']          = -1;
         $_SESSION['STEP_POSITION'] = 0;
+        $_SESSION['CURRENT_TASK']  = $aFields['TAS_UID'];
 
         //if the task is in the valid selfservice tasks for this user, then catch the case, else just view the resume
         if( $oCase->isSelfService($_SESSION['USER_LOGGED'], $aFields['TAS_UID']) ) {
@@ -168,7 +169,7 @@ try {
         $aNextStep = $oCase->getNextStep($_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION']);
         $sPage = $aNextStep['PAGE'];
         G::header('location: ' . $sPage);
-        
+
 
       } else {
         //when the case have another user or current user doesnt have rights to this selfservice,
@@ -178,7 +179,7 @@ try {
         $_SESSION['INDEX']         = $iDelIndex;
         $_SESSION['PROCESS']       = $aFields['PRO_UID'];
         $_SESSION['TASK']          = -1;
-        $Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'] );  
+        $Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'] );
         $_SESSION['CURRENT_TASK']  = $Fields['TAS_UID'];
         $_SESSION['STEP_POSITION'] = 0;
         require_once (PATH_METHODS . 'cases' . PATH_SEP . 'cases_Resume.php');
