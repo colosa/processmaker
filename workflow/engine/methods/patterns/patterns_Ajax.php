@@ -27,7 +27,7 @@ $oJSON   = new Services_JSON();
 if(isset($_POST['mode']) && $_POST['mode'] != '')
     $aData   = $_POST;
 else
-    $aData = urldecode_values($_POST['form']);
+    $aData = $_POST['form'];
 
 G::LoadClass('tasks');
 $oTasks = new Tasks();
