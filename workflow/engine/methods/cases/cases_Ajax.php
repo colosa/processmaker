@@ -903,7 +903,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
         $aCasesList = Array();
 
         foreach ($APP_UIDS as $APP_UID) {
-            $aCase  = $oCases->loadCaseInCurrentDelegation($APP_UID);
+            $aCase  = $oCases->loadCaseInCurrentDelegation($APP_UID, true);
 
             $aUsersInvolved = Array();
             $aCaseGroups = $oTasks->getGroupsOfTask($aCase['TAS_UID'], 1);
@@ -982,7 +982,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
 
             foreach ($aItems as $item) {
                 list($APP_UID, $USR_UID) = explode('|', $item);
-                $aCase = $oCases->loadCaseInCurrentDelegation($APP_UID);
+                $aCase = $oCases->loadCaseInCurrentDelegation($APP_UID, true);
                 $oCase->reassignCase($aCase['APP_UID'], $aCase['DEL_INDEX'], $FROM_USR_UID, $USR_UID);
                 array_push($aCases, $aCase);
             }
@@ -992,7 +992,7 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
             $oUser = new Users();
             $sText = '';
             foreach ($aCases as $aCase) {
-                $aCaseUpdated  = $oCases->loadCaseInCurrentDelegation($aCase['APP_UID']);
+                $aCaseUpdated  = $oCases->loadCaseInCurrentDelegation($aCase['APP_UID'], true);
                 $aUser  = $oUser->load($aCaseUpdated['USR_UID']);
                 $sText .= $aCaseUpdated['APP_PRO_TITLE'] .' - '. ' Case: ' . $aCaseUpdated['APP_NUMBER'] . '# (' .
                             $aCaseUpdated['APP_TAS_TITLE'] . ') <b> => Reassigned to => </b> <font color="blue">' .

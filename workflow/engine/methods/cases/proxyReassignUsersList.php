@@ -75,9 +75,6 @@ function array_sort($array, $on, $order=SORT_ASC, $query='')
 
         $aCasesList = Array();
 
-//        foreach ( $APP_UIDS as $APP_UID ) {
-        	  //$aCase  = $oCases->loadCaseInCurrentDelegation($appUid);
-
             $aUsersInvolved = Array();
             $aCaseGroups = $oTasks->getGroupsOfTask($TaskUid, 1);
             $oConf = new Configurations;

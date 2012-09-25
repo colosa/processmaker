@@ -2804,7 +2804,7 @@ class Cases
      * @Author Erik Amaru Ortiz <erik@colosa.com>
      * @return array
     */
-    public function loadCaseInCurrentDelegation($APP_UID)
+    public function loadCaseInCurrentDelegation($APP_UID, $titles = false)
     {
         $c = new Criteria('workflow');
         $c->clearSelectColumns();
@@ -2827,17 +2827,21 @@ class Cases
         $c->addSelectColumn(UsersPeer::USR_UID);
         $c->addAsColumn('APP_CURRENT_USER', "CONCAT(USERS.USR_LASTNAME, ' ', USERS.USR_FIRSTNAME)");
         $c->addSelectColumn(ApplicationPeer::APP_STATUS);
-        $c->addAsColumn('APP_TITLE', 'APP_TITLE.CON_VALUE');
-        $c->addAsColumn('APP_PRO_TITLE', 'PRO_TITLE.CON_VALUE');
-        $c->addAsColumn('APP_TAS_TITLE', 'TAS_TITLE.CON_VALUE');
+        if ($titles) {
+          $c->addAsColumn('APP_TITLE', 'APP_TITLE.CON_VALUE');
+          $c->addAsColumn('APP_PRO_TITLE', 'PRO_TITLE.CON_VALUE');
+          $c->addAsColumn('APP_TAS_TITLE', 'TAS_TITLE.CON_VALUE');
+        }
         //$c->addAsColumn('APP_DEL_PREVIOUS_USER', 'APP_LAST_USER.USR_USERNAME');
         $c->addAsColumn(
             'APP_DEL_PREVIOUS_USER',
             "CONCAT(APP_LAST_USER.USR_LASTNAME, ' ', APP_LAST_USER.USR_FIRSTNAME)");
 
-        $c->addAlias("APP_TITLE", 'CONTENT');
-        $c->addAlias("PRO_TITLE", 'CONTENT');
-        $c->addAlias("TAS_TITLE", 'CONTENT');
+        if ($titles) {
+          $c->addAlias("APP_TITLE", 'CONTENT');
+          $c->addAlias("PRO_TITLE", 'CONTENT');
+          $c->addAlias("TAS_TITLE", 'CONTENT');
+        }
         $c->addAlias("APP_PREV_DEL", 'APP_DELEGATION');
         $c->addAlias("APP_LAST_USER", 'USERS');
 
@@ -2848,24 +2852,26 @@ class Cases
         $c->addJoinMC($appThreadConds, Criteria::LEFT_JOIN);
         $c->addJoin(AppDelegationPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
 
-        $del = DBAdapter::getStringDelimiter();
-        $appTitleConds = array();
-        $appTitleConds[] = array(ApplicationPeer::APP_UID, 'APP_TITLE.CON_ID');
-        $appTitleConds[] = array('APP_TITLE.CON_CATEGORY', $del . 'APP_TITLE' . $del);
-        $appTitleConds[] = array('APP_TITLE.CON_LANG', $del . SYS_LANG . $del);
-        $c->addJoinMC($appTitleConds, Criteria::LEFT_JOIN);
+        if ($titles) {
+          $del = DBAdapter::getStringDelimiter();
+          $appTitleConds = array();
+          $appTitleConds[] = array(ApplicationPeer::APP_UID, 'APP_TITLE.CON_ID');
+          $appTitleConds[] = array('APP_TITLE.CON_CATEGORY', $del . 'APP_TITLE' . $del);
+          $appTitleConds[] = array('APP_TITLE.CON_LANG', $del . SYS_LANG . $del);
+          $c->addJoinMC($appTitleConds, Criteria::LEFT_JOIN);
 
-        $proTitleConds = array();
-        $proTitleConds[] = array(ApplicationPeer::PRO_UID, 'PRO_TITLE.CON_ID');
-        $proTitleConds[] = array('PRO_TITLE.CON_CATEGORY', $del . 'PRO_TITLE' . $del);
-        $proTitleConds[] = array('PRO_TITLE.CON_LANG', $del . SYS_LANG . $del);
-        $c->addJoinMC($proTitleConds, Criteria::LEFT_JOIN);
+          $proTitleConds = array();
+          $proTitleConds[] = array(ApplicationPeer::PRO_UID, 'PRO_TITLE.CON_ID');
+          $proTitleConds[] = array('PRO_TITLE.CON_CATEGORY', $del . 'PRO_TITLE' . $del);
+          $proTitleConds[] = array('PRO_TITLE.CON_LANG', $del . SYS_LANG . $del);
+          $c->addJoinMC($proTitleConds, Criteria::LEFT_JOIN);
 
-        $tasTitleConds = array();
-        $tasTitleConds[] = array(AppDelegationPeer::TAS_UID, 'TAS_TITLE.CON_ID');
-        $tasTitleConds[] = array('TAS_TITLE.CON_CATEGORY', $del . 'TAS_TITLE' . $del);
-        $tasTitleConds[] = array('TAS_TITLE.CON_LANG', $del . SYS_LANG . $del);
-        $c->addJoinMC($tasTitleConds, Criteria::LEFT_JOIN);
+          $tasTitleConds = array();
+          $tasTitleConds[] = array(AppDelegationPeer::TAS_UID, 'TAS_TITLE.CON_ID');
+          $tasTitleConds[] = array('TAS_TITLE.CON_CATEGORY', $del . 'TAS_TITLE' . $del);
+          $tasTitleConds[] = array('TAS_TITLE.CON_LANG', $del . SYS_LANG . $del);
+          $c->addJoinMC($tasTitleConds, Criteria::LEFT_JOIN);
+        }
 
         $prevConds = array();
         $prevConds[] = array(ApplicationPeer::APP_UID, 'APP_PREV_DEL.APP_UID');
