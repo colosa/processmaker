@@ -22,9 +22,18 @@ try {
     $userUid = (isset($_SESSION["USER_LOGGED"]) && $_SESSION["USER_LOGGED"] != "")? $_SESSION["USER_LOGGED"] : null;
     $user = ($user == "CURRENT_USER")? $userUid : $user;
 
+    /*
     if ((
         $action == "todo" || $action == "draft" || $action == "sent" || $action == "selfservice" ||
         $action == "unassigned" || $action == "search"
+        )
+        &&
+        (($solrConf = System::solrEnv()) !== false)
+    ) {
+    */
+    if ((
+        $action == "todo" || $action == "draft" || $action == "sent" || $action == "selfservice" ||
+        $action == "unassigned"
         )
         &&
         (($solrConf = System::solrEnv()) !== false)
@@ -36,6 +45,10 @@ try {
             $solrConf["solr_host"],
             $solrConf["solr_instance"]
         );
+
+        if ($action == "search") {
+            $userUid = $user;
+        }
 
         $data = $ApplicationSolrIndex->getAppGridData(
             $userUid,
