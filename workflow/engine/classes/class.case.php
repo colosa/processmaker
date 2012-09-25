@@ -3222,14 +3222,13 @@ class Cases
         $c->addSelectColumn(ContentPeer::CON_VALUE);
         $c->add(ContentPeer::CON_ID, $aTriggers, Criteria::IN);
         $c->add(ContentPeer::CON_CATEGORY, 'TRI_TITLE');
-        $c->add(ContentPeer::CON_VALUE, "", Criteria::NOT_EQUAL);
         $c->add(ContentPeer::CON_LANG, $lang);
         $rs = TriggersPeer::doSelectRS($c);
         $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $rs->next();
         $row = $rs->getRow();
         while (is_array($row)) {
-            $info[$row['CON_ID']] = $row['CON_VALUE'];
+            $info[$row['CON_ID']] = ($row['CON_VALUE'] != '' ? $row['CON_VALUE'] : '-');
             $rs->next();
             $row = $rs->getRow();
         }
