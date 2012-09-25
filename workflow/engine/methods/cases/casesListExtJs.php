@@ -95,7 +95,7 @@
   $oHeadPublisher->assign('PMDateFormat',  $dateFormat);                    //sending the fields to get from proxy
   $oHeadPublisher->assign('statusValues',  $status);                        //Sending the listing of status
   $oHeadPublisher->assign('processValues', $processes);                     //Sending the listing of processes
-  $oHeadPublisher->assign('solrConf', System::solrEnv());                   //Sending the status of solar 
+  $oHeadPublisher->assign('solrConf', System::solrEnv());                   //Sending the status of solar
   $oHeadPublisher->assign('categoryValues', $category);                     //Sending the listing of categories
   $oHeadPublisher->assign('userValues',    $users);                         //Sending the listing of users
   $oHeadPublisher->assign('allUsersValues',$allUsers);                      //Sending the listing of all users
@@ -269,8 +269,8 @@
   function getToDo() {
     $caseColumns = array ();
     $caseColumns[] = array( 'header' => '#',                                  'dataIndex' => 'APP_NUMBER',       'width' => 45, 'align' => 'center');
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sorteable'=>false);
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sorteable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sortable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sortable'=>false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASE'),        'dataIndex' => 'APP_TITLE',        'width' => 150 );
     $caseColumns[] = array( 'header' => 'UserUid',                            'dataIndex' => 'USR_UID',          'width' => 50 , 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_PROCESS'),     'dataIndex' => 'APP_PRO_TITLE',    'width' => 120 );
@@ -310,8 +310,8 @@
   function getDraft() {
     $caseColumns = array ();
     $caseColumns[] = array( 'header' => '#',                                 'dataIndex' => 'APP_NUMBER',        'width' => 45, 'align' => 'center');
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),    'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sorteable'=>false);
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sorteable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),    'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sortable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sortable'=>false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASE'),       'dataIndex' => 'APP_TITLE',         'width' => 150 );
     $caseColumns[] = array( 'header' => 'UserUid',                           'dataIndex' => 'USR_UID',           'width' => 50, 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => 'PreUsrUid',                         'dataIndex' => 'PREVIOUS_USR_UID',  'width' => 50, 'hidden'=> true, 'hideable'=> false);
@@ -347,15 +347,15 @@
   function getParticipated() {
     $caseColumns = array ();
     $caseColumns[] = array( 'header' => '#',                                  'dataIndex' => 'APP_NUMBER',        'width' => 45, 'align' => 'center');
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sorteable'=>false);
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sorteable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sortable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sortable'=>false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASE'),        'dataIndex' => 'APP_TITLE',         'width' => 150 );
     $caseColumns[] = array( 'header' => 'UserUid',                            'dataIndex' => 'USR_UID',           'width' => 50, 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => 'PreUsrUid',                          'dataIndex' => 'PREVIOUS_USR_UID',  'width' => 50, 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_PROCESS'),     'dataIndex' => 'APP_PRO_TITLE',     'width' => 120 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_TASK'),        'dataIndex' => 'APP_TAS_TITLE',     'width' => 120 );
     //$caseColumns[] = array( 'header' => G::LoadTranslation('ID_SENT_BY'),     'dataIndex' => 'APP_DEL_PREVIOUS_USER', 'width' => 120 );
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),'dataIndex' => 'APP_CURRENT_USER',  'width' => 120 );
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),'dataIndex' => 'APP_CURRENT_USER',  'width' => 120, 'sortable'=>false );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_LAST_MODIFY'), 'dataIndex' => 'APP_UPDATE_DATE',   'width' => 80 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_STATUS'),      'dataIndex' => 'APP_STATUS',        'width' => 50 );
 
@@ -389,15 +389,15 @@
    function getSearch() {
     $caseColumns = array ();
     $caseColumns[] = array( 'header' => '#',                                     'dataIndex' => 'APP_NUMBER',        'width' => 45, 'align' => 'center');
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sorteable'=>false);
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sorteable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sortable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sortable'=>false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASE'),           'dataIndex' => 'APP_TITLE',         'width' => 100 );
     $caseColumns[] = array( 'header' => 'UserUid',                               'dataIndex' => 'USR_UID',           'width' => 50 , 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => 'PreUsrUid',                             'dataIndex' => 'PREVIOUS_USR_UID',  'width' => 50 , 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_TASK'),           'dataIndex' => 'APP_TAS_TITLE',     'width' => 120 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_PROCESS'),        'dataIndex' => 'APP_PRO_TITLE',     'width' => 120 );
     //$caseColumns[] = array( 'header' => G::LoadTranslation('ID_SENT_BY'),        'dataIndex' => 'APP_DEL_PREVIOUS_USER', 'width' => 120 );
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),   'dataIndex' => 'APP_CURRENT_USER',  'width' => 120 );
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),   'dataIndex' => 'APP_CURRENT_USER',  'width' => 120, 'sortable'=>false );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_LAST_MODIFY'),    'dataIndex' => 'APP_UPDATE_DATE',   'width' => 80 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_DELEGATION_DATE'),'dataIndex' => 'DEL_DELEGATE_DATE', 'width' => 80 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_STATUS'),         'dataIndex' => 'APP_STATUS',        'width' => 50 );
@@ -429,8 +429,8 @@
   function getUnassigned() {
     $caseColumns = array ();
     $caseColumns[] = array( 'header' => '#',                                  'dataIndex' => 'APP_NUMBER',      'width' => 40, 'align' => 'left');
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sorteable'=>false);
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sorteable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sortable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sortable'=>false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASE'),        'dataIndex' => 'APP_TITLE',       'width' => 150 );
     $caseColumns[] = array( 'header' => 'UserUid',                            'dataIndex' => 'USR_UID',         'width' => 50, 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_PROCESS'),     'dataIndex' => 'APP_PRO_TITLE',   'width' => 120 );
@@ -472,8 +472,8 @@
   function getPaused() {
     $caseColumns = array ();
     $caseColumns[] = array( 'header' => '#',                                  'dataIndex' => 'APP_NUMBER',           'width' => 45, 'align' => 'center');
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),    'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sorteable'=>false);
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sorteable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),    'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sortable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sortable'=>false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASE'),        'dataIndex' => 'APP_TITLE',            'width' => 150 );
     $caseColumns[] = array( 'header' => 'UserUid',                            'dataIndex' => 'USR_UID',              'width' => 50, 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_PROCESS'),     'dataIndex' => 'APP_PRO_TITLE',        'width' => 120 );
@@ -514,8 +514,8 @@
   function getToRevise() {
     $caseColumns = array ();
     $caseColumns[] = array( 'header' => '#',                                  'dataIndex' => 'APP_NUMBER',      'width' => 45, 'align' => 'center');
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),    'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sorteable'=>false);
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sorteable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),    'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sortable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sortable'=>false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASE'),        'dataIndex' => 'APP_TITLE',       'width' => 150 );
     $caseColumns[] = array( 'header' => 'UserUid',                            'dataIndex' => 'USR_UID',         'width' => 50, 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => 'PreUsrUid',                          'dataIndex' => 'PREVIOUS_USR_UID','width' => 50, 'hidden'=> true, 'hideable'=> false);
@@ -523,7 +523,7 @@
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_TASK'),        'dataIndex' => 'APP_TAS_TITLE',   'width' => 120 );
 
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SENT_BY'),     'dataIndex' => 'APP_DEL_PREVIOUS_USER','width' => 90 );
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),'dataIndex' => 'APP_CURRENT_USER','width' => 90 );
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),'dataIndex' => 'APP_CURRENT_USER','width' => 90, 'sortable'=>false );
 //    $caseColumns[] = array( 'header' =>'Sent By',      'dataIndex' => 'APP_DEL_PREVIOUS_USER', 'width' => 90 );
 ///--    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_LAST_MODIFY'), 'dataIndex' => 'APP_UPDATE_DATE', 'width' => 110 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_PRIORITY'),    'dataIndex' => 'DEL_PRIORITY',    'width' => 50 );
@@ -557,15 +557,15 @@
 
   function getToReassign() {
     $caseColumns = array ();
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sorteable'=>false);
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sorteable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sortable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sortable'=>false);
     $caseColumns[] = array( 'header' => 'UserUid',                            'dataIndex' => 'USR_UID',         'width' => 50, 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => 'PreUsrUid',                          'dataIndex' => 'PREVIOUS_USR_UID','width' => 50, 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => '#',                                  'dataIndex' => 'APP_NUMBER',      'width' => 45, 'align' => 'center');
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASE'),        'dataIndex' => 'APP_TITLE',       'width' => 150 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_PROCESS'),     'dataIndex' => 'APP_PRO_TITLE',   'width' => 120 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_TASK'),        'dataIndex' => 'APP_TAS_TITLE',   'width' => 120 );
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),'dataIndex' => 'APP_CURRENT_USER','width' => 90 );
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),'dataIndex' => 'APP_CURRENT_USER','width' => 90, 'sortable'=>false );
 //    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SENT_BY'),     'dataIndex' => 'APP_DEL_PREVIOUS_USER', 'width' => 90 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_LAST_MODIFY'), 'dataIndex' => 'APP_UPDATE_DATE', 'width' => 110 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_STATUS'),      'dataIndex' => 'APP_STATUS',      'width' => 50 );
@@ -594,14 +594,14 @@
   function getGeneral() {
     $caseColumns = array ();
     $caseColumns[] = array( 'header' => '#',                                  'dataIndex' => 'APP_NUMBER',        'width' => 45, 'align' => 'center');
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sorteable'=>false);
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sorteable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SUMMARY'),     'dataIndex' => 'CASE_SUMMARY',     'width' => 45, 'align' => 'center',  'sortable'=>false);
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASES_NOTES'), 'dataIndex' => 'CASE_NOTES_COUNT', 'width' => 45, 'align' => 'center',  'sortable'=>false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CASE'),        'dataIndex' => 'APP_TITLE',         'width' => 150 );
     $caseColumns[] = array( 'header' => 'UserUid',                            'dataIndex' => 'USR_UID',           'width' => 50 , 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => 'PreUsrUid',                          'dataIndex' => 'PREVIOUS_USR_UID',  'width' => 50 , 'hidden'=> true, 'hideable'=> false);
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_TASK'),        'dataIndex' => 'APP_TAS_TITLE',     'width' => 120 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_PROCESS'),     'dataIndex' => 'APP_PRO_TITLE',     'width' => 120 );
-    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),'dataIndex' => 'APP_CURRENT_USER',  'width' => 90 );
+    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_CURRENT_USER'),'dataIndex' => 'APP_CURRENT_USER',  'width' => 90, 'sortable'=>false );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SENT_BY'),     'dataIndex' => 'APP_DEL_PREVIOUS_USER', 'width' => 90 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_LAST_MODIFY'), 'dataIndex' => 'APP_UPDATE_DATE',   'width' => 110 );
     $caseColumns[] = array( 'header' => G::LoadTranslation('ID_STATUS'),      'dataIndex' => 'APP_STATUS',        'width' => 50 );
