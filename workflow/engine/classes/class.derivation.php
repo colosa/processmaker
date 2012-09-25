@@ -1033,7 +1033,7 @@ class Derivation
 
   function checkReplacedByUser($user)
   {
-      if (get_class($user) != 'Users') {
+      if (is_string($user)) {
           $userInstance = UsersPeer::retrieveByPK($user);
       } else {
           $userInstance = $user;
