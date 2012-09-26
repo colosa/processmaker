@@ -649,6 +649,14 @@ class pmTablesProxy extends HttpProxyController
                             $j = 0;
                             foreach ($aAdditionalTables['FIELDS'] as $aField) {
                                 $aData[$aField['FLD_NAME']] = (isset($aAux[$j]) ? $aAux[$j] : '');
+                                if ($aData[$aField['FLD_NAME']] == '') {
+                                    switch ($aField['FLD_TYPE']) {
+                                        case 'DATE':
+                                        case 'TIMESTAMP':
+                                            $aData[$aField['FLD_NAME']] = null;
+                                            break;
+                                    }
+                                }
                                 $j++;
                             }
                             try {
