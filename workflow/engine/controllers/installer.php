@@ -5,7 +5,7 @@
  * @author Erik A. O. <erik@colosa.com>
  */
 
-class Installer extends Controller 
+class Installer extends Controller
 {
   public $path_config;
   public $path_languages;
@@ -16,7 +16,7 @@ class Installer extends Controller
 
   public $link;  #resource for database connection
 
-  public function __construct() 
+  public function __construct()
   {
     $this->path_config    = PATH_CORE.'config/';
     $this->path_languages = PATH_CORE.'content/languages/';
@@ -27,7 +27,7 @@ class Installer extends Controller
     $this->path_sep       = PATH_SEP;
   }
 
-  public function index($httpData) 
+  public function index($httpData)
   {
     $step1_txt = 'If any of these items is not supported (marked as No) then please take actions to correct them.<br><br>' .
                  'Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br><br>' .
@@ -38,7 +38,7 @@ class Installer extends Controller
     $step2_txt = 'These settings are recommended for PHP in order to ensure full compatibility with ProcessMaker. <> ' .
                  'However, ProcessMaker still operate if your settings do not quite match the recommended';
     $step3_txt = 'In order for ProcessMaker to work correctly, it needs to be able read and write to certain directories and their files.<br>' .
-                 'Make sure to give read and write access to the directories listed below and all their subdirectories and files.';                 
+                 'Make sure to give read and write access to the directories listed below and all their subdirectories and files.';
     $step4_txt = 'ProcessMaker stores all of its data in a database. Enter the address and port number used by the database. Also enter' .
                  'the username and password of the database user who will set up the databases used by ProcessMaker<br>';
     $step5_txt = 'ProcessMaker uses workspaces to store data in the database. Please enter a valid workspace name and a username and password to login'.
@@ -76,7 +76,7 @@ class Installer extends Controller
     G::RenderPage('publish', 'extJs');
   }
 
-  public function newSite() 
+  public function newSite()
   {
     $textStep1 = 'ProcessMaker stores all of its data in a database. This screen gives the installation program the information needed to create this database.<br><br>' .
                  'If you are installing ProcessMaker on a remote web server, you will need to get this information from your Database Server.';
@@ -109,7 +109,7 @@ class Installer extends Controller
     G::RenderPage('publish', 'extJs');
   }
 
-  public function getSystemInfo() 
+  public function getSystemInfo()
   {
     $this->setResponseType('json');
 
@@ -117,6 +117,19 @@ class Installer extends Controller
     $phpVer = phpversion();
     preg_match('/[0-9\.]+/', $phpVer, $match);
     $phpVerNum = (float) $match[0];
+
+    $info = new stdclass();
+    $info->php = new stdclass();
+    $info->mysql = new stdclass();
+    $info->mssql = new stdclass();
+    $info->openssl = new stdclass();
+    $info->curl = new stdclass();
+    $info->dom = new stdclass();
+    $info->gd = new stdclass();
+    $info->multibyte = new stdclass();
+    $info->soap = new stdclass();
+    $info->ldap = new stdclass();
+    $info->memory = new stdclass();
 
     $info->php->version = phpversion();
     $info->php->result  = $phpVerNum > 5.1 ? true : false;
@@ -211,19 +224,19 @@ class Installer extends Controller
     return $info;
   }
 
-  public function is_dir_writable($path) 
+  public function is_dir_writable($path)
   {
     return G::is_writable_r($path);
   }
 
-  public function getPermissionInfo() 
+  public function getPermissionInfo()
   {
     $this->setResponseType('json');
-    
+
     $info = new StdClass();
     $info->success = true;
     $noWritableFiles = array();
-    
+
     // pathConfig
     $info->pathConfig->message = 'unwriteable';
     $info->pathConfig->result  = G::is_writable_r($_REQUEST['pathConfig'], $noWritableFiles);
@@ -296,7 +309,7 @@ class Installer extends Controller
 
     $info->pathLogFile->message = 'Could not create the installation log';
     $info->pathLogFile->result  = file_exists($_REQUEST['pathLogFile']);
-    
+
     if ($info->pathLogFile->result) {
       $info->pathLogFile->message = 'Installation log created';
     }
@@ -313,7 +326,7 @@ class Installer extends Controller
     return $info;
   }
 
-  public function testConnection () 
+  public function testConnection ()
   {
     $this->setResponseType('json');
     if ($_REQUEST['db_engine'] == 'mysql') {
@@ -329,7 +342,7 @@ class Installer extends Controller
    * the install.log files should be placed in shared/logs
    * for that reason we are using the $_REQUEST of pathShared
    */
-  public function installLog( $text ) 
+  public function installLog( $text )
   {
     $serverAddr = $_SERVER['SERVER_ADDR'];
     //if this function is called outside the createWorkspace, just returns and do nothing
@@ -364,7 +377,7 @@ class Installer extends Controller
    * function to create a workspace
    * in fact this function is calling appropiate functions for mysql and mssql
    */
-  public function createWorkspace() 
+  public function createWorkspace()
   {
     $this->setResponseType('json');
     if ($_REQUEST['db_engine'] == 'mysql') {
@@ -377,7 +390,7 @@ class Installer extends Controller
     return $info;
   }
 
-  public function forceTogenerateTranslationsFiles($url) 
+  public function forceTogenerateTranslationsFiles($url)
   {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, (isset($_SERVER['HTTPS']) ? ($_SERVER['HTTPS'] != '' ? 'https://' : 'http://') : 'http://') . $_SERVER['HTTP_HOST'] . '/js/ext/translation.en.js?r=' . rand(1, 10000));
@@ -392,7 +405,7 @@ class Installer extends Controller
   /**
    * send a query to MySQL and log the query
    */
-  public function mysqlQuery($sql) 
+  public function mysqlQuery($sql)
   {
     $this->installLog($sql);
     $query = @mysql_query($sql, $this->link);
@@ -409,7 +422,7 @@ class Installer extends Controller
   /**
    * send a query to MSSQL and log the query
    */
-  public function mssqlQuery($sql) 
+  public function mssqlQuery($sql)
   {
     $this->installLog( $sql );
     $query = @mssql_query($sql, $this->link);
@@ -430,7 +443,7 @@ class Installer extends Controller
    * @param   string  $connection
    * @return  array   $report
    */
-  public function mysqlFileQuery($file) 
+  public function mysqlFileQuery($file)
   {
     if ( !is_file($file) ) {
       throw ( new Exception ( sprintf ( "File $file is not a valid sql file", $file ) ) );
@@ -455,14 +468,14 @@ class Installer extends Controller
     // }
 
     //erik: New Update, to support more complex queries
-    
+
     $lines = file($file);
     $previous = NULL;
     $errors = '';
     @mysql_query("SET NAMES 'utf8';");
     foreach ($lines as $j => $line) {
       $line = trim($line); // Remove comments from the script
-      
+
       if (strpos($line, "--") === 0) {
         $line = substr($line, 0, strpos($line, "--"));
       }
@@ -484,17 +497,17 @@ class Installer extends Controller
         $line = $previous . " " . $line;
       }
       $previous = NULL;
-      
+
       // If the current line doesnt end with ; then put this line together
       // with the next one, thus supporting multi-line statements.
       if (strrpos($line, ";") != strlen($line) - 1) {
         $previous = $line;
         continue;
       }
-      
+
       $line = substr($line, 0, strrpos($line, ";"));
       @mysql_query($line, $this->link);
-    } 
+    }
 
     $endTime = microtime(true);
     $this->installLog ( sprintf ('File: %s processed in %3.2f seconds', basename($file) , $endTime - $startTime ) );
@@ -508,7 +521,7 @@ class Installer extends Controller
    * @param   string  $connection
    * @return  array   $report
    */
-  public function mssqlFileQuery($file) 
+  public function mssqlFileQuery($file)
   {
     if ( !is_file($file) ) {
       throw ( new Exception ( sprintf ( "File $file is not a valid sql file", $file ) ) );
@@ -542,7 +555,7 @@ class Installer extends Controller
    * @param  string    $psDatabase
    * @return void
    */
-  public function setGrantPrivilegesMySQL($psUser, $psPassword, $psDatabase, $host) 
+  public function setGrantPrivilegesMySQL($psUser, $psPassword, $psDatabase, $host)
   {
     $host = ($host == 'localhost' || $host == '127.0.0.1' ? 'localhost' : '%');
     $query = sprintf("GRANT ALL PRIVILEGES ON `%s`.* TO %s@'%s' IDENTIFIED BY '%s' WITH GRANT OPTION", $psDatabase, $psUser, $host, $psPassword);
@@ -557,7 +570,7 @@ class Installer extends Controller
    * @param  string    $psDatabase
    * @return void
    */
-  public function setGrantPrivilegesMSSQL($psUser, $psPassword, $psDatabase) 
+  public function setGrantPrivilegesMSSQL($psUser, $psPassword, $psDatabase)
   {
 
     $query = sprintf ( "IF  EXISTS (SELECT * FROM sys.server_principals WHERE name = N'%s') DROP LOGIN [%s]", $psUser, $psUser );
@@ -590,7 +603,7 @@ class Installer extends Controller
     return true;
   }
 
-  public function createMySQLWorkspace() 
+  public function createMySQLWorkspace()
   {
     ini_set('max_execution_time', '0');
     $info->result   = false;
@@ -771,7 +784,7 @@ class Installer extends Controller
       define('SYS_SYS', 'workflow');
 
       require_once("propel/Propel.php");
- 
+
       Propel::init( PATH_CORE . "config/databases.php" );
       $con = Propel::getConnection('workflow');
 
@@ -780,27 +793,27 @@ class Installer extends Controller
 
       //setup the appcacheview object, and the path for the sql files
       $appCache = new AppCacheView();
- 
+
       $appCache->setPathToAppCacheFiles ( PATH_METHODS . 'setup' . PATH_SEP .'setupSchemas'. PATH_SEP );
 
-      //APP_DELEGATION INSERT 
+      //APP_DELEGATION INSERT
       $res = $appCache->triggerAppDelegationInsert($lang, true);
-      
-      //APP_DELEGATION Update 
+
+      //APP_DELEGATION Update
       $res = $appCache->triggerAppDelegationUpdate($lang, true);
-      
-      //APPLICATION UPDATE 
+
+      //APPLICATION UPDATE
       $res = $appCache->triggerApplicationUpdate($lang, true);
-      
+
       //APPLICATION DELETE
       $res = $appCache->triggerApplicationDelete($lang, true);
-      
+
       //CONTENT UPDATE
       $res = $appCache->triggerContentUpdate($lang, true);
-      
+
       //build using the method in AppCacheView Class
       $res = $appCache->fillAppCacheView($lang);
-      
+
       //end AppCacheView Build
 
       //erik: for new env conf handling
@@ -854,7 +867,7 @@ class Installer extends Controller
     return $info;
   }
 
-  public function createMSSQLWorkspace() 
+  public function createMSSQLWorkspace()
   {
     ini_set('max_execution_time', '0');
     $info->result   = false;
@@ -1038,7 +1051,7 @@ class Installer extends Controller
     return $info;
   }
 
-  public function getEngines() 
+  public function getEngines()
   {
     $this->setResponseType('json');
     $engines = array();
@@ -1058,7 +1071,7 @@ class Installer extends Controller
     return $engines;
   }
 
-  public function checkDatabases() 
+  public function checkDatabases()
   {
     $this->setResponseType('json');
     $info = new stdclass();
@@ -1091,7 +1104,7 @@ class Installer extends Controller
    * Privates functions section, non callable by http request
    */
 
-  private function testMySQLconnection() 
+  private function testMySQLconnection()
   {
     $info->result   = false;
     $info->message = '';
@@ -1129,7 +1142,7 @@ class Installer extends Controller
     return $info;
   }
 
-  private function testMSSQLconnection() 
+  private function testMSSQLconnection()
   {
     $info->result   = false;
     $info->message = '';

@@ -6,7 +6,7 @@
  * @package gulliver.system
  * @access private
  */
-class Controller  
+class Controller
 {
     /**
      * @var boolean debug switch for general purpose
@@ -16,12 +16,12 @@ class Controller
      * @var array - private array to store proxy data
      */
     private $__data__ = array();
-    
+
     /**
-     * @var object - private object to store the http request data 
+     * @var object - private object to store the http request data
      */
     private $__request__;
-    
+
     /**
      * @var object - headPublisher object to handle the output
      */
@@ -36,25 +36,25 @@ class Controller
      * @var string - layout to pass skinEngine
      */
     private $layout = '';
-    
+
     /**
      * Magic setter method
-     * 
+     *
      * @param string $name
      * @param string $value
      */
-    public function __set($name, $value) 
+    public function __set($name, $value)
     {
         $this->__data__[$name] = $value;
     }
 
     /**
      * Magic getter method
-     * 
+     *
      * @param string $name
      * @return string or NULL if the internal var doesn't exist
      */
-    public function __get($name) 
+    public function __get($name)
     {
         if (array_key_exists($name, $this->__data__)) {
             return $this->__data__[$name];
@@ -73,17 +73,17 @@ class Controller
      * Magic isset method
      * @param string $name
      */
-    public function __isset($name) 
+    public function __isset($name)
     {
         return isset($this->__data__[$name]);
     }
 
-    
+
     /**
      * Magic unset method
      * @param string $name
      */
-    public function __unset($name) 
+    public function __unset($name)
     {
         unset($this->__data__[$name]);
     }
@@ -96,12 +96,12 @@ class Controller
     {
         $this->responseType = $type;
     }
-    
+
     /**
      * call to execute a internal proxy method and handle its exceptions
      * @param string $name
      */
-    public function call($name) 
+    public function call($name)
     {
         try {
             $result = $this->$name($this->__request__);
@@ -122,7 +122,7 @@ class Controller
                 $template->assign('trace',   $e->getTraceAsString());
 
                 echo $template->getOutputContent();
-                
+
             } else {
                 $result->success = false;
                 $result->msg     = $e->getMessage();
@@ -133,66 +133,69 @@ class Controller
                     case 'UserException':   $error = "USER ERROR"; break;
                 }
                 $result->error = $error;
-                
+
                 $result->exception->class = get_class($e);
                 $result->exception->code = $e->getCode();
                 print G::json_encode($result);
             }
         }
     }
-    
+
     /**
      * Set the http request data
      * @param array $data
      */
     public function setHttpRequestData($data)
     {
+        if (!is_object($this->__request__)) {
+            $this->__request__ = new stdclass();
+        }
         if( is_array($data) ) {
             while( $var = each($data) )
-                $this->__request__->$var['key'] = $var['value'];   
-        } else 
+                $this->__request__->$var['key'] = $var['value'];
+        } else
             $this->__request__ = $data;
     }
-    
+
     /**
      * Get debug var. method
-     * @param boolan $val boolean value for debug var. 
+     * @param boolan $val boolean value for debug var.
      */
     public function setDebug($val)
     {
       $this->debug = $val;
     }
-    
+
     /**
-     * Get debug var. method 
+     * Get debug var. method
      */
     public function getDebug()
     {
       if ($this->debug === null) {
         $this->debug = defined('DEBUG') && DEBUG ? true : false;
       }
-      
+
       return $this->debug;
     }
 
-    
+
     /*** HeadPublisher Functions Binding  ***/
-    
+
     /**
      * Include a particular extjs library or extension to the main output
      * @param string $srcFile path of a extjs library or extension
      * @param boolean $debug debug flag to indicate if the js output will be minifield or not
      *                $debug: true  -> the js content will be not minified (readable)
-     *                		  false -> the js content will be minified  
+     *                		  false -> the js content will be minified
      */
     public function includeExtJSLib($srcFile, $debug=false)
     {
       $this->getHeadPublisher()->usingExtJs($srcFile, ($debug ? $debug : $this->getDebug()));
     }
-    
+
     /**
      * Include a javascript file that is using extjs framework to the main output
-     * @param string $srcFile path of javascrit file to include 
+     * @param string $srcFile path of javascrit file to include
      * @param boolean $debug debug flag to indicate if the js output will be minifield or not
      *                $debug: true  -> the js content will be not minified (readable)
      *                		  false -> the js content will be minified
@@ -212,7 +215,7 @@ class Controller
     }
 
     /**
-     * Set variables to be accesible by javascripts 
+     * Set variables to be accesible by javascripts
      * @param string $name contains var. name
      * @param string $value conatins var. value
      */
