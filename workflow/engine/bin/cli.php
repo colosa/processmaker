@@ -50,6 +50,7 @@
   
   $e_all  = defined('E_DEPRECATED') ? E_ALL & ~E_DEPRECATED : E_ALL;
   $e_all  = defined('E_STRICT')     ? E_ALL & ~E_STRICT     : $e_all;
+  $e_all  = $e_all & E_WARNING; // show warning
   $e_all  = $e_all & ~E_NOTICE; // don't notices
 
   // Do not change any of these settings directly, use env.ini instead

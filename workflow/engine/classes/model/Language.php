@@ -268,9 +268,6 @@ class Language extends BaseLanguage {
       $trn->generateFileTranslation($LOCALE);
       $trn->addTranslationEnvironment($LOCALE, $POHeaders, $countItemsSuccess);
 
-      $content = new Content();
-      $content->regenerateContent($languageID);
-
       //fill the results
       $results = new stdClass();
       $results->recordsCount        = $countItems;

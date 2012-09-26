@@ -49,19 +49,41 @@ class workspaceTools {
     return (file_exists($this->path) && file_exists($this->dbPath));
   }
 
-  /**
-   * Upgrade this workspace to the latest system version
-   *
-   * @param   bool $first true if this is the first workspace to be upgrade
-   */
-  public function upgrade($first = false) {
-    CLI::logging("> Updating database...\n");
-    $this->upgradeDatabase();
-    CLI::logging("> Updating translations...\n");
-    $this->upgradeTranslation($first);
-    CLI::logging("> Updating cache view...\n");
-    $this->upgradeCacheView();
-  }
+    /**
+     * Upgrade this workspace to the latest system version
+     *
+     * @param   bool $first true if this is the first workspace to be upgrade
+     */
+    public function upgrade($first=false, $buildCacheView=false)
+    {
+        $start = microtime(true);
+        CLI::logging("> Updating database...\n");
+        $this->upgradeDatabase();
+        $stop = microtime(true);
+        $final = $stop - $start;
+        CLI::logging("<*>   Process Updating database carried out in $final seconds.\n");
+
+        $start = microtime(true);
+        CLI::logging("> Updating translations...\n");
+        $this->upgradeTranslation($first);
+        $stop = microtime(true);
+        $final = $stop - $start;
+        CLI::logging("<*>   Process Updating translations carried out in $final seconds.\n");
+
+        $start = microtime(true);
+        CLI::logging("> Updating Content...\n");
+        $this->upgradeContent();
+        $stop = microtime(true);
+        $final = $stop - $start;
+        CLI::logging("<*>   Process Updating Content carried out in $final seconds.\n");
+
+        $start = microtime(true);
+        CLI::logging("> Updating cache view...\n");
+        $this->upgradeCacheView($buildCacheView);
+        $stop = microtime(true);
+        $final = $stop - $start;
+        CLI::logging("<*>   Process Updating cache view carried out in $final seconds.\n");
+    }
 
   /**
    * Scan the db.php file for database information and return it as an array
@@ -264,6 +286,27 @@ class workspaceTools {
     $this->initPropelRoot = false;
   }
 
+    /**
+     * Upgrade this workspace Content.
+     *
+     */
+    public function upgradeContent() {
+        $this->initPropel(true);
+        require_once('classes/model/Language.php');
+        G::LoadThirdParty('pear/json', 'class.json');
+        $lang = array();
+        foreach (System::listPoFiles() as $poFile) {
+            $poName = basename($poFile);
+            $names = explode(".", basename($poFile));
+            $extension = array_pop($names);
+            $langid = array_pop($names);
+            $arrayLang[] = $langid;
+        }
+        require_once('classes/model/Content.php');
+        $regenerateContent = new Content();
+        $regenerateContent->regenerateContent($arrayLang);
+    }
+
   /**
    * Upgrade this workspace translations from all avaliable languages.
    *
@@ -387,7 +430,7 @@ class workspaceTools {
    * @param   bool $checkOnly only check if the upgrade is needed if true
    * @param  string $lang not currently used
    */
-  public function upgradeCacheView($fill = true) {
+  public function upgradeCacheView($fill=true) {
     $this->initPropel(true);
 
     $lang = "en";
@@ -430,7 +473,7 @@ class workspaceTools {
     $triggers[] = $appCache->triggerContentUpdate($lang, $checkOnly);
 
     if ($fill) {
-      CLI::logging("-> Filling cache view\n");
+      CLI::logging("-> Rebuild Cache View\n");
       //build using the method in AppCacheView Class
       $res = $appCache->fillAppCacheView($lang);
       //set status in config table
