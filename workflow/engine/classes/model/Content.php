@@ -39,6 +39,12 @@ require_once 'classes/model/om/BaseContent.php';
  */
 class Content extends BaseContent {
   
+        public $langs;
+        public $rowsProcessed;
+        public $rowsInserted;
+        public $rowsUnchanged;
+        public $rowsClustered;
+        public $langsAsoc;
   /*
   * Load the content row specified by the parameters: 
   * @param string $sUID
@@ -264,24 +270,117 @@ class Content extends BaseContent {
       throw($oError);
     }
   }
-  
-  function regenerateContent($langId)
-  {
-    $oCriteria = new Criteria('workflow');
-    $oCriteria->addSelectColumn(ContentPeer::CON_CATEGORY);
-    $oCriteria->addSelectColumn(ContentPeer::CON_ID);
-    $oCriteria->addSelectColumn(ContentPeer::CON_VALUE);
-    $oCriteria->add(ContentPeer::CON_LANG, 'en');
-    $oCriteria->add(ContentPeer::CON_VALUE, '', Criteria::NOT_EQUAL );
-    $oDataset = ContentPeer::doSelectRS($oCriteria);
-    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-    $oDataset->next();
-    $oContent = new Content();
-    while ($aRow = $oDataset->getRow()) {
-      $oContent->load($aRow['CON_CATEGORY'], '', $aRow['CON_ID'], $langId);
-      $oDataset->next();
+
+    /*
+    * Regenerate Table Content
+    *
+    * @param  array  $langs
+    */
+    function regenerateContent($langId)
+    {
+        //Search the language
+        $key = array_search('en',$langs);
+        if ($key === false) {
+            $key = array_search(SYS_LANG,$langs);
+            if ($key === false) {
+                $key = '0';
+            }
+        }
+        $this->langsAsoc = array();
+        foreach ($langs as $key=>$value) {
+            $this->langsAsoc[$value] = $value;
+        }
+        
+        $this->langs = $langs;
+        $this->rowsProcessed = 0;
+        $this->rowsInserted  = 0;
+        $this->rowsUnchanged = 0;
+        $this->rowsClustered = 0;
+        
+        $con = Propel::getConnection('workflow');
+        $sql = " SELECT DISTINCT CON_LANG
+                FROM CONTENT ";
+        $stmt = $con->createStatement();
+        $rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+        while ($rs->next()) {
+            $row = $rs->getRow();
+            $language = $row['CON_LANG'];
+            if (array_search($row['CON_LANG'],$langs) === false) {
+                Content::removeLanguageContent($row['CON_LANG']);
+            }
+        }
+
+        $sql = " SELECT CON_ID, CON_CATEGORY, CON_LANG, CON_PARENT, CON_VALUE
+                FROM CONTENT
+                ORDER BY CON_ID, CON_CATEGORY, CON_LANG, CON_PARENT ";
+        mysql_query('SET OPTION SQL_BIG_SELECTS=1');
+        $result = mysql_unbuffered_query($sql);
+        $list = array();
+        $default = array();
+        $sw = array('CON_ID'=>'','CON_CATEGORY'=>'','CON_PARENT'=>'');
+        while ($row = mysql_fetch_assoc($result)) {
+            if ($sw['CON_ID'] == $row['CON_ID'] && $sw['CON_CATEGORY'] == $row['CON_CATEGORY'] && $sw['CON_PARENT'] == $row['CON_PARENT']) {
+                $list[] = $row;
+                if ($sw['CON_LANG'] == $langs[$key]) {
+                    $default = $row;
+                }
+            } else {
+                $this->rowsClustered++;
+                if (count($langs) != count($list)) {
+                    $this->checkLanguage($list, $default);
+                } else {
+                    $this->rowsUnchanged = $this->rowsUnchanged + count($langs);
+                }
+                $sw = array();
+                $sw['CON_ID'] = $row['CON_ID'];
+                $sw['CON_CATEGORY'] = $row['CON_CATEGORY'];
+                $sw['CON_LANG'] = $row['CON_LANG'];
+                $sw['CON_PARENT'] = $row['CON_PARENT'];
+                unset($list);
+                unset($default);
+                $list = array();
+                $default = array();
+                $list[] = $row;
+            }
+            $this->rowsProcessed++;
+        }
+        if (count($langs) != count($list)) {
+            $this->checkLanguage($list, $default);
+        } else {
+            $this->rowsUnchanged = $this->rowsUnchanged + count($langs);
+        }
+        mysql_free_result($result);
+        $total = $this->rowsProcessed + $this->rowsInserted;
+
+        CLI::logging("Rows Processed ---> $this->rowsProcessed ..... \n");
+        CLI::logging("Rows Clustered ---> $this->rowsClustered ..... \n");
+        CLI::logging("Rows Unchanged ---> $this->rowsUnchanged ..... \n");
+        CLI::logging("Rows Inserted  ---> $this->rowsInserted ..... \n");
+        CLI::logging("Rows Total     ---> $total ..... \n");
     }
-  }
+
+    function checkLanguage($content, $default)
+    {
+        if (count($content)>0) {
+            $langs = $this->langs;
+            $langsAsoc = $this->langsAsoc;
+            //Element default
+            $default = (count($default)>0) ? $default : $content[0];
+            foreach ($content as $key => $value) {
+                unset($langsAsoc[$value['CON_LANG']]);
+            }
+            foreach ($langsAsoc as $key) {
+                $this->rowsInserted++;
+                $this->fastInsertContent(
+                    $default['CON_CATEGORY'],
+                    $default['CON_PARENT'],
+                    $default['CON_ID'],
+                    $lang,
+                    $default['CON_VALUE']
+                    );
+            }
+        }
+    }
 
   function removeLanguageContent($lanId) {
     try {
