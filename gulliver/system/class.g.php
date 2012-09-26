@@ -1208,9 +1208,13 @@ class G
 				G::LoadClass('serverConfiguration');
           		$oServerConf =& serverConf::getSingleton();
           		if (!(defined('SYS_LANG'))) {
-          			$syss = explode('://', $_SERVER['HTTP_REFERER']);
-          			$sysObjets =  explode('/', $syss['1']);
-          			$sysLang = $sysObjets['2'];
+          		    if (isset($_SERVER['HTTP_REFERER'])) {
+          			  $syss = explode('://', $_SERVER['HTTP_REFERER']);
+          			  $sysObjets =  explode('/', $syss['1']);
+          			  $sysLang = $sysObjets['2'];
+          			} else {
+          			  $sysLang = 'en';
+          			}
           		} else {
           			$sysLang = SYS_LANG;
           		}

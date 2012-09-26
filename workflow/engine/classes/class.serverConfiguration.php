@@ -55,10 +55,13 @@ class serverConf {
   private $lanLanguage;
   public $workspaces = array();
   public $rtlLang = array('ar','iw','fa');
+  public $filePath = '';
 
 
   public function __construct() {
-    $this->filePath = PATH_DATA . 'srvConf.singleton';
+    if (defined('PATH_DATA')) {
+      $this->filePath = PATH_DATA . 'srvConf.singleton';
+    }
   }
 
   /**
@@ -107,8 +110,10 @@ class serverConf {
    */
 
   function saveSingleton() {
-    $this->filePath = PATH_DATA . 'srvConf.singleton';
-    $size = file_put_contents ( $this->filePath, $this->serializeInstance () );
+    if (defined('PATH_DATA')) {
+      $this->filePath = PATH_DATA . 'srvConf.singleton';
+      $size = file_put_contents ( $this->filePath, $this->serializeInstance () );
+    }
   }
 
   /**
