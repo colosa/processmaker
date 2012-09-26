@@ -150,7 +150,7 @@ class database extends database_base {
       }
     }
     else {
-      if (isset($aParameters['Default']) && $aParameters['Default'] != '') {
+      if (isset($aParameters['Default'])) {
         $sSQL .= " DEFAULT '" . $aParameters['Default'] . "'";
       }
     }
@@ -195,7 +195,7 @@ class database extends database_base {
     //}
     //else {
     if (isset($aParameters['Default'])) {
-      if ( trim($aParameters['Default'] == '') && $aParameters['Type'] == 'datetime' ) {
+      if ( trim($aParameters['Default']) == '' && $aParameters['Type'] == 'datetime' ) {
         //do nothing
       }
       else
