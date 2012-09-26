@@ -95,12 +95,10 @@
   $oHeadPublisher->assign('PMDateFormat',  $dateFormat);                    //sending the fields to get from proxy
   $oHeadPublisher->assign('statusValues',  $status);                        //Sending the listing of status
   $oHeadPublisher->assign('processValues', $processes);                     //Sending the listing of processes
-  $oHeadPublisher->assign('solrConf', System::solrEnv());                   //Sending the status of solar
   $oHeadPublisher->assign('categoryValues', $category);                     //Sending the listing of categories
   $oHeadPublisher->assign('userValues',    $users);                         //Sending the listing of users
   $oHeadPublisher->assign('allUsersValues',$allUsers);                      //Sending the listing of all users
-
-
+  $oHeadPublisher->assign("solrEnabled", (($aux = System::solrEnv()) !== false)? 1 : 0); //Sending the status of solar
 
   //menu permissions
   /*$c = new Criteria('workflow');

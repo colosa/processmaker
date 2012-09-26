@@ -1454,7 +1454,7 @@ Ext.onReady ( function() {
     value: ''
   });
 
-  var optionCategory = (solrConf != true) ?  [ _('ID_CATEGORY'), comboCategory, '-'] : [''] ;
+  var optionCategory = (solrEnabled == 1)? [""] : [_("ID_CATEGORY"), comboCategory, "-"];
 
   var toolbarTodo = [
     optionMenuOpen,
@@ -1635,6 +1635,8 @@ Ext.onReady ( function() {
       })
     ];
 
+  var arrayAux = (solrEnabled == 1)? [""] : ["-", _("ID_USER"), comboUser];
+
   var firstToolbarSearch = new Ext.Toolbar({
     region: 'north',
     width: '100%',
@@ -1648,9 +1650,7 @@ Ext.onReady ( function() {
       '-',
       _('ID_STATUS'),
       comboStatus,
-      '-',
-      _('ID_USER'),
-      comboUser,
+      arrayAux,
       '-',
       textSearch,
       resetSearchButton,
@@ -1893,7 +1893,11 @@ var gridForm = new Ext.FormPanel({
         case "search":
             storeCases.setBaseParam("process", '');
             storeCases.setBaseParam("status", comboStatus.store.getAt(0).get(comboStatus.valueField));
-            storeCases.setBaseParam("user", comboUser.store.getAt(0).get(comboUser.valueField));
+
+            if (!(solrEnabled == 1)) {
+                storeCases.setBaseParam("user", comboUser.store.getAt(0).get(comboUser.valueField));
+            }
+
             storeCases.setBaseParam("search", textSearch.getValue());
             storeCases.setBaseParam("dateFrom", dateFrom.getValue());
             storeCases.setBaseParam("dateTo", dateTo.getValue());
