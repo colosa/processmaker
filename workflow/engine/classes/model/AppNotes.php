@@ -182,25 +182,29 @@ class AppNotes extends BaseAppNotes {
         $sFrom = '"ProcessMaker"';
       }
 
-      if (($aConfiguration['MESS_ENGINE'] != 'MAIL') && ($aConfiguration['MESS_ACCOUNT'] != '')) {
-        $sFrom .= ' <' . $aConfiguration['MESS_ACCOUNT'] . '>';
-      } else {
-        if (($aConfiguration['MESS_ENGINE'] == 'MAIL')) {
-          $sFrom .= ' <info@' . gethostbyaddr('127.0.0.1') . '>';
+      $hasEmailFrom = preg_match('/(.+)@(.+)\.(.+)/', $sFrom, $match);
+
+      if (!$hasEmailFrom || strpos($sFrom, $aConfiguration['MESS_ACCOUNT']) === false) {
+        if (($aConfiguration['MESS_ENGINE'] != 'MAIL') && ($aConfiguration['MESS_ACCOUNT'] != '')) {
+          $sFrom .= ' <' . $aConfiguration['MESS_ACCOUNT'] . '>';
         } else {
-          if ($aConfiguration['MESS_SERVER'] != '') {
-            if (($sAux = @gethostbyaddr($aConfiguration['MESS_SERVER']))) {
-              $sFrom .= ' <info@' . $sAux . '>';
-            } else {
-              $sFrom .= ' <info@' . $aConfiguration['MESS_SERVER'] . '>';
-            }
+          if (($aConfiguration['MESS_ENGINE'] == 'MAIL')) {
+            $sFrom .= ' <info@' . gethostbyaddr('127.0.0.1') . '>';
           } else {
-            $sFrom .= ' <info@processmaker.com>';
+            if ($aConfiguration['MESS_SERVER'] != '') {
+              if (($sAux = @gethostbyaddr($aConfiguration['MESS_SERVER']))) {
+                $sFrom .= ' <info@' . $sAux . '>';
+              } else {
+                $sFrom .= ' <info@' . $aConfiguration['MESS_SERVER'] . '>';
+              }
+            } else {
+              $sFrom .= ' <info@processmaker.com>';
+            }
           }
         }
       }
 
-        $sSubject = G::replaceDataField($configNoteNotification['subject'], $aFields);
+      $sSubject = G::replaceDataField($configNoteNotification['subject'], $aFields);
 
 
       //erik: new behaviour for messages

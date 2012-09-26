@@ -354,8 +354,22 @@ function _()
  */
 function _FNF(USER_NAME, FIRST_NAME, LAST_NAME, FN_FORMAT)
 {
+  if (USER_NAME == null) {
+    USER_NAME = '';
+  }
+  if (FIRST_NAME == null) {
+    FIRST_NAME = '';
+  }
+  if (LAST_NAME == null) {
+    LAST_NAME = '';
+  }
   if (typeof FORMATS != 'undefined') {
-    FN_FORMAT = FORMATS.format;
+    if (USER_NAME != '' || FIRST_NAME != '' || LAST_NAME != '') {
+      FN_FORMAT = FORMATS.format;
+    }
+    else {
+      FN_FORMAT = '';
+    }
   }
   else {
     FN_FORMAT = '(@lastName, @firstName) @userName';

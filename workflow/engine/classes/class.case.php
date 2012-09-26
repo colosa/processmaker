@@ -4529,25 +4529,29 @@ class Cases
             }
 
             if ($sFrom == '') {
-                $sFrom = '"ProcessMaker"';
+              $sFrom = '"ProcessMaker"';
             }
 
-            if (($aConfiguration['MESS_ENGINE'] != 'MAIL') && ($aConfiguration['MESS_ACCOUNT'] != '')) {
+            $hasEmailFrom = preg_match('/(.+)@(.+)\.(.+)/', $sFrom, $match);
+
+            if (!$hasEmailFrom || strpos($sFrom, $aConfiguration['MESS_ACCOUNT']) === false) {
+              if (($aConfiguration['MESS_ENGINE'] != 'MAIL') && ($aConfiguration['MESS_ACCOUNT'] != '')) {
                 $sFrom .= ' <' . $aConfiguration['MESS_ACCOUNT'] . '>';
-            } else {
+              } else {
                 if (($aConfiguration['MESS_ENGINE'] == 'MAIL')) {
-                    $sFrom .= ' <info@' . gethostbyaddr('127.0.0.1') . '>';
+                  $sFrom .= ' <info@' . gethostbyaddr('127.0.0.1') . '>';
                 } else {
-                    if ($aConfiguration['MESS_SERVER'] != '') {
-                        if (($sAux = @gethostbyaddr($aConfiguration['MESS_SERVER']))) {
-                            $sFrom .= ' <info@' . $sAux . '>';
-                        } else {
-                            $sFrom .= ' <info@' . $aConfiguration['MESS_SERVER'] . '>';
-                        }
+                  if ($aConfiguration['MESS_SERVER'] != '') {
+                    if (($sAux = @gethostbyaddr($aConfiguration['MESS_SERVER']))) {
+                      $sFrom .= ' <info@' . $sAux . '>';
                     } else {
-                        $sFrom .= ' <info@processmaker.com>';
+                      $sFrom .= ' <info@' . $aConfiguration['MESS_SERVER'] . '>';
                     }
+                  } else {
+                    $sFrom .= ' <info@processmaker.com>';
+                  }
                 }
+              }
             }
 
             if (isset($aTaskInfo['TAS_DEF_SUBJECT_MESSAGE']) && $aTaskInfo['TAS_DEF_SUBJECT_MESSAGE'] != '') {
