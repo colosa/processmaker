@@ -30,12 +30,13 @@ G::LoadClass("wsTools");
 
 CLI::taskName('upgrade');
 CLI::taskDescription(<<<EOT
-  Upgrade workspaces.
+    Upgrade workspaces.
 
-  This command should be run after ProcessMaker files are upgraded so that all
-  workspaces are upgraded to the current version.
+    This command should be run after ProcessMaker files are upgraded so that all
+    workspaces are upgraded to the current version.
 EOT
 );
+CLI::taskOpt("buildACV", "If the option is enabled, performs the Build Cache View.", "ACV", "buildACV");
 CLI::taskRun(run_upgrade);
 
 
@@ -45,72 +46,76 @@ CLI::taskRun(run_upgrade);
  * @param  string $filename directory or file to remove
  * @param  bool $filesOnly either to remove the containing directory as well or not
  */
-function rm_dir($filename, $filesOnly = false) {
-  if (is_file($filename)) {
-    @unlink($filename) or CLI::logging(CLI::error("Could not remove file $filename")."\n");
-  } else {
-    foreach(glob("$filename/*") as $f) {
-      rm_dir($f);
+function rm_dir($filename, $filesOnly = false)
+{
+    if (is_file($filename)) {
+        @unlink($filename) or CLI::logging(CLI::error("Could not remove file $filename")."\n");
+    } else {
+        foreach (glob("$filename/*") as $f) {
+            rm_dir($f);
+        }
+        if (!$filesOnly) {
+            @rmdir($filename) or CLI::logging(CLI::error("Could not remove directory $filename")."\n");
+        }
     }
-    if (!$filesOnly)
-      @rmdir($filename) or CLI::logging(CLI::error("Could not remove directory $filename")."\n");
-  }
 }
 
-function run_upgrade($command, $args) {
-  CLI::logging("UPGRADE", PROCESSMAKER_PATH . "upgrade.log");
-  CLI::logging("Checking files integrity...\n");
-  $checksum = System::verifyChecksum();
-  if ($checksum === false) {
-    CLI::logging(CLI::error("checksum.txt not found, integrity check is not possible") . "\n");
-    if (!CLI::question("Integrity check failed, do you want to continue the upgrade?")) {
-      CLI::logging("Upgrade failed\n");
-      die();
+function run_upgrade($command, $args)
+{
+    CLI::logging("UPGRADE", PROCESSMAKER_PATH . "upgrade.log");
+    CLI::logging("Checking files integrity...\n");
+    $checksum = System::verifyChecksum();
+    if ($checksum === false) {
+        CLI::logging(CLI::error("checksum.txt not found, integrity check is not possible") . "\n");
+        if (!CLI::question("Integrity check failed, do you want to continue the upgrade?")) {
+            CLI::logging("Upgrade failed\n");
+            die();
+        }
+    } else {
+        if (!empty($checksum['missing'])) {
+            CLI::logging(CLI::error("The following files were not found in the installation:")."\n");
+            foreach ($checksum['missing'] as $missing) {
+                CLI::logging(" $missing\n");
+            }
+        }
+        if (!empty($checksum['diff'])) {
+            CLI::logging(CLI::error("The following files have modifications:")."\n");
+            foreach ($checksum['diff'] as $diff) {
+                CLI::logging(" $diff\n");
+            }
+        }
+        if (!(empty($checksum['missing']) || empty($checksum['diff']))) {
+            if (!CLI::question("Integrity check failed, do you want to continue the upgrade?")) {
+                CLI::logging("Upgrade failed\n");
+                die();
+            }
+        }
     }
-  } else {
-    if (!empty($checksum['missing'])) {
-      CLI::logging(CLI::error("The following files were not found in the installation:")."\n");
-      foreach($checksum['missing'] as $missing) {
-        CLI::logging(" $missing\n");
-      }
+    CLI::logging("Clearing cache...\n");
+    if (defined('PATH_C')) {
+        rm_dir(PATH_C, true);
     }
-    if (!empty($checksum['diff'])) {
-      CLI::logging(CLI::error("The following files have modifications:")."\n");
-      foreach($checksum['diff'] as $diff) {
-        CLI::logging(" $diff\n");
-      }
+    $workspaces = get_workspaces_from_args($args);
+    $count = count($workspaces);
+    $first = true;
+    $errors = false;
+    $buildCacheView = array_key_exists("buildACV", $command);
+    foreach ($workspaces as $index => $workspace) {
+        try {
+            CLI::logging("Upgrading workspaces ($index/$count): " . CLI::info($workspace->name) . "\n");
+            $workspace->upgrade($first, $buildCacheView);
+            $workspace->close();
+            $first = false;
+        } catch (Exception $e) {
+            CLI::logging("Errors upgrading workspace " . CLI::info($workspace->name) . ": " . CLI::error($e->getMessage()) . "\n");
+            $errors = true;
+        }
     }
-    if (!(empty($checksum['missing']) || empty($checksum['diff']))) {
-      if (!CLI::question("Integrity check failed, do you want to continue the upgrade?")) {
-        CLI::logging("Upgrade failed\n");
-        die();
-      }
+    if ($errors) {
+        CLI::logging("Upgrade finished but there were errors upgrading workspaces.\n");
+        CLI::logging(CLI::error("Please check the log above to correct any issues.")."\n");
+    } else {
+        CLI::logging("Upgrade successful\n");
     }
-  }
-  CLI::logging("Clearing cache...\n");
-  if(defined('PATH_C'))
-    rm_dir(PATH_C, true);
-  $workspaces = get_workspaces_from_args($args);
-  $count = count($workspaces);
-  $first = true;
-  $errors = false;
-  foreach ($workspaces as $index => $workspace) {
-    try {
-      CLI::logging("Upgrading workspaces ($index/$count): " . CLI::info($workspace->name) . "\n");
-      $workspace->upgrade($first);
-      $workspace->close();
-      $first = false;
-    } catch (Exception $e) {
-      CLI::logging("Errors upgrading workspace " . CLI::info($workspace->name) . ": " . CLI::error($e->getMessage()) . "\n");
-      $errors = true;
-    }
-  }
-  if ($errors) {
-    CLI::logging("Upgrade finished but there were errors upgrading workspaces.\n");
-    CLI::logging(CLI::error("Please check the log above to correct any issues.")."\n");
-  } else {
-    CLI::logging("Upgrade successful\n");
-  }
 }
 
-?>
