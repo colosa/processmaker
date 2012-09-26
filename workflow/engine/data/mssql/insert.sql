@@ -1457,7 +1457,7 @@ SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_USER','en','Do you want to delete this use
   UNION ALL
 SELECT 'LABEL','ID_USERS_LIST','en','Users','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_USER_REGISTERED','en','User name already exist','2012-07-25' 
+SELECT 'LABEL','ID_USER_REGISTERED','en','User name already exists','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_MSG_ERROR_USR_USERNAME','en','User name required!','2012-06-01' 
   UNION ALL
@@ -1859,7 +1859,7 @@ INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_U
 
 SELECT 'LABEL','ID_PLEASE_ENTER_REQUIRED_FIELDS','en','Please enter the required fields','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_TABLE_ALREADY_EXISTS','en','Table already exist','2012-07-25' 
+SELECT 'LABEL','ID_TABLE_ALREADY_EXISTS','en','Table already exists','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_LANGUAGES','en','Language','2012-06-01' 
   UNION ALL
@@ -2833,7 +2833,7 @@ SELECT 'LABEL','ID_TRIGGER_RETURN_LABEL','en','Variable to hold return value','2
   UNION ALL
 SELECT 'LABEL','ID_SAVE','en','Save','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_LOG_CASE_SCHEDULER','en','Case Scheduler','2012-08-17' 
+SELECT 'LABEL','ID_LOG_CASE_SCHEDULER','en','Case Scheduler Log','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_CASE_SCHEDULER','en','Case Scheduler','2012-06-01' 
   UNION ALL
@@ -3205,7 +3205,7 @@ SELECT 'LABEL','PENTAHO_LABEL_USER_CREATE','en','Create user in Pentaho','2012-0
   UNION ALL
 SELECT 'LABEL','PENTAHO_LABEL_USER_CREATED','en','User created successfully','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','PENTAHO_LABEL_USER_EXIST','en','User already exist','2012-07-25' 
+SELECT 'LABEL','PENTAHO_LABEL_USER_EXIST','en','User already exists','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','PENTAHO_LABEL_USER_NAME','en','User Name','2012-06-01' 
   UNION ALL
@@ -3789,7 +3789,7 @@ SELECT 'LABEL','ID_CASES_STEPS','en','Cases Steps','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_SHOW_HIDE_CASES_STEPS','en','Show or hide the Cases Steps','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_PROCESSTITLE_ALREADY_EXISTS','en','The Process Title "{PRO_TITLE}" already exist!','2012-07-25' 
+SELECT 'LABEL','ID_PROCESSTITLE_ALREADY_EXISTS','en','The Process Title "{PRO_TITLE}" already exists!','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_CREATE','en','Create','2012-06-01' 
   UNION ALL
@@ -3863,7 +3863,7 @@ SELECT 'LABEL','ID_CASE_LIST','en','Case List','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_SAMPLES','en','Samples','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_PROCESSNAME_ALREADY_EXISTS','en','The Process Name already exist!','2012-07-25' 
+SELECT 'LABEL','ID_PROCESSNAME_ALREADY_EXISTS','en','The Process Name already exists!','2012-09-18' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_ROLES_CAN_NOT_DELETE','en','This role cannot be deleted while it still  has some assigned users.','2012-06-01' 
   UNION ALL
@@ -4379,7 +4379,7 @@ SELECT 'LABEL','ID_SET_SUPERVISOR','en','Set Supervisor','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_SET_SUPERVISOR_SUCCESS','en','Supervisor assigned correctly','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_ROLE_EXISTS','en','Role Code already exist.','2012-07-25' 
+SELECT 'LABEL','ID_ROLE_EXISTS','en','Role Code already exists.','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_DEBUG_PANEL_TITLE','en','ProcessMaker Debugger','2012-06-01' 
   UNION ALL
@@ -4891,7 +4891,7 @@ SELECT 'LABEL','ID_MSG_CANNOT_EXPORT_SKIN','en','Can''t export skin. Server Erro
   UNION ALL
 SELECT 'LABEL','ID_NEW_SKIN','en','New Skin','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_SKIN_ALREADY_EXISTS','en','Skin already exist','2012-07-25' 
+SELECT 'LABEL','ID_SKIN_ALREADY_EXISTS','en','Skin already exists','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_SKIN_BASE','en','Base skin','2012-06-01' 
   UNION ALL
@@ -5253,7 +5253,7 @@ SELECT 'LABEL','ID_TEMPLATE_FILE_NOT_EXIST','en','Template file ''{FILE_TEMPLATE
   UNION ALL
 SELECT 'LABEL','ID_MESSAGE_SENT','en','message sent','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CASE_DOES_NOT_EXIST','en','Case {CASE_NUMBER} does not exists','2012-07-25' 
+SELECT 'LABEL','ID_CASE_DOES_NOT_EXIST','en','Case {CASE_NUMBER} does not exist','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_COMMAND_EXECUTED_SUCCESSFULLY','en','Command executed successfully','2012-06-01' 
  ;
@@ -5265,7 +5265,7 @@ SELECT 'LABEL','ID_PASSWD_REQUIRED','en','Password is required','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_PASSWORD_SURPRASES','en','Password surprases the maximun length allowed','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_USERNAME_ALREADY_EXISTS','en','Username ''{USER_ID}'' already exist','2012-07-25' 
+SELECT 'LABEL','ID_USERNAME_ALREADY_EXISTS','en','Username ''{USER_ID}'' already exists','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_INVALID_ROLE','en','Invalid role ''{ROLE}''','2012-06-01' 
   UNION ALL
@@ -5287,7 +5287,7 @@ SELECT 'LABEL','ID_COMMAND_EXECUTED_SUCCESSFULY','en','command executed successf
   UNION ALL
 SELECT 'LABEL','ID_USER_NOT_REGISTERED_GROUP','en','User not registered in the group','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_USER_ALREADY_EXISTS_GROUP','en','User already exist in the group','2012-07-25' 
+SELECT 'LABEL','ID_USER_ALREADY_EXISTS_GROUP','en','User already exists in the group','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_DEPARTMENT_NOT_REGISTERED_SYSTEM','en','Department {DEP_ID} is not registered in the system','2012-06-01' 
   UNION ALL
@@ -5381,7 +5381,7 @@ SELECT 'LABEL','ID_ADMINS_CANT_USE_UXS','en','Administrators users cannot use th
   UNION ALL
 SELECT 'LABEL','ID_IMPORT_PMT','en','Import PM Table','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_OVERWRITE_EXIST','en','Overwrite if exist?','2012-07-25' 
+SELECT 'LABEL','ID_OVERWRITE_EXIST','en','Overwrite if exists?','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_SELECT_PM_FILE','en','Select a .pmt file','2012-06-01' 
   UNION ALL
@@ -5465,7 +5465,7 @@ SELECT 'LABEL','ID_RBAC_DATABASE','en','Rbac Database','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_REPORT_DATABASE','en','Report Database','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_DROP_DATABASE_EXISTS','en','Drop database if exist','2012-07-25' 
+SELECT 'LABEL','ID_DROP_DATABASE_EXISTS','en','Drop database if exists','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_WORKSPACE_ADMINISTRATOR','en','Workspace Administrator','2012-06-01' 
   UNION ALL
@@ -5649,6 +5649,8 @@ SELECT 'LABEL','ID_TIMING_CONTROL','en','Timing Control','2012-07-17'
   UNION ALL
 SELECT 'LABEL','ID_CASE_DOES_NOT_EXIST_JS','en','Case {0} does not exist','2012-07-19' 
   UNION ALL
+SELECT 'LABEL','MIME_DES_PM','en','PM Process File','2012-09-18' 
+  UNION ALL
 SELECT 'LABEL','ID_CASE_PAUSE_REASON','en','Reason of the pause of case','2012-08-01' 
   UNION ALL
 SELECT 'LABEL','ID_NOTIFY_USERS_CASE','en','Notify users of case','2012-08-01' 
@@ -5665,7 +5667,7 @@ SELECT 'LABEL','MIME_DES_XLSX','en','Excel Document','2012-08-07'
   UNION ALL
 SELECT 'LABEL','ID_PROCESSED','en','Processed','2012-08-10' 
   UNION ALL
-SELECT 'LABEL','ID_CASES_NOT_START','en','You can''t start a case because you doesn''t have a starting task assigned','2012-08-15' 
+SELECT 'LABEL','ID_CASES_NOT_START','en','You can''t start a case because you don''t have a starting task assigned','2012-09-18' 
   UNION ALL
 SELECT 'LABEL','ID_FIELD_DYNAFORM_SUGGEST_MESSAGE_TEMPORAL','en','New value inserted in the table','2012-08-15' 
   UNION ALL
@@ -5698,6 +5700,66 @@ SELECT 'LABEL','ID_EVENT_TIMER','en','Event Timer','2012-08-17'
 SELECT 'LABEL','ID_EVENT_CONDITIONAL','en','Event Conditional','2012-08-17' 
   UNION ALL
 SELECT 'LABEL','ID_PMTABLE_INVALID_FIELD_NAME','en','The following fields cannot have these names because the are reserved words "{0}"','2012-09-03' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_CASES_NOT_START','en','User can''t start a case because doesn''t have a starting task assigned','2012-09-05' 
+  UNION ALL
+SELECT 'LABEL','ID_USERS_HAS_ASSIGNED_CASES','en','The user has assigned cases, Do you like to continue anyway?','2012-09-07' 
+  UNION ALL
+SELECT 'LABEL','ID_GRID_PAGE_DISPLAYING_REPORT_PERMISSIONS_MESSAGE','en','Displaying Permissions Simple Reports  {0} - {1} of {2}','2012-09-07' 
+  UNION ALL
+SELECT 'LABEL','ID_GRID_PAGE_NO_PERMISSIONS_MESSAGE','en','No Permissions to display','2012-09-07' 
+  UNION ALL
+SELECT 'LABEL','ID_ASSIGNED_PERMISSIONS_FOR','en','ASSIGNED PERMISSIONS FOR','2012-09-07' 
+  UNION ALL
+SELECT 'LABEL','ID_DELETE_PERMISSION','en','Do you want to deleted the permission of {0}?','2012-09-07' 
+  UNION ALL
+SELECT 'LABEL','ID_FAILED_SAVE_PERMISSIONS','en','Failed saving Permission of Simple Report','2012-09-07' 
+  UNION ALL
+SELECT 'LABEL','ID_PERMISSION_ALREADY_EXIST','en','The Permission already exists!','2012-09-07' 
+  UNION ALL
+SELECT 'LABEL','MIME_DES_PPT','en','PowerPoint File','2012-09-18' 
+  UNION ALL
+SELECT 'LABEL','MIME_DES_PPTX','en','PowerPoint File','2012-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_PROXY_SETTINGS','en','Proxy Settings','2012-09-19' 
+  UNION ALL
+SELECT 'LABEL','ID_PROXY_HOST','en','Host','2012-09-19' 
+  UNION ALL
+SELECT 'LABEL','ID_PROXY_PORT','en','Port','2012-09-19' 
+  UNION ALL
+SELECT 'LABEL','ID_PROXY_USER','en','User','2012-09-19' 
+  UNION ALL
+SELECT 'LABEL','ID_PROXY_PASSWORD','en','Password','2012-09-19' 
+  UNION ALL
+SELECT 'LABEL','ID_APP_MSG_BODY','en','Body','2012-09-19' 
+  UNION ALL
+SELECT 'LABEL','ID_CRON_STATUS_INACTIVE','en','Inactive','2012-09-20' 
+  UNION ALL
+SELECT 'LABEL','ID_CRON_STATUS_ACTIVE','en','Active','2012-09-20' 
+  UNION ALL
+SELECT 'LABEL','ID_CRON_STATUS','en','Cron status','2012-09-20' 
+  UNION ALL
+SELECT 'LABEL','ID_CRON_ACTIONS_LOG','en','Cron Actions Log','2012-09-20' 
+  UNION ALL
+SELECT 'LABEL','ID_RESET_DATES','en','Reset Dates','2012-09-24' 
+ ;
+INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
+
+SELECT 'LABEL','ID_ALL_WORKSPACES','en','All Workspaces','2012-09-21' 
+  UNION ALL
+SELECT 'LABEL','ID_CRON_LOG_CLEAR','en','Are you sure to clear the cron log?','2012-09-21' 
+  UNION ALL
+SELECT 'LABEL','ID_CRON_GRID_PAGE_DISPLAYING_MESSAGE','en','Displaying actions {0} - {1} of {2}','2012-09-21' 
+  UNION ALL
+SELECT 'LABEL','ID_CLEAR_LOG','en','Clear Log','2012-09-21' 
+  UNION ALL
+SELECT 'LABEL','ID_VIEW_INFO','en','View Information','2012-09-24' 
+  UNION ALL
+SELECT 'LABEL','ID_CRON_INFO','en','Cron Information','2012-09-24' 
+  UNION ALL
+SELECT 'LABEL','ID_PATH','en','Path','2012-09-24' 
+  UNION ALL
+SELECT 'LABEL','ID_LOG_INFO','en','Log Information','2012-09-24' 
  ;
 
 INSERT INTO ISO_LOCATION ([IC_UID],[IL_UID],[IL_NAME],[IL_NORMAL_NAME],[IS_UID]) 
@@ -61057,13 +61119,14 @@ SELECT 'ZW','VFA','Victoria Falls','',''  UNION ALL
 SELECT 'ZW','WKI','Hwange','','' ;
 
 INSERT INTO [DASHLET] ([DAS_UID],[DAS_CLASS],[DAS_TITLE],[DAS_DESCRIPTION],[DAS_VERSION],[DAS_CREATE_DATE],[DAS_UPDATE_DATE],[DAS_STATUS])
-SELECT '00000000000000000000000000000002','dashletProcessMakerCommunity','ProcessMaker Community','ProcessMaker Community Links and Information','1.0','2011-12-01 00:00:00','2011-12-01 00:00:00','1' UNION ALL
 SELECT '00000000000000000000000000000001','dashletOpenVSCompleted','Open Cases VS Completed Cases','Open Cases VS Completed Cases','1.0','2011-10-28 00:00:00','2011-10-28 00:00:00','1' UNION ALL
-SELECT '00000000000000000000000000000003','dashletProcessMakerEnterprise','ProcessMaker Enterprise Plugins and Addons','The following list of Enterprise plug-ins includes features and functionality that extend and enhance ProcessMaker performance and functionality.','1.0','2011-12-05 00:00:00','2011-12-05 00:00:00','1' UNION ALL
+SELECT '00000000000000000000000000000002','dashletProcessMakerCommunity','ProcessMaker Community','ProcessMaker Community Links and Information','1.0','2011-12-01 00:00:00','2011-12-01 00:00:00','1' UNION ALL
+SELECT '00000000000000000000000000000003','dashletProcessMakerEnterprise','ProcessMaker Enterprise Plugins and Addons','The following list of Enterprise plug-ins includes features and functionality that extend and enhance ProcessMaker's performance and functionality.','1.0','2011-12-05 00:00:00','2011-12-05 00:00:00','1' UNION ALL
 SELECT '00000000000000000000000000000004','dashletRssReader','Simple RSS reader','Simple RSS reader for ProcessMaker','1.0','2012-04-16 00:00:00','2012-04-16 00:00:00','1';
 
 INSERT INTO [DASHLET_INSTANCE] ([DAS_INS_UID],[DAS_UID],[DAS_INS_OWNER_TYPE],[DAS_INS_OWNER_UID],[DAS_INS_ADDITIONAL_PROPERTIES],[DAS_INS_CREATE_DATE],[DAS_INS_UPDATE_DATE],[DAS_INS_STATUS])
-SELECT '00000000000000000000000000000002','00000000000000000000000000000002','EVERYBODY','','a:1:{s:13:"DAS_INS_TITLE";s:22:"ProcessMaker Community";}','2011-12-02 00:00:00','2011-12-02 00:00:00',1 UNION ALL
-SELECT '00000000000000000000000000000001','00000000000000000000000000000001','EVERYBODY','','a:8:{s:13:"DAS_INS_TITLE";s:29:"Open Cases VS Completed Cases";s:20:"DAS_INS_CONTEXT_TIME";s:5:"TODAY";s:12:"DAS_RED_FROM";s:1:"0";s:10:"DAS_RED_TO";s:2:"30";s:15:"DAS_YELLOW_FROM";s:2:"30";s:13:"DAS_YELLOW_TO";s:2:"50";s:14:"DAS_GREEN_FROM";s:2:"50";s:12:"DAS_GREEN_TO";s:3:"100";}','2011-12-02 00:00:00','2011-12-02 00:00:00',1 UNION ALL
-SELECT '00000000000000000000000000000003','00000000000000000000000000000003','EVERYBODY','','a:1:{s:13:"DAS_INS_TITLE";s:42:"ProcessMaker Enterprise Plugins and Addons";}','2011-12-05 00:00:00','2011-12-05 00:00:00',1;
+SELECT '00000000000000000000000000000004','00000000000000000000000000000004','EVERYBODY','','a:2:{s:13:"DAS_INS_TITLE";s:15:"PM Plugins News";s:7:"DAS_URL";s:71:"http://license.processmaker.com/syspmLicenseSrv/en/green/services/rssAP";}','2012-04-16 00:00:00','2012-04-16 00:00:00',1 UNION ALL
+SELECT '00000000000000000000000000000002','00000000000000000000000000000002','EVERYBODY','','','2011-12-02 00:00:00','2011-12-02 00:00:00',1 UNION ALL
+SELECT '00000000000000000000000000000001','00000000000000000000000000000001','EVERYBODY','','a:7:{s:20:"DAS_INS_CONTEXT_TIME";s:5:"TODAY";s:12:"DAS_RED_FROM";s:1:"0";s:10:"DAS_RED_TO";s:2:"30";s:15:"DAS_YELLOW_FROM";s:2:"30";s:13:"DAS_YELLOW_TO";s:2:"50";s:14:"DAS_GREEN_FROM";s:2:"50";s:12:"DAS_GREEN_TO";s:3:"100";}','2011-12-02 00:00:00','2011-12-02 00:00:00',1 UNION ALL
+SELECT '00000000000000000000000000000003','00000000000000000000000000000003','EVERYBODY','','','2011-12-05 00:00:00','2011-12-05 00:00:00',1;
 
