@@ -87,7 +87,7 @@ try {
 		  require_once 'classes/model/Users.php';
 		  $oAppDocument = new AppDocument();
 		  $oAppDocument->Fields = $oAppDocument->load($_POST['APP_DOC_UID']);
-		  
+
 		  $oInputDocument = new InputDocument();
 		  if ($oAppDocument->Fields['DOC_UID'] != -1) {
 		    $Fields = $oInputDocument->load($oAppDocument->Fields['DOC_UID']);
@@ -124,20 +124,20 @@ try {
 		  }
 		  $oAppDocument->Fields['VIEW'] = G::LoadTranslation('ID_OPEN');
 		  $oAppDocument->Fields['FILE'] = 'tracker_ShowDocument?a=' . $_POST['APP_DOC_UID'] . '&r=' . rand();
-		  
+
   		  //If plugin and trigger are defined for listing
-		  if ( $oPluginRegistry->existsTrigger ( PM_CASE_DOCUMENT_LIST_ARR ) ) {      
+		  if ( $oPluginRegistry->existsTrigger ( PM_CASE_DOCUMENT_LIST_ARR ) ) {
       			$oPluginRegistry =& PMPluginRegistry::getSingleton();
-      			$filesPluginArray=$oPluginRegistry->executeTriggers ( PM_CASE_DOCUMENT_LIST_ARR , $_SESSION['APPLICATION'] );      
+      			$filesPluginArray=$oPluginRegistry->executeTriggers ( PM_CASE_DOCUMENT_LIST_ARR , $_SESSION['APPLICATION'] );
       			//Now search for the file, if exists the change the download URL
-      			foreach($filesPluginArray as $file){      	
-      				if($file->filename==$_POST['APP_DOC_UID']){      					
-      					$oAppDocument->Fields['FILE'] = $file->downloadScript;      		
+      			foreach($filesPluginArray as $file){
+      				if($file->filename==$_POST['APP_DOC_UID']){
+      					$oAppDocument->Fields['FILE'] = $file->downloadScript;
       				}
       			}
     		}
-		  
-		  
+
+
 		  $G_PUBLISH = new Publisher;
 		  $G_PUBLISH->AddContent('xmlform', 'xmlform', $sXmlForm, '', G::array_merges($Fields, $oAppDocument->Fields), '');
 		  G::RenderPage('publish', 'raw');
@@ -150,8 +150,9 @@ try {
 		  require_once 'classes/model/OutputDocument.php';
 		  $oOutputDocument = new OutputDocument();
 		  $aOD = $oOutputDocument->load($aFields['DOC_UID']);
-		  
+
 		  $oCriteria = new Criteria('workflow');
+      $oCriteria->add(AppDelegationPeer::APP_UID, $aFields['APP_UID']);
       $oCriteria->add(AppDelegationPeer::DEL_INDEX, $aFields['DEL_INDEX']);
       $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
       $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
@@ -167,22 +168,22 @@ try {
 		  $aFields['VIEW'] = G::LoadTranslation('ID_OPEN');
 		  $aFields['FILE1'] = 'tracker_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=doc&random=' . rand();
 		  $aFields['FILE2'] = 'tracker_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=pdf&random=' . rand();
-		  
-		  
+
+
 		  //If plugin and trigger are defined for listing
-		  if ( $oPluginRegistry->existsTrigger ( PM_CASE_DOCUMENT_LIST_ARR ) ) {      
+		  if ( $oPluginRegistry->existsTrigger ( PM_CASE_DOCUMENT_LIST_ARR ) ) {
       			$oPluginRegistry =& PMPluginRegistry::getSingleton();
-      			$filesPluginArray=$oPluginRegistry->executeTriggers ( PM_CASE_DOCUMENT_LIST_ARR , $aFields['APP_UID'] );      
-      			//Now search for the file, if exists the change the download URL      			
-      			foreach($filesPluginArray as $file){      				
-      				if($file->filename==$_POST['APP_DOC_UID']){      					
+      			$filesPluginArray=$oPluginRegistry->executeTriggers ( PM_CASE_DOCUMENT_LIST_ARR , $aFields['APP_UID'] );
+      			//Now search for the file, if exists the change the download URL
+      			foreach($filesPluginArray as $file){
+      				if($file->filename==$_POST['APP_DOC_UID']){
       					$aFields['FILE2'] = $file->downloadScript;// The PDF is the only one uploaded to KT
       				}
       			}
     		}
-		  
-		  
-		  
+
+
+
 		  $G_PUBLISH = new Publisher();
 		  $G_PUBLISH->AddContent('xmlform', 'xmlform', 'tracker/tracker_ViewAnyOutputDocument', '', G::array_merges($aOD, $aFields), '');
 		  G::RenderPage('publish', 'raw');
@@ -311,10 +312,10 @@ try {
       }
   	  $oStage           = new Stage();
   	  $oNewStage->label = G::LoadTranslation('ID_STAGE') . ' ' . $iStageNumber;
-  	  
+
   	  if($oData->position->x < 0) $oData->position->x *= -1;
   	  if($oData->position->y < 0) $oData->position->y *= -1;
-  	  
+
   	  $oNewStage->uid   = $oStage->create(array('PRO_UID' => $oData->uid, 'STG_TITLE' => $oNewStage->label, 'STG_POSX' => $oData->position->x, 'STG_POSY' => $oData->position->y, 'STG_INDEX' => $iIndex));
   	  $oJSON            = new Services_JSON();
   	  echo $oJSON->encode($oNewStage);
@@ -420,7 +421,7 @@ try {
   		$oCriteria2->add(TaskPeer::STG_UID, '');
   		BasePeer::doUpdate($oCriteria1, $oCriteria2, Propel::getConnection('workflow'));
     break;
-  
+
     case "processMapLegend":
       $arrayField = array();
       $arrayField["sLabel1"] = G::LoadTranslation("ID_TASK_IN_PROGRESS");
@@ -428,7 +429,7 @@ try {
       $arrayField["sLabel3"] = G::LoadTranslation("ID_PENDING_TASK");
       $arrayField["sLabel4"] = G::LoadTranslation("ID_PARALLEL_TASK");
       $arrayField["tracker"] = 1;
-  
+
       $G_PUBLISH = new Publisher();
       $G_PUBLISH->AddContent("smarty", "cases/cases_Leyends", "", "", $arrayField);
       G::RenderPage("publish", "raw");
