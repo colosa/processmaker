@@ -23,53 +23,64 @@
  *
  */
 
-  $oHeadPublisher =& headPublisher::getSingleton(); 
-  $oHeadPublisher->addExtJsScript('cases/main', false );    //adding a javascript file .js
-  $oHeadPublisher->addContent( 'cases/main'); //adding a html file  .html.
-  
-  $keyMem = 'USER_PREFERENCES'.$_SESSION['USER_LOGGED'];
-  $memcache = & PMmemcached::getSingleton(SYS_SYS);  
-  if ( ($arrayConfig = $memcache->get($keyMem)) === false ) {
-    G::loadClass('configuration');
-    $oConf = new Configurations; 
-    $oConf->loadConfig($x, 'USER_PREFERENCES','','',$_SESSION['USER_LOGGED'],'');
-    $arrayConfig = $oConf->aConfig;
-    $memcache->set( $keyMem, $arrayConfig, PMmemcached::ONE_HOUR);
-  }
+G::LoadClass("configuration");
 
-  $confDefaultOption='';
-  if( isset($arrayConfig['DEFAULT_CASES_MENU']) ){ #this user has a configuration record  
-    $confDefaultOption = $arrayConfig['DEFAULT_CASES_MENU'];
+
+
+
+
+$conf = new Configurations();
+
+$oHeadPublisher = &headPublisher::getSingleton();
+$oHeadPublisher->addExtJsScript("cases/main", false); //Adding a javascript file .js
+$oHeadPublisher->addContent("cases/main"); //Adding a html file  .html.
+
+$keyMem = "USER_PREFERENCES" . $_SESSION["USER_LOGGED"];
+$memcache = &PMmemcached::getSingleton(SYS_SYS);
+
+if (($arrayConfig = $memcache->get($keyMem)) === false) {
+    $conf->loadConfig($x, "USER_PREFERENCES", "", "", $_SESSION["USER_LOGGED"], "");
+    $arrayConfig = $conf->aConfig;
+    $memcache->set($keyMem, $arrayConfig, PMmemcached::ONE_HOUR);
+}
+
+$confDefaultOption = "";
+
+if (isset($arrayConfig["DEFAULT_CASES_MENU"])) { //this user has a configuration record
+    $confDefaultOption = $arrayConfig["DEFAULT_CASES_MENU"];
+
     global $G_TMP_MENU;
+
     $oMenu = new Menu();
-    $oMenu->load('cases');
-    $defaultOption = '';
-    foreach($oMenu->Id as $i=>$id){
-      if( $id == $confDefaultOption ){
-         $defaultOption = $oMenu->Options[$i];
-         break;
-      }
+    $oMenu->load("cases");
+    $defaultOption = "";
+
+    foreach ($oMenu->Id as $i => $id) {
+        if ($id == $confDefaultOption) {
+           $defaultOption = $oMenu->Options[$i];
+           break;
+        }
     }
-    $defaultOption = $defaultOption != '' ? $defaultOption : 'casesListExtJs';
-  
-  } 
-  else {
-    $defaultOption = 'casesListExtJs';
-    $confDefaultOption = 'CASES_INBOX';
-  }
 
-  if (isset($_GET['id']) && isset($_GET['id'])) {
-    $defaultOption = '../cases/open?APP_UID=' . $_GET['id'] . '&DEL_INDEX=' . $_GET['i'];
+    $defaultOption = ($defaultOption != "")? $defaultOption : "casesListExtJs";
+}  else {
+    $defaultOption = "casesListExtJs";
+    $confDefaultOption = "CASES_INBOX";
+}
 
-    if (isset($_GET['a'])) {
-      $defaultOption .= '&action=' . $_GET['a'];
+if (isset($_GET["id"]) && isset($_GET["id"])) {
+    $defaultOption = "../cases/open?APP_UID=" . $_GET["id"] . "&DEL_INDEX=" . $_GET["i"];
+
+    if (isset($_GET["a"])) {
+        $defaultOption .= "&action=" . $_GET["a"];
     }
-  }
-  
-  $oHeadPublisher->assign( 'defaultOption', $defaultOption); // user menu permissions
-  $oHeadPublisher->assign( '_nodeId', isset($confDefaultOption)?$confDefaultOption:'PM_USERS'); // user menu permissions
+}
 
-  $_SESSION['current_ux'] = 'NORMAL';
-  
-  G::RenderPage('publish', 'extJs');
-  
+$oHeadPublisher->assign("defaultOption", $defaultOption); //User menu permissions
+$oHeadPublisher->assign("_nodeId", isset($confDefaultOption)? $confDefaultOption : "PM_USERS"); //User menu permissions
+$oHeadPublisher->assign("FORMATS", $conf->getFormats());
+
+$_SESSION["current_ux"] = "NORMAL";
+
+G::RenderPage("publish", "extJs");
+

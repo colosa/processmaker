@@ -5,6 +5,8 @@ var fsDates;
 var fsCases;
 var _firstName, _lastName, _userName, _dateSample;
 
+var txtCasesRefreshTime;
+
 Ext.onReady(function() {
   Ext.QuickTips.init();
 
@@ -21,8 +23,10 @@ Ext.onReady(function() {
     items: [
       {xtype: 'label', fieldLabel: _('IS_USER_NAME_DISPLAY_FORMAT'), id: 'lblFullName', width: 400},
       {xtype: 'label', fieldLabel: _('ID_GLOBAL_DATE_FORMAT'), id: 'lblDateFormat', width: 400},
-      {xtype: 'label', fieldLabel: _('ID_CASE_LIST') +': '+_('ID_CASES_DATE_MASK'), id: 'lblCasesDateFormat', width: 400},
-      {xtype: 'label', fieldLabel: _('ID_CASE_LIST') +': '+_('ID_CASES_ROW_NUMBER'), id: 'lblCasesRowsList', width: 400}
+      {xtype: 'label', fieldLabel: _('ID_CASE_LIST') +': '+_('ID_CASES_DATE_MASK'), id: 'lblCasesDateFormat', width: 400}
+      //,
+      //{xtype: "label", fieldLabel: _("ID_CASE_LIST") + ": " +_("ID_CASES_ROW_NUMBER"), id: "lblCasesRowsList", width: 400},
+      //{xtype: "label", fieldLabel: _("ID_CASE_LIST") + ": " + _("ID_REFRESH_TIME_SECONDS"), id: "lblCasesRefreshTime", width: 400}
     ]
   });
 
@@ -37,14 +41,14 @@ Ext.onReady(function() {
     listeners:{
       load: function(){
         default_format = FORMATS.format;
-        i = cmbUsernameFormats.store.findExact('id', default_format, 0);
-        cmbUsernameFormats.setValue(cmbUsernameFormats.store.getAt(i).data.id);
-        cmbUsernameFormats.setRawValue(cmbUsernameFormats.store.getAt(i).data.name);
+        i = cmbUsernameFormat.store.findExact('id', default_format, 0);
+        cmbUsernameFormat.setValue(cmbUsernameFormat.store.getAt(i).data.id);
+        cmbUsernameFormat.setRawValue(cmbUsernameFormat.store.getAt(i).data.name);
       }
     }
   });
 
-  cmbUsernameFormats = new Ext.form.ComboBox({
+  cmbUsernameFormat = new Ext.form.ComboBox({
     fieldLabel : _('IS_USER_NAME_DISPLAY_FORMAT'),
     hiddenName : 'userFormat',
     store : storeUsernameFormat,
@@ -59,9 +63,12 @@ Ext.onReady(function() {
     mode:'local',
     listeners:{
       afterrender:function(){
-        cmbUsernameFormats.store.load();
+        cmbUsernameFormat.store.load();
       },
-      select: function(){ChangeSettings('1');}
+      select: function ()
+      {
+          changeSettings(1);
+      }
     }
   });
 
@@ -80,14 +87,14 @@ Ext.onReady(function() {
     listeners:{
       load: function(){
       default_date_format = FORMATS.dateFormat,
-        i = cmbDateFormats.store.findExact('id', default_date_format, 0);
-        cmbDateFormats.setValue(cmbDateFormats.store.getAt(i).data.id);
-        cmbDateFormats.setRawValue(cmbDateFormats.store.getAt(i).data.name);
+        i = cmbDateFormat.store.findExact('id', default_date_format, 0);
+        cmbDateFormat.setValue(cmbDateFormat.store.getAt(i).data.id);
+        cmbDateFormat.setRawValue(cmbDateFormat.store.getAt(i).data.name);
       }
     }
   });
 
-  cmbDateFormats = new Ext.form.ComboBox({
+  cmbDateFormat = new Ext.form.ComboBox({
     fieldLabel : _('ID_GLOBAL_DATE_FORMAT'),
     hiddenName : 'dateFormat',
     store : storeDateFormat,
@@ -102,13 +109,16 @@ Ext.onReady(function() {
     mode:'local',
     listeners:{
       afterrender:function(){
-        cmbDateFormats.store.load();
+        cmbDateFormat.store.load();
       },
-      select: function(){ChangeSettings('2');}
+      select: function ()
+      {
+          changeSettings(2);
+      }
     }
   });
 
-  storeCaseUserNameFormat = new Ext.data.Store({
+  storeCasesDateFormat = new Ext.data.Store({
     proxy : new Ext.data.HttpProxy({
       url : 'environmentSettingsAjax?request=getCasesListDateFormat',
       method : 'POST'
@@ -123,17 +133,17 @@ Ext.onReady(function() {
     listeners:{
       load: function(){
         default_caseslist_date_format = FORMATS.casesListDateFormat;
-        i = cmbCasesDateFormats.store.findExact('id', default_caseslist_date_format, 0);
-        cmbCasesDateFormats.setValue(cmbCasesDateFormats.store.getAt(i).data.id);
-        cmbCasesDateFormats.setRawValue(cmbCasesDateFormats.store.getAt(i).data.name);
+        i = cmbCasesDateFormat.store.findExact('id', default_caseslist_date_format, 0);
+        cmbCasesDateFormat.setValue(cmbCasesDateFormat.store.getAt(i).data.id);
+        cmbCasesDateFormat.setRawValue(cmbCasesDateFormat.store.getAt(i).data.name);
       }
     }
   });
 
-  cmbCasesDateFormats = new Ext.form.ComboBox({
+  cmbCasesDateFormat = new Ext.form.ComboBox({
     fieldLabel : _('ID_CASES_DATE_MASK'),
     hiddenName : 'casesListDateFormat',
-    store : storeCaseUserNameFormat,
+    store : storeCasesDateFormat,
     valueField : 'id',
     displayField : 'name',
     triggerAction : 'all',
@@ -144,13 +154,16 @@ Ext.onReady(function() {
     mode:'local',
     listeners:{
       afterrender:function(){
-        cmbCasesDateFormats.store.load();
+        cmbCasesDateFormat.store.load();
       },
-      select: function(){ChangeSettings('3');}
+      select: function ()
+      {
+          changeSettings(4);
+      }
     }
   });
 
-  storeCaseListNumber = new Ext.data.Store({
+  storeCasesRowNumber = new Ext.data.Store({
   proxy : new Ext.data.HttpProxy( {
     url : 'environmentSettingsAjax?request=getCasesListRowNumber',
     method : 'POST'
@@ -163,21 +176,17 @@ Ext.onReady(function() {
     ]
   }),
   listeners:{
-    load: function(){
-    default_caseslist_row_number = FORMATS.casesListRowNumber;
-      i = cmbCasesRowsPerPage.store.findExact('id', default_caseslist_row_number, 0);
-      if( i != -1 ){
-         cmbCasesRowsPerPage.setValue(cmbCasesRowsPerPage.store.getAt(i).data.id);
-         cmbCasesRowsPerPage.setRawValue(cmbCasesRowsPerPage.store.getAt(i).data.name);
+      load: function ()
+      {
+          cmbCasesRowNumber.setValue(FORMATS.casesListRowNumber + "");
       }
-    }
   }
   });
 
-  cmbCasesRowsPerPage = new Ext.form.ComboBox({
+  cmbCasesRowNumber = new Ext.form.ComboBox({
     fieldLabel : _('ID_CASES_ROW_NUMBER'),
     hiddenName : 'casesListRowNumber',
-    store : storeCaseListNumber,
+    store : storeCasesRowNumber,
     valueField : 'id',
     displayField : 'name',
     triggerAction : 'all',
@@ -188,22 +197,42 @@ Ext.onReady(function() {
     mode:'local',
     listeners:{
       afterrender:function(){
-        cmbCasesRowsPerPage.store.load();
+        cmbCasesRowNumber.store.load();
       },
-      select: function(){ChangeSettings('4');}
+      select: function ()
+      {
+          changeSettings(5);
+      }
     }
+  });
+
+  txtCasesRefreshTime = new Ext.form.TextField({
+      id: "txtCasesRefreshTime",
+      name: "txtCasesRefreshTime",
+
+      value: FORMATS.casesListRefreshTime,
+      fieldLabel: _("ID_REFRESH_TIME_SECONDS"),
+      maskRe: /^\d*$/,
+      enableKeyEvents: true,
+
+      listeners: {
+          keyup: function (txt, e)
+          {
+              changeSettings(6);
+          }
+      }
   });
 
   fsNames = new Ext.form.FieldSet({
     title: _('ID_PM_ENV_SETTINGS_USERFIELDSET_TITLE'),
     labelAlign: 'right',
-    items: [cmbUsernameFormats]
+    items: [cmbUsernameFormat]
   });
 
   fsDates = new Ext.form.FieldSet({
     title: _('ID_PM_ENV_SETTINGS_REGIONFIELDSET_TITLE'),
     labelAlign: 'right',
-    items: [cmbDateFormats]
+    items: [cmbDateFormat]
   });
 
   fsCases = new Ext.form.FieldSet({
@@ -228,9 +257,9 @@ Ext.onReady(function() {
         ]
       }),
       new Ext.form.FieldSet({
-        title: _('ID_CASES_LIST_SETUP'),
-        labelAlign: 'right',
-        items: [cmbCasesDateFormats,cmbCasesRowsPerPage]
+          title: _("ID_CASES_LIST_SETUP"),
+          labelAlign: "right",
+          items: [cmbCasesDateFormat, cmbCasesRowNumber, txtCasesRefreshTime]
       })
     ]
   });
@@ -265,7 +294,7 @@ Ext.onReady(function() {
     buttons : [saveButton]
   });
 
-  LoadSamples();
+  loadSamples();
 
   /*viewport = new Ext.Viewport({
     layout: 'fit',
@@ -279,32 +308,41 @@ Ext.onReady(function() {
 });
 
 //Load Samples Label
-LoadSamples = function(){
-  Ext.getCmp('lblFullName').setText(_FNF(_userName, _firstName, _lastName, FORMATS.format));
-  Ext.getCmp('lblDateFormat').setText(_DF(_dateSample, FORMATS.dateFormat));
-  Ext.getCmp('lblCasesDateFormat').setText(_DF(_dateSample, FORMATS.casesListDateFormat, FORMATS.casesListDateFormat));
-  Ext.getCmp('lblCasesRowsList').setText(FORMATS.casesListRowNumber);
+loadSamples = function ()
+{
+    Ext.getCmp("lblFullName").setText(_FNF(_userName, _firstName, _lastName, FORMATS.format));
+    Ext.getCmp("lblDateFormat").setText(_DF(_dateSample, FORMATS.dateFormat));
+    Ext.getCmp("lblCasesDateFormat").setText(_DF(_dateSample, FORMATS.casesListDateFormat, FORMATS.casesListDateFormat));
+    //Ext.getCmp("lblCasesRowsList").setText(FORMATS.casesListRowNumber);
+    //Ext.getCmp("lblCasesRefreshTime").setText(FORMATS.casesListRefreshTime);
 };
 
 //Change Some Setting
-ChangeSettings = function(iType){
-  saveButton.enable();
-  switch (iType){
-    case '1':
-      _format = cmbUsernameFormats.getValue();
-      Ext.getCmp('lblFullName').setText(_FNF(_userName,_firstName,_lastName, _format));
-      break;
-    case '2':
-      _format = cmbDateFormats.getValue();
-      Ext.getCmp('lblDateFormat').setText(_DF(_dateSample,_format));
-      break;
-    case '3':
-      _format = cmbCasesDateFormats.getValue();
-      Ext.getCmp('lblCasesDateFormat').setText(_DF(_dateSample,_format));
-      break;
-    case '4':
-      _format = cmbCasesRowsPerPage.getValue();
-      Ext.getCmp('lblCasesRowsList').setText(_format);
-      break;
-  }
+changeSettings = function (iType)
+{
+    saveButton.enable();
+
+    switch (iType) {
+        case 1:
+            var f = FORMATS.format;
+
+            FORMATS.format = cmbUsernameFormat.getValue();
+            Ext.getCmp("lblFullName").setText(_FNF(_userName, _firstName, _lastName, cmbUsernameFormat.getValue()));
+            FORMATS.format = f;
+            break;
+        case 2:
+            Ext.getCmp("lblDateFormat").setText(_DF(_dateSample, cmbDateFormat.getValue()));
+            break;
+        case 3:
+            break;
+        case 4:
+            Ext.getCmp("lblCasesDateFormat").setText(_DF(_dateSample, cmbCasesDateFormat.getValue()));
+            break;
+        case 5:
+            //Ext.getCmp("lblCasesRowsList").setText(cmbCasesRowNumber.getValue());
+            break;
+        case 6:
+            //Ext.getCmp("lblCasesRefreshTime").setText(txtCasesRefreshTime.getValue());
+            break;
+    }
 };
