@@ -1192,7 +1192,7 @@ function G_Text(form, element, name)
         break;
       default:
         if (me.mType == 'date' || me.mType == 'currency' || me.mType == 'percentage' || me.validate == 'Real' || me.validate == 'Int') {
-          if ((48 <= pressKey && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188) || (96 <= pressKey && pressKey <= 111)) {
+          if ((48 <= pressKey && pressKey <= 57) || (pressKey == 109 || pressKey == 190 || pressKey == 188 || pressKey == 189) || (96 <= pressKey && pressKey <= 111)) {
             return true;
           }
           else {
