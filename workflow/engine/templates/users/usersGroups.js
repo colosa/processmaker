@@ -53,7 +53,7 @@ Ext.onReady(function(){
   sw_user_summary = false;
 
   editMembersButton = new Ext.Action({
-    text: 'Assign Groups',
+    text: _('ID_ASSIGN_GROUP'),
     iconCls: 'button_menu_ext ss_sprite  ss_user_add',
     handler: EditMembersAction
   });
@@ -65,7 +65,7 @@ Ext.onReady(function(){
   });
 
   backButton = new Ext.Action({
-    text : _('ID_BACK'),
+    text: _('ID_BACK'),
     iconCls: 'button_menu_ext ss_sprite ss_arrow_redo',
     handler: BackToUsers
   });
