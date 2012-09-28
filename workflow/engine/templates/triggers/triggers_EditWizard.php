@@ -54,6 +54,7 @@ try {
     $bReturnValue = true;
     $displayMode  = 'display:block';
     $methodreturnDescription = "";
+    $fieldRequired = array ();
     if (isset($methodreturnA[3])) {
         $methodreturnDescription = (trim(strtoupper($methodreturnA [3])) == strtoupper(G::LoadTranslation ('ID_NONE')))
                                  ? G::LoadTranslation ( 'ID_NOT_REQUIRED')
@@ -62,8 +63,12 @@ try {
     $methodReturnLabel       = isset ( $methodreturnA [3] ) ? $methodreturnDescription : $methodReturn;
     if ( (isset($methodreturnA[0]) && isset($methodreturnA[1]))
         && (trim(strtoupper($methodreturnA[0]) ) != strtoupper(G::LoadTranslation ( 'ID_NONE')) ) ) {
-        $methodReturnLabelRequired = (trim( $methodreturnA[1] ) != "" )
-                                   ? G::LoadTranslation ( "ID_REQUIRED_FIELD" ) : $methodreturnA[1];
+        if (trim( $methodreturnA[1] ) != "") {
+            $methodReturnLabelRequired = G::LoadTranslation ( "ID_REQUIRED_FIELD" );
+            $fieldRequired[] = 'TRI_ANSWER';
+        } else {
+            $methodReturnLabelRequired = $methodreturnA[1];
+        }
         $methodReturnLabel        .= "<br>" . trim( $methodReturnLabelRequired ) . " | " . trim($methodreturnA[0]);
     } else {
         $bReturnValue = false;
@@ -148,10 +153,14 @@ try {
                 //                     str_replace ( '"', '', $paramDefaultValue ) ) );
                 $paramValue = $_GET[trim( str_replace( "$", "", $paramName ) )];
                 $template->assign ( 'ADD_TRI_VALUE', str_replace("\'", "&apos;", $paramValue) );
-                $fieldDescription = ($paramDescription!="")?$paramDescription . "<br>":"";
-                $fieldDescription .= $paramDefaultValue != ""
-                                     ? $paramDefaultValue . " | " . $paramType
-                                     : G::LoadTranslation ( "ID_REQUIRED_FIELD" ) . " | " . $paramType;
+                if ($paramDefaultValue != "") {
+                    $fieldDescription = $paramDescription . "<br>";
+                    $fieldDescription .= $paramDefaultValue . " | " . $paramType;
+                } else {
+                    $fieldDescription = "";
+                    $fieldDescription .= G::LoadTranslation ( "ID_REQUIRED_FIELD" ) . " | " . $paramType;
+                    $fieldRequired[] = trim (str_replace ("$", "", $paramName));
+                }
 
                 $template->assign ( 'ADD_TRI_DESCRIPTION', $fieldDescription );
                 $nrows ++;
@@ -160,6 +169,7 @@ try {
 
     }
     $template->gotoBlock ( '_ROOT' );
+    $template->assign ('FIELDS_REQUIRED', implode ( ",", $fieldRequired ));
     $template->assign ( 'ALLFUNCTION', implode ( ",", $methodParametersOnlyNames ) );
     $sPMfunction .= ");";
     $content = $template->getOutputContent ();

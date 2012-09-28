@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dynaForm name="triggersProperties" type="xmlform" width="100%" labelWidth="20%" enableTemplate="1">
   <PRO_UID type="hidden"/>
+  <FIELDS_REQUIRED type="hidden"/>
   <TITLE type="title" group="1">
     <en>Trigger Information</en>
   </TITLE>

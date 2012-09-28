@@ -61,15 +61,21 @@ try {
     $methodreturnDescription = (trim(strtoupper($methodreturnA[3])) == strtoupper(G::LoadTranslation('ID_NONE')))
                                ? G::LoadTranslation ( 'ID_NOT_REQUIRED') : $methodreturnA[3];
     $methodReturnLabel       = isset ( $methodreturnA[3] ) ? $methodreturnDescription : $methodReturn;
+    $fieldRequired = array ();
     if ( (isset($methodreturnA[0]) && isset($methodreturnA[1]))
             && (trim(strtoupper($methodreturnA[0]) ) != strtoupper(G::LoadTranslation ( 'ID_NONE')) ) ) {
-        $methodReturnLabelRequired = (trim( $methodreturnA[1] ) != "" )
-                                     ? G::LoadTranslation ( "ID_REQUIRED_FIELD" ) : $methodreturnA[1];
+        if (trim( $methodreturnA[1] ) != "") {
+            $methodReturnLabelRequired = G::LoadTranslation ( "ID_REQUIRED_FIELD" );
+            $fieldRequired[] = 'TRI_ANSWER';
+        } else {
+            $methodReturnLabelRequired = $methodreturnA[1];
+        }
         $methodReturnLabel        .= "<br>" . trim( $methodReturnLabelRequired ) . " | " . trim($methodreturnA[0]);
     } else {
         $bReturnValue = false;
         $displayMode  = 'display:none';
     }
+    
     $aParametersFun = $methodParameters;
     $triggerWizardTemplate = PATH_TPL . 'triggers' . PATH_SEP . 'triggers_CreateWizard.html';
     $template = new TemplatePower ( $triggerWizardTemplate );
@@ -112,6 +118,7 @@ try {
 
     $sPMfunction = $sNameFun . " (";
     $methodParametersOnlyNames = array ();
+    
     if (count ( $aParametersFun ) > 0) {
         $template->newBlock ( 'paremetersTriggersGroup' );
         $template->assign ( 'PARAMETERS_LABEL', G::LoadTranslation ( 'ID_PARAMETERS' ) );
@@ -145,16 +152,19 @@ try {
                                     str_replace ( "'", "", str_replace ( '"', '', $paramDefaultValue ) ) );
 
                 $fieldDescription = ($paramDescription!="")?$paramDescription . "<br>":"";
-                $fieldDescription .= $paramDefaultValue != ""
-                                     ? $paramDefaultValue . " | " . $paramType
-                                     : G::LoadTranslation ( "ID_REQUIRED_FIELD" ) . " | " . $paramType;
+                if ($paramDefaultValue != "") {
+                    $fieldDescription .= $paramDefaultValue . " | " . $paramType;
+                } else {
+                    $fieldDescription .= G::LoadTranslation ( "ID_REQUIRED_FIELD" ) . " | " . $paramType;
+                    $fieldRequired[] = trim (str_replace ("$", "", $paramName));
+                }
                 $template->assign ( 'ADD_TRI_DESCRIPTION', $fieldDescription );
                 $nrows ++;
             }
         }
-
     }
     $template->gotoBlock ( '_ROOT' );
+    $template->assign ('FIELDS_REQUIRED', implode ( ",", $fieldRequired ));
     $template->assign ( 'ALLFUNCTION', implode ( ",", $methodParametersOnlyNames ) );
     $sPMfunction .= ");";
     $content = $template->getOutputContent ();

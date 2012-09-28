@@ -9,6 +9,7 @@
 
 
 <PRO_UID type="private"/>
+<FIELDS_REQUIRED type="private"/>
 
 <triggersEdit type="private" defaultValue="../triggers/triggers_Edit"/>
 
@@ -90,27 +91,38 @@
 
   function triggerSave(form)
   {
-  var triUid = "";
-  if(document.getElementById('TRI_UID')) {
-    var triUid = document.getElementById('TRI_UID').value;
-  } 
-   if(triUid==''){  
-   var triTitle =document.getElementById('TRI_TITLE').value;   
-   if(triTitle==''){
-     alert(G_STRINGS.ID_REQUIRED_NAME_TRIGGERS);return false;
-   }   
-   reqName=ajax_function("../triggers/triggers_Save",'lookforNameTrigger','NAMETRIGGER='+encodeURIComponent(triTitle)+'&proUid='+(document.getElementById('PRO_UID').value),'POST') ;  
-   if(!reqName){
-     alert(G_STRINGS.ID_EXIST_TRIGGERS);return false;
+    var triUid = "";
+    if(document.getElementById('TRI_UID')) {
+        var triUid = document.getElementById('TRI_UID').value;
+    }
+    var triTitle =document.getElementById('TRI_TITLE').value;   
+    if(triTitle==''){
+      alert(G_STRINGS.ID_REQUIRED_NAME_TRIGGERS);return false;
+    }
+
+    var fieldsRequired = document.getElementById('FIELDS_REQUIRED').value;
+    fieldsRequired = fieldsRequired.split(",");
+    for (i=0; i<fieldsRequired.length; i++)
+    {
+        var field = document.getElementById(fieldsRequired[i]).value;
+        if (field == '') {
+            alert(_('ID_REQUIRED_FIELDS_ERROR'));return false;
+        }
+    }
+    if(triUid==''){
+        reqName=ajax_function("../triggers/triggers_Save",'lookforNameTrigger','NAMETRIGGER='+encodeURIComponent(triTitle)+'&proUid='+(document.getElementById('PRO_UID').value),'POST') ;  
+        if(!reqName){
+          alert(G_STRINGS.ID_EXIST_TRIGGERS);return false;
+        }else{
+          ajax_post(form.action, form, 'POST');
+         currentPopupWindow.remove();
+         @#PAGED_TABLE_ID.refresh();
+        }
    }else{
-     ajax_post(form.action, form, 'POST');
-    currentPopupWindow.remove();
-    @#PAGED_TABLE_ID.refresh();
-   }
-   }else{
-	     ajax_post(form.action, form, 'POST');
-		   currentPopupWindow.remove();
-		   @#PAGED_TABLE_ID.refresh();
+    
+        ajax_post(form.action, form, 'POST');
+          currentPopupWindow.remove();
+          @#PAGED_TABLE_ID.refresh();
    }
   }
   //with this function, we are removing the spaces after and before of a string 
