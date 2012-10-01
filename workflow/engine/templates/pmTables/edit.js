@@ -160,7 +160,6 @@ Ext.onReady(function(){
           editor: {
             xtype: 'textfield',
             allowBlank: true,
-            style:'text-transform: uppercase',
             listeners:{
               change: function(f,e){
                 this.setValue(this.getValue().toUpperCase());
@@ -546,7 +545,6 @@ Ext.onReady(function(){
     emptyText: _("ID_SET_A_TABLE_NAME"),
     width: 250,
     stripCharsRe: /(\W+)/g,
-    style:'text-transform: uppercase',
     listeners:{
       change: function(){
         this.setValue(this.getValue().toUpperCase())
