@@ -240,17 +240,17 @@ class SkinEngine
 
       $templateFile = $this->layoutFile['dirname'] . PATH_SEP . $this->layoutFileExtjs['basename'];
     }
-	
+
     $template = new TemplatePower($templateFile);
     $template->prepare();
     $template->assign('header', $header);
     $template->assign('styles', $styles);
     $template->assign('bodyTemplate', $body);
-    
+
     // verify is RTL
     $oServerConf =& serverConf::getSingleton();
     if ($oServerConf->isRtl(SYS_LANG)) {
-    	$template->assign('dirBody', 'dir="RTL"');    	
+    	$template->assign('dirBody', 'dir="RTL"');
     }
     // end verify
 
@@ -264,16 +264,16 @@ class SkinEngine
       'IE=7' => '(MSIE 7\.[0-9]+)',
       'IE=6' => '(MSIE 6\.[0-9]+)'
     );
-      
-    foreach ($iexplores as $browser => $pattern) {
+
+          foreach ($iexplores as $browser => $pattern) {
       if (preg_match('/'.$pattern.'/', $_SERVER['HTTP_USER_AGENT'])) {
         $doctype = '';
-        $meta = '<meta http-equiv="X-UA-Compatible" content="'. $browser .'"/>';        
-      }
+        $meta = '<meta http-equiv="X-UA-Compatible" content="'. $browser .'"/>';
+              }
     }
     // end verify
-    	
-    $template->assign('meta', $meta);
+
+    	    $template->assign('meta', $meta);
     $template->assign('doctype', $doctype);
     echo $template->getOutputContent();
   }
@@ -598,7 +598,9 @@ class SkinEngine
       $header = '';
 
       if (isset($oHeadPublisher)) {
-        $oHeadPublisher->title = isset($_SESSION['USR_USERNAME']) ? '(' . $_SESSION['USR_USERNAME'] . ' ' . G::LoadTranslation('ID_IN') . ' ' . SYS_SYS . ')' : '';
+        if (defined('SYS_SYS')) {
+            $oHeadPublisher->title = isset($_SESSION['USR_USERNAME']) ? '(' . $_SESSION['USR_USERNAME'] . ' ' . G::LoadTranslation('ID_IN') . ' ' . SYS_SYS . ')' : '';
+        }
         $header = $oHeadPublisher->printHeader();
         $header .= $oHeadPublisher->getExtJsStylesheets($this->cssFileName);
       }

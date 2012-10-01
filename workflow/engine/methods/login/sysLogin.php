@@ -30,6 +30,10 @@ if (isset ($_POST['form']['USER_ENV'])) {
     die ();
 }
 
+@session_destroy();
+session_start();
+session_regenerate_id();
+
 //Required classes for dbArray work
 require_once ("propel/Propel.php");
 require_once ("creole/Creole.php");
