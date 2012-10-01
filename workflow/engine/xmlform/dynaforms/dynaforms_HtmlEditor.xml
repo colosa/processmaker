@@ -5,10 +5,6 @@
 <URL type="phpvariable"/>
 
 
-<HTML type="html" width="100%" height="350px" toolbarSet="toolbar2lines">
-<en>HTML View</en>
-</HTML>
-
 <PME_HTML_ENABLETEMPLATE type="checkbox" value="1" defaultvalue="0" labelOnRight="0">
   <en>Enable HTML Editing</en>
 </PME_HTML_ENABLETEMPLATE>
@@ -20,6 +16,10 @@
 <PME_REFRESH_VIEW type="button" onclick="html2_html();">
 <en>Refresh View</en>
 </PME_REFRESH_VIEW>
+
+<HTML type="html" width="100%" height="300px" toolbarSet="toolbar2lines">
+<en>HTML View</en>
+</HTML>
 
 <HTML2 type="textarea" cols="120" rows="16" style="width:100%;" className="htmleditor">
 <en>HTML Code</en>
@@ -73,7 +73,18 @@ getField("PME_HTML_ENABLETEMPLATE","dynaforms_HtmlEditor").onclick=function()
 {
 	/*getField("ENABLETEMPLATE","dynaforms_Properties").checked=this.checked;
 	dynaformEditor.saveProperties();*/
-	dynaformEditor.setEnableTemplate( this.checked );
+    if (getField("PME_HTML_ENABLETEMPLATE","dynaforms_HtmlEditor").checked == true) {
+        new leimnud.module.app.confirm().make(
+        {
+            label: "@G::LoadTranslation(ID_MSG_ENABLE_HTML_EDITING)",
+            size:{ w: 350, h: 150 },
+            action: function() { },
+            cancel: function() { 
+                getField("PME_HTML_ENABLETEMPLATE","dynaforms_HtmlEditor").checked = false;
+            }
+        });
+        dynaformEditor.setEnableTemplate( this.checked ); 
+    }
 }
 ]]></PME_RESIZE_JS>
 
