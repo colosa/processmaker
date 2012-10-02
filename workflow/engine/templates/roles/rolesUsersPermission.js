@@ -150,14 +150,27 @@ Ext.onReady(function(){
 		selectSingle: false,
 		listeners:{
 			selectionchange: function(sm){
-    			switch(sm.getCount()){
-    			case 0: Ext.getCmp('removeButton').disable(); break;
-    			default: (ROLES.ROL_UID==pm_admin)? Ext.getCmp('removeButton').disable() : Ext.getCmp('removeButton').enable(); break;	
-    			}
-    		}
-		}
-	});
-	
+                switch (sm.getCount()) {
+                case 0: Ext.getCmp('removeButton').disable(); break;
+                default:
+                    Ext.getCmp('removeButton').enable();
+                    if (ROLES.ROL_UID == pm_admin) {
+                        var permissionUid = assignedGrid.getSelectionModel().getSelections();
+                        permissionUid = permissionUid[0].get('PER_UID');
+                        for (var i=0; i<permissionsAdmin.length; i++)
+                        {
+                            if (permissionUid == permissionsAdmin[i]['PER_UID']) {
+                                Ext.getCmp('removeButton').disable();
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    });
+
 	searchTextA = new Ext.form.TextField ({
         id: 'searchTextA',
         ctCls:'pm_search_text_field',
@@ -268,7 +281,7 @@ Ext.onReady(function(){
                {xtype:'button',text: '>', handler: AssignPermissionAction, id: 'assignButton', disabled: true},
                {xtype:'button',text: '&lt;', handler: RemovePermissionAction, id: 'removeButton', disabled: true},
                {xtype:'button',text: '>>', handler: AssignAllPermissionsAction, id: 'assignButtonAll', disabled: false},
-               {xtype:'button',text: '&lt;&lt;', handler: RemoveAllPermissionsAction, id: 'removeButtonAll', disabled: (ROLES.ROL_UID==pm_admin) ? true : false}
+               {xtype:'button',text: '&lt;&lt;', handler: RemoveAllPermissionsAction, id: 'removeButtonAll', disabled: false}
                ],
         hidden : true
     });
@@ -659,14 +672,25 @@ AssignPermissionAction = function(){
 
 //RemoveButton Functionality
 RemovePermissionAction = function(){
-	if (ROLES.ROL_UID != pm_admin){
-		rowsSelected = assignedGrid.getSelectionModel().getSelections();
-		var arrAux = new Array();
-		for(var a=0; a < rowsSelected.length; a++){
-			arrAux[a] = rowsSelected[a].get('PER_UID');
-		}
-		DeletePermissionsRole(arrAux,RefreshPermissions,FailureProcess);
-	}
+    rowsSelected = assignedGrid.getSelectionModel().getSelections();
+    var arrAux = new Array();
+    var sw;
+    for(var a=0; a < rowsSelected.length; a++){
+        sw = true;
+        if (ROLES.ROL_UID == pm_admin) {
+            for (var i=0; i<permissionsAdmin.length; i++)
+            {
+                if (permissionsAdmin[i]['PER_UID'] == rowsSelected[a].get('PER_UID')) {
+                    sw = false;
+                    break;
+                }
+            }
+        }
+        if (sw) {
+            arrAux[a] = rowsSelected[a].get('PER_UID');
+        }
+    }
+    DeletePermissionsRole(arrAux,RefreshPermissions,FailureProcess);
 };
 
 //AssignALLButton Functionality
@@ -684,15 +708,28 @@ AssignAllPermissionsAction = function(){
 
 //RevomeALLButton Functionality
 RemoveAllPermissionsAction = function(){
-	var allRows = assignedGrid.getStore();
-	var arrAux = new Array();
-	if (allRows.getCount()>0){
-		for (var r=0; r < allRows.getCount(); r++){
-			row = allRows.getAt(r);
-			arrAux[r] = row.data['PER_UID'];
-		}
-		DeletePermissionsRole(arrAux,RefreshPermissions,FailureProcess);
-	}
+    var allRows = assignedGrid.getStore();
+    var arrAux = new Array();
+    if (allRows.getCount()>0){
+        var sw;
+        for (var r=0; r < allRows.getCount(); r++){
+            row = allRows.getAt(r);
+            sw = true;
+            if (ROLES.ROL_UID == pm_admin) {
+                for (var i=0; i<permissionsAdmin.length; i++)
+                {
+                    if (permissionsAdmin[i]['PER_UID'] == row.data['PER_UID']) {
+                        sw = false;
+                        break;
+                    }
+                }
+            }
+            if (sw) {
+                arrAux[r] = row.data['PER_UID'];
+            }
+        }
+        DeletePermissionsRole(arrAux,RefreshPermissions,FailureProcess);
+    }
 };
 
 //ASSIGN USERS TO A ROLE

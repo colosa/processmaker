@@ -61,8 +61,8 @@ $roles['ROL_UID'] = $_GET['rUID'];
 $roles['ROL_CODE'] = $RBAC->getRoleCode($_GET['rUID']);
 $roles['CURRENT_TAB'] = ($_GET['tab']=='permissions') ? 1 : 0;
 
-
 $oHeadPublisher->assign('ROLES', $roles);
+$oHeadPublisher->assign('permissionsAdmin', $RBAC->loadPermissionAdmin());
 G::RenderPage('publish', 'extJs');
 	
 ?>
