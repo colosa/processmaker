@@ -72,9 +72,9 @@ try {
   $importResults = $language->import($languageFile);
   
     G::LoadClass("wsTools");
-    $renegerateContent = new workspaceTools();
+    $renegerateContent = new workspaceTools(SYS_SYS);
     $renegerateContent->upgradeContent();
-  
+
   $result->msg = G::LoadTranslation('IMPORT_LANGUAGE_SUCCESS') . "\n";
   $result->msg .= "PO File num. records: " . $importResults->recordsCount . "\n";
   $result->msg .= "Success Records: " . $importResults->recordsCountSuccess . "\n";
