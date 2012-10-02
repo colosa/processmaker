@@ -276,7 +276,7 @@ class Content extends BaseContent {
     *
     * @param  array  $langs
     */
-    function regenerateContent($langId)
+    function regenerateContent($langs)
     {
         //Search the language
         $key = array_search('en',$langs);
