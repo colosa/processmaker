@@ -43,15 +43,15 @@ try {
   //if the xmlform path is writeable
   if( ! is_writable(PATH_XMLFORM) )
     throw new Exception(G::LoadTranslation('IMPORT_LANGUAGE_ERR_NO_WRITABLE'));
-    
+
   //if all xml files within the xmlform directory are writeable
   if( ! G::is_rwritable(PATH_XMLFORM) )
     throw new Exception(G::LoadTranslation('IMPORT_LANGUAGE_ERR_NO_WRITABLE2'));
-  
+
   $sMaxExecutionTime = ini_get('max_execution_time');
   ini_set('max_execution_time', '0');
   G::LoadClass('configuration');
-  
+
   $languageFile = $_FILES['form']['tmp_name']['LANGUAGE_FILENAME'];
   $languageFilename = $_FILES['form']['name']['LANGUAGE_FILENAME'];
 
@@ -70,23 +70,23 @@ try {
   $language     = new Language();
   $configuration = new Configurations;
   $importResults = $language->import($languageFile);
-  
+
     G::LoadClass("wsTools");
-    $renegerateContent = new workspaceTools();
+    $renegerateContent = new workspaceTools(SYS_SYS);
     $renegerateContent->upgradeContent();
-  
+
   $result->msg = G::LoadTranslation('IMPORT_LANGUAGE_SUCCESS') . "\n";
   $result->msg .= "PO File num. records: " . $importResults->recordsCount . "\n";
   $result->msg .= "Success Records: " . $importResults->recordsCountSuccess . "\n";
   $result->msg .= "Failed Records: " . ($importResults->recordsCount-$importResults->recordsCountSuccess) . "\n";
-  
+
   if( $importResults->errMsg != '' ){
     $result->msg .= "Errors registered: \n" . $importResults->errMsg . "\n";
   }
-  
+
   //$result->msg = htmlentities($result->msg);
   $result->success = true;
-  
+
   //saving metadata
   $configuration->aConfig  = Array(
     'headers'     => $importResults->headers,
@@ -96,9 +96,9 @@ try {
     'version'     => '1.0'
   );
   $configuration->saveConfig('LANGUAGE_META', $importResults->lang);
-  
+
   ini_set('max_execution_time', $sMaxExecutionTime);
-  
+
 } catch (Exception $oError) {
   $result->msg = $oError->getMessage();
   //print_r($oError->getTrace());
