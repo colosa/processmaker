@@ -1,7 +1,7 @@
 /*
  * ProcessMaker Login
  *  Created on date Jul 15, 2011
- * 
+ *
  * @author Erik Amaru Ortiz <erik@colosa.com>
  */
 
@@ -40,7 +40,7 @@ var Login = function() {
     enableVirtualKeyboard : false,
     enableForgotPassword : false,
     fieldsWidth : 200,
-    
+
     /** Init method */
     init : function() {
       new Ext.KeyMap(document, {
@@ -49,18 +49,18 @@ var Login = function() {
           Login.submit();
         }
       });
-      
+
       Ext.QuickTips.init();
       Ext.form.Field.prototype.msgTarget = 'side';
 
       this.enableVirtualKeyboard = virtualKeyboad;
       this.enableForgotPassword = forgotPasswd;
-      
+
       this.initComponents();
-      
+
       this.window.show();
       Ext.getCmp('userTxt').focus(true, 1000);
-      
+
       if (typeof errMsg != 'undefined') {
         Ext.msgBoxSlider.msgTopCenter('alert', 'ERROR', errMsg, 10);
       }
@@ -87,27 +87,27 @@ Login.initComponents = function()
     fieldLabel: _('ID_USER'),
     allowBlank: false
   }
-  
+
   var usernameTxt = {
     id        : 'usernameTxt',
     name      : 'username',
     fieldLabel: _('ID_USER'),
     allowBlank: false
   }
-  
+
   var emailTxt = {
     id        : 'emailTxt',
     name      : 'email',
     fieldLabel: _('ID_EMAIL'),
     allowBlank: false
   }
-  
+
   var passwordTxt = {
     fieldLabel: _('ID_PASSWORD'),
     name      : 'form[USR_PASSWORD]',
     inputType : 'password',
     allowBlank: false,
-    
+
     validationEvent : this.enableVirtualKeyboard == true ? 'blur' : 'keyup',
     enableKeyEvents : true,
     width: this.fieldsWidth, //this.enableVirtualKeyboard == true ? 183 : this.fieldsWidth,
@@ -116,7 +116,7 @@ Login.initComponents = function()
       languageSelection: true
     },
     plugins: this.enableVirtualKeyboard == true ? new Ext.ux.plugins.VirtualKeyboard() : null,
-    
+
     listeners: {
       render: function() {
         this.capsWarningTooltip = new Ext.ToolTip({
@@ -132,7 +132,7 @@ Login.initComponents = function()
             this.disable();
         });
       },
-  
+
       keypress: {
         fn: function(field, e) {
           if(this.forceVirtualKeyboard) {
@@ -161,7 +161,7 @@ Login.initComponents = function()
           }
       }
     }
-  
+
     /*,
     listeners : {
       specialkey: function(f,e){
@@ -171,7 +171,7 @@ Login.initComponents = function()
       }
     }*/
   }
-  
+
   var forgotPasswordLink = {
     xtype: 'box',
     autoEl: {
@@ -251,7 +251,7 @@ Login.initComponents = function()
 
 
   this.form = new Ext.FormPanel(formConfig);
-  
+
   this.forgotPasswordForm = new Ext.FormPanel({
     id        : 'fp-form',
     labelWidth: 80,
@@ -282,7 +282,7 @@ Login.initComponents = function()
       handler: Login.restore
     }]
   });
-  
+
   this.forgotPasswordForm = new Ext.FormPanel({
     id        : 'fp-form',
     labelWidth: 80,
@@ -315,6 +315,7 @@ Login.initComponents = function()
   });
 
   this.window = new Ext.Window({
+    cls: 'x-window-login',
     layout: 'fit',
     title: _('LOGIN'),
     width: 380,
@@ -332,7 +333,7 @@ Login.initComponents = function()
       items: []
     })
   });
-  
+
   this.fpWindow = new Ext.Window({
     layout: 'fit',
     title: _('ID_FORGOT_PASSWORD'),
@@ -405,7 +406,7 @@ Login.restore = function()
 Login.sendFpRequest = function()
 {
   Ext.getCmp('login-statusbar2').showBusy();
-  
+
   if (!Login.forgotPasswordForm.getForm().isValid()) {
     Ext.getCmp('login-statusbar2').setStatus({
       text: _('ID_VALIDATION_ERRORS'),
@@ -414,7 +415,7 @@ Login.sendFpRequest = function()
     });
     return;
   }
-  
+
   Login.forgotPasswordForm.getForm().submit({
     method: 'POST',
     waitTitle: '',
@@ -449,7 +450,7 @@ Login.sendFpRequest = function()
       //Login.form.getForm().reset();
     }
   });
-  
+
 }
 
 
@@ -469,7 +470,7 @@ Login.submit = function()
 
 
   Ext.getCmp('login-statusbar').showBusy();
-  
+
   if (!Login.form.getForm().isValid()) {
     Ext.getCmp('login-statusbar').setStatus({
       text: _('ID_VALIDATION_ERRORS'),

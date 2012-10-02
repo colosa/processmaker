@@ -1478,15 +1478,15 @@ body.x-body-masked .x-window-plain .x-window-mc {
 body.x-pm-login-body{
     width: 100%;
 }
-body.x-pm-login-body div.x-window{
+body.x-pm-login-body div.x-window-login{
     /*!important needed to change position, not appearance. Not allows JavaScrpit change Position.*/
-    left: 50% !important;  
+    left: 50% !important;
     margin-left: -185px !important; /*Left Location for Login Box. Must be a half from the width of login Box.*/
     margin-top: -120px !important;  /*Top Location for Login Box. Must be a half from height of login Box.*/
     overflow: auto !important;
     position: absolute  !important;
     top: 50% !important;
-} 
+}
 body.x-pm-login-body div.x-ie-shadow, body.x-pm-login-body div.x-shadow{
     /*Disappears the shadow Login Box.*/
     display: none !important;
