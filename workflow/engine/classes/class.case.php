@@ -4585,9 +4585,9 @@ class Cases
                     throw (new Exception("Template file \"$fileTemplate\" does not exist."));
                 }
 
-                $sBody = G::replaceDataField(file_get_contents($fileTemplate), $aFields);
+                $sBody = G::replaceDataGridField(file_get_contents($fileTemplate), $aFields);
             } else {
-                $sBody = nl2br(G::replaceDataField($aTaskInfo["TAS_DEF_MESSAGE"], $aFields));
+                $sBody = nl2br(G::replaceDataGridField($aTaskInfo["TAS_DEF_MESSAGE"], $aFields));
             }
 
             G::LoadClass("tasks");

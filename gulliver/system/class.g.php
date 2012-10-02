@@ -2044,6 +2044,69 @@ $output = $outputHeader.$output;
     return $__textoEval;
   }
 
+    /**
+    * Replace Grid Values
+    * The tag @>GRID-NAME to open the grid and @<GRID-NAME to close the grid, 
+    * 
+    * @param type String $sContent
+    * @param type Array $aFields
+    * @return type String 
+    */
+    function replaceDataGridField($sContent, $aFields)
+    {
+        $nrt           = array("\n",    "\r",    "\t");
+        $nrthtml       = array("(n /)", "(r /)", "(t /)");
+        $sContent      = G::unhtmlentities($sContent);
+        $strContentAux = str_replace($nrt, $nrthtml, $sContent);
+        $iOcurrences   = preg_match_all('/\@(?:([\>])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*(?:[\\\\][\w\W])?)*)\))((?:\s*\[[\'"]?\w+[\'"]?\])+)?/', $strContentAux, $arrayMatch1, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+
+        if ($iOcurrences) {
+            $arrayGrid = array();
+            for ($i = 0; $i <= $iOcurrences - 1; $i++) {
+                $arrayGrid[] = $arrayMatch1[2][$i][0];
+            }
+
+            $arrayGrid = array_unique($arrayGrid);
+
+            foreach ($arrayGrid as $index => $value) {
+                $grdName        = $value;
+                $strContentAux1 = $strContentAux;
+                $strContentAux  = null;
+                $ereg           = "/^(.*)@>" . $grdName . "(.*)@<" . $grdName . "(.*)$/";
+
+                while (preg_match($ereg, $strContentAux1, $arrayMatch2)) {
+                    $strData = null;
+
+                    if (isset($aFields[$grdName]) && is_array($aFields[$grdName])) {
+                        foreach ($aFields[$grdName] as $aRow) {
+                            foreach ($aRow as $sKey => $vValue) {
+                                if (!is_array($vValue)) {
+                                    $aRow[$sKey] = nl2br($aRow[$sKey]);
+                                }
+                            }
+                            $strData = $strData . G::replaceDataField($arrayMatch2[2], $aRow);
+                        }
+                    }
+                    $strContentAux1 = $arrayMatch2[1];
+                    $strContentAux  = $strData . $arrayMatch2[3] . $strContentAux;
+                }
+                $strContentAux = $strContentAux1 . $strContentAux;
+            }
+        }
+        $strContentAux = str_replace($nrthtml, $nrt, $strContentAux);
+        $sContent      = $strContentAux;
+
+        foreach ($aFields as $sKey => $vValue) {
+            if (!is_array($vValue)) {
+                $aFields[$sKey] = nl2br($aFields[$sKey]);
+            }
+        }
+        $sContent = G::replaceDataField($sContent, $aFields);
+
+        return $sContent;
+    }
+
+
   /* Load strings from a XMLFile.
    * @author David Callizaya <davidsantos@colosa.com>
    * @parameter $languageFile An xml language file.
