@@ -373,7 +373,8 @@ try {
       if ($filter != ''){
         $cc = $oCriteria->getNewCriterion(UsersPeer::USR_USERNAME,'%'.$filter.'%',Criteria::LIKE)->addOr(
         $oCriteria->getNewCriterion(UsersPeer::USR_FIRSTNAME,'%'.$filter.'%',Criteria::LIKE)->addOr(
-        $oCriteria->getNewCriterion(UsersPeer::USR_LASTNAME,'%'.$filter.'%',Criteria::LIKE)));
+        $oCriteria->getNewCriterion(UsersPeer::USR_LASTNAME,'%'.$filter.'%',Criteria::LIKE)->addOr(
+        $oCriteria->getNewCriterion(UsersPeer::USR_EMAIL,'%'.$filter.'%',Criteria::LIKE))));
         $oCriteria->add($cc);
       }
       $oCriteria->add(UsersPeer::USR_STATUS, array('CLOSED'), Criteria::NOT_IN);
@@ -406,7 +407,8 @@ try {
       if ($filter != ''){
         $cc = $oCriteria->getNewCriterion(UsersPeer::USR_USERNAME,'%'.$filter.'%',Criteria::LIKE)->addOr(
         $oCriteria->getNewCriterion(UsersPeer::USR_FIRSTNAME,'%'.$filter.'%',Criteria::LIKE)->addOr(
-        $oCriteria->getNewCriterion(UsersPeer::USR_LASTNAME,'%'.$filter.'%',Criteria::LIKE)));
+        $oCriteria->getNewCriterion(UsersPeer::USR_LASTNAME,'%'.$filter.'%',Criteria::LIKE)->addOr(
+        $oCriteria->getNewCriterion(UsersPeer::USR_EMAIL,'%'.$filter.'%',Criteria::LIKE))));
         $oCriteria->add($cc);
       }
 //      $sw_add = false;
