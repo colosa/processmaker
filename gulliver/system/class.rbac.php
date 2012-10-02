@@ -59,6 +59,7 @@ class RBAC
   var $currentSystemobj;
   var $rolesPermissionsObj;
   var $authSourcesObj;
+  var $permissionsAdmin;
 
   var $aUserInfo = array();
   var $aRbacPlugins = array();
@@ -142,6 +143,37 @@ class RBAC
      }
    }
   }
+
+    /**
+    * gets the Role and their permissions for Administrator Processmaker
+    *
+    * @access public
+    * @return $this->permissionsAdmin[ $permissionsAdmin ]
+    */
+    function loadPermissionAdmin() {
+        $permissionsAdmin =array(
+            array("PER_UID"=>"00000000000000000000000000000001","PER_CODE"=>"PM_LOGIN"),
+            array("PER_UID"=>"00000000000000000000000000000002","PER_CODE"=>"PM_SETUP"),
+            array("PER_UID"=>"00000000000000000000000000000003","PER_CODE"=>"PM_USERS"),
+            array("PER_UID"=>"00000000000000000000000000000004","PER_CODE"=>"PM_FACTORY"),
+            array("PER_UID"=>"00000000000000000000000000000005","PER_CODE"=>"PM_CASES"),
+            array("PER_UID"=>"00000000000000000000000000000006","PER_CODE"=>"PM_ALLCASES"),
+            array("PER_UID"=>"00000000000000000000000000000007","PER_CODE"=>"PM_REASSIGNCASE"),
+            array("PER_UID"=>"00000000000000000000000000000008","PER_CODE"=>"PM_REPORTS"),
+            array("PER_UID"=>"00000000000000000000000000000009","PER_CODE"=>"PM_SUPERVISOR"),
+            array("PER_UID"=>"00000000000000000000000000000010","PER_CODE"=>"PM_SETUP_ADVANCE"),
+            array("PER_UID"=>"00000000000000000000000000000011","PER_CODE"=>"PM_DASHBOARD"),
+            array("PER_UID"=>"00000000000000000000000000000012","PER_CODE"=>"PM_WEBDAV"),
+            array("PER_UID"=>"00000000000000000000000000000013","PER_CODE"=>"PM_DELETECASE"),
+            array("PER_UID"=>"00000000000000000000000000000014","PER_CODE"=>"PM_EDITPERSONALINFO"),
+            array("PER_UID"=>"00000000000000000000000000000015","PER_CODE"=>"PM_FOLDERS_VIEW"),
+            array("PER_UID"=>"00000000000000000000000000000016","PER_CODE"=>"PM_FOLDERS_ADD_FOLDER"),
+            array("PER_UID"=>"00000000000000000000000000000017","PER_CODE"=>"PM_FOLDERS_ADD_FILE"),
+            array("PER_UID"=>"00000000000000000000000000000018","PER_CODE"=>"PM_CANCELCASE"),
+            array("PER_UID"=>"00000000000000000000000000000019","PER_CODE"=>"PM_FOLDER_DELETE")
+        );
+        return $permissionsAdmin;
+    }
 
   /**
   * Gets the roles and permission for one RBAC_user
