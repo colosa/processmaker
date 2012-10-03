@@ -53,10 +53,14 @@
   <option name="prompt">Show prompt</option>
   </en>
 </NEXTSTEPSAVE>
-
+ 
 <PRINTDYNAFORM type="checkbox" falseValue="0" value="1" defaultvalue="0" labelOnRight="0">
 <en>Show print dynaform button</en>
 </PRINTDYNAFORM>
+
+<ADJUSTGRIDSWITH type="checkbox" falseValue="0" value="0" defaultvalue="0" labelOnRight="0">
+  <en>Adjust the grid width to the width of the main form</en>
+</ADJUSTGRIDSWITH>
 
 <!--<ENABLETEMPLATE type="checkbox" value="1" defaultvalue="0" labelOnRight="0">
   <en>Enable Template</en>
@@ -83,6 +87,7 @@ if(document.getElementById("form[DYN_TYPE]").value=="grid"){
     hideRowById('WIDTH');
     hideRowById('NEXTSTEPSAVE');
     hideRowById('PRINTDYNAFORM');
+    hideRowById('ADJUSTGRIDSWITH');
 }
 
 function getElementsByClassNameCrossBrowser(searchClass,node,tag) {
@@ -145,6 +150,7 @@ function validateGridConversion(proUid,dynUid){
           hideRowById('WIDTH');
           hideRowById('NEXTSTEPSAVE');
           hideRowById('PRINTDYNAFORM');
+          hideRowById('ADJUSTGRIDSWITH');
       } else {
          setDropdownSelection("form[DYN_TYPE]" , "xmlform");
          msgBox("Grid forms can not contain the following fields: <br>" + response,"alert");

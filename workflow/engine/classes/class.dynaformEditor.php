@@ -716,6 +716,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
                           //'ENABLETEMPLATE'=> $form->enableTemplate,
                           'MODE'           => $form->mode,
                           'PRINTDYNAFORM'  => $form->printdynaform,
+                          'ADJUSTGRIDSWITH'=> $form->adjustgridswith,
                           'NEXTSTEPSAVE'   => $form->nextstepsave
                          );
       $tmp['Properties']=$Properties;
@@ -775,6 +776,9 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
       }
       if (isset($Fields['PRINTDYNAFORM'])) {
         $ses2->execute(G::replaceDataField("UPDATE . SET PRINTDYNAFORM = @@PRINTDYNAFORM WHERE XMLNODE_NAME = 'dynaForm' ", $Fields));
+      }
+      if (isset($Fields['ADJUSTGRIDSWITH'])) {
+        $ses2->execute(G::replaceDataField("UPDATE . SET ADJUSTGRIDSWITH = @@ADJUSTGRIDSWITH WHERE XMLNODE_NAME = 'dynaForm' ", $Fields));
       }
       return 0;
     }
