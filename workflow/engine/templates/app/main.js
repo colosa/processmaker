@@ -15,6 +15,15 @@ function closeCaseNotesWindow(){
 
 function openCaseNotesWindow(appUid1, modalSw, appTitle)
 {
+  Ext.MessageBox.show({
+    msg: _('ID_CASE_NOTES_LOADING'),
+    progressText: 'Saving...',
+    width:300,
+    wait:true,
+    waitConfig: {interval:200},
+    animEl: 'mb7'
+  });
+
   Ext.QuickTips.init();
   appUid = !appUid1 ? "": appUid1;
   title  = appTitle;
@@ -32,7 +41,22 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle)
     },
     listeners:{
       load:function(){
+        Ext.MessageBox.hide();
+        if ( typeof(storeNotes.reader.jsonData.noPerms != 'undefined') &&
+           (storeNotes.reader.jsonData.noPerms == '1') ) {
+          Ext.MessageBox.show({
+            title: _('ID_WARNING'),
+            msg: _('ID_CASES_NOTES_NO_PERMISSIONS'),
+            buttons: Ext.MessageBox.OK,
+            animEl: 'mb9',
+            icon: Ext.MessageBox.WARNING
+          });
+          return false;
+        }
 
+        caseNotesWindow.show();
+        newNoteAreaActive = false;  
+        newNoteHandler();
         caseNotesWindow.setTitle(_('ID_CASES_NOTES') + ' (' + storeNotes.data.items.length + ')');
 
         if(storeNotes.getCount()<storeNotes.getTotalCount()){
@@ -236,10 +260,6 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle)
       //text: "",
       width: 200
   });
-
-  newNoteAreaActive = false;
-  caseNotesWindow.show();
-  newNoteHandler();
 }
 
 function updateTextCtr(body, event) {
