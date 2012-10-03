@@ -21,7 +21,7 @@
      <tr>
       <td> </td>
 {foreach from=$form->fields item=field}
-      <td class='vFormTitle'>{if (isset($field->required)&&$field->required&&$field->mode==='edit')}<font color="red">*  </font>{/if}{$field->label}</td>
+      <td class='vFormTitle'>{if (isset($field->required)&&$field->required&&$field->mode==='edit')}<font color="red">*  </font>{/if}{$field->label}{$field->renderHint()}</td>
 {/foreach}
      </tr>
 {literal}

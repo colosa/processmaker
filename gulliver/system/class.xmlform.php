@@ -2264,6 +2264,7 @@ class XmlForm_Field_Link extends XmlForm_Field {
     $html   .= (($this->onclick) ? ' onclick="' . htmlentities ( $onclick, ENT_QUOTES, 'utf-8' ) . '"' : '') ;
     $html   .= (($this->target) ? ' target="' . htmlentities ( $target, ENT_QUOTES, 'utf-8' ) . '"' : '') . '>';
     $html   .= $this->htmlentities ( $this->value === '' ? $label : $value, ENT_QUOTES, 'utf-8' ) . '</a>';
+    $html   .= $this->renderHint();
     return $html;
   }
 
