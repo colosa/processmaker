@@ -5021,6 +5021,8 @@ class Cases
     */
     public function verifyCaseTracker($case, $pin)
     {
+        //CASE INSENSITIVE pin
+        $pin = G::toUpper($pin);
         $pin = md5($pin);
 
         $oCriteria = new Criteria('workflow');
@@ -6109,4 +6111,3 @@ class Cases
         return $response;
     }
 }
-
