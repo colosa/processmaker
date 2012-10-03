@@ -1,0 +1,41 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+  <link rel="stylesheet" href="/css/uxs.css" media="screen" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="/js/jquery/jquery-1.7.1.min.js"></script>
+  {literal}
+  <style>
+  @media only screen and (min-device-width: 768px)  {
+    .uxs { width: 550px; }
+  }
+  
+  </style>
+  <script>
+  $(document).ready(function() {
+    $('#btnRefresh').click(function(){
+      if (typeof parent != 'undefined') {
+        parent.location.href = '../home';
+      }
+    })
+  });
+  </script>
+  {/literal}
+</head>
+
+<body>
+<center>
+  <div class="uxs" style="text-align:left">
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+      <tr><td class="Title">Information</td></tr>
+    </table>
+    <h2></h2>
+    <h3>You are now finished. Please refresh your view to see if you have any more work pending.</h3>
+    <center>
+      <button id="btnRefresh">Refresh view</button>
+    </center>
+  </div>
+</center>
+</body>
+</html>
+

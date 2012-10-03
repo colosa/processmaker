@@ -1,0 +1,92 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" /> 
+
+  <link rel="shortcut icon" href="/images/favicon.ico"   type="image/x-icon"/>
+  <link rel="stylesheet" href="/js/jquery/css/smoothness/jquery-ui-1.8.17.custom.css" type="text/css">
+  <link rel="stylesheet" href="/css/simplified.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript" src="/js/jquery/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="/js/jquery/jquery-ui-1.8.17.min.js"></script>
+  <script type="text/javascript" src="/js/jquery/xbreadcrumbs.js"></script>
+
+  
+  {literal}
+  <style>
+  body {
+    padding-top: 40px;
+    overflow:hidden;
+  }
+  </style>
+
+  <!--[if IE]>
+  <style type="text/css">
+  body {
+    padding-top: 0px !important;
+  }
+  .global-nav-2 {
+    border-bottom: 1.5px solid #d5d5d5;
+  }
+  </style>
+  <![endif]-->
+
+  <script>
+  var ux_env = {ver: '1.0'};
+  //var simplified = {};
+
+  function resize() 
+  {
+    var h = $(window).height() - 42;
+    $('iframe').height(h)
+  }
+
+  function setCurrent(id) 
+  {
+    $('#' + id).trigger('click');
+  }
+
+  </script>
+  {/literal}
+
+</head>
+<body onload="resize()" onresize="resize()" > 
+  <div style="top:40px;"/>
+  <div id="global-nav-2" class="global-nav-2">
+    <!-- start topbar -->
+     
+    <ul class="xbreadcrumbs" id="breadcrumbs-1">
+      {if count($steps) > 0}
+        {foreach from=$steps key=i item=step}
+          <li id="{$step.id}"{if $i eq "0"} class="current"{/if}>
+           <a{if $i eq "0"} class="home"{/if} href="{$step.url}" target="iframex">{$i+1}. {$step.title}</a>
+          </li>
+        {/foreach}
+      {else}
+        <li></li>
+      {/if}
+    </ul>
+    
+    <a id="signout-link" href="home/login" title="Sign out"><img src="/images/simplified/logout-grey.png" /></a>
+    
+    <!-- end topbar -->
+  </div>
+  
+  <iframe id="iframex" name="iframex" src="{$default_url}" width="100%" height="800" scrolling="yes" frameborder="0"></iframe>
+  
+  <div id="dialog-confirm" title="Confirm" style="display:none">
+    <p>
+    Start a new case for:<br/>
+    <span class="ui-icon ui-icon-document" style="float:left; margin:0 7px 20px 0;"></span><span id="startAppTitle"/></p>
+  </div>
+
+  {literal}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#breadcrumbs-1').xBreadcrumbs({ collapsible: ($(window).width() < 500 ?  true : false)});
+    });
+  </script>
+  {/literal}
+
+</body>
+</html>

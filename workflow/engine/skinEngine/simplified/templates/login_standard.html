@@ -1,0 +1,102 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+  <script type="text/javascript" src="/js/jquery/jquery-1.7.1.min.js"></script>
+  <link rel="stylesheet" href="/css/simplified.css" media="screen" rel="stylesheet" type="text/css" />
+  {literal}
+  <script>
+    $(document).ready(function() {
+      function start() {
+        //Fade in the Popup
+        $('#login').fadeIn(1000);
+        
+        //Set the center alignment padding + border see css style
+        var popMargTop = ($('#login').height() + 24) / 2;
+        var popMargLeft = ($('#login').width() + 24) / 2; 
+        
+        if (!jQuery.browser.msie) {
+          $('#login').css({ 
+            'margin-top' : -popMargTop,
+            'margin-left' : -popMargLeft
+          });
+          
+          // Add the mask to body
+          $('body').append('<div id="mask"></div>');
+          $('#mask').fadeIn(0);
+        }
+        else {
+          $('#login').css({ 
+            'margin-top' : (($(window).height()/2) - 140)
+          });
+        }
+        return false;
+      }
+      
+      start();
+      //$('#login').fadeIn(1000);
+    });
+
+    function resize()
+    {
+      var h = $(document.body).height() - 52;
+      var w = $(document.body).width();
+      if (w > 400) w = 400;
+
+      $('#login').width(w-50);
+
+      var popMargTop = ($('#login').height() + 24) / 2;
+      var popMargLeft = ($('#login').width() + 5) / 2; 
+      
+      $('#login').css({ 
+          'margin-top' : -popMargTop,
+          'margin-left' : -popMargLeft
+      });
+    }
+
+
+  </script>
+  {/literal}
+</head>
+
+<body onload="resize()" onresize="resize()" >
+<center>
+  <form method="post" action="../login/authentication">
+    <div id="login" class="login_form">
+      <h1>Sign In</h1>
+
+      <div class="login_message">{$msg}</div>
+
+      <table border=0 width="100%" cellspacing="0" cellpadding="0" class="formbody">
+        <tr>
+          <td><label for="login_field">Username</label></td>
+        </tr>
+        <tr>
+          <td>
+            <input id="login_field" class="text" style="width: 100%;" type="text" value="{$usr}" tabindex="1"  name="form[USR_USERNAME]" autocapitalize="off" />
+          </td>
+        </tr>
+        <tr>
+          <td><label for="password">Password</label></td>
+        </tr>
+        <tr>
+          <td>
+            <input id="password" class="text" style="width: 100%;" type="password" value="{$pwd}" tabindex="2"  name="form[USR_PASSWORD]" autocomplete="disabled" />
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <label class="submit_btn"><input type="submit" value="Log in" tabindex="3" name="commit" /></label>
+          </td>
+        </tr>
+      </table>
+    </div>     
+  </form>
+</center>
+</body>
+
+</html>
+
+
+

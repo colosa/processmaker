@@ -1,0 +1,77 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+  <!--<script type="text/javascript" src="/js/jquery/jquery-1.7.1.min.js"></script>-->
+  <link rel="stylesheet" href="/css/{$skin}.css" media="screen" rel="stylesheet" type="text/css" />
+  {literal}
+  <style>
+  body {
+    background-color: #142F3C;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#142F3C',endColorstr='#1D4558');
+  }
+
+  div.borderForm {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 300px;
+    height: 140px;
+    margin-top: -140px;
+    margin-left: -210px;
+    overflow: none;          
+  }
+
+  </style>
+  {/literal}
+</head>
+
+<body onload="resize()" onresize="resize()" >
+<center>
+  <form method="post" action="../login/authentication" class="formDefault">
+    <div class="borderForm" style="width:400px; padding-left:0; padding-right:0; border-width:1;">
+      <div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+      <div class="content" style="height:100%;">
+      <table width="99%">
+        <tr>
+        <td valign='top'>
+          <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tr>
+              <td class='FormTitle' colspan="2" align=""><span id='form[TITLE]' name='form[TITLE]' >Login</span></td>
+            </tr>
+            <tr>
+              <td class='FormLabel' width="40%">User</td>
+              <td class='FormFieldContent' width='240' >
+                <input class="module_app_input___gray" name="form[USR_USERNAME]" type="text" size="30" maxlength="50" value=""/>
+              </td>
+            </tr>
+            <tr>
+              <td class='FormLabel' width="40%">Password</td>
+              <td class='FormFieldContent' width='240' >
+                <input class="module_app_input___gray" name="form[USR_PASSWORD]" type ="password" size="31" maxlength="50" value=""/>
+              </td>
+            </tr>
+            <!-- <tr>
+              <td class='FormLabel' width="40%">Language</td>
+              <td class='FormFieldContent' width='240' ><select  class="module_app_input___gray" id="form[USER_LANG]" name="form[USER_LANG]"   pm:label="Language"  pm:dependent="0" ><option value="en" >English</option></select></td>
+            </tr> -->
+            <tr>
+              <td class='FormButton' colspan="2" align="">
+                <br/>
+                <input class='module_app_button___gray ' name="form[BSUBMIT]" type='submit' value="Login" />
+              </td>
+            </tr>
+          </table>
+        </td>
+        </tr>
+      </table>
+      </div>
+      <div class="boxBottom"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+    </div>
+  </form>
+</center>
+</body>
+
+</html>
+
+
