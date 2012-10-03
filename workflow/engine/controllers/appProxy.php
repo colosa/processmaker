@@ -17,6 +17,13 @@ class AppProxy extends HttpProxyController
    */
   function getNotesList($httpData)
   {
+    global $RBAC;
+    $permsCasesNotes = ($RBAC->userCanAccess('PM_CASES_NOTES') == 1) ? '1' : '0';
+    
+    if ($permsCasesNotes == '0') {
+      return array('totalCount' => 0, 'notes' => array(), 'noPerms' => 1);
+    }
+
     require_once ( "classes/model/AppNotes.php" );
     $appUid = null;
 
