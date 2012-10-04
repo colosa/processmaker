@@ -166,6 +166,7 @@
     <column name="APP_DOC_TAGS" type="LONGVARCHAR" required="false"/>
     <column name="APP_DOC_STATUS" type="VARCHAR" size="32" required="true" default="ACTIVE"/>
     <column name="APP_DOC_STATUS_DATE" type="TIMESTAMP"/>
+    <column name="APP_DOC_FIELDNAME" type="VARCHAR" size="150" />
     <validator column="APP_DOC_UID">
       <rule name="maxLength" value="32" message="Application Document UID can be no larger than ${value} in size"/>
       <rule name="required" message="Application Document UID is required."/>

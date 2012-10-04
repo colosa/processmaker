@@ -16,86 +16,87 @@ include_once 'creole/CreoleTypes.php';
  *
  * @package    workflow.classes.model.map
  */
-class AdditionalTablesMapBuilder {
+class AdditionalTablesMapBuilder
+{
 
-	/**
-	 * The (dot-path) name of this class
-	 */
-	const CLASS_NAME = 'classes.model.map.AdditionalTablesMapBuilder';
+    /**
+     * The (dot-path) name of this class
+     */
+    const CLASS_NAME = 'classes.model.map.AdditionalTablesMapBuilder';
 
-	/**
-	 * The database map.
-	 */
-	private $dbMap;
+    /**
+     * The database map.
+     */
+    private $dbMap;
 
-	/**
-	 * Tells us if this DatabaseMapBuilder is built so that we
-	 * don't have to re-build it every time.
-	 *
-	 * @return     boolean true if this DatabaseMapBuilder is built, false otherwise.
-	 */
-	public function isBuilt()
-	{
-		return ($this->dbMap !== null);
-	}
+    /**
+     * Tells us if this DatabaseMapBuilder is built so that we
+     * don't have to re-build it every time.
+     *
+     * @return     boolean true if this DatabaseMapBuilder is built, false otherwise.
+     */
+    public function isBuilt()
+    {
+        return ($this->dbMap !== null);
+    }
 
-	/**
-	 * Gets the databasemap this map builder built.
-	 *
-	 * @return     the databasemap
-	 */
-	public function getDatabaseMap()
-	{
-		return $this->dbMap;
-	}
+    /**
+     * Gets the databasemap this map builder built.
+     *
+     * @return     the databasemap
+     */
+    public function getDatabaseMap()
+    {
+        return $this->dbMap;
+    }
 
-	/**
-	 * The doBuild() method builds the DatabaseMap
-	 *
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function doBuild()
-	{
-		$this->dbMap = Propel::getDatabaseMap('workflow');
+    /**
+     * The doBuild() method builds the DatabaseMap
+     *
+     * @return     void
+     * @throws     PropelException
+     */
+    public function doBuild()
+    {
+        $this->dbMap = Propel::getDatabaseMap('workflow');
 
-		$tMap = $this->dbMap->addTable('ADDITIONAL_TABLES');
-		$tMap->setPhpName('AdditionalTables');
+        $tMap = $this->dbMap->addTable('ADDITIONAL_TABLES');
+        $tMap->setPhpName('AdditionalTables');
 
-		$tMap->setUseIdGenerator(false);
+        $tMap->setUseIdGenerator(false);
 
-		$tMap->addPrimaryKey('ADD_TAB_UID', 'AddTabUid', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addPrimaryKey('ADD_TAB_UID', 'AddTabUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
-		$tMap->addColumn('ADD_TAB_NAME', 'AddTabName', 'string', CreoleTypes::VARCHAR, true, 60);
+        $tMap->addColumn('ADD_TAB_NAME', 'AddTabName', 'string', CreoleTypes::VARCHAR, true, 60);
 
-		$tMap->addColumn('ADD_TAB_CLASS_NAME', 'AddTabClassName', 'string', CreoleTypes::VARCHAR, true, 100);
+        $tMap->addColumn('ADD_TAB_CLASS_NAME', 'AddTabClassName', 'string', CreoleTypes::VARCHAR, true, 100);
 
-		$tMap->addColumn('ADD_TAB_DESCRIPTION', 'AddTabDescription', 'string', CreoleTypes::LONGVARCHAR, false, null);
+        $tMap->addColumn('ADD_TAB_DESCRIPTION', 'AddTabDescription', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
-		$tMap->addColumn('ADD_TAB_SDW_LOG_INSERT', 'AddTabSdwLogInsert', 'int', CreoleTypes::TINYINT, false, null);
+        $tMap->addColumn('ADD_TAB_SDW_LOG_INSERT', 'AddTabSdwLogInsert', 'int', CreoleTypes::TINYINT, false, null);
 
-		$tMap->addColumn('ADD_TAB_SDW_LOG_UPDATE', 'AddTabSdwLogUpdate', 'int', CreoleTypes::TINYINT, false, null);
+        $tMap->addColumn('ADD_TAB_SDW_LOG_UPDATE', 'AddTabSdwLogUpdate', 'int', CreoleTypes::TINYINT, false, null);
 
-		$tMap->addColumn('ADD_TAB_SDW_LOG_DELETE', 'AddTabSdwLogDelete', 'int', CreoleTypes::TINYINT, false, null);
+        $tMap->addColumn('ADD_TAB_SDW_LOG_DELETE', 'AddTabSdwLogDelete', 'int', CreoleTypes::TINYINT, false, null);
 
-		$tMap->addColumn('ADD_TAB_SDW_LOG_SELECT', 'AddTabSdwLogSelect', 'int', CreoleTypes::TINYINT, false, null);
+        $tMap->addColumn('ADD_TAB_SDW_LOG_SELECT', 'AddTabSdwLogSelect', 'int', CreoleTypes::TINYINT, false, null);
 
-		$tMap->addColumn('ADD_TAB_SDW_MAX_LENGTH', 'AddTabSdwMaxLength', 'int', CreoleTypes::INTEGER, false, null);
+        $tMap->addColumn('ADD_TAB_SDW_MAX_LENGTH', 'AddTabSdwMaxLength', 'int', CreoleTypes::INTEGER, false, null);
 
-		$tMap->addColumn('ADD_TAB_SDW_AUTO_DELETE', 'AddTabSdwAutoDelete', 'int', CreoleTypes::TINYINT, false, null);
+        $tMap->addColumn('ADD_TAB_SDW_AUTO_DELETE', 'AddTabSdwAutoDelete', 'int', CreoleTypes::TINYINT, false, null);
 
-		$tMap->addColumn('ADD_TAB_PLG_UID', 'AddTabPlgUid', 'string', CreoleTypes::VARCHAR, false, 32);
+        $tMap->addColumn('ADD_TAB_PLG_UID', 'AddTabPlgUid', 'string', CreoleTypes::VARCHAR, false, 32);
 
-		$tMap->addColumn('DBS_UID', 'DbsUid', 'string', CreoleTypes::VARCHAR, false, 32);
+        $tMap->addColumn('DBS_UID', 'DbsUid', 'string', CreoleTypes::VARCHAR, false, 32);
 
-		$tMap->addColumn('PRO_UID', 'ProUid', 'string', CreoleTypes::VARCHAR, false, 32);
+        $tMap->addColumn('PRO_UID', 'ProUid', 'string', CreoleTypes::VARCHAR, false, 32);
 
-		$tMap->addColumn('ADD_TAB_TYPE', 'AddTabType', 'string', CreoleTypes::VARCHAR, false, 32);
+        $tMap->addColumn('ADD_TAB_TYPE', 'AddTabType', 'string', CreoleTypes::VARCHAR, false, 32);
 
-		$tMap->addColumn('ADD_TAB_GRID', 'AddTabGrid', 'string', CreoleTypes::VARCHAR, false, 256);
+        $tMap->addColumn('ADD_TAB_GRID', 'AddTabGrid', 'string', CreoleTypes::VARCHAR, false, 256);
 
-		$tMap->addColumn('ADD_TAB_TAG', 'AddTabTag', 'string', CreoleTypes::VARCHAR, false, 256);
+        $tMap->addColumn('ADD_TAB_TAG', 'AddTabTag', 'string', CreoleTypes::VARCHAR, false, 256);
 
-	} // doBuild()
+    } // doBuild()
 
 } // AdditionalTablesMapBuilder

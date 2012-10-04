@@ -46,4 +46,7 @@
   <link type="toolButton" class="ss_sprite button_toolbar ss_link" onclick="fieldsAdd('link')" buttonType="class">
     <en>Link</en>
   </link>
-</dynaForm>  
+  <file type="toolButton" class="ss_sprite button_toolbar ss_upload" onclick="fieldsAdd('file')" buttonType="class">
+    <en>File</en>
+  </file>
+</dynaForm>

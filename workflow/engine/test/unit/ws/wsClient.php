@@ -6,7 +6,7 @@ function parseItemArray($array) {
   if (! isset($array->item) && ! is_array($array)) {
     return null;
   }
-  
+
   $result = array ();
   if (isset($array->item)) {
     foreach ( $array->item as $key => $value ) {
@@ -27,7 +27,7 @@ function parseItemArray($array) {
  * @return array of objects
  */
 function convertFormToWSObjects($form) {
-  
+
   foreach ( $form as $key => $val ) {
     if (! is_array($val)) { //Normal Variables
       $obj = new stdClass();
@@ -52,7 +52,7 @@ function convertFormToWSObjects($form) {
       }
     }
   }
-  
+
   return $aVariables;
 }
 
@@ -60,7 +60,7 @@ function convertFormToWSObjects($form) {
 function convertSoapArrayToArray($object) {
   $result = array ();
   $properties = get_object_vars($object);
-  
+
   foreach ( $properties as $keyProperties => $valProperties ) {
     $array = array ();
     foreach ( $valProperties as $keyItems => $valItems ) {
@@ -92,7 +92,7 @@ function ws_parser($result) {
     } else {
       $rows[$result->derivation->item->key] = $result->derivation->item->value;
     }
-  
+
   return $rows;
 }
 
@@ -102,10 +102,10 @@ function ws_open() {
   $endpoint = WS_WSDL_URL;
   $sessionId = '';
   @$client = new SoapClient($endpoint);
-  
+
   $user = WS_USER_ID;
   $pass = WS_USER_PASS;
-  
+
   $params = array (
     'userid' => $user,
     'password' => $pass
@@ -113,7 +113,7 @@ function ws_open() {
   $result = $client->__SoapCall('login', array (
     $params
   ));
-  
+
   if ($result->status_code == 0) {
     $sessionId = $result->message;
     return 1;
@@ -126,7 +126,7 @@ function ws_open_with_params($endpoint, $user, $pass) {
   global $client;
   $sessionId = '';
   @$client = new SoapClient($endpoint);
-  
+
   $params = array (
     'userid' => $user,
     'password' => $pass
@@ -134,7 +134,7 @@ function ws_open_with_params($endpoint, $user, $pass) {
   $result = $client->__SoapCall('login', array (
     $params
   ));
-  
+
   if ($result->status_code == 0) {
     $sessionId = $result->message;
     return 1;
@@ -183,14 +183,14 @@ function ws_sendMessage($caseId, $toEmail, $sSubject, $ccEmail, $bccEmail, $temp
 function ws_getVariables($caseId, $variables) {
   global $sessionId;
   global $client;
-  
+
   $aVariables = array ();
   foreach ( $variables as $key => $val ) {
     $obj = new stdClass();
     $obj->name = $val;
     $aVariables[] = $obj;
   }
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'caseId' => $caseId,
@@ -205,25 +205,25 @@ function ws_getVariables($caseId, $variables) {
 function ws_newCase($proUid, $taskUid, $variables) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'processId' => $proUid,
     'taskId' => $taskUid,
     'variables' => $variables
   );
-  
+
   $result = $client->__SoapCall('newCase', array (
     $params
   ));
-  
+
   return $result;
 }
 
 function ws_sendVariables($caseId, $variables) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'caseId' => $caseId,
@@ -232,14 +232,14 @@ function ws_sendVariables($caseId, $variables) {
   $result = $client->__SoapCall('sendVariables', array (
     $params
   ));
-  
+
   return $result;
 }
 
 function ws_executeTrigger($caseId, $triggerId, $delIndex) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'caseId' => $caseId,
@@ -256,7 +256,7 @@ function ws_executeTrigger($caseId, $triggerId, $delIndex) {
 function ws_derivateCase($caseId, $delId) {
   global $sessionId;
   global $client;
-  
+
   $rows = array ();
   $params = array (
     'sessionId' => $sessionId,
@@ -267,7 +267,7 @@ function ws_derivateCase($caseId, $delId) {
     $params
   ));
   $rows = ws_parser($result);
-  
+
   $result->derivation = $rows;
   //print_r($result);
   return $result;
@@ -276,7 +276,7 @@ function ws_derivateCase($caseId, $delId) {
 function ws_routeCase($caseId, $delId) {
   global $sessionId;
   global $client;
-  
+
   $rows = array ();
   $params = array (
     'sessionId' => $sessionId,
@@ -292,7 +292,7 @@ function ws_routeCase($caseId, $delId) {
 function ws_processList() {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId
   );
@@ -308,7 +308,7 @@ function ws_processList() {
 function ws_groupList() {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId
   );
@@ -321,7 +321,7 @@ function ws_groupList() {
 function ws_departmentList() {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId
   );
@@ -334,14 +334,14 @@ function ws_departmentList() {
     $res->departments[0] = $result->departments;
     return $res;
   }
-  
+
   return $result;
 }
 
 function ws_roleList() {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId
   );
@@ -354,7 +354,7 @@ function ws_roleList() {
 function ws_caseList() {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId
   );
@@ -367,7 +367,7 @@ function ws_caseList() {
 function ws_userList() {
   global $sessionId;
   global $client;
-  
+
   $users = array ();
   $params = array (
     'sessionId' => $sessionId
@@ -381,7 +381,7 @@ function ws_userList() {
 function ws_triggerList() {
   global $sessionId;
   global $client;
-  
+
   $users = array ();
   $params = array (
     'sessionId' => $sessionId
@@ -395,7 +395,7 @@ function ws_triggerList() {
 function ws_getCaseInfo($caseId, $delIndex = NULL) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'caseId' => $caseId,
@@ -410,7 +410,7 @@ function ws_getCaseInfo($caseId, $delIndex = NULL) {
 function ws_reassignCase($caseId, $delIndex, $userIdSource, $userIdTarget) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'caseId' => $caseId,
@@ -431,7 +431,7 @@ function ws_reassignCase($caseId, $delIndex, $userIdSource, $userIdTarget) {
 function ws_taskCase($caseId) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'caseId' => $caseId
   );
@@ -443,46 +443,55 @@ function ws_taskCase($caseId) {
   throw (new Exception($result->message));
 }
 
-function ws_sendFile($FILENAME, $USR_UID, $APP_UID, $DEL_INDEX = 1, $DOC_UID = NULL, $title = NULL, $comment = NULL) {
-  
-  $DOC_UID = ($DOC_UID != NULL) ? $DOC_UID : - 1;
-  $APP_DOC_TYPE = ($DOC_UID == - 1) ? 'ATTACHED' : 'INPUT';
-  $title = ($title != NULL) ? $title : $FILENAME;
-  $comment = ($comment != NULL) ? $comment : ''; 
-  
-  $params = array (
-    'ATTACH_FILE' => "@$FILENAME",
-    'APPLICATION' => $APP_UID,
-    'INDEX' => $DEL_INDEX,
-    'USR_UID' => $USR_UID,
-    'DOC_UID' => $DOC_UID,
-    'APP_DOC_TYPE' => $APP_DOC_TYPE,
-    'TITLE' => $title,
-    'COMMENT' => $comment
-  );
-  
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, WS_UPLOAD_URL);
-  //curl_setopt($ch, CURLOPT_VERBOSE, 1);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($ch, CURLOPT_POST, 1);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-  curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
-  curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
-  $response = curl_exec($ch);
-  curl_close($ch);
-  
-  return $response;
+function ws_sendFile(
+    $FILENAME,
+    $USR_UID,
+    $APP_UID,
+    $DEL_INDEX=1,
+    $DOC_UID=null,
+    $APP_DOC_FIELDNAME=null,
+    $title=null,
+    $comment=null
+) {
+    $DOC_UID = ($DOC_UID != null)? $DOC_UID : -1;
+    $APP_DOC_TYPE = ($DOC_UID == -1)? "ATTACHED" : "INPUT";
+    $title = ($title != null)? $title : $FILENAME;
+    $comment = ($comment != null)? $comment : null;
+
+    $params = array(
+        "ATTACH_FILE" => "@$FILENAME",
+        "APPLICATION" => $APP_UID,
+        "INDEX" => $DEL_INDEX,
+        "DOC_UID" => $DOC_UID,
+        "USR_UID" => $USR_UID,
+        "APP_DOC_TYPE" => $APP_DOC_TYPE,
+        "APP_DOC_FIELDNAME" => $APP_DOC_FIELDNAME,
+        "TITLE" => $title,
+        "COMMENT" => $comment
+    );
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, WS_UPLOAD_URL);
+    //curl_setopt($ch, CURLOPT_VERBOSE, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    return $response;
 }
 
 function ws_updateFile($APP_DOC_UID, $FILENAME, $DOC_VERSION, $APP_DOC_TYPE=NULL, $USR_UID=NULL, $APP_UID=NULL, $DEL_INDEX=NULL, $DOC_UID=NULL, $title=NULL, $comment=NULL) {
-  
+
   $params = array (
     'APP_DOC_UID' => $APP_DOC_UID,
     'DOC_VERSION' => $DOC_VERSION,
     'ATTACH_FILE' => "@$FILENAME"
   );
-  
+
   if( $APP_UID != NULL)
     $params['APPLICATION'] = $APP_UID;
   if( $DEL_INDEX != NULL)
@@ -497,7 +506,7 @@ function ws_updateFile($APP_DOC_UID, $FILENAME, $DOC_VERSION, $APP_DOC_TYPE=NULL
     $params['TITLE'] = $title;
   if( $comment != NULL)
     $params['COMMENT'] = $comment;
-  
+
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, WS_UPLOAD_URL);
   //curl_setopt($ch, CURLOPT_VERBOSE, 1);
@@ -506,7 +515,7 @@ function ws_updateFile($APP_DOC_UID, $FILENAME, $DOC_VERSION, $APP_DOC_TYPE=NULL
   curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
   $response = curl_exec($ch);
   curl_close($ch);
-  
+
   return $response;
 }
 
@@ -514,7 +523,7 @@ function ws_updateFile($APP_DOC_UID, $FILENAME, $DOC_VERSION, $APP_DOC_TYPE=NULL
 function ws_createUser($userId, $firstname, $lastname, $email, $role, $password) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'userId' => $userId,
@@ -524,11 +533,11 @@ function ws_createUser($userId, $firstname, $lastname, $email, $role, $password)
     'role' => $role,
     'password' => $password
   );
-  
+
   $result = $client->__SoapCall('createUser', array (
     $params
   ));
-  
+
   return $result;
 }
 
@@ -536,7 +545,7 @@ function ws_createUser($userId, $firstname, $lastname, $email, $role, $password)
 function ws_createGroup( $groupName ) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'name' => $groupName
@@ -549,10 +558,10 @@ function ws_createGroup( $groupName ) {
 function ws_createDepartment( $depName, $depParentId ) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
-    'name' => $depName, 
+    'name' => $depName,
     'parentUID' => $depParentId
   );
   $result = $client->__SoapCall('createDepartment', array ( $params ));
@@ -563,13 +572,13 @@ function ws_createDepartment( $depName, $depParentId ) {
 function ws_assignUserToGroup($userId, $groupId) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'userId' => $userId,
     'groupId' => $groupId
   );
-  
+
   $result = $client->__SoapCall('assignUserToGroup', array (
     $params
   ));
@@ -580,14 +589,14 @@ function ws_assignUserToGroup($userId, $groupId) {
 function ws_assignUserToDepartment($userId, $depId, $manager ) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'userId' => $userId,
     'departmentId' => $depId,
     'manager' => $manager
   );
-  
+
   $result = $client->__SoapCall('assignUserToDepartment', array (
     $params
   ));
@@ -597,7 +606,7 @@ function ws_assignUserToDepartment($userId, $depId, $manager ) {
 function ws_systemInformation() {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId
   );
@@ -610,7 +619,7 @@ function ws_systemInformation() {
 function ws_importProcessFromLibrary($processId, $version = '', $importOption = '', $usernameLibrary = '', $passwordLibrary = '') {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'processId' => $processId,
@@ -628,47 +637,47 @@ function ws_importProcessFromLibrary($processId, $version = '', $importOption = 
 function ws_InputDocumentList($caseId) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'caseId' => $caseId
   );
-  
+
   $result = $client->__SoapCall('InputDocumentList', array (
     $params
   ));
-  
+
   return $result;
 }
 
 function ws_outputDocumentList($caseId) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'caseId' => $caseId
   );
-  
+
   $result = $client->__SoapCall('outputDocumentList', array (
     $params
   ));
-  
+
   return $result;
 }
 
 function ws_removeDocument($appDocUid) {
   global $sessionId;
   global $client;
-  
+
   $params = array (
     'sessionId' => $sessionId,
     'appDocUid' => $appDocUid
   );
-  
+
   $result = $client->__SoapCall('RemoveDocument', array (
     $params
   ));
-  
+
   return $result;
 }

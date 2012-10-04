@@ -30,18 +30,19 @@ try {
     throw new Exception(G::LoadTranslation('ID_INVALID_APPLICATION_ID_MSG', array('<a href=\''.$_SERVER['HTTP_REFERER'].'\'>{1}</a>', G::LoadTranslation('ID_REOPEN'))));
   }
 
-  $oForm = new Form ( $_SESSION ['PROCESS'] . '/' . $_GET ['UID'], PATH_DYNAFORM );
-  $oForm->validatePost ();
+  $oForm = new Form($_SESSION["PROCESS"] . "/" . $_GET["UID"], PATH_DYNAFORM);
+  $oForm->validatePost();
 
-  /* Includes */
-  G::LoadClass ( 'case' );
+  //Includes
+  G::LoadClass("case");
 
-  //load the variables
-  $oCase = new Cases ( );
-  $oCase->thisIsTheCurrentUser ( $_SESSION ['APPLICATION'], $_SESSION ['INDEX'], $_SESSION ['USER_LOGGED'], 'REDIRECT', 'cases_List' );
-  $Fields = $oCase->loadCase ( $_SESSION ['APPLICATION'] );
-  $Fields ['APP_DATA'] = array_merge ( $Fields ['APP_DATA'], G::getSystemConstants () );
-  $Fields ['APP_DATA'] = array_merge ( $Fields ['APP_DATA'], ( array ) $_POST ['form'] );
+  //Load the variables
+  $oCase = new Cases();
+  $oCase->thisIsTheCurrentUser($_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["USER_LOGGED"], "REDIRECT", "cases_List");
+  $Fields = $oCase->loadCase($_SESSION["APPLICATION"]);
+
+  $Fields["APP_DATA"] = array_merge($Fields["APP_DATA"], G::getSystemConstants());
+  $Fields["APP_DATA"] = array_merge($Fields["APP_DATA"], $_POST["form"]);
 
   #here we must verify if is a debug session
   $trigger_debug_session = $_SESSION ['TRIGGER_DEBUG'] ['ISSET']; #here we must verify if is a debugg session
@@ -115,13 +116,13 @@ try {
             } catch ( Exception $oError ) {
               //Nothing
             }
-          } 
+          }
           else {
             try {
               // assembling the field list in order to save the data ina new record of a pm table
               if (empty($newValues)){
                 $newValues = $aValues;
-              } 
+              }
               else {
                 foreach ($aValues as $aValueKey=>$aValueCont) {
                   if (trim($newValues[$aValueKey])==''){
@@ -138,7 +139,7 @@ try {
       }
     }
   }
-  
+
   //save data
   $aData = array ();
   $aData ['APP_NUMBER']       = $Fields ['APP_NUMBER'];
@@ -160,92 +161,148 @@ try {
       $oAdditionalTables->saveDataInTable( $oForm->fields [$oForm->fields[$id]->pmconnection]->pmtable, $newValues);
     }
   }
-  
-  //save files
-  require_once 'classes/model/AppDocument.php';
-  if (isset ( $_FILES ['form'] )) {
-    foreach ( $_FILES ['form'] ['name'] as $sFieldName => $vValue ) {
-      if ($_FILES ['form'] ['error'] [$sFieldName] == 0) {
-        $oAppDocument = new AppDocument();
-        
-        if ( isset ( $_POST ['INPUTS'] [$sFieldName] ) && $_POST ['INPUTS'] [$sFieldName] != '' ) {
-          require_once ('classes/model/AppFolder.php');
-          require_once ('classes/model/InputDocument.php');
-          
-          $oInputDocument = new InputDocument();
-          $aID = $oInputDocument->load($_POST ['INPUTS'] [$sFieldName]);
-          
-           //Get the Custom Folder ID (create if necessary)
-          $oFolder=new AppFolder();
-          $folderId=$oFolder->createFromPath($aID['INP_DOC_DESTINATION_PATH']);
-          
-          //Tags
-          $fileTags=$oFolder->parseTags($aID['INP_DOC_TAGS']);
-          
-          $aFields = array (
-            'APP_UID' => $_SESSION ['APPLICATION'],
-            'DEL_INDEX' => $_SESSION ['INDEX'],
-            'USR_UID' => $_SESSION ['USER_LOGGED'],
-            'DOC_UID' => $_POST ['INPUTS'] [$sFieldName],
-            'APP_DOC_TYPE' => 'INPUT',
-            'APP_DOC_CREATE_DATE' => date ( 'Y-m-d H:i:s' ),
-            'APP_DOC_COMMENT' => '',
-            'APP_DOC_TITLE' => '',
-            'APP_DOC_FILENAME' => $_FILES ['form'] ['name'] [$sFieldName],
-            'FOLDER_UID'          => $folderId,
-            'APP_DOC_TAGS'        => $fileTags
-          );
-        } 
-        else {
-          $aFields = array (
-            'APP_UID' => $_SESSION ['APPLICATION'],
-            'DEL_INDEX' => $_SESSION ['INDEX'],
-            'USR_UID' => $_SESSION ['USER_LOGGED'],
-            'DOC_UID' => -1,
-            'APP_DOC_TYPE' => 'ATTACHED',
-            'APP_DOC_CREATE_DATE' => date ( 'Y-m-d H:i:s' ),
-            'APP_DOC_COMMENT' => '',
-            'APP_DOC_TITLE' => '',
-            'APP_DOC_FILENAME' => $_FILES ['form'] ['name'] [$sFieldName]
-          );
-        }
-        
-        $oAppDocument->create($aFields);
-        
-        $iDocVersion = $oAppDocument->getDocVersion();
-        $sAppDocUid = $oAppDocument->getAppDocUid();
-        $aInfo = pathinfo($oAppDocument->getAppDocFilename());
-        $sExtension = (isset ( $aInfo ['extension'] ) ? $aInfo ['extension'] : '');
-        $sPathName = PATH_DOCUMENT . $_SESSION ['APPLICATION'] . PATH_SEP;
-        $sFileName = $sAppDocUid . '_'.$iDocVersion.'.' . $sExtension;
-        G::uploadFile ( $_FILES ['form'] ['tmp_name'] [$sFieldName], $sPathName, $sFileName );
-        
-        //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
-        $oPluginRegistry = &PMPluginRegistry::getSingleton();
-        if ($oPluginRegistry->existsTrigger(PM_UPLOAD_DOCUMENT) && class_exists("uploadDocumentData")) {
-          $triggerDetail = $oPluginRegistry->getTriggerInfo(PM_UPLOAD_DOCUMENT);
-          $documentData = new uploadDocumentData($_SESSION["APPLICATION"], $_SESSION["USER_LOGGED"], $sPathName . $sFileName, $aFields["APP_DOC_FILENAME"], $sAppDocUid, $iDocVersion);
-          $uploadReturn = $oPluginRegistry->executeTriggers(PM_UPLOAD_DOCUMENT, $documentData);
-          
-          if ($uploadReturn) {
-              $aFields["APP_DOC_PLUGIN"] = $triggerDetail->sNamespace;
-              
-              if (!isset($aFields["APP_DOC_UID"])) {
-                $aFields["APP_DOC_UID"] = $sAppDocUid;
+
+  //Save files
+  require_once ("classes/model/AppDocument.php");
+
+  if (isset($_FILES["form"]["name"]) && count($_FILES["form"]["name"]) > 0) {
+      $arrayField = array();
+      $arrayFileName    = array();
+      $arrayFileTmpName = array();
+      $arrayFileError   = array();
+      $i = 0;
+
+      foreach ($_FILES["form"]["name"] as $fieldIndex => $fieldValue) {
+          if (is_array($fieldValue)) {
+              foreach ($fieldValue as $index => $value) {
+                  if (is_array($value)) {
+                      foreach ($value as $grdFieldIndex => $grdFieldValue) {
+                          $arrayField[$i]["grdName"] = $fieldIndex;
+                          $arrayField[$i]["grdFieldName"] = $grdFieldIndex;
+                          $arrayField[$i]["index"] = $index;
+
+                          $arrayFileName[$i]    = $_FILES["form"]["name"][$fieldIndex][$index][$grdFieldIndex];
+                          $arrayFileTmpName[$i] = $_FILES["form"]["tmp_name"][$fieldIndex][$index][$grdFieldIndex];
+                          $arrayFileError[$i]   = $_FILES["form"]["error"][$fieldIndex][$index][$grdFieldIndex];
+                          $i = $i + 1;
+                      }
+                  }
               }
-  	           if (!isset($aFields["DOC_VERSION"])) {
-                $aFields["DOC_VERSION"] = $iDocVersion;
-              }
-              
-              $oAppDocument->update($aFields);
-              
-              unlink($sPathName . $sFileName);
+          } else {
+              $arrayField[$i] = $fieldIndex;
+
+              $arrayFileName[$i]    = $_FILES["form"]["name"][$fieldIndex];
+              $arrayFileTmpName[$i] = $_FILES["form"]["tmp_name"][$fieldIndex];
+              $arrayFileError[$i]   = $_FILES["form"]["error"][$fieldIndex];
+              $i = $i + 1;
           }
-        }
       }
-    }
+
+      if (count($arrayField) > 0) {
+          for ($i = 0; $i <= count($arrayField) - 1; $i++) {
+              if ($arrayFileError[$i] == 0) {
+                  $indocUid = null;
+                  $fieldName = null;
+
+                  if (is_array($arrayField[$i])) {
+                      if (isset($_POST["INPUTS"][$arrayField[$i]["grdName"]][$arrayField[$i]["grdFieldName"]]) &&
+                          !empty($_POST["INPUTS"][$arrayField[$i]["grdName"]][$arrayField[$i]["grdFieldName"]])
+                      ) {
+                          $indocUid = $_POST["INPUTS"][$arrayField[$i]["grdName"]][$arrayField[$i]["grdFieldName"]];
+                      }
+
+                      $fieldName = $arrayField[$i]["grdName"] . "_" . $arrayField[$i]["index"] . "_" . $arrayField[$i]["grdFieldName"];
+                  } else {
+                      if (isset($_POST["INPUTS"][$arrayField[$i]]) &&
+                          !empty($_POST["INPUTS"][$arrayField[$i]])
+                      ) {
+                          $indocUid = $_POST["INPUTS"][$arrayField[$i]];
+                      }
+
+                      $fieldName = $arrayField[$i];
+                  }
+
+                  if ($indocUid != null) {
+                      require_once ("classes/model/AppFolder.php");
+                      require_once ("classes/model/InputDocument.php");
+
+                      $oInputDocument = new InputDocument();
+                      $aID = $oInputDocument->load($indocUid);
+
+                      //Get the Custom Folder ID (create if necessary)
+                      $oFolder = new AppFolder();
+
+                      $aFields = array (
+                          "APP_UID"   => $_SESSION["APPLICATION"],
+                          "DEL_INDEX" => $_SESSION["INDEX"],
+                          "USR_UID" => $_SESSION["USER_LOGGED"],
+                          "DOC_UID" => $indocUid,
+                          "APP_DOC_TYPE"        => "INPUT",
+                          "APP_DOC_CREATE_DATE" => date("Y-m-d H:i:s"),
+                          "APP_DOC_COMMENT"   => "",
+                          "APP_DOC_TITLE"     => "",
+                          "APP_DOC_FILENAME"  => $arrayFileName[$i],
+                          "FOLDER_UID"        => $oFolder->createFromPath($aID["INP_DOC_DESTINATION_PATH"]),
+                          "APP_DOC_TAGS"      => $oFolder->parseTags($aID["INP_DOC_TAGS"]),
+                          "APP_DOC_FIELDNAME" => $fieldName
+                      );
+                  } else {
+                      $aFields = array (
+                          "APP_UID"   => $_SESSION["APPLICATION"],
+                          "DEL_INDEX" => $_SESSION["INDEX"],
+                          "USR_UID" => $_SESSION["USER_LOGGED"],
+                          "DOC_UID" => -1,
+                          "APP_DOC_TYPE"        => "ATTACHED",
+                          "APP_DOC_CREATE_DATE" => date("Y-m-d H:i:s"),
+                          "APP_DOC_COMMENT"   => "",
+                          "APP_DOC_TITLE"     => "",
+                          "APP_DOC_FILENAME"  => $arrayFileName[$i],
+                          "APP_DOC_FIELDNAME" => $fieldName
+                      );
+                  }
+
+                  $oAppDocument = new AppDocument();
+                  $oAppDocument->create($aFields);
+
+                  $iDocVersion = $oAppDocument->getDocVersion();
+                  $sAppDocUid = $oAppDocument->getAppDocUid();
+                  $aInfo = pathinfo($oAppDocument->getAppDocFilename());
+                  $sExtension = ((isset($aInfo["extension"]))? $aInfo["extension"] : "");
+                  $sPathName = PATH_DOCUMENT . $_SESSION ["APPLICATION"] . PATH_SEP;
+                  $sFileName = $sAppDocUid . "_" . $iDocVersion . "." . $sExtension;
+
+                  G::uploadFile($arrayFileTmpName[$i], $sPathName, $sFileName);
+
+                  //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
+                  $oPluginRegistry = &PMPluginRegistry::getSingleton();
+
+                  if ($oPluginRegistry->existsTrigger(PM_UPLOAD_DOCUMENT) && class_exists("uploadDocumentData")) {
+                      $triggerDetail = $oPluginRegistry->getTriggerInfo(PM_UPLOAD_DOCUMENT);
+                      $documentData = new uploadDocumentData($_SESSION["APPLICATION"], $_SESSION["USER_LOGGED"], $sPathName . $sFileName, $aFields["APP_DOC_FILENAME"], $sAppDocUid, $iDocVersion);
+                      $uploadReturn = $oPluginRegistry->executeTriggers(PM_UPLOAD_DOCUMENT, $documentData);
+
+                      if ($uploadReturn) {
+                          $aFields["APP_DOC_PLUGIN"] = $triggerDetail->sNamespace;
+
+                          if (!isset($aFields["APP_DOC_UID"])) {
+                              $aFields["APP_DOC_UID"] = $sAppDocUid;
+                          }
+
+                          if (!isset($aFields["DOC_VERSION"])) {
+                              $aFields["DOC_VERSION"] = $iDocVersion;
+                          }
+
+                          $oAppDocument->update($aFields);
+
+                          unlink($sPathName . $sFileName);
+                      }
+                  }
+              }
+          }
+      }
   }
-  //go to the next step
+
+  //Go to the next step
   $aNextStep = $oCase->getNextStep ( $_SESSION ['PROCESS'], $_SESSION ['APPLICATION'], $_SESSION ['INDEX'], $_SESSION ['STEP_POSITION'] );
   if (isset ( $_GET ['_REFRESH_'] )) {
     G::header ( 'location: ' . $_SERVER ['HTTP_REFERER'] );

@@ -16,64 +16,65 @@ include_once 'creole/CreoleTypes.php';
  *
  * @package    workflow.classes.model.map
  */
-class DynaformMapBuilder {
+class DynaformMapBuilder
+{
 
-	/**
-	 * The (dot-path) name of this class
-	 */
-	const CLASS_NAME = 'classes.model.map.DynaformMapBuilder';
+    /**
+     * The (dot-path) name of this class
+     */
+    const CLASS_NAME = 'classes.model.map.DynaformMapBuilder';
 
-	/**
-	 * The database map.
-	 */
-	private $dbMap;
+    /**
+     * The database map.
+     */
+    private $dbMap;
 
-	/**
-	 * Tells us if this DatabaseMapBuilder is built so that we
-	 * don't have to re-build it every time.
-	 *
-	 * @return     boolean true if this DatabaseMapBuilder is built, false otherwise.
-	 */
-	public function isBuilt()
-	{
-		return ($this->dbMap !== null);
-	}
+    /**
+     * Tells us if this DatabaseMapBuilder is built so that we
+     * don't have to re-build it every time.
+     *
+     * @return     boolean true if this DatabaseMapBuilder is built, false otherwise.
+     */
+    public function isBuilt()
+    {
+        return ($this->dbMap !== null);
+    }
 
-	/**
-	 * Gets the databasemap this map builder built.
-	 *
-	 * @return     the databasemap
-	 */
-	public function getDatabaseMap()
-	{
-		return $this->dbMap;
-	}
+    /**
+     * Gets the databasemap this map builder built.
+     *
+     * @return     the databasemap
+     */
+    public function getDatabaseMap()
+    {
+        return $this->dbMap;
+    }
 
-	/**
-	 * The doBuild() method builds the DatabaseMap
-	 *
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function doBuild()
-	{
-		$this->dbMap = Propel::getDatabaseMap('workflow');
+    /**
+     * The doBuild() method builds the DatabaseMap
+     *
+     * @return     void
+     * @throws     PropelException
+     */
+    public function doBuild()
+    {
+        $this->dbMap = Propel::getDatabaseMap('workflow');
 
-		$tMap = $this->dbMap->addTable('DYNAFORM');
-		$tMap->setPhpName('Dynaform');
+        $tMap = $this->dbMap->addTable('DYNAFORM');
+        $tMap->setPhpName('Dynaform');
 
-		$tMap->setUseIdGenerator(false);
+        $tMap->setUseIdGenerator(false);
 
-		$tMap->addPrimaryKey('DYN_UID', 'DynUid', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addPrimaryKey('DYN_UID', 'DynUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
-		$tMap->addColumn('PRO_UID', 'ProUid', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addColumn('PRO_UID', 'ProUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
-		$tMap->addColumn('DYN_TYPE', 'DynType', 'string', CreoleTypes::VARCHAR, true, 20);
+        $tMap->addColumn('DYN_TYPE', 'DynType', 'string', CreoleTypes::VARCHAR, true, 20);
 
-		$tMap->addColumn('DYN_FILENAME', 'DynFilename', 'string', CreoleTypes::VARCHAR, true, 100);
+        $tMap->addColumn('DYN_FILENAME', 'DynFilename', 'string', CreoleTypes::VARCHAR, true, 100);
 
-		$tMap->addValidator('DYN_TYPE', 'validValues', 'propel.validator.ValidValuesValidator', 'xmlform|grid', 'Please select a valid dynaform type.');
+        $tMap->addValidator('DYN_TYPE', 'validValues', 'propel.validator.ValidValuesValidator', 'xmlform|grid', 'Please select a valid dynaform type.');
 
-	} // doBuild()
+    } // doBuild()
 
 } // DynaformMapBuilder

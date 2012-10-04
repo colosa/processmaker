@@ -16,70 +16,71 @@ include_once 'creole/CreoleTypes.php';
  *
  * @package    workflow.classes.model.map
  */
-class FieldConditionMapBuilder {
+class FieldConditionMapBuilder
+{
 
-	/**
-	 * The (dot-path) name of this class
-	 */
-	const CLASS_NAME = 'classes.model.map.FieldConditionMapBuilder';
+    /**
+     * The (dot-path) name of this class
+     */
+    const CLASS_NAME = 'classes.model.map.FieldConditionMapBuilder';
 
-	/**
-	 * The database map.
-	 */
-	private $dbMap;
+    /**
+     * The database map.
+     */
+    private $dbMap;
 
-	/**
-	 * Tells us if this DatabaseMapBuilder is built so that we
-	 * don't have to re-build it every time.
-	 *
-	 * @return     boolean true if this DatabaseMapBuilder is built, false otherwise.
-	 */
-	public function isBuilt()
-	{
-		return ($this->dbMap !== null);
-	}
+    /**
+     * Tells us if this DatabaseMapBuilder is built so that we
+     * don't have to re-build it every time.
+     *
+     * @return     boolean true if this DatabaseMapBuilder is built, false otherwise.
+     */
+    public function isBuilt()
+    {
+        return ($this->dbMap !== null);
+    }
 
-	/**
-	 * Gets the databasemap this map builder built.
-	 *
-	 * @return     the databasemap
-	 */
-	public function getDatabaseMap()
-	{
-		return $this->dbMap;
-	}
+    /**
+     * Gets the databasemap this map builder built.
+     *
+     * @return     the databasemap
+     */
+    public function getDatabaseMap()
+    {
+        return $this->dbMap;
+    }
 
-	/**
-	 * The doBuild() method builds the DatabaseMap
-	 *
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function doBuild()
-	{
-		$this->dbMap = Propel::getDatabaseMap('workflow');
+    /**
+     * The doBuild() method builds the DatabaseMap
+     *
+     * @return     void
+     * @throws     PropelException
+     */
+    public function doBuild()
+    {
+        $this->dbMap = Propel::getDatabaseMap('workflow');
 
-		$tMap = $this->dbMap->addTable('FIELD_CONDITION');
-		$tMap->setPhpName('FieldCondition');
+        $tMap = $this->dbMap->addTable('FIELD_CONDITION');
+        $tMap->setPhpName('FieldCondition');
 
-		$tMap->setUseIdGenerator(false);
+        $tMap->setUseIdGenerator(false);
 
-		$tMap->addPrimaryKey('FCD_UID', 'FcdUid', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addPrimaryKey('FCD_UID', 'FcdUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
-		$tMap->addColumn('FCD_FUNCTION', 'FcdFunction', 'string', CreoleTypes::VARCHAR, true, 50);
+        $tMap->addColumn('FCD_FUNCTION', 'FcdFunction', 'string', CreoleTypes::VARCHAR, true, 50);
 
-		$tMap->addColumn('FCD_FIELDS', 'FcdFields', 'string', CreoleTypes::LONGVARCHAR, false, null);
+        $tMap->addColumn('FCD_FIELDS', 'FcdFields', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
-		$tMap->addColumn('FCD_CONDITION', 'FcdCondition', 'string', CreoleTypes::LONGVARCHAR, false, null);
+        $tMap->addColumn('FCD_CONDITION', 'FcdCondition', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
-		$tMap->addColumn('FCD_EVENTS', 'FcdEvents', 'string', CreoleTypes::LONGVARCHAR, false, null);
+        $tMap->addColumn('FCD_EVENTS', 'FcdEvents', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
-		$tMap->addColumn('FCD_EVENT_OWNERS', 'FcdEventOwners', 'string', CreoleTypes::LONGVARCHAR, false, null);
+        $tMap->addColumn('FCD_EVENT_OWNERS', 'FcdEventOwners', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
-		$tMap->addColumn('FCD_STATUS', 'FcdStatus', 'string', CreoleTypes::VARCHAR, false, 10);
+        $tMap->addColumn('FCD_STATUS', 'FcdStatus', 'string', CreoleTypes::VARCHAR, false, 10);
 
-		$tMap->addColumn('FCD_DYN_UID', 'FcdDynUid', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addColumn('FCD_DYN_UID', 'FcdDynUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
-	} // doBuild()
+    } // doBuild()
 
 } // FieldConditionMapBuilder

@@ -2324,76 +2324,111 @@ class XmlForm_Field_Link extends XmlForm_Field {
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_File extends XmlForm_Field {
-  var $required = false;
-  var $input    = '';
-  /**
-   * Function render
-   * @author David S. Callizaya S. <davidsantos@colosa.com>
-   * @access public
-   * @param string value
-   * @return string
-   */
-  function render($value = NULL) {
-    $permission = false;
-    $url = '';
-    if (isset($_SESSION['APPLICATION']) && isset($_SESSION['USER_LOGGED']) && isset($_SESSION['TASK']) && $this->mode == 'view') {
-        require_once ("classes/model/AppDocument.php");
-        G::LoadClass('case');
-        $case = new Cases();
-        $fields = $case->loadCase($_SESSION['APPLICATION']);
-        $sProcessUID = $fields['PRO_UID'];
-        $permissions = $case->getAllObjects($sProcessUID, $_SESSION['APPLICATION'], $_SESSION['TASK'], $_SESSION['USER_LOGGED']);
+class XmlForm_Field_File extends XmlForm_Field
+{
+    public $required = false;
+    public $input = null;
 
-        $criteria = new Criteria();
-        $criteria->add(AppDocumentPeer::APP_DOC_UID, $permissions['INPUT_DOCUMENTS'], Criteria::IN);
-        $criteria->addDescendingOrderByColumn(AppDocumentPeer::APP_DOC_CREATE_DATE);
-        $dataset = AppDocumentPeer::doSelectRS($criteria);
-        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-        $dataset->next();
-        $sw = 0;
-        while (($aRow = $dataset->getRow()) && $sw == 0) {
-            if ($aRow['DOC_UID'] == $this->input) {
-                $sw = 1;
-                $permission = true;
-                $url = (G::is_https() ? 'https://' : 'http://') .
-                $_SERVER['HTTP_HOST'].dirname($_SERVER['REQUEST_URI']).'/cases_ShowDocument?a='.
-                $aRow['APP_DOC_UID'].'&v='.$aRow['DOC_VERSION'];
+    /**
+     * Function render
+     * @author David S. Callizaya S. <davidsantos@colosa.com>
+     * @access public
+     * @param string value
+     * @return string
+     */
+    public function render($value=null, $owner=null, $rowId=null, $row=-1, $therow=-1)
+    {
+        $permission = false;
+        $url = null;
+
+        if (isset($_SESSION["APPLICATION"]) &&
+            isset($_SESSION["USER_LOGGED"]) &&
+            isset($_SESSION["TASK"]) &&
+            isset($this->input) && $this->input != null &&
+            $this->mode == "view"
+        ) {
+            require_once ("classes/model/AppDocument.php");
+            G::LoadClass("case");
+
+            $case = new Cases();
+            $arrayField = $case->loadCase($_SESSION["APPLICATION"]);
+            $arrayPermission = $case->getAllObjects($arrayField["PRO_UID"], $_SESSION["APPLICATION"], $_SESSION["TASK"], $_SESSION["USER_LOGGED"]);
+
+            $criteria = new Criteria();
+            $criteria->add(AppDocumentPeer::APP_DOC_UID, $arrayPermission["INPUT_DOCUMENTS"], Criteria::IN);
+
+            switch ($owner->type) {
+                case "xmlform":
+                    break;
+                case "grid":
+                    $criteria->add(AppDocumentPeer::APP_DOC_FIELDNAME, $owner->name . "_" . $row . "_" . $this->name);
+                    break;
             }
-            $dataset->next();
+
+            $criteria->addDescendingOrderByColumn(AppDocumentPeer::APP_DOC_CREATE_DATE);
+            $rsCriteria = AppDocumentPeer::doSelectRS($criteria);
+            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            $sw = 0;
+
+            while (($rsCriteria->next()) && $sw == 0) {
+                $row = $rsCriteria->getRow();
+
+                if ($row["DOC_UID"] == $this->input) {
+                    $permission = true;
+                    $url = ((G::is_https())? "https://" : "http://") . $_SERVER["HTTP_HOST"] . dirname($_SERVER["REQUEST_URI"]) . "/cases_ShowDocument?a=" . $row["APP_DOC_UID"] . "&v=" . $row["DOC_VERSION"];
+                    $sw = 1;
+                }
+            }
         }
+
+        $html1 = null;
+        $html2 = null;
+        $mode  = ($this->mode == "view")? " disabled=\"disabled\"" : null;
+        $styleDisplay = null;
+
+        if ($this->mode == "view") {
+            if ($permission) {
+                $html1 = "<a href=\"" . $url . "\"" . (($owner->type == "grid")? " class=\"tableOption\" style=\"color: #006699; text-decoration: none; font-weight: normal;\"" : null) . ">";
+                $html2 = "</a>";
+            }
+
+            $html1 = $html1 . $value;
+            $styleDisplay = "display: none;";
+        }
+
+        $html = $html1 . "<input type=\"file\" id=\"form" . $rowId . "[" . $this->name . "]\" name=\"form" . $rowId . "[" . $this->name . "]\" value=\"" . $value . "\" class=\"module_app_input___gray_file\" style=\"" . $styleDisplay . "\"" . $mode . " />" . $html2;
+
+        if (isset($this->input) && $this->input != null) {
+            require_once ("classes/model/InputDocument.php");
+
+            try {
+                $indoc = new InputDocument();
+                $aDoc = $indoc->load($this->input);
+                $aDoc["INP_DOC_TITLE"] = (isset($aDoc["INP_DOC_TITLE"]))? $aDoc["INP_DOC_TITLE"] : null;
+                $html = $html . "<label><img src=\"/images/inputdocument.gif\" width=\"22px\" width=\"22px\" alt=\"\" /><font size=\"1\">(" . trim($aDoc["INP_DOC_TITLE"]) . ")</font></label>";
+            } catch (Exception $e) {
+                //Then the input document doesn"t exits, id referencial broken
+                $html = $html . "&nbsp;<font color=\"red\"><img src=\"/images/alert_icon.gif\" width=\"16px\" width=\"16px\" alt=\"\" /><font size=\"1\">(" . G::loadTranslation("ID_INPUT_DOC_DOESNT_EXIST") . ")</font></font>";
+            }
+        }
+
+        $html = $html . $this->renderHint();
+
+        return $html;
     }
 
-    $mode = ($this->mode == 'view') ? ' disabled="disabled"' : '';
-    if($this->mode == 'view'){
-      $displayStyle = 'display:none;';
-      if ($permission) {
-        $html = '<a href='.$url.'>'.$value.'<input class="module_app_input___gray_file" ' . $mode .'style='.$displayStyle .' id="form[' . $this->name . ']" name="form[' . $this->name . ']" type=\'file\' value=\'' . $value . '\' /></a>';
-      } else {
-        $html = $value.'<input class="module_app_input___gray_file" ' . $mode .'style='.$displayStyle .' id="form[' . $this->name . ']" name="form[' . $this->name . ']" type=\'file\' value=\'' . $value . '\' />';
-      }
-    }
-    else{
-      $html = '<input class="module_app_input___gray_file" ' . $mode . 'id="form[' . $this->name . ']" name="form[' . $this->name . ']" type=\'file\' value=\'' . $value . '\'/>';
-    }
+    public function renderGrid($value=array(), $owner=null, $therow=-1)
+    {
+        $arrayResult = array();
+        $r = 1;
 
-    if( isset($this->input) && $this->input != '') {
-      require_once 'classes/model/InputDocument.php';
-      $oiDoc = new InputDocument;
+        foreach ($value as $v) {
+            $arrayResult[] = $this->render($v, $owner, "[" . $owner->name . "][" . $r . "]", $r, $therow);
+            $r = $r + 1;
+        }
 
-      try {
-        $aDoc  = $oiDoc->load($this->input);
-        $aDoc['INP_DOC_TITLE'] = isset($aDoc['INP_DOC_TITLE'])? $aDoc['INP_DOC_TITLE']: '';
-        $html .= '<label><img src="/images/inputdocument.gif" width="22px" width="22px"/><font size="1">('.trim($aDoc['INP_DOC_TITLE']).')</font></label>';
-      }
-      catch (Exception $e) {
-        // then the input document doesn't exits, id referencial broken
-        $html .= '&nbsp;<font color="red"><img src="/images/alert_icon.gif" width="16px" width="16px"/><font size="1">('.G::loadTranslation('ID_INPUT_DOC_DOESNT_EXIST').')</font></font>';
-      }
+        return $arrayResult;
     }
-    $html .= $this->renderHint();
-    return $html;
-  }
 }
 
 /**
@@ -3296,11 +3331,11 @@ class XmlForm_Field_Grid extends XmlForm_Field
       $fieldsSize +=  $size;
       $emptyRow [$key] = array ($emptyValue);
     }
-    
+
     if (isset($owner->adjustgridswidth) && $owner->adjustgridswidth == '1') {
       // 400w -> 34s to Firefox
       // 400w -> 43s to Chrome
-      
+
       $baseWidth = 400;
       $minusWidth = 30;
       if (eregi('chrome', $_SERVER['HTTP_USER_AGENT'])) {
@@ -3322,7 +3357,7 @@ class XmlForm_Field_Grid extends XmlForm_Field
       }
     } else {
       if($fieldsSize>100)
-        $owner->width = '100%';  
+        $owner->width = '100%';
     }
   //  else
   //    $owner->width = $fieldsSize . 'em';
@@ -4781,14 +4816,20 @@ class xmlformTemplate extends Smarty
           }
         }*/
 
-        if ($v->type == 'grid') {
-          $result ['form'] [$k] = $form->fields [$k]->renderGrid ( $value, $form, $therow );
+        if ($v->type == "grid") {
+            $result["form"][$k] = $form->fields[$k]->renderGrid($value, $form, $therow);
         } else {
-          if ($v->type == 'dropdown') {
-            $result ['form'] [$k] = $form->fields [$k]->renderGrid ( $value, $form, false, $therow );
-          } else {
-            $result ['form'] [$k] = $form->fields [$k]->renderGrid ( $value, $form );
-          }
+            switch ($v->type) {
+                case "dropdown":
+                    $result["form"][$k] = $form->fields[$k]->renderGrid($value, $form, false, $therow);
+                    break;
+                case "file":
+                    $result["form"][$k] = $form->fields[$k]->renderGrid($value, $form, $therow);
+                    break;
+                default:
+                    $result["form"][$k] = $form->fields[$k]->renderGrid($value, $form);
+                    break;
+            }
         }
       }
     }

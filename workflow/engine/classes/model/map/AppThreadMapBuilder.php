@@ -16,66 +16,67 @@ include_once 'creole/CreoleTypes.php';
  *
  * @package    workflow.classes.model.map
  */
-class AppThreadMapBuilder {
+class AppThreadMapBuilder
+{
 
-	/**
-	 * The (dot-path) name of this class
-	 */
-	const CLASS_NAME = 'classes.model.map.AppThreadMapBuilder';
+    /**
+     * The (dot-path) name of this class
+     */
+    const CLASS_NAME = 'classes.model.map.AppThreadMapBuilder';
 
-	/**
-	 * The database map.
-	 */
-	private $dbMap;
+    /**
+     * The database map.
+     */
+    private $dbMap;
 
-	/**
-	 * Tells us if this DatabaseMapBuilder is built so that we
-	 * don't have to re-build it every time.
-	 *
-	 * @return     boolean true if this DatabaseMapBuilder is built, false otherwise.
-	 */
-	public function isBuilt()
-	{
-		return ($this->dbMap !== null);
-	}
+    /**
+     * Tells us if this DatabaseMapBuilder is built so that we
+     * don't have to re-build it every time.
+     *
+     * @return     boolean true if this DatabaseMapBuilder is built, false otherwise.
+     */
+    public function isBuilt()
+    {
+        return ($this->dbMap !== null);
+    }
 
-	/**
-	 * Gets the databasemap this map builder built.
-	 *
-	 * @return     the databasemap
-	 */
-	public function getDatabaseMap()
-	{
-		return $this->dbMap;
-	}
+    /**
+     * Gets the databasemap this map builder built.
+     *
+     * @return     the databasemap
+     */
+    public function getDatabaseMap()
+    {
+        return $this->dbMap;
+    }
 
-	/**
-	 * The doBuild() method builds the DatabaseMap
-	 *
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function doBuild()
-	{
-		$this->dbMap = Propel::getDatabaseMap('workflow');
+    /**
+     * The doBuild() method builds the DatabaseMap
+     *
+     * @return     void
+     * @throws     PropelException
+     */
+    public function doBuild()
+    {
+        $this->dbMap = Propel::getDatabaseMap('workflow');
 
-		$tMap = $this->dbMap->addTable('APP_THREAD');
-		$tMap->setPhpName('AppThread');
+        $tMap = $this->dbMap->addTable('APP_THREAD');
+        $tMap->setPhpName('AppThread');
 
-		$tMap->setUseIdGenerator(false);
+        $tMap->setUseIdGenerator(false);
 
-		$tMap->addPrimaryKey('APP_UID', 'AppUid', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addPrimaryKey('APP_UID', 'AppUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
-		$tMap->addPrimaryKey('APP_THREAD_INDEX', 'AppThreadIndex', 'int', CreoleTypes::INTEGER, true, null);
+        $tMap->addPrimaryKey('APP_THREAD_INDEX', 'AppThreadIndex', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('APP_THREAD_PARENT', 'AppThreadParent', 'int', CreoleTypes::INTEGER, true, null);
+        $tMap->addColumn('APP_THREAD_PARENT', 'AppThreadParent', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('APP_THREAD_STATUS', 'AppThreadStatus', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addColumn('APP_THREAD_STATUS', 'AppThreadStatus', 'string', CreoleTypes::VARCHAR, true, 32);
 
-		$tMap->addColumn('DEL_INDEX', 'DelIndex', 'int', CreoleTypes::INTEGER, true, null);
+        $tMap->addColumn('DEL_INDEX', 'DelIndex', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addValidator('APP_THREAD_STATUS', 'validValues', 'propel.validator.ValidValuesValidator', 'CLOSED|OPEN', 'Please select a valid status.');
+        $tMap->addValidator('APP_THREAD_STATUS', 'validValues', 'propel.validator.ValidValuesValidator', 'CLOSED|OPEN', 'Please select a valid status.');
 
-	} // doBuild()
+    } // doBuild()
 
 } // AppThreadMapBuilder
