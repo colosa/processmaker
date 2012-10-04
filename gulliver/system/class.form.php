@@ -47,6 +47,7 @@ class Form extends XmlForm
   var $objectRequiredFields = null;
   var $nextstepsave = '';
   var $printdynaform = '';
+  var $adjustgridswidth = '0';
 
   public $visual_frontend;
 
