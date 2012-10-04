@@ -108,8 +108,9 @@ class Service_Rest_RestTool
             ));
         }
 
+        print "\n";
         self::out('Loading Xml Schema from: ', 'info', false);
-        echo  $this->dbXmlSchemaFile . "\n";
+        print $this->dbXmlSchemaFile . "\n";
 
         $doc = new Xml_DOMDocumentExtended();
         $doc->load($this->dbXmlSchemaFile);
@@ -146,7 +147,8 @@ class Service_Rest_RestTool
     {
         $this->loadDbXmlSchema();
 
-        $configFile    = empty($filename) ? $this->basePath . $this->configFile : $filename;
+        $configFile    = empty($filename) ? $this->configFile : $filename;
+
         $configIniStr  = <<<EOT
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;             -= ProcessMaker RestFul services configuration =-                ;
@@ -259,9 +261,8 @@ EOT;
         ));
 
         $c = 0;
-        //print_r ($this->config);die;
         //foreach ($this->config['_tables'] as $table => $conf) {
-        foreach ($this->config as $table => $conf) {
+        foreach ($this->config['_tables'] as $table => $conf) {
             $classname = self::camelize($table, 'class');
             $allowedMethods = explode(' ', $conf['ALLOW_METHODS']);
             $methods = '';
