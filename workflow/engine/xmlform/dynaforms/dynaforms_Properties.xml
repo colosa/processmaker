@@ -53,11 +53,14 @@
   <option name="prompt">Show prompt</option>
   </en>
 </NEXTSTEPSAVE>
-
+ 
 <PRINTDYNAFORM type="checkbox" falseValue="0" value="1" defaultvalue="0" labelOnRight="0">
 <en>Show print dynaform button</en>
 </PRINTDYNAFORM>
 
+<ADJUSTGRIDSWIDTH type="checkbox" falseValue="0" value="0" defaultvalue="0" labelOnRight="0">
+  <en>Adjust the grid width to the width of the main form</en>
+</ADJUSTGRIDSWIDTH>
 <!--<ENABLETEMPLATE type="checkbox" value="1" defaultvalue="0" labelOnRight="0">
   <en>Enable Template</en>
 </ENABLETEMPLATE>-->
@@ -83,6 +86,7 @@ if(document.getElementById("form[DYN_TYPE]").value=="grid"){
     hideRowById('WIDTH');
     hideRowById('NEXTSTEPSAVE');
     hideRowById('PRINTDYNAFORM');
+    hideRowById('ADJUSTGRIDSWIDTH');
 }
 
 function getElementsByClassNameCrossBrowser(searchClass,node,tag) {
@@ -119,6 +123,7 @@ leimnud.event.add(getField('DYN_TYPE'), 'change', function() {
     showRowById('WIDTH');
     showRowById('NEXTSTEPSAVE');
     showRowById('PRINTDYNAFORM');
+    showRowById('ADJUSTGRIDSWIDTH');
   }
 });
 
@@ -145,6 +150,7 @@ function validateGridConversion(proUid,dynUid){
           hideRowById('WIDTH');
           hideRowById('NEXTSTEPSAVE');
           hideRowById('PRINTDYNAFORM');
+          hideRowById('ADJUSTGRIDSWIDTH');
       } else {
          setDropdownSelection("form[DYN_TYPE]" , "xmlform");
          msgBox("Grid forms can not contain the following fields: <br>" + response,"alert");
