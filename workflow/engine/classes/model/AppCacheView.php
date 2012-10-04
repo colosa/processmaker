@@ -422,6 +422,7 @@ class AppCacheView extends BaseAppCacheView
     public function getToRevise($userUid, $doCount)
     {
         require_once ('classes/model/ProcessUser.php');
+        require_once ('classes/model/GroupUser.php');
 
         //adding configuration fields from the configuration options
         //and forming the criteria object
@@ -437,6 +438,21 @@ class AppCacheView extends BaseAppCacheView
             $aProcesses[] = $aRow['PRO_UID'];
             $oDataset->next();
         }
+
+        $oCriteria = new Criteria('workflow');
+        $oCriteria->addSelectColumn(ProcessUserPeer::PRO_UID);
+        $oCriteria->add(ProcessUserPeer::PU_TYPE, 'GROUP_SUPERVISOR');
+        $oCriteria->addJoin(ProcessUserPeer::USR_UID, GroupUserPeer::USR_UID, Criteria::LEFT_JOIN);
+        $oCriteria->add(GroupUserPeer::USR_UID, $userUid);
+        $oDataset = ProcessUserPeer::doSelectRS($oCriteria);
+        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $oDataset->next();
+
+        while ($aRow = $oDataset->getRow()) {
+            $aProcesses[] = $aRow['PRO_UID'];
+            $oDataset->next();
+        }
+
 
         if ($doCount && !isset($this->confCasesList['PMTable']) && !empty($this->confCasesList['PMTable'])) {
             $c = new Criteria('workflow');

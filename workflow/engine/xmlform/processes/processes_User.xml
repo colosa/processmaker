@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dynaForm type="pagetable" sqlConnection="" rowsPerPage="10" menu="processes/processes_Assignuser" name="processes_User">
 
-<PU_UID type="hidden" showInTable="0"/>
+<LA_PU_UID type="hidden" showInTable="0"/>
 
-<PRO_UID type="hidden" showInTable="0"/>
+<LA_PRO_UID type="hidden" showInTable="0"/>
 
-<USR_UID type="hidden" showInTable="0"/>
+<LA_USR_UID type="hidden" showInTable="0"/>
 
-<USR_FIRSTNAME type="text" titlealign="left" colWidth="100">
-  <en>First name</en>
-</USR_FIRSTNAME>
+<LA_PU_NAME type="text" titlealign="left" colWidth="250">
+  <en>User or Group</en>
+</LA_PU_NAME>
 
-<USR_LASTNAME type="text" align="right" colWidth="100">
-  <en>Last name</en>
-</USR_LASTNAME>
+<LA_PU_TYPE_NAME type="text" align="right" colWidth="100">
+  <en>Type</en>
+</LA_PU_TYPE_NAME>
 
-<REMOVE type="link" colWidth="40" value="@G::LoadTranslation(ID_DE_ASSIGN)" link="#" onclick="removeProcessUser(@QPU_UID);return false;"/>
+<REMOVE type="link" colWidth="40" value="@G::LoadTranslation(ID_DE_ASSIGN)" link="#" onclick="removeProcessUser(@QLA_PU_UID);return false;"/>
 
 </dynaForm>

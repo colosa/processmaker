@@ -106,10 +106,19 @@ try {
   	  $oProcessMap->webEntry_new($oData->PRO_UID);
   	break;
   	case 'assignProcessUser':
-  	  $oProcessMap->assignProcessUser($oData->PRO_UID, $oData->USR_UID);
+  	  $oProcessMap->assignProcessUser($oData->PRO_UID, $oData->USR_UID, $oData->TYPE_UID);
+      G::LoadClass('processMap');
+      $oProcessMap = new ProcessMap();
+      $oProcessMap->listProcessesUser($oData->PRO_UID);
   	break;
   	case 'removeProcessUser':
   	  $oProcessMap->removeProcessUser($oData->PU_UID);
+      foreach ($_SESSION['_DBArray']['data'] as $key => $value) {
+        if ($value['LA_PU_UID'] == $oData->PU_UID) {
+          unset($_SESSION['_DBArray']['data'][$key]);
+          break;
+        }
+      }
   	break;
   	case 'supervisorDynaforms':
   	  $oProcessMap->supervisorDynaforms($oData->pro_uid);

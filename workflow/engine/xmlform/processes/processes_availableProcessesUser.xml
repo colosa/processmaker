@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm type="pagetable" menu="processes/processes_availableProcessesUserOptions" searchBy="USR_FIRSTNAME|USR_LASTNAME"  sqlConnection="" rowsPerPage="10">  
+<dynaForm type="pagetable" menu="processes/processes_availableProcessesUserOptions" searchBy="USER_GROUP"  sqlConnection="" rowsPerPage="10">  
   <PRO_UID type="hidden" showInTable="0"/>
-  <USR_UID type="hidden" showInTable="0"/>
-  <USR_FIRSTNAME type="text" titlealign="left" colWidth="100">
-    <en>First name</en>
-  </USR_FIRSTNAME>
-  <USR_LASTNAME type="text" align="right" colWidth="100">
-    <en>Last name</en>
-  </USR_LASTNAME>
-  <ASSIGN type="link" colWidth="40" value="@G::LoadTranslation(ID_ASSIGN)" link="#" onclick="assignProcessUser(@QPRO_UID, @QUSR_UID);return false;"/>
+  <UID type="hidden" showInTable="0"/>
+  <USER_GROUP type="text" titlealign="left" colWidth="150">
+    <en>User or Group</en>
+  </USER_GROUP>
+  <TYPE_UID type="text" align="right" colWidth="80">
+    <en>Type</en>
+  </TYPE_UID>
+  <ASSIGN type="link" colWidth="40" value="@G::LoadTranslation(ID_ASSIGN)" link="#" onclick="assignProcessUser(@QPRO_UID, @QUID, @QTYPE_UID);return false;"/>
 </dynaForm>  

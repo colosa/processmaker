@@ -3149,18 +3149,78 @@ class processMap {
    * @return object(Criteria) $oCriteria
    */
   function listProcessesUser($sProcessUID) {
+    $aResp = array(
+      array(
+        'LA_PU_UID'  => 'char',
+        'LA_PRO_UID' => 'char',
+        'LA_USR_UID' => 'char',
+        'LA_PU_NAME' => 'char',
+        'LA_PU_TYPE_NAME' => 'char')
+    );
 
+    // Groups
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn(ProcessUserPeer::PU_UID);
     $oCriteria->addSelectColumn(ProcessUserPeer::USR_UID);
     $oCriteria->addSelectColumn(ProcessUserPeer::PRO_UID);
-    $oCriteria->addSelectColumn(ProcessUserPeer::PU_TYPE);
+    $oCriteria->addAsColumn('GRP_TITLE', ContentPeer::CON_VALUE);
+    
+    $aConditions [] = array(ProcessUserPeer::USR_UID, ContentPeer::CON_ID);
+    $aConditions [] = array(ContentPeer::CON_CATEGORY, DBAdapter::getStringDelimiter () . 'GRP_TITLE' . DBAdapter::getStringDelimiter ());
+    $aConditions [] = array(ContentPeer::CON_LANG, DBAdapter::getStringDelimiter () . SYS_LANG . DBAdapter::getStringDelimiter ());
+    $oCriteria->addJoinMC($aConditions, Criteria::LEFT_JOIN);
+
+    $oCriteria->add(ProcessUserPeer::PU_TYPE, 'GROUP_SUPERVISOR');
+    $oCriteria->add(ProcessUserPeer::PRO_UID, $sProcessUID);
+    $oCriteria->addAscendingOrderByColumn(ContentPeer::CON_VALUE);
+
+    $oDataset = ProcessUserPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
+
+    while ($aRow = $oDataset->getRow()) {
+      $aResp[] = array(
+        'LA_PU_UID'  => $aRow['PU_UID'],
+        'LA_PRO_UID' => $aRow['PRO_UID'],
+        'LA_USR_UID' => $aRow['USR_UID'],
+        'LA_PU_NAME' => $aRow['GRP_TITLE'],
+        'LA_PU_TYPE_NAME' => 'Group');
+      $oDataset->next();
+    }
+
+    // Users
+    $oCriteria = new Criteria('workflow');
+    $oCriteria->addSelectColumn(ProcessUserPeer::PU_UID);
+    $oCriteria->addSelectColumn(ProcessUserPeer::USR_UID);
+    $oCriteria->addSelectColumn(ProcessUserPeer::PRO_UID);
     $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
     $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
     $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
     $oCriteria->addJoin(ProcessUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+    $oCriteria->add(ProcessUserPeer::PU_TYPE, 'SUPERVISOR');
     $oCriteria->add(ProcessUserPeer::PRO_UID, $sProcessUID);
-    return $oCriteria;
+    $oCriteria->addAscendingOrderByColumn(UsersPeer::USR_FIRSTNAME);
+    $oDataset = ProcessUserPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
+
+    while ($aRow = $oDataset->getRow()) {
+      $aResp[] = array(
+        'LA_PU_UID'  => $aRow['PU_UID'],
+        'LA_PRO_UID' => $aRow['PRO_UID'],
+        'LA_USR_UID' => $aRow['USR_UID'],
+        'LA_PU_NAME' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],
+        'LA_PU_TYPE_NAME' => 'User');
+      $oDataset->next();
+    }
+
+    global $_DBArray;
+    $_DBArray['data']  = $aResp;
+    $_SESSION['_DBArray'] = $_DBArray;
+    $LiCriteria = new Criteria('dbarray');
+    $LiCriteria->setDBArrayTable('data');
+
+    return $LiCriteria;
   }
 
   /**
@@ -3175,16 +3235,54 @@ class processMap {
 
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn(ProcessUserPeer::USR_UID);
+    $oCriteria->addSelectColumn(ProcessUserPeer::PU_TYPE);
     $oCriteria->add(ProcessUserPeer::PRO_UID, $sProcessUID);
-    $oCriteria->add(ProcessUserPeer::PU_TYPE, 'SUPERVISOR');
+    $oCriteria->add(ProcessUserPeer::PU_TYPE, '%SUPERVISOR%', Criteria::LIKE);
     $oDataset = ProcessUserPeer::doSelectRS($oCriteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $oDataset->next();
     $aUIDS = array();
+    $aGRUS = array();
     while ($aRow = $oDataset->getRow()) {
-      $aUIDS [] = $aRow ['USR_UID'];
+      if ($aRow['PU_TYPE'] == 'SUPERVISOR') {
+        $aUIDS [] = $aRow ['USR_UID'];
+      } else {
+        $aGRUS [] = $aRow ['USR_UID'];
+      }
       $oDataset->next();
     }
+
+    $aRespLi = array(
+      array(
+        'UID' => 'char',
+        'USER_GROUP' => 'char',
+        'TYPE_UID' => 'char',
+        'PRO_UID' => 'char')
+    );
+    $oCriteria = new Criteria('workflow');
+    $oCriteria->addSelectColumn(GroupwfPeer::GRP_UID);
+    $oCriteria->addAsColumn('GRP_TITLE', ContentPeer::CON_VALUE);
+
+    $aConditions [] = array(GroupwfPeer::GRP_UID, ContentPeer::CON_ID);    
+    $aConditions [] = array(ContentPeer::CON_CATEGORY, DBAdapter::getStringDelimiter () . 'GRP_TITLE' . DBAdapter::getStringDelimiter ());
+    $aConditions [] = array(ContentPeer::CON_LANG, DBAdapter::getStringDelimiter () . SYS_LANG . DBAdapter::getStringDelimiter ());
+    
+    $oCriteria->addJoinMC($aConditions, Criteria::LEFT_JOIN);
+    $oCriteria->add(GroupwfPeer::GRP_UID, $aGRUS, Criteria::NOT_IN);
+
+    $oCriteria->addAscendingOrderByColumn(ContentPeer::CON_VALUE);
+    $oDataset = GroupwfPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
+
+    while ($aRow = $oDataset->getRow()) {
+      $aRespLi[] = array( 'UID' => $aRow['GRP_UID'],
+        'USER_GROUP' => $aRow['GRP_TITLE'],
+        'TYPE_UID' => 'Group',
+        'PRO_UID' => $sProcessUID);
+      $oDataset->next();
+    }
+
     $sDelimiter = DBAdapter::getStringDelimiter ();
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn(UsersPeer::USR_UID);
@@ -3217,7 +3315,26 @@ class processMap {
     $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
     $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
     $oCriteria->add(UsersPeer::USR_UID, $aUIDS, Criteria::IN);
-    return $oCriteria;
+    $oCriteria->addAscendingOrderByColumn(UsersPeer::USR_FIRSTNAME);
+    $oDataset = UsersPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $oDataset->next();
+
+    while ($aRow = $oDataset->getRow()) {
+      $aRespLi[] = array('UID' => $aRow['USR_UID'],
+        'USER_GROUP' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],
+        'TYPE_UID' => 'User',
+        'PRO_UID' => $sProcessUID);
+      $oDataset->next();
+    }
+
+    global $_DBArray;
+    $_DBArray['data']  = $aRespLi;
+    $_SESSION['_DBArray'] = $_DBArray;
+    $LsCriteria = new Criteria('dbarray');
+    $LsCriteria->setDBArrayTable('data');
+
+    return $LsCriteria;
   }
 
   /**
@@ -3227,9 +3344,13 @@ class processMap {
    * @param  string    $sUsrUID
    * @return void
    */
-  function assignProcessUser($sProcessUID, $sUsrUID) {
+  function assignProcessUser($sProcessUID, $sUsrUID, $sTypeUID) {
     $oProcessUser = new ProcessUser ( );
-    $oProcessUser->create(array('PU_UID' => G::generateUniqueID (), 'PRO_UID' => $sProcessUID, 'USR_UID' => $sUsrUID, 'PU_TYPE' => 'SUPERVISOR'));
+    $puType = 'SUPERVISOR';
+    if ($sTypeUID == 'Group') {
+      $puType = 'GROUP_SUPERVISOR';
+    }
+    $oProcessUser->create(array('PU_UID' => G::generateUniqueID (), 'PRO_UID' => $sProcessUID, 'USR_UID' => $sUsrUID, 'PU_TYPE' => $puType));
   }
 
   /**
