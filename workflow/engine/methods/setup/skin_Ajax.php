@@ -49,6 +49,17 @@ function skinList()
 
     foreach ($skinList['skins'] as $key => $value) {
         if ($value['SKIN_FOLDER_ID'] != 'simplified' && $value['SKIN_FOLDER_ID'] != 'uxs') {
+            if($skinList['currentSkin']==$value['SKIN_FOLDER_ID']){ 
+                $value['SKIN_STATUS'] = "@ACTIVE";
+                $value['SKIN_NAME'] = '@'.$value['SKIN_NAME'];
+                $value['SKIN_DESCRIPTION'] = '@'.$value['SKIN_DESCRIPTION'];
+                $value['SKIN_AUTHOR'] = '@'.$value['SKIN_AUTHOR'];
+                $value['SKIN_CREATEDATE'] = '@'.$value['SKIN_CREATEDATE'];
+                $value['SKIN_MODIFIEDDATE'] = '@'.$value['SKIN_MODIFIEDDATE'];
+            }
+            else{
+                $value['SKIN_STATUS'] = "inactive";
+            }
             $skinListArray['skins'][] = $value;
         }
     }

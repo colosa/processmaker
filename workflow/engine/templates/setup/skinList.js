@@ -223,21 +223,24 @@ Ext.onReady(function(){
       header: _('ID_NAME'),
       dataIndex: 'SKIN_NAME',
       width: 80,
-      align:'left'
+      align:'left',
+      renderer: selectedSkinChecked
     },
 
     {
       header: _('ID_DESCRIPTION'),
       dataIndex: 'SKIN_DESCRIPTION',
       width: 200,
-      align:'left'
+      align:'left',
+      renderer: selectedSkin
     },
 
     {
       header: _('ID_AUTHOR'),
       dataIndex: 'SKIN_AUTHOR',
       width: 80,
-      align:'left'
+      align:'left',
+      renderer: selectedSkin
     },
 
     {
@@ -254,6 +257,14 @@ Ext.onReady(function(){
       width: 50,
       align:'center',
       renderer: showdate
+    },
+    
+    {
+      header: _('ID_STATUS'),
+      dataIndex: 'SKIN_STATUS',
+      width: 50,
+      align:'center',
+      renderer: selectedSkin
     }
 
     ]
@@ -360,8 +371,29 @@ Ext.onReady(function(){
 
 //Function format dates
 showdate = function (value){
-  return _DF(value);
+    if(value[0]=='@'){
+        str = _DF(value.substring(1));
+        return '<b><i>' + str + '</i></b>';
+    }
+    return _DF(value);
 };
+
+selectedSkin = function (value){
+    if(value[0]=='@'){
+        str = value.substring(1);
+        return '<b><i>' + str + '</i></b>';
+    }
+    return value;
+};
+
+selectedSkinChecked = function (value){
+    if(value[0]=='@'){
+        str = value.substring(1);
+        return '<b><i><img src="/images/checkedsmall.gif">' + str + '</i></b>';
+    }
+    return value;
+};
+
 
 //Funtion Handles Context Menu Opening
 onMessageContextMenu = function (grid, rowIndex, e) {
