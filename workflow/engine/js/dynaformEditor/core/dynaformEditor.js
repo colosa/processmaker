@@ -3,6 +3,71 @@ var jsEditor  = null;
 
 var clientWinSize = null;
 
+var strError = "";
+var h3OK = 1;
+function checkErrorXML(xmlParse)
+{
+    strError = "";
+    h3OK = 1;
+    checkXML(xmlParse);
+}
+
+function checkXML(nodeXml)
+{
+    var line, i, nNode;
+    nNode = nodeXml.nodeName;
+    if (nNode == "h3") {
+        if (h3OK == 0) {
+            return;
+        }
+        h3OK = 0;
+    }
+    if (nNode == "#text") {
+        strError = nodeXml.nodeValue + "\n";
+    }
+    line = nodeXml.childNodes.length;
+    for (i = 0;i < line; i++) {
+        checkXML(nodeXml.childNodes[i]);
+    }
+}
+
+function validateXML(xmlString)
+{
+    // code for IE
+    if (window.ActiveXObject) {
+        var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDoc.async = "false";
+        xmlDoc.loadXML(xmlString);
+        if (xmlDoc.parseError.errorCode != 0) {
+            xmlString = "Error Code: " + xmlDoc.parseError.errorCode + "\n";
+            xmlString = xmlString + "Error Reason: " + xmlDoc.parseError.reason;
+            xmlString = xmlString + "Error Line: " + xmlDoc.parseError.line;
+            alert(xmlString);
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        // code for Mozilla, Firefox, Opera, etc.
+        if (document.implementation.createDocument) {
+            var parser = new DOMParser();
+            var text = xmlString;
+            var xmlDoc = parser.parseFromString(text, "text/xml");
+
+            if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+                checkErrorXML(xmlDoc.getElementsByTagName("parsererror")[0]);
+                alert(strError);
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            alert('Your browser cannot handle XML validation');
+            return false;
+        }
+    }
+}
+
 if (typeof(dynaformEditor)==="undefined")
 {
 var dynaformEditor={
@@ -16,6 +81,7 @@ var dynaformEditor={
   loadPressLoaded:true,
   codePressLoaded:false,
   currentJS:false,
+  responseAction:true,
   _run:function()
   {
     //LOADING PARTS
@@ -36,27 +102,28 @@ var dynaformEditor={
   {
 
   },
-  save:function(){
+  save:function() {
     /*this.saveProperties();*/
     try {
       this.saveCurrentView();
     } catch (e) {
       alert(e);
     }
-    res=this.ajax.save(this.A,this.dynUid);
-    if(res=='noSub'){
-      alert(G_STRINGS.ID_DONT_SAVE_XMLFORM);
-      return false;
-    }
-    if (res==0) {
-      alert(G_STRINGS.ID_SAVED);
-    }
-    else
-    {
-                if(typeof(res.innerHTML) == 'undefined')
-                  G.alert(res["*message"]);
-                else
-                  alert(G_STRINGS.ID_LOST_SESSION_XMLFORM);
+    if (this.responseAction == true) {
+        res = this.ajax.save(this.A,this.dynUid);
+        if (res == 'noSub') {
+            alert(G_STRINGS.ID_DONT_SAVE_XMLFORM);
+            return false;
+        }
+        if (res==0) {
+            alert(G_STRINGS.ID_SAVED);
+        } else {
+            if (typeof(res.innerHTML) == 'undefined') {
+                G.alert(res["*message"]);
+            } else {
+                alert(G_STRINGS.ID_LOST_SESSION_XMLFORM);
+            }
+        }
     }
   },
   save_as:function(){
@@ -148,10 +215,15 @@ var dynaformEditor={
   {
     //var xmlCode = getField("XML").value;
     var xmlCode = this.getXMLCode();
-    var todoRefreshXmlCode = xmlCode === null;
-    if (todoRefreshXmlCode) return;
-    var res = this.ajax.set_xmlcode(this.A, encodeURIComponent(xmlCode));
-    if (res!=="") G.alert(res);
+    if (validateXML(xmlCode) == true) {
+        var todoRefreshXmlCode = xmlCode === null;
+        if (todoRefreshXmlCode) return;
+        var res = this.ajax.set_xmlcode(this.A, encodeURIComponent(xmlCode));
+        if (res!=="") G.alert(res);
+        this.responseAction = true;
+    } else {
+        this.responseAction = false;
+    }
   },
   saveHtmlCode:function()
   {
@@ -159,7 +231,12 @@ var dynaformEditor={
     todoRefreshHtmlCode = htmlCode === null;
     if (todoRefreshHtmlCode) return;
     var response=this.ajax.set_htmlcode(this.A,htmlCode.value);
-    if (response) G.alert(response["*message"],"Error");
+    if (response) {
+        G.alert(response["*message"],"Error");
+        this.responseAction = false;
+    } else {
+        this.responseAction = true;
+    }
   },
   saveJavascript:function()
   {
@@ -175,6 +252,7 @@ var dynaformEditor={
         G.alert(res["*message"]);
       }
     }
+    this.responseAction = true;
   },
   saveProperties:function()
   {
@@ -183,7 +261,8 @@ var dynaformEditor={
     var response=this.ajax.set_properties(this.A,this.dynUid,post);
                 if (response!=0){
                    G.alert(response["*message"]);
-    } 
+    }
+    this.responseAction = true;
   },
   // Change view point functions
   changeToPreview:function()
