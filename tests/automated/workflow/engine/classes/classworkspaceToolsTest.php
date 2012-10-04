@@ -39,13 +39,13 @@ class classworkspaceToolsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('workspaceTools');
-        $this->assertTrue( count($methods) == 27);
+        $this->assertTrue( count($methods) == 28 );
     }
 
     /**

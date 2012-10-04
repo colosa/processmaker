@@ -44,7 +44,7 @@ class classDerivationTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('Derivation');
-        $this->assertTrue(count($methods) == 13);
+        $this->assertTrue(count($methods) == 14, count($methods));
     }
 
     /**

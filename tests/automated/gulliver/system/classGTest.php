@@ -43,7 +43,8 @@ class classGTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('G');        $this->assertTrue( count($methods) == 134);
+        $methods = get_class_methods('G');
+        $this->assertTrue( count($methods) == 139, "now there are " . count($methods) . " methods.");
     }
 
     /**
@@ -652,7 +653,7 @@ class classGTest extends PHPUnit_Framework_TestCase
 
     /**
     * @covers G::parseURI
-    * @todo   Implement testparseURI().
+    * todo   Implement testparseURI().
     */
     public function testparseURI()
     {
@@ -663,10 +664,43 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'uri');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-        $this->assertTrue( $params[1]->getName() == 'config');
+        $this->assertTrue( $params[1]->getName() == 'isRestRequest');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == array());
+    }
+
+    public function parseNormalUri()
+    {
+        $methods = get_class_methods($this->object);
+        $this->assertTrue( in_array('parseNormalUri', $methods ), 'exists method parseNormalUri' );
+        $r = new ReflectionMethod('G', 'parseNormalUri');
+        $params = $r->getParameters();
+        $this->assertTrue( $params[0]->getName() == 'aRequestUri');
+        $this->assertTrue( $params[0]->isArray() == false);
+        $this->assertTrue( $params[0]->isOptional () == false);
+    }
+
+    public function parseRestUri()
+    {
+        $methods = get_class_methods($this->object);
+        $this->assertTrue( in_array('parseRestUri', $methods ), 'exists method parseRestUri' );
+        $r = new ReflectionMethod('G', 'parseRestUri');
+        $params = $r->getParameters();
+        $this->assertTrue( $params[0]->getName() == 'aRequestUri');
+        $this->assertTrue( $params[0]->isArray() == false);
+        $this->assertTrue( $params[0]->isOptional () == false);
+    }
+
+    public function dispatchRestService()
+    {
+        $methods = get_class_methods($this->object);
+        $this->assertTrue( in_array('dispatchRestService', $methods ), 'exists method parseRestUri' );
+        $r = new ReflectionMethod('G', 'dispatchRestService');
+        $params = $r->getParameters();
+        $this->assertTrue( $params[0]->getName() == 'uri');
+        $this->assertTrue( $params[0]->isArray() == false);
+        $this->assertTrue( $params[0]->isOptional () == false);
     }
 
     /**

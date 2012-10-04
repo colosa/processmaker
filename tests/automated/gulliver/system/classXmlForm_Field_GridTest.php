@@ -139,7 +139,7 @@ class classXmlForm_Field_GridTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('flipValues', $methods ), 'exists method flipValues' );
         $r = new ReflectionMethod('XmlForm_Field_Grid', 'flipValues');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'values');
+        $this->assertTrue( $params[0]->getName() == 'arrayData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
     }

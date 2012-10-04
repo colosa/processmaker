@@ -43,7 +43,8 @@ class classRBACTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('RBAC');        $this->assertTrue( count($methods) == 54);
+        $methods = get_class_methods('RBAC');
+        $this->assertTrue( count($methods) == 55, "now there are " . count($methods) . " methods.");
     }
 
     /**

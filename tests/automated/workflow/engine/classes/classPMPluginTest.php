@@ -46,7 +46,7 @@ class classPMPluginTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('PMPlugin');
-        $this->assertTrue(count($methods) == 22);
+        $this->assertTrue(count($methods) == 24, count($methods));
     }
 
     /**

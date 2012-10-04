@@ -46,7 +46,7 @@ class classserverConfTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('serverConf');
-        $this->assertTrue(count($methods) == 23);
+        $this->assertTrue(count($methods) == 24);
     }
 
     /**

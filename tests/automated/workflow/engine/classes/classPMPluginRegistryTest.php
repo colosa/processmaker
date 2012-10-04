@@ -38,12 +38,13 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('PMPluginRegistry');        $this->assertTrue( count($methods) == 56);
+        $methods = get_class_methods('PMPluginRegistry');
+        $this->assertTrue( count($methods) == 60, count($methods));
     }
 
     /**
@@ -56,7 +57,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__construct', $methods ), 'exists method __construct' );
         $r = new ReflectionMethod('PMPluginRegistry', '__construct');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getSingleton
@@ -68,7 +69,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getSingleton', $methods ), 'exists method getSingleton' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getSingleton');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::serializeInstance
@@ -80,7 +81,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('serializeInstance', $methods ), 'exists method serializeInstance' );
         $r = new ReflectionMethod('PMPluginRegistry', 'serializeInstance');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::unSerializeInstance
@@ -95,7 +96,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'serialized');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::save
@@ -107,7 +108,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('save', $methods ), 'exists method save' );
         $r = new ReflectionMethod('PMPluginRegistry', 'save');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerPlugin
@@ -126,7 +127,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getPluginDetails
@@ -141,7 +142,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sFilename');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::enablePlugin
@@ -156,7 +157,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sNamespace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::disablePlugin
@@ -175,7 +176,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getStatusPlugin
@@ -190,7 +191,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sNamespace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::installPluginArchive
@@ -208,7 +209,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'pluginName');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::uninstallPlugin
@@ -223,7 +224,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sNamespace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::uninstallPluginWorkspaces
@@ -238,7 +239,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'arrayPlugin');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::installPlugin
@@ -253,7 +254,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sNamespace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerMenu
@@ -274,7 +275,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sFilename');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerDashlets
@@ -289,7 +290,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'namespace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerCss
@@ -307,7 +308,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sCssFile');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getRegisteredCss
@@ -319,7 +320,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getRegisteredCss', $methods ), 'exists method getRegisteredCss' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getRegisteredCss');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerJavascript
@@ -340,7 +341,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'pluginJsFile');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getRegisteredJavascript
@@ -352,7 +353,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getRegisteredJavascript', $methods ), 'exists method getRegisteredJavascript' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getRegisteredJavascript');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getRegisteredJavascriptBy
@@ -371,7 +372,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::unregisterJavascripts
@@ -390,7 +391,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerReport
@@ -405,7 +406,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sNamespace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerPmFunction
@@ -420,7 +421,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sNamespace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerRedirectLogin
@@ -441,7 +442,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sPathMethod');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerFolder
@@ -462,7 +463,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sFolderName');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerStep
@@ -490,7 +491,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::isRegisteredFolder
@@ -505,7 +506,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sFolderName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getMenus
@@ -520,7 +521,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'menuId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getDashlets
@@ -532,7 +533,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getDashlets', $methods ), 'exists method getDashlets' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getDashlets');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getReports
@@ -544,7 +545,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getReports', $methods ), 'exists method getReports' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getReports');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getPmFunctions
@@ -556,7 +557,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getPmFunctions', $methods ), 'exists method getPmFunctions' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getPmFunctions');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getSteps
@@ -568,7 +569,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getSteps', $methods ), 'exists method getSteps' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getSteps');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getRedirectLogins
@@ -580,7 +581,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getRedirectLogins', $methods ), 'exists method getRedirectLogins' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getRedirectLogins');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::executeTriggers
@@ -598,7 +599,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'oData');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::existsTrigger
@@ -613,7 +614,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'triggerId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getTriggerInfo
@@ -628,7 +629,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'triggerId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerTrigger
@@ -649,7 +650,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sTriggerName');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getPlugin
@@ -664,7 +665,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sNamespace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::setCompanyLogo
@@ -682,7 +683,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'filename');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getCompanyLogo
@@ -697,7 +698,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'default');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::setupPlugins
@@ -709,7 +710,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('setupPlugins', $methods ), 'exists method setupPlugins' );
         $r = new ReflectionMethod('PMPluginRegistry', 'setupPlugins');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::executeMethod
@@ -730,7 +731,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'oData');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getFieldsForPageSetup
@@ -745,7 +746,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sNamespace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::updateFieldsForPageSetup
@@ -763,7 +764,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'oData');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::eevalidate
@@ -775,7 +776,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('eevalidate', $methods ), 'exists method eevalidate' );
         $r = new ReflectionMethod('PMPluginRegistry', 'eevalidate');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerToolbarFile
@@ -796,7 +797,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sFilename');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getToolbarOptions
@@ -811,7 +812,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sToolbarId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerCaseSchedulerPlugin
@@ -841,7 +842,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->getName() == 'sActionGetFields');
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getCaseSchedulerPlugins
@@ -853,7 +854,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getCaseSchedulerPlugins', $methods ), 'exists method getCaseSchedulerPlugins' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getCaseSchedulerPlugins');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerTaskExtendedProperty
@@ -877,7 +878,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sIcon');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerDashboardPage
@@ -901,7 +902,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sIcon');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getDashboardPages
@@ -913,7 +914,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getDashboardPages', $methods ), 'exists method getDashboardPages' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getDashboardPages');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getTaskExtendedProperties
@@ -925,7 +926,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getTaskExtendedProperties', $methods ), 'exists method getTaskExtendedProperties' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getTaskExtendedProperties');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::registerDashboard
@@ -937,7 +938,7 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('registerDashboard', $methods ), 'exists method registerDashboard' );
         $r = new ReflectionMethod('PMPluginRegistry', 'registerDashboard');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMPluginRegistry::getAttributes
@@ -949,6 +950,6 @@ class classPMPluginRegistryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAttributes', $methods ), 'exists method getAttributes' );
         $r = new ReflectionMethod('PMPluginRegistry', 'getAttributes');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

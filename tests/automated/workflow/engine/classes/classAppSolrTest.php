@@ -47,7 +47,7 @@ class classAppSolrTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('AppSolr');
-        $this->assertTrue( count($methods) == 25);
+        $this->assertTrue( count($methods) == 28);
     }
 
     /**

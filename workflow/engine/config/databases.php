@@ -24,12 +24,12 @@
  */
 
   if (defined('PATH_DB') && defined('SYS_SYS')) {
-  
+
     if (!file_exists(PATH_DB . SYS_SYS . '/db.php'))
       throw new Exception("Could not find db.php in current workspace " . SYS_SYS);
-  
+
     require_once(PATH_DB . SYS_SYS . '/db.php');
-  
+
     //to do: enable for other databases
     $dbType = DB_ADAPTER;
 
@@ -66,7 +66,7 @@
     $pro ['datasources']['rp']['adapter'] = DB_ADAPTER;
 
   }
-  
+
   $pro ['datasources']['dbarray']['connection'] = 'dbarray://user:pass@localhost/pm_os';
   $pro ['datasources']['dbarray']['adapter']    = 'dbarray';
 

@@ -38,7 +38,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -103,10 +103,10 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'sUIDUser');
         $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
+        $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[1]->getName() == 'typeView');
         $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == false);
+        $this->assertTrue( $params[1]->isOptional () == true);
     }
 
     /**
@@ -1448,10 +1448,10 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isOptional () == false);
         $this->assertTrue( $params[2]->getName() == 'TAS_UID');
         $this->assertTrue( $params[2]->isArray() == false);
-        $this->assertTrue( $params[2]->isOptional () == false);
+        $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[3]->getName() == 'USR_UID');
         $this->assertTrue( $params[3]->isArray() == false);
-        $this->assertTrue( $params[3]->isOptional () == false);
+        $this->assertTrue( $params[3]->isOptional () == true);
     }
 
     /**
@@ -1472,10 +1472,10 @@ class classCasesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isOptional () == false);
         $this->assertTrue( $params[2]->getName() == 'TAS_UID');
         $this->assertTrue( $params[2]->isArray() == false);
-        $this->assertTrue( $params[2]->isOptional () == false);
+        $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[3]->getName() == 'USR_UID');
         $this->assertTrue( $params[3]->isArray() == false);
-        $this->assertTrue( $params[3]->isOptional () == false);
+        $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[4]->getName() == 'ACTION');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);

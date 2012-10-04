@@ -37,13 +37,13 @@
         <var name="SYS_SYS" value="os" />
         <var name="SYS_LANG" value="en" />
         <var name="SYS_SKIN" value="classic" />
-        <var name="DB_ADAPTER" value="mysql" />
-        <var name="DB_HOST" value="localhost" />
-        <var name="DB_NAME" value="wf_os" />
-        <var name="DB_USER" value="root" />
-        <var name="DB_PASS" value="password" />
-        <var name="PATH_DB" value="tests/shared/" />
-        <var name="PATH_DATA" value="tests/shared/" />
+        <var name="zDB_ADAPTER" value="mysql" />
+        <var name="zDB_HOST" value="localhost" />
+        <var name="zDB_NAME" value="wf_os" />
+        <var name="zDB_USER" value="root" />
+        <var name="zDB_PASS" value="password" />
+        <var name="PATH_DB" value="/shared/workflow_data/sites/" />
+        <var name="PATH_DATA" value="/shared/workflow_data/sites/" />
     </php>
 
     <logging>

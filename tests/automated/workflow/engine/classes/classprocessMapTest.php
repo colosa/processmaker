@@ -38,12 +38,13 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('processMap');        $this->assertTrue( count($methods) == 149);
+        $methods = get_class_methods('processMap');
+        $this->assertTrue( count($methods) == 150, count($methods));
     }
 
     /**
@@ -79,7 +80,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == true);
         $this->assertTrue( $params[5]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::createProcess
@@ -94,7 +95,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::updateProcess
@@ -109,7 +110,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::editProcess
@@ -124,7 +125,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::deleteProcess
@@ -139,7 +140,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::saveTitlePosition
@@ -163,7 +164,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers processMap::steps
@@ -183,7 +184,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getStepsCriteria
@@ -199,7 +200,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getStepTriggersCriteria
@@ -223,7 +224,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAvailableBBCriteria
@@ -243,7 +244,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::users
@@ -263,7 +264,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::users_adhoc
@@ -283,7 +284,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getTaskUsersCriteria
@@ -303,7 +304,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers processMap::getAvailableUsersCriteria
@@ -323,7 +324,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers processMap::stepsConditions
@@ -343,7 +344,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::stepsTriggers
@@ -363,7 +364,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::addTask
@@ -395,7 +396,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '40');
-    } 
+    }
 
     /**
     * @covers processMap::editTaskProperties
@@ -419,7 +420,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers processMap::saveTaskPosition
@@ -443,7 +444,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers processMap::deleteTask
@@ -459,7 +460,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::deleteGateway
@@ -479,7 +480,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::addGateway
@@ -494,7 +495,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::addGuide
@@ -518,7 +519,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == 'vertical');
-    } 
+    }
 
     /**
     * @covers processMap::saveGuidePosition
@@ -542,7 +543,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == 'vertical');
-    } 
+    }
 
     /**
     * @covers processMap::deleteGuide
@@ -558,7 +559,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::deleteGuides
@@ -574,7 +575,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::addText
@@ -606,7 +607,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::updateText
@@ -630,7 +631,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::saveTextPosition
@@ -654,7 +655,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers processMap::deleteText
@@ -670,7 +671,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::saveGatewayPosition
@@ -694,7 +695,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers processMap::dynaformsList
@@ -710,7 +711,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getDynaformsCriteria
@@ -726,7 +727,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getDynaformsList
@@ -742,7 +743,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::outputdocsList
@@ -758,7 +759,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getOutputDocumentsCriteria
@@ -774,7 +775,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::inputdocsList
@@ -790,7 +791,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getInputDocumentsCriteria
@@ -806,7 +807,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::triggersList
@@ -822,7 +823,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getTriggersCriteria
@@ -838,7 +839,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getTriggers
@@ -854,7 +855,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::caseSchedulerList
@@ -870,7 +871,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::logCaseSchedulerList
@@ -886,7 +887,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::messagesList
@@ -902,7 +903,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::reportTablesList
@@ -918,7 +919,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getReportTablesCriteria
@@ -934,7 +935,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::currentPattern
@@ -952,7 +953,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sTaskUID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::newPattern
@@ -976,7 +977,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sType');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getNumberOfRoutes
@@ -1004,7 +1005,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::saveNewPattern
@@ -1036,7 +1037,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::saveNewGateway
@@ -1064,7 +1065,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::deleteDerivation
@@ -1080,7 +1081,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getConditionProcessList
@@ -1092,7 +1093,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getConditionProcessList', $methods ), 'exists method getConditionProcessList' );
         $r = new ReflectionMethod('processMap', 'getConditionProcessList');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::supervisorDynaforms
@@ -1107,7 +1108,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::supervisorInputs
@@ -1122,7 +1123,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::webEntry
@@ -1137,7 +1138,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::webEntry_new
@@ -1152,7 +1153,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getSupervisorDynaformsCriteria
@@ -1168,7 +1169,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getSupervisorInputsCriteria
@@ -1184,7 +1185,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::availableSupervisorDynaforms
@@ -1199,7 +1200,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::availableSupervisorInputs
@@ -1214,7 +1215,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getAvailableSupervisorDynaformsCriteria
@@ -1230,7 +1231,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAvailableSupervisorInputsCriteria
@@ -1246,7 +1247,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::assignSupervisorStep
@@ -1267,7 +1268,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sObjUID');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::removeSupervisorStep
@@ -1294,7 +1295,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->getName() == 'iPosition');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::listProcessesUser
@@ -1309,7 +1310,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::listNoProcessesUser
@@ -1324,7 +1325,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::assignProcessUser
@@ -1342,7 +1343,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sUsrUID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::removeProcessUser
@@ -1357,7 +1358,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sPUUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getObjectsPermissionsCriteria
@@ -1372,7 +1373,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getAllObjectPermissionCount
@@ -1384,7 +1385,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllObjectPermissionCount', $methods ), 'exists method getAllObjectPermissionCount' );
         $r = new ReflectionMethod('processMap', 'getAllObjectPermissionCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtObjectsPermissions
@@ -1405,7 +1406,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sProcessUID');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::objectsPermissionsList
@@ -1420,7 +1421,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::newObjectPermission
@@ -1435,7 +1436,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::editObjectPermission
@@ -1453,7 +1454,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sProcessUID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::caseTracker
@@ -1468,7 +1469,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::caseTrackerObjects
@@ -1483,7 +1484,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getCaseTrackerObjectsCriteria
@@ -1498,7 +1499,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::availableCaseTrackerObjects
@@ -1513,7 +1514,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getAvailableCaseTrackerObjectsCriteria
@@ -1529,7 +1530,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::assignCaseTrackerObject
@@ -1550,7 +1551,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sObjUID');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::removeCaseTrackerObject
@@ -1571,7 +1572,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'iPosition');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::upCaseTrackerObject
@@ -1592,7 +1593,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'iPosition');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::downCaseTrackerObject
@@ -1613,7 +1614,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'iPosition');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::processFilesManager
@@ -1628,7 +1629,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::exploreDirectory
@@ -1649,7 +1650,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sCurrentDirectory');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::deleteFile
@@ -1673,7 +1674,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sFile');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::deleteDirectory
@@ -1697,7 +1698,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sDirToDelete');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::downloadFile
@@ -1721,7 +1722,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'sFile');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::addSubProcess
@@ -1745,7 +1746,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '0');
-    } 
+    }
 
     /**
     * @covers processMap::deleteSubProcess
@@ -1765,7 +1766,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::subProcess_Properties
@@ -1789,7 +1790,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::subProcess_TaskIni
@@ -1804,7 +1805,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::eventsList
@@ -1822,7 +1823,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'type');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getEventsCriteria
@@ -1840,7 +1841,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'EVN_ACTION');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::editProcessNew
@@ -1855,7 +1856,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::loadProcessCategory
@@ -1867,7 +1868,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('loadProcessCategory', $methods ), 'exists method loadProcessCategory' );
         $r = new ReflectionMethod('processMap', 'loadProcessCategory');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::saveTaskCordinates
@@ -1891,7 +1892,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '60');
-    } 
+    }
 
     /**
     * @covers processMap::saveAnnotationCordinates
@@ -1915,7 +1916,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '60');
-    } 
+    }
 
     /**
     * @covers processMap::saveEventPosition
@@ -1939,7 +1940,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '60');
-    } 
+    }
 
     /**
     * @covers processMap::getAllProcesses
@@ -1951,7 +1952,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllProcesses', $methods ), 'exists method getAllProcesses' );
         $r = new ReflectionMethod('processMap', 'getAllProcesses');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getDynaformList
@@ -1967,7 +1968,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::listNewWebEntry
@@ -1985,7 +1986,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sEventUID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::usersExtList
@@ -2011,7 +2012,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::caseNewSchedulerList
@@ -2026,7 +2027,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sSchUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getAllTaskUserCount
@@ -2038,7 +2039,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllTaskUserCount', $methods ), 'exists method getAllTaskUserCount' );
         $r = new ReflectionMethod('processMap', 'getAllTaskUserCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtTaskUsersCriteria
@@ -2064,7 +2065,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers processMap::getAvailableExtUsersCriteria
@@ -2084,7 +2085,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers processMap::getExtAdditionalTablesList
@@ -2100,7 +2101,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getExtAvailableBBCriteria
@@ -2120,7 +2121,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllStepCount
@@ -2132,7 +2133,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllStepCount', $methods ), 'exists method getAllStepCount' );
         $r = new ReflectionMethod('processMap', 'getAllStepCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtStepsCriteria
@@ -2154,7 +2155,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllStepTriggerCount
@@ -2166,7 +2167,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllStepTriggerCount', $methods ), 'exists method getAllStepTriggerCount' );
         $r = new ReflectionMethod('processMap', 'getAllStepTriggerCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtStepTriggersCriteria
@@ -2196,7 +2197,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getExtAvailableStepTriggersCriteria
@@ -2224,7 +2225,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllDynaformCount
@@ -2236,7 +2237,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllDynaformCount', $methods ), 'exists method getAllDynaformCount' );
         $r = new ReflectionMethod('processMap', 'getAllDynaformCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtDynaformsList
@@ -2258,7 +2259,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllInputDocumentCount
@@ -2270,7 +2271,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllInputDocumentCount', $methods ), 'exists method getAllInputDocumentCount' );
         $r = new ReflectionMethod('processMap', 'getAllInputDocumentCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtInputDocumentsCriteria
@@ -2292,7 +2293,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllOutputDocumentCount
@@ -2304,7 +2305,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllOutputDocumentCount', $methods ), 'exists method getAllOutputDocumentCount' );
         $r = new ReflectionMethod('processMap', 'getAllOutputDocumentCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtOutputDocumentsCriteria
@@ -2326,7 +2327,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::subProcessExtProperties
@@ -2354,7 +2355,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllProcessSupervisorsCount
@@ -2366,7 +2367,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllProcessSupervisorsCount', $methods ), 'exists method getAllProcessSupervisorsCount' );
         $r = new ReflectionMethod('processMap', 'getAllProcessSupervisorsCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::listExtProcessesSupervisors
@@ -2387,7 +2388,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sProcessUID');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::listExtNoProcessesUser
@@ -2402,7 +2403,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getAllSupervisorDynaformsCount
@@ -2414,7 +2415,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllSupervisorDynaformsCount', $methods ), 'exists method getAllSupervisorDynaformsCount' );
         $r = new ReflectionMethod('processMap', 'getAllSupervisorDynaformsCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtSupervisorDynaformsList
@@ -2436,7 +2437,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getExtAvailableSupervisorDynaformsList
@@ -2452,7 +2453,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllSupervisorInputsCount
@@ -2464,7 +2465,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllSupervisorInputsCount', $methods ), 'exists method getAllSupervisorInputsCount' );
         $r = new ReflectionMethod('processMap', 'getAllSupervisorInputsCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtSupervisorInputsList
@@ -2486,7 +2487,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getExtAvailableSupervisorInputsList
@@ -2502,7 +2503,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllDbSourceCount
@@ -2514,7 +2515,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllDbSourceCount', $methods ), 'exists method getAllDbSourceCount' );
         $r = new ReflectionMethod('processMap', 'getAllDbSourceCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtCriteriaDBSList
@@ -2535,7 +2536,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sProcessUID');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::newExtObjectPermission
@@ -2553,7 +2554,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sAction');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::ExtcaseTracker
@@ -2568,7 +2569,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getAllCaseTrackerObjectCount
@@ -2580,7 +2581,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllCaseTrackerObjectCount', $methods ), 'exists method getAllCaseTrackerObjectCount' );
         $r = new ReflectionMethod('processMap', 'getAllCaseTrackerObjectCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtCaseTrackerObjectsCriteria
@@ -2601,7 +2602,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sProcessUID');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getAvailableExtCaseTrackerObjects
@@ -2617,7 +2618,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllReportTableCount
@@ -2629,7 +2630,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllReportTableCount', $methods ), 'exists method getAllReportTableCount' );
         $r = new ReflectionMethod('processMap', 'getAllReportTableCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtReportTables
@@ -2651,7 +2652,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getExtAvailableUsersList
@@ -2671,7 +2672,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '2');
-    } 
+    }
 
     /**
     * @covers processMap::getExtTaskUsersAdHocCriteria
@@ -2697,7 +2698,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers processMap::editExtObjectPermission
@@ -2715,7 +2716,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sOP_UID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getExtusersadhoc
@@ -2741,7 +2742,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::saveExtddEvents
@@ -2756,7 +2757,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::saveExtEvents
@@ -2771,7 +2772,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers processMap::getAllTriggersCount
@@ -2783,7 +2784,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getAllTriggersCount', $methods ), 'exists method getAllTriggersCount' );
         $r = new ReflectionMethod('processMap', 'getAllTriggersCount');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers processMap::getExtTriggersList
@@ -2805,7 +2806,7 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers processMap::getAllInputDocsByTask
@@ -2820,6 +2821,6 @@ class classprocessMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sPRO_UID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

@@ -38,12 +38,13 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('wsBase');        $this->assertTrue( count($methods) == 35);
+        $methods = get_class_methods('wsBase');
+        $this->assertTrue( count($methods) == 40, count($methods));
     }
 
     /**
@@ -60,7 +61,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers wsBase::login
@@ -78,7 +79,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'password');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::processList
@@ -90,7 +91,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('processList', $methods ), 'exists method processList' );
         $r = new ReflectionMethod('wsBase', 'processList');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers wsBase::roleList
@@ -102,7 +103,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('roleList', $methods ), 'exists method roleList' );
         $r = new ReflectionMethod('wsBase', 'roleList');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers wsBase::groupList
@@ -114,7 +115,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('groupList', $methods ), 'exists method groupList' );
         $r = new ReflectionMethod('wsBase', 'groupList');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers wsBase::departmentList
@@ -126,7 +127,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('departmentList', $methods ), 'exists method departmentList' );
         $r = new ReflectionMethod('wsBase', 'departmentList');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers wsBase::caseList
@@ -141,7 +142,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'userId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::unassignedCaseList
@@ -156,7 +157,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'userId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::userList
@@ -168,7 +169,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('userList', $methods ), 'exists method userList' );
         $r = new ReflectionMethod('wsBase', 'userList');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers wsBase::triggerList
@@ -180,7 +181,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('triggerList', $methods ), 'exists method triggerList' );
         $r = new ReflectionMethod('wsBase', 'triggerList');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers wsBase::inputDocumentList
@@ -198,7 +199,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sUserUID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::inputDocumentProcessList
@@ -213,7 +214,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProcessUID');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::outputDocumentList
@@ -231,7 +232,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sUserUID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::removeDocument
@@ -246,7 +247,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'appDocUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::taskList
@@ -261,7 +262,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'userId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::sendMessage
@@ -302,7 +303,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[8]->isArray() == false);
         $this->assertTrue( $params[8]->isOptional () == true);
         $this->assertTrue( $params[8]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers wsBase::getCaseInfo
@@ -320,7 +321,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'iDelIndex');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::createUser
@@ -332,13 +333,13 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('createUser', $methods ), 'exists method createUser' );
         $r = new ReflectionMethod('wsBase', 'createUser');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'userId');
+        $this->assertTrue( $params[0]->getName() == 'userName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-        $this->assertTrue( $params[1]->getName() == 'firstname');
+        $this->assertTrue( $params[1]->getName() == 'firstName');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-        $this->assertTrue( $params[2]->getName() == 'lastname');
+        $this->assertTrue( $params[2]->getName() == 'lastName');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
         $this->assertTrue( $params[3]->getName() == 'email');
@@ -358,7 +359,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[7]->isArray() == false);
         $this->assertTrue( $params[7]->isOptional () == true);
         $this->assertTrue( $params[7]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers wsBase::createGroup
@@ -373,7 +374,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'groupName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::createDepartment
@@ -391,7 +392,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'parentUID');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::removeUserFromGroup
@@ -409,7 +410,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'groupId');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::assignUserToGroup
@@ -427,7 +428,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'groupId');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::assignUserToDepartment
@@ -448,7 +449,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'manager');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::sendVariables
@@ -466,7 +467,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'variables');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::getVariables
@@ -484,7 +485,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'variables');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::newCase
@@ -508,7 +509,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'variables');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::newCaseImpersonate
@@ -529,7 +530,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'variables');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::derivateCase
@@ -554,7 +555,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == true);
         $this->assertTrue( $params[3]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers wsBase::executeTrigger
@@ -578,7 +579,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'delIndex');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::taskCase
@@ -593,7 +594,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'caseId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::processListVerified
@@ -608,7 +609,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'userId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::reassignCase
@@ -635,7 +636,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->getName() == 'userIdTarget');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers wsBase::systemInformation
@@ -647,7 +648,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('systemInformation', $methods ), 'exists method systemInformation' );
         $r = new ReflectionMethod('wsBase', 'systemInformation');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers wsBase::importProcessFromLibrary
@@ -678,7 +679,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers wsBase::getCaseNotes
@@ -697,6 +698,6 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
-  } 
+  }

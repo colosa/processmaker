@@ -38,12 +38,13 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('BpmnEngine_Services_SearchIndex');        $this->assertTrue( count($methods) == 9);
+        $methods = get_class_methods('BpmnEngine_Services_SearchIndex');
+        $this->assertTrue( count($methods) == 10);
     }
 
     /**
@@ -64,7 +65,7 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers BpmnEngine_Services_SearchIndex::isEnabled
@@ -76,7 +77,7 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( in_array('isEnabled', $methods ), 'exists method isEnabled' );
         $r = new ReflectionMethod('BpmnEngine_Services_SearchIndex', 'isEnabled');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers BpmnEngine_Services_SearchIndex::getFacetsList
@@ -91,7 +92,7 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[0]->getName() == 'facetRequestEntity');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_Services_SearchIndex::getNumberDocuments
@@ -106,7 +107,7 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_Services_SearchIndex::updateIndexDocument
@@ -121,7 +122,7 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[0]->getName() == 'solrUpdateDocumentEntity');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_Services_SearchIndex::deleteDocumentFromIndex
@@ -139,7 +140,7 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[1]->getName() == 'idQuery');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_Services_SearchIndex::commitIndexChanges
@@ -154,7 +155,7 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_Services_SearchIndex::getDataTablePaginatedList
@@ -169,7 +170,7 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[0]->getName() == 'solrRequestData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_Services_SearchIndex::getIndexFields
@@ -184,6 +185,6 @@ class classBpmnEngine_Services_SearchIndexTest extends PHPUnit_Framework_TestCas
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }
