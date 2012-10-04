@@ -49,6 +49,18 @@ function skinList()
 
     foreach ($skinList['skins'] as $key => $value) {
         if ($value['SKIN_FOLDER_ID'] != 'simplified' && $value['SKIN_FOLDER_ID'] != 'uxs') {
+            if($skinList['currentSkin'] == $value['SKIN_FOLDER_ID']){ 
+                $wildcard = '@';
+                $value['SKIN_STATUS'] = $wildcard . G::LoadTranslation('ID_ACTIVE');
+                $value['SKIN_NAME'] = $wildcard . $value['SKIN_NAME'];
+                $value['SKIN_DESCRIPTION'] = $wildcard . $value['SKIN_DESCRIPTION'];
+                $value['SKIN_AUTHOR'] = $wildcard . $value['SKIN_AUTHOR'];
+                $value['SKIN_CREATEDATE'] = $wildcard . $value['SKIN_CREATEDATE'];
+                $value['SKIN_MODIFIEDDATE'] = $wildcard . $value['SKIN_MODIFIEDDATE'];
+            }
+            else{
+                $value['SKIN_STATUS'] = G::LoadTranslation('ID_INACTIVE');
+            }
             $skinListArray['skins'][] = $value;
         }
     }
