@@ -165,7 +165,7 @@ Ext.onReady(function(){
 
   store = new Ext.data.GroupingStore( {
     proxy : new Ext.data.HttpProxy({
-      url: 'skin_Ajax?action=skinList'
+      url: 'skin_Ajax?action=skinList&activeskin=1'
     }),
     reader : new Ext.data.JsonReader( {
       root: 'skins',

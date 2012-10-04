@@ -46,11 +46,15 @@ function skinList()
     G::loadClass('system');
 
     $skinList = System::getSkingList();
-
+    
+    $wildcard = '';
+    if(isset($_REQUEST['activeskin']))
+    {
+        $wildcard = '@';
+    }
     foreach ($skinList['skins'] as $key => $value) {
         if ($value['SKIN_FOLDER_ID'] != 'simplified' && $value['SKIN_FOLDER_ID'] != 'uxs') {
             if($skinList['currentSkin'] == $value['SKIN_FOLDER_ID']){ 
-                $wildcard = '@';
                 $value['SKIN_STATUS'] = $wildcard . G::LoadTranslation('ID_ACTIVE');
                 $value['SKIN_NAME'] = $wildcard . $value['SKIN_NAME'];
                 $value['SKIN_DESCRIPTION'] = $wildcard . $value['SKIN_DESCRIPTION'];
