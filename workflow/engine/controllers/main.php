@@ -478,28 +478,26 @@ class Main extends Controller
             if (($aFotoSelect = $this->memcache->get('aFotoSelect')) === false) {
                 G::LoadClass('replacementLogo');
                 $oLogoR = new replacementLogo();
-                $aFotoSelect   = $oLogoR->getNameLogo((isset($_SESSION['USER_LOGGED']))?$_SESSION['USER_LOGGED']:'');
+                $aFotoSelect   = $oLogoR->getNameLogo((isset($_SESSION['USER_LOGGED'])) ?
+                    $_SESSION['USER_LOGGED'] : '');
                 $this->memcache->set('aFotoSelect', $aFotoSelect, 1*3600);
             }
-
             if (is_array ($aFotoSelect)) {
                 $sFotoSelect   = trim($aFotoSelect['DEFAULT_LOGO_NAME']);
                 $sWspaceSelect = trim($aFotoSelect['WORKSPACE_LOGO_NAME']);
             }
         }
-
         if (class_exists('PMPluginRegistry')) {
             $oPluginRegistry = &PMPluginRegistry::getSingleton();
-
-            if (isset($sFotoSelect) && $sFotoSelect!='' && !(strcmp($sWspaceSelect,SYS_SYS))) {
+            $logoPlugin = $oPluginRegistry->getCompanyLogo($sCompanyLogo);
+            if ($logoPlugin != '/images/processmaker2.logo2.png') {
+                $sCompanyLogo = $logoPlugin;
+            } elseif (isset($sFotoSelect) && $sFotoSelect!='' && !(strcmp($sWspaceSelect,SYS_SYS))) {
                 $sCompanyLogo = $oPluginRegistry->getCompanyLogo($sFotoSelect);
                 $sCompanyLogo = "/sys".SYS_SYS."/".SYS_LANG."/".SYS_SKIN."/adminProxy/showLogoFile?id=".
                     base64_encode($sCompanyLogo);
-            } else {
-                $sCompanyLogo = $oPluginRegistry->getCompanyLogo($sCompanyLogo);
             }
         }
-
         return $sCompanyLogo;
     }
 
