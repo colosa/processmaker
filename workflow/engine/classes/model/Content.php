@@ -276,7 +276,7 @@ class Content extends BaseContent {
     *
     * @param  array  $langs
     */
-    function regenerateContent($langs)
+    function regenerateContent($langs, $workSpace=SYS_SYS)
     {
         //Search the language
         $key = array_search('en',$langs);
@@ -312,18 +312,25 @@ class Content extends BaseContent {
 
         $sql = " SELECT CON_ID, CON_CATEGORY, CON_LANG, CON_PARENT, CON_VALUE
                 FROM CONTENT
-                ORDER BY CON_ID, CON_CATEGORY, CON_LANG, CON_PARENT ";
+                ORDER BY CON_ID, CON_CATEGORY, CON_PARENT, CON_LANG";
+
+        G::LoadClass("wsTools");
+        $workSpace = new workspaceTools($workSpace);
+        $workSpace->getDBInfo();
+
+        $link = mysql_pconnect($workSpace->dbHost, $workSpace->dbUser, $workSpace->dbPass)
+        or die ("Could not connect");
+
+        mysql_select_db($workSpace->dbName, $link);
         mysql_query('SET OPTION SQL_BIG_SELECTS=1');
-        $result = mysql_unbuffered_query($sql);
+        $result = mysql_unbuffered_query($sql, $link);
         $list = array();
         $default = array();
         $sw = array('CON_ID'=>'','CON_CATEGORY'=>'','CON_PARENT'=>'');
         while ($row = mysql_fetch_assoc($result)) {
             if ($sw['CON_ID'] == $row['CON_ID'] && $sw['CON_CATEGORY'] == $row['CON_CATEGORY'] && $sw['CON_PARENT'] == $row['CON_PARENT']) {
                 $list[] = $row;
-                if ($sw['CON_LANG'] == $langs[$key]) {
-                    $default = $row;
-                }
+                
             } else {
                 $this->rowsClustered++;
                 if (count($langs) != count($list)) {
@@ -342,6 +349,9 @@ class Content extends BaseContent {
                 $default = array();
                 $list[] = $row;
             }
+            if ($sw['CON_LANG'] == $langs[$key]) {
+                $default = $row;
+            }
             $this->rowsProcessed++;
         }
         if (count($langs) != count($list)) {
@@ -352,11 +362,13 @@ class Content extends BaseContent {
         mysql_free_result($result);
         $total = $this->rowsProcessed + $this->rowsInserted;
 
-        CLI::logging("Rows Processed ---> $this->rowsProcessed ..... \n");
-        CLI::logging("Rows Clustered ---> $this->rowsClustered ..... \n");
-        CLI::logging("Rows Unchanged ---> $this->rowsUnchanged ..... \n");
-        CLI::logging("Rows Inserted  ---> $this->rowsInserted ..... \n");
-        CLI::logging("Rows Total     ---> $total ..... \n");
+        if (!isset($_SERVER['SERVER_NAME'])) {
+            CLI::logging("Rows Processed ---> $this->rowsProcessed ..... \n");
+            CLI::logging("Rows Clustered ---> $this->rowsClustered ..... \n");
+            CLI::logging("Rows Unchanged ---> $this->rowsUnchanged ..... \n");
+            CLI::logging("Rows Inserted  ---> $this->rowsInserted ..... \n");
+            CLI::logging("Rows Total     ---> $total ..... \n");
+        }
     }
 
     function checkLanguage($content, $default)

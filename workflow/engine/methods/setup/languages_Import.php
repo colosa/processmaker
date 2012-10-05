@@ -73,7 +73,7 @@ try {
   
     G::LoadClass("wsTools");
     $renegerateContent = new workspaceTools(SYS_SYS);
-    $renegerateContent->upgradeContent();
+    $messs = $renegerateContent->upgradeContent();
 
   $result->msg = G::LoadTranslation('IMPORT_LANGUAGE_SUCCESS') . "\n";
   $result->msg .= "PO File num. records: " . $importResults->recordsCount . "\n";
@@ -83,7 +83,7 @@ try {
   if( $importResults->errMsg != '' ){
     $result->msg .= "Errors registered: \n" . $importResults->errMsg . "\n";
   }
-  
+    
   //$result->msg = htmlentities($result->msg);
   $result->success = true;
   
