@@ -64,6 +64,13 @@ try {
                 unset($aData['TAS_DEF_MESSAGE_TEMPLATE']);
             }
 
+            //Validating TAS_ASSIGN_VARIABLE value
+            if ($aData['TAS_ASSIGN_TYPE'] == 'SELF_SERVICE_EVALUATE') {
+              $aData['TAS_ASSIGN_TYPE'] = 'SELF_SERVICE';
+            } else {
+              $aData['TAS_GROUP_VARIABLE'] = '';
+            }
+
             $result = $oTask->update($aData);
 
             $response["status"]  = "OK";

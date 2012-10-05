@@ -89,6 +89,8 @@ class TaskMapBuilder
 
         $tMap->addColumn('TAS_ASSIGN_VARIABLE', 'TasAssignVariable', 'string', CreoleTypes::VARCHAR, true, 100);
 
+        $tMap->addColumn('TAS_GROUP_VARIABLE', 'TasGroupVariable', 'string', CreoleTypes::VARCHAR, false, 100);
+
         $tMap->addColumn('TAS_MI_INSTANCE_VARIABLE', 'TasMiInstanceVariable', 'string', CreoleTypes::VARCHAR, true, 100);
 
         $tMap->addColumn('TAS_MI_COMPLETE_VARIABLE', 'TasMiCompleteVariable', 'string', CreoleTypes::VARCHAR, true, 100);

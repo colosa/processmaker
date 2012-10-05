@@ -39,6 +39,10 @@ var saveDataTaskTemporal = function(iForm)
         {
           oTaskData.TAS_ASSIGN_TYPE = 'SELF_SERVICE';
         }
+        if (getField('TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE').checked)
+        {
+          oTaskData.TAS_ASSIGN_TYPE = 'SELF_SERVICE_EVALUATE';
+        }
         if (getField('TAS_ASSIGN_TYPE][REPORT_TO').checked)
         {
           oTaskData.TAS_ASSIGN_TYPE = 'REPORT_TO';
@@ -65,6 +69,7 @@ var saveDataTaskTemporal = function(iForm)
           oTaskData.TAS_ASSIGN_TYPE = 'CANCEL_MI';
         }*/
         oTaskData.TAS_ASSIGN_VARIABLE = getField('TAS_ASSIGN_VARIABLE').value;
+        oTaskData.TAS_GROUP_VARIABLE = getField('TAS_GROUP_VARIABLE').value;
         /* this feature is temporarily disabled
         oTaskData.TAS_MI_INSTANCE_VARIABLE = getField('TAS_MI_INSTANCE_VARIABLE').value;
         oTaskData.TAS_MI_COMPLETE_VARIABLE = getField('TAS_MI_COMPLETE_VARIABLE').value;*/

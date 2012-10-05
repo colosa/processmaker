@@ -100,6 +100,12 @@ abstract class BaseTask extends BaseObject implements Persistent
     protected $tas_assign_variable = '@@SYS_NEXT_USER_TO_BE_ASSIGNED';
 
     /**
+     * The value for the tas_group_variable field.
+     * @var        string
+     */
+    protected $tas_group_variable = '@@SYS_GROUP_TO_BE_ASSIGNED';
+
+    /**
      * The value for the tas_mi_instance_variable field.
      * @var        string
      */
@@ -417,6 +423,17 @@ abstract class BaseTask extends BaseObject implements Persistent
     {
 
         return $this->tas_assign_variable;
+    }
+
+    /**
+     * Get the [tas_group_variable] column value.
+     * 
+     * @return     string
+     */
+    public function getTasGroupVariable()
+    {
+
+        return $this->tas_group_variable;
     }
 
     /**
@@ -989,6 +1006,28 @@ abstract class BaseTask extends BaseObject implements Persistent
         }
 
     } // setTasAssignVariable()
+
+    /**
+     * Set the value of [tas_group_variable] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setTasGroupVariable($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->tas_group_variable !== $v || $v === '@@SYS_GROUP_TO_BE_ASSIGNED') {
+            $this->tas_group_variable = $v;
+            $this->modifiedColumns[] = TaskPeer::TAS_GROUP_VARIABLE;
+        }
+
+    } // setTasGroupVariable()
 
     /**
      * Set the value of [tas_mi_instance_variable] column.
@@ -1669,70 +1708,72 @@ abstract class BaseTask extends BaseObject implements Persistent
 
             $this->tas_assign_variable = $rs->getString($startcol + 11);
 
-            $this->tas_mi_instance_variable = $rs->getString($startcol + 12);
+            $this->tas_group_variable = $rs->getString($startcol + 12);
 
-            $this->tas_mi_complete_variable = $rs->getString($startcol + 13);
+            $this->tas_mi_instance_variable = $rs->getString($startcol + 13);
 
-            $this->tas_assign_location = $rs->getString($startcol + 14);
+            $this->tas_mi_complete_variable = $rs->getString($startcol + 14);
 
-            $this->tas_assign_location_adhoc = $rs->getString($startcol + 15);
+            $this->tas_assign_location = $rs->getString($startcol + 15);
 
-            $this->tas_transfer_fly = $rs->getString($startcol + 16);
+            $this->tas_assign_location_adhoc = $rs->getString($startcol + 16);
 
-            $this->tas_last_assigned = $rs->getString($startcol + 17);
+            $this->tas_transfer_fly = $rs->getString($startcol + 17);
 
-            $this->tas_user = $rs->getString($startcol + 18);
+            $this->tas_last_assigned = $rs->getString($startcol + 18);
 
-            $this->tas_can_upload = $rs->getString($startcol + 19);
+            $this->tas_user = $rs->getString($startcol + 19);
 
-            $this->tas_view_upload = $rs->getString($startcol + 20);
+            $this->tas_can_upload = $rs->getString($startcol + 20);
 
-            $this->tas_view_additional_documentation = $rs->getString($startcol + 21);
+            $this->tas_view_upload = $rs->getString($startcol + 21);
 
-            $this->tas_can_cancel = $rs->getString($startcol + 22);
+            $this->tas_view_additional_documentation = $rs->getString($startcol + 22);
 
-            $this->tas_owner_app = $rs->getString($startcol + 23);
+            $this->tas_can_cancel = $rs->getString($startcol + 23);
 
-            $this->stg_uid = $rs->getString($startcol + 24);
+            $this->tas_owner_app = $rs->getString($startcol + 24);
 
-            $this->tas_can_pause = $rs->getString($startcol + 25);
+            $this->stg_uid = $rs->getString($startcol + 25);
 
-            $this->tas_can_send_message = $rs->getString($startcol + 26);
+            $this->tas_can_pause = $rs->getString($startcol + 26);
 
-            $this->tas_can_delete_docs = $rs->getString($startcol + 27);
+            $this->tas_can_send_message = $rs->getString($startcol + 27);
 
-            $this->tas_self_service = $rs->getString($startcol + 28);
+            $this->tas_can_delete_docs = $rs->getString($startcol + 28);
 
-            $this->tas_start = $rs->getString($startcol + 29);
+            $this->tas_self_service = $rs->getString($startcol + 29);
 
-            $this->tas_to_last_user = $rs->getString($startcol + 30);
+            $this->tas_start = $rs->getString($startcol + 30);
 
-            $this->tas_send_last_email = $rs->getString($startcol + 31);
+            $this->tas_to_last_user = $rs->getString($startcol + 31);
 
-            $this->tas_derivation = $rs->getString($startcol + 32);
+            $this->tas_send_last_email = $rs->getString($startcol + 32);
 
-            $this->tas_posx = $rs->getInt($startcol + 33);
+            $this->tas_derivation = $rs->getString($startcol + 33);
 
-            $this->tas_posy = $rs->getInt($startcol + 34);
+            $this->tas_posx = $rs->getInt($startcol + 34);
 
-            $this->tas_width = $rs->getInt($startcol + 35);
+            $this->tas_posy = $rs->getInt($startcol + 35);
 
-            $this->tas_height = $rs->getInt($startcol + 36);
+            $this->tas_width = $rs->getInt($startcol + 36);
 
-            $this->tas_color = $rs->getString($startcol + 37);
+            $this->tas_height = $rs->getInt($startcol + 37);
 
-            $this->tas_evn_uid = $rs->getString($startcol + 38);
+            $this->tas_color = $rs->getString($startcol + 38);
 
-            $this->tas_boundary = $rs->getString($startcol + 39);
+            $this->tas_evn_uid = $rs->getString($startcol + 39);
 
-            $this->tas_derivation_screen_tpl = $rs->getString($startcol + 40);
+            $this->tas_boundary = $rs->getString($startcol + 40);
+
+            $this->tas_derivation_screen_tpl = $rs->getString($startcol + 41);
 
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 41; // 41 = TaskPeer::NUM_COLUMNS - TaskPeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 42; // 42 = TaskPeer::NUM_COLUMNS - TaskPeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Task object", $e);
@@ -1973,90 +2014,93 @@ abstract class BaseTask extends BaseObject implements Persistent
                 return $this->getTasAssignVariable();
                 break;
             case 12:
-                return $this->getTasMiInstanceVariable();
+                return $this->getTasGroupVariable();
                 break;
             case 13:
-                return $this->getTasMiCompleteVariable();
+                return $this->getTasMiInstanceVariable();
                 break;
             case 14:
-                return $this->getTasAssignLocation();
+                return $this->getTasMiCompleteVariable();
                 break;
             case 15:
-                return $this->getTasAssignLocationAdhoc();
+                return $this->getTasAssignLocation();
                 break;
             case 16:
-                return $this->getTasTransferFly();
+                return $this->getTasAssignLocationAdhoc();
                 break;
             case 17:
-                return $this->getTasLastAssigned();
+                return $this->getTasTransferFly();
                 break;
             case 18:
-                return $this->getTasUser();
+                return $this->getTasLastAssigned();
                 break;
             case 19:
-                return $this->getTasCanUpload();
+                return $this->getTasUser();
                 break;
             case 20:
-                return $this->getTasViewUpload();
+                return $this->getTasCanUpload();
                 break;
             case 21:
-                return $this->getTasViewAdditionalDocumentation();
+                return $this->getTasViewUpload();
                 break;
             case 22:
-                return $this->getTasCanCancel();
+                return $this->getTasViewAdditionalDocumentation();
                 break;
             case 23:
-                return $this->getTasOwnerApp();
+                return $this->getTasCanCancel();
                 break;
             case 24:
-                return $this->getStgUid();
+                return $this->getTasOwnerApp();
                 break;
             case 25:
-                return $this->getTasCanPause();
+                return $this->getStgUid();
                 break;
             case 26:
-                return $this->getTasCanSendMessage();
+                return $this->getTasCanPause();
                 break;
             case 27:
-                return $this->getTasCanDeleteDocs();
+                return $this->getTasCanSendMessage();
                 break;
             case 28:
-                return $this->getTasSelfService();
+                return $this->getTasCanDeleteDocs();
                 break;
             case 29:
-                return $this->getTasStart();
+                return $this->getTasSelfService();
                 break;
             case 30:
-                return $this->getTasToLastUser();
+                return $this->getTasStart();
                 break;
             case 31:
-                return $this->getTasSendLastEmail();
+                return $this->getTasToLastUser();
                 break;
             case 32:
-                return $this->getTasDerivation();
+                return $this->getTasSendLastEmail();
                 break;
             case 33:
-                return $this->getTasPosx();
+                return $this->getTasDerivation();
                 break;
             case 34:
-                return $this->getTasPosy();
+                return $this->getTasPosx();
                 break;
             case 35:
-                return $this->getTasWidth();
+                return $this->getTasPosy();
                 break;
             case 36:
-                return $this->getTasHeight();
+                return $this->getTasWidth();
                 break;
             case 37:
-                return $this->getTasColor();
+                return $this->getTasHeight();
                 break;
             case 38:
-                return $this->getTasEvnUid();
+                return $this->getTasColor();
                 break;
             case 39:
-                return $this->getTasBoundary();
+                return $this->getTasEvnUid();
                 break;
             case 40:
+                return $this->getTasBoundary();
+                break;
+            case 41:
                 return $this->getTasDerivationScreenTpl();
                 break;
             default:
@@ -2091,35 +2135,36 @@ abstract class BaseTask extends BaseObject implements Persistent
             $keys[9] => $this->getTasPriorityVariable(),
             $keys[10] => $this->getTasAssignType(),
             $keys[11] => $this->getTasAssignVariable(),
-            $keys[12] => $this->getTasMiInstanceVariable(),
-            $keys[13] => $this->getTasMiCompleteVariable(),
-            $keys[14] => $this->getTasAssignLocation(),
-            $keys[15] => $this->getTasAssignLocationAdhoc(),
-            $keys[16] => $this->getTasTransferFly(),
-            $keys[17] => $this->getTasLastAssigned(),
-            $keys[18] => $this->getTasUser(),
-            $keys[19] => $this->getTasCanUpload(),
-            $keys[20] => $this->getTasViewUpload(),
-            $keys[21] => $this->getTasViewAdditionalDocumentation(),
-            $keys[22] => $this->getTasCanCancel(),
-            $keys[23] => $this->getTasOwnerApp(),
-            $keys[24] => $this->getStgUid(),
-            $keys[25] => $this->getTasCanPause(),
-            $keys[26] => $this->getTasCanSendMessage(),
-            $keys[27] => $this->getTasCanDeleteDocs(),
-            $keys[28] => $this->getTasSelfService(),
-            $keys[29] => $this->getTasStart(),
-            $keys[30] => $this->getTasToLastUser(),
-            $keys[31] => $this->getTasSendLastEmail(),
-            $keys[32] => $this->getTasDerivation(),
-            $keys[33] => $this->getTasPosx(),
-            $keys[34] => $this->getTasPosy(),
-            $keys[35] => $this->getTasWidth(),
-            $keys[36] => $this->getTasHeight(),
-            $keys[37] => $this->getTasColor(),
-            $keys[38] => $this->getTasEvnUid(),
-            $keys[39] => $this->getTasBoundary(),
-            $keys[40] => $this->getTasDerivationScreenTpl(),
+            $keys[12] => $this->getTasGroupVariable(),
+            $keys[13] => $this->getTasMiInstanceVariable(),
+            $keys[14] => $this->getTasMiCompleteVariable(),
+            $keys[15] => $this->getTasAssignLocation(),
+            $keys[16] => $this->getTasAssignLocationAdhoc(),
+            $keys[17] => $this->getTasTransferFly(),
+            $keys[18] => $this->getTasLastAssigned(),
+            $keys[19] => $this->getTasUser(),
+            $keys[20] => $this->getTasCanUpload(),
+            $keys[21] => $this->getTasViewUpload(),
+            $keys[22] => $this->getTasViewAdditionalDocumentation(),
+            $keys[23] => $this->getTasCanCancel(),
+            $keys[24] => $this->getTasOwnerApp(),
+            $keys[25] => $this->getStgUid(),
+            $keys[26] => $this->getTasCanPause(),
+            $keys[27] => $this->getTasCanSendMessage(),
+            $keys[28] => $this->getTasCanDeleteDocs(),
+            $keys[29] => $this->getTasSelfService(),
+            $keys[30] => $this->getTasStart(),
+            $keys[31] => $this->getTasToLastUser(),
+            $keys[32] => $this->getTasSendLastEmail(),
+            $keys[33] => $this->getTasDerivation(),
+            $keys[34] => $this->getTasPosx(),
+            $keys[35] => $this->getTasPosy(),
+            $keys[36] => $this->getTasWidth(),
+            $keys[37] => $this->getTasHeight(),
+            $keys[38] => $this->getTasColor(),
+            $keys[39] => $this->getTasEvnUid(),
+            $keys[40] => $this->getTasBoundary(),
+            $keys[41] => $this->getTasDerivationScreenTpl(),
         );
         return $result;
     }
@@ -2188,90 +2233,93 @@ abstract class BaseTask extends BaseObject implements Persistent
                 $this->setTasAssignVariable($value);
                 break;
             case 12:
-                $this->setTasMiInstanceVariable($value);
+                $this->setTasGroupVariable($value);
                 break;
             case 13:
-                $this->setTasMiCompleteVariable($value);
+                $this->setTasMiInstanceVariable($value);
                 break;
             case 14:
-                $this->setTasAssignLocation($value);
+                $this->setTasMiCompleteVariable($value);
                 break;
             case 15:
-                $this->setTasAssignLocationAdhoc($value);
+                $this->setTasAssignLocation($value);
                 break;
             case 16:
-                $this->setTasTransferFly($value);
+                $this->setTasAssignLocationAdhoc($value);
                 break;
             case 17:
-                $this->setTasLastAssigned($value);
+                $this->setTasTransferFly($value);
                 break;
             case 18:
-                $this->setTasUser($value);
+                $this->setTasLastAssigned($value);
                 break;
             case 19:
-                $this->setTasCanUpload($value);
+                $this->setTasUser($value);
                 break;
             case 20:
-                $this->setTasViewUpload($value);
+                $this->setTasCanUpload($value);
                 break;
             case 21:
-                $this->setTasViewAdditionalDocumentation($value);
+                $this->setTasViewUpload($value);
                 break;
             case 22:
-                $this->setTasCanCancel($value);
+                $this->setTasViewAdditionalDocumentation($value);
                 break;
             case 23:
-                $this->setTasOwnerApp($value);
+                $this->setTasCanCancel($value);
                 break;
             case 24:
-                $this->setStgUid($value);
+                $this->setTasOwnerApp($value);
                 break;
             case 25:
-                $this->setTasCanPause($value);
+                $this->setStgUid($value);
                 break;
             case 26:
-                $this->setTasCanSendMessage($value);
+                $this->setTasCanPause($value);
                 break;
             case 27:
-                $this->setTasCanDeleteDocs($value);
+                $this->setTasCanSendMessage($value);
                 break;
             case 28:
-                $this->setTasSelfService($value);
+                $this->setTasCanDeleteDocs($value);
                 break;
             case 29:
-                $this->setTasStart($value);
+                $this->setTasSelfService($value);
                 break;
             case 30:
-                $this->setTasToLastUser($value);
+                $this->setTasStart($value);
                 break;
             case 31:
-                $this->setTasSendLastEmail($value);
+                $this->setTasToLastUser($value);
                 break;
             case 32:
-                $this->setTasDerivation($value);
+                $this->setTasSendLastEmail($value);
                 break;
             case 33:
-                $this->setTasPosx($value);
+                $this->setTasDerivation($value);
                 break;
             case 34:
-                $this->setTasPosy($value);
+                $this->setTasPosx($value);
                 break;
             case 35:
-                $this->setTasWidth($value);
+                $this->setTasPosy($value);
                 break;
             case 36:
-                $this->setTasHeight($value);
+                $this->setTasWidth($value);
                 break;
             case 37:
-                $this->setTasColor($value);
+                $this->setTasHeight($value);
                 break;
             case 38:
-                $this->setTasEvnUid($value);
+                $this->setTasColor($value);
                 break;
             case 39:
-                $this->setTasBoundary($value);
+                $this->setTasEvnUid($value);
                 break;
             case 40:
+                $this->setTasBoundary($value);
+                break;
+            case 41:
                 $this->setTasDerivationScreenTpl($value);
                 break;
         } // switch()
@@ -2346,119 +2394,123 @@ abstract class BaseTask extends BaseObject implements Persistent
         }
 
         if (array_key_exists($keys[12], $arr)) {
-            $this->setTasMiInstanceVariable($arr[$keys[12]]);
+            $this->setTasGroupVariable($arr[$keys[12]]);
         }
 
         if (array_key_exists($keys[13], $arr)) {
-            $this->setTasMiCompleteVariable($arr[$keys[13]]);
+            $this->setTasMiInstanceVariable($arr[$keys[13]]);
         }
 
         if (array_key_exists($keys[14], $arr)) {
-            $this->setTasAssignLocation($arr[$keys[14]]);
+            $this->setTasMiCompleteVariable($arr[$keys[14]]);
         }
 
         if (array_key_exists($keys[15], $arr)) {
-            $this->setTasAssignLocationAdhoc($arr[$keys[15]]);
+            $this->setTasAssignLocation($arr[$keys[15]]);
         }
 
         if (array_key_exists($keys[16], $arr)) {
-            $this->setTasTransferFly($arr[$keys[16]]);
+            $this->setTasAssignLocationAdhoc($arr[$keys[16]]);
         }
 
         if (array_key_exists($keys[17], $arr)) {
-            $this->setTasLastAssigned($arr[$keys[17]]);
+            $this->setTasTransferFly($arr[$keys[17]]);
         }
 
         if (array_key_exists($keys[18], $arr)) {
-            $this->setTasUser($arr[$keys[18]]);
+            $this->setTasLastAssigned($arr[$keys[18]]);
         }
 
         if (array_key_exists($keys[19], $arr)) {
-            $this->setTasCanUpload($arr[$keys[19]]);
+            $this->setTasUser($arr[$keys[19]]);
         }
 
         if (array_key_exists($keys[20], $arr)) {
-            $this->setTasViewUpload($arr[$keys[20]]);
+            $this->setTasCanUpload($arr[$keys[20]]);
         }
 
         if (array_key_exists($keys[21], $arr)) {
-            $this->setTasViewAdditionalDocumentation($arr[$keys[21]]);
+            $this->setTasViewUpload($arr[$keys[21]]);
         }
 
         if (array_key_exists($keys[22], $arr)) {
-            $this->setTasCanCancel($arr[$keys[22]]);
+            $this->setTasViewAdditionalDocumentation($arr[$keys[22]]);
         }
 
         if (array_key_exists($keys[23], $arr)) {
-            $this->setTasOwnerApp($arr[$keys[23]]);
+            $this->setTasCanCancel($arr[$keys[23]]);
         }
 
         if (array_key_exists($keys[24], $arr)) {
-            $this->setStgUid($arr[$keys[24]]);
+            $this->setTasOwnerApp($arr[$keys[24]]);
         }
 
         if (array_key_exists($keys[25], $arr)) {
-            $this->setTasCanPause($arr[$keys[25]]);
+            $this->setStgUid($arr[$keys[25]]);
         }
 
         if (array_key_exists($keys[26], $arr)) {
-            $this->setTasCanSendMessage($arr[$keys[26]]);
+            $this->setTasCanPause($arr[$keys[26]]);
         }
 
         if (array_key_exists($keys[27], $arr)) {
-            $this->setTasCanDeleteDocs($arr[$keys[27]]);
+            $this->setTasCanSendMessage($arr[$keys[27]]);
         }
 
         if (array_key_exists($keys[28], $arr)) {
-            $this->setTasSelfService($arr[$keys[28]]);
+            $this->setTasCanDeleteDocs($arr[$keys[28]]);
         }
 
         if (array_key_exists($keys[29], $arr)) {
-            $this->setTasStart($arr[$keys[29]]);
+            $this->setTasSelfService($arr[$keys[29]]);
         }
 
         if (array_key_exists($keys[30], $arr)) {
-            $this->setTasToLastUser($arr[$keys[30]]);
+            $this->setTasStart($arr[$keys[30]]);
         }
 
         if (array_key_exists($keys[31], $arr)) {
-            $this->setTasSendLastEmail($arr[$keys[31]]);
+            $this->setTasToLastUser($arr[$keys[31]]);
         }
 
         if (array_key_exists($keys[32], $arr)) {
-            $this->setTasDerivation($arr[$keys[32]]);
+            $this->setTasSendLastEmail($arr[$keys[32]]);
         }
 
         if (array_key_exists($keys[33], $arr)) {
-            $this->setTasPosx($arr[$keys[33]]);
+            $this->setTasDerivation($arr[$keys[33]]);
         }
 
         if (array_key_exists($keys[34], $arr)) {
-            $this->setTasPosy($arr[$keys[34]]);
+            $this->setTasPosx($arr[$keys[34]]);
         }
 
         if (array_key_exists($keys[35], $arr)) {
-            $this->setTasWidth($arr[$keys[35]]);
+            $this->setTasPosy($arr[$keys[35]]);
         }
 
         if (array_key_exists($keys[36], $arr)) {
-            $this->setTasHeight($arr[$keys[36]]);
+            $this->setTasWidth($arr[$keys[36]]);
         }
 
         if (array_key_exists($keys[37], $arr)) {
-            $this->setTasColor($arr[$keys[37]]);
+            $this->setTasHeight($arr[$keys[37]]);
         }
 
         if (array_key_exists($keys[38], $arr)) {
-            $this->setTasEvnUid($arr[$keys[38]]);
+            $this->setTasColor($arr[$keys[38]]);
         }
 
         if (array_key_exists($keys[39], $arr)) {
-            $this->setTasBoundary($arr[$keys[39]]);
+            $this->setTasEvnUid($arr[$keys[39]]);
         }
 
         if (array_key_exists($keys[40], $arr)) {
-            $this->setTasDerivationScreenTpl($arr[$keys[40]]);
+            $this->setTasBoundary($arr[$keys[40]]);
+        }
+
+        if (array_key_exists($keys[41], $arr)) {
+            $this->setTasDerivationScreenTpl($arr[$keys[41]]);
         }
 
     }
@@ -2518,6 +2570,10 @@ abstract class BaseTask extends BaseObject implements Persistent
 
         if ($this->isColumnModified(TaskPeer::TAS_ASSIGN_VARIABLE)) {
             $criteria->add(TaskPeer::TAS_ASSIGN_VARIABLE, $this->tas_assign_variable);
+        }
+
+        if ($this->isColumnModified(TaskPeer::TAS_GROUP_VARIABLE)) {
+            $criteria->add(TaskPeer::TAS_GROUP_VARIABLE, $this->tas_group_variable);
         }
 
         if ($this->isColumnModified(TaskPeer::TAS_MI_INSTANCE_VARIABLE)) {
@@ -2711,6 +2767,8 @@ abstract class BaseTask extends BaseObject implements Persistent
         $copyObj->setTasAssignType($this->tas_assign_type);
 
         $copyObj->setTasAssignVariable($this->tas_assign_variable);
+
+        $copyObj->setTasGroupVariable($this->tas_group_variable);
 
         $copyObj->setTasMiInstanceVariable($this->tas_mi_instance_variable);
 

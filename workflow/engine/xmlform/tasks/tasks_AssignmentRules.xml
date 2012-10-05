@@ -12,9 +12,13 @@
 <LANG type="private"/>
 
 <TAS_ASSIGN_TYPE type="radiogroup" defaultvalue="BALANCED" group="1">
-  <en>Case to be assigned by<option name="BALANCED">Cyclical Assignment</option><option name="MANUAL">Manual Assignment</option><option name="EVALUATE">Value Based Assignment</option>
+  <en>Case to be assigned by
+  <option name="BALANCED">Cyclical Assignment</option>
+  <option name="MANUAL">Manual Assignment</option>
+  <option name="EVALUATE">Value Based Assignment</option>
   <option name="REPORT_TO">Reports to</option>
   <option name="SELF_SERVICE">Self Service</option>
+  <option name="SELF_SERVICE_EVALUATE">Self Service Value Based Assignment</option>
   <!-- this feature is temporarily disabled -->
   <!--option name="STATIC_MI">Static Partial Join for Multiple Instances</option>
   <option name="CANCEL_MI">Cancelling Partial Join for Multiple Instances</option-->
@@ -24,6 +28,10 @@
 <TAS_ASSIGN_VARIABLE type="textpm" size="40" maxlength="155" defaultvalue="@@SYS_NEXT_USER_TO_BE_ASSIGNED" showVars="1" process="@#PRO_UID">
   <en>Variable for Value Based Assignment</en>
 </TAS_ASSIGN_VARIABLE>
+
+<TAS_GROUP_VARIABLE type="textpm" size="40" maxlength="155" defaultvalue="@@SYS_GROUP_TO_BE_ASSIGNED" showVars="1" process="@#PRO_UID">
+  <en>Variable for Self Service Value Based Assignment</en>
+</TAS_GROUP_VARIABLE>
   <!-- this feature is temporarily disabled -->
 <!--TAS_MI_INSTANCE_VARIABLE type="textpm" size="40" maxlength="155" defaultvalue="@@SYS_VAR_TOTAL_INSTANCE" showVars="1" process="@#PRO_UID">
   <en>Variable for No of Instances</en>
@@ -37,28 +45,37 @@
 
 var showTextpm = function()
 {
-/* this feature is temporarily disabled
-if(getField('TAS_ASSIGN_TYPE][STATIC_MI').checked == true || getField('TAS_ASSIGN_TYPE][CANCEL_MI').checked == true)
-{
-  showRowById('TAS_MI_INSTANCE_VARIABLE');
-  showRowById('TAS_MI_COMPLETE_VARIABLE');
-  hideRowById('TAS_ASSIGN_VARIABLE');
-}
-else */
-if(getField('TAS_ASSIGN_TYPE][EVALUATE').checked == true)
+  /* this feature is temporarily disabled
+  if(getField('TAS_ASSIGN_TYPE][STATIC_MI').checked == true || getField('TAS_ASSIGN_TYPE][CANCEL_MI').checked == true)
   {
-  showRowById('TAS_ASSIGN_VARIABLE');
-/* this feature is temporarily disabled
-  hideRowById('TAS_MI_INSTANCE_VARIABLE');
-  hideRowById('TAS_MI_COMPLETE_VARIABLE');*/
-  }
- else
- {
+    showRowById('TAS_MI_INSTANCE_VARIABLE');
+    showRowById('TAS_MI_COMPLETE_VARIABLE');
     hideRowById('TAS_ASSIGN_VARIABLE');
-/* this feature is temporarily disabled
+  }
+  else */
+  if(getField('TAS_ASSIGN_TYPE][EVALUATE').checked == true) {
+    showRowById('TAS_ASSIGN_VARIABLE');
+    hideRowById('TAS_GROUP_VARIABLE');
+    //getField('TAS_GROUP_VARIABLE').value = '';
+    /* this feature is temporarily disabled
     hideRowById('TAS_MI_INSTANCE_VARIABLE');
     hideRowById('TAS_MI_COMPLETE_VARIABLE');*/
- }
+  } else {
+    if (getField('TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE').checked) {
+      hideRowById('TAS_ASSIGN_VARIABLE');
+      showRowById('TAS_GROUP_VARIABLE');
+      if (getField('TAS_GROUP_VARIABLE').value == '') {
+        getField('TAS_GROUP_VARIABLE').value = '@' + '@' + 'SYS_GROUP_TO_BE_ASSIGNED';//the class xmlform replace this variable @@SYS_GROUP_TO_BE_ASSIGNED
+      }
+    } else {
+      hideRowById('TAS_ASSIGN_VARIABLE');
+      hideRowById('TAS_GROUP_VARIABLE');
+      //getField('TAS_GROUP_VARIABLE').value = '';
+    }
+    /* this feature is temporarily disabled
+    hideRowById('TAS_MI_INSTANCE_VARIABLE');
+    hideRowById('TAS_MI_COMPLETE_VARIABLE');*/
+  }
 };
 
 /* Recovery data */
@@ -67,7 +84,11 @@ if (aTaskFlag[1])
   switch (oTaskData.TAS_ASSIGN_TYPE)
   {
     case 'SELF_SERVICE':
-      getField('TAS_ASSIGN_TYPE][SELF_SERVICE').checked = true;
+      if (getField('TAS_GROUP_VARIABLE').value == '') {
+        getField('TAS_ASSIGN_TYPE][SELF_SERVICE').checked = true;
+      } else {
+        getField('TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE').checked = true;
+      }
       showTextpm();
     break;
     case 'REPORT_TO':
@@ -122,6 +143,10 @@ showTextpm();
 
 
 leimnud.event.add(getField('TAS_ASSIGN_TYPE][SELF_SERVICE'), 'click', function() {
+  showTextpm();
+});
+
+leimnud.event.add(getField('TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE'), 'click', function() {
   showTextpm();
 });
 
@@ -206,4 +231,4 @@ var insertFormVar = function(sFieldName, sValue) {
 
 ]]></JS>
 
-</dynaForm>  
+</dynaForm>

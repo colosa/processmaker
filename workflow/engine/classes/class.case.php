@@ -463,7 +463,7 @@ class Cases
         return $rows;
     }
 
-    public function isSelfService($USR_UID, $TAS_UID)
+    public function isSelfService($USR_UID, $TAS_UID, $APP_UID = '')
     {
         $tasks = $this->getSelfServiceTasks($USR_UID);
 
@@ -472,6 +472,23 @@ class Cases
                 return true;
             }
         }
+
+        if ($APP_UID != '') {
+            $groupsInstance = new Groups();
+            $groups = $groupsInstance->getActiveGroupsForAnUser($USR_UID);
+            $taskInstance = new Task();
+            $taskData = $taskInstance->Load($TAS_UID);
+            $tasGroupVariable = str_replace(array('@', '#'), '', $taskData['TAS_GROUP_VARIABLE']);
+            $caseData = $this->LoadCase($APP_UID);
+            if (isset($caseData['APP_DATA'][$tasGroupVariable])) {
+                if (trim($caseData['APP_DATA'][$tasGroupVariable]) != '') {
+                  if (in_array(trim($caseData['APP_DATA'][$tasGroupVariable]), $groups)) {
+                    return true;
+                  }
+                }
+            }
+        }
+
         return false;
     }
 

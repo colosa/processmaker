@@ -304,6 +304,61 @@ class AppCacheView extends BaseAppCacheView
         return $tasks;
     }
 
+    public function getSelfServiceCasesByEvaluate($userUid) {
+        $cases = array();
+
+        //check groups assigned to SelfService task
+        G::LoadClass('groups');
+        $group = new Groups();
+        $aGroups = $group->getActiveGroupsForAnUser($userUid);
+
+        $c = new Criteria();
+        $c->clearSelectColumns();
+        $c->addSelectColumn(TaskPeer::TAS_UID);
+        $c->addSelectColumn(TaskPeer::PRO_UID);
+        $c->addSelectColumn(TaskPeer::TAS_GROUP_VARIABLE);
+        $c->addJoin(TaskPeer::PRO_UID, ProcessPeer::PRO_UID, Criteria::LEFT_JOIN);
+        $c->addJoin(TaskPeer::TAS_UID, TaskUserPeer::TAS_UID, Criteria::LEFT_JOIN);
+        $c->add(ProcessPeer::PRO_STATUS, 'ACTIVE');
+        $c->add(TaskPeer::TAS_ASSIGN_TYPE, 'SELF_SERVICE');
+        $c->add(TaskPeer::TAS_GROUP_VARIABLE, '', Criteria::NOT_EQUAL);
+        $rs = TaskPeer::doSelectRS($c);
+        $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $rs->next();
+
+        if ($rs->getRecordCount() > 0) {
+          if (!class_exists('Cases')) {
+              G::loadClass('case');
+          }
+          $caseInstance = new Cases();
+          while ($row = $rs->getRow()) {
+              $tasGroupVariable = str_replace(array('@', '#'), '', $row['TAS_GROUP_VARIABLE']);
+              $c2 = new Criteria();
+              $c2->clearSelectColumns();
+              $c2->addSelectColumn(AppDelegationPeer::APP_UID);
+              $c2->add(AppDelegationPeer::TAS_UID, $row['TAS_UID']);
+              $c2->add(AppDelegationPeer::USR_UID, '');
+              $c2->add(AppDelegationPeer::DEL_THREAD_STATUS, 'OPEN');
+              $rs2 = AppDelegationPeer::doSelectRS($c2);
+              $rs2->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+              $rs2->next();
+              while ($row2 = $rs2->getRow()) {
+                  $caseData = $caseInstance->LoadCase($row2['APP_UID']);
+                  if (isset($caseData['APP_DATA'][$tasGroupVariable])) {
+                    if (trim($caseData['APP_DATA'][$tasGroupVariable]) != '') {
+                      if (in_array(trim($caseData['APP_DATA'][$tasGroupVariable]), $aGroups)) {
+                        $cases[] = $row2['APP_UID'];
+                      }
+                    }
+                  }
+                  $rs2->next();
+              }
+              $rs->next();
+          }
+        }
+        return $cases;
+    }
+
     /**
      * gets the UNASSIGNED cases list criteria
      * param $userUid the current userUid
@@ -327,14 +382,18 @@ class AppCacheView extends BaseAppCacheView
             $criteria = $this->addPMFieldsToCriteria('unassigned');
         }
 
-        //$criteria->add(AppCacheViewPeer::APP_STATUS, "TO_DO");
-
         $criteria->add(AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL);
-        //$criteria->add(AppCacheViewPeer::APP_THREAD_STATUS, 'OPEN');
-        //$criteria->add(AppCacheViewPeer::DEL_THREAD_STATUS, 'OPEN');
-
         $criteria->add(AppCacheViewPeer::USR_UID, '');
-        $criteria->add(AppCacheViewPeer::TAS_UID, $tasks, Criteria::IN);
+
+        $cases = $this->getSelfServiceCasesByEvaluate($userUid);
+        if (!empty($cases)) {
+            $criteria->add(
+            $criteria->getNewCriterion(AppCacheViewPeer::TAS_UID, $tasks, Criteria::IN)->
+              addOr($criteria->getNewCriterion(AppCacheViewPeer::APP_UID, $cases, Criteria::IN))
+            );
+        } else {
+            $criteria->add(AppCacheViewPeer::TAS_UID, $tasks, Criteria::IN);
+        }
 
         return $criteria;
     }

@@ -142,10 +142,11 @@ try {
         $_SESSION['CURRENT_TASK']  = $aFields['TAS_UID'];
 
         //if the task is in the valid selfservice tasks for this user, then catch the case, else just view the resume
-        if( $oCase->isSelfService($_SESSION['USER_LOGGED'], $aFields['TAS_UID']) ) {
+        if( $oCase->isSelfService($_SESSION['USER_LOGGED'], $aFields['TAS_UID'], $sAppUid) ) {
           require_once (PATH_METHODS . 'cases' . PATH_SEP . 'cases_CatchSelfService.php');
-        } else
+        } else {
           require_once (PATH_METHODS . 'cases' . PATH_SEP . 'cases_Resume.php');
+        }
 
         exit;
       }
