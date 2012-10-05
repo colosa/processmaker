@@ -516,6 +516,28 @@ function GetVariables($params)
     return $res;
 }
 
+function GetAllVariables($params)
+{
+
+    $vsResult = isValidSession($params->sessionId);
+
+    if ($vsResult->status_code !== 0) {
+        return $vsResult;
+    }
+
+    if (ifPermission($params->sessionId, 'PM_CASES') == 0) {
+        $result = new wsGetVariableResponse(2, "You do not have privileges", null);
+
+        return $result;
+    }
+
+    $ws = new wsBase();
+
+    $res = $ws->getAllVariables($params->caseId);
+
+    return $res;
+}
+
 function DerivateCase($params)
 {
     $oSession = new Sessions();
@@ -1169,6 +1191,7 @@ $server->addFunction("removeDocument");
 $server->addFunction("SendMessage");
 $server->addFunction("SendVariables");
 $server->addFunction("GetVariables");
+$server->addFunction("GetAllVariables");
 $server->addFunction("DerivateCase");
 $server->addFunction("RouteCase");
 $server->addFunction("executeTrigger");

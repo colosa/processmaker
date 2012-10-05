@@ -308,6 +308,11 @@
           <xs:element name="value" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
+      <xs:complexType name="variableListNameStruct">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
       <xs:element name="variableListRequest">
         <xs:complexType>
           <xs:sequence>
@@ -325,12 +330,30 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="getAllVariablesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="status_code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="timestamp" type="xs:string"/>
+            <xs:element name="variables" minOccurs="0" maxOccurs="unbounded" type="xs0:variableListNameStruct"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="getVariablesRequest">
         <xs:complexType>
           <xs:sequence>
             <xs:element name="sessionId" type="xs:string"/>
             <xs:element name="caseId" type="xs:string"/>
             <xs:element name="variables" maxOccurs="unbounded" type="xs0:variableStruct"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAllVariablesRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="sessionId" type="xs:string"/>
+            <xs:element name="caseId" type="xs:string"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -920,6 +943,12 @@
   <message name="getVariablesResponse">
     <part name="parameters" element="xs0:getVariablesResponse"/>
   </message>
+  <message name="getAllVariablesRequest">
+    <part name="parameters" element="xs0:getAllVariablesRequest"/>
+  </message>
+  <message name="getAllVariablesResponse">
+    <part name="parameters" element="xs0:getAllVariablesResponse"/>
+  </message>
   <message name="sendMessageRequest">
     <part name="parameters" element="xs0:sendMessageRequest"/>
   </message>
@@ -1101,6 +1130,10 @@
     <operation name="getVariables">
       <input message="xs0:getVariablesRequest"/>
       <output message="xs0:getVariablesResponse"/>
+    </operation>
+    <operation name="getAllVariables">
+      <input message="xs0:getAllVariablesRequest"/>
+      <output message="xs0:getAllVariablesResponse"/>
     </operation>
     <operation name="sendMessage">
       <input message="xs0:sendMessageRequest"/>
@@ -1356,6 +1389,15 @@
     </operation>
     <operation name="getVariables">
       <soap12:operation soapAction="urn:getVariables" soapActionRequired="true" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="getAllVariables">
+      <soap12:operation soapAction="urn:getAllVariables" soapActionRequired="true" style="document"/>
       <input>
         <soap12:body use="literal"/>
       </input>
