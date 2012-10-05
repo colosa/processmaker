@@ -3409,7 +3409,7 @@ function putFieldNumericValue(elem, num, mask, decimalSeparator)
 
         var strAux = maskNumber.split("").reverse().join("");
         cont = 0;
-        pos = 0;
+        pos = -1;
 
         for (i = 0; i <= strAux.length - 1; i++) {
             if (strAux.charAt(i) == "#") {
@@ -3422,25 +3422,34 @@ function putFieldNumericValue(elem, num, mask, decimalSeparator)
             }
         }
 
-        var mask2 = strAux.substring(0, pos + 1);
-        mask2 = mask2.split("").reverse().join("");
+        var mask2 = "";
+
+        if (pos != -1) {
+            mask2 = strAux.substring(0, pos + 1);
+            mask2 = mask2.split("").reverse().join("");
+        } else {
+            mask1 = maskNumber;
+        }
 
         maskNumber = mask1 + mask2;
     }
 
-    var newNumber  = putStringMask(n.split("").reverse().join(""), maskNumber.split("").reverse().join(""));
-    var newDecimal = putStringMask(d, maskDecimal);
-
-    newNumber = newNumber.split("").reverse().join("");
+    var newNumber  = putStringMask(n, maskNumber, "reverse");
+    var newDecimal = putStringMask(d, maskDecimal, "forward");
 
     elem.value = newNumber + decimalSeparator + newDecimal;
 }
 
-function putStringMask(str, mask)
+function putStringMask(str, mask, dir)
 {
     var newStr = "";
     var i1 = 0;
     var i2 = 0;
+
+    if (dir == "reverse") {
+        str = str.split("").reverse().join("");
+        mask = mask.split("").reverse().join("");
+    }
 
     for (i1 = 0; i1 <= mask.length - 1; i1++) {
         switch (mask.charAt(i1)) {
@@ -3458,6 +3467,10 @@ function putStringMask(str, mask)
                 newStr = newStr + mask.charAt(i1);
                 break;
         }
+    }
+
+    if (dir == "reverse") {
+        newStr = newStr.split("").reverse().join("");
     }
 
     return newStr;

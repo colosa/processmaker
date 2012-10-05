@@ -5,15 +5,13 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
   {$_header}
   {literal}
-<!--[if IE]>
-  <style>  
-  table.x-pm-headerbar td, table th {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-right: 0px;
+  <!--[if lt IE 8]>
+  <style type="text/css">
+  .x-pm-headerbar-data {
+      padding-top: 8px;
   }
   </style>
-<![endif]-->
+  <![endif]-->
   {/literal}
 </head>
 <body>
@@ -21,18 +19,18 @@
 <div id="panel-header" />
 
 <div id="header-content" style="display:none">
-    <table class="x-pm-headerbar">
+  <table class="x-pm-headerbar">
     <tr>
       <td width="50%" valign="middle">
         <img src="{$logo_company}" height="40"/>
       </td>
 
-      <td align="right" valign="top">
+      <td class="x-pm-headerbar-data" align="right" valign="top">
         <table width="100%" height="25" border="0" cellspacing="0" cellpadding="0" class="headerRightSection">
           <tr valign="middle">
             <td align="right">
               {if $licenseNotification != ''}
-              <span class="x-pm-license-notification"> 
+              <span class="x-pm-license-notification">
                 <img src="/images/alert_icon.gif" width="10px" headerRightSection="10px"/> {$licenseNotification}
               </span>
               {/if}
@@ -40,15 +38,15 @@
             <td height="12" valign="middle" align="right" valign="top">
               <a href="#" id="options-tool" class="options-tool">
                 {$userfullname}
-                <span> 
-                  <img src="/images/classic/roll.static.gif" width="10px" headerRightSection="10px"/> 
+                <span>
+                  <img src="/images/classic/roll.static.gif" width="10px" headerRightSection="10px"/>
                 </span>
                 <br />
                 <span style="font-size:9px">{$rolename}</span>
               </a>
             </td>
             <td width="40" align="right">
-              <span id="user-avatar">  
+              <span id="user-avatar">
                 <img src="{$user_avatar}" width="25" height="25"/>
               </span>
             </td>
