@@ -764,19 +764,55 @@ function moveAction()
 {
     copyMoveAction("move");
 }
+
+function findChilds($uidFolder, $path, $arrayPath) {
+    $Criteria = new Criteria ();
+    $Criteria->addSelectColumn ( AppFolderPeer::FOLDER_UID );
+    $Criteria->addSelectColumn ( AppFolderPeer::FOLDER_PARENT_UID );
+    $Criteria->addSelectColumn ( AppFolderPeer::FOLDER_NAME );
+    $Criteria->addSelectColumn ( AppFolderPeer::FOLDER_CREATE_DATE );
+    $Criteria->addSelectColumn ( AppFolderPeer::FOLDER_UPDATE_DATE );
+
+    $Criteria->add(AppFolderPeer::FOLDER_PARENT_UID, $uidFolder);
+    $Criteria->addAscendingOrderByColumn(AppFolderPeer::FOLDER_NAME);
+
+    $rs = appFolderPeer::doSelectRS ( $Criteria );
+    $rs->setFetchmode ( ResultSet::FETCHMODE_ASSOC );
+
+    $folderResult = array ();
+    $appFoder = new AppFolder ();
+    while ($rs->next()) {
+        $row = $rs->getRow();
+        $path = ($uidFolder != '/')? $path : '';
+        $path = $path."/".$row['FOLDER_NAME'];
+        $arrayPath[] = array($row['FOLDER_UID'],$path);
+        $arrayPath = findChilds($row['FOLDER_UID'], $path, $arrayPath);
+    }
+    return $arrayPath;
+}
 function copyMoveAction($type)
 {
     require_once ("classes/model/AppFolder.php");
     $oPMFolder = new AppFolder ();
 
     $dir=$_REQUEST['dir'];
+    $paths = array();
+    $folderResult = findChilds('/', '', $paths);
+    $withCombo = 30;
+    foreach ($folderResult as $key => $value) {
+        $count = strlen($value[1]);
+        $withCombo = ($count>$withCombo) ? $count : $withCombo;
+    }
+    $root = array("/","/");
+    array_unshift ($folderResult,$root);
 
     $dirCompletePath=$oPMFolder->getFolderStructure($dir);
-    $copyDialog["xtype"]="form";
-    $copyDialog["id"]="simpleform";
-    $copyDialog["labelWidth"]=125;
-    $copyDialog["width"]=340;
-    $copyDialog["url"]="URL_SCRIPT";
+    $copyDialog["xtype"]        = "form";
+    $copyDialog["id"]           = "simpleform";
+    $copyDialog["labelWidth"]   = 80;
+    $copyDialog["width"]        = 500;
+    $copyDialog["modal"]        = true;
+    $copyDialog["url"]          = "URL_SCRIPT";
     if ($type=="copy") {
         $copyDialog["dialogtitle"]= "Copy";
     } else {
@@ -787,19 +823,28 @@ function copyMoveAction($type)
     $copyDialog["items"]=array();
 
     $itemField=array();
-    $itemField["xtype"]="textfield";
-    $itemField["fieldLabel"]="Destination";
-    $itemField["name"]="new_dir_label";
-    $itemField["value"]=$dirCompletePath['PATH'];
-    $itemField["width"]=175;
+    $itemField["xtype"]         = "combo";
+    $itemField["hiddenName"]    = "new_dir";
+    $itemField["id"]            = "new_dir_label";
+    $itemField["name"]          = "new_dir_label";
+    $itemField["mode"]          = "local";
+    $itemField["triggerAction"] = "all";
+    $itemField["store"]         = $folderResult;
+    $itemField["valueField"]    = "FOLDER_UID";
+    $itemField["displayField"]  = "FOLDER_NAME";
+    $itemField["selectOnFocus"] = true;
+    $itemField["tpl"]           = '<tpl for="."><div ext:qtip="{field2}" class="x-combo-list-item">{field2}</div></tpl>';
+    $itemField["fieldLabel"]    = "Destination";
+    $itemField["emptyText"]     = "Select a directory...";
+    $itemField["width"] = 390;
     $itemField["allowBlank"]=false;
     $copyDialog["items"][]=$itemField;
 
     $itemField=array();
     $itemField["xtype"]="hidden";
-    $itemField["fieldLabel"]="Destination";
-    $itemField["name"]="new_dir";
-    $itemField["value"]="$dirCompletePath";
+    $itemField["fieldLabel"]="copyMove";
+    $itemField["name"]="copyMove";
+    $itemField["value"]="all";
     $itemField["width"]=175;
     $itemField["allowBlank"]=false;
     $copyDialog["items"][]=$itemField;
@@ -813,47 +858,58 @@ function copyMoveAction($type)
         $itemButton["text"]= "Move";
     }
     $itemButton["handler"]="copyDialogCreateButtonFunction";
+    $itemButton["id"]="buttonCopy";
     $functionsToReplace["copyDialogCreateButtonFunction"]="function() {
-            form =  Ext.getCmp('simpleform').getForm();
-            statusBarMessage('Please wait...', true, true);
-            var requestParams = getRequestParams();
-            requestParams.confirm = 'true';
-            requestParams.action  = '".$type."Execute';
-            form.submit({
-                //reset: true,
-                reset: false,
-                success: function(form, action) {
+        form =  Ext.getCmp('simpleform').getForm();
+        var requestParams = getRequestParams();
+        requestParams.confirm = 'true';
+        if (Ext.getCmp('new_dir_label').getValue() == '') {
+            statusBarMessage('Select a Directory', false, false);
+            return false;
+        }
+        requestParams.new_dir = Ext.getCmp('new_dir_label').getValue()
+        statusBarMessage('Please wait...', true, true);
+        Ext.getCmp('new_dir_label').disable();
+        Ext.getCmp('buttonCopy').disable();
+        Ext.getCmp('buttonCancel').disable();
+        requestParams.action  = '".$type."Execute';
+        form.submit({
+            reset: false,
+            success: function(form, action) {
                 if(action.result.success){
-                if(action.result.success=='success'){
-                    statusBarMessage(action.result.message, false, true);
-                    try{
-                        dirTree.getSelectionModel().getSelectedNode().reload();
-                    } catch(e) {}
-                    datastore.reload();
-                    Ext.getCmp('dialog').destroy();
+                    if(action.result.success=='success'){
+                        statusBarMessage(action.result.message, false, true);
+                        var node = dirTree.getNodeById('root');
+                        node.select();
+                        datastore.directory = 'root';
+                        datastore.reload();
+                        dirTree.getRootNode().reload();
+                        requestParams.dir = 'root';
+                        Ext.getCmp('dialog').destroy();
                     }else{
-                    statusBarMessage(action.result.message, false, false);
+                        statusBarMessage(action.result.message, false, false);
                     }
-                    }else{
+                }else{
                     if(!action.result) return;
                     Ext.MessageBox.alert('Error!', action.result.error);
                     statusBarMessage(action.result.error, false, false);
-                    }
-                },
-                failure: function(form, action) {
-                    if(!action.result) return;
-                    Ext.MessageBox.alert('Error!', action.result.error);
-                    statusBarMessage(action.result.error, false, false);
-                },
-                scope: form,
-                // add some vars to the request, similar to hidden fields
-                params: requestParams
-            });
-          }";
+                }
+            },
+            failure: function(form, action) {
+                if(!action.result) return;
+                Ext.MessageBox.alert('Error!', action.result.error);
+                statusBarMessage(action.result.error, false, false);
+            },
+            scope: form,
+            // add some vars to the request, similar to hidden fields
+            params: requestParams
+        });
+    }";
     $copyDialog["buttons"][]=$itemButton;
 
     $itemButton=array();
     $itemButton["text"]="Cancel";
+    $itemButton["id"]="buttonCancel";
     $itemButton["handler"]= "copyDialogCancelButtonFunction";
     $functionsToReplace["copyDialogCancelButtonFunction"]="function() { Ext.getCmp('dialog').destroy(); }";
     $copyDialog["buttons"][]=$itemButton;
@@ -924,6 +980,54 @@ function overwriteFile ($node, $fileName) {
     }
 }
 
+
+function copyMoveExecuteTree($uidFolder, $newUidFolder)
+{
+    require_once ("classes/model/AppDocument.php");
+    require_once ('classes/model/AppFolder.php');
+
+    $appFoder = new AppFolder ();
+    $folderContent = $appFoder->getFolderContent($uidFolder);
+    $folderOrigin = $appFoder->getFolderStructure($uidFolder);
+    $FolderParentUid = trim($newUidFolder);//$form['FOLDER_PARENT_UID'];
+    $FolderName = $folderOrigin[$uidFolder]['NAME'];
+    $newFolderContent = $appFoder->createFolder ($FolderName, $FolderParentUid, "new");
+
+    $appDocument = new AppDocument();
+    if ($_REQUEST['action'] == 'moveExecute') {
+        $appFoder->remove($uidFolder,$folderOrigin[$uidFolder]['PARENT']);
+    }
+    $action = $_REQUEST['action'];
+    foreach ($folderContent['documents'] as $keys => $value) {
+        $docInfo = $appDocument->load($value['APP_DOC_UID'],$value['DOC_VERSION']);
+        $docInfo['FOLDER_UID'] = $newFolderContent['folderUID'];
+        $docInfo['APP_DOC_CREATE_DATE'] = date('Y-m-d H:i:s');
+        $docInfo['APP_DOC_STATUS'] = 'ACTIVE';
+        if ($action == 'copyExecute') {
+            unset($docInfo['APP_DOC_UID']);
+            $docUid = $appDocument->create($docInfo);
+        } else {
+            $appDocument->update($docInfo);
+        }
+    }
+    return $newFolderContent['folderUID'];
+}
+
+function checkTree ($uidOriginFolder, $uidNewFolder)
+{
+    require_once ('classes/model/AppFolder.php');
+    $appFoder = new AppFolder ();
+    $newFoldercontent = copyMoveExecuteTree($uidOriginFolder, $uidNewFolder);
+    $listfolder = $appFoder->getFolderList($uidOriginFolder);
+    if (count($listfolder)>0) {
+        foreach ($listfolder['folders'] as $key => $value) {
+            copyMoveExecuteTree($value['FOLDER_UID'],$newFoldercontent);
+        }
+    } else {
+        return;
+    }
+}
+
 function uploadExternalDocument()
 {
     $response['action']=$_POST['action']. " - ".$_POST['option'];
@@ -980,19 +1084,30 @@ function uploadExternalDocument()
             }
         } elseif (isset($_POST['selitems'])) {
             $response="";
-            $response['msg']="correct reload";
+            $response['msg']= "correct reload";
             $response['success']=true;
-            require_once ("classes/model/AppDocument.php");
-            require_once ('classes/model/AppFolder.php');
-            $oAppDocument = new AppDocument();
-            foreach ($_POST['selitems'] as $docId) {
-                $arrayDocId = explode ('_',$docId);
-                //print "<b>$docId</b>";
-                $docInfo=$oAppDocument->load($arrayDocId[0]);
-                $docInfo['FOLDER_UID'] =  $_POST['new_dir'];
-                $docInfo['APP_DOC_CREATE_DATE'] = date('Y-m-d H:i:s');
-                $oAppDocument->update($docInfo);
-                //G::pr($docInfo);
+            if (isset($_REQUEST['option']) && isset($_REQUEST['copyMove'])) {
+                if ($_REQUEST['option'] == 'directory' && $_REQUEST['copyMove'] == 'all') {
+                    $response['action'] = $_POST['action']. " - ".$_POST['option'];
+                    $response['error']  = "Complete";
+                    $response['message']= str_replace("Execute", "", $_POST['action']). " ". "Complete";
+                    $response['success']= 'success';
+                    $response['node']   = '';
+                    $_POST ['node']     = "";
+                    $newFolderUid = checkTree($_REQUEST['dir'], $_REQUEST['new_dir']);
+                }
+                $_POST['selitems'] = array();
+            } else {
+                require_once ("classes/model/AppDocument.php");
+                $oAppDocument = new AppDocument();
+                foreach ($_POST['selitems'] as $docId) {
+                    $arrayDocId = explode ('_',$docId);
+                    $docInfo=$oAppDocument->load($arrayDocId[0]);
+                    $docInfo['FOLDER_UID'] =  $_POST['new_dir'];
+                    $docInfo['APP_DOC_CREATE_DATE'] = date('Y-m-d H:i:s');
+                    $oAppDocument->update($docInfo);
+                    //G::pr($docInfo);
+                }
             }
         }
         //G::pr($quequeUpload);
