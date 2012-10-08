@@ -2,6 +2,38 @@
  * @author: Douglas Medrano
  * May 03, 2011 
  */ 
+    function deleteFiles(sDocUid, sVersion) {
+      Ext.MessageBox.confirm(_('ID_CONFIRM'), _('ID_DELETE_DOCUMENT'), function(res){ 
+        if(res == 'yes') {
+          Ext.MessageBox.show({
+            msg: _('ID_LOADING'),
+            width:300,
+            wait:true,
+            waitConfig: {interval:200},
+            animEl: 'mb7'
+          });
+
+          var requestParams = {
+            action : 'delete',
+            option: 'documents',
+            item: sDocUid + '_' + sVersion,
+            'selitems[]': sDocUid + '_' + sVersion
+          };
+          Ext.Ajax.request({
+            url: '../appFolder/appFolderAjax.php',
+            params : requestParams,
+            success : function(response) {
+              Ext.MessageBox.hide();
+              store.load();
+            },
+            failure : function() {
+              Ext.Msg.alert(TRANSLATIONS.ID_ERROR, TRANSLATIONS.ID_UNABLE_START_CASE);
+            }
+          });
+        }
+      });
+    }
+
     function ajaxPostRequest(url, callback_function, id){
       var d = new Date();
       var time = d.getTime();
@@ -203,7 +235,9 @@
               {name : 'CREATED_BY'},
               {name : 'CREATE_DATE'},
               {name : 'FILEDOCLABEL'},
-              {name : 'FILEPDFLABEL'}
+              {name : 'FILEPDFLABEL'},
+              {name : 'DELETE_FILE'},
+              {name : 'DOC_VERSION'}
             ]
           }
         ) 
@@ -253,7 +287,16 @@
           actionTranslate = _("ID_DERIVATED");
         }  
         return actionTranslate;
-      };        
+      };
+
+      function renderDeleteFile(val,p,r) {
+        if (r.data.DELETE_FILE) {
+          return '<img src="/images/delete-16x16.gif" unselectable="off" onClick="deleteFiles(\'' + r.data.APP_DOC_UID + '\', \'' + r.data.DOC_VERSION + '\');">';
+        } else {
+          return '';
+        }
+      }
+
       var processesGrid = new Ext.grid.GridPanel({
         region: 'center',
         layout: 'fit',
@@ -289,7 +332,8 @@
             {header: _("ID_OUTPUT_DOCUMENT"), dataIndex: 'OUTDOCTITLE', width: 70},
             {header: _("ID_ORIGIN_TASK"), dataIndex: 'ORIGIN', width: 70},
             {header: _("ID_CREATED_BY"), dataIndex: 'CREATED_BY', width: 70},
-            {header: _("ID_CREATE_DATE"), dataIndex: 'CREATE_DATE', width: 70,renderer:startDateRender}
+            {header: _("ID_CREATE_DATE"), dataIndex: 'CREATE_DATE', width: 70,renderer:startDateRender},
+            {header: '', dataIndex: 'DELETE_FILE', width: 30,renderer:renderDeleteFile}
             
           ]
         }),
@@ -392,28 +436,29 @@
 
           var rowSelected = processesGrid.getSelectionModel().getSelected();
 
-          var FILEDOCEXIST = rowSelected.data.FILEDOCEXIST;
-          var FILEPDFEXIST = rowSelected.data.FILEPDFEXIST;
-          
-          if (rowSelected.data.FILEDOCLABEL=='') {
-            Ext.getCmp('ID_DOWNLOAD_DOC').setDisabled(true);
+          if (rowSelected) {               
+            var FILEDOCEXIST = rowSelected.data.FILEDOCEXIST;
+            var FILEPDFEXIST = rowSelected.data.FILEPDFEXIST;
+            
+            if (rowSelected.data.FILEDOCLABEL=='') {
+              Ext.getCmp('ID_DOWNLOAD_DOC').setDisabled(true);
+            }
+            else {
+              Ext.getCmp('ID_DOWNLOAD_DOC').setDisabled(false);
+            }
+            
+            if (rowSelected.data.FILEPDFLABEL=='') {
+              Ext.getCmp('ID_DOWNLOAD_PDF').setDisabled(true);
+            }
+            else {
+              Ext.getCmp('ID_DOWNLOAD_PDF').setDisabled(false);
+            }
+            
+            if ((rowSelected.data.FILEPDFLABEL=='') && (rowSelected.data.FILEDOCLABEL=='')) {
+              Ext.getCmp('ID_DOWNLOAD_PDF').setDisabled(true);
+              Ext.getCmp('ID_DOWNLOAD_DOC').setDisabled(true);
+            }
           }
-          else {
-            Ext.getCmp('ID_DOWNLOAD_DOC').setDisabled(false);
-          }
-          
-          if (rowSelected.data.FILEPDFLABEL=='') {
-            Ext.getCmp('ID_DOWNLOAD_PDF').setDisabled(true);
-          }
-          else {
-            Ext.getCmp('ID_DOWNLOAD_PDF').setDisabled(false);
-          }
-          
-          if ((rowSelected.data.FILEPDFLABEL=='') && (rowSelected.data.FILEDOCLABEL=='')) {
-            Ext.getCmp('ID_DOWNLOAD_PDF').setDisabled(true);
-            Ext.getCmp('ID_DOWNLOAD_DOC').setDisabled(true);
-          }
-          
           
        /*   var ID_DOWNLOAD_PDF2_ = Ext.getCmp('ID_DOWNLOAD_PDF');
           var ID_DOWNLOAD_DOC2_ = Ext.getCmp('ID_DOWNLOAD_DOC');
@@ -469,31 +514,6 @@
       );
       
     processesGrid.addListener('rowcontextmenu', emptyReturn,this);
-    processesGrid.on('rowcontextmenu', function (grid, rowIndex, evt) {
-      var sm = grid.getSelectionModel();
-      sm.selectRow(rowIndex, sm.isSelected(rowIndex));
-      
-      var rowSelected = Ext.getCmp('processesGrid').getSelectionModel().getSelected();
-      var activator = Ext.getCmp('activator2');
-      var debug = Ext.getCmp('debug');
-      
-      if( rowSelected.data.PRO_STATUS == 'ACTIVE' ){
-        activator.setIconClass('icon-deactivate');
-        activator.setText(TRANSLATIONS.ID_DEACTIVATE);
-      } else {
-        activator.setIconClass('icon-activate');
-        activator.setText(TRANSLATIONS.ID_ACTIVATE);
-      }
-  
-      if( rowSelected.data.PRO_DEBUG == 1){
-        debug.setIconClass('icon-debug-disabled');
-        debug.setText(_('ID_DISABLE_DEBUG'));
-      } else {
-        debug.setIconClass('icon-debug');
-        debug.setText(_('ID_ENABLE_DEBUG'));
-      }
-    }, this);
-    
     processesGrid.on('contextmenu', function (evt) {
       evt.preventDefault();
     }, this);

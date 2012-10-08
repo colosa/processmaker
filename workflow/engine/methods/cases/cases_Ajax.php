@@ -640,6 +640,8 @@ switch (($_POST['action'])?$_POST['action']:$_REQUEST['action']) {
             $result = $rs->getRow();
             $result["FILEDOCEXIST"] = ($result["FILEDOC"]);
             $result["FILEPDFEXIST"] = ($result["FILEPDF"]);
+            $result["DELETE_FILE"] = (isset($result['ID_DELETE']) && $result['ID_DELETE'] == 'Delete') ? true : false;
+            
             $aProcesses[] = $result;
 
             $rs->next();
