@@ -174,7 +174,7 @@ function run_workspace_upgrade($args, $opts) {
   $first = true;
   foreach ($workspaces as $workspace) {
     try {
-      $workspace->upgrade($first);
+      $workspace->upgrade($first, false, $workspace->name);
       $first = false;
     } catch (Exception $e) {
       echo "Errors upgrading workspace " . CLI::info($workspace->name) . ": " . CLI::error($e->getMessage()) . "\n";
