@@ -3353,10 +3353,10 @@ class Processes {
     $params = array('userid'=>$user, 'password'=>$pass );
     $result = $client->__SoapCall('login', array($params));
     if ( $result->status_code == 0 ) {
-      $sessionId = $result->message;
+      $sessionId = $result->getMessage();
       return 1;
     }
-    throw ( new Exception ( $result->message ) );
+    throw ( new Exception ( $result->getMessage() ) );
     return 1;
   }
 
@@ -3390,7 +3390,7 @@ class Processes {
         }
         $client = @new SoapClient($endpoint, $proxy);
     } catch (Exception $e) {
-        throw ( new Exception ( $e->message ) );
+        throw ( new Exception ( $e->getMessage() ) );
     }
 
 
@@ -3428,7 +3428,7 @@ class Processes {
     if ( $result->status_code == 0 ) {
       return $result;
     }
-    throw ( new Exception ( $result->message ) );
+    throw ( new Exception ( $result->getMessage() ) );
   }
 
   /**
@@ -3497,7 +3497,7 @@ class Processes {
     if ( $result->status_code == 0 ) {
       return $result;
     }
-    throw ( new Exception ( $result->message ) );
+    throw ( new Exception ( $result->getMessage() ) );
   }
 
   /**
