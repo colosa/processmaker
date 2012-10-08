@@ -1010,10 +1010,6 @@ class System {
 
       if ($_SESSION['PROCESSMAKER_ENV_HASH'] === $hash) {
         $_SESSION['PROCESSMAKER_ENV']['from_cache'] = 1;
-        if (!isset($_SESSION['PROCESSMAKER_ENV']['proxy_pass'])) {
-          $_SESSION['PROCESSMAKER_ENV']['proxy_pass'] = '';
-        }
-        $_SESSION['PROCESSMAKER_ENV']['proxy_pass'] = G::decrypt($_SESSION['PROCESSMAKER_ENV']['proxy_pass'], 'proxy_pass');
         return $_SESSION['PROCESSMAKER_ENV'];
       }
     }
