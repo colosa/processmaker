@@ -124,14 +124,25 @@ class Service_Rest_RestTool
             $this->dbInfo[$table['@name']]['pKeys'] = array();
             $this->dbInfo[$table['@name']]['columns'] = array();
             $this->dbInfo[$table['@name']]['required_columns'] = array();
+            //Adding data types
+            $this->dbInfo[$table['@name']]['type']['name'] = array();
+            $this->dbInfo[$table['@name']]['type']['Length'] = array();
 
             foreach ($table['column'] as $column) {
                 $this->dbInfo[$table['@name']]['columns'][] = $column['@name'];
-
+                $this->dbInfo[$table['@name']]['type']['name'][] = $column['@type'];
+                //adding size to typeLength if exists
+                if (array_key_exists('@size', $column) && self::cast($column['@size'])) {
+                   $this->dbInfo[$table['@name']]['type']['Length'][] = $column['@size'];
+                }
+                else{
+                    $this->dbInfo[$table['@name']]['type']['Length'][] = '0';
+                }
+                //adding name to pkeys if exists primary key exists
                 if (array_key_exists('@primaryKey', $column) && self::cast($column['@primaryKey'])) {
                     $this->dbInfo[$table['@name']]['pKeys'][] = $column['@name'];
                 }
-
+                //adding name to requiered_columns if required field exists
                 if (array_key_exists('@required', $column) && self::cast($column['@required'])) {
                     $this->dbInfo[$table['@name']]['required_columns'][] = $column['@name'];
                 }
@@ -260,13 +271,27 @@ EOT;
             )
         ));
 
+        //new feature adding columns types as commentary.
+        $infoExtra = array();
+        foreach ($this->dbInfo as $tablename => $columns){
+            $maxArray = count($columns['columns']);
+            for($ptr = 0; $ptr < $maxArray; $ptr++){
+                $columnName = $columns['columns'][$ptr];
+                $type = $columns['type'];
+                $typeName = $type['name'][$ptr];
+                $typelength = $type['Length'][$ptr];
+                $infoExtra[$tablename][] = "Column: " . $columnName . " of type ". $typeName . (($typelength != '0')?("[" . $typelength . "]"):"");
+            }
+        }
+      
         $c = 0;
         //foreach ($this->config['_tables'] as $table => $conf) {
         foreach ($this->config['_tables'] as $table => $conf) {
             $classname = self::camelize($table, 'class');
             $allowedMethods = explode(' ', $conf['ALLOW_METHODS']);
             $methods = '';
-
+            
+            // Getting data for every method.
             foreach ($allowedMethods as $method) {
                 // validation for a valid method
                 if (! in_array($method, array('GET', 'POST', 'PUT', 'DELETE'))) {
@@ -368,7 +393,9 @@ EOT;
 
             $classContent = Haanga::Load('class.tpl', array(
                 'classname' => $classname,
-                'methods' => $methods
+                'type' => $infoExtra[$table],
+                'tablename' => $table,
+                'methods'   => $methods
             ), true);
 
             //echo "File #$c - $classname.php saved!\n";
