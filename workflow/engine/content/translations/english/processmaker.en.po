@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-1009-ga3b8c41\n"
+"Project-Id-Version: ProcessMaker (Branch 2.0-testing) 2.0.44-testing.3-10-g12b131e\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-09-25 23:26:21\n"
+"PO-Revision-Date: 2012-10-08 10:33:39\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12452,6 +12452,12 @@ msgid "Displaying Report Tables {0} - {1} of {2}"
 msgstr "Displaying Report Tables {0} - {1} of {2}"
 
 # TRANSLATION
+# LABEL/ID_FILTER
+#: LABEL/ID_FILTER
+msgid "[LABEL/ID_FILTER] Filter"
+msgstr "Filter"
+
+# TRANSLATION
 # LABEL/ID_SKIN_EXCEPTION
 #: LABEL/ID_SKIN_EXCEPTION
 msgid "Skin Engine Exception"
@@ -12666,12 +12672,6 @@ msgstr "Two columns"
 #: LABEL/ID_DASHBOARD_BTNCOLUMNS3
 msgid "Three columns"
 msgstr "Three columns"
-
-# TRANSLATION
-# LABEL/ID_FILTER
-#: LABEL/ID_FILTER
-msgid "[LABEL/ID_FILTER] Filter"
-msgstr "Filter"
 
 # TRANSLATION
 # LABEL/ID_DOCUMENT_TYPE
@@ -12962,16 +12962,16 @@ msgid "Cron status"
 msgstr "Cron status"
 
 # TRANSLATION
-# LABEL/ID_CRON_ACTIONS_LOG
-#: LABEL/ID_CRON_ACTIONS_LOG
-msgid "Cron Actions Log"
-msgstr "Cron Actions Log"
-
-# TRANSLATION
 # LABEL/ID_RESET_DATES
 #: LABEL/ID_RESET_DATES
 msgid "Reset Dates"
 msgstr "Reset Dates"
+
+# TRANSLATION
+# LABEL/ID_CRON_ACTIONS
+#: LABEL/ID_CRON_ACTIONS
+msgid "Cron"
+msgstr "Cron"
 
 # TRANSLATION
 # LABEL/ID_ALL_WORKSPACES
@@ -13020,6 +13020,30 @@ msgstr "Path"
 #: LABEL/ID_LOG_INFO
 msgid "Log Information"
 msgstr "Log Information"
+
+# TRANSLATION
+# LABEL/ID_REFRESH_TIME_SECONDS
+#: LABEL/ID_REFRESH_TIME_SECONDS
+msgid "Refresh Time (seconds)"
+msgstr "Refresh Time (seconds)"
+
+# TRANSLATION
+# LABEL/ID_MSG_ENABLE_HTML_EDITING
+#: LABEL/ID_MSG_ENABLE_HTML_EDITING
+msgid "<b>Warning:</b> Editing the HTML prevents fields from being added or moved, so only edit the HTML after creating all the fields. Do you like to continue anyway?"
+msgstr "<b>Warning:</b> Editing the HTML prevents fields from being added or moved, so only edit the HTML after creating all the fields. Do you like to continue anyway?"
+
+# TRANSLATION
+# LABEL/ID_ALL_CATEGORIES
+#: LABEL/ID_ALL_CATEGORIES
+msgid "All Categories"
+msgstr "All Categories"
+
+# TRANSLATION
+# LABEL/ID_CASES_NOTES_NO_PERMISSIONS
+#: LABEL/ID_CASES_NOTES_NO_PERMISSIONS
+msgid "You do not have permission to cases notes"
+msgstr "You do not have permission to cases notes"
 
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml

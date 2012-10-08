@@ -5739,9 +5739,9 @@ SELECT 'LABEL','ID_CRON_STATUS_ACTIVE','en','Active','2012-09-20'
   UNION ALL
 SELECT 'LABEL','ID_CRON_STATUS','en','Cron status','2012-09-20' 
   UNION ALL
-SELECT 'LABEL','ID_CRON_ACTIONS_LOG','en','Cron Actions Log','2012-09-20' 
-  UNION ALL
 SELECT 'LABEL','ID_RESET_DATES','en','Reset Dates','2012-09-24' 
+  UNION ALL
+SELECT 'LABEL','ID_CRON_ACTIONS','en','Cron','2012-10-02' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
@@ -5760,6 +5760,14 @@ SELECT 'LABEL','ID_CRON_INFO','en','Cron Information','2012-09-24'
 SELECT 'LABEL','ID_PATH','en','Path','2012-09-24' 
   UNION ALL
 SELECT 'LABEL','ID_LOG_INFO','en','Log Information','2012-09-24' 
+  UNION ALL
+SELECT 'LABEL','ID_REFRESH_TIME_SECONDS','en','Refresh Time (seconds)','2012-09-26' 
+  UNION ALL
+SELECT 'LABEL','ID_MSG_ENABLE_HTML_EDITING','en','<b>Warning:</b> Editing the HTML prevents fields from being added or moved, so only edit the HTML after creating all the fields. Do you like to continue anyway?','2012-10-01' 
+  UNION ALL
+SELECT 'LABEL','ID_ALL_CATEGORIES','en','All Categories','2012-10-02' 
+  UNION ALL
+SELECT 'LABEL','ID_CASES_NOTES_NO_PERMISSIONS','en','You do not have permission to cases notes','2012-10-03' 
  ;
 
 INSERT INTO ISO_LOCATION ([IC_UID],[IL_UID],[IL_NAME],[IL_NORMAL_NAME],[IS_UID]) 
