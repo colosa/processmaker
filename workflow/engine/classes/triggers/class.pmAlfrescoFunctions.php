@@ -282,6 +282,12 @@ function getFolderChildren($alfrescoServerUrl, $folderId,  $user, $pwd) {
  *
  */
 function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docType, $user, $pwd, $path = '') {
+    if (!(file_exists($fileSource)))
+    {
+        G::SendTemporalMessage('ID_FILE_PLUGIN_NOT_EXISTS', 'error', 'labels', null, null, array('pluginFile' => $fileSource));
+        G::header('Location: '.$_SERVER['HTTP_REFERER']);
+        die;
+    }
     $filep          =  fopen($fileSource,"r");
     $fileLength     =  filesize($fileSource);
     $fileContent    =  fread($filep,$fileLength);
