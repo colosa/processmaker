@@ -43,6 +43,7 @@
     <option name="DYNAFORM">Dynaform</option>
     <option name="INPUT">Input Document</option>
     <option name="OUTPUT">Output Document</option>
+    <option name="CASES_NOTES">Cases Notes</option>
   </en>
 </OP_OBJ_TYPE>
 <ALL type="dropdown" mode="edit" sqlConnection="dbarray">
@@ -163,22 +164,33 @@ if(getField('OP_OBJ_TYPE').value=='ANY')
    hideRowById( 'DYNAFORMS' );
    hideRowById( 'INPUTS' );
 	 hideRowById( 'OUTPUTS' );
+   showRowById( 'OP_ACTION' );
  }
 if(getField('OP_OBJ_TYPE').value=='DYNAFORM')
  { hideRowById( 'ALL' );
    hideRowById( 'INPUTS' );
 	 hideRowById( 'OUTPUTS' );
+   showRowById( 'OP_ACTION' );
  }
 if(getField('OP_OBJ_TYPE').value=='INPUT')
  { hideRowById( 'ALL' );
    hideRowById( 'DYNAFORMS' );
 	 hideRowById( 'OUTPUTS' );
+   showRowById( 'OP_ACTION' );
  }
 if(getField('OP_OBJ_TYPE').value=='OUTPUT')
  { hideRowById( 'ALL' );
    hideRowById( 'DYNAFORMS' );
 	 hideRowById( 'INPUTS' );
+   showRowById( 'OP_ACTION' );
  }
+if(getField('OP_OBJ_TYPE').value=='CASES_NOTES')
+ { hideRowById( 'ALL' );
+   hideRowById( 'DYNAFORMS' );
+   hideRowById( 'INPUTS' );
+   hideRowById( 'OUTPUTS' );
+   hideRowById( 'OP_ACTION' );
+ } 
  getOptions();
  rebuildOptionsWhenLoad(getField('OP_OBJ_TYPE').value);
 
@@ -188,24 +200,35 @@ leimnud.event.add(document.getElementById('form[OP_OBJ_TYPE]'), 'change', functi
 	   hideRowById( 'INPUTS' );
 		 hideRowById( 'OUTPUTS' );
 		 showRowById( 'DYNAFORMS' );
+     showRowById( 'OP_ACTION' );
 	 }
 	if(getField('OP_OBJ_TYPE').value=='INPUT')
 	 { hideRowById( 'ALL' );
 	   hideRowById( 'DYNAFORMS' );
 		 hideRowById( 'OUTPUTS' );
 		 showRowById( 'INPUTS' );
+     showRowById( 'OP_ACTION' );
 	 }
 	if(getField('OP_OBJ_TYPE').value=='OUTPUT')
 	 { hideRowById( 'ALL' );
 	   hideRowById( 'DYNAFORMS' );
 		 hideRowById( 'INPUTS' );
 		 showRowById( 'OUTPUTS' );
+     showRowById( 'OP_ACTION' );
 	 }
+  if(getField('OP_OBJ_TYPE').value=='CASES_NOTES')
+   { hideRowById( 'ALL' );
+     hideRowById( 'DYNAFORMS' );
+     hideRowById( 'INPUTS' );
+     hideRowById( 'OUTPUTS' );
+     hideRowById( 'OP_ACTION' );
+   }
 	if(getField('OP_OBJ_TYPE').value=='ANY')
    { hideRowById('ALL' );
      hideRowById( 'DYNAFORMS' );
      hideRowById( 'INPUTS' );
 	   hideRowById( 'OUTPUTS' );
+     showRowById( 'OP_ACTION' );
    }
    rebuildOptions(getField('OP_OBJ_TYPE').value);
 });

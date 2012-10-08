@@ -17,7 +17,6 @@ class AppProxy extends HttpProxyController
    */
   function getNotesList($httpData)
   {
-    require_once ( "classes/model/AppNotes.php" );
     $appUid = null;
 
     if (isset($httpData->appUid) && trim($httpData->appUid) != "") {
@@ -29,6 +28,22 @@ class AppProxy extends HttpProxyController
       }
     }
 
+    G::LoadClass('case');
+    $case = new Cases();
+
+    $proUid = ($httpData->pro == '') ? $_SESSION['PROCESS'] : $httpData->pro;
+    $tasUid = ($httpData->tas == '') ? $_SESSION['TASK'] : $httpData->tas;
+    $usrUid = $_SESSION['USER_LOGGED'];
+
+    $respView = $case->getAllObjectsFrom($proUid, $appUid, $tasUid, $usrUid, 'VIEW');
+    $respBlock = $case->getAllObjectsFrom($proUid, $appUid, $tasUid, $usrUid, 'BLOCK');
+    
+    if ($respView['CASES_NOTES'] == 0 && $respBlock['CASES_NOTES'] == 0) {
+      return array('totalCount' => 0, 'notes' => array(), 'noPerms' => 1);
+    }
+
+    require_once ( "classes/model/AppNotes.php" );
+    
     if (!isset($appUid)) {
       throw new Exception('Can\'t resolve the Apllication ID for this request.');
     }

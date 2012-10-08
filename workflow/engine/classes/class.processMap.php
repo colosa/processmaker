@@ -3492,6 +3492,10 @@ class processMap {
             $sObject = G::LoadTranslation('ID_ALL');
           }
           break;
+        case 'CASES_NOTES' :
+          $sObjectType = G::LoadTranslation('ID_CASES_NOTES');
+          $sObject = G::LoadTranslation('ID_ALL');
+          break;
         default :
           $sObjectType = G::LoadTranslation('ID_ALL');
           $sObject = G::LoadTranslation('ID_ALL');
