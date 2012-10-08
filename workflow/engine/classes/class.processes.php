@@ -3390,7 +3390,7 @@ class Processes {
         }
         $client = @new SoapClient($endpoint, $proxy);
     } catch (Exception $e) {
-        throw ( new Exception ( $e->message ) );
+        throw ( new Exception ( $e->getMessage() ) );
     }
 
 
