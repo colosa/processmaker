@@ -1654,6 +1654,43 @@ class wsBase
     }
 
     /**
+     * get all variables  the system and case selected
+     * @param string $caseId
+     *
+     * @return $result will return an object
+     */
+    public function getVariablesNames($caseId)
+    {
+        try {
+
+            $oCase = new Cases();
+
+            $caseFields = $oCase->loadCase($caseId);
+
+            $oldFields  = $caseFields['APP_DATA'];
+            $resFields  = array();
+
+            foreach ($oldFields as $key => $val) {
+                $node = new stdClass();
+                $node->name   = $key;
+                $resFields[] = $node;
+            }
+
+            $result = new wsGetVariableResponse(
+                0,
+                count($resFields) . G::loadTranslation('ID_VARIABLES_SENT'), $resFields
+            );
+
+            return $result;
+
+        } catch (Exception $e) {
+            $result = new wsGetVariableResponse(100, $e->getMessage(), null);
+
+            return $result;
+        }
+    }
+
+    /**
      * new Case begins a new case under the name of the logged-in user.
      * @param string $processId
      * @param string $userId
