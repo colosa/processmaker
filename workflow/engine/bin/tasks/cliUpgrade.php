@@ -95,15 +95,15 @@ function run_upgrade($command, $args)
     if (defined('PATH_C')) {
         rm_dir(PATH_C, true);
     }
-    $workspaces = get_workspaces_from_args($args);
+    $workspaces = get_workspaces_from_args($command);
     $count = count($workspaces);
     $first = true;
     $errors = false;
-    $buildCacheView = array_key_exists("buildACV", $command);
+    $buildCacheView = array_key_exists("buildACV", $args);
     foreach ($workspaces as $index => $workspace) {
         try {
             CLI::logging("Upgrading workspaces ($index/$count): " . CLI::info($workspace->name) . "\n");
-            $workspace->upgrade($first, $buildCacheView);
+            $workspace->upgrade($first, $buildCacheView, $workspace->name);
             $workspace->close();
             $first = false;
         } catch (Exception $e) {

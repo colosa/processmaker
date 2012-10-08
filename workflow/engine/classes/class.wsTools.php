@@ -290,7 +290,7 @@ class workspaceTools {
      * Upgrade this workspace Content.
      *
      */
-    public function upgradeContent() {
+    public function upgradeContent($workSpace=SYS_SYS) {
         $this->initPropel(true);
         require_once('classes/model/Language.php');
         G::LoadThirdParty('pear/json', 'class.json');
@@ -304,7 +304,7 @@ class workspaceTools {
         }
         require_once('classes/model/Content.php');
         $regenerateContent = new Content();
-        $regenerateContent->regenerateContent($arrayLang);
+        $regenerateContent->regenerateContent($arrayLang, $workSpace);
     }
 
   /**
