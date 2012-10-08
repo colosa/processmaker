@@ -43,6 +43,7 @@
     <option name="DYNAFORM">Dynaform</option>
     <option name="INPUT">Input Document</option>
     <option name="OUTPUT">Output Document</option>
+    <option name="CASES_NOTES">Cases Notes</option>
   </en>
 </OP_OBJ_TYPE>
 <ALL type="dropdown" mode="edit" sqlConnection="dbarray">
@@ -131,6 +132,7 @@ leimnud.event.add(getField('OP_OBJ_TYPE'), 'change', function() {
       hideRowById('DYNAFORMS');
       hideRowById('INPUTS');
       hideRowById('OUTPUTS');
+      showRowById('OP_ACTION');
     break;
     case 'DYNAFORM':
       getField('ALL').value = '';
@@ -141,6 +143,7 @@ leimnud.event.add(getField('OP_OBJ_TYPE'), 'change', function() {
       showRowById('DYNAFORMS');
       hideRowById('INPUTS');
       hideRowById('OUTPUTS');
+      showRowById('OP_ACTION');
     break;
     case 'INPUT':
       getField('ALL').value = '';
@@ -151,6 +154,7 @@ leimnud.event.add(getField('OP_OBJ_TYPE'), 'change', function() {
       hideRowById('DYNAFORMS');
       showRowById('INPUTS');
       hideRowById('OUTPUTS');
+      showRowById('OP_ACTION');
     break;
     case 'OUTPUT':
       getField('ALL').value = '';
@@ -161,6 +165,19 @@ leimnud.event.add(getField('OP_OBJ_TYPE'), 'change', function() {
       hideRowById('DYNAFORMS');
       hideRowById('INPUTS');
       showRowById('OUTPUTS');
+      showRowById('OP_ACTION');
+    break;
+    case 'CASES_NOTES':
+      getField('ALL').value = '';
+      getField('DYNAFORMS').value = '';
+      getField('INPUTS').value = '';
+      getField('OUTPUTS').value = '';
+      getField('OP_ACTION').value = 'VIEW';
+      hideRowById('ALL');
+      hideRowById('DYNAFORMS');
+      hideRowById('INPUTS');
+      hideRowById('OUTPUTS');
+      hideRowById('OP_ACTION');
     break;
   }
   rebuildOptions(vValue);
@@ -179,6 +196,7 @@ switch (vValue) {
     hideRowById('DYNAFORMS');
     hideRowById('INPUTS');
     hideRowById('OUTPUTS');
+    showRowById('OP_ACTION');
   break;
   case 'DYNAFORM':
     getField('ALL').value = '';
@@ -189,6 +207,7 @@ switch (vValue) {
     showRowById('DYNAFORMS');
     hideRowById('INPUTS');
     hideRowById('OUTPUTS');
+    showRowById('OP_ACTION');
   break;
   case 'INPUT':
     getField('ALL').value = '';
@@ -199,6 +218,7 @@ switch (vValue) {
     hideRowById('DYNAFORMS');
     hideRowById('INPUTS');
     showRowById('OUTPUTS');
+    showRowById('OP_ACTION');
   break;
   case 'OUTPUT':
     getField('ALL').value = '';
@@ -209,7 +229,20 @@ switch (vValue) {
     hideRowById('DYNAFORMS');
     hideRowById('INPUTS');
     showRowById('OUTPUTS');
+    showRowById('OP_ACTION');
   break;
+  case 'CASES_NOTES':
+      getField('ALL').value = '';
+      getField('DYNAFORMS').value = '';
+      getField('INPUTS').value = '';
+      getField('OUTPUTS').value = '';
+      getField('OP_ACTION').value = 'VIEW';
+      hideRowById('ALL');
+      hideRowById('DYNAFORMS');
+      hideRowById('INPUTS');
+      hideRowById('OUTPUTS');
+      hideRowById('OP_ACTION');
+    break;
 }
 getOptions();
 rebuildOptions(vValue);
