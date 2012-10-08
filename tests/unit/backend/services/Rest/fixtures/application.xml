@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<dataset>
+    <table name="SLA">
+        <column>SLA_UID</column>
+        <column>PRO_UID</column>
+        <column>SLA_NAME</column>
+        <column>SLA_DESCRIPTION</column>
+        <column>SLA_TYPE</column>
+        <column>SLA_TAS_START</column>
+        <column>SLA_TAS_END</column>
+        <column>SLA_TIME_DURATION</column>
+        <column>SLA_TIME_DURATION_MODE</column>
+        <column>SLA_CONDITIONS</column>
+        <column>SLA_PEN_ENABLED</column>
+        <column>SLA_PEN_TIME</column>
+        <column>SLA_PEN_TIME_MODE</column>
+        <column>SLA_PEN_VALUE</column>
+        <column>SLA_PEN_VALUE_UNIT</column>
+        <column>SLA_STATUS</column>
+    </table>
+    <table name="APP_SLA">
+        <column>APP_UID</column>
+        <column>SLA_UID</column>
+        <column>APP_SLA_INIT_DATE</column>
+        <column>APP_SLA_DUE_DATE</column>
+        <column>APP_SLA_FINISH_DATE</column>
+        <column>APP_SLA_DURATION</column>
+        <column>APP_SLA_REMAINING</column>
+        <column>APP_SLA_EXCEEDED</column>
+        <column>APP_SLA_PEN_VALUE</column>
+        <column>APP_SLA_STATUS</column>
+    </table>
+</dataset>

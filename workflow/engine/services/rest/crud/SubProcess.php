@@ -70,5 +70,97 @@ class Services_Rest_SubProcess
         return $result;
     }
 
+    /**
+     * Implementation for 'POST' method for Rest API
+     *
+     * @param  mixed $spUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function post($spUid, $proUid, $tasUid, $proParent, $tasParent, $spType, $spSynchronous, $spSynchronousType, $spSynchronousWait, $spVariablesOut, $spVariablesIn, $spGridIn)
+    {
+        try {
+            $result = array();
+            $obj = new SubProcess();
+
+            $obj->setSpUid($spUid);
+            $obj->setProUid($proUid);
+            $obj->setTasUid($tasUid);
+            $obj->setProParent($proParent);
+            $obj->setTasParent($tasParent);
+            $obj->setSpType($spType);
+            $obj->setSpSynchronous($spSynchronous);
+            $obj->setSpSynchronousType($spSynchronousType);
+            $obj->setSpSynchronousWait($spSynchronousWait);
+            $obj->setSpVariablesOut($spVariablesOut);
+            $obj->setSpVariablesIn($spVariablesIn);
+            $obj->setSpGridIn($spGridIn);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'PUT' method for Rest API
+     *
+     * @param  mixed $spUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function put($spUid, $proUid, $tasUid, $proParent, $tasParent, $spType, $spSynchronous, $spSynchronousType, $spSynchronousWait, $spVariablesOut, $spVariablesIn, $spGridIn)
+    {
+        try {
+            $obj = SubProcessPeer::retrieveByPK($spUid);
+
+            $obj->setProUid($proUid);
+            $obj->setTasUid($tasUid);
+            $obj->setProParent($proParent);
+            $obj->setTasParent($tasParent);
+            $obj->setSpType($spType);
+            $obj->setSpSynchronous($spSynchronous);
+            $obj->setSpSynchronousType($spSynchronousType);
+            $obj->setSpSynchronousWait($spSynchronousWait);
+            $obj->setSpVariablesOut($spVariablesOut);
+            $obj->setSpVariablesIn($spVariablesIn);
+            $obj->setSpGridIn($spGridIn);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'DELETE' method for Rest API
+     *
+     * @param  mixed $spUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function delete($spUid)
+    {
+        $conn = Propel::getConnection(SubProcessPeer::DATABASE_NAME);
+        
+        try {
+            $conn->begin();
+        
+            $obj = SubProcessPeer::retrieveByPK($spUid);
+            if (! is_object($obj)) {
+                throw new RestException(412, 'Record does not exist.');
+            }
+            $obj->delete();
+        
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
 
 }

@@ -83,5 +83,123 @@ class Services_Rest_Process
         return $result;
     }
 
+    /**
+     * Implementation for 'POST' method for Rest API
+     *
+     * @param  mixed $proUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function post($proUid, $proParent, $proTime, $proTimeunit, $proStatus, $proTypeDay, $proType, $proAssignment, $proShowMap, $proShowMessage, $proShowDelegate, $proShowDynaform, $proCategory, $proSubCategory, $proIndustry, $proUpdateDate, $proCreateDate, $proCreateUser, $proHeight, $proWidth, $proTitleX, $proTitleY, $proDebug, $proDynaforms, $proDerivationScreenTpl)
+    {
+        try {
+            $result = array();
+            $obj = new Process();
+
+            $obj->setProUid($proUid);
+            $obj->setProParent($proParent);
+            $obj->setProTime($proTime);
+            $obj->setProTimeunit($proTimeunit);
+            $obj->setProStatus($proStatus);
+            $obj->setProTypeDay($proTypeDay);
+            $obj->setProType($proType);
+            $obj->setProAssignment($proAssignment);
+            $obj->setProShowMap($proShowMap);
+            $obj->setProShowMessage($proShowMessage);
+            $obj->setProShowDelegate($proShowDelegate);
+            $obj->setProShowDynaform($proShowDynaform);
+            $obj->setProCategory($proCategory);
+            $obj->setProSubCategory($proSubCategory);
+            $obj->setProIndustry($proIndustry);
+            $obj->setProUpdateDate($proUpdateDate);
+            $obj->setProCreateDate($proCreateDate);
+            $obj->setProCreateUser($proCreateUser);
+            $obj->setProHeight($proHeight);
+            $obj->setProWidth($proWidth);
+            $obj->setProTitleX($proTitleX);
+            $obj->setProTitleY($proTitleY);
+            $obj->setProDebug($proDebug);
+            $obj->setProDynaforms($proDynaforms);
+            $obj->setProDerivationScreenTpl($proDerivationScreenTpl);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'PUT' method for Rest API
+     *
+     * @param  mixed $proUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function put($proUid, $proParent, $proTime, $proTimeunit, $proStatus, $proTypeDay, $proType, $proAssignment, $proShowMap, $proShowMessage, $proShowDelegate, $proShowDynaform, $proCategory, $proSubCategory, $proIndustry, $proUpdateDate, $proCreateDate, $proCreateUser, $proHeight, $proWidth, $proTitleX, $proTitleY, $proDebug, $proDynaforms, $proDerivationScreenTpl)
+    {
+        try {
+            $obj = ProcessPeer::retrieveByPK($proUid);
+
+            $obj->setProParent($proParent);
+            $obj->setProTime($proTime);
+            $obj->setProTimeunit($proTimeunit);
+            $obj->setProStatus($proStatus);
+            $obj->setProTypeDay($proTypeDay);
+            $obj->setProType($proType);
+            $obj->setProAssignment($proAssignment);
+            $obj->setProShowMap($proShowMap);
+            $obj->setProShowMessage($proShowMessage);
+            $obj->setProShowDelegate($proShowDelegate);
+            $obj->setProShowDynaform($proShowDynaform);
+            $obj->setProCategory($proCategory);
+            $obj->setProSubCategory($proSubCategory);
+            $obj->setProIndustry($proIndustry);
+            $obj->setProUpdateDate($proUpdateDate);
+            $obj->setProCreateDate($proCreateDate);
+            $obj->setProCreateUser($proCreateUser);
+            $obj->setProHeight($proHeight);
+            $obj->setProWidth($proWidth);
+            $obj->setProTitleX($proTitleX);
+            $obj->setProTitleY($proTitleY);
+            $obj->setProDebug($proDebug);
+            $obj->setProDynaforms($proDynaforms);
+            $obj->setProDerivationScreenTpl($proDerivationScreenTpl);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'DELETE' method for Rest API
+     *
+     * @param  mixed $proUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function delete($proUid)
+    {
+        $conn = Propel::getConnection(ProcessPeer::DATABASE_NAME);
+        
+        try {
+            $conn->begin();
+        
+            $obj = ProcessPeer::retrieveByPK($proUid);
+            if (! is_object($obj)) {
+                throw new RestException(412, 'Record does not exist.');
+            }
+            $obj->delete();
+        
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
 
 }

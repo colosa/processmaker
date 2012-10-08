@@ -39,6 +39,7 @@ class Services_Rest_AppDocument
                 $criteria->addSelectColumn(AppDocumentPeer::APP_DOC_TAGS);
                 $criteria->addSelectColumn(AppDocumentPeer::APP_DOC_STATUS);
                 $criteria->addSelectColumn(AppDocumentPeer::APP_DOC_STATUS_DATE);
+                $criteria->addSelectColumn(AppDocumentPeer::APP_DOC_FIELDNAME);
                 
                 $dataset = AppEventPeer::doSelectRS($criteria);
                 $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);

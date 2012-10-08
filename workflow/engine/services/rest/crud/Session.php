@@ -65,5 +65,87 @@ class Services_Rest_Session
         return $result;
     }
 
+    /**
+     * Implementation for 'POST' method for Rest API
+     *
+     * @param  mixed $sesUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function post($sesUid, $sesStatus, $usrUid, $sesRemoteIp, $sesInitDate, $sesDueDate, $sesEndDate)
+    {
+        try {
+            $result = array();
+            $obj = new Session();
+
+            $obj->setSesUid($sesUid);
+            $obj->setSesStatus($sesStatus);
+            $obj->setUsrUid($usrUid);
+            $obj->setSesRemoteIp($sesRemoteIp);
+            $obj->setSesInitDate($sesInitDate);
+            $obj->setSesDueDate($sesDueDate);
+            $obj->setSesEndDate($sesEndDate);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'PUT' method for Rest API
+     *
+     * @param  mixed $sesUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function put($sesUid, $sesStatus, $usrUid, $sesRemoteIp, $sesInitDate, $sesDueDate, $sesEndDate)
+    {
+        try {
+            $obj = SessionPeer::retrieveByPK($sesUid);
+
+            $obj->setSesStatus($sesStatus);
+            $obj->setUsrUid($usrUid);
+            $obj->setSesRemoteIp($sesRemoteIp);
+            $obj->setSesInitDate($sesInitDate);
+            $obj->setSesDueDate($sesDueDate);
+            $obj->setSesEndDate($sesEndDate);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'DELETE' method for Rest API
+     *
+     * @param  mixed $sesUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function delete($sesUid)
+    {
+        $conn = Propel::getConnection(SessionPeer::DATABASE_NAME);
+        
+        try {
+            $conn->begin();
+        
+            $obj = SessionPeer::retrieveByPK($sesUid);
+            if (! is_object($obj)) {
+                throw new RestException(412, 'Record does not exist.');
+            }
+            $obj->delete();
+        
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
 
 }

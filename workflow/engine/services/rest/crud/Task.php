@@ -37,6 +37,7 @@ class Services_Rest_Task
                 $criteria->addSelectColumn(TaskPeer::TAS_PRIORITY_VARIABLE);
                 $criteria->addSelectColumn(TaskPeer::TAS_ASSIGN_TYPE);
                 $criteria->addSelectColumn(TaskPeer::TAS_ASSIGN_VARIABLE);
+                $criteria->addSelectColumn(TaskPeer::TAS_GROUP_VARIABLE);
                 $criteria->addSelectColumn(TaskPeer::TAS_MI_INSTANCE_VARIABLE);
                 $criteria->addSelectColumn(TaskPeer::TAS_MI_COMPLETE_VARIABLE);
                 $criteria->addSelectColumn(TaskPeer::TAS_ASSIGN_LOCATION);

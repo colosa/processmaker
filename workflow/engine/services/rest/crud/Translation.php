@@ -63,5 +63,81 @@ class Services_Rest_Translation
         return $result;
     }
 
+    /**
+     * Implementation for 'POST' method for Rest API
+     *
+     * @param  mixed $trnCategory, $trnId, $trnLang Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function post($trnCategory, $trnId, $trnLang, $trnValue, $trnUpdateDate)
+    {
+        try {
+            $result = array();
+            $obj = new Translation();
+
+            $obj->setTrnCategory($trnCategory);
+            $obj->setTrnId($trnId);
+            $obj->setTrnLang($trnLang);
+            $obj->setTrnValue($trnValue);
+            $obj->setTrnUpdateDate($trnUpdateDate);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'PUT' method for Rest API
+     *
+     * @param  mixed $trnCategory, $trnId, $trnLang Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function put($trnCategory, $trnId, $trnLang, $trnValue, $trnUpdateDate)
+    {
+        try {
+            $obj = TranslationPeer::retrieveByPK($trnCategory, $trnId, $trnLang);
+
+            $obj->setTrnValue($trnValue);
+            $obj->setTrnUpdateDate($trnUpdateDate);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'DELETE' method for Rest API
+     *
+     * @param  mixed $trnCategory, $trnId, $trnLang Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function delete($trnCategory, $trnId, $trnLang)
+    {
+        $conn = Propel::getConnection(TranslationPeer::DATABASE_NAME);
+        
+        try {
+            $conn->begin();
+        
+            $obj = TranslationPeer::retrieveByPK($trnCategory, $trnId, $trnLang);
+            if (! is_object($obj)) {
+                throw new RestException(412, 'Record does not exist.');
+            }
+            $obj->delete();
+        
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
 
 }

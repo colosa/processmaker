@@ -66,5 +66,89 @@ class Services_Rest_Step
         return $result;
     }
 
+    /**
+     * Implementation for 'POST' method for Rest API
+     *
+     * @param  mixed $stepUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function post($stepUid, $proUid, $tasUid, $stepTypeObj, $stepUidObj, $stepCondition, $stepPosition, $stepMode)
+    {
+        try {
+            $result = array();
+            $obj = new Step();
+
+            $obj->setStepUid($stepUid);
+            $obj->setProUid($proUid);
+            $obj->setTasUid($tasUid);
+            $obj->setStepTypeObj($stepTypeObj);
+            $obj->setStepUidObj($stepUidObj);
+            $obj->setStepCondition($stepCondition);
+            $obj->setStepPosition($stepPosition);
+            $obj->setStepMode($stepMode);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'PUT' method for Rest API
+     *
+     * @param  mixed $stepUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function put($stepUid, $proUid, $tasUid, $stepTypeObj, $stepUidObj, $stepCondition, $stepPosition, $stepMode)
+    {
+        try {
+            $obj = StepPeer::retrieveByPK($stepUid);
+
+            $obj->setProUid($proUid);
+            $obj->setTasUid($tasUid);
+            $obj->setStepTypeObj($stepTypeObj);
+            $obj->setStepUidObj($stepUidObj);
+            $obj->setStepCondition($stepCondition);
+            $obj->setStepPosition($stepPosition);
+            $obj->setStepMode($stepMode);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'DELETE' method for Rest API
+     *
+     * @param  mixed $stepUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function delete($stepUid)
+    {
+        $conn = Propel::getConnection(StepPeer::DATABASE_NAME);
+        
+        try {
+            $conn->begin();
+        
+            $obj = StepPeer::retrieveByPK($stepUid);
+            if (! is_object($obj)) {
+                throw new RestException(412, 'Record does not exist.');
+            }
+            $obj->delete();
+        
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
 
 }

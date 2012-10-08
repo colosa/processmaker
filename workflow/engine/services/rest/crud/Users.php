@@ -84,5 +84,125 @@ class Services_Rest_Users
         return $result;
     }
 
+    /**
+     * Implementation for 'POST' method for Rest API
+     *
+     * @param  mixed $usrUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function post($usrUid, $usrUsername, $usrPassword, $usrFirstname, $usrLastname, $usrEmail, $usrDueDate, $usrCreateDate, $usrUpdateDate, $usrStatus, $usrCountry, $usrCity, $usrLocation, $usrAddress, $usrPhone, $usrFax, $usrCellular, $usrZipCode, $depUid, $usrPosition, $usrResume, $usrBirthday, $usrRole, $usrReportsTo, $usrReplacedBy, $usrUx)
+    {
+        try {
+            $result = array();
+            $obj = new Users();
+
+            $obj->setUsrUid($usrUid);
+            $obj->setUsrUsername($usrUsername);
+            $obj->setUsrPassword($usrPassword);
+            $obj->setUsrFirstname($usrFirstname);
+            $obj->setUsrLastname($usrLastname);
+            $obj->setUsrEmail($usrEmail);
+            $obj->setUsrDueDate($usrDueDate);
+            $obj->setUsrCreateDate($usrCreateDate);
+            $obj->setUsrUpdateDate($usrUpdateDate);
+            $obj->setUsrStatus($usrStatus);
+            $obj->setUsrCountry($usrCountry);
+            $obj->setUsrCity($usrCity);
+            $obj->setUsrLocation($usrLocation);
+            $obj->setUsrAddress($usrAddress);
+            $obj->setUsrPhone($usrPhone);
+            $obj->setUsrFax($usrFax);
+            $obj->setUsrCellular($usrCellular);
+            $obj->setUsrZipCode($usrZipCode);
+            $obj->setDepUid($depUid);
+            $obj->setUsrPosition($usrPosition);
+            $obj->setUsrResume($usrResume);
+            $obj->setUsrBirthday($usrBirthday);
+            $obj->setUsrRole($usrRole);
+            $obj->setUsrReportsTo($usrReportsTo);
+            $obj->setUsrReplacedBy($usrReplacedBy);
+            $obj->setUsrUx($usrUx);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'PUT' method for Rest API
+     *
+     * @param  mixed $usrUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function put($usrUid, $usrUsername, $usrPassword, $usrFirstname, $usrLastname, $usrEmail, $usrDueDate, $usrCreateDate, $usrUpdateDate, $usrStatus, $usrCountry, $usrCity, $usrLocation, $usrAddress, $usrPhone, $usrFax, $usrCellular, $usrZipCode, $depUid, $usrPosition, $usrResume, $usrBirthday, $usrRole, $usrReportsTo, $usrReplacedBy, $usrUx)
+    {
+        try {
+            $obj = UsersPeer::retrieveByPK($usrUid);
+
+            $obj->setUsrUsername($usrUsername);
+            $obj->setUsrPassword($usrPassword);
+            $obj->setUsrFirstname($usrFirstname);
+            $obj->setUsrLastname($usrLastname);
+            $obj->setUsrEmail($usrEmail);
+            $obj->setUsrDueDate($usrDueDate);
+            $obj->setUsrCreateDate($usrCreateDate);
+            $obj->setUsrUpdateDate($usrUpdateDate);
+            $obj->setUsrStatus($usrStatus);
+            $obj->setUsrCountry($usrCountry);
+            $obj->setUsrCity($usrCity);
+            $obj->setUsrLocation($usrLocation);
+            $obj->setUsrAddress($usrAddress);
+            $obj->setUsrPhone($usrPhone);
+            $obj->setUsrFax($usrFax);
+            $obj->setUsrCellular($usrCellular);
+            $obj->setUsrZipCode($usrZipCode);
+            $obj->setDepUid($depUid);
+            $obj->setUsrPosition($usrPosition);
+            $obj->setUsrResume($usrResume);
+            $obj->setUsrBirthday($usrBirthday);
+            $obj->setUsrRole($usrRole);
+            $obj->setUsrReportsTo($usrReportsTo);
+            $obj->setUsrReplacedBy($usrReplacedBy);
+            $obj->setUsrUx($usrUx);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'DELETE' method for Rest API
+     *
+     * @param  mixed $usrUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function delete($usrUid)
+    {
+        $conn = Propel::getConnection(UsersPeer::DATABASE_NAME);
+        
+        try {
+            $conn->begin();
+        
+            $obj = UsersPeer::retrieveByPK($usrUid);
+            if (! is_object($obj)) {
+                throw new RestException(412, 'Record does not exist.');
+            }
+            $obj->delete();
+        
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
 
 }

@@ -61,5 +61,77 @@ class Services_Rest_AppOwner
         return $result;
     }
 
+    /**
+     * Implementation for 'POST' method for Rest API
+     *
+     * @param  mixed $appUid, $ownUid, $usrUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function post($appUid, $ownUid, $usrUid)
+    {
+        try {
+            $result = array();
+            $obj = new AppOwner();
+
+            $obj->setAppUid($appUid);
+            $obj->setOwnUid($ownUid);
+            $obj->setUsrUid($usrUid);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'PUT' method for Rest API
+     *
+     * @param  mixed $appUid, $ownUid, $usrUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function put($appUid, $ownUid, $usrUid)
+    {
+        try {
+            $obj = AppOwnerPeer::retrieveByPK($appUid, $ownUid, $usrUid);
+
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'DELETE' method for Rest API
+     *
+     * @param  mixed $appUid, $ownUid, $usrUid Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function delete($appUid, $ownUid, $usrUid)
+    {
+        $conn = Propel::getConnection(AppOwnerPeer::DATABASE_NAME);
+        
+        try {
+            $conn->begin();
+        
+            $obj = AppOwnerPeer::retrieveByPK($appUid, $ownUid, $usrUid);
+            if (! is_object($obj)) {
+                throw new RestException(412, 'Record does not exist.');
+            }
+            $obj->delete();
+        
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
 
 }

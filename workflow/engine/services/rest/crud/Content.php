@@ -63,5 +63,80 @@ class Services_Rest_Content
         return $result;
     }
 
+    /**
+     * Implementation for 'POST' method for Rest API
+     *
+     * @param  mixed $conCategory, $conParent, $conId, $conLang Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function post($conCategory, $conParent, $conId, $conLang, $conValue)
+    {
+        try {
+            $result = array();
+            $obj = new Content();
+
+            $obj->setConCategory($conCategory);
+            $obj->setConParent($conParent);
+            $obj->setConId($conId);
+            $obj->setConLang($conLang);
+            $obj->setConValue($conValue);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'PUT' method for Rest API
+     *
+     * @param  mixed $conCategory, $conParent, $conId, $conLang Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function put($conCategory, $conParent, $conId, $conLang, $conValue)
+    {
+        try {
+            $obj = ContentPeer::retrieveByPK($conCategory, $conParent, $conId, $conLang);
+
+            $obj->setConValue($conValue);
+            
+            $obj->save();
+        } catch (Exception $e) {
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
+    /**
+     * Implementation for 'DELETE' method for Rest API
+     *
+     * @param  mixed $conCategory, $conParent, $conId, $conLang Primary key
+     *
+     * @return array $result Returns array within multiple records or a single record depending if
+     *                       a single selection was requested passing id(s) as param
+     */
+    protected function delete($conCategory, $conParent, $conId, $conLang)
+    {
+        $conn = Propel::getConnection(ContentPeer::DATABASE_NAME);
+        
+        try {
+            $conn->begin();
+        
+            $obj = ContentPeer::retrieveByPK($conCategory, $conParent, $conId, $conLang);
+            if (! is_object($obj)) {
+                throw new RestException(412, 'Record does not exist.');
+            }
+            $obj->delete();
+        
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw new RestException(412, $e->getMessage());
+        }
+    }
+
 
 }
