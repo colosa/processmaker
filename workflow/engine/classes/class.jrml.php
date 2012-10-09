@@ -1,6 +1,8 @@
 <?php
+
 /**
  * class.jrml.php
+ *
  * @package workflow.engine.ProcessMaker
  *
  * ProcessMaker Open Source Edition
@@ -13,75 +15,77 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
 
-
 /**
  * Jrml - Jrml class
+ *
  * @package workflow.engine.ProcessMaker
  * @author Maborak <maborak@maborak.com>
  * @copyright 2008 COLOSA
  */
 
-class Jrml 
+class Jrml
 {
-  public $rows;
-  public $sql;
-  private $data;
-  
- /** 
-  * This function is the constructor of the class Jrml
-  * @param array $data
-  * @return void
-  */
-  function __construct($data=array())
-  {
-    $this->data    = $data;
-    $this->sql     = $data['sql'];
-    $this->rows = $this->get_rows($data['type']);
-    $this->md    = $this->get_md();
-  }
-  
- /** 
-  * This function is for get rows
-  * @param array $a
-  * @return array
-  */
-  private function get_rows($a)
-  {
-    $b=array();
-    foreach ($a as $key=>$value){
-      $b[]=$key;
-    }
-    return $b;
-  }
- 
-  public function get_md()
-  {
-  }
-  
- /** 
-  * This function is for get the header
-  * @return string 
-  */
-  public function get_header()
-  {
-    $xml="<queryString><![CDATA[{$this->sql}]]></queryString>";
-    foreach ($this->data['type'] as $key=>$value)
+    public $rows;
+    public $sql;
+    private $data;
+
+    /**
+     * This function is the constructor of the class Jrml
+     *
+     * @param array $data
+     * @return void
+     */
+    function __construct ($data = array())
     {
-      $xml.="<field name='{$key}' class='{$value}'><fieldDescription><![CDATA[]]></fieldDescription></field>";
+        $this->data = $data;
+        $this->sql = $data['sql'];
+        $this->rows = $this->get_rows( $data['type'] );
+        $this->md = $this->get_md();
     }
-    $xml.="<background><band/></background>";
-    $xml.='
+
+    /**
+     * This function is for get rows
+     *
+     * @param array $a
+     * @return array
+     */
+    private function get_rows ($a)
+    {
+        $b = array ();
+        foreach ($a as $key => $value) {
+            $b[] = $key;
+        }
+        return $b;
+    }
+
+    public function get_md ()
+    {
+    }
+
+    /**
+     * This function is for get the header
+     *
+     * @return string
+     */
+    public function get_header ()
+    {
+        $xml = "<queryString><![CDATA[{$this->sql}]]></queryString>";
+        foreach ($this->data['type'] as $key => $value) {
+            $xml .= "<field name='{$key}' class='{$value}'><fieldDescription><![CDATA[]]></fieldDescription></field>";
+        }
+        $xml .= "<background><band/></background>";
+        $xml .= '
            <title>
            <band height="58">
             <line>
@@ -95,64 +99,65 @@ class Jrml
                 <textElement textAlignment="Center">
                     <font size="26" isBold="true"/>
                 </textElement>
-                <text><![CDATA['.$this->data['title'].']]></text>
+                <text><![CDATA[' . $this->data['title'] . ']]></text>
             </staticText>
         </band>
     </title>
     <pageHeader>
         <band/>
-    </pageHeader>';        
-    return $xml;
-  }
-  
- /** 
-  * This function is for get a column of the header
-  * @return string
-  */
-  public function get_column_header()
-  {
-    $xml="<columnHeader><band height='18'>";
-    $w     = (int)($this->data['columnWidth']/sizeof($this->rows));
-    $i=0;
-    foreach ($this->data['type'] as $key=>$value)
+    </pageHeader>';
+        return $xml;
+    }
+
+    /**
+     * This function is for get a column of the header
+     *
+     * @return string
+     */
+    public function get_column_header ()
     {
-      $xml.="<staticText><reportElement mode='Opaque' x='{$i}' y='0' width='{$w}' height='18' forecolor='#FFFFFF' backcolor='#999999'/>
+        $xml = "<columnHeader><band height='18'>";
+        $w = (int) ($this->data['columnWidth'] / sizeof( $this->rows ));
+        $i = 0;
+        foreach ($this->data['type'] as $key => $value) {
+            $xml .= "<staticText><reportElement mode='Opaque' x='{$i}' y='0' width='{$w}' height='18' forecolor='#FFFFFF' backcolor='#999999'/>
                       <textElement>
                             <font size='12'/>
                         </textElement>
                         <text><![CDATA[{$key}]]></text>
                     </staticText>";
-      $i=$i+$w;
+            $i = $i + $w;
+        }
+        $xml .= "    </band></columnHeader>";
+        return $xml;
     }
-    $xml.="    </band></columnHeader>";
-    return $xml;
-  }
-  
- /** 
-  * This function is for get the detail
-  * @return string
-  */
-  public function get_detail()
-  {
-    $xml='<detail><band height="20">';
-    $w    = (int)($this->data['columnWidth']/sizeof($this->rows));
-    $i=0;
-    foreach ($this->data['type'] as $key=>$value)
+
+    /**
+     * This function is for get the detail
+     *
+     * @return string
+     */
+    public function get_detail ()
     {
-      $xml.="<textField hyperlinkType='None'><reportElement x='{$i}' y='0' width='{$w}' height='20'/><textElement><font size='12'/></textElement><textFieldExpression class='{$value}'><![CDATA[\$F{{$key}}]]></textFieldExpression></textField>";
-      $i=$i+$w;
+        $xml = '<detail><band height="20">';
+        $w = (int) ($this->data['columnWidth'] / sizeof( $this->rows ));
+        $i = 0;
+        foreach ($this->data['type'] as $key => $value) {
+            $xml .= "<textField hyperlinkType='None'><reportElement x='{$i}' y='0' width='{$w}' height='20'/><textElement><font size='12'/></textElement><textFieldExpression class='{$value}'><![CDATA[\$F{{$key}}]]></textFieldExpression></textField>";
+            $i = $i + $w;
+        }
+        $xml .= '</band></detail>';
+        return $xml;
     }
-    $xml.='</band></detail>';
-    return $xml;
-  }
-  
- /** 
-  * This function is for get the footer
-  * @return string
-  */
-  public function get_footer()
-  {
-    $xml='<columnFooter>
+
+    /**
+     * This function is for get the footer
+     *
+     * @return string
+     */
+    public function get_footer ()
+    {
+        $xml = '<columnFooter>
       <band/>
     </columnFooter>
     <pageFooter>
@@ -201,22 +206,23 @@ class Jrml
     <summary>
         <band/>
     </summary>';
-    return $xml;
-  }
-  
- /** 
-  * This function is for export
-  * @return string
-  */
-  public function export()
-  {
-    $xml='<?xml version="1.0" encoding="UTF-8"?>
-          <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="'.$this->data['name'].'" pageWidth="'.$this->data['pageWidth'].'" pageHeight="842" columnWidth="'.$this->data['columnWidth'].'" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">';
-    $xml.=$this->get_header();
-    $xml.=$this->get_column_header();
-    $xml.=$this->get_detail();
-    $xml.=$this->get_footer();
-    $xml.='</jasperReport>';
-    return $xml;
-  }
+        return $xml;
+    }
+
+    /**
+     * This function is for export
+     *
+     * @return string
+     */
+    public function export ()
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
+          <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="' . $this->data['name'] . '" pageWidth="' . $this->data['pageWidth'] . '" pageHeight="842" columnWidth="' . $this->data['columnWidth'] . '" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">';
+        $xml .= $this->get_header();
+        $xml .= $this->get_column_header();
+        $xml .= $this->get_detail();
+        $xml .= $this->get_footer();
+        $xml .= '</jasperReport>';
+        return $xml;
+    }
 }

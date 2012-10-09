@@ -2,7 +2,8 @@
 
 /**
  * class.case.php
- * @package    workflow.engine.classes
+ *
+ * @package workflow.engine.classes
  *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2008 Colosa Inc.23
@@ -14,11 +15,11 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
@@ -29,6 +30,7 @@ require_once 'classes/model/AdditionalTables.php';
 /**
  * PmTable Class
  * New class to handle pmTable in native form invoking to Phing & Propel
+ *
  * @author Erik Amaru Ortiz <erik@colosa.com>
  */
 class PmTable
@@ -50,11 +52,11 @@ class PmTable
     private $db;
     private $alterTable = true;
 
-    public function __construct($tableName=null)
+    public function __construct ($tableName = null)
     {
-        if (isset($tableName)) {
+        if (isset( $tableName )) {
             $this->tableName = $tableName;
-            $this->className = $this->toCamelCase($tableName);
+            $this->className = $this->toCamelCase( $tableName );
         }
 
         $this->dbConfig = new StdClass();
@@ -62,21 +64,23 @@ class PmTable
 
     /**
      * Set columns to pmTable
+     *
      * @param array $columns contains a array of abjects
-     *        array(StdClass->field_name, field_type, field_size, field_null, field_key, field_autoincrement,...)
+     * array(StdClass->field_name, field_type, field_size, field_null, field_key, field_autoincrement,...)
      */
-    public function setColumns($columns)
+    public function setColumns ($columns)
     {
         $this->columns = $columns;
     }
 
     /**
      * Set a data source
+     *
      * @param string $dbsUid DBS_UID to relate the pmTable to phisical table
      */
-    public function setDataSource($dbsUid)
+    public function setDataSource ($dbsUid)
     {
-        $this->dataSource = self::resolveDbSource($dbsUid);
+        $this->dataSource = self::resolveDbSource( $dbsUid );
 
         switch ($this->dataSource) {
             case 'workflow':
@@ -98,10 +102,10 @@ class PmTable
             default:
                 require_once 'classes/model/DbSource.php';
                 $oDBSource = new DbSource();
-                $proUid = $oDBSource->getValProUid($this->dataSource);
-                $dbSource = $oDBSource->load($this->dataSource, $proUid);
+                $proUid = $oDBSource->getValProUid( $this->dataSource );
+                $dbSource = $oDBSource->load( $this->dataSource, $proUid );
 
-                if (is_object($dbSource)) {
+                if (is_object( $dbSource )) {
                     $this->dbConfig->adapter = $dbSource->getDbsType();
                     $this->dbConfig->host = $dbSource->getDbsServer();
                     $this->dbConfig->name = $dbSource->getDbsDatabaseName();
@@ -109,7 +113,7 @@ class PmTable
                     $this->dbConfig->passwd = $dbSource->getDbsPassword();
                     $this->dbConfig->port = $dbSource->getDbsPort();
                 }
-                if (is_array($dbSource)) {
+                if (is_array( $dbSource )) {
                     $this->dbConfig->adapter = $dbSource['DBS_TYPE'];
                     $this->dbConfig->host = $dbSource['DBS_SERVER'];
                     $this->dbConfig->name = $dbSource['DBS_DATABASE_NAME'];
@@ -117,7 +121,7 @@ class PmTable
                     $this->dbConfig->passwd = $dbSource['DBS_PASSWORD'];
                     $this->dbConfig->port = $dbSource['DBS_PORT'];
                 } else {
-                    throw new Exception("Db source with id $dbsUid does not exist!");
+                    throw new Exception( "Db source with id $dbsUid does not exist!" );
                 }
         }
     }
@@ -125,10 +129,11 @@ class PmTable
     /**
      * Backward compatibility function
      * Resolve a propel data source
+     *
      * @param string $dbsUid corresponding to DBS_UID key
      * @return string contains resolved DBS_UID
      */
-    public function resolveDbSource($dbsUid)
+    public function resolveDbSource ($dbsUid)
     {
         switch ($dbsUid) {
             case 'workflow':
@@ -147,21 +152,22 @@ class PmTable
         return $dbsUid;
     }
 
-    public function getDataSource()
+    public function getDataSource ()
     {
         return $this->dataSource;
     }
 
     /**
      * get Data base config object
+     *
      * @return object containing dbConfig var
      */
-    public function getDbConfig()
+    public function getDbConfig ()
     {
         return $this->dbConfig;
     }
 
-    public function setAlterTable($value)
+    public function setAlterTable ($value)
     {
         $this->alterTable = $value;
     }
@@ -169,7 +175,7 @@ class PmTable
     /**
      * Build the pmTable with all dependencies
      */
-    public function build()
+    public function build ()
     {
         $this->prepare();
         $this->preparePropelIniFile();
@@ -182,11 +188,11 @@ class PmTable
         }
     }
 
-    public function buildModelFor($dbsUid, $tablesList)
+    public function buildModelFor ($dbsUid, $tablesList)
     {
-        $this->setDataSource($dbsUid);
+        $this->setDataSource( $dbsUid );
         $loadSchema = false;
-        $this->prepare($loadSchema);
+        $this->prepare( $loadSchema );
         $this->phingbuildModel();
         $this->phingbuildSql();
         //$this->upgradeDatabaseFor($this->dataSource, $tablesList);
@@ -195,10 +201,10 @@ class PmTable
     /**
      * Prepare the pmTable env
      */
-    public function prepare($loadSchema=true)
+    public function prepare ($loadSchema = true)
     {
         //prevent execute prepare() twice or more
-        if (is_object($this->dom)) {
+        if (is_object( $this->dom )) {
             return true;
         }
 
@@ -210,94 +216,93 @@ class PmTable
         $this->classesDir = $this->baseDir . 'classes' . PATH_SEP;
 
         // G::mk_dir create the requested dir and the parents directories if not exists
-        G::mk_dir($this->configDir);
-        G::mk_dir($this->dataDir);
+        G::mk_dir( $this->configDir );
+        G::mk_dir( $this->dataDir );
 
         if ($loadSchema) {
             $this->loadSchema();
         }
     }
 
-    public function loadSchema()
+    public function loadSchema ()
     {
-        $this->dom = new DOMDocument('1.0', 'utf-8');
+        $this->dom = new DOMDocument( '1.0', 'utf-8' );
         $this->dom->preserveWhiteSpace = false;
         $this->dom->formatOutput = true;
 
-        if (file_exists($this->configDir . $this->schemaFilename)) {
-            if (@$this->dom->load($this->configDir . $this->schemaFilename) !== true) {
-                throw new Exception('Error: ' . $this->schemaFilename . ' is a invalid xml file!');
+        if (file_exists( $this->configDir . $this->schemaFilename )) {
+            if (@$this->dom->load( $this->configDir . $this->schemaFilename ) !== true) {
+                throw new Exception( 'Error: ' . $this->schemaFilename . ' is a invalid xml file!' );
             }
             $this->rootNode = $this->dom->firstChild;
         } else {
-            $this->rootNode = $this->dom->createElement('database');
-            $this->rootNode->setAttribute('name', $this->dataSource);
-            $this->dom->appendChild($this->rootNode);
+            $this->rootNode = $this->dom->createElement( 'database' );
+            $this->rootNode->setAttribute( 'name', $this->dataSource );
+            $this->dom->appendChild( $this->rootNode );
         }
     }
 
     /**
      * Build the xml schema for propel
      */
-    public function buildSchema()
+    public function buildSchema ()
     {
-        $tableNode = $this->dom->createElement('table');
-        $tableNode->setAttribute('name', $this->tableName);
+        $tableNode = $this->dom->createElement( 'table' );
+        $tableNode->setAttribute( 'name', $this->tableName );
 
         if ($this->hasAutoIncrementPKey()) {
-            $tableNode->setAttribute('idMethod', 'native');
+            $tableNode->setAttribute( 'idMethod', 'native' );
         }
 
         // specifying collation
         switch ($this->dbConfig->adapter) {
             case 'mysql':
-                $vendorNode = $this->dom->createElement('vendor');
-                $vendorNode->setAttribute('type', $this->dbConfig->adapter);
-                $parameterNode = $this->dom->createElement('parameter');
-                $parameterNode->setAttribute('name', 'Collation');
-                $parameterNode->setAttribute('value', 'utf8_general_ci');
-                $vendorNode->appendChild($parameterNode);
-                $tableNode->appendChild($vendorNode);
+                $vendorNode = $this->dom->createElement( 'vendor' );
+                $vendorNode->setAttribute( 'type', $this->dbConfig->adapter );
+                $parameterNode = $this->dom->createElement( 'parameter' );
+                $parameterNode->setAttribute( 'name', 'Collation' );
+                $parameterNode->setAttribute( 'value', 'utf8_general_ci' );
+                $vendorNode->appendChild( $parameterNode );
+                $tableNode->appendChild( $vendorNode );
                 break;
         }
-
 
         foreach ($this->columns as $column) {
 
             // create the column node
-            $columnNode = $this->dom->createElement('column');
+            $columnNode = $this->dom->createElement( 'column' );
             // setting column node attributes
-            $columnNode->setAttribute('name', $column->field_name);
-            $columnNode->setAttribute('type', $column->field_type);
+            $columnNode->setAttribute( 'name', $column->field_name );
+            $columnNode->setAttribute( 'type', $column->field_type );
 
             if ($column->field_size != '' && $column->field_size != 0) {
-                $columnNode->setAttribute('size', $column->field_size);
+                $columnNode->setAttribute( 'size', $column->field_size );
             }
 
-            $columnNode->setAttribute('required', ($column->field_null ? 'false' : 'true'));
+            $columnNode->setAttribute( 'required', ($column->field_null ? 'false' : 'true') );
 
             // only define the primaryKey attribute if it is defined
             if ($column->field_key) {
-                $columnNode->setAttribute('primaryKey', "true");
+                $columnNode->setAttribute( 'primaryKey', "true" );
             }
 
             // only define the autoIncrement attribute if it is defined
             if ($column->field_autoincrement) {
-                $columnNode->setAttribute('autoIncrement', "true");
+                $columnNode->setAttribute( 'autoIncrement', "true" );
             }
-            $tableNode->appendChild($columnNode);
+            $tableNode->appendChild( $columnNode );
         }
 
-        $xpath = new DOMXPath($this->dom);
-        $xtable = $xpath->query('/database/table[@name="' . $this->tableName . '"]');
+        $xpath = new DOMXPath( $this->dom );
+        $xtable = $xpath->query( '/database/table[@name="' . $this->tableName . '"]' );
 
         if ($xtable->length == 0) {
             //the table definition does not exist, then just append the new node
-            $this->rootNode->appendChild($tableNode);
+            $this->rootNode->appendChild( $tableNode );
         } else {
             // the table definition already exist, then replace the node
-            $replacedNode = $xtable->item(0);
-            $this->rootNode->replaceChild($tableNode, $replacedNode);
+            $replacedNode = $xtable->item( 0 );
+            $this->rootNode->replaceChild( $tableNode, $replacedNode );
         }
 
         // saving the xml result file
@@ -307,7 +312,7 @@ class PmTable
     /**
      * Remove the pmTable and all related objects, files and others
      */
-    public function remove()
+    public function remove ()
     {
         $this->prepare();
         $this->removeFromSchema();
@@ -318,16 +323,16 @@ class PmTable
     /**
      * Remove the target pmTable from schema of propel
      */
-    public function removeFromSchema()
+    public function removeFromSchema ()
     {
-        $xpath = new DOMXPath($this->dom);
+        $xpath = new DOMXPath( $this->dom );
         // locate the node
-        $xtable = $xpath->query('/database/table[@name="' . $this->tableName . '"]');
+        $xtable = $xpath->query( '/database/table[@name="' . $this->tableName . '"]' );
         if ($xtable->length == 0) {
             return false;
         }
 
-        $this->rootNode->removeChild($xtable->item(0));
+        $this->rootNode->removeChild( $xtable->item( 0 ) );
         // saving the xml result file
         $this->saveSchema();
     }
@@ -335,29 +340,29 @@ class PmTable
     /**
      * Remove the model related classes files
      */
-    public function removeModelFiles()
+    public function removeModelFiles ()
     {
-        @unlink($this->classesDir . $this->className . '.php');
-        @unlink($this->classesDir . $this->className . 'Peer.php');
-        @unlink($this->classesDir . 'map' . PATH_SEP . $this->className . 'MapBuilder.php');
-        @unlink($this->classesDir . 'om' . PATH_SEP . 'Base' . $this->className . '.php');
-        @unlink($this->classesDir . 'om' . PATH_SEP . 'Base' . $this->className . 'Peer.php');
+        @unlink( $this->classesDir . $this->className . '.php' );
+        @unlink( $this->classesDir . $this->className . 'Peer.php' );
+        @unlink( $this->classesDir . 'map' . PATH_SEP . $this->className . 'MapBuilder.php' );
+        @unlink( $this->classesDir . 'om' . PATH_SEP . 'Base' . $this->className . '.php' );
+        @unlink( $this->classesDir . 'om' . PATH_SEP . 'Base' . $this->className . 'Peer.php' );
     }
 
     /**
      * Drop the phisical table of target pmTable or any specified as parameter
      */
-    public function dropTable($tableName=null)
+    public function dropTable ($tableName = null)
     {
-        $tableName = isset($tableName) ? $tableName : $this->tableName;
-        $con = Propel::getConnection($this->dataSource);
+        $tableName = isset( $tableName ) ? $tableName : $this->tableName;
+        $con = Propel::getConnection( $this->dataSource );
         $stmt = $con->createStatement();
 
-        if (is_object($con)) {
+        if (is_object( $con )) {
             try {
-                $stmt->executeQuery("DROP TABLE {$tableName}");
+                $stmt->executeQuery( "DROP TABLE {$tableName}" );
             } catch (Exception $e) {
-                throw new Exception("Physical table '$tableName' does not exist!");
+                throw new Exception( "Physical table '$tableName' does not exist!" );
             }
         }
     }
@@ -365,28 +370,27 @@ class PmTable
     /**
      * Save the xml schema for propel
      */
-    public function saveSchema()
+    public function saveSchema ()
     {
-        $this->dom->save($this->configDir . $this->schemaFilename);
+        $this->dom->save( $this->configDir . $this->schemaFilename );
     }
 
     /**
      * Prepare and create if not exists the propel ini file
      */
-    public function preparePropelIniFile()
+    public function preparePropelIniFile ()
     {
         $adapter = $this->dbConfig->adapter;
 
-        if (file_exists($this->configDir . "propel.$adapter.ini")) {
+        if (file_exists( $this->configDir . "propel.$adapter.ini" )) {
             return true;
         }
 
-        if (!file_exists(PATH_CORE . PATH_SEP . 'config' . PATH_SEP . "propel.$adapter.ini")) {
-            throw new Exception("Invalid or not supported engine '$adapter'!");
+        if (! file_exists( PATH_CORE . PATH_SEP . 'config' . PATH_SEP . "propel.$adapter.ini" )) {
+            throw new Exception( "Invalid or not supported engine '$adapter'!" );
         }
 
-        @copy(PATH_CORE . PATH_SEP . 'config' . PATH_SEP . "propel.$adapter.ini",
-              $this->configDir . "propel.$adapter.ini");
+        @copy( PATH_CORE . PATH_SEP . 'config' . PATH_SEP . "propel.$adapter.ini", $this->configDir . "propel.$adapter.ini" );
     }
 
     /**
@@ -395,34 +399,35 @@ class PmTable
      * for the related table
      * - this function is not executing other sentenses like 'SET FOREIGN_KEY_CHECKS = 0;' for mysql, and others
      */
-    public function upgradeDatabase()
+    public function upgradeDatabase ()
     {
-        $con = Propel::getConnection($this->dataSource);
+        $con = Propel::getConnection( $this->dataSource );
         $stmt = $con->createStatement();
-        $lines = file($this->dataDir . $this->dbConfig->adapter . PATH_SEP . 'schema.sql');
+        $lines = file( $this->dataDir . $this->dbConfig->adapter . PATH_SEP . 'schema.sql' );
         $previous = null;
-        $queryStack = array();
+        $queryStack = array ();
         $aDNS = $con->getDSN();
         $dbEngine = $aDNS["phptype"];
 
         foreach ($lines as $j => $line) {
             switch ($dbEngine) {
                 case 'mysql':
-                    $line = trim($line); // Remove comments from the script
+                    $line = trim( $line ); // Remove comments from the script
 
-                    if (strpos($line, "--") === 0) {
-                        $line = substr($line, 0, strpos($line, "--"));
+
+                    if (strpos( $line, "--" ) === 0) {
+                        $line = substr( $line, 0, strpos( $line, "--" ) );
                     }
 
-                    if (empty($line)) {
+                    if (empty( $line )) {
                         continue;
                     }
 
-                    if (strpos($line, "#") === 0) {
-                        $line = substr($line, 0, strpos($line, "#"));
+                    if (strpos( $line, "#" ) === 0) {
+                        $line = substr( $line, 0, strpos( $line, "#" ) );
                     }
 
-                    if (empty($line)) {
+                    if (empty( $line )) {
                         continue;
                     }
 
@@ -434,21 +439,19 @@ class PmTable
 
                     // If the current line doesnt end with ; then put this line together
                     // with the next one, thus supporting multi-line statements.
-                    if (strrpos($line, ";") != strlen($line) - 1) {
+                    if (strrpos( $line, ";" ) != strlen( $line ) - 1) {
                         $previous = $line;
                         continue;
                     }
 
-                    $line = substr($line, 0, strrpos($line, ";"));
+                    $line = substr( $line, 0, strrpos( $line, ";" ) );
                     // just execute the drop and create table for target table nad not for others
-                    if (stripos($line, 'CREATE TABLE') !== false || stripos($line, 'DROP TABLE') !== false) {
-                        $isCreateForCurrentTable = preg_match('/CREATE\sTABLE\s[\[\'\"\`]{1}' . $this->tableName
-                                                            . '[\]\'\"\`]{1}/i', $line, $match);
+                    if (stripos( $line, 'CREATE TABLE' ) !== false || stripos( $line, 'DROP TABLE' ) !== false) {
+                        $isCreateForCurrentTable = preg_match( '/CREATE\sTABLE\s[\[\'\"\`]{1}' . $this->tableName . '[\]\'\"\`]{1}/i', $line, $match );
                         if ($isCreateForCurrentTable) {
                             $queryStack['create'] = $line;
                         } else {
-                            $isDropForCurrentTable = preg_match('/DROP TABLE.*[\[\'\"\`]{1}' . $this->tableName
-                                                              . '[\]\'\"\`]{1}/i', $line, $match);
+                            $isDropForCurrentTable = preg_match( '/DROP TABLE.*[\[\'\"\`]{1}' . $this->tableName . '[\]\'\"\`]{1}/i', $line, $match );
                             if ($isDropForCurrentTable) {
                                 $queryStack['drop'] = $line;
                             }
@@ -456,21 +459,22 @@ class PmTable
                     }
                     break;
                 case 'mssql':
-                    $line = trim($line); // Remove comments from the script
+                    $line = trim( $line ); // Remove comments from the script
 
-                    if (strpos($line, "--") === 0) {
-                        $line = substr($line, 0, strpos($line, "--"));
+
+                    if (strpos( $line, "--" ) === 0) {
+                        $line = substr( $line, 0, strpos( $line, "--" ) );
                     }
 
-                    if (empty($line)) {
+                    if (empty( $line )) {
                         continue;
                     }
 
-                    if (strpos($line, "#") === 0) {
-                        $line = substr($line, 0, strpos($line, "#"));
+                    if (strpos( $line, "#" ) === 0) {
+                        $line = substr( $line, 0, strpos( $line, "#" ) );
                     }
 
-                    if (empty($line)) {
+                    if (empty( $line )) {
                         continue;
                     }
 
@@ -482,47 +486,47 @@ class PmTable
 
                     // If the current line doesnt end with ; then put this line together
                     // with the next one, thus supporting multi-line statements.
-                    if (strrpos($line, ";") != strlen($line) - 1) {
+                    if (strrpos( $line, ";" ) != strlen( $line ) - 1) {
                         $previous = $line;
                         continue;
                     }
 
-                    $line = substr($line, 0, strrpos($line, ";"));
+                    $line = substr( $line, 0, strrpos( $line, ";" ) );
 
-                    if (strpos($line, $this->tableName) == false) {
+                    if (strpos( $line, $this->tableName ) == false) {
                         continue;
                     }
 
-                    $auxCreate = explode('CREATE', $line);
-                    $auxDrop   = explode('IF EXISTS', $auxCreate['0']);
+                    $auxCreate = explode( 'CREATE', $line );
+                    $auxDrop = explode( 'IF EXISTS', $auxCreate['0'] );
 
-                    $queryStack['drop']   = 'IF EXISTS' . $auxDrop['1'];
+                    $queryStack['drop'] = 'IF EXISTS' . $auxDrop['1'];
                     $queryStack['create'] = 'CREATE' . $auxCreate['1'];
 
                     break;
                 case 'oracle':
-                    $line = trim($line); // Remove comments from the script
-                    if (empty($line)) {
+                    $line = trim( $line ); // Remove comments from the script
+                    if (empty( $line )) {
                         continue;
                     }
                     switch (true) {
-                        case preg_match("/^CREATE TABLE\s/i", $line):
-                            if (strpos($line, $this->tableName) == true) {
+                        case preg_match( "/^CREATE TABLE\s/i", $line ):
+                            if (strpos( $line, $this->tableName ) == true) {
                                 $inCreate = true;
                                 $lineCreate .= $line . ' ';
                             }
                             break;
-                        case preg_match("/ALTER TABLE\s/i", $line):
-                            if (strpos($line, $this->tableName) == true) {
+                        case preg_match( "/ALTER TABLE\s/i", $line ):
+                            if (strpos( $line, $this->tableName ) == true) {
                                 $inAlter = true;
                                 $lineAlter .= $line . ' ';
                             }
                             break;
-                        case preg_match("/^DROP TABLE\s/i", $line):
-                            if (strpos($line, $this->tableName) == true) {
+                        case preg_match( "/^DROP TABLE\s/i", $line ):
+                            if (strpos( $line, $this->tableName ) == true) {
                                 $inDrop = true;
                                 $lineDrop .= $line . ' ';
-                                if (strrpos($line, ";") > 0) {
+                                if (strrpos( $line, ";" ) > 0) {
                                     $queryStack['drop'] = $lineDrop;
                                     $inDrop = false;
                                 }
@@ -531,21 +535,21 @@ class PmTable
                         default:
                             if ($inCreate) {
                                 $lineCreate .= $line . ' ';
-                                if (strrpos($line, ";") > 0) {
+                                if (strrpos( $line, ";" ) > 0) {
                                     $queryStack['create'] = $lineCreate;
                                     $inCreate = false;
                                 }
                             }
                             if ($inAlter) {
                                 $lineAlter .= $line . ' ';
-                                if (strrpos($line, ";") > 0) {
+                                if (strrpos( $line, ";" ) > 0) {
                                     $queryStack['alter'] = $lineAlter;
                                     $inAlter = false;
                                 }
                             }
                             if ($inDrop) {
                                 $lineDrop .= $line . ' ';
-                                if (strrpos($line, ";") > 0) {
+                                if (strrpos( $line, ";" ) > 0) {
                                     $queryStack['drop'] = $lineDrop;
                                     $inDrop = false;
                                 }
@@ -556,64 +560,65 @@ class PmTable
         }
 
         if ($dbEngine == 'oracle') {
-            $queryStack['drop'] = substr($queryStack['drop'], 0, strrpos($queryStack['drop'], ";"));
-            $queryStack['create'] = substr($queryStack['create'], 0, strrpos($queryStack['create'], ";"));
-            $queryStack['alter'] = substr($queryStack['alter'], 0, strrpos($queryStack['alter'], ";"));
+            $queryStack['drop'] = substr( $queryStack['drop'], 0, strrpos( $queryStack['drop'], ";" ) );
+            $queryStack['create'] = substr( $queryStack['create'], 0, strrpos( $queryStack['create'], ";" ) );
+            $queryStack['alter'] = substr( $queryStack['alter'], 0, strrpos( $queryStack['alter'], ";" ) );
             $queryIfExistTable = "SELECT TABLE_NAME FROM USER_TABLES WHERE TABLE_NAME = '" . $this->tableName . "'";
 
-            $rs = $stmt->executeQuery($queryIfExistTable);
+            $rs = $stmt->executeQuery( $queryIfExistTable );
             if ($rs->next()) {
-                $stmt->executeQuery($queryStack['drop']);
+                $stmt->executeQuery( $queryStack['drop'] );
             }
-            $stmt->executeQuery($queryStack['create']);
-            $stmt->executeQuery($queryStack['alter']);
+            $stmt->executeQuery( $queryStack['create'] );
+            $stmt->executeQuery( $queryStack['alter'] );
         } else {
-            if (isset($queryStack['create'])) {
+            if (isset( $queryStack['create'] )) {
                 // first at all we need to verify if we have a valid schema defined,
                 // so we verify that creating a dummy table
-                $swapQuery = str_replace($this->tableName, $this->tableName . '_TMP', $queryStack['create']);
+                $swapQuery = str_replace( $this->tableName, $this->tableName . '_TMP', $queryStack['create'] );
 
                 // if there is a problem with user defined table schema executeQuery() will throw a sql exception
-                $stmt->executeQuery($swapQuery);
+                $stmt->executeQuery( $swapQuery );
 
                 // if there was not problem above proceced deleting the dummy table and drop and create the target table
-                $stmt->executeQuery("DROP TABLE {$this->tableName}_TMP");
-                if (!isset($queryStack['drop'])) {
+                $stmt->executeQuery( "DROP TABLE {$this->tableName}_TMP" );
+                if (! isset( $queryStack['drop'] )) {
                     $queryStack['drop'] = "DROP TABLE {$this->tableName}";
                 }
-                if (!isset($queryStack['create'])) {
-                    throw new Exception('A problem occurred resolving the schema to update for this table');
+                if (! isset( $queryStack['create'] )) {
+                    throw new Exception( 'A problem occurred resolving the schema to update for this table' );
                 }
-                $stmt->executeQuery($queryStack['drop']);
-                $stmt->executeQuery($queryStack['create']);
+                $stmt->executeQuery( $queryStack['drop'] );
+                $stmt->executeQuery( $queryStack['create'] );
             }
         }
     }
 
-    public function upgradeDatabaseFor($dataSource, $tablesList=array())
+    public function upgradeDatabaseFor ($dataSource, $tablesList = array())
     {
-        $con = Propel::getConnection($dataSource);
+        $con = Propel::getConnection( $dataSource );
         $stmt = $con->createStatement();
-        $lines = file($this->dataDir . $this->dbConfig->adapter . PATH_SEP . 'schema.sql');
+        $lines = file( $this->dataDir . $this->dbConfig->adapter . PATH_SEP . 'schema.sql' );
         $previous = null;
         $errors = '';
 
         foreach ($lines as $j => $line) {
-            $line = trim($line); // Remove comments from the script
+            $line = trim( $line ); // Remove comments from the script
 
-            if (strpos($line, "--") === 0) {
-                $line = substr($line, 0, strpos($line, "--"));
+
+            if (strpos( $line, "--" ) === 0) {
+                $line = substr( $line, 0, strpos( $line, "--" ) );
             }
 
-            if (empty($line)) {
+            if (empty( $line )) {
                 continue;
             }
 
-            if (strpos($line, "#") === 0) {
-                $line = substr($line, 0, strpos($line, "#"));
+            if (strpos( $line, "#" ) === 0) {
+                $line = substr( $line, 0, strpos( $line, "#" ) );
             }
 
-            if (empty($line)) {
+            if (empty( $line )) {
                 continue;
             }
 
@@ -625,23 +630,23 @@ class PmTable
 
             // If the current line doesnt end with ; then put this line together
             // with the next one, thus supporting multi-line statements.
-            if (strrpos($line, ";") != strlen($line) - 1) {
+            if (strrpos( $line, ";" ) != strlen( $line ) - 1) {
                 $previous = $line;
                 continue;
             }
 
-            $line = substr($line, 0, strrpos($line, ";"));
+            $line = substr( $line, 0, strrpos( $line, ";" ) );
 
             // execute
-            $isCreate = stripos($line, 'CREATE TABLE') !== false;
-            $isDrop = stripos($line, 'DROP TABLE') !== false;
+            $isCreate = stripos( $line, 'CREATE TABLE' ) !== false;
+            $isDrop = stripos( $line, 'DROP TABLE' ) !== false;
 
             if ($isCreate || $isDrop) {
-                if (preg_match('/TABLE\s[\'\"\`]+(\w+)[\'\"\`]+/i', $line, $match)) {
-                    if (in_array($match[1], $tablesList)) {
+                if (preg_match( '/TABLE\s[\'\"\`]+(\w+)[\'\"\`]+/i', $line, $match )) {
+                    if (in_array( $match[1], $tablesList )) {
                         //error_log($line);
                         try {
-                            $stmt->executeQuery($line);
+                            $stmt->executeQuery( $line );
                         } catch (Exception $e) {
                             $errors .= $e->getMessage() . "\n";
                             continue;
@@ -656,9 +661,10 @@ class PmTable
 
     /**
      * verify if on the columns list was set a column as primary key
+     *
      * @return boolean to affirm if was defined a column as pk.
      */
-    public function hasAutoIncrementPKey()
+    public function hasAutoIncrementPKey ()
     {
         foreach ($this->columns as $column) {
             if ($column->field_autoincrement) {
@@ -673,14 +679,14 @@ class PmTable
      *
      * @return array contains all supported columns types provided by propel
      */
-    public function getPropelSupportedColumnTypes()
+    public function getPropelSupportedColumnTypes ()
     {
         /**
          * http://www.propelorm.org/wiki/Documentation/1.2/Schema
          * [type = "BOOLEAN|TINYINT|SMALLINT|INTEGER|BIGINT|DOUBLE|FLOAT|REAL|DECIMAL|CHAR|{VARCHAR}
-         *          |LONGVARCHAR|DATE|TIME|TIMESTAMP|BLOB|CLOB"]
+         * |LONGVARCHAR|DATE|TIME|TIMESTAMP|BLOB|CLOB"]
          */
-        $types = array();
+        $types = array ();
 
         $types['BOOLEAN'] = 'BOOLEAN';
         $types['TINYINT'] = 'TINYINT';
@@ -700,96 +706,96 @@ class PmTable
         //$types['BLOB'] = 'BLOB'; <- disabled
         //$types['CLOB'] = 'CLOB'; <- disabled
 
+
         return $types;
     }
 
     /**
+     *
      * @param string $name any string witha name separated by underscore
      * @return string contains a camelcase expresion for $name
      */
-    public function toCamelCase($name)
+    public function toCamelCase ($name)
     {
-        $tmp = explode('_', trim($name));
+        $tmp = explode( '_', trim( $name ) );
         foreach ($tmp as $i => $part) {
-            $tmp[$i] = ucFirst(strtolower($part));
+            $tmp[$i] = ucFirst( strtolower( $part ) );
         }
-        return implode('', $tmp);
+        return implode( '', $tmp );
     }
 
     /**
      * Run om task for phing to build all mdoel classes
      */
-    public function phingbuildModel()
+    public function phingbuildModel ()
     {
-        $this->_callPhing('om');
+        $this->_callPhing( 'om' );
     }
 
     /**
      * Run sql task for phing to generate the sql schema
      */
-    public function phingbuildSql()
+    public function phingbuildSql ()
     {
-        $this->_callPhing('sql');
+        $this->_callPhing( 'sql' );
     }
 
     /**
      * call phing to execute a determinated task
+     *
      * @param string $taskName [om|sql]
      */
-    private function _callPhing($taskName)
+    private function _callPhing ($taskName)
     {
-        $options = array(
-            'project.dir' => $this->configDir,
-            'build.properties' => "propel.{$this->dbConfig->adapter}.ini",
-            'propel.targetPackage' => 'classes',
-            'propel.output.dir' => $this->targetDir,
-            'propel.php.dir' => $this->baseDir
+        $options = array ('project.dir' => $this->configDir,'build.properties' => "propel.{$this->dbConfig->adapter}.ini",'propel.targetPackage' => 'classes','propel.output.dir' => $this->targetDir,'propel.php.dir' => $this->baseDir
         );
 
-        self::callPhing(array($taskName), PATH_THIRDPARTY . 'propel-generator/build.xml', $options, false);
+        self::callPhing( array ($taskName
+        ), PATH_THIRDPARTY . 'propel-generator/build.xml', $options, false );
     }
 
     /**
-     * @param string $target    - task name to execute
+     *
+     * @param string $target - task name to execute
      * @param string $buildFile - build file path
-     * @param array  $options   - array options to override the options on .ini file
-     * @param bool   $verbose   - to show a verbose output
+     * @param array $options - array options to override the options on .ini file
+     * @param bool $verbose - to show a verbose output
      */
-    public static function callPhing($target, $buildFile='', $options=array(), $verbose=true)
+    public static function callPhing ($target, $buildFile = '', $options = array(), $verbose = true)
     {
-        G::loadClass('pmPhing');
+        G::loadClass( 'pmPhing' );
 
-        $args = array();
+        $args = array ();
         foreach ($options as $key => $value) {
             $args[] = "-D$key=$value";
         }
 
         if ($buildFile) {
             $args[] = '-f';
-            $args[] = realpath($buildFile);
+            $args[] = realpath( $buildFile );
         }
 
-        if (!$verbose) {
+        if (! $verbose) {
             $args[] = '-q';
         }
 
-        if (is_array($target)) {
-            $args = array_merge($args, $target);
+        if (is_array( $target )) {
+            $args = array_merge( $args, $target );
         } else {
             $args[] = $target;
         }
 
-        if (DIRECTORY_SEPARATOR != '\\' && (function_exists('posix_isatty') && @posix_isatty(STDOUT))) {
+        if (DIRECTORY_SEPARATOR != '\\' && (function_exists( 'posix_isatty' ) && @posix_isatty( STDOUT ))) {
             $args[] = '-logger';
             $args[] = 'phing.listener.AnsiColorLogger';
         }
 
         Phing::startup();
-        Phing::setProperty('phing.home', getenv('PHING_HOME'));
+        Phing::setProperty( 'phing.home', getenv( 'PHING_HOME' ) );
 
         $m = new pmPhing();
-        $m->execute($args);
+        $m->execute( $args );
         $m->runBuild();
     }
 }
- 
+
