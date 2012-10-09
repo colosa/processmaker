@@ -14,6 +14,7 @@
     <testsuites>
         <testsuite name="automated">
             <directory>./tests/automated/</directory>
+            <directory>./tests/unit/backend/services/</directory>
         </testsuite>
 <!--
         <testsuite name="unit">

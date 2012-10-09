@@ -73,9 +73,8 @@ class ApplicationTest extends PHPUnit_Extensions_Database_TestCase
         $resp = $rest->sendGET($table,$APP_UID);
         //$rest->displayResponse();
 
-        //Obtengo solo el campo q necesito del array
-        //$ultimo = end( $resp );
-        //$solo = object mysql_fetch_field ( resource $resp ['data'] );
+        $APP_UID2 = array("741973");
+        $rest->sendGET($table,$APP_UID2);
 
         $queryTable = $this->getConnection()->createQueryTable(
             'APPLICATION', 'SELECT * FROM APPLICATION WHERE APP_UID = "741388075505cd6bba2e993094312973"'
@@ -102,7 +101,7 @@ class ApplicationTest extends PHPUnit_Extensions_Database_TestCase
 
         $rest = new RestMessage();
         $rest->sendPOST($table,$APP_UID);
-        $rest->displayResponse();
+        //$rest->displayResponse();
 
         $ID = array("4670755835065b7eb6a4187052654566");
         $resp = $rest->sendGET($table,$ID);
@@ -110,6 +109,9 @@ class ApplicationTest extends PHPUnit_Extensions_Database_TestCase
         $queryTable = $this->getConnection()->createQueryTable(
             'APPLICATION', 'SELECT * FROM APPLICATION WHERE APP_UID = "4670755835065b7eb6a4187052654566"'
         );
+
+        $APP_UID2 = array();
+        $rest->sendPOST($table,$APP_UID2);
 
         //$this->assertEquals($queryTable, $resp, "ERROR getting data");
     }
@@ -133,6 +135,9 @@ class ApplicationTest extends PHPUnit_Extensions_Database_TestCase
         $rest = new RestMessage();
         $rest->sendPUT($table,$APP_UID);
         //$rest->displayResponse();
+
+        $APP_UID2 = array();
+        $rest->sendPOST($table,$APP_UID2);
     }
 
     public function testDelete()
@@ -154,6 +159,9 @@ class ApplicationTest extends PHPUnit_Extensions_Database_TestCase
         $rest = new RestMessage();
         $rest->sendDELETE($table,$APP_UID);
         //$rest->displayResponse();
+
+        $APP_UID2 = array("");
+        $rest->sendPOST($table,$APP_UID2);
     }
 }
 

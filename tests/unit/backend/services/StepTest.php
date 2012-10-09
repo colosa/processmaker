@@ -77,6 +77,9 @@ class StepTest extends PHPUnit_Extensions_Database_TestCase
             'STEP', 'SELECT * FROM STEP WHERE STEP_UID = "440848627503b77c71a9637072432170"'
         );
 
+        $key2 = array("741973");
+        $rest->sendGET($table,$key2);
+
         //$this->assertEquals($resp, $queryTable, "ERROR getting data");
     }
 
@@ -106,6 +109,9 @@ class StepTest extends PHPUnit_Extensions_Database_TestCase
         $queryTable = $this->getConnection()->createQueryTable(
             'STEP', 'SELECT * FROM STEP WHERE STEP_UID = "440848627503b77c71a9637074444444"'
         );
+
+        $key2 = array();
+        $rest->sendPOST($table,$key2);
 
         //$this->assertEquals($queryTable, $resp, "ERROR inserting data");
     }
@@ -137,6 +143,9 @@ class StepTest extends PHPUnit_Extensions_Database_TestCase
             'STEP', 'SELECT * FROM STEP WHERE STEP_UID = "440848627503b77c71a9637074444444"'
         );
 
+        $key2 = array("741973");
+        $rest->sendGET($table,$key2);
+
         //$this->assertEquals($queryTable, $resp, "ERROR updating data");
     }
 
@@ -164,6 +173,9 @@ class StepTest extends PHPUnit_Extensions_Database_TestCase
         $queryTable = $this->getConnection()->createQueryTable(
             'STEP', 'SELECT * FROM STEP WHERE STEP_UID = "440848627503b77c71a9637074444444"'
         );
+
+        $key2 = array("741973");
+        $rest->sendGET($table,$key2);
 
         //$this->assertEquals($queryTable, $resp, "ERROR getting data");
     }

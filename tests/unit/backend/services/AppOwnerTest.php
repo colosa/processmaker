@@ -73,6 +73,9 @@ class AppOwnerTest extends PHPUnit_Extensions_Database_TestCase
         $resp = $rest->sendGET($table,$key);
         //$rest->displayResponse();
 
+        $key2 = array("741973");
+        $rest->sendGET($table,$key2);
+
         $queryTable = $this->getConnection()->createQueryTable(
             'APP_OWNER', 'SELECT * FROM APP_OWNER WHERE APP_UID = "741388075505cd6bba2e993094312973"'
         );
@@ -107,6 +110,9 @@ class AppOwnerTest extends PHPUnit_Extensions_Database_TestCase
             'APP_OWNER', 'SELECT * FROM APP_OWNER WHERE APP_UID = "741388075505cd6bba2e993094312900"'
         );
 
+        $key2 = array();
+        $rest->sendPOST($table,$key2);
+
         //$this->assertEquals($queryTable, $resp, "ERROR getting data");
     }
 
@@ -137,6 +143,9 @@ class AppOwnerTest extends PHPUnit_Extensions_Database_TestCase
             'APP_OWNER', 'SELECT * FROM APP_OWNER WHERE APP_UID = "741388075505cd6bba2e993094312900"'
         );
 
+        $key2 = array("741973");
+        $rest->sendGET($table,$key2);
+
         //$this->assertEquals($queryTable, $resp, "ERROR getting data");
     }
 
@@ -166,6 +175,10 @@ class AppOwnerTest extends PHPUnit_Extensions_Database_TestCase
 
         $resp = array();
 
+        $key2 = array("741973");
+        $rest->sendGET($table,$key2);
+
         //$this->assertEquals($queryTable, $resp, "ERROR getting data");
     }
 }
+
