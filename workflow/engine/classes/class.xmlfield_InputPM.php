@@ -373,7 +373,7 @@ class XmlForm_Field_hours extends XmlForm_Field_SimpleText
  * @param eter boolean $bSystemVars
  * @return array
  */
-public function getDynaformsVars ($sProcessUID, $bSystemVars = true, $bIncMulSelFields = 0)
+function getDynaformsVars ($sProcessUID, $bSystemVars = true, $bIncMulSelFields = 0)
 {
     $aFields = array ();
     $aFieldsNames = array ();
@@ -429,7 +429,7 @@ public function getDynaformsVars ($sProcessUID, $bSystemVars = true, $bIncMulSel
  * @param eter string $sProcessUID
  * @return array
  */
-public function getGridsVars ($sProcessUID)
+function getGridsVars ($sProcessUID)
 {
     $aFields = array ();
     $aFieldsNames = array ();
