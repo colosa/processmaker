@@ -2,26 +2,31 @@
 
 require_once 'classes/interfaces/dashletInterface.php';
 
-class dashletProcessMakerCommunity implements DashletInterface {
+class dashletProcessMakerCommunity implements DashletInterface
+{
 
-  const version = '1.0';
+    const version = '1.0';
 
-  public static function getAdditionalFields($className) {
-    $additionalFields = array();
+    public static function getAdditionalFields ($className)
+    {
+        $additionalFields = array ();
 
-    return $additionalFields;
-  }
+        return $additionalFields;
+    }
 
-  public static function getXTemplate($className) {
-    return "<iframe src=\"{page}?DAS_INS_UID={id}\" width=\"{width}\" height=\"207\" frameborder=\"0\"></iframe>";
-  }
+    public static function getXTemplate ($className)
+    {
+        return "<iframe src=\"{page}?DAS_INS_UID={id}\" width=\"{width}\" height=\"207\" frameborder=\"0\"></iframe>";
+    }
 
-  public function setup($config) {
-    return true;
-  }
+    public function setup ($config)
+    {
+        return true;
+    }
 
-  public function render ($width = 300) {
-    $html = "
+    public function render ($width = 300)
+    {
+        $html = "
     <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
 
     <html xmlns=\"http://www.w3.org/1999/xhtml\">
@@ -139,7 +144,7 @@ class dashletProcessMakerCommunity implements DashletInterface {
     </html>
     ";
 
-    echo $html;
-  }
+        echo $html;
+    }
 
 }

@@ -1,7 +1,9 @@
 <?php
+
 /**
  * class.cli.php
- * @package    workflow.engine.classes
+ *
+ * @package workflow.engine.classes
  *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2011 Colosa Inc.
@@ -13,11 +15,11 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
@@ -26,297 +28,313 @@
  */
 
 /**
- * @package    workflow.engine.classes
+ *
+ * @package workflow.engine.classes
  */
-class CLI {
-  public static $tasks = array();
-  public static $currentTask = NULL;
+class CLI
+{
+    public static $tasks = array ();
+    public static $currentTask = NULL;
 
-  /**
-   * Adds a new task defined by it's name. All other task functions will
-   * remember the current task defined here.
-   *
-   * @param  string $name name of the task, used in the command-line
-   */
-  public static function taskName($name) {
-    self::$currentTask = $name;
-    self::$tasks[$name] = array(
-      'name' => $name,
-      'description' => NULL,
-      'args' => array(),
-      'function' => NULL,
-      'opt' => array('short' => '', 'long' => array(), 'descriptions' => array())
-    );
-  }
+    /**
+     * Adds a new task defined by it's name.
+     * All other task functions will
+     * remember the current task defined here.
+     *
+     * @param string $name name of the task, used in the command-line
+     */
+    public static function taskName ($name)
+    {
+        self::$currentTask = $name;
+        self::$tasks[$name] = array ('name' => $name,'description' => NULL,'args' => array (),'function' => NULL,'opt' => array ('short' => '','long' => array (),'descriptions' => array ()
+        )
+        );
+    }
 
-  /**
-   * Adds a description to the current task. The description should contain a
-   * one-line description of the command and a few lines of text with more
-   * information.
-   *
-   * @param  string $description task description
-   */
-  public static function taskDescription($description) {
-    assert(self::$currentTask !== NULL);
-    self::$tasks[self::$currentTask]["description"] = $description;
-  }
+    /**
+     * Adds a description to the current task.
+     * The description should contain a
+     * one-line description of the command and a few lines of text with more
+     * information.
+     *
+     * @param string $description task description
+     */
+    public static function taskDescription ($description)
+    {
+        assert( self::$currentTask !== NULL );
+        self::$tasks[self::$currentTask]["description"] = $description;
+    }
 
-  /**
-   * Adds an argument to the current task. The options will affect how it is
-   * displayed in the help command. Optional will put [] in the argument and
-   * multiple will put ... in the end. Arguments are displayed together with
-   * the task name in the help command.
-   *
-   * @param  string $name argument name
-   */
-  public static function taskArg($name, $optional = true, $multiple = false) {
-    assert(self::$currentTask !== NULL);
-    self::$tasks[self::$currentTask]["args"][$name] = array(
-      'optional' => $optional,
-      'multiple' => $multiple
-    );
-  }
+    /**
+     * Adds an argument to the current task.
+     * The options will affect how it is
+     * displayed in the help command. Optional will put [] in the argument and
+     * multiple will put ... in the end. Arguments are displayed together with
+     * the task name in the help command.
+     *
+     * @param string $name argument name
+     */
+    public static function taskArg ($name, $optional = true, $multiple = false)
+    {
+        assert( self::$currentTask !== NULL );
+        self::$tasks[self::$currentTask]["args"][$name] = array ('optional' => $optional,'multiple' => $multiple
+        );
+    }
 
-  /**
-   * Defines short and long options as used by getopt to the current task.
-   *
-   * @param  string $short short options
-   * @param  array  $long  long options
-   */
-  public static function taskOpt($name, $description, $short, $long = NULL) {
-    assert(self::$currentTask !== NULL);
-    $opts = self::$tasks[self::$currentTask]["opt"];
-    if ($short)
-      $opts['short'] .= $short;
-    if ($long)
-      $opts['long'][] = $long;
-    $opts['descriptions'][$name] = array('short' => $short, 'long' => $long,
-      'description' => $description);
-    self::$tasks[self::$currentTask]["opt"] = $opts;
-  }
+    /**
+     * Defines short and long options as used by getopt to the current task.
+     *
+     * @param string $short short options
+     * @param array $long long options
+     */
+    public static function taskOpt ($name, $description, $short, $long = NULL)
+    {
+        assert( self::$currentTask !== NULL );
+        $opts = self::$tasks[self::$currentTask]["opt"];
+        if ($short)
+            $opts['short'] .= $short;
+        if ($long)
+            $opts['long'][] = $long;
+        $opts['descriptions'][$name] = array ('short' => $short,'long' => $long,'description' => $description
+        );
+        self::$tasks[self::$currentTask]["opt"] = $opts;
+    }
 
-  /**
-   * Defines the function to run for the current task.
-   *
-   * @param  callback $function function to run
-   */
-  public static function taskRun($function) {
-    assert(self::$currentTask !== NULL);
-    self::$tasks[self::$currentTask]["function"] = $function;
-  }
+    /**
+     * Defines the function to run for the current task.
+     *
+     * @param callback $function function to run
+     */
+    public static function taskRun ($function)
+    {
+        assert( self::$currentTask !== NULL );
+        self::$tasks[self::$currentTask]["function"] = $function;
+    }
 
-  /**
-   * Displays the help instructions.
-   *
-   * @param  array $args if defined, the task name should be argument 0
-   * @param  array $opts options as returned by getopt
-   */
-  public static function help($args, $opts = NULL) {
-    global $argv;
-    $scriptName = $argv[0];
-    if (is_array($args))
-      $taskName = $args[0];
-    else
-      $taskName = $args;
+    /**
+     * Displays the help instructions.
+     *
+     * @param array $args if defined, the task name should be argument 0
+     * @param array $opts options as returned by getopt
+     */
+    public static function help ($args, $opts = NULL)
+    {
+        global $argv;
+        $scriptName = $argv[0];
+        if (is_array( $args ))
+            $taskName = $args[0];
+        else
+            $taskName = $args;
 
-    if (!$taskName) {
-      echo "usage: $scriptName <task> [options] [args]\n";
-      echo "Type '$scriptName help <task-name>' for help on a specific task\n";
-      echo "\nAvailable tasks:\n";
-      $tasks = array();
-      ksort(self::$tasks);
-      foreach (self::$tasks as $name => $data) {
-        $description = explode("\n", $data['description']);
-        $tasks[] = "  $name";
-      }
-      $tasks = join("\n", $tasks);
-      echo $tasks . "\n\n";
-    } else {
-      $valid_args = array();
-      foreach(self::$tasks[$taskName]['args'] as $arg => $data) {
-        $arg = strtoupper($arg);
-        if ($data['multiple'])
-          $arg = "$arg...";
-        if ($data['optional'])
-          $arg = "[$arg]";
-        $valid_args[] = $arg;
-      }
-      $valid_args = join(" ", $valid_args);
-      $description = explode("\n", self::$tasks[$taskName]['description']);
-      $taskDescription = trim(array_shift($description));
-      $description = trim(implode("\n", $description));
-      $message = <<< EOT
+        if (! $taskName) {
+            echo "usage: $scriptName <task> [options] [args]\n";
+            echo "Type '$scriptName help <task-name>' for help on a specific task\n";
+            echo "\nAvailable tasks:\n";
+            $tasks = array ();
+            ksort( self::$tasks );
+            foreach (self::$tasks as $name => $data) {
+                $description = explode( "\n", $data['description'] );
+                $tasks[] = "  $name";
+            }
+            $tasks = join( "\n", $tasks );
+            echo $tasks . "\n\n";
+        } else {
+            $valid_args = array ();
+            foreach (self::$tasks[$taskName]['args'] as $arg => $data) {
+                $arg = strtoupper( $arg );
+                if ($data['multiple'])
+                    $arg = "$arg...";
+                if ($data['optional'])
+                    $arg = "[$arg]";
+                $valid_args[] = $arg;
+            }
+            $valid_args = join( " ", $valid_args );
+            $description = explode( "\n", self::$tasks[$taskName]['description'] );
+            $taskDescription = trim( array_shift( $description ) );
+            $description = trim( implode( "\n", $description ) );
+            $message = <<< EOT
 $taskName: {$taskDescription}
 Usage: $scriptName $taskName $valid_args
 
   $description
 
 EOT;
-      $valid_options = array();
-      foreach(self::$tasks[$taskName]['opt']['descriptions'] as $opt => $data) {
-        $optString = array();
-        if ($data['short'])
-          $optString[] = "-{$data['short']}";
-        if ($data['long'])
-          $optString[] = "--{$data['long']}";
-        $valid_options[] = "  " . join(", ", $optString) . "\n\t" . wordwrap($data['description'], 70, "\n\t");
-      }
-      $valid_options = join("\n", $valid_options);
-      if ($valid_options) {
-        $message .= <<< EOT
+            $valid_options = array ();
+            foreach (self::$tasks[$taskName]['opt']['descriptions'] as $opt => $data) {
+                $optString = array ();
+                if ($data['short'])
+                    $optString[] = "-{$data['short']}";
+                if ($data['long'])
+                    $optString[] = "--{$data['long']}";
+                $valid_options[] = "  " . join( ", ", $optString ) . "\n\t" . wordwrap( $data['description'], 70, "\n\t" );
+            }
+            $valid_options = join( "\n", $valid_options );
+            if ($valid_options) {
+                $message .= <<< EOT
 
 Options:
-        
+
 $valid_options
 
 EOT;
-      }
-      echo $message . "\n";
-    }
-  }
-
-  /**
-   * Run the CLI task, which will check which command is specified and run it.
-   */
-  public static function run() {
-    CLI::taskName("help");
-    CLI::taskRun(array('self', 'help'));
-    global $argv;
-    $args = $argv;
-    $cliname = array_shift($args);
-    $taskName = array_shift($args);
-    while ($taskName{0} == '-')
-      $taskName = array_shift($args);
-    if (!$taskName) {
-      echo self::error("Specify a task from the list below.") . "\n\n";
-      self::help(NULL, NULL);
-      return;
-    }
-    $taskData = NULL;
-    foreach (self::$tasks as $name => $data) {
-      if (strcasecmp($name, $taskName) === 0) {
-        $taskData = $data;
-        break;
-      }
-    }
-    if (!$taskData) {
-      echo self::error("Command not found: '$taskName'") . "\n\n";
-      self::help(NULL, NULL);
-      return;
-    }
-    G::LoadThirdParty('pear/Console', 'Getopt');
-    $short = "h" . $taskData['opt']['short'];
-    $long = array_merge(array("help"), $taskData['opt']['long']);
-    $getopt = Console_GetOpt::getopt2($args, $short, $long);
-    if (!is_array($getopt)) {
-      echo self::error("Invalid options (" . $getopt->getMessage() . ")") . "\n\n";
-      self::help($taskName);
-      return;
-    }
-    list($options, $arguments) = $getopt;
-    foreach ($taskData['opt']['descriptions'] as $optName => $optDescription) {
-      $short = str_replace(":", "", $optDescription['short']);
-      $long = str_replace("=", "", $optDescription['long']);
-      $validOpts[$short] = $optName;
-      $validOpts[$long] = $optName;
-    }
-    $taskOpts = array();
-    try {
-      foreach ($options as $opt) {
-        list($optName, $optArg) = $opt;
-        if ($optName === "h" || $optName === "--help") {
-          self::help($taskName);
-          return;
+            }
+            echo $message . "\n";
         }
-        if (strpos($optName, '--') === 0)
-          $optName = substr($optName, 2);
-        if (!array_key_exists($optName, $validOpts))
-          throw new Exception("option not found: $optName");
-        if (array_key_exists($validOpts[$optName], $taskOpts))
-          throw new Exception("'$optName' specified more then once");
-        $taskOpts[$validOpts[$optName]] = $optArg;
-      }
-    } catch (Exception $e) {
-      echo self::error("Invalid options: " . $e->getMessage()) . "\n\n";
-      self::help($taskName);
-      return;
     }
-    try {
-      call_user_func($taskData['function'], $arguments, $taskOpts);
-    } catch (Exception $e) {
-      echo self::error("\n  Error executing '$taskName':\n\n  {$e->getMessage()}\n") . "\n";
+
+    /**
+     * Run the CLI task, which will check which command is specified and run it.
+     */
+    public static function run ()
+    {
+        CLI::taskName( "help" );
+        CLI::taskRun( array ('self','help'
+        ) );
+        global $argv;
+        $args = $argv;
+        $cliname = array_shift( $args );
+        $taskName = array_shift( $args );
+        while ($taskName{0} == '-')
+            $taskName = array_shift( $args );
+        if (! $taskName) {
+            echo self::error( "Specify a task from the list below." ) . "\n\n";
+            self::help( NULL, NULL );
+            return;
+        }
+        $taskData = NULL;
+        foreach (self::$tasks as $name => $data) {
+            if (strcasecmp( $name, $taskName ) === 0) {
+                $taskData = $data;
+                break;
+            }
+        }
+        if (! $taskData) {
+            echo self::error( "Command not found: '$taskName'" ) . "\n\n";
+            self::help( NULL, NULL );
+            return;
+        }
+        G::LoadThirdParty( 'pear/Console', 'Getopt' );
+        $short = "h" . $taskData['opt']['short'];
+        $long = array_merge( array ("help"
+        ), $taskData['opt']['long'] );
+        $getopt = Console_GetOpt::getopt2( $args, $short, $long );
+        if (! is_array( $getopt )) {
+            echo self::error( "Invalid options (" . $getopt->getMessage() . ")" ) . "\n\n";
+            self::help( $taskName );
+            return;
+        }
+        list ($options, $arguments) = $getopt;
+        foreach ($taskData['opt']['descriptions'] as $optName => $optDescription) {
+            $short = str_replace( ":", "", $optDescription['short'] );
+            $long = str_replace( "=", "", $optDescription['long'] );
+            $validOpts[$short] = $optName;
+            $validOpts[$long] = $optName;
+        }
+        $taskOpts = array ();
+        try {
+            foreach ($options as $opt) {
+                list ($optName, $optArg) = $opt;
+                if ($optName === "h" || $optName === "--help") {
+                    self::help( $taskName );
+                    return;
+                }
+                if (strpos( $optName, '--' ) === 0)
+                    $optName = substr( $optName, 2 );
+                if (! array_key_exists( $optName, $validOpts ))
+                    throw new Exception( "option not found: $optName" );
+                if (array_key_exists( $validOpts[$optName], $taskOpts ))
+                    throw new Exception( "'$optName' specified more then once" );
+                $taskOpts[$validOpts[$optName]] = $optArg;
+            }
+        } catch (Exception $e) {
+            echo self::error( "Invalid options: " . $e->getMessage() ) . "\n\n";
+            self::help( $taskName );
+            return;
+        }
+        try {
+            call_user_func( $taskData['function'], $arguments, $taskOpts );
+        } catch (Exception $e) {
+            echo self::error( "\n  Error executing '$taskName':\n\n  {$e->getMessage()}\n" ) . "\n";
+        }
     }
-  }
 
-  /**
-   * Returns an information colorized version of the message.
-   *
-   * @param  string $message the message to colorize
-   */
-  public static function info($message) {
-    return pakeColor::colorize($message, "INFO");
-  }
-
-  /**
-   * Returns a warning colorized version of the message.
-   *
-   * @param  string $message the message to colorize
-   */
-  public static function warning($message) {
-    return pakeColor::colorize($message, "COMMENT");
-  }
-
-  /**
-   * Returns an error colorized version of the message.
-   *
-   * @param  string $message the message to colorize
-   */
-  public static function error($message) {
-    return pakeColor::colorize($message, "ERROR");
-  }
-
-  /**
-   * Prompt the user for information.
-   *
-   * @param  string $message the message to display
-   * @return string the text typed by the user
-   */
-  public static function prompt($message) {
-    echo "$message";
-    $handle = fopen ("php://stdin","r");
-    $line = fgets($handle);
-    return $line;
-  }
-
-  /**
-   * Ask a question of yes or no.
-   *
-   * @param  string $message the message to display
-   * @return bool true if the user choosed no, false otherwise
-   */
-  public static function question($message) {
-    $input = strtolower(self::prompt("$message [Y/n] "));
-    return (array_search(trim($input), array("y", "")) !== false);
-  }
-
-  /**
-   * Display a message to the user. If filename is specified, it will setup
-   * a logging file where all messages will be recorded.
-   *
-   * @param  string $message the message to display
-   * @param  string $filename the log file to write messages
-   */
-  public static function logging($message, $filename = NULL) {
-    static $log_file = NULL;
-    if (isset($filename)) {
-      $log_file = fopen($filename, "a");
-      fwrite($log_file, " -- " . date("c") . " " . $message . " --\n");
-    } else {
-      if (isset($log_file))
-        fwrite($log_file, $message);
-      echo $message;
+    /**
+     * Returns an information colorized version of the message.
+     *
+     * @param string $message the message to colorize
+     */
+    public static function info ($message)
+    {
+        return pakeColor::colorize( $message, "INFO" );
     }
-  }
+
+    /**
+     * Returns a warning colorized version of the message.
+     *
+     * @param string $message the message to colorize
+     */
+    public static function warning ($message)
+    {
+        return pakeColor::colorize( $message, "COMMENT" );
+    }
+
+    /**
+     * Returns an error colorized version of the message.
+     *
+     * @param string $message the message to colorize
+     */
+    public static function error ($message)
+    {
+        return pakeColor::colorize( $message, "ERROR" );
+    }
+
+    /**
+     * Prompt the user for information.
+     *
+     * @param string $message the message to display
+     * @return string the text typed by the user
+     */
+    public static function prompt ($message)
+    {
+        echo "$message";
+        $handle = fopen( "php://stdin", "r" );
+        $line = fgets( $handle );
+        return $line;
+    }
+
+    /**
+     * Ask a question of yes or no.
+     *
+     * @param string $message the message to display
+     * @return bool true if the user choosed no, false otherwise
+     */
+    public static function question ($message)
+    {
+        $input = strtolower( self::prompt( "$message [Y/n] " ) );
+        return (array_search( trim( $input ), array ("y",""
+        ) ) !== false);
+    }
+
+    /**
+     * Display a message to the user.
+     * If filename is specified, it will setup
+     * a logging file where all messages will be recorded.
+     *
+     * @param string $message the message to display
+     * @param string $filename the log file to write messages
+     */
+    public static function logging ($message, $filename = NULL)
+    {
+        static $log_file = NULL;
+        if (isset( $filename )) {
+            $log_file = fopen( $filename, "a" );
+            fwrite( $log_file, " -- " . date( "c" ) . " " . $message . " --\n" );
+        } else {
+            if (isset( $log_file ))
+                fwrite( $log_file, $message );
+            echo $message;
+        }
+    }
 }
 
 ?>
