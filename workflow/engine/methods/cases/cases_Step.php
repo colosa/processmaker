@@ -274,7 +274,13 @@
           $oPluginRegistry->executeTriggers ( PM_UPLOAD_DOCUMENT_BEFORE , array('USR_UID'=>$_SESSION['USER_LOGGED']) );
         }
         //END: If there is a Break Step registered from Plugin
-
+          $deletePermission = $oCase->getAllObjectsFrom($_SESSION['PROCESS'],
+              $_SESSION['APPLICATION'],
+              $_SESSION['TASK'],
+              $_SESSION['USER_LOGGED'],
+              $ACTION = 'DELETE');
+          $permissionsInput = implode(',',$deletePermission['INPUT_DOCUMENTS']);
+          $Fields['permissionsInput'] = $permissionsInput;
           $G_PUBLISH->AddContent('propeltable', 'cases/paged-table-inputDocuments', 'cases/cases_InputdocsList', $oCase->getInputDocumentsCriteria($_SESSION['APPLICATION'], $_SESSION['INDEX'], $_GET['UID']), array_merge(array('DOC_UID'=>$_GET['UID']),$Fields));//$aFields
 
           //call plugin

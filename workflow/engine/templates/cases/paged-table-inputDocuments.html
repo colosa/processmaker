@@ -1,4 +1,5 @@
 <!-- START BLOCK : headBlock -->
+<input style="display: none;" type="text" id="permissionsInput" value="{permissionsInput}" />
 <table cellpadding="0" cellspacing="0" border="0"><tr><td>
 <div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
 <div class="pagedTableDefault">
@@ -181,6 +182,28 @@ function toggleMasterDetailGroup(tablename,groupName,imgicon){
 	}
 }
 document.getElementById('mainlabel').innerHTML = documentName;
+var inputIds = document.getElementById('permissionsInput').value.split(',');
+var hiddenA = new Array();
+var elementsA = document.getElementsByTagName('a');
 
+for (i=0; i<elementsA.length; i++) {
+  if (typeof(elementsA[i]) != 'undefined') {
+    if (elementsA[i].href.indexOf('cases_DeleteDocument')!=-1) {
+      //elementsA[i].parentNode.removeChild(elementsA[i]);
+      elementsA[i].style.display = 'none';
+      hiddenA.push(elementsA[i]);
+    }
+  }
+}
+
+for (i=0; i<hiddenA.length; i++) {
+  if (typeof(hiddenA[i]) != 'undefined') {
+    for (f=0; f<inputIds.length; f++) {
+      if (inputIds[f] != '' && hiddenA[i].href.indexOf(inputIds[f])!=-1) {
+        hiddenA[i].style.display = 'block';
+      }
+    }
+  }
+}
 </script>
 <!-- END IGNORE -->
