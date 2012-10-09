@@ -53,7 +53,7 @@ class ReportTables
      * @param string $$sRepTabUid
      * @return void
      */
-    public public function deleteAllReportVars ($sRepTabUid = '')
+    public function deleteAllReportVars ($sRepTabUid = '')
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
