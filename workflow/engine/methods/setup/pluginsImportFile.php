@@ -147,10 +147,12 @@ try {
   require_once (PATH_PLUGINS . $pluginFile);
 
   $oPluginRegistry->registerPlugin($sClassName, PATH_PLUGINS . $sClassName . ".php");
+  $size = file_put_contents(PATH_DATA_SITE . "plugin.singleton", $oPluginRegistry->serializeInstance());
 
   $details = $oPluginRegistry->getPluginDetails($pluginFile);
 
   $oPluginRegistry->installPlugin($details->sNamespace);
+
   $oPluginRegistry->setupPlugins(); //get and setup enabled plugins
   $size = file_put_contents(PATH_DATA_SITE . "plugin.singleton", $oPluginRegistry->serializeInstance());
 

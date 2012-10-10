@@ -175,21 +175,42 @@ class PMPluginRegistry
      * @param unknown_type $sNamespace
      * @param unknown_type $sFilename
      */
-    function registerPlugin ($sNamespace, $sFilename = null)
+    public function registerPlugin($sNamespace, $sFilename=null)
     {
-        $sClassName = $sNamespace . 'plugin';
-        if (isset( $this->_aPluginDetails[$sNamespace] ))
+        //require_once ($sFilename);
+
+        $sClassName = $sNamespace . "plugin";
+        $plugin = new $sClassName($sNamespace, $sFilename);
+
+        if (isset($this->_aPluginDetails[$sNamespace])) {
+            $this->_aPluginDetails[$sNamespace]->iVersion = $plugin->iVersion;
+
             return;
-            //require_once ( $sFilename );
-        $plugin = new $sClassName( $sNamespace, $sFilename );
-        $detail = new pluginDetail( $sNamespace, $sClassName, $sFilename, $plugin->sFriendlyName, $plugin->sPluginFolder, $plugin->sDescription, $plugin->sSetupPage, $plugin->iVersion );
-        if (isset( $plugin->aWorkspaces ))
+        }
+
+        $detail = new pluginDetail(
+            $sNamespace,
+            $sClassName,
+            $sFilename,
+            $plugin->sFriendlyName,
+            $plugin->sPluginFolder,
+            $plugin->sDescription,
+            $plugin->sSetupPage,
+            $plugin->iVersion
+        );
+
+        if (isset($plugin->aWorkspaces)) {
             $detail->aWorkspaces = $plugin->aWorkspaces;
-        if (isset( $plugin->bPrivate ))
+        }
+
+        if (isset($plugin->bPrivate)) {
             $detail->bPrivate = $plugin->bPrivate;
-            //if ( isset( $this->_aPluginDetails[$sNamespace] ) ){
-            //  $detail->enabled=$this->_aPluginDetails[$sNamespace]->enabled;
-            //}
+        }
+
+        //if (isset($this->_aPluginDetails[$sNamespace])){
+        //    $detail->enabled = $this->_aPluginDetails[$sNamespace]->enabled;
+        //}
+
         $this->_aPluginDetails[$sNamespace] = $detail;
     }
 
