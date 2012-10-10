@@ -1845,6 +1845,14 @@ $output = $outputHeader.$output;
    *  to iterate through the edited array, and I didn't need to original keys for anything.
    */
   function arrayDiff($array1, $array2) {
+    if (!is_array($array1)) {
+        $array1 = (array) $array1;
+    }
+
+    if (!is_array($array2)) {
+        $array2 = (array) $array2;
+    }
+
     // This wrapper for array_diff rekeys the array returned
     $valid_array = array_diff($array1,$array2);
 
@@ -2046,11 +2054,11 @@ $output = $outputHeader.$output;
 
     /**
     * Replace Grid Values
-    * The tag @>GRID-NAME to open the grid and @<GRID-NAME to close the grid, 
-    * 
+    * The tag @>GRID-NAME to open the grid and @<GRID-NAME to close the grid,
+    *
     * @param type String $sContent
     * @param type Array $aFields
-    * @return type String 
+    * @return type String
     */
     function replaceDataGridField($sContent, $aFields)
     {
