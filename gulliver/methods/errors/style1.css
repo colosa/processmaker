@@ -1,0 +1,287 @@
+
+	/* Reset */
+    * {
+    margin: 0 auto;
+    padding: 0;
+    }
+
+    /* Body */
+    body {
+    background: url(images/background.jpg) no-repeat top #00B4CD;
+    text-align: center;
+    }
+
+    /* No borders around images */
+    img {
+    border: none;
+    }
+
+	/* Warp around everything */
+	#warp {
+	margin: 0 auto;
+	margin-top: 10px;
+	width: 985px;
+	font-family: Helvetica;
+	text-align: left;
+    }
+
+	/* Header */
+	#header_top {
+	background: url(images/top.png) no-repeat;
+	width: 985px;
+	height: 30px;
+	}
+
+	/* Header content */
+	#header {
+	background: url(images/box_bg.png) repeat-y;
+	width: 985px;
+	text-align: center;
+	}
+
+	/* Page title */
+	#header h2 {
+	padding-top: 10px;
+	}
+
+	/* Subtitle */
+	#header h5 {
+	margin-top: 5px;
+	padding-bottom: 15px;
+	color: #acacac;
+	}
+
+	/* Content div */
+	#content {
+	background: url(images/content_bg.png) repeat-y;
+	width: 985px;
+	}
+
+	/* The info text */
+	#text {
+	float: left;
+	margin: 10px 0 10px 60px;
+		 width: 420px;
+	/* IE margin fix */
+	display: inline;
+	font-size: 13px;
+	}
+
+	/* The info text P */
+	#text p {
+	margin-top: 5px;
+	font-size: 14px;
+	line-height: 20px;
+	color: #292929;
+	}
+
+	/* The links list */
+
+	/* The list items */
+
+	/* The links */
+	#text a {
+	color: #292929;
+	text-decoration: none;
+	}
+
+	/* Link hover */
+	#text a:hover {
+	text-decoration: none;
+	}
+
+	/* The book icon */
+	#book {
+	float: right;
+	width: 472px;
+	height: 332px;
+	margin: 20px 20px 10px 0;
+
+
+	}
+
+	/* Footer */
+	#footer {
+	background: url(images/box_bg.png) repeat-y;
+	width: 985px;
+
+	}
+
+	/* Footer bottom */
+	#footer_bottom {
+	background: url(images/bottom.png) no-repeat;
+	width: 985px;
+	height: 28px;
+
+	}
+
+	/* Twitter icon */
+	#twitter {
+	margin: 10px 0px 0px 60px;
+	float: left;
+	}
+
+	/* The tweet text */
+	#twitter_text {
+	float: left;
+	margin-left: 10px;
+	margin-top: 15px;
+		  width: 300px;
+	color: #878787;
+	float: left;
+	font-size: 10px;
+	}
+
+	/* Twitter links */
+	#twitter_text a {
+	text-decoration: none;
+	font-weight: bold;
+	}
+
+	/* Search form */
+	#searchform {
+	float: right;
+	margin: 15px 60px 0px 0px;
+	/* IE margin fix */
+	display: inline;
+	}
+
+	/* Search input */
+	input#search {
+	background: url(images/searchfield_bg.png) no-repeat;
+	border: none;
+	height: 31px;
+	width: 244px;
+	float: right;
+	line-height: 30px;
+	padding-left: 10px;
+	}
+
+	/* The Send button */
+	input#submit {
+	border: none;
+	float: right;
+	margin-left: 5px;
+	height: 31px;
+	width: 74px;
+	color: #fff;
+	}
+
+	input:focus {
+	outline: none;
+	}
+
+	/* Social media */
+	#socialmedia {
+	margin-top: 5px;
+	margin-right: 40px;
+	margin-bottom: 10px;
+	display: inline;
+	list-style: none;
+	float: right;
+	}
+
+	/* Social media list items */
+	#socialmedia a{
+	text-decoration: none;
+	}
+
+	/* COLOR CHANGER */
+	#colorchanger {
+	text-align: left;
+	}
+
+	#showChanger {
+	margin-left: 10px;
+	}
+
+	#colors {
+	padding: 10px;
+	background: #425a5e;
+	height: 17px;
+	}
+
+	/* The div around the color change links */
+	.colorbox {
+	width:15px;
+	height:15px;
+	border:1px solid #050505;
+	float:left;
+	margin:0px 2px;
+	cursor:pointer;
+	display:block;
+	}
+
+	/* Blue */
+	.colorblue {
+	background-color:#1e82ac;
+	}
+	/* Blue Hover */
+	.colorblue:hover {
+	background-color:#177197;
+	}
+
+	/* Red */
+	.colorred {
+	background-color:#cc2b2b;
+	}
+	/* Red Hover */
+	.colorred:hover {
+	background-color:#af1a1a;
+	}
+
+	/* Grey */
+	.colorgrey {
+	background-color:#4d4d4d;
+	}
+	/* Grey Hover */
+	.colorgrey:hover {
+	background-color:#7c7c7c;
+	}
+
+	/* Brown */
+	.colorbrown {
+	background-color:#4b3a15;
+	}
+	/* Brown Hover */
+	.colorbrown:hover {
+	background-color:#5e4b20;
+	}
+
+	/* Green */
+	.colorgreen {
+	background-color:#6c8b2f;
+	}
+	/* Green Hover */
+	.cologreen:hover {
+	background-color:#7da137;
+	}
+	/* Page title */
+	#header h2 {
+	color: #187086;
+	}
+
+	/* Page links */
+	#text a:hover {
+	color: #16687d;
+	}
+
+	/* Search button */
+	input#submit {
+	background: url(images/searchbutton_bg.png) no-repeat;
+	}
+
+	/* Twitter links */
+	#twitter_text a {
+	color: #135869;
+	}
+	#textInfo{
+	list-style: square inside none;
+	padding: 0px;
+	margin: 0px;
+	line-height: 20px;
+	}
+	#textInfo li{
+	padding: 5px 0px;
+	text-align: justify;
+	}
