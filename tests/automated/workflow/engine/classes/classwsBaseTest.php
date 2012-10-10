@@ -44,7 +44,7 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('wsBase');
-        $this->assertTrue( count($methods) == 40, count($methods));
+        $this->assertTrue( count($methods) == 41, count($methods));
     }
 
     /**
@@ -485,6 +485,21 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'variables');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
+    }
+
+    /**
+    * @covers wsBase::getVariablesNames
+    * @todo   Implement testgetVariablesNames().
+    */
+    public function testgetVariablesNames()
+    {
+        $methods = get_class_methods($this->object);
+        $this->assertTrue( in_array('getVariablesNames', $methods ), 'exists method getVariablesNames' );
+        $r = new ReflectionMethod('wsBase', 'getVariablesNames');
+        $params = $r->getParameters();
+        $this->assertTrue( $params[0]->getName() == 'caseId');
+        $this->assertTrue( $params[0]->isArray() == false);
+        $this->assertTrue( $params[0]->isOptional () == false);
     }
 
     /**
