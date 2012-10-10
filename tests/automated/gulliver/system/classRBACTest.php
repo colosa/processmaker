@@ -132,18 +132,12 @@ class classRBACTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sAuthType');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-        $this->assertTrue( $params[1]->getName() == 'sAuthSource');
+        $this->assertTrue( $params[1]->getName() == 'aUserFields');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-        $this->assertTrue( $params[2]->getName() == 'aUserFields');
+        $this->assertTrue( $params[2]->getName() == 'strPass');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-        $this->assertTrue( $params[3]->getName() == 'sAuthUserDn');
-        $this->assertTrue( $params[3]->isArray() == false);
-        $this->assertTrue( $params[3]->isOptional () == false);
-        $this->assertTrue( $params[4]->getName() == 'strPass');
-        $this->assertTrue( $params[4]->isArray() == false);
-        $this->assertTrue( $params[4]->isOptional () == false);
     }
 
     /**
