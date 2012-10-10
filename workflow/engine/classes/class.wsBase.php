@@ -758,34 +758,8 @@ class wsBase
                 $Fields = array_merge( $oldFields['APP_DATA'], $appFields );
             }
 
-            $templateContents = file_get_contents( $fileTemplate );
+            $sBody = G::replaceDataGridField(file_get_contents($fileTemplate), $Fields);
 
-            //$sContent    = G::unhtmlentities($sContent);
-            $iAux = 0;
-            $iOcurrences = preg_match_all( '/\@(?:([\>])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*(?:[\\\\][\w\W])?)*)\))((?:\s*\[[\'"]?\w+[\'"]?\])+)?/', $templateContents, $aMatch, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE );
-
-            if ($iOcurrences) {
-                for ($i = 0; $i < $iOcurrences; $i ++) {
-                    preg_match_all( '/@>' . $aMatch[2][$i][0] . '([\w\W]*)' . '@<' . $aMatch[2][$i][0] . '/', $templateContents, $aMatch2, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE );
-
-                    $sGridName = $aMatch[2][$i][0];
-                    $sStringToRepeat = $aMatch2[1][0][0];
-
-                    if (isset( $Fields[$sGridName] )) {
-                        if (is_array( $Fields[$sGridName] )) {
-                            $sAux = '';
-
-                            foreach ($Fields[$sGridName] as $aRow) {
-                                $sAux .= G::replaceDataField( $sStringToRepeat, $aRow );
-                            }
-                        }
-                    }
-
-                    $templateContents = str_replace( '@>' . $sGridName . $sStringToRepeat . '@<' . $sGridName, $sAux, $templateContents );
-                }
-            }
-
-            $sBody = G::replaceDataField( $templateContents, $Fields );
             $hasEmailFrom = preg_match( '/(.+)@(.+)\.(.+)/', $sFrom, $match );
 
             if (! $hasEmailFrom || strpos( $sFrom, $aSetup['MESS_ACCOUNT'] ) === false) {
