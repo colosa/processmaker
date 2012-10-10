@@ -257,7 +257,7 @@ class RBAC
   *  -4: due date
   *  -5: invalid authentication source
   */
-  function VerifyWithOtherAuthenticationSource( $sAuthType, $sAuthSource, $aUserFields, $sAuthUserDn, $strPass)
+  public function VerifyWithOtherAuthenticationSource($sAuthType, $aUserFields, $strPass)
   {
     //check if the user is active
     if ( $aUserFields['USR_STATUS']  != 1 )
@@ -270,9 +270,9 @@ class RBAC
     foreach ( $this->aRbacPlugins as $sClassName) {
       if ( strtolower($sClassName) == strtolower($sAuthType) ) {
         $plugin =  new $sClassName();
-        $plugin->sAuthSource = $sAuthSource;
+        $plugin->sAuthSource = $aUserFields["UID_AUTH_SOURCE"];
         $plugin->sSystem     = $this->sSystem;
-        $bValidUser = $plugin->VerifyLogin ( $sAuthUserDn, $strPass );
+        $bValidUser = $plugin->VerifyLogin($aUserFields["USR_AUTH_USER_DN"], $strPass);
 
         if ( $bValidUser === TRUE)
           return ( $aUserFields['USR_UID'] );
@@ -321,18 +321,16 @@ class RBAC
     $sAuthType = 'mysql';
     if ( isset($this->userObj->fields['USR_AUTH_TYPE']) ) $sAuthType = strtolower ( $this->userObj->fields['USR_AUTH_TYPE'] );
 
-    //hook for RBAC plugins
-    if ( $sAuthType != 'mysql' && $sAuthType != '' ) {
-      $sAuthSource = $this->userObj->fields['UID_AUTH_SOURCE'];
-      $sAuthUserDn = $this->userObj->fields['USR_AUTH_USER_DN'];
-      $res = $this->VerifyWithOtherAuthenticationSource( $sAuthType, $sAuthSource, $this->userObj->fields, $sAuthUserDn, $strPass);
+    //Hook for RBAC plugins
+    if ($sAuthType != "mysql" && $sAuthType != "") {
+        $res = $this->VerifyWithOtherAuthenticationSource($sAuthType, $this->userObj->fields, $strPass);
 
-      return $res;
-    }
-    else {
-      $this->userObj->reuseUserFields = true;
-      $res = $this->userObj->VerifyLogin($strUser, $strPass);
-      return $res;
+        return $res;
+    } else {
+        $this->userObj->reuseUserFields = true;
+        $res = $this->userObj->VerifyLogin($strUser, $strPass);
+
+        return $res;
     }
   }
 
