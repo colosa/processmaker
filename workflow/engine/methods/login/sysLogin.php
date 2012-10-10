@@ -131,11 +131,8 @@ if ($oServerConf->getProperty ('LOGIN_NO_WS')) {
     $G_PUBLISH->AddContent ('xmlform', 'xmlform', 'login/sysLogin', '', $aField, 'sysLogin');
 }
 
-//g::dump($G_PUBLISH);
 
 G::RenderPage ("publish");
-
-
 ?>
 <script type="text/javascript">
     var oInfoPanel;
@@ -186,3 +183,6 @@ G::RenderPage ("publish");
         oInfoPanel.addContent(oRPC.xmlhttp.responseText);
     };
 </script>
+
+<?php
+

@@ -911,7 +911,7 @@ class processMap
             $i = 0;
             while ($aRow = $oDataset->getRow()) {
                 $i ++;
-                if (($aRow['DYN_TITLE'] == NULL) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+                if (($aRow['DYN_TITLE'] == null) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                     $aRow['DYN_TITLE'] = Content::Load( "DYN_TITLE", "", $aRow['DYN_UID'], SYS_LANG );
                 }
                 $aBB[] = array ('STEP_UID' => $aRow['DYN_UID'],'STEP_TITLE' => $aRow['DYN_TITLE'],'STEP_TYPE_OBJ' => 'DYNAFORM','STEP_MODE' => '<select id="STEP_MODE_' . $aRow['DYN_UID'] . '">
@@ -940,7 +940,7 @@ class processMap
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
 
-                if (($aRow['INP_DOC_TITLE'] == NULL) || ($aRow['INP_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+                if (($aRow['INP_DOC_TITLE'] == null) || ($aRow['INP_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                     $aRow['INP_DOC_TITLE'] = Content::Load( "INP_DOC_TITLE", "", $aRow['INP_DOC_UID'], SYS_LANG );
                 }
                 $aBB[] = array ('STEP_UID' => $aRow['INP_DOC_UID'],'STEP_TITLE' => $aRow['INP_DOC_TITLE'],'STEP_TYPE_OBJ' => 'INPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['INP_DOC_UID'] . '">'
@@ -966,7 +966,7 @@ class processMap
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
 
-                if (($aRow['OUT_DOC_TITLE'] == NULL) || ($aRow['OUT_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+                if (($aRow['OUT_DOC_TITLE'] == null) || ($aRow['OUT_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                     $aRow['OUT_DOC_TITLE'] = Content::Load( "OUT_DOC_TITLE", "", $aRow['OUT_DOC_UID'], SYS_LANG );
                 }
                 $aBB[] = array ('STEP_UID' => $aRow['OUT_DOC_UID'],'STEP_TITLE' => $aRow['OUT_DOC_TITLE'],'STEP_TYPE_OBJ' => 'OUTPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['OUT_DOC_UID'] . '">'
@@ -1898,10 +1898,10 @@ class processMap
         $dynaformArray[] = array ('d' => 'char'
         );
         while ($aRow = $oDataset->getRow()) {
-            if (($aRow['DYN_TITLE'] == NULL) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['DYN_TITLE'] == null) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $aRow['DYN_TITLE'] = Content::Load( "DYN_TITLE", "", $aRow['DYN_UID'], SYS_LANG );
             }
-            if (($aRow['DYN_DESCRIPTION'] == NULL) || ($aRow['DYN_DESCRIPTION'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['DYN_DESCRIPTION'] == null) || ($aRow['DYN_DESCRIPTION'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $aRow['DYN_DESCRIPTION'] = Content::Load( "DYN_DESCRIPTION", "", $aRow['DYN_UID'], SYS_LANG );
             }
             $dynaformArray[] = $aRow;
@@ -1951,10 +1951,10 @@ class processMap
         $oDataset->next();
         $dynaformArray = array ();
         while ($aRow = $oDataset->getRow()) {
-            if (($aRow['DYN_TITLE'] == NULL) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['DYN_TITLE'] == null) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $aRow['DYN_TITLE'] = Content::Load( "DYN_TITLE", "", $aRow['DYN_UID'], SYS_LANG );
             }
-            if (($aRow['DYN_DESCRIPTION'] == NULL) || ($aRow['DYN_DESCRIPTION'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['DYN_DESCRIPTION'] == null) || ($aRow['DYN_DESCRIPTION'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $aRow['DYN_DESCRIPTION'] = Content::Load( "DYN_DESCRIPTION", "", $aRow['DYN_UID'], SYS_LANG );
             }
             $dynaformArray[] = $aRow;
@@ -2027,7 +2027,7 @@ class processMap
         $outputDocArray[] = array ('d' => 'char'
         );
         while ($aRow = $oDataset->getRow()) {
-            if (($aRow['OUT_DOC_TITLE'] == NULL) || ($aRow['OUT_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['OUT_DOC_TITLE'] == null) || ($aRow['OUT_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $outputDocument = new OutputDocument();
                 $outputDocumentObj = $outputDocument->load( $aRow['OUT_DOC_UID'] );
                 $aRow['OUT_DOC_TITLE'] = $outputDocumentObj['OUT_DOC_TITLE'];
@@ -2109,7 +2109,7 @@ class processMap
         $inputDocArray[] = array ('INP_DOC_UID' => 'char','PRO_UID' => 'char','INP_DOC_TITLE' => 'char','INP_DOC_DESCRIPTION' => 'char'
         );
         while ($aRow = $oDataset->getRow()) {
-            if (($aRow['INP_DOC_TITLE'] == NULL) || ($aRow['INP_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['INP_DOC_TITLE'] == null) || ($aRow['INP_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $inputDocument = new InputDocument();
                 $inputDocumentObj = $inputDocument->load( $aRow['INP_DOC_UID'] );
                 $aRow['INP_DOC_TITLE'] = $inputDocumentObj['INP_DOC_TITLE'];
@@ -2194,7 +2194,7 @@ class processMap
         );
         while ($aRow = $oDataset->getRow()) {
 
-            if (($aRow['TRI_TITLE'] == NULL) || ($aRow['TRI_TITLE'] == "")) { // There is no transaltion for this Trigger name, try to get/regenerate the label
+            if (($aRow['TRI_TITLE'] == null) || ($aRow['TRI_TITLE'] == "")) { // There is no transaltion for this Trigger name, try to get/regenerate the label
                 $triggerO = new Triggers();
                 $triggerObj = $triggerO->load( $aRow['TRI_UID'] );
                 $aRow['TRI_TITLE'] = $triggerObj['TRI_TITLE'];
@@ -5228,12 +5228,9 @@ class processMap
             $oCriteria->addAsColumn( 'GRP_TITLE', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (GroupwfPeer::GRP_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (GroupwfPeer::GRP_UID,'C.CON_ID');
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter);
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( GroupwfPeer::GRP_STATUS, 'ACTIVE' );
             $oCriteria->add( GroupwfPeer::GRP_UID, $aUIDS1, Criteria::NOT_IN );
@@ -5252,7 +5249,8 @@ class processMap
                 $oDataset2->next();
                 $aRow2 = $oDataset2->getRow();
                 //$aUsers [] = array ('LABEL' => $aRow ['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $aRow ['GRP_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2 ['MEMBERS_NUMBER'] . ' ' . (( int ) $aRow2 ['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation ( 'ID_USER' ) : G::LoadTranslation ( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>', 'TAS_UID' => $sTaskUID, 'USR_UID' => $aRow ['GRP_UID'], 'TU_TYPE' => $iType, 'TU_RELATION' => 2 );
-                $aUsers[] = array ('LABEL' => $aRow['GRP_TITLE'] . ' <font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font><br /><div id="users' . $c . '" style="display: none"></div>','TAS_UID' => $sTaskUID,'USR_UID' => $aRow['GRP_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 2
+                $aUsers[] = array (
+                                'LABEL' => $aRow['GRP_TITLE'] . ' <font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font><br /><div id="users' . $c . '" style="display: none"></div>','TAS_UID' => $sTaskUID,'USR_UID' => $aRow['GRP_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 2
                 );
                 $oDataset->next();
             }
@@ -5283,10 +5281,10 @@ class processMap
         }
     }
 
-    /*
-      * Return the Additional PM tables list created by user
-  * @return object
-  */
+    /**
+     * Return the Additional PM tables list created by user
+     * @return object
+    **/
     public function getExtAdditionalTablesList ($sTab_UID = '')
     {
         $aAdditionalTables = array ();
@@ -5307,12 +5305,12 @@ class processMap
         return $aAdditionalTables;
     }
 
-    /*
-  * Return the available building blocks list criteria object
-  * @param string $sProcessUID
-  * @param string $sTaskUID
-  * @return object
-  */
+    /**
+     * Return the available building blocks list criteria object
+     * @param string $sProcessUID
+     * @param string $sTaskUID
+     * @return object
+    */
     public function getExtAvailableBBCriteria ($sProcessUID = '', $sTaskUID = '')
     {
         try {
@@ -5362,12 +5360,9 @@ class processMap
             $oCriteria->addAsColumn( 'INP_DOC_TITLE', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID');
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter);
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( InputDocumentPeer::PRO_UID, $sProcessUID );
             $oCriteria->add( InputDocumentPeer::INP_DOC_UID, $sUIDs, Criteria::NOT_IN );
@@ -5375,7 +5370,12 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aBB[] = array ('STEP_UID' => $aRow['INP_DOC_UID'],'STEP_UID_OBJ' => $aRow['INP_DOC_UID'],'STEP_TITLE' => $aRow['INP_DOC_TITLE'],'STEP_TYPE_OBJ' => 'INPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['INP_DOC_UID'] . '">'
+                $aBB[] = array (
+                                'STEP_UID' => $aRow['INP_DOC_UID'],
+                                'STEP_UID_OBJ' => $aRow['INP_DOC_UID'],
+                                'STEP_TITLE' => $aRow['INP_DOC_TITLE'],
+                                'STEP_TYPE_OBJ' => 'INPUT_DOCUMENT',
+                                'STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['INP_DOC_UID'] . '">'
                 );
                 $oDataset->next();
             }
@@ -5384,12 +5384,9 @@ class processMap
             $oCriteria->addAsColumn( 'OUT_DOC_TITLE', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C.CON_ID');
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter);
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( OutputDocumentPeer::PRO_UID, $sProcessUID );
             $oCriteria->add( OutputDocumentPeer::OUT_DOC_UID, $sUIDs, Criteria::NOT_IN );
@@ -5397,7 +5394,12 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aBB[] = array ('STEP_UID' => $aRow['OUT_DOC_UID'],'STEP_UID_OBJ' => $aRow['OUT_DOC_UID'],'STEP_TITLE' => $aRow['OUT_DOC_TITLE'],'STEP_TYPE_OBJ' => 'OUTPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['OUT_DOC_UID'] . '">'
+                $aBB[] = array (
+                                'STEP_UID' => $aRow['OUT_DOC_UID'],
+                                'STEP_UID_OBJ' => $aRow['OUT_DOC_UID'],
+                                'STEP_TITLE' => $aRow['OUT_DOC_TITLE'],
+                                'STEP_TYPE_OBJ' => 'OUTPUT_DOCUMENT',
+                                'STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['OUT_DOC_UID'] . '">'
                 );
                 $oDataset->next();
             }
@@ -5428,7 +5430,6 @@ class processMap
         }
     }
 
-    //new functions
     public function getAllStepCount ()
     {
         $c = $this->tmpCriteria;
@@ -5438,17 +5439,18 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
-    /*
-  * Return the steps list criteria object
-  * @param string $sTaskUID
-  * @return array
-  */
+    /**
+    * Return the steps list criteria object
+    * @param string $sTaskUID
+    * @return array
+    */
     public function getExtStepsCriteria ($start, $limit, $sTaskUID = '')
     {
         try {
@@ -5457,18 +5459,26 @@ class processMap
             $externalSteps = $oPluginRegistry->getSteps();
 
             $aSteps = array ();
-            $aSteps[] = array ('STEP_TITLE' => 'char','STEP_UID' => 'char','STEP_TYPE_OBJ' => 'char','STEP_CONDITION' => 'char','STEP_POSITION' => 'integer','STEP_MODE' => 'char','STEP_UID_OBJ' => 'char'
+            $aSteps[] = array (
+                            'STEP_TITLE' => 'char',
+                            'STEP_UID' => 'char',
+                            'STEP_TYPE_OBJ' => 'char',
+                            'STEP_CONDITION' => 'char',
+                            'STEP_POSITION' => 'integer',
+                            'STEP_MODE' => 'char',
+                            'STEP_UID_OBJ' => 'char'
             );
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( StepPeer::TAS_UID, $sTaskUID );
             $oCriteria->addAscendingOrderByColumn( StepPeer::STEP_POSITION );
             $this->tmpCriteria = clone $oCriteria;
 
-            if ($start != '')
+            if ($start != '') {
                 $oCriteria->setOffset( $start );
-            if ($limit != '')
+            }
+            if ($limit != '') {
                 $oCriteria->setLimit( $limit );
-
+            }
             $oDataset = StepPeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
@@ -5547,10 +5557,11 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     /*
@@ -5573,12 +5584,9 @@ class processMap
         $oCriteria->addAsColumn( 'TRI_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (StepTriggerPeer::TRI_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (StepTriggerPeer::TRI_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( StepTriggerPeer::STEP_UID, $sStepUID );
         $oCriteria->add( StepTriggerPeer::TAS_UID, $sTaskUID );
@@ -5586,11 +5594,12 @@ class processMap
         $oCriteria->addAscendingOrderByColumn( StepTriggerPeer::ST_POSITION );
         $this->tmpCriteria = clone $oCriteria;
 
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
-
+        }
         $oDataset = InputDocumentPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -5636,12 +5645,9 @@ class processMap
             $oCriteria->addAsColumn( 'TRI_TITLE', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array ('TRI_UID','C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array ('TRI_UID','C.CON_ID');
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter);
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( TriggersPeer::TRI_UID, $aUIDs, Criteria::NOT_IN );
             $oCriteria->add( TriggersPeer::PRO_UID, $sProcessUID );
@@ -5649,7 +5655,12 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aBB[] = array ('CON_VALUE' => $aRow['CON_VALUE'],'STEP_UID' => $sStepUID,'ST_TYPE' => $sType,'TRI_UID' => $aRow['TRI_UID'],'TRI_TITLE' => $aRow['TRI_TITLE']
+                $aBB[] = array (
+                               'CON_VALUE' => $aRow['CON_VALUE'],
+                               'STEP_UID' => $sStepUID,
+                               'ST_TYPE' => $sType,
+                               'TRI_UID' => $aRow['TRI_UID'],
+                               'TRI_TITLE' => $aRow['TRI_TITLE']
                 );
                 $oDataset->next();
             }
@@ -5670,10 +5681,11 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     /*
@@ -5712,12 +5724,12 @@ class processMap
         $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
 
         //if we have pagination, we use it and limit the query
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
-
+        }
         $oDataset = DynaformPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -5727,10 +5739,10 @@ class processMap
 
         while ($aRow = $oDataset->getRow()) {
             //this is a trick to copy the description and title from other language when the current language does not exist for this content row.
-            if (($aRow['DYN_TITLE'] == NULL) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['DYN_TITLE'] == null) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $aRow['DYN_TITLE'] = Content::Load( "DYN_TITLE", "", $aRow['DYN_UID'], SYS_LANG );
             }
-            if (($aRow['DYN_DESCRIPTION'] == NULL) || ($aRow['DYN_DESCRIPTION'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['DYN_DESCRIPTION'] == null) || ($aRow['DYN_DESCRIPTION'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $aRow['DYN_DESCRIPTION'] = Content::Load( "DYN_DESCRIPTION", "", $aRow['DYN_UID'], SYS_LANG );
             }
 
@@ -5759,8 +5771,9 @@ class processMap
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
             foreach ($dynaformArray as $key => $val) {
-                if ($val['DYN_UID'] == $aRow['STEP_UID_OBJ'])
+                if ($val['DYN_UID'] == $aRow['STEP_UID_OBJ']) {
                     $dynaformArray[$key]['TAS_VIEW'] = $aRow['COUNT(TAS_UID)'];
+                }
             }
             $oDataset->next();
         }
@@ -5779,8 +5792,9 @@ class processMap
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
             foreach ($dynaformArray as $key => $val) {
-                if ($val['DYN_UID'] == $aRow['STEP_UID_OBJ'])
+                if ($val['DYN_UID'] == $aRow['STEP_UID_OBJ']) {
                     $dynaformArray[$key]['TAS_EDIT'] = $aRow['COUNT(TAS_UID)'];
+                }
             }
             $oDataset->next();
         }
@@ -5795,10 +5809,11 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             $result['totalCount'] = $aRow[0];
-        else
+        } else {
             $result['totalCount'] = 0;
+        }
         $result['data'] = $dynaformArray;
 
         return $result;
@@ -5814,17 +5829,19 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
-    /*
-  * Return the Input Documents list array
-  * @param string $sProcessUID
-  * @return object
-  */
+    /**
+     * Return the Input Documents list array
+     *
+     * @param string $sProcessUID
+     * @return object
+     */
     public function getExtInputDocumentsCriteria ($start, $limit, $sProcessUID = '')
     {
         $aTasks = $this->getAllInputDocsByTask( $sProcessUID );
@@ -5858,11 +5875,12 @@ class processMap
 
         $this->tmpCriteria = clone $oCriteria;
 
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
-
+        }
         $oDataset = InputDocumentPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -5870,7 +5888,7 @@ class processMap
         $inputDocArray[] = array ('INP_DOC_UID' => 'char','PRO_UID' => 'char','INP_DOC_TITLE' => 'char','INP_DOC_DESCRIPTION' => 'char'
         );
         while ($aRow = $oDataset->getRow()) {
-            if (($aRow['INP_DOC_TITLE'] == NULL) || ($aRow['INP_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['INP_DOC_TITLE'] == null) || ($aRow['INP_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $inputDocument = new InputDocument();
                 $inputDocumentObj = $inputDocument->load( $aRow['INP_DOC_UID'] );
                 $aRow['INP_DOC_TITLE'] = $inputDocumentObj['INP_DOC_TITLE'];
@@ -5881,14 +5899,13 @@ class processMap
             $oDataset->next();
         }
         /*global $_DBArray;
-      $_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
-      $_DBArray ['inputDocArrayMain'] = $inputDocArray;
-      //$_SESSION ['_DBArray']['inputDocArrayMain']        = $_DBArray;*/
+        $_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
+        $_DBArray ['inputDocArrayMain'] = $inputDocArray;
+        //$_SESSION ['_DBArray']['inputDocArrayMain']        = $_DBArray;*/
 
         return $inputDocArray;
     }
 
-    //new functions
     public function getAllOutputDocumentCount ()
     {
         $c = $this->tmpCriteria;
@@ -5898,17 +5915,20 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
-    /*
-  * Return the Output Documents list array
-  * @param string $sProcessUID
-  * @return object
-  */
+    /**
+     * Return the Output Documents list array
+     *
+     * @param string $sProcessUID
+     * @return object
+     */
+
     public function getExtOutputDocumentsCriteria ($start, $limit, $sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -5940,11 +5960,12 @@ class processMap
 
         $this->tmpCriteria = clone $oCriteria;
 
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
-
+        }
         $oDataset = OutputDocumentPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -5952,7 +5973,8 @@ class processMap
         $outputDocArray[] = array ('d' => 'char'
         );
         while ($aRow = $oDataset->getRow()) {
-            if (($aRow['OUT_DOC_TITLE'] == NULL) || ($aRow['OUT_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
+            // There is no transaltion for this Document name, try to get/regenerate the label
+            if (($aRow['OUT_DOC_TITLE'] == null) || ($aRow['OUT_DOC_TITLE'] == "")) {
                 $outputDocument = new OutputDocument();
                 $outputDocumentObj = $outputDocument->load( $aRow['OUT_DOC_UID'] );
                 $aRow['OUT_DOC_TITLE'] = $outputDocumentObj['OUT_DOC_TITLE'];
@@ -5983,7 +6005,7 @@ class processMap
      */
     public function subProcessExtProperties ($sProcessUID = '', $sTaskUID = '', $sIndex = '', $sType = '')
     {
-        try { //echo "$sProcessUID = '', $sTaskUID = '', $sIndex = ''";
+        try {
             $SP_VARIABLES_OUT = array ();
             $SP_VARIABLES_IN = array ();
 
@@ -6023,13 +6045,14 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             $aRow = $oDataset->getRow();
-            /*while($aRow = $oDataset->getRow ())  {
-
-        $aSubProcess [] = array ('CON_VALUE' => $aRow ['CON_VALUE'], 'TAS_UID' => $sTaskUID, 'TASKS' => $sTaskUID,'TAS_TITLE' => $aRow ['CON_VALUE'],
+            /*
+            while($aRow = $oDataset->getRow ())  {
+            $aSubProcess [] = array ('CON_VALUE' => $aRow ['CON_VALUE'], 'TAS_UID' => $sTaskUID, 'TASKS' => $sTaskUID,'TAS_TITLE' => $aRow ['CON_VALUE'],
                                 'SPROCESS_NAME' => $aRow ['CON_VALUE']
             );
-        $oDataset->next ();
-      }*/
+            $oDataset->next ();
+            }
+            */
 
             $aRow['TASKS'] = $aRow['TAS_UID'];
             //print "<hr>".$aRow['TASKS']."<hr>";
@@ -6072,13 +6095,11 @@ class processMap
             return $aRow;
             //return $aSubProcess;
 
-
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
 
-    //new functions
     public function getAllProcessSupervisorsCount ()
     {
         $c = $this->tmpCriteria;
@@ -6088,10 +6109,11 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     /**
@@ -6115,10 +6137,12 @@ class processMap
         $oCriteria->add( ProcessUserPeer::PRO_UID, $sProcessUID );
         $this->tmpCriteria = clone $oCriteria;
 
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
+        }
         $oDataset = ProcessUserPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -6209,17 +6233,19 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
-    /*
-   * Return the supervisors dynaforms list array
-   * @param string $sProcessUID
-   * @return array
-   */
+    /**
+     * Return the supervisors dynaforms list array
+     *
+     * @param string $sProcessUID
+     * @return array
+     */
 
     public function getExtSupervisorDynaformsList ($start, $limit, $sProcessUID = '')
     {
@@ -6252,11 +6278,12 @@ class processMap
         $oCriteria->addAscendingOrderByColumn( StepSupervisorPeer::STEP_POSITION );
         $this->tmpCriteria = clone $oCriteria;
 
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
-
+        }
         $oDataset = StepSupervisorPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -6270,10 +6297,10 @@ class processMap
     }
 
     /*
-   * Return the available supervisors dynaforms list array
-   * @param string $sProcessUID
-   * @return array
-   */
+     * Return the available supervisors dynaforms list array
+     * @param string $sProcessUID
+     * @return array
+    */
 
     public function getExtAvailableSupervisorDynaformsList ($sProcessUID = '')
     {
@@ -6326,17 +6353,18 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     /*
-   * Return the supervisors input document list array
-   * @param string $sProcessUID
-   * @return array
-   */
+     * Return the supervisors input document list array
+     * @param string $sProcessUID
+     * @return array
+    */
 
     public function getExtSupervisorInputsList ($start, $limit, $sProcessUID = '')
     {
@@ -6351,28 +6379,25 @@ class processMap
         $oCriteria->addAsColumn( 'INP_DOC_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (StepSupervisorPeer::STEP_UID_OBJ,InputDocumentPeer::INP_DOC_UID
-        );
-        $aConditions[] = array (StepSupervisorPeer::STEP_TYPE_OBJ,$sDelimiter . 'INPUT_DOCUMENT' . $sDelimiter
-        );
+        $aConditions[] = array (StepSupervisorPeer::STEP_UID_OBJ,InputDocumentPeer::INP_DOC_UID);
+        $aConditions[] = array (StepSupervisorPeer::STEP_TYPE_OBJ,$sDelimiter . 'INPUT_DOCUMENT' . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( StepSupervisorPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( StepSupervisorPeer::STEP_TYPE_OBJ, 'INPUT_DOCUMENT' );
         $oCriteria->addAscendingOrderByColumn( StepSupervisorPeer::STEP_POSITION );
         $this->tmpCriteria = clone $oCriteria;
 
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
+        }
         $oDataset = StepSupervisorPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -6386,10 +6411,10 @@ class processMap
     }
 
     /*
-   * Return the available supervisors input documents list array
-   * @param string $sProcessUID
-   * @return array
-   */
+     * Return the available supervisors input documents list array
+     * @param string $sProcessUID
+     * @return array
+    */
 
     public function getExtAvailableSupervisorInputsList ($sProcessUID = '')
     {
@@ -6440,10 +6465,11 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     /**
@@ -6481,11 +6507,12 @@ class processMap
 
             $this->tmpCriteria = clone $oCriteria;
 
-            if ($start != '')
+            if ($start != '') {
                 $oCriteria->setOffset( $start );
-            if ($limit != '')
+            }
+            if ($limit != '') {
                 $oCriteria->setLimit( $limit );
-
+            }
             $oDataset = DbSourcePeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
@@ -6653,10 +6680,10 @@ class processMap
         }
         return $aCaseTracker;
         /*global $G_PUBLISH;
-    $G_PUBLISH = new Publisher ( );
-    $G_PUBLISH->AddContent('xmlform', 'xmlform', 'tracker/tracker_Configuration', '', $aCaseTracker, '../tracker/tracker_Save');
-    G::RenderPage('publish', 'raw');
-    return true;*/
+        $G_PUBLISH = new Publisher ( );
+        $G_PUBLISH->AddContent('xmlform', 'xmlform', 'tracker/tracker_Configuration', '', $aCaseTracker, '../tracker/tracker_Save');
+        G::RenderPage('publish', 'raw');
+        return true;*/
     }
 
     //new functions
@@ -6669,10 +6696,11 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     /**
@@ -6691,10 +6719,12 @@ class processMap
         $oCriteria->addAscendingOrderByColumn( CaseTrackerObjectPeer::CTO_POSITION );
         $this->tmpCriteria = clone $oCriteria;
 
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
+        }
         $oDataset = CaseTrackerObjectPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -6719,9 +6749,8 @@ class processMap
                 }
                 $aObjects[] = array ('CTO_TITLE' => $sTitle,'CTO_UID' => $aRow['CTO_UID'],'CTO_TYPE_OBJ' => $aRow['CTO_TYPE_OBJ'],'CTO_UID_OBJ' => $aRow['CTO_UID_OBJ'],'CTO_CONDITION' => $aRow['CTO_CONDITION'],'CTO_POSITION' => $aRow['CTO_POSITION']
                 );
-            }
-
-            catch (Exception $oError) { //Nothing
+            } catch (Exception $oError) {
+                //Nothing
             }
             $oDataset->next();
         }
@@ -6840,13 +6869,13 @@ class processMap
         }
         return $aAvailableObjects;
         /*global $_DBArray;
-    $_DBArray = (isset($_SESSION ['_DBArray']) ? $_SESSION ['_DBArray'] : '');
-    $_DBArray ['availableObjects'] = $aAvailableObjects;
-    $_SESSION ['_DBArray'] = $_DBArray;
-    G::LoadClass('ArrayPeer');
-    $oCriteria = new Criteria('dbarray');
-    $oCriteria->setDBArrayTable('availableObjects');
-    return $oCriteria;*/
+        $_DBArray = (isset($_SESSION ['_DBArray']) ? $_SESSION ['_DBArray'] : '');
+        $_DBArray ['availableObjects'] = $aAvailableObjects;
+        $_SESSION ['_DBArray'] = $_DBArray;
+        G::LoadClass('ArrayPeer');
+        $oCriteria = new Criteria('dbarray');
+        $oCriteria->setDBArrayTable('availableObjects');
+        return $oCriteria;*/
     }
 
     //new functions
@@ -6859,10 +6888,11 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     public function getExtReportTables ($start, $limit, $sProcessUID = '')
@@ -6886,11 +6916,12 @@ class processMap
 
         $this->tmpCriteria = clone $oCriteria;
 
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
-
+        }
         $oDataset = ReportTablePeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -7004,10 +7035,12 @@ class processMap
             $oCriteria->add( TaskUserPeer::TU_RELATION, 2 );
             $this->tmpCriteria = clone $oCriteria;
 
-            if ($start != '')
+            if ($start != '') {
                 $oCriteria->setOffset( $start );
-            if ($limit != '')
+            }
+            if ($limit != '') {
                 $oCriteria->setLimit( $limit );
+            }
             $oDataset = TaskUserPeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
@@ -7074,7 +7107,6 @@ class processMap
      */
     public function editExtObjectPermission ($sProcessUID, $sOP_UID)
     {
-
         $oCriteria = new Criteria();
         $oCriteria->add( ObjectPermissionPeer::OP_UID, $sOP_UID );
         $oDataset = ObjectPermissionPeer::doSelectRS( $oCriteria );
@@ -7084,14 +7116,14 @@ class processMap
 
         $oCriteria = new Criteria();
         $oCriteria->add( GroupwfPeer::GRP_UID, $aRows['USR_UID'] );
-        if (GroupwfPeer::doCount( $oCriteria ) == 1)
+        if (GroupwfPeer::doCount( $oCriteria ) == 1) {
             $user = '2|' . $aRows['USR_UID'];
-
+        }
         $oCriteria = new Criteria();
         $oCriteria->add( UsersPeer::USR_UID, $aRows['USR_UID'] );
-        if (UsersPeer::doCount( $oCriteria ) == 1)
+        if (UsersPeer::doCount( $oCriteria ) == 1) {
             $user = '1|' . $aRows['USR_UID'];
-
+        }
         $aFields['LANG'] = SYS_LANG;
         $aFields['OP_UID'] = $aRows['OP_UID'];
         $aFields['PRO_UID'] = $aRows['PRO_UID'];
@@ -7107,15 +7139,16 @@ class processMap
         $aFields['TASK_TARGET_NAME'] = Content::load( 'TAS_TITLE', '', $aRows['TAS_UID'], $lang );
         $aFields['TASK_SOURCE_NAME'] = Content::load( 'TAS_TITLE', '', $aRows['OP_TASK_SOURCE'], $lang );
         $oUser = UsersPeer::retrieveByPK( $aRows['USR_UID'] );
-        if (! is_null( $oUser ))
+        if (! is_null( $oUser )) {
             $aFields['USR_FULLNAME'] = $oUser->getUsrFirstname() . ' ' . $oUser->getUsrLastname();
-        else
+        } else {
             throw (new Exception( "The row '" . $aRows['USR_UID'] . "' in table USER doesn't exist!" ));
-
+        }
         switch ($aRows['OP_OBJ_TYPE']) {
-            /* case 'ANY':
-        $aFields['OP_OBJ_TYPE'] = '';
-        break; */
+            /*  case 'ANY':
+                $aFields['OP_OBJ_TYPE'] = '';
+                break;
+            */
             case 'DYNAFORM':
                 $aFields['DYNAFORM'] = $aRows['OP_OBJ_UID'];
                 $aFields['DYNAFORM_NAME'] = Content::load( 'DYN_TITLE', '', $aRows['OP_OBJ_UID'], $lang );
@@ -7229,7 +7262,7 @@ class processMap
                 $aDataEvent['EVN_TAS_UID_TO'] = $oData->tas_uid;
                 $output = $oEvent->update( $aDataEvent );
             }
-        } else if (preg_match( "/Inter/", $sEvn_type )) {
+        } elseif (preg_match( "/Inter/", $sEvn_type )) {
             $aDataEvent['EVN_TAS_UID_FROM'] = $oData->tas_from;
             $aDataEvent['EVN_TAS_UID_TO'] = $oData->tas_to;
             $output = $oEvent->update( $aDataEvent );
@@ -7247,18 +7280,18 @@ class processMap
         $oDataset->next();
         $aRow = $oDataset->getRow();
 
-        if (is_array( $aRow ))
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     /*
-   * Return the triggers list criteria object
-   * @param string $sProcessUID
-   * @return object
-   */
-
+     * Return the triggers list criteria object
+     * @param string $sProcessUID
+     * @return object
+    */
     public function getExtTriggersList ($start, $limit, $sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -7291,11 +7324,12 @@ class processMap
         $oCriteria->add( TriggersPeer::PRO_UID, $sProcessUID );
         $oCriteria->addAscendingOrderByColumn( 'TRI_TITLE' );
 
-        if ($start != '')
+        if ($start != '') {
             $oCriteria->setOffset( $start );
-        if ($limit != '')
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
-
+        }
         $oDataset = TriggersPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -7304,7 +7338,8 @@ class processMap
         );
         while ($aRow = $oDataset->getRow()) {
 
-            if (($aRow['TRI_TITLE'] == NULL) || ($aRow['TRI_TITLE'] == "")) { // There is no transaltion for this Trigger name, try to get/regenerate the label
+            if (($aRow['TRI_TITLE'] == null) || ($aRow['TRI_TITLE'] == "")) {
+                // There is no translation for this Trigger name, try to get/regenerate the label
                 $triggerO = new Triggers();
                 $triggerObj = $triggerO->load( $aRow['TRI_UID'] );
                 $aRow['TRI_TITLE'] = $triggerObj['TRI_TITLE'];
@@ -7350,5 +7385,5 @@ class processMap
 
         return (int) $row['MAX_X'];
     }
-
 }
+
