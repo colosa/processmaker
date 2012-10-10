@@ -886,7 +886,7 @@ function G_Text(form, element, name)
           }
           break;
         case '-':
-          if (me.validate == 'Real'){
+          if (me.validate == 'Real' || me.validate == 'Int'){
             newValue += chars[c];
             newCont++;
             if (c + 1 == cursor.selectionStart){
@@ -987,11 +987,9 @@ function G_Text(form, element, name)
           action = 'none';
           break;
         case 8:
-
           newValue  = currentValue.substring(0, cursorStart - 1);
           newValue += currentValue.substring(cursorEnd, currentValue.length);
           newCursor = cursorStart - 1;
-          //alert('aaa' + newValue + ' , ' + newCursor );
           break;
         case 46:
           newValue  = currentValue.substring(0, cursorStart);
@@ -1109,6 +1107,7 @@ function G_Text(form, element, name)
           newCursor = cursorStart - 1;
           break;
         case 46:
+        case 45:
           newValue  = currentValue.substring(0, cursorStart);
           newValue += currentValue.substring(cursorEnd + 1, currentValue.length);
           newCursor = cursorStart;
@@ -1287,7 +1286,7 @@ function G_Text(form, element, name)
           keyValid = true;
           break;
         case 'Int':
-          patron = /[0-9]/;
+          patron = /[0-9\-]/;
           key = String.fromCharCode(pressKey);
           keyValid = patron.test(key);
           break;
@@ -3083,7 +3082,6 @@ var validateForm = function(sRequiredFields) {
         }
       }
     }
-
     return true;
   }
 };
