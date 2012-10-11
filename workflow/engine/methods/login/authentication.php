@@ -294,6 +294,13 @@ try {
         die;
     }
 
+    ?>
+    <script>
+    if (typeof(window.parent) != 'undefined' && typeof(window.parent.removedSaveForm) != 'undefined') {
+        window.parent.removedSaveForm();
+    }
+    </script>
+    <?php
     $oHeadPublisher = &headPublisher::getSingleton();
     $oHeadPublisher->extJsInit = true;
 
