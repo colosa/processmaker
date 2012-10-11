@@ -94,6 +94,7 @@ class Cases
         $c->addJoin(TaskPeer::PRO_UID, ProcessPeer::PRO_UID, Criteria::LEFT_JOIN);
         $c->addJoin(TaskPeer::TAS_UID, TaskUserPeer::TAS_UID, Criteria::LEFT_JOIN);
         $c->add(ProcessPeer::PRO_STATUS, 'ACTIVE');
+        $c->add(ProcessPeer::PRO_SUBPROCESS, '0');
         $c->add(TaskPeer::TAS_START, 'TRUE');
         $c->add(TaskUserPeer::USR_UID, $sUIDUser);
         if ($processUid != '') {
@@ -119,6 +120,7 @@ class Cases
         $c->addJoin(TaskPeer::PRO_UID, ProcessPeer::PRO_UID, Criteria::LEFT_JOIN);
         $c->addJoin(TaskPeer::TAS_UID, TaskUserPeer::TAS_UID, Criteria::LEFT_JOIN);
         $c->add(ProcessPeer::PRO_STATUS, 'ACTIVE');
+        $c->add(ProcessPeer::PRO_SUBPROCESS, '0');
         $c->add(TaskPeer::TAS_START, 'TRUE');
         $c->add(TaskUserPeer::USR_UID, $aGroups, Criteria::IN);
         if ($processUid != '') {

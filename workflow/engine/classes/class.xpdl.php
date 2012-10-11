@@ -2004,6 +2004,7 @@ class Xpdl extends processes
         $process['PRO_ASSIGNMENT'] = 'FALSE';
         $process['PRO_SHOW_MAP'] = 0;
         $process['PRO_SHOW_MESSAGE'] = 0;
+        $process['PRO_SUBPROCESS'] = 0;
         $process['PRO_SHOW_DELEGATE'] = 0;
         $process['PRO_SHOW_DYNAFORM'] = 0;
         $process['PRO_CATEGORY'] = '';

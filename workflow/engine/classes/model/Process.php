@@ -454,6 +454,7 @@ class Process extends BaseProcess {
     $this->setProAssignment   ( $aData['PRO_ASSIGNMENT'] );
     $this->setProShowMap      ( $aData['PRO_SHOW_MAP'] );
     $this->setProShowMessage  ( $aData['PRO_SHOW_MESSAGE'] );
+    $this->setProSubprocess   ( $aData['PRO_SUBPROCESS'] );
     $this->setProShowDelegate ( $aData['PRO_SHOW_DELEGATE'] );
     $this->setProShowDynaform ( $aData['PRO_SHOW_DYNAFORM'] );
 
@@ -602,6 +603,7 @@ class Process extends BaseProcess {
 
     $oCriteria->add(ProcessPeer::PRO_UID, '', Criteria::NOT_EQUAL);
     $oCriteria->add(ProcessPeer::PRO_STATUS, 'DISABLED', Criteria::NOT_EQUAL);
+    $oCriteria->add(ProcessPeer::PRO_SUBPROCESS, '1', Criteria::NOT_EQUAL);
 
     if( isset($category) )
       $oCriteria->add(ProcessPeer::PRO_CATEGORY, $category, Criteria::EQUAL);

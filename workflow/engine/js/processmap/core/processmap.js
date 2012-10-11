@@ -359,7 +359,7 @@ var processmap=function(){
             this.tmp.editProcessPanel = panel =new leimnud.module.panel();
             panel.options={
               limit :true,
-              size  :{w:700,h:480},
+              size  :{w:700,h:520},
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_EDIT_PROCESS+": "+ moldTitle(this.data.db.title.label,700),//this.data.db.title.label,s
               theme :this.options.theme,
