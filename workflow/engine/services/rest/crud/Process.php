@@ -35,6 +35,7 @@ class Services_Rest_Process
                 $criteria->addSelectColumn(ProcessPeer::PRO_ASSIGNMENT);
                 $criteria->addSelectColumn(ProcessPeer::PRO_SHOW_MAP);
                 $criteria->addSelectColumn(ProcessPeer::PRO_SHOW_MESSAGE);
+                $criteria->addSelectColumn(ProcessPeer::PRO_SUBPROCESS);
                 $criteria->addSelectColumn(ProcessPeer::PRO_SHOW_DELEGATE);
                 $criteria->addSelectColumn(ProcessPeer::PRO_SHOW_DYNAFORM);
                 $criteria->addSelectColumn(ProcessPeer::PRO_CATEGORY);

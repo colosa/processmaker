@@ -68,6 +68,10 @@ WHERE
   <en>Hide the case number and the case title in the steps</en>
 </PRO_SHOW_MESSAGE>
 
+<PRO_SUBPROCESS type="checkbox" value="1" falsevalue="0" defaultvalue="1" labelonright="0">
+  <en>This a sub process</en>
+</PRO_SUBPROCESS>
+
 <BTN_CANCEL type="button" onclick="cancel();">
   <en>Cancel</en>
 </BTN_CANCEL>
