@@ -261,25 +261,33 @@ class Translation extends BaseTranslation {
     file_put_contents($filePath, serialize($environments));
   }
   
-  function removeTranslationEnvironment($locale)
-  {
-    $filePath = $this->envFilePath;
-    if( strpos($locale, self::$localeSeparator) !== false ) {
-      list($LAN_ID, $IC_UID) = explode('-', strtoupper($locale));
-    } else {
-      $LAN_ID = $locale;
-      $IC_UID = '__INTERNATIONAL__';
-    }
+    function removeTranslationEnvironment($locale)
+    {
+        $filePath = $this->envFilePath;
+        if (strpos($locale, self::$localeSeparator) !== false) {
+            list($LAN_ID, $IC_UID) = explode('-', strtoupper($locale));
+        } else {
+            $LAN_ID = $locale;
+            $IC_UID = '__INTERNATIONAL__';
+        }
 
-    if( file_exists($filePath) ) {
-      $environments = unserialize(file_get_contents($filePath));
-      if( ! isset($environments[$LAN_ID][$IC_UID]) )
-        return NULL;
-      
-      unset($environments[$LAN_ID][$IC_UID]);
-      file_put_contents($filePath, serialize($environments));
+        if (file_exists($filePath)) {
+            $environments = unserialize(file_get_contents($filePath));
+            if (!isset($environments[$LAN_ID][$IC_UID])) {
+                return NULL;
+            }
+
+            unset($environments[$LAN_ID][$IC_UID]);
+            file_put_contents($filePath, serialize($environments));
+
+            if (file_exists(PATH_CORE . "META-INF" . PATH_SEP . "translation.".$locale)) {
+                G::rm_dir(PATH_DATA . "META-INF" . PATH_SEP . "translation.".$locale);
+            }
+            if (file_exists(PATH_CORE . PATH_SEP . 'content' . PATH_SEP . 'translations' . PATH_SEP . 'processmaker' . $locale . '.po')) {
+                G::rm_dir(PATH_CORE . PATH_SEP . 'content' . PATH_SEP . 'translations' . PATH_SEP . 'processmaker' . $locale . '.po');
+            }
+        }
     }
-  }
 
   function getTranslationEnvironments(){
     $filePath = $this->envFilePath;

@@ -24,7 +24,7 @@ var removeOption;
 var installOption;
 var exportOption;
 
-
+Ext.Ajax.timeout = 300000;
 Ext.onReady(function(){
   
   //Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
