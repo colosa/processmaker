@@ -1239,6 +1239,7 @@ function loadUserData()
 
             comboReplacedBy.store.on("load", function (store) {
                 comboReplacedBy.setValue(data.user.USR_REPLACED_BY);
+                comboReplacedBy.setRawValue(data.user.REPLACED_NAME);
             });
 
             comboCalendar.store.on("load", function (store) {
