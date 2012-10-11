@@ -398,6 +398,20 @@ public function userExists($UsrUid)
 
     return $result;
   }
+
+    public function userVacation($UsrUid = "")
+    {
+        $aFields = array();
+        do {
+            if ($UsrUid != ""){
+                $aFields = $this->load($UsrUid);
+                $UsrUid = $aFields['USR_REPLACED_BY'];
+            } else {
+                break;
+            }
+        } while ($aFields['USR_STATUS'] != 'ACTIVE');
+        return $aFields;
+    }
 } // Users
 
 ?>
