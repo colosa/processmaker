@@ -33,6 +33,7 @@ class XmlForm_Field {
   var $name             = '';
   var $type             = 'field';
   var $label            = '';
+  var $pmLabel          = '';
   var $owner;
   var $language;
   var $group            = 0;
@@ -101,7 +102,7 @@ class XmlForm_Field {
         }
       }
     }
-    @$this->label = $data->value;
+    @$this->label = $this->pmLabel = $data->value;
 
 
     /*Loads the field attributes*/
@@ -731,11 +732,11 @@ class XmlForm_Field {
    */
 
   function NSGridLabel($show = false){
-    $idv = 'pm:label="'.$this->label.'"';
+    $idv = 'pm:label="'.$this->pmLabel.'"';
     if ($show){
       return $idv;
     }else{
-      return ($this->label != '')? $idv : '';
+      return ($this->pmLabel != '')? $idv : '';
     }
   }
 
@@ -4787,6 +4788,9 @@ class xmlformTemplate extends Smarty
       //if (isset($form->fields[$k]->sql)) $form->fields[$k]->executeSQL( $form );
       $value = (isset ( $form->values [$k] )) ? $form->values [$k] : NULL;
       $result [$k] = G::replaceDataField ( $form->fields [$k]->label, $form->values );
+      if ($form->type == 'xmlform') {
+        $result[$k] = '<label for="form[' . $k . ']">' . $result[$k] . '</label>';
+      }
       if (! is_array ( $value )) {
         if ($form->type == 'grid') {
           $aAux = array();
