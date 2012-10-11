@@ -230,7 +230,16 @@ class SkinEngine
       $styles = $oHeadPublisher->getExtJsStylesheets($this->cssFileName);
       $body   = $oHeadPublisher->getExtJsScripts();
 
+      //default
       $templateFile = G::ExpandPath( "skinEngine" ).'base'.PATH_SEP .'extJsInitLoad.html';
+      //Custom skins
+      if (defined('PATH_CUSTOM_SKINS') && is_dir(PATH_CUSTOM_SKINS . $this->mainSkin)) {
+        $templateFile = PATH_CUSTOM_SKINS . $this->mainSkin . PATH_SEP .'extJsInitLoad.html';
+      }
+      //Skin uxs - simplefied
+      if ($_SESSION['user_experience'] != 'NORMAL') {
+        $templateFile = (is_dir(PATH_CUSTOM_SKINS . 'uxs')) ? PATH_CUSTOM_SKINS . 'simplified' . PATH_SEP . 'extJsInitLoad.html' : $templateFile;
+      }
     }
     else {
       $styles  = "";
