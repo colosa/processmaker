@@ -775,11 +775,14 @@ class Process extends BaseProcess {
   	return $aProc;
   }
 
-  function getTriggerProcess ($proUid, $accion)
-  {  
+  function getTriggerWebBotProcess ($proUid, $accion)
+  { 
+    require_once ("classes/model/Triggers.php");
+
     if ((!isset($proUid) && $proUid == '') || (!isset($accion) && $accion == ''))  {
       return false;
     }
+
     $accion = G::toUpper($accion);
     $idTrigger = '';
 
@@ -799,8 +802,12 @@ class Process extends BaseProcess {
     }
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn($var);
+    $oCriteria->addSelectColumn(TriggersPeer::TRI_WEBBOT);
+    $oCriteria->addJoin($var, TriggersPeer::TRI_UID, Criteria::LEFT_JOIN);
     $oCriteria->add(ProcessPeer::PRO_UID, $proUid);
     $oDataSet = ProcessPeer::doSelectRS($oCriteria);
+    G::pr($oDataSet);
+    die;
     $oDataSet->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     if ($oDataSet->next()) {
       $row = $oDataSet->getRow();
