@@ -575,7 +575,7 @@ class Process extends BaseProcess {
       return 0;
   }
 
-  function getAllProcesses($start, $limit, $category=NULL, $processName=NULL, $counters = true) {
+  function getAllProcesses($start, $limit, $category=NULL, $processName=NULL, $counters = true, $reviewSubProcess = false) {
     require_once PATH_RBAC . "model/RbacUsers.php";
     require_once "classes/model/ProcessCategory.php";
     require_once "classes/model/Users.php";
@@ -603,7 +603,9 @@ class Process extends BaseProcess {
 
     $oCriteria->add(ProcessPeer::PRO_UID, '', Criteria::NOT_EQUAL);
     $oCriteria->add(ProcessPeer::PRO_STATUS, 'DISABLED', Criteria::NOT_EQUAL);
-    $oCriteria->add(ProcessPeer::PRO_SUBPROCESS, '1', Criteria::NOT_EQUAL);
+    if ($reviewSubProcess) {
+      $oCriteria->add(ProcessPeer::PRO_SUBPROCESS, '1', Criteria::NOT_EQUAL);  
+    }
 
     if( isset($category) )
       $oCriteria->add(ProcessPeer::PRO_CATEGORY, $category, Criteria::EQUAL);
