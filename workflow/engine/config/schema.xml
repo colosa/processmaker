@@ -795,6 +795,7 @@
     <column name="PRO_ASSIGNMENT" type="VARCHAR" size="20" required="true" default="FALSE"/>
     <column name="PRO_SHOW_MAP" type="TINYINT" required="true" default="1"/>
     <column name="PRO_SHOW_MESSAGE" type="TINYINT" required="true" default="1"/>
+    <column name="PRO_SUBPROCESS" type="TINYINT" required="true" default="0"/>
     <column name="PRO_SHOW_DELEGATE" type="TINYINT" required="true" default="1"/>
     <column name="PRO_SHOW_DYNAFORM" type="TINYINT" required="true" default="0"/>
     <column name="PRO_CATEGORY" type="VARCHAR" size="48" required="true" default=""/>

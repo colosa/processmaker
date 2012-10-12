@@ -86,6 +86,7 @@ $fieldNames = Array(
 	'PRO_ASSIGNMENT' => 'char',
 	'PRO_SHOW_MAP' => 'char',
 	'PRO_SHOW_MESSAGE' => 'char',
+	'PRO_SUBPROCESS' => 'char',
 	'PRO_SHOW_DELEGATE' => 'char',
 	'PRO_SHOW_DYNAFORM' => 'char',
 	'PRO_CATEGORY' => 'char',
