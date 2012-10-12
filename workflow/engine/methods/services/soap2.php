@@ -169,6 +169,7 @@ function CaseList($params)
         $o->name = '';
         $o->status = '';
         $o->delIndex = '';
+        $o->processId = '';
 
         return array("cases" => $o);
     }
@@ -178,6 +179,7 @@ function CaseList($params)
         $o->name = '';
         $o->status = '';
         $o->delIndex = '';
+        $o->processId = '';
 
         return array("cases" => $o);
     }

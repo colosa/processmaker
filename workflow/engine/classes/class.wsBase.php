@@ -323,6 +323,7 @@ class wsBase
             $oCriteria->addSelectColumn( ApplicationPeer::APP_NUMBER );
             $oCriteria->addSelectColumn( ApplicationPeer::APP_STATUS );
             $oCriteria->addSelectColumn( AppDelegationPeer::DEL_INDEX );
+            $oCriteria->addSelectColumn( ApplicationPeer::PRO_UID );
             $oCriteria->addAsColumn( 'CASE_TITLE', 'C1.CON_VALUE' );
             $oCriteria->addAlias( "C1", 'CONTENT' );
             $caseTitleConds = array ();
@@ -354,15 +355,21 @@ class wsBase
                     'delIndex' => $aRow['DEL_INDEX']
                 );
                 */
-                $result[] = array ('guid' => $aRow['APP_UID'],'name' => $aRow['APP_NUMBER'],'status' => $aRow['APP_STATUS'],'delIndex' => $aRow['DEL_INDEX']
-                );
+                $result[] = array('guid' => $aRow['APP_UID'],
+                                  'name' => $aRow['APP_NUMBER'],
+                                  'status' => $aRow['APP_STATUS'],
+                                  'delIndex' => $aRow['DEL_INDEX'],
+                                  'processId' => $aRow['PRO_UID']);
                 $oDataset->next();
             }
 
             return $result;
         } catch (Exception $e) {
-            $result[] = array ('guid' => $e->getMessage(),'name' => $e->getMessage(),'status' => $e->getMessage(),'status' => $e->getMessage()
-            );
+            $result[] = array ('guid' => $e->getMessage(),
+                               'name' => $e->getMessage(),
+                               'status' => $e->getMessage(),
+                               'status' => $e->getMessage(),
+                               'processId' => $e->getMessage());
 
             return $result;
         }
@@ -385,16 +392,21 @@ class wsBase
             $oDataset->next();
 
             while ($aRow = $oDataset->getRow()) {
-                $result[] = array ('guid' => $aRow['APP_UID'],'name' => $aRow['APP_NUMBER'],'delIndex' => $aRow['DEL_INDEX']
-                );
+                $result[] = array ('guid' => $aRow['APP_UID'],
+                                   'name' => $aRow['APP_NUMBER'],
+                                   'delIndex' => $aRow['DEL_INDEX'],
+                                   'processId' => $aRow['PRO_UID']);
 
                 $oDataset->next();
             }
 
             return $result;
         } catch (Exception $e) {
-            $result[] = array ('guid' => $e->getMessage(),'name' => $e->getMessage(),'status' => $e->getMessage(),'status' => $e->getMessage()
-            );
+            $result[] = array ('guid' => $e->getMessage(),
+                               'name' => $e->getMessage(),
+                               'status' => $e->getMessage(),
+                               'status' => $e->getMessage(),
+                               'processId' => $e->getMessage());
 
             return $result;
         }
@@ -665,7 +677,9 @@ class wsBase
             $result = array ();
             $oCriteria = new Criteria( 'workflow' );
             $del = DBAdapter::getStringDelimiter();
+            $oCriteria->addSelectColumn( TaskPeer::PRO_UID );
             $oCriteria->addSelectColumn( TaskPeer::TAS_UID );
+            $oCriteria->addSelectColumn( TaskPeer::TAS_START );
             $oCriteria->setDistinct();
             $oCriteria->addAsColumn( 'TAS_TITLE', 'C1.CON_VALUE' );
             $oCriteria->addAlias( "C1", 'CONTENT' );
@@ -687,8 +701,10 @@ class wsBase
             $oDataset->next();
 
             while ($aRow = $oDataset->getRow()) {
-                $result[] = array ('guid' => $aRow['TAS_UID'],'name' => $aRow['TAS_TITLE']
-                );
+                $result[] = array ('guid' => $aRow['TAS_UID'],
+                                   'name' => $aRow['TAS_TITLE'],
+                                   'processId' => $aRow['PRO_UID'],
+                                   'initialTask' => $aRow['TAS_START'] == 'TRUE' ? '1' : '0');
                 $oDataset->next();
             }
 

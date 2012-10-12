@@ -136,6 +136,7 @@
           <xs:element name="name" type="xs:string"/>
           <xs:element name="status" type="xs:string"/>
           <xs:element name="delIndex" type="xs:string"/>
+          <xs:element name="processId" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="unassignedCaseListStruct">
@@ -143,6 +144,7 @@
           <xs:element name="guid" type="xs:string"/>
           <xs:element name="name" type="xs:string"/>
           <xs:element name="delIndex" type="xs:string"/>
+          <xs:element name="processId" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:element name="caseListRequest">
@@ -515,6 +517,8 @@
         <xs:sequence>
           <xs:element name="guid" type="xs:string"/>
           <xs:element name="name" type="xs:string"/>
+          <xs:element name="processId" type="xs:string"/>
+          <xs:element name="initialTask" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:element name="taskListResponse">
