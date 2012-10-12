@@ -54,7 +54,7 @@ class workspaceTools {
      *
      * @param   bool $first true if this is the first workspace to be upgrade
      */
-    public function upgrade($first=false, $buildCacheView=false, $workSpace=SYS_SYS) 
+    public function upgrade($first=false, $buildCacheView=false, $workSpace=SYS_SYS)
     {
         $start = microtime(true);
         CLI::logging("> Updating database...\n");
