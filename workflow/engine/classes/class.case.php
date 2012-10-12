@@ -6146,4 +6146,15 @@ class Cases
         }
         return $response;
     }
+
+    public function getTriggerProcess($proUid, $accion = 'ALL')
+    {
+        require_once ( "classes/model/Process.php" );
+        $appProcess = new Process();
+        $execute = $appProcess->getTriggerProcess('929004222506f25ab83aac6042919904','DELETED');
+
+        if ($execute != false && $execute != '') {
+            return $execute;
+        }
+    }
 }

@@ -455,6 +455,10 @@ class Process extends BaseProcess {
     $this->setProShowMap      ( $aData['PRO_SHOW_MAP'] );
     $this->setProShowMessage  ( $aData['PRO_SHOW_MESSAGE'] );
     $this->setProSubprocess   ( $aData['PRO_SUBPROCESS'] );
+    $this->setProTriDeleted   ( $aData['PRO_TRI_DELETED'] );
+    $this->setProTriCanceled  ( $aData['PRO_TRI_CANCELED'] );
+    $this->setProTriPaused    ( $aData['PRO_TRI_PAUSED'] );
+    $this->setProTriReassigned( $aData['PRO_TRI_REASSIGNED'] );
     $this->setProShowDelegate ( $aData['PRO_SHOW_DELEGATE'] );
     $this->setProShowDynaform ( $aData['PRO_SHOW_DYNAFORM'] );
 
@@ -769,6 +773,40 @@ class Process extends BaseProcess {
   		$aProc[$row['PRO_CATEGORY']] = $row['CNT'];
   	}
   	return $aProc;
+  }
+
+  function getTriggerProcess ($proUid, $accion)
+  {  
+    if ((!isset($proUid) && $proUid == '') || (!isset($accion) && $accion == ''))  {
+      return false;
+    }
+    $accion = G::toUpper($accion);
+    $idTrigger = '';
+
+    switch ($accion) {
+      case 'DELETED':
+        $var = ProcessPeer::PRO_TRI_DELETED;
+        break;
+      case 'CANCELED':
+        $var = ProcessPeer::PRO_TRI_CANCELED;
+        break;
+      case 'PAUSED':
+        $var = ProcessPeer::PRO_TRI_PAUSED;
+        break;
+      case 'REASSIGNED':
+        $var = ProcessPeer::PRO_TRI_REASSIGNED;
+        break;
+    }
+    $oCriteria = new Criteria('workflow');
+    $oCriteria->addSelectColumn($var);
+    $oCriteria->add(ProcessPeer::PRO_UID, $proUid);
+    $oDataSet = ProcessPeer::doSelectRS($oCriteria);
+    $oDataSet->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    if ($oDataSet->next()) {
+      $row = $oDataSet->getRow();
+      $idTrigger = $row['PRO_TRI_'.$accion];
+    }
+    return $idTrigger;
   }
 
     public function memcachedDelete()
