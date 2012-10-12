@@ -679,6 +679,7 @@ function executeQueryOci ($sql, $connection, $aParameter = array())
                 }
             }
             $objExecute = oci_execute( $stid, OCI_DEFAULT );
+            $result = oci_num_rows ($stid);
             if ($objExecute) {
                 oci_commit( $conn );
             } else {
@@ -688,7 +689,7 @@ function executeQueryOci ($sql, $connection, $aParameter = array())
             oci_free_statement( $stid );
             oci_close( $conn );
             if ($isValid) {
-                return true;
+                return $result;
             } else {
                 return oci_error();
             }

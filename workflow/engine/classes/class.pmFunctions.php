@@ -250,19 +250,20 @@ function executeQuery ($SqlStatement, $DBConnectionUID = 'workflow', $aParameter
                     break;
                 case preg_match( "/^INSERT\s/i", $statement ):
                     $rs = $con->executeUpdate( $SqlStatement );
+                    $result = $con->getUpdateCount();
                     $con->commit();
                     //$result = $lastId->getId();
-                    $result = 1;
+                    // $result = 1;
                     break;
                 case preg_match( "/^UPDATE\s/i", $statement ):
                     $rs = $con->executeUpdate( $SqlStatement );
-                    $con->commit();
                     $result = $con->getUpdateCount();
+                    $con->commit();
                     break;
                 case preg_match( "/^DELETE\s/i", $statement ):
                     $rs = $con->executeUpdate( $SqlStatement );
-                    $con->commit();
                     $result = $con->getUpdateCount();
+                    $con->commit();
                     break;
             }
         } else {
