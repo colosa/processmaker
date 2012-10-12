@@ -7,7 +7,7 @@
 
 G::LoadSystem('dbMaintenance');
 G::LoadClass("cli");
-
+G::LoadClass("multipleFilesBackup");
 /**
  * class workspaceTools
  * @package workflow.engine.classes

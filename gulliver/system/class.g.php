@@ -5430,6 +5430,50 @@ function getDirectorySize($path,$maxmtime=0)
 
         return $reservedWordsSql;
     }
+    
+    /* Friendly functions.
+    /**
+    * isWinOs
+    *
+    * @return true if the 3 first letters of PHP_OS got 'WIN', otherwise false. 
+    */
+    function isWinOs()
+    {
+        return strtoupper(substr(PHP_OS, 0, 3)) == "WIN";
+    }
+
+    /**
+    * isNTOs
+    *
+    * @return true if PHP_OS is 'WINNT', otherwise false.
+    */
+    function isNTOs()
+    {
+        return PHP_OS == "WINNT";
+    }
+
+    /**
+    * isLinuxOs
+    *
+    * @return true if PHP_OS (upper text) got 'LINUX', otherwise false.
+    */
+    function isLinuxOs()
+    {
+        return strtoupper(PHP_OS) == "LINUX";
+    }
+    
+    /**
+    * getDirSize
+    *
+    * @path of the directory that want to check. smaller than getDirectorySize function.
+    */
+    function getDirSize($path)
+    {
+        $io = popen('/usr/bin/du -sb '.$path, 'r');
+        $size = intval(fgets($io,80));
+        pclose($io);
+        return $size;
+    }
 }
 
 /**
@@ -5514,4 +5558,3 @@ function __($msgID , $lang = SYS_LANG, $data = null)
 {
   return G::LoadTranslation($msgID, $lang, $data);
 }
-
