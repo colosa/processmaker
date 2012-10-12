@@ -72,6 +72,34 @@ WHERE
   <en>This a sub process</en>
 </PRO_SUBPROCESS>
 
+<PRO_TRI_DELETED type="dropdown">
+<![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]>
+<en>Trigger to change status to delete
+  <option name="">- Not selected -</option>
+</en>
+</PRO_TRI_DELETED>
+
+<PRO_TRI_CANCELED type="dropdown">
+<![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]>
+<en>Trigger to change status to cancel
+  <option name="">- Not selected -</option>
+</en>
+</PRO_TRI_CANCELED>
+
+<PRO_TRI_PAUSED type="dropdown">
+<![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]>
+<en>Trigger to change status to pause
+  <option name="">- Not selected -</option>
+</en>
+</PRO_TRI_PAUSED>
+
+<PRO_TRI_REASSIGNED type="dropdown">
+<![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]>
+<en>Trigger to reassign case
+  <option name="">- Not selected -</option>
+</en>
+</PRO_TRI_REASSIGNED>
+
 <BTN_CANCEL type="button" onclick="cancel();">
   <en>Cancel</en>
 </BTN_CANCEL>

@@ -1106,6 +1106,8 @@ class Cases
             if ($this->appSolr != null) {
                 $this->appSolr->deleteApplicationSearchIndex($sAppUid);
             }
+
+            $this->getExecuteTriggerProcess($sAppUid, 'DELETED');
             return $result;
         } catch (exception $e) {
             throw ($e);
@@ -3586,6 +3588,8 @@ class Cases
         if ($this->appSolr != null) {
             $this->appSolr->updateApplicationSearchIndex($sApplicationUID);
         }
+
+        $this->getExecuteTriggerProcess($sApplicationUID, 'PAUSED');
     }
 
     /*
@@ -3739,6 +3743,8 @@ class Cases
         if ($this->appSolr != null) {
             $this->appSolr->updateApplicationSearchIndex($sApplicationUID);
         }
+
+        $this->getExecuteTriggerProcess($sApplicationUID, 'CANCELED');
     }
 
     /*
@@ -3856,6 +3862,8 @@ class Cases
         if ($this->appSolr != null) {
             $this->appSolr->updateApplicationSearchIndex($sApplicationUID);
         }
+
+        $this->getExecuteTriggerProcess($sApplicationUID, 'REASSIGNED');
         return true;
     }
 
@@ -6145,5 +6153,30 @@ class Cases
             }
         }
         return $response;
+    }
+
+    public function getExecuteTriggerProcess($appUid, $accion)
+    {
+        if ((!isset($appUid) && $appUid == '') || (!isset($accion) && $accion == ''))  {
+            return true;
+        }
+
+        $oApp    = new Application;
+        $aFields = $oApp->Load($appUid);
+        $proUid  = $aFields['PRO_UID'];
+        
+        require_once ( "classes/model/Process.php" );
+        $appProcess    = new Process();
+        $webBotTrigger = $appProcess->getTriggerWebBotProcess($proUid, $accion);
+
+        if ($execute != false && $execute != '') {
+            global $oPMScript;
+            $oPMScript = new PMScript();
+            $oPMScript->setFields($aFields);
+            $oPMScript->setScript($webBotTrigger);
+            $oPMScript->execute();
+            return $execute;
+        }
+        return false;
     }
 }
