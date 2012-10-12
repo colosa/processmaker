@@ -74,7 +74,12 @@ if ($fields['AUTH_SOURCE_PROVIDER'] == 'ldap' ) {
 }
 else {
   if (file_exists(PATH_PLUGINS . $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml')) {
-    $G_PUBLISH->AddContent('xmlform', 'xmlform', $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml', '', $fields, '../authSources/authSources_Save');
+    if (class_exists($fields['AUTH_SOURCE_PROVIDER'])) {
+      $G_PUBLISH->AddContent('xmlform', 'xmlform', $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml', '', $fields, '../authSources/authSources_Save');
+    }
+    else {
+      $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showMessage', '', array('MESSAGE' => G::LoadTranslation('ID_AUTH_SOURCE_MISSING')));
+    }
   }
   else {
     if (file_exists(PATH_XMLFORM . 'authSources/' . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml')) {
