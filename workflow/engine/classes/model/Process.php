@@ -775,18 +775,18 @@ class Process extends BaseProcess {
   	return $aProc;
   }
 
-  function getTriggerWebBotProcess ($proUid, $accion)
+  function getTriggerWebBotProcess ($proUid, $action)
   { 
     require_once ("classes/model/Triggers.php");
 
-    if ((!isset($proUid) && $proUid == '') || (!isset($accion) && $accion == ''))  {
+    if ((!isset($proUid) && $proUid == '') || (!isset($action) && $action == ''))  {
       return false;
     }
 
-    $accion = G::toUpper($accion);
+    $action = G::toUpper($action);
     $idTrigger = '';
 
-    switch ($accion) {
+    switch ($action) {
       case 'DELETED':
         $var = ProcessPeer::PRO_TRI_DELETED;
         break;
@@ -806,12 +806,11 @@ class Process extends BaseProcess {
     $oCriteria->addJoin($var, TriggersPeer::TRI_UID, Criteria::LEFT_JOIN);
     $oCriteria->add(ProcessPeer::PRO_UID, $proUid);
     $oDataSet = ProcessPeer::doSelectRS($oCriteria);
-    G::pr($oDataSet);
-    die;
+    
     $oDataSet->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     if ($oDataSet->next()) {
       $row = $oDataSet->getRow();
-      $idTrigger = $row['PRO_TRI_'.$accion];
+      $idTrigger = $row['PRO_TRI_'.$action];
     }
     return $idTrigger;
   }

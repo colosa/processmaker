@@ -6155,27 +6155,29 @@ class Cases
         return $response;
     }
 
-    public function getExecuteTriggerProcess($appUid, $accion)
+    public function getExecuteTriggerProcess($appUid, $action)
     {
-        if ((!isset($appUid) && $appUid == '') || (!isset($accion) && $accion == ''))  {
-            return true;
+        if ((!isset($appUid) && $appUid == '') || (!isset($action) && $action == ''))  {
+            return false;
         }
 
-        $oApp    = new Application;
-        $aFields = $oApp->Load($appUid);
+        $oApp    = new Application();
+        $aFields = $oApp->loadCase($appUid);
         $proUid  = $aFields['PRO_UID'];
         
         require_once ( "classes/model/Process.php" );
         $appProcess    = new Process();
-        $webBotTrigger = $appProcess->getTriggerWebBotProcess($proUid, $accion);
+        $webBotTrigger = $appProcess->getTriggerWebBotProcess($proUid, $action);
 
-        if ($execute != false && $execute != '') {
+        if ($webBotTrigger != false && $webBotTrigger != '') {
             global $oPMScript;
             $oPMScript = new PMScript();
             $oPMScript->setFields($aFields);
             $oPMScript->setScript($webBotTrigger);
             $oPMScript->execute();
-            return $execute;
+            $aFields['APP_DATA'] = array_merge($aFields['APP_DATA'], $oPMScript->aFields);
+            $caseInstance->updateCase($aFields['APP_UID'], $aFields);
+            return true;
         }
         return false;
     }
