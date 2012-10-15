@@ -52,6 +52,7 @@ EOT
 );
 CLI::taskArg('workspace', false);
 CLI::taskArg('backup-file', true);
+CLI::taskOpt("filesize", "Set the max size of the compressed splitted files, by default the max is 1000 Mb.", "s:","filesize=");
 CLI::taskRun(run_workspace_backup);
 
 CLI::taskName('workspace-restore');
@@ -70,6 +71,7 @@ CLI::taskArg('backup-file', false);
 CLI::taskArg('workspace', true);
 CLI::taskOpt("overwrite", "If a workspace already exists, overwrite it.", "o", "overwrite");
 CLI::taskOpt("info", "Only shows information about a backup archive.", "i");
+CLI::taskOpt("multiple", "Restore from multiple compresed enumerated files.", "m");
 CLI::taskOpt("workspace", "Select which workspace to restore if multiple workspaces are present in the archive.",
              "w:", "workspace=");
 CLI::taskRun(run_workspace_restore);
@@ -374,14 +376,33 @@ function run_workspace_backup($args, $opts) {
     if (!$workspace->workspaceExists())
       throw new Exception("Workspace '{$workspace->name}' not found");
   //If this is a relative path, put the file in the backups directory
-  if (strpos($filename, "/") === false && strpos($filename, '\\') === false)
+  if (strpos($filename, "/") === false && strpos($filename, '\\') === false){
     $filename = PATH_DATA . "backups/$filename";
+  }
   CLI::logging("Backing up to $filename\n");
-  $backup = workspaceTools::createBackup($filename);
+  
+  $filesize = array_key_exists("filesize", $opts) ? $opts['filesize'] : -1;
+  if($filesize >= 0)
+  {
+      if(!G::isLinuxOs()){
+            CLI::error("This is not a Linux enviroment, cannot use this filesize [-s] feature.\n");
+            return;
+      }
+      $multipleBackup = new multipleFilesBackup ($filename,$filesize);//if filesize is 0 the default size will be took
+      //using new method
+      foreach ($workspaces as $workspace){
+          $multipleBackup->addToBackup($workspace);
+      }
+      $multipleBackup->letsBackup();
+  }
+  else
+  {
+    //ansient method to backup into one large file
+    $backup = workspaceTools::createBackup($filename);
 
-  foreach ($workspaces as $workspace)
-    $workspace->backup($backup);
-
+    foreach ($workspaces as $workspace)
+      $workspace->backup($backup);
+  }
   CLI::logging("\n");
   workspaceTools::printSysInfo();
   foreach ($workspaces as $workspace) {
@@ -405,8 +426,29 @@ function run_workspace_restore($args, $opts) {
     CLI::logging("Restoring from $filename\n");
     $workspace = array_key_exists("workspace", $opts) ? $opts['workspace'] : NULL;
     $overwrite = array_key_exists("overwrite", $opts);
+    $multiple = array_key_exists("multiple", $opts);
     $dstWorkspace = $args[1];
-    workspaceTools::restore($filename, $workspace, $dstWorkspace, $overwrite);
+    if(!empty($multiple)){
+        if(!G::isLinuxOs()){
+            CLI::error("This is not a Linux enviroment, cannot use this multiple [-m] feature.\n");
+            return;
+        }
+        multipleFilesBackup::letsRestore ($filename,$workspace,$dstWorkspace,$overwrite);
+    }
+    else{
+        $anotherExtention = ".*"; //if there are files with and extra extention: e.g. <file>.tar.number
+        $multiplefiles = glob($filename . $anotherExtention);// example: //shared/workflow_data/backups/myWorkspace.tar.*
+        if(count($multiplefiles) > 0)
+        {
+            CLI::error("Processmaker found these files: .\n");
+            foreach($multiplefiles as $index => $value){
+                CLI::logging($value . "\n");
+            }
+            CLI::error("Please, you should use -m parameter to restore them.\n");
+            return;
+        }
+        workspaceTools::restore($filename, $workspace, $dstWorkspace, $overwrite);
+    }
   }
 }
 
