@@ -56,6 +56,12 @@ class workspaceTools {
      */
     public function upgrade($first=false, $buildCacheView=false, $workSpace=SYS_SYS)
     {
+        //setting flag to true to check into sysGeneric.php by usign G::virtualURI
+        date_default_timezone_get();
+        //$final = date('F d, Y h:i:s', mktime(date('h'), date('i')+3, date('s')+30,date("m"),date("d"),date("Y")));
+        //$_SERVER['timeRemainUpdate'] = $final;
+        $_SERVER['Updating'] = true;
+        //updating
         $start = microtime(true);
         CLI::logging("> Updating database...\n");
         $this->upgradeDatabase();
@@ -83,6 +89,8 @@ class workspaceTools {
         $stop = microtime(true);
         $final = $stop - $start;
         CLI::logging("<*>   Process Updating cache view carried out in $final seconds.\n");
+        //setting flag to false
+        $_SERVER['Updating'] = true;
     }
 
   /**
