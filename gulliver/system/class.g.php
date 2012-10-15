@@ -5430,6 +5430,23 @@ function getDirectorySize($path,$maxmtime=0)
 
         return $reservedWordsSql;
     }
+    
+    /**
+    * getMinText, Used with longer size labels to minimize them, don't like it but works.
+    *
+    * @text             Contains the text to be cut according to $maxTextLenght
+    * @maxTextLength    got the max length of the text.
+    * return            the min text plus '...'
+    */
+    function getMinText ($text,$maxTextLenght)
+    {
+        $points = "...";
+        $lengthPoints = strlen($points);
+        if(strlen($text) > $maxTextLenght){
+            $text = substr($text,0,$maxTextLenght - $lengthPoints) . $points;
+        }
+        return $text;//TODO: perhaps it shouls return an array to don't loose the original string text
+    }
 }
 
 /**
@@ -5514,4 +5531,3 @@ function __($msgID , $lang = SYS_LANG, $data = null)
 {
   return G::LoadTranslation($msgID, $lang, $data);
 }
-
