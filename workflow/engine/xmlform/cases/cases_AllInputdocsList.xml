@@ -11,7 +11,7 @@
 <DOWNLOAD_LABEL type="hidden" showInTable="0"/>
 
 
-<TITLE type="text" colWidth="10" titleAlign="left" align="left">
+<TITLE type="text" enableHtml="1" colWidth="10" titleAlign="left" align="left">
   <en>Filename</en>
 </TITLE>
 
