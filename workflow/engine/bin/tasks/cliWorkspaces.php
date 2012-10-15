@@ -436,6 +436,17 @@ function run_workspace_restore($args, $opts) {
         multipleFilesBackup::letsRestore ($filename,$workspace,$dstWorkspace,$overwrite);
     }
     else{
+        $anotherExtention = ".*"; //if there are files with and extra extention: e.g. <file>.tar.number
+        $multiplefiles = glob($filename . $anotherExtention);// example: //shared/workflow_data/backups/myWorkspace.tar.*
+        if(count($multiplefiles) > 0)
+        {
+            CLI::error("Processmaker found these files: .\n");
+            foreach($multiplefiles as $index => $value){
+                CLI::logging($value . "\n");
+            }
+            CLI::error("Please, you should use -m parameter to restore them.\n");
+            return;
+        }
         workspaceTools::restore($filename, $workspace, $dstWorkspace, $overwrite);
     }
   }
