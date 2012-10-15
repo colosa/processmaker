@@ -579,7 +579,8 @@ class Process extends BaseProcess {
       return 0;
   }
 
-  function getAllProcesses($start, $limit, $category=NULL, $processName=NULL, $counters = true) {
+  function getAllProcesses($start, $limit, $category=NULL, $processName=NULL, $counters = true) 
+  {
     require_once PATH_RBAC . "model/RbacUsers.php";
     require_once "classes/model/ProcessCategory.php";
     require_once "classes/model/Users.php";
@@ -784,7 +785,7 @@ class Process extends BaseProcess {
     }
 
     $action = G::toUpper($action);
-    $idTrigger = '';
+    $webBotTrigger = '';
 
     switch ($action) {
       case 'DELETED':
@@ -810,9 +811,9 @@ class Process extends BaseProcess {
     $oDataSet->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     if ($oDataSet->next()) {
       $row = $oDataSet->getRow();
-      $idTrigger = $row['PRO_TRI_'.$action];
+      $webBotTrigger = $row['TRI_WEBBOT'];
     }
-    return $idTrigger;
+    return $webBotTrigger;
   }
 
     public function memcachedDelete()
