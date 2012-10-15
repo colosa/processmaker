@@ -163,8 +163,8 @@ fieldName.focus();
 fieldName.select();
 leimnud.event.add(fieldName, 'change', {method:dynaformVerifyFieldName, instance:fieldName, event:true});
 
-leimnud.event.add(getField('PME_DEFAULTVALUE_SEL'), 'change', function() {
-  switch (this.value) {
+leimnud.event.add(getField('PME_DEFAULTVALUE_SEL'), 'change', function(){
+switch (getField('PME_DEFAULTVALUE_SEL').value) {
     case 'val':
       getField('PME_DEFAULTVALUE').value = '';
     showRowById('PME_DEFAULTVALUE');
@@ -177,9 +177,12 @@ leimnud.event.add(getField('PME_DEFAULTVALUE_SEL'), 'change', function() {
       getField('PME_DEFAULTVALUE').value = 'today';
       hideRowById('PME_DEFAULTVALUE');
     break;
-  }
-}.extend(getField('PME_DEFAULTVALUE_SEL')));
+  }}.extend(getField('PME_DEFAULTVALUE_SEL')));
 
+if (getField('PME_DEFAULTVALUE_SEL').value == 'today')
+{
+    getField('PME_DEFAULTVALUE').value = getField('PME_DEFAULTVALUE_SEL').value;
+}
 
 leimnud.event.add(getField('PME_RELATIVEDATE'), 'change', function() {
   switch (this.value) {
