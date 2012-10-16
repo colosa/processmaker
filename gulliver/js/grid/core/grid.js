@@ -685,8 +685,8 @@ var G_Grid = function(oForm, sGridName){
     //Set focus the first element in the grid
     for (var i = 0; i < this.aFields.length; i++) {
       var fieldName = 'form[' + sGridName + '][' + currentRow + '][' + this.aFields[i].sFieldName + ']';
-      if (this.aFields[i].sType != 'file' && document.getElementById(fieldName).focus) {
-        document.getElementById(fieldName).focus();
+      if (this.aFields[i].sType != 'file' && this.aFields[i].sType != 'hidden' && document.getElementById(fieldName).focus) {
+        document.getElementById(fieldName).focus();console.log(fieldName);
         break;
       }
     }
