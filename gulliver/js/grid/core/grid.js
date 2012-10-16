@@ -685,6 +685,13 @@ var G_Grid = function(oForm, sGridName){
     if (this.onaddrow) {
       this.onaddrow(currentRow);
     }
+    var newInputs = oNewRow.getElementsByTagName('input');
+    for (var i = 0; i < newInputs.length; i++) {
+      if (typeof(newInputs[i]) != 'undefined' && newInputs[i].type != 'hidden') {
+        newInputs[i].focus();
+        break;
+      }
+    }
   };
 
   this.deleteGridRow = function (sRow, bWithoutConfirm)
