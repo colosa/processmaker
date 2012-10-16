@@ -82,12 +82,11 @@ class processMap
    * @param string $sTask
    * @return string
    */
-
+    
     public function load ($sProcessUID, $bView = false, $sApplicationUID = '', $iDelegation = 0, $sTask = '', $bCT = false)
     {
         try {
             $oProcess = new Process();
-
             $aRow = $oProcess->load( $sProcessUID );
             $oPM->title->label = strip_tags( $aRow['PRO_TITLE'] );
             $oPM->title->position->x = $aRow['PRO_TITLE_X'];
@@ -103,12 +102,9 @@ class processMap
             $oCriteria->addSelectColumn( TaskPeer::TAS_COLOR );
             $oCriteria->addSelectColumn( TaskPeer::TAS_TYPE );
             $aConditions = array ();
-            $aConditions[] = array (0 => TaskPeer::TAS_UID,1 => ContentPeer::CON_ID
-            );
-            $aConditions[] = array (0 => ContentPeer::CON_CATEGORY,1 => DBAdapter::getStringDelimiter() . 'TAS_TITLE' . DBAdapter::getStringDelimiter()
-            );
-            $aConditions[] = array (0 => ContentPeer::CON_LANG,1 => DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter()
-            );
+            $aConditions[] = array (0 => TaskPeer::TAS_UID,1 => ContentPeer::CON_ID);
+            $aConditions[] = array (0 => ContentPeer::CON_CATEGORY,1 => DBAdapter::getStringDelimiter() . 'TAS_TITLE' . DBAdapter::getStringDelimiter());
+            $aConditions[] = array (0 => ContentPeer::CON_LANG,1 => DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter());
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( TaskPeer::PRO_UID, $sProcessUID );
             $oDataset = TaskPeer::doSelectRS( $oCriteria );
@@ -130,18 +126,13 @@ class processMap
                     $del = DBAdapter::getStringDelimiter();
                     $oCriteria->add( SubProcessPeer::PRO_PARENT, $aRow1['PRO_UID'] );
                     $oCriteria->add( SubProcessPeer::TAS_PARENT, $aRow1['TAS_UID'] );
-
                     $oCriteria->addAsColumn( 'TAS_TITLE', 'C1.CON_VALUE' );
                     $oCriteria->addAlias( "C1", 'CONTENT' );
                     $tasTitleConds = array ();
-                    $tasTitleConds[] = array (SubProcessPeer::TAS_PARENT,'C1.CON_ID'
-                    );
-                    $tasTitleConds[] = array ('C1.CON_CATEGORY',$del . 'TAS_TITLE' . $del
-                    );
-                    $tasTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del
-                    );
+                    $tasTitleConds[] = array (SubProcessPeer::TAS_PARENT,'C1.CON_ID');
+                    $tasTitleConds[] = array ('C1.CON_CATEGORY',$del . 'TAS_TITLE' . $del);
+                    $tasTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del);
                     $oCriteria->addJoinMC( $tasTitleConds, Criteria::LEFT_JOIN );
-
                     $oDatasetX = SubProcessPeer::doSelectRS( $oCriteria );
                     $oDatasetX->setFetchmode( ResultSet::FETCHMODE_ASSOC );
                     $oDatasetX->next();
@@ -165,6 +156,7 @@ class processMap
                 $oDataset2 = RoutePeer::doSelectRS( $oCriteria );
                 $oDataset2->setFetchmode( ResultSet::FETCHMODE_ASSOC );
                 $oDataset2->next();
+                
                 while ($aRow2 = $oDataset2->getRow()) {
                     switch ($aRow2['ROU_TYPE']) {
                         case 'SEQUENTIAL':
@@ -272,7 +264,7 @@ class processMap
                         }
                     }
                 }
-
+                
                 $msg = array ();
                 G::LoadClass( 'derivation' );
                 $Derivation = new Derivation();
@@ -282,7 +274,7 @@ class processMap
                     $sw_error = true;
                     $msg[] = G::LoadTranslation( 'ID_NO_USERS' );
                 }
-
+                
                 G::LoadClass( 'ArrayPeer' );
                 $stepsCriteria = $this->getStepsCriteria( $aRow1['TAS_UID'] );
                 $oDatasetSteps = ArrayBasePeer::doSelectRS( $stepsCriteria );
@@ -292,7 +284,7 @@ class processMap
                 $countOutput = 0;
                 $countInput = 0;
                 $countExternal = 0;
-
+                
                 while ($aRowSteps = $oDatasetSteps->getRow()) {
                     switch ($aRowSteps['STEP_TYPE_OBJ']) {
                         case 'DYNAFORM':
@@ -316,10 +308,9 @@ class processMap
                     $msg[] = G::LoadTranslation( 'ID_TASK_NO_STEPS' );
                 }
                 if ($sw_error) {
-                    $oTask->statusIcons[] = array ('label' => implode( ",", $msg ),'icon' => '/images/alert.gif','message' => implode( ", ", $msg ),'url' => ''
-                    );
+                    $oTask->statusIcons[] = array ('label' => implode( ",", $msg ),'icon' => '/images/alert.gif','message' => implode( ", ", $msg ),'url' => '' );
                 }
-
+                
                 $oPM->task[] = $oTask;
                 $oDataset->next();
             }
@@ -340,12 +331,9 @@ class processMap
             $oCriteria->addSelectColumn( SwimlanesElementsPeer::SWI_X );
             $oCriteria->addSelectColumn( SwimlanesElementsPeer::SWI_Y );
             $aConditions = array ();
-            $aConditions[] = array (0 => SwimlanesElementsPeer::SWI_UID,1 => ContentPeer::CON_ID
-            );
-            $aConditions[] = array (0 => ContentPeer::CON_CATEGORY,1 => DBAdapter::getStringDelimiter() . 'SWI_TEXT' . DBAdapter::getStringDelimiter()
-            );
-            $aConditions[] = array (0 => ContentPeer::CON_LANG,1 => DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter()
-            );
+            $aConditions[] = array (0 => SwimlanesElementsPeer::SWI_UID,1 => ContentPeer::CON_ID );
+            $aConditions[] = array (0 => ContentPeer::CON_CATEGORY,1 => DBAdapter::getStringDelimiter() . 'SWI_TEXT' . DBAdapter::getStringDelimiter() );
+            $aConditions[] = array (0 => ContentPeer::CON_LANG,1 => DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter() );
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( SwimlanesElementsPeer::PRO_UID, $sProcessUID );
             $oDataset = SwimlanesElementsPeer::doSelectRS( $oCriteria );
@@ -372,9 +360,8 @@ class processMap
                 }
                 $oDataset->next();
             }
-            $oPM->derivation = array ('Sequential','Evaluate (manual)','Evaluate (auto)','Parallel (fork)','Parallel by evaluation (fork)','Parallel (sequential join)','Parallel (sequential main join)'
-            );
-
+            $oPM->derivation = array ('Sequential','Evaluate (manual)','Evaluate (auto)','Parallel (fork)','Parallel by evaluation (fork)','Parallel (sequential join)','Parallel (sequential main join)' );
+            
             //Load extended task properties from plugin. By JHL Jan 18, 2011
             $oPluginRegistry = & PMPluginRegistry::getSingleton();
             $activePluginsForTaskProperties = $oPluginRegistry->getTaskExtendedProperties();
@@ -384,20 +371,20 @@ class processMap
                 $taskOption['id'] = $taskPropertiesInfo->sNamespace . "--" . $taskPropertiesInfo->sName;
                 $oPM->taskOptions[] = $taskOption;
             }
-
+            
             $oJSON = new Services_JSON();
             return $oJSON->encode( $oPM );
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     /*
    * Create a Process
    * @param array $aData
    * @return boolean
    */
-
+    
     public function createProcess ($aData)
     {
         try {
@@ -407,13 +394,13 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Update a Process
    * @param array $aData
    * @return boolean
    */
-
+    
     public function updateProcess ($aData)
     {
         try {
@@ -424,52 +411,48 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Edit the Process Map information
    * @param string $sProcessUID
    * @return boolean
    */
-
+    
     public function editProcess ($sProcessUID)
     {
         try {
             $oProcess = new Process();
-
+            
             if (! is_null( $oProcess )) {
                 G::loadClass( 'processes' );
                 $calendar = new Calendar();
                 $files = Processes::getProcessFiles( $sProcessUID, 'mail' );
-
+                
                 $templates = array ();
                 $templates[] = 'dummy';
-
+                
                 foreach ($files as $file) {
-                    $templates[] = array ('FILE' => $file['filename'],'NAME' => $file['filename']
+                    $templates[] = array ('FILE' => $file['filename'],'NAME' => $file['filename'] 
                     );
                 }
-
+                
                 $calendarObj = $calendar->getCalendarList( true, true );
-
+                
                 global $_DBArray;
                 $_DBArray['_TEMPLATES1'] = $templates;
                 $_DBArray['availableCalendars'] = $calendarObj['array'];
                 $_SESSION['_DBArray'] = $_DBArray;
-
                 $aFields = $oProcess->load( $sProcessUID );
                 $aFields['PRO_SUMMARY_DYNAFORM'] = (isset( $aFields['PRO_DYNAFORMS']['PROCESS'] ) ? $aFields['PRO_DYNAFORMS']['PROCESS'] : '');
                 $aFields['THETYPE'] = 'UPDATE';
                 $calendarInfo = $calendar->getCalendarFor( $sProcessUID, $sProcessUID, $sProcessUID );
-
                 //If the function returns a DEFAULT calendar it means that this object doesn't have assigned any calendar
                 $aFields['PRO_CALENDAR'] = $calendarInfo['CALENDAR_APPLIED'] != 'DEFAULT' ? $calendarInfo['CALENDAR_UID'] : "";
                 $aFields['SYS_LANG'] = SYS_LANG;
-
                 global $G_PUBLISH;
                 $G_PUBLISH = new Publisher();
                 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'processes/processes_Edit', '', $aFields, 'processes_Save' );
                 G::RenderPage( 'publish', 'raw' );
-
                 return true;
             } else {
                 throw (new Exception( 'This row doesn\'t exist!' ));
@@ -478,13 +461,13 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Delete a Process
    * @param string $sProcessUID
    * @return boolean
    */
-
+    
     public function deleteProcess ($sProcessUID)
     {
         try {
@@ -556,7 +539,7 @@ class processMap
                 $oOutputDocument->remove( $aRow['OUT_DOC_UID'] );
                 $oDataset->next();
             }
-
+            
             //Delete the triggers of process
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( TriggersPeer::PRO_UID, $sProcessUID );
@@ -567,7 +550,7 @@ class processMap
                 $oTrigger->remove( $aRow['TRI_UID'] );
                 $oDataset->next();
             }
-
+            
             //Delete the routes of process
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( RoutePeer::PRO_UID, $sProcessUID );
@@ -578,7 +561,7 @@ class processMap
                 $oRoute->remove( $aRow['ROU_UID'] );
                 $oDataset->next();
             }
-
+            
             //Delete the gateways of process
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( GatewayPeer::PRO_UID, $sProcessUID );
@@ -589,7 +572,7 @@ class processMap
                 $oGateway->remove( $aRow['GAT_UID'] );
                 $oDataset->next();
             }
-
+            
             //Delete the Event of process
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( EventPeer::PRO_UID, $sProcessUID );
@@ -600,7 +583,7 @@ class processMap
                 $oEvent->remove( $aRow['EVN_UID'] );
                 $oDataset->next();
             }
-
+            
             //Delete the swimlanes elements of process
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( SwimlanesElementsPeer::PRO_UID, $sProcessUID );
@@ -628,7 +611,7 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-
+                
                 /**
                  * note added by gustavo cruz gustavo-at-colosa-dot-com 27-01-2010
                  * in order to solve the bug 0004389, we use the validation function Exists
@@ -693,7 +676,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Save the process title position
    * @param string sProcessUID
@@ -701,7 +684,7 @@ class processMap
    * @param integer $iY
    * @return boolean
    */
-
+    
     public function saveTitlePosition ($sProcessUID = '', $iX = 0, $iY = 0)
     {
         try {
@@ -716,14 +699,14 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Steps of Tasks
    * @param string $sProcessUID
    * @param string $sTaskUID
    * @return boolean
    */
-
+    
     public function steps ($sProcessUID = '', $sTaskUID = '')
     {
         try {
@@ -744,23 +727,22 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Return the steps list criteria object
    * @param string $sTaskUID
    * @return array
    */
-
+    
     public function getStepsCriteria ($sTaskUID = '')
     {
         try {
             //call plugin
             $oPluginRegistry = &PMPluginRegistry::getSingleton();
             $externalSteps = $oPluginRegistry->getSteps();
-
+            
             $aSteps = array ();
-            $aSteps[] = array ('STEP_TITLE' => 'char','STEP_UID' => 'char','STEP_TYPE_OBJ' => 'char','STEP_CONDITION' => 'char','STEP_POSITION' => 'integer'
-            );
+            $aSteps[] = array ('STEP_TITLE' => 'char','STEP_UID' => 'char','STEP_TYPE_OBJ' => 'char','STEP_CONDITION' => 'char','STEP_POSITION' => 'integer' );
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( StepPeer::TAS_UID, $sTaskUID );
             $oCriteria->addAscendingOrderByColumn( StepPeer::STEP_POSITION );
@@ -770,7 +752,7 @@ class processMap
             while ($aRow = $oDataset->getRow()) {
                 $urlEdit = '';
                 $linkEditValue = '';
-
+                
                 switch ($aRow['STEP_TYPE_OBJ']) {
                     case 'DYNAFORM':
                         $oDynaform = new Dynaform();
@@ -796,7 +778,7 @@ class processMap
                     case 'OUTPUT_DOCUMENT':
                         $oOutputDocument = new OutputDocument();
                         $aFields = $oOutputDocument->getByUid( $aRow['STEP_UID_OBJ'] );
-
+                        
                         if ($aFields === false)
                             continue;
                         $sTitle = $aFields['OUT_DOC_TITLE'];
@@ -817,11 +799,10 @@ class processMap
                         }
                         break;
                 }
-                $aSteps[] = array ('STEP_TITLE' => $sTitle,'STEP_UID' => $aRow['STEP_UID'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_CONDITION' => $aRow['STEP_CONDITION'],'STEP_POSITION' => $aRow['STEP_POSITION'],'urlEdit' => $urlEdit,'linkEditValue' => $linkEditValue,'PRO_UID' => $aRow['PRO_UID']
-                );
+                $aSteps[] = array ('STEP_TITLE' => $sTitle,'STEP_UID' => $aRow['STEP_UID'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_CONDITION' => $aRow['STEP_CONDITION'],'STEP_POSITION' => $aRow['STEP_POSITION'],'urlEdit' => $urlEdit,'linkEditValue' => $linkEditValue,'PRO_UID' => $aRow['PRO_UID'] );
                 $oDataset->next();
             }
-
+            
             global $_DBArray;
             $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
             $_DBArray['steps'] = $aSteps;
@@ -835,7 +816,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Return the step triggers list criteria object
    * @param string $sStepUID
@@ -843,7 +824,7 @@ class processMap
    * @param string $sType
    * @return object
    */
-
+    
     public function getStepTriggersCriteria ($sStepUID = '', $sTaskUID = '', $sType = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -856,12 +837,9 @@ class processMap
         $oCriteria->addAsColumn( 'TRI_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (StepTriggerPeer::TRI_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (StepTriggerPeer::TRI_UID,'C.CON_ID' );
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter );
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( StepTriggerPeer::STEP_UID, $sStepUID );
         $oCriteria->add( StepTriggerPeer::TAS_UID, $sTaskUID );
@@ -869,14 +847,14 @@ class processMap
         $oCriteria->addAscendingOrderByColumn( StepTriggerPeer::ST_POSITION );
         return $oCriteria;
     }
-
+    
     /*
    * Return the available building blocks list criteria object
    * @param string $sProcessUID
    * @param string $sTaskUID
    * @return object
    */
-
+    
     public function getAvailableBBCriteria ($sProcessUID = '', $sTaskUID = '')
     {
         try {
@@ -887,20 +865,16 @@ class processMap
                 $sUIDs[] = $aStep['STEP_UID_OBJ'];
             }
             $aBB = array ();
-            $aBB[] = array ('STEP_UID' => 'char','STEP_TITLE' => 'char','STEP_TYPE_OBJ' => 'char','STEP_MODE' => 'char'
-            );
+            $aBB[] = array ('STEP_UID' => 'char','STEP_TITLE' => 'char','STEP_TYPE_OBJ' => 'char','STEP_MODE' => 'char' );
             $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addSelectColumn( DynaformPeer::DYN_UID );
             $oCriteria->addAsColumn( 'DYN_TITLE', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID' );
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter );
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
             $oCriteria->add( DynaformPeer::DYN_UID, $sUIDs, Criteria::NOT_IN );
@@ -917,7 +891,7 @@ class processMap
                 $aBB[] = array ('STEP_UID' => $aRow['DYN_UID'],'STEP_TITLE' => $aRow['DYN_TITLE'],'STEP_TYPE_OBJ' => 'DYNAFORM','STEP_MODE' => '<select id="STEP_MODE_' . $aRow['DYN_UID'] . '">
                                             <option value="EDIT">Edit</option>
                                             <option value="VIEW">View</option>
-                                           </select>'
+                                           </select>' 
                 );
                 $oDataset->next();
             }
@@ -926,12 +900,9 @@ class processMap
             $oCriteria->addAsColumn( 'INP_DOC_TITLE', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID' );
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter );
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( InputDocumentPeer::PRO_UID, $sProcessUID );
             $oCriteria->add( InputDocumentPeer::INP_DOC_UID, $sUIDs, Criteria::NOT_IN );
@@ -939,11 +910,11 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-
+                
                 if (($aRow['INP_DOC_TITLE'] == null) || ($aRow['INP_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                     $aRow['INP_DOC_TITLE'] = Content::Load( "INP_DOC_TITLE", "", $aRow['INP_DOC_UID'], SYS_LANG );
                 }
-                $aBB[] = array ('STEP_UID' => $aRow['INP_DOC_UID'],'STEP_TITLE' => $aRow['INP_DOC_TITLE'],'STEP_TYPE_OBJ' => 'INPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['INP_DOC_UID'] . '">'
+                $aBB[] = array ('STEP_UID' => $aRow['INP_DOC_UID'],'STEP_TITLE' => $aRow['INP_DOC_TITLE'],'STEP_TYPE_OBJ' => 'INPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['INP_DOC_UID'] . '">' 
                 );
                 $oDataset->next();
             }
@@ -952,12 +923,9 @@ class processMap
             $oCriteria->addAsColumn( 'OUT_DOC_TITLE', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C.CON_ID' );
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter );
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( OutputDocumentPeer::PRO_UID, $sProcessUID );
             $oCriteria->add( OutputDocumentPeer::OUT_DOC_UID, $sUIDs, Criteria::NOT_IN );
@@ -965,21 +933,21 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-
+                
                 if (($aRow['OUT_DOC_TITLE'] == null) || ($aRow['OUT_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                     $aRow['OUT_DOC_TITLE'] = Content::Load( "OUT_DOC_TITLE", "", $aRow['OUT_DOC_UID'], SYS_LANG );
                 }
-                $aBB[] = array ('STEP_UID' => $aRow['OUT_DOC_UID'],'STEP_TITLE' => $aRow['OUT_DOC_TITLE'],'STEP_TYPE_OBJ' => 'OUTPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['OUT_DOC_UID'] . '">'
+                $aBB[] = array ('STEP_UID' => $aRow['OUT_DOC_UID'],'STEP_TITLE' => $aRow['OUT_DOC_TITLE'],'STEP_TYPE_OBJ' => 'OUTPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['OUT_DOC_UID'] . '">' 
                 );
                 $oDataset->next();
             }
-
+            
             //call plugin
             $oPluginRegistry = &PMPluginRegistry::getSingleton();
             $externalSteps = $oPluginRegistry->getSteps();
             if (is_array( $externalSteps ) && count( $externalSteps ) > 0) {
                 foreach ($externalSteps as $key => $stepVar) {
-                    $aBB[] = array ('STEP_UID' => $stepVar->sStepId,'STEP_TITLE' => $stepVar->sStepTitle,'STEP_TYPE_OBJ' => 'EXTERNAL','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $stepVar->sStepId . '">'
+                    $aBB[] = array ('STEP_UID' => $stepVar->sStepId,'STEP_TITLE' => $stepVar->sStepTitle,'STEP_TYPE_OBJ' => 'EXTERNAL','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $stepVar->sStepId . '">' 
                     );
                 }
             }
@@ -997,14 +965,14 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Users assigned to Tasks
    * @param string $sProcessUID
    * @param string $sTaskUID
    * @return boolean
    */
-
+    
     public function users ($sProcessUID = '', $sTaskUID = '')
     {
         try {
@@ -1012,15 +980,15 @@ class processMap
             $aFields = $oProcess->load( $sProcessUID );
             $oTask = new Task();
             $aFields = $oTask->load( $sTaskUID );
-
+            
             $_SESSION['iType'] = 1;
-
+            
             $aFields['TASK'] = $sTaskUID;
             $aFields['TYPE'] = $_SESSION['iType'];
             $aFields['OF_TO_ASSIGN'] = G::LoadTranslation( 'ID_DE_ASSIGN' );
             $aFields['CONFIRM'] = G::LoadTranslation( 'ID_MSG_CONFIRM_DEASIGN_USER_GROUP_MESSAGE' );
             $aFields['UIDS'] = "'0'";
-
+            
             $oTasks = new Tasks();
             $oGroups = new Groups();
             $aAux1 = $oTasks->getGroupsOfTask( $sTaskUID, $_SESSION['iType'] );
@@ -1034,27 +1002,27 @@ class processMap
             $G_PUBLISH = new Publisher();
             $oTask = new Task();
             $aTask = $oTask->load( $sTaskUID );
-
+            
             if ($aFields['TAS_TYPE'] == 'TRUE') {
                 $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'users/users_ShortList', $this->getTaskUsersCriteria( $sTaskUID, $_SESSION['iType'] ), $aFields );
             } else {
                 $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'users/users_ShortList2', $this->getTaskUsersCriteria( $sTaskUID, $_SESSION['iType'] ), $aFields );
             }
-
+            
             G::RenderPage( 'publish', 'raw' );
             return true;
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     /*
    * Users Adhoc assigned to Tasks
    * @param string $sProcessUID
    * @param string $sTaskUID
    * @return boolean
    */
-
+    
     public function users_adhoc ($sProcessUID = '', $sTaskUID = '')
     {
         try {
@@ -1062,15 +1030,15 @@ class processMap
             $aFields = $oProcess->load( $sProcessUID );
             $oTask = new Task();
             $aFields = $oTask->load( $sTaskUID );
-
+            
             $_SESSION['iType'] = 2;
-
+            
             $aFields['TASK'] = $sTaskUID;
             $aFields['TYPE'] = $_SESSION['iType'];
             $aFields['OF_TO_ASSIGN'] = G::LoadTranslation( 'ID_DE_ASSIGN' );
             $aFields['CONFIRM'] = G::LoadTranslation( 'ID_MSG_CONFIRM_DEASIGN_USER_GROUP_MESSAGE' );
             $aFields['UIDS'] = "'0'";
-
+            
             $oTasks = new Tasks();
             $oGroups = new Groups();
             $aAux1 = $oTasks->getGroupsOfTask( $sTaskUID, $_SESSION['iType'] );
@@ -1084,29 +1052,28 @@ class processMap
             $G_PUBLISH = new Publisher();
             $oTask = new Task();
             $aTask = $oTask->load( $sTaskUID );
-
+            
             $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'users/users_ShortListAdhoc', $this->getTaskUsersCriteria( $sTaskUID, $_SESSION['iType'] ), $aFields );
-
+            
             G::RenderPage( 'publish', 'raw' );
             return true;
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     /*
    * Return the tasks users list criteria object
    * @param string $sTaskUID
    * @param integer $iType
    * @return array
    */
-
+    
     public function getTaskUsersCriteria ($sTaskUID = '', $iType = 1)
     {
         try {
             $aUsers = array ();
-            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer'
-            );
+            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer' );
             $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addAsColumn( 'GRP_TITLE', 'C.CON_VALUE' );
@@ -1116,12 +1083,9 @@ class processMap
             $oCriteria->addSelectColumn( TaskUserPeer::TU_RELATION );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (TaskUserPeer::USR_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (TaskUserPeer::USR_UID,'C.CON_ID' );
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter );
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( TaskUserPeer::TAS_UID, $sTaskUID );
             $oCriteria->add( TaskUserPeer::TU_TYPE, $iType );
@@ -1145,8 +1109,7 @@ class processMap
                 } else {
                     $aRow2['GROUP_INACTIVE'] = '<strong>(' . G::LoadTranslation( 'ID_GROUP_INACTIVE' ) . ')</strong>';
                 }
-                $aUsers[] = array ('LABEL' => (! isset( $aRow2['GROUP_INACTIVE'] ) ? $aRow['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $aRow['USR_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>' : $aRow['GRP_TITLE'] . ' ' . $aRow2['GROUP_INACTIVE']),'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION']
-                );
+                $aUsers[] = array ('LABEL' => (! isset( $aRow2['GROUP_INACTIVE'] ) ? $aRow['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $aRow['USR_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>' : $aRow['GRP_TITLE'] . ' ' . $aRow2['GROUP_INACTIVE']),'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION'] );
                 $oDataset->next();
             }
             $oCriteria = new Criteria( 'workflow' );
@@ -1164,8 +1127,7 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION']
-                );
+                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION'] );
                 $oDataset->next();
             }
             global $_DBArray;
@@ -1182,14 +1144,14 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Return the available users and users groups list criteria object
    * @param string $sTaskUID
    * @param integer $iType
    * @return object
    */
-
+    
     public function getAvailableUsersCriteria ($sTaskUID = '', $iType = 1)
     {
         try {
@@ -1205,8 +1167,7 @@ class processMap
                 $aUIDS2[] = $aUser['USR_UID'];
             }
             $aUsers = array ();
-            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer'
-            );
+            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer');
             $sDelimiter = DBAdapter::getStringDelimiter();
             $groups = new Groupwf();
             $start = '';
@@ -1223,8 +1184,7 @@ class processMap
                 $oDataset2->setFetchmode( ResultSet::FETCHMODE_ASSOC );
                 $oDataset2->next();
                 $aRow2 = $oDataset2->getRow();
-                $aUsers[] = array ('LABEL' => $results['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $results['GRP_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>','TAS_UID' => $sTaskUID,'USR_UID' => $results['GRP_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 2
-                );
+                $aUsers[] = array ('LABEL' => $results['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $results['GRP_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>','TAS_UID' => $sTaskUID,'USR_UID' => $results['GRP_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 2 );
             }
             $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria( 'workflow' );
@@ -1237,8 +1197,7 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $sTaskUID,'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 1
-                );
+                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $sTaskUID,'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 1 );
                 $oDataset->next();
             }
             global $_DBArray;
@@ -1255,14 +1214,14 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Conditions of the steps
    * @param string $sProcessUID
    * @param string $sTaskUID
    * @return boolean
    */
-
+    
     public function stepsConditions ($sProcessUID = '', $sTaskUID = '')
     {
         try {
@@ -1270,7 +1229,7 @@ class processMap
             $aFields = $oProcess->load( $sProcessUID );
             $oTask = new Task();
             $aFields = $oTask->load( $sTaskUID );
-
+            
             $aFields['PROCESS'] = $sProcessUID;
             $aFields['TASK'] = $sTaskUID;
             global $G_PUBLISH;
@@ -1282,14 +1241,14 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Triggers of the steps
    * @param string $sProcessUID
    * @param string $sTaskUID
    * @return boolean
    */
-
+    
     public function stepsTriggers ($sProcessUID = '', $sTaskUID = '')
     {
         try {
@@ -1297,7 +1256,7 @@ class processMap
             $aFields = $oProcess->load( $sProcessUID );
             $oTask = new Task();
             $aFields = $oTask->load( $sTaskUID );
-
+            
             $_SESSION['PROCESS'] = $sProcessUID;
             $_SESSION['TASK'] = $sTaskUID;
             global $G_PUBLISH;
@@ -1309,7 +1268,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Add a new task
    * @param string $sProcessUID
@@ -1317,7 +1276,7 @@ class processMap
    * @param integer $iY
    * @return string
    */
-
+    
     public function addTask ($sProcessUID = '', $iX = 0, $iY = 0, $iWidth = 165, $iHeight = 40)
     {
         try {
@@ -1326,40 +1285,40 @@ class processMap
             $oCriteria->add( TaskPeer::PRO_UID, $sProcessUID );
             $oDataset = TaskPeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-
+            
             $aTasks = array ();
             $iTaskNumber = 0;
-
+            
             while ($oDataset->next()) {
                 $aRow = $oDataset->getRow();
-
+                
                 $aTasks[] = $aRow["TAS_UID"];
                 $iTaskNumber = $iTaskNumber + 1;
             }
-
+            
             if ($iTaskNumber > 0) {
                 $criteria = new Criteria( "workflow" );
-
+                
                 $criteria->addSelectColumn( ContentPeer::CON_LANG );
                 $criteria->addSelectColumn( ContentPeer::CON_VALUE );
                 $criteria->add( ContentPeer::CON_ID, $aTasks, Criteria::IN );
                 $criteria->add( ContentPeer::CON_CATEGORY, "TAS_TITLE" );
-
+                
                 $rsSQLCON = ContentPeer::doSelectRS( $criteria );
                 $rsSQLCON->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-
+                
                 $numMaxLang = 0;
                 $numMax = 0;
-
+                
                 while ($rsSQLCON->next()) {
                     $row = $rsSQLCON->getRow();
-
+                    
                     $conLang = $row["CON_LANG"];
                     $conValue = $row["CON_VALUE"];
-
+                    
                     if (preg_match( "/^\S+\s(\d+)$/", $conValue, $matches )) {
                         $n = intval( $matches[1] );
-
+                        
                         if ($conLang == SYS_LANG) {
                             if ($n > $numMaxLang) {
                                 $numMaxLang = $n;
@@ -1371,11 +1330,11 @@ class processMap
                         }
                     }
                 }
-
+                
                 if ($numMaxLang > 0) {
                     $numMax = $numMaxLang;
                 }
-
+                
                 if ($numMax > 0 && $numMax > $iTaskNumber) {
                     $iTaskNumber = $numMax + 1;
                 } else {
@@ -1384,28 +1343,26 @@ class processMap
             } else {
                 $iTaskNumber = 1;
             }
-
+            
             $oTask = new Task();
             $oNewTask->label = G::LoadTranslation( 'ID_TASK' ) . ' ' . $iTaskNumber;
-            $oNewTask->uid = $oTask->create( array ('PRO_UID' => $sProcessUID,'TAS_TITLE' => $oNewTask->label,'TAS_POSX' => $iX,'TAS_POSY' => $iY,'TAS_WIDTH' => $iWidth,'TAS_HEIGHT' => $iHeight
-            ) );
+            $oNewTask->uid = $oTask->create( array ('PRO_UID' => $sProcessUID,'TAS_TITLE' => $oNewTask->label,'TAS_POSX' => $iX,'TAS_POSY' => $iY,'TAS_WIDTH' => $iWidth,'TAS_HEIGHT' => $iHeight) );
             $oNewTask->statusIcons = array ();
-            $oNewTask->statusIcons[] = array ('label' => '','icon' => '/images/alert.gif','message' => '','url' => ''
-            );
+            $oNewTask->statusIcons[] = array ('label' => '','icon' => '/images/alert.gif','message' => '','url' => '');
             $oJSON = new Services_JSON();
-
+            
             return $oJSON->encode( $oNewTask );
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     /*
    * Edit the task properties
    * @param string $sTaskUID
    * @return boolean
    */
-
+    
     public function editTaskProperties ($sTaskUID = '', $iForm = 1, $iIndex = 0)
     {
         $sw_template = false;
@@ -1444,7 +1401,6 @@ class processMap
                             $sw_template = true;
                         }
                     }
-
                     //$sFilename = 'tasks/tasks_Owner.xml';
                     break;
             }
@@ -1453,26 +1409,22 @@ class processMap
             $aFields['INDEX'] = $iIndex;
             $aFields['IFORM'] = $iForm;
             $aFields['LANG'] = SYS_LANG;
-
+            
             /**
              * Task Notifications *
              */
             if ($iForm == 7 || $iForm == 1) {
                 G::loadClass( 'processes' );
                 $files = Processes::getProcessFiles( $aFields['PRO_UID'], 'mail' );
-
                 $templates = array ();
                 $templates[] = 'dummy';
-
                 foreach ($files as $file) {
-                    $templates[] = array ('FILE' => $file['filename'],'NAME' => $file['filename']
-                    );
+                    $templates[] = array ('FILE' => $file['filename'],'NAME' => $file['filename']);
                 }
-
                 global $_DBArray;
                 $_DBArray['_TEMPLATES1'] = $templates;
                 $_SESSION['_DBArray'] = $_DBArray;
-
+                
                 if ($iForm == 7) {
                     // Additional configuration
                     G::loadClass( 'configuration' );
@@ -1485,19 +1437,15 @@ class processMap
                     }
                 }
             }
-
+            
             if ($iForm == 3) { //Load Calendar Information
                 $calendar = new Calendar();
                 $calendarObj = $calendar->getCalendarList( true, true );
-
+                
                 global $_DBArray;
-
                 $_DBArray['availableCalendars'] = $calendarObj['array'];
-
                 $_SESSION['_DBArray'] = $_DBArray;
-
                 $calendarInfo = $calendar->getCalendarFor( $sTaskUID, $sTaskUID, $sTaskUID );
-
                 //If the function returns a DEFAULT calendar it means that this object doesn't have assigned any calendar
                 $aFields['TAS_CALENDAR'] = $calendarInfo['CALENDAR_APPLIED'] != 'DEFAULT' ? $calendarInfo['CALENDAR_UID'] : "";
             }
@@ -1509,14 +1457,14 @@ class processMap
             } else {
                 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $sFilename, '', $aFields );
             }
-
+            
             G::RenderPage( 'publish', 'raw' );
             return true;
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     /*
    * Save the tasks positions
    * @param string $sTaskUID
@@ -1524,13 +1472,13 @@ class processMap
    * @param integer $iY
    * @return integer
    */
-
+    
     public function saveTaskPosition ($sTaskUID = '', $iX = 0, $iY = 0)
     {
         try {
             $oTask = new Task();
             $aFields = $oTask->load( $sTaskUID );
-
+            
             $aFields['TAS_UID'] = $sTaskUID;
             $aFields['TAS_POSX'] = $iX;
             $aFields['TAS_POSY'] = $iY;
@@ -1539,13 +1487,13 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Delete a task
    * @param string $sTaskUID
    * @return boolean
    */
-
+    
     public function deleteTask ($sTaskUID = '')
     {
         try {
@@ -1556,14 +1504,14 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Delete a gateway
    * @param string $sProcessUID
    * @param string $sGatewayUID
    * @return boolean
    */
-
+    
     public function deleteGateway ($sProcessUID = '', $sGatewayUID = '')
     {
         try {
@@ -1579,7 +1527,7 @@ class processMap
                 $aRoutes[] = $aRow['ROU_UID'];
                 $oDataset->next();
             }
-
+            
             $oGateway = new Gateway();
             if ($oGateway->gatewayExists( $sGatewayUID )) {
                 $oTasks = new Tasks();
@@ -1596,14 +1544,14 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Add a gateway
    * @param string $sProcessUID
    * @param string $sGatewayUID
    * @return boolean
    */
-
+    
     public function addGateway ($oData)
     {
         try {
@@ -1632,7 +1580,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Add a new guide
    * @param string $sProcessUID
@@ -1640,7 +1588,7 @@ class processMap
    * @param string $sDirection
    * @return string
    */
-
+    
     public function addGuide ($sProcessUID = '', $iPosition = 0, $sDirection = 'vertical')
     {
         try {
@@ -1649,12 +1597,10 @@ class processMap
             $oSL = new SwimlanesElements();
             switch ($sDirection) {
                 case 'vertical':
-                    $oNewGuide->uid = $oSL->create( array ('PRO_UID' => $sProcessUID,'SWI_TYPE' => 'LINE','SWI_X' => $iPosition,'SWI_Y' => 0
-                    ) );
+                    $oNewGuide->uid = $oSL->create( array ('PRO_UID' => $sProcessUID,'SWI_TYPE' => 'LINE','SWI_X' => $iPosition,'SWI_Y' => 0) );
                     break;
                 case 'horizontal':
-                    $oNewGuide->uid = $oSL->create( array ('PRO_UID' => $sProcessUID,'SWI_TYPE' => 'LINE','SWI_X' => 0,'SWI_Y' => $iPosition
-                    ) );
+                    $oNewGuide->uid = $oSL->create( array ('PRO_UID' => $sProcessUID,'SWI_TYPE' => 'LINE','SWI_X' => 0,'SWI_Y' => $iPosition) );
                     break;
             }
             $oJSON = new Services_JSON();
@@ -1663,7 +1609,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Save the guide position
    * @param string $sSEUID
@@ -1671,7 +1617,7 @@ class processMap
    * @param string $sDirection
    * @return integer
    */
-
+    
     public function saveGuidePosition ($sSEUID = '', $iPosition = 0, $sDirection = 'vertical')
     {
         try {
@@ -1679,25 +1625,23 @@ class processMap
             $aFields = $oSL->load( $sSEUID );
             switch ($sDirection) {
                 case 'vertical':
-                    return $oSL->update( array ('SWI_UID' => $sSEUID,'SWI_X' => $iPosition
-                    ) );
+                    return $oSL->update( array ('SWI_UID' => $sSEUID,'SWI_X' => $iPosition) );
                     break;
                 case 'horizontal':
-                    return $oSL->update( array ('SWI_UID' => $sSEUID,'SWI_Y' => $iPosition
-                    ) );
+                    return $oSL->update( array ('SWI_UID' => $sSEUID,'SWI_Y' => $iPosition ) );
                     break;
             }
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     /*
    * Delete a guide
    * @param string $sUID
    * @return boolean
    */
-
+    
     public function deleteGuide ($sSEUID = '')
     {
         try {
@@ -1709,13 +1653,13 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Delete all guides
    * @param string $sProcessUID
    * @return boolean
    */
-
+    
     public function deleteGuides ($sProcessUID = '')
     {
         try {
@@ -1730,7 +1674,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Add a new text
    * @param string $sProcessUID
@@ -1739,14 +1683,14 @@ class processMap
    * @param integer $iY
    * @return string
    */
-
+    
     public function addText ($sProcessUID = '', $sLabel = '', $iX = 0, $iY = 0, $sNext_uid = '')
     {
         try {
             $oProcess = new Process();
             $aFields = $oProcess->load( $sProcessUID );
             $oSL = new SwimlanesElements();
-            $oNewText->uid = $oSL->create( array ('PRO_UID' => $sProcessUID,'SWI_TYPE' => 'TEXT','SWI_TEXT' => $sLabel,'SWI_X' => $iX,'SWI_Y' => $iY,'SWI_NEXT_UID' => $sNext_uid
+            $oNewText->uid = $oSL->create( array ('PRO_UID' => $sProcessUID,'SWI_TYPE' => 'TEXT','SWI_TEXT' => $sLabel,'SWI_X' => $iX,'SWI_Y' => $iY,'SWI_NEXT_UID' => $sNext_uid 
             ) );
             $oJSON = new Services_JSON();
             return $oJSON->encode( $oNewText );
@@ -1754,26 +1698,26 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Update a text
    * @param string $sSEUID
    * @param string $sLabel
    * @return integer
    */
-
+    
     public function updateText ($sSEUID = '', $sLabel = '', $sNext_uid = '')
     {
         try {
             $oSL = new SwimlanesElements();
             $aFields = $oSL->load( $sSEUID );
-            return $oSL->update( array ('SWI_UID' => $sSEUID,'SWI_TEXT' => $sLabel,'SWI_NEXT_UID' => $sNext_uid
+            return $oSL->update( array ('SWI_UID' => $sSEUID,'SWI_TEXT' => $sLabel,'SWI_NEXT_UID' => $sNext_uid 
             ) );
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     /*
    * Save the text position
    * @param string $sSEUID
@@ -1781,25 +1725,25 @@ class processMap
    * @param integer $iY
    * @return integer
    */
-
+    
     public function saveTextPosition ($sSEUID = '', $iX = 0, $iY = 0)
     {
         try {
             $oSL = new SwimlanesElements();
             $aFields = $oSL->load( $sSEUID );
-            return $oSL->update( array ('SWI_UID' => $sSEUID,'SWI_X' => $iX,'SWI_Y' => $iY
+            return $oSL->update( array ('SWI_UID' => $sSEUID,'SWI_X' => $iX,'SWI_Y' => $iY 
             ) );
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     /*
    * Delete a text
    * @param string $sSEUID
    * @return boolean
    */
-
+    
     public function deleteText ($sSEUID = '')
     {
         try {
@@ -1811,7 +1755,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Save the gateways positions
    * @param string $sGatewayUID
@@ -1819,13 +1763,13 @@ class processMap
    * @param integer $iY
    * @return integer
    */
-
+    
     public function saveGatewayPosition ($sGatewayUID = '', $iX = 0, $iY = 0)
     {
         try {
             $oGateway = new Gateway();
             $aFields = $oGateway->load( $sGatewayUID );
-
+            
             $aFields['GAT_UID'] = $sGatewayUID;
             $aFields['GAT_X'] = $iX;
             $aFields['GAT_Y'] = $iY;
@@ -1834,13 +1778,13 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Presents a small list of dynaforms of the process
    * @param string $sProcessUID
    * @return boolean
    */
-
+    
     public function dynaformsList ($sProcessUID = '')
     {
         try {
@@ -1855,13 +1799,13 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Return the dynaforms list criteria object
    * @param string $sProcessUID
    * @return object
    */
-
+    
     public function getDynaformsCriteria ($sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -1874,28 +1818,22 @@ class processMap
         $oCriteria->addAlias( 'C1', 'CONTENT' );
         $oCriteria->addAlias( 'C2', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C1.CON_ID'
-        );
-        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C1.CON_ID');
+        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter );
+        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C2.CON_ID'
-        );
-        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'DYN_DESCRIPTION' . $sDelimiter
-        );
-        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C2.CON_ID');
+        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'DYN_DESCRIPTION' . $sDelimiter);
+        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
-
+        
         $oDataset = DynaformPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $dynaformArray = array ();
-        $dynaformArray[] = array ('d' => 'char'
+        $dynaformArray[] = array ('d' => 'char' 
         );
         while ($aRow = $oDataset->getRow()) {
             if (($aRow['DYN_TITLE'] == null) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
@@ -1907,7 +1845,6 @@ class processMap
             $dynaformArray[] = $aRow;
             $oDataset->next();
         }
-
         return $oCriteria;
     }
 
@@ -1929,23 +1866,17 @@ class processMap
         $oCriteria->addAlias( 'C1', 'CONTENT' );
         $oCriteria->addAlias( 'C2', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C1.CON_ID'
-        );
-        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C1.CON_ID');
+        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C2.CON_ID'
-        );
-        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'DYN_DESCRIPTION' . $sDelimiter
-        );
-        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C2.CON_ID');
+        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'DYN_DESCRIPTION' . $sDelimiter);
+        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
-
+        
         $oDataset = DynaformPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -1960,16 +1891,16 @@ class processMap
             $dynaformArray[] = $aRow;
             $oDataset->next();
         }
-
+        
         return $dynaformArray;
     }
-
+    
     /*
    * Presents a small list of output documents of the process
    * @param string $sProcessUID
    * @return boolean
    */
-
+    
     public function outputdocsList ($sProcessUID = '')
     {
         try {
@@ -1984,13 +1915,13 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Return the output documents list criteria object
    * @param string $sProcessUID
    * @return object
    */
-
+    
     public function getOutputDocumentsCriteria ($sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -2003,29 +1934,22 @@ class processMap
         $oCriteria->addAlias( 'C1', 'CONTENT' );
         $oCriteria->addAlias( 'C2', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C1.CON_ID'
-        );
-        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C1.CON_ID');
+        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C2.CON_ID'
-        );
-        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'OUT_DOC_DESCRIPTION' . $sDelimiter
-        );
-        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C2.CON_ID' );
+        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'OUT_DOC_DESCRIPTION' . $sDelimiter);
+        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( OutputDocumentPeer::PRO_UID, $sProcessUID );
-
+        
         $oDataset = OutputDocumentPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $outputDocArray = array ();
-        $outputDocArray[] = array ('d' => 'char'
-        );
+        $outputDocArray[] = array ('d' => 'char');
         while ($aRow = $oDataset->getRow()) {
             if (($aRow['OUT_DOC_TITLE'] == null) || ($aRow['OUT_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $outputDocument = new OutputDocument();
@@ -2043,16 +1967,15 @@ class processMap
         G::LoadClass( 'ArrayPeer' );
         $oCriteria = new Criteria( 'dbarray' );
         $oCriteria->setDBArrayTable( 'outputDocArray' );
-
+        
         return $oCriteria;
     }
-
     /*
-   * Presents a small list of input documents of the process
-   * @param string $sProcessUID Process UID
-   * @return void
-   */
-
+    * Presents a small list of input documents of the process
+    * @param string $sProcessUID Process UID
+    * @return void
+    */
+    
     public function inputdocsList ($sProcessUID = '')
     {
         try {
@@ -2067,13 +1990,13 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
    * Return the input documents list criteria object
    * @param string $sProcessUID
    * @return object
    */
-
+    
     public function getInputDocumentsCriteria ($sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -2085,28 +2008,22 @@ class processMap
         $oCriteria->addAlias( 'C1', 'CONTENT' );
         $oCriteria->addAlias( 'C2', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C1.CON_ID'
-        );
-        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C1.CON_ID');
+        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C2.CON_ID'
-        );
-        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'INP_DOC_DESCRIPTION' . $sDelimiter
-        );
-        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C2.CON_ID');
+        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'INP_DOC_DESCRIPTION' . $sDelimiter );
+        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( InputDocumentPeer::PRO_UID, $sProcessUID );
-
+        
         $oDataset = InputDocumentPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $inputDocArray = "";
-        $inputDocArray[] = array ('INP_DOC_UID' => 'char','PRO_UID' => 'char','INP_DOC_TITLE' => 'char','INP_DOC_DESCRIPTION' => 'char'
+        $inputDocArray[] = array ('INP_DOC_UID' => 'char','PRO_UID' => 'char','INP_DOC_TITLE' => 'char','INP_DOC_DESCRIPTION' => 'char' 
         );
         while ($aRow = $oDataset->getRow()) {
             if (($aRow['INP_DOC_TITLE'] == null) || ($aRow['INP_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
@@ -2120,22 +2037,22 @@ class processMap
         }
         global $_DBArray;
         $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
-
+        
         $_DBArray['inputDocArrayMain'] = $inputDocArray;
         $_SESSION['_DBArray'] = $_DBArray;
         G::LoadClass( 'ArrayPeer' );
         $oCriteria = new Criteria( 'dbarray' );
         $oCriteria->setDBArrayTable( 'inputDocArrayMain' );
-
+        
         return $oCriteria;
     }
-
+    
     /*
    * Presents a small list of triggers of the process
    * @param string $sProcessUID
    * @return void
    */
-
+    
     public function triggersList ($sProcessUID = '')
     {
         try {
@@ -2150,13 +2067,12 @@ class processMap
             throw ($oError);
         }
     }
-
     /*
-   * Return the triggers list criteria object
-   * @param string $sProcessUID
-   * @return object
-   */
-
+    * Return the triggers list criteria object
+    * @param string $sProcessUID
+    * @return object
+    */
+    
     public function getTriggersCriteria ($sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -2168,32 +2084,25 @@ class processMap
         $oCriteria->addAlias( 'C1', 'CONTENT' );
         $oCriteria->addAlias( 'C2', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (TriggersPeer::TRI_UID,'C1.CON_ID'
-        );
-        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (TriggersPeer::TRI_UID,'C1.CON_ID');
+        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (TriggersPeer::TRI_UID,'C2.CON_ID'
-        );
-        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (TriggersPeer::TRI_UID,'C2.CON_ID');
+        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( TriggersPeer::PRO_UID, $sProcessUID );
         $oCriteria->addAscendingOrderByColumn( 'TRI_TITLE' );
-
+        
         $oDataset = TriggersPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $triggersArray = "";
-        $triggersArray[] = array ('TRI_UID' => 'char','PRO_UID' => 'char','TRI_TITLE' => 'char','TRI_DESCRIPTION' => 'char'
-        );
+        $triggersArray[] = array ('TRI_UID' => 'char','PRO_UID' => 'char','TRI_TITLE' => 'char','TRI_DESCRIPTION' => 'char');
         while ($aRow = $oDataset->getRow()) {
-
+            
             if (($aRow['TRI_TITLE'] == null) || ($aRow['TRI_TITLE'] == "")) { // There is no transaltion for this Trigger name, try to get/regenerate the label
                 $triggerO = new Triggers();
                 $triggerObj = $triggerO->load( $aRow['TRI_UID'] );
@@ -2203,147 +2112,144 @@ class processMap
             $triggersArray[] = $aRow;
             $oDataset->next();
         }
-
         return $oCriteria;
     }
-
     /*
-   * Return the triggers list in a array
-   * @param string $sProcessUID
-   * @return array
-   */
-
+    * Return the triggers list in a array
+    * @param string $sProcessUID
+    * @return array
+    */
+    
     public function getTriggers ($sProcessUID = '')
     {
         $aTriggers = Array ();
         $oCriteria = $this->getTriggersCriteria( $sProcessUID );
-
+        
         $oDataset = RoutePeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-
+        
         while ($oDataset->next())
             array_push( $aTriggers, $oDataset->getRow() );
-
+        
         return $aTriggers;
     }
-
     /*
-   * Presents a small list of Scheduled Tasks of the process
-   * @param string $sProcessUID
-   * @return void
-   */
-
+    * Presents a small list of Scheduled Tasks of the process
+    * @param string $sProcessUID
+    * @return void
+    */
+    
     public function caseSchedulerList ($sProcessUID = '')
     {
         try {
             /* $oCaseScheduler = new CaseScheduler();
-        $aRows = $oCaseScheduler->getAll();
-
-        //$oCaseScheduler->caseSchedulerCron();
-        // g::pr($aRows); die;
-
-        $fieldNames = Array(
-        'SCH_UID' => 'char',
-        'SCH_NAME' => 'char',
-        'PRO_UID' => 'char',
-        'TAS_UID' => 'char',
-        'SCH_TIME_NEXT_RUN' => 'char',
-        'SCH_LAST_RUN_TIME' => 'char',
-        'SCH_STATE' => 'char',
-        'SCH_LAST_STATE' => 'char',
-        'USR_UID' => 'char',
-        'SCH_OPTION' => 'char',
-        'SCH_START_TIME' => 'char',
-        'SCH_START_DATE' => 'char',
-        'SCH_DAYS_PERFORM_TASK' => 'char',
-        'SCH_EVERY_DAYS' => 'char',
-        'SCH_WEEK_DAYS' => 'char',
-        'SCH_START_DAY' => 'char',
-        'SCH_MONTHS' => 'char',
-        'SCH_END_DATE' => 'char',
-        'SCH_REPEAT_EVERY' => 'char',
-        'SCH_REPEAT_UNTIL' => 'char',
-        'SCH_REPEAT_STOP_IF_RUNNING' => 'char',
-        'PRO_PARENT' => 'char',
-        'PRO_TIME' => 'char',
-        'PRO_TIMEUNIT' => 'char',
-        'PRO_STATUS' => 'char',
-        'PRO_TYPE_DAY' => 'char',
-        'PRO_TYPE' => 'char',
-        'PRO_ASSIGNMENT' => 'char',
-        'PRO_SHOW_MAP' => 'char',
-        'PRO_SHOW_MESSAGE' => 'char',
-        'PRO_SHOW_DELEGATE' => 'char',
-        'PRO_SHOW_DYNAFORM' => 'char',
-        'PRO_CATEGORY' => 'char',
-        'PRO_SUB_CATEGORY' => 'char',
-        'PRO_INDUSTRY' => 'char',
-        'PRO_UPDATE_DATE' => 'char',
-        'PRO_CREATE_DATE' => 'char',
-        'PRO_CREATE_USER' => 'char',
-        'PRO_HEIGHT' => 'char',
-        'PRO_WIDTH' => 'char',
-        'PRO_TITLE_X' => 'char',
-        'PRO_TITLE_Y' => 'char',
-        'PRO_DEBUG' => 'char',
-        'PRO_TITLE' => 'char',
-        'PRO_DESCRIPTION' => 'char',
-        'TAS_TYPE' => 'char',
-        'TAS_DURATION' => 'char',
-        'TAS_DELAY_TYPE' => 'char',
-        'TAS_TEMPORIZER' => 'char',
-        'TAS_TYPE_DAY' => 'char',
-        'TAS_TIMEUNIT' => 'char',
-        'TAS_ALERT' => 'char',
-        'TAS_PRIORITY_VARIABLE' => 'char',
-        'TAS_ASSIGN_TYPE' => 'char',
-        'TAS_ASSIGN_VARIABLE' => 'char',
-        'TAS_ASSIGN_LOCATION' => 'char',
-        'TAS_ASSIGN_LOCATION_ADHOC' => 'char',
-        'TAS_TRANSFER_FLY' => 'char',
-        'TAS_LAST_ASSIGNED' => 'char',
-        'TAS_USER' => 'char',
-        'TAS_CAN_UPLOAD' => 'char',
-        'TAS_VIEW_UPLOAD' => 'char',
-        'TAS_VIEW_ADDITIONAL_DOCUMENTATION' => 'char',
-        'TAS_CAN_CANCEL' => 'char',
-        'TAS_OWNER_APP' => 'char',
-        'STG_UID' => 'char',
-        'TAS_CAN_PAUSE' => 'char',
-        'TAS_CAN_SEND_MESSAGE' => 'char',
-        'TAS_CAN_DELETE_DOCS' => 'char',
-        'TAS_SELF_SERVICE' => 'char',
-        'TAS_START' => 'char',
-        'TAS_TO_LAST_USER' => 'char',
-        'TAS_SEND_LAST_EMAIL' => 'char',
-        'TAS_DERIVATION' => 'char',
-        'TAS_POSX' => 'char',
-        'TAS_POSY' => 'char',
-        'TAS_COLOR' => 'char',
-        'TAS_TITLE' => 'char',
-        'TAS_DESCRIPTION' => 'char',
-        'TAS_DEF_TITLE' => 'char',
-        'TAS_DEF_DESCRIPTION' => 'char',
-        'TAS_DEF_PROC_CODE' => 'char',
-        'TAS_DEF_MESSAGE' => 'char'
-        );
-
-
-        $aRows = array_merge(Array($fieldNames), $aRows);
-
-        // g::pr($aRows); die;
-
-        global $_DBArray;
-        $_DBArray['cases_scheduler']   = $aRows;
-        $_SESSION['_DBArray'] = $_DBArray;
-        G::LoadClass('ArrayPeer');
-        $oCriteria = new Criteria('dbarray');
-        $oCriteria->setDBArrayTable('cases_scheduler');
-        $G_PUBLISH = new Publisher;
-
-        $G_PUBLISH->AddContent('propeltable', 'paged-table', '/cases/cases_Scheduler_List', $oCriteria, array('CONFIRM' => G::LoadTranslation('ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER')));
-        G::RenderPage('publish');
-        //return true; */
+            $aRows = $oCaseScheduler->getAll();
+            
+            //$oCaseScheduler->caseSchedulerCron();
+            // g::pr($aRows); die;
+            
+            $fieldNames = Array(
+            'SCH_UID' => 'char',
+            'SCH_NAME' => 'char',
+            'PRO_UID' => 'char',
+            'TAS_UID' => 'char',
+            'SCH_TIME_NEXT_RUN' => 'char',
+            'SCH_LAST_RUN_TIME' => 'char',
+            'SCH_STATE' => 'char',
+            'SCH_LAST_STATE' => 'char',
+            'USR_UID' => 'char',
+            'SCH_OPTION' => 'char',
+            'SCH_START_TIME' => 'char',
+            'SCH_START_DATE' => 'char',
+            'SCH_DAYS_PERFORM_TASK' => 'char',
+            'SCH_EVERY_DAYS' => 'char',
+            'SCH_WEEK_DAYS' => 'char',
+            'SCH_START_DAY' => 'char',
+            'SCH_MONTHS' => 'char',
+            'SCH_END_DATE' => 'char',
+            'SCH_REPEAT_EVERY' => 'char',
+            'SCH_REPEAT_UNTIL' => 'char',
+            'SCH_REPEAT_STOP_IF_RUNNING' => 'char',
+            'PRO_PARENT' => 'char',
+            'PRO_TIME' => 'char',
+            'PRO_TIMEUNIT' => 'char',
+            'PRO_STATUS' => 'char',
+            'PRO_TYPE_DAY' => 'char',
+            'PRO_TYPE' => 'char',
+            'PRO_ASSIGNMENT' => 'char',
+            'PRO_SHOW_MAP' => 'char',
+            'PRO_SHOW_MESSAGE' => 'char',
+            'PRO_SHOW_DELEGATE' => 'char',
+            'PRO_SHOW_DYNAFORM' => 'char',
+            'PRO_CATEGORY' => 'char',
+            'PRO_SUB_CATEGORY' => 'char',
+            'PRO_INDUSTRY' => 'char',
+            'PRO_UPDATE_DATE' => 'char',
+            'PRO_CREATE_DATE' => 'char',
+            'PRO_CREATE_USER' => 'char',
+            'PRO_HEIGHT' => 'char',
+            'PRO_WIDTH' => 'char',
+            'PRO_TITLE_X' => 'char',
+            'PRO_TITLE_Y' => 'char',
+            'PRO_DEBUG' => 'char',
+            'PRO_TITLE' => 'char',
+            'PRO_DESCRIPTION' => 'char',
+            'TAS_TYPE' => 'char',
+            'TAS_DURATION' => 'char',
+            'TAS_DELAY_TYPE' => 'char',
+            'TAS_TEMPORIZER' => 'char',
+            'TAS_TYPE_DAY' => 'char',
+            'TAS_TIMEUNIT' => 'char',
+            'TAS_ALERT' => 'char',
+            'TAS_PRIORITY_VARIABLE' => 'char',
+            'TAS_ASSIGN_TYPE' => 'char',
+            'TAS_ASSIGN_VARIABLE' => 'char',
+            'TAS_ASSIGN_LOCATION' => 'char',
+            'TAS_ASSIGN_LOCATION_ADHOC' => 'char',
+            'TAS_TRANSFER_FLY' => 'char',
+            'TAS_LAST_ASSIGNED' => 'char',
+            'TAS_USER' => 'char',
+            'TAS_CAN_UPLOAD' => 'char',
+            'TAS_VIEW_UPLOAD' => 'char',
+            'TAS_VIEW_ADDITIONAL_DOCUMENTATION' => 'char',
+            'TAS_CAN_CANCEL' => 'char',
+            'TAS_OWNER_APP' => 'char',
+            'STG_UID' => 'char',
+            'TAS_CAN_PAUSE' => 'char',
+            'TAS_CAN_SEND_MESSAGE' => 'char',
+            'TAS_CAN_DELETE_DOCS' => 'char',
+            'TAS_SELF_SERVICE' => 'char',
+            'TAS_START' => 'char',
+            'TAS_TO_LAST_USER' => 'char',
+            'TAS_SEND_LAST_EMAIL' => 'char',
+            'TAS_DERIVATION' => 'char',
+            'TAS_POSX' => 'char',
+            'TAS_POSY' => 'char',
+            'TAS_COLOR' => 'char',
+            'TAS_TITLE' => 'char',
+            'TAS_DESCRIPTION' => 'char',
+            'TAS_DEF_TITLE' => 'char',
+            'TAS_DEF_DESCRIPTION' => 'char',
+            'TAS_DEF_PROC_CODE' => 'char',
+            'TAS_DEF_MESSAGE' => 'char'
+            );
+            
+            
+            $aRows = array_merge(Array($fieldNames), $aRows);
+            
+            // g::pr($aRows); die;
+            
+            global $_DBArray;
+            $_DBArray['cases_scheduler']   = $aRows;
+            $_SESSION['_DBArray'] = $_DBArray;
+            G::LoadClass('ArrayPeer');
+            $oCriteria = new Criteria('dbarray');
+            $oCriteria->setDBArrayTable('cases_scheduler');
+            $G_PUBLISH = new Publisher;
+            
+            $G_PUBLISH->AddContent('propeltable', 'paged-table', '/cases/cases_Scheduler_List', $oCriteria, array('CONFIRM' => G::LoadTranslation('ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER')));
+            G::RenderPage('publish');
+            //return true; */
             $schedulerPath = SYS_URI . "cases/cases_Scheduler_List";
             $html = "<iframe  WIDTH=820 HEIGHT=530 FRAMEBORDER=0 src='" . $schedulerPath . '?PRO_UID=' . $sProcessUID . "'></iframe>";
             echo $html;
@@ -2351,31 +2257,30 @@ class processMap
             throw ($oError);
         }
     }
-
     /*
-   * Presents a small list of Scheduled Task Logs of the process
-   * @param string $sProcessUID
-   * @return void
-   */
-
+    * Presents a small list of Scheduled Task Logs of the process
+    * @param string $sProcessUID
+    * @return void
+    */
+    
     public function logCaseSchedulerList ($sProcessUID = '')
     {
         try {
             $oLogCaseScheduler = new LogCasesScheduler();
             $aRows = $oLogCaseScheduler->getAll();
-
-            $fieldNames = Array ('PRO_UID' => 'char','TAS_UID' => 'char','USR_NAME' => 'char','EXEC_DATE' => 'char','EXEC_HOUR' => 'char','RESULT' => 'char','SCH_UID' => 'char','WS_CREATE_CASE_STATUS' => 'char','WS_ROUTE_CASE_STATUS' => 'char'
+            
+            $fieldNames = Array ('PRO_UID' => 'char','TAS_UID' => 'char','USR_NAME' => 'char','EXEC_DATE' => 'char','EXEC_HOUR' => 'char','RESULT' => 'char','SCH_UID' => 'char','WS_CREATE_CASE_STATUS' => 'char','WS_ROUTE_CASE_STATUS' => 'char' 
             );
-
-            $aRows = array_merge( Array ($fieldNames
+            
+            $aRows = array_merge( Array ($fieldNames 
             ), $aRows );
-
+            
             $_DBArray['log_cases_scheduler'] = $aRows;
             $_SESSION['_DBArray'] = $_DBArray;
-
+            
             $oCriteria = new Criteria( 'dbarray' );
             $oCriteria->setDBArrayTable( 'log_cases_scheduler' );
-
+            
             $G_PUBLISH = new Publisher();
             $G_PUBLISH->ROWS_PER_PAGE = 10;
             $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'cases/cases_Scheduler_Log', $oCriteria );
@@ -2385,13 +2290,12 @@ class processMap
             throw ($oError);
         }
     }
-
     /*
-   * Presents a small list of messages of the process
-   * @param string $sProcessUID
-   * @return void
-   */
-
+    * Presents a small list of messages of the process
+    * @param string $sProcessUID
+    * @return void
+    */
+    
     public function messagesList ($sProcessUID = '')
     {
         try {
@@ -2408,13 +2312,11 @@ class processMap
             throw ($oError);
         }
     }
-
     /*
-   * Presents a small list of report tables of the process
-   * @param string $sProcessUID
-   * @return void
-   */
-
+    * Presents a small list of report tables of the process
+    * @param string $sProcessUID
+    * @return void
+    */
     public function reportTablesList ($sProcessUID = '')
     {
         try {
@@ -2429,13 +2331,12 @@ class processMap
             throw ($oError);
         }
     }
-
     /*
-   * Return the report tables list criteria object
-   * @param string $sProcessUID
-   * @return object
-   */
-
+    * Return the report tables list criteria object
+    * @param string $sProcessUID
+    * @return object
+    */
+    
     public function getReportTablesCriteria ($sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -2449,24 +2350,21 @@ class processMap
         $oCriteria->addAsColumn( 'REP_TAB_TITLE', "CASE WHEN C.CON_VALUE IS NULL THEN (SELECT DISTINCT MAX(A.CON_VALUE) FROM CONTENT A WHERE A.CON_ID = REPORT_TABLE.REP_TAB_UID ) ELSE C.CON_VALUE  END " );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (ReportTablePeer::REP_TAB_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'REP_TAB_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (ReportTablePeer::REP_TAB_UID,'C.CON_ID' );
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'REP_TAB_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( ReportTablePeer::PRO_UID, $sProcessUID );
         return $oCriteria;
     }
-
+    
     /*
    * Show the current pattern
    * @param string $sProcessUID
    * @param string $sTaskUID
    * @return boolean
    */
-
+    
     public function currentPattern ($sProcessUID, $sTaskUID)
     {
         try {
@@ -2489,8 +2387,7 @@ class processMap
             //      echo $sql;
             //      var_dump($aRow);
             //      die();
-
-
+            
             if (is_array( $aRow )) {
                 $aFields['ROU_TYPE'] = $aRow['ROU_TYPE'];
                 $aFields['ROU_TYPE_OLD'] = $aRow['ROU_TYPE'];
@@ -2576,7 +2473,7 @@ class processMap
                         break;
                 }
             }
-
+            
             $aFields['action'] = 'savePattern';
             $aFields['LANG'] = SYS_LANG;
             $aFields['PROCESS'] = $sProcessUID;
@@ -2596,16 +2493,15 @@ class processMap
             die();
         }
     }
-
     /*
-   * Show the new pattern form
-   * @param string $sProcessUID
-   * @param string $sTaskUID
-   * @param string $sNextTask
-   * @param string $sType
-   * @return boolean
-   */
-
+    * Show the new pattern form
+    * @param string $sProcessUID
+    * @param string $sTaskUID
+    * @param string $sNextTask
+    * @param string $sType
+    * @return boolean
+    */
+    
     public function newPattern ($sProcessUID, $sTaskUID, $sNextTask, $sType)
     {
         try {
@@ -2687,7 +2583,7 @@ class processMap
                             break;
                     }
                 } else {
-
+                
                 }
             }
             switch ($sType) {
@@ -2801,9 +2697,9 @@ class processMap
             $aFields['ROU_NEXT_TASK'] = $sNextTask;
             $aFields['ROU_TYPE'] = $sType;
             $aFields['ROU_CASE'] = (int) $aRow['ROUTE_NUMBER'] + 1;
-
+            
             $sGatewayUID = $aRow['GATEWAY_UID'];
-
+            
             if ($sDelete && $sGatewayUID != '') {
                 $oGateway = new Gateway();
                 $oGateway->remove( $sGatewayUID );
@@ -2814,7 +2710,7 @@ class processMap
                 $oProcessMap = new processMap();
                 $sGatewayUID = $oProcessMap->saveNewGateway( $sProcessUID, $sTaskUID, $sNextTask );
             }
-
+            
             $aFields['GAT_UID'] = (isset( $sGatewayUID )) ? $sGatewayUID : '';
             $oRoute = new Route();
             $oRoute->create( $aFields );
@@ -2842,7 +2738,7 @@ class processMap
             $aFields['GAT_NEXT_TASK'] = $sNextTask;
             $aFields['GAT_X'] = $aTaskDetails['TAS_POSX'] + $aTaskDetails['TAS_WIDTH'] / 2;
             $aFields['GAT_Y'] = $aTaskDetails['TAS_POSY'] + $aTaskDetails['TAS_HEIGHT'] + 10;
-
+            
             switch ($sType) {
                 case 'PARALLEL':
                     $aFields['GAT_TYPE'] = 'bpmnGatewayParallel';
@@ -2863,24 +2759,20 @@ class processMap
                     $aFields['GAT_TYPE'] = 'bpmnGatewayComplex';
                     break;
             }
-
+            
             $oGateway = new Gateway();
-
             $sGatewayUID = $oGateway->create( $aFields );
-
             return $sGatewayUID;
-
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
     /*
-   * Delete a derivation rule
-   * @param string $sTaskUID
-   * @return boolean
-   */
-
+    * Delete a derivation rule
+    * @param string $sTaskUID
+    * @return boolean
+    */
+    
     public function deleteDerivation ($sTaskUID = '')
     {
         try {
@@ -2904,20 +2796,18 @@ class processMap
     public function getConditionProcessList ()
     {
         $aProcesses = array ();
-        $aProcesses[] = array ('PRO_UID' => 'char','PRO_TITLE' => 'char','PRO_DESCRIPTION' => 'char','PRO_STATUS' => 'char','PRO_CATEGORY' => 'char','PRO_CATEGORY_LABEL' => 'char'
-        );
+        $aProcesses[] = array ('PRO_UID' => 'char','PRO_TITLE' => 'char','PRO_DESCRIPTION' => 'char','PRO_STATUS' => 'char','PRO_CATEGORY' => 'char','PRO_CATEGORY_LABEL' => 'char');
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( ProcessPeer::PRO_UID );
         $oCriteria->add( ProcessPeer::PRO_STATUS, 'DISABLED', Criteria::NOT_EQUAL );
         $oDataset = ProcessPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-
+        
         $oDataset->next();
         $oProcess = new Process();
         while ($aRow = $oDataset->getRow()) {
             $aProcess = $oProcess->load( $aRow['PRO_UID'] );
-            $aProcesses[] = array ('PRO_UID' => $aProcess['PRO_UID'],'PRO_TITLE' => $aProcess['PRO_TITLE'],'PRO_DESCRIPTION' => $aProcess['PRO_DESCRIPTION'],'PRO_STATUS' => ($aProcess['PRO_STATUS'] == 'ACTIVE' ? G::LoadTranslation( 'ID_ACTIVE' ) : G::LoadTranslation( 'ID_INACTIVE' )),'PRO_CATEGORY' => $aProcess['PRO_CATEGORY'],'PRO_CATEGORY_LABEL' => $aProcess['PRO_CATEGORY_LABEL']
-            );
+            $aProcesses[] = array ('PRO_UID' => $aProcess['PRO_UID'],'PRO_TITLE' => $aProcess['PRO_TITLE'],'PRO_DESCRIPTION' => $aProcess['PRO_DESCRIPTION'],'PRO_STATUS' => ($aProcess['PRO_STATUS'] == 'ACTIVE' ? G::LoadTranslation( 'ID_ACTIVE' ) : G::LoadTranslation( 'ID_INACTIVE' )),'PRO_CATEGORY' => $aProcess['PRO_CATEGORY'],'PRO_CATEGORY_LABEL' => $aProcess['PRO_CATEGORY_LABEL'] );
             $oDataset->next();
         }
         global $_DBArray;
@@ -2929,19 +2819,18 @@ class processMap
         $oCriteria->setDBArrayTable( 'processes' );
         return $oCriteria;
     }
-
     /*
-   * Show the dynaforms for the supervisors
-   * @param string $sProcessUID
-   * @return boolean
-   */
-
+    * Show the dynaforms for the supervisors
+    * @param string $sProcessUID
+    * @return boolean
+    */
+    
     public function supervisorDynaforms ($sProcessUID)
     {
         try {
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
-            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'dynaforms/dynaforms_Supervisor', $this->getSupervisorDynaformsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID
+            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'dynaforms/dynaforms_Supervisor', $this->getSupervisorDynaformsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID 
             ) );
             G::RenderPage( 'publish', 'raw' );
             return true;
@@ -2962,7 +2851,7 @@ class processMap
         try {
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
-            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'inputdocs/inputdocs_Supervisor', $this->getSupervisorInputsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID
+            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'inputdocs/inputdocs_Supervisor', $this->getSupervisorInputsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID 
             ) );
             G::RenderPage( 'publish', 'raw' );
             return true;
@@ -2984,25 +2873,22 @@ class processMap
             global $G_PUBLISH;
             global $G_FORM;
             $G_PUBLISH = new Publisher();
-
+            
             if (G::is_https())
                 $http = 'https://';
             else
                 $http = 'http://';
-
+            
             $link = $http . $_SERVER['HTTP_HOST'] . '/sys' . SYS_SYS . '/' . SYS_LANG . '/' . SYS_SKIN . '/' . $sProcessUID . '/';
-
             $row = array ();
             $c = 0;
-
             /*
-        $oTask = new Task ( );
-        $TaskFields = $oTask->kgetassigType ( $sProcessUID , $tas='');
-       */
+            $oTask = new Task ( );
+            $TaskFields = $oTask->kgetassigType ( $sProcessUID , $tas='');
+            */
             $TaskFields['TAS_ASSIGN_TYPE'] = '';
-            $row[] = array ('W_TITLE' => '','W_DELETE' => '','TAS_ASSIGN_TYPE' => $TaskFields['TAS_ASSIGN_TYPE']
-            );
-
+            $row[] = array ('W_TITLE' => '','W_DELETE' => '','TAS_ASSIGN_TYPE' => $TaskFields['TAS_ASSIGN_TYPE'] );
+            
             if (is_dir( PATH_DATA . "sites" . PATH_SEP . SYS_SYS . PATH_SEP . "public" . PATH_SEP . $sProcessUID )) {
                 $dir = opendir( PATH_DATA . "sites" . PATH_SEP . SYS_SYS . PATH_SEP . "public" . PATH_SEP . $sProcessUID );
                 while ($archivo = readdir( $dir )) { //print $archivo." **** <hr>";
@@ -3010,16 +2896,16 @@ class processMap
                         if ($archivo != '..') {
                             $one = 0;
                             $two = 0;
-
+                            
                             $alink = $link . $archivo;
-
+                            
                             $one = count( explode( 'wsClient.php', $archivo ) );
                             $two = count( explode( 'Post.php', $archivo ) );
-
+                            
                             if ($one == 1 && $two == 1) {
                                 $arlink = "<a href='" . $alink . "' target='blank'><font color='#9999CC'>" . $alink . "</font></a>";
                                 $linkdelete = sprintf( "<a href='javascript:webEntry_delete(\"%s\",\"%s\",\"%s\");'><font color='red'>delete</font></a>", $alink, $archivo, $sProcessUID );
-                                $row[] = array ('W_LINK' => $arlink,'W_FILENAME' => $archivo,'W_PRO_UID' => $sProcessUID
+                                $row[] = array ('W_LINK' => $arlink,'W_FILENAME' => $archivo,'W_PRO_UID' => $sProcessUID 
                                 );
                             }
                         }
@@ -3035,13 +2921,12 @@ class processMap
             $oCriteria->setDBArrayTable( 'reports' );
             //if ($TaskFields['TAS_ASSIGN_TYPE'] == 'BALANCED') {
             //$G_PUBLISH->AddContent('xmlform', 'xmlform', 'dynaforms/dynaforms_WebEntry', '', array('PRO_UID' => $sProcessUID, 'LANG' => SYS_LANG));
-            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'dynaforms/dynaforms_WebEntryList', $oCriteria, array ('PRO_UID' => $sProcessUID,'LANG' => SYS_LANG
-            ) );
+            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'dynaforms/dynaforms_WebEntryList', $oCriteria, array ('PRO_UID' => $sProcessUID,'LANG' => SYS_LANG ) );
             /* }else{
-        $aMessage['MESSAGE'] = G::loadTranslation(  'WEBEN_ONLY_BALANCED' );
-        $G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/showMessage', '',$aMessage );
-
-        } */
+            $aMessage['MESSAGE'] = G::loadTranslation(  'WEBEN_ONLY_BALANCED' );
+            $G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/showMessage', '',$aMessage );
+            
+            } */
             G::RenderPage( 'publish', 'raw' );
             return true;
         } catch (Exception $oError) {
@@ -3061,8 +2946,7 @@ class processMap
         try {
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
-            $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'dynaforms/dynaforms_WebEntry', '', array ('PRO_UID' => $sProcessUID,'LANG' => SYS_LANG
-            ) );
+            $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'dynaforms/dynaforms_WebEntry', '', array ('PRO_UID' => $sProcessUID,'LANG' => SYS_LANG ) );
             G::RenderPage( 'publish', 'raw' );
             return true;
         } catch (Exception $oError) {
@@ -3087,14 +2971,12 @@ class processMap
     //
     //    return $link;
     //  }
-
-
     /*
-   * Return the supervisors dynaforms list criteria object
-   * @param string $sProcessUID
-   * @return object
-   */
-
+    * Return the supervisors dynaforms list criteria object
+    * @param string $sProcessUID
+    * @return object
+    */
+    
     public function getSupervisorDynaformsCriteria ($sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -3107,31 +2989,26 @@ class processMap
         $oCriteria->addAsColumn( 'DYN_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (StepSupervisorPeer::STEP_UID_OBJ,DynaformPeer::DYN_UID
-        );
-        $aConditions[] = array (StepSupervisorPeer::STEP_TYPE_OBJ,$sDelimiter . 'DYNAFORM' . $sDelimiter
-        );
+        $aConditions[] = array (StepSupervisorPeer::STEP_UID_OBJ,DynaformPeer::DYN_UID );
+        $aConditions[] = array (StepSupervisorPeer::STEP_TYPE_OBJ,$sDelimiter . 'DYNAFORM' . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID' );
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter );
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( StepSupervisorPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( StepSupervisorPeer::STEP_TYPE_OBJ, 'DYNAFORM' );
         $oCriteria->addAscendingOrderByColumn( StepSupervisorPeer::STEP_POSITION );
         return $oCriteria;
     }
-
+    
     /*
-   * Return the supervisors dynaforms list criteria object
-   * @param string $sProcessUID
-   * @return object
-   */
-
+    * Return the supervisors dynaforms list criteria object
+    * @param string $sProcessUID
+    * @return object
+    */
+    
     public function getSupervisorInputsCriteria ($sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -3144,57 +3021,49 @@ class processMap
         $oCriteria->addAsColumn( 'INP_DOC_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (StepSupervisorPeer::STEP_UID_OBJ,InputDocumentPeer::INP_DOC_UID
-        );
-        $aConditions[] = array (StepSupervisorPeer::STEP_TYPE_OBJ,$sDelimiter . 'INPUT_DOCUMENT' . $sDelimiter
-        );
+        $aConditions[] = array (StepSupervisorPeer::STEP_UID_OBJ,InputDocumentPeer::INP_DOC_UID );
+        $aConditions[] = array (StepSupervisorPeer::STEP_TYPE_OBJ,$sDelimiter . 'INPUT_DOCUMENT' . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter );
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( StepSupervisorPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( StepSupervisorPeer::STEP_TYPE_OBJ, 'INPUT_DOCUMENT' );
         $oCriteria->addAscendingOrderByColumn( StepSupervisorPeer::STEP_POSITION );
         return $oCriteria;
     }
-
+    
     /*
    * Show the available dynaforms for the supervisors
    * @param string $sProcessUID
    * @return boolean
    */
-
+    
     public function availableSupervisorDynaforms ($sProcessUID)
     {
         try {
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
-            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'dynaforms/dynaforms_AvailableSupervisorDynaforms', $this->getAvailableSupervisorDynaformsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID
-            ) );
+            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'dynaforms/dynaforms_AvailableSupervisorDynaforms', $this->getAvailableSupervisorDynaformsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID ) );
             G::RenderPage( 'publish', 'raw' );
             return true;
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
     /*
-   * Show the available input documents for the supervisors
-   * @param string $sProcessUID
-   * @return boolean
-   */
-
+    * Show the available input documents for the supervisors
+    * @param string $sProcessUID
+    * @return boolean
+    */
     public function availableSupervisorInputs ($sProcessUID)
     {
         try {
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
-            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'inputdocs/inputdocs_AvailableSupervisorInputs', $this->getAvailableSupervisorInputsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID
+            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'inputdocs/inputdocs_AvailableSupervisorInputs', $this->getAvailableSupervisorInputsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID 
             ) );
             G::RenderPage( 'publish', 'raw' );
             return true;
@@ -3202,13 +3071,11 @@ class processMap
             throw ($oError);
         }
     }
-
     /*
-   * Return the available supervisors dynaforms list criteria object
-   * @param string $sProcessUID
-   * @return object
-   */
-
+    * Return the available supervisors dynaforms list criteria object
+    * @param string $sProcessUID
+    * @return object
+    */
     public function getAvailableSupervisorDynaformsCriteria ($sProcessUID = '')
     {
         $oCriteria = $this->getSupervisorDynaformsCriteria( $sProcessUID );
@@ -3227,25 +3094,20 @@ class processMap
         $oCriteria->addAsColumn( 'DYN_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( DynaformPeer::DYN_TYPE, 'xmlform' );
         $oCriteria->add( DynaformPeer::DYN_UID, $aUIDS, Criteria::NOT_IN );
         return $oCriteria;
     }
-
     /*
-   * Return the available supervisors input documents list criteria object
-   * @param string $sProcessUID
-   * @return object
-   */
-
+    * Return the available supervisors input documents list criteria object
+    * @param string $sProcessUID
+    * @return object
+    */
     public function getAvailableSupervisorInputsCriteria ($sProcessUID = '')
     {
         $oCriteria = $this->getSupervisorInputsCriteria( $sProcessUID );
@@ -3264,12 +3126,9 @@ class processMap
         $oCriteria->addAsColumn( 'INP_DOC_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID' );
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( InputDocumentPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( InputDocumentPeer::INP_DOC_UID, $aUIDS, Criteria::NOT_IN );
@@ -3287,8 +3146,7 @@ class processMap
     public function assignSupervisorStep ($sProcessUID, $sObjType, $sObjUID)
     {
         $oStepSupervisor = new StepSupervisor();
-        $oStepSupervisor->create( array ('PRO_UID' => $sProcessUID,'STEP_TYPE_OBJ' => $sObjType,'STEP_UID_OBJ' => $sObjUID,'STEP_POSITION' => $oStepSupervisor->getNextPosition( $sProcessUID, $sObjType )
-        ) );
+        $oStepSupervisor->create( array ('PRO_UID' => $sProcessUID,'STEP_TYPE_OBJ' => $sObjType,'STEP_UID_OBJ' => $sObjUID,'STEP_POSITION' => $oStepSupervisor->getNextPosition( $sProcessUID, $sObjType ) ) );
     }
 
     /**
@@ -3316,7 +3174,6 @@ class processMap
      */
     public function listProcessesUser ($sProcessUID)
     {
-
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( ProcessUserPeer::PU_UID );
         $oCriteria->addSelectColumn( ProcessUserPeer::USR_UID );
@@ -3340,7 +3197,6 @@ class processMap
     {
         G::LoadSystem( 'rbac' );
         $memcache = & PMmemcached::getSingleton( SYS_SYS );
-
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( ProcessUserPeer::USR_UID );
         $oCriteria->add( ProcessUserPeer::PRO_UID, $sProcessUID );
@@ -3398,8 +3254,7 @@ class processMap
     public function assignProcessUser ($sProcessUID, $sUsrUID)
     {
         $oProcessUser = new ProcessUser();
-        $oProcessUser->create( array ('PU_UID' => G::generateUniqueID(),'PRO_UID' => $sProcessUID,'USR_UID' => $sUsrUID,'PU_TYPE' => 'SUPERVISOR'
-        ) );
+        $oProcessUser->create( array ('PU_UID' => G::generateUniqueID(),'PRO_UID' => $sProcessUID,'USR_UID' => $sUsrUID,'PU_TYPE' => 'SUPERVISOR') );
     }
 
     /**
@@ -3425,8 +3280,7 @@ class processMap
         G::LoadClass( 'case' );
         Cases::verifyTable();
         $aObjectsPermissions = array ();
-        $aObjectsPermissions[] = array ('OP_UID' => 'char','TASK_TARGET' => 'char','GROUP_USER' => 'char','TASK_SOURCE' => 'char','OBJECT_TYPE' => 'char','OBJECT' => 'char','PARTICIPATED' => 'char','ACTION' => 'char','OP_CASE_STATUS' => 'char'
-        );
+        $aObjectsPermissions[] = array ('OP_UID' => 'char','TASK_TARGET' => 'char','GROUP_USER' => 'char','TASK_SOURCE' => 'char','OBJECT_TYPE' => 'char','OBJECT' => 'char','PARTICIPATED' => 'char','ACTION' => 'char','OP_CASE_STATUS' => 'char');
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( ObjectPermissionPeer::OP_UID );
         $oCriteria->addSelectColumn( ObjectPermissionPeer::TAS_UID );
@@ -3551,8 +3405,7 @@ class processMap
             //Obtain action (permission)
             $sAction = G::LoadTranslation( 'ID_' . $aRow['OP_ACTION'] );
             //Add to array
-            $aObjectsPermissions[] = array ('OP_UID' => $aRow['OP_UID'],'TASK_TARGET' => $sTaskTarget,'GROUP_USER' => $sUserGroup,'TASK_SOURCE' => $sTaskSource,'OBJECT_TYPE' => $sObjectType,'OBJECT' => $sObject,'PARTICIPATED' => $sParticipated,'ACTION' => $sAction,'OP_CASE_STATUS' => $aRow['OP_CASE_STATUS']
-            );
+            $aObjectsPermissions[] = array ('OP_UID' => $aRow['OP_UID'],'TASK_TARGET' => $sTaskTarget,'GROUP_USER' => $sUserGroup,'TASK_SOURCE' => $sTaskSource,'OBJECT_TYPE' => $sObjectType,'OBJECT' => $sObject,'PARTICIPATED' => $sParticipated,'ACTION' => $sAction,'OP_CASE_STATUS' => $aRow['OP_CASE_STATUS'] );
             $oDataset->next();
         }
         global $_DBArray;
@@ -3564,7 +3417,7 @@ class processMap
         $oCriteria->setDBArrayTable( 'objectsPermissions' );
         return $oCriteria;
     }
-
+    
     //new functions
     public function getAllObjectPermissionCount ()
     {
@@ -3574,11 +3427,12 @@ class processMap
         $oDataset = ObjectPermissionPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
-        if (is_array( $aRow ))
+        
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     public function getExtObjectsPermissions ($start, $limit, $sProcessUID)
@@ -3600,12 +3454,13 @@ class processMap
         $oCriteria->addSelectColumn( ObjectPermissionPeer::OP_CASE_STATUS );
         $oCriteria->add( ObjectPermissionPeer::PRO_UID, $sProcessUID );
         $this->tmpCriteria = clone $oCriteria;
-
-        if ($start != '')
-            $oCriteria->setOffset( $start );
-        if ($limit != '')
+        
+        if ($start != '') {
+            $oCriteria->setOffset( $start ); 
+        }
+        if ($limit != '') {
             $oCriteria->setLimit( $limit );
-
+        }
         $oDataset = ObjectPermissionPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
@@ -3698,7 +3553,7 @@ class processMap
             //Obtain action (permission)
             $sAction = G::LoadTranslation( 'ID_' . $aRow['OP_ACTION'] );
             //Add to array
-            $aObjectsPermissions[] = array ('OP_UID' => $aRow['OP_UID'],'TASK_TARGET' => $sTaskTarget,'GROUP_USER' => $sUserGroup,'TASK_SOURCE' => $sTaskSource,'OBJECT_TYPE' => $sObjectType,'OBJECT' => $sObject,'PARTICIPATED' => $sParticipated,'ACTION' => $sAction,'OP_CASE_STATUS' => $aRow['OP_CASE_STATUS']
+            $aObjectsPermissions[] = array ('OP_UID' => $aRow['OP_UID'],'TASK_TARGET' => $sTaskTarget,'GROUP_USER' => $sUserGroup,'TASK_SOURCE' => $sTaskSource,'OBJECT_TYPE' => $sObjectType,'OBJECT' => $sObject,'PARTICIPATED' => $sParticipated,'ACTION' => $sAction,'OP_CASE_STATUS' => $aRow['OP_CASE_STATUS'] 
             );
             $oDataset->next();
         }
@@ -3715,8 +3570,7 @@ class processMap
     {
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher();
-        $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'processes/processes_ObjectsPermissionsList', $this->getObjectsPermissionsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID
-        ) );
+        $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'processes/processes_ObjectsPermissionsList', $this->getObjectsPermissionsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID) );
         G::RenderPage( 'publish', 'raw' );
         return true;
     }
@@ -3763,17 +3617,13 @@ class processMap
         }
         $usersGroups .= '</select>';
         $aAllObjects = array ();
-        $aAllObjects[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllObjects[] = array ('UID' => 'char','LABEL' => 'char');
         $aAllDynaforms = array ();
-        $aAllDynaforms[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllDynaforms[] = array ('UID' => 'char','LABEL' => 'char' );
         $aAllInputs = array ();
-        $aAllInputs[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllInputs[] = array ('UID' => 'char','LABEL' => 'char' );
         $aAllOutputs = array ();
-        $aAllOutputs[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllOutputs[] = array ('UID' => 'char','LABEL' => 'char' );
         $oCriteria = $this->getDynaformsCriteria( $sProcessUID );
         $oCriteria->add( DynaformPeer::DYN_TYPE, 'XMLFORM' );
         $oDataset = DynaformPeer::doSelectRS( $oCriteria );
@@ -3781,9 +3631,9 @@ class processMap
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
             $aRow['DYN_TITLE'] = (isset( $aRow['DYN_TITLE'] )) ? $aRow['DYN_TITLE'] : '';
-            $aAllObjects[] = array ('UID' => 'DYNAFORM|' . $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE'] . ' (' . G::LoadTranslation( 'ID_DYNAFORM' ) . ')'
+            $aAllObjects[] = array ('UID' => 'DYNAFORM|' . $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE'] . ' (' . G::LoadTranslation( 'ID_DYNAFORM' ) . ')' 
             );
-            $aAllDynaforms[] = array ('UID' => $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE']
+            $aAllDynaforms[] = array ('UID' => $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE'] 
             );
             $oDataset->next();
         }
@@ -3792,9 +3642,9 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAllObjects[] = array ('UID' => 'INPUT_DOCUMENT|' . $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_INPUT_DOCUMENT' ) . ')'
+            $aAllObjects[] = array ('UID' => 'INPUT_DOCUMENT|' . $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_INPUT_DOCUMENT' ) . ')' 
             );
-            $aAllInputs[] = array ('UID' => $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE']
+            $aAllInputs[] = array ('UID' => $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE'] 
             );
             $oDataset->next();
         }
@@ -3803,10 +3653,8 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAllObjects[] = array ('UID' => 'OUTPUT_DOCUMENT|' . $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_OUTPUT_DOCUMENT' ) . ')'
-            );
-            $aAllOutputs[] = array ('UID' => $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE']
-            );
+            $aAllObjects[] = array ('UID' => 'OUTPUT_DOCUMENT|' . $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_OUTPUT_DOCUMENT' ) . ')' );
+            $aAllOutputs[] = array ('UID' => $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE'] );
             $oDataset->next();
         }
         global $_DBArray;
@@ -3818,8 +3666,7 @@ class processMap
         $_SESSION['_DBArray'] = $_DBArray;
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher();
-        $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'processes/processes_NewObjectPermission', '', array ('GROUP_USER' => $usersGroups,'LANG' => SYS_LANG,'PRO_UID' => $sProcessUID,'ID_DELETE' => G::LoadTranslation( 'ID_DELETE' )
-        ), 'processes_SaveObjectPermission' );
+        $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'processes/processes_NewObjectPermission', '', array ('GROUP_USER' => $usersGroups,'LANG' => SYS_LANG,'PRO_UID' => $sProcessUID,'ID_DELETE' => G::LoadTranslation( 'ID_DELETE' ) ), 'processes_SaveObjectPermission' );
         G::RenderPage( 'publish', 'raw' );
         return true;
     }
@@ -3833,24 +3680,24 @@ class processMap
      */
     public function editObjectPermission ($sOP_UID, $sProcessUID)
     {
-
+        
         $oCriteria = new Criteria();
         $oCriteria->add( ObjectPermissionPeer::OP_UID, $sOP_UID );
         $oDataset = ObjectPermissionPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $aRows = $oDataset->getRow();
-
+        
         $oCriteria = new Criteria();
         $oCriteria->add( GroupwfPeer::GRP_UID, $aRows['USR_UID'] );
         if (GroupwfPeer::doCount( $oCriteria ) == 1)
             $user = '2|' . $aRows['USR_UID'];
-
+        
         $oCriteria = new Criteria();
         $oCriteria->add( UsersPeer::USR_UID, $aRows['USR_UID'] );
         if (UsersPeer::doCount( $oCriteria ) == 1)
             $user = '1|' . $aRows['USR_UID'];
-
+        
         $aFields['LANG'] = SYS_LANG;
         $aFields['OP_UID'] = $aRows['OP_UID'];
         $aFields['PRO_UID'] = $aRows['PRO_UID'];
@@ -3860,9 +3707,9 @@ class processMap
         $aFields['OP_PARTICIPATE'] = $aRows['OP_PARTICIPATE'];
         $aFields['OP_OBJ_TYPE'] = $aRows['OP_OBJ_TYPE'];
         $aFields['OP_ACTION'] = $aRows['OP_ACTION'];
-
+        
         switch ($aRows['OP_OBJ_TYPE']) {
-            /* case 'ANY':
+        /* case 'ANY':
         $aFields['OP_OBJ_TYPE'] = '';
         break; */
             case 'DYNAFORM':
@@ -3875,18 +3722,15 @@ class processMap
                 $aFields['OUTPUTS'] = $aRows['OP_OBJ_UID'];
                 break;
         }
-
+        
         $usersGroups = '<select pm:dependent="0" pm:label="' . G::LoadTranslation( 'ID_GROUP_USERS' ) . '" name="form[GROUP_USER]" id="form[GROUP_USER]" class="module_app_input___gray">';
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( GroupwfPeer::GRP_UID );
         $oCriteria->addAsColumn( 'GRP_TITLE', ContentPeer::CON_VALUE );
         $aConditions = array ();
-        $aConditions[] = array (GroupwfPeer::GRP_UID,ContentPeer::CON_ID
-        );
-        $aConditions[] = array (ContentPeer::CON_CATEGORY,DBAdapter::getStringDelimiter() . 'GRP_TITLE' . DBAdapter::getStringDelimiter()
-        );
-        $aConditions[] = array (ContentPeer::CON_LANG,DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter()
-        );
+        $aConditions[] = array (GroupwfPeer::GRP_UID,ContentPeer::CON_ID );
+        $aConditions[] = array (ContentPeer::CON_CATEGORY,DBAdapter::getStringDelimiter() . 'GRP_TITLE' . DBAdapter::getStringDelimiter() );
+        $aConditions[] = array (ContentPeer::CON_LANG,DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter() );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( GroupwfPeer::GRP_STATUS, 'ACTIVE' );
         $oCriteria->addAscendingOrderByColumn( 'GRP_TITLE' );
@@ -3920,19 +3764,15 @@ class processMap
             }
             $usersGroups .= '</optgroup>';
         }
-
+        
         $aAllObjects = array ();
-        $aAllObjects[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllObjects[] = array ('UID' => 'char','LABEL' => 'char' );
         $aAllDynaforms = array ();
-        $aAllDynaforms[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllDynaforms[] = array ('UID' => 'char','LABEL' => 'char');
         $aAllInputs = array ();
-        $aAllInputs[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllInputs[] = array ('UID' => 'char','LABEL' => 'char');
         $aAllOutputs = array ();
-        $aAllOutputs[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllOutputs[] = array ('UID' => 'char','LABEL' => 'char');
         //dynaforms
         $oCriteria = $this->getDynaformsCriteria( $aRows['PRO_UID'] );
         $oCriteria->add( DynaformPeer::DYN_TYPE, 'XMLFORM' );
@@ -3940,9 +3780,9 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAllObjects[] = array ('UID' => 'DYNAFORM|' . $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE'] . ' (' . G::LoadTranslation( 'ID_DYNAFORM' ) . ')'
+            $aAllObjects[] = array ('UID' => 'DYNAFORM|' . $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE'] . ' (' . G::LoadTranslation( 'ID_DYNAFORM' ) . ')' 
             );
-            $aAllDynaforms[] = array ('UID' => $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE']
+            $aAllDynaforms[] = array ('UID' => $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE'] 
             );
             $oDataset->next();
         }
@@ -3952,9 +3792,9 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAllObjects[] = array ('UID' => 'INPUT_DOCUMENT|' . $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_INPUT_DOCUMENT' ) . ')'
+            $aAllObjects[] = array ('UID' => 'INPUT_DOCUMENT|' . $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_INPUT_DOCUMENT' ) . ')' 
             );
-            $aAllInputs[] = array ('UID' => $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE']
+            $aAllInputs[] = array ('UID' => $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE'] 
             );
             $oDataset->next();
         }
@@ -3964,9 +3804,9 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAllObjects[] = array ('UID' => 'OUTPUT_DOCUMENT|' . $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_OUTPUT_DOCUMENT' ) . ')'
+            $aAllObjects[] = array ('UID' => 'OUTPUT_DOCUMENT|' . $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_OUTPUT_DOCUMENT' ) . ')' 
             );
-            $aAllOutputs[] = array ('UID' => $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE']
+            $aAllOutputs[] = array ('UID' => $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE'] 
             );
             $oDataset->next();
         }
@@ -3977,10 +3817,10 @@ class processMap
         $_DBArray['allInputs'] = $aAllInputs;
         $_DBArray['allOutputs'] = $aAllOutputs;
         $_SESSION['_DBArray'] = $_DBArray;
-
+        
         $aFields['GROUP_USER'] = $usersGroups;
         $aFields['ID_DELETE'] = G::LoadTranslation( 'ID_DELETE' );
-
+        
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher();
         $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'processes/processes_EditObjectPermission', '', $aFields, 'processes_SaveEditObjectPermission' );
@@ -3999,8 +3839,7 @@ class processMap
         $oCriteria->add( CaseTrackerPeer::PRO_UID, $sProcessUID );
         $oCaseTracker = new CaseTracker();
         if (CaseTrackerPeer::doCount( $oCriteria ) === 0) {
-            $aCaseTracker = array ('PRO_UID' => $sProcessUID,'CT_MAP_TYPE' => 'PROCESSMAP','CT_DERIVATION_HISTORY' => 1,'CT_MESSAGE_HISTORY' => 1
-            );
+            $aCaseTracker = array ('PRO_UID' => $sProcessUID,'CT_MAP_TYPE' => 'PROCESSMAP','CT_DERIVATION_HISTORY' => 1,'CT_MESSAGE_HISTORY' => 1 );
             $oCaseTracker->create( $aCaseTracker );
         } else {
             $aCaseTracker = $oCaseTracker->load( $sProcessUID );
@@ -4022,8 +3861,7 @@ class processMap
     {
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher();
-        $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'tracker/tracker_objectsList', $this->getCaseTrackerObjectsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID
-        ) );
+        $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'tracker/tracker_objectsList', $this->getCaseTrackerObjectsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID ) );
         G::RenderPage( 'publish', 'raw' );
         return true;
     }
@@ -4037,8 +3875,7 @@ class processMap
     public function getCaseTrackerObjectsCriteria ($sProcessUID)
     {
         $aObjects = array ();
-        $aObjects[] = array ('CTO_TITLE' => 'char','CTO_UID' => 'char','CTO_TYPE_OBJ' => 'char','CTO_UID_OBJ' => 'char','CTO_CONDITION' => 'char','CTO_POSITION' => 'integer'
-        );
+        $aObjects[] = array ('CTO_TITLE' => 'char','CTO_UID' => 'char','CTO_TYPE_OBJ' => 'char','CTO_UID_OBJ' => 'char','CTO_CONDITION' => 'char','CTO_POSITION' => 'integer' );
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->add( CaseTrackerObjectPeer::PRO_UID, $sProcessUID );
         $oCriteria->addAscendingOrderByColumn( CaseTrackerObjectPeer::CTO_POSITION );
@@ -4064,8 +3901,7 @@ class processMap
                         $sTitle = $aFields['OUT_DOC_TITLE'];
                         break;
                 }
-                $aObjects[] = array ('CTO_TITLE' => $sTitle,'CTO_UID' => $aRow['CTO_UID'],'CTO_TYPE_OBJ' => $aRow['CTO_TYPE_OBJ'],'CTO_UID_OBJ' => $aRow['CTO_UID_OBJ'],'CTO_CONDITION' => $aRow['CTO_CONDITION'],'CTO_POSITION' => $aRow['CTO_POSITION']
-                );
+                $aObjects[] = array ('CTO_TITLE' => $sTitle,'CTO_UID' => $aRow['CTO_UID'],'CTO_TYPE_OBJ' => $aRow['CTO_TYPE_OBJ'],'CTO_UID_OBJ' => $aRow['CTO_UID_OBJ'],'CTO_CONDITION' => $aRow['CTO_CONDITION'],'CTO_POSITION' => $aRow['CTO_POSITION'] );
             } catch (Exception $oError) { //Nothing
             }
             $oDataset->next();
@@ -4091,7 +3927,7 @@ class processMap
     {
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher();
-        $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'tracker/tracker_AvailableCaseTrackerObjects', $this->getAvailableCaseTrackerObjectsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID
+        $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'tracker/tracker_AvailableCaseTrackerObjects', $this->getAvailableCaseTrackerObjectsCriteria( $sProcessUID ), array ('PRO_UID' => $sProcessUID 
         ) );
         G::RenderPage( 'publish', 'raw' );
         return true;
@@ -4127,20 +3963,16 @@ class processMap
             $oDataset->next();
         }
         $aAvailableObjects = array ();
-        $aAvailableObjects[] = array ('OBJECT_UID' => 'char','OBJECT_TYPE' => 'char','OBJECT_TITLE' => 'char'
-        );
+        $aAvailableObjects[] = array ('OBJECT_UID' => 'char','OBJECT_TYPE' => 'char','OBJECT_TITLE' => 'char' );
         $sDelimiter = DBAdapter::getStringDelimiter();
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( DynaformPeer::DYN_UID );
         $oCriteria->addAsColumn( 'DYN_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID' );
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter );
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( DynaformPeer::DYN_TYPE, 'xmlform' );
@@ -4149,8 +3981,7 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['DYN_UID'],'OBJECT_TYPE' => 'DYNAFORM','OBJECT_TITLE' => $aRow['DYN_TITLE']
-            );
+            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['DYN_UID'],'OBJECT_TYPE' => 'DYNAFORM','OBJECT_TITLE' => $aRow['DYN_TITLE'] );
             $oDataset->next();
         }
         $oCriteria = new Criteria( 'workflow' );
@@ -4158,12 +3989,9 @@ class processMap
         $oCriteria->addAsColumn( 'INP_DOC_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID' );
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter );
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( InputDocumentPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( InputDocumentPeer::INP_DOC_UID, $aInputsUIDS, Criteria::NOT_IN );
@@ -4171,7 +3999,7 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['INP_DOC_UID'],'OBJECT_TYPE' => 'INPUT_DOCUMENT','OBJECT_TITLE' => $aRow['INP_DOC_TITLE']
+            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['INP_DOC_UID'],'OBJECT_TYPE' => 'INPUT_DOCUMENT','OBJECT_TITLE' => $aRow['INP_DOC_TITLE'] 
             );
             $oDataset->next();
         }
@@ -4180,22 +4008,18 @@ class processMap
         $oCriteria->addAsColumn( 'OUT_DOC_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C.CON_ID' );
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter );
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter );
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( OutputDocumentPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( OutputDocumentPeer::OUT_DOC_UID, $aOutputsUIDS, Criteria::NOT_IN );
-
+        
         $oDataset = OutputDocumentPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['OUT_DOC_UID'],'OBJECT_TYPE' => 'OUTPUT_DOCUMENT','OBJECT_TITLE' => $aRow['OUT_DOC_TITLE']
-            );
+            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['OUT_DOC_UID'],'OBJECT_TYPE' => 'OUTPUT_DOCUMENT','OBJECT_TITLE' => $aRow['OUT_DOC_TITLE'] );
             $oDataset->next();
         }
         global $_DBArray;
@@ -4222,8 +4046,7 @@ class processMap
         $oCriteria->add( CaseTrackerObjectPeer::PRO_UID, $sProcessUID );
         $iPosition = CaseTrackerObjectPeer::doCount( $oCriteria ) + 1;
         $oCaseTrackerObject = new CaseTrackerObject();
-        $ctoUID = $oCaseTrackerObject->create( array ('PRO_UID' => $sProcessUID,'CTO_TYPE_OBJ' => $sObjType,'CTO_UID_OBJ' => $sObjUID,'CTO_POSITION' => $iPosition,'CTO_CONDITION' => ''
-        ) );
+        $ctoUID = $oCaseTrackerObject->create( array ('PRO_UID' => $sProcessUID,'CTO_TYPE_OBJ' => $sObjType,'CTO_UID_OBJ' => $sObjUID,'CTO_POSITION' => $iPosition,'CTO_CONDITION' => '' ) );
         return $ctoUID;
     }
 
@@ -4259,7 +4082,6 @@ class processMap
             $oCriteria2->add( CaseTrackerObjectPeer::PRO_UID, $sProcessUID );
             $oCriteria2->add( CaseTrackerObjectPeer::CTO_POSITION, ($iPosition - 1) );
             BasePeer::doUpdate( $oCriteria2, $oCriteria1, Propel::getConnection( 'workflow' ) );
-
             $oCriteria1 = new Criteria( 'workflow' );
             $oCriteria1->add( CaseTrackerObjectPeer::CTO_POSITION, ($iPosition - 1) );
             $oCriteria2 = new Criteria( 'workflow' );
@@ -4311,24 +4133,16 @@ class processMap
         G::LoadClass( 'ArrayPeer' );
         global $_DBArray;
         global $G_PUBLISH;
-
         $oCriteria = new Criteria( 'dbarray' );
         $G_PUBLISH = new Publisher();
-
         $aDirectories = array ();
-        $aDirectories[] = array ('DIRECTORY' => 'char'
-        );
-        $aDirectories[] = array ('DIRECTORY' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'mailTemplates\', \'\');" class="pagedTableHeader">' . G::loadTranslation( 'ID_TEMPLATES' ) . '</a>'
-        );
-        $aDirectories[] = array ('DIRECTORY' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'public\', \'\');" class="pagedTableHeader">' . G::loadTranslation( 'ID_PUBLIC' ) . '</a>'
-        );
-
+        $aDirectories[] = array ('DIRECTORY' => 'char');
+        $aDirectories[] = array ('DIRECTORY' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'mailTemplates\', \'\');" class="pagedTableHeader">' . G::loadTranslation( 'ID_TEMPLATES' ) . '</a>');
+        $aDirectories[] = array ('DIRECTORY' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'public\', \'\');" class="pagedTableHeader">' . G::loadTranslation( 'ID_PUBLIC' ) . '</a>');
         $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
         $_DBArray['directories'] = $aDirectories;
         $_SESSION['_DBArray'] = $_DBArray;
-
         $oCriteria->setDBArrayTable( 'directories' );
-
         $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'processes/processes_DirectoriesList', $oCriteria );
         G::RenderPage( 'publish', 'raw' );
     }
@@ -4357,8 +4171,7 @@ class processMap
         G::verifyPath( $sDirectory, true );
         $sDirectory .= $sCurrentDirectory . PATH_SEP;
         $aTheFiles = array ();
-        $aTheFiles[] = array ('PATH' => 'char','EDIT' => 'char','DOWNLOAD_TEXT' => '','DOWNLOAD_JS' => '','DELETE_TEXT' => 'char','DELETE_JS' => 'char'
-        );
+        $aTheFiles[] = array ('PATH' => 'char','EDIT' => 'char','DOWNLOAD_TEXT' => '','DOWNLOAD_JS' => '','DELETE_TEXT' => 'char','DELETE_JS' => 'char' );
         $aDirectories = array ();
         $aFiles = array ();
         $oDirectory = dir( $sDirectory );
@@ -4366,32 +4179,26 @@ class processMap
             if (($sObject !== '.') && ($sObject !== '..')) {
                 $sPath = $sDirectory . $sObject;
                 if (is_dir( $sPath )) {
-                    $aDirectories[] = array ('PATH' => ($sCurrentDirectory != '' ? $sCurrentDirectory . PATH_SEP : '') . $sObject,'DIRECTORY' => $sObject
-                    );
+                    $aDirectories[] = array ('PATH' => ($sCurrentDirectory != '' ? $sCurrentDirectory . PATH_SEP : '') . $sObject,'DIRECTORY' => $sObject );
                 } else {
                     $aAux = pathinfo( $sPath );
-                    $aFiles[] = array ('FILE' => $sObject,'EXT' => $aAux['extension']
-                    );
+                    $aFiles[] = array ('FILE' => $sObject,'EXT' => $aAux['extension']);
                 }
             }
         }
         $oDirectory->close();
         if ($sCurrentDirectory == '') {
-            $aTheFiles[] = array ('PATH' => '<a href="#" onclick="goToHome(\'' . $sProcessUID . '\');" class="pagedTableHeader">..</a>','EDIT' => '','DOWNLOAD_TEXT' => '','DOWNLOAD_JS' => '','DELETE_TEXT' => '','DELETE_JS' => ''
-            );
+            $aTheFiles[] = array ('PATH' => '<a href="#" onclick="goToHome(\'' . $sProcessUID . '\');" class="pagedTableHeader">..</a>','EDIT' => '','DOWNLOAD_TEXT' => '','DOWNLOAD_JS' => '','DELETE_TEXT' => '','DELETE_JS' => '');
         } else {
             $aAux = explode( PATH_SEP, $sCurrentDirectory );
             array_pop( $aAux );
-            $aTheFiles[] = array ('PATH' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . implode( PATH_SEP, $aAux ) . '\');" class="pagedTableHeader">..</a>','EDIT' => '','DOWNLOAD_TEXT' => '','DOWNLOAD_JS' => '','DELETE_TEXT' => '','DELETE_JS' => ''
-            );
+            $aTheFiles[] = array ('PATH' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . implode( PATH_SEP, $aAux ) . '\');" class="pagedTableHeader">..</a>','EDIT' => '','DOWNLOAD_TEXT' => '','DOWNLOAD_JS' => '','DELETE_TEXT' => '','DELETE_JS' => '');
         }
         foreach ($aDirectories as $aDirectories) {
-            $aTheFiles[] = array ('PATH' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $aDirectories['PATH'] . '\');" class="pagedTableHeader">' . $aDirectories['DIRECTORY'] . '</a>','EDIT' => '','DOWNLOAD_TEXT' => '','DOWNLOAD_JS' => '','DELETE_TEXT' => G::LoadTranslation( 'ID_DELETE' ),'DELETE_JS' => 'deleteDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aDirectories['DIRECTORY'] . '\');'
-            );
+            $aTheFiles[] = array ('PATH' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $aDirectories['PATH'] . '\');" class="pagedTableHeader">' . $aDirectories['DIRECTORY'] . '</a>','EDIT' => '','DOWNLOAD_TEXT' => '','DOWNLOAD_JS' => '','DELETE_TEXT' => G::LoadTranslation( 'ID_DELETE' ),'DELETE_JS' => 'deleteDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aDirectories['DIRECTORY'] . '\');' );
         }
         foreach ($aFiles as $aFile) {
-            $aTheFiles[] = array ('PATH' => $aFile['FILE'],'EDIT' => ($sMainDirectory == 'mailTemplates' ? 'Edit' : ''),'EDIT_JS' => "editFile('{$sProcessUID}', @@PATH)",'DOWNLOAD_TEXT' => G::LoadTranslation( 'ID_DOWNLOAD' ),'DOWNLOAD_JS' => 'downloadFile(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aFile['FILE'] . '\');','DELETE_TEXT' => G::LoadTranslation( 'ID_DELETE' ),'DELETE_JS' => 'deleteFile(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aFile['FILE'] . '\');'
-            );
+            $aTheFiles[] = array ('PATH' => $aFile['FILE'],'EDIT' => ($sMainDirectory == 'mailTemplates' ? 'Edit' : ''),'EDIT_JS' => "editFile('{$sProcessUID}', @@PATH)",'DOWNLOAD_TEXT' => G::LoadTranslation( 'ID_DOWNLOAD' ),'DOWNLOAD_JS' => 'downloadFile(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aFile['FILE'] . '\');','DELETE_TEXT' => G::LoadTranslation( 'ID_DELETE' ),'DELETE_JS' => 'deleteFile(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aFile['FILE'] . '\');' );
         }
         global $_DBArray;
         $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
@@ -4401,10 +4208,10 @@ class processMap
         $oCriteria = new Criteria( 'dbarray' );
         $oCriteria->setDBArrayTable( 'objects' );
         $oCriteria->addAscendingOrderByColumn( 'DOWNLOAD_TEXT' );
-
+        
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher();
-        $G_PUBLISH->AddContent( 'propeltable', 'processes/files-paged-table', 'processes/processes_FilesList', $oCriteria, array ('PRO_UID' => $sProcessUID,'MAIN_DIRECTORY' => $sMainDirectory,'CURRENT_DIRECTORY' => $sCurrentDirectory
+        $G_PUBLISH->AddContent( 'propeltable', 'processes/files-paged-table', 'processes/processes_FilesList', $oCriteria, array ('PRO_UID' => $sProcessUID,'MAIN_DIRECTORY' => $sMainDirectory,'CURRENT_DIRECTORY' => $sCurrentDirectory 
         ) );
         G::RenderPage( 'publish', 'raw' );
     }
@@ -4480,9 +4287,9 @@ class processMap
             G::streamFile( $sDirectory . $sFile, true );
         }
     }
-
+    
     /* For sub-process */
-
+    
     /**
      * addSubProcess
      *
@@ -4496,15 +4303,11 @@ class processMap
         try {
             $oTask = new Task();
             $oNewTask->label = 'Sub-Process'; //G::LoadTranslation('ID_TASK');
-            $oNewTask->uid = $oTask->create( array ('PRO_UID' => $sProcessUID,'TAS_TITLE' => $oNewTask->label,'TAS_POSX' => $iX,'TAS_POSY' => $iY,'TAS_TYPE' => 'SUBPROCESS'
-            ) );
+            $oNewTask->uid = $oTask->create( array ('PRO_UID' => $sProcessUID,'TAS_TITLE' => $oNewTask->label,'TAS_POSX' => $iX,'TAS_POSY' => $iY,'TAS_TYPE' => 'SUBPROCESS' ) );
             $oJSON = new Services_JSON();
-
             $oOP = new SubProcess();
-            $aData = array ('SP_UID' => G::generateUniqueID(),'PRO_UID' => 0,'TAS_UID' => 0,'PRO_PARENT' => $sProcessUID,'TAS_PARENT' => $oNewTask->uid,'SP_TYPE' => 'SIMPLE','SP_SYNCHRONOUS' => 0,'SP_SYNCHRONOUS_TYPE' => 'ALL','SP_SYNCHRONOUS_WAIT' => 0,'SP_VARIABLES_OUT' => '','SP_VARIABLES_IN' => '','SP_GRID_IN' => ''
-            );
+            $aData = array ('SP_UID' => G::generateUniqueID(),'PRO_UID' => 0,'TAS_UID' => 0,'PRO_PARENT' => $sProcessUID,'TAS_PARENT' => $oNewTask->uid,'SP_TYPE' => 'SIMPLE','SP_SYNCHRONOUS' => 0,'SP_SYNCHRONOUS_TYPE' => 'ALL','SP_SYNCHRONOUS_WAIT' => 0,'SP_VARIABLES_OUT' => '','SP_VARIABLES_IN' => '','SP_GRID_IN' => '' );
             $oOP->create( $aData );
-
             return $oJSON->encode( $oNewTask );
         } catch (Exception $oError) {
             throw ($oError);
@@ -4524,7 +4327,6 @@ class processMap
         try {
             $oTasks = new Tasks();
             $oTasks->deleteTask( $sTaskUID );
-
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addSelectColumn( 'SP_UID' );
             $oCriteria->add( SubProcessPeer::PRO_PARENT, $sProcessUID );
@@ -4533,10 +4335,8 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             $aRow = $oDataset->getRow();
-
             $oSubProcess = new SubProcess();
             $oSubProcess->remove( $aRow['SP_UID'] );
-
             return true;
         } catch (Exception $oError) {
             throw ($oError);
@@ -4554,22 +4354,21 @@ class processMap
      */
     public function subProcess_Properties ($sProcessUID = '', $sTaskUID = '', $sIndex = '')
     {
-        try { //echo "$sProcessUID = '', $sTaskUID = '', $sIndex = ''";
+        try {
+            //echo "$sProcessUID = '', $sTaskUID = '', $sIndex = ''";
             $SP_VARIABLES_OUT = array ();
             $SP_VARIABLES_IN = array ();
-
             /* Prepare page before to show */
             global $_DBArray;
             $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
             $_DBArray['NewCase'] = $this->subProcess_TaskIni( $sProcessUID );
             unset( $_DBArray['TheProcesses'] );
-            $_DBArray['TheProcesses'][] = array ('pro_uid' => 'char','value' => 'char'
+            $_DBArray['TheProcesses'][] = array ('pro_uid' => 'char','value' => 'char' 
             );
             $i = 0;
             foreach ($_DBArray['NewCase'] as $aRow) {
                 if ($i > 0) {
-                    $_DBArray['TheProcesses'][] = array ('pro_uid' => $aRow['pro_uid'] . '_' . $i,'value' => $aRow['value']
-                    );
+                    $_DBArray['TheProcesses'][] = array ('pro_uid' => $aRow['pro_uid'] . '_' . $i,'value' => $aRow['value'] );
                 }
                 $i ++;
             }
@@ -4579,23 +4378,18 @@ class processMap
             $oCriteria->add( SubProcessPeer::PRO_PARENT, $sProcessUID );
             $oCriteria->add( SubProcessPeer::PRO_PARENT, $sProcessUID );
             $oCriteria->add( SubProcessPeer::TAS_PARENT, $sTaskUID );
-
             $oCriteria->addAsColumn( 'CON_VALUE', 'C1.CON_VALUE', 'CON_TITLE' );
             $oCriteria->addAlias( "C1", 'CONTENT' );
             $tasTitleConds = array ();
-            $tasTitleConds[] = array (SubProcessPeer::TAS_PARENT,'C1.CON_ID'
-            );
-            $tasTitleConds[] = array ('C1.CON_CATEGORY',$del . 'TAS_TITLE' . $del
-            );
-            $tasTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del
-            );
+            $tasTitleConds[] = array (SubProcessPeer::TAS_PARENT,'C1.CON_ID');
+            $tasTitleConds[] = array ('C1.CON_CATEGORY',$del . 'TAS_TITLE' . $del);
+            $tasTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del);
             $oCriteria->addJoinMC( $tasTitleConds, Criteria::LEFT_JOIN );
-
             $oDataset = SubProcessPeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             $aRow = $oDataset->getRow();
-
+            
             $aRow['TASKS'] = $aRow['TAS_UID'];
             //print "<hr>".$aRow['TASKS']."<hr>";
             //$aRow['SPROCESS_NAME'] = $aRow['TAS_TITLE'];
@@ -4610,7 +4404,7 @@ class processMap
                     $i ++;
                 }
             }
-
+            
             $SP_VARIABLES_IN = unserialize( $aRow['SP_VARIABLES_IN'] );
             if (is_array( $SP_VARIABLES_IN )) {
                 $j = 1;
@@ -4654,19 +4448,16 @@ class processMap
         $rs->next();
         $row = $rs->getRow();
         while (is_array( $row )) {
-            $tasks[] = array ('TAS_UID' => $row['TAS_UID'],'PRO_UID' => $row['PRO_UID']
-            );
+            $tasks[] = array ('TAS_UID' => $row['TAS_UID'],'PRO_UID' => $row['PRO_UID']);
             $rs->next();
             $row = $rs->getRow();
         }
-        $rows[] = array ('uid' => 'char','value' => 'char','pro_uid' => 'char'
-        );
+        $rows[] = array ('uid' => 'char','value' => 'char','pro_uid' => 'char');
         foreach ($tasks as $key => $val) {
             $tasTitle = Content::load( 'TAS_TITLE', '', $val['TAS_UID'], SYS_LANG );
             $proTitle = Content::load( 'PRO_TITLE', '', $val['PRO_UID'], SYS_LANG );
             $title = " $proTitle ($tasTitle)";
-            $rows[] = array ('uid' => $val['TAS_UID'],'value' => $title,'pro_uid' => $val['PRO_UID']
-            );
+            $rows[] = array ('uid' => $val['TAS_UID'],'value' => $title,'pro_uid' => $val['PRO_UID'] );
         }
         return $rows;
     }
@@ -4686,7 +4477,7 @@ class processMap
             $G_PUBLISH = new Publisher();
             $oHeadPublisher = & headPublisher::getSingleton();
             $oHeadPublisher->addScriptFile( '/jscore/events/events.js' );
-
+            
             switch ($type) {
                 case 'message':
                     $EVN_ACTION = "SEND_MESSAGE";
@@ -4698,20 +4489,17 @@ class processMap
                     $EVN_ACTION = "EXECUTE_TRIGGER";
                     break;
             }
-
             $oCriteria = $this->getEventsCriteria( $sProcessUID, $EVN_ACTION );
-
-            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'events/eventsShortList', $oCriteria, array ('PRO_UID' => $sProcessUID,'EVN_TYPE' => $EVN_ACTION
-            ) );
+            $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'events/eventsShortList', $oCriteria, array ('PRO_UID' => $sProcessUID,'EVN_TYPE' => $EVN_ACTION) );
             G::RenderPage( 'publish', 'raw' );
             return true;
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     /* get all the events for a specified process */
-
+    
     /**
      * getEventsCriteria
      *
@@ -4729,18 +4517,14 @@ class processMap
             $oCriteria->addSelectColumn( EventPeer::EVN_STATUS );
             $oCriteria->addSelectColumn( EventPeer::EVN_WHEN_OCCURS );
             $oCriteria->addSelectColumn( EventPeer::EVN_RELATED_TO );
-
             $oCriteria->addAsColumn( 'EVN_DESCRIPTION', ContentPeer::CON_VALUE );
             $aConditions = array ();
-            $aConditions[] = array (EventPeer::EVN_UID,ContentPeer::CON_ID
-            );
-            $aConditions[] = array (ContentPeer::CON_CATEGORY,$sDelimiter . 'EVN_DESCRIPTION' . $sDelimiter
-            );
-            $aConditions[] = array (ContentPeer::CON_LANG,$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (EventPeer::EVN_UID,ContentPeer::CON_ID);
+            $aConditions[] = array (ContentPeer::CON_CATEGORY,$sDelimiter . 'EVN_DESCRIPTION' . $sDelimiter);
+            $aConditions[] = array (ContentPeer::CON_LANG,$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( EventPeer::PRO_UID, $sProcessUID );
-
+            
             switch ($EVN_ACTION) {
                 case 'SEND_MESSAGE':
                     $oCriteria->add( EventPeer::EVN_ACTION, "SEND_MESSAGE" );
@@ -4752,13 +4536,12 @@ class processMap
                     $oCriteria->add( EventPeer::EVN_ACTION, "EXECUTE_TRIGGER" );
                     break;
             }
-
             return $oCriteria;
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
-
+    
     // processMap
     /**
      * **************************All Functions for New ProcessMap*****************************************************
@@ -4768,7 +4551,7 @@ class processMap
   * @param string $sProcessUID
   * @return boolean
   */
-
+    
     public function editProcessNew ($sProcessUID)
     {
         try {
@@ -4776,18 +4559,14 @@ class processMap
             if (! is_null( $oProcess )) {
                 $calendar = new Calendar();
                 $calendarObj = $calendar->getCalendarList( true, true );
-
                 global $_DBArray;
-
                 $_DBArray['availableCalendars'] = $calendarObj['array'];
-
                 $_SESSION['_DBArray'] = $_DBArray;
                 $aFields = $oProcess->load( $sProcessUID );
                 $aFields['THETYPE'] = 'UPDATE';
                 $calendarInfo = $calendar->getCalendarFor( $sProcessUID, $sProcessUID, $sProcessUID );
                 //If the public function returns a DEFAULT calendar it means that this object doesn't have assigned any calendar
                 $aFields['PRO_CALENDAR'] = $calendarInfo['CALENDAR_APPLIED'] != 'DEFAULT' ? $calendarInfo['CALENDAR_UID'] : "";
-
                 return $aFields;
             } else {
                 throw (new Exception( 'This row doesn\'t exist!' ));
@@ -4796,24 +4575,24 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
   * Load all categories
   * @return array
   */
-
+    
     public function loadProcessCategory ()
     {
         $aProcessCategory = '';
         require_once ("classes/model/ProcessCategory.php");
         $Criteria = new Criteria( 'workflow' );
         $Criteria->clearSelectColumns();
-
+        
         $Criteria->addSelectColumn( ProcessCategoryPeer::CATEGORY_UID );
         $Criteria->addSelectColumn( ProcessCategoryPeer::CATEGORY_PARENT );
         $Criteria->addSelectColumn( ProcessCategoryPeer::CATEGORY_NAME );
         $Criteria->addSelectColumn( ProcessCategoryPeer::CATEGORY_ICON );
-
+        
         $Criteria->add( processCategoryPeer::CATEGORY_UID, "xx", CRITERIA::NOT_EQUAL );
         $oDataset = processCategoryPeer::doSelectRS( $Criteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
@@ -4822,10 +4601,9 @@ class processMap
             $aProcessCategory[] = $aRow;
             $oDataset->next();
         }
-
         return $aProcessCategory;
     }
-
+    
     /*
   * Save the tasks Width and Height
   * @param string $sTaskUID
@@ -4838,7 +4616,7 @@ class processMap
         try {
             $oTask = new Task();
             $aFields = $oTask->load( $sTaskUID );
-
+            
             $aFields['TAS_UID'] = $sTaskUID;
             $aFields['TAS_WIDTH'] = $iX;
             $aFields['TAS_HEIGHT'] = $iY;
@@ -4847,7 +4625,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
   * Save the Annotation Width and Height
   * @param string $sSwimLaneUID
@@ -4860,7 +4638,7 @@ class processMap
         try {
             $oSL = new SwimlanesElements();
             $aFields = $oSL->load( $sSwimLaneUID );
-
+            
             $aFields['SWI_UID'] = $sSwimLaneUID;
             $aFields['SWI_WIDTH'] = $iX;
             $aFields['SWI_HEIGHT'] = $iY;
@@ -4869,7 +4647,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     /*
   * Save the Event Position
   * @param string $sSwimLaneUID
@@ -4882,7 +4660,7 @@ class processMap
         try {
             $oEvents = new Event();
             $aFields = $oEvents->load( $sEventUID );
-
+            
             $aFields['EVN_UID'] = $sEventUID;
             $aFields['EVN_POSX'] = $iX;
             $aFields['EVN_POSY'] = $iY;
@@ -4902,7 +4680,6 @@ class processMap
      */
     public function getAllProcesses ()
     {
-
         $aProcesses = array ();
         //$aProcesses [] = array ('PRO_UID' => 'char', 'PRO_TITLE' => 'char');
         $oCriteria = new Criteria( 'workflow' );
@@ -4910,32 +4687,29 @@ class processMap
         $oCriteria->add( ProcessPeer::PRO_STATUS, 'DISABLED', Criteria::NOT_EQUAL );
         $oDataset = ProcessPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-
+        
         $oDataset->next();
         $oProcess = new Process();
         while ($aRow = $oDataset->getRow()) {
             $aProcess = $oProcess->load( $aRow['PRO_UID'] );
-            $aProcesses[] = array ('value' => $aProcess['PRO_UID'],'name' => $aProcess['PRO_TITLE']
-            );
+            $aProcesses[] = array ('value' => $aProcess['PRO_UID'],'name' => $aProcess['PRO_TITLE']);
             $oDataset->next();
         }
         $oJSON = new Services_JSON();
         return $oJSON->encode( $aProcesses );
     }
-
     /*
-  * Return the steps list criteria object
-  * @param string $sTaskUID
-  * @return array
-  *
-  */
+    * Return the steps list criteria object
+    * @param string $sTaskUID
+    * @return array
+    *
+    */
     public function getDynaformList ($sTaskUID = '')
     {
         try {
             //call plugin
             $oPluginRegistry = &PMPluginRegistry::getSingleton();
             $externalSteps = $oPluginRegistry->getSteps();
-
             $aSteps = array ();
             //$aSteps [] = array ('STEP_TITLE' => 'char', 'STEP_UID' => 'char', 'STEP_TYPE_OBJ' => 'char', 'STEP_CONDITION' => 'char', 'STEP_POSITION' => 'integer' );
             $oCriteria = new Criteria( 'workflow' );
@@ -4947,7 +4721,7 @@ class processMap
             while ($aRow = $oDataset->getRow()) {
                 $urlEdit = '';
                 $linkEditValue = '';
-
+                
                 switch ($aRow['STEP_TYPE_OBJ']) {
                     case 'DYNAFORM':
                         $oDynaform = new Dynaform();
@@ -4956,7 +4730,7 @@ class processMap
                         $DYN_UID = $aFields['DYN_UID'];
                         break;
                 }
-                $aSteps[] = array ('name' => $sTitle,'value' => $DYN_UID
+                $aSteps[] = array ('name' => $sTitle,'value' => $DYN_UID 
                 );
                 $oDataset->next();
             }
@@ -4972,7 +4746,6 @@ class processMap
             global $G_PUBLISH;
             global $G_FORM;
             $G_PUBLISH = new Publisher();
-
             require_once 'classes/model/Event.php';
             $oEvent = new Event();
             $arlink = '';
@@ -4983,7 +4756,7 @@ class processMap
                 $dynUid = '';
                 $task_name = '';
                 $usr_uid_evn = $oEvent->getEvnConditions();
-
+                
                 if ($oData['EVN_ACTION'] != '' && $oData['EVN_ACTION'] != 'WEB_ENTRY') {
                     require_once 'classes/model/Content.php';
                     require_once 'classes/model/Task.php';
@@ -4991,46 +4764,37 @@ class processMap
                     $oContent = new Content();
                     $dynTitle = $oContent->load( 'DYN_TITLE', '', $oData['EVN_ACTION'], 'en' );
                     $task_uid = $oEvent->getEvnTasUidTo();
-
                     $dyn = new Dynaform();
                     $dyn->load( $oData['EVN_ACTION'] );
-
                     $dynUid = $dyn->getDynUid();
-
                     $task = new Task();
                     $task->load( $task_uid );
                     $task_name = $task->getTasTitle();
-
-                    if (G::is_https())
+                    
+                    if (G::is_https()) {
                         $http = 'https://';
-                    else
+                    } else {
                         $http = 'http://';
-
+                    }
                     $link = $http . $_SERVER['HTTP_HOST'] . '/sys' . SYS_SYS . '/' . SYS_LANG . '/' . SYS_SKIN . '/' . $sProcessUID . '/';
-
+                    
                     $row = array ();
                     $c = 0;
-
                     /*
-          $oTask = new Task ( );
-          $TaskFields = $oTask->kgetassigType ( $sProcessUID , $tas='');
-          */
+                    $oTask = new Task ( );
+                    $TaskFields = $oTask->kgetassigType ( $sProcessUID , $tas='');
+                    */
                     $TaskFields['TAS_ASSIGN_TYPE'] = '';
                     //$row [] = array ('W_TITLE' => '', 'W_DELETE' => '', 'TAS_ASSIGN_TYPE' => $TaskFields ['TAS_ASSIGN_TYPE'] );
-
-
                     if (is_dir( PATH_DATA . "sites" . PATH_SEP . SYS_SYS . PATH_SEP . "public" . PATH_SEP . $sProcessUID )) {
                         $dir = opendir( PATH_DATA . "sites" . PATH_SEP . SYS_SYS . PATH_SEP . "public" . PATH_SEP . $sProcessUID );
                         $dynTitle = str_replace( ' ', '_', str_replace( '/', '_', $dynTitle ) );
                         $arlink = $link . $dynTitle . '.php';
                         //$arlink     = "<a href='" . $alink . "' target='blank'><font color='#9999CC'>" . $alink . "</font></a>";
-
-
                     }
                 }
             }
-            $row = array ('W_LINK' => $arlink,'DYN_TITLE' => $dynTitle,'TAS_TITLE' => $task_name,'USR_UID' => $usr_uid_evn,'DYN_UID' => $dynUid
-            );
+            $row = array ('W_LINK' => $arlink,'DYN_TITLE' => $dynTitle,'TAS_TITLE' => $task_name,'USR_UID' => $usr_uid_evn,'DYN_UID' => $dynUid);
             //     $oJSON = new Services_JSON ( );
             //     $tmpData = $oJSON->encode( $row ) ;
             //     $tmpData = str_replace("\\/","/",'{success:true,data:'.$tmpData.'}'); // unescape the slashes
@@ -5043,13 +4807,12 @@ class processMap
             throw ($oError);
         }
     }
-
     /*
-  * Users assigned to Tasks
-  * @param string $sProcessUID
-  * @param string $sTaskUID
-  * @return boolean
-  */
+    * Users assigned to Tasks
+    * @param string $sProcessUID
+    * @param string $sTaskUID
+    * @return boolean
+    */
     public function usersExtList ($start, $limit, $sProcessUID = '', $sTaskUID = '')
     {
         try {
@@ -5057,15 +4820,15 @@ class processMap
             $aFields = $oProcess->load( $sProcessUID );
             $oTask = new Task();
             $aFields = $oTask->load( $sTaskUID );
-
+            
             $_SESSION['iType'] = 1;
-
+            
             $aFields['TASK'] = $sTaskUID;
             $aFields['TYPE'] = $_SESSION['iType'];
             $aFields['OF_TO_ASSIGN'] = G::LoadTranslation( 'ID_DE_ASSIGN' );
             $aFields['CONFIRM'] = G::LoadTranslation( 'ID_MSG_CONFIRM_DEASIGN_USER_GROUP_MESSAGE' );
             $aFields['UIDS'] = "'0'";
-
+            
             $oTasks = new Tasks();
             $oGroups = new Groups();
             $aAux1 = $oTasks->getGroupsOfTask( $sTaskUID, $_SESSION['iType'] );
@@ -5079,10 +4842,9 @@ class processMap
             $G_PUBLISH = new Publisher();
             $oTask = new Task();
             $aTask = $oTask->load( $sTaskUID );
-
+            
             $this->getExtTaskUsersCriteria( $start, $limit, $sTaskUID, $_SESSION['iType'] );
             return $_SESSION['_DBArray']['taskUsers'];
-
         } catch (Exception $oError) {
             throw ($oError);
         }
@@ -5094,7 +4856,6 @@ class processMap
             $oCaseScheduler = new CaseScheduler();
             $aRows = $oCaseScheduler->load( $sSchUID );
             return $aRows;
-
         } catch (Exception $oError) {
             throw ($oError);
         }
@@ -5108,19 +4869,19 @@ class processMap
         $oDataset = TaskUserPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
-        if (is_array( $aRow ))
+        
+        if (is_array( $aRow )) {
             return $aRow[0];
-        else
+        } else {
             return 0;
+        }
     }
 
     public function getExtTaskUsersCriteria ($start, $limit, $sTaskUID = '', $iType = 1)
     {
         try {
             $aUsers = array ();
-            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer'
-            );
+            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer');
             $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addAsColumn( 'GRP_TITLE', 'C.CON_VALUE' );
@@ -5130,24 +4891,21 @@ class processMap
             $oCriteria->addSelectColumn( TaskUserPeer::TU_RELATION );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (TaskUserPeer::USR_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (TaskUserPeer::USR_UID,'C.CON_ID');
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter);
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( TaskUserPeer::TAS_UID, $sTaskUID );
             $oCriteria->add( TaskUserPeer::TU_TYPE, $iType );
             $oCriteria->add( TaskUserPeer::TU_RELATION, 2 );
-
             $this->tmpCriteria = clone $oCriteria;
-
-            if ($start != '')
+            
+            if ($start != '') {
                 $oCriteria->setOffset( $start );
-            if ($limit != '')
+            }
+            if ($limit != '') {
                 $oCriteria->setLimit( $limit );
-
+            }
             $oDataset = TaskUserPeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
@@ -5168,8 +4926,7 @@ class processMap
                     $aRow2['GROUP_INACTIVE'] = '<strong>(' . G::LoadTranslation( 'ID_GROUP_INACTIVE' ) . ')</strong>';
                 }
                 //$aUsers [] = array ('LABEL' => (! isset ( $aRow2 ['GROUP_INACTIVE'] ) ? $aRow ['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $aRow ['USR_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2 ['MEMBERS_NUMBER'] . ' ' . (( int ) $aRow2 ['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation ( 'ID_USER' ) : G::LoadTranslation ( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>' : $aRow ['GRP_TITLE'] . ' ' . $aRow2 ['GROUP_INACTIVE']), 'TAS_UID' => $aRow ['TAS_UID'], 'USR_UID' => $aRow ['USR_UID'], 'TU_TYPE' => $aRow ['TU_TYPE'], 'TU_RELATION' => $aRow ['TU_RELATION'] );
-                $aUsers[] = array ('LABEL' => (! isset( $aRow2['GROUP_INACTIVE'] ) ? $aRow['GRP_TITLE'] . ' <font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font><br /><div id="users' . $c . '" style="display: none"></div>' : $aRow['GRP_TITLE'] . ' ' . $aRow2['GROUP_INACTIVE']),'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION']
-                );
+                $aUsers[] = array ('LABEL' => (! isset( $aRow2['GROUP_INACTIVE'] ) ? $aRow['GRP_TITLE'] . ' <font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font><br /><div id="users' . $c . '" style="display: none"></div>' : $aRow['GRP_TITLE'] . ' ' . $aRow2['GROUP_INACTIVE']),'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION']);
                 $oDataset->next();
             }
             $oCriteria = new Criteria( 'workflow' );
@@ -5187,7 +4944,7 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION']
+                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION'] 
                 );
                 $oDataset->next();
             }
@@ -5249,9 +5006,7 @@ class processMap
                 $oDataset2->next();
                 $aRow2 = $oDataset2->getRow();
                 //$aUsers [] = array ('LABEL' => $aRow ['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $aRow ['GRP_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2 ['MEMBERS_NUMBER'] . ' ' . (( int ) $aRow2 ['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation ( 'ID_USER' ) : G::LoadTranslation ( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>', 'TAS_UID' => $sTaskUID, 'USR_UID' => $aRow ['GRP_UID'], 'TU_TYPE' => $iType, 'TU_RELATION' => 2 );
-                $aUsers[] = array (
-                                'LABEL' => $aRow['GRP_TITLE'] . ' <font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font><br /><div id="users' . $c . '" style="display: none"></div>','TAS_UID' => $sTaskUID,'USR_UID' => $aRow['GRP_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 2
-                );
+                $aUsers[] = array ('LABEL' => $aRow['GRP_TITLE'] . ' <font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font><br /><div id="users' . $c . '" style="display: none"></div>','TAS_UID' => $sTaskUID,'USR_UID' => $aRow['GRP_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 2);
                 $oDataset->next();
             }
             $sDelimiter = DBAdapter::getStringDelimiter();
@@ -5265,15 +5020,13 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $sTaskUID,'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 1
-                );
+                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $sTaskUID,'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 1);
                 $oDataset->next();
             }
             global $_DBArray;
             $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
             $_DBArray['availableUsers'] = $aUsers;
             $_SESSION['_DBArray'] = $_DBArray;
-
             //return $oCriteria;
             return $_SESSION['_DBArray']['availableUsers'];
         } catch (Exception $oError) {
@@ -5283,8 +5036,10 @@ class processMap
 
     /**
      * Return the Additional PM tables list created by user
+     * 
      * @return object
-    **/
+     *
+     */
     public function getExtAdditionalTablesList ($sTab_UID = '')
     {
         $aAdditionalTables = array ();
@@ -5293,12 +5048,11 @@ class processMap
         $oCriteria->addSelectColumn( AdditionalTablesPeer::ADD_TAB_NAME );
         $oCriteria->addSelectColumn( AdditionalTablesPeer::ADD_TAB_DESCRIPTION );
         $oCriteria->add( AdditionalTablesPeer::ADD_TAB_UID, '', Criteria::NOT_EQUAL );
-
         $oDataset = AdditionalTablesPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAdditionalTables[] = array ('ADD_TAB_UID' => $aRow['ADD_TAB_UID'],'ADD_TAB_NAME' => $aRow['ADD_TAB_NAME'],'ADD_TAB_DESCRIPTION' => $aRow['ADD_TAB_DESCRIPTION']
+            $aAdditionalTables[] = array ('ADD_TAB_UID' => $aRow['ADD_TAB_UID'],'ADD_TAB_NAME' => $aRow['ADD_TAB_NAME'],'ADD_TAB_DESCRIPTION' => $aRow['ADD_TAB_DESCRIPTION'] 
             );
             $oDataset->next();
         }
@@ -5307,10 +5061,11 @@ class processMap
 
     /**
      * Return the available building blocks list criteria object
+     * 
      * @param string $sProcessUID
      * @param string $sTaskUID
      * @return object
-    */
+     */
     public function getExtAvailableBBCriteria ($sProcessUID = '', $sTaskUID = '')
     {
         try {
@@ -5323,20 +5078,16 @@ class processMap
                 $sUIDs[] = $aStep['STEP_UID_OBJ'];
             }
             $aBB = array ();
-            $aBB[] = array ('STEP_UID' => 'char','STEP_TITLE' => 'char','STEP_TYPE_OBJ' => 'char','STEP_MODE' => 'char','STEP_UID_OBJ' => 'char'
-            );
+            $aBB[] = array ('STEP_UID' => 'char','STEP_TITLE' => 'char','STEP_TYPE_OBJ' => 'char','STEP_MODE' => 'char','STEP_UID_OBJ' => 'char');
             $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addSelectColumn( DynaformPeer::DYN_UID );
             $oCriteria->addAsColumn( 'DYN_TITLE', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID');
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter);
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
             $oCriteria->add( DynaformPeer::DYN_UID, $sUIDs, Criteria::NOT_IN );
@@ -5351,7 +5102,7 @@ class processMap
                                             <option value="EDIT">Edit</option>
                                             <option value="VIEW">View</option>
                                            </select>' );*/
-                $aBB[] = array ('STEP_UID' => $aRow['DYN_UID'],'STEP_TITLE' => $aRow['DYN_TITLE'],'STEP_TYPE_OBJ' => 'DYNAFORM','STEP_MODE' => 'EDIT','STEP_UID_OBJ' => $aRow['DYN_UID']
+                $aBB[] = array ('STEP_UID' => $aRow['DYN_UID'],'STEP_TITLE' => $aRow['DYN_TITLE'],'STEP_TYPE_OBJ' => 'DYNAFORM','STEP_MODE' => 'EDIT','STEP_UID_OBJ' => $aRow['DYN_UID'] 
                 );
                 $oDataset->next();
             }
@@ -5370,12 +5121,7 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aBB[] = array (
-                                'STEP_UID' => $aRow['INP_DOC_UID'],
-                                'STEP_UID_OBJ' => $aRow['INP_DOC_UID'],
-                                'STEP_TITLE' => $aRow['INP_DOC_TITLE'],
-                                'STEP_TYPE_OBJ' => 'INPUT_DOCUMENT',
-                                'STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['INP_DOC_UID'] . '">'
+                $aBB[] = array ('STEP_UID' => $aRow['INP_DOC_UID'],'STEP_UID_OBJ' => $aRow['INP_DOC_UID'],'STEP_TITLE' => $aRow['INP_DOC_TITLE'],'STEP_TYPE_OBJ' => 'INPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['INP_DOC_UID'] . '">' 
                 );
                 $oDataset->next();
             }
@@ -5394,26 +5140,21 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aBB[] = array (
-                                'STEP_UID' => $aRow['OUT_DOC_UID'],
-                                'STEP_UID_OBJ' => $aRow['OUT_DOC_UID'],
-                                'STEP_TITLE' => $aRow['OUT_DOC_TITLE'],
-                                'STEP_TYPE_OBJ' => 'OUTPUT_DOCUMENT',
-                                'STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['OUT_DOC_UID'] . '">'
+                $aBB[] = array ('STEP_UID' => $aRow['OUT_DOC_UID'],'STEP_UID_OBJ' => $aRow['OUT_DOC_UID'],'STEP_TITLE' => $aRow['OUT_DOC_TITLE'],'STEP_TYPE_OBJ' => 'OUTPUT_DOCUMENT','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $aRow['OUT_DOC_UID'] . '">' 
                 );
                 $oDataset->next();
             }
-
+            
             //call plugin
             $oPluginRegistry = &PMPluginRegistry::getSingleton();
             $externalSteps = $oPluginRegistry->getSteps();
             if (is_array( $externalSteps ) && count( $externalSteps ) > 0) {
                 foreach ($externalSteps as $key => $stepVar) {
-                    $aBB[] = array ('STEP_UID' => $stepVar->sStepId,'STEP_TITLE' => $stepVar->sStepTitle,'STEP_TYPE_OBJ' => 'EXTERNAL','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $stepVar->sStepId . '">'
+                    $aBB[] = array ('STEP_UID' => $stepVar->sStepId,'STEP_TITLE' => $stepVar->sStepTitle,'STEP_TYPE_OBJ' => 'EXTERNAL','STEP_MODE' => '<input type="hidden" id="STEP_MODE_' . $stepVar->sStepId . '">' 
                     );
                 }
             }
-
+            
             global $_DBArray;
             $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
             $_DBArray['availableBB'] = $aBB;
@@ -5438,7 +5179,7 @@ class processMap
         $oDataset = StepPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
@@ -5447,32 +5188,26 @@ class processMap
     }
 
     /**
-    * Return the steps list criteria object
-    * @param string $sTaskUID
-    * @return array
-    */
+     * Return the steps list criteria object
+     * 
+     * @param string $sTaskUID
+     * @return array
+     */
     public function getExtStepsCriteria ($start, $limit, $sTaskUID = '')
     {
         try {
             //call plugin
             $oPluginRegistry = &PMPluginRegistry::getSingleton();
             $externalSteps = $oPluginRegistry->getSteps();
-
+            
             $aSteps = array ();
-            $aSteps[] = array (
-                            'STEP_TITLE' => 'char',
-                            'STEP_UID' => 'char',
-                            'STEP_TYPE_OBJ' => 'char',
-                            'STEP_CONDITION' => 'char',
-                            'STEP_POSITION' => 'integer',
-                            'STEP_MODE' => 'char',
-                            'STEP_UID_OBJ' => 'char'
+            $aSteps[] = array ('STEP_TITLE' => 'char','STEP_UID' => 'char','STEP_TYPE_OBJ' => 'char','STEP_CONDITION' => 'char','STEP_POSITION' => 'integer','STEP_MODE' => 'char','STEP_UID_OBJ' => 'char' 
             );
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( StepPeer::TAS_UID, $sTaskUID );
             $oCriteria->addAscendingOrderByColumn( StepPeer::STEP_POSITION );
             $this->tmpCriteria = clone $oCriteria;
-
+            
             if ($start != '') {
                 $oCriteria->setOffset( $start );
             }
@@ -5485,7 +5220,7 @@ class processMap
             while ($aRow = $oDataset->getRow()) {
                 $urlEdit = '';
                 $linkEditValue = '';
-
+                
                 switch ($aRow['STEP_TYPE_OBJ']) {
                     case 'DYNAFORM':
                         $oDynaform = new Dynaform();
@@ -5527,11 +5262,11 @@ class processMap
                         }
                         break;
                 }
-                $aSteps[] = array ('STEP_TITLE' => $sTitle,'STEP_UID' => $aRow['STEP_UID'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_CONDITION' => $aRow['STEP_CONDITION'],'STEP_POSITION' => $aRow['STEP_POSITION'],'urlEdit' => $urlEdit,'linkEditValue' => $linkEditValue,'PRO_UID' => $aRow['PRO_UID'],'STEP_MODE' => $aRow['STEP_MODE'],'STEP_UID_OBJ' => $aRow['STEP_UID_OBJ']
+                $aSteps[] = array ('STEP_TITLE' => $sTitle,'STEP_UID' => $aRow['STEP_UID'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_CONDITION' => $aRow['STEP_CONDITION'],'STEP_POSITION' => $aRow['STEP_POSITION'],'urlEdit' => $urlEdit,'linkEditValue' => $linkEditValue,'PRO_UID' => $aRow['PRO_UID'],'STEP_MODE' => $aRow['STEP_MODE'],'STEP_UID_OBJ' => $aRow['STEP_UID_OBJ'] 
                 );
                 $oDataset->next();
             }
-
+            
             global $_DBArray;
             $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
             $_DBArray['steps'] = $aSteps;
@@ -5546,7 +5281,7 @@ class processMap
             throw ($oError);
         }
     }
-
+    
     //new functions
     public function getAllStepTriggerCount ()
     {
@@ -5556,14 +5291,14 @@ class processMap
         $oDataset = StepTriggerPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
             return 0;
         }
     }
-
+    
     /*
   * Return the steps trigger criteria array
   * @param string $sTaskUID
@@ -5593,7 +5328,7 @@ class processMap
         $oCriteria->add( StepTriggerPeer::ST_TYPE, $sType );
         $oCriteria->addAscendingOrderByColumn( StepTriggerPeer::ST_POSITION );
         $this->tmpCriteria = clone $oCriteria;
-
+        
         if ($start != '') {
             $oCriteria->setOffset( $start );
         }
@@ -5604,13 +5339,13 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aBB[] = array ('CON_VALUE' => $aRow['CON_VALUE'],'STEP_UID' => $aRow['STEP_UID'],'ST_TYPE' => $aRow['ST_TYPE'],'ST_POSITION' => $aRow['ST_POSITION'],'ST_CONDITION' => $aRow['ST_CONDITION'],'TRI_UID' => $aRow['TRI_UID'],'TRI_TITLE' => $aRow['TRI_TITLE']
+            $aBB[] = array ('CON_VALUE' => $aRow['CON_VALUE'],'STEP_UID' => $aRow['STEP_UID'],'ST_TYPE' => $aRow['ST_TYPE'],'ST_POSITION' => $aRow['ST_POSITION'],'ST_CONDITION' => $aRow['ST_CONDITION'],'TRI_UID' => $aRow['TRI_UID'],'TRI_TITLE' => $aRow['TRI_TITLE'] 
             );
             $oDataset->next();
         }
         return $aBB;
     }
-
+    
     /*
   * Return the available step triggers list object
   * @param string $sStepUID
@@ -5655,12 +5390,7 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aBB[] = array (
-                               'CON_VALUE' => $aRow['CON_VALUE'],
-                               'STEP_UID' => $sStepUID,
-                               'ST_TYPE' => $sType,
-                               'TRI_UID' => $aRow['TRI_UID'],
-                               'TRI_TITLE' => $aRow['TRI_TITLE']
+                $aBB[] = array ('CON_VALUE' => $aRow['CON_VALUE'],'STEP_UID' => $sStepUID,'ST_TYPE' => $sType,'TRI_UID' => $aRow['TRI_UID'],'TRI_TITLE' => $aRow['TRI_TITLE'] 
                 );
                 $oDataset->next();
             }
@@ -5669,7 +5399,7 @@ class processMap
             throw ($e);
         }
     }
-
+    
     //new functions
     //deprecated
     public function getAllDynaformCount ()
@@ -5680,14 +5410,14 @@ class processMap
         $oDataset = DynaformPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
             return 0;
         }
     }
-
+    
     /*
   * Return the dynaforms list array
   * @param string $sProcessUID
@@ -5706,23 +5436,17 @@ class processMap
         $oCriteria->addAlias( 'C1', 'CONTENT' );
         $oCriteria->addAlias( 'C2', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C1.CON_ID'
-        );
-        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C1.CON_ID');
+        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C2.CON_ID'
-        );
-        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'DYN_DESCRIPTION' . $sDelimiter
-        );
-        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C2.CON_ID');
+        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'DYN_DESCRIPTION' . $sDelimiter);
+        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
-
+        
         //if we have pagination, we use it and limit the query
         if ($start != '') {
             $oCriteria->setOffset( $start );
@@ -5736,7 +5460,7 @@ class processMap
         $dynaformArray = array ();
         $gridLabel = G::LoadTranslation( 'ID_GRID' );
         $normalLabel = G::LoadTranslation( 'ID_NORMAL' );
-
+        
         while ($aRow = $oDataset->getRow()) {
             //this is a trick to copy the description and title from other language when the current language does not exist for this content row.
             if (($aRow['DYN_TITLE'] == null) || ($aRow['DYN_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
@@ -5745,7 +5469,7 @@ class processMap
             if (($aRow['DYN_DESCRIPTION'] == null) || ($aRow['DYN_DESCRIPTION'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
                 $aRow['DYN_DESCRIPTION'] = Content::Load( "DYN_DESCRIPTION", "", $aRow['DYN_UID'], SYS_LANG );
             }
-
+            
             if ($aRow['DYN_TYPE'] == 'grid')
                 $aRow['DYN_TYPE'] = $gridLabel;
             if ($aRow['DYN_TYPE'] == 'xmlform')
@@ -5756,7 +5480,7 @@ class processMap
             $oDataset->next();
         }
         $result = array ();
-
+        
         //Now count how many times the dynaform was used in different tasks in VIEW mode,
         $groupbyCriteria = new Criteria( 'workflow' );
         $groupbyCriteria->clearSelectColumns();
@@ -5777,7 +5501,7 @@ class processMap
             }
             $oDataset->next();
         }
-
+        
         //Now count how many times the dynaform was used in different tasks in EDIT mode,
         $groupbyCriteria = new Criteria( 'workflow' );
         $groupbyCriteria->clearSelectColumns();
@@ -5798,7 +5522,7 @@ class processMap
             }
             $oDataset->next();
         }
-
+        
         //now query to get total dynaform for this process,
         //$counCriteria is used to count how many dynaforms there are in this process
         $countCriteria = new Criteria( 'workflow' );
@@ -5808,17 +5532,17 @@ class processMap
         $oDataset = DynaformPeer::doSelectRS( $countCriteria );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             $result['totalCount'] = $aRow[0];
         } else {
             $result['totalCount'] = 0;
         }
         $result['data'] = $dynaformArray;
-
+        
         return $result;
     }
-
+    
     //new functions
     public function getAllInputDocumentCount ()
     {
@@ -5828,7 +5552,7 @@ class processMap
         $oDataset = InputDocumentPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
@@ -5856,25 +5580,19 @@ class processMap
         $oCriteria->addAlias( 'C1', 'CONTENT' );
         $oCriteria->addAlias( 'C2', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C1.CON_ID'
-        );
-        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C1.CON_ID');
+        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C2.CON_ID'
-        );
-        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'INP_DOC_DESCRIPTION' . $sDelimiter
-        );
-        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C2.CON_ID');
+        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'INP_DOC_DESCRIPTION' . $sDelimiter);
+        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( InputDocumentPeer::PRO_UID, $sProcessUID );
-
+        
         $this->tmpCriteria = clone $oCriteria;
-
+        
         if ($start != '') {
             $oCriteria->setOffset( $start );
         }
@@ -5885,7 +5603,7 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $inputDocArray = "";
-        $inputDocArray[] = array ('INP_DOC_UID' => 'char','PRO_UID' => 'char','INP_DOC_TITLE' => 'char','INP_DOC_DESCRIPTION' => 'char'
+        $inputDocArray[] = array ('INP_DOC_UID' => 'char','PRO_UID' => 'char','INP_DOC_TITLE' => 'char','INP_DOC_DESCRIPTION' => 'char' 
         );
         while ($aRow = $oDataset->getRow()) {
             if (($aRow['INP_DOC_TITLE'] == null) || ($aRow['INP_DOC_TITLE'] == "")) { // There is no transaltion for this Document name, try to get/regenerate the label
@@ -5902,7 +5620,7 @@ class processMap
         $_DBArray = (isset ( $_SESSION ['_DBArray'] ) ? $_SESSION ['_DBArray'] : '');
         $_DBArray ['inputDocArrayMain'] = $inputDocArray;
         //$_SESSION ['_DBArray']['inputDocArrayMain']        = $_DBArray;*/
-
+        
         return $inputDocArray;
     }
 
@@ -5914,7 +5632,7 @@ class processMap
         $oDataset = OutputDocumentPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
@@ -5928,7 +5646,7 @@ class processMap
      * @param string $sProcessUID
      * @return object
      */
-
+    
     public function getExtOutputDocumentsCriteria ($start, $limit, $sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -5941,25 +5659,19 @@ class processMap
         $oCriteria->addAlias( 'C1', 'CONTENT' );
         $oCriteria->addAlias( 'C2', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C1.CON_ID'
-        );
-        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C1.CON_ID');
+        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C2.CON_ID'
-        );
-        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'OUT_DOC_DESCRIPTION' . $sDelimiter
-        );
-        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C2.CON_ID');
+        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'OUT_DOC_DESCRIPTION' . $sDelimiter);
+        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( OutputDocumentPeer::PRO_UID, $sProcessUID );
-
+        
         $this->tmpCriteria = clone $oCriteria;
-
+        
         if ($start != '') {
             $oCriteria->setOffset( $start );
         }
@@ -5970,7 +5682,7 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $outputDocArray = array ();
-        $outputDocArray[] = array ('d' => 'char'
+        $outputDocArray[] = array ('d' => 'char' 
         );
         while ($aRow = $oDataset->getRow()) {
             // There is no transaltion for this Document name, try to get/regenerate the label
@@ -5990,7 +5702,7 @@ class processMap
         G::LoadClass( 'ArrayPeer' );
         $oCriteria = new Criteria( 'dbarray' );
         $oCriteria->setDBArrayTable( 'outputDocArray' );
-
+        
         return $outputDocArray;
     }
 
@@ -6008,18 +5720,17 @@ class processMap
         try {
             $SP_VARIABLES_OUT = array ();
             $SP_VARIABLES_IN = array ();
-
+            
             /* Prepare page before to show */
             global $_DBArray;
             $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
             $_DBArray['NewCase'] = $this->subProcess_TaskIni( $sProcessUID );
             unset( $_DBArray['TheProcesses'] );
-            $_DBArray['TheProcesses'][] = array ('pro_uid' => 'char','value' => 'char'
-            );
+            $_DBArray['TheProcesses'][] = array ('pro_uid' => 'char','value' => 'char');
             $i = 0;
             foreach ($_DBArray['NewCase'] as $aRow) {
                 if ($i > 0) {
-                    $_DBArray['TheProcesses'][] = array ('pro_uid' => $aRow['pro_uid'] . '_' . $i,'value' => $aRow['value']
+                    $_DBArray['TheProcesses'][] = array ('pro_uid' => $aRow['pro_uid'] . '_' . $i,'value' => $aRow['value'] 
                     );
                 }
                 $i ++;
@@ -6029,18 +5740,15 @@ class processMap
             $del = DBAdapter::getStringDelimiter();
             $oCriteria->add( SubProcessPeer::PRO_PARENT, $sProcessUID );
             $oCriteria->add( SubProcessPeer::TAS_PARENT, $sTaskUID );
-
+            
             $oCriteria->addAsColumn( 'CON_VALUE', 'C1.CON_VALUE', 'CON_TITLE' );
             $oCriteria->addAlias( "C1", 'CONTENT' );
             $tasTitleConds = array ();
-            $tasTitleConds[] = array (SubProcessPeer::TAS_PARENT,'C1.CON_ID'
-            );
-            $tasTitleConds[] = array ('C1.CON_CATEGORY',$del . 'TAS_TITLE' . $del
-            );
-            $tasTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del
-            );
+            $tasTitleConds[] = array (SubProcessPeer::TAS_PARENT,'C1.CON_ID');
+            $tasTitleConds[] = array ('C1.CON_CATEGORY',$del . 'TAS_TITLE' . $del);
+            $tasTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del);
             $oCriteria->addJoinMC( $tasTitleConds, Criteria::LEFT_JOIN );
-
+            
             $oDataset = SubProcessPeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
@@ -6052,8 +5760,7 @@ class processMap
             );
             $oDataset->next ();
             }
-            */
-
+            */            
             $aRow['TASKS'] = $aRow['TAS_UID'];
             //print "<hr>".$aRow['TASKS']."<hr>";
             //$aRow['SPROCESS_NAME'] = $aRow['TAS_TITLE'];
@@ -6061,7 +5768,7 @@ class processMap
             $aRow['SPROCESS_NAME'] = $aRow['CON_VALUE'];
             $lang = defined( 'SYS_LANG' ) ? SYS_LANG : 'en';
             $aRow['PRO_TITLE'] = Content::load( 'PRO_TITLE', '', $aRow['PRO_UID'], $lang );
-
+            
             if ($sType == 0) {
                 $SP_VARIABLES_OUT = unserialize( $aRow['SP_VARIABLES_OUT'] );
                 if (is_array( $SP_VARIABLES_OUT )) {
@@ -6076,7 +5783,7 @@ class processMap
                     }
                 }
             }
-
+            
             if ($sType == 1) {
                 $SP_VARIABLES_IN = unserialize( $aRow['SP_VARIABLES_IN'] );
                 if (is_array( $SP_VARIABLES_IN )) {
@@ -6094,6 +5801,7 @@ class processMap
             //print '<hr>';print_r($aRow);
             return $aRow;
             //return $aSubProcess;
+        
 
         } catch (Exception $oError) {
             throw ($oError);
@@ -6108,7 +5816,7 @@ class processMap
         $oDataset = ProcessUserPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
@@ -6124,7 +5832,7 @@ class processMap
      */
     public function listExtProcessesSupervisors ($start, $limit, $sProcessUID)
     {
-
+        
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( ProcessUserPeer::PU_UID );
         $oCriteria->addSelectColumn( ProcessUserPeer::USR_UID );
@@ -6136,7 +5844,7 @@ class processMap
         $oCriteria->addJoin( ProcessUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN );
         $oCriteria->add( ProcessUserPeer::PRO_UID, $sProcessUID );
         $this->tmpCriteria = clone $oCriteria;
-
+        
         if ($start != '') {
             $oCriteria->setOffset( $start );
         }
@@ -6148,8 +5856,7 @@ class processMap
         $oDataset->next();
         $aProcessUser = '';
         while ($aRow = $oDataset->getRow()) {
-            $aProcessUser[] = array ('PU_UID' => $aRow['PU_UID'],'USR_UID' => $aRow['USR_UID'],'PU_TYPE' => $aRow['PU_TYPE'],'USR_FIRSTNAME' => $aRow['USR_FIRSTNAME'],'USR_LASTNAME' => $aRow['USR_LASTNAME'],'USR_EMAIL' => $aRow['USR_EMAIL']
-            );
+            $aProcessUser[] = array ('PU_UID' => $aRow['PU_UID'],'USR_UID' => $aRow['USR_UID'],'PU_TYPE' => $aRow['PU_TYPE'],'USR_FIRSTNAME' => $aRow['USR_FIRSTNAME'],'USR_LASTNAME' => $aRow['USR_LASTNAME'],'USR_EMAIL' => $aRow['USR_EMAIL']);
             $oDataset->next();
         }
         return $aProcessUser;
@@ -6165,7 +5872,7 @@ class processMap
     {
         G::LoadSystem( 'rbac' );
         $memcache = & PMmemcached::getSingleton( SYS_SYS );
-
+        
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( ProcessUserPeer::USR_UID );
         $oCriteria->add( ProcessUserPeer::PRO_UID, $sProcessUID );
@@ -6210,19 +5917,19 @@ class processMap
         $oCriteria->addSelectColumn( UsersPeer::USR_FIRSTNAME );
         $oCriteria->addSelectColumn( UsersPeer::USR_LASTNAME );
         $oCriteria->add( UsersPeer::USR_UID, $aUIDS, Criteria::IN );
-
+        
         $oDataset = UsersPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $aAvailableUser = '';
         while ($aRow = $oDataset->getRow()) {
-            $aAvailableUser[] = array ('USR_UID' => $aRow['USR_UID'],'USR_FIRSTNAME' => $aRow['USR_FIRSTNAME'],'USR_LASTNAME' => $aRow['USR_LASTNAME']
+            $aAvailableUser[] = array ('USR_UID' => $aRow['USR_UID'],'USR_FIRSTNAME' => $aRow['USR_FIRSTNAME'],'USR_LASTNAME' => $aRow['USR_LASTNAME'] 
             );
             $oDataset->next();
         }
         return $aAvailableUser;
     }
-
+    
     //new functions
     public function getAllSupervisorDynaformsCount ()
     {
@@ -6232,7 +5939,7 @@ class processMap
         $oDataset = StepSupervisorPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
@@ -6246,7 +5953,7 @@ class processMap
      * @param string $sProcessUID
      * @return array
      */
-
+    
     public function getExtSupervisorDynaformsList ($start, $limit, $sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -6260,24 +5967,19 @@ class processMap
         $oCriteria->addAsColumn( 'DYN_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (StepSupervisorPeer::STEP_UID_OBJ,DynaformPeer::DYN_UID
-        );
-        $aConditions[] = array (StepSupervisorPeer::STEP_TYPE_OBJ,$sDelimiter . 'DYNAFORM' . $sDelimiter
-        );
+        $aConditions[] = array (StepSupervisorPeer::STEP_UID_OBJ,DynaformPeer::DYN_UID);
+        $aConditions[] = array (StepSupervisorPeer::STEP_TYPE_OBJ,$sDelimiter . 'DYNAFORM' . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( StepSupervisorPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( StepSupervisorPeer::STEP_TYPE_OBJ, 'DYNAFORM' );
         $oCriteria->addAscendingOrderByColumn( StepSupervisorPeer::STEP_POSITION );
         $this->tmpCriteria = clone $oCriteria;
-
+        
         if ($start != '') {
             $oCriteria->setOffset( $start );
         }
@@ -6289,19 +5991,18 @@ class processMap
         $oDataset->next();
         $aProcessDynaform = '';
         while ($aRow = $oDataset->getRow()) {
-            $aProcessDynaform[] = array ('DYN_TITLE' => $aRow['DYN_TITLE'],'DYN_UID' => $aRow['DYN_UID'],'STEP_UID' => $aRow['STEP_UID'],'STEP_UID_OBJ' => $aRow['STEP_UID_OBJ'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_POSITION' => $aRow['STEP_POSITION']
-            );
+            $aProcessDynaform[] = array ('DYN_TITLE' => $aRow['DYN_TITLE'],'DYN_UID' => $aRow['DYN_UID'],'STEP_UID' => $aRow['STEP_UID'],'STEP_UID_OBJ' => $aRow['STEP_UID_OBJ'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_POSITION' => $aRow['STEP_POSITION']);
             $oDataset->next();
         }
         return $aProcessDynaform;
     }
-
+    
     /*
      * Return the available supervisors dynaforms list array
      * @param string $sProcessUID
      * @return array
     */
-
+    
     public function getExtAvailableSupervisorDynaformsList ($sProcessUID = '')
     {
         $oCriteria = $this->getSupervisorDynaformsCriteria( $sProcessUID );
@@ -6320,29 +6021,26 @@ class processMap
         $oCriteria->addAsColumn( 'DYN_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( DynaformPeer::DYN_TYPE, 'xmlform' );
         $oCriteria->add( DynaformPeer::DYN_UID, $aUIDS, Criteria::NOT_IN );
-
+        
         $oDataset = DynaformPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $aAvailableProcessDynaform = '';
         while ($aRow = $oDataset->getRow()) {
-            $aAvailableProcessDynaform[] = array ('DYN_TITLE' => $aRow['DYN_TITLE'],'DYN_UID' => $aRow['DYN_UID']
+            $aAvailableProcessDynaform[] = array ('DYN_TITLE' => $aRow['DYN_TITLE'],'DYN_UID' => $aRow['DYN_UID'] 
             );
             $oDataset->next();
         }
         return $aAvailableProcessDynaform;
     }
-
+    
     //new functions
     public function getAllSupervisorInputsCount ()
     {
@@ -6352,20 +6050,20 @@ class processMap
         $oDataset = StepSupervisorPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
             return 0;
         }
     }
-
+    
     /*
      * Return the supervisors input document list array
      * @param string $sProcessUID
      * @return array
     */
-
+    
     public function getExtSupervisorInputsList ($start, $limit, $sProcessUID = '')
     {
         $sDelimiter = DBAdapter::getStringDelimiter();
@@ -6391,7 +6089,6 @@ class processMap
         $oCriteria->add( StepSupervisorPeer::STEP_TYPE_OBJ, 'INPUT_DOCUMENT' );
         $oCriteria->addAscendingOrderByColumn( StepSupervisorPeer::STEP_POSITION );
         $this->tmpCriteria = clone $oCriteria;
-
         if ($start != '') {
             $oCriteria->setOffset( $start );
         }
@@ -6403,19 +6100,18 @@ class processMap
         $oDataset->next();
         $aProcessInputDoc = '';
         while ($aRow = $oDataset->getRow()) {
-            $aProcessInputDoc[] = array ('INP_DOC_TITLE' => $aRow['INP_DOC_TITLE'],'INP_DOC_UID' => $aRow['INP_DOC_UID'],'STEP_UID' => $aRow['STEP_UID'],'STEP_UID_OBJ' => $aRow['STEP_UID_OBJ'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_POSITION' => $aRow['STEP_POSITION']
-            );
+            $aProcessInputDoc[] = array ('INP_DOC_TITLE' => $aRow['INP_DOC_TITLE'],'INP_DOC_UID' => $aRow['INP_DOC_UID'],'STEP_UID' => $aRow['STEP_UID'],'STEP_UID_OBJ' => $aRow['STEP_UID_OBJ'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_POSITION' => $aRow['STEP_POSITION']);
             $oDataset->next();
         }
         return $aProcessInputDoc;
     }
-
+    
     /*
      * Return the available supervisors input documents list array
      * @param string $sProcessUID
      * @return array
     */
-
+    
     public function getExtAvailableSupervisorInputsList ($sProcessUID = '')
     {
         $oCriteria = $this->getSupervisorInputsCriteria( $sProcessUID );
@@ -6434,12 +6130,9 @@ class processMap
         $oCriteria->addAsColumn( 'INP_DOC_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( InputDocumentPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( InputDocumentPeer::INP_DOC_UID, $aUIDS, Criteria::NOT_IN );
@@ -6448,13 +6141,12 @@ class processMap
         $oDataset->next();
         $aAvailableProcessIODoc = '';
         while ($aRow = $oDataset->getRow()) {
-            $aAvailableProcessIODoc[] = array ('INP_DOC_TITLE' => $aRow['INP_DOC_TITLE'],'INP_DOC_UID' => $aRow['INP_DOC_UID']
-            );
+            $aAvailableProcessIODoc[] = array ('INP_DOC_TITLE' => $aRow['INP_DOC_TITLE'],'INP_DOC_UID' => $aRow['INP_DOC_UID']);
             $oDataset->next();
         }
         return $aAvailableProcessIODoc;
     }
-
+    
     //new functions
     public function getAllDbSourceCount ()
     {
@@ -6464,7 +6156,6 @@ class processMap
         $oDataset = DbSourcePeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
@@ -6496,17 +6187,14 @@ class processMap
             $oCriteria->addAsColumn( 'DBS_DESCRIPTION', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (DbSourcePeer::DBS_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DBS_DESCRIPTION' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (DbSourcePeer::DBS_UID,'C.CON_ID');
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DBS_DESCRIPTION' . $sDelimiter);
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( DbSourcePeer::PRO_UID, $sProcessUID );
-
+            
             $this->tmpCriteria = clone $oCriteria;
-
+            
             if ($start != '') {
                 $oCriteria->setOffset( $start );
             }
@@ -6517,8 +6205,7 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aDBList[] = array ('DBS_UID' => $aRow['DBS_UID'],'DBS_TYPE' => $aRow['DBS_TYPE'],'DBS_SERVER' => $aRow['DBS_SERVER'],'DBS_DATABASE_NAME' => $aRow['DBS_DATABASE_NAME'],'DBS_USERNAME' => $aRow['DBS_USERNAME'],'DBS_PASSWORD' => $aRow['DBS_PASSWORD'],'DBS_DESCRIPTION' => $aRow['DBS_DESCRIPTION'],'DBS_PORT' => $aRow['DBS_PORT']
-                );
+                $aDBList[] = array ('DBS_UID' => $aRow['DBS_UID'],'DBS_TYPE' => $aRow['DBS_TYPE'],'DBS_SERVER' => $aRow['DBS_SERVER'],'DBS_DATABASE_NAME' => $aRow['DBS_DATABASE_NAME'],'DBS_USERNAME' => $aRow['DBS_USERNAME'],'DBS_PASSWORD' => $aRow['DBS_PASSWORD'],'DBS_DESCRIPTION' => $aRow['DBS_DESCRIPTION'],'DBS_PORT' => $aRow['DBS_PORT'] );
                 $oDataset->next();
             }
             return $aDBList;
@@ -6537,50 +6224,40 @@ class processMap
     public function newExtObjectPermission ($sProcessUID, $sAction)
     {
         $aAllTasks = array ();
-        $aAllTasks[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllTasks[] = array ('UID' => 'char','LABEL' => 'char');
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( TaskPeer::PRO_UID );
         $oCriteria->addSelectColumn( TaskPeer::TAS_UID );
         $oCriteria->addSelectColumn( ContentPeer::CON_VALUE );
         $aConditions = array ();
-        $aConditions[] = array (0 => TaskPeer::TAS_UID,1 => ContentPeer::CON_ID
-        );
-        $aConditions[] = array (0 => ContentPeer::CON_CATEGORY,1 => DBAdapter::getStringDelimiter() . 'TAS_TITLE' . DBAdapter::getStringDelimiter()
-        );
-        $aConditions[] = array (0 => ContentPeer::CON_LANG,1 => DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter()
-        );
+        $aConditions[] = array (0 => TaskPeer::TAS_UID,1 => ContentPeer::CON_ID);
+        $aConditions[] = array (0 => ContentPeer::CON_CATEGORY,1 => DBAdapter::getStringDelimiter() . 'TAS_TITLE' . DBAdapter::getStringDelimiter());
+        $aConditions[] = array (0 => ContentPeer::CON_LANG,1 => DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter());
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( TaskPeer::PRO_UID, $sProcessUID );
         $oDataset = TaskPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAllTasks[] = array ('UID' => $aRow['TAS_UID'],'LABEL' => $aRow['CON_VALUE']
-            );
+            $aAllTasks[] = array ('UID' => $aRow['TAS_UID'],'LABEL' => $aRow['CON_VALUE']);
             $oDataset->next();
         }
         $aUsersGroups = array ();
-        $aUsersGroups[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aUsersGroups[] = array ('UID' => 'char','LABEL' => 'char');
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( GroupwfPeer::GRP_UID );
         $oCriteria->addAsColumn( 'GRP_TITLE', ContentPeer::CON_VALUE );
         $aConditions = array ();
-        $aConditions[] = array (GroupwfPeer::GRP_UID,ContentPeer::CON_ID
-        );
-        $aConditions[] = array (ContentPeer::CON_CATEGORY,DBAdapter::getStringDelimiter() . 'GRP_TITLE' . DBAdapter::getStringDelimiter()
-        );
-        $aConditions[] = array (ContentPeer::CON_LANG,DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter()
-        );
+        $aConditions[] = array (GroupwfPeer::GRP_UID,ContentPeer::CON_ID);
+        $aConditions[] = array (ContentPeer::CON_CATEGORY,DBAdapter::getStringDelimiter() . 'GRP_TITLE' . DBAdapter::getStringDelimiter());
+        $aConditions[] = array (ContentPeer::CON_LANG,DBAdapter::getStringDelimiter() . SYS_LANG . DBAdapter::getStringDelimiter());
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( GroupwfPeer::GRP_STATUS, 'ACTIVE' );
         $oDataset = GroupwfPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aUsersGroups[] = array ('UID' => '2|' . $aRow['GRP_UID'],'LABEL' => $aRow['GRP_TITLE'] . ' (' . G::LoadTranslation( 'ID_GROUP' ) . ')'
-            );
+            $aUsersGroups[] = array ('UID' => '2|' . $aRow['GRP_UID'],'LABEL' => $aRow['GRP_TITLE'] . ' (' . G::LoadTranslation( 'ID_GROUP' ) . ')');
             $oDataset->next();
         }
         $oCriteria = new Criteria( 'workflow' );
@@ -6593,22 +6270,17 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aUsersGroups[] = array ('UID' => '1|' . $aRow['USR_UID'],'LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'] . ' (' . $aRow['USR_USERNAME'] . ')'
-            );
+            $aUsersGroups[] = array ('UID' => '1|' . $aRow['USR_UID'],'LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'] . ' (' . $aRow['USR_USERNAME'] . ')' );
             $oDataset->next();
         }
         $aAllObjects = array ();
-        $aAllObjects[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllObjects[] = array ('UID' => 'char','LABEL' => 'char');
         $aAllDynaforms = array ();
-        $aAllDynaforms[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllDynaforms[] = array ('UID' => 'char','LABEL' => 'char');
         $aAllInputs = array ();
-        $aAllInputs[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllInputs[] = array ('UID' => 'char','LABEL' => 'char');
         $aAllOutputs = array ();
-        $aAllOutputs[] = array ('UID' => 'char','LABEL' => 'char'
-        );
+        $aAllOutputs[] = array ('UID' => 'char','LABEL' => 'char');
         $oCriteria = $this->getDynaformsCriteria( $sProcessUID );
         $oCriteria->add( DynaformPeer::DYN_TYPE, 'XMLFORM' );
         $oDataset = DynaformPeer::doSelectRS( $oCriteria );
@@ -6616,10 +6288,8 @@ class processMap
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
             $aRow['DYN_TITLE'] = (isset( $aRow['DYN_TITLE'] )) ? $aRow['DYN_TITLE'] : '';
-            $aAllObjects[] = array ('UID' => 'DYNAFORM|' . $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE'] . ' (' . G::LoadTranslation( 'ID_DYNAFORM' ) . ')'
-            );
-            $aAllDynaforms[] = array ('UID' => $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE']
-            );
+            $aAllObjects[] = array ('UID' => 'DYNAFORM|' . $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE'] . ' (' . G::LoadTranslation( 'ID_DYNAFORM' ) . ')');
+            $aAllDynaforms[] = array ('UID' => $aRow['DYN_UID'],'LABEL' => $aRow['DYN_TITLE']);
             $oDataset->next();
         }
         G::LoadClass( 'ArrayPeer' );
@@ -6627,10 +6297,8 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAllObjects[] = array ('UID' => 'INPUT_DOCUMENT|' . $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_INPUT_DOCUMENT' ) . ')'
-            );
-            $aAllInputs[] = array ('UID' => $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE']
-            );
+            $aAllObjects[] = array ('UID' => 'INPUT_DOCUMENT|' . $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_INPUT_DOCUMENT' ) . ')');
+            $aAllInputs[] = array ('UID' => $aRow['INP_DOC_UID'],'LABEL' => $aRow['INP_DOC_TITLE'] );
             $oDataset->next();
         }
         G::LoadClass( 'ArrayPeer' );
@@ -6638,15 +6306,13 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAllObjects[] = array ('UID' => 'OUTPUT_DOCUMENT|' . $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_OUTPUT_DOCUMENT' ) . ')'
-            );
-            $aAllOutputs[] = array ('UID' => $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE']
-            );
+            $aAllObjects[] = array ('UID' => 'OUTPUT_DOCUMENT|' . $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE'] . ' (' . G::LoadTranslation( 'ID_OUTPUT_DOCUMENT' ) . ')');
+            $aAllOutputs[] = array ('UID' => $aRow['OUT_DOC_UID'],'LABEL' => $aRow['OUT_DOC_TITLE']);
             $oDataset->next();
         }
         global $_DBArray;
         $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
-
+        
         switch ($sAction) {
             case 'tasks':
                 return $aAllTasks;
@@ -6672,8 +6338,7 @@ class processMap
         $oCriteria->add( CaseTrackerPeer::PRO_UID, $sProcessUID );
         $oCaseTracker = new CaseTracker();
         if (CaseTrackerPeer::doCount( $oCriteria ) === 0) {
-            $aCaseTracker = array ('PRO_UID' => $sProcessUID,'CT_MAP_TYPE' => 'PROCESSMAP','CT_DERIVATION_HISTORY' => 1,'CT_MESSAGE_HISTORY' => 1
-            );
+            $aCaseTracker = array ('PRO_UID' => $sProcessUID,'CT_MAP_TYPE' => 'PROCESSMAP','CT_DERIVATION_HISTORY' => 1,'CT_MESSAGE_HISTORY' => 1);
             $oCaseTracker->create( $aCaseTracker );
         } else {
             $aCaseTracker = $oCaseTracker->load( $sProcessUID );
@@ -6685,7 +6350,6 @@ class processMap
         G::RenderPage('publish', 'raw');
         return true;*/
     }
-
     //new functions
     public function getAllCaseTrackerObjectCount ()
     {
@@ -6695,7 +6359,7 @@ class processMap
         $oDataset = CaseTrackerObjectPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
@@ -6712,13 +6376,13 @@ class processMap
     public function getExtCaseTrackerObjectsCriteria ($start, $limit, $sProcessUID)
     {
         $aObjects = array ();
-        $aObjects[] = array ('CTO_TITLE' => 'char','CTO_UID' => 'char','CTO_TYPE_OBJ' => 'char','CTO_UID_OBJ' => 'char','CTO_CONDITION' => 'char','CTO_POSITION' => 'integer'
+        $aObjects[] = array ('CTO_TITLE' => 'char','CTO_UID' => 'char','CTO_TYPE_OBJ' => 'char','CTO_UID_OBJ' => 'char','CTO_CONDITION' => 'char','CTO_POSITION' => 'integer' 
         );
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->add( CaseTrackerObjectPeer::PRO_UID, $sProcessUID );
         $oCriteria->addAscendingOrderByColumn( CaseTrackerObjectPeer::CTO_POSITION );
         $this->tmpCriteria = clone $oCriteria;
-
+        
         if ($start != '') {
             $oCriteria->setOffset( $start );
         }
@@ -6747,7 +6411,7 @@ class processMap
                         $sTitle = $aFields['OUT_DOC_TITLE'];
                         break;
                 }
-                $aObjects[] = array ('CTO_TITLE' => $sTitle,'CTO_UID' => $aRow['CTO_UID'],'CTO_TYPE_OBJ' => $aRow['CTO_TYPE_OBJ'],'CTO_UID_OBJ' => $aRow['CTO_UID_OBJ'],'CTO_CONDITION' => $aRow['CTO_CONDITION'],'CTO_POSITION' => $aRow['CTO_POSITION']
+                $aObjects[] = array ('CTO_TITLE' => $sTitle,'CTO_UID' => $aRow['CTO_UID'],'CTO_TYPE_OBJ' => $aRow['CTO_TYPE_OBJ'],'CTO_UID_OBJ' => $aRow['CTO_UID_OBJ'],'CTO_CONDITION' => $aRow['CTO_CONDITION'],'CTO_POSITION' => $aRow['CTO_POSITION'] 
                 );
             } catch (Exception $oError) {
                 //Nothing
@@ -6796,7 +6460,7 @@ class processMap
             $oDataset->next();
         }
         $aAvailableObjects = array ();
-        $aAvailableObjects[] = array ('OBJECT_UID' => 'char','OBJECT_TYPE' => 'char','OBJECT_TITLE' => 'char'
+        $aAvailableObjects[] = array ('OBJECT_UID' => 'char','OBJECT_TYPE' => 'char','OBJECT_TITLE' => 'char' 
         );
         $sDelimiter = DBAdapter::getStringDelimiter();
         $oCriteria = new Criteria( 'workflow' );
@@ -6804,12 +6468,9 @@ class processMap
         $oCriteria->addAsColumn( 'DYN_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (DynaformPeer::DYN_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'DYN_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( DynaformPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( DynaformPeer::DYN_TYPE, 'xmlform' );
@@ -6818,8 +6479,7 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['DYN_UID'],'OBJECT_TYPE' => 'DYNAFORM','OBJECT_TITLE' => $aRow['DYN_TITLE']
-            );
+            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['DYN_UID'],'OBJECT_TYPE' => 'DYNAFORM','OBJECT_TITLE' => $aRow['DYN_TITLE']);
             $oDataset->next();
         }
         $oCriteria = new Criteria( 'workflow' );
@@ -6827,12 +6487,9 @@ class processMap
         $oCriteria->addAsColumn( 'INP_DOC_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (InputDocumentPeer::INP_DOC_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'INP_DOC_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( InputDocumentPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( InputDocumentPeer::INP_DOC_UID, $aInputsUIDS, Criteria::NOT_IN );
@@ -6840,7 +6497,7 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['INP_DOC_UID'],'OBJECT_TYPE' => 'INPUT_DOCUMENT','OBJECT_TITLE' => $aRow['INP_DOC_TITLE']
+            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['INP_DOC_UID'],'OBJECT_TYPE' => 'INPUT_DOCUMENT','OBJECT_TITLE' => $aRow['INP_DOC_TITLE'] 
             );
             $oDataset->next();
         }
@@ -6849,21 +6506,18 @@ class processMap
         $oCriteria->addAsColumn( 'OUT_DOC_TITLE', 'C.CON_VALUE' );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (OutputDocumentPeer::OUT_DOC_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'OUT_DOC_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( OutputDocumentPeer::PRO_UID, $sProcessUID );
         $oCriteria->add( OutputDocumentPeer::OUT_DOC_UID, $aOutputsUIDS, Criteria::NOT_IN );
-
+        
         $oDataset = OutputDocumentPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['OUT_DOC_UID'],'OBJECT_TYPE' => 'OUTPUT_DOCUMENT','OBJECT_TITLE' => $aRow['OUT_DOC_TITLE']
+            $aAvailableObjects[] = array ('OBJECT_UID' => $aRow['OUT_DOC_UID'],'OBJECT_TYPE' => 'OUTPUT_DOCUMENT','OBJECT_TITLE' => $aRow['OUT_DOC_TITLE'] 
             );
             $oDataset->next();
         }
@@ -6877,7 +6531,7 @@ class processMap
         $oCriteria->setDBArrayTable('availableObjects');
         return $oCriteria;*/
     }
-
+    
     //new functions
     public function getAllReportTableCount ()
     {
@@ -6887,7 +6541,7 @@ class processMap
         $oDataset = ReportTablePeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
@@ -6905,17 +6559,14 @@ class processMap
         $oCriteria->addAsColumn( 'REP_TAB_TITLE', "CASE WHEN C.CON_VALUE IS NULL THEN (SELECT DISTINCT MAX(A.CON_VALUE) FROM CONTENT A WHERE A.CON_ID = REPORT_TABLE.REP_TAB_UID ) ELSE C.CON_VALUE  END " );
         $oCriteria->addAlias( 'C', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (ReportTablePeer::REP_TAB_UID,'C.CON_ID'
-        );
-        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'REP_TAB_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (ReportTablePeer::REP_TAB_UID,'C.CON_ID');
+        $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'REP_TAB_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( ReportTablePeer::PRO_UID, $sProcessUID );
-
+        
         $this->tmpCriteria = clone $oCriteria;
-
+        
         if ($start != '') {
             $oCriteria->setOffset( $start );
         }
@@ -6926,7 +6577,7 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $aReportTable[] = array ('REP_TAB_UID' => $aRow['REP_TAB_UID'],'REP_TAB_TITLE' => $aRow['REP_TAB_TITLE']
+            $aReportTable[] = array ('REP_TAB_UID' => $aRow['REP_TAB_UID'],'REP_TAB_TITLE' => $aRow['REP_TAB_TITLE'] 
             );
             $oDataset->next();
         }
@@ -6948,20 +6599,16 @@ class processMap
                 $aUIDS2[] = $aUser['USR_UID'];
             }
             $aUsers = array ();
-            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer'
-            );
+            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer' );
             $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addSelectColumn( GroupwfPeer::GRP_UID );
             $oCriteria->addAsColumn( 'GRP_TITLE', 'C.CON_VALUE' );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (GroupwfPeer::GRP_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (GroupwfPeer::GRP_UID,'C.CON_ID');
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter);
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( GroupwfPeer::GRP_STATUS, 'ACTIVE' );
             $oCriteria->add( GroupwfPeer::GRP_UID, $aUIDS1, Criteria::NOT_IN );
@@ -6979,8 +6626,7 @@ class processMap
                 $oDataset2->setFetchmode( ResultSet::FETCHMODE_ASSOC );
                 $oDataset2->next();
                 $aRow2 = $oDataset2->getRow();
-                $aUsers[] = array ('LABEL' => $aRow['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $aRow['GRP_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>','TAS_UID' => $sTaskUID,'USR_UID' => $aRow['GRP_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 2
-                );
+                $aUsers[] = array ('LABEL' => $aRow['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $aRow['GRP_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>','TAS_UID' => $sTaskUID,'USR_UID' => $aRow['GRP_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 2 );
                 $oDataset->next();
             }
             $sDelimiter = DBAdapter::getStringDelimiter();
@@ -6994,8 +6640,7 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $sTaskUID,'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 1
-                );
+                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $sTaskUID,'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $iType,'TU_RELATION' => 1 );
                 $oDataset->next();
             }
             global $_DBArray;
@@ -7012,8 +6657,7 @@ class processMap
     {
         try {
             $aUsers = array ();
-            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer'
-            );
+            $aUsers[] = array ('LABEL' => 'char','TAS_UID' => 'char','USR_UID' => 'char','TU_TYPE' => 'integer','TU_RELATION' => 'integer' );
             $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addAsColumn( 'GRP_TITLE', 'C.CON_VALUE' );
@@ -7023,18 +6667,15 @@ class processMap
             $oCriteria->addSelectColumn( TaskUserPeer::TU_RELATION );
             $oCriteria->addAlias( 'C', 'CONTENT' );
             $aConditions = array ();
-            $aConditions[] = array (TaskUserPeer::USR_UID,'C.CON_ID'
-            );
-            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter
-            );
-            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-            );
+            $aConditions[] = array (TaskUserPeer::USR_UID,'C.CON_ID');
+            $aConditions[] = array ('C.CON_CATEGORY',$sDelimiter . 'GRP_TITLE' . $sDelimiter);
+            $aConditions[] = array ('C.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
             $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
             $oCriteria->add( TaskUserPeer::TAS_UID, $sTaskUID );
             $oCriteria->add( TaskUserPeer::TU_TYPE, $iType );
             $oCriteria->add( TaskUserPeer::TU_RELATION, 2 );
             $this->tmpCriteria = clone $oCriteria;
-
+            
             if ($start != '') {
                 $oCriteria->setOffset( $start );
             }
@@ -7060,8 +6701,7 @@ class processMap
                 } else {
                     $aRow2['GROUP_INACTIVE'] = '<strong>(' . G::LoadTranslation( 'ID_GROUP_INACTIVE' ) . ')</strong>';
                 }
-                $aUsers[] = array ('LABEL' => (! isset( $aRow2['GROUP_INACTIVE'] ) ? $aRow['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $aRow['USR_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>' : $aRow['GRP_TITLE'] . ' ' . $aRow2['GROUP_INACTIVE']),'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION']
-                );
+                $aUsers[] = array ('LABEL' => (! isset( $aRow2['GROUP_INACTIVE'] ) ? $aRow['GRP_TITLE'] . ' <a href="#" onclick="usersGroup(\'' . $aRow['USR_UID'] . '\', \'' . $c . '\');return false;"><font color="green"><strong>(' . $aRow2['MEMBERS_NUMBER'] . ' ' . ((int) $aRow2['MEMBERS_NUMBER'] == 1 ? G::LoadTranslation( 'ID_USER' ) : G::LoadTranslation( 'ID_USERS' )) . ')</strong></font></a> <br /><div id="users' . $c . '" style="display: none"></div>' : $aRow['GRP_TITLE'] . ' ' . $aRow2['GROUP_INACTIVE']),'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION'] );
                 $oDataset->next();
             }
             $oCriteria = new Criteria( 'workflow' );
@@ -7079,7 +6719,7 @@ class processMap
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION']
+                $aUsers[] = array ('LABEL' => $aRow['USR_FIRSTNAME'] . ' ' . $aRow['USR_LASTNAME'],'TAS_UID' => $aRow['TAS_UID'],'USR_UID' => $aRow['USR_UID'],'TU_TYPE' => $aRow['TU_TYPE'],'TU_RELATION' => $aRow['TU_RELATION'] 
                 );
                 $oDataset->next();
             }
@@ -7113,7 +6753,7 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $aRows = $oDataset->getRow();
-
+        
         $oCriteria = new Criteria();
         $oCriteria->add( GroupwfPeer::GRP_UID, $aRows['USR_UID'] );
         if (GroupwfPeer::doCount( $oCriteria ) == 1) {
@@ -7134,7 +6774,7 @@ class processMap
         $aFields['OP_PARTICIPATE'] = $aRows['OP_PARTICIPATE'];
         $aFields['OP_OBJ_TYPE'] = $aRows['OP_OBJ_TYPE'];
         $aFields['OP_ACTION'] = $aRows['OP_ACTION'];
-
+        
         $lang = defined( 'SYS_LANG' ) ? SYS_LANG : 'en';
         $aFields['TASK_TARGET_NAME'] = Content::load( 'TAS_TITLE', '', $aRows['TAS_UID'], $lang );
         $aFields['TASK_SOURCE_NAME'] = Content::load( 'TAS_TITLE', '', $aRows['OP_TASK_SOURCE'], $lang );
@@ -7162,7 +6802,7 @@ class processMap
                 $aFields['OUTPUT_NAME'] = Content::load( 'OUT_DOC_TITLE', '', $aRows['OP_OBJ_UID'], $lang );
                 break;
         }
-
+        
         return $aFields;
     }
 
@@ -7173,15 +6813,12 @@ class processMap
             $aFields = $oProcess->load( $sProcessUID );
             $oTask = new Task();
             $aFields = $oTask->load( $sTaskUID );
-
             $_SESSION['iType'] = 2;
-
             $aFields['TASK'] = $sTaskUID;
             $aFields['TYPE'] = $_SESSION['iType'];
             $aFields['OF_TO_ASSIGN'] = G::LoadTranslation( 'ID_DE_ASSIGN' );
             $aFields['CONFIRM'] = G::LoadTranslation( 'ID_MSG_CONFIRM_DEASIGN_USER_GROUP_MESSAGE' );
             $aFields['UIDS'] = "'0'";
-
             $oTasks = new Tasks();
             $oGroups = new Groups();
             $aAux1 = $oTasks->getGroupsOfTask( $sTaskUID, $_SESSION['iType'] );
@@ -7198,7 +6835,7 @@ class processMap
             //$assignedUsers = getExtTaskUsersCriteria($sTaskUID, $_SESSION ['iType']);
             $this->getExtTaskUsersAdHocCriteria( $start, $limit, $sTaskUID, $_SESSION['iType'] );
             return $_SESSION['_DBArray']['taskUsers'];
-
+        
         } catch (Exception $oError) {
             throw ($oError);
         }
@@ -7214,11 +6851,10 @@ class processMap
         $aData['EVN_TYPE'] = $oData->evn_type;
         $aData['EVN_POSX'] = $oData->position->x;
         $aData['EVN_POSY'] = $oData->position->y;
-
         $aData['EVN_STATUS'] = 'ACTIVE';
         $aData['EVN_WHEN'] = '1';
         $aData['EVN_ACTION'] = '';
-
+        
         if (preg_match( "/Inter/", $aData['EVN_TYPE'] )) {
             $aData['EVN_RELATED_TO'] = 'MULTIPLE';
         }
@@ -7250,7 +6886,7 @@ class processMap
         $aDataEvent['EVN_UID'] = $oData->evn_uid;
         $aDataEvent['EVN_RELATED_TO'] = 'MULTIPLE';
         $aDataEvent['EVN_TYPE'] = $oData->evn_type;
-
+        
         if (preg_match( "/Start/", $sEvn_type )) {
             if (isset( $oData->tas_uid ) && $oData->tas_uid != '') {
                 $aDataTask['TAS_UID'] = $oData->tas_uid;
@@ -7258,7 +6894,7 @@ class processMap
                 $aDataTask['EVN_TYPE'] = $oData->evn_type;
                 $aDataTask['TAS_EVN_UID'] = $oData->evn_uid;
                 $oTask->update( $aDataTask );
-
+                
                 $aDataEvent['EVN_TAS_UID_TO'] = $oData->tas_uid;
                 $output = $oEvent->update( $aDataEvent );
             }
@@ -7269,7 +6905,7 @@ class processMap
         }
         return $output;
     }
-
+    
     //new functions
     public function getAllTriggersCount ()
     {
@@ -7279,14 +6915,14 @@ class processMap
         $oDataset = TriggersPeer::doSelectRS( $c );
         $oDataset->next();
         $aRow = $oDataset->getRow();
-
+        
         if (is_array( $aRow )) {
             return $aRow[0];
         } else {
             return 0;
         }
     }
-
+    
     /*
      * Return the triggers list criteria object
      * @param string $sProcessUID
@@ -7300,30 +6936,23 @@ class processMap
         $oCriteria->addSelectColumn( TriggersPeer::PRO_UID );
         $oCriteria->add( TriggersPeer::PRO_UID, $sProcessUID );
         $this->tmpCriteria = clone $oCriteria;
-
         $oCriteria->addAsColumn( 'TRI_TITLE', 'C1.CON_VALUE' );
         $oCriteria->addAsColumn( 'TRI_DESCRIPTION', 'C2.CON_VALUE' );
         $oCriteria->addAlias( 'C1', 'CONTENT' );
         $oCriteria->addAlias( 'C2', 'CONTENT' );
         $aConditions = array ();
-        $aConditions[] = array (TriggersPeer::TRI_UID,'C1.CON_ID'
-        );
-        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (TriggersPeer::TRI_UID,'C1.CON_ID');
+        $aConditions[] = array ('C1.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C1.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $aConditions = array ();
-        $aConditions[] = array (TriggersPeer::TRI_UID,'C2.CON_ID'
-        );
-        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter
-        );
-        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter
-        );
+        $aConditions[] = array (TriggersPeer::TRI_UID,'C2.CON_ID');
+        $aConditions[] = array ('C2.CON_CATEGORY',$sDelimiter . 'TRI_TITLE' . $sDelimiter);
+        $aConditions[] = array ('C2.CON_LANG',$sDelimiter . SYS_LANG . $sDelimiter);
         $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
         $oCriteria->add( TriggersPeer::PRO_UID, $sProcessUID );
         $oCriteria->addAscendingOrderByColumn( 'TRI_TITLE' );
-
+        
         if ($start != '') {
             $oCriteria->setOffset( $start );
         }
@@ -7334,10 +6963,9 @@ class processMap
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $triggersArray = "";
-        $triggersArray[] = array ('TRI_UID' => 'char','PRO_UID' => 'char','TRI_TITLE' => 'char','TRI_DESCRIPTION' => 'char'
-        );
+        $triggersArray[] = array ('TRI_UID' => 'char','PRO_UID' => 'char','TRI_TITLE' => 'char','TRI_DESCRIPTION' => 'char');
         while ($aRow = $oDataset->getRow()) {
-
+            
             if (($aRow['TRI_TITLE'] == null) || ($aRow['TRI_TITLE'] == "")) {
                 // There is no translation for this Trigger name, try to get/regenerate the label
                 $triggerO = new Triggers();
@@ -7349,7 +6977,7 @@ class processMap
             $oDataset->next();
         }
         return $triggersArray;
-
+    
     }
 
     public function getAllInputDocsByTask ($sPRO_UID)
@@ -7362,7 +6990,7 @@ class processMap
         $oCriteria->add( StepPeer::PRO_UID, $sPRO_UID );
         $oDataset = StepPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-
+        
         $aIDocs = array ();
         while ($oDataset->next()) {
             $row = $oDataset->getRow();
@@ -7376,13 +7004,10 @@ class processMap
         $criteria = new Criteria( 'workflow' );
         $criteria->addSelectColumn( 'MAX(TAS_POSX) AS MAX_X' );
         $criteria->add( TaskPeer::PRO_UID, $processUid );
-
         $dataset = TaskPeer::doSelectRS( $criteria );
         $dataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $dataset->next();
-
         $row = $dataset->getRow();
-
         return (int) $row['MAX_X'];
     }
 }
