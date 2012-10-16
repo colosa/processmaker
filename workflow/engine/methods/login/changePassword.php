@@ -24,63 +24,62 @@ require_once 'classes/model/UsersProperties.php';
 $oUserProperty = new UsersProperties();
 $aUserProperty = $oUserProperty->load($_SESSION['USER_LOGGED']);
 $aHistory      = unserialize($aUserProperty['USR_PASSWORD_HISTORY']);
+
 if (!is_array($aHistory)) {
-  $aHistory = array();
+    $aHistory = array();
 }
+
 if (!defined('PPP_PASSWORD_HISTORY')) {
-  define('PPP_PASSWORD_HISTORY', 0);
+    define('PPP_PASSWORD_HISTORY', 0);
 }
+
 if (PPP_PASSWORD_HISTORY > 0) {
-  if (count($aHistory) >= PPP_PASSWORD_HISTORY) {
-    array_shift($aHistory);
-  }
-  $aHistory[] = $_POST['form']['USR_PASSWORD'];
+    if (count($aHistory) >= PPP_PASSWORD_HISTORY) {
+        array_shift($aHistory);
+    }
+    $aHistory[] = $_POST['form']['USR_PASSWORD'];
 }
+
 $aUserProperty['USR_LAST_UPDATE_DATE'] = date('Y-m-d H:i:s');
 $aUserProperty['USR_LOGGED_NEXT_TIME'] = 0;
 $aUserProperty['USR_PASSWORD_HISTORY'] = serialize($aHistory);
 $oUserProperty->update($aUserProperty);
-if ( class_exists('redirectDetail')) {
-  //falta validar...
-  if(isset($RBAC->aUserInfo['PROCESSMAKER']['ROLE']['ROL_CODE']))
-      $userRole = $RBAC->aUserInfo['PROCESSMAKER']['ROLE']['ROL_CODE'];
 
-  $oPluginRegistry = &PMPluginRegistry::getSingleton();
-  //$oPluginRegistry->showArrays();
-  $aRedirectLogin = $oPluginRegistry->getRedirectLogins();
-  if(isset($aRedirectLogin))
-   { if(is_array($aRedirectLogin))
-     {
-        foreach ( $aRedirectLogin as $key=>$detail ) {
-           if(isset($detail->sPathMethod))
-            {
-              if ( $detail->sRoleCode == $userRole ) {
-                G::header('location: /sys' .  SYS_TEMP . '/' . SYS_LANG . '/' . SYS_SKIN . '/' . $detail->sPathMethod );
-                die;
-              }
+if (class_exists('redirectDetail')) {
+    //falta validar...
+    if (isset($RBAC->aUserInfo['PROCESSMAKER']['ROLE']['ROL_CODE'])) {
+        $userRole = $RBAC->aUserInfo['PROCESSMAKER']['ROLE']['ROL_CODE'];
+    }
+    $oPluginRegistry = &PMPluginRegistry::getSingleton();
+    //$oPluginRegistry->showArrays();
+    $aRedirectLogin = $oPluginRegistry->getRedirectLogins();
+    if (isset($aRedirectLogin)) {
+        if (is_array($aRedirectLogin)) {
+            foreach ($aRedirectLogin as $key => $detail) {
+                if (isset($detail->sPathMethod)) {
+                    if ($detail->sRoleCode == $userRole) {
+                        G::header('location: /sys' .  SYS_TEMP . '/' . SYS_LANG . '/' . SYS_SKIN . '/' . $detail->sPathMethod );
+                        die;
+                    }
+                }
             }
         }
-     }
-   }
+    }
 }
 //end plugin
 
-
- if (isset($frm['USER_LANG'])) {
+if (isset($frm['USER_LANG'])) {
     if ($frm['USER_LANG'] != '') {
-      $lang = $frm['USER_LANG'];
+        $lang = $frm['USER_LANG'];
     }
-  }
-  else {
+} else {
     if (defined('SYS_LANG')) {
-      $lang = SYS_LANG;
+        $lang = SYS_LANG;
+    } else {
+        $lang = 'en';
     }
-    else {
-      $lang = 'en';
-    }
-  }
- $sLocation = $oUserProperty->redirectTo($_SESSION['USER_LOGGED'], $lang);
- G::header('Location: ' . $sLocation);
- die;
+}
+$sLocation = $oUserProperty->redirectTo($_SESSION['USER_LOGGED'], $lang);
+G::header('Location: ' . $sLocation);
+die;
 
-?>

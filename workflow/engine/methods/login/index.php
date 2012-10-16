@@ -22,7 +22,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  * 
  */
-  $newFile = str_replace ( 'index.php', 'login.php' ,  __FILE__ ) ;
+  $newFile = str_replace ( 'index.php', 'login.php' ,  __FILE__ );
   return $newFile;
   
   

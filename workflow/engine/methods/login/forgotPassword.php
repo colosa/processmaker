@@ -22,7 +22,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-  $G_PUBLISH = new Publisher ();
-  $G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/forgotPassword', '', array(), 'retrivePassword.php');
-  G::RenderPage ( "publish" );
+$G_PUBLISH = new Publisher ();
+$G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/forgotPassword', '', array(), 'retrivePassword.php');
+G::RenderPage ( "publish" );
 

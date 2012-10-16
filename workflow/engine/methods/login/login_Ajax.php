@@ -23,28 +23,25 @@
  *
  */
 try {
-  
-  G::LoadInclude ( 'ajax' );
-  if (isset ( $_POST ['form'] )) {
-    $_POST = $_POST ['form'];
-  }
-  $_POST ['function'] = get_ajax_value ( 'function' );
-  switch ($_POST ['function']) {
-    case 'getStarted_save' :
-      require_once 'classes/model/Configuration.php';
-      $aData ['CFG_UID'] = 'getStarted';
-      $aData ['OBJ_UID'] = '';
-      $aData ['CFG_VALUE'] = '1';
-      $aData ['PRO_UID'] = '';
-      $aData ['USR_UID'] = '';
-      $aData ['APP_UID'] = '';
-      
-      $oConfig = new Configuration ( );
-      
-      $oConfig->create ( $aData );
-      break;
-  }
+    G::LoadInclude ( 'ajax' );
+    if (isset ( $_POST ['form'] )) {
+        $_POST = $_POST ['form'];
+    }
+    $_POST ['function'] = get_ajax_value ( 'function' );
+    switch ($_POST ['function']) {
+        case 'getStarted_save':
+            require_once 'classes/model/Configuration.php';
+            $aData ['CFG_UID'] = 'getStarted';
+            $aData ['OBJ_UID'] = '';
+            $aData ['CFG_VALUE'] = '1';
+            $aData ['PRO_UID'] = '';
+            $aData ['USR_UID'] = '';
+            $aData ['APP_UID'] = '';
+            $oConfig = new Configuration ( );
+            $oConfig->create ( $aData );
+            break;
+    }
+} catch ( Exception $oException ) {
+    die ( $oException->getMessage () );
 }
-catch ( Exception $oException ) {
-  die ( $oException->getMessage () );
-}
+

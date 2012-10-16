@@ -154,9 +154,9 @@ try {
     }
 
     if (PHP_VERSION < 5.2) {
-      setcookie(session_name(), session_id(), null, '/', '; HttpOnly');
+        setcookie(session_name(), session_id(), null, '/', '; HttpOnly');
     } else {
-      setcookie(session_name(), session_id(), null, '/', null, null, true);
+        setcookie(session_name(), session_id(), null, '/', null, null, true);
     }
 
     $aUser = $RBAC->userObj->load($_SESSION['USER_LOGGED']);
@@ -214,11 +214,11 @@ try {
     //************** background processes, here we are putting some back office routines **********
     $heartBeatNWIDate = $oServerConf->getHeartbeatProperty('HB_NEXT_GWI_DATE','HEART_BEAT_CONF');
     if (is_null($heartBeatNWIDate)) {
-      $heartBeatNWIDate = time();
+        $heartBeatNWIDate = time();
     }
     if (time() >= $heartBeatNWIDate) {
-      $oServerConf->setWsInfo(SYS_SYS, $oServerConf->getWorkspaceInfo(SYS_SYS));
-      $oServerConf->setHeartbeatProperty('HB_NEXT_GWI_DATE', strtotime('+1 day'), 'HEART_BEAT_CONF');
+        $oServerConf->setWsInfo(SYS_SYS, $oServerConf->getWorkspaceInfo(SYS_SYS));
+        $oServerConf->setHeartbeatProperty('HB_NEXT_GWI_DATE', strtotime('+1 day'), 'HEART_BEAT_CONF');
     }
 
     //**** defining and saving server info, this file has the values of the global array $_SERVER ****

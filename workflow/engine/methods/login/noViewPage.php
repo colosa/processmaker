@@ -30,7 +30,7 @@ $G_SUB_MENU = "empty";
 $referer = $_SERVER ['HTTP_REFERER'];
 $dbc = new DBConnection ( );
 $G_PUBLISH = new Publisher ( );
-$G_PUBLISH->AddContent ( "xmlform", "xmlform", "login/noViewPage", "", NULL );
+$G_PUBLISH->AddContent ( "xmlform", "xmlform", "login/noViewPage", "", null );
 
 G::RenderPage ( "publish" );
-?>
+

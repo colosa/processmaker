@@ -24,82 +24,78 @@
  *
  */
 
-function lookup( $target ) {
-  global $ntarget;
-  $msg = $target . ' => ';
-  //if (eregi ( '[a-zA-Z]', $target ))
-  if (preg_match( '[a-zA-Z]', $target )) //Made compatible to PHP 5.3
-    $ntarget = gethostbyname ( $target );
-  else
-    $ntarget = gethostbyaddr ( $target );
-  $msg .= $ntarget;
-  return ($msg);
+function lookup ($target)
+{
+    global $ntarget;
+    $msg = $target . ' => ';
+      //if (eregi ( '[a-zA-Z]', $target ))
+    if (preg_match( '[a-zA-Z]', $target )) {
+        //Made compatible to PHP 5.3
+        $ntarget = gethostbyname ( $target );
+    } else {
+        $ntarget = gethostbyaddr ( $target );
+    }
+    $msg .= $ntarget;
+    return ($msg);
 }
 
 G::LoadClass("system");
 
 if (getenv ( 'HTTP_CLIENT_IP' )) {
-  $ip = getenv ( 'HTTP_CLIENT_IP' );
-}
-else {
-  if (getenv ( 'HTTP_X_FORWARDED_FOR' )) {
-    $ip = getenv ( 'HTTP_X_FORWARDED_FOR' );
-  }
-  else {
-    $ip = getenv ( 'REMOTE_ADDR' );
-  }
+    $ip = getenv ( 'HTTP_CLIENT_IP' );
+} else {
+    if (getenv ( 'HTTP_X_FORWARDED_FOR' )) {
+        $ip = getenv ( 'HTTP_X_FORWARDED_FOR' );
+    } else {
+        $ip = getenv ( 'REMOTE_ADDR' );
+    }
 }
 
 $redhat = '';
 if (file_exists ( '/etc/redhat-release' )) {
-  $fnewsize = filesize ( '/etc/redhat-release' );
-  $fp = fopen ( '/etc/redhat-release', 'r' );
-  $redhat = trim ( fread ( $fp, $fnewsize ) );
-  fclose ( $fp );
+    $fnewsize = filesize ( '/etc/redhat-release' );
+    $fp = fopen ( '/etc/redhat-release', 'r' );
+    $redhat = trim ( fread ( $fp, $fnewsize ) );
+    fclose ( $fp );
 }
 
 $redhat .= " (" . PHP_OS . ")";
 if (defined ( "DB_HOST" )) {
-  G::LoadClass ( 'net' );
-  G::LoadClass ( 'dbConnections' );
-  $dbNetView = new NET ( DB_HOST );
-  $dbNetView->loginDbServer ( DB_USER, DB_PASS );
-  
-  $dbConns = new dbConnections ( '' );
-  $availdb = '';
-  foreach ( $dbConns->getDbServicesAvailables () as $key => $val ) {
-    if ($availdb != '')
-      $availdb .= ', ';
-    $availdb .= $val ['name'];
-  }
-  
-  try {
-    
-    $sMySQLVersion = $dbNetView->getDbServerVersion ( DB_ADAPTER );      
-    
-  }
-  catch ( Exception $oException ) {
-    $sMySQLVersion = '?????';
-  }
+    G::LoadClass ( 'net' );
+    G::LoadClass ( 'dbConnections' );
+    $dbNetView = new NET ( DB_HOST );
+    $dbNetView->loginDbServer ( DB_USER, DB_PASS );
+    $dbConns = new dbConnections ( '' );
+    $availdb = '';
+    foreach ($dbConns->getDbServicesAvailables () as $key => $val) {
+        if ($availdb != '') {
+            $availdb .= ', ';
+        }
+        $availdb .= $val ['name'];
+    }
+    try {
+        $sMySQLVersion = $dbNetView->getDbServerVersion ( DB_ADAPTER );
+    } catch (Exception $oException) {
+        $sMySQLVersion = '?????';
+    }
 }
 
 $Fields ['SYSTEM'] = $redhat;
 if (defined ( "DB_HOST" )) {
-  $Fields ['DATABASE'] = $dbNetView->dbName ( DB_ADAPTER ) . ' (Version ' . $sMySQLVersion . ')';
-  $Fields ['DATABASE_SERVER'] = DB_HOST;
-  $Fields ['DATABASE_NAME'] = DB_NAME;
-  $Fields ['AVAILABLE_DB'] = $availdb;
-}
-else {
-  $Fields ['DATABASE'] = "Not defined";
-  $Fields ['DATABASE_SERVER'] = "Not defined";
-  $Fields ['DATABASE_NAME'] = "Not defined";
-  $Fields ['AVAILABLE_DB'] = "Not defined";
+    $Fields ['DATABASE'] = $dbNetView->dbName ( DB_ADAPTER ) . ' (Version ' . $sMySQLVersion . ')';
+    $Fields ['DATABASE_SERVER'] = DB_HOST;
+    $Fields ['DATABASE_NAME'] = DB_NAME;
+    $Fields ['AVAILABLE_DB'] = $availdb;
+} else {
+    $Fields ['DATABASE'] = "Not defined";
+    $Fields ['DATABASE_SERVER'] = "Not defined";
+    $Fields ['DATABASE_NAME'] = "Not defined";
+    $Fields ['AVAILABLE_DB'] = "Not defined";
 }
 $eeT="";
-  if(class_exists('pmLicenseManager')){
+if (class_exists('pmLicenseManager')) {
     $eeT=" - Enterprise Edition";
-  }
+}
 $Fields ['PHP'] = phpversion ();
 $Fields ['FLUID'] = System::getVersion() . $eeT;
 $Fields ['IP'] = lookup ( $ip );
@@ -113,8 +109,9 @@ $Fields ['SERVER_ADDR'] = getenv ( 'SERVER_ADDR' );
 $Fields ['HTTP_USER_AGENT'] = getenv ( 'HTTP_USER_AGENT' );
 $Fields ['TIME_ZONE'] = (defined('TIME_ZONE')) ? TIME_ZONE : "Unknown";
 
-if (! defined ( 'SKIP_RENDER_SYSTEM_INFORMATION' )) {
-  $G_PUBLISH = new Publisher ( );
-  $G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/dbInfo', '', $Fields, 'appNew2' );
-  G::RenderPage ( 'publish', 'raw' );
+if (!defined( 'SKIP_RENDER_SYSTEM_INFORMATION')) {
+    $G_PUBLISH = new Publisher ( );
+    $G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/dbInfo', '', $Fields, 'appNew2' );
+    G::RenderPage ( 'publish', 'raw' );
 }
+
