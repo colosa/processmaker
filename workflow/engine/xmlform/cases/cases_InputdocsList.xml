@@ -11,7 +11,7 @@
 
 <CONFIRM type="hidden" showInTable="0"/>
 
-<TITLE type="text" colWidth="150" titleAlign="left" align="left">
+<TITLE type="text" enableHtml="1" colWidth="150" titleAlign="left" align="left">
   <en>Title</en>
 </TITLE>
 

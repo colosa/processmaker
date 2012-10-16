@@ -3374,6 +3374,8 @@ class Cases
                 $aFields['DOWNLOAD_LABEL'] = G::LoadTranslation('ID_DOWNLOAD');
                 $aFields['DOWNLOAD_LINK'] = "cases_ShowDocument?a=" .
                     $aRow['APP_DOC_UID'] . "&v=" . $aRow['DOC_VERSION'];
+                $aFields['TITLE']= '<a href="'.$aFields['DOWNLOAD_LINK'].'">'.$aFields['TITLE'].'</a>';
+
 
                 if (is_array($listing)) {
                     foreach ($listing as $folderitem) {
@@ -4055,6 +4057,7 @@ class Cases
                     }
                 }
             }
+            $aFields['TITLE']= '<a href="'.$aFields['DOWNLOAD_LINK'].'">'.$aFields['TITLE'].'</a>';
             if ($lastVersion == $aRow['DOC_VERSION']) {
                 //Show only last version
                 $aInputDocuments[] = $aFields;
