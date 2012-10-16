@@ -681,16 +681,19 @@ var G_Grid = function(oForm, sGridName){
           }
         }
     }
+
+    //Set focus the first element in the grid
+    for (var i = 0; i < this.aFields.length; i++) {
+      var fieldName = 'form[' + sGridName + '][' + currentRow + '][' + this.aFields[i].sFieldName + ']';
+      if (this.aFields[i].sType != 'file' && document.getElementById(fieldName).focus) {
+        document.getElementById(fieldName).focus();
+        break;
+      }
+    }
+
     //Fires OnAddRow Event
     if (this.onaddrow) {
       this.onaddrow(currentRow);
-    }
-    var newInputs = oNewRow.getElementsByTagName('input');
-    for (var i = 0; i < newInputs.length; i++) {
-      if (typeof(newInputs[i]) != 'undefined' && newInputs[i].type != 'hidden') {
-        newInputs[i].focus();
-        break;
-      }
     }
   };
 
@@ -740,12 +743,12 @@ var G_Grid = function(oForm, sGridName){
       for (i = 1; i < oObj.oGrid.rows[iRowAux - 1].cells.length; i++) {
         var oCell1 = oObj.oGrid.rows[iRowAux - 1].cells[i];
         var oCell2 = oObj.oGrid.rows[iRowAux].cells[i];
-        
+
         switch (oCell1.innerHTML.replace(/^\s+|\s+$/g, '').substr(0, 6).toLowerCase()){
           case '<input':
             aObjects1 = oCell1.getElementsByTagName('input');
             aObjects2 = oCell2.getElementsByTagName('input');
-            
+
             if (aObjects1 && aObjects2) {
                 switch (aObjects2[0].type) {
                     case "file":
@@ -828,7 +831,7 @@ var G_Grid = function(oForm, sGridName){
             if (( oCell2.innerHTML.indexOf('changeValues') == 111 || oCell2.innerHTML.indexOf('changeValues') == 115 ) ) {
               break;
             }
-            
+
             if (oCell2.innerHTML.toLowerCase().indexOf('deletegridrow') == -1) {
               oCell1.innerHTML = oCell2.innerHTML;
             }
