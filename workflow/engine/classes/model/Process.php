@@ -455,6 +455,10 @@ class Process extends BaseProcess {
     $this->setProShowMap      ( $aData['PRO_SHOW_MAP'] );
     $this->setProShowMessage  ( $aData['PRO_SHOW_MESSAGE'] );
     $this->setProSubprocess   ( $aData['PRO_SUBPROCESS'] );
+    $this->setProTriDeleted   ( $aData['PRO_TRI_DELETED'] );
+    $this->setProTriCanceled  ( $aData['PRO_TRI_CANCELED'] );
+    $this->setProTriPaused    ( $aData['PRO_TRI_PAUSED'] );
+    $this->setProTriReassigned( $aData['PRO_TRI_REASSIGNED'] );
     $this->setProShowDelegate ( $aData['PRO_SHOW_DELEGATE'] );
     $this->setProShowDynaform ( $aData['PRO_SHOW_DYNAFORM'] );
 
@@ -575,7 +579,8 @@ class Process extends BaseProcess {
       return 0;
   }
 
-  function getAllProcesses($start, $limit, $category=NULL, $processName=NULL, $counters = true, $reviewSubProcess = false) {
+  function getAllProcesses($start, $limit, $category=NULL, $processName=NULL, $counters = true, $reviewSubProcess = false)
+  {
     require_once PATH_RBAC . "model/RbacUsers.php";
     require_once "classes/model/ProcessCategory.php";
     require_once "classes/model/Users.php";
@@ -604,7 +609,7 @@ class Process extends BaseProcess {
     $oCriteria->add(ProcessPeer::PRO_UID, '', Criteria::NOT_EQUAL);
     $oCriteria->add(ProcessPeer::PRO_STATUS, 'DISABLED', Criteria::NOT_EQUAL);
     if ($reviewSubProcess) {
-      $oCriteria->add(ProcessPeer::PRO_SUBPROCESS, '1', Criteria::NOT_EQUAL);  
+      $oCriteria->add(ProcessPeer::PRO_SUBPROCESS, '1', Criteria::NOT_EQUAL);
     }
 
     if( isset($category) )
@@ -771,6 +776,46 @@ class Process extends BaseProcess {
   		$aProc[$row['PRO_CATEGORY']] = $row['CNT'];
   	}
   	return $aProc;
+  }
+
+  function getTriggerWebBotProcess ($proUid, $action)
+  {
+    require_once ("classes/model/Triggers.php");
+
+    if ((!isset($proUid) && $proUid == '') || (!isset($action) && $action == ''))  {
+      return false;
+    }
+
+    $action = G::toUpper($action);
+    $webBotTrigger = '';
+
+    switch ($action) {
+      case 'DELETED':
+        $var = ProcessPeer::PRO_TRI_DELETED;
+        break;
+      case 'CANCELED':
+        $var = ProcessPeer::PRO_TRI_CANCELED;
+        break;
+      case 'PAUSED':
+        $var = ProcessPeer::PRO_TRI_PAUSED;
+        break;
+      case 'REASSIGNED':
+        $var = ProcessPeer::PRO_TRI_REASSIGNED;
+        break;
+    }
+    $oCriteria = new Criteria('workflow');
+    $oCriteria->addSelectColumn($var);
+    $oCriteria->addSelectColumn(TriggersPeer::TRI_WEBBOT);
+    $oCriteria->addJoin($var, TriggersPeer::TRI_UID, Criteria::LEFT_JOIN);
+    $oCriteria->add(ProcessPeer::PRO_UID, $proUid);
+    $oDataSet = ProcessPeer::doSelectRS($oCriteria);
+
+    $oDataSet->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    if ($oDataSet->next()) {
+      $row = $oDataSet->getRow();
+      $webBotTrigger = $row['TRI_WEBBOT'];
+    }
+    return $webBotTrigger;
   }
 
     public function memcachedDelete()

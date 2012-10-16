@@ -36,6 +36,10 @@ class Services_Rest_Process
                 $criteria->addSelectColumn(ProcessPeer::PRO_SHOW_MAP);
                 $criteria->addSelectColumn(ProcessPeer::PRO_SHOW_MESSAGE);
                 $criteria->addSelectColumn(ProcessPeer::PRO_SUBPROCESS);
+                $criteria->addSelectColumn(ProcessPeer::PRO_TRI_DELETED);
+                $criteria->addSelectColumn(ProcessPeer::PRO_TRI_CANCELED);
+                $criteria->addSelectColumn(ProcessPeer::PRO_TRI_PAUSED);
+                $criteria->addSelectColumn(ProcessPeer::PRO_TRI_REASSIGNED);
                 $criteria->addSelectColumn(ProcessPeer::PRO_SHOW_DELEGATE);
                 $criteria->addSelectColumn(ProcessPeer::PRO_SHOW_DYNAFORM);
                 $criteria->addSelectColumn(ProcessPeer::PRO_CATEGORY);

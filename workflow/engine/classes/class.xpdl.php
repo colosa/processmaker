@@ -2005,6 +2005,10 @@ class Xpdl extends processes
         $process['PRO_SHOW_MAP'] = 0;
         $process['PRO_SHOW_MESSAGE'] = 0;
         $process['PRO_SUBPROCESS'] = 0;
+        $process['PRO_TRI_DELETED'] = '';
+        $process['PRO_TRI_CANCELED'] = '';
+        $process['PRO_TRI_PAUSED'] = '';
+        $process['PRO_TRI_REASSIGNED'] = '';
         $process['PRO_SHOW_DELEGATE'] = 0;
         $process['PRO_SHOW_DYNAFORM'] = 0;
         $process['PRO_CATEGORY'] = '';
