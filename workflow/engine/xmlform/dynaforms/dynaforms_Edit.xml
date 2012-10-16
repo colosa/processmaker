@@ -87,7 +87,7 @@ document.getElementById('form[DYN_TITLE]').value = document.getElementById('form
   leimnud.event.add(document.getElementById('form[ADD_TABLE]'), 'change', setPMTableDynaformTitle);
   function setPMTableDynaformTitle(){
     if(document.getElementById('form[ADD_TABLE]').value!=''){
-        document.getElementById('form[DYN_TITLE]').value = document.getElementById('form[DYN_TITLE]').value + document.getElementById('form[ADD_TABLE]')[document.getElementById('form[ADD_TABLE]').selectedIndex].innerHTML;
+        document.getElementById('form[DYN_TITLE]').value = document.getElementById('form[ADD_TABLE]')[document.getElementById('form[ADD_TABLE]').selectedIndex].innerHTML;
     }
   }
   var oPanel;
