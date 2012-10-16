@@ -17,7 +17,7 @@
   <en>Create from a PM Table</en>
 </ADD_TABLE>
 
-<DYN_TITLE type="text" maxlength="256" size ="48" required="1">
+<DYN_TITLE type="text" maxlength="48" size ="48" required="1">
   <en>Title</en>
 </DYN_TITLE>
 
@@ -87,7 +87,7 @@ document.getElementById('form[DYN_TITLE]').value = document.getElementById('form
   leimnud.event.add(document.getElementById('form[ADD_TABLE]'), 'change', setPMTableDynaformTitle);
   function setPMTableDynaformTitle(){
     if(document.getElementById('form[ADD_TABLE]').value!=''){
-        document.getElementById('form[DYN_TITLE]').value = document.getElementById('form[DYN_TITLE]').value + document.getElementById('form[ADD_TABLE]')[document.getElementById('form[ADD_TABLE]').selectedIndex].innerHTML;
+        document.getElementById('form[DYN_TITLE]').value = document.getElementById('form[ADD_TABLE]')[document.getElementById('form[ADD_TABLE]').selectedIndex].innerHTML;
     }
   }
   var oPanel;
