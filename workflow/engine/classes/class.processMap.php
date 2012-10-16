@@ -220,6 +220,8 @@ class processMap
                     if ($aRow3) {
                         $aRow2['FINISH'] = '';
                     }
+
+                    /*
                     if (($aRow2['FINISH'] == null) && ($aRow1['TAS_UID'] == $sTask)) {
                         $oTask->color = '#FF0000';
                     } else {
@@ -232,6 +234,21 @@ class processMap
                             }
                         } else {
                             $oTask->color = "#939598";
+                        }
+                    }
+                    */
+                    if (empty($aRow2["FINISH"]) && $aRow1["TAS_UID"] == $sTask) {
+                        $oTask->color = "#FF0000"; //Red
+                    } else {
+                        if (!empty($aRow2["FINISH"])) {
+                            $oTask->color = "#006633"; //Green
+                        } else {
+                            if ($aRow2["CANT"] == 0 || $oTask->derivation->type != 5) {
+                                $oTask->color = "#939598"; //Gray
+                            } else {
+                                //$oTask->color = "#FF9900"; //Yellow
+                                $oTask->color = "#FF0000"; //Red
+                            }
                         }
                     }
                 } else {
@@ -257,6 +274,8 @@ class processMap
                         if ($aRow3) {
                             $aRow2['FINISH'] = '';
                         }
+
+                        /*
                         if (($aRow2['FINISH'] == null) && ($aRow1['TAS_UID'] == $sTask)) {
                             $oTask->color = '#FF0000';
                         } else {
@@ -268,6 +287,20 @@ class processMap
                                 }
                             } else {
                                 $oTask->color = '#939598';
+                            }
+                        }
+                        */
+                        if (empty($aRow2["FINISH"]) && $aRow1["TAS_UID"] == $sTask) {
+                            $oTask->color = "#FF0000"; //Red
+                        } else {
+                            if (!empty($aRow2["FINISH"])) {
+                                $oTask->color = "#006633"; //Green
+                            } else {
+                                if ($aRow2["CANT"] == 0 || $oTask->derivation->type != 5) {
+                                    $oTask->color = "#939598"; //Gray
+                                } else {
+                                    $oTask->color = "#FF9900"; //Yellow
+                                }
                             }
                         }
                     }
