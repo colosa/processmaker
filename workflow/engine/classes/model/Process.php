@@ -454,11 +454,11 @@ class Process extends BaseProcess {
     $this->setProAssignment   ( $aData['PRO_ASSIGNMENT'] );
     $this->setProShowMap      ( $aData['PRO_SHOW_MAP'] );
     $this->setProShowMessage  ( $aData['PRO_SHOW_MESSAGE'] );
-    $this->setProSubprocess   ( $aData['PRO_SUBPROCESS'] );
-    $this->setProTriDeleted   ( $aData['PRO_TRI_DELETED'] );
-    $this->setProTriCanceled  ( $aData['PRO_TRI_CANCELED'] );
-    $this->setProTriPaused    ( $aData['PRO_TRI_PAUSED'] );
-    $this->setProTriReassigned( $aData['PRO_TRI_REASSIGNED'] );
+    $this->setProSubprocess   ( isset($aData['PRO_SUBPROCESS']) ? $aData['PRO_SUBPROCESS'] : '' );
+    $this->setProTriDeleted   ( isset($aData['PRO_TRI_DELETED']) ? $aData['PRO_TRI_DELETED'] : '' );
+    $this->setProTriCanceled  ( isset($aData['PRO_TRI_CANCELED']) ? $aData['PRO_TRI_CANCELED'] : '' );
+    $this->setProTriPaused    ( isset($aData['PRO_TRI_PAUSED']) ? $aData['PRO_TRI_PAUSED'] : '' );
+    $this->setProTriReassigned( isset($aData['PRO_TRI_REASSIGNED']) ? $aData['PRO_TRI_REASSIGNED'] : '' );
     $this->setProShowDelegate ( $aData['PRO_SHOW_DELEGATE'] );
     $this->setProShowDynaform ( $aData['PRO_SHOW_DYNAFORM'] );
 
