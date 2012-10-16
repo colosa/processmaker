@@ -7,14 +7,13 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false"
+         stopOnFailure="true"
+         syntaxCheck="true"
          bootstrap="tests/bootstrap.php"
 >
     <testsuites>
         <testsuite name="automated">
             <directory>./tests/automated/</directory>
-            <directory>./tests/unit/backend/services/</directory>
         </testsuite>
 <!--
         <testsuite name="unit">
@@ -48,10 +47,6 @@
     </php>
 
     <logging>
-        <log type="coverage-html" target="build/coverage" title="ERC"
-            charset="UTF-8" yui="true" highlight="true"
-            lowUpperBound="10" highLowerBound="20"/>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
         <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
     </logging>
 </phpunit>
