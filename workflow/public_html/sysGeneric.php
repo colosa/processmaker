@@ -141,6 +141,8 @@
   $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'appFolder/core/appFolderList.js', true );
   $oHeadPublisher->addMaborakFile(PATH_THIRDPARTY    . 'htmlarea/editor.js', true );
 
+  
+
   //check if it is a installation instance
   if(!defined('PATH_C')) {
     // is a intallation instance, so we need to define PATH_C and PATH_LANGUAGECONT constants temporarily
@@ -174,12 +176,14 @@
   $virtualURITable['/files/']                        = 'errorFile';
   $virtualURITable['/[a-zA-Z][a-zA-Z0-9]{0,}()']     = 'sysUnnamed';
   $virtualURITable['/rest/(*)']                      = 'rest-service';
+  $virtualURITable['/update/(*)']                    = PATH_GULLIVER_HOME . 'methods/update/';
   $virtualURITable['/(*)']                           = PATH_HTML;
-
+  
   $isRestRequest = false;
-
+  
   // Verify if we need to redirect or stream the file, if G:VirtualURI returns true means we are going to redirect the page
-  if ( G::virtualURI($_SERVER['REQUEST_URI'], $virtualURITable , $realPath )) {
+  if ( G::virtualURI($_SERVER['REQUEST_URI'], $virtualURITable , $realPath )) 
+  {
     // review if the file requested belongs to public_html plugin
     if ( substr ( $realPath, 0,6) == 'plugin' ) {
       // Another way to get the path of Plugin public_html and stream the correspondent file, By JHL Jul 14, 08
@@ -207,7 +211,6 @@
       }
       die;
     }
-
     // if (substr($realPath, 0, 12) === 'rest-service') {
     //   G::dispatchRestService();
     //   die;
@@ -265,11 +268,18 @@
           die;
         }
     }
-  }
+  }//virtual URI parser
 
   // the request correspond to valid php page, now parse the URI
   G::parseURI(getenv("REQUEST_URI"), $isRestRequest);
 
+  if(G::isPMUnderUpdating())
+  {
+      header("location: /update/updating.php");
+      if ( DEBUG_TIME_LOG ) G::logTimeByPage();
+      die;
+  }
+  
   // verify if index.html exists
   if (!file_exists(PATH_HTML . 'index.html')) { // if not, create it from template
     file_put_contents(
@@ -612,7 +622,7 @@
     G::SendTemporalMessage ('ID_USER_HAVENT_RIGHTS_SYSTEM', "error");
     // verify if the current skin is a 'ux' variant
     $urlPart = substr(SYS_SKIN, 0, 2) == 'ux' && SYS_SKIN != 'uxs' ? '/main/login' : '/login/login';
-
+    
     header('Location: /sys' . SYS_SYS . '/' . SYS_LANG . '/' . SYS_SKIN . $urlPart);
     die;
   }
@@ -702,6 +712,7 @@
 
           if (empty($_POST)) {
             header('location: ' . SYS_URI . $loginUrl . '?u=' . urlencode($_SERVER['REQUEST_URI']));
+            
           }
           else {
             if ($isControllerCall) {
