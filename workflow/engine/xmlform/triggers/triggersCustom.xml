@@ -19,7 +19,7 @@
   <en>Description</en>
 </TRI_DESCRIPTION>
 
-<TRI_WEBBOT type="textareapm" class="formLabel" cols="50" rows="15" width="100%" height="380px" showVars="1" process="@#PRO_UID">
+<TRI_WEBBOT type="textareapm" class="formLabel" cols="60" rows="15" width="100%" height="380px" showVars="1" process="@#PRO_UID">
 </TRI_WEBBOT>
 <SAVE type="button" onclick="triggerSave1(this.form);">
   <en>Save</en>

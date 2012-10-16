@@ -29,7 +29,6 @@
 
 <triggerNewGoogleCreateEvent type="private" defaultValue="../triggers/triggers_CreateGoogleEvent"/>
 
-
 <PAGED_TABLE_ID type="private"/> 
 <PAGED_TABLE_FAST_SEARCH type="FastSearch" label="@G::LoadTranslation(ID_SEARCH)"/>
 
@@ -70,7 +69,7 @@
   }
   
   function triggerEdit(sUID) {
-    popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID=' + sUID , 900, 600);
+    popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID='+ sUID , 930, 600);
   }
 
   function triggerProperties( sUID ) {
@@ -119,10 +118,9 @@
          @#PAGED_TABLE_ID.refresh();
         }
    }else{
-    
-        ajax_post(form.action, form, 'POST');
-          currentPopupWindow.remove();
-          @#PAGED_TABLE_ID.refresh();
+    	ajax_post(form.action, form, 'POST');
+      currentPopupWindow.remove();
+      @#PAGED_TABLE_ID.refresh();
    }
   }
   //with this function, we are removing the spaces after and before of a string 
@@ -155,8 +153,6 @@
 		   @#PAGED_TABLE_ID.refresh();
    }
   }
-
-
 //end for trigger no wirzard
 
   function triggerDelete(sUID) {
@@ -188,7 +184,8 @@
     }.extend(this);
     oRPC.make();
   }
-  function triggerNewWizard(nameFunction, library) {//alert('@G::encryptlink(@#triggerNewWizard)?PRO_UID=@%PRO_UID&amp;NAME_FUN='+nameFunction+'&amp;PARAMETERS_FUN='+parametersFunct+'&amp;PAGED_TABLE_ID='+@#PAGED_TABLE_ID);return;
+  
+  function triggerNewWizard(nameFunction, library) {//alert('@G::encryptlink(@#triggerNewWizard)?PRO_UID=@%PRO_UID&amp;NAME_FUN='+nameFunction+'&amp;	PARAMETERS_FUN='+parametersFunct+'&amp;PAGED_TABLE_ID='+@#PAGED_TABLE_ID);return;
     popupWindow('@G::LoadTranslation(ID_NEW_TRIGGERS)', '@G::encryptlink(@#triggerNewWizard)?PRO_UID=@%PRO_UID&NAME_FUN='+nameFunction+'&LIBRARY='+library+'&PAGED_TABLE_ID='+@#PAGED_TABLE_ID , 600, 600);
   }
   
@@ -202,4 +199,4 @@
 
 <SEARCH_FILTER_FORM type="private"/>
 
-</dynaForm> 
+</dynaForm>
