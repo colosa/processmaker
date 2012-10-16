@@ -16,13 +16,13 @@
 </PRO_TITLE>
 
 <PRO_VALIDATE_TITLE type="text">
-SELECT 
-  PRO_UID 
-FROM 
-  PROCESS 
-  INNER JOIN CONTENT ON (CONTENT.CON_ID = PROCESS.PRO_UID) 
-WHERE 
-  CON_LANG = @@SYS_LANG AND 
+SELECT
+  PRO_UID
+FROM
+  PROCESS
+  INNER JOIN CONTENT ON (CONTENT.CON_ID = PROCESS.PRO_UID)
+WHERE
+  CON_LANG = @@SYS_LANG AND
   CON_VALUE = TRIM(@@PRO_TITLE)
   <en>Title</en>
 </PRO_VALIDATE_TITLE>
@@ -72,6 +72,34 @@ WHERE
   <en>This a sub process</en>
 </PRO_SUBPROCESS>
 
+<PRO_TRI_DELETED type="dropdown">
+<![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]>
+<en>Execute a trigger when a case is deleted
+  <option name="">- Don't execute anything -</option>
+</en>
+</PRO_TRI_DELETED>
+
+<PRO_TRI_CANCELED type="dropdown">
+<![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]>
+<en>Execute a trigger when a case is cancelled
+  <option name="">- Don't execute anything -</option>
+</en>
+</PRO_TRI_CANCELED>
+
+<PRO_TRI_PAUSED type="dropdown">
+<![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]>
+<en>Execute a trigger when a case is paused
+  <option name="">- Don't execute anything -</option>
+</en>
+</PRO_TRI_PAUSED>
+
+<PRO_TRI_REASSIGNED type="dropdown">
+<![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]>
+<en>Execute a trigger when a case is reassigned
+  <option name="">- Don't execute anything -</option>
+</en>
+</PRO_TRI_REASSIGNED>
+
 <BTN_CANCEL type="button" onclick="cancel();">
   <en>Cancel</en>
 </BTN_CANCEL>
@@ -100,7 +128,7 @@ var verifyProcessInformation = function(oForm) {
         }
 
         var regExp =  /^(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\..*)(\..+)?$)[^\x00-\x1f\\?*:\";|/]+$/;
-        
+
         if (oAux.value.search(regExp)==-1) {
             alert('@G::LoadTranslation(ID_INVALID_PROCESS_NAME)');
             oAux.focus();
@@ -115,14 +143,14 @@ var verifyProcessInformation = function(oForm) {
     } else {
         var nProcess = new input(getField('PRO_TITLE'));
         nProcess.focus();
-    }	
+    }
 };
 
 leimnud.event.add(getField('PRO_TITLE'), 'change', function() {
     var nProcess = new input(getField('PRO_TITLE'));
     getField('PRO_TITLE').value = getField('PRO_TITLE').value.replace(/^\s*|\s*$/g,"");
 
-    if ( (getField('PRO_VALIDATE_TITLE').value == '') || 
+    if ( (getField('PRO_VALIDATE_TITLE').value == '') ||
          (getField('PRO_VALIDATE_TITLE').value == getField('PRO_UID').value)
        ) {
         validateNameProcess = true;

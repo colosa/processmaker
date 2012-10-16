@@ -796,6 +796,10 @@
     <column name="PRO_SHOW_MAP" type="TINYINT" required="true" default="1"/>
     <column name="PRO_SHOW_MESSAGE" type="TINYINT" required="true" default="1"/>
     <column name="PRO_SUBPROCESS" type="TINYINT" required="true" default="0"/>
+    <column name="PRO_TRI_DELETED" type="VARCHAR" size="32" required="true" default=""/>
+    <column name="PRO_TRI_CANCELED" type="VARCHAR" size="32" required="true" default=""/>
+    <column name="PRO_TRI_PAUSED" type="VARCHAR" size="32" required="true" default=""/>
+    <column name="PRO_TRI_REASSIGNED" type="VARCHAR" size="32" required="true" default=""/>
     <column name="PRO_SHOW_DELEGATE" type="TINYINT" required="true" default="1"/>
     <column name="PRO_SHOW_DYNAFORM" type="TINYINT" required="true" default="0"/>
     <column name="PRO_CATEGORY" type="VARCHAR" size="48" required="true" default=""/>
