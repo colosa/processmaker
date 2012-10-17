@@ -12,26 +12,25 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
-  $G_MAIN_MENU        = 'processmaker';
-  $G_ID_MENU_SELECTED = 'MY_ACCOUNT';
-  $G_PUBLISH          = new Publisher ();
-  
-  if ( isset($_GET['type']) ){
-    $G_PUBLISH->AddContent('view', 'users/usersReload');
-    G::RenderPage( "publishBlank", "blank");
-  }
-  else {
-    $G_PUBLISH->AddContent('view', 'users/usersLoad');
+$G_MAIN_MENU = 'processmaker';
+$G_ID_MENU_SELECTED = 'MY_ACCOUNT';
+$G_PUBLISH = new Publisher();
+
+if (isset( $_GET['type'] )) {
+    $G_PUBLISH->AddContent( 'view', 'users/usersReload' );
+    G::RenderPage( "publishBlank", "blank" );
+} else {
+    $G_PUBLISH->AddContent( 'view', 'users/usersLoad' );
     G::RenderPage( "publish" );
-  }
+}
+

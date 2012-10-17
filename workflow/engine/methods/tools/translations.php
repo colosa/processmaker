@@ -1,6 +1,6 @@
 <style>
 .tableOption {
-  color:#005791 !important;
+	color: #005791 !important;
 }
 </style>
 <?php
@@ -17,29 +17,28 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
-  $G_MAIN_MENU = 'tools';
-  $G_SUB_MENU = 'toolsTranslations';
-  $G_ID_MENU_SELECTED = 'TRANSLATION';
-  $G_ID_SUB_MENU_SELECTED = 'TRANSLATION_LIST';
+$G_MAIN_MENU = 'tools';
+$G_SUB_MENU = 'toolsTranslations';
+$G_ID_MENU_SELECTED = 'TRANSLATION';
+$G_ID_SUB_MENU_SELECTED = 'TRANSLATION_LIST';
 
-  $table="TRANSLATION";
+$table = "TRANSLATION";
 
-  $G_PUBLISH = new Publisher;
-  $G_PUBLISH->AddContent('pagedtable', 'paged-table', 'tools/translationsList', '', array() , '');
-  if( isset($_SESSION['TOOLS_VIEWTYPE']) ) {
-    G::RenderPage('publishBlank', 'green-submenu');
-  } else {
-    G::RenderPage('publish');
-  }
+$G_PUBLISH = new Publisher();
+$G_PUBLISH->AddContent( 'pagedtable', 'paged-table', 'tools/translationsList', '', array (), '' );
+if (isset( $_SESSION['TOOLS_VIEWTYPE'] )) {
+    G::RenderPage( 'publishBlank', 'green-submenu' );
+} else {
+    G::RenderPage( 'publish' );
+}
 

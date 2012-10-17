@@ -12,27 +12,26 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
-  $G_MAIN_MENU = 'tools';
-  $G_SUB_MENU = 'toolsTranslations';
-  $G_ID_MENU_SELECTED = 'TRANSLATION';
-  $G_ID_SUB_MENU_SELECTED = 'TRANSLATION_ADD';
+$G_MAIN_MENU = 'tools';
+$G_SUB_MENU = 'toolsTranslations';
+$G_ID_MENU_SELECTED = 'TRANSLATION';
+$G_ID_SUB_MENU_SELECTED = 'TRANSLATION_ADD';
 
-  $G_PUBLISH = new Publisher;
-  $G_PUBLISH->AddContent('xmlform', 'xmlform', 'tools/translationAdd', '', null, 'translationsSave' );
+$G_PUBLISH = new Publisher();
+$G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'tools/translationAdd', '', null, 'translationsSave' );
 
-  if( isset($_SESSION['TOOLS_VIEWTYPE']) && $_SESSION['TOOLS_VIEWTYPE'] == 'blank') {
-    G::RenderPage('publishBlank', 'green-submenu');
-  } else {
-    G::RenderPage('publish');
-  }
-?>
+if (isset( $_SESSION['TOOLS_VIEWTYPE'] ) && $_SESSION['TOOLS_VIEWTYPE'] == 'blank') {
+    G::RenderPage( 'publishBlank', 'green-submenu' );
+} else {
+    G::RenderPage( 'publish' );
+}
+
