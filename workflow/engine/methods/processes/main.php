@@ -12,15 +12,14 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
 /*$access = $RBAC->userCanAccess('PM_FACTORY');
@@ -38,23 +37,23 @@ if( $access != 1 ) {
   }
   exit();
 }*/
-//next two variables store the current process uid and the last processmap used 
+//next two variables store the current process uid and the last processmap used
 //print_r ($_SESSION['PROCESS'] );
 //print_r ($_SESSION['PROCESSMAP'] );
-$RBAC->requirePermissions('PM_FACTORY');
+$RBAC->requirePermissions( 'PM_FACTORY' );
 
-$G_MAIN_MENU            = 'processmaker';
-$G_SUB_MENU             = 'process';
-$G_ID_MENU_SELECTED     = 'PROCESSES';
+$G_MAIN_MENU = 'processmaker';
+$G_SUB_MENU = 'process';
+$G_ID_MENU_SELECTED = 'PROCESSES';
 $G_ID_SUB_MENU_SELECTED = '-';
 
-$G_PUBLISH = new Publisher;
-$oHeadPublisher =& headPublisher::getSingleton();
+$G_PUBLISH = new Publisher();
+$oHeadPublisher = & headPublisher::getSingleton();
 //$oHeadPublisher->addScriptFile('/jscore/processes/main.js');
-$G_PUBLISH->AddContent('view', 'processes/mainLoad');
+$G_PUBLISH->AddContent( 'view', 'processes/mainLoad' );
 
-if( isset($_GET['type']) )
-	  G::RenderPage( "publishBlank", "blank");
-	else
-	  G::RenderPage( "publish" );
-  
+if (isset( $_GET['type'] ))
+    G::RenderPage( "publishBlank", "blank" );
+else
+    G::RenderPage( "publish" );
+
