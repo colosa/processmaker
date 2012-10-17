@@ -389,6 +389,13 @@ Ext.onReady(function(){
     ]
   });
 
+  userPhoto = new Ext.form.FieldSet({
+    title: _('ID_PHOTO'),
+    items: [
+      {html: '<div class="thumb" align="center"><img src="users_ViewPhotoGrid?h='+Math.random()+'&pUID='+USERS.USR_UID+'"></div>'}
+    ]
+  });
+
   viewForm = new Ext.FormPanel({
     frame: true,
     //autoScroll: true,
@@ -399,7 +406,7 @@ Ext.onReady(function(){
       autoScroll: true,
       items:[
         {columnWidth:.6, padding: 3, layout: 'form', items: [userFields]},
-        {columnWidth:.4, padding: 3, layout: 'form', items: [caseFields]}
+        {columnWidth:.4, padding: 3, layout: 'form', items: [userPhoto, caseFields]}
       ]
     }]
   });
