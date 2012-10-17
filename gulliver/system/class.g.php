@@ -5377,6 +5377,36 @@ function get_mobile_data( $pv_browser_user_agent )
                         "UTC_TIMESTAMP","VALUES","VARBINARY","VARCHAR","VARCHARACTER","VARYING","VIEW","WAITFOR","WHEN","WHERE","WHILE","WITH","WRITE","WRITETEXT","XOR","YEAR_MONTH","ZEROFILL");
         return $reservedWordsSql;
     }
+
+    /**
+    * isPMUnderUpdating, Used to set a file flag to check if PM is upgrading.
+    *
+    * @setFlag          Contains the flag to set or unset the temporary file:
+    *                   0 to delete the temporary file flag
+    *                   1 to set the temporary file flag.
+    *                   2 or bigger to check if the temporary file exists.
+    * return            true if the file exists, otherwise false.
+    */
+    function isPMUnderUpdating($setFlag = 2)
+    {
+        $fileCheck = PATH_DATA."UPDATE.dat";
+        if($setFlag == 0){
+            if (file_exists($fileCheck)){
+                unlink ($fileCheck);
+            }
+        }
+        else if($setFlag == 1){
+            $fp = fopen($fileCheck,'w');
+            $line = fputs($fp,"true");
+        }
+        //checking temporary file
+        if($setFlag >= 1){
+            if ( file_exists($fileCheck)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 /**
