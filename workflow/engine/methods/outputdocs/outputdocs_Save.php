@@ -88,3 +88,4 @@ try {
 } catch (Exception $oException) {
     die( $oException->getMessage() );
 }
+
