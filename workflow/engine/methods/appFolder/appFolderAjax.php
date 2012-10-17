@@ -133,7 +133,7 @@ function expandNode()
         global $RBAC;
         $user = ($RBAC->userCanAccess('PM_ALLCASES') == 1)? '' : $_SESSION['USER_LOGGED'];
         $folderContentObj = $oPMFolder->getFolderContent ($_POST ['node'] != 'root' ?
-            $_POST ['node'] == 'NA' ? "" : $_POST ['node'] : $rootFolder, array(), null, null, $limit, $start, $user);
+            $_POST ['node'] == 'NA' ? "" : $_POST ['node'] : $rootFolder, array(), null, null, $limit, $start, $user, true);
         $folderContent=$folderContentObj['documents'];
         $totalDocuments=$folderContentObj['totalDocumentsCount'];
         $totalItems+=count($folderContent);

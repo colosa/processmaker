@@ -203,7 +203,7 @@ if($limit != 0){
     return $folderArray;
   }
 
-  function getFolderContent($folderID, $docIdFilter = array(), $keyword = NULL, $searchType = NULL, $limit=0, $start=0, $user='') {
+  function getFolderContent($folderID, $docIdFilter = array(), $keyword = NULL, $searchType = NULL, $limit=0, $start=0, $user='', $onlyActive=false) {
     require_once ("classes/model/AppDocument.php");
     require_once ("classes/model/InputDocument.php");
     require_once ("classes/model/OutputDocument.php");
@@ -252,6 +252,9 @@ if($limit != 0){
             $data[] = $row['APP_UID'];
         }
         $oCriteria->add ( AppDocumentPeer::APP_UID, $data, CRITERIA::IN );
+    }
+    if ($onlyActive){
+      $oCriteria->add(AppDocumentPeer::APP_DOC_STATUS, 'ACTIVE');
     }
 
     $oCase->verifyTable ();
