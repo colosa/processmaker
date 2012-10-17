@@ -12,26 +12,24 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
-$G_PUBLISH = new Publisher;
-$oTemplatePower = new TemplatePower(PATH_TPL . 'services/login_getStarted.html');
+$G_PUBLISH = new Publisher();
+$oTemplatePower = new TemplatePower( PATH_TPL . 'services/login_getStarted.html' );
 $oTemplatePower->prepare();
 /*
 $oTemplatePower->newBlock('users');
 $oTemplatePower->assign('USR_UID', $aUser['USR_UID']);
 $oTemplatePower->assign('USR_FULLNAME', $aData['USR_FIRSTNAME'] . ' ' . $aData['USR_LASTNAME'] . ' (' . $aData['USR_USERNAME'] . ')');
 */
-$G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
+$G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
 
-G::RenderPage('publish','raw');
-          
-?>
+G::RenderPage( 'publish', 'raw' );
+
