@@ -1,10 +1,10 @@
 <?php
 /**
  * pluginsSetupSave.php
- *  
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2008 Colosa Inc.23
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -12,37 +12,36 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd., 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
  */
 
-  $pluginFile = $_GET['id'];
-	G::LoadClass('plugin');
+$pluginFile = $_GET['id'];
+G::LoadClass( 'plugin' );
 
-  $oPluginRegistry =& PMPluginRegistry::getSingleton();
+$oPluginRegistry = & PMPluginRegistry::getSingleton();
 
-  $details = $oPluginRegistry->getPluginDetails( $pluginFile );
-  try {
-  	$Fields = $oPluginRegistry->updateFieldsForPageSetup( $details->sNamespace, $_POST );
-  	$str = "$Fields fields saved successfully!";
-  	G::SendTemporalMessage($str, 'info', 'string', 3, 100);
-    G::Header("location: pluginsSetup?id=$pluginFile");
-  } catch ( Exception $e ){
-    $G_MAIN_MENU            = 'processmaker';
-    $G_ID_MENU_SELECTED     = 'SETUP';
-    $G_SUB_MENU             = 'setup';
+$details = $oPluginRegistry->getPluginDetails( $pluginFile );
+try {
+    $Fields = $oPluginRegistry->updateFieldsForPageSetup( $details->sNamespace, $_POST );
+    $str = "$Fields fields saved successfully!";
+    G::SendTemporalMessage( $str, 'info', 'string', 3, 100 );
+    G::Header( "location: pluginsSetup?id=$pluginFile" );
+} catch (Exception $e) {
+    $G_MAIN_MENU = 'processmaker';
+    $G_ID_MENU_SELECTED = 'SETUP';
+    $G_SUB_MENU = 'setup';
     $G_ID_SUB_MENU_SELECTED = 'PLUGINS';
-   
-    $G_PUBLISH = new Publisher;
-  	$aMessage['MESSAGE'] = $e->getMessage();
-    $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showMessage', '', $aMessage );
-    G::RenderPage('publish');
-  }
+
+    $G_PUBLISH = new Publisher();
+    $aMessage['MESSAGE'] = $e->getMessage();
+    $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', $aMessage );
+    G::RenderPage( 'publish' );
+}
 

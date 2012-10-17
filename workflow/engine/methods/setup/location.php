@@ -1,10 +1,10 @@
 <?php
 /**
  * location.php
- *  
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2008 Colosa Inc.23
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -12,39 +12,39 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd., 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
  */
-if (($RBAC_Response=$RBAC->userCanAccess("PM_SETUP"))!=1) return $RBAC_Response;
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_SETUP" )) != 1)
+    return $RBAC_Response;
 
-	$G_ENABLE_BLANK_SKIN = true;
+$G_ENABLE_BLANK_SKIN = true;
 
-	$uid = $_SESSION['USER_LOGGED'];
+$uid = $_SESSION['USER_LOGGED'];
 
-	$dbc = new DBConnection;
-	$ses = new DBSession($dbc);
+$dbc = new DBConnection();
+$ses = new DBSession( $dbc );
 
-	G::LoadClass ( 'templateTable' );
+G::LoadClass( 'templateTable' );
 
-	$query=$ses->execute('select USR_COUNTRY ,USR_CITY ,USR_LOCATION from USER where UID = "'.$uid.'"');
-	$param=$query->read();
+$query = $ses->execute( 'select USR_COUNTRY ,USR_CITY ,USR_LOCATION from USER where UID = "' . $uid . '"' );
+$param = $query->read();
 
-	$city=$param['USR_CITY'];
-	$query=$ses->execute('SELECT UID,CAPTION FROM TERRITORY WHERE TERRITORY="LOCATION" AND RELATION="'.$city.'"');
-/*	
+$city = $param['USR_CITY'];
+$query = $ses->execute( 'SELECT UID,CAPTION FROM TERRITORY WHERE TERRITORY="LOCATION" AND RELATION="' . $city . '"' );
+/*
 $table=new templateTable('list_template.html','DIV_LOCATIONS');
 	$table->formatTitleCol(0,'width="80%"');
 	$table->formatTitleCol(1,'align="center"');
 	$table->formatCol(0,'width="80%" ');
 	$table->formatCol(1,'align="center"');
-	
+
 $table->addTitle(array(G::LoadTranslation('ID_LOCATION'),''));
 for($r=0;$r<$query->count();$r++)
 {
@@ -61,9 +61,10 @@ $table->addRowTag($r,'lastRow','','');
 			));
 */
 
-$G_PUBLISH = new Publisher;
+$G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/location', '', $param );
 //$G_PUBLISH->AddContent('template', '', '', '', $table->tpl);
+
 
 G::RenderPage( 'publish' );
 
@@ -160,3 +161,4 @@ function ajax_function(ajax_server, funcion, parameters)
     return objetus.responseText;
 }
 </script>
+
