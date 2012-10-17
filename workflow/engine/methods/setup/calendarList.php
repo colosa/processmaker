@@ -12,21 +12,20 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
-if($RBAC->userCanAccess('PM_SETUP') != 1 && $RBAC->userCanAccess('PM_SETUP_ADVANCE') != 1){	
-  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  //G::header('location: ../login/login');
-  die;
+if ($RBAC->userCanAccess( 'PM_SETUP' ) != 1 && $RBAC->userCanAccess( 'PM_SETUP_ADVANCE' ) != 1) {
+    G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+    //G::header('location: ../login/login');
+    die();
 }
 
 $G_MAIN_MENU = 'processmaker';
@@ -34,18 +33,17 @@ $G_SUB_MENU = 'setup';
 $G_ID_MENU_SELECTED = 'SETUP';
 $G_ID_SUB_MENU_SELECTED = 'CALENDAR';
 
-$G_PUBLISH = new Publisher;
+$G_PUBLISH = new Publisher();
 
-G::LoadClass('configuration');
+G::LoadClass( 'configuration' );
 $c = new Configurations();
-$configPage = $c->getConfiguration('calendarList', 'pageSize','',$_SESSION['USER_LOGGED']);
-$Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;
+$configPage = $c->getConfiguration( 'calendarList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
+$Config['pageSize'] = isset( $configPage['pageSize'] ) ? $configPage['pageSize'] : 20;
 
-$oHeadPublisher =& headPublisher::getSingleton();
-$oHeadPublisher->addExtJsScript('setup/calendarList', false);    //adding a javascript file .js
-$oHeadPublisher->addContent('setup/calendarList'); //adding a html file  .html.
-$oHeadPublisher->assign('CONFIG', $Config);
+$oHeadPublisher = & headPublisher::getSingleton();
+$oHeadPublisher->addExtJsScript( 'setup/calendarList', false ); //adding a javascript file .js
+$oHeadPublisher->addContent( 'setup/calendarList' ); //adding a html file  .html.
+$oHeadPublisher->assign( 'CONFIG', $Config );
 
-G::RenderPage('publish', 'extJs');
+G::RenderPage( 'publish', 'extJs' );
 
-?>

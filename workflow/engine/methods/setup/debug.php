@@ -1,10 +1,10 @@
 <?php
 /**
  * debug.php
- *  
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2008 Colosa Inc.23
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -12,29 +12,28 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd., 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
  */
-if (($RBAC_Response=$RBAC->userCanAccess("PM_SETUP"))!=1) return $RBAC_Response;
-	$G_ENABLE_BLANK_SKIN = true;
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_SETUP" )) != 1)
+    return $RBAC_Response;
+$G_ENABLE_BLANK_SKIN = true;
 
-	$dbc = new DBConnection;
-	$G_PUBLISH = new Publisher;
+$dbc = new DBConnection();
+$G_PUBLISH = new Publisher();
 
-	G::LoadClass ( 'lexico' );
-	$lex = new Lexico( $dbc );
-	$Fields['SESSION_PC'] 		 = $lex->getFluidValue ( 'SESSION_PC', 'Y' );
-	$Fields['SESSION_BROWSER'] = $lex->getFluidValue ( 'SESSION_BROWSER', 'Y' );
+G::LoadClass( 'lexico' );
+$lex = new Lexico( $dbc );
+$Fields['SESSION_PC'] = $lex->getFluidValue( 'SESSION_PC', 'Y' );
+$Fields['SESSION_BROWSER'] = $lex->getFluidValue( 'SESSION_BROWSER', 'Y' );
 
-	$G_PUBLISH->AddContent( "xmlform", "xmlform", "setup/session","", $Fields , "session2" );
+$G_PUBLISH->AddContent( "xmlform", "xmlform", "setup/session", "", $Fields, "session2" );
 
-	G::RenderPage( 'publish-treeview' );
+G::RenderPage( 'publish-treeview' );
 
-?>

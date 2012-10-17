@@ -12,70 +12,73 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
 global $RBAC;
-if($RBAC->userCanAccess('PM_SETUP') != 1 && $RBAC->userCanAccess('PM_FACTORY') != 1){	
-  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  //G::header('location: ../login/login');
-  die;
+if ($RBAC->userCanAccess( 'PM_SETUP' ) != 1 && $RBAC->userCanAccess( 'PM_FACTORY' ) != 1) {
+    G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+    //G::header('location: ../login/login');
+    die();
 }
 
-$G_MAIN_MENU            = 'processmaker';
-$G_SUB_MENU             = 'setup';
-$G_ID_MENU_SELECTED     = 'SETUP';
+$G_MAIN_MENU = 'processmaker';
+$G_SUB_MENU = 'setup';
+$G_ID_MENU_SELECTED = 'SETUP';
 $G_ID_SUB_MENU_SELECTED = 'EMAILS';
 
 require_once 'classes/model/Configuration.php';
 $oConfiguration = new Configuration();
-$sDelimiter     = DBAdapter::getStringDelimiter();
-$oCriteria      = new Criteria('workflow');
-$oCriteria->add(ConfigurationPeer::CFG_UID, 'Emails');
-$oCriteria->add(ConfigurationPeer::OBJ_UID, '');
-$oCriteria->add(ConfigurationPeer::PRO_UID, '');
-$oCriteria->add(ConfigurationPeer::USR_UID, '');
-$oCriteria->add(ConfigurationPeer::APP_UID, '');
+$sDelimiter = DBAdapter::getStringDelimiter();
+$oCriteria = new Criteria( 'workflow' );
+$oCriteria->add( ConfigurationPeer::CFG_UID, 'Emails' );
+$oCriteria->add( ConfigurationPeer::OBJ_UID, '' );
+$oCriteria->add( ConfigurationPeer::PRO_UID, '' );
+$oCriteria->add( ConfigurationPeer::USR_UID, '' );
+$oCriteria->add( ConfigurationPeer::APP_UID, '' );
 
-if (ConfigurationPeer::doCount($oCriteria) == 0) {
-  $oConfiguration->create(array('CFG_UID' => 'Emails', 'OBJ_UID' => '', 'CFG_VALUE' => '', 'PRO_UID' => '', 'USR_UID' => '', 'APP_UID' => '', 'MESS_RAUTH' => ''));
-  $aFields = array();
+if (ConfigurationPeer::doCount( $oCriteria ) == 0) {
+    $oConfiguration->create( array ('CFG_UID' => 'Emails','OBJ_UID' => '','CFG_VALUE' => '','PRO_UID' => '','USR_UID' => '','APP_UID' => '','MESS_RAUTH' => ''
+    ) );
+    $aFields = array ();
+} else {
+    $aFields = $oConfiguration->load( 'Emails', '', '', '', '' );
+    if (trim( $aFields['CFG_VALUE'] ) != '') {
+        $aFields = unserialize( $aFields['CFG_VALUE'] );
+    } else {
+        $aFields = array ();
+    }
 }
-else {
-  $aFields = $oConfiguration->load('Emails', '', '', '', '');
-  if (trim($aFields['CFG_VALUE']) != '') {
-    $aFields = unserialize($aFields['CFG_VALUE']);
-  }
-  else {
-    $aFields = array();
-  }
-}
 
-$aFields['SMTPSecure'] = (isset($aFields['SMTPSecure']) && $aFields['SMTPSecure'] != '')? $aFields['SMTPSecure'] : 'none';
+$aFields['SMTPSecure'] = (isset( $aFields['SMTPSecure'] ) && $aFields['SMTPSecure'] != '') ? $aFields['SMTPSecure'] : 'none';
 
-$rows[] = array ( 'uid' => 'char', 'name' => 'char', 'age' => 'integer', 'balance' => 'float' );
-$rows[] = array ( 'uid' => 'PHPMAILER', 'name' => 'SMTP (PHPMailer)' );
+$rows[] = array ('uid' => 'char','name' => 'char','age' => 'integer','balance' => 'float'
+);
+$rows[] = array ('uid' => 'PHPMAILER','name' => 'SMTP (PHPMailer)'
+);
 // ending OpenMail support
 // $rows[] = array ( 'uid' => 'OPENMAIL', 'name' => 'SMTP (OpenMail)' );
-$rows[] = array ( 'uid' => 'MAIL', 'name' => 'Mail (PHP)'  );
+$rows[] = array ('uid' => 'MAIL','name' => 'Mail (PHP)'
+);
 
 $_DBArray['mails'] = $rows;
 $_SESSION['_DBArray'] = $_DBArray;
 
-$trn = G::getTranslations(Array('ID_SUCESS', 'ID_FAIL', ''));
+$trn = G::getTranslations( Array ('ID_SUCESS','ID_FAIL',''
+) );
 
-$G_PUBLISH = new Publisher;
+$G_PUBLISH = new Publisher();
 $oHeadPublisher = headPublisher::getSingleton();
-$oHeadPublisher->addScriptCode('var TRANSLATIONS='.G::json_encode($trn).';');
-$oHeadPublisher->addScriptFile('/jscore/setup/emails.js');
+$oHeadPublisher->addScriptCode( 'var TRANSLATIONS=' . G::json_encode( $trn ) . ';' );
+$oHeadPublisher->addScriptFile( '/jscore/setup/emails.js' );
 
-$G_PUBLISH->AddContent('xmlform', 'xmlform', 'setup/emails', '', $aFields, 'emails_Save');
-G::RenderPage('publishBlank', 'blank');
+$G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/emails', '', $aFields, 'emails_Save' );
+G::RenderPage( 'publishBlank', 'blank' );
+

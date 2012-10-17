@@ -12,18 +12,19 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
-$oHeadPublisher =& headPublisher::getSingleton();
-$oHeadPublisher->addExtJsScript('setup/clearCompiled', true );    //adding a javascript file .js
+$oHeadPublisher = & headPublisher::getSingleton();
+$oHeadPublisher->addExtJsScript( 'setup/clearCompiled', true ); //adding a javascript file .js
 
-G::RenderPage('publish', 'extJs');
+
+G::RenderPage( 'publish', 'extJs' );
+
