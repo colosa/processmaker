@@ -487,6 +487,23 @@
             }*/
           
           },
+        rowdblclick: function(grid, rowIndex, e) {
+            var rowSelected = store.getAt(rowIndex);
+            generateDocumentGridDownloadGlobal.APP_DOC_UID = rowSelected.data.APP_DOC_UID;
+            generateDocumentGridDownloadGlobal.FILEDOC = rowSelected.data.FILEDOC;
+            generateDocumentGridDownloadGlobal.FILEPDF = rowSelected.data.FILEPDF;
+            if (rowSelected.data.FILEPDFLABEL != '') {
+                generateDocumentGridDownloadGlobal.DOWNLOAD = 'FILEPDF';
+            } else {
+                generateDocumentGridDownloadGlobal.DOWNLOAD = 'FILEDOC';
+            }
+            var APP_DOC_UID = generateDocumentGridDownloadGlobal.APP_DOC_UID;
+            var FILEDOC = generateDocumentGridDownloadGlobal.FILEDOC;
+            var FILEPDF = generateDocumentGridDownloadGlobal.FILEPDF;
+            var DOWNLOAD = generateDocumentGridDownloadGlobal.DOWNLOAD;
+
+            generateDocumentGridDownload();
+        },
           render: function(){
             this.loadMask = new Ext.LoadMask(this.body, {msg:'Loading...'});
             

@@ -461,14 +461,24 @@
           items:[]
         }),
         listeners: {
-          rowdblclick: emptyReturn,
-          render: function(){
-            this.loadMask = new Ext.LoadMask(this.body, {msg:'Loading...'});
-            processesGrid.getSelectionModel().on('rowselect', function(){        
-              var rowSelected = processesGrid.getSelectionModel().getSelected();
-              
-            });
-          }
+            rowdblclick: function(grid, rowIndex, e) {
+                var rowSelected = store.getAt(rowIndex);
+                uploadDocumentGridDownloadGlobal.APP_DOC_UID   = rowSelected.data.APP_DOC_UID;
+                uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK   = rowSelected.data.DOWNLOAD_LINK;
+                uploadDocumentGridDownloadGlobal.TITLE   = rowSelected.data.TITLE;
+
+                var APP_DOC_UID = uploadDocumentGridDownloadGlobal.APP_DOC_UID;
+                var DOWNLOAD_LINK = uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK;
+                var TITLE = uploadDocumentGridDownloadGlobal.TITLE;
+
+                uploadDocumentGridDownload();
+            },
+            render: function(){
+                this.loadMask = new Ext.LoadMask(this.body, {msg:'Loading...'});
+                processesGrid.getSelectionModel().on('rowselect', function() {
+                    var rowSelected = processesGrid.getSelectionModel().getSelected();
+                });
+            }
         }
       });  
     processesGrid.store.load({params: {"function":"languagesList"}});
