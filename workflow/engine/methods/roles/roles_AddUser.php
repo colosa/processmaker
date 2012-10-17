@@ -12,24 +12,25 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
-    require_once ( 'classes/class.xmlfield_InputPM.php' );
-		$G_PUBLISH = new Publisher;
-    
-    require_once 'classes/model/Users.php';
-    $oUser  = new Users();
-    $aData = Array('ROL_UID'=>$_GET['ROL_UID']);
-    $G_PUBLISH->AddContent('propeltable', 'roles/paged-table', 'roles/roles_ListUsers', $oUser->getAvailableUsersCriteria($_GET['ROL_UID']),$aData);
+require_once ('classes/class.xmlfield_InputPM.php');
+$G_PUBLISH = new Publisher();
 
-		G::RenderPage('publish', 'raw');
-die;
+require_once 'classes/model/Users.php';
+$oUser = new Users();
+$aData = Array ('ROL_UID' => $_GET['ROL_UID']
+);
+$G_PUBLISH->AddContent( 'propeltable', 'roles/paged-table', 'roles/roles_ListUsers', $oUser->getAvailableUsersCriteria( $_GET['ROL_UID'] ), $aData );
+
+G::RenderPage( 'publish', 'raw' );
+die();
+

@@ -12,26 +12,25 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
 require_once (PATH_RBAC . "model/RolesPeer.php");
-G::LoadClass('ArrayPeer');
+G::LoadClass( 'ArrayPeer' );
 
-isset($_POST['textFilter']) ? $filter = $_POST['textFilter'] : $filter = '';
+isset( $_POST['textFilter'] ) ? $filter = $_POST['textFilter'] : $filter = '';
 
-if ($filter != ""){
-  $aRoles = $RBAC->getAllRolesFilter($filter);	 
-}else{
-  $aRoles = $RBAC->getAllRoles();	
+if ($filter != "") {
+    $aRoles = $RBAC->getAllRolesFilter( $filter );
+} else {
+    $aRoles = $RBAC->getAllRoles();
 }
 
 //$ocaux = $oAdditionalTables->getDataCriteria($_GET['sUID']);
@@ -43,4 +42,5 @@ if ($filter != ""){
 //while($rs->next()){
 //	$rows[] = $rs->getRow();
 //}
-echo '{roles: '.G::json_encode($aRoles).'}';
+echo '{roles: ' . G::json_encode( $aRoles ) . '}';
+

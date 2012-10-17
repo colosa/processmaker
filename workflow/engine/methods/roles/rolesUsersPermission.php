@@ -12,57 +12,54 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
- **/
+ */
 
 global $RBAC;
-switch ($RBAC->userCanAccess('PM_USERS')) {
-        case - 2:
-            G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-            G::header('location: ../login/login');
-            die;
-            break;
-        case - 1:
-            G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-            G::header('location: ../login/login');
-            die;
-            break;
-            case -3:
-              G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-              G::header('location: ../login/login');
-              die;
-            break;
+switch ($RBAC->userCanAccess( 'PM_USERS' )) {
+    case - 2:
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        die();
+        break;
+    case - 1:
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        die();
+        break;
+    case - 3:
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        die();
+        break;
 }
-	
+
 $G_MAIN_MENU = 'processmaker';
 $G_SUB_MENU = 'users';
 $G_ID_MENU_SELECTED = 'USERS';
 $G_ID_SUB_MENU_SELECTED = 'ROLES';
-	
 
-$G_PUBLISH = new Publisher;
+$G_PUBLISH = new Publisher();
 
-$oHeadPublisher =& headPublisher::getSingleton();
+$oHeadPublisher = & headPublisher::getSingleton();
 
-$oHeadPublisher->addExtJsScript('roles/rolesUsersPermission', false);    //adding a javascript file .js
-$oHeadPublisher->addContent('roles/rolesUsersPermission'); //adding a html file  .html.
+$oHeadPublisher->addExtJsScript( 'roles/rolesUsersPermission', false ); //adding a javascript file .js
+$oHeadPublisher->addContent( 'roles/rolesUsersPermission' ); //adding a html file  .html.
 
 
-$roles = Array();
+$roles = Array ();
 $roles['ROL_UID'] = $_GET['rUID'];
-$roles['ROL_CODE'] = $RBAC->getRoleCode($_GET['rUID']);
-$roles['CURRENT_TAB'] = ($_GET['tab']=='permissions') ? 1 : 0;
+$roles['ROL_CODE'] = $RBAC->getRoleCode( $_GET['rUID'] );
+$roles['CURRENT_TAB'] = ($_GET['tab'] == 'permissions') ? 1 : 0;
 
-$oHeadPublisher->assign('ROLES', $roles);
-$oHeadPublisher->assign('permissionsAdmin', $RBAC->loadPermissionAdmin());
-G::RenderPage('publish', 'extJs');
-	
-?>
+$oHeadPublisher->assign( 'ROLES', $roles );
+$oHeadPublisher->assign( 'permissionsAdmin', $RBAC->loadPermissionAdmin() );
+G::RenderPage( 'publish', 'extJs' );
+
