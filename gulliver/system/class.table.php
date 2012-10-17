@@ -29,6 +29,7 @@
 /**
  *
  *
+ *
  * Table class definition
  * Render table
  *
@@ -397,7 +398,8 @@ class Table
      */
     function AddColumn ($strLabel = "", $strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "")
     {
-        $tmpCol = array ("Name" => $strName,"Type" => $strType,"Width" => $intWidth,"Align" => $strAlign,"Target" => $strTarget,"Content" => $strContent);
+        $tmpCol = array ("Name" => $strName,"Type" => $strType,"Width" => $intWidth,"Align" => $strAlign,"Target" => $strTarget,"Content" => $strContent
+        );
         $pos = 0;
         if (is_array( $this->Columns )) {
             $pos = count( $this->Columns );
@@ -424,7 +426,8 @@ class Table
      */
     function AddRawColumn ($strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "", $strExtra = "", $strCondition = "", $orderByThis = true)
     {
-        $tmpCol = array ("Name" => $strName,"Type" => $strType,"Width" => $intWidth,"Align" => $strAlign,"Target" => $strTarget,"Content" => $strContent,"Extra" => $strExtra,"Condition" => $strCondition,"orderByThis" => $orderByThis);
+        $tmpCol = array ("Name" => $strName,"Type" => $strType,"Width" => $intWidth,"Align" => $strAlign,"Target" => $strTarget,"Content" => $strContent,"Extra" => $strExtra,"Condition" => $strCondition,"orderByThis" => $orderByThis
+        );
         $pos = 0;
         if (is_array( $this->Columns )) {
             $pos = count( $this->Columns );
@@ -789,7 +792,7 @@ class Table
 
             case "image":
 
-                if (is_array( $col["Condition"] ))                //By JHL to enable Condition to display a image -- New parameter Condition in Addrawcolumn
+                if (is_array( $col["Condition"] ))                 //By JHL to enable Condition to display a image -- New parameter Condition in Addrawcolumn
 {
                     $field_compare = $col["Condition"]['field'];
                     $tlabel = substr( $field_compare, 0, 1 );
@@ -803,7 +806,7 @@ class Table
                 } else {
                     $val = "<img border=0 src='$fieldname'>";
                 }
-                //      break;
+            //      break;
 
 
             case "textimage":
