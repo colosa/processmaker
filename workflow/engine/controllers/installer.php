@@ -132,7 +132,7 @@ class Installer extends Controller
     $info->memory = new stdclass();
 
     $info->php->version = phpversion();
-    $info->php->result  = $phpVerNum > 5.1 ? true : false;
+    $info->php->result  = $phpVerNum >= 5.1 ? true : false;
 
     // MYSQL info and verification
     $info->mysql->result  = false;
