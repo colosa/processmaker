@@ -12,28 +12,28 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 global $RBAC;
-if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') != 1) {
-  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-	G::header('location: ../login/login');
-	die;
+if ($RBAC->userCanAccess( 'PM_SETUP_ADVANCE' ) != 1) {
+    G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+    G::header( 'location: ../login/login' );
+    die();
 }
 
-$G_MAIN_MENU            = 'processmaker';
-$G_SUB_MENU             = 'users';
-$G_ID_MENU_SELECTED     = 'USERS';
+$G_MAIN_MENU = 'processmaker';
+$G_SUB_MENU = 'users';
+$G_ID_MENU_SELECTED = 'USERS';
 $G_ID_SUB_MENU_SELECTED = 'AUTH_SOURCES';
 
 $G_PUBLISH = new Publisher();
-$G_PUBLISH->AddContent('xmlform', 'xmlform', 'authSources/authSources_SearchUsers', '', array('AUTH_SOURCE_UID' => $_GET['sUID']), '../authSources/authSources_ImportUsers');
-G::RenderPage('publish','blank');
+$G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'authSources/authSources_SearchUsers', '', array ('AUTH_SOURCE_UID' => $_GET['sUID']), '../authSources/authSources_ImportUsers' );
+G::RenderPage( 'publish', 'blank' );
+
