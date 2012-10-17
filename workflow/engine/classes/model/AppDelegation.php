@@ -256,6 +256,9 @@ class AppDelegation extends BaseAppDelegation {
       $oTask->update($aData);
     }
     else {
+      if (is_null($task)) {
+        return 0;
+      }
       $aData['TAS_DURATION'] = $task->getTasDuration();
       $aData['TAS_TIMEUNIT'] = $task->getTasTimeUnit();
       $aData['TAS_TYPE_DAY'] = $task->getTasTypeDay();
