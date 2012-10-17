@@ -12,52 +12,49 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 global $RBAC;
-$access = $RBAC->userCanAccess('PM_FACTORY');
-if( $access != 1 ){
-  switch ($access)
-  {
-  	case -1:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	case -2:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	default:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;  	
-  }
+$access = $RBAC->userCanAccess( 'PM_FACTORY' );
+if ($access != 1) {
+    switch ($access) {
+        case - 1:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+        case - 2:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+        default:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+    }
 }
-try{
-require_once 'classes/model/ObjectPermission.php';
-$oOP = new ObjectPermission();
-$oOP = ObjectPermissionPeer::retrieveByPK($_GET['OP_UID']);
-$sProcessUID = $oOP->getProUid();
-$oOP->delete();
-$result->success = true;
-$result->msg = G::LoadTranslation('ID_REPORTTABLE_REMOVED');
-G::LoadClass('processMap');
-$oProcessMap = new ProcessMap();
-$oProcessMap->getObjectsPermissionsCriteria($sProcessUID);
-}
-catch (Exception $e) {
+try {
+    require_once 'classes/model/ObjectPermission.php';
+    $oOP = new ObjectPermission();
+    $oOP = ObjectPermissionPeer::retrieveByPK( $_GET['OP_UID'] );
+    $sProcessUID = $oOP->getProUid();
+    $oOP->delete();
+    $result->success = true;
+    $result->msg = G::LoadTranslation( 'ID_REPORTTABLE_REMOVED' );
+    G::LoadClass( 'processMap' );
+    $oProcessMap = new ProcessMap();
+    $oProcessMap->getObjectsPermissionsCriteria( $sProcessUID );
+} catch (Exception $e) {
     $result->success = false;
     $result->msg = $e->getMessage();
-   }
-print G::json_encode($result);
+}
+print G::json_encode( $result );
