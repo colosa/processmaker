@@ -236,7 +236,10 @@ class SkinEngine
       if (defined('PATH_CUSTOM_SKINS') && is_dir(PATH_CUSTOM_SKINS . $this->mainSkin)) {
         $templateFile = PATH_CUSTOM_SKINS . $this->mainSkin . PATH_SEP .'extJsInitLoad.html';
       }
-      //Skin uxs - simplefied
+      //Skin uxs - simplified
+      if (!isset($_SESSION['user_experience'])) {
+        $_SESSION['user_experience'] = 'NORMAL';
+      }
       if ($_SESSION['user_experience'] != 'NORMAL') {
         $templateFile = (is_dir(PATH_CUSTOM_SKINS . 'uxs')) ? PATH_CUSTOM_SKINS . 'simplified' . PATH_SEP . 'extJsInitLoad.html' : $templateFile;
       }
