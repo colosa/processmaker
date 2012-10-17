@@ -1,7 +1,7 @@
 <?php
 /**
  * class.helper.php
- * @package gulliver.system 
+ * @package gulliver.system
  *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2011 Colosa Inc.
@@ -23,7 +23,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
- 
+
 /**
  * Class Helper
  * @author Erik Amaru Ortiz. <erik@colosa.com>
@@ -37,7 +37,7 @@ class Helper{
   public $minified;
   public $gzipModuleEnabled;
   public $contentType;
-  
+
   function __construct(){
     $this->content      = '';
     $this->gzipEnabled  = true;
@@ -45,20 +45,20 @@ class Helper{
     $this->gzipModuleEnabled = false;
     $this->contentType = 'text/html';
   }
-  
+
   function addFile($file){
     if( is_file($file) )
       $this->content .= file_get_contents($file);
   }
-  
+
   function addContent($content){
       $this->content = $content;
   }
-  
+
   function setContentType($ctype){
     $this->contentType = $ctype;
   }
-  
+
   function init(){
     header("Content-type: {$this->contentType}");
     header('Pragma: cache');
@@ -67,10 +67,10 @@ class Helper{
     if( $this->gzipEnabled && extension_loaded('zlib') ){
       $this->gzipModuleEnabled = true;
       ob_start('ob_gzhandler');
-    } else 
+    } else
       ob_start();
   }
-  
+
   function minify() {
 		if ($this->contentType != 'text/css') {
 			G::LoadThirdParty('jsmin', 'jsmin');
@@ -84,14 +84,14 @@ class Helper{
     print($this->content);
     ob_end_flush();
   }
-  
+
   function serve($type=null){
     if( isset($type) )
       $this->setContentType($ctype);
     $this->init();
     $this->flush();
   }
-} 
+}
 /*
 function minify($buffer) {
   return G::removeComments($buffer);
