@@ -12,36 +12,35 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
- 
-if(isset($_POST['function'])) {
- 
-  switch($_POST['function']) {
-  
-      case 'checkCategoryName':
-          
-         $CategoryName = $_POST['CategoryName'];
-         require_once ( "classes/model/ProcessCategory.php" );
-         $processCategory = new ProcessCategory();
-         $aProcessCategory = $processCategory->loadByCategoryName($CategoryName);
-         if( is_array($aProcessCategory)) { 
-            return print '1';
-         } else {
-            return print '0';
-         }
-         break;
-             
-      default: echo 'default';
-  }
+if (isset( $_POST['function'] )) {
+
+    switch ($_POST['function']) {
+
+        case 'checkCategoryName':
+
+            $CategoryName = $_POST['CategoryName'];
+            require_once ("classes/model/ProcessCategory.php");
+            $processCategory = new ProcessCategory();
+            $aProcessCategory = $processCategory->loadByCategoryName( $CategoryName );
+            if (is_array( $aProcessCategory )) {
+                return print '1';
+            } else {
+                return print '0';
+            }
+            break;
+
+        default:
+            echo 'default';
+    }
 
 }
