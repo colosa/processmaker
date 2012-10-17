@@ -61,7 +61,7 @@ $result->catchMessage = "";
 
 if ($action == "uploadFileNewProcess") {
     try {
-        //type of file, bpmn, xpdl, or pm
+        //type of file: only pm
         $processFileType = $_REQUEST["processFileType"];
         $oProcess = new stdClass();
         $oData = new stdClass();
@@ -71,24 +71,18 @@ if ($action == "uploadFileNewProcess") {
         if (isset( $_FILES['form']['type']['PROCESS_FILENAME'] )) {
             $allowedExtensions = array ($processFileType
             );
-            $allowedExtensions = array ('xpdl','bpmn','pm'
-            );
+            $allowedExtensions = array ('pm');
             if (! in_array( end( explode( ".", $_FILES['form']['name']['PROCESS_FILENAME'] ) ), $allowedExtensions )) {
                 throw new Exception( G::LoadTranslation( "ID_FILE_UPLOAD_INCORRECT_EXTENSION" ) );
             }
         }
-        if ($processFileType != "pm" && $processFileType != "xpdl" && $processFileType != "bpmn") {
+        if ($processFileType != "pm") {
             throw new Exception( G::LoadTranslation( "ID_ERROR_UPLOAD_FILE_CONTACT_ADMINISTRATOR" ) );
         }
 
         if ($processFileType == "pm") {
             G::LoadClass( 'processes' );
             $oProcess = new Processes();
-        }
-
-        if ($processFileType == "xpdl") {
-            G::LoadClass( 'xpdl' );
-            $oProcess = new Xpdl();
         }
 
         $result->success = true;
@@ -122,11 +116,9 @@ if ($action == "uploadFileNewProcess") {
             die();
         }
 
-        //if file is a .pm or .xpdl file continues normally the importing
+        //if file is a .pm  file continues normally the importing
         if ($processFileType == "pm") {
             $oData = $oProcess->getProcessData( $path . $filename );
-        } else {
-            $oData = $oProcess->getProcessDataXpdl( $path . $filename );
         }
 
         reservedWordsSqlValidate( $oData );
@@ -169,11 +161,6 @@ if ($action == "uploadFileNewProcess") {
         if ($result->ExistProcessInDatabase == 0 && $result->ExistGroupsInDatabase == 0) {
             if ($processFileType == "pm") {
                 $oProcess->createProcessFromData( $oData, $path . $filename );
-            } else {
-                if (! isset( $oData->tasks ))
-                    $oData->tasks = array ();
-                $tasks = $oData->tasks;
-                $oProcess->createProcessFromDataXpdl( $oData, $tasks );
             }
         }
 
@@ -202,7 +189,7 @@ if ($action == "uploadFileNewProcessExist") {
         $sNewProUid = "";
 
         $oProcess = new stdClass();
-        if ($processFileType != "pm" && $processFileType != "xpdl") {
+        if ($processFileType != "pm") {
             throw new Exception( G::LoadTranslation( "ID_ERROR_UPLOAD_FILE_CONTACT_ADMINISTRATOR" ) );
         }
 
@@ -210,17 +197,12 @@ if ($action == "uploadFileNewProcessExist") {
         if ($processFileType == "pm") {
             G::LoadClass( 'processes' );
             $oProcess = new Processes();
-        } else {
-            G::LoadClass( 'xpdl' );
-            $oProcess = new Xpdl();
         }
 
         $path = PATH_DOCUMENT . 'input' . PATH_SEP;
 
         if ($processFileType == "pm") {
             $oData = $oProcess->getProcessData( $path . $filename );
-        } else {
-            $oData = $oProcess->getProcessDataXpdl( $path . $filename );
         }
 
         reservedWordsSqlValidate( $oData );
@@ -274,12 +256,6 @@ if ($action == "uploadFileNewProcessExist") {
 
                 if ($processFileType == "pm") {
                     $oProcess->createProcessFromData( $oData, $path . $filename );
-                } else {
-                    if (! isset( $oData->tasks )) {
-                        $oData->tasks = array ();
-                    }
-                    $tasks = $oData->tasks;
-                    $oProcess->createProcessFromDataXpdl( $oData, $tasks );
                 }
             }
 
@@ -293,12 +269,6 @@ if ($action == "uploadFileNewProcessExist") {
 
                 if ($processFileType == "pm") {
                     $oProcess->createProcessFromData( $oData, $path . $filename );
-                } else {
-                    if (! isset( $oData->tasks )) {
-                        $oData->tasks = array ();
-                    }
-                    $tasks = $oData->tasks;
-                    $oProcess->createProcessFromDataXpdl( $oData, $tasks );
                 }
             }
         }
