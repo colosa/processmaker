@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="name-of-project" default="build-simple">
+<project name="name-of-project" default="build-phpcs">
     <target name="build"
         depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
     <target name="build-simple"
-        depends="prepare,phpunit,phpcs-ci,phploc"/>
+        depends="prepare,phpunit,phpcs-ci,phploc,lint"/>
+
+    <target name="build-phpcs"
+        depends="prepare,phpcs-ci,phploc,phpunit"/>
 
     <target name="build-parallel"
         depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
@@ -98,6 +101,18 @@
  </target>
 
  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+  <exec executable="phpcs" output="/dev/null">
+   <arg value="--report=checkstyle" />
+   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+   <arg value="--standard=PSR2" />
+   <arg path="${basedir}/gulliver/system" />
+   <arg path="${basedir}/workflow/engine/methods" />
+   <arg path="${basedir}/workflow/engine/classes" />
+   <arg path="${basedir}/workflow/engine/controllers" />
+  </exec>
+ </target>
+
+ <target name="phpcs-ci-old" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
   <exec executable="phpcs" output="/dev/null">
    <arg value="--report=checkstyle" />
    <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
