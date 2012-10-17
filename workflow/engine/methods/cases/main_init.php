@@ -76,6 +76,16 @@ if (isset($_GET["id"]) && isset($_GET["id"])) {
     }
 }
 
+  $oServerConf =& serverConf::getSingleton();
+  if ($oServerConf->isRtl(SYS_LANG)) {
+    $regionTreePanel = 'east';
+    $regionDebug = 'west';
+  } else {
+    $regionTreePanel = 'west';
+    $regionDebug = 'east';
+  }
+$oHeadPublisher->assign('regionTreePanel', $regionTreePanel);
+$oHeadPublisher->assign('regionDebug', $regionDebug);
 $oHeadPublisher->assign("defaultOption", $defaultOption); //User menu permissions
 $oHeadPublisher->assign("_nodeId", isset($confDefaultOption)? $confDefaultOption : "PM_USERS"); //User menu permissions
 $oHeadPublisher->assign("FORMATS", $conf->getFormats());

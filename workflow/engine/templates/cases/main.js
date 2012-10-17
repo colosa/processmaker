@@ -296,7 +296,7 @@ Ext.onReady(function(){
   mainMenu = new Ext.Panel({
     id:'menuTreePanel',
     title: '',
-    region: 'west',
+    region: regionTreePanel,
     layout: 'border',
     width: 200,
     height: 500,
@@ -412,7 +412,7 @@ Ext.onReady(function(){
   debugPanel = new Ext.Panel({
     id:'debugPanel',
     title: _('ID_DEBUG_PANEL_TITLE'),
-    region: 'east',
+    region: regionDebug,
     layout: 'border',
     width: 300,
     height: 500,
