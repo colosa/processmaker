@@ -22,7 +22,10 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-	td {font-family: Tahoma, Verdana, sans-serif; font-size: 12px;}
+td {
+	font-family: Tahoma, Verdana, sans-serif;
+	font-size: 12px;
+}
 </style>
 <script language="JavaScript">
 
@@ -101,44 +104,55 @@ function set_datetime(n_datetime, b_close) {
 
 </script>
 
-<php
-	$ARR_MONTHS = array ( "January", "February", "March", "April", "May", "June",
+<php $ARR_MONTHS=array
+	( "January", "February", "March", "April", "May", "June",
 		"July", "August", "September", "October", "November", "December");
-	$ARR_WEEKDAYS = array ( "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" );
-	$NUM_WEEKSTART = 1;  //day week starts from (normally 0-Su or 1-Mo)
+	$ARR_WEEKDAYS=array
+	( "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" );
+	$NUM_WEEKSTART=1; //day
+	week starts from (normally 0-Suor 1-Mo)
 
 ?>
 <table class="clsOTable" cellspacing="0" border="0" width="100%">
-<tr><td bgcolor="#4682B4">
-<table cellspacing="1" cellpadding="3" border="0" width="100%">
-<tr><td colspan="7"><table cellspacing="0" cellpadding="0" border="0" width="100%">
-<tr>
-	<td> +(obj_caller&&obj_caller.year_scroll?'<a href="javascript:set_datetime('+dt_prev_year.valueOf()+')">
-		<img src="'+STR_ICONPATH+'prev_year.gif" width="16" height="16" border="0" alt="previous year"></a>&nbsp;':'')+'
-		<a href="javascript:set_datetime('+dt_prev_month.valueOf()+')">
-			<img src="'+STR_ICONPATH+'prev.gif" width="16" height="16" border="0" alt="previous month"></a>
-	</td>
+	<tr>
+		<td bgcolor="#4682B4">
+			<table cellspacing="1" cellpadding="3" border="0" width="100%">
+				<tr>
+					<td colspan="7"><table cellspacing="0" cellpadding="0" border="0"
+							width="100%">
+							<tr>
+								<td>+(obj_caller&&obj_caller.year_scroll?'<a
+									href="javascript:set_datetime('+dt_prev_year.valueOf()+')"> <img
+										src="'+STR_ICONPATH+'prev_year.gif" width="16" height="16"
+										border="0" alt="previous year"></a>&nbsp;':'')+' <a
+									href="javascript:set_datetime('+dt_prev_month.valueOf()+')"> <img
+										src="'+STR_ICONPATH+'prev.gif" width="16" height="16"
+										border="0" alt="previous month"></a>
+								</td>
 
-	<td align="center" width="100%">
-		<font color="#ffffff"> +ARR_MONTHS[dt_current.getMonth()]+' '+dt_current.getFullYear() </font></td>
-		<td><a href="javascript:set_datetime('+dt_next_month.valueOf()+')">
-			<img src="'+STR_ICONPATH+'next.gif" width="16" height="16" border="0" alt="next month"></a>
-			'+(obj_caller && obj_caller.year_scroll?'&nbsp;
-			<a href="javascript:set_datetime('+dt_next_year.valueOf()+')">
-				<img src="'+STR_ICONPATH+'next_year.gif" width="16" height="16" border="0" alt="next year">
-			</a>':'')+'
-	</td>'
-);
+								<td align="center" width="100%"><font color="#ffffff">
+										+ARR_MONTHS[dt_current.getMonth()]+'
+										'+dt_current.getFullYear() </font></td>
+								<td><a
+									href="javascript:set_datetime('+dt_next_month.valueOf()+')"> <img
+										src="'+STR_ICONPATH+'next.gif" width="16" height="16"
+										border="0" alt="next month"></a> '+(obj_caller &&
+									obj_caller.year_scroll?'&nbsp; <a
+									href="javascript:set_datetime('+dt_next_year.valueOf()+')"> <img
+										src="'+STR_ICONPATH+'next_year.gif" width="16" height="16"
+										border="0" alt="next year">
+								</a>':'')+'</td>' );
 
-</tr>
-</table></td></tr>
-<tr>
-<script language="JavaScript">
+							</tr>
+						</table></td>
+				</tr>
+				<tr>
+					<script language="JavaScript">
 <?php
-	// print weekdays titles
-	for ($n=0; $n<7; $n++)
-  	print "<td bgcolor='#87cefa' align='center'><font color='#ffffff'>" . $ARR_WEEKDAYS[ (NUM_WEEKSTART+n)%7] . "</font></td>";
-	print "</tr>";
+// print weekdays titles
+for ($n = 0; $n < 7; $n ++)
+    print "<td bgcolor='#87cefa' align='center'><font color='#ffffff'>" . $ARR_WEEKDAYS[(NUM_WEEKSTART + n) % 7] . "</font></td>";
+print "</tr>";
 
 ?>
 // print calendar table
@@ -175,11 +189,15 @@ while (dt_current_day.getMonth() == dt_current.getMonth() ||
 	// print row footer
 	document.write('</tr>');
 }
-if (obj_caller && obj_caller.time_comp)
+if (obj_caller && obj_caller.time_comp) {
 	document.write('<form onsubmit="javascript:set_datetime('+dt_current.valueOf()+', true)" name="cal"><tr><td colspan="7" bgcolor="#87CEFA"><font color="White" face="tahoma, verdana" size="2">Time: <input type="text" name="time" value="'+obj_caller.gen_time(this.dt_current)+'" size="8" maxlength="8"></font></td></tr></form>');
+}
 </script>
-</table></tr></td>
+
+			</table>
+
+	</tr>
+	</td>
 </table>
 </body>
 </html>
-

@@ -57,9 +57,6 @@ function cal_popup1 (str_datetime) {
 	);
 	obj_calwindow.opener = window;
 	obj_calwindow.focus();
-	
-	
-
 }
 
 // timestamp generating function
@@ -160,3 +157,4 @@ function cal_error (str_message) {
 	alert (str_message);
 	return null;
 }
+

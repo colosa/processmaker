@@ -24,16 +24,13 @@ function getLoadTreeMenuData ()
     $oMenu->load( 'cases' );
 
     $oCases = new Cases();
-    $aTypes = Array ('to_do','draft','cancelled','sent','paused','completed','selfservice'
+    $aTypes = Array ('to_do','draft','cancelled','sent','paused','completed','selfservice');
     //'to_revise',
     //'to_reassign'
-    ;
-    $aTypesID = Array ('CASES_INBOX' => 'to_do','CASES_DRAFT' => 'draft','CASES_CANCELLED' => 'cancelled','CASES_SENT' => 'sent','CASES_PAUSED' => 'paused','CASES_COMPLETED' => 'completed','CASES_SELFSERVICE' => 'selfservice'
+    $aTypesID = Array ('CASES_INBOX' => 'to_do','CASES_DRAFT' => 'draft','CASES_CANCELLED' => 'cancelled','CASES_SENT' => 'sent','CASES_PAUSED' => 'paused','CASES_COMPLETED' => 'completed','CASES_SELFSERVICE' => 'selfservice');
     //'CASES_TO_REVISE'=>'to_revise',
     //'CASES_TO_REASSIGN'=>'to_reassign'
-    ;
-
-    $list = array ();
+        $list = array ();
     $list['count'] = ' ';
 
     $empty = array ();
@@ -64,8 +61,7 @@ function getLoadTreeMenuData ()
             $menuCases[$CurrentBlockID]['blockType'] = $oMenu->Types[$i];
             $menuCases[$CurrentBlockID]['link'] = $oMenu->Options[$i];
         } else {
-            $menuCases[$CurrentBlockID]['blockItems'][$oMenu->Id[$i]] = Array ('label' => $oMenu->Labels[$i],'link' => $oMenu->Options[$i],'icon' => (isset( $oMenu->Icons[$i] ) && $oMenu->Icons[$i] != '') ? $oMenu->Icons[$i] : 'kcmdf.png'
-            );
+            $menuCases[$CurrentBlockID]['blockItems'][$oMenu->Id[$i]] = Array ('label' => $oMenu->Labels[$i],'link' => $oMenu->Options[$i],'icon' => (isset( $oMenu->Icons[$i] ) && $oMenu->Icons[$i] != '') ? $oMenu->Icons[$i] : 'kcmdf.png');
 
             if (isset( $aTypesID[$oMenu->Id[$i]] )) {
                 $menuCases[$CurrentBlockID]['blockItems'][$oMenu->Id[$i]]['cases_count'] = $aCount[$aTypesID[$oMenu->Id[$i]]]['count'];
@@ -131,8 +127,7 @@ function getProcess ()
     $aTypesID['CASES_SELFSERVICE'] = 'selfservice';
     //$aTypesID['CASES_TO_REVISE']   = 'to_revise';
     //$aTypesID['CASES_TO_REASSIGN'] = 'to_reassign';
-    $aTypesID = Array ('CASES_INBOX' => 'to_do','CASES_DRAFT' => 'draft','CASES_CANCELLED' => 'cancelled','CASES_SENT' => 'sent','CASES_PAUSED' => 'paused','CASES_COMPLETED' => 'completed','CASES_SELFSERVICE' => 'selfservice','CASES_TO_REVISE' => 'to_revise','CASES_TO_REASSIGN' => 'to_reassign'
-    );
+    $aTypesID = Array ('CASES_INBOX' => 'to_do','CASES_DRAFT' => 'draft','CASES_CANCELLED' => 'cancelled','CASES_SENT' => 'sent','CASES_PAUSED' => 'paused','CASES_COMPLETED' => 'completed','CASES_SELFSERVICE' => 'selfservice','CASES_TO_REVISE' => 'to_revise','CASES_TO_REASSIGN' => 'to_reassign');
 
     $aCount = $oCases->getAllCounters( Array ($aTypesID[$type]
     ), $userId, true );
@@ -188,8 +183,7 @@ function getAllCounters ()
         $aCount = $ApplicationSolrIndex->getCasesCount( $userUid );
 
         //get paused count
-        $aCountMissing = $oAppCache->getAllCounters( array ('paused','completed','cancelled'
-        ), $userUid );
+        $aCountMissing = $oAppCache->getAllCounters( array ('paused','completed','cancelled'), $userUid );
 
         $aCount = array_merge( $aCount, $aCountMissing );
     } else {
