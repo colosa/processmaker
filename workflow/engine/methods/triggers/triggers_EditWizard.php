@@ -12,26 +12,29 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
 // this script calls the template that constructs the wizard form for a trigger
 
-if (($RBAC_Response=$RBAC->userCanAccess("PM_FACTORY"))!=1) return $RBAC_Response;
-if (!class_exists('Triggers')){
-    require_once('classes/model/Triggers.php');
+
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
+    return $RBAC_Response;
 }
-$G_PUBLISH = new Publisher ( );
-$G_PUBLISH->AddContent ( 'view', 'triggers/triggers_EditWizard', '', '', $_GET, '' );
-G::RenderPage('publish', 'raw');
+if (! class_exists( 'Triggers' )) {
+    require_once ('classes/model/Triggers.php');
+}
+$G_PUBLISH = new Publisher();
+$G_PUBLISH->AddContent( 'view', 'triggers/triggers_EditWizard', '', '', $_GET, '' );
+G::RenderPage( 'publish', 'raw' );
+
 
 ?>
 
@@ -93,3 +96,4 @@ var insertFormVar = function(sFieldName, sValue) {
 };
 
 </script>
+
