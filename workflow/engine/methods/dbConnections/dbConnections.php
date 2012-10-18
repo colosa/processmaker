@@ -1,4 +1,5 @@
 <?php
+
 /**
  * upgrade.php
  *
@@ -12,15 +13,14 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 /*
 global $RBAC;
@@ -44,34 +44,35 @@ $G_ID_MENU_SELECTED = 'PROCESSES';
 $G_ID_SUB_MENU_SELECTED = 'DB_CONNECTIONS';
 */
 
-$G_PUBLISH = new Publisher;
+$G_PUBLISH = new Publisher();
 
-G::LoadClass('processMap');
+G::LoadClass( 'processMap' );
 $oProcess = new processMap();
 $oCriteria = $oProcess->getConditionProcessList();
-if (ProcessPeer::doCount($oCriteria) > 0) {
-    $aProcesses = array();
-    $aProcesses[] = array('PRO_UID' => 'char', 'PRO_TITLE' => 'char');
-    $oDataset = StepPeer::doSelectRS($oCriteria);
-    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+if (ProcessPeer::doCount( $oCriteria ) > 0) {
+    $aProcesses = array ();
+    $aProcesses[] = array ('PRO_UID' => 'char','PRO_TITLE' => 'char' );
+    $oDataset = StepPeer::doSelectRS( $oCriteria );
+    $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
     $oDataset->next();
     $sProcessUID = '';
     while ($aRow = $oDataset->getRow()) {
         if ($sProcessUID == '') {
             $sProcessUID = $aRow['PRO_UID'];
         }
-        $aProcesses[] = array('PRO_UID' => $aRow['PRO_UID'], 'PRO_TITLE' => $aRow['PRO_TITLE']);
+        $aProcesses[] = array ('PRO_UID' => $aRow['PRO_UID'],'PRO_TITLE' => $aRow['PRO_TITLE'] );
         $oDataset->next();
     }
     global $_DBArray;
     $_DBArray['PROCESSES'] = $aProcesses;
     $_SESSION['_DBArray'] = $_DBArray;
-    $G_PUBLISH->AddContent('xmlform', 'xmlform', 'dbConnections/dbConnections_Events');
+    $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'dbConnections/dbConnections_Events' );
     require_once 'classes/model/DbSource.php';
     $oDBSource = new DbSource();
-    $oCriteria = $oDBSource->getCriteriaDBSList($sProcessUID);
-    $G_PUBLISH->AddContent('propeltable', 'paged-table', 'dbConnections/dbConnections', $oCriteria);
+    $oCriteria = $oDBSource->getCriteriaDBSList( $sProcessUID );
+    $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'dbConnections/dbConnections', $oCriteria );
 } else {
-    $G_PUBLISH->AddContent('xmlform', 'xmlform', 'setup/noProcesses');
+    $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/noProcesses' );
 }
-G::RenderPage('publish');
+G::RenderPage( 'publish' );
+
