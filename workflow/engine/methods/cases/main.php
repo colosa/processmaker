@@ -12,25 +12,24 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
-$RBAC->requirePermissions('PM_CASES');
+$RBAC->requirePermissions( 'PM_CASES' );
 
-$G_MAIN_MENU            = 'processmaker';
-$G_ID_MENU_SELECTED     = 'CASES';
+$G_MAIN_MENU = 'processmaker';
+$G_ID_MENU_SELECTED = 'CASES';
 
-$_POST['qs'] = isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '' ? '?' . $_SERVER['QUERY_STRING'] : '';
+$_POST['qs'] = isset( $_SERVER['QUERY_STRING'] ) && $_SERVER['QUERY_STRING'] != '' ? '?' . $_SERVER['QUERY_STRING'] : '';
 
-$G_PUBLISH = new Publisher;
-$G_PUBLISH->AddContent('view', 'cases/cases_Load');
-G::RenderPage('publish');
+$G_PUBLISH = new Publisher();
+$G_PUBLISH->AddContent( 'view', 'cases/cases_Load' );
+G::RenderPage( 'publish' );
 

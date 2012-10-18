@@ -12,48 +12,46 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
 /* Permissions */
-switch ($RBAC->userCanAccess('PM_SUPERVISOR')) {
+switch ($RBAC->userCanAccess( 'PM_SUPERVISOR' )) {
     case - 2:
-        G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-        G::header('location: ../login/login');
-        die;
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        die();
         break;
     case - 1:
-        G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-        G::header('location: ../login/login');
-        die;
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        die();
         break;
 }
 
 /* Includes */
-G::LoadClass('case');
+G::LoadClass( 'case' );
 
 /* Menues */
-$G_MAIN_MENU            = 'processmaker';
-$G_SUB_MENU             = 'cases';
-$G_ID_MENU_SELECTED     = 'CASES';
+$G_MAIN_MENU = 'processmaker';
+$G_SUB_MENU = 'cases';
+$G_ID_MENU_SELECTED = 'CASES';
 $G_ID_SUB_MENU_SELECTED = 'CASES_TO_REVISE';
 
-
 /* Prepare page before to show */
-$oTemplatePower = new TemplatePower(PATH_TPL . 'cases/cases_Step.html');
+$oTemplatePower = new TemplatePower( PATH_TPL . 'cases/cases_Step.html' );
 $oTemplatePower->prepare();
-$G_PUBLISH = new Publisher;
-$oHeadPublisher =& headPublisher::getSingleton();
+$G_PUBLISH = new Publisher();
+$oHeadPublisher = & headPublisher::getSingleton();
 // check if the code for the addScriptCode is necessary since the interface is now based in ExtJs
-$oHeadPublisher->addScriptCode('
+$oHeadPublisher->addScriptCode( '
 var Cse = {};
 Cse.panels = {};
 var leimnud = new maborak();
@@ -65,16 +63,15 @@ leimnud.Package.Load("cases_Step",{Type:"file",Absolute:true,Path:"/jscore/cases
 leimnud.Package.Load("processmap",{Type:"file",Absolute:true,Path:"/jscore/processmap/core/processmap.js"});
 leimnud.exec(leimnud.fix.memoryLeak);
 leimnud.event.add(window,"load",function(){
-  '.(isset($_SESSION['showCasesWindow'])?'try{'.$_SESSION['showCasesWindow'].'}catch(e){}':'').'});
-');
-$G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
+  ' . (isset( $_SESSION['showCasesWindow'] ) ? 'try{' . $_SESSION['showCasesWindow'] . '}catch(e){}' : '') . '});
+' );
+$G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
 $oCase = new Cases();
-$G_PUBLISH->AddContent('propeltable', 'paged-table', 'cases/cases_OutputdocsListToRevise',
-    $oCase->getOutputDocumentsCriteriaToRevise($_SESSION['APPLICATION']), '');
-G::RenderPage('publish', 'blank');
+$G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'cases/cases_OutputdocsListToRevise', $oCase->getOutputDocumentsCriteriaToRevise( $_SESSION['APPLICATION'] ), '' );
+G::RenderPage( 'publish', 'blank' );
 
-if (!isset($_GET['ex'])) {
-    $_GET['ex']=0;
+if (! isset( $_GET['ex'] )) {
+    $_GET['ex'] = 0;
 }
 ?>
 
@@ -98,3 +95,4 @@ function setSelect()
     }
 }
 </script>
+

@@ -12,82 +12,77 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
- /**
-  * @author Erik Amaru Ortiz <erik@colosa.com>
-  * @date Jan 3th, 2010
-  */
+/**
+ *
+ * @author Erik Amaru Ortiz <erik@colosa.com>
+ * @date Jan 3th, 2010
+ */
 
-  if (!isset($_GET['APP_UID']) || !isset($_GET['DEL_INDEX'])) {
-  	if (isset($_GET['APP_NUMBER'])) {
-  	  G::LoadClass('case');
-      $oCase = new Cases();
-      $_GET['APP_UID']   = $oCase->getApplicationUIDByNumber($_GET['APP_NUMBER']);
-      $_GET['DEL_INDEX'] = $oCase->getCurrentDelegation($_GET['APP_UID'], $_SESSION['USER_LOGGED']); 
-      if( is_null($_GET['APP_UID']) ) {
-       throw new Exception(G::LoadTranslation('ID_CASE_DOES_NOT_EXISTS'));
-      } 
-      if( is_null($_GET['DEL_INDEX']) ) {
-        throw new Exception(G::LoadTranslation('ID_CASE_IS_CURRENTLY_WITH_ANOTHER_USER'));
-      }      
+if (! isset( $_GET['APP_UID'] ) || ! isset( $_GET['DEL_INDEX'] )) {
+    if (isset( $_GET['APP_NUMBER'] )) {
+        G::LoadClass( 'case' );
+        $oCase = new Cases();
+        $_GET['APP_UID'] = $oCase->getApplicationUIDByNumber( $_GET['APP_NUMBER'] );
+        $_GET['DEL_INDEX'] = $oCase->getCurrentDelegation( $_GET['APP_UID'], $_SESSION['USER_LOGGED'] );
+        if (is_null( $_GET['APP_UID'] )) {
+            throw new Exception( G::LoadTranslation( 'ID_CASE_DOES_NOT_EXISTS' ) );
+        }
+        if (is_null( $_GET['DEL_INDEX'] )) {
+            throw new Exception( G::LoadTranslation( 'ID_CASE_IS_CURRENTLY_WITH_ANOTHER_USER' ) );
+        }
+    } else {
+        throw new Exception( "Application ID or Delegation Index is missing!. The System can't open the case." );
     }
-    else {
-  		throw new Exception("Application ID or Delegation Index is missing!. The System can't open the case.");
-  	}
-  }
-  
-  
-  require_once ("classes/model/Step.php");
-  G::LoadClass("configuration");
-  G::LoadClass("case");
-  $oCase = new Cases();
-  $conf  = new Configurations;
+}
 
-  $oHeadPublisher =& headPublisher::getSingleton();
+require_once ("classes/model/Step.php");
+G::LoadClass( "configuration" );
+G::LoadClass( "case" );
+$oCase = new Cases();
+$conf = new Configurations();
 
-  $oHeadPublisher->addExtJsScript('app/main', true);
-  $oHeadPublisher->addExtJsScript('cases/open', true);
-  $oHeadPublisher->assign('FORMATS',$conf->getFormats());
-  $uri = '';
-  foreach($_GET as $k=>$v) {
-    $uri .= ($uri == '')? "$k=$v": "&$k=$v";
-  }
+$oHeadPublisher = & headPublisher::getSingleton();
 
-  $case   = $oCase->loadCase($_GET['APP_UID'], $_GET['DEL_INDEX']);
+$oHeadPublisher->addExtJsScript( 'app/main', true );
+$oHeadPublisher->addExtJsScript( 'cases/open', true );
+$oHeadPublisher->assign( 'FORMATS', $conf->getFormats() );
+$uri = '';
+foreach ($_GET as $k => $v) {
+    $uri .= ($uri == '') ? "$k=$v" : "&$k=$v";
+}
 
-  if (!isset($_GET['to_revise'])){
+$case = $oCase->loadCase( $_GET['APP_UID'], $_GET['DEL_INDEX'] );
+
+if (! isset( $_GET['to_revise'] )) {
     $script = 'cases_Open?';
-  }
-  else {
+} else {
     $script = 'cases_OpenToRevise?';
     $delIndex = $_GET['DEL_INDEX'];
-    $appUid   = $_GET['APP_UID'];
-    $oHeadPublisher->assign('treeToReviseTitle', G::loadtranslation('ID_STEP_LIST'));
-    $casesPanelUrl = 'casesToReviseTreeContent?APP_UID='.$appUid.'&DEL_INDEX='.$delIndex;
-    $oHeadPublisher->assign('casesPanelUrl', $casesPanelUrl); //translations
+    $appUid = $_GET['APP_UID'];
+    $oHeadPublisher->assign( 'treeToReviseTitle', G::loadtranslation( 'ID_STEP_LIST' ) );
+    $casesPanelUrl = 'casesToReviseTreeContent?APP_UID=' . $appUid . '&DEL_INDEX=' . $delIndex;
+    $oHeadPublisher->assign( 'casesPanelUrl', $casesPanelUrl ); //translations
     echo "<div id='toReviseTree'></div>";
-  }
+}
 
-  $oStep = new Step;
-  $oStep = $oStep->loadByProcessTaskPosition($case['PRO_UID'], $case['TAS_UID'], 1);
+$oStep = new Step();
+$oStep = $oStep->loadByProcessTaskPosition( $case['PRO_UID'], $case['TAS_UID'], 1 );
 
-  $oHeadPublisher->assign('uri', $script . $uri);
-  $oHeadPublisher->assign('_APP_NUM', '#: ' . $case['APP_NUMBER']);
-  $oHeadPublisher->assign('_ENV_CURRENT_DATE', $conf->getSystemDate(date('Y-m-d')));
-  $oHeadPublisher->assign('_ENV_CURRENT_DATE_NO_FORMAT', date('Y-m-d'));
-  $oHeadPublisher->assign('idfirstform', is_null($oStep)?'':$oStep->getStepUidObj());
+$oHeadPublisher->assign( 'uri', $script . $uri );
+$oHeadPublisher->assign( '_APP_NUM', '#: ' . $case['APP_NUMBER'] );
+$oHeadPublisher->assign( '_ENV_CURRENT_DATE', $conf->getSystemDate( date( 'Y-m-d' ) ) );
+$oHeadPublisher->assign( '_ENV_CURRENT_DATE_NO_FORMAT', date( 'Y-m-d' ) );
+$oHeadPublisher->assign( 'idfirstform', is_null( $oStep ) ? '' : $oStep->getStepUidObj() );
 
-
-  G::RenderPage('publish', 'extJs');
-
+G::RenderPage( 'publish', 'extJs' );
 

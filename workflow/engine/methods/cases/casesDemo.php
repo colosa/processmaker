@@ -167,3 +167,4 @@ catch ( Exception $e ){
   $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showMessage', '', $aMessage );
   G::RenderPage('publish');
 }
+

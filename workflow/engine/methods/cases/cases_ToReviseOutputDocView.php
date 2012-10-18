@@ -12,48 +12,46 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
 /* Permissions */
-switch ($RBAC->userCanAccess('PM_SUPERVISOR')) {
-  case - 2:
-    G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-    G::header('location: ../login/login');
-    die;
-    break;
-  case - 1:
-    G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-    G::header('location: ../login/login');
-    die;
-    break;
+switch ($RBAC->userCanAccess( 'PM_SUPERVISOR' )) {
+    case - 2:
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        die();
+        break;
+    case - 1:
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        die();
+        break;
 }
 
 /* Includes */
-G::LoadClass('case');
+G::LoadClass( 'case' );
 
 /* Menues */
-$G_MAIN_MENU            = 'processmaker';
-$G_SUB_MENU             = 'cases';
-$G_ID_MENU_SELECTED     = 'CASES';
+$G_MAIN_MENU = 'processmaker';
+$G_SUB_MENU = 'cases';
+$G_ID_MENU_SELECTED = 'CASES';
 $G_ID_SUB_MENU_SELECTED = 'CASES_TO_REVISE';
 
-
 /* Prepare page before to show */
-$oTemplatePower = new TemplatePower(PATH_TPL . 'cases/cases_Step.html');
+$oTemplatePower = new TemplatePower( PATH_TPL . 'cases/cases_Step.html' );
 $oTemplatePower->prepare();
-$G_PUBLISH = new Publisher;
+$G_PUBLISH = new Publisher();
 
-$oHeadPublisher =& headPublisher::getSingleton();
-$oHeadPublisher->addScriptCode('
+$oHeadPublisher = & headPublisher::getSingleton();
+$oHeadPublisher->addScriptCode( '
 var Cse = {};
 Cse.panels = {};
 var leimnud = new maborak();
@@ -65,36 +63,37 @@ leimnud.Package.Load("cases_Step",{Type:"file",Absolute:true,Path:"/jscore/cases
 leimnud.Package.Load("processmap",{Type:"file",Absolute:true,Path:"/jscore/processmap/core/processmap.js"});
 leimnud.exec(leimnud.fix.memoryLeak);
 leimnud.event.add(window,"load",function(){
-  '.(isset($_SESSION['showCasesWindow'])?'try{'.$_SESSION['showCasesWindow'].'}catch(e){}':'').'});
-');
-$G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
+  ' . (isset( $_SESSION['showCasesWindow'] ) ? 'try{' . $_SESSION['showCasesWindow'] . '}catch(e){}' : '') . '});
+' );
+$G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
 //
 require_once 'classes/model/OutputDocument.php';
 $oOutputDocument = new OutputDocument();
-$aOD = $oOutputDocument->load($_GET['UID']);
+$aOD = $oOutputDocument->load( $_GET['UID'] );
 require_once 'classes/model/AppDocument.php';
 $oAppDocument = new AppDocument();
-$aFields = $oAppDocument->load($_GET['DOC']);
-$aFields['VIEW'] = G::LoadTranslation('ID_OPEN');
-switch ($aOD ['OUT_DOC_GENERATE']) {
-  case 'DOC':
-    $aFields['FILE1'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=doc&random=' . rand();
-    break;
-  case 'PDF':
-    $aFields['FILE2'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=pdf&random=' . rand();
-    break;
-  case 'BOTH':
-    $aFields['FILE1'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=doc&random=' . rand();
-    $aFields['FILE2'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=pdf&random=' . rand();
-    break;
+$aFields = $oAppDocument->load( $_GET['DOC'] );
+$aFields['VIEW'] = G::LoadTranslation( 'ID_OPEN' );
+switch ($aOD['OUT_DOC_GENERATE']) {
+    case 'DOC':
+        $aFields['FILE1'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=doc&random=' . rand();
+        break;
+    case 'PDF':
+        $aFields['FILE2'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=pdf&random=' . rand();
+        break;
+    case 'BOTH':
+        $aFields['FILE1'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=doc&random=' . rand();
+        $aFields['FILE2'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&ext=pdf&random=' . rand();
+        break;
 }
 
-$G_PUBLISH = new Publisher;
-$G_PUBLISH->AddContent('xmlform', 'xmlform', 'cases/cases_ViewOutputDocumentToRevise', '', G::array_merges($aOD, $aFields), '');
+$G_PUBLISH = new Publisher();
+$G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'cases/cases_ViewOutputDocumentToRevise', '', G::array_merges( $aOD, $aFields ), '' );
 //
-G::RenderPage('publish', 'blank');
+G::RenderPage( 'publish', 'blank' );
 
-if(!isset($_GET['ex'])) $_GET['ex']=0;
+if (! isset( $_GET['ex'] ))
+    $_GET['ex'] = 0;
 
 ?>
 <script type="text/javascript">
@@ -117,3 +116,4 @@ function setSelect()
   }
 }
 </script>
+

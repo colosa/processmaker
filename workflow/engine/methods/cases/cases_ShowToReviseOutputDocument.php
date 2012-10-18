@@ -12,15 +12,14 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 /*
  * Created on 13-02-2008
@@ -28,39 +27,36 @@
  * @author David Callizaya <davidsantos@colosa.com>
  */
 
-  switch ($RBAC->userCanAccess('PM_SUPERVISOR')) {
-	    case - 2:
-	        G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-	        G::header('location: ../login/login');
-	        die;
-	        break;
-	    case - 1:
-	        G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-	        G::header('location: ../login/login');
-	        die;
-	        break;
-	}
+switch ($RBAC->userCanAccess( 'PM_SUPERVISOR' )) {
+    case - 2:
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        die();
+        break;
+    case - 1:
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        die();
+        break;
+}
 
-  require_once ( "classes/model/AppDocumentPeer.php" );
+require_once ("classes/model/AppDocumentPeer.php");
 
-  $oAppDocument = new AppDocument();
-  $oAppDocument->Fields = $oAppDocument->load($_GET['a']);
+$oAppDocument = new AppDocument();
+$oAppDocument->Fields = $oAppDocument->load( $_GET['a'] );
 
-  $sAppDocUid = $oAppDocument->getAppDocUid();
-  $info = pathinfo( $oAppDocument->getAppDocFilename() );
-  if (!isset($_GET['ext'])) {
+$sAppDocUid = $oAppDocument->getAppDocUid();
+$info = pathinfo( $oAppDocument->getAppDocFilename() );
+if (! isset( $_GET['ext'] )) {
     $ext = $info['extension'];
-  }
-  else {
-  	if ($_GET['ext'] != '') {
-  		$ext = $_GET['ext'];
-  	}
-  	else {
-  		$ext = $info['extension'];
-  	}
-  }
+} else {
+    if ($_GET['ext'] != '') {
+        $ext = $_GET['ext'];
+    } else {
+        $ext = $info['extension'];
+    }
+}
 
-  $realPath = PATH_DOCUMENT . $_SESSION['APPLICATION'] . '/outdocs/' . $info['basename'] . '.' . $ext ;
-  G::streamFile ( $realPath, true );
+$realPath = PATH_DOCUMENT . $_SESSION['APPLICATION'] . '/outdocs/' . $info['basename'] . '.' . $ext;
+G::streamFile( $realPath, true );
 
-?>
