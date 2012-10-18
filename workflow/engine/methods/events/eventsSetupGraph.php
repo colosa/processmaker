@@ -9,19 +9,19 @@ if ($t != 's') {
     $t = 'm';
 }
 
-    //when occurs, after time elapses or when starting
+//when occurs, after time elapses or when starting
 $o = isset( $_GET['o'] ) ? $_GET['o'] : 's';
 if ($t != 's') {
     $t = 'a';
 }
 
-    //status
+//status
 $s = isset( $_GET['s'] ) ? $_GET['s'] : 'a';
 if ($s != 'a') {
     $s = 'i';
 }
 
-    //timeUnit
+//timeUnit
 $timeunit = isset( $_GET['t'] ) ? $_GET['t'] : 'Days';
 $timeunit = ucfirst( strtolower( $timeunit ) );
 

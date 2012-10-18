@@ -1,4 +1,5 @@
 <?php
+
 /**
  * events_Delete.php
  *

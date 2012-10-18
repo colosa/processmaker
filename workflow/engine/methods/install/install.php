@@ -12,15 +12,14 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
 /**
@@ -29,7 +28,7 @@
  * @author MaBoRaK
  * @version 0.1
  */
-if($_POST && isset($_POST['phpinfo'])) {
+if ($_POST && isset( $_POST['phpinfo'] )) {
     phpinfo();
     die();
 }
@@ -38,13 +37,14 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>';
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-   <title>Processmaker Installer</title>
-   <script type='text/javascript' src='/js/maborak/core/maborak.js'></script>
-   <link rel="stylesheet" type="text/css" href="/js/maborak/samples/style.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Processmaker Installer</title>
+<script type='text/javascript' src='/js/maborak/core/maborak.js'></script>
+<link rel="stylesheet" type="text/css"
+	href="/js/maborak/samples/style.css" />
 
-   <script type='text/javascript' src='/sys/en/classic/install/install.js'></script>
-   <script type='text/javascript'>
+<script type='text/javascript' src='/sys/en/classic/install/install.js'></script>
+<script type='text/javascript'>
    var ifr;
    var forceCssLoad = true;
    var grid,winGrill, leimnud = new maborak(forceCssLoad);
@@ -107,96 +107,97 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>';
       inst.make();
    };
    </script>
-   <style>
-   input{
-      font:normal 8pt sans-serif,Tahoma,MiscFixed;
-   }
-   body{
-      background-color:white;
-      font:normal 8pt sans-serif,Tahoma;
-   }
-.inst_table
-{
-   width:100%;
-border-collapse:collapse;
-      font:normal 8pt Tahoma,sans-serif;
+<style>
+input {
+	font: normal 8pt sans-serif, Tahoma, MiscFixed;
 }
-.inst_td0
-{
-   width:60%;
-   text-align:right;
-   border:1px solid #CCC;
-   padding:5px;
+
+body {
+	background-color: white;
+	font: normal 8pt sans-serif, Tahoma;
 }
-.inst_td1
-{
-   font-weight:bold;
-   width:40%;
-   padding:5px;
-   border:1px solid #CCC;
-   text-align:center;
+
+.inst_table {
+	width: 100%;
+	border-collapse: collapse;
+	font: normal 8pt Tahoma, sans-serif;
 }
-.tdNormal, .tdOk, .tdFailed
-{
-   font-weight:bold;
-   border:1px solid #CCC;
-   text-align:center;
+
+.inst_td0 {
+	width: 60%;
+	text-align: right;
+	border: 1px solid #CCC;
+	padding: 5px;
 }
-.tdOk
-{
-   font-weight:bold;
-   color:green;
-   padding:6px;
+
+.inst_td1 {
+	font-weight: bold;
+	width: 40%;
+	padding: 5px;
+	border: 1px solid #CCC;
+	text-align: center;
 }
-.tdFailed
-{
-   font-weight:bold;
-   color:red;
+
+.tdNormal,.tdOk,.tdFailed {
+	font-weight: bold;
+	border: 1px solid #CCC;
+	text-align: center;
 }
-.title
-{
-   text-align:left;
-padding-left:10px;
+
+.tdOk {
+	font-weight: bold;
+	color: green;
+	padding: 6px;
 }
-.inputNormal, .inputOk, .inputFailed
-{
-   width:100%;
-   border:1px solid #666;
-   border-left:3px solid #666;
-   font:normal 8pt Tahoma,sans-serif;
-   text-align:center;
+
+.tdFailed {
+	font-weight: bold;
+	color: red;
 }
-.inputOk
-{
-   border:1px solid green;
-   border-left:3px solid green;
+
+.title {
+	text-align: left;
+	padding-left: 10px;
 }
-.inputFailed
-{
-   border:1px solid red;
-   border-left:3px solid red;
+
+.inputNormal,.inputOk,.inputFailed {
+	width: 100%;
+	border: 1px solid #666;
+	border-left: 3px solid #666;
+	font: normal 8pt Tahoma, sans-serif;
+	text-align: center;
 }
-.button
-{
-   font:normal 8pt Tahoma,MiscFixed,sans-serif;
-   border:1px solid #afafaf;
-   margin-left:2px;
-   color:black;
-   cursor:pointer;
+
+.inputOk {
+	border: 1px solid green;
+	border-left: 3px solid green;
 }
-.buttonHover
-{
-   border:1px solid #666;
-   background-position:0 -8;
+
+.inputFailed {
+	border: 1px solid red;
+	border-left: 3px solid red;
 }
-.buttonDisabled
-{
-   border:1px solid #9f9f9f;
-   background-position:0 -10;
-   color:#9f9f9f;
-   cursor:default;
+
+.button {
+	font: normal 8pt Tahoma, MiscFixed, sans-serif;
+	border: 1px solid #afafaf;
+	margin-left: 2px;
+	color: black;
+	cursor: pointer;
 }
-   </style>
+
+.buttonHover {
+	border: 1px solid #666;
+	background-position: 0 -8;
+}
+
+.buttonDisabled {
+	border: 1px solid #9f9f9f;
+	background-position: 0 -10;
+	color: #9f9f9f;
+	cursor: default;
+}
+</style>
 </head>
 
 <body>
@@ -204,5 +205,5 @@ padding-left:10px;
 //exec("mkdir /var/www/html/asas",$console);
 ?>
 </body>
-
 </html>
+
