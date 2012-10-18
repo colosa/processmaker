@@ -40,11 +40,11 @@ try {
   $c = $oProcessMap->listNoProcessesUser($sProUid);
   global $RBAC;
   $RBAC->loadUserRolePermission($RBAC->sSystem, $_SESSION['USER_LOGGED']);
-
+  
   $G_PUBLISH = new Publisher;
   $G_PUBLISH->AddContent('propeltable', 'paged-table', 'processes/processes_availableProcessesUser', $c, array('PRO_UID' => $sProUid));
   G::RenderPage( 'publish', 'raw' );
-
+  
 }
 catch ( Exception $e ){
   $G_PUBLISH = new Publisher;

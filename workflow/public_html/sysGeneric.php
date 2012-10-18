@@ -700,6 +700,15 @@
         }
 
         if ($bRedirect) {
+          //G::pr($_SERVER['REDIRECT_URL']);
+          //die;
+          $existDynaformsAjax = strpos($_SERVER['REDIRECT_URL'], 'dynaforms_Ajax');
+          $existFieldsHandler = strpos($_SERVER['REDIRECT_URL'], 'fieldsHandler');
+
+          if ($existDynaformsAjax == true || $existFieldsHandler == true) {
+            return 'timeout';
+          }
+
           if (substr(SYS_SKIN, 0, 2) == 'ux' && SYS_SKIN != 'uxs') {  // verify if the current skin is a 'ux' variant
             $loginUrl = 'main/login';
           }

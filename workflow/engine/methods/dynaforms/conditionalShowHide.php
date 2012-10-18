@@ -34,9 +34,12 @@
  global $_DBArray;
  
  $oFieldCondition = new FieldCondition;
- $DYN_UID = $_SESSION['Current_Dynafom']['Parameters']['DYN_UID'];
- $aRows = $oFieldCondition->getAllByDynUid($DYN_UID);
- 
+
+ if (isset($_SESSION['Current_Dynafom']['Parameters']['DYN_UID'])) {
+    $DYN_UID = $_SESSION['Current_Dynafom']['Parameters']['DYN_UID'];
+    $aRows = $oFieldCondition->getAllByDynUid($DYN_UID);
+ }
+
  $aFieldNames = Array(
    'FCD_NRO',
    'FCD_UID',

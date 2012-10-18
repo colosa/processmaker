@@ -4,12 +4,42 @@ var jsEditor  = null;
 var clientWinSize = null;
 
 var strError = "";
+var typeSave = "";
 var h3OK = 1;
 function checkErrorXML(xmlParse)
 {
     strError = "";
     h3OK = 1;
     checkXML(xmlParse);
+}
+
+function removedSaveForm() {
+  myDialog.remove();
+  switch (typeSave) {
+    case 'refresh_xmlcode':
+      dynaformEditor.refresh_xmlcode();
+      break;
+    case 'save':
+      dynaformEditor.save();
+      break;
+    case 'saveXmlCode':
+      dynaformEditor.saveXmlCode();
+      dynaformEditor.refresh_htmlcode();
+      break;
+    case 'saveHtmlCode':
+      dynaformEditor.saveHtmlCode();
+      break;
+    case 'refreshProperties':
+      dynaformEditor.refreshProperties();
+      break;
+    case 'saveProperties':
+      dynaformEditor.saveProperties();
+      break;
+    case 'saveJavascript':
+      dynaformEditor.saveJavascript();
+      break;
+  }
+  typeSave = '';
 }
 
 function checkXML(nodeXml)
@@ -111,6 +141,39 @@ var dynaformEditor={
     }
     if (this.responseAction == true) {
         res = this.ajax.save(this.A,this.dynUid);
+
+        if ( typeof(res) == 'object' ) {
+          typeSave = 'save';
+          myDialog = new leimnud.module.panel();
+          myDialog.options = {
+            size:{w:500,h:300},
+            position:{center:true},
+            title: G_STRINGS.ID_LOST_SESSION_XMLFORM,
+            control: { close  :true, roll  :false, drag  :true, resize :false },
+            fx: {
+              //shadow  :true,
+              blinkToFront:false,
+              opacity :true,
+              drag:false,
+              modal: true
+            },
+            theme:"processmaker"
+          };
+
+          myDialog.make();
+
+          var contentStr = '<iframe frameborder="0" id="pm-frame-login" name="pm-frame-login" style="overflow: auto; width: 490px; height: 255px;" src="../login/login.php"></iframe>';
+          
+          myDialog.addContent( contentStr );
+          //myDialog.values = values;
+          myDialog.dialogCallback = function ( dialogResult ) {
+            myDialog.remove( );
+            if ( callbackFn )
+              callbackFn ( dialogResult );
+          }
+          return false;
+        }
+
         if (res == 'noSub') {
             alert(G_STRINGS.ID_DONT_SAVE_XMLFORM);
             return false;
@@ -219,8 +282,38 @@ var dynaformEditor={
         var todoRefreshXmlCode = xmlCode === null;
         if (todoRefreshXmlCode) return;
         var res = this.ajax.set_xmlcode(this.A, encodeURIComponent(xmlCode));
-        if (res!=="") G.alert(res);
         this.responseAction = true;
+        if ( typeof(res) == 'object' ) {
+          typeSave = 'saveXmlCode';
+          myDialog = new leimnud.module.panel();
+          myDialog.options = {
+            size:{w:500,h:300},
+            position:{center:true},
+            title: G_STRINGS.ID_LOST_SESSION_XMLFORM,
+            control: { close  :true, roll  :false, drag  :true, resize :false },
+            fx: {
+              //shadow  :true,
+              blinkToFront:false,
+              opacity :true,
+              drag:false,
+              modal: true
+            },
+            theme:"processmaker"
+          };
+
+          myDialog.make();
+
+          var contentStr = '<iframe frameborder="0" id="pm-frame-login" name="pm-frame-login" style="overflow: auto; width: 490px; height: 255px;" src="../login/login.php"></iframe>';
+          
+          myDialog.addContent( contentStr );
+          //myDialog.values = values;
+          myDialog.dialogCallback = function ( dialogResult ) {
+            myDialog.remove( );
+            if ( callbackFn )
+              callbackFn ( dialogResult );
+          }
+          return false;
+        }
     } else {
         this.responseAction = false;
     }
@@ -231,6 +324,37 @@ var dynaformEditor={
     todoRefreshHtmlCode = htmlCode === null;
     if (todoRefreshHtmlCode) return;
     var response=this.ajax.set_htmlcode(this.A,htmlCode.value);
+    if ( typeof(response) == 'object' ) {
+      typeSave = 'saveHtmlCode';
+      myDialog = new leimnud.module.panel();
+      myDialog.options = {
+        size:{w:500,h:300},
+        position:{center:true},
+        title: G_STRINGS.ID_LOST_SESSION_XMLFORM,
+        control: { close  :true, roll  :false, drag  :true, resize :false },
+        fx: {
+          //shadow  :true,
+          blinkToFront:false,
+          opacity :true,
+          drag:false,
+          modal: true
+        },
+        theme:"processmaker"
+      };
+
+      myDialog.make();
+
+      var contentStr = '<iframe frameborder="0" id="pm-frame-login" name="pm-frame-login" style="overflow: auto; width: 490px; height: 255px;" src="../login/login.php"></iframe>';
+      
+      myDialog.addContent( contentStr );
+      //myDialog.values = values;
+      myDialog.dialogCallback = function ( dialogResult ) {
+        myDialog.remove( );
+        if ( callbackFn )
+          callbackFn ( dialogResult );
+      }
+      return false;
+    }
     if (response) {
         G.alert(response["*message"],"Error");
         this.responseAction = false;
@@ -247,6 +371,37 @@ var dynaformEditor={
     if (field.value)
     {
       var res = this.ajax.set_javascript(this.A,field.value, encodeURIComponent(code), meta);
+      if ( typeof(response) == 'object' ) {
+        typeSave = 'saveJavascript';
+        myDialog = new leimnud.module.panel();
+        myDialog.options = {
+          size:{w:500,h:300},
+          position:{center:true},
+          title: G_STRINGS.ID_LOST_SESSION_XMLFORM,
+          control: { close  :true, roll  :false, drag  :true, resize :false },
+          fx: {
+            //shadow  :true,
+            blinkToFront:false,
+            opacity :true,
+            drag:false,
+            modal: true
+          },
+          theme:"processmaker"
+        };
+
+        myDialog.make();
+
+        var contentStr = '<iframe frameborder="0" id="pm-frame-login" name="pm-frame-login" style="overflow: auto; width: 490px; height: 255px;" src="../login/login.php"></iframe>';
+        
+        myDialog.addContent( contentStr );
+        //myDialog.values = values;
+        myDialog.dialogCallback = function ( dialogResult ) {
+          myDialog.remove( );
+          if ( callbackFn )
+            callbackFn ( dialogResult );
+        }
+        return false;
+      }
       if (typeof(res["*message"])==="string")
       {
         G.alert(res["*message"]);
@@ -259,8 +414,39 @@ var dynaformEditor={
     var form=this.views["properties"].getElementsByTagName("form")[0];
     var post=ajax_getForm(form);
     var response=this.ajax.set_properties(this.A,this.dynUid,post);
-                if (response!=0){
-                   G.alert(response["*message"]);
+    if ( typeof(response) == 'object' ) {
+      typeSave = 'saveProperties';
+      myDialog = new leimnud.module.panel();
+      myDialog.options = {
+        size:{w:500,h:300},
+        position:{center:true},
+        title: G_STRINGS.ID_LOST_SESSION_XMLFORM,
+        control: { close  :true, roll  :false, drag  :true, resize :false },
+        fx: {
+          //shadow  :true,
+          blinkToFront:false,
+          opacity :true,
+          drag:false,
+          modal: true
+        },
+        theme:"processmaker"
+      };
+
+      myDialog.make();
+
+      var contentStr = '<iframe frameborder="0" id="pm-frame-login" name="pm-frame-login" style="overflow: auto; width: 490px; height: 255px;" src="../login/login.php"></iframe>';
+      
+      myDialog.addContent( contentStr );
+      //myDialog.values = values;
+      myDialog.dialogCallback = function ( dialogResult ) {
+        myDialog.remove( );
+        if ( callbackFn )
+          callbackFn ( dialogResult );
+      }
+      return false;
+    }
+    if (response!=0){
+       G.alert(response["*message"]);
     }
     this.responseAction = true;
   },
@@ -275,35 +461,39 @@ var dynaformEditor={
   },
   changeToXmlCode:function()
   {
-    content_div = getElementByPMClass('panel_content___processmaker')
-    content_div.style.overflow='auto';
-    
-    this.refresh_xmlcode();
-    this.currentView="xmlcode";
-    if( ! xmlEditor ) {
-      clientWinSize = getClientWindowSize();
+    if (typeSave == '') {
+      content_div = getElementByPMClass('panel_content___processmaker')
+      content_div.style.overflow='auto';
+      
+      this.refresh_xmlcode();
+      this.currentView="xmlcode";
+      if( ! xmlEditor ) {
+        clientWinSize = getClientWindowSize();
 
-        xmlEditor = CodeMirror.fromTextArea('form[XML]', {
-        height: (clientWinSize.height - 120) + "px",
-        width: (_BROWSER.name == 'msie' ? '100%' : '98%'),
-        parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
-                     "../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js",
-                     "../contrib/php/js/parsephphtmlmixed.js"],
-        stylesheet: ["css/xmlcolors.css", "css/jscolors.css", "css/csscolors.css", "contrib/php/css/phpcolors.css"],
-        path: "js/",
-        lineNumbers: true,
-        continuousScanning: 500
-      });
-    }  
+          xmlEditor = CodeMirror.fromTextArea('form[XML]', {
+          height: (clientWinSize.height - 120) + "px",
+          width: (_BROWSER.name == 'msie' ? '100%' : '98%'),
+          parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
+                       "../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js",
+                       "../contrib/php/js/parsephphtmlmixed.js"],
+          stylesheet: ["css/xmlcolors.css", "css/jscolors.css", "css/csscolors.css", "contrib/php/css/phpcolors.css"],
+          path: "js/",
+          lineNumbers: true,
+          continuousScanning: 500
+        });
+      }
+    }
   },
   changeToHtmlCode:function()
   {
-    //to adecuate the view perspective @Neyek
-    content_div = getElementByPMClass('panel_content___processmaker')
-    content_div.style.overflow='auto';
-    
-    this.refresh_htmlcode();
-    this.currentView="htmlcode";
+    if (typeSave == '') {
+      //to adecuate the view perspective @Neyek
+      content_div = getElementByPMClass('panel_content___processmaker')
+      content_div.style.overflow='auto';
+      
+      this.refresh_htmlcode();
+      this.currentView="htmlcode"; 
+    }
   },
   changeToFieldsList:function()
   {
@@ -316,52 +506,56 @@ var dynaformEditor={
   },
   changeToJavascripts:function()
   {
-    var field=getField("JS_LIST","dynaforms_JSEditor");
-    var res=this.ajax.get_javascripts(this.A,field.value);
-    
-    this.currentView="javascripts";
-    this.refreshJavascripts();
-    
-    if(field.value!='' || typeof(res.aOptions[0])!='undefined'){
-      hideRowById('JS_TITLE');
-      showRowById('JS');
-      showRowById('JS_LIST');
+    if (typeSave == '') {
+      var field=getField("JS_LIST","dynaforms_JSEditor");
+      var res=this.ajax.get_javascripts(this.A,field.value);
+      
+      this.currentView="javascripts";
+      this.refreshJavascripts();
+      
+      if(field.value!='' || typeof(res.aOptions[0])!='undefined'){
+        hideRowById('JS_TITLE');
+        showRowById('JS');
+        showRowById('JS_LIST');
 
-      //to adecuate the view perspective @Neyek
-      content_div = getElementByPMClass('panel_content___processmaker')
-      content_div.style.overflow='auto';
-        
-      //this.currentView="javascripts";
-      //this.refreshJavascripts();
-      //if (this.loadPressLoaded && !JSCodePress)
-      if( ! jsEditor )
-      {
-        clientWinSize = getClientWindowSize();
-        startJSCodePress(); 
-        jsEditor = CodeMirror.fromTextArea('form[JS]', {
-          height: (clientWinSize.height - 140) + "px",
-          width: (_BROWSER.name == 'msie' ? '100%' : '98%'),
-          parserfile: ["tokenizejavascript.js", "parsejavascript.js"],
-          stylesheet: ["css/jscolors.css"],
-          path: "js/",
-          lineNumbers: true,
-          continuousScanning: 500
-        });
+        //to adecuate the view perspective @Neyek
+        content_div = getElementByPMClass('panel_content___processmaker')
+        content_div.style.overflow='auto';
+          
+        //this.currentView="javascripts";
+        //this.refreshJavascripts();
+        //if (this.loadPressLoaded && !JSCodePress)
+        if( ! jsEditor )
+        {
+          clientWinSize = getClientWindowSize();
+          startJSCodePress(); 
+          jsEditor = CodeMirror.fromTextArea('form[JS]', {
+            height: (clientWinSize.height - 140) + "px",
+            width: (_BROWSER.name == 'msie' ? '100%' : '98%'),
+            parserfile: ["tokenizejavascript.js", "parsejavascript.js"],
+            stylesheet: ["css/jscolors.css"],
+            path: "js/",
+            lineNumbers: true,
+            continuousScanning: 500
+          });
+        }
+      } else {
+        showRowById('JS_TITLE');
+        hideRowById('JS');
+        hideRowById('JS_LIST');
       }
-    } else {
-      showRowById('JS_TITLE');
-      hideRowById('JS');
-      hideRowById('JS_LIST');
     }
   },
   changeToProperties:function()
   {
-    //to adecuate the view perspective @Neyek
-    content_div = getElementByPMClass('panel_content___processmaker')
-    content_div.style.overflow='auto';
-    
-    this.currentView="properties";
-    this.refreshProperties();
+    if (typeSave == '') {
+      //to adecuate the view perspective @Neyek
+      content_div = getElementByPMClass('panel_content___processmaker')
+      content_div.style.overflow='auto';
+      
+      this.currentView="properties";
+      this.refreshProperties();
+    }
   },
   changeToShowHide:function()
   {
@@ -435,6 +629,37 @@ var dynaformEditor={
   refresh_xmlcode:function()
   {
     var response=this.ajax.get_xmlcode(this.A);
+    if (typeof(response.error) == 'undefined') {
+      typeSave = 'refresh_xmlcode';
+      myDialog = new leimnud.module.panel();
+      myDialog.options = {
+        size:{w:500,h:300},
+        position:{center:true},
+        title: G_STRINGS.ID_LOST_SESSION_XMLFORM,
+        control: { close  :true, roll  :false, drag  :true, resize :false },
+        fx: {
+          //shadow  :true,
+          blinkToFront:false,
+          opacity :true,
+          drag:false,
+          modal: true
+        },  
+        theme:"processmaker"
+      };
+
+      myDialog.make();
+
+      var contentStr = '<iframe frameborder="0" id="pm-frame-login" name="pm-frame-login" style="overflow: auto; width: 490px; height: 255px;" src="../login/login.php"></iframe>';
+      
+      myDialog.addContent( contentStr );
+      //myDialog.values = values;
+      myDialog.dialogCallback = function ( dialogResult ) {
+        myDialog.remove( );
+        if ( callbackFn )
+          callbackFn ( dialogResult );
+      }
+      return false;
+    }
     if (response.error===0)
     {
       //xmlCode.value = response.xmlcode;
@@ -592,29 +817,64 @@ var dynaformEditor={
   },
   changeJavascriptCode:function()
   {
-    var field=getField("JS_LIST","dynaforms_JSEditor");
-    var value=field.value;
-    if (this.currentJS)
-    {
-      field.value=this.currentJS;
-      this.saveJavascript();
-      field.value=value;
+    if (typeSave == '') {
+      var field=getField("JS_LIST","dynaforms_JSEditor");
+      var value=field.value;
+      if (this.currentJS)
+      {
+        field.value=this.currentJS;
+        this.saveJavascript();
+        field.value=value;
+      }
+      this.refreshJavascripts();
     }
-    this.refreshJavascripts();
   },
   refreshProperties:function()
   {
-    var form=this.views["properties"].getElementsByTagName("form")[0];
-    var prop=this.ajax.get_properties(this.A,this.dynUid);
-    getField("A","dynaforms_Properties").value=prop.A;
-    getField("DYN_UID","dynaforms_Properties").value=prop.DYN_UID;
-    getField("PRO_UID","dynaforms_Properties").value=prop.PRO_UID;
-    getField("DYN_TITLE","dynaforms_Properties").value=prop.DYN_TITLE;
-    getField("DYN_TYPE","dynaforms_Properties").value=prop.DYN_TYPE;
-    getField("DYN_DESCRIPTION","dynaforms_Properties").value=prop.DYN_DESCRIPTION;
-    getField("WIDTH","dynaforms_Properties").value=prop.WIDTH;
-    /*getField("ENABLETEMPLATE","dynaforms_Properties").checked=(prop.ENABLETEMPLATE=="1");*/
-    getField("MODE","dynaforms_Properties").value=prop.MODE;
+    if (typeSave == '') {
+      var form=this.views["properties"].getElementsByTagName("form")[0];
+      var prop=this.ajax.get_properties(this.A,this.dynUid);
+      if (typeof(prop.A) == 'undefined') {
+        typeSave = 'refreshProperties';
+        myDialog = new leimnud.module.panel();
+        myDialog.options = {
+          size:{w:500,h:300},
+          position:{center:true},
+          title: G_STRINGS.ID_LOST_SESSION_XMLFORM,
+          control: { close  :true, roll  :false, drag  :true, resize :false },
+          fx: {
+            //shadow  :true,
+            blinkToFront:false,
+            opacity :true,
+            drag:false,
+            modal: true
+          },
+          theme:"processmaker"
+        };
+
+        myDialog.make();
+
+        var contentStr = '<iframe frameborder="0" id="pm-frame-login" name="pm-frame-login" style="overflow: auto; width: 490px; height: 255px;" src="../login/login.php"></iframe>';
+        
+        myDialog.addContent( contentStr );
+        //myDialog.values = values;
+        myDialog.dialogCallback = function ( dialogResult ) {
+          myDialog.remove( );
+          if ( callbackFn )
+            callbackFn ( dialogResult );
+        }
+        return false;
+      }
+      getField("A","dynaforms_Properties").value=prop.A;
+      getField("DYN_UID","dynaforms_Properties").value=prop.DYN_UID;
+      getField("PRO_UID","dynaforms_Properties").value=prop.PRO_UID;
+      getField("DYN_TITLE","dynaforms_Properties").value=prop.DYN_TITLE;
+      getField("DYN_TYPE","dynaforms_Properties").value=prop.DYN_TYPE;
+      getField("DYN_DESCRIPTION","dynaforms_Properties").value=prop.DYN_DESCRIPTION;
+      getField("WIDTH","dynaforms_Properties").value=prop.WIDTH;
+      /*getField("ENABLETEMPLATE","dynaforms_Properties").checked=(prop.ENABLETEMPLATE=="1");*/
+      getField("MODE","dynaforms_Properties").value=prop.MODE;
+    }
   },
   // Internal functions
   runScripts:function(scripts)
