@@ -1,4 +1,5 @@
 <?php
+
 /**
  * departments.php
  *
@@ -12,58 +13,59 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
-G::LoadClass('configuration');
+G::LoadClass( 'configuration' );
 $c = new Configurations();
 
-$access = $RBAC->userCanAccess('PM_USERS');
-if( $access != 1 ){
-  switch ($access)
-  {
-  	case -1:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	case -2:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	default:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;  	
-  }
-}  
-if (($RBAC_Response=$RBAC->userCanAccess("PM_USERS"))!=1) return $RBAC_Response;
+$access = $RBAC->userCanAccess( 'PM_USERS' );
+if ($access != 1) {
+    switch ($access) {
+        case - 1:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+        case - 2:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+        default:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+    }
+}
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
+    return $RBAC_Response;
+}
 
-  $G_MAIN_MENU            = 'processmaker';
-  $G_SUB_MENU             = 'users';
-  $G_ID_MENU_SELECTED     = 'USERS';
-  $G_ID_SUB_MENU_SELECTED = 'DEPARTMENTS';
-  
-  $G_PUBLISH = new Publisher;
+$G_MAIN_MENU = 'processmaker';
+$G_SUB_MENU = 'users';
+$G_ID_MENU_SELECTED = 'USERS';
+$G_ID_SUB_MENU_SELECTED = 'DEPARTMENTS';
 
-$oHeadPublisher =& headPublisher::getSingleton();
+$G_PUBLISH = new Publisher();
 
-$oHeadPublisher->addExtJsScript('departments/departmentList', false);    //adding a javascript file .js
-$oHeadPublisher->addContent('departments/departmentList'); //adding a html file  .html.
+$oHeadPublisher = & headPublisher::getSingleton();
+
+$oHeadPublisher->addExtJsScript( 'departments/departmentList', false ); //adding a javascript file .js
+$oHeadPublisher->addContent( 'departments/departmentList' ); //adding a html file  .html.
+
 
 //$labels = G::getTranslations(Array('ID_DEPARTMENTS','ID_DELETE','ID_EDIT','ID_USERS','ID_ACTIVE','ID_INACTIVE','ID_SELECT_STATUS',
 //    'ID_CLOSE','ID_SAVE','ID_DEPARTMENT_NAME','ID_STATUS'));
 //
 //$oHeadPublisher->assign('TRANSLATIONS', $labels);
-$oHeadPublisher->assign('FORMATS',$c->getFormats());
-G::RenderPage('publish', 'extJs');
-?>
+$oHeadPublisher->assign( 'FORMATS', $c->getFormats() );
+G::RenderPage( 'publish', 'extJs' );
+

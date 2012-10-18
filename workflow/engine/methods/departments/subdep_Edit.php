@@ -1,10 +1,10 @@
 <?php
 /**
  * departments_Edit.php
- *  
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2008 Colosa Inc.23
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -12,60 +12,57 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd., 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
  */
 
-$access = $RBAC->userCanAccess('PM_USERS');
-if( $access != 1 ){
-  switch ($access)
-  {
-  	case -1:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	case -2:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	default:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;  	
-  }
-}  
-if (($RBAC_Response=$RBAC->userCanAccess("PM_USERS"))!=1) return $RBAC_Response;
+$access = $RBAC->userCanAccess( 'PM_USERS' );
+if ($access != 1) {
+    switch ($access) {
+        case - 1:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+        case - 2:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+        default:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+    }
+}
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
+    return $RBAC_Response;
+}
 
-  G::LoadClass('departments');
+G::LoadClass( 'departments' );
 
-  $dbc = new DBConnection();
-  $ses = new DBSession($dbc);
+$dbc = new DBConnection();
+$ses = new DBSession( $dbc );
 
-  $Dpto = new Department();
-  $DptoUid = (isset($_GET['SUID'])) ? urldecode($_GET['SUID']):'';
-  $DepParent = (isset($_GET['SDEPPARENT'])) ? urldecode($_GET['SDEPPARENT']):'';
+$Dpto = new Department();
+$DptoUid = (isset( $_GET['SUID'] )) ? urldecode( $_GET['SUID'] ) : '';
+$DepParent = (isset( $_GET['SDEPPARENT'] )) ? urldecode( $_GET['SDEPPARENT'] ) : '';
 
-  if (strlen($DptoUid) > 1 && strlen($DepParent)>1)
-  {
-    $aFields=$Dpto->Load( $DptoUid );
-  }
-  else
-  {$infosubDto = $Dpto->Load( $DptoUid );//print_r($infosubDto);
-    $aFields=array('SUID'=>$DptoUid,'SDEPPARENT'=>$DepParent);//print_r($aFields);print"<hr>";
-  }
-  $G_PUBLISH = new Publisher();
-  $G_PUBLISH->AddContent('xmlform', 'xmlform', 'departments/subdep_Edit', '', $aFields , 'subdep_Save');
+if (strlen( $DptoUid ) > 1 && strlen( $DepParent ) > 1) {
+    $aFields = $Dpto->Load( $DptoUid );
+} else {
+    $infosubDto = $Dpto->Load( $DptoUid ); //print_r($infosubDto);
+    $aFields = array ('SUID' => $DptoUid,'SDEPPARENT' => $DepParent ); //print_r($aFields);print"<hr>";
+}
+$G_PUBLISH = new Publisher();
+$G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'departments/subdep_Edit', '', $aFields, 'subdep_Save' );
 
-  G::RenderPage( "publish" , "raw" );
+G::RenderPage( "publish", "raw" );
 
-?>
