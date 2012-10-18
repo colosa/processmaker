@@ -154,7 +154,7 @@ class Applications
                 $Criteria->add( AppCacheViewPeer::DEL_DELEGATE_DATE, $dateFrom, Criteria::GREATER_EQUAL );
                 $CriteriaCount->add( AppCacheViewPeer::DEL_DELEGATE_DATE, $dateFrom, Criteria::GREATER_EQUAL );
             }
-        } else if ($dateTo != '') {
+        } elseif ($dateTo != '') {
             $Criteria->add( AppCacheViewPeer::DEL_DELEGATE_DATE, $dateTo, Criteria::LESS_EQUAL );
             $CriteriaCount->add( AppCacheViewPeer::DEL_DELEGATE_DATE, $dateTo, Criteria::LESS_EQUAL );
         }
