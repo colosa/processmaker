@@ -96,19 +96,22 @@ class DBConnection
     function DBConnection ($strServer = DB_HOST, $strUser = DB_USER, $strPwd = DB_PASS, $strDB = DB_NAME, $type = DB_ADAPTER, $strPort = 0, $errorLevel = 2)
     {
         $this->errorLevel = $errorLevel;
-        if ($type == null)
+        if ($type == null) {
             $type = 'mysql';
+        }
         $this->type = $type;
         //print "<hr>$type $strServer, $strUser, $strPwd, $strDB <hr>";
-        if ($type == "mysql")
+        if ($type == "mysql") {
             $dsn = "mysql://$strUser:$strPwd@$strServer/$strDB";
+        }
         if ($type == "pgsql") {
             //$dsn = "pgsql://postgres@$strServer/$strDB";
             $prt = ($strPort == 0 || $strPort == 5432 ? '' : ":$strPort");
             $dsn = "pgsql://$strUser:$strPwd@$strServer$prt/$strDB";
         }
-        if ($type == "odbc")
+        if ($type == "odbc") {
             $dsn = "odbc://$strUser:$strPwd@$strServer/$strDB";
+        }
         if ($type == "mssql") {
             $strServer = substr( $strServer, 0, strpos( $strServer, ':' ) );
             $prt = ($strPort == 0 || $strPort == 1433 ? '' : ":$strPort");
@@ -179,16 +182,16 @@ class DBConnection
      * @param string $errorLevel
      * @return void
      */
-    function logError ($obj, $errorLevel = NULL)
+    function logError ($obj, $errorLevel = null)
     {
         global $_SESSION;
         global $_SERVER;
         if (is_null( $errorLevel ))
-            if (isset( $this->errorLevel )) {
-                $errorLevel = $this->errorLevel;
-            } else {
-                $errorLevel = DB_ERROR_SHOWALL_AND_STOP; //for fatal errors the default is 3, show detailed and die.
-            }
+        if (isset( $this->errorLevel )) {
+            $errorLevel = $this->errorLevel;
+        } else {
+            $errorLevel = DB_ERROR_SHOWALL_AND_STOP; //for fatal errors the default is 3, show detailed and die.
+        }
 
         if ($errorLevel == DB_ERROR_SHOW_AND_STOP || $errorLevel == DB_ERROR_SHOW_AND_CONTINUE || $errorLevel == DB_ERROR_SHOWALL_AND_STOP || $errorLevel == DB_ERROR_SHOWALL_AND_CONTINUE) {
             print "<table border=1 style='font-family:Arial' cellspacing=1 cellpadding = 0 width=400 class= 'tableError' >";
