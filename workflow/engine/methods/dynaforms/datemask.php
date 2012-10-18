@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * fields_Edit.php
  *
@@ -12,30 +12,31 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 //if (($RBAC_Response=$RBAC->userCanAccess("PM_FACTORY"))!=1) return $RBAC_Response;
 
-  //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
-  G::LoadClass('dynaFormField');
-
- // if (!(isset($_GET['A']) && $_GET['A']!==''))  return;
-
- // $file = G::decrypt( $_GET['A'] , URL_KEY );
-  $file='datemask';
+//G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
 
-  $G_PUBLISH = new Publisher();
-  $G_PUBLISH->AddContent('xmlform', 'xmlform', 'dynaforms/datemask','','');
-  //$G_PUBLISH->AddContent('xmlform', 'xmlform', 'dynaforms/fields/' . $type, '', $Fields , SYS_URI.'dynaforms/fields_Save', SYS_URI.'dynaforms/fields_Ajax');
-   G::RenderPage( "publish" , "raw" );
-?>
+G::LoadClass( 'dynaFormField' );
+
+// if (!(isset($_GET['A']) && $_GET['A']!==''))  return;
+
+
+// $file = G::decrypt( $_GET['A'] , URL_KEY );
+$file = 'datemask';
+
+$G_PUBLISH = new Publisher();
+$G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'dynaforms/datemask', '', '' );
+//$G_PUBLISH->AddContent('xmlform', 'xmlform', 'dynaforms/fields/' . $type, '', $Fields , SYS_URI.'dynaforms/fields_Save', SYS_URI.'dynaforms/fields_Ajax');
+G::RenderPage( "publish", "raw" );
+

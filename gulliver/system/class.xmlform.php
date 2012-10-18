@@ -560,7 +560,7 @@ class XmlForm_Field
                 $events[$attribute] = $value;
             }
         }
-        if ($sizeof( $events ) < 1) {
+        if (sizeof( $events ) < 1) {
             return '{}';
         }
         return $json->encode( $events );

@@ -12,53 +12,53 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
-if (($RBAC_Response=$RBAC->userCanAccess("PM_FACTORY"))!=1) return $RBAC_Response;
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
+    return $RBAC_Response;
+}
 
-  //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
+    //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
-  G::LoadClass('dynaFormField');
 
-  if (!(isset($_POST['A']) && $_POST['A']!==''))  return;
+G::LoadClass( 'dynaFormField' );
 
-  $file = G::decrypt( $_POST['A'] , URL_KEY );
+if (! (isset( $_POST['A'] ) && $_POST['A'] !== '')) {
+    return;
+}
 
-  $dbc = new DBConnection( PATH_DYNAFORM . $file . '.xml' ,'','','','myxml' );
-  $ses = new DBSession($dbc);
+$file = G::decrypt( $_POST['A'], URL_KEY );
 
-  $fields = new DynaFormField( $dbc );
+$dbc = new DBConnection( PATH_DYNAFORM . $file . '.xml', '', '', '', 'myxml' );
+$ses = new DBSession( $dbc );
 
-  if (!isset($_POST['XMLNODE_NAME'])) return;
+$fields = new DynaFormField( $dbc );
 
-  $fields->Delete( $_POST['XMLNODE_NAME'] );
+if (! isset( $_POST['XMLNODE_NAME'] )) {
+    return;
+}
 
-  G::LoadClass('xmlDb');
-  $i         = 0;
-	$aFields   = array();
-  $aFields[] = array('XMLNODE_NAME' => 'char',
-  	                 'TYPE'         => 'char',
-  	                 'UP'           => 'char',
-  	                 'DOWN'         => 'char');
-	$oSession = new DBSession(new DBConnection(PATH_DYNAFORM . $file . '.xml', '', '', '', 'myxml'));
-	$oDataset = $oSession->Execute('SELECT * FROM dynaForm WHERE NOT( XMLNODE_NAME = "" )');
-	$iMaximun = $oDataset->count();
-	while ($aRow = $oDataset->Read()) {
-  	$aFields[] = array('XMLNODE_NAME' => $aRow['XMLNODE_NAME'],
-    	                 'TYPE'         => $aRow['TYPE'],
-    	                 'UP'           => ($i > 0 ? G::LoadTranslation('ID_UP') : ''),
-    	                 'DOWN'         => ($i < $iMaximun-1 ? G::LoadTranslation('ID_DOWN') : ''));
-    $i++;
-	}
-	global $_DBArray;
-  $_DBArray['fields']   = $aFields;
-  $_SESSION['_DBArray'] = $_DBArray;
-?>
+$fields->Delete( $_POST['XMLNODE_NAME'] );
+
+G::LoadClass( 'xmlDb' );
+$i = 0;
+$aFields = array ();
+$aFields[] = array ('XMLNODE_NAME' => 'char','TYPE' => 'char','UP' => 'char','DOWN' => 'char');
+$oSession = new DBSession( new DBConnection( PATH_DYNAFORM . $file . '.xml', '', '', '', 'myxml' ) );
+$oDataset = $oSession->Execute( 'SELECT * FROM dynaForm WHERE NOT( XMLNODE_NAME = "" )' );
+$iMaximun = $oDataset->count();
+while ($aRow = $oDataset->Read()) {
+    $aFields[] = array ('XMLNODE_NAME' => $aRow['XMLNODE_NAME'],'TYPE' => $aRow['TYPE'],'UP' => ($i > 0 ? G::LoadTranslation( 'ID_UP' ) : ''),'DOWN' => ($i < $iMaximun - 1 ? G::LoadTranslation( 'ID_DOWN' ) : '') );
+    $i ++;
+}
+global $_DBArray;
+$_DBArray['fields'] = $aFields;
+$_SESSION['_DBArray'] = $_DBArray;
+

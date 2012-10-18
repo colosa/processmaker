@@ -12,15 +12,14 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 /*
  * Created on 07/01/2008
@@ -28,11 +27,11 @@
  * @author David Callizaya <davidsantos@colosa.com>
  */
 global $_DBArray;
-if (!isset($_DBArray)) {
-  $_DBArray = array();
+if (! isset( $_DBArray )) {
+    $_DBArray = array ();
 }
-G::LoadClass('dynaformEditor');
-$oDynaformEditorAjax = new dynaformEditorAjax($_POST);
+G::LoadClass( 'dynaformEditor' );
+$oDynaformEditorAjax = new dynaformEditorAjax( $_POST );
 
 //if (($RBAC_Response=$RBAC->userCanAccess("PM_FACTORY"))!=1) return $RBAC_Response;
 //
@@ -226,4 +225,4 @@ $oDynaformEditorAjax = new dynaformEditorAjax($_POST);
 //      break;
 //	}
 //
-?>
+
