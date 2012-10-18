@@ -12,59 +12,58 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
-$access = $RBAC->userCanAccess('PM_USERS');
-if( $access != 1 ){
-  switch ($access)
-  {
-  	case -1:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	case -2:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	default:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;  	
-  }
-}  
+$access = $RBAC->userCanAccess( 'PM_USERS' );
+if ($access != 1) {
+    switch ($access) {
+        case - 1:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+        case - 2:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+        default:
+            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+            G::header( 'location: ../login/login' );
+            die();
+            break;
+    }
+}
 
-if (($RBAC_Response=$RBAC->userCanAccess("PM_USERS"))!=1) return $RBAC_Response;
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
+    return $RBAC_Response;
+}
 
-  $G_MAIN_MENU            = 'processmaker';
-  $G_SUB_MENU             = 'users';
-  $G_ID_MENU_SELECTED     = 'USERS';
-  $G_ID_SUB_MENU_SELECTED = 'GROUPS';
-  
-  
-$G_PUBLISH = new Publisher;
+$G_MAIN_MENU = 'processmaker';
+$G_SUB_MENU = 'users';
+$G_ID_MENU_SELECTED = 'USERS';
+$G_ID_SUB_MENU_SELECTED = 'GROUPS';
 
-G::LoadClass('configuration');
+$G_PUBLISH = new Publisher();
+
+G::LoadClass( 'configuration' );
 $c = new Configurations();
-$configPage = $c->getConfiguration('groupList', 'pageSize','',$_SESSION['USER_LOGGED']);
-$configEnv = $c->getConfiguration('ENVIRONMENT_SETTINGS', '');
-$Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;
+$configPage = $c->getConfiguration( 'groupList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
+$configEnv = $c->getConfiguration( 'ENVIRONMENT_SETTINGS', '' );
+$Config['pageSize'] = isset( $configPage['pageSize'] ) ? $configPage['pageSize'] : 20;
 
-$oHeadPublisher =& headPublisher::getSingleton();
-$oHeadPublisher->addExtJsScript('groups/groupsList', false);    //adding a javascript file .js
-$oHeadPublisher->addContent('groups/groupsList'); //adding a html file  .html.
-$oHeadPublisher->assign('CONFIG', $Config);
+$oHeadPublisher = & headPublisher::getSingleton();
+$oHeadPublisher->addExtJsScript( 'groups/groupsList', false ); //adding a javascript file .js
+$oHeadPublisher->addContent( 'groups/groupsList' ); //adding a html file  .html.
+$oHeadPublisher->assign( 'CONFIG', $Config );
 
-G::RenderPage('publish', 'extJs');
-?>
+G::RenderPage( 'publish', 'extJs' );
+
