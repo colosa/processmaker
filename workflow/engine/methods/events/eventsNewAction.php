@@ -12,37 +12,36 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 global $RBAC;
-if ($RBAC->userCanAccess('PM_SETUP') != 1) {
-  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-	G::header('location: ../login/login');
-	die;
+if ($RBAC->userCanAccess( 'PM_SETUP' ) != 1) {
+    G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+    G::header( 'location: ../login/login' );
+    die();
 }
 
 global $_DBArray;
 
-//get the posted fields of new Event and create a new record of that 
+//get the posted fields of new Event and create a new record of that
 require_once 'classes/model/Event.php';
 
 $oEvent = new Event();
-$envUId = $oEvent->create($_POST);
+$envUId = $oEvent->create( $_POST );
 
 $_SESSION['EVN_UID'] = $envUId;
-require_once ( 'eventsEditAction.php' );
-die;
+require_once ('eventsEditAction.php');
+die();
 
 /*
-//this page is showing the parameters for setup email messages and triggers, 
+//this page is showing the parameters for setup email messages and triggers,
 //probably this will be changed soon.
 
 $aTemplates   = array();
@@ -81,3 +80,4 @@ $G_PUBLISH->AddContent('xmlform', 'xmlform', 'events/events_EditAction', '', $_P
 G::RenderPage('publish', 'raw');
 
 */
+

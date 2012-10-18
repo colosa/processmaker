@@ -506,7 +506,6 @@ class XmlForm_Field
         if ($e !== '') {
             $correct = false;
         }
-
         //##,###.##   --> ^...$ no parece pero no, o mejor si, donde # es \d?, en general todos
         // es valida cuando no encuentra un caracter que no deberia estar, puede no terminar la mascara
         // pero si sobran caracteres en el value entonces no se cumple la mascara.
@@ -4246,7 +4245,6 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
          * $html .= '<input type="hidden" id="'.$idIsoDate.'" name="'.$idIsoDate.'" value="'.$valisoDate.'"/>';
          * *
          */
-
         if ($this->gridFieldType == '') {
             $html .= $this->renderHint();
         }

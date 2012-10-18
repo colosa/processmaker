@@ -6,7 +6,6 @@ require_once 'classes/model/Content.php';
 
 switch($req){
     case 'showUsers':
-
         /*
         $sql = "SELECT USR_UID, USR_EMAIL, CONCAT(USR_FIRSTNAME, ' ' , USR_LASTNAME) AS USR_FULLNAME FROM USERS WHERE USR_STATUS = 'ACTIVE' AND USR_EMAIL <> ''";
         */
@@ -29,7 +28,7 @@ switch($req){
         $rs = $stmt->executeQuery();
 
         $aRows[] = array('USR_UID'=>'char', 'USR_EMAIL'=>'char', 'USR_FULLNAME'=>'char');
-        while($rs->next()){
+        while ($rs->next()) {
             $aRows[] = array('USR_UID'=>$rs->getString('USR_UID'), 'USR_EMAIL'=>$rs->getString('USR_EMAIL'), 'USR_FULLNAME'=>$rs->getString('USR_FULLNAME'));
         }
         //echo '<pre>';     print_r($aRows);
@@ -40,11 +39,10 @@ switch($req){
         G::LoadClass('ArrayPeer');
         $oCriteria = new Criteria('dbarray');
         $oCriteria->setDBArrayTable('virtualtable');
-
         $G_PUBLISH = new Publisher();
         $G_PUBLISH->AddContent('propeltable', 'paged-table', 'events/usermailList', $oCriteria);
         G::RenderPage('publish', 'raw');
-    break;
+        break;
     case 'showGroups':
         G::LoadClass('groups');
         $groups = new Groups();
@@ -56,41 +54,35 @@ switch($req){
             $GROUP_TITLE = strip_tags($group->getGrpTitle());
             $aRows[] = array('GRP_UID'=>$UID, 'GROUP_TITLE'=>$GROUP_TITLE);
         }
-
         global $_DBArray;
         $_DBArray['virtualtable']   = $aRows;
         $_SESSION['_DBArray'] = $_DBArray;
         G::LoadClass('ArrayPeer');
         $oCriteria = new Criteria('dbarray');
         $oCriteria->setDBArrayTable('virtualtable');
-
         $G_PUBLISH = new Publisher();
         $G_PUBLISH->AddContent('propeltable', 'paged-table', 'events/groupmailList', $oCriteria);
         G::RenderPage('publish', 'raw');
-    break;
+        break;
     case 'showDynavars':
         G::LoadClass('xmlfield_InputPM');
         $dynaformFields = getDynaformsVars($_SESSION['PROCESS'], false, false);
         $fields = array(array('id' => 'char', 'dynaform' => 'char', 'name' => 'char'));
-
         foreach ($dynaformFields as $dynaformField) {
             $fields[] = array('id' => $dynaformField['sName'],
                               'name' => '<a href="#" style="color: black;" onclick="e.toAdd(\'' . $dynaformField['sName'] . '\', \'' . $dynaformField['sName'] . '\', \'dyn\');oPanel.remove();return false;">@#' . $dynaformField['sName'] . '</a>', 'label' => $dynaformField['sLabel']);
         }
-
         global $_DBArray;
         $_DBArray['virtualtable'] = $fields;
         $_SESSION['_DBArray'] = $_DBArray;
         G::LoadClass('ArrayPeer');
         $oCriteria = new Criteria('dbarray');
         $oCriteria->setDBArrayTable('virtualtable');
-
         $G_PUBLISH = new Publisher();
         $G_PUBLISH->AddContent('propeltable', 'paged-table', 'events/dynavarsList', $oCriteria);
         G::RenderPage('publish', 'raw');
-    break;
+        break;
     case 'eventList':
-
         $start      = (isset($_REQUEST['start']))?      $_REQUEST['start']      : '0';
         $limit      = (isset($_REQUEST['limit']))?      $_REQUEST['limit']      : '25';
         $proUid     = (isset($_REQUEST['process']))?    $_REQUEST['process']    : '';
@@ -110,7 +102,7 @@ switch($req){
         $result = AppEventPeer::doSelectRS($criteria);
         $result->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $data = Array();
-        while( $result->next() ) {
+        while ( $result->next() ) {
             $data[] = $result->getRow();
         }
         $totalCount = count($data);
@@ -120,8 +112,7 @@ switch($req){
         if ($sort != '') {
             if ($dir == 'ASC') {
                 $criteria->addAscendingOrderByColumn($sort);
-            }
-            else {
+            } else {
                 $criteria->addDescendingOrderByColumn($sort);
             }
         } else {
@@ -136,12 +127,13 @@ switch($req){
         $data = Array();
         $dataPro = array();
         $index = 0;
-        while( $result->next() ) {
+        while ( $result->next() ) {
             $data[] = $result->getRow();
         }
         $response = array();
         $response['totalCount'] = $totalCount;
         $response['data']       = $data;
         die(G::json_encode($response));
-    break;
+        break;
 }
+
