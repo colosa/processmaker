@@ -13,15 +13,14 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 /*
  * Map for Case Tracker
@@ -30,21 +29,21 @@
  *
  */
 require_once 'classes/model/Process.php';
-if (!isset($_SESSION['PROCESS'])) {
-    G::header('location: login');
+if (! isset( $_SESSION['PROCESS'] )) {
+    G::header( 'location: login' );
 }
 $G_MAIN_MENU = 'caseTracker';
 $G_ID_MENU_SELECTED = 'MAP';
 
 require_once 'classes/model/CaseTracker.php';
 $oCaseTracker = new CaseTracker();
-$aCaseTracker = $oCaseTracker->load($_SESSION['PROCESS']);
+$aCaseTracker = $oCaseTracker->load( $_SESSION['PROCESS'] );
 
 $idProcess = $_SESSION['PROCESS'];
 $oProcess = new Process();
-$aProcessFieds = $oProcess->load($idProcess);
+$aProcessFieds = $oProcess->load( $idProcess );
 $noShowTitle = 0;
-if (isset($aProcessFieds['PRO_SHOW_MESSAGE'])) {
+if (isset( $aProcessFieds['PRO_SHOW_MESSAGE'] )) {
     $noShowTitle = $aProcessFieds['PRO_SHOW_MESSAGE'];
 }
 switch (($aCaseTracker['CT_MAP_TYPE'])) {
@@ -52,28 +51,28 @@ switch (($aCaseTracker['CT_MAP_TYPE'])) {
         //Nothing
         break;
     case 'PROCESSMAP':
-        G::LoadClass('case');
-        G::LoadClass('processMap');
+        G::LoadClass( 'case' );
+        G::LoadClass( 'processMap' );
         $oCase = new Cases();
-        $aFields = $oCase->loadCase($_SESSION['APPLICATION']);
-        if (isset($aFields['TITLE'])) {
+        $aFields = $oCase->loadCase( $_SESSION['APPLICATION'] );
+        if (isset( $aFields['TITLE'] )) {
             $aFields['APP_TITLE'] = $aFields['TITLE'];
         }
         if ($aFields['APP_PROC_CODE'] != '') {
             $aFields['APP_NUMBER'] = $aFields['APP_PROC_CODE'];
         }
-        $aFields['CASE'] = G::LoadTranslation('ID_CASE');
-        $aFields['TITLE'] = G::LoadTranslation('ID_TITLE');
-        $oTemplatePower = new TemplatePower(PATH_TPL . 'processes/processes_Map.html');
+        $aFields['CASE'] = G::LoadTranslation( 'ID_CASE' );
+        $aFields['TITLE'] = G::LoadTranslation( 'ID_TITLE' );
+        $oTemplatePower = new TemplatePower( PATH_TPL . 'processes/processes_Map.html' );
         $oTemplatePower->prepare();
-        $G_PUBLISH = new Publisher;
+        $G_PUBLISH = new Publisher();
         if ($noShowTitle == 0) {
-            $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $aFields);
+            $G_PUBLISH->AddContent( 'smarty', 'cases/cases_title', '', '', $aFields );
         }
-        $G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
+        $G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
         $oHeadPublisher = & headPublisher::getSingleton();
-        $oHeadPublisher->addScriptCode('
-        var maximunX = ' . processMap::getMaximunTaskX($_SESSION['PROCESS']) . ';
+        $oHeadPublisher->addScriptCode( '
+        var maximunX = ' . processMap::getMaximunTaskX( $_SESSION['PROCESS'] ) . ';
         leimnud.event.add(window,"load",function(){
           var pb = leimnud.dom.capture("tag.body 0");
           pm = new processmap();
@@ -133,30 +132,30 @@ switch (($aCaseTracker['CT_MAP_TYPE'])) {
           }.extend(this);
 
           rpcRequest.make();
-        });');
-        G::RenderPage('publish');
+        });' );
+        G::RenderPage( 'publish' );
         break;
     case 'STAGES':
-        G::LoadClass('case');
+        G::LoadClass( 'case' );
         $oCase = new Cases();
-        $aFields = $oCase->loadCase($_SESSION['APPLICATION']);
-        if (isset($aFields['TITLE'])) {
+        $aFields = $oCase->loadCase( $_SESSION['APPLICATION'] );
+        if (isset( $aFields['TITLE'] )) {
             $aFields['APP_TITLE'] = $aFields['TITLE'];
         }
         if ($aFields['APP_PROC_CODE'] != '') {
             $aFields['APP_NUMBER'] = $aFields['APP_PROC_CODE'];
         }
-        $aFields['CASE'] = G::LoadTranslation('ID_CASE');
-        $aFields['TITLE'] = G::LoadTranslation('ID_TITLE');
-        $oTemplatePower = new TemplatePower(PATH_TPL . 'tracker/stages_Map.html');
+        $aFields['CASE'] = G::LoadTranslation( 'ID_CASE' );
+        $aFields['TITLE'] = G::LoadTranslation( 'ID_TITLE' );
+        $oTemplatePower = new TemplatePower( PATH_TPL . 'tracker/stages_Map.html' );
         $oTemplatePower->prepare();
-        $G_PUBLISH = new Publisher;
+        $G_PUBLISH = new Publisher();
         if ($noShowTitle == 0) {
-            $G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $aFields);
+            $G_PUBLISH->AddContent( 'smarty', 'cases/cases_title', '', '', $aFields );
         }
-        $G_PUBLISH->AddContent('template', '', '', '', $oTemplatePower);
+        $G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
         $oHeadPublisher = & headPublisher::getSingleton();
-        $oHeadPublisher->addScriptCode('
+        $oHeadPublisher->addScriptCode( '
         leimnud.Package.Load("stagesmap",{Type:"file",Absolute:true,Path:"/jscore/stagesmap/core/stagesmap.js"});
         leimnud.event.add(window,"load",function(){
           var pb=leimnud.dom.capture("tag.body 0");
@@ -174,7 +173,8 @@ switch (($aCaseTracker['CT_MAP_TYPE'])) {
             hideMenu  : false
           };
           Sm.make();
-        });');
-        G::RenderPage('publish');
+        });' );
+        G::RenderPage( 'publish' );
         break;
 }
+

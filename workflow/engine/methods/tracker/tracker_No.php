@@ -12,34 +12,33 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
- 
-   /*
-   * message for Case Tracker
-   *
-   * @author Everth S. Berrios Morales <everth@colosa.com>
-   * 
-   */
-	if (!isset($_SESSION['PROCESS']))
-  {
-	  G::header('location: login');
-  }
-	$G_MAIN_MENU            = 'caseTracker';
-  //$G_ID_MENU_SELECTED     = 'DYNADOC';  
 
-  G::LoadClass('processMap');  
-  
-  $G_PUBLISH = new Publisher();
-  $G_PUBLISH->AddContent('xmlform', 'xmlform', 'tracker/tracker_No', '', '');
-	
-	G::RenderPage('publish');
-	
+/*
+* message for Case Tracker
+*
+* @author Everth S. Berrios Morales <everth@colosa.com>
+*
+*/
+if (! isset( $_SESSION['PROCESS'] )) {
+    G::header( 'location: login' );
+}
+$G_MAIN_MENU = 'caseTracker';
+//$G_ID_MENU_SELECTED     = 'DYNADOC';
+
+
+G::LoadClass( 'processMap' );
+
+$G_PUBLISH = new Publisher();
+$G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'tracker/tracker_No', '', '' );
+
+G::RenderPage( 'publish' );
+
