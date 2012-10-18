@@ -1,4 +1,5 @@
 <?php
+
 /**
  * autoinstallProcess.php
  *

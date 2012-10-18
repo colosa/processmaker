@@ -24,7 +24,6 @@ if (isset( $_GET['gen'] )) {
     echo "<textarea cols=120>$h</textarea><br/>";
     echo "SYSTEM_HASH<br/>";
     echo "<textarea cols=120>$sh</textarea>";
-
     $s = "<?php
 
 define( 'PATH_DATA', '/shared/workflow_data/' );

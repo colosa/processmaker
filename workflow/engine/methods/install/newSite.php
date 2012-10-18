@@ -1,4 +1,5 @@
 <?php
+
 /**
  * installServer.php
  *
