@@ -92,10 +92,7 @@ function getProcessList ()
                         $tempTreeChild['otherAttributes'] = array_merge( $processInfoChild, $proData[$processInfoChild['pro_uid']], $calendar->getCalendarFor( $processInfoChild['uid'], $processInfoChild['uid'], $processInfoChild['uid'] ) );
                         $tempTreeChild['otherAttributes']['PRO_TAS_TITLE'] = str_replace( ")", "", str_replace( "(", "", trim( str_replace( $tempTreeChild['otherAttributes']['PRO_TITLE'], "", $tempTreeChild['otherAttributes']["value"] ) ) ) );
                         $tempTreeChild['qtip'] = $tempTreeChild['otherAttributes']['PRO_DESCRIPTION'];
-
                         //$tempTree['cls']='file';
-
-
                         $tempTreeChildren[] = $tempTreeChild;
                     }
                 }
@@ -289,16 +286,10 @@ function getSimpleDashboardData ()
     $Criteria->addSelectColumn( AppCacheViewPeer::USR_UID );
     $Criteria->addSelectColumn( AppCacheViewPeer::APP_THREAD_STATUS );
 
-    $Criteria->add( AppCacheViewPeer::APP_STATUS, array ("TO_DO","DRAFT"
-    ), CRITERIA::IN );
-    $Criteria->add( AppCacheViewPeer::USR_UID, array ($sUIDUserLogged,""
-    ), CRITERIA::IN );
-
+    $Criteria->add( AppCacheViewPeer::APP_STATUS, array ("TO_DO","DRAFT"), CRITERIA::IN );
+    $Criteria->add( AppCacheViewPeer::USR_UID, array ($sUIDUserLogged,""), CRITERIA::IN );
     $Criteria->add( AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL );
-
     //$Criteria->add ( AppCacheViewPeer::APP_THREAD_STATUS, 'OPEN' );
-
-
     $Criteria->add( AppCacheViewPeer::DEL_THREAD_STATUS, 'OPEN' );
 
     //execute the query

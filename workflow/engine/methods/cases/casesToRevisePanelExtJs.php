@@ -1,6 +1,7 @@
 <?php
 //  $oHeadPublisher =& headPublisher::getSingleton();
 //  $TRANSLATIONS = array_merge($TRANSLATIONS, $TRANSLATIONS2);
+
 $delIndex = $_GET['DEL_INDEX'];
 $appUid = $_GET['APP_UID'];
 //  $oHeadPublisher->assign( 'TRANSLATIONS',   $TRANSLATIONS); //translations

@@ -69,8 +69,7 @@ try {
 } catch (Exception $error) {
     global $G_PUBLISH;
     $G_PUBLISH = new Publisher();
-    $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => $error->getMessage()
-    ) );
+    $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => $error->getMessage()) );
     G::RenderPage( 'publish', 'blank' );
     die();
 }

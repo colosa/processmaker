@@ -1,15 +1,12 @@
 <?php
-
 $request = isset( $_POST['request'] ) ? $_POST['request'] : '';
 switch ($request) {
     case 'getRows':
 
         $fieldname = $_POST['fieldname'];
-
         G::LoadClass( 'case' );
         $oApp = new Cases();
         $aFields = $oApp->loadCase( $_SESSION['APPLICATION'] );
-
         $aVars = Array ();
         for ($i = 0; $i < count( $_SESSION['TRIGGER_DEBUG']['DATA'] ); $i ++) {
             $aVars[$_SESSION['TRIGGER_DEBUG']['DATA'][$i]['key']] = $_SESSION['TRIGGER_DEBUG']['DATA'][$i]['value'];
@@ -86,10 +83,8 @@ switch ($request) {
         if (isset( $_POST['filter'] ) && $_POST['filter'] == 'sys') {
             $aVars = G::getSystemConstants();
         }
-
         ksort( $aVars );
         $return_object->totalCount = 1;
-
         foreach ($aVars as $i => $var) {
             if (is_array( $var ) || is_object( $var )) {
                 $aVars[$i] = print_r( $var, true );

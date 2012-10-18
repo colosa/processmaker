@@ -1,7 +1,5 @@
 <?php
-
 G::LoadClass( 'configuration' );
-
 $callback = isset( $_POST['callback'] ) ? $_POST['callback'] : 'stcCallback1001';
 $query = isset( $_POST['query'] ) ? $_POST['query'] : '';
 $dir = isset( $_POST['dir'] ) ? $_POST['dir'] : 'DESC';

@@ -1,5 +1,4 @@
 <?php
-
 class TreeNode
 {
     public $text = "";
@@ -43,9 +42,7 @@ class ExtJsTreeNode extends TreeNode
 }
 
 G::LoadClass( 'case' );
-
 $o = new Cases();
-
 $PRO_UID = $_SESSION['PROCESS'];
 
 $treeArray = array ();

@@ -1,9 +1,7 @@
 <?php
-
 $action = isset( $_GET['action'] ) ? $_GET['action'] : 'default';
 G::LoadClass( 'case' );
 G::LoadClass( 'configuration' );
-
 $userId = isset( $_SESSION['USER_LOGGED'] ) ? $_SESSION['USER_LOGGED'] : '00000000000000000000000000000000';
 switch ($action) {
     case 'getAllCounters':
@@ -182,7 +180,6 @@ function getAllCounters ()
     $aTypes['selfservice'] = 'CASES_SELFSERVICE';
     //$aTypes['to_revise']   = 'CASES_TO_REVISE';
     //$aTypes['to_reassign'] = 'CASES_TO_REASSIGN';
-
 
     if ((($solrConf = System::solrEnv()) !== false)) {
         G::LoadClass( 'AppSolr' );

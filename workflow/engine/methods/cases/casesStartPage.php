@@ -13,8 +13,6 @@ global $RBAC;
 switch ($page) {
     case "startCase":
         $oHeadPublisher->addExtJsScript( 'cases/casesStartCase', true ); //adding a javascript file .js
-
-
         $oHeadPublisher->addContent( 'cases/casesStartCase' ); //adding a html file  .html.
         G::LoadClass( 'configuration' );
         $c = new Configurations();
@@ -43,6 +41,5 @@ switch ($page) {
         break;
 
 }
-
 G::RenderPage( 'publish', 'extJs' );
 

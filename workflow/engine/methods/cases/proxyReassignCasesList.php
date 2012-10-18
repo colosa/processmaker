@@ -21,8 +21,7 @@ $allTasUids = array ();
 // getting all App Uids and task Uids
 foreach ($sentUids as $sentUid) {
     $aItem = explode( '|', $sentUid );
-    $allUidsRecords[] = array ('APP_UID' => $aItem[0],'TAS_UID' => $aItem[1],'DEL_INDEX' => $aItem[2]
-    );
+    $allUidsRecords[] = array ('APP_UID' => $aItem[0],'TAS_UID' => $aItem[1],'DEL_INDEX' => $aItem[2]);
 }
 
 $sReassignFromUser = isset( $_POST['user'] ) ? $_POST['user'] : '';
@@ -55,8 +54,8 @@ foreach ($allUidsRecords as $aRecord) {
         foreach ($aCaseUsers as $aCaseUser) {
             if ($aCaseUser['USR_UID'] != $sReassignFromUser) {
                 $aCaseUserRecord = $oUser->load( $aCaseUser['USR_UID'] );
-                $aUsersInvolved[] = array ('userUid' => $aCaseUser['USR_UID'],'userFullname' => $aCaseUserRecord['USR_FIRSTNAME'] . ' ' . $aCaseUserRecord['USR_LASTNAME']
-                ); // . ' (' . $aCaseUserRecord['USR_USERNAME']
+                $aUsersInvolved[] = array ('userUid' => $aCaseUser['USR_UID'],'userFullname' => $aCaseUserRecord['USR_FIRSTNAME'] . ' ' . $aCaseUserRecord['USR_LASTNAME']);
+                // . ' (' . $aCaseUserRecord['USR_USERNAME']
             }
         }
     }

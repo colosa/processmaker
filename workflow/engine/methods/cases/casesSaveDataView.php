@@ -25,7 +25,6 @@
 //$oForm = new Form ( $_SESSION ['PROCESS'] . '/' . $_GET ['UID'], PATH_DYNAFORM );
 //$oForm->validatePost ();
 
-
 /* @author Alvaro Campos Sanchez */
 /* Includes */
 G::LoadClass( 'case' );
@@ -39,11 +38,7 @@ $Fields['APP_DATA'] = array_merge( $Fields['APP_DATA'], (array) $_POST['form'] )
 
 #here we must verify if is a debug session
 $trigger_debug_session = $_SESSION['TRIGGER_DEBUG']['ISSET']; #here we must verify if is a debugg session
-
-
 #trigger debug routines...
-
-
 //cleaning debug variables
 $_SESSION['TRIGGER_DEBUG']['ERRORS'] = Array ();
 $_SESSION['TRIGGER_DEBUG']['DATA'] = Array ();

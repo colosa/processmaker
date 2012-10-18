@@ -4,7 +4,6 @@ if (isset( $_SESSION['TRIGGER_DEBUG']['info'] )) {
 } else {
     $aTriggers[0] = $_SESSION['TRIGGER_DEBUG'];
 }
-
 //print_r($aTriggers);die;
 $triggersList = Array ();
 
@@ -21,8 +20,6 @@ foreach ($aTriggers as $aTrigger) {
             //$t_code = str_replace('"', '\'',$t_code);
             //$t_code = addslashes($t_code);
             //$t_code = Only1br($t_code);
-
-
             //highlighting the trigger code using the geshi third party library
             G::LoadThirdParty( 'geshi', 'geshi' );
             $geshi = new GeSHi( $aTrigger['TRIGGERS_VALUES'][$index]['TRI_WEBBOT'], 'php' );
@@ -65,9 +62,7 @@ foreach ($DEBUG_ERRORS as $error) {
       ]}';
 
  */
-
 $triggersRet->total = count( $triggersList );
 $triggersRet->data = $triggersList;
-
 echo G::json_encode( $triggersRet );
 

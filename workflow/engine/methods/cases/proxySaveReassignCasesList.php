@@ -28,7 +28,6 @@ foreach ($items as $item) {
     $dataUids = explode( "|", $item );
     $appSelectedUids[] = $dataUids[0];
 }
-
 // var_dump($aData);
 //var_dump($appSelectedUids);
 $casesReassignedCount = 0;
@@ -86,10 +85,8 @@ if (is_array( $aData )) {
         $rs->next();
         $row = $rs->getRow();
     }
-    $serverResponse[] = array ('TAS_TITLE' => $aData->APP_TAS_TITLE,'REASSIGNED_CASES' => $currentCasesReassigned
-    );
+    $serverResponse[] = array ('TAS_TITLE' => $aData->APP_TAS_TITLE,'REASSIGNED_CASES' => $currentCasesReassigned);
 }
-
 $serverResponse['TOTAL'] = $casesReassignedCount;
 echo G::json_encode( $serverResponse );
 

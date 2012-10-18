@@ -69,18 +69,13 @@ $oCriteria->addDescendingOrderByColumn( LogCasesSchedulerPeer::EXEC_HOUR );
 
 $oDataset = LogCasesSchedulerPeer::doSelectRS( $oCriteria );
 $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-
 //$oDataset = LogCasesSchedulerPeer::doSelectRS ( $oCriteria );
 //$oDataset->setFetchmode ( ResultSet::FETCHMODE_ASSOC );
-
-
 $addTables = Array ();
 while ($oDataset->next()) {
     $addTables[] = $oDataset->getRow();
 }
-
 //$oLogCasesScheduler = new LogCasesScheduler();
 //$arrData = $oLogCasesScheduler->getAll();
-
 echo '{results: ' . $results . ', rows: ' . G::json_encode( $addTables ) . '}';
 

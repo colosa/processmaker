@@ -18,7 +18,6 @@ $dateTo = isset( $_POST["dateTo"] ) ? substr( $_POST["dateTo"], 0, 10 ) : "";
 
 try {
     $result = "";
-
     $userUid = (isset( $_SESSION["USER_LOGGED"] ) && $_SESSION["USER_LOGGED"] != "") ? $_SESSION["USER_LOGGED"] : null;
     $user = ($user == "CURRENT_USER") ? $userUid : $user;
 

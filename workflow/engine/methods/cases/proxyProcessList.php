@@ -8,7 +8,6 @@ $option = '';
 if (isset( $_GET['t'] ))
     $option = $_GET['t'];
 try {
-
     G::LoadClass( "BasePeer" );
     require_once ("classes/model/Process.php");
     require_once ("classes/model/AppCacheView.php");

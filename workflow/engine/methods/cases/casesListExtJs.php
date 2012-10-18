@@ -6,7 +6,6 @@ if ($action == 'selfservice')
     $action = 'unassigned';
     //if ( $action == 'sent' ) $action = 'participated';
 
-
 G::LoadClass( "BasePeer" );
 G::LoadClass( 'configuration' );
 require_once ("classes/model/Fields.php");
@@ -16,8 +15,6 @@ require_once ("classes/model/Users.php");
 
 $oHeadPublisher = & headPublisher::getSingleton();
 // oHeadPublisher->setExtSkin( 'xtheme-blue');
-
-
 //get the configuration for this action
 $conf = new Configurations();
 try {
@@ -57,8 +54,7 @@ if ($action == 'draft' /* &&  $action == 'cancelled' */) {
     //array_unshift ( $columns, array( 'header'=> '', 'width'=> 50, 'sortable'=> false, 'id'=> 'deleteLink' ) );
 }
 if ($action == 'selfservice') {
-    array_unshift( $columns, array ('header' => '','width' => 50,'sortable' => false,'id' => 'viewLink'
-    ) );
+    array_unshift( $columns, array ('header' => '','width' => 50,'sortable' => false,'id' => 'viewLink') );
 }
 
 if ($action == 'paused') {
@@ -79,8 +75,7 @@ $oAppCache = new AppCacheView();
 $oAppCache->confCasesList = $confCasesList;
 
 //get values for the comboBoxes
-$processes[] = array ('',G::LoadTranslation( 'ID_ALL_PROCESS' )
-);
+$processes[] = array ('',G::LoadTranslation( 'ID_ALL_PROCESS' ));
 $status = getStatusArray( $action, $userUid );
 $category = getCategoryArray();
 $users = getUserArray( $action, $userUid );
@@ -101,7 +96,6 @@ $oHeadPublisher->assign( 'userValues', $users ); //Sending the listing of users
 $oHeadPublisher->assign( 'allUsersValues', $allUsers ); //Sending the listing of all users
 $oHeadPublisher->assign( "solrEnabled", (($aux = System::solrEnv()) !== false) ? 1 : 0 ); //Sending the status of solar
 
-
 //menu permissions
 /*$c = new Criteria('workflow');
   $c->clearSelectColumns();
@@ -112,11 +106,7 @@ $oHeadPublisher->assign( "solrEnabled", (($aux = System::solrEnv()) !== false) ?
 $cnt = '';
 $menuPerms = '';
 $menuPerms = $menuPerms . ($RBAC->userCanAccess( 'PM_REASSIGNCASE' ) == 1) ? 'R' : ''; //can reassign case
-
-
 $oHeadPublisher->assign( '___p34315105', $menuPerms ); // user menu permissions
-
-
 G::LoadClass( 'configuration' );
 $c = new Configurations();
 
@@ -131,10 +121,8 @@ function getUserArray ($action, $userUid)
 {
     global $oAppCache;
     $status = array ();
-    $users[] = array ("CURRENT_USER",G::LoadTranslation( "ID_CURRENT_USER" )
-    );
-    $users[] = array ("",G::LoadTranslation( "ID_ALL_USERS" )
-    );
+    $users[] = array ("CURRENT_USER",G::LoadTranslation( "ID_CURRENT_USER" ));
+    $users[] = array ("",G::LoadTranslation( "ID_ALL_USERS" ));
 
     //now get users, just for the Search action
     switch ($action) {
@@ -149,8 +137,7 @@ function getUserArray ($action, $userUid)
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-                $users[] = array ($aRow['USR_UID'],$aRow['USR_LASTNAME'] . ' ' . $aRow['USR_FIRSTNAME']
-                );
+                $users[] = array ($aRow['USR_UID'],$aRow['USR_LASTNAME'] . ' ' . $aRow['USR_FIRSTNAME']);
                 $oDataset->next();
             }
             break;
@@ -176,8 +163,7 @@ function getCategoryArray ()
     $dataset->next();
 
     while ($row = $dataset->getRow()) {
-        $category[] = array ($row['CATEGORY_UID'],$row['CATEGORY_NAME']
-        );
+        $category[] = array ($row['CATEGORY_UID'],$row['CATEGORY_NAME']);
         $dataset->next();
     }
     return $category;
@@ -205,8 +191,7 @@ function getAllUsersArray ($action)
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $users[] = array ($aRow['USR_UID'],$aRow['APP_CURRENT_USER']
-            );
+            $users[] = array ($aRow['USR_UID'],$aRow['APP_CURRENT_USER']);
             $oDataset->next();
         }
     }
@@ -217,8 +202,7 @@ function getStatusArray ($action, $userUid)
 {
     global $oAppCache;
     $status = array ();
-    $status[] = array ('',G::LoadTranslation( 'ID_ALL_STATUS' )
-    );
+    $status[] = array ('',G::LoadTranslation( 'ID_ALL_STATUS' ));
     //get the list based in the action provided
     switch ($action) {
         case 'sent':
@@ -274,8 +258,8 @@ function getStatusArray ($action, $userUid)
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
-            $status[] = array ($aRow['APP_STATUS'],G::LoadTranslation( 'ID_CASES_STATUS_' . $aRow['APP_STATUS'] )
-            ); //here we can have a translation for the status ( the second param)
+            $status[] = array ($aRow['APP_STATUS'],G::LoadTranslation( 'ID_CASES_STATUS_' . $aRow['APP_STATUS'] ));
+            //here we can have a translation for the status ( the second param)
             $oDataset->next();
         }
     }
@@ -286,8 +270,7 @@ function getStatusArray ($action, $userUid)
 function getToDo ()
 {
     $caseColumns = array ();
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center'
-    );
+    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center');
     $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
     );
     $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false

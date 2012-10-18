@@ -74,7 +74,6 @@ function casesShowOuputDocumentExist ($url)
 
 if ($actionAjax == 'casesGenerateDocumentPage') {
     global $G_PUBLISH;
-
     $oHeadPublisher = & headPublisher::getSingleton();
     G::loadClass( 'configuration' );
     $conf = new Configurations();
@@ -128,7 +127,6 @@ if ($actionAjax == 'generateDocumentGrid_Ajax') {
     if (isset( $generalConfCasesList['casesListDateFormat'] ) && ! empty( $generalConfCasesList['casesListDateFormat'] )) {
         $dateFormat = $generalConfCasesList['casesListDateFormat'];
     }
-
     $newDir = '/tmp/test/directory';
     $r = G::verifyPath( $newDir );
     $r->data = $aProcesses;

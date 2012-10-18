@@ -20,6 +20,7 @@
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
+ *
  */
 //$newFile = str_replace ( 'index.php', 'cases_List.php' ,  __FILE__ ) ;
 $newFile = str_replace( 'index.php', 'main.php', __FILE__ );

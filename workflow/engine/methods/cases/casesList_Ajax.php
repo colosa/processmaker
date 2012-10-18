@@ -27,7 +27,6 @@ require_once 'classes/model/AppThread.php';
 require_once 'classes/model/AppDelay.php';
 require_once 'classes/model/Process.php';
 require_once 'classes/model/Task.php';
-
 require_once ("classes/model/AppCacheView.php");
 require_once ("classes/model/AppDelegation.php");
 require_once ("classes/model/AdditionalTables.php");
@@ -74,12 +73,9 @@ if ($actionAjax == "processListExtJs") {
             }
             $del = DBAdapter::getStringDelimiter();
             $conds = array ();
-            $conds[] = array (ProcessPeer::PRO_UID,ContentPeer::CON_ID
-            );
-            $conds[] = array (ContentPeer::CON_CATEGORY,$del . 'PRO_TITLE' . $del
-            );
-            $conds[] = array (ContentPeer::CON_LANG,$del . $lang . $del
-            );
+            $conds[] = array (ProcessPeer::PRO_UID,ContentPeer::CON_ID);
+            $conds[] = array (ContentPeer::CON_CATEGORY,$del . 'PRO_TITLE' . $del);
+            $conds[] = array (ContentPeer::CON_LANG,$del . $lang . $del);
             $cProcess->addJoinMC( $conds, Criteria::LEFT_JOIN );
             $cProcess->add( ProcessPeer::PRO_STATUS, 'ACTIVE' );
             $oDataset = ProcessPeer::doSelectRS( $cProcess );
