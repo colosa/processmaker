@@ -21,7 +21,6 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-
 global $RBAC;
 if ($RBAC->userCanAccess( 'PM_SETUP_ADVANCE' ) != 1) {
     G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );

@@ -1,7 +1,6 @@
 <?php
 /**
  * authSources_List.php
- *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2008 Colosa Inc.23
  *

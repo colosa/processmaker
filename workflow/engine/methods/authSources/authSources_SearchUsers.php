@@ -27,7 +27,6 @@ if ($RBAC->userCanAccess( 'PM_SETUP_ADVANCE' ) != 1) {
     G::header( 'location: ../login/login' );
     die();
 }
-
 $G_MAIN_MENU = 'processmaker';
 $G_SUB_MENU = 'users';
 $G_ID_MENU_SELECTED = 'USERS';
