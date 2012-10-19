@@ -1,4 +1,5 @@
 <?php
+
 /**
  * class.table.php
  *
@@ -25,6 +26,8 @@
  *
  */
 /**
+ *
+ *
  *
  *
  *
@@ -151,8 +154,9 @@ class Table
         global $HTTP_GET_VARS;
         global $HTTP_SESSION_VARS;
         $stOrderByDir = $this->DefaultOrderDir;
-        if (isset( $HTTP_SESSION_VARS['OrderDir'] ) && ($HTTP_SESSION_VARS['OrderDir'] == 'DESC' || $HTTP_SESSION_VARS['OrderDir'] == 'ASC'))
+        if (isset( $HTTP_SESSION_VARS['OrderDir'] ) && ($HTTP_SESSION_VARS['OrderDir'] == 'DESC' || $HTTP_SESSION_VARS['OrderDir'] == 'ASC')) {
             $stOrderByDir = $HTTP_SESSION_VARS['OrderDir'];
+        }
 
         $stQry = $this->_source;
         if ($this->WhereClause != "") {
@@ -688,7 +692,6 @@ class Table
                     $res .= "&nbsp;";
                 }
                 break;
-
             case "currency2":
                 if ($val != "") {
                     $res .= G::NumberToCurrency( $val );
@@ -696,7 +699,6 @@ class Table
                     $res .= "$ 0.00";
                 }
                 break;
-
             case "percentage2":
                 if ($val != "") {
                     $res .= G::NumberToPercentage( $val );
@@ -704,7 +706,6 @@ class Table
                     $res .= "0.00 %";
                 }
                 break;
-
             case "percentage":
                 if ($val != "") {
                     $res .= htmlentities( number_format( (float) $val, 2, ".", "," ) . " %", ENT_QUOTES, 'utf-8' );
@@ -712,7 +713,6 @@ class Table
                     $res .= "&nbsp;";
                 }
                 break;
-
             case "date":
                 if ($val != "" && $val != '0000-00-00 00:00:00') {
                     $part = explode( ' ', $val );
@@ -732,12 +732,10 @@ class Table
                             $res .= formatDate( '$M $d $Y', $val );
                             break;
                     }
-
                 } else {
                     $res .= "&nbsp;";
                 }
                 break;
-
             case "email":
                 if ($val != "") {
                     $res .= "<a href=\"mailto:" . $val . "\">";
@@ -747,7 +745,6 @@ class Table
                     $res .= "&nbsp;";
                 }
                 break;
-
             case "ifpdf":
                 if ($val == '1') {
                     $image = "<img border=0 src='/images/pdf.gif'>";
@@ -761,7 +758,6 @@ class Table
                     $res .= "&nbsp;";
                 }
                 break;
-
             case "ifimg":
                 $image = "<img border=0 src='" . $col['Extra'] . "' >";
                 if ($val == '1') {
@@ -774,7 +770,6 @@ class Table
                     $res .= "&nbsp;";
                 }
                 break;
-
             case "ifrtf":
                 if ($val == '1') {
                     $image = "<img border=0 src='/images/word.gif'>";
@@ -788,11 +783,9 @@ class Table
                     $res .= "&nbsp;";
                 }
                 break;
-
             case "image":
-
-                if (is_array( $col["Condition"] ))                 //By JHL to enable Condition to display a image -- New parameter Condition in Addrawcolumn
-{
+                if (is_array( $col["Condition"] )) {
+                    //By JHL to enable Condition to display a image -- New parameter Condition in Addrawcolumn
                     $field_compare = $col["Condition"]['field'];
                     $tlabel = substr( $field_compare, 0, 1 );
                     switch ($tlabel) {
@@ -805,13 +798,11 @@ class Table
                 } else {
                     $val = "<img border=0 src='$fieldname'>";
                 }
-            //      break;
-
-
+                 //      break;
             case "textimage":
                 $AAS = $col['Extra'];
                 $val1 = " <img border=0 src='$AAS' align='middle'>";
-            //      break;
+                //      break;
             case "image-text":
                 if (is_array( $col['Content'] ) && $col['Content'] != "") {
                     // Hay mas de un valor para el link
@@ -834,14 +825,14 @@ class Table
                         }
                     }
                     $res .= "\"><span class='txtin3'>" . strtoupper( $fieldname ) . "$val</span></a>";
-                } else
+                } else {
                     $val2 = "<span class='txtin3'>" . strtoupper( $fieldname ) . "</span>";
+                }
                 //      break;
-
-
             case "link":
-                if ($val == "")
+                if ($val == "") {
                     $res .= "&nbsp;";
+                }
                 $title = '';
                 if ($col["Type"] == 'link' && trim( isset( $this->_row_values['TOOLTIP'] ) ? $this->_row_values['TOOLTIP'] : '' ))
                     ;
@@ -921,10 +912,10 @@ class Table
                     $res .= "</a" . $col['Extra'] . ">";
                 }
                 break;
-
             case "linknew":
-                if ($val == "")
+                if ($val == "") {
                     $res .= "&nbsp;";
+                }
                 if ($col["Content"] != "") {
                     $tlabel = substr( $col["Content"], 0, 1 );
                     switch ($tlabel) {
@@ -964,7 +955,6 @@ class Table
                     $res .= "</a" . $col['Extra'] . ">";
                 }
                 break;
-
             case "iflink":
                 if ($col["Content"] != "") {
                     $tlabel = substr( $col["Content"], 0, 1 );
@@ -999,10 +989,8 @@ class Table
                     $res .= "</a" . $col['Extra'] . ">";
                 }
                 break;
-
             case "jsimglink":
                 $val = "<img border=0 src='$fieldname'>";
-
             case "jslink":
                 if ($val == "") {
                     $val .= "<span class='txtin3'> " . $col['Name'] . '<span>';
@@ -1020,7 +1008,6 @@ class Table
                             $res .= $val;
                             $res .= "</a" . $col['Extra'] . ">";
                             break;
-
                         case "$":
                             $vname = substr( $col["Content"], 1, (strlen( $col["Content"] ) - 1) );
                             $lval = $HTTP_SESSION_VARS[$vname];
@@ -1028,7 +1015,6 @@ class Table
                             $res .= $val;
                             $res .= "</a" . $col['Extra'] . ">";
                             break;
-
                         case '_':
                             $Values = explode( ',', substr( $col['Content'], 1, strlen( $col['Content'] ) ) );
                             $res .= "<a class='$strClassLink' href=\"javascript:" . $col["Target"] . "(";
@@ -1048,7 +1034,6 @@ class Table
                             $res .= $val;
                             $res .= "</a" . $col['Extra'] . ">";
                             break;
-
                         default:
                             $res .= "<a class='$strClassLink' href=\"javascript:" . $col["Target"] . "('" . $val . "')\"" . $col['Extra'] . ">";
                             $res .= $col["Content"];
@@ -1061,7 +1046,6 @@ class Table
                     $res .= "</a" . $col['Extra'] . ">";
                 }
                 break;
-
             case "checkbox":
                 $res .= "<input type='checkbox' name=\"form[" . $fieldname . "][" . $val . "]\" ";
                 if ($val == '1' || $val == 'TRUE' || $val == 'yes') {
@@ -1107,7 +1091,6 @@ class Table
         if (is_array( $this->contexto )) {
             $this->contexto[0][] = $contexto;
             $this->contexto[1][] = $nombre;
-
         } else {
             $this->contexto = array ();
             $this->contexto[0][] = $contexto;
@@ -1183,7 +1166,7 @@ class Table
         $token = '';
         $i = 0;
 
-        While ($i <= $len and $i <= $number) {
+        while ($i <= $len and $i <= $number) {
             $car = substr( $value, $i, 1 );
             $br = strtoupper( substr( $value, $i, 4 ) );
             if ($car == '<') {
@@ -1192,16 +1175,19 @@ class Table
             if ($car == '>') {
                 $Flag = 1;
             }
-            if ($br == '<BR>' || $br == '</P>')
+            if ($br == '<BR>' || $br == '</P>') {
                 $token .= "<BR>";
+            }
 
             if (($Flag == 1) && ($car != '>')) {
                 $token .= $car;
-                if ($i == $number)
+                if ($i == $number) {
                     $token .= "... ";
+                }
             }
             $i = $i + 1;
         }
         return $token;
     }
 }
+

@@ -96,15 +96,15 @@ class pmGauge
         $this->renderGauge( $im, $cX, $cY, $diameter );
 
         /*
-    //center coords
-    $cX = intval($this->w * 3/4);
-    $cY = intval($this->h /2);
+         //center coords
+         $cX = intval($this->w * 3/4);
+         $cY = intval($this->h /2);
 
-    //diameter for gauge
-    $diameter = intval( $this->h * 4/5 );
+         //diameter for gauge
+         $diameter = intval( $this->h * 4/5 );
 
-    $this->renderGauge($im, $cX, $cY, $diameter);
-*/
+         $this->renderGauge($im, $cX, $cY, $diameter);
+         */
         Header( "Content-type: image/png" );
         ImagePng( $im );
 
@@ -145,18 +145,24 @@ class pmGauge
         imagefilledellipse( $im, $cX, $cY, $dXRing, $dYRing, $bgcolor );
 
         //drawing the red arc
-        if ($this->redFrom > $this->maxValue)
+        if ($this->redFrom > $this->maxValue) {
             $this->redFrom = $this->maxValue;
-        if ($this->redTo > $this->maxValue)
+        }
+        if ($this->redTo > $this->maxValue) {
             $this->redTo = $this->maxValue;
-        if ($this->yellowFrom > $this->maxValue)
+        }
+        if ($this->yellowFrom > $this->maxValue) {
             $this->yellowFrom = $this->maxValue;
-        if ($this->yellowTo > $this->maxValue)
+        }
+        if ($this->yellowTo > $this->maxValue) {
             $this->yellowTo = $this->maxValue;
-        if ($this->greenFrom > $this->maxValue)
+        }
+        if ($this->greenFrom > $this->maxValue) {
             $this->greenFrom = $this->maxValue;
-        if ($this->greenTo > $this->maxValue)
+        }
+        if ($this->greenTo > $this->maxValue) {
             $this->greenTo = $this->maxValue;
+        }
 
         $redFrom = $this->redFrom / $this->maxValue * 300 - 240;
         $redTo = $this->redTo / $this->maxValue * 300 - 240;
@@ -181,10 +187,11 @@ class pmGauge
         $radiusY = intval( $dY * 0.42 );
         $min = 5;
         while ($min <= 55) {
-            if ($min % 5 == 0)
+            if ($min % 5 == 0) {
                 $len = $radiusX / 8;
-            else
+            } else {
                 $len = $radiusX / 25;
+            }
 
             $ang = (2 * M_PI * $min) / 60;
             $x1 = sin( $ang ) * ($radiusX - $len) + $cX;
@@ -225,40 +232,40 @@ class pmGauge
         ImageLine( $im, $cX, $cY, $x1, $y1, $arrowLine );
 
         /*
-    //arrowLine
-    $arrowHeight = intval($dY * 0.02);
-    $arrowWidth  = intval($dX * 0.35);
-    $arrowTail   = intval($dX * 0.15);
-    $values = array(
+         //arrowLine
+         $arrowHeight = intval($dY * 0.02);
+         $arrowWidth  = intval($dX * 0.35);
+         $arrowTail   = intval($dX * 0.15);
+         $values = array(
               0, -$arrowHeight,
               -$arrowTail,  0,
               0, $arrowHeight,
               $arrowWidth, 0,
               0, -$arrowHeight
-    );
+         );
 
-    //rotate n degrees
-    $n = 20;
-    $ang = (2 * M_PI * $n) / 60;
+         //rotate n degrees
+         $n = 20;
+         $ang = (2 * M_PI * $n) / 60;
 
-    foreach ( $values as $k => $val ) {
-      if ( $k % 2 == 0 ) {
-        //$values[$k] = sin($ang)*$val + 20;
-        $values[$k] = sin($ang)*($val/$cX)*$;
-        $values[$k] += $cX;
-      }
-      else {
-        //$ys = intval(sin($sec * M_PI/30 - M_PI/2) * R);
-        //$values[$k] = intval(sin($n *  M_PI/30 - M_PI/2) *$val);
-        $values[$k] = (cos($ang))*($val/$cY)*$cY;
-        $values[$k] += $cY;
-      }
-    }
+         foreach ( $values as $k => $val ) {
+            if ( $k % 2 == 0 ) {
+            //$values[$k] = sin($ang)*$val + 20;
+            $values[$k] = sin($ang)*($val/$cX)*$;
+            $values[$k] += $cX;
+         }
+          else {
+            //$ys = intval(sin($sec * M_PI/30 - M_PI/2) * R);
+            //$values[$k] = intval(sin($n *  M_PI/30 - M_PI/2) *$val);
+            $values[$k] = (cos($ang))*($val/$cY)*$cY;
+            $values[$k] += $cY;
+         }
+         }
 
-    imagefilledpolygon  ($im, $values, 5, $arrowBody);
-    imagepolygon        ($im, $values, 5, $arrowLine);
-  */
-        //blue ring
+          imagefilledpolygon  ($im, $values, 5, $arrowBody);
+          imagepolygon        ($im, $values, 5, $arrowLine);
+          */
+          //blue ring
         $dXBlueRing = $dX * 0.07;
         $dYBlueRing = $dY * 0.07;
         imagefilledellipse( $im, $cX, $cY, $dXBlueRing, $dXBlueRing, $blueRing );
@@ -273,5 +280,5 @@ class pmGauge
         imagettftext( $im, 9, 0, $centerX, $centerY, $black, $fontArial, $textToDisplay );
 
     }
-
 }
+

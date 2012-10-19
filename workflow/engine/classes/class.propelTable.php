@@ -150,15 +150,18 @@ class propelTable
         foreach ($orderFields as $field => $fieldOrder) {
             $field = G::getUIDName( $field, '' );
             $fieldOrder = strtoupper( $fieldOrder );
-            if ($fieldOrder === 'A')
+            if ($fieldOrder === 'A') {
                 $fieldOrder = 'ASC';
-            if ($fieldOrder === 'D')
+            }
+            if ($fieldOrder === 'D') {
                 $fieldOrder = 'DESC';
+            }
             switch ($fieldOrder) {
                 case 'ASC':
                 case 'DESC':
-                    if ($order !== '')
+                    if ($order !== '') {
                         $order .= ', ';
+                    }
                     $order .= $field . ' ' . $fieldOrder;
                     $this->aOrder[$field] = $fieldOrder;
             }
@@ -175,10 +178,11 @@ class propelTable
                 $this->criteria->clearOrderByColumns();
             }
             foreach ($this->aOrder as $field => $ascending) {
-                if ($ascending == 'ASC')
+                if ($ascending == 'ASC') {
                     $this->criteria->addAscendingOrderByColumn( $field );
-                else
+                } else {
                     $this->criteria->addDescendingOrderByColumn( $field );
+                }
             }
         }
         /**
@@ -215,18 +219,21 @@ class propelTable
         $this->name = $xmlForm->name;
         $this->id = $xmlForm->id;
         //$this->sqlConnection=((isset($this->xmlForm->sqlConnection))?$this->xmlForm->sqlConnection:'');
-        if (isset( $_GET['page'] ))
+        if (isset( $_GET['page'] )) {
             $this->currentPage = $_GET['page'];
-        else
+        } else {
             $this->currentPage = 1;
-        if (isset( $_GET['order'] ))
+        }
+        if (isset( $_GET['order'] )) {
             $this->orderBy = urldecode( $_GET['order'] );
-        else
+        } else {
             $this->orderBy = "";
-        if (isset( $_GET['filter'] ))
+        }
+        if (isset( $_GET['filter'] )) {
             $this->filter = urldecode( $_GET['filter'] );
-        else
+        } else {
             $this->filter = "";
+        }
         if ($xmlForm->ajaxServer != '') {
             $this->ajaxServer = G::encryptLink( $xmlForm->ajaxServer );
         } else {
@@ -235,12 +242,14 @@ class propelTable
         $this->ownerPage = G::encryptLink( SYS_CURRENT_URI );
         // Config attributes from XMLFORM file
         $myAttributes = get_class_vars( get_class( $this ) );
-        foreach ($this->xmlForm->xmlform->tree->attribute as $atrib => $value)
+        foreach ($this->xmlForm->xmlform->tree->attribute as $atrib => $value) {
             if (array_key_exists( $atrib, $myAttributes )) {
                 eval( 'settype($value, gettype($this->' . $atrib . '));' );
-                if ($value !== '')
+                if ($value !== '') {
                     eval( '$this->' . $atrib . '=$value;' );
+                }
             }
+        }
         if ($this->masterdetail != "") {
             $this->masterdetail = explode( ",", $this->masterdetail );
             foreach ($this->masterdetail as $keyMasterDetail => $valueMasterDetail) {
@@ -258,8 +267,9 @@ class propelTable
             $r = $f;
             $this->fields[$r]['Name'] = $this->xmlForm->fields[$f]->name;
             $this->fields[$r]['Type'] = $this->xmlForm->fields[$f]->type;
-            if (isset( $this->xmlForm->fields[$f]->size ))
+            if (isset( $this->xmlForm->fields[$f]->size )) {
                 $this->fields[$r]['Size'] = $this->xmlForm->fields[$f]->size;
+            }
             $this->fields[$r]['Label'] = $this->xmlForm->fields[$f]->label;
         }
         //Set the default settings
@@ -283,9 +293,11 @@ class propelTable
             }
         }
         $totalWidth = 0;
-        foreach ($this->fields as $r => $rval)
-            if ($this->style[$r]['showInTable'] != '0')
+        foreach ($this->fields as $r => $rval) {
+            if ($this->style[$r]['showInTable'] != '0') {
                 $totalWidth += $this->style[$r]['colWidth'];
+            }
+        }
         $this->totalWidth = $totalWidth;
     }
 
@@ -313,13 +325,14 @@ class propelTable
     {
         //fix the bug about showing hidden fields in propel table.
         foreach ($this->fields as $r => $rval) {
-            if ($this->style[$r]['type'] == 'hidden')
+            if ($this->style[$r]['type'] == 'hidden') {
                 $this->style[$r]['showInTable'] = '0';
+            }
         }
         //Render headers
         $this->colCount = 0;
         $this->shownFields = '[';
-        foreach ($this->fields as $r => $rval)
+        foreach ($this->fields as $r => $rval) {
             if (($this->style[$r]['showInTable'] != '0') && (! (in_array( $this->fields[$r]['Name'], $this->masterdetail )))) {
                 //if (($this->style[$r]['showInTable'] != '0' ))
                 $this->tpl->newBlock( "headers" );
@@ -327,26 +340,31 @@ class propelTable
                 $sortOrder = (((isset( $this->aOrder[$this->fields[$r]['Name']] )) && ($this->aOrder[$this->fields[$r]['Name']] === 'DESC')) ? '' : $sortOrder);
                 $this->style[$r]['href'] = $this->ownerPage . '?order=' . ($sortOrder !== '' ? (G::createUID( '', $this->fields[$r]['Name'] ) . '=' . $sortOrder) : '') . '&page=' . $this->currentPage;
                 $this->style[$r]['onsort'] = $this->id . '.doSort("' . G::createUID( '', $this->fields[$r]['Name'] ) . '" , "' . $sortOrder . '");return false;';
-                if (isset( $this->style[$r]['href'] ))
+                if (isset( $this->style[$r]['href'] )) {
                     $this->tpl->assign( "href", $this->style[$r]['href'] );
-                if (isset( $this->style[$r]['onsort'] ))
+                }
+                if (isset( $this->style[$r]['onsort'] )) {
                     $this->tpl->assign( "onsort", htmlentities( $this->style[$r]['onsort'], ENT_QUOTES, 'UTF-8' ) );
+                }
 
                     /* BUG 8080 - erik: don't setup onclick on page table header, doesn't have sense and causing problems
-        if (isset($this->style[$r]['onclick']))
-          $this->tpl->assign( "onclick" , htmlentities( $this->style[$r]['onclick'] , ENT_QUOTES, 'UTF-8' ) );
-        */
+                       if (isset($this->style[$r]['onclick']))
+                       $this->tpl->assign( "onclick" , htmlentities( $this->style[$r]['onclick'] , ENT_QUOTES, 'UTF-8' ) );
+                     */
 
-                if (isset( $this->style[$r]['colWidth'] ))
+                if (isset( $this->style[$r]['colWidth'] )) {
                     $this->tpl->assign( "width", $this->style[$r]['colWidth'] );
-                if (isset( $this->style[$r]['colWidth'] ))
+                }
+                if (isset( $this->style[$r]['colWidth'] )) {
                     $this->tpl->assign( "widthPercent", ($this->style[$r]['colWidth'] * 100 / $this->totalWidth) . "%" );
                     //Hook for special skin with RTL languajes
+                }
                 if (defined( 'SYS_LANG_DIRECTION' ) && SYS_LANG_DIRECTION == 'R') {
                     $this->style[$r]['titleAlign'] = 'right';
                 }
-                if (isset( $this->style[$r]['titleAlign'] ))
+                if (isset( $this->style[$r]['titleAlign'] )) {
                     $this->tpl->assign( "align", 'text-align:' . $this->style[$r]['titleAlign'] . ';' );
+                }
                 if ($this->style[$r]['titleVisibility'] != '0') {
                     $sortOrder = (((isset( $this->aOrder[$this->fields[$r]['Name']] )) && ($this->aOrder[$this->fields[$r]['Name']] === 'ASC')) ? '<img src="/images/arrow-up.gif">' : '');
                     $sortOrder = (((isset( $this->aOrder[$this->fields[$r]['Name']] )) && ($this->aOrder[$this->fields[$r]['Name']] === 'DESC')) ? '<img src="/images/arrow-down.gif">' : $sortOrder);
@@ -359,6 +377,7 @@ class propelTable
                 $this->shownFields .= ($this->shownFields !== '[') ? ',' : '';
                 $this->shownFields .= '"' . $r . '"';
             }
+        }
         $this->shownFields .= ']';
     }
 
@@ -380,10 +399,11 @@ class propelTable
         $styleData = $this->style[$r];
         $fielDataName = $styleData['data'];
         $fieldClassName = isset( $styleData['colClassName'] ) && ($styleData['colClassName']) ? $styleData['colClassName'] : $this->tdClass;
-        if ($fielDataName != '')
+        if ($fielDataName != '') {
             $value = ((isset( $result[$fielDataName] )) ? $result[$fielDataName] : '');
-        else
+        } else {
             $value = $this->fields[$r]['Label'];
+        }
         $this->tpl->newBlock( "field" );
         $this->tpl->assign( 'width', $this->style[$r]['colWidth'] );
         $classAttr = (trim( $fieldClassName ) != '') ? " class=\"$fieldClassName\"" : '';
@@ -414,7 +434,7 @@ class propelTable
         $this->xmlForm->setDefaultValues();
         $this->xmlForm->setValues( $result );
         //var_dump($fieldName, $fieldClass );echo '<br /><br />';
-        if (array_search( 'renderTable', get_class_methods( $fieldClass ) ) !== FALSE) {
+        if (array_search( 'renderTable', get_class_methods( $fieldClass ) ) !== false) {
             $htmlField = $this->xmlForm->fields[$fieldName]->renderTable( $value, $this->xmlForm, true );
             if (is_object( $value )) {
                 $value = '';
@@ -423,8 +443,9 @@ class propelTable
             $testValue = preg_match( "/<a ?.*>(.*)<\/a>/i", $htmlField, $value );
             $this->tpl->assign( "value", $htmlField );
             if ($testValue > 0 && (isset( $value[1] ) && strlen( trim( $value[1] ) ) == 0)) {
-                if ((trim( $value[0] )) == '')
+                if ((trim( $value[0] )) == '') {
                     $this->tpl->assign( "value", "&nbsp;" );
+                }
                 // $this->tpl->assign( "value" , (preg_match('^[[:space:]]^', $value) && (substr($fieldName,0,3)!="PRO"))? str_ireplace(" ","&nbsp;",$htmlField):$htmlField );
             } else {
                 $this->tpl->assign( "value", $htmlField );
@@ -453,51 +474,60 @@ class propelTable
             $this->style[$r] = array ('showInTable' => '1','titleVisibility' => '1','colWidth' => '150','onclick' => '','event' => ''
             );
             //Some widths
-            if (! (strpos( '  date linknew ', ' ' . $this->fields[$r]['Type'] . ' ' ) === FALSE))
+            if (! (strpos( '  date linknew ', ' ' . $this->fields[$r]['Type'] . ' ' ) === false)) {
                 $this->style[$r]['colWidth'] = '70';
+            }
                 //Data source:
-            if (! (strpos( '  title button linknew image-text jslink ', ' ' . $this->fields[$r]['Type'] . ' ' ) === FALSE))
+            if (! (strpos( '  title button linknew image-text jslink ', ' ' . $this->fields[$r]['Type'] . ' ' ) === false)) {
                 $this->style[$r]['data'] = ''; //If the control is a link it shows the label
-            else
+            } else {
                 $this->style[$r]['data'] = $this->fields[$r]['Name']; //ELSE: The data value for that field
                 //Hidden fields
+            }
             if (! isset( $this->style[$r]['showInTable'] )) {
-                if (! (strpos( '  title button endgrid2 submit password ', ' ' . $this->fields[$r]['Type'] . ' ' ) === FALSE)) {
+                if (! (strpos( '  title button endgrid2 submit password ', ' ' . $this->fields[$r]['Type'] . ' ' ) === false)) {
                     $this->style[$r]['showInTable'] = '0';
                 } else {
                     $this->style[$r]['showInTable'] = '1';
                 }
             }
             //Hidden titles
-            if (! (strpos( '  linknew button endgrid2 ', ' ' . $this->fields[$r]['Type'] . ' ' ) === FALSE)) {
+            if (! (strpos( '  linknew button endgrid2 ', ' ' . $this->fields[$r]['Type'] . ' ' ) === false)) {
                 $this->style[$r]['titleVisibility'] = '0';
             }
             //Align titles
             $this->style[$r]['titleAlign'] = 'center';
             //Align fields
-            if (defined( 'SYS_LANG_DIRECTION' ) && SYS_LANG_DIRECTION == 'R')
+            if (defined( 'SYS_LANG_DIRECTION' ) && SYS_LANG_DIRECTION == 'R') {
                 $this->style[$r]['align'] = 'right';
-            else
+            } else {
                 $this->style[$r]['align'] = 'left';
-            if (! (strpos( ' linknew date ', ' ' . $this->fields[$r]['Type'] . ' ' ) === FALSE)) {
+            }
+            if (! (strpos( ' linknew date ', ' ' . $this->fields[$r]['Type'] . ' ' ) === false)) {
                 $this->style[$r]['align'] = 'center';
             }
         }
         // Adjust the columns width to prevent overflow the page width
             //Render headers
         $totalWidth = 0;
-        foreach ($this->fields as $r => $rval)
-            if ($this->style[$r]['showInTable'] != '0')
+        foreach ($this->fields as $r => $rval) {
+            if ($this->style[$r]['showInTable'] != '0') {
                 $totalWidth += $this->style[$r]['colWidth'];
+            }
+        }
         $this->totalWidth = $totalWidth;
         $maxWidth = 1800;
         $proportion = $totalWidth / $maxWidth;
-        if ($proportion > 1)
+        if ($proportion > 1) {
             $this->totalWidth = 1800;
-        if ($proportion > 1)
-            foreach ($this->fields as $r => $rval)
-                if ($this->style[$r]['showInTable'] != '0')
+        }
+        if ($proportion > 1) {
+            foreach ($this->fields as $r => $rval) {
+                if ($this->style[$r]['showInTable'] != '0') {
                     $this->style[$r]['colWidth'] = $this->style[$r]['colWidth'] / $proportion;
+                }
+            }
+        }
     }
 
     /**
@@ -512,12 +542,13 @@ class propelTable
     {
         //Render Title
         $thereisnotitle = true;
-        foreach ($this->fields as $r => $rval)
+        foreach ($this->fields as $r => $rval) {
             if ($this->fields[$r]['Type'] === 'title') {
                 $this->title = $this->fields[$r]['Label'];
                 unset( $this->fields[$r] );
                 $thereisnotitle = false;
             }
+        }
         if ($thereisnotitle) {
             $this->title = '';
         }
@@ -530,11 +561,12 @@ class propelTable
         // verify if there are templates folders registered, template and method folders are the same
         $folderTemplate = explode( '/', $this->template );
         $oPluginRegistry = & PMPluginRegistry::getSingleton();
-        if ($oPluginRegistry->isRegisteredFolder( $folderTemplate[0] ))
+        if ($oPluginRegistry->isRegisteredFolder( $folderTemplate[0] )) {
             $templateFile = PATH_PLUGINS . $this->template . '.html';
-        else
+        } else {
             $templateFile = PATH_TPL . $this->template . '.html';
             // Prepare the template
+        }
         $this->tpl = new TemplatePower( $templateFile );
         $this->tpl->prepare();
         if (is_array( $fields )) {
@@ -553,8 +585,9 @@ class propelTable
             $this->tpl->assign( "title", $this->title );
             if (file_exists( $this->xmlForm->home . $this->filterForm . '.xml' )) {
                 $filterForm = new filterForm( $this->filterForm, $this->xmlForm->home );
-                if ($this->menu === '')
+                if ($this->menu === '') {
                     $this->menu = 'gulliver/pagedTable_Options';
+                }
             }
             if (file_exists( $this->xmlForm->home . $this->menu . '.xml' )) {
                 $menu = new xmlMenu( $this->menu, $this->xmlForm->home );
@@ -585,8 +618,9 @@ class propelTable
                 $this->tpl->assign( 'content', $filterForm->render( $template, $scriptCode ) );
                 $oHeadPublisher->addScriptFile( $filterForm->scriptURL );
                 $oHeadPublisher->addScriptCode( $scriptCode );
-                if (isset( $_SESSION ))
+                if (isset( $_SESSION )) {
                     $_SESSION[$filterForm->id] = $filterForm->values;
+                }
             }
 
         }
@@ -620,17 +654,17 @@ class propelTable
             }
             $rs->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             /*
-      print "<div class='pagedTableDefault'><table  class='default'>";
-      $rs->next();
-      $row = $rs->getRow();
-      while ( is_array ( $row ) ) {
-        print "<tr  class='Row1'>";
-        foreach ( $row as $k=>$v ) print "<td>$v</td>";
-        print "</tr>";
-        $rs->next();
-        $row = $rs->getRow();
-      }
-      print "</table></div>";  die;*/
+             print "<div class='pagedTableDefault'><table  class='default'>";
+             $rs->next();
+             $row = $rs->getRow();
+             while ( is_array ( $row ) ) {
+             print "<tr  class='Row1'>";
+             foreach ( $row as $k=>$v ) print "<td>$v</td>";
+             print "</tr>";
+             $rs->next();
+             $row = $rs->getRow();
+             }
+             print "</table></div>";  die;*/
             $gridRows = 0;
             $rs->next();
             //Initialize the array of breakFields for Master Detail View
@@ -677,14 +711,16 @@ class propelTable
                         }
                     }
                     $this->tpl->gotoblock( "row" );
-                    if (! isset( $rowName ))
+                    if (! isset( $rowName )) {
                         $rowName = array ();
+                    }
                     $this->tpl->assign( "rowName", implode( ",", $rowName ) );
                 }
                 //End Master Detail: This enable the MasterDEtail view
                 //Merge $result with $xmlForm values (for default valuesSettings)
-                if (is_array( $this->xmlForm->values ))
+                if (is_array( $this->xmlForm->values )) {
                     $result = array_merge( $this->xmlForm->values, $result );
+                }
                 foreach ($this->fields as $r => $rval) {
                     if (strcasecmp( $this->fields[$r]['Type'], 'cellMark' ) == 0) {
                         $result1 = $result;
@@ -695,8 +731,9 @@ class propelTable
                         $this->tdStyle = $this->xmlForm->fields[$this->fields[$r]['Name']]->tdStyle( $result1, $this->xmlForm );
                         $this->tdClass = $this->xmlForm->fields[$this->fields[$r]['Name']]->tdClass( $result1, $this->xmlForm );
                     } elseif ($this->style[$r]['showInTable'] != '0') {
-                        if (($this->style[$r]['showInTable'] != '0') && (! (in_array( $this->fields[$r]['Name'], $this->masterdetail ))))
+                        if (($this->style[$r]['showInTable'] != '0') && (! (in_array( $this->fields[$r]['Name'], $this->masterdetail )))) {
                             $this->renderField( $j + 1, $r, $result );
+                        }
                     }
                 }
             }
@@ -728,20 +765,23 @@ class propelTable
                 $last = "<a class='noLastPage'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>";
             }
             $pagesEnum = '';
-            for ($r = 1; $r <= $this->totPages; $r ++)
+            for ($r = 1; $r <= $this->totPages; $r ++) {
                 if (($r >= ($this->currentPage - 5)) && ($r <= ($this->currentPage + 5))) {
                     $pageAjax = $this->id . ".doGoToPage(" . $r . ");return false;";
-                    if ($r != $this->currentPage)
+                    if ($r != $this->currentPage) {
                         $pagesEnum .= "&nbsp;<a href=\"" . htmlentities( $this->ownerPage . '?order=' . $this->orderBy . '&page=' . $r, ENT_QUOTES, 'utf-8' ) . "\" onclick=\"" . $pageAjax . "\">" . $r . "</a>";
-                    else
+                    } else {
                         $pagesEnum .= "&nbsp;<a>" . $r . "</a>";
+                    }
                 }
+            }
             if ($this->totRows === 0) {
                 $this->tpl->newBlock( 'norecords' );
                 $this->tpl->assign( "columnCount", $this->colCount );
                 $noRecordsFound = 'ID_NO_RECORDS_FOUND';
-                if (G::LoadTranslation( $noRecordsFound ))
+                if (G::LoadTranslation( $noRecordsFound )) {
                     $noRecordsFound = G::LoadTranslation( $noRecordsFound );
+                }
                 $this->tpl->assign( "noRecordsFound", $noRecordsFound );
             }
             if (! $this->disableFooter) {
@@ -770,32 +810,34 @@ class propelTable
                 } else {
                     $this->tpl->assign( "fastSearchStyle", 'visibility:hidden;' );
                 }
-                if ($this->addRow)
-                    if ($this->sqlInsert != '')
+                if ($this->addRow) {
+                    if ($this->sqlInsert != '') {
                         $this->tpl->assign( "insert", '<a href="#" onclick="pagedTable.event=\'Insert\';popup(\'' . $this->popupPage . '\');return false;">'./*G::LoadXml('labels','ID_ADD_NEW')*/ 'ID_ADD_NEW' . '</a>' );
+                    }
+                }
                 $this->tpl->assign( "pagesEnum", $pagesEnum );
             }
             ?>
 
-<script language='JavaScript'>
-var <?php echo $this->id?><?php echo ($this->name != '' ? '='.$this->name : '')?>=new G_PagedTable();
-<?php echo $this->id?>.id<?php echo '="'. addslashes($this->id) . '"'?>;
-<?php echo $this->id?>.name<?php echo '="'. addslashes($this->name) . '"'?>;
-<?php echo $this->id?>.ajaxUri<?php echo '="'. addslashes($this->ajaxServer) . '?ptID='.$this->id.'"'?>;
-<?php echo $this->id?>.currentOrder<?php echo '="'. addslashes($this->orderBy) . '"'?>;
-<?php echo $this->id?>.currentFilter;
-<?php echo $this->id?>.currentPage<?php echo '='. $this->currentPage?>;
-<?php echo $this->id?>.totalRows<?php echo '='.$this->totRows ?>;
-<?php echo $this->id?>.rowsPerPage<?php echo '='.$this->rowsPerPage?>;
-<?php echo $this->id?>.popupPage<?php echo '="'. addslashes($this->popupPage) . '?ptID='.$this->id.'"'?>;
-<?php echo $this->id?>.onUpdateField<?php echo '="'. addslashes($this->onUpdateField) . '"'?>;
-<?php echo $this->id?>.shownFields<?php echo '='.$this->shownFields ?>;
+            <script language='JavaScript'>
+            var <?php echo $this->id?><?php echo ($this->name != '' ? '='.$this->name : '')?>=new G_PagedTable();
+            <?php echo $this->id?>.id<?php echo '="'. addslashes($this->id) . '"'?>;
+            <?php echo $this->id?>.name<?php echo '="'. addslashes($this->name) . '"'?>;
+            <?php echo $this->id?>.ajaxUri<?php echo '="'. addslashes($this->ajaxServer) . '?ptID='.$this->id.'"'?>;
+            <?php echo $this->id?>.currentOrder<?php echo '="'. addslashes($this->orderBy) . '"'?>;
+            <?php echo $this->id?>.currentFilter;
+            <?php echo $this->id?>.currentPage<?php echo '='. $this->currentPage?>;
+            <?php echo $this->id?>.totalRows<?php echo '='.$this->totRows ?>;
+            <?php echo $this->id?>.rowsPerPage<?php echo '='.$this->rowsPerPage?>;
+            <?php echo $this->id?>.popupPage<?php echo '="'. addslashes($this->popupPage) . '?ptID='.$this->id.'"'?>;
+            <?php echo $this->id?>.onUpdateField<?php echo '="'. addslashes($this->onUpdateField) . '"'?>;
+            <?php echo $this->id?>.shownFields<?php echo '='.$this->shownFields ?>;
 
-var panelPopup;
-var popupWidth<?php echo '='.$this->popupWidth?>;
-var popupHeight<?php echo '='.$this->popupHeight?>;
-</script>
-<?php
+            var panelPopup;
+            var popupWidth<?php echo '='.$this->popupWidth?>;
+            var popupHeight<?php echo '='.$this->popupHeight?>;
+            </script>
+            <?php
         }
         /**
          * ******** CLOSE BLOCK **************
@@ -832,3 +874,4 @@ var popupHeight<?php echo '='.$this->popupHeight?>;
         G::RenderPage( "publish", "blank" );
     }
 }
+
