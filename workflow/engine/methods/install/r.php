@@ -33,6 +33,7 @@ define( 'SYSTEM_HASH', '$sh' );";
 
     echo '<br/>';
 
+
     if (file_exists( FILE_PATHS_INSTALLED )) {
         if (@copy( FILE_PATHS_INSTALLED, FILE_PATHS_INSTALLED . '.backup' )) {
             echo 'Backup file was created ' . FILE_PATHS_INSTALLED . '.backup<br>';

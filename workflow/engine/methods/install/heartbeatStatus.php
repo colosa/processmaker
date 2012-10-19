@@ -1,4 +1,5 @@
 <?php
+
 try {
     if (isset( $_REQUEST['status'] )) {
         G::LoadClass( 'serverConfiguration' );
