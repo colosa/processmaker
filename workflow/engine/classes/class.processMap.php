@@ -1534,6 +1534,15 @@ class processMap
                 //If the function returns a DEFAULT calendar it means that this object doesn't have assigned any calendar
                 $aFields['TAS_CALENDAR'] = $calendarInfo['CALENDAR_APPLIED'] != 'DEFAULT' ? $calendarInfo['CALENDAR_UID'] : "";
             }
+
+            if ($iForm == 2) {
+                switch ($aFields["TAS_ASSIGN_TYPE"]) {
+                    case "SELF_SERVICE":
+                        $aFields["TAS_ASSIGN_TYPE"] = (!empty($aFields["TAS_GROUP_VARIABLE"]))? "SELF_SERVICE_EVALUATE" : $aFields["TAS_ASSIGN_TYPE"];
+                        break;
+                }
+            }
+
             global $G_PUBLISH;
             G::LoadClass( 'xmlfield_InputPM' );
             $G_PUBLISH = new Publisher();
@@ -3363,7 +3372,7 @@ class processMap
         $oCriteria->addSelectColumn(ProcessUserPeer::USR_UID);
         $oCriteria->addSelectColumn(ProcessUserPeer::PRO_UID);
         $oCriteria->addAsColumn('GRP_TITLE', ContentPeer::CON_VALUE);
-        
+
         $aConditions [] = array(ProcessUserPeer::USR_UID, ContentPeer::CON_ID);
         $aConditions [] = array(ContentPeer::CON_CATEGORY, DBAdapter::getStringDelimiter () . 'GRP_TITLE' . DBAdapter::getStringDelimiter ());
         $aConditions [] = array(ContentPeer::CON_LANG, DBAdapter::getStringDelimiter () . SYS_LANG . DBAdapter::getStringDelimiter ());
@@ -3463,10 +3472,10 @@ class processMap
         $oCriteria->addSelectColumn(GroupwfPeer::GRP_UID);
         $oCriteria->addAsColumn('GRP_TITLE', ContentPeer::CON_VALUE);
 
-        $aConditions [] = array(GroupwfPeer::GRP_UID, ContentPeer::CON_ID);    
+        $aConditions [] = array(GroupwfPeer::GRP_UID, ContentPeer::CON_ID);
         $aConditions [] = array(ContentPeer::CON_CATEGORY, DBAdapter::getStringDelimiter () . 'GRP_TITLE' . DBAdapter::getStringDelimiter ());
         $aConditions [] = array(ContentPeer::CON_LANG, DBAdapter::getStringDelimiter () . SYS_LANG . DBAdapter::getStringDelimiter ());
-        
+
         $oCriteria->addJoinMC($aConditions, Criteria::LEFT_JOIN);
         $oCriteria->add(GroupwfPeer::GRP_UID, $aGRUS, Criteria::NOT_IN);
 

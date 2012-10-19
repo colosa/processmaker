@@ -63,7 +63,7 @@ if (file_exists(PATH_DATA . "cron")) {
     $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
     $bCronIsRunning = (boolean)($arrayCron["bCronIsRunning"]);
     $sLastExecution = $arrayCron["sLastExecution"];
-    $processcTimeProcess = (isset($arrayCron["processcTimeProcess"]))? intval($arrayCron["processcTimeProcess"]) : 10;
+    $processcTimeProcess = (isset($arrayCron["processcTimeProcess"]))? intval($arrayCron["processcTimeProcess"]) : 10; //Minutes
     $processcTimeStart   = (isset($arrayCron["processcTimeStart"]))? $arrayCron["processcTimeStart"] : 0;
 }
 

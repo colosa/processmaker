@@ -2,10 +2,10 @@
 /**
  * Triggers.php
  * @package    workflow.engine.classes.model
- *  
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2011 Colosa Inc.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -15,13 +15,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd., 
+ *
+ * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
+ *
  */
 
 require_once 'classes/model/Content.php';
@@ -31,7 +31,7 @@ require_once 'classes/model/om/BaseTriggers.php';
 /**
  * Skeleton subclass for representing a row from the 'TRIGGER' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -60,7 +60,7 @@ class Triggers extends BaseTriggers {
   }
   /**
    * Set the tri_title column value.
-   * 
+   *
    * @param      string $v new value
    * @return     void
    */
@@ -99,7 +99,7 @@ class Triggers extends BaseTriggers {
   }
   /**
    * Set the tri_description column value.
-   * 
+   *
    * @param      string $v new value
    * @return     void
    */
@@ -112,7 +112,7 @@ class Triggers extends BaseTriggers {
     $lang = defined ( 'SYS_LANG') ? SYS_LANG : 'en';
     if ($this->tri_description !== $v || $v==="") {
       $this->tri_description = $v;
-      
+
       $res = Content::addContent( 'TRI_DESCRIPTION', '', $this->getTriUid(), $lang, $this->tri_description );
       return $res;
     }
@@ -145,38 +145,38 @@ class Triggers extends BaseTriggers {
     try
     {
       $con->begin();
-      if ( isset ( $aData['TRI_UID'] ) && $aData['TRI_UID']== '' ) 
+      if ( isset ( $aData['TRI_UID'] ) && $aData['TRI_UID']== '' )
         unset ( $aData['TRI_UID'] );
-      if ( !isset ( $aData['TRI_UID'] ) ) 
+      if ( !isset ( $aData['TRI_UID'] ) )
         $this->setTriUid(G::generateUniqueID());
       else
         $this->setTriUid($aData['TRI_UID'] );
-        
+
       $this->setProUid($aData['PRO_UID']);
       $this->setTriType("SCRIPT");
 
-      if ( !isset ( $aData['TRI_WEBBOT'] ) ) 
+      if ( !isset ( $aData['TRI_WEBBOT'] ) )
         $this->setTriWebbot("");
       else
         $this->setTriWebbot( $aData['TRI_WEBBOT'] );
-        
+
       if($this->validate())
       {
-        if ( !isset ( $aData['TRI_TITLE'] ) ) 
+        if ( !isset ( $aData['TRI_TITLE'] ) )
           $this->setTriTitle("");
         else
           $this->setTriTitle( $aData['TRI_TITLE'] );
-          
-        if ( !isset ( $aData['TRI_DESCRIPTION'] ) ) 
+
+        if ( !isset ( $aData['TRI_DESCRIPTION'] ) )
           $this->setTriDescription("");
         else
           $this->setTriDescription( $aData['TRI_DESCRIPTION'] );
-          
-        if ( !isset ( $aData['TRI_PARAM'] ) ) 
+
+        if ( !isset ( $aData['TRI_PARAM'] ) )
           $this->setTriParam("");
         else
           $this->setTriParam( $aData['TRI_PARAM'] );
-          
+
         $result=$this->save();
         $con->commit();
         return $result;
@@ -231,7 +231,7 @@ class Triggers extends BaseTriggers {
     try
     {
       $result = false;
-      $con->begin();  
+      $con->begin();
       $oTri = TriggersPeer::retrieveByPK( $TriUid );
       if (!is_null($oTri)) {
         Content::removeContent( 'TRI_TITLE', '', $this->getTriUid());
@@ -247,7 +247,7 @@ class Triggers extends BaseTriggers {
       throw($e);
     }
   }
-  
+
   /**
    * verify if Trigger row specified in [sUid] exists.
    *
@@ -268,22 +268,22 @@ class Triggers extends BaseTriggers {
     catch (Exception $oError) {
       throw($oError);
     }
-  }  
-  
+  }
+
   function verifyDependecies($TRI_UID){
     require_once "classes/model/Event.php";
     require_once "classes/model/StepTrigger.php";
-    
+
     $oResult = new stdClass();
     $oResult->dependencies = Array();
-    
+
     $oCriteria = new Criteria();
     $oCriteria->addSelectColumn(EventPeer::EVN_UID);
     $oCriteria->addSelectColumn(EventPeer::TRI_UID);
     $oCriteria->add(EventPeer::EVN_ACTION, '', Criteria::NOT_EQUAL);
     $oCriteria->add(EventPeer::TRI_UID, $TRI_UID);
-    
-    
+
+
     $oDataset = EventPeer::doSelectRS($oCriteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -291,7 +291,7 @@ class Triggers extends BaseTriggers {
     while( $oDataset->next() ) {
       array_push($aRows, $oDataset->getRow());
     }
-    
+
     $oResult->dependencies['Events'] = Array();
     if(count($aRows) == 0){
       $oResult->code = 0;
@@ -299,16 +299,16 @@ class Triggers extends BaseTriggers {
       $oResult->code = 1;
       foreach($aRows as $row){
         $oTrigger = TriggersPeer::retrieveByPK($row['TRI_UID']);
-        array_push($oResult->dependencies['Events'], Array('UID'=>($oTrigger->getTriUid()), 'DESCRIPTION'=>($oTrigger->getTriTitle()))); 
+        array_push($oResult->dependencies['Events'], Array('UID'=>($oTrigger->getTriUid()), 'DESCRIPTION'=>($oTrigger->getTriTitle())));
       }
     }
-    
+
     //for tasks dependencies
     $oCriteria = new Criteria();
     $oCriteria->addSelectColumn(StepTriggerPeer::TAS_UID);
     $oCriteria->addSelectColumn(StepTriggerPeer::TRI_UID);
     $oCriteria->add(StepTriggerPeer::TRI_UID, $TRI_UID);
-    
+
     $oDataset = StepTriggerPeer::doSelectRS($oCriteria);
     $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -316,7 +316,7 @@ class Triggers extends BaseTriggers {
     while( $oDataset->next() ) {
       array_push($aRows, $oDataset->getRow());
     }
-    
+
     $oResult->dependencies['Tasks'] = Array();
     if($oResult->code == 0 && count($aRows) == 0){
       $oResult->code = 0;
@@ -324,12 +324,43 @@ class Triggers extends BaseTriggers {
       $oResult->code = 1;
       foreach($aRows as $row){
         $oTask = TaskPeer::retrieveByPK($row['TAS_UID']);
-        array_push($oResult->dependencies['Tasks'], Array('UID'=>($oTask->getTasUid()), 'DESCRIPTION'=>($oTask->getTasTitle()))); 
+        array_push($oResult->dependencies['Tasks'], Array('UID'=>($oTask->getTasUid()), 'DESCRIPTION'=>($oTask->getTasTitle())));
       }
     }
-    
+
+    //Tasks, assignment rules dependencies
+    $criteria = new Criteria();
+
+    $criteria->addSelectColumn(TaskPeer::TAS_UID);
+    $criteria->add(TaskPeer::TAS_SELFSERVICE_TIMEOUT, 1);
+    $criteria->add(TaskPeer::TAS_SELFSERVICE_TRIGGER_UID, $TRI_UID);
+
+    $rsCriteria = TaskPeer::doSelectRS($criteria);
+    $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+    $arrayRow = array();
+
+    while ($rsCriteria->next()) {
+        array_push($arrayRow, $rsCriteria->getRow());
+    }
+
+    $oResult->dependencies["Assignment rules"] = array();
+
+    if ($oResult->code == 0 && count($arrayRow) == 0) {
+        $oResult->code = 0;
+    } else {
+        if (count($arrayRow) > 0) {
+            foreach ($arrayRow as $row) {
+                $task = TaskPeer::retrieveByPK($row["TAS_UID"]);
+                array_push($oResult->dependencies["Assignment rules"], array("UID" => $task->getTasUid(), "DESCRIPTION" => $task->getTasTitle()));
+            }
+
+            $oResult->code = 1;
+        }
+    }
+
     return $oResult;
   }
-  
+
 } // Trigger
 ?>

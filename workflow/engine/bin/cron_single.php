@@ -95,7 +95,9 @@ require_once ("classes/model/AppDelegation.php");
 require_once ("classes/model/Event.php");
 require_once ("classes/model/AppEvent.php");
 require_once ("classes/model/CaseScheduler.php");
-//G::loadClass("pmScript");
+
+G::LoadClass("pmScript");
+G::LoadClass("case");
 
 if (!defined('SYS_SYS')) {
     $sObject = $argv[1];
@@ -222,6 +224,7 @@ function processWorkspace()
         executeEvents($sLastExecution);
         executeScheduledCases();
         executeUpdateAppTitle();
+        executeCaseSelfService();
         executePlugins();
     } catch (Exception $oError) {
         saveLog("main", "error", "Error processing workspace : " . $oError->getMessage() . "\n");
@@ -335,7 +338,7 @@ function executePlugins()
 
                 if (method_exists($oPlugin, 'executeCron')) {
                     $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
-                    $arrayCron["processcTimeProcess"] = 60;
+                    $arrayCron["processcTimeProcess"] = 60; //Minutes
                     $arrayCron["processcTimeStart"]   = time();
                     @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
 
@@ -491,6 +494,135 @@ function executeUpdateAppTitle()
         setExecutionResultMessage("WITH ERRORS", "error");
         eprintln("  '-" . $e->getMessage(), "red");
         saveLog("updateCaseLabels", "error", "Error updating case labels: " . $e->getMessage());
+    }
+}
+
+function executeCaseSelfService()
+{
+    try {
+        global $sFilter;
+
+        if ($sFilter != "" && strpos($sFilter, "unassigned-case") === false) {
+            return false;
+        }
+
+        $criteria = new Criteria("workflow");
+
+        //SELECT
+        $criteria->addSelectColumn(AppCacheViewPeer::APP_UID);
+        $criteria->addSelectColumn(AppCacheViewPeer::DEL_INDEX);
+        $criteria->addSelectColumn(AppCacheViewPeer::DEL_DELEGATE_DATE);
+        $criteria->addSelectColumn(AppCacheViewPeer::APP_NUMBER);
+        $criteria->addSelectColumn(AppCacheViewPeer::PRO_UID);
+        $criteria->addSelectColumn(TaskPeer::TAS_UID);
+        $criteria->addSelectColumn(TaskPeer::TAS_SELFSERVICE_TIME);
+        $criteria->addSelectColumn(TaskPeer::TAS_SELFSERVICE_TIME_UNIT);
+        $criteria->addSelectColumn(TaskPeer::TAS_SELFSERVICE_TRIGGER_UID);
+
+        //FROM
+        $condition = array();
+        $condition[] = array(AppCacheViewPeer::TAS_UID, TaskPeer::TAS_UID);
+        $condition[] = array(TaskPeer::TAS_SELFSERVICE_TIMEOUT, 1);
+        $criteria->addJoinMC($condition, Criteria::LEFT_JOIN);
+
+        //WHERE
+        $criteria->add(AppCacheViewPeer::USR_UID, "");
+        $criteria->add(AppCacheViewPeer::DEL_THREAD_STATUS, "OPEN");
+
+        //QUERY
+        $rsCriteria = AppCacheViewPeer::doSelectRS($criteria);
+        $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        setExecutionMessage("Unassigned case");
+        saveLog("unassignedCase", "action", "Unassigned case", "c");
+
+        while ($rsCriteria->next()) {
+            $row = $rsCriteria->getRow();
+
+            $appcacheAppUid   = $row["APP_UID"];
+            $appcacheDelIndex = $row["DEL_INDEX"];
+            $appcacheDelDelegateDate = $row["DEL_DELEGATE_DATE"];
+            $appcacheAppNumber = $row["APP_NUMBER"];
+            $appcacheProUid    = $row["PRO_UID"];
+            $taskUid = $row["TAS_UID"];
+            $taskSelfServiceTime = intval($row["TAS_SELFSERVICE_TIME"]);
+            $taskSelfServiceTimeUnit = $row["TAS_SELFSERVICE_TIME_UNIT"];
+            $taskSelfServiceTriggerUid = $row["TAS_SELFSERVICE_TRIGGER_UID"];
+
+            //Get dates in seconds
+            $arrayDelegateDate = getdate(strtotime($appcacheDelDelegateDate));
+
+            $mktDelegateDate = mktime(
+                $arrayDelegateDate["hours"],
+                $arrayDelegateDate["minutes"],
+                $arrayDelegateDate["seconds"],
+                $arrayDelegateDate["mon"],
+                $arrayDelegateDate["mday"],
+                $arrayDelegateDate["year"]
+            );
+
+            //TAS_SELFSERVICE_TIME in seconds
+            $t = $taskSelfServiceTime;
+
+            switch ($taskSelfServiceTimeUnit) {
+                case "HOURS":
+                    $t = $taskSelfServiceTime * 60 * 60;
+                    break;
+                case "DAYS":
+                    $t = $taskSelfServiceTime * 24 * 60 * 60;
+                    break;
+            }
+
+            if (time() > $mktDelegateDate + $t) {
+                //Load data
+                $case = new Cases();
+                $appFields = $case->loadCase($appcacheAppUid);
+
+                $appFields["APP_DATA"]["APPLICATION"] = $appcacheAppUid;
+
+                if (!isset($_SESSION["PROCESS"])) {
+                    $_SESSION["PROCESS"] = $appFields["PRO_UID"];
+                }
+
+                //Execute trigger
+                $criteriaTgr = new Criteria();
+                $criteriaTgr->add(TriggersPeer::TRI_UID, $taskSelfServiceTriggerUid);
+
+                $rsCriteriaTgr = TriggersPeer::doSelectRS($criteriaTgr);
+                $rsCriteriaTgr->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+                if ($rsCriteriaTgr->next()) {
+                    $row = $rsCriteriaTgr->getRow();
+
+                    if (is_array($row) && $row["TRI_TYPE"] == "SCRIPT") {
+                        $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+                        $arrayCron["processcTimeProcess"] = 60; //Minutes
+                        $arrayCron["processcTimeStart"]   = time();
+                        @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+
+                        //Trigger
+                        global $oPMScript;
+
+                        $oPMScript = new PMScript();
+                        $oPMScript->setFields($appFields["APP_DATA"]);
+                        $oPMScript->setScript($row["TRI_WEBBOT"]);
+                        $oPMScript->execute();
+
+                        $appFields["APP_DATA"] = array_merge($appFields["APP_DATA"], $oPMScript->aFields);
+
+                        $case->updateCase($appFields["APP_UID"], $appFields);
+
+                        saveLog("unassignedCase", "action", "OK Executed tigger to the case $appcacheAppNumber");
+                    }
+                }
+            }
+        }
+
+        setExecutionResultMessage("DONE");
+    } catch (Exception $e) {
+        setExecutionResultMessage("WITH ERRORS", "error");
+        eprintln("  '-" . $e->getMessage(), "red");
+        saveLog("unassignedCase", "error", "Error in unassigned case: " . $e->getMessage());
     }
 }
 

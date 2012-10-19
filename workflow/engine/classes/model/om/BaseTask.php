@@ -280,6 +280,30 @@ abstract class BaseTask extends BaseObject implements Persistent
     protected $tas_derivation_screen_tpl = '';
 
     /**
+     * The value for the tas_selfservice_timeout field.
+     * @var        int
+     */
+    protected $tas_selfservice_timeout = 0;
+
+    /**
+     * The value for the tas_selfservice_time field.
+     * @var        string
+     */
+    protected $tas_selfservice_time = '';
+
+    /**
+     * The value for the tas_selfservice_time_unit field.
+     * @var        string
+     */
+    protected $tas_selfservice_time_unit = '';
+
+    /**
+     * The value for the tas_selfservice_trigger_uid field.
+     * @var        string
+     */
+    protected $tas_selfservice_trigger_uid = '';
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -753,6 +777,50 @@ abstract class BaseTask extends BaseObject implements Persistent
     {
 
         return $this->tas_derivation_screen_tpl;
+    }
+
+    /**
+     * Get the [tas_selfservice_timeout] column value.
+     * 
+     * @return     int
+     */
+    public function getTasSelfserviceTimeout()
+    {
+
+        return $this->tas_selfservice_timeout;
+    }
+
+    /**
+     * Get the [tas_selfservice_time] column value.
+     * 
+     * @return     string
+     */
+    public function getTasSelfserviceTime()
+    {
+
+        return $this->tas_selfservice_time;
+    }
+
+    /**
+     * Get the [tas_selfservice_time_unit] column value.
+     * 
+     * @return     string
+     */
+    public function getTasSelfserviceTimeUnit()
+    {
+
+        return $this->tas_selfservice_time_unit;
+    }
+
+    /**
+     * Get the [tas_selfservice_trigger_uid] column value.
+     * 
+     * @return     string
+     */
+    public function getTasSelfserviceTriggerUid()
+    {
+
+        return $this->tas_selfservice_trigger_uid;
     }
 
     /**
@@ -1668,6 +1736,94 @@ abstract class BaseTask extends BaseObject implements Persistent
     } // setTasDerivationScreenTpl()
 
     /**
+     * Set the value of [tas_selfservice_timeout] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setTasSelfserviceTimeout($v)
+    {
+
+        // Since the native PHP type for this column is integer,
+        // we will cast the input value to an int (if it is not).
+        if ($v !== null && !is_int($v) && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->tas_selfservice_timeout !== $v || $v === 0) {
+            $this->tas_selfservice_timeout = $v;
+            $this->modifiedColumns[] = TaskPeer::TAS_SELFSERVICE_TIMEOUT;
+        }
+
+    } // setTasSelfserviceTimeout()
+
+    /**
+     * Set the value of [tas_selfservice_time] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setTasSelfserviceTime($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->tas_selfservice_time !== $v || $v === '') {
+            $this->tas_selfservice_time = $v;
+            $this->modifiedColumns[] = TaskPeer::TAS_SELFSERVICE_TIME;
+        }
+
+    } // setTasSelfserviceTime()
+
+    /**
+     * Set the value of [tas_selfservice_time_unit] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setTasSelfserviceTimeUnit($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->tas_selfservice_time_unit !== $v || $v === '') {
+            $this->tas_selfservice_time_unit = $v;
+            $this->modifiedColumns[] = TaskPeer::TAS_SELFSERVICE_TIME_UNIT;
+        }
+
+    } // setTasSelfserviceTimeUnit()
+
+    /**
+     * Set the value of [tas_selfservice_trigger_uid] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setTasSelfserviceTriggerUid($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->tas_selfservice_trigger_uid !== $v || $v === '') {
+            $this->tas_selfservice_trigger_uid = $v;
+            $this->modifiedColumns[] = TaskPeer::TAS_SELFSERVICE_TRIGGER_UID;
+        }
+
+    } // setTasSelfserviceTriggerUid()
+
+    /**
      * Hydrates (populates) the object variables with values from the database resultset.
      *
      * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -1768,12 +1924,20 @@ abstract class BaseTask extends BaseObject implements Persistent
 
             $this->tas_derivation_screen_tpl = $rs->getString($startcol + 41);
 
+            $this->tas_selfservice_timeout = $rs->getInt($startcol + 42);
+
+            $this->tas_selfservice_time = $rs->getString($startcol + 43);
+
+            $this->tas_selfservice_time_unit = $rs->getString($startcol + 44);
+
+            $this->tas_selfservice_trigger_uid = $rs->getString($startcol + 45);
+
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 42; // 42 = TaskPeer::NUM_COLUMNS - TaskPeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 46; // 46 = TaskPeer::NUM_COLUMNS - TaskPeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Task object", $e);
@@ -2103,6 +2267,18 @@ abstract class BaseTask extends BaseObject implements Persistent
             case 41:
                 return $this->getTasDerivationScreenTpl();
                 break;
+            case 42:
+                return $this->getTasSelfserviceTimeout();
+                break;
+            case 43:
+                return $this->getTasSelfserviceTime();
+                break;
+            case 44:
+                return $this->getTasSelfserviceTimeUnit();
+                break;
+            case 45:
+                return $this->getTasSelfserviceTriggerUid();
+                break;
             default:
                 return null;
                 break;
@@ -2165,6 +2341,10 @@ abstract class BaseTask extends BaseObject implements Persistent
             $keys[39] => $this->getTasEvnUid(),
             $keys[40] => $this->getTasBoundary(),
             $keys[41] => $this->getTasDerivationScreenTpl(),
+            $keys[42] => $this->getTasSelfserviceTimeout(),
+            $keys[43] => $this->getTasSelfserviceTime(),
+            $keys[44] => $this->getTasSelfserviceTimeUnit(),
+            $keys[45] => $this->getTasSelfserviceTriggerUid(),
         );
         return $result;
     }
@@ -2321,6 +2501,18 @@ abstract class BaseTask extends BaseObject implements Persistent
                 break;
             case 41:
                 $this->setTasDerivationScreenTpl($value);
+                break;
+            case 42:
+                $this->setTasSelfserviceTimeout($value);
+                break;
+            case 43:
+                $this->setTasSelfserviceTime($value);
+                break;
+            case 44:
+                $this->setTasSelfserviceTimeUnit($value);
+                break;
+            case 45:
+                $this->setTasSelfserviceTriggerUid($value);
                 break;
         } // switch()
     }
@@ -2513,6 +2705,22 @@ abstract class BaseTask extends BaseObject implements Persistent
             $this->setTasDerivationScreenTpl($arr[$keys[41]]);
         }
 
+        if (array_key_exists($keys[42], $arr)) {
+            $this->setTasSelfserviceTimeout($arr[$keys[42]]);
+        }
+
+        if (array_key_exists($keys[43], $arr)) {
+            $this->setTasSelfserviceTime($arr[$keys[43]]);
+        }
+
+        if (array_key_exists($keys[44], $arr)) {
+            $this->setTasSelfserviceTimeUnit($arr[$keys[44]]);
+        }
+
+        if (array_key_exists($keys[45], $arr)) {
+            $this->setTasSelfserviceTriggerUid($arr[$keys[45]]);
+        }
+
     }
 
     /**
@@ -2692,6 +2900,22 @@ abstract class BaseTask extends BaseObject implements Persistent
             $criteria->add(TaskPeer::TAS_DERIVATION_SCREEN_TPL, $this->tas_derivation_screen_tpl);
         }
 
+        if ($this->isColumnModified(TaskPeer::TAS_SELFSERVICE_TIMEOUT)) {
+            $criteria->add(TaskPeer::TAS_SELFSERVICE_TIMEOUT, $this->tas_selfservice_timeout);
+        }
+
+        if ($this->isColumnModified(TaskPeer::TAS_SELFSERVICE_TIME)) {
+            $criteria->add(TaskPeer::TAS_SELFSERVICE_TIME, $this->tas_selfservice_time);
+        }
+
+        if ($this->isColumnModified(TaskPeer::TAS_SELFSERVICE_TIME_UNIT)) {
+            $criteria->add(TaskPeer::TAS_SELFSERVICE_TIME_UNIT, $this->tas_selfservice_time_unit);
+        }
+
+        if ($this->isColumnModified(TaskPeer::TAS_SELFSERVICE_TRIGGER_UID)) {
+            $criteria->add(TaskPeer::TAS_SELFSERVICE_TRIGGER_UID, $this->tas_selfservice_trigger_uid);
+        }
+
 
         return $criteria;
     }
@@ -2827,6 +3051,14 @@ abstract class BaseTask extends BaseObject implements Persistent
         $copyObj->setTasBoundary($this->tas_boundary);
 
         $copyObj->setTasDerivationScreenTpl($this->tas_derivation_screen_tpl);
+
+        $copyObj->setTasSelfserviceTimeout($this->tas_selfservice_timeout);
+
+        $copyObj->setTasSelfserviceTime($this->tas_selfservice_time);
+
+        $copyObj->setTasSelfserviceTimeUnit($this->tas_selfservice_time_unit);
+
+        $copyObj->setTasSelfserviceTriggerUid($this->tas_selfservice_trigger_uid);
 
 
         $copyObj->setNew(true);
