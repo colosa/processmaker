@@ -198,25 +198,31 @@ try {
 
                 if (is_array( $result )) {
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->name ))
+                            }
+                            if (isset( $item->name )) {
                                 $name = $item->name;
+                            }
                         }
 
                         $rows[] = array ('guid' => $guid,'name' => $name
@@ -231,7 +237,7 @@ try {
                     $c->setDBArrayTable( 'process' );
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrProcessList', $c );
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -256,25 +262,31 @@ try {
                 if (is_array( $result )) {
 
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->name ))
+                            }
+                            if (isset( $item->name )) {
                                 $name = $item->name;
+                            }
                         }
 
                         $rows[] = array ('guid' => $guid,'name' => $name
@@ -290,7 +302,7 @@ try {
                     $c->setDBArrayTable( 'role' );
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrRoleList', $c );
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -313,25 +325,31 @@ try {
                 );
                 if (is_array( $result )) {
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->name ))
+                            }
+                            if (isset( $item->name )) {
                                 $name = $item->name;
+                            }
                         }
 
                         $rows[] = array ('guid' => $guid,'name' => $name
@@ -347,7 +365,7 @@ try {
                     $c->setDBArrayTable( 'group' );
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrGroupList', $c );
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -372,38 +390,49 @@ try {
 
                 if (is_array( $result )) {
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
-                                if ($val->key == 'status')
+                                }
+                                if ($val->key == 'status') {
                                     $status = $val->value;
-                                if ($val->key == 'delIndex')
+                                }
+                                if ($val->key == 'delIndex') {
                                     $delIndex = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
-                                if ($val->key == 'status')
+                                }
+                                if ($val->key == 'status') {
                                     $status = $val->value;
-                                if ($val->key == 'delIndex')
+                                }
+                                if ($val->key == 'delIndex') {
                                     $delIndex = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->name ))
+                            }
+                            if (isset( $item->name )) {
                                 $name = $item->name;
-                            if (isset( $item->status ))
+                            }
+                            if (isset( $item->status )) {
                                 $status = $item->status;
-                            if (isset( $item->delIndex ))
+                            }
+                            if (isset( $item->delIndex )) {
                                 $delIndex = $item->delIndex;
-
+                            }
                         }
                         $rows[] = array ('guid' => $guid,'name' => $name,'status' => $status,'delIndex' => $delIndex
                         );
@@ -421,7 +450,7 @@ try {
                     //$c->addAscendingOrderByColumn ( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrCaseList', $c );
 
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -446,31 +475,40 @@ try {
 
                 if (is_array( $result )) {
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
-                                if ($val->key == 'delIndex')
+                                }
+                                if ($val->key == 'delIndex') {
                                     $delIndex = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
-                                if ($val->key == 'delIndex')
+                                }
+                                if ($val->key == 'delIndex') {
                                     $delIndex = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->name ))
+                            }
+                            if (isset( $item->name )) {
                                 $name = $item->name;
-                            if (isset( $item->delIndex ))
+                            }
+                            if (isset( $item->delIndex )) {
                                 $delIndex = $item->delIndex;
+                            }
                         }
                         $rows[] = array ('guid' => $guid,'name' => $name,'delIndex' => $delIndex
                         );
@@ -486,7 +524,7 @@ try {
                     $c->setDBArrayTable( 'case' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrUnassignedCaseList', $c );
 
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -510,25 +548,31 @@ try {
                 if (is_array( $result )) {
 
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->name ))
+                            }
+                            if (isset( $item->name )) {
                                 $name = $item->name;
+                            }
                         }
 
                         $rows[] = array ('guid' => $guid,'name' => $name
@@ -546,7 +590,7 @@ try {
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrUserList', $c );
 
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -788,25 +832,31 @@ try {
                 if (is_array( $result )) {
 
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->name ))
+                            }
+                            if (isset( $item->name )) {
                                 $name = $item->name;
+                            }
                         }
 
                         $rows[] = array ('guid' => $guid,'name' => $name
@@ -822,7 +872,7 @@ try {
                     $c->setDBArrayTable( 'task' );
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrTaskList', $c );
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -846,31 +896,40 @@ try {
 
                 if (is_array( $result )) {
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
-                                if ($val->key == 'processId')
+                                }
+                                if ($val->key == 'processId') {
                                     $processId = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
-                                if ($val->key == 'processId')
+                                }
+                                if ($val->key == 'processId') {
                                     $processId = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->name ))
+                            }
+                            if (isset( $item->name )) {
                                 $name = $item->name;
-                            if (isset( $item->processId ))
+                            }
+                            if (isset( $item->processId )) {
                                 $processId = $item->processId;
+                            }
                         }
                         $rows[] = array ('guid' => $guid,'name' => $name,'processId' => $processId
                         );
@@ -881,12 +940,13 @@ try {
 
                     foreach ($rows as $key => $row) {
                         $proId = $row['processId'];
-                        if (isset( $_DBArray['process'] ) && is_array( $_DBArray['process'] ))
+                        if (isset( $_DBArray['process'] ) && is_array( $_DBArray['process'] )) {
                             foreach ($_DBArray['process'] as $pkey => $prow) {
                                 if ($proId == $prow['guid']) {
                                     $rows[$key]['processId'] = $prow['name'];
                                 }
                             }
+                        }
                     }
 
                     $_DBArray['triggers'] = $rows;
@@ -898,7 +958,7 @@ try {
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrTriggerList', $c );
 
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -926,61 +986,85 @@ try {
 
                 if (is_array( $result )) {
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'filename')
+                                }
+                                if ($val->key == 'filename') {
                                     $filename = $val->value;
-                                if ($val->key == 'docId')
+                                }
+                                if ($val->key == 'docId') {
                                     $docId = $val->value;
-                                if ($val->key == 'version')
+                                }
+                                if ($val->key == 'version') {
                                     $version = $val->value;
-                                if ($val->key == 'createDate')
+                                }
+                                if ($val->key == 'createDate') {
                                     $createDate = $val->value;
-                                if ($val->key == 'createBy')
+                                }
+                                if ($val->key == 'createBy') {
                                     $createBy = $val->value;
-                                if ($val->key == 'type')
+                                }
+                                if ($val->key == 'type') {
                                     $type = $val->value;
-                                if ($val->key == 'link')
+                                }
+                                if ($val->key == 'link') {
                                     $link = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'filename')
+                                }
+                                if ($val->key == 'filename') {
                                     $filename = $val->value;
-                                if ($val->key == 'docId')
+                                }
+                                if ($val->key == 'docId') {
                                     $docId = $val->value;
-                                if ($val->key == 'version')
+                                }
+                                if ($val->key == 'version') {
                                     $version = $val->value;
-                                if ($val->key == 'createDate')
+                                }
+                                if ($val->key == 'createDate') {
                                     $createDate = $val->value;
-                                if ($val->key == 'createBy')
+                                }
+                                if ($val->key == 'createBy') {
                                     $createBy = $val->value;
-                                if ($val->key == 'type')
+                                }
+                                if ($val->key == 'type') {
                                     $type = $val->value;
-                                if ($val->key == 'link')
+                                }
+                                if ($val->key == 'link') {
                                     $link = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->filename ))
+                            }
+                            if (isset( $item->filename )) {
                                 $filename = $item->filename;
-                            if (isset( $item->docId ))
+                            }
+                            if (isset( $item->docId )) {
                                 $docId = $item->docId;
-                            if (isset( $item->version ))
+                            }
+                            if (isset( $item->version )) {
                                 $version = $item->version;
-                            if (isset( $item->createDate ))
+                            }
+                            if (isset( $item->createDate )) {
                                 $createDate = $item->createDate;
-                            if (isset( $item->createBy ))
+                            }
+                            if (isset( $item->createBy )) {
                                 $createBy = $item->createBy;
-                            if (isset( $item->type ))
+                            }
+                            if (isset( $item->type )) {
                                 $type = $item->type;
-                            if (isset( $item->link ))
+                            }
+                            if (isset( $item->link )) {
                                 $link = $item->link;
+                            }
                         }
                         $rows[] = array ('guid' => $guid,'filename' => $filename,'docId' => $docId,'version' => $version,'createDate' => $createDate,'createBy' => $createBy,'type' => $type,'link' => $link
                         );
@@ -992,16 +1076,22 @@ try {
                     $documentArray = array ();
                     $documentArray[] = array ('guid' => 'char','filename' => 'char'
                     );
-                    if (isset( $_DBArray['inputDocument'] ))
-                        foreach ($_DBArray['inputDocument'] as $key => $val)
-                            if ($key != 0 && isset( $val['filename'] ))
+                    if (isset( $_DBArray['inputDocument'] )) {
+                        foreach ($_DBArray['inputDocument'] as $key => $val) {
+                            if ($key != 0 && isset( $val['filename'] )) {
                                 $documentArray[] = array ('guid' => $val['guid'],'filename' => $val['filename']
                                 );
-                    if (isset( $_DBArray['outputDocument'] ))
-                        foreach ($_DBArray['outputDocument'] as $key => $val)
-                            if ($key != 0 && isset( $val['filename'] ))
+                            }
+                        }
+                    }
+                    if (isset( $_DBArray['outputDocument'] )) {
+                        foreach ($_DBArray['outputDocument'] as $key => $val) {
+                            if ($key != 0 && isset( $val['filename'] )) {
                                 $documentArray[] = array ('guid' => $val['guid'],'filename' => $val['filename']
                                 );
+                            }
+                        }
+                    }
                     $_DBArray['documents'] = $documentArray;
                     $_DBArray['WS_TMP_CASE_UID'] = $frm["CASE_ID"];
                     $_SESSION['_DBArray'] = $_DBArray;
@@ -1012,7 +1102,7 @@ try {
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrInputDocumentList', $c );
 
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -1036,31 +1126,40 @@ try {
                 );
                 if (is_array( $result )) {
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
-                                if ($val->key == 'description')
+                                }
+                                if ($val->key == 'description') {
                                     $description = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'name')
+                                }
+                                if ($val->key == 'name') {
                                     $name = $val->value;
-                                if ($val->key == 'description')
+                                }
+                                if ($val->key == 'description') {
                                     $description = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->name ))
+                            }
+                            if (isset( $item->name )) {
                                 $name = $item->name;
-                            if (isset( $item->description ))
+                            }
+                            if (isset( $item->description )) {
                                 $description = $item->description;
+                            }
                         }
                         $rows[] = array ('guid' => $guid,'name' => $name,'description' => $description
                         );
@@ -1075,7 +1174,7 @@ try {
                     $c->setDBArrayTable( 'inputDocuments' );
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrInputDocumentProcessList', $c );
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -1101,61 +1200,85 @@ try {
                 if (is_array( $result )) {
 
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'filename')
+                                }
+                                if ($val->key == 'filename') {
                                     $filename = $val->value;
-                                if ($val->key == 'docId')
+                                }
+                                if ($val->key == 'docId') {
                                     $docId = $val->value;
-                                if ($val->key == 'version')
+                                }
+                                if ($val->key == 'version') {
                                     $version = $val->value;
-                                if ($val->key == 'createDate')
+                                }
+                                if ($val->key == 'createDate') {
                                     $createDate = $val->value;
-                                if ($val->key == 'createBy')
+                                }
+                                if ($val->key == 'createBy') {
                                     $createBy = $val->value;
-                                if ($val->key == 'type')
+                                }
+                                if ($val->key == 'type') {
                                     $type = $val->value;
-                                if ($val->key == 'link')
+                                }
+                                if ($val->key == 'link') {
                                     $link = $val->value;
+                                }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
-                                if ($val->key == 'filename')
+                                }
+                                if ($val->key == 'filename') {
                                     $filename = $val->value;
-                                if ($val->key == 'docId')
+                                }
+                                if ($val->key == 'docId') {
                                     $docId = $val->value;
-                                if ($val->key == 'version')
+                                }
+                                if ($val->key == 'version') {
                                     $version = $val->value;
-                                if ($val->key == 'createDate')
+                                }
+                                if ($val->key == 'createDate') {
                                     $createDate = $val->value;
-                                if ($val->key == 'createBy')
+                                }
+                                if ($val->key == 'createBy') {
                                     $createBy = $val->value;
-                                if ($val->key == 'type')
+                                }
+                                if ($val->key == 'type') {
                                     $type = $val->value;
-                                if ($val->key == 'link')
+                                }
+                                if ($val->key == 'link') {
                                     $link = $val->value;
+                                }
                             }
-                        else {
-                            if (isset( $item->guid ))
+                        } else {
+                            if (isset( $item->guid )) {
                                 $guid = $item->guid;
-                            if (isset( $item->filename ))
+                            }
+                            if (isset( $item->filename )) {
                                 $filename = $item->filename;
-                            if (isset( $item->docId ))
+                            }
+                            if (isset( $item->docId )) {
                                 $docId = $item->docId;
-                            if (isset( $item->version ))
+                            }
+                            if (isset( $item->version )) {
                                 $version = $item->version;
-                            if (isset( $item->createDate ))
+                            }
+                            if (isset( $item->createDate )) {
                                 $createDate = $item->createDate;
-                            if (isset( $item->createBy ))
+                            }
+                            if (isset( $item->createBy )) {
                                 $createBy = $item->createBy;
-                            if (isset( $item->type ))
+                            }
+                            if (isset( $item->type )) {
                                 $type = $item->type;
-                            if (isset( $item->link ))
+                            }
+                            if (isset( $item->link )) {
                                 $link = $item->link;
+                            }
                         }
                         $rows[] = array ('guid' => $guid,'filename' => $filename,'docId' => $docId,'version' => $version,'createDate' => $createDate,'createBy' => $createBy,'type' => $type,'link' => $link
                         );
@@ -1166,16 +1289,22 @@ try {
                     $documentArray = array ();
                     $documentArray[] = array ('guid' => 'char','filename' => 'char'
                     );
-                    if (isset( $_DBArray['inputDocument'] ))
-                        foreach ($_DBArray['inputDocument'] as $key => $val)
-                            if ($key != 0 && isset( $val['filename'] ))
+                    if (isset( $_DBArray['inputDocument'] )) {
+                        foreach ($_DBArray['inputDocument'] as $key => $val) {
+                            if ($key != 0 && isset( $val['filename'] )) {
                                 $documentArray[] = array ('guid' => $val['guid'],'filename' => $val['filename']
                                 );
-                    if (isset( $_DBArray['outputDocument'] ))
-                        foreach ($_DBArray['outputDocument'] as $key => $val)
-                            if ($key != 0 && isset( $val['filename'] ))
+                            }
+                        }
+                    }
+                    if (isset( $_DBArray['outputDocument'] )) {
+                        foreach ($_DBArray['outputDocument'] as $key => $val) {
+                            if ($key != 0 && isset( $val['filename'] )) {
                                 $documentArray[] = array ('guid' => $val['guid'],'filename' => $val['filename']
                                 );
+                            }
+                        }
+                    }
                     $_DBArray['documents'] = $documentArray;
                     $_SESSION['_DBArray'] = $_DBArray;
 
@@ -1184,7 +1313,7 @@ try {
                     $c->setDBArrayTable( 'outputDocument' );
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrOutputDocumentList', $c );
-                } else if (is_object( $result )) {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
                     $fields['status_code'] = $result->status_code;
                     $fields['message'] = $result->message;
@@ -1251,7 +1380,7 @@ try {
                 if (is_array( $result )) {
 
                     foreach ($result as $key => $item) {
-                        if (isset( $item->item ))
+                        if (isset( $item->item )) {
                             foreach ($item->item as $index => $val) {
                                 if ($val->key == 'guid') {
                                     $guid = $val->value;
@@ -1260,18 +1389,17 @@ try {
                                     $name = $val->value;
                                 }
                             }
-                        else if (is_array( $item ))
+                        } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
-                                if ($val->key == 'guid')
+                                if ($val->key == 'guid') {
                                     $guid = $val->value;
+                                }
                             }
+                        }
                         if ($val->key == 'name') {
                             $name = $val->value;
                         }
-                    }
-                        else
-
-                    {
+                    } else {
                         if (isset( $item->guid )) {
                             $guid = $item->guid;
                         }
@@ -1294,9 +1422,8 @@ try {
                 $c->setDBArrayTable( 'taskCases' );
                 $c->addAscendingOrderByColumn( 'name' );
                 $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrTaskCase', $c );
-        } else
-
-        if (is_object( $result )) {
+        } elseif (is_object( $result ))
+        {
             $_SESSION['WS_SESSION_ID'] = '';
             $fields['status_code'] = $result->status_code;
             $fields['message'] = $result->message;
@@ -1306,83 +1433,84 @@ try {
 
         G::RenderPage( 'publish', 'raw' );
         break;
-            case "wsSendFiles":
-
-
-        if (isset( $_FILES['form'] )) {
-            foreach ($_FILES['form']['name'] as $sFieldName => $vValue) {
-                if ($_FILES['form']['error'][$sFieldName] == 0) {
-                    file_put_contents( G::sys_get_temp_dir() . PATH_SEP . $_FILES['form']['name'][$sFieldName], file_get_contents( $_FILES['form']['tmp_name'][$sFieldName] ) );
-                    $filename = G::sys_get_temp_dir() . PATH_SEP . $_FILES['form']['name'][$sFieldName];
+        case "wsSendFiles":
+            if (isset( $_FILES['form'] )) {
+                foreach ($_FILES['form']['name'] as $sFieldName => $vValue) {
+                    if ($_FILES['form']['error'][$sFieldName] == 0) {
+                        file_put_contents( G::sys_get_temp_dir() . PATH_SEP . $_FILES['form']['name'][$sFieldName], file_get_contents( $_FILES['form']['tmp_name'][$sFieldName] ) );
+                        $filename = G::sys_get_temp_dir() . PATH_SEP . $_FILES['form']['name'][$sFieldName];
+                    }
                 }
             }
-        }
 
-        //                              G::pr ( $_SESSION );
-        if (! isset( $_POST['form']['INPUT_DOCUMENT'] )) {
-            $_POST['form']['INPUT_DOCUMENT'] = '';
-        }
-
-        if (isset( $_SESSION['_DBArray']['inputDocument'] )) {
-            foreach ($_SESSION['_DBArray']['inputDocument'] as $inputDocument) {
-                if ($inputDocument['guid'] == $_POST['form']['INPUT_DOCUMENT']) {
-                    $doc_uid = $inputDocument['docId'];
-                }
+            //                              G::pr ( $_SESSION );
+            if (! isset( $_POST['form']['INPUT_DOCUMENT'] )) {
+                $_POST['form']['INPUT_DOCUMENT'] = '';
             }
-        } else {
-            $doc_uid = "default";
-        }
-        if (! isset( $_SESSION['_DBArray']['WS_TMP_CASE_UID'] )) {
-            $_SESSION['_DBArray']['WS_TMP_CASE_UID'] = '';
-        }
-        $usr_uid = $_SESSION['USER_LOGGED'];
-        $app_uid = $_SESSION['_DBArray']['WS_TMP_CASE_UID'];
-        $del_index = 1;
 
-        function sendFile ($FILENAME, $USR_UID, $APP_UID, $DEL_INDEX = 1, $DOC_UID = null, $title = null, $comment = null)
-        {
-            $defaultEndpoint = 'http://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . '/sys' . SYS_SYS . '/' . SYS_LANG . '/classic/services/upload';
-            $upload = isset( $_SESSION['END_POINT'] ) ? $_SESSION['END_POINT'] : $defaultEndpoint;
+            if (isset( $_SESSION['_DBArray']['inputDocument'] )) {
+                foreach ($_SESSION['_DBArray']['inputDocument'] as $inputDocument) {
+                    if ($inputDocument['guid'] == $_POST['form']['INPUT_DOCUMENT']) {
+                        $doc_uid = $inputDocument['docId'];
+                    }
+                }
+            } else {
+                $doc_uid = "default";
+            }
+            if (! isset( $_SESSION['_DBArray']['WS_TMP_CASE_UID'] )) {
+                $_SESSION['_DBArray']['WS_TMP_CASE_UID'] = '';
+            }
+            $usr_uid = $_SESSION['USER_LOGGED'];
+            $app_uid = $_SESSION['_DBArray']['WS_TMP_CASE_UID'];
+            $del_index = 1;
 
-            $DOC_UID = ($DOC_UID != null) ? $DOC_UID : - 1;
-            $APP_DOC_TYPE = ($DOC_UID == - 1) ? 'ATTACHED' : 'INPUT';
-            $title = ($title != null) ? $title : $FILENAME;
-            $comment = ($comment != null) ? $comment : '';
+            function sendFile ($FILENAME, $USR_UID, $APP_UID, $DEL_INDEX = 1, $DOC_UID = null, $title = null, $comment = null)
+            {
+                $defaultEndpoint = 'http://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . '/sys' . SYS_SYS . '/' . SYS_LANG . '/classic/services/upload';
+                $upload = isset( $_SESSION['END_POINT'] ) ? $_SESSION['END_POINT'] : $defaultEndpoint;
 
-            $params = array ('ATTACH_FILE' => "@$FILENAME",'APPLICATION' => $APP_UID,'INDEX' => $DEL_INDEX,'USR_UID' => $USR_UID,'DOC_UID' => $DOC_UID,'APP_DOC_TYPE' => $APP_DOC_TYPE,'TITLE' => $title,'COMMENT' => $comment
-            );
+                $DOC_UID = ($DOC_UID != null) ? $DOC_UID : - 1;
+                $APP_DOC_TYPE = ($DOC_UID == - 1) ? 'ATTACHED' : 'INPUT';
+                $title = ($title != null) ? $title : $FILENAME;
+                $comment = ($comment != null) ? $comment : '';
 
-            $ch = curl_init();
-            curl_setopt( $ch, CURLOPT_URL, $defaultEndpoint );
-            //curl_setopt($ch, CURLOPT_VERBOSE, 1);
-            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-            curl_setopt( $ch, CURLOPT_POST, 1 );
-            curl_setopt( $ch, CURLOPT_POSTFIELDS, $params );
-            $response = curl_exec( $ch );
-            curl_close( $ch );
-            return $response;
-        }
+                $params = array ('ATTACH_FILE' => "@$FILENAME",'APPLICATION' => $APP_UID,'INDEX' => $DEL_INDEX,'USR_UID' => $USR_UID,'DOC_UID' => $DOC_UID,'APP_DOC_TYPE' => $APP_DOC_TYPE,'TITLE' => $title,'COMMENT' => $comment
+                );
 
-        $fields['status_code'] = 0;
-        $fields['time_stamp'] = date( "Y-m-d H:i:s" );
-        if ($_POST['form']['UPLOAD_OPTION'] == '1') {
-            // G::pr($doc_uid);
-            $fields['message'] = sendFile( $filename, $usr_uid, $app_uid, 1, $doc_uid );
+                $ch = curl_init();
+                curl_setopt( $ch, CURLOPT_URL, $defaultEndpoint );
+                //curl_setopt($ch, CURLOPT_VERBOSE, 1);
+                curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+                curl_setopt( $ch, CURLOPT_POST, 1 );
+                curl_setopt( $ch, CURLOPT_POSTFIELDS, $params );
+                $response = curl_exec( $ch );
+                curl_close( $ch );
+                return $response;
+            }
 
-        } else {
-            $fields['message'] = sendFile( $filename, $usr_uid, $app_uid );
-        }
-        $G_PUBLISH = new Publisher();
-        $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
-        G::RenderPage( 'publish', 'blank' );
-        die();
-        break;
+            $fields['status_code'] = 0;
+            $fields['time_stamp'] = date( "Y-m-d H:i:s" );
+            if ($_POST['form']['UPLOAD_OPTION'] == '1') {
+                // G::pr($doc_uid);
+                $fields['message'] = sendFile( $filename, $usr_uid, $app_uid, 1, $doc_uid );
+
+            } else {
+                $fields['message'] = sendFile( $filename, $usr_uid, $app_uid );
+            }
+            $G_PUBLISH = new Publisher();
+            $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
+            G::RenderPage( 'publish', 'blank' );
+            die();
+            break;
         default:
 
-
-        print_r( $_POST );
+            print_r( $_POST );
     }
 }
+
+
+
+
 
 
     global $_DBArray;
