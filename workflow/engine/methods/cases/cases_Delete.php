@@ -43,13 +43,15 @@ try {
     $oCase = new Cases();
     if (isset( $_POST['APP_UIDS'] )) {
         $ids = explode( ',', $_POST['APP_UIDS'] );
-        foreach ($ids as $id)
+        foreach ($ids as $id) {
             $oCase->removeCase( $id );
+        }
 
-        if (count( $_POST['APP_UIDS'] ) > 1)
+        if (count( $_POST['APP_UIDS'] ) > 1) {
             echo 'The Case was deleted successfully';
-        else
+        } else {
             echo 'All Cases were deleted successfully';
+        }
     }
 } catch (Exception $e) {
     echo $e->getMessage();

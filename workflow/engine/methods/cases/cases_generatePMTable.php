@@ -42,11 +42,9 @@ foreach ($pmTableFields as $iRow => $aRow) {
 
 foreach ($pmTableFields as $iRow => $aRow) {
 
-    $oFields->create( array ('FLD_INDEX' => $iRow + 1,'ADD_TAB_UID' => $sAddTabUid,'FLD_NAME' => $aRow['FLD_NAME'],'FLD_DESCRIPTION' => isset( $aRow['FLD_DESCRIPTION'] ) ? $aRow['FLD_DESCRIPTION'] : '','FLD_TYPE' => isset( $aRow['FLD_TYPE'] ) ? $aRow['FLD_TYPE'] : 'VARCHAR','FLD_SIZE' => isset( $aRow['FLD_SIZE'] ) ? $aRow['FLD_SIZE'] : '32','FLD_NULL' => ($aRow['FLD_NULL'] == 'on' ? 1 : 0),'FLD_AUTO_INCREMENT' => ($aRow['FLD_AUTO_INCREMENT'] == 'on' ? 1 : 0),'FLD_KEY' => ($aRow['FLD_KEY'] == 'on' ? 1 : 0),'FLD_FOREIGN_KEY' => ($aRow['FLD_FOREIGN_KEY'] == 'on' ? 1 : 0),'FLD_FOREIGN_KEY_TABLE' => isset( $aRow['FLD_FOREIGN_KEY_TABLE'] ) ? $aRow['FLD_FOREIGN_KEY_TABLE'] : ''
-    ) );
+    $oFields->create( array ('FLD_INDEX' => $iRow + 1,'ADD_TAB_UID' => $sAddTabUid,'FLD_NAME' => $aRow['FLD_NAME'],'FLD_DESCRIPTION' => isset( $aRow['FLD_DESCRIPTION'] ) ? $aRow['FLD_DESCRIPTION'] : '','FLD_TYPE' => isset( $aRow['FLD_TYPE'] ) ? $aRow['FLD_TYPE'] : 'VARCHAR','FLD_SIZE' => isset( $aRow['FLD_SIZE'] ) ? $aRow['FLD_SIZE'] : '32','FLD_NULL' => ($aRow['FLD_NULL'] == 'on' ? 1 : 0),'FLD_AUTO_INCREMENT' => ($aRow['FLD_AUTO_INCREMENT'] == 'on' ? 1 : 0),'FLD_KEY' => ($aRow['FLD_KEY'] == 'on' ? 1 : 0),'FLD_FOREIGN_KEY' => ($aRow['FLD_FOREIGN_KEY'] == 'on' ? 1 : 0),'FLD_FOREIGN_KEY_TABLE' => isset( $aRow['FLD_FOREIGN_KEY_TABLE'] ) ? $aRow['FLD_FOREIGN_KEY_TABLE'] : '') );
 
-    $aFields[] = array ('sType' => isset( $aRow['FLD_TYPE'] ) ? $aRow['FLD_TYPE'] : 'VARCHAR','iSize' => isset( $aRow['FLD_SIZE'] ) ? $aRow['FLD_SIZE'] : '32','sFieldName' => $aRow['FLD_NAME'],'bNull' => ($aRow['FLD_NULL'] == 'on' ? 1 : 0),'bAI' => ($aRow['FLD_AUTO_INCREMENT'] == 'on' ? 1 : 0),'bPrimaryKey' => ($aRow['FLD_KEY'] == 'on' ? 1 : 0)
-    );
+    $aFields[] = array ('sType' => isset( $aRow['FLD_TYPE'] ) ? $aRow['FLD_TYPE'] : 'VARCHAR','iSize' => isset( $aRow['FLD_SIZE'] ) ? $aRow['FLD_SIZE'] : '32','sFieldName' => $aRow['FLD_NAME'],'bNull' => ($aRow['FLD_NULL'] == 'on' ? 1 : 0),'bAI' => ($aRow['FLD_AUTO_INCREMENT'] == 'on' ? 1 : 0),'bPrimaryKey' => ($aRow['FLD_KEY'] == 'on' ? 1 : 0));
 }
 
 $oAdditionalTables->createTable( strtoupper( $pmTableName ), 'wf', $aFields );
@@ -88,12 +86,12 @@ while ($aRow = $oDataset->getRow()) {
     $i ++;
     //    if ( $i == 100 ) die;
     /*	if ( strpos ( $aRow['APP_DATA'], 'cedula' ) !== false ) {
-	  print_r ( $aRow );
-	  print "<hr>";
+      print_r ( $aRow );
+      print "<hr>";
     $i++;
     if ( $i == 10 ) die;
-	 }
-*/
+    }
+    */
     $oDataset->next();
 }
 print "--$i--";

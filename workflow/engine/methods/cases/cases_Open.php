@@ -108,8 +108,8 @@ try {
                 $oDataset->next();
                 $aData = $oDataset->getRow();
 
-                if ($aData['USR_UID'] != $_SESSION['USER_LOGGED'] && $aData['USR_UID'] != "")                 //distinct "" for selfservice
-{
+                if ($aData['USR_UID'] != $_SESSION['USER_LOGGED'] && $aData['USR_UID'] != "") {
+                    //distinct "" for selfservice
                     //so we show just the resume
                     $_SESSION['alreadyDerivated'] = true;
                     //the case is paused show only the resume
@@ -183,7 +183,6 @@ try {
                 require_once (PATH_METHODS . 'cases' . PATH_SEP . 'cases_Resume.php');
             }
             break;
-
         default: //APP_STATUS <> DRAFT and TO_DO
             $_SESSION['APPLICATION'] = $sAppUid;
             $_SESSION['INDEX'] = $iDelIndex != "" ? $iDelIndex : $oCase->getCurrentDelegationCase( $_GET['APP_UID'] );

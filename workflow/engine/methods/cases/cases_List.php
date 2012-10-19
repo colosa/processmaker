@@ -29,8 +29,9 @@
  */
 
 /* Permissions */
-if (($RBAC_Response = $RBAC->userCanAccess( "PM_CASES" )) != 1)
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_CASES" )) != 1) {
     return $RBAC_Response;
+}
 
     /* Includes */
 G::LoadClass( 'case' );
@@ -99,8 +100,9 @@ switch ($sTypeList) {
         if (defined( 'ENABLE_CASE_LIST_OPTIMIZATION' )) {
             $aCriteria = $oCases->prepareCriteriaForToDo( $sUIDUserLogged );
             $xmlfile = 'cases/cases_ListTodoNew';
-        } else
+        } else {
             list ($aCriteria, $xmlfile) = $oCases->getConditionCasesList( $sTypeList, $sUIDUserLogged, true, $aAdditionalFilter );
+        }
         break;
     default:
         list ($aCriteria, $xmlfile) = $oCases->getConditionCasesList( $sTypeList, $sUIDUserLogged, true, $aAdditionalFilter );
@@ -156,14 +158,14 @@ G::RenderPage( 'publish', 'blank' );
 function InAssocArray ($a, $k, $v)
 {
     foreach ($a as $item) {
-        if (isset( $item[$k] ) && $v == $item[$k])
+        if (isset( $item[$k] ) && $v == $item[$k]) {
             return true;
+        }
     }
     return false;
 }
 
 ?>
-
 <script>
   try{
     oPropelTable = document.getElementById('publisherContent[0]');
@@ -176,4 +178,5 @@ function InAssocArray ($a, $k, $v)
 if(parent.refreshCountFolders) parent.refreshCountFolders();
   }catch(e){}
 </script>
+<?php
 

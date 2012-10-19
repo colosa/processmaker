@@ -48,7 +48,6 @@ switch ($RBAC->userCanAccess( 'PM_CASES' )) {
         G::header( 'location: ../login/login' );
         die();
         break;
-
     case - 1:
         G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
         G::header( 'location: ../login/login' );
@@ -137,18 +136,21 @@ $aFields['CHANGE_LINK'] = G::LoadTranslation( 'ID_CHANGE_VIEW' );
 if (isset( $aMessage )) {
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', $aMessage );
 }
-if ($listType == 'dropdown')
+if ($listType == 'dropdown') {
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $sXmlForm, '', $aFields, 'cases_Save' );
+}
 
 if ($listType == 'link') {
-    if ($bCanStart)
+    if ($bCanStart) {
         $sXmlForm = 'cases/cases_NewRadioGroup.xml';
+    }
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $sXmlForm, '', $aFields, 'cases_Save' );
 }
 
 if ($listType == 'category') {
-    if ($bCanStart)
+    if ($bCanStart) {
         $sXmlForm = 'cases/cases_NewCategory.xml';
+    }
     $G_PUBLISH->AddContent( 'view', 'cases/cases_NewCategory' );
 }
 
@@ -159,4 +161,6 @@ G::RenderPage( 'publish', 'blank' );
     parent.outerLayout.hide('east');
     parent.PANEL_EAST_OPEN = false;
 </script>
+
+<?php
 

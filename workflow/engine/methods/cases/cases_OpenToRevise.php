@@ -23,7 +23,7 @@
  */
 /* Permissions */
 
-if ($RBAC->userCanAccess( 'PM_SUPERVISOR' ) != 1)
+if ($RBAC->userCanAccess( 'PM_SUPERVISOR' ) != 1) {
     switch ($RBAC->userCanAccess( 'PM_SUPERVISOR' )) {
         case - 2:
             G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
@@ -36,6 +36,7 @@ if ($RBAC->userCanAccess( 'PM_SUPERVISOR' ) != 1)
             die();
             break;
     }
+}
 
     /* Includes */
 G::LoadClass( 'case' );
