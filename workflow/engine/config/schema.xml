@@ -1197,6 +1197,10 @@
     <column name="TAS_EVN_UID" type="VARCHAR" size="32" required="true" default=""/>
     <column name="TAS_BOUNDARY" type="VARCHAR" size="32" required="true" default=""/>
     <column name="TAS_DERIVATION_SCREEN_TPL" type="VARCHAR" size="128" default="" required="false"/>
+    <column name="TAS_SELFSERVICE_TIMEOUT" type="INTEGER" default="0"/>
+    <column name="TAS_SELFSERVICE_TIME" type="VARCHAR" size="15" default=""/>
+    <column name="TAS_SELFSERVICE_TIME_UNIT" type="VARCHAR" size="15" default=""/>
+    <column name="TAS_SELFSERVICE_TRIGGER_UID" type="VARCHAR" size="32" default=""/>
 
     <validator column="TAS_TYPE">
       <rule name="validValues" value="NORMAL|ADHOC|SUBPROCESS|HIDDEN" message="Please select a valid value for TAS_TYPE."/>
