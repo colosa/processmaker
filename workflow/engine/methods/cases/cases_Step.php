@@ -99,7 +99,8 @@ $oProcessFieds = $oProcess->Load( $_SESSION['PROCESS'] );
 #trigger debug routines...
 
 
-if (isset( $oProcessFieds['PRO_DEBUG'] ) && $oProcessFieds['PRO_DEBUG']) { #here we must verify if is a debugg session
+if (isset( $oProcessFieds['PRO_DEBUG'] ) && $oProcessFieds['PRO_DEBUG']) {
+    #here we must verify if is a debugg session
     $_SESSION['TRIGGER_DEBUG']['ISSET'] = 1;
     $_SESSION['PMDEBUGGER'] = true;
 } else {
@@ -109,8 +110,9 @@ if (isset( $oProcessFieds['PRO_DEBUG'] ) && $oProcessFieds['PRO_DEBUG']) { #here
 
 //cleaning debug variables
 if (! isset( $_GET['breakpoint'] )) {
-    if (isset( $_SESSION['TRIGGER_DEBUG']['info'] ))
+    if (isset( $_SESSION['TRIGGER_DEBUG']['info'] )) {
         unset( $_SESSION['TRIGGER_DEBUG']['info'] );
+    }
 
     if (! isset( $_SESSION['_NO_EXECUTE_TRIGGERS_'] )) {
         $_SESSION['TRIGGER_DEBUG']['ERRORS'] = Array ();
@@ -228,7 +230,6 @@ try {
 
             $G_PUBLISH->AddContent( 'dynaform', 'xmlform', $_SESSION['PROCESS'] . '/' . $_GET['UID'], '', $Fields['APP_DATA'], 'cases_SaveData?UID=' . $_GET['UID'] . '&APP_UID=' . $_SESSION['APPLICATION'], '', (strtolower( $oStep->getStepMode() ) != 'edit' ? strtolower( $oStep->getStepMode() ) : '') );
             break;
-
         case 'INPUT_DOCUMENT':
             if ($noShowTitle == 0) {
                 $G_PUBLISH->AddContent( 'smarty', 'cases/cases_title', '', '', $array );
@@ -267,9 +268,9 @@ try {
                     $Fields['MESSAGE2'] = G::LoadTranslation( 'ID_PLEASE_SELECT_FILE' );
                     //START: If there is a Break Step registered from Plugin Similar as a Trigger debug
                     $oPluginRegistry = & PMPluginRegistry::getSingleton();
-                    if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT_BEFORE )) { //If a Plugin has registered a Break Page Evaluator
-                        $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT_BEFORE, array ('USR_UID' => $_SESSION['USER_LOGGED']
-                        ) );
+                    if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT_BEFORE )) {
+                        //If a Plugin has registered a Break Page Evaluator
+                        $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT_BEFORE, array ('USR_UID' => $_SESSION['USER_LOGGED']) );
                     }
                     //END: If there is a Break Step registered from Plugin
                     $G_PUBLISH->AddContent( 'propeltable', 'cases/paged-table-inputDocuments', 'cases/cases_InputdocsList', $oCase->getInputDocumentsCriteria( $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_GET['UID'] ), array_merge( array ('DOC_UID' => $_GET['UID']
@@ -289,12 +290,12 @@ try {
 
                     $oHeadPublisher = & headPublisher::getSingleton();
                     $titleDocument = "<h3>" . $Fields['INP_DOC_TITLE'] . "<br><small>" . G::LoadTranslation( 'ID_INPUT_DOCUMENT' ) . "</small></h3>";
-                    if ($Fields['INP_DOC_DESCRIPTION'])
+                    if ($Fields['INP_DOC_DESCRIPTION']) {
                         $titleDocument .= " " . str_replace( "\n", "", str_replace( "'", "\'", nl2br( htmlentities( utf8_decode( $Fields['INP_DOC_DESCRIPTION'] ) ) ) ) ) . "";
+                    }
 
                     $oHeadPublisher->addScriptCode( "documentName='{$titleDocument}';" );
                     break;
-
                 case 'VIEW':
                     require_once 'classes/model/AppDocument.php';
                     require_once 'classes/model/Users.php';
@@ -321,10 +322,8 @@ try {
                     break;
             }
             break;
-
         case 'OUTPUT_DOCUMENT':
             //$G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
-
 
             require_once 'classes/model/OutputDocument.php';
             $oOutputDocument = new OutputDocument();
@@ -341,12 +340,11 @@ try {
                 case 'GENERATE':
                     //START: If there is a Break Step registered from Plugin Similar as a Trigger debug
                     $oPluginRegistry = & PMPluginRegistry::getSingleton();
-                    if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT_BEFORE )) { //If a Plugin has registered a Break Page Evaluator
-                        $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT_BEFORE, array ('USR_UID' => $_SESSION['USER_LOGGED']
-                        ) );
+                    if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT_BEFORE )) {
+                        //If a Plugin has registered a Break Page Evaluator
+                        $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT_BEFORE, array ('USR_UID' => $_SESSION['USER_LOGGED']) );
                     }
                     //END: If there is a Break Step registered from Plugin
-
 
                     $sFilenameOriginal = $sFilename = preg_replace( '[^A-Za-z0-9_]', '_', G::replaceDataField( $aOD['OUT_DOC_FILENAME'], $Fields['APP_DATA'] ) );
                     require_once 'classes/model/AppFolder.php';
@@ -369,7 +367,6 @@ try {
                     //  $lastDocVersion++;
                     //}
 
-
                     $oCriteria = new Criteria( 'workflow' );
                     $oCriteria->add( AppDocumentPeer::APP_UID, $_SESSION['APPLICATION'] );
                     //$oCriteria->add(AppDocumentPeer::DEL_INDEX,    $_SESSION['INDEX']);
@@ -379,7 +376,8 @@ try {
                     $oDataset = AppDocumentPeer::doSelectRS( $oCriteria );
                     $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
                     $oDataset->next();
-                    if (($aOD['OUT_DOC_VERSIONING']) && ($lastDocVersion != 0)) { //Create new Version of current output
+                    if (($aOD['OUT_DOC_VERSIONING']) && ($lastDocVersion != 0)) {
+                        //Create new Version of current output
                         $lastDocVersion ++;
                         if ($aRow = $oDataset->getRow()) {
                             $aFields = array ('APP_DOC_UID' => $aRow['APP_DOC_UID'],'APP_UID' => $_SESSION['APPLICATION'],'DEL_INDEX' => $_SESSION['INDEX'],'DOC_UID' => $_GET['UID'],'DOC_VERSION' => $lastDocVersion + 1,'USR_UID' => $_SESSION['USER_LOGGED'],'APP_DOC_TYPE' => 'OUTPUT','APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_FILENAME' => $sFilename,'FOLDER_UID' => $folderId,'APP_DOC_TAGS' => $fileTags
@@ -388,18 +386,20 @@ try {
                             $oAppDocument->create( $aFields );
                             $sDocUID = $aRow['APP_DOC_UID'];
                         }
-                    } else { //No versioning so Update a current Output or Create new if no exist
-                        if ($aRow = $oDataset->getRow()) { //Update
-                            $aFields = array ('APP_DOC_UID' => $aRow['APP_DOC_UID'],'APP_UID' => $_SESSION['APPLICATION'],'DEL_INDEX' => $_SESSION['INDEX'],'DOC_UID' => $_GET['UID'],'DOC_VERSION' => $lastDocVersion,'USR_UID' => $_SESSION['USER_LOGGED'],'APP_DOC_TYPE' => 'OUTPUT','APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_FILENAME' => $sFilename,'FOLDER_UID' => $folderId,'APP_DOC_TAGS' => $fileTags
-                            );
+                    } else {
+                        //No versioning so Update a current Output or Create new if no exist
+                        if ($aRow = $oDataset->getRow()) {
+                            //Update
+                            $aFields = array ('APP_DOC_UID' => $aRow['APP_DOC_UID'],'APP_UID' => $_SESSION['APPLICATION'],'DEL_INDEX' => $_SESSION['INDEX'],'DOC_UID' => $_GET['UID'],'DOC_VERSION' => $lastDocVersion,'USR_UID' => $_SESSION['USER_LOGGED'],'APP_DOC_TYPE' => 'OUTPUT','APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_FILENAME' => $sFilename,'FOLDER_UID' => $folderId,'APP_DOC_TAGS' => $fileTags );
                             $oAppDocument = new AppDocument();
                             $oAppDocument->update( $aFields );
                             $sDocUID = $aRow['APP_DOC_UID'];
-                        } else { //create
-                            if ($lastDocVersion == 0)
+                        } else {
+                            //create
+                            if ($lastDocVersion == 0) {
                                 $lastDocVersion ++;
-                            $aFields = array ('APP_UID' => $_SESSION['APPLICATION'],'DEL_INDEX' => $_SESSION['INDEX'],'DOC_UID' => $_GET['UID'],'DOC_VERSION' => $lastDocVersion,'USR_UID' => $_SESSION['USER_LOGGED'],'APP_DOC_TYPE' => 'OUTPUT','APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_FILENAME' => $sFilename,'FOLDER_UID' => $folderId,'APP_DOC_TAGS' => $fileTags
-                            );
+                            }
+                            $aFields = array ('APP_UID' => $_SESSION['APPLICATION'],'DEL_INDEX' => $_SESSION['INDEX'],'DOC_UID' => $_GET['UID'],'DOC_VERSION' => $lastDocVersion,'USR_UID' => $_SESSION['USER_LOGGED'],'APP_DOC_TYPE' => 'OUTPUT','APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_FILENAME' => $sFilename,'FOLDER_UID' => $folderId,'APP_DOC_TAGS' => $fileTags);
                             $oAppDocument = new AppDocument();
                             $aFields['APP_DOC_UID'] = $sDocUID = $oAppDocument->create( $aFields );
 
@@ -408,7 +408,6 @@ try {
 
                     //$sFilename = ereg_replace('[^A-Za-z0-9_]', '_', G::replaceDataField($aOD['OUT_DOC_FILENAME'], $Fields['APP_DATA']));
                     //if ( $sFilename == '' ) $sFilename='_';
-
 
                     $sFilename = $aFields['APP_DOC_UID'] . "_" . $lastDocVersion;
 
@@ -419,24 +418,26 @@ try {
 
                             $aProperties = array (); //maui
 
-
-                            if (! isset( $aOD['OUT_DOC_MEDIA'] ))
+                            if (! isset( $aOD['OUT_DOC_MEDIA'] )) {
                                 $aOD['OUT_DOC_MEDIA'] = 'Letter';
-                            if (! isset( $aOD['OUT_DOC_LEFT_MARGIN'] ))
+                            }
+                            if (! isset( $aOD['OUT_DOC_LEFT_MARGIN'] )) {
                                 $aOD['OUT_DOC_LEFT_MARGIN'] = '15';
-                            if (! isset( $aOD['OUT_DOC_RIGHT_MARGIN'] ))
+                            }
+                            if (! isset( $aOD['OUT_DOC_RIGHT_MARGIN'] )) {
                                 $aOD['OUT_DOC_RIGHT_MARGIN'] = '15';
-                            if (! isset( $aOD['OUT_DOC_TOP_MARGIN'] ))
+                            }
+                            if (! isset( $aOD['OUT_DOC_TOP_MARGIN'] )) {
                                 $aOD['OUT_DOC_TOP_MARGIN'] = '15';
-                            if (! isset( $aOD['OUT_DOC_BOTTOM_MARGIN'] ))
+                            }
+                            if (! isset( $aOD['OUT_DOC_BOTTOM_MARGIN'] )) {
                                 $aOD['OUT_DOC_BOTTOM_MARGIN'] = '15';
+                            }
 
                             $aProperties['media'] = $aOD['OUT_DOC_MEDIA'];
-                            $aProperties['margins'] = array ('left' => $aOD['OUT_DOC_LEFT_MARGIN'],'right' => $aOD['OUT_DOC_RIGHT_MARGIN'],'top' => $aOD['OUT_DOC_TOP_MARGIN'],'bottom' => $aOD['OUT_DOC_BOTTOM_MARGIN']
-                            );
+                            $aProperties['margins'] = array ('left' => $aOD['OUT_DOC_LEFT_MARGIN'],'right' => $aOD['OUT_DOC_RIGHT_MARGIN'],'top' => $aOD['OUT_DOC_TOP_MARGIN'],'bottom' => $aOD['OUT_DOC_BOTTOM_MARGIN']);
                             if ($aOD['OUT_DOC_PDF_SECURITY_ENABLED'] == '1') {
-                                $aProperties['pdfSecurity'] = array ('openPassword' => $aOD['OUT_DOC_PDF_SECURITY_OPEN_PASSWORD'],'ownerPassword' => $aOD['OUT_DOC_PDF_SECURITY_OWNER_PASSWORD'],'permissions' => $aOD['OUT_DOC_PDF_SECURITY_PERMISSIONS']
-                                );
+                                $aProperties['pdfSecurity'] = array ('openPassword' => $aOD['OUT_DOC_PDF_SECURITY_OPEN_PASSWORD'],'ownerPassword' => $aOD['OUT_DOC_PDF_SECURITY_OWNER_PASSWORD'],'permissions' => $aOD['OUT_DOC_PDF_SECURITY_PERMISSIONS']);
                             }
                             $oOutputDocument->generate( $_GET['UID'], $Fields['APP_DATA'], $pathOutput, $sFilename, $aOD['OUT_DOC_TEMPLATE'], (boolean) $aOD['OUT_DOC_LANDSCAPE'], $aOD['OUT_DOC_GENERATE'], $aProperties );
                             //$sFilename, $aOD['OUT_DOC_TEMPLATE'], (boolean)$aOD['OUT_DOC_LANDSCAPE'], $aOD['OUT_DOC_GENERATE'] );
@@ -479,7 +480,6 @@ try {
                             $xmlData .= "</dynaform>\n";
                             //$iSize = file_put_contents ( $javaOutput .  'addressBook.xml' , $xmlData );
 
-
                             G::LoadClass( 'javaBridgePM' );
                             $JBPM = new JavaBridgePM();
                             $JBPM->checkJavaExtension();
@@ -506,11 +506,9 @@ try {
                     $Fields['TAS_UID'] = $_SESSION['TASK'];
                     //Execute after triggers - End
 
-
                     //Save data - Start
                     $oCase->updateCase( $_SESSION['APPLICATION'], $Fields );
                     //Save data - End
-
 
                     //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
                     $oPluginRegistry = & PMPluginRegistry::getSingleton();
@@ -528,7 +526,8 @@ try {
                                 $documentData->sFileType = "PDF";
                                 $documentData->bUseOutputFolder = true;
                                 $uploadReturn = $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT, $documentData );
-                                if ($uploadReturn) { //Only delete if the file was saved correctly
+                                if ($uploadReturn) {
+                                    //Only delete if the file was saved correctly
                                     $aFields['APP_DOC_PLUGIN'] = $triggerDetail->sNamespace;
                                     //$oAppDocument = new AppDocument();
                                     //$oAppDocument->update($aFields);
@@ -540,10 +539,10 @@ try {
                                 $documentData->sFileType = "DOC";
                                 $documentData->bUseOutputFolder = true;
                                 $uploadReturn = $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT, $documentData );
-                                if ($uploadReturn) { //Only delete if the file was saved correctly
+                                if ($uploadReturn) {
+                                    //Only delete if the file was saved correctly
                                     unlink( $pathOutput . $sFilename . '.doc' );
                                 }
-
                                 break;
                             case "PDF":
                                 $documentData = new uploadDocumentData( $_SESSION['APPLICATION'], $_SESSION['USER_LOGGED'], $pathOutput . $sFilename . '.pdf', $sFilenameOriginal . '.pdf', $sDocUID, $oAppDocument->getDocVersion() );
@@ -551,7 +550,8 @@ try {
                                 $documentData->sFileType = "PDF";
                                 $documentData->bUseOutputFolder = true;
                                 $uploadReturn = $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT, $documentData );
-                                if ($uploadReturn) { //Only delete if the file was saved correctly
+                                if ($uploadReturn) {
+                                    //Only delete if the file was saved correctly
                                     unlink( $pathOutput . $sFilename . '.pdf' );
                                 }
                                 break;
@@ -561,7 +561,8 @@ try {
                                 $documentData->sFileType = "DOC";
                                 $documentData->bUseOutputFolder = true;
                                 $uploadReturn = $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT, $documentData );
-                                if ($uploadReturn) { //Only delete if the file was saved correctly
+                                if ($uploadReturn) {
+                                    //Only delete if the file was saved correctly
                                     unlink( $pathOutput . $sFilename . '.doc' );
                                 }
                                 break;
@@ -608,7 +609,8 @@ try {
 
                     $aFields['FILE2'] = 'cases_ShowOutputDocument?a=' . $aFields['APP_DOC_UID'] . '&v=' . $lastDocVersion . '&ext=pdf&random=' . rand() . '&PHPSESSID=' . @session_id();
 
-                    if (is_array( $listing )) { //If exist in Plugin Document List
+                    if (is_array( $listing )) {
+                        //If exist in Plugin Document List
                         foreach ($listing as $folderitem) {
                             if (($folderitem->filename == $aFields['APP_DOC_UID']) && ($folderitem->type == 'DOC')) {
                                 $aFields['VIEW1'] = G::LoadTranslation( 'ID_GET_EXTERNAL_FILE' );
@@ -623,19 +625,20 @@ try {
                         }
                     }
 
-                    if (($aGields['OUT_DOC_GENERATE'] == 'BOTH') || ($aGields['OUT_DOC_GENERATE'] == ''))
+                    if (($aGields['OUT_DOC_GENERATE'] == 'BOTH') || ($aGields['OUT_DOC_GENERATE'] == '')) {
                         $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'cases/cases_ViewOutputDocument1', '', G::array_merges( $aOD, $aFields ), '' );
+                    }
 
-                    if ($aGields['OUT_DOC_GENERATE'] == 'DOC')
+                    if ($aGields['OUT_DOC_GENERATE'] == 'DOC') {
                         $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'cases/cases_ViewOutputDocument2', '', G::array_merges( $aOD, $aFields ), '' );
+                    }
 
-                    if ($aGields['OUT_DOC_GENERATE'] == 'PDF')
+                    if ($aGields['OUT_DOC_GENERATE'] == 'PDF') {
                         $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'cases/cases_ViewOutputDocument3', '', G::array_merges( $aOD, $aFields ), '' );
-
+                    }
                     break;
             }
             break;
-
         case 'ASSIGN_TASK':
             $oDerivation = new Derivation();
             $oProcess = new Process();
@@ -699,9 +702,11 @@ try {
                         //var_dump($aFields);
                         //there is a error with reportsTo, when the USR_UID is empty means there are no manager for this user, so we are disabling buttons
                         //but this validation is not for SELF_SERVICE
-                        if ($aValues['NEXT_TASK']['TAS_ASSIGN_TYPE'] != 'SELF_SERVICE')
-                            if ($aFields['TASK'][$sKey]['NEXT_TASK']['USER_ASSIGNED']['USR_UID'] == '')
+                        if ($aValues['NEXT_TASK']['TAS_ASSIGN_TYPE'] != 'SELF_SERVICE') {
+                            if ($aFields['TASK'][$sKey]['NEXT_TASK']['USER_ASSIGNED']['USR_UID'] == '') {
                                 $aFields['PROCESS']['ERROR'] = $aFields['TASK'][$sKey]['NEXT_TASK']['USER_ASSIGNED']['USR_FULLNAME'];
+                            }
+                        }
                         break;
                     case 'MANUAL':
                         $Aux = array ();
@@ -728,19 +733,23 @@ try {
                         if ($aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_INSTANCE_VARIABLE'] != '') {
                             if (isset( $aData['APP_DATA'][str_replace( '@@', '', $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_INSTANCE_VARIABLE'] )] )) {
                                 $sMIinstanceVar = $aData['APP_DATA'][str_replace( '@@', '', $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_INSTANCE_VARIABLE'] )];
-                                if ($sMIinstanceVar > $cntInstanceUsers)
+                                if ($sMIinstanceVar > $cntInstanceUsers) {
                                     throw (new Exception( "Total Multiple Instance Task cannot be greater than number of users in the group." ));
-                                else if ($sMIinstanceVar == 0)
+                                } elseif ($sMIinstanceVar == 0) {
                                     throw (new Exception( "Total Multiple Instance Task cannot be zero." ));
-                            } else if (is_int( (int) $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_INSTANCE_VARIABLE'] )) {
+                                }
+                            } elseif (is_int( (int) $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_INSTANCE_VARIABLE'] )) {
                                 $sMIinstanceVar = $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_INSTANCE_VARIABLE'];
-                                if ($sMIinstanceVar > $cntInstanceUsers)
+                                if ($sMIinstanceVar > $cntInstanceUsers) {
                                     throw (new Exception( "Total Multiple Instance Task cannot be greater than number of users in the group." ));
-                            } else
+                                }
+                            } else {
                                 throw (new Exception( "Total Multiple Instance Task variable doesn't have valid value." ));
-                        } else
+                            }
+                        } else {
                             throw (new Exception( "Total Multiple Instance Task variable doesn't have valid value." ));
                             ////set TAS_MI_INSTANCE_VARIABLE value
+                        }
 
 
                         //set TAS_MI_COMPLETE_VARIABLE value
@@ -749,17 +758,21 @@ try {
                             if (isset( $aData['APP_DATA'][str_replace( '@@', '', $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_COMPLETE_VARIABLE'] )] )) {
                                 $sMIcompleteVar = $aData['APP_DATA'][str_replace( '@@', '', $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_COMPLETE_VARIABLE'] )];
                                 //
-                                if ($sMIcompleteVar > $sMIinstanceVar)
+                                if ($sMIcompleteVar > $sMIinstanceVar) {
                                     throw (new Exception( "Total Multiple Instance Task to complete cannot be greater than Total number of Instances." ));
-                            } else if (is_int( (int) $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_COMPLETE_VARIABLE'] )) {
+                                }
+                            } elseif (is_int( (int) $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_COMPLETE_VARIABLE'] )) {
                                 $sMIcompleteVar = $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_MI_COMPLETE_VARIABLE'];
-                                if ($sMIcompleteVar > $sMIinstanceVar)
+                                if ($sMIcompleteVar > $sMIinstanceVar) {
                                     throw (new Exception( "Total Multiple Instance Task to complete cannot be greater than Total number of Instances." ));
-                            } else
+                                }
+                            } else {
                                 throw (new Exception( "Total Multiple Instance Task to complete variable doesn't have valid value." ));
+                            }
 
-                        } else
+                        } else {
                             throw (new Exception( "Total Multiple Instance Task to complete variable doesn't have valid value." ));
+                        }
                             //set TAS_MI_COMPLETE_VARIABLE value
                         $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_NEXT'] = $aValues['NEXT_TASK']['TAS_ASSIGN_TYPE'];
 
@@ -802,19 +815,20 @@ try {
                 $hiddenName = 'form[TASKS][' . $sKey . ']';
 
                 /* Allow user defined Timing Control
-         * Values in the dropdown will be populated from the Table TASK.
-         */
-                if ($aValues['NEXT_TASK']['TAS_ASSIGN_TYPE'] != '')                 //Check for End of Process
-{
+                * Values in the dropdown will be populated from the Table TASK.
+                */
+                if ($aValues['NEXT_TASK']['TAS_ASSIGN_TYPE'] != '') {
+                    //Check for End of Process
                     $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_TRANSFER_FLY'] = strtolower( $aValues['NEXT_TASK']['TAS_TRANSFER_FLY'] );
                     $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_TRANSFER_HIDDEN_FLY'] = "<input type=hidden name='" . $hiddenName . "[NEXT_TASK][TAS_TRANSFER_HIDDEN_FLY]' id='" . $hiddenName . "[NEXT_TASK][TAS_TRANSFER_HIDDEN_FLY]' value=" . $aValues['NEXT_TASK']['TAS_TRANSFER_FLY'] . ">";
                     if ($aValues['NEXT_TASK']['TAS_TRANSFER_FLY'] == 'true') {
                         $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_DURATION'] = '<input type="text" size="5" name="' . $hiddenName . '[NEXT_TASK][TAS_DURATION]" id="' . $hiddenName . '[NEXT_TASK][TAS_DURATION]" value="' . $aValues['NEXT_TASK']['TAS_DURATION'] . '">';
                         $hoursSelected = $daysSelected = '';
-                        if ($aFields['TASK'][$sKey]['NEXT_TASK']['TAS_TIMEUNIT'] == 'HOURS')
+                        if ($aFields['TASK'][$sKey]['NEXT_TASK']['TAS_TIMEUNIT'] == 'HOURS') {
                             $hoursSelected = "selected = 'selected'";
-                        else
+                        } else {
                             $daysSelected = "selected = 'selected'";
+                        }
 
                         $sAux = '<select name=' . $hiddenName . '[NEXT_TASK][TAS_TIMEUNIT] id= ' . $hiddenName . '[NEXT_TASK][TAS_TIMEUNIT] ';
                         $sAux .= "<option " . $hoursSelected . " value='HOURS'>Hours</option> ";
@@ -823,10 +837,11 @@ try {
                         $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_TIMEUNIT'] = $sAux;
 
                         $workSelected = $calendarSelected = '';
-                        if ($aFields['TASK'][$sKey]['NEXT_TASK']['TAS_TYPE_DAY'] == '1')
+                        if ($aFields['TASK'][$sKey]['NEXT_TASK']['TAS_TYPE_DAY'] == '1') {
                             $workSelected = "selected = 'selected'";
-                        else
+                        } else {
                             $calendarSelected = "selected = 'selected'";
+                        }
 
                         $sAux = '<select name=' . $hiddenName . '[NEXT_TASK][TAS_TYPE_DAY] id= ' . $hiddenName . '[NEXT_TASK][TAS_TYPE_DAY] ';
                         $sAux .= "<option " . $workSelected . " value='1'>Work Days</option> ";
@@ -875,10 +890,12 @@ try {
 
             $tasDerivationScreenTpl = $task->getTasDerivationScreenTpl();
 
-            if (! empty( $tasDerivationScreenTpl )) { //erik: first, verify if the task has a personalized template (for derivation screen)
+            if (! empty( $tasDerivationScreenTpl )) {
+                //erik: first, verify if the task has a personalized template (for derivation screen)
                 $tplFile = $tasDerivationScreenTpl;
                 $tplFile = PATH_DATA_MAILTEMPLATES . $aFields['PROCESS']['PRO_UID'] . PATH_SEP . $tplFile;
-            } else { //erik: verify if the process has a personalized template (for derivation screen)
+            } else {
+                //erik: verify if the process has a personalized template (for derivation screen)
                 if (! empty( $aFields['PROCESS']['PRO_DERIVATION_SCREEN_TPL'] )) {
                     $tplFile = $aFields['PROCESS']['PRO_DERIVATION_SCREEN_TPL'];
                     $tplFile = PATH_DATA_MAILTEMPLATES . $aFields['PROCESS']['PRO_UID'] . PATH_SEP . $tplFile;
@@ -887,22 +904,21 @@ try {
 
             $G_PUBLISH->AddContent( 'smarty', $tplFile, '', '', $aFields );
             /*
-      if (isset( $aFields['TASK'][1]['NEXT_TASK']['USER_ASSIGNED'])){
-       if($aFields['TASK'][1]['NEXT_TASK']['USER_ASSIGNED']!="ERROR" && is_array($aFields['TASK'][1]['NEXT_TASK']['USER_ASSIGNED'])){
-         $G_PUBLISH->AddContent('smarty', 'cases/cases_ScreenDerivation', '', '', $aFields);
-         }
-       else {
-        $sMessageError = "The current user does not have a valid Reports To user.  Please contact administrator.";
-        //$aFields['TASK'][$sKey]['NEXT_TASK']['USR_HIDDEN_FIELD'] = '<input type="hidden" name="' . $hiddenName . '" id="' . $hiddenName . '" value="' . $sMessageError . '">';
-        G::SendTemporalMessage ('UID_UNDEFINED_USER', "Error");
-        $aFields['ERROR_REPORTSTO']= "Error";
-        $aFields['MESSAGE_ERROR_REPORTSTO']=G::loadTranslation("ID_MSJ_REPORSTO");;
-        $G_PUBLISH->AddContent('smarty', 'cases/cases_ShowE_Reportsto', '', '', $aFields);
-       }
-      }else{
-        $G_PUBLISH->AddContent('smarty', 'cases/cases_ScreenDerivation', '', '', $aFields);
-        }
-*/
+            if (isset( $aFields['TASK'][1]['NEXT_TASK']['USER_ASSIGNED'])){
+                if($aFields['TASK'][1]['NEXT_TASK']['USER_ASSIGNED']!="ERROR" && is_array($aFields['TASK'][1]['NEXT_TASK']['USER_ASSIGNED'])){
+                $G_PUBLISH->AddContent('smarty', 'cases/cases_ScreenDerivation', '', '', $aFields);
+            } else {
+                $sMessageError = "The current user does not have a valid Reports To user.  Please contact administrator.";
+                //$aFields['TASK'][$sKey]['NEXT_TASK']['USR_HIDDEN_FIELD'] = '<input type="hidden" name="' . $hiddenName . '" id="' . $hiddenName . '" value="' . $sMessageError . '">';
+                G::SendTemporalMessage ('UID_UNDEFINED_USER', "Error");
+                $aFields['ERROR_REPORTSTO']= "Error";
+                $aFields['MESSAGE_ERROR_REPORTSTO']=G::loadTranslation("ID_MSJ_REPORSTO");;
+                $G_PUBLISH->AddContent('smarty', 'cases/cases_ShowE_Reportsto', '', '', $aFields);
+            }
+            } else {
+                $G_PUBLISH->AddContent('smarty', 'cases/cases_ScreenDerivation', '', '', $aFields);
+            }
+            */
             break;
         case 'EXTERNAL':
             if ($noShowTitle == 0) {

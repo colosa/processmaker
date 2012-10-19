@@ -92,8 +92,9 @@ $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'cases/cases_ViewOutputDocumentToR
 //
 G::RenderPage( 'publish', 'blank' );
 
-if (! isset( $_GET['ex'] ))
+if (! isset( $_GET['ex'] )) {
     $_GET['ex'] = 0;
+}
 
 ?>
 <script type="text/javascript">
@@ -116,4 +117,5 @@ function setSelect()
   }
 }
 </script>
+<?php
 

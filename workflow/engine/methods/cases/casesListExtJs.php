@@ -2,9 +2,10 @@
 //get the action from GET or POST, default is todo
 $action = isset( $_GET['action'] ) ? $_GET['action'] : (isset( $_POST['action'] ) ? $_POST['action'] : 'todo');
 //fix a previous inconsistency
-if ($action == 'selfservice')
+if ($action == 'selfservice') {
     $action = 'unassigned';
     //if ( $action == 'sent' ) $action = 'participated';
+}
 
 G::LoadClass( "BasePeer" );
 G::LoadClass( 'configuration' );
@@ -183,8 +184,9 @@ function getAllUsersArray ($action)
         $cUsers = $oAppCache->getToReassignListCriteria();
         $cUsers->addSelectColumn( AppCacheViewPeer::USR_UID );
 
-        if (g::MySQLSintaxis())
+        if (g::MySQLSintaxis()) {
             $cUsers->addGroupByColumn( AppCacheViewPeer::USR_UID );
+        }
 
         $cUsers->addAscendingOrderByColumn( AppCacheViewPeer::APP_CURRENT_USER );
         $oDataset = AppCacheViewPeer::doSelectRS( $cUsers );
@@ -224,7 +226,6 @@ function getStatusArray ($action, $userUid)
             }
             return $status;
             break;
-
         case 'selfservice':
             $cStatus = $oAppCache->getUnassignedListCriteria( $userUid );
             break;
@@ -241,7 +242,7 @@ function getStatusArray ($action, $userUid)
         case 'todo':
         case 'draft':
         case 'gral':
-        //      case 'to_revise' :
+            //      case 'to_revise' :
         default:
             return $status;
             break;
@@ -990,7 +991,8 @@ function getReassignUsersList ()
 
 function getAdditionalFields ($action, $confCasesList = array())
 {
-    if (! empty( $confCasesList ) && ! empty( $confCasesList['second']['data'] )) { // For the case list builder in the enterprise plugin
+    if (! empty( $confCasesList ) && ! empty( $confCasesList['second']['data'] )) {
+        // For the case list builder in the enterprise plugin
         $caseColumns = array ();
         $caseReaderFields = array ();
 

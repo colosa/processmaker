@@ -13,8 +13,9 @@ switch ($RBAC->userCanAccess( 'PM_SUPERVISOR' )) {
         break;
 }
 
-if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1)
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
     return $RBAC_Response;
+}
 
 $G_MAIN_MENU = 'processmaker';
 $G_SUB_MENU = 'cases';

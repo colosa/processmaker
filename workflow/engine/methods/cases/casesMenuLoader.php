@@ -145,7 +145,7 @@ function getProcess ()
       $response[$i]->loaded = true;
       $i++;
     }
-*/
+    */
     //ordering
     /*for($i=0; $i<=count($response)-1; $i++){
       for($j=$i+1; $j<=count($response); $j++){
