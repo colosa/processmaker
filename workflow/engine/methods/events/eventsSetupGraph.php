@@ -70,7 +70,6 @@ imagerectangle( $im, 0, 0, $w - 1, $h - 1, $gray );
 //    imageline($im, $x +$mean, $h , $x + $mean, $h-1, $red);
 //  }
 
-
 function drawTask ($im, $x1, $x2, $y, $h)
 {
     global $w;
@@ -88,7 +87,6 @@ function drawTask ($im, $x1, $x2, $y, $h)
     }
     imagerectangle( $im, $x1, $y - 10, $x2, $y, $black );
 }
-;
 
 function smallTask ($im, $x1, $x2, $y)
 {
@@ -120,7 +118,6 @@ function drawMultipleTask ($im, $x1, $x2, $y, $h)
     smallTask( $im, $x1 + 1 * $terca, $x1 + 2 * $terca, $y - 6 );
     smallTask( $im, $x1 + 2 * $terca, $x1 + 3 * $terca, $y );
 }
-;
 
 function drawTimerEvent ($im, $x1, $y1, $h)
 {
