@@ -54,17 +54,17 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
 if ($actionAjax == 'showHistoryMessage') {
 
     ?>
-<link rel="stylesheet" type="text/css" href="/css/classic.css" />
-<style type="text/css">
-html {
-	color: black !important;
-}
+    <link rel="stylesheet" type="text/css" href="/css/classic.css" />
+    <style type="text/css">
+    html {
+        color: black !important;
+    }
 
-body {
-	color: black !important;
-}
-</style>
-<script language="Javascript">
+    body {
+        color: black !important;
+    }
+    </style>
+    <script language="Javascript">
         //!Code that simulated reload library javascript maborak
         var leimnud = {};
         leimnud.exec = "";
@@ -78,7 +78,7 @@ body {
         }
         //!
       </script>
-<?php
+    <?php
 
     G::LoadClass( 'case' );
     $oCase = new Cases();
@@ -92,14 +92,14 @@ body {
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'cases/cases_MessagesView', '', $oCase->getHistoryMessagesTrackerView( $_POST['APP_UID'], $_POST['APP_MSG_UID'] ) );
 
     ?>
-<script language="javascript">
-<?php
+    <script language="javascript">
+    <?php
     global $G_FORM;
     ?>
           function loadForm_<?php echo $G_FORM->id;?>(parametro1){
           }
         </script>
-<?php
+    <?php
 
     G::RenderPage( 'publish', 'raw' );
 }

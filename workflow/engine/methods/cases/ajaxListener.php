@@ -44,7 +44,7 @@ $ajax->$action( $_REQUEST );
 class Ajax
 {
 
-    function getCaseMenu ($params)
+    public function getCaseMenu ($params)
     {
 
         G::LoadClass( "configuration" );
@@ -59,8 +59,7 @@ class Ajax
 
         $menuOptions = Array ();
         foreach ($oMenu->Options as $i => $action) {
-            $option = Array ('id' => $oMenu->Id[$i],'label' => $oMenu->Labels[$i],'action' => $action
-            );
+            $option = Array ('id' => $oMenu->Id[$i],'label' => $oMenu->Labels[$i],'action' => $action);
 
             switch ($option['id']) {
                 case 'STEPS':
@@ -79,7 +78,7 @@ class Ajax
         echo G::json_encode( $menuOptions );
     }
 
-    function steps ()
+    public function steps ()
     {
         G::LoadClass( 'applications' );
         $applications = new Applications();
@@ -122,30 +121,22 @@ class Ajax
         echo G::json_encode( $list );
     }
 
-    function getInformationOptions ()
+    public function getInformationOptions ()
     {
         $options = Array ();
-        $options[] = Array ('text' => G::LoadTranslation( 'ID_PROCESS_MAP' ),'fn' => 'processMap'
-        );
-        $options[] = Array ('text' => G::LoadTranslation( 'ID_PROCESS_INFORMATION' ),'fn' => 'processInformation'
-        );
-        $options[] = Array ('text' => G::LoadTranslation( 'ID_TASK_INFORMATION' ),'fn' => 'taskInformation'
-        );
-        $options[] = Array ('text' => G::LoadTranslation( 'ID_CASE_HISTORY' ),'fn' => 'caseHistory'
-        );
-        $options[] = Array ('text' => G::LoadTranslation( 'ID_HISTORY_MESSAGE_CASE' ),'fn' => 'messageHistory'
-        );
-        $options[] = Array ('text' => G::LoadTranslation( 'ID_DYNAFORMS' ),'fn' => 'dynaformHistory'
-        );
-        $options[] = Array ('text' => G::LoadTranslation( 'ID_UPLOADED_DOCUMENTS' ),'fn' => 'uploadedDocuments'
-        );
-        $options[] = Array ('text' => G::LoadTranslation( 'ID_GENERATED_DOCUMENTS' ),'fn' => 'generatedDocuments'
-        );
+        $options[] = Array ('text' => G::LoadTranslation( 'ID_PROCESS_MAP' ),'fn' => 'processMap' );
+        $options[] = Array ('text' => G::LoadTranslation( 'ID_PROCESS_INFORMATION' ),'fn' => 'processInformation');
+        $options[] = Array ('text' => G::LoadTranslation( 'ID_TASK_INFORMATION' ),'fn' => 'taskInformation');
+        $options[] = Array ('text' => G::LoadTranslation( 'ID_CASE_HISTORY' ),'fn' => 'caseHistory');
+        $options[] = Array ('text' => G::LoadTranslation( 'ID_HISTORY_MESSAGE_CASE' ),'fn' => 'messageHistory');
+        $options[] = Array ('text' => G::LoadTranslation( 'ID_DYNAFORMS' ),'fn' => 'dynaformHistory' );
+        $options[] = Array ('text' => G::LoadTranslation( 'ID_UPLOADED_DOCUMENTS' ),'fn' => 'uploadedDocuments');
+        $options[] = Array ('text' => G::LoadTranslation( 'ID_GENERATED_DOCUMENTS' ),'fn' => 'generatedDocuments');
 
         return $options;
     }
 
-    function getActionOptions ()
+    public function getActionOptions ()
     {
         $APP_UID = $_SESSION['APPLICATION'];
 
@@ -166,47 +157,36 @@ class Ajax
         switch ($aFields['APP_STATUS']) {
             case 'DRAFT':
                 if (! AppDelay::isPaused( $_SESSION['APPLICATION'], $_SESSION['INDEX'] )) {
-                    $options[] = Array ('text' => G::LoadTranslation( 'ID_PAUSED_CASE' ),'fn' => 'setUnpauseCaseDate'
-                    );
+                    $options[] = Array ('text' => G::LoadTranslation( 'ID_PAUSED_CASE' ),'fn' => 'setUnpauseCaseDate');
                 } else {
-                    $options[] = Array ('text' => G::LoadTranslation( 'ID_UNPAUSE' ),'fn' => 'unpauseCase'
-                    );
+                    $options[] = Array ('text' => G::LoadTranslation( 'ID_UNPAUSE' ),'fn' => 'unpauseCase');
                 }
 
-                $options[] = Array ('text' => G::LoadTranslation( 'ID_DELETE' ),'fn' => 'deleteCase'
-                );
+                $options[] = Array ('text' => G::LoadTranslation( 'ID_DELETE' ),'fn' => 'deleteCase');
 
                 if ($RBAC->userCanAccess( 'PM_REASSIGNCASE' ) == 1) {
-                    $options[] = Array ('text' => G::LoadTranslation( 'ID_REASSIGN' ),'fn' => 'getUsersToReassign'
-                    );
+                    $options[] = Array ('text' => G::LoadTranslation( 'ID_REASSIGN' ),'fn' => 'getUsersToReassign');
                 }
                 break;
-
             case 'TO_DO':
                 if (! AppDelay::isPaused( $_SESSION['APPLICATION'], $_SESSION['INDEX'] )) {
-                    $options[] = Array ('text' => G::LoadTranslation( 'ID_PAUSED_CASE' ),'fn' => 'setUnpauseCaseDate'
-                    );
+                    $options[] = Array ('text' => G::LoadTranslation( 'ID_PAUSED_CASE' ),'fn' => 'setUnpauseCaseDate');
                     if ($cant == 1) {
-                        if ($RBAC->userCanAccess( 'PM_CANCELCASE' ) == 1)
-                            $options[] = Array ('text' => G::LoadTranslation( 'ID_CANCEL' ),'fn' => 'cancelCase'
-                            );
-                        else
-                            $options[] = Array ('text' => G::LoadTranslation( 'ID_CANCEL' ),'fn' => 'cancelCase','hide' => 'hiden'
-                            );
+                        if ($RBAC->userCanAccess( 'PM_CANCELCASE' ) == 1) {
+                            $options[] = Array ('text' => G::LoadTranslation( 'ID_CANCEL' ),'fn' => 'cancelCase');
+                        } else {
+                            $options[] = Array ('text' => G::LoadTranslation( 'ID_CANCEL' ),'fn' => 'cancelCase','hide' => 'hiden');
+                        }
                     }
                 } else {
-                    $options[] = Array ('text' => G::LoadTranslation( 'ID_UNPAUSE' ),'fn' => 'unpauseCase'
-                    );
+                    $options[] = Array ('text' => G::LoadTranslation( 'ID_UNPAUSE' ),'fn' => 'unpauseCase');
                 }
                 if ($RBAC->userCanAccess( 'PM_REASSIGNCASE' ) == 1) {
-                    $options[] = Array ('text' => G::LoadTranslation( 'ID_REASSIGN' ),'fn' => 'getUsersToReassign'
-                    );
+                    $options[] = Array ('text' => G::LoadTranslation( 'ID_REASSIGN' ),'fn' => 'getUsersToReassign');
                 }
                 break;
-
             case 'CANCELLED':
-                $options[] = Array ('text' => G::LoadTranslation( 'ID_REACTIVATE' ),'fn' => 'reactivateCase'
-                );
+                $options[] = Array ('text' => G::LoadTranslation( 'ID_REACTIVATE' ),'fn' => 'reactivateCase');
                 break;
         }
 
@@ -214,14 +194,13 @@ class Ajax
             $oTask = new Task();
             $aTask = $oTask->load( $_SESSION['TASK'] );
             if ($aTask['TAS_TYPE'] == 'ADHOC') {
-                $options[] = Array ('text' => G::LoadTranslation( 'ID_ADHOC_ASSIGNMENT' ),'fn' => 'adhocAssignmentUsers'
-                );
+                $options[] = Array ('text' => G::LoadTranslation( 'ID_ADHOC_ASSIGNMENT' ),'fn' => 'adhocAssignmentUsers');
             }
         }
         return $options;
     }
 
-    function processMap ()
+    public function processMap ()
     {
         global $G_PUBLISH;
         global $G_CONTENT;
@@ -322,7 +301,7 @@ class Ajax
         G::RenderPage( 'publish', 'blank' );
     }
 
-    function getProcessInformation ()
+    public function getProcessInformation ()
     {
         $process = new Process();
         $processData = $process->load( $_SESSION['PROCESS'] );
@@ -340,17 +319,18 @@ class Ajax
         print (G::json_encode( $processData )) ;
     }
 
-    function getTaskInformation ()
+    public function getTaskInformation ()
     {
         $task = new Task();
-        if ($_SESSION['TASK'] == '-1')
+        if ($_SESSION['TASK'] == '-1') {
             $_SESSION['TASK'] = $_SESSION['CURRENT_TASK'];
+        }
         $taskData = $task->getDelegatedTaskData( $_SESSION['TASK'], $_SESSION['APPLICATION'], $_SESSION['INDEX'] );
 
         print (G::json_encode( $taskData )) ;
     }
 
-    function caseHistory ()
+    public function caseHistory ()
     {
         global $G_PUBLISH;
         G::loadClass( 'configuration' );
@@ -363,7 +343,7 @@ class Ajax
         G::RenderPage( 'publish', 'extJs' );
     }
 
-    function messageHistory ()
+    public function messageHistory ()
     {
         global $G_PUBLISH;
         G::loadClass( 'configuration' );
@@ -376,7 +356,7 @@ class Ajax
         G::RenderPage( 'publish', 'extJs' );
     }
 
-    function dynaformHistory ()
+    public function dynaformHistory ()
     {
         global $G_PUBLISH;
         G::loadClass( 'configuration' );
@@ -389,7 +369,7 @@ class Ajax
         G::RenderPage( 'publish', 'extJs' );
     }
 
-    function uploadedDocuments ()
+    public function uploadedDocuments ()
     {
         global $G_PUBLISH;
         G::loadClass( 'configuration' );
@@ -402,7 +382,7 @@ class Ajax
         G::RenderPage( 'publish', 'extJs' );
     }
 
-    function uploadedDocumentsSummary ()
+    public function uploadedDocumentsSummary ()
     {
         global $G_PUBLISH;
         G::loadClass( 'configuration' );
@@ -415,7 +395,7 @@ class Ajax
         G::RenderPage( 'publish', 'extJs' );
     }
 
-    function generatedDocuments ()
+    public function generatedDocuments ()
     {
         global $G_PUBLISH;
         G::loadClass( 'configuration' );
@@ -428,7 +408,7 @@ class Ajax
         G::RenderPage( 'publish', 'extJs' );
     }
 
-    function generatedDocumentsSummary ()
+    public function generatedDocumentsSummary ()
     {
         global $G_PUBLISH;
         G::loadClass( 'configuration' );
@@ -441,7 +421,7 @@ class Ajax
         G::RenderPage( 'publish', 'extJs' );
     }
 
-    function cancelCase ()
+    public function cancelCase ()
     {
         $oCase = new Cases();
         $multiple = false;
@@ -452,9 +432,10 @@ class Ajax
 
             $appUids = explode( ',', $APP_UID );
             $delIndexes = explode( ',', $DEL_INDEX );
-            if (count( $appUids ) > 1 && count( $delIndexes ) > 1)
+            if (count( $appUids ) > 1 && count( $delIndexes ) > 1) {
                 $multiple = true;
-        } else if (isset( $_POST['sApplicationUID'] ) && isset( $_POST['iIndex'] )) {
+            }
+        } elseif (isset( $_POST['sApplicationUID'] ) && isset( $_POST['iIndex'] )) {
             $APP_UID = $_POST['sApplicationUID'];
             $DEL_INDEX = $_POST['iIndex'];
         } else {
@@ -473,13 +454,15 @@ class Ajax
 
 
         if ($multiple) {
-            foreach ($appUids as $i => $appUid)
+            foreach ($appUids as $i => $appUid) {
                 $oCase->cancelCase( $appUid, $delIndexes[$i], $_SESSION['USER_LOGGED'] );
-        } else
+            }
+        } else {
             $oCase->cancelCase( $APP_UID, $DEL_INDEX, $_SESSION['USER_LOGGED'] );
+        }
     }
 
-    function getUsersToReassign ()
+    public function getUsersToReassign ()
     {
         $case = new Cases();
         $result->data = $case->getUsersToReassign( $_SESSION['TASK'], $_SESSION['USER_LOGGED'] );
@@ -488,7 +471,7 @@ class Ajax
 
     }
 
-    function reassignCase ()
+    public function reassignCase ()
     {
         $cases = new Cases();
         $user = new Users();
@@ -512,7 +495,7 @@ class Ajax
         print G::json_encode( $result );
     }
 
-    function pauseCase ()
+    public function pauseCase ()
     {
         try {
             $unpauseDate = $_REQUEST['unpauseDate'];
@@ -520,7 +503,7 @@ class Ajax
             if (isset( $_POST['APP_UID'] ) && isset( $_POST['DEL_INDEX'] )) {
                 $APP_UID = $_POST['APP_UID'];
                 $DEL_INDEX = $_POST['DEL_INDEX'];
-            } else if (isset( $_POST['sApplicationUID'] ) && isset( $_POST['iIndex'] )) {
+            } elseif (isset( $_POST['sApplicationUID'] ) && isset( $_POST['iIndex'] )) {
                 $APP_UID = $_POST['sApplicationUID'];
                 $DEL_INDEX = $_POST['iIndex'];
             } else {
@@ -553,7 +536,7 @@ class Ajax
         echo G::json_encode( $result );
     }
 
-    function unpauseCase ()
+    public function unpauseCase ()
     {
         try {
             $applicationUID = (isset( $_POST['APP_UID'] )) ? $_POST['APP_UID'] : $_SESSION['APPLICATION'];
@@ -575,7 +558,7 @@ class Ajax
         print G::json_encode( $result );
     }
 
-    function deleteCase ()
+    public function deleteCase ()
     {
         try {
             $applicationUID = (isset( $_POST['APP_UID'] )) ? $_POST['APP_UID'] : $_SESSION['APPLICATION'];
@@ -595,7 +578,7 @@ class Ajax
         print G::json_encode( $result );
     }
 
-    function reactivateCase ()
+    public function reactivateCase ()
     {
         try {
             $applicationUID = (isset( $_POST['APP_UID'] )) ? $_POST['APP_UID'] : $_SESSION['APPLICATION'];
@@ -617,7 +600,7 @@ class Ajax
         print G::json_encode( $result );
     }
 
-    function changeLogTab ()
+    public function changeLogTab ()
     {
         try {
             global $G_PUBLISH;
@@ -638,41 +621,43 @@ class Ajax
             $G_PUBLISH = new Publisher();
             $G_PUBLISH->AddContent( 'view', 'cases/cases_DynaformHistory' );
             ?>
-<link rel="stylesheet" type="text/css" href="/css/classic.css" />
-<style type="text/css">
-html {
-	color: black !important;
-}
+            <link rel="stylesheet" type="text/css" href="/css/classic.css" />
+            <style type="text/css">
+            html {
+                color: black !important;
+            }
 
-body {
-	color: black !important;
-}
-</style>
-<script language="javascript">
-          function ajaxPostRequest(url, callback_function, id){
+            body {
+                color: black !important;
+            }
+            </style>
+            <script language="javascript">
+            function ajaxPostRequest(url, callback_function, id){
             var d = new Date();
             var time = d.getTime();
-            url= url + '&nocachetime='+time;
+            url = url + '&nocachetime='+time;
             var return_xml=false;
             var http_request = false;
 
-            if (window.XMLHttpRequest) { // Mozilla, Safari,...
-              http_request = new XMLHttpRequest();
-              if (http_request.overrideMimeType){
-                http_request.overrideMimeType('text/xml');
+            if (window.XMLHttpRequest) {
+                // Mozilla, Safari,...
+                http_request = new XMLHttpRequest();
+                if (http_request.overrideMimeType){
+                    http_request.overrideMimeType('text/xml');
               }
             }
-            else if (window.ActiveXObject) {// IE
-              try {
-                http_request = new ActiveXObject("Msxml2.XMLHTTP");
-              }
-              catch (e) {
+            elseif (window.ActiveXObject) {
+                // IE
                 try {
-                  http_request = new ActiveXObject("Microsoft.XMLHTTP");
+                    http_request = new ActiveXObject("Msxml2.XMLHTTP");
                 }
                 catch (e) {
+                  try {
+                     http_request = new ActiveXObject("Microsoft.XMLHTTP");
+                  }
+                  catch (e) {
+                  }
                 }
-              }
             }
 
             if (!http_request){
@@ -697,9 +682,9 @@ body {
             }
             http_request.open('GET', url, true);
             http_request.send(null);
-          }
+            }
 
-          function toggleTable(tablename) {
+            function toggleTable(tablename) {
             table= document.getElementById(tablename);
 
             if(table.style.display == ''){
@@ -707,17 +692,17 @@ body {
             }else{
               table.style.display = '';
             }
-          }
+            }
 
-          function noesFuncion(idIframe) {
-            window.parent.tabIframeWidthFix2(idIframe);
-          }
+            function noesFuncion(idIframe) {
+                window.parent.tabIframeWidthFix2(idIframe);
+            }
 
-          function onResizeIframe(idIframe){
-            window.onresize = noesFuncion(idIframe);
-          }
+            function onResizeIframe(idIframe){
+                window.onresize = noesFuncion(idIframe);
+            }
 
-          function showDynaformHistoryGetNomDynaform_RSP(response,id) {
+            function showDynaformHistoryGetNomDynaform_RSP(response,id) {
             //!showDynaformHistoryGlobal
             showDynaformHistoryGlobal.idDin = showDynaformHistoryGlobal.idDin;
             showDynaformHistoryGlobal.idHistory = showDynaformHistoryGlobal.idHistory;
@@ -735,29 +720,28 @@ body {
             window.parent.historyGridListChangeLogGlobal.dynDate = dynDate;
 
             window.parent.Actions.tabFrame('dynaformViewFromHistory');
-          }
+            }
 
-          showDynaformHistoryGlobal = {};
-          showDynaformHistoryGlobal.idDin = "";
-          showDynaformHistoryGlobal.idHistory = "";
-          showDynaformHistoryGlobal.dynDate = "";
+            showDynaformHistoryGlobal = {};
+            showDynaformHistoryGlobal.idDin = "";
+            showDynaformHistoryGlobal.idHistory = "";
+            showDynaformHistoryGlobal.dynDate = "";
 
-          function showDynaformHistory(idDin, idHistory, dynDate) {
-            //!showDynaformHistoryGlobal
-            showDynaformHistoryGlobal.idDin = showDynaformHistoryGlobal.idDin;
-            showDynaformHistoryGlobal.idHistory = showDynaformHistoryGlobal.idHistory;
-            showDynaformHistoryGlobal.dynDate = showDynaformHistoryGlobal.dynDate;
+            function showDynaformHistory(idDin, idHistory, dynDate) {
+                //!showDynaformHistoryGlobal
+                showDynaformHistoryGlobal.idDin = showDynaformHistoryGlobal.idDin;
+                showDynaformHistoryGlobal.idHistory = showDynaformHistoryGlobal.idHistory;
+                showDynaformHistoryGlobal.dynDate = showDynaformHistoryGlobal.dynDate;
 
-            //!dataSystem
-            showDynaformHistoryGlobal.idDin = idDin;
-            showDynaformHistoryGlobal.idHistory = idHistory;
-            showDynaformHistoryGlobal.dynDate = dynDate;
+                //!dataSystem
+                showDynaformHistoryGlobal.idDin = idDin;
+                showDynaformHistoryGlobal.idHistory = idHistory;
+                showDynaformHistoryGlobal.dynDate = dynDate;
 
-            var url = "caseHistory_Ajax.php?actionAjax=showDynaformHistoryGetNomDynaform_JXP&idDin="+idDin+"&dynDate="+dynDate;
-            ajaxPostRequest(url, 'showDynaformHistoryGetNomDynaform_RSP');
-          }
-        </script>
-<?php
+                var url = "caseHistory_Ajax.php?actionAjax=showDynaformHistoryGetNomDynaform_JXP&idDin="+idDin+"&dynDate="+dynDate;ajaxPostRequest(url, 'showDynaformHistoryGetNomDynaform_RSP');
+            }
+            </script>
+            <?php
 
             G::RenderPage( 'publish', 'raw' );
 
@@ -769,29 +753,28 @@ body {
         }
     }
 
-    function dynaformViewFromHistory ()
+    public function dynaformViewFromHistory ()
     {
         ?>
+        <link rel="stylesheet" type="text/css" href="/css/classic.css" />
 
-<link rel="stylesheet" type="text/css" href="/css/classic.css" />
+    <script type="text/javascript">
+        //!Code that simulated reload library javascript maborak
+        var leimnud = {};
+        leimnud.exec = "";
+        leimnud.fix = {};
+        leimnud.fix.memoryLeak = "";
+        leimnud.browser = {};
+        leimnud.browser.isIphone = "";
+        leimnud.iphone = {};
+        leimnud.iphone.make = function () {};
+        function ajax_function(ajax_server, funcion, parameters, method)
+        {
+        }
+        //!
+        </script>
 
-<script type="text/javascript">
-    //!Code that simulated reload library javascript maborak
-    var leimnud = {};
-    leimnud.exec = "";
-    leimnud.fix = {};
-    leimnud.fix.memoryLeak = "";
-    leimnud.browser = {};
-    leimnud.browser.isIphone = "";
-    leimnud.iphone = {};
-    leimnud.iphone.make = function () {};
-    function ajax_function(ajax_server, funcion, parameters, method)
-    {
-    }
-    //!
-    </script>
-
-<?php
+        <?php
         global $G_PUBLISH;
 
         $_POST["HISTORY_ID"] = $_REQUEST["HISTORY_ID"];
@@ -807,43 +790,41 @@ body {
         $G_PUBLISH->AddContent( "dynaform", "xmlform", $_SESSION["PROCESS"] . "/" . $_POST["DYN_UID"], "", $Fields["APP_DATA"], "", "", "view" );
         ?>
 
-<script type="text/javascript">
+        <script type="text/javascript">
 
-<?php
-        global $G_FORM;
+        <?php
+            global $G_FORM;
         ?>
 
-    function loadForm_<?php echo $G_FORM->id; ?>(parametro1)
-    {
-    }
-    </script>
+        function loadForm_<?php echo $G_FORM->id; ?>(parametro1) {
+        }
+        </script>
 
-<?php
+        <?php
         G::RenderPage( "publish", "raw" );
         ?>
 
-<style type="text/css">
-html {
-	color: black !important;
-}
+        <style type="text/css">
+        html {
+	        color: black !important;
+        }
 
-body {
-	color: black !important;
-}
-</style>
+        body {
+	        color: black !important;
+        }
+        </style>
 
-<script type="text/javascript">
+        <script type="text/javascript">
 
-<?php
+        <?php
         global $G_FORM;
         ?>
 
-    function loadForm_<?php echo $G_FORM->id; ?>(parametro1)
-    {
-    }
-    </script>
+        function loadForm_<?php echo $G_FORM->id; ?>(parametro1) {
+        }
+        </script>
 
-<?php
+        <?php
     }
 }
 

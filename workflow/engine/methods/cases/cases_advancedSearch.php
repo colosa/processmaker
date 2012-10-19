@@ -78,4 +78,5 @@ G::RenderPage( 'publish', 'blank' );
     parent.outerLayout.hide('east');
     parent.PANEL_EAST_OPEN = false;
 </script>
+<?php
 

@@ -68,32 +68,24 @@ if ($actionAjax == 'historyGridListChangeLogPanelBody_JXP') {
 
     ?>
 
-<table bgcolor="white" height=100% width=100%>
-	<tr>
-		<td height=99%>
-			<div
-				style="width: 100%; overflow-y: scroll; overflow-x: hidden; max-height: 310px; _height: 310px; height: 310px; visibility: inherit;">
-
-<?php
+    <table bgcolor="white" height=100% width=100%>
+    <tr>
+       <td height=99%>
+           <div
+               style="width: 100%; overflow-y: scroll; overflow-x: hidden; max-height: 310px; _height: 310px; height: 310px; visibility: inherit;">
+    <?php
     require_once 'classes/model/AppHistory.php';
     $G_PUBLISH = new Publisher();
     $G_PUBLISH->AddContent( 'view', 'cases/cases_DynaformHistory' );
     G::RenderPage( 'publish', 'raw' );
     ?>
+    </div>
+    </td>
+    </tr>
+    <tr>
+        <td height=30 valign=top>
 
-
-      </div>
-
-
-
-
-
-		</td>
-	</tr>
-	<tr>
-		<td height=30 valign=top>
-
-			<table align=center cellspacing="0" class="x-btn x-btn-noicon"
+            <table align=center cellspacing="0" class="x-btn x-btn-noicon"
 				id="ext-comp-1043" style="width: 75px; margin-top: 0px;">
 				<tbody class="x-btn-small x-btn-icon-small-left">
 					<tr>
@@ -114,11 +106,11 @@ if ($actionAjax == 'historyGridListChangeLogPanelBody_JXP') {
 						<td class="x-btn-br"><i>&nbsp;</i></td>
 					</tr>
 				</tbody>
-			</table>
-		</td>
-	</tr>
-</table>
-<?php
+           </table>
+        </td>
+    </tr>
+    </table>
+    <?php
 
 }
 

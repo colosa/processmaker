@@ -20,8 +20,7 @@ $functionName( $functionParams );
 
 function getExtJSParams ()
 {
-    $validParams = array ('callback' => '','dir' => 'DESC','sort' => '','start' => 0,'limit' => 25,'filter' => '','search' => '','action' => '','xaction' => '','data' => '','status' => '','query' => '','fields' => ""
-    );
+    $validParams = array ('callback' => '','dir' => 'DESC','sort' => '','start' => 0,'limit' => 25,'filter' => '','search' => '','action' => '','xaction' => '','data' => '','status' => '','query' => '','fields' => "");
     $result = array ();
     foreach ($validParams as $paramName => $paramDefault) {
         $result[$paramName] = isset( $_REQUEST[$paramName] ) ? $_REQUEST[$paramName] : isset( $_REQUEST[$paramName] ) ? $_REQUEST[$paramName] : $paramDefault;
@@ -52,6 +51,7 @@ function getNotesList ()
     $usrUid = (isset( $_SESSION['USER_LOGGED'] )) ? $_SESSION['USER_LOGGED'] : "";
     $appNotes = new AppNotes();
     $response = $appNotes->getNotesList( $appUid, '', $start, $limit );
+
     sendJsonResultGeneric( $response['array'], $callback );
 }
 
