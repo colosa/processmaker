@@ -28,7 +28,6 @@ switch ($RBAC->userCanAccess( 'PM_CASES' )) {
         G::header( 'location: ../login/login' );
         die();
         break;
-
     case - 1:
         G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
         G::header( 'location: ../login/login' );
@@ -42,16 +41,21 @@ G::LoadClass( 'case' );
 /* GET , POST & $_SESSION Vars */
 
 /* unset any variable, because we are starting a new case */
-if (isset( $_SESSION['APPLICATION'] ))
+if (isset( $_SESSION['APPLICATION'] )) {
     unset( $_SESSION['APPLICATION'] );
-if (isset( $_SESSION['PROCESS'] ))
+}
+if (isset( $_SESSION['PROCESS'] )) {
     unset( $_SESSION['PROCESS'] );
-if (isset( $_SESSION['TASK'] ))
+}
+if (isset( $_SESSION['TASK'] )) {
     unset( $_SESSION['TASK'] );
-if (isset( $_SESSION['INDEX'] ))
+}
+if (isset( $_SESSION['INDEX'] )) {
     unset( $_SESSION['INDEX'] );
-if (isset( $_SESSION['STEP_POSITION'] ))
+}
+if (isset( $_SESSION['STEP_POSITION'] )) {
     unset( $_SESSION['STEP_POSITION'] );
+}
 
     /* Process */
 try {

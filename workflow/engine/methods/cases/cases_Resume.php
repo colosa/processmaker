@@ -76,8 +76,9 @@ if (isset( $aRow['APP_TYPE'] )) {
 }
 
 $actions = 'false';
-if ($_GET['action'] == 'paused')
+if ($_GET['action'] == 'paused') {
     $actions = 'true';
+}
 
     /* Render page */
 $oHeadPublisher = & headPublisher::getSingleton();

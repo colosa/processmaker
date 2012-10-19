@@ -20,4 +20,5 @@ foreach ($startTasks as $task) {
 //  echo "<option value=\"".$value."\">".$label."</option>";
 ?>
 </select>
+<?php
 

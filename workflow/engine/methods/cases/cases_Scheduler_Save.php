@@ -23,21 +23,21 @@
  */
 try {
     /*
-   global $RBAC;
-   switch ($RBAC->userCanAccess('PM_FACTORY'))
-   {
-  	case -2:
-  	G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-  	G::header('location: ../login/login');
-  	die;
-  	break;
-  	case -1:
-  	G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	G::header('location: ../login/login');
-  	die;
-  	break;
-  	}
-  	*/
+    global $RBAC;
+    switch ($RBAC->userCanAccess('PM_FACTORY'))
+    {
+    case -2:
+      G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
+      G::header('location: ../login/login');
+      die;
+      break;
+    case -1:
+      G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+      G::header('location: ../login/login');
+      die;
+      break;
+    }
+    */
 
     require_once 'classes/model/CaseScheduler.php';
     $oCaseScheduler = new CaseScheduler();
@@ -103,12 +103,12 @@ try {
                     break;
             }
             break;
-
         case '2': // If the option is zero, set by default 1
-            if (empty( $_POST['form']['SCH_EVERY_DAYS'] ))
+            if (empty( $_POST['form']['SCH_EVERY_DAYS'] )) {
                 $nEveryDays = 1;
-            else
+            } else {
                 $nEveryDays = $_POST['form']['SCH_EVERY_DAYS'];
+            }
             $aData['SCH_EVERY_DAYS'] = $nEveryDays;
             $sWeeks = '';
             if (! empty( $_POST['form']['SCH_WEEK_DAYS'] )) {
@@ -125,7 +125,6 @@ try {
             }
             $sStartTime = $_POST['form']['SCH_START_TIME'];
             $aData['SCH_WEEK_DAYS'] = $sWeeks;
-
             break;
         case '3':
             $nStartDay = $_POST['form']['SCH_START_DAY'];
@@ -158,7 +157,6 @@ try {
             $sStartDay = $aData['SCH_START_DAY'];
             $sValue = $nStartDay;
             break;
-
     }
     echo "<br>sOption: " . $sOption;
     if (($sOption != '1') && ($sOption != '4') && ($sOption != '5')) {
@@ -207,10 +205,11 @@ try {
 
     if (! empty( $_POST['form']['SCH_REPEAT_TASK_CHK'] )) {
         $nOptEvery = $_POST['form']['SCH_REPEAT_EVERY_OPT'];
-        if ($nOptEvery == 2)
+        if ($nOptEvery == 2) {
             $aData['SCH_REPEAT_EVERY'] = $_POST['form']['SCH_REPEAT_EVERY'] * 60;
-        else
+        } else {
             $aData['SCH_REPEAT_EVERY'] = $_POST['form']['SCH_REPEAT_EVERY'];
+        }
 
     }
 
@@ -229,7 +228,6 @@ try {
         foreach ($activePluginsForCaseScheduler as $key => $caseSchedulerPluginDetail) {
             if (($caseSchedulerPluginDetail->sNamespace == $params[0]) && ($caseSchedulerPluginDetail->sActionId == $params[1])) {
                 $caseSchedulerSelected = $caseSchedulerPluginDetail;
-
             }
         }
         if ((isset( $caseSchedulerSelected )) && (is_object( $caseSchedulerSelected ))) {

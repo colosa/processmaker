@@ -25,35 +25,35 @@ try {
     global $RBAC;
 
     /*
-  switch ($RBAC->userCanAccess('PM_FACTORY'))
-  {
-  	case -2:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	case -1:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  }
-*/
+    switch ($RBAC->userCanAccess('PM_FACTORY'))
+    {
+    case -2:
+      G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
+      G::header('location: ../login/login');
+      die;
+    break;
+    case -1:
+      G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+      G::header('location: ../login/login');
+      die;
+    break;
+    }
+    */
 
-/*
-  $aFields['MESSAGE0']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_USER_REGISTERED')) . '!';
-  $aFields['MESSAGE1']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_MSG_ERROR_USR_USERNAME'));
-  $aFields['MESSAGE2']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_MSG_ERROR_DUE_DATE'));
-  $aFields['MESSAGE3']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_NEW_PASS_SAME_OLD_PASS'));
-  $aFields['MESSAGE4']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_MSG_ERROR_USR_FIRSTNAME'));
-  $aFields['MESSAGE5']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_MSG_ERROR_USR_LASTNAME'));
-  // the default role variable sets the value that will be showed as the default for the role field.
-  $aFields['DEFAULT_ROLE']   = 'PROCESSMAKER_OPERATOR';
-  $aFields['START_DATE'] = date('Y-m-d');
-  $aFields['END_DATE']   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y') + 5));
-  $aFields['USR_DUE_DATE']= date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y') + 1));
-*/
-  if (! class_exists( 'LogCasesSchedulerPeer' )) {
+    /*
+    $aFields['MESSAGE0']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_USER_REGISTERED')) . '!';
+    $aFields['MESSAGE1']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_MSG_ERROR_USR_USERNAME'));
+    $aFields['MESSAGE2']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_MSG_ERROR_DUE_DATE'));
+    $aFields['MESSAGE3']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_NEW_PASS_SAME_OLD_PASS'));
+    $aFields['MESSAGE4']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_MSG_ERROR_USR_FIRSTNAME'));
+    $aFields['MESSAGE5']   = str_replace("\r\n","<br>",G::LoadTranslation('ID_MSG_ERROR_USR_LASTNAME'));
+    // the default role variable sets the value that will be showed as the default for the role field.
+    $aFields['DEFAULT_ROLE']   = 'PROCESSMAKER_OPERATOR';
+    $aFields['START_DATE'] = date('Y-m-d');
+    $aFields['END_DATE']   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y') + 5));
+    $aFields['USR_DUE_DATE']= date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y') + 1));
+    */
+    if (! class_exists( 'LogCasesSchedulerPeer' )) {
         require_once ('classes/model/LogCasesScheduler.php');
     }
 

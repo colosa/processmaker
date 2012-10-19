@@ -148,3 +148,5 @@ try {
 ?>
 <div id="publisherContent[10]" style="display: none"></div>
 
+<?php
+

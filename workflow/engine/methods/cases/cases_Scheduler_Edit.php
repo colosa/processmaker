@@ -24,21 +24,21 @@
 try {
     global $RBAC;
 
-/*
-  switch ($RBAC->userCanAccess('PM_FACTORY'))
-  {
-  	case -2:
+    /*
+    switch ($RBAC->userCanAccess('PM_FACTORY'))
+    {
+    case -2:
   	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
   	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	case -1:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  }
-*/
+      die;
+    break;
+    case -1:
+      G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+      G::header('location: ../login/login');
+      die;
+    break;
+    }
+    */
 
     require_once 'classes/model/CaseScheduler.php';
     require_once 'classes/model/Process.php';
@@ -115,7 +115,7 @@ try {
     //        var_dump($aFields['SCH_END_DATE']);
     //        var_dump($aFields['SCH_REPEAT_EVERY']);
     //        die();
-    if ($aFields['SCH_END_DATE'] != NULL || trim( $aFields['SCH_REPEAT_EVERY'] ) != '') {
+    if ($aFields['SCH_END_DATE'] != null || trim( $aFields['SCH_REPEAT_EVERY'] ) != '') {
         $aFields['SCH_ADVANCED'] = 'true';
     } else {
         $aFields['SCH_ADVANCED'] = 'false';

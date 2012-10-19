@@ -49,7 +49,6 @@ if ((isset( $_FILES['form'] )) && ($_FILES['form']['error']['APP_DOC_FILENAME'] 
         case UPLOAD_ERR_EXTENSION:
             $message = G::LoadTranslation( 'ID_UPLOAD_ERR_EXTENSION' );
             break;
-
         default:
             $message = G::LoadTranslation( 'ID_UPLOAD_ERR_UNKNOWN' );
             break;

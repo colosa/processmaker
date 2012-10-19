@@ -66,7 +66,8 @@ try {
             $aAux2 = $oGroups->getUsersOfGroup( $value1['GRP_UID'] );
             foreach ($aAux2 as $value2) {
                 if ($aRow['USR_UID'] != $value2['USR_UID']) {
-                    if (! in_array( $value2['USR_UID'], $aUsrUid )) { //var_dump($aRow['USR_UID'], $value2['USR_UID']);echo '<br /><br />';
+                    if (! in_array( $value2['USR_UID'], $aUsrUid )) {
+                        //var_dump($aRow['USR_UID'], $value2['USR_UID']);echo '<br /><br />';
                         $aAux = $oUser->load( $value2['USR_UID'] );
                         $aUsr[$aAux['USR_FIRSTNAME'] . ' ' . $aAux['USR_LASTNAME']] = $aAux;
                         $aUsrUid[] = $value2['USR_UID'];
@@ -78,8 +79,9 @@ try {
         $aUsers = $oTasks->getUsersOfTask( $aRow['TAS_UID'], 1 );
         foreach ($aUsers as $key => $value) {
             if ($aRow['USR_UID'] != $value['USR_UID']) {
-                if (! in_array( $value['USR_UID'], $aUsrUid ))
+                if (! in_array( $value['USR_UID'], $aUsrUid )) {
                     $aUsr[$value['USR_FIRSTNAME'] . ' ' . $value['USR_LASTNAME']] = $value;
+                }
             }
         }
         ksort( $aUsr );

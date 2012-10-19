@@ -23,21 +23,21 @@
  */
 try {
     /*
-  global $RBAC;
-  switch ($RBAC->userCanAccess('PM_FACTORY'))
-  {
-  	case -2:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  	case -1:
-  	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
-  	  G::header('location: ../login/login');
-  	  die;
-  	break;
-  }
- */
+    global $RBAC;
+    switch ($RBAC->userCanAccess('PM_FACTORY'))
+    {
+    case -2:
+      G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
+      G::header('location: ../login/login');
+      die;
+    break;
+    case -1:
+      G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+      G::header('location: ../login/login');
+      die;
+    break;
+    }
+    */
 
     require_once 'classes/model/CaseScheduler.php';
 
@@ -83,7 +83,8 @@ try {
     $nSW = 0;
 
     switch ($sOption) {
-        case '1': // Option 1
+        case '1':
+            // Option 1
             $sValue = $_POST['form']['SCH_DAYS_PERFORM_TASK'];
             switch ($sValue) {
                 case '1':
@@ -100,11 +101,13 @@ try {
                     break;
             }
             break;
-        case '2': // If the option is zero, set by default 1
-            if (empty( $_POST['form']['SCH_EVERY_DAYS'] ))
+        case '2':
+            // If the option is zero, set by default 1
+            if (empty( $_POST['form']['SCH_EVERY_DAYS'] )) {
                 $nEveryDays = 1;
-            else
+            } else {
                 $nEveryDays = $_POST['form']['SCH_EVERY_DAYS'];
+            }
             $aData['SCH_EVERY_DAYS'] = $nEveryDays;
             $sWeeks = '';
             if (! empty( $_POST['form']['SCH_WEEK_DAYS'] )) {
@@ -122,7 +125,6 @@ try {
             $sStartTime = $_POST['form']['SCH_START_TIME'];
             $aData['SCH_WEEK_DAYS'] = $sWeeks;
             break;
-
         case '3':
             $nStartDay = $_POST['form']['SCH_START_DAY'];
             if ($nStartDay == 1) {
@@ -191,14 +193,14 @@ try {
                     $startTime = $_POST['form']['SCH_START_TIME'] . ":00";
                     if ($recalculateDate) {
                         $aData['SCH_TIME_NEXT_RUN'] = date( 'Y' ) . '-' . $row . '-' . $aStartDay[1] . ' ' . $startTime;
-                    } else if ($recalculateTime) {
+                    } elseif ($recalculateTime) {
                         $aData['SCH_TIME_NEXT_RUN'] = $oCaseScheduler->getSchTimeNextRun( "Y-m-d" ) . " " . $_POST['form']['SCH_START_TIME'] . ":00";
                     }
                     break;
                 } else {
                     if ($recalculateDate) {
                         $aData['SCH_TIME_NEXT_RUN'] = $oCaseScheduler->updateNextRun( $sOption, $sValue, $nActualTime, $sDaysPerformTask, $sWeeks, $sStartDay, $sMonths, $sDateTmp );
-                    } else if ($recalculateTime) {
+                    } elseif ($recalculateTime) {
                         $aData['SCH_TIME_NEXT_RUN'] = $oCaseScheduler->getSchTimeNextRun( "Y-m-d" ) . " " . $_POST['form']['SCH_START_TIME'] . ":00";
                     }
                 }
@@ -206,7 +208,7 @@ try {
         } else {
             if ($recalculateDate) {
                 $aData['SCH_TIME_NEXT_RUN'] = $oCaseScheduler->updateNextRun( $sOption, $sValue, $nActualTime, $sDaysPerformTask, $sWeeks, $sStartDay, $sMonths, $sDateTmp );
-            } else if ($recalculateTime) {
+            } elseif ($recalculateTime) {
                 $aData['SCH_TIME_NEXT_RUN'] = $oCaseScheduler->getSchTimeNextRun( "Y-m-d" ) . " " . $_POST['form']['SCH_START_TIME'] . ":00";
             }
         }
@@ -218,7 +220,7 @@ try {
         }
         if ($recalculateDate) {
             $aData['SCH_TIME_NEXT_RUN'] = $aData['SCH_START_TIME'];
-        } else if ($recalculateTime) {
+        } elseif ($recalculateTime) {
 
             //                                $Fields = $oCaseScheduler->Load($aData['SCH_UID']);
             //                                $Fields['SCH_LAST_STATE'] = $aRow['SCH_STATE'];
@@ -245,10 +247,11 @@ try {
 
     if (! empty( $_POST['form']['SCH_REPEAT_TASK_CHK'] )) {
         $nOptEvery = $_POST['form']['SCH_REPEAT_EVERY_OPT'];
-        if ($nOptEvery == 2)
+        if ($nOptEvery == 2) {
             $aData['SCH_REPEAT_EVERY'] = $_POST['form']['SCH_REPEAT_EVERY'] * 60;
-        else
+        } else {
             $aData['SCH_REPEAT_EVERY'] = $_POST['form']['SCH_REPEAT_EVERY'];
+        }
 
     }
     //	 	var_dump ($aData['SCH_TIME_NEXT_RUN']);

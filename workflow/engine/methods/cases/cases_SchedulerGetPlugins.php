@@ -28,8 +28,9 @@ function pluginsList ()
     $oPluginRegistry = & PMPluginRegistry::getSingleton();
     $activePluginsForCaseScheduler = $oPluginRegistry->getCaseSchedulerPlugins();
     $selectedPlugin = "";
-    if ((isset( $_REQUEST['plg_uid'] )) && ($_REQUEST['plg_uid'] != ""))
+    if ((isset( $_REQUEST['plg_uid'] )) && ($_REQUEST['plg_uid'] != "")) {
         $selectedPlugin = $_REQUEST['plg_uid'];
+    }
     if (! empty( $activePluginsForCaseScheduler )) {
         echo '<select style="width: 300px;" name="form[CASE_SH_PLUGIN_UID]" id="form[CASE_SH_PLUGIN_UID]" class="module_app_input___gray" required="1" onChange="showPluginSelection(this.options[this.selectedIndex].value,getField(\'PRO_UID\').value)">';
         echo "<option value=\"\">- Select -</option>";
@@ -38,8 +39,9 @@ function pluginsList ()
             $sNamespace = $caseSchedulerPluginDetail->sNamespace;
             $optionId = $sNamespace . "--" . $sActionId;
             $selectedOption = "";
-            if ($selectedPlugin == $optionId)
+            if ($selectedPlugin == $optionId) {
                 $selectedOption = "selected";
+            }
             echo "<option value=\"$optionId\" $selectedOption>" . $sActionId . "</option>";
         }
         echo '</select>';
@@ -49,8 +51,9 @@ function pluginsList ()
 
 function pluginCaseSchedulerForm ()
 {
-    if (! isset( $_REQUEST['selectedOption'] ))
+    if (! isset( $_REQUEST['selectedOption'] )) {
         die();
+    }
     $G_PUBLISH = new Publisher();
     $params = explode( "--", $_REQUEST['selectedOption'] );
     $oPluginRegistry = & PMPluginRegistry::getSingleton();
