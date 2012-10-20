@@ -86,9 +86,19 @@ class Translation extends BaseTranslation
         }
         // for date filter
         if (($dateFrom) && ($dateTo)) {
-            $oCriteria->add( $oCriteria->getNewCriterion( TranslationPeer::TRN_UPDATE_DATE, "$dateFrom", Criteria::GREATER_EQUAL )            //LESS_EQUAL
-->addAnd( $oCriteria->getNewCriterion( TranslationPeer::TRN_UPDATE_DATE, "$dateTo", Criteria::LESS_EQUAL )            //GREATER_EQUAL
- ) );
+            $oCriteria->add(
+                $oCriteria->getNewCriterion(
+                    TranslationPeer::TRN_UPDATE_DATE,
+                    "$dateFrom",
+                    Criteria::GREATER_EQUAL
+                )->addAnd(
+                    $oCriteria->getNewCriterion(
+                        TranslationPeer::TRN_UPDATE_DATE,
+                        "$dateTo",
+                        Criteria::LESS_EQUAL
+                    )
+               )
+            );
         }
         // end filter
         $c = clone $oCriteria;
@@ -122,10 +132,9 @@ class Translation extends BaseTranslation
     }
 
     /* Load strings from a Database .
-   * @author Fernando Ontiveros <fernando@colosa.com>
-   * @parameter $languageId   (es|en|...).
-  */
-
+     * @author Fernando Ontiveros <fernando@colosa.com>
+     * @parameter $languageId   (es|en|...).
+    */
     public function generateFileTranslation ($languageId = '')
     {
         $translation = Array ();
@@ -354,16 +363,18 @@ class Translation extends BaseTranslation
             if ($country !== false) {
                 if ($country != '.') {
                     $LOCALE = $language['LAN_ID'] . '-' . $country['IC_UID'];
-                } else if ($country == '.') {
+                } elseif ($country == '.') {
                     //this a trsnlation file with a language international, no country name was set
                     $LOCALE = $language['LAN_ID'];
-                } else
+                } else {
                     throw new Exception( 'PO File Error: "' . $file . '" has a invalid country definition!' );
-            } else
+                }
+            } else {
                 throw new Exception( 'PO File Error: "' . $file . '" has a invalid country definition!' );
-        } else
+            }
+        } else {
             throw new Exception( 'PO File Error: "' . $file . '" has a invalid language definition!' );
-
+        }
         $countItems = 0;
         try {
             while ($rowTranslation = $POFile->getTranslation()) {
@@ -451,5 +462,4 @@ class Translation extends BaseTranslation
         return false;
     }
 }
-// Translation
 

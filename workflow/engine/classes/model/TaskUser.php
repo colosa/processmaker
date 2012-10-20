@@ -194,5 +194,4 @@ class TaskUser extends BaseTaskUser
         return $result;
     }
 }
-// TaskUser
 

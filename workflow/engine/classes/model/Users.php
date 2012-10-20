@@ -44,7 +44,7 @@ require_once 'classes/model/IsoLocation.php';
 class Users extends BaseUsers
 {
 
-    function create ($aData)
+    public function create ($aData)
     {
         $con = Propel::getConnection( UsersPeer::DATABASE_NAME );
         try {
@@ -175,7 +175,7 @@ class Users extends BaseUsers
         }
     }
 
-    function remove ($UsrUid)
+    public function remove ($UsrUid)
     {
         $con = Propel::getConnection( UsersPeer::DATABASE_NAME );
         try {
@@ -190,7 +190,7 @@ class Users extends BaseUsers
         }
     }
 
-    function loadByUsername ($sUsername)
+    public function loadByUsername ($sUsername)
     {
         $c = new Criteria( 'workflow' );
         $del = DBAdapter::getStringDelimiter();
@@ -204,7 +204,7 @@ class Users extends BaseUsers
         return $c;
     }
 
-    function loadByUsernameInArray ($sUsername)
+    public function loadByUsernameInArray ($sUsername)
     {
         $c = $this->loadByUsername( $sUsername );
         $rs = UsersPeer::doSelectRS( $c );
@@ -296,7 +296,7 @@ class Users extends BaseUsers
         }
     }
 
-    function getAvailableUsersCriteria ($sGroupUID = '')
+    public function getAvailableUsersCriteria ($sGroupUID = '')
     {
         try {
 
@@ -317,7 +317,7 @@ class Users extends BaseUsers
      *
      * @return array of all active users
      */
-    function getAll ($start = null, $limit = null, $search = null)
+    public function getAll ($start = null, $limit = null, $search = null)
     {
         $totalCount = 0;
         $criteria = new Criteria( 'workflow' );
@@ -380,5 +380,4 @@ class Users extends BaseUsers
         return $aFields;
     }
 }
-// Users
 

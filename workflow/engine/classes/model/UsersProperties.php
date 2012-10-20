@@ -22,12 +22,12 @@ class UsersProperties extends BaseUsersProperties
     public $usrID = '';
     public $lang = 'en';
 
-    function __construct ()
+    public function __construct ()
     {
         $this->lang = defined( 'SYS_LANG' ) ? SYS_LANG : 'en';
     }
 
-    function UserPropertyExists ($sUserUID)
+    public function UserPropertyExists ($sUserUID)
     {
         $oUserProperty = UsersPropertiesPeer::retrieveByPk( $sUserUID );
         if (! is_null( $oUserProperty ) && is_object( $oUserProperty ) && get_class( $oUserProperty ) == 'UsersProperties') {
@@ -436,5 +436,4 @@ class UsersProperties extends BaseUsersProperties
         return $baseUrl . $url;
     }
 }
-// UsersProperties
 
