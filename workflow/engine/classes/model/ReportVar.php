@@ -21,10 +21,10 @@ require_once 'classes/model/om/BaseReportVar.php';
 class ReportVar extends BaseReportVar
 {
     /*
-  * Load the report var registry
-  * @param string $sRepVarUid
-  * @return variant
-  */
+    * Load the report var registry
+    * @param string $sRepVarUid
+    * @return variant
+    */
     public function load ($sRepVarUid)
     {
         try {
@@ -156,5 +156,4 @@ class ReportVar extends BaseReportVar
         }
     }
 }
-// ReportVar
 

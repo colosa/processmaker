@@ -18,74 +18,72 @@ require_once 'classes/model/om/BaseShadowTable.php';
  *
  * @package    workflow.engine.classes.model
  */
-class ShadowTable extends BaseShadowTable {
-  function load($sUID) {
-    try {
-      $oShadowTable = ShadowTablePeer::retrieveByPK($sUID);
-      if (!is_null($oShadowTable)) {
-        $this->fromArray($aFields, BasePeer::TYPE_FIELDNAME);
-        return $aFields;
-      }
-      else {
-        throw(new Exception('This row doesn\'t exist!'));
-      }
-    }
-    catch (Exception $oError) {
-      throw($oError);
-    }
-  }
-
-  function create($aData) {
-    if (!isset($aData['SHD_UID'])) {
-      $aData['SHD_UID'] = G::generateUniqueID();
-    }
-    else {
-      if ($aData['SHD_UID'] == '') {
-        $aData['SHD_UID'] = G::generateUniqueID();
-      }
-    }
-    $oConnection = Propel::getConnection(ShadowTablePeer::DATABASE_NAME);
-    try {
-      $oShadowTable = new ShadowTable();
-      $oShadowTable->fromArray($aData, BasePeer::TYPE_FIELDNAME);
-      if ($oShadowTable->validate()) {
-        $oConnection->begin();
-        $iResult = $oShadowTable->save();
-        $oConnection->commit();
-        return $aData['SHD_UID'];
-      }
-      else {
-        $sMessage = '';
-        $aValidationFailures = $oShadowTable->getValidationFailures();
-        foreach($aValidationFailures as $oValidationFailure) {
-          $sMessage .= $oValidationFailure->getMessage() . '<br />';
+class ShadowTable extends BaseShadowTable
+{
+    public function load($sUID)
+    {
+        try {
+            $oShadowTable = ShadowTablePeer::retrieveByPK($sUID);
+            if (!is_null($oShadowTable)) {
+                $this->fromArray($aFields, BasePeer::TYPE_FIELDNAME);
+                return $aFields;
+            } else {
+                throw(new Exception('This row doesn\'t exist!'));
+            }
+        } catch (Exception $oError) {
+            throw($oError);
         }
-        throw(new Exception('The registry cannot be created!<br />' . $sMessage));
-      }
     }
-    catch (Exception $oError) {
-      $oConnection->rollback();
-      throw($oError);
-    }
-  }
 
-  function remove($sUID) {
-    $oConnection = Propel::getConnection(ShadowTablePeer::DATABASE_NAME);
-    try {
-      $oShadowTable = ShadowTablePeer::retrieveByPK($sUID);
-      if (!is_null($oShadowTable)) {
-        $oConnection->begin();
-        $iResult = $oShadowTable->delete();
-        $oConnection->commit();
-        return $iResult;
-      }
-      else {
-        throw(new Exception('This row doesn\'t exist!'));
-      }
+    public function create($aData)
+    {
+        if (!isset($aData['SHD_UID'])) {
+            $aData['SHD_UID'] = G::generateUniqueID();
+        } else {
+            if ($aData['SHD_UID'] == '') {
+                $aData['SHD_UID'] = G::generateUniqueID();
+            }
+        }
+        $oConnection = Propel::getConnection(ShadowTablePeer::DATABASE_NAME);
+        try {
+            $oShadowTable = new ShadowTable();
+            $oShadowTable->fromArray($aData, BasePeer::TYPE_FIELDNAME);
+            if ($oShadowTable->validate()) {
+                $oConnection->begin();
+                $iResult = $oShadowTable->save();
+                $oConnection->commit();
+                return $aData['SHD_UID'];
+            } else {
+                $sMessage = '';
+                $aValidationFailures = $oShadowTable->getValidationFailures();
+                foreach ($aValidationFailures as $oValidationFailure) {
+                    $sMessage .= $oValidationFailure->getMessage() . '<br />';
+                }
+                throw(new Exception('The registry cannot be created!<br />' . $sMessage));
+            }
+        } catch (Exception $oError) {
+            $oConnection->rollback();
+            throw($oError);
+        }
     }
-    catch (Exception $oError) {
-      $oConnection->rollback();
-      throw($oError);
+
+    public function remove($sUID)
+    {
+        $oConnection = Propel::getConnection(ShadowTablePeer::DATABASE_NAME);
+        try {
+            $oShadowTable = ShadowTablePeer::retrieveByPK($sUID);
+            if (!is_null($oShadowTable)) {
+                $oConnection->begin();
+                $iResult = $oShadowTable->delete();
+                $oConnection->commit();
+                return $iResult;
+            } else {
+                throw(new Exception('This row doesn\'t exist!'));
+            }
+        } catch (Exception $oError) {
+            $oConnection->rollback();
+            throw($oError);
+        }
     }
-  }
-} // ShadowTable
+}
+

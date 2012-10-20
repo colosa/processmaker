@@ -504,9 +504,9 @@ class OutputDocument extends BaseOutputDocument
         $sPath,
         $sFilename,
         $sContent,
-        $sLandscape=false,
-        $sTypeDocToGener='BOTH',
-        $aProperties=array()
+        $sLandscape = false,
+        $sTypeDocToGener = 'BOTH',
+        $aProperties = array()
     ) {
         if (($sUID != '') && is_array($aFields) && ($sPath != '')) {
             $nrt     = array("\n",    "\r",    "\t");
@@ -945,5 +945,4 @@ class OutputDocument extends BaseOutputDocument
         }
     }
 }
-// OutputDocument
 

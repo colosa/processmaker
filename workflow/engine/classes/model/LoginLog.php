@@ -20,8 +20,7 @@ require_once 'classes/model/om/BaseLoginLog.php';
  */
 class LoginLog extends BaseLoginLog
 {
-
-    function create ($aData)
+    public function create ($aData)
     {
         $con = Propel::getConnection( LoginLogPeer::DATABASE_NAME );
         try {
@@ -79,7 +78,7 @@ class LoginLog extends BaseLoginLog
         }
     }
 
-    function remove ($LogUid)
+    public function remove ($LogUid)
     {
         $con = Propel::getConnection( LoginLogPeer::DATABASE_NAME );
         try {
@@ -95,7 +94,7 @@ class LoginLog extends BaseLoginLog
     }
 
     //Added by Qennix
-    function getLastLoginByUser ($sUID)
+    public function getLastLoginByUser ($sUID)
     {
         $c = new Criteria();
         $c->addSelectColumn( LoginLogPeer::LOG_INIT_DATE );
@@ -110,7 +109,7 @@ class LoginLog extends BaseLoginLog
     }
 
     //Added by Qennix
-    function getLastLoginAllUsers ()
+    public function getLastLoginAllUsers ()
     {
         $c = new Criteria();
         $c->addSelectColumn( LoginLogPeer::USR_UID );
@@ -126,5 +125,4 @@ class LoginLog extends BaseLoginLog
         return $aRows;
     }
 }
-// LoginLog
 

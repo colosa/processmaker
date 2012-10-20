@@ -10,7 +10,7 @@ require_once 'classes/model/om/BaseSession.php';
 /**
  * Skeleton subclass for representing a row from the 'SESSION' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -18,6 +18,7 @@ require_once 'classes/model/om/BaseSession.php';
  *
  * @package    workflow.engine.classes.model
  */
-class Session extends BaseSession {
+class Session extends BaseSession
+{
+}
 
-} // Session

@@ -297,7 +297,7 @@ class InputDocument extends BaseInputDocument
      * @param string $sUid the uid of the Prolication
      */
 
-    function InputExists ($sUid)
+    public function InputExists ($sUid)
     {
         $con = Propel::getConnection( InputDocumentPeer::DATABASE_NAME );
         try {

@@ -150,7 +150,7 @@ class Process extends BaseProcess
      * @return void
      */
 
-    function create ($aData)
+    public function create ($aData)
     {
         if (! isset( $aData['USR_UID'] )) {
             throw (new PropelException( 'The process cannot be created. The USR_UID is empty.' ));
@@ -212,7 +212,6 @@ class Process extends BaseProcess
                 }
                 throw (new PropelException( 'The row cannot be created!', new PropelException( $msg ) ));
             }
-
         } catch (Exception $e) {
             $con->rollback();
             throw ($e);
@@ -224,8 +223,7 @@ class Process extends BaseProcess
      *
      * @param string $sProUid the uid of the Prolication
      */
-
-    function processExists ($ProUid)
+    public function processExists ($ProUid)
     {
         $con = Propel::getConnection( ProcessPeer::DATABASE_NAME );
         try {
@@ -246,10 +244,8 @@ class Process extends BaseProcess
      * @param string $ProUid the uid of the Prolication
      * @return array $Fields the fields
      */
-
-    function load ($ProUid, $getAllLang = false)
+    public function load ($ProUid, $getAllLang = false)
     {
-
         $con = Propel::getConnection( ProcessPeer::DATABASE_NAME );
         try {
             $oPro = ProcessPeer::retrieveByPk( $ProUid );
@@ -261,7 +257,6 @@ class Process extends BaseProcess
                 //        $aFields['PRO_DESCRIPTION'] = $oPro->getProDescription();
                 //        $this->pro_title = $aFields['PRO_TITLE'];
                 //        $this->pro_description = $aFields['PRO_DESCRIPTION'];
-
 
                 $lang = defined( 'SYS_LANG' ) ? SYS_LANG : 'en';
 
@@ -335,9 +330,8 @@ class Process extends BaseProcess
         }
     }
 
-    function getAll ()
+    public function getAll ()
     {
-
         $oCriteria = new Criteria( 'workflow' );
 
         $oCriteria->addSelectColumn( ProcessPeer::PRO_UID );
@@ -403,7 +397,6 @@ class Process extends BaseProcess
      * @return variant
      *
      */
-
     public function update ($aData)
     {
         if (isset( $aData['PRO_DYNAFORMS'] ) && is_array( $aData['PRO_DYNAFORMS'] )) {
@@ -453,7 +446,6 @@ class Process extends BaseProcess
      * @return variant
      *
      */
-
     public function createRow ($aData)
     {
         $con = Propel::getConnection( ProcessPeer::DATABASE_NAME );
@@ -577,8 +569,7 @@ class Process extends BaseProcess
         return $aRow['PROCESS'] ? true : false;
     }
 
-    //new functions
-    function getAllProcessesCount ()
+    public function getAllProcessesCount ()
     {
         $c = $this->tmpCriteria;
         $c->clearSelectColumns();
@@ -594,7 +585,7 @@ class Process extends BaseProcess
         }
     }
 
-    function getAllProcesses ($start, $limit, $category = null, $processName = null, $counters = true, $reviewSubProcess = false)
+    public function getAllProcesses ($start, $limit, $category = null, $processName = null, $counters = true, $reviewSubProcess = false)
     {
         require_once PATH_RBAC . "model/RbacUsers.php";
         require_once "classes/model/ProcessCategory.php";
@@ -753,7 +744,7 @@ class Process extends BaseProcess
         return $aProcesses;
     }
 
-    function getCasesCountInAllProcesses ()
+    public function getCasesCountInAllProcesses ()
     {
         /*SELECT PRO_UID, APP_STATUS, COUNT( * )
           FROM APPLICATION
@@ -783,7 +774,7 @@ class Process extends BaseProcess
         return $aProcesses;
     }
 
-    function getAllProcessesByCategory ()
+    public function getAllProcessesByCategory ()
     {
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( ProcessPeer::PRO_CATEGORY );
@@ -799,7 +790,7 @@ class Process extends BaseProcess
         return $aProc;
     }
 
-    function getTriggerWebBotProcess ($proUid, $action)
+    public function getTriggerWebBotProcess ($proUid, $action)
     {
         require_once ("classes/model/Triggers.php");
 
@@ -856,12 +847,9 @@ class Process extends BaseProcess
         }
     }
 }
-//Process
-
 
 function ordProcessByProTitle ($a, $b)
 {
-
     if ($a['PRO_TITLE'] > $b['PRO_TITLE']) {
         return 1;
     } elseif ($a['PRO_TITLE'] < $b['PRO_TITLE']) {

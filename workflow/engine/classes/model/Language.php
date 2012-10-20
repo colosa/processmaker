@@ -45,7 +45,7 @@ require_once 'classes/model/Translation.php';
 class Language extends BaseLanguage
 {
 
-    function load ($sLanUid)
+    public function load ($sLanUid)
     {
         try {
             $oRow = LanguagePeer::retrieveByPK( $sLanUid );
@@ -62,7 +62,7 @@ class Language extends BaseLanguage
         }
     }
 
-    function update ($aFields)
+    public function update ($aFields)
     {
         $oConnection = Propel::getConnection( LanguagePeer::DATABASE_NAME );
         try {
@@ -82,8 +82,9 @@ class Language extends BaseLanguage
             throw ($e);
         }
     }
+
     //SELECT LAN_ID, LAN_NAME FROM LANGUAGE WHERE LAN_ENABLED = '1' ORDER BY LAN_WEIGHT DESC
-    function getActiveLanguages ()
+    public function getActiveLanguages ()
     {
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( LanguagePeer::LAN_ID );
@@ -103,7 +104,7 @@ class Language extends BaseLanguage
         return $rows;
     }
 
-    function findById ($LAN_ID)
+    public function findById ($LAN_ID)
     {
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( LanguagePeer::LAN_NAME );
@@ -114,7 +115,7 @@ class Language extends BaseLanguage
         return $oDataset->getRow();
     }
 
-    function findByLanName ($LAN_NAME)
+    public function findByLanName ($LAN_NAME)
     {
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( LanguagePeer::LAN_ID );
@@ -179,9 +180,7 @@ class Language extends BaseLanguage
             $errorMsg = '';
 
             while ($rowTranslation = $POFile->getTranslation()) {
-
                 $countItems ++;
-
                 if (! isset( $POFile->translatorComments[0] ) || ! isset( $POFile->translatorComments[1] ) || ! isset( $POFile->references[0] )) {
                     throw new Exception( 'The .po file doesn\'t have valid directives for Processmaker!' );
                 }
@@ -223,7 +222,6 @@ class Language extends BaseLanguage
                     }
                 }                 // is a Xml update
                 elseif ($updateXml) {
-
                     $xmlForm = $context;
                     //erik: expresion to prevent and hable correctly dropdown values like -1, -2 etc.
                     preg_match( '/^([\w_]+)\s-\s([\w_]+)\s*-*\s*([\w\W]*)$/', $reference, $match );
@@ -287,16 +285,10 @@ class Language extends BaseLanguage
     }
 
     //export
-    function export ()
+    public function export ()
     {
-        //G::LoadThirdParty('pear', 'Benchmark/Timer');
         G::LoadSystem( 'i18n_po' );
         G::LoadClass( "system" );
-
-        //echo G::getMemoryUsage();
-        //$timer = new Benchmark_Timer();
-        //$timer->start();
-
 
         //creating the .po file
         $sPOFile = PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . MAIN_POFILE . '.' . $_GET['LOCALE'] . '.po';
@@ -346,10 +338,6 @@ class Language extends BaseLanguage
         $poFile->addHeader( 'X-Poedit-Country', ucwords( $sCountry ) );
         $poFile->addHeader( 'X-Poedit-SourceCharset', 'utf-8' );
         $poFile->addHeader( 'Content-Transfer-Encoding', '8bit' );
-
-        //$timer->setMarker('end making po headers');
-        //export translation
-
 
         $aLabels = array ();
         $aMsgids = array ('' => true
@@ -429,9 +417,6 @@ class Language extends BaseLanguage
 
 
         //now find labels in xmlforms
-        /**
-         * *********
-         */
         $aExceptionFields = array ('','javascript','hidden','phpvariable','private','toolbar','xmlmenu','toolbutton','cellmark','grid','CheckboxTable'
         );
 
@@ -545,25 +530,11 @@ class Language extends BaseLanguage
                     }
                 }
             } //end foreach
-
-
         }
-
-        //
-        //$timer->setMarker('end xml files processed');
-        //$profiling = $timer->getProfiling();
-        //$timer->stop(); $timer->display();
-        //echo G::getMemoryUsage();
-        //die;
-        //g::pr($profiling);
-
-
         G::streamFile( $sPOFile, true );
-
     }
 }
 // Language
-
 
 function getMatchDropdownOptionValue ($name, $options)
 {

@@ -41,7 +41,7 @@ require_once 'classes/model/om/BaseStepTrigger.php';
 class StepTrigger extends BaseStepTrigger
 {
 
-    function create ($aData)
+    public function create ($aData)
     {
         $con = Propel::getConnection( StepTriggerPeer::DATABASE_NAME );
         try {
@@ -96,7 +96,7 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    function update ($fields)
+    public function update ($fields)
     {
         $con = Propel::getConnection( StepTriggerPeer::DATABASE_NAME );
         try {
@@ -117,7 +117,7 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    function remove ($StepUid, $TasUid, $TriUid, $StType)
+    public function remove ($StepUid, $TasUid, $TriUid, $StType)
     {
         $oConnection = Propel::getConnection( StepTriggerPeer::DATABASE_NAME );
         try {
@@ -136,7 +136,7 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    function stepTriggerExists ($StepUid, $TasUid, $TriUid, $StType)
+    public function stepTriggerExists ($StepUid, $TasUid, $TriUid, $StType)
     {
         $con = Propel::getConnection( StepTriggerPeer::DATABASE_NAME );
         try {
@@ -151,7 +151,7 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    function removeTrigger ($TriUid)
+    public function removeTrigger ($TriUid)
     {
         $con = Propel::getConnection( StepTriggerPeer::DATABASE_NAME );
         try {
@@ -173,7 +173,7 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    function getNextPosition ($sStepUID, $sType)
+    public function getNextPosition ($sStepUID, $sType)
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
@@ -190,7 +190,7 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    function reOrder ($sStepUID, $sTaskUID, $sType, $iPosition)
+    public function reOrder ($sStepUID, $sTaskUID, $sType, $iPosition)
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
@@ -212,7 +212,7 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    function up ($sStepUID = '', $sTaskUID = '', $sTriggerUID = '', $sType = '', $iPosition = 0)
+    public function up ($sStepUID = '', $sTaskUID = '', $sTriggerUID = '', $sType = '', $iPosition = 0)
     {
         try {
             if ($iPosition > 1) {
@@ -238,7 +238,7 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    function down ($sStepUID = '', $sTaskUID = '', $sTriggerUID = '', $sType = '', $iPosition = 0)
+    public function down ($sStepUID = '', $sTaskUID = '', $sTriggerUID = '', $sType = '', $iPosition = 0)
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
@@ -273,7 +273,7 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    function createRow ($aData)
+    public function createRow ($aData)
     {
         $con = Propel::getConnection( StepTriggerPeer::DATABASE_NAME );
         try {
@@ -302,5 +302,4 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 }
-// StepTrigger
 

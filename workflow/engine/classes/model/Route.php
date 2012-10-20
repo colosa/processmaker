@@ -43,10 +43,10 @@ class Route extends BaseRoute
 {
 
     /*
-  * Load the application document registry
-  * @param string $sRouUid
-  * @return variant
-  */
+     * Load the application document registry
+     * @param string $sRouUid
+     * @return variant
+     */
     public function load ($sRouUid)
     {
         try {
@@ -106,6 +106,7 @@ class Route extends BaseRoute
             throw ($oError);
         }
     }
+
     /**
      * Update the application document registry
      *
@@ -213,5 +214,4 @@ class Route extends BaseRoute
         return $value;
     }
 }
-// Route
 

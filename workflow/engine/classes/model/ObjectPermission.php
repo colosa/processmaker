@@ -20,7 +20,6 @@ require_once 'classes/model/om/BaseObjectPermission.php';
  */
 class ObjectPermission extends BaseObjectPermission
 {
-
     public function load ($UID)
     {
         try {
@@ -38,7 +37,7 @@ class ObjectPermission extends BaseObjectPermission
         }
     }
 
-    function create ($aData)
+    public function create ($aData)
     {
         try {
             $this->fromArray( $aData, BasePeer::TYPE_FIELDNAME );
@@ -49,7 +48,7 @@ class ObjectPermission extends BaseObjectPermission
         }
     }
 
-    function Exists ($Uid)
+    public function Exists ($Uid)
     {
         try {
             $oPro = ObjectPermissionPeer::retrieveByPk( $Uid );
@@ -63,7 +62,7 @@ class ObjectPermission extends BaseObjectPermission
         }
     }
 
-    function remove ($Uid)
+    public function remove ($Uid)
     {
         $con = Propel::getConnection( ObjectPermissionPeer::DATABASE_NAME );
         try {
@@ -82,7 +81,7 @@ class ObjectPermission extends BaseObjectPermission
         }
     }
 
-    function update ($aFields)
+    public function update ($aFields)
     {
         $oConnection = Propel::getConnection( ObjectPermissionPeer::DATABASE_NAME );
         try {
@@ -103,7 +102,7 @@ class ObjectPermission extends BaseObjectPermission
         }
     }
 
-    function removeByObject ($sType, $sObjUid)
+    public function removeByObject ($sType, $sObjUid)
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
@@ -115,7 +114,7 @@ class ObjectPermission extends BaseObjectPermission
         }
     }
 
-    function loadInfo ($sObjUID)
+    public function loadInfo ($sObjUID)
     {
 
         $oCriteria = new Criteria( 'workflow' );
@@ -127,5 +126,4 @@ class ObjectPermission extends BaseObjectPermission
         return ($aRow);
     }
 }
-// ObjectPermission
 

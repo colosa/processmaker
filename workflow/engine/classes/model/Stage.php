@@ -189,5 +189,4 @@ class Stage extends BaseStage
         }
     }
 }
-// Stage
 

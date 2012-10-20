@@ -10,7 +10,7 @@ require_once 'classes/model/om/BaseLogCasesScheduler.php';
 /**
  * Skeleton subclass for representing a row from the 'LOG_CASES_SCHEDULER' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -18,8 +18,10 @@ require_once 'classes/model/om/BaseLogCasesScheduler.php';
  *
  * @package    workflow.engine.classes.model
  */
-class LogCasesScheduler extends BaseLogCasesScheduler {
-    function getAllCriteria() {
+class LogCasesScheduler extends BaseLogCasesScheduler
+{
+    public function getAllCriteria()
+    {
         $c = new Criteria('workflow');
         $c->clearSelectColumns();
         $c->addSelectColumn(LogCasesSchedulerPeer::LOG_CASE_UID);
@@ -34,14 +36,15 @@ class LogCasesScheduler extends BaseLogCasesScheduler {
         $c->addSelectColumn(LogCasesSchedulerPeer::WS_ROUTE_CASE_STATUS);
         return $c;
     }
-    
-    function getAll(){
+
+    public function getAll()
+    {
         $oCriteria = $this->getAllCriteria();
         $oDataset = LogCasesSchedulerPeer::doSelectRS($oCriteria);
         $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $oDataset->next();
         $aRows = Array();
-        while( $aRow = $oDataset->getRow() ) {
+        while ($aRow = $oDataset->getRow() ) {
             $aRows[] = $aRow;
             $oDataset->next();
         }
@@ -53,16 +56,19 @@ class LogCasesScheduler extends BaseLogCasesScheduler {
           $aRows[$k] = array_merge($aRow, $aProcessRow, $aTaskRow);
         }*/
 
-    return $aRows;
+        return $aRows;
     }
-    
-    function saveLogParameters($params){
 
-        if ( isset ( $params['LOG_CASE_UID'] ) && $params['LOG_CASE_UID']== '' )
+    public function saveLogParameters($params)
+    {
+        if ( isset ( $params['LOG_CASE_UID'] ) && $params['LOG_CASE_UID']== '' ) {
             unset ( $params['LOG_CASE_UID'] );
-        if ( !isset ( $params['LOG_CASE_UID'] ) )
-        $params['LOG_CASE_UID'] = G::generateUniqueID();
-      $this->setLogCaseUid($params['LOG_CASE_UID']);
+        }
+        if ( !isset ( $params['LOG_CASE_UID'] ) ) {
+            $params['LOG_CASE_UID'] = G::generateUniqueID();
+        }
+
+        $this->setLogCaseUid($params['LOG_CASE_UID']);
         $this->setProUid($params['PRO_UID']);
         $this->setTasUid($params['TAS_UID']);
         $this->setSchUid($params['SCH_UID']);
@@ -72,8 +78,6 @@ class LogCasesScheduler extends BaseLogCasesScheduler {
         $this->setResult($params['RESULT']);
         $this->setWsCreateCaseStatus($params['WS_CREATE_CASE_STATUS']);
         $this->setWsRouteCaseStatus($params['WS_ROUTE_CASE_STATUS']);
-         
     }
+}
 
-
-} // LogCasesScheduler

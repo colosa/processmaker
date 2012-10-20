@@ -50,10 +50,10 @@ class SwimlanesElements extends BaseSwimlanesElements
     protected $swi_text = '';
 
     /*
-  * Load the application document registry
-  * @param string $sAppDocUid
-  * @return variant
-  */
+    * Load the application document registry
+    * @param string $sAppDocUid
+    * @return variant
+    */
     public function load ($sSwiEleUid)
     {
         try {

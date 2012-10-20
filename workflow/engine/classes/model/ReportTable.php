@@ -223,5 +223,4 @@ class ReportTable extends BaseReportTable
         }
     }
 }
-// ReportTable
 

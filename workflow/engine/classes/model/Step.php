@@ -97,7 +97,6 @@ class Step extends BaseStep
                 $con->rollback();
                 throw (new Exception( "Failed Validation in class " . get_class( $this ) . "." ));
             }
-
         } catch (Exception $e) {
             $con->rollback();
             throw ($e);
@@ -141,12 +140,12 @@ class Step extends BaseStep
     }
 
     /*
-  * Load the step information using the Task UID, the type and the object UID
-  * @param string $sTaskUID
-  * @param string $sType
-  * @param string $sUID
-  * @return variant
-  */
+    * Load the step information using the Task UID, the type and the object UID
+    * @param string $sTaskUID
+    * @param string $sType
+    * @param string $sUID
+    * @return variant
+    */
     public function loadByType ($sTasUid, $sType, $sUid)
     {
         try {
@@ -166,10 +165,10 @@ class Step extends BaseStep
     }
 
     /*
-  * update the step information using an array with all values
-  * @param array $fields
-  * @return variant
-  */
+    * update the step information using an array with all values
+    * @param array $fields
+    * @return variant
+    */
     public function update ($fields)
     {
         $con = Propel::getConnection( StepPeer::DATABASE_NAME );
@@ -203,21 +202,6 @@ class Step extends BaseStep
             $aRow = $oDataset->getRow();
             $oStepTriggers->remove( $aRow['STEP_UID'], $aRow['TAS_UID'], $aRow['TRI_UID'], $aRow['ST_TYPE'] );
         }
-        /*$con = Propel::getConnection(StepPeer::DATABASE_NAME);
-    try
-    {
-      $con->begin();
-      //$this->fromArray($fields,BasePeer::TYPE_FIELDNAME);
-      $this->setStepUid($sStepUID);
-      $result=$this->delete();
-      $con->commit();
-      return $result;
-    }
-    catch(Exception $e)
-    {
-      $con->rollback();
-      throw($e);
-    }*/
         $oConnection = Propel::getConnection( StepPeer::DATABASE_NAME );
         try {
             $oStep = StepPeer::retrieveByPK( $sStepUID );
@@ -254,12 +238,6 @@ class Step extends BaseStep
     public function reOrder ($sStepUID, $iPosition)
     {
         try {
-            /*$oCriteria1 = new Criteria('workflow');
-      $oCriteria1->add(StepPeer::STEP_POSITION, StepPeer::STEP_POSITION);
-      $oCriteria2 = new Criteria('workflow');
-      $oCriteria2->add(StepPeer::TAS_UID,      $sTaskUID);
-      $oCriteria2->add(StepPeer::STEP_POSITION, $iPosition, '>');
-      BasePeer::doUpdate($oCriteria2, $oCriteria1, Propel::getConnection('workflow'));*/
             $oStep = StepPeer::retrieveByPK( $sStepUID );
             $sTaskUID = $oStep->getTasUid();
             $oCriteria = new Criteria( 'workflow' );
@@ -352,7 +330,6 @@ class Step extends BaseStep
      *
      * @param string $sUid the uid of the
      */
-
     public function StepExists ($sUid)
     {
         $con = Propel::getConnection( StepPeer::DATABASE_NAME );
@@ -376,7 +353,6 @@ class Step extends BaseStep
      */
     public function loadInfoAssigDynaform ($sproUid, $sObjUID)
     {
-
         require_once ("classes/model/DynaformPeer.php");
         G::LoadSystem( 'dynaformhandler' );
 
@@ -481,10 +457,10 @@ class Step extends BaseStep
                 $check = 0;
                 foreach ($dynFields as $field) {
                     $ssqlConnection = $this->getAttribute( $field, 'sqlconnection' );
-                    if ($ssqlConnection == $sdbsUid)
+                    if ($ssqlConnection == $sdbsUid) {
                         $swDynaform = false;
+                    }
                 } //end foreach
-
 
             } //end if
             $oDataset->next();
@@ -503,11 +479,9 @@ class Step extends BaseStep
     /**
      * Get related steps for a determinated case
      *
-     * @author Erik A. O. <erik@colosa.com>
      */
     public function getAllCaseSteps ($PRO_UID, $TAS_UID, $APP_UID)
     {
-
         $c = new Criteria();
         $c->addSelectColumn( '*' );
         $c->add( StepPeer::PRO_UID, $PRO_UID );
@@ -522,7 +496,6 @@ class Step extends BaseStep
      *
      * @param string $sproUid the uid of the process
      * @param string $sdbsUid the uid of the db connection
-     * @author krlos <carlos@colosa.com>
      */
     public function lookingforUidGrids ($sproUid, $sObjUID)
     {
@@ -567,7 +540,5 @@ class Step extends BaseStep
 
         }
     }
-
 }
-// Step
 
