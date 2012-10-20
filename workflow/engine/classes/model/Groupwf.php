@@ -96,8 +96,7 @@ class Groupwf extends BaseGroupwf
      * @param array $aData $oData is not necessary
      * @return void
      */
-
-    function create ($aData)
+    public function create ($aData)
     {
         //$oData is not necessary
         $con = Propel::getConnection( GroupwfPeer::DATABASE_NAME );
@@ -153,8 +152,7 @@ class Groupwf extends BaseGroupwf
      * @param string $ProUid the uid of the Prolication
      * @return array $Fields the fields
      */
-
-    function Load ($ProUid)
+    public function Load ($ProUid)
     {
         $con = Propel::getConnection( GroupwfPeer::DATABASE_NAME );
         try {
@@ -180,7 +178,6 @@ class Groupwf extends BaseGroupwf
      * @return variant
      *
      */
-
     public function update ($aData)
     {
         $con = Propel::getConnection( GroupwfPeer::DATABASE_NAME );
@@ -245,7 +242,7 @@ class Groupwf extends BaseGroupwf
      * @param string $sProUid the uid of the Prolication
      */
 
-    function GroupwfExists ($GrpUid)
+    public function GroupwfExists ($GrpUid)
     {
         $con = Propel::getConnection( GroupwfPeer::DATABASE_NAME );
         try {
@@ -260,7 +257,7 @@ class Groupwf extends BaseGroupwf
         }
     }
 
-    function loadByGroupname ($Groupname)
+    public function loadByGroupname ($Groupname)
     {
         $c = new Criteria( 'workflow' );
         $del = DBAdapter::getStringDelimiter();
@@ -275,7 +272,7 @@ class Groupwf extends BaseGroupwf
         return $c;
     }
 
-    function getAll ($start = null, $limit = null, $search = null)
+    public function getAll ($start = null, $limit = null, $search = null)
     {
         $totalCount = 0;
         $criteria = new Criteria( 'workflow' );
@@ -325,7 +322,7 @@ class Groupwf extends BaseGroupwf
         return $result;
     }
 
-    function getAllGroup ($start = null, $limit = null, $search = null)
+    public function getAllGroup ($start = null, $limit = null, $search = null)
     {
         require_once PATH_RBAC . "model/RbacUsers.php";
         require_once 'classes/model/TaskUser.php';
@@ -382,7 +379,7 @@ class Groupwf extends BaseGroupwf
         );
     }
 
-    function filterGroup ($filter, $start, $limit)
+    public function filterGroup ($filter, $start, $limit)
     {
         require_once 'classes/model/Groupwf.php';
         require_once 'classes/model/TaskUser.php';
@@ -428,5 +425,4 @@ class Groupwf extends BaseGroupwf
 
     }
 }
-// Groupwf
 

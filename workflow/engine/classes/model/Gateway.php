@@ -162,5 +162,4 @@ class Gateway extends BaseGateway
         }
     }
 }
-// Gateway
 

@@ -10,7 +10,7 @@
 /**
  * Skeleton subclass for performing query and update operations on the 'DASHLET_INSTANCE' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -18,6 +18,7 @@
  *
  * @package    classes.model
  */
-class DashletInstancePeer extends BaseDashletInstancePeer {
+class DashletInstancePeer extends BaseDashletInstancePeer
+{
+}
 
-} // DashletInstancePeer

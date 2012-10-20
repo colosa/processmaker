@@ -51,7 +51,7 @@ class Department extends BaseDepartment
      * @return void
      */
 
-    function create ($aData)
+    public function create ($aData)
     {
         $con = Propel::getConnection( DepartmentPeer::DATABASE_NAME );
         try {
@@ -171,8 +171,7 @@ class Department extends BaseDepartment
      * @param string $ProUid the uid of the Prolication
      * @return array $Fields the fields
      */
-
-    function Load ($DepUid)
+    public function Load ($DepUid)
     {
         $con = Propel::getConnection( DepartmentPeer::DATABASE_NAME );
         try {
@@ -296,7 +295,7 @@ class Department extends BaseDepartment
      * @return array $Fields the fields
      */
 
-    function existsDepartment ($DepUid)
+    public function existsDepartment ($DepUid)
     {
         $con = Propel::getConnection( DepartmentPeer::DATABASE_NAME );
         $oPro = DepartmentPeer::retrieveByPk( $DepUid );
@@ -307,7 +306,7 @@ class Department extends BaseDepartment
         }
     }
 
-    function existsUserInDepartment ($depId, $userId)
+    public function existsUserInDepartment ($depId, $userId)
     {
         $con = Propel::getConnection( DepartmentPeer::DATABASE_NAME );
         $oUser = UsersPeer::retrieveByPk( $userId );
@@ -320,7 +319,7 @@ class Department extends BaseDepartment
         return false;
     }
 
-    function updateDepartmentManager ($depId)
+    public function updateDepartmentManager ($depId)
     {
         $managerId = '';
         $depParent = '';
@@ -374,7 +373,7 @@ class Department extends BaseDepartment
     }
 
     //add an user to a department and sync all about manager info
-    function addUserToDepartment ($depId, $userId, $manager, $updateManager = false)
+    public function addUserToDepartment ($depId, $userId, $manager, $updateManager = false)
     {
         try {
             //update the field in user table
@@ -405,7 +404,7 @@ class Department extends BaseDepartment
 
     // select departments
     // this function is used to draw the hierachy tree view
-    function getDepartments ($DepParent)
+    public function getDepartments ($DepParent)
     {
         try {
             $result = array ();
@@ -465,7 +464,7 @@ class Department extends BaseDepartment
      * @return boolean $Fields true or false
      *
      */
-    function checkDepartmentName ($departmentName, $parentUID, $departmentUID = '')
+    public function checkDepartmentName ($departmentName, $parentUID, $departmentUID = '')
     {
         $oCriteria = new Criteria( 'workflow' );
 
@@ -488,7 +487,7 @@ class Department extends BaseDepartment
         return ($aRow) ? true : false;
     }
 
-    function getUsersFromDepartment ($sDepUid, $sManagerUid)
+    public function getUsersFromDepartment ($sDepUid, $sManagerUid)
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
@@ -544,7 +543,7 @@ class Department extends BaseDepartment
      * @param string $DepUid, $UsrUid
      * @return array
      */
-    function removeUserFromDepartment ($DepUid, $UsrUid)
+    public function removeUserFromDepartment ($DepUid, $UsrUid)
     {
         $aFields = array ('USR_UID' => $UsrUid,'DEP_UID' => '','USR_REPORTS_TO' => ''
         );
@@ -566,7 +565,7 @@ class Department extends BaseDepartment
      * @param string $sGroupUID
      * @return object
      */
-    function getAvailableUsersCriteria ($sGroupUID = '')
+    public function getAvailableUsersCriteria ($sGroupUID = '')
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
@@ -586,7 +585,7 @@ class Department extends BaseDepartment
     * @param string $sDepUID
     * @return object
     */
-    function cantUsersInDepartment ($sDepUID)
+    public function cantUsersInDepartment ($sDepUID)
     {
         try {
             $c = new Criteria( 'workflow' );
@@ -604,7 +603,7 @@ class Department extends BaseDepartment
         }
     }
 
-    function loadByGroupname ($Groupname)
+    public function loadByGroupname ($Groupname)
     {
         $c = new Criteria( 'workflow' );
         $del = DBAdapter::getStringDelimiter();
@@ -620,7 +619,7 @@ class Department extends BaseDepartment
     }
 
     //Added by Qennix
-    function getAllDepartmentsByUser ()
+    public function getAllDepartmentsByUser ()
     {
         $c = new Criteria( 'workflow' );
         $c->addSelectColumn( UsersPeer::USR_UID );
@@ -638,7 +637,7 @@ class Department extends BaseDepartment
         return $aRows;
     }
 
-    function getDepartmentsForUser ($userUid)
+    public function getDepartmentsForUser ($userUid)
     {
         $criteria = new Criteria( 'workflow' );
         $criteria->addSelectColumn( UsersPeer::DEP_UID );
@@ -669,5 +668,4 @@ class Department extends BaseDepartment
         return $departments;
     }
 }
-// Department
 

@@ -101,7 +101,7 @@ class GroupUser extends BaseGroupUser
         }
     }
 
-    function getCountAllUsersByGroup ()
+    public function getCountAllUsersByGroup ()
     {
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( GroupUserPeer::GRP_UID );
@@ -119,7 +119,7 @@ class GroupUser extends BaseGroupUser
         return $aRows;
     }
 
-    function getAllUserGroups ($usrUid)
+    public function getAllUserGroups ($usrUid)
     {
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->add( GroupUserPeer::USR_UID, $usrUid );
@@ -143,5 +143,4 @@ class GroupUser extends BaseGroupUser
         return $rows;
     }
 }
-// GroupUser
 

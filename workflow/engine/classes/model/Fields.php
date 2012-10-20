@@ -18,106 +18,102 @@ require_once 'classes/model/om/BaseFields.php';
  *
  * @package    workflow.engine.classes.model
  */
-class Fields extends BaseFields {
-  public function load($sUID) {
-    try {
-      $oFields = FieldsPeer::retrieveByPK($sUID);
-      if (!is_null($oFields)) {
-        $aFields = $oFields->toArray(BasePeer::TYPE_FIELDNAME);
-        $this->fromArray($aFields, BasePeer::TYPE_FIELDNAME);
-        return $aFields;
-      }
-      else {
-        throw(new Exception('This row doesn\'t exist!'));
-      }
-    }
-    catch (Exception $oError) {
-      throw($oError);
-    }
-  }
-
-  function create($aData) {
-    if (!isset($aData['FLD_UID'])) {
-      $aData['FLD_UID'] = G::generateUniqueID();
-    }
-    else {
-      if ($aData['FLD_UID'] == '') {
-        $aData['FLD_UID'] = G::generateUniqueID();
-      }
-    }
-    $oConnection = Propel::getConnection(FieldsPeer::DATABASE_NAME);
-    try {
-      $oFields = new Fields();
-      $oFields->fromArray($aData, BasePeer::TYPE_FIELDNAME);
-      if ($oFields->validate()) {
-        $oConnection->begin();
-        $iResult = $oFields->save();
-        $oConnection->commit();
-        return $aData['FLD_UID'];
-      }
-      else {
-        $sMessage = '';
-        $aValidationFailures = $oFields->getValidationFailures();
-        foreach($aValidationFailures as $oValidationFailure) {
-          $sMessage .= $oValidationFailure->getMessage() . '<br />';
+class Fields extends BaseFields
+{
+    public function load($sUID)
+    {
+        try {
+            $oFields = FieldsPeer::retrieveByPK($sUID);
+            if (!is_null($oFields)) {
+                $aFields = $oFields->toArray(BasePeer::TYPE_FIELDNAME);
+                $this->fromArray($aFields, BasePeer::TYPE_FIELDNAME);
+                return $aFields;
+            } else {
+                throw(new Exception('This row doesn\'t exist!'));
+            }
+        } catch (Exception $oError) {
+            throw($oError);
         }
-        throw(new Exception('The registry cannot be created!<br />' . $sMessage));
-      }
     }
-    catch (Exception $oError) {
-      $oConnection->rollback();
-      throw($oError);
-    }
-  }
 
-  function update($aData) {
-    $oConnection = Propel::getConnection(FieldsPeer::DATABASE_NAME);
-    try {
-      $oFields = FieldsPeer::retrieveByPK($aData['FLD_UID']);
-      if (!is_null($oFields)) {
-        $oFields->fromArray($aData, BasePeer::TYPE_FIELDNAME);
-        if ($oFields->validate()) {
-          $oConnection->begin();
-          $iResult = $oFields->save();
-          $oConnection->commit();
-          return $iResult;
+    public function create($aData)
+    {
+        if (!isset($aData['FLD_UID'])) {
+            $aData['FLD_UID'] = G::generateUniqueID();
+        } else {
+            if ($aData['FLD_UID'] == '') {
+                $aData['FLD_UID'] = G::generateUniqueID();
+            }
         }
-        else {
-          $sMessage = '';
-          $aValidationFailures = $oFields->getValidationFailures();
-          foreach($aValidationFailures as $oValidationFailure) {
-            $sMessage .= $oValidationFailure->getMessage() . '<br />';
-          }
-          throw(new Exception('The registry cannot be updated!<br />'.$sMessage));
+        $oConnection = Propel::getConnection(FieldsPeer::DATABASE_NAME);
+        try {
+            $oFields = new Fields();
+            $oFields->fromArray($aData, BasePeer::TYPE_FIELDNAME);
+            if ($oFields->validate()) {
+                $oConnection->begin();
+                $iResult = $oFields->save();
+                $oConnection->commit();
+                return $aData['FLD_UID'];
+            } else {
+                $sMessage = '';
+                $aValidationFailures = $oFields->getValidationFailures();
+                foreach ($aValidationFailures as $oValidationFailure) {
+                    $sMessage .= $oValidationFailure->getMessage() . '<br />';
+                }
+                throw(new Exception('The registry cannot be created!<br />' . $sMessage));
+            }
+        } catch (Exception $oError) {
+            $oConnection->rollback();
+            throw($oError);
         }
-      }
-      else {
-        throw(new Exception('This row doesn\'t exist!'));
-      }
     }
-    catch (Exception $oError) {
-      $oConnection->rollback();
-      throw($oError);
-    }
-  }
 
-  function remove($sUID) {
-    $oConnection = Propel::getConnection(FieldsPeer::DATABASE_NAME);
-    try {
-      $oFields = FieldsPeer::retrieveByPK($sUID);
-      if (!is_null($oFields)) {
-        $oConnection->begin();
-        $iResult = $oFields->delete();
-        $oConnection->commit();
-        return $iResult;
-      }
-      else {
-        throw(new Exception('This row doesn\'t exist!'));
-      }
+    public function update($aData)
+    {
+        $oConnection = Propel::getConnection(FieldsPeer::DATABASE_NAME);
+        try {
+            $oFields = FieldsPeer::retrieveByPK($aData['FLD_UID']);
+            if (!is_null($oFields)) {
+                $oFields->fromArray($aData, BasePeer::TYPE_FIELDNAME);
+                if ($oFields->validate()) {
+                    $oConnection->begin();
+                    $iResult = $oFields->save();
+                    $oConnection->commit();
+                    return $iResult;
+                } else {
+                    $sMessage = '';
+                    $aValidationFailures = $oFields->getValidationFailures();
+                    foreach ($aValidationFailures as $oValidationFailure) {
+                        $sMessage .= $oValidationFailure->getMessage() . '<br />';
+                    }
+                    throw(new Exception('The registry cannot be updated!<br />'.$sMessage));
+                }
+            } else {
+                throw(new Exception('This row doesn\'t exist!'));
+            }
+        } catch (Exception $oError) {
+            $oConnection->rollback();
+            throw($oError);
+        }
     }
-    catch (Exception $oError) {
-      $oConnection->rollback();
-      throw($oError);
+
+    public function remove($sUID)
+    {
+        $oConnection = Propel::getConnection(FieldsPeer::DATABASE_NAME);
+        try {
+            $oFields = FieldsPeer::retrieveByPK($sUID);
+            if (!is_null($oFields)) {
+                $oConnection->begin();
+                $iResult = $oFields->delete();
+                $oConnection->commit();
+                return $iResult;
+            } else {
+                throw(new Exception('This row doesn\'t exist!'));
+            }
+        } catch (Exception $oError) {
+            $oConnection->rollback();
+            throw($oError);
+        }
     }
-  }
-} // Fields
+}
+

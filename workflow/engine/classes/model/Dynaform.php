@@ -150,7 +150,7 @@ class Dynaform extends BaseDynaform
      * @return void
      */
 
-    function create ($aData)
+    public function create ($aData)
     {
         if (! isset( $aData['PRO_UID'] )) {
             throw (new PropelException( 'The dynaform cannot be created. The PRO_UID is empty.' ));
@@ -223,7 +223,7 @@ class Dynaform extends BaseDynaform
      *
      */
 
-    function createFromPMTable ($aData, $pmTableUid)
+    public function createFromPMTable ($aData, $pmTableUid)
     {
         $this->create( $aData );
         $aData['DYN_UID'] = $this->getDynUid();
@@ -355,7 +355,7 @@ class Dynaform extends BaseDynaform
      * @return array $Fields the fields
      */
 
-    function Load ($ProUid)
+    public function Load ($ProUid)
     {
         $con = Propel::getConnection( DynaformPeer::DATABASE_NAME );
         try {
@@ -468,7 +468,7 @@ class Dynaform extends BaseDynaform
      * @param string $sProUid the uid of the Prolication
      */
 
-    function dynaformExists ($DynUid)
+    public function dynaformExists ($DynUid)
     {
         $con = Propel::getConnection( TaskPeer::DATABASE_NAME );
         try {
@@ -483,7 +483,7 @@ class Dynaform extends BaseDynaform
         }
     }
 
-    function getDynaformContent ($dynaformUid)
+    public function getDynaformContent ($dynaformUid)
     {
         $content = '';
         $fields = $this->Load( $dynaformUid );
@@ -495,7 +495,7 @@ class Dynaform extends BaseDynaform
         return $content;
     }
 
-    function getDynaformFields ($dynaformUid)
+    public function getDynaformFields ($dynaformUid)
     {
         $content = '';
         $fields = $this->Load( $dynaformUid );
@@ -510,7 +510,7 @@ class Dynaform extends BaseDynaform
         return $G_FORM->fields;
     }
 
-    function verifyExistingName ($sName, $sProUid)
+    public function verifyExistingName ($sName, $sProUid)
     {
         $sNameDyanform = urldecode( $sName );
         $sProUid = urldecode( $sProUid );
@@ -540,5 +540,4 @@ class Dynaform extends BaseDynaform
         return $flag;
     }
 }
-// Dynaform
 

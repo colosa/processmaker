@@ -14,21 +14,20 @@ require_once 'classes/model/om/BaseDashlet.php';
  *
  * @package    classes.model
  */
-class Dashlet extends BaseDashlet {
-
-  public function load($dasUid) {
-    try {
-      $dashlet = DashletPeer::retrieveByPK($dasUid);
-      if (!is_null($dashlet)) {
-        return $dashlet->toArray(BasePeer::TYPE_FIELDNAME);
-      }
-      else {
-        return null;
-      }
+class Dashlet extends BaseDashlet
+{
+    public function load($dasUid)
+    {
+        try {
+            $dashlet = DashletPeer::retrieveByPK($dasUid);
+            if (!is_null($dashlet)) {
+                return $dashlet->toArray(BasePeer::TYPE_FIELDNAME);
+            } else {
+                return null;
+            }
+        } catch (Exception $error) {
+            throw $error;
+        }
     }
-    catch (Exception $error) {
-      throw $error;
-    }
-  }
+}
 
-} // Dashlet

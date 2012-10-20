@@ -98,7 +98,7 @@ class Event extends BaseEvent
         }
     }
 
-    function create ($aData)
+    public function create ($aData)
     {
         if (! isset( $aData['EVN_UID'] ) || $aData['EVN_UID'] == '') {
             $aData['EVN_UID'] = G::generateUniqueID();
@@ -226,7 +226,7 @@ class Event extends BaseEvent
         }
     }
 
-    function update ($aData)
+    public function update ($aData)
     {
         $oConnection = Propel::getConnection( EventPeer::DATABASE_NAME );
         try {
@@ -362,7 +362,7 @@ class Event extends BaseEvent
         }
     }
 
-    function remove ($sUID)
+    public function remove ($sUID)
     {
         $oConnection = Propel::getConnection( EventPeer::DATABASE_NAME );
         try {
@@ -407,7 +407,7 @@ class Event extends BaseEvent
         }
     }
 
-    function calculateEventsExecutionDate ()
+    public function calculateEventsExecutionDate ()
     {
         $line1 = '';
         $line2 = '';
@@ -416,7 +416,7 @@ class Event extends BaseEvent
         return $line1 . "<br>\n" . $line2;
     }
 
-    function calculateExecutionDateSingle ()
+    public function calculateExecutionDateSingle ()
     {
         try {
             $rowsCreated = 0;
@@ -537,7 +537,7 @@ class Event extends BaseEvent
         }
     }
 
-    function calculateExecutionDateMultiple ()
+    public function calculateExecutionDateMultiple ()
     {
         try {
             $rowsCreated = 0;
@@ -647,9 +647,8 @@ class Event extends BaseEvent
         }
     }
 
-    function closeAppEvents ($PRO_UID, $APP_UID, $DEL_INDEX, $TAS_UID)
+    public function closeAppEvents ($PRO_UID, $APP_UID, $DEL_INDEX, $TAS_UID)
     {
-
         $aAppEvents = $this->getAppEvents( $APP_UID, $DEL_INDEX );
         if ($aAppEvents) {
             foreach ($aAppEvents as $aRow) {
@@ -661,10 +660,9 @@ class Event extends BaseEvent
                 }
             }
         }
-
     }
 
-    function createAppEvents ($PRO_UID, $APP_UID, $DEL_INDEX, $TAS_UID)
+    public function createAppEvents ($PRO_UID, $APP_UID, $DEL_INDEX, $TAS_UID)
     {
         $aRows = Array ();
         $aEventsRows = $this->getBy( $PRO_UID, $TAS_UID );
@@ -728,7 +726,7 @@ class Event extends BaseEvent
         }
     }
 
-    function verifyTaskbetween ($PRO_UID, $taskFrom, $taskTo, $taskVerify)
+    public function verifyTaskbetween ($PRO_UID, $taskFrom, $taskTo, $taskVerify)
     {
         $criteria = new Criteria( 'workflow' );
         $criteria->addSelectColumn( RoutePeer::ROU_NEXT_TASK );
@@ -756,9 +754,8 @@ class Event extends BaseEvent
         }
     }
 
-    function getBy ($PRO_UID, $taskUid)
+    public function getBy ($PRO_UID, $taskUid)
     {
-
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( EventPeer::EVN_UID );
         $oCriteria->addSelectColumn( EventPeer::TAS_UID );
@@ -818,7 +815,7 @@ class Event extends BaseEvent
         return (count( $aRows ) > 0) ? $aRows : false;
     }
 
-    function getAppEvents ($APP_UID, $DEL_INDEX)
+    public function getAppEvents ($APP_UID, $DEL_INDEX)
     {
         //for single task event
         $oCriteria = new Criteria( 'workflow' );
@@ -862,7 +859,7 @@ class Event extends BaseEvent
         return (count( $aRows ) > 0) ? $aRows : false;
     }
 
-    function toCalculateTime ($aData, $iDate = null)
+    public function toCalculateTime ($aData, $iDate = null)
     {
         G::LoadClass( 'dates' );
         $oDates = new dates();
@@ -887,7 +884,7 @@ class Event extends BaseEvent
         return $sActionDate;
     }
 
-    function Exists ($sUid)
+    public function Exists ($sUid)
     {
         try {
             $oObj = EventPeer::retrieveByPk( $sUid );
@@ -923,5 +920,4 @@ class Event extends BaseEvent
         return $aRow;
     }
 }
-// Event
 
