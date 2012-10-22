@@ -126,7 +126,7 @@ class PMPluginRegistry
      *
      * @return object
      */
-    function &getSingleton ()
+    public function &getSingleton ()
     {
         if (self::$instance == null) {
             self::$instance = new PMPluginRegistry();
@@ -490,7 +490,8 @@ class PMPluginRegistry
                 }
 
                 ///////
-                $this->uninstallPluginWorkspaces( array ($sNamespace) );
+                $this->uninstallPluginWorkspaces( array ($sNamespace
+                ) );
                 ///////
                 break;
             }
@@ -511,6 +512,7 @@ class PMPluginRegistry
                 //G::LoadClass("plugin");
                 //Here we are loading all plug-ins registered
                 //The singleton has a list of enabled plug-ins
+
 
                 $pluginRegistry = &PMPluginRegistry::getSingleton();
                 $pluginRegistry->unSerializeInstance( file_get_contents( $wsPathDataSite . "plugin.singleton" ) );
@@ -1189,12 +1191,13 @@ class PMPluginRegistry
         $oData = null;
         return $this->executeMethod( $sNamespace, 'getFieldsForPageSetup', $oData );
     }
+
     /**
-    * this function updates Fields For Page on Setup
-    *
-    * @param string $sNamespace
-    * @return void
-    */
+     * this function updates Fields For Page on Setup
+     *
+     * @param string $sNamespace
+     * @return void
+     */
     public function updateFieldsForPageSetup ($sNamespace, $oData)
     {
         if (! isset( $this->_aPluginDetails[$sNamespace] )) {
@@ -1261,10 +1264,11 @@ class PMPluginRegistry
     public function registerCaseSchedulerPlugin ($sNamespace, $sActionId, $sActionForm, $sActionSave, $sActionExecute, $sActionGetFields)
     {
         $found = false;
-        foreach ($this->_aCaseSchedulerPlugin as $row => $detail)
+        foreach ($this->_aCaseSchedulerPlugin as $row => $detail) {
             if ($sActionId == $detail->sActionId && $sNamespace == $detail->sNamespace) {
                 $found = true;
             }
+        }
 
         if (! $found) {
             $this->_aCaseSchedulerPlugin[] = new caseSchedulerPlugin( $sNamespace, $sActionId, $sActionForm, $sActionSave, $sActionExecute, $sActionGetFields );

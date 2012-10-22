@@ -135,9 +135,9 @@ class database extends database_base
             }
         }
         /*if ($aParameters['Key'] == 'PRI') {
-      $sKeys .= 'ALTER TABLE ' . $this->sQuoteCharacter . $sTable . $this->sQuoteCharacter .
-                ' ADD PRIMARY KEY (' . $this->sQuoteCharacter . $sColumn . $this->sQuoteCharacter . ')' . $this->sEndLine;
-    }*/
+          $sKeys .= 'ALTER TABLE ' . $this->sQuoteCharacter . $sTable . $this->sQuoteCharacter .
+          ' ADD PRIMARY KEY (' . $this->sQuoteCharacter . $sColumn . $this->sQuoteCharacter . ')' . $this->sEndLine;
+         }*/
         if (isset( $aParameters['AI'] )) {
             if ($aParameters['AI'] == 1) {
                 $sSQL .= ' AUTO_INCREMENT';
@@ -184,8 +184,9 @@ class database extends database_base
         if (isset( $aParameters['Default'] )) {
             if (trim( $aParameters['Default'] == '' ) && $aParameters['Type'] == 'datetime') {
                 //do nothing
-            } else
+            } else {
                 $sSQL .= " DEFAULT '" . $aParameters['Default'] . "'";
+            }
             //}
         }
         if (! isset( $aParameters['Default'] ) && isset( $aParameters['Null'] ) && $aParameters['Null'] == 'YES') {
@@ -363,8 +364,9 @@ class database extends database_base
 
     public function isConnected ()
     {
-        if (! $this->oConnection)
+        if (! $this->oConnection) {
             return false;
+        }
         return $this->executeQuery( 'USE ' . $this->sDataBase );
     }
 
@@ -372,14 +374,18 @@ class database extends database_base
     {
         try {
             $found = false;
-            if (substr( $sQuery, 0, 6 ) == 'SELECT')
+            if (substr( $sQuery, 0, 6 ) == 'SELECT') {
                 $found = true;
-            if (substr( $sQuery, 0, 4 ) == 'SHOW')
+            }
+            if (substr( $sQuery, 0, 4 ) == 'SHOW') {
                 $found = true;
-            if (substr( $sQuery, 0, 4 ) == 'DESC')
+            }
+            if (substr( $sQuery, 0, 4 ) == 'DESC') {
                 $found = true;
-            if (substr( $sQuery, 0, 4 ) == 'USE ')
+            }
+            if (substr( $sQuery, 0, 4 ) == 'USE ') {
                 $found = true;
+            }
             if (! $found) {
                 $logFile = PATH_DATA . 'log' . PATH_SEP . 'query.log';
                 $fp = fopen( $logFile, 'a+' );
@@ -544,7 +550,7 @@ class database extends database_base
      *
      * @return string $sConcat
      */
-    function concatString()
+    public function concatString ()
     {
         $nums = func_num_args();
         $vars = func_get_args();
@@ -552,17 +558,18 @@ class database extends database_base
         for ($i = 0; $i < $nums; $i ++) {
             if (isset( $vars[$i] )) {
                 $sConcat .= $vars[$i];
-                if (($i + 1) < $nums)
+                if (($i + 1) < $nums) {
                     $sConcat .= " + ";
+                }
             }
         }
         return $sConcat;
     }
 
     /*
-   * query functions for class class.case.php
-   *
-   */
+     * query functions for class class.case.php
+     *
+     */
     /**
      * concatString
      * Generates a string equivalent to the case when
@@ -572,7 +579,7 @@ class database extends database_base
      *
      * @return string $sCompare
      */
-    function getCaseWhen($compareValue, $trueResult, $falseResult)
+    public function getCaseWhen ($compareValue, $trueResult, $falseResult)
     {
         $sCompare = " CASE WHEN " . $compareValue . " THEN " . $trueResult . " ELSE " . $falseResult . " END ";
         return $sCompare;
@@ -586,7 +593,7 @@ class database extends database_base
      *
      * @return string $sql
      */
-    function createTableObjectPermission()
+    public function createTableObjectPermission ()
     {
         $sql = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='OBJECT_PERMISSION' AND xtype='U')
           CREATE TABLE OBJECT_PERMISSION (
@@ -605,9 +612,9 @@ class database extends database_base
     }
 
     /*
-   * query functions for class class.report.php
-   *
-   */
+     * query functions for class class.report.php
+     *
+     */
     /**
      * Generates a string query
      *
@@ -616,7 +623,7 @@ class database extends database_base
      *
      * @return string $sql
      */
-    function getSelectReport4()
+    public function getSelectReport4 ()
     {
 
         $sqlConcat = " U.USR_LASTNAME + ' ' + USR_FIRSTNAME AS [USER] ";
@@ -645,7 +652,7 @@ class database extends database_base
      *
      * @return string $sql
      */
-    function getSelectReport4Filter($var)
+    public function getSelectReport4Filter ($var)
     {
         $sqlConcat = " U.USR_LASTNAME + ' ' + USR_FIRSTNAME AS [USER] ";
         $sqlGroupBy = " U.USR_LASTNAME + ' ' + USR_FIRSTNAME ";
@@ -673,7 +680,7 @@ class database extends database_base
      *
      * @return string $sql
      */
-    function getSelectReport5()
+    public function getSelectReport5 ()
     {
 
         $sqlConcat = " U.USR_LASTNAME + ' ' + USR_FIRSTNAME AS [USER] ";
@@ -702,7 +709,7 @@ class database extends database_base
      *
      * @return string $sql
      */
-    function getSelectReport5Filter($var)
+    public function getSelectReport5Filter ($var)
     {
 
         $sqlConcat = " U.USR_LASTNAME + ' ' + USR_FIRSTNAME AS [USER] ";
@@ -723,14 +730,15 @@ class database extends database_base
     }
 
     /*
-   * query functions for class class.net.php
-   *
-   */
-    function getServerVersion($driver, $dbIP, $dbPort, $dbUser, $dbPasswd, $dbSourcename)
+     * query functions for class class.net.php
+     *
+     */
+    public function getServerVersion ($driver, $dbIP, $dbPort, $dbUser, $dbPasswd, $dbSourcename)
     {
 
-        if (strlen( trim( $dbIP ) ) <= 0)
+        if (strlen( trim( $dbIP ) ) <= 0) {
             $dbIP = DB_HOST;
+        }
         if ($link = @mssql_connect( $dbIP, $dbUser, $dbPasswd )) {
             @mssql_select_db( DB_NAME, $link );
             $oResult = @mssql_query( "select substring(@@version, 21, 6) + ' (' + CAST(SERVERPROPERTY ('productlevel') as varchar(10)) + ') ' + CAST(SERVERPROPERTY('productversion') AS VARCHAR(15)) + ' ' + CAST(SERVERPROPERTY ('edition') AS VARCHAR(25)) as version; ", $link );
@@ -745,16 +753,16 @@ class database extends database_base
     }
 
     /*
-   * query functions for class class.net.php
-   *
-   */
-    function getDropTable($sTableName)
+     * query functions for class class.net.php
+     *
+     */
+    public function getDropTable ($sTableName)
     {
         $sql = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='" . $sTableName . "' AND xtype='U') " . "DROP TABLE ['" . $sTableName . "']";
         return $sql;
     }
 
-    function getTableDescription($sTableName)
+    public function getTableDescription ($sTableName)
     {
         $sql = " select column_name as Field,
               data_type + ' ' +
@@ -776,13 +784,13 @@ class database extends database_base
         return $sql;
     }
 
-    function getFieldNull()
+    public function getFieldNull ()
     {
         $fieldName = "AsNull";
         return $fieldName;
     }
 
-    function getValidate($validate)
+    public function getValidate ($validate)
     {
         $oValidate = true;
         return $oValidate;
@@ -792,7 +800,7 @@ class database extends database_base
      * Determines whether a table exists
      * It is part of class.reportTables.php
      */
-    function reportTableExist()
+    public function reportTableExist ()
     {
         $bExists = true;
         $oConnection = mssql_connect( DB_HOST, DB_USER, DB_PASS );
@@ -805,7 +813,7 @@ class database extends database_base
     /**
      * It is part of class.pagedTable.php
      */
-    function getLimitRenderTable($nCurrentPage, $nRowsPerPage)
+    public function getLimitRenderTable ($nCurrentPage, $nRowsPerPage)
     {
         $sql = "";
         return $sql;
@@ -814,7 +822,7 @@ class database extends database_base
     /**
      * Determining the existence of a table
      */
-    function tableExists($table, $db)
+    public function tableExists ($table, $db)
     {
         $sql = "SELECT * FROM sysobjects WHERE name='" . $table . "' AND type='u'";
         $bExists = true;
