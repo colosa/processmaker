@@ -47,7 +47,7 @@ G::LoadClass( "plugin" );
 
 class Derivation
 {
-    var $case;
+    public $case;
 
     /**
      * prepareInformation
@@ -55,7 +55,7 @@ class Derivation
      * @param array $aData
      * @return $taskInfo
      */
-    function prepareInformation ($aData)
+    public function prepareInformation ($aData)
     {
         $oTask = new Task();
         //SELECT *
@@ -82,7 +82,6 @@ class Derivation
         $aDerivation = $rs->getRow();
         $i = 0;
         $taskInfo = array ();
-
         $oUser = new Users();
         $this->case = new Cases();
         // 1. there is no rule
@@ -137,8 +136,8 @@ class Derivation
                     $aDerivation['NEXT_TASK']['USR_UID'] = '';
                 } else {
                     //3. load the task information of normal NEXT_TASK
-                    $aDerivation['NEXT_TASK'] = $oTask->load( $aDerivation['ROU_NEXT_TASK'] ); //print $aDerivation['ROU_NEXT_TASK']." **** ".$aDerivation['NEXT_TASK']['TAS_TYPE']."<hr>";
-
+                    $aDerivation['NEXT_TASK'] = $oTask->load( $aDerivation['ROU_NEXT_TASK'] );
+                    //print $aDerivation['ROU_NEXT_TASK']." **** ".$aDerivation['NEXT_TASK']['TAS_TYPE']."<hr>";
 
                     if ($aDerivation['NEXT_TASK']['TAS_TYPE'] === 'SUBPROCESS') {
                         $oCriteria = new Criteria( 'workflow' );
@@ -176,7 +175,7 @@ class Derivation
      * @param array $aData
      * @return $routeCondition
      */
-    function getRouteCondition ($aData)
+    public function getRouteCondition ($aData)
     {
         //SELECT *
         //FROM APP_DELEGATION AS A
@@ -207,7 +206,7 @@ class Derivation
 
     }
 
-    function GetAppParentIndex ($aData)
+    public function GetAppParentIndex ($aData)
     {
         //('SELECT * FROM APP_THREAD WHERE APP_UID='".$aData['APP_UID']."' AND DEL_INDEX = '".$aData['DEL_INDEX']."'");
         try {
@@ -236,7 +235,7 @@ class Derivation
    * @param   string  $sTasUid  the task uidUser
    * @return  Array   $users an array with userID order by USR_UID
   */
-    function getAllUsersFromAnyTask ($sTasUid)
+    public function getAllUsersFromAnyTask ($sTasUid)
     {
         $users = array ();
         $c = new Criteria( 'workflow' );
@@ -292,7 +291,7 @@ class Derivation
    * @param   Array   $aUsers      the task uidUser
    * @return  Array   $aUsersData  an array with with User's fullname
    */
-    function getUsersFullNameFromArray ($aUsers)
+    public function getUsersFullNameFromArray ($aUsers)
     {
         $oUser = new Users();
         $aUsersData = array ();
@@ -343,7 +342,7 @@ class Derivation
    * @param   Array   $tasInfo
    * @return  Array   $userFields
    */
-    function getNextAssignedUser ($tasInfo)
+    public function getNextAssignedUser ($tasInfo)
     {
         $oUser = new Users();
         $nextAssignedTask = $tasInfo['NEXT_TASK'];
@@ -369,8 +368,9 @@ class Derivation
                     $uidUser = $users[0];
                     $i = count( $users ) - 1;
                     while ($i > 0) {
-                        if ($lastAssigned < $users[$i])
+                        if ($lastAssigned < $users[$i]) {
                             $uidUser = $users[$i];
+                        }
                         $i --;
                     }
                 } else {
@@ -397,8 +397,9 @@ class Derivation
                     } else {
                         throw (new Exception( "Task doesn't have a valid user in variable $variable." ));
                     }
-                } else
+                } else {
                     throw (new Exception( "Task doesn't have a valid user in variable $variable or this variable doesn't exist." ));
+                }
                 break;
 
             case 'REPORT_TO':
@@ -445,13 +446,14 @@ class Derivation
    * @param   string   $USR_UID
    * @return  string   $aRow['USR_REPORTS_TO']
    */
-    function getDenpendentUser($USR_UID) {
+    public function getDenpendentUser ($USR_UID)
+    {
         //Here the uid to next user
         $oC = new Criteria();
-        $oC->addSelectColumn(UsersPeer::USR_REPORTS_TO);
-        $oC->add(UsersPeer::USR_UID, $USR_UID);
-        $oDataset = UsersPeer::doSelectRS($oC);
-        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $oC->addSelectColumn( UsersPeer::USR_REPORTS_TO );
+        $oC->add( UsersPeer::USR_UID, $USR_UID );
+        $oDataset = UsersPeer::doSelectRS( $oC );
+        $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
         $aRow = $oDataset->getRow();
         return $aRow['USR_REPORTS_TO'] != '' ? $aRow['USR_REPORTS_TO'] : $USR_UID;
@@ -464,7 +466,7 @@ class Derivation
    * @throws  Exception $e
    * @return  void
    */
-    function setTasLastAssigned ($tasUid, $usrUid)
+    public function setTasLastAssigned ($tasUid, $usrUid)
     {
         try {
             $oTask = TaskPeer::retrieveByPk( $tasUid );
@@ -481,13 +483,16 @@ class Derivation
    * @param   array   $nextDelegations
    * @return  void
    */
-    function derivate ($currentDelegation = array(), $nextDelegations = array())
+    public function derivate ($currentDelegation = array(), $nextDelegations = array())
     {
         //define this...
-        if (! defined( 'TASK_FINISH_PROCESS' ))
+        if (! defined( 'TASK_FINISH_PROCESS' )) {
             define( 'TASK_FINISH_PROCESS', - 1 );
-        if (! defined( 'TASK_FINISH_TASK' ))
+        }
+
+        if (! defined( 'TASK_FINISH_TASK' )) {
             define( 'TASK_FINISH_TASK', - 2 );
+        }
 
         $this->case = new cases();
 
@@ -511,8 +516,7 @@ class Derivation
                     $aSP['USR_UID'] = $nextDel['USR_UID'];
                     $oTask = new Task();
                     $aTask = $oTask->load( $nextDel['TAS_PARENT'] );
-                    $nextDel = array ('TAS_UID' => $aTask['TAS_UID'],'USR_UID' => $aSP['USR_UID'],'TAS_ASSIGN_TYPE' => $aTask['TAS_ASSIGN_TYPE'],'TAS_DEF_PROC_CODE' => $aTask['TAS_DEF_PROC_CODE'],'DEL_PRIORITY' => 3,'TAS_PARENT' => ''
-                    );
+                    $nextDel = array ('TAS_UID' => $aTask['TAS_UID'],'USR_UID' => $aSP['USR_UID'],'TAS_ASSIGN_TYPE' => $aTask['TAS_ASSIGN_TYPE'],'TAS_DEF_PROC_CODE' => $aTask['TAS_DEF_PROC_CODE'],'DEL_PRIORITY' => 3,'TAS_PARENT' => '');
                 } else {
                     continue;
                 }
@@ -532,8 +536,8 @@ class Derivation
             }
             switch ($nextDel['TAS_UID']) {
                 case TASK_FINISH_PROCESS:
-          /*Close all delegations of $currentDelegation['APP_UID'] */
-          $this->case->closeAllDelegations( $currentDelegation['APP_UID'] );
+                    /*Close all delegations of $currentDelegation['APP_UID'] */
+                    $this->case->closeAllDelegations( $currentDelegation['APP_UID'] );
                     $this->case->closeAllThreads( $currentDelegation['APP_UID'] );
                     //I think we need to change the APP_STATUS to completed,
                     break;
@@ -552,44 +556,47 @@ class Derivation
                             $siblingThreads = $this->case->GetAllOpenDelegation( $currentDelegation );
                             $aData = $this->case->loadCase( $currentDelegation['APP_UID'] );
 
-                            if (isset( $aData['APP_DATA'][str_replace( '@@', '', $currentDelegation['TAS_MI_INSTANCE_VARIABLE'] )] ))
+                            if (isset( $aData['APP_DATA'][str_replace( '@@', '', $currentDelegation['TAS_MI_INSTANCE_VARIABLE'] )] )) {
                                 $sMIinstanceVar = $aData['APP_DATA'][str_replace( '@@', '', $currentDelegation['TAS_MI_INSTANCE_VARIABLE'] )];
-                            else
+                            } else {
                                 $sMIinstanceVar = $aData['APP_DATA']['TAS_MI_INSTANCE_VARIABLE'];
-
-                            if (isset( $aData['APP_DATA'][str_replace( '@@', '', $currentDelegation['TAS_MI_COMPLETE_VARIABLE'] )] ))
+                            }
+                            if (isset( $aData['APP_DATA'][str_replace( '@@', '', $currentDelegation['TAS_MI_COMPLETE_VARIABLE'] )] )) {
                                 $sMIcompleteVar = $aData['APP_DATA'][str_replace( '@@', '', $currentDelegation['TAS_MI_COMPLETE_VARIABLE'] )];
-                            else
+                            } else {
                                 $sMIcompleteVar = $aData['APP_DATA']['TAS_MI_COMPLETE_VARIABLE'];
+                            }
 
                             $discriminateThread = $sMIinstanceVar - $sMIcompleteVar;
 
                             // -1 because One App Delegation is closed by above Code
-                            if ($discriminateThread == count( $siblingThreads ))
+                            if ($discriminateThread == count( $siblingThreads )) {
                                 $canDerivate = true;
-                            else
+                            } else {
                                 $canDerivate = false;
+                            }
                             break;
 
                         default:
                             if ($currentDelegation['ROU_TYPE'] == 'SEC-JOIN') {
                                 $siblingThreads = $this->case->getOpenSiblingThreads( $nextDel['TAS_UID'], $currentDelegation['APP_UID'], $currentDelegation['DEL_INDEX'], $currentDelegation['TAS_UID'], $currentDelegation['ROU_TYPE'] );
                                 $canDerivate = count( $siblingThreads ) == 0;
-                            } else if ($currentDelegation['ROU_TYPE'] == 'DISCRIMINATOR') {
+                            } elseif ($currentDelegation['ROU_TYPE'] == 'DISCRIMINATOR') {
                                 //First get the total threads of Next Task where route type='Discriminator'
                                 $siblingThreads = $this->case->getOpenSiblingThreads( $nextDel['TAS_UID'], $currentDelegation['APP_UID'], $currentDelegation['DEL_INDEX'], $currentDelegation['TAS_UID'], $currentDelegation['ROU_TYPE'] );
                                 $siblingThreadsCount = count( $siblingThreads );
                                 $discriminateThread = $currentDelegation['ROU_CONDITION'];
                                 //$checkThread = count($totalThreads) - $cond;
-                                if ($discriminateThread == $siblingThreadsCount)
+                                if ($discriminateThread == $siblingThreadsCount) {
                                     $canDerivate = true;
-                                else
+                                } else {
                                     $canDerivate = false;
+                                }
                             } else {
                                 $canDerivate = true;
                             }
-                    } //end switch
-
+                    }
+                    //end switch
 
                     if ($canDerivate) {
                         $aSP = isset( $aSP ) ? $aSP : null;
@@ -602,18 +609,19 @@ class Derivation
                                 $this->case->closeAppThread( $currentDelegation['APP_UID'], $iAppThreadIndex );
                                 break;
                             default:
-                                if ($currentDelegation['TAS_ASSIGN_TYPE'] == 'STATIC_MI' || $currentDelegation['TAS_ASSIGN_TYPE'] == 'CANCEL_MI')
+                                if ($currentDelegation['TAS_ASSIGN_TYPE'] == 'STATIC_MI' || $currentDelegation['TAS_ASSIGN_TYPE'] == 'CANCEL_MI') {
                                     $this->case->closeAppThread( $currentDelegation['APP_UID'], $iAppThreadIndex );
-                        } //switch
+                                }
+                        }
+                        //switch
                     }
             }
             //SETS THE APP_PROC_CODE
             //if (isset($nextDel['TAS_DEF_PROC_CODE']))
             //$appFields['APP_PROC_CODE'] = $nextDel['TAS_DEF_PROC_CODE'];
             unset( $aSP );
-
-        } //end foreach
-
+        }
+        //end foreach
 
         /* Start Block : UPDATES APPLICATION */
 
@@ -630,14 +638,12 @@ class Derivation
             $appFields["APP_STATUS"] = "COMPLETED";
             $appFields["APP_FINISH_DATE"] = "now";
             $this->verifyIsCaseChild( $currentDelegation["APP_UID"] );
-
             $sw = 1;
         }
 
         if (isset( $iNewDelIndex )) {
             $appFields["DEL_INDEX"] = $iNewDelIndex;
             $appFields["TAS_UID"] = $nextDel["TAS_UID"];
-
             $sw = 1;
         }
 
@@ -648,7 +654,7 @@ class Derivation
         }
     }
 
-    function doDerivation ($currentDelegation, $nextDel, $appFields, $aSP = null)
+    public function doDerivation ($currentDelegation, $nextDel, $appFields, $aSP = null)
     {
         $iAppThreadIndex = $appFields['DEL_THREAD'];
         $delType = 'NORMAL';
@@ -670,13 +676,11 @@ class Derivation
                     $iNewAppThreadIndex += 1;
                     //Creating new delegation according to users in group
                     $iMIDelIndex = $this->case->newAppDelegation( $appFields['PRO_UID'], $currentDelegation['APP_UID'], $nextDel['TAS_UID'], (isset( $aValue['USR_UID'] ) ? $aValue['USR_UID'] : ''), $currentDelegation['DEL_INDEX'], $nextDel['DEL_PRIORITY'], $delType, $iNewAppThreadIndex, $nextDel );
-
                     $iNewThreadIndex = $this->case->newAppThread( $currentDelegation['APP_UID'], $iMIDelIndex, $iAppThreadIndex );
-
                     //Setting the del Index for Updating the AppThread delIndex
-                    if ($key == 0)
+                    if ($key == 0) {
                         $iNewDelIndex = $iMIDelIndex - 1;
-
+                    }
                 } //end foreach
                 break;
 
@@ -703,8 +707,8 @@ class Derivation
             case 'DISCRIMINATOR':
                 if ($currentDelegation['ROU_OPTIONAL'] == 'TRUE') {
                     $this->case->discriminateCases( $currentDelegation );
-                } //No Break, executing Default Condition
-
+                }
+                //No Break, executing Default Condition
 
             default:
                 switch ($currentDelegation['TAS_ASSIGN_TYPE']) {
@@ -756,10 +760,8 @@ class Derivation
             // the following line of code was commented because it is related to the 6878 bug
             //$AppDelegation->setDelInitDate("+1 second");
 
-
             $AppDelegation->save();
             //If not is SYNCHRONOUS derivate one more time
-
 
             if ($aSP['SP_SYNCHRONOUS'] == 0) {
                 $this->case->setDelInitDate( $currentDelegation['APP_UID'], $iNewDelIndex );
@@ -784,11 +786,11 @@ class Derivation
     }
 
     /* verifyIsCaseChild
-   *
-   * @param   string   $sApplicationUID
-   * @return  void
-   */
-    function verifyIsCaseChild ($sApplicationUID)
+    *
+    * @param   string   $sApplicationUID
+    * @return  void
+    */
+    public function verifyIsCaseChild ($sApplicationUID)
     {
         //Obtain the related row in the table SUB_APPLICATION
         $oCriteria = new Criteria( 'workflow' );
@@ -824,11 +826,9 @@ class Derivation
                 $oCase->updateCase( $aSA['APP_PARENT'], $aParentCase );
                 //Update table SUB_APPLICATION
                 $oSubApplication = new SubApplication();
-                $oSubApplication->update( array ('APP_UID' => $sApplicationUID,'APP_PARENT' => $aSA['APP_PARENT'],'DEL_INDEX_PARENT' => $aSA['DEL_INDEX_PARENT'],'DEL_THREAD_PARENT' => $aSA['DEL_THREAD_PARENT'],'SA_STATUS' => 'FINISHED','SA_VALUES_IN' => serialize( $aNewFields ),'SA_FINISH_DATE' => date( 'Y-m-d H:i:s' )
-                ) );
+                $oSubApplication->update( array ('APP_UID' => $sApplicationUID,'APP_PARENT' => $aSA['APP_PARENT'],'DEL_INDEX_PARENT' => $aSA['DEL_INDEX_PARENT'],'DEL_THREAD_PARENT' => $aSA['DEL_THREAD_PARENT'],'SA_STATUS' => 'FINISHED','SA_VALUES_IN' => serialize( $aNewFields ),'SA_FINISH_DATE' => date( 'Y-m-d H:i:s' )) );
                 //Derive the parent case
-                $aDeriveTasks = $this->prepareInformation( array ('USER_UID' => - 1,'APP_UID' => $aSA['APP_PARENT'],'DEL_INDEX' => $aSA['DEL_INDEX_PARENT']
-                ) );
+                $aDeriveTasks = $this->prepareInformation( array ('USER_UID' => - 1,'APP_UID' => $aSA['APP_PARENT'],'DEL_INDEX' => $aSA['DEL_INDEX_PARENT']) );
                 if (isset( $aDeriveTasks[1] )) {
                     if ($aDeriveTasks[1]['ROU_TYPE'] != 'SELECT') {
                         $nextDelegations2 = array ();
@@ -837,8 +837,7 @@ class Derivation
                                 $selectedUser = $aDeriveTask['NEXT_TASK']['USER_ASSIGNED'][0];
                                 unset( $aDeriveTask['NEXT_TASK']['USER_ASSIGNED'] );
                                 $aDeriveTask['NEXT_TASK']['USER_ASSIGNED'] = $selectedUser;
-                                $myLabels = array ($aDeriveTask['NEXT_TASK']['TAS_TITLE'],$aParentCase['APP_NUMBER'],$selectedUser['USR_USERNAME'],$selectedUser['USR_FIRSTNAME'],$selectedUser['USR_LASTNAME']
-                                );
+                                $myLabels = array ($aDeriveTask['NEXT_TASK']['TAS_TITLE'],$aParentCase['APP_NUMBER'],$selectedUser['USR_USERNAME'],$selectedUser['USR_FIRSTNAME'],$selectedUser['USR_LASTNAME']);
                                 G::SendTemporalMessage( 'ID_TASK_WAS_ASSIGNED_TO_USER', 'warning', 'labels', 10, null, $myLabels );
 
                             }
@@ -855,15 +854,15 @@ class Derivation
     }
 
     /*  getDerivatedCases
-   *  get all derivated cases and subcases from any task,
-   *  this function is useful to know who users have been assigned and what task they do.
-   *
-   * @param   string   $sParentUid
-   * @param   string   $sDelIndexParent
-   * @return  array    $derivation
-   *
-   */
-    function getDerivatedCases ($sParentUid, $sDelIndexParent)
+    *  get all derivated cases and subcases from any task,
+    *  this function is useful to know who users have been assigned and what task they do.
+    *
+    * @param   string   $sParentUid
+    * @param   string   $sDelIndexParent
+    * @return  array    $derivation
+    *
+    */
+    public function getDerivatedCases ($sParentUid, $sDelIndexParent)
     {
         $oCriteria = new Criteria( 'workflow' );
         $cases = array ();
@@ -880,7 +879,6 @@ class Derivation
         $aRow = $oDataset->getRow();
         while (is_array( $aRow )) {
             $children[] = $aRow['DEL_INDEX'];
-
             $oDataset->next();
             $aRow = $oDataset->getRow();
         }
@@ -925,7 +923,7 @@ class Derivation
         return $derivation;
     }
 
-    function getGrpUser ($aData)
+    public function getGrpUser ($aData)
     {
         G::LoadClass( 'groups' );
         G::LoadClass( 'tasks' );
@@ -947,7 +945,7 @@ class Derivation
         return $aGrp;
     }
 
-    function checkReplacedByUser ($user)
+    public function checkReplacedByUser ($user)
     {
         if (is_string( $user )) {
             $userInstance = UsersPeer::retrieveByPK( $user );
@@ -968,5 +966,5 @@ class Derivation
             }
         }
     }
-
 }
+

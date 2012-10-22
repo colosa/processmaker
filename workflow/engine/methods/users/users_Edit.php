@@ -57,7 +57,7 @@ try {
     //getting the user and department
     $oDepInfo = new Department();
     $oUser = UsersPeer::retrieveByPk( $aFields['USR_REPORTS_TO'] );
-    if ($oUser != '')
+    if ($oUser != '') {
         if (get_class( $oUser ) == 'Users') {
             $userFields = $oUser->toArray( BasePeer::TYPE_FIELDNAME );
             $aFields['USR_REPORTS_TO'] = $userFields['USR_FIRSTNAME'] . ' ' . $userFields['USR_LASTNAME'];
@@ -69,7 +69,7 @@ try {
         } else {
             $aFields['USR_REPORTS_TO'] = ' ';
         }
-
+    }
     try {
         $depFields = $oDepInfo->load( $aFields['DEP_UID'] );
         $aFields['USR_DEPARTMENT'] = $depFields['DEPO_TITLE'];
@@ -118,8 +118,7 @@ try {
         $aRow1 = $oDataset->getRow();
 
         $infoUser = G::getFormatUserList( $defaultOption, $aRow1 );
-        $aUserInfo[] = array ('USR_UID' => $aRow1['USR_UID'],'USER_FULLNAME' => $infoUser
-        );
+        $aUserInfo[] = array ('USR_UID' => $aRow1['USR_UID'],'USER_FULLNAME' => $infoUser);
     }
 
     //calculating the max upload file size;
@@ -133,8 +132,9 @@ try {
     $mul = ($mul == 'M' ? 1048576 : ($mul == 'K' ? 1024 : ($mul == 'G' ? 1073741824 : 1)));
     $uploadMaxSize = (int) $UPLOAD_MAX_SIZE * $mul;
 
-    if ($postMaxSize < $uploadMaxSize)
+    if ($postMaxSize < $uploadMaxSize) {
         $uploadMaxSize = $postMaxSize;
+    }
     $aFields['MAX_FILES_SIZE'] = " (" . $UPLOAD_MAX_SIZE . ") ";
 
     global $_DBArray;
