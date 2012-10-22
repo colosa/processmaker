@@ -45,7 +45,7 @@ class PMmemcached
     var $enabled = false;
     var $supported = false;
 
-    private static $instance = NULL;
+    private static $instance = null;
 
     public function __construct ($workspace)
     {
@@ -111,62 +111,71 @@ class PMmemcached
         throw new Exception( "Deserializing is not allowed." );
     }
 
-    function set ($key, $object, $timeout = 0)
+    public function set ($key, $object, $timeout = 0)
     {
-        if (! $this->connected)
+        if (! $this->connected) {
             return false;
-        if ($this->class != 'filecache')
+        }
+        if ($this->class != 'filecache') {
             $this->mem->set( $this->workspace . '_' . $key, $object, false, $timeout );
-        else
+        } else {
             $this->mem->set( $this->workspace . '_' . $key, $object );
+        }
     }
 
-    function get ($key)
+    public function get ($key)
     {
-        if (! $this->connected)
+        if (! $this->connected) {
             return false;
+        }
         return $this->mem->get( $this->workspace . '_' . $key );
     }
 
-    function add ($key, $value)
+    public function add ($key, $value)
     {
-        if ((! $this->connected) || ($this->class == 'filecache'))
+        if ((! $this->connected) || ($this->class == 'filecache')) {
             return false;
+        }
         return $this->mem->add( $this->workspace . '_' . $key, $value );
     }
 
-    function increment ($key, $value)
+    public function increment ($key, $value)
     {
-        if ((! $this->connected) || ($this->class == 'filecache'))
+        if ((! $this->connected) || ($this->class == 'filecache')) {
             return false;
+        }
         return $this->mem->increment( $this->workspace . '_' . $key, $value );
     }
 
-    function delete ($key)
+    public function delete ($key)
     {
-        if ((! $this->connected) || ($this->class == 'filecache'))
+        if ((! $this->connected) || ($this->class == 'filecache')) {
             return false;
+        }
         return $this->mem->delete( $this->workspace . '_' . $key );
     }
 
-    function flush ()
+    public function flush ()
     {
-        if ((! $this->connected) || ($this->class == 'filecache'))
+        if ((! $this->connected) || ($this->class == 'filecache')) {
             return false;
+        }
         return $this->mem->flush();
     }
 
-    function getStats ()
+    public function getStats ()
     {
-        if ((! $this->connected) || ($this->class == 'filecache'))
+        if ((! $this->connected) || ($this->class == 'filecache')) {
             return false;
+        }
         return $status = $this->mem->getStats();
     }
 
-    function printDetails ()
+    public function printDetails ()
     {
-        if ((! $this->connected) || ($this->class == 'filecache'))
+        if ((! $this->connected) || ($this->class == 'filecache')) {
             return false;
+        }
         $status = $this->mem->getStats();
         echo "<table border='1'>";
         echo "<tr><td>Memcache Server version:</td><td> " . $status["version"] . "</td></tr>";
@@ -195,6 +204,5 @@ class PMmemcached
         echo "<tr><td>Number of valid items removed from cache to free memory for new items.</td><td>" . $status["evictions"] . "</td></tr>";
         echo "</table>";
     }
-
 }
 

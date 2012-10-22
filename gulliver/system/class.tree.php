@@ -54,7 +54,7 @@ class Tree extends Xml_Node
      *
      * @return none
      */
-    function Tree ($xmlnode = null)
+    public function Tree ($xmlnode = null)
     {
         if (! isset( $xmlnode )) {
             return;
@@ -87,7 +87,7 @@ class Tree extends Xml_Node
      * @return object(Tree) $newNode
      */
 
-    function &addChild ($name, $label, $attributes = array())
+    public function &addChild ($name, $label, $attributes = array())
     {
         $newNode = new Tree( new Xml_Node( $name, 'open', $label, $attributes ) );
         $this->children[] = & $newNode;
@@ -99,7 +99,7 @@ class Tree extends Xml_Node
      *
      * @return string '<span>...</span>'
      */
-    function printPlus ()
+    public function printPlus ()
     {
         $plus = 'none';
         $minus = 'none';
@@ -121,7 +121,7 @@ class Tree extends Xml_Node
      *
      * @return $this->value
      */
-    function printLabel ()
+    public function printLabel ()
     {
         return $this->value;
     }
@@ -131,7 +131,7 @@ class Tree extends Xml_Node
      *
      * @return string $html
      */
-    function printContent ()
+    public function printContent ()
     {
         $html = '';
         $row = 0;
@@ -150,7 +150,7 @@ class Tree extends Xml_Node
      *
      * @return $obj->printObject( array( 'node' => &$this ) )
      */
-    function render ()
+    public function render ()
     {
         $obj = new objectTemplate( $this->template );
         return $obj->printObject( array ('node' => &$this

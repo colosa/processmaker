@@ -58,13 +58,14 @@ G::LoadThirdParty( 'pear/json', 'class.json' );
 
 class Processes
 {
+
     /**
-    * change Status of any Process
-    *
-    * @param string $sProUid
-    * @return boolean
-    * @package workflow.engine.ProcessMaker
-    */
+     * change Status of any Process
+     *
+     * @param string $sProUid
+     * @return boolean
+     * @package workflow.engine.ProcessMaker
+     */
     public function changeStatus ($sProUid = '')
     {
         $oProcess = new Process();
@@ -550,9 +551,9 @@ class Processes
     }
 
     /*
-  * get an unused Dynaform GUID
-  * @return $sDynUid
-  */
+     * get an unused Dynaform GUID
+     * @return $sDynUid
+     */
     public function getUnusedDynaformGUID ()
     {
         do {
@@ -952,7 +953,7 @@ class Processes
         } else {
             $oProcess->create( $row );
         }
-     }
+    }
 
     /**
      * Gets the subprocess data from a process and returns it in an array.
@@ -1470,11 +1471,11 @@ class Processes
     }
 
     /**
-    * Create ProcessCategory record
-    *
-    * @param $ProcessCategory array.
-    * @return void
-    */
+     * Create ProcessCategory record
+     *
+     * @param $ProcessCategory array.
+     * @return void
+     */
     public function createProcessCategoryRow ($row)
     {
         if ($row && is_array( $row ) && isset( $row['CATEGORY_UID'] )) {
@@ -1835,8 +1836,8 @@ class Processes
         foreach ($oData->reportTablesVars as $key => $val) {
             if (isset( $map[$val['REP_TAB_UID']] )) {
                 /*TODO: Why this can be not defined?? The scenario was when
-             * imported an existing process but as a new one
-             */
+                 * imported an existing process but as a new one
+                 */
                 $newGuid = $map[$val['REP_TAB_UID']];
                 $oData->reportTablesVars[$key]['REP_TAB_UID'] = $newGuid;
             }
@@ -2493,6 +2494,7 @@ class Processes
     }
     #@!neyek
 
+
     /**
      * Update Report Tables from an array of data
      *
@@ -2646,6 +2648,7 @@ class Processes
                 $bytesSaved += fwrite( $fp, $fsXmlGuid ); //writing the size of xml file
                 $bytesSaved += fwrite( $fp, $xmlGuid ); //writing the xmlfile
 
+
                 $xmlContent = file_get_contents( $sFileName );
                 $fsXmlContent = sprintf( "%09d", strlen( $xmlContent ) );
                 $bytesSaved += fwrite( $fp, $fsXmlContent ); //writing the size of xml file
@@ -2705,6 +2708,7 @@ class Processes
                             $fsFileName = sprintf( "%09d", strlen( $filename ) );
                             $bytesSaved += fwrite( $fp, $fsFileName ); //writing the fileName size
                             $bytesSaved += fwrite( $fp, $filename ); //writing the fileName size
+
 
                             $fileContent = file_get_contents( $sFileName );
                             $fsFileContent = sprintf( "%09d", strlen( $fileContent ) );
@@ -2811,6 +2815,7 @@ class Processes
         $contents = '';
         $contents = @fread( $fp, $fsData ); //reading string $oData
 
+
         if ($contents != '') {
             $oData = unserialize( $contents );
             if ($oData === false) {
@@ -2825,7 +2830,7 @@ class Processes
             $oData->dynaformFiles = array ();
             $sIdentifier = 0;
             while (! feof( $fp ) && is_numeric( $sIdentifier )) {
-                $sIdentifier = fread( $fp, 9 );//reading the block identifier
+                $sIdentifier = fread( $fp, 9 ); //reading the block identifier
                 if (is_numeric( $sIdentifier )) {
                     $fsXmlGuid = intval( $sIdentifier ); //reading the size of $filename
                     if ($fsXmlGuid > 0) {
@@ -3049,6 +3054,7 @@ class Processes
     /**
      * create the files from a .
      *
+     *
      * pm file
      *
      * @param $oData process data
@@ -3067,6 +3073,7 @@ class Processes
         $fsData = intval( fread( $fp, 9 ) ); //reading the size of $oData
         $contents = fread( $fp, $fsData ); //reading string $oData
 
+
         $path = PATH_DYNAFORM . $oData->process['PRO_UID'] . PATH_SEP;
         if (! is_dir( $path )) {
             G::verifyPath( $path, true );
@@ -3077,8 +3084,9 @@ class Processes
             $sIdentifier = fread( $fp, 9 ); //reading the size of $filename
             if (is_numeric( $sIdentifier )) {
                 $fsXmlGuid = intval( $sIdentifier ); //reading the size of $filename
-                if ($fsXmlGuid > 0)
+                if ($fsXmlGuid > 0) {
                     $XmlGuid = fread( $fp, $fsXmlGuid ); //reading string $XmlGuid
+                }
                 $fsXmlContent = intval( fread( $fp, 9 ) ); //reading the size of $XmlContent
                 if ($fsXmlContent > 0) {
                     $newXmlGuid = $oData->dynaformFiles[$XmlGuid];
@@ -3269,17 +3277,17 @@ class Processes
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
-            //Delete the steptrigger of process
-            /*$oCriteria = new Criteria('workflow');
-            $oCriteria->add(StepTriggerPeer::STEP_UID, $aRow['STEP_UID']);
-            $oDataseti = StepTriggerPeer::doSelectRS($oCriteria);
-            $oDataseti->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-            $oDataseti->next();
-            while ($aRowi = $oDataseti->getRow()) {
-            if ($oStepTrigger->stepTriggerExists($aRowi['STEP_UID'], $aRowi['TAS_UID'], $aRowi['TRI_UID'], $aRowi['ST_TYPE']))
-              $oStepTrigger->remove($aRowi['STEP_UID'], $aRowi['TAS_UID'], $aRowi['TRI_UID'], $aRowi['ST_TYPE']);
-            $oDataseti->next();
-            }*/
+                //Delete the steptrigger of process
+                /*$oCriteria = new Criteria('workflow');
+                  $oCriteria->add(StepTriggerPeer::STEP_UID, $aRow['STEP_UID']);
+                  $oDataseti = StepTriggerPeer::doSelectRS($oCriteria);
+                  $oDataseti->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                  $oDataseti->next();
+                  while ($aRowi = $oDataseti->getRow()) {
+                  if ($oStepTrigger->stepTriggerExists($aRowi['STEP_UID'], $aRowi['TAS_UID'], $aRowi['TRI_UID'], $aRowi['ST_TYPE']))
+                  $oStepTrigger->remove($aRowi['STEP_UID'], $aRowi['TAS_UID'], $aRowi['TRI_UID'], $aRowi['ST_TYPE']);
+                  $oDataseti->next();
+                  }*/
                 $oStep->remove( $aRow['STEP_UID'] );
                 $oDataset->next();
             }
@@ -3469,6 +3477,7 @@ class Processes
         //it was commented becuase it seems to be working fine
         //$this->createEventRows(isset($oData->event) ? $oData->event : array());
 
+
         $aRoutesUID = $this->createRouteRows( $oData->routes );
         $this->createLaneRows( $oData->lanes );
 
@@ -3492,8 +3501,8 @@ class Processes
                   $oRoute->update($aData);
               }
          }
-    }
-    else*/
+        }
+        else*/
 
         if (isset( $oData->gateways )) {
             $this->createGatewayRows( $oData->gateways );
@@ -3608,8 +3617,10 @@ class Processes
             }
         }
         $client = new SoapClient( $endpoint, $proxy );
-        $params = array ('userid' => $user,'password' => $pass);
-        $result = $client->__SoapCall( 'login', array ($params) );
+        $params = array ('userid' => $user,'password' => $pass
+        );
+        $result = $client->__SoapCall( 'login', array ($params
+        ) );
         if ($result->status_code == 0) {
             $sessionId = $result->message;
             return 1;
@@ -3619,12 +3630,12 @@ class Processes
     }
 
     /**
-    * Open a WebService public connection
-    *
-    * @param $user username for pm
-    * @param $pass password for the user
-    * @return 1 integer.
-    */
+     * Open a WebService public connection
+     *
+     * @param $user username for pm
+     * @param $pass password for the user
+     * @return 1 integer.
+     */
     public function ws_open_public ()
     {
         global $sessionId;
@@ -3683,8 +3694,10 @@ class Processes
 
         $client = new SoapClient( $endpoint, $proxy );
         $sessionId = '';
-        $params = array ('sessionId' => $sessionId);
-        $result = $client->__SoapCall( 'processList', array ($params) );
+        $params = array ('sessionId' => $sessionId
+        );
+        $result = $client->__SoapCall( 'processList', array ($params
+        ) );
         if ($result->status_code == 0) {
             return $result;
         }
@@ -3757,8 +3770,10 @@ class Processes
         $client = new SoapClient( $endpoint, $proxy );
 
         $sessionId = '';
-        $params = array ('sessionId' => $sessionId,'processId' => $proId);
-        $result = $client->__SoapCall( 'processGetData', array ($params) );
+        $params = array ('sessionId' => $sessionId,'processId' => $proId
+        );
+        $result = $client->__SoapCall( 'processGetData', array ($params
+        ) );
         if ($result->status_code == 0) {
             return $result;
         }
@@ -3811,6 +3826,7 @@ class Processes
 
         G::verifyPath( $dir, true ); //Create if it does not exist
 
+
         //Creating the default template (if not exists)
         if (! file_exists( $dir . "alert_message.html" )) {
             @copy( PATH_TPL . "mails" . PATH_SEP . "alert_message.html", $dir . "alert_message.html" );
@@ -3826,13 +3842,14 @@ class Processes
             $fileName = basename( $file );
 
             if ($fileName != "alert_message.html" && $fileName != "unassignedMessage.html") {
-                $filesList[] = array ("filepath" => $file,"filename" => $fileName);
+                $filesList[] = array ("filepath" => $file,"filename" => $fileName
+                );
             }
         }
         return $filesList;
     }
-
-} //end class processes
+}
+//end class processes
 
 
 /**
