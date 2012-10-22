@@ -217,8 +217,9 @@ class headPublisher
             return '';
         }
 
-            // available js-calendar languages array
-        $availableJsCalendarLang = array ('ca','cn','cz','de','en','es','fr','it','jp','nl','pl','pt','ro','ru','sv');
+        // available js-calendar languages array
+        $availableJsCalendarLang = array ('ca','cn','cz','de','en','es','fr','it','jp','nl','pl','pt','ro','ru','sv'
+        );
 
         // get the system language without locale
         $sysLang = explode( '-', SYS_LANG );
@@ -275,7 +276,7 @@ class headPublisher
         foreach ($this->leimnudLoad as $file) {
             $head .= "  eval(ajax_function('" . $file . "','',''));\n";
         }
-            //Adapts the add events on load to simple javascript sentences.
+        //Adapts the add events on load to simple javascript sentences.
         $this->headerScript = preg_replace( '/\s*leimnud.event.add\s*\(\s*window\s*,\s*(?:\'|")load(?:\'|")\s*,\s*function\(\)\{(.+)\}\s*\)\s*;?/', '$1', $this->headerScript );
         $head .= $this->headerScript;
         //$head .= "</script>\n";
@@ -452,6 +453,7 @@ class headPublisher
     /**
      * Function addExtJsScript
      * adding a javascript file .
+     *
      * js
      * add a js file in the extension Javascript Array,
      * later, when we use the includeExtJs function, all the files in this array will be included in the output
@@ -565,6 +567,7 @@ class headPublisher
     /**
      * Function AddContent
      * adding a html file .
+     *
      * html.
      * the main idea for this function, is to be a replacement to homonymous function in Publisher class.
      * with this function you are adding Content to the output, the class HeadPublisher will maintain a list of
@@ -595,7 +598,8 @@ class headPublisher
      */
     function Assign ($variable, $value)
     {
-        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'string');
+        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'string'
+        );
     }
 
     function AssignVar ($name, $value)
@@ -619,7 +623,8 @@ class headPublisher
      */
     function AssignNumber ($variable, $value)
     {
-        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'number');
+        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'number'
+        );
     }
 
     /**
@@ -664,13 +669,14 @@ class headPublisher
 
     function stripCodeQuotes ($sJson)
     {
-        $fields = array ("editor","renderer");
+        $fields = array ("editor","renderer"
+        );
         foreach ($fields as $field) {
             $pattern = '/"(' . $field . ')":"[a-zA-Z.()]*"/';
             //      echo $pattern."<br>";
             preg_match( $pattern, $sJson, $matches );
             //      var_dump ($matches);
-            //      echo "<br>";
+                //      echo "<br>";
             if (! empty( $matches )) {
                 $rendererMatch = $matches[0];
                 $replaceBy = explode( ":", $matches[0] );
@@ -678,7 +684,7 @@ class headPublisher
                 $tmpString = implode( ":", $replaceBy );
                 $sJson = str_replace( $rendererMatch, $tmpString, $sJson );
                 //        var_dump ($sJson);
-                //        echo "<br>";
+                    //        echo "<br>";
             }
         }
         return $sJson;
