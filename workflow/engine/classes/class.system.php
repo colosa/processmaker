@@ -33,7 +33,6 @@
  * date May 12th, 2010
  *
  * @package workflow.engine.classes
- *
  */
 
 class System
