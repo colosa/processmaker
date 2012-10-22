@@ -20,7 +20,6 @@ require_once 'classes/model/om/BaseAdditionalTables.php';
  */
 class AdditionalTables extends BaseAdditionalTables
 {
-
     public $fields = array();
     public $primaryKeys = array();
 
@@ -28,7 +27,7 @@ class AdditionalTables extends BaseAdditionalTables
      * Function load
      * access public
      */
-    public function load($sUID, $bFields=false)
+    public function load($sUID, $bFields = false)
     {
         $oAdditionalTables = AdditionalTablesPeer::retrieveByPK($sUID);
 
@@ -82,7 +81,7 @@ class AdditionalTables extends BaseAdditionalTables
         return $this->fields;
     }
 
-    public function getPrimaryKeys($type='complete')
+    public function getPrimaryKeys($type = 'complete')
     {
         $this->primaryKeys = array();
         foreach ($this->fields as $field) {
@@ -136,7 +135,7 @@ class AdditionalTables extends BaseAdditionalTables
     /**
      * Create & Update function
      */
-    public function create($aData, $aFields=array())
+    public function create($aData, $aFields = array())
     {
         if (!isset($aData['ADD_TAB_UID']) || (isset($aData['ADD_TAB_UID']) && $aData['ADD_TAB_UID'] == '')) {
             $aData['ADD_TAB_UID'] = G::generateUniqueID();
@@ -177,7 +176,7 @@ class AdditionalTables extends BaseAdditionalTables
         }
     }
 
-    public function update($aData, $aFields=array())
+    public function update($aData, $aFields = array())
     {
         $oConnection = Propel::getConnection(AdditionalTablesPeer::DATABASE_NAME);
         try {
@@ -188,16 +187,6 @@ class AdditionalTables extends BaseAdditionalTables
                     $oConnection->begin();
                     $iResult = $oAdditionalTables->save();
                     $oConnection->commit();
-                    /*                     * * DEPRECATED
-                      require_once 'classes/model/ShadowTable.php';
-                      $oShadowTable = new ShadowTable();
-                      $oShadowTable->create(array('ADD_TAB_UID' => $aData['ADD_TAB_UID'],
-                      'SHD_ACTION'  => 'ALTER',
-                      'SHD_DETAILS' => serialize($aFields),
-                      'USR_UID'     => (isset($_SESSION['USER_LOGGED']) ? $_SESSION['USER_LOGGED'] : ''),
-                      'APP_UID'     => '',
-                      'SHD_DATE'    => date('Y-m-d H:i:s')));
-                      return $iResult; */
                 } else {
                     $sMessage = '';
                     $aValidationFailures = $oAdditionalTables->getValidationFailures();
@@ -320,7 +309,7 @@ class AdditionalTables extends BaseAdditionalTables
         }
     }
 
-    public function getAllData($sUID, $start=null, $limit=null, $keyOrderUppercase=true)
+    public function getAllData($sUID, $start = null, $limit = null, $keyOrderUppercase = true)
     {
         $addTab = new AdditionalTables();
         $aData = $addTab->load($sUID, true);
@@ -429,7 +418,7 @@ class AdditionalTables extends BaseAdditionalTables
                 }
             }
             if ($oClass->validate()) {
-                $iResult = $oClass->save();                
+                $iResult = $oClass->save();
                 if ($keysAutoIncrement == 1 && $aFields[$keyUIDAutoIncrement] == '' && isset($_SESSION['APPLICATION']) && $_SESSION['APPLICATION'] != '') {
                     G::LoadClass('case');
                     $oCaseKeyAuto = new Cases();
@@ -437,7 +426,7 @@ class AdditionalTables extends BaseAdditionalTables
                     $aFields = $oCaseKeyAuto->loadCase($_SESSION['APPLICATION']);
                     $aFields['APP_DATA'][$keyUIDAutoIncrement] = $newId;
                     if (isset($_POST['form'])) {
-                        $_POST['form'][$keyUIDAutoIncrement] = $newId;    
+                        $_POST['form'][$keyUIDAutoIncrement] = $newId;
                     }
                     $oCaseKeyAuto->updateCase($_SESSION['APPLICATION'], $aFields);
                 }
@@ -568,7 +557,7 @@ class AdditionalTables extends BaseAdditionalTables
      * @param string $sGrid
      * @return number
      */
-    public function populateReportTable($tableName, $sConnection='rp', $type='NORMAL', $processUid='', $gridKey='')
+    public function populateReportTable($tableName, $sConnection = 'rp', $type = 'NORMAL', $processUid = '', $gridKey = '')
     {
         require_once "classes/model/Application.php";
 
@@ -727,7 +716,7 @@ class AdditionalTables extends BaseAdditionalTables
         }
     }
 
-    public function getTableVars($uid, $bWhitType=false)
+    public function getTableVars($uid, $bWhitType = false)
     {
         require_once 'classes/model/Fields.php';
         try {
@@ -761,7 +750,7 @@ class AdditionalTables extends BaseAdditionalTables
         }
     }
 
-    public function getAll($start=0, $limit=20, $filter='', $process=null)
+    public function getAll($start = 0, $limit = 20, $filter = '', $process = null)
     {
         $oCriteria = new Criteria('workflow');
         $oCriteria->addSelectColumn(AdditionalTablesPeer::ADD_TAB_UID);
@@ -839,14 +828,6 @@ class AdditionalTables extends BaseAdditionalTables
             }
         }
 
-        // // fltering by proces title
-        // if(isset($filter['process'])) {
-        //    foreach ($addTables as $i => $addTable) {
-        //     if (strpos($addTable['PRO_TITLE'], $filter['process']) === false)
-        //       unset($addTables[$i]);
-        //   }
-        // }
-
         return array('rows' => $addTables, 'count' => $count);
     }
 
@@ -856,7 +837,7 @@ class AdditionalTables extends BaseAdditionalTables
      * Don't use this method, it was left only for backward compatibility
      * for some external plugins that still is using it
      */
-    public function createPropelClasses($sTableName, $sClassName, $aFields, $sAddTabUid, $connection='workflow')
+    public function createPropelClasses($sTableName, $sClassName, $aFields, $sAddTabUid, $connection = 'workflow')
     {
         try {
             /* $aUID = array('FLD_NAME'           => 'PM_UNIQUE_ID',
@@ -1257,5 +1238,4 @@ class AdditionalTables extends BaseAdditionalTables
         }
     }
 }
-// AdditionalTables
- 
+

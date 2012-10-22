@@ -31,10 +31,9 @@ class AppFolder extends BaseAppFolder
      * @param strin(32) $folderParent
      * @return Ambigous <>|number
      */
-    function createFolder ($folderName, $folderParent = "/", $action = "createifnotexists")
+    public function createFolder ($folderName, $folderParent = "/", $action = "createifnotexists")
     {
-        $validActions = array ("createifnotexists","create","update"
-        );
+        $validActions = array ("createifnotexists","create","update");
         if (! in_array( $action, $validActions )) {
             $action = "createifnotexists";
         }
@@ -93,7 +92,7 @@ class AppFolder extends BaseAppFolder
      * @param strin(32) $sessionID
      * @return string Last Folder ID generated
      */
-    function createFromPath ($folderPath, $sessionID = "")
+    public function createFromPath ($folderPath, $sessionID = "")
     {
         if ($sessionID == "") {
             $sessionID = $_SESSION['APPLICATION'];
@@ -121,7 +120,7 @@ class AppFolder extends BaseAppFolder
      * @param string(32) $sessionID Application ID
      * @return string
      */
-    function parseTags ($fileTags, $sessionID = "")
+    public function parseTags ($fileTags, $sessionID = "")
     {
 
         if ($sessionID == "") {
@@ -141,7 +140,7 @@ class AppFolder extends BaseAppFolder
      * @param string(32) $folderID
      * @return multitype:
      */
-    function getFolderList ($folderID, $limit = 0, $start = 0)
+    public function getFolderList ($folderID, $limit = 0, $start = 0)
     {
         $Criteria = new Criteria( 'workflow' );
         $Criteria->clearSelectColumns()->clearOrderByColumns();
@@ -177,7 +176,7 @@ class AppFolder extends BaseAppFolder
      * @param string(32) $folderUid
      * @return array <multitype:, mixed>
      */
-    function load ($folderUid)
+    public function load ($folderUid)
     {
         $tr = AppFolderPeer::retrieveByPK( $folderUid );
         if ((is_object( $tr ) && get_class( $tr ) == 'AppFolder')) {
@@ -203,7 +202,7 @@ class AppFolder extends BaseAppFolder
         return $fields;
     }
 
-    function getFolderStructure ($folderId)
+    public function getFolderStructure ($folderId)
     {
         $folderObj = $this->load( $folderId );
         $folderArray[$folderObj['FOLDER_UID']] = array ("NAME" => $folderObj['FOLDER_NAME'],"PARENT" => $folderObj['FOLDER_PARENT_UID']
@@ -220,7 +219,7 @@ class AppFolder extends BaseAppFolder
         return $folderArray;
     }
 
-    function getFolderContent ($folderID, $docIdFilter = array(), $keyword = null, $searchType = null, $limit = 0, $start = 0, $user = '', $onlyActive = false)
+    public function getFolderContent ($folderID, $docIdFilter = array(), $keyword = null, $searchType = null, $limit = 0, $start = 0, $user = '', $onlyActive = false)
     {
         require_once ("classes/model/AppDocument.php");
         require_once ("classes/model/InputDocument.php");
@@ -308,7 +307,8 @@ class AppFolder extends BaseAppFolder
                             }
                         } elseif ($lastVersion == $row['DOC_VERSION']) {
                             //Only Last Document version
-                            if ($searchType == "ALL") { // If search in name of docs is active then filter
+                            if ($searchType == "ALL") {
+                                // If search in name of docs is active then filter
                                 if ((stripos( $completeInfo['APP_DOC_FILENAME'], $keyword ) !== false) || (stripos( $completeInfo['APP_DOC_TAGS'], $keyword ) !== false)) {
                                     $response['documents'][] = $completeInfo;
                                 }
@@ -325,7 +325,7 @@ class AppFolder extends BaseAppFolder
         return ($response);
     }
 
-    function getCompleteDocumentInfo ($appUid, $appDocUid, $docVersion, $docUid, $usrId)
+    public function getCompleteDocumentInfo ($appUid, $appDocUid, $docVersion, $docUid, $usrId)
     {
         require_once ("classes/model/AppDocument.php");
         require_once ("classes/model/InputDocument.php");
@@ -339,7 +339,8 @@ class AppFolder extends BaseAppFolder
         G::LoadClass( 'process' );
         $oProcess = new Process();
         if (($oApp->exists( $appUid )) || ($appUid == "00000000000000000000000000000000")) {
-            if ($appUid == "00000000000000000000000000000000") { //External Files
+            if ($appUid == "00000000000000000000000000000000") {
+                //External Files
                 $row1 = $oAppDocument->load( $appDocUid, $docVersion );
                 $row2 = array ('PRO_TITLE' => G::LoadTranslation( 'ID_NOT_PROCESS_RELATED' ));
                 $row3 = array ('APP_TITLE' => G::LoadTranslation( 'ID_NOT_PROCESS_RELATED' ));
@@ -400,7 +401,6 @@ class AppFolder extends BaseAppFolder
                         $downloadLabel1 = "";
                     }
 
-                    ///////
                     if (! empty( $row1["APP_DOC_PLUGIN"] )) {
                         $pluginRegistry = &PMPluginRegistry::getSingleton();
                         $pluginName = $row1["APP_DOC_PLUGIN"];
@@ -434,7 +434,6 @@ class AppFolder extends BaseAppFolder
                         $row1["APP_DOC_PLUGIN"] = $fieldValue;
                     }
                     break;
-
                 default:
                     $row4 = array ();
                     $versioningEnabled = false;
@@ -473,8 +472,7 @@ class AppFolder extends BaseAppFolder
             }
             //**** End get docinfo
             $infoMerged = array_merge( $row1, $row2, $row3, $row4, $row5, $row6 );
-            //krumo($infoMerged);
-            //****************************************************************************************************
+
             $sUserUID = $_SESSION['USER_LOGGED'];
             $aObjectPermissions = array ();
             if (isset( $infoMerged['PRO_UID'] )) {
@@ -508,12 +506,11 @@ class AppFolder extends BaseAppFolder
                     $aObjectPermissions['OUTPUT_DOCUMENTS'] = array (- 1);
                 }
             }
-            //****************************************************************************************************
             return array_merge( $infoMerged, $aObjectPermissions );
         }
     }
 
-    function getFolderChilds ($folderID, $folderArray)
+    public function getFolderChilds ($folderID, $folderArray)
     {
         $folderList = $this->getFolderList( $folderID );
         $foldersList = array ();
@@ -524,7 +521,7 @@ class AppFolder extends BaseAppFolder
         return (array_merge( $folderArray, $foldersList ));
     }
 
-    function getFolderTags ($rootFolder)
+    public function getFolderTags ($rootFolder)
     {
         $folderArray[$rootFolder] = $rootFolder;
         $foldersToProcess = $this->getFolderChilds( $rootFolder, $folderArray );
@@ -536,22 +533,21 @@ class AppFolder extends BaseAppFolder
             foreach ($filesList as $key => $fileInfo) {
                 $fileTags = explode( ",", $fileInfo['APP_DOC_TAGS'] );
                 foreach ($fileTags as $key1 => $tag) {
-                    if (! (isset( $tagsInfo[$tag] )))
+                    if (! (isset( $tagsInfo[$tag] ))) {
                         $tagsInfo[$tag] = 0;
+                    }
                     $tagsInfo[$tag] ++;
                 }
             }
         }
         return $tagsInfo;
-
     }
 
-    function remove ($FolderUid, $rootfolder)
+    public function remove ($FolderUid, $rootfolder)
     {
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->add( AppFolderPeer::FOLDER_UID, $FolderUid );
         AppFolderPeer::doDelete( $oCriteria );
     }
 }
-// AppFolder
 

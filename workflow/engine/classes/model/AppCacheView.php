@@ -34,7 +34,7 @@ class AppCacheView extends BaseAppCacheView
     public $confCasesList;
     public $pathToAppCacheFiles;
 
-    public function getAllCounters($aTypes, $userUid, $processSummary=false)
+    public function getAllCounters($aTypes, $userUid, $processSummary = false)
     {
         $aResult = array();
 
@@ -248,7 +248,7 @@ class AppCacheView extends BaseAppCacheView
      * @param string $sUIDUser
      * @return $rows
      */
-    public function getSelfServiceTasks($userUid='')
+    public function getSelfServiceTasks($userUid = '')
     {
         $rows[] = array();
         $tasks  = array();
@@ -304,7 +304,8 @@ class AppCacheView extends BaseAppCacheView
         return $tasks;
     }
 
-    public function getSelfServiceCasesByEvaluate($userUid) {
+    public function getSelfServiceCasesByEvaluate($userUid)
+    {
         $cases = array();
 
         //check groups assigned to SelfService task
@@ -327,34 +328,34 @@ class AppCacheView extends BaseAppCacheView
         $rs->next();
 
         if ($rs->getRecordCount() > 0) {
-          if (!class_exists('Cases')) {
-              G::loadClass('case');
-          }
-          $caseInstance = new Cases();
-          while ($row = $rs->getRow()) {
-              $tasGroupVariable = str_replace(array('@', '#'), '', $row['TAS_GROUP_VARIABLE']);
-              $c2 = new Criteria();
-              $c2->clearSelectColumns();
-              $c2->addSelectColumn(AppDelegationPeer::APP_UID);
-              $c2->add(AppDelegationPeer::TAS_UID, $row['TAS_UID']);
-              $c2->add(AppDelegationPeer::USR_UID, '');
-              $c2->add(AppDelegationPeer::DEL_THREAD_STATUS, 'OPEN');
-              $rs2 = AppDelegationPeer::doSelectRS($c2);
-              $rs2->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-              $rs2->next();
-              while ($row2 = $rs2->getRow()) {
-                  $caseData = $caseInstance->LoadCase($row2['APP_UID']);
-                  if (isset($caseData['APP_DATA'][$tasGroupVariable])) {
-                    if (trim($caseData['APP_DATA'][$tasGroupVariable]) != '') {
-                      if (in_array(trim($caseData['APP_DATA'][$tasGroupVariable]), $aGroups)) {
-                        $cases[] = $row2['APP_UID'];
-                      }
+            if (!class_exists('Cases')) {
+                G::loadClass('case');
+            }
+            $caseInstance = new Cases();
+            while ($row = $rs->getRow()) {
+                $tasGroupVariable = str_replace(array('@', '#'), '', $row['TAS_GROUP_VARIABLE']);
+                $c2 = new Criteria();
+                $c2->clearSelectColumns();
+                $c2->addSelectColumn(AppDelegationPeer::APP_UID);
+                $c2->add(AppDelegationPeer::TAS_UID, $row['TAS_UID']);
+                $c2->add(AppDelegationPeer::USR_UID, '');
+                $c2->add(AppDelegationPeer::DEL_THREAD_STATUS, 'OPEN');
+                $rs2 = AppDelegationPeer::doSelectRS($c2);
+                $rs2->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                $rs2->next();
+                while ($row2 = $rs2->getRow()) {
+                    $caseData = $caseInstance->LoadCase($row2['APP_UID']);
+                    if (isset($caseData['APP_DATA'][$tasGroupVariable])) {
+                        if (trim($caseData['APP_DATA'][$tasGroupVariable]) != '') {
+                            if (in_array(trim($caseData['APP_DATA'][$tasGroupVariable]), $aGroups)) {
+                                $cases[] = $row2['APP_UID'];
+                            }
+                        }
                     }
-                  }
-                  $rs2->next();
-              }
-              $rs->next();
-          }
+                    $rs2->next();
+                }
+                $rs->next();
+            }
         }
         return $cases;
     }
@@ -853,7 +854,7 @@ class AppCacheView extends BaseAppCacheView
      * @param Boolean $doCount
      * @return Criteria
      */
-    public function getGeneralCases($doCount='false')
+    public function getGeneralCases($doCount = 'false')
     {
         if ($doCount && !isset($this->confCasesList['PMTable']) && !empty($this->confCasesList['PMTable'])) {
             $oCriteria = new Criteria('workflow');
@@ -1021,7 +1022,7 @@ class AppCacheView extends BaseAppCacheView
         return $row[0];
     }
 
-    public function checkGrantsForUser($root=false)
+    public function checkGrantsForUser($root = false)
     {
         try {
             if ($root) {
@@ -1144,7 +1145,7 @@ class AppCacheView extends BaseAppCacheView
      * Insert an app delegatiojn trigger
      * @return void
      */
-    public function triggerAppDelegationInsert($lang, $recreate=false)
+    public function triggerAppDelegationInsert($lang, $recreate = false)
     {
         $con = Propel::getConnection("workflow");
         $stmt = $con->createStatement();
@@ -1191,7 +1192,7 @@ class AppCacheView extends BaseAppCacheView
      * update the App Delegation triggers
      * @return void
      */
-    public function triggerAppDelegationUpdate($lang, $recreate=false)
+    public function triggerAppDelegationUpdate($lang, $recreate = false)
     {
         $con = Propel::getConnection("workflow");
         $stmt = $con->createStatement();
@@ -1238,7 +1239,7 @@ class AppCacheView extends BaseAppCacheView
      * update the Application triggers
      * @return void
      */
-    public function triggerApplicationUpdate($lang, $recreate=false)
+    public function triggerApplicationUpdate($lang, $recreate = false)
     {
         $con = Propel::getConnection("workflow");
         $stmt = $con->createStatement();
@@ -1283,7 +1284,7 @@ class AppCacheView extends BaseAppCacheView
      * update the Application triggers
      * @return void
      */
-    public function triggerApplicationDelete($lang, $recreate=false)
+    public function triggerApplicationDelete($lang, $recreate = false)
     {
         $con = Propel::getConnection("workflow");
         $stmt = $con->createStatement();
@@ -1324,7 +1325,7 @@ class AppCacheView extends BaseAppCacheView
         return 'exists';
     }
 
-    public function triggerContentUpdate($lang, $recreate=false)
+    public function triggerContentUpdate($lang, $recreate = false)
     {
         $cnn = Propel::getConnection("workflow");
         $stmt = $cnn->createStatement();
@@ -1456,7 +1457,7 @@ class AppCacheView extends BaseAppCacheView
         return $aRows;
     }
 
-    public function appTitleByTaskCaseLabelUpdate($taskUid, $lang, $cron=0)
+    public function appTitleByTaskCaseLabelUpdate($taskUid, $lang, $cron = 0)
     {
         $taskDefTitle = null;
 
@@ -1537,5 +1538,4 @@ class AppCacheView extends BaseAppCacheView
         }
     }
 }
-//AppCacheView
 

@@ -15,7 +15,6 @@ require_once 'classes/model/om/BaseAppNotes.php';
  */
 class AppNotes extends BaseAppNotes
 {
-
     public function getNotesList ($appUid, $usrUid = '', $start = '', $limit = '')
     {
         require_once ("classes/model/Users.php");
@@ -206,25 +205,8 @@ class AppNotes extends BaseAppNotes
 
             $sSubject = G::replaceDataField( $configNoteNotification['subject'], $aFields );
 
-            //erik: new behaviour for messages
-            //G::loadClass('configuration');
-            //$oConf = new Configurations;
-            //$oConf->loadConfig($x, 'TAS_EXTRA_PROPERTIES', $aTaskInfo['TAS_UID'], '', '');
-            //$conf = $oConf->aConfig;
-            /*
-            if( isset($conf['TAS_DEF_MESSAGE_TYPE']) && isset($conf['TAS_DEF_MESSAGE_TEMPLATE'])
-            && $conf['TAS_DEF_MESSAGE_TYPE'] == 'template' && $conf['TAS_DEF_MESSAGE_TEMPLATE'] != '') {
-
-            $pathEmail = PATH_DATA_SITE . 'mailTemplates' . PATH_SEP . $aTaskInfo['PRO_UID'] . PATH_SEP;
-            $fileTemplate = $pathEmail . $conf['TAS_DEF_MESSAGE_TEMPLATE'];
-
-            if ( ! file_exists ( $fileTemplate ) ) {
-              throw new Exception("Template file '$fileTemplate' does not exist.");
-            }
-            $sBody = G::replaceDataField(file_get_contents($fileTemplate), $aFields);
-            } else {*/
             $sBody = nl2br( G::replaceDataField( $configNoteNotification['body'], $aFields ) );
-            /*}*/
+
             G::LoadClass( 'spool' );
             $oUser = new Users();
             $recipientsArray = explode( ",", $noteRecipients );

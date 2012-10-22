@@ -56,9 +56,8 @@ class AppDelegation extends BaseAppDelegation
      * @param $isSubprocess is a subprocess inside a process?
      * @return delegation index of the application delegation.
      */
-    function createAppDelegation ($sProUid, $sAppUid, $sTasUid, $sUsrUid, $sAppThread, $iPriority = 3, $isSubprocess = false, $sPrevious = -1, $sNextTasParam = null)
+    public function createAppDelegation ($sProUid, $sAppUid, $sTasUid, $sUsrUid, $sAppThread, $iPriority = 3, $isSubprocess = false, $sPrevious = -1, $sNextTasParam = null)
     {
-
         if (! isset( $sProUid ) || strlen( $sProUid ) == 0) {
             throw (new Exception( 'Column "PRO_UID" cannot be null.' ));
         }
@@ -159,7 +158,7 @@ class AppDelegation extends BaseAppDelegation
      * @return array $Fields the fields
      */
 
-    function Load ($AppUid, $sDelIndex)
+    public function Load ($AppUid, $sDelIndex)
     {
         $con = Propel::getConnection( AppDelegationPeer::DATABASE_NAME );
         try {
@@ -213,7 +212,7 @@ class AppDelegation extends BaseAppDelegation
         }
     }
 
-    function remove ($sApplicationUID, $iDelegationIndex)
+    public function remove ($sApplicationUID, $iDelegationIndex)
     {
         $oConnection = Propel::getConnection( StepTriggerPeer::DATABASE_NAME );
         try {
@@ -232,7 +231,7 @@ class AppDelegation extends BaseAppDelegation
 
     // TasTypeDay = 1  => working days
     // TasTypeDay = 2  => calendar days
-    function calculateDueDate ($sNextTasParam)
+    public function calculateDueDate ($sNextTasParam)
     {
         //Get Task properties
         $task = TaskPeer::retrieveByPK( $this->getTasUid() );
@@ -272,7 +271,7 @@ class AppDelegation extends BaseAppDelegation
         return $iDueDate;
     }
 
-    function getDiffDate ($date1, $date2)
+    public function getDiffDate ($date1, $date2)
     {
         return ($date1 - $date2) / (24 * 60 * 60); //days
         return ($date1 - $date2) / 3600;
@@ -445,23 +444,15 @@ class AppDelegation extends BaseAppDelegation
 
                 //and finally save the record
                 $RES = $oAppDel->save();
-                //print "<tr><td>$iDelegateDate </td><td>$iInitDate </td><td>$iDueDate </td><td>$iFinishDate </td><td>$isStarted </td><td>$isFinished </td><td>$isDelayed</td><td>$queueDuration </td><td>$delDuration </td>" .
-                //       "<td>$delayDuration</td><td>$overduePercentage</td><td>" . $row['DEL_INDEX'] . " $RES </td></tr>";
-
-
-                //UPDATE APP_DELEGATION SET DEL_DELAYED = 0
-                //where
-                // APP_OVERDUE_PERCENTAGE < 0
                 $rs->next();
                 $row = $rs->getRow();
-
             }
         } catch (Exception $oError) {
             error_log( $oError->getMessage() );
         }
     }
 
-    function getLastDeleration ($APP_UID)
+    public function getLastDeleration ($APP_UID)
     {
         $c = new Criteria( 'workflow' );
         $c->addSelectColumn( AppDelegationPeer::APP_UID );
@@ -486,5 +477,4 @@ class AppDelegation extends BaseAppDelegation
         return $rs->getRow();
     }
 }
-// AppDelegation
 

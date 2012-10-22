@@ -121,5 +121,4 @@ class AppMessage extends BaseAppMessage
         }
     }
 }
-// AppMessage
 

@@ -20,7 +20,6 @@ require_once 'classes/model/om/BaseCaseTracker.php';
  */
 class CaseTracker extends BaseCaseTracker
 {
-
     public function load ($sProcessUID)
     {
         try {
@@ -110,7 +109,7 @@ class CaseTracker extends BaseCaseTracker
         }
     }
 
-    function caseTrackerExists ($sUid)
+    public function caseTrackerExists ($sUid)
     {
         try {
             $oObj = CaseTrackerPeer::retrieveByPk( $sUid );
@@ -120,5 +119,4 @@ class CaseTracker extends BaseCaseTracker
         }
     }
 }
-// CaseTracker
 

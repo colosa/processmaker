@@ -67,6 +67,7 @@ class CalendarDefinition extends BaseCalendarDefinition
             return $return;
         }
     }
+
     //Added by qennix
     //Gets criteria for listing
     public function getCalendarCriterias ($filter, $start, $limit)
@@ -143,6 +144,7 @@ class CalendarDefinition extends BaseCalendarDefinition
         //********************
         return $fields;
     }
+
     //for edit
     public function getCalendarInfoE ($CalendarUid)
     {
@@ -291,11 +293,6 @@ class CalendarDefinition extends BaseCalendarDefinition
             }
             //return array ( 'codError' => -100, 'rowsAffected' => 0, 'message' => $msg );
         }
-        //return array ( 'codError' => 0, 'rowsAffected' => $res, 'message' => '');
-        //to do: uniform  coderror structures for all classes
-        //if ( $res['codError'] < 0 ) {
-        //  G::SendMessageText ( $res['message'] , 'error' );
-        //}
     }
 
     public function deleteCalendar ($CalendarUid)
@@ -328,11 +325,6 @@ class CalendarDefinition extends BaseCalendarDefinition
             G::SendMessage( "ERROR", $msg );
             //return array ( 'codError' => -100, 'rowsAffected' => 0, 'message' => $msg );
         }
-        //return array ( 'codError' => 0, 'rowsAffected' => $res, 'message' => '');
-        //to do: uniform  coderror structures for all classes
-        //if ( $res['codError'] < 0 ) {
-        //  G::SendMessageText ( $res['message'] , 'error' );
-        //}
     }
 
     public function getCalendarFor ($userUid, $proUid, $tasUid, $sw_validate = true)
@@ -416,6 +408,7 @@ class CalendarDefinition extends BaseCalendarDefinition
             }
         }
     }
+
     //Added by Qennix
     //Counts all users,task,process by calendar
     public function getAllCounterByCalendar ($type)
@@ -451,5 +444,4 @@ class CalendarDefinition extends BaseCalendarDefinition
         return $oDataset->getRow();
     }
 }
-// CalendarDefinition
 

@@ -37,7 +37,7 @@ class AppEvent extends BaseAppEvent
         }
     }
 
-    function create ($aData)
+    public function create ($aData)
     {
         $oConnection = Propel::getConnection( AppEventPeer::DATABASE_NAME );
         try {
@@ -62,7 +62,7 @@ class AppEvent extends BaseAppEvent
         }
     }
 
-    function update ($aData)
+    public function update ($aData)
     {
         $oConnection = Propel::getConnection( AppEventPeer::DATABASE_NAME );
         try {
@@ -91,7 +91,7 @@ class AppEvent extends BaseAppEvent
         }
     }
 
-    function remove ($sApplicationUID, $iDelegation, $sEvnUid)
+    public function remove ($sApplicationUID, $iDelegation, $sEvnUid)
     {
         $oConnection = Propel::getConnection( AppEventPeer::DATABASE_NAME );
         try {
@@ -110,7 +110,7 @@ class AppEvent extends BaseAppEvent
         }
     }
 
-    function getAppEventsCriteria ($sProcessUid = '', $sStatus = '', $EVN_ACTION = '')
+    public function getAppEventsCriteria ($sProcessUid = '', $sStatus = '', $EVN_ACTION = '')
     {
         try {
             require_once 'classes/model/Event.php';
@@ -347,12 +347,11 @@ class AppEvent extends BaseAppEvent
         }
     }
 
-    function close ($APP_UID, $DEL_INDEX)
+    public function close ($APP_UID, $DEL_INDEX)
     {
         $aRow = $this->load( $APP_UID, $DEL_INDEX );
         $aRow['APP_EVN_STATUS'] = 'CLOSE';
         $this->update( $aRow );
     }
 }
-// AppEvent
 

@@ -578,7 +578,7 @@ class AppDocument extends BaseAppDocument
         return $res;
     }
 
-    function getObject ($APP_UID, $DEL_INDEX, $STEP_UID_OBJ, $APP_DOC_TYPE)
+    public function getObject ($APP_UID, $DEL_INDEX, $STEP_UID_OBJ, $APP_DOC_TYPE)
     {
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->add( AppDocumentPeer::APP_UID, $APP_UID );
@@ -617,5 +617,4 @@ class AppDocument extends BaseAppDocument
         return $documents;
     }
 }
-// AppDocument
 

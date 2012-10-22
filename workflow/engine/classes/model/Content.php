@@ -47,10 +47,10 @@ class Content extends BaseContent
     public $rowsClustered;
     public $langsAsoc;
     /*
-  * Load the content row specified by the parameters:
-  * @param string $sUID
-  * @return variant
-  */
+     * Load the content row specified by the parameters:
+     * @param string $sUID
+     * @return variant
+    */
     public function load ($ConCategory, $ConParent, $ConId, $ConLang)
     {
         $content = ContentPeer::retrieveByPK( $ConCategory, $ConParent, $ConId, $ConLang );
@@ -67,14 +67,15 @@ class Content extends BaseContent
         }
         return $ConValue;
     }
+
     /*
-  * Find a valid Lang for current Content. The most recent
-  * @param string $ConCategory
-  * @param string  $ConParent
-  * @param string $ConId
-  * @return string
-  *
-  */
+    * Find a valid Lang for current Content. The most recent
+    * @param string $ConCategory
+    * @param string  $ConParent
+    * @param string $ConId
+    * @return string
+    *
+    */
     public function getDefaultContentLang ($ConCategory, $ConParent, $ConId, $destConLang)
     {
         $Criteria = new Criteria( 'workflow' );
@@ -102,6 +103,7 @@ class Content extends BaseContent
         }
         return ($defaultLang);
     }
+
     /*
     * Load the content row and the Save automatically the row for the destination language
     * @param string $ConCategory
@@ -150,14 +152,14 @@ class Content extends BaseContent
     }
 
     /*
-  * Insert a content row
-  * @param string $ConCategory
-  * @param string $ConParent
-  * @param string $ConId
-  * @param string $ConLang
-  * @param string $ConValue
-  * @return variant
-  */
+    * Insert a content row
+    * @param string $ConCategory
+    * @param string $ConParent
+    * @param string $ConId
+    * @param string $ConLang
+    * @param string $ConValue
+    * @return variant
+    */
     public function addContent ($ConCategory, $ConParent, $ConId, $ConLang, $ConValue)
     {
         try {
@@ -197,14 +199,14 @@ class Content extends BaseContent
     }
 
     /*
-  * Insert a content row
-  * @param string $ConCategory
-  * @param string $ConParent
-  * @param string $ConId
-  * @param string $ConLang
-  * @param string $ConValue
-  * @return variant
-  */
+    * Insert a content row
+    * @param string $ConCategory
+    * @param string $ConParent
+    * @param string $ConId
+    * @param string $ConLang
+    * @param string $ConValue
+    * @return variant
+    */
     public function insertContent ($ConCategory, $ConParent, $ConId, $ConLang, $ConValue)
     {
         try {
@@ -227,14 +229,14 @@ class Content extends BaseContent
     }
 
     /*
-  * remove a content row
-  * @param string $ConCategory
-  * @param string $ConParent
-  * @param string $ConId
-  * @param string $ConLang
-  * @param string $ConValue
-  * @return variant
-  */
+    * remove a content row
+    * @param string $ConCategory
+    * @param string $ConParent
+    * @param string $ConId
+    * @param string $ConLang
+    * @param string $ConValue
+    * @return variant
+    */
     public function removeContent ($ConCategory, $ConParent, $ConId)
     {
         try {
@@ -257,15 +259,15 @@ class Content extends BaseContent
     }
 
     /*
-  * Reasons if the record already exists
-  *
-  * @param  string  $ConCategory
-  * @param  string  $ConParent
-  * @param  string  $ConId
-  * @param  string  $ConLang
-  * @param  string  $ConValue
-  * @return boolean true or false
-  */
+    * Reasons if the record already exists
+    *
+    * @param  string  $ConCategory
+    * @param  string  $ConParent
+    * @param  string  $ConId
+    * @param  string  $ConLang
+    * @param  string  $ConValue
+    * @return boolean true or false
+    */
     public function Exists ($ConCategory, $ConParent, $ConId, $ConLang)
     {
         try {
@@ -457,6 +459,7 @@ class Content extends BaseContent
             throw ($e);
         }
     }
+
     //Added by Enrique at Feb 9th,2011
     //Gets all Role Names by Role
     public function getAllContentsByRole ($sys_lang = SYS_LANG)
@@ -481,5 +484,4 @@ class Content extends BaseContent
         return $aRoles;
     }
 }
-// Content
 

@@ -23,28 +23,6 @@ require_once 'classes/model/Task.php';
  */
 class CaseScheduler extends BaseCaseScheduler
 {
-    /*
-    private $SchTimeNextRun = null;
-    private $SchLastRunTime = null;
-
-    public function getSchTimeNextRun() {
-    if($this->SchTimeNextRun === null)
-    $this->SchTimeNextRun = time();
-    return $this->SchTimeNextRun;
-    }
-    public function setSchTimeNextRun($value) {
-    $this->SchTimeNextRun = $value;
-    }
-    public function getSchLastRunTime(){
-    if($this->SchTimeNextRun === null)
-    $this->SchTimeNextRun = time();
-    return $this->SchLastRunTime;
-    }
-    public function setSchLastRunTime($value){
-    $this->SchLastRunTime = $value;
-    }
-    */
-
     public function load ($SchUid)
     {
         try {
@@ -115,13 +93,6 @@ class CaseScheduler extends BaseCaseScheduler
             } else {
                 throw (new Exception( 'This row doesn\'t exist!' ));
             }
-            /*
-            $con->begin();
-            $this->setSchUid ( $SchUid );
-            $result = $this->delete();
-            $con->commit();
-            return $result;
-            */
         } catch (Exception $e) {
             $con->rollback();
             throw ($e);
@@ -129,10 +100,10 @@ class CaseScheduler extends BaseCaseScheduler
     }
 
     /*
-   * change Status of any Process
-   * @param string $sSchedulerUid
-   * @return boolean
-   */
+    * change Status of any Process
+    * @param string $sSchedulerUid
+    * @return boolean
+    */
     public function changeStatus ($sSchedulerUid = '')
     {
         $Fields = $this->Load( $sSchedulerUid );
@@ -145,14 +116,6 @@ class CaseScheduler extends BaseCaseScheduler
         $this->Update( $Fields );
     }
 
-    // SELECT A.SCH_UID, A.SCH_NAME, A.PRO_UID, B.CON_VALUE AS PROCESS,
-    //    A.TAS_UID, B.CON_VALUE AS TASK, A.SCH_TIME_NEXT_RUN, A.SCH_LAST_RUN_TIME, A.SCH_STATE, A.SCH_LAST_STATE,
-    //    A.USR_UID, A.SCH_OPTION
-    //    SCH_START_TIME, SCH_START_DATE, SCH_DAYS_PERFORM_TASK, SCH_EVERY_DAYS, SCH_WEEK_DAYS
-    //    SCH_START_DAY, SCH_MONTHS, SCH_END_DATE, SCH_REPEAT_EVERY, SCH_REPEAT_UNTIL, SCH_REPEAT_STOP_IF_RUNNING
-    // FROM CASE_SCHEDULER A LEFT JOIN CONTENT B ON A.PRO_UID= B.CON_ID AND B.CON_CATEGORY='PRO_TITLE' AND B.CON_LANG='en'
-    // LEFT JOIN CONTENT C ON A.TAS_UID= C.CON_ID AND C.CON_CATEGORY='TAS_TITLE' AND C.CON_LANG='en'
-    //
     public function getAllCriteria ()
     {
         $c = new Criteria( 'workflow' );
@@ -184,7 +147,6 @@ class CaseScheduler extends BaseCaseScheduler
         $c->addSelectColumn( CaseSchedulerPeer::CASE_SH_PLUGIN_UID );
 
         return $c;
-
     }
 
     public function getAll ()
@@ -293,12 +255,7 @@ class CaseScheduler extends BaseCaseScheduler
             ), array ('PRO_UID' => $aTaskRow['PRO_UID']
             ) );
         }
-
-        // g::pr($aRows); die;
-
-
         return $aRows;
-
     }
 
     public function caseSchedulerCron ($date, &$log = array(), $cron = 0)
@@ -358,7 +315,6 @@ class CaseScheduler extends BaseCaseScheduler
                     break;
                 case '5':
                     break;
-
             }
 
             $sActualTime = $aRow['SCH_TIME_NEXT_RUN'];
@@ -368,6 +324,7 @@ class CaseScheduler extends BaseCaseScheduler
             $dActualSysMinutes = date( 'i', $nTime );
             $sActualDataTime = strtotime( $aRow['SCH_TIME_NEXT_RUN'] );
             $sActualSysTime = strtotime( $nTime );
+
             // note added consider the posibility to encapsulate some in functionality in a class method or some funtions
             if ($sActualDataHour < $dActualSysHour) {
                 $_PORT = (SERVER_PORT != '80') ? ':' . SERVER_PORT : '';
@@ -419,12 +376,10 @@ class CaseScheduler extends BaseCaseScheduler
 
                         }
                     }
+
                     //If there is a trigger that is registered to do this then transfer control
-
-
                     if ((isset( $caseSchedulerSelected )) && (is_object( $caseSchedulerSelected ))) {
                         eprintln( " - Transfering control to a Plugin: " . $caseSchedulerSelected->sNamespace . "/" . $caseSchedulerSelected->sActionId, 'green' );
-
                         $oData['OBJ_SOAP'] = $client;
                         $oData['SCH_UID'] = $aRow['SCH_UID'];
                         $oData['params'] = $params;
@@ -506,7 +461,7 @@ class CaseScheduler extends BaseCaseScheduler
                 } else {
 
                 }
-            } else if ($sActualDataHour == $dActualSysHour && $sActualDataMinutes <= $dActualSysMinutes) {
+            } elseif ($sActualDataHour == $dActualSysHour && $sActualDataMinutes <= $dActualSysMinutes) {
                 $_PORT = (isset( $_SERVER['SERVER_PORT'] ) && $_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '';
                 //$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_PORT . '/sys' . SYS_SYS .'/'.SYS_LANG.'/classic/green/services/wsdl2';
                 $defaultEndpoint = 'http://' . SERVER_NAME . $_PORT . '/sys' . SYS_SYS . '/' . SYS_LANG . '/classic/services/wsdl2';
@@ -563,7 +518,6 @@ class CaseScheduler extends BaseCaseScheduler
                         $paramsLog['WS_CREATE_CASE_STATUS'] = strip_tags( $result->message );
                         eprintln( "FAILED->{$paramsLog ['WS_CREATE_CASE_STATUS']}", 'red' );
                         $paramsLogResult = 'FAILED';
-
                     }
                 } else {
                     // invalid user or  bad password
@@ -611,10 +565,8 @@ class CaseScheduler extends BaseCaseScheduler
                     $this->updateDate( $sSchedulerUid, $nSchTimeNextRun, $nSchLastRunTime );
                 }
             }
-
             $oDataset->next();
         }
-
     }
 
     public function updateDate ($sSchedulerUid = '', $sSchTimeNextRun = '', $sSchLastRunTime = '')
@@ -628,8 +580,6 @@ class CaseScheduler extends BaseCaseScheduler
     public function updateNextRun ($sOption, $sValue = '', $sActualTime = '', $sDaysPerformTask = '', $sWeeks = '', $sStartDay = '', $sMonths = '', $currentDate = '')
     {
         $nActualDate = $currentDate . " " . $sActualTime;
-        // date("Y-m-d  H:i:s", $sActualTime);
-        // date("Y-m-d  H:i:s", $sActualTime);
         $dEstimatedDate = '';
         switch ($sOption) {
             case '1':
@@ -652,7 +602,6 @@ class CaseScheduler extends BaseCaseScheduler
                         break;
                 }
                 break;
-
             case '2':
                 if (strlen( $sWeeks ) > 0) {
                     //die($sActualTime);
@@ -675,12 +624,8 @@ class CaseScheduler extends BaseCaseScheduler
                             break;
                         }
                     }
-
-                    //die;
                     if ($nSW == 1) {
                         $dEstimatedDate = date( 'Y-m-d', strtotime( "$nActualDate next " . $aDaysWeek[$nNextDay] ) ) . ' ' . date( 'H:i:s', strtotime( $sActualTime ) );
-                        //print_r($dEstimatedDate);
-                        //                                                                die("03");
                     } else {
                         $nEveryDays = $sDaysPerformTask;
                         //                                                                $nEveryDays = '1';
@@ -699,31 +644,14 @@ class CaseScheduler extends BaseCaseScheduler
                             $nEveryDays = 1;
                             //$nActualDate = date('Y-m-d').' '.$sActualTime;
                             $nDataTmp = date( 'Y-m-d', strtotime( "$nActualDate + " . $nEveryDays . " Week" ) );
-                            //echo "$nActualDate + " . $nEveryDays . " Week ";
-                            //echo "++";
-                            //echo strtotime( "+".$nEveryDays . " week"), "\n";
-                            //echo strtotime("$nActualDate +" . $nEveryDays . " Week ");
-                            //echo "++";
-                            //echo $nDataTmp;
-                            //echo "--";
-                            //echo $sTypeOperation;
-                            //echo $nFirstDay;
-                            //print_r ($aDaysWeek);
-                            //$sTypeOperation = "next";
                             $dEstimatedDate = date( 'Y-m-d', strtotime( "$nDataTmp " . $sTypeOperation . " " . $aDaysWeek[$nFirstDay] ) ) . ' ' . date( 'H:i:s', strtotime( $sActualTime ) );
-                            //echo (strtotime ("$nDataTmp " . $sTypeOperation . " " . $aDaysWeek[$nFirstDay]));
-                            //echo "$nDataTmp " . $sTypeOperation . " " . $aDaysWeek[$nFirstDay];
-                            //echo $dEstimatedDate;
-                            //echo "--";
-                            //echo date('Y-m-d', strtotime ("$nDataTmp " . $sTypeOperation . " " . $aDaysWeek[$nFirstDay])) . ' ' . date('H:i:s', strtotime($sActualTime));
-                            //die("02");
                         }
-                        //die("03");
                     }
                 }
                 break;
             case '3':
-                if (strlen( $sMonths ) > 0) { // Must have at least one selected month
+                if (strlen( $sMonths ) > 0) {
+                    // Must have at least one selected month
                     //  Calculamos para la siguiente ejecucion, acorde a lo seleccionado
                     $aStartDay = explode( '|', $sStartDay );
                     $nYear = date( "Y", strtotime( $sActualTime ) );
@@ -741,7 +669,7 @@ class CaseScheduler extends BaseCaseScheduler
                         }
                     }
 
-                    if ($nSW == 1) { // Mes encontrado
+                    if ($nSW == 1) {
                         $nExecNextMonth = $nNextMonth;
                     } else {
                         $nExecNextMonth = $aMonths[0] - 1;
@@ -782,11 +710,8 @@ class CaseScheduler extends BaseCaseScheduler
                                     break;
                             }
                             $dEstimatedDate = date( 'Y-m-d', strtotime( $sDaysWeekOpt . ' week ' . $aWeeksShort[$sDayWeek - 1] . ' ' . $aMontsShort[$nExecNextMonth] . ' ' . $nYear ) ) . ' ' . date( 'H:i:s', strtotime( $sActualTime ) );
-                            // krumo($nExecNextMonth, $sDayWeek);
-                            // krumo($sDaysWeekOpt . ' week ' . $aWeeksShort[$sDayWeek-1] . ' ' . $aMontsShort[$nExecNextMonth] . ' ' . $nYear);
                             break;
                     }
-
                 }
                 break;
         }
@@ -803,5 +728,4 @@ class CaseScheduler extends BaseCaseScheduler
         }
     }
 }
-// CaseScheduler
 

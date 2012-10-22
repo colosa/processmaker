@@ -14,7 +14,7 @@
 /**
  * Skeleton subclass for performing query and update operations on the 'APP_EVENT' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -22,6 +22,7 @@
  *
  * @package    workflow.engine.classes.model
  */
-class AppEventPeer extends BaseAppEventPeer {
+class AppEventPeer extends BaseAppEventPeer
+{
+}
 
-} // AppEventPeer

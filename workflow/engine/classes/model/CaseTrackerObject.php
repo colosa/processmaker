@@ -116,7 +116,7 @@ class CaseTrackerObject extends BaseCaseTrackerObject
         }
     }
 
-    function reorderPositions ($sProcessUID, $iPosition)
+    public function reorderPositions ($sProcessUID, $iPosition)
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
@@ -135,7 +135,7 @@ class CaseTrackerObject extends BaseCaseTrackerObject
         }
     }
 
-    function caseTrackerObjectExists ($Uid)
+    public function caseTrackerObjectExists ($Uid)
     {
         try {
             $oObj = CaseTrackerObjectPeer::retrieveByPk( $Uid );
@@ -149,7 +149,7 @@ class CaseTrackerObject extends BaseCaseTrackerObject
         }
     }
 
-    function removeByObject ($sType, $sObjUid)
+    public function removeByObject ($sType, $sObjUid)
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
@@ -161,5 +161,4 @@ class CaseTrackerObject extends BaseCaseTrackerObject
         }
     }
 }
-// CaseTrackerObject
 
