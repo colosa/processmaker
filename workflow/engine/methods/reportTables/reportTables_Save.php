@@ -21,14 +21,14 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1)
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     return $RBAC_Response;
-
+}
 G::LoadClass( 'reportTables' );
 
-if (isset( $_POST['form'] ))
+if (isset( $_POST['form'] )) {
     $values = $_POST['form']; //For Old processmap
-else {
+} else {
     $values = $_POST; //For extjs,since we are not using form
     $values['FIELDS'] = explode( ',', $_POST['FIELDS'] );
 }
@@ -96,4 +96,4 @@ foreach ($values['FIELDS'] as $sField) {
 $oReportTables->dropTable( $sOldTableName, $sOldConnection );
 $oReportTables->createTable( $values['REP_TAB_NAME'], $values['REP_TAB_CONNECTION'], $values['REP_TAB_TYPE'], $aFields );
 $oReportTables->populateTable( $values['REP_TAB_NAME'], $values['REP_TAB_CONNECTION'], $values['REP_TAB_TYPE'], $aFields, $values['PRO_UID'], $values['REP_TAB_GRID'] );
-?>
+

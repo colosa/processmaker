@@ -58,4 +58,4 @@ switch ($_GET['sType']) {
         G::RenderPage( 'publish', 'raw' );
         break;
 }
-?>
+

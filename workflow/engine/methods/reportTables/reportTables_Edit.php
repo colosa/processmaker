@@ -21,8 +21,9 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1)
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     return $RBAC_Response;
+}
 G::LoadClass( 'reportTables' );
 G::LoadClass( 'xmlfield_InputPM' );
 $aFields['FIELDS'] = array ();
@@ -66,4 +67,4 @@ $aFields['LANG'] = SYS_LANG;
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'reportTables/reportTables_Edit', '', $aFields, '../reportTables/reportTables_Save' );
 G::RenderPage( 'publish', 'blank' );
-?>
+

@@ -56,3 +56,4 @@ $oHeadPublisher->assign( 'FORMATS', $c->getFormats() );
 $oHeadPublisher->assign( 'CONFIG', $Config );
 $oHeadPublisher->assign( 'PRO_UID', isset( $_GET['PRO_UID'] ) ? $_GET['PRO_UID'] : false );
 G::RenderPage( 'publish', 'extJs' );
+

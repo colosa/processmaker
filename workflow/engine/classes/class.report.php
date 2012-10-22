@@ -139,8 +139,9 @@ class Report
         //$aAux1 = explode('-', $from);  date('Y-m-d H:i:s', mktime(0, 0, 0, $aAux1[1], $aAux1[2], $aAux1[0]))
         $oCriteria->add( $oCriteria->getNewCriterion( AppDelegationPeer::DEL_INIT_DATE, $from . ' 00:00:00', Criteria::GREATER_EQUAL )->addAnd( $oCriteria->getNewCriterion( AppDelegationPeer::DEL_INIT_DATE, $to . ' 23:59:59', Criteria::LESS_EQUAL ) ) );
 
-        if ($startedby != '')
+        if ($startedby != '') {
             $oCriteria->add( ApplicationPeer::APP_INIT_USER, $startedby );
+        }
 
         $oCriteria->addGroupByColumn( AppDelegationPeer::PRO_UID );
         $oCriteria->addGroupByColumn( 'C1.CON_VALUE' );
@@ -155,11 +156,11 @@ class Report
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addSelectColumn( ApplicationPeer::PRO_UID );
             $oCriteria->add( ApplicationPeer::PRO_UID, $aRow['PRO_UID'] );
-            if ($startedby != '')
+            if ($startedby != '') {
                 $oCriteria->add( ApplicationPeer::APP_INIT_USER, $startedby );
+            }
 
-            $aProcess[] = array ('PRO_UID' => $aRow['PRO_UID'],'PRO_TITLE' => $aRow['PRO_TITLE'],'CANTCASES' => ApplicationPeer::doCount( $oCriteria ),'MIN' => number_format( $aRow['MIN'], 2 ),'MAX' => number_format( $aRow['MAX'], 2 ),'TOTALDUR' => number_format( $aRow['TOTALDUR'], 2 ),'PROMEDIO' => number_format( $aRow['PROMEDIO'], 2 )
-            );
+            $aProcess[] = array ('PRO_UID' => $aRow['PRO_UID'],'PRO_TITLE' => $aRow['PRO_TITLE'],'CANTCASES' => ApplicationPeer::doCount( $oCriteria ),'MIN' => number_format( $aRow['MIN'], 2 ),'MAX' => number_format( $aRow['MAX'], 2 ),'TOTALDUR' => number_format( $aRow['TOTALDUR'], 2 ),'PROMEDIO' => number_format( $aRow['PROMEDIO'], 2 ));
             $oDataset->next();
         }
 
@@ -379,8 +380,9 @@ class Report
 
         $oCriteria->add( $oCriteria->getNewCriterion( AppDelegationPeer::DEL_INIT_DATE, $from . ' 00:00:00', Criteria::GREATER_EQUAL )->addAnd( $oCriteria->getNewCriterion( AppDelegationPeer::DEL_INIT_DATE, $to . ' 23:59:59', Criteria::LESS_EQUAL ) ) );
 
-        if ($startedby != '')
+        if ($startedby != '') {
             $oCriteria->add( AppDelegationPeer::USR_UID, $startedby );
+        }
 
         $oCriteria->add( AppDelegationPeer::PRO_UID, $PRO_UID );
 
@@ -428,8 +430,9 @@ class Report
 
         $oCriteria->add( $oCriteria->getNewCriterion( AppDelegationPeer::DEL_INIT_DATE, $from . ' 00:00:00', Criteria::GREATER_EQUAL )->addAnd( $oCriteria->getNewCriterion( AppDelegationPeer::DEL_INIT_DATE, $to . ' 23:59:59', Criteria::LESS_EQUAL ) ) );
 
-        if ($startedby != '')
+        if ($startedby != '') {
             $oCriteria->add( AppDelegationPeer::USR_UID, $startedby );
+        }
 
         $oDataset = AppDelegationPeer::doSelectRS( $oCriteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
@@ -439,16 +442,16 @@ class Report
         $lastmonth = date( 'Y-m-d', mktime( 0, 0, 0, date( "m" ) - 2, date( "d" ), date( "Y" ) ) );
         $day = mktime( 0, 0, 0, date( "m" ), date( "d" ) - 1, date( "Y" ) );
         $lastday = mktime( 0, 0, 0, date( "m" ), date( "d" ) - 2, date( "Y" ) );
-        $aProcess[] = array ('PRO_UID' => 'char','PRO_TITLE' => 'char','CANTCASES' => 'integer','MIN' => 'float','MAX' => 'float','CASELASTMONTH' => 'integer','CASELASTDAY' => 'integer'
-        );
+        $aProcess[] = array ('PRO_UID' => 'char','PRO_TITLE' => 'char','CANTCASES' => 'integer','MIN' => 'float','MAX' => 'float','CASELASTMONTH' => 'integer','CASELASTDAY' => 'integer');
 
         while ($aRow = $oDataset->getRow()) {
             $oCriteria2 = new Criteria( 'workflow' );
             $oCriteria2->addSelectColumn( ApplicationPeer::PRO_UID );
             $oCriteria2->addAsColumn( "CANTCASES", "COUNT(*)" );
             $oCriteria2->add( ApplicationPeer::PRO_UID, $aRow['PRO_UID'] );
-            if ($startedby != '')
+            if ($startedby != '') {
                 $oCriteria2->add( ApplicationPeer::APP_INIT_USER, $startedby );
+            }
             $oCriteria2->addGroupByColumn( ApplicationPeer::PRO_UID );
             $oDataset2 = AppDelegationPeer::doSelectRS( $oCriteria2 );
             $oDataset2->setFetchmode( ResultSet::FETCHMODE_ASSOC );
@@ -462,8 +465,9 @@ class Report
             $oCriteria2->add( ApplicationPeer::PRO_UID, $aRow['PRO_UID'] );
             $oCriteria2->add( ApplicationPeer::APP_INIT_DATE, $lastmonth, Criteria::GREATER_EQUAL );
             $oCriteria2->add( ApplicationPeer::APP_INIT_DATE, $month, Criteria::LESS_EQUAL );
-            if ($startedby != '')
+            if ($startedby != '') {
                 $oCriteria2->add( ApplicationPeer::APP_INIT_USER, $startedby );
+            }
             $oCriteria2->addGroupByColumn( ApplicationPeer::PRO_UID );
             $oDataset2 = AppDelegationPeer::doSelectRS( $oCriteria2 );
             $oDataset2->setFetchmode( ResultSet::FETCHMODE_ASSOC );
@@ -477,8 +481,9 @@ class Report
             $oCriteria2->add( ApplicationPeer::PRO_UID, $aRow['PRO_UID'] );
             $oCriteria2->add( ApplicationPeer::APP_INIT_DATE, $lastday, Criteria::GREATER_EQUAL );
             $oCriteria2->add( ApplicationPeer::APP_INIT_DATE, $day, Criteria::LESS_EQUAL );
-            if ($startedby != '')
+            if ($startedby != '') {
                 $oCriteria2->add( ApplicationPeer::APP_INIT_USER, $startedby );
+            }
             $oCriteria2->addGroupByColumn( ApplicationPeer::PRO_UID );
             $oDataset2 = AppDelegationPeer::doSelectRS( $oCriteria2 );
             $oDataset2->setFetchmode( ResultSet::FETCHMODE_ASSOC );
@@ -492,8 +497,7 @@ class Report
                             'CASELASTMONTH' => $cant1,
                             'CASELASTDAY' => $cant2
                            );*/
-            $aProcess[] = array ('PRO_UID' => $aRow['PRO_UID'],'PRO_TITLE' => $aRow['PRO_TITLE'],'CANTCASES' => $cant,'MIN' => number_format( $aRow['MIN'], 2 ),'MAX' => number_format( $aRow['MAX'], 2 ),'CASELASTMONTH' => number_format( $cant1, 2 ),'CASELASTDAY' => number_format( $cant2, 2 )
-            );
+            $aProcess[] = array ('PRO_UID' => $aRow['PRO_UID'],'PRO_TITLE' => $aRow['PRO_TITLE'],'CANTCASES' => $cant,'MIN' => number_format( $aRow['MIN'], 2 ),'MAX' => number_format( $aRow['MAX'], 2 ),'CASELASTMONTH' => number_format( $cant1, 2 ),'CASELASTDAY' => number_format( $cant2, 2 ));
             $oDataset->next();
         }
 
@@ -539,12 +543,10 @@ class Report
         $stmt = $con->prepareStatement( $sql );
         $rs = $stmt->executeQuery();
 
-        $ROW[] = array ('FECHA' => 'char','CANTCASES' => 'integer','MIN' => 'float','MAX' => 'float','TOTALDUR' => 'float','PROMEDIO' => 'float'
-        );
+        $ROW[] = array ('FECHA' => 'char','CANTCASES' => 'integer','MIN' => 'float','MAX' => 'float','TOTALDUR' => 'float','PROMEDIO' => 'float');
 
         while ($rs->next()) {
-            $ROW[] = array ('FECHA' => $rs->getString( 'FECHA' ),'CANTCASES' => $rs->getString( 'CANTCASES' ),'MIN' => number_format( $rs->getString( 'MIN' ), 2 ),'MAX' => number_format( $rs->getString( 'MAX' ), 2 ),'TOTALDUR' => number_format( $rs->getString( 'TOTALDUR' ), 2 ),'PROMEDIO' => number_format( $rs->getString( 'PROMEDIO' ), 2 )
-            );
+            $ROW[] = array ('FECHA' => $rs->getString( 'FECHA' ),'CANTCASES' => $rs->getString( 'CANTCASES' ),'MIN' => number_format( $rs->getString( 'MIN' ), 2 ),'MAX' => number_format( $rs->getString( 'MAX' ), 2 ),'TOTALDUR' => number_format( $rs->getString( 'TOTALDUR' ), 2 ),'PROMEDIO' => number_format( $rs->getString( 'PROMEDIO' ), 2 ));
         }
 
         global $_DBArray;
@@ -600,12 +602,10 @@ class Report
         $con = Propel::getConnection( "workflow" );
         $stmt = $con->prepareStatement( $sql );
         $rs = $stmt->executeQuery();
-        $ROW[] = array ('FECHA' => 'char','CANTCASES' => 'integer','MIN' => 'float','MAX' => 'float','TOTALDUR' => 'float','PROMEDIO' => 'float'
-        );
+        $ROW[] = array ('FECHA' => 'char','CANTCASES' => 'integer','MIN' => 'float','MAX' => 'float','TOTALDUR' => 'float','PROMEDIO' => 'float');
 
         while ($rs->next()) {
-            $ROW[] = array ('FECHA' => $rs->getString( 'FECHA' ),'CANTCASES' => $rs->getString( 'CANTCASES' ),'MIN' => number_format( $rs->getString( 'MIN' ), 2 ),'MAX' => number_format( $rs->getString( 'MAX' ), 2 ),'TOTALDUR' => number_format( $rs->getString( 'TOTALDUR' ), 2 ),'PROMEDIO' => number_format( $rs->getString( 'PROMEDIO' ), 2 )
-            );
+            $ROW[] = array ('FECHA' => $rs->getString( 'FECHA' ),'CANTCASES' => $rs->getString( 'CANTCASES' ),'MIN' => number_format( $rs->getString( 'MIN' ), 2 ),'MAX' => number_format( $rs->getString( 'MAX' ), 2 ),'TOTALDUR' => number_format( $rs->getString( 'TOTALDUR' ), 2 ),'PROMEDIO' => number_format( $rs->getString( 'PROMEDIO' ), 2 ));
         }
 
         global $_DBArray;
@@ -902,11 +902,11 @@ class Report
             $aData['DEL_INDEX'] = $aRow['DEL_INDEX'];
             $aData['DEL_DELEGATE_DATE'] = $aRow['DEL_DELEGATE_DATE'];
 
-            if ($aRow['DEL_INIT_DATE'] == NULL)
+            if ($aRow['DEL_INIT_DATE'] == null) {
                 $aData['DEL_INIT_DATE'] = $aRow['DEL_DELEGATE_DATE'];
-            else
+            } else {
                 $aData['DEL_INIT_DATE'] = $aRow['DEL_INIT_DATE'];
-
+            }
                 //$aData['DEL_FINISH_DATE']=$aRow['DEL_FINISH_DATE'];
             if ($aRow['DEL_DURATION'] != 0) {
                 G::LoadClass( 'dates' );
@@ -920,5 +920,5 @@ class Report
         }
         return;
     }
+}
 
-}// end Report class
