@@ -30,7 +30,6 @@ $oHeadPublisher = &headPublisher::getSingleton();
 $oHeadPublisher->addExtJsScript( "cases/main", false ); //Adding a javascript file .js
 $oHeadPublisher->addContent( "cases/main" ); //Adding a html file  .html.
 
-
 $keyMem = "USER_PREFERENCES" . $_SESSION["USER_LOGGED"];
 $memcache = &PMmemcached::getSingleton( SYS_SYS );
 
@@ -42,7 +41,8 @@ if (($arrayConfig = $memcache->get( $keyMem )) === false) {
 
 $confDefaultOption = "";
 
-if (isset( $arrayConfig["DEFAULT_CASES_MENU"] )) { //this user has a configuration record
+if (isset( $arrayConfig["DEFAULT_CASES_MENU"] )) {
+    //this user has a configuration record
     $confDefaultOption = $arrayConfig["DEFAULT_CASES_MENU"];
 
     global $G_TMP_MENU;

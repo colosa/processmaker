@@ -31,16 +31,19 @@ try {
     //$totalCount = AppCacheViewPeer::doCount( $Criteria );
 
 
-    if (isset( $limit ))
+    if (isset( $limit )) {
         $Criteria->setLimit( $limit );
-    if (isset( $start ))
+    }
+    if (isset( $start )) {
         $Criteria->setOffset( $start );
+    }
 
     if ($sort != '') {
-        if ($dir == 'DESC')
+        if ($dir == 'DESC') {
             $Criteria->addDescendingOrderByColumn( $sort );
-        else
+        } else {
             $Criteria->addAscendingOrderByColumn( $sort );
+        }
     }
     $oDataset = AppCacheViewPeer::doSelectRS( $Criteria );
     $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );

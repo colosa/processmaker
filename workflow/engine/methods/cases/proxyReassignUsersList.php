@@ -106,3 +106,4 @@ $result = array ();
 $aUsersInvolved = array_sort( $aUsersInvolved, 'userFullname', SORT_ASC, $query );
 $result['data'] = $aUsersInvolved;
 print G::json_encode( $result );
+

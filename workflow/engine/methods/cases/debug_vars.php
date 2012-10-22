@@ -25,10 +25,8 @@ switch ($request) {
             foreach ($field as $row) {
                 if ($sw) {
                     foreach ($row as $key => $value) {
-                        $response->headers[] = Array ('name' => $key
-                        );
-                        $response->columns[] = Array ('header' => $key,'width' => 100,'dataIndex' => $key
-                        );
+                        $response->headers[] = Array ('name' => $key);
+                        $response->columns[] = Array ('header' => $key,'width' => 100,'dataIndex' => $key);
                     }
                     $sw = false;
                 }
@@ -51,8 +49,7 @@ switch ($request) {
                 );
 
                 foreach ($field as $key => $value) {
-                    $response->rows[] = Array ($key,$value
-                    );
+                    $response->rows[] = Array ($key,$value);
                 }
             }
         }
