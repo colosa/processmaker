@@ -46,10 +46,10 @@ if (! isset( $_POST['sNoShowLeyend'] )) {
         $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_ESC' ) . '</td></tr>';
         $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_NONEC' ) . '</td></tr>';
         /*$sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_EURL') . '</td></tr>';
-    $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_EVAL') . '</td></tr>';
-    $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_ESCJS') . '</td></tr>';
-    $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_ESCSJS') . '</td></tr>';
-    $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_FUNCTION') . '</td></tr>';*/
+        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_EVAL') . '</td></tr>';
+        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_ESCJS') . '</td></tr>';
+        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_ESCSJS') . '</td></tr>';
+        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_FUNCTION') . '</td></tr>';*/
     } else {
         $sHTML .= '<tr><td class="module_app_input___gray" width="5%">@@</td><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_TO_STRING' ) . '</td></tr>';
         $sHTML .= '<tr><td class="module_app_input___gray" width="5%">@#</td><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_TO_FLOAT' ) . '</td></tr>';
