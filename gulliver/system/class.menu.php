@@ -245,7 +245,6 @@ class Menu
 
     /**
      * Disable an menu option by menu's position
-     *
      * @author Fernando Ontiveros Lira <fernando@colosa.com>
      * @access public
      * @param string $intPos menu option's position

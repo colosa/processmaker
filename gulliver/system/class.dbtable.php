@@ -185,7 +185,7 @@ class DBTable
      */
     public function load ()
     {
-        //    bug::traceRoute();
+        //bug::traceRoute();
         $ncount = 0;
         $stWhere = "";
         $arrKeys = func_get_args();
@@ -416,7 +416,6 @@ class DBTable
 
     /**
      * Move to next record in a recordset
-     *
      * Move to next record in a recordset, this is useful where the load method have a recordset with many rows
      *
      * @author Fernando Ontiveros Lira <fernando@colosa.com>
