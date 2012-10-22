@@ -20,7 +20,6 @@
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 try {
     $docUid = $_POST['form']['DOC_UID'];
