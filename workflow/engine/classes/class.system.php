@@ -1,5 +1,4 @@
 <?php
-
 /**
  * upgrade_System.php
  *
@@ -33,7 +32,6 @@
  *
  * @package workflow.engine.classes
  */
-
 class System
 {
     public $sFilename;
@@ -66,7 +64,6 @@ class System
         sort( $plugins, SORT_STRING );
         return $plugins;
     }
-
     /**
      * Lists existing workspaces, returning an array of workspaceTools object
      * for each.

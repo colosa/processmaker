@@ -77,7 +77,6 @@ try {
         $oUser->setDepUid( '' );
         $oUser->save();
     }
-
     //Load Calendar options and falue for this user
     G::LoadClass( 'calendar' );
     $calendar = new Calendar();

@@ -52,7 +52,7 @@ require_once 'classes/model/Configuration.php';
  */
 class Configurations // extends Configuration
 {
-    var $aConfig = array ();
+    public $aConfig = array ();
     private $Configuration = null;
     private $UserConfig = null;
 
@@ -61,7 +61,7 @@ class Configurations // extends Configuration
      *
      * @return void
      */
-    function Configurations ()
+    public function Configurations ()
     {
         $this->Configuration = new Configuration();
     }
@@ -73,17 +73,17 @@ class Configurations // extends Configuration
      * @param array &$cloneObject Array duplicate
      * @return void
      */
-    function arrayClone (&$object, &$cloneObject)
+    public function arrayClone (&$object, &$cloneObject)
     {
         if (is_array( $object )) {
             foreach ($object as $k => $v) {
-                $cloneObject[$k] = NULL;
+                $cloneObject[$k] = null;
                 $this->arrayClone( $object[$k], $cloneObject[$k] );
             }
         } else {
             if (is_object( $object )) {
             } else {
-                $cloneObject = NULL;
+                $cloneObject = null;
             }
         }
     }
@@ -95,30 +95,32 @@ class Configurations // extends Configuration
      * @param array &$from
      * @return void
      */
-    function configObject (&$object, &$from)
+    public function configObject (&$object, &$from)
     {
-        if (! (is_object( $object ) || is_array( $object )))
+        if (! (is_object( $object ) || is_array( $object ))) {
             return;
-
-        if (! isset( $from ))
+        }
+        if (! isset( $from )) {
             $from = &$this->aConfig;
-
+        }
         foreach ($from as $k => $v) {
             if (isset( $v ) && array_key_exists( $k, $object )) {
-                if (is_object( $v ))
+                if (is_object( $v )) {
                     throw new Exception( 'Object is not permited inside configuration array.' );
-
+                }
                 if (is_object( $object )) {
-                    if (is_array( $v ))
+                    if (is_array( $v )) {
                         $this->configObject( $object->{$k}, $v );
-                    else
+                    } else {
                         $object->{$k} = $v;
+                    }
                 } else {
                     if (is_array( $object )) {
-                        if (is_array( $v ))
+                        if (is_array( $v )) {
                             $this->configObject( $object[$k], $v );
-                        else
+                        } else {
                             $object[$k] = $v;
+                        }
                     }
                 }
             }
@@ -136,7 +138,7 @@ class Configurations // extends Configuration
      * @param string $app
      * @return void
      */
-    function loadConfig (&$object, $cfg, $obj = '', $pro = '', $usr = '', $app = '')
+    public function loadConfig (&$object, $cfg, $obj = '', $pro = '', $usr = '', $app = '')
     {
         $this->load( $cfg, $obj, $pro, $usr, $app );
         $this->configObject( $object, $this->aConfig );
@@ -152,7 +154,7 @@ class Configurations // extends Configuration
      * @param string $app
      * @return void
      */
-    function load ($cfg, $obj = '', $pro = '', $usr = '', $app = '')
+    public function load ($cfg, $obj = '', $pro = '', $usr = '', $app = '')
     {
         $this->Fields = array ();
 
@@ -162,12 +164,12 @@ class Configurations // extends Configuration
         } // the configuration does not exist
 
 
-        if (isset( $this->Fields['CFG_VALUE'] ))
+        if (isset( $this->Fields['CFG_VALUE'] )) {
             $this->aConfig = unserialize( $this->Fields['CFG_VALUE'] );
-
-        if (! is_array( $this->aConfig ))
+        }
+        if (! is_array( $this->aConfig )) {
             $this->aConfig = Array ();
-
+        }
         return $this->aConfig;
     }
 
@@ -178,7 +180,7 @@ class Configurations // extends Configuration
      * @param array &$from
      * @return void
      */
-    function saveConfig ($cfg, $obj, $pro = '', $usr = '', $app = '')
+    public function saveConfig ($cfg, $obj, $pro = '', $usr = '', $app = '')
     {
         $aFields = array ('CFG_UID' => $cfg,'OBJ_UID' => $obj,'PRO_UID' => $pro,'USR_UID' => $usr,'APP_UID' => $app,'CFG_VALUE' => serialize( $this->aConfig )
         );
@@ -197,7 +199,7 @@ class Configurations // extends Configuration
      * @param array &$from
      * @return void
      */
-    function saveObject (&$object, $cfg, $obj, $pro = '', $usr = '', $app = '')
+    public function saveObject (&$object, $cfg, $obj, $pro = '', $usr = '', $app = '')
     {
         $aFields = array ('CFG_UID' => $cfg,'OBJ_UID' => $obj,'PRO_UID' => $pro,'USR_UID' => $usr,'APP_UID' => $app,'CFG_VALUE' => serialize( array (&$object
         ) )
@@ -221,22 +223,24 @@ class Configurations // extends Configuration
      * @param string $app
      * @return void
      */
-    function loadObject ($cfg, $obj, $pro = '', $usr = '', $app = '')
+    public function loadObject ($cfg, $obj, $pro = '', $usr = '', $app = '')
     {
         $objectContainer = array ((object) array ()
         );
         $this->Fields = array ();
-        if ($this->Configuration->exists( $cfg, $obj, $pro, $usr, $app ))
+        if ($this->Configuration->exists( $cfg, $obj, $pro, $usr, $app )) {
             $this->Fields = $this->Configuration->load( $cfg, $obj, $pro, $usr, $app );
-        else
+        } else {
             return $objectContainer[0];
-
-        if (isset( $this->Fields['CFG_VALUE'] ))
+        }
+        if (isset( $this->Fields['CFG_VALUE'] )) {
             $objectContainer = unserialize( $this->Fields['CFG_VALUE'] );
-        if (! is_array( $objectContainer ) || sizeof( $objectContainer ) != 1)
+        }
+        if (! is_array( $objectContainer ) || sizeof( $objectContainer ) != 1) {
             return (object) array ();
-        else
+        } else {
             return $objectContainer[0];
+        }
     }
 
     /**
@@ -249,7 +253,7 @@ class Configurations // extends Configuration
      * @param string $app
      * @return void
      */
-    function getConfiguration ($cfg, $obj, $pro = '', $usr = '', $app = '')
+    public function getConfiguration ($cfg, $obj, $pro = '', $usr = '', $app = '')
     {
         try {
             $oCfg = ConfigurationPeer::retrieveByPK( $cfg, $obj, $pro, $usr, $app );
@@ -280,11 +284,12 @@ class Configurations // extends Configuration
      * @return string User Name Well-Formatted
      */
 
-    function usersNameFormat ($username, $firstname, $lastname)
+    public function usersNameFormat ($username, $firstname, $lastname)
     {
         try {
-            if (! isset( $this->UserConfig ))
+            if (! isset( $this->UserConfig )) {
                 $this->UserConfig = $this->getConfiguration( 'ENVIRONMENT_SETTINGS', '' );
+            }
             if (isset( $this->UserConfig['format'] )) {
                 $aux = '';
                 $aux = str_replace( '@userName', $username, $this->UserConfig['format'] );
@@ -349,10 +354,11 @@ class Configurations // extends Configuration
      * @param object &$to
      * @return void
      */
-    function setConfig ($route, &$object, &$to)
+    public function setConfig ($route, &$object, &$to)
     {
-        if (! isset( $to ))
+        if (! isset( $to )) {
             $to = &$this->aConfig;
+        }
         $routes = explode( ',', $route );
         foreach ($routes as $r) {
             $ro = explode( '/', $r );
@@ -362,26 +368,30 @@ class Configurations // extends Configuration
                 if ($ro[0] === '*') {
                     foreach ($object as $k => $v) {
                         if (is_object( $object )) {
-                            if (! isset( $to[$k] ))
+                            if (! isset( $to[$k] )) {
                                 $to[$k] = array ();
+                            }
                             $this->setConfig( implode( '/', $rou ), $object->{$k}, $to[$k] );
                         } else {
                             if (is_array( $object )) {
-                                if (! isset( $to[$k] ))
+                                if (! isset( $to[$k] )) {
                                     $to[$k] = array ();
+                                }
                                 $this->setConfig( implode( '/', $rou ), $object[$k], $to[$k] );
                             }
                         }
                     }
                 } else {
                     if (is_object( $object )) {
-                        if (! isset( $to[$ro[0]] ))
+                        if (! isset( $to[$ro[0]] )) {
                             $to[$ro[0]] = array ();
+                        }
                         $this->setConfig( implode( '/', $rou ), $object->{$ro[0]}, $to[$ro[0]] );
                     } else {
                         if (is_array( $object )) {
-                            if (! isset( $to[$ro[0]] ))
+                            if (! isset( $to[$ro[0]] )) {
                                 $to[$ro[0]] = array ();
+                            }
                             $this->setConfig( implode( '/', $rou ), $object[$ro[0]], $to[$ro[0]] );
                         } else {
                             $to = $object;
@@ -393,20 +403,23 @@ class Configurations // extends Configuration
                 if ($ro[0] === '*') {
                     foreach ($object as $k => $v) {
                         if (is_object( $object )) {
-                            if (! isset( $to[$k] ))
+                            if (! isset( $to[$k] )) {
                                 $to[$k] = array ();
+                            }
                             $to[$k] = $object->{$k};
                         } else {
                             if (is_array( $object )) {
-                                if (! isset( $to[$k] ))
+                                if (! isset( $to[$k] )) {
                                     $to[$k] = array ();
+                                }
                                 $to[$k] = $object[$k];
                             }
                         }
                     }
                 } else {
-                    if (! isset( $to[$r] ))
+                    if (! isset( $to[$r] )) {
                         $to[$r] = array ();
+                    }
                     if (is_object( $object )) {
                         $to[$r] = $object->{$r};
                     } elseif (is_array( $object )) {
@@ -419,10 +432,9 @@ class Configurations // extends Configuration
         }
     }
 
-    function getDateFormats ()
+    public function getDateFormats ()
     {
-        $formats[] = Array ('id' => 'Y-m-d H:i:s',        //the id , don't translate
-'name' => G::loadTranslation( 'ID_DATE_FORMAT_1' )  //'Y-m-d H:i:s'      i.e: '2010-11-17 10:25:07'
+        $formats[] = Array ('id' => 'Y-m-d H:i:s', 'name' => G::loadTranslation( 'ID_DATE_FORMAT_1' ) //'Y-m-d H:i:s'      i.e: '2010-11-17 10:25:07'
         );
         $formats[] = Array ('id' => 'd/m/Y','name' => G::loadTranslation( 'ID_DATE_FORMAT_2' )  //'d/m/Y'      i.e:'17/11/2010'
         );
@@ -452,10 +464,10 @@ class Configurations // extends Configuration
         return $formats;
     }
 
-    function getUserNameFormats ()
+    public function getUserNameFormats ()
     {
         $formats[] = Array ('id' => '@firstName @lastName',        //the id , don't translate
-'name' => G::loadTranslation( 'ID_USERNAME_FORMAT_1' )  //label displayed, can be translated
+        'name' => G::loadTranslation( 'ID_USERNAME_FORMAT_1' )  //label displayed, can be translated
         );
         $formats[] = Array ('id' => '@firstName @lastName (@userName)','name' => G::loadTranslation( 'ID_USERNAME_FORMAT_2' )
         );
@@ -473,7 +485,7 @@ class Configurations // extends Configuration
         return $formats;
     }
 
-    function getSystemDate ($dateTime)
+    public function getSystemDate ($dateTime)
     {
         $oConf = new Configurations();
         $oConf->loadConfig( $obj, 'ENVIRONMENT_SETTINGS', '' );
@@ -494,21 +506,24 @@ class Configurations // extends Configuration
         return $dateTime;
     }
 
-    function getEnvSetting ($key = null, $data = null)
+    public function getEnvSetting ($key = null, $data = null)
     {
         $this->loadConfig( $obj, 'ENVIRONMENT_SETTINGS', '' );
 
         if (isset( $key )) {
             if (isset( $this->aConfig[$key] )) {
-                if (isset( $data ) && is_array( $data ))
-                    foreach ($data as $k => $v)
+                if (isset( $data ) && is_array( $data )) {
+                    foreach ($data as $k => $v) {
                         $this->aConfig[$key] = str_replace( '@' . $k, $v, $this->aConfig[$key] );
-
+                    }
+                }
                 return $this->aConfig[$key];
-            } else
+            } else {
                 return '';
-        } else
+            }
+        } else {
             return $this->aConfig;
+        }
     }
 }
 

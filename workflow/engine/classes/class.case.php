@@ -98,7 +98,7 @@ class Cases
         $c->add(TaskPeer::TAS_START, 'TRUE');
         $c->add(TaskUserPeer::USR_UID, $sUIDUser);
         if ($processUid != '') {
-          $c->add(TaskPeer::PRO_UID, $processUid);
+            $c->add(TaskPeer::PRO_UID, $processUid);
         }
 
         $rs = TaskPeer::doSelectRS($c);
@@ -113,7 +113,6 @@ class Cases
         G::LoadClass('groups');
         $group = new Groups();
         $aGroups = $group->getActiveGroupsForAnUser($sUIDUser);
-
         $c = new Criteria();
         $c->clearSelectColumns();
         $c->addSelectColumn('COUNT(*)');
@@ -124,7 +123,7 @@ class Cases
         $c->add(TaskPeer::TAS_START, 'TRUE');
         $c->add(TaskUserPeer::USR_UID, $aGroups, Criteria::IN);
         if ($processUid != '') {
-          $c->add(TaskPeer::PRO_UID, $processUid);
+            $c->add(TaskPeer::PRO_UID, $processUid);
         }
 
         $rs = TaskPeer::doSelectRS($c);
@@ -484,9 +483,9 @@ class Cases
             $caseData = $this->LoadCase($APP_UID);
             if (isset($caseData['APP_DATA'][$tasGroupVariable])) {
                 if (trim($caseData['APP_DATA'][$tasGroupVariable]) != '') {
-                  if (in_array(trim($caseData['APP_DATA'][$tasGroupVariable]), $groups)) {
-                    return true;
-                  }
+                    if (in_array(trim($caseData['APP_DATA'][$tasGroupVariable]), $groups)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -2850,9 +2849,9 @@ class Cases
         $c->addAsColumn('APP_CURRENT_USER', "CONCAT(USERS.USR_LASTNAME, ' ', USERS.USR_FIRSTNAME)");
         $c->addSelectColumn(ApplicationPeer::APP_STATUS);
         if ($titles) {
-          $c->addAsColumn('APP_TITLE', 'APP_TITLE.CON_VALUE');
-          $c->addAsColumn('APP_PRO_TITLE', 'PRO_TITLE.CON_VALUE');
-          $c->addAsColumn('APP_TAS_TITLE', 'TAS_TITLE.CON_VALUE');
+            $c->addAsColumn('APP_TITLE', 'APP_TITLE.CON_VALUE');
+            $c->addAsColumn('APP_PRO_TITLE', 'PRO_TITLE.CON_VALUE');
+            $c->addAsColumn('APP_TAS_TITLE', 'TAS_TITLE.CON_VALUE');
         }
         //$c->addAsColumn('APP_DEL_PREVIOUS_USER', 'APP_LAST_USER.USR_USERNAME');
         $c->addAsColumn(
@@ -2860,9 +2859,9 @@ class Cases
             "CONCAT(APP_LAST_USER.USR_LASTNAME, ' ', APP_LAST_USER.USR_FIRSTNAME)");
 
         if ($titles) {
-          $c->addAlias("APP_TITLE", 'CONTENT');
-          $c->addAlias("PRO_TITLE", 'CONTENT');
-          $c->addAlias("TAS_TITLE", 'CONTENT');
+            $c->addAlias("APP_TITLE", 'CONTENT');
+            $c->addAlias("PRO_TITLE", 'CONTENT');
+            $c->addAlias("TAS_TITLE", 'CONTENT');
         }
         $c->addAlias("APP_PREV_DEL", 'APP_DELEGATION');
         $c->addAlias("APP_LAST_USER", 'USERS');
@@ -2875,24 +2874,24 @@ class Cases
         $c->addJoin(AppDelegationPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
 
         if ($titles) {
-          $del = DBAdapter::getStringDelimiter();
-          $appTitleConds = array();
-          $appTitleConds[] = array(ApplicationPeer::APP_UID, 'APP_TITLE.CON_ID');
-          $appTitleConds[] = array('APP_TITLE.CON_CATEGORY', $del . 'APP_TITLE' . $del);
-          $appTitleConds[] = array('APP_TITLE.CON_LANG', $del . SYS_LANG . $del);
-          $c->addJoinMC($appTitleConds, Criteria::LEFT_JOIN);
+            $del = DBAdapter::getStringDelimiter();
+            $appTitleConds = array();
+            $appTitleConds[] = array(ApplicationPeer::APP_UID, 'APP_TITLE.CON_ID');
+            $appTitleConds[] = array('APP_TITLE.CON_CATEGORY', $del . 'APP_TITLE' . $del);
+            $appTitleConds[] = array('APP_TITLE.CON_LANG', $del . SYS_LANG . $del);
+            $c->addJoinMC($appTitleConds, Criteria::LEFT_JOIN);
 
-          $proTitleConds = array();
-          $proTitleConds[] = array(ApplicationPeer::PRO_UID, 'PRO_TITLE.CON_ID');
-          $proTitleConds[] = array('PRO_TITLE.CON_CATEGORY', $del . 'PRO_TITLE' . $del);
-          $proTitleConds[] = array('PRO_TITLE.CON_LANG', $del . SYS_LANG . $del);
-          $c->addJoinMC($proTitleConds, Criteria::LEFT_JOIN);
+            $proTitleConds = array();
+            $proTitleConds[] = array(ApplicationPeer::PRO_UID, 'PRO_TITLE.CON_ID');
+            $proTitleConds[] = array('PRO_TITLE.CON_CATEGORY', $del . 'PRO_TITLE' . $del);
+            $proTitleConds[] = array('PRO_TITLE.CON_LANG', $del . SYS_LANG . $del);
+            $c->addJoinMC($proTitleConds, Criteria::LEFT_JOIN);
 
-          $tasTitleConds = array();
-          $tasTitleConds[] = array(AppDelegationPeer::TAS_UID, 'TAS_TITLE.CON_ID');
-          $tasTitleConds[] = array('TAS_TITLE.CON_CATEGORY', $del . 'TAS_TITLE' . $del);
-          $tasTitleConds[] = array('TAS_TITLE.CON_LANG', $del . SYS_LANG . $del);
-          $c->addJoinMC($tasTitleConds, Criteria::LEFT_JOIN);
+            $tasTitleConds = array();
+            $tasTitleConds[] = array(AppDelegationPeer::TAS_UID, 'TAS_TITLE.CON_ID');
+            $tasTitleConds[] = array('TAS_TITLE.CON_CATEGORY', $del . 'TAS_TITLE' . $del);
+            $tasTitleConds[] = array('TAS_TITLE.CON_LANG', $del . SYS_LANG . $del);
+            $c->addJoinMC($tasTitleConds, Criteria::LEFT_JOIN);
         }
 
         $prevConds = array();
@@ -3024,7 +3023,7 @@ class Cases
      * Description: This method set all cases with the APP_DISABLE_ACTION_DATE for today
      * @return void
      */
-    public function ThrowUnpauseDaemon($today, $cron=0)
+    public function ThrowUnpauseDaemon($today, $cron = 0)
     {
         $today = ($today==date('Y-m-d'))?date('Y-m-d'):$today;
         $c = new Criteria('workflow');
@@ -3032,14 +3031,12 @@ class Cases
         $c->add(
             $c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_USER, null, Criteria::ISNULL)->
             addOr($c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_USER, 0)
-            )
-        );
+            ));
         $c->add(
             $c->getNewCriterion(
                 AppDelayPeer::APP_DISABLE_ACTION_DATE, $today . ' 23:59:59', Criteria::LESS_EQUAL)->
                 addAnd($c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_DATE, null, Criteria::ISNOTNULL)
-            )
-        );
+            ));
         $d = AppDelayPeer::doSelectRS($c);
         $d->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $d->next();
@@ -4505,7 +4502,7 @@ class Cases
      * @param string $sFrom
      * @return void
     */
-    public function sendNotifications($sCurrentTask, $aTasks, $aFields, $sApplicationUID, $iDelegation, $sFrom="")
+    public function sendNotifications($sCurrentTask, $aTasks, $aFields, $sApplicationUID, $iDelegation, $sFrom = "")
     {
         try {
             $applicationData = $this->loadCase($sApplicationUID);
@@ -4536,14 +4533,14 @@ class Cases
                     $passwd = $aConfiguration["MESS_PASSWORD"];
                     $passwdDec = G::decrypt($passwd, "EMAILENCRYPT");
                     $auxPass = explode('hash:', $passwdDec);
-		            if (count($auxPass) > 1) {
+                    if (count($auxPass) > 1) {
                         if (count($auxPass) == 2) {
                             $passwd = $auxPass[1];
                         } else {
                             array_shift($auxPass);
                             $passwd = implode('', $auxPass);
                         }
-		            }
+                    }
                     $aConfiguration["MESS_PASSWORD"] = $passwd;
                 } else {
                     $aConfiguration = array();
@@ -4563,29 +4560,29 @@ class Cases
             }
 
             if ($sFrom == '') {
-              $sFrom = '"ProcessMaker"';
+                $sFrom = '"ProcessMaker"';
             }
 
             $hasEmailFrom = preg_match('/(.+)@(.+)\.(.+)/', $sFrom, $match);
 
             if (!$hasEmailFrom || strpos($sFrom, $aConfiguration['MESS_ACCOUNT']) === false) {
-              if (($aConfiguration['MESS_ENGINE'] != 'MAIL') && ($aConfiguration['MESS_ACCOUNT'] != '')) {
-                $sFrom .= ' <' . $aConfiguration['MESS_ACCOUNT'] . '>';
-              } else {
-                if (($aConfiguration['MESS_ENGINE'] == 'MAIL')) {
-                  $sFrom .= ' <info@' . gethostbyaddr('127.0.0.1') . '>';
+                if (($aConfiguration['MESS_ENGINE'] != 'MAIL') && ($aConfiguration['MESS_ACCOUNT'] != '')) {
+                    $sFrom .= ' <' . $aConfiguration['MESS_ACCOUNT'] . '>';
                 } else {
-                  if ($aConfiguration['MESS_SERVER'] != '') {
-                    if (($sAux = @gethostbyaddr($aConfiguration['MESS_SERVER']))) {
-                      $sFrom .= ' <info@' . $sAux . '>';
+                    if (($aConfiguration['MESS_ENGINE'] == 'MAIL')) {
+                        $sFrom .= ' <info@' . gethostbyaddr('127.0.0.1') . '>';
                     } else {
-                      $sFrom .= ' <info@' . $aConfiguration['MESS_SERVER'] . '>';
+                        if ($aConfiguration['MESS_SERVER'] != '') {
+                            if (($sAux = @gethostbyaddr($aConfiguration['MESS_SERVER']))) {
+                                $sFrom .= ' <info@' . $sAux . '>';
+                            } else {
+                                $sFrom .= ' <info@' . $aConfiguration['MESS_SERVER'] . '>';
+                            }
+                        } else {
+                            $sFrom .= ' <info@processmaker.com>';
+                        }
                     }
-                  } else {
-                    $sFrom .= ' <info@processmaker.com>';
-                  }
                 }
-              }
             }
 
             if (isset($aTaskInfo['TAS_DEF_SUBJECT_MESSAGE']) && $aTaskInfo['TAS_DEF_SUBJECT_MESSAGE'] != '') {
@@ -4639,7 +4636,8 @@ class Cases
                 switch ($aTask["TAS_ASSIGN_TYPE"]) {
                     case "SELF_SERVICE":
                         if ($swtplDefault == 1) {
-                            G::verifyPath($pathEmail, true); //Create if it does not exist
+                            G::verifyPath($pathEmail, true);
+                            //Create if it does not exist
                             $fileTemplate = $pathEmail . "unassignedMessage.html";
 
                             if (!file_exists($fileTemplate)) {
@@ -6158,7 +6156,7 @@ class Cases
 
     public function getExecuteTriggerProcess($appUid, $action)
     {
-        if ((!isset($appUid) && $appUid == '') || (!isset($action) && $action == ''))  {
+        if ((!isset($appUid) && $appUid == '') || (!isset($action) && $action == '')) {
             return false;
         }
 
