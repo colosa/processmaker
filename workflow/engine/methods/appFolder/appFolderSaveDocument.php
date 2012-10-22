@@ -31,7 +31,6 @@ try {
     $docType = isset( $_GET['docType'] ) ? $_GET['docType'] : "";
 
     //save info
-
     require_once ("classes/model/AppDocument.php");
     require_once ('classes/model/AppFolder.php');
     require_once ('classes/model/InputDocument.php');
