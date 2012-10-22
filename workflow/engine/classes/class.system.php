@@ -28,7 +28,6 @@
 
 /**
  * class system for workflow mantanance routines
- *
  * author Erik A.O.<erik@colosa.com>
  * date May 12th, 2010
  *

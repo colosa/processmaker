@@ -51,7 +51,6 @@ try {
     $G_SUB_MENU = 'users';
     $G_ID_MENU_SELECTED = 'USERS';
     $G_ID_SUB_MENU_SELECTED = 'USERS';
-
     $G_PUBLISH = new Publisher();
 
     //getting the user and department
