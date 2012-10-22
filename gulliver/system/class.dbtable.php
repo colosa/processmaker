@@ -76,7 +76,6 @@ class DBTable
      */
     public function setTo ($objDBConnection, $strTable = "", $arrKeys = array( 'UID' ))
     {
-
         $this->_dbc = $objDBConnection;
         if ($this->_dbc != null && strcasecmp( get_class( $objDBConnection ), 'dbconnection' ) == 0) {
             $this->_dbses = new DBSession( $this->_dbc );

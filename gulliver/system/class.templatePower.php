@@ -3,7 +3,6 @@
  * class.templatePower.php
  *
  * @package gulliver.system
- *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2011 Colosa Inc.
  *
