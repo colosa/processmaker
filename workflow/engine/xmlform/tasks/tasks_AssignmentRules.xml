@@ -40,42 +40,91 @@
   <en>Variable for No of Instances to complete</en>
 </TAS_MI_COMPLETE_VARIABLE-->
 
+<TAS_SELFSERVICE_TIMEOUT type="checkbox" value="1">
+    <en>Set a timeout</en>
+</TAS_SELFSERVICE_TIMEOUT>
+
+<TAS_SELFSERVICE_TIME type="text" required="1" validate="Int" size="3">
+    <en>Time</en>
+</TAS_SELFSERVICE_TIME>
+
+<TAS_SELFSERVICE_TIME_UNIT type="dropdown">
+    <en>
+        Time unit
+        <option name="HOURS">Hours</option>
+        <option name="DAYS">Days</option>
+    </en>
+</TAS_SELFSERVICE_TIME_UNIT>
+
+<TAS_SELFSERVICE_TRIGGER_UID type="dropdown" required="1">
+    SELECT TGR.TRI_UID, CON.CON_VALUE
+    FROM   TRIGGERS AS TGR, CONTENT AS CON
+    WHERE  TGR.PRO_UID = '@#PROCESS' AND
+           TGR.TRI_UID = CON.CON_ID AND CON.CON_CATEGORY = 'TRI_TITLE' AND CON.CON_LANG = '@#LANG'
+    ORDER BY CON.CON_VALUE ASC
+
+    <en>
+        Trigger to execute
+        <option name="">- Select a trigger -</option>
+    </en>
+</TAS_SELFSERVICE_TRIGGER_UID>
 
 <JS type="javascript"><![CDATA[
-
-var showTextpm = function()
+var selfServiceTimeoutDataShow = function (sw)
 {
-  /* this feature is temporarily disabled
-  if(getField('TAS_ASSIGN_TYPE][STATIC_MI').checked == true || getField('TAS_ASSIGN_TYPE][CANCEL_MI').checked == true)
-  {
-    showRowById('TAS_MI_INSTANCE_VARIABLE');
-    showRowById('TAS_MI_COMPLETE_VARIABLE');
-    hideRowById('TAS_ASSIGN_VARIABLE');
-  }
-  else */
-  if(getField('TAS_ASSIGN_TYPE][EVALUATE').checked == true) {
-    showRowById('TAS_ASSIGN_VARIABLE');
-    hideRowById('TAS_GROUP_VARIABLE');
-    //getField('TAS_GROUP_VARIABLE').value = '';
-    /* this feature is temporarily disabled
-    hideRowById('TAS_MI_INSTANCE_VARIABLE');
-    hideRowById('TAS_MI_COMPLETE_VARIABLE');*/
-  } else {
-    if (getField('TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE').checked) {
-      hideRowById('TAS_ASSIGN_VARIABLE');
-      showRowById('TAS_GROUP_VARIABLE');
-      if (getField('TAS_GROUP_VARIABLE').value == '') {
-        getField('TAS_GROUP_VARIABLE').value = '@' + '@' + 'SYS_GROUP_TO_BE_ASSIGNED';//the class xmlform replace this variable @@SYS_GROUP_TO_BE_ASSIGNED
-      }
-    } else {
-      hideRowById('TAS_ASSIGN_VARIABLE');
-      hideRowById('TAS_GROUP_VARIABLE');
-      //getField('TAS_GROUP_VARIABLE').value = '';
+    hideRowById("TAS_SELFSERVICE_TIME");
+    hideRowById("TAS_SELFSERVICE_TIME_UNIT");
+    hideRowById("TAS_SELFSERVICE_TRIGGER_UID");
+
+    if (sw == true) {
+        showRowById("TAS_SELFSERVICE_TIME");
+        showRowById("TAS_SELFSERVICE_TIME_UNIT");
+        showRowById("TAS_SELFSERVICE_TRIGGER_UID");
     }
+};
+
+var showTextpm = function ()
+{
+    hideRowById("TAS_ASSIGN_VARIABLE");
+    hideRowById("TAS_GROUP_VARIABLE");
     /* this feature is temporarily disabled
-    hideRowById('TAS_MI_INSTANCE_VARIABLE');
-    hideRowById('TAS_MI_COMPLETE_VARIABLE');*/
-  }
+    hideRowById("TAS_MI_INSTANCE_VARIABLE");
+    hideRowById("TAS_MI_COMPLETE_VARIABLE");
+    */
+    hideRowById("TAS_SELFSERVICE_TIMEOUT");
+
+    selfServiceTimeoutDataShow(false);
+
+    /* this feature is temporarily disabled
+    if(getField("TAS_ASSIGN_TYPE][STATIC_MI").checked == true || getField("TAS_ASSIGN_TYPE][CANCEL_MI").checked == true) {
+        showRowById("TAS_MI_INSTANCE_VARIABLE");
+        showRowById("TAS_MI_COMPLETE_VARIABLE");
+        hideRowById("TAS_ASSIGN_VARIABLE");
+    } else */
+
+    if (getField("TAS_ASSIGN_TYPE][EVALUATE").checked == true) {
+        showRowById("TAS_ASSIGN_VARIABLE");
+        //getField("TAS_GROUP_VARIABLE").value = "";
+    } else {
+        if (getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE").checked) {
+            showRowById("TAS_GROUP_VARIABLE");
+            showRowById("TAS_SELFSERVICE_TIMEOUT");
+
+            if (getField("TAS_GROUP_VARIABLE").value == "") {
+                getField("TAS_GROUP_VARIABLE").value = "@" + "@" + "SYS_GROUP_TO_BE_ASSIGNED"; //the class xmlform replace this variable @@SYS_GROUP_TO_BE_ASSIGNED
+            }
+
+            selfServiceTimeoutDataShow(getField("TAS_SELFSERVICE_TIMEOUT").checked);
+        } else {
+            if (getField("TAS_ASSIGN_TYPE][SELF_SERVICE").checked) {
+                showRowById("TAS_SELFSERVICE_TIMEOUT");
+
+                selfServiceTimeoutDataShow(getField("TAS_SELFSERVICE_TIMEOUT").checked);
+            } else {
+                //getField("TAS_GROUP_VARIABLE").value = "";
+            }
+        }
+    }
 };
 
 /* Recovery data */
@@ -83,14 +132,25 @@ if (aTaskFlag[1])
 {
   switch (oTaskData.TAS_ASSIGN_TYPE)
   {
-    case 'SELF_SERVICE':
-      if (getField('TAS_GROUP_VARIABLE').value == '') {
-        getField('TAS_ASSIGN_TYPE][SELF_SERVICE').checked = true;
-      } else {
-        getField('TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE').checked = true;
-      }
-      showTextpm();
-    break;
+    case "SELF_SERVICE":
+    case "SELF_SERVICE_EVALUATE":
+        if (oTaskData.TAS_ASSIGN_TYPE == "SELF_SERVICE") {
+            getField("TAS_ASSIGN_TYPE][SELF_SERVICE").checked = true;
+        } else {
+            getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE").checked = true;
+        }
+
+        getField("TAS_SELFSERVICE_TIMEOUT").checked = (oTaskData.TAS_SELFSERVICE_TIMEOUT == 1)? true : false;
+        getField("TAS_SELFSERVICE_TIME").value = oTaskData.TAS_SELFSERVICE_TIME;
+
+        if (oTaskData.TAS_SELFSERVICE_TIME_UNIT != "") {
+            getField("TAS_SELFSERVICE_TIME_UNIT").value = oTaskData.TAS_SELFSERVICE_TIME_UNIT;
+        }
+
+        getField("TAS_SELFSERVICE_TRIGGER_UID").value = oTaskData.TAS_SELFSERVICE_TRIGGER_UID;
+
+        showTextpm();
+        break;
     case 'REPORT_TO':
       getField('TAS_ASSIGN_TYPE][REPORT_TO').checked = true;
       showTextpm();
@@ -174,6 +234,10 @@ leimnud.event.add(getField('TAS_ASSIGN_TYPE][CANCEL_MI'), 'click', function() {
 if (!getField('TAS_ASSIGN_TYPE][EVALUATE').checked) {
   showTextpm();
 }
+
+leimnud.event.add(getField("TAS_SELFSERVICE_TIMEOUT"), "click", function () {
+    selfServiceTimeoutDataShow(getField("TAS_SELFSERVICE_TIMEOUT").checked);
+});
 
 
 var _oVarsPanel_;
