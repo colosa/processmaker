@@ -26,7 +26,6 @@
 
 /**
  * Class Helper
- *
  * @author Erik Amaru Ortiz. <erik@colosa.com>
  * @package gulliver.system
  * @access public

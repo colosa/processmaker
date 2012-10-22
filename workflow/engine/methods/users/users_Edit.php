@@ -24,7 +24,6 @@
 try {
     global $RBAC;
     $RBAC->requirePermissions( 'PM_USERS' );
-
     // deprecated the class XmlForm_Field_Image is currently part of the class.xmlform.php package
     // the use of the external xmlfield_Image is highly discouraged
     if (! class_exists( 'XmlForm_Field_Image' )) {

@@ -47,7 +47,6 @@ class System
      * List currently installed plugins
      *
      * param
-     *
      * @return array with the names of the plugins
      */
     public static function getPlugins ()

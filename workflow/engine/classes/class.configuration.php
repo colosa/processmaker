@@ -276,7 +276,6 @@ class Configurations // extends Configuration
 
     /**
      * usersNameFormat
-     *
      * @author Enrique Ponce de Leon enrique@colosa.com
      * @param string $username
      * @param string $firstname

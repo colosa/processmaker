@@ -70,7 +70,6 @@ try {
 
             'DEL_INDEX' => 1,'USR_UID' => $_SESSION['USER_LOGGED'],'DOC_UID' => $docUid,'APP_DOC_TYPE' => $_POST['form']['APP_DOC_TYPE'],'APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_COMMENT' => isset( $_POST['form']['APP_DOC_COMMENT'] ) ? $_POST['form']['APP_DOC_COMMENT'] : '','APP_DOC_TITLE' => '','APP_DOC_FILENAME' => isset( $_FILES['form']['name']['APP_DOC_FILENAME'] ) ? $_FILES['form']['name']['APP_DOC_FILENAME'] : '','FOLDER_UID' => $folderId,'APP_DOC_TAGS' => $fileTags
             );
-
             $oAppDocument->create( $aFields );
             break;
         default:
