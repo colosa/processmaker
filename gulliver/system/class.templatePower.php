@@ -75,15 +75,18 @@ define( "TP_ROOTBLOCK", '_ROOT' );
  */
 class TemplatePowerParser
 {
-    var $tpl_base; //Array( [filename/varcontent], [T_BYFILE/T_BYVAR] )
-    var $tpl_include; //Array( [filename/varcontent], [T_BYFILE/T_BYVAR] )
-    var $tpl_count;
-    var $parent = Array (); // $parent[{blockname}] = {parentblockname}
-    var $defBlock = Array ();
-    var $rootBlockName;
-    var $ignore_stack;
-    var $version;
-    var $unhtmlentities = 0;
+    public $tpl_base;
+    //Array( [filename/varcontent], [T_BYFILE/T_BYVAR] )
+    public $tpl_include;
+    //Array( [filename/varcontent], [T_BYFILE/T_BYVAR] )
+    public $tpl_count;
+    public $parent = Array ();
+    // $parent[{blockname}] = {parentblockname}
+    public $defBlock = Array ();
+    public $rootBlockName;
+    public $ignore_stack;
+    public $version;
+    public $unhtmlentities = 0;
 
     /**
      * TemplatePowerParser::TemplatePowerParser()
@@ -92,14 +95,12 @@ class TemplatePowerParser
      * @param string $type
      * @access private
      */
-    function TemplatePowerParser ($tpl_file, $type)
+    public function TemplatePowerParser ($tpl_file, $type)
     {
         $this->version = '3.0.2';
-        $this->tpl_base = Array ($tpl_file,$type
-        );
+        $this->tpl_base = Array ($tpl_file,$type);
         $this->tpl_count = 0;
-        $this->ignore_stack = Array (false
-        );
+        $this->ignore_stack = Array (false);
     }
 
     /**
@@ -109,7 +110,7 @@ class TemplatePowerParser
      *
      * @access private
      */
-    function __errorAlert ($message)
+    public function __errorAlert ($message)
     {
         print ('<br>' . $message . '<br>' . "\r\n") ;
     }
@@ -120,7 +121,7 @@ class TemplatePowerParser
      * @access private
      * @return void
      */
-    function __prepare ()
+    public function __prepare ()
     {
         $this->defBlock[TP_ROOTBLOCK] = Array ();
         $tplvar = $this->__prepareTemplate( $this->tpl_base[0], $this->tpl_base[1] );
@@ -139,7 +140,7 @@ class TemplatePowerParser
      *
      * @access private
      */
-    function __cleanUp ()
+    public function __cleanUp ()
     {
         for ($i = 0; $i <= $this->tpl_count; $i ++) {
             $tplvar = 'tpl_rawContent' . $i;
@@ -154,14 +155,14 @@ class TemplatePowerParser
      * @param string $type
      * @access private
      */
-    function __prepareTemplate ($tpl_file, $type)
+    public function __prepareTemplate ($tpl_file, $type)
     {
         $tplvar = 'tpl_rawContent' . $this->tpl_count;
         if ($type == T_BYVAR) {
             $this->{$tplvar}["content"] = preg_split( "/\n/", $tpl_file, - 1, PREG_SPLIT_DELIM_CAPTURE );
         } else {
-            // Trigger the error in the local scope of the function
-            //    trigger_error ("Some error", E_USER_WARNING);
+            //Trigger the error in the local scope of the function
+            //trigger_error ("Some error", E_USER_WARNING);
             $this->{$tplvar}["content"] = @file( $tpl_file ) or die( $this->__errorAlert( 'TemplatePower Error: Couldn\'t open [ ' . $tpl_file . ' ]!' ) );
         }
         $this->{$tplvar}["size"] = sizeof( $this->{$tplvar}["content"] );
@@ -177,7 +178,7 @@ class TemplatePowerParser
      * @param string $initdev
      * @access private
      */
-    function __parseTemplate ($tplvar, $blockname, $initdev)
+    public function __parseTemplate ($tplvar, $blockname, $initdev)
     {
         $coderow = $initdev["coderow"];
         $varrow = $initdev["varrow"];
@@ -203,12 +204,14 @@ class TemplatePowerParser
                             if (isset( $this->tpl_include[$regs[2]] )) {
                                 $tpl_file = $this->tpl_include[$regs[2]][0];
                                 $type = $this->tpl_include[$regs[2]][1];
-                            } else if (file_exists( $regs[2] )) { //check if defined as constant in template
+                            } elseif (file_exists( $regs[2] )) {
+                                //check if defined as constant in template
                                 $tpl_file = $regs[2];
                                 $type = T_BYFILE;
                             } else {
                                 $include_defined = false;
                             }
+
                             if ($include_defined) {
                                 //initialize startvalues for recursive call
                                 $initdev["varrow"] = $varrow;
@@ -220,13 +223,14 @@ class TemplatePowerParser
                                 $coderow = $initdev["coderow"];
                                 $varrow = $initdev["varrow"];
                             }
-                        } else if ($regs[1] == 'INCLUDESCRIPT') {
+                        } elseif ($regs[1] == 'INCLUDESCRIPT') {
                             $include_defined = true;
                             //check if the includescript file is assigned by the assignInclude function
                             if (isset( $this->tpl_include[$regs[2]] )) {
                                 $include_file = $this->tpl_include[$regs[2]][0];
                                 $type = $this->tpl_include[$regs[2]][1];
-                            } else if (file_exists( $regs[2] )) { //check if defined as constant in template
+                            } elseif (file_exists( $regs[2] )) {
+                                //check if defined as constant in template
                                 $include_file = $regs[2];
                                 $type = T_BYFILE;
                             } else {
@@ -246,7 +250,7 @@ class TemplatePowerParser
                                 $coderow ++;
                                 ob_end_clean();
                             }
-                        } else if ($regs[1] == 'REUSE') {
+                        } elseif ($regs[1] == 'REUSE') {
                             //do match for 'AS'
                             if (preg_match( '/(.+) AS (.+)/', $regs[2], $reuse_regs )) {
                                 $originalbname = trim( $reuse_regs[1] );
@@ -269,9 +273,11 @@ class TemplatePowerParser
                                 $coderow ++;
                             }
                         } else {
-                            if ($regs[2] == $blockname) { //is it the end of a block
+                            if ($regs[2] == $blockname) {
+                                //is it the end of a block
                                 break;
-                            } else { //its the start of a block
+                            } else {
+                                //its the start of a block
                                 //make a child block and tell the parent that he has a child
                                 $this->defBlock[$regs[2]] = Array ();
                                 $this->defBlock[$blockname]["_B:" . $regs[2]] = '';
@@ -288,7 +294,8 @@ class TemplatePowerParser
                                 $index = $initdev["index"];
                             }
                         }
-                    } else { //is it code and/or var(s)
+                    } else {
+                        //is it code and/or var(s)
                         //explode current template line on the curly bracket '{'
                         $sstr = explode( '{', $this->{$tplvar}["content"][$index] );
                         reset( $sstr );
@@ -350,7 +357,7 @@ class TemplatePowerParser
      * @return void
      * @access public
      */
-    function version ()
+    public function version ()
     {
         return $this->version;
     }
@@ -364,10 +371,9 @@ class TemplatePowerParser
      * @return void
      * @access public
      */
-    function assignInclude ($iblockname, $value, $type = T_BYFILE)
+    public function assignInclude ($iblockname, $value, $type = T_BYFILE)
     {
-        $this->tpl_include["$iblockname"] = Array ($value,$type
-        );
+        $this->tpl_include["$iblockname"] = Array ($value,$type);
     }
 }
 
@@ -378,13 +384,14 @@ class TemplatePowerParser
  */
 class TemplatePower extends TemplatePowerParser
 {
-    var $index = Array (); // $index[{blockname}]  = {indexnumber}
-    var $content = Array ();
-    var $currentBlock;
-    var $showUnAssigned;
-    var $serialized;
-    var $globalvars = Array ();
-    var $prepared;
+    public $index = Array ();
+    // $index[{blockname}]  = {indexnumber}
+    public $content = Array ();
+    public $currentBlock;
+    public $showUnAssigned;
+    public $serialized;
+    public $globalvars = Array ();
+    public $prepared;
 
     /**
      * TemplatePower::TemplatePower()
@@ -394,12 +401,13 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access public
      */
-    function TemplatePower ($tpl_file = '', $type = T_BYFILE)
+    public function TemplatePower ($tpl_file = '', $type = T_BYFILE)
     {
         TemplatePowerParser::TemplatePowerParser( $tpl_file, $type );
         $this->prepared = false;
         $this->showUnAssigned = false;
-        $this->serialized = false; //added: 26 April 2002
+        $this->serialized = false;
+        //added: 26 April 2002
     }
 
     /**
@@ -410,7 +418,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access private
      */
-    function __deSerializeTPL ($stpl_file, $type)
+    public function __deSerializeTPL ($stpl_file, $type)
     {
         if ($type == T_BYFILE) {
             $serializedTPL = @file( $stpl_file ) or die( $this->__errorAlert( 'TemplatePower Error: Can\'t open [ ' . $stpl_file . ' ]!' ) );
@@ -429,10 +437,9 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access private
      */
-    function __makeContentRoot ()
+    public function __makeContentRoot ()
     {
-        $this->content[TP_ROOTBLOCK . "_0"][0] = Array (TP_ROOTBLOCK
-        );
+        $this->content[TP_ROOTBLOCK . "_0"][0] = Array (TP_ROOTBLOCK);
         $this->currentBlock = &$this->content[TP_ROOTBLOCK . "_0"][0];
     }
 
@@ -445,9 +452,10 @@ class TemplatePower extends TemplatePowerParser
      *
      * @access private
      */
-    function __assign ($varname, $value)
+    public function __assign ($varname, $value)
     {
-        if (sizeof( $regs = explode( '.', $varname ) ) == 2) { //this is faster then preg_match
+        if (sizeof( $regs = explode( '.', $varname ) ) == 2) {
+            //this is faster then preg_match
             $ind_blockname = $regs[0] . '_' . $this->index[$regs[0]];
             $lastitem = sizeof( $this->content[$ind_blockname] );
             $lastitem > 1 ? $lastitem -- : $lastitem = 0;
@@ -467,7 +475,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access private
      */
-    function __assignGlobal ($varname, $value)
+    public function __assignGlobal ($varname, $value)
     {
         $this->globalvars[$varname] = $value;
     }
@@ -479,7 +487,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access private
      */
-    function __outputContent ($blockname)
+    public function __outputContent ($blockname)
     {
         $numrows = sizeof( $this->content[$blockname] );
         for ($i = 0; $i < $numrows; $i ++) {
@@ -487,7 +495,7 @@ class TemplatePower extends TemplatePowerParser
             for (reset( $this->defBlock[$defblockname] ); $k = key( $this->defBlock[$defblockname] ); next( $this->defBlock[$defblockname] )) {
                 if ($k[1] == 'C') {
                     print ($this->defBlock[$defblockname][$k]) ;
-                } else if ($k[1] == 'V') {
+                } elseif ($k[1] == 'V') {
                     $defValue = $this->defBlock[$defblockname][$k];
                     if (! isset( $this->content[$blockname][$i]["_V:" . $defValue] )) {
                         if (isset( $this->globalvars[$defValue] )) {
@@ -514,7 +522,7 @@ class TemplatePower extends TemplatePowerParser
                     if ($this->unhtmlentities)
                         $value = G::unhtmlentities( $value );
                     print ($value) ;
-                } else if ($k[1] == 'B') {
+                } elseif ($k[1] == 'B') {
                     if (isset( $this->content[$blockname][$i][$k] )) {
                         $this->__outputContent( $this->content[$blockname][$i][$k] );
                     }
@@ -529,7 +537,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access public
      */
-    function __printVars ()
+    public function __printVars ()
     {
         var_dump( $this->defBlock );
         print ("<br>--------------------<br>") ;
@@ -549,7 +557,7 @@ class TemplatePower extends TemplatePowerParser
      *
      * @access public
      */
-    function serializedBase ()
+    public function serializedBase ()
     {
         $this->serialized = true;
         $this->__deSerializeTPL( $this->tpl_base[0], $this->tpl_base[1] );
@@ -562,7 +570,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access public
      */
-    function showUnAssigned ($state = true)
+    public function showUnAssigned ($state = true)
     {
         $this->showUnAssigned = $state;
     }
@@ -573,7 +581,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access public
      */
-    function prepare ()
+    public function prepare ()
     {
         if (! $this->serialized) {
             TemplatePowerParser::__prepare();
@@ -590,7 +598,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access public
      */
-    function newBlock ($blockname)
+    public function newBlock ($blockname)
     {
         $parent = &$this->content[$this->parent[$blockname] . '_' . $this->index[$this->parent[$blockname]]];
         $lastitem = sizeof( $parent );
@@ -624,7 +632,7 @@ class TemplatePower extends TemplatePowerParser
      *
      * @access public
      */
-    function assignGlobal ($varname, $value = '')
+    public function assignGlobal ($varname, $value = '')
     {
         if (is_array( $varname )) {
             foreach ($varname as $var => $value) {
@@ -643,7 +651,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access public
      */
-    function assign ($varname, $value = '')
+    public function assign ($varname, $value = '')
     {
         if (is_array( $varname )) {
             foreach ($varname as $var => $value) {
@@ -661,7 +669,7 @@ class TemplatePower extends TemplatePowerParser
      * @param string $blockname
      * @access public
      */
-    function gotoBlock ($blockname)
+    public function gotoBlock ($blockname)
     {
         if (isset( $this->defBlock[$blockname] )) {
             $ind_blockname = $blockname . '_' . $this->index[$blockname];
@@ -680,9 +688,10 @@ class TemplatePower extends TemplatePowerParser
      * @param string $varname
      * @access public
      */
-    function getVarValue ($varname)
+    public function getVarValue ($varname)
     {
-        if (sizeof( $regs = explode( '.', $varname ) ) == 2) { //this is faster then preg_match{
+        if (sizeof( $regs = explode( '.', $varname ) ) == 2) {
+            //this is faster then preg_match{
             $ind_blockname = $regs[0] . '_' . $this->index[$regs[0]];
             $lastitem = sizeof( $this->content[$ind_blockname] );
             $lastitem > 1 ? $lastitem -- : $lastitem = 0;
@@ -700,7 +709,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access public
      */
-    function printToScreen ()
+    public function printToScreen ()
     {
         if ($this->prepared) {
             $this->__outputContent( TP_ROOTBLOCK . '_0' );
@@ -715,7 +724,7 @@ class TemplatePower extends TemplatePowerParser
      * @return void
      * @access public
      */
-    function getOutputContent ()
+    public function getOutputContent ()
     {
         ob_start();
         $this->printToScreen();
@@ -724,3 +733,4 @@ class TemplatePower extends TemplatePowerParser
         return $content;
     }
 }
+
