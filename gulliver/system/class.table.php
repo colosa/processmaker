@@ -1,4 +1,5 @@
 <?php
+
 /**
  * class.table.php
  *
@@ -29,6 +30,7 @@
  *
  *
  *
+ *
  * Table class definition
  * Render table
  *
@@ -40,49 +42,51 @@
 
 class Table
 {
-    var $Columns = null;
-    var $Labels = null;
-    var $rows_per_page = 25;
-    var $show_nummbers = null;
-    var $first_row = 0;
-    var $row_pos = 0;
-    var $Action = ""; //not used
-    var $ActionLabel = "Continuar"; //not used
-    var $_dbc = null;
-    var $_dbses = null;
-    var $_dbset = null;
-    var $_source = "";
-    var $DefaultOrder = "UID";
-    var $DefaultOrderDir = 'ASC';
-    var $CustomOrder = "";
-    var $WhereClause = "";
-    var $_row_values = null;
-    var $_ordered = true;
-    var $orderprefix = "";
-    var $CountQry = "";
-    var $filtro = 1;
-    var $title = '';
+    public $Columns = null;
+    public $Labels = null;
+    public $rows_per_page = 25;
+    public $show_nummbers = null;
+    public $first_row = 0;
+    public $row_pos = 0;
+    public $Action = "";
+    //not used
+    public $ActionLabel = "Continuar";
+    //not used
+    public $_dbc = null;
+    public $_dbses = null;
+    public $_dbset = null;
+    public $_source = "";
+    public $DefaultOrder = "UID";
+    public $DefaultOrderDir = 'ASC';
+    public $CustomOrder = "";
+    public $WhereClause = "";
+    public $_row_values = null;
+    public $_ordered = true;
+    public $orderprefix = "";
+    public $CountQry = "";
+    public $filtro = 1;
+    public $title = '';
 
     /**
      * Asocia un arreglo con valores de traducci?n/conversi?n a un contexto
      *
      * @var array
      */
-    var $contexto = null;
+    public $contexto = null;
 
     /**
      * Arreglo que contiene las cadenas que van a ser usadas al traducir/convertir
      *
      * @var array
      */
-    var $translate = null;
+    public $translate = null;
 
     /**
      * Establece el ?ltimo contexto utilizado
      *
      * @var string
      */
-    var $_contexto = '';
+    public $_contexto = '';
 
     /**
      * Set conecction using default values
@@ -92,7 +96,7 @@ class Table
      * @param string $objConnection connection string
      * @return void
      */
-    function Table ($objConnection = null)
+    public function Table ($objConnection = null)
     {
         $this->SetTo( $objConnection );
     }
@@ -105,7 +109,7 @@ class Table
      * @param string $objConnection connection string
      * @return void
      */
-    function SetTo ($objConnection = null)
+    public function SetTo ($objConnection = null)
     {
         $this->_dbc = $objConnection;
     }
@@ -119,7 +123,7 @@ class Table
      * @param string $stDefaultOrder index to order by, default value='UID'
      * @return void
      */
-    function SetSource ($stQry = "", $stDefaultOrder = "UID", $stDefaultOrderDir = 'ASC')
+    public function SetSource ($stQry = "", $stDefaultOrder = "UID", $stDefaultOrderDir = 'ASC')
     {
         //to fix missing value for variable orderDir, when between pages changes.
         $url1 = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?';
@@ -146,15 +150,16 @@ class Table
      * @access public
      * @return void
      */
-    function GetSource ()
+    public function GetSource ()
     {
         global $HTTP_GET_VARS;
         global $HTTP_SESSION_VARS;
         $stOrderByDir = $this->DefaultOrderDir;
-        if (isset( $HTTP_SESSION_VARS['OrderDir'] ) && ($HTTP_SESSION_VARS['OrderDir'] == 'DESC' || $HTTP_SESSION_VARS['OrderDir'] == 'ASC'))
+        if (isset( $HTTP_SESSION_VARS['OrderDir'] ) && ($HTTP_SESSION_VARS['OrderDir'] == 'DESC' || $HTTP_SESSION_VARS['OrderDir'] == 'ASC')) {
             $stOrderByDir = $HTTP_SESSION_VARS['OrderDir'];
-
+        }
         $stQry = $this->_source;
+
         if ($this->WhereClause != "") {
             $stQry .= " WHERE " . $this->WhereClause;
         }
@@ -162,7 +167,6 @@ class Table
         if ($this->_ordered == true) {
             $stOrderBy = (isset( $HTTP_GET_VARS[$this->orderprefix . 'order'] ) ? $HTTP_GET_VARS[$this->orderprefix . 'order'] : '');
             $stOrderLb = (isset( $HTTP_GET_VARS[$this->orderprefix . 'label'] ) ? $HTTP_GET_VARS[$this->orderprefix . 'label'] : '');
-
             //if( isset( $HTTP_SESSION_VARS['OrderDir'] ) && $HTTP_SESSION_VARS['OrderDir'] == $stOrderBy ) {
             if ($stOrderLb) {
                 if ($HTTP_SESSION_VARS['OrderDir'] == 'ASC') {
@@ -234,7 +238,7 @@ class Table
      * @access public
      * @return int
      */
-    function TotalCount ()
+    public function TotalCount ()
     {
         global $HTTP_GET_VARS;
         global $HTTP_SESSION_VARS;
@@ -271,7 +275,7 @@ class Table
      * @access public
      * @return int
      */
-    function Count ()
+    public function Count ()
     {
         if (is_object( $this->_dbset )) {
             return $this->_dbset->Count();
@@ -287,7 +291,7 @@ class Table
      * @access public
      * @return int
      */
-    function CurRow ()
+    public function CurRow ()
     {
         return $this->row_pos;
     }
@@ -299,7 +303,7 @@ class Table
      * @access public
      * @return int
      */
-    function ColumnCount ()
+    public function ColumnCount ()
     {
         $result = 0;
         if (is_array( $this->Columns )) {
@@ -315,7 +319,7 @@ class Table
      * @access public
      * @return array
      */
-    function Read ()
+    public function Read ()
     {
         $this->_row_values = $this->_dbset->Read();
         $this->row_pos ++;
@@ -330,7 +334,7 @@ class Table
      * @param int $intPos position to seek
      * @return int
      */
-    function Seek ($intPos = 0)
+    public function Seek ($intPos = 0)
     {
         $result = $this->_dbset->Seek( $intPos );
         if ($result) {
@@ -346,7 +350,7 @@ class Table
      * @access public
      * @return int
      */
-    function MoveFirst ()
+    public function MoveFirst ()
     {
         if ($this->Count() != 0) {
             if ($this->first_row < $this->Count()) {
@@ -362,7 +366,7 @@ class Table
      * @access public
      * @return boolean
      */
-    function EOF ()
+    public function EOF ()
     {
         $result = false;
         if ($this->Count() == 0) {
@@ -395,7 +399,7 @@ class Table
      * @param $strContent
      * @return void
      */
-    function AddColumn ($strLabel = "", $strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "")
+    public function AddColumn ($strLabel = "", $strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "")
     {
         $tmpCol = array ("Name" => $strName,"Type" => $strType,"Width" => $intWidth,"Align" => $strAlign,"Target" => $strTarget,"Content" => $strContent
         );
@@ -423,7 +427,7 @@ class Table
      * @param $orderByThis
      * @return void
      */
-    function AddRawColumn ($strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "", $strExtra = "", $strCondition = "", $orderByThis = true)
+    public function AddRawColumn ($strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "", $strExtra = "", $strCondition = "", $orderByThis = true)
     {
         $tmpCol = array ("Name" => $strName,"Type" => $strType,"Width" => $intWidth,"Align" => $strAlign,"Target" => $strTarget,"Content" => $strContent,"Extra" => $strExtra,"Condition" => $strCondition,"orderByThis" => $orderByThis
         );
@@ -445,7 +449,7 @@ class Table
      * @param $strClass
      * @return void
      */
-    function RenderTitle ($pa, $intPos = 1, $strClass = "tblHeader")
+    public function RenderTitle ($pa, $intPos = 1, $strClass = "tblHeader")
     {
         if (! defined( 'ENABLE_ENCRYPT' )) {
             define( 'ENABLE_ENCRYPT', 'no' );
@@ -459,14 +463,13 @@ class Table
                 $res .= " width=\"" . $col["Width"] . "\"";
             }
             $res .= ">";
-
             //$res .= "<a class=\"" . $strClass . "Link\" href=\"";
             $res .= "<a class=\"" . $strClass . "\" href=\"";
             $res .= (ENABLE_ENCRYPT == 'yes' ? str_replace( G::encrypt( 'sys' . SYS_SYS, URL_KEY ), SYS_SYS, G::encryptUrl( urldecode( SYS_CURRENT_URI ), URL_KEY ) ) : SYS_CURRENT_URI) . "?order=" . $this->Columns[$intPos]['Name'] . "&page=" . $pa . "&label=true";
             //$res .= $_SERVER['REDIRECT_URL'] . "?order=" . $this->Columns[$intPos]['Name']."&page=".$pa."&label=true";
             $res .= "\">" . $this->Labels[$intPos] . "</a>";
-
-            $res .= "</th>\n"; //echo $res;die;
+            $res .= "</th>\n";
+            //echo $res;die;
         } else {
             $res = "<th class=\"$strClass\" align=\"left\" height=\"25\"";
             if ($col["Width"] > 0) {
@@ -488,7 +491,7 @@ class Table
      * @param $strClass
      * @return void
      */
-    function RenderTitle_ajax ($pa, $intPos = 1, $strClass = "tblHeader")
+    public function RenderTitle_ajax ($pa, $intPos = 1, $strClass = "tblHeader")
     {
         global $HTTP_SESSION_VARS;
         $col = $this->Columns[$intPos];
@@ -500,7 +503,6 @@ class Table
                 $res .= " width=\"" . $col["Width"] . "\"";
             }
             $res .= ">";
-
             //$res .= "<a class=\"" . $strClass . "Link\" href=\"";
             $res .= "<a class=\"" . $strClass . "\" href=\"";
             $_temp_var = $this->Columns[$intPos]['Name'];
@@ -514,8 +516,8 @@ class Table
                     $res .= "&nbsp;<img src='/images/arrow_order_asc.gif' border=0>";
                 }
             }
-
-            $res .= "</th>\n"; //echo $res;die;
+            $res .= "</th>\n";
+            //echo $res;die;
         } else {
             $res = "<th class=\"$strClass\" align=\"left\" height=\"25\"";
             if ($col["Width"] > 0) {
@@ -539,7 +541,7 @@ class Table
      * @param $auxgetval
      * @return void
      */
-    function RenderTitle2 ($pa, $fil, $intPos, $strClass = "tblHeader", $auxgetval = '')
+    public function RenderTitle2 ($pa, $fil, $intPos, $strClass = "tblHeader", $auxgetval = '')
     {
         if (! defined( 'ENABLE_ENCRYPT' )) {
             define( 'ENABLE_ENCRYPT', 'no' );
@@ -605,7 +607,7 @@ class Table
      * @param $renderTD if this value = 1, this function will include the TD tags
      * @return void
      */
-    function RenderColumn ($intPos = 0, $strClass = "tblCell", $strClassLink = "tblCellA", $number = 0, $renderTD = 1)
+    public function RenderColumn ($intPos = 0, $strClass = "tblCell", $strClassLink = "tblCellA", $number = 0, $renderTD = 1)
     {
         if (! defined( 'ENABLE_ENCRYPT' )) {
             define( 'ENABLE_ENCRYPT', 'no' );
@@ -688,7 +690,6 @@ class Table
                     $res .= "&nbsp;";
                 }
                 break;
-
             case "currency2":
                 if ($val != "") {
                     $res .= G::NumberToCurrency( $val );
@@ -732,7 +733,6 @@ class Table
                             $res .= formatDate( '$M $d $Y', $val );
                             break;
                     }
-
                 } else {
                     $res .= "&nbsp;";
                 }
@@ -782,17 +782,16 @@ class Table
                     $tlabel = substr( $col["Content"], 0, 1 );
                     $vname = substr( $col["Content"], 1, (strlen( $col["Content"] ) - 1) );
                     $lval = $this->_row_values[$vname];
-                    //$res .= "<a href='" . $col["Target"] . $lval . "' target='_new' > $image</a> "; //It open a new window... better the other way By JHL 16/11/06
+                    //$res .= "<a href='" . $col["Target"] . $lval . "' target='_new' > $image</a> ";
+                    //It open a new window... better the other way By JHL 16/11/06
                     $res .= "<a href='" . $col["Target"] . $lval . "' > $image</a> ";
                 } else {
                     $res .= "&nbsp;";
                 }
                 break;
-
             case "image":
-
-                if (is_array( $col["Condition"] ))                 //By JHL to enable Condition to display a image -- New parameter Condition in Addrawcolumn
-{
+                if (is_array( $col["Condition"] )) {
+                    //By JHL to enable Condition to display a image -- New parameter Condition in Addrawcolumn
                     $field_compare = $col["Condition"]['field'];
                     $tlabel = substr( $field_compare, 0, 1 );
                     switch ($tlabel) {
@@ -801,44 +800,36 @@ class Table
                             $field_val = $this->_row_values[$vname];
                             break;
                     }
-
                 } else {
                     $val = "<img border=0 src='$fieldname'>";
                 }
-            //      break;
-
-
+                //      break;
             case "textimage":
                 $AAS = $col['Extra'];
                 $val1 = " <img border=0 src='$AAS' align='middle'>";
-            //      break;
+                //      break;
             case "image-text":
                 if (is_array( $col['Content'] ) && $col['Content'] != "") {
                     // Hay mas de un valor para el link
                     $values = $col['Content'];
                     $n = count( $values );
-
                     $res .= "<a class='$txtin3' $title href=\"" . (ENABLE_ENCRYPT == 'yes' ? G::encryptUrl( urldecode( $col["Target"] ), URL_KEY ) : $col["Target"]) . "/";
-
                     for ($i = 0; $i < $n; $i ++) {
                         $element = $values[$i];
-
                         $tlabel = substr( $element, 0, 1 );
                         switch ($tlabel) {
                             case "&":
                                 $vname = substr( $element, 1, (strlen( $element ) - 1) );
                                 $lval = $this->_row_values[$vname];
-
                                 $res .= $i == $n - 1 ? $lval : $lval . "/";
                                 break;
                         }
                     }
                     $res .= "\"><span class='txtin3'>" . strtoupper( $fieldname ) . "$val</span></a>";
-                } else
+                } else {
                     $val2 = "<span class='txtin3'>" . strtoupper( $fieldname ) . "</span>";
-                //      break;
-
-
+                    //break;
+                }
             case "link":
                 if ($val == "")
                     $res .= "&nbsp;";
@@ -855,13 +846,11 @@ class Table
 
                     for ($i = 0; $i < $n; $i ++) {
                         $element = $values[$i];
-
                         $tlabel = substr( $element, 0, 1 );
                         switch ($tlabel) {
                             case "&":
                                 $vname = substr( $element, 1, (strlen( $element ) - 1) );
                                 $lval = $this->_row_values[$vname];
-
                                 $res .= $i == $n - 1 ? $lval : $lval . "/";
                                 break;
                         }
@@ -883,7 +872,6 @@ class Table
                                     $val = " (" . $val . ")";
                                 }
                                 if ($col["Type"] == "image-text") {
-
                                     $res .= $val2;
                                 }
                                 $res .= $val;
@@ -921,10 +909,10 @@ class Table
                     $res .= "</a" . $col['Extra'] . ">";
                 }
                 break;
-
             case "linknew":
-                if ($val == "")
+                if ($val == "") {
                     $res .= "&nbsp;";
+                }
                 if ($col["Content"] != "") {
                     $tlabel = substr( $col["Content"], 0, 1 );
                     switch ($tlabel) {
@@ -964,7 +952,6 @@ class Table
                     $res .= "</a" . $col['Extra'] . ">";
                 }
                 break;
-
             case "iflink":
                 if ($col["Content"] != "") {
                     $tlabel = substr( $col["Content"], 0, 1 );
@@ -999,10 +986,8 @@ class Table
                     $res .= "</a" . $col['Extra'] . ">";
                 }
                 break;
-
             case "jsimglink":
                 $val = "<img border=0 src='$fieldname'>";
-
             case "jslink":
                 if ($val == "") {
                     $val .= "<span class='txtin3'> " . $col['Name'] . '<span>';
@@ -1048,7 +1033,6 @@ class Table
                             $res .= $val;
                             $res .= "</a" . $col['Extra'] . ">";
                             break;
-
                         default:
                             $res .= "<a class='$strClassLink' href=\"javascript:" . $col["Target"] . "('" . $val . "')\"" . $col['Extra'] . ">";
                             $res .= $col["Content"];
@@ -1086,28 +1070,28 @@ class Table
      * @param string $strLabel Label
      * @return void
      */
-    function SetAction ($strAction, $strLabel = "Continue")
+
+    public function SetAction ($strAction, $strLabel = "Continue")
     {
         $this->Action = $strAction;
         $this->ActionLabel = $strLabel;
     }
 
     /**
-     * Set contaxt and table (array) of translate
-     *
-     * @author Hardy Beltran Monasterios <hardy@acm.org>
-     * @param string $contexto Contexto en el cual se busca la traducci?n
-     * @param array $tabla Tabla con valores para traducir
-     * @param string $nombre Nombre del array $tabla
-     * @access public
-     * @return void
-     */
-    function setTranslate ($contexto, $tabla, $nombre)
+    * Set contaxt and table (array) of translate
+    *
+    * @author Hardy Beltran Monasterios <hardy@acm.org>
+    * @param string $contexto Contexto en el cual se busca la traducci?n
+    * @param array $tabla Tabla con valores para traducir
+    * @param string $nombre Nombre del array $tabla
+    * @access public
+    * @return void
+    */
+    public function setTranslate ($contexto, $tabla, $nombre)
     {
         if (is_array( $this->contexto )) {
             $this->contexto[0][] = $contexto;
             $this->contexto[1][] = $nombre;
-
         } else {
             $this->contexto = array ();
             $this->contexto[0][] = $contexto;
@@ -1135,7 +1119,7 @@ class Table
      * @param string $lang El lenguaje que se va utilizar
      * @return mixed
      */
-    function translateValue ($contexto, $valor, $lang)
+    public function translateValue ($contexto, $valor, $lang)
     {
         // Verificar si exite el contexto
         if (in_array( $contexto, $this->contexto[0] )) {
@@ -1155,27 +1139,26 @@ class Table
             print ("l10n error:no context.") ;
         }
     }
-
     /**
-     * Estable el contexto de traducci?n/conversi?n
-     *
-     * @author Hardy Beltran Monasterios <hardy@acm.org>
-     * @param string $contexto Contexto en el cual se busca la traducci?n
-     * @return void
-     */
-    function setContext ($contexto)
+    * Estable el contexto de traducci?n/conversi?n
+    *
+    * @author Hardy Beltran Monasterios <hardy@acm.org>
+    * @param string $contexto Contexto en el cual se busca la traducci?n
+    * @return void
+    */
+    public function setContext ($contexto)
     {
         $this->_context = $contexto;
     }
 
     /**
-     * Parse from HTML
-     *
-     * @author Fernando Ontiveros Lira <fernando@colosa.com>
-     * @access public
-     * @return void
-     */
-    function ParsingFromHtml ($value, $number = '100000000')
+    * Parse from HTML
+    *
+    * @author Fernando Ontiveros Lira <fernando@colosa.com>
+    * @access public
+    * @return void
+    */
+    public function ParsingFromHtml ($value, $number = '100000000')
     {
         $car = substr( $value, 0, 1 );
         $len = strlen( $value );
@@ -1183,7 +1166,7 @@ class Table
         $token = '';
         $i = 0;
 
-        While ($i <= $len and $i <= $number) {
+        while ($i <= $len and $i <= $number) {
             $car = substr( $value, $i, 1 );
             $br = strtoupper( substr( $value, $i, 4 ) );
             if ($car == '<') {
@@ -1192,16 +1175,19 @@ class Table
             if ($car == '>') {
                 $Flag = 1;
             }
-            if ($br == '<BR>' || $br == '</P>')
+            if ($br == '<BR>' || $br == '</P>') {
                 $token .= "<BR>";
+            }
 
             if (($Flag == 1) && ($car != '>')) {
                 $token .= $car;
-                if ($i == $number)
+                if ($i == $number) {
                     $token .= "... ";
+                }
             }
             $i = $i + 1;
         }
         return $token;
     }
 }
+
