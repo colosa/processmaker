@@ -190,21 +190,49 @@ function deleteObject($alfrescoServerUrl, $objetcId, $user, $pwd) {
  * @label Download Document/File from Alfresco Repository
  *
  * @param string | $alfrescoServerUrl | Server name and port where Alfresco exists | http://localhost:8080/alfresco
- * @param string | $objetcId | Id of the Object(Folder/File) to be deleted
- * @param string | $parentFolder | Parent Folder Name
- * @param string | $folderName | Name of the Folder to be created
+ * @param string | $pathFile | File Source
+ * @param string | $pathFolder | Folder Name
  * @param string | $user | Valid Admin username to connect to Alfresco server
  * @param string | $pwd | Valid Admin password to connect to Alfresco server
  *
  * @return string | $result | Response
  *
  */
-function downloadDoc($alfrescoServerUrl, $parentFolder, $folderName, $user, $pwd) {
-    $alfresco_url = "$alfrescoServerUrl/s/cmis/s/workspace:SpacesStore/i/$objetcId";
-    $alfresco_exec = RestClient::delete($alfresco,$user,$pwd,"application/atom+xml");
-    $alfresco_res = G::json_decode($alfresco_exec->getResponse());
-    echo($alfresco_res);
-    return $alfresco_res;
+function downloadDoc($alfrescoServerUrl, $pathFile , $pathFolder, $user, $pwd) {
+    if (!(G::verifyPath($pathFolder))) {
+        G::SendTemporalMessage('ID_FILE_PLUGIN_NOT_EXISTS', 'error', 'labels', null, null, array('pluginFile' => $pathFolder));
+        G::header('Location: '.$_SERVER['HTTP_REFERER']);
+        die;
+    }
+
+    $dataPathFile = pathinfo($pathFile);
+    $nameFile = $dataPathFile['basename'];
+
+    $alfresco_url = "$alfrescoServerUrl" . PATH_SEP . "s" . PATH_SEP . "cmis" . PATH_SEP . "p" . PATH_SEP . "Sites" . PATH_SEP . "$pathFile";
+    $alfresco_exec = RestClient::get($alfresco_url,$user,$pwd,'application/atom+xml');
+    $sXmlArray = $alfresco_exec->getResponse();
+    $sXmlArray = eregi_replace("[\n|\r|\n\r]", '', $sXmlArray);
+    $xmlObject = simplexml_load_string((string)$sXmlArray);
+
+    if (!isset($xmlObject->content)) {
+        G::SendTemporalMessage('ID_FILE_PLUGIN_NOT_EXISTS', 'error', 'labels', null, null, array('pluginFile' => $nameFile . ' in Alfresco'));
+        G::header('Location: '.$_SERVER['HTTP_REFERER']);
+        die;
+    }
+
+    $linkContent = (string)$xmlObject->content->attributes()->src;
+    $alfresco_exec = RestClient::get($linkContent,$user,$pwd,'application/atom+xml');
+    $sXmlArray = $alfresco_exec->getResponse();
+    $content = eregi_replace("[\n|\r|\n\r]", '', $sXmlArray);
+    
+    if ('/' != substr($pathFolder, -1)) {
+        $pathFolder .= '/';
+    }
+
+    $fp = fopen($pathFolder . $nameFile, "w+");
+    fwrite($fp, $content);
+    fclose($fp);
+    return true;
 }
 
 /**
