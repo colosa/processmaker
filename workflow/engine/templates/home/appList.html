@@ -22,7 +22,6 @@
     color  : #808080;
     /*font   : normal 8pt sans-serif,Tahoma,MiscFixed;*/
     background-color:#ECECEC;
-
   }
 
   #note_text {
@@ -64,14 +63,18 @@
     $('textarea#note_text').val('');
     $( "#dialog-add-note" ).dialog({
       resizable: false,
-      height:178,
+      height:192,
       modal: true,
       buttons: {
         "Add Note": function() {
+        	var sendMail = document.getElementById('chkSendMail').checked;
+            sendMail = (sendMail == true) ? '1' : '0';
           $(this).dialog("close");
           $.post(
             '../appProxy/postNote',
-            {appUid: appUid, noteText: $('textarea#note_text').val()},
+            {appUid  : appUid,
+             noteText: $('textarea#note_text').val(),
+             swSendMail : sendMail},
             function(responseText) {
               updateNt(appUid);
             }
@@ -167,6 +170,10 @@
     <p><!-- <span class="ui-icon ui-icon-document" style="float:left; margin:0 7px 20px 0;"></span> -->
     <span id="startAppTitle"/>
     <textarea id="note_text" rows="2" cols="22"></textarea>
+    <div class="x-form-check-wrap" id="ext-gen160" style="font-size:11px">
+      <input type="checkbox" name="chkSendMail" id="chkSendMail" autocomplete="off" class=" x-form-checkbox x-form-field" checked="">
+      <label class="x-form-cb-label" for="chkSendMail" id="ext-gen161">Send email (Case Participants)</label>
+    </div>
     </p>
   </div>
   <br/>
