@@ -493,7 +493,7 @@ DoSearchA = function(){
         if (((numPage-1)*pageSize) >= total) {
             numPage--;
         }
-        availableGrid.getBottomToolbar().changePage(numPage);
+        availableGrid.getBottomToolbar().changePage(getPageData().activePage);
         }
         });
 };
