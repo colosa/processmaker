@@ -1095,6 +1095,7 @@ class G
             $skinVariant = strtolower( $filenameParts[1] );
         }
 
+        $configurationFile = '';
         if ($skinName == "jscolors") {
             $skinName = "classic";
         }
@@ -1156,7 +1157,6 @@ class G
                 $baseCSSPath = PATH_SKIN_ENGINE . "base" . PATH_SEP . "baseCss" . PATH_SEP;
                 $output .= file_get_contents( $baseCSSPath . 'ext-all-notheme.css' );
                 //$output .= file_get_contents ( $publicExtPath . 'ext-all.css' );
-
 
                 //Classic Skin
                 $extJsSkin = 'xtheme-gray';
@@ -1381,6 +1381,7 @@ class G
                 $output = '';
                 $pathJs = PATH_GULLIVER_HOME . PATH_SEP . 'js' . PATH_SEP;
                 switch ($jsName) {
+                    //
                     case 'draw2d.js':
                         $cachePath = PATH_C . 'ExtJs' . PATH_SEP;
                         $checksum = G::getCheckSum( array ($pathJs . 'ext/wz_jsgraphics.js',$pathJs . 'ext/mootools.js',$pathJs . 'ext/moocanvas.js'

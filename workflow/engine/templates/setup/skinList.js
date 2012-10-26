@@ -183,6 +183,10 @@ Ext.onReady(function(){
         name : 'SKIN_NAME'
       },
 
+        {
+            name : 'SKIN_WORKSPACE'
+        },
+
       {
         name : 'SKIN_DESCRIPTION'
       },
@@ -225,6 +229,14 @@ Ext.onReady(function(){
       width: 80,
       align:'left',
       renderer: selectedSkinChecked
+    },
+
+    {
+      header: _('ID_ROOT_FOLDER'),
+      dataIndex: 'SKIN_WORKSPACE',
+      width: 80,
+      align:'left',
+      renderer: nameWorkspace
     },
 
     {
@@ -403,6 +415,16 @@ selectedSkinChecked = function (value){
     }
     return value;
 };
+nameWorkspace = function (value){
+    if(value[0]=='@'){
+        str = value.substring(1);
+        return '<b><i>' + ((value == 'Global') ? value : 'Workspace') + '</i></b>';
+    }
+    if (value != 'Global') {
+        value = "Workspace";
+    }
+    return value;
+};
 
 
 //Funtion Handles Context Menu Opening
@@ -505,7 +527,20 @@ newSkin = function(){
         allowBlank: false,
         selectOnFocus:true,
         width:200
-      })
+      }),
+        {
+            xtype: 'radio',
+            name: 'workspace',
+            inputValue: 'global',
+            checked: true,
+            boxLabel: 'All Workspace'
+        },
+        {
+            xtype: 'radio',
+            name: 'workspace',
+            inputValue: 'current',
+            boxLabel: 'Current Workspace'
+        }
       ],
       buttons:[
       {
@@ -612,7 +647,20 @@ importSkin = function(){
         fieldLabel: _('ID_OVERWRITE'),
         name:       "overwrite_files",
         checked:    true
-      }
+      },
+        {
+            xtype: 'radio',
+            name: 'workspace',
+            inputValue: 'global',
+            checked: true,
+            boxLabel: 'All Workspace'
+        },
+        {
+            xtype: 'radio',
+            name: 'workspace',
+            inputValue: 'current',
+            boxLabel: 'Current Workspace'
+        }
       ],
       buttons:[
       {

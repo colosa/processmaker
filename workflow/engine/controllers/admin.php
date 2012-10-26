@@ -18,6 +18,11 @@ class Admin extends Controller
         require_once PATH_CONTROLLERS . 'main.php';
         G::loadClass( 'system' );
         $skinsList = System::getSkingList();
+        foreach ($skinsList['skins'] as $key => $value) {
+            if ($value['SKIN_WORKSPACE'] != 'Global') {
+                unset( $skinsList['skins'][$key] );
+            }
+        }
         $skins = array ();
         $timeZonesList = System::getAllTimeZones();
         $timeZonesList = array_keys( $timeZonesList );
