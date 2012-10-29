@@ -427,6 +427,23 @@ class AppCacheView extends BaseAppCacheView
      */
     public function getPaused($userUid, $doCount)
     {
+        //finding cases PRO_UID where $userUid is supervising
+        require_once ('classes/model/ProcessUser.php');
+        require_once ('classes/model/GroupUser.php');
+
+        $oCriteria = new Criteria('workflow');
+        $oCriteria->add(ProcessUserPeer::USR_UID, $userUid);
+        $oCriteria->add(ProcessUserPeer::PU_TYPE, 'SUPERVISOR');
+        $oDataset = ProcessUserPeer::doSelectRS($oCriteria);
+        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $oDataset->next();
+        $aProcesses = array();
+
+        while ($aRow = $oDataset->getRow()) {
+            $aProcesses[] = $aRow['PRO_UID'];
+            $oDataset->next();
+        }
+
         //adding configuration fields from the configuration options
         //and forming the criteria object
         if ($doCount && !isset($this->confCasesList['PMTable']) && !empty($this->confCasesList['PMTable'])) {
@@ -435,7 +452,12 @@ class AppCacheView extends BaseAppCacheView
             $criteria = $this->addPMFieldsToCriteria('paused');
         }
 
-        $criteria->add(AppCacheViewPeer::USR_UID, $userUid);
+        //add a validation to show the processes of which $userUid is supervisor
+        //$criteria->add(AppCacheViewPeer::USR_UID, $userUid);
+        $criteria->add(
+            $criteria->getNewCriterion(AppCacheViewPeer::USR_UID, $userUid)->
+            addOr($criteria->getNewCriterion(AppCacheViewPeer::PRO_UID, $aProcesses, Criteria::IN))
+        );
 
         //join with APP_DELAY table using APP_UID and DEL_INDEX
         $appDelayConds[] = array(AppCacheViewPeer::APP_UID, AppDelayPeer::APP_UID);
@@ -512,7 +534,6 @@ class AppCacheView extends BaseAppCacheView
             $aProcesses[] = $aRow['PRO_UID'];
             $oDataset->next();
         }
-
 
         if ($doCount && !isset($this->confCasesList['PMTable']) && !empty($this->confCasesList['PMTable'])) {
             $c = new Criteria('workflow');
