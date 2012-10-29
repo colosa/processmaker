@@ -942,6 +942,7 @@ class System
         }
 
         $customSkins = array_merge( $baseSkins, $customSkins );
+        $global = G::LoadTranslation('ID_GLOBAL');
 
         //Read and parse each Configuration File
         foreach ($customSkins as $key => $configInformation) {
@@ -962,8 +963,24 @@ class System
                 foreach ($skinInformationArray as $keyInfo => $infoValue) {
                     $res['SKIN_' . strtoupper( $keyInfo )] = $infoValue['__VALUE__'];
                 }
+                $res['SKIN_CREATEDATE'] = (isset($res['SKIN_CREATEDATE'])) ? $res['SKIN_CREATEDATE']: '';
+                $res['SKIN_MODIFIEDDATE'] = (isset($res['SKIN_MODIFIEDDATE'])) ? $res['SKIN_MODIFIEDDATE']: '';
+                $res['SKIN_WORKSPACE'] = (isset($res['SKIN_WORKSPACE'])) ? ( ($res['SKIN_WORKSPACE'] != '')? $res['SKIN_WORKSPACE'] : $global): $global;
 
-                $skinListArray['skins'][] = $res;
+                $swWS = true;
+                if ($res['SKIN_WORKSPACE'] != $global) {
+                    $workspace = explode("|", $res['SKIN_WORKSPACE']);
+                    $swWS = false;
+                    foreach ($workspace as $key => $value) {
+                        if ($value == SYS_SYS) {
+                            $swWS = true;
+                            break;
+                        }
+                    }
+                }
+                if ($swWS) {
+                    $skinListArray['skins'][] = $res;
+                }
             }
         }
 
