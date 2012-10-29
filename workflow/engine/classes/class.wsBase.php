@@ -730,7 +730,7 @@ class wsBase
      * @param $appFields = null
      * @return $result will return an object
      */
-    public function sendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $appFields = null, $aAttachment = null)
+    public function sendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $appFields = null, $aAttachment = null, $showMessage = true)
     {
         try {
             G::loadClass( 'system' );
@@ -781,8 +781,9 @@ class wsBase
             if (! $hasEmailFrom || strpos( $sFrom, $aSetup['MESS_ACCOUNT'] ) === false) {
                 $sFrom = '"' . stripslashes( $sFrom ) . '" <' . $aSetup['MESS_ACCOUNT'] . ">";
             }
+            $showMessage = ($showMessage) ? 1 : 0 ;
 
-            $messageArray = array ('msg_uid' => '','app_uid' => $caseId,'del_index' => 0,'app_msg_type' => 'TRIGGER','app_msg_subject' => $sSubject,'app_msg_from' => $sFrom,'app_msg_to' => $sTo,'app_msg_body' => $sBody,'app_msg_cc' => $sCc,'app_msg_bcc' => $sBcc,'app_msg_attach' => $aAttachment,'app_msg_template' => '','app_msg_status' => 'pending'
+            $messageArray = array ('msg_uid' => '','app_uid' => $caseId,'del_index' => 0,'app_msg_type' => 'TRIGGER','app_msg_subject' => $sSubject,'app_msg_from' => $sFrom,'app_msg_to' => $sTo,'app_msg_body' => $sBody,'app_msg_cc' => $sCc,'app_msg_bcc' => $sBcc,'app_msg_attach' => $aAttachment,'app_msg_template' => '','app_msg_status' => 'pending', 'app_msg_show_message' => $showMessage
             );
 
             $oSpool->create( $messageArray );

@@ -236,6 +236,7 @@
     <column name="APP_MSG_STATUS" type="VARCHAR" size="20"/>
     <column name="APP_MSG_ATTACH" type="LONGVARCHAR" required="false"/>
     <column name="APP_MSG_SEND_DATE" type="TIMESTAMP" required="true"/>
+    <column name="APP_MSG_SHOW_MESSAGE" type="TINYINT" required="true" default="1"/>
   </table>
   <table name="APP_OWNER">
     <vendor type="mysql">

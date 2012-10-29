@@ -623,6 +623,7 @@ class spoolRun
         $spool->setAppMsgTemplate( $db_spool['app_msg_template'] );
         $spool->setAppMsgStatus( $db_spool['app_msg_status'] );
         $spool->setAppMsgSendDate( date( 'Y-m-d H:i:s' ) ); // Add by Ankit
+        $spool->setAppMsgShowMessage( $db_spool['app_msg_show_message'] ); // Add by Ankit
 
 
         if (! $spool->validate()) {

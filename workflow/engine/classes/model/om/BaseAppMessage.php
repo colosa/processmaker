@@ -124,6 +124,12 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
     protected $app_msg_send_date;
 
     /**
+     * The value for the app_msg_show_message field.
+     * @var        int
+     */
+    protected $app_msg_show_message = 1;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -353,6 +359,17 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
         } else {
             return date($format, $ts);
         }
+    }
+
+    /**
+     * Get the [app_msg_show_message] column value.
+     * 
+     * @return     int
+     */
+    public function getAppMsgShowMessage()
+    {
+
+        return $this->app_msg_show_message;
     }
 
     /**
@@ -714,6 +731,28 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
     } // setAppMsgSendDate()
 
     /**
+     * Set the value of [app_msg_show_message] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setAppMsgShowMessage($v)
+    {
+
+        // Since the native PHP type for this column is integer,
+        // we will cast the input value to an int (if it is not).
+        if ($v !== null && !is_int($v) && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->app_msg_show_message !== $v || $v === 1) {
+            $this->app_msg_show_message = $v;
+            $this->modifiedColumns[] = AppMessagePeer::APP_MSG_SHOW_MESSAGE;
+        }
+
+    } // setAppMsgShowMessage()
+
+    /**
      * Hydrates (populates) the object variables with values from the database resultset.
      *
      * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -762,12 +801,14 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
 
             $this->app_msg_send_date = $rs->getTimestamp($startcol + 15, null);
 
+            $this->app_msg_show_message = $rs->getInt($startcol + 16);
+
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 16; // 16 = AppMessagePeer::NUM_COLUMNS - AppMessagePeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 17; // 17 = AppMessagePeer::NUM_COLUMNS - AppMessagePeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating AppMessage object", $e);
@@ -1019,6 +1060,9 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
             case 15:
                 return $this->getAppMsgSendDate();
                 break;
+            case 16:
+                return $this->getAppMsgShowMessage();
+                break;
             default:
                 return null;
                 break;
@@ -1055,6 +1099,7 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
             $keys[13] => $this->getAppMsgStatus(),
             $keys[14] => $this->getAppMsgAttach(),
             $keys[15] => $this->getAppMsgSendDate(),
+            $keys[16] => $this->getAppMsgShowMessage(),
         );
         return $result;
     }
@@ -1133,6 +1178,9 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
                 break;
             case 15:
                 $this->setAppMsgSendDate($value);
+                break;
+            case 16:
+                $this->setAppMsgShowMessage($value);
                 break;
         } // switch()
     }
@@ -1221,6 +1269,10 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
             $this->setAppMsgSendDate($arr[$keys[15]]);
         }
 
+        if (array_key_exists($keys[16], $arr)) {
+            $this->setAppMsgShowMessage($arr[$keys[16]]);
+        }
+
     }
 
     /**
@@ -1294,6 +1346,10 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
 
         if ($this->isColumnModified(AppMessagePeer::APP_MSG_SEND_DATE)) {
             $criteria->add(AppMessagePeer::APP_MSG_SEND_DATE, $this->app_msg_send_date);
+        }
+
+        if ($this->isColumnModified(AppMessagePeer::APP_MSG_SHOW_MESSAGE)) {
+            $criteria->add(AppMessagePeer::APP_MSG_SHOW_MESSAGE, $this->app_msg_show_message);
         }
 
 
@@ -1379,6 +1435,8 @@ abstract class BaseAppMessage extends BaseObject implements Persistent
         $copyObj->setAppMsgAttach($this->app_msg_attach);
 
         $copyObj->setAppMsgSendDate($this->app_msg_send_date);
+
+        $copyObj->setAppMsgShowMessage($this->app_msg_show_message);
 
 
         $copyObj->setNew(true);

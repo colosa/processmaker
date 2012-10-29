@@ -796,7 +796,7 @@ function getEmailConfiguration ()
  *
  */
 //@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value.
-function PMFSendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields = array(), $aAttachment = array())
+function PMFSendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields = array(), $aAttachment = array(), $showMessage = true)
 {
     global $oPMScript;
 
@@ -810,7 +810,7 @@ function PMFSendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTempla
 
     G::LoadClass( 'wsBase' );
     $ws = new wsBase();
-    $result = $ws->sendMessage( $caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields, $aAttachment );
+    $result = $ws->sendMessage( $caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields, $aAttachment, $showMessage);
 
     if ($result->status_code == 0) {
         return 1;
