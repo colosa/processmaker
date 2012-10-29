@@ -6059,6 +6059,13 @@ class Cases
             }
         }
 
+        $aAux = $oTasks->getUsersOfTask($TAS_UID, 2);
+        foreach ($aAux as $aUser) {
+            if ($aUser['USR_UID'] != $USR_UID) {
+                $row[] = $aUser['USR_UID'];
+            }
+        }
+
         require_once 'classes/model/Users.php';
         $c = new Criteria('workflow');
         $c->addSelectColumn(UsersPeer::USR_UID);
