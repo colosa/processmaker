@@ -35,8 +35,7 @@
 class headPublisher
 {
     private static $instance = null;
-    var $maborakFiles = array ();
-    var $maborakLoaderFiles = array ();
+    var $version;
     var $scriptFiles = array ();
     var $leimnudLoad = array ();
 
@@ -91,7 +90,10 @@ class headPublisher
 
     public function __construct ()
     {
-        $this->addScriptFile( "/js/maborak/core/maborak.js" );
+        $fileVersion = PATH_GULLIVER_HOME . 'js-min' . PATH_SEP . 'VERSION.txt';
+        $version = trim(file_get_contents($fileVersion));
+        $this->version = $version;
+        $this->addScriptFile( "/js/maborak-$version.min.js" );
     }
 
     function &getSingleton ()
@@ -114,23 +116,6 @@ class headPublisher
     function setTitle ($title)
     {
         $this->title = $title;
-    }
-
-    /**
-     * Function addMaborakFile
-     *
-     * @access public
-     * @param eter string filename
-     * @param eter string loader; false -> maborak files, true maborak.loader
-     * @return string
-     */
-    function addMaborakFile ($filename, $loader = false)
-    {
-        if ($loader) {
-            $this->maborakLoaderFiles[] = $filename;
-        } else {
-            $this->maborakFiles[] = $filename;
-        }
     }
 
     /**
@@ -217,9 +202,8 @@ class headPublisher
             return '';
         }
 
-        // available js-calendar languages array
-        $availableJsCalendarLang = array ('ca','cn','cz','de','en','es','fr','it','jp','nl','pl','pt','ro','ru','sv'
-        );
+            // available js-calendar languages array
+        $availableJsCalendarLang = array ('ca','cn','cz','de','en','es','fr','it','jp','nl','pl','pt','ro','ru','sv');
 
         // get the system language without locale
         $sysLang = explode( '-', SYS_LANG );
@@ -228,8 +212,11 @@ class headPublisher
         // verify if the requested lang by the system is supported by js-calendar library, if not set english by default
         $sysLang = in_array( $sysLang, $availableJsCalendarLang ) ? $sysLang : 'en';
 
-        $this->addScriptFile( "/js/widgets/js-calendar/unicode-letter.js" );
-        $this->addScriptFile( "/js/widgets/js-calendar/lang/" . $sysLang . ".js" );
+        //$this->addScriptFile( "/js/widgets/js-calendar/unicode-letter.js" );
+        $this->addScriptFile( "/js/unicode-letter-{$this->version}.min.js" );
+
+        //$this->addScriptFile( "/js/widgets/js-calendar/lang/" . $sysLang . ".js" );
+        $this->addScriptFile( "/js/js-calendar-{$sysLang}-{$this->version}.min.js" );
 
         $head = '';
         $head .= '<TITLE>' . $this->title . "</TITLE>\n";
@@ -276,7 +263,7 @@ class headPublisher
         foreach ($this->leimnudLoad as $file) {
             $head .= "  eval(ajax_function('" . $file . "','',''));\n";
         }
-        //Adapts the add events on load to simple javascript sentences.
+            //Adapts the add events on load to simple javascript sentences.
         $this->headerScript = preg_replace( '/\s*leimnud.event.add\s*\(\s*window\s*,\s*(?:\'|")load(?:\'|")\s*,\s*function\(\)\{(.+)\}\s*\)\s*;?/', '$1', $this->headerScript );
         $head .= $this->headerScript;
         //$head .= "</script>\n";
@@ -314,8 +301,8 @@ class headPublisher
     {
         $this->clearScripts();
         $head = '';
-        $head .= "  <script type='text/javascript' src='/js/ext/ext-base.js'></script>\n";
-        $head .= "  <script type='text/javascript' src='/js/ext/ext-all.js'></script>\n";
+        $head .= "  <script type='text/javascript' src='/js/extjs-{$this->version}.js'></script>\n";
+        //$head .= "  <script type='text/javascript' src='/js/ext/ext-all.js'></script>\n";
         $aux = explode( '-', strtolower( SYS_LANG ) );
         if (($aux[0] != 'en') && file_exists( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'ext' . PATH_SEP . 'locale' . PATH_SEP . 'ext-lang-' . $aux[0] . '.js' )) {
             $head .= "  <script type='text/javascript' src='/js/ext/locale/ext-lang-" . $aux[0] . ".js'></script>\n";
@@ -324,7 +311,6 @@ class headPublisher
         // enabled for particular use
         $head .= $this->getExtJsLibraries();
 
-        // $head .= "  <script type='text/javascript' src='/js/ext/draw2d.js'></script>\n";
         $head .= "  <script type='text/javascript' src='/js/ext/translation." . SYS_LANG . ".js'></script>\n";
 
         if (! isset( $this->extJsSkin ) || $this->extJsSkin == '') {
@@ -336,7 +322,7 @@ class headPublisher
         $head .= $this->getExtJsVariablesScript();
         $oServerConf = & serverConf::getSingleton();
         if ($oServerConf->isRtl( SYS_LANG )) {
-            $head .= "  <script type='text/javascript' src='/js/ext/extjs_rtl.js'></script>\n";
+            $head .= "  <script type='text/javascript' src='/js/extjs_rtl-{$this->version}.min.js'></script>\n";
         }
 
         return $head;
@@ -350,11 +336,6 @@ class headPublisher
         $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/ext-all-notheme.css' />\n";
         $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/" . $this->extJsSkin.".css' />\n";
 
-        // <!-- DEPRECATED, this will be removed in a future - the three next lines
-        if (file_exists ( PATH_HTML . 'skins' . PATH_SEP . 'ext' . PATH_SEP . 'pmos-' . $this->extJsSkin . '.css' )) {
-          $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/pmos-" . $this->extJsSkin . ".css' />\n";
-        }
-        //DEPRECATED, this will be removed in a future -->
 
         //new interactive css decorator
         $script .= "  <link rel='stylesheet' type='text/css' href='/gulliver/loader?t=extjs-cssExtended&s=".$this->extJsSkin."' />\n";
@@ -411,9 +392,10 @@ class headPublisher
     function getExtJsLibraries ()
     {
         $script = '';
+        $script .= "  <script type='text/javascript' src='/js/draw2d-{$this->version}.min.js'></script>\n";
         if (isset( $this->extJsLibrary ) && is_array( $this->extJsLibrary )) {
             foreach ($this->extJsLibrary as $file) {
-                $script .= "  <script type='text/javascript' src='/js/ext/" . $file . ".js'></script>\n";
+                $script .= "  <script type='text/javascript' src='/xxjs/ext/" . $file . ".js'></script>\n";
             }
         }
         return $script;
@@ -453,7 +435,6 @@ class headPublisher
     /**
      * Function addExtJsScript
      * adding a javascript file .
-     *
      * js
      * add a js file in the extension Javascript Array,
      * later, when we use the includeExtJs function, all the files in this array will be included in the output
@@ -567,7 +548,6 @@ class headPublisher
     /**
      * Function AddContent
      * adding a html file .
-     *
      * html.
      * the main idea for this function, is to be a replacement to homonymous function in Publisher class.
      * with this function you are adding Content to the output, the class HeadPublisher will maintain a list of
@@ -598,8 +578,7 @@ class headPublisher
      */
     function Assign ($variable, $value)
     {
-        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'string'
-        );
+        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'string');
     }
 
     function AssignVar ($name, $value)
@@ -623,8 +602,7 @@ class headPublisher
      */
     function AssignNumber ($variable, $value)
     {
-        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'number'
-        );
+        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'number');
     }
 
     /**
@@ -669,14 +647,13 @@ class headPublisher
 
     function stripCodeQuotes ($sJson)
     {
-        $fields = array ("editor","renderer"
-        );
+        $fields = array ("editor","renderer");
         foreach ($fields as $field) {
             $pattern = '/"(' . $field . ')":"[a-zA-Z.()]*"/';
             //      echo $pattern."<br>";
             preg_match( $pattern, $sJson, $matches );
             //      var_dump ($matches);
-                //      echo "<br>";
+            //      echo "<br>";
             if (! empty( $matches )) {
                 $rendererMatch = $matches[0];
                 $replaceBy = explode( ":", $matches[0] );
@@ -684,7 +661,7 @@ class headPublisher
                 $tmpString = implode( ":", $replaceBy );
                 $sJson = str_replace( $rendererMatch, $tmpString, $sJson );
                 //        var_dump ($sJson);
-                    //        echo "<br>";
+                //        echo "<br>";
             }
         }
         return $sJson;
@@ -704,4 +681,3 @@ class headPublisher
         $this->disableHeaderScripts = true;
     }
 }
-

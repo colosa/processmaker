@@ -1,4 +1,246 @@
-Ext.ns('Ext.ux.plugins');
+/*!
+ * Ext JS Library 3.2.1
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+
+/** Portal.js */
+
+Ext.ux.Portal = Ext.extend(Ext.Panel, {
+    layout : 'column',
+    autoScroll : true,
+    cls : 'x-portal',
+    defaultType : 'portalcolumn',
+    
+    initComponent : function(){
+        Ext.ux.Portal.superclass.initComponent.call(this);
+        this.addEvents({
+            validatedrop:true,
+            beforedragover:true,
+            dragover:true,
+            beforedrop:true,
+            drop:true
+        });
+    },
+
+    initEvents : function(){
+        Ext.ux.Portal.superclass.initEvents.call(this);
+        this.dd = new Ext.ux.Portal.DropZone(this, this.dropConfig);
+    },
+    
+    beforeDestroy : function() {
+        if(this.dd){
+            this.dd.unreg();
+        }
+        Ext.ux.Portal.superclass.beforeDestroy.call(this);
+    }
+});
+
+Ext.reg('portal', Ext.ux.Portal);
+
+Ext.ux.Portal.DropZone = Ext.extend(Ext.dd.DropTarget, {
+    
+    constructor : function(portal, cfg){
+        this.portal = portal;
+        Ext.dd.ScrollManager.register(portal.body);
+        Ext.ux.Portal.DropZone.superclass.constructor.call(this, portal.bwrap.dom, cfg);
+        portal.body.ddScrollConfig = this.ddScrollConfig;
+    },
+    
+    ddScrollConfig : {
+        vthresh: 50,
+        hthresh: -1,
+        animate: true,
+        increment: 200
+    },
+
+    createEvent : function(dd, e, data, col, c, pos){
+        return {
+            portal: this.portal,
+            panel: data.panel,
+            columnIndex: col,
+            column: c,
+            position: pos,
+            data: data,
+            source: dd,
+            rawEvent: e,
+            status: this.dropAllowed
+        };
+    },
+
+    notifyOver : function(dd, e, data){
+        var xy = e.getXY(), portal = this.portal, px = dd.proxy;
+
+        // case column widths
+        if(!this.grid){
+            this.grid = this.getGrid();
+        }
+
+        // handle case scroll where scrollbars appear during drag
+        var cw = portal.body.dom.clientWidth;
+        if(!this.lastCW){
+            this.lastCW = cw;
+        }else if(this.lastCW != cw){
+            this.lastCW = cw;
+            portal.doLayout();
+            this.grid = this.getGrid();
+        }
+
+        // determine column
+        var col = 0, xs = this.grid.columnX, cmatch = false;
+        for(var len = xs.length; col < len; col++){
+            if(xy[0] < (xs[col].x + xs[col].w)){
+                cmatch = true;
+                break;
+            }
+        }
+        // no match, fix last index
+        if(!cmatch){
+            col--;
+        }
+
+        // find insert position
+        var p, match = false, pos = 0,
+            c = portal.items.itemAt(col),
+            items = c.items.items, overSelf = false;
+
+        for(var len = items.length; pos < len; pos++){
+            p = items[pos];
+            var h = p.el.getHeight();
+            if(h === 0){
+                overSelf = true;
+            }
+            else if((p.el.getY()+(h/2)) > xy[1]){
+                match = true;
+                break;
+            }
+        }
+
+        pos = (match && p ? pos : c.items.getCount()) + (overSelf ? -1 : 0);
+        var overEvent = this.createEvent(dd, e, data, col, c, pos);
+
+        if(portal.fireEvent('validatedrop', overEvent) !== false &&
+           portal.fireEvent('beforedragover', overEvent) !== false){
+
+            // make sure proxy width is fluid
+            px.getProxy().setWidth('auto');
+
+            if(p){
+                px.moveProxy(p.el.dom.parentNode, match ? p.el.dom : null);
+            }else{
+                px.moveProxy(c.el.dom, null);
+            }
+
+            this.lastPos = {c: c, col: col, p: overSelf || (match && p) ? pos : false};
+            this.scrollPos = portal.body.getScroll();
+
+            portal.fireEvent('dragover', overEvent);
+
+            return overEvent.status;
+        }else{
+            return overEvent.status;
+        }
+
+    },
+
+    notifyOut : function(){
+        delete this.grid;
+    },
+
+    notifyDrop : function(dd, e, data){
+        delete this.grid;
+        if(!this.lastPos){
+            return;
+        }
+        var c = this.lastPos.c, 
+            col = this.lastPos.col, 
+            pos = this.lastPos.p,
+            panel = dd.panel,
+            dropEvent = this.createEvent(dd, e, data, col, c,
+                pos !== false ? pos : c.items.getCount());
+
+        if(this.portal.fireEvent('validatedrop', dropEvent) !== false &&
+           this.portal.fireEvent('beforedrop', dropEvent) !== false){
+
+            dd.proxy.getProxy().remove();
+            panel.el.dom.parentNode.removeChild(dd.panel.el.dom);
+            
+            if(pos !== false){
+                c.insert(pos, panel);
+            }else{
+                c.add(panel);
+            }
+            
+            c.doLayout();
+
+            this.portal.fireEvent('drop', dropEvent);
+
+            // scroll position is lost on drop, fix it
+            var st = this.scrollPos.top;
+            if(st){
+                var d = this.portal.body.dom;
+                setTimeout(function(){
+                    d.scrollTop = st;
+                }, 10);
+            }
+
+        }
+        delete this.lastPos;
+    },
+
+    // internal cache of body and column coords
+    getGrid : function(){
+        var box = this.portal.bwrap.getBox();
+        box.columnX = [];
+        this.portal.items.each(function(c){
+             box.columnX.push({x: c.el.getX(), w: c.el.getWidth()});
+        });
+        return box;
+    },
+
+    // unregister the dropzone from ScrollManager
+    unreg: function() {
+        Ext.dd.ScrollManager.unregister(this.portal.body);
+        Ext.ux.Portal.DropZone.superclass.unreg.call(this);
+    }
+});
+
+/** PortalColumn.js */
+
+Ext.ux.PortalColumn = Ext.extend(Ext.Container, {
+    layout : 'anchor',
+    //autoEl : 'div',//already defined by Ext.Component
+    defaultType : 'portlet',
+    cls : 'x-portal-column'
+});
+
+Ext.reg('portalcolumn', Ext.ux.PortalColumn);
+
+/** Portlet.js */
+
+Ext.ux.Portlet = Ext.extend(Ext.Panel, {
+    anchor : '100%',
+    frame : true,
+    collapsible : false,
+    draggable : true,
+    cls : 'x-portlet'
+});
+
+Ext.reg('portlet', Ext.ux.Portlet);
+/*
+  * Ext.ux.menu.StoreMenu  Addon
+  *
+  * @author    Marco Wienkoop (wm003/lubber)
+  * @copyright (c) 2009, Marco Wienkoop (marco.wienkoop@lubber.de) http://www.lubber.de
+*/
+
+Ext.namespace('Ext.ux.menu');Ext.ux.menu.StoreMenu=function(config){Ext.ux.menu.StoreMenu.superclass.constructor.call(this,config);if(!this.store){this.store=new Ext.data.SimpleStore({fields:['config'],url:this.url,baseParams:this.baseParams});}
+this.on('show',this.onMenuLoad,this);this.store.on('beforeload',this.onBeforeLoad,this);this.store.on('load',this.onLoad,this);};Ext.extend(Ext.ux.menu.StoreMenu,Ext.menu.Menu,{loadingText:Ext.LoadMask.prototype.msg||'Loading...',loaded:false,onMenuLoad:function(){if(!this.loaded){this.store.load();}},updateMenuItems:function(loadedState,records){this.removeAll();this.el.sync();if(loadedState){for(var i=0,len=records.length;i<len;i++){if(records[i].json.handler){eval("records[i].json.handler = "+records[i].json.handler);}
+if(records[i].json.menu){eval("records[i].json.menu = "+records[i].json.menu);}
+this.add(records[i].json);}}
+else{this.add('<span class="loading-indicator">'+this.loadingText+'</span>');}
+this.loaded=loadedState;},onBeforeLoad:function(store){this.store.baseParams=this.baseParams;this.updateMenuItems(false);},onLoad:function(store,records){this.updateMenuItems(true,records);}});Ext.ns('Ext.ux.plugins');
 Ext.ux.plugins.VirtualKeyboard = Ext.extend ( Ext.util.Observable, {
 	events: {},
 	/**
@@ -810,3 +1052,273 @@ Ext.ux.VirtualKeyboard = Ext.extend(Ext.Component, {
 });
 
 Ext.reg('virtualkeyboard', Ext.ux.VirtualKeyboard);
+/*
+ * CodePress - Real Time Syntax Highlighting Editor written in JavaScript - http://codepress.org/
+ *
+ * Copyright (C) 2006 Fernando M.A.d.S. <fermads@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation.
+ *
+ * Read the full licence: http://www.opensource.org/licenses/lgpl-license.php
+ */
+
+Ext.namespace('Ext.ux');
+
+Ext.ux.CodePress = Ext.extend(Ext.form.Field, {
+
+    /**
+     * @cfg {String} sourceEl The id of the element to pull code from
+     */
+	sourceEl : false
+
+    /**
+     * @cfg {String} code The code to use in the editor
+     */
+	, code : false
+
+    /**
+     * @cfg {String} language The language to render the code with
+     */
+	, language : false
+
+	, url : false
+
+	, height : false
+
+	, width : false
+
+	, autoResize : false
+
+    // private
+	, initialized : false
+
+    // private
+    , initComponent : function(){
+		Ext.ux.CodePress.superclass.initComponent.call(this);
+
+		// Hide the sourceEl if provided
+		if(this.sourceEl){
+			Ext.get(this.sourceEl).hide();
+		}
+
+        this.addEvents({
+            /**
+             * @event initialize
+             * Fires when the editor is fully initialized (including the iframe)
+             * @param {HtmlEditor} this
+             */
+            initialize: true
+
+            /**
+             * @event activate
+             * Fires when the editor is first receives the focus. Any insertion must wait
+             * until after this event.
+             * @param {HtmlEditor} this
+             */
+            , activate: true
+
+		});
+	}
+
+    // private (for BoxComponent)
+    , adjustSize : Ext.BoxComponent.prototype.adjustSize
+
+	, resize : function(){
+		//console.log('resizing: ' + this.ownerCt.body.dom.clientWidth + 'x' + this.ownerCt.body.dom.clientHeight);
+		var h = (this.height || this.ownerCt.body.dom.clientHeight) + 'px';
+		var w = (this.width  || this.ownerCt.body.dom.clientWidth)  + 'px';
+                var bodyWidth = ((this.width  || this.ownerCt.body.dom.clientWidth)-50) + 'px';
+		this.editor.body.style.width = bodyWidth;
+		this.iframe.setStyle('height', h);
+		this.iframe.setStyle('width', w);
+    }
+
+    , onRender : function(ct, position){
+        Ext.ux.CodePress.superclass.onRender.call(this, ct, position);
+
+		if(!Ext.ux.CodePress.path){
+			this.getCodePath();
+		}
+		//Taken from Ext.form.HtmlEditor
+        this.el.dom.style.border = '0 none';
+        this.el.dom.setAttribute('tabIndex', -1);
+        this.el.addClass('x-hidden');
+
+
+        if(Ext.isIE){ // fix IE 1px bogus margin
+            this.el.applyStyles('margin-top:-1px;margin-bottom:-1px;')
+        }
+        this.wrap = this.el.wrap({
+            //cls:'x-html-editor-wrap', cn:{cls:'x-html-editor-tb'}
+        });
+
+		// Create the iframe
+		this.iframe = Ext.get(document.createElement('iframe'));
+        this.iframe.src = (Ext.SSL_SECURE_URL || 'javascript:false');
+
+		// Create the textarea element if not created
+		if(!this.sourceEl){
+			this.textarea = Ext.get(document.createElement('textarea'));
+		}else{
+			this.textarea = Ext.get(this.sourceEl);
+		}
+		this.textarea.dom.disabled = true;
+		this.textarea.dom.style.overflow = 'hidden';
+		this.textarea.dom.style.overflow = 'auto';
+		this.iframe.dom.frameBorder = 0; // remove IE internal iframe border
+		this.iframe.setStyle('visibility', 'hidden');
+		this.iframe.setStyle('position', 'absolute');
+		this.options = this.textarea.dom.className;
+
+        this.wrap.dom.appendChild(this.textarea.dom);
+		this.textarea.dom.parentNode.insertBefore(this.iframe.dom, this.textarea.dom);
+
+		this.edit();
+	}
+
+	, afterRender : function(){
+        Ext.ux.CodePress.superclass.afterRender.call(this);
+
+    }
+
+	, focus : function(){
+
+	}
+
+	, getCodePath : function() {
+		s = document.getElementsByTagName('script');
+		for(var i=0,n=s.length;i<n;i++) {
+			if(s[i].src.match('Ext.ux.codepress.js')) {
+				Ext.ux.CodePress.path = s[i].src.replace('Ext.ux.codepress.js','');
+				break;
+			}
+		}
+	}
+
+	, initialize : function() {
+		if(Ext.isIE){
+			this.doc = this.iframe.dom.contentWindow.document;
+			this.win = this.iframe.dom.contentWindow;
+		} else {
+			this.doc = this.iframe.dom.contentDocument;
+			this.win = this.iframe.dom.contentWindow;
+		}
+//                alert (this.win);
+//                for (var key in this.win){
+//                  alert (key+"-"+this.win[key]);
+//                }
+                
+		this.editor = this.win.CodePress;
+		this.editor.body = this.doc.getElementsByTagName('body')[0];
+		if(this.url){
+			Ext.Ajax.request({
+				url: this.url
+				, method:'get'
+				, success:function(response, options){
+					var code = response.responseText;
+					this.code = code;
+					this.editor.setCode(this.code);
+				}.createDelegate(this)
+			});
+		}else{
+			this.editor.setCode( this.getValue() );
+//			this.editor.setCode( this.code || this.textarea.dom.value );
+		}
+		this.resize();
+		this.setOptions();
+		this.editor.syntaxHighlight('init');
+		this.textarea.dom.style.display = 'none';
+		this.iframe.dom.style.position = 'static';
+		this.iframe.dom.style.visibility = 'visible';
+		this.iframe.dom.style.display = 'inline';
+
+		this.initialized = true;
+		//if(this.autoResize === true) this.resize();
+		this.fireEvent('initialize', this);
+	}
+
+	// obj can by a textarea id or a string (code)
+	, edit : function(obj,language) {
+		if(obj) this.textarea.dom.value = document.getElementById(obj) ? document.getElementById(obj).value : obj;
+		if(!this.textarea.dom.disabled) return;
+		this.language = language ? language : this.getLanguage();
+		this.iframe.dom.src = Ext.ux.CodePress.path+'codepress.html?language='+this.language+'&ts='+(new Date).getTime();
+		this.iframe.removeListener('load', this.initialize);
+		this.iframe.on('load', this.initialize, this);
+	}
+
+	, getLanguage : function() {
+		if(this.language) return this.language;
+		for (language in Ext.ux.CodePress.languages)
+			if(this.options.match('\\b'+language+'\\b'))
+				return Ext.ux.CodePress.languages[language] ? language : 'generic';
+	}
+
+	, setOptions : function() {
+		if(this.options.match('autocomplete-off')) this.toggleAutoComplete();
+		if(this.options.match('readonly-on')) this.toggleReadOnly();
+		if(this.options.match('linenumbers-off')) this.toggleLineNumbers();
+	}
+
+	, getCode : function() {
+		return this.textarea.dom.disabled ? this.editor.getCode() : this.textarea.dom.value;
+	}
+
+	, setCode : function(code) {
+		this.textarea.dom.disabled ? this.editor.setCode(code) : this.textarea.dom.value = code;
+		this.editor.syntaxHighlight();
+	}
+
+	, toggleAutoComplete : function() {
+		this.editor.autocomplete = (this.editor.autocomplete) ? false : true;
+	}
+
+	, toggleReadOnly : function() {
+		this.textarea.dom.readOnly = (this.textarea.dom.readOnly) ? false : true;
+		if(this.iframe.dom.style.display != 'none') // prevent exception on FF + iframe with display:none
+			this.editor.readOnly(this.textarea.dom.readOnly ? true : false);
+	}
+
+	, toggleLineNumbers : function() {
+		var cn = this.editor.body.className;
+		this.editor.body.className = (cn==''||cn=='show-line-numbers') ? 'hide-line-numbers' : 'show-line-numbers';
+	}
+
+	, toggleEditor : function() {
+		if(this.textarea.dom.disabled) {
+			this.textarea.dom.value = this.getCode();
+			this.textarea.dom.disabled = false;
+			this.iframe.dom.style.display = 'none';
+			this.textarea.dom.style.display = 'inline';
+		}
+		else {
+			this.textarea.dom.disabled = true;
+			this.setCode(this.textarea.dom.value);
+			this.editor.syntaxHighlight('init');
+			this.iframe.domstyle.display = 'inline';
+			this.textarea.dom.style.display = 'none';
+		}
+	}
+});
+
+Ext.reg('codepress', Ext.ux.CodePress);
+
+
+
+Ext.ux.CodePress.languages = {
+	csharp : 'C#',
+	css : 'CSS',
+	generic : 'Generic',
+	html : 'HTML',
+	java : 'Java',
+	javascript : 'JavaScript',
+	perl : 'Perl',
+	ruby : 'Ruby',
+	php : 'PHP',
+	text : 'Text',
+	sql : 'SQL',
+	vbscript : 'VBScript'
+}
+
+Ext.ux.CodePress.path = '/js/thirdparty/codepress/';

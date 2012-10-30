@@ -105,43 +105,6 @@
   define ('ERROR_SHOW_SOURCE_CODE', true);  // enable ERROR_SHOW_SOURCE_CODE to display the source code for any WARNING OR NOTICE
   //define ( 'ERROR_LOG_NOTICE_ERROR', true );  //enable ERROR_LOG_NOTICE_ERROR to log Notices messages in default apache log
 
-  // Create headPublisher singleton
-  G::LoadSystem('headPublisher');
-  $oHeadPublisher =& headPublisher::getSingleton();
-
-  // Defining the maborak js file, this file is the concat of many js files and here we are including all of them.
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/maborak.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/common.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/effects.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/webResource.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'dveditor/core/dveditor.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/tree/tree.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'json/core/json.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'form/core/form.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'form/core/pagedTable.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'grid/core/grid.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.panel.js'    , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.validator.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.app.js'      , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.rpc.js'      , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.fx.js'       , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.drag.js'     , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.drop.js'     , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.dom.js'      , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.abbr.js'     , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.dashboard.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/js-calendar/js-calendar.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/suggest/bsn.AutoSuggest_2.1.3.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/tooltip/pmtooltip.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'thirdparty/krumo/krumo.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/calendar/pmcalendar.js' , true );
-  $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'cases/core/cases.js' , true );
-  $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'cases/core/cases_Step.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'processmap/core/processmap.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'appFolder/core/appFolderList.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_THIRDPARTY    . 'htmlarea/editor.js', true );
-
-  
 
   //check if it is a installation instance
   if(!defined('PATH_C')) {
@@ -154,7 +117,7 @@
   $virtualURITable = array();
   $virtualURITable['/plugin/(*)']    = 'plugin';
   $virtualURITable['/(sys*)/(*.js)'] = 'jsMethod';
-  $virtualURITable['/js/(*)']        = PATH_GULLIVER_HOME . 'js/';
+  $virtualURITable['/js/(*)']        = PATH_GULLIVER_HOME . 'js-min/';
   $virtualURITable['/jscore/(*)']    = PATH_CORE . 'js/';
 
   if ( defined('PATH_C') ) {
@@ -178,11 +141,11 @@
   $virtualURITable['/rest/(*)']                      = 'rest-service';
   $virtualURITable['/update/(*)']                    = PATH_GULLIVER_HOME . 'methods/update/';
   $virtualURITable['/(*)']                           = PATH_HTML;
-  
+
   $isRestRequest = false;
-  
+
   // Verify if we need to redirect or stream the file, if G:VirtualURI returns true means we are going to redirect the page
-  if ( G::virtualURI($_SERVER['REQUEST_URI'], $virtualURITable , $realPath )) 
+  if ( G::virtualURI($_SERVER['REQUEST_URI'], $virtualURITable , $realPath ))
   {
     // review if the file requested belongs to public_html plugin
     if ( substr ( $realPath, 0,6) == 'plugin' ) {
@@ -279,7 +242,7 @@
       if ( DEBUG_TIME_LOG ) G::logTimeByPage();
       die;
   }
-  
+
   // verify if index.html exists
   if (!file_exists(PATH_HTML . 'index.html')) { // if not, create it from template
     file_put_contents(
@@ -288,7 +251,12 @@
     );
   }
 
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . "widgets/jscalendar/lang/calendar-" . SYS_LANG . ".js");
+  // Todo:
+  // Create headPublisher singleton
+  G::LoadSystem('headPublisher');
+  $oHeadPublisher =& headPublisher::getSingleton();
+  //$oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . "widgets/jscalendar/lang/calendar-" . SYS_LANG . ".js");
+
   define('SYS_URI' , '/sys' .  SYS_TEMP . '/' . SYS_LANG . '/' . SYS_SKIN . '/');
 
   // defining the serverConf singleton
@@ -622,7 +590,7 @@
     G::SendTemporalMessage ('ID_USER_HAVENT_RIGHTS_SYSTEM', "error");
     // verify if the current skin is a 'ux' variant
     $urlPart = substr(SYS_SKIN, 0, 2) == 'ux' && SYS_SKIN != 'uxs' ? '/main/login' : '/login/login';
-    
+
     header('Location: /sys' . SYS_SYS . '/' . SYS_LANG . '/' . SYS_SKIN . $urlPart);
     die;
   }
@@ -712,7 +680,7 @@
 
           if (empty($_POST)) {
             header('location: ' . SYS_URI . $loginUrl . '?u=' . urlencode($_SERVER['REQUEST_URI']));
-            
+
           }
           else {
             if ($isControllerCall) {
