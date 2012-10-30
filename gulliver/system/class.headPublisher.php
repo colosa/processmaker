@@ -35,8 +35,7 @@
 class headPublisher
 {
     private static $instance = null;
-    var $maborakFiles = array ();
-    var $maborakLoaderFiles = array ();
+    var $version;
     var $scriptFiles = array ();
     var $leimnudLoad = array ();
 
@@ -91,7 +90,10 @@ class headPublisher
 
     public function __construct ()
     {
-        $this->addScriptFile( "/js/maborak/core/maborak.js" );
+        $fileVersion = PATH_GULLIVER_HOME . 'js-min' . PATH_SEP . 'VERSION.txt';
+        $version = trim(file_get_contents($fileVersion));
+        $this->version = $version;
+        $this->addScriptFile( "/js/maborak-$version.min.js" );
     }
 
     function &getSingleton ()
@@ -114,23 +116,6 @@ class headPublisher
     function setTitle ($title)
     {
         $this->title = $title;
-    }
-
-    /**
-     * Function addMaborakFile
-     *
-     * @access public
-     * @param eter string filename
-     * @param eter string loader; false -> maborak files, true maborak.loader
-     * @return string
-     */
-    function addMaborakFile ($filename, $loader = false)
-    {
-        if ($loader) {
-            $this->maborakLoaderFiles[] = $filename;
-        } else {
-            $this->maborakFiles[] = $filename;
-        }
     }
 
     /**
@@ -227,8 +212,11 @@ class headPublisher
         // verify if the requested lang by the system is supported by js-calendar library, if not set english by default
         $sysLang = in_array( $sysLang, $availableJsCalendarLang ) ? $sysLang : 'en';
 
-        $this->addScriptFile( "/js/widgets/js-calendar/unicode-letter.js" );
-        $this->addScriptFile( "/js/widgets/js-calendar/lang/" . $sysLang . ".js" );
+        //$this->addScriptFile( "/js/widgets/js-calendar/unicode-letter.js" );
+        $this->addScriptFile( "/js/unicode-letter-{$this->version}.min.js" );
+
+        //$this->addScriptFile( "/js/widgets/js-calendar/lang/" . $sysLang . ".js" );
+        $this->addScriptFile( "/js/js-calendar-{$sysLang}-{$this->version}.min.js" );
 
         $head = '';
         $head .= '<TITLE>' . $this->title . "</TITLE>\n";
@@ -313,8 +301,8 @@ class headPublisher
     {
         $this->clearScripts();
         $head = '';
-        $head .= "  <script type='text/javascript' src='/js/ext/ext-base.js'></script>\n";
-        $head .= "  <script type='text/javascript' src='/js/ext/ext-all.js'></script>\n";
+        $head .= "  <script type='text/javascript' src='/js/extjs-{$this->version}.js'></script>\n";
+        //$head .= "  <script type='text/javascript' src='/js/ext/ext-all.js'></script>\n";
         $aux = explode( '-', strtolower( SYS_LANG ) );
         if (($aux[0] != 'en') && file_exists( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'ext' . PATH_SEP . 'locale' . PATH_SEP . 'ext-lang-' . $aux[0] . '.js' )) {
             $head .= "  <script type='text/javascript' src='/js/ext/locale/ext-lang-" . $aux[0] . ".js'></script>\n";
@@ -323,7 +311,6 @@ class headPublisher
         // enabled for particular use
         $head .= $this->getExtJsLibraries();
 
-        // $head .= "  <script type='text/javascript' src='/js/ext/draw2d.js'></script>\n";
         $head .= "  <script type='text/javascript' src='/js/ext/translation." . SYS_LANG . ".js'></script>\n";
 
         if (! isset( $this->extJsSkin ) || $this->extJsSkin == '') {
@@ -335,7 +322,7 @@ class headPublisher
         $head .= $this->getExtJsVariablesScript();
         $oServerConf = & serverConf::getSingleton();
         if ($oServerConf->isRtl( SYS_LANG )) {
-            $head .= "  <script type='text/javascript' src='/js/ext/extjs_rtl.js'></script>\n";
+            $head .= "  <script type='text/javascript' src='/js/extjs_rtl-{$this->version}.min.js'></script>\n";
         }
 
         return $head;
@@ -349,11 +336,6 @@ class headPublisher
         $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/ext-all-notheme.css' />\n";
         $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/" . $this->extJsSkin.".css' />\n";
 
-        // <!-- DEPRECATED, this will be removed in a future - the three next lines
-        if (file_exists ( PATH_HTML . 'skins' . PATH_SEP . 'ext' . PATH_SEP . 'pmos-' . $this->extJsSkin . '.css' )) {
-          $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/pmos-" . $this->extJsSkin . ".css' />\n";
-        }
-        //DEPRECATED, this will be removed in a future -->
 
         //new interactive css decorator
         $script .= "  <link rel='stylesheet' type='text/css' href='/gulliver/loader?t=extjs-cssExtended&s=".$this->extJsSkin."' />\n";
@@ -410,9 +392,10 @@ class headPublisher
     function getExtJsLibraries ()
     {
         $script = '';
+        $script .= "  <script type='text/javascript' src='/js/draw2d-{$this->version}.min.js'></script>\n";
         if (isset( $this->extJsLibrary ) && is_array( $this->extJsLibrary )) {
             foreach ($this->extJsLibrary as $file) {
-                $script .= "  <script type='text/javascript' src='/js/ext/" . $file . ".js'></script>\n";
+                $script .= "  <script type='text/javascript' src='/xxjs/ext/" . $file . ".js'></script>\n";
             }
         }
         return $script;

@@ -1,4 +1,112 @@
 [
+    {
+        "name": "extjs",
+        "libraries": [
+            {
+                "name": "ext-base.js",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ext-base.js",
+                "mini": "gulliver/js/ext/ext-base.js"
+            },
+            {
+                "name": "ext-all.js",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ext-all.js",
+                "mini": "gulliver/js/ext/ext-all.js"
+            },
+            {
+                "name": "pmos-common",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/pmos-common.js",
+                "mini": "gulliver/js/ext/pmos-common.js"
+            },
+            {
+                "name": "ux-all",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux/ux-all.js",
+                "mini": "gulliver/js/ext/ux/ux-all.js"
+            },
+            {
+                "name": "miframe",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux/miframe.js",
+                "mini": "gulliver/js/ext/ux/miframe.js"
+            },
+            {
+                "name": "LocationBar",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux.locationbar/Ext.ux.LocationBar.js",
+                "mini": "gulliver/js/ext/ux.locationbar/Ext.ux.LocationBar.js"
+            },
+            {
+                "name": "ext-statusbar",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux.statusbar/ext-statusbar.js",
+                "mini": "gulliver/js/ext/ux.statusbar/ext-statusbar.js"
+            },
+            {
+                "name": "TreeFilterX",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js",
+                "mini": "gulliver/js/ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js"
+            }
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js-min/",
+        "build_css_to" : "gulliver/css-min/"
+    },
+    {
+        "name": "extjs-old",
+        "libraries": [
+            {
+                "name": "portal",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux/portal.js",
+                "mini": "gulliver/js/ext/ux/portal.js"
+            },
+            {
+                "name": "menu",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux/ux.menu.js",
+                "mini": "gulliver/js/ext/ux/ux.menu.js"
+            },
+            {
+                "name": "virtualkeyboard",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux/virtualkeyboard.js",
+                "mini": "gulliver/js/ext/ux/virtualkeyboard.js"
+            },
+            {
+                "name": "virtualkeyboard",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux/virtualkeyboard.js",
+                "mini": "gulliver/js/ext/ux/virtualkeyboard.js"
+            },
+            {
+                "name": "codepress.js",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/ux.codepress/Ext.ux.codepress.js",
+                "mini": "gulliver/js/ext/ux.codepress/Ext.ux.codepress.js"
+            }
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js-min/",
+        "build_css_to" : "gulliver/css-min/"
+    },
+    {
+        "name": "extjs_rtl",
+        "libraries": [
+            {
+                "name": "extjs_rtl",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/extjs_rtl.js",
+                "mini": "gulliver/js/ext/extjs_rtl.js"
+            }
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js-min/",
+        "build_css_to" : "gulliver/css-min/"
+    },
 	{
 	    "name": "maborak",
 		"libraries": [
@@ -73,6 +181,35 @@
                 "mini": "gulliver/js/grid/core/grid.js"
             },
             {
+                "name": "js-calendar",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/widgets/js-calendar/js-calendar.js",
+                "mini": "gulliver/js/widgets/js-calendar/js-calendar.js"
+            },
+            {
+                "name": "bsn.AutoSuggest",
+                "version": "2.1.3",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/widgets/suggest/bsn.AutoSuggest_2.1.3.js",
+                "mini": "gulliver/js/widgets/suggest/bsn.AutoSuggest_2.1.3.js"
+            },
+            {
+                "name": "pmtooltip",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/widgets/tooltip/pmtooltip.js",
+                "mini": "gulliver/js/widgets/tooltip/pmtooltip.js"
+            }
+		],
+		"build" : true,
+		"build_js_to" : "gulliver/js-min/",
+		"build_css_to" : "gulliver/css-min/"
+	},
+    {
+        "name": "maborak.loader",
+        "libraries": [
+            {
                 "name": "module.panel",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
@@ -143,27 +280,6 @@
                 "mini": "gulliver/js/maborak/core/module.dashboard.js"
             },
             {
-                "name": "js-calendar",
-                "version": "0.6",
-                "homepage": "http://www.maborak.com",
-                "full": "gulliver/js/widgets/js-calendar/js-calendar.js",
-                "mini": "gulliver/js/widgets/js-calendar/js-calendar.js"
-            },
-            {
-                "name": "bsn.AutoSuggest",
-                "version": "2.1.3",
-                "homepage": "http://www.maborak.com",
-                "full": "gulliver/js/widgets/suggest/bsn.AutoSuggest_2.1.3.js",
-                "mini": "gulliver/js/widgets/suggest/bsn.AutoSuggest_2.1.3.js"
-            },
-            {
-                "name": "pmtooltip",
-                "version": "0.6",
-                "homepage": "http://www.maborak.com",
-                "full": "gulliver/js/widgets/tooltip/pmtooltip.js",
-                "mini": "gulliver/js/widgets/tooltip/pmtooltip.js"
-            },
-            {
                 "name": "pmcalendar",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
@@ -205,9 +321,83 @@
                 "full": "gulliver/thirdparty/htmlarea/editor.js",
                 "mini": "gulliver/thirdparty/htmlarea/editor.js"
             }
-		],
-		"build" : true,
-		"build_js_to" : "gulliver/js-min/",
-		"build_css_to" : "gulliver/css-min/"
-	}
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js-min/",
+        "build_css_to" : "gulliver/css-min/"
+    },
+    {
+        "name": "unicode-letter",
+        "libraries": [
+            {
+                "name": "unicode-letter",
+                "version": "0.6",
+                "full": "gulliver/js/widgets/js-calendar/unicode-letter.js",
+                "mini": "gulliver/js/widgets/js-calendar/unicode-letter.js"
+            }
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js-min/",
+        "build_css_to" : "gulliver/css-min/"
+    },
+    {
+        "name": "js-calendar-en",
+        "libraries": [
+            {
+                "name": "js-calendar-en",
+                "version": "0.6",
+                "full": "gulliver/js/widgets/js-calendar/lang/en.js",
+                "mini": "gulliver/js/widgets/js-calendar/lang/en.js"
+            }
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js-min/",
+        "build_css_to" : "gulliver/css-min/"
+    },
+    {
+        "name": "draw2d",
+        "libraries": [
+            {
+                "name": "wz_jsgraphics",
+                "version": "0.6",
+                "full": "gulliver/js/ext/wz_jsgraphics.js",
+                "mini": "gulliver/js/ext/wz_jsgraphics.js"
+            },
+            {
+                "name": "mootools",
+                "version": "0.6",
+                "full": "gulliver/js/ext/mootools.js",
+                "mini": "gulliver/js/ext/mootools.js"
+            },
+            {
+                "name": "moocanvas",
+                "version": "0.6",
+                "full": "gulliver/js/ext/moocanvas.js",
+                "mini": "gulliver/js/ext/moocanvas.js"
+            },
+            {
+                "name": "draw2d",
+                "version": "0.6",
+                "full": "gulliver/js/ext/draw2d.js",
+                "mini": "gulliver/js/ext/draw2d.js"
+            }
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js-min/",
+        "build_css_to" : "gulliver/css-min/"
+    },
+    {
+        "name": "ext-lang-en",
+        "libraries": [
+            {
+                "name": "ext-base.js",
+                "version": "3.4.0",
+                "full": "gulliver/js/ext/locale/ext-lang-en.js",
+                "mini": "gulliver/js/ext/locale/ext-lang-en.js"
+            }
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js-min/",
+        "build_css_to" : "gulliver/css-min/"
+    }
 ]

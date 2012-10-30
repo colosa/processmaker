@@ -12,6 +12,8 @@ define('SE_LAYOUT_NOT_FOUND', 6);
 class SkinEngine
 {
 
+  private $version;
+
   private $layout   = '';
   private $template = '';
   private $skin     = '';
@@ -36,18 +38,20 @@ class SkinEngine
 
   public function __construct($template, $skin, $content)
   {
+    $fileVersion = PATH_GULLIVER_HOME . 'js-min' . PATH_SEP . 'VERSION.txt';
+    $version = trim(file_get_contents($fileVersion));
+    $this->version = $version;
+
     $this->template = $template;
     $this->skin = $skin;
     $this->content = $content;
     $this->skinVariants = array('blank','extjs','raw','tracker','submenu');
     $this->skinsBasePath = G::ExpandPath("skinEngine");
-
     $this->_init();
   }
 
   private function _init()
   {
-
     // setting default skin
     if (!isset($this->skin) || $this->skin == "") {
       $this->skin = "classic";
@@ -252,10 +256,10 @@ class SkinEngine
 
       $templateFile = $this->layoutFile['dirname'] . PATH_SEP . $this->layoutFileExtjs['basename'];
     }
-
     $template = new TemplatePower($templateFile);
     $template->prepare();
     $template->assign('header', $header);
+    $template->assign('versionjs', $this->version);
     $template->assign('styles', $styles);
     $template->assign('bodyTemplate', $body);
 
@@ -277,7 +281,7 @@ class SkinEngine
       'IE=6' => '(MSIE 6\.[0-9]+)'
     );
 
-          foreach ($iexplores as $browser => $pattern) {
+    foreach ($iexplores as $browser => $pattern) {
       if (preg_match('/'.$pattern.'/', $_SERVER['HTTP_USER_AGENT'])) {
         $doctype = '';
         $meta = '<meta http-equiv="X-UA-Compatible" content="'. $browser .'"/>';
@@ -285,7 +289,7 @@ class SkinEngine
     }
     // end verify
 
-    	    $template->assign('meta', $meta);
+    $template->assign('meta', $meta);
     $template->assign('doctype', $doctype);
     echo $template->getOutputContent();
   }
@@ -311,7 +315,7 @@ class SkinEngine
     }
 
     $smarty->assign('username', (isset($_SESSION['USR_USERNAME']) ? '(' . $_SESSION['USR_USERNAME'] . ' ' . G::LoadTranslation('ID_IN') . ' ' . SYS_SYS . ')' : '') );
-    $smarty->assign('header', $header );
+    $smarty->assign('header', 'XXXX' . $this->version . $header );
     $smarty->force_compile = $this->forceTemplateCompile;
 
     // display

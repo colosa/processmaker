@@ -1129,18 +1129,20 @@ var maborak = function(forceCssLoad){
 					}
 				}
 				//alert(this.parent.options.thisIsNotPM);
+				/*
 				if (tl.length > 0) {
 					var script = $dce("script");
 					this.parent.dom.capture("tag.head 0").appendChild(script);
-					script.src = (this.parent.options.inGulliver===true)?this.path+'maborak.loader.js':this.path + 'server/maborak.loader.php?load=' + tl.join(',');
-//					script.src = this.path + 'maborak.loader.js';
-//                    alert(script.src)
+					script.src = (this.parent.options.inGulliver===true) ?
+					             this.path+'maborak.loader.js' :
+					             this.path + 'server/maborak.loader.php?load=' + tl.join(',');
 					script.type = "text/javascript";
 					script.charset = this.parent.charset;
 					if (this.type == "module") {
 						this.write(script);
 					}
 				}
+				*/
 			}
 			else
 			{

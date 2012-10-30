@@ -50,7 +50,6 @@ class G
     /**
      * Fill array values (recursive)
      *
-     * @author maborak <maborak@maborak.com>
      * @access public
      * @param Array $arr
      * @param Void $value
@@ -75,7 +74,6 @@ class G
 
     /**
      * Generate Password Random
-     * @author maborak <maborak@maborak.com>
      * @access public
      * @param  Int
      * @return String
@@ -99,7 +97,6 @@ class G
      * Array concat
      * array_concat(ArrayToConcat,ArrayOriginal);
      *
-     * @author maborak <maborak@maborak.com>
      * @access public
      * @param Array
      * @return Array
@@ -122,7 +119,6 @@ class G
     /**
      * Compare Variables
      * var_compare(value,[var1,var2,varN]);
-     * @author maborak <maborak@maborak.com>
      * @access public
      * @param  void $value
      * @param  void $var1-N
@@ -146,7 +142,6 @@ class G
 
     /**
      * Emulate variable selector
-     * @author maborak <maborak@maborak.com>
      * @access public
      * @param  void
      * @return void
@@ -1303,6 +1298,7 @@ class G
             return;
         }
 
+        //sent Headers accordint the typefile
         if (file_exists( $filename )) {
             switch (strtolower( $typefile )) {
                 case 'swf':
@@ -1380,73 +1376,7 @@ class G
                 $jsName = $paths[count( $paths ) - 1];
                 $output = '';
                 $pathJs = PATH_GULLIVER_HOME . PATH_SEP . 'js' . PATH_SEP;
-                switch ($jsName) {
-                    case 'draw2d.js':
-                        $cachePath = PATH_C . 'ExtJs' . PATH_SEP;
-                        $checksum = G::getCheckSum( array ($pathJs . 'ext/wz_jsgraphics.js',$pathJs . 'ext/mootools.js',$pathJs . 'ext/moocanvas.js'
-                        ) );
-
-                        $cf = $cachePath . "ext-draw2d-cache.$checksum.js";
-                        $cfStored = G::getCacheFileNameByPattern( $cachePath, 'ext-draw2d-cache.*.js' );
-                        //error_log("draw2d.js ".$checksum ."==". $cfStored['checksum']);
-                        if (is_file( $cfStored['filename'] ) && $checksum == $cfStored['checksum']) {
-                            $output = file_get_contents( $cf );
-                        } else {
-                            if (is_file( $cfStored['filename'] )) {
-                                @unlink( $cfStored['filename'] );
-                            }
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/wz_jsgraphics.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/mootools.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/moocanvas.js' ) );
-                            $output .= file_get_contents( $pathJs . 'ext/draw2d.js' ); //already minified
-                            file_put_contents( $cf, $output );
-                        }
-                        break;
-                    case 'ext-all.js':
-                        $cachePath = PATH_C . 'ExtJs' . PATH_SEP;
-                        $checksum = G::getCheckSum( array ($pathJs . 'ext/pmos-common.js',$pathJs . 'ext/ux/miframe.js',$pathJs . 'ext/ux.locationbar/Ext.ux.LocationBar.js',$pathJs . 'ext/ux.statusbar/ext-statusbar.js',$pathJs . 'ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js'
-                        ) );
-
-                        $cfStored = G::getCacheFileNameByPattern( $cachePath, 'ext-all-cache.*.js' );
-                        $cf = PATH_C . 'ExtJs' . PATH_SEP . "ext-all-cache.$checksum.js";
-                        if (is_file( $cfStored['filename'] ) && $checksum == $cfStored['checksum']) {
-                            $output = file_get_contents( $cf );
-                        } else {
-                            if (is_file( $cfStored['filename'] )) {
-                                @unlink( $cfStored['filename'] );
-                            }
-
-                            $output .= file_get_contents( $pathJs . 'ext/ext-all.js' ); //already minified
-                            $output .= file_get_contents( $pathJs . 'ext/ux/ux-all.js' ); //already minified
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/pmos-common.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/ux/miframe.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/ux.locationbar/Ext.ux.LocationBar.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/ux.statusbar/ext-statusbar.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js' ) );
-
-                            file_put_contents( $cf, $output );
-                        }
-                        break;
-                    case 'maborak.js':
-                        $oHeadPublisher = & headPublisher::getSingleton();
-                        foreach ($oHeadPublisher->maborakFiles as $fileJS) {
-                            $output .= JSMin::minify( file_get_contents( $fileJS ) );
-                            //$output .= G::trimSourceCodeFile ($fileJS );
-                        }
-                        break;
-                    case 'maborak.loader.js':
-                        $oHeadPublisher = & headPublisher::getSingleton();
-                        foreach ($oHeadPublisher->maborakLoaderFiles as $fileJS) {
-                            $output .= JSMin::minify( file_get_contents( $fileJS ) );
-                            //$output .= G::trimSourceCodeFile ($fileJS );
-                        }
-                        break;
-                    default:
-                        //$output = file_get_contents ( $filename ) ;
-                        $output = JSMin::minify( file_get_contents( $filename ) );
-                        //$output = G::trimSourceCodeFile ($filename );
-                        break;
-                }
+                $output = file_get_contents ( $filename ) ;
                 print $output;
                 break;
             case 'css':

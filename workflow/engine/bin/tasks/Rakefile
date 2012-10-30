@@ -1,7 +1,7 @@
 require 'rubygems'
 
 desc "Generate JS libraries"
-task :build do
+task :buildjs do
   begin
     require 'json'
   rescue LoadError
@@ -15,7 +15,6 @@ task :build do
   Dir.mkdir('gulliver/css-min') unless File.exists?('gulliver/css-min')
   Dir.mkdir('gulliver/js-min') unless File.exists?('gulliver/js-min')
 
-  puts "Starting libraries generation..."
   lib_file = File.read 'workflow/engine/bin/tasks/libraries.json'
   libraries = JSON.parse(lib_file);
   libraries.each do |library|
@@ -62,45 +61,8 @@ task :build do
       puts "File '#{css_path}#{fileName}.css' has been generated correctly."
     end
   end
-  source = File.read 'src/build.json'
-  sources = JSON.parse(source)
-  sources.each do |source|
-    if source['build']
-      buffer = ""
-      js_path = source['build_js_to']
-      fileName = source['name'] + "-" + getVersion
-      files = source['files']
-      files.each do |file|
-        buffer += File.read file
-        buffer += "\n"
-      end
-      File.open(js_path + fileName + ".js", 'w+') do |file_full|
-         file_full.write buffer
-      end
-      puts "File '#{js_path}#{fileName}.js' has been generated correctly."
-      File.open(js_path + fileName + '.min.js', 'w+') do |file_mini|
-        file_mini.write Closure::Compiler.new.compress(buffer)
-      end
-      puts "File '#{js_path}#{fileName}.min.js' has been generated correctly."
-
-      css_path = source['build_css_to']
-      buffer_css = ""
-      styles = source['css']
-      styles.each do |style|
-        buffer_css += File.read style
-      end
-      File.open(css_path + fileName + ".css", 'w+') do |file_css|
-         file_css.write buffer_css
-      end
-      puts "File '#{css_path}#{fileName}.css' has been generated correctly."
-
-      if source['css_images']
-        Dir.mkdir(source['copy_css_images_to']) unless File.exists?(source['copy_css_images_to'])
-        system "cp -r " + source['css_images']  + " " + source['copy_css_images_to'] + "."
-      end
-
-    end
-  end
+  puts "Copying VERSION.txt"
+  system "cp workflow/engine/bin/tasks/VERSION.js.txt gulliver/js-min/VERSION.txt"
 
   puts "Libraries generation DONE"
 end
@@ -310,10 +272,10 @@ task :build, :version do |t, args|
   if args['version']
     Rake::Task['version'].invoke(args['version'])
   end
-  Rake::Task['libraries'].execute
-  Rake::Task['skeleton'].execute
-  Rake::Task['docs'].execute
-  Rake::Task['package'].execute
+  Rake::Task['buildjs'].execute
+  #Rake::Task['skeleton'].execute
+  #Rake::Task['docs'].execute
+  #Rake::Task['package'].execute
   puts "jCore " + getVersion + " has been build correctly."
 end
 
