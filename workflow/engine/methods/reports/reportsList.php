@@ -122,4 +122,4 @@ $oCriteria->setDBArrayTable( 'reports' );
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'reports/reportsList', $oCriteria );
 G::RenderPage( 'publish' );
-?>
+

@@ -21,8 +21,9 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1)
+if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     return $RBAC_Response;
+}
 G::LoadClass( 'reportTables' );
 try {
     $oReportTables = new ReportTables();
@@ -34,4 +35,4 @@ try {
     $result->msg = $e->getMessage();
 }
 print G::json_encode( $result );
-?>
+

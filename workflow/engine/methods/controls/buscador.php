@@ -49,4 +49,5 @@ Buscador tipo : <?php echo $frm['tipo'] ?><br>
 </form>
 </body>
 </html>
+<?php
 

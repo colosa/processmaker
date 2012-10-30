@@ -40,8 +40,7 @@ class ReportTables
     private $aDef = array ('mysql' => array ('number' => 'DOUBLE','char' => 'VARCHAR(255)','text' => 'TEXT','date' => 'DATETIME'
     ),'pgsql' => array ('number' => 'DOUBLE','char' => 'VARCHAR(255)','text' => 'TEXT','date' => 'DATETIME'
     ),'mssql' => array ('number' => 'FLOAT','char' => 'NVARCHAR(255)','text' => 'TEXT','date' => 'CHAR(19)'
-    ) /* Changed DATETIME CHAR(19) for compatibility issues. */
-												);
+    ) /* Changed DATETIME CHAR(19) for compatibility issues. */ );
     //private $sPrefix = 'REP_';
     private $sPrefix = '';
 
@@ -146,7 +145,6 @@ class ReportTables
                     $sQuery .= ' DEFAULT CHARSET=utf8;';
                     $rs = $stmt->executeQuery( $sQuery );
                     break;
-
                 case 'mssql':
                     $sQuery = 'CREATE TABLE [' . $sTableName . '] (';
                     if ($bDefaultFields) {
@@ -569,7 +567,6 @@ class ReportTables
                 $con = Propel::getConnection( $PropelDatabase );
                 $stmt = $con->createStatement();
                 switch (DB_ADAPTER) {
-
                     case 'mysql':
                         $aTableFields = $this->getTableVars( $aRow['REP_TAB_UID'], true );
                         if ($aRow['REP_TAB_TYPE'] == 'NORMAL') {
@@ -786,12 +783,12 @@ class ReportTables
     public function tableExist ()
     {
         /*
-    $bExists  = true;
-    $oConnection = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-    mysql_select_db(DB_NAME);
-    $oDataset = mysql_query('SELECT COUNT(*) FROM REPORT_TABLE') || ($bExists = false);
-    return $bExists;
-    */
+        $bExists  = true;
+        $oConnection = mysql_connect(DB_HOST, DB_USER, DB_PASS);
+        mysql_select_db(DB_NAME);
+        $oDataset = mysql_query('SELECT COUNT(*) FROM REPORT_TABLE') || ($bExists = false);
+        return $bExists;
+        */
         $bExists = true;
         $sDataBase = 'database_' . strtolower( DB_ADAPTER );
         if (G::LoadSystemExist( $sDataBase )) {
@@ -814,12 +811,16 @@ class ReportTables
     {
         $repTabConnection = trim( strtoupper( $TabConnectionk ) );
         $PropelDatabase = 'rp';
-        if ($repTabConnection == '' || $repTabConnection == 'REPORT')
+        if ($repTabConnection == '' || $repTabConnection == 'REPORT') {
             $PropelDatabase = 'rp';
-        if ($repTabConnection == 'RBAC')
+        }
+        if ($repTabConnection == 'RBAC') {
             $PropelDatabase = 'rbac';
-        if ($repTabConnection == 'WF')
+        }
+        if ($repTabConnection == 'WF') {
             $PropelDatabase = 'workflow';
+        }
         return ($PropelDatabase);
     }
 }
+

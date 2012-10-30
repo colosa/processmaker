@@ -486,16 +486,13 @@ RemoveAllUsersAction = function(){
 //Function DoSearch Available
 DoSearchA = function(){
     numPage = parseInt(bbarpagingAvailable.getPageData().activePage);
-    availableGrid.store.load(
-        {params: {textFilter: searchTextA.getValue()},
-        callback: function (r, options, success) {
-        total = parseInt(bbarpagingAvailable.getPageData().total);
-        if (((numPage-1)*pageSize) >= total) {
-            numPage--;
-        }
-        availableGrid.getBottomToolbar().changePage(numPage);
-        }
-        });
+    availableGrid.store.setBaseParam( 'textFilter', searchTextA.getValue());
+    availableGrid.store.load();
+    total = parseInt(bbarpagingAvailable.getPageData().total);
+    if (((numPage-1)*pageSize) >= total) {
+        numPage--;
+    }
+    availableGrid.getBottomToolbar().changePage(numPage);
 };
 
 //Function DoSearch Assigned
@@ -506,8 +503,10 @@ DoSearchP = function(){
 //Load Grid By Default Available Members
 GridByDefaultA = function(){
   searchTextA.reset();
+  availableGrid.store.setBaseParam( 'textFilter', '');
   availableGrid.store.load();
 };
+
 
 //Load Grid By Default Assigned Members
 GridByDefaultP = function(){

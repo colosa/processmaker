@@ -7,7 +7,8 @@ $oHeadPublisher = & headPublisher::getSingleton();
 $oHeadPublisher->addExtJsScript( 'reportTables/edit', true );
 $oHeadPublisher->assign( 'ADD_TAB_UID', $id );
 
-if ($id) { // if is a edit request
+if ($id) {
+    // if is a edit request
     require_once 'classes/model/AdditionalTables.php';
     require_once 'classes/model/Fields.php';
     G::LoadClass( 'xmlfield_InputPM' );
@@ -20,9 +21,9 @@ if ($id) { // if is a edit request
     // list the case fields
     foreach ($table['FIELDS'] as $i => $field) {
         /*if ($field['FLD_NAME'] == 'APP_UID' || $field['FLD_NAME'] == 'APP_NUMBER' || $field['FLD_NAME'] == 'ROW') {
-      unset($table['FIELDS'][$i]);
-      continue;
-    }*/
+        unset($table['FIELDS'][$i]);
+        continue;
+        }*/
         array_push( $tableFields, $field['FLD_DYN_NAME'] );
     }
 
@@ -32,8 +33,7 @@ if ($id) { // if is a edit request
         foreach ($fields as $field) {
             //select to not assigned fields for available grid
             if (! in_array( $field['sName'], $tableFields )) {
-                $fieldsList[] = array ('FIELD_UID' => $field['sName'] . '-' . $field['sType'],'FIELD_NAME' => $field['sName']
-                );
+                $fieldsList[] = array ('FIELD_UID' => $field['sName'] . '-' . $field['sType'],'FIELD_NAME' => $field['sName']);
             }
         }
     } else {
@@ -44,8 +44,7 @@ if ($id) { // if is a edit request
 
         foreach ($gridFields as $gfield) {
             if (! in_array( $gfield['sName'], $tableFields )) {
-                $fieldsList[] = array ('FIELD_UID' => $gfield['sName'] . '-' . $gfield['sType'],'FIELD_NAME' => $gfield['sName']
-                );
+                $fieldsList[] = array ('FIELD_UID' => $gfield['sName'] . '-' . $gfield['sType'],'FIELD_NAME' => $gfield['sName']);
             }
         }
     }
@@ -73,3 +72,4 @@ $oHeadPublisher->assign( 'PRO_UID', isset( $_GET['PRO_UID'] ) ? $_GET['PRO_UID']
 $oHeadPublisher->assign( 'TABLE', $table );
 
 G::RenderPage( 'publish', 'extJs' );
+

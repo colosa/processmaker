@@ -31,7 +31,7 @@ class NET
      * @param string $pHost
      * @return void
      */
-    function __construct ($pHost)
+    public function __construct ($pHost)
     {
         $this->errno = 0;
         $this->errstr = "";
@@ -56,7 +56,7 @@ class NET
      * @param string $pHost
      * @return void
      */
-    function resolv ($pHost)
+    public function resolv ($pHost)
     {
         $aHost = explode( "\\", $pHost );
         if (count( $aHost ) > 1) {
@@ -75,7 +75,7 @@ class NET
         } else {
             $ip = @gethostbyname( $ipHost );
             $long = ip2long( $ip );
-            if ($long == - 1 || $long === FALSE) {
+            if ($long == - 1 || $long === false) {
                 $this->errno = 2000;
                 $this->errstr = "NET::Host down";
                 $this->error = "Destination Host Unreachable";
@@ -92,7 +92,7 @@ class NET
      * @param string $pPort
      * @return true
      */
-    function scannPort ($pPort)
+    public function scannPort ($pPort)
     {
         define( 'TIMEOUT', 5 );
         $hostip = @gethostbyname( $host ); // resloves IP from Hostname returns hostname on failure
@@ -114,7 +114,7 @@ class NET
      * @param string $pHost
      * @return true
      */
-    function is_ipaddress ($pHost)
+    public function is_ipaddress ($pHost)
     {
         $key = true;
         #verifing if is a ip address
@@ -140,13 +140,14 @@ class NET
      * @param string $pHost
      * @return true
      */
-    function ping ($pTTL = 3000)
+    public function ping ($pTTL = 3000)
     {
         $cmd = "ping -w $pTTL $this->ip";
         $output = exec( $cmd, $a, $a1 );
         $this->errstr = "";
-        for ($i = 0; $i < count( $a ); $i ++)
+        for ($i = 0; $i < count( $a ); $i ++) {
             $this->errstr += $a[$i];
+        }
         $this->errno = $a1;
     }
 
@@ -157,7 +158,7 @@ class NET
      * @param string $pPasswd
      * @return void
      */
-    function loginDbServer ($pUser, $pPasswd)
+    public function loginDbServer ($pUser, $pPasswd)
     {
         $this->db_user = $pUser;
         $this->db_passwd = $pPasswd;
@@ -170,7 +171,7 @@ class NET
      * @param string $pPort
      * @return void
      */
-    function setDataBase ($pDb, $pPort = '')
+    public function setDataBase ($pDb, $pPort = '')
     {
         $this->db_sourcename = $pDb;
         $this->db_port = $pPort;
@@ -182,7 +183,7 @@ class NET
      * @param string $pDbDriver
      * @return void
      */
-    function tryConnectServer ($pDbDriver)
+    public function tryConnectServer ($pDbDriver)
     {
         if ($this->errno != 0) {
             return 0;
@@ -213,7 +214,6 @@ class NET
                         $this->errno = 10001;
                     }
                     break;
-
                 case 'pgsql':
                     $this->db_port = ($this->db_port == "") ? "5432" : $this->db_port;
                     $link = @pg_connect( "host='$this->ip' port='$this->db_port' user='$this->db_user' password='$this->db_passwd' dbname='$this->db_sourcename'" );
@@ -227,7 +227,6 @@ class NET
                         $this->errno = 20001;
                     }
                     break;
-
                 case 'mssql':
                     if ($this->db_instance != "") {
                         $str_port = "";
@@ -247,7 +246,6 @@ class NET
                         $this->errno = 30001;
                     }
                     break;
-
                 case 'oracle':
                     $this->db_port = (($this->db_port == "") || ($this->db_port == 0)) ? "1521" : $this->db_port;
                     try {
@@ -265,7 +263,6 @@ class NET
                         throw new Exception( "[erik] Couldn't connect to Oracle Server! - " . $e->getMessage() );
                     }
                     break;
-
                 case 'informix':
                     break;
                 case 'sqlite':
@@ -284,7 +281,7 @@ class NET
      * @param string $pDbDriver
      * @return void
      */
-    function tryOpenDataBase ($pDbDriver)
+    public function tryOpenDataBase ($pDbDriver)
     {
         if ($this->errno != 0) {
             return 0;
@@ -322,7 +319,6 @@ class NET
                         $this->errno = 10001;
                     }
                     break;
-
                 case 'pgsql':
                     $this->db_port = (($this->db_port == "") || ($this->db_port == 0)) ? "5432" : $this->db_port;
                     $link = @pg_connect( "host='$this->ip' port='$this->db_port' user='$this->db_user' password='$this->db_passwd' dbname='$this->db_sourcename'" );
@@ -342,7 +338,6 @@ class NET
                         $this->errno = 20001;
                     }
                     break;
-
                 case 'mssql':
                     //          $str_port = (($this->db_port == "")  || ($this->db_port == 0) || ($this->db_port == 1433)) ? "" : ":".$this->db_port;
                     //          $link = @mssql_connect($this->ip . $str_port, $this->db_user, $this->db_passwd);
@@ -370,7 +365,6 @@ class NET
                         $this->errno = 30001;
                     }
                     break;
-
                 case 'oracle':
                     $this->db_port = (($this->db_port == "") || ($this->db_port == 0)) ? "1521" : $this->db_port;
                     $link = @oci_connect( $this->db_user, $this->db_passwd, "(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP) (HOST=$this->ip) (PORT=$this->db_port) )) (CONNECT_DATA=(SERVICE_NAME=$this->db_sourcename)))" );
@@ -393,10 +387,8 @@ class NET
                         $this->errno = 40001;
                     }
                     break;
-
                 case 'informix':
                     break;
-
                 case 'sqlite':
                     break;
             }
@@ -412,15 +404,17 @@ class NET
      * @param string $driver
      * @return void
      */
-    function getDbServerVersion ($driver)
+    public function getDbServerVersion ($driver)
     {
-        if (! isset( $this->ip ))
+        if (! isset( $this->ip )) {
             $this->ip = getenv( 'HTTP_CLIENT_IP' );
+        }
 
         if (isset( $this->ip ) && isset( $this->db_user ) && isset( $this->db_passwd )) {
             try {
-                if (! isset( $this->db_sourcename ))
+                if (! isset( $this->db_sourcename )) {
                     $this->db_sourcename = DB_NAME;
+                }
                 $value = 'none';
                 $sDataBase = 'database_' . strtolower( DB_ADAPTER );
                 if (G::LoadSystemExist( $sDataBase )) {
@@ -443,7 +437,7 @@ class NET
      * @param string $pAdapter
      * @return void
      */
-    function dbName ($pAdapter)
+    public function dbName ($pAdapter)
     {
         switch ($pAdapter) {
             case 'mysql':
@@ -473,7 +467,7 @@ class NET
      * @param string $pAdapter
      * @return void
      */
-    function showMsg ()
+    public function showMsg ()
     {
         if ($this->errno != 0) {
             $msg = "
@@ -497,7 +491,7 @@ class NET
      *
      * @return string
      */
-    function getErrno ()
+    public function getErrno ()
     {
         return $this->errno;
     }
@@ -508,11 +502,10 @@ class NET
      *
      * @return string
      */
-    function getErrmsg ()
+    public function getErrmsg ()
     {
         return $this->errstr;
     }
-
 }
 
 /**
@@ -523,8 +516,9 @@ class Stat
 {
     public $stutus;
 
-    function __construct ()
+    public function __construct ()
     {
         $this->status = false;
     }
 }
+

@@ -246,17 +246,16 @@ class Publisher
                 if ($Part['Template'] == 'xmlform_preview') {
                     $Part['Template'] = 'xmlform';
                 }
-
                 $template = PATH_CORE . 'templates/' . $Part['Template'] . '.html';
 
                 //erik: new feature, now templates such as xmlform.html can be personalized via skins
                 if (defined( 'SYS_SKIN' ) && strtolower( SYS_SKIN ) != 'classic') {
-                    // first, verify if the template exists on base skins path
-                    if (is_file( G::ExpandPath( "skinEngine" ) . SYS_SKIN . PATH_SEP . $Part['Template'] . '.html' )) {
-                        $template = G::ExpandPath( "skinEngine" ) . SYS_SKIN . PATH_SEP . $Part['Template'] . '.html';
-                        // second, verify if the template exists on user skins path
-                    } elseif (is_file( PATH_CUSTOM_SKINS . SYS_SKIN . PATH_SEP . $Part['Template'] . '.html' )) {
+                    // First, verify if the template exists on Custom skins path
+                    if (is_file( PATH_CUSTOM_SKINS . SYS_SKIN . PATH_SEP . $Part['Template'] . '.html' )) {
                         $template = PATH_CUSTOM_SKINS . SYS_SKIN . PATH_SEP . $Part['Template'] . '.html';
+                        //Second, verify if the template exists on base skins path
+                    } elseif (is_file( G::ExpandPath( "skinEngine" ) . SYS_SKIN . PATH_SEP . $Part['Template'] . '.html' )) {
+                        $template = G::ExpandPath( "skinEngine" ) . SYS_SKIN . PATH_SEP . $Part['Template'] . '.html';
                     }
                 }
                 //end new feature

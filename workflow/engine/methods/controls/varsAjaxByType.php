@@ -38,8 +38,7 @@ G::LoadClass( 'xmlfield_InputPM' );
 $aFields = getDynaformsVars( $_POST['sProcess'], true, isset( $_POST['bIncMulSelFields'] ) ? $_POST['bIncMulSelFields'] : 0 );
 $aType = $_POST['type'];
 
-$aRows[0] = Array ('fieldname' => 'char','variable' => 'char','type' => 'type','label' => 'char'
-);
+$aRows[0] = Array ('fieldname' => 'char','variable' => 'char','type' => 'type','label' => 'char');
 foreach ($aFields as $aField) {
     switch ($aType) {
         case "system":

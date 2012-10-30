@@ -29,13 +29,13 @@ try {
   	    G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
   	    G::header('location: ../login/login');
   	  die;
-  	break;
-  	case -1:
+  	  break;
+  	  case -1:
   	  G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
   	  G::header('location: ../login/login');
   	  die;
-  	break;
-  }*/
+  	  break;
+      }*/
     $oJSON = new Services_JSON();
     if (isset( $_REQUEST['data'] )) {
         $oData = $oJSON->decode( stripslashes( $_REQUEST['data'] ) );
@@ -97,7 +97,6 @@ try {
             unlink( PATH_DATA . "sites" . PATH_SEP . SYS_SYS . PATH_SEP . "public" . PATH_SEP . $form['PRO_UID'] . PATH_SEP . str_replace( ".php", "Post", $form['FILENAME'] ) . ".php" );
             $oProcessMap->webEntry( $_REQUEST['PRO_UID'] );
             break;
-
         case 'webEntry_new':
             $oProcessMap->webEntry_new( $oData->PRO_UID );
             break;
@@ -125,11 +124,9 @@ try {
         case 'webEntry':
             $oProcessMap->webEntry( $oData->pro_uid );
             break;
-
         case 'webEntry_Val_Assig':
             include (PATH_METHODS . 'processes/webEntry_Val_Assig.php');
             break;
-
         case 'saveTitlePosition':
             $sOutput = $oProcessMap->saveTitlePosition( $oData->pro_uid, $oData->position->x, $oData->position->y );
             break;
@@ -149,15 +146,12 @@ try {
         case 'users':
             $oProcessMap->users( $oData->pro_uid, $oData->tas_uid );
             break;
-
         case 'users_adhoc':
             $oProcessMap->users_adhoc( $oData->pro_uid, $oData->tas_uid );
             break;
-
         case 'addTask':
             $sOutput = $oProcessMap->addTask( $oData->uid, $oData->position->x, $oData->position->y );
             break;
-
         case 'addSubProcess':
             $sOutput = $oProcessMap->addSubProcess( $oData->uid, $oData->position->x, $oData->position->y );
             break;
@@ -427,16 +421,15 @@ try {
             $oJSON = new Services_JSON();
             echo $oJSON->encode( $oResponse );
             break;
-
         case 'editFile':
             //echo $_REQUEST['filename'];
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
             ///-- $sDirectory = PATH_DATA_MAILTEMPLATES . $_REQUEST['pro_uid'] . PATH_SEP . $_REQUEST['filename'];
             $sDir = "";
-            if (isset( $_SESSION['PFMDirectory'] ))
+            if (isset( $_SESSION['PFMDirectory'] )) {
                 $sDir = $_SESSION['PFMDirectory'];
-
+            }
             switch ($sDir) {
                 case 'mailTemplates':
                     $sDirectory = PATH_DATA_MAILTEMPLATES . $_REQUEST['pro_uid'] . PATH_SEP . $_REQUEST['filename'];
@@ -457,17 +450,17 @@ try {
             $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'processes/processes_FileEdit', '', $aData );
             G::RenderPage( 'publish', 'raw' );
             /*}else{ echo 'krlos';
-	  		$aMessage['MESSAGE'] = G::loadTranslation(	'HTML_FILES' );
-        $G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/showMessage', '',$aMessage );
-	  		}*/
-
+	  		       $aMessage['MESSAGE'] = G::loadTranslation(	'HTML_FILES' );
+                   $G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/showMessage', '',$aMessage );
+	  		       }*/
             break;
         case 'saveFile':
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
             $sDir = "";
-            if (isset( $_REQUEST['MAIN_DIRECTORY'] ))
+            if (isset( $_REQUEST['MAIN_DIRECTORY'] )) {
                 $sDir = $_REQUEST['MAIN_DIRECTORY'];
+            }
 
             switch ($sDir) {
                 case 'mailTemplates':
@@ -493,26 +486,25 @@ try {
             $oProcessMap->eventsList( $oData->pro_uid, $oData->type );
             break;
         /*
-	case 'saveFile':
-    global $G_PUBLISH;
-    $G_PUBLISH = new Publisher();
-    $sDirectory = PATH_DATA_MAILTEMPLATES . $_REQUEST['pro_uid'] . PATH_SEP . $_REQUEST['filename'];
+	       case 'saveFile':
+         global $G_PUBLISH;
+         $G_PUBLISH = new Publisher();
+         $sDirectory = PATH_DATA_MAILTEMPLATES . $_REQUEST['pro_uid'] . PATH_SEP . $_REQUEST['filename'];
 
-    $fp = fopen($sDirectory, 'w');
-    $content = stripslashes($_REQUEST['fcontent']);
-    $content = str_replace("@amp@", "&", $content);
-    fwrite($fp, $content);
-    fclose($fp);
-    echo 'saved: '. $sDirectory;
-  break;
-*/
+         $fp = fopen($sDirectory, 'w');
+         $content = stripslashes($_REQUEST['fcontent']);
+         $content = str_replace("@amp@", "&", $content);
+         fwrite($fp, $content);
+         fclose($fp);
+         echo 'saved: '. $sDirectory;
+         break;
+        */
         case 'emptyFileOptions':
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
             $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'processes/processes_FileEditCreateEmpty', '' );
             G::RenderPage( 'publish', 'raw' );
             break;
-
         case "taskCases":
             require_once 'classes/model/AppDelegation.php';
             $criteria = new Criteria( 'workflow' );

@@ -65,4 +65,4 @@ $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'reports/reports_Description', $c );
 //$G_PUBLISH->AddContent('xmlform', 'xmlform', 'reports/reports_Description_search', '', $fields);
 G::RenderPage( 'publish', 'raw' );
-?>
+

@@ -33,7 +33,7 @@ function casesShowOuputDocumentExist ($url)
     require_once ("classes/model/AppDocumentPeer.php");
 
     $oAppDocument = new AppDocument();
-    $oAppDocument->Fields = $oAppDocument->load( $_GET['a'], (isset( $_GET['v'] )) ? $_GET['v'] : NULL );
+    $oAppDocument->Fields = $oAppDocument->load( $_GET['a'], (isset( $_GET['v'] )) ? $_GET['v'] : null );
 
     $sAppDocUid = $oAppDocument->getAppDocUid();
     $info = pathinfo( $oAppDocument->getAppDocFilename() );
@@ -48,8 +48,10 @@ function casesShowOuputDocumentExist ($url)
     }
     $ver = (isset( $_GET['v'] ) && $_GET['v'] != '') ? '_' . $_GET['v'] : '';
 
-    if (! $ver) //This code is in the case the outputdocument won't be versioned
+    if (! $ver) {
+        //This code is in the case the outputdocument won't be versioned
         $ver = '_1';
+    }
 
     $realPath = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/outdocs/' . $sAppDocUid . $ver . '.' . $ext;
     $realPath1 = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/outdocs/' . $info['basename'] . $ver . '.' . $ext;

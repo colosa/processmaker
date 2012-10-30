@@ -681,4 +681,3 @@ class headPublisher
         $this->disableHeaderScripts = true;
     }
 }
-

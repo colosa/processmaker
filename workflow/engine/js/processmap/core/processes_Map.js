@@ -35,6 +35,44 @@ var saveDataTaskTemporal = function(iForm)
       break;
       case 2:
       case '2':
+        var sw = 0;
+        var msg = "";
+        var fieldEval;
+
+        if (getField("TAS_SELFSERVICE_TIMEOUT").checked) {
+            sw = 1;
+
+            fieldEval = new input(getField("TAS_SELFSERVICE_TIME"));
+
+            if (getField("TAS_SELFSERVICE_TIME").value.trim() == "") {
+                sw = 0;
+                msg = msg + ((msg != "")? "<br />" : "") + _("ID_TIME_REQUIRED");
+
+                fieldEval.failed();
+            } else {
+                fieldEval.passed();
+            }
+
+            fieldEval = new input(getField("TAS_SELFSERVICE_TRIGGER_UID"));
+
+            if (getField("TAS_SELFSERVICE_TRIGGER_UID").value.trim() == "") {
+                sw = 0;
+                msg = msg + ((msg != "")? "<br />" : "") + _("ID_TRIGGER_REQUIRED");
+
+                fieldEval.failed();
+            } else {
+                fieldEval.passed();
+            }
+
+            if (sw == 0) {
+                new leimnud.module.app.alert().make({
+                    label: msg
+                });
+
+                return false;
+            }
+        }
+
         if (getField('TAS_ASSIGN_TYPE][SELF_SERVICE').checked)
         {
           oTaskData.TAS_ASSIGN_TYPE = 'SELF_SERVICE';
@@ -73,7 +111,14 @@ var saveDataTaskTemporal = function(iForm)
         /* this feature is temporarily disabled
         oTaskData.TAS_MI_INSTANCE_VARIABLE = getField('TAS_MI_INSTANCE_VARIABLE').value;
         oTaskData.TAS_MI_COMPLETE_VARIABLE = getField('TAS_MI_COMPLETE_VARIABLE').value;*/
-      break;
+
+        sw = ((oTaskData.TAS_ASSIGN_TYPE == "SELF_SERVICE" || oTaskData.TAS_ASSIGN_TYPE == "SELF_SERVICE_EVALUATE") && getField("TAS_SELFSERVICE_TIMEOUT").checked)? 1 : 0;
+
+        oTaskData.TAS_SELFSERVICE_TIMEOUT = sw;
+        oTaskData.TAS_SELFSERVICE_TIME = (sw == 1)? getField("TAS_SELFSERVICE_TIME").value : "";
+        oTaskData.TAS_SELFSERVICE_TIME_UNIT = (sw == 1)? getField("TAS_SELFSERVICE_TIME_UNIT").value : "";
+        oTaskData.TAS_SELFSERVICE_TRIGGER_UID = (sw == 1)? getField("TAS_SELFSERVICE_TRIGGER_UID").value : "";
+        break;
       case 3:
       case '3':
         oTaskData.TAS_DURATION     = getField('TAS_DURATION').value;

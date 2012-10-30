@@ -41,72 +41,72 @@ G::LoadClass( "ArrayPeer" );
 
 class propelTable
 {
-    var $xmlFormFile;
-    var $currentPage;
-    var $orderBy = '';
-    var $filter = array ();
-    var $filterType = array ();
-    var $searchBy = '';
-    var $fastSearch = '';
-    var $order = '';
-    var $template = 'templates/paged-table.html';
-    var $tpl;
-    var $style = array ();
-    var $rowsPerPage = 25;
-    var $ownerPage;
-    var $popupPage;
-    var $popupSubmit;
-    var $popupWidth = 450;
-    var $popupHeight = 200;
-    var $ajaxServer;
-    var $fields;
-    var $query;
-    var $totPages;
-    var $totRows;
+    public $xmlFormFile;
+    public $currentPage;
+    public $orderBy = '';
+    public $filter = array ();
+    public $filterType = array ();
+    public $searchBy = '';
+    public $fastSearch = '';
+    public $order = '';
+    public $template = 'templates/paged-table.html';
+    public $tpl;
+    public $style = array ();
+    public $rowsPerPage = 25;
+    public $ownerPage;
+    public $popupPage;
+    public $popupSubmit;
+    public $popupWidth = 450;
+    public $popupHeight = 200;
+    public $ajaxServer;
+    public $fields;
+    public $query;
+    public $totPages;
+    public $totRows;
 
     //SQL QUERIES
-    var $criteria;
-    var $sql = '';
-    var $sqlWhere = '';
-    var $sqlGroupBy = '';
-    var $sqlSelect = 'SELECT 1';
-    var $sqlDelete = '';
-    var $sqlInsert = '';
-    var $sqlUpdate = '';
-    var $fieldDataList = '';
+    public $criteria;
+    public $sql = '';
+    public $sqlWhere = '';
+    public $sqlGroupBy = '';
+    public $sqlSelect = 'SELECT 1';
+    public $sqlDelete = '';
+    public $sqlInsert = '';
+    public $sqlUpdate = '';
+    public $fieldDataList = '';
 
     //Configuration
-    var $xmlPopup = '';
-    var $addRow = false;
-    var $deleteRow = false;
-    var $editRow = false;
-    var $notFields = '  title button linknew begingrid2 endgrid2 '; // These are not considered to build the sql queries (update,insert,delete)
+    public $xmlPopup = '';
+    public $addRow = false;
+    public $deleteRow = false;
+    public $editRow = false;
+    public $notFields = '  title button linknew begingrid2 endgrid2 '; // These are not considered to build the sql queries (update,insert,delete)
 
 
     //JavaScript Object attributes
-    var $onUpdateField = "";
-    var $onDeleteField = "";
-    var $afterDeleteField = "";
-    var $onInsertField = "";
+    public $onUpdateField = "";
+    public $onDeleteField = "";
+    public $afterDeleteField = "";
+    public $onInsertField = "";
 
     //New gulliver
-    var $xmlForm;
-    var $menu = '';
-    var $filterForm = '';
-    var $filterForm_Id = '';
-    var $name = 'pagedTable';
-    var $id = 'A1';
-    var $disableFooter = false;
+    public $xmlForm;
+    public $menu = '';
+    public $filterForm = '';
+    public $filterForm_Id = '';
+    public $name = 'pagedTable';
+    public $id = 'A1';
+    public $disableFooter = false;
     //This attribute is used to set STYLES to groups of TD, using the field type "cellMark" (see XmlForm_Field_cellMark)
-    var $tdStyle = '';
-    var $tdClass = '';
+    public $tdStyle = '';
+    public $tdClass = '';
     //Config Save definition
-    var $__Configuration = 'orderBy,filter,fastSearch,style/*/showInTable'; //order,rowsPerPage,disableFooter';
+    public $__Configuration = 'orderBy,filter,fastSearch,style/*/showInTable'; //order,rowsPerPage,disableFooter';
 
 
     //Variable for MasterDetail feature
-    var $masterdetail = '';
-    var $title;
+    public $masterdetail = '';
+    public $title;
 
     /**
      * Function prepareQuery
@@ -116,7 +116,7 @@ class propelTable
      * @param string $limitPage
      * @return string
      */
-    function prepareQuery ($limitPage = false)
+    public function prepareQuery ($limitPage = false)
     {
         // process the QuickSearch string and add the fields and expression needed to run the search
         if ($this->searchBy !== '') {
@@ -212,7 +212,7 @@ class propelTable
      * @param eter string xmlForm
      * @return string
      */
-    function setupFromXmlform ($xmlForm)
+    public function setupFromXmlform ($xmlForm)
     {
         $this->xmlForm = $xmlForm;
         //Config
@@ -308,7 +308,7 @@ class propelTable
      * @access public
      * @return string
      */
-    function count ()
+    public function count ()
     {
         $this->prepareQuery();
         return $this->totRows;
@@ -321,7 +321,7 @@ class propelTable
      * @access public
      * @return string
      */
-    function renderTitle ()
+    public function renderTitle ()
     {
         //fix the bug about showing hidden fields in propel table.
         foreach ($this->fields as $r => $rval) {
@@ -391,7 +391,7 @@ class propelTable
      * @param eter string result
      * @return string
      */
-    function renderField ($row, $r, $result)
+    public function renderField ($row, $r, $result)
     {
         global $G_DATE_FORMAT;
         //to do: special content??
@@ -468,7 +468,7 @@ class propelTable
      * @access public
      * @return string
      */
-    function defaultStyle ()
+    public function defaultStyle ()
     {
         foreach ($this->fields as $r => $rval) {
             $this->style[$r] = array ('showInTable' => '1','titleVisibility' => '1','colWidth' => '150','onclick' => '','event' => ''
@@ -538,7 +538,7 @@ class propelTable
      * @access public
      * @return string
      */
-    function renderTable ($block = '', $fields = '')
+    public function renderTable ($block = '', $fields = '')
     {
         //Render Title
         $thereisnotitle = true;
@@ -866,7 +866,7 @@ class propelTable
      * @param array $data
      * @return void
      */
-    function printForm ($filename, $data = array())
+    public function printForm ($filename, $data = array())
     {
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher();

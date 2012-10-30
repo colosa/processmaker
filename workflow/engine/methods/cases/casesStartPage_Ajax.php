@@ -37,8 +37,9 @@ function getProcessList ()
         $processList = array ();
         foreach ($processListInitial as $key => $procInfo) {
             if (isset( $procInfo['pro_uid'] )) {
-                if (trim( $procInfo['cat'] ) == "")
+                if (trim( $procInfo['cat'] ) == "") {
                     $procInfo['cat'] = "_OTHER_";
+                }
                 $processList[$procInfo['catname']][$procInfo['value']] = $procInfo;
             }
         }
@@ -122,7 +123,6 @@ function getProcessList ()
                 //$tempTree['cls']='file';
                 $processListTree[] = $tempTree;
             }
-
         }
         $processList = $processListTree;
     } else {
@@ -209,17 +209,22 @@ function startCase ()
     G::LoadClass( 'case' );
 
     /* GET , POST & $_SESSION Vars */
-  /* unset any variable, because we are starting a new case */
-  if (isset( $_SESSION['APPLICATION'] ))
+    /* unset any variable, because we are starting a new case */
+    if (isset( $_SESSION['APPLICATION'] )) {
         unset( $_SESSION['APPLICATION'] );
-    if (isset( $_SESSION['PROCESS'] ))
+    }
+    if (isset( $_SESSION['PROCESS'] )) {
         unset( $_SESSION['PROCESS'] );
-    if (isset( $_SESSION['TASK'] ))
+    }
+    if (isset( $_SESSION['TASK'] )) {
         unset( $_SESSION['TASK'] );
-    if (isset( $_SESSION['INDEX'] ))
+    }
+    if (isset( $_SESSION['INDEX'] )) {
         unset( $_SESSION['INDEX'] );
-    if (isset( $_SESSION['STEP_POSITION'] ))
+    }
+    if (isset( $_SESSION['STEP_POSITION'] )) {
         unset( $_SESSION['STEP_POSITION'] );
+    }
 
         /* Process */
     try {
@@ -308,13 +313,15 @@ function getSimpleDashboardData ()
             $processNames[$aRow['PRO_UID']] = $aProcess['PRO_TITLE'];
         }
 
-        if ($aRow['USR_UID'] == "")
+        if ($aRow['USR_UID'] == "") {
             $aRow['APP_STATUS'] = "UNASSIGNED";
+        }
         if (((in_array( $aRow['APP_STATUS'], array ("TO_DO","UNASSIGNED"
         ) )) && ($aRow['APP_THREAD_STATUS'] == "OPEN")) || ($aRow['APP_STATUS'] == "DRAFT")) {
             $rows[$processNames[$aRow['PRO_UID']]][$aRow['APP_STATUS']][$aRow['DEL_DELAYED']][] = $aRow['APP_UID'];
-            if (! isset( $rows[$processNames[$aRow['PRO_UID']]][$aRow['APP_STATUS']]['count'] ))
+            if (! isset( $rows[$processNames[$aRow['PRO_UID']]][$aRow['APP_STATUS']]['count'] )) {
                 $rows[$processNames[$aRow['PRO_UID']]][$aRow['APP_STATUS']]['count'] = 0;
+            }
             $rows[$processNames[$aRow['PRO_UID']]][$aRow['APP_STATUS']]['count'] ++;
         }
 
@@ -326,13 +333,10 @@ function getSimpleDashboardData ()
     foreach ($rows as $processID => $processInfo) {
         $i ++;
         if ($i <= 10) {
-            $rowsResponse['caseStatusByProcess'][] = array ('process' => $processID,'inbox' => isset( $processInfo['TO_DO']['count'] ) ? $processInfo['TO_DO']['count'] : 0,'draft' => isset( $processInfo['DRAFT']['count'] ) ? $processInfo['DRAFT']['count'] : 0,'unassigned' => isset( $processInfo['UNASSIGNED']['count'] ) ? $processInfo['UNASSIGNED']['count'] : 0
-            );
-
+            $rowsResponse['caseStatusByProcess'][] = array ('process' => $processID,'inbox' => isset( $processInfo['TO_DO']['count'] ) ? $processInfo['TO_DO']['count'] : 0,'draft' => isset( $processInfo['DRAFT']['count'] ) ? $processInfo['DRAFT']['count'] : 0,'unassigned' => isset( $processInfo['UNASSIGNED']['count'] ) ? $processInfo['UNASSIGNED']['count'] : 0);
         }
     }
-    $rowsResponse['caseDelayed'][] = array ('delayed' => 'On Time','total' => 100
-    );
+    $rowsResponse['caseDelayed'][] = array ('delayed' => 'On Time','total' => 100);
     $rowsResponse['caseDelayed'][] = array ('delayed' => 'Delayed','total' => 50
     );
 

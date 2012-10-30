@@ -29,4 +29,5 @@ $ses->Execute( $sql );
 <script language="JavaScript">
   window.close();
 </script>
+<?php
 

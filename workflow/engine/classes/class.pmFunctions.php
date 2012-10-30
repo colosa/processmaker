@@ -796,7 +796,7 @@ function getEmailConfiguration ()
  *
  */
 //@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value.
-function PMFSendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields = array(), $aAttachment = array())
+function PMFSendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields = array(), $aAttachment = array(), $showMessage = true)
 {
     global $oPMScript;
 
@@ -810,7 +810,7 @@ function PMFSendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTempla
 
     G::LoadClass( 'wsBase' );
     $ws = new wsBase();
-    $result = $ws->sendMessage( $caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields, $aAttachment );
+    $result = $ws->sendMessage( $caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields, $aAttachment, $showMessage);
 
     if ($result->status_code == 0) {
         return 1;
@@ -2281,6 +2281,16 @@ function PMFCancelCase ($caseUid, $delIndex, $userUid)
     $result = $ws->cancelCase( $caseUid, $delIndex, $userUid );
 
     if ($result->status_code == 0) {
+        if (isset($_SESSION['APPLICATION']) && isset($_SESSION['INDEX'])) {
+            if ($_SESSION['APPLICATION'] == $caseUid && $_SESSION['INDEX'] == $delIndex) {
+                if (!defined('WEB_SERVICE_VERSION')) {
+                    G::header('Location: ../cases/casesListExtJsRedirector');
+                    die();
+                } else {
+                    die(__('ID_PM_FUNCTION_CHANGE_CASE', SYS_LANG, array('PMFCancelCase', G::LoadTranslation('ID_CANCELLED'))));
+                }
+            }
+        }
         return 1;
     } else {
         return 0;
@@ -2303,12 +2313,22 @@ function PMFCancelCase ($caseUid, $delIndex, $userUid)
  */
 function PMFPauseCase ($caseUid, $delIndex, $userUid, $unpauseDate = null)
 {
-    G::LoadClass( "wsBase" );
+    G::LoadClass('wsBase');
 
     $ws = new wsBase();
-    $result = $ws->pauseCase( $caseUid, $delIndex, $userUid, $unpauseDate );
+    $result = $ws->pauseCase($caseUid, $delIndex, $userUid, $unpauseDate);
 
     if ($result->status_code == 0) {
+        if (isset($_SESSION['APPLICATION']) && isset($_SESSION['INDEX'])) {
+            if ($_SESSION['APPLICATION'] == $caseUid && $_SESSION['INDEX'] == $delIndex) {
+                if (!defined('WEB_SERVICE_VERSION')) {
+                    G::header('Location: ../cases/casesListExtJsRedirector');
+                    die();
+                } else {
+                    die(__('ID_PM_FUNCTION_CHANGE_CASE', SYS_LANG, array('PMFPauseCase', G::LoadTranslation('ID_PAUSED'))));
+                }
+            }
+        }
         return 1;
     } else {
         return 0;

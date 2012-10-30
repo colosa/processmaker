@@ -322,6 +322,38 @@ class Triggers extends BaseTriggers
                 array_push($oResult->dependencies['Tasks'], Array('UID'=>($oTask->getTasUid()), 'DESCRIPTION'=>($oTask->getTasTitle())));
             }
         }
+
+        //Tasks, assignment rules dependencies
+        $criteria = new Criteria();
+
+        $criteria->addSelectColumn(TaskPeer::TAS_UID);
+        $criteria->add(TaskPeer::TAS_SELFSERVICE_TIMEOUT, 1);
+        $criteria->add(TaskPeer::TAS_SELFSERVICE_TRIGGER_UID, $TRI_UID);
+
+        $rsCriteria = TaskPeer::doSelectRS($criteria);
+        $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        $arrayRow = array();
+
+        while ($rsCriteria->next()) {
+            array_push($arrayRow, $rsCriteria->getRow());
+        }
+
+        $oResult->dependencies["Assignment rules"] = array();
+
+        if ($oResult->code == 0 && count($arrayRow) == 0) {
+            $oResult->code = 0;
+        } else {
+            if (count($arrayRow) > 0) {
+                foreach ($arrayRow as $row) {
+                    $task = TaskPeer::retrieveByPK($row["TAS_UID"]);
+                    array_push($oResult->dependencies["Assignment rules"], array("UID" => $task->getTasUid(), "DESCRIPTION" => $task->getTasTitle()));
+                }
+
+                $oResult->code = 1;
+            }
+        }
+
         return $oResult;
     }
 }

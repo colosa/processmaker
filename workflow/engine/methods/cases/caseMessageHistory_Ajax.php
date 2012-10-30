@@ -39,9 +39,11 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
 
     $totalCount = 0;
     foreach ($appMessageArray as $index => $value) {
-        $appMessageArray[$index]['ID_MESSAGE'] = $appMessageArray[$index]['APP_UID'] . '_' . $appMessageArray[$index]['APP_MSG_UID'];
-        $aProcesses[] = $appMessageArray[$index];
-        $totalCount ++;
+        if ($appMessageArray[$index]['APP_MSG_SHOW_MESSAGE'] == 1) {
+            $appMessageArray[$index]['ID_MESSAGE'] = $appMessageArray[$index]['APP_UID'] . '_' . $appMessageArray[$index]['APP_MSG_UID'];
+            $aProcesses[] = $appMessageArray[$index];
+            $totalCount ++;
+        }
     }
 
     $newDir = '/tmp/test/directory';

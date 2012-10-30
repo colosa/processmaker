@@ -19,15 +19,15 @@
 /**
  * Sharepoint Triggers that allow ProcessMaker to perform common DWS actions
  * @class pmTrSharepoint
+ *
  * @name Sharepoint DWS Triggers v. 0.1
  * @icon /images/triggers/sharepoint.gif
  * @className class.pmTrSharepoint.pmFunctions.php
  */
 
 /**
- * @method
  *
- * Create a DWS in Sharepoint server
+ * @method Create a DWS in Sharepoint server
  *
  * @name createDWS
  * @label Create a DWS in Sharepoint server
@@ -42,18 +42,18 @@
  * @return string | $result | Response
  *
  */
-function createDWS($sharepointServer, $auth, $name="", $users="", $title="", $documents="", $result="") {
-  //print "Trigger: createDWS";
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $beforeResult = $pmTrSharepoint->createDWS($name, $users, $title, $documents);
-  return $beforeResult;
+function createDWS ($sharepointServer, $auth, $name = "", $users = "", $title = "", $documents = "", $result = "")
+{
+    //print "Trigger: createDWS";
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $beforeResult = $pmTrSharepoint->createDWS( $name, $users, $title, $documents );
+    return $beforeResult;
 }
 
 /**
- * @method
  *
- * Delete a DWS in Sharepoint server
+ * @method Delete a DWS in Sharepoint server
  *
  * @name deleteDWS
  * @label Delete a DWS in Sharepoint server
@@ -65,22 +65,23 @@ function createDWS($sharepointServer, $auth, $name="", $users="", $title="", $do
  * @return string | $result | Response
  *
  */
-function deleteDWS($sharepointServer, $auth, $dwsname) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $beforeResult = $pmTrSharepoint->deleteDWS($dwsname);
-  $newResult = $beforeResult->DeleteDwsResult;
-  if($newResult == '<Result/>')
-     return "Successfully deleted the DWS";
-  else
-     return "Error in deleting the DWS";
+function deleteDWS ($sharepointServer, $auth, $dwsname)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $beforeResult = $pmTrSharepoint->deleteDWS( $dwsname );
+    $newResult = $beforeResult->DeleteDwsResult;
+    if ($newResult == '<Result/>') {
+        return "Successfully deleted the DWS";
+    } else {
+        return "Error in deleting the DWS";
+    }
 
 }
 
 /**
- * @method
  *
- * Create a folder in a DWS
+ * @method Create a folder in a DWS
  *
  * @name createFolderDWS
  * @label Create a folder in a DWS
@@ -93,27 +94,26 @@ function deleteDWS($sharepointServer, $auth, $dwsname) {
  * @return string | $result | Response
  *
  */
-function createFolderDWS($sharepointServer, $auth, $dwsname, $dwsFolderName) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $result = $pmTrSharepoint->createFolderDWS($dwsname,$dwsFolderName);
-  var_dump($result);
-  $newResult = $result->CreateFolderResult;
-  var_dump($newResult);
-  if(isset($newResult))
-                  {
-                      if($newResult == '<Result/>')
-                        return "Folder is created";
-                      else
-                        return "Folder could not be created";
-                  }
+function createFolderDWS ($sharepointServer, $auth, $dwsname, $dwsFolderName)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $result = $pmTrSharepoint->createFolderDWS( $dwsname, $dwsFolderName );
+    var_dump( $result );
+    $newResult = $result->CreateFolderResult;
+    var_dump( $newResult );
+    if (isset( $newResult )) {
+        if ($newResult == '<Result/>') {
+            return "Folder is created";
+        } else {
+            return "Folder could not be created";
+        }
+    }
 }
 
-
 /**
- * @method
  *
- * Delete a DWS folder
+ * @method Delete a DWS folder
  *
  * @name deleteFolderDWS
  * @label Delete a DWS folder
@@ -127,25 +127,24 @@ function createFolderDWS($sharepointServer, $auth, $dwsname, $dwsFolderName) {
  *
  */
 
-function deleteFolderDWS($sharepointServer, $auth, $dwsname, $folderName) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $result = $pmTrSharepoint->deleteFolderDWS($dwsname, $folderName);
-  $newResult = $result->DeleteFolderResult;
-  if(isset($newResult))
-                  {
-                      if($newResult == '<Result/>')
-                        return "Folder is deleted";
-                      else
-                        return "Folder could not be deleted";
-                  }
+function deleteFolderDWS ($sharepointServer, $auth, $dwsname, $folderName)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $result = $pmTrSharepoint->deleteFolderDWS( $dwsname, $folderName );
+    $newResult = $result->DeleteFolderResult;
+    if (isset( $newResult )) {
+        if ($newResult == '<Result/>') {
+            return "Folder is deleted";
+        } else {
+            return "Folder could not be deleted";
+        }
+    }
 }
 
-
 /**
- * @method
  *
- * Get DWS data
+ * @method Get DWS data
  *
  * @name getDWSData
  * @label Get DWS data
@@ -159,20 +158,21 @@ function deleteFolderDWS($sharepointServer, $auth, $dwsname, $folderName) {
  * @return string | $result | Response
  *
  */
-function getDWSData($sharepointServer, $auth, $newFileName, $dwsname, $lastUpdate) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $resultDWSData = $pmTrSharepoint->getDWSData($newFileName, $dwsname, $lastUpdate);
-if($resultDWSData)
+function getDWSData ($sharepointServer, $auth, $newFileName, $dwsname, $lastUpdate)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $resultDWSData = $pmTrSharepoint->getDWSData( $newFileName, $dwsname, $lastUpdate );
+    if ($resultDWSData) {
         return $resultDWSData;
-  else
+    } else {
         return "There was some error while getting the DWS Data";
+    }
 }
 
 /**
- * @method
  *
- * Get DWS meta data
+ * @method Get DWS meta data
  *
  * @name getDWSMetaData
  * @label Get DWS meta data
@@ -187,27 +187,23 @@ if($resultDWSData)
  * @return string | $result | Response
  *
  */
-function getDWSMetaData($sharepointServer, $auth, $newFileName, $dwsname, $id) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $result = $pmTrSharepoint->getDWSMetaData($newFileName, $dwsname, $id);
-  //$newResult = $result->GetDwsMetaDataResult;
-  if(isset($result))
-                  {
-                        return $result;
-                  }
-            else
-                  {
-                       return "Document workspace Meta-data not found";
-                  }
+function getDWSMetaData ($sharepointServer, $auth, $newFileName, $dwsname, $id)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $result = $pmTrSharepoint->getDWSMetaData( $newFileName, $dwsname, $id );
+    //$newResult = $result->GetDwsMetaDataResult;
+    if (isset( $result )) {
+        return $result;
+    } else {
+        return "Document workspace Meta-data not found";
+    }
 
 }
 
-
 /**
- * @method
  *
- * Copy/Upload Documents to DWS folder
+ * @method Copy/Upload Documents to DWS folder
  *
  * @name uploadDocumentDWS
  * @label Copy/Upload Documents to DWS folder
@@ -222,18 +218,18 @@ function getDWSMetaData($sharepointServer, $auth, $newFileName, $dwsname, $id) {
  * @return string | $result | Response
  *
  */
-function uploadDocumentDWS($sharepointServer, $auth, $dwsname, $folderName, $sourceUrl, $filename) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $beforeResult = $pmTrSharepoint->uploadDocumentDWS($dwsname, $folderName, $sourceUrl, $filename);
+function uploadDocumentDWS ($sharepointServer, $auth, $dwsname, $folderName, $sourceUrl, $filename)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $beforeResult = $pmTrSharepoint->uploadDocumentDWS( $dwsname, $folderName, $sourceUrl, $filename );
 
-  return $beforeResult;
+    return $beforeResult;
 }
 
 /**
- * @method
  *
- * Download documents from DWS folder
+ * @method Download documents from DWS folder
  *
  * @name downloadDocumentDWS
  * @label Download DWS Documents
@@ -247,21 +243,21 @@ function uploadDocumentDWS($sharepointServer, $auth, $dwsname, $folderName, $sou
  * @return string | $result | Response
  *
  */
-function downloadDocumentDWS($sharepointServer, $auth, $dwsname, $fileName, $fileLocation) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $result = $pmTrSharepoint->downloadDocumentDWS($dwsname, $fileName, $fileLocation);
-  if(isset($result))
+function downloadDocumentDWS ($sharepointServer, $auth, $dwsname, $fileName, $fileLocation)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $result = $pmTrSharepoint->downloadDocumentDWS( $dwsname, $fileName, $fileLocation );
+    if (isset( $result )) {
         return "Document downloaded";
-  else
-       return "Document cannot be downloaded";
+    } else {
+        return "Document cannot be downloaded";
+    }
 }
 
-
 /**
- * @method
  *
- * Get DWS Folder items
+ * @method Get DWS Folder items
  *
  * @name getDWSFolderItems
  * @label Get DWS Folder items
@@ -274,20 +270,21 @@ function downloadDocumentDWS($sharepointServer, $auth, $dwsname, $fileName, $fil
  * @return string | $result | Response
  *
  */
-function getDWSFolderItems($sharepointServer, $auth,$dwsname, $strFolderUrl) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $result = $pmTrSharepoint->getDWSFolderItems($dwsname, $strFolderUrl);
-  if(isset($result))
+function getDWSFolderItems ($sharepointServer, $auth, $dwsname, $strFolderUrl)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $result = $pmTrSharepoint->getDWSFolderItems( $dwsname, $strFolderUrl );
+    if (isset( $result )) {
         return $result;
-  else
-       return "Folder does not exist";
+    } else {
+        return "Folder does not exist";
+    }
 }
 
 /**
- * @method
  *
- * Get DWS Document Versions
+ * @method Get DWS Document Versions
  *
  * @name getDWSDocumentVersions
  * @label Get DWS Document Versions
@@ -300,33 +297,32 @@ function getDWSFolderItems($sharepointServer, $auth,$dwsname, $strFolderUrl) {
  * @return string | $result | Response
  *
  */
-function getDWSDocumentVersions($sharepointServer, $auth, $newFileName, $dwsname) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $result = $pmTrSharepoint->getDWSDocumentVersions($newFileName, $dwsname);
-  if(isset($result->GetVersionsResult))
-                  {
-                        /*
+function getDWSDocumentVersions ($sharepointServer, $auth, $newFileName, $dwsname)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $result = $pmTrSharepoint->getDWSDocumentVersions( $newFileName, $dwsname );
+    if (isset( $result->GetVersionsResult )) {
+        /*
                          * Code to get the Document's Version/s
                          */
-                        $xml = $result->GetVersionsResult->any;// in Result we get string in Xml format
-                        $xmlNew = simplexml_load_string($xml);// used to parse string to xml
-                        $xmlArray = @G::json_decode(@G::json_encode($xmlNew),1);// used to convert Objects to array
-                        $resultCount = count($xmlArray['result']);
-                        for($i=0;$i<$resultCount;$i++)
-                        {
-                            $version[] =$xmlArray['result'][$i]['@attributes']['version'];
-                        }
-                        $serializeResult = serialize($version);// serializing the Array for Returning.
-                        return $serializeResult;
-                }
-                else
-                    return "No version found";
+        $xml = $result->GetVersionsResult->any; // in Result we get string in Xml format
+        $xmlNew = simplexml_load_string( $xml ); // used to parse string to xml
+        $xmlArray = @G::json_decode( @G::json_encode( $xmlNew ), 1 ); // used to convert Objects to array
+        $resultCount = count( $xmlArray['result'] );
+        for ($i = 0; $i < $resultCount; $i ++) {
+            $version[] = $xmlArray['result'][$i]['@attributes']['version'];
+        }
+        $serializeResult = serialize( $version ); // serializing the Array for Returning.
+        return $serializeResult;
+    } else {
+        return "No version found";
+    }
 }
+
 /**
- * @method
  *
- * Delete DWS Document Version
+ * @method Delete DWS Document Version
  *
  * @name deleteDWSDocumentVersion
  * @label Delete DWS Document Version
@@ -340,18 +336,17 @@ function getDWSDocumentVersions($sharepointServer, $auth, $newFileName, $dwsname
  * @return string | $result | Response
  *
  */
-function deleteDWSDocumentVersion($sharepointServer, $auth, $newFileName, $dwsname, $versionNum) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $result = $pmTrSharepoint->deleteDWSDocVersion($newFileName, $dwsname, $versionNum);
-       return $result;
+function deleteDWSDocumentVersion ($sharepointServer, $auth, $newFileName, $dwsname, $versionNum)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $result = $pmTrSharepoint->deleteDWSDocVersion( $newFileName, $dwsname, $versionNum );
+    return $result;
 }
 
-
 /**
- * @method
  *
- * Delete all DWS Document Versions
+ * @method Delete all DWS Document Versions
  *
  * @name deleteDWSAllDocumentVersion
  * @label Delete all DWS Document Versions
@@ -364,9 +359,11 @@ function deleteDWSDocumentVersion($sharepointServer, $auth, $newFileName, $dwsna
  * @return string | $result | Response
  *
  */
-function deleteDWSAllDocumentVersion($sharepointServer, $auth, $newFileName, $dwsname) {
-  require_once(PATH_CORE. 'classes' . PATH_SEP.'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-  $pmTrSharepoint = new pmTrSharepointClass($sharepointServer, $auth);
-  $result = $pmTrSharepoint->deleteAllDWSDocVersion($newFileName, $dwsname);
-  return $result;
+function deleteDWSAllDocumentVersion ($sharepointServer, $auth, $newFileName, $dwsname)
+{
+    require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
+    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $result = $pmTrSharepoint->deleteAllDWSDocVersion( $newFileName, $dwsname );
+    return $result;
 }
+

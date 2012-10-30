@@ -47,8 +47,9 @@ while ($aRow = $oDataset->getRow()) {
     $oDataseti->next();
     $b = 0;
     while ($aRows = $oDataseti->getRow()) {
-        if (TaskPeer::doCount( $oCriteria ) == 1)
+        if (TaskPeer::doCount( $oCriteria ) == 1) {
             $b = 1;
+        }
         $oDataseti->next();
     }
 
@@ -87,5 +88,3 @@ while ($aRow = $oDataset->getRow()) {
 
 //G::header('location: reportsList');
 
-
-?>

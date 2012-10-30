@@ -43,49 +43,49 @@
 
 class Table
 {
-    var $Columns = null;
-    var $Labels = null;
-    var $rows_per_page = 25;
-    var $show_nummbers = null;
-    var $first_row = 0;
-    var $row_pos = 0;
-    var $Action = ""; //not used
-    var $ActionLabel = "Continuar"; //not used
-    var $_dbc = null;
-    var $_dbses = null;
-    var $_dbset = null;
-    var $_source = "";
-    var $DefaultOrder = "UID";
-    var $DefaultOrderDir = 'ASC';
-    var $CustomOrder = "";
-    var $WhereClause = "";
-    var $_row_values = null;
-    var $_ordered = true;
-    var $orderprefix = "";
-    var $CountQry = "";
-    var $filtro = 1;
-    var $title = '';
+    public $Columns = null;
+    public $Labels = null;
+    public $rows_per_page = 25;
+    public $show_nummbers = null;
+    public $first_row = 0;
+    public $row_pos = 0;
+    public $Action = ""; //not used
+    public $ActionLabel = "Continuar"; //not used
+    public $_dbc = null;
+    public $_dbses = null;
+    public $_dbset = null;
+    public $_source = "";
+    public $DefaultOrder = "UID";
+    public $DefaultOrderDir = 'ASC';
+    public $CustomOrder = "";
+    public $WhereClause = "";
+    public $_row_values = null;
+    public $_ordered = true;
+    public $orderprefix = "";
+    public $CountQry = "";
+    public $filtro = 1;
+    public $title = '';
 
     /**
      * Asocia un arreglo con valores de traducci?n/conversi?n a un contexto
      *
      * @var array
      */
-    var $contexto = null;
+    public $contexto = null;
 
     /**
      * Arreglo que contiene las cadenas que van a ser usadas al traducir/convertir
      *
      * @var array
      */
-    var $translate = null;
+    public $translate = null;
 
     /**
      * Establece el ?ltimo contexto utilizado
      *
      * @var string
      */
-    var $_contexto = '';
+    public $_contexto = '';
 
     /**
      * Set conecction using default values
@@ -95,7 +95,7 @@ class Table
      * @param string $objConnection connection string
      * @return void
      */
-    function Table ($objConnection = null)
+    public function Table ($objConnection = null)
     {
         $this->SetTo( $objConnection );
     }
@@ -108,7 +108,7 @@ class Table
      * @param string $objConnection connection string
      * @return void
      */
-    function SetTo ($objConnection = null)
+    public function SetTo ($objConnection = null)
     {
         $this->_dbc = $objConnection;
     }
@@ -122,7 +122,7 @@ class Table
      * @param string $stDefaultOrder index to order by, default value='UID'
      * @return void
      */
-    function SetSource ($stQry = "", $stDefaultOrder = "UID", $stDefaultOrderDir = 'ASC')
+    public function SetSource ($stQry = "", $stDefaultOrder = "UID", $stDefaultOrderDir = 'ASC')
     {
         //to fix missing value for variable orderDir, when between pages changes.
         $url1 = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?';
@@ -149,7 +149,7 @@ class Table
      * @access public
      * @return void
      */
-    function GetSource ()
+    public function GetSource ()
     {
         global $HTTP_GET_VARS;
         global $HTTP_SESSION_VARS;
@@ -238,7 +238,7 @@ class Table
      * @access public
      * @return int
      */
-    function TotalCount ()
+    public function TotalCount ()
     {
         global $HTTP_GET_VARS;
         global $HTTP_SESSION_VARS;
@@ -275,7 +275,7 @@ class Table
      * @access public
      * @return int
      */
-    function Count ()
+    public function Count ()
     {
         if (is_object( $this->_dbset )) {
             return $this->_dbset->Count();
@@ -291,7 +291,7 @@ class Table
      * @access public
      * @return int
      */
-    function CurRow ()
+    public function CurRow ()
     {
         return $this->row_pos;
     }
@@ -303,7 +303,7 @@ class Table
      * @access public
      * @return int
      */
-    function ColumnCount ()
+    public function ColumnCount ()
     {
         $result = 0;
         if (is_array( $this->Columns )) {
@@ -319,7 +319,7 @@ class Table
      * @access public
      * @return array
      */
-    function Read ()
+    public function Read ()
     {
         $this->_row_values = $this->_dbset->Read();
         $this->row_pos ++;
@@ -334,7 +334,7 @@ class Table
      * @param int $intPos position to seek
      * @return int
      */
-    function Seek ($intPos = 0)
+    public function Seek ($intPos = 0)
     {
         $result = $this->_dbset->Seek( $intPos );
         if ($result) {
@@ -350,7 +350,7 @@ class Table
      * @access public
      * @return int
      */
-    function MoveFirst ()
+    public function MoveFirst ()
     {
         if ($this->Count() != 0) {
             if ($this->first_row < $this->Count()) {
@@ -366,7 +366,7 @@ class Table
      * @access public
      * @return boolean
      */
-    function EOF ()
+    public function EOF ()
     {
         $result = false;
         if ($this->Count() == 0) {
@@ -399,7 +399,7 @@ class Table
      * @param $strContent
      * @return void
      */
-    function AddColumn ($strLabel = "", $strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "")
+    public function AddColumn ($strLabel = "", $strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "")
     {
         $tmpCol = array ("Name" => $strName,"Type" => $strType,"Width" => $intWidth,"Align" => $strAlign,"Target" => $strTarget,"Content" => $strContent
         );
@@ -427,7 +427,7 @@ class Table
      * @param $orderByThis
      * @return void
      */
-    function AddRawColumn ($strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "", $strExtra = "", $strCondition = "", $orderByThis = true)
+    public function AddRawColumn ($strType = "text", $strName = "", $strAlign = "left", $intWidth = 0, $strTarget = "", $strContent = "", $strExtra = "", $strCondition = "", $orderByThis = true)
     {
         $tmpCol = array ("Name" => $strName,"Type" => $strType,"Width" => $intWidth,"Align" => $strAlign,"Target" => $strTarget,"Content" => $strContent,"Extra" => $strExtra,"Condition" => $strCondition,"orderByThis" => $orderByThis
         );
@@ -449,7 +449,7 @@ class Table
      * @param $strClass
      * @return void
      */
-    function RenderTitle ($pa, $intPos = 1, $strClass = "tblHeader")
+    public function RenderTitle ($pa, $intPos = 1, $strClass = "tblHeader")
     {
         if (! defined( 'ENABLE_ENCRYPT' )) {
             define( 'ENABLE_ENCRYPT', 'no' );
@@ -492,7 +492,7 @@ class Table
      * @param $strClass
      * @return void
      */
-    function RenderTitle_ajax ($pa, $intPos = 1, $strClass = "tblHeader")
+    public function RenderTitle_ajax ($pa, $intPos = 1, $strClass = "tblHeader")
     {
         global $HTTP_SESSION_VARS;
         $col = $this->Columns[$intPos];
@@ -543,7 +543,7 @@ class Table
      * @param $auxgetval
      * @return void
      */
-    function RenderTitle2 ($pa, $fil, $intPos, $strClass = "tblHeader", $auxgetval = '')
+    public function RenderTitle2 ($pa, $fil, $intPos, $strClass = "tblHeader", $auxgetval = '')
     {
         if (! defined( 'ENABLE_ENCRYPT' )) {
             define( 'ENABLE_ENCRYPT', 'no' );
@@ -609,7 +609,7 @@ class Table
      * @param $renderTD if this value = 1, this function will include the TD tags
      * @return void
      */
-    function RenderColumn ($intPos = 0, $strClass = "tblCell", $strClassLink = "tblCellA", $number = 0, $renderTD = 1)
+    public function RenderColumn ($intPos = 0, $strClass = "tblCell", $strClassLink = "tblCellA", $number = 0, $renderTD = 1)
     {
         if (! defined( 'ENABLE_ENCRYPT' )) {
             define( 'ENABLE_ENCRYPT', 'no' );
@@ -777,7 +777,8 @@ class Table
                     $tlabel = substr( $col["Content"], 0, 1 );
                     $vname = substr( $col["Content"], 1, (strlen( $col["Content"] ) - 1) );
                     $lval = $this->_row_values[$vname];
-                    //$res .= "<a href='" . $col["Target"] . $lval . "' target='_new' > $image</a> "; //It open a new window... better the other way By JHL 16/11/06
+                    //$res .= "<a href='" . $col["Target"] . $lval . "' target='_new' > $image</a> ";
+                    //It open a new window... better the other way By JHL 16/11/06
                     $res .= "<a href='" . $col["Target"] . $lval . "' > $image</a> ";
                 } else {
                     $res .= "&nbsp;";
@@ -828,14 +829,13 @@ class Table
                 } else {
                     $val2 = "<span class='txtin3'>" . strtoupper( $fieldname ) . "</span>";
                 }
-                //      break;
+                //break;
             case "link":
                 if ($val == "") {
                     $res .= "&nbsp;";
                 }
                 $title = '';
-                if ($col["Type"] == 'link' && trim( isset( $this->_row_values['TOOLTIP'] ) ? $this->_row_values['TOOLTIP'] : '' ))
-                    ;
+                if ($col["Type"] == 'link' && trim( isset( $this->_row_values['TOOLTIP'] ) ? $this->_row_values['TOOLTIP'] : '' ));
                 $title = (isset( $this->_row_values['TOOLTIP'] ) ? "title=\" " . $this->_row_values['TOOLTIP'] . " \"" : '');
                 if (is_array( $col['Content'] ) && $col['Content'] != "") {
                     // Hay mas de un valor para el link
@@ -1070,7 +1070,7 @@ class Table
      * @param string $strLabel Label
      * @return void
      */
-    function SetAction ($strAction, $strLabel = "Continue")
+    public function SetAction ($strAction, $strLabel = "Continue")
     {
         $this->Action = $strAction;
         $this->ActionLabel = $strLabel;
@@ -1086,7 +1086,7 @@ class Table
      * @access public
      * @return void
      */
-    function setTranslate ($contexto, $tabla, $nombre)
+    public function setTranslate ($contexto, $tabla, $nombre)
     {
         if (is_array( $this->contexto )) {
             $this->contexto[0][] = $contexto;
@@ -1118,7 +1118,7 @@ class Table
      * @param string $lang El lenguaje que se va utilizar
      * @return mixed
      */
-    function translateValue ($contexto, $valor, $lang)
+    public function translateValue ($contexto, $valor, $lang)
     {
         // Verificar si exite el contexto
         if (in_array( $contexto, $this->contexto[0] )) {
@@ -1146,7 +1146,7 @@ class Table
      * @param string $contexto Contexto en el cual se busca la traducci?n
      * @return void
      */
-    function setContext ($contexto)
+    public function setContext ($contexto)
     {
         $this->_context = $contexto;
     }
@@ -1158,7 +1158,7 @@ class Table
      * @access public
      * @return void
      */
-    function ParsingFromHtml ($value, $number = '100000000')
+    public function ParsingFromHtml ($value, $number = '100000000')
     {
         $car = substr( $value, 0, 1 );
         $len = strlen( $value );

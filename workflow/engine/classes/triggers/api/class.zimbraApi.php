@@ -205,7 +205,8 @@ class Zimbra
             if ($sysConf['proxy_user'] != '') {
                 curl_setopt( $this->_curl, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : '') );
             }
-            curl_setopt( $this->_curl, CURLOPT_HTTPHEADER, array ('Expect:') );
+            curl_setopt( $this->_curl, CURLOPT_HTTPHEADER, array ('Expect:'
+            ) );
         }
 
         $preauth = $this->getPreAuth( $this->_username );
@@ -673,7 +674,8 @@ class Zimbra
         $tpl->assign( 'total_messages', $total_messages );
         $tpl->assign( 'unread_messages', $unread_messages );
 
-        $info = $this->getInfo( array ('sections' => 'mbox') );
+        $info = $this->getInfo( array ('sections' => 'mbox'
+        ) );
         if (is_array( $info['attrs'][0]['attr_attribute_name'] )) {
             $quota = $info['attrs'][0]['attr'][array_search( 'zimbraMailQuota', $info['attrs'][0]['attr_attribute_name'] )];
             $size_text = $this->makeBytesPretty( $info['used'][0], ($quota * 0.75) ) . ' out of ' . $this->makeBytesPretty( $quota );
@@ -929,16 +931,15 @@ class Zimbra
             switch ($val['type']) {
                 case 'open':
                     array_push( $hash_stack, $val['tag'] );
-                    if (isset( $val['attributes'] ))
+                    if (isset( $val['attributes'] )) {
                         $ret = $this->composeArray( $ret, $hash_stack, $val['attributes'] );
-                    else
+                    } else {
                         $ret = $this->composeArray( $ret, $hash_stack );
+                    }
                     break;
-
                 case 'close':
                     array_pop( $hash_stack );
                     break;
-
                 case 'complete':
                     array_push( $hash_stack, $val['tag'] );
                     $ret = $this->composeArray( $ret, $hash_stack, $val['value'] );
@@ -952,11 +953,9 @@ class Zimbra
                             array_pop( $hash_stack );
                         }
                     }
-
                     break;
             }
         }
-
         return $ret;
     }
 
@@ -985,7 +984,8 @@ class Zimbra
         // does the current element refer to a list
         if (sizeof( $elements ) > 0) {
             $array[$element][sizeof( $array[$element] ) - 1] = &$this->composeArray( $array[$element][sizeof( $array[$element] ) - 1], $elements, $value );
-        } else { // if (is_array($value))
+        } else {
+            // if (is_array($value))
             $array[$element][sizeof( $array[$element] )] = $value;
         }
 
@@ -1018,7 +1018,9 @@ class Zimbra
      * @access public
      * @param
      *
+     *
      * @return
+     *
      *
      */
     public function addAppointment ($serializeOp1)
@@ -1160,7 +1162,9 @@ class Zimbra
      * @access public
      * @param
      *
+     *
      * @return
+     *
      *
      */
     public function addContacts ($serializeOp1)
@@ -1202,7 +1206,9 @@ class Zimbra
      * @access public
      * @param
      *
+     *
      * @return
+     *
      *
      */
 
@@ -1238,7 +1244,9 @@ class Zimbra
      * @access public
      * @param
      *
+     *
      * @return
+     *
      *
      */
 
@@ -1282,7 +1290,9 @@ class Zimbra
      * @access public
      * @param
      *
+     *
      * @return
+     *
      *
      */
     public function getDocId ($folderId, $fileName)

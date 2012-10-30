@@ -5481,7 +5481,8 @@ class Cases
                 'APP_MSG_BCC' => $aRow['APP_MSG_BCC'],
                 'APP_MSG_TEMPLATE' => $aRow['APP_MSG_TEMPLATE'],
                 'APP_MSG_STATUS' => $aRow['APP_MSG_STATUS'],
-                'APP_MSG_ATTACH' => $aRow['APP_MSG_ATTACH']
+                'APP_MSG_ATTACH' => $aRow['APP_MSG_ATTACH'],
+                'APP_MSG_SHOW_MESSAGE' => $aRow['APP_MSG_SHOW_MESSAGE']
             );
             $oDataset->next();
         }
@@ -6053,6 +6054,13 @@ class Cases
         }
 
         $aAux = $oTasks->getUsersOfTask($TAS_UID, 1);
+        foreach ($aAux as $aUser) {
+            if ($aUser['USR_UID'] != $USR_UID) {
+                $row[] = $aUser['USR_UID'];
+            }
+        }
+
+        $aAux = $oTasks->getUsersOfTask($TAS_UID, 2);
         foreach ($aAux as $aUser) {
             if ($aUser['USR_UID'] != $USR_UID) {
                 $row[] = $aUser['USR_UID'];

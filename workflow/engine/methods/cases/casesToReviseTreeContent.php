@@ -9,7 +9,7 @@ class TreeNode
     public $href = "#";
     public $hrefTarget = "";
 
-    function __construct ($id, $text, $iconCls, $leaf, $draggable, $href, $hrefTarget)
+    public function __construct ($id, $text, $iconCls, $leaf, $draggable, $href, $hrefTarget)
     {
         $this->id = $id;
         $this->text = $text;
@@ -20,7 +20,7 @@ class TreeNode
         $this->hrefTarget = $hrefTarget;
     }
 
-    function toJson ()
+    public function toJson ()
     {
         return G::json_encode( $this );
     }
@@ -30,12 +30,12 @@ class ExtJsTreeNode extends TreeNode
 {
     public $children = array ();
 
-    function add ($object)
+    public function add ($object)
     {
         $this->children[] = $object;
     }
 
-    function toJson ()
+    public function toJson ()
     {
         return G::json_encode( $this );
     }

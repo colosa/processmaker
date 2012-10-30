@@ -2022,6 +2022,8 @@ function removeValue(id){
 
 function datePicker4(obj, id, mask, startDate, endDate, showTIme, idIsoDate)
 {
+  __lastMask__ = mask;
+
   if (showTIme=='false') {
     showTIme = false;
   }
