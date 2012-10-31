@@ -1398,115 +1398,114 @@ try {
                         }
                         if ($val->key == 'name') {
                             $name = $val->value;
+                        } else {
+                            if (isset( $item->guid )) {
+                                $guid = $item->guid;
+                            }
+                            if (isset( $item->name )) {
+                                $name = $item->name;
+                            }
                         }
-                    } else {
-                        if (isset( $item->guid )) {
-                            $guid = $item->guid;
-                        }
-                        if (isset( $item->name )) {
-                            $name = $item->name;
-                        }
+
+                        $rows[] = array ('guid' => $guid,'name' => $name
+                        );
                     }
 
-                    $rows[] = array ('guid' => $guid,'name' => $name
+                    global $_DBArray;
+                    $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
+                    $_DBArray['taskCases'] = $rows;
+                    $_SESSION['_DBArray'] = $_DBArray;
+
+                    G::LoadClass( 'ArrayPeer' );
+                    $c = new Criteria( 'dbarray' );
+                    $c->setDBArrayTable( 'taskCases' );
+                    $c->addAscendingOrderByColumn( 'name' );
+                    $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrTaskCase', $c );
+                } elseif (is_object( $result ))
+                {
+                    $_SESSION['WS_SESSION_ID'] = '';
+                    $fields['status_code'] = $result->status_code;
+                    $fields['message'] = $result->message;
+                    $fields['time_stamp'] = date( "Y-m-d H:i:s" );
+                    $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
+                }
+
+                G::RenderPage( 'publish', 'raw' );
+                break;
+            case "wsSendFiles":
+                if (isset( $_FILES['form'] )) {
+                    foreach ($_FILES['form']['name'] as $sFieldName => $vValue) {
+                        if ($_FILES['form']['error'][$sFieldName] == 0) {
+                            file_put_contents( G::sys_get_temp_dir() . PATH_SEP . $_FILES['form']['name'][$sFieldName], file_get_contents( $_FILES['form']['tmp_name'][$sFieldName] ) );
+                            $filename = G::sys_get_temp_dir() . PATH_SEP . $_FILES['form']['name'][$sFieldName];
+                        }
+                    }
+                }
+
+                //                              G::pr ( $_SESSION );
+                if (! isset( $_POST['form']['INPUT_DOCUMENT'] )) {
+                    $_POST['form']['INPUT_DOCUMENT'] = '';
+                }
+
+                if (isset( $_SESSION['_DBArray']['inputDocument'] )) {
+                    foreach ($_SESSION['_DBArray']['inputDocument'] as $inputDocument) {
+                        if ($inputDocument['guid'] == $_POST['form']['INPUT_DOCUMENT']) {
+                            $doc_uid = $inputDocument['docId'];
+                        }
+                    }
+                } else {
+                    $doc_uid = "default";
+                }
+                if (! isset( $_SESSION['_DBArray']['WS_TMP_CASE_UID'] )) {
+                    $_SESSION['_DBArray']['WS_TMP_CASE_UID'] = '';
+                }
+                $usr_uid = $_SESSION['USER_LOGGED'];
+                $app_uid = $_SESSION['_DBArray']['WS_TMP_CASE_UID'];
+                $del_index = 1;
+
+                function sendFile ($FILENAME, $USR_UID, $APP_UID, $DEL_INDEX = 1, $DOC_UID = null, $title = null, $comment = null)
+                {
+                    $defaultEndpoint = 'http://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . '/sys' . SYS_SYS . '/' . SYS_LANG . '/classic/services/upload';
+                    $upload = isset( $_SESSION['END_POINT'] ) ? $_SESSION['END_POINT'] : $defaultEndpoint;
+
+                    $DOC_UID = ($DOC_UID != null) ? $DOC_UID : - 1;
+                    $APP_DOC_TYPE = ($DOC_UID == - 1) ? 'ATTACHED' : 'INPUT';
+                    $title = ($title != null) ? $title : $FILENAME;
+                    $comment = ($comment != null) ? $comment : '';
+
+                    $params = array ('ATTACH_FILE' => "@$FILENAME",'APPLICATION' => $APP_UID,'INDEX' => $DEL_INDEX,'USR_UID' => $USR_UID,'DOC_UID' => $DOC_UID,'APP_DOC_TYPE' => $APP_DOC_TYPE,'TITLE' => $title,'COMMENT' => $comment
                     );
+
+                    $ch = curl_init();
+                    curl_setopt( $ch, CURLOPT_URL, $defaultEndpoint );
+                    //curl_setopt($ch, CURLOPT_VERBOSE, 1);
+                    curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+                    curl_setopt( $ch, CURLOPT_POST, 1 );
+                    curl_setopt( $ch, CURLOPT_POSTFIELDS, $params );
+                    $response = curl_exec( $ch );
+                    curl_close( $ch );
+                    return $response;
                 }
 
-                global $_DBArray;
-                $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
-                $_DBArray['taskCases'] = $rows;
-                $_SESSION['_DBArray'] = $_DBArray;
+                $fields['status_code'] = 0;
+                $fields['time_stamp'] = date( "Y-m-d H:i:s" );
+                if ($_POST['form']['UPLOAD_OPTION'] == '1') {
+                    // G::pr($doc_uid);
+                    $fields['message'] = sendFile( $filename, $usr_uid, $app_uid, 1, $doc_uid );
 
-                G::LoadClass( 'ArrayPeer' );
-                $c = new Criteria( 'dbarray' );
-                $c->setDBArrayTable( 'taskCases' );
-                $c->addAscendingOrderByColumn( 'name' );
-                $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrTaskCase', $c );
-        } elseif (is_object( $result ))
-        {
-            $_SESSION['WS_SESSION_ID'] = '';
-            $fields['status_code'] = $result->status_code;
-            $fields['message'] = $result->message;
-            $fields['time_stamp'] = date( "Y-m-d H:i:s" );
-            $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
+                } else {
+                    $fields['message'] = sendFile( $filename, $usr_uid, $app_uid );
+                }
+                $G_PUBLISH = new Publisher();
+                $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
+                G::RenderPage( 'publish', 'blank' );
+                die();
+                break;
+            default:
+
+                print_r( $_POST );
         }
-
-        G::RenderPage( 'publish', 'raw' );
-        break;
-        case "wsSendFiles":
-            if (isset( $_FILES['form'] )) {
-                foreach ($_FILES['form']['name'] as $sFieldName => $vValue) {
-                    if ($_FILES['form']['error'][$sFieldName] == 0) {
-                        file_put_contents( G::sys_get_temp_dir() . PATH_SEP . $_FILES['form']['name'][$sFieldName], file_get_contents( $_FILES['form']['tmp_name'][$sFieldName] ) );
-                        $filename = G::sys_get_temp_dir() . PATH_SEP . $_FILES['form']['name'][$sFieldName];
-                    }
-                }
-            }
-
-            //                              G::pr ( $_SESSION );
-            if (! isset( $_POST['form']['INPUT_DOCUMENT'] )) {
-                $_POST['form']['INPUT_DOCUMENT'] = '';
-            }
-
-            if (isset( $_SESSION['_DBArray']['inputDocument'] )) {
-                foreach ($_SESSION['_DBArray']['inputDocument'] as $inputDocument) {
-                    if ($inputDocument['guid'] == $_POST['form']['INPUT_DOCUMENT']) {
-                        $doc_uid = $inputDocument['docId'];
-                    }
-                }
-            } else {
-                $doc_uid = "default";
-            }
-            if (! isset( $_SESSION['_DBArray']['WS_TMP_CASE_UID'] )) {
-                $_SESSION['_DBArray']['WS_TMP_CASE_UID'] = '';
-            }
-            $usr_uid = $_SESSION['USER_LOGGED'];
-            $app_uid = $_SESSION['_DBArray']['WS_TMP_CASE_UID'];
-            $del_index = 1;
-
-            function sendFile ($FILENAME, $USR_UID, $APP_UID, $DEL_INDEX = 1, $DOC_UID = null, $title = null, $comment = null)
-            {
-                $defaultEndpoint = 'http://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . '/sys' . SYS_SYS . '/' . SYS_LANG . '/classic/services/upload';
-                $upload = isset( $_SESSION['END_POINT'] ) ? $_SESSION['END_POINT'] : $defaultEndpoint;
-
-                $DOC_UID = ($DOC_UID != null) ? $DOC_UID : - 1;
-                $APP_DOC_TYPE = ($DOC_UID == - 1) ? 'ATTACHED' : 'INPUT';
-                $title = ($title != null) ? $title : $FILENAME;
-                $comment = ($comment != null) ? $comment : '';
-
-                $params = array ('ATTACH_FILE' => "@$FILENAME",'APPLICATION' => $APP_UID,'INDEX' => $DEL_INDEX,'USR_UID' => $USR_UID,'DOC_UID' => $DOC_UID,'APP_DOC_TYPE' => $APP_DOC_TYPE,'TITLE' => $title,'COMMENT' => $comment
-                );
-
-                $ch = curl_init();
-                curl_setopt( $ch, CURLOPT_URL, $defaultEndpoint );
-                //curl_setopt($ch, CURLOPT_VERBOSE, 1);
-                curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-                curl_setopt( $ch, CURLOPT_POST, 1 );
-                curl_setopt( $ch, CURLOPT_POSTFIELDS, $params );
-                $response = curl_exec( $ch );
-                curl_close( $ch );
-                return $response;
-            }
-
-            $fields['status_code'] = 0;
-            $fields['time_stamp'] = date( "Y-m-d H:i:s" );
-            if ($_POST['form']['UPLOAD_OPTION'] == '1') {
-                // G::pr($doc_uid);
-                $fields['message'] = sendFile( $filename, $usr_uid, $app_uid, 1, $doc_uid );
-
-            } else {
-                $fields['message'] = sendFile( $filename, $usr_uid, $app_uid );
-            }
-            $G_PUBLISH = new Publisher();
-            $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
-            G::RenderPage( 'publish', 'blank' );
-            die();
-            break;
-        default:
-
-            print_r( $_POST );
     }
-}
 
 
 
