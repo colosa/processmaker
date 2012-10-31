@@ -5,6 +5,130 @@ var clientWinSize = null;
 
 var strError = "";
 var h3OK = 1;
+
+var promptPanel;
+var lastActionPerformed = '';
+
+var sessionPersits = function() {
+    var rpc = new leimnud.module.rpc.xmlhttp({
+        url : '../services/sessionPersists',
+        async:false
+    });
+    rpc.make();
+    var response = rpc.xmlhttp.responseText.parseJSON();
+    return response.status;
+};
+
+var verifyLogin = function() {
+    if (document.getElementById('thePassword').value.trim() == '') {
+        alert(_('ID_WRONG_PASS'));
+        return;
+    }
+	var rpc = new leimnud.module.rpc.xmlhttp({
+        url : '../login/authentication',
+        args: 'form[USR_USERNAME]=' + usernameLogged + '&form[USR_PASSWORD]=' + document.getElementById('thePassword').value.trim() + '&form[USR_LANG]=' + SYS_LANG
+    });
+    rpc.callback = function(rpc) {
+        if (rpc.xmlhttp.responseText.indexOf('form[USR_USERNAME]') == -1) {
+            promptPanel.remove();
+            switch (lastActionPerformed) {
+                case 'save':
+                    dynaformEditor.save();
+                    break;
+                case 'save_as':
+                    dynaformEditor.save_as();
+                    break;
+                case 'saveJavascript':
+                    dynaformEditor.saveJavascript();
+                    break;
+                case 'close':
+                    dynaformEditor.close();
+                    break;
+                case 'changeToPreview':
+                    dynaformEditor.changeToPreview();
+                    break;
+                case 'changeToXmlCode':
+                    dynaformEditor.changeToXmlCode();
+                    break;
+                case 'changeToHtmlCode':
+                    dynaformEditor.changeToHtmlCode();
+                    break;
+                case 'changeToFieldsList':
+                    dynaformEditor.changeToFieldsList();
+                    break;
+                case 'changeToJavascripts':
+                    dynaformEditor.changeToJavascripts();
+                    break;
+                case 'changeToProperties':
+                    dynaformEditor.changeToProperties();
+                    break;
+                case 'changeToShowHide':
+                    dynaformEditor.changeToShowHide();
+                    break;
+            }
+            lastActionPerformed = '';
+        } else {
+            alert(_('ID_WRONG_PASS'));
+        }
+    }.extend(this);
+    rpc.make();
+};
+
+var showPrompt = function(lastAction) {
+    lastActionPerformed = lastAction;
+    promptPanel = new leimnud.module.panel();
+    promptPanel.options={
+    	statusBarButtons:[{value: _('LOGIN')}],
+    	position:{center:true},
+    	size:{w:300,h:110},
+    	control:{
+    		close:false,
+    		resize:false
+    	},
+    	fx:{
+    		modal:true
+    	}
+    };
+    promptPanel.setStyle={
+    	content:{
+    		padding:10,
+    		paddingBottom:2,
+    		textAlign:'left',
+    		paddingLeft:50,
+    		backgroundRepeat:'no-repeat',
+    		backgroundPosition:'10 50%',
+    		backgroundColor:'transparent',
+    		borderWidth:0
+    	}
+    };
+    promptPanel.make();
+    promptPanel.addContent(_('ID_DYNAFORM_EDITOR_LOGIN_AGAIN'));
+    promptPanel.addContent('<br />');
+    var thePassword = $dce('input');
+    thePassword.type = 'password'
+    thePassword.id = 'thePassword';
+    leimnud.dom.setStyle(thePassword,{
+    	font:'normal 8pt Tahoma,MiscFixed',
+    	color:'#000',
+    	width:'100%',
+    	marginTop:3,
+    	backgroundColor:'white',
+    	border:'1px solid #919B9C'
+    });
+    promptPanel.addContent(thePassword);
+    thePassword.focus();
+    thePassword.onkeyup=function(evt)
+    {
+    	var evt = (window.event)?window.event:evt;
+    	var key = (evt.which)?evt.which:evt.keyCode;
+    	if(key == 13) {
+    		verifyLogin();
+    	}
+    }.extend(this);
+    promptPanel.fixContent();
+    promptPanel.elements.statusBarButtons[0].onmouseup = verifyLogin;
+};
+
 function checkErrorXML(xmlParse)
 {
     strError = "";
@@ -91,19 +215,22 @@ var dynaformEditor={
     mainPanel.elements.headerBar.appendChild(this.toolbar);
     mainPanel.events.remove = function(){
     }
-// note added by krlos pacha carlos[at]colosa[dot]com    
+// note added by krlos pacha carlos[at]colosa[dot]com
 // the following line of code has been commented because it was executing twice the JavaScript code
 // when the DynaForm was first loaded.
 //    this.refresh_preview();
-    this.changeToJavascripts();
-    this.changeToPreview();
+    this.changeToJavascripts(false);
+    this.changeToPreview(false);
   },
   _review:function()
   {
 
   },
   save:function() {
-    /*this.saveProperties();*/
+    if (!sessionPersits()) {
+        showPrompt('save');
+        return;
+    }
     try {
       this.saveCurrentView();
     } catch (e) {
@@ -120,14 +247,15 @@ var dynaformEditor={
         } else {
             if (typeof(res.innerHTML) == 'undefined') {
                 G.alert(res["*message"]);
-            } else {
-                alert(G_STRINGS.ID_LOST_SESSION_XMLFORM);
             }
         }
     }
   },
   save_as:function(){
-    /*this.saveProperties();*/
+    if (!sessionPersits()) {
+        showPrompt('save_as');
+        return;
+    }
     try {
       this.saveCurrentView();
     } catch (e) {
@@ -138,6 +266,10 @@ var dynaformEditor={
   },
   close:function()
   {
+    if (!sessionPersits()) {
+        showPrompt('close');
+        return;
+    }
     var modified=this.ajax.is_modified(this.A,this.dynUid);
     if (typeof(modified)==="boolean")
     {
@@ -149,7 +281,6 @@ var dynaformEditor={
         }
         else
         {
-          //alert(res["response"]);
           alert(res["*message"]);
         }
         return true;
@@ -187,7 +318,6 @@ var dynaformEditor={
 
   saveShowHide:function()
   {
-    ///-- this.save();
     try {
       this.saveCurrentView();
     } catch (e) {
@@ -213,7 +343,6 @@ var dynaformEditor={
 
   saveXmlCode:function()
   {
-    //var xmlCode = getField("XML").value;
     var xmlCode = this.getXMLCode();
     if (validateXML(xmlCode) == true) {
         var todoRefreshXmlCode = xmlCode === null;
@@ -265,8 +394,15 @@ var dynaformEditor={
     this.responseAction = true;
   },
   // Change view point functions
-  changeToPreview:function()
+  changeToPreview:function(checkSessionPersists)
   {
+    checkSessionPersists = typeof(checkSessionPersists) != 'undefined' ? checkSessionPersists : true;
+    if (checkSessionPersists) {
+        if (!sessionPersits()) {
+            showPrompt('changeToPreview');
+            return;
+        }
+    }
     //to adecuate the view perspective @Neyek
     content_div = getElementByPMClass('panel_content___processmaker')
     content_div.style.overflow='auto';
@@ -275,9 +411,13 @@ var dynaformEditor={
   },
   changeToXmlCode:function()
   {
+    if (!sessionPersits()) {
+        showPrompt('changeToXmlCode');
+        return;
+    }
     content_div = getElementByPMClass('panel_content___processmaker')
     content_div.style.overflow='auto';
-    
+
     this.refresh_xmlcode();
     this.currentView="xmlcode";
     if( ! xmlEditor ) {
@@ -294,34 +434,49 @@ var dynaformEditor={
         lineNumbers: true,
         continuousScanning: 500
       });
-    }  
+    }
   },
   changeToHtmlCode:function()
   {
+    if (!sessionPersits()) {
+        showPrompt('changeToHtmlCode');
+        return;
+    }
     //to adecuate the view perspective @Neyek
     content_div = getElementByPMClass('panel_content___processmaker')
     content_div.style.overflow='auto';
-    
+
     this.refresh_htmlcode();
     this.currentView="htmlcode";
   },
   changeToFieldsList:function()
   {
+    if (!sessionPersits()) {
+        showPrompt('changeToFieldsList');
+        return;
+    }
     //to adecuate the view perspective @Neyek
     content_div = getElementByPMClass('panel_content___processmaker')
     content_div.style.overflow='visible';
-    
+
     this.refreshFieldsList();
     this.currentView="fieldslist";
   },
-  changeToJavascripts:function()
+  changeToJavascripts:function(checkSessionPersists)
   {
+    checkSessionPersists = typeof(checkSessionPersists) != 'undefined' ? checkSessionPersists : true;
+    if (checkSessionPersists) {
+        if (!sessionPersits()) {
+            showPrompt('changeToJavascripts');
+            return;
+        }
+    }
     var field=getField("JS_LIST","dynaforms_JSEditor");
     var res=this.ajax.get_javascripts(this.A,field.value);
-    
+
     this.currentView="javascripts";
     this.refreshJavascripts();
-    
+
     if(field.value!='' || typeof(res.aOptions[0])!='undefined'){
       hideRowById('JS_TITLE');
       showRowById('JS');
@@ -330,14 +485,14 @@ var dynaformEditor={
       //to adecuate the view perspective @Neyek
       content_div = getElementByPMClass('panel_content___processmaker')
       content_div.style.overflow='auto';
-        
+
       //this.currentView="javascripts";
       //this.refreshJavascripts();
       //if (this.loadPressLoaded && !JSCodePress)
       if( ! jsEditor )
       {
         clientWinSize = getClientWindowSize();
-        startJSCodePress(); 
+        startJSCodePress();
         jsEditor = CodeMirror.fromTextArea('form[JS]', {
           height: (clientWinSize.height - 140) + "px",
           width: (_BROWSER.name == 'msie' ? '100%' : '98%'),
@@ -356,19 +511,26 @@ var dynaformEditor={
   },
   changeToProperties:function()
   {
+    if (!sessionPersits()) {
+        showPrompt('changeToProperties');
+        return;
+    }
     //to adecuate the view perspective @Neyek
     content_div = getElementByPMClass('panel_content___processmaker')
     content_div.style.overflow='auto';
-    
+
     this.currentView="properties";
     this.refreshProperties();
   },
   changeToShowHide:function()
   {
+    if (!sessionPersits()) {
+        showPrompt('changeToShowHide');
+        return;
+    }
     //to adecuate the view perspective @Neyek
     content_div = getElementByPMClass('panel_content___processmaker')
     content_div.style.overflow='auto';
-    //alert('xxxxxx');
     this.currentView="showHide";
     this.refreshShowHide();
   },
@@ -453,14 +615,14 @@ var dynaformEditor={
       });
     document.getElementById('dynaformEditor[6]').innerHTML = '';
       oRPC.callback = function(rpc) {
-        
+
         var scs=rpc.xmlhttp.responseText.extractScript();
         document.getElementById('dynaformEditor[6]').innerHTML = rpc.xmlhttp.responseText;
         scs.evalScript();
-        
+
       }.extend(this);
     oRPC.make();
-  },  
+  },
   refreshShowHide:function() {
     //fields_List.refresh(); return;
     var oRPC = new leimnud.module.rpc.xmlhttp({
@@ -468,15 +630,15 @@ var dynaformEditor={
         args: ''
       });
     document.getElementById('dynaformEditor[9]').innerHTML = '';
-    
+
       oRPC.callback = function(rpc) {
-        
+
         var scs=rpc.xmlhttp.responseText.extractScript();
         document.getElementById('dynaformEditor[9]').innerHTML = rpc.xmlhttp.responseText;
         scs.evalScript();
-        
+
       }.extend(this);
-    oRPC.make(); 
+    oRPC.make();
   },
   getJSCode:function()
   {
@@ -511,7 +673,7 @@ var dynaformEditor={
   getXMLCode:function()
   {
     if (xmlEditor) {
-      xmlEditor.save();  
+      xmlEditor.save();
     }
     return getField("XML","dynaforms_XmlEditor").value;
   },
@@ -537,12 +699,12 @@ var dynaformEditor={
   refreshJavascripts:function()
   {
     var field=getField("JS_LIST","dynaforms_JSEditor");
-    
+
     for(j=0; j<field.options.length; j++) {
       if( field.options[j].value == '___pm_boot_strap___' ){
         field.remove(j);
       }
-    }    
+    }
     this.currentJS=field.value;
     var res=this.ajax.get_javascripts(this.A,field.value);
     if(field.value == ''){
@@ -551,8 +713,8 @@ var dynaformEditor={
         this.currentJS = res.aOptions[0].value;
       }
     }
-    
-      
+
+
     if (typeof(res["*message"])==="undefined")
     {
       while(field.options.length>0) field.remove(0);
@@ -570,7 +732,7 @@ var dynaformEditor={
     {
       G.alert(response.error["*message"],"Error");
     }
-    
+
     var field=getField("JS_LIST","dynaforms_JSEditor");
     for(j=0; j<field.options.length; j++) {
       if( field.options[j].value == '___pm_boot_strap___' ){
@@ -588,7 +750,7 @@ var dynaformEditor={
       }
     }else{
       showRowById('JS_TITLE');hideRowById('JS_LIST');hideRowById('JS');}
-  
+
   },
   changeJavascriptCode:function()
   {
@@ -685,7 +847,7 @@ function getElementByPMClass(__class){
       dField.focus();
       return;
     }
-    
+
     if (!(isNaN(parseInt(str.substr(0,1))))) {
       msgBox(_("DYNAFIELD_NODENAME_NUMBER"), "alert");
       dField.failed();
@@ -699,17 +861,17 @@ function getElementByPMClass(__class){
       setTimeout('fieldsSave(validatingForm);',100);
       return;
     }
-    
+
     if (!G.getObject(form).verifyRequiredFields()){
       return;
     }
-    
+
     //processbar.style.display = '';
     var res=ajax_post( form.action, form, 'POST' , null , false );
     currentPopupWindow.remove();
     dynaformEditor.refreshCurrentView();
   }
-  
+
   var typePopup = 0;
   function fieldsAdd( type,label )
   {

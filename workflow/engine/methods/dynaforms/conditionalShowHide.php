@@ -33,8 +33,10 @@ $DISPLAY_MAX_SIZE = 25;
 global $_DBArray;
 
 $oFieldCondition = new FieldCondition();
-$DYN_UID = $_SESSION['Current_Dynafom']['Parameters']['DYN_UID'];
-$aRows = $oFieldCondition->getAllByDynUid( $DYN_UID );
+if (isset($_SESSION['Current_Dynafom']['Parameters']['DYN_UID'])) {
+    $DYN_UID = $_SESSION['Current_Dynafom']['Parameters']['DYN_UID'];
+    $aRows = $oFieldCondition->getAllByDynUid( $DYN_UID );
+}
 
 $aFieldNames = Array ('FCD_NRO','FCD_UID','FCD_FUNCTION','FCD_FIELDS','FCD_CONDITION','FCD_EVENTS','FCD_EVENT_OWNERS','FCD_STATUS','FCD_DYN_UID' );
 
