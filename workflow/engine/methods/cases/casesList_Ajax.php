@@ -99,7 +99,7 @@ if ($actionAjax == "processListExtJs") {
             $cProcess = $oAppCache->getToReviseListCriteria( $userUid );
             break;
         case 'to_reassign':
-            $cProcess = $oAppCache->getToReassignListCriteria();
+            $cProcess = $oAppCache->getToReassignListCriteria($userUid);
             $cProcess->addAscendingOrderByColumn( AppCacheViewPeer::APP_PRO_TITLE );
             break;
         case 'gral':

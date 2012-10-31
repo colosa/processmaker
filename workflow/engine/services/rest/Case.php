@@ -10,7 +10,7 @@ class Services_Rest_Case
             $app = new Applications();
             $userUid = Services_Rest_Auth::$userId;
 
-            return $app->getAll($userUid, $start, $limit, $type, $filter, $search, $process, $user, $status, $typeResource, $dateFrom, $dateTo);
+            return $app->getAll($userUid, $start, $limit, $type, $filter, $search, $process, $status, $typeResource, $dateFrom, $dateTo);
         } else {
             // get a specific record.
             G::loadClass('wsBase');

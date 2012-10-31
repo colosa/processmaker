@@ -37,7 +37,7 @@ $oCases = new Cases();
 require_once ('classes/model/Task.php');
 require_once ('classes/model/AppCacheView.php');
 $oAppCacheView = new AppCacheView();
-$oCasesReassignList = $oAppCacheView->getToReassignListCriteria();
+$oCasesReassignList = $oAppCacheView->getToReassignListCriteria(null);
 if (isset( $_POST['selected'] ) && $_POST['selected'] == 'true') {
     $oCasesReassignList->add( AppCacheViewPeer::APP_UID, $appSelectedUids, Criteria::IN );
 }
