@@ -181,7 +181,7 @@ function getAllUsersArray ($action)
 
     if ($action == 'to_reassign') {
         //now get users, just for the Search action
-        $cUsers = $oAppCache->getToReassignListCriteria();
+        $cUsers = $oAppCache->getToReassignListCriteria(null);
         $cUsers->addSelectColumn( AppCacheViewPeer::USR_UID );
 
         if (g::MySQLSintaxis()) {
@@ -237,7 +237,7 @@ function getStatusArray ($action, $userUid)
             //           $cStatus       = $oAppCache->getPausedListCriteria($userUid);
             break;
         case 'to_reassign':
-            $cStatus = $oAppCache->getToReassignListCriteria();
+            $cStatus = $oAppCache->getToReassignListCriteria($userUid);
             break;
         case 'todo':
         case 'draft':

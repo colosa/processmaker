@@ -17,30 +17,82 @@ $dateFrom = isset( $_POST["dateFrom"] ) ? substr( $_POST["dateFrom"], 0, 10 ) : 
 $dateTo = isset( $_POST["dateTo"] ) ? substr( $_POST["dateTo"], 0, 10 ) : "";
 
 try {
+    $userUid = (isset($_SESSION["USER_LOGGED"]) && $_SESSION["USER_LOGGED"] != "")? $_SESSION["USER_LOGGED"] : null;
     $result = "";
-    $userUid = (isset( $_SESSION["USER_LOGGED"] ) && $_SESSION["USER_LOGGED"] != "") ? $_SESSION["USER_LOGGED"] : null;
-    $user = ($user == "CURRENT_USER") ? $userUid : $user;
 
-    if (($action == "todo" || $action == "draft" || $action == "sent" || $action == "selfservice" || $action == "unassigned" || $action == "search") && (($solrConf = System::solrEnv()) !== false)) {
-        G::LoadClass( "AppSolr" );
+    if ((
+        $action == "todo" || $action == "draft" || $action == "sent" || $action == "selfservice" ||
+        $action == "unassigned" || $action == "search"
+        ) &&
+        (($solrConf = System::solrEnv()) !== false)
+    ) {
+        G::LoadClass("AppSolr");
 
-        $ApplicationSolrIndex = new AppSolr( $solrConf["solr_enabled"], $solrConf["solr_host"], $solrConf["solr_instance"] );
+        $user = ($user == "CURRENT_USER")? $userUid : $user;
 
-        $data = $ApplicationSolrIndex->getAppGridData( $userUid, $start, $limit, $action, $filter, $search, $process, $user, $status, $type, $dateFrom, $dateTo, $callback, $dir, $sort );
+        $ApplicationSolrIndex = new AppSolr(
+            $solrConf["solr_enabled"],
+            $solrConf["solr_host"],
+            $solrConf["solr_instance"]
+        );
 
-        $result = G::json_encode( $data );
+        $data = $ApplicationSolrIndex->getAppGridData(
+            $userUid,
+            $start,
+            $limit,
+            $action,
+            $filter,
+            $search,
+            $process,
+            $user, //delete
+            $status,
+            $type,
+            $dateFrom,
+            $dateTo,
+            $callback,
+            $dir,
+            $sort
+        );
+
+        $result = G::json_encode($data);
     } else {
-        G::LoadClass( "applications" );
+        G::LoadClass("applications");
+
+        switch ($action) {
+            case "search":
+            case "to_reassign":
+                $user = ($user == "CURRENT_USER")? $userUid : $user;
+                $userUid = $user;
+                break;
+            default:
+                break;
+        }
 
         $apps = new Applications();
-        $data = $apps->getAll( $userUid, $start, $limit, $action, $filter, $search, $process, $user, $status, $type, $dateFrom, $dateTo, $callback, $dir, $sort, $category );
+        $data = $apps->getAll(
+            $userUid,
+            $start,
+            $limit,
+            $action,
+            $filter,
+            $search,
+            $process,
+            $status,
+            $type,
+            $dateFrom,
+            $dateTo,
+            $callback,
+            $dir,
+            $sort,
+            $category
+        );
 
-        $result = G::json_encode( $data );
+        $result = G::json_encode($data);
     }
 
     echo $result;
 } catch (Exception $e) {
-    $msg = array ("error" => $e->getMessage() );
-    echo G::json_encode( $msg );
+    $msg = array("error" => $e->getMessage());
+    echo G::json_encode($msg);
 }
 
