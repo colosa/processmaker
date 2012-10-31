@@ -1,28 +1,40 @@
 <?php
-
 class Applications
 {
+    public function getAll(
+        $userUid,
+        $start = null,
+        $limit = null,
+        $action = null,
+        $filter = null,
+        $search = null,
+        $process = null,
+        $status = null,
+        $type = null,
+        $dateFrom = null,
+        $dateTo = null,
+        $callback = null,
+        $dir = null,
+        $sort = "APP_CACHE_VIEW.APP_NUMBER",
+        $category = null
+    ) {
+        $callback = isset($callback)? $callback : "stcCallback1001";
+        $dir = isset($dir)? $dir : "DESC";
+        $sort = isset($sort)? $sort : "";
+        $start = isset($start)? $start : "0";
+        $limit = isset($limit)? $limit : "25";
+        $filter = isset($filter)? $filter : "";
+        $search = isset($search)? $search : "";
+        $process = isset($process)? $process : "";
+        $category = isset($category)? $category : "";
+        $status = isset($status)? $status : "";
+        $action = isset($action)? $action : "todo";
+        $type = isset($type)? $type : "extjs";
+        $dateFrom = isset($dateFrom)? $dateFrom : "";
+        $dateTo = isset($dateTo)? $dateTo : "";
 
-    public function getAll ($userUid, $start = null, $limit = null, $action = null, $filter = null, $search = null, $process = null, $user = null, $status = null, $type = null, $dateFrom = null, $dateTo = null, $callback = null, $dir = null, $sort = 'APP_CACHE_VIEW.APP_NUMBER', $category = null)
-    {
-        $callback = isset( $callback ) ? $callback : 'stcCallback1001';
-        $dir = isset( $dir ) ? $dir : 'DESC';
-        $sort = isset( $sort ) ? $sort : '';
-        $start = isset( $start ) ? $start : '0';
-        $limit = isset( $limit ) ? $limit : '25';
-        $filter = isset( $filter ) ? $filter : '';
-        $search = isset( $search ) ? $search : '';
-        $process = isset( $process ) ? $process : '';
-        $category = isset( $category ) ? $category : '';
-        $user = isset( $user ) ? $user : '';
-        $status = isset( $status ) ? strtoupper( $status ) : '';
-        $action = isset( $action ) ? $action : 'todo';
-        $type = isset( $type ) ? $type : 'extjs';
-        $dateFrom = isset( $dateFrom ) ? $dateFrom : '';
-        $dateTo = isset( $dateTo ) ? $dateTo : '';
-
-        G::LoadClass( "BasePeer" );
-        G::LoadClass( 'configuration' );
+        G::LoadClass("BasePeer");
+        G::LoadClass("configuration");
         require_once ("classes/model/AppCacheView.php");
         require_once ("classes/model/AppDelegation.php");
         require_once ("classes/model/AdditionalTables.php");
@@ -31,72 +43,107 @@ class Applications
         require_once ("classes/model/Users.php");
         require_once ("classes/model/Process.php");
 
-        //$userUid = ( isset($_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '' ) ? $_SESSION['USER_LOGGED'] : null; <-- passed by param
         $oAppCache = new AppCacheView();
 
         //get data configuration
         $conf = new Configurations();
         $confCasesList = $conf->getConfiguration( 'casesList', ($action == 'search' || $action == 'simple_search') ? 'sent' : $action );
-        //  var_dump($confCasesList);
         $oAppCache->confCasesList = $confCasesList;
 
         // get the action based list
         switch ($action) {
-            case 'draft':
-                $Criteria = $oAppCache->getDraftListCriteria( $userUid );
-                $CriteriaCount = $oAppCache->getDraftCountCriteria( $userUid );
+            case "draft":
+                $Criteria = $oAppCache->getDraftListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getDraftCountCriteria($userUid);
                 break;
-            case 'sent':
-                $Criteria = $oAppCache->getSentListCriteria( $userUid );
-                $CriteriaCount = $oAppCache->getSentCountCriteria( $userUid );
-                //         var_dump($Criteria);
+            case "sent":
+                $Criteria = $oAppCache->getSentListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getSentCountCriteria($userUid);
+
+                if (!empty($status)) {
+                    $Criteria->add(AppCacheViewPeer::APP_STATUS, $status);
+                    $CriteriaCount->add(AppCacheViewPeer::APP_STATUS, $status);
+                }
                 break;
-            case 'selfservice':
-            case 'unassigned':
-                $Criteria = $oAppCache->getUnassignedListCriteria( $userUid );
-                $CriteriaCount = $oAppCache->getUnassignedCountCriteria( $userUid );
+            case "selfservice":
+            case "unassigned":
+                //$userUid can't be empty or null
+                $Criteria = $oAppCache->getUnassignedListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getUnassignedCountCriteria($userUid);
                 break;
-            case 'paused':
-                $Criteria = $oAppCache->getPausedListCriteria( $userUid );
-                $CriteriaCount = $oAppCache->getPausedCountCriteria( $userUid );
+            case "paused":
+                $Criteria = $oAppCache->getPausedListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getPausedCountCriteria($userUid);
                 break;
-            case 'completed':
-                $Criteria = $oAppCache->getCompletedListCriteria( $userUid );
-                $CriteriaCount = $oAppCache->getCompletedCountCriteria( $userUid );
+            case "completed":
+                $Criteria = $oAppCache->getCompletedListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getCompletedCountCriteria($userUid);
                 break;
-            case 'cancelled':
-                $Criteria = $oAppCache->getCancelledListCriteria( $userUid );
-                $CriteriaCount = $oAppCache->getCancelledCountCriteria( $userUid );
+            case "cancelled":
+                $Criteria = $oAppCache->getCancelledListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getCancelledCountCriteria($userUid);
                 break;
-            case 'search':
-                $Criteria = $oAppCache->getSearchListCriteria();
-                $CriteriaCount = $oAppCache->getSearchCountCriteria();
+            case "search":
+                //$Criteria = $oAppCache->getSearchListCriteria();
+                //$CriteriaCount = $oAppCache->getSearchCountCriteria();
+
+                switch ($status) {
+                    case "TO_DO":
+                        $Criteria = $oAppCache->getToDoListCriteria($userUid);
+                        $CriteriaCount = $oAppCache->getToDoCountCriteria($userUid);
+                        break;
+                    case "DRAFT":
+                        $Criteria = $oAppCache->getDraftListCriteria($userUid);
+                        $CriteriaCount = $oAppCache->getDraftCountCriteria($userUid);
+                        break;
+                    case "PAUSED":
+                        $Criteria = $oAppCache->getPausedListCriteria($userUid);
+                        $CriteriaCount = $oAppCache->getPausedCountCriteria($userUid);
+                        break;
+                    case "CANCELLED":
+                        $Criteria = $oAppCache->getCancelledListCriteria($userUid);
+                        $CriteriaCount = $oAppCache->getCancelledCountCriteria($userUid);
+                        break;
+                    case "COMPLETED":
+                        $Criteria = $oAppCache->getCompletedListCriteria($userUid);
+                        $CriteriaCount = $oAppCache->getCompletedCountCriteria($userUid);
+                        break;
+                    default:
+                        //All status
+                        $Criteria = $oAppCache->getAllCasesListCriteria2($userUid);
+                        $CriteriaCount = $oAppCache->getAllCasesCountCriteria2($userUid);
+                        break;
+                }
                 break;
-            case 'simple_search':
+            case "simple_search":
                 $Criteria = $oAppCache->getSimpleSearchListCriteria();
                 $CriteriaCount = $oAppCache->getSimpleSearchCountCriteria();
                 break;
-            case 'to_revise':
-                $Criteria = $oAppCache->getToReviseListCriteria( $userUid );
-                $CriteriaCount = $oAppCache->getToReviseCountCriteria( $userUid );
+            case "to_revise":
+                $Criteria = $oAppCache->getToReviseListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getToReviseCountCriteria($userUid);
                 break;
-            case 'to_reassign':
-                $Criteria = $oAppCache->getToReassignListCriteria();
-                $CriteriaCount = $oAppCache->getToReassignCountCriteria();
+            case "to_reassign":
+                $Criteria = $oAppCache->getToReassignListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getToReassignCountCriteria($userUid);
                 break;
-            case 'all':
-                $Criteria = $oAppCache->getAllCasesListCriteria( $userUid );
-                $CriteriaCount = $oAppCache->getAllCasesCountCriteria( $userUid );
+            case "all":
+                $Criteria = $oAppCache->getAllCasesListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getAllCasesCountCriteria($userUid);
                 break;
-            // general criteria probably will be deprecated
-            case 'gral':
+            case "gral":
+                //General criteria probably will be deprecated
                 $Criteria = $oAppCache->getGeneralListCriteria();
                 $CriteriaCount = $oAppCache->getGeneralCountCriteria();
                 break;
-            case 'todo':
+            case "todo":
+                $Criteria = $oAppCache->getToDoListCriteria($userUid);
+                $CriteriaCount = $oAppCache->getToDoCountCriteria($userUid);
+                break;
             default:
-                $Criteria = $oAppCache->getToDoListCriteria( $userUid );
-                $CriteriaCount = $oAppCache->getToDoCountCriteria( $userUid );
+                //All status
+                $Criteria = $oAppCache->getAllCasesListCriteria2($userUid);
+                $CriteriaCount = $oAppCache->getAllCasesCountCriteria2($userUid);
                 break;
         }
 
@@ -107,7 +154,7 @@ class Applications
         $Criteria->addAsColumn( 'USR_USERNAME', 'CU.USR_USERNAME' );
 
         // Fix for previous user
-        if ($action == 'todo' || $action == 'selfservice' || $action == 'unassigned' || $action == 'paused' || $action == 'to_revise' || $action == 'sent') {
+        if (($action == "todo" || $action == "selfservice" || $action == "unassigned" || $action == "paused" || $action == "to_revise" || $action == "sent") || ($status == "TO_DO" || $status == "DRAFT" || $status == "PAUSED" || $status == "CANCELLED" || $status == "COMPLETED")) {
             $Criteria->addAlias( 'PU', 'USERS' );
             $Criteria->addJoin( AppCacheViewPeer::PREVIOUS_USR_UID, 'PU.USR_UID', Criteria::LEFT_JOIN );
             $Criteria->addAsColumn( 'PREVIOUS_USR_FIRSTNAME', 'PU.USR_FIRSTNAME' );
@@ -115,11 +162,13 @@ class Applications
             $Criteria->addAsColumn( 'PREVIOUS_USR_USERNAME', 'PU.USR_USERNAME' );
         }
 
+        /*
         if (! is_array( $confCasesList )) {
             $rows = $this->getDefaultFields( $action );
             $result = $this->genericJsonResponse( '', array (), $rows, 20, '' );
             //$conf->saveObject($result,'casesList',$action,'','','');
         }
+        */
 
         // add the process filter
         if ($process != '') {
@@ -136,15 +185,19 @@ class Applications
         }
 
         // add the user filter
+        /*
         if ($user != '') {
             $Criteria->add( AppCacheViewPeer::USR_UID, $user, Criteria::EQUAL );
             $CriteriaCount->add( AppCacheViewPeer::USR_UID, $user, Criteria::EQUAL );
         }
+        */
 
+        /*
         if ($status != '') {
             $Criteria->add( AppCacheViewPeer::APP_STATUS, $status, Criteria::EQUAL );
             $CriteriaCount->add( AppCacheViewPeer::APP_STATUS, $status, Criteria::EQUAL );
         }
+        */
 
         if ($dateFrom != '') {
             if ($dateTo != '') {
@@ -183,7 +236,6 @@ class Applications
 
         //add the search filter
         if ($search != '') {
-
             $defaultFields = $oAppCache->getDefaultFields();
             $oTmpCriteria = '';
             // if there is PMTABLE for this case list:
@@ -222,13 +274,33 @@ class Applications
             }
         }
 
+        // this is the optimal way or query to render the cases search list
+        // fixing the bug related to the wrong data displayed in the list
+        /*
+        if ($action == 'search') {
+            $oDatasetIndex = AppCacheViewPeer::doSelectRS( $Criteria );
+            $oDatasetIndex->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oDatasetIndex->next();
+            $maxDelIndexList = array ();
+            // a list of MAX_DEL_INDEXES is required in order to validate the right row
+            while ($aRow = $oDatasetIndex->getRow()) {
+                $maxDelIndexList[] = $aRow['MAX_DEL_INDEX'];
+                $oDatasetIndex->next();
+            }
+            // adding the validation condition in order to get the right row using the group by sentence
+            $Criteria->add( AppCacheViewPeer::DEL_INDEX, $maxDelIndexList, Criteria::IN );
+            //
+            //$params = array($maxDelIndexList);
+        }
+        */
+
         //here we count how many records exists for this criteria.
         //BUT there are some special cases, and if we dont optimize them the server will crash.
         $doCountAlreadyExecuted = false;
         //case 1. when the SEARCH action is selected and none filter, search criteria is defined,
         //we need to count using the table APPLICATION, because APP_CACHE_VIEW takes 3 seconds
 
-
+        /*
         if ($action == 'search' && $filter == '' && $search == '' && $process == '' && $status == '' && $dateFrom == '' && $dateTo == '' && $category == '') {
             $totalCount = $oAppCache->getSearchAllCount();
             $doCountAlreadyExecuted = true;
@@ -237,11 +309,12 @@ class Applications
             $totalCount = $oAppCache->getSearchCountCriteria();
             $doCountAlreadyExecuted = true;
         }
+        */
 
         if ($doCountAlreadyExecuted == false) {
             // in the case of reassign the distinct attribute shows a diferent count result comparing to the
             // original list
-            if ($action == 'to_reassign' || $action == 'todo') {
+            if (($action == "to_reassign" || $action == "todo") || ($status == "TO_DO")) {
                 $distinct = false;
             } else {
                 $distinct = true;
@@ -278,26 +351,6 @@ class Applications
         //limit the results according the interface
         $Criteria->setLimit( $limit );
         $Criteria->setOffset( $start );
-
-        // this is the optimal way or query to render the cases search list
-        // fixing the bug related to the wrong data displayed in the list
-        if ($action == 'search') {
-            $oDatasetIndex = AppCacheViewPeer::doSelectRS( $Criteria );
-            $oDatasetIndex->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-            $oDatasetIndex->next();
-            $maxDelIndexList = array ();
-            // a list of MAX_DEL_INDEXES is required in order to validate the right row
-            while ($aRow = $oDatasetIndex->getRow()) {
-                $maxDelIndexList[] = $aRow['MAX_DEL_INDEX'];
-                $oDatasetIndex->next();
-            }
-            // adding the validation condition in order to get the right row using the group by sentence
-            $Criteria->add( AppCacheViewPeer::DEL_INDEX, $maxDelIndexList, Criteria::IN );
-            //
-            $params = array ($maxDelIndexList
-            );
-
-        }
 
         //execute the query
         $oDataset = AppCacheViewPeer::doSelectRS( $Criteria );
