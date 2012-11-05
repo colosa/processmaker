@@ -47,16 +47,18 @@ class AppCacheView extends BaseAppCacheView
 
     public function getListCounters($type, $userUid, $processSummary)
     {
+        $distinct = true;
+
         switch ($type) {
             case 'to_do':
                 $criteria = $this->getToDoCountCriteria($userUid);
+                $distinct = false;
                 break;
             case 'draft':
                 $criteria = $this->getDraftCountCriteria($userUid);
                 break;
             case 'sent':
                 $criteria = $this->getSentCountCriteria($userUid);
-                //return AppCacheViewPeer::doCount($criteria, true);
                 break;
             case 'selfservice':
                 $criteria = $this->getUnassignedCountCriteria($userUid);
@@ -77,7 +79,7 @@ class AppCacheView extends BaseAppCacheView
                 return $type;
         }
 
-        return AppCacheViewPeer::doCount($criteria);
+        return AppCacheViewPeer::doCount($criteria, $distinct);
     }
 
     /**
@@ -1004,35 +1006,35 @@ class AppCacheView extends BaseAppCacheView
             $criteria->add(AppCacheViewPeer::USR_UID, $userUid);
         }
 
-        //paused
+        //Paused
         $sqlAppDelay = $this->getAppDelaySql(AppCacheViewPeer::APP_UID, AppCacheViewPeer::DEL_INDEX);
 
         $criteria->add(
-            //todo - getToDo()
+            //ToDo - getToDo()
             $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "TO_DO", CRITERIA::EQUAL)->addAnd(
             $criteria->getNewCriterion(AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL))->addAnd(
             $criteria->getNewCriterion(AppCacheViewPeer::APP_THREAD_STATUS, "OPEN"))->addAnd(
             $criteria->getNewCriterion(AppCacheViewPeer::DEL_THREAD_STATUS, "OPEN"))
         )->addOr(
-            //draft - getDraft()
+            //Draft - getDraft()
             $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "DRAFT", CRITERIA::EQUAL)->addAnd(
             $criteria->getNewCriterion(AppCacheViewPeer::APP_THREAD_STATUS, "OPEN"))->addAnd(
             $criteria->getNewCriterion(AppCacheViewPeer::DEL_THREAD_STATUS, "OPEN"))
         )->addOr(
-            //paused
+            //Paused
             $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "PAUSED")->addAnd(
             $criteria->getNewCriterion(AppCacheViewPeer::APP_UID, AppCacheViewPeer::APP_UID . " IN ($sqlAppDelay)", Criteria::CUSTOM))
         )->addOr(
-            //cancelled - getCancelled()
+            //Cancelled - getCancelled()
             $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "CANCELLED", CRITERIA::EQUAL)->addAnd(
             $criteria->getNewCriterion(AppCacheViewPeer::DEL_THREAD_STATUS, "CLOSED"))
         )->addOr(
-            //completed - getCompleted()
+            //Completed - getCompleted()
             $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "COMPLETED", CRITERIA::EQUAL)
         );
 
         if (!$doCount) {
-            //completed - getCompleted()
+            //Completed - getCompleted()
             $criteria->addGroupByColumn(AppCacheViewPeer::APP_UID);
 
             //$criteria->addGroupByColumn(AppCacheViewPeer::USR_UID);

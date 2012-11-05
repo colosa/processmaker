@@ -170,18 +170,23 @@ class Applications
         }
         */
 
-        // add the process filter
-        if ($process != '') {
-            $Criteria->add( AppCacheViewPeer::PRO_UID, $process, Criteria::EQUAL );
-            $CriteriaCount->add( AppCacheViewPeer::PRO_UID, $process, Criteria::EQUAL );
+        //Add the process filter
+        if (!empty($process)) {
+            $Criteria->add(AppCacheViewPeer::PRO_UID, $process, Criteria::EQUAL);
+            $CriteriaCount->add(AppCacheViewPeer::PRO_UID, $process, Criteria::EQUAL);
         }
 
-        // add the category filter
-        if ($category != '') {
-            $Criteria->addAlias( 'CP', 'PROCESS' );
-            $Criteria->add( 'CP.PRO_CATEGORY', $category, Criteria::EQUAL );
-            $Criteria->addJoin( AppCacheViewPeer::PRO_UID, 'CP.PRO_UID', Criteria::LEFT_JOIN );
-            $Criteria->addAsColumn( 'CATEGORY_UID', 'CP.PRO_CATEGORY' );
+        //Add the category filter
+        if (!empty($category)) {
+            $Criteria->addAlias("CP", "PROCESS");
+            $Criteria->add("CP.PRO_CATEGORY", $category, Criteria::EQUAL);
+            $Criteria->addJoin(AppCacheViewPeer::PRO_UID, "CP.PRO_UID", Criteria::LEFT_JOIN);
+            $Criteria->addAsColumn("CATEGORY_UID", "CP.PRO_CATEGORY");
+
+            $CriteriaCount->addAlias("CP", "PROCESS");
+            $CriteriaCount->add("CP.PRO_CATEGORY", $category, Criteria::EQUAL);
+            $CriteriaCount->addJoin(AppCacheViewPeer::PRO_UID, "CP.PRO_UID", Criteria::LEFT_JOIN);
+            $CriteriaCount->addAsColumn("CATEGORY_UID", "CP.PRO_CATEGORY");
         }
 
         // add the user filter
@@ -314,11 +319,13 @@ class Applications
         if ($doCountAlreadyExecuted == false) {
             // in the case of reassign the distinct attribute shows a diferent count result comparing to the
             // original list
-            if (($action == "to_reassign" || $action == "todo") || ($status == "TO_DO")) {
+            //Check also $distinct in the method getListCounters(), this in AppCacheView.php
+            $distinct = true;
+
+            if (($action == "todo" || $action == "to_reassign") || ($status == "TO_DO")) {
                 $distinct = false;
-            } else {
-                $distinct = true;
             }
+
             // first check if there is a PMTable defined within the list,
             // the issue that brokes the normal criteria query seems to be fixed
             if (isset( $oAppCache->confCasesList['PMTable'] ) && ! empty( $oAppCache->confCasesList['PMTable'] )) {

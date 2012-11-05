@@ -22,6 +22,7 @@
  *
  */
 
+require_once ("classes" . PATH_SEP . "model" . PATH_SEP . "AppCacheView.php");
 require_once "classes/model/Application.php";
 require_once "classes/model/AppDelegation.php";
 require_once "classes/model/AppThread.php";
@@ -170,6 +171,213 @@ class AppSolr
     }
 
     /**
+     * Gets the Solr string for todo cases
+     *
+     * Return the Solr string for todo cases
+     *
+     * @param string $userUid The user ID
+     * @param string $filter Filter the results posible values ("read", "unread")
+     * @return string Solr string
+     */
+    public function getToDoSolrString($userUid, $filter)
+    {
+        $strSolr = "APP_STATUS:TO_DO";
+        $strDelgIndex = null;
+
+        if (!empty($userUid)) {
+            switch ($filter) {
+                case "read":
+                    $strSolr = "APP_ASSIGNED_USERS_READ:" . $userUid;
+                    $strDelgIndex = "APP_ASSIGNED_USER_READ_DEL_INDEX_" . $userUid . "_txt";
+                    break;
+                case "unread":
+                    $strSolr = "APP_ASSIGNED_USERS_UNREAD:" . $userUid;
+                    $strDelgIndex = "APP_ASSIGNED_USER_UNREAD_DEL_INDEX_" . $userUid . "_txt";
+                    break;
+                default:
+                    $strSolr = "APP_ASSIGNED_USERS:" . $userUid;
+                    $strDelgIndex = "APP_ASSIGNED_USER_DEL_INDEX_" . $userUid . "_txt";
+                    break;
+            }
+        }
+
+        return array($strSolr, $strDelgIndex);
+    }
+
+    /**
+     * Gets the Solr string for draft cases
+     *
+     * Return the Solr string for draft cases
+     *
+     * @param string $userUid The user ID
+     * @return string Solr string
+     */
+    public function getDraftSolrString($userUid)
+    {
+        $strSolr = "APP_STATUS:DRAFT";
+        $strDelgIndex = null;
+
+        if (!empty($userUid)) {
+            $strSolr = "APP_DRAFT_USER:" . $userUid;
+            $strDelgIndex = "APP_DRAFT_USER_DEL_INDEX_" . $userUid . "_txt";
+        }
+
+        return array($strSolr, $strDelgIndex);
+    }
+
+    /**
+     * Gets the Solr string for paused cases
+     *
+     * Return the Solr string for paused cases
+     *
+     * @param string $userUid The user ID
+     * @return string Solr string
+     */
+    public function getPausedSolrString($userUid)
+    {
+        $strSolr = "APP_STATUS:PAUSED";
+        $strDelgIndex = null;
+
+        if (!empty($userUid)) {
+            $strSolr = "APP_PAUSED_USERS:" . $userUid;
+            $strDelgIndex = "APP_PAUSED_USERS_DEL_INDEX_" . $userUid . "_txt";
+        }
+
+        return array($strSolr, $strDelgIndex);
+    }
+
+    /**
+     * Gets the Solr string for cancelled cases
+     *
+     * Return the Solr string for cancelled cases
+     *
+     * @param string $userUid The user ID
+     * @return string Solr string
+     */
+    public function getCancelledSolrString($userUid)
+    {
+        $strSolr = "APP_STATUS:CANCELLED";
+        $strDelgIndex = null;
+
+        if (!empty($userUid)) {
+            $strSolr = "APP_CANCELLED_USER_txt:" . $userUid;
+            $strDelgIndex = "APP_CANCELLED_USER_DEL_INDEX_" . $userUid . "_txt";
+        }
+
+        return array($strSolr, $strDelgIndex);
+    }
+
+    /**
+     * Gets the Solr string for completed cases
+     *
+     * Return the Solr string for completed cases
+     *
+     * @param string $userUid The user ID
+     * @return string Solr string
+     */
+    public function getCompletedSolrString($userUid)
+    {
+        $strSolr = "APP_STATUS:COMPLETED";
+        $strDelgIndex = null;
+
+        if (!empty($userUid)) {
+            $strSolr = "APP_PARTICIPATED_USERS_COMPLETED:" . $userUid;
+            $strDelgIndex = "APP_PARTICIPATED_USER_COMPLETED_DEL_INDEX_" . $userUid . "_txt";
+        }
+
+        return array($strSolr, $strDelgIndex);
+    }
+
+    /**
+     * Gets the Solr string for sent cases
+     *
+     * Return the Solr string for sent cases
+     *
+     * @param string $userUid The user ID
+     * @param string $filter Filter the results posible values ("started", "completed")
+     * @return string Solr string
+     */
+    public function getSentSolrString($userUid, $filter)
+    {
+        $strSolr = null;
+        $strDelgIndex = null;
+
+        if (!empty($userUid)) {
+            switch ($filter) {
+                case "started":
+                    $strSolr = "APP_PARTICIPATED_USERS_STARTED:" . $userUid;
+                    $strDelgIndex = "APP_PARTICIPATED_USER_STARTED_DEL_INDEX_" . $userUid . "_txt";
+                    break;
+                case "completed":
+                    $strSolr = "APP_PARTICIPATED_USERS_COMPLETED:" . $userUid;
+                    $strDelgIndex = "APP_PARTICIPATED_USER_COMPLETED_DEL_INDEX_" . $userUid . "_txt";
+                    break;
+                default:
+                    $strSolr = "APP_PARTICIPATED_USERS:" . $userUid;
+                    $strDelgIndex = "APP_PARTICIPATED_USER_DEL_INDEX_" . $userUid . "_txt";
+                    break;
+            }
+        }
+
+        return array($strSolr, $strDelgIndex);
+    }
+
+    /**
+     * Gets the Solr string for all cases
+     *
+     * Return the Solr string for all cases
+     *
+     * @param string $userUid The user ID
+     * @return string Solr string
+     */
+    public function getAllSolrString($userUid)
+    {
+        $strSolr = "(APP_STATUS:TO_DO OR
+                     APP_STATUS:DRAFT OR
+                     APP_STATUS:PAUSED OR
+                     APP_STATUS:CANCELLED OR
+                     APP_STATUS:COMPLETED
+                    )";
+        $arrayDelgIndex = array();
+
+        if (!empty($userUid)) {
+            $strSolr = "(";
+
+            //ToDo
+            $strSolr = $strSolr . "APP_ASSIGNED_USERS:" . $userUid;
+            $arrayDelgIndex[] = "APP_ASSIGNED_USER_DEL_INDEX_" . $userUid . "_txt";
+
+            $strSolr = $strSolr . " OR ";
+
+            //Draft
+            $strSolr = $strSolr . "APP_DRAFT_USER:" . $userUid;
+            $arrayDelgIndex[] = "APP_DRAFT_USER_DEL_INDEX_" . $userUid . "_txt";
+
+            $strSolr = $strSolr . " OR ";
+
+            //Paused
+            $strSolr = $strSolr . "APP_PAUSED_USERS:" . $userUid;
+            $arrayDelgIndex[] = "APP_PAUSED_USERS_DEL_INDEX_" . $userUid . "_txt";
+
+            $strSolr = $strSolr . " OR ";
+
+            //Cancelled
+            $strSolr = $strSolr . "APP_CANCELLED_USER_txt:" . $userUid;
+            $arrayDelgIndex[] = "APP_CANCELLED_USER_DEL_INDEX_" . $userUid . "_txt";
+
+            $strSolr = $strSolr . " OR ";
+
+            //Completed
+            $strSolr = $strSolr . "APP_PARTICIPATED_USERS_COMPLETED:" . $userUid;
+            $arrayDelgIndex[] = "APP_PARTICIPATED_USER_COMPLETED_DEL_INDEX_" . $userUid . "_txt";
+
+            $strSolr = $strSolr . ")";
+        }
+
+        return array($strSolr, $arrayDelgIndex);
+    }
+
+    /**
      * Gets the information of Grids using Solr server.
      *
      * Returns the list of records for the grid depending of the function
@@ -195,9 +403,24 @@ class AppSolr
      * @param boolean $doCount default=false, if true only the count of records is returned.
      * @return array return the list of cases
      */
-    public function getAppGridData ($userUid, $start = null, $limit = null, $action = null, $filter = null, $search = null, $process = null, $user = null, $status = null, $type = null, $dateFrom = null, $dateTo = null, $callback = null, $dir = null, $sort = 'APP_CACHE_VIEW.APP_NUMBER', $doCount = false)
-    {
-
+    public function getAppGridData(
+        $userUid,
+        $start = null,
+        $limit = null,
+        $action = null,
+        $filter = null,
+        $search = null,
+        $process = null,
+        $status = null,
+        $type = null,
+        $dateFrom = null,
+        $dateTo = null,
+        $callback = null,
+        $dir = null,
+        $sort = "APP_CACHE_VIEW.APP_NUMBER",
+        $category = null,
+        $doCount = false
+    ) {
         $callback = isset( $callback ) ? $callback : 'stcCallback1001';
         $dir = isset( $dir ) ? $dir : 'DESC'; // direction of sort column
         // (ASC, DESC)
@@ -217,7 +440,6 @@ class AppSolr
         $process = isset( $process ) ? $process : ''; // filter by an specific
         // process
         // uid
-        $user = isset( $user ) ? $user : ''; // filter by an specific user uid
         $status = isset( $status ) ? strtoupper( $status ) : ''; // filter by an
         // specific
         // app_status
@@ -226,7 +448,6 @@ class AppSolr
         $dateFrom = isset( $dateFrom ) ? $dateFrom : ''; // filter by
         // DEL_DELEGATE_DATE
         $dateTo = isset( $dateTo ) ? $dateTo : ''; // filter by DEL_DELEGATE_DATE
-
 
         $swErrorInSearchText = false;
         $solrQueryResult = null;
@@ -251,7 +472,7 @@ class AppSolr
             $columsToInclude = array ('APP_CREATE_DATE','','','','APP_NUMBER','','APP_PRO_TITLE','APP_STATUS','','','APP_TITLE','APP_UID','DEL_LAST_UPDATE_DATE','','','','','','','','','DEL_MAX_PRIORITY','','','','','','PRO_UID','',''
             );
             // create pagination data
-            $solrSearchText = "";
+            $solrSearchText = null;
             $sortableCols = array ();
             $sortCols = array ();
             $sortDir = array ();
@@ -294,75 +515,112 @@ class AppSolr
                 $numSortingCols ++;
             }
 
-            // get del_index field
-            $delIndexDynaField = "";
-            // process filter
-            if ($process != '') {
-                $solrSearchText .= "PRO_UID:" . $process . " AND ";
-            }
-            // status filter
-            if ($status != '') {
-                $solrSearchText .= "APP_STATUS:" . $status . " AND ";
-            }
-            // todo list, add condition
-            if ($userUid != null && $action == 'todo') {
-                if ($filter == 'read') {
-                    $solrSearchText .= "APP_ASSIGNED_USERS_READ:" . $userUid . " AND ";
-                    $delegationIndexes[] = "APP_ASSIGNED_USER_READ_DEL_INDEX_" . trim( $userUid ) . '_txt';
-                } elseif ($filter == 'unread') {
-                    $solrSearchText .= "APP_ASSIGNED_USERS_UNREAD:" . $userUid . " AND ";
-                    $delegationIndexes[] = "APP_ASSIGNED_USER_UNREAD_DEL_INDEX_" . trim( $userUid ) . '_txt';
-                } else {
-                    $solrSearchText .= "APP_ASSIGNED_USERS:" . $userUid . " AND ";
-                    $delegationIndexes[] = "APP_ASSIGNED_USER_DEL_INDEX_" . trim( $userUid ) . '_txt';
-                }
-            }
-            // participated, add condition
-            if ($userUid != null && $action == 'sent') {
-                if ($filter == 'started') {
-                    $solrSearchText .= "APP_PARTICIPATED_USERS_STARTED:" . $userUid . " AND ";
-                    $delegationIndexes[] = "APP_PARTICIPATED_USER_STARTED_DEL_INDEX_" . trim( $userUid ) . '_txt';
-                } elseif ($filter == 'completed') {
-                    $solrSearchText .= "APP_PARTICIPATED_USERS_COMPLETED:" . $userUid . " AND ";
-                    $delegationIndexes[] = "APP_PARTICIPATED_USER_COMPLETED_DEL_INDEX_" . trim( $userUid ) . '_txt';
-                } else {
-                    $solrSearchText .= "APP_PARTICIPATED_USERS:" . $userUid . " AND ";
-                    $delegationIndexes[] = "APP_PARTICIPATED_USER_DEL_INDEX_" . trim( $userUid ) . '_txt';
-                }
-            }
-            // draft, add condition
-            if ($userUid != null && $action == 'draft') {
-                $solrSearchText .= "APP_DRAFT_USER:" . $userUid . " AND ";
-                // index is allways 1
-            }
-            // unassigned, add condition
-            if ($userUid != null && $action == 'unassigned') {
-                // get the list of groups to which belongs the user.
-                $userGroups = $this->getUserGroups( $userUid );
+            //Define conditions for the $action
+            $arrayAux = array();
 
-                $solrSearchText .= "(APP_UNASSIGNED_USERS:" . $userUid;
-                if (count( $userGroups ) > 0) {
-                    $solrSearchText .= " OR ";
+            switch ($action) {
+                case "todo":
+                    $arrayAux = $this->getToDoSolrString($userUid, $filter);
+                    break;
+                case "draft":
+                    $arrayAux = $this->getDraftSolrString($userUid);
+                    break;
+                case "paused":
+                    $arrayAux = $this->getPausedSolrString($userUid);
+                    break;
+                case "selfservice":
+                case "unassigned":
+                    if (!empty($userUid)) {
+                        //Get the list of groups to which belongs the user.
+                        $userGroups = $this->getUserGroups($userUid);
 
-                    foreach ($userGroups as $group) {
-                        $solrSearchText .= "APP_UNASSIGNED_GROUPS:" . $group['GRP_UID'] . " OR ";
+                        $solrSearchText = $solrSearchText . "(APP_UNASSIGNED_USERS:" . $userUid;
+
+                        if (count($userGroups) > 0) {
+                            $solrSearchText = $solrSearchText . " OR ";
+
+                            foreach ($userGroups as $group) {
+                                $solrSearchText = $solrSearchText . "APP_UNASSIGNED_GROUPS:" . $group["GRP_UID"] . " OR ";
+                            }
+
+                            //Remove last OR in condition
+                            if ($solrSearchText != null) {
+                                $solrSearchText = substr_replace($solrSearchText, null, -4);
+                            }
+                        }
+
+                        $solrSearchText = $solrSearchText . ") AND ";
+
+                        $delegationIndexes[] = "APP_UNASSIGNED_USER_GROUP_DEL_INDEX_" . $userUid . "_txt";
+
+                        foreach ($userGroups as $group) {
+                            $delegationIndexes[] = "APP_UNASSIGNED_USER_GROUP_DEL_INDEX_" . $group["GRP_UID"] . "_txt";
+                        }
                     }
-
-                    // remove last OR in condition
-                    if ($solrSearchText != '') {
-                        $solrSearchText = substr_replace( $solrSearchText, "", - 4 );
+                    break;
+                case "sent":
+                    $arrayAux = $this->getSentSolrString($userUid, $filter);
+                    break;
+                case "search":
+                    switch ($status) {
+                        case "TO_DO":
+                            $arrayAux = $this->getToDoSolrString($userUid, $filter);
+                            break;
+                        case "DRAFT":
+                            $arrayAux = $this->getDraftSolrString($userUid);
+                            break;
+                        case "PAUSED":
+                            $arrayAux = $this->getPausedSolrString($userUid);
+                            break;
+                        case "CANCELLED":
+                            $arrayAux = $this->getCancelledSolrString($userUid);
+                            break;
+                        case "COMPLETED":
+                            $arrayAux = $this->getCompletedSolrString($userUid);
+                            break;
+                        default:
+                            //All status
+                            $arrayAux = $this->getAllSolrString($userUid);
+                            break;
                     }
-                }
-                $solrSearchText .= ") AND ";
+                    break;
+            }
 
-                $delegationIndexes[] = "APP_UNASSIGNED_USER_GROUP_DEL_INDEX_" . trim( $userUid ) . '_txt';
-                foreach ($userGroups as $group) {
-                    $delegationIndexes[] = "APP_UNASSIGNED_USER_GROUP_DEL_INDEX_" . trim( $group['GRP_UID'] ) . '_txt';
+            if (count($arrayAux) > 0) {
+                switch ($action) {
+                    case "sent":
+                        if (!empty($status)) {
+                            $solrSearchText = $solrSearchText . "APP_STATUS:" . $status . " AND ";
+                        }
+                        break;
                 }
+
+                $solrSearchText = $solrSearchText . ((!empty($arrayAux[0]))? $arrayAux[0] . " AND " : null);
+
+                if (is_array($arrayAux[1])) {
+                    foreach ($arrayAux[1] as $index => $value) {
+                        $delegationIndexes[] = $value;
+                    }
+                } else {
+                    $delegationIndexes[] = $arrayAux[1];
+                }
+            }
+
+            //Get DEL_INDEX field
+            $delIndexDynaField = null;
+
+            //Process filter
+            if (!empty($process)) {
+                $solrSearchText = $solrSearchText . "PRO_UID:" . $process . " AND ";
+            }
+
+            //Category filter
+            if (!empty($category)) {
+                $solrSearchText = $solrSearchText . "PRO_CATEGORY_UID_s:" . $category . " AND ";
             }
 
             //search action
-            if ($action == 'search' && $dateFrom != "" && $dateTo != "") {
+            if (!empty($dateFrom) && !empty($dateTo)) {
                 $fromDate = date( "Y-m-d", strtotime( $dateFrom ) );
                 $toDate = date( "Y-m-d", strtotime( $dateTo ) );
 
@@ -449,7 +707,7 @@ class AppSolr
                 $appUids[] = $data[11];
             }
 
-            $aaappsDBData = $this->getListApplicationDelegationData( $appUids );
+            $aaappsDBData = $this->getListApplicationDelegationData($appUids, $action, $status);
 
             if ($this->debug) {
                 $this->afterDbQueryTime = microtime( true );
@@ -461,6 +719,7 @@ class AppSolr
                 $delIndexes = array ();
                 // complete empty values
                 $appUID = $data[11];
+
                 //get all the delindexes
                 for ($i = 30; $i < count( $data ); $i ++) {
                     if (is_array( $data[$i] )) {
@@ -473,12 +732,8 @@ class AppSolr
                 // if is not check different types of repositories
                 // the delegation index must always be defined.
                 if (count( $delIndexes ) == 0) {
-                    // if is draft
-                    if ($action == 'draft') {
-                        $delIndexes[] = 1; // the first default index
-                    } elseif ($action == 'search') {
-                        // get all the indexes
-
+                    if ($action == "search") {
+                        //Get all the indexes
 
                         //$delIndexes = $this->getApplicationDelegationsIndex ($appUID);
                         $indexes = $this->aaSearchRecords( $aaappsDBData, array ('APP_UID' => $appUID
@@ -496,13 +751,26 @@ class AppSolr
                      * elseif ($action == 'unassigned'){ $delIndexes = $this->getApplicationDelegationsIndex ($appUID); }
                      */
                 }
-                //remove duplicated
-                $delIndexes = array_unique( $delIndexes );
+
+                $arrayRowAux = array();
+
+                foreach ($resultColumns as $j => $columnName) {
+                    $arrayRowAux[$columnName] = $data[$j];
+                }
+
+                //Remove duplicated
+                $delIndexes = array_unique($delIndexes);
+
+                //Gets the last DEL_INDEX
+                sort($delIndexes);
+                $delIndexAux = array_pop($delIndexes);
+
+                $delIndexes = array($delIndexAux);
+
+                //Set register
                 foreach ($delIndexes as $delIndex) {
-                    $aRow = array ();
-                    foreach ($resultColumns as $j => $columnName) {
-                        $aRow[$columnName] = $data[$j];
-                    }
+                    $aRow = $arrayRowAux;
+
                     // convert date from solr format UTC to local time in MySQL format
                     $solrdate = $data[0];
                     $localDate = date( 'Y-m-d H:i:s', strtotime( $solrdate ) );
@@ -553,9 +821,14 @@ class AppSolr
                     $aRow['USR_UID'] = $userUid;
                     $aRow['DEL_PRIORITY'] = G::LoadTranslation( "ID_PRIORITY_{$aPriorities[$aRow['DEL_PRIORITY']]}" );
 
+                    if (isset($aRow["APP_STATUS"])) {
+                        $aRow["APP_STATUS"] = G::LoadTranslation("ID_" . $aRow["APP_STATUS"]);
+                    }
+
                     $rows[] = $aRow;
                 }
             }
+
             $result['data'] = $rows;
             $result['success'] = true;
             $result['result'] = true;
@@ -631,12 +904,13 @@ class AppSolr
     /**
      * Get the application delegation record from database
      *
-     * @param string $aappUIDs array of Application identifiers
+     * @param string $arrayAppUid array of Application identifiers
+     * @param string $action Action (todo, draft, paused, sent, selfservice, unassigned, search)
+     * @param string $appStatus Status of Application
      * @return array of arrays with delegation information.
      */
-    public function getListApplicationDelegationData ($aappUIDs)
+    public function getListApplicationDelegationData($arrayAppUid, $action, $appStatus)
     {
-
         $c = new Criteria();
 
         $c->addSelectColumn( AppDelegationPeer::APP_UID );
@@ -665,44 +939,114 @@ class AppSolr
         $c->addSelectColumn( AppDelegationPeer::DEL_THREAD_STATUS );
         $c->addSelectColumn( AppDelegationPeer::TAS_UID );
 
-        $c->addAlias( 'u', 'USERS' );
-        $c->addAlias( 'uprev', 'USERS' );
-        $c->addAlias( 'adprev', 'APP_DELEGATION' );
-        $c->addAlias( 'ctastitle', 'CONTENT' );
-        $c->addAlias( 'at', 'APP_THREAD' );
+        $c->addAlias("u", "USERS");
+        $c->addAlias("uprev", "USERS");
+        $c->addAlias("adprev", "APP_DELEGATION");
+        $c->addAlias("ctastitle", "CONTENT");
+        $c->addAlias("at", "APP_THREAD");
 
-        $aConditions = array ();
-        $aConditions[] = array (AppDelegationPeer::USR_UID,'u.USR_UID'
-        );
-        $c->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
+        $arrayCondition = array();
+        $arrayCondition[] = array(AppDelegationPeer::APP_UID, ApplicationPeer::APP_UID);
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
-        $aConditions = array ();
-        $aConditions[] = array (AppDelegationPeer::APP_UID,'adprev.APP_UID'
-        );
-        $aConditions[] = array (AppDelegationPeer::DEL_PREVIOUS,'adprev.DEL_INDEX'
-        );
-        $c->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
+        $arrayCondition = array();
+        $arrayCondition[] = array(AppDelegationPeer::USR_UID, "u.USR_UID");
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
-        $aConditions = array ();
-        $aConditions[] = array (AppDelegationPeer::TAS_UID,'ctastitle.CON_ID'
-        );
-        $c->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
+        $arrayCondition = array();
+        $arrayCondition[] = array(AppDelegationPeer::APP_UID, "adprev.APP_UID");
+        $arrayCondition[] = array(AppDelegationPeer::DEL_PREVIOUS, "adprev.DEL_INDEX");
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
-        $aConditions = array ();
-        $aConditions[] = array ('adprev.USR_UID','uprev.USR_UID'
-        );
-        $c->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
+        $arrayCondition = array();
+        $arrayCondition[] = array(AppDelegationPeer::TAS_UID, "ctastitle.CON_ID");
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
-        $aConditions = array ();
-        $aConditions[] = array (AppDelegationPeer::APP_UID,'at.APP_UID'
-        );
-        $aConditions[] = array (AppDelegationPeer::DEL_THREAD,'at.APP_THREAD_INDEX'
-        );
-        $c->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
+        $arrayCondition = array();
+        $arrayCondition[] = array("adprev.USR_UID", "uprev.USR_UID");
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
-        $c->add( AppDelegationPeer::APP_UID, $aappUIDs, Criteria::IN );
+        $arrayCondition = array();
+        $arrayCondition[] = array(AppDelegationPeer::APP_UID, "at.APP_UID");
+        $arrayCondition[] = array(AppDelegationPeer::DEL_THREAD, "at.APP_THREAD_INDEX");
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $c->add(AppDelegationPeer::APP_UID, $arrayAppUid, Criteria::IN);
         //$c->add (AppDelegationPeer::DEL_INDEX, $delIndex);
 
+        switch ($action) {
+            case "sent":
+                if (!empty($appStatus)) {
+                    $c->add(ApplicationPeer::APP_STATUS, $appStatus);
+                }
+                break;
+            default:
+                $appCacheView = new AppCacheView();
+
+                //Paused
+                $sqlAppDelay = $appCacheView->getAppDelaySql(AppDelegationPeer::APP_UID, AppDelegationPeer::DEL_INDEX);
+
+                //Criterions
+                $criterionToDo = $c->getNewCriterion(ApplicationPeer::APP_STATUS, "TO_DO", CRITERIA::EQUAL)->addAnd(
+                                 $c->getNewCriterion(AppDelegationPeer::DEL_FINISH_DATE, null, Criteria::ISNULL))->addAnd(
+                                 $c->getNewCriterion("at.APP_THREAD_STATUS", "OPEN"))->addAnd(
+                                 $c->getNewCriterion(AppDelegationPeer::DEL_THREAD_STATUS, "OPEN"));
+
+                $criterionDraft = $c->getNewCriterion(ApplicationPeer::APP_STATUS, "DRAFT", CRITERIA::EQUAL)->addAnd(
+                                  $c->getNewCriterion("at.APP_THREAD_STATUS", "OPEN"))->addAnd(
+                                  $c->getNewCriterion(AppDelegationPeer::DEL_THREAD_STATUS, "OPEN"));
+
+                $criterionPaused = $c->getNewCriterion(ApplicationPeer::APP_STATUS, "PAUSED")->addAnd(
+                                   $c->getNewCriterion(AppDelegationPeer::APP_UID, AppDelegationPeer::APP_UID . " IN ($sqlAppDelay)", Criteria::CUSTOM));
+
+                $criterionCancelled = $c->getNewCriterion(ApplicationPeer::APP_STATUS, "CANCELLED", CRITERIA::EQUAL)->addAnd(
+                                      $c->getNewCriterion(AppDelegationPeer::DEL_THREAD_STATUS, "CLOSED"));
+
+                $criterionCompleted = $c->getNewCriterion(ApplicationPeer::APP_STATUS, "COMPLETED");
+
+                switch ($appStatus) {
+                    case "TO_DO":
+                        //ToDo
+                        $c->add($criterionToDo);
+                        break;
+                    case "DRAFT":
+                        //Draft
+                        $c->add($criterionDraft);
+                        break;
+                    case "PAUSED":
+                        //Paused
+                        $c->add($criterionPaused);
+                        break;
+                    case "CANCELLED":
+                        //Cancelled
+                        $c->add($criterionCancelled);
+                        break;
+                    case "COMPLETED":
+                        //Completed
+                        $c->add($criterionCompleted);
+                        break;
+                    default:
+                        //All status
+                        $c->add(
+                            //ToDo
+                            $criterionToDo
+                        )->addOr(
+                            //Draft
+                            $criterionDraft
+                        )->addOr(
+                            //Paused
+                            $criterionPaused
+                        )->addOr(
+                            //Cancelled
+                            $criterionCancelled
+                        )->addOr(
+                            //Completed
+                            $criterionCompleted
+                        );
+                        break;
+                }
+                break;
+        }
 
         $c->add( 'ctastitle.CON_CATEGORY', 'TAS_TITLE' );
         $c->add( 'ctastitle.CON_LANG', 'en' );
@@ -1172,8 +1516,7 @@ class AppSolr
                     // get delegation data from DB
                 $aaAppData = array ();
                 //filter data from db
-                $indexes = $this->aaSearchRecords( $aaAllAppDelData, array ('APP_UID' => $aAPPUID['APP_UID']
-                ) );
+                $indexes = $this->aaSearchRecords($aaAllAppDelData, array("APP_UID" => $aAPPUID["APP_UID"]));
 
                 foreach ($indexes as $index) {
                     $aaAppData[] = $aaAllAppDelData[$index];
@@ -1219,11 +1562,29 @@ class AppSolr
             $participatedUsersCompletedByUser = $result[10];
             $unassignedUsers = $result[11];
             $unassignedGroups = $result[12];
+            $pausedUser = $result[13];
+            $cancelledUser = $result[14];
 
             try {
 
                 // create document
-                $xmlDoc .= $this->buildSearchIndexDocumentPMOS2( $documentInformation, $dynaformFieldTypes, $lastUpdateDate, $maxPriority, $assignedUsers, $assignedUsersRead, $assignedUsersUnread, $draftUser, $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser, $unassignedUsers, $unassignedGroups );
+                $xmlDoc = $xmlDoc . $this->buildSearchIndexDocumentPMOS2(
+                    $documentInformation,
+                    $dynaformFieldTypes,
+                    $lastUpdateDate,
+                    $maxPriority,
+                    $assignedUsers,
+                    $assignedUsersRead,
+                    $assignedUsersUnread,
+                    $draftUser,
+                    $participatedUsers,
+                    $participatedUsersStartedByUser,
+                    $participatedUsersCompletedByUser,
+                    $unassignedUsers,
+                    $unassignedGroups,
+                    $pausedUser,
+                    $cancelledUser
+                );
 
                 if ($this->debug) {
                     $this->afterBuilXMLDocTime = microtime( true );
@@ -1279,6 +1640,8 @@ class AppSolr
      *        UIDs in application
      * @param [in] array $unassignedUsers array of unassigned users UIDs
      * @param [in] array $unassignedGroups array of unassigned groups UIDs
+     * @param [in] array $pausedUser array of array of uids of paused users to Application UIDs
+     * @param [in] array $cancelledUser array of array of uids of cancelled users to Application UIDs
      * @param [out] xml xml document
      *
      *        $xmlDoc .= buildSearchIndexDocumentPMOS2($documentInformation,
@@ -1288,10 +1651,25 @@ class AppSolr
      *        $draftUser,
      *        $participatedUsers, $participatedUsersStartedByUser,
      *        $participatedUsersCompletedByUser,
-     *        $unassignedUsers, $unassignedGroups);*
+     *        $unassignedUsers, $unassignedGroups, $pausedUser, $cancelledUser);
      */
-    public function buildSearchIndexDocumentPMOS2 ($documentData, $dynaformFieldTypes, $lastUpdateDate, $maxPriority, $assignedUsers, $assignedUsersRead, $assignedUsersUnread, $draftUser, $participatedUsers, $participatedUsersStartedByUser, $participatedUsersCompletedByUser, $unassignedUsers, $unassignedGroups)
-    {
+    public function buildSearchIndexDocumentPMOS2(
+        $documentData,
+        $dynaformFieldTypes,
+        $lastUpdateDate,
+        $maxPriority,
+        $assignedUsers,
+        $assignedUsersRead,
+        $assignedUsersUnread,
+        $draftUser,
+        $participatedUsers,
+        $participatedUsersStartedByUser,
+        $participatedUsersCompletedByUser,
+        $unassignedUsers,
+        $unassignedGroups,
+        $pausedUser,
+        $cancelledUser
+    ) {
         // build xml document
 
 
@@ -1363,6 +1741,13 @@ class AppSolr
         $writer->text( $maxPriority );
         $writer->endElement();
 
+        if (!empty($documentData["PRO_CATEGORY_UID"])) {
+            $writer->startElement("field");
+            $writer->writeAttribute("name", "PRO_CATEGORY_UID_s");
+            $writer->text($documentData["PRO_CATEGORY_UID"]);
+            $writer->endElement();
+        }
+
         if (is_array( $assignedUsers ) && ! empty( $assignedUsers )) {
             foreach ($assignedUsers as $userUID) {
                 $writer->startElement( "field" );
@@ -1409,11 +1794,45 @@ class AppSolr
             }
         }
 
-        if (! empty( $draftUser )) {
-            $writer->startElement( "field" );
-            $writer->writeAttribute( 'name', 'APP_DRAFT_USER' );
-            $writer->text( $draftUser['USR_UID'] );
+        if (count($draftUser) > 0) {
+            $writer->startElement("field");
+            $writer->writeAttribute("name", "APP_DRAFT_USER");
+            $writer->text($draftUser["USR_UID"]);
             $writer->endElement();
+
+            //Add field for DEL_INDEX information
+            $writer->startElement("field");
+            $writer->writeAttribute("name", "APP_DRAFT_USER_DEL_INDEX_" . trim($draftUser["USR_UID"]) . "_txt");
+            $writer->text($draftUser["DEL_INDEX"]);
+            $writer->endElement();
+        }
+
+        if (count($pausedUser) > 0) {
+            $writer->startElement("field");
+            $writer->writeAttribute("name", "APP_PAUSED_USERS");
+            $writer->text($pausedUser["USR_UID"]);
+            $writer->endElement();
+
+            //Add field for DEL_INDEX information
+            $writer->startElement("field");
+            $writer->writeAttribute("name", "APP_PAUSED_USERS_DEL_INDEX_" . trim($pausedUser["USR_UID"]) . "_txt");
+            $writer->text($pausedUser["DEL_INDEX"]);
+            $writer->endElement();
+        }
+
+        if (count($cancelledUser) > 0) {
+            foreach ($cancelledUser as $userUid) {
+                $writer->startElement("field");
+                $writer->writeAttribute("name", "APP_CANCELLED_USER_txt");
+                $writer->text($userUid["USR_UID"]);
+                $writer->endElement();
+
+                //Add field for DEL_INDEX information
+                $writer->startElement("field");
+                $writer->writeAttribute("name", "APP_CANCELLED_USER_DEL_INDEX_" . trim($userUid["USR_UID"]) . "_txt");
+                $writer->text($userUid["DEL_INDEX"]);
+                $writer->endElement();
+            }
         }
 
         if (is_array( $participatedUsers ) && ! empty( $participatedUsers )) {
@@ -1629,7 +2048,9 @@ class AppSolr
      *         $participatedUsersStartedByUser,
      *         $participatedUsersCompletedByUser,
      *         $unassignedUsers,
-     *         $unassignedGroups
+     *         $unassignedGroups,
+     *         $pausedUser,
+     *         $cancelledUser
      */
     public function getApplicationIndexData ($AppUID, $allAppDbData)
     {
@@ -1694,6 +2115,34 @@ class AppSolr
             );
         }
 
+        //Paused
+        $pausedUser = array();
+
+        foreach ($allAppDbData as $row) {
+            if ((empty($row["APPDELY_APP_DISABLE_ACTION_USER"]) || $row["APPDELY_APP_DISABLE_ACTION_USER"] == "0") &&
+                !empty($row["APPDELY_APP_DELAY_UID"]) && $row["APPDELY_APP_TYPE"] == "PAUSE"
+            ) {
+                $pausedUser = array("USR_UID" => $row["USR_UID"], "DEL_INDEX" => $row["DEL_INDEX"]);
+                break;
+            }
+        }
+
+        //Cancelled
+        $cancelledUser = array();
+
+        $arrayIndex = $this->aaSearchRecords(
+            $allAppDbData,
+            array("APP_STATUS" => "CANCELLED", "DEL_THREAD_STATUS" => "CLOSED")
+        );
+
+        foreach ($arrayIndex as $index) {
+            $cancelledUser[] = array(
+                "USR_UID" => $allAppDbData[$index]["USR_UID"],
+                "DEL_INDEX" => $allAppDbData[$index]["DEL_INDEX"]
+            );
+        }
+
+        //Participated
         $participatedUsers = array ();
         foreach ($allAppDbData as $row) {
             $participatedUsers[] = array ('USR_UID' => $row['USR_UID'],'DEL_INDEX' => $row['DEL_INDEX']
@@ -1795,8 +2244,24 @@ class AppSolr
             // create cache of dynaformfields
             $oMemcache->set( $documentInformation['PRO_UID'], $dynaformFieldTypes );
         }
-        // return result values
-        $result = array ($documentInformation,$dynaformFieldTypes,$lastUpdateDate,$maxPriority,$assignedUsers,$assignedUsersRead,$assignedUsersUnread,$draftUser,$participatedUsers,$participatedUsersStartedByUser,$participatedUsersCompletedByUser,$unassignedUsers,$unassignedGroups
+
+        //Return result values
+        $result = array(
+            $documentInformation,
+            $dynaformFieldTypes,
+            $lastUpdateDate,
+            $maxPriority,
+            $assignedUsers,
+            $assignedUsersRead,
+            $assignedUsersUnread,
+            $draftUser,
+            $participatedUsers,
+            $participatedUsersStartedByUser,
+            $participatedUsersCompletedByUser,
+            $unassignedUsers,
+            $unassignedGroups,
+            $pausedUser,
+            $cancelledUser
         );
 
         return $result;
@@ -1914,14 +2379,14 @@ class AppSolr
                         $evaluateRow = true;
                     } else {
                         $evaluateRow = false;
-                        breaK;
+                        break;
                     }
                 } else {
                     if ($row[$column] != $condition) {
                         $evaluateRow = true;
                     } else {
                         $evaluateRow = false;
-                        breaK;
+                        break;
                     }
                 }
             }
@@ -2036,94 +2501,100 @@ class AppSolr
      * @param string $aAppUID array of application identifiers
      * @return array of array of records from database
      */
-    public function getListApplicationUpdateDelegationData ($aaAppUIDs)
+    public function getListApplicationUpdateDelegationData($aaAppUIDs)
     {
-
-        $allAppDbData = array ();
+        $allAppDbData = array();
 
         $c = new Criteria();
 
-        $c->addSelectColumn( ApplicationPeer::APP_UID );
-        $c->addSelectColumn( ApplicationPeer::APP_NUMBER );
-        $c->addSelectColumn( ApplicationPeer::APP_STATUS );
-        $c->addSelectColumn( ApplicationPeer::PRO_UID );
-        $c->addSelectColumn( ApplicationPeer::APP_CREATE_DATE );
-        $c->addSelectColumn( ApplicationPeer::APP_FINISH_DATE );
-        $c->addSelectColumn( ApplicationPeer::APP_UPDATE_DATE );
-        $c->addSelectColumn( ApplicationPeer::APP_DATA );
+        $c->addSelectColumn(ApplicationPeer::APP_UID);
+        $c->addSelectColumn(ApplicationPeer::APP_NUMBER);
+        $c->addSelectColumn(ApplicationPeer::APP_STATUS);
+        $c->addSelectColumn(ApplicationPeer::PRO_UID);
+        $c->addSelectColumn(ApplicationPeer::APP_CREATE_DATE);
+        $c->addSelectColumn(ApplicationPeer::APP_FINISH_DATE);
+        $c->addSelectColumn(ApplicationPeer::APP_UPDATE_DATE);
+        $c->addSelectColumn(ApplicationPeer::APP_DATA);
 
-        $c->addAsColumn( 'APP_TITLE', 'capp.CON_VALUE' );
-        $c->addAsColumn( 'PRO_TITLE', 'cpro.CON_VALUE' );
+        $c->addAsColumn("APP_TITLE", "capp.CON_VALUE");
+        $c->addAsColumn("PRO_TITLE", "cpro.CON_VALUE");
 
-        $c->addSelectColumn( 'ad.DEL_INDEX' );
-        $c->addSelectColumn( 'ad.DEL_PREVIOUS' );
-        $c->addSelectColumn( 'ad.TAS_UID' );
-        $c->addSelectColumn( 'ad.USR_UID' );
-        $c->addSelectColumn( 'ad.DEL_TYPE' );
-        $c->addSelectColumn( 'ad.DEL_THREAD' );
-        $c->addSelectColumn( 'ad.DEL_THREAD_STATUS' );
-        $c->addSelectColumn( 'ad.DEL_PRIORITY' );
-        $c->addSelectColumn( 'ad.DEL_DELEGATE_DATE' );
-        $c->addSelectColumn( 'ad.DEL_INIT_DATE' );
-        $c->addSelectColumn( 'ad.DEL_TASK_DUE_DATE' );
-        $c->addSelectColumn( 'ad.DEL_FINISH_DATE' );
-        $c->addSelectColumn( 'ad.DEL_DURATION' );
-        $c->addSelectColumn( 'ad.DEL_QUEUE_DURATION' );
-        $c->addSelectColumn( 'ad.DEL_DELAY_DURATION' );
-        $c->addSelectColumn( 'ad.DEL_STARTED' );
-        $c->addSelectColumn( 'ad.DEL_FINISHED' );
-        $c->addSelectColumn( 'ad.DEL_DELAYED' );
-        $c->addSelectColumn( 'ad.APP_OVERDUE_PERCENTAGE' );
+        $c->addSelectColumn("ad.DEL_INDEX");
+        $c->addSelectColumn("ad.DEL_PREVIOUS");
+        $c->addSelectColumn("ad.TAS_UID");
+        $c->addSelectColumn("ad.USR_UID");
+        $c->addSelectColumn("ad.DEL_TYPE");
+        $c->addSelectColumn("ad.DEL_THREAD");
+        $c->addSelectColumn("ad.DEL_THREAD_STATUS");
+        $c->addSelectColumn("ad.DEL_PRIORITY");
+        $c->addSelectColumn("ad.DEL_DELEGATE_DATE");
+        $c->addSelectColumn("ad.DEL_INIT_DATE");
+        $c->addSelectColumn("ad.DEL_TASK_DUE_DATE");
+        $c->addSelectColumn("ad.DEL_FINISH_DATE");
+        $c->addSelectColumn("ad.DEL_DURATION");
+        $c->addSelectColumn("ad.DEL_QUEUE_DURATION");
+        $c->addSelectColumn("ad.DEL_DELAY_DURATION");
+        $c->addSelectColumn("ad.DEL_STARTED");
+        $c->addSelectColumn("ad.DEL_FINISHED");
+        $c->addSelectColumn("ad.DEL_DELAYED");
+        $c->addSelectColumn("ad.APP_OVERDUE_PERCENTAGE");
 
-        $c->addSelectColumn( 'at.APP_THREAD_INDEX' );
-        $c->addSelectColumn( 'at.APP_THREAD_PARENT' );
-        $c->addSelectColumn( 'at.APP_THREAD_STATUS' );
+        $c->addSelectColumn("at.APP_THREAD_INDEX");
+        $c->addSelectColumn("at.APP_THREAD_PARENT");
+        $c->addSelectColumn("at.APP_THREAD_STATUS");
 
-        $c->addAlias( 'capp', 'CONTENT' );
-        $c->addAlias( 'cpro', 'CONTENT' );
-        $c->addAlias( 'ad', 'APP_DELEGATION' );
-        $c->addAlias( 'at', 'APP_THREAD' );
+        $c->addAsColumn("APPDELY_APP_DELAY_UID", "appDely.APP_DELAY_UID");
+        $c->addAsColumn("APPDELY_APP_TYPE", "appDely.APP_TYPE");
+        $c->addAsColumn("APPDELY_APP_DISABLE_ACTION_USER", "appDely.APP_DISABLE_ACTION_USER");
 
-        $aConditions = array ();
-        $aConditions[] = array (ApplicationPeer::APP_UID,'capp.CON_ID'
-        );
-        $aConditions[] = array ('capp.CON_CATEGORY',DBAdapter::getStringDelimiter() . 'APP_TITLE' . DBAdapter::getStringDelimiter()
-        );
-        $aConditions[] = array ('capp.CON_LANG',DBAdapter::getStringDelimiter() . 'en' . DBAdapter::getStringDelimiter()
-        );
-        $c->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
+        $c->addAsColumn("PRO_CATEGORY_UID", "pro.PRO_CATEGORY");
 
-        $aConditions = array ();
-        $aConditions[] = array (ApplicationPeer::PRO_UID,'cpro.CON_ID'
-        );
-        $aConditions[] = array ('cpro.CON_CATEGORY',DBAdapter::getStringDelimiter() . 'PRO_TITLE' . DBAdapter::getStringDelimiter()
-        );
-        $aConditions[] = array ('cpro.CON_LANG',DBAdapter::getStringDelimiter() . 'en' . DBAdapter::getStringDelimiter()
-        );
-        $c->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
+        $c->addAlias("capp", "CONTENT");
+        $c->addAlias("cpro", "CONTENT");
+        $c->addAlias("ad", "APP_DELEGATION");
+        $c->addAlias("at", "APP_THREAD");
+        $c->addAlias("appDely", "APP_DELAY");
+        $c->addAlias("pro", "PROCESS");
 
-        $c->addJoin( ApplicationPeer::APP_UID, 'ad.APP_UID', Criteria::JOIN );
+        $arrayCondition = array();
+        $arrayCondition[] = array(ApplicationPeer::APP_UID, "capp.CON_ID");
+        $arrayCondition[] = array("capp.CON_CATEGORY", DBAdapter::getStringDelimiter() . "APP_TITLE" . DBAdapter::getStringDelimiter());
+        $arrayCondition[] = array("capp.CON_LANG", DBAdapter::getStringDelimiter() . "en" . DBAdapter::getStringDelimiter());
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
-        $aConditions = array ();
-        $aConditions[] = array ('ad.APP_UID','at.APP_UID'
-        );
-        $aConditions[] = array ('ad.DEL_THREAD','at.APP_THREAD_INDEX'
-        );
-        $c->addJoinMC( $aConditions, Criteria::JOIN );
+        $arrayCondition = array();
+        $arrayCondition[] = array(ApplicationPeer::PRO_UID, "cpro.CON_ID");
+        $arrayCondition[] = array("cpro.CON_CATEGORY", DBAdapter::getStringDelimiter() . "PRO_TITLE" . DBAdapter::getStringDelimiter());
+        $arrayCondition[] = array("cpro.CON_LANG", DBAdapter::getStringDelimiter() . "en" . DBAdapter::getStringDelimiter());
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
-        $c->add( ApplicationPeer::APP_UID, $aaAppUIDs, Criteria::IN );
+        $c->addJoin(ApplicationPeer::APP_UID, "ad.APP_UID", Criteria::JOIN);
 
-        $rs = ApplicationPeer::doSelectRS( $c );
-        $rs->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $arrayCondition = array();
+        $arrayCondition[] = array("ad.APP_UID", "at.APP_UID");
+        $arrayCondition[] = array("ad.DEL_THREAD", "at.APP_THREAD_INDEX");
+        $c->addJoinMC($arrayCondition, Criteria::JOIN);
 
-        $rs->next();
-        $row = $rs->getRow();
+        $arrayCondition = array();
+        $arrayCondition[] = array("ad.APP_UID", "appDely.APP_UID");
+        $arrayCondition[] = array("ad.DEL_INDEX", "appDely.APP_DEL_INDEX");
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
-        while (is_array( $row )) {
-            $allAppDbData[] = $row;
-            $rs->next();
+        $arrayCondition = array();
+        $arrayCondition[] = array(ApplicationPeer::PRO_UID, "pro.PRO_UID");
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $c->add(ApplicationPeer::APP_UID, $aaAppUIDs, Criteria::IN);
+
+        $rs = ApplicationPeer::doSelectRS($c);
+        $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        while ($rs->next()) {
             $row = $rs->getRow();
+
+            $allAppDbData[] = $row;
         }
+
         return $allAppDbData;
     }
 

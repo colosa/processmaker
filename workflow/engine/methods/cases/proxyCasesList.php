@@ -20,15 +20,23 @@ try {
     $userUid = (isset($_SESSION["USER_LOGGED"]) && $_SESSION["USER_LOGGED"] != "")? $_SESSION["USER_LOGGED"] : null;
     $result = "";
 
+    switch ($action) {
+        case "search":
+        case "to_reassign":
+            $user = ($user == "CURRENT_USER")? $userUid : $user;
+            $userUid = $user;
+            break;
+        default:
+            break;
+    }
+
     if ((
-        $action == "todo" || $action == "draft" || $action == "sent" || $action == "selfservice" ||
-        $action == "unassigned" || $action == "search"
+        $action == "todo" || $action == "draft" || $action == "paused" || $action == "sent" ||
+        $action == "selfservice" || $action == "unassigned" || $action == "search"
         ) &&
         (($solrConf = System::solrEnv()) !== false)
     ) {
         G::LoadClass("AppSolr");
-
-        $user = ($user == "CURRENT_USER")? $userUid : $user;
 
         $ApplicationSolrIndex = new AppSolr(
             $solrConf["solr_enabled"],
@@ -44,29 +52,19 @@ try {
             $filter,
             $search,
             $process,
-            $user, //delete
             $status,
             $type,
             $dateFrom,
             $dateTo,
             $callback,
             $dir,
-            $sort
+            $sort,
+            $category
         );
 
         $result = G::json_encode($data);
     } else {
         G::LoadClass("applications");
-
-        switch ($action) {
-            case "search":
-            case "to_reassign":
-                $user = ($user == "CURRENT_USER")? $userUid : $user;
-                $userUid = $user;
-                break;
-            default:
-                break;
-        }
 
         $apps = new Applications();
         $data = $apps->getAll(
