@@ -14,6 +14,9 @@ if( isset($request) ){
       }
 
       if (is_array($_SESSION[$_POST["formID"]][$_POST["gridname"]])) {
+          if (!is_array($_SESSION[$_POST["formID"]][$_POST["gridname"]])) {
+              $_SESSION[$_POST["formID"]][$_POST["gridname"]] = (array)$_SESSION[$_POST["formID"]][$_POST["gridname"]];
+          }
           ksort($_SESSION[$_POST["formID"]][$_POST["gridname"]]);
           $oFields = array();
           $initialKey = 1;
