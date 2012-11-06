@@ -150,6 +150,7 @@ class AppSolr
     private $_solrHost = "";
     private $_solrInstance = "";
     private $debug = false; //false
+    private $debugAppInfo = false;
 
 
     public function __construct ($SolrEnabled, $SolrHost, $SolrInstance)
@@ -1401,6 +1402,10 @@ class AppSolr
         }
 
         if ($this->debug) {
+            $this->getApplicationDataDBTime = 0;
+            $this->getPreparedApplicationDataDBTime = 0;
+            $this->getBuilXMLDocTime = 0;
+       
             $this->beforeCreateSolrXMLDocTime = microtime( true );
         }
         // create XML document
@@ -1426,7 +1431,7 @@ class AppSolr
                 $this->afterUpdateSolrXMLDocTime = microtime( true );
             }
             // commit changes
-            $oSearchIndex->commitIndexChanges( $this->_solrInstance );
+            //$oSearchIndex->commitIndexChanges( $this->_solrInstance );
 
         } catch (Exception $ex) {
             //print "Excepcion indexing data: " . $ex->getMessage() . "\n"; die;
@@ -1435,12 +1440,34 @@ class AppSolr
             fclose( $fh );
         }
         if ($this->debug) {
+
+            $fh = fopen("SolrIndexTime.txt", 'a') or die("can't open file to store Solr index time.");
+            //fwrite($fh, sprintf("Solr Query time: %s DB Query time: %s Prepare result time: %s \n", gmdate ('H:i:s:u', ($this->afterSolrQueryTime - $this->initTimeAll)), gmdate ('H:i:s:u', ($this->afterDbQueryTime - $this->afterSolrQueryTime)), gmdate ('H:i:s:u', ($this->afterPrepareResultTime - $this->afterDbQueryTime))  ));
+            $trunkSize = count($aaAPPUIDs);
+            $this->trunkSizeAcumulated += $trunkSize;
+            $this->totalTimeAcumulated += ($this->afterUpdateSolrXMLDocTime - $this->beforeCreateSolrXMLDocTime);
+
+            //Solr App trunk size| Get Data from DB (s)| Prepare DB data (s) | Create XML file (s)| Create XML Document total (s)| Update Solr Document (s)
+            fwrite($fh, sprintf("%s|%s|%s|%s|%s|%s|%s|%s\r\n", 
+              $this->trunkSizeAcumulated,
+              $this->totalTimeAcumulated,
+              $this->getApplicationDataDBTime, 
+              $this->getPreparedApplicationDataDBTime, 
+              $this->getBuilXMLDocTime,
+              ($this->afterCreateSolrXMLDocTime - $this->beforeCreateSolrXMLDocTime), 
+              ($this->afterUpdateSolrXMLDocTime - $this->afterCreateSolrXMLDocTime),
+              ($this->afterUpdateSolrXMLDocTime - $this->beforeCreateSolrXMLDocTime)
+              ));
+
+            fclose($fh);
+
+            /*
             $this->afterCommitSolrDocTime = microtime( true );
 
             $fh = fopen( "SolrIndexTime.txt", 'a' ) or die( "can't open file to store Solr index time." );
             //fwrite($fh, sprintf("Solr Query time: %s DB Query time: %s Prepare result time: %s \n", gmdate ('H:i:s:u', ($this->afterSolrQueryTime - $this->initTimeAll)), gmdate ('H:i:s:u', ($this->afterDbQueryTime - $this->afterSolrQueryTime)), gmdate ('H:i:s:u', ($this->afterPrepareResultTime - $this->afterDbQueryTime))  ));
             fwrite( $fh, sprintf( "Solr Create XML Document time: %s Update Solr Document time: %s Commit Solr Changes time: %s Total:%s \r\n", ($this->afterCreateSolrXMLDocTime - $this->beforeCreateSolrXMLDocTime), ($this->afterUpdateSolrXMLDocTime - $this->afterCreateSolrXMLDocTime), ($this->afterCommitSolrDocTime - $this->afterUpdateSolrXMLDocTime), ($this->afterCommitSolrDocTime - $this->beforeCreateSolrXMLDocTime) ) );
-            fclose( $fh );
+            fclose( $fh );*/
         }
     }
 
@@ -1486,11 +1513,12 @@ class AppSolr
     {
         if ($this->debug) {
             $this->getApplicationDataDBTime = 0;
-            $this->getBuilXMLDocTime = 0;
+            $this->getPreparedApplicationDataDBTime = 0;
+            $this->getBuilXMLDocTime = 0;            
         }
         // search data from DB
         $xmlDoc = "<?xml version='1.0' encoding='UTF-8'?>\n";
-        $xmlDoc .= "<add>\n";
+        $xmlDoc .= "<add commitWithin='5000'>\n";
 
         //get all application data from DB of all applications and delegations
         $aAPPUIDs = array ();
@@ -1502,8 +1530,8 @@ class AppSolr
         }
         $aaAllAppDelData = $this->getListApplicationUpdateDelegationData( $aAPPUIDs );
         if ($this->debug) {
-            $this->afterGetApplicationDataDBTime = microtime( true );
-
+            $this->afterGetApplicationDataDBTime = microtime (true);
+          
             $this->getApplicationDataDBTime = $this->afterGetApplicationDataDBTime - $this->beforeGetApplicationDataDBTime;
         }
         foreach ($aaAPPUIDs as $aAPPUID) {
@@ -1525,9 +1553,10 @@ class AppSolr
                 $result = $this->getApplicationIndexData( $aAPPUID['APP_UID'], $aaAppData );
 
                 if ($this->debug) {
-                    $this->afterPrepareApplicationDataDBTime = microtime( true );
-
-                    $this->getPreparedApplicationDataDBTime = $this->afterPrepareApplicationDataDBTime - $this->beforePrepareApplicationDataDBTime;
+                
+                  $this->afterPrepareApplicationDataDBTime = microtime (true);
+                
+                  $this->getPreparedApplicationDataDBTime += $this->afterPrepareApplicationDataDBTime - $this->beforePrepareApplicationDataDBTime;                    
                 }
 
             } catch (ApplicationWithoutDelegationRecordsException $ex) {
@@ -1544,7 +1573,7 @@ class AppSolr
                 continue;
             } catch (Exception $ex) {
                 $fh = fopen( "./SolrIndexErrors.txt", 'a' ) or die( "can't open file to store Solr index errors." );
-                fwrite( $fh, "getApplicationIndexData " . $aAPPUID . ":" . $ex->getMessage() . "\n" );
+                fwrite( $fh, "getApplicationIndexData " . $aAPPUID['APP_UID'] . ":" . $ex->getMessage() . "\n" );
                 fclose( $fh );
                 continue;
             }
@@ -1587,9 +1616,9 @@ class AppSolr
                 );
 
                 if ($this->debug) {
-                    $this->afterBuilXMLDocTime = microtime( true );
-
-                    $this->getBuilXMLDocTime += $this->afterBuilXMLDocTime - $this->afterGetApplicationDataDBTime;
+                    $this->afterBuilXMLDocTime = microtime (true);
+                    
+                    $this->getBuilXMLDocTime += $this->afterBuilXMLDocTime - $this->afterPrepareApplicationDataDBTime;                   
                 }
             } catch (ApplicationAPP_DATAUnserializeException $ex) {
                 // exception trying to get application information
@@ -1600,20 +1629,31 @@ class AppSolr
                 continue;
             } catch (Exception $ex) {
                 $fh = fopen( "./SolrIndexErrors.txt", 'a' ) or die( "can't open file to store Solr index errors." );
-                fwrite( $fh, "buildSearchIndexDocumentPMOS2 " . $aAPPUID . ":" . $ex->getMessage() . "\n" );
+                fwrite( $fh, "buildSearchIndexDocumentPMOS2 " . $aAPPUID['APP_UID'] . ":" . $ex->getMessage() . "\n" );
                 fclose( $fh );
                 continue;
             }
 
-        }
+          if($this->debugAppInfo)
+          {
+            $fh = fopen("SolrAPPUIDIndexSize.txt", 'a') or die("can't open file to store Solr index time.");
+            //fwrite($fh, sprintf("APP UID %s => doc size: %s\r\n", 
+            //  $aAPPUID['APP_UID'], strlen($xmlCurrentDoc)));
+            fwrite($fh, sprintf("%s|%s|%s\r\n", 
+              $documentInformation ['APP_NUMBER'], $aAPPUID['APP_UID'], strlen($xmlCurrentDoc)));
+            fclose($fh);
+          }            
+
+        }//end foreach
 
         $xmlDoc .= "</add>\n";
 
+        /*
         if ($this->debug) {
             $fh = fopen( "SolrIndexTime.txt", 'a' ) or die( "can't open file to store Solr index time." );
             fwrite( $fh, sprintf( "Get Data DB time: %s Prepare DB data Time: %s Create XML file time: %s \r\n", $this->getApplicationDataDBTime, $this->getPreparedApplicationDataDBTime, $this->getBuilXMLDocTime ) );
             fclose( $fh );
-        }
+        }*/
 
         return $xmlDoc;
     }
