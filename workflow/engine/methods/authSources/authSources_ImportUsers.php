@@ -27,8 +27,11 @@ if ($RBAC->userCanAccess( 'PM_SETUP_ADVANCE' ) != 1) {
     G::header( 'location: ../login/login' );
     die();
 }
-
 $aFields = $RBAC->getAuthSource( $_POST['form']['AUTH_SOURCE_UID'] );
+$aAttributes = array();
+if (isset($aFields['AUTH_SOURCE_DATA']['AUTH_SOURCE_GRID_ATTRIBUTE'])) {
+    $aAttributes = $aFields['AUTH_SOURCE_DATA']['AUTH_SOURCE_GRID_ATTRIBUTE'];    
+}
 
 G::LoadThirdParty( 'pear/json', 'class.json' );
 $oJSON = new Services_JSON();
@@ -64,6 +67,14 @@ foreach ($_POST['aUsers'] as $sUser) {
     $aData['USR_UID'] = $sUserUID;
     $aData['USR_PASSWORD'] = md5( $sUserUID ); //fake :p
     $aData['USR_ROLE'] = 'PROCESSMAKER_OPERATOR';
+
+    if (count($aAttributes)) {
+        foreach ($aAttributes as $value) {
+            if (isset($aUser[$value['attributeUser']])) {
+                $aData[$value['attributeUser']] = str_replace( "*", "'", $aUser[$value['attributeUser']] );
+            }
+        }
+    }
     require_once 'classes/model/Users.php';
     $oUser = new Users();
     $oUser->create( $aData );

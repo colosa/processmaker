@@ -218,7 +218,6 @@ class RBAC
     {
         $result = - 1; //default return value,
 
-
         foreach ($this->aRbacPlugins as $sClassName) {
             $plugin = new $sClassName();
             if (method_exists( $plugin, 'automaticRegister' )) {
@@ -283,8 +282,9 @@ class RBAC
                 $plugin = new $sClassName();
                 $plugin->sAuthSource = $aUserFields["UID_AUTH_SOURCE"];
                 $plugin->sSystem = $this->sSystem;
-                $bValidUser = $plugin->VerifyLogin( $aUserFields["USR_AUTH_USER_DN"], $strPass );
 
+                $bValidUser = false;
+                $bValidUser = $plugin->VerifyLogin( $aUserFields["USR_AUTH_USER_DN"], $strPass );
                 if ($bValidUser === true) {
                     return ($aUserFields['USR_UID']);
                 } else {
@@ -335,9 +335,9 @@ class RBAC
         if (isset( $this->userObj->fields['USR_AUTH_TYPE'] )) {
             $sAuthType = strtolower( $this->userObj->fields['USR_AUTH_TYPE'] );
         }
-
-            //Hook for RBAC plugins
+        //Hook for RBAC plugins
         if ($sAuthType != "mysql" && $sAuthType != "") {
+
             $res = $this->VerifyWithOtherAuthenticationSource( $sAuthType, $this->userObj->fields, $strPass );
             return $res;
         } else {

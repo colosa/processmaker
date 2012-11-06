@@ -53,7 +53,19 @@ if (is_array( $fields['AUTH_SOURCE_DATA'] )) {
         $fields[$field] = $value;
     }
 }
+$fields['AUTH_SOURCE_SHOWGRID_FLAG'] = 0;
+if (isset($fields['AUTH_SOURCE_DATA']['AUTH_SOURCE_SHOWGRID']) && $fields['AUTH_SOURCE_DATA']['AUTH_SOURCE_SHOWGRID'] == 'on') {
+    $fields['AUTH_SOURCE_SHOWGRID_FLAG'] = 1;    
+}
 unset( $fields['AUTH_SOURCE_DATA'] );
+
+$textAttribute = '';
+if (isset($fields['AUTH_SOURCE_GRID_ATTRIBUTE']) && count($fields['AUTH_SOURCE_GRID_ATTRIBUTE'])) {
+    foreach ($fields['AUTH_SOURCE_GRID_ATTRIBUTE'] as $value) {
+        $textAttribute .= '|' . $value['attributeLdap'] . '/' . $value['attributeUser'];
+    }
+}
+$fields['AUTH_SOURCE_GRID_TEXT'] = $textAttribute;
 
 //fixing a problem with dropdown with int values,
 //the problem : the value was integer, but the dropdown was expecting a string value, and they returns always the first item of dropdown
@@ -73,6 +85,17 @@ if ($fields['AUTH_SOURCE_PROVIDER'] == 'ldap') {
 } else {
     if (file_exists( PATH_PLUGINS . $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml' )) {
         if (class_exists( $fields['AUTH_SOURCE_PROVIDER'] )) {
+            // The attributes the users
+            G::loadClass('pmFunctions');
+            $data = executeQuery('DESCRIBE USERS');
+            $fieldSet = array('USR_UID', 'USR_USERNAME', 'USR_PASSWORD', 'USR_EMAIL', 'USR_CREATE_DATE', 'USR_UPDATE_DATE', 'USR_STATUS', 'USR_COUNTRY', 'USR_CITY', 'USR_LOCATION', 'DEP_UID', 'USR_RESUME', 'USR_ROLE', 'USR_REPORTS_TO', 'USR_REPLACED_BY', 'USR_UX');
+            $attributes = '';
+            foreach ($data as $value) {
+                if (!(in_array($value['Field'], $fieldSet))) {
+                    $attributes .= $value['Field'] . '|';
+                }
+            }
+            $fields['AUTH_SOURCE_ATTRIBUTE_IDS'] = $attributes;
             $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml', '', $fields, '../authSources/authSources_Save' );
         } else {
             $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => G::LoadTranslation( 'ID_AUTH_SOURCE_MISSING' )
