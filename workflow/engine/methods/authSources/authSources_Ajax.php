@@ -45,8 +45,7 @@ try {
                 $dataset->next();
             }
 
-            $aFields = $RBAC->getAuthSource( $_POST['sUID'] );
-
+            $aFields = $RBAC->getAuthSource( $_POST['sUID'] );            
             G::LoadThirdParty( 'pear/json', 'class.json' );
             $oJSON = new Services_JSON();
             $i = 0;
@@ -130,8 +129,6 @@ try {
             echo '{sources: ' . G::json_encode( $aSources ) . ', total_sources: ' . $total_sources . '}';
             break;
         case 'canDeleteAuthSource':
-            //echo 'llego';
-            //require_once PATH_RBAC.'model/RbacUsers.php';
             try {
                 $authUID = $_POST['auth_uid'];
                 global $RBAC;

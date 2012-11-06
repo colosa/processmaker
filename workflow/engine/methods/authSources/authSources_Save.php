@@ -41,6 +41,13 @@ foreach ($_POST['form'] as $sField => $sValue) {
         $aData[$sField] = $sValue;
     }
 }
+unset($aData['AUTH_SOURCE_ATTRIBUTE_IDS']);
+unset($aData['AUTH_SOURCE_SHOWGRID_FLAG']);
+unset($aData['AUTH_SOURCE_GRID_TEXT']);
+if (!isset($aData['AUTH_SOURCE_SHOWGRID']) || $aData['AUTH_SOURCE_SHOWGRID'] == 'off') {
+    unset($aData['AUTH_SOURCE_GRID_ATTRIBUTE']);
+}
+
 $aFields['AUTH_SOURCE_DATA'] = $aData;
 
 if ($aFields['AUTH_SOURCE_UID'] == '') {
