@@ -419,37 +419,27 @@ class Configurations // extends Configuration
         }
     }
 
-    function getDateFormats ()
+    function getDateFormats()
     {
-        $formats[] = Array ('id' => 'Y-m-d H:i:s',        //the id , don't translate
-'name' => G::loadTranslation( 'ID_DATE_FORMAT_1' )  //'Y-m-d H:i:s'      i.e: '2010-11-17 10:25:07'
-        );
-        $formats[] = Array ('id' => 'd/m/Y','name' => G::loadTranslation( 'ID_DATE_FORMAT_2' )  //'d/m/Y'      i.e:'17/11/2010'
-        );
-        $formats[] = Array ('id' => 'm/d/Y','name' => G::loadTranslation( 'ID_DATE_FORMAT_3' )  //'m/d/Y'     i.e:'11/17/2010'
-        );
-        $formats[] = Array ('id' => 'Y/d/m','name' => G::loadTranslation( 'ID_DATE_FORMAT_4' )  //'Y/d/m'     i.e:'2010/17/11'
-        );
-        $formats[] = Array ('id' => 'Y/m/d','name' => G::loadTranslation( 'ID_DATE_FORMAT_5' )  //'Y/m/d'     i.e:'2010/11/17'
-        );
-        $formats[] = Array ('id' => 'F j, Y, g:i a','name' => G::loadTranslation( 'ID_DATE_FORMAT_6' )  //'F j, Y, g:i a'     i.e:'November 17, 2010, 10:45 am'
-        );
-        $formats[] = Array ('id' => 'm.d.y','name' => G::loadTranslation( 'ID_DATE_FORMAT_7' )  //'m.d.y'     i.e: '11.17.10'
-        );
-        $formats[] = Array ('id' => 'j, n, Y','name' => G::loadTranslation( 'ID_DATE_FORMAT_8' )  //'j, n, Y'     i.e:'17,11,2010'
-        );
-        $formats[] = Array ('id' => 'D M j G:i:s T Y','name' => G::loadTranslation( 'ID_DATE_FORMAT_9' )  //'D M j G:i:s T Y'     i.e:'Thu Nov 17 10:48:18 BOT 2010'
-        );
-        $formats[] = Array ('id' => 'D d M, Y','name' => G::loadTranslation( 'ID_DATE_FORMAT_10' )  //'D d M, Y'     i.e:'Thu 17 Nov, 2010'
-        );
-        $formats[] = Array ('id' => 'D M, Y','name' => G::loadTranslation( 'ID_DATE_FORMAT_11' )  //'D M, Y'     i.e:'Thu Nov, 2010'
-        );
-        $formats[] = Array ('id' => 'd M, Y','name' => G::loadTranslation( 'ID_DATE_FORMAT_12' )  //'d M, Y'     i.e:'17 Nov, 2010'
-        );
-        $formats[] = Array ('id' => 'd m, Y','name' => G::loadTranslation( 'ID_DATE_FORMAT_13' )  //'d m, Y'     i.e:'17 11, 2010'
-        );
+        $arrayFormat = array();
 
-        return $formats;
+        //The id, don't translate
+        $arrayFormat[] = array("id" => "Y-m-d H:i:s",     "name" => G::LoadTranslation("ID_DATE_FORMAT_1"));  //"Y-m-d H:i:s"     i.e: "2010-11-17 10:25:07"
+        $arrayFormat[] = array("id" => "d/m/Y",           "name" => G::LoadTranslation("ID_DATE_FORMAT_2"));  //"d/m/Y"           i.e: "17/11/2010"
+        $arrayFormat[] = array("id" => "m/d/Y",           "name" => G::LoadTranslation("ID_DATE_FORMAT_3"));  //"m/d/Y"           i.e: "11/17/2010"
+        $arrayFormat[] = array("id" => "Y/d/m",           "name" => G::LoadTranslation("ID_DATE_FORMAT_4"));  //"Y/d/m"           i.e: "2010/17/11"
+        $arrayFormat[] = array("id" => "Y/m/d",           "name" => G::LoadTranslation("ID_DATE_FORMAT_5"));  //"Y/m/d"           i.e: "2010/11/17"
+        $arrayFormat[] = array("id" => "F j, Y, g:i a",   "name" => G::LoadTranslation("ID_DATE_FORMAT_6"));  //"F j, Y, g:i a"   i.e: "November 17, 2010, 10:45 am"
+        $arrayFormat[] = array("id" => "m.d.y",           "name" => G::LoadTranslation("ID_DATE_FORMAT_7"));  //"m.d.y"           i.e: "11.17.10"
+        $arrayFormat[] = array("id" => "j, n, Y",         "name" => G::LoadTranslation("ID_DATE_FORMAT_8"));  //"j, n, Y"         i.e: "17,11,2010"
+        $arrayFormat[] = array("id" => "D M j G:i:s T Y", "name" => G::LoadTranslation("ID_DATE_FORMAT_9"));  //"D M j G:i:s T Y" i.e: "Thu Nov 17 10:48:18 BOT 2010"
+        $arrayFormat[] = array("id" => "D d M, Y",        "name" => G::LoadTranslation("ID_DATE_FORMAT_10")); //"D d M, Y"        i.e: "Thu 17 Nov, 2010"
+        $arrayFormat[] = array("id" => "D M, Y",          "name" => G::LoadTranslation("ID_DATE_FORMAT_11")); //"D M, Y"          i.e: "Thu Nov, 2010"
+        $arrayFormat[] = array("id" => "d M, Y",          "name" => G::LoadTranslation("ID_DATE_FORMAT_12")); //"d M, Y"          i.e: "17 Nov, 2010"
+        $arrayFormat[] = array("id" => "d m, Y",          "name" => G::LoadTranslation("ID_DATE_FORMAT_13")); //"d m, Y"          i.e: "17 11, 2010"
+        $arrayFormat[] = array("id" => "d.m.Y",           "name" => G::LoadTranslation("ID_DATE_FORMAT_14")); //"d.m.Y"           i.e: "17.11.2010"
+
+        return $arrayFormat;
     }
 
     function getUserNameFormats ()
