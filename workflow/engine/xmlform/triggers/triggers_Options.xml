@@ -15,6 +15,8 @@
 
 <triggersEditCustom type="private" defaultValue="../triggers/triggers_EditCustom"/>
 
+<triggerCopy type="private" defaultValue="../triggers/triggerCopy"/>
+
 <triggersDelete type="private" defaultValue="../triggers/triggers_Delete"/>
 
 <triggersProperties type="private" defaultValue="../triggers/triggersProperties"/>
@@ -29,7 +31,7 @@
 
 <triggerNewGoogleCreateEvent type="private" defaultValue="../triggers/triggers_CreateGoogleEvent"/>
 
-<PAGED_TABLE_ID type="private"/> 
+<PAGED_TABLE_ID type="private" />
 <PAGED_TABLE_FAST_SEARCH type="FastSearch" label="@G::LoadTranslation(ID_SEARCH)"/>
 
 <JS type="javascript" replaceTags="1">
@@ -44,6 +46,9 @@
 	  }
 	}
 */
+  var windowWidth = 600;
+  var windowHeight = 460;
+
   function triggerEditWizardSource (sUID){
     popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID=' + sUID +'&BYPASS=1' , 770, 510);
   }
@@ -51,23 +56,30 @@
   function triggerNew() {
     popupWindow('@G::LoadTranslation(ID_NEW_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?PRO_UID=@%PRO_UID' , 600, 340);
   }
-  function triggerNewCustom() {  
-    popupWindow('@G::LoadTranslation(ID_NEW_TRIGGERS)', '@G::encryptlink(@#triggersEditCustom)?PRO_UID=@%PRO_UID' , 600, 460);
+
+  function triggerNewCustom()
+  {
+      popupWindow("@G::LoadTranslation(ID_NEW_TRIGGERS)", "@G::encryptlink(@#triggersEditCustom)?PRO_UID=@%PRO_UID" , windowWidth, windowHeight);
   }
-  
+
+  function triggerCopy()
+  {
+      popupWindow("@G::LoadTranslation(ID_TRIGGER_COPY_TITLE)", "@G::encryptlink(@#triggerCopy)?PRO_UID=@%PRO_UID" , windowWidth, windowHeight);
+  }
+
   function triggerFromLibrary() {
-    popupWindow('@G::LoadTranslation(ID_NEW_TRIGGERS)', '@G::encryptlink(@#triggersOptionList)?PRO_UID=@%PRO_UID' , 600, 400);
+    popupWindow('@G::LoadTranslation(ID_NEW_TRIGGERS)', '@G::encryptlink(@#triggersOptionList)?PRO_UID=@%PRO_UID' , 600, 460);
     if (navigator.appName != "Microsoft Internet Explorer") {
       try {
         var oAllPs = document.querySelectorAll("div.panel_content___processmaker");
-        oAllPs[3].style.height = "340px";
+        oAllPs[3].style.height = "410px";
       }
       catch(e) {
         // nothing to do
       }
     }
   }
-  
+
   function triggerEdit(sUID) {
     popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID='+ sUID , 930, 600);
   }
@@ -75,18 +87,18 @@
   function triggerProperties( sUID ) {
     popupWindow('@G::LoadTranslation(ID_TRIGGERS)', '@G::encryptlink(@#triggersProperties)?TRI_UID='+ sUID , 600, 340);
   }
-  
+
   function triggerPropertiesSave( form ) {
-    var doc = getField("OUT_DOC_FILENAME");    
+    var doc = getField("OUT_DOC_FILENAME");
     if(doc.value=='')
      { alert(G_STRINGS.ID_FILEGENERATED);
      }
-    else  
+    else
      { ajax_post( form.action, form, 'POST' );
        currentPopupWindow.remove();
        @#PAGED_TABLE_ID.refresh();
-     }  
-  }  
+     }
+  }
 
   function triggerSave(form)
   {
@@ -94,7 +106,7 @@
     if(document.getElementById('TRI_UID')) {
         var triUid = document.getElementById('TRI_UID').value;
     }
-    var triTitle =document.getElementById('TRI_TITLE').value;   
+    var triTitle =document.getElementById('TRI_TITLE').value;
     if(triTitle==''){
       alert(G_STRINGS.ID_REQUIRED_NAME_TRIGGERS);return false;
     }
@@ -109,7 +121,7 @@
         }
     }
     if(triUid==''){
-        reqName=ajax_function("../triggers/triggers_Save",'lookforNameTrigger','NAMETRIGGER='+encodeURIComponent(triTitle)+'&proUid='+(document.getElementById('PRO_UID').value),'POST') ;  
+        reqName=ajax_function("../triggers/triggers_Save",'lookforNameTrigger','NAMETRIGGER='+encodeURIComponent(triTitle)+'&proUid='+(document.getElementById('PRO_UID').value),'POST') ;
         if(!reqName){
           alert(G_STRINGS.ID_EXIST_TRIGGERS);return false;
         }else{
@@ -123,22 +135,22 @@
       @#PAGED_TABLE_ID.refresh();
    }
   }
-  //with this function, we are removing the spaces after and before of a string 
-  String.prototype.trim = function() { 
-  return this.replace(/^\s+|\s+$/g, ""); 
+  //with this function, we are removing the spaces after and before of a string
+  String.prototype.trim = function() {
+  return this.replace(/^\s+|\s+$/g, "");
   };
   //for trigger no wizard
  function triggerSave1(form)
   {
-  var triUid = ""; 
+  var triUid = "";
   if(getField('TRI_UID')) {
     var triUid = getField('TRI_UID').value;
-  } 
-   if(triUid==''){  
-   var triTitle =getField('TRI_TITLE').value.trim();   
+  }
+   if(triUid==''){
+   var triTitle =getField('TRI_TITLE').value.trim();
    if(triTitle==''){
      alert(G_STRINGS.ID_REQUIRED_NAME_TRIGGERS);return false;
-   } 
+   }
    reqName=ajax_function("../triggers/triggers_Save",'lookforNameTrigger','NAMETRIGGER='+encodeURIComponent(triTitle)+'&proUid='+(getField('PRO_UID').value),'POST') ;
    if(!reqName){
      alert(G_STRINGS.ID_EXIST_TRIGGERS);return false;
@@ -157,7 +169,7 @@
 
   function triggerDelete(sUID) {
     var validateResult;
-    
+
     oRPC = XHRequest();
     oRPC.options = {
       url   : '../triggers/triggers_Ajax',
@@ -184,11 +196,11 @@
     }.extend(this);
     oRPC.make();
   }
-  
+
   function triggerNewWizard(nameFunction, library) {//alert('@G::encryptlink(@#triggerNewWizard)?PRO_UID=@%PRO_UID&amp;NAME_FUN='+nameFunction+'&amp;	PARAMETERS_FUN='+parametersFunct+'&amp;PAGED_TABLE_ID='+@#PAGED_TABLE_ID);return;
     popupWindow('@G::LoadTranslation(ID_NEW_TRIGGERS)', '@G::encryptlink(@#triggerNewWizard)?PRO_UID=@%PRO_UID&NAME_FUN='+nameFunction+'&LIBRARY='+library+'&PAGED_TABLE_ID='+@#PAGED_TABLE_ID , 600, 600);
   }
-  
+
 ]]>
 </JS>
 

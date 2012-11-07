@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dynaForm mode="edit" width="100%" labelWidth="28%" enableTemplate="1">
+<PRO_UID type="hidden"/>
+<TRI_UID type="hidden"/>
+<TRI_PARAM type="hidden"/>
+<TRI_TYPE type="hidden"/>
+<FIELDS_REQUIRED type="hidden"/>
+
+<LANG type="private"/>
+
+<LBLTITLE1 type="title">
+    <en>Trigger Information</en>
+</LBLTITLE1>
+
+<PROCESS_UID type="dropdown" dependentfields="TRIGGER_UID">
+    SELECT PRO.PRO_UID, CON.CON_VALUE
+    FROM   PROCESS AS PRO, CONTENT AS CON
+    WHERE  PRO.PRO_UID = CON.CON_ID AND CON.CON_CATEGORY = 'PRO_TITLE' AND CON.CON_LANG = '@#LANG'
+    ORDER BY CON.CON_VALUE ASC
+
+    <en>
+        Process
+        <option name="">- Select a process -</option>
+    </en>
+</PROCESS_UID>
+
+<TRIGGER_UID type="dropdown" dependentfields="TRI_DESCRIPTION,TRI_WEBBOT">
+    SELECT TGR.TRI_UID, CON.CON_VALUE
+    FROM   TRIGGERS AS TGR, CONTENT AS CON
+    WHERE  TGR.PRO_UID = '@#PROCESS_UID' AND
+           TGR.TRI_UID = CON.CON_ID AND CON.CON_CATEGORY = 'TRI_TITLE' AND CON.CON_LANG = '@#LANG'
+    ORDER BY CON.CON_VALUE ASC
+
+    <en>
+        Trigger
+        <option name="">- Select a trigger -</option>
+    </en>
+</TRIGGER_UID>
+
+<TRI_TITLE type="text" size="70" maxlength="100" required="1">
+    <en>Title of the new trigger</en>
+</TRI_TITLE>
+
+<TRI_DESCRIPTION type="textarea" rows="3" cols="67">
+    SELECT CON.CON_VALUE
+    FROM   CONTENT AS CON
+    WHERE  CON.CON_ID = '@#TRIGGER_UID' AND CON.CON_CATEGORY = 'TRI_DESCRIPTION' AND CON.CON_LANG = '@#LANG'
+
+    <en>Description of the new trigger</en>
+</TRI_DESCRIPTION>
+
+<TRI_WEBBOT type="textarea" rows="10" cols="67" readonly="1">
+    SELECT TGR.TRI_WEBBOT
+    FROM   TRIGGERS AS TGR
+    WHERE  TGR.TRI_UID = '@#TRIGGER_UID'
+
+    <en>Script</en>
+</TRI_WEBBOT>
+
+<BTNCOPYSAVE type="button" onclick="triggerSave1(this.form);">
+    <en>Copy/Import and Save</en>
+</BTNCOPYSAVE>
+
+<BTNCANCEL type="button" onclick="cancel(); triggerFromLibrary();">
+    <en>Cancel</en>
+</BTNCANCEL>
+
+<JS type="javascript">
+    <![CDATA[
+    function cancel()
+    {
+        currentPopupWindow.remove();
+    }
+
+    var cboTriggerUid = getField("TRIGGER_UID");
+    var txtTgrTitle = getField("TRI_TITLE");
+
+    leimnud.event.add(
+        getField("PROCESS_UID"),
+        "change",
+        function ()
+        {
+            txtTgrTitle.value = "";
+        }
+    );
+
+    leimnud.event.add(
+        cboTriggerUid,
+        "change",
+        function ()
+        {
+            txtTgrTitle.value = "";
+
+            if (cboTriggerUid.value != "") {
+                txtTgrTitle.value = cboTriggerUid.options[cboTriggerUid.selectedIndex].text;
+            }
+        }
+    );
+
+    txtTgrTitle.form.onsubmit = function () { return false; };
+    ]]>
+</JS>
+</dynaForm>
+

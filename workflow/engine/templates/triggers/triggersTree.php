@@ -24,54 +24,59 @@
  */
 
 try {
-	G::LoadClass ( 'tree' );
-	
-	G::LoadClass ( 'triggerLibrary' );
-	$triggerLibrary = triggerLibrary::getSingleton ();	
-	$triggerLibraryO = $triggerLibrary->getRegisteredClasses ();	
-	$oTree = new Tree ( );
-	$oTree->nodeType = 'blank';
-	$oTree->name = 'Triggers';
-	$oTree->showSign = false;
-	
-	$oNode = & $oTree->addChild ( 'TRI_CUSTOM', '&nbsp;&nbsp;<table border="0" cellpadding="0" cellspacing="0"><tr><td nowrap valign="top"><span onclick="currentPopupWindow.remove();triggerNewCustom();" style="cursor: pointer;" >' . "<img src='/images/50px-Edit.png' width='15px' heigth='15px' valing='middle'>&nbsp;&nbsp;<b>" .G::LoadTranslation('ID_CUSTOM_TRIGGER')  . "&nbsp;</b></td></tr><tr><td class=''><span onclick='currentPopupWindow.remove();triggerNewCustom();' style='cursor: pointer;' ><small><i>".G::LoadTranslation('ID_CUSTOM_TRIGGER_DESCRIPTION')."</i></small></span></td></tr></table>", array ('nodeType' => 'parent' ) );
-	
-	$triggerLibraryOCount=count($triggerLibraryO);
-	foreach ( $triggerLibraryO as $keyLibrary => $libraryObj ) {
-		$libraryName = $libraryObj->info ['name'];
-		$libraryIcon = isset ( $libraryObj->info ['icon'] ) && ($libraryObj->info ['icon'] != "") ? $libraryObj->info ['icon'] : "/images/browse.gif";
-		$libraryDescription = trim ( str_replace ( "*", "", implode ( " ", $libraryObj->info ['description'] ) ) );
-		$triggerCount = count ( $libraryObj->methods );
-		if ($triggerCount > 0) {
-			//Sort alpha
-			ksort($libraryObj->methods,SORT_STRING);
-			//Now the Triggers
-			//Library Father (Name + Description)
-			$oNode = & $oTree->addChild ( $keyLibrary, '&nbsp;&nbsp;<table border="0" cellpadding="0" cellspacing="0"><tr><td nowrap valign="top"><span onclick="tree.expand(this.parentNode);" style="cursor: pointer;" >' . "<img src='" . $libraryIcon . "' width='15px' heigth='15px' valing='middle'>&nbsp;&nbsp;<b>" . $libraryName . "&nbsp;($triggerCount)</b></td></tr><tr><td class=''><span onclick='tree.expand(this.parentNode);' style='cursor: pointer;' ><small><i>$libraryDescription</i></small></span></td></tr></table>", array ('nodeType' => 'parent' ) );
-			$oNode->contracted = $triggerLibraryOCount==1?false:true;
-			//Library Childs (available methods)
-			foreach ( $libraryObj->methods as $methodName => $methodObject ) {
-				
-				$methodName = $methodObject->info ['name'];
-				$methodLabel = $methodObject->info ['label'];
-				$methodDescription = trim ( str_replace ( "*", "", implode ( " ", $methodObject->info ['description'] ) ) );
-				
-				$oAux1 = & $oNode->addChild ( $keyLibrary . "-" . $methodName, '<table><tr><td nowrap ><span style="cursor: pointer;">' . " <a class='linkInBlue' href='#' onclick='currentPopupWindow.remove();triggerNewWizard( \"$methodName\" , \"$keyLibrary\" );return;'> " . $methodLabel . ' (' . $methodName . ')' . '</a></span></td></tr><tr><td><i>' . $methodDescription . '</i><br></span></td></tr></table>', array ('nodeType' => 'child' ) );
-				//$oAux1->plus       = "<span  style='cursor:pointer;display:block;width:15;height:10px;' onclick='tree.expand(this.parentNode);'></span>";
-			
+    G::LoadClass("tree");
+    G::LoadClass("triggerLibrary");
 
-			//$oAux2             =& $oAux1->addChild($keyLibrary."-".$methodName."-desc", "$methodParameters", array('nodeType'=>'parent'));
-			
+    $triggerLibrary = triggerLibrary::getSingleton();
+    $triggerLibraryO = $triggerLibrary->getRegisteredClasses();
 
-			}
-		}
-	
-	}
-	echo $oTree->render ();
+    $oTree = new Tree();
+    $oTree->nodeType = "blank";
+    $oTree->name = "Triggers";
+    $oTree->showSign = false;
 
+    $div1Style = (strpos($_SERVER["HTTP_USER_AGENT"], "MSIE") !== false)? " style=\"margin-top: 0.65em;\"" : null;
 
-} catch ( Exception $oException ) {
-	die ( $oException->getMessage () );
+    $oNode = &$oTree->addChild("TRI_CUSTOM", "<div" . $div1Style . "><span onclick=\"currentPopupWindow.remove(); triggerNewCustom();\" style=\"cursor: pointer;\"><img src=\"/images/50px-Edit.png\" width=\"15px\" heigth=\"15px\" valing=\"middle\" alt=\"\" />&nbsp;&nbsp;<strong>" . G::LoadTranslation("ID_CUSTOM_TRIGGER") . "</strong></span><br /><span onclick=\"currentPopupWindow.remove(); triggerNewCustom();\" style=\"cursor: pointer;\"><small><em>" . G::LoadTranslation("ID_CUSTOM_TRIGGER_DESCRIPTION") . "</em></small></span></div>", array("nodeType" => "parent"));
+    $oNode = &$oTree->addChild("TRI_COPY",   "<div style=\"margin-top: 1.25em;\"><span onclick=\"currentPopupWindow.remove(); triggerCopy();\" style=\"cursor: pointer;\"><img src=\"/images/documents/_editcopy.png\" width=\"15px\" heigth=\"15px\" valing=\"middle\" alt=\"\" />&nbsp;&nbsp;<strong>" . G::LoadTranslation("ID_TRIGGER_COPY_OPTION") . "</strong></span><br /><span onclick=\"currentPopupWindow.remove(); triggerCopy();\" style=\"cursor: pointer;\"><small><em>" . G::LoadTranslation("ID_TRIGGER_COPY_OPTION_DESCRIPTION") . "</em></small></span></div>", array("nodeType" => "parent"));
+
+    $triggerLibraryOCount = count($triggerLibraryO);
+
+    foreach ($triggerLibraryO as $keyLibrary => $libraryObj) {
+        $libraryName = $libraryObj->info["name"];
+        $libraryIcon = (isset($libraryObj->info["icon"]) && ($libraryObj->info["icon"]!= ""))? $libraryObj->info["icon"] : "/images/browse.gif";
+        $libraryDescription = trim(str_replace("*", "", implode(" ", $libraryObj->info["description"])));
+        $triggerCount = count($libraryObj->methods);
+
+        if ($triggerCount > 0) {
+            //Sort alpha
+            ksort($libraryObj->methods, SORT_STRING);
+
+            //Now the Triggers
+            //Library Father (Name + Description)
+            $oNode = &$oTree->addChild($keyLibrary, "&nbsp;&nbsp;<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td nowrap=\"nowrap\" valign=\"top\"><span onclick=\"tree.expand(this.parentNode);\" style=\"cursor: pointer;\"><img src=\"" . $libraryIcon . "\" width=\"15px\" heigth=\"15px\" valing=\"middle\" alt=\"\" />&nbsp;&nbsp;<b>" . $libraryName . "&nbsp;($triggerCount)</b></td></tr><tr><td class=\"\"><span onclick=\"tree.expand(this.parentNode);\" style=\"cursor: pointer;\"><small><i>$libraryDescription</i></small></span></td></tr></table>", array("nodeType" => "parent"));
+            $oNode->contracted = ($triggerLibraryOCount == 1)? false : true;
+
+            //Library Childs (available methods)
+            foreach ($libraryObj->methods as $methodName => $methodObject) {
+                $methodName = $methodObject->info["name"];
+                $methodLabel = $methodObject->info["label"];
+                $methodDescription = trim(str_replace("*", "", implode(" ", $methodObject->info["description"])));
+
+                $oAux1 = &$oNode->addChild($keyLibrary . "-" . $methodName, "<table><tr><td nowrap=\"nowrap\"><span style=\"cursor: pointer;\"><a class=\"linkInBlue\" href=\"javascript:;\" onclick=\"currentPopupWindow.remove(); triggerNewWizard('$methodName' , '$keyLibrary'); return false;\">" . $methodLabel . " (" . $methodName . ")</a></span></td></tr><tr><td><i>" . $methodDescription . "</i><br></span></td></tr></table>", array("nodeType" => "child"));
+                //$oAux1->plus       = "<span  style='cursor:pointer;display:block;width:15;height:10px;' onclick='tree.expand(this.parentNode);'></span>";
+                //$oAux2             =& $oAux1->addChild($keyLibrary."-".$methodName."-desc", "$methodParameters", array('nodeType'=>'parent'));
+            }
+        }
+    }
+
+    error_log("\n*****\n", 3, "/home/victor/MyLog.log");
+    error_log(print_r($oTree, true), 3, "/home/victor/MyLog.log");
+
+    echo $oTree->render();
+} catch (Exception $e) {
+    die($e->getMessage());
 }
-unset ( $_SESSION ['PROCESS'] );
-?>
+
+unset($_SESSION["PROCESS"]);
+

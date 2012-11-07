@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <dynaForm name="triggersProperties" type="xmlform" width="100%" labelWidth="20%" enableTemplate="1">
 <PRO_UID type="hidden"/>
 <FIELDS_REQUIRED type="hidden"/>
@@ -19,7 +19,7 @@
   <en>Description</en>
 </TRI_DESCRIPTION>
 
-<TRI_WEBBOT type="textareapm" class="formLabel" cols="60" rows="15" width="100%" height="380px" showVars="1" process="@#PRO_UID">
+<TRI_WEBBOT type="textareapm" class="formLabel" cols="55" rows="13" width="100%" height="380px" showVars="1" process="@#PRO_UID">
 </TRI_WEBBOT>
 <SAVE type="button" onclick="triggerSave1(this.form);">
   <en>Save</en>

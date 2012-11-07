@@ -1,0 +1,62 @@
+  <form id="{$form_id}" name="" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit="return validateForm('{$form_objectRequiredFields}');">  <div class="borderForm" style="width:{$form_width}; padding-left:0; padding-right:0; border-width:{$form_border};">
+    <div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+    <div class="content" style="height:{$form_height};" >
+    <table width="99%">
+      <tr>
+        <td valign='top'>
+          <input type="hidden" class="notValidateThisFields" name="__notValidateThisFields__" id="__notValidateThisFields__" value="{$form_objectRequiredFields}" />
+          <input type="hidden" name="DynaformRequiredFields" id="DynaformRequiredFields" value="{$form_objectRequiredFields}" />
+          <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                                    <tr style="display: none">
+              <td colspan="2">{$form.PRO_UID}</td>
+            </tr>
+                                                <tr style="display: none">
+              <td colspan="2">{$form.TRI_UID}</td>
+            </tr>
+                                                <tr style="display: none">
+              <td colspan="2">{$form.TRI_PARAM}</td>
+            </tr>
+                                                <tr style="display: none">
+              <td colspan="2">{$form.TRI_TYPE}</td>
+            </tr>
+                                                <tr style="display: none">
+              <td colspan="2">{$form.FIELDS_REQUIRED}</td>
+            </tr>
+                                                                                    <tr>
+              <td class='FormTitle' colspan="2" align="">{$form.LBLTITLE1}</td>
+            </tr>
+                                                <tr>
+              <td class='FormLabel' width="{$form_labelWidth}">{$PROCESS_UID}</td>
+              <td class='FormFieldContent' width='{$form_fieldContentWidth}' >{$form.PROCESS_UID}</td>
+            </tr>
+                                                <tr>
+              <td class='FormLabel' width="{$form_labelWidth}">{$TRIGGER_UID}</td>
+              <td class='FormFieldContent' width='{$form_fieldContentWidth}' >{$form.TRIGGER_UID}</td>
+            </tr>
+                                                <tr>
+              <td class='FormLabel' width="{$form_labelWidth}"><font color="red">*  </font>{$TRI_TITLE}</td>
+              <td class='FormFieldContent' width='{$form_fieldContentWidth}' >{$form.TRI_TITLE}</td>
+            </tr>
+                                                <tr>
+              <td class='FormLabel' width="{$form_labelWidth}">{$TRI_DESCRIPTION}</td>
+              <td class='FormFieldContent' width='{$form_fieldContentWidth}' >{$form.TRI_DESCRIPTION}</td>
+            </tr>
+                                                <tr>
+              <td class='FormLabel' width="{$form_labelWidth}">{$TRI_WEBBOT}</td>
+              <td class='FormFieldContent' width='{$form_fieldContentWidth}' >{$form.TRI_WEBBOT}</td>
+            </tr>
+                                                <tr>
+              <td class='FormButton' colspan="2" align="center">{$form.BTNCOPYSAVE}&nbsp;{$form.BTNCANCEL}</td>
+            </tr>
+                                                                      </table>
+        </td>
+      </tr>
+    </table>
+    <div class="FormRequiredTextMessage"><font color="red">*  </font>Required Field</div>       </div>
+       <div class="boxBottom"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+       </div>
+                                                                                                                                                                                                                                                           <script type="text/javascript">
+             {$form.JS}
+           </script>
+                  </form>
+
