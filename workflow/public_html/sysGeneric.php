@@ -3,7 +3,7 @@
  * sysGeneric.php
  *
  * ProcessMaker Open Source Edition
- * Copyright (C) 2004 - 2008 Colosa Inc.23
+ * Copyright (C) 2004 - 2008 Colosa Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -27,8 +27,6 @@
  * sysGeneric - ProcessMaker Bootstrap
  * this file is used initialize main variables, redirect and dispatch all requests
  */
-
-  $startingTime = microtime(true);
 
   // Defining the PATH_SEP constant, he we are defining if the the path separator symbol will be '\\' or '/'
   define('PATH_SEP', '/');
@@ -81,22 +79,6 @@
   define ('MEMCACHED_SERVER',   $config['memcached_server']);
   define ('TIME_ZONE', $config['time_zone']);
 
-  // Verifiying permissions processmaker writable directories
-  $writableDirs = array(PATH_CONFIG, PATH_XMLFORM, PATH_HTML, PATH_PLUGINS);
-
-  if (defined('PATH_DATA')) {
-    $writableDirs[] = PATH_DATA;
-  }
-
-  try {
-    G::verifyWriteAccess($writableDirs);
-  }
-  catch (Exception $e) {
-    G::renderTemplate('write_access_denied.exception', array('files' => $e->files));
-    die();
-  }
-  // end permissions verification
-
   // IIS Compatibility, SERVER_ADDR doesn't exist on that env, so we need to define it.
   $_SERVER['SERVER_ADDR'] = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['SERVER_NAME'];
 
@@ -104,42 +86,6 @@
 
   define ('ERROR_SHOW_SOURCE_CODE', true);  // enable ERROR_SHOW_SOURCE_CODE to display the source code for any WARNING OR NOTICE
   //define ( 'ERROR_LOG_NOTICE_ERROR', true );  //enable ERROR_LOG_NOTICE_ERROR to log Notices messages in default apache log
-
-  // Create headPublisher singleton
-  G::LoadSystem('headPublisher');
-  $oHeadPublisher =& headPublisher::getSingleton();
-
-  // Defining the maborak js file, this file is the concat of many js files and here we are including all of them.
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/maborak.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/common.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/effects.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/webResource.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'dveditor/core/dveditor.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/tree/tree.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'json/core/json.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'form/core/form.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'form/core/pagedTable.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'grid/core/grid.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.panel.js'    , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.validator.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.app.js'      , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.rpc.js'      , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.fx.js'       , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.drag.js'     , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.drop.js'     , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.dom.js'      , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.abbr.js'     , true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.dashboard.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/js-calendar/js-calendar.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/suggest/bsn.AutoSuggest_2.1.3.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/tooltip/pmtooltip.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'thirdparty/krumo/krumo.js' );
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/calendar/pmcalendar.js' , true );
-  $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'cases/core/cases.js' , true );
-  $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'cases/core/cases_Step.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'processmap/core/processmap.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'appFolder/core/appFolderList.js', true );
-  $oHeadPublisher->addMaborakFile(PATH_THIRDPARTY    . 'htmlarea/editor.js', true );
 
   //check if it is a installation instance
   if(!defined('PATH_C')) {
@@ -167,19 +113,19 @@
   $virtualURITable['/gulliver/(*)']                  = PATH_GULLIVER_HOME . 'methods/';
   $virtualURITable['/controls/(*)']                  = PATH_GULLIVER_HOME . 'methods/controls/';
   $virtualURITable['/html2ps_pdf/(*)']               = PATH_THIRDPARTY . 'html2ps_pdf/';
-  $virtualURITable['/Krumo/(*)']                     = PATH_THIRDPARTY . 'krumo/';
-  //$virtualURITable['/codepress/(*)']                 = PATH_THIRDPARTY . 'codepress/';
   $virtualURITable['/images/']                       = 'errorFile';
   $virtualURITable['/skins/']                        = 'errorFile';
   $virtualURITable['/files/']                        = 'errorFile';
   $virtualURITable['/[a-zA-Z][a-zA-Z0-9]{0,}()']     = 'sysUnnamed';
   $virtualURITable['/rest/(*)']                      = 'rest-service';
+  $virtualURITable['/update/(*)']                    = PATH_GULLIVER_HOME . 'methods/update/';
   $virtualURITable['/(*)']                           = PATH_HTML;
 
   $isRestRequest = false;
 
   // Verify if we need to redirect or stream the file, if G:VirtualURI returns true means we are going to redirect the page
-  if ( G::virtualURI($_SERVER['REQUEST_URI'], $virtualURITable , $realPath )) {
+  if ( G::virtualURI($_SERVER['REQUEST_URI'], $virtualURITable , $realPath ))
+  {
     // review if the file requested belongs to public_html plugin
     if ( substr ( $realPath, 0,6) == 'plugin' ) {
       // Another way to get the path of Plugin public_html and stream the correspondent file, By JHL Jul 14, 08
@@ -208,11 +154,6 @@
       die;
     }
 
-    // if (substr($realPath, 0, 12) === 'rest-service') {
-    //   G::dispatchRestService();
-    //   die;
-    // }
-
     $requestUriArray = explode("/",$_SERVER['REQUEST_URI']);
 
     if((isset($requestUriArray[1]))&&($requestUriArray[1] == 'skin')) {
@@ -234,7 +175,6 @@
       }
       die;
     }
-
     switch ($realPath) {
       case 'sysUnnamed' :
         require_once('sysUnnamed.php');
@@ -265,10 +205,17 @@
           die;
         }
     }
-  }
+  }//virtual URI parser
 
   // the request correspond to valid php page, now parse the URI
   G::parseURI(getenv("REQUEST_URI"), $isRestRequest);
+
+  if(G::isPMUnderUpdating())
+  {
+      header("location: /update/updating.php");
+      if ( DEBUG_TIME_LOG ) G::logTimeByPage();
+      die;
+  }
 
   // verify if index.html exists
   if (!file_exists(PATH_HTML . 'index.html')) { // if not, create it from template
@@ -278,7 +225,6 @@
     );
   }
 
-  $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . "widgets/jscalendar/lang/calendar-" . SYS_LANG . ".js");
   define('SYS_URI' , '/sys' .  SYS_TEMP . '/' . SYS_LANG . '/' . SYS_SKIN . '/');
 
   // defining the serverConf singleton
@@ -306,11 +252,9 @@
   G::LoadSystem('menu');
   G::LoadSystem("xmlMenu");
   G::LoadSystem('dvEditor');
-  //G::LoadSystem('table');
   G::LoadSystem('controller');
   G::LoadSystem('httpProxyController');
   G::LoadSystem('pmException');
-  //G::LoadSystem('pagedTable');
 
   // Installer, redirect to install if we don't have a valid shared data folder
   if ( !defined('PATH_DATA') || !file_exists(PATH_DATA)) {
@@ -407,10 +351,6 @@
     }
   }
 
-  // create memcached singleton
-  G::LoadClass ( 'memcached' );
-  $memcache = & PMmemcached::getSingleton(SYS_SYS);
-
   // PM Paths DATA
   define('PATH_DATA_SITE',                 PATH_DATA      . 'sites/' . SYS_SYS . '/');
   define('PATH_DOCUMENT',                  PATH_DATA_SITE . 'files/');
@@ -422,6 +362,14 @@
   define('PATH_IMAGES_ENVIRONMENT_USERS',  PATH_DATA_SITE . 'usersPhotographies'.PATH_SEP);
   define('SERVER_NAME',  $_SERVER ['SERVER_NAME']);
   define('SERVER_PORT',  $_SERVER ['SERVER_PORT']);
+
+  // Create headPublisher singleton
+  G::LoadSystem('headPublisher');
+  $oHeadPublisher =& headPublisher::getSingleton();
+
+  // create memcached singleton
+  G::LoadClass ( 'memcached' );
+  $memcache = & PMmemcached::getSingleton(SYS_SYS);
 
   // verify configuration for rest service
   if ($isRestRequest) {
@@ -702,6 +650,7 @@
 
           if (empty($_POST)) {
             header('location: ' . SYS_URI . $loginUrl . '?u=' . urlencode($_SERVER['REQUEST_URI']));
+
           }
           else {
             if ($isControllerCall) {
