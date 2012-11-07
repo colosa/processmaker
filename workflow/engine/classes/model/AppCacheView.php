@@ -213,7 +213,7 @@ class AppCacheView extends BaseAppCacheView
         $criteria->add(AppCacheViewPeer::USR_UID, $userUid);
 
         return $criteria;*/
-        return $this->getSentListCriteria($userUid);
+        return $this->getSentListCriteria($userUid, true);
     }
 
     /**
@@ -221,17 +221,17 @@ class AppCacheView extends BaseAppCacheView
      * param $userUid the current userUid
      * @return Criteria object $Criteria
      */
-    public function getSentListCriteria ($userUid)
+    public function getSentListCriteria ($userUid, $doCount = false)
     {
         $criteria = $this->addPMFieldsToCriteria('sent');
 
         //$criteria->addAsColumn('MAX_DEL_INDEX', 'MAX(' . AppDelegationPeer::DEL_INDEX . ')');
         //$criteria->addJoin(AppCacheViewPeer::APP_UID , AppDelegationPeer::APP_UID, Criteria::LEFT_JOIN);
-        //$criteria->add(AppCacheViewPeer::USR_UID, $userUid);
-        //$criteria->addGroupByColumn(AppCacheViewPeer::APP_UID);
+        $criteria->add(AppCacheViewPeer::USR_UID, $userUid);
+        if (!$doCount) {
+            $criteria->addGroupByColumn(AppCacheViewPeer::APP_UID);
+        }
         //$criteria->addGroupByColumn(AppCacheViewPeer::APP_);
-        $criteria->add(AppCacheViewPeer::PREVIOUS_USR_UID, $userUid);
-        $criteria->add(AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL);
 
         return $criteria;
     }

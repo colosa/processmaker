@@ -297,6 +297,18 @@ class Content extends BaseContent {
         $this->rowsUnchanged = 0;
         $this->rowsClustered = 0;
 
+        //Creating table CONTENT_BACKUP
+        $oConnection = Propel::getConnection('workflow');
+        $oStatement  = $oConnection->prepareStatement("CREATE TABLE IF NOT EXISTS `CONTENT_BACKUP` (
+            `CON_CATEGORY` VARCHAR(30) default '' NOT NULL,
+            `CON_PARENT` VARCHAR(32) default '' NOT NULL,
+            `CON_ID` VARCHAR(100) default '' NOT NULL,
+            `CON_LANG` VARCHAR(10) default '' NOT NULL,
+            `CON_VALUE` MEDIUMTEXT NOT NULL,
+            CONSTRAINT CONTENT_BACKUP_PK PRIMARY KEY (CON_CATEGORY,CON_PARENT,CON_ID,CON_LANG)
+        )Engine=MyISAM  DEFAULT CHARSET='utf8' COMMENT='Table for add content';");
+        $oStatement->executeQuery();
+
         $con = Propel::getConnection('workflow');
         $sql = " SELECT DISTINCT CON_LANG
                 FROM CONTENT ";
@@ -329,9 +341,10 @@ class Content extends BaseContent {
         $default = array();
         $sw = array('CON_ID'=>'','CON_CATEGORY'=>'','CON_PARENT'=>'');
         while ($row = mysql_fetch_assoc($result)) {
-            if ($sw['CON_ID'] == $row['CON_ID'] && $sw['CON_CATEGORY'] == $row['CON_CATEGORY'] && $sw['CON_PARENT'] == $row['CON_PARENT']) {
+            if ($sw['CON_ID'] == $row['CON_ID'] &&
+                $sw['CON_CATEGORY'] == $row['CON_CATEGORY'] &&
+                $sw['CON_PARENT'] == $row['CON_PARENT']) {
                 $list[] = $row;
-
             } else {
                 $this->rowsClustered++;
                 if (count($langs) != count($list)) {
@@ -363,6 +376,15 @@ class Content extends BaseContent {
         mysql_free_result($result);
         $total = $this->rowsProcessed + $this->rowsInserted;
 
+        $connection = Propel::getConnection('workflow');
+        $statement  = $connection->prepareStatement("INSERT INTO CONTENT
+            SELECT CON_CATEGORY, CON_PARENT, CON_ID , CON_LANG, CON_VALUE
+            FROM CONTENT_BACKUP");
+        $statement->executeQuery();
+
+        $statement  = $connection->prepareStatement("DROP TABLE CONTENT_BACKUP");
+        $statement->executeQuery();
+
         if (!isset($_SERVER['SERVER_NAME'])) {
             CLI::logging("Rows Processed ---> $this->rowsProcessed ..... \n");
             CLI::logging("Rows Clustered ---> $this->rowsClustered ..... \n");
@@ -390,20 +412,18 @@ class Content extends BaseContent {
                     $default['CON_ID'],
                     $value,
                     $default['CON_VALUE']
-                    );
+                );
             }
         }
     }
 
     function fastInsertContent ($ConCategory, $ConParent, $ConId, $ConLang, $ConValue) {
-        $con = new Content ( );
-        $con->setConCategory ( $ConCategory );
-        $con->setConParent ( $ConParent );
-        $con->setConId ( $ConId );
-        $con->setConLang ( $ConLang );
-        $con->setConValue ( $ConValue );
-        $res = $con->save ();
-        return $res;
+        $ConValue = mysql_real_escape_string($ConValue);
+        $connection = Propel::getConnection('workflow');
+        $statement  = $connection->prepareStatement("INSERT INTO CONTENT_BACKUP (
+        CON_CATEGORY, CON_PARENT, CON_ID , CON_LANG, CON_VALUE)
+        VALUES ('$ConCategory', '$ConParent', '$ConId', '$ConLang', '$ConValue');");
+        $statement->executeQuery();
     }
 
   function removeLanguageContent($lanId) {
@@ -422,7 +442,7 @@ class Content extends BaseContent {
       $row = $result->getRow ();
 
       while ( is_array ( $row ) ) {
-        $content = ContentPeer::retrieveByPK( $row['CON_CATEGORY'], '', $row['CON_ID'], $lanId);
+        $content = ContentPeer::retrieveByPK( $row['CON_CATEGORY'], $row['CON_PARENT'], $row['CON_ID'], $lanId);
 
         if( $content !== null )
           $content->delete();

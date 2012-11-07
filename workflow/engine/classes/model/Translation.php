@@ -50,8 +50,8 @@ class Translation extends BaseTranslation {
   }
 
   function getAllCriteria(){
-    
-    //SELECT * from TRANSLATION WHERE TRN_LANG = 'en' order by TRN_CATEGORY, TRN_ID 
+
+    //SELECT * from TRANSLATION WHERE TRN_LANG = 'en' order by TRN_CATEGORY, TRN_ID
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn(TranslationPeer::TRN_ID);
     $oCriteria->addSelectColumn(TranslationPeer::TRN_CATEGORY);
@@ -64,7 +64,7 @@ class Translation extends BaseTranslation {
 
   function getAll($lang='en', $start=null, $limit=null, $search=null, $dateFrom=null, $dateTo=null){
     $totalCount = 0;
-    
+
     $oCriteria = new Criteria('workflow');
     $oCriteria->addSelectColumn(TranslationPeer::TRN_ID);
     $oCriteria->addSelectColumn(TranslationPeer::TRN_CATEGORY);
@@ -89,7 +89,7 @@ class Translation extends BaseTranslation {
       );
     }
    // for date filter
-    if( ($dateFrom)&&($dateTo) ) {      
+    if( ($dateFrom)&&($dateTo) ) {
       $oCriteria->add(
         $oCriteria->getNewCriterion(
           TranslationPeer::TRN_UPDATE_DATE,
@@ -97,9 +97,9 @@ class Translation extends BaseTranslation {
         )->addAnd($oCriteria->getNewCriterion(
           TranslationPeer::TRN_UPDATE_DATE,
           "$dateTo", Criteria::LESS_EQUAL//GREATER_EQUAL
-        ))       
-      );      
-    }    
+        ))
+      );
+    }
    // end filter
     $c = clone $oCriteria;
     $c->clearSelectColumns();
@@ -110,12 +110,12 @@ class Translation extends BaseTranslation {
 
     if( is_array($aRow) )
       $totalCount = $aRow[0];
-      
+
     if($start)
       $oCriteria->setOffset($start);
     if($limit) //&& !isset($seach) && !isset($search))
       $oCriteria->setLimit($limit);
-    
+
     $rs = TranslationPeer::doSelectRS($oCriteria);
     $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     $rows = Array();
@@ -125,7 +125,7 @@ class Translation extends BaseTranslation {
 
     $result->data = $rows;
     $result->totalCount = $totalCount;
-    
+
     return $result;
   }
 
@@ -138,7 +138,7 @@ class Translation extends BaseTranslation {
   function generateFileTranslation ($languageId = '') {
     $translation = Array();
     $translationJS = Array();
-    
+
     if ($languageId === '')
       $languageId = defined('SYS_LANG') ? SYS_LANG : 'en';
 
@@ -159,13 +159,13 @@ class Translation extends BaseTranslation {
         $translationJS[ $row->getTrnId() ] = $row->getTrnValue();
       }
     }
-	
+
     try {
-      
-      if( ! is_dir(dirname($cacheFile)) ) 
+
+      if( ! is_dir(dirname($cacheFile)) )
         G::mk_dir(dirname($cacheFile));
-        
-      if( ! is_dir(dirname($cacheFileJS)) ) 
+
+      if( ! is_dir(dirname($cacheFileJS)) )
         G::mk_dir(dirname($cacheFileJS));
 
       $f = fopen( $cacheFile , 'w+');
@@ -184,7 +184,7 @@ class Translation extends BaseTranslation {
       $res['cacheFileJS'] = $cacheFileJS;
       $res['rows']   = count (  $translation );
       $res['rowsJS'] = count (  $translationJS );
-      return $res;    
+      return $res;
     } catch( Exception $e ) {
       echo $e->getMessage();
     }
@@ -236,11 +236,11 @@ class Translation extends BaseTranslation {
   {
     $filePath = $this->envFilePath;
     $environments = Array();
-    
+
     if( file_exists($filePath) ) {
       $environments = unserialize(file_get_contents($filePath));
     }
-    
+
     $environment['LOCALE']  = $locale;
     $environment['HEADERS'] = $headers;
     $environment['DATE']    = date('Y-m-d H:i:s');
@@ -256,47 +256,55 @@ class Translation extends BaseTranslation {
       $environment['IC_UID'] = '';
       $environments[$locale]['__INTERNATIONAL__'] = $environment;
     }
-    
-    
+
+
     file_put_contents($filePath, serialize($environments));
   }
-  
-  function removeTranslationEnvironment($locale)
-  {
-    $filePath = $this->envFilePath;
-    if( strpos($locale, self::$localeSeparator) !== false ) {
-      list($LAN_ID, $IC_UID) = explode('-', strtoupper($locale));
-    } else {
-      $LAN_ID = $locale;
-      $IC_UID = '__INTERNATIONAL__';
-    }
 
-    if( file_exists($filePath) ) {
-      $environments = unserialize(file_get_contents($filePath));
-      if( ! isset($environments[$LAN_ID][$IC_UID]) )
-        return NULL;
-      
-      unset($environments[$LAN_ID][$IC_UID]);
-      file_put_contents($filePath, serialize($environments));
+    function removeTranslationEnvironment($locale)
+    {
+        $filePath = $this->envFilePath;
+        if (strpos($locale, self::$localeSeparator) !== false) {
+            list($LAN_ID, $IC_UID) = explode('-', strtoupper($locale));
+        } else {
+            $LAN_ID = $locale;
+            $IC_UID = '__INTERNATIONAL__';
+        }
+
+        if (file_exists($filePath)) {
+            $environments = unserialize(file_get_contents($filePath));
+            if (!isset($environments[$LAN_ID][$IC_UID])) {
+                return NULL;
+            }
+
+            unset($environments[$LAN_ID][$IC_UID]);
+            file_put_contents($filePath, serialize($environments));
+
+            if (file_exists(PATH_CORE . "META-INF" . PATH_SEP . "translation.".$locale)) {
+                G::rm_dir(PATH_DATA . "META-INF" . PATH_SEP . "translation.".$locale);
+            }
+            if (file_exists(PATH_CORE . PATH_SEP . 'content' . PATH_SEP . 'translations' . PATH_SEP . 'processmaker' . $locale . '.po')) {
+                G::rm_dir(PATH_CORE . PATH_SEP . 'content' . PATH_SEP . 'translations' . PATH_SEP . 'processmaker' . $locale . '.po');
+            }
+        }
     }
-  }
 
   function getTranslationEnvironments(){
     $filePath = $this->envFilePath;
     $envs = Array();
-    
+
     if( ! file_exists($filePath) ) {
       //the transaltions table file doesn't exist, then build it
 
       if( ! is_dir(dirname($this->envFilePath)) )
         G::mk_dir(dirname($this->envFilePath));
-      
+
       $translationsPath = PATH_CORE . "content" . PATH_SEP . 'translations' . PATH_SEP;
       $basePOFile = $translationsPath . 'english' . PATH_SEP . 'processmaker.en.po';
-      
+
       $params = self::getInfoFromPOFile($basePOFile);
       $this->addTranslationEnvironment($params['LOCALE'], $params['HEADERS'], $params['COUNT']);
-      
+
       //getting more lanuguage translations
       $files = glob($translationsPath . "*.po");
       foreach( $files as $file ){
@@ -312,7 +320,7 @@ class Translation extends BaseTranslation {
         $environments[] = $rec2;
       }
     }
-    
+
     return $environments;
 
     /*G::LoadSystem('dbMaintenance');
@@ -391,10 +399,10 @@ class Translation extends BaseTranslation {
 
     if( isset($environments[$LAN_ID][$IC_UID]) )
       return $environments[$LAN_ID][$IC_UID];
-    else 
+    else
       return false;
   }
-  
+
   function saveTranslationEnvironment($locale, $data){
     $filePath = $this->envFilePath;
     $environments = Array();

@@ -23,22 +23,22 @@
  *
  */
 
-  $oHeadPublisher =& headPublisher::getSingleton(); 
+  $oHeadPublisher =& headPublisher::getSingleton();
   $oHeadPublisher->addExtJsScript('cases/main', false );    //adding a javascript file .js
   $oHeadPublisher->addContent( 'cases/main'); //adding a html file  .html.
-  
+
   $keyMem = 'USER_PREFERENCES'.$_SESSION['USER_LOGGED'];
-  $memcache = & PMmemcached::getSingleton(SYS_SYS);  
+  $memcache = & PMmemcached::getSingleton(SYS_SYS);
   if ( ($arrayConfig = $memcache->get($keyMem)) === false ) {
     G::loadClass('configuration');
-    $oConf = new Configurations; 
+    $oConf = new Configurations;
     $oConf->loadConfig($x, 'USER_PREFERENCES','','',$_SESSION['USER_LOGGED'],'');
     $arrayConfig = $oConf->aConfig;
     $memcache->set( $keyMem, $arrayConfig, PMmemcached::ONE_HOUR);
   }
 
   $confDefaultOption='';
-  if( isset($arrayConfig['DEFAULT_CASES_MENU']) ){ #this user has a configuration record  
+  if( isset($arrayConfig['DEFAULT_CASES_MENU']) ){ #this user has a configuration record
     $confDefaultOption = $arrayConfig['DEFAULT_CASES_MENU'];
     global $G_TMP_MENU;
     $oMenu = new Menu();
@@ -51,8 +51,8 @@
       }
     }
     $defaultOption = $defaultOption != '' ? $defaultOption : 'casesListExtJs';
-  
-  } 
+
+  }
   else {
     $defaultOption = 'casesListExtJs';
     $confDefaultOption = 'CASES_INBOX';
@@ -65,11 +65,20 @@
       $defaultOption .= '&action=' . $_GET['a'];
     }
   }
-  
+
+  $oServerConf =& serverConf::getSingleton();
+  if ($oServerConf->isRtl(SYS_LANG)) {
+    $regionTreePanel = 'east';
+    $regionDebug = 'west';
+  } else {
+    $regionTreePanel = 'west';
+    $regionDebug = 'east';
+  }
+  $oHeadPublisher->assign('regionTreePanel', $regionTreePanel);
+  $oHeadPublisher->assign('regionDebug', $regionDebug);
   $oHeadPublisher->assign( 'defaultOption', $defaultOption); // user menu permissions
   $oHeadPublisher->assign( '_nodeId', isset($confDefaultOption)?$confDefaultOption:'PM_USERS'); // user menu permissions
 
   $_SESSION['current_ux'] = 'NORMAL';
-  
+
   G::RenderPage('publish', 'extJs');
-  

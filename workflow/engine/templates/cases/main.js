@@ -11,7 +11,7 @@ var detailsText = '<i></i>';
 
 var debugTriggersDetailTpl = new Ext.Template('<pre style="font-size:10px"><code>{code}</code></pre>');
 debugTriggersDetailTpl.compile();
-  
+
 var propStore;
 var triggerStore;
 
@@ -21,7 +21,7 @@ var NOTIFIER_FLAG = false;
 var result;
 var _action = '';
 var _CASE_TITLE;
- 
+
 Ext.onReady(function(){
   new Ext.KeyMap(document, {
     key: Ext.EventObject.F5,
@@ -32,8 +32,8 @@ Ext.onReady(function(){
         }
         e.stopEvent();
         updateCasesTree();
-      } 
-      else 
+      }
+      else
         Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
     }
   });
@@ -41,7 +41,7 @@ Ext.onReady(function(){
   Ext.QuickTips.init();
   Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
-  var resetGrid = function() {  
+  var resetGrid = function() {
     propStore.load();
   };
 
@@ -52,16 +52,16 @@ Ext.onReady(function(){
   var debugVariablesFilterSystem = function(){
     propStore.load({params:{filter:'sys'}});
   }
-  
+
   var resetTriggers = function(){
     triggerStore.load();
   }
-  
+
   propStore = new Ext.data.Store({
     proxy: new Ext.data.HttpProxy({url: 'debug_vars'}),
     reader: new Ext.data.DynamicJsonReader({root: 'data'})
   });
-    
+
   propStore.on('load', function(){
     propStore.fields = propStore.recordType.prototype.fields;
     debugVariables.setSource(propStore.getAt(0).data);
@@ -76,14 +76,14 @@ Ext.onReady(function(){
     width: 400,
     region: 'center',
     margins: '2 2 0 2',
-    
+
     border: true,
     stripeRows: true,
     listeners: {
       beforeedit: function(event) { //Cancel editing - read only
         event.cancel = true;
       }
-    }, 
+    },
     tbar: [
       {text: TRANSLATIONS.ID_ALL, handler: resetGrid},
       {text: TRANSLATIONS.ID_DYNAFORM, handler: debugVariablesFilterDynaform},
@@ -95,18 +95,18 @@ Ext.onReady(function(){
     }
 
   });
-  
+
   //set debug variable details
   debugVariables.getSelectionModel().on('rowselect', function(sm, rowIdx, r) {
     var detailPanel = Ext.getCmp('debug-details-panel');
     var d = {}
-    
+
     d.name  = r.data.name;
     d.value = parent.parent.htmlentities ? parent.parent.htmlentities(r.data.value) : r.data.value;
 
     debugVarTpl.overwrite(detailPanel.body, d);
     detailPanel.setTitle(r.data.name);
-    
+
     if(r.data.value == '<object>' || r.data.value == '<array>' ){
       Ext.getCmp('deatachAction').setDisabled(false);
       Ext.Ajax.request({
@@ -114,11 +114,11 @@ Ext.onReady(function(){
         success: function(response){
           try{
             result = eval('('+response.responseText+')');
-            
+
             var store1a = new Ext.data.ArrayStore({fields: result.headers});
               // manually load local data
               store1a.loadData(result.rows);
-              
+
               var myGridPanel = new Ext.grid.GridPanel({
                 store: store1a,
                 height: 200,
@@ -129,7 +129,7 @@ Ext.onReady(function(){
                 viewConfig:{forceFit:true, scrollOffset:0},
                 listeners: {
                   rowdblclick: function(grid, n,e){
-                    
+
                   },
                   render: function(){
                     this.loadMask = new Ext.LoadMask(this.body, { msg:'Loading...' });
@@ -152,12 +152,12 @@ Ext.onReady(function(){
         params: {request: 'getRows', fieldname:r.data.name}
       });
 
-     
+
     } else
       Ext.getCmp('deatachAction').setDisabled(true);
 
   });
-  
+
   //center iframe panel
   centerPanel = {
     region : 'center',
@@ -217,13 +217,13 @@ Ext.onReady(function(){
             ReloadTreeMenuItemDetail({item:''});
           }
         })*/
-        
+
       }/*,
       'afterrender': {
         fn: setNode,
         scope: this
       }*/
-      
+
     }
   });
 
@@ -236,7 +236,7 @@ Ext.onReady(function(){
       //if it is, then update cases tree
       updateCasesTree();
     }
-    
+
     if( _nodeId != '' ){
       treePanel1 = Ext.getCmp('tree-panel')
       if(treePanel1)
@@ -291,13 +291,13 @@ Ext.onReady(function(){
       loaded:false,
       expanded:true
   });
-  
+
   treeMenuItemDetail.setRootNode(root);
 
   mainMenu = new Ext.Panel({
     id:'menuTreePanel',
     title: '',
-    region: 'west',
+    region: regionTreePanel,
     layout: 'border',
     width: 200,
     height: 500,
@@ -319,13 +319,13 @@ Ext.onReady(function(){
    * Triggers Panel
    */
   var xg = Ext.grid;
-  
+
   var reader = new Ext.data.JsonReader(
     {
       root: 'data',
       totalProperty: 'total',
       id: 'name'
-    }, 
+    },
     [
       {name: 'name'},
       {name: 'execution_time'},
@@ -350,7 +350,7 @@ Ext.onReady(function(){
 
   var debugTriggers = new xg.GridPanel({
       store: triggerStore,
-      
+
       columns: [
         {id:'name',header: "Name", width: 60, sortable: true, dataIndex: 'name'},
         {header: "Execution", width: 30, sortable: true, dataIndex: 'execution_time'},
@@ -378,14 +378,14 @@ Ext.onReady(function(){
         }
       }
   });
-  
+
   debugTriggers.getSelectionModel().on('rowselect', function(sm, rowIdx, r) {
     Ext.getCmp('deatachAction').setDisabled(false);
     var detailPanel = Ext.getCmp('debug-details-panel');
     detailPanel.setTitle(r.data.name);
     debugTriggersDetailTpl.overwrite(detailPanel.body, r.data);
   });
-  
+
   function triggerWindow() {
     var r = debugTriggers.getSelectionModel().getSelected();
     if(r){
@@ -413,7 +413,7 @@ Ext.onReady(function(){
   debugPanel = new Ext.Panel({
     id:'debugPanel',
     title: _('ID_DEBUG_PANEL_TITLE'),
-    region: 'east',
+    region: regionDebug,
     layout: 'border',
     width: 300,
     height: 500,
@@ -435,7 +435,7 @@ Ext.onReady(function(){
         items: [
           debugVariables,
           debugTriggers
-        ], 
+        ],
         listeners: {
           beforetabchange: function(){
             Ext.getCmp('deatachAction').setDisabled(true);
@@ -503,33 +503,33 @@ Ext.onReady(function(){
             }
           }
         ]
-    }]  
+    }]
   });
-  
+
   var viewport = new Ext.Viewport({
     layout: 'border',
     items: [ mainMenu, centerPanel, debugPanel]
   });
 
-  
-  /** after panel creation routines */ 
+
+  /** after panel creation routines */
   var menuPanelC = Ext.getCmp('debugPanel');
   //w.collapse();
-  
+
   /**hide*/
-  menuPanelC.hide(); 
-  menuPanelC.ownerCt.doLayout(); 
-  
+  menuPanelC.hide();
+  menuPanelC.ownerCt.doLayout();
+
   /**show*/
   //w.show();
   //w.ownerCt.doLayout();
   //w.expand();
 
   var menuPanelDetail = Ext.getCmp('tree_menuItem_detail');
-  menuPanelDetail.hide(); 
+  menuPanelDetail.hide();
   menuPanelDetail.ownerCt.doLayout();
 
-  //the starting timer will be triggered after timerMinutes 
+  //the starting timer will be triggered after timerMinutes
   setTimeout('Timer()', timerMinutes );
 });
 
@@ -538,7 +538,7 @@ function updateCasesView() {
     if (document.getElementById('casesSubFrame').contentWindow.storeCases) {
       document.getElementById('casesSubFrame').contentWindow.storeCases.reload();
     }
-  } 
+  }
   catch(e){};
 }
 
@@ -580,7 +580,7 @@ function updateCasesTree() {
     failure: function(){},
     params: {'updateCasesTree': true}
   });
-  
+
 }
 
 //the timer function will be called after 2 minutes;
@@ -620,7 +620,7 @@ Ext.extend(Ext.data.DynamicJsonReader, Ext.data.JsonReader, {
     var recordType = this.getRecordType(root);
     var fields = recordType.prototype.fields;
     var records = [];
-    
+
     for(var i = 0; i < root.length; i++){
       var n = root[i];
         var values = {};
@@ -683,8 +683,8 @@ Ext.app.menuLoader = Ext.extend(Ext.ux.tree.XmlTreeLoader, {
         //attr.disabled=true;
         attr.expandable=true;
         attr.qtip=attr.blockTitle;
-         
-                      
+
+
       }else if(attr.blockTitle){
       attr.text = attr.blockTitle;
       attr.iconCls = 'ICON_' + attr.id;
@@ -694,11 +694,11 @@ Ext.app.menuLoader = Ext.extend(Ext.ux.tree.XmlTreeLoader, {
       //}else{
         attr.expanded = true;
       //}
-    }else if(attr.title){ 
+    }else if(attr.title){
       attr.text = attr.title;
       if( attr.cases_count )
         attr.text += ' (<label id="NOTIFIER_'+attr.id+'">' + attr.cases_count + '</label>)';
-      
+
       attr.iconCls = 'ICON_' + attr.id;
       attr.loaded = true;
       attr.expanded = false;

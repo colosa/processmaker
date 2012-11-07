@@ -54,7 +54,7 @@ class workspaceTools {
      *
      * @param   bool $first true if this is the first workspace to be upgrade
      */
-    public function upgrade($first=false, $buildCacheView=false, $workSpace=SYS_SYS) 
+    public function upgrade($first=false, $buildCacheView=false, $workSpace=SYS_SYS)
     {
         $start = microtime(true);
         CLI::logging("> Updating database...\n");
@@ -292,15 +292,12 @@ class workspaceTools {
      */
     public function upgradeContent($workSpace=SYS_SYS) {
         $this->initPropel(true);
-        require_once('classes/model/Language.php');
-        G::LoadThirdParty('pear/json', 'class.json');
-        $lang = array();
-        foreach (System::listPoFiles() as $poFile) {
-            $poName = basename($poFile);
-            $names = explode(".", basename($poFile));
-            $extension = array_pop($names);
-            $langid = array_pop($names);
-            $arrayLang[] = $langid;
+        require_once 'classes/model/Translation.php';
+        $translation = new Translation();
+        $information = $translation->getTranslationEnvironments();
+        $arrayLang = array();
+        foreach ($information as $key => $value) {
+            $arrayLang[] = trim($value['LOCALE']);
         }
         require_once('classes/model/Content.php');
         $regenerateContent = new Content();

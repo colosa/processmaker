@@ -511,8 +511,10 @@ Ext.onReady ( function() {
     if( c.id == 'unpauseLink')                  c.renderer = unpauseLink;
     if( c.dataIndex == 'CASE_SUMMARY')          c.renderer = renderSummary;
     if( c.dataIndex == 'CASE_NOTES_COUNT')      c.renderer = renderNote;
-    if( c.dataIndex == 'APP_DEL_PREVIOUS_USER') c.renderer = previous_full_name;
-    if( c.dataIndex == 'APP_CURRENT_USER')      c.renderer = full_name;
+    if (solrEnabled != 1) {
+        if( c.dataIndex == 'APP_DEL_PREVIOUS_USER') c.renderer = previous_full_name;
+        if( c.dataIndex == 'APP_CURRENT_USER')      c.renderer = full_name;
+    }
   }
 
   //adding the hidden field DEL_INIT_DATE

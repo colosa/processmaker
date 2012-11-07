@@ -7,7 +7,7 @@ body, html
 }
 
 .logout {
-    float: left 
+    float: left
 }
 
 ul#pm_menu {
@@ -17,6 +17,7 @@ ul#pm_menu {
     padding: 0 0 0 13px;
 }
 
+ul#pm_menu li { float: right;}
 
 a.options-tool {
     color: #FFFFFF;
@@ -347,7 +348,7 @@ x-btn-mc em.x-btn-arrow { padding-left: 12px }
 .ext-ie .x-fieldset-header-text{
     margin-right:18px;
 }
-    
+
 fieldset.x-panel-collapsed .x-fieldset-bwrap {
     right:-1000px;
     left:auto;

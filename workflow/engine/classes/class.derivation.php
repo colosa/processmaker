@@ -258,7 +258,7 @@ class Derivation
         $cGrp->add(GroupUserPeer::GRP_UID, $row['USR_UID']);
         $cGrp->addJoin(GroupUserPeer::GRP_UID, GroupwfPeer::GRP_UID, Criteria::LEFT_JOIN);
         $cGrp->addJoin(GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
-        $cGrp->add(UsersPeer::USR_STATUS, 'ACTIVE');
+        $cGrp->add(UsersPeer::USR_STATUS, 'INACTIVE', Criteria::NOT_EQUAL);
         $rsGrp = GroupUserPeer::DoSelectRs ($cGrp);
         $rsGrp->setFetchmode (ResultSet::FETCHMODE_ASSOC);
         $rsGrp->next();
@@ -300,7 +300,8 @@ class Derivation
     $aUsersData = array();
     if ( is_array ( $aUsers ) ) {
       foreach ( $aUsers as $key => $val ) {
-        $userFields = $oUser->load($val);
+        // $userFields = $oUser->load($val);
+        $userFields = $oUser->userVacation( $val );
         $auxFields['USR_UID'] = $userFields['USR_UID'];
         $auxFields['USR_USERNAME']   = $userFields['USR_USERNAME'];
         $auxFields['USR_FIRSTNAME']  = $userFields['USR_FIRSTNAME'];

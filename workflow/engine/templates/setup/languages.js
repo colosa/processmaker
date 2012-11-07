@@ -1,6 +1,6 @@
 /*
  * @author: Erik A. Ortiz
- * Aug 20th, 2010 
+ * Aug 20th, 2010
  */
 
 new Ext.KeyMap(document, {
@@ -24,9 +24,9 @@ var removeOption;
 var installOption;
 var exportOption;
 
-
+Ext.Ajax.timeout = 300000;
 Ext.onReady(function(){
-  
+
   //Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
   Ext.QuickTips.init();
 
@@ -215,10 +215,10 @@ Ext.onReady(function(){
           buttons: Ext.MessageBox.OK
         });
       }
-      
+
     }
   });
-  
+
   var infoGrid = new Ext.grid.GridPanel( {
     /*renderTo: 'list-panel',*/
     region: 'center',

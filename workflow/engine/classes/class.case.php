@@ -3261,6 +3261,13 @@ class Cases
     public function getInputDocumentsCriteria($sApplicationUID, $iDelegation, $sDocumentUID, $sAppDocuUID = '')
     {
         try {
+            $deletePermission = $this->getAllObjectsFrom(
+                $_SESSION['PROCESS'],
+                $sApplicationUID,
+                $_SESSION['TASK'],
+                $_SESSION['USER_LOGGED'],
+                $ACTION = 'DELETE'
+            );
             $listing = false;
             $oPluginRegistry = & PMPluginRegistry::getSingleton();
             if ($oPluginRegistry->existsTrigger(PM_CASE_DOCUMENT_LIST)) {
@@ -3316,11 +3323,10 @@ class Cases
                 $aFields['POSITION'] = isset($_SESSION['STEP_POSITION']) ? $_SESSION['STEP_POSITION'] : 1;
                 $aFields['CONFIRM'] = G::LoadTranslation('ID_CONFIRM_DELETE_INPUT_AND_HISTORY');
 
-                //if (in_array($aRow['APP_DOC_UID'], $aDelete['INPUT_DOCUMENTS'])) {
-                //  $aFields['ID_DELETE'] = G::LoadTranslation('ID_DELETE');
-                //}
-                $aFields['ID_DELETE'] = G::LoadTranslation('ID_DELETE');
-
+                $aFields['ID_DELETE'] = '';
+                if (in_array($aRow['APP_DOC_UID'], $deletePermission['INPUT_DOCUMENTS'])) {
+                    $aFields['ID_DELETE'] = G::LoadTranslation('ID_DELETE');
+                }
                 $aFields['REPLACE_LABEL'] = "";
                 if (($aRow['DOC_VERSION'] == $lastVersion) || ($sAppDocuUID != "")) {
                     $aFields['REPLACE_LABEL'] = G::LoadTranslation('ID_REPLACE');
