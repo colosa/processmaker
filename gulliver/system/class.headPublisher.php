@@ -35,8 +35,6 @@
 class headPublisher
 {
     private static $instance = null;
-    var $maborakFiles = array ();
-    var $maborakLoaderFiles = array ();
     var $scriptFiles = array ();
     var $leimnudLoad = array ();
 
@@ -114,23 +112,6 @@ class headPublisher
     function setTitle ($title)
     {
         $this->title = $title;
-    }
-
-    /**
-     * Function addMaborakFile
-     *
-     * @access public
-     * @param eter string filename
-     * @param eter string loader; false -> maborak files, true maborak.loader
-     * @return string
-     */
-    function addMaborakFile ($filename, $loader = false)
-    {
-        if ($loader) {
-            $this->maborakLoaderFiles[] = $filename;
-        } else {
-            $this->maborakFiles[] = $filename;
-        }
     }
 
     /**
@@ -229,7 +210,7 @@ class headPublisher
         $sysLang = in_array( $sysLang, $availableJsCalendarLang ) ? $sysLang : 'en';
 
         $this->addScriptFile( "/js/widgets/js-calendar/unicode-letter.js" );
-        $this->addScriptFile( "/js/widgets/js-calendar/lang/" . $sysLang . ".js" );
+        //$this->addScriptFile( "/js/widgets/js-calendar/lang/" . $sysLang . ".js" );
 
         $head = '';
         $head .= '<TITLE>' . $this->title . "</TITLE>\n";
@@ -437,9 +418,6 @@ class headPublisher
 
     /**
      * Function setExtSkin
-     * with this function we are using the ExtJs library, this library is not compatible with
-     * previous libraries, for that reason oHeadPublisher will clear previous libraries like maborak
-     * we need to check if we need the language file
      *
      * @author Fernando Ontiveros <fernando@colosa.com>
      * @access public
