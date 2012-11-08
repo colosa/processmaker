@@ -1482,7 +1482,11 @@ class G
             //if ( ereg("msie", $userAgent)) {
             header( 'Pragma: cache' );
 
-            $mtime = filemtime( $filename );
+            if (file_exists( $filename )) {
+                $mtime = filemtime( $filename );
+            } else {
+                $mtime = date( 'U' );
+            }
             $gmt_mtime = gmdate( "D, d M Y H:i:s", $mtime ) . " GMT";
             header( 'ETag: "' . md5( $mtime . $filename ) . '"' );
             header( "Last-Modified: " . $gmt_mtime );
