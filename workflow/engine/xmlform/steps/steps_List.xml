@@ -17,6 +17,10 @@
   <en>Type<option name="DYNAFORM">Dynaform</option><option name="INPUT_DOCUMENT">Input Document</option><option name="OUTPUT_DOCUMENT">Output Document</option><option name="EXTERNAL">External Step</option></en>
 </STEP_TYPE_OBJ>
 
+<STEP_MODE type="dropdown" colWidth="80" titleAlign="left" align="left">
+  <en>Mode<option name=""><![CDATA[N/A]]></option><option name="VIEW">View</option><option name="EDIT">Edit</option></en>
+</STEP_MODE>
+
 <linkEditValue type="link" value="@#linkEditValue" link="javascript:@#urlEdit" colWidth="40" align="center"/>
 
 <DELETE type="link" colWidth="30" value="@G::LoadTranslation(ID_DE_ASSIGN)" link="#" onclick="stepDelete(@QSTEP_UID, @QSTEP_POSITION);return false;"><en></en></DELETE>

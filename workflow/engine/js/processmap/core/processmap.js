@@ -1399,7 +1399,7 @@ var processmap=function(){
             }
             panel.options={
               limit:true,
-              size:{w:670,h:450},
+              size:{w:770,h:450},
               position:{x:50,y:50,center:true},
               title: G_STRINGS.ID_PROCESSMAP_TASK_STEPS+" "+data.label.substr(0,82) + (data.label.length>=82 ? "..." : "") ,
               theme:this.options.theme,
