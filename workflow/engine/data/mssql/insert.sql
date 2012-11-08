@@ -1463,7 +1463,7 @@ SELECT 'LABEL','ID_MSG_ERROR_USR_USERNAME','en','User name required!','2012-06-0
   UNION ALL
 SELECT 'LABEL','ID_MSG_ERROR_DUE_DATE','en','Due date required!','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_NEW_PASS_SAME_OLD_PASS','en','The  confirm Password fields must be the same!','2012-06-01' 
+SELECT 'LABEL','ID_NEW_PASS_SAME_OLD_PASS','en','The confirm Password fields must be the same!','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_NEW_INPUTDOCS','en','New Input Document','2012-06-01' 
   UNION ALL
@@ -1543,7 +1543,7 @@ SELECT 'LABEL','ID_PROCESSMAP_DYNAFORMS','en','DynaForms','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_ATTACH','en','Attach','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_CASES','en','Are you sure  you want to delete all     selected cases?','2012-06-01' 
+SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_CASES','en','Are you sure you want to delete all selected cases?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_ALL','en','All','2012-06-01' 
   UNION ALL
@@ -1713,7 +1713,7 @@ SELECT 'LABEL','ID_WITHOUT_RESUME','en','Without resume!','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_NO_RESUME','en','The user doesn''t have a resume.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_NO_DERIVATION_RULE','en','Process definition error: All conditions in  parallel evaluation routing rule evaluated  to false, so workflow has stopped. Please  change the definition of the parallel  evaluation routing rule.','2012-06-01' 
+SELECT 'LABEL','ID_NO_DERIVATION_RULE','en','Process definition error: All conditions in parallel evaluation routing rule evaluated to false, so workflow has stopped. Please change the definition of the parallel evaluation routing rule.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_NO_USERS','en','The task doesn''t have any users.','2012-06-01' 
   UNION ALL
@@ -1897,7 +1897,7 @@ SELECT 'LABEL','ID_FOLDERS','en','Documents','2012-06-01'
   UNION ALL
 SELECT 'JAVASCRIPT','ID_ROLES_MSG1','en','You must specify a role code!','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_ROLES_CAN_NOT_DELETE','en','This role cannot be deleted while it still   has some assigned users.','2012-06-01' 
+SELECT 'LABEL','ID_ROLES_CAN_NOT_DELETE','en','This role cannot be deleted while it still has some assigned users.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_SUPERVISOR_DYNAFORM','en','Do you want to remove this DynaForm?','2012-06-01' 
   UNION ALL
@@ -1917,7 +1917,7 @@ SELECT 'LABEL','ID_MESS_ENGINE_TYPE_3','en','SMTP (OpenMail)','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_MESS_TEST_MESSAGE_ERROR_PHP_MAIL','en','Test message send failed, error:','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','IMPORT_LANGUAGE_ERR_NO_WRITABLE2','en','Some files within XMLFORM directory are not  writable, to install or update the  translations the system requires that all  files are writable.  Contact your system administrator please.','2012-06-01' 
+SELECT 'LABEL','IMPORT_LANGUAGE_ERR_NO_WRITABLE2','en','Some files within XMLFORM directory are not writable, to install or update the translations the system requires that all files are writable. Contact your system administrator please.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_MESS_ENGINE_TYPE_2','en','SMTP (PHPMailer)','2012-06-01' 
   UNION ALL
@@ -1931,7 +1931,7 @@ SELECT 'JAVASCRIPT','ID_MESS_TEST_FROM_EMAIL','en','The ''From Email'' field is 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_MESS_TEST_TO','en','The ''To'' field is required','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MESS_SEND_MAX_REQUIRED','en','The maximum number of attempts to send mail  is a required field.','2012-06-01' 
+SELECT 'LABEL','ID_MESS_SEND_MAX_REQUIRED','en','The maximum number of attempts to send mail is a required field.','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_MESS_EXECUTE_EVERY_REQUIRED','en','The ''Execute Every'' field is required','2012-06-01' 
   UNION ALL
@@ -2043,15 +2043,15 @@ SELECT 'LABEL','ID_REACTIVATE','en','Reactivate','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_USER_GROUPS','en','Groups for','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_FUNCTION','en','@function() It evaluates the value, then  executes a PHP function','2012-06-01' 
+SELECT 'LABEL','ID_FUNCTION','en','@function() It evaluates the value, then executes a PHP function','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_MSG_CONFIRM_REACTIVATE_CASES','en','Are you sure you want to reactivate this case?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_CONFIRM_REACTIVATE_CASE','en','Are you sure you want to reactivate this case?','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_ESCSJS','en','@@ It replaces the value in single  quotation marks to use it in JavaScript  sentences.','2012-06-01' 
+SELECT 'LABEL','ID_ESCSJS','en','@@ It replaces the value in single quotation marks to use it in JavaScript sentences.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_ESCJS','en','@@ It replaces the value in quotation marks  to use it in JavaScript sentences','2012-06-01' 
+SELECT 'LABEL','ID_ESCJS','en','@@ It replaces the value in quotation marks to use it in JavaScript sentences','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_ESC','en','@@ Replace the value in quotes','2012-06-01' 
   UNION ALL
@@ -2319,7 +2319,7 @@ SELECT 'LABEL','ID_DYNAFORM_HISTORY','en','Change Log','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_CASEDEMO','en','Case Demo','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_NEED_REGISTER','en','You need to be registered to download this  process. Register NOW!','2012-06-01' 
+SELECT 'LABEL','ID_NEED_REGISTER','en','You need to be registered to download this process. Register NOW!','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_INCORRECT_USER_OR_PASS','en','Incorrect username or password','2012-06-01' 
   UNION ALL
@@ -2369,7 +2369,7 @@ SELECT 'JAVASCRIPT','CONDITIONAL_NOFIELDS_IN_CONDITION','en','No records found f
   UNION ALL
 SELECT 'LABEL','IMPORT_LANGUAGE_ERR_NO_WRITABLE','en','The XML forms directory is not writable','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','CONDITIONAL_ALERT2','en','You should select at least one event  (OnChange or OnLoad )','2012-06-01' 
+SELECT 'JAVASCRIPT','CONDITIONAL_ALERT2','en','You should select at least one event (OnChange or OnLoad )','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','CONDITIONAL_TITLE','en','CONDITIONAL SHOW/HIDE EDITOR','2012-06-01' 
   UNION ALL
@@ -2389,11 +2389,11 @@ SELECT 'LABEL','ID_FULL_NAME','en','Full Name','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_ROLE','en','Role','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_CANNOT_DELETE_USER','en','User cannot be deleted while has assigned  cases.','2012-06-01' 
+SELECT 'LABEL','ID_MSG_CANNOT_DELETE_USER','en','User cannot be deleted while has assigned cases.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_REMOVE_PLUGIN','en','Are you sure that you want to remove this  plugin?','2012-06-01' 
+SELECT 'LABEL','ID_MSG_REMOVE_PLUGIN','en','Are you sure that you want to remove this plugin?','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','USERS_REASSIGN','en','This user cannot be deleted because he/she  still has some pending tasks. <br/><br/>Do  you want to reassign these tasks to another  user now?','2012-06-01' 
+SELECT 'JAVASCRIPT','USERS_REASSIGN','en','This user cannot be deleted because he/she still has some pending tasks. <br/><br/>Do you want to reassign these tasks to another user now?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','LOGIN_VERIFY_MSG','en','Verifying...','2012-06-01' 
   UNION ALL
@@ -2419,7 +2419,7 @@ SELECT 'LABEL','ID_DEBUG','en','Debugger','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_EVENT','en','Do you want to delete this event?','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_MSG_CONFIRM_RESENDMSG','en','Are you sure that you want to resend this  message?','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_MSG_CONFIRM_RESENDMSG','en','Are you sure that you want to resend this message?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_RESEND','en','Resend','2012-06-01' 
   UNION ALL
@@ -2453,7 +2453,7 @@ SELECT 'LABEL','ID_AUTHENTICATION_SOURCE_INVALID','en','Authentication Source fo
   UNION ALL
 SELECT 'LABEL','ID_USER_INACTIVE_BY_DATE','en','User not allowed access past due date','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_AUTH_SOURCE','en','Do you want to delete this authentication  source?','2012-06-01' 
+SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_AUTH_SOURCE','en','Do you want to delete this authentication source?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_ERROR_OBJECT_NOT_EXISTS','en','Error: Object does not exist.','2012-06-01' 
   UNION ALL
@@ -2465,7 +2465,7 @@ SELECT 'JAVASCRIPT','ID_PROCESSMAP_SUPERVISORS_INPUTS','en','Input Documents','2
   UNION ALL
 SELECT 'JAVASCRIPT','ID_ASSIGN_INPUT_DOCUMENT','en','Assign Input Document','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_NOT_DERIVATED','en','The case couldn''t be routed. Consult the  system administrator','2012-06-01' 
+SELECT 'LABEL','ID_NOT_DERIVATED','en','The case couldn''t be routed. Consult the system administrator','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_SUPERVISOR_INPUT','en','Do you want to remove this Input Document?','2012-06-01' 
   UNION ALL
@@ -2497,19 +2497,19 @@ SELECT 'LABEL','ID_ACCOUNT_DISABLED_CONTACT_ADMIN','en','disabled, please contac
   UNION ALL
 SELECT 'LABEL','ID_WORKSPACE_USING','en','Using workspace','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_REASSIGN_BYUSER_CONFIRM','en','Are you sure that you want to reassign the  cases?','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_REASSIGN_BYUSER_CONFIRM','en','Are you sure that you want to reassign the cases?','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_REASSIGN_BYUSER','en','At least one item from the list must be  selected.','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_REASSIGN_BYUSER','en','At least one item from the list must be selected.','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_MSG_RESSIGN_BYUSER_PANEL','en','Users selection interface','2012-06-01' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'JAVASCRIPT','ID_MSG_RESSIGN_B','en','At least one item from the list must be  selected.','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_MSG_RESSIGN_B','en','At least one item from the list must be selected.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_DETAILS_WEBSERVICES','en','Details','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_ERROR_STREAMING_FILE','en','doesn''t exist. It should be saved by a  plugin to a different place. Please review  the configuration','2012-06-01' 
+SELECT 'LABEL','ID_ERROR_STREAMING_FILE','en','doesn''t exist. It should be saved by a plugin to a different place. Please review the configuration','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_UPLOAD_ERR_UNKNOWN','en','Unknown upload error','2012-06-01' 
   UNION ALL
@@ -2523,9 +2523,9 @@ SELECT 'LABEL','ID_UPLOAD_ERR_NO_FILE','en','No file was uploaded','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_UPLOAD_ERR_PARTIAL','en','The uploaded file was only partially uploaded','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_UPLOAD_ERR_FORM_SIZE','en','The uploaded file exceeds the MAX_FILE_SIZE   directive that was specified in the HTML form','2012-06-01' 
+SELECT 'LABEL','ID_UPLOAD_ERR_FORM_SIZE','en','The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_UPLOAD_ERR_INI_SIZE','en','The uploaded file exceeds the  upload_max_filesize directive in php.ini','2012-06-01' 
+SELECT 'LABEL','ID_UPLOAD_ERR_INI_SIZE','en','The uploaded file exceeds the upload_max_filesize directive in php.ini','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_NOT_PROCESS_RELATED','en','Not from a Process','2012-06-01' 
   UNION ALL
@@ -2533,9 +2533,9 @@ SELECT 'LABEL','ID_EXTERNAL_FILE','en','External','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_INFO','en','Info','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CONFIRM_DELETE_INPUT_AND_HISTORY','en','This action will delete the current  document and all its versions','2012-06-01' 
+SELECT 'LABEL','ID_CONFIRM_DELETE_INPUT_AND_HISTORY','en','This action will delete the current document and all its versions','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_CONFIRM_DELETE_INPUT_AND_HISTORY','en','This will delete the current document and  its past versions.','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_CONFIRM_DELETE_INPUT_AND_HISTORY','en','This will delete the current document and its past versions.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_SETUP_MAILCONF_TITLE','en','Test SMTP Connection','2012-06-01' 
   UNION ALL
@@ -2571,7 +2571,7 @@ SELECT 'LABEL','ID_FIELD_HANDLER_HELP1','en','About the feature','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_FIELD_HANDLER_HELP2','en','Drag & Drop to move and reorder the fields.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_FIELD_HANDLER_HELP3','en','Bring the mouse pointer near tool icon and  the corresponding options (Edit, Delete)  will be shown.','2012-06-01' 
+SELECT 'LABEL','ID_FIELD_HANDLER_HELP3','en','Bring the mouse pointer near tool icon and the corresponding options (Edit, Delete) will be shown.','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_CONFIRM_WEBENTRY_DELETE','en','Are you sure you want to delete this web entry?','2012-06-01' 
   UNION ALL
@@ -2587,29 +2587,29 @@ SELECT 'LABEL','ID_LABEL','en','Label','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_NAME','en','Name','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','WEBEN_ONLY_BALANCED','en','Web Entry only works with tasks which  have  Cyclical Assignment.<br/> Please  change  the Assignment Rules','2012-06-01' 
+SELECT 'LABEL','WEBEN_ONLY_BALANCED','en','Web Entry only works with tasks which have Cyclical Assignment.<br/> Please change the Assignment Rules','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_DETAIL','en','Detail','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','HTML_FILES','en','You can open only files with the .html  extension','2012-06-01' 
+SELECT 'LABEL','HTML_FILES','en','You can open only files with the .html extension','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','WEBEN_ONLY_BALANCEDJS','en','Web Entry only works with tasks which have   Cyclical Assignment.  Please change  the  Assignment Rules','2012-06-01' 
+SELECT 'JAVASCRIPT','WEBEN_ONLY_BALANCEDJS','en','Web Entry only works with tasks which have Cyclical Assignment. Please change the Assignment Rules','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','HTML_FILES','en','Make sure your uploaded file has extension  html or txt','2012-06-01' 
+SELECT 'JAVASCRIPT','HTML_FILES','en','Make sure your uploaded file has extension html or txt','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_SEARCH_RESULT','en','Search results','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_MSG_REMOVE_PLUGIN','en','Are you sure that you want to remove this  plugin?','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_MSG_REMOVE_PLUGIN','en','Are you sure that you want to remove this plugin?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_MSG_REMOVE_PLUGIN_SUCCESS','en','Plugin successfully removed!','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','CANT_DEL_LANGUAGE','en','This language cannot be deleted  because it  is currently being  used.','2012-06-01' 
+SELECT 'LABEL','CANT_DEL_LANGUAGE','en','This language cannot be deleted because it is currently being used.','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_ADD','en','Add','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','CONDITIONAL_ALERT3','en','You have not tested the condition, do you  want save anyway?','2012-06-01' 
+SELECT 'JAVASCRIPT','CONDITIONAL_ALERT3','en','You have not tested the condition, do you want save anyway?','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','CONDITIONAL_ALERT4','en','You have an error in the condition, do you  want save anyway?','2012-06-01' 
+SELECT 'JAVASCRIPT','CONDITIONAL_ALERT4','en','You have an error in the condition, do you want save anyway?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_ERROR','en','ERROR','2012-06-01' 
   UNION ALL
@@ -2631,7 +2631,7 @@ SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_DEPARTMENT','en','Do you want to delete th
   UNION ALL
 SELECT 'JAVASCRIPT','ID_MSJ_DEPTO','en','Department name already exists!','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSJ_REPORSTO','en','The current user does not have a valid   Reports To user.  Please contact  the  administrator.','2012-06-01' 
+SELECT 'LABEL','ID_MSJ_REPORSTO','en','The current user does not have a valid Reports To user. Please contact the administrator.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_REMOVE_LOGO','en','Are you sure you want to delete this Logo?','2012-06-01' 
   UNION ALL
@@ -2655,13 +2655,13 @@ SELECT 'LABEL','ID_SENT','en','Participated','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_CALENDAR','en','Calendar','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER','en','Are you sure you want to delete this  scheduled case?','2012-06-01' 
+SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER','en','Are you sure you want to delete this scheduled case?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_SCHEDULER_LIST','en','New cases scheduler','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_SCHEDULER_LOG','en','Cases Scheduler Logs','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_IDOCUMENT','en','This object is being used in some steps.  Are you sure you want to delete it?','2012-06-01' 
+SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_IDOCUMENT','en','This object is being used in some steps. Are you sure you want to delete it?','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_FIELD_FOREIGN_TABLE','en','Field "table" is required','2012-06-01' 
  ;
@@ -2677,19 +2677,19 @@ SELECT 'LABEL','ID_SAVED','en','Saved','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_ASSIGN_RULES','en','Error: There is a problem with the next tasks of this process. One of them has manual assignment. Manual assignment shouldn''t be used with subprocesses','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_SELECT_OPTION_TABLE','en','Select a option to export schema or data  from the selected table(s).','2012-06-01' 
+SELECT 'LABEL','ID_SELECT_OPTION_TABLE','en','Select a option to export schema or data from the selected table(s).','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_SELECT_TABLE','en','Please select a table to export.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_TASK_WAS_ASSIGNED_TO_USER','en','Manual assignment shouldn''t be used with  subprocesses.<br>The task "{0}" from case  {1} was assigned to user <b>{2}</b> ( {3}   {4} )','2012-06-01' 
+SELECT 'LABEL','ID_TASK_WAS_ASSIGNED_TO_USER','en','Manual assignment shouldn''t be used with subprocesses.<br>The task "{0}" from case {1} was assigned to user <b>{2}</b> ( {3} {4} )','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_USER_ONVACATION','en','User on vacation! Contact to your System  Administrator if you want to login. please','2012-06-01' 
+SELECT 'LABEL','ID_USER_ONVACATION','en','User on vacation! Contact to your System Administrator if you want to login. please','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','PASSWORD_HISTORY','en','Password history','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_EMAIL_REQUIRED','en','The mail to is required, or uncheck the  send a test mail','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_EMAIL_REQUIRED','en','The mail to is required, or uncheck the send a test mail','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_PASSWORD_REQUIRED','en','The password is required, or uncheck the  option Require Authentication','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_PASSWORD_REQUIRED','en','The password is required, or uncheck the option Require Authentication','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_SERVER_REQUIRED','en','You must specify a server!','2012-06-01' 
   UNION ALL
@@ -2711,7 +2711,7 @@ SELECT 'LABEL','ID_CLAIM','en','Claim','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_TABLE_INVALID_SYNTAX','en','Invalid syntax','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_NO_PERMISSION_NO_PARTICIPATED','en','You do not have permission to see this case  or you have not participated in it.','2012-06-01' 
+SELECT 'LABEL','ID_NO_PERMISSION_NO_PARTICIPATED','en','You do not have permission to see this case or you have not participated in it.','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_EMPTY_NODENAME','en','The field name contains spaces or it''s empty!','2012-06-01' 
   UNION ALL
@@ -2719,7 +2719,7 @@ SELECT 'JAVASCRIPT','ID_SUGGEST_NEW_ENTRIES_ALERT','en','You should set all opti
   UNION ALL
 SELECT 'LABEL','ID_ISNT_LICENSE','en','This isn''t the correct license.','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_TABLE_RESERVED_WORDS','en','This table name is reserved. Please set  another for','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_TABLE_RESERVED_WORDS','en','This table name is reserved. Please set another for','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_START_NEW_CASE','en','Start a new case','2012-06-01' 
   UNION ALL
@@ -2729,7 +2729,7 @@ SELECT 'LABEL','ID_PLEASE_SELECT_LOGO','en','Please Select Logo','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_TASK_NO_STEPS','en','The task doesn''t have any steps','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_FIELDS_RESERVED_WORDS','en','The following fields cannot have these  names because they are reserved words','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_FIELDS_RESERVED_WORDS','en','The following fields cannot have these names because they are reserved words','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_PROCESS_CATEGORY','en','Process Categories','2012-06-01' 
   UNION ALL
@@ -2765,11 +2765,11 @@ SELECT 'JAVASCRIPT','DBCONNECTIONS_ALERT','en','You forgot to fill a required fi
   UNION ALL
 SELECT 'LABEL','ID_DISABLE_WORKSPACE','en','Disable Workspace','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','NEW_SITE_SUCCESS_CONFIRMNOTE','en','Note.- If you open the new site your  current session will be closed.','2012-06-01' 
+SELECT 'JAVASCRIPT','NEW_SITE_SUCCESS_CONFIRMNOTE','en','Note.- If you open the new site your current session will be closed.','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','NEW_SITE_SUCCESS_CONFIRM','en','Do you want open the new site?','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','NEW_SITE_SUCCESS','en','Your new site was successfully created with  name:','2012-06-01' 
+SELECT 'JAVASCRIPT','NEW_SITE_SUCCESS','en','Your new site was successfully created with name:','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','DBCONNECTIONS_MSGR','en','Server Response','2012-06-01' 
   UNION ALL
@@ -2783,11 +2783,11 @@ SELECT 'LABEL','ID_CUSTOM_TRIGGER','en','Custom Trigger','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_TRIGGERS_VALIDATION_ERR3','en','* The {Object} {Description} depends.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_TRIGGERS_VALIDATION_ERR2','en','({N}) Dependencies were found for this  trigger in {Object} objects','2012-06-01' 
+SELECT 'LABEL','ID_TRIGGERS_VALIDATION_ERR2','en','({N}) Dependencies were found for this trigger in {Object} objects','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_TRIGGERS_VALIDATION','en','No Dependencies were found for this trigger  in {Object} definitions','2012-06-01' 
+SELECT 'LABEL','ID_TRIGGERS_VALIDATION','en','No Dependencies were found for this trigger in {Object} definitions','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_TRIGGERS_VALIDATE_EERR1','en','This trigger can''t be deleted due to  dependencies.','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_TRIGGERS_VALIDATE_EERR1','en','This trigger can''t be deleted due to dependencies.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_CONTACT_ADMIN','en','Please contact your system administrator','2012-06-01' 
   UNION ALL
@@ -2843,7 +2843,7 @@ SELECT 'LABEL','OPEN_NEW_WS','en','Open new site','2012-06-01'
   UNION ALL
 SELECT 'JAVASCRIPT','ERROR_NEW_WS','en','You have some mistakes, please try again','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_ASSIGN_CASE_TO_USER','en','You have to select one employee. Select one  from the dropdown list please.','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_ASSIGN_CASE_TO_USER','en','You have to select one employee. Select one from the dropdown list please.','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','DBCONNECTIONS_MSGT','en','The test has','2012-06-01' 
   UNION ALL
@@ -2935,7 +2935,7 @@ SELECT 'LABEL','ID_TRIGGERS_VALIDATE_EERR1','en','* The {Object} {Description} d
   UNION ALL
 SELECT 'LABEL','ID_CASES_STATUS_TO_DO','en','To Do','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_DONT_SAVE_XMLFORM','en','This form has not a submit action. Do you  want to continue anyway?','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_DONT_SAVE_XMLFORM','en','This form has not a submit action. Do you want to continue anyway?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_CASES_STATUS_COMPLETED','en','Completed','2012-06-01' 
   UNION ALL
@@ -2997,7 +2997,7 @@ SELECT 'LABEL','ID_EMPTY_CASE','en','Search Case...','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_OPT_JUMP','en','Jump To','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_DISPLAY_ITEMS','en','Display Items  {0} - {1}  of {2}','2012-06-01' 
+SELECT 'LABEL','ID_DISPLAY_ITEMS','en','Display Items {0} - {1} of {2}','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_DISPLAY_EMPTY','en','Displaying Empty','2012-06-01' 
   UNION ALL
@@ -3061,7 +3061,7 @@ SELECT 'LABEL','ID_PRO_TITLE','en','Process Title','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_DISPLAY_OF','en','of','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_DELETE_LANGUAGE_WARNING','en','To delete a language you should select a  item from the list first.','2012-06-01' 
+SELECT 'LABEL','ID_DELETE_LANGUAGE_WARNING','en','To delete a language you should select a item from the list first.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_DELETE_LANGUAGE_CONFIRM','en','Do you want remove the language "{0}" ?','2012-06-01' 
   UNION ALL
@@ -3069,7 +3069,7 @@ SELECT 'LABEL','ID_DELETE_LANGUAGE','en','Remove','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_LANGUAGE_DELETED_SUCCESSFULLY','en','Language deleted successfully!','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_LANGUAGE_CANT_DELETE','en','There is {0} cases started with this  language, delete action canceled!','2012-06-01' 
+SELECT 'LABEL','ID_LANGUAGE_CANT_DELETE','en','There is {0} cases started with this language, delete action canceled!','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_TOTAL_CASES','en','Total Cases','2012-06-01' 
   UNION ALL
@@ -3085,7 +3085,7 @@ SELECT 'JAVASCRIPT','ID_MAIL_SUCESSFULLY','en','Test message sent successfully',
   UNION ALL
 SELECT 'JAVASCRIPT','ID_MAIL_FAILED','en','The test failure, you must configure yourrnserver to send messages','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CACHE_DIR_ISNOT_WRITABLE','en','The cache directory is not writable, change  permissions please!','2012-06-01' 
+SELECT 'LABEL','ID_CACHE_DIR_ISNOT_WRITABLE','en','The cache directory is not writable, change permissions please!','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_CACHE_DELETED_SUCCESS','en','All cache data was deleted successfully','2012-06-01' 
   UNION ALL
@@ -3135,15 +3135,15 @@ SELECT 'LABEL','ID_NO_SELECTION_WARNING','en','Select a item from the list pleas
   UNION ALL
 SELECT 'JAVASCRIPT','ID_REQUIRED_NAME_TRIGGERS','en','You forgot the title of the trigger','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_EXIST_PROCESS','en','There is a process with the same name. this  process will not save','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_EXIST_PROCESS','en','There is a process with the same name. this process will not save','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same name in  this process. It is not saving','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same name in this process. It is not saving','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_CLASS_TABLE_DOESNT_EXIST','en','This Class Table doesn''t exist!','2012-07-25' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_EXIST_INPUTDOCUMENT','en','There is an Input Document with the same  name in  this process. It is not saving','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_EXIST_INPUTDOCUMENT','en','There is an Input Document with the same name in this process. It is not saving','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_EXIST_OUTPUTDOCUMENT','en','There is an Output Document with the same  name in  this process. It is not saving','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_EXIST_OUTPUTDOCUMENT','en','There is an Output Document with the same name in this process. It is not saving','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_CASE_SCHEDULER_VALIDATE_ALERT','en','User or password are empty.','2012-06-01' 
   UNION ALL
@@ -3189,9 +3189,9 @@ SELECT 'LABEL','PENTAHO_LABEL_SHOW_JNDI_INFORMATION','en','Show JNDI Info','2012
   UNION ALL
 SELECT 'LABEL','PENTAHO_LABEL_SYNC','en','Sync to Pentaho Solution','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','PENTAHO_LABEL_TABLE_ALREADY_SYNCH','en','Workspace already synchronized with Pentaho  Solution','2012-06-01' 
+SELECT 'LABEL','PENTAHO_LABEL_TABLE_ALREADY_SYNCH','en','Workspace already synchronized with Pentaho Solution','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','PENTAHO_LABEL_TABLE_SUCCESS','en','Table APP_CACHE_VIEW and triggers are  installed successfully','2012-06-01' 
+SELECT 'LABEL','PENTAHO_LABEL_TABLE_SUCCESS','en','Table APP_CACHE_VIEW and triggers are installed successfully','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','PENTAHO_LABEL_TABLE_SYNCHED','en','Workspace synchronized with Pentaho Solution','2012-06-01' 
   UNION ALL
@@ -3215,7 +3215,7 @@ SELECT 'LABEL','PENTAHO_LABEL_WS_USER_PASSWORD','en','Pentaho Workspace User and
   UNION ALL
 SELECT 'LABEL','PENTAHO_TABLES_TRIGGERS','en','Database tables and triggers','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_EXIST_TRIGGERS','en','There is a triggers with the same name in  this process.','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_EXIST_TRIGGERS','en','There is a triggers with the same name in this process.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_SELECT_ONE_AT_LEAST','en','Select at least one item from the list','2012-06-01' 
   UNION ALL
@@ -3227,7 +3227,7 @@ SELECT 'LABEL','ID_DELETING_ELEMENTS','en','Deleting elements, please wait...','
   UNION ALL
 SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_CASE','en','Are you sure you want to delete this case?','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_CONFIRM_CANCEL_CASES','en','Are you sure you want to cancel all   selected cases?','2012-06-01' 
+SELECT 'LABEL','ID_MSG_CONFIRM_CANCEL_CASES','en','Are you sure you want to cancel all selected cases?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_PAUSE_CASE','en','Pause Case','2012-06-01' 
   UNION ALL
@@ -3309,7 +3309,7 @@ SELECT 'LABEL','ID_USERNAME_FORMAT_6','en','@lastName, @firstName','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_USERNAME_FORMAT_7','en','@lastName, @firstName (@userName)','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','USERS_DELETE_WITH_HISTORY','en','The user has some completed or canceled   tasks (which may be useful for  historical  records). Do you want to  delete this user  anyway?','2012-06-01' 
+SELECT 'JAVASCRIPT','USERS_DELETE_WITH_HISTORY','en','The user has some completed or canceled tasks (which may be useful for historical records). Do you want to delete this user anyway?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_DISCARD_CHANGES','en','Discard Changes','2012-06-01' 
  ;
@@ -3325,7 +3325,7 @@ SELECT 'LABEL','ID_CONFIGURE','en','Configure','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_VERSION','en','Version','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MESSAGE_ROOT_CHANGE_SUCESS','en','The root password has been updated  successfully!','2012-06-01' 
+SELECT 'LABEL','ID_MESSAGE_ROOT_CHANGE_SUCESS','en','The root password has been updated successfully!','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_MESSAGE_ROOT_CHANGE_FAILURE','en','The root password can''t be updated!','2012-06-01' 
   UNION ALL
@@ -3341,7 +3341,7 @@ SELECT 'LABEL','ID_LAN_LOCALE','en','Locale','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_SUBMIT','en','submit','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_PLUGIN_CANT_DELETE','en','The plugin is activated, please deactivate  first to remove it.','2012-06-01' 
+SELECT 'LABEL','ID_PLUGIN_CANT_DELETE','en','The plugin is activated, please deactivate first to remove it.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_CACHE_LANGUAGE','en','Language','2012-06-01' 
   UNION ALL
@@ -3583,7 +3583,7 @@ SELECT 'LABEL','ID_AVAILABLE_USERS','en','AVAILABLE USERS','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_ASSIGNED_USERS','en','ASSIGNED USERS','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_CONFIRM_ASSIGN_ALL_USERS','en','Do you want to assign all available users  to this role?','2012-06-01' 
+SELECT 'LABEL','ID_MSG_CONFIRM_ASSIGN_ALL_USERS','en','Do you want to assign all available users to this role?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_MSG_AJAX_FAILURE','en','Some error has happened. Please retry later.','2012-06-01' 
   UNION ALL
@@ -3593,7 +3593,7 @@ SELECT 'LABEL','ID_USERS_SUCCESS_DELETE','en','User has been deleted correctly.'
   UNION ALL
 SELECT 'LABEL','ID_ASSIGN_ALL_GROUPS','en','Assign All Groups','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_USERS_DELETE_WITH_HISTORY','en','The user has some completed or canceled     tasks (which may be useful for  historical    records). Do you want to  delete this  user   anyway?','2012-06-01' 
+SELECT 'LABEL','ID_USERS_DELETE_WITH_HISTORY','en','The user has some completed or canceled tasks (which may be useful for historical records). Do you want to delete this user anyway?','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_REMOVE_ALL_GROUPS','en','Remove All Groups','2012-06-01' 
   UNION ALL
@@ -3643,7 +3643,7 @@ SELECT 'LABEL','ID_ASSIGNED_MEMBERS','en','MEMBERS','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_AVAILABLE_MEMBERS','en','AVAILABLE MEMBERS','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CREATE_ROLE_TITLE','en','Create New  Role','2012-06-01' 
+SELECT 'LABEL','ID_CREATE_ROLE_TITLE','en','Create New Role','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_EDIT_ROLE_TITLE','en','Edit Role','2012-06-01' 
   UNION ALL
@@ -3657,7 +3657,7 @@ SELECT 'LABEL','ID_FIRSTNAME','en','First Name','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_LASTNAME','en','Last Name','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_REASSIGNMENT_SUCCESS','en','The case #{APP_NUMBER} was reassigned to  user   {USER} successfully!','2012-06-01' 
+SELECT 'LABEL','ID_REASSIGNMENT_SUCCESS','en','The case #{APP_NUMBER} was reassigned to user {USER} successfully!','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_REASSIGN_CONFIRM','en','Are you sure to reassign the current case?','2012-06-01' 
   UNION ALL
@@ -3665,7 +3665,7 @@ SELECT 'LABEL','ID_CASE_PAUSED_SUCCESSFULLY','en','The Case {APP_NUMBER} was pau
   UNION ALL
 SELECT 'LABEL','ID_VACATION','en','Vacation','2012-06-01' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_DB_CONNECTION_ASSIGN','en','You can not delete this data base  connection. This is assigned in some step.','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_DB_CONNECTION_ASSIGN','en','You can not delete this data base connection. This is assigned in some step.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_LAST_LOGIN','en','Last Login','2012-06-01' 
   UNION ALL
@@ -3823,7 +3823,7 @@ SELECT 'LABEL','ID_CONFIRM_DELETE_DEPARTMENT','en','Do you want to delete select
   UNION ALL
 SELECT 'LABEL','ID_DEPARTMENT_SUCCESS_DELETE','en','Department has been deleted correctly.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_CANNOT_DELETE_DEPARTMENT','en','Department cannot be deleted while has  assigned users.','2012-06-01' 
+SELECT 'LABEL','ID_MSG_CANNOT_DELETE_DEPARTMENT','en','Department cannot be deleted while has assigned users.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_MANAGER','en','Manager','2012-06-01' 
   UNION ALL
@@ -3847,7 +3847,7 @@ SELECT 'LABEL','ID_CATEGORY_SUCCESS_UPDATE','en','Process category has been upda
   UNION ALL
 SELECT 'LABEL','ID_CATEGORY_SUCCESS_DELETE','en','Process category has been deleted correctly.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MSG_CANNOT_DELETE_CATEGORY','en','Category cannot be deleted while has   assigned processes.','2012-06-01' 
+SELECT 'LABEL','ID_MSG_CANNOT_DELETE_CATEGORY','en','Category cannot be deleted while has assigned processes.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_CONFIRM_DELETE_CATEGORY','en','Do you want to delete selected category?','2012-06-01' 
   UNION ALL
@@ -3865,7 +3865,7 @@ SELECT 'LABEL','ID_SAMPLES','en','Samples','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_PROCESSNAME_ALREADY_EXISTS','en','The Process Name already exists!','2012-09-18' 
   UNION ALL
-SELECT 'JAVASCRIPT','ID_ROLES_CAN_NOT_DELETE','en','This role cannot be deleted while it still  has some assigned users.','2012-06-01' 
+SELECT 'JAVASCRIPT','ID_ROLES_CAN_NOT_DELETE','en','This role cannot be deleted while it still has some assigned users.','2012-06-01' 
   UNION ALL
 SELECT 'JAVASCRIPT','ID_REMOVE_ROLE','en','Are you sure you want to delete this role?','2012-06-01' 
   UNION ALL
@@ -3929,7 +3929,7 @@ SELECT 'LABEL','ID_DBS_CONNECTION_EDIT','en','Connection Edited Successfully','2
   UNION ALL
 SELECT 'LABEL','ID_GRID_PAGE_NO_AUTHENTICATION_MESSAGE','en','No authentication sources to display','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_INPUT_REMOVE','en','Input Document  has been removed successfully from Process','2012-06-01' 
+SELECT 'LABEL','ID_INPUT_REMOVE','en','Input Document has been removed successfully from Process','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_INPUT_WARNING','en','Input document assigned to a process supervisors cannot be deleted','2012-06-01' 
   UNION ALL
@@ -3945,7 +3945,7 @@ SELECT 'LABEL','ID_TAGS','en','Tags','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_INPUT_CREATE','en','Input document has been created successfully','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_INPUT_NOT_SAVE','en','There is an Input Document with the same  name in  this process. It is not saving','2012-06-01' 
+SELECT 'LABEL','ID_INPUT_NOT_SAVE','en','There is an Input Document with the same name in this process. It is not saving','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_INPUT_UPDATE','en','Input document has been updated successfully','2012-06-01' 
   UNION ALL
@@ -3971,7 +3971,7 @@ SELECT 'LABEL','ID_OUTPUT_GENERATE','en','Output Document to Generate','2012-06-
   UNION ALL
 SELECT 'LABEL','OUTPUT_CREATE','en','Output document has been created successfully','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_OUTPUT_NOT_SAVE','en','There is an Output Document with the same  name in  this process. It is not saving.','2012-06-01' 
+SELECT 'LABEL','ID_OUTPUT_NOT_SAVE','en','There is an Output Document with the same name in this process. It is not saving.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_OUTPUT_UPDATE','en','Output document has been updated successfully.','2012-06-01' 
   UNION ALL
@@ -4023,7 +4023,7 @@ SELECT 'LABEL','ID_PERMISSION_NEW','en','New specific Permission','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_SUPERVISOR_UNAVAILABLE','en','No supervisors are available. All supervisors have been already assigned.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_SUPERVISOR_REMOVED','en','Supervisor  has been removed successfully from Process','2012-06-01' 
+SELECT 'LABEL','ID_SUPERVISOR_REMOVED','en','Supervisor has been removed successfully from Process','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_SUPERVISOR_ASSIGNED','en','Supervisor has been successfully assigned to a Process','2012-06-01' 
   UNION ALL
@@ -4031,7 +4031,7 @@ SELECT 'LABEL','ID_SUPERVISOR_FAILED','en','Failed saving Supervisor Assigned to
   UNION ALL
 SELECT 'LABEL','ID_SUPERVISOR','en','Supervisor','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_DYANFORM_REMOVE','en','Dynaform  has been removed successfully from Process','2012-06-01' 
+SELECT 'LABEL','ID_DYANFORM_REMOVE','en','Dynaform has been removed successfully from Process','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_DYNAFORM_ASSIGN','en','Dynaform has been successfully assigned to a Process','2012-06-01' 
   UNION ALL
@@ -4525,7 +4525,7 @@ SELECT 'LABEL','ID_GROUPS_ACTORS','en','Groups Actors','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_ADHOC_GROUPS_ACTORS','en','Ad Hoc Groups Actors','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same name in   this process. It is not saving','2012-06-01' 
+SELECT 'LABEL','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same name in this process. It is not saving','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_INPUT_DOC_SUCCESS_NEW','en','Input Document has been created correctly.','2012-06-01' 
   UNION ALL
@@ -4623,7 +4623,7 @@ SELECT 'LABEL','ID_HOME_SETTINGS','en','Home Settings','2012-07-19'
   UNION ALL
 SELECT 'LABEL','ID_ENVIRONMENT','en','Environment','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CURLFUN_ISUNDEFINED','en','The process was not downloaded, because the curl     extension for php is not installed','2012-06-01' 
+SELECT 'LABEL','ID_CURLFUN_ISUNDEFINED','en','The process was not downloaded, because the curl extension for php is not installed','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_RATING','en','Rating','2012-06-01' 
   UNION ALL
@@ -4779,9 +4779,9 @@ SELECT 'LABEL','ID_PREFERENCES','en','Preferences','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_PERSONAL_INFORMATION','en','Personal information','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','NEW_SITE_SUCCESS','en','Your new site was successfully created with  name:','2012-06-01' 
+SELECT 'LABEL','NEW_SITE_SUCCESS','en','Your new site was successfully created with name:','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','NEW_SITE_SUCCESS_CONFIRMNOTE','en','Note.- If you open the new site your  current session will be closed.','2012-06-01' 
+SELECT 'LABEL','NEW_SITE_SUCCESS_CONFIRMNOTE','en','Note.- If you open the new site your current session will be closed.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','NEW_SITE_SUCCESS_CONFIRM','en','Do you want open the new site?','2012-06-01' 
   UNION ALL
@@ -5115,7 +5115,7 @@ SELECT 'LABEL','ID_UPDATED_SUCCESSFULLY','en','Updated Successfully','2012-06-01
   UNION ALL
 SELECT 'LABEL','ID_UPDATE_FAILED','en','Updated Failed','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_DONT_MODIFY_PK_VALUE','en','You can not modify the primary key value  for "{0}" field.','2012-06-01' 
+SELECT 'LABEL','ID_DONT_MODIFY_PK_VALUE','en','You can not modify the primary key value for "{0}" field.','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_DELETED_SUCCESSFULLY','en','Deleted Successfully','2012-06-01' 
   UNION ALL
@@ -5423,7 +5423,7 @@ INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_U
 
 SELECT 'LABEL','ID_TIME_ZONE','en','Time Zone','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_MEMORY_LIMIT','en','Memory Limit  (Mb)','2012-06-01' 
+SELECT 'LABEL','ID_MEMORY_LIMIT','en','Memory Limit (Mb)','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_SYSTEM_SETTINGS','en','System Settings','2012-06-01' 
   UNION ALL
@@ -5705,7 +5705,7 @@ SELECT 'LABEL','ID_USER_CASES_NOT_START','en','User can''t start a case because 
   UNION ALL
 SELECT 'LABEL','ID_USERS_HAS_ASSIGNED_CASES','en','The user has assigned cases, Do you like to continue anyway?','2012-09-07' 
   UNION ALL
-SELECT 'LABEL','ID_GRID_PAGE_DISPLAYING_REPORT_PERMISSIONS_MESSAGE','en','Displaying Permissions Simple Reports  {0} - {1} of {2}','2012-09-07' 
+SELECT 'LABEL','ID_GRID_PAGE_DISPLAYING_REPORT_PERMISSIONS_MESSAGE','en','Displaying Permissions Simple Reports {0} - {1} of {2}','2012-09-07' 
   UNION ALL
 SELECT 'LABEL','ID_GRID_PAGE_NO_PERMISSIONS_MESSAGE','en','No Permissions to display','2012-09-07' 
   UNION ALL
