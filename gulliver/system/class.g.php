@@ -1209,8 +1209,8 @@ class G
         $defaultTranslations = $translation;
 
         //if some foreign language was requested and its translation file exists
-        if ($locale != 'en' && file_exists( PATH_LANGUAGECONT . 'translation.' . $lang )) {
-            require_once (PATH_LANGUAGECONT . 'translation.' . $lang); //load the foreign translations table
+        if ($locale != 'en' && file_exists( PATH_LANGUAGECONT . 'translation.' . $locale )) {
+            require_once (PATH_LANGUAGECONT . 'translation.' . $locale); //load the foreign translations table
             $foreignTranslations = $translation;
         }
 
