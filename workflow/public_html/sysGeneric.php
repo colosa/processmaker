@@ -256,6 +256,10 @@
   G::LoadSystem('httpProxyController');
   G::LoadSystem('pmException');
 
+  // Create headPublisher singleton
+  G::LoadSystem('headPublisher');
+  $oHeadPublisher =& headPublisher::getSingleton();
+
   // Installer, redirect to install if we don't have a valid shared data folder
   if ( !defined('PATH_DATA') || !file_exists(PATH_DATA)) {
 
@@ -298,10 +302,6 @@
     G::RenderPage( 'publish' );
     die;
   }
-
-  // Create headPublisher singleton
-  G::LoadSystem('headPublisher');
-  $oHeadPublisher =& headPublisher::getSingleton();
 
   // database and workspace definition
   // if SYS_TEMP exists, the URL has a workspace, now we need to verify if exists their db.php file
