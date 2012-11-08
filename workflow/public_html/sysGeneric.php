@@ -299,6 +299,10 @@
     die;
   }
 
+  // Create headPublisher singleton
+  G::LoadSystem('headPublisher');
+  $oHeadPublisher =& headPublisher::getSingleton();
+
   // database and workspace definition
   // if SYS_TEMP exists, the URL has a workspace, now we need to verify if exists their db.php file
   if ( defined('SYS_TEMP') && SYS_TEMP != '')  {
@@ -362,10 +366,6 @@
   define('PATH_IMAGES_ENVIRONMENT_USERS',  PATH_DATA_SITE . 'usersPhotographies'.PATH_SEP);
   define('SERVER_NAME',  $_SERVER ['SERVER_NAME']);
   define('SERVER_PORT',  $_SERVER ['SERVER_PORT']);
-
-  // Create headPublisher singleton
-  G::LoadSystem('headPublisher');
-  $oHeadPublisher =& headPublisher::getSingleton();
 
   // create memcached singleton
   G::LoadClass ( 'memcached' );
