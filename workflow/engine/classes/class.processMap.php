@@ -792,7 +792,7 @@ class processMap
             $externalSteps = $oPluginRegistry->getSteps();
 
             $aSteps = array ();
-            $aSteps[] = array ('STEP_TITLE' => 'char','STEP_UID' => 'char','STEP_TYPE_OBJ' => 'char','STEP_CONDITION' => 'char','STEP_POSITION' => 'integer'
+            $aSteps[] = array ('STEP_TITLE' => 'char','STEP_UID' => 'char','STEP_TYPE_OBJ' => 'char','STEP_MODE' => 'char','STEP_CONDITION' => 'char','STEP_POSITION' => 'integer'
             );
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( StepPeer::TAS_UID, $sTaskUID );
@@ -850,7 +850,8 @@ class processMap
                         }
                         break;
                 }
-                $aSteps[] = array ('STEP_TITLE' => $sTitle,'STEP_UID' => $aRow['STEP_UID'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_CONDITION' => $aRow['STEP_CONDITION'],'STEP_POSITION' => $aRow['STEP_POSITION'],'urlEdit' => $urlEdit,'linkEditValue' => $linkEditValue,'PRO_UID' => $aRow['PRO_UID']
+
+                $aSteps[] = array ('STEP_TITLE' => $sTitle,'STEP_UID' => $aRow['STEP_UID'],'STEP_TYPE_OBJ' => $aRow['STEP_TYPE_OBJ'],'STEP_MODE' => $aRow['STEP_MODE'],'STEP_CONDITION' => $aRow['STEP_CONDITION'],'STEP_POSITION' => $aRow['STEP_POSITION'],'urlEdit' => $urlEdit,'linkEditValue' => $linkEditValue,'PRO_UID' => $aRow['PRO_UID']
                 );
                 $oDataset->next();
             }
