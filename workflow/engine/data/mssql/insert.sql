@@ -1511,7 +1511,7 @@ SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_GROUP','en','Are you sure to delete this g
   UNION ALL
 SELECT 'LABEL','ID_INCORRECT_EMAIL','en','Your E-mail address is not valid.','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_USER_NOT_REGISTERED','en','User not registered!','2012-06-01' 
+SELECT 'LABEL','ID_USER_NOT_REGISTERED','en','User not registered!','2012-11-07' 
   UNION ALL
 SELECT 'LABEL','ID_USER_INACTIVE','en','User inactive!','2012-06-01' 
   UNION ALL
@@ -1547,7 +1547,7 @@ SELECT 'LABEL','ID_MSG_CONFIRM_DELETE_CASES','en','Are you sure  you want to del
   UNION ALL
 SELECT 'LABEL','ID_ALL','en','All','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_CANCELLED','en','Canceled','2012-06-01' 
+SELECT 'LABEL','ID_CANCELLED','en','Cancelled','2012-10-29' 
   UNION ALL
 SELECT 'LABEL','ID_FINISHED','en','Finished','2012-06-01' 
   UNION ALL
@@ -1799,7 +1799,7 @@ SELECT 'LABEL','PAUSED','en','Pause','2012-06-01'
   UNION ALL
 SELECT 'LABEL','COMPLETED','en','Completed','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','CANCELLED','en','Canceled','2012-06-01' 
+SELECT 'LABEL','CANCELLED','en','Cancelled','2012-10-29' 
   UNION ALL
 SELECT 'LABEL','ID_NOT_FINISHED','en','Not finished','2012-06-01' 
   UNION ALL
@@ -4207,7 +4207,7 @@ SELECT 'LABEL','ID_GENERATE_WEB_ENTRY_PAGE','en','Generate Web Entry Page','2012
   UNION ALL
 SELECT 'LABEL','ID_GENERATE_INFO','en','General Information','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_TEST_USER','en','Test User','2012-06-01' 
+SELECT 'LABEL','ID_TEST_USER','en','Test User','2012-10-09' 
   UNION ALL
 SELECT 'LABEL','ID_PROCESSMAKER_VALIDATION','en','Please insert a valid processmaker user name and password, in order to assign the case to their respective owner.','2012-06-01' 
   UNION ALL
@@ -5739,9 +5739,9 @@ SELECT 'LABEL','ID_CRON_STATUS_ACTIVE','en','Active','2012-09-20'
   UNION ALL
 SELECT 'LABEL','ID_CRON_STATUS','en','Cron status','2012-09-20' 
   UNION ALL
-SELECT 'LABEL','ID_CRON_ACTIONS_LOG','en','Cron Actions Log','2012-09-20' 
-  UNION ALL
 SELECT 'LABEL','ID_RESET_DATES','en','Reset Dates','2012-09-24' 
+  UNION ALL
+SELECT 'LABEL','ID_CRON_ACTIONS','en','Cron','2012-10-02' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
@@ -5760,6 +5760,36 @@ SELECT 'LABEL','ID_CRON_INFO','en','Cron Information','2012-09-24'
 SELECT 'LABEL','ID_PATH','en','Path','2012-09-24' 
   UNION ALL
 SELECT 'LABEL','ID_LOG_INFO','en','Log Information','2012-09-24' 
+  UNION ALL
+SELECT 'LABEL','ID_REFRESH_TIME_SECONDS','en','Refresh Time (seconds)','2012-09-26' 
+  UNION ALL
+SELECT 'LABEL','ID_MSG_ENABLE_HTML_EDITING','en','<b>Warning:</b> Editing the HTML prevents fields from being added or moved, so only edit the HTML after creating all the fields. Do you like to continue anyway?','2012-10-01' 
+  UNION ALL
+SELECT 'LABEL','ID_ALL_CATEGORIES','en','All Categories','2012-10-02' 
+  UNION ALL
+SELECT 'LABEL','ID_CASES_NOTES_NO_PERMISSIONS','en','You do not have permission to cases notes','2012-10-03' 
+  UNION ALL
+SELECT 'LABEL','ID_DELETE_DOCUMENT','en','Do you want to delete selected document?','2012-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_AUTH_SOURCE_MISSING','en','The plugin that is related to this authentication source was removed or disabled, please consult to your system administrator.','2012-10-12' 
+  UNION ALL
+SELECT 'LABEL','ID_TRIGGER_REQUIRED','en','Trigger is required','2012-10-17' 
+  UNION ALL
+SELECT 'LABEL','ID_TIME_REQUIRED','en','Time is required','2012-10-17' 
+  UNION ALL
+SELECT 'LABEL','ID_CURRENT_WORKSPACE','en','Current Workspace','2012-10-29' 
+  UNION ALL
+SELECT 'LABEL','ID_PM_FUNCTION_CHANGE_CASE','en','The "{0}" function has {1} the current case, the script has stopped to avoid conflicts.','2012-10-29' 
+  UNION ALL
+SELECT 'LABEL','ID_DYNAFORM_EDITOR_LOGIN_AGAIN','en','You have lost your session and you have to login to continue. Please enter you password.','2012-10-31' 
+  UNION ALL
+SELECT 'LABEL','ID_DATE_FORMAT_14','en','d.m.Y','2012-11-06' 
+  UNION ALL
+SELECT 'LABEL','ID_TRIGGER_COPY_TITLE','en','Copy/Import Trigger','2012-11-07' 
+  UNION ALL
+SELECT 'LABEL','ID_TRIGGER_COPY_OPTION','en','Copy/Import Triggers from a Process','2012-11-07' 
+  UNION ALL
+SELECT 'LABEL','ID_TRIGGER_COPY_OPTION_DESCRIPTION','en','With this option is it possible to copy/import a trigger from any existent process on the System','2012-11-07' 
  ;
 
 INSERT INTO ISO_LOCATION ([IC_UID],[IL_UID],[IL_NAME],[IL_NORMAL_NAME],[IS_UID]) 
@@ -61121,7 +61151,7 @@ SELECT 'ZW','WKI','Hwange','','' ;
 INSERT INTO [DASHLET] ([DAS_UID],[DAS_CLASS],[DAS_TITLE],[DAS_DESCRIPTION],[DAS_VERSION],[DAS_CREATE_DATE],[DAS_UPDATE_DATE],[DAS_STATUS])
 SELECT '00000000000000000000000000000001','dashletOpenVSCompleted','Open Cases VS Completed Cases','Open Cases VS Completed Cases','1.0','2011-10-28 00:00:00','2011-10-28 00:00:00','1' UNION ALL
 SELECT '00000000000000000000000000000002','dashletProcessMakerCommunity','ProcessMaker Community','ProcessMaker Community Links and Information','1.0','2011-12-01 00:00:00','2011-12-01 00:00:00','1' UNION ALL
-SELECT '00000000000000000000000000000003','dashletProcessMakerEnterprise','ProcessMaker Enterprise Plugins and Addons','The following list of Enterprise plug-ins includes features and functionality that extend and enhance ProcessMaker's performance and functionality.','1.0','2011-12-05 00:00:00','2011-12-05 00:00:00','1' UNION ALL
+SELECT '00000000000000000000000000000003','dashletProcessMakerEnterprise','ProcessMaker Enterprise Plugins and Addons','The following list of Enterprise plug-ins includes features and functionality that extend and enhance ProcessMaker''s performance and functionality.','1.0','2011-12-05 00:00:00','2011-12-05 00:00:00','1' UNION ALL
 SELECT '00000000000000000000000000000004','dashletRssReader','Simple RSS reader','Simple RSS reader for ProcessMaker','1.0','2012-04-16 00:00:00','2012-04-16 00:00:00','1';
 
 INSERT INTO [DASHLET_INSTANCE] ([DAS_INS_UID],[DAS_UID],[DAS_INS_OWNER_TYPE],[DAS_INS_OWNER_UID],[DAS_INS_ADDITIONAL_PROPERTIES],[DAS_INS_CREATE_DATE],[DAS_INS_UPDATE_DATE],[DAS_INS_STATUS])
