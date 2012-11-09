@@ -260,26 +260,26 @@ function toMaskNumber(iNumber,dec)
 	iNumber = fix(iNumber.toString(),dec || 2);
 	var t=iNumber.split(".");
 	var arrayResult=iNumber.replace(/\D/g,'').replace(/^0*/,'').split("").reverse();
-	var final="";
+	var result="";
 	var aux=0;
 	var sep=0;
 	for(var i=0;i<arrayResult.length;i++)
 	{
 		if(i==1)
 		{
-			final="."+arrayResult[i]+final;
+			result="."+arrayResult[i]+result;
 		}
 		else
 		{
 			if(i>1 && aux>=3 && ((aux%3)==0))
 			{
-				final=arrayResult[i]+","+final;
+				result=arrayResult[i]+","+result;
 				aux+=1;
 				sep+=1;
 			}
 			else
 			{
-				final=arrayResult[i]+final;
+				result=arrayResult[i]+result;
 				if(i>1)
 				{
 					aux+=1;
@@ -287,7 +287,7 @@ function toMaskNumber(iNumber,dec)
 			}
 		}
 	}
-	return final;
+	return result;
 }
 
 function fix(val, dec)

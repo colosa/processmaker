@@ -1,0 +1,307 @@
+require 'rubygems'
+
+desc "Generate JS libraries"
+task :buildjs do
+  begin
+    require 'json'
+  rescue LoadError
+    puts "JSON not found.\nInstall it by running 'gem install json'"
+    exit
+  end
+  puts "Starting libraries generation..."
+
+  #system "rm -rf gulliver/js-min/"
+  #system "rm -rf gulliver/css-min/"
+  #Dir.mkdir('gulliver/css-min') unless File.exists?('gulliver/css-min')
+  #Dir.mkdir('gulliver/js-min') unless File.exists?('gulliver/js-min')
+
+  lib_file = File.read 'workflow/engine/bin/tasks/libraries.json'
+  libraries = JSON.parse(lib_file);
+  libraries.each do |library|
+    build = library['build']
+    if build
+      begin
+          require 'closure-compiler'
+      rescue LoadError
+        puts "closure-compiler not found.\nInstall it by running 'gem install closure-compiler'"
+        exit
+      end
+      buffer_full = ""
+      buffer_mini = ""
+      buffer_css = ""
+      lib_name = library['name']
+      files = library['libraries']
+      js_path = library['build_js_to']
+      css_path = library['build_css_to']
+      puts "Processing #{lib_name} file."
+      files.each do |lbry|
+        puts "Processing library: " + lbry['name']
+        buffer_full += File.read lbry['full']
+        buffer_mini += File.read lbry['mini']
+        if lbry['css']
+          buffer_css += File.read lbry['css']
+        end
+        if lbry['css_images']
+          Dir.mkdir(lbry['copy_css_images_to']) unless File.exists?(lbry['copy_css_images_to'])
+          system "cp -r " + lbry['css_images']  + " " + lbry['copy_css_images_to'] + "."
+        end
+      end
+
+      fileName = lib_name + "-" + getVersion
+
+      #File.open(js_path + fileName + ".js", 'w+') do |file_full|
+      #  file_full.write buffer_full
+      #end
+      #puts "File '#{js_path}#{fileName}.js' has been generated correctly."
+
+      File.open(js_path + lib_name + '.js', 'w+') do |file_mini|
+        file_mini.write Closure::Compiler.new.compress(buffer_mini)
+      end
+      puts "File '#{js_path}#{fileName}.js' has been generated correctly."
+      #puts "File '#{js_path}#{fileName}.min.js' has been generated correctly."
+
+      #File.open(css_path + fileName + '.css', 'w+') do |file_css|
+      #   file_css.write buffer_css
+      #end
+      #puts "File '#{css_path}#{fileName}.css' has been generated correctly."
+    end
+  end
+
+  #puts "Copying VERSION.txt"
+  #system "cp workflow/engine/bin/tasks/VERSION.js.txt gulliver/js-min/VERSION.txt"
+
+  puts "Libraries generation DONE"
+end
+
+desc "Run Jasmine BDD tests"
+task :jasmine do
+  system "jasmine-node --matchall --verbose spec"
+end
+
+desc "Create skeleton pages"
+task :skeleton  do
+  begin
+    require 'json'
+  rescue LoadError
+    puts "JSON not found.\nInstall it by running 'gem install json'"
+    exit
+  end
+  version = getVersion
+  template = "<!DOCTYPE html>\n<html>\n<head>\n"
+  template += "<title>jCore #{version}</title>\n"
+  template += "<link type=\"text/css\" href=\"css/jcore.utils-#{version}.css\" rel=\"stylesheet\" />\n"
+  template += "<script type=\"text/javascript\" src=\"js/jcore.utils-#{version}.min.js\" ></script>\n"
+  build_file = File.read 'src/build.json'
+  sources = JSON.parse(build_file)
+  sources.each do |source|
+    if source['css']
+      template += "<link type=\"text/css\" href=\"css/" + source['name'] + "-#{version}.css\" rel=\"stylesheet\" />\n"
+    end
+    template += "<script type=\"text/javascript\" src=\"js/" + source['name'] + "-#{version}.min.js\" ></script>\n"
+  end
+  template += "</head>\n<body>\n"
+  template += "<h1>Welcome to jCore FE #{version}</h1>\n"
+  template += "</body>\n</html>"
+  File.open('index.html', 'w+') do |file|
+    file.write template
+  end
+  puts "File 'index.html' has been generated correctly."
+  template = "<!DOCTYPE html>\n<html>\n<head>\n"
+  template += "<title>jCore #{version}</title>\n"
+  lib_file = File.read 'lib/libraries.json'
+  libraries = JSON.parse(lib_file)
+  libraries.each do |library|
+    if library['build']
+      template += "<!--Including " + library['name'] + " files -->\n"
+      buffer_js = ""
+      buffer_css = ""
+      files = library['libraries']
+      files.each do |lbry|
+        if lbry['full']
+          buffer_js += "<script type=\"text/javascript\" src=\"" +  lbry['full'] + "\" ></script>\n"
+        end
+        if lbry['css']
+          buffer_css += "<link type=\"text/css\" href=\"" + lbry['css'] + "\" rel=\"stylesheet\" />\n"
+        end
+      end
+      template += buffer_css
+      template += buffer_js
+    end
+  end
+  src_file = File.read 'src/build.json'
+  sources = JSON.parse(src_file)
+  sources.each do |source|
+    if source['build']
+      template += "<!--Including " + source['name'] + " files -->\n"
+      styles = source['css']
+      styles.each do |style|
+        template += "<link type=\"text/css\" href=\"" + style + "\" rel=\"stylesheet\" />\n"
+      end
+      files = source['files']
+      files.each do |file|
+        template += "<script type=\"text/javascript\" src=\"" +  file + "\" ></script>\n"
+      end
+    end
+  end
+  template += "</head>\n<body>\n"
+  template += "<h1>Welcome to jCore FE #{version}</h1>\n"
+  template += "</body>\n</html>"
+  File.open('devel.html', 'w+') do |file|
+    file.write template
+  end
+  puts "File 'devel.html' has been generated correctly."
+end
+
+desc "Set the library's version"
+task :version, :version do |t,args|
+  if (args['version'])
+    File.open('VERSION.txt', 'w+') do |file|
+      file.write args['version']
+    end
+  end
+end
+
+desc "Create a package for distribution"
+task :package do
+  begin
+    require 'zip/zip'
+    require 'zip/zipfilesystem'
+  rescue LoadError
+    puts "Zip Tools not found.\nInstall it by running 'gem install rubyzip'"
+    exit
+  end
+  begin
+      require 'json'
+    rescue LoadError
+      puts "JSON not found.\nInstall it by running 'gem install json'"
+      exit
+    end
+  system "rm -rf dist/"
+  Dir.mkdir('dist') unless File.exists?('dist')
+  zip_config = File.read 'dist.json'
+  zips = JSON.parse(zip_config)
+  zips.each do |zip|
+    zip_path = zip['copy_to']
+    fileName = zip['fileName']
+    type = zip['type']
+    version = getVersion
+    archive = zip_path + fileName + "-" + version + "-" + type + ".zip";
+    FileUtils.rm archive, :force=>true
+    Zip::ZipFile.open(archive, 'w') do |zipfile|
+      files = zip['files']
+      files.each do |file|
+        add_files = FileList.new(file)
+        add_files.each do |afile|
+          zipfile.add(afile,afile)
+        end
+      end
+      puts "File: " + archive + " has been created correctly!"
+    end
+  end
+end
+
+desc "Run JSHint Javascript sniffer"
+task :sniffer do
+  system "find src/ -name \"*.js\" -print0 | xargs -0 jslint --sloppy"
+  system "jshint src/"
+end
+
+desc "Run JSLint tests"
+task :jslint, :file do |t, args|
+  if args['file']
+    system "find src/ -name \"" + args['file'] + "\" -print0 | xargs -0 jslint --sloppy"
+  else
+    system "find src/ -name \"*.js\" -print0 | xargs -0 jslint --sloppy"
+  end
+end
+
+desc "Run JSHint tests"
+task :jshint, :file do |t, args|
+  if args['file']
+    system "find src/ -name \"" + args['file'] + "\" -print0 | xargs -0 jshint"
+  else
+    system "jshint src/"
+  end
+end
+
+desc "Run JSLint for CI Server"
+task :jslint_ci do
+  puts "Starting JSLINT test for CI Server"
+  failed_files = []
+  Dir['src/**/*.js'].each do |name|
+    cmd = "jslint --sloppy #{name}"
+    results = %x{#{cmd}}
+    unless results == name + " is OK"
+       failed_files << name
+    else
+       puts "File: " + name + " ...OK"
+    end
+  end
+  if failed_files.size > 0
+    exit 0
+  else
+    puts "JSLINT testing...DONE"
+  end
+end
+
+desc "Run Jasmine Test for CI Server"
+task :jasmine_ci do
+  puts "Starting JASMINE testing..."
+  system "jasmine-node spec/ --junitreport"
+  puts "JASMINE testing...DONE"
+end
+
+desc "Compile Documentation with JSDoc 3"
+task :docs do
+  begin
+      require 'json'
+  rescue LoadError
+      puts "JSON not found.\nInstall it by running 'gem install json'"
+      exit
+  end
+  doc_config = File.read 'docs.json'
+  docs = JSON.parse(doc_config)
+  docs.each do |doc_file|
+     doc_list = ""
+     doc_target = doc_file['build_dir']
+     files = doc_file['files']
+     files.each do |file|
+        doc_list += " " + file
+     end
+     system "jsduck -o " + doc_target + doc_list
+  end
+
+end
+
+desc "Build jCore library"
+task :build, :version do |t, args|
+  if args['version']
+    Rake::Task['version'].invoke(args['version'])
+  end
+  Rake::Task['buildjs'].execute
+  #Rake::Task['skeleton'].execute
+  #Rake::Task['docs'].execute
+  #Rake::Task['package'].execute
+  puts "jCore " + getVersion + " has been build correctly."
+end
+
+desc "Default Task - Build Library"
+task :default do
+  Rake::Task['build'].execute
+end
+
+desc "Run Violations Test for CI Server"
+task :violations do
+  Dir.mkdir('violations') unless File.exists?('violations')
+  Dir.mkdir('violations/js') unless File.exists?('violations/js')
+  Dir.mkdir('violations/css') unless File.exists?('violations/css')
+  system "nodelint src --config config/jslint.js --reporter=xml > violations/js/jslint.xml"
+  system "csslint src --format=checkstyle-xml > violations/css/checkstyle.xml"
+  system "csslint src --format=lint-xml > violations/css/csslint.xml"
+end
+
+def getVersion
+  version = File.read 'workflow/engine/bin/tasks/VERSION.js.txt'
+  return version
+  exit
+end
