@@ -105,14 +105,6 @@
                 "full": "gulliver/js/widgets/tooltip/pmtooltip.js",
                 "mini": "gulliver/js/widgets/tooltip/pmtooltip.js",
                 "minify": true
-            },
-            {
-                "name": "module.panel",
-                "version": "0.6",
-                "homepage": "http://www.maborak.com",
-                "full": "gulliver/js/maborak/core/module.panel.js",
-                "mini": "gulliver/js/maborak/core/module.panel.js",
-                "minify": true
             }
         ],
         "build" : true,

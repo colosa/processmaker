@@ -1,2 +1,2 @@
 
-//var leimnud = new maborak;
+var leimnud = new maborak;
