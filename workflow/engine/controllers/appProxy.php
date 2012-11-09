@@ -127,6 +127,20 @@ class AppProxy extends HttpProxyController
       throw new Exception(G::LoadTranslation('ID_NO_PERMISSION_NO_PARTICIPATED'));
     }
 
+        if ($httpData->action == 'sent') { // Get the last valid delegation for participated list
+            $criteria = new Criteria();
+            $criteria->addSelectColumn(AppDelegationPeer::DEL_INDEX);
+            $criteria->add(AppDelegationPeer::APP_UID, $httpData->appUid);
+            $criteria->add(AppDelegationPeer::DEL_FINISH_DATE, null, Criteria::ISNULL);
+            $criteria->addDescendingOrderByColumn(AppDelegationPeer::DEL_INDEX);
+            if (AppDelegationPeer::doCount($criteria) > 0) {
+                $dataset = AppDelegationPeer::doSelectRS($criteria);
+                $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                $dataset->next();
+                $row = $dataset->getRow();
+                $httpData->delIndex = $row['DEL_INDEX'];
+            }
+        }
     $applicationFields = $case->loadCase($httpData->appUid, $httpData->delIndex);
     $process = new Process();
     $processData = $process->load($applicationFields['PRO_UID']);
@@ -168,6 +182,20 @@ class AppProxy extends HttpProxyController
       unset($_SESSION['_processData']);
     }
     else {
+            if ($httpData->action == 'sent') { // Get the last valid delegation for participated list
+                $criteria = new Criteria();
+                $criteria->addSelectColumn(AppDelegationPeer::DEL_INDEX);
+                $criteria->add(AppDelegationPeer::APP_UID, $httpData->appUid);
+                $criteria->add(AppDelegationPeer::DEL_FINISH_DATE, null, Criteria::ISNULL);
+                $criteria->addDescendingOrderByColumn(AppDelegationPeer::DEL_INDEX);
+                if (AppDelegationPeer::doCount($criteria) > 0) {
+                    $dataset = AppDelegationPeer::doSelectRS($criteria);
+                    $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                    $dataset->next();
+                    $row = $dataset->getRow();
+                    $httpData->delIndex = $row['DEL_INDEX'];
+                }
+            }
       $applicationFields = $case->loadCase($httpData->appUid, $httpData->delIndex);
       $process = new Process();
       $processData = $process->load($applicationFields['PRO_UID']);
