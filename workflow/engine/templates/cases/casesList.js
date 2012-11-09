@@ -26,7 +26,7 @@ var textJump;
 var caseSummary = function() {
   var rowModel = grid.getSelectionModel().getSelected();
   if (rowModel) {
-    openSummaryWindow(rowModel.data.APP_UID, rowModel.data.DEL_INDEX);
+    openSummaryWindow(rowModel.data.APP_UID, rowModel.data.DEL_INDEX, action);
   }
   else {
     msgBox(_('ID_INFORMATION'), _('ID_SELECT_ONE_AT_LEAST'));
@@ -472,7 +472,7 @@ Ext.onReady ( function() {
 
   var renderSummary = function (val, p, r) {
     var summaryIcon = '<img src="/images/ext/default/s.gif" class="x-tree-node-icon ss_layout_header" unselectable="off" id="extdd-17" ';
-    summaryIcon += 'onclick="openSummaryWindow(' + "'" + r.data['APP_UID'] + "'" + ', ' + r.data['DEL_INDEX'] + ')" title="' + _('ID_SUMMARY') + '" />';
+    summaryIcon += 'onclick="openSummaryWindow(' + "'" + r.data['APP_UID'] + "'" + ', ' + r.data['DEL_INDEX'] + ', action)" title="' + _('ID_SUMMARY') + '" />';
     return summaryIcon;
   };
 

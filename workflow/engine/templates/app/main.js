@@ -390,7 +390,7 @@ function statusBarMessage( msg, isLoading, success ) {
 /* Case Notes - End */
 
 /* Case Summary - Start */
-var openSummaryWindow = function(appUid, delIndex)
+var openSummaryWindow = function(appUid, delIndex, action)
 {
   if (summaryWindowOpened) {
     return;
@@ -400,12 +400,13 @@ var openSummaryWindow = function(appUid, delIndex)
     url : '../appProxy/requestOpenSummary',
     params : {
       appUid  : appUid,
-      delIndex: delIndex
+      delIndex: delIndex,
+      action: action
     },
     success: function (result, request) {
       var response = Ext.util.JSON.decode(result.responseText);
       if (response.success) {
-        var sumaryInfPanel = PMExt.createInfoPanel('../appProxy/getSummary', {appUid: appUid, delIndex: delIndex});
+        var sumaryInfPanel = PMExt.createInfoPanel('../appProxy/getSummary', {appUid: appUid, delIndex: delIndex, action: action});
         sumaryInfPanel.setTitle(_('ID_GENERATE_INFO'));
 
         var summaryWindow = new Ext.Window({
