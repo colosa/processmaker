@@ -141,7 +141,6 @@ class AppFolder extends BaseAppFolder {
 
     $Criteria->addAscendingOrderByColumn ( AppFolderPeer::FOLDER_NAME );
 
-  $response['totalFoldersCount'] = AppFolderPeer::doCount($Criteria);
   $response['folders'] = array();
 
 if($limit != 0){
@@ -157,6 +156,7 @@ if($limit != 0){
       $response['folders'] [] = $row;
       $rs->next ();
     }
+    $response['totalFoldersCount'] = count($response['folders']);
     return ($response);
   }
   /**
@@ -261,7 +261,6 @@ if($limit != 0){
     $oCriteria->addDescendingOrderByColumn ( AppDocumentPeer::DOC_VERSION );
 
 
-  $response['totalDocumentsCount'] = AppDocumentPeer::doCount($oCriteria);
   $response['documents'] = array();
 
 
@@ -306,6 +305,7 @@ if($limit != 0){
       }
       $rs->next ();
     }
+    $response['totalDocumentsCount'] = count($response['documents']);
     return ($response);
   }
   function getCompleteDocumentInfo($appUid, $appDocUid, $docVersion, $docUid, $usrId) {
@@ -381,37 +381,37 @@ if($limit != 0){
             $downloadLabel = G::LoadTranslation ( 'ID_DOWNLOAD' );
             $downloadLabel1 = "";
           }
-          
+
           ///////
           if (!empty($row1["APP_DOC_PLUGIN"])) {
             $pluginRegistry = &PMPluginRegistry::getSingleton();
-            
+
             $pluginName = $row1["APP_DOC_PLUGIN"];
             $fieldValue = "";
-            
+
             if (file_exists(PATH_PLUGINS . $pluginName . ".php")) {
               $pluginDetail = $pluginRegistry->getPluginDetails($pluginName . ".php");
-              
+
               if ($pluginDetail) {
                 if ($pluginDetail->enabled) {
                   require_once (PATH_PLUGINS . $pluginName . ".php");
-                  
+
                   $pluginNameClass = $pluginName . "Plugin";
-                  
+
                   $objPluginClass = new $pluginNameClass($pluginName);
-                  
+
                   if (isset($objPluginClass->sMethodGetUrlDownload) && !empty($objPluginClass->sMethodGetUrlDownload)) {
                     if (file_exists(PATH_PLUGINS . $pluginName . PATH_SEP . "class." . $pluginName . ".php")) {
                       require_once (PATH_PLUGINS . $pluginName . PATH_SEP . "class." . $pluginName . ".php");
-                  
+
                       $pluginNameClass = $pluginName . "Class";
-                  
+
                       $objClass = new $pluginNameClass();
-                  
+
                       if (method_exists($objClass, $objPluginClass->sMethodGetUrlDownload)) {
                         eval("\$url = \$objClass->" . $objPluginClass->sMethodGetUrlDownload . "(\"" . $row1["APP_DOC_UID"] . "\");");
                         $downloadLink = $url;
-                        
+
                         $fieldValue = $row1["APP_DOC_PLUGIN"];
                       }
                     }
@@ -419,11 +419,11 @@ if($limit != 0){
                 }
               }
             }
-            
+
             $row1["APP_DOC_PLUGIN"] = $fieldValue;
           }
           break;
-        
+
         default :
           $row4 = array ();
           $versioningEnabled = false;

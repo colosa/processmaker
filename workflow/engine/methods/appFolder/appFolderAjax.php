@@ -341,7 +341,7 @@ function expandNode()
     }
     //G::pr($processListTree);
     if ((isset($_POST['option'])) && ($_POST['option'] == "gridDocuments")) {
-        $processListTreeTemp['totalCount']=$totalFolders+$totalDocuments;//count($processListTree);
+        $processListTreeTemp['totalCount']=$totalFolders+count($processListTree);
         $processListTreeTemp['msg']='correct reload';
         $processListTreeTemp['items']=$processListTree;
         $processListTree = $processListTreeTemp;
@@ -615,7 +615,7 @@ function uploadDocument()
     $functionsToReplace["function_standardupload_btnsave"]=' function() {
                 statusBarMessage("'.G::LoadTranslation('ID_UPLOADING_FILE').'", true, true);
                 form = Ext.getCmp("uploadform").getForm();
-                
+
                 //Ext.getCmp("uploadform").getForm().submit();
                 //console.log(form);
                 //console.log(form.url);
@@ -623,13 +623,13 @@ function uploadDocument()
                     //reset: true,
                     reset: false,
                     success: function(form, action) {
-                        
+
                         datastore.reload();
                         statusBarMessage(action.result.message, false, true);
                         Ext.getCmp("dialog").destroy();
                     },
                     failure: function(form, action) {
-                        
+
                         if(!action.result) return;
                         Ext.MessageBox.alert("error", action.result.error);
                         statusBarMessage(action.result.error, false, false);
