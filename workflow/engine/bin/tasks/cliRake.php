@@ -74,7 +74,10 @@ function minify_javascript($command, $args)
                 $sum2 += $size2;
                 printf ("%7d -> %7d %5.2f%%\n", $size1, $size2, 100 - $size2/$size1*100) ;
             }
-            $outputMiniFile = PATH_TRUNK . $library->build_js_to . "/" . $libName . ".js";
+            if (substr($library->build_js_to ,-1) != '/') {
+                $library->build_js_to .= '/';
+            }
+            $outputMiniFile = PATH_TRUNK . $library->build_js_to . $libName . ".js";
             file_put_contents ( $outputMiniFile, $bufferMini );
             printf ("    -------------------- -------    ------- ------\n");
             printf ("    %-20s %7d -> %7d %6.2f%%\n", $libName.'.js', $sum1, $sum2, 100-$sum2/$sum1*100) ;

@@ -1,1 +1,0 @@
-<div section="a" rel='static' style="width:6548px;"></div>
