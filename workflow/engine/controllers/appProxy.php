@@ -33,9 +33,15 @@ class AppProxy extends HttpProxyController
 
         G::LoadClass( 'case' );
         $case = new Cases();
+        $caseLoad = '';
 
-        $proUid = ($httpData->pro == '') ? $_SESSION['PROCESS'] : $httpData->pro;
-        $tasUid = ($httpData->tas == '') ? $_SESSION['TASK'] : $httpData->tas;
+        if (!isset($_SESSION['PROCESS']) && !isset($httpData->pro)) {
+            $caseLoad = $case->loadCase($appUid);
+            $httpData->pro = $caseLoad['PRO_UID'];
+        }
+
+        $proUid = (!isset($httpData->pro)) ? $_SESSION['PROCESS'] : $httpData->pro;
+        $tasUid = (!isset($httpData->tas)) ? ((isset($_SESSION['TASK'])) ? $_SESSION['TASK'] : '') : $httpData->tas;
         $usrUid = $_SESSION['USER_LOGGED'];
 
         $respView = $case->getAllObjectsFrom( $proUid, $appUid, $tasUid, $usrUid, 'VIEW' );
