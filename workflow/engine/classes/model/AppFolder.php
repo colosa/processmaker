@@ -152,7 +152,6 @@ class AppFolder extends BaseAppFolder
         $Criteria->add( appFolderPeer::FOLDER_PARENT_UID, $folderID, CRITERIA::EQUAL );
         $Criteria->addAscendingOrderByColumn( AppFolderPeer::FOLDER_NAME );
 
-        $response['totalFoldersCount'] = AppFolderPeer::doCount( $Criteria );
         $response['folders'] = array ();
 
         if ($limit != 0) {
@@ -168,6 +167,7 @@ class AppFolder extends BaseAppFolder
             $response['folders'][] = $row;
             $rs->next();
         }
+        $response['totalFoldersCount'] = count($response['folders']);
         return ($response);
     }
 
@@ -280,7 +280,6 @@ class AppFolder extends BaseAppFolder
         $oCriteria->addAscendingOrderByColumn( AppDocumentPeer::APP_DOC_INDEX );
         $oCriteria->addDescendingOrderByColumn( AppDocumentPeer::DOC_VERSION );
 
-        $response['totalDocumentsCount'] = AppDocumentPeer::doCount( $oCriteria );
         $response['documents'] = array ();
 
         $oCriteria->setLimit( $limit );
@@ -322,6 +321,7 @@ class AppFolder extends BaseAppFolder
             }
             $rs->next();
         }
+        $response['totalDocumentsCount'] = count($response['documents']);
         return ($response);
     }
 
