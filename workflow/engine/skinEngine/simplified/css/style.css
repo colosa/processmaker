@@ -37,6 +37,14 @@ pre {
   height: 40px;
   background-color: #252525;
   background-position: 0 0;
+  background: #007eb5; /* Old browsers */
+  background: -moz-linear-gradient(top,  #007eb5 0%, #003d5a 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#007eb5), color-stop(100%,#003d5a)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #007eb5 0%,#003d5a 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #007eb5 0%,#003d5a 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #007eb5 0%,#003d5a 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #007eb5 0%,#003d5a 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007eb5', endColorstr='#003d5a',GradientType=0 ); /* IE6-9 */
 
 /*    background-image: url("/images/twitter_web_sprite_bgs.png");
   background-repeat: repeat-x;*/

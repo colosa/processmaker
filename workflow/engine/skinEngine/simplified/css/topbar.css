@@ -592,7 +592,8 @@ div.topbar ul li ul li span {
 div#corpBar div.topbar-bg {
   background-color: #142F3C;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#142F3C), to(#307190)); /* Webkit */
-  background-image: -moz-linear-gradient(#142F3C, #1D4558); /* FF3.6 */
+  background-image: -moz-linear-gradient(top, #0085bf 0%, #003954 100%); /* FF3.6 */
+  /*background-image: -moz-linear-gradient(#677C89 , #1D4558); *//* FF3.6 */
   /*erik: modified backgournd colors in topbar, but just for FF, we need todo for others; 
   original: #00a0d1, #008db8 */  
 
