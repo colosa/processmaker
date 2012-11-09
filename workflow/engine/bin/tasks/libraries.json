@@ -7,102 +7,235 @@
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/maborak/core/maborak.old.js",
-                "mini": "gulliver/js/maborak/core/maborak.old.js"
+                "mini": "gulliver/js/maborak/core/maborak.old.js",
+                "minify": true
             },
             {
                 "name": "common",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/common/core/common.js",
-                "mini": "gulliver/js/common/core/common.js"
+                "mini": "gulliver/js/common/core/common.js",
+                "minify": true
             },
             {
                 "name": "effects",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/common/core/effects.js",
-                "mini": "gulliver/js/common/core/effects.js"
+                "mini": "gulliver/js/common/core/effects.js",
+                "minify": true
             },
             {
                 "name": "webResource",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/common/core/webResource.js",
-                "mini": "gulliver/js/common/core/webResource.js"
+                "mini": "gulliver/js/common/core/webResource.js",
+                "minify": true
             },
             {
                 "name": "dveditor",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/dveditor/core/dveditor.js",
-                "mini": "gulliver/js/dveditor/core/dveditor.js"
+                "mini": "gulliver/js/dveditor/core/dveditor.js",
+                "minify": true
             },
             {
                 "name": "tree",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/common/tree/tree.js",
-                "mini": "gulliver/js/common/tree/tree.js"
+                "mini": "gulliver/js/common/tree/tree.js",
+                "minify": true
             },
             {
                 "name": "json",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/json/core/json.js",
-                "mini": "gulliver/js/json/core/json.js"
+                "mini": "gulliver/js/json/core/json.js",
+                "minify": true
             },
             {
                 "name": "form",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/form/core/form.js",
-                "mini": "gulliver/js/form/core/form.js"
+                "mini": "gulliver/js/form/core/form.js",
+                "minify": true
             },
             {
                 "name": "pagedTable",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/form/core/pagedTable.js",
-                "mini": "gulliver/js/form/core/pagedTable.js"
+                "mini": "gulliver/js/form/core/pagedTable.js",
+                "minify": true
             },
             {
                 "name": "grid",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/grid/core/grid.js",
-                "mini": "gulliver/js/grid/core/grid.js"
+                "mini": "gulliver/js/grid/core/grid.js",
+                "minify": true
             },
             {
                 "name": "js-calendar",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/widgets/js-calendar/js-calendar.js",
-                "mini": "gulliver/js/widgets/js-calendar/js-calendar.js"
+                "mini": "gulliver/js/widgets/js-calendar/js-calendar.js",
+                "minify": true
             },
             {
                 "name": "bsn.AutoSuggest",
                 "version": "2.1.3",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/widgets/suggest/bsn.AutoSuggest_2.1.3.js",
-                "mini": "gulliver/js/widgets/suggest/bsn.AutoSuggest_2.1.3.js"
+                "mini": "gulliver/js/widgets/suggest/bsn.AutoSuggest_2.1.3.js",
+                "minify": true
             },
             {
                 "name": "pmtooltip",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/widgets/tooltip/pmtooltip.js",
-                "mini": "gulliver/js/widgets/tooltip/pmtooltip.js"
+                "mini": "gulliver/js/widgets/tooltip/pmtooltip.js",
+                "minify": true
             },
             {
                 "name": "module.panel",
                 "version": "0.6",
                 "homepage": "http://www.maborak.com",
                 "full": "gulliver/js/maborak/core/module.panel.js",
-                "mini": "gulliver/js/maborak/core/module.panel.js"
+                "mini": "gulliver/js/maborak/core/module.panel.js",
+                "minify": true
             }
         ],
         "build" : true,
         "build_js_to" : "gulliver/js/maborak/core/",
         "build_css_to" : "gulliver/css-min/"
+    },
+    {
+        "name": "maborak.loader",
+        "libraries": [
+            {
+                "name": "module.panel",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/maborak/core/module.panel.js",
+                "mini": "gulliver/js/maborak/core/module.panel.js",
+                "minify": true
+            },
+            {
+                "name": "module.validator",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/maborak/core/module.validator.js",
+                "mini": "gulliver/js/maborak/core/module.validator.js",
+                "minify": true
+            },
+            {
+                "name": "module.app",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/maborak/core/module.app.js",
+                "mini": "gulliver/js/maborak/core/module.app.js",
+                "minify": true
+            },
+            {
+                "name": "module.rpc",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/maborak/core/module.rpc.js",
+                "mini": "gulliver/js/maborak/core/module.rpc.js",
+                "minify": true
+            },
+            {
+                "name": "module.fx",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/maborak/core/module.fx.js",
+                "mini": "gulliver/js/maborak/core/module.fx.js",
+                "minify": true
+            },
+            {
+                "name": "module.drag",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/maborak/core/module.drag.js",
+                "mini": "gulliver/js/maborak/core/module.drag.js",
+                "minify": true
+            },
+            {
+                "name": "module.drop",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/maborak/core/module.drop.js",
+                "mini": "gulliver/js/maborak/core/module.drop.js",
+                "minify": true
+            },
+            {
+                "name": "module.dom",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/maborak/core/module.dom.js",
+                "mini": "gulliver/js/maborak/core/module.dom.js",
+                "minify": true
+            },
+            {
+                "name": "module.dashboard",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/js/maborak/core/module.dashboard.js",
+                "mini": "gulliver/js/maborak/core/module.dashboard.js",
+                "minify": true
+            },
+            {
+                "name": "cases",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "workflow/engine/js/cases/core/cases.js",
+                "mini": "workflow/engine/js/cases/core/cases.js",
+                "minify": true
+            },
+            {
+                "name": "cases_Step",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "workflow/engine/js/cases/core/cases_Step.js",
+                "mini": "workflow/engine/js/cases/core/cases_Step.js",
+                "minify": true
+            },
+            {
+                "name": "processmap",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "workflow/engine/js/processmap/core/processmap.js",
+                "mini": "workflow/engine/js/processmap/core/processmap.js",
+                "minify": true
+            },
+            {
+                "name": "appFolderList",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "workflow/engine/js/appFolder/core/appFolderList.js",
+                "mini": "workflow/engine/js/appFolder/core/appFolderList.js",
+                "minify": true
+            },
+            {
+                "name": "editor",
+                "version": "0.6",
+                "homepage": "http://www.maborak.com",
+                "full": "gulliver/thirdparty/htmlarea/editor.js",
+                "mini": "gulliver/thirdparty/htmlarea/editor.js",
+                "minify": true
+            }
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js/maborak/core/"
     }
 ]

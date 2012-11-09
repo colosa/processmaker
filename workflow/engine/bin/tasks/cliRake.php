@@ -38,9 +38,50 @@ CLI::taskRun(minify_javascript);
 
 function minify_javascript($command, $args)
 {
-    CLI::logging("BUILD-JS", PROCESSMAKER_PATH . "upgrade.log");
-    CLI::logging("Checking if rake is installed...\n");
-    $rakeFile = PROCESSMAKER_PATH . "workflow/engine/bin/tasks/Rakefile";
-    system('rake -f ' . $rakeFile);
+    CLI::logging("BUILD-JS\n");
+    //disabling the rakefile version, until we have updated the dev environment
+    //CLI::logging("Checking if rake is installed...\n");
+    //$rakeFile = PROCESSMAKER_PATH . "workflow/engine/bin/tasks/Rakefile";
+    //system('rake -f ' . $rakeFile);
+
+    require_once (PATH_THIRDPARTY . 'jsmin/jsmin.php');
+
+    $libraries = json_decode( file_get_contents ( PATH_HOME . 'engine/bin/tasks/libraries.json' ));
+    //print_r($libraries);
+
+    foreach ($libraries as $k=>$library ) {
+        $build = $library->build;
+        if ($build) {
+            $bufferMini = "";
+            $sum1 = 0;
+            $sum2 = 0;
+            $libName = $library->name;
+            $files   = $library->libraries;
+            $js_path = $library->build_js_to;
+            printf ("Processing %s library:\n", $libName );
+            foreach ( $files as $file ) {
+                printf ( "    %-20s ", $file->name );
+                $fileNameMini = PATH_TRUNK . $file->mini;
+                if ($file->minify) {
+                    $minify = JSMin::minify( file_get_contents( $fileNameMini ) );
+                } else {
+                    $minify = file_get_contents( $fileNameMini );
+                }
+                $bufferMini .= $minify;
+                $size1 = filesize($fileNameMini);
+                $size2 = strlen($minify);
+                $sum1 += $size1;
+                $sum2 += $size2;
+                printf ("%7d -> %7d %5.2f%%\n", $size1, $size2, 100 - $size2/$size1*100) ;
+            }
+            $outputMiniFile = PATH_TRUNK . $library->build_js_to . "/" . $libName . ".js";
+            file_put_contents ( $outputMiniFile, $bufferMini );
+            printf ("    -------------------- -------    ------- ------\n");
+            printf ("    %-20s %7d -> %7d %6.2f%%\n", $libName.'.js', $sum1, $sum2, 100-$sum2/$sum1*100) ;
+            print "    $outputMiniFile\n";
+
+        }
+    }
+    CLI::logging("BUILD-JS DONE\n");
 }
 
