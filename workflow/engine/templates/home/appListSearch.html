@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" /> 
+    
+    <link rel="stylesheet" href="/css/simplified.css" media="screen" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/js/jquery/css/smoothness/jquery-ui-1.8.17.custom.css" type="text/css">
+    <!--<link rel="stylesheet" href="/js/jquery/css/redmond/jquery-ui-1.7.2.custom.css" type="text/css">-->
+
+    <script type="text/javascript" src="/js/jquery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery/jquery-ui-1.8.17.min.js"></script>
+
+    {literal}
+    <style>
+        body {
+            /*width: 500px;*/
+            margin: 10px auto;
+            /*color: #999;*/
+            font: 90%/150% Arial, Helvetica, sans-serif;
+            /*margin : 0px;*/
+            color  : #808080;
+            /*font   : normal 8pt sans-serif,Tahoma,MiscFixed;*/
+            background-color:#ECECEC;
+        }
+
+        #note_text {
+            width:100%;
+            height:52px;
+        }
+
+        .postitem:hover{
+            /*background:#EFEFEF;*/
+        }
+        .fontText {
+            color: #565656;
+            font: bold 10px/15px Helvetica,Sans-Serif;
+            text-align: center;
+            text-decoration: none;
+            text-shadow: 0 1px 2px #FFFFFF;
+            text-transform: uppercase;
+        }
+
+        #btn {
+            background: #ffffff; /* Old browsers */
+            background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #dbdbdb 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#dbdbdb)); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#dbdbdb 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#dbdbdb 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#dbdbdb 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#dbdbdb 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dbdbdb',GradientType=0 ); /* IE6-9 */
+            
+            border: 1px solid #FFFFFF;
+            color: #565656;
+            text-decoration: none;
+                text-shadow: 1px 1px 1px #FFFFFF;
+            font: 10px/25px Helvetica,Sans-Serif;
+                border-radius: 10px 10px 10px 10px;
+                box-shadow: 0 0 6px #FFFFFF inset;
+            text-decoration: none;
+            padding: 5px 0 0;
+        }
+        a.btn:hover {
+            color: #145675;
+            -moz-transition: color 0.25s ease-in-out;
+            -webkit-transition: color 0.25s ease-in-out;
+            transition: color 0.25s ease-in-out;
+        }
+        .global-nav{
+            background: #007eb5; /* Old browsers */
+            background: -moz-linear-gradient(top,  #007eb5 0%, #003d5a 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#007eb5), color-stop(100%,#003d5a)); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  #007eb5 0%,#003d5a 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  #007eb5 0%,#003d5a 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  #007eb5 0%,#003d5a 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  #007eb5 0%,#003d5a 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007eb5', endColorstr='#003d5a',GradientType=0 ); /* IE6-9 */
+        }
+    </style>
+    <script>
+        function resize()
+        {
+            var h = $(document.body).height() - 52;
+            var w = $(document.body).width();
+            if (w > 600) {
+                w = 600;
+            }
+
+            $('.content-header').width(w-50);
+        }
+        function setTextSearch()
+        {
+            $("#searchText").val(null);
+            redirect();
+        }
+        
+        function redirect()
+        {
+            var src = $("#iframex", window.parent.document).attr('src');
+            src = src.split("?");
+
+            var params = '?';
+            params += 'process='+$("#comboProcess option:selected").val();
+            params += '&status='+$("#comboStatus option:selected").val();
+            params += '&search='+$("#searchText").val();
+            params += '&category='+$("#comboCategory option:selected").val();
+            params += '&user='+$("#comboUsers option:selected").val();
+            params += '&dateFrom='+$("#dateFrom").val();
+            params += '&dateTo='+$("#dateTo").val();
+
+            $("#iframex", window.parent.document).attr({src : src[0]+params});
+            return false;
+        }
+
+        function showNt(appUid)
+        {
+            var d = $('#m_'+appUid);
+
+            if (d.css('display') == 'block') {
+                d.hide('slow');
+            }
+            else {
+                d.show('slow');
+            }
+        }
+
+        function addNt(appUid)
+        {
+            $('textarea#note_text').val('');
+            $( "#dialog-add-note" ).dialog({
+                resizable: false,
+                height:192,
+                modal: true,
+                buttons: {
+                    "Add Note": function() {
+                        var sendMail = document.getElementById('chkSendMail').checked;
+                        sendMail = (sendMail == true) ? '1' : '0';
+                        $(this).dialog("close");
+                        $.post(
+                            '../appProxy/postNote',
+                            {appUid  : appUid,
+                             noteText: $('textarea#note_text').val(),
+                             swSendMail : sendMail},
+                            function(responseText) {
+                                updateNt(appUid);
+                            }
+                        );
+                        //redirect('home/startCase?id='+id);
+                    },
+                    Cancel: function() {
+                        $(this).dialog( "close" );
+                    }
+                }
+            });
+        }
+        function addPanelSearch()
+        {
+            var urlFile = $('#imagenPanel').attr('src');
+            var file = urlFile.split("/");
+            var img = file.pop();
+            var stylePanel = '';
+            switch (img) {
+                case 'down.png':
+                    src = '/images/simplified/up.png';
+                    $('#panelDown').attr({style: 'display: table; width: 95%;'});
+                    $('#panelDown').show();
+                    break;
+                case 'up.png':
+                    src = '/images/simplified/down.png';
+                    $('#panelDown').attr({style: 'display:none  width: 95%;'});
+                    $('#panelDown').hide();
+                default:
+                    src = '/images/simplified/down.png';
+                    $('#panelDown').attr({style: 'display:none  width: 95%;'});
+                    $('#panelDown').hide();
+                    break;
+            }
+            $('#imagenPanel').attr({src: src});
+        }
+
+        function updateNt(appUid)
+        {
+            $.post(
+                '../appProxy/getNotesList?appUid='+appUid,
+                {start:0, limit:100},
+                function(resp) {
+                    data = jQuery.parseJSON(resp);
+                    content = $('div#m_'+appUid);
+                    content.html('');
+
+                    for (i=0; i<data.notes.length; i++) {
+                        r = data.notes[i];
+
+                        s = '<div class="appMessage"><table border="0"><tr>' +
+                              '<td width="50" valign="top">'+
+                                '<img border="0" src="../users/users_ViewPhotoGrid?pUID='+r.USR_UID+'" width="40" height="40"/>' +
+                              '</td><td>' +
+                                '<h3>'+r.USR_FIRSTNAME+' '+r.USR_LASTNAME+' ('+r.USR_USERNAME+')</h3>' +
+                                '<p><pre>'+r.NOTE_CONTENT+'</pre>' +
+                                '<div class="appMessageDate">Posted at '+r.NOTE_DATE+'</div>' +
+                              '</td></tr></table></div>';
+
+                        content.append(s);
+                        $('#n_'+appUid).show('slow');
+                    }
+                    d = $('#m_'+appUid);
+                    d.show('slow');
+                }
+            );
+            return true;
+        }
+
+        $(document).ready(function(){
+            $("#loadmorebutton").click(function (){
+                $('#loadmorebutton').html('<img src="/images/ajax-loader.gif" />');
+                $.ajax({
+                    url: "getApps?t="+listType+"&start="+appListStart+"&limit="+appListLimit,
+                    success: function(html){
+                        appListStart += appListLimit;
+    
+                        if(jQuery.trim(html) != ''){
+                            $("#commentlist").append(html);
+                            $('#loadmorebutton').html('Load More');
+                        }
+                        else {
+                            $('#loadmorebutton').replaceWith('<center>No more applications to show.</center>');
+                        }
+                    }
+                });
+                return false;
+            });
+            $("#dateFrom").datepicker({ dateFormat:'yy-mm-dd'});
+            $("#dateTo").datepicker({ dateFormat:'yy-mm-dd'});
+
+            $("#comboProcess").val(process);
+            $("#comboStatus").val(status);
+            $("#searchText").val(search);
+            $("#comboCategory").val(category);
+            $("#comboUsers").val(user);
+            $("#dateFrom").val(dateFrom);
+            $("#dateTo").val(dateTo);
+
+        });
+        {/literal}
+
+        var appListLimit = {$appListLimit};
+        var appListStart = {$appListStart};
+        var listType     = '{$listType}';
+        var process = '{$arraySearch[0]}';
+        var status = '{$arraySearch[1]}';
+        var search = '{$arraySearch[2]}';
+        var category = '{$arraySearch[3]}';
+        var user = '{$arraySearch[4]}';
+        var dateFrom = '{$arraySearch[5]}';
+        var dateTo = '{$arraySearch[6]}';
+    </script>
+
+</head>
+
+<body id='bodySearch' onload="resize()" onresize="resize()" >
+
+    <center>
+    <div id="btn" style = "display: table; width: 550px; margin: 5px;">
+        <center>
+        <div style = "display: table; width: 95%;">
+            <div style = "float: left;"> <b>{$categoryTitle}:</b>
+                <select id="comboCategory" onchange="redirect();" style="width: 200px">
+                    {foreach from=$categoryValues key=k item=VALUE}
+                    <option value="{$VALUE[0]}">{$VALUE[1]}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div style = "float: right;"> <b>{$processTitle}:</b>
+                <select id="comboProcess" onchange="redirect();" style="width: 200px">
+                    {foreach from=$processValues key=k item=VALUE}
+                    <option value="{$VALUE[0]}">{$VALUE[1]}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div style = "float: left;"> <b>{$statusTitle}:&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                <select id="comboStatus" onchange="redirect();" style="width: 200px">
+                    {foreach from=$statusValues key=k item=VALUE}
+                    <option value="{$VALUE[0]}">{$VALUE[1]}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div style = "float: right;">
+                <input type="button" class="fontText" onclick="setTextSearch();" tabindex="2" value=" x ">
+            </div>
+            <div style = "float: right;"><b>{$searchTitle}:</b>
+                <input type="text" size="27" maxlength="60" value="" id='searchText' placeholder="{$searchTitle}...">
+            </div>
+            
+            
+        </div>
+
+        <div id='panelDown' style = "display: none; width: 95%;">
+            <div style = "float: left;"> <b>{$userTitle}:&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                <select id="comboUsers" onchange="redirect();" style="width: 400px">
+                    {foreach from=$userValues key=k item=VALUE}
+                    <option value="{$VALUE[0]}">{$VALUE[1]}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div style = "float: left;"><b>{$fromTitle} &nbsp;&nbsp;</b>
+                <input id='dateFrom' type='text' readonly='true' size="10">
+                <div style="display: none" class=demo-description></div>
+            </div>
+            <div style = "float: left;"><b> &nbsp;&nbsp;{$toTitle}&nbsp;&nbsp;
+                <input id='dateTo' type='text' readonly='true' size="10">
+                <div style="display: none" class=demo-description></div>
+            </div>
+        </div>
+        <div style = "display: table; width: 95%;">
+            <div style = "float: left">  &nbsp;
+                <input type="button" class="fontText" onclick="redirect();" name="commit" tabindex="1" value="{$searchTitle}">
+            </div>
+            <div style = "float: right;"> &nbsp;&nbsp;
+                <a href="#" onclick="addPanelSearch(); return false;"><img id='imagenPanel' src="/images/simplified/down.png" border="0"></a>
+            </div>
+        </div>
+    </center>
+    </div>
+
+  <center>
+    <div class="content-header" style="text-align:left">
+      <h1 style="padding: 10px">{$title} ({$cases_count})</h1>
+      <ul id="commentlist">
+        {include file='home/applications.html'}
+      </ul>
+
+      {if $cases_count > $appListLimit}
+      <center>
+        <a href="#" style="color:#1F98C7; font-size:12px; font-weight:bold;" id="loadmorebutton">Load More</a>
+      </center>
+      {/if}
+    </div>
+  </center>
+
+  <div id="dialog-add-note" title="Case Note" style="display:none">
+    <p><!-- <span class="ui-icon ui-icon-document" style="float:left; margin:0 7px 20px 0;"></span> -->
+    <span id="startAppTitle"/>
+    <textarea id="note_text" rows="2" cols="22"></textarea>
+    <div class="x-form-check-wrap" id="ext-gen160" style="font-size:11px">
+      <input type="checkbox" name="chkSendMail" id="chkSendMail" autocomplete="off" class=" x-form-checkbox x-form-field" checked="">
+      <label class="x-form-cb-label" for="chkSendMail" id="ext-gen161">Send email (Case Participants)</label>
+    </div>
+    </p>
+  </div>
+  <br/>
+ </body>
+ </html>

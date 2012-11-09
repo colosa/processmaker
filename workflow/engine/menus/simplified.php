@@ -12,5 +12,7 @@ if ($RBAC->userCanAccess("PM_CASES") == 1) {
         "/images/simplified/folder-grey3.png", null, null, null);
     $G_TMP_MENU->AddIdRawOption("S_NEW_CASE", "#", G::LoadTranslation("ID_NEW_CASE"),
         "/images/simplified/plus-set-grey.png", null, null, null);
+    $G_TMP_MENU->AddIdRawOption("S_ADVANCED_SEARCH", "home/appAdvancedSearch", G::LoadTranslation("ID_ADVANCEDSEARCH"),
+        "/images/simplified/advancedSearch.png", null, null, null);
 }
 
