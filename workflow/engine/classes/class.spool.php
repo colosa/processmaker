@@ -138,6 +138,7 @@ class spoolRun
      */
     public function create ($aData)
     {
+        $aData['app_msg_show_message'] = (isset($aData['app_msg_show_message'])) ? $aData['app_msg_show_message'] : 1;
         $sUID = $this->db_insert( $aData );
 
         $aData['app_msg_date'] = isset( $aData['app_msg_date'] ) ? $aData['app_msg_date'] : '';
