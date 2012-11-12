@@ -2125,6 +2125,7 @@ function stringReplace(strSearch, stringReplace, str)
 }
 
 var mb_strlen = function(str) {
+    str = str || '';
     var len = 0;
     for (var i = 0; i < str.length; i++) {
         len += str.charCodeAt(i) < 0 || str.charCodeAt(i) > 255 ? 2 : 1;
