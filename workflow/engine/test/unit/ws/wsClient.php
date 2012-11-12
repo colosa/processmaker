@@ -142,7 +142,7 @@ function ws_open_with_params($endpoint, $user, $pass) {
   throw (new Exception($result->message));
 }
 
-function ws_sendEmailMessage($caseId, $toEmail, $sSubject, $ccEmail, $bccEmail, $sBody) {
+function ws_sendEmailMessage($caseId, $toEmail, $sSubject, $ccEmail, $bccEmail, $template) {
   global $sessionId;
   global $client;
   $params = array (
@@ -153,7 +153,7 @@ function ws_sendEmailMessage($caseId, $toEmail, $sSubject, $ccEmail, $bccEmail, 
     'cc' => $ccEmail,
     'bcc' => $bccEmail,
     'subject' => $sSubject,
-    'message' => $sBody
+    'template' => $template
   );
   $result = $client->__SoapCall('sendMessage', array (
     $params
@@ -172,7 +172,7 @@ function ws_sendMessage($caseId, $toEmail, $sSubject, $ccEmail, $bccEmail, $temp
     'cc' => $ccEmail,
     'bcc' => $bccEmail,
     'subject' => $sSubject,
-    'message' => $template
+    'template' => $template
   );
   $result = $client->__SoapCall('sendMessage', array (
     $params
