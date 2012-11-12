@@ -196,10 +196,15 @@ Ext.onReady(function() {
     columns:[{
       header: _('ID_DEPARTMENT_NAME'),
       dataIndex: 'DEP_TITLE',
-      width: 320
+      width: 380,
+      tpl: new Ext.XTemplate('{DEP_TITLE:this.formatDepTitle}', {
+        formatDepTitle: function(v) {
+          return '<span style="white-space:normal !important;word-wrap: break-word;">' + v + '</span>';
+        }
+      })
     },{
       header: _('ID_STATUS'),
-      width: 100,
+      width: 70,
       dataIndex: 'DEP_STATUS',
       align: 'center',
       tpl: new Ext.XTemplate('{DEP_STATUS:this.formatStatus}', {
@@ -216,7 +221,7 @@ Ext.onReady(function() {
       dataIndex: 'DEP_MANAGER_NAME'
     },{
       header: _('ID_USERS'),
-      width: 80,
+      width: 70,
       dataIndex: 'DEP_TOTAL_USERS',
       align: 'center',
       sortType: 'asFloat'
