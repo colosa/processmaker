@@ -1466,7 +1466,10 @@ function PMFGenerateOutputDocument ($outputID, $sApplication = null, $index = nu
     $aProperties['media'] = $aOD['OUT_DOC_MEDIA'];
     $aProperties['margins'] = array ('left' => $aOD['OUT_DOC_LEFT_MARGIN'],'right' => $aOD['OUT_DOC_RIGHT_MARGIN'],'top' => $aOD['OUT_DOC_TOP_MARGIN'],'bottom' => $aOD['OUT_DOC_BOTTOM_MARGIN']
     );
-    $oOutputDocument->generate( $outputID, $Fields['APP_DATA'], $pathOutput, $sFilename, $aOD['OUT_DOC_TEMPLATE'], (boolean) $aOD['OUT_DOC_LANDSCAPE'], $aOD['OUT_DOC_GENERATE'] );
+    if (isset($aOD['OUT_DOC_REPORT_GENERATOR'])) {
+        $aProperties['report_generator'] = $aOD['OUT_DOC_REPORT_GENERATOR'];
+    }
+    $oOutputDocument->generate( $outputID, $Fields['APP_DATA'], $pathOutput, $sFilename, $aOD['OUT_DOC_TEMPLATE'], (boolean) $aOD['OUT_DOC_LANDSCAPE'], $aOD['OUT_DOC_GENERATE'], $aProperties );
 
     //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
     //G::LoadClass('plugin');
