@@ -86,17 +86,17 @@ Ext.onReady(function(){
         Ext.get('pathPublicSpan').dom.innerHTML    = (response.pathPublic.result ? okImage : badImage);
         Ext.get('pathSharedSpan').dom.innerHTML    = (response.pathShared.result ? okImage : badImage);
         Ext.get('pathLogFileSpan').dom.innerHTML    = (response.pathLogFile.result ? okImage : badImage);
-        
-        wizard.onClientValidation(1, 
-          response.pathConfig.result && 
-          response.pathLanguages.result && 
-          response.pathPlugins.result && 
-          response.pathXmlforms.result && 
-          response.pathPublic.result && 
-          response.pathShared.result && 
+
+        wizard.onClientValidation(1,
+          response.pathConfig.result &&
+          response.pathLanguages.result &&
+          response.pathPlugins.result &&
+          response.pathXmlforms.result &&
+          response.pathPublic.result &&
+          response.pathShared.result &&
           response.pathLogFile.result
         );
-        
+
         wizard.showLoadMask(false);
 
         permissionInfo.error1 = response.noWritableFiles
@@ -147,10 +147,10 @@ Ext.onReady(function(){
       success: function(response){
         var response = Ext.util.JSON.decode(response.responseText);
         Ext.getCmp('db_message').setValue(getFieldOutput(response.message, response.result));
-        
+
         if (!response.result)
           PMExt.notify('WARNING', response.message, 'warning');
-        
+
         wizard.onClientValidation(3, response.result);
         wizard.showLoadMask(false);
       },
@@ -216,7 +216,7 @@ Ext.onReady(function(){
         Ext.get('wfDatabaseSpan').dom.innerHTML = (response.wfDatabaseExists ? existMsg : noExistsMsg);
         Ext.get('rbDatabaseSpan').dom.innerHTML = (response.rbDatabaseExists ? existMsg : noExistsMsg);
         Ext.get('rpDatabaseSpan').dom.innerHTML = (response.rpDatabaseExists ? existMsg : noExistsMsg);
-        
+
         var dbFlag = ((!response.wfDatabaseExists && !response.rbDatabaseExists && !response.rpDatabaseExists) || Ext.getCmp('deleteDB').getValue());
         wizard.onClientValidation(4, dbFlag);
 
@@ -270,7 +270,7 @@ Ext.onReady(function(){
             bodyStyle : 'padding:10px;font-size:1.2em;',
             html: step1_txt
           },
-         
+
           {
             region: 'center',
             xtype : 'fieldset',
@@ -278,7 +278,7 @@ Ext.onReady(function(){
             items:[
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'PHP Version >= 5.1',
+                fieldLabel: 'PHP Version >= 5.2.10',
                 id  : 'php'
               },
               {
@@ -464,7 +464,7 @@ Ext.onReady(function(){
     }
 
   } );
-  
+
 
   // third card with input field email-address
   steps[setIndex++] = new Ext.ux.Wiz.Card({
@@ -512,8 +512,8 @@ Ext.onReady(function(){
       show: function() {
         setTimeout(function(){
           var iAgree = Ext.getCmp('agreeCheckbox').getValue();
-          
-          wizard.onClientValidation(2, iAgree);          
+
+          wizard.onClientValidation(2, iAgree);
         }, 100);
       }
     }
