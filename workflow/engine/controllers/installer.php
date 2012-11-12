@@ -821,8 +821,8 @@ class Installer extends Controller
       $envFile = PATH_CONFIG . 'env.ini';
 
       //writting for new installtions to use the new skin 'uxmind' with new Front End ExtJs Based
-      $updatedConf['default_skin'] = 'uxmodern';
-      $info->uri = '/sys' . $_REQUEST['workspace'] . '/en/uxmodern/main/login';
+      $updatedConf['default_skin'] = 'classic';
+      $info->uri = '/sys' . $_REQUEST['workspace'] . '/en/classic/login/login';
 
       try {
         G::update_php_ini($envFile, $updatedConf);
