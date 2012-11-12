@@ -25,7 +25,7 @@ abstract class BaseOutputDocumentPeer
     const CLASS_DEFAULT = 'classes.model.OutputDocument';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 19;
+    const NUM_COLUMNS = 20;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -36,6 +36,9 @@ abstract class BaseOutputDocumentPeer
 
     /** the column name for the PRO_UID field */
     const PRO_UID = 'OUTPUT_DOCUMENT.PRO_UID';
+
+    /** the column name for the OUT_DOC_REPORT_GENERATOR field */
+    const OUT_DOC_REPORT_GENERATOR = 'OUTPUT_DOCUMENT.OUT_DOC_REPORT_GENERATOR';
 
     /** the column name for the OUT_DOC_LANDSCAPE field */
     const OUT_DOC_LANDSCAPE = 'OUTPUT_DOCUMENT.OUT_DOC_LANDSCAPE';
@@ -99,10 +102,10 @@ abstract class BaseOutputDocumentPeer
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     private static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('OutDocUid', 'ProUid', 'OutDocLandscape', 'OutDocMedia', 'OutDocLeftMargin', 'OutDocRightMargin', 'OutDocTopMargin', 'OutDocBottomMargin', 'OutDocGenerate', 'OutDocType', 'OutDocCurrentRevision', 'OutDocFieldMapping', 'OutDocVersioning', 'OutDocDestinationPath', 'OutDocTags', 'OutDocPdfSecurityEnabled', 'OutDocPdfSecurityOpenPassword', 'OutDocPdfSecurityOwnerPassword', 'OutDocPdfSecurityPermissions', ),
-        BasePeer::TYPE_COLNAME => array (OutputDocumentPeer::OUT_DOC_UID, OutputDocumentPeer::PRO_UID, OutputDocumentPeer::OUT_DOC_LANDSCAPE, OutputDocumentPeer::OUT_DOC_MEDIA, OutputDocumentPeer::OUT_DOC_LEFT_MARGIN, OutputDocumentPeer::OUT_DOC_RIGHT_MARGIN, OutputDocumentPeer::OUT_DOC_TOP_MARGIN, OutputDocumentPeer::OUT_DOC_BOTTOM_MARGIN, OutputDocumentPeer::OUT_DOC_GENERATE, OutputDocumentPeer::OUT_DOC_TYPE, OutputDocumentPeer::OUT_DOC_CURRENT_REVISION, OutputDocumentPeer::OUT_DOC_FIELD_MAPPING, OutputDocumentPeer::OUT_DOC_VERSIONING, OutputDocumentPeer::OUT_DOC_DESTINATION_PATH, OutputDocumentPeer::OUT_DOC_TAGS, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_ENABLED, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OPEN_PASSWORD, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OWNER_PASSWORD, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_PERMISSIONS, ),
-        BasePeer::TYPE_FIELDNAME => array ('OUT_DOC_UID', 'PRO_UID', 'OUT_DOC_LANDSCAPE', 'OUT_DOC_MEDIA', 'OUT_DOC_LEFT_MARGIN', 'OUT_DOC_RIGHT_MARGIN', 'OUT_DOC_TOP_MARGIN', 'OUT_DOC_BOTTOM_MARGIN', 'OUT_DOC_GENERATE', 'OUT_DOC_TYPE', 'OUT_DOC_CURRENT_REVISION', 'OUT_DOC_FIELD_MAPPING', 'OUT_DOC_VERSIONING', 'OUT_DOC_DESTINATION_PATH', 'OUT_DOC_TAGS', 'OUT_DOC_PDF_SECURITY_ENABLED', 'OUT_DOC_PDF_SECURITY_OPEN_PASSWORD', 'OUT_DOC_PDF_SECURITY_OWNER_PASSWORD', 'OUT_DOC_PDF_SECURITY_PERMISSIONS', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('OutDocUid', 'ProUid', 'OutDocReportGenerator', 'OutDocLandscape', 'OutDocMedia', 'OutDocLeftMargin', 'OutDocRightMargin', 'OutDocTopMargin', 'OutDocBottomMargin', 'OutDocGenerate', 'OutDocType', 'OutDocCurrentRevision', 'OutDocFieldMapping', 'OutDocVersioning', 'OutDocDestinationPath', 'OutDocTags', 'OutDocPdfSecurityEnabled', 'OutDocPdfSecurityOpenPassword', 'OutDocPdfSecurityOwnerPassword', 'OutDocPdfSecurityPermissions', ),
+        BasePeer::TYPE_COLNAME => array (OutputDocumentPeer::OUT_DOC_UID, OutputDocumentPeer::PRO_UID, OutputDocumentPeer::OUT_DOC_REPORT_GENERATOR, OutputDocumentPeer::OUT_DOC_LANDSCAPE, OutputDocumentPeer::OUT_DOC_MEDIA, OutputDocumentPeer::OUT_DOC_LEFT_MARGIN, OutputDocumentPeer::OUT_DOC_RIGHT_MARGIN, OutputDocumentPeer::OUT_DOC_TOP_MARGIN, OutputDocumentPeer::OUT_DOC_BOTTOM_MARGIN, OutputDocumentPeer::OUT_DOC_GENERATE, OutputDocumentPeer::OUT_DOC_TYPE, OutputDocumentPeer::OUT_DOC_CURRENT_REVISION, OutputDocumentPeer::OUT_DOC_FIELD_MAPPING, OutputDocumentPeer::OUT_DOC_VERSIONING, OutputDocumentPeer::OUT_DOC_DESTINATION_PATH, OutputDocumentPeer::OUT_DOC_TAGS, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_ENABLED, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OPEN_PASSWORD, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OWNER_PASSWORD, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_PERMISSIONS, ),
+        BasePeer::TYPE_FIELDNAME => array ('OUT_DOC_UID', 'PRO_UID', 'OUT_DOC_REPORT_GENERATOR', 'OUT_DOC_LANDSCAPE', 'OUT_DOC_MEDIA', 'OUT_DOC_LEFT_MARGIN', 'OUT_DOC_RIGHT_MARGIN', 'OUT_DOC_TOP_MARGIN', 'OUT_DOC_BOTTOM_MARGIN', 'OUT_DOC_GENERATE', 'OUT_DOC_TYPE', 'OUT_DOC_CURRENT_REVISION', 'OUT_DOC_FIELD_MAPPING', 'OUT_DOC_VERSIONING', 'OUT_DOC_DESTINATION_PATH', 'OUT_DOC_TAGS', 'OUT_DOC_PDF_SECURITY_ENABLED', 'OUT_DOC_PDF_SECURITY_OPEN_PASSWORD', 'OUT_DOC_PDF_SECURITY_OWNER_PASSWORD', 'OUT_DOC_PDF_SECURITY_PERMISSIONS', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -112,10 +115,10 @@ abstract class BaseOutputDocumentPeer
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     private static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('OutDocUid' => 0, 'ProUid' => 1, 'OutDocLandscape' => 2, 'OutDocMedia' => 3, 'OutDocLeftMargin' => 4, 'OutDocRightMargin' => 5, 'OutDocTopMargin' => 6, 'OutDocBottomMargin' => 7, 'OutDocGenerate' => 8, 'OutDocType' => 9, 'OutDocCurrentRevision' => 10, 'OutDocFieldMapping' => 11, 'OutDocVersioning' => 12, 'OutDocDestinationPath' => 13, 'OutDocTags' => 14, 'OutDocPdfSecurityEnabled' => 15, 'OutDocPdfSecurityOpenPassword' => 16, 'OutDocPdfSecurityOwnerPassword' => 17, 'OutDocPdfSecurityPermissions' => 18, ),
-        BasePeer::TYPE_COLNAME => array (OutputDocumentPeer::OUT_DOC_UID => 0, OutputDocumentPeer::PRO_UID => 1, OutputDocumentPeer::OUT_DOC_LANDSCAPE => 2, OutputDocumentPeer::OUT_DOC_MEDIA => 3, OutputDocumentPeer::OUT_DOC_LEFT_MARGIN => 4, OutputDocumentPeer::OUT_DOC_RIGHT_MARGIN => 5, OutputDocumentPeer::OUT_DOC_TOP_MARGIN => 6, OutputDocumentPeer::OUT_DOC_BOTTOM_MARGIN => 7, OutputDocumentPeer::OUT_DOC_GENERATE => 8, OutputDocumentPeer::OUT_DOC_TYPE => 9, OutputDocumentPeer::OUT_DOC_CURRENT_REVISION => 10, OutputDocumentPeer::OUT_DOC_FIELD_MAPPING => 11, OutputDocumentPeer::OUT_DOC_VERSIONING => 12, OutputDocumentPeer::OUT_DOC_DESTINATION_PATH => 13, OutputDocumentPeer::OUT_DOC_TAGS => 14, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_ENABLED => 15, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OPEN_PASSWORD => 16, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OWNER_PASSWORD => 17, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_PERMISSIONS => 18, ),
-        BasePeer::TYPE_FIELDNAME => array ('OUT_DOC_UID' => 0, 'PRO_UID' => 1, 'OUT_DOC_LANDSCAPE' => 2, 'OUT_DOC_MEDIA' => 3, 'OUT_DOC_LEFT_MARGIN' => 4, 'OUT_DOC_RIGHT_MARGIN' => 5, 'OUT_DOC_TOP_MARGIN' => 6, 'OUT_DOC_BOTTOM_MARGIN' => 7, 'OUT_DOC_GENERATE' => 8, 'OUT_DOC_TYPE' => 9, 'OUT_DOC_CURRENT_REVISION' => 10, 'OUT_DOC_FIELD_MAPPING' => 11, 'OUT_DOC_VERSIONING' => 12, 'OUT_DOC_DESTINATION_PATH' => 13, 'OUT_DOC_TAGS' => 14, 'OUT_DOC_PDF_SECURITY_ENABLED' => 15, 'OUT_DOC_PDF_SECURITY_OPEN_PASSWORD' => 16, 'OUT_DOC_PDF_SECURITY_OWNER_PASSWORD' => 17, 'OUT_DOC_PDF_SECURITY_PERMISSIONS' => 18, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('OutDocUid' => 0, 'ProUid' => 1, 'OutDocReportGenerator' => 2, 'OutDocLandscape' => 3, 'OutDocMedia' => 4, 'OutDocLeftMargin' => 5, 'OutDocRightMargin' => 6, 'OutDocTopMargin' => 7, 'OutDocBottomMargin' => 8, 'OutDocGenerate' => 9, 'OutDocType' => 10, 'OutDocCurrentRevision' => 11, 'OutDocFieldMapping' => 12, 'OutDocVersioning' => 13, 'OutDocDestinationPath' => 14, 'OutDocTags' => 15, 'OutDocPdfSecurityEnabled' => 16, 'OutDocPdfSecurityOpenPassword' => 17, 'OutDocPdfSecurityOwnerPassword' => 18, 'OutDocPdfSecurityPermissions' => 19, ),
+        BasePeer::TYPE_COLNAME => array (OutputDocumentPeer::OUT_DOC_UID => 0, OutputDocumentPeer::PRO_UID => 1, OutputDocumentPeer::OUT_DOC_REPORT_GENERATOR => 2, OutputDocumentPeer::OUT_DOC_LANDSCAPE => 3, OutputDocumentPeer::OUT_DOC_MEDIA => 4, OutputDocumentPeer::OUT_DOC_LEFT_MARGIN => 5, OutputDocumentPeer::OUT_DOC_RIGHT_MARGIN => 6, OutputDocumentPeer::OUT_DOC_TOP_MARGIN => 7, OutputDocumentPeer::OUT_DOC_BOTTOM_MARGIN => 8, OutputDocumentPeer::OUT_DOC_GENERATE => 9, OutputDocumentPeer::OUT_DOC_TYPE => 10, OutputDocumentPeer::OUT_DOC_CURRENT_REVISION => 11, OutputDocumentPeer::OUT_DOC_FIELD_MAPPING => 12, OutputDocumentPeer::OUT_DOC_VERSIONING => 13, OutputDocumentPeer::OUT_DOC_DESTINATION_PATH => 14, OutputDocumentPeer::OUT_DOC_TAGS => 15, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_ENABLED => 16, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OPEN_PASSWORD => 17, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OWNER_PASSWORD => 18, OutputDocumentPeer::OUT_DOC_PDF_SECURITY_PERMISSIONS => 19, ),
+        BasePeer::TYPE_FIELDNAME => array ('OUT_DOC_UID' => 0, 'PRO_UID' => 1, 'OUT_DOC_REPORT_GENERATOR' => 2, 'OUT_DOC_LANDSCAPE' => 3, 'OUT_DOC_MEDIA' => 4, 'OUT_DOC_LEFT_MARGIN' => 5, 'OUT_DOC_RIGHT_MARGIN' => 6, 'OUT_DOC_TOP_MARGIN' => 7, 'OUT_DOC_BOTTOM_MARGIN' => 8, 'OUT_DOC_GENERATE' => 9, 'OUT_DOC_TYPE' => 10, 'OUT_DOC_CURRENT_REVISION' => 11, 'OUT_DOC_FIELD_MAPPING' => 12, 'OUT_DOC_VERSIONING' => 13, 'OUT_DOC_DESTINATION_PATH' => 14, 'OUT_DOC_TAGS' => 15, 'OUT_DOC_PDF_SECURITY_ENABLED' => 16, 'OUT_DOC_PDF_SECURITY_OPEN_PASSWORD' => 17, 'OUT_DOC_PDF_SECURITY_OWNER_PASSWORD' => 18, 'OUT_DOC_PDF_SECURITY_PERMISSIONS' => 19, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -219,6 +222,8 @@ abstract class BaseOutputDocumentPeer
         $criteria->addSelectColumn(OutputDocumentPeer::OUT_DOC_UID);
 
         $criteria->addSelectColumn(OutputDocumentPeer::PRO_UID);
+
+        $criteria->addSelectColumn(OutputDocumentPeer::OUT_DOC_REPORT_GENERATOR);
 
         $criteria->addSelectColumn(OutputDocumentPeer::OUT_DOC_LANDSCAPE);
 

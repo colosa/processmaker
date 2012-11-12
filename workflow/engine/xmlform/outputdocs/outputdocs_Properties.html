@@ -1,4 +1,4 @@
-<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>  
+<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>
 
   <div class="borderForm" style="padding-left: 0pt; padding-right: 0pt;">
     <div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
@@ -34,6 +34,10 @@
                     <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_DESCRIPTION}</td>
                   </tr>
                   <tr>
+                    <td class="FormLabel" width="{$form_labelWidth}">{$OUT_DOC_REPORT_GENERATOR}</td>
+                    <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_REPORT_GENERATOR}</td>
+                  </tr>
+                  <tr>
                     <td class="FormLabel" width="{$form_labelWidth}">{$OUT_DOC_MEDIA}/ {$OUT_DOC_LANDSCAPE}</td>
                     <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.OUT_DOC_LANDSCAPE} </td>  //-->
                     <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_MEDIA}&nbsp;{$form.OUT_DOC_LANDSCAPE} </td>
@@ -41,7 +45,7 @@
                   <!--<tr>
 	              <td class="FormLabel" width="{$form_labelWidth}">{$OUT_DOC_MEDIA}</td>
 
-	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_MEDIA}</td> 
+	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_MEDIA}</td>
                   </tr>
                   -->
                   <tr>
@@ -58,22 +62,22 @@
                   <!--             <tr>
 	              <td class="FormLabel" width="{$form_labelWidth}">{$OUT_DOC_LEFT_MARGIN}</td>
 
-	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_LEFT_MARGIN}</td> 
+	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_LEFT_MARGIN}</td>
                                </tr>
                                <tr>
 	              <td class="FormLabel" width="{$form_labelWidth}">{$OUT_DOC_RIGHT_MARGIN}</td>
 
-	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_RIGHT_MARGIN}</td> 
+	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_RIGHT_MARGIN}</td>
                                </tr>
                                <tr>
 	              <td class="FormLabel" width="{$form_labelWidth}">{$OUT_DOC_TOP_MARGIN}</td>
 
-	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_TOP_MARGIN}</td> 
+	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_TOP_MARGIN}</td>
                                </tr>
                                <tr>
 	              <td class="FormLabel" width="{$form_labelWidth}">{$OUT_DOC_BOTTOM_MARGIN}</td>
 
-	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_BOTTOM_MARGIN}</td> 
+	              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_BOTTOM_MARGIN}</td>
                                </tr>
                   -->
                   <tr>
@@ -83,7 +87,7 @@
                   </tr>
                   <tr>
                     <td class="FormLabel" width="{$form_labelWidth}">{$OUT_DOC_PDF_SECURITY_ENABLED}</td>
-                    
+
                     <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.OUT_DOC_PDF_SECURITY_ENABLED}</td>
                   </tr>
                   <tr>
@@ -139,4 +143,4 @@
     {$form.JS}
   </script>
 
-</form>	
+</form>

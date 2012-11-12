@@ -439,6 +439,9 @@ try {
                             if ($aOD['OUT_DOC_PDF_SECURITY_ENABLED'] == '1') {
                                 $aProperties['pdfSecurity'] = array ('openPassword' => $aOD['OUT_DOC_PDF_SECURITY_OPEN_PASSWORD'],'ownerPassword' => $aOD['OUT_DOC_PDF_SECURITY_OWNER_PASSWORD'],'permissions' => $aOD['OUT_DOC_PDF_SECURITY_PERMISSIONS']);
                             }
+                            if (isset($aOD['OUT_DOC_REPORT_GENERATOR'])) {
+                                $aProperties['report_generator'] = $aOD['OUT_DOC_REPORT_GENERATOR'];
+                            }
                             $oOutputDocument->generate( $_GET['UID'], $Fields['APP_DATA'], $pathOutput, $sFilename, $aOD['OUT_DOC_TEMPLATE'], (boolean) $aOD['OUT_DOC_LANDSCAPE'], $aOD['OUT_DOC_GENERATE'], $aProperties );
                             //$sFilename, $aOD['OUT_DOC_TEMPLATE'], (boolean)$aOD['OUT_DOC_LANDSCAPE'], $aOD['OUT_DOC_GENERATE'] );
                             break;

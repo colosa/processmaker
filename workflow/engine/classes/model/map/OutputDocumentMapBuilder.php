@@ -69,6 +69,8 @@ class OutputDocumentMapBuilder
 
         $tMap->addColumn('PRO_UID', 'ProUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
+        $tMap->addColumn('OUT_DOC_REPORT_GENERATOR', 'OutDocReportGenerator', 'string', CreoleTypes::VARCHAR, true, 10);
+
         $tMap->addColumn('OUT_DOC_LANDSCAPE', 'OutDocLandscape', 'int', CreoleTypes::TINYINT, true, null);
 
         $tMap->addColumn('OUT_DOC_MEDIA', 'OutDocMedia', 'string', CreoleTypes::VARCHAR, true, 10);

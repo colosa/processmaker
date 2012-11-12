@@ -21,6 +21,13 @@
   <en>Description</en>
 </OUT_DOC_DESCRIPTION>
 
+<OUT_DOC_REPORT_GENERATOR type="dropdown" required="0" readonly="0" mode="edit">
+  <en>Report Generator
+    <option name="HTML2PDF">HTML2PDF (Old Version)</option>
+    <option name="TCPDF">TCPDF</option>
+  </en>
+</OUT_DOC_REPORT_GENERATOR>
+
 <OUT_DOC_LANDSCAPE type="dropdown">
   <en>Orientation<option name="">Portrait</option><option name="1">Landscape</option></en>
 </OUT_DOC_LANDSCAPE>
@@ -54,18 +61,18 @@
     <option name="A10">A10</option>
     <option name="Screenshot640">Screenshot640</option>
     <option name="Screenshot800">Screenshot800</option>
-    <option name="Screenshot1024">Screenshot1024</option> 
+    <option name="Screenshot1024">Screenshot1024</option>
   </en>
 </OUT_DOC_MEDIA>
 
 <OUT_DOC_LEFT_MARGIN type="text" style="width:15%" validate="Int">
-  <en>Left</en>  
+  <en>Left</en>
 </OUT_DOC_LEFT_MARGIN>
 <OUT_DOC_RIGHT_MARGIN type="text" style="width:15%" validate="Int">
-  <en>Right</en> 
+  <en>Right</en>
 </OUT_DOC_RIGHT_MARGIN>
 <OUT_DOC_TOP_MARGIN type="text" style="width:15%" validate="Int">
-  <en>Top</en> 
+  <en>Top</en>
 </OUT_DOC_TOP_MARGIN>
 <OUT_DOC_BOTTOM_MARGIN type="text" style="width:15%" validate="Int">
   <en>Bottom</en>
@@ -174,7 +181,7 @@ var verifyTitle = function(oForm)
 	  var proUid = getField('PRO_UID').value;
 	  var OutPutID = getField('OUT_DOC_UID').value;
 	  if(OutPutID==''){
-		  reqName=ajax_function('../outputdocs/outputdocs_Ajax','lookForNameOutput','NAMEOUTPUT='+encodeURIComponent(nameOutPut)+'&proUid='+encodeURIComponent(proUid),'POST') ;      
+		  reqName=ajax_function('../outputdocs/outputdocs_Ajax','lookForNameOutput','NAMEOUTPUT='+encodeURIComponent(nameOutPut)+'&proUid='+encodeURIComponent(proUid),'POST') ;
 		  if(reqName){
 			 outputdocsPropertiesSave(oForm);
 	    } else {
@@ -214,7 +221,7 @@ if ((getField('OUT_DOC_PDF_SECURITY_ENABLED').value == '0')) {
 leimnud.event.add(getField('OUT_DOC_GENERATE'), 'change', function() {
   showPdfSecuritySwitch();
 });
- 
+
 
   leimnud.event.add(getField('OUT_DOC_PDF_SECURITY_ENABLED'), 'change', function() {
   togglePDFSecurity();
@@ -224,4 +231,4 @@ showPdfSecuritySwitch();
 togglePDFSecurity();
 
 ]]></JS>
-</dynaForm>  
+</dynaForm>

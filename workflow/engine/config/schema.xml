@@ -733,6 +733,7 @@
     </vendor>
     <column name="OUT_DOC_UID" type="VARCHAR" size="32" required="true" primaryKey="true" default=""/>
     <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
+    <column name="OUT_DOC_REPORT_GENERATOR" type="VARCHAR" size="10" required="true" default="HTML2PDF"/>
     <column name="OUT_DOC_LANDSCAPE" type="TINYINT" required="true" default="0"/>
     <column name="OUT_DOC_MEDIA" type="VARCHAR" size="10" required="true" default="Letter"/>
     <column name="OUT_DOC_LEFT_MARGIN" type="INTEGER" default="30"/>
