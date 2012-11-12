@@ -792,7 +792,7 @@ else{PMExt.error('Processmaker JS Core Error','The TRANSLATIONS global object is
 return trn;}
 function stringReplace(strSearch,stringReplace,str)
 {var expression=eval("/"+strSearch+"/g");return str.replace(expression,stringReplace);}
-var mb_strlen=function(str){var len=0;for(var i=0;i<str.length;i++){len+=str.charCodeAt(i)<0||str.charCodeAt(i)>255?2:1;}
+var mb_strlen=function(str){str=str||'';var len=0;for(var i=0;i<str.length;i++){len+=str.charCodeAt(i)<0||str.charCodeAt(i)>255?2:1;}
 return len;};var stripNonNumeric=function(str){str+='';var rgx=/^\d|\.|-$/;var out='';for(var i=0;i<str.length;i++){if(rgx.test(str.charAt(i))){if(!((str.charAt(i)=='.'&&out.indexOf('.')!=-1)||(str.charAt(i)=='-'&&out.length!=0))){out+=str.charAt(i);}}}
 return out;};
 var TimeToFade=1000.0;function fade(eid,inOut){inOut=(typeof(inOut)!='undefined')?true:false;var element=document.getElementById(eid);if(element==null)
