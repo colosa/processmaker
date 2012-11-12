@@ -345,6 +345,7 @@ class Content extends BaseContent
 
         mysql_select_db( $workSpace->dbName, $link );
         mysql_query( "SET NAMES 'utf8';" );
+        mysql_query( "SET FOREIGN_KEY_CHECKS=0;" );
         mysql_query( 'SET OPTION SQL_BIG_SELECTS=1' );
         $result = mysql_unbuffered_query( $sql, $link );
         $list = array ();

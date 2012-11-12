@@ -1123,6 +1123,7 @@ class workspaceTools
             CLI::logging( "> Connecting to system database in '$dbHost'\n" );
             $link = mysql_connect( $dbHost, $dbUser, $dbPass );
             @mysql_query( "SET NAMES 'utf8';" );
+            @mysql_query( "SET FOREIGN_KEY_CHECKS=0;" );
             if (! $link) {
                 throw new Exception( 'Could not connect to system database: ' . mysql_error() );
             }

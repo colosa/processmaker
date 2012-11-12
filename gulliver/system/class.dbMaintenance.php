@@ -162,6 +162,7 @@ class DataBaseMaintenance
 
         $this->link = mysql_connect( $this->host, $this->user, $this->passwd );
         @mysql_query( "SET NAMES 'utf8';" );
+        @mysql_query( "SET FOREIGN_KEY_CHECKS=0;" );
         if (! $this->link) {
             throw new Exception( "Couldn't connect to host {$this->host} with user {$this->user}" );
         }
