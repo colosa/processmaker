@@ -54,14 +54,11 @@ var deleteButton;
 var searchButton;
 var searchText;
 var contextMenu;
-var pageSize;
 
 var classicSkin = '00000000000000000000000000000001';
 
 Ext.onReady(function(){
   Ext.QuickTips.init();
-
-  pageSize = parseInt(CONFIG.pageSize);
 
   newButton = new Ext.Action({
     text: _('ID_NEW'),
@@ -270,7 +267,7 @@ Ext.onReady(function(){
       align:'center',
       renderer: showdate
     },
-    
+
     {
       header: _('ID_STATUS'),
       dataIndex: 'SKIN_STATUS',
@@ -281,42 +278,6 @@ Ext.onReady(function(){
 
     ]
   });
-
-  storePageSize = new Ext.data.SimpleStore({
-    fields: ['size'],
-    data: [['20'],['30'],['40'],['50'],['100']],
-    autoLoad: true
-  });
-
-  comboPageSize = new Ext.form.ComboBox({
-    typeAhead     : false,
-    mode          : 'local',
-    triggerAction : 'all',
-    store: storePageSize,
-    valueField: 'size',
-    displayField: 'size',
-    width: 50,
-    editable: false,
-    listeners:{
-      select: function(c,d,i){
-        UpdatePageConfig(d.data['size']);
-        bbarpaging.pageSize = parseInt(d.data['size']);
-        bbarpaging.moveFirst();
-      }
-    }
-  });
-
-  comboPageSize.setValue(pageSize);
-
-  bbarpaging = new Ext.PagingToolbar({
-    pageSize: pageSize,
-    store: store,
-    displayInfo: true,
-    displayMsg: _('ID_GRID_PAGE_DISPLAYING_SKIN_MESSAGE') + '&nbsp; &nbsp; ',
-    emptyMsg: _('ID_GRID_PAGE_NO_SKIN_MESSAGE')//,
-  //items: ['-',_('ID_PAGE_SIZE')+':',comboPageSize]
-  });
-
 
   infoGrid = new Ext.grid.GridPanel({
     region: 'center',
@@ -341,7 +302,6 @@ Ext.onReady(function(){
     tbar: [newButton, '-', importButton,exportButton,'-',deleteButton, {
       xtype: 'tbfill'
     }, searchText,clearTextButton,searchButton],
-    bbar: bbarpaging,
     listeners: {
       rowdblclick: function(grid, n,e){
         rowSelected = infoGrid.getSelectionModel().getSelected();
@@ -816,19 +776,6 @@ deleteSkin = function(){
           }
           );
 }
-
-
-
-//Update Page Size Configuration
-UpdatePageConfig = function(pageSize){
-  Ext.Ajax.request({
-    url: 'calendar_Ajax',
-    params: {
-      action:'updatePageSize',
-      size: pageSize
-    }
-  });
-};
 
 function changeSkin(newSkin,currentSkin){
   Ext.Ajax.request({
