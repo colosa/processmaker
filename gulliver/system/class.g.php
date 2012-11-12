@@ -5081,6 +5081,9 @@ class G
     */
     public function isPMUnderUpdating($setFlag = 2)
     {
+        if (!defined('PATH_DATA')) {
+            return false;
+        }
         $fileCheck = PATH_DATA."UPDATE.dat";
         if ($setFlag == 0) {
             if (file_exists($fileCheck)) {
