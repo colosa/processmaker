@@ -931,6 +931,10 @@ class System
         $skinListArray = array ();
         $customSkins = glob( PATH_CUSTOM_SKINS . "*/config.xml" );
 
+        if (!is_array($customSkins)) {
+            $customSkins = array();
+        }
+
         // getting al base skins
         $baseSkins = glob( G::ExpandPath( "skinEngine" ) . '*/config.xml' );
 
