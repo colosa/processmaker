@@ -72,6 +72,22 @@ foreach ($_POST['aUsers'] as $sUser) {
         foreach ($aAttributes as $value) {
             if (isset($aUser[$value['attributeUser']])) {
                 $aData[$value['attributeUser']] = str_replace( "*", "'", $aUser[$value['attributeUser']] );
+                if ($value['attributeUser'] == 'USR_STATUS') {
+                    $evalValue = $aData[$value['attributeUser']];
+
+                    $statusValue = 'INACTIVE';
+                    if (is_string($evalValue) && G::toUpper($evalValue) == 'ACTIVE') {
+                        $statusValue = 'ACTIVE';
+                    }
+                    if (is_bool($evalValue) && $evalValue == true) {
+                        $statusValue = 'ACTIVE';
+                    }
+                    if ( (is_float($evalValue) || is_int($evalValue) ||
+                          is_integer($evalValue) || is_numeric($evalValue)) && (int)$evalValue != 0) {
+                        $statusValue = 'ACTIVE';
+                    }
+                    $aData[$value['attributeUser']] = $statusValue;
+                }
             }
         }
     }
