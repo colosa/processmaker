@@ -9,11 +9,11 @@
   <en>Enable HTML Editing</en>
 </PME_HTML_ENABLETEMPLATE>
 
-<PME_RESTORE_HTML type="button" onclick="dynaformEditor.restoreHTML();">
+<PME_RESTORE_HTML type="button" onclick="dynaformEditor.restoreHTML(); this.blur();">
 <en>Restore Original HTML</en>
 </PME_RESTORE_HTML>
 
-<PME_REFRESH_VIEW type="button" onclick="html2_html();">
+<PME_REFRESH_VIEW type="button" onclick="html2_html(); this.blur();">
 <en>Refresh View</en>
 </PME_REFRESH_VIEW>
 
@@ -79,13 +79,14 @@ getField("PME_HTML_ENABLETEMPLATE","dynaforms_HtmlEditor").onclick=function()
             label: "@G::LoadTranslation(ID_MSG_ENABLE_HTML_EDITING)",
             size:{ w: 350, h: 150 },
             action: function() { },
-            cancel: function() { 
+            cancel: function () {
                 getField("PME_HTML_ENABLETEMPLATE","dynaforms_HtmlEditor").checked = false;
             }
         });
-        dynaformEditor.setEnableTemplate( this.checked ); 
+
+        dynaformEditor.setEnableTemplate(this.checked);
     }
 }
 ]]></PME_RESIZE_JS>
 
-</dynaForm>  
+</dynaForm>
