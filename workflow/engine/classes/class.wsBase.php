@@ -749,6 +749,11 @@ class wsBase
                 }
             }
             $aSetup['MESS_PASSWORD'] = $passwd;
+            if ($aSetup['MESS_RAUTH'] == false || (is_string($aSetup['MESS_RAUTH']) && $aSetup['MESS_RAUTH'] == 'false')) {
+                $aSetup['MESS_RAUTH'] = 0;
+            } else {
+                $aSetup['MESS_RAUTH'] = 1;
+            }
 
             $oSpool = new spoolRun();
             $oSpool->setConfig( array ('MESS_ENGINE' => $aSetup['MESS_ENGINE'],'MESS_SERVER' => $aSetup['MESS_SERVER'],'MESS_PORT' => $aSetup['MESS_PORT'],'MESS_ACCOUNT' => $aSetup['MESS_ACCOUNT'],'MESS_PASSWORD' => $aSetup['MESS_PASSWORD'],'SMTPAuth' => $aSetup['MESS_RAUTH']
