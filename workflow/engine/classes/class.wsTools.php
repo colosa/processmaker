@@ -315,6 +315,8 @@ class workspaceTools
             } elseif ($first) {
                 CLI::logging( "Updating XML form translations with $poName\n" );
                 Language::import( $poFile, true, false );
+                CLI::logging( "Updating database translations with $poName\n" );
+                Language::import( $poFile, false, true );
             }
         }
     }
