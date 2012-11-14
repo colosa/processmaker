@@ -155,6 +155,29 @@ class XmlForm_Field_toolButton extends XmlForm_Field
             case 'text/image':
                 $html = $this->htmlentities( $this->label, ENT_QUOTES, 'utf-8' ) . '<br/><img src="' . htmlentities( $url, ENT_QUOTES, 'utf-8' ) . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . '/>';
                 break;
+            case 'dropdown':
+                $html = '';
+                if (isset($this->owner->values['PRO_UID'])) {
+                    G::LoadClass('processMap');
+                    $criteria = processMap::getDynaformsCriteria($this->owner->values['PRO_UID']);
+                    $dataset = DynaformPeer::doSelectRS($criteria);
+                    if ($dataset->getRecordCount() > 0) {
+                        $html .= '<span style="font-size: 8pt;margin-left: 20px;">' . G::LoadTranslation('ID_EDITING_DYNAFORM');
+                        $html .= ': <select onchange="window.location = \'dynaforms_Editor?PRO_UID=' . $this->owner->values['PRO_UID'];
+                        $html .= '&DYN_UID=\' + this.value;" class="module_app_input___gray">';
+                        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                        $dataset->next();
+                        while ($row = $dataset->getRow()) {
+                            $html .= '<option value="' . $row['DYN_UID'] . '"';
+                            $html .= ($this->owner->values['DYN_UID'] == $row['DYN_UID'] ? ' selected="selected"' : '') . '>';
+                            $html .= htmlentities($row['DYN_TITLE'], ENT_QUOTES, 'utf-8') . '</option>';
+                            $dataset->next();
+                        }
+                        $html .= '</select></span>';
+                    }
+                }
+                return $html;
+                break;
             case 'class':
                 $html = '<a href="#" onclick="' . $this->onclick . '" onmouseover="backImage(this, \'url(/images/dynamicForm/hover.gif) no-repeat\')" onmouseout="backImage(this, \'\')"  style="width:25px;height:25px;margin-bottom:3px">
                  <div class="' . $this->class . '" title="' . strip_tags( $this->label ) . '" style="width:25px;height:25px;margin-bottom:3px"></div>

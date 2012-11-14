@@ -169,7 +169,7 @@ class dynaformEditor extends WebResource
             $oHeadPublisher->addScriptCode("var TRANSLATIONS = " . G::json_encode($labesTrans) . ";");
             $oHeadPublisher->setTitle(G::LoadTranslation('ID_DYNAFORM_EDITOR') . ' - ' . $Properties['DYN_TITLE']);
             $G_PUBLISH->AddContent('blank');
-            $this->panelConf['title'] = $this->title;
+            $this->panelConf['title'] = '';
             $G_PUBLISH->AddContent('panel-init', 'mainPanel', $this->panelConf);
             if ($Properties['DYN_TYPE'] == 'xmlform') {
                 $G_PUBLISH->AddContent('xmlform', 'toolbar', 'dynaforms/fields_Toolbar', 'display:none', $Parameters, '', '');
