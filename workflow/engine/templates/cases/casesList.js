@@ -491,7 +491,7 @@ Ext.onReady ( function() {
         return _FNF(s.data.USR_USERNAME, s.data.USR_FIRSTNAME, s.data.USR_LASTNAME);
       }
       else {
-        return '';
+        return '[' + _('ID_UNASSIGNED').toUpperCase() + ']';
       }
   };
 

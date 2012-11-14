@@ -149,6 +149,7 @@ class Applications
 
         $Criteria->addAlias( 'CU', 'USERS' );
         $Criteria->addJoin( AppCacheViewPeer::USR_UID, 'CU.USR_UID', Criteria::LEFT_JOIN );
+        $Criteria->addAsColumn( 'USR_UID', 'CU.USR_UID' );
         $Criteria->addAsColumn( 'USR_FIRSTNAME', 'CU.USR_FIRSTNAME' );
         $Criteria->addAsColumn( 'USR_LASTNAME', 'CU.USR_LASTNAME' );
         $Criteria->addAsColumn( 'USR_USERNAME', 'CU.USR_USERNAME' );
