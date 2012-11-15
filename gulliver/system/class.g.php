@@ -3468,7 +3468,12 @@ class G
         G::LoadClass("pmFunctions");
         G::LoadThirdParty('phpmailer', 'class.phpmailer');
         $setup = getEmailConfiguration();
-
+        if ($setup['MESS_RAUTH'] == false || (is_string($setup['MESS_RAUTH']) && $setup['MESS_RAUTH'] == 'false')) {
+            $setup['MESS_RAUTH'] = 0;
+        } else {
+            $setup['MESS_RAUTH'] = 1;
+        }
+        
         if (count($setup) == 0 || !isset($setup['MESS_ENGINE']) || !isset($setup['MESS_SERVER'])
             || !isset($setup['MESS_ENABLED']) || !isset($setup['MESS_RAUTH']) || $setup['MESS_SERVER'] == '') {
             return G::LoadTranslation('ID_EMAIL_ENGINE_IS_NOT_CONFIGURED');

@@ -774,6 +774,12 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
         }
 
         $oSpool = new spoolRun();
+        if ($aConfiguration['MESS_RAUTH'] == false || (is_string($aConfiguration['MESS_RAUTH']) && $aConfiguration['MESS_RAUTH'] == 'false')) {
+            $aConfiguration['MESS_RAUTH'] = 0;
+        } else {
+            $aConfiguration['MESS_RAUTH'] = 1;
+        }
+
         $oSpool->setConfig( array ('MESS_ENGINE' => $aConfiguration['MESS_ENGINE'],'MESS_SERVER' => $aConfiguration['MESS_SERVER'],'MESS_PORT' => $aConfiguration['MESS_PORT'],'MESS_ACCOUNT' => $aConfiguration['MESS_ACCOUNT'],'MESS_PASSWORD' => $aConfiguration['MESS_PASSWORD'],'SMTPAuth' => $aConfiguration['MESS_RAUTH']
         ) );
         $passwd = $oSpool->config['MESS_PASSWORD'];

@@ -542,6 +542,11 @@ class spoolRun
 
         if ($aConfiguration["MESS_ENABLED"] == "1") {
             require_once ("classes/model/AppMessage.php");
+            if ($aConfiguration['MESS_RAUTH'] == false || (is_string($aConfiguration['MESS_RAUTH']) && $aConfiguration['MESS_RAUTH'] == 'false')) {
+                $aConfiguration['MESS_RAUTH'] = 0;
+            } else {
+                $aConfiguration['MESS_RAUTH'] = 1;
+            }
 
             $this->setConfig( array ("MESS_ENGINE" => $aConfiguration["MESS_ENGINE"],"MESS_SERVER" => $aConfiguration["MESS_SERVER"],"MESS_PORT" => $aConfiguration["MESS_PORT"],"MESS_ACCOUNT" => $aConfiguration["MESS_ACCOUNT"],"MESS_PASSWORD" => $aConfiguration["MESS_PASSWORD"],"SMTPAuth" => $aConfiguration["MESS_RAUTH"],"SMTPSecure" => $aConfiguration["SMTPSecure"]
             ) );

@@ -55,7 +55,11 @@ if ($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL'
 
     G::LoadClass('spool');
     $oSpool = new spoolRun();
-
+    if ($aSetup['MESS_RAUTH'] == false || (is_string($aSetup['MESS_RAUTH']) && $aSetup['MESS_RAUTH'] == 'false')) {
+        $aSetup['MESS_RAUTH'] = 0;
+    } else {
+        $aSetup['MESS_RAUTH'] = 1;
+    }
     $oSpool->setConfig( array(
         'MESS_ENGINE'   => $aSetup['MESS_ENGINE'],
         'MESS_SERVER'   => $aSetup['MESS_SERVER'],

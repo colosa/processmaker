@@ -4717,6 +4717,11 @@ class Cases
 
                 if ($sTo != null) {
                     $oSpool = new spoolRun();
+                    if ($aConfiguration['MESS_RAUTH'] == false || (is_string($aConfiguration['MESS_RAUTH']) && $aConfiguration['MESS_RAUTH'] == 'false')) {
+                        $aConfiguration['MESS_RAUTH'] = 0;
+                    } else {
+                        $aConfiguration['MESS_RAUTH'] = 1;
+                    }
 
                     $oSpool->setConfig(array(
                         "MESS_ENGINE"   => $aConfiguration["MESS_ENGINE"],
