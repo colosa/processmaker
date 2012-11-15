@@ -87,19 +87,13 @@ function getCurrentTime ()
  * @label User Info
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#userInfo.28.29
  *
- * @param string(32) | $user_id | User ID | The user unique ID
- * @return array | $userInfo | User Info | An associative array with Information
+ * @param string(32) | $userUid | User ID | The user unique ID
+ * @return array | $info | User Info | An associative array with Information
  *
  */
-function userInfo ($user_uid)
+function userInfo($userUid)
 {
-    try {
-        require_once 'classes/model/Users.php';
-        $oUser = new Users();
-        return $oUser->getAllInformation( $user_uid );
-    } catch (Exception $oException) {
-        throw $oException;
-    }
+    return PMFInformationUser($userUid);
 }
 
 /**
@@ -1109,6 +1103,40 @@ function WSUpdateUser ($userUid, $userName, $firstName = null, $lastName = null,
 
 /**
  *
+ * @method Retrieves information about a user with a given ID.
+ *
+ * @name WSInformationUser
+ * @label WS Information User
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#WSInformationUser.28.29
+ *
+ * @param string(32) | $userUid | User UID | The user UID.
+ * @return array | $response | WS array | A WS Response associative array.
+ *
+ */
+function WSInformationUser($userUid)
+{
+    $client = WSOpen();
+
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+
+    $params = array(
+        "sessionId" => $sessionId,
+        "userUid"   => $userUid
+    );
+
+    $result = $client->__soapCall("informationUser", array($params));
+
+    $response = array();
+    $response["status_code"] = $result->status_code;
+    $response["message"]     = $result->message;
+    $response["time_stamp"]  = $result->timestamp;
+    $response["info"] = (isset($result->info))? $result->info : null;
+
+    return $response;
+}
+
+/**
+ *
  * @method Returns the unique ID for the current active session.
  *
  * @name WSGetSession
@@ -1849,6 +1877,34 @@ function PMFUpdateUser ($userUid, $userName, $firstName = null, $lastName = null
     } else {
         return 0;
     }
+}
+
+/**
+ *
+ * @method Retrieves information about a user with a given ID.
+ *
+ * @name PMFInformationUser
+ * @label PMF Information User
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFInformationUser.28.29
+ *
+ * @param string(32) | $userUid | User UID | The user UID.
+ * @return array | $info | Information of user | An associative array with Information.
+ *
+ */
+function PMFInformationUser($userUid)
+{
+    G::LoadClass("wsBase");
+
+    $ws = new wsBase();
+    $result = $ws->informationUser($userUid);
+
+    $info = array();
+
+    if ($result->status_code == 0 && isset($result->info)) {
+        $info = $result->info;
+    }
+
+    return $info;
 }
 
 /**

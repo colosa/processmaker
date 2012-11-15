@@ -873,6 +873,26 @@ function updateUser ($params)
     return $result;
 }
 
+function informationUser($params)
+{
+    $result = isValidSession($params->sessionId);
+
+    if ($result->status_code != 0) {
+        return $result;
+    }
+
+    if (ifPermission($params->sessionId, "PM_USERS") == 0) {
+        $result = new wsResponse(2, "You do not have privileges");
+
+        return $result;
+    }
+
+    $ws = new wsBase();
+    $result = $ws->informationUser($params->userUid);
+
+    return $result;
+}
+
 function CreateGroup ($params)
 {
     $vsResult = isValidSession( $params->sessionId );
@@ -1170,46 +1190,48 @@ function unpauseCase ($params)
     return $result;
 }
 
-$server = new SoapServer( $wsdl );
-$server->addFunction( "Login" );
-$server->addFunction( "ProcessList" );
-$server->addFunction( "CaseList" );
-$server->addFunction( "UnassignedCaseList" );
-$server->addFunction( "RoleList" );
-$server->addFunction( "GroupList" );
-$server->addFunction( "DepartmentList" );
-$server->addFunction( "UserList" );
-$server->addFunction( "TriggerList" );
-$server->addFunction( "outputDocumentList" );
-$server->addFunction( "inputDocumentList" );
-$server->addFunction( "inputDocumentProcessList" );
-$server->addFunction( "removeDocument" );
-$server->addFunction( "SendMessage" );
-$server->addFunction( "SendVariables" );
-$server->addFunction( "GetVariables" );
-$server->addFunction( "GetVariablesNames" );
-$server->addFunction( "DerivateCase" );
-$server->addFunction( "RouteCase" );
-$server->addFunction( "executeTrigger" );
-$server->addFunction( "NewCaseImpersonate" );
-$server->addFunction( "NewCase" );
-$server->addFunction( "AssignUserToGroup" );
-$server->addFunction( "AssignUserToDepartment" );
-$server->addFunction( "CreateGroup" );
-$server->addFunction( "CreateDepartment" );
-$server->addFunction( "CreateUser" );
-$server->addFunction( "updateUser" );
-$server->addFunction( "getCaseInfo" );
-$server->addFunction( "TaskList" );
-$server->addFunction( "TaskCase" );
-$server->addFunction( "ReassignCase" );
-$server->addFunction( "systemInformation" );
-$server->addFunction( "importProcessFromLibrary" );
-$server->addFunction( "removeUserFromGroup" );
-$server->addFunction( "getCaseNotes" );
-$server->addFunction( "deleteCase" );
-$server->addFunction( "cancelCase" );
-$server->addFunction( "pauseCase" );
-$server->addFunction( "unpauseCase" );
+$server = new SoapServer($wsdl);
+
+$server->addFunction("Login");
+$server->addFunction("ProcessList");
+$server->addFunction("CaseList");
+$server->addFunction("UnassignedCaseList");
+$server->addFunction("RoleList");
+$server->addFunction("GroupList");
+$server->addFunction("DepartmentList");
+$server->addFunction("UserList");
+$server->addFunction("TriggerList");
+$server->addFunction("outputDocumentList");
+$server->addFunction("inputDocumentList");
+$server->addFunction("inputDocumentProcessList");
+$server->addFunction("removeDocument");
+$server->addFunction("SendMessage");
+$server->addFunction("SendVariables");
+$server->addFunction("GetVariables");
+$server->addFunction("GetVariablesNames");
+$server->addFunction("DerivateCase");
+$server->addFunction("RouteCase");
+$server->addFunction("executeTrigger");
+$server->addFunction("NewCaseImpersonate");
+$server->addFunction("NewCase");
+$server->addFunction("AssignUserToGroup");
+$server->addFunction("AssignUserToDepartment");
+$server->addFunction("CreateGroup");
+$server->addFunction("CreateDepartment");
+$server->addFunction("CreateUser");
+$server->addFunction("updateUser");
+$server->addFunction("informationUser");
+$server->addFunction("getCaseInfo");
+$server->addFunction("TaskList");
+$server->addFunction("TaskCase");
+$server->addFunction("ReassignCase");
+$server->addFunction("systemInformation");
+$server->addFunction("importProcessFromLibrary");
+$server->addFunction("removeUserFromGroup");
+$server->addFunction("getCaseNotes");
+$server->addFunction("deleteCase");
+$server->addFunction("cancelCase");
+$server->addFunction("pauseCase");
+$server->addFunction("unpauseCase");
 $server->handle();
 
