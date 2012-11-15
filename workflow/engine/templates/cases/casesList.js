@@ -808,7 +808,9 @@ Ext.onReady ( function() {
             comboProcess.getStore().loadData(processValues);
         },
         failure: function ( result, request) {
-            Ext.MessageBox.alert('Failed', result.responseText);
+            if (typeof(result.responseText) != 'undefined') {
+                Ext.MessageBox.alert(_('ID_FAILED'), result.responseText);
+            }
         }
     });
 
@@ -927,7 +929,9 @@ Ext.onReady ( function() {
 
                 },
                 failure: function ( result, request) {
-                    Ext.MessageBox.alert('Failed', result.responseText);
+                    if (typeof(result.responseText) != 'undefined') {
+                        Ext.MessageBox.alert(_('ID_FAILED'), result.responseText);
+                    }
                 }
             });
           }},
@@ -1257,7 +1261,9 @@ Ext.onReady ( function() {
             }
           },
           failure: function ( result, request) {
-            Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+            if (typeof(result.responseText) != 'undefined') {
+              Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+            }
           }
         });
       });
@@ -1285,7 +1291,9 @@ Ext.onReady ( function() {
             }
           },
           failure: function ( result, request) {
-            Ext.MessageBox.alert('Failed', result.responseText);
+            if (typeof(result.responseText) != 'undefined') {
+              Ext.MessageBox.alert(_('ID_FAILED'), result.responseText);
+            }
           }
         });
       });
