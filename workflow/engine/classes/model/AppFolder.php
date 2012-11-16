@@ -254,6 +254,15 @@ if($limit != 0){
         $oCriteria->add ( AppDocumentPeer::APP_UID, $data, CRITERIA::IN );
     }
 
+    $numRecTotal = AppDocumentPeer::doCount($oCriteria);
+
+    $auxCriteria = clone $oCriteria;
+    $auxCriteria->addJoin(AppDocumentPeer::DOC_UID, OutputDocumentPeer::OUT_DOC_UID);
+    $auxCriteria->add(AppDocumentPeer::APP_DOC_TYPE, 'OUTPUT');
+    $auxCriteria->add(OutputDocumentPeer::OUT_DOC_UID, '-1', Criteria::NOT_EQUAL);
+    $auxCriteria->add(OutputDocumentPeer::OUT_DOC_GENERATE, 'BOTH');
+    $numRecTotal += AppDocumentPeer::doCount($auxCriteria);
+
     $oCase->verifyTable ();
 
 
@@ -305,8 +314,10 @@ if($limit != 0){
       }
       $rs->next ();
     }
-    $response['totalDocumentsCount'] = count($response['documents']);
-    return ($response);
+
+    $response["totalDocumentsCount"] = $numRecTotal;
+
+    return $response;
   }
   function getCompleteDocumentInfo($appUid, $appDocUid, $docVersion, $docUid, $usrId) {
     require_once ("classes/model/AppDocument.php");

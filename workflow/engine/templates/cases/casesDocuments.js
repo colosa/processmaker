@@ -1093,11 +1093,7 @@ var gridbb = new Ext.PagingToolbar({
   lastText : TRANSLATIONS.ID_LAST,
   nextText : TRANSLATIONS.ID_NEXT,
   prevText : TRANSLATIONS.ID_PREVIOUS,
-  refreshText : TRANSLATIONS.ID_RELOAD,
-  items : [ '-', ' ', ' ', ' ', ' ', ' ', new Ext.ux.StatusBar({
-    defaultText : TRANSLATIONS.ID_DONE,
-    id : 'statusPanel'
-  }) ]
+  refreshText : TRANSLATIONS.ID_RELOAD
 });
 
 var grid;

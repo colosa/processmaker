@@ -121,26 +121,36 @@ function expandNode()
     $totalDocuments=0;
 
     if (($_POST['sendWhat'] == "dirs") || ($_POST['sendWhat'] == "both")) {
-        $folderListObj = $oPMFolder->getFolderList ($_POST ['node'] != 'root' ?
-            $_POST ['node'] == 'NA' ? "" : $_POST ['node'] : $rootFolder, $limit, $start);
-        //G::pr($folderListObj);
+        $folderListObj = $oPMFolder->getFolderList(
+            ($_POST["node"] != "root")? (($_POST["node"] == "NA")? "" : $_POST["node"]) : $rootFolder,
+            $limit,
+            $start
+        );
+
         $folderList=$folderListObj['folders'];
         $totalFolders=$folderListObj['totalFoldersCount'];
         $totalItems+=count($folderList);
-        //G::pr($folderListObj);
     }
     if (($_POST['sendWhat'] == "files") || ($_POST['sendWhat'] == "both")) {
         global $RBAC;
+
         $user = ($RBAC->userCanAccess('PM_ALLCASES') == 1)? '' : $_SESSION['USER_LOGGED'];
-        $folderContentObj = $oPMFolder->getFolderContent ($_POST ['node'] != 'root' ?
-            $_POST ['node'] == 'NA' ? "" : $_POST ['node'] : $rootFolder, array(), null, null, $limit, $start, $user);
+        $folderContentObj = $oPMFolder->getFolderContent(
+            ($_POST["node"] != "root")? (($_POST["node"] == "NA")? "" : $_POST["node"]) : $rootFolder,
+            array(),
+            null,
+            null,
+            $limit,
+            $start,
+            $user,
+            true
+        );
+
         $folderContent=$folderContentObj['documents'];
         $totalDocuments=$folderContentObj['totalDocumentsCount'];
         $totalItems+=count($folderContent);
-        //G::pr($folderContent);
     }
-    //    G::pr($folderList);
-    //var_dump(isset($folderList));
+
     $processListTree=array();
     $tempTree=array();
     if (isset($folderList) && sizeof($folderList)>0) {
@@ -339,15 +349,15 @@ function expandNode()
             $tempTree=array();
         }
     }
-    //G::pr($processListTree);
+
     if ((isset($_POST['option'])) && ($_POST['option'] == "gridDocuments")) {
-        $processListTreeTemp['totalCount']=$totalFolders+count($processListTree);
+        $processListTreeTemp["totalCount"] = $totalFolders + $totalDocuments;
         $processListTreeTemp['msg']='correct reload';
         $processListTreeTemp['items']=$processListTree;
         $processListTree = $processListTreeTemp;
     }
-    //G::pr ($processListTree);die;
-    print G::json_encode ($processListTree);
+
+    echo G::json_encode ($processListTree);
 }
 
 function openPMFolder()
