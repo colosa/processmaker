@@ -277,6 +277,13 @@ class AppFolder extends BaseAppFolder
 
         $numRecTotal = AppDocumentPeer::doCount($oCriteria);
 
+        $auxCriteria = clone $oCriteria;
+        $auxCriteria->addJoin(AppDocumentPeer::DOC_UID, OutputDocumentPeer::OUT_DOC_UID);
+        $auxCriteria->add(AppDocumentPeer::APP_DOC_TYPE, 'OUTPUT');
+        $auxCriteria->add(OutputDocumentPeer::OUT_DOC_UID, '-1', Criteria::NOT_EQUAL);
+        $auxCriteria->add(OutputDocumentPeer::OUT_DOC_GENERATE, 'BOTH');
+        $numRecTotal += AppDocumentPeer::doCount($auxCriteria);
+
         $oCase->verifyTable();
 
         $oCriteria->addAscendingOrderByColumn( AppDocumentPeer::APP_DOC_INDEX );
