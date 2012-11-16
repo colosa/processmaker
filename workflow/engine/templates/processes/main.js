@@ -841,6 +841,7 @@ importProcessExistProcess = function()
     header      : false,
     width       : 460,
     height      : 210,
+    autoHeight : true,
     modal       : true,
     autoScroll  : false,
     maximizable : false,
@@ -853,7 +854,7 @@ importProcessExistProcess = function()
         fileUpload : false,
         width      : 440,
         frame      : true,
-        autoHeight : false,
+        autoHeight : true,
         bodyStyle  : 'padding: 10px 10px 0 10px;',
         labelWidth : 50,
         defaults : {
