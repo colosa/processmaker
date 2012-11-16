@@ -489,10 +489,6 @@ switch ($_POST['action']) {
 
         $aFields['CASES_MENUSELECTED_NAME'] = $casesMenuSelected;
 
-        $aFields['USR_COUNTRY_NAME'] = (! empty( $aFields['USR_COUNTRY_NAME'] )) ? $aFields['USR_COUNTRY_NAME'] : '';
-        $aFields['USR_CITY_NAME'] = (! empty( $aFields['USR_CITY_NAME'] )) ? $aFields['USR_CITY_NAME'] : '';
-        $aFields['USR_LOCATION_NAME'] = (! empty( $aFields['USR_LOCATION_NAME'] )) ? $aFields['USR_LOCATION_NAME'] : '';
-
         $result->success = true;
         $result->user = $aFields;
 

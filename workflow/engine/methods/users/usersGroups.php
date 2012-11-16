@@ -82,13 +82,16 @@ switch ($_REQUEST['type']) {
         break;
 }
 
-$users = Array ();
-$users['USR_UID'] = $_GET['uUID'];
-$users['USR_FIRSTNAME'] = $aRow['USR_FIRSTNAME'];
-$users['USR_LASTNAME'] = $aRow['USR_LASTNAME'];
-$users['USR_USERNAME'] = $aRow['USR_USERNAME'];
-$users['fullNameFormat'] = $Config['fullNameFormat'];
-$users['CURRENT_TAB'] = $ctab;
+$arrayAuthSources = $RBAC->getAllAuthSourcesByUser();
+
+$users = array();
+$users["USR_UID"] = $_GET["uUID"];
+$users["USR_FIRSTNAME"] = $aRow["USR_FIRSTNAME"];
+$users["USR_LASTNAME"]  = $aRow["USR_LASTNAME"];
+$users["USR_USERNAME"]  = $aRow["USR_USERNAME"];
+$users["USR_AUTH_SOURCE"] = (isset($arrayAuthSources[$_GET["uUID"]]))? $arrayAuthSources[$_GET["uUID"]] : "ProcessMaker (MYSQL)";
+$users["fullNameFormat"]  = $Config["fullNameFormat"];
+$users["CURRENT_TAB"] = $ctab;
 
 $oHeadPublisher = & headPublisher::getSingleton();
 $oHeadPublisher->addExtJsScript( 'users/usersGroups', false ); //adding a javascript file .js

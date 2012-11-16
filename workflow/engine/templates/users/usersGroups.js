@@ -263,8 +263,8 @@ Ext.onReady(function(){
   });
 
   //GROUPS DRAG AND DROP PANEL
-  GroupsPanel = new Ext.Panel({ 
-    title     : _('ID_GROUPS'), 
+  GroupsPanel = new Ext.Panel({
+    title: _("ID_GROUPS"),
     autoWidth   : true,
     layout       : 'hbox',
     defaults     : { flex : 1 }, //auto stretch
@@ -408,7 +408,15 @@ Ext.onReady(function(){
         {columnWidth:.6, padding: 3, layout: 'form', items: [userFields]},
         {columnWidth:.4, padding: 3, layout: 'form', items: [userPhoto, caseFields]}
       ]
-    }]
+    }],
+    buttons: [
+        {
+            text: _("ID_EDIT"),
+            handler: function () {
+                location.href = "usersEdit?USR_UID=" + USERS.USR_UID + "&USR_AUTH_SOURCE=" + USERS.USR_AUTH_SOURCE + "&MODE=edit";
+            }
+        }
+    ]
   });
 
   SummaryPanel = new Ext.Panel({
