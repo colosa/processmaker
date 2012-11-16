@@ -275,6 +275,8 @@ class AppFolder extends BaseAppFolder
             $oCriteria->add( AppDocumentPeer::APP_DOC_STATUS, 'ACTIVE' );
         }
 
+        $numRecTotal = AppDocumentPeer::doCount($oCriteria);
+
         $oCase->verifyTable();
 
         $oCriteria->addAscendingOrderByColumn( AppDocumentPeer::APP_DOC_INDEX );
@@ -321,8 +323,10 @@ class AppFolder extends BaseAppFolder
             }
             $rs->next();
         }
-        $response['totalDocumentsCount'] = count($response['documents']);
-        return ($response);
+
+        $response["totalDocumentsCount"] = $numRecTotal;
+
+        return $response;
     }
 
     public function getCompleteDocumentInfo ($appUid, $appDocUid, $docVersion, $docUid, $usrId)
