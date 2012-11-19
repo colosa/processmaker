@@ -545,6 +545,7 @@ function handleErrors ($errno, $errstr, $errfile, $errline)
             if (isset($oPMScript) && isset($_SESSION['APPLICATION'])) {
                 G::LoadClass( 'case' );
                 $oCase = new Cases();
+                $oPMScript->aFields['__ERROR__'] = $errstr;
                 $oCase->updateCase($_SESSION['APPLICATION'], array('APP_DATA' => $oPMScript->aFields));
             }
             registerError( 1, $errstr, $errline - 1, $sCode );
@@ -578,6 +579,7 @@ function handleFatalErrors ($buffer)
                 }
                 global $oPMScript;
                 if (isset($oPMScript) && isset($_SESSION['APPLICATION'])) {
+                    $oPMScript->aFields['__ERROR__'] = $aAux[0];
                     $oCase->updateCase($_SESSION['APPLICATION'], array('APP_DATA' => $oPMScript->aFields));
                 }
                 G::header( 'Location: ' . $aNextStep['PAGE'] );
@@ -586,6 +588,7 @@ function handleFatalErrors ($buffer)
             $_SESSION['_NO_EXECUTE_TRIGGERS_'] = 1;
             global $oPMScript;
             if (isset($oPMScript) && isset($_SESSION['APPLICATION'])) {
+                $oPMScript->aFields['__ERROR__'] = $aAux[0];
                 $oCase->updateCase($_SESSION['APPLICATION'], array('APP_DATA' => $oPMScript->aFields));
             }
             G::header( 'Location: ' . $_SERVER['REQUEST_URI'] );
@@ -602,6 +605,7 @@ function handleFatalErrors ($buffer)
             }
             global $oPMScript;
             if (isset($oPMScript) && isset($_SESSION['APPLICATION'])) {
+                $oPMScript->aFields['__ERROR__'] = $aAux[0];
                 $oCase->updateCase($_SESSION['APPLICATION'], array('APP_DATA' => $oPMScript->aFields));
             }
             G::header( 'Location: ' . $aNextStep['PAGE'] );
