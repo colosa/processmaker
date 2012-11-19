@@ -30,6 +30,7 @@ require_once ("classes/model/AppCacheView.php");
 require_once ("classes/model/AppDelegation.php");
 require_once ("classes/model/AppDocument.php");
 require_once ("classes/model/AppDelay.php");
+require_once ("classes/model/AppNotes.php");
 require_once ("classes/model/AppThread.php");
 require_once ("classes/model/Department.php");
 require_once ("classes/model/Dynaform.php");
@@ -3018,6 +3019,76 @@ class wsBase
 
             $result = array ("status_code" => $res->status_code,"message" => $res->message,"timestamp" => $res->timestamp
             );
+
+            return $result;
+        } catch (Exception $e) {
+            $result = new wsResponse(100, $e->getMessage());
+
+            return $result;
+        }
+    }
+
+    /**
+     * Add case note
+     *
+     * @param string caseUid : ID of the case.
+     * @param string processUid : ID of the process.
+     * @param string taskUid : ID of the task.
+     * @param string userUid : The unique ID of the user who will add note case.
+     * @param string note : Note of the case.
+     * @param int sendMail : Optional parameter. If set to 1, will send an email to all participants in the case.
+     * @return $result will return an object
+     */
+    public function addCaseNote($caseUid, $processUid, $taskUid, $userUid, $note, $sendMail = 1)
+    {
+        try {
+            if (empty($caseUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " caseUid");
+
+                return $result;
+            }
+
+            if (empty($processUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " processUid");
+
+                return $result;
+            }
+
+            if (empty($taskUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " taskUid");
+
+                return $result;
+            }
+
+            if (empty($userUid)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " userUid");
+
+                return $result;
+            }
+
+            if (empty($note)) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_REQUIRED_FIELD") . " note");
+
+                return $result;
+            }
+
+            $case = new Cases();
+
+            $respView = $case->getAllObjectsFrom($processUid, $caseUid, $taskUid, $userUid, "VIEW");
+            $respBlock = $case->getAllObjectsFrom($processUid, $caseUid, $taskUid, $userUid, "BLOCK");
+
+            if ($respView["CASES_NOTES"] == 0 && $respBlock["CASES_NOTES"] == 0) {
+                $result = new wsResponse(100, G::LoadTranslation("ID_CASES_NOTES_NO_PERMISSIONS"));
+
+                return $result;
+            }
+
+            //Add note case
+            $appNote = new AppNotes();
+            $response = $appNote->addCaseNote($caseUid, $userUid, $note, $sendMail);
+
+            //Response
+            $result = new wsResponse(0, G::LoadTranslation("ID_COMMAND_EXECUTED_SUCCESSFULLY"));
 
             return $result;
         } catch (Exception $e) {

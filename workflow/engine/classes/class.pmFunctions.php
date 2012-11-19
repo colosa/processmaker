@@ -1290,6 +1290,49 @@ function WSUnpauseCase ($caseUid, $delIndex, $userUid)
     return $response;
 }
 
+/**
+ *
+ * @method Add case note.
+ *
+ * @name WSAddCaseNote
+ * @label WS Add case note
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#WSAddCaseNote.28.29
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @param string(32) | $processUid | ID of the process | The unique ID of the process.
+ * @param string(32) | $taskUid | ID of the task | The unique ID of the task.
+ * @param string(32) | $userUid | ID user | The unique ID of the user who will add note case.
+ * @param string | $note | Note of the case | Note of the case.
+ * @param int | $sendMail = 1 | Send mail | Optional parameter. If set to 1, will send an email to all participants in the case.
+ * @return array | $response | WS array | A WS Response associative array.
+ *
+ */
+function WSAddCaseNote($caseUid, $processUid, $taskUid, $userUid, $note, $sendMail = 1)
+{
+    $client = WSOpen();
+
+    $sessionId = $_SESSION["WS_SESSION_ID"];
+
+    $params = array(
+        "sessionId"  => $sessionId,
+        "caseUid"    => $caseUid,
+        "processUid" => $processUid,
+        "taskUid"    => $taskUid,
+        "userUid"    => $userUid,
+        "note"       => $note,
+        "sendMail"   => $sendMail
+    );
+
+    $result = $client->__soapCall("addCaseNote", array($params));
+
+    $response = array();
+    $response["status_code"] = $result->status_code;
+    $response["message"]     = $result->message;
+    $response["time_stamp"]  = $result->timestamp;
+
+    return $response;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -2413,6 +2456,36 @@ function PMFUnpauseCase ($caseUid, $delIndex, $userUid)
 
     $ws = new wsBase();
     $result = $ws->unpauseCase( $caseUid, $delIndex, $userUid );
+
+    if ($result->status_code == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ *
+ * @method Add case note.
+ *
+ * @name PMFAddCaseNote
+ * @label PMF Add case note
+ *
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @param string(32) | $processUid | ID of the process | The unique ID of the process.
+ * @param string(32) | $taskUid | ID of the task | The unique ID of the task.
+ * @param string(32) | $userUid | ID user | The unique ID of the user who will add note case.
+ * @param string | $note | Note of the case | Note of the case.
+ * @param int | $sendMail = 1 | Send mail | Optional parameter. If set to 1, will send an email to all participants in the case.
+ * @return int | $result | Result of the add case note | Returns 1 if the note has been added to the case.; otherwise, returns 0 if an error occurred.
+ *
+ */
+function PMFAddCaseNote($caseUid, $processUid, $taskUid, $userUid, $note, $sendMail = 1)
+{
+    G::LoadClass("wsBase");
+
+    $ws = new wsBase();
+    $result = $ws->addCaseNote($caseUid, $processUid, $taskUid, $userUid, $note, $sendMail);
 
     if ($result->status_code == 0) {
         return 1;

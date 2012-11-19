@@ -235,5 +235,30 @@ class AppNotes extends BaseAppNotes
             throw $oException;
         }
     }
+
+    public function addCaseNote($applicationUid, $userUid, $note, $sendMail)
+    {
+        $response = $this->postNewNote($applicationUid, $userUid, $note, false);
+
+        if ($sendMail == 1) {
+            G::LoadClass("case");
+
+            $case = new Cases();
+
+            $p = $case->getUsersParticipatedInCase($applicationUid);
+            $noteRecipientsList = array();
+
+            foreach ($p["array"] as $key => $userParticipated) {
+                $noteRecipientsList[] = $key;
+            }
+
+            $noteRecipients = implode(",", $noteRecipientsList);
+            $note = stripslashes($note);
+
+            $this->sendNoteNotification($applicationUid, $userUid, $note, $noteRecipients);
+        }
+
+        return $response;
+    }
 }
 

@@ -871,6 +871,28 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="addCaseNoteRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="sessionId" type="xs:string"/>
+            <xs:element name="caseUid" type="xs:string"/>
+            <xs:element name="processUid" type="xs:string"/>
+            <xs:element name="taskUid" type="xs:string"/>
+            <xs:element name="userUid" type="xs:string"/>
+            <xs:element name="note" type="xs:string"/>
+            <xs:element name="sendMail" minOccurs="0" maxOccurs="unbounded" type="xs:integer"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="addCaseNoteResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="status_code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="timestamp" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
   </types>
 
@@ -1099,6 +1121,12 @@
   <message name="unpauseCaseResponse">
     <part name="parameters" element="xs0:unpauseCaseResponse"/>
   </message>
+  <message name="addCaseNoteRequest">
+    <part name="parameters" element="xs0:addCaseNoteRequest"/>
+  </message>
+  <message name="addCaseNoteResponse">
+    <part name="parameters" element="xs0:addCaseNoteResponse"/>
+  </message>
 
   <portType name="ProcessMakerServiceSoap">
     <operation name="login">
@@ -1260,6 +1288,10 @@
     <operation name="unpauseCase">
       <input message="xs0:unpauseCaseRequest"/>
       <output message="xs0:unpauseCaseResponse"/>
+    </operation>
+    <operation name="addCaseNote">
+      <input message="xs0:addCaseNoteRequest"/>
+      <output message="xs0:addCaseNoteResponse"/>
     </operation>
   </portType>
 
@@ -1618,6 +1650,15 @@
     </operation>
     <operation name="unpauseCase">
       <soap12:operation soapAction="urn:unpauseCase" soapActionRequired="true" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="addCaseNote">
+      <soap12:operation soapAction="urn:addCaseNote" soapActionRequired="true" style="document"/>
       <input>
         <soap12:body use="literal"/>
       </input>

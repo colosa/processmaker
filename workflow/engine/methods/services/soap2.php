@@ -1190,6 +1190,33 @@ function unpauseCase ($params)
     return $result;
 }
 
+function addCaseNote($params)
+{
+    $result = isValidSession($params->sessionId);
+
+    if ($result->status_code != 0) {
+        return $result;
+    }
+
+    if (ifPermission($params->sessionId, "PM_CASES") == 0) {
+        $result = new wsResponse(2, "You do not have privileges");
+
+        return $result;
+    }
+
+    $ws = new wsBase();
+    $result = $ws->addCaseNote(
+        $params->caseUid,
+        $params->processUid,
+        $params->taskUid,
+        $params->userUid,
+        $params->note,
+        (isset($params->sendMail))? $params->sendMail : 1
+    );
+
+    return $result;
+}
+
 $server = new SoapServer($wsdl);
 
 $server->addFunction("Login");
@@ -1233,5 +1260,6 @@ $server->addFunction("deleteCase");
 $server->addFunction("cancelCase");
 $server->addFunction("pauseCase");
 $server->addFunction("unpauseCase");
+$server->addFunction("addCaseNote");
 $server->handle();
 
