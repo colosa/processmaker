@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: UpToDateTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: 5b0af63dfa9acb85374dcdd2d7fd866ce81391d0 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,8 +19,9 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 include_once 'phing/tasks/system/condition/Condition.php';
+include_once 'phing/tasks/system/PropertyTask.php';
 include_once 'phing/util/DirectoryScanner.php';
 include_once 'phing/util/SourceFileScanner.php';
 include_once 'phing/mappers/MergeMapper.php';
@@ -33,16 +34,17 @@ include_once 'phing/mappers/MergeMapper.php';
  * @author    William Ferguson <williamf@mincom.com> (Ant)
  * @author    Hiroaki Nakamura <hnakamur@mc.neweb.ne.jp> (Ant)
  * @author    Stefan Bodewig <stefan.bodewig@epost.de> (Ant)
- * @version   $Revision: 1.6 $
+ * @version   $Id$
  * @package   phing.tasks.system
  */
-class UpToDateTask extends TaskPhing implements Condition {
+class UpToDateTask extends Task implements Condition {
 
     private $_property;
     private $_value;
     private $_sourceFile;
     private $_targetFile;
     private $sourceFileSets = array();
+    private $_filelists = array();
 
     protected $mapperElement = null;
 
@@ -54,6 +56,14 @@ class UpToDateTask extends TaskPhing implements Condition {
      */
     public function setProperty($property) {
         $this->_property = $property;
+    }
+
+    /**
+     * Get property name
+     * @param property the name of the property to set if Target is up-to-date.
+     */
+    public function getProperty() {
+        return $this->_property;
     }
 
     /**
@@ -101,6 +111,8 @@ class UpToDateTask extends TaskPhing implements Condition {
 
     /**
      * Nested <srcfiles> element.
+     *
+     * @deprecated Deprecated since Phing 2.4.0
      */
     public function createSrcfiles() {
         $fs = new FileSet();
@@ -108,6 +120,22 @@ class UpToDateTask extends TaskPhing implements Condition {
         return $fs;
     }
 
+    /**
+     * Nested <fileset> element.
+     */
+    public function addFileset(FileSet $fs) {
+        $this->sourceFileSets[] = $fs;
+    }
+    
+    /**
+     * Supports embedded <filelist> element.
+     * @return FileList
+     */
+    public function createFileList() {
+        $num = array_push($this->_filelists, new FileList());
+        return $this->_filelists[$num-1];
+    }
+   
     /**
      * Defines the FileNameMapper to use (nested mapper element).
      */
@@ -126,15 +154,15 @@ class UpToDateTask extends TaskPhing implements Condition {
      * @return boolean
      */
     public function evaluate() {
-        if (count($this->sourceFileSets) === 0 && $this->_sourceFile === null) {
+        if (count($this->sourceFileSets) == 0 && count($this->_filelists) == 0 && $this->_sourceFile === null) {
             throw new BuildException("At least one srcfile or a nested "
-                                     . "<srcfiles> element must be set.");
+                                     . "<fileset> or <filelist> element must be set.");
         }
 
-        if (count($this->sourceFileSets) > 0 && $this->_sourceFile !== null) {
+        if ((count($this->sourceFileSets) > 0 || count($this->_filelists) > 0) && $this->_sourceFile !== null) {
             throw new BuildException("Cannot specify both the srcfile "
-                                     . "attribute and a nested <srcfiles> "
-                                     . "element.");
+                                     . "attribute and a nested <fileset> "
+                                     . "or <filelist> element.");
         }
 
         if ($this->_targetFile === null && $this->mapperElement === null) {
@@ -159,6 +187,13 @@ class UpToDateTask extends TaskPhing implements Condition {
             $ds = $fs->getDirectoryScanner($this->project);
             $upToDate = $upToDate && $this->scanDir($fs->getDir($this->project),
                                            $ds->getIncludedFiles());
+        }
+
+        for($i=0,$size=count($this->_filelists); $i < $size && $upToDate; $i++) {
+            $fl = $this->_filelists[$i];
+            $srcFiles = $fl->getFiles($this->project);
+            $upToDate = $upToDate && $this->scanDir($fs->getDir($this->project),
+                                           $srcFiles);
         }
 
         if ($this->_sourceFile !== null) {
@@ -189,13 +224,18 @@ class UpToDateTask extends TaskPhing implements Condition {
         }
         $upToDate = $this->evaluate();
         if ($upToDate) {
-            $this->project->setNewProperty($this->_property, $this->getValue());
+            $property = $this->project->createTask('property');
+            $property->setName($this->getProperty());
+            $property->setValue($this->getValue());
+            $property->setOverride(true);
+            $property->main(); // execute
+
             if ($this->mapperElement === null) {
                 $this->log("File \"" . $this->_targetFile->getAbsolutePath() 
-                    . "\" is up-to-date.", PROJECT_MSG_VERBOSE);
+                    . "\" is up-to-date.", Project::MSG_VERBOSE);
             } else {
                 $this->log("All target files are up-to-date.",
-                    PROJECT_MSG_VERBOSE);
+                    Project::MSG_VERBOSE);
             }
         }
     }

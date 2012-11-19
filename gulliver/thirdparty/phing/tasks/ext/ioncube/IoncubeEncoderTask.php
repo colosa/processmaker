@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: IoncubeEncoderTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: a6ce870b3d14be7f365468e3a272e5ac16128e93 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,318 +19,624 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 require_once 'phing/tasks/ext/ioncube/IoncubeComment.php';
 
 /**
  * Invokes the ionCube Encoder (PHP4 or PHP5)
  *
- * @author Michiel Rook <michiel.rook@gmail.com>
- * @version $Id: IoncubeEncoderTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * @author Michiel Rook <mrook@php.net>
+ * @author Andrew Eddie <andrew.eddie@jamboworks.com> 
+ * @author Domenico Sgarbossa <sbraaaa@yahoo.it> 
+ * @version $Id: a6ce870b3d14be7f365468e3a272e5ac16128e93 $
  * @package phing.tasks.ext.ioncube
  * @since 2.2.0
  */
-class IoncubeEncoderTask extends TaskPhing
+class IoncubeEncoderTask extends Task
 {
-	private $phpVersion = "5";
-	private $ioncubePath = "/usr/local/ioncube";
-	private $encoderName = "ioncube_encoder";
-	
-	private $fromDir = "";
-	private $toDir = "";
-	
-	private $encrypt = "";
-	
-	private $targetOption = "";
-	private $binary = false;
-	private $optimize = "";
-	private $withoutRuntimeLoaderSupport = false;
-	
-	private $licensePath = "";
-	private $passPhrase = "";
-	
-	private $comments = array();
+    private $ionSwitches = array();
+    
+    private $ionOptions = array();
+    
+    private $ionOptionsXS = array();
 
-	/**
-	 * Sets the path to the ionCube encoder
-	 */
-	function setIoncubePath($ioncubePath)
-	{
-		$this->ioncubePath = $ioncubePath;
-	}
+    private $comments = array();
+    
+    private $encoderName = 'ioncube_encoder';
+    
+    private $fromDir = '';
 
-	/**
-	 * Returns the path to the ionCube encoder
-	 */
-	function getIoncubePath()
-	{
-		return $this->ioncubePath;
-	}
+    private $ioncubePath = '/usr/local/ioncube';
 
-	/**
-	 * Sets the version of PHP to use (defaults to 5)
-	 */
-	function setPhpVersion($phpVersion)
-	{
-		$this->phpVersion = $phpVersion;
-	}
+    private $phpVersion = '5';
 
-	/**
-	 * Returns the version of PHP to use (defaults to 5)
-	 */
-	function getPhpVersion()
-	{
-		return $this->phpVersion;
-	}
-	
-	/**
-	 * Sets the source directory
-	 */
-	function setFromDir($fromDir)
-	{
-		$this->fromDir = $fromDir;
-	}
+    private $targetOption = '';
 
-	/**
-	 * Returns the source directory
-	 */
-	function getFromDir($fromDir)
-	{
-		return $this->fromDir;
-	}
-	
-	/**
-	 * Sets the target directory
-	 */
-	function setToDir($toDir)
-	{
-		$this->toDir = $toDir;
-	}
+    private $toDir = '';
 
-	/**
-	 * Returns the target directory
-	 */
-	function getToDir($toDir)
-	{
-		return $this->toDir;
-	}
+    private $showCommandLine = false;
+ 
+    /**
+     * Sets whether to show command line before it is executed
+     */
+    function setShowCommandLine($value)
+    {
+        $this->showCommandLine = $value;
+    }
 
-	/**
-	 * Sets regexps of additional files to encrypt (separated by space)
-	 */
-	function setEncrypt($encrypt)
-	{
-		$this->encrypt = $encrypt;
-	}
-	
-	/**
-	 * Returns regexps of additional files to encrypt (separated by space)
-	 */
-	function getEncrypt()
-	{
-		return $this->encrypt;
-	}
-	
-	/**
-	 * Sets the binary option
-	 */
-	function setBinary($binary)
-	{
-		$this->binary = $binary;
-	}
-	
-	/**
-	 * Returns the binary option
-	 */
-	function getBinary()
-	{
-		return $this->binary;
-	}
+    /**
+     * Adds a comment to be used in encoded files
+     */
+    function addComment(IoncubeComment $comment)
+    {
+        $this->comments[] = $comment;
+    }
 
-	/**
-	 * Sets the optimize option
-	 */
-	function setOptimize($optimize)
-	{
-		$this->optimize = $optimize;
-	}
-	
-	/**
-	 * Returns the optimize option
-	 */
-	function getOptimize()
-	{
-		return $this->optimize;
-	}
+    /**
+     * Sets the allowed server
+     */
+    function setAllowedServer($value)
+    {
+        $this->ionOptionsXS['allowed-server'] = $value;
+    }
 
-	/**
-	 * Sets the without-runtime-loader-support option
-	 */
-	function setWithoutRuntimeLoaderSupport($withoutRuntimeLoaderSupport)
-	{
-		$this->withoutRuntimeLoaderSupport = $withoutRuntimeLoaderSupport;
-	}
-	
-	/**
-	 * Returns the without-runtime-loader-support option
-	 */
-	function getWithoutRuntimeLoaderSupport()
-	{
-		return $this->withoutRuntimeLoaderSupport;
-	}
-	
-	/**
-	 * Sets the option to use when encoding target directory already exists (defaults to none)
-	 */
-	function setTargetOption($targetOption)
-	{
-		$this->targetOption = $targetOption;
-	}
+    /**
+     * Returns the allowed server setting
+     */
+    function getAllowedServer()
+    {
+        return $this->ionOptionsXS['allowed-server'];
+    }
 
-	/**
-	 * Returns he option to use when encoding target directory already exists (defaults to none)
-	 */
-	function getTargetOption()
-	{
-		return $this->targetOption;
-	}
-	
-	/**
-	 * Sets the path to the license file to use
-	 */
-	function setLicensePath($licensePath)
-	{
-		$this->licensePath = $licensePath;
-	}
+    /**
+     * Sets the binary option
+     */
+    function setBinary($value)
+    {
+        $this->ionSwitches['binary'] = $value;
+    }
 
-	/**
-	 * Returns the path to the license file to use
-	 */
-	function getLicensePath()
-	{
-		return $this->licensePath;
-	}
+    /**
+     * Returns the binary option
+     */
+    function getBinary()
+    {
+        return $this->ionSwitches['binary'];
+    }
 
-	/**
-	 * Sets the passphrase to use when encoding files
-	 */
-	function setPassPhrase($passPhrase)
-	{
-		$this->passPhrase = $passPhrase;
-	}
+    /**
+     * Sets files or folders to copy (separated by space)
+     */
+    function setCopy($value)
+    {
+        $this->ionOptionsXS['copy'] = $value;
+    }
 
-	/**
-	 * Returns the passphrase to use when encoding files
-	 */
-	function getPassPhrase()
-	{
-		return $this->passPhrase;
-	}
+    /**
+     * Returns the copy setting
+     */
+    function getCopy()
+    {
+        return $this->ionOptionsXS['copy'];
+    }
 
-	/**
-	 * Adds a comment to be used in encoded files
-	 */
-	function addComment(IoncubeComment $comment)
-	{
-		$this->comments[] = $comment;
-	}
+    /**
+     * Sets additional file patterns, files or directories to encode,
+     * or to reverse the effect of copy (separated by space)
+     */
+    function setEncode($value)
+    {
+        $this->ionOptionsXS['encode'] = $value;
+    }
+    
+    /**
+     * Returns the encode setting
+     */
+    function getEncode()
+    {
+        return $this->ionOptionsXS['encode'];
+    }
 
-	/**
-	 * The main entry point
-	 *
-	 * @throws BuildException
-	 */
-	function main()
-	{
-		$arguments = $this->constructArguments();
-		
-		$encoder = new PhingFile($this->ioncubePath, $this->encoderName . ($this->phpVersion == 5 ? '5' : ''));
-		
-		$this->log("Running ionCube Encoder...");
-		
-		exec($encoder->__toString() . " " . $arguments . " 2>&1", $output, $return);
-		
+    /**
+     * Sets regexps of additional files to encrypt (separated by space)
+     */
+    function setEncrypt($value)
+    {
+        $this->ionOptionsXS['encrypt'] = $value;
+    }
+    
+    /**
+     * Returns regexps of additional files to encrypt (separated by space)
+     */
+    function getEncrypt()
+    {
+        return $this->ionOptionsXS['encrypt'];
+    }
+
+    /**
+     * Sets a period after which the files expire
+     */
+    function setExpirein($value)
+    {
+        $this->ionOptions['expire-in'] = $value;
+    }
+    
+    /**
+     * Returns the expireIn setting
+     */
+    function getExpirein()
+    {
+        return $this->ionOptions['expire-in'];
+    }
+
+    /**
+     * Sets a YYYY-MM-DD date to expire the files 
+     */
+    function setExpireon($value)
+    {
+        $this->ionOptions['expire-on'] = $value;
+    }
+    
+    /**
+     * Returns the expireOn setting
+     */
+    function getExpireon()
+    {
+        return $this->ionOptions['expire-on'];
+    }
+
+    /**
+     * Sets the source directory
+     */
+    function setFromDir($value)
+    {
+        $this->fromDir = $value;
+    }
+
+    /**
+     * Returns the source directory
+     */
+    function getFromDir()
+    {
+        return $this->fromDir;
+    }
+
+    /**
+     * Set files and directories to ignore entirely and exclude from the target directory
+     * (separated by space).
+     */
+    function setIgnore($value)
+    {
+        $this->ionOptionsXS['ignore'] = $value;
+    }
+
+    /**
+     * Returns the ignore setting
+     */
+    function getIgnore()
+    {
+        return $this->ionOptionsXS['ignore'];
+    }
+
+    /**
+     * Sets the path to the ionCube encoder
+     */
+    function setIoncubePath($value)
+    {
+        $this->ioncubePath = $value;
+    }
+
+    /**
+     * Returns the path to the ionCube encoder
+     */
+    function getIoncubePath()
+    {
+        return $this->ioncubePath;
+    }
+
+    /**
+     * Set files and directories not to be ignored (separated by space).
+     */
+    function setKeep($value)
+    {
+        $this->ionOptionsXS['keep'] = $value;
+    }
+
+    /**
+     * Returns the ignore setting
+     */
+    function getKeep()
+    {
+        return $this->ionOptionsXS['keep'];
+    }
+
+    /**
+     * Sets the path to the license file to use
+     */
+    function setLicensePath($value)
+    {
+        $this->ionOptions['with-license'] = $value;
+    }
+
+    /**
+     * Returns the path to the license file to use
+     */
+    function getLicensePath()
+    {
+        return $this->ionOptions['with-license'];
+    }
+
+    /**
+     * Sets the no-doc-comments option
+     */
+    function setNoDocComments($value)
+    {
+        $this->ionSwitches['no-doc-comment'] = $value;
+    }
+    
+    /**
+     * Returns the no-doc-comments option
+     */
+    function getNoDocComments()
+    {
+        return $this->ionSwitches['no-doc-comment'];
+    }
+    
+    /**
+     * Sets the obfuscate option
+     */
+    function setObfuscate($value)
+    {
+        $this->ionOptionsXS['obfuscate'] = $value;
+    }
+    
+    /**
+     * Returns the optimize option
+     */
+    function getObfuscate()
+    {
+        return $this->ionOptionsXS['obfuscate'];
+    }
+
+    /**
+     * Sets the obfuscation key (required if using the obfuscate option)
+     */
+    function setObfuscationKey($value)
+    {
+        $this->ionOptions['obfuscation-key'] = $value;
+    }
+    
+    /**
+     * Returns the optimize option
+     */
+    function getObfuscationKey()
+    {
+        return $this->ionOptions['obfuscation-key'];
+    }
+
+    /**
+     * Sets the optimize option
+     */
+    function setOptimize($value)
+    {
+        $this->ionOptions['optimize'] = $value;
+    }
+    
+    /**
+     * Returns the optimize option
+     */
+    function getOptimize()
+    {
+        return $this->ionOptions['optimize'];
+    }
+
+    /**
+     * Sets the passphrase to use when encoding files
+     */
+    function setPassPhrase($value)
+    {
+        $this->ionOptions['passphrase'] = $value;
+    }
+
+    /**
+     * Returns the passphrase to use when encoding files
+     */
+    function getPassPhrase()
+    {
+        return $this->ionOptions['passphrase'];
+    }
+
+    /**
+     * Sets the version of PHP to use (defaults to 5)
+     */
+    function setPhpVersion($value)
+    {
+        $this->phpVersion = $value;
+    }
+
+    /**
+     * Returns the version of PHP to use (defaults to 5)
+     */
+    function getPhpVersion()
+    {
+        return $this->phpVersion;
+    }
+    
+    /**
+     * Sets the target directory
+     */
+    function setToDir($value)
+    {
+        $this->toDir = $value;
+    }
+
+    /**
+     * Returns the target directory
+     */
+    function getToDir()
+    {
+        return $this->toDir;
+    }
+
+    /**
+     * Sets the without-runtime-loader-support option
+     */
+    function setWithoutRuntimeLoaderSupport($value)
+    {
+        $this->ionSwitches['without-runtime-loader-support'] = $value;
+    }
+    
+    /**
+     * Returns the without-runtime-loader-support option
+     */
+    function getWithoutRuntimeLoaderSupport()
+    {
+        return $this->ionSwitches['without-runtime-loader-support'];
+    }
+
+    /**
+     * Sets the no-short-open-tags option
+     */
+    function setNoShortOpenTags($value)
+    {
+        $this->ionSwitches['no-short-open-tags'] = $value;
+    }
+    
+    /**
+     * Returns the no-short-open-tags option
+     */
+    function getNoShortOpenTags()
+    {
+        return $this->ionSwitches['no-short-open-tags'];
+    }
+
+    /**
+     * Sets the ignore-deprecated-warnings option
+     */
+    function setIgnoreDeprecatedWarnings($value)
+    {
+        $this->ionSwitches['ignore-deprecated-warnings'] = $value;
+    }
+
+    /**
+     * Returns the ignore-deprecated-warnings option
+     */
+    function getIgnoreDeprecatedWarnings()
+    {
+        return $this->ionSwitches['ignore-deprecated-warnings'];
+    }
+
+    /**
+     * Sets the ignore-strict-warnings option
+     */
+    function setIgnoreStrictWarnings($value)
+    {
+        $this->ionSwitches['ignore-strict-warnings'] = $value;
+    }
+
+    /**
+     * Returns the ignore-strict-warnings option
+     */
+    function getIgnoreStrictWarnings()
+    {
+        return $this->ionSwitches['ignore-strict-warnings'];
+    }
+
+    /**
+     * Sets the allow-encoding-into-source option
+     */
+    function setAllowEncodingIntoSource($value)
+    {
+        $this->ionSwitches['allow-encoding-into-source'] = $value;
+    }
+
+    /**
+     * Returns the allow-encoding-into-source option
+     */
+    function getAllowEncodingIntoSource()
+    {
+        return $this->ionSwitches['allow-encoding-into-source'];
+    }
+
+    /**
+     * Sets the message-if-no-loader option
+     */
+    function setMessageIfNoLoader($value)
+    {
+        $this->ionOptions['message-if-no-loader'] = $value;
+    }
+
+    /**
+     * Returns the message-if-no-loader option
+     */
+    function getMessageIfNoLoader()
+    {
+        return $this->ionOptions['message-if-no-loader'];
+    }
+
+    /**
+     * Sets the action-if-no-loader option
+     */
+    function setActionIfNoLoader($value)
+    {
+        $this->ionOptions['action-if-no-loader'] = $value;
+    }
+
+    /**
+     * Returns the action-if-no-loader option
+     */
+    function getActionIfNoLoader()
+    {
+        return $this->ionOptions['action-if-no-loader'];
+    }
+
+    /**
+     * Sets the option to use when encoding target directory already exists (defaults to none)
+     */
+    function setTargetOption($targetOption)
+    {
+        $this->targetOption = $targetOption;
+    }
+
+    /**
+     * Returns he option to use when encoding target directory already exists (defaults to none)
+     */
+    function getTargetOption()
+    {
+        return $this->targetOption;
+    }
+    
+    /**
+     * Sets the callback-file option
+     */
+    function setCallbackFile($value)
+    {
+        $this->ionOptions['callback-file'] = $value;
+    }
+
+    /**
+     * Returns the callback-file option
+     */
+    function getCallbackFile()
+    {
+        return $this->ionOptions['callback-file'];
+    }
+
+    /**
+     * Sets the obfuscation-exclusions-file option
+     */
+    function setObfuscationExclusionFile($value)
+    {
+        $this->ionOptions['obfuscation-exclusion-file'] = $value;
+    }
+
+    /**
+     * Returns the obfuscation-exclusions-file option
+     */
+    function getObfuscationExclusionFile()
+    {
+        return $this->ionOptions['obfuscation-exclusion-file'];
+    }
+ 
+    /**
+     * The main entry point
+     *
+     * @throws BuildException
+     */
+    function main()
+    {
+        $arguments = $this->constructArguments();
+        
+        $encoder = new PhingFile($this->ioncubePath, $this->encoderName . ($this->phpVersion == 5 ? '5' : ''));
+        
+        $this->log("Running ionCube Encoder...");
+       
+        if ($this->showCommandLine)
+        {
+            $this->log("Command line: ".$encoder->__toString() . ' ' . $arguments);
+        }
+
+        exec($encoder->__toString() . ' ' . $arguments . " 2>&1", $output, $return);
+       
         if ($return != 0)
         {
-			throw new BuildException("Could not execute ionCube Encoder: " . implode(' ', $output));
+            throw new BuildException("Could not execute ionCube Encoder: " . implode(' ', $output));
         }       
-	}
+    }
 
-	/**
-	 * Constructs an argument string for the ionCube encoder
-	 */
-	private function constructArguments()
-	{
-		$arguments = "";
-		
-		if ($this->binary)
-		{
-			$arguments.= "--binary ";
-		}
-		
-		if (!empty($this->optimize))
-		{
-			$arguments.= "--optimize " . $this->optimize . " ";
-		}
-		
-		if ($this->withoutRuntimeLoaderSupport)
-		{
-			$arguments.= "--without-runtime-loader-support ";
-		}
-		
-		if (!empty($this->targetOption))
-		{
-			switch ($this->targetOption)
-			{
-				case "replace":
-				case "merge":
-				case "update":
-				case "rename":
-				{
-					$arguments.= "--" . $this->targetOption . "-target ";
-				} break;
-				
-				default:
-				{
-					throw new BuildException("Unknown target option '" . $this->targetOption . "'");
-				} break;
-			}
-		}
-		
-		if (!empty($this->encrypt))
-		{
-			foreach (explode(" ", $this->encrypt) as $encrypt)
-			{
-				$arguments.= "--encrypt '$encrypt' ";
-			}
-		}
-		
-		if (!empty($this->licensePath))
-		{
-			$arguments.= "--with-license '" . $this->licensePath . "' ";
-		}
+    /**
+     * Constructs an argument string for the ionCube encoder
+     */
+    private function constructArguments()
+    {
+        $arguments = '';
+        
+        foreach ($this->ionSwitches as $name => $value)
+        {
+            if ($value)
+            {
+                $arguments.= "--$name ";
+            }
+        }
 
-		if (!empty($this->passPhrase))
-		{
-			$arguments.= "--passphrase '" . $this->passPhrase . "' ";
-		}
-		
-		foreach ($this->comments as $comment)
-		{
-			$arguments.= "--add-comment '" . $comment->getValue() . "' ";
-		}
-		
-		if ($this->fromDir != "")
-		{
-			$arguments .= $this->fromDir . " ";
-		}
+        foreach ($this->ionOptions as $name => $value)
+        {
+            /**
+             * action-if-no-loader value is a php source snippet so it is
+	         * better to handle it this way to prevent quote problems!
+	         */		
+            if ($name == 'action-if-no-loader')
+            {
+                $arguments.= "--$name \"$value\" ";
+            }
+            else
+            {
+                $arguments.= "--$name '$value' ";
+            }            
+        }
 
-		if ($this->toDir != "")
-		{
-			$arguments .= "-o " . $this->toDir . " ";
-		}
+        foreach ($this->ionOptionsXS as $name => $value)
+        {
+            foreach (explode(' ', $value) as $arg)
+            {
+                $arguments.= "--$name '$arg' ";
+            }
+        }
 
-		return $arguments;
-	}
+        foreach ($this->comments as $comment)
+        {
+            $arguments.= "--add-comment '" . $comment->getValue() . "' ";
+        }
+        
+        if (!empty($this->targetOption))
+        {
+            switch ($this->targetOption)
+            {
+                case "replace":
+                case "merge":
+                case "update":
+                case "rename":
+                {
+                    $arguments.= "--" . $this->targetOption . "-target ";
+                } break;
+                
+                default:
+                {
+                    throw new BuildException("Unknown target option '" . $this->targetOption . "'");
+                } break;
+            }
+        }
+        
+        if ($this->fromDir != '')
+        {
+            $arguments .= $this->fromDir . ' ';
+        }
+
+        if ($this->toDir != '')
+        {
+            $arguments .= "-o " . $this->toDir . ' ';
+        }
+       
+        return $arguments;
+    }
 }
-?>

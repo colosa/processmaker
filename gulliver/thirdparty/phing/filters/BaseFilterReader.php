@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: BaseFilterReader.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: a1da135c09abf5cf07a53b3a327baf3497cfb697 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,7 +28,7 @@ include_once 'phing/system/io/StringReader.php';
  * Base class for core filter readers.
  *
  * @author    <a href="mailto:yl@seasonfive.com">Yannick Lecaillez</a>
- * @version   $Revision: 1.8 $ $Date: 2004/05/20 02:24:10 $
+ * @version   $Id$
  * @access    public
  * @see       FilterReader
  * @package   phing.filters
@@ -147,11 +147,11 @@ class BaseFilterReader extends FilterReader {
      * @param string $msg Message to log.
      * @param int $level Priority level.
      */
-    function log($msg, $level = PROJECT_MSG_INFO) {
+    function log($msg, $level = Project::MSG_INFO) {
         if ($this->project !== null) {
             $this->project->log("[filter:".get_class($this)."] ".$msg, $level);    
         }
     }
 }
 
-?>
+

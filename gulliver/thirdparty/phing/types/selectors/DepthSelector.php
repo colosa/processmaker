@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: DepthSelector.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: 9c244177a7f95995cd30c67c9fee47c1e977e4e2 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,7 +27,7 @@ require_once 'phing/types/selectors/BaseExtendSelector.php';
  *
  * @author    Hans Lellelid <hans@xmpl.org> (Phing)
  * @author    Bruce Atherton <bruce@callenish.com> (Ant)
- * @version   $Revision: 1.7 $
+ * @version   $Id$
  * @package   phing.types.selectors
  */
 class DepthSelector extends BaseExtendSelector {

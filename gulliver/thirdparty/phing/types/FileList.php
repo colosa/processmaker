@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: FileList.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: aab0ffb8e2266923f6cdaf165741dc38931a2aed $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -41,7 +41,7 @@ include_once 'phing/system/io/PhingFile.php';
  * (or a mixture of files="" and listfile="" can be used)
  * 
  * @author Hans Lellelid <hans@xmpl.org>
- * @version $Revision: 1.10 $
+ * @version $Id$
  * @package phing.types
  */
 class FileList extends DataType {
@@ -142,9 +142,10 @@ class FileList extends DataType {
     
     /**
      * Get the source "list" file that contains file names.
+     * @param Project $p
      * @return PhingFile
      */
-    function getListFile() {
+    function getListFile(Project $p) {
         if ($this->isReference()) {
             $ref = $this->getRef($p);
             return $ref->getListFile($p);

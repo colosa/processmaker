@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: SmartyTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 1fe8b2aa2668db628554e59b3099520c0e1c03e4 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,7 +20,7 @@
  * <http://phing.info>. 
  */
  
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 include_once 'phing/BuildException.php';
 include_once 'phing/util/StringHelper.php';
 
@@ -37,10 +37,10 @@ include_once 'phing/util/StringHelper.php';
  * @author    Hans Lellelid <hans@xmpl.org> (SmartyTask)
  * @author    Jason van Zyl <jvanzyl@apache.org> (TexenTask)
  * @author    Robert Burrell Donkin <robertdonkin@mac.com>
- * @version   $Id: SmartyTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * @version   $Id: 1fe8b2aa2668db628554e59b3099520c0e1c03e4 $
  * @package   phing.tasks.ext
  */
-class SmartyTask extends TaskPhing {
+class SmartyTask extends Task {
 
     /**
      * Smarty template engine.
@@ -233,7 +233,7 @@ class SmartyTask extends TaskPhing {
     public function setOutputDirectory(PhingFile $outputDirectory) {
         try {            
             if (!$outputDirectory->exists()) {
-                $this->log("Output directory does not exist, creating: " . $outputDirectory->getPath(),PROJECT_MSG_VERBOSE);
+                $this->log("Output directory does not exist, creating: " . $outputDirectory->getPath(),Project::MSG_VERBOSE);
                 if (!$outputDirectory->mkdirs()) {
                     throw new IOException("Unable to create Ouptut directory: " . $outputDirectory->getAbsolutePath());
                 }
@@ -494,7 +494,7 @@ class SmartyTask extends TaskPhing {
         
         $smartyCompilePath = new PhingFile($this->context->compile_dir);
         if (!$smartyCompilePath->exists()) {
-            $this->log("Compile directory does not exist, creating: " . $smartyCompilePath->getPath(), PROJECT_MSG_VERBOSE);
+            $this->log("Compile directory does not exist, creating: " . $smartyCompilePath->getPath(), Project::MSG_VERBOSE);
             if (!$smartyCompilePath->mkdirs()) {
                 throw new BuildException("Smarty needs a place to compile templates; specify a 'compilePath' or create ".$this->context->compile_dir);
             }
@@ -543,7 +543,7 @@ class SmartyTask extends TaskPhing {
                     // reset value, and then 
                     // read in teh contents of the file into that var
                     $value = "";
-                    $f = new PhingFile($project->resolveFile($value)->getCanonicalPath());                        
+                    $f = new PhingFile($this->project->resolveFile($value)->getCanonicalPath());
                     if ($f->exists()) {
                         try {
                             $fr = new FileReader($f);

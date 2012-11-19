@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: CopyTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 86322e73609da671413e4c959082958c16a510cc $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@
  * <http://phing.info>.
  */
  
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 include_once 'phing/system/io/PhingFile.php';
 include_once 'phing/util/FileUtils.php';
 include_once 'phing/util/SourceFileScanner.php';
@@ -33,27 +33,33 @@ include_once 'phing/mappers/FlattenMapper.php';
  * exist. It is possible to explictly overwrite existing files.
  *
  * @author   Andreas Aderhold, andi@binarycloud.com
- * @version  $Revision: 1.16 $ $Date: 2006-06-12 21:46:05 +0200 (Mon, 12 Jun 2006) $
+ * @version  $Id: 86322e73609da671413e4c959082958c16a510cc $
  * @package  phing.tasks.system
  */
-class CopyTask extends TaskPhing {
+class CopyTask extends Task {
     
     protected $file          = null;   // the source file (from xml attribute)
     protected $destFile      = null;   // the destiantion file (from xml attribute)
     protected $destDir       = null;   // the destination dir (from xml attribute)
     protected $overwrite     = false;  // overwrite destination (from xml attribute)
-    protected $preserveLMT   = true;   // sync timestamps (from xml attribute)
+    protected $preserveLMT   = false;   // sync timestamps (from xml attribute)
     protected $includeEmpty  = true;   // include empty dirs? (from XML)
     protected $flatten       = false;  // apply the FlattenMapper right way (from XML)
     protected $mapperElement = null;
 
     protected $fileCopyMap   = array(); // asoc array containing mapped file names
     protected $dirCopyMap    = array(); // asoc array containing mapped file names
+    protected $completeDirMap= array(); // asoc array containing complete dir names
     protected $fileUtils     = null;    // a instance of fileutils
     protected $filesets      = array(); // all fileset objects assigned to this task
+    protected $filelists     = array(); // all filelist objects assigned to this task
     protected $filterChains  = array(); // all filterchains objects assigned to this task
 
-    protected $verbosity     = PROJECT_MSG_VERBOSE;
+    protected $verbosity     = Project::MSG_VERBOSE;
+    
+    protected $mode           = 0755;   // mode to create directories with
+    
+    protected $haltonerror   = true;    // stop build on errors
 
     /**
      * Sets up this object internal stuff. i.e. the Fileutils instance
@@ -84,14 +90,21 @@ class CopyTask extends TaskPhing {
      */
     function setVerbose($verbosity) {
         if ($verbosity) {
-            $this->verbosity = PROJECT_MSG_INFO;
+            $this->verbosity = Project::MSG_INFO;
         } else {
-            $this->verbosity = PROJECT_MSG_VERBOSE;
+            $this->verbosity = Project::MSG_VERBOSE;
         }
     }
     
     /**
-     * Set the preserve timestmap flag. IntrospectionHelper takes care of
+     * @see CopyTask::setPreserveLastModified
+     */
+    function setTstamp($bool) {
+       $this->setPreserveLastModified($bool); 
+    }
+    
+    /**
+     * Set the preserve timestamp flag. IntrospectionHelper takes care of
      * booleans in set* methods so we can assume that the right
      * value (boolean primitive) is coming in here.
      *
@@ -99,10 +112,9 @@ class CopyTask extends TaskPhing {
      * @return void
      * @access public
      */
-    function setTstamp($bool) {
+    function setPreserveLastModified($bool) {
         $this->preserveLMT = (boolean) $bool;
     }
-
 
     /**
      * Set the include empty dirs flag. IntrospectionHelper takes care of
@@ -145,6 +157,17 @@ class CopyTask extends TaskPhing {
         $this->destFile = $file;
     }
 
+    /**
+     * Sets the mode to create destination directories with (ignored on Windows).
+     * Default mode is 0755.
+     *
+     * @param  integer  Octal mode
+     * @return void
+     * @access public
+     */
+    function setMode($mode) {
+        $this->mode = (int) base_convert($mode, 8, 10);
+    }
 
     /**
      * Set the toDir. We have to manually take care of the
@@ -160,16 +183,38 @@ class CopyTask extends TaskPhing {
     }
 
     /**
-     * Nested creator, creates a FileSet for this task
+     * Set the haltonerror attribute - when true, will
+     * make the build fail when errors are detected.
      *
-     * @access  public
-     * @return  object  The created fileset object
+     * @param  boolean  Flag if the build should be stopped on errors
+     * @return void
+     * @access public
      */
-    function createFileSet() {
-        $num = array_push($this->filesets, new FileSet());
-        return $this->filesets[$num-1];
+    function setHaltonerror($haltonerror) {        
+        $this->haltonerror = (boolean) $haltonerror;
     }
 
+    /**
+     * Nested creator, creates a FileSet for this task
+     *
+     * @param FileSet $fileset Set of files to copy
+     *
+     * @return void
+     */
+    public function addFileSet(FileSet $fs) {
+        $this->filesets[] = $fs;
+    }
+
+    /**
+     * Nested creator, adds a set of files (nested fileset attribute).
+     *
+     * @access  public
+     * @return  object  The created filelist object
+     */
+    function createFileList() {
+        $num = array_push($this->filelists, new FileList());
+        return $this->filelists[$num-1];
+    }
     /**
      * Creates a filterchain
      *
@@ -219,18 +264,38 @@ class CopyTask extends TaskPhing {
                 }
             } else {
                 // terminate build
-                throw new BuildException("Could not find file " . $this->file->__toString() . " to copy.");
+                $this->logError("Could not find file " . $this->file->__toString() . " to copy.");
             }
         }
 
         $project = $this->getProject();
 
+        // process filelists
+        foreach($this->filelists as $fl) {
+            $fromDir  = $fl->getDir($project);
+            $srcFiles = $fl->getFiles($project);
+            $srcDirs  = array($fl->getDir($project));
+            
+            if (!$this->flatten && $this->mapperElement === null)
+            {
+                $this->completeDirMap[$fromDir->getAbsolutePath()] = $this->destDir->getAbsolutePath();
+            }
+            
+            $this->_scan($fromDir, $this->destDir, $srcFiles, $srcDirs);
+        }
+        
         // process filesets
         foreach($this->filesets as $fs) {
             $ds = $fs->getDirectoryScanner($project);
             $fromDir  = $fs->getDir($project);
             $srcFiles = $ds->getIncludedFiles();
             $srcDirs  = $ds->getIncludedDirectories();
+            
+            if (!$this->flatten && $this->mapperElement === null)
+            {
+                $this->completeDirMap[$fromDir->getAbsolutePath()] = $this->destDir->getAbsolutePath();
+            }
+            
             $this->_scan($fromDir, $this->destDir, $srcFiles, $srcDirs);
         }
 
@@ -249,18 +314,18 @@ class CopyTask extends TaskPhing {
      * @return  void
      * @throws  BuildException
      */
-    private function validateAttributes() {
+    protected function validateAttributes() {
     
-        if ($this->file === null && count($this->filesets) === 0) {
-            throw new BuildException("CopyTask. Specify at least one source - a file or a fileset.");
+        if ($this->file === null && count($this->filesets) === 0 && count($this->filelists) === 0) {
+            throw new BuildException("CopyTask. Specify at least one source - a file, fileset or filelist.");
         }
 
         if ($this->destFile !== null && $this->destDir !== null) {
-            throw new BuildException("Only one destfile and destdir may be set.");
+            throw new BuildException("Only one of destfile and destdir may be set.");
         }
 
         if ($this->destFile === null && $this->destDir === null) {
-            throw new BuildException("One destfile or destdir must be set.");
+            throw new BuildException("One of destfile or destdir must be set.");
         }
 
         if ($this->file !== null && $this->file->exists() && $this->file->isDirectory()) {
@@ -268,7 +333,7 @@ class CopyTask extends TaskPhing {
         }
 
         if ($this->destFile !== null && count($this->filesets) > 0) {
-            throw new BuildException("Cannot concatenate multiple files into a single file.");
+            throw new BuildException("Cannot concatenate multple files into a single file.");
         }
 
         if ($this->destFile !== null) {
@@ -336,17 +401,41 @@ class CopyTask extends TaskPhing {
      * @return  void
      * @throws  BuildException
      */
-    private function doWork() {
-		
-		// These "slots" allow filters to retrieve information about the currently-being-process files		
-		$fromSlot = $this->getRegisterSlot("currentFromFile");
-		$fromBasenameSlot = $this->getRegisterSlot("currentFromFile.basename");	
+    protected function doWork() {
+        
+        // These "slots" allow filters to retrieve information about the currently-being-process files      
+        $fromSlot = $this->getRegisterSlot("currentFromFile");
+        $fromBasenameSlot = $this->getRegisterSlot("currentFromFile.basename"); 
 
-		$toSlot = $this->getRegisterSlot("currentToFile");
-		$toBasenameSlot = $this->getRegisterSlot("currentToFile.basename");	
-		
+        $toSlot = $this->getRegisterSlot("currentToFile");
+        $toBasenameSlot = $this->getRegisterSlot("currentToFile.basename"); 
+        
         $mapSize = count($this->fileCopyMap);
         $total = $mapSize;
+
+        // handle empty dirs if appropriate
+        if ($this->includeEmpty) {
+            $count = 0;
+            foreach ($this->dirCopyMap as $srcdir => $destdir) {
+                $s = new PhingFile((string) $srcdir);
+                $d = new PhingFile((string) $destdir);
+                if (!$d->exists()) {
+                    if (!$d->mkdirs()) {
+                        $this->logError("Unable to create directory " . $d->__toString());
+                    } else {
+                        if ($this->preserveLMT) {
+                            $d->setLastModified($s->lastModified());
+                        }
+
+                        $count++;
+                    }
+                }
+            }
+            if ($count > 0) {
+                $this->log("Created ".$count." empty director" . ($count == 1 ? "y" : "ies") . " in " . $this->destDir->getAbsolutePath());
+            }
+        }
+
         if ($mapSize > 0) {
             $this->log("Copying ".$mapSize." file".(($mapSize) === 1 ? '' : 's')." to ". $this->destDir->getAbsolutePath());
             // walks the map and actually copies the files
@@ -359,42 +448,32 @@ class CopyTask extends TaskPhing {
                 }
                 $this->log("From ".$from." to ".$to, $this->verbosity);
                 try { // try to copy file
-				
-					$fromFile = new PhingFile($from);
-					$toFile = new PhingFile($to);
-					
+                
+                    $fromFile = new PhingFile($from);
+                    $toFile = new PhingFile($to);
+                    
                     $fromSlot->setValue($fromFile->getPath());
-					$fromBasenameSlot->setValue($fromFile->getName());
+                    $fromBasenameSlot->setValue($fromFile->getName());
 
-					$toSlot->setValue($toFile->getPath());
-					$toBasenameSlot->setValue($toFile->getName());
-					
-                    $this->fileUtils->copyFile($fromFile, $toFile, $this->overwrite, $this->preserveLMT, $this->filterChains, $this->getProject());
-			
+                    $toSlot->setValue($toFile->getPath());
+                    $toBasenameSlot->setValue($toFile->getName());
+                    
+                    $this->fileUtils->copyFile($fromFile, $toFile, $this->overwrite, $this->preserveLMT, $this->filterChains, $this->getProject(), $this->mode);
+            
                     $count++;
                 } catch (IOException $ioe) {
-                    $this->log("Failed to copy " . $from . " to " . $to . ": " . $ioe->getMessage(), PROJECT_MSG_ERR);
+                    $this->logError("Failed to copy " . $from . " to " . $to . ": " . $ioe->getMessage());
                 }
             }
         }
-
-        // handle empty dirs if appropriate
-        if ($this->includeEmpty) {
-            $destdirs = array_values($this->dirCopyMap);
-            $count = 0;
-            foreach ($destdirs as $destdir) {
-                $d = new PhingFile((string) $destdir);
-                if (!$d->exists()) {
-                    if (!$d->mkdirs()) {
-                        $this->log("Unable to create directory " . $d->__toString(), PROJECT_MSG_ERR);
-                    } else {
-                        $count++;
-                    }
-                }
-            }
-            if ($count > 0) {
-                $this->log("Copied ".$count." empty director" . ($count == 1 ? "y" : "ies") . " to " . $this->destDir->getAbsolutePath());
-            }
+    }
+    
+    protected function logError($message, $location = NULL)
+    {
+        if ($this->haltonerror) {
+            throw new BuildException($message, $location);
+        } else {
+            $this->log($message, Project::MSG_ERR);
         }
     }
 

@@ -21,16 +21,22 @@ PHP class or method name.
               to lowercase.
 -->
 
-<!ELEMENT database (external-schema*, table+)>
+<!ELEMENT database (external-schema*, table+, behavior*)>
 <!ATTLIST database
   name CDATA #IMPLIED
   defaultIdMethod (native|none) "none"
   defaultTranslateMethode CDATA #IMPLIED
   package CDATA #IMPLIED
+  schema CDATA #IMPLIED
+  namespace CDATA #IMPLIED
   baseClass CDATA #IMPLIED
   basePeer CDATA #IMPLIED
   defaultPhpNamingMethod (nochange|underscore|phpname) "underscore"
   heavyIndexing (true|false) "false"
+  tablePrefix CDATA #IMPLIED
+  defaultStringFormat CDATA #IMPLIED
+  xmlns:xsi CDATA #IMPLIED
+  xsi:noNamespaceSchemaLocation CDATA #IMPLIED
 >
 
 <!ELEMENT external-schema EMPTY>
@@ -42,7 +48,7 @@ PHP class or method name.
      note: the interface="true", requires that useManagers=true in the
      properties file.
 -->
-<!ELEMENT table (column+,(foreign-key|index|unique|id-method-parameter|validator|vendor)*)>
+<!ELEMENT table (column+,(foreign-key|index|unique|id-method-parameter|validator|behavior|vendor)*)>
 <!ATTLIST table
   name CDATA #REQUIRED
   phpName CDATA #IMPLIED
@@ -50,8 +56,11 @@ PHP class or method name.
   skipSql (true|false) "false"
   readOnly (true|false) "false"
   abstract (true|false) "false"
-  isTree (true|false) "false"
+  isCrossRef (true|false) "false"
+  treeMode (MaterializedPath|NestedSet|AdjacencyList) "AdjacencyList"
   package CDATA #IMPLIED
+  schema CDATA #IMPLIED
+  namespace CDATA #IMPLIED
   baseClass CDATA #IMPLIED
   basePeer CDATA #IMPLIED
   alias CDATA #IMPLIED
@@ -59,6 +68,7 @@ PHP class or method name.
   phpNamingMethod (nochange|underscore|phpname) #IMPLIED
   heavyIndexing (true|false) #IMPLIED
   description CDATA #IMPLIED
+  defaultStringFormat CDATA #IMPLIED
 >
 
 <!ELEMENT id-method-parameter EMPTY>
@@ -76,23 +86,27 @@ PHP class or method name.
   required (true|false) "false"
   type
     (
-          BIT  | TINYINT | SMALLINT    | INTEGER    | BIGINT    | FLOAT
-        | REAL | NUMERIC | DECIMAL     | CHAR       | VARCHAR   | LONGVARCHAR
-        | DATE | TIME    | TIMESTAMP   | BINARY     | VARBINARY | LONGVARBINARY
-        | NULL | OTHER   | PHP_OBJECT  | DISTINCT   | STRUCT    | ARRAY
-        | BLOB | CLOB    | REF         | BOOLEANINT | BOOLEANCHAR
-        | DOUBLE | BOOLEAN
+          BIT    | TINYINT | SMALLINT    | INTEGER    | BIGINT    | FLOAT
+        | REAL   | NUMERIC | DECIMAL     | CHAR       | VARCHAR   | LONGVARCHAR
+        | DATE   | TIME    | TIMESTAMP   | BINARY     | VARBINARY | LONGVARBINARY
+        | NULL   | OTHER   | PHP_OBJECT  | DISTINCT   | STRUCT    | ARRAY
+        | BLOB   | CLOB    | REF         | BOOLEANINT | BOOLEANCHAR
+        | DOUBLE | BOOLEAN | OBJECT      | ENUM
     ) "VARCHAR"
-  phpType (object|primitive) #IMPLIED
+  phpType CDATA #IMPLIED
+  sqlType CDATA #IMPLIED
   size CDATA #IMPLIED
   scale CDATA #IMPLIED
   default CDATA #IMPLIED
+  defaultValue CDATA #IMPLIED
+  defaultExpr CDATA #IMPLIED
   autoIncrement (true|false) "false"
   inheritance (single|false) "false"
-  inputValidator CDATA #IMPLIED
   phpNamingMethod (nochange|underscore|phpname) #IMPLIED
   description CDATA #IMPLIED
   lazyLoad (true|false) "false"
+  primaryString (true|false) "false"
+  valueSet CDATA #IMPLIED
 >
 
 <!ELEMENT inheritance EMPTY>
@@ -106,9 +120,13 @@ PHP class or method name.
 <!ELEMENT foreign-key (reference+, vendor*)>
 <!ATTLIST foreign-key
   foreignTable CDATA #REQUIRED
+  foreignSchema CDATA #IMPLIED
   name CDATA #IMPLIED
+  phpName CDATA #IMPLIED
+  refPhpName CDATA #IMPLIED
   onUpdate (CASCADE|cascade|SETNULL|setnull|RESTRICT|restrict|NONE|none) "none"
   onDelete (CASCADE|cascade|SETNULL|setnull|RESTRICT|restrict|NONE|none) "none"
+  skipSql (true|false) "false"
 >
 
 <!ELEMENT reference EMPTY>
@@ -119,6 +137,11 @@ PHP class or method name.
 
 <!ELEMENT index (index-column+)>
 <!ATTLIST index
+  name CDATA #IMPLIED
+>
+
+<!ELEMENT behavior (parameter+)>
+<!ATTLIST behavior
   name CDATA #IMPLIED
 >
 
@@ -146,14 +169,15 @@ PHP class or method name.
 
 <!ELEMENT rule EMPTY>
 <!ATTLIST rule
-  name (mask|maxLength|maxValue|minLength|minValue|required|unique|validValues) #REQUIRED
+  name (mask|maxLength|maxValue|minLength|minValue|required|unique|validValues|class) #REQUIRED
+  class CDATA #IMPLIED
   value CDATA #IMPLIED
   size ID #IMPLIED
   message CDATA #IMPLIED
 >
 
 <!ELEMENT vendor (parameter+)>
-<!ATTLIST validator
+<!ATTLIST vendor
   type CDATA #REQUIRED
 >
 

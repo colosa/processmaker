@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: IoncubeLicenseTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: 555e4853cd742e4ef733e3df4051c49cda527b73 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,126 +19,190 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 require_once 'phing/tasks/ext/ioncube/IoncubeComment.php';
 
 /**
  * Invokes the ionCube "make_license" program
  *
- * @author Michiel Rook <michiel.rook@gmail.com>
- * @version $Id: IoncubeLicenseTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * @author Michiel Rook <mrook@php.net>
+ * @version $Id: 555e4853cd742e4ef733e3df4051c49cda527b73 $
  * @package phing.tasks.ext.ioncube
  * @since 2.2.0
  */
-class IoncubeLicenseTask extends TaskPhing
+class IoncubeLicenseTask extends Task
 {
-	private $ioncubePath = "/usr/local/ioncube";
-	
-	private $licensePath = "";
-	private $passPhrase = "";
-	
-	private $comments = array();
+    private $ioncubePath = "/usr/local/ioncube";
+    
+    private $licensePath = "";
+    private $passPhrase = "";
+    private $allowedServer = "";
+    private $expireOn = "";
+    private $expireIn = "";
+    private $comments = array();
 
-	/**
-	 * Sets the path to the ionCube encoder
-	 */
-	function setIoncubePath($ioncubePath)
-	{
-		$this->ioncubePath = $ioncubePath;
-	}
+    /**
+     * Sets the path to the ionCube encoder
+     */
+    function setIoncubePath($ioncubePath)
+    {
+        $this->ioncubePath = $ioncubePath;
+    }
 
-	/**
-	 * Returns the path to the ionCube encoder
-	 */
-	function getIoncubePath()
-	{
-		return $this->ioncubePath;
-	}
+    /**
+     * Returns the path to the ionCube encoder
+     */
+    function getIoncubePath()
+    {
+        return $this->ioncubePath;
+    }
 
-	/**
-	 * Sets the path to the license file to use
-	 */
-	function setLicensePath($licensePath)
-	{
-		$this->licensePath = $licensePath;
-	}
+    /**
+     * Sets the path to the license file to use
+     */
+    function setLicensePath($licensePath)
+    {
+        $this->licensePath = $licensePath;
+    }
 
-	/**
-	 * Returns the path to the license file to use
-	 */
-	function getLicensePath()
-	{
-		return $this->licensePath;
-	}
+    /**
+     * Returns the path to the license file to use
+     */
+    function getLicensePath()
+    {
+        return $this->licensePath;
+    }
 
-	/**
-	 * Sets the passphrase to use when encoding files
-	 */
-	function setPassPhrase($passPhrase)
-	{
-		$this->passPhrase = $passPhrase;
-	}
+    /**
+     * Sets the passphrase to use when encoding files
+     */
+    function setPassPhrase($passPhrase)
+    {
+        $this->passPhrase = $passPhrase;
+    }
 
-	/**
-	 * Returns the passphrase to use when encoding files
-	 */
-	function getPassPhrase()
-	{
-		return $this->passPhrase;
-	}
+    /**
+     * Returns the passphrase to use when encoding files
+     */
+    function getPassPhrase()
+    {
+        return $this->passPhrase;
+    }
 
-	/**
-	 * Adds a comment to be used in encoded files
-	 */
-	function addComment(IoncubeComment $comment)
-	{
-		$this->comments[] = $comment;
-	}
+    /**
+     * Adds a comment to be used in encoded files
+     */
+    function addComment(IoncubeComment $comment)
+    {
+        $this->comments[] = $comment;
+    }
 
-	/**
-	 * The main entry point
-	 *
-	 * @throws BuildException
-	 */
-	function main()
-	{
-		$arguments = $this->constructArguments();
-		
-		$makelicense = new PhingFile($this->ioncubePath, 'make_license');
-		
-		$this->log("Running ionCube make_license...");
-		
-		exec($makelicense->__toString() . " " . $arguments . " 2>&1", $output, $return);
-		
+    /**
+     * Sets the --allowed-server option to use when generating the license
+     */ 
+    function setAllowedServer($allowedServer)
+    {
+	$this->allowedServer = $allowedServer;
+    }
+
+    /**
+     * Returns the --allowed-server option
+     */
+    function getAllowedServer()
+    {
+	return $this->allowedServer;
+    }
+
+    /**
+     * Sets the --expire-on option to use when generating the license
+     */
+    function setExpireOn($expireOn)
+    {
+        $this->expireOn = $expireOn;
+    }
+
+    /**
+     * Returns the --expire-on option
+     */
+    function getExpireOn()
+    {
+        return $this->expireOn;
+    }
+
+    /**
+     * Sets the --expire-in option to use when generating the license
+     */
+    function setExpireIn($expireIn)
+    {
+        $this->expireIn = $expireIn;
+    }
+
+    /**
+     * Returns the --expire-in option
+     */
+    function getExpireIn()
+    {
+        return $this->expireIn;
+    }
+
+    /**
+     * The main entry point
+     *
+     * @throws BuildException
+     */
+    function main()
+    {
+        $arguments = $this->constructArguments();
+        
+        $makelicense = new PhingFile($this->ioncubePath, 'make_license');
+        
+        $this->log("Running ionCube make_license...");
+
+        exec($makelicense->__toString() . " " . $arguments . " 2>&1", $output, $return);
+        
         if ($return != 0)
         {
-			throw new BuildException("Could not execute ionCube make_license: " . implode(' ', $output));
+            throw new BuildException("Could not execute ionCube make_license: " . implode(' ', $output));
         }       
-	}
+    }
 
-	/**
-	 * Constructs an argument string for the ionCube make_license
-	 */
-	private function constructArguments()
+    /**
+     * Constructs an argument string for the ionCube make_license
+     */
+    private function constructArguments()
+    {
+        $arguments = "";
+        
+        if (!empty($this->passPhrase))
+        {
+            $arguments.= "--passphrase '" . $this->passPhrase . "' ";
+        }
+        
+        foreach ($this->comments as $comment)
+        {
+            $arguments.= "--header-line '" . $comment->getValue() . "' ";
+        }
+        
+        if (!empty($this->licensePath))
+        {
+            $arguments.= "--o '" . $this->licensePath . "' ";
+        }
+
+	if (!empty($this->allowedServer))
 	{
-		$arguments = "";
-		
-		if (!empty($this->passPhrase))
-		{
-			$arguments.= "--passphrase '" . $this->passPhrase . "' ";
-		}
-		
-		foreach ($this->comments as $comment)
-		{
-			$arguments.= "--header-line '" . $comment->getValue() . "' ";
-		}
-		
-		if (!empty($this->licensePath))
-		{
-			$arguments.= "--o '" . $this->licensePath . "' ";
-		}
-
-		return $arguments;
+	    $arguments.= "--allowed-server {" . $this->allowedServer . "} ";
 	}
+
+	if (!empty($this->expireOn))
+        {
+            $arguments.= "--expire-on " . $this->expireOn . " ";
+        }
+
+	if (!empty($this->expireIn))
+        {
+            $arguments.= "--expire-in " . $this->expireIn . " ";
+        }
+
+        return $arguments;
+    }
 }
-?>

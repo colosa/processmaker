@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: WarnTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: a2192433abbea9c5fe4b4ddb518cde8c09a643da $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -22,14 +22,14 @@
 require_once 'phing/tasks/system/EchoTask.php';
 
 /**
- * Simple task to echo a warning message (PROJECT_MSG_WARN) to all output devices.
+ * Simple task to echo a warning message (Project::MSG_WARN) to all output devices.
  *
  * @author   Hans Lellelid <hans@xmpl.org>
- * @version  $Revision: 1.1 $ $Date: 2006-04-28 16:49:47 +0200 (Fri, 28 Apr 2006) $
+ * @version  $Id$
  * @package  phing.tasks.system
  */
 class WarnTask extends EchoTask {
     function main() {
-        $this->log($this->msg, PROJECT_MSG_WARN);
+        $this->log($this->msg, Project::MSG_WARN);
     }
 }

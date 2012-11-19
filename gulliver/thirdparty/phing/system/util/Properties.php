@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: Properties.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 577374dcb65bb9a2614bc80f605ce49600d64778 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,11 +30,30 @@ include_once 'phing/system/io/FileWriter.php';
  *        - Add support for arrays (separated by ',')
  *
  * @package    phing.system.util
- * @version $Revision: 1.13 $
+ * @version $Id: 577374dcb65bb9a2614bc80f605ce49600d64778 $
  */
 class Properties {
 
     private $properties = array();
+    
+    /**
+     * @var PhingFile
+     */
+    private $file = null;
+    
+    /**
+     * Constructor
+     *
+     * @param array $properties
+     */
+    function __construct($properties = NULL)
+    {
+        if (is_array($properties)) {
+            foreach ($properties as $key => $value) {
+                $this->setProperty($key, $value);
+            }
+        }
+    }
 
     /**
      * Load properties from a file.
@@ -46,6 +65,8 @@ class Properties {
     function load(PhingFile $file) {
         if ($file->canRead()) {
             $this->parse($file->getPath(), false);                    
+
+            $this->file = $file;
         } else {
             throw new IOException("Can not read file ".$file->getPath());
         }
@@ -75,21 +96,17 @@ class Properties {
         $sec_name = "";
         
         foreach($lines as $line) {
+            // strip comments and leading/trailing spaces
+            $line = trim(preg_replace("/\s+[;#]\s.+$/", "", $line));
             
-            $line = trim($line);
-    
-            if($line == "")
+            if (empty($line) || $line[0] == ';' || $line[0] == '#') {
                 continue;
-                    
-            if ($line{0} == '#' or $line{0} == ';') {
-                // it's a comment, so continue to next line
-                continue;
-            } else {
-                $pos = strpos($line, '=');
-                $property = trim(substr($line, 0, $pos));
-                $value = trim(substr($line, $pos + 1));                
-                $this->properties[$property] = $this->inVal($value);
             }
+                
+            $pos = strpos($line, '=');
+            $property = trim(substr($line, 0, $pos));
+            $value = trim(substr($line, $pos + 1));                
+            $this->properties[$property] = $this->inVal($value);
             
         } // for each line        
     }
@@ -135,7 +152,7 @@ class Properties {
     public function toString() {
         $buf = "";        
         foreach($this->properties as $key => $item) {
-            $buf .= $key . "=" . $this->outVal($item) . Phing::getProperty('line.separator');
+            $buf .= $key . "=" . $this->outVal($item) . PHP_EOL;
         }
         return $buf;    
     }
@@ -148,15 +165,22 @@ class Properties {
      * @return void
      * @throws IOException - on error writing properties file.
      */
-    function store(PhingFile $file, $header = null) {
+    function store(PhingFile $file = null, $header = null) {
+        if ($file == null) {
+            $file = $this->file;
+        }
+        
+        if ($file == null) {
+            throw new IOException("Unable to write to empty filename");
+        }
+        
         // stores the properties in this object in the file denoted
         // if file is not given and the properties were loaded from a
         // file prior, this method stores them in the file used by load()        
         try {
             $fw = new FileWriter($file);
-            $fw->open();
             if ($header !== null) {
-                $fw->write( "# " . $header . Phing::getProperty("line.separator") );
+                $fw->write( "# " . $header . PHP_EOL );
             }
             $fw->write($this->toString());
             $fw->close();
@@ -215,7 +239,10 @@ class Properties {
      * @return mixed Old property value or NULL if none was set.
      */
     function setProperty($key, $value) {
-        $oldValue = @$this->properties[$key];       
+        $oldValue = null;
+        if (isset($this->properties[$key])) {
+            $oldValue = $this->properties[$key];
+        }
         $this->properties[$key] = $value;
         return $oldValue;
     }
@@ -232,6 +259,23 @@ class Properties {
         return $this->setProperty($key, $value);
     }
     
+    /**
+     * Appends a value to a property if it already exists with a delimiter
+     *
+     * If the property does not, it just adds it.
+     * 
+     * @param string $key
+     * @param mixed $value
+     * @param string $delimiter
+     */
+    function append($key, $value, $delimiter = ',') {
+        $newValue = $value;
+        if (isset($this->properties[$key]) && !empty($this->properties[$key]) ) {
+            $newValue = $this->properties[$key] . $delimiter . $value;
+        }
+        $this->properties[$key] = $newValue;
+    }
+
     /**
      * Same as keys() function, returns an array of property names.
      * @return array
@@ -267,4 +311,4 @@ class Properties {
     }
 
 }
-?>
+

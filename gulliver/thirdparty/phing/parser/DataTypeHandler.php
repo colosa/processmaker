@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: DataTypeHandler.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: dbae47cfbf1ad4a3ac68909118f69175cf1d45f4 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,9 +29,9 @@ include_once 'phing/RuntimeConfigurable.php';
  * If PHP would support nested classes. All the phing/parser/*Filter
  * classes would be nested within this class
  *
- * @author      Andreas Aderhold <andi@binarycloud.com>
- * @copyright © 2001,2002 THYRELL. All rights reserved
- * @version   $Revision: 1.8 $ $Date: 2005/11/02 13:55:33 $
+ * @author    Andreas Aderhold <andi@binarycloud.com>
+ * @copyright 2001,2002 THYRELL. All rights reserved
+ * @version   $Id$
  * @access    public
  * @package   phing.parser
  */

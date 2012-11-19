@@ -1,7 +1,7 @@
 <?php
 
 /*
- * $Id: DateSelector.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: f05cee91082616c66b2e109157b1d2f2298a66f8 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,8 +29,8 @@ require_once 'phing/types/selectors/BaseExtendSelector.php';
  *
  * @author    Hans Lellelid <hans@xmpl.org> (Phing)
  * @author    Bruce Atherton <bruce@callenish.com> (Ant)
- * @version   $Revision: 1.10 $
- * @package   phing.types.selecctors
+ * @version   $Id: f05cee91082616c66b2e109157b1d2f2298a66f8 $
+ * @package   phing.types.selectors
  */
 class DateSelector extends BaseExtendSelector {
 
@@ -203,7 +203,7 @@ class DateSelector extends BaseExtendSelector {
         if ($this->cmp === 0) {
             return (($file->lastModified() - $this->granularity) < $this->seconds);
         } elseif ($this->cmp === 1) {
-            return (($file->lastModified() . $this->granularity) > $this->seconds);
+            return (($file->lastModified() - $this->granularity) > $this->seconds);
         } else {
             return (abs($file->lastModified() -  $this->seconds) <= $this->granularity);
         }

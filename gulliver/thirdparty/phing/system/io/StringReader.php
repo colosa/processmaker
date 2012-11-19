@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: StringReader.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 2fba6ccfe1849d1f94b1dd91daf51e64e05cace2 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,13 +20,24 @@
  */
 
 /**
- * Dummy class for reading character streams. 
+ * Dummy class for reading from string of characters. 
  * @package phing.system.io
  */
 class StringReader extends Reader {
     
-    private    $_string;
+    /**
+     * @var string
+     */
+    private $_string;
+    
+    /**
+     * @var int
+     */
     private $mark = 0;
+    
+    /**
+     * @var int
+     */
     private $currPos = 0;
     
     function __construct($string) {
@@ -70,4 +81,4 @@ class StringReader extends Reader {
         return '(string) "'.$this->_string . '"';
     }
 }
-?>
+

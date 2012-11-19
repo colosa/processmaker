@@ -1,6 +1,6 @@
 <?php
 /* 
- *  $Id: FileNameMapper.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 24c9367363b11f9ab97509532739bf2353023034 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,7 +24,7 @@
  *
  * @author Andreas Aderhold, andi@binarycloud.com
  * @author Hans Lellelid <hans@xmpl.org>
- * @version $Revision: 1.7 $
+ * @version $Id$
  * @package phing.mappers
  */
 interface FileNameMapper {

@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: MatchingTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 1e1f6274f400b90c2344c8cdb5d3711030b8f44a $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 require_once 'phing/types/selectors/SelectorContainer.php';
 include_once 'phing/types/FileSet.php';
 include_once 'phing/types/PatternSet.php';
@@ -38,10 +38,10 @@ include_once 'phing/util/DirectoryScanner.php';
  * @author    Jon S. Stevens <jon@clearink.com> (Ant
  * @author    Stefan Bodewig <stefan.bodewig@epost.de> (Ant)
  * @author    Bruce Atherton <bruce@callenish.com> (Ant)
- * @version   $Revision: 1.4 $
+ * @version   $Id: 1e1f6274f400b90c2344c8cdb5d3711030b8f44a $
  * @package   phing.tasks.system
  */
-abstract class MatchingTask extends TaskPhing implements SelectorContainer {
+abstract class MatchingTask extends Task implements SelectorContainer {
 
     /** @var boolean */
     protected $useDefaultExcludes = true;
@@ -59,7 +59,7 @@ abstract class MatchingTask extends TaskPhing implements SelectorContainer {
     /**
      * @see ProjectComponent::setProject()
      */
-    public function setProject(Project $project) {
+    public function setProject($project) {
         parent::setProject($project);
         $this->fileset->setProject($project);
     }

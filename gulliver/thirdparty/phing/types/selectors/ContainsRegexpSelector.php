@@ -1,7 +1,7 @@
 <?php
 
 /*
- * $Id: ContainsRegexpSelector.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: 2a891d7cc3fb1b710b72d51e6a8cf2d0b553f91a $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@ include_once 'phing/types/RegularExpression.php';
  * 
  * @author    Hans Lellelid <hans@xmpl.org> (Phing)
  * @author    Bruce Atherton <bruce@callenish.com> (Ant)
- * @version   $Revision: 1.3 $
+ * @version   $Id$
  * @package   phing.types.selectors
  */
 class ContainsRegexpSelector extends BaseExtendSelector {

@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Location.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: ffb9bc98eef0f4e535f60388d52b7495c539f682 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -22,9 +22,9 @@
 /**
  * Stores the file name and line number of a XML file
  *
- * @author      Andreas Aderhold <andi@binarycloud.com>
- * @copyright © 2001,2002 THYRELL. All rights reserved
- * @version   $Revision: 1.6 $ $Date: 2003/12/24 13:02:09 $
+ * @author    Andreas Aderhold <andi@binarycloud.com>
+ * @copyright 2001,2002 THYRELL. All rights reserved
+ * @version   $Id$
  * @access    public
  * @package   phing.parser
  */
@@ -68,5 +68,9 @@ class Location {
             $buf.=":".$this->columnNumber;
         }
         return (string) $buf;
+    }
+
+    function __toString () {
+      return $this->toString();
     }
 }

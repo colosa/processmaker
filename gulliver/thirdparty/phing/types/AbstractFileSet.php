@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: AbstractFileSet.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: b7d8ccab6ed556e74626d880dcc09be20ea8bd58 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -62,7 +62,7 @@ include_once 'phing/util/DirectoryScanner.php';
  *
  * @author    Andreas Aderhold <andi@binarycloud.com>
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version    $Revision: 1.15 $ $Date: 2005/05/26 13:10:53 $
+ * @version    $Id$
  * @see        ProjectComponent
  * @package    phing.types
  */
@@ -74,6 +74,12 @@ class AbstractFileSet extends DataType implements SelectorContainer {
      * @var boolean
      */
     public $useDefaultExcludes = true;
+    
+    /** 
+     * Whether to expand/dereference symbolic links, default is false
+     * @var boolean
+     */
+    protected $expandSymbolicLinks = false;
     
     /**
      * @var PatternSet
@@ -96,7 +102,15 @@ class AbstractFileSet extends DataType implements SelectorContainer {
         }
         $this->defaultPatterns = new PatternSet();
     }
-
+    
+    /** 
+     * Sets whether to expand/dereference symbolic links, default is false
+     * @var boolean
+     */
+    function setExpandSymbolicLinks($expandSymbolicLinks)
+    {
+        $this->expandSymbolicLinks = $expandSymbolicLinks;
+    }
 
     /**
     * Makes this instance in effect a reference to another PatternSet
@@ -268,10 +282,13 @@ class AbstractFileSet extends DataType implements SelectorContainer {
         if (!$this->dir->exists()) {
             throw new BuildException("Directory ".$this->dir->getAbsolutePath()." not found.");
         }
-        if (!$this->dir->isDirectory()) {
-            throw new BuildException($this->dir->getAbsolutePath()." is not a directory.");
+        if (!$this->dir->isLink() || !$this->expandSymbolicLinks) {
+            if (!$this->dir->isDirectory()) {
+                throw new BuildException($this->dir->getAbsolutePath()." is not a directory.");
+            }
         }
         $ds = new DirectoryScanner();
+        $ds->setExpandSymbolicLinks($this->expandSymbolicLinks);
         $this->setupDirectoryScanner($ds, $p);
         $ds->scan();
         return $ds;
@@ -292,7 +309,7 @@ class AbstractFileSet extends DataType implements SelectorContainer {
         $ds->setIncludes($this->defaultPatterns->getIncludePatterns($p));
         $ds->setExcludes($this->defaultPatterns->getExcludePatterns($p));
 
-        $p->log("FileSet: Setup file scanner in dir " . $this->dir->__toString() . " with " . $this->defaultPatterns->toString(), PROJECT_MSG_DEBUG);
+        $p->log("FileSet: Setup file scanner in dir " . $this->dir->__toString() . " with " . $this->defaultPatterns->toString(), Project::MSG_DEBUG);
         
         if ($ds instanceof SelectorScanner) {
             $ds->setSelectors($this->getSelectors($p));

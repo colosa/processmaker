@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: PrefixLines.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 744d8766d5aba397c0a8efd61afb8e60bd77b0c3 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -37,7 +37,7 @@ include_once 'phing/filters/ChainableReader.php';
  *
  * @author    <a href="mailto:yl@seasonfive.com">Yannick Lecaillez</a>
  * @author    hans lellelid, hans@velum.net
- * @version   $Revision: 1.6 $ $Date: 2004/03/15 14:45:06 $
+ * @version   $Id$
  * @access    public
  * @see       FilterReader
  * @package   phing.filters
@@ -139,4 +139,4 @@ class PrefixLines extends BaseParamFilterReader implements ChainableReader {
     }
 }
 
-?>
+

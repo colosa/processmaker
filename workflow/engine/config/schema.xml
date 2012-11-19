@@ -2444,7 +2444,7 @@
       <parameter name="Max_data_length" value="281474976710655"/>
       <parameter name="Index_length" value="5120"/>
       <parameter name="Data_free" value="0"/>
-      <parameter name="Auto_increment" value=""/>
+      <parameter name="Auto_increment" value="1"/>
       <parameter name="Create_time" value="2007-12-06 07:22:27"/>
       <parameter name="Update_time" value="2007-12-09 14:08:22"/>
       <parameter name="Check_time" value=""/>
@@ -2453,6 +2453,7 @@
       <parameter name="Create_options" value=""/>
       <parameter name="Comment" value="History table for Dynaforms"/>
     </vendor>
+    <column name="HISTORY_UID" type="INTEGER" required="true" autoIncrement="true" primaryKey="true"/>
     <column name="APP_UID" type="VARCHAR" size="32" required="true" default=""/>
     <column name="DEL_INDEX" type="INTEGER" required="true" default="0"/>
     <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
@@ -2772,7 +2773,7 @@
       <parameter name="Max_data_length" value="281474976710655"/>
       <parameter name="Index_length" value="5120"/>
       <parameter name="Data_free" value="0"/>
-      <parameter name="Auto_increment" value=""/>
+      <parameter name="Auto_increment" value="1"/>
       <parameter name="Create_time" value="2007-12-06 07:22:27"/>
       <parameter name="Update_time" value="2007-12-09 14:08:22"/>
       <parameter name="Check_time" value=""/>
@@ -2781,6 +2782,7 @@
       <parameter name="Create_options" value=""/>
       <parameter name="Comment" value="Application Notes"/>
     </vendor>
+    <column name="NOTE_UID" type="INTEGER" required="true" autoIncrement="true" primaryKey="true"/>
     <column name="APP_UID" type="VARCHAR" size="32" required="true" default=""/>
     <column name="USR_UID" type="VARCHAR" size="32" required="true" default=""/>
     <column name="NOTE_DATE" type="TIMESTAMP" required="true"/>

@@ -1,22 +1,11 @@
 <?php
-/*
- *  $Id: ValidationFailed.php 536 2007-01-10 14:30:38Z heltem $
+
+/**
+ * This file is part of the Propel package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information please see
- * <http://propel.phpdb.org>.
+ * @license    MIT License
  */
 
 
@@ -30,8 +19,8 @@
  * failed.
  *
  * @author     Hans Lellelid <hans@xmpl.org>
- * @version    $Revision: 536 $
- * @package    propel.validator
+ * @version    $Revision$
+ * @package    propel.runtime.validator
  * @see        BasePeer::doValidate()
  */
 class ValidationFailed {
@@ -47,9 +36,10 @@ class ValidationFailed {
 
 	/**
 	 * Construct a new ValidationFailed object.
-	 * @param      string $colname Column name.
-	 * @param      string $message Message to display to user.
-	 * @param      object $validator The Validator that caused this column to fail.
+	 *
+	 * @param     string  $colname Column name.
+	 * @param     string  $message Message to display to user.
+	 * @param     object  $validator The Validator that caused this column to fail.
 	 */
 	public function __construct($colname, $message, $validator = null)
 	{
@@ -60,7 +50,8 @@ class ValidationFailed {
 
 	/**
 	 * Set the column name.
-	 * @param      string $v
+	 *
+	 * @param     string  $v
 	 */
 	public function setColumn($v)
 	{
@@ -69,7 +60,8 @@ class ValidationFailed {
 
 	/**
 	 * Gets the column name.
-	 * @return     string Qualified column name (tablename.COLUMN_NAME)
+	 *
+	 * @return    string  Qualified column name (tablename.COLUMN_NAME)
 	 */
 	public function getColumn()
 	{
@@ -78,7 +70,8 @@ class ValidationFailed {
 
 	/**
 	 * Set the message for the validation failure.
-	 * @param      string $v
+	 *
+	 * @param     string  $v
 	 */
 	public function setMessage($v)
 	{
@@ -87,7 +80,8 @@ class ValidationFailed {
 
 	/**
 	 * Gets the message for the validation failure.
-	 * @return     string
+	 *
+	 * @return    string
 	 */
 	public function getMessage()
 	{
@@ -96,7 +90,8 @@ class ValidationFailed {
 
 	/**
 	 * Set the validator object that caused this to fail.
-	 * @param      object $v
+	 *
+	 * @param     object  $v
 	 */
 	public function setValidator($v)
 	{
@@ -105,7 +100,8 @@ class ValidationFailed {
 
 	/**
 	 * Gets the validator object that caused this to fail.
-	 * @return     object
+	 *
+	 * @return    object
 	 */
 	public function getValidator()
 	{
@@ -116,11 +112,11 @@ class ValidationFailed {
 	 * "magic" method to get string represenation of object.
 	 * Maybe someday PHP5 will support the invoking this method automatically
 	 * on (string) cast.  Until then it's pretty useless.
-	 * @return     string
+	 *
+	 * @return    string
 	 */
 	public function __toString()
 	{
 		return $this->getMessage();
 	}
-
 }

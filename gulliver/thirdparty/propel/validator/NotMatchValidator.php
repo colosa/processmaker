@@ -1,25 +1,12 @@
 <?php
-/*
- *  $Id: NotMatchValidator.php 536 2007-01-10 14:30:38Z heltem $
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information please see
- * <http://propel.phpdb.org>.
- */
 
-require_once 'propel/validator/BasicValidator.php';
+/**
+ * This file is part of the Propel package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
 
 /**
  * A validator for regular expressions.
@@ -45,16 +32,17 @@ require_once 'propel/validator/BasicValidator.php';
  *
  * @author     Michael Aichler <aichler@mediacluster.de>
  * @author     Hans Lellelid <hans@xmpl.org>
- * @version    $Revision: 536 $
- * @package    propel.validator
+ * @version    $Revision$
+ * @package    propel.runtime.validator
  */
 class NotMatchValidator implements BasicValidator
 {
 	/**
 	 * Prepares the regular expression entered in the XML
 	 * for use with preg_match().
-	 * @param      string $exp
-	 * @return     string Prepared regular expession.
+	 *
+	 * @param      string  $exp
+	 * @return     string
 	 */
 	private function prepareRegexp($exp)
 	{
@@ -70,9 +58,14 @@ class NotMatchValidator implements BasicValidator
 	}
 
 	/**
-	 * Whether the passed string matches regular expression.
+	 * @see       BasicValidator::isValid()
+	 *
+	 * @param     ValidatorMap  $map
+	 * @param     string        $str
+	 *
+	 * @return    boolean
 	 */
-	public function isValid (ValidatorMap $map, $str)
+	public function isValid(ValidatorMap $map, $str)
 	{
 		return (preg_match($this->prepareRegexp($map->getValue()), $str) == 0);
 	}

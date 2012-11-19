@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: ChmodTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: fad30caf32ff1ee9ff98f63849d61053ab88f645 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 include_once 'phing/types/FileSet.php';
 
 /**
@@ -27,10 +27,10 @@ include_once 'phing/types/FileSet.php';
  *
  * @author    Manuel Holtgrewe <grin@gmx.net>
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.12 $
+ * @version   $Id: fad30caf32ff1ee9ff98f63849d61053ab88f645 $
  * @package   phing.tasks.system
  */
-class ChmodTask extends TaskPhing {
+class ChmodTask extends Task {
 
     private $file;
 
@@ -39,21 +39,22 @@ class ChmodTask extends TaskPhing {
     private $filesets = array();
 
     private $filesystem;
-	
-	private $quiet = false;	
-	private $failonerror = true;
-	
-	/**
-	 * This flag means 'note errors to the output, but keep going'
-	 * @see setQuiet()
-	 */
+    
+    private $quiet = false; 
+    private $failonerror = true;
+    private $verbose = true;
+    
+    /**
+     * This flag means 'note errors to the output, but keep going'
+     * @see setQuiet()
+     */
     function setFailonerror($bool) {
         $this->failonerror = $bool;
-    }	
+    }   
 
     /**
      * Set quiet mode, which suppresses warnings if chmod() fails.
-	 * @see setFailonerror()
+     * @see setFailonerror()
      */
     function setQuiet($bool) {
         $this->quiet = $bool;
@@ -61,7 +62,15 @@ class ChmodTask extends TaskPhing {
             $this->failonerror = false;
         }
     }
-	
+    
+    /**
+     * Set verbosity, which if set to false surpresses all but an overview
+     * of what happened.
+     */
+    function setVerbose($bool) {
+        $this->verbose = (bool)$bool;
+    }
+    
     /**
      * Sets a single source file to touch.  If the file does not exist
      * an empty file will be created.
@@ -118,16 +127,21 @@ class ChmodTask extends TaskPhing {
      * @return void
      */
     private function chmod() {
-    	
-		if (strlen($this->mode) === 4) {
-			$mode = octdec($this->mode);
-		} else {
-			// we need to prepend the 0 before converting
-			$mode = octdec("0". $this->mode);
-		}
+        
+        if (strlen($this->mode) === 4) {
+            $mode = octdec($this->mode);
+        } else {
+            // we need to prepend the 0 before converting
+            $mode = octdec("0". $this->mode);
+        }
+        
+        // counters for non-verbose output
+        $total_files = 0;
+        $total_dirs = 0;
         
         // one file
         if ($this->file !== null) {
+            $total_files = 1;
             $this->chmodFile($this->file, $mode);
         }
 
@@ -140,38 +154,50 @@ class ChmodTask extends TaskPhing {
             $srcFiles = $ds->getIncludedFiles();
             $srcDirs = $ds->getIncludedDirectories();
 
-            for ($j = 0, $filecount = count($srcFiles); $j < $filecount; $j++) {
+            $filecount = count($srcFiles);
+            $total_files = $total_files + $filecount;
+            for ($j = 0; $j < $filecount; $j++) {
                 $this->chmodFile(new PhingFile($fromDir, $srcFiles[$j]), $mode);
             }
 
-            for ($j = 0, $dircount = count($srcDirs); $j <  $dircount; $j++) {
+            $dircount = count($srcDirs);
+            $total_dirs = $total_dirs + $dircount;
+            for ($j = 0; $j <  $dircount; $j++) {
                 $this->chmodFile(new PhingFile($fromDir, $srcDirs[$j]), $mode);
             }
         }
 
+        if (!$this->verbose) {
+            $this->log('Total files changed to ' . vsprintf('%o', $mode) . ': ' . $total_files);
+            $this->log('Total directories changed to ' . vsprintf('%o', $mode) . ': ' . $total_dirs);
+        }
+
     }
 
-	/**
-	 * Actually change the mode for the file.
-	 * @param PhingFile $file
-	 * @param int $mode
-	 */
+    /**
+     * Actually change the mode for the file.
+     * @param PhingFile $file
+     * @param int $mode
+     */
     private function chmodFile(PhingFile $file, $mode) {
         if ( !$file->exists() ) {
             throw new BuildException("The file " . $file->__toString() . " does not exist");
         }   
-		     
-		try {
-			$file->setMode($mode);
-			$this->log("Changed file mode on '" . $file->__toString() ."' to " . vsprintf("%o", $mode));
-		} catch (Exception $e) {
-			if($this->failonerror) {
-				throw $e;
-			} else {
-				$this->log($e->getMessage(), $this->quiet ? PROJECT_MSG_VERBOSE : PROJECT_MSG_WARN);
-			}
-		}
+             
+        try {
+            $file->setMode($mode);
+            if ($this->verbose) {
+                $this->log("Changed file mode on '" . $file->__toString() ."' to " . vsprintf("%o", $mode));
+            }
+        } catch (Exception $e) {
+            if($this->failonerror) {
+                throw $e;
+            } else {
+                $this->log($e->getMessage(), $this->quiet ? Project::MSG_VERBOSE : Project::MSG_WARN);
+            }
+        }
     }
-	
+    
 }
+
 

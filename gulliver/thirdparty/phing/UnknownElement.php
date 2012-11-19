@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: UnknownElement.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: a4e6c2e3f776c5a353e52fb8518b3533f14a97c4 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 
 /**
  * Wrapper class that holds all information necessary to create a task
@@ -31,10 +31,10 @@ require_once 'phing/TaskPhing.php';
  *
  * @author    Andreas Aderhold <andi@binarycloud.com>
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.9 $
+ * @version   $Id$
  * @package   phing
  */
-class UnknownElement extends TaskPhing {
+class UnknownElement extends Task {
 
     private $elementName;
     private $realThing;
@@ -69,7 +69,7 @@ class UnknownElement extends TaskPhing {
     
         $this->realThing = $this->makeObject($this, $this->wrapper);
         $this->wrapper->setProxy($this->realThing);
-        if ($this->realThing instanceof TaskPhing) {
+        if ($this->realThing instanceof Task) {
             $this->realThing->setRuntimeConfigurableWrapper($this->wrapper);
         }
     
@@ -91,7 +91,7 @@ class UnknownElement extends TaskPhing {
             throw new BuildException("Should not be executing UnknownElement::main() -- task/type: {$this->elementName}");
         }
         
-        if ($this->realThing instanceof TaskPhing) {
+        if ($this->realThing instanceof Task) {
             $this->realThing->main();
         }
         
@@ -130,16 +130,20 @@ class UnknownElement extends TaskPhing {
                 $realChild = $this->makeTask($child, $childWrapper, false);
                 $parent->addTask($realChild);
             } else {
-                $realChild = $ih->createElement($this->project, $parent, $child->getTag());
+                $project = $this->project === null ? $parent->project : $this->project;
+                $realChild = $ih->createElement($project, $parent, $child->getTag());
             }
 
             $childWrapper->setProxy($realChild);
-            if ($realChild instanceof TaskPhing) {
+            if ($realChild instanceof Task) {
                 $realChild->setRuntimeConfigurableWrapper($childWrapper);
             }
-
-            $child->handleChildren($realChild, $childWrapper);
-            if ($realChild instanceof TaskPhing) {
+            
+            if ($realChild instanceof ProjectComponent) {
+                $child->handleChildren($realChild, $childWrapper);
+            }
+            
+            if ($realChild instanceof Task) {
                 $realChild->maybeConfigure();
             }
         }

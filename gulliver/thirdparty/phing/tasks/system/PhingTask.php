@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: PhingTask.php 3076 2006-12-18 08:52:12Z fabien $  
+ *  $Id: 2eec26f6ebaaeceb4eca76644de88bde7515f5dc $  
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,7 +20,7 @@
  * <http://phing.info>.
 */
 
-include_once 'phing/TaskPhing.php';
+include_once 'phing/Task.php';
 include_once 'phing/util/FileUtils.php';
 include_once 'phing/types/Reference.php';
 include_once 'phing/tasks/system/PropertyTask.php';
@@ -41,10 +41,10 @@ include_once 'phing/tasks/system/PropertyTask.php';
  * </pre>
  * 
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.20 $
+ * @version   $Id: 2eec26f6ebaaeceb4eca76644de88bde7515f5dc $
  * @package   phing.tasks.system
  */
-class PhingTask extends TaskPhing {
+class PhingTask extends Task {
 
     /** the basedir where is executed the build file */
     private $dir;
@@ -151,46 +151,47 @@ class PhingTask extends TaskPhing {
         }
 
         // if no filesets are given stop here; else process filesets
-        if (empty($this->filesets)) { 
-            return;
-        }
-        
-        // preserve old settings
-        $savedDir = $this->dir;
-        $savedPhingFile = $this->phingFile;
-        $savedTarget = $this->newTarget;
-        $buildFailed = false;
-
-        // set no specific target for files in filesets
-        // [HL] I'm commenting this out; I don't know why this should not be supported!
-        // $this->newTarget = null;
-        
-        foreach($this->filesets as $fs) {
-
-            $ds = $fs->getDirectoryScanner($this->project);
-
-            $fromDir  = $fs->getDir($this->project);
-            $srcFiles = $ds->getIncludedFiles();
-
-            foreach($srcFiles as $fname) {            
-                $f = new PhingFile($ds->getbasedir(), $fname);
-                $f = $f->getAbsoluteFile();
-                $this->phingFile = $f->getAbsolutePath();
-                $this->dir = $f->getParentFile();
-                $this->processFile();    // run Phing!
+        if (!empty($this->filesets)) { 
+            // preserve old settings
+            $savedDir = $this->dir;
+            $savedPhingFile = $this->phingFile;
+            $savedTarget = $this->newTarget;
+    
+            // set no specific target for files in filesets
+            // [HL] I'm commenting this out; I don't know why this should not be supported!
+            // $this->newTarget = null;
+            
+            foreach($this->filesets as $fs) {
+    
+                $ds = $fs->getDirectoryScanner($this->project);
+    
+                $fromDir  = $fs->getDir($this->project);
+                $srcFiles = $ds->getIncludedFiles();
+    
+                foreach($srcFiles as $fname) {            
+                    $f = new PhingFile($ds->getbasedir(), $fname);
+                    $f = $f->getAbsoluteFile();
+                    $this->phingFile = $f->getAbsolutePath();
+                    $this->dir = $f->getParentFile();
+                    $this->processFile();    // run Phing!
+                }
+            }        
+            
+            // side effect free programming ;-)
+            $this->dir = $savedDir;        
+            $this->phingFile = $savedPhingFile;
+            $this->newTarget = $savedTarget;
+            
+            // [HL] change back to correct dir
+            if ($this->dir !== null) {
+                chdir($this->dir->getAbsolutePath());
             }
-        }        
-        
-        // side effect free programming ;-)
-        $this->dir = $savedDir;        
-        $this->phingFile = $savedPhingFile;
-        $this->newTarget = $savedTarget;
-        
-        // [HL] change back to correct dir
-        if ($this->dir !== null) {
-            chdir($this->dir->getAbsolutePath());
         }
         
+        // Remove any dangling references to help the GC
+        foreach ($this->properties as $property) {
+            $property->setFallback(null);
+        }
     }
     
     /**
@@ -199,12 +200,13 @@ class PhingTask extends TaskPhing {
      * @return void
      */
     private function processFile()  {
-            
+
+        $buildFailed = false;
         $savedDir = $this->dir;
         $savedPhingFile = $this->phingFile;
         $savedTarget = $this->newTarget;
         
-		$savedBasedirAbsPath = null; // this is used to save the basedir *if* we change it
+        $savedBasedirAbsPath = null; // this is used to save the basedir *if* we change it
         
         try {
         
@@ -215,17 +217,17 @@ class PhingTask extends TaskPhing {
             $this->initializeProject();
             
             if ($this->dir !== null) {
-            	
-            	$dirAbsPath = $this->dir->getAbsolutePath();
-            	
-            	// BE CAREFUL! -- when the basedir is changed for a project,
-            	// all calls to getAbsolutePath() on a relative-path dir will
-            	// be made relative to the project's basedir!  This means
-            	// that subsequent calls to $this->dir->getAbsolutePath() will be WRONG!
-            	
-            	// We need to save the current project's basedir first.
-            	$savedBasedirAbsPath = $this->getProject()->getBasedir()->getAbsolutePath();
-				 
+                
+                $dirAbsPath = $this->dir->getAbsolutePath();
+                
+                // BE CAREFUL! -- when the basedir is changed for a project,
+                // all calls to getAbsolutePath() on a relative-path dir will
+                // be made relative to the project's basedir!  This means
+                // that subsequent calls to $this->dir->getAbsolutePath() will be WRONG!
+                
+                // We need to save the current project's basedir first.
+                $savedBasedirAbsPath = $this->getProject()->getBasedir()->getAbsolutePath();
+                 
                 $this->newProject->setBasedir($this->dir);
                 
                 // Now we must reset $this->dir so that it continues to resolve to the same
@@ -237,9 +239,9 @@ class PhingTask extends TaskPhing {
                 }
                 
             } else {
-            	
-            	// Since we're not changing the basedir here (for file resolution),
-            	// we don't need to worry about any side-effects in this scanrio.
+                
+                // Since we're not changing the basedir here (for file resolution),
+                // we don't need to worry about any side-effects in this scanrio.
                 $this->dir = $this->getProject()->getBasedir();   
             }
 
@@ -276,10 +278,15 @@ class PhingTask extends TaskPhing {
             
         } catch (Exception $e) {
             $buildFailed = true;
-            $this->log($e->getMessage(), PROJECT_MSG_ERR);
-            
+            $this->log($e->getMessage(), Project::MSG_ERR);
+            if (Phing::getMsgOutputLevel() <= Project::MSG_DEBUG) { 
+                $lines = explode("\n", $e->getTraceAsString());
+                foreach($lines as $line) {
+                    $this->log($line, Project::MSG_DEBUG);
+                }
+            }
             // important!!! continue on to perform cleanup tasks.    
-		}
+        }
         
         
         // reset environment values to prevent side-effects.
@@ -300,8 +307,8 @@ class PhingTask extends TaskPhing {
         }
 
         if ($this->haltOnFailure && $buildFailed) {
-			throw new BuildException("Execution of the target buildfile failed. Aborting.");
-		}
+            throw new BuildException("Execution of the target buildfile failed. Aborting.");
+        }
     }
 
     /**
@@ -414,7 +421,7 @@ class PhingTask extends TaskPhing {
                 if (!isset($projReferences[$refid])) {
                     $this->log("Parent project doesn't contain any reference '"
                         . $refid . "'",
-                        PROJECT_MSG_WARN);
+                        Project::MSG_WARN);
                     continue;
                 }
                 
@@ -471,8 +478,8 @@ class PhingTask extends TaskPhing {
             $copy->setProject($this->newProject);
         } elseif (in_array('setProject', get_class_methods(get_class($copy)))) {
             $copy->setProject($this->newProject);
-		} elseif ($copy instanceof Project) {
-			// don't copy the old "Project" itself
+        } elseif ($copy instanceof Project) {
+            // don't copy the old "Project" itself
         } else {
             $msg = "Error setting new project instance for "
                 . "reference with id " . $oldKey;
@@ -591,6 +598,8 @@ class PhingTask extends TaskPhing {
 /**
  * Helper class that implements the nested <reference>
  * element of <phing> and <phingcall>.
+ *
+ * @package   phing.tasks.system
  */
 class PhingReference extends Reference {
 

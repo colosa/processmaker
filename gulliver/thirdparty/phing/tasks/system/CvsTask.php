@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: CvsTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 642c6947fa58e02a8c7893c8c4dfab2debfdd51d $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 include_once 'phing/tasks/system/ExecTask.php';
 include_once 'phing/types/Commandline.php';
 
@@ -35,10 +35,10 @@ include_once 'phing/types/Commandline.php';
  * @author stefano@apache.org (Ant)
  * @author Wolfgang Werner <wwerner@picturesafe.de> (Ant)
  * @author Kevin Ross <kevin.ross@bredex.com> (Ant)
- * @version $Revision: 1.14 $
+ * @version $Id: 642c6947fa58e02a8c7893c8c4dfab2debfdd51d $
  * @package phing.tasks.system
  */
-class CvsTask extends TaskPhing {
+class CvsTask extends Task {
 
     /** 
      * Default compression level to use, if compression is enabled via
@@ -155,14 +155,14 @@ class CvsTask extends TaskPhing {
         if ($this->passFile !== null) {
             if ($this->passFile->isFile() && $this->passFile->canRead()) {            
                 putenv("CVS_PASSFILE=" . $this->passFile->__toString());
-                $this->log("Using cvs passfile: " . $this->passFile->__toString(), PROJECT_MSG_INFO);
+                $this->log("Using cvs passfile: " . $this->passFile->__toString(), Project::MSG_INFO);
             } elseif (!$this->passFile->canRead()) {
                 $this->log("cvs passfile: " . $this->passFile->__toString() 
-                    . " ignored as it is not readable", PROJECT_MSG_WARN);
+                    . " ignored as it is not readable", Project::MSG_WARN);
             } else {
                 $this->log("cvs passfile: " . $this->passFile->__toString() 
                     . " ignored as it is not a file",
-                    PROJECT_MSG_WARN);
+                    Project::MSG_WARN);
             }
         }
 
@@ -201,14 +201,14 @@ class CvsTask extends TaskPhing {
         
         try {
             $actualCommandLine = $toExecuteStr; // we converted to string above
-            $this->log($actualCommandLine, PROJECT_MSG_INFO);
-            $retCode = $exe->execute();
-            $this->log("retCode=" . $retCode, PROJECT_MSG_DEBUG);
+            $this->log($actualCommandLine, Project::MSG_INFO);
+            $retCode = $exe->main();
+            $this->log("retCode=" . $retCode, Project::MSG_DEBUG);
             /*Throw an exception if cvs exited with error. (Iulian)*/
             if ($this->failOnError && $retCode !== 0) {
                 throw new BuildException("cvs exited with error code "
                                          . $retCode 
-                                         . Phing::getProperty("line.separator")
+                                         . PHP_EOL
                                          . "Command line was ["
                                          . $toExecute->describeCommand() . "]", $this->getLocation());
             }
@@ -216,7 +216,7 @@ class CvsTask extends TaskPhing {
             if ($this->failOnError) {
                 throw new BuildException($e, $this->getLocation());
             } else {
-                $this->log("Caught exception: " . $e, PROJECT_MSG_WARN);
+                $this->log("Caught exception: " . $e, Project::MSG_WARN);
             }
         } catch (BuildException $e) {
             if ($this->failOnError) {
@@ -226,13 +226,13 @@ class CvsTask extends TaskPhing {
                 if ($t === null) {
                     $t = $e;
                 }
-                $this->log("Caught exception: " . $t, PROJECT_MSG_WARN);
+                $this->log("Caught exception: " . $t, Project::MSG_WARN);
             }
         } catch (Exception $e) {
             if ($this->failOnError) {
                 throw new BuildException($e, $this->getLocation());
             } else {
-                $this->log("Caught exception: " . $e, PROJECT_MSG_WARN);
+                $this->log("Caught exception: " . $e, Project::MSG_WARN);
             }
         }
     }

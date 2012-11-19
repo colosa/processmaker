@@ -35,7 +35,7 @@
  * </code>
  *
  * @author Hans Lellelid <hans@xmpl.org>
- * @version $Revision: 1.3 $
+ * @version $Id$
  * @package phing.system.util
  */
 class Register {
@@ -62,6 +62,8 @@ class Register {
 
 /**
  * Represents a slot in the register.
+ *
+ * @package phing.system.util
  */
 class RegisterSlot {
     
@@ -111,5 +113,37 @@ class RegisterSlot {
         return $this->value;
     }
     
+    /**
+     * Recursively implodes an array to a comma-separated string
+     * @param  array  $arr
+     * @return string
+     */
+    private function implodeArray(array $arr) {
+        $values = array();
+        
+        foreach ($arr as $value) {
+            if (is_array($value)) {
+                $values[] = $this->implodeArray($value);
+            } else {
+                $values[] = $value;
+            }
+        }
+        
+        return "{" . implode(",", $values) . "}";
+    }
+    
+    /**
+     * Returns the value at this slot as a string value.
+     * @return string
+     */
+    public function __toString()
+    {
+        if (is_array($this->value)) {
+            return $this->implodeArray($this->value);
+        } else {
+            return (string) $this->value;
+        }
+    }
+    
 }
-?>
+

@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: BaseParamFilterReader.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 412cc012db35b1dcf3545b93d5053e727d66b61f $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,8 +28,8 @@ include_once 'phing/types/Parameter.php';
  * Base class for core filter readers.
  *
  * @author <a href="mailto:yl@seasonfive.com">Yannick Lecaillez</a>
- * @copyright © 2003 seasonfive. All rights reserved
- * @version   $Revision: 1.5 $ $Date: 2005/02/27 20:52:08 $
+ * @copyright ï¿½ 2003 seasonfive. All rights reserved
+ * @version   $Id$
  * @access    public
  * @see       FilterReader
  * @package   phing.filters
@@ -66,4 +66,4 @@ class BaseParamFilterReader extends BaseFilterReader implements Parameterizable 
     }
 }
 
-?>
+

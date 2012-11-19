@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: IfTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 4452f066ac71d51d3e2521d39cdee2caf4f7e9cc $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -67,7 +67,7 @@ require_once 'phing/tasks/system/SequentialTask.php';
  * task before you use it the first time:</p>
  *
  * <pre><code>
- *   <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" /&gt;
+ *   &lt;taskdef name=&quot;if&quot; classname=&quot;net.sf.antcontrib.logic.IfTask&quot; /&gt;
  * </code></pre>
  *
  * <h3>Crude Example</h3>
@@ -105,6 +105,7 @@ require_once 'phing/tasks/system/SequentialTask.php';
  * </code>
  *
  * @author <a href="mailto:stefan.bodewig@freenet.de">Stefan Bodewig</a>
+ * @package phing.tasks.system
  */
 class IfTask extends ConditionBase {
 
@@ -148,16 +149,16 @@ class IfTask extends ConditionBase {
     }
 
     public function main() {
-	
+    
         if ($this->countConditions() > 1) {
             throw new BuildException("You must not nest more than one condition into <if>");
         }
         if ($this->countConditions() < 1) {
             throw new BuildException("You must nest a condition into <if>");
         }
-		$conditions = $this->getConditions();
-		$c = $conditions[0];
-		
+        $conditions = $this->getConditions();
+        $c = $conditions[0];
+        
         if ($c->evaluate()) {
             if ($this->thenTasks != null) {
                 $this->thenTasks->main();
@@ -165,8 +166,8 @@ class IfTask extends ConditionBase {
         } else {
             $done = false;
             $sz = count($this->elseIfTasks);
-			for($i=0; $i < $sz && !$done; $i++) {
-				$ei = $this->elseIfTasks[$i];
+            for($i=0; $i < $sz && !$done; $i++) {
+                $ei = $this->elseIfTasks[$i];
                 if ($ei->evaluate()) {
                     $done = true;
                     $ei->main();
@@ -183,6 +184,8 @@ class IfTask extends ConditionBase {
 /**
  * "Inner" class for IfTask.
  * This class has same basic structure as the IfTask, although of course it doesn't support <else> tags.
+ *
+ * @package phing.tasks.system
  */
 class ElseIfTask extends ConditionBase {
 
@@ -194,28 +197,28 @@ class ElseIfTask extends ConditionBase {
             }
             $this->thenTasks = $t;
         }
-	
-		/**
-		 * @return boolean
-		 */
+    
+        /**
+         * @return boolean
+         */
         public function evaluate() {
-		
+        
             if ($this->countConditions() > 1) {
                 throw new BuildException("You must not nest more than one condition into <elseif>");
             }
             if ($this->countConditions() < 1) {
                 throw new BuildException("You must nest a condition into <elseif>");
             }
-			
-			$conditions = $this->getConditions();
-			$c = $conditions[0];
+            
+            $conditions = $this->getConditions();
+            $c = $conditions[0];
 
             return $c->evaluate();
         }
-		
-		/**
-		 * 
-		 */
+        
+        /**
+         * 
+         */
         public function main() {
             if ($this->thenTasks != null) {
                 $this->thenTasks->main();

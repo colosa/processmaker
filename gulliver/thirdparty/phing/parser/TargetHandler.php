@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: TargetHandler.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: f73d7c67a353cf16f048af3ba013d84ec726a926 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@ require_once 'phing/parser/AbstractHandler.php';
  *
  * @author    Andreas Aderhold <andi@binarycloud.com>
  * @copyright  2001,2002 THYRELL. All rights reserved
- * @version   $Revision: 1.10 $
+ * @version   $Id: f73d7c67a353cf16f048af3ba013d84ec726a926 $
  * @package   phing.parser
  */
 class TargetHandler extends AbstractHandler {
@@ -82,6 +82,7 @@ class TargetHandler extends AbstractHandler {
         $unlessCond = null;
         $id = null;
         $description = null;
+        $isHidden = false;
 
         foreach($attrs as $key => $value) {
             if ($key==="name") {
@@ -94,6 +95,8 @@ class TargetHandler extends AbstractHandler {
                 $unlessCond = (string) $value;
             } else if ($key==="id") {
                 $id = (string) $value;
+            } else if ($key==="hidden") {
+                $isHidden = ($value == 'true' || $value == '1') ? true : false;
             } else if ($key==="description") {
                 $description = (string)$value;
             } else {
@@ -108,22 +111,54 @@ class TargetHandler extends AbstractHandler {
         // shorthand
         $project = $this->configurator->project;
 
+        // check to see if this target is a dup within the same file
+        if (isset($this->configurator->getCurrentTargets[$name])) {
+          throw new BuildException("Duplicate target: $targetName",  
+              $this->parser->getLocation());
+        }
+
         $this->target = new Target();
         $this->target->setName($name);
+        $this->target->setHidden($isHidden);
         $this->target->setIf($ifCond);
         $this->target->setUnless($unlessCond);
         $this->target->setDescription($description);
-
-        $project->addTarget($name, $this->target);
-
-        if ($id !== null && $id !== "") {
-            $project->addReference($id, $this->target);
-        }
         // take care of dependencies
         if (strlen($depends) > 0) {
             $this->target->setDepends($depends);
         }
 
+        $usedTarget = false;
+        // check to see if target with same name is already defined
+        $projectTargets = $project->getTargets();
+        if (isset($projectTargets[$name])) {
+          $project->log("Already defined in main or a previous import, " .
+            "ignore {$name}", Project::MSG_VERBOSE);
+        } else {
+          $project->addTarget($name, $this->target);
+          if ($id !== null && $id !== "") {
+            $project->addReference($id, $this->target);
+          }
+          $usedTarget = true;
+        }
+
+        if ($this->configurator->isIgnoringProjectTag() && 
+            $this->configurator->getCurrentProjectName() != null && 
+            strlen($this->configurator->getCurrentProjectName()) != 0) {
+          // In an impored file (and not completely
+          // ignoring the project tag)
+          $newName = $this->configurator->getCurrentProjectName() . "." . $name;
+          if ($usedTarget) {
+            // clone needs to make target->children a shared reference
+            $newTarget = clone $this->target;
+          } else {
+            $newTarget = $this->target;
+          }
+          $newTarget->setName($newName);
+          $ct = $this->configurator->getCurrentTargets();
+          $ct[$newName] = $newTarget;
+          $project->addTarget($newName, $newTarget);
+        }
     }
 
     /**
@@ -144,6 +179,18 @@ class TargetHandler extends AbstractHandler {
         } else {
             $tmp = new TaskHandler($this->parser, $this, $this->configurator, $this->target, null, $this->target);
             $tmp->init($name, $attrs);
+        }
+    }
+    
+    /**
+     * Checks if this target has dependencies and/or nested tasks.
+     * If the target has neither, show a warning.
+     */
+    protected function finished()
+    {
+        if (!count($this->target->getDependencies()) && !count($this->target->getTasks())) {
+            $this->configurator->project->log("Warning: target '" . $this->target->getName() .
+                "' has no tasks or dependencies", Project::MSG_WARN);
         }
     }
 }

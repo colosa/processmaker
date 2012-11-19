@@ -1,4 +1,4 @@
-<project name="propel" default="main" basedir=".">
+<project name="propel" default="main">
 
   <!--
     Note - You should not have to edit this file.
@@ -13,17 +13,17 @@
   <property name="build.properties" value="build.properties"/>
   <property name="propel.contextProperties" value="./${build.properties}"/>
   <property name="propel.home" value="."/>
-  
+
   <available file="${propel.home}/build.properties" property="globalBuildPopertiesExists"/>
-  
-  <if> 
+
+  <if>
   	<and>
   		<isset property="globalBuildPopertiesExists"/>
   	</and>
   	<then>
 	    <property file="${propel.home}/build.properties"/>
-	</then>	
-  </if>  
+    </then>
+  </if>
 
   <!--
     The default.properties file will map old properties to the new ones along
@@ -37,43 +37,49 @@
   -->
 
   <path id="propelclasses">
-    <pathelement dir="${propel.home}/classes/"/>
+    <pathelement dir="${propel.home}/lib/"/>
+    <pathelement dir="${propel.project.dir}/"/>
   </path>
 
   <taskdef
-    name="propel-data-model"
-    classname="propel.phing.PropelDataModelTask" classpathRef="propelclasses"/>
-  <taskdef
-    name="propel-old-om"
-    classname="propel.phing.PropelOldOMTask" classpathRef="propelclasses"/>
-  <taskdef
     name="propel-om"
-    classname="propel.phing.PropelOMTask" classpathRef="propelclasses"/>
-  <taskdef
-    name="propel-data-dtd"
-    classname="propel.phing.PropelDataDTDTask" classpathRef="propelclasses"/>
+    classname="task.PropelOMTask" classpathRef="propelclasses"/>
   <taskdef
     name="propel-data-dump"
-    classname="propel.phing.PropelDataDumpTask" classpathRef="propelclasses"/>
+    classname="task.PropelDataDumpTask" classpathRef="propelclasses"/>
   <taskdef
     name="propel-data-sql"
-    classname="propel.phing.PropelDataSQLTask" classpathRef="propelclasses"/>
+    classname="task.PropelDataSQLTask" classpathRef="propelclasses"/>
    <taskdef
-    name="propel-creole-transform"
-    classname="propel.phing.PropelCreoleTransformTask" classpathRef="propelclasses"/>
+    name="propel-schema-reverse"
+    classname="task.PropelSchemaReverseTask" classpathRef="propelclasses"/>
   <taskdef
     name="propel-sql"
-    classname="propel.phing.PropelSQLTask" classpathRef="propelclasses"/>
+    classname="task.PropelSQLTask" classpathRef="propelclasses"/>
   <taskdef
-    name="propel-old-sql"
-    classname="propel.phing.PropelOldSQLTask" classpathRef="propelclasses"/>
+    name="propel-sql-diff"
+    classname="task.PropelSQLDiffTask" classpathRef="propelclasses"/>
+  <taskdef
+    name="propel-migration-status"
+    classname="task.PropelMigrationStatusTask" classpathRef="propelclasses"/>
+  <taskdef
+    name="propel-migration-up"
+    classname="task.PropelMigrationUpTask" classpathRef="propelclasses"/>
+  <taskdef
+    name="propel-migration-down"
+    classname="task.PropelMigrationDownTask" classpathRef="propelclasses"/>
+  <taskdef
+    name="propel-migration"
+    classname="task.PropelMigrationTask" classpathRef="propelclasses"/>
   <taskdef
     name="propel-sql-exec"
-    classname="propel.phing.PropelSQLExec" classpathRef="propelclasses"/>
+    classname="task.PropelSQLExec" classpathRef="propelclasses"/>
   <taskdef
     name="propel-graphviz"
-    classname="propel.phing.PropelGraphvizTask" classpathRef="propelclasses"/>
-
+    classname="task.PropelGraphvizTask" classpathRef="propelclasses"/>
+  <taskdef
+    name="propel-convert-conf"
+    classname="task.PropelConvertConfTask" classpathRef="propelclasses"/>
 
   <!-- ================================================================ -->
   <!-- M A I N  T A R G E T                                             -->
@@ -86,20 +92,12 @@
 
   <target
     name="main"
+  	depends="mysqli-check"
     description="==> generates sql + om classes">
 
     <phingcall target="sql"/>
     <phingcall target="om"/>
-    <phingcall target="convert-props"/>
-  </target>
-
-  <target
-    name="old-build"
-    description="==> generates sql + [new] om classes">
-
-    <phingcall target="sql"/>
-    <phingcall target="old-om"/>
-    <phingcall target="convert-props"/>
+    <phingcall target="convert-conf"/>
   </target>
 
   <!-- ================================================================ -->
@@ -158,9 +156,26 @@
 	</if>
   </target>
 
+	  <!--	temporary target to check whether mysqli is being used
+			If so, a warning is issued, since this is deprecated  -->
+	  <target name="mysqli-check">
+	  	<if>
+	  		<and>
+				<equals arg1="${propel.database}" arg2="mysqli"/>
+			</and>
+			<then>
+				<warn>ATTENTION: It appears you are using the mysqli driver.</warn>
+				<warn></warn>
+				<warn>This driver is no longer supported by Propel because Propel now uses PDO for database connections.</warn>
+				<warn>Please use mysqli driver instead.</warn>
+				<fail>Use 'mysql' instead of 'mysqli' for your propel.database property.</fail>
+			</then>
+		</if>
+	  </target>
+	
   <target
     name="sql"
-    depends="sql-check,pgsql-quoting-check"
+    depends="sql-check,pgsql-quoting-check,mysqli-check"
     unless="propel.internal.sql.uptodate"
     description="==> generates the SQL for your project">
 
@@ -176,58 +191,22 @@
 
   <target name="sql-template">
     <propel-sql
-	  validate="${propel.schema.validate}"
-	  xsd="${propel.schema.xsd.file}"
-	  xsl="${propel.schema.xsl.file}"
+      validate="${propel.schema.validate}"
+      xsd="${propel.schema.xsd.file}"
+      xsl="${propel.schema.xsl.file}"
       outputDirectory="${propel.sql.dir}"
       sqldbmap="${propel.sql.dir}/sqldb.map"
       targetDatabase="${propel.database}"
-      templatePath="${propel.templatePath}"
       packageObjectModel="${propel.packageObjectModel}"
-      >
+      url="${propel.database.url}"
+      userId="${propel.database.user}"
+      password="${propel.database.password}">
       <mapper type="glob" from="${propel.sql.mapper.from}" to="${propel.sql.mapper.to}"/>
       <schemafileset dir="${propel.schema.dir}"
         includes="${propel.schema.sql.includes}"
         excludes="${propel.schema.sql.excludes}"
       />
     </propel-sql>
-  </target>
-
-
-  <target
-    name="old-sql"
-    depends="sql-check"
-    unless="propel.internal.sql.uptodate"
-    description="==> generates the SQL for your project">
-
-    <echo message="+------------------------------------------+"/>
-    <echo message="|                                          |"/>
-    <echo message="| Generating SQL for YOUR Propel project!  |"/>
-    <echo message="| (using deprecated legacy SQL template)   |"/>
-	<echo message="|                                          |"/>
-    <echo message="+------------------------------------------+"/>
-
-    <phingcall target="old-sql-template"/>
-
-  </target>
-
-  <target name="old-sql-template">
-    <propel-old-sql
-	  validate="${propel.schema.validate}"
-	  xsd="${propel.schema.xsd.file}"
-	  xsl="${propel.schema.xsl.file}"
-      outputDirectory="${propel.sql.dir}"
-      sqldbmap="${propel.sql.dir}/sqldb.map"
-      targetDatabase="${propel.database}"
-      templatePath="${propel.templatePath}"
-      packageObjectModel="${propel.packageObjectModel}"
-      >
-      <mapper type="glob" from="${propel.sql.mapper.from}" to="${propel.sql.mapper.to}"/>
-      <schemafileset dir="${propel.schema.dir}"
-        includes="${propel.schema.sql.includes}"
-        excludes="${propel.schema.sql.excludes}"
-      />
-    </propel-old-sql>
   </target>
 
   <!-- ================================================================ -->
@@ -246,27 +225,12 @@
   <target
     name="create-db"
     unless="propel.internal.manualCreation"
-    depends="create-db-check"
+    depends="create-db-check,mysqli-check"
     description="==> generates the target database">
 
-    <propel-data-model
-	  validate="${propel.schema.validate}"
-	  xsd="${propel.schema.xsd.file}"
-	  xsl="${propel.schema.xsl.file}"
-      controlTemplate="${propel.template.sqlDbInit}"
-      outputDirectory="${propel.sql.dir}"
-      outputFile="create-db.sql"
-      targetDatabase="${propel.database}"
-      dbEncoding="${propel.database.encoding}"
-      templatePath="${propel.templatePath}"
-      packageObjectModel="${propel.packageObjectModel}"
-      >
-      <schemafileset dir="${propel.schema.dir}"
-        includes="${propel.schema.create-db.includes}"
-        excludes="${propel.schema.create-db.excludes}"
-      />
-    </propel-data-model>
+    <fail message="create-db target temporarily disabled, while we replace creole components."/>
 
+	<!--
     <echo message="Executing the create-db.sql script ..."/>
 
     <sql
@@ -276,6 +240,7 @@
       src="${propel.sql.dir}/create-db.sql"
       url="${propel.database.createUrl}"
     />
+    -->
   </target>
 
   <!-- ================================================================ -->
@@ -288,40 +253,178 @@
 
     <propel-sql-exec
       autocommit="true"
-      driver="${propel.database.driver}"
       onerror="continue"
       sqldbmap="${propel.sql.dir}/sqldb.map"
       srcDir="${propel.sql.dir}"
       url="${propel.database.buildUrl}"
+      userId="${propel.database.user}"
+      password="${propel.database.password}"
     />
   </target>
-
+  
   <!-- ================================================================ -->
-  <!-- C R E O L E  TO  X M L                                               -->
+  <!-- N E W   R E V E R S E   T O   X M L                              -->
   <!-- ================================================================ -->
 
   <target
-    name="creole"
-    description="==> generate xml schema from Creole metadata">
+    name="reverse"
+    description="==> generate xml schema from reverse-engineered database (new)">
 
     <echo message="+-----------------------------------------------+"/>
     <echo message="|                                               |"/>
-    <echo message="| Generating XML from Creole connection !       |"/>
+    <echo message="| Generating XML from PDO connection !          |"/>
     <echo message="|                                               |"/>
     <echo message="+-----------------------------------------------+"/>
 
-    <propel-creole-transform
-      dbDriver="${propel.database.driver}"
+    <propel-schema-reverse
+      databaseName="${propel.project}"
       dbSchema="${propel.database.schema}"
       dbEncoding="${propel.database.encoding}"
-      dbUrl="${propel.database.url}"
+      url="${propel.database.buildUrl}"
+      userId="${propel.database.user}"
+      password="${propel.database.password}"
       outputFile="${propel.schema.dir}/${propel.default.schema.basename}.xml"
       samePhpName="${propel.samePhpName}"
       addVendorInfo="${propel.addVendorInfo}"
       addValidators="${propel.addValidators}"
     />
+
   </target>
 
+  <!-- ================================================================ -->
+  <!-- M I G R A T I O N   T A S K S                                    -->
+  <!-- ================================================================ -->
+  
+  <target
+    name="sql-diff"
+    depends="sql-check,pgsql-quoting-check,mysqli-check"
+    unless="propel.internal.sql.uptodate"
+    description="==> generates a SQL diff for your project">
+
+    <echo message="+----------------------------------------------+"/>
+    <echo message="|                                              |"/>
+    <echo message="| Generating SQL diff between the XML schemas  |"/>
+    <echo message="| and the current database structure.          |"/>
+    <echo message="|                                              |"/>
+    <echo message="+----------------------------------------------+"/>
+
+    <phingcall target="sql-diff-template"/>
+  </target>
+
+  <target name="sql-diff-template">
+    <propel-sql-diff
+      validate="${propel.schema.validate}"
+      xsd="${propel.schema.xsd.file}"
+      xsl="${propel.schema.xsl.file}"
+      outputDirectory="${propel.migration.dir}"
+      targetDatabase="${propel.database}"
+      packageObjectModel="${propel.packageObjectModel}"
+      databaseName="${propel.project}"
+      url="${propel.database.url}"
+      userId="${propel.database.user}"
+      password="${propel.database.password}"
+      editorCmd="${propel.migration.editor}"
+      caseInsensitive="${propel.migration.caseInsensitive}">
+      <mapper type="glob" from="${propel.sql.mapper.from}" to="${propel.sql.mapper.to}"/>
+      <schemafileset dir="${propel.schema.dir}"
+        includes="${propel.schema.sql.includes}"
+        excludes="${propel.schema.sql.excludes}"
+      />
+    </propel-sql-diff>
+  </target>
+
+  <target
+    name="migration-status"
+    depends="sql-check,pgsql-quoting-check,mysqli-check"
+    unless="propel.internal.sql.uptodate"
+    description="Lists the migrations left to be executed">
+
+    <echo message="+----------------------------------------------+"/>
+    <echo message="|                                              |"/>
+    <echo message="| Look for Migration classes and lists         |"/>
+    <echo message="| the ones not yet executed.                   |"/>
+    <echo message="|                                              |"/>
+    <echo message="+----------------------------------------------+"/>
+
+    <phingcall target="migration-status-template"/>
+  </target>
+
+  <target name="migration-status-template">
+    <propel-migration-status
+      migrationTable="${propel.migration.table}"
+      outputDirectory="${propel.migration.dir}">
+    </propel-migration-status>
+  </target>
+
+  <target
+    name="migration-up"
+    depends="sql-check,pgsql-quoting-check,mysqli-check"
+    unless="propel.internal.sql.uptodate"
+    description="Execute the next migration">
+
+    <echo message="+----------------------------------------------+"/>
+    <echo message="|                                              |"/>
+    <echo message="| Look for next Migration class                |"/>
+    <echo message="| and execute it                               |"/>
+    <echo message="|                                              |"/>
+    <echo message="+----------------------------------------------+"/>
+
+    <phingcall target="migration-up-template"/>
+  </target>
+
+  <target name="migration-up-template">
+    <propel-migration-up
+      migrationTable="${propel.migration.table}"
+      outputDirectory="${propel.migration.dir}">
+    </propel-migration-up>
+  </target>
+
+  <target
+    name="migration-down"
+    depends="sql-check,pgsql-quoting-check,mysqli-check"
+    unless="propel.internal.sql.uptodate"
+    description="Execute the next migration">
+
+    <echo message="+----------------------------------------------+"/>
+    <echo message="|                                              |"/>
+    <echo message="| Look for previous Migration class            |"/>
+    <echo message="| and execute it                               |"/>
+    <echo message="|                                              |"/>
+    <echo message="+----------------------------------------------+"/>
+
+    <phingcall target="migration-down-template"/>
+  </target>
+
+  <target name="migration-down-template">
+    <propel-migration-down
+      migrationTable="${propel.migration.table}"
+      outputDirectory="${propel.migration.dir}">
+    </propel-migration-down>
+  </target>
+
+  <target
+    name="migration"
+    depends="sql-check,pgsql-quoting-check,mysqli-check"
+    unless="propel.internal.sql.uptodate"
+    description="Execute the next migration">
+
+    <echo message="+----------------------------------------------+"/>
+    <echo message="|                                              |"/>
+    <echo message="| Look for next Migration class                |"/>
+    <echo message="| and execute it                               |"/>
+    <echo message="|                                              |"/>
+    <echo message="+----------------------------------------------+"/>
+
+    <phingcall target="migration-template"/>
+  </target>
+
+  <target name="migration-template">
+    <propel-migration
+      migrationTable="${propel.migration.table}"
+      outputDirectory="${propel.migration.dir}">
+    </propel-migration>
+  </target>
+  
   <!-- ================================================================ -->
   <!-- Generate SQL from XML data file                                  -->
   <!-- ================================================================ -->
@@ -337,17 +440,15 @@
     <echo message="+-----------------------------------------------+"/>
 
     <propel-data-sql
-	  validate="${propel.schema.validate}"
-	  xsd="${propel.schema.xsd.file}"
-	  xsl="${propel.schema.xsl.file}"
+      validate="${propel.schema.validate}"
+      xsd="${propel.schema.xsd.file}"
+      xsl="${propel.schema.xsl.file}"
       outputDirectory="${propel.sql.dir}"
       sqldbmap="${propel.sql.dir}/sqldb.map"
       dbEncoding="${propel.database.encoding}"
       targetDatabase="${propel.database}"
-      templatePath="${propel.templatePath}"
       datadbmap="${propel.schema.dir}/datadb.map"
-      srcDir="${propel.schema.dir}"
-      >
+      srcDir="${propel.schema.dir}">
       <mapper type="glob" from="${propel.datasql.mapper.from}" to="${propel.datasql.mapper.to}"/>
       <schemafileset dir="${propel.schema.dir}"
         includes="${propel.schema.datadtd.includes}"
@@ -371,54 +472,23 @@
     <echo message="+-----------------------------------------------+"/>
 
     <propel-data-dump
-	  validate="${propel.schema.validate}"
-	  xsd="${propel.schema.xsd.file}"
-	  xsl="${propel.schema.xsl.file}"
+      validate="${propel.schema.validate}"
+      xsd="${propel.schema.xsd.file}"
+      xsl="${propel.schema.xsl.file}"
       targetDatabase="${propel.database}"
       datadbmap="${propel.schema.dir}/datadb.map"
       databaseDriver="${propel.database.driver}"
       dbEncoding="${propel.database.encoding}"
       databaseUrl="${propel.database.url}"
-      outputDirectory="${propel.schema.dir}"
-      templatePath="${propel.templatePath}">
+      databaseUser="${propel.database.user}"
+      databasePassword="${propel.database.password}"
+      outputDirectory="${propel.schema.dir}">
       <mapper type="glob" from="${propel.datadump.mapper.from}" to="${propel.datadump.mapper.to}"/>
       <schemafileset dir="${propel.schema.dir}"
         includes="${propel.schema.datadtd.includes}"
         excludes="${propel.schema.datadtd.excludes}"
       />
      </propel-data-dump>
-  </target>
-
-  <!-- ================================================================ -->
-  <!-- G E N E R A T E  P R O J E C T  D A T A  D T D                   -->
-  <!-- ================================================================ -->
-  <!-- Generate the DATA DTD for your project                           -->
-  <!-- ================================================================ -->
-
-  <target
-    name="datadtd"
-    description="==> generates the DATA DTD for your project">
-
-    <echo message="+-----------------------------------------------+"/>
-    <echo message="|                                               |"/>
-    <echo message="| Generating Data DTD for YOUR Propel project!  |"/>
-    <echo message="|                                               |"/>
-    <echo message="+-----------------------------------------------+"/>
-
-    <propel-data-dtd
-	  validate="${propel.schema.validate}"
-	  xsd="${propel.schema.xsd.file}"
-	  xsl="${propel.schema.xsl.file}"
-      targetDatabase="${propel.database}"
-      outputDirectory="${propel.output.dir}"
-      templatePath="${propel.templatePath}">
-      <!-- TODO: add properties for the mapper type, from, and to -->
-      <mapper type="glob" from="${propel.datadtd.mapper.from}" to="${propel.datadtd.mapper.to}"/>
-      <schemafileset dir="${propel.schema.dir}"
-        includes="${propel.schema.datadtd.includes}"
-        excludes="${propel.schema.datadtd.excludes}"
-      />
-    </propel-data-dtd>
   </target>
 
   <!-- ================================================================ -->
@@ -441,14 +511,14 @@
 
   <target
     name="om"
-    depends="om-check"
+    depends="om-check,mysqli-check"
     unless="propel.internal.om.uptodate"
     description="==> generates the Peer-based object model for your project">
 
     <echo message="+------------------------------------------+"/>
     <echo message="|                                          |"/>
     <echo message="| Generating Peer-based Object Model for   |"/>
-    <echo message="| YOUR Propel project! (NEW OM BUILDERS)!  |"/>
+    <echo message="| YOUR Propel project!                     |"/>
     <echo message="|                                          |"/>
     <echo message="+------------------------------------------+"/>
 
@@ -458,16 +528,14 @@
 
   <target name="om-template">
     <propel-om
-	  validate="${propel.schema.validate}"
-	  xsd="${propel.schema.xsd.file}"
-	  xsl="${propel.schema.xsl.file}"
+      validate="${propel.schema.validate}"
+      xsd="${propel.schema.xsd.file}"
+      xsl="${propel.schema.xsl.file}"
       outputDirectory="${propel.php.dir}"
       targetDatabase="${propel.database}"
       targetPackage="${propel.targetPackage}"
-      templatePath="${propel.templatePath}"
       targetPlatform="${propel.targetPlatform}"
-      packageObjectModel="${propel.packageObjectModel}"
-      >
+      packageObjectModel="${propel.packageObjectModel}">
       <schemafileset dir="${propel.schema.dir}"
         includes="${propel.schema.om.includes}"
         excludes="${propel.schema.om.excludes}"
@@ -475,68 +543,57 @@
     </propel-om>
   </target>
 
-  <!-- the new OM tasks -->
-
-  <target
-    name="old-om"
-    depends="om-check"
-    unless="propel.internal.om.uptodate"
-    description="==> generates the OLD Peer-based object model for your project">
-
-    <echo message="+------------------------------------------+"/>
-    <echo message="|                                          |"/>
-    <echo message="| Generating Peer-based Object Model for   |"/>
-    <echo message="| YOUR Propel project (OLD OM TEMPLATES).  |"/>
-    <echo message="|                                          |"/>
-    <echo message="+------------------------------------------+"/>
-
-    <phingcall target="old-om-template"/>
-    <!--<phingcall target="om-tar"/>-->
-  </target>
-
-  <target name="old-om-template">
-    <propel-old-om
-	  validate="${propel.schema.validate}"
-	  xsd="${propel.schema.xsd.file}"
-	  xsl="${propel.schema.xsl.file}"
-      outputDirectory="${propel.php.dir}"
-      targetDatabase="${propel.database}"
-      targetPackage="${propel.targetPackage}"
-      templatePath="${propel.templatePath}"
-      targetPlatform="${propel.targetPlatform}">
-      <schemafileset dir="${propel.schema.dir}"
-        includes="${propel.schema.om.includes}"
-        excludes="${propel.schema.om.excludes}"
-      />
-    </propel-old-om>
-  </target>
-
-
   <!-- ================================================================== -->
-  <!-- P R O P S   T O   P H P   A R R A Y                                -->
+  <!-- X M L   R U N T I M E   C O N F   T O   P H P   A R R A Y          -->
   <!-- ================================================================== -->
 
   <target
-    name="convert-props"
+    name="convert-conf"
     description="==> converts properties file to PHP array">
 
     <echo message="+------------------------------------------+"/>
     <echo message="|                                          |"/>
-    <echo message="| Converting project properties file to an |"/>
-    <echo message="| array dump for run-time performance.     |"/>
+    <echo message="| Converting runtime config file to an     |"/>
+    <echo message="| array dump for improved performance.     |"/>
     <echo message="|                                          |"/>
     <echo message="+------------------------------------------+"/>
 
-    <capsule
-      templatePath="${propel.templatePath}"
-      controlTemplate="${propel.template.conf}"
+    <propel-convert-conf
+      targetDatabase="${propel.database}"
+      xsd="${propel.schema.xsd.file}"
+      xsl="${propel.schema.xsl.file}"
+      xmlConfFile="${propel.conf.dir}/${propel.runtime.conf.file}"
       outputDirectory="${propel.phpconf.dir}"
-      outputFile="${propel.runtime.phpconf.file}">
-      <assign name="propertiesFile" value="${propel.conf.dir}/${propel.runtime.conf.file}"/>
-     </capsule>
+      outputFile="${propel.runtime.phpconf.file}"
+      outputClassmapFile="${propel.runtime.phpconf-classmap.file}"
+      packageObjectModel="${propel.packageObjectModel}">
+      <schemafileset dir="${propel.schema.dir}"
+        includes="${propel.schema.sql.includes}"
+        excludes="${propel.schema.sql.excludes}"
+      />
+     </propel-convert-conf>
 
   </target>
 
+  <target
+    name="dbd2propel"
+    description="==> generates a Propel XML schema from a DBDesigner 4 XML schema">
+
+    <echo message="+------------------------------------------+"/>
+    <echo message="|                                          |"/>
+    <echo message="|      Generating Propel XML Schema        |"/>
+    <echo message="|      Based on DB4Designer export         |"/>
+    <echo message="|                                          |"/>
+    <echo message="+------------------------------------------+"/>
+
+    <xslt todir="${propel.schema.dir}" style="${propel.dbd2propel.xsl.file}" >
+      <fileset dir="${propel.dbd2propel.dir}">
+        <include name="${propel.dbd2propel.includes}" />
+      </fileset>
+      <mapper type="regexp" from="^(.*)\.xml$" to="\1.schema.xml"/>
+    </xslt>
+  </target>
+  
   <target
     name="graphviz"
     depends="sql-check"

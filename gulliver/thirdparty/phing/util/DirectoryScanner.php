@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: DirectoryScanner.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 7aef4b4e372e89055248ab063660dbee92a98cc3 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -110,7 +110,7 @@ include_once 'phing/types/selectors/SelectorUtils.php';
  *  @author   Magesh Umasankar, umagesh@rediffmail.com
  *  @author   Andreas Aderhold, andi@binarycloud.com
  *
- *  @version   $Revision: 1.15 $
+ *  @version   $Id: 7aef4b4e372e89055248ab063660dbee92a98cc3 $
  *  @package   phing.util
  */
 class DirectoryScanner implements SelectorScanner {
@@ -127,10 +127,17 @@ class DirectoryScanner implements SelectorScanner {
         "**/SCCS",
         "**/SCCS/**",
         "**/vssver.scc",
-		"**/.svn",
-		"**/.svn/**",
-		"**/._*",
-		"**/.DS_Store",
+        "**/.svn",
+        "**/.svn/**",
+        "**/._*",
+        "**/.DS_Store",
+    	"**/.darcs",
+    	"**/.darcs/**",
+    	"**/.git",
+    	"**/.git/**",
+    	"**/.gitattributes",
+    	"**/.gitignore",
+    	"**/.gitmodules",
     );
 
     /** The base directory which should be scanned. */
@@ -141,6 +148,9 @@ class DirectoryScanner implements SelectorScanner {
 
     /** The patterns for the files that should be excluded. */
     protected $excludes = null;
+    
+    /** Whether to expand/dereference symbolic links, default is false */
+    protected $expandSymbolicLinks = false;
 
     /**
      * The files that where found and matched at least one includes, and matched
@@ -319,6 +329,16 @@ class DirectoryScanner implements SelectorScanner {
             }
         }
     }
+    
+    /**
+     * Sets whether to expand/dereference symbolic links
+     *
+     * @param expandSymbolicLinks boolean value
+     */
+    function setExpandSymbolicLinks($expandSymbolicLinks)
+    {
+        $this->expandSymbolicLinks = $expandSymbolicLinks;
+    }
 
     /**
      * Scans the base directory for files that match at least one include
@@ -409,7 +429,7 @@ class DirectoryScanner implements SelectorScanner {
     function listDir($_dir) {
         $d = dir($_dir);
         $list = array();
-        while($entry = $d->read()) {
+        while(($entry = $d->read()) !== false) {
             if ($entry != "." && $entry != "..") {
                 $list[] = $entry;
             }
@@ -449,6 +469,26 @@ class DirectoryScanner implements SelectorScanner {
             $file = $_rootdir . DIRECTORY_SEPARATOR . $newfiles[$i];
             $name = $_vpath . $newfiles[$i];
 
+            if (@is_link($file) && !$this->expandSymbolicLinks)
+            {
+                if ($this->isIncluded($name)) {
+                    if (!$this->isExcluded($name)) {
+                        if ($this->isSelected($name, $file)) {
+                            $this->filesIncluded[] = $name;
+                        } else {
+                            $this->everythingIncluded = false;
+                            $this->filesDeselected[] = $name;
+                        }                        
+                    } else {
+                        $this->everythingIncluded = false;
+                        $this->filesExcluded[] = $name;
+                    }
+                } else {
+                    $this->everythingIncluded = false;
+                    $this->filesNotIncluded[] = $name;
+                }
+            }
+            else
             if (@is_dir($file)) {
                 if ($this->isIncluded($name)) {
                     if (!$this->isExcluded($name)) {
@@ -698,8 +738,13 @@ class DirectoryScanner implements SelectorScanner {
      */
     protected function isSelected($name, $file) {
         if ($this->selectors !== null) {
-            for ($i=0,$size=count($this->selectors); $i < $size; $i++) {
-                if (($this->selectors[$i]->isSelected(new PhingFile($this->basedir), $name, new PhingFile($file))) === false) {
+            $basedir = new PhingFile($this->basedir);
+            $file = new PhingFile($file);
+            if (!$file->canRead())
+                return false;
+            
+            foreach($this->selectors as $selector) {
+                if (!$selector->isSelected($basedir, $name, $file)) {
                     return false;
                 }
             }

@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: PathTokenizer.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 0ca7f2a419b5cc4285a8f84695c4b680b0aa190b $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -45,7 +45,7 @@ include_once 'phing/util/StringHelper.php';
 
  * @author Jeff Tulley <jtulley@novell.com>  (Ant)
 
- * @pacakge phing.util
+ * @package phing.util
 
  */ 
 

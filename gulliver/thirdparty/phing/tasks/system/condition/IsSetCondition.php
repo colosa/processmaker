@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: IsSetCondition.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 5c5924da5cff2626af09b4908703a21eec79c777 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,7 +27,7 @@ require_once 'phing/tasks/system/condition/Condition.php';
  *
  * @author Hans Lellelid <hans@xmpl.org> (Phing)
  * @author Stefan Bodewig <stefan.bodewig@epost.de> (Ant)
- * @version $Revision: 1.4 $
+ * @version $Id$
  * @package phing.tasks.system.condition
  */
 class IsSetCondition extends ProjectComponent implements Condition {

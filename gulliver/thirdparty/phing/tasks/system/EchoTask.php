@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: EchoTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: c5ebadd12256533d9ca4d6fb6cabd50415bdddbf $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,19 +19,19 @@
  * <http://phing.info>.
  */
  
-include_once 'phing/TaskPhing.php';
+include_once 'phing/Task.php';
 
 /**
  *  Echos a message to the logging system or to a file
  *
- *  @author   Michiel Rook <michiel.rook@gmail.com>
+ *  @author   Michiel Rook <mrook@php.net>
  *  @author   Andreas Aderhold, andi@binarycloud.com
- *  @version  $Revision: 1.5 $ $Date: 2006-07-07 20:15:35 +0200 (Fri, 07 Jul 2006) $
+ *  @version  $Id$
  *  @package  phing.tasks.system
  */
 
-class EchoTask extends TaskPhing {
-	
+class EchoTask extends Task {
+    
     protected $msg = "";
     
     protected $file = "";
@@ -40,54 +40,87 @@ class EchoTask extends TaskPhing {
     
     protected $level = "info";
 
-    function main() {		
-		switch ($this->level)
-		{
-			case "error": $loglevel = PROJECT_MSG_ERR; break;
-			case "warning": $loglevel = PROJECT_MSG_WARN; break;
-			case "info": $loglevel = PROJECT_MSG_INFO; break;
-			case "verbose": $loglevel = PROJECT_MSG_VERBOSE; break;
-			case "debug": $loglevel = PROJECT_MSG_DEBUG; break;
-		}
-		
-		if (empty($this->file))
-		{
-        	$this->log($this->msg, $loglevel);
-		}
-		else
-		{
-			if ($this->append)
-			{
-				$handle = fopen($this->file, "a");
-			}
-			else
-			{
-				$handle = fopen($this->file, "w");
-			}
-			
-			fwrite($handle, $this->msg);
-			
-			fclose($handle);
-		}
+    protected $filesets = array();
+
+    function main() {       
+        switch ($this->level)
+        {
+            case "error": $loglevel = Project::MSG_ERR; break;
+            case "warning": $loglevel = Project::MSG_WARN; break;
+            case "info": $loglevel = Project::MSG_INFO; break;
+            case "verbose": $loglevel = Project::MSG_VERBOSE; break;
+            case "debug": $loglevel = Project::MSG_DEBUG; break;
+        }
+
+        if (count($this->filesets)) {
+            if (trim(substr($this->msg, -1)) != '') {
+                $this->msg .= "\n";
+            }
+            $this->msg .= $this->getFilesetsMsg();
+        }
+        
+        if (empty($this->file))
+        {
+            $this->log($this->msg, $loglevel);
+        }
+        else
+        {
+            if ($this->append)
+            {
+                $handle = fopen($this->file, "a");
+            }
+            else
+            {
+                $handle = fopen($this->file, "w");
+            }
+            
+            fwrite($handle, $this->msg);
+            
+            fclose($handle);
+        }
+    }
+
+    /**
+     * Merges all filesets into a string to be echoed out
+     *
+     * @return string String to echo
+     */
+    protected function getFilesetsMsg()
+    {
+        $project = $this->getProject();
+        $msg = '';
+        foreach ($this->filesets as $fs) {
+            $ds = $fs->getDirectoryScanner($project);
+            $fromDir  = $fs->getDir($project);
+            $srcFiles = $ds->getIncludedFiles();
+            $msg .= 'Directory: ' . $fromDir . ' => '
+                . realpath($fromDir) . "\n";
+            foreach ($srcFiles as $file) {
+                $relPath = $fromDir . DIRECTORY_SEPARATOR . $file;
+                $msg .= $relPath . "\n";
+            }
+        }
+
+        return $msg;
     }
     
     /** setter for file */
     function setFile($file)
     {
-		$this->file = (string) $file;
-	}
+        $this->file = (string) $file;
+    }
 
     /** setter for level */
     function setLevel($level)
     {
-		$this->level = (string) $level;
-	}
+        $this->level = (string) $level;
+    }
 
     /** setter for append */
     function setAppend($append)
     {
-		$this->append = $append;
-	}
+        $this->append = $append;
+    }
 
     /** setter for message */
     function setMsg($msg) {
@@ -103,5 +136,17 @@ class EchoTask extends TaskPhing {
     function addText($msg)
     {
         $this->msg = (string) $msg;
+    }
+
+    /**
+     * Adds a fileset to echo the files of
+     *
+     * @param FileSet $fs Set of files to echo
+     *
+     * @return void
+     */
+    public function addFileSet(FileSet $fs)
+    {
+        $this->filesets[] = $fs;
     }
 }

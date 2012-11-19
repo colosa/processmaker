@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: SvnExportTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: ca2d150a53b870fe410f5434f4d500decc7cda73 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,50 +19,52 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 require_once 'phing/tasks/ext/svn/SvnBaseTask.php';
 
 /**
  * Exports/checks out a repository to a local directory
+ * with authentication 
  *
- * @author Michiel Rook <michiel.rook@gmail.com>
- * @version $Id: SvnExportTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * @author Michiel Rook <mrook@php.net>
+ * @author Andrew Eddie <andrew.eddie@jamboworks.com> 
+ * @version $Id: ca2d150a53b870fe410f5434f4d500decc7cda73 $
  * @package phing.tasks.ext.svn
- * @see VersionControl_SVN
- * @since 2.1.0
+ * @since 2.2.0
  */
 class SvnExportTask extends SvnBaseTask
 {
-	private $toDir = "";
+    /**
+     * Which Revision to Export
+     * 
+     * @todo check if version_control_svn supports constants
+     * 
+     * @var string
+     */
+    private $revision = 'HEAD';
 
-	/**
-	 * Sets the path to export/checkout to
-	 */
-	function setToDir($toDir)
-	{
-		$this->toDir = $toDir;
-	}
+    /**
+     * The main entry point
+     *
+     * @throws BuildException
+     */
+    function main()
+    {
+        $this->setup('export');
+        
+        $this->log("Exporting SVN repository to '" . $this->getToDir() . "'");
 
-	/**
-	 * Returns the path to export/checkout to
-	 */
-	function getToDir()
-	{
-		return $this->toDir;
-	}
+        $switches = array();
 
-	/**
-	 * The main entry point
-	 *
-	 * @throws BuildException
-	 */
-	function main()
-	{
-		$this->setup('export');
-		
-		$this->log("Exporting SVN repository to '" . $this->toDir . "'");
-		
-		$this->run(array($this->toDir));
-	}
+        if (!empty($this->revision)) {
+            $switches['r'] = $this->revision;
+        }
+
+        $this->run(array($this->getToDir()), $switches);
+    }
+
+    public function setRevision($revision)
+    {
+        $this->revision = $revision;
+    }
 }
-?>

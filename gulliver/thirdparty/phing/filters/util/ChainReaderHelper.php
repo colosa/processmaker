@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: ChainReaderHelper.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: c1709ddb9da44ce62fbe072c61d29dba4814e3f6 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -61,7 +61,7 @@ include_once 'phing/filters/ChainableReader.php';
  * TODO: Implement the classPath feature.
  *
  * @author    <a href="mailto:yl@seasonfive.com">Yannick Lecaillez</a>
- * @version   $Revision: 1.8 $ $Date: 2005/02/27 20:52:09 $
+ * @version   $Id$
  * @access    public
  * @package   phing.filters.util
 */
@@ -181,4 +181,3 @@ class ChainReaderHelper {
 
 }
 
-?>

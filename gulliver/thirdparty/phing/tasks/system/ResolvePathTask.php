@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: ResolvePathTask.php 3076 2006-12-18 08:52:12Z fabien $  
+ *  $Id: 9635ed3f6605f5ed64b74e85731dbcd3ad43ce0f $  
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 
 /**
  * Task for resolving relative paths and setting absolute path in property value.
@@ -39,10 +39,10 @@ require_once 'phing/TaskPhing.php';
  *      - Possibly integrate this with PackageAsPath, for handling/resolving dot-path paths.
  * 
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.6 $
+ * @version   $Id$
  * @package   phing.tasks.system
  */
-class ResolvePathTask extends TaskPhing {
+class ResolvePathTask extends Task {
 
     /** Name of property to set. */
     private $propertyName;
@@ -52,6 +52,11 @@ class ResolvePathTask extends TaskPhing {
     
     /** Base directory used for resolution. */
     private $dir;
+    
+    /**
+     * Log level
+     */
+    private $logLevel = Project::MSG_VERBOSE;
     
     /**
      * Set the name of the property to set.
@@ -90,6 +95,38 @@ class ResolvePathTask extends TaskPhing {
     }
 
     /**
+     * Set level of log messages generated (default = verbose)
+     *
+     * @param string $level Log level
+     *
+     * @return void
+     */
+    public function setLevel($level)
+    {
+        switch ($level) {
+        case 'error':
+            $this->logLevel = Project::MSG_ERR;
+            break;
+        case 'warning':
+            $this->logLevel = Project::MSG_WARN;
+            break;
+        case 'info':
+            $this->logLevel = Project::MSG_INFO;
+            break;
+        case 'verbose':
+            $this->logLevel = Project::MSG_VERBOSE;
+            break;
+        case 'debug':
+            $this->logLevel = Project::MSG_DEBUG;
+            break;
+        default:
+            throw new BuildException(
+                sprintf('Unknown log level "%s"', $level)
+            );
+        }
+    }
+
+    /**
      * Perform the resolution & set property.
      */
     public function main() {        
@@ -103,11 +140,11 @@ class ResolvePathTask extends TaskPhing {
             throw new BuildException("You must specify a path to resolve", $this->getLocation());
         }
         
-		$fs = FileSystem::getFileSystem();
-		
+        $fs = FileSystem::getFileSystem();
+        
         // if dir attribute was specified then we should
         // use that as basedir to which file was relative.
-		// -- unless the file specified is an absolute path
+        // -- unless the file specified is an absolute path
         if ($this->dir !== null && !$fs->isAbsolute(new PhingFile($this->file))) {
             $resolved = new PhingFile($this->dir->getPath(), $this->file);
         } else {
@@ -115,7 +152,7 @@ class ResolvePathTask extends TaskPhing {
             $resolved = $this->project->resolveFile($this->file);
         }
         
-        $this->log("Resolved " . $this->file . " to " . $resolved->getAbsolutePath(), PROJECT_MSG_INFO);
+        $this->log("Resolved " . $this->file . " to " . $resolved->getAbsolutePath(), $this->logLevel);
         $this->project->setProperty($this->propertyName, $resolved->getAbsolutePath());
     }
 

@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: TypedefTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 6122dcb36b79ffe3c3fb430a0b4586d9d145410b $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 
 /**
  * Register a datatype for use within a buildfile.
@@ -43,10 +43,10 @@ require_once 'phing/TaskPhing.php';
  *      (right now these are just too simple to really justify creating an abstract class)
  * 
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.7 $
+ * @version   $Id$
  * @package   phing.tasks.system
  */
-class TypedefTask extends TaskPhing {
+class TypedefTask extends Task {
     
     /** Tag name for datatype that will be used in XML */
     private $name;
@@ -71,7 +71,7 @@ class TypedefTask extends TaskPhing {
     /**
      * Set the classpath to be used when searching for component being defined
      * 
-     * @param Path $classpath An Path object containing the classpath.
+     * @param Path $classpath A Path object containing the classpath.
      */
     public function setClasspath(Path $classpath) {
         if ($this->classpath === null) {
@@ -83,6 +83,8 @@ class TypedefTask extends TaskPhing {
 
     /**
      * Create the classpath to be used when searching for component being defined
+     * 
+     * @return Path
      */ 
     public function createClasspath() {
         if ($this->classpath === null) {

@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: MkdirTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: e7e3dbd896d8d46cd8694fca10d1d9a7b3ce54fc $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,20 +19,26 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 include_once 'phing/system/io/PhingFile.php';
 
 /**
  * Task to create a directory.
  *
  * @author   Andreas Aderhold, andi@binarycloud.com
- * @version  $Revision: 1.8 $
+ * @version  $Id$
  * @package  phing.tasks.system
  */
-class MkdirTask extends TaskPhing {
+class MkdirTask extends Task {
 
     /** directory to create*/
     private $dir;
+    
+    /**
+     * Mode to create directory with
+     * @var integer
+     */
+    private $mode = 0755;
 
     /**
      * create the directory and all parents
@@ -44,10 +50,10 @@ class MkdirTask extends TaskPhing {
             throw new BuildException("dir attribute is required", $this->location);
         }
         if ($this->dir->isFile()) {
-            throw new BuildException("Unable to create directory since a file already exists with that name: " . $this->dir->getAbsolutePath());
+            throw new BuildException("Unable to create directory as a file already exists with that name: " . $this->dir->getAbsolutePath());
         }
         if (!$this->dir->exists()) {
-            $result = $this->dir->mkdirs();
+            $result = $this->dir->mkdirs($this->mode);
             if (!$result) {
                 $msg = "Directory " . $this->dir->getAbsolutePath() . " creation was not successful for an unknown reason";
                 throw new BuildException($msg, $this->location);
@@ -59,6 +65,15 @@ class MkdirTask extends TaskPhing {
     /** the directory to create; required. */
     function setDir(PhingFile $dir) {
         $this->dir = $dir;
+    }
+    
+    /**
+     * Sets mode to create directory with
+     * @param mixed $mode
+     */
+    function setMode($mode)
+    {
+        $this->mode = base_convert((int) $mode, 8, 10);
     }
 
 }

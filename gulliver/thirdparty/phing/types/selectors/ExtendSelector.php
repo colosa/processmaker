@@ -1,7 +1,7 @@
 <?php
 
 /*
- * $Id: ExtendSelector.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: 1683a0a93b4bb5486f3cffbe40e8260f886c6258 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,11 +25,11 @@ include_once 'phing/util/StringHelper.php';
 /**
  * Selector that selects files by forwarding the request on to other classes.
  *
- * TODO:
- *        Consider adding Path (org.apache.tools.ant.types.Path) support to this class
+ * TODO - Consider adding Path (phing.types.Path) support to this class
  *         and to the Mappers class.  See Ant versions for implimentation details.
- *
- * @author <a href="mailto:bruce@callenish.com">Bruce Atherton</a>
+ * 
+ * @author Hans Lellelid <hans@xmpl.org> (Phing)
+ * @author Bruce Atherton <bruce@callenish.com> (Ant)
  * @package phing.types.selectors
  */
 class ExtendSelector extends BaseSelector {
@@ -105,10 +105,7 @@ class ExtendSelector extends BaseSelector {
 
     /**
      * Allows the custom selector to choose whether to select a file. This
-     * is also where the Parameters are passed to the custom selector,
-     * since we know we must have them all by now. And since we must know
-     * both classpath and classname, creating the class is deferred to here
-     * as well.
+     * is also where the Parameters are passed to the custom selector.
      *
      * @throws BuildException
      */

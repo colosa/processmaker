@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: FilterReader.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 70652dbec76165f9ab0311daffde790df58eaf8e $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,21 +19,21 @@
  * <http://phing.info>. 
  */
 
-include_once 'phing/system/io/Reader.php';
+require_once 'phing/system/io/Reader.php';
 
 /**
- * Convenience class for reading files. The constructor of this
- *  @package   phing.system.io
- *
- * TODO: All filters should be ProjectComponents, too!
+ * Wrapper class for readers, which can be used to apply filters.
+ * @package phing.system.io
  */
 class FilterReader extends Reader {
     
+    /** 
+     * @var Reader
+     */
     protected $in;
     
     function __construct(Reader $in = null) {
         $this->in = $in;
-        //parent::__construct(new FileReader($file, $exclusive));
     }
     
     public function setReader(Reader $in) {
@@ -61,12 +61,8 @@ class FilterReader extends Reader {
         return $this->in->close();
     }
     
-    public function open() {
-        return $this->in->open();
-    }
-
     function getResource() {
         return $this->in->getResource();
     }
 }
-?>
+

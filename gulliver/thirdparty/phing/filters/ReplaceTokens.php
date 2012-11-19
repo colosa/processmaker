@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: ReplaceTokens.php 3076 2006-12-18 08:52:12Z fabien $  
+ *  $Id: 6c5d97f2254de3c08ac34baaabf6119c54a49a7d $  
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,7 +24,7 @@ include_once 'phing/filters/BaseParamFilterReader.php';
 include_once 'phing/types/TokenSource.php';
 include_once 'phing/filters/ChainableReader.php';
 
-/*
+/**
  * Replaces tokens in the original input with user-supplied values.
  *
  * Example:
@@ -43,7 +43,7 @@ include_once 'phing/filters/ChainableReader.php';
  *
  * @author    <a href="mailto:yl@seasonfive.com">Yannick Lecaillez</a>
  * @author    hans lellelid, hans@velum.net
- * @version   $Revision: 1.14 $ $Date: 2005/06/16 15:09:10 $
+ * @version   $Id: 6c5d97f2254de3c08ac34baaabf6119c54a49a7d $
  * @access    public
  * @see       BaseParamFilterReader
  * @package   phing.filters
@@ -142,7 +142,7 @@ class ReplaceTokens extends BaseParamFilterReader implements ChainableReader {
             $replaceWith = $this->_beginToken . $key . $this->_endToken;            
             $this->log("No token defined for key \"".$this->_beginToken  . $key . $this->_endToken."\"");
         } else {
-            $this->log("Replaced \"".$this->_beginToken  . $key . $this->_endToken ."\" with \"".$replaceWith."\"");
+            $this->log("Replaced \"".$this->_beginToken  . $key . $this->_endToken ."\" with \"".$replaceWith."\"", Project::MSG_VERBOSE);
         }
 
         return $replaceWith;
@@ -169,7 +169,7 @@ class ReplaceTokens extends BaseParamFilterReader implements ChainableReader {
         
         // filter buffer
         $buffer = preg_replace_callback(
-            "/".preg_quote($this->_beginToken)."([\w\.\-:]+?)".preg_quote($this->_endToken)."/",
+            "/".preg_quote($this->_beginToken, '/')."([\w\.\-:]+?)".preg_quote($this->_endToken, '/')."/",
             array($this, 'replaceTokenCallback'), $buffer);
 
         return $buffer;
@@ -360,6 +360,8 @@ class ReplaceTokens extends BaseParamFilterReader implements ChainableReader {
 
 /**
  * Holds a token.
+ *
+ * @package   phing.filters
  */
 class Token {
 
@@ -390,7 +392,16 @@ class Token {
      * @param string $value The value for this token. Must not be <code>null</code>.
      */
     function setValue($value) {
-        $this->_value = (string) $value;
+        // special case for boolean values
+        if (is_bool($value)) {
+            if ($value) {
+                $this->_value = "true";
+            } else {
+                $this->_value = "false";
+            }
+        } else {        
+            $this->_value = (string) $value;
+        }
     }
 
     /**
@@ -410,6 +421,15 @@ class Token {
     function getValue() {
         return $this->_value;
     }
+
+    /**
+     * Sets the token value from text.
+     *
+     * @param string $value The value for this token. Must not be <code>null</code>.
+     */
+    function addText($value) {
+        $this->setValue($value);
+    }
 }
 
-?>
+

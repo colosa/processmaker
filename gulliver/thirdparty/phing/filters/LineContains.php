@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: LineContains.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 2e783b14ff093df7de21477479a123403d630984 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -47,7 +47,7 @@ include_once 'phing/filters/ChainableReader.php';
  *
  * @author    Yannick Lecaillez <yl@seasonfive.com>
  * @author    Hans Lellelid <hans@velum.net>
- * @version   $Revision: 1.11 $
+ * @version   $Id$
  * @see       PhingFilterReader
  * @package   phing.filters
 */
@@ -153,7 +153,7 @@ class LineContains extends BaseParamFilterReader implements ChainableReader {
     }
 
     /**
-     * Adds a <code><contains></code> nested element.
+     * Adds a <code>contains</code> nested element.
      *
      * @return Contains The <code>contains</code> element added.
      *                  Must not be <code>null</code>.
@@ -169,7 +169,7 @@ class LineContains extends BaseParamFilterReader implements ChainableReader {
      *
      * @param array $contains An array of words which must be contained
      *                 within a line in order for it to match in this filter.
-     *                 Must not be <code>null<code>.
+     *                 Must not be <code>null</code>.
      */
     function setContains($contains) {
         // type check, error must never occur, bad code of it does
@@ -231,6 +231,8 @@ class LineContains extends BaseParamFilterReader implements ChainableReader {
 
 /**
  * Holds a contains element.
+ *
+ * @package phing.filters
  */
 class Contains {
 
@@ -255,4 +257,4 @@ class Contains {
         return $this->_value;
     }
 }
-?>
+

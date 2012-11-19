@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: InputTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: ae986f84ca9d952b0e14f2df9f21657213ef5e47 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 include_once 'phing/input/InputRequest.php';
 include_once 'phing/input/YesNoInputRequest.php';
 include_once 'phing/input/MultipleChoiceInputRequest.php';
@@ -31,10 +31,10 @@ include_once 'phing/input/MultipleChoiceInputRequest.php';
  * @author    Hans Lellelid <hans@xmpl.org> (Phing)
  * @author    Ulrich Schmidt <usch@usch.net> (Ant)
  * @author    Stefan Bodewig <stefan.bodewig@epost.de> (Ant)
- * @version   $Revision: 1.6 $
+ * @version   $Id: ae986f84ca9d952b0e14f2df9f21657213ef5e47 $
  * @package   phing.tasks.system
  */
-class InputTask extends TaskPhing {
+class InputTask extends Task {
     
     private $validargs;
     private $message = ""; // required
@@ -102,6 +102,10 @@ class InputTask extends TaskPhing {
     
         if ($this->propertyName === null) {
             throw new BuildException("You must specify a value for propertyName attribute.");
+        }
+        
+        if ($this->message === "") {
+            throw new BuildException("You must specify a message for input task.");
         }
         
         if ($this->validargs !== null) {

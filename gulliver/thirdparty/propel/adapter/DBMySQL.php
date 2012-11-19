@@ -1,26 +1,12 @@
 <?php
 
-/*
- *  $Id: DBMySQL.php 536 2007-01-10 14:30:38Z heltem $
+/**
+ * This file is part of the Propel package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information please see
- * <http://propel.phpdb.org>.
+ * @license    MIT License
  */
-
-require_once 'propel/adapter/DBAdapter.php';
 
 /**
  * This is used in order to connect to a MySQL database.
@@ -29,16 +15,16 @@ require_once 'propel/adapter/DBAdapter.php';
  * @author     Jon S. Stevens <jon@clearink.com> (Torque)
  * @author     Brett McLaughlin <bmclaugh@algx.net> (Torque)
  * @author     Daniel Rall <dlr@finemaltcoding.com> (Torque)
- * @version    $Revision: 536 $
- * @package    propel.adapter
+ * @version    $Revision$
+ * @package    propel.runtime.adapter
  */
-class DBMySQL extends DBAdapter {
-
+class DBMySQL extends DBAdapter
+{
 	/**
 	 * This method is used to ignore case.
 	 *
-	 * @param      in The string to transform to upper case.
-	 * @return     The upper case string.
+	 * @param     string  $in  The string to transform to upper case.
+	 * @return    string  The upper case string.
 	 */
 	public function toUpperCase($in)
 	{
@@ -48,8 +34,8 @@ class DBMySQL extends DBAdapter {
 	/**
 	 * This method is used to ignore case.
 	 *
-	 * @param      in The string whose case to ignore.
-	 * @return     The string in a case that can be ignored.
+	 * @param     string  $in  The string whose case to ignore.
+	 * @return    string  The string in a case that can be ignored.
 	 */
 	public function ignoreCase($in)
 	{
@@ -59,9 +45,10 @@ class DBMySQL extends DBAdapter {
 	/**
 	 * Returns SQL which concatenates the second string to the first.
 	 *
-	 * @param      string String to concatenate.
-	 * @param      string String to append.
-	 * @return     string
+	 * @param     string  $s1  String to concatenate.
+	 * @param     string  $s2  String to append.
+	 *
+	 * @return    string
 	 */
 	public function concatString($s1, $s2)
 	{
@@ -71,10 +58,11 @@ class DBMySQL extends DBAdapter {
 	/**
 	 * Returns SQL which extracts a substring.
 	 *
-	 * @param      string String to extract from.
-	 * @param      int Offset to start from.
-	 * @param      int Number of characters to extract.
-	 * @return     string
+	 * @param     string   $s  String to extract from.
+	 * @param     integer  $pos  Offset to start from.
+	 * @param     integer  $len  Number of characters to extract.
+	 *
+	 * @return    string
 	 */
 	public function subString($s, $pos, $len)
 	{
@@ -84,8 +72,8 @@ class DBMySQL extends DBAdapter {
 	/**
 	 * Returns SQL which calculates the length (in chars) of a string.
 	 *
-	 * @param      string String to calculate length of.
-	 * @return     string
+	 * @param     string  $s  String to calculate length of.
+	 * @return    string
 	 */
 	public function strLength($s)
 	{
@@ -96,38 +84,147 @@ class DBMySQL extends DBAdapter {
 	/**
 	 * Locks the specified table.
 	 *
-	 * @param      Connection $con The Creole connection to use.
-	 * @param      string $table The name of the table to lock.
-	 * @throws     SQLException No Statement could be created or
-	 * executed.
+	 * @param     PDO     $con  The Propel connection to use.
+	 * @param     string  $table  The name of the table to lock.
+	 *
+	 * @throws    PDOException  No Statement could be created or executed.
 	 */
-	public function lockTable(Connection $con, $table)
+	public function lockTable(PDO $con, $table)
 	{
-		$statement = $con->createStatement();
-		$sql = "LOCK TABLE " . $table . " WRITE";
-		$statement->executeUpdate($sql);
+		$con->exec("LOCK TABLE " . $table . " WRITE");
 	}
 
 	/**
 	 * Unlocks the specified table.
 	 *
-	 * @param      Connection $con The Creole connection to use.
-	 * @param      string $table The name of the table to unlock.
-	 * @throws     SQLException No Statement could be created or
-	 * executed.
+	 * @param     PDO     $con  The PDO connection to use.
+	 * @param     string  $table  The name of the table to unlock.
+	 *
+	 * @throws    PDOException  No Statement could be created or executed.
 	 */
-	public function unlockTable(Connection $con, $table)
+	public function unlockTable(PDO $con, $table)
 	{
-		$statement = $con->createStatement();
-		$statement->executeUpdate("UNLOCK TABLES");
+		$statement = $con->exec("UNLOCK TABLES");
 	}
 
 	/**
-	 * @see        DBAdapter::quoteIdentifier()
+	 * @see       DBAdapter::quoteIdentifier()
+	 *
+	 * @param     string  $text
+	 * @return    string
 	 */
 	public function quoteIdentifier($text)
 	{
 		return '`' . $text . '`';
 	}
 
+	/**
+	 * @see       DBAdapter::quoteIdentifierTable()
+	 *
+	 * @param     string  $table
+	 * @return    string
+	 */
+	public function quoteIdentifierTable($table)
+	{
+		// e.g. 'database.table alias' should be escaped as '`database`.`table` `alias`'
+		return '`' . strtr($table, array('.' => '`.`', ' ' => '` `')) . '`';
+	}
+
+	/**
+	 * @see       DBAdapter::useQuoteIdentifier()
+	 *
+	 * @return    boolean
+	 */
+	public function useQuoteIdentifier()
+	{
+		return true;
+	}
+
+	/**
+	 * @see       DBAdapter::applyLimit()
+	 *
+	 * @param     string   $sql
+	 * @param     integer  $offset
+	 * @param     integer  $limit
+	 */
+	public function applyLimit(&$sql, $offset, $limit)
+	{
+		if ( $limit > 0 ) {
+			$sql .= " LIMIT " . ($offset > 0 ? $offset . ", " : "") . $limit;
+		} else if ( $offset > 0 ) {
+			$sql .= " LIMIT " . $offset . ", 18446744073709551615";
+		}
+	}
+
+	/**
+	 * @see       DBAdapter::random()
+	 *
+	 * @param     string  $seed
+	 * @return    string
+	 */
+	public function random($seed = null)
+	{
+		return 'rand('.((int) $seed).')';
+	}
+
+	/**
+	 * @see       DBAdapter::bindValue()
+	 *
+	 * @param     PDOStatement  $stmt
+	 * @param     string        $parameter
+	 * @param     mixed         $value
+	 * @param     ColumnMap     $cMap
+	 * @param     null|integer  $position
+	 *
+	 * @return    boolean
+	 */
+	public function bindValue(PDOStatement $stmt, $parameter, $value, ColumnMap $cMap, $position = null)
+	{
+		$pdoType = $cMap->getPdoType();
+		// FIXME - This is a temporary hack to get around apparent bugs w/ PDO+MYSQL
+		// See http://pecl.php.net/bugs/bug.php?id=9919
+		if ($pdoType == PDO::PARAM_BOOL) {
+			$value = (int) $value;
+			$pdoType = PDO::PARAM_INT;
+			return $stmt->bindValue($parameter, $value, $pdoType);
+		} elseif ($cMap->isTemporal()) {
+			$value = $this->formatTemporalValue($value, $cMap);
+		} elseif (is_resource($value) && $cMap->isLob()) {
+			// we always need to make sure that the stream is rewound, otherwise nothing will
+			// get written to database.
+			rewind($value);
+		}
+
+		return $stmt->bindValue($parameter, $value, $pdoType);
+	}
+
+	/**
+	 * Prepare connection parameters.
+	 * See: http://www.propelorm.org/ticket/1360
+	 *
+	 * @param array	$params
+	 * @return array
+	 */
+	public function prepareParams($params)
+	{
+		$params = parent::prepareParams($params);
+
+		if(isset($params['settings']['charset']['value'])) {
+			if(version_compare(PHP_VERSION, '5.3.6', '<')) {
+				throw new PropelException(<<<EXCEPTION
+Connection option "charset" cannot be used for MySQL connections in PHP versions older than 5.3.6.
+Please refer to http://www.propelorm.org/ticket/1360 for instructions and details about the implications of
+using a SET NAMES statement in the "queries" setting.
+EXCEPTION
+			);
+			} else {
+				if(strpos($params['dsn'], ';charset=') === false) {
+					$params['dsn'] .= ';charset=' . $params['settings']['charset']['value'];
+					unset($params['settings']['charset']);
+				}
+			}
+		}
+
+		return $params;
+	}
 }

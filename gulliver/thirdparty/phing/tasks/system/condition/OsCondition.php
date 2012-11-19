@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: OsCondition.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: d63246e2d25230f5ba6e45a651497e3ba01abe2c $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,8 +25,8 @@ require_once 'phing/tasks/system/condition/ConditionBase.php';
  *  Condition that tests the OS type.
  *
  *  @author    Andreas Aderhold <andi@binarycloud.com>
- *  @copyright © 2001,2002 THYRELL. All rights reserved
- *  @version   $Revision: 1.8 $ $Date: 2006-04-28 16:49:47 +0200 (Fri, 28 Apr 2006) $
+ *  @copyright 2001,2002 THYRELL. All rights reserved
+ *  @version   $Id$
  *  @access    public
  *  @package   phing.tasks.system.condition
  */
@@ -40,20 +40,20 @@ class OsCondition implements Condition {
 
     function evaluate() {
         $osName = strtolower(Phing::getProperty("os.name"));
-		
+        
         if ($this->family !== null) {
             if ($this->family === "windows") {
                 return StringHelper::startsWith("win", $osName);
             } elseif ($this->family === "mac") {
                 return (strpos($osName, "mac") !== false || strpos($osName, "darwin") !== false);
             } elseif ($this->family === ("unix")) {
-				return (
-					StringHelper::endsWith("ix", $osName) ||
-					StringHelper::endsWith("ux", $osName) ||
-					StringHelper::endsWith("bsd", $osName) ||
-					StringHelper::startsWith("sunos", $osName) ||
-					StringHelper::startsWith("darwin", $osName)
-				);
+                return (
+                    StringHelper::endsWith("ix", $osName) ||
+                    StringHelper::endsWith("ux", $osName) ||
+                    StringHelper::endsWith("bsd", $osName) ||
+                    StringHelper::startsWith("sunos", $osName) ||
+                    StringHelper::startsWith("darwin", $osName)
+                );
             }
             throw new BuildException("Don't know how to detect os family '" . $this->family . "'");
         }

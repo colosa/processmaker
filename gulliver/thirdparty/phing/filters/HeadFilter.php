@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: HeadFilter.php 3076 2006-12-18 08:52:12Z fabien $  
+ *  $Id: e3e9c0a171b4416545e57fe42b45b4eec14914ce $  
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -36,7 +36,7 @@ include_once 'phing/filters/ChainableReader.php';
  *
  * @author    <a href="mailto:yl@seasonfive.com">Yannick Lecaillez</a>
  * @author    hans lellelid, hans@velum.net
- * @version   $Revision: 1.6 $ $Date: 2004/03/15 14:45:06 $
+ * @version   $Id$
  * @access    public
  * @see       FilterReader
  * @package   phing.filters
@@ -158,4 +158,4 @@ class HeadFilter extends BaseParamFilterReader implements ChainableReader {
     }
 }
 
-?>
+

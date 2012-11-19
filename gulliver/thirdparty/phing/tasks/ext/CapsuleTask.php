@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: CapsuleTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 205bc55fd1f7f36783d105ff2d0e27357282bbed $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,7 +20,7 @@
  * <http://phing.info>. 
  */
  
-include_once 'phing/TaskPhing.php';
+include_once 'phing/Task.php';
 include_once 'phing/BuildException.php';
 include_once 'phing/lib/Capsule.php';
 include_once 'phing/util/StringHelper.php';
@@ -31,10 +31,10 @@ include_once 'phing/util/StringHelper.php';
  * This is based on the interface to TexenTask from Apache's Velocity engine. 
  *
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.17 $
+ * @version   $Id: 205bc55fd1f7f36783d105ff2d0e27357282bbed $
  * @package   phing.tasks.ext
  */
-class CapsuleTask extends TaskPhing {
+class CapsuleTask extends Task {
 
     /**
      * Capsule "template" engine.
@@ -185,7 +185,7 @@ class CapsuleTask extends TaskPhing {
     public function setOutputDirectory(PhingFile $outputDirectory) {
         try {
             if (!$outputDirectory->exists()) {
-                $this->log("Output directory does not exist, creating: " . $outputDirectory->getPath(),PROJECT_MSG_VERBOSE);
+                $this->log("Output directory does not exist, creating: " . $outputDirectory->getPath(),Project::MSG_VERBOSE);
                 if (!$outputDirectory->mkdirs()) {
                     throw new IOException("Unable to create Ouptut directory: " . $outputDirectory->getAbsolutePath());
                 }
@@ -393,7 +393,7 @@ class CapsuleTask extends TaskPhing {
                 // reset value, and then 
                 // read in teh contents of the file into that var
                 $value = "";
-                $f = new PhingFile($project->resolveFile($value)->getCanonicalPath());                        
+                $f = new PhingFile($this->project->resolveFile($value)->getCanonicalPath());
                 if ($f->exists()) {
                     $fr = new FileReader($f);
                     $fr->readInto($value);
@@ -453,25 +453,27 @@ class CapsuleTask extends TaskPhing {
 /**
  * An "inner" class for holding assigned var values.
  * May be need to expand beyond name/value in the future.
+ *
+ * @package phing.tasks.ext
  */
 class AssignedVar {
     
     private $name;
     private $value;
     
-    function setName($v) {
+    public function setName($v) {
         $this->name = $v;
     }
     
-    function setValue($v) {
+    public function setValue($v) {
         $this->value = $v;
     }
     
-    function getName() {
+    public function getName() {
         return $this->name;
     }
     
-    function getValue() {
+    public function getValue() {
         return $this->value;
     }
 

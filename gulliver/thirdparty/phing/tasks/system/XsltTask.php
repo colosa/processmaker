@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: XsltTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 8f87e1c7908c06223382baf628d018c3a0f10824 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,7 +31,7 @@ include_once 'phing/filters/XsltFilter.php';
  * in the <filterchains> section.
  * 
  * @author    Andreas Aderhold, andi@binarycloud.com
- * @version   $Revision: 1.8 $
+ * @version   $Id: 8f87e1c7908c06223382baf628d018c3a0f10824 $
  * @package   phing.tasks.system
  */
 class XsltTask extends CopyTask {
@@ -57,7 +57,7 @@ class XsltTask extends CopyTask {
      * @see CopyTask::main()
      */
     function main() {        
-        $this->log("Doing XSLT transformation using stylesheet " . $this->xsltFilter->getStyle(), PROJECT_MSG_VERBOSE);
+        $this->log("Doing XSLT transformation using stylesheet " . $this->xsltFilter->getStyle(), Project::MSG_VERBOSE);
         $this->xsltFilter->setParams($this->parameters);
         parent::main();
     }
@@ -68,6 +68,28 @@ class XsltTask extends CopyTask {
      */
     function setStyle(PhingFile $style) {
         $this->xsltFilter->setStyle($style);
+    }
+    
+    /**
+     * Whether to resolve entities in the XML document.
+     * 
+     * @param bool $resolveExternals
+     * 
+     * @since 2.4
+     */
+    function setResolveDocumentExternals($resolveExternals) {
+        $this->xsltFilter->setResolveDocumentExternals((bool)$resolveExternals);
+    }
+    
+    /**
+     * Whether to resolve entities in the stylesheet.
+     * 
+     * @param bool $resolveExternals
+     * 
+     * @since 2.4
+     */
+    function setResolveStylesheetExternals($resolveExternals) {
+        $this->xsltFilter->setResolveStylesheetExternals((bool)$resolveExternals);
     }
     
     /**

@@ -1,22 +1,11 @@
 <?php
-/*
- *  $Id: PropelPager.php 536 2007-01-10 14:30:38Z heltem $
+
+/**
+ * This file is part of the Propel package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information please see
- * <http://propel.phpdb.org>.
+ * @license    MIT License
  */
 
 /**
@@ -45,33 +34,33 @@
  * <table>
  * <tr>
  * <td>
- * <?if($link = $pager->getFirstPage):?>
+ * <?if ($link = $pager->getFirstPage):?>
  * <a href="somescript?page=<?=$link?>"><?=$link?></a>|
  * <?endif?>
  * </td>
  * <td>
- * <?if($link = $pager->getPrev()):?>
+ * <?if ($link = $pager->getPrev()):?>
  * <a href="somescript?page=<?=$link?>">Previous</a>|
  * <?endif?>
  * </td>
  * <td>
- * <?foreach($pager->getPrevLinks() as $link):?>
+ * <?foreach ($pager->getPrevLinks() as $link):?>
  * <a href="somescript?page=<?=$link?>"><?=$link?></a>|
  * <?endforeach?>
  * </td>
  * <td><?=$pager->getPage()?></td>
  * <td>
- * <?foreach($pager->getNextLinks() as $link):?>
+ * <?foreach ($pager->getNextLinks() as $link):?>
  * | <a href="somescript?page=<?=$link?>"><?=$link?></a>
  * <?endforeach?>
  * </td>
  * <td>
- * <?if($link = $pager->getNext()):?>
+ * <?if ($link = $pager->getNext()):?>
  * <a href="somescript?page=<?=$link?>">Last</a>|
  * <?endif?>
  * </td>
  * <td>
- * <?if($link = $pager->getLastPage()):?>
+ * <?if ($link = $pager->getLastPage()):?>
  * <a href="somescript?page=<?=$link?>"><?=$link?></a>|
  * <?endif?>
  * </td>
@@ -84,7 +73,7 @@
  * <th>Date</th>
  * <th>comments</th>
  * </tr>
- * <?foreach($pager->getResult() as $poem):?>
+ * <?foreach ($pager->getResult() as $poem):?>
  * <tr>
  * <td><?=$poem->getTitle()?></td>
  * <td><?=$poem->getPoemUsers()->getUname()?></td>
@@ -96,11 +85,13 @@
  *
  *
  * @author     Rob Halff <info@rhalff.com>
- * @version    $Revision: 536 $
+ * @author	   Niklas Närhinen <niklas@narhinen.net>
+ * @version    $Revision$
  * @copyright  Copyright (c) 2004 Rob Halff: LGPL - See LICENCE
- * @package    propel.util
+ * @package    propel.runtime.util
  */
-class PropelPager {
+class PropelPager implements Countable, Iterator
+{
 
 	private $recordCount;
 	private $pages;
@@ -111,6 +102,9 @@ class PropelPager {
 	private $countCriteria;
 	private $page;
 	private $rs = null;
+
+	//Iterator vars
+	private $currentKey = 0;
 
 	/** @var        int Start row (offset) */
 	protected $start = 0;
@@ -128,7 +122,7 @@ class PropelPager {
 	 */
 	public function __construct($c = null, $peerClass = null, $peerSelectMethod = null, $page = 1, $rowsPerPage = 25)
 	{
-		if(!isset($c)) {
+		if (!isset($c)) {
 			$c = new Criteria();
 		}
 		$this->setCriteria($c);
@@ -268,7 +262,7 @@ class PropelPager {
 	 */
 	public function getResult()
 	{
-		if(!isset($this->rs)) {
+		if (!isset($this->rs)) {
 			$this->doRs();
 		}
 
@@ -343,9 +337,9 @@ class PropelPager {
 	 * @return     int $this->pages
 	 */
 	public function getTotalPages() {
-		if(!isset($this->pages)) {
+		if (!isset($this->pages)) {
 			$recordCount = $this->getTotalRecordCount();
-			if($this->max > 0) {
+			if ($this->max > 0) {
 					$this->pages = ceil($recordCount/$this->max);
 			} else {
 					$this->pages = 0;
@@ -367,8 +361,8 @@ class PropelPager {
 		$end = $this->getPage() - $range;
 		$first =  $this->getFirstPage();
 		$links = array();
-		for($i=$start; $i>$end; $i--) {
-			if($i < $first) {
+		for ($i=$start; $i>$end; $i--) {
+			if ($i < $first) {
 					break;
 			}
 			$links[] = $i;
@@ -390,8 +384,8 @@ class PropelPager {
 		$end = $this->getPage() + $range;
 		$last =  $this->getLastPage();
 		$links = array();
-		for($i=$start; $i<$end; $i++) {
-			if($i > $last) {
+		for ($i=$start; $i<$end; $i++) {
+			if ($i > $last) {
 					break;
 			}
 			$links[] = $i;
@@ -416,7 +410,7 @@ class PropelPager {
 	 * @return     mixed $prev
 	 */
 	public function getPrev() {
-		if($this->getPage() != $this->getFirstPage()) {
+		if ($this->getPage() != $this->getFirstPage()) {
 				$prev = $this->getPage() - 1;
 		} else {
 				$prev = false;
@@ -430,7 +424,7 @@ class PropelPager {
 	 * @return     mixed $next
 	 */
 	public function getNext() {
-		if($this->getPage() != $this->getLastPage()) {
+		if ($this->getPage() != $this->getLastPage()) {
 				$next = $this->getPage() + 1;
 		} else {
 				$next = false;
@@ -498,11 +492,11 @@ class PropelPager {
 	public function getTotalRecordCount()
 	{
 
-				if(!isset($this->rs)) {
+				if (!isset($this->rs)) {
 					$this->doRs();
 				}
 
-				if(empty($this->recordCount)) {
+				if (empty($this->recordCount)) {
 						$this->countCriteria = clone $this->criteria;
 						$this->countCriteria->setLimit(0);
 						$this->countCriteria->setOffset(0);
@@ -538,6 +532,66 @@ class PropelPager {
 	public function setMax($v)
 	{
 		$this->max = $v;
+	}
+
+	/**
+	 * Returns the count of the current page's records
+	 * @return 	int
+	 */
+	public function count()
+	{
+		return count($this->getResult());
+	}
+
+	/**
+	 * Returns the current element of the iterator
+	 * @return mixed
+	 */
+	public function current()
+	{
+		if (!isset($this->rs)) {
+			$this->doRs();
+		}
+		return $this->rs[$this->currentKey];
+	}
+
+	/**
+	 * Returns the current key of the iterator
+	 * @return int
+	 */
+	public function key()
+	{
+		return $this->currentKey;
+	}
+
+	/**
+	 * Advances the iterator to the next element
+	 * @return void
+	 */
+	public function next()
+	{
+		$this->currentKey++;
+	}
+
+	/**
+	 * Resets the iterator to the first element
+	 * @return void
+	 */
+	public function rewind()
+	{
+		$this->currentKey = 0;
+	}
+
+	/**
+	 * Checks if the current key exists in the container
+	 * @return boolean
+	 */
+	public function valid()
+	{
+		if (!isset($this->rs)) {
+			$this->doRs();
+		}
+		return in_array($this->currentKey, array_keys($this->rs));
 	}
 
 }

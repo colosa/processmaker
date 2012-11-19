@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: ExpandProperties.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: d6bb7717db7cf2b122cbdcb93e5bb0f45d97ec52 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -33,12 +33,29 @@ include_once 'phing/filters/ChainableReader.php';
  *
  * @author    Yannick Lecaillez <yl@seasonfive.com>
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.6 $
+ * @version   $Id: d6bb7717db7cf2b122cbdcb93e5bb0f45d97ec52 $
  * @see       BaseFilterReader
  * @package   phing.filters
  */
 class ExpandProperties extends BaseFilterReader implements ChainableReader {
+    protected $logLevel = Project::MSG_VERBOSE;
    
+    /**
+     * Set level of log messages generated (default = info)
+     * @param string $level
+     */
+    public function setLevel($level)
+    {
+        switch ($level)
+        {
+            case "error": $this->logLevel = Project::MSG_ERR; break;
+            case "warning": $this->logLevel = Project::MSG_WARN; break;
+            case "info": $this->logLevel = Project::MSG_INFO; break;
+            case "verbose": $this->logLevel = Project::MSG_VERBOSE; break;
+            case "debug": $this->logLevel = Project::MSG_DEBUG; break;
+        }
+    }
+    
     /**
      * Returns the filtered stream. 
      * The original stream is first read in fully, and the Phing properties are expanded.
@@ -57,7 +74,7 @@ class ExpandProperties extends BaseFilterReader implements ChainableReader {
         }
         
         $project = $this->getProject();
-        $buffer = ProjectConfigurator::replaceProperties($project, $buffer, $project->getProperties());
+        $buffer = ProjectConfigurator::replaceProperties($project, $buffer, $project->getProperties(), $this->logLevel);
         
         return $buffer;
     }
@@ -79,4 +96,4 @@ class ExpandProperties extends BaseFilterReader implements ChainableReader {
     }
 }
 
-?>
+

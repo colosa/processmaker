@@ -1,26 +1,12 @@
 <?php
 
-/*
- *  $Id: DBOracle.php 536 2007-01-10 14:30:38Z heltem $
+/**
+ * This file is part of the Propel package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information please see
- * <http://propel.phpdb.org>.
+ * @license    MIT License
  */
-
-require_once 'propel/adapter/DBAdapter.php';
 
 /**
  * Oracle adapter.
@@ -31,16 +17,39 @@ require_once 'propel/adapter/DBAdapter.php';
  * @author     Brett McLaughlin <bmclaugh@algx.net> (Torque)
  * @author     Bill Schneider <bschneider@vecna.com> (Torque)
  * @author     Daniel Rall <dlr@finemaltcoding.com> (Torque)
- * @version    $Revision: 536 $
- * @package    propel.adapter
+ * @version    $Revision$
+ * @package    propel.runtime.adapter
  */
-class DBOracle extends DBAdapter {
+class DBOracle extends DBAdapter
+{
+	/**
+	 * This method is called after a connection was created to run necessary
+	 * post-initialization queries or code.
+	 * Removes the charset query and adds the date queries
+	 *
+	 * @see       parent::initConnection()
+	 *
+	 * @param     PDO    $con
+	 * @param     array  $settings  A $PDO PDO connection instance
+	 */
+	public function initConnection(PDO $con, array $settings)
+	{
+		$con->exec("ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD'");
+		$con->exec("ALTER SESSION SET NLS_TIMESTAMP_FORMAT='YYYY-MM-DD HH24:MI:SS'");
+		if (isset($settings['queries']) && is_array($settings['queries'])) {
+			foreach ($settings['queries'] as $queries) {
+				foreach ((array)$queries as $query) {
+					$con->exec($query);
+				}
+			}
+		}
+	}
 
 	/**
 	 * This method is used to ignore case.
 	 *
-	 * @param      string $in The string to transform to upper case.
-	 * @return     string The upper case string.
+	 * @param     string  $in  The string to transform to upper case.
+	 * @return    string  The upper case string.
 	 */
 	public function toUpperCase($in)
 	{
@@ -50,8 +59,8 @@ class DBOracle extends DBAdapter {
 	/**
 	 * This method is used to ignore case.
 	 *
-	 * @param      string $in The string whose case to ignore.
-	 * @return     string The string in a case that can be ignored.
+	 * @param     string  $in  The string whose case to ignore.
+	 * @return    string  The string in a case that can be ignored.
 	 */
 	public function ignoreCase($in)
 	{
@@ -61,9 +70,10 @@ class DBOracle extends DBAdapter {
 	/**
 	 * Returns SQL which concatenates the second string to the first.
 	 *
-	 * @param      string String to concatenate.
-	 * @param      string String to append.
-	 * @return     string
+	 * @param     string  $s1  String to concatenate.
+	 * @param     string  $s2  String to append.
+	 *
+	 * @return    string
 	 */
 	public function concatString($s1, $s2)
 	{
@@ -73,10 +83,11 @@ class DBOracle extends DBAdapter {
 	/**
 	 * Returns SQL which extracts a substring.
 	 *
-	 * @param      string String to extract from.
-	 * @param      int Offset to start from.
-	 * @param      int Number of characters to extract.
-	 * @return     string
+	 * @param     string   $s  String to extract from.
+	 * @param     integer  $pos  Offset to start from.
+	 * @param     integer  $len  Number of characters to extract.
+	 *
+	 * @return    string
 	 */
 	public function subString($s, $pos, $len)
 	{
@@ -86,8 +97,8 @@ class DBOracle extends DBAdapter {
 	/**
 	 * Returns SQL which calculates the length (in chars) of a string.
 	 *
-	 * @param      string String to calculate length of.
-	 * @return     string
+	 * @param     string  $s  String to calculate length of.
+	 * @return    string
 	 */
 	public function strLength($s)
 	{
@@ -95,29 +106,132 @@ class DBOracle extends DBAdapter {
 	}
 
 	/**
-	 * Locks the specified table.
+	 * @see       DBAdapter::applyLimit()
 	 *
-	 * @param      Connection $con The Creole connection to use.
-	 * @param      string $table The name of the table to lock.
-	 * @throws     SQLException No Statement could be created or executed.
+	 * @param     string   $sql
+	 * @param     integer  $offset
+	 * @param     integer  $limit
+	 * @param     null|Criteria  $criteria
 	 */
-	public function lockTable(Connection $con, $table)
+	public function applyLimit(&$sql, $offset, $limit, $criteria = null)
 	{
-		$statement = $con->createStatement();
-		$statement->executeQuery("SELECT next_id FROM " . $table ." FOR UPDATE");
+		if (BasePeer::needsSelectAliases($criteria)) {
+			$crit = clone $criteria;
+			$selectSql = $this->createSelectSqlPart($crit, $params, true);
+			$sql = $selectSql . substr($sql, strpos($sql, 'FROM') - 1);
+		}
+		$sql = 'SELECT B.* FROM ('
+			. 'SELECT A.*, rownum AS PROPEL_ROWNUM FROM (' . $sql . ') A '
+			. ') B WHERE ';
+
+		if ( $offset > 0 ) {
+			$sql .= ' B.PROPEL_ROWNUM > ' . $offset;
+			if ( $limit > 0 ) {
+				$sql .= ' AND B.PROPEL_ROWNUM <= ' . ( $offset + $limit );
+			}
+		} else {
+			$sql .= ' B.PROPEL_ROWNUM <= ' . $limit;
+		}
 	}
 
 	/**
-	 * Unlocks the specified table.
-	 *
-	 * @param      Connection $con The Creole connection to use.
-	 * @param      string $table The name of the table to unlock.
-	 * @throws     SQLException - No Statement could be created or executed.
+	 * @return int
 	 */
-	public function unlockTable(Connection $con, $table)
+	protected function getIdMethod()
 	{
-		// Tables in Oracle are unlocked when a commit is issued.  The
-		// user may have issued a commit but do it here to be sure.
-		$con->commit();
+		return DBAdapter::ID_METHOD_SEQUENCE;
+	}
+
+	/**
+	 * @param     PDO     $con
+	 * @param     string  $name
+	 *
+	 * @throws    PropelException
+	 * @return    integer
+	 */
+	public function getId(PDO $con, $name = null)
+	{
+		if ($name === null) {
+			throw new PropelException("Unable to fetch next sequence ID without sequence name.");
+		}
+
+		$stmt = $con->query("SELECT " . $name . ".nextval FROM dual");
+		$row = $stmt->fetch(PDO::FETCH_NUM);
+
+		return $row[0];
+	}
+
+	/**
+	 * @param     string  $seed
+	 * @return    string
+	 */
+	public function random($seed=NULL)
+	{
+		return 'dbms_random.value';
+	}
+
+	/**
+	 * Ensures uniqueness of select column names by turning them all into aliases
+	 * This is necessary for queries on more than one table when the tables share a column name
+	 *
+	 * @see http://propel.phpdb.org/trac/ticket/795
+	 *
+	 * @param     Criteria  $criteria
+	 * @return    Criteria  The input, with Select columns replaced by aliases
+	 */
+	public function turnSelectColumnsToAliases(Criteria $criteria)
+	{
+		$selectColumns = $criteria->getSelectColumns();
+		// clearSelectColumns also clears the aliases, so get them too
+		$asColumns = $criteria->getAsColumns();
+		$criteria->clearSelectColumns();
+		$columnAliases = $asColumns;
+		// add the select columns back
+		foreach ($selectColumns as $id => $clause) {
+			// Generate a unique alias
+			$baseAlias = "ORA_COL_ALIAS_".$id;
+			$alias = $baseAlias;
+			// If it already exists, add a unique suffix
+			$i = 0;
+			while (isset($columnAliases[$alias])) {
+				$i++;
+				$alias = $baseAlias . '_' . $i;
+			}
+			// Add it as an alias
+			$criteria->addAsColumn($alias, $clause);
+			$columnAliases[$alias] = $clause;
+		}
+		// Add the aliases back, don't modify them
+		foreach ($asColumns as $name => $clause) {
+			$criteria->addAsColumn($name, $clause);
+		}
+
+		return $criteria;
+	}
+
+	/**
+	 * @see       DBAdapter::bindValue()
+	 *
+	 * @param     PDOStatement  $stmt
+	 * @param     string        $parameter
+	 * @param     mixed         $value
+	 * @param     ColumnMap     $cMap
+	 * @param     null|integer  $position
+	 *
+	 * @return    boolean
+	 */
+	public function bindValue(PDOStatement $stmt, $parameter, $value, ColumnMap $cMap, $position = null)
+	{
+		if ($cMap->isTemporal()) {
+			$value = $this->formatTemporalValue($value, $cMap);
+		} elseif ($cMap->getType() == PropelColumnTypes::CLOB_EMU) {
+			return $stmt->bindParam(':p'.$position, $value, $cMap->getPdoType(), strlen($value));
+		} elseif (is_resource($value) && $cMap->isLob()) {
+			// we always need to make sure that the stream is rewound, otherwise nothing will
+			// get written to database.
+			rewind($value);
+		}
+
+		return $stmt->bindValue($parameter, $value, $cMap->getPdoType());
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: TailFilter.php 3076 2006-12-18 08:52:12Z fabien $  
+ *  $Id: 3c108d45a4b3be6f6b9a395477e7641d8e17c44b $  
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -37,8 +37,8 @@ require_once 'phing/filters/BaseParamFilterReader.php';
  *
  * @author    <a href="mailto:yl@seasonfive.com">Yannick Lecaillez</a>
  * @author    hans lellelid, hans@velum.net
- * @copyright © 2003 seasonfive. All rights reserved
- * @version   $Revision: 1.7 $
+ * @copyright ï¿½ 2003 seasonfive. All rights reserved
+ * @version   $Id$
  * @see       BaseParamFilterReader
  * @package   phing.filters
  */
@@ -154,4 +154,4 @@ class TailFilter extends BaseParamFilterReader implements ChainableReader {
     }
 }
 
-?>
+

@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: LineContainsRegexp.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 0a881c0b67c96c20345980fd033f006379949dda $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -42,7 +42,7 @@ include_once 'phing/filters/ChainableReader.php';
  *
  * @author    Yannick Lecaillez <yl@seasonfive.com>
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.8 $
+ * @version   $Id$
  * @see       FilterReader
  * @package   phing.filters
  */
@@ -176,4 +176,4 @@ class LineContainsRegexp extends BaseParamFilterReader implements ChainableReade
     }
 }
 
-?>
+

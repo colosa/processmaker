@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: TokenReader.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: c267e1935c57a372e5b8fc07eef73bd084195e82 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,7 +27,7 @@ include_once 'phing/filters/ReplaceTokens.php'; // For class Token
  * Abstract class for TokenReaders.
  * 
  * @author    Manuel Holtgewe
- * @version   $Revision: 1.5 $
+ * @version   $Id$
  * @package   phing.filters.util
  */
 abstract class TokenReader {
@@ -63,4 +63,4 @@ abstract class TokenReader {
     
 }
 
-?>
+

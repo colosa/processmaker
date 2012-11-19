@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: UnixFileSystem.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: ccfae0e7f76e6a02bfb20fc4b6f30eddf86d169f $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -39,7 +39,7 @@ include_once 'phing/system/io/FileSystem.php';
  *  - Error handling reduced to min, error are handled by PhingFile mainly
  *
  * @author    Andreas Aderhold, andi@binarycloud.com
- * @version   $Revision: 1.10 $
+ * @version   $Id$
  * @package   phing.system.io
  */
 class UnixFileSystem extends FileSystem {
@@ -68,7 +68,7 @@ class UnixFileSystem extends FileSystem {
      */
     function normalize($strPathname) {
         
-        if (empty($strPathname)) {
+        if (!strlen($strPathname)) {
             return;
         }
         
@@ -191,7 +191,7 @@ class UnixFileSystem extends FileSystem {
     /* -- most of the following is mapped to the php natives wrapped by FileSystem */    
 
     /* -- Attribute accessors -- */
-    function getBooleanAttributes(&$f) {
+    function getBooleanAttributes($f) {
         //$rv = getBooleanAttributes0($f);
         $name = $f->getName();
         $hidden = (strlen($name) > 0) && ($name{0} == '.');
@@ -207,23 +207,47 @@ class UnixFileSystem extends FileSystem {
             $perms = (int) (@fileperms($strPath) & 0444);
             return FileSystem::Chmod($strPath, $perms);
         } else {
-            throw new Exception("IllegalArgutmentType: Argument is not File");
+            throw new Exception("IllegalArgumentType: Argument is not File");
         }
     }
 
     /**
      * compares file paths lexicographically
      */
-    function compare($f1, $f2) {
-        if ( ($f1 instanceof PhingFile) && ($f2 instanceof PhingFile) ) {
-            $f1Path = $f1->getPath();
-            $f2Path = $f2->getPath();
-            return (boolean) strcmp((string) $f1Path, (string) $f2Path);
-        } else {
-            throw new Exception("IllegalArgutmentType: Argument is not PhingFile");
-        }
+    function compare(PhingFile $f1, PhingFile $f2) {
+        $f1Path = $f1->getPath();
+        $f2Path = $f2->getPath();
+        return strcmp((string) $f1Path, (string) $f2Path);
     }
 
+    /**
+     * Copy a file, takes care of symbolic links
+     *
+     * @param PhingFile $src Source path and name file to copy.
+     * @param PhingFile $dest Destination path and name of new file.
+     *
+     * @return void     
+     * @throws Exception if file cannot be copied.
+     */
+    function copy(PhingFile $src, PhingFile $dest) {
+        global $php_errormsg;
+        
+        if (!$src->isLink())
+        {
+            return parent::copy($src, $dest);
+        }
+        
+        $srcPath  = $src->getAbsolutePath();
+        $destPath = $dest->getAbsolutePath();
+        
+        $linkTarget = $src->getLinkTarget();
+        if (false === @symlink($linkTarget, $destPath))
+        {
+            $msg = "FileSystem::copy() FAILED. Cannot create symlink from $destPath to $linkTarget.";
+            throw new Exception($msg);
+        }
+    }
+    
     /* -- fs interface --*/
 
     function listRoots() {
@@ -261,6 +285,18 @@ class UnixFileSystem extends FileSystem {
         }
 
         return $p;
+    }
+    
+    /**
+     * Whether file can be deleted.
+     * @param PhingFile $f
+     * @return boolean
+     */
+    function canDelete(PhingFile $f) 
+    { 
+        @clearstatcache(); 
+        $dir = dirname($f->getAbsolutePath()); 
+        return (bool) @is_writable($dir); 
     }
     
 }

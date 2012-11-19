@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: MailTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 901fb0efa435ae78d249a50ed0e0f6e5d31e0d32 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,59 +19,141 @@
  * <http://phing.info>.
  */
  
-include_once 'phing/TaskPhing.php';
+include_once 'phing/Task.php';
 
 /**
- *  Send a message by mail() 
+ * Send an e-mail message
  *
- *  <mail to="user@example.org" subject="build complete">The build process is a success...</mail> 
+ * <mail tolist="user@example.org" subject="build complete">The build process is a success...</mail> 
  * 
- *  @author   Francois Harvey at SecuriWeb (http://www.securiweb.net)
- *  @version  $Revision: 1.1 $
- *  @package  phing.tasks.ext
+ * @author   Michiel Rook <mrook@php.net>
+ * @author   Francois Harvey at SecuriWeb (http://www.securiweb.net)
+ * @version  $Id: 901fb0efa435ae78d249a50ed0e0f6e5d31e0d32 $
+ * @package  phing.tasks.ext
  */
-class MailTask extends TaskPhing {
-
-    protected $recipient;
-      
-    protected $subject;
+class MailTask extends Task
+{
+    protected $tolist = null;
+    protected $subject = null;
+    protected $msg = null;
+    protected $from = null;
     
-    protected $msg;
+    protected $filesets = array();
+    
+    public function main()
+    {
+        if (empty($this->from)) {
+            throw new BuildException('Missing "from" attribute');
+        }
+        
+        $this->log('Sending mail to ' . $this->tolist);
+        
+        if (!empty($this->filesets)) {
+            @require_once 'Mail.php';
+            @require_once 'Mail/mime.php';
+            
+            if (!class_exists('Mail_mime')) {
+                throw new BuildException('Need the PEAR Mail_mime package to send attachments');
+            }
+            
+            $mime = new Mail_mime();
+            $hdrs = array(
+            	'From'    => $this->from,
+            	'Subject' => $this->subject
+            );
+            $mime->setTXTBody($this->msg);
+            
+            foreach ($this->filesets as $fs) {
+                $ds = $fs->getDirectoryScanner($this->project);
+                $fromDir  = $fs->getDir($this->project);
+                $srcFiles = $ds->getIncludedFiles();
 
-    function main() {
-        $this->log('Sending mail to ' . $this->recipient );    
-        mail($this->recipient, $this->subject, $this->msg);
+                foreach ($srcFiles as $file) {
+                    $mime->addAttachment($fromDir . DIRECTORY_SEPARATOR . $file, 'application/octet-stream');
+                }
+            }
+            
+            $body = $mime->get();
+            $hdrs = $mime->headers($hdrs);
+            
+            $mail = Mail::factory('mail');
+            $mail->send($this->tolist, $hdrs, $body);
+        } else {
+            mail($this->tolist, $this->subject, $this->msg, "From: {$this->from}\n");
+        }
     }
 
-    /** setter for message */
-    function setMsg($msg) {
+    /**
+     * Setter for message
+     */
+    public function setMsg($msg)
+    {
         $this->setMessage($msg);
     }
 
-    /** alias setter */
-    function setMessage($msg) {
-        $this->msg = (string) $msg;
-    }
-    
-    /** setter for subject **/
-    function setSubject($subject) {
-        $this->subject = (string) $subject;    
-    }
-
-    /** setter for recipient **/
-    function setRecipient($recipient) {
-        $this->recipient = (string) $recipient;
-    }
-
-    /** alias for recipient **/
-    function setTo($recipient) {
-        $this->recipient = (string) $recipient;
-    }
-        
-    /** Supporting the <mail>Message</mail> syntax. */
-    function addText($msg)
+    /**
+     * Alias setter
+     */
+    public function setMessage($msg)
     {
         $this->msg = (string) $msg;
     }
-}
+    
+    /**
+     * Setter for subject
+     */
+    public function setSubject($subject)
+    {
+        $this->subject = (string) $subject;
+    }
 
+    /**
+     * Setter for tolist
+     */
+    public function setToList($tolist)
+    {
+        $this->tolist = $tolist;
+    }
+    
+    /**
+     * Alias for (deprecated) recipient
+     */
+    public function setRecipient($recipient)
+    {
+        $this->tolist = (string) $recipient;
+    }
+
+    /**
+     * Alias for to
+     */
+    public function setTo($to)
+    {
+        $this->tolist = (string) $to;
+    }
+        
+    /**
+     * Supports the <mail>Message</mail> syntax.
+     */
+    public function addText($msg)
+    {
+        $this->msg = (string) $msg;
+    }
+    
+    /**
+     * Sets email address of sender
+     */
+    public function setFrom($from)
+    {
+        $this->from = $from;
+    }
+    
+    /**
+     * Adds a fileset
+     */
+    public function createFileSet()
+    {
+        $fileset = new FileSet();
+        $this->filesets[] = $fileset;
+        return $fileset;
+    }
+}

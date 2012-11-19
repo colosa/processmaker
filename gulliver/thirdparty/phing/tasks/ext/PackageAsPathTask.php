@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: PackageAsPathTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 976dafaf4cafd9ff8f47907a09943ae3963aea79 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,16 +20,16 @@
  * <http://phing.info>. 
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 
 /**
  * Convert dot-notation packages to relative paths.
  *
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.5 $
+ * @version   $Id: 976dafaf4cafd9ff8f47907a09943ae3963aea79 $
  * @package   phing.tasks.ext
  */
-class PackageAsPathTask extends TaskPhing {
+class PackageAsPathTask extends Task {
 
     /** The package to convert. */
     protected $pckg;

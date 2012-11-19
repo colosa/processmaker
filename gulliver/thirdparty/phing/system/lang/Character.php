@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Character.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: afe71e9fbaaa9c49e543c338b5fdca1bc7c9d198 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -46,4 +46,4 @@ class Character {
     }
 
 }
-?>
+

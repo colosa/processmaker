@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: BufferedWriter.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 8a155d3b04ca1a938bc22f59aba8509e0910ad33 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,7 +25,7 @@ include_once 'phing/system/io/Writer.php';
  * Convenience class for writing files.
  *
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.10 $
+ * @version   $Id$
  * @package   phing.system.io 
  */
 class BufferedWriter extends Writer {
@@ -36,37 +36,36 @@ class BufferedWriter extends Writer {
     private $bufferSize    = 0;
     
     /**
-     * The Writer we are buffering output to.
+     * @var Writer The Writer we are buffering output to.
      */
     private $out;
 
-    function __construct(Writer $writer, $buffsize = 8192) {
+    public function __construct(Writer $writer, $buffsize = 8192) {
         $this->out = $writer;
         $this->bufferSize = $buffsize;
     }
 
-    function write($buf, $off = null, $len = null) {
+    public function write($buf, $off = null, $len = null) {
         return $this->out->write($buf, $off, $len);
     }
     
-    function newLine() {
-        $this->write(Phing::getProperty('line.separator'));
+    public function newLine() {
+        $this->write(PHP_EOL);
     }
     
-    function getResource() {
+    public function getResource() {
         return $this->out->getResource();
     }
-
-    function reset() {
-        return $this->out->reset();
+    
+    public function flush() {
+        $this->out->flush();
     }
     
-    function close() {
+    /**
+     * Close attached stream.
+     */
+    public function close() {
         return $this->out->close();
-    }
-    
-    function open() {
-        return $this->out->open();
     }
     
 }

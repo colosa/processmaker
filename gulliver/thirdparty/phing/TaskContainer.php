@@ -1,6 +1,6 @@
 <?php
-/*
- *  $Id: TaskContainer.php 3076 2006-12-18 08:52:12Z fabien $
+/**
+ *  $Id: c31c503eb573b2f454071e9a97fa6a2323c128eb $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -17,6 +17,8 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information please see
  * <http://phing.info>.
+ *
+ * @package phing
  */
 
 /**
@@ -24,8 +26,8 @@
  *  Used to check if a class can contain tasks (via instanceof)
  *
  *  @author    Andreas Aderhold <andi@binarycloud.com>
- *  @copyright © 2001,2002 THYRELL. All rights reserved
- *  @version   $Revision: 1.5 $ $Date: 2005/10/04 19:13:44 $
+ *  @copyright 2001,2002 THYRELL. All rights reserved
+ *  @version   $Id$
  *  @access    public
  *  @package   phing
  */
@@ -38,5 +40,5 @@ interface TaskContainer {
      *  @param  object  The task to be added to the container
      *  @access public
      */
-    function addTask(TaskPhing $task);
+    function addTask(Task $task);
 }

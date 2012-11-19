@@ -16,13 +16,12 @@
     $> phing -Dproject=bookstore -Dtarget=insert-sql
 
 -->
-<project name="propel-project-builder" default="main" basedir=".">
+<project name="propel-project-builder" default="main">
 
 <!-- in case ${project.dir} was specified on command line, we set the project.dir
      property here.  If it wasn't set, then this will be bogus, but it will
      be overridden by the "set-project-dir" target. -->    
-<property name="propel.project.dir" value="${project.dir}"/>
-<resolvepath propertyName="propel.project.dir" file="${propel.project.dir}" dir="${application.startdir}"/>
+<resolvepath propertyName="propel.project.dir" file="${project.dir}" dir="${application.startdir}"/>
 
 <!-- set a default target if none provided -->
 <property name="target" value="main"/>
@@ -40,7 +39,7 @@
 <target name="check-buildprops" unless="projBuildPopertiesExists" depends="check-buildprops-exists">
 		<echo message="====================================================="/>
 		<echo message="Could not open ${build.properties} file:"/>
-		<echo message="		${propel.project.dir}/${build.properties}"/>
+		<echo message="		${propel.project.dir}${build.properties}"/>
 		<echo message=" "/>
 		<echo message="Make sure that '${propel.project.dir}' is a valid path"/>
 		<echo message="and that it contains a ${build.properties} file."/>
@@ -60,18 +59,38 @@
 
 <target name="check-buildprops-for-propel-gen" if="using.propel-gen" unless="projBuildPopertiesExists" depends="check-buildprops-exists">
 	<echo message="=========================================================="/>
-	<echo message="Could not open ${build.properties} file:"/>
-	<echo message="		${propel.project.dir}/${build.properties}"/>
+	<echo message="                   Welcome to Propel!"/>
 	<echo message=" "/>
-	<echo message="Project directory not specified or invalid. You must "/>
-	<echo message="specify the path to your project directory and your "/>
-	<echo message="project directory must contain your ${build.properties} "/>
-	<echo message="and schema.xml files.                                "/>
+	<echo message="The propel-gen script requires a ${build.properties} file"/>
+	<echo message="to run. Either you didn't create one already, or this file"/>
+	<echo message="is not where the propel-gen script is looking for it."/>
 	<echo message=" "/>
-	<echo message="Usage: "/>
+	<echo message="Expected ${build.properties} file location is:"/>
+	<echo message="  ${propel.project.dir}${build.properties}"/>
 	<echo message=" "/>
-	<echo message="$&gt; propel-gen /path/to/projectdir [target]"/>
+	<echo message="The propel-gen script expects the name of a task to execute:"/>
 	<echo message=" "/>
+	<echo message="$&gt; propel-gen [taskname]"/>
+	<echo message=" "/>
+	<echo message="If you call the script from another directory than the one where"/>
+	<echo message="where the ${build.properties} file is, set the path to this"/>
+	<echo message="file as first argument of the script:"/>
+	<echo message=" "/>
+	<echo message="$&gt; propel-gen /path/to/projectdir [taskname]"/>
+	<echo message=" "/>
+	<echo message="Available tasknames are:"/>
+	<echo message="  om"/>
+	<echo message="  convert-conf"/>
+	<echo message="  sql"/>
+	<echo message="  insert-sql"/>
+	<echo message="  diff"/>
+	<echo message="  status"/>
+	<echo message="  migrate"/>
+	<echo message="  up"/>
+	<echo message="  down"/>
+	<echo message="  reverse"/>
+	<echo message="  ... and a few others."/>
+	<echo message="But you should start by creating a schema."/>
 	<echo message="=========================================================="/>	
 	<fail message="No project directory specified."/>
 </target>
@@ -101,6 +120,14 @@
 </target>
 
 <target name="configure" depends="set-project-dir,check-buildprops-for-propel-gen,check-buildprops">
+	<if>
+		<isset property="additional.properties"/>
+		<then>
+			<echo>Processing additional properties file: ${additional.properties}</echo>
+			<resolvepath propertyName="additional.properties.resolved" file="${additional.properties}" dir="${application.startdir}"/>
+			<property file="${additional.properties.resolved}"/>
+		</then>
+	</if>
 	<echo msg="Loading project-specific props from ${propel.project.dir}/${build.properties}"/>
 	<property file="${propel.project.dir}/${build.properties}"/>
 </target>
@@ -125,20 +152,16 @@
  issue as far as maintenance is concerned.
 -->
 
-<target name="convert-props" depends="configure">
-	<phing phingfile="build-propel.xml" target="convert-props"/>
+<target name="convert-conf" depends="configure">
+	<phing phingfile="build-propel.xml" target="convert-conf"/>
 </target>
 
 <target name="create-db" depends="configure">
 	<phing phingfile="build-propel.xml" target="create-db"/>
 </target>
 
-<target name="creole" depends="configure">
-	<phing phingfile="build-propel.xml" target="creole"/>
-</target>
-
-<target name="datadtd" depends="configure">
-	<phing phingfile="build-propel.xml" target="datadtd"/>
+<target name="reverse" depends="configure">
+	<phing phingfile="build-propel.xml" target="reverse"/>
 </target>
 
 <target name="datadump" depends="configure">
@@ -165,8 +188,46 @@
 	<phing phingfile="build-propel.xml" target="sql"/>
 </target>
 
+<target name="sql-diff" depends="configure">
+	<phing phingfile="build-propel.xml" target="sql-diff"/>
+</target>
+
+<target name="diff" depends="sql-diff" />
+
+<target name="migration-status" depends="configure">
+	<phing phingfile="build-propel.xml" target="migration-status"/>
+</target>
+
+<target name="status" depends="migration-status" />
+
+<target name="migration-up" depends="configure">
+	<phing phingfile="build-propel.xml" target="migration-up"/>
+</target>
+
+<target name="migrate-up" depends="migration-up" />
+
+<target name="up" depends="migration-up" />
+
+<target name="migration-down" depends="configure">
+	<phing phingfile="build-propel.xml" target="migration-down"/>
+</target>
+
+<target name="migrate-down" depends="migration-down" />
+
+<target name="down" depends="migration-down" />
+
+<target name="migration" depends="configure">
+	<phing phingfile="build-propel.xml" target="migration"/>
+</target>
+
+<target name="migrate" depends="migration" />
+
 <target name="old-sql" depends="configure">
 	<phing phingfile="build-propel.xml" target="old-sql"/>
+</target>
+
+<target name="dbd2propel" depends="configure">
+	<phing phingfile="build-propel.xml" target="dbd2propel"/>
 </target>
 
 <target name="graphviz" depends="configure">

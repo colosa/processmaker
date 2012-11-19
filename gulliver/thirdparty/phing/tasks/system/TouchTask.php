@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: TouchTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: e581b40ff4e3eac5f62a32b48b4a22285cbc51c1 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@
  * <http://phing.info>.
  */
 
-require_once 'phing/TaskPhing.php';
+require_once 'phing/Task.php';
 include_once 'phing/util/DirectoryScanner.php';
 include_once 'phing/types/FileSet.php';
 include_once 'phing/util/FileUtils.php';
@@ -31,10 +31,10 @@ include_once 'phing/system/io/IOException.php';
  *
  * If the file to touch doesn't exist, an empty one is created.
  *
- * @version $Revision: 1.12 $
+ * @version $Id$
  * @package phing.tasks.system
  */
-class TouchTask extends TaskPhing {
+class TouchTask extends Task {
 
     private $file;
     private $millis    = -1;
@@ -117,7 +117,7 @@ class TouchTask extends TaskPhing {
     function _touch() {
         if ($this->file !== null) {
             if (!$this->file->exists()) {
-                $this->log("Creating " . $this->file->__toString(), PROJECT_MSG_INFO);
+                $this->log("Creating " . $this->file->__toString(), Project::MSG_INFO);
                 try { // try to create file
                     $this->file->createNewFile();
                 } catch(IOException  $ioe) {

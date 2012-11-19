@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: TarTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: c3ac5fcdf4d7cdb199d57b021e3f015c9c7fd3f8 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,7 +31,7 @@ include_once 'phing/util/StringHelper.php';
  * @author    Stefano Mazzocchi <stefano@apache.org> (Ant)
  * @author    Stefan Bodewig <stefan.bodewig@epost.de> (Ant)
  * @author    Magesh Umasankar
- * @version   $Revision: 1.10 $
+ * @version   $Id: c3ac5fcdf4d7cdb199d57b021e3f015c9c7fd3f8 $
  * @package   phing.tasks.ext
  */
 class TarTask extends MatchingTask {
@@ -44,8 +44,8 @@ class TarTask extends MatchingTask {
     
     private $tarFile;
     private $baseDir;
-	private $includeEmpty = true; // Whether to include empty dirs in the TAR
-	
+    private $includeEmpty = true; // Whether to include empty dirs in the TAR
+    
     private $longFileMode = "warn";
 
     private $filesets = array();
@@ -60,6 +60,13 @@ class TarTask extends MatchingTask {
      * Compression mode.  Available options "gzip", "bzip2", "none" (null).
      */
     private $compression = null;
+
+    /**
+     * File path prefix in the tar archive
+     *
+     * @var string
+     */
+    private $prefix = null;
     
     /**
      * Ensures that PEAR lib exists.
@@ -114,7 +121,7 @@ class TarTask extends MatchingTask {
      * @return void
      * @access public
      */
-    function setIncludeEmptyDirs($bool) {
+    public function setIncludeEmptyDirs($bool) {
         $this->includeEmpty = (boolean) $bool;
     }
 
@@ -156,9 +163,20 @@ class TarTask extends MatchingTask {
                 $this->compression = null;
                 break;
             default:
-                $this->log("Ignoring unknown compression mode: ".$mode, PROJECT_MSG_WARN);
+                $this->log("Ignoring unknown compression mode: ".$mode, Project::MSG_WARN);
                 $this->compression = null;
         }
+    }
+
+    /**
+     * Sets the file path prefix for file in the tar file.
+     *
+     * @param string $prefix Prefix
+     *
+     * @return void
+     */
+    public function setPrefix($prefix) {
+        $this->prefix = $prefix;
     }
     
     /**
@@ -186,14 +204,14 @@ class TarTask extends MatchingTask {
         try {
             if ($this->baseDir !== null) {
                 if (!$this->baseDir->exists()) {
-                    throw new BuildException("basedir does not exist!", $this->getLocation());
+                    throw new BuildException("basedir '" . (string) $this->baseDir . "' does not exist!", $this->getLocation());
                 }
-				if (empty($this->filesets)) { // if there weren't any explicit filesets specivied, then
-	                						  // create a default, all-inclusive fileset using the specified basedir.
-	                $mainFileSet = new TarFileSet($this->fileset);
-	                $mainFileSet->setDir($this->baseDir);
-	                $this->filesets[] = $mainFileSet;
-	            }
+                if (empty($this->filesets)) { // if there weren't any explicit filesets specivied, then
+                                              // create a default, all-inclusive fileset using the specified basedir.
+                    $mainFileSet = new TarFileSet($this->fileset);
+                    $mainFileSet->setDir($this->baseDir);
+                    $this->filesets[] = $mainFileSet;
+                }
             }
 
             if (empty($this->filesets)) {
@@ -204,25 +222,25 @@ class TarTask extends MatchingTask {
             
             // check if tar is out of date with respect to each fileset
             if($this->tarFile->exists()) {
-	            $upToDate = true;
-	            foreach($this->filesets as $fs) {
-	                $files = $fs->getFiles($this->project, $this->includeEmpty);
-	                if (!$this->archiveIsUpToDate($files, $fs->getDir($this->project))) {
-	                    $upToDate = false;
-	                }
-	                for ($i=0, $fcount=count($files); $i < $fcount; $i++) {
-	                    if ($this->tarFile->equals(new PhingFile($fs->getDir($this->project), $files[$i]))) {
-	                        throw new BuildException("A tar file cannot include itself", $this->getLocation());
-	                    }
-	                }
-	            }
-	            if ($upToDate) {
-	                $this->log("Nothing to do: " . $this->tarFile->__toString() . " is up to date.", PROJECT_MSG_INFO);
-	                return;
-	            }
-			}
-			
-            $this->log("Building tar: " . $this->tarFile->__toString(), PROJECT_MSG_INFO);
+                $upToDate = true;
+                foreach($this->filesets as $fs) {
+                    $files = $fs->getFiles($this->project, $this->includeEmpty);
+                    if (!$this->archiveIsUpToDate($files, $fs->getDir($this->project))) {
+                        $upToDate = false;
+                    }
+                    for ($i=0, $fcount=count($files); $i < $fcount; $i++) {
+                        if ($this->tarFile->equals(new PhingFile($fs->getDir($this->project), $files[$i]))) {
+                            throw new BuildException("A tar file cannot include itself", $this->getLocation());
+                        }
+                    }
+                }
+                if ($upToDate) {
+                    $this->log("Nothing to do: " . $this->tarFile->__toString() . " is up to date.", Project::MSG_INFO);
+                    return;
+                }
+            }
+            
+            $this->log("Building tar: " . $this->tarFile->__toString(), Project::MSG_INFO);
             
             $tar = new Archive_Tar($this->tarFile->getAbsolutePath(), $this->compression);
             
@@ -241,9 +259,10 @@ class TarTask extends MatchingTask {
                     $filesToTar = array();
                     for ($i=0, $fcount=count($files); $i < $fcount; $i++) {
                         $f = new PhingFile($fsBasedir, $files[$i]);
-                        $filesToTar[] = $f->getAbsolutePath();                        
+                        $filesToTar[] = $f->getAbsolutePath();
+                        $this->log("Adding file " . $f->getPath() . " to archive.", Project::MSG_VERBOSE);                
                     }                    
-                    $tar->addModify($filesToTar, '', $fsBasedir->getAbsolutePath());            
+                    $tar->addModify($filesToTar, $this->prefix, $fsBasedir->getAbsolutePath());            
             }
                          
                 
@@ -277,6 +296,7 @@ class TarTask extends MatchingTask {
  * Permissions are currently not implemented by PEAR Archive_Tar,
  * but hopefully they will be in the future.
  * 
+ * @package   phing.tasks.ext
  */
 class TarFileSet extends FileSet {
 
@@ -304,38 +324,38 @@ class TarFileSet extends FileSet {
             
             if ($includeEmpty) {
             
-	            // first any empty directories that will not be implicitly added by any of the files
-				$implicitDirs = array();
-				foreach($this->files as $file) {
-					$implicitDirs[] = dirname($file);
-				} 
-				
-				$incDirs = $ds->getIncludedDirectories();
-				
-				// we'll need to add to that list of implicit dirs any directories
-				// that contain other *directories* (and not files), since otherwise
-				// we get duplicate directories in the resulting tar
-				foreach($incDirs as $dir) {
-					foreach($incDirs as $dircheck) {
-						if (!empty($dir) && $dir == dirname($dircheck)) {
-							$implicitDirs[] = $dir;
-						}
-					}
-				}
-				
-				$implicitDirs = array_unique($implicitDirs);
-				
-				// Now add any empty dirs (dirs not covered by the implicit dirs)
-				// to the files array. 
-				
-				foreach($incDirs as $dir) { // we cannot simply use array_diff() since we want to disregard empty/. dirs
-					if ($dir != "" && $dir != "." && !in_array($dir, $implicitDirs)) {
-						// it's an empty dir, so we'll add it.
-						$this->files[] = $dir;
-					}
-				}
-			} // if $includeEmpty
-			
+                // first any empty directories that will not be implicitly added by any of the files
+                $implicitDirs = array();
+                foreach($this->files as $file) {
+                    $implicitDirs[] = dirname($file);
+                } 
+                
+                $incDirs = $ds->getIncludedDirectories();
+                
+                // we'll need to add to that list of implicit dirs any directories
+                // that contain other *directories* (and not files), since otherwise
+                // we get duplicate directories in the resulting tar
+                foreach($incDirs as $dir) {
+                    foreach($incDirs as $dircheck) {
+                        if (!empty($dir) && $dir == dirname($dircheck)) {
+                            $implicitDirs[] = $dir;
+                        }
+                    }
+                }
+                
+                $implicitDirs = array_unique($implicitDirs);
+                
+                // Now add any empty dirs (dirs not covered by the implicit dirs)
+                // to the files array. 
+                
+                foreach($incDirs as $dir) { // we cannot simply use array_diff() since we want to disregard empty/. dirs
+                    if ($dir != "" && $dir != "." && !in_array($dir, $implicitDirs)) {
+                        // it's an empty dir, so we'll add it.
+                        $this->files[] = $dir;
+                    }
+                }
+            } // if $includeEmpty
+            
         } // if ($this->files===null)
         
         return $this->files;

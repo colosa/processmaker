@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: BuildException.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 5edc6b90e055d23ecceac1b6fd7e5fa80e86e006 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -23,15 +23,21 @@
  * BuildException is for when things go wrong in a build execution.
  *
  * @author   Andreas Aderhold <andi@binarycloud.com>
- * @version  $Revision: 1.12 $
+ * @version  $Id$
  * @package  phing
  */
 class BuildException extends Exception {
 
-    /** location in the xml file */
-    protected $location = null; 
+    /**
+     * Location in the xml file.
+     * @var Location
+     */
+    protected $location;
             
-    /** The nested "cause" exception. */
+    /**
+     * The nested "cause" exception.
+     * @var Exception
+     */
     protected $cause;
     
     /**
@@ -43,8 +49,11 @@ class BuildException extends Exception {
      *         throw new BuildException($msg, $causeExc);
      *         throw new BuildException($msg, $loc);
      *         throw new BuildException($msg, $causeExc, $loc);
+     * @param Exception|string $p1
+     * @param Location|Exception|null $p2
+     * @param Location|null $p3
      */
-    function __construct($p1, $p2 = null, $p3 = null) {        
+    public function __construct($p1, $p2 = null, $p3 = null) {        
         
         $cause = null;
         $loc = null;
@@ -84,15 +93,30 @@ class BuildException extends Exception {
         }                
     }
     
-    function getCause() {
+    /**
+     * Gets the cause exception.
+     *
+     * @return Exception
+     */
+    public function getCause() {
         return $this->cause;
     }
     
-    function getLocation() {
+    /**
+     * Gets the location of error in XML file.
+     *
+     * @return Location
+     */
+    public function getLocation() {
         return $this->location;
     }
 
-    function setLocation($loc) {        
+    /**
+     * Sets the location of error in XML file.
+     *
+     * @param Location $loc
+     */
+    public function setLocation(Location $loc) {        
         $this->location = $loc;
         $this->message = $loc->toString() . ': ' . $this->message;
     }

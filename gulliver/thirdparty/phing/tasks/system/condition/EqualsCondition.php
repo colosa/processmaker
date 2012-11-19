@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: EqualsCondition.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: faec716501a00cdeb84b8c893b5bbe5c76064dec $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,8 +26,8 @@ require_once 'phing/tasks/system/condition/Condition.php';
  *  binary safe manner. Implements the condition interface specification.
  *
  *  @author    Andreas Aderhold <andi@binarycloud.com>
- *  @copyright © 2001,2002 THYRELL. All rights reserved
- *  @version   $Revision: 1.7 $ $Date: 2006-04-28 16:49:47 +0200 (Fri, 28 Apr 2006) $
+ *  @copyright 2001,2002 THYRELL. All rights reserved
+ *  @version   $Id: faec716501a00cdeb84b8c893b5bbe5c76064dec $
  *  @access    public
  *  @package   phing.tasks.system.condition
  */

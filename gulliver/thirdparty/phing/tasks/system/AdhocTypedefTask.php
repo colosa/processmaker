@@ -1,7 +1,7 @@
 <?php
 
 /*
- * $Id: AdhocTypedefTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: 679ed701a01fef022a2da8ff5db16cff658b77e6 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,7 +26,7 @@ require_once 'phing/tasks/system/AdhocTask.php';
  * A class for creating adhoc datatypes in build file.
  * 
  * @author    Hans Lellelid <hans@xmpl.org>
- * @version   $Revision: 1.4 $
+ * @version   $Id$
  * @package   phing.tasks.system
  */
 class AdhocTypedefTask extends AdhocTask {
@@ -65,7 +65,7 @@ class AdhocTypedefTask extends AdhocTask {
             throw new BuildException("The adhoc class you defined must be an instance of phing.ProjectComponent", $this->location);
         }
         
-        $this->log("Datatype " . $this->name . " will be handled by class " . $classname, PROJECT_MSG_VERBOSE);
+        $this->log("Datatype " . $this->name . " will be handled by class " . $classname, Project::MSG_VERBOSE);
         $this->project->addDataTypeDefinition($this->name, $classname);        
     }
 }

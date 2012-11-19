@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: NoBannerLogger.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: d74783e6edb73c6f11fbb93701f0bb6e7ccf06b1 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,16 +19,14 @@
  * <http://phing.info>.
  */
 
-include_once 'phing/listener/DefaultLogger.php';
+require_once 'phing/listener/DefaultLogger.php';
 
 /**
- *  Extends DefaultLogger to strip out empty targets.  This logger is most
- *  commonly used and also enforced by the default phing invokation scripts
- *  in bin/.
+ *  Extends DefaultLogger to strip out empty targets.
  *
  *  @author    Andreas Aderhold <andi@binarycloud.com>
- *  @copyright © 2001,2002 THYRELL. All rights reserved
- *  @version   $Revision: 1.4 $ $Date: 2003/12/24 13:02:08 $
+ *  @copyright 2001,2002 THYRELL. All rights reserved
+ *  @version   $Id$
  *  @package   phing.listener
  */
 class NoBannerLogger extends DefaultLogger {
@@ -45,14 +43,14 @@ class NoBannerLogger extends DefaultLogger {
     }
 
     function messageLogged(BuildEvent $event) {
-        if ($event->getPriority() > $this->msgOutputLevel ||
-                null === $event->getMessage() ||
-                         trim($event->getMessage() === "")) {
+        
+        if ($event->getPriority() > $this->msgOutputLevel || null === $event->getMessage() || trim($event->getMessage() === "")) {
             return;
         }
-
+        
         if ($this->targetName !== null) {
-            print($this->lSep . "Target: ".$this->targetName . $this->lSep);
+            $msg = PHP_EOL . $event->getProject()->getName() . ' > ' . $this->targetName . ':' . PHP_EOL;
+            $this->printMessage($msg, $this->out, $event->getPriority());
             $this->targetName = null;
         }
 

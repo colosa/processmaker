@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Writer.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 1dbdd04d4483e88c8e409811babeaa83c47f8418 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -20,29 +20,34 @@
  */
 
 /**
- * Abstract class for writing character streams. 
+ * Abstract class for writing character streams.
+ * 
  * @package   phing.system.io
  */
 abstract class Writer {
-
-    abstract public function write($buf, $off = null, $len = null);
-
-    abstract public function reset();
-    
-    abstract public function close();
-    
-    abstract public function open();
-
-    public function mark() {}
-    
-    public function ready() {}
-
-    public function markSupported() {}
     
     /**
-     * Returns the filename, url, etc. that is being written to.
+     * Writes data to output stream.
+     * @param string $buf
+     * @param int $off
+     * @param int $len
+     */
+    abstract public function write($buf, $off = null, $len = null);
+    
+    /**
+     * Close the stream.
+     * @throws IOException - if there is an error closing stream.
+     */
+    abstract public function close();
+    
+    /**
+     * Flush the stream, if supported by the stream.
+     */
+    public function flush() {}
+    
+    /**
+     * Returns a string representation of resource filename, url, etc. that is being written to.
      * @return string
      */    
-    abstract function getResource();
+    abstract public function getResource();
 }
-?>

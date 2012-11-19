@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: EventObject.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: b844b1250c5bf730b5eeaccc01bdb24ebbb336e4 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -49,4 +49,4 @@ class EventObject {
         }
     }
 }
-?>
+

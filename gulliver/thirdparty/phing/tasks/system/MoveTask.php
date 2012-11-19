@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: MoveTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 01e6d627d455729bfed47d603188d8c56f54d9e5 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -35,7 +35,7 @@ include_once 'phing/system/io/IOException.php';
  * Source files and directories are only deleted when the file or
  * directory has been copied to the destination successfully.
  *
- * @version $Revision: 1.8 $
+ * @version $Id$
  * @package phing.tasks.system
  */
 class MoveTask extends CopyTask {
@@ -45,7 +45,58 @@ class MoveTask extends CopyTask {
         $this->forceOverwrite = true;
     }
     
+    /**
+     * Validates attributes coming in from XML
+     *
+     * @access  private
+     * @return  void
+     * @throws  BuildException
+     */
+    protected function validateAttributes() {    
+        if ($this->file !== null && $this->file->isDirectory()) {
+            if (($this->destFile !== null && $this->destDir !== null)
+                || ($this->destFile === null && $this->destDir === null)) {
+                    throw new BuildException("One and only one of tofile and todir must be set.");
+            }
+            
+            if ($this->destFile === null)
+            {
+                $this->destFile = new PhingFile($this->destDir, $this->file->getName());
+            }
+            
+            if ($this->destDir === null)
+            {
+                $this->destDir = $this->destFile->getParentFile();
+            }
+            
+            $this->completeDirMap[$this->file->getAbsolutePath()] = $this->destFile->getAbsolutePath();
+            
+            $this->file = null;
+        } else {
+            parent::validateAttributes();
+        }
+    }
+    
     protected function doWork() {
+        if (count($this->completeDirMap) > 0)
+        {
+            foreach ($this->completeDirMap as $from => $to)
+            {
+                $f = new PhingFile($from);
+                $d = new PhingFile($to);
+                
+                $moved = false;
+                try { // try to rename                    
+                    $this->log("Attempting to rename $from to $to", $this->verbosity);
+                    $this->fileUtils->copyFile($f, $d, $this->forceOverwrite, $this->preserveLMT, $this->filterChains, $this->getProject(), $this->mode);
+                    $f->delete(true);
+                    $moved = true;
+                } catch (IOException $ioe) {
+                    $moved = false;
+                    $this->logError("Failed to rename $from to $to: " . $ioe->getMessage());
+                }
+            }
+        }
     
         $copyMapSize = count($this->fileCopyMap);
         if ($copyMapSize > 0) {
@@ -58,33 +109,18 @@ class MoveTask extends CopyTask {
                     continue;
                 }
 
-                $moved = false;
                 $f = new PhingFile($from);
                 $d = new PhingFile($to);
                 
-                $moved = false;
-                try { // try to rename                    
-                    $this->log("Attempting to rename $from to $to", $this->verbosity);
-                    $this->renameFile($f, $d, $this->forceOverwrite);
-                    $moved = true;
+                try { // try to move
+                    $this->log("Moving $from to $to", $this->verbosity);
+
+                    $this->fileUtils->copyFile($f, $d, $this->forceOverwrite, $this->preserveLMT, $this->filterChains, $this->getProject(), $this->mode);
+
+                    $f->delete();
                 } catch (IOException $ioe) {
-                    $moved = false;
-                    $this->log("Failed to rename $from to $to: " . $ioe->getMessage(), $this->verbosity);
+                    $this->logError("Failed to move $from to $to: " . $ioe->getMessage(), $this->location);
                 }
-
-                if (!$moved) {                    
-                    try { // try to move
-                        $this->log("Moving $from to $to", $this->verbosity);
-
-                        $this->fileUtils->copyFile($f, $d, $this->forceOverwrite, $this->preserveLMT, $this->filterChains, $this->getProject());                        
-
-                        $f = new PhingFile($fromFile);
-                        $f->delete();
-                    } catch (IOException $ioe) {
-                        $msg = "Failed to move $from to $to: " . $ioe->getMessage();
-                        throw new BuildException($msg, $this->location);
-                    }
-                } // if !moved
             } // foreach fileCopyMap
         } // if copyMapSize
 
@@ -96,7 +132,7 @@ class MoveTask extends CopyTask {
                 $d = new PhingFile((string) $dir);
                 if (!$d->exists()) {
                     if (!$d->mkdirs()) {
-                        $this->log("Unable to create directory " . $d->getAbsolutePath(), PROJECT_MSG_ERR);
+                        $this->logError("Unable to create directory " . $d->getAbsolutePath());
                     } else {
                         $count++;
                     }
@@ -160,38 +196,7 @@ class MoveTask extends CopyTask {
         try {
             $d->delete();
         } catch (Exception $e) {
-            throw new BuildException("Unable to delete directory " . $d->__toString() . ": " . $e->getMessage());
+            $this->logError("Unable to delete directory " . $d->__toString() . ": " . $e->getMessage());
         }
-    }
-
-    /**
-     * Attempts to rename a file from a source to a destination.
-     * If overwrite is set to true, this method overwrites existing file
-     * even if the destination file is newer.
-     * Otherwise, the source f
-     * ile is renamed only if the destination file #
-     * is older than it.
-     */
-    private function renameFile(PhingFile $sourceFile, PhingFile $destFile, $overwrite) {
-        $renamed = true;
-
-        // ensure that parent dir of dest file exists!
-        $parent = $destFile->getParentFile();
-        if ($parent !== null) {
-            if (!$parent->exists()) {
-                $parent->mkdirs();
-            }
-        }
-        if ($destFile->exists()) {
-            try {
-                $destFile->delete();
-            } catch (Exception $e) {
-                throw new BuildException("Unable to remove existing file " . $destFile->__toString() . ": " . $e->getMessage());
-            }
-        }
-        $renamed = $sourceFile->renameTo($destFile);
-
-        return $renamed;
     }
 }
-?>

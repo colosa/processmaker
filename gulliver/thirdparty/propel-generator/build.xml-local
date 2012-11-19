@@ -15,7 +15,7 @@
     $> phing -Dtarget=insert-sql
 
 -->
-<project name="propel-project-builder" default="main" basedir=".">
+<project name="propel-project-builder" default="main">
 
 <!-- set to this dir -->    
 <property name="project.dir" value="."/>
@@ -82,10 +82,6 @@
 
 <target name="creole" depends="configure">
 	<phing phingfile="${propel.home}/build-propel.xml" target="creole"/>
-</target>
-
-<target name="datadtd" depends="configure">
-	<phing phingfile="${propel.home}/build-propel.xml" target="datadtd"/>
 </target>
 
 <target name="datadump" depends="configure">

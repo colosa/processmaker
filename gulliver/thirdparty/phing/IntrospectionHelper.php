@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: IntrospectionHelper.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: a5f2dbd71bafd2c363026d911132c3b47bf44239 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -36,8 +36,8 @@ include_once 'phing/util/StringHelper.php';
  *
  * @author    Andreas Aderhold <andi@binarycloud.com>
  * @author    Hans Lellelid <hans@xmpl.org>
- * @copyright © 2001,2002 THYRELL. All rights reserved
- * @version   $Revision: 1.19 $
+ * @copyright 2001,2002 THYRELL. All rights reserved
+ * @version   $Id: a5f2dbd71bafd2c363026d911132c3b47bf44239 $
  * @package   phing
  */
 class IntrospectionHelper {
@@ -123,9 +123,9 @@ class IntrospectionHelper {
      * need to perform any introspection -- either the requested attribute setter/creator
      * exists or it does not & a BuildException is thrown.
      * 
-     * @param string $bean The classname for this IH.
+     * @param string $class The classname for this IH.
      */
-    function __construct($class) {
+    public function __construct($class) {
     
         $this->bean = new ReflectionClass($class);
         
@@ -178,7 +178,7 @@ class IntrospectionHelper {
                     
                 } elseif (strpos($name, "create") === 0) {                            
                     
-                    if (count($method->getParameters()) > 0) {
+                    if ($method->getNumberOfRequiredParameters() > 0) {
                         throw new BuildException($method->getDeclaringClass()->getName()."::".$method->getName()."() may not take any parameters.");
                     }
                     
@@ -266,8 +266,14 @@ class IntrospectionHelper {
     }
 
 
-    /** Sets the named attribute. */
-    function setAttribute(Project $project, $element, $attributeName, &$value) {
+    /**
+     * Sets the named attribute.
+     * @param Project $project
+     * @param string $element
+     * @param string $attributeName
+     * @param mixed $value
+     */
+    public function setAttribute(Project $project, $element, $attributeName, &$value) {
         
         // we want to check whether the value we are setting looks like
         // a slot-listener variable:  %{task.current_file}
@@ -309,10 +315,6 @@ class IntrospectionHelper {
             if ($as == "setrefid") {            
                 $value = new Reference($value);
             } else {
-            
-                // decode any html entities in string
-                $value = html_entity_decode($value);                
-                
                 // value is a string representation of a boolean type,
                 // convert it to primitive
                 if (StringHelper::isBoolean($value)) {
@@ -352,7 +354,7 @@ class IntrospectionHelper {
         } // if is slot-listener
         
         try {
-            $project->log("    -calling setter ".$method->getDeclaringClass()->getName()."::".$method->getName()."()", PROJECT_MSG_DEBUG);
+            $project->log("    -calling setter ".$method->getDeclaringClass()->getName()."::".$method->getName()."()", Project::MSG_DEBUG);
             $method->invoke($element, $value);
         } catch(Exception $exc) {
             throw new BuildException($exc);
@@ -360,8 +362,14 @@ class IntrospectionHelper {
         
     }
 
-    /** Adds PCDATA areas.*/
-    function addText(Project $project, $element, $text) {
+    /**
+     * Adds PCDATA areas.
+     *
+     * @param Project $project
+     * @param string $element
+     * @param string $text
+     */
+    public function addText(Project $project, $element, $text) {
         if ($this->methodAddText === null) {
             $msg = $this->getElementName($project, $element)." doesn't support nested text data.";
             throw new BuildException($msg);
@@ -378,10 +386,14 @@ class IntrospectionHelper {
      * Creates a named nested element. 
      * 
      * Valid creators can be in the form createFoo() or addFoo(Bar).
+     *
+     * @param  Project $project
+     * @param  string $element
+     * @param  string $elementName
      * @return object Returns the nested element.
      * @throws BuildException
      */
-    function createElement(Project $project, $element, $elementName) {
+    public function createElement(Project $project, $element, $elementName) {
     
         $addMethod = "add".strtolower($elementName);
         $createMethod = "create".strtolower($elementName);
@@ -391,7 +403,7 @@ class IntrospectionHelper {
             
             $method = $this->nestedCreators[$createMethod];
              try { // try to invoke the creator method on object
-                $project->log("    -calling creator ".$method->getDeclaringClass()->getName()."::".$method->getName()."()", PROJECT_MSG_DEBUG);
+                $project->log("    -calling creator ".$method->getDeclaringClass()->getName()."::".$method->getName()."()", Project::MSG_DEBUG);
                 $nestedElement = $method->invoke($element);
             } catch (Exception $exc) {
                 throw new BuildException($exc);
@@ -405,7 +417,7 @@ class IntrospectionHelper {
             
             try { // try to invoke the adder method on object
             
-                $project->log("    -calling adder ".$method->getDeclaringClass()->getName()."::".$method->getName()."()", PROJECT_MSG_DEBUG);
+                $project->log("    -calling adder ".$method->getDeclaringClass()->getName()."::".$method->getName()."()", Project::MSG_DEBUG);
                 // we've already assured that correct num of params
                 // exist and that method is using class hints                
                 $params = $method->getParameters();
@@ -438,10 +450,15 @@ class IntrospectionHelper {
 
     /**
      * Creates a named nested element.
+     *
+     * @param  Project $project
+     * @param  string $element
+     * @param  string $child
+     * @param  string|null $elementName
      * @return void
      * @throws BuildException
      */
-    function storeElement($project, $element, $child, $elementName = null) {
+    public function storeElement($project, $element, $child, $elementName = null) {
     
         if ($elementName === null) {
             return;
@@ -454,7 +471,7 @@ class IntrospectionHelper {
             $method = $this->nestedStorers[$storer];
             
             try {                                
-                $project->log("    -calling storer ".$method->getDeclaringClass()->getName()."::".$method->getName()."()", PROJECT_MSG_DEBUG);                    
+                $project->log("    -calling storer ".$method->getDeclaringClass()->getName()."::".$method->getName()."()", Project::MSG_DEBUG);                    
                 $method->invoke($element, $child);            
             } catch (Exception $exc) {
                 throw new BuildException($exc);
@@ -463,13 +480,19 @@ class IntrospectionHelper {
         
     }
 
-    /** Does the introspected class support PCDATA? */
-    function supportsCharacters() {
+    /**
+     * Does the introspected class support PCDATA?
+     * @return boolean
+     */
+    public function supportsCharacters() {
         return ($this->methodAddText !== null);
     }
 
-    /** Return all attribues supported by the introspected class. */
-    function getAttributes() {
+    /**
+     * Return all attribues supported by the introspected class.
+     * @return string[]
+     */
+    public function getAttributes() {
         $attribs = array();
         foreach (array_keys($this->attributeSetters) as $setter) {
             $attribs[] =$this->getPropertyName($setter, "set");
@@ -477,8 +500,11 @@ class IntrospectionHelper {
         return $attribs;
     }
 
-    /** Return all nested elements supported by the introspected class. */
-    function getNestedElements() {
+    /**
+     * Return all nested elements supported by the introspected class.
+     * @return string[]
+     */
+    public function getNestedElements() {
         return $this->nestedTypes;
     }
     
@@ -492,7 +518,7 @@ class IntrospectionHelper {
      * @param object $element The Task or type element.
      * @return string Fully qualified class name of element when possible.
      */
-    function getElementName(Project $project, $element) {
+    public function getElementName(Project $project, $element) {
        
           $taskdefs = $project->getTaskDefinitions();
         $typedefs = $project->getDataTypeDefinitions();
@@ -524,17 +550,24 @@ class IntrospectionHelper {
         }        
     }
 
-    /** extract the name of a property from a method name - subtracting  a given prefix. */
-    function getPropertyName($methodName, $prefix) {
+    /**
+     * Extract the name of a property from a method name - subtracting  a given prefix.
+     *
+     * @param  string $methodName
+     * @param  string $prefix
+     * @return string
+     */
+    public function getPropertyName($methodName, $prefix) {
         $start = strlen($prefix);
         return strtolower(substr($methodName, $start));
     }
     
     /**
      * Prints warning message to screen if -debug was used.
+     * @param string $msg
      */
-    function warn($msg) {
-        if (Phing::getMsgOutputLevel() === PROJECT_MSG_DEBUG) {
+    public function warn($msg) {
+        if (Phing::getMsgOutputLevel() === Project::MSG_DEBUG) {
             print("[IntrospectionHelper] " . $msg . "\n");
         }
     }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: ContainsCondition.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 6cdecc53a715fce4601b1ceb64c8ec95d29c1468 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,7 +27,7 @@ require_once 'phing/tasks/system/condition/Condition.php';
  *
  * @author Hans Lellelid <hans@xmpl.org> (Phing)
  * @author Stefan Bodewig <stefan.bodewig@epost.de> (Ant)
- * @version $Revision: 1.3 $
+ * @version $Id: 6cdecc53a715fce4601b1ceb64c8ec95d29c1468 $
  * @package phing.tasks.system.condition
  */
 class ContainsCondition implements Condition {
@@ -71,6 +71,6 @@ class ContainsCondition implements Condition {
 
         return $this->caseSensitive 
             ? strpos($this->string, $this->subString) !== false
-            : substr(strtolower($this->string), strtolower($this->subString)) !== false;
+            : strpos(strtolower($this->string), strtolower($this->subString)) !== false;
     }
 }

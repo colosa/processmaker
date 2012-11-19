@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: YesNoInputRequest.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 659526fec1ed2e66d5b9308fba48924ea3dda494 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,7 +25,7 @@ require_once 'phing/input/MultipleChoiceInputRequest.php';
  * Encapsulates an input request that returns a boolean (yes/no).
  *
  * @author Hans Lellelid <hans@xmpl.org>
- * @version $Revision: 1.4 $
+ * @version $Id: 659526fec1ed2e66d5b9308fba48924ea3dda494 $
  * @package phing.input
  */
 class YesNoInputRequest extends MultipleChoiceInputRequest {     

@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Path.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: 762715ec83a12704f4ab528e507c28396c159083 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -16,7 +16,7 @@
  *
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information please see
- * <http://phing.info>. 
+ * <http://phing.info>.
  */
 
 require_once 'phing/types/DataType.php';
@@ -37,7 +37,7 @@ include_once 'phing/types/FileSet.php';
  * PHP include_path, and will try to load dependent classes accordingly).  The other option is
  * to provide a way for this class to add paths to the include path, if desired -- or to create
  * an IncludePath subclass.  Once added, though, when would a path be removed from the include path?
- * 
+ *
  * <p>
  * <code>
  * &lt;sometask&gt;<br>
@@ -65,8 +65,8 @@ include_once 'phing/types/FileSet.php';
  */
 class Path extends DataType {
 
-    private $elements = array();    
-    
+    private $elements = array();
+
     /**
      * Constructor for internally instantiated objects sets project.
      * @param Project $project
@@ -78,7 +78,7 @@ class Path extends DataType {
         }
         if ($path !== null) {
             $this->createPathElement()->setPath($path);
-        }        
+        }
     }
 
     /**
@@ -90,7 +90,7 @@ class Path extends DataType {
     public function setDir(PhingFile $location) {
         if ($this->isReference()) {
             throw $this->tooManyAttributes();
-        }        
+        }
         $this->createPathElement()->setDir($location);
     }
 
@@ -123,7 +123,7 @@ class Path extends DataType {
 
     /**
      * Creates the nested <code>&lt;pathelement&gt;</code> element.
-     * @throws BuildException 
+     * @throws BuildException
      */
     public function createPathElement() {
         if ($this->isReference()) {
@@ -136,7 +136,7 @@ class Path extends DataType {
 
     /**
      * Adds a nested <code>&lt;fileset&gt;</code> element.
-     * @throws BuildException 
+     * @throws BuildException
      */
     public function addFileset(FileSet $fs) {
         if ($this->isReference()) {
@@ -148,7 +148,7 @@ class Path extends DataType {
 
     /**
      * Adds a nested <code>&lt;dirset&gt;</code> element.
-     * @throws BuildException 
+     * @throws BuildException
      */
     public function addDirset(DirSet $dset) {
         if ($this->isReference()) {
@@ -206,8 +206,8 @@ class Path extends DataType {
             if ($f->exists()) {
                 $this->setDir($f);
             } else {
-                $this->log("dropping " . $f->__toString() . " from path as it doesn't exist", 
-                    PROJECT_MSG_VERBOSE);
+                $this->log("dropping " . $f->__toString() . " from path as it doesn't exist",
+                    Project::MSG_VERBOSE);
             }
         }
     }
@@ -235,13 +235,13 @@ class Path extends DataType {
                     throw new BuildException($msg);
                 }
             }
-            
+
             if (is_string($o)) {
                 $result[] = $o;
             } elseif ($o instanceof PathElement) {
                 $parts = $o->getParts();
                 if ($parts === null) {
-                    throw new BuildException("You must either set location or" 
+                    throw new BuildException("You must either set location or"
                         . " path on <pathelement>");
                 }
                 foreach($parts as $part) {
@@ -261,13 +261,10 @@ class Path extends DataType {
                 $ds = $dset->getDirectoryScanner($this->project);
                 $dirstrs = $ds->getIncludedDirectories();
                 $dir = $dset->getDir($this->project);
-                $this->addUnlessPresent($result, $dir, $s);  
-                
                 foreach($dirstrs as $dstr) {
                     $d = new PhingFile($dir, $dstr);
                     $result[] = $d->getAbsolutePath();
-                }                
-                     
+                }
             } elseif ($o instanceof FileList) {
                 $fl = $o;
                 $dirstrs = $fl->getFiles($this->project);
@@ -278,7 +275,7 @@ class Path extends DataType {
                 }
             }
         }
-        
+
         return array_unique($result);
     }
 
@@ -289,14 +286,14 @@ class Path extends DataType {
      * @return string A textual representation of the path.
      */
     public function __toString() {
-        
+
         $list = $this->listPaths();
 
         // empty path return empty string
         if (empty($list)) {
             return "";
         }
-        
+
         return implode(PATH_SEPARATOR, $list);
     }
 
@@ -312,29 +309,27 @@ class Path extends DataType {
         }
 
         $tok = new PathTokenizer($source);
-        $element = "";
-        while ($tok->hasMoreTokens()) {            
+        while ($tok->hasMoreTokens()) {
             $pathElement = $tok->nextToken();
             try {
-                $element .= self::resolveFile($project, $pathElement);
+                $element = self::resolveFile($project, $pathElement);
+                for ($i = 0, $_i=strlen($element); $i < $_i; $i++) {
+                    self::translateFileSep($element, $i);
+                }
+                $result[] = $element;
             } catch (BuildException $e) {
-                $this->project->log("Dropping path element " . $pathElement 
-                    . " as it is not valid relative to the project", 
-                    PROJECT_MSG_VERBOSE);
+                $this->project->log("Dropping path element " . $pathElement
+                    . " as it is not valid relative to the project",
+                    Project::MSG_VERBOSE);
             }
-            
-            for ($i = 0, $_i=strlen($element); $i < $_i; $i++) {
-                self::translateFileSep($element, $i);
-            }
-            $result[] = $element;
         }
-        
+
         return $result;
     }
 
     /**
      * Returns its argument with all file separator characters
-     * replaced so that they match the local OS conventions.  
+     * replaced so that they match the local OS conventions.
      */
     public static function translateFile($source) {
         if ($source == null) {
@@ -345,14 +340,14 @@ class Path extends DataType {
         for ($i = 0, $_i=strlen($source); $i < $_i; $i++) {
             self::translateFileSep($result, $i);
         }
-        
+
         return $result;
     }
 
     /**
      * Translates all occurrences of / or \ to correct separator of the
      * current platform and returns whether it had to do any
-     * replacements.  
+     * replacements.
      */
     protected static function translateFileSep(&$buffer, $pos) {
         if ($buffer{$pos} == '/' || $buffer{$pos} == '\\') {
@@ -383,7 +378,7 @@ class Path extends DataType {
 
     /**
      * Overrides the version of DataType to recurse on all DataType
-     * child elements that may have been added.  
+     * child elements that may have been added.
      * @throws BuildException
      */
     public function dieOnCircularReference(&$stk, Project $p) {
@@ -391,10 +386,10 @@ class Path extends DataType {
         if ($this->checked) {
             return;
         }
-    
+
         // elements can contain strings, FileSets, Reference, etc.
         foreach($this->elements as $o) {
-            
+
             if ($o instanceof Reference) {
                 $o = $o->getReferencedObject($p);
             }
@@ -409,7 +404,7 @@ class Path extends DataType {
                 }
             }
         }
-        
+
         $this->checked = true;
     }
 
@@ -424,23 +419,25 @@ class Path extends DataType {
             return $f->getAbsolutePath();
         }
         return $relativeName;
-    }    
+    }
 
 }
 
 
 /**
  * Helper class, holds the nested <code>&lt;pathelement&gt;</code> values.
+ *
+ * @package phing.types
  */
 class PathElement {
 
     private $parts = array();
     private $outer;
-    
+
     public function __construct(Path $outer) {
         $this->outer = $outer;
     }
-    
+
     public function setDir(PhingFile $loc) {
         $this->parts = array(Path::translateFile($loc->getAbsolutePath()));
     }
@@ -453,4 +450,3 @@ class PathElement {
         return $this->parts;
     }
 }
-?>

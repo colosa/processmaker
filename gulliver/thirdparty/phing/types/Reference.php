@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: Reference.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: 48c142f41717a31654d5cbfdb37f339e84adf391 $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -53,4 +53,4 @@ class Reference {
         return $o;
     }
 }
-?>
+
