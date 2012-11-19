@@ -167,6 +167,9 @@ class PMScript
 
     public function executeAndCatchErrors ($sScript, $sCode)
     {
+        G::LoadClass( 'case' );
+        $oCase = new Cases();
+        $oCase->updateCase($_SESSION['APPLICATION'], array('APP_DATA' => $this->aFields));
         ob_start( 'handleFatalErrors' );
         set_error_handler( 'handleErrors' );
         $_SESSION['_CODE_'] = $sCode;
