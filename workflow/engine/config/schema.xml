@@ -198,6 +198,25 @@
       <rule name="validValues" value="ACTIVE|DELETED" message="Please select a valid document status (ACTIVE|DELETED)."/>
       <rule name="required" message="Application Document Status is required."/>
     </validator>
+
+    <index name="indexAppDocument">
+      <index-column name="FOLDER_UID"/>
+      <index-column name="APP_DOC_UID"/>
+      <vendor type="mysql">
+        <parameter name="Table" value="APP_DOCUMENT"/>
+        <parameter name="Non_unique" value="1"/>
+        <parameter name="Key_name" value="indexAppDocument"/>
+        <parameter name="Seq_in_index" value="1"/>
+        <parameter name="Column_name" value="APP_DOCUMENT"/>
+        <parameter name="Collation" value="A"/>
+        <parameter name="Cardinality" value=""/>
+        <parameter name="Sub_part" value=""/>
+        <parameter name="Packed" value=""/>
+        <parameter name="Null" value=""/>
+        <parameter name="Index_type" value="BTREE"/>
+        <parameter name="Comment" value=""/>
+      </vendor>
+    </index>
   </table>
   <table name="APP_MESSAGE" idMethod="native">
     <vendor type="mysql">

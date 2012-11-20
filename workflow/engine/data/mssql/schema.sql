@@ -165,6 +165,9 @@ CREATE TABLE [APP_DOCUMENT]
 	CONSTRAINT APP_DOCUMENT_PK PRIMARY KEY ([APP_DOC_UID],[DOC_VERSION])
 );
 
+
+CREATE INDEX [indexAppDocument] ON [APP_DOCUMENT] ([FOLDER_UID],[APP_DOC_UID]);
+
 /* ---------------------------------------------------------------------- */
 /* APP_MESSAGE											*/
 /* ---------------------------------------------------------------------- */
