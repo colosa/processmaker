@@ -83,10 +83,13 @@ function getWorkspacesAvailable()
     sort ($filesArray, SORT_STRING);
     return $filesArray;
 }
+
 $availableWorkspace = getWorkspacesAvailable ();
 
 //Translations
-$Translations = G::getModel("Translation");
+//$Translations = G::getModel("Translation");  <-- ugly way to get a class
+require_once "classes/model/Translation.php";
+$Translations = new Translation();
 $translationsTable = $Translations->getTranslationEnvironments();
 
 $availableLangArray = array ();
@@ -102,7 +105,6 @@ foreach ($translationsTable as $locale) {
 
     $availableLangArray [] = $aFields;
 }
-
 
 $availableWorkspaceArray = array ();
 $availableWorkspaceArray [] = array ('ENV_ID' => 'char', 'ENV_NAME' => 'char');
@@ -120,8 +122,9 @@ $_SESSION ['_DBArray'] = $_DBArray;
 
 $aField ['LOGIN_VERIFY_MSG'] = G::loadTranslation ('LOGIN_VERIFY_MSG');
 $aField['USER_LANG'] = SYS_LANG;
+
 //Get Server Configuration
-G::LoadClass ('serverConfiguration');
+//G::LoadClass ('serverConfiguration'); //already called
 $oServerConf = & serverConf::getSingleton ();
 
 $G_PUBLISH = new Publisher ();
@@ -131,8 +134,8 @@ if ($oServerConf->getProperty ('LOGIN_NO_WS')) {
     $G_PUBLISH->AddContent ('xmlform', 'xmlform', 'login/sysLogin', '', $aField, 'sysLogin');
 }
 
-
 G::RenderPage ("publish");
+
 ?>
 <script type="text/javascript">
     var oInfoPanel;

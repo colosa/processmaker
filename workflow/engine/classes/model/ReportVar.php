@@ -5,7 +5,7 @@
  * @package workflow.engine.classes.model
  */
 
-require_once 'classes/model/om/BaseReportVar.php';
+//require_once 'classes/model/om/BaseReportVar.php';
 
 /**
  * Skeleton subclass for representing a row from the 'REPORT_VAR' table.

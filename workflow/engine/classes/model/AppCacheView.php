@@ -4,7 +4,7 @@
  * @package    workflow.engine.classes.model
  */
 
-require_once ('classes/model/om/BaseAppCacheView.php');
+//require_once ('classes/model/om/BaseAppCacheView.php');
 
 
 /**
@@ -18,11 +18,11 @@ require_once ('classes/model/om/BaseAppCacheView.php');
  *
  */
 
-require_once ('classes/model/Application.php');
-require_once ('classes/model/AppDelegation.php');
-require_once ('classes/model/AppDelay.php');
-require_once ('classes/model/Task.php');
-require_once ('classes/model/AdditionalTables.php');
+//require_once ('classes/model/Application.php');
+//require_once ('classes/model/AppDelegation.php');
+//require_once ('classes/model/AppDelay.php');
+//require_once ('classes/model/Task.php');
+//require_once ('classes/model/AdditionalTables.php');
 
 
 /**

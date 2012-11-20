@@ -5,7 +5,7 @@
  * @package workflow.engine.classes.model
  */
 
-require_once 'classes/model/om/BaseObjectPermission.php';
+//require_once 'classes/model/om/BaseObjectPermission.php';
 
 /**
  * Skeleton subclass for representing a row from the 'OBJECT_PERMISSION' table.

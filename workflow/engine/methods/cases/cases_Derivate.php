@@ -41,7 +41,7 @@ G::LoadClass( 'pmScript' );
 G::LoadClass( 'case' );
 G::LoadClass( 'derivation' );
 
-require_once 'classes/model/Event.php';
+//require_once 'classes/model/Event.php';
 
 /* GET , POST & $_SESSION Vars */
 /* Process the info */

@@ -25,9 +25,9 @@
  *
  */
 
-require_once 'classes/model/om/BaseAppDocument.php';
-require_once 'classes/model/Content.php';
-require_once 'classes/model/InputDocument.php';
+//require_once 'classes/model/om/BaseAppDocument.php';
+//require_once 'classes/model/Content.php';
+//require_once 'classes/model/InputDocument.php';
 
 /**
  * Skeleton subclass for representing a row from the 'APP_DOCUMENT' table.

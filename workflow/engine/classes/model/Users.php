@@ -25,10 +25,10 @@
  *
  */
 
-require_once 'classes/model/om/BaseUsers.php';
-require_once 'classes/model/IsoCountry.php';
-require_once 'classes/model/IsoSubdivision.php';
-require_once 'classes/model/IsoLocation.php';
+//require_once 'classes/model/om/BaseUsers.php';
+//require_once 'classes/model/IsoCountry.php';
+//require_once 'classes/model/IsoSubdivision.php';
+//require_once 'classes/model/IsoLocation.php';
 
 /**
  * Skeleton subclass for representing a row from the 'USERS' table.

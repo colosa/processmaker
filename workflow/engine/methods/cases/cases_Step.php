@@ -297,8 +297,8 @@ try {
                     $oHeadPublisher->addScriptCode( "documentName='{$titleDocument}';" );
                     break;
                 case 'VIEW':
-                    require_once 'classes/model/AppDocument.php';
-                    require_once 'classes/model/Users.php';
+                    //require_once 'classes/model/AppDocument.php';
+                    //require_once 'classes/model/Users.php';
                     $oAppDocument = new AppDocument();
                     $oAppDocument->Fields = $oAppDocument->load( $_GET['DOC'], $_GET['VERSION'] );
                     $Fields['POSITION'] = $_SESSION['STEP_POSITION'];
@@ -325,7 +325,7 @@ try {
         case 'OUTPUT_DOCUMENT':
             //$G_PUBLISH->AddContent('smarty', 'cases/cases_title', '', '', $array);
 
-            require_once 'classes/model/OutputDocument.php';
+            //require_once 'classes/model/OutputDocument.php';
             $oOutputDocument = new OutputDocument();
             $aOD = $oOutputDocument->load( $_GET['UID'] );
             if (! $aPreviousStep) {
@@ -347,8 +347,8 @@ try {
                     //END: If there is a Break Step registered from Plugin
 
                     $sFilenameOriginal = $sFilename = preg_replace( '[^A-Za-z0-9_]', '_', G::replaceDataField( $aOD['OUT_DOC_FILENAME'], $Fields['APP_DATA'] ) );
-                    require_once 'classes/model/AppFolder.php';
-                    require_once 'classes/model/AppDocument.php';
+                    //require_once 'classes/model/AppFolder.php';
+                    //require_once 'classes/model/AppDocument.php';
 
                     //Get the Custom Folder ID (create if necessary)
                     $oFolder = new AppFolder();
@@ -581,7 +581,7 @@ try {
                     if ($noShowTitle == 0) {
                         $G_PUBLISH->AddContent( 'smarty', 'cases/cases_title', '', '', $array );
                     }
-                    require_once 'classes/model/AppDocument.php';
+                    //require_once 'classes/model/AppDocument.php';
                     $oAppDocument = new AppDocument();
                     $lastVersion = $oAppDocument->getLastAppDocVersion( $_GET['DOC'], $_SESSION['APPLICATION'] );
                     $aFields = $oAppDocument->load( $_GET['DOC'], $lastVersion );
@@ -594,7 +594,7 @@ try {
                         $listing = $oPluginRegistry->executeTriggers( PM_CASE_DOCUMENT_LIST, $folderData );
                     }
 
-                    require_once 'classes/model/OutputDocument.php';
+                    //require_once 'classes/model/OutputDocument.php';
                     $oOutputDocument = new OutputDocument();
                     $aGields = $oOutputDocument->load( $aFields['DOC_UID'] );
 

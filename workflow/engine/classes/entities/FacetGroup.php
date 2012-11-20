@@ -1,5 +1,5 @@
 <?php
-require_once ('Base.php');
+//require_once ('Base.php');
 
 /**
  * Facet group entity that represent a facet group

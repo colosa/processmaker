@@ -23,7 +23,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-require_once 'classes/model/om/BaseAppMessage.php';
+//require_once 'classes/model/om/BaseAppMessage.php';
 
 /**
  * Skeleton subclass for representing a row from the 'APP_MESSAGE' table.

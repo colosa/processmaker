@@ -21,7 +21,7 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-require_once 'classes/model/Application.php';
+/*require_once 'classes/model/Application.php';
 require_once 'classes/model/Users.php';
 require_once 'classes/model/AppThread.php';
 require_once 'classes/model/AppDelay.php';
@@ -30,7 +30,7 @@ require_once 'classes/model/Task.php';
 require_once ("classes/model/AppCacheView.php");
 require_once ("classes/model/AppDelegation.php");
 require_once ("classes/model/AdditionalTables.php");
-require_once ("classes/model/AppDelay.php");
+require_once ("classes/model/AppDelay.php");*/
 G::LoadClass( 'case' );
 
 $actionAjax = isset( $_REQUEST['actionAjax'] ) ? $_REQUEST['actionAjax'] : null;

@@ -22,7 +22,8 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-$oHeadPublisher = & headPublisher::getSingleton();
+//$oHeadPublisher = & headPublisher::getSingleton();
+
 G::loadClass( 'configuration' );
 $conf = new Configurations();
 
@@ -33,4 +34,3 @@ $oHeadPublisher->addContent( 'processes/main' ); //adding a html file  .html.
 $oHeadPublisher->assign( 'pageSize', $conf->getEnvSetting( 'casesListRowNumber' ) );
 
 G::RenderPage( 'publish', 'extJs' );
-

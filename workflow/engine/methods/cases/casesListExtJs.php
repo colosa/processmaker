@@ -9,10 +9,10 @@ if ($action == 'selfservice') {
 
 G::LoadClass( "BasePeer" );
 G::LoadClass( 'configuration' );
-require_once ("classes/model/Fields.php");
-require_once ("classes/model/AppCacheView.php");
-require_once ("classes/model/Process.php");
-require_once ("classes/model/Users.php");
+//require_once ("classes/model/Fields.php");
+//require_once ("classes/model/AppCacheView.php");
+//require_once ("classes/model/Process.php");
+//require_once ("classes/model/Users.php");
 
 $oHeadPublisher = & headPublisher::getSingleton();
 // oHeadPublisher->setExtSkin( 'xtheme-blue');

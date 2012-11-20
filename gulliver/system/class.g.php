@@ -214,231 +214,6 @@ class G
     {
         return array_sum( explode( ' ', microtime() ) );
     }
-        /* custom error functions */
-
-    /**
-     * &setFatalErrorHandler
-     *
-     * @param string $newFatalErrorHandler default value null
-     *
-     * @return boolean true
-     */
-    public function &setFatalErrorHandler ($newFatalErrorHandler = null)
-    {
-        if (isset( $newFatalErrorHandler )) {
-            set_error_handler( $newFatalErrorHandler );
-        } else {
-            ob_start( array ('G','fatalErrorHandler'
-            ) );
-        }
-        return true;
-    }
-
-    /**
-     * setErrorHandler
-     *
-     * @param string setErrorHandler
-     * @param object $newCustomErrorHandler
-     *
-     * @return boolean true
-     */
-    /*public static*/
-    public function setErrorHandler ($newCustomErrorHandler = null)
-    {
-        if (isset( $newCustomErrorHandler )) {
-            set_error_handler( $newCustomErrorHandler );
-        } else {
-            set_error_handler( array ("G","customErrorHandler") );
-        }
-        return true;
-    }
-
-    /**
-     * fatalErrorHandler
-     *
-     * @param string $buffer
-     *
-     * @return string $errorBox or $buffer
-     */
-    /*public static*/
-    public function fatalErrorHandler ($buffer)
-    {
-        // The ereg function has been DEPRECATED as of PHP 5.3.0.
-        // if (ereg("(error</b>:)(.+)(<br)", $buffer, $regs) ) {
-        if (preg_match( "/(error</b>:)(.+)(<br)/", $buffer, $regs )) {
-            $err = preg_replace( "/<.*?>/", "", $regs[2] );
-            G::customErrorLog( 'FATAL', $err, '', 0, '' );
-            $ip_addr = G::getIpAddress();
-            $errorBox = "<table cellpadding=1 cellspacing=0 border=0 bgcolor=#808080 width=250><tr><td >" . "<table cellpadding=2 cellspacing=0 border=0 bgcolor=white width=100%>" . "<tr bgcolor=#d04040><td colspan=2 nowrap><font color=#ffffaa><code> ERROR CAUGHT check log file</code></font></td></tr>" . "<tr ><td colspan=2 nowrap><font color=black><code>IP address: $ip_addr</code></font></td></tr> " . "</table></td></tr></table>";
-            return $errorBox;
-        }
-        return $buffer;
-    }
-    /**
-     * customErrorHandler
-     *
-     * @param string $errno
-     * @param string $msg
-     * @param string $file
-     * @param string $line
-     * @param string $context
-     *
-     * @return void
-     */
-        /*public static*/
-    public function customErrorHandler ($errno, $msg, $file, $line, $context)
-    {
-        switch ($errno) {
-            case E_ERROR:
-            case E_USER_ERROR:
-                $type = "FATAL";
-                G::customErrorLog( $type, $msg, $file, $line );
-                G::verboseError( $type, $errno, $msg, $file, $line, $context );
-                if (defined( "ERROR_SHOW_SOURCE_CODE" ) && ERROR_SHOW_SOURCE_CODE) {
-                    G::showErrorSource( $type, $msg, $file, $line, "#c00000" );
-                }
-                die();
-                break;
-            case E_WARNING:
-            case E_USER_WARNING:
-                $type = "WARNING";
-                G::customErrorLog( $type, $msg, $file, $line );
-                break;
-            case E_NOTICE:
-            case E_USER_NOTICE:
-                $type = "NOTICE";
-                if (defined( "ERROR_LOG_NOTICE_ERROR" ) && ERROR_LOG_NOTICE_ERROR) {
-                    G::customErrorLog( $type, $msg, $file, $line );
-                }
-                break;
-            case E_STRICT:
-                $type = "STRICT"; //dont show STRICT Errors
-                break;
-            default:
-                $type = "ERROR ($errno)";
-                G::customErrorLog( $type, $msg, $file, $line );
-                break;
-        }
-        if (defined( "ERROR_SHOW_SOURCE_CODE" ) && ERROR_SHOW_SOURCE_CODE && $errno != E_STRICT) {
-            G::showErrorSource( $type, $msg, $file, $line );
-        }
-    }
-
-    /**
-     * public function showErrorSource
-     *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
-     * @access public
-     * @param eter string type
-     * @param eter string msg
-     * @param eter string file
-     * @param eter string line
-     * @return string
-     */
-    public function showErrorSource ($type, $msg, $file, $line)
-    {
-        global $__src_array;
-        $line_offset = 3;
-
-        if (! isset( $__src_array[$file] )) {
-            $__src_array[$file] = @file( $file );
-        }
-        if (! $__src_array[$file]) {
-            return;
-        }
-        if ($line - $line_offset < 1) {
-            $start = 1;
-        } else {
-            $start = $line - $line_offset;
-        }
-        if ($line + $line_offset > count( $__src_array[$file] )) {
-            $end = count( $__src_array[$file] );
-        } else {
-            $end = $line + $line_offset;
-        }
-        print "<table cellpadding=1 cellspacing=0 border=0 bgcolor=#808080 width=80%><tr><td >";
-        print "<table cellpadding=2 cellspacing=0 border=0 bgcolor=white width=100%>";
-        print "<tr bgcolor=#d04040>
-          <td colspan=2 nowrap><font color=#ffffaa><code> $type: $msg</code></font></td></tr>
-          <tr >
-          <td colspan=2 nowrap><font color=gray>File: $file</font></td></tr>";
-        for ($i = $start; $i <= $end; $i ++) {
-            $str = @highlight_string( "<?php" . $__src_array[$file][$i - 1] . "?>", true );
-
-            $pos1 = strpos( $str, "&lt;?" );
-            $pos2 = strrpos( $str, "?&gt;" );
-
-            $str = substr( $str, 0, $pos1 ) . substr( $str, $pos1 + 5, $pos2 - ($pos1 + 5) ) . substr( $str, $pos2 + 5 );
-
-            ($i == $line) ? $bgcolor = "bgcolor=#ffccaa" : $bgcolor = "bgcolor=#ffffff";
-            print "<tr><td bgcolor=#d0d0d0 width=15 align=right><code>$i</code></td>
-            <td $bgcolor>$str</td></tr>";
-        }
-
-        print "</table></td></tr></table><p>";
-    }
-
-    /**
-     * customErrorLog
-     *
-     * @param string $type
-     * @param string $msg
-     * @param string $file
-     * @param string $line
-     *
-     * @return void
-     */
-    public function customErrorLog ($type, $msg, $file, $line)
-    {
-        global $HTTP_X_FORWARDED_FOR, $REMOTE_ADDR, $HTTP_USER_AGENT, $REQUEST_URI;
-
-        $ip_addr = G::getIpAddress();
-
-        if (defined( 'APPLICATION_CODE' )) {
-            $name = APPLICATION_CODE;
-        } else {
-            $name = "php";
-        }
-        if ($file != '') {
-            $msg .= " in $file:$line ";
-        }
-        $date = date( 'Y-m-d H:i:s' );
-        $REQUEST_URI = getenv( 'REQUEST_URI' );
-        $HTTP_USER_AGENT = getenv( 'HTTP_USER_AGENT' );
-        error_log( "[$date] [$ip_addr] [$name] $type: $msg [$HTTP_USER_AGENT] URI: $REQUEST_URI", 0 );
-    }
-
-    /**
-     * verboseError
-     *
-     * @param string $type
-     * @param string $errno
-     * @param string $msg
-     * @param string $file
-     * @param string $line
-     * @param string $context
-     *
-     * @return void
-     */
-    /*public static*/
-    public function verboseError ($type, $errno, $msg, $file, $line, $context)
-    {
-        global $SERVER_ADMIN;
-
-        print "<h1>Error!</h1>";
-        print "An error occurred while executing this script. Please
-          contact the <a href=mailto:$SERVER_ADMIN>$SERVER_ADMIN</a> to
-          report this error.";
-        print "<p>";
-        print "Here is the information provided by the script:";
-        print "<hr><pre>";
-        print "Error type: $type (code: $errno)<br>";
-        print "Error message: $msg<br>";
-        print "Script name and line number of error: $file:$line<br>";
-        print "Variable context when error occurred: <br>";
-        print_r( $context );
-        print "</pre><hr>";
-    }
 
     /**
      * * Encrypt and decrypt functions ***
@@ -1331,129 +1106,10 @@ class G
             G::header( "location: /errors/error404.php?l=" . $_SERVER['REQUEST_URI'] );
         }
 
-        switch (strtolower( $typefile )) {
-            case "js":
-                $paths = explode( '/', $filename );
-                $jsName = $paths[count( $paths ) - 1];
-                $output = '';
-                $pathJs = PATH_GULLIVER_HOME . PATH_SEP . 'js' . PATH_SEP;
-                switch ($jsName) {
-                    case 'draw2d.js':
-                        $filename = PATH_GULLIVER_HOME . 'js/ext/min/draw2d.js';
-                        @readfile( $filename );
-                        /*  this code is commented, because in run time we dont generate the file ext-all.js
-                          the file was generate once and the committed to git. If there are changes in the included
-                          files we need to regenerate the file manually.
-                        $cachePath = PATH_C . 'ExtJs' . PATH_SEP;
-                        $checksum = G::getCheckSum( array ($pathJs . 'ext/wz_jsgraphics.js',$pathJs . 'ext/mootools.js',$pathJs . 'ext/moocanvas.js'
-                        ) );
-
-                        $cf = $cachePath . "ext-draw2d-cache.$checksum.js";
-                        $cfStored = G::getCacheFileNameByPattern( $cachePath, 'ext-draw2d-cache.*.js' );
-                        //error_log("draw2d.js ".$checksum ."==". $cfStored['checksum']);
-                        if (is_file( $cfStored['filename'] ) && $checksum == $cfStored['checksum']) {
-                            $output = file_get_contents( $cf );
-                        } else {
-                            if (is_file( $cfStored['filename'] )) {
-                                @unlink( $cfStored['filename'] );
-                            }
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/wz_jsgraphics.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/mootools.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/moocanvas.js' ) );
-                            $output .= file_get_contents( $pathJs . 'ext/draw2d.js' ); //already minified
-                            file_put_contents( $cf, $output );
-                        }
-                        */
-                        break;
-                    case 'ext-all.js':
-                        $filename = PATH_GULLIVER_HOME . 'js/ext/min/ext-all.js';
-                        @readfile( $filename );
-                        /*  this code is commented, because in run time we dont generate the file ext-all.js
-                          the file was generate once and the committed to git. If there are changes in the included
-                          files we need to regenerate the file manually.
-                        $cachePath = PATH_C . 'ExtJs' . PATH_SEP;
-                        $checksum = G::getCheckSum( array ($pathJs . 'ext/pmos-common.js',$pathJs . 'ext/ux/miframe.js',$pathJs . 'ext/ux.locationbar/Ext.ux.LocationBar.js',$pathJs . 'ext/ux.statusbar/ext-statusbar.js',$pathJs . 'ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js'
-                        ) );
-
-                        $cfStored = G::getCacheFileNameByPattern( $cachePath, 'ext-all-cache.*.js' );
-                        $cf = PATH_C . 'ExtJs' . PATH_SEP . "ext-all-cache.$checksum.js";
-                        if (is_file( $cfStored['filename'] ) && $checksum == $cfStored['checksum']) {
-                            $output = file_get_contents( $cf );
-                        } else {
-                            if (is_file( $cfStored['filename'] )) {
-                                @unlink( $cfStored['filename'] );
-                            }
-                            $output .= file_get_contents( $pathJs . 'ext/ext-all.js' ); //already minified
-                            $output .= file_get_contents( $pathJs . 'ext/ux/ux-all.js' ); //already minified
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/pmos-common.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/ux/miframe.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/ux.locationbar/Ext.ux.LocationBar.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/ux.statusbar/ext-statusbar.js' ) );
-                            $output .= JSMin::minify( file_get_contents( $pathJs . 'ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js' ) );
-                            file_put_contents( $cf, $output );
-                        }
-                        */
-                        break;
-                    default:
-                        @readfile( $filename );
-                        break;
-                }
-                print $output;
-                break;
-            case 'css':
-                print G::trimSourceCodeFile( $filename );
-                break;
-            default:
-                @readfile( $filename );
-                break;
+        if ( substr($filename,-10) == "ext-all.js" ) {
+            $filename = PATH_GULLIVER_HOME . 'js/ext/min/ext-all.js';
         }
-    }
-
-    /**
-     * trimSourceCodeFile
-     *
-     * @param string $filename
-     *
-     * @return string $output
-     */
-    public function trimSourceCodeFile ($filename)
-    {
-        $handle = fopen( $filename, "r" );
-        $lastChar = '';
-        $firstChar = '';
-        $content = '';
-        $line = '';
-
-        if ($handle) {
-            while (! feof( $handle )) {
-                //$line = trim( fgets($handle, 16096) ) . "\n" ;
-                $line = fgets( $handle, 16096 );
-                $content .= $line;
-            }
-            fclose( $handle );
-        }
-        return $content;
-
-        $index = 0;
-        $output = '';
-        while ($index < strlen( $content )) {
-            $car = $content[$index];
-            $index ++;
-            if ($car == '/' && isset( $content[$index] ) && $content[$index] == '*') {
-                $endComment = false;
-                $index ++;
-                while ($endComment == false && $index < strlen( $content )) {
-                    if ($content[$index] == '*' && isset( $content[$index + 1] ) && $content[$index + 1] == '/') {
-                        $endComment = true;
-                        $index ++;
-                    }
-                    $index ++;
-                }
-                $car = '';
-            }
-            $output .= $car;
-        }
-        return $output;
+        @readfile( $filename );
     }
 
     /**
@@ -3372,7 +3028,7 @@ class G
     /**
      * Validate and emai address in complete forms,
      *
-     * @author Erik A.O. <erik@gmail.com, aortiz.erik@gmail.com>
+     * @author Erik A.O. <erik@colosa.com>
      * i.e. if the param. is 'erik a.o. <erik@colosa.com>'
      *      -> returns a object within $o->email => erik@colosa.com and $o->name => erik A.O. in other case returns false
      *
@@ -3405,7 +3061,7 @@ class G
     /**
      * JSON encode
      *
-     * @author Erik A.O. <erik@gmail.com, aortiz.erik@gmail.com>
+     * @author Erik A.O. <erik@colosa.com>
      */
     public function json_encode($Json)
     {
@@ -3421,7 +3077,7 @@ class G
     /**
       * JSON decode
       *
-      * @author Erik A.O. <erik@gmail.com, aortiz.erik@gmail.com>
+      * @author Erik A.O. <erik@colosa.com>
      */
     public function json_decode($Json)
     {
@@ -3695,11 +3351,11 @@ class G
         return $infoUser;
     }
 
-    public function getModel($model)
-    {
-        require_once "classes/model/$model.php";
-        return new $model();
-    }
+    //public function getModel($model)
+    //{
+    //    require_once "classes/model/$model.php";
+    //    return new $model();
+    //}
 
     /**
      * Recursive Is writeable function

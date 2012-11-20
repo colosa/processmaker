@@ -25,8 +25,8 @@
  *
  */
 
-require_once 'classes/model/Content.php';
-require_once 'classes/model/om/BaseReportTable.php';
+//require_once 'classes/model/Content.php';
+//require_once 'classes/model/om/BaseReportTable.php';
 
 /**
  * Skeleton subclass for representing a row from the 'REPORT_TABLE' table.

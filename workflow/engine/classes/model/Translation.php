@@ -25,7 +25,7 @@
  *
  */
 
-require_once 'classes/model/om/BaseTranslation.php';
+//require_once 'classes/model/om/BaseTranslation.php';
 
 /**
  * Skeleton subclass for representing a row from the 'TRANSLATION' table.

@@ -50,8 +50,8 @@ class dashletRssReader implements DashletInterface
         curl_setopt( $pCurl, CURLOPT_CONNECTTIMEOUT, 10 );
         curl_setopt( $pCurl, CURLOPT_TIMEOUT, 20 );
 
-        curl_setopt( $pCurl, CURLOPT_NOPROGRESS, false );
-        curl_setopt( $pCurl, CURLOPT_VERBOSE, true );
+        curl_setopt( $pCurl, CURLOPT_NOPROGRESS, true );
+        curl_setopt( $pCurl, CURLOPT_VERBOSE, false );
 
         //Apply proxy settings
         $sysConf = System::getSystemConfiguration();

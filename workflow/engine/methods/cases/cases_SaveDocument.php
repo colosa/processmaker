@@ -108,9 +108,9 @@ $oCase->updateCase( $_SESSION['APPLICATION'], $aData );
 //save info
 
 
-require_once ("classes/model/AppDocument.php");
-require_once ('classes/model/AppFolder.php');
-require_once ('classes/model/InputDocument.php');
+//require_once ("classes/model/AppDocument.php");
+//require_once ('classes/model/AppFolder.php');
+//require_once ('classes/model/InputDocument.php');
 
 $oInputDocument = new InputDocument();
 $aID = $oInputDocument->load( $_GET['UID'] );

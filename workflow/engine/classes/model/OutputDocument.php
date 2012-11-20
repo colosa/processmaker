@@ -24,8 +24,8 @@
  *
  */
 
-require_once ("classes/model/om/BaseOutputDocument.php");
-require_once ("classes/model/Content.php");
+//require_once ("classes/model/om/BaseOutputDocument.php");
+//require_once ("classes/model/Content.php");
 
 /**
  * Skeleton subclass for representing a row from the 'OUTPUT_DOCUMENT' table.

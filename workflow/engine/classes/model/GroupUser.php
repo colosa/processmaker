@@ -25,10 +25,10 @@
  *
  */
 
-require_once 'classes/model/om/BaseGroupUser.php';
-require_once 'classes/model/Content.php';
-require_once 'classes/model/Users.php';
-require_once 'classes/model/Groupwf.php';
+//require_once 'classes/model/om/BaseGroupUser.php';
+//require_once 'classes/model/Content.php';
+//require_once 'classes/model/Users.php';
+//require_once 'classes/model/Groupwf.php';
 
 /**
  * Skeleton subclass for representing a row from the 'GROUP_USER' table.

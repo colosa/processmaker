@@ -25,11 +25,11 @@
  *
  */
 
-require_once 'classes/model/om/BaseLanguage.php';
+//require_once 'classes/model/om/BaseLanguage.php';
 
-require_once 'classes/model/Content.php';
-require_once 'classes/model/IsoCountry.php';
-require_once 'classes/model/Translation.php';
+//require_once 'classes/model/Content.php';
+//require_once 'classes/model/IsoCountry.php';
+//require_once 'classes/model/Translation.php';
 
 /**
  * Skeleton subclass for representing a row from the 'LANGUAGE' table.

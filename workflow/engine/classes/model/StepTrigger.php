@@ -25,7 +25,7 @@
  *
  */
 
-require_once 'classes/model/om/BaseStepTrigger.php';
+//require_once 'classes/model/om/BaseStepTrigger.php';
 
 /**
  * Skeleton subclass for representing a row from the 'STEP_TRIGGER' table.

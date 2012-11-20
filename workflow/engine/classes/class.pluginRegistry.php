@@ -1102,7 +1102,7 @@ class PMPluginRegistry
     {
         try {
             $iPlugins = 0;
-            G::LoadClass( 'serverConfiguration' );
+            require_once ( 'class.serverConfiguration.php' );
             $oServerConf = & serverConf::getSingleton();
             $oServerConf->addPlugin( SYS_SYS, $this->_aPluginDetails );
             foreach ($this->_aPluginDetails as $namespace => $detail) {

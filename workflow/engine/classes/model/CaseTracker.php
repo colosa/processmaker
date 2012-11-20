@@ -5,7 +5,7 @@
  * @package workflow.engine.classes.model
  */
 
-require_once 'classes/model/om/BaseCaseTracker.php';
+//require_once 'classes/model/om/BaseCaseTracker.php';
 
 /**
  * Skeleton subclass for representing a row from the 'CASE_TRACKER' table.

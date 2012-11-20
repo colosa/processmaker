@@ -24,8 +24,8 @@
  *
  */
 
-require_once 'classes/model/om/BaseConfiguration.php';
-require_once 'classes/model/Content.php';
+//require_once 'classes/model/om/BaseConfiguration.php';
+//require_once 'classes/model/Content.php';
 
 
 /**

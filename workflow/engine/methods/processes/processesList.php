@@ -29,7 +29,7 @@ $limit = isset( $_POST['limit'] ) ? $_POST['limit'] : '';
 
 $oProcess = new Process();
 
-$memcache = & PMmemcached::getSingleton( SYS_SYS );
+//$memcache = & PMmemcached::getSingleton( SYS_SYS );
 
 $memkey = 'no memcache';
 $memcacheUsed = 'not used';

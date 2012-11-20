@@ -24,7 +24,7 @@
  *
  */
 
-require_once 'classes/model/om/BaseIsoLocation.php';
+//require_once 'classes/model/om/BaseIsoLocation.php';
 
 
 /**

@@ -28,12 +28,12 @@
  * @date Jan 3th, 2010
  */
 
-require_once 'classes/model/Application.php';
-require_once 'classes/model/Users.php';
-require_once 'classes/model/AppThread.php';
-require_once 'classes/model/AppDelay.php';
-require_once 'classes/model/Process.php';
-require_once 'classes/model/Task.php';
+//require_once 'classes/model/Application.php';
+//require_once 'classes/model/Users.php';
+//require_once 'classes/model/AppThread.php';
+//require_once 'classes/model/AppDelay.php';
+//require_once 'classes/model/Process.php';
+//require_once 'classes/model/Task.php';
 G::LoadClass( 'case' );
 
 $action = $_REQUEST['action'];

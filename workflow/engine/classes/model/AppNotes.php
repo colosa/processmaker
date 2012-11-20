@@ -1,6 +1,6 @@
 <?php
 
-require_once 'classes/model/om/BaseAppNotes.php';
+//require_once 'classes/model/om/BaseAppNotes.php';
 
 /**
  * Skeleton subclass for representing a row from the 'APP_NOTES' table.

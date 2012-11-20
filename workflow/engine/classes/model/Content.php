@@ -25,7 +25,7 @@
  *
  */
 
-require_once 'classes/model/om/BaseContent.php';
+//require_once 'classes/model/om/BaseContent.php';
 
 /**
  * Skeleton subclass for representing a row from the 'CONTENT' table.

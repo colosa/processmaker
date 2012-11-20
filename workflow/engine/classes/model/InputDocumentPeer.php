@@ -25,10 +25,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseInputDocumentPeer.php';
+  //require_once 'classes/model/om/BaseInputDocumentPeer.php';
 
   // include object class
-  include_once 'classes/model/InputDocument.php';
+  //include_once 'classes/model/InputDocument.php';
 
 
 /**

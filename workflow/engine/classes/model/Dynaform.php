@@ -25,10 +25,10 @@
  *
  */
 
-require_once 'classes/model/om/BaseDynaform.php';
-require_once 'classes/model/Content.php';
-require_once ('classes/model/AdditionalTables.php');
-G::LoadClass( 'dynaFormField' );
+//require_once 'classes/model/om/BaseDynaform.php';
+//require_once 'classes/model/Content.php';
+//require_once ('classes/model/AdditionalTables.php');
+//G::LoadClass( 'dynaFormField' );
 
 /**
  * Skeleton subclass for representing a row from the 'DYNAFORM' table.

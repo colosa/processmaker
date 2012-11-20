@@ -30,8 +30,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
 require_once ('classes/model/Dynaform.php');
 require_once ('classes/model/Content.php');
 
-$oJSON = new Services_JSON();
-
 if (isset( $_POST['function'] )) {
     $sfunction = $_POST['function'];
 } elseif (isset( $_POST['functions'] )) {

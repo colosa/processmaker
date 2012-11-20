@@ -5,7 +5,7 @@
  * @package workflow.engine.classes.model
  */
 
-require_once 'classes/model/om/BaseAppEvent.php';
+//require_once 'classes/model/om/BaseAppEvent.php';
 
 /**
  * Skeleton subclass for representing a row from the 'APP_EVENT' table.

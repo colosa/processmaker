@@ -66,7 +66,7 @@ class PMmemcached
                     $this->version = $this->mem->getVersion();
                 }
             } else {
-                G::Loadclass( 'fileCache' );
+                require_once ('classes/class.fileCache.php');
                 // create cache folder
                 $cacheFolder = PATH_DATA . "sites/" . $workspace . "/cachefiles/";
                 if (! file_exists( $cacheFolder )) {

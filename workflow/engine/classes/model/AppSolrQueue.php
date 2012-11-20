@@ -1,7 +1,7 @@
 <?php
 
-require_once 'classes/model/om/BaseAppSolrQueue.php';
-require_once 'classes/entities/AppSolrQueue.php';
+//require_once 'classes/model/om/BaseAppSolrQueue.php';
+//require_once 'classes/entities/AppSolrQueue.php';
 
 /**
  * Skeleton subclass for representing a row from the 'APP_SOLR_QUEUE' table.

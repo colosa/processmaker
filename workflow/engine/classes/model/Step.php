@@ -25,7 +25,7 @@
  *
  */
 
-require_once 'classes/model/om/BaseStep.php';
+//require_once 'classes/model/om/BaseStep.php';
 
 /**
  * Skeleton subclass for representing a row from the 'STEP' table.

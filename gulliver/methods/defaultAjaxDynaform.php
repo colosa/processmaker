@@ -24,4 +24,4 @@
  */
 define('XMLFORM_AJAX_PATH',PATH_DYNAFORM);
 require_once(PATH_GULLIVER_HOME.'/methods/defaultAjax.php');
-?>
+

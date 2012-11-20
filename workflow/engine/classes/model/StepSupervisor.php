@@ -5,7 +5,7 @@
  * @package workflow.engine.classes.model
  */
 
-require_once 'classes/model/om/BaseStepSupervisor.php';
+//require_once 'classes/model/om/BaseStepSupervisor.php';
 
 /**
  * Skeleton subclass for representing a row from the 'STEP_SUPERVISOR' table.

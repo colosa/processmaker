@@ -9,7 +9,7 @@
  * Copyright (C) 2004 - 2011 Colosa Inc.
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
+ * it under the terms of the GNU Affero General Public License as$translationsFile = "/js/ext/translation." . SYS_LANG . ".js";
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
@@ -18,7 +18,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
+ * You should have received a copy of the GNU Affero General Public LicensegetExtJsLibraries
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
@@ -40,7 +40,6 @@ class headPublisher
 
     /* extJsSkin  init coreLoad flag*/
     var $extJsInit = 'false';
-
     /* extJsSkin  store the current skin for the ExtJs*/
     var $extJsSkin = '';
 
@@ -62,6 +61,8 @@ class headPublisher
     /* tplVariable array, to store the variables for template power */
     var $tplVariable = array ();
 
+    var $translationsFile;
+    
     var $leimnudInitString = '  var leimnud = new maborak();
   leimnud.make({
     zip:true,
@@ -90,6 +91,7 @@ class headPublisher
     public function __construct ()
     {
         $this->addScriptFile( "/js/maborak/core/maborak.js" );
+        $this->translationsFile = "/js/ext/translation." . SYS_LANG . ".js";
     }
 
     function &getSingleton ()
@@ -211,12 +213,16 @@ class headPublisher
 
         $this->addScriptFile( "/js/widgets/js-calendar/unicode-letter.js" );
         //$this->addScriptFile( "/js/widgets/js-calendar/lang/" . $sysLang . ".js" );
-
+        
         $head = '';
         $head .= '<TITLE>' . $this->title . "</TITLE>\n";
         foreach ($this->scriptFiles as $file) {
             $head .= "<script type='text/javascript' src='" . $file . "'></script>\n";
         }
+        if(!in_array( $this->translationsFile, $this->scriptFiles)) {
+            $head .= "<script type='text/javascript' src='" . $this->translationsFile . "'></script>\n";
+        }
+        
         $head .= "<script type='text/javascript'>\n";
         $head .= $this->leimnudInitString;
         foreach ($this->leimnudLoad as $file) {
@@ -306,7 +312,7 @@ class headPublisher
         $head .= $this->getExtJsLibraries();
 
         // $head .= "  <script type='text/javascript' src='/js/ext/draw2d.js'></script>\n";
-        $head .= "  <script type='text/javascript' src='/js/ext/translation." . SYS_LANG . ".js'></script>\n";
+        // $head .= "  <script type='text/javascript' src='/js/ext/translation." . SYS_LANG . ".js'></script>\n";
 
         if (! isset( $this->extJsSkin ) || $this->extJsSkin == '') {
             $this->extJsSkin = 'xtheme-gray';
@@ -326,7 +332,7 @@ class headPublisher
     function getExtJsStylesheets ($skinName)
     {
         $script = "  <link rel='stylesheet' type='text/css' href='/css/$skinName.css' />\n";
-        $script .= "  <script type='text/javascript' src='/js/ext/translation." . SYS_LANG . ".js'></script>\n";
+        //$script .= "  <script type='text/javascript' src='/js/ext/translation." . SYS_LANG . ".js'></script>\n";
         /*
         $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/ext-all-notheme.css' />\n";
         $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/" . $this->extJsSkin.".css' />\n";
@@ -390,12 +396,15 @@ class headPublisher
     }
 
     function getExtJsLibraries ()
-    {
+    { 
         $script = '';
         if (isset( $this->extJsLibrary ) && is_array( $this->extJsLibrary )) {
             foreach ($this->extJsLibrary as $file) {
                 $script .= "  <script type='text/javascript' src='/js/ext/" . $file . ".js'></script>\n";
             }
+        }
+        if(!in_array( $this->translationsFile, $this->extJsLibrary)) {
+            $script .= "  <script type='text/javascript' src='" . $this->translationsFile . "'></script>\n";
         }
         return $script;
     }

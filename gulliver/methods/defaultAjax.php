@@ -28,9 +28,8 @@
     eval($_SESSION['CURRENT_PAGE_INITILIZATION']);
 
 
-  G::LoadThirdParty('pear/json','class.json');
-
-  $json=new Services_JSON();
+  //G::LoadThirdParty('pear/json','class.json');
+  //$json=new Services_JSON();
   if (!defined('XMLFORM_AJAX_PATH')) define('XMLFORM_AJAX_PATH',PATH_XMLFORM);
 
   $_DBArray = array();
@@ -55,7 +54,7 @@
   $G_FORM=new form( $xmlFile , $sPath );
   $G_FORM->id=urlDecode($_POST['form']);
   $G_FORM->values=isset($_SESSION[$G_FORM->id]) ? $_SESSION[$G_FORM->id] : array();
-  $newValues=($json->decode(urlDecode(stripslashes($_POST['fields']))));  
+  $newValues=(Bootstrap::json_decode(urlDecode(stripslashes($_POST['fields']))));  
   if (isset($_POST['grid'])) {
     $_POST['row'] = (int)$_POST['row'];
     $aAux = array();
@@ -161,7 +160,7 @@
     }
     $r++;
   }
-  echo($json->encode($sendContent));
+  echo(Bootstrap::json_encode($sendContent));
 
   function toJSArray($array, $type= '')
   {

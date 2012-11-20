@@ -25,9 +25,9 @@
  *
  */
 
-require_once 'classes/model/om/BaseProcess.php';
-require_once 'classes/model/Content.php';
-require_once 'classes/model/ProcessCategory.php';
+//require_once 'classes/model/om/BaseProcess.php';
+//require_once 'classes/model/Content.php';
+//require_once 'classes/model/ProcessCategory.php';
 
 /**
  * Skeleton subclass for representing a row from the 'PROCESS' table.

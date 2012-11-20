@@ -1,5 +1,5 @@
 <?php
-require_once ('Base.php');
+//require_once ('Base.php');
 
 class Entity_SolrQueryResult extends Entity_Base
 {

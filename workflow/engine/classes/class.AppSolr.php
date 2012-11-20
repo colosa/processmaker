@@ -22,20 +22,20 @@
  *
  */
 
-require_once ("classes" . PATH_SEP . "model" . PATH_SEP . "AppCacheView.php");
-require_once "classes/model/Application.php";
-require_once "classes/model/AppDelegation.php";
-require_once "classes/model/AppThread.php";
-require_once "classes/model/Content.php";
-require_once "classes/model/Users.php";
-require_once "classes/model/GroupUser.php";
-require_once "classes/model/Task.php";
-require_once "classes/model/TaskUser.php";
-require_once "classes/model/Dynaform.php";
-require_once "entities/SolrRequestData.php";
-require_once "entities/SolrUpdateDocument.php";
-require_once "entities/AppSolrQueue.php";
-require_once "classes/model/AppSolrQueue.php";
+//require_once ("classes" . PATH_SEP . "model" . PATH_SEP . "AppCacheView.php");
+//require_once "classes/model/Application.php";
+//require_once "classes/model/AppDelegation.php";
+//require_once "classes/model/AppThread.php";
+//require_once "classes/model/Content.php";
+//require_once "classes/model/Users.php";
+//require_once "classes/model/GroupUser.php";
+//require_once "classes/model/Task.php";
+//require_once "classes/model/TaskUser.php";
+//require_once "classes/model/Dynaform.php";
+//require_once "entities/SolrRequestData.php";
+//require_once "entities/SolrUpdateDocument.php";
+//require_once "entities/AppSolrQueue.php";
+//require_once "classes/model/AppSolrQueue.php";
 
 /**
  * Invalid search text for Solr exception
