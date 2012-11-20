@@ -434,12 +434,28 @@ if ($actionAjax == 'historyDynaformGridPreview') {
     $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['NEXT_STEP'] = '#';
     $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['NEXT_ACTION'] = 'return false;';
     $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['DYNUIDPRINT'] = $_POST['DYN_UID'];
+    ?>
+    <script language="javascript">
+    window.onload = function () {
+        var inputs = document.getElementsByTagName('input');
+        console.log(inputs);
+        for(var i= 0; i<inputs.length; i++) {
+            console.log(inputs[i].type);
+            if(inputs[i].type == 'button' || inputs[i].type == 'submit')
+                {
+            	   inputs[i].disabled = true;
+                }
+            }
+    };
+    </script>
+    <?php
 
     $_SESSION['DYN_UID_PRINT'] = $_POST['DYN_UID'];
     $G_PUBLISH->AddContent( 'dynaform', 'xmlform', $_SESSION['PROCESS'] . '/' . $_POST['DYN_UID'], '', $Fields['APP_DATA'], '', '', 'view' );
 
     ?>
     <script language="javascript">
+
     function popUp(URL, width, height, left, top, resizable) {
         window.open(URL, '', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=1,resizable='+resizable+',width='+width+',height='+height+',left = '+left+',top = '+top+'');
     }
