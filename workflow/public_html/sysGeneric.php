@@ -400,7 +400,7 @@ if (defined( 'PATH_DATA' ) && file_exists( PATH_DATA )) {
 Bootstrap::LoadThirdParty( 'smarty/libs', 'Smarty.class' );
 
 //testing the autoloader feature
-spl_autoload_register(array(Bootstrap, 'autoloadClass'));
+spl_autoload_register(array('Bootstrap', 'autoloadClass'));
 Bootstrap::registerClass('headPublisher', PATH_GULLIVER . "class.headPublisher.php");
 Bootstrap::registerClass('G', PATH_GULLIVER . "class.g.php");
 Bootstrap::registerClass('publisher', PATH_GULLIVER . "class.publisher.php");

@@ -965,6 +965,7 @@ class Bootstrap
 			}
 		}
 
+		$mtime = date ( 'U' );
 		$gmt_mtime = gmdate( "D, d M Y H:i:s", $mtime ) . " GMT";
 		header( 'Pragma: cache' );
 		header( 'ETag: "' . md5( $mtime . $filename ) . '"' );
