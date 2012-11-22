@@ -18,6 +18,7 @@
 		popupWindow('@G::LoadTranslation(ID_EDIT_FIELD)', '@G::encryptlink(@#fields_Edit)?A=@%URL&XMLNODE_NAME='+ uid , 500, 650, null,false,true);
   }
   function fieldsSave( form ) {
+  alert("save");
     if (pme_validating) {
       validatingForm=form;
       setTimeout('fieldsSave(validatingForm);',100);

@@ -25,10 +25,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseSwimlanesElementsPeer.php';
+  //require_once 'classes/model/om/BaseSwimlanesElementsPeer.php';
 
   // include object class
-  include_once 'classes/model/SwimlanesElements.php';
+  //include_once 'classes/model/SwimlanesElements.php';
 
 
 /**

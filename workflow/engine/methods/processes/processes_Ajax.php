@@ -42,9 +42,10 @@ try {
         $oData = G::json_decode( stripslashes( $_REQUEST['data'] ) );
         //$oData = $oJSON->decode( stripslashes( $_REQUEST['data'] ) );
         $sOutput = '';
+        $sTask = '';
     }
 
-    G::LoadClass( 'processMap' );
+    //G::LoadClass( 'processMap' );
     $oProcessMap = new processMap( new DBConnection() );
 
     switch ($_REQUEST['action']) {

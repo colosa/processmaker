@@ -25,8 +25,8 @@
  *
  */
 
-require_once 'classes/model/om/BaseSwimlanesElements.php';
-require_once 'classes/model/Content.php';
+//require_once 'classes/model/om/BaseSwimlanesElements.php';
+//require_once 'classes/model/Content.php';
 
 /**
  * Skeleton subclass for representing a row from the 'SWIMLANES_ELEMENTS' table.

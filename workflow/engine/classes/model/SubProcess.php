@@ -5,7 +5,7 @@
  * @package workflow.engine.classes.model
  */
 
-require_once 'classes/model/om/BaseSubProcess.php';
+//require_once 'classes/model/om/BaseSubProcess.php';
 
 /**
  * Skeleton subclass for representing a row from the 'SUB_PROCESS' table.

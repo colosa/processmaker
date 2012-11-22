@@ -28,41 +28,41 @@
  *
  * @package workflow.engine.ProcessMaker
  */
-G::LoadThirdParty( 'pear/json', 'class.json' );
-G::LoadClass( 'groups' );
-G::LoadClass( 'tasks' );
+//G::LoadThirdParty( 'pear/json', 'class.json' );
+//G::LoadClass( 'groups' );
+//G::LoadClass( 'tasks' );
 G::LoadClass( 'xmlfield_InputPM' );
-G::LoadClass( 'calendar' );
+//G::LoadClass( 'calendar' );
 
-require_once 'classes/model/AppDelegation.php';
-require_once 'classes/model/CaseTracker.php';
-require_once 'classes/model/CaseTrackerObject.php';
-require_once 'classes/model/Configuration.php';
-require_once 'classes/model/Content.php';
-require_once 'classes/model/DbSource.php';
-require_once 'classes/model/Dynaform.php';
-require_once 'classes/model/Event.php';
-require_once 'classes/model/Groupwf.php';
-require_once 'classes/model/InputDocument.php';
-require_once 'classes/model/ObjectPermission.php';
-require_once 'classes/model/OutputDocument.php';
-require_once 'classes/model/Process.php';
-require_once 'classes/model/ProcessUser.php';
-require_once 'classes/model/ReportTable.php';
-require_once 'classes/model/Route.php';
-require_once 'classes/model/CaseScheduler.php';
-require_once 'classes/model/LogCasesScheduler.php';
-require_once 'classes/model/Step.php';
-require_once 'classes/model/StepSupervisor.php';
-require_once 'classes/model/StepTrigger.php';
-require_once 'classes/model/SubProcess.php';
-require_once 'classes/model/SwimlanesElements.php';
-require_once 'classes/model/Task.php';
-require_once 'classes/model/TaskUser.php';
-require_once 'classes/model/Triggers.php';
-require_once 'classes/model/Users.php';
-require_once 'classes/model/Gateway.php';
-require_once 'classes/model/om/BaseUsers.php';
+//require_once 'classes/model/AppDelegation.php';
+//require_once 'classes/model/CaseTracker.php';
+//require_once 'classes/model/CaseTrackerObject.php';
+//require_once 'classes/model/Configuration.php';
+//require_once 'classes/model/Content.php';
+//require_once 'classes/model/DbSource.php';
+//require_once 'classes/model/Dynaform.php';
+//require_once 'classes/model/Event.php';
+//require_once 'classes/model/Groupwf.php';
+//require_once 'classes/model/InputDocument.php';
+//require_once 'classes/model/ObjectPermission.php';
+//require_once 'classes/model/OutputDocument.php';
+//require_once 'classes/model/Process.php';
+//require_once 'classes/model/ProcessUser.php';
+//require_once 'classes/model/ReportTable.php';
+//require_once 'classes/model/Route.php';
+//require_once 'classes/model/CaseScheduler.php';
+//require_once 'classes/model/LogCasesScheduler.php';
+//require_once 'classes/model/Step.php';
+//require_once 'classes/model/StepSupervisor.php';
+//require_once 'classes/model/StepTrigger.php';
+//require_once 'classes/model/SubProcess.php';
+//require_once 'classes/model/SwimlanesElements.php';
+//require_once 'classes/model/Task.php';
+//require_once 'classes/model/TaskUser.php';
+//require_once 'classes/model/Triggers.php';
+//require_once 'classes/model/Users.php';
+//require_once 'classes/model/Gateway.php';
+//require_once 'classes/model/om/BaseUsers.php';
 
 /**
  * processMap - Process Map class
@@ -418,8 +418,8 @@ class processMap
                 $oPM->taskOptions[] = $taskOption;
             }
 
-            $oJSON = new Services_JSON();
-            return $oJSON->encode( $oPM );
+            //$oJSON = new Services_JSON();
+            return Bootstrap::json_encode($oPM);//$oJSON->encode( $oPM );
         } catch (Exception $oError) {
             throw ($oError);
         }
@@ -1426,9 +1426,8 @@ class processMap
             $oNewTask->statusIcons = array ();
             $oNewTask->statusIcons[] = array ('label' => '','icon' => '/images/alert.gif','message' => '','url' => ''
             );
-            $oJSON = new Services_JSON();
-
-            return $oJSON->encode( $oNewTask );
+            //$oJSON = new Services_JSON();
+            return Bootstrap::json_encode($oNewTask);//$oJSON->encode( $oNewTask );
         } catch (Exception $oError) {
             throw ($oError);
         }
@@ -1669,8 +1668,8 @@ class processMap
                 $oGateway->update( $aData );
             }
             $oEncode->uid = $sGat_uid;
-            $oJSON = new Services_JSON();
-            return $oJSON->encode( $oEncode );
+            //$oJSON = new Services_JSON();
+            return Bootstrap::json_encode($oEncode);//$oJSON->encode( $oEncode );
         } catch (Exception $oError) {
             throw ($oError);
         }
@@ -1700,8 +1699,8 @@ class processMap
                     ) );
                     break;
             }
-            $oJSON = new Services_JSON();
-            return $oJSON->encode( $oNewGuide );
+            //$oJSON = new Services_JSON();
+            return Bootstrap::json_encode($oNewGuide);//$oJSON->encode( $oNewGuide );
         } catch (Exception $oError) {
             throw ($oError);
         }
@@ -1791,8 +1790,8 @@ class processMap
             $oSL = new SwimlanesElements();
             $oNewText->uid = $oSL->create( array ('PRO_UID' => $sProcessUID,'SWI_TYPE' => 'TEXT','SWI_TEXT' => $sLabel,'SWI_X' => $iX,'SWI_Y' => $iY,'SWI_NEXT_UID' => $sNext_uid
             ) );
-            $oJSON = new Services_JSON();
-            return $oJSON->encode( $oNewText );
+            //$oJSON = new Services_JSON();
+            return Bootstrap::json_encode($oNewText);//$oJSON->encode( $oNewText );
         } catch (Exception $oError) {
             throw ($oError);
         }
@@ -4660,14 +4659,14 @@ class processMap
             $oNewTask->label = 'Sub-Process'; //G::LoadTranslation('ID_TASK');
             $oNewTask->uid = $oTask->create( array ('PRO_UID' => $sProcessUID,'TAS_TITLE' => $oNewTask->label,'TAS_POSX' => $iX,'TAS_POSY' => $iY,'TAS_TYPE' => 'SUBPROCESS'
             ) );
-            $oJSON = new Services_JSON();
+            //$oJSON = new Services_JSON();
 
             $oOP = new SubProcess();
             $aData = array ('SP_UID' => G::generateUniqueID(),'PRO_UID' => 0,'TAS_UID' => 0,'PRO_PARENT' => $sProcessUID,'TAS_PARENT' => $oNewTask->uid,'SP_TYPE' => 'SIMPLE','SP_SYNCHRONOUS' => 0,'SP_SYNCHRONOUS_TYPE' => 'ALL','SP_SYNCHRONOUS_WAIT' => 0,'SP_VARIABLES_OUT' => '','SP_VARIABLES_IN' => '','SP_GRID_IN' => ''
             );
             $oOP->create( $aData );
 
-            return $oJSON->encode( $oNewTask );
+            return Bootstrap::json_endoce($oNewTask);//$oJSON->encode( $oNewTask );
         } catch (Exception $oError) {
             throw ($oError);
         }
@@ -5081,8 +5080,8 @@ class processMap
             );
             $oDataset->next();
         }
-        $oJSON = new Services_JSON();
-        return $oJSON->encode( $aProcesses );
+        //$oJSON = new Services_JSON();
+        return Bootstrap::json_encode($aProcesses);//$oJSON->encode( $aProcesses );
     }
 
     /*
@@ -7396,8 +7395,8 @@ class processMap
             $oEvent->update( $aData );
         }
         $oEncode->uid = $sEvn_uid;
-        $oJSON = new Services_JSON();
-        return $oJSON->encode( $oEncode );
+        //$oJSON = new Services_JSON();
+        return Bootstrap::json_encode($oEncode);//$oJSON->encode( $oEncode );
     }
 
     public function saveExtEvents ($oData)

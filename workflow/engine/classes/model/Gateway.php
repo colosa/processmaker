@@ -5,7 +5,7 @@
  * @package workflow.engine.classes.model
  */
 
-require_once 'classes/model/om/BaseGateway.php';
+//require_once 'classes/model/om/BaseGateway.php';
 
 /**
  * Skeleton subclass for representing a row from the 'GATEWAY' table.
