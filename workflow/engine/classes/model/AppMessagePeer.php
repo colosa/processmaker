@@ -25,10 +25,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseAppMessagePeer.php';
+  //require_once 'classes/model/om/BaseAppMessagePeer.php';
 
   // include object class
-  include_once 'classes/model/AppMessage.php';
+  //include_once 'classes/model/AppMessage.php';
 
 
 /**
