@@ -587,6 +587,8 @@ Bootstrap::registerClass('UsersPeer',           PATH_HOME . "engine/classes/mode
 
 Bootstrap::registerClass('Xml_Node',            PATH_GULLIVER . "class.xmlDocument.php");
 
+require_once  PATH_THIRDPARTY . '/pear/PEAR.php';
+
 //Bootstrap::registerClass('Cases',               PATH_HOME . "engine/classes/class.case.php");
 //Bootstrap::registerClass('configuration',       PATH_HOME . "engine/classes/class.configuration.php");
 

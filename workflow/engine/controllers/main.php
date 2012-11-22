@@ -499,8 +499,7 @@ class Main extends Controller
 
     public function getLanguagesList ()
     {
-        //translation
-        $Translations = G::getModel( "Translation" );
+        $Translations = new Translation;
         $translationsTable = $Translations->getTranslationEnvironments();
 
         if (($languagesList = $this->memcache->get( 'languagesList' )) === false) {
