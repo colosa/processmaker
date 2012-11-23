@@ -70,8 +70,8 @@ try {
         }
     }
 
-    error_log("\n*****\n", 3, "/home/victor/MyLog.log");
-    error_log(print_r($oTree, true), 3, "/home/victor/MyLog.log");
+  //  error_log("\n*****\n", 3, "/home/victor/MyLog.log");
+  //  error_log(print_r($oTree, true), 3, "/home/victor/MyLog.log");
 
     echo $oTree->render();
 } catch (Exception $e) {

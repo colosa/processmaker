@@ -5,8 +5,8 @@
  * @package workflow.engine.classes.model
  */
 
-require_once 'classes/model/om/BaseAppFolder.php';
-require_once 'classes/model/Application.php';
+//require_once 'classes/model/om/BaseAppFolder.php';
+//require_once 'classes/model/Application.php';
 
 /**
  * Skeleton subclass for representing a row from the 'APP_FOLDER' table.
