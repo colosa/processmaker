@@ -25,10 +25,10 @@
  */
 
 // include base peer class
-require_once 'classes/model/om/BaseTriggersPeer.php';
+//require_once 'classes/model/om/BaseTriggersPeer.php';
 
 // include object class
-include_once 'classes/model/Triggers.php';
+//include_once 'classes/model/Triggers.php';
 
 
 /**

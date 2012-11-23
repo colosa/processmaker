@@ -430,6 +430,8 @@ Bootstrap::registerClass('Entity_Base',         PATH_HOME . "engine/classes/enti
 
 Bootstrap::registerClass('BaseContent',        PATH_HOME . "engine/classes/model/om/BaseContent.php");
 Bootstrap::registerClass('Content',            PATH_HOME . "engine/classes/model/Content.php");
+Bootstrap::registerClass('BaseContentPeer',    PATH_HOME . "engine/classes/model/om/BaseContentPeer.php");
+Bootstrap::registerClass('ContentPeer',        PATH_HOME . "engine/classes/model/ContentPeer.php");
 Bootstrap::registerClass('BaseApplication',    PATH_HOME . "engine/classes/model/om/BaseApplication.php");
 Bootstrap::registerClass('ApplicationPeer',    PATH_HOME . "engine/classes/model/ApplicationPeer.php");
 Bootstrap::registerClass('Application',        PATH_HOME . "engine/classes/model/Application.php");
@@ -608,6 +610,7 @@ Bootstrap::registerClass('TaskUser',            PATH_HOME . "engine/classes/mode
 
 Bootstrap::registerClass('BaseTriggers',        PATH_HOME . "engine/classes/model/om/BaseTriggers.php");
 Bootstrap::registerClass('Triggers',            PATH_HOME . "engine/classes/model/Triggers.php");
+Bootstrap::registerClass('BaseTriggersPeer',    PATH_HOME . "engine/classes/model/om/BaseTriggersPeer.php");
 Bootstrap::registerClass('TriggersPeer',        PATH_HOME . "engine/classes/model/TriggersPeer.php");
 
 Bootstrap::registerClass('BaseUsers',           PATH_HOME . "engine/classes/model/om/BaseUsers.php");
