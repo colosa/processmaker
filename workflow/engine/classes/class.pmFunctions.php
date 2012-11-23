@@ -786,12 +786,25 @@ function getEmailConfiguration ()
  * @param string(32) | $sTemplate | Name of the template | The name of the template file in plain text or HTML format which will produce the body of the email.
  * @param array | $aFields | An optional associative array | Optional parameter. An associative array where the keys are the variable names and the values are the variables' values.
  * @param array | $aAttachment | Attachment | An Optional arrray. An array of files (full paths) to be attached to the email.
+ * @param boolean | $showMessage = true | Show message | Optional parameter.
+ * @param int | $delIndex = 0 | Delegation index of the case | Optional parameter. The delegation index of the current task in the case.
  * @return int | $result | result | Result of sending email
  *
  */
 //@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value.
-function PMFSendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields = array(), $aAttachment = array(), $showMessage = true)
-{
+function PMFSendMessage(
+    $caseId,
+    $sFrom,
+    $sTo,
+    $sCc,
+    $sBcc,
+    $sSubject,
+    $sTemplate,
+    $aFields = array(),
+    $aAttachment = array(),
+    $showMessage = true,
+    $delIndex = 0
+) {
     global $oPMScript;
 
     if (isset( $oPMScript->aFields ) && is_array( $oPMScript->aFields )) {
@@ -802,9 +815,22 @@ function PMFSendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTempla
         }
     }
 
-    G::LoadClass( 'wsBase' );
+    G::LoadClass("wsBase");
+
     $ws = new wsBase();
-    $result = $ws->sendMessage( $caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $aFields, $aAttachment, $showMessage);
+    $result = $ws->sendMessage(
+        $caseId,
+        $sFrom,
+        $sTo,
+        $sCc,
+        $sBcc,
+        $sSubject,
+        $sTemplate,
+        $aFields,
+        $aAttachment,
+        $showMessage,
+        $delIndex
+    );
 
     if ($result->status_code == 0) {
         return 1;

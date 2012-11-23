@@ -729,10 +729,24 @@ class wsBase
      * @param string $sSubject
      * @param string $sTemplate
      * @param $appFields = null
+     * @param $aAttachment = null
+     * @param boolean $showMessage = true
+     * @param int $delIndex = 0
      * @return $result will return an object
      */
-    public function sendMessage ($caseId, $sFrom, $sTo, $sCc, $sBcc, $sSubject, $sTemplate, $appFields = null, $aAttachment = null, $showMessage = true)
-    {
+    public function sendMessage(
+        $caseId,
+        $sFrom,
+        $sTo,
+        $sCc,
+        $sBcc,
+        $sSubject,
+        $sTemplate,
+        $appFields = null,
+        $aAttachment = null,
+        $showMessage = true,
+        $delIndex = 0
+    ) {
         try {
             G::loadClass( 'system' );
 
@@ -789,7 +803,21 @@ class wsBase
             }
             $showMessage = ($showMessage) ? 1 : 0 ;
 
-            $messageArray = array ('msg_uid' => '','app_uid' => $caseId,'del_index' => 0,'app_msg_type' => 'TRIGGER','app_msg_subject' => $sSubject,'app_msg_from' => $sFrom,'app_msg_to' => $sTo,'app_msg_body' => $sBody,'app_msg_cc' => $sCc,'app_msg_bcc' => $sBcc,'app_msg_attach' => $aAttachment,'app_msg_template' => '','app_msg_status' => 'pending', 'app_msg_show_message' => $showMessage
+            $messageArray = array(
+                "msg_uid" => "",
+                "app_uid" => $caseId,
+                "del_index"    => $delIndex,
+                "app_msg_type" => "TRIGGER",
+                "app_msg_subject" => $sSubject,
+                "app_msg_from"    => $sFrom,
+                "app_msg_to"   => $sTo,
+                "app_msg_body" => $sBody,
+                "app_msg_cc"   => $sCc,
+                "app_msg_bcc"  => $sBcc,
+                "app_msg_attach"   => $aAttachment,
+                "app_msg_template" => "",
+                "app_msg_status"   => "pending",
+                "app_msg_show_message" => $showMessage
             );
 
             $oSpool->create( $messageArray );
