@@ -2690,12 +2690,4 @@ class Bootstrap
 		        return $url;
 		    }
 		}
-		
-        public function mylog($echo) {
-                  $fp = fopen("jsloaded.log","a");
-                  fwrite($fp, $echo . PHP_EOL);
-                  fclose($fp);
-        }
-		
-		
 	}
