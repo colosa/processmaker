@@ -94,6 +94,118 @@ switch ($request) {
             $o->remove( '___pm_boot_strap___' );
         }
         break;
+    case 'showImportForm':
+        require_once 'classes/model/Dynaform.php';
+        require_once 'classes/model/Content.php';
+        $uidDynafom = $_POST['DYN_UID'];
+
+        $oCriteria = new Criteria( 'workflow' );
+        $oCriteria->clearSelectColumns();
+        $oCriteria->addSelectColumn( DynaformPeer::DYN_FILENAME );
+        $oCriteria->addAsColumn( 'DYNA_NAME', 'C_DYNA.CON_VALUE' );
+        $oCriteria->addAsColumn( 'PROC_NAME', 'C_PROC.CON_VALUE' );
+
+        $oCriteria->addAlias("C_DYNA", "CONTENT");
+        $oCriteria->addAlias("C_PROC", "CONTENT");
+
+        $arrayCondition = array();
+        $arrayCondition[] = array(DynaformPeer::DYN_UID, "C_DYNA.CON_ID");
+        $oCriteria->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $arrayCondition = array();
+        $arrayCondition[] = array(DynaformPeer::PRO_UID, "C_PROC.CON_ID");
+        $oCriteria->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $oCriteria->add( 'C_DYNA.CON_LANG', SYS_LANG );
+        $oCriteria->add( 'C_DYNA.CON_CATEGORY', 'DYN_TITLE' );
+
+        $oCriteria->add( 'C_PROC.CON_LANG', SYS_LANG );
+        $oCriteria->add( 'C_PROC.CON_CATEGORY', 'PRO_TITLE' );
+
+        $oCriteria->add( DynaformPeer::DYN_UID, $uidDynafom, Criteria::NOT_EQUAL);
+        
+        $oCriteria->addAscendingOrderByColumn ('PROC_NAME');
+        $oCriteria->addAscendingOrderByColumn ('DYNA_NAME');
+        $oDataset = DynaformPeer::doSelectRS( $oCriteria );
+        $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $oDataset->next();
+        $aRow = $oDataset->getRow();
+
+
+        $select = '<select name="form[IMPORT_DYNA]" id="form[IMPORT_DYNA]"  width="300" style="width: 300px" class="module_app_input___gray">';
+        $selectGroup = '';
+        while (is_array( $aRow )) {
+            if ($selectGroup != $aRow['PROC_NAME']) {
+                if ($selectGroup != '') {
+                    $select .= '</optgroup>';
+                }
+                $selectGroup = $aRow['PROC_NAME'];
+                $select .= '<optgroup label="' . $aRow['PROC_NAME'] . '">';
+            }
+            $select .= '<option value="' . $aRow['DYN_FILENAME'] . '">' . $aRow['DYNA_NAME'] . '</option>';
+            $oDataset->next();
+            $aRow = $oDataset->getRow();
+        }
+
+        $select .= '</optgroup></select>';
+        $html = '<div id="importForm"><table width="100%" cellspacing="3" cellpadding="3" border="0">
+                    <tbody>
+                        <tr>
+                            <td align="" colspan="2" style="background: none repeat scroll 0 0 #E0E7EF; border-bottom: 1px solid #C3D1DF;
+                                color: #000000; font-weight: bold; padding-left: 5px; text-shadow: 0 1px 0 #FFFFFF;
+                                font: 8px">
+                                <span>' . G::LoadTranslation('ID_SELECT_DYNAFORM_IMPORT') . '</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="40%" style="font: 11px/180% sans-serif,MiscFixed; color: #808080; text-align: right;">
+                                <label for="form[IMPORT_DYNA]">' . G::LoadTranslation('ID_DYNAFORM') . '</label>
+                            </td>
+                            <td width="615" class="FormFieldContent">' . $select . '
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2" class="FormButton">
+                                <input type="button" onclick="dynaformEditor.import(document.getElementById(&#39;form[IMPORT_DYNA]&#39;).value);" value="' . G::LoadTranslation('ID_IMPORT') . '" class="module_app_button___gray " style=""> &nbsp;
+                                <input type="button" onclick="panelImportDyna.remove();" value="' . G::LoadTranslation('ID_CANCEL') . '" class="module_app_button___gray " style="">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><div>';
+        echo $html;
+        break;
+    case 'import':
+        require_once 'classes/model/Dynaform.php';
+        $uidDynafom = $_POST['DYN_UID'];
+        $oCriteria = new Criteria( 'workflow' );
+        $oCriteria->clearSelectColumns();
+        $oCriteria->addSelectColumn( DynaformPeer::DYN_FILENAME );
+        $oCriteria->add( DynaformPeer::DYN_UID, $uidDynafom, Criteria::EQUAL);
+        $oDataset = DynaformPeer::doSelectRS( $oCriteria );
+        $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $oDataset->next();
+        $aRow = $oDataset->getRow();
+
+        $dynaFile = PATH_DYNAFORM . $aRow['DYN_FILENAME'] . '.xml';
+        $importFile = PATH_DYNAFORM . $_POST['FILE'] . '.xml';
+
+        $importFp = fopen ($importFile, "r+");
+        $fileText = fread($importFp, filesize($importFile));
+        fclose ( $importFp );
+        $newFile = str_replace($_POST['FILE'], $aRow['DYN_FILENAME'], $fileText);
+
+        $dynaFileTmp = PATH_DYNAFORM . $aRow['DYN_FILENAME'] . '_tmp0.xml';
+        $dynafmFp = fopen ($dynaFileTmp,"w+");
+        fwrite ( $dynafmFp, $newFile);
+        fclose ( $dynafmFp );
+
+        /*
+        $dynafmFp = fopen ($dynaFile,"w+");
+        fwrite ( $dynafmFp, $newFile);
+        fclose ( $dynafmFp );
+        */
+        echo 'success';
+        break;
     default:
         echo 'no request param.';
 }
