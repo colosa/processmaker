@@ -3060,18 +3060,22 @@ var validateForm = function(sRequiredFields) {
   }
   else {
     var arrayForm = document.getElementsByTagName("form");
+    var inputAux;
+    var id = "";
+    var i1 = 0;
+    var i2 = 0;
 
-    for (var i = 0; i <= arrayForm.length - 1; i++) {
-      var frm = arrayForm[i];
+    for (i1 = 0; i1 <= arrayForm.length - 1; i1++) {
+      var frm = arrayForm[i1];
 
-      for (var i = 0; i <= frm.elements.length - 1; i++)  {
-        var elem = frm.elements[i];
+      for (i2 = 0; i2 <= frm.elements.length - 1; i2++)  {
+        var elem = frm.elements[i2];
 
         if (elem.type == "checkbox" && elem.disabled && elem.checked) {
-          var id = elem.id + "_";
+          id = elem.id + "_";
 
           if (!document.getElementById(id)) {
-              var inputAux   = document.createElement("input");
+              inputAux       = document.createElement("input");
               inputAux.type  = "hidden";
               inputAux.id    = id;
               inputAux.name  = elem.name;
@@ -3081,7 +3085,47 @@ var validateForm = function(sRequiredFields) {
           }
         }
       }
+
+      var arrayLink = frm.getElementsByTagName("a");
+
+      for (i2 = 0; i2 <= arrayLink.length - 1; i2++)  {
+          var link = arrayLink[i2];
+
+          if (typeof link.id != "undefined" && link.id != "" && link.id != "form[DYN_BACKWARD]" && link.id != "form[DYN_FORWARD]") {
+              var strHtml = link.parentNode.innerHTML;
+
+              strHtml = stringReplace("\\x0A", "", strHtml); //\n 10
+              strHtml = stringReplace("\\x0D", "", strHtml); //\r 13
+              strHtml = stringReplace("\\x09", "", strHtml); //\t  9
+
+              if (/^.*pm:field.*$/.test(strHtml)) {
+                  id = link.id + "_";
+
+                  if (!document.getElementById(id)) {
+                      var strAux = link.id.replace("form[", "");
+                      strAux = strAux.substring(0, strAux.length - 1);
+
+                      inputAux       = document.createElement("input");
+                      inputAux.type  = "hidden";
+                      inputAux.id    = id;
+                      inputAux.name  = link.id;
+                      inputAux.value = link.href;
+
+                      frm.appendChild(inputAux);
+
+                      inputAux   = document.createElement("input");
+                      inputAux.type  = "hidden";
+                      inputAux.id    = id + "label";
+                      inputAux.name  = "form[" + strAux + "_label]";
+                      inputAux.value = link.innerHTML;
+
+                      frm.appendChild(inputAux);
+                  }
+              }
+          }
+      }
     }
+
     return true;
   }
 };

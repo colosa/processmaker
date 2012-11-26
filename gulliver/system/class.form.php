@@ -236,6 +236,14 @@ class Form extends XmlForm
                     foreach ($newValues[$k] as $j => $item) {
                         if ($this->fields[$k]->validateValue( $newValues[$k][$j], $this )) {
                             $this->values[$k][$j] = $newValues[$k][$j];
+
+                            switch ($this->fields[$k]->type) {
+                                case "link":
+                                    if (isset($newValues[$k . "_label"][$j])) {
+                                        $this->values[$k . "_label"][$j] = $newValues[$k . "_label"][$j];
+                                    }
+                                    break;
+                            }
                         }
                     }
                     if ((sizeof( $this->values[$k] ) === 1) && ($v->type !== 'grid') && isset( $this->values[$k][0] )) {
@@ -247,6 +255,14 @@ class Form extends XmlForm
                 } else {
                     if ($this->fields[$k]->validateValue( $newValues[$k], $this )) {
                         $this->values[$k] = $newValues[$k];
+
+                        switch ($this->fields[$k]->type) {
+                            case "link":
+                                if (isset($newValues[$k . "_label"])) {
+                                    $this->values[$k . "_label"] = $newValues[$k . "_label"];
+                                }
+                                break;
+                        }
                     }
                 }
             }
@@ -331,7 +347,6 @@ class Form extends XmlForm
             if (($v->type != 'submit')) {
                 if ($v->type != 'file') {
                     if (array_key_exists( $k, $newValues )) {
-
                         switch ($v->type) {
                             case 'radiogroup':
                                 $values[$k] = $newValues[$k];
@@ -414,6 +429,10 @@ class Form extends XmlForm
                                     }
                                 }
                                 break;
+                            case "link":
+                                $values[$k] = $newValues[$k];
+                                $values[$k . "_label"] = $newValues[$k . "_label"];
+                                break;
                             case 'grid':
                                 foreach ($newValues[$k] as $j => $item) {
                                     if (is_array( $item )) {
@@ -456,6 +475,10 @@ class Form extends XmlForm
                                                                 }
                                                             }
                                                         }
+                                                        break;
+                                                    case "link":
+                                                        $values[$k][$j] = $newValues[$k][$j];
+                                                        $values[$k][$j][$kk . "_label"] = $newValues[$k][$j][$kk . "_label"];
                                                         break;
                                                     default:
                                                         //If there are no dropdowns previously setted and the evaluated field is not a dropdown

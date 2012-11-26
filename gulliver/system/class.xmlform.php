@@ -2495,19 +2495,54 @@ class XmlForm_Field_Link extends XmlForm_Field
      * @param string value
      * @return string
      */
-    public function render ($value = null, $owner = null)
+    public function render($value = null, $label = null, $owner = null, $row = -1)
     {
-        $onclick = G::replaceDataField( $this->onclick, $owner->values );
-        $link = G::replaceDataField( $this->link, $owner->values );
-        $target = G::replaceDataField( $this->target, $owner->values );
-        $value = G::replaceDataField( $this->value, $owner->values );
-        $label = G::replaceDataField( $this->label, $owner->values );
-        $html = '<a class="tableOption" href=\'' . $this->htmlentities( $link, ENT_QUOTES, 'utf-8' ) . '\'';
-        $html .= 'id="form[' . $this->name . ']" name="form[' . $this->name . ']" style="' . htmlentities( $this->style, ENT_QUOTES, 'utf-8' ) . '" ';
-        $html .= (($this->onclick) ? ' onclick="' . htmlentities( $onclick, ENT_QUOTES, 'utf-8' ) . '"' : '');
-        $html .= (($this->target) ? ' target="' . htmlentities( $target, ENT_QUOTES, 'utf-8' ) . '"' : '') . '>';
-        $html .= $this->htmlentities( $this->value === '' ? $label : $value, ENT_QUOTES, 'utf-8' ) . '</a>';
-        $html .= $this->renderHint();
+        $id = null;
+        $v = null;
+
+        switch ($owner->type) {
+            case "grid":
+                $id = $owner->name . "][" . $row . "][" . $this->name;
+                $v = (isset($owner->values[$owner->name][$row]))? $owner->values[$owner->name][$row] : array();
+                break;
+            default:
+                $id = $this->name;
+                $v = $owner->values;
+                break;
+        }
+
+        $link = (!empty($value))? $value : G::replaceDataField($this->link, $v);
+        $labelAux1 = (!empty($label))? $label : G::replaceDataField($this->label, $v);
+        $labelAux2 = (!empty($label))? $label : G::replaceDataField($this->value, $v);
+        $onclick = G::replaceDataField($this->onclick, $v);
+        $target = G::replaceDataField($this->target, $v);
+
+        $html = "<a class=\"tableOption\" href=\"" . $this->htmlentities($link, ENT_QUOTES, "utf-8") . "\"";
+        $html = $html . " id=\"form[$id]\" name=\"form[$id]\" pm:field=\"pm:field\"";
+        $html = $html . (($this->onclick)? " onclick=\"" . htmlentities($onclick, ENT_QUOTES, "utf-8") . "\"" : null);
+        $html = $html . (($this->target)? " target=\"" . htmlentities($target, ENT_QUOTES, "utf-8") . "\"" : null);
+
+        switch ($owner->type) {
+            case "grid":
+                if ($this->mode == "view") {
+                    $html = $html . " style=\"color: #006699; text-decoration: none; font-weight: normal;\"";
+                }
+                break;
+            default:
+                $html = $html . " style=\"" . htmlentities($this->style, ENT_QUOTES, "utf-8") . "\"";
+                break;
+        }
+
+        $html = $html . ">" . $this->htmlentities(($this->value == "")? $labelAux1 : $labelAux2, ENT_QUOTES, "utf-8") . "</a>";
+
+        switch ($owner->type) {
+            case "grid":
+                break;
+            default:
+                $html = $html . $this->renderHint();
+                break;
+        }
+
         return $html;
     }
 
@@ -2518,30 +2553,22 @@ class XmlForm_Field_Link extends XmlForm_Field
      * @param $owner
      * @return <array>
      */
-    public function renderGrid ($values = array(), $owner = null)
+    public function renderGrid($value = array(), $label = array(), $owner = null)
     {
-        $result = array ();
-        $r = 1;
-        foreach ($values as $v) {
-            $_aData_ = (isset( $owner->values[$owner->name][$r] ) ? $owner->values[$owner->name][$r] : array ());
-            $onclick = G::replaceDataField( $this->onclick, $_aData_ );
-            $link = G::replaceDataField( $this->link, $_aData_ );
-            $target = G::replaceDataField( $this->target, $_aData_ );
-            $value = G::replaceDataField( $this->value, $_aData_ );
-            $label = G::replaceDataField( $this->label, $_aData_ );
-            $html = '<a class="tableOption" href=\'' . $this->htmlentities( $link, ENT_QUOTES, 'utf-8' ) . '\'';
-            $html .= 'id="form[' . $owner->name . '][' . $r . '][' . $this->name . ']"';
-            $html .= 'name="form[' . $owner->name . '][' . $r . '][' . $this->name . ']"';
-            $html .= (($this->onclick) ? ' onclick="' . htmlentities( $onclick, ENT_QUOTES, 'utf-8' ) . '"' : '');
-            $html .= (($this->target) ? ' target="' . htmlentities( $target, ENT_QUOTES, 'utf-8' ) . '"' : '');
-            if ($this->mode == 'view') {
-                $html .= 'style="color: #006699; text-decoration: none;font-weight: normal;"';
-            }
-            $html .= '>' . $this->htmlentities( $this->value === '' ? $label : $value, ENT_QUOTES, 'utf-8' ) . '</a>';
-            $result[] = $html;
-            $r ++;
+        $arrayResult = array();
+        $row = 1;
+
+        foreach ($value as $index => $v) {
+            $arrayResult[] = $this->render(
+                (isset($value[$index]))? $value[$index] : null,
+                (isset($label[$index]))? $label[$index] : null,
+                $owner,
+                $row
+            );
+            $row = $row + 1;
         }
-        return $result;
+
+        return $arrayResult;
     }
 
     /**
@@ -5246,7 +5273,18 @@ class xmlformTemplate extends Smarty
                     }
                     $result['form'][$k] = $form->fields[$k]->renderGrid( $aAux, $form );
                 } else {
-                    $result['form'][$k] = $form->fields[$k]->render( $value, $form );
+                    switch ($v->type) {
+                        case "link":
+                            $result["form"][$k] = $form->fields[$k]->render(
+                                $value,
+                                (isset($form->values[$k . "_label"]))? $form->values[$k . "_label"] : null,
+                                $form
+                            );
+                            break;
+                        default:
+                            $result["form"][$k] = $form->fields[$k]->render($value, $form);
+                            break;
+                    }
                 }
             } else {
                 /*if (isset ( $form->owner )) {
@@ -5269,6 +5307,13 @@ class xmlformTemplate extends Smarty
                             break;
                         case "file":
                             $result["form"][$k] = $form->fields[$k]->renderGrid( $value, $form, $therow );
+                            break;
+                        case "link":
+                            $result["form"][$k] = $form->fields[$k]->renderGrid(
+                                $value,
+                                (isset($form->values[$k . "_label"]))? $form->values[$k . "_label"] : array(),
+                                $form
+                            );
                             break;
                         default:
                             $result["form"][$k] = $form->fields[$k]->renderGrid( $value, $form );

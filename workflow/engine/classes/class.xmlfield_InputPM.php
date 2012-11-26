@@ -387,10 +387,10 @@ function getDynaformsVars ($sProcessUID, $bSystemVars = true, $bIncMulSelFields 
         $aFields[] = array ('sName' => 'PIN','sType' => 'system','sLabel' => 'System variable'
         );
     }
-    $aInvalidTypes = array ('title','subtitle','link','file','button','reset','submit','javascript'
-    );
-    $aMultipleSelectionFields = array ('listbox','checkgroup','grid'
-    );
+
+    $aInvalidTypes = array("title", "subtitle", "file", "button", "reset", "submit", "javascript");
+    $aMultipleSelectionFields = array("listbox", "checkgroup", "grid");
+
     if ($bIncMulSelFields != 0) {
         $aInvalidTypes = array_merge( $aInvalidTypes, $aMultipleSelectionFields );
     }
