@@ -36,8 +36,8 @@
 
     //THIS BLOCK SET THE FILTER VARIABLES
     if (isset($ntable->filterForm_Id) && ($ntable->filterForm_Id!=='')) {
-      
-      $sPath = PATH_XMLFORM;      
+
+      $sPath = PATH_XMLFORM;
        //if the xmlform file doesn't exist, then try with the plugins folders
       if ( !is_file ( $sPath . G::getUIDName( $ntable->filterForm_Id ) ) ) {
         $aux = explode ( PATH_SEP, G::getUIDName( $ntable->filterForm_Id ) );
@@ -49,11 +49,11 @@
           }
         }
       }
-      
+
     $filterForm=new filterForm(G::getUIDName( $ntable->filterForm_Id ),$sPath);
-    
-    
-    
+
+
+
     $filterForm->values=$_SESSION[$filterForm->id];
     parse_str( urldecode(get_ajax_value('filter')) , $newValues);
     if (isset($newValues['form'])) {
@@ -77,10 +77,10 @@
 
   //order by
   $orderBy = get_ajax_value('order');
-  if (isset($orderBy)) {
-	  $orderBy = urldecode($orderBy);
-  	$ntable->orderBy = $orderBy;
-  }
+   if (isset($orderBy) && $orderBy !== 'ZDZXRHkzVzNmWVE___%3DASC' && $orderBy !== 'ZDZXRHkzUzRnSFhFdVE___%3DASC' && $orderBy !== 'ZXFpRXk0VzhlQQ______%3DASC') {
+       $orderBy = urldecode($orderBy);
+       $ntable->orderBy = $orderBy;
+   }
 
 	if ( isset($page) && $page!=='' ) $ntable->currentPage = (int) $page;
 

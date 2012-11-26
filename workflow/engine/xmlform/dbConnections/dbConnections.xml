@@ -21,14 +21,16 @@
   <en>Description</en>
 </DBS_DESCRIPTION>
 
-<DBS_EDIT type="link" colWidth="50" link="javascript:editDbConnection(&#039;@#DBS_UID&#039;)">
-  <en>Edit</en>
+<DBS_EDIT type="link" colWidth="50" value="Edit" link="javascript:editDbConnection(&#039;@#DBS_UID&#039;)">
+  <en></en>
 </DBS_EDIT>
 
-<DBS_DELETE type="link" colWidth="50" link="javascript:deleteDbConnection(&#039;@#DBS_UID&#039;,&#039;@#PRO_UID&#039;)">
-  <en>Delete</en>
+<DBS_DELETE type="link" colWidth="50" value="Delete" link="javascript:deleteDbConnection(&#039;@#DBS_UID&#039;,&#039;@#PRO_UID&#039;)">
+  <en></en>
 </DBS_DELETE>
 
-<GET_UID type="link" colWidth="40" value="UID" link="#" onclick="msgBox(&#039;UID: &#039;+@QDBS_UID, &#039;info&#039;);return false;"/>
+<GET_UID type="link" colWidth="40" value="UID" link="#" onclick="msgBox(&#039;UID: &#039;+@QDBS_UID, &#039;info&#039;);return false;"/> 
+
+
 
 </dynaForm>  
