@@ -723,6 +723,8 @@ return this.dom;}.extend(this);this.dom.remove=function()
 {if(radio_name[i].value==radio_value)
 {return radio_name[i];}}
 return false;}}});
+var $=function(el)
+{var d=(typeof el=="string")?document.getElementById(el):el;return new leimnud.module.dom.methods(d);};var button=leimnud.module.dom.button;var input=leimnud.module.dom.input;var DOM=leimnud.module.dom.create;var panel=leimnud.module.panel;var select=leimnud.module.dom.select;
 leimnud.Package.Public({info:{Class:"maborak",File:"module.dashboard.js",Name:"dashboard",Type:"module",Version:"0.1"},content:function(){this.elements={};this.make=function(options)
 {this.options={drag:true,panel:[],data:[]}.concat(options||{});this.drop=new this.parent.module.drop();this.drop.make();var width=this.options.target.offsetWidth-50;this.columns=this.options.data.length;this.widthColumn=(width/this.columns);this.elements.column=[];this.elements.table=$dce('table');$(this.elements.table).setStyle({width:width,borderCollapse:'collapse'})
 this.elements.tr=this.elements.table.insertRow(-1);this.options.target.append(this.elements.table);this.matriz=[];for(var i=0;i<this.columns;i++)

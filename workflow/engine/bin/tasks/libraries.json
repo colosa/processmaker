@@ -136,6 +136,12 @@
                 "minify": true
             },
             {
+                "name": "module.abbr",
+                "full": "gulliver/js/maborak/core/module.abbr.js",
+                "mini": "gulliver/js/maborak/core/module.abbr.js",
+                "minify": true
+            },
+            {
                 "name": "module.dashboard",
                 "full": "gulliver/js/maborak/core/module.dashboard.js",
                 "mini": "gulliver/js/maborak/core/module.dashboard.js",
