@@ -581,6 +581,9 @@ Bootstrap::registerClass('StepPeer',            PATH_HOME . "engine/classes/mode
 Bootstrap::registerClass('BaseStepSupervisor',  PATH_HOME . "engine/classes/model/om/BaseStepSupervisor.php");
 Bootstrap::registerClass('StepSupervisor',      PATH_HOME . "engine/classes/model/StepSupervisor.php");
 
+Bootstrap::registerClass('BaseStepSupervisorPeer',PATH_HOME . "engine/classes/model/om/BaseStepSupervisorPeer.php");
+Bootstrap::registerClass('StepSupervisorPeer',  PATH_HOME . "engine/classes/model/StepSupervisorPeer.php");
+
 Bootstrap::registerClass('BaseStepTrigger',     PATH_HOME . "engine/classes/model/om/BaseStepTrigger.php");
 Bootstrap::registerClass('StepTrigger',         PATH_HOME . "engine/classes/model/StepTrigger.php");
 Bootstrap::registerClass('StepTriggerPeer',     PATH_HOME . "engine/classes/model/StepTriggerPeer.php");

@@ -284,7 +284,7 @@ function G_Field ( form, element, name )
     return me.element.value;
   };
   this.toJSONString=function()  {
-    return '{'+me.name+':'+me.element.value.toJSONString()+'}';
+    return '{"'+me.name+'":'+me.element.value.toJSONString()+'}';
   };
   this.highLight=function(){
     try{
