@@ -4,7 +4,7 @@ $request = isset( $_REQUEST['request'] ) ? $_REQUEST['request'] : null;
 switch ($request) {
     case 'getLangList':
 
-        $Translations = G::getModel( 'Translation' );
+        $Translations = new Translation();
         $result = new stdClass();
         $result->rows = Array ();
 
