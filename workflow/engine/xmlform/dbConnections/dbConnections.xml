@@ -29,6 +29,7 @@
   <en>Delete</en>
 </DBS_DELETE>
 
-<GET_UID type="link" colWidth="40" value="UID" link="#" onclick="msgBox(&#039;UID: &#039;+@QDBS_UID, &#039;info&#039;);return false;"/>
+<GET_UID type="link" colWidth="40" value="UID" link="#" onclick="msgBox(&#039;UID: &#039;+@QDBS_UID, &#039;info&#039;);return false;"/> 
+
 
 </dynaForm>  
