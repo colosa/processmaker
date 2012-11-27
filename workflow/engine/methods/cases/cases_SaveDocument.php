@@ -59,136 +59,86 @@ if ((isset( $_FILES['form'] )) && ($_FILES['form']['error']['APP_DOC_FILENAME'] 
     die();
 }
 
-$docUid = $_POST['form']['DOC_UID'];
-$appDocUid = $_POST['form']['APP_DOC_UID'];
-$docVersion = $_POST['form']['docVersion'];
-$actionType = $_POST['form']['actionType'];
+G::LoadClass("case");
 
-//load the variables
-G::LoadClass( 'case' );
-$oCase = new Cases();
-$oCase->thisIsTheCurrentUser( $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['USER_LOGGED'], 'REDIRECT', 'cases_List' );
-$Fields = $oCase->loadCase( $_SESSION['APPLICATION'] );
-$Fields['APP_DATA'] = array_merge( $Fields['APP_DATA'], G::getSystemConstants() );
+$inputDocumentUid = $_GET["UID"]; //$_POST["form"]["DOC_UID"]
+$appDocUid = $_POST["form"]["APP_DOC_UID"];
+$docVersion = intval($_POST["form"]["docVersion"]);
+$appDocType = $_POST["form"]["APP_DOC_TYPE"];
+$appDocComment = (isset($_POST["form"]["APP_DOC_COMMENT"]))? $_POST["form"]["APP_DOC_COMMENT"] : "";
+$actionType = $_POST["form"]["actionType"];
 
-#trigger debug routines...
+$case = new Cases();
+$case->thisIsTheCurrentUser($_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["USER_LOGGED"], "REDIRECT", "cases_List");
 
+//Load the fields
+$arrayField = $case->loadCase($_SESSION["APPLICATION"]);
+$arrayField["APP_DATA"] = array_merge($arrayField["APP_DATA"], G::getSystemConstants());
 
-//cleaning debug variables
-$_SESSION['TRIGGER_DEBUG']['ERRORS'] = Array ();
-$_SESSION['TRIGGER_DEBUG']['DATA'] = Array ();
-$_SESSION['TRIGGER_DEBUG']['TRIGGERS_NAMES'] = Array ();
-$_SESSION['TRIGGER_DEBUG']['TRIGGERS_VALUES'] = Array ();
+//Triggers
+$arrayTrigger = $case->loadTriggers($_SESSION["TASK"], "INPUT_DOCUMENT", $inputDocumentUid, "AFTER");
 
-$triggers = $oCase->loadTriggers( $_SESSION['TASK'], 'INPUT_DOCUMENT', $_GET['UID'], 'AFTER' );
+//Trigger debug routines
+//Cleaning debug variables
+$_SESSION["TRIGGER_DEBUG"]["ERRORS"] = array();
+$_SESSION["TRIGGER_DEBUG"]["DATA"] = array();
+$_SESSION["TRIGGER_DEBUG"]["TRIGGERS_NAMES"] = array();
+$_SESSION["TRIGGER_DEBUG"]["TRIGGERS_VALUES"] = array();
 
-$_SESSION['TRIGGER_DEBUG']['NUM_TRIGGERS'] = count( $triggers );
-$_SESSION['TRIGGER_DEBUG']['TIME'] = 'AFTER';
-if ($_SESSION['TRIGGER_DEBUG']['NUM_TRIGGERS'] != 0) {
-    $_SESSION['TRIGGER_DEBUG']['TRIGGERS_NAMES'] = $oCase->getTriggerNames( $triggers );
-    $_SESSION['TRIGGER_DEBUG']['TRIGGERS_VALUES'] = $triggers;
+$_SESSION["TRIGGER_DEBUG"]["NUM_TRIGGERS"] = count($arrayTrigger);
+$_SESSION["TRIGGER_DEBUG"]["TIME"] = "AFTER";
+
+if ($_SESSION["TRIGGER_DEBUG"]["NUM_TRIGGERS"] > 0) {
+    $_SESSION["TRIGGER_DEBUG"]["TRIGGERS_NAMES"] = $case->getTriggerNames($arrayTrigger);
+    $_SESSION["TRIGGER_DEBUG"]["TRIGGERS_VALUES"] = $arrayTrigger;
 }
 
-if ($_SESSION['TRIGGER_DEBUG']['NUM_TRIGGERS'] != 0) {
-    //Execute after triggers - Start
-    $Fields['APP_DATA'] = $oCase->ExecuteTriggers( $_SESSION['TASK'], 'INPUT_DOCUMENT', $_GET['UID'], 'AFTER', $Fields['APP_DATA'] );
-    //Execute after triggers - End
+if ($_SESSION["TRIGGER_DEBUG"]["NUM_TRIGGERS"] > 0) {
+    //Trigger - Execute after - Start
+    $arrayField["APP_DATA"] = $case->executeTriggers(
+        $_SESSION["TASK"],
+        "INPUT_DOCUMENT",
+        $inputDocumentUid,
+        "AFTER",
+        $arrayField["APP_DATA"]
+    );
+    //Trigger - Execute after - End
 }
 
-//save data
-$aData = array ();
-$aData['APP_NUMBER'] = $Fields['APP_NUMBER'];
-$aData['APP_PROC_STATUS'] = $Fields['APP_PROC_STATUS'];
-$aData['APP_DATA'] = $Fields['APP_DATA'];
-$aData['DEL_INDEX'] = $_SESSION['INDEX'];
-$aData['TAS_UID'] = $_SESSION['TASK'];
-//$aData = $oCase->loadCase($_SESSION['APPLICATION']);
-$oCase->updateCase( $_SESSION['APPLICATION'], $aData );
+//Save data
+$arrayData = array();
+$arrayData["APP_NUMBER"] = $arrayField["APP_NUMBER"];
+$arrayData["APP_PROC_STATUS"] = $arrayField["APP_PROC_STATUS"];
+$arrayData["APP_DATA"]  = $arrayField["APP_DATA"];
+$arrayData["DEL_INDEX"] = $_SESSION["INDEX"];
+$arrayData["TAS_UID"]   = $_SESSION["TASK"];
 
-//save info
+$case->updateCase($_SESSION["APPLICATION"], $arrayData);
 
-
-//require_once ("classes/model/AppDocument.php");
-//require_once ('classes/model/AppFolder.php');
-//require_once ('classes/model/InputDocument.php');
-
-$oInputDocument = new InputDocument();
-$aID = $oInputDocument->load( $_GET['UID'] );
-
-$oAppDocument = new AppDocument();
-
-//Get the Custom Folder ID (create if necessary)
-$oFolder = new AppFolder();
-$folderId = $oFolder->createFromPath( $aID['INP_DOC_DESTINATION_PATH'] );
-
-//Tags
-$fileTags = $oFolder->parseTags( $aID['INP_DOC_TAGS'] );
-
-switch ($actionType) {
-    case "R": //replace
-        $aFields = array ('APP_DOC_UID' => $appDocUid,'APP_UID' => $_SESSION['APPLICATION'],'DOC_VERSION' => $docVersion,'DEL_INDEX' => $_SESSION['INDEX'],'USR_UID' => $_SESSION['USER_LOGGED'],'DOC_UID' => $docUid,'APP_DOC_TYPE' => $_POST['form']['APP_DOC_TYPE'],'APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_COMMENT' => isset( $_POST['form']['APP_DOC_COMMENT'] ) ? $_POST['form']['APP_DOC_COMMENT'] : '','APP_DOC_TITLE' => '','APP_DOC_FILENAME' => isset( $_FILES['form']['name']['APP_DOC_FILENAME'] ) ? $_FILES['form']['name']['APP_DOC_FILENAME'] : '','FOLDER_UID' => $folderId,'APP_DOC_TAGS' => $fileTags
-        );
-
-        $oAppDocument->update( $aFields );
-        break;
-    case "NV": //New Version
-
-
-        $aFields = array ('APP_DOC_UID' => $appDocUid,'APP_UID' => $_SESSION['APPLICATION'],'DEL_INDEX' => $_SESSION['INDEX'],'USR_UID' => $_SESSION['USER_LOGGED'],'DOC_UID' => $docUid,'APP_DOC_TYPE' => $_POST['form']['APP_DOC_TYPE'],'APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_COMMENT' => isset( $_POST['form']['APP_DOC_COMMENT'] ) ? $_POST['form']['APP_DOC_COMMENT'] : '','APP_DOC_TITLE' => '','APP_DOC_FILENAME' => isset( $_FILES['form']['name']['APP_DOC_FILENAME'] ) ? $_FILES['form']['name']['APP_DOC_FILENAME'] : '','FOLDER_UID' => $folderId,'APP_DOC_TAGS' => $fileTags
-        );
-
-        $oAppDocument->create( $aFields );
-        break;
-    default: //New
-        $aFields = array ('APP_UID' => $_SESSION['APPLICATION'],'DEL_INDEX' => $_SESSION['INDEX'],'USR_UID' => $_SESSION['USER_LOGGED'],'DOC_UID' => $docUid,'APP_DOC_TYPE' => $_POST['form']['APP_DOC_TYPE'],'APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_COMMENT' => isset( $_POST['form']['APP_DOC_COMMENT'] ) ? $_POST['form']['APP_DOC_COMMENT'] : '','APP_DOC_TITLE' => '','APP_DOC_FILENAME' => isset( $_FILES['form']['name']['APP_DOC_FILENAME'] ) ? $_FILES['form']['name']['APP_DOC_FILENAME'] : '','FOLDER_UID' => $folderId,'APP_DOC_TAGS' => $fileTags
-        );
-
-        $oAppDocument->create( $aFields );
-        break;
-}
-
-$sAppDocUid = $oAppDocument->getAppDocUid();
-$iDocVersion = $oAppDocument->getDocVersion();
-$info = pathinfo( $oAppDocument->getAppDocFilename() );
-$ext = (isset( $info['extension'] ) ? $info['extension'] : '');
-
-//save the file
-if (! empty( $_FILES['form'] )) {
-    if ($_FILES['form']['error']['APP_DOC_FILENAME'] == 0) {
-        $sPathName = PATH_DOCUMENT . $_SESSION['APPLICATION'] . PATH_SEP;
-        $sFileName = $sAppDocUid . "_" . $iDocVersion . '.' . $ext;
-        G::uploadFile( $_FILES['form']['tmp_name']['APP_DOC_FILENAME'], $sPathName, $sFileName );
-
-        //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
-        $oPluginRegistry = & PMPluginRegistry::getSingleton();
-        if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT ) && class_exists( 'uploadDocumentData' )) {
-            $triggerDetail = $oPluginRegistry->getTriggerInfo( PM_UPLOAD_DOCUMENT );
-            $oData['APP_UID'] = $_SESSION['APPLICATION'];
-            $documentData = new uploadDocumentData( $_SESSION['APPLICATION'], $_SESSION['USER_LOGGED'], $sPathName . $sFileName, $aFields['APP_DOC_FILENAME'], $sAppDocUid, $iDocVersion );
-
-            $uploadReturn = $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT, $documentData );
-            if ($uploadReturn) {
-                $aFields['APP_DOC_PLUGIN'] = $triggerDetail->sNamespace;
-                if (! isset( $aFields['APP_DOC_UID'] )) {
-                    $aFields['APP_DOC_UID'] = $sAppDocUid;
-                }
-                if (! isset( $aFields['DOC_VERSION'] )) {
-                    $aFields['DOC_VERSION'] = $iDocVersion;
-                }
-                //$oAppDocument1 = new AppDocument();
-                //G::pr($aFields);die;
-                $oAppDocument->update( $aFields );
-                unlink( $sPathName . $sFileName );
-            }
-        }
-        //end plugin
-    }
+//Add Input Document
+if (isset($_FILES) && isset($_FILES["form"]) && count($_FILES["form"]) > 0) {
+    $appDocUid = $case->addInputDocument(
+        $inputDocumentUid,
+        $appDocUid,
+        $docVersion,
+        $appDocType,
+        $appDocComment,
+        $actionType,
+        $_SESSION["APPLICATION"],
+        $_SESSION["INDEX"],
+        $_SESSION["TASK"],
+        $_SESSION["USER_LOGGED"],
+        "xmlform",
+        $_FILES["form"]["name"]["APP_DOC_FILENAME"],
+        $_FILES["form"]["error"]["APP_DOC_FILENAME"],
+        $_FILES["form"]["tmp_name"]["APP_DOC_FILENAME"]
+    );
 }
 
 //go to the next step
 //if (!isset($_POST['form']['MORE'])) {
 if (false) {
-    $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] );
+    $aNextStep = $case->getNextStep($_SESSION["PROCESS"], $_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["STEP_POSITION"]);
     $_SESSION['STEP_POSITION'] = $aNextStep['POSITION'];
 
     if ($_SESSION['TRIGGER_DEBUG']['ISSET']) {
@@ -212,7 +162,7 @@ if (false) {
             G::header( 'location: ' . $_SERVER['HTTP_REFERER'] );
             die();
         } else {
-            $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] - 1 );
+            $aNextStep = $case->getNextStep($_SESSION["PROCESS"], $_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["STEP_POSITION"] - 1);
             $_SESSION['STEP_POSITION'] = $aNextStep['POSITION'];
 
             if ($_SESSION['TRIGGER_DEBUG']['ISSET']) {
@@ -225,7 +175,7 @@ if (false) {
             die();
         }
     } else {
-        $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] - 1 );
+        $aNextStep = $case->getNextStep($_SESSION["PROCESS"], $_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["STEP_POSITION"] - 1);
         $_SESSION['STEP_POSITION'] = $aNextStep['POSITION'];
 
         if ($_SESSION['TRIGGER_DEBUG']['ISSET']) {

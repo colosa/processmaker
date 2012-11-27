@@ -1447,6 +1447,65 @@ function PMFUserList () //its test was successfull
 }
 
 /**
+ * @method
+ *
+ * Add a input document.
+ *
+ * @name PMFAddInputDocument
+ * @label PMF Add a input document.
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFAddInputDocument.28.29
+ *
+ * @param string(32) | $inputDocumentUid | ID of the input document | The unique ID of the input document.
+ * @param string(32) | $appDocUid | ID of the application document | The unique ID of the application document; if action is set to null or empty (Add), then this parameter it set to null or empty.
+ * @param int | $docVersion | Document version | Document version.
+ * @param string | $appDocType = "INPUT" | Document type | Document type.
+ * @param string | $appDocComment | Document comment | Document comment.
+ * @param string | $inputDocumentAction | Action | Action, posible values: null or empty (Add), "R" (Replace), "NV" (New Version).
+ * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
+ * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
+ * @param string(32) | $taskUid | ID of the task | The unique ID of the task.
+ * @param string(32) | $userUid | ID user | The unique ID of the user who will add a input document.
+ * @param string | $option = "file" | Option | Option, value: "file".
+ * @param string | $file = "path_to_file/myfile.txt" | File, path to file | File, path to file.
+ * @return string | $appDocUid | ID of the application document | Returns ID if it has added the input document successfully; otherwise, returns null or empty if an error occurred.
+ *
+ */
+function PMFAddInputDocument(
+    $inputDocumentUid,
+    $appDocUid,
+    $docVersion,
+    $appDocType = "INPUT",
+    $appDocComment,
+    $inputDocumentAction,
+    $caseUid,
+    $delIndex,
+    $taskUid,
+    $userUid,
+    $option = "file",
+    $file = "path_to_file/myfile.txt"
+) {
+    G::LoadClass("case");
+    $case = new Cases();
+
+    $appDocUid = $case->addInputDocument(
+        $inputDocumentUid,
+        $appDocUid,
+        $docVersion,
+        $appDocType,
+        $appDocComment,
+        $inputDocumentAction,
+        $caseUid,
+        $delIndex,
+        $taskUid,
+        $userUid,
+        $option,
+        $file
+    );
+
+    return $appDocUid;
+}
+
+/**
  *
  * @method Generates an Output Document
  *
@@ -2365,10 +2424,13 @@ function PMFGetCaseNotes ($applicationID, $type = 'array', $userUid = '')
 
 /**
  *
- * @method Delete a specified case.
+ * @method
+ *
+ * Delete a specified case.
  *
  * @name PMFDeleteCase
  * @label PMF Delete a specified case.
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFDeleteCase.28.29
  *
  * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
  * @return int | $result | Result of the elimination | Returns 1 if the case is delete successfully; otherwise, returns 0 if an error occurred.
@@ -2390,10 +2452,13 @@ function PMFDeleteCase ($caseUid)
 
 /**
  *
- * @method Cancel a specified case.
+ * @method
+ *
+ * Cancel a specified case.
  *
  * @name PMFCancelCase
  * @label PMF Cancel a specified case.
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFCancelCase.28.29
  *
  * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
  * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
@@ -2427,10 +2492,13 @@ function PMFCancelCase ($caseUid, $delIndex, $userUid)
 
 /**
  *
- * @method Pauses a specified case.
+ * @method
+ *
+ * Pauses a specified case.
  *
  * @name PMFPauseCase
  * @label PMF Pauses a specified case.
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFPauseCase.28.29
  *
  * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
  * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
@@ -2465,10 +2533,13 @@ function PMFPauseCase ($caseUid, $delIndex, $userUid, $unpauseDate = null)
 
 /**
  *
- * @method Unpause a specified case.
+ * @method
+ *
+ * Unpause a specified case.
  *
  * @name PMFUnpauseCase
  * @label PMF Unpause a specified case.
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFUnpauseCase.28.29
  *
  * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
  * @param int | $delIndex | Delegation index of the case | The delegation index of the current task in the case.
@@ -2492,10 +2563,13 @@ function PMFUnpauseCase ($caseUid, $delIndex, $userUid)
 
 /**
  *
- * @method Add case note.
+ * @method
+ *
+ * Add case note.
  *
  * @name PMFAddCaseNote
  * @label PMF Add case note
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFAddCaseNote.28.29
  *
  * @param string(32) | $caseUid | ID of the case | The unique ID of the case.
  * @param string(32) | $processUid | ID of the process | The unique ID of the process.

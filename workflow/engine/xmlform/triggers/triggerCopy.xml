@@ -13,10 +13,12 @@
 </LBLTITLE1>
 
 <PROCESS_UID type="dropdown" dependentfields="TRIGGER_UID">
+    <![CDATA[
     SELECT PRO.PRO_UID, CON.CON_VALUE
     FROM   PROCESS AS PRO, CONTENT AS CON
     WHERE  PRO.PRO_UID = CON.CON_ID AND CON.CON_CATEGORY = 'PRO_TITLE' AND CON.CON_LANG = '@#LANG'
     ORDER BY CON.CON_VALUE ASC
+    ]]>
 
     <en>
         Process
@@ -25,11 +27,13 @@
 </PROCESS_UID>
 
 <TRIGGER_UID type="dropdown" dependentfields="TRI_DESCRIPTION,TRI_WEBBOT">
+    <![CDATA[
     SELECT TGR.TRI_UID, CON.CON_VALUE
     FROM   TRIGGERS AS TGR, CONTENT AS CON
     WHERE  TGR.PRO_UID = '@#PROCESS_UID' AND
            TGR.TRI_UID = CON.CON_ID AND CON.CON_CATEGORY = 'TRI_TITLE' AND CON.CON_LANG = '@#LANG'
     ORDER BY CON.CON_VALUE ASC
+    ]]>
 
     <en>
         Trigger
@@ -42,17 +46,21 @@
 </TRI_TITLE>
 
 <TRI_DESCRIPTION type="textarea" rows="3" cols="67">
+    <![CDATA[
     SELECT CON.CON_VALUE
     FROM   CONTENT AS CON
     WHERE  CON.CON_ID = '@#TRIGGER_UID' AND CON.CON_CATEGORY = 'TRI_DESCRIPTION' AND CON.CON_LANG = '@#LANG'
+    ]]>
 
     <en>Description of the new trigger</en>
 </TRI_DESCRIPTION>
 
 <TRI_WEBBOT type="textarea" rows="10" cols="67" readonly="1">
+    <![CDATA[
     SELECT TGR.TRI_WEBBOT
     FROM   TRIGGERS AS TGR
     WHERE  TGR.TRI_UID = '@#TRIGGER_UID'
+    ]]>
 
     <en>Script</en>
 </TRI_WEBBOT>
