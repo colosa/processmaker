@@ -147,13 +147,16 @@ class LDAP
         $sKeyword .= '*';
       }
     }
+
+    $additionalFilter = isset($aAuthSource['AUTH_SOURCE_DATA']['AUTH_SOURCE_ADDITIONAL_FILTER']) ? trim($aAuthSource['AUTH_SOURCE_DATA']['AUTH_SOURCE_ADDITIONAL_FILTER']) : '';
+
     $sFilter  = '(&(|(objectClass=*))';
 
     if ( isset( $aAuthSource['AUTH_SOURCE_DATA']['LDAP_TYPE']) && $aAuthSource['AUTH_SOURCE_DATA']['LDAP_TYPE'] == 'ad' ) {
-      $sFilter = "(&(|(objectClass=*))(|(samaccountname=$sKeyword)(userprincipalname=$sKeyword)))";
+      $sFilter = "(&(|(objectClass=*))(|(samaccountname=$sKeyword)(userprincipalname=$sKeyword))$additionalFilter)";
     }
     else
-      $sFilter = "(&(|(objectClass=*))(|(uid=$sKeyword)(cn=$sKeyword)))";
+      $sFilter = "(&(|(objectClass=*))(|(uid=$sKeyword)(cn=$sKeyword))$additionalFilter)";
 
     //G::pr($sFilter);
     $aUsers  = array();
