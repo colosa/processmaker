@@ -37,7 +37,7 @@ Ext.onReady(function(){
       hiddenName: 'LDAP_TYPE',
       store: new Ext.data.SimpleStore({
           fields: ['ldap','ad'],
-          data : my_values 
+          data : my_values
       }),
       displayField: 'ldap',
       typeAhead: true,
@@ -48,10 +48,8 @@ Ext.onReady(function(){
       listeners:{
        select: function(c,d,i){
           if(i){
-            formAuthSourceE.getForm().findField('AUTH_SOURCE_ATTRIBUTES').setValue('cn' + "\n" + 'samaccountname' + "\n" + 'givenname' + "\n" + 'sn' + "\n" + 'userprincipalname' + "\n" + 'telephonenumber');
             formAuthSourceE.getForm().findField('AUTH_SOURCE_IDENTIFIER_FOR_USER').setValue('samaccountname');
           } else {
-            formAuthSourceE.getForm().findField('AUTH_SOURCE_ATTRIBUTES').setValue('cn' + "\n" + 'uid' + "\n" + 'givenname' + "\n" + 'sn' + "\n" + 'mail' + "\n" + 'mobile');
             formAuthSourceE.getForm().findField('AUTH_SOURCE_IDENTIFIER_FOR_USER').setValue('uid');
           }
        }
@@ -59,8 +57,8 @@ Ext.onReady(function(){
   });
 
   var txtServerName=new Ext.form.TextField({
-  id: 'AUTH_SOURCE_SERVER_NAME',				
-  fieldLabel: _('ID_SERVER_NAME'), 
+  id: 'AUTH_SOURCE_SERVER_NAME',
+  fieldLabel: _('ID_SERVER_NAME'),
   xtype:'textfield',
   value:'',
   width: 200,
@@ -75,8 +73,8 @@ Ext.onReady(function(){
   });
 
   var txtPort=new Ext.form.TextField({
-    id: 'AUTH_SOURCE_PORT',				
-    fieldLabel: _('ID_PORT'), 
+    id: 'AUTH_SOURCE_PORT',
+    fieldLabel: _('ID_PORT'),
     xtype:'textfield',
     value:'389',
     width: 200,
@@ -123,11 +121,11 @@ Ext.onReady(function(){
 
 
   var txtBaseDN=new Ext.form.TextField({
-    id: 'AUTH_SOURCE_BASE_DN',				
-    fieldLabel: _('ID_BASE_DN'), 
+    id: 'AUTH_SOURCE_BASE_DN',
+    fieldLabel: _('ID_BASE_DN'),
     xtype:'textfield',
     value:sUID,
-    width: 200,
+    width: 300,
     autoCreate: {tag: 'input', type: 'text', size: '10', autocomplete: 'off', maxlength: '128'},
     allowBlank: false,
     listeners: {
@@ -163,20 +161,20 @@ Ext.onReady(function(){
                 Ext.getCmp("AUTH_SOURCE_PASSWORD").show();
                 txtPassword.getEl().up('.x-form-item').setDisplayed(true);
             }else{
-                Ext.getCmp("AUTH_SOURCE_SEARCH_USER").disable(); 
+                Ext.getCmp("AUTH_SOURCE_SEARCH_USER").disable();
                 Ext.getCmp("AUTH_SOURCE_SEARCH_USER").hide();
                 txtSearchUser.getEl().up('.x-form-item').setDisplayed(false);
-                Ext.getCmp("AUTH_SOURCE_PASSWORD").disable(); 
+                Ext.getCmp("AUTH_SOURCE_PASSWORD").disable();
                 Ext.getCmp("AUTH_SOURCE_PASSWORD").hide();
-                txtPassword.getEl().up('.x-form-item').setDisplayed(false);                
-            }     
+                txtPassword.getEl().up('.x-form-item').setDisplayed(false);
+            }
            }
           }
   });
 
   var txtSearchUser=new Ext.form.TextField({
-    id: 'AUTH_SOURCE_SEARCH_USER',				
-    fieldLabel: _('ID_SEARCH_USER'), 
+    id: 'AUTH_SOURCE_SEARCH_USER',
+    fieldLabel: _('ID_SEARCH_USER'),
     xtype:'textfield',
     value:'',
     width: 200,
@@ -191,7 +189,7 @@ Ext.onReady(function(){
 
   var txtPassword=new Ext.form.TextField({
     id: 'AUTH_SOURCE_PASSWORD',
-    fieldLabel: _('ID_CACHE_PASSWORD'), 
+    fieldLabel: _('ID_CACHE_PASSWORD'),
     xtype:'textfield',
     inputType:'password',
     value:'',
@@ -208,7 +206,7 @@ Ext.onReady(function(){
 //Identifier for an imported user
   var txtIdentifier=new Ext.form.TextField({
     id: 'AUTH_SOURCE_IDENTIFIER_FOR_USER',
-    fieldLabel: _('ID_IDENTIFIER_IMPORT_USER'), 
+    fieldLabel: _('ID_IDENTIFIER_IMPORT_USER'),
     xtype:'textfield',
     value:'',
     width: 200,
@@ -221,45 +219,15 @@ Ext.onReady(function(){
                 }
               }
     });
-//Object Classes
-  var txtaClass=new Ext.form.TextArea({
-    id: 'AUTH_SOURCE_OBJECT_CLASSES',
-    fieldLabel: _('ID_OBJECT_CLASS'), 
-    xtype:'textarea',
-    value:'*',
-    width: 200,
-    allowBlank: false,
-    listeners: {
-                'render': function(c) {
-                  c.getEl().on('keyup', function() {
-                  }, c);
-                }
-              }
-    });
 //Additional Filter
   var txtoAddFilter=new Ext.form.TextField({
     id: 'AUTH_SOURCE_ADDITIONAL_FILTER',
-    fieldLabel: _('ID_ADDITIONAL_FILTER'), 
+    fieldLabel: _('ID_ADDITIONAL_FILTER'),
     xtype:'textfield',
     value:'',
-    width: 200,
+    width: 300,
     autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '200'},
     allowBlank: true,
-    listeners: {
-                'render': function(c) {
-                  c.getEl().on('keyup', function() {
-                  }, c);
-                }
-              }
-    });
-//Attributes
-  var txtAttributes=new Ext.form.TextArea({
-    id: 'AUTH_SOURCE_ATTRIBUTES',
-    fieldLabel: _('ID_ATTRIBUTES'), 
-    xtype:'textArea',
-    value:'cn' + "\n" + 'uid' + "\n" + 'givenname' + "\n" + 'sn' + "\n" + 'mail' + "\n" + 'mobile',
-    width: 200,
-    allowBlank: false,
     listeners: {
                 'render': function(c) {
                   c.getEl().on('keyup', function() {
@@ -274,7 +242,7 @@ Ext.onReady(function(){
             txtSourceId,
             txtName,
             cboxType,
-            txtServerName,         
+            txtServerName,
             txtPort,
             cboxTLS,
             cboxVersion,
@@ -283,14 +251,12 @@ Ext.onReady(function(){
             txtSearchUser,
             txtPassword ,
             txtIdentifier,
-            txtaClass,
             txtoAddFilter,
-            txtAttributes
-            ]    
+            ]
     });
 
   formAuthSourceE = new Ext.FormPanel({
-    id:'formAuthSourceE',       
+    id:'formAuthSourceE',
     labelWidth: 250,
     labelAlign:'right',
     autoScroll: true,
@@ -304,7 +270,7 @@ Ext.onReady(function(){
       allowBlank: false,
       resizable: true,
       msgTarget: 'side',
-      align:'center'      
+      align:'center'
     },
     items:[
     fieldsAS
@@ -312,19 +278,19 @@ Ext.onReady(function(){
     buttons: [
       {
         text: _('ID_SAVE'),
-        handler: saveAuthSources       
+        handler: saveAuthSources
       },
-      {     
+      {
         text: _('ID_CANCEL'),
         handler: goback
       }
     ]
-    
+
   });
 
    formAuthSourceE.render(document.body);
    loadAuthSourceData(sUID, txtSearchUser, txtPassword);
-    
+
  });
  function goback(){
     window.location = 'authSources_List';
@@ -334,7 +300,7 @@ Ext.onReady(function(){
       url: '../adminProxy/saveAuthSources',
       params: {
   //                            action : 'tryit',
-       AUTH_SOURCE_UID:  formAuthSourceE.getForm().findField('AUTH_SOURCE_UID').getValue(), 
+       AUTH_SOURCE_UID:  formAuthSourceE.getForm().findField('AUTH_SOURCE_UID').getValue(),
        AUTH_SOURCE_NAME: formAuthSourceE.getForm().findField('AUTH_SOURCE_NAME').getValue(),
        LDAP_TYPE: formAuthSourceE.getForm().findField('LDAP_TYPE').getValue(),
        AUTH_SOURCE_SERVER_NAME: formAuthSourceE.getForm().findField('AUTH_SOURCE_SERVER_NAME').getValue(),
@@ -344,14 +310,12 @@ Ext.onReady(function(){
        AUTH_SOURCE_SEARCH_USER: formAuthSourceE.getForm().findField('AUTH_SOURCE_SEARCH_USER').getValue(),
        AUTH_SOURCE_PASSWORD: formAuthSourceE.getForm().findField('AUTH_SOURCE_PASSWORD').getValue(),
        AUTH_SOURCE_VERSION: formAuthSourceE.getForm().findField('AUTH_SOURCE_VERSION').getValue(),
-       AUTH_SOURCE_BASE_DN: formAuthSourceE.getForm().findField('AUTH_SOURCE_BASE_DN').getValue(),
-       AUTH_SOURCE_OBJECT_CLASSES: formAuthSourceE.getForm().findField('AUTH_SOURCE_OBJECT_CLASSES').getValue(),
-       AUTH_SOURCE_ATTRIBUTES: formAuthSourceE.getForm().findField('AUTH_SOURCE_ATTRIBUTES').getValue()
+       AUTH_SOURCE_BASE_DN: formAuthSourceE.getForm().findField('AUTH_SOURCE_BASE_DN').getValue()
       },
-      waitMsg : 'testing...',
+      waitMsg : _('ID_SAVING'),
       timeout : 3600,
       success: function(f,a){
-       
+
        resp = Ext.util.JSON.decode(a.response.responseText);
        if (resp.success){
          window.location = 'authSources_List';
@@ -367,7 +331,7 @@ Ext.onReady(function(){
       }
     });
  }
- 
+
  // Load authosource data for the Edit mode
 function loadAuthSourceData(sUID, txtSearchUser, txtPassword){
   Ext.Ajax.request({
@@ -376,7 +340,7 @@ function loadAuthSourceData(sUID, txtSearchUser, txtPassword){
       'action': 'loadauthSourceData',
       sUID:sUID
     },
-    waitMsg: _('ID_UPLOADING_PROCESS_FILE'), 
+    waitMsg: _('ID_UPLOADING_PROCESS_FILE'),
     success: function(r,o){
       var data = Ext.util.JSON.decode(r.responseText);
 
@@ -388,16 +352,16 @@ function loadAuthSourceData(sUID, txtSearchUser, txtPassword){
                 Ext.getCmp("AUTH_SOURCE_PASSWORD").show();
                 txtPassword.getEl().up('.x-form-item').setDisplayed(true);
             }else{
-                Ext.getCmp("AUTH_SOURCE_SEARCH_USER").disable(); 
+                Ext.getCmp("AUTH_SOURCE_SEARCH_USER").disable();
                 Ext.getCmp("AUTH_SOURCE_SEARCH_USER").hide();
                 txtSearchUser.getEl().up('.x-form-item').setDisplayed(false);
-                Ext.getCmp("AUTH_SOURCE_PASSWORD").disable(); 
+                Ext.getCmp("AUTH_SOURCE_PASSWORD").disable();
                 Ext.getCmp("AUTH_SOURCE_PASSWORD").hide();
-                txtPassword.getEl().up('.x-form-item').setDisplayed(false);                
+                txtPassword.getEl().up('.x-form-item').setDisplayed(false);
             }
 
       Ext.getCmp('formAuthSourceE').getForm().setValues({
-      
+
        AUTH_SOURCE_UID:  data.sources.AUTH_SOURCE_UID,
        AUTH_SOURCE_NAME: data.sources.AUTH_SOURCE_NAME ,
        LDAP_TYPE: (data.sources.LDAP_TYPE=='ad')?'Active Directory':data.sources.LDAP_TYPE,
@@ -410,8 +374,6 @@ function loadAuthSourceData(sUID, txtSearchUser, txtPassword){
        AUTH_SOURCE_IDENTIFIER_FOR_USER: data.sources.AUTH_SOURCE_IDENTIFIER_FOR_USER,
        AUTH_SOURCE_VERSION: data.sources.AUTH_SOURCE_VERSION,
        AUTH_SOURCE_BASE_DN: data.sources.AUTH_SOURCE_BASE_DN,
-       AUTH_SOURCE_OBJECT_CLASSES: data.sources.AUTH_SOURCE_OBJECT_CLASSES,
-       AUTH_SOURCE_ATTRIBUTES:data.sources.AUTH_SOURCE_ATTRIBUTES,
        AUTH_SOURCE_ADDITIONAL_FILTER:data.sources.AUTH_SOURCE_ADDITIONAL_FILTER
       })
     },

@@ -47,7 +47,7 @@ Ext.onReady(function(){
       hiddenName: 'LDAP_TYPE',
       store: new Ext.data.SimpleStore({
           fields: ['ldap','ad'],
-          data : my_values 
+          data : my_values
       }),
       displayField: 'ldap',
       typeAhead: true,
@@ -59,10 +59,8 @@ Ext.onReady(function(){
       listeners:{
        select: function(c,d,i){
           if(i){
-            formAuthSource.getForm().findField('AUTH_SOURCE_ATTRIBUTES').setValue('cn' + "\n" + 'samaccountname' + "\n" + 'givenname' + "\n" + 'sn' + "\n" + 'userprincipalname' + "\n" + 'telephonenumber');
             formAuthSource.getForm().findField('AUTH_SOURCE_IDENTIFIER_FOR_USER').setValue('samaccountname');
           } else {
-            formAuthSource.getForm().findField('AUTH_SOURCE_ATTRIBUTES').setValue('cn' + "\n" + 'uid' + "\n" + 'givenname' + "\n" + 'sn' + "\n" + 'mail' + "\n" + 'mobile');
             formAuthSource.getForm().findField('AUTH_SOURCE_IDENTIFIER_FOR_USER').setValue('uid');
           }
        }
@@ -71,7 +69,7 @@ Ext.onReady(function(){
 
   var txtServerName=new Ext.form.TextField({
   id: 'AUTH_SOURCE_SERVER_NAME',
-  fieldLabel: _('ID_SERVER_NAME'), 
+  fieldLabel: _('ID_SERVER_NAME'),
   xtype:'textfield',
   value:'',
   width: 200,
@@ -87,7 +85,7 @@ Ext.onReady(function(){
 
   var txtPort=new Ext.form.TextField({
     id: 'AUTH_SOURCE_PORT',
-    fieldLabel: _('ID_PORT'), 
+    fieldLabel: _('ID_PORT'),
     xtype:'textfield',
     value:'389',
     width: 200,
@@ -143,7 +141,7 @@ Ext.onReady(function(){
     fieldLabel: _('ID_BASE_DN'),
     xtype:'textfield',
     value:'',
-    width: 200,
+    width: 300,
     autoCreate: {tag: 'input', type: 'text', size: '10', autocomplete: 'off', maxlength: '128'},
     allowBlank: false,
     listeners: {
@@ -181,20 +179,20 @@ Ext.onReady(function(){
                 Ext.getCmp("AUTH_SOURCE_PASSWORD").show();
                 txtPassword.getEl().up('.x-form-item').setDisplayed(true);
             }else{
-                Ext.getCmp("AUTH_SOURCE_SEARCH_USER").disable(); 
+                Ext.getCmp("AUTH_SOURCE_SEARCH_USER").disable();
                 Ext.getCmp("AUTH_SOURCE_SEARCH_USER").hide();
                 txtSearchUser.getEl().up('.x-form-item').setDisplayed(false);
-                Ext.getCmp("AUTH_SOURCE_PASSWORD").disable(); 
+                Ext.getCmp("AUTH_SOURCE_PASSWORD").disable();
                 Ext.getCmp("AUTH_SOURCE_PASSWORD").hide();
                 txtPassword.getEl().up('.x-form-item').setDisplayed(false);
-            }     
+            }
            }
           }
   });
 
   var txtSearchUser=new Ext.form.TextField({
     id: 'AUTH_SOURCE_SEARCH_USER',
-    fieldLabel: _('ID_SEARCH_USER'), 
+    fieldLabel: _('ID_SEARCH_USER'),
     xtype:'textfield',
     value:'',
     width: 200,
@@ -209,7 +207,7 @@ Ext.onReady(function(){
 
   var txtPassword=new Ext.form.TextField({
     id: 'AUTH_SOURCE_PASSWORD',
-    fieldLabel: _('ID_CACHE_PASSWORD'), 
+    fieldLabel: _('ID_CACHE_PASSWORD'),
     xtype:'textfield',
     inputType:'password',
     value:'',
@@ -226,26 +224,11 @@ Ext.onReady(function(){
 //Identifier for an imported user
   var txtIdentifier=new Ext.form.TextField({
     id: 'AUTH_SOURCE_IDENTIFIER_FOR_USER',
-    fieldLabel: _('ID_IDENTIFIER_IMPORT_USER'), 
+    fieldLabel: _('ID_IDENTIFIER_IMPORT_USER'),
     xtype:'textfield',
     value:'uid',
     width: 200,
     autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '50'},
-    allowBlank: false,
-    listeners: {
-                'render': function(c) {
-                  c.getEl().on('keyup', function() {
-                  }, c);
-                }
-              }
-    });
-//Object Classes
-  var txtaClass=new Ext.form.TextArea({
-    id: 'AUTH_SOURCE_OBJECT_CLASSES',
-    fieldLabel: _('ID_OBJECT_CLASS'), 
-    xtype:'textarea',
-    value:'*',
-    width: 200,
     allowBlank: false,
     listeners: {
                 'render': function(c) {
@@ -260,24 +243,9 @@ Ext.onReady(function(){
     fieldLabel: _('ID_ADDITIONAL_FILTER'),
     xtype:'textfield',
     value:'',
-    width: 200,
+    width: 300,
     autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '200'},
     allowBlank: true,
-    listeners: {
-                'render': function(c) {
-                  c.getEl().on('keyup', function() {
-                  }, c);
-                }
-              }
-    });
-//Attributes
-  var txtAttributes=new Ext.form.TextArea({
-    id: 'AUTH_SOURCE_ATTRIBUTES',
-    fieldLabel: _('ID_ATTRIBUTES'), 
-    xtype:'textArea',
-    value:'cn' + "\n" + 'uid' + "\n" + 'givenname' + "\n" + 'sn' + "\n" + 'mail' + "\n" + 'mobile',
-    width: 200,
-    allowBlank: false,
     listeners: {
                 'render': function(c) {
                   c.getEl().on('keyup', function() {
@@ -302,9 +270,7 @@ Ext.onReady(function(){
             txtSearchUser,
             txtPassword ,
             txtIdentifier,
-            txtaClass,
-            txtoAddFilter,
-            txtAttributes
+            txtoAddFilter
             ]
     });
 
@@ -333,18 +299,18 @@ Ext.onReady(function(){
       {
         text: _('ID_SAVE'),
         handler: TestSite
-      
+
       },
-      {     
+      {
         text: _('ID_CANCEL'),
         handler: goback
       }
     ]
-    
+
   });
 
     formAuthSource.render(document.body);
-    
+
  });
  function goback(){
     window.location = 'authSources_List';
@@ -354,7 +320,7 @@ Ext.onReady(function(){
     url: '../adminProxy/saveAuthSources',
       params: {
     //                            action : 'tryit',
-       AUTH_SOURCE_UID:  formAuthSource.getForm().findField('AUTH_SOURCE_UID').getValue(), 
+       AUTH_SOURCE_UID:  formAuthSource.getForm().findField('AUTH_SOURCE_UID').getValue(),
        AUTH_SOURCE_NAME: formAuthSource.getForm().findField('AUTH_SOURCE_NAME').getValue(),
        LDAP_TYPE: formAuthSource.getForm().findField('LDAP_TYPE').getValue(),
        AUTH_SOURCE_SERVER_NAME: formAuthSource.getForm().findField('AUTH_SOURCE_SERVER_NAME').getValue(),
@@ -365,15 +331,13 @@ Ext.onReady(function(){
        AUTH_SOURCE_PASSWORD: formAuthSource.getForm().findField('AUTH_SOURCE_PASSWORD').getValue(),
        AUTH_SOURCE_VERSION: formAuthSource.getForm().findField('AUTH_SOURCE_VERSION').getValue(),
        AUTH_SOURCE_BASE_DN: formAuthSource.getForm().findField('AUTH_SOURCE_BASE_DN').getValue(),
-       AUTH_SOURCE_OBJECT_CLASSES: formAuthSource.getForm().findField('AUTH_SOURCE_OBJECT_CLASSES').getValue(),
-       AUTH_SOURCE_ATTRIBUTES: formAuthSource.getForm().findField('AUTH_SOURCE_ATTRIBUTES').getValue(),
        AUTH_SOURCE_ADDITIONAL_FILTER: formAuthSource.getForm().findField('AUTH_SOURCE_ADDITIONAL_FILTER').getValue()
-       
+
       },
-      waitMsg : 'testing...',
+      waitMsg : _('ID_SAVING'),
       timeout : 3600,
       success: function(f,a){
-       
+
        resp = Ext.util.JSON.decode(a.response.responseText);
        if (resp.success){
          window.location = 'authSources_List';
