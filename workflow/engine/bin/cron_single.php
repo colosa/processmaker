@@ -89,12 +89,62 @@ if (!defined('PATH_HOME')) {
     define ('TIME_ZONE', $config['time_zone']);
 }
 
-require_once ("classes/model/Configuration.php");
-require_once ("classes/model/AppCacheView.php");
-require_once ("classes/model/AppDelegation.php");
-require_once ("classes/model/Event.php");
-require_once ("classes/model/AppEvent.php");
-require_once ("classes/model/CaseScheduler.php");
+require_once (PATH_GULLIVER . PATH_SEP . 'class.bootstrap.php');
+//define( 'PATH_GULLIVER_HOME', PATH_TRUNK . 'gulliver' . PATH_SEP );
+
+spl_autoload_register(array('Bootstrap', 'autoloadClass'));
+
+Bootstrap::registerClass('BaseConfiguration',   PATH_HOME . "engine/classes/model/om/BaseConfiguration.php");
+Bootstrap::registerClass('Configuration',       PATH_HOME . "engine/classes/model/Configuration.php");
+
+Bootstrap::registerClass('EventPeer',        PATH_HOME . "engine/classes/model/EventPeer.php");
+Bootstrap::registerClass('ApplicationPeer',        PATH_HOME . "engine/classes/model/ApplicationPeer.php");
+
+Bootstrap::registerClass('BaseGroupUser',  PATH_HOME . "engine/classes/model/om/BaseGroupUser.php");
+Bootstrap::registerClass('BaseUsers',  PATH_HOME . "engine/classes/model/om/BaseUsers.php");
+Bootstrap::registerClass('BaseProcess',  PATH_HOME . "engine/classes/model/om/BaseProcess.php");
+Bootstrap::registerClass('BaseContentPeer',  PATH_HOME . "engine/classes/model/om/BaseContentPeer.php");
+Bootstrap::registerClass('BaseContent',  PATH_HOME . "engine/classes/model/om/BaseContent.php");
+Bootstrap::registerClass('BaseLogCasesScheduler',  PATH_HOME . "engine/classes/model/om/BaseLogCasesScheduler.php");
+Bootstrap::registerClass('BaseApplication',  PATH_HOME . "engine/classes/model/om/BaseApplication.php");
+Bootstrap::registerClass('BaseEvent',  PATH_HOME . "engine/classes/model/om/BaseEvent.php");
+Bootstrap::registerClass('BaseEventPeer',  PATH_HOME . "engine/classes/model/om/BaseEventPeer.php");
+Bootstrap::registerClass('BaseTriggers',  PATH_HOME . "engine/classes/model/om/BaseTriggers.php");
+Bootstrap::registerClass('BaseTriggersPeer',    PATH_HOME . "engine/classes/model/om/BaseTriggersPeer.php");
+Bootstrap::registerClass('BaseAppMessage',  PATH_HOME . "engine/classes/model/om/BaseAppMessage.php");
+Bootstrap::registerClass('BaseAppMessagePeer',    PATH_HOME . "engine/classes/model/om/BaseAppMessagePeer.php");
+
+Bootstrap::registerClass('BaseAppDelegation',  PATH_HOME . "engine/classes/model/om/BaseAppDelegation.php");
+Bootstrap::registerClass('BaseHoliday',        PATH_HOME . "engine/classes/model/om/BaseHoliday.php");
+Bootstrap::registerClass('BaseHolidayPeer',    PATH_HOME . "engine/classes/model/om/BaseHolidayPeer.php");
+Bootstrap::registerClass('BaseTask',           PATH_HOME . "engine/classes/model/om/BaseTask.php");
+Bootstrap::registerClass('BaseTaskPeer',       PATH_HOME . "engine/classes/model/om/BaseTaskPeer.php");
+Bootstrap::registerClass('HolidayPeer',        PATH_HOME . "engine/classes/model/HolidayPeer.php");
+Bootstrap::registerClass('Holiday',            PATH_HOME . "engine/classes/model/Holiday.php");
+
+Bootstrap::registerClass('Task',               PATH_HOME . "engine/classes/model/Task.php");
+Bootstrap::registerClass('TaskPeer',           PATH_HOME . "engine/classes/model/TaskPeer.php");
+Bootstrap::registerClass('dates',              PATH_HOME . "engine/classes/class.dates.php");
+Bootstrap::registerClass('AppDelegation',      PATH_HOME . "engine/classes/model/AppDelegation.php");
+Bootstrap::registerClass('AppDelegationPeer',  PATH_HOME . "engine/classes/model/AppDelegationPeer.php");
+Bootstrap::registerClass('BaseAppDelay',       PATH_HOME . "engine/classes/model/om/BaseAppDelay.php");
+Bootstrap::registerClass('AppDelayPeer',       PATH_HOME . "engine/classes/model/AppDelayPeer.php");
+Bootstrap::registerClass('AppDelay',           PATH_HOME . "engine/classes/model/AppDelay.php");
+Bootstrap::registerClass('BaseAdditionalTables',PATH_HOME . "engine/classes/model/om/BaseAdditionalTables.php");
+Bootstrap::registerClass('AdditionalTables',   PATH_HOME . "engine/classes/model/AdditionalTables.php");
+Bootstrap::registerClass('BaseAppCacheView',   PATH_HOME . "engine/classes/model/om/BaseAppCacheView.php");
+Bootstrap::registerClass('AppCacheView',       PATH_HOME . "engine/classes/model/AppCacheView.php");
+Bootstrap::registerClass('AppCacheViewPeer',   PATH_HOME . "engine/classes/model/AppCacheViewPeer.php");
+
+Bootstrap::registerClass('BaseEvent',          PATH_HOME . "engine/classes/model/om/BaseEvent.php");
+Bootstrap::registerClass('Event',              PATH_HOME . "engine/classes/model/Event.php");
+
+Bootstrap::registerClass('BaseAppEvent',       PATH_HOME . "engine/classes/model/om/BaseAppEvent.php");
+Bootstrap::registerClass('AppEvent',           PATH_HOME . "engine/classes/model/AppEvent.php");
+Bootstrap::registerClass('AppEventPeer',       PATH_HOME . "engine/classes/model/AppEventPeer.php");
+
+Bootstrap::registerClass('BaseCaseScheduler',   PATH_HOME . "engine/classes/model/om/BaseCaseScheduler.php");
+Bootstrap::registerClass('CaseScheduler',       PATH_HOME . "engine/classes/model/CaseScheduler.php");
 
 G::LoadClass("case");
 G::LoadClass("dates");
