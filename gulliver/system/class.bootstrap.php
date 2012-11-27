@@ -341,7 +341,7 @@ class Bootstrap
         if (strtolower( $typefile ) == 'js' && $typearray[0] == 'translation') {
             Bootstrap::sendHeaders( $filename, 'text/javascript', $download, $downloadFileName );
             $output = Bootstrap::streamJSTranslationFile( $filename, $typearray[1] );
-            print $output;
+            echo $output;
             return;
         }
 
@@ -349,7 +349,7 @@ class Bootstrap
         if (strtolower( $typefile ) == 'css' && $folderarray[count( $folderarray ) - 2] == 'css') {
             Bootstrap::sendHeaders( $filename, 'text/css', $download, $downloadFileName );
             $output = Bootstrap::streamCSSBigFile( $typearray[0] );
-            print $output;
+            echo $output;
             return;
         }
 

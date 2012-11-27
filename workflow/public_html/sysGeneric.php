@@ -71,8 +71,10 @@ if (file_exists($requestFile)) {
     if($pos < $size) {
         //if this file got an extension then assign the content
     	$ext_file = substr($request, $pos, $size);
-        if ($ext_file == "gif" || $ext_file == "png" || $ext_file == "jpg") {
+        if ($ext_file == "gif" || $ext_file == "png") {
             $ext_file = 'image/'.$ext_file ;
+        } elseif ($ext_file == "jpg" || $ext_file == "jpeg") {
+            $ext_file = 'image/jpeg';
         } elseif ($ext_file == "swf") {
             $ext_file = "application/x-shockwave-flash";
         } elseif ($ext_file == "json" || $ext_file == "htc" ) {
@@ -426,7 +428,7 @@ Bootstrap::registerClass('Calendar',     PATH_HOME . "engine/classes/class.calen
 Bootstrap::registerClass('processMap',   PATH_HOME . "engine/classes/class.processMap.php");
 
 //DATABASE propel classes used in 'Cases' Options
-Bootstrap::registerClass('Entity_Base',         PATH_HOME . "engine/classes/entities/Base.php");
+Bootstrap::registerClass('Entity_Base',        PATH_HOME . "engine/classes/entities/Base.php");
 
 Bootstrap::registerClass('BaseContent',        PATH_HOME . "engine/classes/model/om/BaseContent.php");
 Bootstrap::registerClass('Content',            PATH_HOME . "engine/classes/model/Content.php");
