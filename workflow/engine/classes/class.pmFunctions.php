@@ -1530,7 +1530,7 @@ function PMFGenerateOutputDocument ($outputID, $sApplication = null, $index = nu
 
     G::LoadClass( 'case' );
     $oCase = new Cases();
-    $oCase->thisIsTheCurrentUser( $sApplication, $index, $sUserLogged, '', 'cases_List' );
+    $oCase->thisIsTheCurrentUser( $sApplication, $index, $sUserLogged, '', 'casesListExtJs' );
 
     //require_once 'classes/model/OutputDocument.php';
     $oOutputDocument = new OutputDocument();
@@ -2109,7 +2109,7 @@ function jumping ($caseId, $delIndex)
     } catch (Exception $oException) {
         G::SendTemporalMessage( 'ID_NOT_DERIVATED', 'error', 'labels' );
     }
-    G::header( 'Location: cases_List' );
+    G::header( 'Location: casesListExtJs' );
 }
 
 /**

@@ -69,7 +69,7 @@ $appDocComment = (isset($_POST["form"]["APP_DOC_COMMENT"]))? $_POST["form"]["APP
 $actionType = $_POST["form"]["actionType"];
 
 $case = new Cases();
-$case->thisIsTheCurrentUser($_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["USER_LOGGED"], "REDIRECT", "cases_List");
+$case->thisIsTheCurrentUser($_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["USER_LOGGED"], "REDIRECT", "casesListExtJs");
 
 //Load the fields
 $arrayField = $case->loadCase($_SESSION["APPLICATION"]);

@@ -39,7 +39,7 @@ try {
 
     //Load the variables
     $oCase = new Cases();
-    $oCase->thisIsTheCurrentUser( $_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["USER_LOGGED"], "REDIRECT", "cases_List" );
+    $oCase->thisIsTheCurrentUser( $_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["USER_LOGGED"], "REDIRECT", "casesListExtJs" );
     $Fields = $oCase->loadCase( $_SESSION["APPLICATION"] );
 
     $Fields["APP_DATA"] = array_merge( $Fields["APP_DATA"], G::getSystemConstants() );
