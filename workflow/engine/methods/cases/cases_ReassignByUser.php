@@ -93,11 +93,11 @@ try {
         $oTasks = new Tasks();
         $oGroups = new Groups();
         $oUser = new Users();
-        G::LoadClass( 'case' );
-        $oCases = new Cases();
 
-        list ($oCriteriaToDo, $sXMLFile) = $oCases->getConditionCasesList( 'to_do', $sUserToReassign );
-        list ($oCriteriaDraft, $sXMLFile) = $oCases->getConditionCasesList( 'draft', $sUserToReassign );
+        $oAppCache = new AppCacheView();
+
+        $oCriteriaToDo = $oAppCache->getToDoListCriteria($sUserToReassign);
+        $oCriteriaDraft = $oAppCache->getDraftListCriteria($sUserToReassign);
 
         $aCasesList = Array ();
 
