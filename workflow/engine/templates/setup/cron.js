@@ -61,17 +61,19 @@ cron.application = {
         {
             var record = grdpnlMain.getSelectionModel().getSelected();
 
-            var strData = "<b>" + _("ID_DATE_LABEL") + "</b><br />" + record.get("DATE") + "<br />";
-            strData = strData + "<b>" + _("ID_WORKSPACE") + "</b><br />" + record.get("WORKSPACE") + "<br />";
-            strData = strData + "<b>" + _("ID_ACTION") + "</b><br />" + record.get("ACTION") + "<br />";
-            strData = strData + "<b>" + _("ID_STATUS") + "</b><br />" + record.get("STATUS") + "<br />";
-            strData = strData + "<b>" + _("ID_DESCRIPTION") + "</b><br />" + record.get("DESCRIPTION") + "<br />";
+            if (typeof record != "undefined") {
+                var strData = "<b>" + _("ID_DATE_LABEL") + "</b><br />" + record.get("DATE") + "<br />";
+                strData = strData + "<b>" + _("ID_WORKSPACE") + "</b><br />" + record.get("WORKSPACE") + "<br />";
+                strData = strData + "<b>" + _("ID_ACTION") + "</b><br />" + record.get("ACTION") + "<br />";
+                strData = strData + "<b>" + _("ID_STATUS") + "</b><br />" + record.get("STATUS") + "<br />";
+                strData = strData + "<b>" + _("ID_DESCRIPTION") + "</b><br />" + record.get("DESCRIPTION") + "<br />";
 
-            var formItems = Ext.getCmp("frmLogView").form.items;
-            formItems.items[0].setValue(strData);
+                var formItems = Ext.getCmp("frmLogView").form.items;
+                formItems.items[0].setValue(strData);
 
-            winLog.setTitle("Log - " + _("ID_WORKSPACE") + "&nbsp;" + record.get("WORKSPACE"));
-            winLog.show();
+                winLog.setTitle("Log - " + _("ID_WORKSPACE") + "&nbsp;" + record.get("WORKSPACE"));
+                winLog.show();
+            }
         }
 
         //Variables
@@ -233,7 +235,7 @@ cron.application = {
         var btnInfoView = new Ext.Action({
             id: "btnInfoView",
 
-            text: _("ID_VIEW_INFO"),
+            text: _("ID_CRON_INFO"),
             iconCls: "button_menu_ext ss_sprite ss_zoom",
 
             handler: function ()
@@ -457,3 +459,4 @@ cron.application = {
 }
 
 Ext.onReady(cron.application.init, cron.application);
+
