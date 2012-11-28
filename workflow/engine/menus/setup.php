@@ -85,5 +85,6 @@ if ($RBAC->userCanAccess('PM_SETUP') == 1) {
     $G_TMP_MENU->AddIdRawOption('EVENT', '../events/eventList', G::LoadTranslation('ID_EVENTS'), '', '', 'logs');
     $G_TMP_MENU->AddIdRawOption('LOG_CASE_SCHEDULER', '../cases/cases_Scheduler_Log', G::LoadTranslation('ID_CASE_SCHEDULER'), "icon-logs-list.png",'', 'logs');
     $G_TMP_MENU->AddIdRawOption("CRON", "../setup/cron", G::LoadTranslation("ID_CRON_ACTIONS"), null, null, "logs");
+    $G_TMP_MENU->AddIdRawOption('EMAILS', '../mails/emailList', ucfirst (strtolower ( G::LoadTranslation('ID_EMAILS'))), '', '', 'logs');
 }
 
