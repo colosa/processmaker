@@ -36,16 +36,17 @@ try {
             break;
     }
 
+    $sfunction = '';
     if (isset( $_POST['function'] )) {
         $sfunction = $_POST['function'];
-    } else {
+    } elseif (isset( $_POST['functions'] )){
         $sfunction = $_POST['functions'];
-    }
-
+    } 
+    // Bootstrap::mylog("post:".$_POST['function']);
     switch ($sfunction) {
         case 'lookForNameInput':
-            require_once ('classes/model/Content.php');
-            require_once ("classes/model/InputDocument.php");
+            //require_once ('classes/model/Content.php');
+            //require_once ("classes/model/InputDocument.php");
 
             $snameInput = urldecode( $_POST['NAMEINPUT'] );
             $sPRO_UID = urldecode( $_POST['proUid'] );
@@ -77,7 +78,7 @@ try {
             print $flag;
             break;
         default:
-            require_once 'classes/model/InputDocument.php';
+            //require_once 'classes/model/InputDocument.php';
             G::LoadClass( 'processMap' );
 
             $oInputDocument = new InputDocument();
