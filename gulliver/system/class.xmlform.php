@@ -807,7 +807,7 @@ class XmlForm_Field
 
     public function NSGridLabel ($show = false)
     {
-        $idv = 'pm:label="' . $this->pmLabel . '"';
+        $idv = 'pm:label="' . htmlentities($this->pmLabel, ENT_COMPAT, 'utf-8') . '"';
         if ($show) {
             return $idv;
         } else {
