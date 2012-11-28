@@ -120,5 +120,13 @@ class AppMessage extends BaseAppMessage
             return $this->getAppMsgUid();
         }
     }
+
+    public function updateStatus($msgUid, $msgStatus)
+    {
+        $message = AppMessagePeer::retrieveByPk( $msgUid );
+        $message->fromArray( $message, BasePeer::TYPE_FIELDNAME );
+        $message->setAppMsgStatus($msgStatus);
+        $message->save();
+    }
 }
 
