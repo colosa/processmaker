@@ -24,7 +24,6 @@
  */
 class AppFolder extends BaseAppFolder
 {
-
     /**
      *
      * @param string $folderName
@@ -85,6 +84,52 @@ class AppFolder extends BaseAppFolder
             }
         }
     }
+
+    /**
+     * Update the application document registry
+     *
+     * @param array $aData
+     * @return string
+     *
+     */
+    public function update ($aData)
+    {
+        $oConnection = Propel::getConnection( AppDocumentPeer::DATABASE_NAME );
+        try {
+            $oAppFolder = AppFolderPeer::retrieveByPK( $aData['FOLDER_UID'] );
+            if (! is_null( $oAppFolder )) {
+                $oAppFolder->fromArray( $aData, BasePeer::TYPE_FIELDNAME );
+                if ($oAppFolder->validate()) {
+                    $oConnection->begin();
+                    if (isset( $aData['FOLDER_NAME'] )) {
+                        $oAppFolder->setFolderName( $aData['FOLDER_NAME'] );
+                    }
+                    if (isset( $aData['FOLDER_UID'] )) {
+                        $oAppFolder->setFolderUid( $aData['FOLDER_UID'] );
+                    }
+                    if (isset( $aData['FOLDER_UPDATE_DATE'] )) {
+                        $oAppFolder->setFolderUpdateDate( $aData['FOLDER_UPDATE_DATE'] );
+                    }
+                    $iResult = $oAppFolder->save();
+                    $oConnection->commit();
+                    return $iResult;
+                } else {
+                    $sMessage = '';
+                    $aValidationFailures = $oAppFolder->getValidationFailures();
+                    foreach ($aValidationFailures as $oValidationFailure) {
+                        $sMessage .= $oValidationFailure->getMessage() . '<br />';
+                    }
+                    throw (new Exception( 'The registry cannot be updated!<br />' . $sMessage ));
+                }
+            } else {
+                throw (new Exception( 'This row doesn\'t exist!' ));
+            }
+        } catch (Exception $oError) {
+            $oConnection->rollback();
+            throw ($oError);
+        }
+    }
+
 
     /**
      *

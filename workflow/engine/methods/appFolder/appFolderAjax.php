@@ -13,11 +13,42 @@ if (! function_exists ($_REQUEST ['action'])) {
     die ();
 }
 
-$functionName = $_REQUEST ['action'];
-$functionParams = isset ($_REQUEST ['params']) ? $_REQUEST ['params'] : array ();
+if (($_REQUEST['action']) != 'rename') {
+    $functionName = $_REQUEST ['action'];
+    $functionParams = isset ($_REQUEST ['params']) ? $_REQUEST ['params'] : array ();
 
-$functionName ($functionParams);
+    $functionName ($functionParams);
+} else {
+    $functionName = 'renameFolder';
+    $functionParams = isset ($_REQUEST ['params']) ? $_REQUEST ['params'] : array ();
+    $oldname = $_REQUEST ['item'];
+    $newname = $_REQUEST ['newitemname'];
+    $uid = $_REQUEST ['selitems'];
+
+    $functionName ($oldname, $newname, $uid);
+}
+
 /////////////////////////////////////////////
+
+function renameFolder($oldname, $newname, $uid)
+{
+    $folder = new AppFolder();
+
+    //Clean Folder name (delete spaces...)
+    $newname = trim( $newname );
+
+    $fiels = array();
+
+    $fiels['FOLDER_UID'] = $uid[0];
+    $fiels['FOLDER_NAME'] = $newname;
+    $fiels['FOLDER_UPDATE_DATE'] = date('Y-m-d H:i:s');
+
+    $folder->update($fiels);
+
+    $msgLabel= G::LoadTranslation ('ID_EDIT_SUCCESSFULLY');
+    echo "{action: '', error:'error',message: '$msgLabel', success: 'success',folderUID: 'root'}";
+}
+
 /**
  * delete folders and documents
  * created by carlos pacha carlos@colosa.com, pckrlos@gmail.com
