@@ -207,7 +207,7 @@ class XmlForm_Field_TextareaPM extends XmlForm_Field
      * @param eter string owner
      * @return string
      */
-    public function renderGrid ($values = null, $owner)
+    public function renderGrid ($owner, $values = null)
     {
         $result = array ();
         $r = 1;
@@ -320,7 +320,7 @@ class XmlForm_Field_hours extends XmlForm_Field_SimpleText
      * @param eter string owner
      * @return string
      */
-    public function renderGrid ($values = array(), $owner)
+    public function renderGrid ($values = array(),$owner)
     {
         $result = array ();
         $r = 1;
@@ -380,8 +380,7 @@ function getDynaformsVars ($sProcessUID, $bSystemVars = true, $bIncMulSelFields 
     if ($bSystemVars) {
         $aAux = G::getSystemConstants();
         foreach ($aAux as $sName => $sValue) {
-            $aFields[] = array ('sName' => $sName,'sType' => 'system','sLabel' => 'System variable'
-            );
+            $aFields[] = array ('sName' => $sName,'sType' => 'system','sLabel' => 'System variable');
         }
         //we're adding the ping variable to the system list
         $aFields[] = array ('sName' => 'PIN','sType' => 'system','sLabel' => 'System variable'

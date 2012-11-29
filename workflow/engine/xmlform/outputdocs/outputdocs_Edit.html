@@ -1,5 +1,4 @@
 <form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>  
-
  <div class="borderForm" style="padding-left: 0pt; padding-right: 0pt;">
 		<div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
 		<div class="content" style="">
@@ -19,7 +18,7 @@
              <tr style="display: none;">
               <td colspan="2">{$form.OUT_DOC_UID}</td>
              </tr>
-             <tr class="FormFieldContent" >
+             <tr class="FormFieldContent">
               <td colspan="2">{$form.OUT_DOC_TEMPLATE}</td>
              </tr>                                             
              <tr>
@@ -32,8 +31,7 @@
     		</div>
 		<div class="boxBottom"><div class="a"></div><div class="b"></div><div class="c"></div></div>
   </div>
-                              <script type="text/javascript">
+  <script type="text/javascript">
     {$form.JS}
   </script>
-  
 </form>	

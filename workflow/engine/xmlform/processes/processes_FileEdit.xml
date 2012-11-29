@@ -8,7 +8,7 @@
 	  <en><![CDATA[<div align="center">Edit @#filename email template</div>]]></en>
 	</TITLE>
 
-	<fcontent type="html" height="420" width="100%" defaultValue="">
+	<fcontent type="wysiwyg_editor" editorType="EMAIL_TEMPLATE" height="380" width="720" defaultValue="">
 	  <en/>
 	</fcontent>
 

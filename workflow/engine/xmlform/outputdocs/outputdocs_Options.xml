@@ -26,7 +26,9 @@ var outputdocsEditor;
     var top = (screen.height/2);//-(h/2);
     var targetWin = window.open (pageURL, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
   } 
+////////////////////////////////////////////////////
 
+var outputdocsEditor;
   function outputdocsEdit( uid, typ ) {
      
     if (( _BROWSER.name == 'msie' ) && ( _BROWSER.version < '9' )) {
@@ -46,17 +48,27 @@ var outputdocsEditor;
 		  control	 : {close:true,resize:false},fx: {modal:false},
 		  fx	     : {shadow:false,modal:false}
 	  };
+	  
 	  outputdocsEditor.make();
-	  oIFrame = window.document.createElement('iframe');
-	  oIFrame.style.border = '0';
-	  oIFrame.style.width  = '100%';
-	  oIFrame.style.height = '100%';
-	  oIFrame.src          = '../outputdocs/outputdocs_Edit?OUT_DOC_UID=' + uid;
-	  outputdocsEditor.addContent(oIFrame);
+	  
+	  
+      var oRPC = new leimnud.module.rpc.xmlhttp({
+        url : '../outputdocs/outputdocs_Ajax',
+        args: 'action=loadOutputEditor&OUT_DOC_UID='+uid+'&OUT_DOC_TYPE='+typ
+      });
+
+      outputdocsEditor.loader.show();
+    oRPC.callback = function(rpc) {
+        outputdocsEditor.loader.hide();
+        outputdocsEditor.addContent(rpc.xmlhttp.responseText);
+        var scs=rpc.xmlhttp.responseText.extractScript();
+        scs.evalScript();
+    }.extend(this);
+    oRPC.make();
   }
   
   function outputdocsProperties( uid ) {
-		popupWindow('@G::LoadTranslation(ID_OUTPUT_DOCUMENTS)', '@G::encryptlink(@#outputdocs_Properties)?OUT_DOC_UID='+ uid , 600, 530);
+        popupWindow('@G::LoadTranslation(ID_OUTPUT_DOCUMENTS)', '@G::encryptlink(@#outputdocs_Properties)?OUT_DOC_UID='+ uid , 600, 530);
   }
   
   function outputdocsPropertiesSave( form ) {
@@ -80,8 +92,9 @@ var outputdocsEditor;
   }
   
   function outputdocsSave( form ) {
+    form.action = '../outputdocs/outputdocs_Save';
     ajax_post( form.action, form, 'POST' );
-    currentPopupWindow.remove();
+    outputdocsEditor.remove();
     @#PAGED_TABLE_ID.refresh();
       
   }

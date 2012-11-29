@@ -161,8 +161,10 @@ var EventCompose = function(t){
 		oPanel.make();
 		oPanel.loader.show();
 		var oRPC = new leimnud.module.rpc.xmlhttp({
-		  	url : '../events/eventsAjax',
-		  	args: 'request=showDynavars'
+//		  	url : '../events/eventsAjax',
+//		  	args: 'request=showDynavars',
+		  	url : '../controls/varsAjax',
+		  	args: 'sSymbol=@@&displayOption=event'
 	  	});
 	  	oRPC.callback = function(rpc) {
 		  	oPanel.loader.hide();
@@ -196,6 +198,26 @@ var EventCompose = function(t){
 
 		newOption.selected=true;
 		o.options[o.options.length] = newOption;
+	}
+        this.insertFormVar= function(id, value, prefix){
+
+		if(this.exists(id)) {
+                    new leimnud.module.app.alert().make({label: G_STRINGS.EVENT_EMAILEXISTS});
+                    return false;
+		}
+
+		this.deselectAll();
+		o = getField(this.target);
+
+		if(prefix == 'dyn'){
+			var newOption = new Option('@#'+value, prefix+"|"+id);
+		} else {
+			var newOption = new Option(value, prefix+"|"+id);
+		}
+
+		newOption.selected=true;
+		o.options[o.options.length] = newOption;
+                oPanel.remove();
 	}
 	this.dropSel= function(){
 	    var o = getField(this.target);
