@@ -2629,6 +2629,19 @@ function contractExpandSubtitle(subTitleName){
   else contractSubtitle(subTitleName);
 }
 
+function concat_collection(obj1, obj2) {
+    var i;
+    var arr = new Array();
+    var len1 = obj1.length;
+    var len2 = obj2.length;
+    for (i=0; i<len1; i++) {
+        arr.push(obj1[i]);
+    }
+    for (i=0; i<len2; i++) {
+        arr.push(obj2[i]);
+    }
+    return arr;
+}
 var getControlsInTheRow = function(oRow) {
   var aAux1 = [];
   if (oRow.cells) {
@@ -2637,12 +2650,18 @@ var getControlsInTheRow = function(oRow) {
     var sFieldName;
     for (i = 0; i < oRow.cells.length; i++) {
       var aAux2 = oRow.cells[i].getElementsByTagName('input');
+
+      aAux2 = concat_collection(aAux2, oRow.cells[i].getElementsByTagName('a'));
+      aAux2 = concat_collection(aAux2, oRow.cells[i].getElementsByTagName('select'));
+      aAux2 = concat_collection(aAux2, oRow.cells[i].getElementsByTagName('textarea'));
       if (aAux2) {
         for (j = 0; j < aAux2.length; j++) {
           sFieldName = aAux2[j].id.replace('form[', '');
           //sFieldName = sFieldName.replace(']', '');
           sFieldName = sFieldName.replace(/]$/, '');
-          aAux1.push(sFieldName);
+          if (sFieldName != '') {
+            aAux1.push(sFieldName);
+          }
         }
       }
     }

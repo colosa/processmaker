@@ -1166,7 +1166,10 @@ function expandSubtitle(subTitle){subTitle=getRow(subTitle);var c=subTitle.cells
 t.rows[i].style.display='';var aAux=getControlsInTheRow(t.rows[i]);for(var j=0;j<aAux.length;j++){enableRequiredById(aAux[j]);}}}
 function contractExpandSubtitle(subTitleName){subTitle=getRow(subTitleName);var c=subTitle.cells[0].className;var a=subTitle.rowIndex;var t=subTitle.parentNode;var contracted=false;for(var i=a+1,m=t.rows.length;i<m;i++){if(t.rows[i].cells.length==1)break;if(t.rows[i].style.display==='none'){contracted=true;}}
 if(contracted)expandSubtitle(subTitleName);else contractSubtitle(subTitleName);}
-var getControlsInTheRow=function(oRow){var aAux1=[];if(oRow.cells){var i;var j;var sFieldName;for(i=0;i<oRow.cells.length;i++){var aAux2=oRow.cells[i].getElementsByTagName('input');if(aAux2){for(j=0;j<aAux2.length;j++){sFieldName=aAux2[j].id.replace('form[','');sFieldName=sFieldName.replace(/]$/,'');aAux1.push(sFieldName);}}}}
+function concat_collection(obj1,obj2){var i;var arr=new Array();var len1=obj1.length;var len2=obj2.length;for(i=0;i<len1;i++){arr.push(obj1[i]);}
+for(i=0;i<len2;i++){arr.push(obj2[i]);}
+return arr;}
+var getControlsInTheRow=function(oRow){var aAux1=[];if(oRow.cells){var i;var j;var sFieldName;for(i=0;i<oRow.cells.length;i++){var aAux2=oRow.cells[i].getElementsByTagName('input');aAux2=concat_collection(aAux2,oRow.cells[i].getElementsByTagName('a'));aAux2=concat_collection(aAux2,oRow.cells[i].getElementsByTagName('select'));aAux2=concat_collection(aAux2,oRow.cells[i].getElementsByTagName('textarea'));if(aAux2){for(j=0;j<aAux2.length;j++){sFieldName=aAux2[j].id.replace('form[','');console.info(sFieldName);sFieldName=sFieldName.replace(/]$/,'');if(sFieldName!=''){aAux1.push(sFieldName);}}}}}
 return aAux1;};var notValidateThisFields=[];function getElementsByClassNameCrossBrowser(searchClass,node,tag){var classElements=new Array();if(node==null)
 node=document;if(tag==null)
 tag='*';var els=node.getElementsByTagName(tag);var elsLen=els.length;var pattern=new RegExp("(^|\\s)"+searchClass+"(\\s|$)");for(i=0,j=0;i<elsLen;i++){if(pattern.test(els[i].className)){classElements[j]=els[i];j++;}}
