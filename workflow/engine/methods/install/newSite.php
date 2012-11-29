@@ -48,12 +48,12 @@ if (isset( $_POST['form']['NW_TITLE'] )) {
     ), ($action === 'create') ? true : false );
     $result['result']['admin']['password'] = ($pass === $pass1) ? true : false;
     $result['result']['action'] = $action;
-    $json = new Services_JSON();
+    //$json = new Services_JSON();
     /*$ec;
     $ec->created=($new)?true:false;
     $ec->name=$name;
     $ec->message=($new)?"Workspace created":"Workspace already exists or Name invalid";*/
-    echo $json->encode( $result );
+    echo Bootstrap::json_encode( $result );
 } else {
     global $RBAC;
     switch ($RBAC->userCanAccess( 'PM_SETUP_ADVANCE' )) {

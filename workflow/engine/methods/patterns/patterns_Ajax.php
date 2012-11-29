@@ -22,7 +22,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 G::LoadInclude( 'ajax' );
-$oJSON = new Services_JSON();
+//$oJSON = new Services_JSON();
 if (isset( $_POST['mode'] ) && $_POST['mode'] != '') {
     $aData = $_POST;
 } else {

@@ -65,7 +65,7 @@ class PmBootstrap extends Bootstrap
         // pm workflow classes (static load)
         $this->autoloader->registerClass('System', PATH_CORE . 'classes/class.system');
 
-        $this->autoloader->registerClass('Services_JSON', PATH_THIRDPARTY .'pear/json/class.json');
+        //$this->autoloader->registerClass('Services_JSON', PATH_THIRDPARTY .'pear/json/class.json');
         $this->autoloader->registerClass('Smarty', PATH_THIRDPARTY . 'smarty/libs/Smarty.class');
 
         $this->autoloader->registerClass('Propel', PATH_THIRDPARTY . 'propel/Propel');

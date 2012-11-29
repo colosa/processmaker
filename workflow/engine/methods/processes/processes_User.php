@@ -29,10 +29,10 @@
  * @Date 16/05/2008
  * @LastModification none
  */
-G::LoadThirdParty( 'pear/json', 'class.json' );
+//G::LoadThirdParty( 'pear/json', 'class.json' );
 try {
-    $oJSON = new Services_JSON();
-    $stdObj = $oJSON->decode( stripslashes( $_POST['data'] ) );
+    //$oJSON = new Services_JSON();
+    $stdObj = Bootstrap::json_decode( stripslashes( $_POST['data'] ) );
     if (isset( $stdObj->pro_uid ))
         $sProUid = $stdObj->pro_uid;
     else

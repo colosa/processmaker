@@ -62,14 +62,14 @@
     }
 
     function simpleProcess ($oData  ) {
-   	  $oJSON  = new Services_JSON();
+   	  //$oJSON  = new Services_JSON();
       $sProUid     = $oData['PRO_UID'];
       $sTemplate   = $oData['PRO_TEMPLATE'];
       $oProcessMap = $oData['PROCESSMAP'];
       
-      $t1 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 70)  );
-      $t2 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 160) );
-      $t3 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 250) );
+      $t1 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 70)  );
+      $t2 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 160) );
+      $t3 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 250) );
       $task1 = $t1->uid;
       $task2 = $t2->uid;
       $task3 = $t3->uid;
@@ -84,15 +84,15 @@
     }
 
     function simpleParallel ($oData  ) {
-   	  $oJSON  = new Services_JSON();
+   	  //$oJSON  = new Services_JSON();
       $sProUid     = $oData['PRO_UID'];
       $sTemplate   = $oData['PRO_TEMPLATE'];
       $oProcessMap = $oData['PROCESSMAP'];
       
-      $t1 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 70)  );
-      $t2 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 200, 160) );
-      $t3 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 400, 160) );
-      $t5 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 250) );
+      $t1 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 70)  );
+      $t2 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 200, 160) );
+      $t3 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 400, 160) );
+      $t5 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 250) );
     
       $aData = array("TAS_START"=>"TRUE","TAS_UID"=>$t1->uid);
    	  $oTask = new Task();
@@ -106,18 +106,18 @@
     }
     
     function fullParallel ($oData  ) {
-   	  $oJSON  = new Services_JSON();
+   	  //$oJSON  = new Services_JSON();
       $sProUid     = $oData['PRO_UID'];
       $sTemplate   = $oData['PRO_TEMPLATE'];
       $oProcessMap = $oData['PROCESSMAP'];
       
-      $t1 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 70)  );
-      $t2 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 100, 160) );
-      $t3 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 160) );
-      $t4 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 500, 160) );
-      $t5 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 200, 250) );
-      $t6 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 500, 250) );
-      $t7 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 350, 340) );
+      $t1 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 70)  );
+      $t2 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 100, 160) );
+      $t3 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 160) );
+      $t4 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 500, 160) );
+      $t5 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 200, 250) );
+      $t6 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 500, 250) );
+      $t7 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 350, 340) );
     
       $aData = array("TAS_START"=>"TRUE","TAS_UID"=>$t1->uid);
    	  $oTask = new Task();
@@ -136,15 +136,15 @@
     
     
     function conditional ($oData  ) {
-   	  $oJSON  = new Services_JSON();
+   	  //$oJSON  = new Services_JSON();
       $sProUid     = $oData['PRO_UID'];
       $sTemplate   = $oData['PRO_TEMPLATE'];
       $oProcessMap = $oData['PROCESSMAP'];
       
-      $t1 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 70)  );
-      $t2 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 200, 160) );
-      $t3 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 400, 160) );
-      $t4 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 250) );
+      $t1 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 70)  );
+      $t2 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 200, 160) );
+      $t3 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 400, 160) );
+      $t4 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 250) );
       $task1 = $t1->uid;
       $task2 = $t2->uid;
       $task3 = $t3->uid;
@@ -163,14 +163,14 @@
     
     
     function doubleStart ($oData  ) {
-   	  $oJSON  = new Services_JSON();
+   	  //$oJSON  = new Services_JSON();
       $sProUid     = $oData['PRO_UID'];
       $sTemplate   = $oData['PRO_TEMPLATE'];
       $oProcessMap = $oData['PROCESSMAP'];
       
-      $t1 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 200, 70)  );
-      $t2 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 400, 70) );
-      $t3 = $oJSON->decode( $oProcessMap->addTask( $sProUid, 300, 160) );
+      $t1 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 200, 70)  );
+      $t2 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 400, 70) );
+      $t3 = Bootstrap::json_decode( $oProcessMap->addTask( $sProUid, 300, 160) );
       $task1 = $t1->uid;
       $task2 = $t2->uid;
       $task3 = $t3->uid;

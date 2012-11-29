@@ -39,7 +39,7 @@ try {
     //$oJSON = new Services_JSON();
 
     if (isset( $_REQUEST['data'] )) {
-        $oData = G::json_decode( stripslashes( $_REQUEST['data'] ) );
+        $oData = Bootstrap::json_decode( stripslashes( $_REQUEST['data'] ) );
         //$oData = $oJSON->decode( stripslashes( $_REQUEST['data'] ) );
         $sOutput = '';
         $sTask = '';
@@ -319,7 +319,7 @@ try {
             $oProcessMap->processFilesManager( $oData->pro_uid );
             break;
         case 'exploreDirectory':
-            $objData = G::json_decode( $_REQUEST['data'] );
+            $objData = Bootstrap::json_decode( $_REQUEST['data'] );
             $_SESSION['PFMDirectory'] = $objData->{'main_directory'};
             $oProcessMap->exploreDirectory( $oData->pro_uid, $oData->main_directory, $oData->directory );
             break;
@@ -399,7 +399,7 @@ try {
             break;
         case 'loginPML':
             G::LoadClass( 'processes' );
-            G::LoadThirdParty( 'pear/json', 'class.json' );
+            //G::LoadThirdParty( 'pear/json', 'class.json' );
             $oProcesses = new Processes();
             try {
                 if ($oProcesses->ws_open( $oData->u, $oData->p ) == 1) {
@@ -421,8 +421,8 @@ try {
                 $oResponse->sLink = '../processes/downloadPML?id=' . $oData->pro_uid . '&s=' . $sessionId;
             }
             $oResponse->bExists = $bExists;
-            $oJSON = new Services_JSON();
-            echo $oJSON->encode( $oResponse );
+            //$oJSON = new Services_JSON();
+            echo Bootstrap::json_encode( $oResponse );
             break;
         case 'editFile':
             //echo $_REQUEST['filename'];
@@ -542,8 +542,8 @@ try {
             }
             $response = new stdclass();
             $response->casesNumRec = $casesNumRec;
-            $json = new Services_JSON();
-            $sOutput = $json->encode( $response );
+            //$json = new Services_JSON();
+            $sOutput = Bootstrap::json_encode( $response );
             break;
     }
     if (isset( $sOutput )) {

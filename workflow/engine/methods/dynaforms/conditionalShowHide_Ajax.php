@@ -53,14 +53,14 @@ try {
             $_DYN_FILENAME = $_SESSION['Current_Dynafom']['Parameters']['FILE'];
             $sFilter = isset( $_POST['filter'] ) ? $_POST['filter'] : '';
 
-            $oJSON = new Services_JSON();
+            //$oJSON = new Services_JSON();
             $oDynaformHandler = new dynaFormHandler( PATH_DYNAFORM . $_DYN_FILENAME . '.xml' );
 
             $aFilter = explode( ',', $sFilter );
 
             $aAvailableFields = $oDynaformHandler->getFieldNames( $aFilter );
 
-            print ($oJSON->encode( $aAvailableFields )) ;
+            print (Bootstrap::json_encode( $aAvailableFields )) ;
             break;
         case 'showDynavars':
             G::LoadSystem( 'dynaformhandler' );

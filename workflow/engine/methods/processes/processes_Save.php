@@ -27,7 +27,7 @@
  *
  */
 
-G::LoadThirdParty( 'pear/json', 'class.json' );
+//G::LoadThirdParty( 'pear/json', 'class.json' );
 
 $function = isset( $_POST['function'] ) ? $_POST['function'] : '';
 
@@ -58,7 +58,7 @@ switch ($function) {
         $oProcessMap = new ProcessMap();
         if (! isset( $_POST['form']['PRO_UID'] )) {
             $_POST['form']['USR_UID'] = $_SESSION['USER_LOGGED'];
-            $oJSON = new Services_JSON();
+            //$oJSON = new Services_JSON();
             require_once 'classes/model/Task.php';
 
             $sProUid = $oProcessMap->createProcess( $_POST['form'] );

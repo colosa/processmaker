@@ -64,14 +64,14 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     // the script responds an ajax request in order to check the dependent fields,
     // and generate a json output of the values that the dependent field must have.
 $sDynUid = G::getUIDName( urlDecode( $_POST['DYN_UID'] ) );
-$json = new Services_JSON();
-$formValues = ($json->decode( $_POST['fields'] ));
+//$json = new Services_JSON();
+$formValues = (Bootstrap::json_decode( $_POST['fields'] ));
 $sFieldName = $_POST['fieldName'];
 $sMasterField = '';
 $sPath = PATH_DYNAFORM;
 $G_FORM = new form( $sDynUid, $sPath );
 $aux = array ();
-$newValues = $json->decode( urlDecode( stripslashes( $_POST['form'] ) ) );
+$newValues = Bootstrap::json_decode( urlDecode( stripslashes( $_POST['form'] ) ) );
 
 if (isset( $_POST['grid'] )) {
     $_POST['row'] = (int) $_POST['row'];

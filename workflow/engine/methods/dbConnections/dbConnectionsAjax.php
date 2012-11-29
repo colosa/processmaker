@@ -273,13 +273,13 @@ switch ($action) {
         }
         break;
     case 'showEncodes':
-        G::LoadThirdParty( 'pear/json', 'class.json' );
-        $oJSON = new Services_JSON();
+        //G::LoadThirdParty( 'pear/json', 'class.json' );
+        //$oJSON = new Services_JSON();
         $engine = $_POST['engine'];
 
         if ($engine != "0") {
             $dbs = new dbConnections();
-            echo $oJSON->encode( $dbs->getEncondeList( $engine ) );
+            echo Bootstrap::json_encode( $dbs->getEncondeList( $engine ) );
 
         } else {
             echo '[["0","..."]]';

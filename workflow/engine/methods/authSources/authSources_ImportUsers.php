@@ -33,12 +33,12 @@ if (isset($aFields['AUTH_SOURCE_DATA']['AUTH_SOURCE_GRID_ATTRIBUTE'])) {
     $aAttributes = $aFields['AUTH_SOURCE_DATA']['AUTH_SOURCE_GRID_ATTRIBUTE'];    
 }
 
-G::LoadThirdParty( 'pear/json', 'class.json' );
-$oJSON = new Services_JSON();
+//G::LoadThirdParty( 'pear/json', 'class.json' );
+//$oJSON = new Services_JSON();
 
 foreach ($_POST['aUsers'] as $sUser) {
     $matches = array ();
-    $aUser = (array) $oJSON->decode( stripslashes( $sUser ) );
+    $aUser = (array) Bootstrap::json_decode( stripslashes( $sUser ) );
     $aData['USR_USERNAME'] = str_replace( "*", "'", $aUser['sUsername'] );
     $aData['USR_PASSWORD'] = md5( str_replace( "*", "'", $aUser['sUsername'] ) );
     // note added by gustavo gustavo-at-colosa.com

@@ -30,8 +30,8 @@ if (isset( $_SESSION['CURRENT_PAGE_INITILIZATION'] )) {
     eval( $_SESSION['CURRENT_PAGE_INITILIZATION'] );
 }
     //G::LoadSystem('json');
-require_once (PATH_THIRDPARTY . 'pear/json/class.json.php');
-$json = new Services_JSON();
+//require_once (PATH_THIRDPARTY . 'pear/json/class.json.php');
+//$json = new Services_JSON();
 $G_FORM = new form( G::getUIDName( urlDecode( $_POST['form'] ) ) );
 $G_FORM->id = urlDecode( $_POST['form'] );
 $G_FORM->values = $_SESSION[$G_FORM->id];
@@ -44,7 +44,7 @@ define( 'DB_XMLDB_PASS', '' );
 define( 'DB_XMLDB_NAME', '' );
 define( 'DB_XMLDB_TYPE', 'myxml' );
 
-$newValues = ($json->decode( urlDecode( stripslashes( $_POST['fields'] ) ) ));
+$newValues = (Bootstrap::json_decode( urlDecode( stripslashes( $_POST['fields'] ) ) ));
 //Resolve dependencies
 //Returns an array ($dependentFields) with the names of the fields
 //that depends of fields passed through AJAX ($_GET/$_POST)
@@ -84,7 +84,7 @@ foreach ($dependentFields as $d) {
     $sendContent[$r]->value = $G_FORM->values[$d];
     $r ++;
 }
-echo ($json->encode( $sendContent ));
+echo (Bootstrap::json_encode( $sendContent ));
 
 function toJSArray ($array)
 {

@@ -9,13 +9,12 @@
 class newSiteProxy extends HttpProxyController
 {
 
-    public function testingNW ($params)
-    {
+    public function testingNW ($params) {
         if (isset( $_POST['NW_TITLE'] )) {
             $action = (isset( $_POST['action'] )) ? trim( $_POST['action'] ) : 'test';
 
             G::LoadClass( 'Installer' );
-            G::LoadClass( 'json' );
+            //G::LoadClass( 'json' );
             $name = trim( $_POST['NW_TITLE'] );
             $inst = new Installer();
             $isset = $inst->isset_site( $name );
@@ -36,7 +35,7 @@ class newSiteProxy extends HttpProxyController
             ), ($action === 'create') ? true : false );
             $result['result']['admin']['password'] = ($pass === $pass1) ? true : false;
             $result['result']['action'] = $action;
-            $json = new Services_JSON();
+            //$json = new Services_JSON();
             //G::pr($result['result']['database']);G::pr($action);
             $dbWf = $result['result']['database']['ao']['ao_db_wf']['status'];
             $dbRb = $result['result']['database']['ao']['ao_db_rb']['status'];
@@ -54,10 +53,10 @@ class newSiteProxy extends HttpProxyController
         }
     }
 
-    public function creatingNW ($params)
+   /* public function creatingNW ($params)
     {
         G::pr( $_POST );
         G::pr( "krlossss" );
-    }
+    }*/
 }
 

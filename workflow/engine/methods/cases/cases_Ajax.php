@@ -554,7 +554,7 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
         $r->data = $aProcesses;
         $r->totalCount = $totalCount;
 
-        echo G::json_encode( $r );
+        echo Bootstrap::json_encode( $r );
         break;
     case 'generateDocumentGrid_Ajax':
 
@@ -612,7 +612,7 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
         $r->totalCount = $totalCount;
         $r->dataFormat = $dateFormat;
 
-        echo G::json_encode( $r );
+        echo Bootstrap::json_encode( $r );
         break;
     case 'showGeneratedDocument':
         //require_once 'classes/model/AppDocument.php';
@@ -935,16 +935,16 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
         G::RenderPage( 'publish', 'raw' );
         break;
     case "getCountCasesFolder":
-        $json = new Services_JSON();
+        //$json = new Services_JSON();
         $aTypes = Array ('to_do','draft','cancelled','sent','paused','completed','selfservice','to_revise','to_reassign');
         $aTypesID = Array ('to_do' => 'CASES_INBOX','draft' => 'CASES_DRAFT','cancelled' => 'CASES_CANCELLED','sent' => 'CASES_SENT','paused' => 'CASES_PAUSED','completed' => 'CASES_COMPLETED','selfservice' => 'CASES_SELFSERVICE','to_revise' => 'CASES_TO_REVISE','to_reassign' => 'CASES_TO_REASSIGN');
 
         if (! isset( $_POST['A'] )) {
             $oCases = new Cases();
             $aCount = $oCases->getAllConditionCasesCount( $aTypes, true );
-            echo $json->encode( $aCount );
+            echo Bootstrap::json_encode( $aCount );
         } else {
-            echo $json->encode( $aTypesID );
+            echo Bootstrap::json_encode( $aTypesID );
         }
         break;
     case "previusJump":
@@ -965,7 +965,7 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
             $response['exists'] = false;
         }
 
-        echo G::json_encode( $response );
+        echo Bootstrap::json_encode( $response );
         break;
     default:
         echo 'default';

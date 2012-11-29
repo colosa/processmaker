@@ -199,8 +199,8 @@ try {
             require_once 'classes/model/Process.php';
             require_once 'classes/model/Task.php';
             require_once 'classes/model/AppDelegation.php';
-            $oJSON = new Services_JSON();
-            $oData = $oJSON->decode( stripslashes( $_POST['data'] ) );
+            //$oJSON = new Services_JSON();
+            $oData = Bootstrap::json_decode( stripslashes( $_POST['data'] ) );
             $oProcess = new Process();
             $aRow = $oProcess->load( $oData->uid );
             $oSM->title->label = strip_tags( $aRow['PRO_TITLE'] );
@@ -262,13 +262,13 @@ try {
                     $oSM->stages[$iKey]->derivation->type = 0;
                 }
             }
-            $oJSON = new Services_JSON();
-            echo $oJSON->encode( $oSM );
+            //$oJSON = new Services_JSON();
+            echo Bootstrap::json_encode( $oSM );
             break;
         case 'addStage':
             require_once 'classes/model/Stage.php';
-            $oJSON = new Services_JSON();
-            $oData = $oJSON->decode( stripslashes( $_POST['data'] ) );
+            //$oJSON = new Services_JSON();
+            $oData = Bootstrap::json_decode( stripslashes( $_POST['data'] ) );
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addSelectColumn( 'STG_UID' );
             $oCriteria->add( StagePeer::PRO_UID, $oData->uid );
@@ -313,13 +313,13 @@ try {
                 $oData->position->y *= - 1;
 
             $oNewStage->uid = $oStage->create( array ('PRO_UID' => $oData->uid,'STG_TITLE' => $oNewStage->label,'STG_POSX' => $oData->position->x,'STG_POSY' => $oData->position->y,'STG_INDEX' => $iIndex) );
-            $oJSON = new Services_JSON();
-            echo $oJSON->encode( $oNewStage );
+            //$oJSON = new Services_JSON();
+            echo Bootstrap::json_encode( $oNewStage );
             break;
         case 'saveStagePosition':
             require_once 'classes/model/Stage.php';
-            $oJSON = new Services_JSON();
-            $oData = $oJSON->decode( stripslashes( $_POST['data'] ) );
+            //$oJSON = new Services_JSON();
+            $oData = Bootstrap::json_decode( stripslashes( $_POST['data'] ) );
             $oStage = new Stage();
             $aFields = $oStage->load( $oData->uid );
             $aFields['STG_UID'] = $oData->uid;
@@ -329,8 +329,8 @@ try {
             break;
         case 'deleteStage':
             require_once 'classes/model/Stage.php';
-            $oJSON = new Services_JSON();
-            $oData = $oJSON->decode( stripslashes( $_POST['data'] ) );
+            //$oJSON = new Services_JSON();
+            $oData = Bootstrap::json_decode( stripslashes( $_POST['data'] ) );
             $oStage = new Stage();
             $aFields = $oStage->load( $oData->stg_uid );
             $oStage->remove( $oData->stg_uid );
@@ -344,8 +344,8 @@ try {
             break;
         case 'editStage':
             require_once 'classes/model/Stage.php';
-            $oJSON = new Services_JSON();
-            $oData = $oJSON->decode( stripslashes( $_POST['data'] ) );
+            //$oJSON = new Services_JSON();
+            $oData = Bootstrap::json_decode( stripslashes( $_POST['data'] ) );
             $oStage = new Stage();
             $aFields = $oStage->load( $oData->stg_uid );
             $aFields['THEINDEX'] = $oData->theindex;
@@ -365,8 +365,8 @@ try {
         case 'tasksAssigned':
             require_once 'classes/model/Stage.php';
             require_once 'classes/model/Task.php';
-            $oJSON = new Services_JSON();
-            $oData = $oJSON->decode( stripslashes( $_POST['data'] ) );
+            //$oJSON = new Services_JSON();
+            $oData = Bootstrap::json_decode( stripslashes( $_POST['data'] ) );
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addSelectColumn( TaskPeer::TAS_UID );
             $oCriteria->addAsColumn( 'TAS_TITLE', ContentPeer::CON_VALUE );

@@ -22,7 +22,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-G::LoadThirdParty( 'pear/json', 'class.json' );
+//G::LoadThirdParty( 'pear/json', 'class.json' );
 
 try {
 
@@ -49,8 +49,8 @@ try {
         return $value;
     }
 
-    $oJSON = new Services_JSON();
-    $stdObj = $oJSON->decode( $_POST['data'] );
+    //$oJSON = new Services_JSON();
+    $stdObj = Bootstrap::json_decode( $_POST['data'] );
     if (isset( $stdObj->pro_uid ))
         $sProUid = $stdObj->pro_uid;
     else

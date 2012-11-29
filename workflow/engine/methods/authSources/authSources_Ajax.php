@@ -46,8 +46,8 @@ try {
             }
 
             $aFields = $RBAC->getAuthSource( $_POST['sUID'] );            
-            G::LoadThirdParty( 'pear/json', 'class.json' );
-            $oJSON = new Services_JSON();
+            //G::LoadThirdParty( 'pear/json', 'class.json' );
+            //$oJSON = new Services_JSON();
             $i = 0;
             $oUser = new Users();
             $aAux = $RBAC->searchUsers( $_POST['sUID'], $_POST['sKeyword'] );
@@ -59,7 +59,7 @@ try {
             foreach ($aAux as $aUser) {
                 if (! in_array( $aUser['sUsername'], $pmUsers )) {
                     // add replace to change D'Souza to D*Souza by krlos
-                    $sCheckbox = '<div align="center"><input type="checkbox" name="aUsers[' . $i . ']" id="aUsers[' . $i . ']" value=\'' . str_replace( "\'", "*", addslashes( $oJSON->encode( $aUser ) ) ) . '\' /></div>';
+                    $sCheckbox = '<div align="center"><input type="checkbox" name="aUsers[' . $i . ']" id="aUsers[' . $i . ']" value=\'' . str_replace( "\'", "*", addslashes( Bootstrap::json_encode( $aUser ) ) ) . '\' /></div>';
                     $i ++;
                 } else {
                     $sCheckbox = G::LoadTranslation( 'ID_USER_REGISTERED' ) . ':<br />(' . $aUser['sUsername'] . ')';

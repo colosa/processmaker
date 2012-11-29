@@ -476,8 +476,8 @@ class Publisher
                 global $mainPanelScript;
                 global $panelName;
                 global $tabCount;
-                G::LoadThirdParty( 'pear/json', 'class.json' );
-                $json = new Services_JSON();
+                //G::LoadThirdParty( 'pear/json', 'class.json' );
+                //$json = new Services_JSON();
                 $tabCount = 0;
                 $panelName = $Part['Template'];
                 $data = $Part['File'];
@@ -493,7 +493,7 @@ class Publisher
                 . ($data['roll'] ? 'true' : 'false') . ',' . ' drag:' . ($data['drag'] ? 'true' : 'false') . ',' . ' resize:'
                 . ($data['resize'] ? 'true' : 'false') . '},' . 'fx:{' . ' drag:' . ($data['drag'] ? 'true' : 'false') . ',' . ' modal:'
                 . ($data['modal'] ? 'true' : 'false') . ',' . ' blinkToFront:' . ($data['blinkToFront'] ? 'true' : 'false') . '}' . '};'
-                . $panelName . '.setStyle=' . $json->encode( $data['style'] ) . ';' . $panelName . '.tab={' . 'width:'
+                . $panelName . '.setStyle=' . Bootstrap::json_encode( $data['style'] ) . ';' . $panelName . '.tab={' . 'width:'
                 . ($data['tabWidth'] + $data['tabSpace']) . ',' . 'optWidth:' . $data['tabWidth'] . ',' . 'step :' . $data['tabStep']
                 . ',' . 'options:[]' . '};';
                 print (' ') ;
