@@ -372,6 +372,8 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
 // the request correspond to valid php page, now parse the URI
 Bootstrap::parseURI( getenv( "REQUEST_URI" ), $isRestRequest );
 
+//Bootstrap::mylog("sys_temp: ".SYS_TEMP);
+
 if (Bootstrap::isPMUnderUpdating()) {
     header( "location: /update/updating.php" );
     if (DEBUG_TIME_LOG)
@@ -623,6 +625,7 @@ Bootstrap::registerClass('IsoCountry',          PATH_HOME . "engine/classes/mode
 Bootstrap::registerClass('BaseIsoSubdivision',  PATH_HOME . "engine/classes/model/om/BaseIsoSubdivision.php");
 Bootstrap::registerClass('IsoSubdivision',      PATH_HOME . "engine/classes/model/IsoSubdivision.php");
 Bootstrap::registerClass('BaseIsoLocation',     PATH_HOME . "engine/classes/model/om/BaseIsoLocation.php");
+Bootstrap::registerClass('IsoLocation',         PATH_HOME . "engine/classes/model/IsoLocation.php");
 Bootstrap::registerClass('Users',               PATH_HOME . "engine/classes/model/Users.php");
 Bootstrap::registerClass('UsersPeer',           PATH_HOME . "engine/classes/model/UsersPeer.php");
 
