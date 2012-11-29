@@ -1485,6 +1485,16 @@ function PMFAddInputDocument(
     $file = "path_to_file/myfile.txt"
 ) {
     G::LoadClass("case");
+
+    $g = new G();
+
+    $g->sessionVarSave();
+
+    $_SESSION["APPLICATION"] = $caseUid;
+    $_SESSION["INDEX"] = $delIndex;
+    $_SESSION["TASK"] = $taskUid;
+    $_SESSION["USER_LOGGED"] = $userUid;
+
     $case = new Cases();
 
     $appDocUid = $case->addInputDocument(
@@ -1502,6 +1512,8 @@ function PMFAddInputDocument(
         $file
     );
 
+    $g->sessionVarRestore();
+
     return $appDocUid;
 }
 
@@ -1518,14 +1530,26 @@ function PMFAddInputDocument(
  */
 function PMFGenerateOutputDocument ($outputID, $sApplication = null, $index = null, $sUserLogged = null)
 {
-    if (! $sApplication) {
-        $sApplication = $_SESSION['APPLICATION'];
+    $g = new G();
+
+    $g->sessionVarSave();
+
+    if ($sApplication) {
+        $_SESSION["APPLICATION"] = $sApplication;
+    } else {
+        $sApplication = $_SESSION["APPLICATION"];
     }
-    if (! $index) {
-        $index = $_SESSION['INDEX'];
+
+    if ($index) {
+        $_SESSION["INDEX"] = $index;
+    } else {
+        $index = $_SESSION["INDEX"];
     }
-    if (! $sUserLogged) {
-        $sUserLogged = $_SESSION['USER_LOGGED'];
+
+    if ($sUserLogged) {
+        $_SESSION["USER_LOGGED"] = $sUserLogged;
+    } else {
+        $sUserLogged = $_SESSION["USER_LOGGED"];
     }
 
     G::LoadClass( 'case' );
@@ -1688,6 +1712,8 @@ function PMFGenerateOutputDocument ($outputID, $sApplication = null, $index = nu
                 break;
         }
     }
+
+    $g->sessionVarRestore();
 }
 
 /**
@@ -2157,7 +2183,15 @@ function PMFgetLabelOption ($PROCESS, $DYNAFORM_UID, $FIELD_NAME, $FIELD_SELECTE
  */
 function PMFRedirectToStep ($sApplicationUID, $iDelegation, $sStepType, $sStepUid)
 {
-    $iDelegation = intval( $iDelegation );
+    $g = new G();
+
+    $g->sessionVarSave();
+
+    $iDelegation = intval($iDelegation);
+
+    $_SESSION["APPLICATION"] = $sApplicationUID;
+    $_SESSION["INDEX"] = $iDelegation;
+
     require_once 'classes/model/AppDelegation.php';
     $oCriteria = new Criteria( 'workflow' );
     $oCriteria->addSelectColumn( AppDelegationPeer::TAS_UID );
@@ -2206,10 +2240,15 @@ function PMFRedirectToStep ($sApplicationUID, $iDelegation, $sStepType, $sStepUi
                 $aFields['APP_DATA'] = $oPMScript->aFields;
                 $oCase->updateCase( $sApplicationUID, $aFields );
             }
+
+            $g->sessionVarRestore();
+
             G::header( 'Location: ' . 'cases_Step?TYPE=' . $sStepType . '&UID=' . $sStepUid . '&POSITION=' . $oTheStep->getStepPosition() . '&ACTION=' . $sAction );
             die();
         }
     }
+
+    $g->sessionVarRestore();
 }
 
 /**

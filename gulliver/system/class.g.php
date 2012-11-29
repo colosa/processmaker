@@ -30,6 +30,8 @@
 
 class G
 {
+    public $sessionVar = array(); //SESSION temporary array store.
+
     /**
      * is_https
      * @return void
@@ -3130,7 +3132,7 @@ class G
         } else {
             $setup['MESS_RAUTH'] = 1;
         }
-        
+
         if (count($setup) == 0 || !isset($setup['MESS_ENGINE']) || !isset($setup['MESS_SERVER'])
             || !isset($setup['MESS_ENABLED']) || !isset($setup['MESS_RAUTH']) || $setup['MESS_SERVER'] == '') {
             return G::LoadTranslation('ID_EMAIL_ENGINE_IS_NOT_CONFIGURED');
@@ -4762,6 +4764,90 @@ class G
             }
         }
         return false;
+    }
+
+    /**
+     * Save the $_SESSION variables into $sessionVar array, to unset them temporary.
+     *
+     */
+    public function sessionVarSave()
+    {
+        //Unset any variable
+        $this->sessionVar = array();
+
+        if (isset($_SESSION["APPLICATION"])) {
+            $this->sessionVar["APPLICATION"] = $_SESSION["APPLICATION"];
+        }
+
+        if (isset($_SESSION["INDEX"])) {
+            $this->sessionVar["INDEX"] = $_SESSION["INDEX"];
+        }
+
+        if (isset($_SESSION["PROCESS"])) {
+            $this->sessionVar["PROCESS"] = $_SESSION["PROCESS"];
+        }
+
+        if (isset($_SESSION["TASK"])) {
+            $this->sessionVar["TASK"] = $_SESSION["TASK"];
+        }
+
+        if (isset($_SESSION["USER_LOGGED"])) {
+            $this->sessionVar["USER_LOGGED"] = $_SESSION["USER_LOGGED"];
+        }
+
+        if (isset($_SESSION["USR_USERNAME"])) {
+            $this->sessionVar["USR_USERNAME"] = $_SESSION["USR_USERNAME"];
+        }
+
+        if (isset($_SESSION["STEP_POSITION"])) {
+            $this->sessionVar["STEP_POSITION"] = $_SESSION["STEP_POSITION"];
+        }
+    }
+
+    /**
+     * Restore the session variables with values of $sessionVar array, if this is set.
+     *
+     */
+    public function sessionVarRestore()
+    {
+        if (count($this->sessionVar) > 0) {
+            //Restore original values
+            unset($_SESSION["APPLICATION"]);
+            unset($_SESSION["INDEX"]);
+            unset($_SESSION["PROCESS"]);
+            unset($_SESSION["TASK"]);
+            unset($_SESSION["USER_LOGGED"]);
+            unset($_SESSION["USR_USERNAME"]);
+            unset($_SESSION["STEP_POSITION"]);
+
+            if (isset($this->sessionVar["APPLICATION"])) {
+                $_SESSION["APPLICATION"] = $this->sessionVar["APPLICATION"];
+            }
+
+            if (isset($this->sessionVar["INDEX"])) {
+                $_SESSION["INDEX"] = $this->sessionVar["INDEX"];
+            }
+
+            if (isset($this->sessionVar["PROCESS"])) {
+                $_SESSION["PROCESS"] = $this->sessionVar["PROCESS"];
+            }
+
+            if (isset($this->sessionVar["TASK"])) {
+                $_SESSION["TASK"] = $this->sessionVar["TASK"];
+            }
+
+            if (isset($this->sessionVar["USER_LOGGED"])) {
+                $_SESSION["USER_LOGGED"] = $this->sessionVar["USER_LOGGED"];
+            }
+
+            if (isset($this->sessionVar["USR_USERNAME"])) {
+                $_SESSION["USR_USERNAME"] = $this->sessionVar["USR_USERNAME"];
+            }
+
+            if (isset($this->sessionVar["STEP_POSITION"])) {
+                $_SESSION["STEP_POSITION"] = $this->sessionVar["STEP_POSITION"];
+            }
+        }
     }
 }
 
