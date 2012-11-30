@@ -87,7 +87,7 @@ Ext.onReady(function(){
         handler : function(a) {
           Ext.MessageBox.show({
             msg: _('ID_LOADING'),
-            progressText: 'Saving...',
+            progressText: _('ID_SAVING'),
             width:300,
             wait:true,
             waitConfig: {interval:200},
@@ -103,7 +103,7 @@ Ext.onReady(function(){
           }
           var flag = 0;
           for (var i = 0; i < dashletMove.length; i++) {
-            Ext.getCmp('columnPos' + flag).add(Ext.getCmp(dashletMove[i])); 
+            Ext.getCmp('columnPos' + flag).add(Ext.getCmp(dashletMove[i]));
             if (flag == 0) {
               flag = 1;
             } else {
@@ -175,7 +175,7 @@ Ext.onReady(function(){
           var orderNow = generatedOrder();
           Ext.MessageBox.show({
             msg: _('ID_LOADING'),
-            progressText: 'Saving...',
+            progressText: _('ID_SAVING'),
             width:300,
             wait:true,
             waitConfig: {interval:200},
@@ -239,7 +239,7 @@ Ext.onReady(function(){
       con++;
     }
   }
-    
+
 
   pd.doLayout();
 
