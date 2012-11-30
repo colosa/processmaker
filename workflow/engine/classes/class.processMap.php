@@ -4882,7 +4882,7 @@ class processMap
      */
     public function getEventsCriteria ($sProcessUID, $EVN_ACTION)
     {
-        try {
+        try {require_once 'classes/model/Event.php';
             $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addSelectColumn( EventPeer::EVN_UID );
