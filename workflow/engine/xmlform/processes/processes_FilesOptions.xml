@@ -6,7 +6,7 @@
 </MNU_NEWEMPTY>
 
 <MNU_UPLOAD type="link" value="" link="#" onclick="uploadFilesScreen(@QPRO_UID, @QMAIN_DIRECTORY, @QCURRENT_DIRECTORY);return false;" colAlign="left" colWidth="100">
-  <en>Upload</en>
+  <en>Upload...............</en>
 </MNU_UPLOAD>
 
 <PRO_UID type="private"/>
@@ -16,7 +16,6 @@
 <CURRENT_DIRECTORY type="private"/>
 
 <JS type="javascript"><![CDATA[
-
 
 var CURRENT_PRO_UID = @QPRO_UID;
 var CURRENT_MAIN_DIRECTORY;
@@ -74,19 +73,20 @@ var uploadFilesScreen = function(PRO_UID, MAIN_DIRECTORY, CURRENT_DIRECTORY) {
 
 var oPanel;
 function editFile(pro_uid, fileName){
-var typofile = fileName.split(".");
-if( typofile[typofile.length-1].toLowerCase() != 'txt' && typofile[typofile.length-1].toLowerCase() != 'html' ){
-         	msgBox(G_STRINGS.HTML_FILES,"alert");return;
-         } 
+    var typofile = fileName.split(".");
+    if( typofile[typofile.length-1].toLowerCase() != 'txt' && typofile[typofile.length-1].toLowerCase() != 'html' ){
+        msgBox(G_STRINGS.HTML_FILES,"alert");return;
+    } 
 
 	oPanel = new leimnud.module.panel();
 	oPanel.options={
 		limit	   : true,
-		size	   : {w:800,h:600},
-		position : {x:50,y:50,center:true},
+		size	   : {w:800,h:530},
+		position   : {x:50,y:50,center:true},
 		title	   : '',
-		control	 : {close:true,resize:false},fx:{modal:true},
-		fx	     : {shadow:true,modal:true}
+		control    : {close:true,resize:false},
+		fx         : {modal:true},
+		fx	       : {shadow:true,modal:true}
 	};
 	oPanel.make();
 	
@@ -101,24 +101,28 @@ if( typofile[typofile.length-1].toLowerCase() != 'txt' && typofile[typofile.leng
 	  	oPanel.addContent(rpc.xmlhttp.responseText);
 	  	var scs=rpc.xmlhttp.responseText.extractScript();
 	  	scs.evalScript();
-	  	
-  	}.extend(this);
+	}.extend(this);
 	oRPC.make();
 }
 
+/*refresh content tiny*/
+
 function saveFile(pro_uid, fileName){
-  var fc64 = base64_encode(getField('fcontent').value);
-  fc64 = fc64.replace(/&amp;/g, "@amp@");
-  fc64 = fc64.replace(/\+/g, '%2B');
+    
+    var fc64 = base64_encode(getField('fcontent').value);
+    fc64 = fc64.replace(/&amp;/g, "@amp@");
+    fc64 = fc64.replace(/\+/g, '%2B');
+	
 	var oRPC = new leimnud.module.rpc.xmlhttp({
     url : 'processes_Ajax',
 	  args: 'action=saveFile&filename='+fileName+'&pro_uid='+pro_uid+'&MAIN_DIRECTORY='+CURRENT_MAIN_DIRECTORY+'&fcontent='+fc64
  	});
-  oPanel.loader.show();
-  oRPC.callback = function(rpc) {
-	  oPanel.remove();
-  }.extend(this);
-  oRPC.make();
+ 	
+ 	oPanel.loader.show();
+    oRPC.callback = function(rpc) {
+        oPanel.remove();
+    }.extend(this);
+    oRPC.make();
 }
 
 var showCreateEmptyOptionsPanel;

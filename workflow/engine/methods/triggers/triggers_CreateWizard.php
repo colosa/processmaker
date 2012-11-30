@@ -43,7 +43,7 @@ var showDynaformsFormVars = function(sFieldName, sAjaxServer, sProcess, sSymbol)
 	_oVarsPanel_ = new leimnud.module.panel();
 	_oVarsPanel_.options = {
     limit    : true,
-    size     : {w:550,h:675},
+    size     : {w:600,h:420},
     position : {x:0,y:0,center:true},
     title    : '',
     theme    : 'processmaker',

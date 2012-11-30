@@ -21,12 +21,161 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-G::LoadClass( 'xmlfield_InputPM' );
-$aFields = getDynaformsVars( $_POST['sProcess'], true, isset( $_POST['bIncMulSelFields'] ) ? $_POST['bIncMulSelFields'] : 0 );
+$_SERVER["QUERY_STRING"] = isset($_SERVER["QUERY_STRING"])?$_SERVER["QUERY_STRING"]:'';
+$_REQUEST["sProcess"] = isset($_REQUEST["sProcess"])?$_REQUEST["sProcess"]:'';
+$_REQUEST["sFieldName"] = isset($_REQUEST["sFieldName"])?$_REQUEST["sFieldName"]:'';
+$_REQUEST['sSymbol']= isset($_REQUEST["sSymbol"])?$_REQUEST["sSymbol"]:'';
 
+$html = '<form action="uploader.php?'.$_SERVER["QUERY_STRING"].'&q=upload" onLoad="onLoad()" method="post" enctype="multipart/form-data" onsubmit="">';
+$html .= '<div id="d_variables">';
+$html .= '<table width="90%" align="center">';
+
+$html .= '<tr style="display:none; visibility:hidden;">';
+$html .= '<td colspan="3">';
+$html .= '<input type="hidden" id="process" value="'.$_REQUEST['sProcess'].'">';
+$html .= '<input type="hidden" id="selectedField" name="selectedField" value="'.$_REQUEST['sFieldName'].'"/> ';
+$html .= '</td>';
+$html .= '</tr>';
+
+$html .= '<tr>';
+$html .= '<td width="50%">';
+$html .= '<label for="type_label">Type Variable</label>';
+$html .= '</td>';
+
+$html .= '<td width="25%">';
+$html .= '<label for="prefix_label">Prefix</label>';
+$html .= '</td>';
+
+$html .= '<td width="25%">';
+$html .= '<label for="variables_label">Search</label>';
+$html .= '</td>';
+$html .= '</tr>';
+
+//$html = '<form action="uploader.php?'.$_SERVER["QUERY_STRING"].'&q=upload" method="post" enctype="multipart/form-data" onsubmit="">';
+
+$html .= '<tr>';
+$html .= '<td width="25%">';
+$html .= '<select name="type_variables" id="type_variables">';
+$html .= '<option value="all">All Variables</option>';
+$html .= '<option value="system">System Variables</option>';
+$html .= '<option value="process">Process Variables</option>';
+$html .= '</select> &nbsp;&nbsp;&nbsp;&nbsp;';
+$html .= '</td>';
+
+$html .= '<td width="25%">';
+//$html .= '<select name="prefix" id="prefix" onChange="Seleccionar(this);">';
+$html .= '<select name="prefix" id="prefix">';
+
+$html .= '<option value="ID_TO_STRING">@@</option>';
+$html .= '<option value="ID_TO_FLOAT">@#</option>';
+$html .= '<option value="ID_TO_INTEGER">@%</option>';
+$html .= '<option value="ID_TO_URL">@?</option>';
+$html .= '<option value="ID_SQL_ESCAPE">@$</option>';
+$html .= '<option value="ID_REPLACE_WITHOUT_CHANGES">@=</option>';
+/*
+$html .= '<option value="@@">@@</option>';
+$html .= '<option value="@#">@#</option>';
+$html .= '<option value="@%">@%</option>';
+$html .= '<option value="@?">@?</option>';
+$html .= '<option value="@$">@$</option>';
+$html .= '<option value="@=">@=</option>';
+*/
+$html .= '</select> &nbsp;&nbsp;&nbsp;&nbsp;';
+$html .= '</td>';
+
+$html .= '<td width="25%" valign="top">';
+$html .= '<input type="text" id="search" size="15">';
+$html .= '</td>';
+$html .= '</tr>';
+$html .= '<tr>';
+$html .= '<tr><td><label for="prefix_label">Variables</label></td></tr>';
+$html .= '<tr>';
+//onChange="Seleccionar(this);
+$html .= '<td colspan="3">';
+
+G::LoadClass( 'xmlfield_InputPM' );
+$aFields = getDynaformsVars( $_REQUEST['sProcess'], true, isset( $_POST['bIncMulSelFields'] ) ? $_POST['bIncMulSelFields'] : 0 );
+
+//$html .= '<select name="_Var_Form_" id="_Var_Form_" size="' . count( $aFields ) . '" style="width:100%;' . (! isset( $_POST['sNoShowLeyend'] ) ? 'height:50%;' : '') . '" ondblclick="insertFormVar(\'' . $_POST['sFieldName'] . '\', this.value);">';
+
+$displayOption = '';
+if (isset($_REQUEST['displayOption'])){
+    $displayOption = 'displayOption="'.$_REQUEST['displayOption'].'"';
+} else {
+    $displayOption = 'displayOption="normal"' ;
+}
+$html .= '<select name="_Var_Form_" id="_Var_Form_" size="8"  style="width:100%;' . (! isset( $_POST['sNoShowLeyend'] ) ? 'height:170;' : '') . '" '.$displayOption.'>';
+
+foreach ($aFields as $aField) {
+    $html .= '<option value="' . $_REQUEST['sSymbol'] . $aField['sName'] . '">' . $_REQUEST['sSymbol'] . $aField['sName'] . ' (' . $aField['sType'] . ')</option>';
+}
+
+$aRows[0] = Array ('fieldname' => 'char','variable' => 'char','type' => 'type','label' => 'char');
+foreach ($aFields as $aField) {
+    $aRows[] = Array ('fieldname' => $_REQUEST['sFieldName'], 'variable' => $_REQUEST['sSymbol'] . $aField['sName'],'variable_label' => '<div class="pm__dynavars"> <a id="dynalink" href=# onclick="insertFormVar(\'' . $_REQUEST['sFieldName'] . '\',\'' . $_REQUEST['sSymbol'] . $aField['sName'] . '\');">' . $_REQUEST['sSymbol'] . $aField['sName'] . '</a></div>','type' => $aField['sType'],'label' => $aField['sLabel']
+    );
+}
+$html .= '</select>';
+
+$html .= '</td>';
+$html .= '</tr>';
+$html .= '</table>';
+$html .= '</div>';
+
+$html .= '<br>';
+$html .= '<table border="1" width="90%" align="center">';
+$html .= '<tr width="40%">';
+$html .= '<td>Result</td>';
+$html .= '<td><span id="selectedVariableLabel">@@SYS_LANG</span></td>';
+$html .= '</tr>';
+$html .= '<tr width="60%">';
+$html .= '<td>Description</td>';
+$html .= '<td><span id="desc_variables">'.G::LoadTranslation('ID_SYSTEM').'</span></td>';
+$html .= '</tr>';
+$html .= '</table>';
+$html .= '</div>';
+$html .= '<br>';
+$html .= '<table width="90%" align="center">';
+$html .= '<tr><td>';
+$html .= '<label for="desc_prefix">*<span id="desc_prefix">' . G::LoadTranslation( 'ID_TO_STRING' ) . '</span></label>';
+$html .= '</td></tr>';
+$html .= '</div>';
+
+$html .= '</form>';
+
+$display     = 'raw';
+
+$G_PUBLISH = new Publisher();
+$oHeadPublisher = & headPublisher::getSingleton();
+$oHeadPublisher->addScriptFile('/jscore/controls/variablePicker.js');
+if (isset($_REQUEST['displayOption'])) {
+    if($_REQUEST['displayOption']=='tinyMCE'){
+        $display = 'blank';
+        $oHeadPublisher->addScriptFile('/js/tinymce/jscripts/tiny_mce/tiny_mce_popup.js');
+        $oHeadPublisher->addScriptFile('/js/tinymce/jscripts/tiny_mce/plugins/pmVariablePicker/editor_plugin_src.js');
+    }
+}
+
+echo $html;
+
+G::RenderPage( 'publish', $display );
+/*
+$alll = '<script type="text/javascript" language="javascript">';
+$alll .= 'function Seleccionar(combo){';
+$alll .= 'alert(combo.value);';
+$alll .= '}';
+$alll .= '</script>';
+
+echo $alll;
+*/
+
+
+
+//echo var_dump($aFields);
+/*
 $sHTML = '<select name="_Var_Form_" id="_Var_Form_" size="' . count( $aFields ) . '" style="width:100%;' . (! isset( $_POST['sNoShowLeyend'] ) ? 'height:50%;' : '') . '" ondblclick="insertFormVar(\'' . $_POST['sFieldName'] . '\', this.value);">';
 foreach ($aFields as $aField) {
-    $sHTML .= '<option value="' . $_POST['sSymbol'] . $aField['sName'] . '">' . $_POST['sSymbol'] . $aField['sName'] . ' (' . $aField['sType'] . ')</option>';
+    $html .= '<option value="' . $_POST['sSymbol'] . $aField['sName'] . '">' . $_POST['sSymbol'] . $aField['sName'] . ' (' . $aField['sType'] . ')</option>';
 }
 
 $aRows[0] = Array ('fieldname' => 'char','variable' => 'char','type' => 'type','label' => 'char'
@@ -36,117 +185,40 @@ foreach ($aFields as $aField) {
     );
 }
 
-$sHTML .= '</select>';
-$sHTML = '';
+$html .= '</select>';
 
-if (! isset( $_POST['sNoShowLeyend'] )) {
-    $sHTML = '<table width="100%">';
-    $sHTML .= '<tr><td align="center" class="module_app_input___gray" colspan="2"><b>Variables cast prefix</b></td></tr>';
-    if (isset( $_POST['sType'] )) {
-        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_ESC' ) . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_NONEC' ) . '</td></tr>';
-        /*$sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_EURL') . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_EVAL') . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_ESCJS') . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_ESCSJS') . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray">' . G::LoadTranslation('ID_FUNCTION') . '</td></tr>';*/
-    } else {
-        $sHTML .= '<tr><td class="module_app_input___gray" width="5%">@@</td><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_TO_STRING' ) . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray" width="5%">@#</td><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_TO_FLOAT' ) . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray" width="5%">@%</td><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_TO_INTEGER' ) . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray" width="5%">@?</td><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_TO_URL' ) . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray" width="5%">@$</td><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_SQL_ESCAPE' ) . '</td></tr>';
-        $sHTML .= '<tr><td class="module_app_input___gray" width="5%">@=</td><td class="module_app_input___gray">' . G::LoadTranslation( 'ID_REPLACE_WITHOUT_CHANGES' ) . '</td></tr>';
-    }
-    $sHTML .= '<tr><td align="center" class="module_app_input___gray" colspan="2">&nbsp;</td></tr>';
-    //$sHTML .= '<tr><td align="center" class="module_app_input___gray" colspan="2">' . G::LoadTranslation('ID_DOCLICK') . '</td></tr>';
-    $sHTML .= '</table>';
-} else {
-    // please don't remove this definition if there isn't some sort of html tags before the css styles aren't loaded in IE
-    $sHTML = '<table width="100%">';
-    $sHTML .= '</table>';
-}
-$sStyle = " <style type=\"text/css\">
+$html .= '</td>';
+$html .= '</tr>';
+$html .= '</table>';
+$html .= '</div>';
 
-.pm__dynavars a#dynalink{color:#000000;}
+$html .= '<br>';
+$html .= '<div id="desc_variables">';
+$html .= '<table border="1" width="90%" align="center">';
+$html .= '<tr width="40%">';
+$html .= '<td>Result</td>';
+$html .= '<td>@#SYS_LANG</td>';
+$html .= '</tr>';
+$html .= '<tr width="60%">';
+$html .= '<td>Description</td>';
+$html .= '<td>Description @#SYS_LANG</td>';
+$html .= '</tr>';
+$html .= '</table>';
+$html .= '</div>';
+$html .= '<br>';
+$html .= '<div id="desc_variables">';
+$html .= '<table width="90%" align="center">';
+$html .= '<tr><td>';
+$html .= '<label for="desc_prefix">' . G::LoadTranslation( 'ID_TO_FLOAT' ) . '</label>';
+$html .= '</td></tr>';
+$html .= '</div>';
 
-/* begin css tabs */
-ul#tabnav { /* general settings */
-text-align: left; /* set to left, right or center */
-margin: 1em 0 1em 0; /* set margins as desired */
-font: bold 11px verdana, arial, sans-serif; /* set font as desired */
-border-bottom: 1px solid #ccc; /* set border COLOR as desired */
-list-style-type: none;
-padding: 3px 10px 3px 10px; /* THIRD number must change with respect to padding-top (X) below */
-}
+$html .= '</form>';
 
-ul#tabnav li { /* do not change */
-display: inline;
-}
+echo $html;
 
-div#all li.all, div#system li.system, div#process li.process, div#tab4 li.tab4 { /* settings for selected tab */
-border-bottom: 1px solid #fff; /* set border color to page background color */
-background-color: #fff; /* set background color to match above border color */
-}
-
-div#all li.all a, div#system li.system a, div#process li.process a, div#tab4 li.tab4 a { /* settings for selected tab link */
-background-color: #fff; /* set selected tab background color as desired */
-color: #000; /* set selected tab link color as desired */
-position: relative;
-top: 1px;
-padding-top: 4px; /* must change with respect to padding (X) above and below */
-}
-
-ul#tabnav li a { /* settings for all tab links */
-padding: 3px 4px; /* set padding (tab size) as desired; FIRST number must change with respect to padding-top (X) above */
-border: 1px solid #aaa; /* set border COLOR as desired; usually matches border color specified in #tabnav */
-background-color: #ccc; /* set unselected tab background color as desired */
-color: #666; /* set unselected tab link color as desired */
-margin-right: 10px; /* set additional spacing between tabs as desired */
-text-decoration: none;
-border-bottom: none;
-}
-
-ul#tabnav a:hover { /* settings for hover effect */
-background: #fff; /* set desired hover color */
-}
-
-/* end css tabs */
-
-</style>";
-$cssTabs = "<div id=\"all\">
-                <ul id=\"tabnav\">
-                    <li class=\"all\"><a href=\"#\" onclick=\"changeVariables('all','" . $_POST['sProcess'] . "','" . $_POST['sFieldName'] . "','" . $_POST['sSymbol'] . "','processVariablesContent');\">All variables</a></li>
-                    <li class=\"system\"><a href=\"#\" onclick=\"changeVariables('system','" . $_POST['sProcess'] . "','" . $_POST['sFieldName'] . "','" . $_POST['sSymbol'] . "','processVariablesContent');\">System</a></li>
-                    <li class=\"process\"><a href=\"#\" onclick=\"changeVariables('process','" . $_POST['sProcess'] . "','" . $_POST['sFieldName'] . "','" . $_POST['sSymbol'] . "','processVariablesContent');\">Process</a></li>
-                </ul>
-            </div>
-            ";
-echo $sHTML;
-echo $sStyle;
-
-////////////////////////////////////////////////////////
-
-
-echo "<div id=\"processVariablesContent\">";
-echo $cssTabs;
-G::LoadClass( 'ArrayPeer' );
-
-global $_DBArray;
-$_DBArray['dynavars'] = $aRows;
-$_SESSION['_DBArray'] = $_DBArray;
-
-G::LoadClass( 'ArrayPeer' );
-$oCriteria = new Criteria( 'dbarray' );
-$oCriteria->setDBArrayTable( 'dynavars' );
-
-$aFields = array ();
-
-$G_PUBLISH = new Publisher();
-$oHeadPublisher = & headPublisher::getSingleton();
-$oHeadPublisher->addScriptFile( "/jscore/controls/varsAjax.js" );
-$G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'triggers/dynavars', $oCriteria );
 G::RenderPage( 'publish', 'raw' );
 
-echo "</div>";
-
+/*$G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'triggers/dynavars', $oCriteria );
+G::RenderPage( 'publish', 'raw' );
+*/

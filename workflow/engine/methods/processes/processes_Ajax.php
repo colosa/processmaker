@@ -446,16 +446,50 @@ try {
             }
             $fcontent = file_get_contents( $sDirectory );
             $extion = explode( ".", $_REQUEST['filename'] );
-
+//            $oHeadPublisher = &headPublisher::getSingleton();
+//            $oHeadPublisher->clearScripts();
+//            $oHeadPublisher->addScriptFile( '/js/tinymce/jscripts/tiny_mce/tiny_mce.js' );
+//            $jscriptCode .= '
+//
+////                    var tmpArrToStr = Array.prototype.toStr;
+////                    var tmpObjToStr = Object.prototype.toStr;
+////                    var tmpObjConcat = Object.prototype.concat;
+////                    var tmpObjGetByKey = Object.prototype.get_by_key;
+////                    var tmpObjExpand = Object.prototype.expand;
+////                    var tmpObjSetParent = Object.prototype.setParent;
+////                    var tmpObjIsSetKey = Object.prototype.isset_key;
+////
+////                    delete Array.prototype.toStr;
+////                    delete Object.prototype.toStr;
+////                    delete Object.prototype.concat;
+////                    delete Object.prototype.get_by_key;
+////                    delete Object.prototype.expand;
+////                    delete Object.prototype.setParent;
+////                    delete Object.prototype.isset_key;
+////                alert ("hi");
+////                document.body.onload = function(){
+//                    alert ("hello");
+//                    tinyMCE.baseURL = "/js/tinymce/jscripts/tiny_mce";
+//                    tinyMCE.init({
+//                        theme   : "advanced",
+//                        plugins : "fullpage",
+//                        mode    : "specific_textareas",
+//                        editor_selector : "tmceEditor",
+//                        width   : "640",
+//                        height  : "300",
+//                        theme_advanced_buttons3_add : "fullpage"
+//                    });
+////                    alert ("goodbye");
+////                }
+//            ';
+//            $oHeadPublisher->addScriptCode($jscriptCode);
+            $_REQUEST['fcontent'] = $fcontent;
             //if($extion[count($extion)-1]=='html' || $extion[count($extion)-1]=='txt'){
-            $aData = Array ('pro_uid' => $_REQUEST['pro_uid'],'fcontent' => $fcontent,'filename' => $_REQUEST['filename']
-            );
+            $aData = Array ( 'pro_uid' => $_REQUEST['pro_uid'],'fcontent' => $fcontent,'filename' => $_REQUEST['filename'] );
             $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'processes/processes_FileEdit', '', $aData );
             G::RenderPage( 'publish', 'raw' );
-            /*}else{ echo 'krlos';
-	  		       $aMessage['MESSAGE'] = G::loadTranslation(	'HTML_FILES' );
-                   $G_PUBLISH->AddContent ( 'xmlform', 'xmlform', 'login/showMessage', '',$aMessage );
-	  		       }*/
+//            $G_PUBLISH->AddContent( 'view', 'processes/processesFileEditEmail' );
+//            G::RenderPage( 'publish', 'blank' );
             break;
         case 'saveFile':
             global $G_PUBLISH;
@@ -487,6 +521,36 @@ try {
             break;
         case 'events':
             $oProcessMap->eventsList( $oData->pro_uid, $oData->type );
+            break;
+        case 'getVariableList':
+            G::LoadClass('xmlfield_InputPM');
+            $proUid= isset( $_REQUEST['process'] )?$_REQUEST['process']:'';
+            $queryText= isset( $_REQUEST['queryText'] )?$_REQUEST['queryText']:'';
+            if ($_REQUEST['type']=='system'){
+                $isSystem = true;
+            } else {
+                $isSystem = false;
+            }
+            if ($_REQUEST['type']=='all'){
+                $aFields = getDynaformsVars( $proUid );
+            } else {
+                $aFields = getDynaformsVars( $proUid, $isSystem, isset( $_REQUEST['bIncMulSelFields'] ) ? $_REQUEST['bIncMulSelFields'] : 1);
+            }
+            $aVariables = array();
+            foreach ($aFields as $key => $value){
+                if($queryText!='') {
+                    if(stristr($aFields[$key]['sName'], $queryText)){
+                        $aVariables[] = $aFields[$key];
+                    }
+                } else {
+                    $aVariables[] = $aFields[$key];
+                }
+            }
+            echo Bootstrap::json_encode( $aVariables );
+            break;
+        case 'getVariablePrefix':
+            $_REQUEST['prefix'] = $_REQUEST['prefix']!=null?$_REQUEST['prefix']:'ID_TO_STRING';
+            echo G::LoadTranslation($_REQUEST['prefix']);
             break;
         /*
 	       case 'saveFile':

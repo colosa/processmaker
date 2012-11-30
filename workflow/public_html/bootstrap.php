@@ -250,6 +250,7 @@
   G::LoadSystem('menu');
   G::LoadSystem("xmlMenu");
   G::LoadSystem('dvEditor');
+  G::LoadSystem('wysiwygEditor');
   G::LoadSystem('controller');
   G::LoadSystem('httpProxyController');
   G::LoadSystem('pmException');

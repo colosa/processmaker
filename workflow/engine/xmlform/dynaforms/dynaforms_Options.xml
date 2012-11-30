@@ -22,8 +22,8 @@
 
 <js type="javascript" replaceTags="1"><![CDATA[
   function dynaformAdd(){
-                popupWindow('@G::LoadTranslation(ID_NEW_DYNAFORM)', '@G::encryptlink(@#dynaformsChoseType)?PRO_UID=@%PRO_UID' , 500, 200);
-	        //popupWindow('@G::LoadTranslation(ID_NEW_DYNAFORM)', '@G::encryptlink(@#dynaformsNewPlugin)?PRO_UID=@%PRO_UID' , 500, 350);
+    popupWindow('@G::LoadTranslation(ID_NEW_DYNAFORM)', '@G::encryptlink(@#dynaformsChoseType)?PRO_UID=@%PRO_UID' , 500, 200);
+	//popupWindow('@G::LoadTranslation(ID_NEW_DYNAFORM)', '@G::encryptlink(@#dynaformsNewPlugin)?PRO_UID=@%PRO_UID' , 500, 350);
   }
   function dynaformPluginAdd(){
 		popupWindow('@G::LoadTranslation(ID_NEW_DYNAFORM)', '@G::encryptlink(@#dynaformsEdit)?PRO_UID=@%PRO_UID' , 500, 350);
@@ -75,6 +75,7 @@
   }
 
   function dynaformSave ( form, bOpen ) {
+  alert('guardando');
   var nameDynaForm = getField('DYN_TITLE').value;
   var proUid = getField('PRO_UID').value;
    
