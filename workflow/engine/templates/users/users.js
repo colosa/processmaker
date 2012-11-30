@@ -1043,14 +1043,14 @@ function saveUser()
         return false;
       }
     }
-    
+
     if (USR_UID == '00000000000000000000000000000001') {
     	if (Ext.getCmp('USR_ROLE').getValue() != 'PROCESSMAKER_ADMIN') {
-    		Ext.Msg.alert( _('ID_ERROR'), 'The Role of this user must be PROCESSMAKER_ADMIN, because this is the default Administrator User.');
+    		Ext.Msg.alert( _('ID_ERROR'), _('ID_ADMINISTRATOR_ROLE_CANT_CHANGED');
             return false;
     	}
     }
-    
+
   } else {
     Ext.Msg.alert( _('ID_ERROR'), _('ID_MSG_ERROR_USR_USERNAME'));
     return false;
