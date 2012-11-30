@@ -309,8 +309,8 @@ class Content extends BaseContent
         $this->rowsClustered = 0;
 
         //Creating table CONTENT_BACKUP
-        $oConnection = Propel::getConnection( 'workflow' );
-        $oStatement = $oConnection->prepareStatement( "CREATE TABLE IF NOT EXISTS `CONTENT_BACKUP` (
+        $connection = Propel::getConnection( 'workflow' );
+        $oStatement = $connection->prepareStatement( "CREATE TABLE IF NOT EXISTS `CONTENT_BACKUP` (
             `CON_CATEGORY` VARCHAR(30) default '' NOT NULL,
             `CON_PARENT` VARCHAR(32) default '' NOT NULL,
             `CON_ID` VARCHAR(100) default '' NOT NULL,
@@ -320,10 +320,13 @@ class Content extends BaseContent
         )Engine=MyISAM  DEFAULT CHARSET='utf8' COMMENT='Table for add content';" );
         $oStatement->executeQuery();
 
-        $con = Propel::getConnection( 'workflow' );
+        //set interactive timeout
+        $oStatement = $connection->prepareStatement( "set global interactive_timeout = 100;" );
+        $oStatement->executeQuery();
+
         $sql = " SELECT DISTINCT CON_LANG
                 FROM CONTENT ";
-        $stmt = $con->createStatement();
+        $stmt = $connection->createStatement();
         $rs = $stmt->executeQuery( $sql, ResultSet::FETCHMODE_ASSOC );
         while ($rs->next()) {
             $row = $rs->getRow();
@@ -341,7 +344,7 @@ class Content extends BaseContent
         $workSpace = new workspaceTools( $workSpace );
         $workSpace->getDBInfo();
 
-        $link = mysql_pconnect( $workSpace->dbHost, $workSpace->dbUser, $workSpace->dbPass ) or die( "Could not connect" );
+        $link = mysql_pconnect( $workSpace->dbHost, $workSpace->dbUser, $workSpace->dbPass, MYSQL_CLIENT_INTERACTIVE ) or die( "Could not connect" );
 
         mysql_select_db( $workSpace->dbName, $link );
         mysql_query( "SET NAMES 'utf8';" );
@@ -385,7 +388,7 @@ class Content extends BaseContent
         }
         mysql_free_result( $result );
         $total = $this->rowsProcessed + $this->rowsInserted;
-        $connection = Propel::getConnection( 'workflow' );
+
         $statement = $connection->prepareStatement( "INSERT INTO CONTENT
             SELECT CON_CATEGORY, CON_PARENT, CON_ID , CON_LANG, CON_VALUE
             FROM CONTENT_BACKUP" );
