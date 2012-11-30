@@ -526,6 +526,9 @@ Bootstrap::registerClass('DynaformPeer',       PATH_HOME . "engine/classes/model
 Bootstrap::registerClass('BaseEvent',          PATH_HOME . "engine/classes/model/om/BaseEvent.php");
 Bootstrap::registerClass('Event',              PATH_HOME . "engine/classes/model/Event.php");
 
+Bootstrap::registerClass('BaseEventPeer',      PATH_HOME . "engine/classes/model/om/BaseEventPeer.php");
+Bootstrap::registerClass('EventPeer',          PATH_HOME . "engine/classes/model/EventPeer.php");
+
 Bootstrap::registerClass('BaseFields',         PATH_HOME . "engine/classes/model/om/BaseFields.php");
 Bootstrap::registerClass('Fields',             PATH_HOME . "engine/classes/model/Fields.php");
 
