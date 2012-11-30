@@ -25,11 +25,13 @@ if (($_REQUEST['action']) != 'rename') {
     $newname = $_REQUEST ['newitemname'];
     $oUid = $_REQUEST ['selitems'];
 
-    if ((isset($oUid))) {
+    if (isset($oUid[0])) {
         $uid = $oUid[0];
+    } else {
+        $uid = $oUid;
     }
 
-    $functionName ($oldname, $newname, $uid);
+    renameFolder ($oldname, $newname, $uid);
 }
 
 /////////////////////////////////////////////
