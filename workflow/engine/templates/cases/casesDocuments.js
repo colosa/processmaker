@@ -73,6 +73,7 @@ streamFilefromPM=function(fileStream) {
 };
 
 var swHandleCallbackRootNodeLoad = 0;
+var dirTreeEd;
 
 function rootNodeCreate()
 {
@@ -298,7 +299,6 @@ function openActionDialog( caller, action ) {
     case 'edit':
     case 'newFolder':
     case 'moveAction':
-    case 'rename':
     case 'search':
     case 'uploadDocument':
       requestParams = getRequestParams();
@@ -485,6 +485,9 @@ function openActionDialog( caller, action ) {
 			 * messageText="Downloading file "+fileName; statusBarMessage(
 			 * messageText, false, true ); }else{ alert("sadasd"); }
 			 */
+      break;
+    case 'rename':
+      dirTreeEd.triggerEdit(Ext.getCmp('dirTreePanel').getSelectionModel().getSelectedNode());
       break;
   }
 }
@@ -1441,7 +1444,7 @@ function dirContext(node, e) {
   // Unselect all files in the grid
   ext_itemgrid.getSelectionModel().clearSelections();
 
-  dirCtxMenu.items.get('dirCtxMenu_rename')[node.attributes.is_deletable ? 'disable': 'disable']();
+  dirCtxMenu.items.get('dirCtxMenu_rename')[node.attributes.is_deletable ? 'enable': 'disable']();
 //  dirCtxMenu.items.get('dirCtxMenu_remove')[node.attributes.is_deletable ? 'enable':'disable']();
   dirCtxMenu.items.get('dirCtxMenu_remove')[permitodelete==1 && node.attributes.id!='root' ? 'show':'hide']();
 
@@ -1502,8 +1505,6 @@ var dirCtxMenu = new Ext.menu.Menu(
   {
     id : 'dirCtxMenu_rename',
     iconCls: 'button_menu_ext ss_sprite ss_textfield_rename',// icon
-    // :
-    hidden: true,															// '/images/documents/_fonts.png',
     text : TRANSLATIONS.ID_RENAME,
     handler : function() {
       dirCtxMenu.hide();
@@ -1898,7 +1899,7 @@ var documentsTab = {
 
         // create the editor for the directory
         // tree
-        var dirTreeEd = new Ext.tree.TreeEditor(
+        dirTreeEd = new Ext.tree.TreeEditor(
           dirTree,
           {
             allowBlank : false,
