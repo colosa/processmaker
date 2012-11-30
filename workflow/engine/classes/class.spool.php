@@ -86,8 +86,8 @@ class spoolRun
         $this->ExceptionCode['WARNING'] = 2;
         $this->ExceptionCode['NOTICE'] = 3;
 
-        $this->longMailEreg = '/(.*)(<([\w\-\.]+@[\w\-_\.]+\.\w{2,3})+>)/';
-        $this->mailEreg = '/^([\w\-_\.]+@[\w\-_\.]+\.\w{2,3}+)$/';
+        $this->longMailEreg = '/(.*)(<([\w\-\.]+@[\w\-_\.]+\.\w{2,5})+>)/';
+        $this->mailEreg = '/^([\w\-_\.]+@[\w\-_\.]+\.\w{2,5}+)$/';
     }
 
     /**
