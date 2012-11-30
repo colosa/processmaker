@@ -88,8 +88,18 @@ class Tasks
     {
         try {
             $aTasks = array ();
+            $sDelimiter = DBAdapter::getStringDelimiter();
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( TaskPeer::PRO_UID, $sProUid );
+            $aConditions = array ();
+            $aConditions[] = array (TaskPeer::TAS_UID,ContentPeer::CON_ID
+            );
+            $aConditions[] = array (ContentPeer::CON_CATEGORY,$sDelimiter . 'TAS_TITLE' . $sDelimiter
+            );
+            $aConditions[] = array (ContentPeer::CON_LANG,$sDelimiter . SYS_LANG . $sDelimiter
+            );
+            $oCriteria->addJoinMC( $aConditions, Criteria::LEFT_JOIN );
+            $oCriteria->addAscendingOrderByColumn( ContentPeer::CON_VALUE );
             $oDataset = TaskPeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
