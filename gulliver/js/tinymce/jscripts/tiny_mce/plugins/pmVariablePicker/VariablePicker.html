@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	
+</head>
+
+<form action="uploader.php?'.$_SERVER["QUERY_STRING"].'&q=upload" method="post" enctype="multipart/form-data" onsubmit="">'
+    <div id="d_variables">
+        <table width="80%">
+            <tr>
+                <td width="33%"><label for="type_label">Type Variable</label></td>
+                <td width="33%"><label for="prefix_label">Prefix</label></td>
+                <td width="33%"><label for="variables_label">Variables</label></td>
+            </tr>
+
+            <tr>
+	            <td width="33%">
+		            <select name="type_variables">
+			            <option value="all">All Variables</option>
+			            <option value="system">System Variables</option>
+			            <option value="process">Process Variables</option>
+		            </select>
+	            </td>
+                <td width="33%">
+	                <select name="prefix">
+		                <option value="quotes">@#</option>
+		                <option value="float">@@</option>
+		                <option value="encoding">@?</option>
+	                </select> &nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                <td width="33%">
+	                <select name="variables">
+		                <option value="quotes">@@SYS_SYS</option>
+		                <option value="float">@@SYS_LANG</option>
+		                <option value="encoding">@@SYS_SKIN</option>
+	                </select>
+                </td>
+           </tr>
+        </table>
+    </div>
+
+    <br>
+    
+    <div id="desc_variables">
+        <table border="1" width="100%">
+            <tr width="40%">
+                <td>Result</td>
+                <td>@#SYS_LANG</td>
+            </tr>
+            <tr width="60%">
+                <td>Description</td>
+                <td>Description @#SYS_LANG</td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+    
+    <div id="desc_variables">
+        <label for="desc_prefix">* @# Replace de value in quotes</label>
+    </div>
+</form>
+
+</html>

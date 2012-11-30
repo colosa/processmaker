@@ -30,6 +30,7 @@ global $_DBArray;
 if (! isset( $_DBArray )) {
     $_DBArray = array ();
 }
+
 G::LoadClass( 'dynaformEditor' );
 $oDynaformEditorAjax = new dynaformEditorAjax( $_POST );
 
