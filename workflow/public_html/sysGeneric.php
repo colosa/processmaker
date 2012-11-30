@@ -175,15 +175,10 @@ if (file_exists( FILE_PATHS_INSTALLED )) {
     // smarty constants
     define( 'PATH_SMARTY_C', PATH_C . 'smarty' . PATH_SEP . 'c' );
     define( 'PATH_SMARTY_CACHE', PATH_C . 'smarty' . PATH_SEP . 'cache' );
-/* To do:
-    if (! is_dir( PATH_SMARTY_C )) {
-        G::mk_dir( PATH_SMARTY_C );
-    }
-
-    if (! is_dir( PATH_SMARTY_CACHE )) {
-        G::mk_dir( PATH_SMARTY_CACHE );
-    }
-    */
+    
+    /* TO DO: put these line in other part of code*/
+    Bootstrap::verifyPath ( PATH_SMARTY_C,     true );
+    Bootstrap::verifyPath ( PATH_SMARTY_CACHE, true );
 }
 
 // set include path
