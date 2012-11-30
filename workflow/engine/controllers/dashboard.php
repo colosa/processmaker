@@ -26,10 +26,109 @@ class Dashboard extends Controller
     public function index ($httpData)
     {
         try {
-            $this->setJSVar( 'dashletsInstances', $this->getDashletsInstancesForCurrentUser() );
+            $dashletsExist = $this->getDashletsInstancesForCurrentUser();
+            $dashletsHide  = array();
+            $dashletColumns = 3;
+
+            G::LoadClass( 'configuration' );
+            $oConfiguration = new Configurations();
+            $aConfiguration = $oConfiguration->load('Dashboard', '', '', $_SESSION['USER_LOGGED']);
+            if (is_array($aConfiguration) && count($aConfiguration) != 0) {
+                if (isset($aConfiguration["COLUMNS"])) {
+                    $dashletColumns = $aConfiguration["COLUMNS"];
+                }
+
+                if (isset($aConfiguration["ORDER"])) {
+
+                    $listDashletAux = array();
+                    $listDashletAuxShow = array();
+                    foreach ($dashletsExist as $key => $value) {
+                        $listDashletAux[$value['DAS_INS_UID']] = $key;
+                    }
+                    
+                    $dashletsShow['0'] = array();
+                    foreach ($aConfiguration['ORDER']['0'] as $value) {
+                        if (isset($listDashletAux[$value])) {
+                            $listDashletAuxShow[] = $value;
+                            $dashletsShow['0'][] = $dashletsExist[$listDashletAux[$value]];
+                        }
+                    }
+
+                    $dashletsShow['1'] = array();
+                    foreach ($aConfiguration['ORDER']['1'] as $value) {
+                        if (isset($listDashletAux[$value])) {
+                            $listDashletAuxShow[] = $value;
+                            $dashletsShow['1'][] = $dashletsExist[$listDashletAux[$value]];
+                        }
+                    }
+
+                    $dashletsShow['2'] = array();
+                    foreach ($aConfiguration['ORDER']['2'] as $value) {
+                        if (isset($listDashletAux[$value])) {
+                            $listDashletAuxShow[] = $value;
+                            $dashletsShow['2'][] = $dashletsExist[$listDashletAux[$value]];
+                        }
+                    }
+                } else {
+                    $col = 0;
+                    foreach ($dashletsExist as $value) {
+                        $dashletsShow[$col][] = $value;
+                        $col++;
+                        if ($col == 3) {
+                            $col = 0;
+                        }
+                    }
+                }
+            } else {
+                $col = 0;
+                foreach ($dashletsExist as $value) {
+                    $dashletsShow[$col][] = $value;
+                    $col++;
+                    if ($col == 3) {
+                        $col = 0;
+                    }
+                }
+            }
+
+            $this->setJSVar( 'dashletsAll', $dashletsExist);
+            $this->setJSVar( 'dashletsInstances', $dashletsShow);
+            $this->setJSVar( 'dashletsColumns', $dashletColumns);
             $this->includeExtJS( 'dashboard/index' );
             $this->includeExtJSLib( 'ux/portal' );
             G::RenderPage( 'publish', 'extJs' );
+        } catch (Exception $error) {
+            //ToDo: Display a error message
+        }
+    }
+
+    public function saveOrderDashlet ($data)
+    {
+        $this->setResponseType( 'json' );
+        try {
+            $orderDashlet[0] = Bootstrap::json_encode($data->positionCol0);
+            $orderDashlet[1] = Bootstrap::json_encode($data->positionCol1);
+            $orderDashlet[2] = Bootstrap::json_encode($data->positionCol2);
+
+            G::loadClass('configuration');
+            $oConfiguration = new Configurations();
+            $aConfiguration = $oConfiguration->load('Dashboard', '', '', $_SESSION['USER_LOGGED']);
+            $dataDashboard = array();
+            if (isset($aConfiguration["CFG_VALUE"])) {
+                $dataDashboard = $aConfiguration["CFG_VALUE"];
+            }
+            $dataNow['ORDER'] = $orderDashlet;
+
+            if (isset($data->columns)) {
+                $dataNow['COLUMNS'] = Bootstrap::json_encode($data->columns);
+            }
+
+            $dataDashboard = array_merge($dataDashboard, $dataNow);
+
+            $oConfiguration->aConfig = $dataDashboard;
+            $oConfiguration->saveConfig('Dashboard', '', '', $_SESSION['USER_LOGGED']);
+
+            $result->success = '1';
+            return $result;
         } catch (Exception $error) {
             //ToDo: Display a error message
         }
