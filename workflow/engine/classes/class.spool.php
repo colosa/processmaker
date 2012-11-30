@@ -138,6 +138,10 @@ class spoolRun
      */
     public function create ($aData)
     {
+        if (is_array($aData['app_msg_attach'])) {
+            $attachment = implode(",", $aData['app_msg_attach']);
+            $aData['app_msg_attach'] = $attachment;
+        }
         $aData['app_msg_show_message'] = (isset($aData['app_msg_show_message'])) ? $aData['app_msg_show_message'] : 1;
         $sUID = $this->db_insert( $aData );
 
@@ -300,7 +304,7 @@ class spoolRun
                     $this->fileData['envelope_to'][] = "$val";
                 }
             }
-        } else if ($text != '') {
+        } elseif ($text != '') {
             $this->fileData['envelope_to'][] = "$text";
         } else {
             $this->fileData['envelope_to'] = Array ();
@@ -315,7 +319,7 @@ class spoolRun
                     $this->fileData['envelope_cc'][] = "$valcc";
                 }
             }
-        } else if ($textcc != '') {
+        } elseif ($textcc != '') {
             $this->fileData['envelope_cc'][] = "$textcc";
         } else {
             $this->fileData['envelope_cc'] = Array ();
@@ -330,7 +334,7 @@ class spoolRun
                     $this->fileData['envelope_bcc'][] = "$valbcc";
                 }
             }
-        } else if ($textbcc != '') {
+        } elseif ($textbcc != '') {
             $this->fileData['envelope_bcc'][] = "$textbcc";
         } else {
             $this->fileData['envelope_bcc'] = Array ();
