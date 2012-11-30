@@ -105,13 +105,14 @@ class Dashboard extends Controller
     {
         $this->setResponseType( 'json' );
         try {
-            $orderDashlet[0] = Bootstrap::json_encode($data->positionCol0);
-            $orderDashlet[1] = Bootstrap::json_encode($data->positionCol1);
-            $orderDashlet[2] = Bootstrap::json_encode($data->positionCol2);
+            $orderDashlet[0] = Bootstrap::json_decode($data->positionCol0);
+            $orderDashlet[1] = Bootstrap::json_decode($data->positionCol1);
+            $orderDashlet[2] = Bootstrap::json_decode($data->positionCol2);
 
             G::loadClass('configuration');
             $oConfiguration = new Configurations();
             $aConfiguration = $oConfiguration->load('Dashboard', '', '', $_SESSION['USER_LOGGED']);
+
             $dataDashboard = array();
             if (isset($aConfiguration["CFG_VALUE"])) {
                 $dataDashboard = $aConfiguration["CFG_VALUE"];
@@ -119,7 +120,7 @@ class Dashboard extends Controller
             $dataNow['ORDER'] = $orderDashlet;
 
             if (isset($data->columns)) {
-                $dataNow['COLUMNS'] = Bootstrap::json_encode($data->columns);
+                $dataNow['COLUMNS'] = Bootstrap::json_decode($data->columns);
             }
 
             $dataDashboard = array_merge($dataDashboard, $dataNow);
