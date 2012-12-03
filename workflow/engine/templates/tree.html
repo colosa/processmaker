@@ -6,7 +6,7 @@
 		<div class="b"></div>
 		<div class="c"></div>
 	</div>
-  <div class="content">  	
+  <div class="content" style= "overflow-y: auto; overflow-x: hidden; height: {$node->height}; ">
   <table id="treeNode[{$node->name}]" cellspacing="0" cellpadding="0" border="0" style="width:{$node->width};">
   <tr {if $node->value==''}style="display:none"{/if}>
   	<td class="a" name="treeNode[plus][{$node->name}]" style="background-color:white;">
