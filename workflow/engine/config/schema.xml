@@ -2045,6 +2045,24 @@
     <column name="LOG_END_DATE" type="TIMESTAMP" required="false"/>
     <column name="LOG_CLIENT_HOSTNAME" type="VARCHAR" size="100" required="true" default=""/>
     <column name="USR_UID" type="VARCHAR" size="32" required="true" default=""/>
+    <index name="indexLoginLog">
+      <index-column name="USR_UID"/>
+      <index-column name="LOG_INIT_DATE"/>
+      <vendor type="mysql">
+        <parameter name="Table" value="LOGIN_LOG"/>
+        <parameter name="Non_unique" value="1"/>
+        <parameter name="Key_name" value="indexLoginLog"/>
+        <parameter name="Seq_in_index" value="1"/>
+        <parameter name="Column_name" value="USR_UID"/>
+        <parameter name="Collation" value="A"/>
+        <parameter name="Cardinality" value=""/>
+        <parameter name="Sub_part" value=""/>
+        <parameter name="Packed" value=""/>
+        <parameter name="Null" value=""/>
+        <parameter name="Index_type" value="BTREE"/>
+        <parameter name="Comment" value=""/>
+      </vendor>
+    </index>
   </table>
   <table name="USERS_PROPERTIES">
     <vendor type="mysql">

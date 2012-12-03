@@ -12,7 +12,7 @@ include_once 'classes/model/OutputDocumentPeer.php';
 /**
  * Base class that represents a row from the 'OUTPUT_DOCUMENT' table.
  *
- *
+ * 
  *
  * @package    workflow.classes.model.om
  */
@@ -163,7 +163,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_uid] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocUid()
@@ -174,7 +174,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [pro_uid] column value.
-     *
+     * 
      * @return     string
      */
     public function getProUid()
@@ -185,7 +185,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_report_generator] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocReportGenerator()
@@ -196,7 +196,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_landscape] column value.
-     *
+     * 
      * @return     int
      */
     public function getOutDocLandscape()
@@ -207,7 +207,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_media] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocMedia()
@@ -218,7 +218,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_left_margin] column value.
-     *
+     * 
      * @return     int
      */
     public function getOutDocLeftMargin()
@@ -229,7 +229,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_right_margin] column value.
-     *
+     * 
      * @return     int
      */
     public function getOutDocRightMargin()
@@ -240,7 +240,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_top_margin] column value.
-     *
+     * 
      * @return     int
      */
     public function getOutDocTopMargin()
@@ -251,7 +251,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_bottom_margin] column value.
-     *
+     * 
      * @return     int
      */
     public function getOutDocBottomMargin()
@@ -262,7 +262,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_generate] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocGenerate()
@@ -273,7 +273,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_type] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocType()
@@ -284,7 +284,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_current_revision] column value.
-     *
+     * 
      * @return     int
      */
     public function getOutDocCurrentRevision()
@@ -295,7 +295,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_field_mapping] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocFieldMapping()
@@ -306,7 +306,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_versioning] column value.
-     *
+     * 
      * @return     int
      */
     public function getOutDocVersioning()
@@ -317,7 +317,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_destination_path] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocDestinationPath()
@@ -328,7 +328,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_tags] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocTags()
@@ -339,7 +339,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_pdf_security_enabled] column value.
-     *
+     * 
      * @return     int
      */
     public function getOutDocPdfSecurityEnabled()
@@ -350,7 +350,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_pdf_security_open_password] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocPdfSecurityOpenPassword()
@@ -361,7 +361,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_pdf_security_owner_password] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocPdfSecurityOwnerPassword()
@@ -372,7 +372,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Get the [out_doc_pdf_security_permissions] column value.
-     *
+     * 
      * @return     string
      */
     public function getOutDocPdfSecurityPermissions()
@@ -383,7 +383,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_uid] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -405,7 +405,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [pro_uid] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -427,7 +427,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_report_generator] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -449,7 +449,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_landscape] column.
-     *
+     * 
      * @param      int $v new value
      * @return     void
      */
@@ -471,7 +471,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_media] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -493,7 +493,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_left_margin] column.
-     *
+     * 
      * @param      int $v new value
      * @return     void
      */
@@ -515,7 +515,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_right_margin] column.
-     *
+     * 
      * @param      int $v new value
      * @return     void
      */
@@ -537,7 +537,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_top_margin] column.
-     *
+     * 
      * @param      int $v new value
      * @return     void
      */
@@ -559,7 +559,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_bottom_margin] column.
-     *
+     * 
      * @param      int $v new value
      * @return     void
      */
@@ -581,7 +581,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_generate] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -603,7 +603,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_type] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -625,7 +625,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_current_revision] column.
-     *
+     * 
      * @param      int $v new value
      * @return     void
      */
@@ -647,7 +647,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_field_mapping] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -669,7 +669,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_versioning] column.
-     *
+     * 
      * @param      int $v new value
      * @return     void
      */
@@ -691,7 +691,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_destination_path] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -713,7 +713,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_tags] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -735,7 +735,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_pdf_security_enabled] column.
-     *
+     * 
      * @param      int $v new value
      * @return     void
      */
@@ -757,7 +757,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_pdf_security_open_password] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -779,7 +779,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_pdf_security_owner_password] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -801,7 +801,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
     /**
      * Set the value of [out_doc_pdf_security_permissions] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -1038,7 +1038,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
      * an aggreagated array of ValidationFailed objects will be returned.
      *
      * @param      array $columns Array of column names to validate.
-     * @return     mixed <code>true</code> if all validations pass;
+     * @return     mixed <code>true</code> if all validations pass; 
                    array of <code>ValidationFailed</code> objects otherwise.
      */
     protected function doValidate($columns = null)
