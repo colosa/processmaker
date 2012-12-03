@@ -4057,10 +4057,12 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
         //$this->defaultValue = G::replaceDataField( $this->defaultValue, $owner->values);
         $id = "form[$this->name]";
 
-        if ($this->renderMode != 'edit' && $value == 'today') {
-            $mask = str_replace( "%", "", $this->mask );
-            $value = date( masktophp($mask) );
-            return $value;
+        if ($this->renderMode == 'edit' && $this->renderMode == 'view') {
+            if ($value == 'today') {
+                $mask = str_replace( "%", "", $this->mask );
+                $value = date( masktophp($mask) );
+                return $value;
+            }
         }
         return $this->__draw_widget( $id, $value, $owner );
     }
@@ -4169,7 +4171,7 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
             $mask = '%Y-%m-%d'; //set default
         }
 
-        if ($this->defaultValue == "today") {
+        if ($this->defaultValue != "") {
             $defaultValue = masktophp( $mask );
         }
 
@@ -4210,15 +4212,8 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
         if (trim( $value ) == '' or $value == null) {
             $value = ''; //date ($tmp);
         } else {
-            switch (strtolower( $value )) {
-                case 'today':
-                    $value = masktophp( $mask ); //   $value = date($tmp);
-                    break;
-                default:
-                    if (! $this->verifyDateFormat( $value )) {
-                        //$value='';
-                        break;
-                    }
+            if ($value != "") {
+                $value = masktophp( $mask );
             }
         }
 
@@ -5472,6 +5467,39 @@ function masktophp ($mask)
     }
     if (preg_match('/S/',$tmp)) {
         $tmp = str_replace("S", "s", $tmp);
+    }
+    if (preg_match('/o/',$tmp)) {
+        $tmp = str_replace("o", "n", $tmp);
+    }
+    if (preg_match('/a/',$tmp)) {
+        $tmp = str_replace("a", "D", $tmp);
+    }
+    if (preg_match('/l/',$tmp)) {
+        $tmp = str_replace("l", "g", $tmp);
+    }
+    if (preg_match('/A/',$tmp)) {
+        $tmp = str_replace("A", "l", $tmp);
+    }
+    if (preg_match('/I/',$tmp)) {
+        $tmp = str_replace("I", "h", $tmp);
+    }
+    if (preg_match('/j/',$tmp)) {
+        $tmp = str_replace("j", "z", $tmp);
+    }
+    if (preg_match('/k/',$tmp)) {
+        $tmp = str_replace("k", "G", $tmp);
+    }
+    if (preg_match('/e/',$tmp)) {
+        $tmp = str_replace("e", "j", $tmp);
+    }
+    if (preg_match('/u/',$tmp)) {
+        $tmp = str_replace("u", "N", $tmp);
+    }
+    if (preg_match('/p/',$tmp)) {
+        $tmp = str_replace("p", "A", $tmp);
+    }
+    if (preg_match('/P/',$tmp)) {
+        $tmp = str_replace("P", "a", $tmp);
     }
     $value = date($tmp);
     return $value;
