@@ -799,6 +799,17 @@ antes funcionaba.
 	height:15px !important;
 }
 
+.ICON_PM_REQUIREMENTS{
+    /*ss_wrench*/
+    background-image: url(/images/icons_silk/sprites.png) !important;
+    background-position:0 -17821px !important
+}
+
+.ICON_PHP_INFO{
+    background-image: url(/images/documents/extension/php.png) !important;
+    width: 16px !important;
+    height: 16px !important;
+}
 
 /* Language Support module styles*/
 .upload-icon {

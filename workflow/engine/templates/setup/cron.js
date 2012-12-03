@@ -434,6 +434,8 @@ cron.application = {
             ],
             bbar: pagingCron,
 
+            border: false,
+
             title: _("ID_CRON_ACTIONS_LOG"),
 
             listeners: {

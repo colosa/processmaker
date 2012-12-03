@@ -5,9 +5,9 @@ G::LoadClass( "configuration" );
 
 global $RBAC;
 
-if ($RBAC->userCanAccess( "PM_SETUP_ADVANCE" ) != 1) {
-    G::SendTemporalMessage( "ID_USER_HAVENT_RIGHTS_PAGE", "error", "labels" );
-    exit( 0 );
+if ($RBAC->userCanAccess("PM_SETUP") != 1) {
+    G::SendTemporalMessage("ID_USER_HAVENT_RIGHTS_PAGE", "error", "labels");
+    exit(0);
 }
 
 //Cron status
