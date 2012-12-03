@@ -220,8 +220,8 @@ class Bootstrap
 		}
 
 		$smarty = new Smarty ();
-		$smarty->compile_dir = g::sys_get_temp_dir ();
-		$smarty->cache_dir = g::sys_get_temp_dir ();
+		$smarty->compile_dir = Bootstrap::sys_get_temp_dir ();
+		$smarty->cache_dir = Bootstrap::sys_get_temp_dir ();
 		$smarty->config_dir = PATH_THIRDPARTY . 'smarty/configs';
 
 		$smarty->template_dir = PATH_TEMPLATE;
@@ -888,47 +888,37 @@ class Bootstrap
 	 * @return string
 	 */
 	public function streamJSTranslationFile($filename, $locale = 'en') {
-		header ( 'Content-Type: text/javascript' );
+        $defaultTranslations = Array ();
+        $foreignTranslations = Array ();
 
-		if (! Bootstrap::LoadTranslationObject ( $locale )) {
-			header ( 'Cache-Control: no-cache' );
-			header ( 'Pragma: no-cache' );
-			return;
-		}
+        //if the default translations table doesn't exist we can't proceed
+        if (! is_file( PATH_LANGUAGECONT . 'translation.en' )) {
+            return ;
+        }
+        //load the translations table
+        require_once (PATH_LANGUAGECONT . 'translation.en');
+        $defaultTranslations = $translation;
 
-		global $translation;
+        //if some foreign language was requested and its translation file exists
+        if ($locale != 'en' && file_exists( PATH_LANGUAGECONT . 'translation.' . $locale )) {
+            require_once (PATH_LANGUAGECONT . 'translation.' . $locale); //load the foreign translations table
+            $foreignTranslations = $translation;
+        }
 
-		// if userAgent (BROWSER) is MSIE we need special headers to avoid MSIE
-		// behaivor.
-		$userAgent = strtolower ( $_SERVER ['HTTP_USER_AGENT'] );
-		if (file_exists ( $filename )) {
-			$mtime = filemtime ( $filename );
-		} else {
-			$mtime = date ( 'U' );
-	 }
+        if (defined( "SHOW_UNTRANSLATED_AS_TAG" ) && SHOW_UNTRANSLATED_AS_TAG != 0) {    
+            $translation = $foreignTranslations;
+        } else {
+            $translation = array_merge( $defaultTranslations, $foreignTranslations );
+        }
 
-	 $gmt_mtime = gmdate ( "D, d M Y H:i:s", $mtime ) . " GMT";
-	 header ( 'Pragma: cache' );
-	 header ( 'ETag: "' . md5 ( $mtime . $filename ) . '"' );
-	 header ( "Last-Modified: " . $gmt_mtime );
-	 header ( 'Cache-Control: public' );
-	 header ( "Expires: " . gmdate ( "D, d M Y H:i:s", time () + 30 * 60 * 60 * 24 ) . " GMT" ); // 1
-	 // month
-	 if (isset ( $_SERVER ['HTTP_IF_MODIFIED_SINCE'] )) {
-	 	if ($_SERVER ['HTTP_IF_MODIFIED_SINCE'] == $gmt_mtime) {
-	 		header ( 'HTTP/1.1 304 Not Modified' );
-	 		exit ();
-	 	}
-	 }
+        $calendarJs = '';
+        $calendarJsFile = PATH_GULLIVER_HOME . "js/widgets/js-calendar/lang/" . $locale .".js";
+        if (! file_exists($calendarJsFile)) {
+            $calendarJsFile = PATH_GULLIVER_HOME . "js/widgets/js-calendar/lang/en.js";
+        }
+        $calendarJs = file_get_contents($calendarJsFile) . "\n";
 
-	 if (isset ( $_SERVER ['HTTP_IF_NONE_MATCH'] )) {
-	 	if (str_replace ( '"', '', stripslashes ( $_SERVER ['HTTP_IF_NONE_MATCH'] ) ) == md5 ( $mtime . $filename )) {
-	 		header ( "HTTP/1.1 304 Not Modified" );
-	 		exit ();
-	 	}
-	 }
-
-	 return 'var TRANSLATIONS = ' . Bootstrap::json_encode ( $translation ) . ";\n";
+        return $calendarJs . 'var TRANSLATIONS = ' . Bootstrap::json_encode( $translation ) . ';' ;
 	}
 
 	/**
