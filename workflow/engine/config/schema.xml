@@ -77,6 +77,15 @@
         <parameter name="Seq_in_index" value="1"/>
       </vendor>
     </index>
+    <index name="indexAppCreateDate">
+      <index-column name="APP_CREATE_DATE"/>
+      <vendor type="mysql">
+        <parameter name="Table" value="APPLICATION"/>
+        <parameter name="Non_unique" value="1"/>
+        <parameter name="Key_name" value="indexAppCreateDate"/>
+        <parameter name="Seq_in_index" value="1"/>
+      </vendor>
+    </index>
   </table>
   <table name="APP_DELEGATION">
     <vendor type="mysql">

@@ -31,7 +31,8 @@ CREATE TABLE `APPLICATION`
 	PRIMARY KEY (`APP_UID`),
 	KEY `indexApp`(`PRO_UID`, `APP_STATUS`, `APP_UID`),
 	KEY `indexAppNumber`(`APP_NUMBER`),
-	KEY `indexAppStatus`(`APP_STATUS`)
+	KEY `indexAppStatus`(`APP_STATUS`),
+	KEY `indexAppCreateDate`(`APP_CREATE_DATE`)
 )ENGINE=MyISAM  DEFAULT CHARSET='utf8' COMMENT='The application';
 #-----------------------------------------------------------------------------
 #-- APP_DELEGATION
@@ -91,8 +92,7 @@ CREATE TABLE `APP_DOCUMENT`
 	`APP_DOC_STATUS_DATE` DATETIME,
 	`APP_DOC_FIELDNAME` VARCHAR(150),
 	PRIMARY KEY (`APP_DOC_UID`,`DOC_VERSION`),
-    
-    KEY `indexAppDocument`(`FOLDER_UID`, `APP_DOC_UID`)
+	KEY `indexAppDocument`(`FOLDER_UID`, `APP_DOC_UID`)
 )ENGINE=MyISAM  DEFAULT CHARSET='utf8' COMMENT='Documents in an Application';
 #-----------------------------------------------------------------------------
 #-- APP_MESSAGE
@@ -934,7 +934,8 @@ CREATE TABLE `LOGIN_LOG`
 	`LOG_END_DATE` DATETIME,
 	`LOG_CLIENT_HOSTNAME` VARCHAR(100) default '' NOT NULL,
 	`USR_UID` VARCHAR(32) default '' NOT NULL,
-	PRIMARY KEY (`LOG_UID`)
+	PRIMARY KEY (`LOG_UID`),
+	KEY `indexLoginLog`(`USR_UID`, `LOG_INIT_DATE`)
 )ENGINE=MyISAM  DEFAULT CHARSET='utf8';
 #-----------------------------------------------------------------------------
 #-- USERS_PROPERTIES
