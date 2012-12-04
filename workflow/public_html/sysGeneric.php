@@ -568,7 +568,7 @@ Bootstrap::registerClass('BaseProcessUser',     PATH_HOME . "engine/classes/mode
 Bootstrap::registerClass('ProcessUser',         PATH_HOME . "engine/classes/model/ProcessUser.php");
 
 Bootstrap::registerClass('BaseProcessUserPeer', PATH_HOME . "engine/classes/model/om/BaseProcessUserPeer.php");
-Bootstrap::registerClass('ProcessUser',         PATH_HOME . "engine/classes/model/ProcessUserPeer.php");
+Bootstrap::registerClass('ProcessUserPeer',     PATH_HOME . "engine/classes/model/ProcessUserPeer.php");
 
 Bootstrap::registerClass('BaseReportTable',     PATH_HOME . "engine/classes/model/om/BaseReportTable.php");
 Bootstrap::registerClass('ReportTable',         PATH_HOME . "engine/classes/model/ReportTable.php");
