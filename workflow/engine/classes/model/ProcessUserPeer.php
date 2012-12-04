@@ -5,10 +5,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseProcessUserPeer.php';
+ // require_once 'classes/model/om/BaseProcessUserPeer.php';
 
   // include object class
-  include_once 'classes/model/ProcessUser.php';
+ // include_once 'classes/model/ProcessUser.php';
 
 
 /**

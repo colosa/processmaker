@@ -5,10 +5,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseEventPeer.php';
+  //require_once 'classes/model/om/BaseEventPeer.php';
 
   // include object class
-  include_once 'classes/model/Event.php';
+  //include_once 'classes/model/Event.php';
 
 
 /**
