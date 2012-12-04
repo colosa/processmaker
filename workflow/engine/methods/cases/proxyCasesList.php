@@ -18,6 +18,7 @@ $dateTo   = isset($_POST["dateTo"])? substr($_POST["dateTo"], 0, 10) : "";
 
 try {
     $result = "";
+    $solrEnabled = false;
 
     $userUid = (isset($_SESSION["USER_LOGGED"]) && $_SESSION["USER_LOGGED"] != "")? $_SESSION["USER_LOGGED"] : null;
     $user = ($user == "CURRENT_USER")? $userUid : $user;
@@ -37,6 +38,18 @@ try {
             $solrConf["solr_instance"]
         );
 
+        if($ApplicationSolrIndex->isSolrEnabled()){
+            //check if there are missing records to reindex and reindex them
+            $ApplicationSolrIndex->synchronizePendingApplications();
+            
+            $solrEnabled = true;
+        }
+        else{
+            $solrEnabled = false;
+        }
+    } 
+
+    if($solrEnabled){
         $data = $ApplicationSolrIndex->getAppGridData(
             $userUid,
             $start,
@@ -54,9 +67,9 @@ try {
             $dir,
             $sort
         );
-
         $result = G::json_encode($data);
-    } else {
+    }
+    else {
         G::LoadClass("applications");
 
         $apps = new Applications();

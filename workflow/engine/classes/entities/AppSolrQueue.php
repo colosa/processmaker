@@ -7,6 +7,8 @@ require_once ('Base.php');
 class Entity_AppSolrQueue extends Entity_Base
 {
   public $appUid = '';
+  public $appChangeDate = '';
+  public $appChangeTrace = '';
   public $appUpdated = 0;
   
   private function __construct()
@@ -28,6 +30,8 @@ class Entity_AppSolrQueue extends Entity_Base
     
     $requiredFields = array (
         "appUid",
+        "appChangeDate",
+        "appChangeTrace",
         "appUpdated" 
     );
     

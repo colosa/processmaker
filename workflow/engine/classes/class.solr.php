@@ -49,11 +49,21 @@ class BpmnEngine_SearchIndexAccess_Solr
    *
    * @return bool
    */
-  public function isEnabled()
+  public function isEnabled($workspace)
   {
-    // verify solr server response
+    $resultServerStatus = false;
 
-    return $this->_solrIsEnabled;
+    if($this->_solrIsEnabled != true)
+      return $resultServerStatus;
+
+    // verify solr server response
+    try{
+      $resultServerStatus = $this->ping($workspace);
+    }catch(Exception $ex){
+      $resultServerStatus = false;    
+    }
+    
+    return $resultServerStatus;
   }
 
   /**
@@ -427,6 +437,56 @@ class BpmnEngine_SearchIndexAccess_Solr
       throw new Exception ("Error getting index fields in Solr." . $solrIntruct . " response error: " . $response . "\n");
     }
     return $responseSolr;
+  }
+  
+  /**
+   * Ping the Solr Server to check his health
+   * 
+   * @param string $workspace
+   *          Solr instance name
+   * @throws Exception
+   * @return void mixed of field names
+   */
+  public function ping($workspace)
+  {
+    if (! $this->_solrIsEnabled)
+      return;
+    
+    $solrIntruct = '';
+    // get configuration information in base to workspace parameter
+    $solrIntruct = (substr ($this->_solrHost, - 1) == "/") ? $this->_solrHost : $this->_solrHost . "/";
+    $solrIntruct .= $workspace;
+    $solrIntruct .= "/admin/ping?wt=json";
+    
+    $handler = curl_init ($solrIntruct);
+    curl_setopt ($handler, CURLOPT_RETURNTRANSFER, true);
+
+    //Apply proxy settings
+    $sysConf = System::getSystemConfiguration();
+    if ($sysConf['proxy_host'] != '') {
+      curl_setopt($handler, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+      if ($sysConf['proxy_port'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+      }
+      if ($sysConf['proxy_user'] != '') {
+        curl_setopt($handler, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+      }
+      curl_setopt($handler, CURLOPT_HTTPHEADER, array('Expect:'));
+    }
+
+    $response = curl_exec ($handler);
+    curl_close ($handler);
+
+    //there's no response
+    if(!$response)
+      return false;
+
+    // decode
+    $responseSolr = G::json_decode ($response);
+    if ($responseSolr->responseHeader->status != "OK") {
+      throw new Exception ("Error pinging Solr server." . $solrIntruct . " response error: " . $response . "\n");
+    }
+    return true;
   }
 
   /**

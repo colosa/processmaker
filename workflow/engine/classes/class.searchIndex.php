@@ -62,13 +62,13 @@ class BpmnEngine_Services_SearchIndex
    * @param
    *          [out] bool true if index service is enabled false in other case
    */
-  public function isEnabled()
+  public function isEnabled($workspace)
   {
     // require_once (ROOT_PATH .
     // '/businessLogic/modules/SearchIndexAccess/Solr.php');
     require_once ('class.solr.php');
     $solr = new BpmnEngine_SearchIndexAccess_Solr ($this->_solrIsEnabled, $this->_solrHost);
-    return $solr->isEnabled ();
+    return $solr->isEnabled ($workspace);
   }
   
   /**
@@ -404,10 +404,10 @@ class BpmnEngine_Services_SearchIndex
         }
         else {
           if (isset ($doc->$columnName)) {
-            $data ['aaData'] [$i] [] = $doc->$columnName;
+            $data ['aaData'] [$i] [$columnName] = $doc->$columnName;
           }
           else {
-            $data ['aaData'] [$i] [] = '';
+            $data ['aaData'] [$i] [$columnName] = '';
           }
         }
       }
