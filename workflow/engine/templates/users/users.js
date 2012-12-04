@@ -1046,7 +1046,7 @@ function saveUser()
 
     if (USR_UID == '00000000000000000000000000000001') {
     	if (Ext.getCmp('USR_ROLE').getValue() != 'PROCESSMAKER_ADMIN') {
-    		Ext.Msg.alert( _('ID_ERROR'), _('ID_ADMINISTRATOR_ROLE_CANT_CHANGED');
+    		Ext.Msg.alert( _('ID_ERROR'), _('ID_ADMINISTRATOR_ROLE_CANT_CHANGED'));
             return false;
     	}
     }
