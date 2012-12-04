@@ -243,6 +243,7 @@ var dynaformEditor={
             return false;
         }
         if (res==0) {
+            document.getElementById('_dynaformsList_').options[document.getElementById('_dynaformsList_').selectedIndex].text = getField('DYN_TITLE', 'dynaforms_Properties').value;
             alert(G_STRINGS.ID_SAVED);
         } else {
             if (typeof(res.innerHTML) == 'undefined') {
@@ -291,14 +292,14 @@ var dynaformEditor={
     document.getElementById('importAjax').style.display = 'none';
     panelImportDyna.addContent(oRPC.xmlhttp.responseText);
   },
-  import:function(uidDynaSelect){
+  importation:function(uidDynaSelect){
     document.getElementById('importAjax').style.display = 'block';
     document.getElementById('importForm').style.display = 'none';
     var oRPC = new leimnud.module.rpc.xmlhttp({
       url   : '../dynaforms/fieldsHandlerAjax',
       async : false,
       method: 'POST',
-      args  : 'request=import' + '&DYN_UID=' + this.dynUid + '&FILE=' + uidDynaSelect
+      args  : 'request=importation' + '&DYN_UID=' + this.dynUid + '&FILE=' + uidDynaSelect
     });
     oRPC.make();
     resp = oRPC.xmlhttp.responseText;
@@ -605,7 +606,7 @@ var dynaformEditor={
     delete myScripts;
   },
   refresh_htmlcode:function()
-  {    
+  {
     var dynaformEditorHTML = this.views["htmlcode"];
     if (this.htmlEditorLoaded)
     {

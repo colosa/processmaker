@@ -123,7 +123,7 @@ switch ($request) {
         $oCriteria->add( 'C_PROC.CON_CATEGORY', 'PRO_TITLE' );
 
         $oCriteria->add( DynaformPeer::DYN_UID, $uidDynafom, Criteria::NOT_EQUAL);
-        
+
         $oCriteria->addAscendingOrderByColumn ('PROC_NAME');
         $oCriteria->addAscendingOrderByColumn ('DYNA_NAME');
         $oDataset = DynaformPeer::doSelectRS( $oCriteria );
@@ -166,7 +166,7 @@ switch ($request) {
                         </tr>
                         <tr>
                             <td align="center" colspan="2" class="FormButton">
-                                <input type="button" onclick="dynaformEditor.import(document.getElementById(&#39;form[IMPORT_DYNA]&#39;).value);" value="' . G::LoadTranslation('ID_IMPORT') . '" class="module_app_button___gray " style=""> &nbsp;
+                                <input type="button" onclick="dynaformEditor.importation(document.getElementById(&#39;form[IMPORT_DYNA]&#39;).value);" value="' . G::LoadTranslation('ID_IMPORT') . '" class="module_app_button___gray " style=""> &nbsp;
                                 <input type="button" onclick="panelImportDyna.remove();" value="' . G::LoadTranslation('ID_CANCEL') . '" class="module_app_button___gray " style="">
                             </td>
                         </tr>
@@ -174,7 +174,7 @@ switch ($request) {
                 </table><div>';
         echo $html;
         break;
-    case 'import':
+    case 'importation':
         require_once 'classes/model/Dynaform.php';
         $uidDynafom = $_POST['DYN_UID'];
         $oCriteria = new Criteria( 'workflow' );

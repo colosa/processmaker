@@ -163,7 +163,7 @@ class XmlForm_Field_toolButton extends XmlForm_Field
                     $dataset = DynaformPeer::doSelectRS($criteria);
                     if ($dataset->getRecordCount() > 0) {
                         $html .= '<span style="font-size: 8pt;margin-left: 20px;">' . G::LoadTranslation('ID_EDITING_DYNAFORM');
-                        $html .= ': <select onchange="window.location = \'dynaforms_Editor?PRO_UID=' . $this->owner->values['PRO_UID'];
+                        $html .= ': <select id="_dynaformsList_" onchange="window.location = \'dynaforms_Editor?PRO_UID=' . $this->owner->values['PRO_UID'];
                         $html .= '&DYN_UID=\' + this.value;" class="module_app_input___gray">';
                         $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
                         $dataset->next();
