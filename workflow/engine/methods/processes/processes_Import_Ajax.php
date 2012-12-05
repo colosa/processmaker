@@ -155,8 +155,20 @@ if ($action == "uploadFileNewProcess") {
                 $result->ExistGroupsInDatabase = 0;
             }
         }
-        //!respect of the groups
 
+        //replacing a nonexistent user for the current user
+        $UsrUid = $oData->process['PRO_CREATE_USER'];
+
+        G::LoadClass( 'Users' );
+        $user = new Users();
+        $existUser = $user->userExists( $UsrUid );
+        if ($existUser == false)
+        {
+            $UsrUid = $_SESSION['USER_LOGGED'];
+            $oData->process['PRO_CREATE_USER'] = $UsrUid;
+        }
+
+        //!respect of the groups
 
         if ($result->ExistProcessInDatabase == 0 && $result->ExistGroupsInDatabase == 0) {
             if ($processFileType == "pm") {
