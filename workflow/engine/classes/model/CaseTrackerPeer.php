@@ -5,10 +5,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseCaseTrackerPeer.php';
+  //require_once 'classes/model/om/BaseCaseTrackerPeer.php';
 
   // include object class
-  include_once 'classes/model/CaseTracker.php';
+  //include_once 'classes/model/CaseTracker.php';
 
 
 /**

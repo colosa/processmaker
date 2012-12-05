@@ -504,6 +504,9 @@ Bootstrap::registerClass('CaseScheduler',       PATH_HOME . "engine/classes/mode
 Bootstrap::registerClass('BaseCaseTracker',     PATH_HOME . "engine/classes/model/om/BaseCaseTracker.php");
 Bootstrap::registerClass('CaseTracker',         PATH_HOME . "engine/classes/model/CaseTracker.php");
 
+Bootstrap::registerClass('BaseCaseTrackerPeer', PATH_HOME . "engine/classes/model/om/BaseCaseTrackerPeer.php");
+Bootstrap::registerClass('CaseTrackerPeer',     PATH_HOME . "engine/classes/model/CaseTrackerPeer.php");
+
 Bootstrap::registerClass('BaseCaseTrackerObject',PATH_HOME . "engine/classes/model/om/BaseCaseTrackerObject.php");
 Bootstrap::registerClass('CaseTrackerObject',    PATH_HOME . "engine/classes/model/CaseTrackerObject.php");
 
