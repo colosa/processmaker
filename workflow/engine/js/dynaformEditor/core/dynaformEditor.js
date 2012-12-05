@@ -269,7 +269,7 @@ var dynaformEditor={
     panelImportDyna = new leimnud.module.panel();
     panelImportDyna.options={
       limit    : true,
-      size     : {w:410,h:160},
+      size     : {w:650,h:160},
       position : {x:0,y:0,center:true},
       title    : '',
       theme    : 'processmaker',
