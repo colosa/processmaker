@@ -166,7 +166,7 @@ switch ($request) {
                         </tr>
                         <tr>
                             <td align="center" colspan="2" class="FormButton">
-                                <input type="button" onclick="dynaformEditor.importation(document.getElementById(&#39;form[IMPORT_DYNA]&#39;).value);" value="' . G::LoadTranslation('ID_IMPORT') . '" class="module_app_button___gray " style=""> &nbsp;
+                                <input type="button" onclick="if (confirm(&#39;' . G::LoadTranslation('ID_CONFIRM_IMPORT_DYNAFORM') . '&#39;)) { dynaformEditor.importation(document.getElementById(&#39;form[IMPORT_DYNA]&#39;).value); }" value="' . G::LoadTranslation('ID_IMPORT') . '" class="module_app_button___gray " style=""> &nbsp;
                                 <input type="button" onclick="panelImportDyna.remove();" value="' . G::LoadTranslation('ID_CANCEL') . '" class="module_app_button___gray " style="">
                             </td>
                         </tr>
