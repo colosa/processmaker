@@ -69,6 +69,17 @@ class Dashboard extends Controller
                             $dashletsShow['2'][] = $dashletsExist[$listDashletAux[$value]];
                         }
                     }
+
+                    $orderCol = 0;
+                    foreach ($listDashletAux as $key => $value) {
+                        if (!(in_array($key, $listDashletAuxShow))) {
+                            $dashletsShow[$orderCol][] = $dashletsExist[$value];
+                            $orderCol++;
+                            if ($orderCol == 3) {
+                                $orderCol = 0;
+                            }
+                        }
+                    }
                 } else {
                     $col = 0;
                     foreach ($dashletsExist as $value) {
