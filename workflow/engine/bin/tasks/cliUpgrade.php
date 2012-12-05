@@ -96,7 +96,8 @@ function run_upgrade($command, $args)
     }
     CLI::logging("Clearing cache...\n");
     if (defined('PATH_C')) {
-        rm_dir(PATH_C, true);
+        G::rm_dir(PATH_C);
+        mkdir(PATH_C, 0777, true);
     }
     $workspaces = get_workspaces_from_args($command);
     $count = count($workspaces);
