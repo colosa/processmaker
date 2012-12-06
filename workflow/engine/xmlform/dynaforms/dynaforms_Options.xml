@@ -75,7 +75,6 @@
   }
 
   function dynaformSave ( form, bOpen ) {
-  alert('guardando');
   var nameDynaForm = getField('DYN_TITLE').value;
   var proUid = getField('PRO_UID').value;
    
