@@ -26,7 +26,7 @@ $timeunit = isset( $_GET['t'] ) ? $_GET['t'] : 'Days';
 $timeunit = ucfirst( strtolower( $timeunit ) );
 
 //estimated
-$estimated = abs( isset( $_GET['e'] ) ? (($timeunit == 'Hours') ? round( $_GET['e'] / 24, 2 ) : $_GET['e']) : '1' );
+$estimated = abs( isset( $_GET['e'] ) ? (($timeunit == 'Hours') ? round( $_GET['e'] / 24, 5 ) : $_GET['e']) : '1' );
 
 //when
 $when = isset( $_GET['w'] ) ? $_GET['w'] : '0';
