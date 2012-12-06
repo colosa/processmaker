@@ -12,7 +12,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. BaseCaseTrackerObjectPeerSee the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
@@ -510,6 +510,9 @@ Bootstrap::registerClass('CaseTrackerPeer',     PATH_HOME . "engine/classes/mode
 
 Bootstrap::registerClass('BaseCaseTrackerObject',PATH_HOME . "engine/classes/model/om/BaseCaseTrackerObject.php");
 Bootstrap::registerClass('CaseTrackerObject',    PATH_HOME . "engine/classes/model/CaseTrackerObject.php");
+
+Bootstrap::registerClass('BaseCaseTrackerObjectPeer',PATH_HOME . "engine/classes/model/om/BaseCaseTrackerObjectPeer.php");
+Bootstrap::registerClass('CaseTrackerObjectPeer',    PATH_HOME . "engine/classes/model/CaseTrackerObjectPeer.php");
 
 Bootstrap::registerClass('BaseConfiguration',   PATH_HOME . "engine/classes/model/om/BaseConfiguration.php");
 Bootstrap::registerClass('Configuration',       PATH_HOME . "engine/classes/model/Configuration.php");
