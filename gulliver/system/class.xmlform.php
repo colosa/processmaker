@@ -2916,7 +2916,7 @@ class XmlForm_Field_Checkbox extends XmlForm_Field
      */
     public function maskValue ($value, &$owner)
     {
-        return ($value === $this->value) ? $value : $this->falseValue;
+        return ($value === $this->value || $value == 1) ? $this->value : $this->falseValue;
     }
 }
 

@@ -420,7 +420,7 @@ if(method==='POST')objetus.setRequestHeader("Content-Type","application/x-www-fo
 {alert("error"+ss.message);}}
 function ajax_post(ajax_server,parameters,method,callback,asynchronous)
 {var objetus;objetus=get_xmlhttp();var response;try
-{if(typeof(parameters)==='object')parameters=ajax_getForm(parameters);if(!method)method="POST";if(typeof(asynchronous)==='undefined')asynchronous=false;data=parameters;questionMark=(ajax_server.split('?').length>1)?'&':'?';if(method==='GET/POST'){objetus.open('POST',ajax_server+((data.length<1024)?(questionMark+data):''),asynchronous);}else{objetus.open(method,ajax_server+((method==='GET')?questionMark+data:''),asynchronous);}
+{if(typeof(parameters)==='object')parameters=ajax_getForm(parameters);if(!method)method="POST";if(typeof(asynchronous)==='undefined')asynchronous=false;data=parameters;questionMark=(ajax_server.split('?').length>1)?'&':'?';if(method==='POST' || method==='GET/POST'){objetus.open('POST',ajax_server+((data.length<1024)?(questionMark+data):''),asynchronous);}else{objetus.open(method,ajax_server+((method==='GET')?questionMark+data:''),asynchronous);}
 objetus.onreadystatechange=function(){if(objetus.readyState==4)
 {if(objetus.status==200)
 {if(callback)callback(objetus.responseText);}}}
