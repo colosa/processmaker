@@ -113,7 +113,7 @@
       	if (typeof(asynchronous)==='undefined') asynchronous = false;
       	data = parameters;
       	questionMark = (ajax_server.split('?').length > 1 ) ? '&' : '?';
-      	if (method==='GET/POST') {
+      	if ((method==='POST')||(method==='GET/POST')) {
       	  objetus.open( 'POST', ajax_server + ((data.length<1024)?(questionMark+data):''), asynchronous );
       	} else {
       	  objetus.open( method, ajax_server + ((method==='GET')? questionMark+data : '') , asynchronous );
@@ -159,7 +159,11 @@
 	  } else if(thisform.elements[i].type == "textarea") { //Handle textareas
 		  formdata += thisform.elements[i].name + "=" + encodeURIComponent(thisform.elements[i].value);
 	  } else if(thisform.elements[i].type == "checkbox") { //Handle checkbox's
-		  formdata += thisform.elements[i].name + '=' + ((thisform.elements[i].checked)? '1': '0');
+      if (typeof(thisform.elements[i].value) != undefined) {
+        formdata += thisform.elements[i].name + '=' + thisform.elements[i].value;
+      } else {
+        formdata += thisform.elements[i].name + '=' + ((thisform.elements[i].checked)? '1': '0');  
+      }
 	  } else if(thisform.elements[i].type == "radio") { //Handle Radio buttons
 		  if(thisform.elements[i].checked==true){
 			  formdata += thisform.elements[i].name + "=" + thisform.elements[i].value;

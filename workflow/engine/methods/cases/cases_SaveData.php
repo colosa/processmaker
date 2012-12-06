@@ -25,7 +25,6 @@
 
 
 try {
-
     if ($_GET['APP_UID'] !== $_SESSION['APPLICATION']) {
         throw new Exception( G::LoadTranslation( 'ID_INVALID_APPLICATION_ID_MSG', array ('<a href=\'' . $_SERVER['HTTP_REFERER'] . '\'>{1}</a>',G::LoadTranslation( 'ID_REOPEN' )
         ) ) );
