@@ -25,10 +25,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseGroupwfPeer.php';
+  //require_once 'classes/model/om/BaseGroupwfPeer.php';
 
   // include object class
-  include_once 'classes/model/Groupwf.php';
+  //include_once 'classes/model/Groupwf.php';
 
 
 /**

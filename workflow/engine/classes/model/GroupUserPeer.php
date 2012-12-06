@@ -25,10 +25,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseGroupUserPeer.php';
+  //require_once 'classes/model/om/BaseGroupUserPeer.php';
 
   // include object class
-  include_once 'classes/model/GroupUser.php';
+  //include_once 'classes/model/GroupUser.php';
 
 
 /**
