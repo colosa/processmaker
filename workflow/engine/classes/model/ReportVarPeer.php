@@ -5,10 +5,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseReportVarPeer.php';
+  //require_once 'classes/model/om/BaseReportVarPeer.php';
 
   // include object class
-  include_once 'classes/model/ReportVar.php';
+  //include_once 'classes/model/ReportVar.php';
 
 
 /**

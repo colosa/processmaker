@@ -26,6 +26,7 @@
  * bootstrap - ProcessMaker Bootstrap
  * this file is used initialize main variables, redirect and dispatch all requests
  */
+
 // Defining the PATH_SEP constant, he we are defining if the the path separator symbol will be '\\' or '/'
 define( 'PATH_SEP', '/' );
 
@@ -579,6 +580,9 @@ Bootstrap::registerClass('ReportTablePeer',     PATH_HOME . "engine/classes/mode
 
 Bootstrap::registerClass('BaseReportVar',       PATH_HOME . "engine/classes/model/om/BaseReportVar.php");
 Bootstrap::registerClass('ReportVar',           PATH_HOME . "engine/classes/model/ReportVar.php");
+
+Bootstrap::registerClass('BaseReportVarPeer',   PATH_HOME . "engine/classes/model/om/BaseReportVarPeer.php");
+Bootstrap::registerClass('ReportVarPeer',       PATH_HOME . "engine/classes/model/ReportVarPeer.php");
 
 Bootstrap::registerClass('BaseRoute',           PATH_HOME . "engine/classes/model/om/BaseRoute.php");
 Bootstrap::registerClass('Route',               PATH_HOME . "engine/classes/model/Route.php");
