@@ -47,9 +47,16 @@ switch (basename( $form->template, '.html' )) {
     default:
         $template = 'xmlform';
 }
-$G_PUBLISH->AddContent( 'dynaform', $template, $file, '', array ('__DYNAFORM_OPTIONS' => array ('PREVIOUS_STEP' => '#','NEXT_STEP' => '#','PREVIOUS_ACTION' => 'return false;','NEXT_ACTION' => 'return false;'
-)
-), '' );
+$G_PUBLISH->AddContent(
+    'dynaform',
+    $template,
+    $file,
+    '',
+    array ('__DYNAFORM_OPTIONS' =>
+        array ('PREVIOUS_STEP' => '#','NEXT_STEP' => '#','PREVIOUS_ACTION' => 'return false;','NEXT_ACTION' => 'return false;')
+    ),
+    ''
+);
 G::RenderPage( 'publish', 'raw' );
 
 /* $toolbar = new ToolBar( '/dynaforms/dynaforms_Toolbar' , PATH_XMLFORM, SYS_LANG, false );

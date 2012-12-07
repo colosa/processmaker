@@ -219,6 +219,8 @@ class Publisher
                 $G_FORM->setValues( $Part['Data'] );
 
                 $G_FORM->setValues( array ('G_FORM_ID' => $G_FORM->id ) );
+//G::LoadSystem('CVarDumper');
+//CVarDumper::dump($Part,10, true);
 
                 //Asegurese de que no entre cuando $Part['Template']=="grid"
                 //de hecho soo deberia usarse cuando $Part['Template']=="xmlform"

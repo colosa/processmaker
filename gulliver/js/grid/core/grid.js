@@ -340,6 +340,19 @@ var G_Grid = function(oForm, sGridName){
 
     return newElem;
   };
+  function replaceHtml(el, html) {
+    var oldEl = typeof el === "string" ? document.getElementById(el) : el;
+    /*Pure innerHTML is slightly faster in IE
+        oldEl.innerHTML = html;
+        return oldEl;
+    */
+    var newEl = oldEl.cloneNode(false);
+    newEl.innerHTML = html;
+    oldEl.parentNode.replaceChild(newEl, oldEl);
+    /* Since we just removed the old element from the DOM, return a reference
+    to the new element, which can be used to restore variable references. */
+    return newEl;
+  };
 
   this.addGridRow = function() {
     this.oGrid = document.getElementById(this.sGridName);
@@ -361,7 +374,7 @@ var G_Grid = function(oForm, sGridName){
 
     // Clone Cells Loop
     for (i = 0; i < aCells.length; i++) {
-      oNewRow.appendChild(aCells[i].cloneNode(true)); //Clone First Cell exactly.
+        oNewRow.appendChild(aCells[i].cloneNode(true)); //Clone First Cell exactly.
       switch (i){
         case 0:
           oNewRow.getElementsByTagName('td')[i].innerHTML = currentRow;
@@ -445,6 +458,14 @@ var G_Grid = function(oForm, sGridName){
                         }
                       }
                     }
+                    aObjectsScript = oNewRow.getElementsByTagName('td')[i].getElementsByTagName('script');
+                    sObjectType = this.aFields[i-1].sType;
+                    if (aObjectsScript[0] != 'undefined' && sObjectType == 'suggest') {
+                        sObjScript = aObjectsScript[0].innerHTML;
+                        sNewObjScript = sObjScript.replace(/\[1\]/g, '\[' + currentRow + '\]');
+                        replaceHtml(aObjectsScript[0], sNewObjScript);
+                        eval(aObjectsScript[0].innerHTML);
+                    }
                     break;
                   case 'checkbox': //CHECKBOX
                       var attributeCheckBox = elementAttributesNS(aObjects[n], "");
@@ -456,8 +477,12 @@ var G_Grid = function(oForm, sGridName){
                       }
                       break;
                   case 'hidden': //HIDDEN
-                    if ((attributes.gridtype != 'yesno' && attributes.gridtype != 'dropdown') || typeof attributes.gridtype == 'undefined')
-                      aObjects[n].value = defaultValue;
+                    if ((attributes.gridtype != 'yesno' && attributes.gridtype != 'dropdown') || typeof attributes.gridtype == 'undefined') {
+                        aObjects[n].value = defaultValue;
+                        newID = aObjects[n].id.replace(/\[1\]/g, '\[' + currentRow + '\]');
+                        aObjects[n].id = newID;
+                        aObjects[n].name = newID;
+                    }
                     break;
                   case 'button':
                     if (aObjects[n].onclick){
@@ -685,6 +710,9 @@ var G_Grid = function(oForm, sGridName){
     //Set focus the first element in the grid
     for (var i = 0; i < this.aFields.length; i++) {
       var fieldName = 'form[' + sGridName + '][' + currentRow + '][' + this.aFields[i].sFieldName + ']';
+      if (this.aFields[i].sType == 'suggest' ) {
+          fieldName = 'form[' + sGridName + '][' + currentRow + '][' + this.aFields[i].sFieldName + '_label]';
+      }
       if (this.aFields[i].sType != 'file' && this.aFields[i].sType != 'hidden' && document.getElementById(fieldName).focus) {
         document.getElementById(fieldName).focus();
         break;
@@ -770,6 +798,9 @@ var G_Grid = function(oForm, sGridName){
                         }
                         aObjects1[0].value = aObjects2[0].value;
                         aObjects1[0].className = aObjects2[0].className;
+                        if ( typeof(aObjects1[1]) != 'undefined' && typeof(aObjects2[1]) != 'undefined' ) {
+                            aObjects1[1].value = aObjects2[1].value;
+                        }
                         break;
                 }
             }
