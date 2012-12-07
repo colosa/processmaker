@@ -233,7 +233,7 @@ class Language extends BaseLanguage
 
                     if (count( $match ) < 4) {
                         $near = isset( $rowTranslation['msgid'] ) ? $rowTranslation['msgid'] : (isset( $rowTranslation['msgstr'] ) ? $rowTranslation['msgstr'] : '');
-                        $errorMsg .= "Invalid Translation reference: \"$reference\",  near -> " . $near . "\n";
+                        $errorMsg .= "Invalid Translation reference: \"$reference\",  near -> " . strip_tags($near) . "\n";
                         continue;
                     }
 

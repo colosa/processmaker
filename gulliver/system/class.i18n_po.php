@@ -264,8 +264,17 @@ class i18n_PO
 
         //verifying the headers data
         if (! isset( $this->_meta['X-Poedit-Language'] )) {
-            $this->flagError = true;
-            $errMsg = "X-Poedit-Language meta doesn't exist";
+            if (! isset( $this->_meta['Language'] )) {
+                $this->flagError = true;
+                $errMsg = "X-Poedit-Language and Language meta doesn't exist";
+            } else if ($this->_meta['Language'] == '') {
+                $this->flagError = true;
+                $errMsg = "Language meta is empty";
+            } else {
+                $this->_meta['X-Poedit-Language'] = $this->_meta['Language'];
+                unset($this->_meta['Language']);
+                $this->flagError = false;
+            }
         } else if ($this->_meta['X-Poedit-Language'] == '') {
             $this->flagError = true;
             $errMsg = "X-Poedit-Language meta is empty";
