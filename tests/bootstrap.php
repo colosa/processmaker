@@ -1,7 +1,7 @@
 <?php
 // ProcessMaker Test Unit Bootstrap
-
 // Defining the PATH_SEP constant, he we are defining if the the path separator symbol will be '\\' or '/'
+
 define('PATH_SEP', '/');
 
 if (!defined('__DIR__')) {
@@ -77,6 +77,9 @@ set_include_path(
     PATH_RBAC_CORE . PATH_SEPARATOR .
     get_include_path()
 );
+
+// include bootstrap Class
+require_once (PATH_GULLIVER . PATH_SEP . 'class.bootstrap.php');
   // include Gulliver Class
 //  require_once( PATH_GULLIVER . PATH_SEP . 'class.g.php');
 
@@ -291,9 +294,9 @@ Bootstrap::registerClass('BaseStepTrigger',     PATH_HOME . "engine/classes/mode
 Bootstrap::registerClass('StepTrigger',         PATH_HOME . "engine/classes/model/StepTrigger.php");
 Bootstrap::registerClass('StepTriggerPeer',     PATH_HOME . "engine/classes/model/StepTriggerPeer.php");
 
-Bootstrap::registerClass('SolrRequestData',     PATH_HOME . "engine/classes/entities/SolrRequestData.php");
+Bootstrap::registerClass('Entity_SolrRequestData',   PATH_HOME . "engine/classes/entities/SolrRequestData.php");
 
-Bootstrap::registerClass('SolrUpdateDocument',  PATH_HOME . "engine/classes/entities/SolrUpdateDocument.php");
+Bootstrap::registerClass('Entity_SolrUpdateDocument',PATH_HOME . "engine/classes/entities/SolrUpdateDocument.php");
 
 Bootstrap::registerClass('BaseSwimlanesElements',PATH_HOME . "engine/classes/model/om/BaseSwimlanesElements.php");
 Bootstrap::registerClass('SwimlanesElements',   PATH_HOME . "engine/classes/model/SwimlanesElements.php");
@@ -339,3 +342,4 @@ $config = System::getSystemConfiguration ('', '', SYS_SYS);
 define ('MEMCACHED_ENABLED', $config ['memcached']);
 define ('MEMCACHED_SERVER', $config ['memcached_server']);
 define ('TIME_ZONE', $config ['time_zone']);
+

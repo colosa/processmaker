@@ -44,7 +44,7 @@ class classGTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('G');
-        $this->assertTrue( count($methods) == 139, "now there are " . count($methods) . " methods.");
+        $this->assertTrue( count($methods) == 133, "now there are " . count($methods) . " methods.");
     }
 
     /**
