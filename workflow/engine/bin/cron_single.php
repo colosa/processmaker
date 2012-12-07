@@ -146,6 +146,17 @@ Bootstrap::registerClass('AppEventPeer',       PATH_HOME . "engine/classes/model
 Bootstrap::registerClass('BaseCaseScheduler',   PATH_HOME . "engine/classes/model/om/BaseCaseScheduler.php");
 Bootstrap::registerClass('CaseScheduler',       PATH_HOME . "engine/classes/model/CaseScheduler.php");
 
+Bootstrap::registerClass('BaseGroupUser',      PATH_HOME . "engine/classes/model/om/BaseGroupUser.php");
+Bootstrap::registerClass('Groupwf',            PATH_HOME . "engine/classes/model/Groupwf.php");
+Bootstrap::registerClass('GroupUser',          PATH_HOME . "engine/classes/model/GroupUser.php");
+
+Bootstrap::registerClass('BaseGroupUserPeer',  PATH_HOME . "engine/classes/model/om/BaseGroupUserPeer.php");
+Bootstrap::registerClass('GroupUserPeer',      PATH_HOME . "engine/classes/model/GroupUserPeer.php");
+
+Bootstrap::registerClass('BaseGroupwfPeer',    PATH_HOME . "engine/classes/model/om/BaseGroupwfPeer.php");
+Bootstrap::registerClass('GroupwfPeer',        PATH_HOME . "engine/classes/model/GroupwfPeer.php");
+
+
 G::LoadClass("case");
 G::LoadClass("dates");
 G::LoadClass("pmScript");
