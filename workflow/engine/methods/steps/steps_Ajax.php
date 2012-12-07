@@ -40,7 +40,11 @@ try {
     require_once 'classes/model/Triggers.php';
     G::LoadInclude( 'ajax' );
     if (! empty( $_GET )) {
-        $aData = urldecode_values( $_GET );
+        if (! isset( $_GET['form'] )) {
+            $aData = urldecode_values( $_GET );
+        } else {
+            $aData = urldecode_values( $_GET['form'] );
+        }
     } else {
         if (! isset( $_POST['form'] )) {
             $aData = urldecode_values( $_POST );
