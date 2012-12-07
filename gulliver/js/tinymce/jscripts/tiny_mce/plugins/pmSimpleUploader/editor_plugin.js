@@ -28,9 +28,11 @@
     tinymce.PluginManager.add('pmSimpleUploader', tinymce.plugins.pmSimpleUploaderPlugin);
 })();
 
-// this function can get called from the plugin inint (above) or from the callback on advlink/advimg plugins..
-// in the latter case, win and type will be set.. In the rist case, we will just update the main editor window
-// with the path of the uploaded file
+/**
+ * this function can get called from the plugin inint (above) or from the callback on advlink/advimg plugins..
+ * in the latter case, win and type will be set.. In the rist case, we will just update the main editor window
+ * with the path of the uploaded file
+ */
 function pmSimpleUploader(field_name, url, type, win) {    
     var strPluginPath  = tinyMCE.activeEditor.plugins.pmSimpleUploader.getPluginURL();                               // get the path to the uploader plugin    
     var strUploaderURL = strPluginPath + "/uploader.php";                                                           // generate the path to the uploader script    
@@ -57,12 +59,20 @@ function pmSimpleUploader(field_name, url, type, win) {
   
     return false;
 }
-// This function will get called when the uploader is done uploading the file and ready to update
-// calling dialog and close the upload popup
-// strReturnURL should be the string with the path to the uploaded file
+
+/**
+ * This function will get called when the uploader is done uploading the file and ready to update
+ * calling dialog and close the upload popup
+ * strReturnURL should be the string with the path to the uploaded file
+ */
+
 function closePluginPopup(){    
-    tinyMCEPopup.close();	                                                                    // close popup window
+    tinyMCEPopup.close();	       // close popup window
 }
+
+/**
+ * This function update the content editor with the content template file
+ */
 
 function updateEditorContent(serializedHTML){
     tinyMCE.activeEditor.execCommand('mceSetContent', false, serializedHTML);

@@ -3,7 +3,10 @@
 **/
 
 (function(){
+    // set the base url setting
+    tinyMCE.baseURL = "/js/tinymce/jscripts/tiny_mce";
     var strPluginURL;
+    // the plugin init settings
     tinymce.create('tinymce.plugins.pmVariablePickerPlugin', {
     	init: function(ed, url) 
         {   
@@ -29,12 +32,18 @@
 })();
 
 // this function can get called from the plugin inint (above) or from the callback on advlink/advimg plugins..
-// in the latter case, win and type will be set.. In the rist case, we will just update the main editor window
-// with the path of the uploaded file
-function pmVariablePicker(field_name, url, type, win) {    
+// in the latter case, win and type will be set.. 
+/**
+ * @function pmVariablePicker
+ * @description Opens the plugin popup, loading the form inside it.
+ * @param field_name deprecated
+ * @param type deprecated
+ * @param win deprecated
+ * 
+ */
+function pmVariablePicker(field_name, type, win) {    
     
     var uloc=String(location);
-    //alert(uloc);
     var new_text = uloc.split('/');
     var loc='/'+new_text[3]+'/'+new_text[4]+'/'+new_text[5]+'/controls/varsAjax?displayOption=tinyMCE&sSymbol=@@&&sProcess='+tinyMCE.activeEditor.processID;
     var strPluginPath  = tinyMCE.activeEditor.plugins.pmVariablePicker.getPluginURL();                               // get the path to the uploader plugin    
@@ -49,7 +58,6 @@ function pmVariablePicker(field_name, url, type, win) {
     }
     //tinyMCE.activeEditor.anyVariable='path/to/ProcessMaker' 
     tinyMCE.activeEditor.windowManager.open({                                                                       // open the plugin popup
-        //file 		: '/sysworkflow/en/classic/controls/varsAjax?displayOption=tinyMCE&sSymbol=@@',
         file            : loc,
         title           : 'Upload Variable',
         width           : '600px',
@@ -66,17 +74,32 @@ function pmVariablePicker(field_name, url, type, win) {
 
     return false;
 }
-// This function will get called when the uploader is done uploading the file and ready to update
-// calling dialog and close the upload popup
-// strReturnURL should be the string with the path to the uploaded file
-function closePluginPopup(){    
+
+/**
+ * @function closePluginPopup
+ * @description closes the tinyMCE popup window
+ */
+function closePluginPopup(){
     tinyMCEPopup.close();	                                                                    // close popup window
 }
 
+/**
+ * @function updateEditorContent
+ * @description insert the editor content with a html code string
+ * @params serializedHTML String html code
+ */
 function updateEditorContent(serializedHTML){
     tinyMCE.activeEditor.execCommand('mceInsertContent', false, serializedHTML);
 }
 
+/**
+ * @function insertFormVar
+ * @description alternate version of updateEditorContent this function is 
+ *              compatible with the variable picker calls, also closes the popup
+ *              window
+ * @param fieldName String deprecated
+ * @param serializedHTML String the html code to be added. 
+ */
 function insertFormVar(fieldName,serializedHTML){
     tinyMCE.activeEditor.execCommand('mceInsertContent', false, serializedHTML);
     closePluginPopup();

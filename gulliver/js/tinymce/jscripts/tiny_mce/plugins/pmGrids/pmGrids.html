@@ -1,0 +1,91 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="/js/jquery/jquery-1.7.1.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+        <script src="editor_plugin_src.js"></script>
+        <script src="pmGrids.js"></script>
+        <link href="css/table.css" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+            
+            body {
+                position: absolute;
+                top: 0px;
+                left: 35%;
+                margin-left: -70px;
+            }
+            .container {
+                
+                display: table;
+            }
+            .row {
+                display: table-row;
+            }
+            .left, .right, .middle, .gridCell {
+                display: table-cell;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <div class="panel current">
+            <fieldset>
+            <div class="row">
+                <div class="left">
+                    Chose a grid&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="middle">
+                    <select id="gridList">
+
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="left">
+                    Prefix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="middle">
+                    <select name="prefixList" id="prefixList">
+                        <option value="@#">@#</option>
+                        <option value="@@">@@</option>
+                    </select>
+                </div>
+            </div>
+            
+            <br>
+            <div class="row">
+                <div class="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="middle">
+                    <input type="checkbox" id="borderCheckbox"> Border    
+                </div>
+            </div>
+            <div class="row">
+                <div class="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="middle">
+                    <input type="checkbox" id="headersCheckbox"> Headers
+                </div>
+            </div>
+            </fieldset>
+        </div>
+        
+        <br> 
+        <table id="listContainer" border="1" cellspacing="0" cellpadding="3">
+        </table>
+        <br>
+        <div align="center">
+            <button id="insert">
+                Add
+            </button>
+            <button id="cancel">
+                Cancel
+            </button>
+        </div>
+    </body>
+</html>

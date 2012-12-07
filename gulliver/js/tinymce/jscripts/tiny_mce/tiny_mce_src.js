@@ -4206,7 +4206,7 @@ tinymce.html.Styles = function(settings, schema) {
 					// Remove already removed children
 					fi = nodes.length;
 					while (fi--) {
-                                           
+                                            // ProcessMaker: conditional statemets created in order to assure the compatibility with maborak
                                             if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'){
 						if (!nodes[fi].parent){
                                                     nodes.splice(fi, 1);
@@ -4216,6 +4216,7 @@ tinymce.html.Styles = function(settings, schema) {
                                         
                                         
 					for (i = 0, l = list.length; i < l; i++){
+                                            // ProcessMaker: conditional statemets created in order to assure the compatibility with maborak
                                             if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'){
                                                 list[i](nodes, name, args);
                                             }
@@ -4233,6 +4234,7 @@ tinymce.html.Styles = function(settings, schema) {
 						// Remove already removed children
 						fi = nodes.length;
 						while (fi--) {
+                                                    // ProcessMaker: conditional statemets created in order to assure the compatibility with maborak
                                                     if(list.name!='toStr'&&list.name!='concat'&&list.name!='get_by_key'&&list.name!='expand'&&list.name!='setParent'&&list.name!='isset_key'){
 //                                                        if (!nodes[fi].parent){
                                                             nodes.splice(fi, 1);
@@ -4241,6 +4243,7 @@ tinymce.html.Styles = function(settings, schema) {
 						}
 
 						for (fi = 0, fl = list.callbacks.length; fi < fl; fi++){
+                                                    // ProcessMaker: conditional statemets created in order to assure the compatibility with maborak
                                                     if(list.name!='toStr'&&list.name!='concat'&&list.name!='get_by_key'&&list.name!='expand'&&list.name!='setParent'&&list.name!='isset_key'){
                                                         list.callbacks[fi](nodes, list.name, args);
                                                     }                                                    

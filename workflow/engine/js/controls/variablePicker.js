@@ -8,6 +8,16 @@ var setVariablePickerJS = function(){
         }
     });
 
+    /**
+     * Function getVariableList returns a list with all process variables
+     *
+     * @access public
+     * @param string proUid process ID
+     * @param string queryText text searched
+     * @param string varType type of variables (System or Process)
+     * @return array
+     */
+    
     var getVariableList = function (queryText, proUid, varType){
         varType = varType.toLowerCase();
         var responseData
@@ -25,6 +35,13 @@ var setVariablePickerJS = function(){
         return responseData;
     }
 
+    /**
+     * Function getPrefix returns selected prefix
+     *
+     * @access public
+     * @param string prefix
+     * @return string
+     */
     var getPrefix = function (prefix) {
         if(document.getElementById('prefix').value=='ID_TO_STRING')
             prefix='@@';
@@ -41,6 +58,14 @@ var setVariablePickerJS = function(){
         return prefix;
     }
 
+    /**
+     * Function getPrefixInfo returns a prefix description
+     *
+     * @access public
+     * @param string prefix
+     * @return string
+     */
+    
     var getPrefixInfo = function (prefix){
         var oRPC = new leimnud.module.rpc.xmlhttp({
             url   : "../processes/processes_Ajax",
@@ -82,6 +107,14 @@ var setVariablePickerJS = function(){
         }
     });
 
+    /**
+     * Function generateListValues fills the dropdown with all variables according to filters
+     *
+     * @access public
+     * @param string prefix
+     * @return array
+     */
+    
     function generateListValues (prefix){
         var list = getVariableList(document.getElementById('search').value, document.getElementById('process').value, document.getElementById('type_variables').value);
         var combo = document.getElementById("_Var_Form_");
@@ -109,9 +142,13 @@ var setVariablePickerJS = function(){
         }  
     }
 }
+// check wether the document has been already loaded or not, 
+// whatever the state is this condition ensures that the events are always loaded
 if (document.readyState == 'complete'){
+    // if completed load the functions and events
     setVariablePickerJS();
 } else {
+    // if not set the function call in the body onload event
     document.body.onload = setVariablePickerJS;
 }
 

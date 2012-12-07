@@ -161,8 +161,11 @@ var EventCompose = function(t){
 		oPanel.make();
 		oPanel.loader.show();
 		var oRPC = new leimnud.module.rpc.xmlhttp({
-//		  	url : '../events/eventsAjax',
-//		  	args: 'request=showDynavars',
+                        // previous calls for the old component
+                        // url : '../events/eventsAjax',
+                        // args: 'request=showDynavars',
+                        // the control for assign dynavars is the same as 
+                        // the other sections inside processmaker
 		  	url : '../controls/varsAjax',
 		  	args: 'sSymbol=@@&displayOption=event'
 	  	});

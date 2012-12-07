@@ -25,7 +25,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  * @package workflow.engine.classes
- */
+ **/
 
 class XmlForm_Field_TextPM extends XmlForm_Field_SimpleText
 {
@@ -432,6 +432,7 @@ function getGridsVars ($sProcessUID)
 {
     $aFields = array ();
     $aFieldsNames = array ();
+
     require_once 'classes/model/Dynaform.php';
     $oCriteria = new Criteria( 'workflow' );
     $oCriteria->addSelectColumn( DynaformPeer::DYN_FILENAME );
@@ -445,8 +446,7 @@ function getGridsVars ($sProcessUID)
             foreach ($G_FORM->fields as $k => $v) {
                 if ($v->type == 'grid') {
                     if (! in_array( $k, $aFieldsNames )) {
-                        $aFields[] = array ('sName' => $k,'sXmlForm' => str_replace( $sProcessUID . '/', '', $v->xmlGrid )
-                        );
+                        $aFields[] = array ('sName' => $k,'sXmlForm' => str_replace( $sProcessUID . '/', '', $v->xmlGrid ));
                         $aFieldsNames[] = $k;
                     }
                 }
@@ -456,6 +456,44 @@ function getGridsVars ($sProcessUID)
     }
     return $aFields;
 }
+/**
+ * Function getVarsGrid returns all variables of Grid
+ *
+ * @access public
+ * @param string proUid process ID
+ * @param string dynUid dynaform ID
+ * @return array
+ */
+
+function getVarsGrid ($proUid, $dynUid)
+{
+    G::LoadClass( 'dynaformhandler' );
+    G::LoadClass( 'AppSolr' );
+
+    $dynaformFields = array ();
+
+    if (is_file( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/'. $proUid .'/'.$dynUid. '.xml' ) && filesize( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/'. $proUid .'/'. $dynUid .'.xml' ) > 0) {
+        $dyn = new dynaFormHandler( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/' .$proUid. '/' . $dynUid .'.xml' );
+        $dynaformFields[] = $dyn->getFields();
+    }
+
+    $dynaformFieldTypes = array ();
+
+    foreach ($dynaformFields as $aDynFormFields) {
+        foreach ($aDynFormFields as $field) {
+
+            if ($field->getAttribute( 'validate' ) == 'Int') {
+                $dynaformFieldTypes[$field->nodeName] = 'Int';
+            } elseif ($field->getAttribute( 'validate' ) == 'Real') {
+                $dynaformFieldTypes[$field->nodeName] = 'Real';
+            } else {
+                $dynaformFieldTypes[$field->nodeName] = $field->getAttribute( 'type' );
+            }
+        }
+    }
+    return $dynaformFieldTypes;
+}
+
 
 /**
  * Class XmlForm_Field_CheckBoxTable

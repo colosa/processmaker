@@ -85,8 +85,7 @@ function editFile(pro_uid, fileName){
 		position   : {x:50,y:50,center:true},
 		title	   : '',
 		control    : {close:true,resize:false},
-		fx         : {modal:true},
-		fx	       : {shadow:true,modal:true}
+		fx	   : {shadow:true,modal:true}
 	};
 	oPanel.make();
 	
