@@ -482,12 +482,12 @@ Bootstrap::registerClass('AppMessage',         PATH_HOME . "engine/classes/model
 
 Bootstrap::registerClass('BaseAppMessagePeer', PATH_HOME . "engine/classes/model/om/BaseAppMessagePeer.php");
 Bootstrap::registerClass('AppMessagePeer',     PATH_HOME . "engine/classes/model/AppMessagePeer.php");
-
-Bootstrap::registerClass('BaseAppNotes',        PATH_HOME . "engine/classes/model/om/BaseAppNotes.php");
-Bootstrap::registerClass('AppNotes',            PATH_HOME . "engine/classes/model/AppNotes.php");
-
+                                                                    
 Bootstrap::registerClass('BaseAppNotesPeer',    PATH_HOME . "engine/classes/model/om/BaseAppNotesPeer.php");
 Bootstrap::registerClass('AppNotesPeer',        PATH_HOME . "engine/classes/model/AppNotesPeer.php");
+                                                                    
+Bootstrap::registerClass('BaseAppNotes',        PATH_HOME . "engine/classes/model/om/BaseAppNotes.php");
+Bootstrap::registerClass('AppNotes',            PATH_HOME . "engine/classes/model/AppNotes.php");
 
 Bootstrap::registerClass('BaseAppOwner',        PATH_HOME . "engine/classes/model/om/BaseAppOwner.php");
 Bootstrap::registerClass('AppOwner',            PATH_HOME . "engine/classes/model/AppOwner.php");
