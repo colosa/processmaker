@@ -1342,10 +1342,10 @@ leimnud.Package.Public({
 			this.panel.styles.fx.opacityModal.Static=0;
 			this.panel.make();
 			this.panel.elements.headerBar.className="boxTopPanel";
-			this.panel.elements.headerBar.innerHTML="<div class='a'></div><div class='b'></div><div class='c'></div>";
+			this.panel.elements.headerBar.innerHTML="<div class='a'>&nbsp;</div><div class='b'>&nbsp;</div><div class='c'>&nbsp;</div>";
 
 			this.panel.elements.statusBar.className="boxBottom";
-			this.panel.elements.statusBar.innerHTML="<div class='a'></div><div class='b'></div><div class='c'></div>";
+			this.panel.elements.statusBar.innerHTML="<div class='a'>&nbsp;</div><div class='b'>&nbsp;</div><div class='c'>&nbsp;</div>";
 			return this.panel;
 		},
 		confirm:function()

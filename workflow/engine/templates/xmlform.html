@@ -1,7 +1,7 @@
 {if $printTemplate}
 {* this is the xmlform template *}
   <form id="{$form->id}" name="{$form->name}" action="{$form->action}" class="{$form->className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit="return validateForm('{$form->objectRequiredFields}');">  <div class="borderForm" style="width:{$form->width}; padding-left:0; padding-right:0; border-width:{$form->border};">
-    <div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+    <div class="boxTop"><div class="a">&nbsp;</div><div class="b">&nbsp;</div><div class="c">&nbsp;</div></div>
     <div class="content" style="height:{$form->height};" >
     <table width="99%">
       <tr>
@@ -66,7 +66,7 @@
     </table>
     {if $hasRequiredFields}<div class="FormRequiredTextMessage"><font color="red">*  </font>{php}echo (G::LoadTranslation('ID_REQUIRED_FIELD'));{/php}</div>{/if}
        </div>
-       <div class="boxBottom"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+       <div class="boxBottom"><div class="a">&nbsp;</div><div class="b">&nbsp;</div><div class="c">&nbsp;</div></div>
        </div>
        {foreach from=$form->fields item=field}
          {if ($field->type==='javascript')}

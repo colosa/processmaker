@@ -845,6 +845,8 @@ var dynaformEditor={
   },
   restoreHTML:function()
   {
+      var htmlContent = this.ajax.restore_html(this.A);
+      tinyMCE.activeEditor.execCommand('mceSetContent', false, htmlContent);
 //    window._editorHTML.doc.body.innerHTML = this.ajax.restore_html(this.A);
 //    html_html2();
 //    html2_html();
