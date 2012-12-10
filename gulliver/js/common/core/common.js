@@ -159,11 +159,7 @@
 	  } else if(thisform.elements[i].type == "textarea") { //Handle textareas
 		  formdata += thisform.elements[i].name + "=" + encodeURIComponent(thisform.elements[i].value);
 	  } else if(thisform.elements[i].type == "checkbox") { //Handle checkbox's
-      if (typeof(thisform.elements[i].value) != undefined) {
-        formdata += thisform.elements[i].name + '=' + thisform.elements[i].value;
-      } else {
-        formdata += thisform.elements[i].name + '=' + ((thisform.elements[i].checked)? '1': '0');  
-      }
+      formdata += thisform.elements[i].name + '=' + ((thisform.elements[i].checked)? '1': '0');  
 	  } else if(thisform.elements[i].type == "radio") { //Handle Radio buttons
 		  if(thisform.elements[i].checked==true){
 			  formdata += thisform.elements[i].name + "=" + thisform.elements[i].value;
