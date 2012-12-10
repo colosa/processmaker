@@ -7,7 +7,7 @@ require_once 'propel/om/Persistent.php';
 
 include_once 'propel/util/Criteria.php';
 
-include_once 'classes/model/AppNotesPeer.php';
+//include_once 'classes/model/AppNotesPeer.php';
 
 /**
  * Base class that represents a row from the 'APP_NOTES' table.
