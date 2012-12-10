@@ -131,7 +131,9 @@ class XmlForm_Field
         if (isset( $data->children )) {
             foreach ($data->children as $k => $v) {
                 if ($v->type !== 'cdata') {
-                    $this->{$v->name}[$v->attributes["name"]] = $v->value;
+                    if (isset($v->name) && isset($v->attributes["name"])) {
+                        $this->{$v->name}[$v->attributes["name"]] = $v->value;
+                    }
                 }
             }
         }
