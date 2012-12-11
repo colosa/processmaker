@@ -2117,13 +2117,14 @@ function _()
 }
 
 /**
- * String Replace function, if StrSearch has special characters "(", "[", must be escape "\\(", "\\[".
+ * String Replace function, if strSearch has special characters "(", "[", must be escape "\\(", "\\[".
+ *
  */
-function stringReplace(strSearch, stringReplace, str)
+function stringReplace(strSearch, strReplace, str)
 {
     var expression = eval("/" + strSearch + "/g");
 
-    return str.replace(expression, stringReplace);
+    return str.replace(expression, strReplace);
 }
 
 var mb_strlen = function(str) {

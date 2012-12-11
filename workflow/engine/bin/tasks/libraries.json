@@ -188,6 +188,55 @@
         "build_js_to" : "gulliver/js/maborak/core/"
     },
     {
+        "name": "ext-all",
+        "libraries": [
+            {
+                "name": "ext-all",
+                "full": "gulliver/js/ext/ext-all.js",
+                "mini": "gulliver/js/ext/ext-all.js",
+                "minify": true
+            },
+            {
+                "name": "ux-all",
+                "full": "gulliver/js/ext/ux/ux-all.js",
+                "mini": "gulliver/js/ext/ux/ux-all.js",
+                "minify": true
+            },
+            {
+                "name": "pmos-common",
+                "full": "gulliver/js/ext/pmos-common.js",
+                "mini": "gulliver/js/ext/pmos-common.js",
+                "minify": true
+            },
+            {
+                "name": "miframe",
+                "full": "gulliver/js/ext/ux/miframe.js",
+                "mini": "gulliver/js/ext/ux/miframe.js",
+                "minify": true
+            },
+            {
+                "name": "Ext.ux.LocationBar",
+                "full": "gulliver/js/ext/ux.locationbar/Ext.ux.LocationBar.js",
+                "mini": "gulliver/js/ext/ux.locationbar/Ext.ux.LocationBar.js",
+                "minify": true
+            },
+            {
+                "name": "ext-statusbar",
+                "full": "gulliver/js/ext/ux.statusbar/ext-statusbar.js",
+                "mini": "gulliver/js/ext/ux.statusbar/ext-statusbar.js",
+                "minify": true
+            },
+            {
+                "name": "Ext.ux.tree.TreeFilterX",
+                "full": "gulliver/js/ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js",
+                "mini": "gulliver/js/ext/ux.treefilterx/Ext.ux.tree.TreeFilterX.js",
+                "minify": true
+            }
+        ],
+        "build" : true,
+        "build_js_to" : "gulliver/js/ext/min/"
+    },
+    {
         "name": "draw2d",
         "libraries": [
             {

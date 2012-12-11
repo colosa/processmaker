@@ -7,8 +7,8 @@ if ($action == 'selfservice') {
     //if ( $action == 'sent' ) $action = 'participated';
 }
 
-G::LoadClass( "BasePeer" );
-G::LoadClass( 'configuration' );
+G::LoadClass("BasePeer");
+G::LoadClass("configuration");
 //require_once ("classes/model/Fields.php");
 //require_once ("classes/model/AppCacheView.php");
 //require_once ("classes/model/Process.php");
@@ -69,7 +69,6 @@ if ($action == 'paused') {
 //  if ( $action == 'cancelled' ) {
 //    array_unshift ( $columns, array( 'header'=> '', 'width'=> 50, 'sortable'=> false, 'id'=> 'reactivateLink' ) );
 //  }
-
 
 $userUid = (isset( $_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '') ? $_SESSION['USER_LOGGED'] : null;
 $oAppCache = new AppCacheView();
@@ -268,647 +267,6 @@ function getStatusArray ($action, $userUid)
 }
 
 //these getXX function gets the default fields in casesListSetup
-function getToDo ()
-{
-    $caseColumns = array ();
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center');
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASE' ),'dataIndex' => 'APP_TITLE','width' => 150
-    );
-    $caseColumns[] = array ('header' => 'UserUid','dataIndex' => 'USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PROCESS' ),'dataIndex' => 'APP_PRO_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_TASK' ),'dataIndex' => 'APP_TAS_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SENT_BY' ),'dataIndex' => 'APP_DEL_PREVIOUS_USER','width' => 90
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_DUE_DATE' ),'dataIndex' => 'DEL_TASK_DUE_DATE','width' => 110
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_LAST_MODIFY' ),'dataIndex' => 'APP_UPDATE_DATE','width' => 110
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PRIORITY' ),'dataIndex' => 'DEL_PRIORITY','width' => 50
-    );
-
-    $caseReaderFields = array ();
-    $caseReaderFields[] = array ('name' => 'APP_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_FIRSTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_LASTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_USERNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_INDEX'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_NUMBER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_PRO_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TAS_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_DEL_PREVIOUS_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_TASK_DUE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_UPDATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_PRIORITY'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_FINISH_DATE'
-    );
-
-    $caseReaderFields[] = array ('name' => 'APP_CURRENT_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-
-    $caseReaderFields[] = array ('name' => 'CASE_SUMMARY'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_NOTES_COUNT'
-    );
-
-    return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => 20,'dateformat' => 'M d, Y'
-    );
-}
-
-function getDraft ()
-{
-    $caseColumns = array ();
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center'
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASE' ),'dataIndex' => 'APP_TITLE','width' => 150
-    );
-    $caseColumns[] = array ('header' => 'UserUid','dataIndex' => 'USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => 'PreUsrUid','dataIndex' => 'PREVIOUS_USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PROCESS' ),'dataIndex' => 'APP_PRO_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_TASK' ),'dataIndex' => 'APP_TAS_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_DUE_DATE' ),'dataIndex' => 'DEL_TASK_DUE_DATE','width' => 110
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_LAST_MODIFY' ),'dataIndex' => 'APP_UPDATE_DATE','width' => 110
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PRIORITY' ),'dataIndex' => 'DEL_PRIORITY','width' => 50
-    );
-
-    $caseReaderFields = array ();
-    $caseReaderFields[] = array ('name' => 'APP_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_NUMBER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_INDEX'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_PRO_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TAS_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_DEL_PREVIOUS_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_CURRENT_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_TASK_DUE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_UPDATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_PRIORITY'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_FINISH_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_SUMMARY'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_NOTES_COUNT'
-    );
-
-    return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => 20,'dateformat' => 'M d, Y'
-    );
-}
-
-function getParticipated ()
-{
-    $caseColumns = array ();
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center'
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASE' ),'dataIndex' => 'APP_TITLE','width' => 150
-    );
-    $caseColumns[] = array ('header' => 'UserUid','dataIndex' => 'USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => 'PreUsrUid','dataIndex' => 'PREVIOUS_USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PROCESS' ),'dataIndex' => 'APP_PRO_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_TASK' ),'dataIndex' => 'APP_TAS_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_LAST_MODIFY' ),'dataIndex' => 'APP_UPDATE_DATE','width' => 80
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_STATUS' ),'dataIndex' => 'APP_STATUS','width' => 50
-    );
-
-    $caseReaderFields = array ();
-    $caseReaderFields[] = array ('name' => 'APP_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_FIRSTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_LASTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_USERNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_NUMBER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_INDEX'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_PRO_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TAS_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_DEL_PREVIOUS_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_CURRENT_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_TASK_DUE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_UPDATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_PRIORITY'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_FINISH_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_SUMMARY'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_NOTES_COUNT'
-    );
-
-    return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => 20,'dateformat' => 'M d, Y'
-    );
-}
-
-function getSearch ()
-{
-    $caseColumns = array ();
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center'
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASE' ),'dataIndex' => 'APP_TITLE','width' => 100
-    );
-    $caseColumns[] = array ('header' => 'UserUid','dataIndex' => 'USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => 'PreUsrUid','dataIndex' => 'PREVIOUS_USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_TASK' ),'dataIndex' => 'APP_TAS_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PROCESS' ),'dataIndex' => 'APP_PRO_TITLE','width' => 120
-    );
-    //$caseColumns[] = array( 'header' => G::LoadTranslation('ID_SENT_BY'),        'dataIndex' => 'APP_DEL_PREVIOUS_USER', 'width' => 120 );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CURRENT_USER' ),'dataIndex' => 'APP_CURRENT_USER','width' => 120,'sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_LAST_MODIFY' ),'dataIndex' => 'APP_UPDATE_DATE','width' => 80
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_DELEGATION_DATE' ),'dataIndex' => 'DEL_DELEGATE_DATE','width' => 80
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_DUE_DATE' ),'dataIndex' => 'DEL_TASK_DUE_DATE','width' => 80
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_STATUS' ),'dataIndex' => 'APP_STATUS','width' => 50
-    );
-
-    $caseReaderFields = array ();
-    $caseReaderFields[] = array ('name' => 'APP_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_NUMBER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_INDEX'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_PRO_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TAS_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_DEL_PREVIOUS_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_CURRENT_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_TASK_DUE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_UPDATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_DELEGATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_PRIORITY'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_FINISH_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_SUMMARY'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_NOTES_COUNT'
-    );
-
-    return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => 20,'dateformat' => 'M d, Y'
-    );
-}
-
-function getUnassigned ()
-{
-    $caseColumns = array ();
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 40,'align' => 'left'
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASE' ),'dataIndex' => 'APP_TITLE','width' => 150
-    );
-    $caseColumns[] = array ('header' => 'UserUid','dataIndex' => 'USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PROCESS' ),'dataIndex' => 'APP_PRO_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_TASK' ),'dataIndex' => 'APP_TAS_TITLE','width' => 120
-    );
-
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SENT_BY' ),'dataIndex' => 'APP_DEL_PREVIOUS_USER','width' => 90
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_DUE_DATE' ),'dataIndex' => 'DEL_TASK_DUE_DATE','width' => 110
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_LAST_MODIFY' ),'dataIndex' => 'APP_UPDATE_DATE','width' => 80
-    );
-
-    //    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_COMPLETED_BY_USER'),'dataIndex' => 'APP_CURRENT_USER','width' => 110 );
-    //    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_FINISH_DATE'),      'dataIndex' => 'APP_FINISH_DATE', 'width' => 50 );
-
-
-    $caseReaderFields = array ();
-    $caseReaderFields[] = array ('name' => 'APP_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_FIRSTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_LASTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_USERNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_NUMBER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_INDEX'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_PRO_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TAS_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_DEL_PREVIOUS_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_CURRENT_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_TASK_DUE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_UPDATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_PRIORITY'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_FINISH_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_SUMMARY'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_NOTES_COUNT'
-    );
-
-    return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => 20,'dateformat' => 'M d, Y'
-    );
-}
-
-function getPaused ()
-{
-    $caseColumns = array ();
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center'
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASE' ),'dataIndex' => 'APP_TITLE','width' => 150
-    );
-    $caseColumns[] = array ('header' => 'UserUid','dataIndex' => 'USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PROCESS' ),'dataIndex' => 'APP_PRO_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_TASK' ),'dataIndex' => 'APP_TAS_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SENT_BY' ),'dataIndex' => 'APP_DEL_PREVIOUS_USER','width' => 90
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_LAST_MODIFY' ),'dataIndex' => 'APP_UPDATE_DATE','width' => 80
-    );
-
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_THREAD_INDEX' ),'dataIndex' => 'APP_THREAD_INDEX','width' => 80
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_DEL_INDEX' ),'dataIndex' => 'DEL_INDEX','width' => 80
-    );
-
-    $caseReaderFields = array ();
-    $caseReaderFields[] = array ('name' => 'APP_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_FIRSTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_LASTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_USERNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_NUMBER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_INDEX'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_PRO_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TAS_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_DEL_PREVIOUS_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_CURRENT_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_TASK_DUE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_UPDATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_PRIORITY'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_FINISH_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_THREAD_INDEX'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_SUMMARY'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_NOTES_COUNT'
-    );
-
-    return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => 20,'dateformat' => 'M d, Y'
-    );
-}
-
-function getToRevise ()
-{
-    $caseColumns = array ();
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center'
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASE' ),'dataIndex' => 'APP_TITLE','width' => 150
-    );
-    $caseColumns[] = array ('header' => 'UserUid','dataIndex' => 'USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => 'PreUsrUid','dataIndex' => 'PREVIOUS_USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PROCESS' ),'dataIndex' => 'APP_PRO_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_TASK' ),'dataIndex' => 'APP_TAS_TITLE','width' => 120
-    );
-
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SENT_BY' ),'dataIndex' => 'APP_DEL_PREVIOUS_USER','width' => 90
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CURRENT_USER' ),'dataIndex' => 'APP_CURRENT_USER','width' => 90,'sortable' => false
-    );
-    //    $caseColumns[] = array( 'header' =>'Sent By',      'dataIndex' => 'APP_DEL_PREVIOUS_USER', 'width' => 90 );
-    ///--    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_LAST_MODIFY'), 'dataIndex' => 'APP_UPDATE_DATE', 'width' => 110 );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PRIORITY' ),'dataIndex' => 'DEL_PRIORITY','width' => 50
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_STATUS' ),'dataIndex' => 'APP_STATUS','width' => 50
-    );
-
-    $caseReaderFields = array ();
-    $caseReaderFields[] = array ('name' => 'APP_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_FIRSTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_LASTNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_USERNAME'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_NUMBER'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_INDEX'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_PRO_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TAS_TITLE'
-    );
-    //    $caseReaderFields[] = array( 'name' => 'APP_DEL_PREVIOUS_USER' );
-    $caseReaderFields[] = array ('name' => 'APP_CURRENT_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_TASK_DUE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_UPDATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_PRIORITY'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_FINISH_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_DEL_PREVIOUS_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_SUMMARY'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_NOTES_COUNT'
-    );
-
-    return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => 20,'dateformat' => 'M d, Y'
-    );
-}
-
-function getToReassign ()
-{
-    $caseColumns = array ();
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => 'UserUid','dataIndex' => 'USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => 'PreUsrUid','dataIndex' => 'PREVIOUS_USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center'
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASE' ),'dataIndex' => 'APP_TITLE','width' => 150
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PROCESS' ),'dataIndex' => 'APP_PRO_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_TASK' ),'dataIndex' => 'APP_TAS_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CURRENT_USER' ),'dataIndex' => 'APP_CURRENT_USER','width' => 90,'sortable' => false
-    );
-    //    $caseColumns[] = array( 'header' => G::LoadTranslation('ID_SENT_BY'),     'dataIndex' => 'APP_DEL_PREVIOUS_USER', 'width' => 90 );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_LAST_MODIFY' ),'dataIndex' => 'APP_UPDATE_DATE','width' => 110
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_STATUS' ),'dataIndex' => 'APP_STATUS','width' => 50
-    );
-
-    $caseReaderFields = array ();
-    $caseReaderFields[] = array ('name' => 'TAS_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'DEL_INDEX'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_NUMBER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TAS_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_PRO_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_CURRENT_USER'
-    );
-    //    $caseReaderFields[] = array( 'name' => 'APP_DEL_PREVIOUS_USER' );
-    $caseReaderFields[] = array ('name' => 'APP_UPDATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_SUMMARY'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_NOTES_COUNT'
-    );
-
-    return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => 20,'dateformat' => 'M d, Y'
-    );
-}
-
-function getGeneral ()
-{
-    $caseColumns = array ();
-    $caseColumns[] = array ('header' => '#','dataIndex' => 'APP_NUMBER','width' => 45,'align' => 'center'
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SUMMARY' ),'dataIndex' => 'CASE_SUMMARY','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASES_NOTES' ),'dataIndex' => 'CASE_NOTES_COUNT','width' => 45,'align' => 'center','sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CASE' ),'dataIndex' => 'APP_TITLE','width' => 150
-    );
-    $caseColumns[] = array ('header' => 'UserUid','dataIndex' => 'USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => 'PreUsrUid','dataIndex' => 'PREVIOUS_USR_UID','width' => 50,'hidden' => true,'hideable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_TASK' ),'dataIndex' => 'APP_TAS_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_PROCESS' ),'dataIndex' => 'APP_PRO_TITLE','width' => 120
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_CURRENT_USER' ),'dataIndex' => 'APP_CURRENT_USER','width' => 90,'sortable' => false
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_SENT_BY' ),'dataIndex' => 'APP_DEL_PREVIOUS_USER','width' => 90
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_LAST_MODIFY' ),'dataIndex' => 'APP_UPDATE_DATE','width' => 110
-    );
-    $caseColumns[] = array ('header' => G::LoadTranslation( 'ID_STATUS' ),'dataIndex' => 'APP_STATUS','width' => 50
-    );
-
-    $caseReaderFields = array ();
-    $caseReaderFields[] = array ('name' => 'APP_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'PREVIOUS_USR_UID'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_NUMBER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_TAS_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_PRO_TITLE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_CURRENT_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_DEL_PREVIOUS_USER'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_UPDATE_DATE'
-    );
-    $caseReaderFields[] = array ('name' => 'APP_STATUS'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_SUMMARY'
-    );
-    $caseReaderFields[] = array ('name' => 'CASE_NOTES_COUNT'
-    );
-
-    return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => 20,'dateformat' => 'M d, Y'
-    );
-}
 
 /**
  * get the list configuration headers of the cases checked for reassign, for the
@@ -970,75 +328,68 @@ function getReassignUsersList ()
     );
 }
 
-//  Ext.namespace("Ext.ux");
-//  Ext.ux.comboBoxRenderer = function(combo) {
-//    return function(value) {
-//      var idx = combo.store.find(combo.valueField, value);
-//      var rec = combo.store.getAt(idx);
-//      return rec.get(combo.displayField);
-//    }
-//  }
 /**
  * loads the PM Table field list from the database based in an action parameter
  * then assemble the List of fields with these data, for the configuration in cases list.
  *
  * @param String $action
  * @return Array $config
+ *
  */
-
-function getAdditionalFields ($action, $confCasesList = array())
+function getAdditionalFields($action, $confCasesList = array())
 {
-    if (! empty( $confCasesList ) && ! empty( $confCasesList['second']['data'] )) {
-        // For the case list builder in the enterprise plugin
-        $caseColumns = array ();
-        $caseReaderFields = array ();
+    $config = new Configurations();
+    $arrayConfig = $config->casesListDefaultFieldsAndConfig($action);
 
-        foreach ($confCasesList['second']['data'] as $fieldData) {
-            if ($fieldData['fieldType'] != 'key') {
-                $label = $fieldData['label'];
-                $caseColumns[] = array ('header' => $label,'dataIndex' => $fieldData['name'],'width' => $fieldData['width'],'align' => $fieldData['align']
-                );
-                $caseReaderFields[] = array ('name' => $fieldData['name']
-                );
+    if (is_array($confCasesList) && count($confCasesList) > 0 && count($confCasesList["second"]["data"]) > 0) {
+        //For the case list builder in the enterprise plugin
+        $caseColumns = array();
+        $caseReaderFields = array();
+        $caseReaderFieldsAux = array();
+
+        foreach ($confCasesList["second"]["data"] as $index1 => $value1) {
+            $arrayField = $value1;
+
+            if ($arrayField["fieldType"] != "key") {
+                $arrayAux = array();
+
+                foreach ($arrayField as $index2 => $value2) {
+                    if ($index2 != "gridIndex" && $index2 != "fieldType") {
+                        $indexAux = $index2;
+                        $valueAux = $value2;
+
+                        switch ($index2) {
+                            case "name":
+                                $indexAux = "dataIndex";
+                                break;
+                            case "label":
+                                $indexAux = "header";
+
+                                if (preg_match("/^\*\*(.+)\*\*$/", $value2, $arrayMatch)) {
+                                    $valueAux = G::LoadTranslation($arrayMatch[1]);
+                                }
+                                break;
+                        }
+                        $arrayAux[$indexAux] = $valueAux;
+                    }
+                }
+
+                $caseColumns[] = $arrayAux;
+                $caseReaderFields[] = array("name" => $arrayField["name"]);
+
+                $caseReaderFieldsAux[] = $arrayField["name"];
             }
         }
-        return array ('caseColumns' => $caseColumns,'caseReaderFields' => $caseReaderFields,'rowsperpage' => $confCasesList['rowsperpage'],'dateformat' => $confCasesList['dateformat']
-        );
-    } else {
-        switch ($action) {
-            case 'draft':
-                $config = getDraft();
-                break;
-            case 'simple_search':
-            case 'search':
-                $config = getSearch();
-                break;
-            case 'participated':
-            case 'sent':
-                $config = getParticipated();
-                break;
-            case 'unassigned':
-                $config = getUnassigned();
-                break;
-            case 'paused':
-                $config = getPaused();
-                break;
-            case 'to_revise':
-                $config = getToRevise();
-                break;
-            case 'to_reassign':
-                $config = getToReassign();
-                break;
-            case 'gral':
-                $config = getGeneral();
-                break;
-            case 'todo':
-            default:
-                $action = 'todo';
-                $config = getToDo();
-                break;
+
+        foreach ($arrayConfig["caseReaderFields"] as $index => $value) {
+            if (!in_array($value["name"], $caseReaderFieldsAux)) {
+                $caseReaderFields[] = $value;
+            }
         }
-        return $config;
+
+        $arrayConfig = array("caseColumns" => $caseColumns, "caseReaderFields" => $caseReaderFields, "rowsperpage" => $confCasesList["rowsperpage"], "dateformat" => $confCasesList["dateformat"]);
     }
+
+    return $arrayConfig;
 }
 

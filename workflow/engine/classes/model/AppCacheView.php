@@ -825,37 +825,47 @@ class AppCacheView extends BaseAppCacheView
         $oCriteria = new Criteria('workflow');
         $oCriteria->clearSelectColumns();
 
-        //default configuration fields array
+        //Default configuration fields array
         $defaultFields = $this->getDefaultFields();
 
-        //if there is PMTABLE for this case list:
-        if (!empty($this->confCasesList) &&
-            isset($this->confCasesList['PMTable']) &&
-            trim($this->confCasesList['PMTable']) != ''
-        ) {
-            //getting the table name
-            $oAdditionalTables = AdditionalTablesPeer::retrieveByPK($this->confCasesList['PMTable']);
-            $tableName = $oAdditionalTables->getAddTabName();
+        //If there is PMTable for this case list
+        if (is_array($this->confCasesList) && count($this->confCasesList) > 0 && isset($this->confCasesList["PMTable"]) && trim($this->confCasesList["PMTable"]) != "") {
+            //Getting the table name
+            $additionalTableUid = $this->confCasesList["PMTable"];
 
-            foreach ($this->confCasesList['second']['data'] as $fieldData) {
-                if (!in_array($fieldData['name'],$defaultFields)) {
-                    $fieldName = $tableName . '.' . $fieldData['name'];
-                    $oCriteria->addSelectColumn($fieldName);
-                } else {
-                    switch ($fieldData['fieldType']) {
-                        case 'case field':
-                            $configTable = 'APP_CACHE_VIEW';
+            $additionalTable = AdditionalTablesPeer::retrieveByPK($additionalTableUid);
+            $tableName = $additionalTable->getAddTabName();
+
+            $additionalTable = new AdditionalTables();
+            $tableData = $additionalTable->load($additionalTableUid, true);
+
+            $tableField = array();
+
+            foreach ($tableData["FIELDS"] as $arrayField) {
+                $tableField[] = $arrayField["FLD_NAME"];
+            }
+
+            foreach ($this->confCasesList["second"]["data"] as $fieldData) {
+                if (in_array($fieldData["name"], $defaultFields)) {
+                    switch ($fieldData["fieldType"]) {
+                        case "case field":
+                            $configTable = "APP_CACHE_VIEW";
                             break;
-                        case 'delay field':
-                            $configTable = 'APP_DELAY';
+                        case "delay field":
+                            $configTable = "APP_DELAY";
                             break;
                         default:
-                            $configTable = 'APP_CACHE_VIEW';
+                            $configTable = "APP_CACHE_VIEW";
                             break;
                     }
 
-                    $fieldName = $configTable . '.' . $fieldData['name'];
+                    $fieldName = $configTable . "." . $fieldData["name"];
                     $oCriteria->addSelectColumn($fieldName);
+                } else {
+                    if (in_array($fieldData["name"], $tableField)) {
+                        $fieldName = $tableName . "." . $fieldData["name"];
+                        $oCriteria->addSelectColumn($fieldName);
+                    }
                 }
             }
 
@@ -868,23 +878,25 @@ class AppCacheView extends BaseAppCacheView
 
             return $oCriteria;
         } else {
-            //else this list do not have a PM Table
-            if (is_array($this->confCasesList) && !empty($this->confCasesList['second']['data'])) {
-                foreach ($this->confCasesList['second']['data'] as $fieldData) {
-                    switch ($fieldData['fieldType']) {
-                        case 'case field':
-                            $configTable = 'APP_CACHE_VIEW';
-                            break;
-                        case 'delay field':
-                            $configTable = 'APP_DELAY';
-                            break;
-                        default:
-                            $configTable = 'APP_CACHE_VIEW';
-                            break;
-                    }
+            //This list do not have a PMTable
+            if (is_array($this->confCasesList) && count($this->confCasesList["second"]["data"]) > 0) {
+                foreach ($this->confCasesList["second"]["data"] as $fieldData) {
+                    if (in_array($fieldData["name"], $defaultFields)) {
+                        switch ($fieldData["fieldType"]) {
+                            case "case field":
+                                $configTable = "APP_CACHE_VIEW";
+                                break;
+                            case "delay field":
+                                $configTable = "APP_DELAY";
+                                break;
+                            default:
+                                $configTable = "APP_CACHE_VIEW";
+                                break;
+                        }
 
-                    $fieldName = $configTable . '.' . $fieldData['name'];
-                    $oCriteria->addSelectColumn($fieldName);
+                        $fieldName = $configTable . "." . $fieldData["name"];
+                        $oCriteria->addSelectColumn($fieldName);
+                    }
                 }
             } else {
                 //foreach ($defaultFields as $field) {

@@ -47,7 +47,7 @@ class Applications
 
         //get data configuration
         $conf = new Configurations();
-        $confCasesList = $conf->getConfiguration( 'casesList', ($action == 'search' || $action == 'simple_search') ? 'sent' : $action );
+        $confCasesList = $conf->getConfiguration("casesList", ($action == "search" || $action == "simple_search")? "search" : $action);
         $oAppCache->confCasesList = $confCasesList;
 
         // get the action based list
@@ -240,28 +240,49 @@ class Applications
             }
         }
 
-        //add the search filter
+        //Add the search filter
         if ($search != '') {
-            $defaultFields = $oAppCache->getDefaultFields();
             $oTmpCriteria = '';
-            // if there is PMTABLE for this case list:
-            if (! empty( $oAppCache->confCasesList ) && isset( $oAppCache->confCasesList['PMTable'] ) && trim( $oAppCache->confCasesList['PMTable'] ) != '') {
-                // getting the table name
-                $oAdditionalTables = AdditionalTablesPeer::retrieveByPK( $oAppCache->confCasesList['PMTable'] );
-                $tableName = $oAdditionalTables->getAddTabName();
-                $oNewCriteria = new Criteria( 'workflow' );
-                $counter = 0;
-                foreach ($oAppCache->confCasesList['second']['data'] as $fieldData) {
-                    if (! in_array( $fieldData['name'], $defaultFields )) {
-                        $fieldName = $tableName . '.' . $fieldData['name'];
-                        if ($counter == 0) {
-                            $oTmpCriteria = $oNewCriteria->getNewCriterion( $fieldName, '%' . $search . '%', Criteria::LIKE );
-                        } else {
-                            $oTmpCriteria = $oNewCriteria->getNewCriterion( $fieldName, '%' . $search . '%', Criteria::LIKE )->addOr( $oTmpCriteria );
+
+            //If there is PMTable for this case list
+            if (is_array($oAppCache->confCasesList) && count($oAppCache->confCasesList) > 0 && isset($oAppCache->confCasesList["PMTable"]) && trim($oAppCache->confCasesList["PMTable"]) != "") {
+                //Default configuration fields array
+                $defaultFields = $oAppCache->getDefaultFields();
+
+                //Getting the table name
+                $additionalTableUid = $oAppCache->confCasesList["PMTable"];
+
+                $additionalTable = AdditionalTablesPeer::retrieveByPK($additionalTableUid);
+                $tableName = $additionalTable->getAddTabName();
+
+                $additionalTable = new AdditionalTables();
+                $tableData = $additionalTable->load($additionalTableUid, true);
+
+                $tableField = array();
+
+                foreach ($tableData["FIELDS"] as $arrayField) {
+                    $tableField[] = $arrayField["FLD_NAME"];
+                }
+
+                $oNewCriteria = new Criteria("workflow");
+                $sw = 0;
+
+                foreach ($oAppCache->confCasesList["second"]["data"] as $fieldData) {
+                    if (!in_array($fieldData["name"], $defaultFields)) {
+                        if (in_array($fieldData["name"], $tableField)) {
+                            $fieldName = $tableName . "." . $fieldData["name"];
+
+                            if ($sw == 0) {
+                                $oTmpCriteria = $oNewCriteria->getNewCriterion($fieldName, "%" . $search . "%", Criteria::LIKE);
+                            } else {
+                                $oTmpCriteria = $oNewCriteria->getNewCriterion($fieldName, "%" . $search . "%", Criteria::LIKE)->addOr($oTmpCriteria);
+                            }
+
+                            $sw = 1;
                         }
-                        $counter ++;
                     }
                 }
+
                 //add the default and hidden DEL_INIT_DATE
             }
 
