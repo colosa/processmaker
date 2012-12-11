@@ -25,7 +25,7 @@
 /*NEXT LINE: Runs any configuration defined to be executed before dependent fields recalc*/
 if (isset( $_SESSION['CURRENT_PAGE_INITILIZATION'] ))
     eval( $_SESSION['CURRENT_PAGE_INITILIZATION'] );
-    
+
    // G::LoadThirdParty('pear/json','class.json');
    // $json=new Services_JSON();
 if (! defined( 'XMLFORM_AJAX_PATH' ))
@@ -57,18 +57,19 @@ $newValues = (Bootstrap::json_decode( urlDecode( stripslashes( $_POST['fields'] 
 if (isset( $_POST['grid'] )) {
     $_POST['row'] = (int) $_POST['row'];
     $aAux = array ();
+
     foreach ($newValues as $sKey => $newValue) {
         $newValue = (array) $newValue;
         $aKeys = array_keys( $newValue );
-        $aValues = array ();
-        for ($i = 1; $i <= ($_POST['row'] - 1); $i ++) {
-            $aValues[$i] = array ($aKeys[0] => '' 
-            );
+        if (count($aKeys)>0) {
+            $aValues = array ();
+            for ($i = 1; $i <= ($_POST['row'] - 1); $i ++) {
+                $aValues[$i] = array ($aKeys[0] => '' );
+            }
+            $aValues[$_POST['row']] = array ($aKeys[0] => $newValue[$aKeys[0]] );
+            $newValues[$sKey]->$_POST['grid'] = $aValues;
+            unset( $newValues[$sKey]->$aKeys[0] );
         }
-        $aValues[$_POST['row']] = array ($aKeys[0] => $newValue[$aKeys[0]] 
-        );
-        $newValues[$sKey]->$_POST['grid'] = $aValues;
-        unset( $newValues[$sKey]->$aKeys[0] );
     }
 }
 
@@ -154,7 +155,7 @@ foreach ($dependentFields as $d) {
                     if ($sendContent[$r]->content->type != 'text') {
                         $sendContent[$r]->content->{$attribute} = toJSArray( $value );
                     } else {
-                        $sendContent[$r]->content->{$attribute} = toJSArray( (isset( $value[$_POST['row']] ) ? array ($value[$_POST['row']] 
+                        $sendContent[$r]->content->{$attribute} = toJSArray( (isset( $value[$_POST['row']] ) ? array ($value[$_POST['row']]
                         ) : array ()) );
                     }
                     break;
@@ -204,6 +205,9 @@ function subDependencies ($k, &$G_FORM, &$aux, $grid = '')
         //       $myDependentFields = array_merge( $myDependentFields , subDependencies( $ki , $G_FORM , $aux ) );
         //     }
     } else {
+        if (! isset($G_FORM->fields[$grid])) {
+            return array ();
+        }
         if (! array_key_exists( $k, $G_FORM->fields[$grid]->fields ))
             return array ();
         if (! isset( $G_FORM->fields[$grid]->fields[$k]->dependentFields ))

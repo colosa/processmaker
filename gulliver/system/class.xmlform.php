@@ -1409,11 +1409,11 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
 
                 if ($count > 0) {
                     for ($cnt = 0; $cnt < $count; $cnt ++) {
-                        $sOptions .= 'if ( "' . $this->name . '" == "' . $aDepFields[$cnt] . '" ) {';
-                        $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = obj.id;';
-                        $sOptions .= '} else { ';
-                        $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = getField(\'' . $aDepFields[$cnt] . '\').value; ';
-                        $sOptions .= '}';
+                        if ( $this->name == $aDepFields[$cnt] ) {
+                            $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = obj.id;';
+                        } else {
+                            $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = getField(\'' . $aDepFields[$cnt] . '\').value; ';
+                        }
                     }
                 }
 
@@ -1464,6 +1464,215 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
         }
     }
 
+   /**
+     * render Field Grid
+     *
+     * @param type $value
+     * @param type $owner
+     * @param type $rowId
+     * @param type $ownerName   Grid Name
+     * @param type $index       Index on the grid
+     * @return string
+     */
+    public function renderFieldGrid($value = null, $owner = null, $rowId = '', $ownerName = '', $index = 0)
+    {
+        $rowIdField = substr($rowId, 1);
+        if (! $this->sqlConnection) {
+            $this->sqlConnection = 'workflow';
+        }
+
+        if ($this->strTo === 'UPPER') {
+            $value = strtoupper( $value );
+        }
+        if ($this->strTo === 'LOWER') {
+            $value = strtolower( $value );
+        }
+        $onkeypress = G::replaceDataField( $this->onkeypress, $owner->values );
+
+        if ($this->replaceTags == 1) {
+            $value = G::replaceDataField( $value, $owner->values );
+        }
+
+        $storeEntry = null;
+        $storeEntryData = ", storeEntryData: [0]";
+        if ($this->store_new_entry) {
+            $storeEntry = ' title="' . G::LoadTranslation( "ID_FIELD_DYNAFORM_SUGGEST_INPUT_TITLE" ) . '"';
+            $storeEntryData = ", storeEntryData: [1, \"form" . $rowId . "[" . $this->name . "_label]\", \"" . $this->sqlConnection . "\", \"" . $this->table . "\", \"" . $this->primary_key . "\", \"" . $this->primary_key_type . "\", \"" . $this->field . "\"]";
+        }
+
+        $formVariableValue = '';
+        $formVariableKeyValue = '';
+        G::LoadClass( 'case' );
+        $oApp = new Cases();
+        if (isset( $_SESSION['APPLICATION'] ) && ($_SESSION['APPLICATION'] != null && $oApp->loadCase( $_SESSION['APPLICATION'] ) != null)) {
+            $aFields = $oApp->loadCase( $_SESSION['APPLICATION'] );
+            if (isset( $aFields['APP_DATA'][$ownerName][$index][$this->name . '_label'] )) {
+
+                $formVariableValue = $aFields['APP_DATA'][$ownerName][$index][$this->name . '_label'];
+                $formVariableKeyValue = $aFields['APP_DATA'][$ownerName][$index][$this->name];
+            }
+        }
+
+        if ($this->mode === 'edit') {
+            if ($this->readOnly) {
+                return '<input class="module_app_input___gray" id="form' . $rowId . '[' . $this->name . ']" name="form' . $rowId . '[' . $this->name . ']" type ="text" size="' . $this->size . '" maxlength="' . $this->maxLength . '" value=\'' . $this->htmlentities( $value, ENT_COMPAT, 'utf-8' ) . '\' readOnly="readOnly" style="' . htmlentities( $this->style, ENT_COMPAT, 'utf-8' ) . '" onkeypress="' . htmlentities( $onkeypress, ENT_COMPAT, 'utf-8' ) . '"/>';
+            } else {
+                if (strlen( trim( $formVariableValue ) ) > 0) {
+                    $value = $formVariableValue;
+                }
+                $name = "'" . $this->name . "'";
+                $str = '<input type="text" ' . $storeEntry . ' class="module_app_input___gray" size="' . $this->size . '" id="form' . $rowId . '[' . $this->name . '_label]" name="form' . $rowId . '[' . $this->name . '_label]" value="' . $this->htmlentities( $value, ENT_COMPAT, 'utf-8' ) . '" onblur="idSet(' . $name . ');" ';
+                $str .= $this->NSDependentFields( true ) . ' ';
+                $str .= '/>';
+                $str .= '<input ';
+                $str .= 'id="form' . $rowId . '[' . $this->name . ']" ';
+                $str .= 'name="form' . $rowId . '[' . $this->name . ']" ';
+                $str .= 'value="' . $this->htmlentities( $formVariableKeyValue, ENT_COMPAT, 'utf-8' ) . '" ';
+                $str .= 'type="hidden" />';
+
+                $str .= $this->renderHint();
+                if (trim( $this->callback ) != '') {
+                    $sCallBack = 'try{' . $this->callback . '}catch(e){alert("Suggest Widget call back error: "+e)}';
+                } else {
+                    $sCallBack = '';
+                }
+
+                $hash = str_rot13( base64_encode( $this->sql . '@|' . $this->sqlConnection ) );
+                $sSQL = $this->sql;
+                $nCount = preg_match_all( '/\@(?:([\@\%\#\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/', $sSQL, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE );
+
+                $sResult = array ();
+                if ($nCount) {
+                    for ($i = 0; $i < $nCount; $i ++) {
+                        if (isset( $match[0][$i][0] ) && isset( $match[2][$i][0] )) {
+                            $aResult[$match[0][$i][0]] = $match[2][$i][0];
+                        }
+                    }
+                }
+
+                $depValues = '';
+                $i = 1;
+                if (isset( $aResult ) && $aResult) {
+                    $sResult = '"' . implode( '","', $aResult ) . '"';
+                    $aResultKeys = array_keys( $aResult );
+                    $sResultKeys = str_rot13( base64_encode( implode( '|', $aResultKeys ) ) );
+
+                    foreach ($aResult as $key => $field) {
+                        $depValues .= 'getField(\''. $rowIdField . '[' . $field . '\').value';
+
+                        if ($i ++ < count( $aResult )) {
+                            $depValues .= '+"|"+';
+                        }
+
+                    }
+                    $depValues = '+' . $depValues . '+';
+                } else {
+                    $sResult = '';
+                    $sResultKeys = '';
+                    $depValues = '+';
+                }
+
+                $aDepFields = array ();
+                $count = 0;
+                if ($this->dependentFields !== '') {
+                    $dependentFields = explode( ",", $this->dependentFields );
+                    foreach ($dependentFields as $valueDependent) {
+                        $sqlDepField = $owner->fields[$valueDependent]->sql;
+                        $count = preg_match_all( '/\@(?:([\@\%\#\=\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/', $sqlDepField, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE );
+                        for ($cnt = 0; $cnt < $count; $cnt ++) {
+                            $aDepFields[$cnt] = $match[2][$cnt][0];
+                        }
+                    }
+                }
+
+                $sOptions = 'script: function (input) { ';
+
+                $sOptions .= '  var inputValue = base64_encode(getField(\'' . $rowIdField . '[' . $this->name . '_label\').value); ';
+
+                $sOptions .= '  return "' . $this->ajaxServer . '?request=suggest&json=true&limit=' . $this->maxresults;
+                $sOptions .= '&hash=' . $hash . '&dependentFieldsKeys=' . $sResultKeys . '&dependentFieldsValue="';
+                $sOptions .= $depValues . '"&input="+inputValue+"&inputEnconde64=enable"; ';
+                $sOptions .= '},';
+                $sOptions .= 'json: true,';
+                $sOptions .= 'limit: ' . $this->maxresults . ',';
+
+                $sOptions .= 'shownoresults: ' . ($this->shownoresults ? 'true' : 'false') . ',';
+                $sOptions .= 'maxresults: ' . $this->maxresults . ',';
+                $sOptions .= 'chache: true,';
+
+                $sOptions .= 'callback: function (obj) { ';
+
+                $sOptions .= 'if (typeof obj != "undefined") { ';
+                $sOptions .= ' var jField = { };';
+                $sOptions .= ' var sField = "[]"; ';
+
+                if ($count > 0) {
+                    for ($cnt = 0; $cnt < $count; $cnt ++) {
+                        if ( $this->name  == $aDepFields[$cnt] ) {
+                            $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = obj.id;';
+//                        } else {
+//                            $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = getField(\'' . $rowIdField . '[' . $aDepFields[$cnt] . '\').value; ';
+                        }
+                    }
+                }
+
+                $sOptions .= ' var sField = "["+ encodeURIComponent(jField.toJSONString()) + "]"; ';
+                $sOptions .= $sCallBack . '; getField("' . $rowIdField . '[' . $this->name . '").value = obj.id;';
+
+                $sOwnerId = (isset($owner->owner->id))? $owner->owner->id : $owner->id;
+                $sOptions .= 'var indexField =  "' . $rowIdField . '[' . $this->name . '";';
+                $sOptions .= 'indexField = indexField.match(/\[[0-9]+\]/g); ';
+                $sOptions .= 'indexFieldVal = indexField[0].replace(/\[|\]/g,""); ';
+
+                $sOptions .= 'var response = ajax_function("../gulliver/defaultAjaxDynaform", "reloadField", ';
+                $sOptions .= '               "form=' . $sOwnerId . '&fields=" + sField + "&grid=' . $ownerName . '&row=" + indexFieldVal, "POST" ); ';
+
+                $sOptions .= 'if (response.substr(0,1) === \'[\') { ';
+                $sOptions .= '  var newcont; ';
+                $sOptions .= '  eval(\'newcont=\' + response + \';\'); ';
+
+                $sOptions .= '  for(var i = 0; i<newcont.length; i++) { ';
+                // $sOptions .= '    var depField = getField(\'' . $rowIdField . '[\' + ' . 'newcont[i].name); ';
+                $sOptions .= '    var depField = \'' . $rowIdField . '[\' + ' . 'newcont[i].name; ';
+
+                $sOptions .= '    getField(depField).value = newcont[i].value; ';
+                $sOptions .= '    if (newcont[i].content.type == \'dropdown\') { ';
+
+                $sOptions .= '      fieldLength = getField(depField).options.length; ';
+
+                $sOptions .= '      for (ni = 0; ni < fieldLength; ni++ ){ ';
+                $sOptions .= '        getField(depField).options.remove(ni); ';
+                $sOptions .= '      } ';
+                $sOptions .= '      getField(depField).length = 0; ';
+
+                $sOptions .= '      for (ni = 0; ni < newcont[i].content.options.length; ni++ ){ ';
+                $sOptions .= '        var opt = document.createElement("OPTION"); ';
+                $sOptions .= '        opt.value = newcont[i].content.options[ni].key; ';
+                $sOptions .= '        opt.text  = newcont[i].content.options[ni].value; ';
+                $sOptions .= '        getField(depField).options.add(opt); ';
+
+                $sOptions .= '      } ';
+                $sOptions .= '    } ';
+
+                $sOptions .= '  } ';
+                $sOptions .= '} else { ';
+                $sOptions .= '  alert(\'Invalid response: \' + response); ';
+                $sOptions .= '} ';
+                $sOptions .= '} ';
+                $sOptions .= 'return false; ';
+                $sOptions .= '}';
+
+                $str .= '<script type="text/javascript">';
+                $str .= 'var as_json = new bsn.AutoSuggest(\'form' . $rowId . '[' . $this->name . '_label]\', {' . $sOptions . $storeEntryData . '}); ';
+                $str .= '</script>';
+
+                return $str;
+            }
+        } else {
+            return $this->htmlentities( $formVariableValue, ENT_COMPAT, 'utf-8' );
+        }
+    }
+
     /**
      * Function renderGrid
      *
@@ -1475,27 +1684,14 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
      */
     public function renderGrid ($values = array(), $owner = null)
     {
-        $result = array ();
+        $aResult = array();
         $r = 1;
-        foreach ($values as $v) {
-            if ($this->replaceTags == 1) {
-                $v = G::replaceDataField( $v, $owner->values );
-            }
-            if ($this->mode === 'edit') {
-                if ($this->readOnly) {
-                    $result[] = '<input class="module_app_input___gray" id="form[' . $owner->name . '][' . $r . '][' . $this->name . ']" name="form[' . $owner->name . '][' . $r . '][' . $this->name . ']" type ="text" size="' . $this->size . '" maxlength="' . $this->maxLength . '" value="' . $this->htmlentities( $v, ENT_COMPAT, 'utf-8' ) . '" readOnly="readOnly" style="' . htmlentities( $this->style, ENT_COMPAT, 'utf-8' ) . '"/>';
-                } else {
-                    $result[] = '<input class="module_app_input___gray" id="form[' . $owner->name . '][' . $r . '][' . $this->name . ']" name="form[' . $owner->name . '][' . $r . '][' . $this->name . ']" type ="text" size="' . $this->size . '" maxlength="' . $this->maxLength . '" value="' . $this->htmlentities( $v, ENT_COMPAT, 'utf-8' ) . '" style="' . htmlentities( $this->style, ENT_COMPAT, 'utf-8' ) . '"/>';
-                }
-            } elseif ($this->mode === 'view') {
-                $result[] = $this->htmlentities( $v, ENT_COMPAT, 'utf-8' );
-            } else {
-                $result[] = $this->htmlentities( $v, ENT_COMPAT, 'utf-8' );
-            }
-            $r ++;
-        }
-        return $result;
 
+        foreach ($values as $v) {
+            $aResult[] = $this->renderFieldGrid( $v, $owner, '[' . $owner->name . '][' . $r . ']', $owner->name, $r );
+            $r++;
+        }
+        return $aResult;
     }
 
     /**
