@@ -115,6 +115,7 @@ Bootstrap::registerClass('Holiday',            PATH_HOME . "engine/classes/model
 Bootstrap::registerClass('Task',               PATH_HOME . "engine/classes/model/Task.php");
 Bootstrap::registerClass('TaskPeer',           PATH_HOME . "engine/classes/model/TaskPeer.php");
 Bootstrap::registerClass('dates',              PATH_HOME . "engine/classes/class.dates.php");
+Bootstrap::registerClass('BaseAppDelegationPeer',PATH_HOME . "engine/classes/model/om/BaseAppDelegationPeer.php");
 Bootstrap::registerClass('AppDelegation',      PATH_HOME . "engine/classes/model/AppDelegation.php");
 Bootstrap::registerClass('AppDelegationPeer',  PATH_HOME . "engine/classes/model/AppDelegationPeer.php");
 Bootstrap::registerClass('BaseAppDelay',       PATH_HOME . "engine/classes/model/om/BaseAppDelay.php");
