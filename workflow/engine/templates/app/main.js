@@ -221,7 +221,7 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle, proUid, taskUid)
           text: _('ID_CANCEL'),
           cls: 'x-toolbar1',
           //iconCls: 'xx',
-          icon: '/images/add_notes.png',
+          //icon: '/images/add_notes.png',
           handler: newNoteHandler,
           tooltip: {
             title: _('ID_CASES_NOTES_ADD'),

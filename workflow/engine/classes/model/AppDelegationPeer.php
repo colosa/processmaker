@@ -25,10 +25,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseAppDelegationPeer.php';
+  //require_once 'classes/model/om/BaseAppDelegationPeer.php';
 
   // include object class
-  include_once 'classes/model/AppDelegation.php';
+  //include_once 'classes/model/AppDelegation.php';
 
 
 /**
