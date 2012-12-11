@@ -46,7 +46,7 @@ class Zimbra
      * @param string $which defaults to prod
      */
 
-    public function __construct ($username, $serverUrl, $preAuthKey, $which = 'prod')
+    public function __construct ($username, $serverUrl, $preAuthKey, $which = 'prod', $protocol = 'http')
     {
         if ($which == 'dev') {
             $which = 'zimbra_dev';
@@ -56,7 +56,7 @@ class Zimbra
         }
 
         $this->_preAuthKey = $preAuthKey;
-        $this->_protocol = "http://"; // could also be http://
+        $this->_protocol = $protocol."://"; // could also be http://
         $this->_server = $serverUrl; //'zimbra.hostname.edu';
         $this->_server1 = $serverUrl; //'zimbra.hostname.edu';
         $this->_username = $username;

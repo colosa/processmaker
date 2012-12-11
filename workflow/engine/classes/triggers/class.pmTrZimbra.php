@@ -35,15 +35,16 @@
  * @param string | $username | Valid username to connect to Zimbra server
  * @param string | $preAuthKey | Server Key for SSO authentication
  * @param string | $folderName | Folder Name
+ * @param string | $protocol | protpcol server http https
  *
  * @return string | $result | Response
  *
  */
 include_once PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'api' . PATH_SEP . "class.zimbraApi.php";
 
-function getZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName) {
-
-    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey);
+function getZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName, $protocol = 'http')
+{
+    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey , '', $protocol);
     $connectionResult = $zimbra->connect();
 
     if (!$connectionResult) {
@@ -69,13 +70,15 @@ function getZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName) {
  * @param string | $ServerUrl | Server name and port where Zimbra exists | zimbra.server:port
  * @param string | $username| Valid username to connect to Zimbra server
  * @param string | $preAuthKey | Server Key for SSO authentication
+ * @param string | $protocol | protpcol server http https
  *
  * @return string | $result | Response
  *
  */
-function getZimbraContactList($ServerUrl, $username, $preAuthKey) {
+function getZimbraContactList($ServerUrl, $username, $preAuthKey, $protocol = 'http')
+{
 
-    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey);
+    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey, '', $protocol);
     $connectionResult = $zimbra->connect();
 
     if (!$connectionResult) {
@@ -101,16 +104,18 @@ function getZimbraContactList($ServerUrl, $username, $preAuthKey) {
  * @param string | $ServerUrl | Server name and port where Zimbra exists | zimbra.server:port
  * @param string | $username| Valid username to connect to Zimbra server
  * @param string | $preAuthKey | Server Key for SSO authentication
+ * @param string | $protocol | protpcol server http https
  *
  * @return string | $result | Response
  *
  */
-function getZimbraTaskList($ServerUrl, $username, $preAuthKey) {
+function getZimbraTaskList($ServerUrl, $username, $preAuthKey, $protocol = 'http')
+{
 
     $xXmlArray = array();
     $xXmlArray1 = array();
 
-    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey);
+    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey, '', $protocol = 'http');
     $connectionResult = $zimbra->connect();
 
     if (!$connectionResult) {
@@ -136,16 +141,18 @@ function getZimbraTaskList($ServerUrl, $username, $preAuthKey) {
  * @param string | $ServerUrl | Server name and port where Zimbra exists | zimbra.server:port
  * @param string | $username| Valid username to connect to Zimbra server
  * @param string | $preAuthKey | Server Key for SSO authentication
+ * @param string | $protocol | protpcol server http https
  *
  * @return string | $result | Response
  *
  */
-function getZimbraAppointmentList($ServerUrl, $username, $preAuthKey) {
+function getZimbraAppointmentList($ServerUrl, $username, $preAuthKey, $protocol = 'http')
+{
 
     $xXmlArray = array();
     $xXmlArray1 = array();
 
-    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey);
+    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey, '', $protocol);
     $connectionResult = $zimbra->connect();
 
     if (!$connectionResult) {
@@ -173,16 +180,18 @@ function getZimbraAppointmentList($ServerUrl, $username, $preAuthKey) {
  * @param string | $preAuthKey | Server Key for SSO authentication
  * @param string | $folderName | Folder Name
  * @param string | $color | Color of Folder
+ * @param string | $protocol | protpcol server http https
  *
  * @return string | $result | Response
  *
  */
-function createZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName, $color) {
+function createZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName, $color, $protocol = 'http')
+{
     $serializeOp = array();
     $serializeOp = array('folderName' => $folderName, 'color' => $color);
     $serializeOp1 = serialize($serializeOp);
 
-    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey);
+    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey, '', $protocol);
     $connectionResult = $zimbra->connect();
 
     if (!$connectionResult) {
@@ -212,17 +221,19 @@ function createZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName, $co
  * @param string | $email | Email Address
  * @param string | $otherData | BirthDay/Anniversary/Custom
  * @param string | $otherDataValue | Corresponding Date or Value
+ * @param string | $protocol | protpcol server http https
  *
  * @return string | $result | Response
  *
  */
-function createZimbraContacts($ServerUrl, $username, $preAuthKey, $firstName, $lastName, $email, $otherData, $otherDataValue) {
+function createZimbraContacts($ServerUrl, $username, $preAuthKey, $firstName, $lastName, $email, $otherData, $otherDataValue, $protocol = 'http')
+{
 
     $serializeOp = array();
     $serializeOp = array('firstName' => $firstName, 'lastName' => $lastName, 'email' => $email, 'otherData' => $otherData, 'otherDataValue' => $otherDataValue);
     $serializeOp1 = serialize($serializeOp);
 
-    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey);
+    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey, '', $protocol);
     $connectionResult = $zimbra->connect();
 
     if (!$connectionResult) {
@@ -259,16 +270,18 @@ function createZimbraContacts($ServerUrl, $username, $preAuthKey, $firstName, $l
  * @param string | $dueDate | Due Date of the task
  * @param string | $status | Status of the task
  * @param string | $percent | Percentage of Task Completed
+ * @param string | $protocol | protpcol server http https
  *
  * @return string | $result | Response
  *
  */
-function createZimbraTask($ServerUrl, $username, $preAuthKey, $subject, $taskName, $friendlyName, $userEmail, $priority, $allDay, $class, $location, $dueDate, $status, $percent) {
+function createZimbraTask($ServerUrl, $username, $preAuthKey, $subject, $taskName, $friendlyName, $userEmail, $priority, $allDay, $class, $location, $dueDate, $status, $percent, $protocol = 'http')
+{
     $serializeOp = array();
     $serializeOp = array('subject' => $subject, 'taskName' => $taskName, 'friendlyName' => $friendlyName, 'userEmail' => $userEmail, 'priority' => $priority, 'allDay' => $allDay, 'class' => $class, 'location' => $location, 'dueDate' => $dueDate, 'status' => $status, 'percent' => $percent);
     $serializeOp1 = serialize($serializeOp);
 
-    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey);
+    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey, '', $protocol);
 
     $connectionResult = $zimbra->connect();
     if (!$connectionResult) {
@@ -311,17 +324,19 @@ function createZimbraTask($ServerUrl, $username, $preAuthKey, $subject, $taskNam
  * @param string | $startDate | Start Date of the Appointment
  * @param string | $endDate | End Date of the Appointment
  * @param string | $tz | Time Zone
+ * @param string | $protocol | protpcol server http https
  *
  * @return string | $result | Response
  *
  */
-function createZimbraAppointment($ServerUrl, $username, $preAuthKey, $subject, $appointmentName, $friendlyName, $userEmail, $domainName, $schedule, $cutype, $allDay, $isOrg, $rsvp, $atFriendlyName, $role, $location, $ptst, $startDate, $endDate, $tz='') {
+function createZimbraAppointment($ServerUrl, $username, $preAuthKey, $subject, $appointmentName, $friendlyName, $userEmail, $domainName, $schedule, $cutype, $allDay, $isOrg, $rsvp, $atFriendlyName, $role, $location, $ptst, $startDate, $endDate, $tz = '', $protocol = 'http')
+{
 
     $serializeOp = array();
     $serializeOp = array('username' => $username, 'subject' => $subject, 'appointmentName' => $appointmentName, 'friendlyName' => $friendlyName, 'userEmail' => $userEmail, 'domainName' => $domainName, 'schedule' => $schedule, 'cutype' => $cutype, 'allDay' => $allDay, 'isOrg' => $isOrg, 'rsvp' => $rsvp, 'atFriendlyName' => $atFriendlyName, 'role' => $role, 'location' => $location, 'ptst' => $ptst, 'startDate' => $startDate, 'endDate' => $endDate, 'tz' => $tz);
     $serializeOp1 = serialize($serializeOp);
 
-    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey);
+    $zimbra = new Zimbra($username, $ServerUrl, $preAuthKey, '', $protocol);
     $connectionResult = $zimbra->connect();
 
     if (!$connectionResult) {
@@ -349,16 +364,18 @@ function createZimbraAppointment($ServerUrl, $username, $preAuthKey, $subject, $
  * @param string | $preAuthKey | Server Key for SSO authentication
  * @param string | $folderName | Folder Name
  * @param string | $fileLocation | Absolute path of the File to be uploaded.
+ * @param string | $protocol | protpcol server http https
  *
  * @return string | $result | Response
  *
  */
-function uploadZimbraFile($ServerUrl, $username, $preAuthKey, $folderName, $fileLocation) {
+function uploadZimbraFile($ServerUrl, $username, $preAuthKey, $folderName, $fileLocation, $protocol = 'http')
+{
 
     $header_array = array("ENCTYPE" => "multipart/form-data");
     $file = $fileLocation;
 
-    $oZimbraObj = new Zimbra($username, $ServerUrl, $preAuthKey);
+    $oZimbraObj = new Zimbra($username, $ServerUrl, $preAuthKey, '', $protocol);
     $connectResult = $oZimbraObj->connect();
     $sAuthToken = $oZimbraObj->auth_token;
     $cookie = array('ZM_AUTH_TOKEN' => $sAuthToken, 'ZM_TEST' => true);
@@ -387,19 +404,18 @@ function uploadZimbraFile($ServerUrl, $username, $preAuthKey, $folderName, $file
     //Apply proxy settings
     $sysConf = System::getSystemConfiguration();
     if ($sysConf['proxy_host'] != '') {
-      curl_setopt($ch, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
-      if ($sysConf['proxy_port'] != '') {
-        curl_setopt($ch, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
-      }
-      if ($sysConf['proxy_user'] != '') {
-        curl_setopt($ch, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
-      }
-      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
+        curl_setopt($ch, CURLOPT_PROXY, $sysConf['proxy_host'] . ($sysConf['proxy_port'] != '' ? ':' . $sysConf['proxy_port'] : ''));
+        if ($sysConf['proxy_port'] != '') {
+            curl_setopt($ch, CURLOPT_PROXYPORT, $sysConf['proxy_port']);
+        }
+        if ($sysConf['proxy_user'] != '') {
+            curl_setopt($ch, CURLOPT_PROXYUSERPWD, $sysConf['proxy_user'] . ($sysConf['proxy_pass'] != '' ? ':' . $sysConf['proxy_pass'] : ''));
+        }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
     }
 
-    if( ! $response = curl_exec($ch))
-    {
-       return "Upload error. Connection Error";
+    if ( ! $response = curl_exec($ch)) {
+        return "Upload error. Connection Error";
     }
 
     //G::pr($response);
@@ -439,4 +455,6 @@ function uploadZimbraFile($ServerUrl, $username, $preAuthKey, $folderName, $file
     } else {
         return "The file has been uploaded Successfully";
     }
+
 }
+
