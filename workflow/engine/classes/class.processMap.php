@@ -4666,7 +4666,7 @@ class processMap
             );
             $oOP->create( $aData );
 
-            return Bootstrap::json_endoce($oNewTask);//$oJSON->encode( $oNewTask );
+            return Bootstrap::json_encode($oNewTask);//$oJSON->encode( $oNewTask );
         } catch (Exception $oError) {
             throw ($oError);
         }

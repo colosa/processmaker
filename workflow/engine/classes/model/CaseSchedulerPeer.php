@@ -5,10 +5,10 @@
  */
 
   // include base peer class
-  require_once 'classes/model/om/BaseCaseSchedulerPeer.php';
+  //require_once 'classes/model/om/BaseCaseSchedulerPeer.php';
 
   // include object class
-  include_once 'classes/model/CaseScheduler.php';
+  //include_once 'classes/model/CaseScheduler.php';
 
 
 /**

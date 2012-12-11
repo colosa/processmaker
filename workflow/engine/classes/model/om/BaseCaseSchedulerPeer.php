@@ -3,7 +3,7 @@
 require_once 'propel/util/BasePeer.php';
 // The object class -- needed for instanceof checks in this class.
 // actual class may be a subclass -- as returned by CaseSchedulerPeer::getOMClass()
-include_once 'classes/model/CaseScheduler.php';
+//include_once 'classes/model/CaseScheduler.php';
 
 /**
  * Base static class for performing query and update operations on the 'CASE_SCHEDULER' table.

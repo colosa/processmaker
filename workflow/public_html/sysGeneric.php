@@ -506,6 +506,9 @@ Bootstrap::registerClass('AppThreadPeer',       PATH_HOME . "engine/classes/mode
 Bootstrap::registerClass('BaseCaseScheduler',   PATH_HOME . "engine/classes/model/om/BaseCaseScheduler.php");
 Bootstrap::registerClass('CaseScheduler',       PATH_HOME . "engine/classes/model/CaseScheduler.php");
 
+Bootstrap::registerClass('BaseCaseSchedulerPeer',PATH_HOME . "engine/classes/model/om/BaseCaseSchedulerPeer.php");
+Bootstrap::registerClass('CaseSchedulerPeer',    PATH_HOME . "engine/classes/model/CaseSchedulerPeer.php");
+
 Bootstrap::registerClass('BaseCaseTracker',     PATH_HOME . "engine/classes/model/om/BaseCaseTracker.php");
 Bootstrap::registerClass('CaseTracker',         PATH_HOME . "engine/classes/model/CaseTracker.php");
 
@@ -630,6 +633,9 @@ Bootstrap::registerClass('SubApplicationPeer',  PATH_HOME . "engine/classes/mode
 
 Bootstrap::registerClass('BaseSubProcess',      PATH_HOME . "engine/classes/model/om/BaseSubProcess.php");
 Bootstrap::registerClass('SubProcess',          PATH_HOME . "engine/classes/model/SubProcess.php");
+
+Bootstrap::registerClass('BaseSubProcessPeer',  PATH_HOME . "engine/classes/model/om/BaseSubProcessPeer.php");
+Bootstrap::registerClass('SubProcessPeer',      PATH_HOME . "engine/classes/model/SubProcessPeer.php");
 
 Bootstrap::registerClass('BaseTask',            PATH_HOME . "engine/classes/model/om/BaseTask.php");
 Bootstrap::registerClass('Task',                PATH_HOME . "engine/classes/model/Task.php");
