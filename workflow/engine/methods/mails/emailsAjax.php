@@ -23,7 +23,7 @@ switch($req){
         $criteria = new Criteria();
         $criteria->addJoin(AppMessagePeer::APP_UID, ApplicationPeer::APP_UID);
         if ($emailStatus != '') {
-            $criteria->add( AppMessagePeer::APP_MSG_STATUS, $emailStatus, Criteria::LESS_EQUAL );
+            $criteria->add( AppMessagePeer::APP_MSG_STATUS, $emailStatus);
         }
         if ($proUid != '') {
             $criteria->add( ApplicationPeer::PRO_UID, $proUid);
@@ -37,7 +37,7 @@ switch($req){
         } elseif ($dateTo != '') {
             $criteria->add( AppMessagePeer::APP_MSG_DATE, $dateTo, Criteria::LESS_EQUAL );
         }
-        
+
         $result = AppMessagePeer::doSelectRS($criteria);
         $result->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $data = Array();
@@ -67,7 +67,7 @@ switch($req){
         $criteria->addAlias('C2', 'CONTENT');
 
         if ($emailStatus != '') {
-            $criteria->add( AppMessagePeer::APP_MSG_STATUS, $emailStatus, Criteria::LESS_EQUAL );
+            $criteria->add( AppMessagePeer::APP_MSG_STATUS, $emailStatus);
         }
         if ($proUid != '') {
             $criteria->add( ApplicationPeer::PRO_UID, $proUid);
