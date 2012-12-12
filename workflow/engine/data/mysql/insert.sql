@@ -3598,6 +3598,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_ALL_CATEGORIES','en','All Categories','2012-10-02') ,
 ( 'LABEL','ID_CASES_NOTES_NO_PERMISSIONS','en','You do not have permission to cases notes','2012-10-03') ,
 ( 'LABEL','ID_DELETE_DOCUMENT','en','Do you want to delete selected document?','2012-10-08') ,
+( 'LABEL','ID_CRON_ACTIONS_LOG','en','Cron Actions Log','2012-11-12') ,
 ( 'LABEL','ID_AUTH_SOURCE_MISSING','en','The plugin that is related to this authentication source was removed or disabled, please consult to your system administrator.','2012-10-12') ,
 ( 'LABEL','ID_TRIGGER_REQUIRED','en','Trigger is required','2012-10-17') ,
 ( 'LABEL','ID_TIME_REQUIRED','en','Time is required','2012-10-17') ,
@@ -3607,7 +3608,37 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_DATE_FORMAT_14','en','d.m.Y','2012-11-06') ,
 ( 'LABEL','ID_TRIGGER_COPY_TITLE','en','Copy/Import Trigger','2012-11-07') ,
 ( 'LABEL','ID_TRIGGER_COPY_OPTION','en','Copy/Import Triggers from a Process','2012-11-07') ,
-( 'LABEL','ID_TRIGGER_COPY_OPTION_DESCRIPTION','en','With this option is it possible to copy/import a trigger from any existent process on the System','2012-11-07') ;
+( 'LABEL','ID_TRIGGER_COPY_OPTION_DESCRIPTION','en','With this option is it possible to copy/import a trigger from any existent process on the System','2012-11-07') ,
+( 'LABEL','ID_EDITING_DYNAFORM','en','Editing the dynaform','2012-11-13') ,
+( 'LABEL','ID_DISPLAY_TOTAL','en','Total {2}','2012-11-28') ,
+( 'LABEL','ID_TASK_NOT_RELATED','en','[Not related to a task]','2012-11-28') ,
+( 'LABEL','ID_GRID_PAGE_DISPLAYING_EMAIL_MESSAGE','en','Displaying emails {0} - {1} of {2}','2012-11-28') ,
+( 'LABEL','ID_GRID_PAGE_NO_EMAIL_MESSAGE','en','No Emails to display','2012-11-28') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_CHECK','en','Check PM requirements','2012-11-30') ,
+( 'LABEL','ID_PHP_INFO','en','PHP Information','2012-11-30') ,
+( 'LABEL','ID_CHECKING','en','Checking...','2012-11-30') ,
+( 'LABEL','ID_CHECK_AGAIN','en','Check again','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION','en','If any of these items is not supported (marked as No) then please take actions to correct them.<br /><br />Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br /><br />(*) OpenSSL is optional.<br /><br />(*) LDAP is optional.','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_PHP','en','PHP Version >= 5.2.10','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_MYSQL','en','MySQL Support','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_MSSQL','en','MSSQL Support (*)','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_CURL','en','cURL Version','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_OPENSSL','en','OpenSSL Version (*)','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_DOMXML','en','DOM/XML Support','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_GD','en','GD Support','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_MULTIBYTESTRING','en','Multibyte Strings Support','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_SOAP','en','Soap Support','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_LDAP','en','LDAP Support (*)','2012-11-30') ,
+( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_MEMORYLIMIT','en','Memory Limit >= 80M','2012-11-30') ,
+( 'LABEL','ID_ADMINISTRATOR_ROLE_CANT_CHANGED','en','The administrator''s role can''t be changed!','2012-11-30') ,
+( 'LABEL','ID_SELECT_DYNAFORM_IMPORT','en','Select the dynaform you want to import','2012-12-05') ,
+( 'LABEL','ID_CONFIRM_IMPORT_DYNAFORM','en','When you import the selected form, lose the information of the current form. Are you sure you import the form?','2012-12-05') ,
+( 'LABEL','ID_CASESLIST_FIELD_RESET','en','Restart everything with the system fields','2012-12-10') ,
+( 'LABEL','ID_CASESLIST_FIELD_RESET_ID','en','Restart everything with the system fields, with the ID of the label for its translation','2012-12-10') ,
+( 'LABEL','ID_CASESLIST_FIELD_COMPLETE','en','Complete all system fields','2012-12-10') ,
+( 'LABEL','ID_CASESLIST_FIELD_COMPLETE_ID','en','Complete all system fields, with the label ID for its translation','2012-12-10') ,
+( 'LABEL','ID_CASESLIST_FIELD_LABEL_RESET','en','Restart labels with system fields','2012-12-10') ,
+( 'LABEL','ID_CASESLIST_FIELD_LABEL_RESET_ID','en','Restart labels with system fields, with the ID for its translation','2012-12-10') ;
 
 INSERT INTO ISO_LOCATION (IC_UID,IL_UID,IL_NAME,IL_NORMAL_NAME,IS_UID)  VALUES 
 ('AD','','',' ','') ,
@@ -58966,14 +58997,14 @@ INSERT INTO ISO_LOCATION (IC_UID,IL_UID,IL_NAME,IL_NORMAL_NAME,IS_UID)  VALUES
 ('ZW','WKI','Hwange',' ','') ;
 
 INSERT INTO DASHLET (DAS_UID,DAS_CLASS,DAS_TITLE,DAS_DESCRIPTION,DAS_VERSION,DAS_CREATE_DATE,DAS_UPDATE_DATE,DAS_STATUS) VALUES 
-('00000000000000000000000000000001','dashletOpenVSCompleted','Open Cases VS Completed Cases','Open Cases VS Completed Cases','1.0','2011-10-28 00:00:00','2011-10-28 00:00:00','1'),
 ('00000000000000000000000000000002','dashletProcessMakerCommunity','ProcessMaker Community','ProcessMaker Community Links and Information','1.0','2011-12-01 00:00:00','2011-12-01 00:00:00','1'),
+('00000000000000000000000000000001','dashletOpenVSCompleted','Open Cases VS Completed Cases','Open Cases VS Completed Cases','1.0','2011-10-28 00:00:00','2011-10-28 00:00:00','1'),
 ('00000000000000000000000000000003','dashletProcessMakerEnterprise','ProcessMaker Enterprise Plugins and Addons','The following list of Enterprise plug-ins includes features and functionality that extend and enhance ProcessMaker''s performance and functionality.','1.0','2011-12-05 00:00:00','2011-12-05 00:00:00','1'),
 ('00000000000000000000000000000004','dashletRssReader','Simple RSS reader','Simple RSS reader for ProcessMaker','1.0','2012-04-16 00:00:00','2012-04-16 00:00:00','1');
 
 INSERT INTO DASHLET_INSTANCE (DAS_INS_UID,DAS_UID,DAS_INS_OWNER_TYPE,DAS_INS_OWNER_UID,DAS_INS_ADDITIONAL_PROPERTIES,DAS_INS_CREATE_DATE,DAS_INS_UPDATE_DATE,DAS_INS_STATUS) VALUES 
-('00000000000000000000000000000004','00000000000000000000000000000004','EVERYBODY','','a:2:{s:13:"DAS_INS_TITLE";s:15:"PM Plugins News";s:7:"DAS_URL";s:71:"http://license.processmaker.com/syspmLicenseSrv/en/green/services/rssAP";}','2012-04-16 00:00:00','2012-04-16 00:00:00',1),
-('00000000000000000000000000000002','00000000000000000000000000000002','EVERYBODY','','','2011-12-02 00:00:00','2011-12-02 00:00:00',1),
 ('00000000000000000000000000000001','00000000000000000000000000000001','EVERYBODY','','a:7:{s:20:"DAS_INS_CONTEXT_TIME";s:5:"TODAY";s:12:"DAS_RED_FROM";s:1:"0";s:10:"DAS_RED_TO";s:2:"30";s:15:"DAS_YELLOW_FROM";s:2:"30";s:13:"DAS_YELLOW_TO";s:2:"50";s:14:"DAS_GREEN_FROM";s:2:"50";s:12:"DAS_GREEN_TO";s:3:"100";}','2011-12-02 00:00:00','2011-12-02 00:00:00',1),
-('00000000000000000000000000000003','00000000000000000000000000000003','EVERYBODY','','','2011-12-05 00:00:00','2011-12-05 00:00:00',1);
+('00000000000000000000000000000002','00000000000000000000000000000002','EVERYBODY','','','2011-12-02 00:00:00','2011-12-02 00:00:00',1),
+('00000000000000000000000000000003','00000000000000000000000000000003','EVERYBODY','','','2011-12-05 00:00:00','2011-12-05 00:00:00',1),
+('00000000000000000000000000000004','00000000000000000000000000000004','EVERYBODY','','a:2:{s:13:"DAS_INS_TITLE";s:15:"PM Plugins News";s:7:"DAS_URL";s:71:"http://license.processmaker.com/syspmLicenseSrv/en/green/services/rssAP";}','2012-04-16 00:00:00','2012-04-16 00:00:00',1);
 

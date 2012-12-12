@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-1009-ga3b8c41\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-2086-gdc14a1f\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-09-25 23:26:21\n"
+"PO-Revision-Date: 2012-12-12 18:04:11\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -292,8 +292,8 @@ msgstr "Due date required!"
 # TRANSLATION
 # LABEL/ID_NEW_PASS_SAME_OLD_PASS
 #: LABEL/ID_NEW_PASS_SAME_OLD_PASS
-msgid "The  confirm Password fields must be the same!"
-msgstr "The  confirm Password fields must be the same!"
+msgid "The confirm Password fields must be the same!"
+msgstr "The confirm Password fields must be the same!"
 
 # TRANSLATION
 # LABEL/ID_NEW_INPUTDOCS
@@ -526,8 +526,8 @@ msgstr "Attach"
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_DELETE_CASES
 #: LABEL/ID_MSG_CONFIRM_DELETE_CASES
-msgid "Are you sure  you want to delete all     selected cases?"
-msgstr "Are you sure  you want to delete all     selected cases?"
+msgid "Are you sure you want to delete all selected cases?"
+msgstr "Are you sure you want to delete all selected cases?"
 
 # TRANSLATION
 # LABEL/ID_ALL
@@ -538,8 +538,8 @@ msgstr "All"
 # TRANSLATION
 # LABEL/ID_CANCELLED
 #: LABEL/ID_CANCELLED
-msgid "Canceled"
-msgstr "Canceled"
+msgid "Cancelled"
+msgstr "Cancelled"
 
 # TRANSLATION
 # LABEL/ID_FINISHED
@@ -1030,8 +1030,8 @@ msgstr "The user doesn't have a resume."
 # TRANSLATION
 # LABEL/ID_NO_DERIVATION_RULE
 #: LABEL/ID_NO_DERIVATION_RULE
-msgid "Process definition error: All conditions in  parallel evaluation routing rule evaluated  to false, so workflow has stopped. Please  change the definition of the parallel  evaluation routing rule."
-msgstr "Process definition error: All conditions in  parallel evaluation routing rule evaluated  to false, so workflow has stopped. Please  change the definition of the parallel  evaluation routing rule."
+msgid "Process definition error: All conditions in parallel evaluation routing rule evaluated to false, so workflow has stopped. Please change the definition of the parallel evaluation routing rule."
+msgstr "Process definition error: All conditions in parallel evaluation routing rule evaluated to false, so workflow has stopped. Please change the definition of the parallel evaluation routing rule."
 
 # TRANSLATION
 # LABEL/ID_NO_USERS
@@ -1288,8 +1288,8 @@ msgstr "Completed"
 # TRANSLATION
 # LABEL/CANCELLED
 #: LABEL/CANCELLED
-msgid "[LABEL/CANCELLED] Canceled"
-msgstr "Canceled"
+msgid "[LABEL/CANCELLED] Cancelled"
+msgstr "Cancelled"
 
 # TRANSLATION
 # LABEL/ID_NOT_FINISHED
@@ -1576,8 +1576,8 @@ msgstr "You must specify a role code!"
 # TRANSLATION
 # LABEL/ID_ROLES_CAN_NOT_DELETE
 #: LABEL/ID_ROLES_CAN_NOT_DELETE
-msgid "This role cannot be deleted while it still   has some assigned users."
-msgstr "This role cannot be deleted while it still   has some assigned users."
+msgid "This role cannot be deleted while it still has some assigned users."
+msgstr "This role cannot be deleted while it still has some assigned users."
 
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_DELETE_SUPERVISOR_DYNAFORM
@@ -1636,8 +1636,8 @@ msgstr "Test message send failed, error:"
 # TRANSLATION
 # LABEL/IMPORT_LANGUAGE_ERR_NO_WRITABLE2
 #: LABEL/IMPORT_LANGUAGE_ERR_NO_WRITABLE2
-msgid "Some files within XMLFORM directory are not  writable, to install or update the  translations the system requires that all  files are writable.  Contact your system administrator please."
-msgstr "Some files within XMLFORM directory are not  writable, to install or update the  translations the system requires that all  files are writable.  Contact your system administrator please."
+msgid "Some files within XMLFORM directory are not writable, to install or update the translations the system requires that all files are writable. Contact your system administrator please."
+msgstr "Some files within XMLFORM directory are not writable, to install or update the translations the system requires that all files are writable. Contact your system administrator please."
 
 # TRANSLATION
 # LABEL/ID_MESS_ENGINE_TYPE_2
@@ -1678,8 +1678,8 @@ msgstr "The 'To' field is required"
 # TRANSLATION
 # LABEL/ID_MESS_SEND_MAX_REQUIRED
 #: LABEL/ID_MESS_SEND_MAX_REQUIRED
-msgid "The maximum number of attempts to send mail  is a required field."
-msgstr "The maximum number of attempts to send mail  is a required field."
+msgid "The maximum number of attempts to send mail is a required field."
+msgstr "The maximum number of attempts to send mail is a required field."
 
 # TRANSLATION
 # JAVASCRIPT/ID_MESS_EXECUTE_EVERY_REQUIRED
@@ -2008,8 +2008,8 @@ msgstr "Groups for"
 # TRANSLATION
 # LABEL/ID_FUNCTION
 #: LABEL/ID_FUNCTION
-msgid "@function() It evaluates the value, then  executes a PHP function"
-msgstr "@function() It evaluates the value, then  executes a PHP function"
+msgid "@function() It evaluates the value, then executes a PHP function"
+msgstr "@function() It evaluates the value, then executes a PHP function"
 
 # TRANSLATION
 # JAVASCRIPT/ID_MSG_CONFIRM_REACTIVATE_CASES
@@ -2026,14 +2026,14 @@ msgstr "Are you sure you want to reactivate this case?"
 # TRANSLATION
 # LABEL/ID_ESCSJS
 #: LABEL/ID_ESCSJS
-msgid "@@ It replaces the value in single  quotation marks to use it in JavaScript  sentences."
-msgstr "@@ It replaces the value in single  quotation marks to use it in JavaScript  sentences."
+msgid "@@ It replaces the value in single quotation marks to use it in JavaScript sentences."
+msgstr "@@ It replaces the value in single quotation marks to use it in JavaScript sentences."
 
 # TRANSLATION
 # LABEL/ID_ESCJS
 #: LABEL/ID_ESCJS
-msgid "@@ It replaces the value in quotation marks  to use it in JavaScript sentences"
-msgstr "@@ It replaces the value in quotation marks  to use it in JavaScript sentences"
+msgid "@@ It replaces the value in quotation marks to use it in JavaScript sentences"
+msgstr "@@ It replaces the value in quotation marks to use it in JavaScript sentences"
 
 # TRANSLATION
 # LABEL/ID_ESC
@@ -2830,8 +2830,8 @@ msgstr "Case Demo"
 # TRANSLATION
 # LABEL/ID_NEED_REGISTER
 #: LABEL/ID_NEED_REGISTER
-msgid "You need to be registered to download this  process. Register NOW!"
-msgstr "You need to be registered to download this  process. Register NOW!"
+msgid "You need to be registered to download this process. Register NOW!"
+msgstr "You need to be registered to download this process. Register NOW!"
 
 # TRANSLATION
 # JAVASCRIPT/ID_INCORRECT_USER_OR_PASS
@@ -2974,8 +2974,8 @@ msgstr "The XML forms directory is not writable"
 # TRANSLATION
 # JAVASCRIPT/CONDITIONAL_ALERT2
 #: JAVASCRIPT/CONDITIONAL_ALERT2
-msgid "You should select at least one event  (OnChange or OnLoad )"
-msgstr "You should select at least one event  (OnChange or OnLoad )"
+msgid "You should select at least one event (OnChange or OnLoad )"
+msgstr "You should select at least one event (OnChange or OnLoad )"
 
 # TRANSLATION
 # JAVASCRIPT/CONDITIONAL_TITLE
@@ -3034,20 +3034,20 @@ msgstr "Role"
 # TRANSLATION
 # LABEL/ID_MSG_CANNOT_DELETE_USER
 #: LABEL/ID_MSG_CANNOT_DELETE_USER
-msgid "User cannot be deleted while has assigned  cases."
-msgstr "User cannot be deleted while has assigned  cases."
+msgid "User cannot be deleted while has assigned cases."
+msgstr "User cannot be deleted while has assigned cases."
 
 # TRANSLATION
 # LABEL/ID_MSG_REMOVE_PLUGIN
 #: LABEL/ID_MSG_REMOVE_PLUGIN
-msgid "Are you sure that you want to remove this  plugin?"
-msgstr "Are you sure that you want to remove this  plugin?"
+msgid "Are you sure that you want to remove this plugin?"
+msgstr "Are you sure that you want to remove this plugin?"
 
 # TRANSLATION
 # JAVASCRIPT/USERS_REASSIGN
 #: JAVASCRIPT/USERS_REASSIGN
-msgid "This user cannot be deleted because he/she  still has some pending tasks. <br/><br/>Do  you want to reassign these tasks to another  user now?"
-msgstr "This user cannot be deleted because he/she  still has some pending tasks. <br/><br/>Do  you want to reassign these tasks to another  user now?"
+msgid "This user cannot be deleted because he/she still has some pending tasks. <br/><br/>Do you want to reassign these tasks to another user now?"
+msgstr "This user cannot be deleted because he/she still has some pending tasks. <br/><br/>Do you want to reassign these tasks to another user now?"
 
 # TRANSLATION
 # LABEL/LOGIN_VERIFY_MSG
@@ -3124,8 +3124,8 @@ msgstr "Do you want to delete this event?"
 # TRANSLATION
 # JAVASCRIPT/ID_MSG_CONFIRM_RESENDMSG
 #: JAVASCRIPT/ID_MSG_CONFIRM_RESENDMSG
-msgid "Are you sure that you want to resend this  message?"
-msgstr "Are you sure that you want to resend this  message?"
+msgid "Are you sure that you want to resend this message?"
+msgstr "Are you sure that you want to resend this message?"
 
 # TRANSLATION
 # LABEL/ID_RESEND
@@ -3226,8 +3226,8 @@ msgstr "User not allowed access past due date"
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_DELETE_AUTH_SOURCE
 #: LABEL/ID_MSG_CONFIRM_DELETE_AUTH_SOURCE
-msgid "Do you want to delete this authentication  source?"
-msgstr "Do you want to delete this authentication  source?"
+msgid "Do you want to delete this authentication source?"
+msgstr "Do you want to delete this authentication source?"
 
 # TRANSLATION
 # LABEL/ID_ERROR_OBJECT_NOT_EXISTS
@@ -3262,8 +3262,8 @@ msgstr "Assign Input Document"
 # TRANSLATION
 # LABEL/ID_NOT_DERIVATED
 #: LABEL/ID_NOT_DERIVATED
-msgid "The case couldn't be routed. Consult the  system administrator"
-msgstr "The case couldn't be routed. Consult the  system administrator"
+msgid "The case couldn't be routed. Consult the system administrator"
+msgstr "The case couldn't be routed. Consult the system administrator"
 
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_DELETE_SUPERVISOR_INPUT
@@ -3358,14 +3358,14 @@ msgstr "Using workspace"
 # TRANSLATION
 # JAVASCRIPT/ID_REASSIGN_BYUSER_CONFIRM
 #: JAVASCRIPT/ID_REASSIGN_BYUSER_CONFIRM
-msgid "Are you sure that you want to reassign the  cases?"
-msgstr "Are you sure that you want to reassign the  cases?"
+msgid "Are you sure that you want to reassign the cases?"
+msgstr "Are you sure that you want to reassign the cases?"
 
 # TRANSLATION
 # JAVASCRIPT/ID_REASSIGN_BYUSER
 #: JAVASCRIPT/ID_REASSIGN_BYUSER
-msgid "At least one item from the list must be  selected."
-msgstr "At least one item from the list must be  selected."
+msgid "At least one item from the list must be selected."
+msgstr "At least one item from the list must be selected."
 
 # TRANSLATION
 # JAVASCRIPT/ID_MSG_RESSIGN_BYUSER_PANEL
@@ -3376,8 +3376,8 @@ msgstr "Users selection interface"
 # TRANSLATION
 # JAVASCRIPT/ID_MSG_RESSIGN_B
 #: JAVASCRIPT/ID_MSG_RESSIGN_B
-msgid "[JAVASCRIPT/ID_MSG_RESSIGN_B] At least one item from the list must be  selected."
-msgstr "At least one item from the list must be  selected."
+msgid "[JAVASCRIPT/ID_MSG_RESSIGN_B] At least one item from the list must be selected."
+msgstr "At least one item from the list must be selected."
 
 # TRANSLATION
 # LABEL/ID_DETAILS_WEBSERVICES
@@ -3388,8 +3388,8 @@ msgstr "Details"
 # TRANSLATION
 # LABEL/ID_ERROR_STREAMING_FILE
 #: LABEL/ID_ERROR_STREAMING_FILE
-msgid "doesn't exist. It should be saved by a  plugin to a different place. Please review  the configuration"
-msgstr "doesn't exist. It should be saved by a  plugin to a different place. Please review  the configuration"
+msgid "doesn't exist. It should be saved by a plugin to a different place. Please review the configuration"
+msgstr "doesn't exist. It should be saved by a plugin to a different place. Please review the configuration"
 
 # TRANSLATION
 # LABEL/ID_UPLOAD_ERR_UNKNOWN
@@ -3430,14 +3430,14 @@ msgstr "The uploaded file was only partially uploaded"
 # TRANSLATION
 # LABEL/ID_UPLOAD_ERR_FORM_SIZE
 #: LABEL/ID_UPLOAD_ERR_FORM_SIZE
-msgid "The uploaded file exceeds the MAX_FILE_SIZE   directive that was specified in the HTML form"
-msgstr "The uploaded file exceeds the MAX_FILE_SIZE   directive that was specified in the HTML form"
+msgid "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form"
+msgstr "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form"
 
 # TRANSLATION
 # LABEL/ID_UPLOAD_ERR_INI_SIZE
 #: LABEL/ID_UPLOAD_ERR_INI_SIZE
-msgid "The uploaded file exceeds the  upload_max_filesize directive in php.ini"
-msgstr "The uploaded file exceeds the  upload_max_filesize directive in php.ini"
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 
 # TRANSLATION
 # LABEL/ID_NOT_PROCESS_RELATED
@@ -3460,14 +3460,14 @@ msgstr "Info"
 # TRANSLATION
 # LABEL/ID_CONFIRM_DELETE_INPUT_AND_HISTORY
 #: LABEL/ID_CONFIRM_DELETE_INPUT_AND_HISTORY
-msgid "This action will delete the current  document and all its versions"
-msgstr "This action will delete the current  document and all its versions"
+msgid "This action will delete the current document and all its versions"
+msgstr "This action will delete the current document and all its versions"
 
 # TRANSLATION
 # JAVASCRIPT/ID_CONFIRM_DELETE_INPUT_AND_HISTORY
 #: JAVASCRIPT/ID_CONFIRM_DELETE_INPUT_AND_HISTORY
-msgid "This will delete the current document and  its past versions."
-msgstr "This will delete the current document and  its past versions."
+msgid "This will delete the current document and its past versions."
+msgstr "This will delete the current document and its past versions."
 
 # TRANSLATION
 # LABEL/ID_SETUP_MAILCONF_TITLE
@@ -3574,8 +3574,8 @@ msgstr "Drag & Drop to move and reorder the fields."
 # TRANSLATION
 # LABEL/ID_FIELD_HANDLER_HELP3
 #: LABEL/ID_FIELD_HANDLER_HELP3
-msgid "Bring the mouse pointer near tool icon and  the corresponding options (Edit, Delete)  will be shown."
-msgstr "Bring the mouse pointer near tool icon and  the corresponding options (Edit, Delete)  will be shown."
+msgid "Bring the mouse pointer near tool icon and the corresponding options (Edit, Delete) will be shown."
+msgstr "Bring the mouse pointer near tool icon and the corresponding options (Edit, Delete) will be shown."
 
 # TRANSLATION
 # JAVASCRIPT/ID_CONFIRM_WEBENTRY_DELETE
@@ -3622,8 +3622,8 @@ msgstr "Name"
 # TRANSLATION
 # LABEL/WEBEN_ONLY_BALANCED
 #: LABEL/WEBEN_ONLY_BALANCED
-msgid "Web Entry only works with tasks which  have  Cyclical Assignment.<br/> Please  change  the Assignment Rules"
-msgstr "Web Entry only works with tasks which  have  Cyclical Assignment.<br/> Please  change  the Assignment Rules"
+msgid "Web Entry only works with tasks which have Cyclical Assignment.<br/> Please change the Assignment Rules"
+msgstr "Web Entry only works with tasks which have Cyclical Assignment.<br/> Please change the Assignment Rules"
 
 # TRANSLATION
 # LABEL/ID_DETAIL
@@ -3634,20 +3634,20 @@ msgstr "Detail"
 # TRANSLATION
 # LABEL/HTML_FILES
 #: LABEL/HTML_FILES
-msgid "You can open only files with the .html  extension"
-msgstr "You can open only files with the .html  extension"
+msgid "You can open only files with the .html extension"
+msgstr "You can open only files with the .html extension"
 
 # TRANSLATION
 # JAVASCRIPT/WEBEN_ONLY_BALANCEDJS
 #: JAVASCRIPT/WEBEN_ONLY_BALANCEDJS
-msgid "Web Entry only works with tasks which have   Cyclical Assignment.  Please change  the  Assignment Rules"
-msgstr "Web Entry only works with tasks which have   Cyclical Assignment.  Please change  the  Assignment Rules"
+msgid "Web Entry only works with tasks which have Cyclical Assignment. Please change the Assignment Rules"
+msgstr "Web Entry only works with tasks which have Cyclical Assignment. Please change the Assignment Rules"
 
 # TRANSLATION
 # JAVASCRIPT/HTML_FILES
 #: JAVASCRIPT/HTML_FILES
-msgid "Make sure your uploaded file has extension  html or txt"
-msgstr "Make sure your uploaded file has extension  html or txt"
+msgid "Make sure your uploaded file has extension html or txt"
+msgstr "Make sure your uploaded file has extension html or txt"
 
 # TRANSLATION
 # LABEL/ID_SEARCH_RESULT
@@ -3658,8 +3658,8 @@ msgstr "Search results"
 # TRANSLATION
 # JAVASCRIPT/ID_MSG_REMOVE_PLUGIN
 #: JAVASCRIPT/ID_MSG_REMOVE_PLUGIN
-msgid "[JAVASCRIPT/ID_MSG_REMOVE_PLUGIN] Are you sure that you want to remove this  plugin?"
-msgstr "Are you sure that you want to remove this  plugin?"
+msgid "[JAVASCRIPT/ID_MSG_REMOVE_PLUGIN] Are you sure that you want to remove this plugin?"
+msgstr "Are you sure that you want to remove this plugin?"
 
 # TRANSLATION
 # LABEL/ID_MSG_REMOVE_PLUGIN_SUCCESS
@@ -3670,8 +3670,8 @@ msgstr "Plugin successfully removed!"
 # TRANSLATION
 # LABEL/CANT_DEL_LANGUAGE
 #: LABEL/CANT_DEL_LANGUAGE
-msgid "This language cannot be deleted  because it  is currently being  used."
-msgstr "This language cannot be deleted  because it  is currently being  used."
+msgid "This language cannot be deleted because it is currently being used."
+msgstr "This language cannot be deleted because it is currently being used."
 
 # TRANSLATION
 # JAVASCRIPT/ID_ADD
@@ -3682,14 +3682,14 @@ msgstr "Add"
 # TRANSLATION
 # JAVASCRIPT/CONDITIONAL_ALERT3
 #: JAVASCRIPT/CONDITIONAL_ALERT3
-msgid "You have not tested the condition, do you  want save anyway?"
-msgstr "You have not tested the condition, do you  want save anyway?"
+msgid "You have not tested the condition, do you want save anyway?"
+msgstr "You have not tested the condition, do you want save anyway?"
 
 # TRANSLATION
 # JAVASCRIPT/CONDITIONAL_ALERT4
 #: JAVASCRIPT/CONDITIONAL_ALERT4
-msgid "You have an error in the condition, do you  want save anyway?"
-msgstr "You have an error in the condition, do you  want save anyway?"
+msgid "You have an error in the condition, do you want save anyway?"
+msgstr "You have an error in the condition, do you want save anyway?"
 
 # TRANSLATION
 # LABEL/ID_ERROR
@@ -3754,8 +3754,8 @@ msgstr "Department name already exists!"
 # TRANSLATION
 # LABEL/ID_MSJ_REPORSTO
 #: LABEL/ID_MSJ_REPORSTO
-msgid "The current user does not have a valid   Reports To user.  Please contact  the  administrator."
-msgstr "The current user does not have a valid   Reports To user.  Please contact  the  administrator."
+msgid "The current user does not have a valid Reports To user. Please contact the administrator."
+msgstr "The current user does not have a valid Reports To user. Please contact the administrator."
 
 # TRANSLATION
 # LABEL/ID_REMOVE_LOGO
@@ -3826,8 +3826,8 @@ msgstr "Calendar"
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER
 #: LABEL/ID_MSG_CONFIRM_DELETE_CASE_SCHEDULER
-msgid "Are you sure you want to delete this  scheduled case?"
-msgstr "Are you sure you want to delete this  scheduled case?"
+msgid "Are you sure you want to delete this scheduled case?"
+msgstr "Are you sure you want to delete this scheduled case?"
 
 # TRANSLATION
 # LABEL/ID_SCHEDULER_LIST
@@ -3844,8 +3844,8 @@ msgstr "Cases Scheduler Logs"
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_DELETE_IDOCUMENT
 #: LABEL/ID_MSG_CONFIRM_DELETE_IDOCUMENT
-msgid "This object is being used in some steps.  Are you sure you want to delete it?"
-msgstr "This object is being used in some steps.  Are you sure you want to delete it?"
+msgid "This object is being used in some steps. Are you sure you want to delete it?"
+msgstr "This object is being used in some steps. Are you sure you want to delete it?"
 
 # TRANSLATION
 # JAVASCRIPT/ID_FIELD_FOREIGN_TABLE
@@ -3886,8 +3886,8 @@ msgstr "Error: There is a problem with the next tasks of this process. One of th
 # TRANSLATION
 # LABEL/ID_SELECT_OPTION_TABLE
 #: LABEL/ID_SELECT_OPTION_TABLE
-msgid "Select a option to export schema or data  from the selected table(s)."
-msgstr "Select a option to export schema or data  from the selected table(s)."
+msgid "Select a option to export schema or data from the selected table(s)."
+msgstr "Select a option to export schema or data from the selected table(s)."
 
 # TRANSLATION
 # LABEL/ID_SELECT_TABLE
@@ -3898,14 +3898,14 @@ msgstr "Please select a table to export."
 # TRANSLATION
 # LABEL/ID_TASK_WAS_ASSIGNED_TO_USER
 #: LABEL/ID_TASK_WAS_ASSIGNED_TO_USER
-msgid "Manual assignment shouldn't be used with  subprocesses.<br>The task \"{0}\" from case  {1} was assigned to user <b>{2}</b> ( {3}   {4} )"
-msgstr "Manual assignment shouldn't be used with  subprocesses.<br>The task \"{0}\" from case  {1} was assigned to user <b>{2}</b> ( {3}   {4} )"
+msgid "Manual assignment shouldn't be used with subprocesses.<br>The task \"{0}\" from case {1} was assigned to user <b>{2}</b> ( {3} {4} )"
+msgstr "Manual assignment shouldn't be used with subprocesses.<br>The task \"{0}\" from case {1} was assigned to user <b>{2}</b> ( {3} {4} )"
 
 # TRANSLATION
 # LABEL/ID_USER_ONVACATION
 #: LABEL/ID_USER_ONVACATION
-msgid "User on vacation! Contact to your System  Administrator if you want to login. please"
-msgstr "User on vacation! Contact to your System  Administrator if you want to login. please"
+msgid "User on vacation! Contact to your System Administrator if you want to login. please"
+msgstr "User on vacation! Contact to your System Administrator if you want to login. please"
 
 # TRANSLATION
 # LABEL/PASSWORD_HISTORY
@@ -3916,14 +3916,14 @@ msgstr "Password history"
 # TRANSLATION
 # JAVASCRIPT/ID_EMAIL_REQUIRED
 #: JAVASCRIPT/ID_EMAIL_REQUIRED
-msgid "The mail to is required, or uncheck the  send a test mail"
-msgstr "The mail to is required, or uncheck the  send a test mail"
+msgid "The mail to is required, or uncheck the send a test mail"
+msgstr "The mail to is required, or uncheck the send a test mail"
 
 # TRANSLATION
 # JAVASCRIPT/ID_PASSWORD_REQUIRED
 #: JAVASCRIPT/ID_PASSWORD_REQUIRED
-msgid "The password is required, or uncheck the  option Require Authentication"
-msgstr "The password is required, or uncheck the  option Require Authentication"
+msgid "The password is required, or uncheck the option Require Authentication"
+msgstr "The password is required, or uncheck the option Require Authentication"
 
 # TRANSLATION
 # JAVASCRIPT/ID_SERVER_REQUIRED
@@ -3988,8 +3988,8 @@ msgstr "Invalid syntax"
 # TRANSLATION
 # LABEL/ID_NO_PERMISSION_NO_PARTICIPATED
 #: LABEL/ID_NO_PERMISSION_NO_PARTICIPATED
-msgid "You do not have permission to see this case  or you have not participated in it."
-msgstr "You do not have permission to see this case  or you have not participated in it."
+msgid "You do not have permission to see this case or you have not participated in it."
+msgstr "You do not have permission to see this case or you have not participated in it."
 
 # TRANSLATION
 # JAVASCRIPT/ID_EMPTY_NODENAME
@@ -4012,8 +4012,8 @@ msgstr "This isn't the correct license."
 # TRANSLATION
 # JAVASCRIPT/ID_TABLE_RESERVED_WORDS
 #: JAVASCRIPT/ID_TABLE_RESERVED_WORDS
-msgid "This table name is reserved. Please set  another for"
-msgstr "This table name is reserved. Please set  another for"
+msgid "This table name is reserved. Please set another for"
+msgstr "This table name is reserved. Please set another for"
 
 # TRANSLATION
 # LABEL/ID_START_NEW_CASE
@@ -4042,8 +4042,8 @@ msgstr "The task doesn't have any steps"
 # TRANSLATION
 # JAVASCRIPT/ID_FIELDS_RESERVED_WORDS
 #: JAVASCRIPT/ID_FIELDS_RESERVED_WORDS
-msgid "The following fields cannot have these  names because they are reserved words"
-msgstr "The following fields cannot have these  names because they are reserved words"
+msgid "The following fields cannot have these names because they are reserved words"
+msgstr "The following fields cannot have these names because they are reserved words"
 
 # TRANSLATION
 # LABEL/ID_PROCESS_CATEGORY
@@ -4150,8 +4150,8 @@ msgstr "Disable Workspace"
 # TRANSLATION
 # JAVASCRIPT/NEW_SITE_SUCCESS_CONFIRMNOTE
 #: JAVASCRIPT/NEW_SITE_SUCCESS_CONFIRMNOTE
-msgid "Note.- If you open the new site your  current session will be closed."
-msgstr "Note.- If you open the new site your  current session will be closed."
+msgid "Note.- If you open the new site your current session will be closed."
+msgstr "Note.- If you open the new site your current session will be closed."
 
 # TRANSLATION
 # JAVASCRIPT/NEW_SITE_SUCCESS_CONFIRM
@@ -4162,8 +4162,8 @@ msgstr "Do you want open the new site?"
 # TRANSLATION
 # JAVASCRIPT/NEW_SITE_SUCCESS
 #: JAVASCRIPT/NEW_SITE_SUCCESS
-msgid "Your new site was successfully created with  name:"
-msgstr "Your new site was successfully created with  name:"
+msgid "Your new site was successfully created with name:"
+msgstr "Your new site was successfully created with name:"
 
 # TRANSLATION
 # LABEL/DBCONNECTIONS_MSGR
@@ -4204,20 +4204,20 @@ msgstr "* The {Object} {Description} depends."
 # TRANSLATION
 # LABEL/ID_TRIGGERS_VALIDATION_ERR2
 #: LABEL/ID_TRIGGERS_VALIDATION_ERR2
-msgid "({N}) Dependencies were found for this  trigger in {Object} objects"
-msgstr "({N}) Dependencies were found for this  trigger in {Object} objects"
+msgid "({N}) Dependencies were found for this trigger in {Object} objects"
+msgstr "({N}) Dependencies were found for this trigger in {Object} objects"
 
 # TRANSLATION
 # LABEL/ID_TRIGGERS_VALIDATION
 #: LABEL/ID_TRIGGERS_VALIDATION
-msgid "No Dependencies were found for this trigger  in {Object} definitions"
-msgstr "No Dependencies were found for this trigger  in {Object} definitions"
+msgid "No Dependencies were found for this trigger in {Object} definitions"
+msgstr "No Dependencies were found for this trigger in {Object} definitions"
 
 # TRANSLATION
 # JAVASCRIPT/ID_TRIGGERS_VALIDATE_EERR1
 #: JAVASCRIPT/ID_TRIGGERS_VALIDATE_EERR1
-msgid "This trigger can't be deleted due to  dependencies."
-msgstr "This trigger can't be deleted due to  dependencies."
+msgid "This trigger can't be deleted due to dependencies."
+msgstr "This trigger can't be deleted due to dependencies."
 
 # TRANSLATION
 # LABEL/ID_CONTACT_ADMIN
@@ -4378,8 +4378,8 @@ msgstr "You have some mistakes, please try again"
 # TRANSLATION
 # JAVASCRIPT/ID_ASSIGN_CASE_TO_USER
 #: JAVASCRIPT/ID_ASSIGN_CASE_TO_USER
-msgid "You have to select one employee. Select one  from the dropdown list please."
-msgstr "You have to select one employee. Select one  from the dropdown list please."
+msgid "You have to select one employee. Select one from the dropdown list please."
+msgstr "You have to select one employee. Select one from the dropdown list please."
 
 # TRANSLATION
 # JAVASCRIPT/DBCONNECTIONS_MSGT
@@ -4654,8 +4654,8 @@ msgstr "To Do"
 # TRANSLATION
 # JAVASCRIPT/ID_DONT_SAVE_XMLFORM
 #: JAVASCRIPT/ID_DONT_SAVE_XMLFORM
-msgid "This form has not a submit action. Do you  want to continue anyway?"
-msgstr "This form has not a submit action. Do you  want to continue anyway?"
+msgid "This form has not a submit action. Do you want to continue anyway?"
+msgstr "This form has not a submit action. Do you want to continue anyway?"
 
 # TRANSLATION
 # LABEL/ID_CASES_STATUS_COMPLETED
@@ -4834,8 +4834,8 @@ msgstr "Jump To"
 # TRANSLATION
 # LABEL/ID_DISPLAY_ITEMS
 #: LABEL/ID_DISPLAY_ITEMS
-msgid "Display Items  {0} - {1}  of {2}"
-msgstr "Display Items  {0} - {1}  of {2}"
+msgid "Display Items {0} - {1} of {2}"
+msgstr "Display Items {0} - {1} of {2}"
 
 # TRANSLATION
 # LABEL/ID_DISPLAY_EMPTY
@@ -4942,7 +4942,7 @@ msgstr "Completed"
 # TRANSLATION
 # LABEL/ID_TITLE_CANCELLED
 #: LABEL/ID_TITLE_CANCELLED
-msgid "Cancelled"
+msgid "[LABEL/ID_TITLE_CANCELLED] Cancelled"
 msgstr "Cancelled"
 
 # TRANSLATION
@@ -5026,8 +5026,8 @@ msgstr "of"
 # TRANSLATION
 # LABEL/ID_DELETE_LANGUAGE_WARNING
 #: LABEL/ID_DELETE_LANGUAGE_WARNING
-msgid "To delete a language you should select a  item from the list first."
-msgstr "To delete a language you should select a  item from the list first."
+msgid "To delete a language you should select a item from the list first."
+msgstr "To delete a language you should select a item from the list first."
 
 # TRANSLATION
 # LABEL/ID_DELETE_LANGUAGE_CONFIRM
@@ -5050,8 +5050,8 @@ msgstr "Language deleted successfully!"
 # TRANSLATION
 # LABEL/ID_LANGUAGE_CANT_DELETE
 #: LABEL/ID_LANGUAGE_CANT_DELETE
-msgid "There is {0} cases started with this  language, delete action canceled!"
-msgstr "There is {0} cases started with this  language, delete action canceled!"
+msgid "There is {0} cases started with this language, delete action canceled!"
+msgstr "There is {0} cases started with this language, delete action canceled!"
 
 # TRANSLATION
 # LABEL/ID_TOTAL_CASES
@@ -5098,8 +5098,8 @@ msgstr "The test failure, you must configure yourrnserver to send messages"
 # TRANSLATION
 # LABEL/ID_CACHE_DIR_ISNOT_WRITABLE
 #: LABEL/ID_CACHE_DIR_ISNOT_WRITABLE
-msgid "The cache directory is not writable, change  permissions please!"
-msgstr "The cache directory is not writable, change  permissions please!"
+msgid "The cache directory is not writable, change permissions please!"
+msgstr "The cache directory is not writable, change permissions please!"
 
 # TRANSLATION
 # LABEL/ID_CACHE_DELETED_SUCCESS
@@ -5248,14 +5248,14 @@ msgstr "You forgot the title of the trigger"
 # TRANSLATION
 # JAVASCRIPT/ID_EXIST_PROCESS
 #: JAVASCRIPT/ID_EXIST_PROCESS
-msgid "There is a process with the same name. this  process will not save"
-msgstr "There is a process with the same name. this  process will not save"
+msgid "There is a process with the same name. this process will not save"
+msgstr "There is a process with the same name. this process will not save"
 
 # TRANSLATION
 # JAVASCRIPT/ID_EXIST_DYNAFORM
 #: JAVASCRIPT/ID_EXIST_DYNAFORM
-msgid "There is a Dynaform with the same name in  this process. It is not saving"
-msgstr "There is a Dynaform with the same name in  this process. It is not saving"
+msgid "There is a Dynaform with the same name in this process. It is not saving"
+msgstr "There is a Dynaform with the same name in this process. It is not saving"
 
 # TRANSLATION
 # LABEL/ID_CLASS_TABLE_DOESNT_EXIST
@@ -5266,14 +5266,14 @@ msgstr "This Class Table doesn't exist!"
 # TRANSLATION
 # JAVASCRIPT/ID_EXIST_INPUTDOCUMENT
 #: JAVASCRIPT/ID_EXIST_INPUTDOCUMENT
-msgid "There is an Input Document with the same  name in  this process. It is not saving"
-msgstr "There is an Input Document with the same  name in  this process. It is not saving"
+msgid "There is an Input Document with the same name in this process. It is not saving"
+msgstr "There is an Input Document with the same name in this process. It is not saving"
 
 # TRANSLATION
 # JAVASCRIPT/ID_EXIST_OUTPUTDOCUMENT
 #: JAVASCRIPT/ID_EXIST_OUTPUTDOCUMENT
-msgid "There is an Output Document with the same  name in  this process. It is not saving"
-msgstr "There is an Output Document with the same  name in  this process. It is not saving"
+msgid "There is an Output Document with the same name in this process. It is not saving"
+msgstr "There is an Output Document with the same name in this process. It is not saving"
 
 # TRANSLATION
 # LABEL/ID_CASE_SCHEDULER_VALIDATE_ALERT
@@ -5404,14 +5404,14 @@ msgstr "Sync to Pentaho Solution"
 # TRANSLATION
 # LABEL/PENTAHO_LABEL_TABLE_ALREADY_SYNCH
 #: LABEL/PENTAHO_LABEL_TABLE_ALREADY_SYNCH
-msgid "Workspace already synchronized with Pentaho  Solution"
-msgstr "Workspace already synchronized with Pentaho  Solution"
+msgid "Workspace already synchronized with Pentaho Solution"
+msgstr "Workspace already synchronized with Pentaho Solution"
 
 # TRANSLATION
 # LABEL/PENTAHO_LABEL_TABLE_SUCCESS
 #: LABEL/PENTAHO_LABEL_TABLE_SUCCESS
-msgid "Table APP_CACHE_VIEW and triggers are  installed successfully"
-msgstr "Table APP_CACHE_VIEW and triggers are  installed successfully"
+msgid "Table APP_CACHE_VIEW and triggers are installed successfully"
+msgstr "Table APP_CACHE_VIEW and triggers are installed successfully"
 
 # TRANSLATION
 # LABEL/PENTAHO_LABEL_TABLE_SYNCHED
@@ -5482,8 +5482,8 @@ msgstr "Database tables and triggers"
 # TRANSLATION
 # JAVASCRIPT/ID_EXIST_TRIGGERS
 #: JAVASCRIPT/ID_EXIST_TRIGGERS
-msgid "There is a triggers with the same name in  this process."
-msgstr "There is a triggers with the same name in  this process."
+msgid "There is a triggers with the same name in this process."
+msgstr "There is a triggers with the same name in this process."
 
 # TRANSLATION
 # LABEL/ID_SELECT_ONE_AT_LEAST
@@ -5518,8 +5518,8 @@ msgstr "Are you sure you want to delete this case?"
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_CANCEL_CASES
 #: LABEL/ID_MSG_CONFIRM_CANCEL_CASES
-msgid "Are you sure you want to cancel all   selected cases?"
-msgstr "Are you sure you want to cancel all   selected cases?"
+msgid "Are you sure you want to cancel all selected cases?"
+msgstr "Are you sure you want to cancel all selected cases?"
 
 # TRANSLATION
 # LABEL/ID_PAUSE_CASE
@@ -5764,8 +5764,8 @@ msgstr "@lastName, @firstName (@userName)"
 # TRANSLATION
 # JAVASCRIPT/USERS_DELETE_WITH_HISTORY
 #: JAVASCRIPT/USERS_DELETE_WITH_HISTORY
-msgid "The user has some completed or canceled   tasks (which may be useful for  historical  records). Do you want to  delete this user  anyway?"
-msgstr "The user has some completed or canceled   tasks (which may be useful for  historical  records). Do you want to  delete this user  anyway?"
+msgid "The user has some completed or canceled tasks (which may be useful for historical records). Do you want to delete this user anyway?"
+msgstr "The user has some completed or canceled tasks (which may be useful for historical records). Do you want to delete this user anyway?"
 
 # TRANSLATION
 # LABEL/ID_DISCARD_CHANGES
@@ -5806,8 +5806,8 @@ msgstr "Version"
 # TRANSLATION
 # LABEL/ID_MESSAGE_ROOT_CHANGE_SUCESS
 #: LABEL/ID_MESSAGE_ROOT_CHANGE_SUCESS
-msgid "The root password has been updated  successfully!"
-msgstr "The root password has been updated  successfully!"
+msgid "The root password has been updated successfully!"
+msgstr "The root password has been updated successfully!"
 
 # TRANSLATION
 # LABEL/ID_MESSAGE_ROOT_CHANGE_FAILURE
@@ -5854,8 +5854,8 @@ msgstr "submit"
 # TRANSLATION
 # LABEL/ID_PLUGIN_CANT_DELETE
 #: LABEL/ID_PLUGIN_CANT_DELETE
-msgid "The plugin is activated, please deactivate  first to remove it."
-msgstr "The plugin is activated, please deactivate  first to remove it."
+msgid "The plugin is activated, please deactivate first to remove it."
+msgstr "The plugin is activated, please deactivate first to remove it."
 
 # TRANSLATION
 # LABEL/ID_CACHE_LANGUAGE
@@ -6574,8 +6574,8 @@ msgstr "ASSIGNED USERS"
 # TRANSLATION
 # LABEL/ID_MSG_CONFIRM_ASSIGN_ALL_USERS
 #: LABEL/ID_MSG_CONFIRM_ASSIGN_ALL_USERS
-msgid "Do you want to assign all available users  to this role?"
-msgstr "Do you want to assign all available users  to this role?"
+msgid "Do you want to assign all available users to this role?"
+msgstr "Do you want to assign all available users to this role?"
 
 # TRANSLATION
 # LABEL/ID_MSG_AJAX_FAILURE
@@ -6604,8 +6604,8 @@ msgstr "Assign All Groups"
 # TRANSLATION
 # LABEL/ID_USERS_DELETE_WITH_HISTORY
 #: LABEL/ID_USERS_DELETE_WITH_HISTORY
-msgid "The user has some completed or canceled     tasks (which may be useful for  historical    records). Do you want to  delete this  user   anyway?"
-msgstr "The user has some completed or canceled     tasks (which may be useful for  historical    records). Do you want to  delete this  user   anyway?"
+msgid "[LABEL/ID_USERS_DELETE_WITH_HISTORY] The user has some completed or canceled tasks (which may be useful for historical records). Do you want to delete this user anyway?"
+msgstr "The user has some completed or canceled tasks (which may be useful for historical records). Do you want to delete this user anyway?"
 
 # TRANSLATION
 # LABEL/ID_REMOVE_ALL_GROUPS
@@ -6748,8 +6748,8 @@ msgstr "AVAILABLE MEMBERS"
 # TRANSLATION
 # LABEL/ID_CREATE_ROLE_TITLE
 #: LABEL/ID_CREATE_ROLE_TITLE
-msgid "Create New  Role"
-msgstr "Create New  Role"
+msgid "Create New Role"
+msgstr "Create New Role"
 
 # TRANSLATION
 # LABEL/ID_EDIT_ROLE_TITLE
@@ -6790,8 +6790,8 @@ msgstr "Last Name"
 # TRANSLATION
 # LABEL/ID_REASSIGNMENT_SUCCESS
 #: LABEL/ID_REASSIGNMENT_SUCCESS
-msgid "The case #{APP_NUMBER} was reassigned to  user   {USER} successfully!"
-msgstr "The case #{APP_NUMBER} was reassigned to  user   {USER} successfully!"
+msgid "The case #{APP_NUMBER} was reassigned to user {USER} successfully!"
+msgstr "The case #{APP_NUMBER} was reassigned to user {USER} successfully!"
 
 # TRANSLATION
 # LABEL/ID_REASSIGN_CONFIRM
@@ -6814,8 +6814,8 @@ msgstr "Vacation"
 # TRANSLATION
 # JAVASCRIPT/ID_DB_CONNECTION_ASSIGN
 #: JAVASCRIPT/ID_DB_CONNECTION_ASSIGN
-msgid "You can not delete this data base  connection. This is assigned in some step."
-msgstr "You can not delete this data base  connection. This is assigned in some step."
+msgid "You can not delete this data base connection. This is assigned in some step."
+msgstr "You can not delete this data base connection. This is assigned in some step."
 
 # TRANSLATION
 # LABEL/ID_LAST_LOGIN
@@ -7282,8 +7282,8 @@ msgstr "Department has been deleted correctly."
 # TRANSLATION
 # LABEL/ID_MSG_CANNOT_DELETE_DEPARTMENT
 #: LABEL/ID_MSG_CANNOT_DELETE_DEPARTMENT
-msgid "Department cannot be deleted while has  assigned users."
-msgstr "Department cannot be deleted while has  assigned users."
+msgid "Department cannot be deleted while has assigned users."
+msgstr "Department cannot be deleted while has assigned users."
 
 # TRANSLATION
 # LABEL/ID_MANAGER
@@ -7354,8 +7354,8 @@ msgstr "Process category has been deleted correctly."
 # TRANSLATION
 # LABEL/ID_MSG_CANNOT_DELETE_CATEGORY
 #: LABEL/ID_MSG_CANNOT_DELETE_CATEGORY
-msgid "Category cannot be deleted while has   assigned processes."
-msgstr "Category cannot be deleted while has   assigned processes."
+msgid "Category cannot be deleted while has assigned processes."
+msgstr "Category cannot be deleted while has assigned processes."
 
 # TRANSLATION
 # LABEL/ID_CONFIRM_DELETE_CATEGORY
@@ -7408,8 +7408,8 @@ msgstr "The Process Name already exists!"
 # TRANSLATION
 # JAVASCRIPT/ID_ROLES_CAN_NOT_DELETE
 #: JAVASCRIPT/ID_ROLES_CAN_NOT_DELETE
-msgid "This role cannot be deleted while it still  has some assigned users."
-msgstr "This role cannot be deleted while it still  has some assigned users."
+msgid "[JAVASCRIPT/ID_ROLES_CAN_NOT_DELETE] This role cannot be deleted while it still has some assigned users."
+msgstr "This role cannot be deleted while it still has some assigned users."
 
 # TRANSLATION
 # JAVASCRIPT/ID_REMOVE_ROLE
@@ -7600,8 +7600,8 @@ msgstr "No authentication sources to display"
 # TRANSLATION
 # LABEL/ID_INPUT_REMOVE
 #: LABEL/ID_INPUT_REMOVE
-msgid "Input Document  has been removed successfully from Process"
-msgstr "Input Document  has been removed successfully from Process"
+msgid "Input Document has been removed successfully from Process"
+msgstr "Input Document has been removed successfully from Process"
 
 # TRANSLATION
 # LABEL/ID_INPUT_WARNING
@@ -7648,8 +7648,8 @@ msgstr "Input document has been created successfully"
 # TRANSLATION
 # LABEL/ID_INPUT_NOT_SAVE
 #: LABEL/ID_INPUT_NOT_SAVE
-msgid "[LABEL/ID_INPUT_NOT_SAVE] There is an Input Document with the same  name in  this process. It is not saving"
-msgstr "There is an Input Document with the same  name in  this process. It is not saving"
+msgid "[LABEL/ID_INPUT_NOT_SAVE] There is an Input Document with the same name in this process. It is not saving"
+msgstr "There is an Input Document with the same name in this process. It is not saving"
 
 # TRANSLATION
 # LABEL/ID_INPUT_UPDATE
@@ -7720,8 +7720,8 @@ msgstr "Output document has been created successfully"
 # TRANSLATION
 # LABEL/ID_OUTPUT_NOT_SAVE
 #: LABEL/ID_OUTPUT_NOT_SAVE
-msgid "There is an Output Document with the same  name in  this process. It is not saving."
-msgstr "There is an Output Document with the same  name in  this process. It is not saving."
+msgid "There is an Output Document with the same name in this process. It is not saving."
+msgstr "There is an Output Document with the same name in this process. It is not saving."
 
 # TRANSLATION
 # LABEL/ID_OUTPUT_UPDATE
@@ -7876,8 +7876,8 @@ msgstr "No supervisors are available. All supervisors have been already assigned
 # TRANSLATION
 # LABEL/ID_SUPERVISOR_REMOVED
 #: LABEL/ID_SUPERVISOR_REMOVED
-msgid "Supervisor  has been removed successfully from Process"
-msgstr "Supervisor  has been removed successfully from Process"
+msgid "Supervisor has been removed successfully from Process"
+msgstr "Supervisor has been removed successfully from Process"
 
 # TRANSLATION
 # LABEL/ID_SUPERVISOR_ASSIGNED
@@ -7900,8 +7900,8 @@ msgstr "Supervisor"
 # TRANSLATION
 # LABEL/ID_DYANFORM_REMOVE
 #: LABEL/ID_DYANFORM_REMOVE
-msgid "Dynaform  has been removed successfully from Process"
-msgstr "Dynaform  has been removed successfully from Process"
+msgid "Dynaform has been removed successfully from Process"
+msgstr "Dynaform has been removed successfully from Process"
 
 # TRANSLATION
 # LABEL/ID_DYNAFORM_ASSIGN
@@ -9364,8 +9364,8 @@ msgstr "Ad Hoc Groups Actors"
 # TRANSLATION
 # LABEL/ID_EXIST_DYNAFORM
 #: LABEL/ID_EXIST_DYNAFORM
-msgid "There is a Dynaform with the same name in   this process. It is not saving"
-msgstr "There is a Dynaform with the same name in   this process. It is not saving"
+msgid "[LABEL/ID_EXIST_DYNAFORM] There is a Dynaform with the same name in this process. It is not saving"
+msgstr "There is a Dynaform with the same name in this process. It is not saving"
 
 # TRANSLATION
 # LABEL/ID_INPUT_DOC_SUCCESS_NEW
@@ -9652,8 +9652,8 @@ msgstr "Environment"
 # TRANSLATION
 # LABEL/ID_CURLFUN_ISUNDEFINED
 #: LABEL/ID_CURLFUN_ISUNDEFINED
-msgid "The process was not downloaded, because the curl     extension for php is not installed"
-msgstr "The process was not downloaded, because the curl     extension for php is not installed"
+msgid "The process was not downloaded, because the curl extension for php is not installed"
+msgstr "The process was not downloaded, because the curl extension for php is not installed"
 
 # TRANSLATION
 # LABEL/ID_RATING
@@ -10114,14 +10114,14 @@ msgstr "Personal information"
 # TRANSLATION
 # LABEL/NEW_SITE_SUCCESS
 #: LABEL/NEW_SITE_SUCCESS
-msgid "[LABEL/NEW_SITE_SUCCESS] Your new site was successfully created with  name:"
-msgstr "Your new site was successfully created with  name:"
+msgid "[LABEL/NEW_SITE_SUCCESS] Your new site was successfully created with name:"
+msgstr "Your new site was successfully created with name:"
 
 # TRANSLATION
 # LABEL/NEW_SITE_SUCCESS_CONFIRMNOTE
 #: LABEL/NEW_SITE_SUCCESS_CONFIRMNOTE
-msgid "[LABEL/NEW_SITE_SUCCESS_CONFIRMNOTE] Note.- If you open the new site your  current session will be closed."
-msgstr "Note.- If you open the new site your  current session will be closed."
+msgid "[LABEL/NEW_SITE_SUCCESS_CONFIRMNOTE] Note.- If you open the new site your current session will be closed."
+msgstr "Note.- If you open the new site your current session will be closed."
 
 # TRANSLATION
 # LABEL/NEW_SITE_SUCCESS_CONFIRM
@@ -11110,8 +11110,8 @@ msgstr "Updated Failed"
 # TRANSLATION
 # LABEL/ID_DONT_MODIFY_PK_VALUE
 #: LABEL/ID_DONT_MODIFY_PK_VALUE
-msgid "You can not modify the primary key value  for \"{0}\" field."
-msgstr "You can not modify the primary key value  for \"{0}\" field."
+msgid "You can not modify the primary key value for \"{0}\" field."
+msgstr "You can not modify the primary key value for \"{0}\" field."
 
 # TRANSLATION
 # LABEL/ID_DELETED_SUCCESSFULLY
@@ -12022,8 +12022,8 @@ msgstr "Time Zone"
 # TRANSLATION
 # LABEL/ID_MEMORY_LIMIT
 #: LABEL/ID_MEMORY_LIMIT
-msgid "Memory Limit  (Mb)"
-msgstr "Memory Limit  (Mb)"
+msgid "Memory Limit (Mb)"
+msgstr "Memory Limit (Mb)"
 
 # TRANSLATION
 # LABEL/ID_SYSTEM_SETTINGS
@@ -12862,8 +12862,8 @@ msgstr "The user has assigned cases, Do you like to continue anyway?"
 # TRANSLATION
 # LABEL/ID_GRID_PAGE_DISPLAYING_REPORT_PERMISSIONS_MESSAGE
 #: LABEL/ID_GRID_PAGE_DISPLAYING_REPORT_PERMISSIONS_MESSAGE
-msgid "Displaying Permissions Simple Reports  {0} - {1} of {2}"
-msgstr "Displaying Permissions Simple Reports  {0} - {1} of {2}"
+msgid "Displaying Permissions Simple Reports {0} - {1} of {2}"
+msgstr "Displaying Permissions Simple Reports {0} - {1} of {2}"
 
 # TRANSLATION
 # LABEL/ID_GRID_PAGE_NO_PERMISSIONS_MESSAGE
@@ -12962,16 +12962,16 @@ msgid "Cron status"
 msgstr "Cron status"
 
 # TRANSLATION
-# LABEL/ID_CRON_ACTIONS_LOG
-#: LABEL/ID_CRON_ACTIONS_LOG
-msgid "Cron Actions Log"
-msgstr "Cron Actions Log"
-
-# TRANSLATION
 # LABEL/ID_RESET_DATES
 #: LABEL/ID_RESET_DATES
 msgid "Reset Dates"
 msgstr "Reset Dates"
+
+# TRANSLATION
+# LABEL/ID_CRON_ACTIONS
+#: LABEL/ID_CRON_ACTIONS
+msgid "Cron"
+msgstr "Cron"
 
 # TRANSLATION
 # LABEL/ID_ALL_WORKSPACES
@@ -13020,6 +13020,282 @@ msgstr "Path"
 #: LABEL/ID_LOG_INFO
 msgid "Log Information"
 msgstr "Log Information"
+
+# TRANSLATION
+# LABEL/ID_REFRESH_TIME_SECONDS
+#: LABEL/ID_REFRESH_TIME_SECONDS
+msgid "Refresh Time (seconds)"
+msgstr "Refresh Time (seconds)"
+
+# TRANSLATION
+# LABEL/ID_MSG_ENABLE_HTML_EDITING
+#: LABEL/ID_MSG_ENABLE_HTML_EDITING
+msgid "<b>Warning:</b> Editing the HTML prevents fields from being added or moved, so only edit the HTML after creating all the fields. Do you like to continue anyway?"
+msgstr "<b>Warning:</b> Editing the HTML prevents fields from being added or moved, so only edit the HTML after creating all the fields. Do you like to continue anyway?"
+
+# TRANSLATION
+# LABEL/ID_ALL_CATEGORIES
+#: LABEL/ID_ALL_CATEGORIES
+msgid "All Categories"
+msgstr "All Categories"
+
+# TRANSLATION
+# LABEL/ID_CASES_NOTES_NO_PERMISSIONS
+#: LABEL/ID_CASES_NOTES_NO_PERMISSIONS
+msgid "You do not have permission to cases notes"
+msgstr "You do not have permission to cases notes"
+
+# TRANSLATION
+# LABEL/ID_DELETE_DOCUMENT
+#: LABEL/ID_DELETE_DOCUMENT
+msgid "Do you want to delete selected document?"
+msgstr "Do you want to delete selected document?"
+
+# TRANSLATION
+# LABEL/ID_CRON_ACTIONS_LOG
+#: LABEL/ID_CRON_ACTIONS_LOG
+msgid "Cron Actions Log"
+msgstr "Cron Actions Log"
+
+# TRANSLATION
+# LABEL/ID_AUTH_SOURCE_MISSING
+#: LABEL/ID_AUTH_SOURCE_MISSING
+msgid "The plugin that is related to this authentication source was removed or disabled, please consult to your system administrator."
+msgstr "The plugin that is related to this authentication source was removed or disabled, please consult to your system administrator."
+
+# TRANSLATION
+# LABEL/ID_TRIGGER_REQUIRED
+#: LABEL/ID_TRIGGER_REQUIRED
+msgid "Trigger is required"
+msgstr "Trigger is required"
+
+# TRANSLATION
+# LABEL/ID_TIME_REQUIRED
+#: LABEL/ID_TIME_REQUIRED
+msgid "Time is required"
+msgstr "Time is required"
+
+# TRANSLATION
+# LABEL/ID_CURRENT_WORKSPACE
+#: LABEL/ID_CURRENT_WORKSPACE
+msgid "Current Workspace"
+msgstr "Current Workspace"
+
+# TRANSLATION
+# LABEL/ID_PM_FUNCTION_CHANGE_CASE
+#: LABEL/ID_PM_FUNCTION_CHANGE_CASE
+msgid "The \"{0}\" function has {1} the current case, the script has stopped to avoid conflicts."
+msgstr "The \"{0}\" function has {1} the current case, the script has stopped to avoid conflicts."
+
+# TRANSLATION
+# LABEL/ID_DYNAFORM_EDITOR_LOGIN_AGAIN
+#: LABEL/ID_DYNAFORM_EDITOR_LOGIN_AGAIN
+msgid "You have lost your session and you have to login to continue. Please enter you password."
+msgstr "You have lost your session and you have to login to continue. Please enter you password."
+
+# TRANSLATION
+# LABEL/ID_DATE_FORMAT_14
+#: LABEL/ID_DATE_FORMAT_14
+msgid "d.m.Y"
+msgstr "d.m.Y"
+
+# TRANSLATION
+# LABEL/ID_TRIGGER_COPY_TITLE
+#: LABEL/ID_TRIGGER_COPY_TITLE
+msgid "Copy/Import Trigger"
+msgstr "Copy/Import Trigger"
+
+# TRANSLATION
+# LABEL/ID_TRIGGER_COPY_OPTION
+#: LABEL/ID_TRIGGER_COPY_OPTION
+msgid "Copy/Import Triggers from a Process"
+msgstr "Copy/Import Triggers from a Process"
+
+# TRANSLATION
+# LABEL/ID_TRIGGER_COPY_OPTION_DESCRIPTION
+#: LABEL/ID_TRIGGER_COPY_OPTION_DESCRIPTION
+msgid "With this option is it possible to copy/import a trigger from any existent process on the System"
+msgstr "With this option is it possible to copy/import a trigger from any existent process on the System"
+
+# TRANSLATION
+# LABEL/ID_EDITING_DYNAFORM
+#: LABEL/ID_EDITING_DYNAFORM
+msgid "Editing the dynaform"
+msgstr "Editing the dynaform"
+
+# TRANSLATION
+# LABEL/ID_DISPLAY_TOTAL
+#: LABEL/ID_DISPLAY_TOTAL
+msgid "Total {2}"
+msgstr "Total {2}"
+
+# TRANSLATION
+# LABEL/ID_TASK_NOT_RELATED
+#: LABEL/ID_TASK_NOT_RELATED
+msgid "[Not related to a task]"
+msgstr "[Not related to a task]"
+
+# TRANSLATION
+# LABEL/ID_GRID_PAGE_DISPLAYING_EMAIL_MESSAGE
+#: LABEL/ID_GRID_PAGE_DISPLAYING_EMAIL_MESSAGE
+msgid "Displaying emails {0} - {1} of {2}"
+msgstr "Displaying emails {0} - {1} of {2}"
+
+# TRANSLATION
+# LABEL/ID_GRID_PAGE_NO_EMAIL_MESSAGE
+#: LABEL/ID_GRID_PAGE_NO_EMAIL_MESSAGE
+msgid "No Emails to display"
+msgstr "No Emails to display"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_CHECK
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_CHECK
+msgid "Check PM requirements"
+msgstr "Check PM requirements"
+
+# TRANSLATION
+# LABEL/ID_PHP_INFO
+#: LABEL/ID_PHP_INFO
+msgid "PHP Information"
+msgstr "PHP Information"
+
+# TRANSLATION
+# LABEL/ID_CHECKING
+#: LABEL/ID_CHECKING
+msgid "Checking..."
+msgstr "Checking..."
+
+# TRANSLATION
+# LABEL/ID_CHECK_AGAIN
+#: LABEL/ID_CHECK_AGAIN
+msgid "Check again"
+msgstr "Check again"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION
+msgid "If any of these items is not supported (marked as No) then please take actions to correct them.<br /><br />Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br /><br />(*) OpenSSL is optional.<br /><br />(*) LDAP is optional."
+msgstr "If any of these items is not supported (marked as No) then please take actions to correct them.<br /><br />Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br /><br />(*) OpenSSL is optional.<br /><br />(*) LDAP is optional."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_PHP
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_PHP
+msgid "PHP Version >= 5.2.10"
+msgstr "PHP Version >= 5.2.10"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_MYSQL
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_MYSQL
+msgid "MySQL Support"
+msgstr "MySQL Support"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_MSSQL
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_MSSQL
+msgid "MSSQL Support (*)"
+msgstr "MSSQL Support (*)"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_CURL
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_CURL
+msgid "cURL Version"
+msgstr "cURL Version"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_OPENSSL
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_OPENSSL
+msgid "OpenSSL Version (*)"
+msgstr "OpenSSL Version (*)"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DOMXML
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DOMXML
+msgid "DOM/XML Support"
+msgstr "DOM/XML Support"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_GD
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_GD
+msgid "GD Support"
+msgstr "GD Support"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_MULTIBYTESTRING
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_MULTIBYTESTRING
+msgid "Multibyte Strings Support"
+msgstr "Multibyte Strings Support"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_SOAP
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_SOAP
+msgid "Soap Support"
+msgstr "Soap Support"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_LDAP
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_LDAP
+msgid "LDAP Support (*)"
+msgstr "LDAP Support (*)"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_MEMORYLIMIT
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_MEMORYLIMIT
+msgid "Memory Limit >= 80M"
+msgstr "Memory Limit >= 80M"
+
+# TRANSLATION
+# LABEL/ID_ADMINISTRATOR_ROLE_CANT_CHANGED
+#: LABEL/ID_ADMINISTRATOR_ROLE_CANT_CHANGED
+msgid "The administrator's role can't be changed!"
+msgstr "The administrator's role can't be changed!"
+
+# TRANSLATION
+# LABEL/ID_SELECT_DYNAFORM_IMPORT
+#: LABEL/ID_SELECT_DYNAFORM_IMPORT
+msgid "Select the dynaform you want to import"
+msgstr "Select the dynaform you want to import"
+
+# TRANSLATION
+# LABEL/ID_CONFIRM_IMPORT_DYNAFORM
+#: LABEL/ID_CONFIRM_IMPORT_DYNAFORM
+msgid "When you import the selected form, lose the information of the current form. Are you sure you import the form?"
+msgstr "When you import the selected form, lose the information of the current form. Are you sure you import the form?"
+
+# TRANSLATION
+# LABEL/ID_CASESLIST_FIELD_RESET
+#: LABEL/ID_CASESLIST_FIELD_RESET
+msgid "Restart everything with the system fields"
+msgstr "Restart everything with the system fields"
+
+# TRANSLATION
+# LABEL/ID_CASESLIST_FIELD_RESET_ID
+#: LABEL/ID_CASESLIST_FIELD_RESET_ID
+msgid "Restart everything with the system fields, with the ID of the label for its translation"
+msgstr "Restart everything with the system fields, with the ID of the label for its translation"
+
+# TRANSLATION
+# LABEL/ID_CASESLIST_FIELD_COMPLETE
+#: LABEL/ID_CASESLIST_FIELD_COMPLETE
+msgid "Complete all system fields"
+msgstr "Complete all system fields"
+
+# TRANSLATION
+# LABEL/ID_CASESLIST_FIELD_COMPLETE_ID
+#: LABEL/ID_CASESLIST_FIELD_COMPLETE_ID
+msgid "Complete all system fields, with the label ID for its translation"
+msgstr "Complete all system fields, with the label ID for its translation"
+
+# TRANSLATION
+# LABEL/ID_CASESLIST_FIELD_LABEL_RESET
+#: LABEL/ID_CASESLIST_FIELD_LABEL_RESET
+msgid "Restart labels with system fields"
+msgstr "Restart labels with system fields"
+
+# TRANSLATION
+# LABEL/ID_CASESLIST_FIELD_LABEL_RESET_ID
+#: LABEL/ID_CASESLIST_FIELD_LABEL_RESET_ID
+msgid "Restart labels with system fields, with the ID for its translation"
+msgstr "Restart labels with system fields, with the ID for its translation"
 
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
@@ -13945,6 +14221,174 @@ msgstr "Continue"
 msgid "[authSources/authSources_SelectType.xml?BTN_CANCEL] Cancel"
 msgstr "Cancel"
 
+# authSources/ldapAdvancedEdit.xml?TITLE
+# authSources/ldapAdvancedEdit.xml
+#: title - TITLE
+msgid "[authSources/ldapAdvancedEdit.xml?TITLE] Authentication Source Information"
+msgstr "Authentication Source Information"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_NAME
+# authSources/ldapAdvancedEdit.xml
+#: text - AUTH_SOURCE_NAME
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_NAME] Name"
+msgstr "Name"
+
+# authSources/ldapAdvancedEdit.xml?LDAP_TYPE
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - LDAP_TYPE
+msgid "[authSources/ldapAdvancedEdit.xml?LDAP_TYPE] Type"
+msgstr "Type"
+
+# authSources/ldapAdvancedEdit.xml?LDAP_TYPE-ldap
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - LDAP_TYPE - ldap
+msgid "[authSources/ldapAdvancedEdit.xml?LDAP_TYPE-ldap]"
+msgstr "LDAP"
+
+# authSources/ldapAdvancedEdit.xml?LDAP_TYPE-ad
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - LDAP_TYPE - ad
+msgid "[authSources/ldapAdvancedEdit.xml?LDAP_TYPE-ad]"
+msgstr "Active Directory"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_SOURCE_AUTO_REGISTER
+msgid "Enabled Automatic Register"
+msgstr "Enabled Automatic Register"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER-0
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_SOURCE_AUTO_REGISTER - 0
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER-0]"
+msgstr "No"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER-1
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_SOURCE_AUTO_REGISTER - 1
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER-1]"
+msgstr "Yes"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_SERVER_NAME
+# authSources/ldapAdvancedEdit.xml
+#: text - AUTH_SOURCE_SERVER_NAME
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_SERVER_NAME] Server Name"
+msgstr "Server Name"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_PORT
+# authSources/ldapAdvancedEdit.xml
+#: text - AUTH_SOURCE_PORT
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_PORT] Port"
+msgstr "Port"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_SOURCE_ENABLED_TLS
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS] Enabled TLS"
+msgstr "Enabled TLS"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS-
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_SOURCE_ENABLED_TLS -
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS-]"
+msgstr "No"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS-1
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_SOURCE_ENABLED_TLS - 1
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS-1]"
+msgstr "Yes"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_SOURCE_VERSION
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION] Version"
+msgstr "Version"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION-2
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_SOURCE_VERSION - 2
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION-2]"
+msgstr "2"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION-3
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_SOURCE_VERSION - 3
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION-3]"
+msgstr "3"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_BASE_DN
+# authSources/ldapAdvancedEdit.xml
+#: text - AUTH_SOURCE_BASE_DN
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_BASE_DN] Base DN"
+msgstr "Base DN"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_ANONYMOUS
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS] Anonymous"
+msgstr "Anonymous"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS-
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_ANONYMOUS -
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS-]"
+msgstr "No"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS-1
+# authSources/ldapAdvancedEdit.xml
+#: dropdown - AUTH_ANONYMOUS - 1
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS-1]"
+msgstr "Yes"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_SEARCH_USER
+# authSources/ldapAdvancedEdit.xml
+#: text - AUTH_SOURCE_SEARCH_USER
+msgid "Search User"
+msgstr "Search User"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_PASSWORD
+# authSources/ldapAdvancedEdit.xml
+#: password - AUTH_SOURCE_PASSWORD
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_PASSWORD] Password"
+msgstr "Password"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_IDENTIFIER_FOR_USER
+# authSources/ldapAdvancedEdit.xml
+#: text - AUTH_SOURCE_IDENTIFIER_FOR_USER
+msgid "User Identifier"
+msgstr "User Identifier"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_OBJECT_CLASSES
+# authSources/ldapAdvancedEdit.xml
+#: textarea - AUTH_SOURCE_OBJECT_CLASSES
+msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_OBJECT_CLASSES] Object Classes"
+msgstr "Object Classes"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ATTRIBUTES
+# authSources/ldapAdvancedEdit.xml
+#: textarea - AUTH_SOURCE_ATTRIBUTES
+msgid "Filter Fields"
+msgstr "Filter Fields"
+
+# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_RETIRED_OU
+# authSources/ldapAdvancedEdit.xml
+#: text - AUTH_SOURCE_RETIRED_OU
+msgid "OU for Retired Employees OU"
+msgstr "OU for Retired Employees OU"
+
+# authSources/ldapAdvancedEdit.xml?btnSave
+# authSources/ldapAdvancedEdit.xml
+#: submit - btnSave
+msgid "[authSources/ldapAdvancedEdit.xml?btnSave] Save"
+msgstr "Save"
+
+# authSources/ldapAdvancedEdit.xml?btnCancel
+# authSources/ldapAdvancedEdit.xml
+#: button - btnCancel
+msgid "[authSources/ldapAdvancedEdit.xml?btnCancel] Cancel"
+msgstr "Cancel"
+
 # authSources/ldapEdit.xml?TITLE
 # authSources/ldapEdit.xml
 #: title - TITLE
@@ -14050,7 +14494,7 @@ msgstr "Yes"
 # authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER
 # authSources/ldapEdit.xml
 #: text - AUTH_SOURCE_SEARCH_USER
-msgid "Search User"
+msgid "[authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER] Search User"
 msgstr "Search User"
 
 # authSources/ldapEdit.xml?AUTH_SOURCE_PASSWORD
@@ -19865,12 +20309,6 @@ msgstr "Cancel"
 msgid "<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color:transparent\">    <tr>      <td  class='FormTitle'>Preview</td>      <td align=\"right\"></td>    </tr>  </table>"
 msgstr "<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color:transparent\">    <tr>      <td  class='FormTitle'>Preview</td>      <td align=\"right\"></td>    </tr>  </table>"
 
-# dynaforms/dynaforms_HtmlEditor.xml?HTML
-# dynaforms/dynaforms_HtmlEditor.xml
-#: html - HTML
-msgid "HTML View"
-msgstr "HTML View"
-
 # dynaforms/dynaforms_HtmlEditor.xml?PME_HTML_ENABLETEMPLATE
 # dynaforms/dynaforms_HtmlEditor.xml
 #: checkbox - PME_HTML_ENABLETEMPLATE
@@ -19883,17 +20321,11 @@ msgstr "Enable HTML Editing"
 msgid "Restore Original HTML"
 msgstr "Restore Original HTML"
 
-# dynaforms/dynaforms_HtmlEditor.xml?PME_REFRESH_VIEW
+# dynaforms/dynaforms_HtmlEditor.xml?HTML
 # dynaforms/dynaforms_HtmlEditor.xml
-#: button - PME_REFRESH_VIEW
-msgid "Refresh View"
-msgstr "Refresh View"
-
-# dynaforms/dynaforms_HtmlEditor.xml?HTML2
-# dynaforms/dynaforms_HtmlEditor.xml
-#: textarea - HTML2
-msgid "HTML Code"
-msgstr "HTML Code"
+#: wysiwyg_editor - HTML
+msgid "HTML View"
+msgstr "HTML View"
 
 # dynaforms/dynaforms_JSEditor.xml?JS_TITLE
 # dynaforms/dynaforms_JSEditor.xml
@@ -20062,6 +20494,12 @@ msgstr "Show prompt"
 #: checkbox - PRINTDYNAFORM
 msgid "Show print dynaform button"
 msgstr "Show print dynaform button"
+
+# dynaforms/dynaforms_Properties.xml?ADJUSTGRIDSWIDTH
+# dynaforms/dynaforms_Properties.xml
+#: checkbox - ADJUSTGRIDSWIDTH
+msgid "Adjust the grid width to the width of the main form"
+msgstr "Adjust the grid width to the width of the main form"
 
 # dynaforms/dynaforms_Properties.xml?PME_PROP_APPLY
 # dynaforms/dynaforms_Properties.xml
@@ -20639,6 +21077,12 @@ msgstr "Save"
 msgid "Save as"
 msgstr "Save as"
 
+# dynaforms/fields_Toolbar.xml?importDyna
+# dynaforms/fields_Toolbar.xml
+#: toolButton - importDyna
+msgid "[dynaforms/fields_Toolbar.xml?importDyna] Import"
+msgstr "Import"
+
 # dynaforms/fields_Toolbar.xml?text
 # dynaforms/fields_Toolbar.xml
 #: toolButton - text
@@ -20807,6 +21251,12 @@ msgstr "Currency"
 msgid "[dynaforms/fields_ToolbarGrid.xml?percentage] Percentage"
 msgstr "Percentage"
 
+# dynaforms/fields_ToolbarGrid.xml?suggest
+# dynaforms/fields_ToolbarGrid.xml
+#: toolButton - suggest
+msgid "[dynaforms/fields_ToolbarGrid.xml?suggest] Suggest"
+msgstr "Suggest"
+
 # dynaforms/fields_ToolbarGrid.xml?textarea
 # dynaforms/fields_ToolbarGrid.xml
 #: toolButton - textarea
@@ -20848,6 +21298,12 @@ msgstr "Hidden"
 #: toolButton - link
 msgid "[dynaforms/fields_ToolbarGrid.xml?link] Link"
 msgstr "Link"
+
+# dynaforms/fields_ToolbarGrid.xml?file
+# dynaforms/fields_ToolbarGrid.xml
+#: toolButton - file
+msgid "[dynaforms/fields_ToolbarGrid.xml?file] File"
+msgstr "File"
 
 # events/appEventsList.xml?TAS_TITLE
 # events/appEventsList.xml
@@ -22667,12 +23123,6 @@ msgstr "Upload a modified file"
 msgid "upload"
 msgstr "upload"
 
-# outputdocs/outputdocs_Edit.xml?INSERT_VARIABLE
-# outputdocs/outputdocs_Edit.xml
-#: button - INSERT_VARIABLE
-msgid "[outputdocs/outputdocs_Edit.xml?INSERT_VARIABLE] @#"
-msgstr "@#"
-
 # outputdocs/outputdocs_Edit.xml?ACCEPT
 # outputdocs/outputdocs_Edit.xml
 #: button - ACCEPT
@@ -22834,6 +23284,24 @@ msgstr "Filename generated"
 #: textarea - OUT_DOC_DESCRIPTION
 msgid "[outputdocs/outputdocs_Properties.xml?OUT_DOC_DESCRIPTION] Description"
 msgstr "Description"
+
+# outputdocs/outputdocs_Properties.xml?OUT_DOC_REPORT_GENERATOR
+# outputdocs/outputdocs_Properties.xml
+#: dropdown - OUT_DOC_REPORT_GENERATOR
+msgid "Report Generator"
+msgstr "Report Generator"
+
+# outputdocs/outputdocs_Properties.xml?OUT_DOC_REPORT_GENERATOR-HTML2PDF
+# outputdocs/outputdocs_Properties.xml
+#: dropdown - OUT_DOC_REPORT_GENERATOR - HTML2PDF
+msgid "[outputdocs/outputdocs_Properties.xml?OUT_DOC_REPORT_GENERATOR-HTML2PDF]"
+msgstr "HTML2PDF (Old Version)"
+
+# outputdocs/outputdocs_Properties.xml?OUT_DOC_REPORT_GENERATOR-TCPDF
+# outputdocs/outputdocs_Properties.xml
+#: dropdown - OUT_DOC_REPORT_GENERATOR - TCPDF
+msgid "[outputdocs/outputdocs_Properties.xml?OUT_DOC_REPORT_GENERATOR-TCPDF]"
+msgstr "TCPDF"
 
 # outputdocs/outputdocs_Properties.xml?OUT_DOC_LANDSCAPE
 # outputdocs/outputdocs_Properties.xml
@@ -23861,6 +24329,60 @@ msgstr "Debug"
 msgid "Hide the case number and the case title in the steps"
 msgstr "Hide the case number and the case title in the steps"
 
+# processes/processes_Edit.xml?PRO_SUBPROCESS
+# processes/processes_Edit.xml
+#: checkbox - PRO_SUBPROCESS
+msgid "This a sub process"
+msgstr "This a sub process"
+
+# processes/processes_Edit.xml?PRO_TRI_DELETED
+# processes/processes_Edit.xml
+#: dropdown - PRO_TRI_DELETED
+msgid "Execute a trigger when a case is deleted"
+msgstr "Execute a trigger when a case is deleted"
+
+# processes/processes_Edit.xml?PRO_TRI_DELETED-
+# processes/processes_Edit.xml
+#: dropdown - PRO_TRI_DELETED -
+msgid "[processes/processes_Edit.xml?PRO_TRI_DELETED-]"
+msgstr "- Don't execute anything -"
+
+# processes/processes_Edit.xml?PRO_TRI_CANCELED
+# processes/processes_Edit.xml
+#: dropdown - PRO_TRI_CANCELED
+msgid "Execute a trigger when a case is cancelled"
+msgstr "Execute a trigger when a case is cancelled"
+
+# processes/processes_Edit.xml?PRO_TRI_CANCELED-
+# processes/processes_Edit.xml
+#: dropdown - PRO_TRI_CANCELED -
+msgid "[processes/processes_Edit.xml?PRO_TRI_CANCELED-]"
+msgstr "- Don't execute anything -"
+
+# processes/processes_Edit.xml?PRO_TRI_PAUSED
+# processes/processes_Edit.xml
+#: dropdown - PRO_TRI_PAUSED
+msgid "Execute a trigger when a case is paused"
+msgstr "Execute a trigger when a case is paused"
+
+# processes/processes_Edit.xml?PRO_TRI_PAUSED-
+# processes/processes_Edit.xml
+#: dropdown - PRO_TRI_PAUSED -
+msgid "[processes/processes_Edit.xml?PRO_TRI_PAUSED-]"
+msgstr "- Don't execute anything -"
+
+# processes/processes_Edit.xml?PRO_TRI_REASSIGNED
+# processes/processes_Edit.xml
+#: dropdown - PRO_TRI_REASSIGNED
+msgid "Execute a trigger when a case is reassigned"
+msgstr "Execute a trigger when a case is reassigned"
+
+# processes/processes_Edit.xml?PRO_TRI_REASSIGNED-
+# processes/processes_Edit.xml
+#: dropdown - PRO_TRI_REASSIGNED -
+msgid "[processes/processes_Edit.xml?PRO_TRI_REASSIGNED-]"
+msgstr "- Don't execute anything -"
+
 # processes/processes_Edit.xml?BTN_CANCEL
 # processes/processes_Edit.xml
 #: button - BTN_CANCEL
@@ -23981,6 +24503,12 @@ msgstr "Input Document"
 msgid "[processes/processes_EditObjectPermission.xml?OP_OBJ_TYPE-OUTPUT]"
 msgstr "Output Document"
 
+# processes/processes_EditObjectPermission.xml?OP_OBJ_TYPE-CASES_NOTES
+# processes/processes_EditObjectPermission.xml
+#: dropdown - OP_OBJ_TYPE - CASES_NOTES
+msgid "[processes/processes_EditObjectPermission.xml?OP_OBJ_TYPE-CASES_NOTES]"
+msgstr "Cases Notes"
+
 # processes/processes_EditObjectPermission.xml?ALL
 # processes/processes_EditObjectPermission.xml
 #: dropdown - ALL
@@ -24097,7 +24625,7 @@ msgstr "<div align=\"center\">Edit @#filename email template</div>"
 
 # processes/processes_FileEdit.xml?fcontent
 # processes/processes_FileEdit.xml
-#: html - fcontent
+#: wysiwyg_editor - fcontent
 msgid "[processes/processes_FileEdit.xml?fcontent] "
 msgstr ""
 
@@ -24152,8 +24680,8 @@ msgstr "New"
 # processes/processes_FilesOptions.xml?MNU_UPLOAD
 # processes/processes_FilesOptions.xml
 #: link - MNU_UPLOAD
-msgid "[processes/processes_FilesOptions.xml?MNU_UPLOAD] Upload"
-msgstr "Upload"
+msgid "Upload..............."
+msgstr "Upload..............."
 
 # processes/processes_Import.xml?TITLE1
 # processes/processes_Import.xml
@@ -24563,6 +25091,12 @@ msgstr "Input Document"
 msgid "[processes/processes_NewObjectPermission.xml?OP_OBJ_TYPE-OUTPUT]"
 msgstr "Output Document"
 
+# processes/processes_NewObjectPermission.xml?OP_OBJ_TYPE-CASES_NOTES
+# processes/processes_NewObjectPermission.xml
+#: dropdown - OP_OBJ_TYPE - CASES_NOTES
+msgid "[processes/processes_NewObjectPermission.xml?OP_OBJ_TYPE-CASES_NOTES]"
+msgstr "Cases Notes"
+
 # processes/processes_NewObjectPermission.xml?ALL
 # processes/processes_NewObjectPermission.xml
 #: dropdown - ALL
@@ -24863,17 +25397,17 @@ msgstr "File 5"
 msgid "[processes/processes_UploadFilesForm.xml?UPLOAD] Upload"
 msgstr "Upload"
 
-# processes/processes_User.xml?USR_FIRSTNAME
+# processes/processes_User.xml?LA_PU_NAME
 # processes/processes_User.xml
-#: text - USR_FIRSTNAME
-msgid "First name"
-msgstr "First name"
+#: text - LA_PU_NAME
+msgid "User or Group"
+msgstr "User or Group"
 
-# processes/processes_User.xml?USR_LASTNAME
+# processes/processes_User.xml?LA_PU_TYPE_NAME
 # processes/processes_User.xml
-#: text - USR_LASTNAME
-msgid "Last name"
-msgstr "Last name"
+#: text - LA_PU_TYPE_NAME
+msgid "[processes/processes_User.xml?LA_PU_TYPE_NAME] Type"
+msgstr "Type"
 
 # processes/processes_ValidatingGroups.xml?title
 # processes/processes_ValidatingGroups.xml
@@ -24935,17 +25469,17 @@ msgstr "Description"
 msgid "[processes/processes_ViewOptions.xml?MNU] Back to list"
 msgstr "Back to list"
 
-# processes/processes_availableProcessesUser.xml?USR_FIRSTNAME
+# processes/processes_availableProcessesUser.xml?USER_GROUP
 # processes/processes_availableProcessesUser.xml
-#: text - USR_FIRSTNAME
-msgid "[processes/processes_availableProcessesUser.xml?USR_FIRSTNAME] First name"
-msgstr "First name"
+#: text - USER_GROUP
+msgid "[processes/processes_availableProcessesUser.xml?USER_GROUP] User or Group"
+msgstr "User or Group"
 
-# processes/processes_availableProcessesUser.xml?USR_LASTNAME
+# processes/processes_availableProcessesUser.xml?TYPE_UID
 # processes/processes_availableProcessesUser.xml
-#: text - USR_LASTNAME
-msgid "[processes/processes_availableProcessesUser.xml?USR_LASTNAME] Last name"
-msgstr "Last name"
+#: text - TYPE_UID
+msgid "[processes/processes_availableProcessesUser.xml?TYPE_UID] Type"
+msgstr "Type"
 
 # processes/processes_subProcess.xml?TITLE1
 # processes/processes_subProcess.xml
@@ -29147,6 +29681,30 @@ msgstr "Output Document"
 msgid "[steps/steps_List.xml?STEP_TYPE_OBJ-EXTERNAL]"
 msgstr "External Step"
 
+# steps/steps_List.xml?STEP_MODE
+# steps/steps_List.xml
+#: dropdown - STEP_MODE
+msgid "[steps/steps_List.xml?STEP_MODE] Mode"
+msgstr "Mode"
+
+# steps/steps_List.xml?STEP_MODE-
+# steps/steps_List.xml
+#: dropdown - STEP_MODE -
+msgid "[steps/steps_List.xml?STEP_MODE-]"
+msgstr "N/A"
+
+# steps/steps_List.xml?STEP_MODE-VIEW
+# steps/steps_List.xml
+#: dropdown - STEP_MODE - VIEW
+msgid "[steps/steps_List.xml?STEP_MODE-VIEW]"
+msgstr "View"
+
+# steps/steps_List.xml?STEP_MODE-EDIT
+# steps/steps_List.xml
+#: dropdown - STEP_MODE - EDIT
+msgid "[steps/steps_List.xml?STEP_MODE-EDIT]"
+msgstr "Edit"
+
 # steps/steps_List.xml?DELETE
 # steps/steps_List.xml
 #: link - DELETE
@@ -29333,11 +29891,65 @@ msgstr "Reports to"
 msgid "[tasks/tasks_AssignmentRules.xml?TAS_ASSIGN_TYPE-SELF_SERVICE]"
 msgstr "Self Service"
 
+# tasks/tasks_AssignmentRules.xml?TAS_ASSIGN_TYPE-SELF_SERVICE_EVALUATE
+# tasks/tasks_AssignmentRules.xml
+#: radiogroup - TAS_ASSIGN_TYPE - SELF_SERVICE_EVALUATE
+msgid "[tasks/tasks_AssignmentRules.xml?TAS_ASSIGN_TYPE-SELF_SERVICE_EVALUATE]"
+msgstr "Self Service Value Based Assignment"
+
 # tasks/tasks_AssignmentRules.xml?TAS_ASSIGN_VARIABLE
 # tasks/tasks_AssignmentRules.xml
 #: textpm - TAS_ASSIGN_VARIABLE
 msgid "[tasks/tasks_AssignmentRules.xml?TAS_ASSIGN_VARIABLE] Variable for Value Based Assignment"
 msgstr "Variable for Value Based Assignment"
+
+# tasks/tasks_AssignmentRules.xml?TAS_GROUP_VARIABLE
+# tasks/tasks_AssignmentRules.xml
+#: textpm - TAS_GROUP_VARIABLE
+msgid "Variable for Self Service Value Based Assignment"
+msgstr "Variable for Self Service Value Based Assignment"
+
+# tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TIMEOUT
+# tasks/tasks_AssignmentRules.xml
+#: checkbox - TAS_SELFSERVICE_TIMEOUT
+msgid "Set a timeout"
+msgstr "Set a timeout"
+
+# tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TIME
+# tasks/tasks_AssignmentRules.xml
+#: text - TAS_SELFSERVICE_TIME
+msgid "[tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TIME] Time"
+msgstr "Time"
+
+# tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TIME_UNIT
+# tasks/tasks_AssignmentRules.xml
+#: dropdown - TAS_SELFSERVICE_TIME_UNIT
+msgid "Time unit"
+msgstr "Time unit"
+
+# tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TIME_UNIT-HOURS
+# tasks/tasks_AssignmentRules.xml
+#: dropdown - TAS_SELFSERVICE_TIME_UNIT - HOURS
+msgid "[tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TIME_UNIT-HOURS]"
+msgstr "Hours"
+
+# tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TIME_UNIT-DAYS
+# tasks/tasks_AssignmentRules.xml
+#: dropdown - TAS_SELFSERVICE_TIME_UNIT - DAYS
+msgid "[tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TIME_UNIT-DAYS]"
+msgstr "Days"
+
+# tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TRIGGER_UID
+# tasks/tasks_AssignmentRules.xml
+#: dropdown - TAS_SELFSERVICE_TRIGGER_UID
+msgid "Trigger to execute"
+msgstr "Trigger to execute"
+
+# tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TRIGGER_UID-
+# tasks/tasks_AssignmentRules.xml
+#: dropdown - TAS_SELFSERVICE_TRIGGER_UID -
+msgid "[tasks/tasks_AssignmentRules.xml?TAS_SELFSERVICE_TRIGGER_UID-]"
+msgstr "- Select a trigger -"
 
 # tasks/tasks_Definition.xml?TAS_TITLE
 # tasks/tasks_Definition.xml
@@ -29534,7 +30146,7 @@ msgstr "Task duration"
 # tasks/tasks_TimingControl.xml?TAS_TIMEUNIT
 # tasks/tasks_TimingControl.xml
 #: dropdown - TAS_TIMEUNIT
-msgid "Time unit"
+msgid "[tasks/tasks_TimingControl.xml?TAS_TIMEUNIT] Time unit"
 msgstr "Time unit"
 
 # tasks/tasks_TimingControl.xml?TAS_TIMEUNIT-HOURS
@@ -30341,10 +30953,70 @@ msgstr "Variable"
 msgid "[triggers/dynavars.xml?label] Label"
 msgstr "Label"
 
+# triggers/triggerCopy.xml?LBLTITLE1
+# triggers/triggerCopy.xml
+#: title - LBLTITLE1
+msgid "Trigger Information"
+msgstr "Trigger Information"
+
+# triggers/triggerCopy.xml?PROCESS_UID
+# triggers/triggerCopy.xml
+#: dropdown - PROCESS_UID
+msgid "[triggers/triggerCopy.xml?PROCESS_UID] Process"
+msgstr "Process"
+
+# triggers/triggerCopy.xml?PROCESS_UID-
+# triggers/triggerCopy.xml
+#: dropdown - PROCESS_UID -
+msgid "[triggers/triggerCopy.xml?PROCESS_UID-]"
+msgstr "- Select a process -"
+
+# triggers/triggerCopy.xml?TRIGGER_UID
+# triggers/triggerCopy.xml
+#: dropdown - TRIGGER_UID
+msgid "[triggers/triggerCopy.xml?TRIGGER_UID] Trigger"
+msgstr "Trigger"
+
+# triggers/triggerCopy.xml?TRIGGER_UID-
+# triggers/triggerCopy.xml
+#: dropdown - TRIGGER_UID -
+msgid "[triggers/triggerCopy.xml?TRIGGER_UID-]"
+msgstr "- Select a trigger -"
+
+# triggers/triggerCopy.xml?TRI_TITLE
+# triggers/triggerCopy.xml
+#: text - TRI_TITLE
+msgid "Title of the new trigger"
+msgstr "Title of the new trigger"
+
+# triggers/triggerCopy.xml?TRI_DESCRIPTION
+# triggers/triggerCopy.xml
+#: textarea - TRI_DESCRIPTION
+msgid "Description of the new trigger"
+msgstr "Description of the new trigger"
+
+# triggers/triggerCopy.xml?TRI_WEBBOT
+# triggers/triggerCopy.xml
+#: textarea - TRI_WEBBOT
+msgid "Script"
+msgstr "Script"
+
+# triggers/triggerCopy.xml?BTNCOPYSAVE
+# triggers/triggerCopy.xml
+#: button - BTNCOPYSAVE
+msgid "Copy/Import and Save"
+msgstr "Copy/Import and Save"
+
+# triggers/triggerCopy.xml?BTNCANCEL
+# triggers/triggerCopy.xml
+#: button - BTNCANCEL
+msgid "[triggers/triggerCopy.xml?BTNCANCEL] Cancel"
+msgstr "Cancel"
+
 # triggers/triggersCustom.xml?TITLE
 # triggers/triggersCustom.xml
 #: title - TITLE
-msgid "Trigger Information"
+msgid "[triggers/triggersCustom.xml?TITLE] Trigger Information"
 msgstr "Trigger Information"
 
 # triggers/triggersCustom.xml?TRI_TITLE
@@ -31274,7 +31946,7 @@ msgstr "Save"
 # users/users_AvailableUsers.xml?LABEL
 # users/users_AvailableUsers.xml
 #: text - LABEL
-msgid "User or Group"
+msgid "[users/users_AvailableUsers.xml?LABEL] User or Group"
 msgstr "User or Group"
 
 # users/users_AvailableUsers.xml?ASSIGN
