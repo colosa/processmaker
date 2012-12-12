@@ -416,8 +416,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
         } else {
             $error = 0;
         }
-        $HtmlEditor = array('URL' => $A, 'HTML' => $html
-        );
+        $HtmlEditor = array('URL' => $A, 'HTML' => $html, 'DYN_UID' => $file );
         $G_PUBLISH->AddContent('xmlform', 'xmlform', 'dynaforms/dynaforms_HtmlEditor', '', $HtmlEditor, '', '');
         G::RenderPage("publish", 'raw');
         return array('error' => $error, 'html' => ob_get_clean()

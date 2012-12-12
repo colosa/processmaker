@@ -3,7 +3,7 @@
 
 
 <URL type="phpvariable"/>
-
+<DYN_UID type="phpvariable"/>
 
 <PME_HTML_ENABLETEMPLATE type="checkbox" value="1" defaultvalue="0" labelOnRight="0">
   <en>Enable HTML Editing</en>
@@ -21,7 +21,7 @@
 <en>HTML View</en>
 </HTML -->
 
-<HTML type="wysiwyg_editor" editorType="DYNAFORM_TEMPLATE" width="100%" height="300px">
+<HTML type="wysiwyg_editor" editorType="DYNAFORM_TEMPLATE" dynUID="@@DYN_UID" width="100%" height="300px">
 <en>HTML View</en>
 </HTML>
 

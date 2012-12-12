@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="editor_plugin_src.js"></script>
+        <script src="/js/jquery/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script>
+        $(document).ready(function () {
+
+            var getVariableList = function (dynUid, proUid){
+                var responseData
+                var url = tinyMCE.activeEditor.domainURL+"processes/processes_Ajax"; // action url that processes the ajax call
+                responseData = $.ajax({ // jquery ajax call
+                    url : url,
+                    type: "POST",
+                    data: {action : 'getDynaformFieldList', DYN_UID: dynUid, PRO_UID:proUid}, // parameters
+                    async: false,
+                    dataType: "json" // json response type
+                }).responseText;
+                responseData = eval("(" +responseData+ ")");
+                return responseData;
+            }
+            var generateListValues = function(prefix){
+                var list = getVariableList(tinyMCE.activeEditor.dynUID, tinyMCE.activeEditor.proUID);
+                var combo = document.getElementById("varsField");
+                var option = document.createElement('option');
+                var aDelete;
+                for(i=(combo.length-1); i>=0; i--)
+                {
+                    aDelete = combo.options[i];
+                    aDelete.parentNode.removeChild( aDelete );
+                }
+
+                if(list.length>0){
+                    for(i=0; i<list.length; i++)
+                    {
+                       option = document.createElement("OPTION");
+                       option.value = list[i].id;
+                       option.text = list[i].name;
+                       combo.add(option);
+                    }
+                } else {
+                    option = document.createElement("OPTION");
+                    option.value = 0;
+                    option.text = 'No results';
+                    combo.add(option);
+                }  
+            }
+            
+            $("#varsField").dblclick(function(){
+                if ($('#isLabel').is(':checked')){
+                    updateEditorContent("{$"+$("#varsField").val()+"}");
+                } else {
+                    updateEditorContent("{$form."+$("#varsField").val()+"}");
+                }
+            });
+            generateListValues();
+        });
+        
+        
+        
+        </script>
+</head>
+<body>
+<form action="" method="post" enctype="multipart/form-data" onsubmit="">
+    <div id="help_desc">
+        Please, double click a field to add it into the editor.
+    </div>
+    <div id="label_desc">
+        Label <input type="checkbox" id="isLabel" name="isLabel">
+    </div>
+    <div id="desc_variables">
+        <select id="varsField" name="varsField" size="6" style="width:100%;">
+            
+        </select>
+    </div>
+        
+</form>
+</body>
+</html>

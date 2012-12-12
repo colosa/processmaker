@@ -43,6 +43,8 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
     public $defaultValue = '<br/>';
     public $editorType = '';
     public $processID = '';
+    public $dynUID = '';
+
     /**
      * render function returns the HTML definition for the Dynaform Field
      *
@@ -142,16 +144,18 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
 
             case 'DYNAFORM_TEMPLATE':
                 $editorDefinition.= '
+                var formProcessID = document.getElementById("form[PRO_UID]").value;
+                var formDynaformID = document.getElementById("form[DYN_UID]").value;
                 tinyMCE.init({
                     theme   : "advanced",
-                    plugins : "advhr,advimage,advlink,advlist,autolink,autoresize,autosave,contextmenu,directionality,emotions,example,example_dependency,fullpage,fullscreen,iespell,inlinepopups,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,spellchecker,style,tabfocus,table,template,visualblocks,visualchars,wordcount,xhtmlxtras,style,table",
+                    plugins : "advhr,advimage,advlink,advlist,autolink,autoresize,autosave,contextmenu,directionality,emotions,example,example_dependency,fullpage,fullscreen,iespell,inlinepopups,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,spellchecker,style,tabfocus,table,template,visualblocks,visualchars,wordcount,xhtmlxtras,style,table,noneditable,pmFieldPicker",
                     mode    : "specific_textareas",
                     //apply_source_formatting : true,
                     //remove_linebreaks: false,
                     editor_selector : "tmceEditor",
-                    width   : 850,
+                    width   : \'100%\',
                     height  : 300,
-                    theme_advanced_buttons1 : "bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontselect,fontsizeselect,|,cut,copy,paste,|,bullist,numlist",
+                    theme_advanced_buttons1 : "bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontselect,fontsizeselect,|,cut,copy,paste,|,bullist,numlist,|,pmFieldPicker",
                     theme_advanced_buttons2 : "tablecontrols,|outdent,indent,blockquote,|,undo,redo,|,link,unlink,image,|,forecolor,backcolor,styleprops,|,hr,removeformat,visualaid,|,sub,sup,|,ltr,rtl,|,code",
                     popup_css : "/js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/dialog.css",
                     skin : "o2k7",
@@ -162,9 +166,15 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
                     external_image_list_url : "js/image_list.js",
                     media_external_list_url : "js/media_list.js",
                     extended_valid_elements : "div[*]",
+//                    noneditable_regexp: /[^"|^:|^\']{(.*?)}/g,
                     template_replace_values : {
                         username : "Some User",
                         staffid : "991234"
+                    },
+                    oninit: function () {
+                        tinyMCE.activeEditor.domainURL = domainURL;
+                        tinyMCE.activeEditor.dynUID    = formDynaformID;
+                        tinyMCE.activeEditor.proUID    = formProcessID;
                     },
                     handle_event_callback : function(e) {
                         if(this.isDirty()) {

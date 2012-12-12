@@ -593,6 +593,24 @@ try {
 
             echo Bootstrap::json_encode( $aVariables );
             break;
+        case 'getDynaformFieldList':
+            G::LoadClass( 'dynaformhandler' );
+            $dynaformFields = array ();
+            $resultArray = array ();
+            $proUid= isset( $_REQUEST['PRO_UID'] )?$_REQUEST['PRO_UID']:'';
+            $dynUid= isset( $_REQUEST['DYN_UID'] )?$_REQUEST['DYN_UID']:'';
+            if (is_file( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/'. $proUid .'/'.$dynUid. '.xml' ) && filesize( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/'. $proUid .'/'. $dynUid .'.xml' ) > 0) {
+                $dyn = new dynaFormHandler( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/' .$proUid. '/' . $dynUid .'.xml' );
+                $dynaformFields[] = $dyn->getFields();
+            }
+            foreach ($dynaformFields as $aDynFormFields) {
+                foreach ($aDynFormFields as $field) {
+                    $resultArray[] = array ("id"=>$field->nodeName, "name"=>$field->nodeName );
+                }
+            }
+            echo Bootstrap::json_encode( $resultArray );
+//            var_dump($resultArray);
+            break;
         /*
 	       case 'saveFile':
          global $G_PUBLISH;
