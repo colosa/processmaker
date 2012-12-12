@@ -161,7 +161,7 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
                     external_link_list_url : "js/link_list.js",
                     external_image_list_url : "js/image_list.js",
                     media_external_list_url : "js/media_list.js",
-
+                    extended_valid_elements : "div[*]",
                     template_replace_values : {
                         username : "Some User",
                         staffid : "991234"
