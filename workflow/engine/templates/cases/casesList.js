@@ -815,7 +815,7 @@ Ext.onReady ( function() {
     });
 
   var comboProcess = new Ext.form.ComboBox({
-    width         : 200,
+    width         : 180,
     boxMaxWidth   : 200,
     editable      : true,
     displayField  : 'APP_PRO_TITLE',
@@ -890,7 +890,7 @@ Ext.onReady ( function() {
   });
 
     var comboCategory = new Ext.form.ComboBox({
-        width           : 200,
+        width           : 180,
         boxMaxWidth     : 200,
         editable        : true,
         displayField    : 'CATEGORY_NAME',
@@ -1008,7 +1008,7 @@ Ext.onReady ( function() {
   });
   // ComboBox creation
   var comboStatus = new Ext.form.ComboBox({
-    width         : 90,
+    width         : 80,
     boxMaxWidth   : 90,
     editable      : false,
     mode          : 'local',
@@ -1076,7 +1076,7 @@ Ext.onReady ( function() {
   var textSearch = new Ext.form.TextField ({
     allowBlank: true,
     ctCls:'pm_search_text_field',
-    width: 150,
+    width: 140,
     emptyText: _('ID_EMPTY_SEARCH'),
     listeners: {
       specialkey: function(f,e){
