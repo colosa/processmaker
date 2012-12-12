@@ -179,6 +179,7 @@ class Applications
 
         //Add the category filter
         if (!empty($category)) {
+            require_once 'classes/model/Process.php';
             $Criteria->addAlias("CP", "PROCESS");
             $Criteria->add("CP.PRO_CATEGORY", $category, Criteria::EQUAL);
             $Criteria->addJoin(AppCacheViewPeer::PRO_UID, "CP.PRO_UID", Criteria::LEFT_JOIN);

@@ -117,6 +117,7 @@ if ($actionAjax == "processListExtJs") {
     $cProcess->addSelectColumn( AppCacheViewPeer::APP_PRO_TITLE );
     $cProcess->setDistinct( AppCacheViewPeer::PRO_UID );
     if ($categoryUid) {
+        require_once 'classes/model/Process.php';
         $cProcess->addAlias( 'CP', 'PROCESS' );
         $cProcess->add( 'CP.PRO_CATEGORY', $categoryUid, Criteria::EQUAL );
         $cProcess->addJoin( AppCacheViewPeer::PRO_UID, 'CP.PRO_UID', Criteria::LEFT_JOIN );
