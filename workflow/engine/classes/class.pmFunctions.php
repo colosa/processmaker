@@ -2394,9 +2394,11 @@ function PMFGetUserEmailAddress ($id, $APP_UID = null, $prefix = 'usr')
                     }
                 } else {
                     $oUserRow = UsersPeer::retrieveByPK( $sID );
-                    $sID = $oUserRow->getUsrEmail();
-                    if (G::emailAddress( $sID )) {
-                        array_push( $aRecipient, $sID );
+                    if ($oUserRow != null) {
+                        $sID = $oUserRow->getUsrEmail();
+                        if (G::emailAddress( $sID )) {
+                            array_push( $aRecipient, $sID );
+                        }
                     }
                 }
 

@@ -330,6 +330,7 @@ class AppEvent extends BaseAppEvent
                         $log[] = ' - The trigger ' . $aRow['TRI_UID'] . ' throw some errors!';
                         println( " - The trigger {$aRow['TRI_UID']} throw some errors!" );
                         print_r( $_SESSION['TRIGGER_DEBUG']['ERRORS'] );
+                        $_SESSION['TRIGGER_DEBUG']['ERRORS'] = array();
                     }
                     if ($oAppEvent->getAppEvnAttempts() > 0) {
                         $oAppEvent->setAppEvnAttempts( $oAppEvent->getAppEvnAttempts() - 1 );

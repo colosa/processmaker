@@ -578,8 +578,8 @@ class spoolRun
                     $sFrom = $row["APP_MSG_FROM"];
                     $hasEmailFrom = preg_match('/(.+)@(.+)\.(.+)/', $row["APP_MSG_FROM"], $match);
 
-                    if (! $hasEmailFrom || strpos( $row["APP_MSG_FROM"], $setup['MESS_ACCOUNT'] ) === false) {
-                        $sFrom = '"' . stripslashes( $row["APP_MSG_FROM"] ) . '" <' . $setup['MESS_ACCOUNT'] . ">";
+                    if (! $hasEmailFrom || strpos( $row["APP_MSG_FROM"], $aConfiguration['MESS_ACCOUNT'] ) === false) {
+                        $sFrom = '"' . stripslashes( $row["APP_MSG_FROM"] ) . '" <' . $aConfiguration['MESS_ACCOUNT'] . ">";
                     }
                     $this->setData( $row["APP_MSG_UID"], $row["APP_MSG_SUBJECT"], $sFrom, $row["APP_MSG_TO"], $row["APP_MSG_BODY"], date( "Y-m-d H:i:s" ), $row["APP_MSG_CC"], $row["APP_MSG_BCC"], $row["APP_MSG_TEMPLATE"], $row["APP_MSG_ATTACH"] );
 
