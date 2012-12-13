@@ -120,7 +120,8 @@ return camelizedString;};String.prototype.toArray=function()
 {return this.split("");};String.prototype.extractScript=function()
 {var matchAll=new RegExp(tagScript,'img');return(this.match(matchAll)||[]);};String.prototype.evalScript=function()
 {return(this.match(new RegExp(tagScript,'img'))||[]).evalScript();};String.prototype.stripScript=function()
-{return this.replace(new RegExp(tagScript,'img'),'');};if((typeof XMLSerializer)==='undefined')
+{return this.replace(new RegExp(tagScript,'img'),'');};String.prototype.toInitCap=function(str)
+{return(str+'').replace(/^([a-z])|\s+([a-z])/g,function($1){return $1.toUpperCase();});};if((typeof XMLSerializer)==='undefined')
 {window.XMLSerializer=function(){this.toString=function()
 {return"[object XMLSerializer]";};this.serializeToString=function(xml){return xml.xml||xml.outerHTML||"Error XMLSerializer";};};}};this.loadMethods=function(methods,instance)
 {var _return_=[];var tmp;for(var i=0;i<methods.length;i++)
@@ -1055,7 +1056,7 @@ if(this.validate=="Email")
 else{this.element.className=this.element.className.split(" ")[0]+" FormFieldInvalid";}}
 else
 {this.element.className=this.element.className.split(" ")[0]+" FormFieldValid";}}
-if(this.strTo){switch(this.strTo){case'UPPER':this.element.value=this.element.value.toUpperCase();break;case'LOWER':this.element.value=this.element.value.toLowerCase();break;}}}.extend(this);}
+if(this.strTo){switch(this.strTo){case'UPPER':this.element.value=this.element.value.toUpperCase();break;case'LOWER':this.element.value=this.element.value.toLowerCase();break;case'TITLE':this.element.value=this.element.value.toLowerCase();this.element.value=this.element.value.toInitCap(this.element.value);break;case'PHRASE':var phrase=this.element.value.split(' ');phrase[0]=phrase[0].toInitCap(phrase[0]);this.element.value=phrase.join(' ');break;}}}.extend(this);}
 if(!element)return;if(!window.event){this.element.onkeydown=this.handleKeyDown;this.element.onkeypress=this.handleKeyPress;this.element.onchange=this.updateDepententFields;}else{leimnud.event.add(this.element,'keydown',this.handleKeyDown);leimnud.event.add(this.element,'keypress',this.handleKeyPress);leimnud.event.add(this.element,'change',this.updateDepententFields);}};G_Text.prototype=new G_Field();function G_Percentage(form,element,name)
 {var me=this;this.parent=G_Text;this.parent(form,element,name);this.mType='percentage';this.mask='###.##';this.comma_separator=".";}
 G_Percentage.prototype=new G_Field();function G_Currency(form,element,name)

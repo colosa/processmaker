@@ -1502,6 +1502,16 @@ function G_Text(form, element, name)
           case 'LOWER':
             this.element.value = this.element.value.toLowerCase();
             break;
+          case 'TITLE':
+        	this.element.value = this.element.value.toLowerCase();
+            this.element.value = this.element.value.toInitCap(this.element.value);
+            break;
+          case 'PHRASE':
+            //this.element.value = this.element.value.toLowerCase();
+            var phrase = this.element.value.split(' ');
+            phrase[0] = phrase[0].toInitCap(phrase[0]);
+            this.element.value = phrase.join(' ');
+            break;
         }
       }
     }.extend(this);

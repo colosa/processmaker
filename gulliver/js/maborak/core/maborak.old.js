@@ -743,6 +743,17 @@ var maborak = function(forceCssLoad){
 		{
 			return this.replace(new RegExp(tagScript, 'img'), '');
 		};
+		
+		/**
+		 * Return first letters as uppercase, rest lower.
+		 */
+		String.prototype.toInitCap = function(str)
+		{
+			return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
+		        return $1.toUpperCase();
+		    });
+		};
+		
 		/**
 		*	XMLSerializer Crossbrowser
 		*/

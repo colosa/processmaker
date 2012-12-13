@@ -38,7 +38,7 @@
 </PME_MASK>
 <PME_STRTO type="dropdown" defaultvalue="">
 
-  <en>Text transform to<option name=""></option><option name="UPPER">UPPER</option><option name="LOWER">LOWER</option></en>
+  <en>Text transform to<option name=""></option><option name="UPPER">UPPER</option><option name="LOWER">LOWER</option><option name="PHRASE">CAPITALIZE PHRASE</option><option name="TITLE">TITLE CASE</option></en>
 </PME_STRTO>
 <PME_REQUIRED type="checkbox" falseValue="0" value="1" defaultvalue="0" labelOnRight="0">
   <en>Required</en>
