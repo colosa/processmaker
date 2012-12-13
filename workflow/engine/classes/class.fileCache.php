@@ -1,5 +1,4 @@
 <?php
-
 /**
  * class.memcached.php
  *
@@ -28,15 +27,14 @@
 
 class FileCache
 {
-
     function __construct ($dir)
     {
         $this->dir = $dir;
     }
 
-    private function _name ($key)
+    private function _name($key)
     {
-        return sprintf( "%s/%s", $this->dir, sha1( $key ) );
+        return sprintf("%s%s", $this->dir, sha1($key));
     }
 
     public function get ($key, $expiration = 3600)
@@ -53,7 +51,7 @@ class FileCache
         }
 
         if (filemtime( $cache_path ) < (time() - $expiration)) {
-            // $this->clear($key);
+            // $this->delete($key);
             // different users can have different timeout requests
             return FALSE;
         }
@@ -102,15 +100,26 @@ class FileCache
         return TRUE;
     }
 
-    public function clear ($key)
+    public function delete($key)
     {
-        $cache_path = $this->_name( $key );
+        $cache_path = $this->_name($key);
 
-        if (file_exists( $cache_path )) {
-            unlink( $cache_path );
-            return TRUE;
+        if (file_exists($cache_path)) {
+            unlink($cache_path);
+            return true;
         }
 
-        return FALSE;
+        return false;
+    }
+
+    public function flush()
+    {
+        G::rm_dir($this->dir);
+    }
+
+    public function getStats()
+    {
+        return null;
     }
 }
+

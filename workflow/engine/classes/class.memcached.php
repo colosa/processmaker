@@ -1,5 +1,4 @@
 <?php
-
 /**
  * class.memcached.php
  *
@@ -66,9 +65,11 @@ class PMmemcached
                     $this->version = $this->mem->getVersion();
                 }
             } else {
-                require_once ('classes/class.fileCache.php');
-                // create cache folder
-                $cacheFolder = PATH_DATA . "sites/" . $workspace . "/cachefiles/";
+                require_once ("classes" . PATH_SEP . "class.fileCache.php");
+
+                //Create cache folder
+                $cacheFolder = PATH_DATA . "sites". PATH_SEP . $workspace . PATH_SEP . "cachefiles" . PATH_SEP;
+
                 if (! file_exists( $cacheFolder )) {
                     if (! mkdir( $cacheFolder )) {
                         return false;
@@ -116,7 +117,8 @@ class PMmemcached
         if (! $this->connected) {
             return false;
         }
-        if ($this->class != 'filecache') {
+
+        if ($this->class != "fileCache") {
             $this->mem->set( $this->workspace . '_' . $key, $object, false, $timeout );
         } else {
             $this->mem->set( $this->workspace . '_' . $key, $object );
@@ -133,50 +135,61 @@ class PMmemcached
 
     public function add ($key, $value)
     {
-        if ((! $this->connected) || ($this->class == 'filecache')) {
+        if (!$this->connected || $this->class == "fileCache") {
             return false;
         }
+
         return $this->mem->add( $this->workspace . '_' . $key, $value );
     }
 
     public function increment ($key, $value)
     {
-        if ((! $this->connected) || ($this->class == 'filecache')) {
+        if (!$this->connected || $this->class == "fileCache") {
             return false;
         }
+
         return $this->mem->increment( $this->workspace . '_' . $key, $value );
     }
 
-    public function delete ($key)
+    public function delete($key)
     {
-        if ((! $this->connected) || ($this->class == 'filecache')) {
+        if (!$this->connected) {
             return false;
         }
-        return $this->mem->delete( $this->workspace . '_' . $key );
+
+        return $this->mem->delete($this->workspace . "_" . $key);
     }
 
-    public function flush ()
+    public function flush()
     {
-        if ((! $this->connected) || ($this->class == 'filecache')) {
+        if (!$this->connected) {
             return false;
         }
+
         return $this->mem->flush();
     }
 
-    public function getStats ()
+    public function getStats()
     {
-        if ((! $this->connected) || ($this->class == 'filecache')) {
+        if (!$this->connected) {
             return false;
         }
+
         return $status = $this->mem->getStats();
     }
 
-    public function printDetails ()
+    public function printDetails()
     {
-        if ((! $this->connected) || ($this->class == 'filecache')) {
+        if (!$this->connected) {
             return false;
         }
+
         $status = $this->mem->getStats();
+
+        if (!is_array($status)) {
+            return false;
+        }
+
         echo "<table border='1'>";
         echo "<tr><td>Memcache Server version:</td><td> " . $status["version"] . "</td></tr>";
         echo "<tr><td>Number of hours this server has been running </td><td>" . ($status["uptime"] / 3660) . "</td></tr>";
