@@ -777,6 +777,17 @@ deleteSkin = function(){
           );
 }
 
+function createCookie (name, value, time) {
+    if (time) {
+        var date = new Date();
+        date.setTime(date.getTime()+(time*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    } else {
+        var expires = "";
+    }
+    document.cookie = name+"="+value+expires+"; path=/"+SYS_SYS;
+}
+
 function changeSkin(newSkin,currentSkin){
   Ext.Ajax.request({
       url: 'clearCompiledAjax',
@@ -787,6 +798,7 @@ function changeSkin(newSkin,currentSkin){
         var response = Ext.util.JSON.decode(r.responseText);
         if (response.success) {
           currentLocation = top.location.href;
+          createCookie ('workspaceSkin', newSkin, '1');
           if (currentSkin.substring(0,2) != 'ux') {
             if (newSkin.substring(0,2) == 'ux') {
               newLocation = currentLocation.replace("/" + currentSkin + "/setup/", "/" + newSkin + "/");

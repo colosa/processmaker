@@ -249,6 +249,13 @@ try {
             $sLocation = $_REQUEST['u'];
         } else {
             $sLocation = $oUserProperty->redirectTo($_SESSION['USER_LOGGED'], $lang);
+            if (isset($_COOKIE['workspaceSkin'])) {
+                if (substr(SYS_SKIN, 0, 2) == 'ux') {
+                    $sLocation = str_replace(SYS_SKIN."/main", $_COOKIE['workspaceSkin']."/setup/main", $sLocation);
+                } else {
+                    $sLocation = str_replace(SYS_SKIN, $_COOKIE['workspaceSkin'], $sLocation);
+                }
+            }
         }
     }
 
