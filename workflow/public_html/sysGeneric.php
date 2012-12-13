@@ -286,6 +286,7 @@ $virtualURITable['/rest/(*)'] = 'rest-service';
 $virtualURITable['/update/(*)'] = PATH_GULLIVER_HOME . 'methods/update/';
 //$virtualURITable['/(*)'] = PATH_HTML;
 $virtualURITable['/css/(*)'] = PATH_HTML . 'css/'; //ugly
+$virtualURITable['/skin/(*)'] = PATH_HTML;
 $virtualURITable['/[a-zA-Z][a-zA-Z0-9]{0,}/'] = 'errorFile';
 
 $isRestRequest = false;
@@ -365,6 +366,13 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
     }
 } //virtual URI parser
 
+// Call Gulliver Classes
+Bootstrap::LoadThirdParty( 'smarty/libs', 'Smarty.class' );
+//loading the autoloader libraries feature
+spl_autoload_register(array('Bootstrap', 'autoloadClass'));
+Bootstrap::registerClass('G', PATH_GULLIVER . "class.g.php");
+Bootstrap::registerClass('System',        PATH_HOME . "engine/classes/class.system.php");
+
 // the request correspond to valid php page, now parse the URI
 Bootstrap::parseURI( getenv( "REQUEST_URI" ), $isRestRequest );
 
@@ -392,13 +400,8 @@ if (defined( 'PATH_DATA' ) && file_exists( PATH_DATA )) {
     $oServerConf = & serverConf::getSingleton();
 }
 
-// Call Gulliver Classes
-Bootstrap::LoadThirdParty( 'smarty/libs', 'Smarty.class' );
-
-//testing the autoloader feature
-spl_autoload_register(array('Bootstrap', 'autoloadClass'));
+// Call more Classes
 Bootstrap::registerClass('headPublisher', PATH_GULLIVER . "class.headPublisher.php");
-Bootstrap::registerClass('G', PATH_GULLIVER . "class.g.php");
 Bootstrap::registerClass('publisher', PATH_GULLIVER . "class.publisher.php");
 Bootstrap::registerClass('xmlform', PATH_GULLIVER . "class.xmlform.php");
 Bootstrap::registerClass('XmlForm_Field', PATH_GULLIVER . "class.xmlform.php");
@@ -418,7 +421,6 @@ Bootstrap::registerClass('Controller',          PATH_GULLIVER . "class.controlle
 Bootstrap::registerClass('HttpProxyController', PATH_GULLIVER . "class.httpProxyController.php");
 Bootstrap::registerClass('templatePower',            PATH_GULLIVER . "class.templatePower.php");
 Bootstrap::registerClass('XmlForm_Field_SimpleText', PATH_GULLIVER . "class.xmlformExtension.php");
-Bootstrap::registerClass('System',        PATH_HOME . "engine/classes/class.system.php");
 Bootstrap::registerClass('Propel',          PATH_THIRDPARTY . "propel/Propel.php");
 Bootstrap::registerClass('Creole',          PATH_THIRDPARTY . "creole/Creole.php");
 Bootstrap::registerClass('Groups',       PATH_HOME . "engine/classes/class.groups.php");

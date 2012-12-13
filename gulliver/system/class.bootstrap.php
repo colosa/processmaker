@@ -292,33 +292,30 @@ class Bootstrap
 	 *        	= local path
 	 * @return boolean
 	 */
-	public function virtualURI($url, $convertionTable, &$realPath) {
-		foreach ( $convertionTable as $urlPattern => $localPath ) {
-			// $urlPattern = addcslashes( $urlPattern , '/');
-			$urlPattern = addcslashes ( $urlPattern, './' );
-			$urlPattern = '/^' . str_replace ( array (
-					'*',
-					'?'
-			), array (
-					'.*',
-					'.?'
-			), $urlPattern ) . '$/';
-			if (preg_match ( $urlPattern, $url, $match )) {
-				if ($localPath === false) {
-					$realPath = $url;
-					return false;
-				}
-				if ($localPath != 'jsMethod') {
-					$realPath = $localPath . $match [1];
-				} else {
-					$realPath = $localPath;
-				}
-				return true;
-			}
-		}
-		$realPath = $url;
-		return false;
-	}
+    public function virtualURI ($url, $convertionTable, &$realPath)
+    {
+        foreach ($convertionTable as $urlPattern => $localPath) {
+            //      $urlPattern = addcslashes( $urlPattern , '/');
+            $urlPattern = addcslashes( $urlPattern, './' );
+            $urlPattern = '/^' . str_replace( array ('*','?'
+            ), array ('.*','.?'
+            ), $urlPattern ) . '$/';
+            if (preg_match( $urlPattern, $url, $match )) {
+                if ($localPath === false) {
+                    $realPath = $url;
+                    return false;
+                }
+                if ($localPath != 'jsMethod') {
+                    $realPath = $localPath . $match[1];
+                } else {
+                    $realPath = $localPath;
+                }
+                return true;
+            }
+        }
+        $realPath = $url;
+        return false;
+    }
 
 	/**
 	 * streaming a file
@@ -469,9 +466,9 @@ class Bootstrap
 	 * return true if the file exists, otherwise false.
 	 */
 	public function isPMUnderUpdating($setFlag = 2) {
-                if (!defined('PATH_DATA')) {
-                    return false;
-                }
+        if (!defined('PATH_DATA')) {
+           return false;
+        }
 
 		$fileCheck = PATH_DATA . "UPDATE.dat";
 		if ($setFlag == 0) {
