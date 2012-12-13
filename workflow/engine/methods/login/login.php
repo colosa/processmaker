@@ -69,6 +69,7 @@ if (isset ($_SESSION['USER_LOGGED'])) {
     $aRow = $oDataset->getRow();
 
     if ($aRow) {
+        setcookie("workspaceSkin", SYS_SKIN, time() + 24*60*60, "/sys".SYS_SYS);
         if ($aRow['LOG_STATUS'] != 'CLOSED' && $aRow['LOG_END_DATE'] == null) {
             $weblog = new LoginLog();
 

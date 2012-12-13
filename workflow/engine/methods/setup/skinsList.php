@@ -45,6 +45,7 @@ $oHeadPublisher->addExtJsScript( 'setup/skinList', false ); //adding a javascrip
 $oHeadPublisher->addContent( 'setup/skinList' ); //adding a html file  .html.
 $oHeadPublisher->assign( 'CONFIG', $Config );
 $oHeadPublisher->assign( 'SYS_SKIN', SYS_SKIN );
+$oHeadPublisher->assign( 'SYS_SYS', "sys".SYS_SYS );
 
 $oHeadPublisher->assign( 'FORMATS', $c->getFormats() );
 
