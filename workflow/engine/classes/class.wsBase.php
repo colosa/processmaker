@@ -747,7 +747,7 @@ class wsBase
         $delIndex = 0
     ) {
         try {
-            G::loadClass( 'system' );
+            G::LoadClass("system");
 
             $aSetup = System::getEmailConfiguration();
 
@@ -816,7 +816,8 @@ class wsBase
                 "app_msg_attach"   => $aAttachment,
                 "app_msg_template" => "",
                 "app_msg_status"   => "pending",
-                "app_msg_show_message" => $showMessage
+                "app_msg_show_message" => $showMessage,
+                "contentTypeIsHtml" => (preg_match("/^.+\.html?$/i", $fileTemplate))? true : false
             );
 
             $oSpool->create( $messageArray );

@@ -151,7 +151,7 @@ class spoolRun
             $this->status = strtolower( $aData['app_msg_status'] );
         }
 
-        $this->setData( $sUID, $aData['app_msg_subject'], $aData['app_msg_from'], $aData['app_msg_to'], $aData['app_msg_body'], $aData['app_msg_date'], $aData['app_msg_cc'], $aData['app_msg_bcc'], $aData['app_msg_template'], $aData['app_msg_attach'] );
+        $this->setData($sUID, $aData["app_msg_subject"], $aData["app_msg_from"], $aData["app_msg_to"], $aData["app_msg_body"], $aData["app_msg_date"], $aData["app_msg_cc"], $aData["app_msg_bcc"], $aData["app_msg_template"], $aData["app_msg_attach"], $aData["contentTypeIsHtml"]);
     }
 
     /**
@@ -171,7 +171,7 @@ class spoolRun
      * @param string $sAppMsgUid, $sSubject, $sFrom, $sTo, $sBody, $sDate, $sCC, $sBCC, $sTemplate
      * @return none
      */
-    public function setData ($sAppMsgUid, $sSubject, $sFrom, $sTo, $sBody, $sDate = '', $sCC = '', $sBCC = '', $sTemplate = '', $aAttachment = array())
+    public function setData($sAppMsgUid, $sSubject, $sFrom, $sTo, $sBody, $sDate = "", $sCC = "", $sBCC = "", $sTemplate = "", $aAttachment = array(), $bContentTypeIsHtml = true)
     {
         $this->spool_id = $sAppMsgUid;
         $this->fileData['subject'] = $sSubject;
@@ -184,6 +184,7 @@ class spoolRun
         $this->fileData['template'] = $sTemplate;
         $this->fileData['attachments'] = is_array( $aAttachment ) ? $aAttachment : ($aAttachment != '' ? explode( ',', $aAttachment ) : array ());
         $this->fileData['envelope_to'] = array ();
+        $this->fileData["contentTypeIsHtml"] = $bContentTypeIsHtml;
 
         if ($this->config['MESS_ENGINE'] == 'OPENMAIL') {
             if ($this->config['MESS_SERVER'] != '') {
@@ -462,7 +463,7 @@ class spoolRun
                         }
                     }
 
-                    $oPHPMailer->IsHTML( true );
+                    $oPHPMailer->IsHTML($this->fileData["contentTypeIsHtml"]);
 
                     if ($oPHPMailer->Send()) {
                         $this->error = '';
