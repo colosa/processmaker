@@ -98,9 +98,11 @@ class Home extends Controller
         $processList = $case->getStartCasesPerType( $_SESSION['USER_LOGGED'], 'category' );
         $switchLink = $userProperty->getUserLocation( $_SESSION['USER_LOGGED'] );
 
-        if (substr( $sysConf['default_skin'], 0, 2 ) == 'ux') {
-            $_SESSION['_defaultUserLocation'] = $switchLink;
-            $switchLink = '/sys' . SYS_SYS . '/' . SYS_LANG . '/' . $sysConf['default_skin'] . '/main';
+        if (!isset($_COOKIE['workspaceSkin'])) {
+            if (substr( $sysConf['default_skin'], 0, 2 ) == 'ux') {
+                $_SESSION['_defaultUserLocation'] = $switchLink;
+                $switchLink = '/sys' . SYS_SYS . '/' . SYS_LANG . '/' . $sysConf['default_skin'] . '/main';
+            }
         }
 
         unset( $processList[0] );

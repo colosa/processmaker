@@ -446,11 +446,7 @@ class Bootstrap
 		}
 
 		define ( "SYS_LANG", $args ['SYS_LANG'] );
-        if (isset($_COOKIE['workspaceSkin'])) {
-            define('SYS_SKIN', $_COOKIE['workspaceSkin']);
-        } else {
-            define('SYS_SKIN', $args ['SYS_SKIN']);
-        }
+        define('SYS_SKIN', $args ['SYS_SKIN']);
 		define ( 'SYS_COLLECTION', $args ['SYS_COLLECTION'] );
 		define ( 'SYS_TARGET', $args ['SYS_TARGET'] );
 

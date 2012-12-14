@@ -251,7 +251,16 @@ class UsersProperties extends BaseUsersProperties
         $url = '';
 
         if (substr( SYS_SKIN, 0, 2 ) == 'ux' && SYS_SKIN != 'uxs') {
-            $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/main';
+            if (isset($_COOKIE['workspaceSkin'])) {
+                if (substr( $_COOKIE['workspaceSkin'], 0, 2 ) != 'ux') {
+                    $url = $this->_getDefaultLocation();
+                    return $url;
+                } else {
+                    $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . $_COOKIE['workspaceSkin'] . '/main';
+                }
+            } else {
+                $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/main';
+            }
             global $RBAC;
             G::loadClass( 'configuration' );
             $oConf = new Configurations();
@@ -317,7 +326,11 @@ class UsersProperties extends BaseUsersProperties
             if (isset( $aRedirectLogin ) && is_array( $aRedirectLogin )) {
                 foreach ($aRedirectLogin as $key => $detail) {
                     if (isset( $detail->sPathMethod ) && $detail->sRoleCode == $userRole) {
-                        $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/' . $detail->sPathMethod;
+                        if (isset($_COOKIE['workspaceSkin'])) {
+                            $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . $_COOKIE['workspaceSkin'] . '/' . $detail->sPathMethod;
+                        } else {
+                            $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/' . $detail->sPathMethod;
+                        }
                     }
                 }
             }
@@ -378,7 +391,12 @@ class UsersProperties extends BaseUsersProperties
         $oConf = new Configurations();
         $oConf->loadConfig( $x, 'USER_PREFERENCES', '', '', $_SESSION['USER_LOGGED'], '' );
 
-        $baseUrl = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/';
+        //$baseUrl = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/';
+        if (isset($_COOKIE['workspaceSkin'])) {
+            $baseUrl = '/sys' . SYS_SYS . '/' . $this->lang . '/' . $_COOKIE['workspaceSkin'] . '/';
+        } else {
+            $baseUrl = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/';
+        }
         $url = '';
 
         if (sizeof( $oConf->aConfig ) > 0) {
