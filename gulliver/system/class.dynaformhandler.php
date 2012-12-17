@@ -384,14 +384,18 @@ class dynaFormHandler
         }
         foreach ($av as $e) {
             $xnode = $this->root->getElementsByTagName($e)->item(0);
-            if ($xnode->nodeType == XML_ELEMENT_NODE) {
-                $dropednode = $this->root->removeChild($xnode);
-                /* evaluation field aditional routines */
-                $xpath = new DOMXPath($this->dom);
-                $nodeList = $xpath->query("/dynaForm/JS_$e");
-                if ($nodeList->length != 0) {
-                    $tmp_node = $nodeList->item(0);
-                    $this->root->removeChild($tmp_node);
+            if (isset($xnode->nodeType)) {
+                if ($xnode->nodeType == XML_ELEMENT_NODE) {
+                    $dropednode = $this->root->removeChild($xnode);
+                    /* evaluation field aditional routines */
+                    $xpath = new DOMXPath($this->dom);
+                    $nodeList = $xpath->query("/dynaForm/JS_$e");
+                    if ($nodeList->length != 0) {
+                        $tmp_node = $nodeList->item(0);
+                        $this->root->removeChild($tmp_node);
+                    }
+                } else {
+                    print("[Class dynaFormHandler] ERROR:  The \"$e\" element doesn't exist!<br>");
                 }
             } else {
                 print("[Class dynaFormHandler] ERROR:  The \"$e\" element doesn't exist!<br>");
