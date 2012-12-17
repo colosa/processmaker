@@ -2070,7 +2070,7 @@ class Processes
      * @param string $sProUid
      * @return $aDynaform array
      */
-    public function getObjectPermissionRows ($sProUid)
+    public function getObjectPermissionRows ($sProUid, &$oData)
     {
         // by erik
         try {
@@ -2084,15 +2084,44 @@ class Processes
             while ($aRow = $oDataset->getRow()) {
                 $o = new ObjectPermission();
                 $oPermissions[] = $o->Load( $aRow['OP_UID'] );
+
+                $oGroupwf = new Groupwf();
+                $oData->groupwfs[] = $oGroupwf->Load( $aRow['USR_UID'] );
                 $oDataset->next();
             }
+
             return $oPermissions;
         } catch (Exception $oError) {
             throw ($oError);
         }
     }
     #@!neyek
-
+    
+    /**
+     * Get Object Permission Rows from a Process
+     *
+     * @param string $sProUid
+     * @return $aDynaform array
+     */
+    public function getGroupwfSupervisor ($sProUid, &$oData)
+    {
+        try {
+            $oCriteria = new Criteria( 'workflow' );
+            $oCriteria->add(ProcessUserPeer::PRO_UID,  $sProUid );
+            $oCriteria->add(ProcessUserPeer::PU_TYPE,  'GROUP_SUPERVISOR' );
+            $oDataset = ProcessUserPeer::doSelectRS( $oCriteria );
+            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oDataset->next();
+            while ($aRow = $oDataset->getRow()) {
+                $oGroupwf = new Groupwf();
+                $oData->groupwfs[] = $oGroupwf->Load( $aRow['USR_UID'] );
+                $oDataset->next();
+            }
+            return true;
+        } catch (Exception $oError) {
+            throw ($oError);
+        }
+    }
 
     /**
      * Create Dynaform Rows for a Process form an array
@@ -2235,6 +2264,7 @@ class Processes
                 $aGroupwf[] = $oGroupwf->Load( $aRow['GRP_UID'] );
                 $oDataset->next();
             }
+
             return $aGroupwf;
         } catch (Exception $oError) {
             throw ($oError);
@@ -2570,7 +2600,7 @@ class Processes
         $oData->reportTables = $this->getReportTablesRows( $sProUid );
         $oData->reportTablesVars = $this->getReportTablesVarsRows( $sProUid );
         $oData->stepSupervisor = $this->getStepSupervisorRows( $sProUid );
-        $oData->objectPermissions = $this->getObjectPermissionRows( $sProUid );
+        $oData->objectPermissions = $this->getObjectPermissionRows( $sProUid, $oData);
         $oData->subProcess = $this->getSubProcessRow( $sProUid );
         $oData->caseTracker = $this->getCaseTrackerRow( $sProUid );
         $oData->caseTrackerObject = $this->getCaseTrackerObjectRow( $sProUid );
@@ -2579,6 +2609,7 @@ class Processes
         $oData->event = $this->getEventRow( $sProUid );
         $oData->caseScheduler = $this->getCaseSchedulerRow( $sProUid );
         $oData->processCategory = $this->getProcessCategoryRow( $sProUid );
+        $this->getGroupwfSupervisor( $sProUid, $oData);
 
         //krumo ($oData);die;
         //$oJSON = new Services_JSON();
