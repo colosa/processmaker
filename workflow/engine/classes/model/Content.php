@@ -320,10 +320,6 @@ class Content extends BaseContent
         )Engine=MyISAM  DEFAULT CHARSET='utf8' COMMENT='Table for add content';" );
         $oStatement->executeQuery();
 
-        //set interactive timeout
-        $oStatement = $connection->prepareStatement( "set global interactive_timeout = 100;" );
-        $oStatement->executeQuery();
-
         $sql = " SELECT DISTINCT CON_LANG
                 FROM CONTENT ";
         $stmt = $connection->createStatement();
@@ -344,7 +340,7 @@ class Content extends BaseContent
         $workSpace = new workspaceTools( $workSpace );
         $workSpace->getDBInfo();
 
-        $link = mysql_pconnect( $workSpace->dbHost, $workSpace->dbUser, $workSpace->dbPass, MYSQL_CLIENT_INTERACTIVE ) or die( "Could not connect" );
+        $link = mysql_pconnect( $workSpace->dbHost, $workSpace->dbUser, $workSpace->dbPass) or die( "Could not connect" );
 
         mysql_select_db( $workSpace->dbName, $link );
         mysql_query( "SET NAMES 'utf8';" );
@@ -396,6 +392,16 @@ class Content extends BaseContent
 
         $statement = $connection->prepareStatement( "DROP TABLE CONTENT_BACKUP" );
         $statement->executeQuery();
+
+        //close connection
+        $sql = "SELECT * FROM information_schema.processlist WHERE command = 'Sleep' and user = SUBSTRING_INDEX(USER(),'@',1) and db = DATABASE() ORDER BY id;";
+        $stmt = $connection->createStatement();
+        $rs = $stmt->executeQuery( $sql, ResultSet::FETCHMODE_ASSOC );
+        while ($rs->next()) {
+            $row = $rs->getRow();
+            $oStatement = $connection->prepareStatement( "kill ". $row['ID'] );
+            $oStatement->executeQuery();
+        }
 
         if (! isset( $_SERVER['SERVER_NAME'] )) {
             CLI::logging( "Rows Processed ---> $this->rowsProcessed ..... \n" );
