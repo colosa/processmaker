@@ -119,6 +119,242 @@ class Bootstrap
         return $config;
     }
 
+    public static function registerSystemClasses()
+    {
+        //DATABASE propel classes used in "Cases" Options
+        self::registerClass("Entity_Base",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "Base.php");
+
+        self::registerClass("BaseContent",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseContent.php");
+        self::registerClass("Content",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Content.php");
+        self::registerClass("BaseContentPeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseContentPeer.php");
+        self::registerClass("ContentPeer",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ContentPeer.php");
+        self::registerClass("BaseApplication",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseApplication.php");
+        self::registerClass("ApplicationPeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ApplicationPeer.php");
+        self::registerClass("Application",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Application.php");
+
+        self::registerClass("BaseAppDelegation",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppDelegation.php");
+        self::registerClass("BaseHoliday",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseHoliday.php");
+        self::registerClass("BaseHolidayPeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseHolidayPeer.php");
+        self::registerClass("BaseTask",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseTask.php");
+        self::registerClass("BaseTaskPeer",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseTaskPeer.php");
+        self::registerClass("HolidayPeer",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "HolidayPeer.php");
+        self::registerClass("Holiday",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Holiday.php");
+        self::registerClass("Task",               PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Task.php");
+        self::registerClass("TaskPeer",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "TaskPeer.php");
+        self::registerClass("dates",              PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.dates.php");
+        self::registerClass("AppDelegation",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppDelegation.php");
+        self::registerClass("BaseAppDelegationPeer",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppDelegationPeer.php");
+        self::registerClass("AppDelegationPeer",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppDelegationPeer.php");
+        self::registerClass("BaseAppDelay",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppDelay.php");
+        self::registerClass("AppDelayPeer",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppDelayPeer.php");
+        self::registerClass("AppDelay",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppDelay.php");
+        self::registerClass("BaseAdditionalTables",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAdditionalTables.php");
+        self::registerClass("AdditionalTables",   PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AdditionalTables.php");
+        self::registerClass("BaseAppCacheView",   PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppCacheView.php");
+        self::registerClass("AppCacheView",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppCacheView.php");
+        self::registerClass("BaseAppCacheViewPeer",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppCacheViewPeer.php");
+        self::registerClass("AppCacheViewPeer",   PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppCacheViewPeer.php");
+
+        self::registerClass("BaseInputDocument",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseInputDocument.php");
+        self::registerClass("InputDocument",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "InputDocument.php");
+        self::registerClass("BaseAppDocument",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppDocument.php");
+        self::registerClass("AppDocument",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppDocument.php");
+        self::registerClass("AppDocumentPeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppDocumentPeer.php");
+
+        self::registerClass("BaseAppEvent",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppEvent.php");
+        self::registerClass("AppEvent",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppEvent.php");
+        self::registerClass("AppEventPeer",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppEventPeer.php");
+
+        self::registerClass("BaseAppHistory",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppHistory.php");
+        self::registerClass("AppHistory",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppHistory.php");
+        self::registerClass("AppHistoryPeer",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppHistoryPeer.php");
+
+        self::registerClass("BaseAppFolder",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppFolder.php");
+        self::registerClass("AppFolder",          PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppFolder.php");
+        self::registerClass("AppFolderPeer",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppFolderPeer.php");
+
+        self::registerClass("BaseAppMessage",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppMessage.php");
+        self::registerClass("AppMessage",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppMessage.php");
+
+        self::registerClass("BaseAppMessagePeer", PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppMessagePeer.php");
+        self::registerClass("AppMessagePeer",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppMessagePeer.php");
+
+        self::registerClass("BaseAppNotesPeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppNotesPeer.php");
+        self::registerClass("AppNotesPeer",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppNotesPeer.php");
+
+        self::registerClass("BaseAppNotes",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppNotes.php");
+        self::registerClass("AppNotes",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppNotes.php");
+
+        self::registerClass("BaseAppOwner",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppOwner.php");
+        self::registerClass("AppOwner",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppOwner.php");
+        self::registerClass("AppOwnerPeer",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppOwnerPeer.php");
+
+        self::registerClass("BaseAppSolrQueue",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppSolrQueue.php");
+        self::registerClass("Entity_AppSolrQueue", PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "AppSolrQueue.php");
+        self::registerClass("AppSolrQueue",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppSolrQueue.php");
+        self::registerClass("AppSolrQueuePeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppSolrQueuePeer.php");
+
+        self::registerClass("BaseAppThread",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppThread.php");
+        self::registerClass("AppThread",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppThread.php");
+        self::registerClass("AppThreadPeer",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppThreadPeer.php");
+
+        self::registerClass("BaseCaseScheduler",   PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseCaseScheduler.php");
+        self::registerClass("CaseScheduler",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "CaseScheduler.php");
+
+        self::registerClass("BaseCaseSchedulerPeer",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseCaseSchedulerPeer.php");
+        self::registerClass("CaseSchedulerPeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "CaseSchedulerPeer.php");
+
+        self::registerClass("BaseCaseTracker",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseCaseTracker.php");
+        self::registerClass("CaseTracker",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "CaseTracker.php");
+
+        self::registerClass("BaseCaseTrackerPeer", PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseCaseTrackerPeer.php");
+        self::registerClass("CaseTrackerPeer",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "CaseTrackerPeer.php");
+
+        self::registerClass("BaseCaseTrackerObject",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseCaseTrackerObject.php");
+        self::registerClass("CaseTrackerObject",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "CaseTrackerObject.php");
+
+        self::registerClass("BaseCaseTrackerObjectPeer",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseCaseTrackerObjectPeer.php");
+        self::registerClass("CaseTrackerObjectPeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "CaseTrackerObjectPeer.php");
+
+        self::registerClass("BaseConfiguration",   PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseConfiguration.php");
+        self::registerClass("Configuration",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Configuration.php");
+
+        self::registerClass("BaseDbSource",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseDbSource.php");
+        self::registerClass("DbSource",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "DbSource.php");
+
+        self::registerClass("XMLDB",              PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.xmlDb.php");
+        self::registerClass("dynaFormHandler",    PATH_GULLIVER . "class.dynaformhandler.php");
+        self::registerClass("DynaFormField",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.dynaFormField.php");
+        self::registerClass("BaseDynaform",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseDynaform.php");
+        self::registerClass("Dynaform",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Dynaform.php");
+        self::registerClass("DynaformPeer",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "DynaformPeer.php");
+
+        self::registerClass("BaseEvent",          PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseEvent.php");
+        self::registerClass("Event",              PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Event.php");
+
+        self::registerClass("BaseEventPeer",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseEventPeer.php");
+        self::registerClass("EventPeer",          PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "EventPeer.php");
+
+        self::registerClass("BaseFields",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseFields.php");
+        self::registerClass("Fields",             PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Fields.php");
+
+        self::registerClass("BaseGateway",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseGateway.php");
+        self::registerClass("Gateway",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Gateway.php");
+
+        self::registerClass("BaseGroupUser",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseGroupUser.php");
+        self::registerClass("Groupwf",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Groupwf.php");
+        self::registerClass("GroupUser",          PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "GroupUser.php");
+
+        self::registerClass("BaseGroupUserPeer",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseGroupUserPeer.php");
+        self::registerClass("GroupUserPeer",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "GroupUserPeer.php");
+
+        self::registerClass("BaseGroupwfPeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseGroupwfPeer.php");
+        self::registerClass("GroupwfPeer",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "GroupwfPeer.php");
+
+        self::registerClass("BaseInputDocumentPeer",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseInputDocumentPeer.php");
+        self::registerClass("InputDocumentPeer",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "InputDocumentPeer.php");
+
+        self::registerClass("BaseIsoCountry",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseIsoCountry.php");
+        self::registerClass("IsoCountry",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "IsoCountry.php");
+        self::registerClass("BaseTranslation",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseTranslation.php");
+        self::registerClass("Translation",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Translation.php");
+        self::registerClass("BaseLanguage",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseLanguage.php");
+        self::registerClass("Language",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Language.php");
+
+        self::registerClass("BaseLogCasesScheduler",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseLogCasesScheduler.php");
+        self::registerClass("LogCasesScheduler",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "LogCasesScheduler.php");
+
+        self::registerClass("BaseObjectPermission",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseObjectPermission.php");
+        self::registerClass("ObjectPermission",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ObjectPermission.php");
+        self::registerClass("ObjectPermissionPeer",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ObjectPermissionPeer.php");
+
+        self::registerClass("BaseOutputDocument",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseOutputDocument.php");
+        self::registerClass("OutputDocument",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "OutputDocument.php");
+        self::registerClass("OutputDocumentPeer",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "OutputDocumentPeer.php");
+
+        self::registerClass("BaseProcess",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseProcess.php");
+        self::registerClass("BaseProcessCategory", PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseProcessCategory.php");
+        self::registerClass("ProcessCategory",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ProcessCategory.php");
+        self::registerClass("ProcessCategoryPeer", PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ProcessCategoryPeer.php");
+        self::registerClass("ProcessPeer",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ProcessPeer.php");
+        self::registerClass("Process",             PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Process.php");
+
+        self::registerClass("BaseProcessUser",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseProcessUser.php");
+        self::registerClass("ProcessUser",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ProcessUser.php");
+
+        self::registerClass("BaseProcessUserPeer", PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseProcessUserPeer.php");
+        self::registerClass("ProcessUserPeer",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ProcessUserPeer.php");
+
+        self::registerClass("BaseReportTable",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseReportTable.php");
+        self::registerClass("ReportTable",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ReportTable.php");
+        self::registerClass("ReportTablePeer",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ReportTablePeer.php");
+
+        self::registerClass("BaseReportVar",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseReportVar.php");
+        self::registerClass("ReportVar",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ReportVar.php");
+
+        self::registerClass("BaseReportVarPeer",   PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseReportVarPeer.php");
+        self::registerClass("ReportVarPeer",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "ReportVarPeer.php");
+
+        self::registerClass("BaseRoute",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseRoute.php");
+        self::registerClass("Route",               PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Route.php");
+        self::registerClass("RoutePeer",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "RoutePeer.php");
+
+        self::registerClass("BaseStep",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseStep.php");
+        self::registerClass("Step",                PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Step.php");
+        self::registerClass("StepPeer",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "StepPeer.php");
+
+        self::registerClass("BaseStepSupervisor",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseStepSupervisor.php");
+        self::registerClass("StepSupervisor",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "StepSupervisor.php");
+
+        self::registerClass("BaseStepSupervisorPeer",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseStepSupervisorPeer.php");
+        self::registerClass("StepSupervisorPeer",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "StepSupervisorPeer.php");
+
+        self::registerClass("BaseStepTrigger",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseStepTrigger.php");
+        self::registerClass("StepTrigger",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "StepTrigger.php");
+        self::registerClass("StepTriggerPeer",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "StepTriggerPeer.php");
+
+        self::registerClass("SolrRequestData",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "SolrRequestData.php");
+
+        self::registerClass("SolrUpdateDocument",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "SolrUpdateDocument.php");
+
+        self::registerClass("BaseSwimlanesElements",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseSwimlanesElements.php");
+        self::registerClass("SwimlanesElements",   PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "SwimlanesElements.php");
+        self::registerClass("BaseSwimlanesElementsPeer",PATH_HOME ."engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseSwimlanesElementsPeer.php");
+        self::registerClass("SwimlanesElementsPeer",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "SwimlanesElementsPeer.php");
+
+        self::registerClass("BaseSubApplication",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseSubApplication.php");
+        self::registerClass("SubApplication",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "SubApplication.php");
+        self::registerClass("SubApplicationPeer",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "SubApplicationPeer.php");
+
+        self::registerClass("BaseSubProcess",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseSubProcess.php");
+        self::registerClass("SubProcess",          PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "SubProcess.php");
+
+        self::registerClass("BaseSubProcessPeer",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseSubProcessPeer.php");
+        self::registerClass("SubProcessPeer",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "SubProcessPeer.php");
+
+        self::registerClass("BaseTask",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseTask.php");
+        self::registerClass("Task",                PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Task.php");
+
+        self::registerClass("BaseTaskUser",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseTaskUser.php");
+        self::registerClass("TaskUserPeer",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "TaskUserPeer.php");
+        self::registerClass("TaskUser",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "TaskUser.php");
+
+        self::registerClass("BaseTriggers",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseTriggers.php");
+        self::registerClass("Triggers",            PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Triggers.php");
+        self::registerClass("BaseTriggersPeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseTriggersPeer.php");
+        self::registerClass("TriggersPeer",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "TriggersPeer.php");
+
+        self::registerClass("BaseUsers",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseUsers.php");
+        self::registerClass("IsoCountry",          PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "IsoCountry.php");
+        self::registerClass("BaseIsoSubdivision",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseIsoSubdivision.php");
+        self::registerClass("IsoSubdivision",      PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "IsoSubdivision.php");
+        self::registerClass("BaseIsoLocation",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseIsoLocation.php");
+        self::registerClass("IsoLocation",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "IsoLocation.php");
+        self::registerClass("Users",               PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Users.php");
+        self::registerClass("UsersPeer",           PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "UsersPeer.php");
+
+        self::registerClass("Xml_Node",            PATH_GULLIVER . "class.xmlDocument.php");
+    }
 
     //below this line, still not approved methods
 
@@ -902,7 +1138,7 @@ class Bootstrap
             $foreignTranslations = $translation;
         }
 
-        if (defined( "SHOW_UNTRANSLATED_AS_TAG" ) && SHOW_UNTRANSLATED_AS_TAG != 0) {    
+        if (defined( "SHOW_UNTRANSLATED_AS_TAG" ) && SHOW_UNTRANSLATED_AS_TAG != 0) {
             $translation = $foreignTranslations;
         } else {
             $translation = array_merge( $defaultTranslations, $foreignTranslations );
@@ -2682,3 +2918,4 @@ class Bootstrap
 		    }
 		}
 	}
+

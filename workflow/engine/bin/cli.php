@@ -2,7 +2,7 @@
 /**
  * cli.php
  * @package workflow-engine-bin
- * 
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2011 Colosa Inc.
  *
@@ -21,33 +21,41 @@
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
+ *
  * @author Alexandre Rosenfeld <alexandre@colosa.com>
  */
 
   /* Windows supports both / and \ as path separators, so use the Unix separator
    * for maximum compatibility.
-   */ 
+   */
   define('PATH_SEP', '/');
 
   define('PATH_HOME',     WORKFLOW_PATH );
   define('PATH_TRUNK',    PROCESSMAKER_PATH  );
   define('PATH_OUTTRUNK', realpath(PROCESSMAKER_PATH.'/..') );
 
-  /* Most definitions (including the G class) is done in paths.php
-   * This mostly simulates a sysGeneric.php call.
-   */
-  if (file_exists(PATH_HOME . 'engine/config/paths_installed.php'))
-      require_once(PATH_HOME . 'engine/config/paths_installed.php');
-  require_once ( PATH_HOME . 'engine/config/paths.php' );
+/* Most definitions (including the G class) is done in paths.php
+ * This mostly simulates a sysGeneric.php call.
+ */
+if (file_exists(PATH_HOME . "engine" . PATH_SEP . "config" . PATH_SEP . "paths_installed.php")) {
+    require_once(PATH_HOME . "engine" . PATH_SEP . "config" . PATH_SEP . "paths_installed.php");
+}
 
-  require_once( PATH_THIRDPARTY . 'pake/pakeFunction.php');
-  require_once( PATH_THIRDPARTY . 'pake/pakeGetopt.class.php');
-  require_once( PATH_CORE . 'config/environments.php');
+require_once (PATH_HOME . "engine" . PATH_SEP . "config" . PATH_SEP . "paths.php");
 
-  require_once PATH_HOME  . 'engine' . PATH_SEP . 'classes' . PATH_SEP . 'class.system.php';
-  $config = System::getSystemConfiguration(PATH_HOME . 'engine' . PATH_SEP . 'config' . PATH_SEP . 'env.ini');
-  
+require_once (PATH_THIRDPARTY . "pake" . PATH_SEP . "pakeFunction.php");
+require_once (PATH_THIRDPARTY . "pake" . PATH_SEP . "pakeGetopt.class.php");
+require_once (PATH_CORE . "config" . PATH_SEP . "environments.php");
+require_once (PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.system.php");
+
+require_once (PATH_GULLIVER . "class.bootstrap.php");
+
+spl_autoload_register(array("Bootstrap", "autoloadClass"));
+
+Bootstrap::registerSystemClasses();
+
+$config = System::getSystemConfiguration(PATH_HOME . "engine" . PATH_SEP . "config" . PATH_SEP . "env.ini");
+
   $e_all  = defined('E_DEPRECATED') ? E_ALL & ~E_DEPRECATED : E_ALL;
   $e_all  = defined('E_STRICT')     ? E_ALL & ~E_STRICT     : $e_all;
   $e_all  = $e_all & E_WARNING; // show warning
@@ -57,11 +65,11 @@
   ini_set('display_errors', $config['debug']);
   ini_set('error_reporting', $e_all);
   ini_set('short_open_tag', 'On');
-  ini_set('default_charset', "UTF-8");  
+  ini_set('default_charset', "UTF-8");
   ini_set('memory_limit', $config['memory_limit']);
   ini_set('soap.wsdl_cache_enabled', $config['wsdl_cache']);
   ini_set('date.timezone', $config['time_zone']);
-  
+
   define ('DEBUG_SQL_LOG', $config['debug_sql']);
   define ('DEBUG_TIME_LOG', $config['debug_time']);
   define ('DEBUG_CALENDAR_LOG', $config['debug_calendar']);
@@ -98,3 +106,4 @@
   CLI::run();
 
   exit(0);
+

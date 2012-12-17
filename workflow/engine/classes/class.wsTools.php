@@ -282,14 +282,14 @@ class workspaceTools
     public function upgradeContent ($workSpace = SYS_SYS)
     {
         $this->initPropel( true );
-        require_once 'classes/model/Translation.php';
+        //require_once 'classes/model/Translation.php';
         $translation = new Translation();
         $information = $translation->getTranslationEnvironments();
         $arrayLang = array ();
         foreach ($information as $key => $value) {
             $arrayLang[] = trim( $value['LOCALE'] );
         }
-        require_once ('classes/model/Content.php');
+        //require_once ('classes/model/Content.php');
         $regenerateContent = new Content();
         $regenerateContent->regenerateContent( $arrayLang, $workSpace );
     }
@@ -302,7 +302,7 @@ class workspaceTools
     public function upgradeTranslation ($first = true)
     {
         $this->initPropel( true );
-        require_once ('classes/model/Language.php');
+        //require_once ('classes/model/Language.php');
         G::LoadThirdParty( 'pear/json', 'class.json' );
         foreach (System::listPoFiles() as $poFile) {
             $poName = basename( $poFile );
@@ -433,10 +433,11 @@ class workspaceTools
 
         $lang = "en";
 
-        require_once ('classes/model/AppCacheView.php');
+        //require_once ('classes/model/AppCacheView.php');
 
         //check the language, if no info in config about language, the default is 'en'
-        G::loadClass( 'configuration' );
+        G::LoadClass("configuration");
+
         $oConf = new Configurations();
         $oConf->loadConfig( $x, 'APP_CACHE_VIEW_ENGINE', '', '', '', '' );
         $appCacheViewEngine = $oConf->aConfig;

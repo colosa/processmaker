@@ -23,14 +23,15 @@
  *
  */
 if (isset ($_POST['form']['USER_ENV'])) {
-    session_start ();
+    session_destroy();
+    session_start();
     $_SESSION ['sysLogin'] = $_POST ['form'];
     G::header ('location: /sys' . $_POST ['form'] ['USER_ENV'] . '/' . SYS_LANG . '/' . SYS_SKIN .
         '/login/sysLoginVerify');
     die ();
 }
 
-@session_destroy();
+session_destroy();
 session_start();
 session_regenerate_id();
 
