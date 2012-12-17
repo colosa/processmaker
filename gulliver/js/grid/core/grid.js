@@ -1150,25 +1150,32 @@ var G_Grid = function(oForm, sGridName){
     aFields = aFields.unique();
     sAux = oField.sFormula;
     for (i = 0; i < aFields.length; i++) {
-      if (!isNumber(aFields[i])) {
+    	if (!isNumber(aFields[i])) {
         oAux = this.getElementByName(aAux[1], aFields[i]);
+        //sAux = sAux.replace(new RegExp(aFields[i], "g"), "parseFloat(G.cleanMask(this.getElementByName(" + aAux[1] + ", '" + aFields[i] + "').value().replace(/[$|a-zA-Z\s]/g,'') || 0, '" + (oAux.sMask ? oAux.sMask : '')
         sAux = sAux.replace(new RegExp(aFields[i], "g"), "parseFloat(G.cleanMask(this.getElementByName(" + aAux[1] + ", '" + aFields[i] + "').value().replace(/[$|a-zA-Z\s]/g,'') || 0, '" + (oAux.sMask ? oAux.sMask : '')
-            + "').result.replace(/,/g, ''))");
+        + "').result.replace(/,/g, ''))");
+        
         eval("if (!document.getElementById('" + aAux[0] + '][' + aAux[1] + '][' + aFields[i] + "]')) { oContinue = false; }");
       }
     }
     eval("if (!document.getElementById('" + aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + "]')) { oContinue = false; }");
 
+    var swReal=0;
+    
     if (oContinue) {
       //we're selecting the mask to put in the field with the formula
       for (i = 0; i < this.aFields.length; i++) {
         if(oField.sFieldName==this.aFields[i].sFieldName) {
-          maskformula =this.aFields[i].oProperties.mask;
+        	maskformula=this.aFields[i].oProperties.mask;
+        	
+        	if(this.aFields[i].oProperties.validate=='Real')
+        		swReal=1;
         }
       }
+      
       if(maskformula!=''){
         maskDecimal=maskformula.split(";");
-
         if(maskDecimal.length > 1) {
           maskDecimal=maskDecimal[1].split(".");
         } else {
@@ -1180,21 +1187,23 @@ var G_Grid = function(oForm, sGridName){
         } else {
           maskToPut=0;
         }
-
       } else {
-        maskToPut=0;
+    	  if(swReal==1)
+    		  maskToPut=2;
+    	  else
+    		  maskToPut=0;
       }
-
+      
       // clean the field and load mask execute event keypress
       document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value = '';
       this.executeEvent(document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']'), 'keypress');
 
       // execute formula and set decimal
       eval("document.getElementById('" + aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + "]').value = (" + sAux + ').toFixed('+maskToPut+');');
-
+      
       // trim value
       document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value = document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value.replace(/^\s*|\s*$/g,"");
-
+      
       // set '' to field if response is NaN
       if (document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value =='NaN')
         document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value = '';
