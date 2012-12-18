@@ -486,38 +486,81 @@ class CaseScheduler extends BaseCaseScheduler
                     $paramsLog = array ('PRO_UID' => $processId,'TAS_UID' => $taskId,'SCH_UID' => $sSchedulerUid,'USR_NAME' => $user,'RESULT' => '','EXEC_DATE' => date( 'Y-m-d' ),'EXEC_HOUR' => date( 'H:i:s' ),'WS_CREATE_CASE_STATUS' => '','WS_ROUTE_CASE_STATUS' => ''
                     );
 
-                    $result = $client->__SoapCall( 'NewCase', array ($params) );
+                    $sw_transfer_control_plugin = false; //This SW will be true only if a plugin is allowed to continue the action
+                    //If this Job was was registered to be performed by a plugin
+                    if ((isset( $aRow['CASE_SH_PLUGIN_UID'] )) && ($aRow['CASE_SH_PLUGIN_UID'] != "")) {
+                        //Check if the plugin is active
+                        $pluginParts = explode( "--", $aRow['CASE_SH_PLUGIN_UID'] );
+                        if (count( $pluginParts ) == 2) {
+                            //***************** Plugins **************************
+                            G::LoadClass( 'plugin' );
+                            //here we are loading all plugins registered
+                            //the singleton has a list of enabled plugins
+                            $sSerializedFile = PATH_DATA_SITE . 'plugin.singleton';
+                            $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                            if (file_exists( $sSerializedFile )) {
+                                $oPluginRegistry->unSerializeInstance( file_get_contents( $sSerializedFile ) );
+                            }
+                            $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                            $activePluginsForCaseScheduler = $oPluginRegistry->getCaseSchedulerPlugins();
+                            foreach ($activePluginsForCaseScheduler as $key => $caseSchedulerPlugin) {
+                                if ((isset( $caseSchedulerPlugin->sNamespace )) && ($caseSchedulerPlugin->sNamespace == $pluginParts[0]) && (isset( $caseSchedulerPlugin->sActionId )) && ($caseSchedulerPlugin->sActionId == $pluginParts[1])) {
+                                    $sw_transfer_control_plugin = true;
+                                    $caseSchedulerSelected = $caseSchedulerPlugin;
+                                }
+                            }
 
-                    eprint( " - Creating the new case............." );
-                    if ($result->status_code == 0) {
-                        eprintln( "OK+ CASE #{$result->caseNumber} was created!", 'green' );
-                        $caseId = $result->caseId;
-                        $caseNumber = $result->caseNumber;
-                        $log[] = $caseNumber . ' was created!, ProcessID: ' . $aRow['PRO_UID'];
-                        $paramsLog['WS_CREATE_CASE_STATUS'] = "Case " . $caseNumber . " " . strip_tags( $result->message );
-                        $paramsLogResult = 'SUCCESS';
-
-                        $params = array ('sessionId' => $sessionId,'caseId' => $caseId,'delIndex' => "1"
-                        );
-                        $result = $client->__SoapCall( 'RouteCase', array ($params
-                        ) );
-                        eprint( " - Routing the case #$caseNumber.............." );
-                        if ($result->status_code == 0) {
-                            $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
-                            $retMsg = explode( "Debug", $paramsLog['WS_ROUTE_CASE_STATUS'] );
-                            $retMsg = $retMsg[0];
-                            eprintln( "OK+ $retMsg", 'green' );
-                            $paramsRouteLogResult = 'SUCCESS';
-                        } else {
-                            eprintln( "FAILED-> {$paramsLog ['WS_ROUTE_CASE_STATUS']}", 'red' );
-                            $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
-                            $paramsRouteLogResult = 'FAILED';
                         }
+                    }
 
+                    //If there is a trigger that is registered to do this then transfer control
+                    if ((isset( $caseSchedulerSelected )) && (is_object( $caseSchedulerSelected ))) {
+                        eprintln( " - Transfering control to a Plugin: " . $caseSchedulerSelected->sNamespace . "/" . $caseSchedulerSelected->sActionId, 'green' );
+                        $oData['OBJ_SOAP'] = $client;
+                        $oData['SCH_UID'] = $aRow['SCH_UID'];
+                        $oData['params'] = $params;
+                        $oData['sessionId'] = $sessionId;
+                        $oData['userId'] = $user;
+                        $paramsLogResultFromPlugin = $oPluginRegistry->executeMethod( $caseSchedulerSelected->sNamespace, $caseSchedulerSelected->sActionExecute, $oData );
+                        $paramsLog['WS_CREATE_CASE_STATUS'] = $paramsLogResultFromPlugin['WS_CREATE_CASE_STATUS'];
+                        $paramsLog['WS_ROUTE_CASE_STATUS'] = $paramsLogResultFromPlugin['WS_ROUTE_CASE_STATUS'];
+
+                        $paramsLogResult = $paramsLogResultFromPlugin['paramsLogResult'];
+                        $paramsRouteLogResult = $paramsLogResultFromPlugin['paramsRouteLogResult'];
                     } else {
-                        $paramsLog['WS_CREATE_CASE_STATUS'] = strip_tags( $result->message );
-                        eprintln( "FAILED->{$paramsLog ['WS_CREATE_CASE_STATUS']}", 'red' );
-                        $paramsLogResult = 'FAILED';
+                        eprint( " - Creating the new case............." );
+                        $result = $client->__SoapCall( 'NewCase', array ($params) );
+
+                        if ($result->status_code == 0) {
+                            eprintln( "OK+ CASE #{$result->caseNumber} was created!", 'green' );
+                            $caseId = $result->caseId;
+                            $caseNumber = $result->caseNumber;
+                            $log[] = $caseNumber . ' was created!, ProcessID: ' . $aRow['PRO_UID'];
+                            $paramsLog['WS_CREATE_CASE_STATUS'] = "Case " . $caseNumber . " " . strip_tags( $result->message );
+                            $paramsLogResult = 'SUCCESS';
+
+                            $params = array ('sessionId' => $sessionId,'caseId' => $caseId,'delIndex' => "1"
+                            );
+                            $result = $client->__SoapCall( 'RouteCase', array ($params
+                            ) );
+                            eprint( " - Routing the case #$caseNumber.............." );
+                            if ($result->status_code == 0) {
+                                $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
+                                $retMsg = explode( "Debug", $paramsLog['WS_ROUTE_CASE_STATUS'] );
+                                $retMsg = $retMsg[0];
+                                eprintln( "OK+ $retMsg", 'green' );
+                                $paramsRouteLogResult = 'SUCCESS';
+                            } else {
+                                eprintln( "FAILED-> {$paramsLog ['WS_ROUTE_CASE_STATUS']}", 'red' );
+                                $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
+                                $paramsRouteLogResult = 'FAILED';
+                            }
+
+                        } else {
+                            $paramsLog['WS_CREATE_CASE_STATUS'] = strip_tags( $result->message );
+                            eprintln( "FAILED->{$paramsLog ['WS_CREATE_CASE_STATUS']}", 'red' );
+                            $paramsLogResult = 'FAILED';
+                        }
                     }
                 } else {
                     // invalid user or  bad password
