@@ -112,6 +112,13 @@ switch ($_POST['action']) {
         break;
     case 'saveUser':
         try {
+            $criteria = new Criteria();
+            $criteria->addSelectColumn(UsersPeer::USR_USERNAME);
+            $criteria->add(UsersPeer::USR_USERNAME, $_POST['USR_USERNAME']);
+            if (UsersPeer::doCount($criteria) > 0) {
+                throw new Exception(G::LoadTranslation('ID_USERNAME_ALREADY_EXISTS', array('USER_ID' => $_POST['USR_USERNAME'])));
+            }
+
             $form = $_POST;
 
             if (isset( $_POST['USR_UID'] )) {
@@ -119,16 +126,7 @@ switch ($_POST['action']) {
             } else {
                 $form['USR_UID'] = '';
             }
-            /*
-      if ( isset($_FILES['USR_RESUME']['name']) ) {
-        if ($_FILES['USR_RESUME']['tmp_name'] != '') {
-          $form['USR_RESUME'] = $_FILES['USR_RESUME']['name'];
-        }
-        else {
-          $form['USR_RESUME'] = '';
-        }
-      }
-*/
+
             if (! isset( $form['USR_NEW_PASS'] )) {
                 $form['USR_NEW_PASS'] = '';
             }
