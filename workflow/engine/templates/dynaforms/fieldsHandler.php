@@ -38,7 +38,7 @@
 <html>
 	<head>
 		<link type="text/css" href="/js/jquery/css/redmond/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
-		<link type="text/css" href="/skins/<?php echo SYS_SKIN;?>/style.css" rel="stylesheet" />
+		<link type="text/css" href="/skin/<?php echo SYS_SKIN;?>/style.css" rel="stylesheet" />
 		<style> body{ background-color: #fff; }</style>
 		<script type="text/javascript" src="/js/jquery/jquery-1.3.2.min.js"></script>
 		<script type="text/javascript" src="/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>

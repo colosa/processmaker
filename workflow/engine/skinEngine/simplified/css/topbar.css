@@ -91,7 +91,7 @@ div.topbar a {
   text-shadow: 0 -1px 0 rgba(0,0,0,.3);
 }
 div.topbar a#logo {
-  background: url(../phoenix/img/twitter_logo_right.png) no-repeat 0 9px;
+  /*background: url(../phoenix/img/twitter_logo_right.png) no-repeat 0 9px;*/
   display: block;
   width: 120px;
   height: 40px;
@@ -173,7 +173,7 @@ div.topbar ul li.active a {
   padding: 7px 8px 5px 8px;
 }
 #search-form span.glass i {
-  background-image: url(../phoenix/img/sprite-icons.png);
+  /*background-image: url(../phoenix/img/sprite-icons.png);*/
   background-position: -224px -96px;
   width: 14px;
   height: 14px;
@@ -225,7 +225,7 @@ div.topbar ul.primary-nav {
   display: block;
   height: 14px;
   text-indent: -9999px;
-  background-image: url("../phoenix/img/sprite-icons.png");
+  /*background-image: url("../phoenix/img/sprite-icons.png");*/
   background-position: -176px -96px;
   font-size: 0;
 }
@@ -490,7 +490,7 @@ div.topbar ul li a.menu span.menu-label:after {
   width: 7px;
   height: 7px;
   display: inline-block;
-  background: transparent url(../phoenix/img/sprite-icons.png) no-repeat scroll -79px -68px;
+  /*background: transparent url(../phoenix/img/sprite-icons.png) no-repeat scroll -79px -68px;*/
   content: "&darr;";
   text-indent: -99999px;
   vertical-align: top;
