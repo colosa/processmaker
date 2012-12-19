@@ -1537,6 +1537,8 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $name = "'" . $this->name . "'";
                 $str = '<input type="text" ' . $storeEntry . ' class="module_app_input___gray" size="' . $this->size . '" id="form' . $rowId . '[' . $this->name . '_label]" name="form' . $rowId . '[' . $this->name . '_label]" value="' . $this->htmlentities( $value, ENT_COMPAT, 'utf-8' ) . '" onblur="idSet(' . $name . ');" ';
                 $str .= $this->NSDependentFields( true ) . ' ';
+                $str .= $this->NSRequiredValue() . ' ';
+                $str .= $this->NSGridLabel() . ' ';
                 $str .= '/>';
                 $str .= '<input ';
                 $str .= 'id="form' . $rowId . '[' . $this->name . ']" ';

@@ -438,62 +438,64 @@ class Form extends XmlForm
                                     if (is_array( $item )) {
                                         $values[$k][$j] = $this->fields[$k]->maskValue( $newValues[$k][$j], $this );
                                         foreach ($item as $kk => $vv) {
-                                            if ($this->fields[$k]->fields[$kk]->type != "file") {
-                                                switch ($this->fields[$k]->fields[$kk]->type) {
-                                                    case "dropdown":
-                                                        //We need to know which fields are dropdowns
-                                                        $values[$k][$j] = $newValues[$k][$j];
+                                            if (isset($this->fields[$k]->fields[$kk])) {
+                                                if ($this->fields[$k]->fields[$kk]->type != "file") {
+                                                    switch ($this->fields[$k]->fields[$kk]->type) {
+                                                        case "dropdown":
+                                                            //We need to know which fields are dropdowns
+                                                            $values[$k][$j] = $newValues[$k][$j];
 
-                                                        if ($this->fields[$k]->validateValue( $newValues[$k][$j], $this )) {
-                                                            //If the dropdown has otions
-                                                            if (isset( $this->fields[$k]->fields[$kk]->options[$vv] )) {
-                                                                $values[$k][$j][$kk . "_label"] = $newValues[$k][$j][$kk . "_label"] = $this->fields[$k]->fields[$kk]->options[$vv];
-                                                            } else {
-                                                                //If hasn't options try execute a sql sentence
-                                                                $query = G::replaceDataField( $this->fields[$k]->fields[$kk]->sql, $values[$k][$j] );
-                                                                $con = Propel::getConnection( (! empty( $this->fields[$k]->fields[$kk]->sqlConnection )) ? $this->fields[$k]->fields[$kk]->sqlConnection : "workflow" );
-                                                                $stmt = $con->prepareStatement( $query );
+                                                            if ($this->fields[$k]->validateValue( $newValues[$k][$j], $this )) {
+                                                                //If the dropdown has otions
+                                                                if (isset( $this->fields[$k]->fields[$kk]->options[$vv] )) {
+                                                                    $values[$k][$j][$kk . "_label"] = $newValues[$k][$j][$kk . "_label"] = $this->fields[$k]->fields[$kk]->options[$vv];
+                                                                } else {
+                                                                    //If hasn't options try execute a sql sentence
+                                                                    $query = G::replaceDataField( $this->fields[$k]->fields[$kk]->sql, $values[$k][$j] );
+                                                                    $con = Propel::getConnection( (! empty( $this->fields[$k]->fields[$kk]->sqlConnection )) ? $this->fields[$k]->fields[$kk]->sqlConnection : "workflow" );
+                                                                    $stmt = $con->prepareStatement( $query );
 
-                                                                //Execute just if a query was set, it should be not empty
-                                                                if (trim( $query ) == "") {
-                                                                    //if it is  empty string skip it
-                                                                    continue;
-                                                                }
+                                                                    //Execute just if a query was set, it should be not empty
+                                                                    if (trim( $query ) == "") {
+                                                                        //if it is  empty string skip it
+                                                                        continue;
+                                                                    }
 
-                                                                $rs = $stmt->executeQuery( ResultSet::FETCHMODE_NUM );
+                                                                    $rs = $stmt->executeQuery( ResultSet::FETCHMODE_NUM );
 
-                                                                while ($rs->next()) {
-                                                                    //From the query executed we only need certain elements
-                                                                    //note added by krlos pacha carlos[at]colosa[dot]com
-                                                                    //the following line has the correct values because the query return an associative array. Related 7945 bug
-                                                                    list ($rowId, $rowContent) = explode( ",", implode( ",", $rs->getRow() ) );
+                                                                    while ($rs->next()) {
+                                                                        //From the query executed we only need certain elements
+                                                                        //note added by krlos pacha carlos[at]colosa[dot]com
+                                                                        //the following line has the correct values because the query return an associative array. Related 7945 bug
+                                                                        list ($rowId, $rowContent) = explode( ",", implode( ",", $rs->getRow() ) );
 
-                                                                    if ($vv == $rowId) {
-                                                                        $values[$k][$j][$kk . "_label"] = $newValues[$k][$j][$kk . "_label"] = $rowContent;
-                                                                        break;
+                                                                        if ($vv == $rowId) {
+                                                                            $values[$k][$j][$kk . "_label"] = $newValues[$k][$j][$kk . "_label"] = $rowContent;
+                                                                            break;
+                                                                        }
                                                                     }
                                                                 }
                                                             }
-                                                        }
-                                                        break;
-                                                    case "link":
-                                                        $values[$k][$j] = $newValues[$k][$j];
-                                                        $values[$k][$j][$kk . "_label"] = $newValues[$k][$j][$kk . "_label"];
-                                                        break;
-                                                    default:
-                                                        //If there are no dropdowns previously setted and the evaluated field is not a dropdown
-                                                        //only then rewritte the $values
-                                                        $values[$k][$j] = $this->fields[$k]->maskValue( $newValues[$k][$j], $this );
-                                                        break;
-                                                }
-                                            } else {
-                                                if (isset( $_FILES["form"]["name"][$k][$j][$kk] )) {
-                                                    $values[$k][$j][$kk] = $_FILES["form"]["name"][$k][$j][$kk];
-                                                }
+                                                            break;
+                                                        case "link":
+                                                            $values[$k][$j] = $newValues[$k][$j];
+                                                            $values[$k][$j][$kk . "_label"] = $newValues[$k][$j][$kk . "_label"];
+                                                            break;
+                                                        default:
+                                                            //If there are no dropdowns previously setted and the evaluated field is not a dropdown
+                                                            //only then rewritte the $values
+                                                            $values[$k][$j] = $this->fields[$k]->maskValue( $newValues[$k][$j], $this );
+                                                            break;
+                                                    }
+                                                } else {
+                                                    if (isset( $_FILES["form"]["name"][$k][$j][$kk] )) {
+                                                        $values[$k][$j][$kk] = $_FILES["form"]["name"][$k][$j][$kk];
+                                                    }
 
-                                                if (isset( $this->fields[$k]->fields[$kk]->input ) && ! empty( $this->fields[$k]->fields[$kk]->input )) {
-                                                    //$_POST["INPUTS"][$k][$j][$kk] = $this->fields[$k]->fields[$kk]->input;
-                                                    $_POST["INPUTS"][$k][$kk] = $this->fields[$k]->fields[$kk]->input;
+                                                    if (isset( $this->fields[$k]->fields[$kk]->input ) && ! empty( $this->fields[$k]->fields[$kk]->input )) {
+                                                        //$_POST["INPUTS"][$k][$j][$kk] = $this->fields[$k]->fields[$kk]->input;
+                                                        $_POST["INPUTS"][$k][$kk] = $this->fields[$k]->fields[$kk]->input;
+                                                    }
                                                 }
                                             }
                                         }
@@ -584,6 +586,9 @@ class Form extends XmlForm
                 foreach ($field->fields as $fieldGrid) {
                     if (is_object( $fieldGrid ) && isset( $fieldGrid->required ) && $fieldGrid->required) {
                         if (! in_array( $fieldGrid->type, $skippedFieldsTypes )) {
+                            if (!isset($requiredFieldsGrids[$field->name])) {
+                                $requiredFieldsGrids[$field->name] = array();
+                            }
                             if (! (is_array( $requiredFieldsGrids[$field->name] ))) {
                                 $requiredFieldsGrids[$field->name] = array ();
                             }
@@ -609,6 +614,9 @@ class Form extends XmlForm
                             $requiredFieldsGrids[$dataFieldName] = array ();
                         }
                         if (in_array( $fieldGridName, $requiredFieldsGrids[$dataFieldName] ) && ! in_array( $fieldGridName, $noRequired ) && trim( $fieldGridValue ) == '') {
+                            if (! (isset( $notPassedFields[$dataFieldName] ))) {
+                                $notPassedFields[$dataFieldName] = array ();
+                            }
                             if (! (is_array( $notPassedFields[$dataFieldName] ))) {
                                 $notPassedFields[$dataFieldName] = array ();
                             }
