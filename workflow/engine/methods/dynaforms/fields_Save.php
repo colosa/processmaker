@@ -123,7 +123,7 @@ if (file_exists(PATH_XMLFORM . 'dynaforms/fields/' . $type . '.xml')) {
         }
     }
     if ($type === 'dropdown' || $type === 'listbox') {
-        if (isset($_POST['form']['PME_OPTIONS'][1])) {
+        if (isset($_POST['form']['PME_OPTIONS'][1]) && count($_POST['form']['PME_OPTIONS']) == 1) {
             if ($_POST['form']['PME_OPTIONS']['1']['NAME'] === "" &&
                     $_POST['form']['PME_OPTIONS']['1']['LABEL'] === "") {
                 unset($_POST['form']['PME_OPTIONS']);
