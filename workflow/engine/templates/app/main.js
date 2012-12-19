@@ -29,7 +29,6 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle, proUid, taskUid)
   proUid  = !proUid  ? "": proUid;
   taskUid = !taskUid ? "": taskUid;
 
-  title   = appTitle;
   var startRecord=0;
   var loadSize=10;
 
@@ -57,16 +56,18 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle, proUid, taskUid)
           return false;
         }
 
-        caseNotesWindow.show();
-        newNoteAreaActive = false;
-        newNoteHandler();
         caseNotesWindow.setTitle(_('ID_CASES_NOTES') + ' (' + storeNotes.data.items.length + ')');
+        title = !appTitle ? storeNotes.reader.jsonData.appTitle : appTitle ;
 
         if(storeNotes.getCount()<storeNotes.getTotalCount()){
           Ext.getCmp('CASES_MORE_BUTTON').show();
         }else{
           Ext.getCmp('CASES_MORE_BUTTON').hide();
         }
+
+        caseNotesWindow.show();
+        newNoteAreaActive = false;
+        newNoteHandler();
       }
     }
   });

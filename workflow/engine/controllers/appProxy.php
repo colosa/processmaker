@@ -75,6 +75,10 @@ class AppProxy extends HttpProxyController
         $appNotes = new AppNotes();
         $response = $appNotes->getNotesList( $appUid, '', $httpData->start, $httpData->limit );
 
+        require_once ("classes/model/Content.php");
+        $content = new Content();
+        $response['array']['appTitle'] = $content->load('APP_TITLE', '', $appUid, SYS_LANG);
+
         return $response['array'];
     }
 
