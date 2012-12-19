@@ -148,7 +148,7 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
                 var formDynaformID = document.getElementById("form[DYN_UID]").value;
                 tinyMCE.init({
                     theme   : "advanced",
-                    plugins : "advhr,advimage,advlink,advlist,autolink,autoresize,autosave,contextmenu,directionality,emotions,example,example_dependency,fullpage,fullscreen,iespell,inlinepopups,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,spellchecker,style,tabfocus,table,template,visualblocks,visualchars,wordcount,xhtmlxtras,style,table,noneditable,pmFieldPicker",
+                    plugins : "advhr,advimage,advlink,advlist,autolink,autoresize,contextmenu,directionality,emotions,example,example_dependency,fullpage,fullscreen,iespell,inlinepopups,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,spellchecker,style,tabfocus,table,template,visualblocks,visualchars,wordcount,xhtmlxtras,style,table,noneditable,pmFieldPicker",
                     mode    : "specific_textareas",
                     //apply_source_formatting : true,
                     //remove_linebreaks: false,
