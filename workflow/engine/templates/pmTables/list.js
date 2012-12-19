@@ -8,9 +8,9 @@ var dataButton;
 var store;
 var expander;
 var cmodel;
+var chkSelModel;
 var infoGrid;
 var viewport;
-var smodel;
 
 var rowsSelected;
 var importOption;
@@ -215,7 +215,7 @@ Ext.onReady(function(){
       }),
       listeners: {
         load: function(a,b){
-          if (currentSelectedRow != '') {
+          if (currentSelectedRow != -1) {
             Ext.getCmp('infoGrid').getSelectionModel().selectRow(currentSelectedRow);
             Ext.getCmp('infoGrid').fireEvent('rowclick', Ext.getCmp('infoGrid'), currentSelectedRow)
           }
@@ -223,7 +223,7 @@ Ext.onReady(function(){
       }
     });
 
-    smodel = new Ext.grid.CheckboxSelectionModel({
+    chkSelModel = new Ext.grid.CheckboxSelectionModel({
       listeners:{
         selectionchange: function(sm){
           if (sm.last !== false) {
@@ -258,7 +258,7 @@ Ext.onReady(function(){
     });
 
     cmodelColumns = new Array();
-    cmodelColumns.push(new Ext.grid.CheckboxSelectionModel());
+    cmodelColumns.push(chkSelModel);
     cmodelColumns.push({id:'ADD_TAB_UID', dataIndex: 'ADD_TAB_UID', hidden:true, hideable:false});
     cmodelColumns.push({dataIndex: 'ADD_TAB_TAG', hidden:true, hideable:false});
     cmodelColumns.push({header: _('ID_NAME'), dataIndex: 'ADD_TAB_NAME', width: 300, align:'left', renderer: function(v,p,r){
@@ -329,7 +329,7 @@ Ext.onReady(function(){
       store: store,
       loadMask: true,
       cm: cmodel,
-      sm: smodel,
+      sm: chkSelModel,
       tbar: [
         newButton,
         editButton,
@@ -469,10 +469,12 @@ DeletePMTable = function() {
             Ext.MessageBox.hide();
             result = Ext.util.JSON.decode(resp.responseText);
             Ext.getCmp('infoGrid').getStore().reload();
+
             if (result.success) {
-              PMExt.notify(_("ID_DELETION_SUCCESSFULLY"), _("ID_ALL_RECORDS_DELETED_SUCESSFULLY"));
+                currentSelectedRow = -1;
+                PMExt.notify(_("ID_DELETION_SUCCESSFULLY"), _("ID_ALL_RECORDS_DELETED_SUCESSFULLY"));
             } else {
-              PMExt.error( _('ID_ERROR'), result.message.nl2br());
+                PMExt.error(_("ID_ERROR"), result.message.nl2br());
             }
           },
           failure: function(obj, resp){
