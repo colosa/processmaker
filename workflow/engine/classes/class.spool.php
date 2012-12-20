@@ -151,6 +151,8 @@ class spoolRun
             $this->status = strtolower( $aData['app_msg_status'] );
         }
 
+        $aData["contentTypeIsHtml"] = (isset($aData["contentTypeIsHtml"]))? $aData["contentTypeIsHtml"] : true;
+
         $this->setData($sUID, $aData["app_msg_subject"], $aData["app_msg_from"], $aData["app_msg_to"], $aData["app_msg_body"], $aData["app_msg_date"], $aData["app_msg_cc"], $aData["app_msg_bcc"], $aData["app_msg_template"], $aData["app_msg_attach"], $aData["contentTypeIsHtml"]);
     }
 
