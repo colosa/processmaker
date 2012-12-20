@@ -2,7 +2,7 @@
 <dynaForm name="fields_Toolbar" version="1.0" type="toolbar" align="left" width="894px">
   <PRO_UID type="private" />
   <DYN_UID type="private" />
-  <separator1 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
+  <!--<separator1 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>-->
   <saveDyna type="toolButton" class="ss_sprite button_toolbar ss_disk" onclick="dynaformEditor.save()" buttonType="class">
     <en>Save</en>
   </saveDyna>

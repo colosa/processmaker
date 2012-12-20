@@ -8,14 +8,15 @@
 		  <tr>
 {php}$this->assign('cols', 0);{/php}
 {foreach from=$form->fields item=field index=abc}
+{if ($field->type!='private')}
 <td>
 {if ($field->type==='javascript')}
 {elseif ($field->type==='phpvariable')}
-{elseif ($field->type==='private')}
 {elseif ($field->type==='')}
 {else}
 {* elseif ($field->type==='link') || ($field->type==='menu') *}{$field->field}{/if}
-</td> 
+</td>
+{/if}
 {/foreach}
 
 {php}

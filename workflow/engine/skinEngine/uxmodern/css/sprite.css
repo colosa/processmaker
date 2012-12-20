@@ -30,7 +30,7 @@ Sprite modificado de http://ajaxbestiary.com/Labs/SilkSprite/
 
 .button_menu_ext{padding-left:20px !important;height:18px !important;}
 .button_large_ext{padding-left:20px !important;height:32px !important;}
-.button_toolbar{padding-left:20px !important;height:18px !important;font-size:15px;cursor:pointer;margin:0 3px 1px 3px;line-height:25px}
+.button_toolbar{padding-left:18px !important;height:18px !important;font-size:15px;cursor:pointer;margin:0 2px 1px 3px;line-height:25px}
 .ss_accept{background-position:0 0 !important}
 .ss_add{background-position:0 -19px !important}
 .ss_anchor{background-position:0 -37px !important}

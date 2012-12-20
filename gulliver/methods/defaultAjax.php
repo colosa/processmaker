@@ -111,13 +111,12 @@ for ($r = 0; $r < sizeof( $newValues ); $r ++) {
             foreach ($v[$_POST['row']] as $k1 => $v1) {
                 $myDependentFields = subDependencies( $k1, $G_FORM, $aux, $_POST['grid'] );
                 $_SESSION[$G_FORM->id][$_POST['grid']][$_POST['row']][$k1] = $v1;
+                $G_FORM->values[$_POST['grid']][$_POST['row']][$k1] = $v1;
             }
         }
         $dependentFields = array_merge( $dependentFields, $myDependentFields );
     }
 }
-if (isset( $_POST['grid'] ))
-    $G_FORM->values = isset( $_SESSION[$G_FORM->id] ) ? $_SESSION[$G_FORM->id] : array ();
 
 $dependentFields = array_unique( $dependentFields );
 

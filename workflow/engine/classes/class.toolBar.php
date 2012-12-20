@@ -162,7 +162,7 @@ class XmlForm_Field_toolButton extends XmlForm_Field
                     $criteria = processMap::getDynaformsCriteria($this->owner->values['PRO_UID']);
                     $dataset = DynaformPeer::doSelectRS($criteria);
                     if ($dataset->getRecordCount() > 0) {
-                        $html .= '<span style="font-size: 8pt;margin-left: 20px;">' . G::LoadTranslation('ID_EDITING_DYNAFORM');
+                        $html .= '<span style="display:inline-block; font-size: 8pt;margin-left: 5px;margin-bottom: 3px;">' . G::LoadTranslation('ID_DYNAFORM');
                         $html .= ': <select id="_dynaformsList_" onchange="window.location = \'dynaforms_Editor?PRO_UID=' . $this->owner->values['PRO_UID'];
                         $html .= '&DYN_UID=\' + this.value;" class="module_app_input___gray">';
                         $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
@@ -179,8 +179,8 @@ class XmlForm_Field_toolButton extends XmlForm_Field
                 return $html;
                 break;
             case 'class':
-                $html = '<a href="#" onclick="' . $this->onclick . '" onmouseover="backImage(this, \'url(/images/dynamicForm/hover.gif) no-repeat\')" onmouseout="backImage(this, \'\')"  style="width:25px;height:25px;margin-bottom:3px">
-                 <div class="' . $this->class . '" title="' . strip_tags( $this->label ) . '" style="width:25px;height:25px;margin-bottom:3px"></div>
+                $html = '<a href="#" onclick="' . $this->onclick . '" onmouseover="backImage(this, \'url(/images/dynamicForm/hover.gif) no-repeat\')" onmouseout="backImage(this, \'\')"  style="height:25px;margin-bottom:3px">
+                 <div class="' . $this->class . '" title="' . strip_tags( $this->label ) . '" style="height:25px;margin-bottom:3px"></div>
                </a>';
                 return $html;
 
