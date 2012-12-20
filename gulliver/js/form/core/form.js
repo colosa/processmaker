@@ -1108,10 +1108,18 @@ function G_Text(form, element, name)
           break;
         case 46:
         case 45:
-          newValue  = currentValue.substring(0, cursorStart);
-          newValue += currentValue.substring(cursorEnd + 1, currentValue.length);
-          newCursor = cursorStart;
-          break;
+            if (me.validate != "Email") {
+                newValue  = currentValue.substring(0, cursorStart);
+                newValue += currentValue.substring(cursorEnd + 1, currentValue.length);
+                newCursor = cursorStart;
+            } else {
+                newKey = String.fromCharCode(keyCode);
+                newValue  = currentValue.substring(0, cursorStart);
+                newValue += newKey;
+                newValue += currentValue.substring(cursorEnd, currentValue.length);
+                newCursor = cursorStart + 1;
+            }
+            break;
         case 256:
           newValue  = currentValue.substring(0, cursorStart);
           newValue += '.';
@@ -1173,10 +1181,16 @@ function G_Text(form, element, name)
       case 8: case 46:  //BACKSPACE OR DELETE
       case 35: case 36: //HOME OR END
       case 37: case 38: case 39: case 40: // ARROW KEYS
-        if (me.validate == 'NodeName' && ((pressKey == 8) || (pressKey == 46))) {
-          return true;
+        if ((pressKey == 8 || pressKey == 46) && me.validate == "NodeName") {
+            return true;
         }
+
+        if (pressKey == 46 && me.validate == "Email") {
+            return true;
+        }
+
         me.applyMask(pressKey);
+
         if ((pressKey == 8 || pressKey == 46) && (me.validate != 'Login' && me.validate != 'NodeName')) me.sendOnChange();
         me.checkBrowser();
         if (me.browser.name == 'Chrome' || me.browser.name == 'Safari'){
@@ -1357,7 +1371,10 @@ function G_Text(form, element, name)
 
       if (keyValid){
         //APPLY MASK
-        if ((me.validate == "Login" || me.validate == "NodeName") && me.mask == "") return true;
+        if ((me.validate == "Login" || me.validate == "NodeName") && me.mask == "") {
+            return true;
+        }
+
         if (pressKey == 46){
           me.applyMask(256); //This code send [.] period to the mask
         }
@@ -1365,7 +1382,9 @@ function G_Text(form, element, name)
           me.applyMask(pressKey);
         }
 
-        if (updateOnChange) me.sendOnChange();
+        if (updateOnChange) {
+            me.sendOnChange();
+        }
       }
 
       if (me.browser.name == 'Firefox') {
@@ -1473,10 +1492,9 @@ function G_Text(form, element, name)
         }
       }
 
-      if(this.validate=="Email")
-      {
-        //var pat=/^[\w\_\-\.ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±]{2,255}@[\w\_\-]{2,255}\.[a-z]{1,3}\.?[a-z]{0,3}$/;
-        var pat=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
+      if (this.validate == "Email") {
+        var pat = /^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,6}$/;
+
         if(!pat.test(this.element.value))
         {
           //old|if(this.required=="0"&&this.element.value=="") {
