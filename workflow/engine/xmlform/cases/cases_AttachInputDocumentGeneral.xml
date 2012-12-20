@@ -51,6 +51,8 @@ var verifyInfo = function(oForm)
     oAux.focus();
     return;
   }
+  getField('SAVE').disabled = true;
+  getField('BTN_CANCEL').disabled = true;
   oForm.submit();
 };
 
