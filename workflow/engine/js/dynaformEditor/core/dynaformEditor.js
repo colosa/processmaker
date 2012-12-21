@@ -474,7 +474,7 @@ var dynaformEditor={
         parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
                      "../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js",
                      "../contrib/php/js/parsephphtmlmixed.js"],
-        stylesheet: ["css/xmlcolors.css", "css/jscolors.css", "css/csscolors.css", "contrib/php/css/phpcolors.css"],
+        stylesheet: ["css/xmlcolors.css", "css/jscolors.css"],
         path: "js/",
         lineNumbers: true,
         continuousScanning: 500

@@ -52,7 +52,7 @@ function skinList ()
         $wildcard = '@';
     }
     foreach ($skinList['skins'] as $key => $value) {
-        if ($value['SKIN_FOLDER_ID'] != 'simplified' && $value['SKIN_FOLDER_ID'] != 'uxs') {
+        if ($value['SKIN_FOLDER_ID'] != 'simplified' && $value['SKIN_FOLDER_ID'] != 'uxs' && $value['SKIN_FOLDER_ID'] != 'uxmodern') {
             if ($skinList['currentSkin'] == $value['SKIN_FOLDER_ID']) {
                 $value['SKIN_STATUS'] = $wildcard . G::LoadTranslation( 'ID_ACTIVE' );
                 $value['SKIN_NAME'] = $wildcard . $value['SKIN_NAME'];

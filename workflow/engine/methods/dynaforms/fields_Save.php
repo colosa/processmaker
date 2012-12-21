@@ -245,7 +245,7 @@ $oDataset = $oSession->Execute('SELECT * FROM dynaForm WHERE NOT( XMLNODE_NAME =
 $iMaximun = $oDataset->count();
 while ($aRow = $oDataset->Read()) {
     $aFields[] = array('XMLNODE_NAME' => $aRow['XMLNODE_NAME'],
-        'TYPE' => $aRow['TYPE'],
+        'TYPE' => isset($aRow['TYPE']) ? $aRow['TYPE'] : '',
         'UP' => ($i > 0 ? G::LoadTranslation('ID_UP') : ''),
         'DOWN' => ($i < $iMaximun - 1 ? G::LoadTranslation('ID_DOWN') : ''),
         'row__' => ($i + 1));
@@ -261,4 +261,3 @@ if (isset($sType) && $sType === 'javascript') {
     $editor = new dynaformEditorAjax($_POST);
     $editor->set_javascript($A, $fieldName, $sCode);
 }
- 
