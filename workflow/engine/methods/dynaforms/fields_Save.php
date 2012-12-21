@@ -115,10 +115,10 @@ if (file_exists(PATH_XMLFORM . 'dynaforms/fields/' . $type . '.xml')) {
         //      }
     }
     if ($type === 'grid') {
-        if (!isset($_POST['form']['PME_ADDROW'])) {
+        if (!isset($_POST['form']['PME_ADDROW']) || $_POST['form']['PME_ADDROW'] == '') {
             $_POST['form']['PME_ADDROW'] = '0';
         }
-        if (!isset($_POST['form']['PME_DELETEROW'])) {
+        if (!isset($_POST['form']['PME_DELETEROW']) || $_POST['form']['PME_DELETEROW'] == '') {
             $_POST['form']['PME_DELETEROW'] = '0';
         }
     }
