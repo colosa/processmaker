@@ -6260,6 +6260,21 @@ class Cases
             }
         }
 
+        // Group Ad Hoc
+        $oTasks = new Tasks();
+        $aAux = $oTasks->getGroupsOfTask($TAS_UID, 2);
+        $row = array();
+        $groups = new Groups();
+        foreach ($aAux as $aGroup) {
+            $aUsers = $groups->getUsersOfGroup($aGroup['GRP_UID']);
+            foreach ($aUsers as $aUser) {
+                if ($aUser['USR_UID'] != $USR_UID) {
+                    $row[] = $aUser['USR_UID'];
+                }
+            }
+        }
+
+        // User Ad Hoc
         $aAux = $oTasks->getUsersOfTask($TAS_UID, 2);
         foreach ($aAux as $aUser) {
             if ($aUser['USR_UID'] != $USR_UID) {
