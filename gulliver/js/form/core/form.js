@@ -1106,8 +1106,8 @@ function G_Text(form, element, name)
           newValue += currentValue.substring(cursorEnd, currentValue.length);
           newCursor = cursorStart - 1;
           break;
-        case 46:
         case 45:
+        case 46:
             if (me.validate != "Email") {
                 newValue  = currentValue.substring(0, cursorStart);
                 newValue += currentValue.substring(cursorEnd + 1, currentValue.length);
@@ -1290,7 +1290,7 @@ function G_Text(form, element, name)
       //pressKey = window.event ? event.keyCode : event.which;
       var pressKey = (window.event)? window.event.keyCode : event.which;
 
-      if (me.mType == 'date') me.validate = 'Int';
+      //if (me.mType == 'date') me.validate = 'Int';
 
       keyValid = true;
       updateOnChange = true;
