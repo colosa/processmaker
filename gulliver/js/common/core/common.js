@@ -2022,6 +2022,9 @@ function removeValue(id){
 
 function datePicker4(obj, id, mask, startDate, endDate, showTIme, idIsoDate)
 {
+    var aux = id.replace(/[\[\]]/g, '_');
+  __lastMasks__[aux] = mask;
+
   if (showTIme=='false') {
     showTIme = false;
   }
