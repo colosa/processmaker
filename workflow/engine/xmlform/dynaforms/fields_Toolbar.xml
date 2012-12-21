@@ -9,9 +9,6 @@
   <saveasDyna type="toolButton" class="ss_sprite button_toolbar ss_disk_multiple" onclick="dynaformEditor.save_as()" buttonType="class">
     <en>Save as</en>
   </saveasDyna>
-  <importDyna type="toolButton" class="ss_sprite button_toolbar ss_application_side_expand" onclick="dynaformEditor.importForm()" buttonType="class">
-    <en>Import</en>
-  </importDyna>
   <!--.-->
   <separator2 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html"  buttonStyle=""/>
   <text type="toolButton" class="ss_sprite button_toolbar ss_textfield" onclick="fieldsAdd('text')" buttonType="class">
