@@ -1113,7 +1113,6 @@ class AppCacheView extends BaseAppCacheView
             $oCriteria->add(AppCacheViewPeer::USR_UID, $userUid);
         }
 
-        $oCriteria->add(AppCacheViewPeer::APP_CURRENT_USER, '', Criteria::NOT_EQUAL);
         $oCriteria->add(AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL);
         $oCriteria->add(AppCacheViewPeer::APP_THREAD_STATUS, 'OPEN');
         $oCriteria->add(AppCacheViewPeer::DEL_THREAD_STATUS, 'OPEN');
