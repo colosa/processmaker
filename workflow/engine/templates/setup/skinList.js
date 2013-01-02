@@ -816,6 +816,10 @@ function changeSkin(newSkin,currentSkin){
               newLocation = currentLocation.replace("/" + currentSkin + "/", "/" + newSkin + "/setup/");
             }
           }
+          var punto = newLocation.indexOf('s=SKINS');
+          if (punto == -1) {
+            newLocation = newLocation +"?s=SKINS";
+          }
           top.location.href = newLocation;
         }
         else {
