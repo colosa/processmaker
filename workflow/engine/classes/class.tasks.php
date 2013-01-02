@@ -616,24 +616,6 @@ class Tasks
     {
         try {
             $oTaskUser = new TaskUser();
-            $oCriteria = new Criteria( 'workflow' );
-            $oCriteria->add( GroupUserPeer::GRP_UID, $sGroupUID );
-            $oDataset = GroupUserPeer::doSelectRS( $oCriteria );
-            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-            $oDataset->next();
-            while ($aGroupUser = $oDataset->getRow()) {
-                $oCriteria = new Criteria( 'workflow' );
-                $oCriteria->add( TaskUserPeer::TAS_UID, $sTaskUID );
-                $oCriteria->add( TaskUserPeer::USR_UID, $aGroupUser['USR_UID'] );
-                $oDataset2 = TaskUserPeer::doSelectRS( $oCriteria );
-                $oDataset2->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-                $oDataset2->next();
-                $aRow = $oDataset2->getRow();
-                if (is_array( $aRow )) {
-                    $this->ofToAssignUser( $sTaskUID, $aGroupUser['USR_UID'], $iType );
-                }
-                $oDataset->next();
-            }
             return $oTaskUser->remove( $sTaskUID, $sGroupUID, $iType, 2 );
         } catch (Exception $oError) {
             throw ($oError);
