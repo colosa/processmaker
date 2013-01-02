@@ -36,7 +36,7 @@ try {
         $pwd = '';
 
         if (isset($frm['USR_USERNAME'])) {
-            $usr = strtolower(trim($frm['USR_USERNAME']));
+            $usr = mb_strtolower(trim($frm['USR_USERNAME']), 'UTF-8');
             $pwd = trim($frm['USR_PASSWORD']);
         }
 
