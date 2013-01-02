@@ -6263,7 +6263,6 @@ class Cases
         // Group Ad Hoc
         $oTasks = new Tasks();
         $aAux = $oTasks->getGroupsOfTask($TAS_UID, 2);
-        $row = array();
         $groups = new Groups();
         foreach ($aAux as $aGroup) {
             $aUsers = $groups->getUsersOfGroup($aGroup['GRP_UID']);
