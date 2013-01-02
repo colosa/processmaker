@@ -811,6 +811,12 @@ antes funcionaba.
     height: 16px !important;
 }
 
+.ICON_INFORMATION{
+    /*ss_information*/
+    background-image: url(/images/icons_silk/sprites.png) !important;
+    background-position:0 -8749px !important
+}
+
 /* Language Support module styles*/
 .upload-icon {
 	background: url('/images/cases-documents.png') no-repeat 0 0 !important;

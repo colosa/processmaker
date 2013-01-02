@@ -79,6 +79,7 @@ if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1) {
   $G_TMP_MENU->AddIdRawOption('AUTHSOURCES', '../authSources/authSources_List', G::LoadTranslation('ID_AUTH_SOURCES'), '', '', 'users');
   $G_TMP_MENU->AddIdRawOption('UX', '../admin/uxList', G::LoadTranslation('ID_USER_EXPERIENCE'), '', '', 'users');
   $G_TMP_MENU->AddIdRawOption('SYSTEM', '../admin/system', G::LoadTranslation('ID_SYSTEM'), '', '', 'settings');
+  $G_TMP_MENU->AddIdRawOption('INFORMATION', '../setup/systemInfo?option=processInfo', G::LoadTranslation('ID_SYSTEM_INFO'), '', '', 'settings');
 }
 
 if ($RBAC->userCanAccess('PM_SETUP') == 1) {

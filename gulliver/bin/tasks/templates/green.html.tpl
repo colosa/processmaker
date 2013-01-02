@@ -6,35 +6,7 @@
   <link rel="stylesheet" type="text/css" href="/skins/green/style.css"/>
   {$header}
   <script type="text/javascript">{literal}
-    var openInfoPanel = function()
-    {
-      var oInfoPanel = new leimnud.module.panel();
-      oInfoPanel.options = {
-        size    :{w:500,h:424},
-        position:{x:0,y:0,center:true},
-        title   :'System Information',
-        theme   :'processmaker',
-        control :{
-          close :true,
-          drag  :false
-        },
-        fx:{
-          modal:true
-        }
-      };
-      oInfoPanel.setStyle = {modal: {
-        backgroundColor: 'white'
-      }};
-      oInfoPanel.make();
-      var oRPC = new leimnud.module.rpc.xmlhttp({
-        url   : '../login/dbInfo',
-        async : false,
-        method: 'POST',
-        args  : ''
-      });
-      oRPC.make();
-      oInfoPanel.addContent(oRPC.xmlhttp.responseText);
-    };
+
   {/literal}</script>
 </head>
 <body>
@@ -109,7 +81,7 @@
         <div class="content">
         {php}if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {{/php}
           {php}if ( defined('SYS_SYS') ) {{/php}
-            <a href="#" onclick="openInfoPanel();return false;" class="FooterLink">| System Information |</a><br />
+
           {php}}{/php}
           <br />Copyright © 2003-2008 Colosa, Inc. All rights reserved.
         {php}}{/php}

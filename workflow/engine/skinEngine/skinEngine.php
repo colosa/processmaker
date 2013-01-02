@@ -332,9 +332,6 @@ class SkinEngine
     global $G_ID_MENU_SELECTED;
     global $G_ID_SUB_MENU_SELECTED;
 
-    if (! defined('DB_SYSTEM_INFORMATION'))
-      define('DB_SYSTEM_INFORMATION', 1);
-
     G::verifyPath(PATH_SMARTY_C, true);
     G::verifyPath(PATH_SMARTY_CACHE, true);
 
@@ -361,10 +358,6 @@ class SkinEngine
       $footer = '';
 
       if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {
-        if (DB_SYSTEM_INFORMATION == 1) {
-          $footer = "<a href=\"#\" onclick=\"openInfoPanel();return false;\" class=\"FooterLink\">| " . G::LoadTranslation('ID_SYSTEM_INFO') . " |</a><br />";
-        }
-
         $freeOfChargeText = "";
         if (! defined('SKIP_FREE_OF_CHARGE_TEXT')) {
           $freeOfChargeText = "Supplied free of charge with no support, certification, warranty, <br>maintenance nor indemnity by Colosa and its Certified Partners.";
@@ -458,9 +451,6 @@ class SkinEngine
       $footer = '';
 
       if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {
-        if ( defined('SYS_SYS') ) {
-          $footer = "<a href=\"#\" onclick=\"openInfoPanel();return false;\" class=\"FooterLink\">| " . G::LoadTranslation('ID_SYSTEM_INFO') . " |</a><br />";
-        }
         $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " Colosa, Inc. All rights reserved.";
       }
 
@@ -574,10 +564,6 @@ class SkinEngine
     global $G_ID_MENU_SELECTED;
     global $G_ID_SUB_MENU_SELECTED;
 
-    if (! defined('DB_SYSTEM_INFORMATION')) {
-      define('DB_SYSTEM_INFORMATION', 1);
-    }
-
     G::verifyPath(PATH_SMARTY_C, true);
     G::verifyPath(PATH_SMARTY_CACHE, true);
 
@@ -622,9 +608,6 @@ class SkinEngine
       $footer = '';
 
       if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {
-        if (DB_SYSTEM_INFORMATION == 1) {
-          $footer = "<a href=\"#\" onclick=\"openInfoPanel();return false;\" class=\"FooterLink\">| " . G::LoadTranslation('ID_SYSTEM_INFO') . " |</a><br />";
-        }
 
         $freeOfChargeText = "";
         if (! defined('SKIP_FREE_OF_CHARGE_TEXT'))

@@ -140,52 +140,6 @@ G::RenderPage ("publish");
 ?>
 <script type="text/javascript">
     var oInfoPanel;
-    var openInfoPanel = function()
-    {
-        // note added by carlos pacha carlos[at]colosa[dot]com pckrlos[at]gmail[dot]com
-        // the following lines of code are getting the hight of panel. Related 8021 bug
-        var hightpnl= 424;
-        var varjs = "<?php echo isset($_POST['form']['USER_ENV'])?$_POST['form']['USER_ENV']:''; ?>";
-        if (varjs !=' ') {
-            hightpnl= 330;
-        }
-
-        var oInfoPanel = new leimnud.module.panel();
-        oInfoPanel.options = {
-            size    :{w:500,h:hightpnl},
-            position:{x:0,y:0,center:true},
-            title   :'System Information',
-            theme   :'processmaker',
-            control :{
-                close :true,
-                drag  :false
-            },
-            fx:{
-                modal:true
-            }
-        };
-        oInfoPanel.setStyle = {modal: {
-            backgroundColor: 'white'
-        }};
-        oInfoPanel.make();
-
-        var oRPC = new leimnud.module.rpc.xmlhttp({
-            url   : '../login/dbInfo',
-            //async : false,
-            method: 'POST',
-            args  : ''
-        });
-
-        oRPC.callback = function(oRPC) {
-            oInfoPanel.loader.hide();
-            var scs = oRPC.xmlhttp.responseText.extractScript();
-            oInfoPanel.addContent(oRPC.xmlhttp.responseText);
-            scs.evalScript();
-        }.extend(this);
-
-        oRPC.make();
-        oInfoPanel.addContent(oRPC.xmlhttp.responseText);
-    };
 </script>
 
 <?php

@@ -12,6 +12,13 @@ switch ($option) {
 
         G::RenderPage("publish", "extJs");
         break;
+    case "processInfo":
+        $oHeadPublisher = &headPublisher::getSingleton();
+        $oHeadPublisher->addContent("setup/dbInfo"); //Adding a html file .html
+        $oHeadPublisher->addExtJsScript("setup/dbInfo", false); //Adding a javascript file .js
+
+        G::RenderPage("publish", "extJs");
+        break;
     default:
         require_once (PATH_CONTROLLERS . "installer.php");
 
