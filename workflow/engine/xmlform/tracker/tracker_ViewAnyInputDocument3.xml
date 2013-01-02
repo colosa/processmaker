@@ -35,9 +35,9 @@
 
 <FILE type="phpVariable"/>
 
-<APP_DOC_FILENAME type="link" value="@#VIEW" link="@#FILE" target="_blank">
+<APP_DOC_FILENAME1 type="link" value="@#VIEW" link="@#FILE" target="_blank">
   <en>File</en>
-</APP_DOC_FILENAME>
+</APP_DOC_FILENAME1>
 
 <JS type="javascript"><![CDATA[
 
