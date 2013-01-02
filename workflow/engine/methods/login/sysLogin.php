@@ -36,9 +36,9 @@ session_start();
 session_regenerate_id();
 
 //Required classes for dbArray work
-require_once ("propel/Propel.php");
-require_once ("creole/Creole.php");
-G::LoadThirdParty ("pake", "pakeColor.class");
+//require_once ("propel/Propel.php");
+//require_once ("creole/Creole.php");
+//G::LoadThirdParty ("pake", "pakeColor.class");
 Propel::init (PATH_CORE . "config/databases.php");
 Creole::registerDriver ('dbarray', 'creole.contrib.DBArrayConnection');
 
