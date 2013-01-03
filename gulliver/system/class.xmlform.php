@@ -5457,7 +5457,7 @@ class xmlformTemplate extends Smarty
             $value = (isset( $form->values[$k] )) ? $form->values[$k] : null;
             $result[$k] = G::replaceDataField( $form->fields[$k]->label, $form->values );
             if ($form->type == 'xmlform') {
-                if ($v->type != 'checkgroup' && $v->type != 'radiogroup') {
+                if (in_array($v->type, array('text', 'currency', 'percentage', 'password', 'suggest', 'textarea', 'dropdown', 'yesno', 'listbox', 'checkbox', 'date', 'link', 'file'))) {
                     $result[$k] = '<label for="form[' . $k . ']">' . $result[$k] . '</label>';
                 }
             }
