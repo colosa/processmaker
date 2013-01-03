@@ -6,7 +6,7 @@
 <USR_USERNAME type="text" size="30" maxlength="50" validate="Any">
   <en>User</en>
 </USR_USERNAME>
-<USR_PASSWORD type="password" size="30" maxlength="32">
+<USR_PASSWORD type="password" size="30" maxlength="32" autocomplete="0">
   <en>Password</en>
 </USR_PASSWORD>
 <USER_LANG type="dropdown" sqlconnection="dbarray">

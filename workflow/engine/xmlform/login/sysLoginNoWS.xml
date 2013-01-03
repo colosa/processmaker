@@ -8,7 +8,7 @@
   <en>User</en>
 </USR_USERNAME>
 
-<USR_PASSWORD type="password" size="30" maxlength="32" >
+<USR_PASSWORD type="password" size="30" maxlength="32" autocomplete="0">
   <en>Password</en>
 </USR_PASSWORD>
 
@@ -30,23 +30,23 @@ SELECT LANG_ID, LANG_NAME FROM langOptions
 
 setFocus (getField ('USR_USERNAME'));
 
-leimnud.event.add(document.getElementById('form[BSUBMIT]'), 'click', function() { 
+leimnud.event.add(document.getElementById('form[BSUBMIT]'), 'click', function() {
     ws = getField('USER_ENV').value;
     createCookie('pmos_generik2', '{"ws":"'+ws+'"}', 365);
-    
+
     var client = getBrowserClient();
-    if (client.browser == "msie" || client.browser == "safari"){ 
+    if (client.browser == "msie" || client.browser == "safari"){
         document.sysLogin.submit();
-    } 
-}.extend(document.getElementById('form[BSUBMIT]'))); 
+    }
+}.extend(document.getElementById('form[BSUBMIT]')));
 
 try{
     c = new String(readCookie('pmos_generik2'));
     o = eval("("+c+")");
     if( o != null){
-        getField('USER_ENV').value = o.ws; 
+        getField('USER_ENV').value = o.ws;
     }
 } catch(e){}
 
 ]]></JS>
-</dynaForm>  
+</dynaForm>
