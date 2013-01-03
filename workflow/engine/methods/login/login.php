@@ -28,7 +28,7 @@ $aFields = array();
 if (!isset($_GET['u'])) {
     $aFields['URL'] = '';
 } else {
-    $aFields['URL'] = urldecode($_GET['u']);
+    $aFields['URL'] = urldecode(htmlentities($_GET['u']));
 }
 
 if (!isset($_SESSION['G_MESSAGE'])) {
