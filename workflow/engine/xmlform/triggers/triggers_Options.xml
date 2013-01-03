@@ -107,9 +107,12 @@
         var triUid = document.getElementById('TRI_UID').value;
     }
     var triTitle =document.getElementById('TRI_TITLE').value;
-    if(triTitle==''){
+
+    triTitle = triTitle.replace(/^\s*|\s*$/g,"");
+    if (triTitle == '') {
       alert(G_STRINGS.ID_REQUIRED_NAME_TRIGGERS);return false;
     }
+    document.getElementById('TRI_TITLE').value = triTitle;
 
     var fieldsRequired = document.getElementById('FIELDS_REQUIRED').value;
     fieldsRequired = fieldsRequired.split(",");
