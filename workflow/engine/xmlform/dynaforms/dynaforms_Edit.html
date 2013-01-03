@@ -1,4 +1,4 @@
-<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>  
+<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>
 
   <div class="borderForm" style="padding-left: 0pt; padding-right: 0pt;">
 		<div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
@@ -22,33 +22,56 @@
               <td class="FormTitle" colspan="2" align="">{$form.TITLE}</td>
              </tr>
              <tr id="pmtabledrop" style="display: none;">
-              <td class="FormLabel"  width="{$form_labelWidth}">{$ADD_TABLE}</td>
-              <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.ADD_TABLE} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.ADD_TABLE}</td> 
-              </tr>
-              <tr>
-              <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$DYN_TITLE}</td>
-              <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DYN_TITLE} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DYN_TITLE}</td> 
-              </tr>
-              <tr id='normalformdrop' style="display: none;">
-              <td class="FormLabel" width="{$form_labelWidth}">{$DYN_TYPE}</td>
-              <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DYN_TYPE} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DYN_TYPE}</td> 
-              </tr>
-                                                <tr>
-              <td class="FormLabel" width="{$form_labelWidth}">{$DYN_DESCRIPTION}</td>
-              <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DYN_DESCRIPTION} </td>  //-->
-              <td class="FormFieldContent"width="{$form_fieldContentWidth}">{$form.DYN_DESCRIPTION}</td> 
-              </tr>
-              <tr id="normalform" style="display: none;" ><td></td>
-              <td class="FormButton"  colspan="1" align="center">{$form.SAVE_DYNAFORM}&nbsp; &nbsp;{$form.SAVE_OPEN}&nbsp; &nbsp;{$form.BTN_CANCEL}</td>
+                 <td class="FormLabel"  width="{$form_labelWidth}">{$ADD_TABLE}</td>
+                 <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.ADD_TABLE} </td>  //-->
+                 <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.ADD_TABLE}</td>
              </tr>
-             
-             <tr id="pmtableform" style="display: none;" ><td></td>
-              <td class="FormButton"  colspan="1" align="center">{$form.CONTINUE}&nbsp; &nbsp;{$form.BTN_CANCEL}</td>
+             <tr id="title">
+                 <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$DYN_TITLE}</td>
+                 <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DYN_TITLE} </td>  //-->
+                 <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DYN_TITLE}</td>
              </tr>
-           
+             <tr id='normalformdrop' style="display: none;">
+                 <td class="FormLabel" width="{$form_labelWidth}">{$DYN_TYPE}</td>
+                 <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DYN_TYPE} </td>  //-->
+                 <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DYN_TYPE}</td>
+             </tr>
+             <tr id="description">
+                 <td class="FormLabel" width="{$form_labelWidth}">{$DYN_DESCRIPTION}</td>
+                 <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DYN_DESCRIPTION} </td>  //-->
+                 <td class="FormFieldContent"width="{$form_fieldContentWidth}">{$form.DYN_DESCRIPTION}</td>
+             </tr>
+             <tr id="normalform" style="display: none;">
+                 <td class="FormButton" colspan="2" align="center">{$form.SAVE_DYNAFORM}&nbsp;{$form.SAVE_OPEN}&nbsp;{$form.BTN_CANCEL}</td>
+             </tr>
+             <tr id="pmtableform" style="display: none;">
+                 <td class="FormButton" colspan="2" align="center">{$form.CONTINUE}&nbsp;{$form.BTN_CANCEL}</td>
+             </tr>
+
+             <!--Copy dynaform-->
+             <tr id="copyProcess" style="display: none;">
+                 <td class="FormLabel"  width="{$form_labelWidth}">{$COPY_PROCESS_UID}</td>
+                 <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.COPY_PROCESS_UID}</td>
+             </tr>
+             <tr id="copyType" style="display: none;">
+                 <td class="FormLabel"  width="{$form_labelWidth}">{$COPY_TYPE}</td>
+                 <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.COPY_TYPE}</td>
+             </tr>
+             <tr id="copyDynaform" style="display: none;">
+                 <td class="FormLabel"  width="{$form_labelWidth}"><span style="color: red;">*</span>&nbsp;{$COPY_DYNAFORM_UID}</td>
+                 <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.COPY_DYNAFORM_UID}</td>
+             </tr>
+             <tr id="copyDynTitle" style="display: none;">
+                 <td class="FormLabel" width="{$form_labelWidth}"><span style="color: red;">*</span>&nbsp;{$COPY_DYNAFORM_TITLE}</td>
+                 <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.COPY_DYNAFORM_TITLE}</td>
+             </tr>
+             <tr id="copyDynDescription" style="display: none;">
+                 <td class="FormLabel"  width="{$form_labelWidth}">{$COPY_DYNAFORM_DESCRIPTION}</td>
+                 <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.COPY_DYNAFORM_DESCRIPTION}</td>
+             </tr>
+             <tr id="copyButton" style="display: none;">
+                 <td class="FormButton" colspan="2" align="center">{$form.BTNCOPYSAVE}&nbsp;{$form.BTNCOPYSAVEOPEN}&nbsp;{$form.BTNCOPYCANCEL}</td>
+             </tr>
             </tbody></table>
         </td>
       </tr>
@@ -59,5 +82,6 @@
                             <script type="text/javascript">
     {$form.JS}
   </script>
-  
+
 </form>
+

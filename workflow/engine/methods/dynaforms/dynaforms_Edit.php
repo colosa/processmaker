@@ -59,11 +59,14 @@ if ($dynUid == '') {
 } else {
     $aFields = $dynaform->load( $dynUid );
 }
-$aFields['PRO_UID'] = isset( $dynaform->Fields['PRO_UID'] ) ? $dynaform->Fields['PRO_UID'] : $_GET['PRO_UID'];
 
+$aFields["PRO_UID"] = (isset($dynaform->Fields["PRO_UID"]))? $dynaform->Fields["PRO_UID"] : $_GET["PRO_UID"];
 $aFields['ACTION'] = isset( $_GET['ACTION'] ) ? $_GET['ACTION'] : '';
 //$aFields['READ_ONLY'] = ($_GET['ACTION']=='normal')?0:1;
+$aFields["LANG"] = SYS_LANG;
+
 G::LoadClass( 'xmlfield_InputPM' );
+
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'dynaforms/dynaforms_Edit', '', $aFields, SYS_URI . 'dynaforms/dynaforms_Save' );
 

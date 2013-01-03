@@ -57,11 +57,13 @@
 </TAS_SELFSERVICE_TIME_UNIT>
 
 <TAS_SELFSERVICE_TRIGGER_UID type="dropdown" required="1">
+    <![CDATA[
     SELECT TGR.TRI_UID, CON.CON_VALUE
     FROM   TRIGGERS AS TGR, CONTENT AS CON
     WHERE  TGR.PRO_UID = '@#PRO_UID' AND
            TGR.TRI_UID = CON.CON_ID AND CON.CON_CATEGORY = 'TRI_TITLE' AND CON.CON_LANG = '@#LANG'
     ORDER BY CON.CON_VALUE ASC
+    ]]>
 
     <en>
         Trigger to execute
@@ -296,3 +298,4 @@ var insertFormVar = function(sFieldName, sValue) {
 ]]></JS>
 
 </dynaForm>
+

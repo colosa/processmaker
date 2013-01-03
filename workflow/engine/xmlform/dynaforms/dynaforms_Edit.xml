@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm
-  name="dynaforms_Edit"
-  type="xmlform"
-  width="100%" enableTemplate="1" >
-
+<dynaForm name="dynaforms_Edit" type="xmlform" width="100%" enableTemplate="1">
 <DYN_UID type="hidden" showInTable="0"/>
 <ACTION type="hidden" showInTable="0"/>
 <PRO_UID type="hidden" showInTable="0"/>
+<LANG type="private"/>
 
 <TITLE type="title" group="1">
   <en>Dynaform Information</en>
@@ -37,7 +34,7 @@
 </CONTINUE>
 
 <SAVE_DYNAFORM type="button" onclick="dynaformSave( this.form, false );">
-  <en>Save</en> 
+  <en>Save</en>
 </SAVE_DYNAFORM>
 
 <SAVE_OPEN type="button" onclick="dynaformSave( this.form, true );">
@@ -48,38 +45,157 @@
   <en>Cancel</en>
 </BTN_CANCEL>
 
+<!--Copy dynaform-->
+<COPY_PROCESS_UID type="dropdown" dependentfields="COPY_DYNAFORM_UID">
+    <![CDATA[
+    SELECT PRO.PRO_UID, CON.CON_VALUE
+    FROM   PROCESS AS PRO, CONTENT AS CON
+    WHERE  PRO.PRO_UID = CON.CON_ID AND CON.CON_CATEGORY = 'PRO_TITLE' AND CON.CON_LANG = '@#LANG'
+    ORDER BY CON.CON_VALUE ASC
+    ]]>
+
+    <en>
+        Process
+        <option name="">- Select a process -</option>
+    </en>
+</COPY_PROCESS_UID>
+
+<COPY_TYPE type="dropdown" dependentfields="COPY_DYNAFORM_UID">
+    <en>
+        Showing forms of type
+        <option name="xmlform">Normal</option>
+        <option name="grid">Grid</option>
+    </en>
+</COPY_TYPE>
+
+<COPY_DYNAFORM_UID type="dropdown" dependentfields="COPY_DYNAFORM_DESCRIPTION">
+    <![CDATA[
+    SELECT DYN.DYN_UID, CON.CON_VALUE
+    FROM   DYNAFORM AS DYN, CONTENT AS CON
+    WHERE  DYN.PRO_UID = '@#COPY_PROCESS_UID' AND DYN.DYN_TYPE = '@#COPY_TYPE' AND
+           DYN.DYN_UID = CON.CON_ID AND CON.CON_CATEGORY = 'DYN_TITLE' AND CON.CON_LANG = '@#LANG'
+    ORDER BY CON.CON_VALUE ASC
+    ]]>
+
+    <en>
+        Dynaform to copy/import
+        <option name="">- Select a dynaform -</option>
+    </en>
+</COPY_DYNAFORM_UID>
+
+<COPY_DYNAFORM_TITLE type="text" size="48" maxlength="256" required="1">
+    <en>Title of the new dynaform</en>
+</COPY_DYNAFORM_TITLE>
+
+<COPY_DYNAFORM_DESCRIPTION type="textarea" rows="8" cols="45">
+    <![CDATA[
+    SELECT CON.CON_VALUE
+    FROM   CONTENT AS CON
+    WHERE  CON.CON_ID = '@#COPY_DYNAFORM_UID' AND CON.CON_CATEGORY = 'DYN_DESCRIPTION' AND CON.CON_LANG = '@#LANG'
+    ]]>
+
+    <en>Description of the new dynaform</en>
+</COPY_DYNAFORM_DESCRIPTION>
+
+<BTNCOPYSAVE type="button" onclick="dynaformSave(this.form, false);">
+    <en><![CDATA[Copy/Import]]></en>
+</BTNCOPYSAVE>
+
+<BTNCOPYSAVEOPEN type="button" onclick="dynaformSave(this.form, true);">
+    <en><![CDATA[Copy/Import and Open]]></en>
+</BTNCOPYSAVEOPEN>
+
+<BTNCOPYCANCEL type="button" onclick="cancel();">
+    <en>Cancel</en>
+</BTNCOPYCANCEL>
+
 <JS type="javascript">
 <![CDATA[
- 
-getField('DYN_TITLE').form.onsubmit = function() {return false;};
+    function checkDynaformSource()
+    {
+        var action = "@#ACTION";
 
-  checkDynaformSource();
-  function checkDynaformSource(){
-  //alert('@#ACTION');
-  
-  if ('@#ACTION'=='normal'){
-   document.getElementById('normalform').style.display='';  
-   document.getElementById('normalformdrop').style.display='';  
-   document.getElementById('pmtableform').style.display='none';
-  } else {
-   document.getElementById('pmtableform').style.display='';
-   document.getElementById('pmtabledrop').style.display='';  
-   document.getElementById('normalform').style.display='none';
-   //document.getElementById('form[DYN_TYPE]').value = 'xmlform';
-  }
-    
-    /*if ('@#ACTION'=='normal'){
-        hideRow('ADD_TABLE');
-        hideRow('CONTINUE');
-        hideRow('PROCESS_VARIABLES');
-        hideRow('PRO_VAR_ASSIGN');
-    } else {
-        document.getElementById('form[DYN_TYPE]').value = 'xmlform';
-        hideRow('DYN_TYPE');
-    }*/
-  }
-leimnud.event.add(getField('DYN_TITLE'), 'blur', function() 
-{  
+        switch (action) {
+            case "pmtable":
+                document.getElementById("pmtableform").style.display="";
+                document.getElementById("pmtabledrop").style.display="";
+                document.getElementById("normalform").style.display="none";
+                //document.getElementById("form[DYN_TYPE]").value = "xmlform";
+                break;
+            case "copy":
+                document.getElementById("title").style.display = "none";
+                document.getElementById("description").style.display = "none";
+
+                document.getElementById("form[TITLE]").innerHTML = "@G::LoadTranslation(ID_DYNAFORM_COPY)";
+                document.getElementById("copyProcess").style.display = "";
+                document.getElementById("copyType").style.display = "";
+                document.getElementById("copyDynaform").style.display = "";
+                document.getElementById("copyDynTitle").style.display = "";
+                document.getElementById("copyDynDescription").style.display = "";
+                document.getElementById("copyButton").style.display = "";
+                break;
+            default:
+                //normal
+                document.getElementById("normalform").style.display="";
+                document.getElementById("normalformdrop").style.display="";
+                document.getElementById("pmtableform").style.display="none";
+                break;
+        }
+
+        /*
+        if ("@#ACTION" == "normal"){
+            hideRow("ADD_TABLE");
+            hideRow("CONTINUE");
+            hideRow("PROCESS_VARIABLES");
+            hideRow("PRO_VAR_ASSIGN");
+        } else {
+            document.getElementById("form[DYN_TYPE]").value = "xmlform";
+            hideRow("DYN_TYPE");
+        }
+        */
+    }
+
+    var cbocopyDynaformUid = getField("COPY_DYNAFORM_UID")
+    var txtcopyDynTitle = getField("COPY_DYNAFORM_TITLE");
+
+    leimnud.event.add(
+        getField("COPY_PROCESS_UID"),
+        "change",
+        function ()
+        {
+            txtcopyDynTitle.value = "";
+        }
+    );
+
+    leimnud.event.add(
+        getField("COPY_TYPE"),
+        "change",
+        function ()
+        {
+            txtcopyDynTitle.value = "";
+        }
+    );
+
+    leimnud.event.add(
+        cbocopyDynaformUid,
+        "change",
+        function ()
+        {
+            txtcopyDynTitle.value = "";
+
+            if (cbocopyDynaformUid.value != "") {
+                txtcopyDynTitle.value = cbocopyDynaformUid.options[cbocopyDynaformUid.selectedIndex].text;
+            }
+        }
+    );
+
+    txtcopyDynTitle.form.onsubmit = function () { return false; };
+    getField("DYN_TITLE").form.onsubmit = function () { return false; };
+
+    checkDynaformSource();
+
+leimnud.event.add(getField('DYN_TITLE'), 'blur', function()
+{
 String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
 document.getElementById('form[DYN_TITLE]').value = document.getElementById('form[DYN_TITLE]').value.trim();
 });
@@ -133,17 +249,18 @@ document.getElementById('form[DYN_TITLE]').value = document.getElementById('form
         }.extend(this);
         oRPC.make();
         lastPopupWindow.remove();
-        
-        
+
+
         //popupWindow('Assign Variable', '?PRO_UID=@%PRO_UID&TABLE_UID='+table_uid , 500, 300);
     }
   }
-  
+
   function cancel(){
     lastPopupWindow.remove();
   }
-  
+
 ]]>
 </JS>
 
-</dynaForm> 
+</dynaForm>
+

@@ -37,7 +37,6 @@ if (isset( $_POST['function'] )) {
 }
 
 if (isset( $sfunction ) && $sfunction == 'lookforNameDynaform') {
-
     $snameDyanform = urldecode( $_POST['NAMEDYNAFORM'] );
     $sPRO_UID = urldecode( $_POST['proUid'] );
 
@@ -69,7 +68,6 @@ if (isset( $sfunction ) && $sfunction == 'lookforNameDynaform') {
     print $flag;
 
 } else {
-    $dynaform = new dynaform();
     if (isset( $_POST['form'] )) {
         $aData = $_POST['form']; //For old process map form
         if ($aData['DYN_UID'] === '') {
@@ -91,18 +89,161 @@ if (isset( $sfunction ) && $sfunction == 'lookforNameDynaform') {
     }
     //if ($aData['DYN_UID']==='') unset($aData['DYN_UID']);
 
+    $dynaform = new dynaform();
 
-    if (isset( $aData['DYN_UID'] )) {
-        $dynaform->Save( $aData );
+    if (isset($aData["DYN_UID"])) {
+        $dynaform->Save($aData);
     } else {
-        if (! isset( $aData['ADD_TABLE'] ) || $aData['ADD_TABLE'] == "") {
-            $aFields = $dynaform->create( $aData );
-        } else {
-            $aFields = $dynaform->createFromPMTable( $aData, $aData['ADD_TABLE'] );
+        switch ($aData["ACTION"]) {
+            case "copy":
+                $aData["DYN_TYPE"] = $aData["COPY_TYPE"];
+                $aData["DYN_TITLE"] = $aData["COPY_DYNAFORM_TITLE"];
+                $aData["DYN_DESCRIPTION"] = $aData["COPY_DYNAFORM_DESCRIPTION"];
+
+                $aFields = $dynaform->create($aData);
+
+                $dynaformUid = $dynaform->getDynUid();
+
+                //Copy files of the dynaform
+                $umaskOld = umask(0);
+
+                $fileXml = PATH_DYNAFORM . $aData["COPY_PROCESS_UID"] . PATH_SEP . $aData["COPY_DYNAFORM_UID"] . ".xml";
+
+                if (file_exists($fileXml)) {
+                    $fileXmlCopy = PATH_DYNAFORM . $aData["PRO_UID"] . PATH_SEP . $dynaformUid . ".xml";
+
+                    $fhXml = fopen($fileXml, "r");
+                    $fhXmlCopy = fopen($fileXmlCopy, "w");
+
+                    while (!feof($fhXml)) {
+                        $strLine = fgets($fhXml, 4096);
+                        $strLine = str_replace($aData["COPY_PROCESS_UID"] . "/" . $aData["COPY_DYNAFORM_UID"], $aData["PRO_UID"] . "/" . $dynaformUid, $strLine);
+
+                        //Dynaform grid
+                        preg_match_all("/<.*type\s*=\s*[\"\']grid[\"\'].*xmlgrid\s*=\s*[\"\']\w{32}\/(\w{32})[\"\'].*\/>/", $strLine, $arrayMatch, PREG_SET_ORDER);
+
+                        foreach ($arrayMatch as $value) {
+                            $copyDynaformGridUid = $value[1];
+
+                            //Get data
+                            $criteria = new Criteria();
+
+                            $criteria->addSelectColumn(ContentPeer::CON_VALUE);
+                            $criteria->add(ContentPeer::CON_ID, $copyDynaformGridUid);
+                            $criteria->add(ContentPeer::CON_CATEGORY, "DYN_TITLE");
+                            $criteria->add(ContentPeer::CON_LANG, SYS_LANG);
+
+                            $rsCriteria = ContentPeer::doSelectRS($criteria);
+                            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+                            $rsCriteria->next();
+                            $row = $rsCriteria->getRow();
+
+                            $copyDynGrdTitle = $row["CON_VALUE"];
+
+                            $criteria = new Criteria();
+
+                            $criteria->addSelectColumn(ContentPeer::CON_VALUE);
+                            $criteria->add(ContentPeer::CON_ID, $copyDynaformGridUid);
+                            $criteria->add(ContentPeer::CON_CATEGORY, "DYN_DESCRIPTION");
+                            $criteria->add(ContentPeer::CON_LANG, SYS_LANG);
+
+                            $rsCriteria = ContentPeer::doSelectRS($criteria);
+                            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+                            $rsCriteria->next();
+                            $row = $rsCriteria->getRow();
+
+                            $copyDynGrdDescription = $row["CON_VALUE"];
+
+                            //Create grid
+                            $aDataAux = $aData;
+
+                            $aDataAux["DYN_TYPE"] = "grid";
+                            $aDataAux["DYN_TITLE"] = $copyDynGrdTitle;
+                            $aDataAux["DYN_DESCRIPTION"] = $copyDynGrdDescription;
+
+                            $dynaformGrid = new dynaform();
+                            $aFields = $dynaformGrid->create($aDataAux);
+
+                            $dynaformGridUid = $dynaformGrid->getDynUid();
+
+                            $aDataAux["DYN_UID"] = $dynaformGridUid;
+
+                            $dynaformGrid->update($aDataAux);
+
+                            //Copy files of the dynaform grid
+                            $fileGridXml = PATH_DYNAFORM . $aData["COPY_PROCESS_UID"] . PATH_SEP . $copyDynaformGridUid . ".xml";
+
+                            if (file_exists($fileGridXml)) {
+                                $fileGridXmlCopy = PATH_DYNAFORM . $aData["PRO_UID"] . PATH_SEP . $dynaformGridUid . ".xml";
+
+                                $fhGridXml = fopen($fileGridXml, "r");
+                                $fhGridXmlCopy = fopen($fileGridXmlCopy, "w");
+
+                                while (!feof($fhGridXml)) {
+                                    $strLineAux = fgets($fhGridXml, 4096);
+                                    $strLineAux = str_replace($aData["COPY_PROCESS_UID"] . "/" . $copyDynaformGridUid, $aData["PRO_UID"] . "/" . $dynaformGridUid, $strLineAux);
+
+                                    fwrite($fhGridXmlCopy, $strLineAux);
+                                }
+
+                                fclose($fhGridXmlCopy);
+                                fclose($fhGridXml);
+
+                                chmod($fileGridXmlCopy, 0777);
+                            }
+
+                            $fileGridHtml = PATH_DYNAFORM . $aData["COPY_PROCESS_UID"] . PATH_SEP . $copyDynaformGridUid . ".html";
+
+                            if (file_exists($fileGridHtml)) {
+                                $fileGridHtmlCopy = PATH_DYNAFORM . $aData["PRO_UID"] . PATH_SEP . $dynaformGridUid . ".html";
+
+                                copy($fileGridHtml, $fileGridHtmlCopy);
+
+                                chmod($fileGridHtmlCopy, 0777);
+                            }
+
+                            $strLine = str_replace($aData["COPY_PROCESS_UID"] . "/" . $copyDynaformGridUid, $aData["PRO_UID"] . "/" . $dynaformGridUid, $strLine);
+                        }
+
+                        fwrite($fhXmlCopy, $strLine);
+                    }
+
+                    fclose($fhXmlCopy);
+                    fclose($fhXml);
+
+                    chmod($fileXmlCopy, 0777);
+                }
+
+                $fileHtml = PATH_DYNAFORM . $aData["COPY_PROCESS_UID"] . PATH_SEP . $aData["COPY_DYNAFORM_UID"] . ".html";
+
+                if (file_exists($fileHtml)) {
+                    $fileHtmlCopy = PATH_DYNAFORM . $aData["PRO_UID"] . PATH_SEP . $dynaformUid . ".html";
+
+                    copy($fileHtml, $fileHtmlCopy);
+
+                    chmod($fileHtmlCopy, 0777);
+                }
+
+                umask($umaskOld);
+                break;
+            default:
+                //normal
+                //pmtable
+                if (!isset($aData["ADD_TABLE"]) || $aData["ADD_TABLE"] == "") {
+                    $aFields = $dynaform->create($aData);
+                } else {
+                    $aFields = $dynaform->createFromPMTable($aData, $aData["ADD_TABLE"]);
+                }
+                break;
         }
-        $aData['DYN_UID'] = $dynaform->getDynUid();
-        $dynaform->update( $aData );
+
+        $aData["DYN_UID"] = $dynaform->getDynUid();
+
+        $dynaform->update($aData);
     }
+
     echo $dynaform->getDynUid();
 }
 

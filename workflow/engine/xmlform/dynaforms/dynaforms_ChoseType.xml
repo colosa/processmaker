@@ -16,6 +16,7 @@
   <en>Type
     <option name="normal">Blank Dynaform</option>
     <option name="pmtable">PM Table Dynaform</option>
+    <option name="copy">Copy/Import Dynaform</option>
   </en>
 </DYN_SOURCE>
 
@@ -30,23 +31,33 @@
 <dynaformsNewPlugin type="private" defaultValue="../dynaforms/dynaforms_NewPlugin"/>
 
 <JS type="javascript">
-<![CDATA[
-  function choseDynaformType( form, bOpen ) {
-    var action;
-    if (document.getElementsByName('form[DYN_SOURCE]')[0].checked) {
-        action = document.getElementsByName('form[DYN_SOURCE]')[0].value;
-    } else {
-        action = document.getElementsByName('form[DYN_SOURCE]')[1].value;
-    }
-    panel = popupWindowObject('@G::LoadTranslation(ID_NEW_DYNAFORM)', '@G::encryptlink(@#dynaformsNewPlugin)?PRO_UID=@%PRO_UID&ACTION='+action , 450, 350);
-    currentPopupWindow.remove();
-  }
-  
-function cancel(){
-    currentPopupWindow.remove();
-}
-  
-]]>
-</JS>
+    <![CDATA[
+    function choseDynaformType(form, bOpen)
+    {
+        var action = "";
 
-</dynaForm>  
+        if (document.getElementsByName("form[DYN_SOURCE]")[0].checked) {
+            action = document.getElementsByName("form[DYN_SOURCE]")[0].value;
+        }
+
+        if (document.getElementsByName("form[DYN_SOURCE]")[1].checked) {
+            action = document.getElementsByName("form[DYN_SOURCE]")[1].value;
+        }
+
+        if (document.getElementsByName("form[DYN_SOURCE]")[2].checked) {
+            action = document.getElementsByName("form[DYN_SOURCE]")[2].value;
+        }
+
+        panel = popupWindowObject("@G::LoadTranslation(ID_NEW_DYNAFORM)", "@G::encryptlink(@#dynaformsNewPlugin)?PRO_UID=@%PRO_UID&ACTION=" + action, 600, 460);
+
+        currentPopupWindow.remove();
+    }
+
+    function cancel()
+    {
+        currentPopupWindow.remove();
+    }
+    ]]>
+</JS>
+</dynaForm>
+

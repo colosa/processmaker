@@ -22,7 +22,7 @@
 
 <js type="javascript" replaceTags="1"><![CDATA[
   function dynaformAdd(){
-    popupWindow('@G::LoadTranslation(ID_NEW_DYNAFORM)', '@G::encryptlink(@#dynaformsChoseType)?PRO_UID=@%PRO_UID' , 500, 200);
+    popupWindow("@G::LoadTranslation(ID_NEW_DYNAFORM)", "@G::encryptlink(@#dynaformsChoseType)?PRO_UID=@%PRO_UID" , 500, 225);
 	//popupWindow('@G::LoadTranslation(ID_NEW_DYNAFORM)', '@G::encryptlink(@#dynaformsNewPlugin)?PRO_UID=@%PRO_UID' , 500, 350);
   }
   function dynaformPluginAdd(){
@@ -74,30 +74,52 @@
      return document.getElementById(id);
   }
 
-  function dynaformSave ( form, bOpen ) {
-  var nameDynaForm = getField('DYN_TITLE').value;
-  var proUid = getField('PRO_UID').value;
-   
-  if(nameDynaForm==''){
-    // G_STRINGS.ID_REQUIRED_NAME_DYNAFORM
-    msgBox('@G::LoadTranslation(ID_REQUIRED_NAME_DYNAFORM)','alert');
-    return false;
-  }
-   
-  reqName=ajax_function(form.action,'lookforNameDynaform','NAMEDYNAFORM='+encodeURIComponent(nameDynaForm)+'&proUid='+encodeURIComponent(proUid),'POST') ;
-    if(!reqName){
-//    alert(G_STRINGS.ID_EXIST_DYNAFORM);return false;
-      msgBox('@G::LoadTranslation(ID_EXIST_DYNAFORM)','alert');
-    }else{
-           if (!bOpen) {
-	      ajax_post( form.action, form, 'POST' );
-	      lastPopupWindow.remove();
-	      @#PAGED_TABLE_ID.refresh();
-	   } else {
-	      ajax_post( form.action, form, 'POST', openDynaform );
-	   }
-     }
-  
+  function dynaformSave(form, bOpen)
+  {
+      var nameDynaForm = "";
+
+      var msgv = "";
+      var swv = 1;
+
+      switch (getField("ACTION").value) {
+          case "copy":
+              nameDynaForm = getField("COPY_DYNAFORM_TITLE").value;
+
+              if (getField("COPY_DYNAFORM_UID").value == "") {
+                  msgv = msgv + ((msgv != "")? "<br />" : "") + "@G::LoadTranslation(ID_DYNAFORM_COPY_REQUIRED)";
+                  swv = 0;
+              }
+              break;
+          default:
+              //normal
+              //pmtable
+              nameDynaForm = getField("DYN_TITLE").value;
+              break;
+      }
+
+      if (nameDynaForm == "") {
+          msgv = msgv + ((msgv != "")? "<br />" : "") + "@G::LoadTranslation(ID_REQUIRED_NAME_DYNAFORM)";
+          swv = 0;
+      }
+
+      if (swv == 0) {
+          msgBox(msgv, "alert");
+          return false;
+      }
+
+      var reqName = ajax_function(form.action, "lookforNameDynaform", "NAMEDYNAFORM=" + encodeURIComponent(nameDynaForm) + "&proUid=" + encodeURIComponent(getField("PRO_UID").value), "POST");
+
+      if (!reqName) {
+          msgBox("@G::LoadTranslation(ID_EXIST_DYNAFORM)", "alert");
+      } else {
+          if (!bOpen) {
+              ajax_post(form.action, form, "POST");
+              lastPopupWindow.remove();
+              @#PAGED_TABLE_ID.refresh();
+          } else {
+              ajax_post(form.action, form, "POST", openDynaform);
+          }
+      }
   }
 
   function dynaformSavePMBasedForm ( form, bOpen ) {
@@ -114,7 +136,7 @@
   function openDynaform(sUID) {
     dynaformEdit(sUID);
   }
-  
+
   function dynaformDelete ( uid,proUid ){
 
     isokDependent = ajax_function('@G::encryptlink(@#dynaformsDelete)','getDynaformAssign','DYN_UID='+uid+'&PRO_UID='+proUid,'POST');
@@ -124,7 +146,7 @@
 	  }
 	  result = ajax_function('@G::encryptlink(@#dynaformsDelete)','getRelationInfDynaform','DYN_UID='+uid,'POST');
 	  labelToshow = (result)?'@G::LoadTranslation(ID_MSG_CONFIRM_DELETE_IDOCUMENT)':'@G::LoadTranslation(ID_MSG_CONFIRM_DELETE_DYNAFORM)';
-  
+
     new leimnud.module.app.confirm().make({
     	label:labelToshow,
     	action:function()
@@ -134,7 +156,7 @@
       }.extend(this)
     });
   }
-  
+
   function getStyle(oElm, strCssRule){
 	var strValue = "";
 	if(document.defaultView && document.defaultView.getComputedStyle){
@@ -151,4 +173,5 @@
 ]]></js>
 
 <SEARCH_FILTER_FORM type="private"/>
-</dynaForm> 
+</dynaForm>
+
