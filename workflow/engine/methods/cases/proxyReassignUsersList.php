@@ -14,6 +14,7 @@ $status = isset( $_POST['status'] ) ? strtoupper( $_POST['status'] ) : '';
 $action = isset( $_GET['action'] ) ? $_GET['action'] : (isset( $_POST['action'] ) ? $_POST['action'] : 'todo');
 $type = isset( $_GET['type'] ) ? $_GET['type'] : (isset( $_POST['type'] ) ? $_POST['type'] : 'extjs');
 
+
 function array_sort ($array, $on, $order = SORT_ASC, $query = '')
 {
     $new_array = array ();
@@ -61,45 +62,21 @@ $appUid = isset( $_POST['application'] ) ? $_POST['application'] : '';
 $TaskUid = isset( $_POST['task'] ) ? $_POST['task'] : '';
 $sReassignFromUser = isset( $_POST['currentUser'] ) ? $_POST['currentUser'] : '';
 
-G::LoadClass( 'tasks' );
-G::LoadClass( 'groups' );
 G::LoadClass( 'case' );
-G::LoadClass( 'users' );
 
-$oTasks = new Tasks();
-$oGroups = new Groups();
-$oUser = new Users();
 $oCases = new Cases();
-
-$aCasesList = Array ();
-
-$aUsersInvolved = Array ();
-$aCaseGroups = $oTasks->getGroupsOfTask( $TaskUid, 1 );
 $oConf = new Configurations();
+
+$aUsersInvolved = Array();
+
 $ConfEnv = $oConf->getFormats();
-foreach ($aCaseGroups as $aCaseGroup) {
-    $aCaseUsers = $oGroups->getUsersOfGroup( $aCaseGroup['GRP_UID'] );
-    foreach ($aCaseUsers as $aCaseUser) {
-        if ($aCaseUser['USR_UID'] != $sReassignFromUser) {
-            $aCaseUserRecord = $oUser->load( $aCaseUser['USR_UID'] );
-            $sCaseUser = G::getFormatUserList( $ConfEnv['format'], $aCaseUserRecord );
-            //                        $aUsersInvolved[] = array ( 'userUid' => $aCaseUser['USR_UID'] , 'userFullname' => $aCaseUserRecord['USR_FIRSTNAME'] . ' ' . $aCaseUserRecord['USR_LASTNAME']); // . ' (' . $aCaseUserRecord['USR_USERNAME'] . ')';
-            $aUsersInvolved[] = array ('userUid' => $aCaseUser['USR_UID'],'userFullname' => $sCaseUser
-            ); // . ' (' . $aCaseUserRecord['USR_USERNAME'] . ')';
-        }
-    }
+$rows = $oCases->getUsersToReassign($TaskUid, $sReassignFromUser);
+
+foreach($rows as $row) {
+    $sCaseUser = G::getFormatUserList( $ConfEnv['format'], $row );
+    $aUsersInvolved[] = array ('userUid' => $row['USR_UID'], 'userFullname' => $sCaseUser);
 }
 
-$aCaseUsers = $oTasks->getUsersOfTask( $TaskUid, 1 );
-foreach ($aCaseUsers as $aCaseUser) {
-    if ($aCaseUser['USR_UID'] != $sReassignFromUser) {
-        $aCaseUserRecord = $oUser->load( $aCaseUser['USR_UID'] );
-        $sCaseUser = G::getFormatUserList( $ConfEnv['format'], $aCaseUserRecord );
-        //                    $aUsersInvolved[] = array ( 'userUid' => $aCaseUser['USR_UID'] , 'userFullname' => $aCaseUserRecord['USR_FIRSTNAME'] . ' ' . $aCaseUserRecord['USR_LASTNAME']); // . ' (' . $aCaseUserRecord['USR_USERNAME'] . ')';
-        $aUsersInvolved[] = array ('userUid' => $aCaseUser['USR_UID'],'userFullname' => $sCaseUser
-        ); // . ' (' . $aCaseUserRecord['USR_USERNAME'] . ')';
-    }
-}
 //            $oTmp = new stdClass();
 //            $oTmp->items = $aUsersInvolved;
 $result = array ();
