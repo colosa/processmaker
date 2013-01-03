@@ -779,16 +779,16 @@ function getEmailConfiguration ()
  *
  * @param string(32) | $caseId | UID for case | The UID (unique identification) for a case, which is a string of 32 hexadecimal characters to identify the case.
  * @param string(32) | $sFrom | Email addres | The email address of the person who sends out the email.
- * @param string(32) | $sTo | Email receptor | The email address(es) to whom the email is sent. If multiple recipients, separate each email address with a comma.
- * @param string(32) | $sCc | Email addres for copies | The email address(es) of people who will receive carbon copies of the email.
- * @param string(32) | $sBcc | Email addres for copies hidden | The email address(es) of people who will receive blind carbon copies of the email.
- * @param string(32) | $sSubject | Subject of the email | The subject (title) of the email.
- * @param string(32) | $sTemplate | Name of the template | The name of the template file in plain text or HTML format which will produce the body of the email.
- * @param array | $aFields | An optional associative array | Optional parameter. An associative array where the keys are the variable names and the values are the variables' values.
- * @param array | $aAttachment | Attachment | An Optional arrray. An array of files (full paths) to be attached to the email.
+ * @param string(100) | $sTo | Email receptor | The email address(es) to whom the email is sent. If multiple recipients, separate each email address with a comma.
+ * @param string(100) | $sCc = '' | Email addres for copies | The email address(es) of people who will receive carbon copies of the email.
+ * @param string(100) | $sBcc = ''| Email addres for copies hidden | The email address(es) of people who will receive blind carbon copies of the email.
+ * @param string(50) | $sSubject | Subject of the email | The subject (title) of the email.
+ * @param string(50) | $sTemplate | Name of the template | The name of the template file in plain text or HTML format which will produce the body of the email.
+ * @param array | $aFields = array() | An optional associative array | Optional parameter. An associative array where the keys are the variable names and the values are the variables' values.
+ * @param array | $aAttachment = array() | Attachment | An Optional arrray. An array of files (full paths) to be attached to the email.
  * @param boolean | $showMessage = true | Show message | Optional parameter.
  * @param int | $delIndex = 0 | Delegation index of the case | Optional parameter. The delegation index of the current task in the case.
- * @return int | $result | result | Result of sending email
+ * @return int | | result | Result of sending email
  *
  */
 //@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value.

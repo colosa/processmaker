@@ -67,7 +67,7 @@ try {
             $methodReturnLabelRequired = G::LoadTranslation ( "ID_REQUIRED_FIELD" );
             $fieldRequired[] = 'TRI_ANSWER';
         } else {
-            $methodReturnLabelRequired = $methodreturnA[1];
+            $methodReturnLabelRequired = G::LoadTranslation ( "ID_NOT_REQUIRED" );//$methodreturnA[1];
         }
         $methodReturnLabel        .= "<br>" . trim( $methodReturnLabelRequired ) . " | " . trim($methodreturnA[0]);
     } else {
@@ -157,7 +157,7 @@ try {
                 $template->assign ( 'ADD_TRI_VALUE', str_replace("'", "&#34;", $paramValue) );
                 if ($paramDefaultValue != "") {
                     $fieldDescription = $paramDescription . "<br>";
-                    $fieldDescription .= $paramDefaultValue . " | " . $paramType;
+                    $fieldDescription .= G::LoadTranslation ( "ID_NOT_REQUIRED" ) . " | " . $paramDefaultValue . " | " . $paramType;
                 } else {
                     $fieldDescription = "";
                     $fieldDescription .= G::LoadTranslation ( "ID_REQUIRED_FIELD" ) . " | " . $paramType;

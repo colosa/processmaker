@@ -68,7 +68,7 @@ try {
             $methodReturnLabelRequired = G::LoadTranslation ( "ID_REQUIRED_FIELD" );
             $fieldRequired[] = 'TRI_ANSWER';
         } else {
-            $methodReturnLabelRequired = $methodreturnA[1];
+            $methodReturnLabelRequired = G::LoadTranslation ( "ID_NOT_REQUIRED" );//$methodreturnA[1];
         }
         $methodReturnLabel        .= "<br>" . trim( $methodReturnLabelRequired ) . " | " . trim($methodreturnA[0]);
     } else {
@@ -118,7 +118,7 @@ try {
 
     $sPMfunction = $sNameFun . " (";
     $methodParametersOnlyNames = array ();
-    
+
     if (count ( $aParametersFun ) > 0) {
         $template->newBlock ( 'paremetersTriggersGroup' );
         $template->assign ( 'PARAMETERS_LABEL', G::LoadTranslation ( 'ID_PARAMETERS' ) );
@@ -153,7 +153,7 @@ try {
 
                 $fieldDescription = ($paramDescription!="")?$paramDescription . "<br>":"";
                 if ($paramDefaultValue != "") {
-                    $fieldDescription .= $paramDefaultValue . " | " . $paramType;
+                    $fieldDescription .= G::LoadTranslation ( "ID_NOT_REQUIRED" ) . " | " . $paramDefaultValue . " | " . $paramType;
                 } else {
                     $fieldDescription .= G::LoadTranslation ( "ID_REQUIRED_FIELD" ) . " | " . $paramType;
                     $fieldRequired[] = trim (str_replace ("$", "", $paramName));
@@ -163,6 +163,7 @@ try {
             }
         }
     }
+
     $template->gotoBlock ( '_ROOT' );
     $template->assign ('FIELDS_REQUIRED', implode ( ",", $fieldRequired ));
     $template->assign ( 'ALLFUNCTION', implode ( ",", $methodParametersOnlyNames ) );
