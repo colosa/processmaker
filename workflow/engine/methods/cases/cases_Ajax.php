@@ -549,8 +549,7 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
             $totalCount ++;
         }
 
-        $newDir = '/tmp/test/directory';
-        $r = G::verifyPath( $newDir );
+        $r = new stdclass();
         $r->data = $aProcesses;
         $r->totalCount = $totalCount;
 
@@ -606,8 +605,7 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
             $dateFormat = $generalConfCasesList['casesListDateFormat'];
         }
 
-        $newDir = '/tmp/test/directory';
-        $r = G::verifyPath( $newDir );
+        $r = new stdclass();
         $r->data = $aProcesses;
         $r->totalCount = $totalCount;
         $r->dataFormat = $dateFormat;

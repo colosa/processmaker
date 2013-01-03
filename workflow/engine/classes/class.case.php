@@ -4332,6 +4332,80 @@ class Cases
             }
             $oDataset->next();
         }
+        // Get input documents added/modified by a supervisor - Begin
+        $oAppDocument = new AppDocument();
+        $oCriteria = new Criteria('workflow');
+        $oCriteria->add(AppDocumentPeer::APP_UID, $sApplicationUID);
+        $oCriteria->add(AppDocumentPeer::APP_DOC_TYPE, array('INPUT'), Criteria::IN);
+        $oCriteria->add(AppDocumentPeer::APP_DOC_STATUS, array('ACTIVE'), Criteria::IN);
+        $oCriteria->add(AppDocumentPeer::DEL_INDEX, 100000);
+
+        $oCriteria->add(
+            $oCriteria->getNewCriterion(
+                AppDocumentPeer::APP_DOC_UID,
+                $aObjectPermissions['INPUT_DOCUMENTS'],
+                Criteria::IN
+            )->
+            addOr($oCriteria->getNewCriterion(AppDocumentPeer::USR_UID, array($sUserUID, '-1'), Criteria::IN)));
+
+        $oCriteria->addJoin(AppDocumentPeer::APP_UID, ApplicationPeer::APP_UID, Criteria::LEFT_JOIN);
+        $oCriteria->add(ApplicationPeer::PRO_UID, $sProcessUID);
+        $oCriteria->addAscendingOrderByColumn(AppDocumentPeer::APP_DOC_INDEX);
+        $oDataset = AppDocumentPeer::doSelectRS($oCriteria);
+        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $oDataset->next();
+        $oUser = new Users();
+        while ($aRow = $oDataset->getRow()) {
+            $aTask = array('TAS_TITLE' => '[ ' . G::LoadTranslation('ID_SUPERVISOR') . ' ]');
+            $aAux = $oAppDocument->load($aRow['APP_DOC_UID'], $aRow['DOC_VERSION']);
+            $lastVersion = $oAppDocument->getLastAppDocVersion($aRow['APP_DOC_UID'], $sApplicationUID);
+            try {
+                $aAux1 = $oUser->load($aAux['USR_UID']);
+                $sUser = $aAux1['USR_FIRSTNAME'] . ' ' . $aAux1['USR_LASTNAME'];
+            } catch (Exception $oException) {
+                $sUser = '***';
+            }
+            $aFields = array(
+                'APP_DOC_UID' => $aAux['APP_DOC_UID'],
+                'DOC_UID' => $aAux['DOC_UID'],
+                'APP_DOC_COMMENT' => $aAux['APP_DOC_COMMENT'],
+                'APP_DOC_FILENAME' => $aAux['APP_DOC_FILENAME'],
+                'APP_DOC_INDEX' => $aAux['APP_DOC_INDEX'],
+                'TYPE' => $aAux['APP_DOC_TYPE'],
+                'ORIGIN' => $aTask['TAS_TITLE'],
+                'CREATE_DATE' => $aAux['APP_DOC_CREATE_DATE'],
+                'CREATED_BY' => $sUser
+            );
+            if ($aFields['APP_DOC_FILENAME'] != '') {
+                $aFields['TITLE'] = $aFields['APP_DOC_FILENAME'];
+            } else {
+                $aFields['TITLE'] = $aFields['APP_DOC_COMMENT'];
+            }
+            $aFields['POSITION'] = $_SESSION['STEP_POSITION'];
+            $aFields['CONFIRM'] = G::LoadTranslation('ID_CONFIRM_DELETE_ELEMENT');
+            if (in_array($aRow['APP_DOC_UID'], $aDelete['INPUT_DOCUMENTS'])) {
+                $aFields['ID_DELETE'] = G::LoadTranslation('ID_DELETE');
+            }
+
+            $aFields['DOWNLOAD_LABEL'] = G::LoadTranslation('ID_DOWNLOAD');
+            $aFields['DOWNLOAD_LINK'] = "cases_ShowDocument?a=" . $aRow['APP_DOC_UID'] . "&v=" . $aRow['DOC_VERSION'];
+            $aFields['DOC_VERSION'] = $aRow['DOC_VERSION'];
+            if (is_array($listing)) {
+                foreach ($listing as $folderitem) {
+                    if ($folderitem->filename == $aRow['APP_DOC_UID']) {
+                        $aFields['DOWNLOAD_LABEL'] = G::LoadTranslation('ID_GET_EXTERNAL_FILE');
+                        $aFields['DOWNLOAD_LINK'] = $folderitem->downloadScript;
+                        continue;
+                    }
+                }
+            }
+            if ($lastVersion == $aRow['DOC_VERSION']) {
+                //Show only last version
+                $aInputDocuments[] = $aFields;
+            }
+            $oDataset->next();
+        }
+        // Get input documents added/modified by a supervisor - End
         global $_DBArray;
         $_DBArray['inputDocuments'] = $aInputDocuments;
         $_SESSION['_DBArray'] = $_DBArray;
@@ -5231,7 +5305,7 @@ class Cases
                         $aConditions[] = array(AppDelegationPeer::DEL_INDEX, AppDocumentPeer::DEL_INDEX);
                         $oCriteria->addJoinMC($aConditions, Criteria::LEFT_JOIN);
 
-                        $oDataset = DynaformPeer::doSelectRS($oCriteria);
+                        $oDataset = AppDocumentPeer::doSelectRS($oCriteria);
                         $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
                         $oDataset->next();
                         while ($aRow = $oDataset->getRow()) {
@@ -5239,6 +5313,30 @@ class Cases
                                 array_push($RESULT[$obj_type], $aRow['APP_DOC_UID']);
                             }
                             $oDataset->next();
+                        }
+                        if ($obj_type == 'INPUT') { // For supervisor documents
+                            $oCriteria = new Criteria('workflow');
+                            $oCriteria->addSelectColumn(AppDocumentPeer::APP_DOC_UID);
+                            $oCriteria->addSelectColumn(AppDocumentPeer::APP_DOC_TYPE);
+                            $oCriteria->add(ApplicationPeer::APP_UID, $APP_UID);
+                            $oCriteria->add(ApplicationPeer::PRO_UID, $PRO_UID);
+                            if ($O_UID != '' && $O_UID != '0') {
+                                $oCriteria->add(AppDocumentPeer::DOC_UID, $O_UID);
+                            }
+                            $oCriteria->add(AppDocumentPeer::APP_DOC_TYPE, 'INPUT');
+                            $oCriteria->add(AppDocumentPeer::DEL_INDEX, 100000);
+
+                            $oCriteria->addJoin(ApplicationPeer::APP_UID, AppDocumentPeer::APP_UID, Criteria::LEFT_JOIN);
+
+                            $oDataset = AppDocumentPeer::doSelectRS($oCriteria);
+                            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                            $oDataset->next();
+                            while ($aRow = $oDataset->getRow()) {
+                                if (!in_array($aRow['APP_DOC_UID'], $RESULT['INPUT'])) {
+                                    array_push($RESULT['INPUT'], $aRow['APP_DOC_UID']);
+                                }
+                                $oDataset->next();
+                            }
                         }
                         break;
                     case 'CASES_NOTES':
