@@ -384,7 +384,7 @@ function run_workspace_backup($args, $opts) {
   $filesize = array_key_exists("filesize", $opts) ? $opts['filesize'] : -1;
   if($filesize >= 0)
   {
-      if(!G::isLinuxOs()){
+      if(!Bootstrap::isLinuxOs()){
             CLI::error("This is not a Linux enviroment, cannot use this filesize [-s] feature.\n");
             return;
       }
@@ -429,7 +429,7 @@ function run_workspace_restore($args, $opts) {
     $multiple = array_key_exists("multiple", $opts);
     $dstWorkspace = $args[1];
     if(!empty($multiple)){
-        if(!G::isLinuxOs()){
+        if(!Bootstrap::isLinuxOs()){
             CLI::error("This is not a Linux enviroment, cannot use this multiple [-m] feature.\n");
             return;
         }

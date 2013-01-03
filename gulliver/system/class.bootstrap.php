@@ -2917,5 +2917,32 @@ class Bootstrap
 		        return $url;
 		    }
 		}
-	}
+    /**
+    * isWinOs
+    *
+    * @return true if the 3 first letters of PHP_OS got 'WIN', otherwise false.
+    */
+    function isWinOs()
+    {
+        return strtoupper(substr(PHP_OS, 0, 3)) == "WIN";
+    }
+    /**
+    * isNTOs
+    *
+    * @return true if PHP_OS is 'WINNT', otherwise false.
+    */
+    function isNTOs()
+    {
+        return PHP_OS == "WINNT";
+    }
+    /**
+    * isLinuxOs
+    *
+    * @return true if PHP_OS (upper text) got 'LINUX', otherwise false.
+    */
+    function isLinuxOs()
+    {
+        return strtoupper(PHP_OS) == "LINUX";
+    }
+}
 
