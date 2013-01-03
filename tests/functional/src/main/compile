@@ -1,0 +1,47 @@
+#!/bin/bash
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# must be executed from ..../processmaker/tests/functional/src/main
+# must create symlinks to libraries of selenium and junit
+# ln -s /usr/share/junit/junit-4.8.2.jar junit.jar
+# ln -s /usr/share/selenium/selenium-java-2.25.0.jar selenium-java.jar
+# ln -s /usr/share/selenium/libs/ libs
+
+#compile common
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/ ./java/com/colosa/qa/automatization/common/*.java
+
+#compile pages
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/pages/*.java
+
+#compile tests
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/login/*.java
+
+#compile tests main
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/main/*.java
+
+#compile tests documents
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/documents/*.java
+
+#compile tests designerlist
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/processlist/*.java
+
+#compile tests input document process
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/inputDocuments/TestInputDocument.java
+
+#compile tests output document process
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/outputDocuments/TestOutputDocProcess.java
+
+#compile tests designer
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/derivationRules/*.java
+
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/documents/*.java
+
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/processDesigner/*.java
+
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/processExecutionForDerivationRules/*.java
+
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/processExecutionForEvents/*.java
+
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/salesProcess/*.java
+
+javac -cp .:./resources/libs/*:./resources/selenium-java.jar:./java/:./resources/junit.jar ./java/com/colosa/qa/automatization/tests/triggersProcess/*.java
+
