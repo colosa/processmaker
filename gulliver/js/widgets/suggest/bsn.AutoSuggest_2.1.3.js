@@ -330,7 +330,7 @@ _b.AutoSuggest.prototype.createList = function(arr)
 	// loop throught arr of suggestions
 	// creating an LI element for each suggestion
 	//
-	for (var i=0;i<arr.length;i++)
+	for (var i = 0; (i < arr.length) && (i < this.oP.maxresults); i++)
 	{
 		// format output with the input enclosed in a EM element
 		// (as HTML, not DOM)

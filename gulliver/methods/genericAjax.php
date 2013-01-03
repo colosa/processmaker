@@ -126,8 +126,6 @@ if( isset($request) ){
             $count++;
             $aResults[] = array( "id"=>$id ,"value"=>htmlspecialchars($value), "info"=>htmlspecialchars($info) );
 
-            if ($limit && $count==$limit)
-              break;
           }
         }
 
