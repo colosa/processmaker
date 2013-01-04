@@ -414,6 +414,7 @@ Bootstrap::registerClass('DBConnection', PATH_GULLIVER . "class.dbconnection.php
 Bootstrap::registerClass('DBRecordset',  PATH_GULLIVER . "class.dbrecordset.php");
 Bootstrap::registerClass('DBTable',      PATH_GULLIVER . "class.dbtable.php");
 Bootstrap::registerClass('xmlMenu',      PATH_GULLIVER . "class.xmlMenu.php");
+Bootstrap::registerClass('XmlForm_Field_FastSearch', PATH_GULLIVER . "class.xmlformExtension.php");
 Bootstrap::registerClass('XmlForm_Field_XmlMenu', PATH_GULLIVER . "class.xmlMenu.php");
 Bootstrap::registerClass('XmlForm_Field_HTML',  PATH_GULLIVER . "class.dvEditor.php");
 Bootstrap::registerClass('XmlForm_Field_WYSIWYG_EDITOR',  PATH_GULLIVER . "class.wysiwygEditor.php");
