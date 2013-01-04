@@ -47,7 +47,9 @@ if (! class_exists( 'PMScript' )) {
 
 /**
  *
- * @method Returns the current date formated in the format "yyyy-mm-dd", with leading zeros in the
+ * @method
+ * 
+ * Retrieves the current date formated in the format "yyyy-mm-dd", with leading zeros in the
  * month and day if less than 10. This function is equivalent to PHP's date("Y-m-d").
  *
  * @name getCurrentDate
@@ -64,7 +66,9 @@ function getCurrentDate ()
 
 /**
  *
- * @method Returns the current time in the format "hh:mm:ss" with leading zeros when the hours,
+ * @method
+ *
+ * Returns the current time in the format "hh:mm:ss" with leading zeros when the hours,
  * minutes or seconds are less than 10.
  *
  * @name getCurrentTime
@@ -81,7 +85,9 @@ function getCurrentTime ()
 
 /**
  *
- * @method Retrieves information about a user with a given ID.
+ * @method
+ *
+ * Retrieves information about a user with a given ID.
  *
  * @name userInfo
  * @label User Info
@@ -98,7 +104,9 @@ function userInfo($userUid)
 
 /**
  *
- * @method Returns a string converted into all UPPERCASE letters.
+ * @method
+ *
+ * Returns a string converted into all UPPERCASE letters.
  *
  * @name upperCase
  * @label Upper Case
@@ -115,7 +123,9 @@ function upperCase ($sText)
 
 /**
  *
- * @method Returns a string with all the letters converted into lower case letters.
+ * @method
+ *
+ * Returns a string with all the letters converted into lower case letters.
  *
  * @name lowerCase
  * @label Lower Case
@@ -132,7 +142,9 @@ function lowerCase ($sText)
 
 /**
  *
- * @method Converts the first letter in each word into an uppercase letter.
+ * @method
+ *
+ * Converts the first letter in each word into an uppercase letter.
  * Subsequent letters in each word are changed into lowercase letters.
  *
  * @name capitalize
@@ -150,7 +162,9 @@ function capitalize ($sText)
 
 /**
  *
- * @method Returns a string formatted according to the given date format and given language
+ * @method
+ *
+ * Returns a string formatted according to the given date format and given language
  *
  * @name formatDate
  * @label Format Date
@@ -176,7 +190,9 @@ function formatDate ($date, $format = '', $lang = 'en')
 
 /**
  *
- * @method Returns a specified date written out in a given language, with full month names.
+ * @method
+ *
+ * Returns a specified date written out in a given language, with full month names.
  *
  * @name literalDate
  * @label Literal Date
@@ -209,7 +225,9 @@ function literalDate ($date, $lang = 'en')
 
 /**
  *
- * @method Executes a SQL statement in a database connection or in one of ProcessMaker's
+ * @method
+ *
+ * Executes a SQL statement in a database connection or in one of ProcessMaker's
  * internal databases.
  *
  * @name executeQuery
@@ -273,7 +291,9 @@ function executeQuery ($SqlStatement, $DBConnectionUID = 'workflow', $aParameter
 
 /**
  *
- * @method Sorts a grid according to a specified field in ascending or descending order.
+ * @method
+ *
+ * Sorts a grid according to a specified field in ascending or descending order.
  *
  * @name orderGrid
  * @label order Grid
@@ -312,7 +332,9 @@ function orderGrid ($dataM, $field, $ord = 'ASC')
 
 /**
  *
- * @method Executes operations among the grid fields, such as addition, substraction, etc
+ * @method
+ *
+ * Executes operations among the grid fields, such as addition, substraction, etc
  *
  * @name evaluateFunction
  * @label evaluate Function
@@ -348,7 +370,9 @@ function evaluateFunction ($aGrid, $sExpresion)
  */
 /**
  *
- * @method Logs in a user to initiate a web services session in a ProcessMaker server.
+ * @method
+ *
+ * Logs in a user to initiate a web services session in a ProcessMaker server.
  *
  * @name WSLogin
  * @label WS Login
@@ -399,7 +423,9 @@ function WSLogin ($user, $pass, $endpoint = "")
 
 /**
  *
- * @method Opens a connection for web services and returns a SOAP client object which is
+ * @method
+ *
+ * Opens a connection for web services and returns a SOAP client object which is
  * used by all subsequent other WS function calls
  *
  * @name WSOpen
@@ -429,7 +455,9 @@ function WSOpen ($force = false)
 
 /**
  *
- * @method Returns all the tasks which has open delegations for the indicated case.
+ * @method
+ *
+ * Returns all the tasks which has open delegations for the indicated case.
  *
  * @name WSTaskCase
  * @label WS Task Case
@@ -476,7 +504,9 @@ function WSTaskCase ($caseId)
 
 /**
  *
- * @method Returns a list of tasks in which the logged-in user can initiate cases or is
+ * @method
+ *
+ * Returns a list of tasks in which the logged-in user can initiate cases or is
  * assigned to these cases.
  *
  * @name WSTaskList
@@ -523,7 +553,9 @@ function WSTaskList ()
 
 /**
  *
- * @method Returns a list of users whose status is "ACTIVE" in the current workspace.
+ * @method
+ *
+ * Returns a list of users whose status is "ACTIVE" in the current workspace.
  *
  * @name WSUserList
  * @label WS User List
@@ -569,7 +601,9 @@ function WSUserList ()
 
 /**
  *
- * @method Returns a list of active groups in a workspace.
+ * @method
+ *
+ * Returns a list of active groups in a workspace.
  *
  * @name WSGroupList
  * @label WS Group List
@@ -615,7 +649,9 @@ function WSGroupList ()
 
 /**
  *
- * @method Returns a list of roles in the current workspace.
+ * @method
+ *
+ * Returns a list of roles in the current workspace.
  *
  * @name WSRoleList
  * @label WS Role List
@@ -661,7 +697,9 @@ function WSRoleList ()
 
 /**
  *
- * @method Returns a list of the cases which the current logged-in user has privileges to
+ * @method
+ *
+ * Returns a list of the cases which the current logged-in user has privileges to
  * open.
  *
  * @name WSCaseList
@@ -708,7 +746,9 @@ function WSCaseList ()
 
 /**
  *
- * @method Returns a list of processes in the current workspace.
+ * @method
+ *
+ * Returns a list of processes in the current workspace.
  *
  * @name WSProcessList
  * @label WS Process List
@@ -754,7 +794,9 @@ function WSProcessList ()
 
 /**
  *
- * @method Returns Email configuration.
+ * @method
+ *
+ * Returns Email configuration.
  *
  * @name getEmailConfiguration
  * @label Get Email Configuration
@@ -771,7 +813,9 @@ function getEmailConfiguration ()
 
 /**
  *
- * @method Sends an email using a template file.
+ * @method
+ *
+ * Sends an email using a template file.
  *
  * @name PMFSendMessage
  * @label PMF Send Message
@@ -841,7 +885,9 @@ function PMFSendMessage(
 
 /**
  *
- * @method Sends two variables to the specified case.
+ * @method
+ *
+ * Sends two variables to the specified case.
  * It will create new case variables if they don't already exist
  *
  * @name WSSendVariables
@@ -888,7 +934,9 @@ function WSSendVariables ($caseId, $name1, $value1, $name2, $value2)
 
 /**
  *
- * @method Routes (derivates) a case, moving the case to the next task in the process
+ * @method
+ *
+ * Routes (derivates) a case, moving the case to the next task in the process
  * according its routing rules.
  *
  * @name WSDerivateCase
@@ -921,7 +969,9 @@ function WSDerivateCase ($caseId, $delIndex)
 
 /**
  *
- * @method Creates a case with any user with two initial case variables.
+ * @method
+ *
+ * Creates a case with any user with two initial case variables.
  *
  * @name WSNewCaseImpersonate
  * @label WS New Case Impersonate
@@ -970,7 +1020,9 @@ function WSNewCaseImpersonate ($processId, $userId, $name1, $value1, $name2, $va
 
 /**
  *
- * @method Creates a new case starting with a specified task and using two initial case
+ * @method
+ *
+ * Creates a new case starting with a specified task and using two initial case
  * variables.
  *
  * @name WSNewCase
@@ -1019,7 +1071,9 @@ function WSNewCase ($processId, $taskId, $name1, $value1, $name2, $value2)
 
 /**
  *
- * @method Assigns a user to a group (as long as the logged in user has the PM_USERS
+ * @method
+ *
+ * Assigns a user to a group (as long as the logged in user has the PM_USERS
  * permission in their role).
  *
  * @name WSAssignUserToGroup
@@ -1052,7 +1106,9 @@ function WSAssignUserToGroup ($userId, $groupId)
 
 /**
  *
- * @method Creates a new user in ProcessMaker.
+ * @method
+ *
+ * Creates a new user in ProcessMaker.
  *
  * @name WSCreateUser
  * @label WS Create User
@@ -1090,7 +1146,9 @@ function WSCreateUser ($userId, $password, $firstname, $lastname, $email, $role,
 
 /**
  *
- * @method Update an user in ProcessMaker.
+ * @method
+ *
+ * Update an user in ProcessMaker.
  *
  * @name WSUpdateUser
  * @label WS Update User
@@ -1129,7 +1187,9 @@ function WSUpdateUser ($userUid, $userName, $firstName = null, $lastName = null,
 
 /**
  *
- * @method Retrieves information about a user with a given ID.
+ * @method
+ *
+ * Retrieves information about a user with a given ID.
  *
  * @name WSInformationUser
  * @label WS Information User
@@ -1163,7 +1223,9 @@ function WSInformationUser($userUid)
 
 /**
  *
- * @method Returns the unique ID for the current active session.
+ * @method
+ *
+ * Returns the unique ID for the current active session.
  *
  * @name WSGetSession
  * @label WS Get Session
@@ -1183,7 +1245,9 @@ function WSGetSession ()
 
 /**
  *
- * @method Delete a specified case.
+ * @method
+ *
+ * Delete a specified case.
  *
  * @name WSDeleteCase
  * @label WS Delete Case
@@ -1215,7 +1279,9 @@ function WSDeleteCase ($caseUid)
 
 /**
  *
- * @method Cancel a specified case.
+ * @method
+ *
+ * Cancel a specified case.
  *
  * @name WSCancelCase
  * @label WS Cancel Case
@@ -1249,7 +1315,9 @@ function WSCancelCase ($caseUid, $delIndex, $userUid)
 
 /**
  *
- * @method Pauses a specified case.
+ * @method
+ *
+ * Pauses a specified case.
  *
  * @name WSPauseCase
  * @label WS Pause Case
@@ -1284,7 +1352,9 @@ function WSPauseCase ($caseUid, $delIndex, $userUid, $unpauseDate = null)
 
 /**
  *
- * @method Unpause a specified case.
+ * @method
+ *
+ * Unpause a specified case.
  *
  * @name WSUnpauseCase
  * @label WS Unpause Case
@@ -1318,7 +1388,9 @@ function WSUnpauseCase ($caseUid, $delIndex, $userUid)
 
 /**
  *
- * @method Add case note.
+ * @method
+ *
+ * Add case note.
  *
  * @name WSAddCaseNote
  * @label WS Add case note
@@ -1368,7 +1440,9 @@ function WSAddCaseNote($caseUid, $processUid, $taskUid, $userUid, $note, $sendMa
 
 /**
  *
- * @method Returns all the tasks for the specified case which have open delegations.
+ * @method
+ *
+ * Returns all the tasks for the specified case which have open delegations.
  *
  * @name PMFTaskCase
  * @label PMF Task Case
@@ -1395,7 +1469,9 @@ function PMFTaskCase ($caseId) //its test was successfull
 
 /**
  *
- * @method Returns a list of tasks which the specified user has initiated.
+ * @method
+ *
+ * Returns a list of tasks which the specified user has initiated.
  *
  * @name PMFTaskList
  * @label PMF Task List
@@ -1422,7 +1498,9 @@ function PMFTaskList ($userId) //its test was successfull
 
 /**
  *
- * @method Returns a list of users whose status is set to "ACTIVE" for the current workspace.
+ * @method
+ *
+ * Returns a list of users whose status is set to "ACTIVE" for the current workspace.
  *
  * @name PMFUserList
  * @label PMF User List
@@ -1519,7 +1597,9 @@ function PMFAddInputDocument(
 
 /**
  *
- * @method Generates an Output Document
+ * @method
+ *
+ * Generates an Output Document
  *
  * @name PMFGenerateOutputDocument
  * @label PMF Generate Output Document
@@ -1718,7 +1798,9 @@ function PMFGenerateOutputDocument ($outputID, $sApplication = null, $index = nu
 
 /**
  *
- * @method Returns a list of groups from the current workspace
+ * @method
+ *
+ * Returns a list of groups from the current workspace
  *
  * @name PMFGroupList
  * @label PMF Group List
@@ -1744,7 +1826,9 @@ function PMFGroupList () //its test was successfull
 
 /**
  *
- * @method Returns a list of roles whose status is "ACTIVE" for the current workspace.
+ * @method
+ *
+ * Returns a list of roles whose status is "ACTIVE" for the current workspace.
  *
  * @name PMFRoleList
  * @label PMF Role List
@@ -1772,6 +1856,8 @@ function PMFRoleList () //its test was successfull
  *
  * @method Returns a list of the pending cases for a specified user
  *
+ * returns a list of the pending cases for a specified user. Note that the specified user must be designated to work on the current task for these cases.
+ *
  * @name PMFCaseList
  * @label PMF Case List
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFCaseList.28.29
@@ -1797,7 +1883,9 @@ function PMFCaseList ($userId) //its test was successfull
 
 /**
  *
- * @method Returns a list of processes for the current workspace
+ * @method
+ *
+ * Returns a list of processes for the current workspace
  *
  * @name PMFProcessList
  * @label PMF Process List
@@ -1823,7 +1911,9 @@ function PMFProcessList () //its test was successfull
 
 /**
  *
- * @method Sends an array of case variables to a specified case.
+ * @method
+ *
+ * Sends an array of case variables to a specified case.
  *
  * @name PMFSendVariables
  * @label PMF Send Variables
@@ -1849,7 +1939,9 @@ function PMFSendVariables ($caseId, $variables)
 
 /**
  *
- * @method Derivates (routes) a case to the next task in the process.
+ * @method
+ *
+ * Derivates (routes) a case to the next task in the process.
  *
  * @name PMFDerivateCase
  * @label PMF Derivate Case
@@ -1884,7 +1976,9 @@ function PMFDerivateCase ($caseId, $delIndex, $bExecuteTriggersBeforeAssignment 
 
 /**
  *
- * @method Creates a new case with a user who can impersonate a user with the proper
+ * @method
+ *
+ * Creates a new case with a user who can impersonate a user with the proper
  * privileges.
  *
  * @name PMFNewCaseImpersonate
@@ -1913,7 +2007,9 @@ function PMFNewCaseImpersonate ($processId, $userId, $variables)
 
 /**
  *
- * @method Creates a new case starting with the specified task
+ * @method
+ *
+ * Creates a new case starting with the specified task
  *
  * @name PMFNewCase
  * @label PMF New Case
@@ -1942,8 +2038,12 @@ function PMFNewCase ($processId, $userId, $taskId, $variables)
 
 /**
  *
- * @method Assigns a user to a group.
+ * @method
  *
+ * Assigns a user to a group.
+ *
+ * Assigns a user to a group. Note that the logged-in user must have the PM_USERS permission in his/her role to be able to assign a user to a group. 
+ * 
  * @name PMFAssignUserToGroup
  * @label PMF Assign User To Group
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFNewCase.28.29
@@ -1968,7 +2068,9 @@ function PMFAssignUserToGroup ($userId, $groupId)
 
 /**
  *
- * @method Creates a new user with the given data.
+ * @method
+ *
+ * Creates a new user with the given data.
  *
  * @name PMFCreateUser
  * @label PMF Create User
@@ -2001,7 +2103,9 @@ function PMFCreateUser ($userId, $password, $firstname, $lastname, $email, $role
 
 /**
  *
- * @method Update a user with the given data.
+ * @method
+ *
+ * Update a user with the given data.
  *
  * @name PMFUpdateUser
  * @label PMF Update User
@@ -2035,7 +2139,9 @@ function PMFUpdateUser ($userUid, $userName, $firstName = null, $lastName = null
 
 /**
  *
- * @method Retrieves information about a user with a given ID.
+ * @method
+ *
+ * Retrieves information about a user with a given ID.
  *
  * @name PMFInformationUser
  * @label PMF Information User
@@ -2063,7 +2169,9 @@ function PMFInformationUser($userUid)
 
 /**
  *
- * @method Creates a random string of letters and/or numbers of a specified length,which
+ * @method
+ *
+ * Creates a random string of letters and/or numbers of a specified length,which
  * can be used as the PINs (public identification numbers) and codes for cases.
  *
  * @name generateCode
@@ -2082,7 +2190,9 @@ function generateCode ($iDigits = 4, $sType = 'NUMERIC')
 
 /**
  *
- * @method Sets the code and PIN for a case.
+ * @method
+ *
+ * Sets the code and PIN for a case.
  *
  * @name setCaseTrackerCode
  * @label set Case Tracker Code
@@ -2114,7 +2224,9 @@ function setCaseTrackerCode ($sApplicationUID, $sCode, $sPIN = '')
 
 /**
  *
- * @method Routes (derivates) a case and then displays the case list.
+ * @method
+ *
+ * Routes (derivates) a case and then displays the case list.
  *
  * @name jumping
  * @label jumping
@@ -2140,7 +2252,9 @@ function jumping ($caseId, $delIndex)
 
 /**
  *
- * @method Returns the label of a specified option from a dropdown box, listbox,
+ * @method
+ *
+ * Returns the label of a specified option from a dropdown box, listbox,
  * checkgroup or radiogroup.
  *
  * @name PMFgetLabelOption
@@ -2166,7 +2280,9 @@ function PMFgetLabelOption ($PROCESS, $DYNAFORM_UID, $FIELD_NAME, $FIELD_SELECTE
 
 /**
  *
- * @method Redirects a case to any step in the current task. In order for the step to
+ * @method
+ *
+ * Redirects a case to any step in the current task. In order for the step to
  * be executed, the specified step much exist and if it contains a condition,
  * it must evaluate to true.
  *
@@ -2253,7 +2369,9 @@ function PMFRedirectToStep ($sApplicationUID, $iDelegation, $sStepType, $sStepUi
 
 /**
  *
- * @method Returns a list of the next assigned users to a case.
+ * @method
+ *
+ * Returns a list of the next assigned users to a case.
  *
  * @name PMFGetNextAssignedUser
  * @label PMFGet Next Assigned User
@@ -2304,7 +2422,9 @@ function PMFGetNextAssignedUser ($application, $task)
 
 /**
  *
- * @method Returns a list or user.
+ * @method
+ *
+ * Returns a list or user.
  *
  * @name PMFGetUserEmailAddress
  * @label PMFGet User Email Address
@@ -2445,7 +2565,9 @@ function PMFGetUserEmailAddress ($id, $APP_UID = null, $prefix = 'usr')
 
 /**
  *
- * @method Get of the cases notes an application.
+ * @method
+ *
+ * Get of the cases notes an application.
  *
  * @name PMFGetCaseNotes
  * @label PMF Get of the cases notes an application.
