@@ -2673,6 +2673,9 @@ var mainPanel;
 
 function showDbConnectionsList(PRO_UID)
 {
+    if (typeof(this.Pm.menu) != 'undefined') {
+        this.Pm.menu.remove();
+    }
   mainPanel = new leimnud.module.panel();
   mainPanel.options = {
       size  :{w:640,h:450},
@@ -2703,6 +2706,9 @@ function showDbConnectionsList(PRO_UID)
 
 function showCaseSchedulerList(PRO_UID)
 {
+    if (typeof(this.Pm.menu) != 'undefined') {
+        this.Pm.menu.remove();
+    }
   mainPanel = new leimnud.module.panel();
   mainPanel.options = {
       size  :{w:850,h:570},
