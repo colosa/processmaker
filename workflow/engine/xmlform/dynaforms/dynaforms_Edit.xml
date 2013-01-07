@@ -231,6 +231,7 @@ document.getElementById('form[DYN_TITLE]').value = document.getElementById('form
         var ADD_TABLE = document.getElementById('form[ADD_TABLE]').value;
         var DYN_TITLE = document.getElementById('form[DYN_TITLE]').value;
         var DYN_TYPE = document.getElementById('form[DYN_TYPE]').value;
+        var ACTION = document.getElementById('form[ACTION]').value;
         var DYN_DESCRIPTION = document.getElementById('form[DYN_DESCRIPTION]').value;
 
         //alert("pepe2");
@@ -238,7 +239,7 @@ document.getElementById('form[DYN_TITLE]').value = document.getElementById('form
         oRPC = new leimnud.module.rpc.xmlhttp({
             url    : '../dynaforms/dynaforms_AssignVariables',
             method : 'POST',
-            args   : 'PRO_UID=' + PRO_UID + '&DYN_UID=' + DYN_UID + '&ADD_TABLE=' + ADD_TABLE + '&DYN_TITLE=' + DYN_TITLE + '&DYN_TYPE=' + DYN_TYPE + '&DYN_DESCRIPTION=' + DYN_DESCRIPTION
+            args   : 'PRO_UID=' + PRO_UID + '&DYN_UID=' + DYN_UID + '&ADD_TABLE=' + ADD_TABLE + '&DYN_TITLE=' + DYN_TITLE + '&DYN_TYPE=' + DYN_TYPE + '&DYN_DESCRIPTION=' + DYN_DESCRIPTION + '&ACTION=' + ACTION
         });
         //alert("alert");
         oRPC.callback = function(oRPC) {

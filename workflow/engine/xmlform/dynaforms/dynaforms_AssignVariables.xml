@@ -4,6 +4,7 @@
 <DYN_UID type="hidden"/>
 <DYN_TITLE type="hidden"/>
 <DYN_TYPE type="hidden"/>
+<ACTION type="hidden"/>
 <VALIDATION_MESSAGE type="hidden"/>
 <DYN_DESCRIPTION type="hidden"/>
 <ADD_TABLE type="hidden"/>

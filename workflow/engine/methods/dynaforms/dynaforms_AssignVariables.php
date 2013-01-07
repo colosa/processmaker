@@ -16,6 +16,7 @@ $aFields['ADD_TABLE'] = $_POST['ADD_TABLE'];
 $aFields['PRO_UID'] = $_POST['PRO_UID'];
 $aFields['DYN_TITLE'] = $_POST['DYN_TITLE'];
 $aFields['DYN_TYPE'] = $_POST['DYN_TYPE'];
+$aFields['ACTION'] = $_POST['ACTION'];
 $aFields['DYN_DESCRIPTION'] = $_POST['DYN_DESCRIPTION'];
 $aFields['VALIDATION_MESSAGE'] = G::LoadTranslation( 'ID_FILL_PRIMARY_KEYS' );
 
