@@ -266,10 +266,10 @@ class AppFolder extends BaseAppFolder
 
     public function getFolderContent ($folderID, $docIdFilter = array(), $keyword = null, $searchType = null, $limit = 0, $start = 0, $user = '', $onlyActive = false)
     {
-        require_once ("classes/model/AppDocument.php");
-        require_once ("classes/model/InputDocument.php");
-        require_once ("classes/model/OutputDocument.php");
-        require_once ("classes/model/Users.php");
+        //require_once ("classes/model/AppDocument.php");
+        //require_once ("classes/model/InputDocument.php");
+        //require_once ("classes/model/OutputDocument.php");
+        //require_once ("classes/model/Users.php");
 
         G::LoadClass( 'case' );
         $oCase = new Cases();
@@ -316,6 +316,7 @@ class AppFolder extends BaseAppFolder
             }
             $oCriteria->add( AppDocumentPeer::APP_UID, $data, CRITERIA::IN );
         }
+
         if ($onlyActive) {
             $oCriteria->add( AppDocumentPeer::APP_DOC_STATUS, 'ACTIVE' );
         }
@@ -352,27 +353,31 @@ class AppFolder extends BaseAppFolder
                 $oAppDocument = new AppDocument();
                 $lastVersion = $oAppDocument->getLastAppDocVersion( $row['APP_DOC_UID'], $row['APP_UID'] );
                 //$filesResult [] = $completeInfo;
+
                 if ($completeInfo['APP_DOC_STATUS'] != "DELETED") {
-                    if ((in_array( $row['APP_DOC_UID'], $completeInfo['INPUT_DOCUMENTS'] )) || (in_array( $row['APP_DOC_UID'], $completeInfo['OUTPUT_DOCUMENTS'] )) || (in_array( $completeInfo['USR_UID'], array ($_SESSION['USER_LOGGED'],'-1') ))) {
+                    if (in_array($row["APP_DOC_UID"], $completeInfo["INPUT_DOCUMENTS"]) || in_array($row["APP_DOC_UID"], $completeInfo["OUTPUT_DOCUMENTS"]) || in_array($completeInfo["USR_UID"], array($_SESSION["USER_LOGGED"], "-1")) || $user == "") {
                         if (count( $docIdFilter ) > 0) {
                             if (in_array( $row['APP_DOC_UID'], $docIdFilter )) {
                                 $response['documents'][] = $completeInfo;
                             }
-                        } elseif ($lastVersion == $row['DOC_VERSION']) {
-                            //Only Last Document version
-                            if ($searchType == "ALL") {
-                                // If search in name of docs is active then filter
-                                if ((stripos( $completeInfo['APP_DOC_FILENAME'], $keyword ) !== false) || (stripos( $completeInfo['APP_DOC_TAGS'], $keyword ) !== false)) {
-                                    $response['documents'][] = $completeInfo;
+                        } else {
+                            if ($lastVersion == $row["DOC_VERSION"]) {
+                                //Only Last Document version
+                                if ($searchType == "ALL") {
+                                    //If search in name of docs is active then filter
+                                    if (stripos($completeInfo["APP_DOC_FILENAME"], $keyword) !== false || stripos($completeInfo["APP_DOC_TAGS"], $keyword) !== false) {
+                                        $response["documents"][] = $completeInfo;
+                                    }
+                                } else {
+                                    //No search filter active
+                                    $response["documents"][] = $completeInfo;
                                 }
-                            } else {
-                                //No search filter active
-                                $response['documents'][] = $completeInfo;
                             }
                         }
                     }
                 }
             }
+
             $rs->next();
         }
 
@@ -383,10 +388,11 @@ class AppFolder extends BaseAppFolder
 
     public function getCompleteDocumentInfo ($appUid, $appDocUid, $docVersion, $docUid, $usrId)
     {
-        require_once ("classes/model/AppDocument.php");
-        require_once ("classes/model/InputDocument.php");
-        require_once ("classes/model/OutputDocument.php");
-        require_once ("classes/model/Users.php");
+        //require_once ("classes/model/AppDocument.php");
+        //require_once ("classes/model/InputDocument.php");
+        //require_once ("classes/model/OutputDocument.php");
+        //require_once ("classes/model/Users.php");
+
         //**** start get Doc Info
         $oApp = new Application();
         $oAppDocument = new AppDocument();
@@ -410,8 +416,55 @@ class AppFolder extends BaseAppFolder
             switch ($row1['APP_DOC_TYPE']) {
                 case "OUTPUT":
                     $oOutputDocument = new OutputDocument();
-                    $row4 = $oOutputDocument->load( $docUid );
+
+                    $row4 = array();
+                    $swOutDocExists = 0;
+
+                    if ($oOutputDocument->OutputExists($docUid)) {
+                        $row4 = $oOutputDocument->load($docUid);
+                        $swOutDocExists = 1;
+                    }
+
+                    if ($swOutDocExists == 0) {
+                        $swpdf = 0;
+                        $swdoc = 0;
+
+                        $info = pathinfo($oAppDocument->getAppDocFilename());
+
+                        $version = (!empty($docVersion))? "_" . $docVersion : "_1";
+                        $outDocPath = PATH_DOCUMENT . $row1["APP_UID"] . PATH_SEP . "outdocs" . PATH_SEP;
+
+                        if (file_exists($outDocPath . $appDocUid . $version . ".pdf") ||
+                            file_exists($outDocPath . $info["basename"] . $version . ".pdf") ||
+                            file_exists($outDocPath . $info["basename"] . ".pdf")
+                        ) {
+                            $swpdf = 1;
+                        }
+
+                        if (file_exists($outDocPath . $appDocUid . $version . ".doc") ||
+                            file_exists($outDocPath . $info["basename"] . $version . ".doc") ||
+                            file_exists($outDocPath . $info["basename"] . ".doc")
+                        ) {
+                            $swdoc = 1;
+                        }
+
+                        if ($swpdf == 1 && $swdoc == 1) {
+                            $row4["OUT_DOC_GENERATE"] = "BOTH";
+                        } else {
+                            if ($swpdf == 1) {
+                                $row4["OUT_DOC_GENERATE"] = "PDF";
+                            } else {
+                                if ($swdoc == 1) {
+                                    $row4["OUT_DOC_GENERATE"] = "DOC";
+                                } else {
+                                    $row4["OUT_DOC_GENERATE"] = "NOFILE";
+                                }
+                            }
+                        }
+                    }
+
                     $versioningEnabled = false; //$row4['OUT_DOC_VERSIONING']; //Only enabled for Input or Attached documents. Need to study the best way for Output docs.
+
                     switch ($row4['OUT_DOC_GENERATE']) {
                         case "PDF":
                             $downloadLink = "../cases/cases_ShowOutputDocument?a=" . $appDocUid . "&v=" . $docVersion . "&ext=pdf" . "&random=" . rand();
@@ -431,8 +484,17 @@ class AppFolder extends BaseAppFolder
                             $downloadLabel = ".pdf";
                             $downloadLabel1 = ".doc";
                             break;
+                        case "NOFILE":
+                            $downloadLink = "../cases/cases_ShowDocument?a=" . $appDocUid . "&v=" . $docVersion;
+                            $downloadLink1 = "";
+                            $downloadLabel = G::LoadTranslation("ID_DOWNLOAD");
+                            $downloadLabel1 = "";
+                            break;
                     }
 
+                    if ($swOutDocExists == 0) {
+                        $row4 = array();
+                    }
                     break;
                 case "INPUT":
                     $oInputDocument = new InputDocument();

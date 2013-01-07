@@ -1,5 +1,4 @@
 <?php
-
 if (! isset ($_REQUEST ['action'])) {
     $res ['success'] = false;
     $res ['message'] = 'You may request an action';
@@ -133,25 +132,30 @@ function sendJsonResultGeneric($response, $callback)
 
 function expandNode()
 {
-    extract(getExtJSParams());
-    require_once ("classes/model/AppFolder.php");
+    //require_once ("classes/model/AppFolder.php");
 
-    $oPMFolder = new AppFolder ();
+    extract(getExtJSParams());
+
+    $oPMFolder = new AppFolder();
 
     $rootFolder = "/";
 
     if ($_POST ['node']=="") {
         $_POST ['node'] ="/";
     }
+
     if ($_POST ['node']=="root") {
         $_POST ['node'] ="/";
     }
+
     if (!(isset($_POST['sendWhat']))) {
         $_POST['sendWhat']="both";
     }
+
     if (isset($_POST['renderTree'])) {
         $limit = 1000000;
     }
+
     $totalItems=0;
     $totalFolders=0;
     $totalDocuments=0;
@@ -167,6 +171,7 @@ function expandNode()
         $totalFolders=$folderListObj['totalFoldersCount'];
         $totalItems+=count($folderList);
     }
+
     if (($_POST['sendWhat'] == "files") || ($_POST['sendWhat'] == "both")) {
         global $RBAC;
 
@@ -188,8 +193,9 @@ function expandNode()
         $totalItems+=count($folderContent);
     }
 
-    $processListTree=array();
-    $tempTree=array();
+    $processListTree = array();
+    $tempTree = array();
+
     if (isset($folderList) && sizeof($folderList)>0) {
         //$tempTree=array();
         foreach ($folderList as $key => $obj) {
@@ -268,6 +274,7 @@ function expandNode()
             //$processListTree [] = array();
         }
     }
+
     if (isset($folderContent)) {
         foreach ($folderContent as $key => $obj) {
             $tempTree ['text'] = $obj['APP_DOC_FILENAME'];
@@ -380,6 +387,19 @@ function expandNode()
                     $processListTree [] = $tempTree;
                 }
             } else {
+                if ($obj["APP_DOC_TYPE"] == "OUTPUT" &&
+                    $tempTree["type"] == G::LoadTranslation("MIME_DES_FILE") &&
+                    preg_match("/^.+&ext=(.+)&.+$/", $tempTree["downloadLink"], $arrayMatch)
+                ) {
+                    $ext = $arrayMatch[1];
+                    $mimeInformation = getMime($obj["APP_DOC_FILENAME"] . ".$ext");
+
+                    $tempTree["text"] = $obj["APP_DOC_FILENAME"] . ".$ext";
+                    $tempTree["name"] = $obj["APP_DOC_FILENAME"] . ".$ext";
+                    $tempTree["type"] = $mimeInformation["description"];
+                    $tempTree["icon"] = $mimeInformation["icon"];
+                }
+
                 $processListTree [] = $tempTree;
             }
             $tempTree=array();
