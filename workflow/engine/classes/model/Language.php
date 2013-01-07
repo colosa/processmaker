@@ -107,6 +107,7 @@ class Language extends BaseLanguage
     public function findById ($LAN_ID)
     {
         $oCriteria = new Criteria( 'workflow' );
+        $oCriteria->addSelectColumn( LanguagePeer::LAN_ID );
         $oCriteria->addSelectColumn( LanguagePeer::LAN_NAME );
         $oCriteria->add( LanguagePeer::LAN_ID, $LAN_ID );
         $oDataset = LanguagePeer::doSelectRS( $oCriteria );
@@ -150,8 +151,11 @@ class Language extends BaseLanguage
             $langRecord = $language->findByLanName( $langName );
 
             if (! isset( $langRecord['LAN_ID'] )) {
-                //if the language doesn't exist abort
-                throw new Exception( 'The .po file has a invalid X-Poedit-Language definition!' );
+                $langRecord = $language->findById( $langName );
+                if (! isset( $langRecord['LAN_ID'] )) {
+                    //if the language doesn't exist abort
+                    throw new Exception( 'The .po file has a invalid X-Poedit-Language definition!' );
+                }
             }
 
             $languageID = $langRecord['LAN_ID'];
