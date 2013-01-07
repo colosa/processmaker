@@ -1,14 +1,25 @@
 var setVariablePickerJS = function(){       
-    
-    document.getElementById('_Var_Form_').addEventListener('dblclick', function(){
+   if (document.getElementById('_Var_Form_').addEventListener)  // W3C DOM
+      document.getElementById('_Var_Form_').addEventListener('dblclick', function(){
         if (this.getAttribute('displayOption')=='event'){
             e.insertFormVar(this.value.substring(2), this.value.substring(2), 'dyn' );
         } else {
             insertFormVar(document.getElementById('selectedField').value, this.value);
         }
-    });
-
-    /**
+      });
+   else if (document.getElementById('selectedField').attachEvent) { // IE DOM
+      var element = document.getElementById('_Var_Form_');
+      element.attachEvent("ondblclick", function(){
+          if (element.displayOption=='event'){
+              e.insertFormVar(element.value.substring(2), element.value.substring(2), 'dyn' );
+          } else {
+              insertFormVar(document.getElementById('selectedField').value, element.value);
+          }
+      });
+   }
+    
+ 
+   /**
      * Function getVariableList returns a list with all process variables
      *
      * @access public

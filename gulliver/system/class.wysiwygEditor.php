@@ -81,6 +81,7 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
             case 'EMAIL_TEMPLATE':
                 $editorDefinition.= '
                 // is necessary the process uid variable in order to load the picker correctly
+                var actualCaretPositionBookmark;
                 var formProcessID = document.getElementById("form[pro_uid]").value;
                 tinyMCE.init({
                     theme   : "advanced",
@@ -146,6 +147,7 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
                 $editorDefinition.= '
                 var formProcessID = document.getElementById("form[PRO_UID]").value;
                 var formDynaformID = document.getElementById("form[DYN_UID]").value;
+                var actualCaretPositionBookmark;
                 tinyMCE.init({
                     theme   : "advanced",
                     plugins : "advhr,advimage,advlink,advlist,autolink,autoresize,contextmenu,directionality,emotions,example,example_dependency,fullpage,fullscreen,iespell,inlinepopups,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,style,tabfocus,table,template,visualblocks,visualchars,wordcount,xhtmlxtras,style,table,noneditable,pmFieldPicker",
@@ -160,7 +162,7 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
                     popup_css : "/js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/dialog.css",
                     skin : "o2k7",
                     skin_variant : "silver",
-                    content_css : "/css/classic.css",
+                    content_css : "/css/'.SYS_SKIN.'.css",
                     template_external_list_url : "js/template_list.js",
                     external_link_list_url : "js/link_list.js",
                     external_image_list_url : "js/image_list.js",

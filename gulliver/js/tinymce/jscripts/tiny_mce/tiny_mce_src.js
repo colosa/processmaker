@@ -4207,7 +4207,7 @@ tinymce.html.Styles = function(settings, schema) {
 					fi = nodes.length;
 					while (fi--) {
                                             // ProcessMaker: conditional statemets created in order to assure the compatibility with maborak
-                                            if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'){
+                                            if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'&&name!='toJSONString'){
 						if (!nodes[fi].parent){
                                                     nodes.splice(fi, 1);
                                                 }
@@ -4217,7 +4217,7 @@ tinymce.html.Styles = function(settings, schema) {
                                         
 					for (i = 0, l = list.length; i < l; i++){
                                             // ProcessMaker: conditional statemets created in order to assure the compatibility with maborak
-                                            if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'){
+                                            if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'&&name!='toJSONString'){
                                                 list[i](nodes, name, args);
                                             }
                                         }
@@ -4580,20 +4580,29 @@ tinymce.dom = {};
 
 (function(namespace, expando) {
 	var w3cEventModel = !!document.addEventListener;
-
 	function addEvent(target, name, callback, capture) {
 		if (target.addEventListener) {
+                    //conditional statement in order to maintain compatibility with the maborak processmaker library
+                    if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'&&name!='toJSONString'&&name!='isObject'&&name!='isArray'&&name!='isObjectStrict'){
 			target.addEventListener(name, callback, capture || false);
+                    }
 		} else if (target.attachEvent) {
+                    //conditional statement in order to maintain compatibility with the maborak processmaker library
+                    if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'&&name!='toJSONString'&&name!='isObject'&&name!='isArray'&&name!='isObjectStrict'){
 			target.attachEvent('on' + name, callback);
+                    }
 		}
 	}
 
 	function removeEvent(target, name, callback, capture) {
 		if (target.removeEventListener) {
+                    if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'&&name!='toJSONString'&&name!='isObject'&&name!='isArray'&&name!='isObjectStrict'){
 			target.removeEventListener(name, callback, capture || false);
+                    }
 		} else if (target.detachEvent) {
+                    if(name!='toStr'&&name!='concat'&&name!='get_by_key'&&name!='expand'&&name!='setParent'&&name!='isset_key'&&name!='toJSONString'&&name!='isObject'&&name!='isArray'&&name!='isObjectStrict'){
 			target.detachEvent('on' + name, callback);
+                    }
 		}
 	}
 
@@ -4783,7 +4792,7 @@ tinymce.dom = {};
 			names = names.split(' ');
 			i = names.length;
 			while (i--) {
-				name = names[i];
+                            name = names[i];
 				nativeHandler = defaultNativeHandler;
 				fakeName = capture = false;
 
@@ -4865,7 +4874,7 @@ tinymce.dom = {};
 					// If it already has an native handler then just push the callback
 					callbackList.push({func: callback, scope: scope});
 				}
-			}
+                            }
 
 			target = callbackList = 0; // Clean memory for IE
 
@@ -4890,7 +4899,7 @@ tinymce.dom = {};
 					names = names.split(' ');
 					i = names.length;
 					while (i--) {
-						name = names[i];
+                                            name = names[i];
 						callbackList = eventMap[name];
 
 						// Unbind the event if it exists in the map
@@ -4911,7 +4920,7 @@ tinymce.dom = {};
 								removeEvent(target, callbackList.fakeName || name, w3cEventModel ? callbackList.nativeHandler : callbackList.proxyHandler, callbackList.capture);
 							}
 						}
-					}
+                                            }
 				} else {
 					// All events for a specific element
 					for (name in eventMap) {
