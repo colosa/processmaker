@@ -101,6 +101,7 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
 var fieldForm="currency";
 var fieldName=getField("PME_XMLNODE_NAME",fieldForm);
 var fieldVal=getField("PME_VALIDATE",fieldForm);
+var fieldSeparator=getField("PME_COMMA_SEPARATOR",fieldForm);
 var fieldMask=getField("PME_MASK",fieldForm);
 var savedFieldName=fieldName.value;
 var pme_validating;
@@ -108,6 +109,7 @@ fieldName.focus();
 fieldName.select();
 leimnud.event.add(fieldName, 'change', {method:dynaformVerifyFieldName, instance:fieldName, event:true});
 leimnud.event.add(fieldVal, 'change', {method:checkVal, instance:fieldVal, event:true});
+leimnud.event.add(fieldSeparator, 'change', {method:checkSeparator, instance:fieldSeparator, event:true});
 leimnud.event.add(fieldMask, 'change', {method:checkVal, instance:fieldMask, event:true});
 function verifyFieldName(){
   pme_validating=true;
@@ -126,21 +128,67 @@ function cancel(){
     currentPopupWindow.remove();
 }
 
+function replaceAll( text, search, change ) {
+    while (text.toString().indexOf(search) != -1) {
+        text = text.toString().replace(search,change);
+    }
+    return text;
+}
+
+function checkSeparator() {
+    var separatorOld;
+    var separatorNew;
+    switch (fieldSeparator.value) {
+        case '.':
+            separatorOld = ',';
+            separatorNew = '.';
+            break;
+        case ',':
+            separatorOld = '.';
+            separatorNew = ',';
+            break;
+        default:
+            separatorOld = ',';
+            separatorNew = '.';
+            break;
+    }
+    var mask = fieldMask.value;
+    if (fieldVal.value !== 'Int'){
+        var amount = fieldMask.value.length;
+        var separator = mask.substring(amount-3, amount-2);
+        mask = mask.substring(0, amount-3);
+    }
+    mask = replaceAll(mask , separatorNew, separatorOld);
+    if (fieldVal.value !== 'Int'){
+        mask = mask.concat(separatorNew, '##');
+    }
+    fieldMask.value = mask;
+}
+
 function checkVal(){
   if (fieldVal.value === 'Int'){
     aux = fieldMask.value;
     aux = aux.replace('.000','');
-    aux = aux.replace('.00','');
-    aux = aux.replace('.0','');
-    aux = aux.replace('.##','');
-    aux = aux.replace('.#','');
-    aux = aux.replace('.','');
+    var amount = fieldMask.value.length;
+    var sw = 0;
+    var i = 0;
+    while (sw == 0) {
+        if(aux.charAt(amount - i - 1) == ',' || aux.charAt(amount - i - 1) == '.') {
+            sw = 1;
+        } else {
+            i++;
+        }
+    }
+    if (i <= 2) {
+        aux = aux.substring(0, amount - i - 1);
+    }
     fieldMask.value = aux;
   }
   if (fieldVal.value === 'Real'){
     fieldMask.value = fieldMask.value+'.##';
   }
+  checkSeparator();
 }
-             
+
 ]]></PME_JS>
-</dynaForm>  
+</dynaForm>
