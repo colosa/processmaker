@@ -92,6 +92,7 @@ var outputdocsEditor;
   }
   
   function outputdocsSave( form ) {
+    tinyMCE.execCommand('mceRemoveControl',false,'form[OUT_DOC_TEMPLATE]');
     form.action = '../outputdocs/outputdocs_Save';
     ajax_post( form.action, form, 'POST' );
     outputdocsEditor.remove();

@@ -101,6 +101,6 @@ function updateEditorContent(serializedHTML){
  * @param serializedHTML String the html code to be added. 
  */
 function insertFormVar(fieldName,serializedHTML){
-        tinyMCEPopup.execCommand('mceInsertContent', false, serializedHTML);
+    tinyMCEPopup.execCommand('mceInsertContent', false, serializedHTML);
     closePluginPopup();
 }

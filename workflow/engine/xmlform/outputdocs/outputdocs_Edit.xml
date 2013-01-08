@@ -19,6 +19,7 @@
 <JS type="JavaScript"><![CDATA[
 
     function cancel(){
+        tinyMCE.execCommand('mceRemoveControl',false,'form[OUT_DOC_TEMPLATE]');
         outputdocsEditor.remove();
     }
 

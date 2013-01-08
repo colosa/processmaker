@@ -23,6 +23,7 @@
 <JS type="javascript" replacetags="1"><![CDATA[
 
 function cancel() {
+    tinyMCE.execCommand('mceRemoveControl',false,'form[fcontent]');
     oPanel.remove();
 }
 

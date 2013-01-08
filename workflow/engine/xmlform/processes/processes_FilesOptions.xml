@@ -109,6 +109,7 @@ function editFile(pro_uid, fileName){
 function saveFile(pro_uid, fileName){
     
     var fc64 = base64_encode(getField('fcontent').value);
+    tinyMCE.execCommand('mceRemoveControl',false,'form[fcontent]');
     fc64 = fc64.replace(/&amp;/g, "@amp@");
     fc64 = fc64.replace(/\+/g, '%2B');
 	
