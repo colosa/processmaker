@@ -77,7 +77,7 @@ var saveDataTaskTemporal = function(iForm)
         {
           oTaskData.TAS_ASSIGN_TYPE = 'SELF_SERVICE';
         }
-        if (getField('TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE').checked)
+        if (getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE") && getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE").checked)
         {
           oTaskData.TAS_ASSIGN_TYPE = 'SELF_SERVICE_EVALUATE';
         }
@@ -371,3 +371,4 @@ var ofToAssignTrigger = function(sStep, sTrigger, sType, iPosition)
     }.extend(this)
   });
 };
+

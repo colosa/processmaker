@@ -105,10 +105,12 @@ var showTextpm = function ()
     } else */
 
     if (getField("TAS_ASSIGN_TYPE][EVALUATE").checked == true) {
+        getField("TAS_SELFSERVICE_TIMEOUT").checked = false;
+
         showRowById("TAS_ASSIGN_VARIABLE");
         //getField("TAS_GROUP_VARIABLE").value = "";
     } else {
-        if (getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE").checked) {
+        if (getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE") && getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE").checked) {
             showRowById("TAS_GROUP_VARIABLE");
             showRowById("TAS_SELFSERVICE_TIMEOUT");
 
@@ -123,6 +125,8 @@ var showTextpm = function ()
 
                 selfServiceTimeoutDataShow(getField("TAS_SELFSERVICE_TIMEOUT").checked);
             } else {
+                getField("TAS_SELFSERVICE_TIMEOUT").checked = false;
+
                 //getField("TAS_GROUP_VARIABLE").value = "";
             }
         }
@@ -139,7 +143,9 @@ if (aTaskFlag[1])
         if (oTaskData.TAS_ASSIGN_TYPE == "SELF_SERVICE") {
             getField("TAS_ASSIGN_TYPE][SELF_SERVICE").checked = true;
         } else {
-            getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE").checked = true;
+            if (getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE")) {
+                getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE").checked = true;
+            }
         }
 
         getField("TAS_SELFSERVICE_TIMEOUT").checked = (oTaskData.TAS_SELFSERVICE_TIMEOUT == 1)? true : false;
@@ -201,16 +207,20 @@ aTaskFlag[1] = true;
 showTextpm();
 }
 
-
-
-
 leimnud.event.add(getField('TAS_ASSIGN_TYPE][SELF_SERVICE'), 'click', function() {
   showTextpm();
 });
 
-leimnud.event.add(getField('TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE'), 'click', function() {
-  showTextpm();
-});
+if (getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE")) {
+    leimnud.event.add(
+        getField("TAS_ASSIGN_TYPE][SELF_SERVICE_EVALUATE"),
+        "click",
+        function ()
+        {
+            showTextpm();
+        }
+    );
+}
 
 leimnud.event.add(getField('TAS_ASSIGN_TYPE][REPORT_TO'), 'click', function() {
   showTextpm();
