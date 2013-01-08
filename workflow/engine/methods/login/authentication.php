@@ -243,7 +243,15 @@ try {
 
     // getting default user location
     if (isset($_REQUEST['form']['URL']) && $_REQUEST['form']['URL'] != '') {
-        $sLocation = $_REQUEST['form']['URL'];
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            if (strpos($_SERVER['HTTP_REFERER'], 'processes/processes_Map?PRO_UID=') !== false) {
+                $sLocation = $_SERVER['HTTP_REFERER'];
+            } else {
+                $sLocation = $_REQUEST['form']['URL'];
+            }
+        } else {
+            $sLocation = $_REQUEST['form']['URL'];
+        }
     } else {
         if (isset($_REQUEST['u']) && $_REQUEST['u'] != '') {
             $sLocation = $_REQUEST['u'];
