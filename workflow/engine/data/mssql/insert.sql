@@ -4525,7 +4525,7 @@ SELECT 'LABEL','ID_GROUPS_ACTORS','en','Groups Actors','2012-06-01'
   UNION ALL
 SELECT 'LABEL','ID_ADHOC_GROUPS_ACTORS','en','Ad Hoc Groups Actors','2012-06-01' 
   UNION ALL
-SELECT 'LABEL','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same name in this process. It is not saving','2012-06-01' 
+SELECT 'LABEL','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same title in the current process. Please use another title for the new Dynaform.','2013-01-03' 
   UNION ALL
 SELECT 'LABEL','ID_INPUT_DOC_SUCCESS_NEW','en','Input Document has been created correctly.','2012-06-01' 
   UNION ALL
@@ -5583,6 +5583,12 @@ SELECT 'LABEL','ID_FALSE','en','FALSE','2012-06-06'
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
+SELECT 'LABEL','ID_PMTABLE_DATA_KEEP','en','Keep the records of the table','2013-01-08' 
+  UNION ALL
+SELECT 'LABEL','ID_DYNAFORM_COPY_REQUIRED','en','Select the dynaform you want to copy/import.','2013-01-03' 
+  UNION ALL
+SELECT 'LABEL','ID_DYNAFORM_COPY','en','Copy/Import Dynaform','2013-01-02' 
+  UNION ALL
 SELECT 'LABEL','ID_INSTRUCTIONS_TEXT','en','To assign a case it should be selected from the grid and then on the Search enter a name to do the user search to whom the case will be reasigned and then select one from the list.','2012-06-21' 
   UNION ALL
 SELECT 'LABEL','ID_CONFIRM_TO_REASSIGN','en','There are cases which are not reassigned to a user. Do you like to continue?','2012-06-21' 
@@ -5736,15 +5742,15 @@ SELECT 'LABEL','ID_APP_MSG_BODY','en','Body','2012-09-19'
 SELECT 'LABEL','ID_CRON_STATUS_INACTIVE','en','Inactive','2012-09-20' 
   UNION ALL
 SELECT 'LABEL','ID_CRON_STATUS_ACTIVE','en','Active','2012-09-20' 
-  UNION ALL
+ ;
+INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
+
 SELECT 'LABEL','ID_CRON_STATUS','en','Cron status','2012-09-20' 
   UNION ALL
 SELECT 'LABEL','ID_RESET_DATES','en','Reset Dates','2012-09-24' 
   UNION ALL
 SELECT 'LABEL','ID_CRON_ACTIONS','en','Cron','2012-10-02' 
- ;
-INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
-
+  UNION ALL
 SELECT 'LABEL','ID_ALL_WORKSPACES','en','All Workspaces','2012-09-21' 
   UNION ALL
 SELECT 'LABEL','ID_CRON_LOG_CLEAR','en','Are you sure to clear the cron log?','2012-09-21' 
@@ -5836,8 +5842,6 @@ SELECT 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_LDAP','en','LDAP Support (*)','2012
 SELECT 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_MEMORYLIMIT','en','Memory Limit >= 80M','2012-11-30' 
   UNION ALL
 SELECT 'LABEL','ID_ADMINISTRATOR_ROLE_CANT_CHANGED','en','The administrator''s role can''t be changed!','2012-11-30' 
-  UNION ALL
-SELECT 'LABEL','ID_SELECT_DYNAFORM_IMPORT','en','Select the dynaform you want to import','2012-12-05' 
   UNION ALL
 SELECT 'LABEL','ID_CONFIRM_IMPORT_DYNAFORM','en','When you import the selected form, lose the information of the current form. Are you sure you import the form?','2012-12-05' 
   UNION ALL

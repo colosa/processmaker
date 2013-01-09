@@ -2967,7 +2967,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_ADHOC_USERS_ACTORS','en','Ad hoc Users Actors','2012-06-01') ,
 ( 'LABEL','ID_GROUPS_ACTORS','en','Groups Actors','2012-06-01') ,
 ( 'LABEL','ID_ADHOC_GROUPS_ACTORS','en','Ad Hoc Groups Actors','2012-06-01') ,
-( 'LABEL','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same name in this process. It is not saving','2012-06-01') ,
+( 'LABEL','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same title in the current process. Please use another title for the new Dynaform.','2013-01-03') ,
 ( 'LABEL','ID_INPUT_DOC_SUCCESS_NEW','en','Input Document has been created correctly.','2012-06-01') ,
 ( 'LABEL','ID_INPUT_DOC_SUCCESS_UPDATE','en','Input Document has been updated correctly.','2012-06-01') ,
 ( 'LABEL','ID_INPUT_DOC_SUCCESS_DELETE','en','Input Document has been deleted correctly.','2012-06-01') ,
@@ -3503,6 +3503,9 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_FALSE','en','FALSE','2012-06-06') ;
 INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE )  VALUES 
 
+( 'LABEL','ID_PMTABLE_DATA_KEEP','en','Keep the records of the table','2013-01-08') ,
+( 'LABEL','ID_DYNAFORM_COPY_REQUIRED','en','Select the dynaform you want to copy/import.','2013-01-03') ,
+( 'LABEL','ID_DYNAFORM_COPY','en','Copy/Import Dynaform','2013-01-02') ,
 ( 'LABEL','ID_INSTRUCTIONS_TEXT','en','To assign a case it should be selected from the grid and then on the Search enter a name to do the user search to whom the case will be reasigned and then select one from the list.','2012-06-21') ,
 ( 'LABEL','ID_CONFIRM_TO_REASSIGN','en','There are cases which are not reassigned to a user. Do you like to continue?','2012-06-21') ,
 ( 'LABEL','ID_USERNAME_TESTING','en','Verifying username availability','2012-06-25') ,
@@ -3579,12 +3582,12 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_PROXY_PASSWORD','en','Password','2012-09-19') ,
 ( 'LABEL','ID_APP_MSG_BODY','en','Body','2012-09-19') ,
 ( 'LABEL','ID_CRON_STATUS_INACTIVE','en','Inactive','2012-09-20') ,
-( 'LABEL','ID_CRON_STATUS_ACTIVE','en','Active','2012-09-20') ,
-( 'LABEL','ID_CRON_STATUS','en','Cron status','2012-09-20') ,
-( 'LABEL','ID_RESET_DATES','en','Reset Dates','2012-09-24') ,
-( 'LABEL','ID_CRON_ACTIONS','en','Cron','2012-10-02') ;
+( 'LABEL','ID_CRON_STATUS_ACTIVE','en','Active','2012-09-20') ;
 INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE )  VALUES 
 
+( 'LABEL','ID_CRON_STATUS','en','Cron status','2012-09-20') ,
+( 'LABEL','ID_RESET_DATES','en','Reset Dates','2012-09-24') ,
+( 'LABEL','ID_CRON_ACTIONS','en','Cron','2012-10-02') ,
 ( 'LABEL','ID_ALL_WORKSPACES','en','All Workspaces','2012-09-21') ,
 ( 'LABEL','ID_CRON_LOG_CLEAR','en','Are you sure to clear the cron log?','2012-09-21') ,
 ( 'LABEL','ID_CRON_GRID_PAGE_DISPLAYING_MESSAGE','en','Displaying actions {0} - {1} of {2}','2012-09-21') ,
@@ -3631,7 +3634,6 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_LDAP','en','LDAP Support (*)','2012-11-30') ,
 ( 'LABEL','ID_PROCESSMAKER_REQUIREMENTS_MEMORYLIMIT','en','Memory Limit >= 80M','2012-11-30') ,
 ( 'LABEL','ID_ADMINISTRATOR_ROLE_CANT_CHANGED','en','The administrator''s role can''t be changed!','2012-11-30') ,
-( 'LABEL','ID_SELECT_DYNAFORM_IMPORT','en','Select the dynaform you want to import','2012-12-05') ,
 ( 'LABEL','ID_CONFIRM_IMPORT_DYNAFORM','en','When you import the selected form, lose the information of the current form. Are you sure you import the form?','2012-12-05') ,
 ( 'LABEL','ID_CASESLIST_FIELD_RESET','en','Restart everything with the system fields','2012-12-10') ,
 ( 'LABEL','ID_CASESLIST_FIELD_RESET_ID','en','Restart everything with the system fields, with the ID of the label for its translation','2012-12-10') ,

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.41-testing.4-2086-gdc14a1f\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.4-164-g995aa55\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-12-12 18:04:11\n"
+"PO-Revision-Date: 2013-01-09 14:44:53\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -9364,8 +9364,8 @@ msgstr "Ad Hoc Groups Actors"
 # TRANSLATION
 # LABEL/ID_EXIST_DYNAFORM
 #: LABEL/ID_EXIST_DYNAFORM
-msgid "[LABEL/ID_EXIST_DYNAFORM] There is a Dynaform with the same name in this process. It is not saving"
-msgstr "There is a Dynaform with the same name in this process. It is not saving"
+msgid "There is a Dynaform with the same title in the current process. Please use another title for the new Dynaform."
+msgstr "There is a Dynaform with the same title in the current process. Please use another title for the new Dynaform."
 
 # TRANSLATION
 # LABEL/ID_INPUT_DOC_SUCCESS_NEW
@@ -12494,6 +12494,24 @@ msgid "FALSE"
 msgstr "FALSE"
 
 # TRANSLATION
+# LABEL/ID_PMTABLE_DATA_KEEP
+#: LABEL/ID_PMTABLE_DATA_KEEP
+msgid "Keep the records of the table"
+msgstr "Keep the records of the table"
+
+# TRANSLATION
+# LABEL/ID_DYNAFORM_COPY_REQUIRED
+#: LABEL/ID_DYNAFORM_COPY_REQUIRED
+msgid "Select the dynaform you want to copy/import."
+msgstr "Select the dynaform you want to copy/import."
+
+# TRANSLATION
+# LABEL/ID_DYNAFORM_COPY
+#: LABEL/ID_DYNAFORM_COPY
+msgid "Copy/Import Dynaform"
+msgstr "Copy/Import Dynaform"
+
+# TRANSLATION
 # LABEL/ID_INSTRUCTIONS_TEXT
 #: LABEL/ID_INSTRUCTIONS_TEXT
 msgid "To assign a case it should be selected from the grid and then on the Search enter a name to do the user search to whom the case will be reasigned and then select one from the list."
@@ -13248,12 +13266,6 @@ msgstr "Memory Limit >= 80M"
 #: LABEL/ID_ADMINISTRATOR_ROLE_CANT_CHANGED
 msgid "The administrator's role can't be changed!"
 msgstr "The administrator's role can't be changed!"
-
-# TRANSLATION
-# LABEL/ID_SELECT_DYNAFORM_IMPORT
-#: LABEL/ID_SELECT_DYNAFORM_IMPORT
-msgid "Select the dynaform you want to import"
-msgstr "Select the dynaform you want to import"
 
 # TRANSLATION
 # LABEL/ID_CONFIRM_IMPORT_DYNAFORM
@@ -19919,6 +19931,12 @@ msgstr "Blank Dynaform"
 msgid "[dynaforms/dynaforms_ChoseType.xml?DYN_SOURCE-pmtable]"
 msgstr "PM Table Dynaform"
 
+# dynaforms/dynaforms_ChoseType.xml?DYN_SOURCE-copy
+# dynaforms/dynaforms_ChoseType.xml
+#: radiogroup - DYN_SOURCE - copy
+msgid "[dynaforms/dynaforms_ChoseType.xml?DYN_SOURCE-copy]"
+msgstr "Copy/Import Dynaform"
+
 # dynaforms/dynaforms_ChoseType.xml?BTN_CANCEL
 # dynaforms/dynaforms_ChoseType.xml
 #: button - BTN_CANCEL
@@ -20301,6 +20319,78 @@ msgstr "Save & Open"
 # dynaforms/dynaforms_Edit.xml
 #: button - BTN_CANCEL
 msgid "[dynaforms/dynaforms_Edit.xml?BTN_CANCEL] Cancel"
+msgstr "Cancel"
+
+# dynaforms/dynaforms_Edit.xml?COPY_PROCESS_UID
+# dynaforms/dynaforms_Edit.xml
+#: dropdown - COPY_PROCESS_UID
+msgid "[dynaforms/dynaforms_Edit.xml?COPY_PROCESS_UID] Process"
+msgstr "Process"
+
+# dynaforms/dynaforms_Edit.xml?COPY_PROCESS_UID-
+# dynaforms/dynaforms_Edit.xml
+#: dropdown - COPY_PROCESS_UID -
+msgid "[dynaforms/dynaforms_Edit.xml?COPY_PROCESS_UID-]"
+msgstr "- Select a process -"
+
+# dynaforms/dynaforms_Edit.xml?COPY_TYPE
+# dynaforms/dynaforms_Edit.xml
+#: dropdown - COPY_TYPE
+msgid "Showing forms of type"
+msgstr "Showing forms of type"
+
+# dynaforms/dynaforms_Edit.xml?COPY_TYPE-xmlform
+# dynaforms/dynaforms_Edit.xml
+#: dropdown - COPY_TYPE - xmlform
+msgid "[dynaforms/dynaforms_Edit.xml?COPY_TYPE-xmlform]"
+msgstr "Normal"
+
+# dynaforms/dynaforms_Edit.xml?COPY_TYPE-grid
+# dynaforms/dynaforms_Edit.xml
+#: dropdown - COPY_TYPE - grid
+msgid "[dynaforms/dynaforms_Edit.xml?COPY_TYPE-grid]"
+msgstr "Grid"
+
+# dynaforms/dynaforms_Edit.xml?COPY_DYNAFORM_UID
+# dynaforms/dynaforms_Edit.xml
+#: dropdown - COPY_DYNAFORM_UID
+msgid "Dynaform to copy/import"
+msgstr "Dynaform to copy/import"
+
+# dynaforms/dynaforms_Edit.xml?COPY_DYNAFORM_UID-
+# dynaforms/dynaforms_Edit.xml
+#: dropdown - COPY_DYNAFORM_UID -
+msgid "[dynaforms/dynaforms_Edit.xml?COPY_DYNAFORM_UID-]"
+msgstr "- Select a dynaform -"
+
+# dynaforms/dynaforms_Edit.xml?COPY_DYNAFORM_TITLE
+# dynaforms/dynaforms_Edit.xml
+#: text - COPY_DYNAFORM_TITLE
+msgid "Title of the new dynaform"
+msgstr "Title of the new dynaform"
+
+# dynaforms/dynaforms_Edit.xml?COPY_DYNAFORM_DESCRIPTION
+# dynaforms/dynaforms_Edit.xml
+#: textarea - COPY_DYNAFORM_DESCRIPTION
+msgid "Description of the new dynaform"
+msgstr "Description of the new dynaform"
+
+# dynaforms/dynaforms_Edit.xml?BTNCOPYSAVE
+# dynaforms/dynaforms_Edit.xml
+#: button - BTNCOPYSAVE
+msgid "Copy/Import"
+msgstr "Copy/Import"
+
+# dynaforms/dynaforms_Edit.xml?BTNCOPYSAVEOPEN
+# dynaforms/dynaforms_Edit.xml
+#: button - BTNCOPYSAVEOPEN
+msgid "Copy/Import and Open"
+msgstr "Copy/Import and Open"
+
+# dynaforms/dynaforms_Edit.xml?BTNCOPYCANCEL
+# dynaforms/dynaforms_Edit.xml
+#: button - BTNCOPYCANCEL
+msgid "[dynaforms/dynaforms_Edit.xml?BTNCOPYCANCEL] Cancel"
 msgstr "Cancel"
 
 # dynaforms/dynaforms_Editor.xml?title
@@ -21076,12 +21166,6 @@ msgstr "Save"
 #: toolButton - saveasDyna
 msgid "Save as"
 msgstr "Save as"
-
-# dynaforms/fields_Toolbar.xml?importDyna
-# dynaforms/fields_Toolbar.xml
-#: toolButton - importDyna
-msgid "[dynaforms/fields_Toolbar.xml?importDyna] Import"
-msgstr "Import"
 
 # dynaforms/fields_Toolbar.xml?text
 # dynaforms/fields_Toolbar.xml
@@ -30737,10 +30821,10 @@ msgstr "Copy"
 msgid "[tracker/tracker_ViewAnyInputDocument1.xml?APP_DOC_CREATE_DATE] Created Date"
 msgstr "Created Date"
 
-# tracker/tracker_ViewAnyInputDocument1.xml?APP_DOC_FILENAME
+# tracker/tracker_ViewAnyInputDocument1.xml?APP_DOC_FILENAME1
 # tracker/tracker_ViewAnyInputDocument1.xml
-#: link - APP_DOC_FILENAME
-msgid "[tracker/tracker_ViewAnyInputDocument1.xml?APP_DOC_FILENAME] File"
+#: link - APP_DOC_FILENAME1
+msgid "[tracker/tracker_ViewAnyInputDocument1.xml?APP_DOC_FILENAME1] File"
 msgstr "File"
 
 # tracker/tracker_ViewAnyInputDocument2.xml?INP_DOC_TITLE
@@ -30887,10 +30971,10 @@ msgstr "Created Date"
 msgid "[tracker/tracker_ViewAnyInputDocument3.xml?APP_DOC_COMMENT] Comments"
 msgstr "Comments"
 
-# tracker/tracker_ViewAnyInputDocument3.xml?APP_DOC_FILENAME
+# tracker/tracker_ViewAnyInputDocument3.xml?APP_DOC_FILENAME1
 # tracker/tracker_ViewAnyInputDocument3.xml
-#: link - APP_DOC_FILENAME
-msgid "[tracker/tracker_ViewAnyInputDocument3.xml?APP_DOC_FILENAME] File"
+#: link - APP_DOC_FILENAME1
+msgid "[tracker/tracker_ViewAnyInputDocument3.xml?APP_DOC_FILENAME1] File"
 msgstr "File"
 
 # tracker/tracker_ViewAnyOutputDocument.xml?OUT_DOC_TITLE
@@ -35458,6 +35542,18 @@ msgstr "UPPER"
 #: dropdown - PME_STRTO - LOWER
 msgid "[dynaforms/fields/text.xml?PME_STRTO-LOWER]"
 msgstr "LOWER"
+
+# dynaforms/fields/text.xml?PME_STRTO-PHRASE
+# dynaforms/fields/text.xml
+#: dropdown - PME_STRTO - PHRASE
+msgid "[dynaforms/fields/text.xml?PME_STRTO-PHRASE]"
+msgstr "CAPITALIZE PHRASE"
+
+# dynaforms/fields/text.xml?PME_STRTO-TITLE
+# dynaforms/fields/text.xml
+#: dropdown - PME_STRTO - TITLE
+msgid "[dynaforms/fields/text.xml?PME_STRTO-TITLE]"
+msgstr "TITLE CASE"
 
 # dynaforms/fields/text.xml?PME_REQUIRED
 # dynaforms/fields/text.xml
