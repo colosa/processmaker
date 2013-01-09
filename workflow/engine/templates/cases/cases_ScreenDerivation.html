@@ -144,7 +144,7 @@
             {if $PROCESS.ERROR eq '' && $PROCESS.ROU_TYPE neq 'SELECT' && ! $PROCESS.ROU_FINISH_FLAG }
             <tr>
               <td colspan="2" align="center">
-                <input type="button" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$CONTINUE}" {$PROCESS.DISABLED} onclick="return clickButton(this);">       
+                <input type="button" class='module_app_button___gray' name="btnContinue_{$id}" id="btnContinue" value="{$CONTINUE}" {$PROCESS.DISABLED} onclick="return clickButton(this);">
               </td>
             </tr>
             {/if}
@@ -177,13 +177,13 @@
   var rouType = '{$PROCESS.ROU_TYPE}';
   var userHidden = '{$data.NEXT_TASK.USR_HIDDEN_FIELD}';
   {literal}
-  
+
   // option select
   var optionSelect = "";
 
   /**
    * @name clickButton
-   * @description verify the option select in button 
+   * @description verify the option select in button
    * @access public
    * @param obj [object: button, submit]
    * @return boolean
@@ -210,7 +210,7 @@
    */
   var disabledButton = function() {
     var submitsForm  = document.getElementsByTagName("input");
-    
+
     for (var i = 0 ; i <= submitsForm.length ; i++) {
       if (typeof(submitsForm[i]) != 'undefined' && submitsForm[i].type == 'button') {
         submitsForm[i].disabled = true;
@@ -229,7 +229,7 @@
    */
   var enabledButton = function() {
     var submitsForm = document.getElementsByTagName("input");
-    
+
     for (var i = 0 ; i <= submitsForm.length ; i++) {
       if (typeof(submitsForm[i]) != 'undefined' && submitsForm[i].type == 'button') {
         submitsForm[i].disabled = false;
@@ -252,14 +252,14 @@
 
     // verify type of derivation
     if (rouType == 'PARALLEL' || rouType == 'PARALLEL-BY-EVALUATION') {
-      // verify all value select 
+      // verify all value select
       var selectsForm = document.getElementsByTagName("select");
       for (var i = 0 ; i <= selectsForm.length ; i++) {
         if (typeof(selectsForm[i]) != 'undefined') {
           var vtext = new input(selectsForm[i]);
           if (selectsForm[i].value == '') {
             flagSelect = true;
-            vtext.failed();            
+            vtext.failed();
           } else {
             vtext.passed();
           }
@@ -273,12 +273,15 @@
       }
     } else {
       var selectId = "form[TASKS]["+optionSelect+"][USR_UID]";
-      
+
       if (typeof(document.getElementById(selectId)) != 'undefined' && document.getElementById(selectId) != null && userHidden == '') {
         var vtext  = new input(document.getElementById(selectId));
 
         // verify value select the option select
-        if (document.getElementById(selectId).value == '') {
+        if (document.getElementById(selectId).value == '' &&
+            document.getElementById("form[TASKS]["+optionSelect+"][TAS_ASSIGN_TYPE]").value != 'SELF_SERVICE' &&
+            document.getElementById("form[TASKS]["+optionSelect+"][TAS_ASSIGN_TYPE]").value != 'SELF_SERVICE_EVALUATE'
+           ) {
           enabledButton();
           vtext.failed();
           alert(G_STRINGS.ID_ASSIGN_CASE_TO_USER);
@@ -288,7 +291,7 @@
         }
       }
     }
-    
+
 
     {/literal}
     setNestedProperty(this, Array('disabled'), 'true');
