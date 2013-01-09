@@ -116,3 +116,4 @@ h3 {font-size:14px;}
 #colorpicker #namedcolors a {display:block; float:left; width:10px; height:10px; margin:1px 1px 0 0; overflow:hidden;}
 #colorpicker #colornamecontainer {margin-top:5px;}
 #colorpicker #picker_panel fieldset {margin:auto;width:325px;}
+#prev {margin:0; border:1px solid #000; width:428px; height:150px; overflow:auto;}
