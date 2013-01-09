@@ -340,6 +340,9 @@ Ext.onReady(function(){
         handler: removeColumn
       }
     ],
+
+    border: false,
+
     listeners: {
       render: function(grid) {
         var ddrow = new Ext.dd.DropTarget(grid.getView().mainBody, {
@@ -561,17 +564,33 @@ Ext.onReady(function(){
     allowBlank: true
   });
 
+  items.push(
+      {
+          layout: "column",
+          style: "margin-left: 255px;",
+          hidden: (dataNumRows > 0)? false : true,
+          items: [
+              {
+                  xtype: "checkbox",
+                  id: "chkKeepData",
+                  name: "chkKeepData",
+                  boxLabel: _("ID_PMTABLE_DATA_KEEP")
+              }
+          ]
+      }
+  );
+
   //items.push(comboDbConnections);
 
   var frmDetails = new Ext.FormPanel({
     id         :'frmDetails',
     region     : 'north',
-    labelWidth : 180,
+    labelWidth: 250,
     labelAlign :'right',
     title      : ADD_TAB_UID ? _('ID_PMTABLE') : _('ID_NEW_PMTABLE'),
     bodyStyle  :'padding:10px',
     frame      : true,
-    height     : 120,
+    height: 170,
     items      : items,
     //tbar       : tbar,
     waitMsgTarget : true,
@@ -589,7 +608,7 @@ Ext.onReady(function(){
       {
         text: TABLE === false ? _("ID_CREATE") : _("ID_UPDATE"),
         handler: function() {
-          if (TABLE === false || dataNumRows == 0) {
+          if (TABLE === false || dataNumRows == 0 || Ext.getCmp("chkKeepData").checked == true) {
             createReportTable();
           }
           else {
@@ -730,18 +749,24 @@ function createReportTable()
     waitConfig: {interval:500}
   });
 
+  var p = {
+      REP_TAB_UID: (TABLE !== false)? TABLE.ADD_TAB_UID : "",
+      PRO_UID: "",
+      REP_TAB_NAME: (TABLE !== false)? tableName : "PMT_" + tableName,
+      REP_TAB_DSC: tableDescription,
+      REP_TAB_CONNECTION: "workflow",
+      REP_TAB_TYPE: "",
+      REP_TAB_GRID: "",
+      columns: Ext.util.JSON.encode(columns)
+  };
+
+  if (dataNumRows > 0) {
+      p.keepData = (Ext.getCmp("chkKeepData").checked == true)? 1 : 0;
+  }
+
   Ext.Ajax.request({
     url: '../pmTablesProxy/save',
-    params: {
-      REP_TAB_UID   : TABLE !== false ? TABLE.ADD_TAB_UID : '',
-      PRO_UID       : '',
-      REP_TAB_NAME  : TABLE !== false ? tableName : 'PMT_' + tableName,
-      REP_TAB_DSC   : tableDescription,
-      REP_TAB_CONNECTION : 'workflow',
-      REP_TAB_TYPE  : '',
-      REP_TAB_GRID  : '',
-      columns       : Ext.util.JSON.encode(columns)
-    },
+    params: p,
     success: function(resp){
       try {
         result = Ext.util.JSON.decode(resp.responseText);

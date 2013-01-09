@@ -51,6 +51,7 @@ class PmTable
     private $dbConfig;
     private $db;
     private $alterTable = true;
+    private $keepData = false;
 
     public function __construct ($tableName = null)
     {
@@ -170,6 +171,11 @@ class PmTable
     public function setAlterTable ($value)
     {
         $this->alterTable = $value;
+    }
+
+    public function setKeepData($value)
+    {
+        $this->keepData = $value;
     }
 
     /**
@@ -559,6 +565,25 @@ class PmTable
             }
         }
 
+        $table = $this->tableName;
+        $tableBackup = $this->tableName . "_BAK";
+
+        $sqlTableBackup = null;
+        $swTableBackup = 0;
+
+        switch ($dbEngine) {
+            case "mysql":
+                $sqlTableBackup = "CREATE TABLE $tableBackup SELECT * FROM $table";
+                break;
+            case "mssql":
+                $sqlTableBackup = "SELECT * INTO $tableBackup FROM $table";
+                break;
+            case "oracle":
+                $sqlTableBackup = "CREATE TABLE $tableBackup AS SELECT * FROM $table";
+                break;
+
+        }
+
         if ($dbEngine == 'oracle') {
             $queryStack['drop'] = substr( $queryStack['drop'], 0, strrpos( $queryStack['drop'], ";" ) );
             $queryStack['create'] = substr( $queryStack['create'], 0, strrpos( $queryStack['create'], ";" ) );
@@ -566,9 +591,20 @@ class PmTable
             $queryIfExistTable = "SELECT TABLE_NAME FROM USER_TABLES WHERE TABLE_NAME = '" . $this->tableName . "'";
 
             $rs = $stmt->executeQuery( $queryIfExistTable );
+
             if ($rs->next()) {
+                if ($this->keepData && $sqlTableBackup != null) {
+                    //Delete backup if exists
+                    $rs = $stmt->executeQuery(str_replace($table, $tableBackup, $queryStack["drop"]));
+
+                    //Create backup
+                    $rs = $stmt->executeQuery($sqlTableBackup, ResultSet::FETCHMODE_ASSOC);
+                    $swTableBackup = 1;
+                }
+
                 $stmt->executeQuery( $queryStack['drop'] );
             }
+
             $stmt->executeQuery( $queryStack['create'] );
             $stmt->executeQuery( $queryStack['alter'] );
         } else {
@@ -588,9 +624,40 @@ class PmTable
                 if (! isset( $queryStack['create'] )) {
                     throw new Exception( 'A problem occurred resolving the schema to update for this table' );
                 }
+
+                if ($this->keepData && $sqlTableBackup != null) {
+                    //Delete backup if exists
+                    $rs = $stmt->executeQuery(str_replace($table, $tableBackup, $queryStack["drop"]));
+
+                    //Create backup
+                    $rs = $stmt->executeQuery($sqlTableBackup, ResultSet::FETCHMODE_ASSOC);
+                    $swTableBackup = 1;
+                }
+
                 $stmt->executeQuery( $queryStack['drop'] );
                 $stmt->executeQuery( $queryStack['create'] );
             }
+        }
+
+        if ($swTableBackup == 1) {
+            $tableFileName = str_replace("_", " ", strtolower($table));
+            $tableFileName = str_replace(" ", null, ucwords($tableFileName));
+
+            require_once (PATH_WORKSPACE . "classes" . PATH_SEP . "$tableFileName.php");
+
+            $sql = "SELECT * FROM $tableBackup";
+            $rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+            while ($rs->next()) {
+                $row = $rs->getRow();
+
+                $oTable = new $tableFileName();
+                $oTable->fromArray($row, BasePeer::TYPE_FIELDNAME);
+                $oTable->save();
+            }
+
+            //Delete backup
+            $rs = $stmt->executeQuery(str_replace($table, $tableBackup, $queryStack["drop"]));
         }
     }
 

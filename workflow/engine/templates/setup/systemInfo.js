@@ -159,7 +159,7 @@ systemInfo.application = {
                 },
                 {
                     xtype: "displayfield",
-                    fieldLabel: "",
+                    fieldLabel: ""
                 },
                 new Ext.Button({
                     text: _("ID_CHECK_AGAIN"),

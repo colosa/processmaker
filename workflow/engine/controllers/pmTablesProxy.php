@@ -1,5 +1,4 @@
 <?php
-
 /**
  * pmTablesProxy
  *
@@ -196,8 +195,8 @@ class pmTablesProxy extends HttpProxyController
      */
     public function save ($httpData, $alterTable = true)
     {
-        require_once 'classes/model/AdditionalTables.php';
-        require_once 'classes/model/Fields.php';
+        //require_once 'classes/model/AdditionalTables.php';
+        //require_once 'classes/model/Fields.php';
 
         try {
             ob_start();
@@ -273,12 +272,18 @@ class pmTablesProxy extends HttpProxyController
                 }
             }
 
-            G::loadClass( 'pmTable' );
+            G::LoadClass("pmTable");
 
             $pmTable = new pmTable( $data['REP_TAB_NAME'] );
             $pmTable->setDataSource( $data['REP_TAB_CONNECTION'] );
             $pmTable->setColumns( $columns );
             $pmTable->setAlterTable( $alterTable );
+
+            if (isset($data["keepData"]) && $data["keepData"] == 1) {
+                //PM Table
+                $pmTable->setKeepData(true);
+            }
+
             $pmTable->build();
 
             $buildResult = ob_get_contents();
