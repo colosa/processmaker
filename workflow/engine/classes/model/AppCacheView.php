@@ -62,6 +62,7 @@ class AppCacheView extends BaseAppCacheView
                 break;
             case 'selfservice':
                 $criteria = $this->getUnassignedCountCriteria($userUid);
+                $distinct = false;
                 break;
             case 'paused':
                 $criteria = $this->getPausedCountCriteria($userUid);

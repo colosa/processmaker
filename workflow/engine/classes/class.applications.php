@@ -345,7 +345,7 @@ class Applications
             //Check also $distinct in the method getListCounters(), this in AppCacheView.php
             $distinct = true;
 
-            if (($action == "todo" || $action == "to_reassign") || ($status == "TO_DO")) {
+            if (($action == "todo" || $action == "selfservice" || $action == "unassigned" || $action == "to_reassign") || ($status == "TO_DO")) {
                 $distinct = false;
             }
 
@@ -366,7 +366,8 @@ class Applications
                     require_once (PATH_DB . SYS_SYS . PATH_SEP . "classes" . PATH_SEP . $tableName . ".php");
                 }
             }
-            $totalCount = AppCacheViewPeer::doCount( $CriteriaCount, $distinct );
+
+            $totalCount = AppCacheViewPeer::doCount($CriteriaCount, $distinct);
         }
 
         //add sortable options
