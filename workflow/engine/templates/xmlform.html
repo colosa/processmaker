@@ -16,7 +16,7 @@
             </tr>
             {elseif ($field->type==='subtitle')}
             <tr>
-              <td class='FormSubTitle' colspan="2" align="{$field->align}" id="form[{$field->name}]">
+              <td class='FormSubTitle' colspan="2" align="{$field->align}">
                 <span>{$field->field}</span>
                 {if (isset($field->showHide) && $field->showHide)}
                 <a style="float:right;" href="#" onclick="contractExpandSubtitle(this);return false;">Hide</a>
