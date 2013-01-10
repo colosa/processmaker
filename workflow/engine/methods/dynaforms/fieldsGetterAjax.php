@@ -50,9 +50,6 @@ function validateGridConversion ($gridFields)
             case 'checkgroup':
                 $invalidFields[] = $value['XMLNODE_NAME'];
                 break;
-            case 'file':
-                $invalidFields[] = $value['XMLNODE_NAME'];
-                break;
             case 'javascript':
                 $invalidFields[] = $value['XMLNODE_NAME'];
                 break;
