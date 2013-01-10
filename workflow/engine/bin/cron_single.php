@@ -151,10 +151,10 @@ Bootstrap::registerClass('AppMessage',         PATH_HOME . "engine/classes/model
 
 Bootstrap::registerClass('BaseAppMessagePeer', PATH_HOME . "engine/classes/model/om/BaseAppMessagePeer.php");
 Bootstrap::registerClass('AppMessagePeer',     PATH_HOME . "engine/classes/model/AppMessagePeer.php");
-                                                                    
+
 Bootstrap::registerClass('BaseAppNotesPeer',    PATH_HOME . "engine/classes/model/om/BaseAppNotesPeer.php");
 Bootstrap::registerClass('AppNotesPeer',        PATH_HOME . "engine/classes/model/AppNotesPeer.php");
-                                                                    
+
 Bootstrap::registerClass('BaseAppNotes',        PATH_HOME . "engine/classes/model/om/BaseAppNotes.php");
 Bootstrap::registerClass('AppNotes',            PATH_HOME . "engine/classes/model/AppNotes.php");
 
@@ -421,6 +421,11 @@ if (!defined('SYS_SYS')) {
 
             Propel::init(PATH_CORE . 'config/_databases_.php');
             //Creole::registerDriver('dbarray', 'creole.contrib.DBArrayConnection');
+
+            // enable rbac
+            Bootstrap::LoadSystem( 'rbac' );
+            $RBAC = &RBAC::getSingleton( PATH_DATA, session_id() );
+            $RBAC->sSystem = 'PROCESSMAKER';
 
             eprintln("Processing workspace: " . $sObject, "green");
 
