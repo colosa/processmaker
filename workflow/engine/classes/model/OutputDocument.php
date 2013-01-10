@@ -510,66 +510,7 @@ class OutputDocument extends BaseOutputDocument
         $aProperties = array()
     ) {
         if (($sUID != '') && is_array($aFields) && ($sPath != '')) {
-            $nrt     = array("\n",    "\r",    "\t");
-            $nrthtml = array("(n /)", "(r /)", "(t /)");
-
-            $sContent = G::unhtmlentities($sContent);
-
-            $strContentAux = str_replace($nrt, $nrthtml, $sContent);
-
-            $iOcurrences = preg_match_all('/\@(?:([\>])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*(?:[\\\\][\w\W])?)*)\))((?:\s*\[[\'"]?\w+[\'"]?\])+)?/', $strContentAux, $arrayMatch1, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
-
-            if ($iOcurrences) {
-                $arrayGrid = array();
-
-                for ($i = 0; $i <= $iOcurrences - 1; $i++) {
-                    $arrayGrid[] = $arrayMatch1[2][$i][0];
-                }
-
-                $arrayGrid = array_unique($arrayGrid);
-
-                foreach ($arrayGrid as $index => $value) {
-                    $grdName = $value;
-
-                    $strContentAux1 = $strContentAux;
-                    $strContentAux  = null;
-
-                    $ereg = "/^(.*)@>" . $grdName . "(.*)@<" . $grdName . "(.*)$/";
-
-                    while (preg_match($ereg, $strContentAux1, $arrayMatch2)) {
-                        $strData = null;
-
-                        if (isset($aFields[$grdName]) && is_array($aFields[$grdName])) {
-                            foreach ($aFields[$grdName] as $aRow) {
-                                foreach ($aRow as $sKey => $vValue) {
-                                    if (!is_array($vValue)) {
-                                        $aRow[$sKey] = nl2br($aRow[$sKey]);
-                                    }
-                                }
-
-                                $strData = $strData . G::replaceDataField($arrayMatch2[2], $aRow);
-                            }
-                        }
-
-                        $strContentAux1 = $arrayMatch2[1];
-                        $strContentAux  = $strData . $arrayMatch2[3] . $strContentAux;
-                    }
-
-                    $strContentAux = $strContentAux1 . $strContentAux;
-                }
-            }
-
-            $strContentAux = str_replace($nrthtml, $nrt, $strContentAux);
-
-            $sContent = $strContentAux;
-
-            foreach ($aFields as $sKey => $vValue) {
-                if (!is_array($vValue)) {
-                    $aFields[$sKey] = nl2br($aFields[$sKey]);
-                }
-            }
-
-            $sContent = G::replaceDataField($sContent, $aFields);
+            $sContent = G::replaceDataGridField($sContent, $aFields);
 
             G::verifyPath($sPath, true);
 
@@ -813,13 +754,83 @@ class OutputDocument extends BaseOutputDocument
 
     public function generateTcpdf($sUID, $aFields, $sPath, $sFilename, $sContent, $sLandscape = false, $aProperties = array())
     {
-        require_once(PATH_THIRDPARTY . 'tcpdf/config/lang/eng.php');
-        require_once(PATH_THIRDPARTY . 'tcpdf/tcpdf.php');
+        require_once (PATH_THIRDPARTY . "tcpdf" . PATH_SEP . "config" . PATH_SEP . "lang" . PATH_SEP . "eng.php");
+        require_once (PATH_THIRDPARTY . "tcpdf" . PATH_SEP . "tcpdf.php");
+
+        $nrt     = array("\n",    "\r",    "\t");
+        $nrthtml = array("(n /)", "(r /)", "(t /)");
+
+        $strContentAux = str_replace($nrt, $nrthtml, $sContent);
+        $sContent = null;
+
+        while (preg_match("/^(.*)<font([^>]*)>(.*)$/i", $strContentAux, $arrayMatch)) {
+            $str = trim($arrayMatch[2]);
+            $strAttribute = null;
+
+            if (!empty($str)) {
+                $strAux = $str;
+                $str = null;
+
+                while (preg_match("/^(.*)([\"'].*[\"'])(.*)$/", $strAux, $arrayMatch2)) {
+                    $strAux = $arrayMatch2[1];
+                    $str = str_replace(" ", "__SPACE__", $arrayMatch2[2]) . $arrayMatch2[3] . $str;
+                }
+
+                $str = $strAux . $str;
+
+                //Get attributes
+                $strStyle = null;
+                $array = explode(" ", $str);
+
+                foreach ($array as $value) {
+                    $arrayAux = explode("=", $value);
+
+                    if (isset($arrayAux[1])) {
+                        $a = trim($arrayAux[0]);
+                        $v = trim(str_replace(array("__SPACE__", "\"", "'"), array(" ", null, null), $arrayAux[1]));
+
+                        switch (strtolower($a)) {
+                            case "color":
+                                $strStyle = $strStyle . "color: $v;";
+                                break;
+                            case "face":
+                                $strStyle = $strStyle . "font-family: $v;";
+                                break;
+                            case "size":
+                                $arrayPt = array(0, 8, 10, 12, 14, 18, 24, 36);
+                                $strStyle = $strStyle . "font-size: " . $arrayPt[intval($v)] . "pt;";
+                                break;
+                            case "style":
+                                $strStyle = $strStyle . "$v;";
+                                break;
+                            default:
+                                $strAttribute = $strAttribute . " $a=\"$v\"";
+                                break;
+                        }
+                    }
+                }
+
+                if ($strStyle != null) {
+                    $strAttribute = $strAttribute . " style=\"$strStyle\"";
+                }
+            }
+
+            $strContentAux = $arrayMatch[1];
+            $sContent = "<span" . $strAttribute . ">" . $arrayMatch[3] . $sContent;
+        }
+
+        $sContent = $strContentAux . $sContent;
+
+        $sContent = str_ireplace("</font>", "</span>", $sContent);
+
+        $sContent = str_replace($nrthtml, $nrt, $sContent);
+
         // define Save file
         $sOutput = 2;
         $sOrientation = ($sLandscape == false)? PDF_PAGE_ORIENTATION : 'L';
         $sMedia = (isset($aProperties['media'])) ? $aProperties['media'] : PDF_PAGE_FORMAT;
         $sLang = (defined('SYS_LANG'))? SYS_LANG : 'en';
+
         // create new PDF document
         $pdf = new TCPDF($sOrientation, PDF_UNIT, $sMedia, true, 'UTF-8', false);
 
@@ -830,10 +841,10 @@ class OutputDocument extends BaseOutputDocument
         $pdf->SetSubject($sFilename);
 
         $margins = $aProperties['margins'];
-        $margins['left']   = ($margins['left']>0)? $margins['left']: PDF_MARGIN_LEFT;
-        $margins['top']    = ($margins['top']>0)? $margins['top']: PDF_MARGIN_TOP;
-        $margins['right']  = ($margins['right']>0)? $margins['right']: PDF_MARGIN_RIGHT;
-        $margins['bottom'] = ($margins['bottom']>0)? $margins['bottom']: PDF_MARGIN_BOTTOM;
+        $margins["left"]   = ($margins["left"] >= 0)?   $margins["left"]: PDF_MARGIN_LEFT;
+        $margins["top"]    = ($margins["top"] >= 0)?    $margins["top"]: PDF_MARGIN_TOP;
+        $margins["right"]  = ($margins["right"] >= 0)?  $margins["right"]: PDF_MARGIN_RIGHT;
+        $margins["bottom"] = ($margins["bottom"] >= 0)? $margins["bottom"]: PDF_MARGIN_BOTTOM;
 
         $pdf->setPrintHeader(false);
         $pdf->setPrintFooter(false);
@@ -842,9 +853,10 @@ class OutputDocument extends BaseOutputDocument
         $pdf->SetRightMargin($margins['right']);
         $pdf->SetAutoPageBreak(true, $margins['bottom']);
 
-        $oServerConf =& serverConf::getSingleton();
+        $oServerConf = &serverConf::getSingleton();
+
         // set some language dependent data:
-        $lg = Array();
+        $lg = array();
         $lg['a_meta_charset'] = 'UTF-8';
         $lg['a_meta_dir'] = ($oServerConf->isRtl($sLang)) ? 'rtl' : 'ltr' ;
         $lg['a_meta_language'] = $sLang;
@@ -869,7 +881,7 @@ class OutputDocument extends BaseOutputDocument
         // dejavusans is a UTF-8 Unicode font, if you only need to
         // print standard ASCII chars, you can use core fonts like
         // helvetica or times to reduce file size.
-        $pdf->SetFont('dejavusans', '', 14, '', true);
+        //$pdf->SetFont('dejavusans', '', 14, '', true);
 
         // Add a page
         // This method has several options, check the source code documentation for more information.
