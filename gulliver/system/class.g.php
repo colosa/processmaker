@@ -2689,7 +2689,7 @@ class G
      */
     public function capitalizeWords($text)
     {
-        return ucwords($text);
+        return mb_convert_case($text, MB_CASE_TITLE, 'UTF-8');
     }
 
     /**
