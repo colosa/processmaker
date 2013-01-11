@@ -1255,6 +1255,21 @@ class pmTablesProxy extends HttpProxyController
         $application->field_autoincrement = false;
         array_push( $defaultColumns, $application );
 
+        $application = new stdClass(); //APP_STATUS
+        $application->uid = '';
+        $application->field_dyn = '';
+        $application->field_uid = '';
+        $application->field_name = 'APP_STATUS';
+        $application->field_label = 'APP_STATUS';
+        $application->field_type = 'VARCHAR';
+        $application->field_size = 10;
+        $application->field_dyn = '';
+        $application->field_key = 0;
+        $application->field_null = 0;
+        $application->field_filter = false;
+        $application->field_autoincrement = false;
+        array_push( $defaultColumns, $application );
+
         //if it is a grid report table
         if ($type == 'GRID') {
             //GRID INDEX
@@ -1401,7 +1416,7 @@ class pmTablesProxy extends HttpProxyController
                 }
             } //end editing
 
-
+            $indexes = array();
             foreach ($fields as $i => $field) {
                 $fields[$i]['_index'] = $i;
                 $indexes[$field['FIELD_NAME']] = $i;
