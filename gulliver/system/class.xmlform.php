@@ -2795,6 +2795,7 @@ class XmlForm_Field_Link extends XmlForm_Field
                 $owner,
                 $row
             );
+
             $row = $row + 1;
         }
 
@@ -5489,7 +5490,15 @@ class xmlformTemplate extends Smarty
                             $aAux[] = '';
                         }
                     }
-                    $result['form'][$k] = $form->fields[$k]->renderGrid( $aAux, $form );
+
+                    switch ($v->type) {
+                        case "link":
+                            $result["form"][$k] = $form->fields[$k]->renderGrid($aAux, array(), $form);
+                            break;
+                        default:
+                            $result["form"][$k] = $form->fields[$k]->renderGrid($aAux, $form);
+                            break;
+                    }
                 } else {
                     switch ($v->type) {
                         case "link":
