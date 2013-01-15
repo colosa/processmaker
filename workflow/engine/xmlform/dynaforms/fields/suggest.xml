@@ -154,6 +154,11 @@ select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE	XMLNODE_NAME <> @@
 
     var dyntype = "@#PME_DYN_TYPE";
 
+    if (dyntype == 'grid') {
+        hideRowById('PME_DEPENDENTFIELDS');
+    } else {
+        showRowById('PME_DEPENDENTFIELDS');
+    }
     storeNewEntriesOptions(getField("PME_STORE_NEW_ENTRY"));
 
     leimnud.event.add(
