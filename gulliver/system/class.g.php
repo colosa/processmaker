@@ -1372,11 +1372,16 @@ class G
         //scape the literal
         switch ($lang) {
             case 'es':
+                $format = str_replace( ' del ', '[ofl]', $format );
                 $format = str_replace( ' de ', '[of]', $format );
                 break;
         }
 
         //first we must formatted the string
+        $format = str_replace( 'h', '{h}', $format );
+        $format = str_replace( 'i', '{i}', $format );
+        $format = str_replace( 's', '{s}', $format );
+
         $format = str_replace( 'yyyy', '{YEAR}', $format );
         $format = str_replace( 'yy', '{year}', $format );
 
@@ -1386,10 +1391,6 @@ class G
 
         $format = str_replace( 'dd', '{DAY}', $format );
         $format = str_replace( 'd', '{day}', $format );
-
-        $format = str_replace( 'h', '{h}', $format );
-        $format = str_replace( 'i', '{i}', $format );
-        $format = str_replace( 's', '{s}', $format );
 
         if ($lang === '') {
             $lang = defined( SYS_LANG ) ? SYS_LANG : 'en';
@@ -1437,6 +1438,7 @@ class G
         //recovering the original literal
         switch ($lang) {
             case 'es':
+                $ret = str_replace( '[ofl]', ' del ', $ret );
                 $ret = str_replace( '[of]', ' de ', $ret );
                 break;
         }
