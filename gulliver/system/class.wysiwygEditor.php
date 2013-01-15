@@ -141,6 +141,12 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
                             inst.save();
                         }
                         return true;
+                    },
+                    handle_event_callback : function(e) {
+                        if(this.isDirty()) {
+                            this.save();
+                        }
+                        return true;
                     }
                 });
                 ';
