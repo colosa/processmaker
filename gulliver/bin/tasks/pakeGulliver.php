@@ -282,7 +282,8 @@ function copyPluginFile($tplName, $fName, $class) {
   printf("saved %s bytes in file %s \n", pakeColor::colorize($iSize, 'INFO'), pakeColor::colorize($tplName, 'INFO'));
 }
 
-function savePluginFile($fName, $tplName, $class, $tableName, $fields = null) {
+function savePluginFile($fName, $tplName, $class, $tableName, $fields = null, $utf8 = false)
+{
   $pluginOutDirectory = PATH_OUTTRUNK . "plugins" . PATH_SEP . $class . PATH_SEP;
   $pluginFilename     = $pluginOutDirectory . $fName;
 
@@ -309,6 +310,12 @@ function savePluginFile($fName, $tplName, $class, $tableName, $fields = null) {
 
   $content = $template->getOutputContent();
   $iSize = file_put_contents($pluginFilename, $content);
+    if ($utf8) {
+        //add BOM utf-8
+        $fp = fopen($pluginFilename,"wb");
+        fwrite($fp,pack("CCC",0xef,0xbb,0xbf) . $content);
+        fclose($fp);
+    }
   printf("saved %s bytes in file %s [%s]\n", pakeColor::colorize($iSize, 'INFO'), pakeColor::colorize($fName, 'INFO'), pakeColor::colorize($tplName, 'INFO'));
 }
 
@@ -617,11 +624,11 @@ function run_new_plugin($task, $args) {
       'className' => $pluginName
     );
 
-    savePluginFile($pluginName . PATH_SEP . 'menu' . $pluginName . '.php', 'pluginMenu', $pluginName, $pluginName, $fields);
+    savePluginFile($pluginName . PATH_SEP . 'menu' . $pluginName . '.php', 'pluginMenu', $pluginName, $pluginName, $fields, true);
 
-    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.php",     "pluginApplication.php", $pluginName, $pluginName);
-    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.html",    "pluginApplication.html", $pluginName, $pluginName);
-    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.js",      "pluginApplication.js", $pluginName, $pluginName);
+    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.php",     "pluginApplication.php", $pluginName, $pluginName, null, true);
+    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.html",    "pluginApplication.html", $pluginName, $pluginName, null, true);
+    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.js",      "pluginApplication.js", $pluginName, $pluginName, null, true);
     savePluginFile($pluginName . PATH_SEP . $pluginName . "ApplicationAjax.php", "pluginApplicationAjax.php", $pluginName, $pluginName);
 
     $swMenu = 1;
@@ -635,22 +642,22 @@ function run_new_plugin($task, $args) {
       "className" => $pluginName
     );
 
-    savePluginFile($pluginName . PATH_SEP . "menuCases" . $pluginName . ".php", "pluginMenuCases", $pluginName, $pluginName, $fields);
+    savePluginFile($pluginName . PATH_SEP . "menuCases" . $pluginName . ".php", "pluginMenuCases", $pluginName, $pluginName, $fields, true);
 
     if ($swMenu == 0) {
-      savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.php",     "pluginApplication.php", $pluginName, $pluginName);
-      savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.html",    "pluginApplication.html", $pluginName, $pluginName);
-      savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.js",      "pluginApplication.js", $pluginName, $pluginName);
-      savePluginFile($pluginName . PATH_SEP . $pluginName . "ApplicationAjax.php", "pluginApplicationAjax.php", $pluginName, $pluginName);
+      savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.php",     "pluginApplication.php", $pluginName, $pluginName, null, true);
+      savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.html",    "pluginApplication.html", $pluginName, $pluginName, null, true);
+      savePluginFile($pluginName . PATH_SEP . $pluginName . "Application.js",      "pluginApplication.js", $pluginName, $pluginName, null, true);
+      savePluginFile($pluginName . PATH_SEP . $pluginName . "ApplicationAjax.php", "pluginApplicationAjax.php", $pluginName, $pluginName, null, true);
     }
 
-    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application2.php",     "pluginApplication2.php", $pluginName, $pluginName);
-    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application2.html",    "pluginApplication2.html", $pluginName, $pluginName);
-    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application2.js",      "pluginApplication2.js", $pluginName, $pluginName);
+    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application2.php",     "pluginApplication2.php", $pluginName, $pluginName, null, true);
+    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application2.html",    "pluginApplication2.html", $pluginName, $pluginName, null, true);
+    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application2.js",      "pluginApplication2.js", $pluginName, $pluginName, null, true);
 
-    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application3.php",     "pluginApplication3.php", $pluginName, $pluginName);
-    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application3.html",    "pluginApplication3.html", $pluginName, $pluginName);
-    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application3.js",      "pluginApplication3.js", $pluginName, $pluginName);
+    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application3.php",     "pluginApplication3.php", $pluginName, $pluginName, null, true);
+    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application3.html",    "pluginApplication3.html", $pluginName, $pluginName, null, true);
+    savePluginFile($pluginName . PATH_SEP . $pluginName . "Application3.js",      "pluginApplication3.js", $pluginName, $pluginName, null, true);
   }
 
   //RBAC features
@@ -685,10 +692,10 @@ function run_new_plugin($task, $args) {
       'GUID' => G::generateUniqueID()
     );
 
-    savePluginFile($pluginName . PATH_SEP . "step" . $pluginName . "Application.php",     "pluginStepApplication.php",     $pluginName, $pluginName);
-    savePluginFile($pluginName . PATH_SEP . "step" . $pluginName . "Application.html",    "pluginStepApplication.html",    $pluginName, $pluginName);
-    savePluginFile($pluginName . PATH_SEP . "step" . $pluginName . "Application.js",      "pluginStepApplication.js",      $pluginName, $pluginName);
-    savePluginFile($pluginName . PATH_SEP . "step" . $pluginName . "ApplicationAjax.php", "pluginStepApplicationAjax.php", $pluginName, $pluginName);
+    savePluginFile($pluginName . PATH_SEP . "step" . $pluginName . "Application.php",     "pluginStepApplication.php",     $pluginName, $pluginName, null, true);
+    savePluginFile($pluginName . PATH_SEP . "step" . $pluginName . "Application.html",    "pluginStepApplication.html",    $pluginName, $pluginName, null, true);
+    savePluginFile($pluginName . PATH_SEP . "step" . $pluginName . "Application.js",      "pluginStepApplication.js",      $pluginName, $pluginName, null, true);
+    savePluginFile($pluginName . PATH_SEP . "step" . $pluginName . "ApplicationAjax.php", "pluginStepApplicationAjax.php", $pluginName, $pluginName, null, true);
   }
 
   //Dashboards
@@ -717,7 +724,7 @@ function run_new_plugin($task, $args) {
     G::verifyPath($pluginHome . PATH_SEP . "views", true);
   
     savePluginFile($pluginName . PATH_SEP . "classes" . PATH_SEP . "class.dashlet". $pluginName . ".php", "pluginDashletClass.php", $pluginName, $pluginName);
-    copyPluginFile("pluginDashlet.html", $pluginName . PATH_SEP . "views" . PATH_SEP . "dashlet". $pluginName . ".html", $pluginName);
+    copyPluginFile("pluginDashlet.html", $pluginName . PATH_SEP . "views" . PATH_SEP . "dashlet". $pluginName . ".html", $pluginName, null, true);
   }
 
   //$report = strtolower(prompt('Create a Report for Processmaker [y/N]'));
