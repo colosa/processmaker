@@ -1371,7 +1371,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $sSQL = $this->sql;
                 $nCount = preg_match_all( '/\@(?:([\@\%\#\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/', $sSQL, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE );
 
-                $sResult = array ();
+                $aResult = array ();
                 if ($nCount) {
                     for ($i = 0; $i < $nCount; $i ++) {
                         if (isset( $match[0][$i][0] ) && isset( $match[2][$i][0] )) {
@@ -1560,7 +1560,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $str .= 'value="' . $this->htmlentities( $formVariableKeyValue, ENT_COMPAT, 'utf-8' ) . '" ';
                 $str .= 'type="hidden" />';
 
-                $str .= $this->renderHint();
+                //$str .= $this->renderHint();
                 if (trim( $this->callback ) != '') {
                     $sCallBack = 'try{' . $this->callback . '}catch(e){alert("Suggest Widget call back error: "+e)}';
                 } else {
@@ -1571,7 +1571,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $sSQL = $this->sql;
                 $nCount = preg_match_all( '/\@(?:([\@\%\#\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/', $sSQL, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE );
 
-                $sResult = array ();
+                $aResult = array ();
                 if ($nCount) {
                     for ($i = 0; $i < $nCount; $i ++) {
                         if (isset( $match[0][$i][0] ) && isset( $match[2][$i][0] )) {
@@ -1581,6 +1581,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 }
 
                 $depValues = '';
+                $depFieldsLast = '';
                 $i = 1;
                 if (isset( $aResult ) && $aResult) {
                     $sResult = '"' . implode( '","', $aResult ) . '"';
@@ -1595,6 +1596,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                         }
 
                     }
+                    $depFieldsLast = 'getField(\''. $rowIdField . '[' . $field . '\').value';
                     $depValues = '+' . $depValues . '+';
                 } else {
                     $sResult = '';
@@ -1635,13 +1637,16 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $sOptions .= 'if (typeof obj != "undefined") { ';
                 $sOptions .= ' var jField = { };';
                 $sOptions .= ' var sField = "[]"; ';
+                $sOptions .= ' var aFieldCurrent = {};';
+                $sOptions .= ' aFieldCurrent[\'' . $this->name . '\'] = obj.id;';
+                $sOptions .= ' var sFieldCurrent = "["+ encodeURIComponent(aFieldCurrent.toJSONString()) + "]"; ';
 
                 if ($count > 0) {
                     for ($cnt = 0; $cnt < $count; $cnt ++) {
                         if ( $this->name  == $aDepFields[$cnt] ) {
                             $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = obj.id;';
-//                        } else {
-//                            $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = getField(\'' . $rowIdField . '[' . $aDepFields[$cnt] . '\').value; ';
+                        } else {
+                            $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = getField(\'' . $rowIdField . '[' . $aDepFields[$cnt] . '\').value; ';
                         }
                     }
                 }
@@ -1655,7 +1660,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $sOptions .= 'indexFieldVal = indexField[0].replace(/\[|\]/g,""); ';
 
                 $sOptions .= 'var response = ajax_function("../gulliver/defaultAjaxDynaform", "reloadField", ';
-                $sOptions .= '               "form=' . $sOwnerId . '&fields=" + sField + "&grid=' . $ownerName . '&row=" + indexFieldVal, "POST" ); ';
+                $sOptions .= '               "form=' . $sOwnerId . '&fields=" + sField + "&grid=' . $ownerName . '&row=" + indexFieldVal + "&aFieldCurrent=" + sFieldCurrent, "POST" ); ';
 
                 $sOptions .= 'if (response.substr(0,1) === \'[\') { ';
                 $sOptions .= '  var newcont; ';

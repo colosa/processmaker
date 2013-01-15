@@ -54,11 +54,16 @@ $G_FORM = new form( $xmlFile, $sPath );
 $G_FORM->id = urlDecode( $_POST['form'] );
 $G_FORM->values = isset( $_SESSION[$G_FORM->id] ) ? $_SESSION[$G_FORM->id] : array ();
 $newValues = (Bootstrap::json_decode( urlDecode( stripslashes( $_POST['fields'] ) ) ));
+if (isset($_POST['aFieldCurrent'])) {
+    $currentValue = (Bootstrap::json_decode( urlDecode( stripslashes( $_POST['aFieldCurrent'] ) ) ));
+} else {
+    $currentValue = (Bootstrap::json_decode( urlDecode( stripslashes( $_POST['fields'] ) ) ));
+}
 if (isset( $_POST['grid'] )) {
     $_POST['row'] = (int) $_POST['row'];
     $aAux = array ();
 
-    foreach ($newValues as $sKey => $newValue) {
+    foreach ($currentValue as $sKey => $newValue) {
         $newValue = (array) $newValue;
         $aKeys = array_keys( $newValue );
         if (count($aKeys)>0) {
@@ -154,8 +159,7 @@ foreach ($dependentFields as $d) {
                     if ($sendContent[$r]->content->type != 'text') {
                         $sendContent[$r]->content->{$attribute} = toJSArray( $value );
                     } else {
-                        $sendContent[$r]->content->{$attribute} = toJSArray( (isset( $value[$_POST['row']] ) ? array ($value[$_POST['row']]
-                        ) : array ()) );
+                        $sendContent[$r]->content->{$attribute} = toJSArray( (isset( $value[$_POST['row']] ) ? array ($value[$_POST['row']]) : array ()) );
                     }
                     break;
             }
@@ -199,10 +203,10 @@ function subDependencies ($k, &$G_FORM, &$aux, $grid = '')
             if ($myDependentFields[$r] == "")
                 unset( $myDependentFields[$r] );
         }
-        //     $mD = $myDependentFields;
-        //     foreach( $mD as $ki) {
-        //       $myDependentFields = array_merge( $myDependentFields , subDependencies( $ki , $G_FORM , $aux ) );
-        //     }
+        $mD = $myDependentFields;
+        foreach( $mD as $ki) {
+            $myDependentFields = array_merge( $myDependentFields , subDependencies( $ki , $G_FORM , $aux ) );
+        }
     } else {
         if (! isset($G_FORM->fields[$grid])) {
             return array ();
@@ -221,10 +225,10 @@ function subDependencies ($k, &$G_FORM, &$aux, $grid = '')
             if ($myDependentFields[$r] == "")
                 unset( $myDependentFields[$r] );
         }
-        //      $mD = $myDependentFields;
-        //      foreach( $mD as $ki) {
-        //        $myDependentFields = array_merge( $myDependentFields , subDependencies( $ki , $G_FORM , $aux, $grid) );
-        //      }
+        $mD = $myDependentFields;
+        foreach( $mD as $ki) {
+            $myDependentFields = array_merge( $myDependentFields , subDependencies( $ki , $G_FORM , $aux, $grid) );
+        }
     }
     return $myDependentFields;
 }

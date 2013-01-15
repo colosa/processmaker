@@ -162,9 +162,11 @@ function G_Field ( form, element, name )
         for(var i=0;i<newcont.length;i++) {
           //alert(newcont[i].name + '-' +  newcont[i].value);
           var j=me.form.getElementIdByName(newcont[i].name);
-          me.form.aElements[j].setValue(newcont[i].value);
-          me.form.aElements[j].setContent(newcont[i].content);
-          me.form.aElements[j].updateDepententFields();
+          if (me.form.aElements[j] != 'undefined' ) {
+            me.form.aElements[j].setValue(newcont[i].value);
+            me.form.aElements[j].setContent(newcont[i].content);
+            me.form.aElements[j].updateDepententFields();
+          }
           /*if (me.form.aElements[j].element.fireEvent) {
             me.form.aElements[j].element.fireEvent("onchange");
           } else {
