@@ -96,7 +96,7 @@ if ($fields['AUTH_SOURCE_PROVIDER'] == 'ldap') {
                 }
             }
             $fields['AUTH_SOURCE_ATTRIBUTE_IDS'] = $attributes;
-            $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml', '', $fields, '../authSources/authSources_Save' );
+            $G_PUBLISH->AddContent( 'xmlform', 'xmlform', "../plugins/".$fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit', '', $fields, '../authSources/authSources_Save' );
         } else {
             $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => G::LoadTranslation( 'ID_AUTH_SOURCE_MISSING' )
             ) );
