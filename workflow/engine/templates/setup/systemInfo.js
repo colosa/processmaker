@@ -13,7 +13,7 @@ systemInfo.application = {
 
             switch (option) {
                 case "SYS":
-                    url = "../installer/getSystemInfo"
+                    url = "../installer/getSystemInfo";
                     break;
             }
 
@@ -69,12 +69,13 @@ systemInfo.application = {
         var pnlWest = new Ext.Panel({
             id: "pnlWest",
 
-            region: "west",
+            region: "fit",
 
             margins: {top: 10, right: 0, bottom: 10, left: 10},
             border: false,
             bodyStyle: "padding: 10px; font: 0.80em arial;",
             width: 250,
+            height: 300,
 
             html: _("ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION")
         });
@@ -82,12 +83,13 @@ systemInfo.application = {
         var frmfsCenter = new Ext.form.FieldSet({
             id: "frmfsCenter",
 
-            region: "center",
+            region: "fit",
 
             margins: {top: 10, right: 10, bottom: 10, left: 0},
             border: false,
             labelWidth: 200,
-
+            width: 430,
+            height: 320,
             items: [
                 {
                     xtype: "displayfield",
@@ -170,20 +172,34 @@ systemInfo.application = {
             ]
         });
 
-        var pnlMain = new Ext.Panel({
+       var pnlMain = new Ext.Panel({
             id: "pnlMain",
 
-            layout: "border",
-
+            layout: "table",
+            autoScroll: true,
             border: false,
             title: _("ID_PROCESSMAKER_REQUIREMENTS_CHECK"),
+            layoutConfig: {
+                columns: 2
+            },
+            items:[{
+                width: 250,
+                bodyBorder: false,
+                layout: 'form',
+                items: pnlWest
+            }, {
+                width: 430,
 
-            items: [pnlWest, frmfsCenter]
+                layout: 'form',
+                items: frmfsCenter
+            }]
+
         });
 
         //Load all panels
         var viewport = new Ext.Viewport({
             layout: "fit",
+            autoScroll: true,
             items: [pnlMain]
         });
     }
