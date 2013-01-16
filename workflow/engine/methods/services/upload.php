@@ -93,7 +93,7 @@ if (isset( $_FILES ) && $_FILES["ATTACH_FILE"]["error"] == 0) {
             $aFields["APP_DOC_FIELDNAME"] = $_POST["APP_DOC_FIELDNAME"];
         } else {
             //New record
-            $aFields = array ("APP_UID" => $_POST["APPLICATION"],"DEL_INDEX" => $_POST["INDEX"],"USR_UID" => $_POST["USR_UID"],"DOC_UID" => $_POST["DOC_UID"],"APP_DOC_TYPE" => $_POST["APP_DOC_TYPE"],"APP_DOC_CREATE_DATE" => date( "Y-m-d H:i:s" ),"APP_DOC_COMMENT" => (isset( $_POST["COMMENT"] )) ? $_POST["COMMENT"] : "","APP_DOC_TITLE" => (isset( $_POST["TITLE"] )) ? $_POST["TITLE"] : "","APP_DOC_FILENAME" => (isset( $_FILES["ATTACH_FILE"]["name"] )) ? $_FILES["ATTACH_FILE"]["name"] : "","FOLDER_UID" => $folderId,"APP_DOC_TAGS" => $fileTags,"APP_DOC_FIELDNAME" => $_POST["APP_DOC_FIELDNAME"]
+            $aFields = array ("APP_UID" => $_POST["APPLICATION"],"DEL_INDEX" => $_POST["INDEX"],"USR_UID" => $_POST["USR_UID"],"DOC_UID" => $_POST["DOC_UID"],"APP_DOC_TYPE" => $_POST["APP_DOC_TYPE"],"APP_DOC_CREATE_DATE" => date( "Y-m-d H:i:s" ),"APP_DOC_COMMENT" => (isset( $_POST["COMMENT"] )) ? $_POST["COMMENT"] : "","APP_DOC_TITLE" => (isset( $_POST["TITLE"] )) ? $_POST["TITLE"] : "","APP_DOC_FILENAME" => (isset( $_FILES["ATTACH_FILE"]["name"] )) ? $_FILES["ATTACH_FILE"]["name"] : "","FOLDER_UID" => $folderId,"APP_DOC_TAGS" => $fileTags,"APP_DOC_FIELDNAME" => (isset($_POST["APP_DOC_FIELDNAME"])) ? $_POST["APP_DOC_FIELDNAME"] : ( (isset( $_FILES["ATTACH_FILE"]["name"] )) ? $_FILES["ATTACH_FILE"]["name"] : "")
             );
         }
 
