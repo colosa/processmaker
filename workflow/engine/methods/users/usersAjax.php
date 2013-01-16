@@ -112,12 +112,6 @@ switch ($_POST['action']) {
         break;
     case 'saveUser':
         try {
-            $criteria = new Criteria();
-            $criteria->addSelectColumn(UsersPeer::USR_USERNAME);
-            $criteria->add(UsersPeer::USR_USERNAME, $_POST['USR_USERNAME']);
-            if (UsersPeer::doCount($criteria) > 0) {
-                throw new Exception(G::LoadTranslation('ID_USERNAME_ALREADY_EXISTS', array('USER_ID' => $_POST['USR_USERNAME'])));
-            }
 
             $form = $_POST;
 
@@ -144,6 +138,12 @@ switch ($_POST['action']) {
             }
 
             if ($form['USR_UID'] == '') {
+                $criteria = new Criteria();
+                $criteria->addSelectColumn(UsersPeer::USR_USERNAME);
+                $criteria->add(UsersPeer::USR_USERNAME, $_POST['USR_USERNAME']);
+                if (UsersPeer::doCount($criteria) > 0) {
+                    throw new Exception(G::LoadTranslation('ID_USERNAME_ALREADY_EXISTS', array('USER_ID' => $_POST['USR_USERNAME'])));
+                }
                 $aData['USR_USERNAME'] = $form['USR_USERNAME'];
                 $aData['USR_PASSWORD'] = $form['USR_PASSWORD'];
                 $aData['USR_FIRSTNAME'] = $form['USR_FIRSTNAME'];
