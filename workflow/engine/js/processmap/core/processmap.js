@@ -2678,6 +2678,7 @@ function showDbConnectionsList(PRO_UID)
     }
   mainPanel = new leimnud.module.panel();
   mainPanel.options = {
+      limit: true,
       size  :{w:640,h:450},
       position:{x:0,y:0,center:true},
       title :G_STRINGS.ID_DBS_LIST,
@@ -2711,6 +2712,7 @@ function showCaseSchedulerList(PRO_UID)
     }
   mainPanel = new leimnud.module.panel();
   mainPanel.options = {
+      limit: true,
       size  :{w:850,h:570},
       position:{x:0,y:0,center:true},
       title :G_STRINGS.ID_PROCESSMAP_CASE_SCHEDULER_TITLE,
