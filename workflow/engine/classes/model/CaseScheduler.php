@@ -459,7 +459,17 @@ class CaseScheduler extends BaseCaseScheduler
                     $Fields['SCH_STATE'] = 'PROCESSED';
                     $this->Update( $Fields );
                 } else {
+                    $nSchLastRunTime = $sActualTime;
+                    $Fields = $this->Load( $sSchedulerUid );
+                    $Fields['SCH_LAST_RUN_TIME'] = $Fields['SCH_TIME_NEXT_RUN'];
 
+                    //$nSchTimeNextRun = strtotime( $Fields['SCH_TIME_NEXT_RUN'] );
+                    $nSchTimeNextRun = $nTime;
+                    $nextRun = $Fields['SCH_REPEAT_EVERY'] * 60 * 60;
+                    $nSchTimeNextRun += $nextRun;
+                    $nSchTimeNextRun = date( "Y-m-d H:i", $nSchTimeNextRun );
+
+                    $this->updateDate( $sSchedulerUid, $nSchTimeNextRun, $nSchLastRunTime );
                 }
             } elseif ($sActualDataHour == $dActualSysHour && $sActualDataMinutes <= $dActualSysMinutes) {
                 $_PORT = (isset( $_SERVER['SERVER_PORT'] ) && $_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '';
@@ -557,7 +567,8 @@ class CaseScheduler extends BaseCaseScheduler
                     $Fields = $this->Load( $sSchedulerUid );
                     $Fields['SCH_LAST_RUN_TIME'] = $Fields['SCH_TIME_NEXT_RUN'];
 
-                    $nSchTimeNextRun = strtotime( $Fields['SCH_TIME_NEXT_RUN'] );
+                    //$nSchTimeNextRun = strtotime( $Fields['SCH_TIME_NEXT_RUN'] );
+                    $nSchTimeNextRun = $nTime;
                     $nextRun = $Fields['SCH_REPEAT_EVERY'] * 60 * 60;
                     $nSchTimeNextRun += $nextRun;
                     $nSchTimeNextRun = date( "Y-m-d H:i", $nSchTimeNextRun );
