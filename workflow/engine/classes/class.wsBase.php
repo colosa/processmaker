@@ -2431,21 +2431,19 @@ class wsBase
      */
     public function taskCase ($caseId)
     {
+        $result = array ();
         try {
-            $result = array ();
             $oCriteria = new Criteria( 'workflow' );
             $del = DBAdapter::getStringDelimiter();
             $oCriteria->addSelectColumn( AppDelegationPeer::DEL_INDEX );
+            $oCriteria->addSelectColumn( AppDelegationPeer::TAS_UID );
 
             $oCriteria->addAsColumn( 'TAS_TITLE', 'C1.CON_VALUE' );
             $oCriteria->addAlias( "C1", 'CONTENT' );
             $tasTitleConds = array ();
-            $tasTitleConds[] = array (AppDelegationPeer::TAS_UID,'C1.CON_ID'
-            );
-            $tasTitleConds[] = array ('C1.CON_CATEGORY',$del . 'TAS_TITLE' . $del
-            );
-            $tasTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del
-            );
+            $tasTitleConds[] = array (AppDelegationPeer::TAS_UID,'C1.CON_ID');
+            $tasTitleConds[] = array ('C1.CON_CATEGORY',$del . 'TAS_TITLE' . $del);
+            $tasTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del);
             $oCriteria->addJoinMC( $tasTitleConds, Criteria::LEFT_JOIN );
 
             $oCriteria->add( AppDelegationPeer::APP_UID, $caseId );
@@ -2456,7 +2454,10 @@ class wsBase
             $oDataset->next();
 
             while ($aRow = $oDataset->getRow()) {
-                $result[] = array ('guid' => $aRow['DEL_INDEX'],'name' => $aRow['TAS_TITLE']
+                $result[] = array (
+                    'guid'     => $aRow['TAS_UID'],
+                    'name'     => $aRow['TAS_TITLE'],
+                    'delegate' => $aRow['DEL_INDEX']
                 );
                 $oDataset->next();
             }
