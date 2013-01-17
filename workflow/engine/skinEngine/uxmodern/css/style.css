@@ -637,7 +637,7 @@ form.formDefault table
 {
 	font:normal 11px sans-serif,MiscFixed;
 	color:#808080;
-	line-height:180%;
+	#line-height:180%;
 }
 form.formDefault td
 {
