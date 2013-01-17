@@ -440,7 +440,11 @@ class propelTable
         $this->xmlForm->setValues( $result );
         //var_dump($fieldName, $fieldClass );echo '<br /><br />';
         if (array_search( 'renderTable', get_class_methods( $fieldClass ) ) !== false) {
-            $htmlField = $this->xmlForm->fields[$fieldName]->renderTable( $value, $this->xmlForm, true );
+            if ($value == '-') {
+                $htmlField = $value;
+            } else {
+                $htmlField = $this->xmlForm->fields[$fieldName]->renderTable( $value, $this->xmlForm, true );
+            }
             if (is_object( $value )) {
                 $value = '';
             }
