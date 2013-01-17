@@ -148,6 +148,7 @@ if ($action == "uploadFileNewProcess") {
                 $oNewGroup = $oProcess->mergeExistingGroups( $oData->groupwfs );
                 $oData->groupwfs = $oNewGroup;
                 $oData->taskusers = $oProcess->mergeExistingUsers( $oBaseGroup, $oNewGroup, $oData->taskusers );
+                $oData->objectPermissions = $oProcess->mergeExistingUsers( $oBaseGroup, $oNewGroup, $oData->objectPermissions );
             }
             $result->ExistGroupsInDatabase = 0;
         } else {
