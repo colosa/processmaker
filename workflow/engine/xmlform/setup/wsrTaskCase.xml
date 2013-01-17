@@ -3,10 +3,14 @@
 
 <guid type="text" colWidth="200" align="left" titleAlign="left">
   <en>Del Index</en>
-<es>Del Index</es></guid>
+</guid>
 
 <name type="text" colWidth="280" align="left" titleAlign="left">
   <en>Task Title</en>
-<es><![CDATA[Título de Tarea]]></es></name>
+</name>
+
+<delegate type="text" colWidth="280" align="left" titleAlign="left">
+  <en>Delegate Index</en>
+</delegate>
 
 </dynaForm> 

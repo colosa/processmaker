@@ -1365,17 +1365,15 @@ try {
                 break;
             case "TaskCase":
                 $sessionId = $frm["SESSION_ID"];
-                $caseId = $frm["CASE_ID"];
+                $caseId    = $frm["CASE_ID"];
 
-                $params = array ('sessionId' => $sessionId,'caseId' => $caseId
-                );
-                $wsResponse = $client->__SoapCall( 'TaskCase', array ($params
-                ) );
-                $result = G::PMWSCompositeResponse( $wsResponse, 'taskCases' );
+                $params     = array ('sessionId' => $sessionId,'caseId' => $caseId);
+                $wsResponse = $client->__SoapCall( 'TaskCase', array ($params) );
+
+                $result     = G::PMWSCompositeResponse( $wsResponse, 'taskCases' );
 
                 $G_PUBLISH = new Publisher();
-                $rows[] = array ('guid' => 'char','name' => 'char'
-                );
+                $rows[]    = array ('guid' => 'char','name' => 'char', 'delegate' => 'char' );
 
                 if (is_array( $result )) {
 
@@ -1388,6 +1386,9 @@ try {
                                 if ($val->key == 'name') {
                                     $name = $val->value;
                                 }
+                                if ($val->key == 'delegate') {
+                                    $delegate = $val->value;
+                                }
                             }
                         } elseif (is_array( $item )) {
                             foreach ($item as $index => $val) {
@@ -1396,7 +1397,7 @@ try {
                                 }
                             }
                         }
-                        if ($val->key == 'name') {
+                        if (isset($val->key) && ($val->key == 'name')) {
                             $name = $val->value;
                         } else {
                             if (isset( $item->guid )) {
@@ -1405,28 +1406,29 @@ try {
                             if (isset( $item->name )) {
                                 $name = $item->name;
                             }
+                            if (isset( $item->delegate )) {
+                                $delegate = $item->delegate;
+                            }
                         }
 
-                        $rows[] = array ('guid' => $guid,'name' => $name
-                        );
+                        $rows[] = array ('guid' => $guid, 'name' => $name, 'delegate' => $delegate);
                     }
 
                     global $_DBArray;
-                    $_DBArray = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
+                    $_DBArray              = (isset( $_SESSION['_DBArray'] ) ? $_SESSION['_DBArray'] : '');
                     $_DBArray['taskCases'] = $rows;
-                    $_SESSION['_DBArray'] = $_DBArray;
+                    $_SESSION['_DBArray']  = $_DBArray;
 
                     G::LoadClass( 'ArrayPeer' );
                     $c = new Criteria( 'dbarray' );
                     $c->setDBArrayTable( 'taskCases' );
                     $c->addAscendingOrderByColumn( 'name' );
                     $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'setup/wsrTaskCase', $c );
-                } elseif (is_object( $result ))
-                {
+                } elseif (is_object( $result )) {
                     $_SESSION['WS_SESSION_ID'] = '';
-                    $fields['status_code'] = $result->status_code;
-                    $fields['message'] = $result->message;
-                    $fields['time_stamp'] = date( "Y-m-d H:i:s" );
+                    $fields['status_code']     = $result->status_code;
+                    $fields['message']         = $result->message;
+                    $fields['time_stamp']      = date( "Y-m-d H:i:s" );
                     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'setup/wsShowResult', null, $fields );
                 }
 

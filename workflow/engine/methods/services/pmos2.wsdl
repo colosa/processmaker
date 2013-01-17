@@ -576,6 +576,7 @@
         <xs:sequence>
           <xs:element name="guid" type="xs:string"/>
           <xs:element name="name" type="xs:string"/>
+          <xs:element name="delegate" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:element name="taskCaseRequest">
