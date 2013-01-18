@@ -50,20 +50,18 @@ if (! is_file( XMLFORM_AJAX_PATH . $xmlFile )) {
         }
     }
 }
+
 $G_FORM = new form( $xmlFile, $sPath );
 $G_FORM->id = urlDecode( $_POST['form'] );
 $G_FORM->values = isset( $_SESSION[$G_FORM->id] ) ? $_SESSION[$G_FORM->id] : array ();
+
 $newValues = (Bootstrap::json_decode( urlDecode( stripslashes( $_POST['fields'] ) ) ));
-if (isset($_POST['aFieldCurrent'])) {
-    $currentValue = (Bootstrap::json_decode( urlDecode( stripslashes( $_POST['aFieldCurrent'] ) ) ));
-} else {
-    $currentValue = (Bootstrap::json_decode( urlDecode( stripslashes( $_POST['fields'] ) ) ));
-}
+
 if (isset( $_POST['grid'] )) {
     $_POST['row'] = (int) $_POST['row'];
     $aAux = array ();
 
-    foreach ($currentValue as $sKey => $newValue) {
+    foreach ($newValues as $sKey => $newValue) {
         $newValue = (array) $newValue;
         $aKeys = array_keys( $newValue );
         if (count($aKeys)>0) {
@@ -102,6 +100,7 @@ if (sizeof( $newValues ) > 1 && isset( $_POST['grid'] )) {
 //Resolve dependencies
 //Returns an array ($dependentFields) with the names of the fields
 //that depends of fields passed through AJAX ($_GET/$_POST)
+//Returns all dependencies of all fields, this in grids
 $dependentFields = array ();
 $aux = array ();
 for ($r = 0; $r < sizeof( $newValues ); $r ++) {
@@ -125,16 +124,54 @@ for ($r = 0; $r < sizeof( $newValues ); $r ++) {
 
 $dependentFields = array_unique( $dependentFields );
 
+//Delete all dependencies of all fields, we're interested only in the fields sending from AJAX, this in grids
+if (isset($_POST["grid"])) {
+    $arrayField = (array)(Bootstrap::json_decode(urlDecode(stripslashes($_POST["fields"]))));
+    $arrayDependentField = array();
+    $ereg = null;
+
+    foreach ($arrayField as $fieldData) {
+        $arrayAux = (array)($fieldData);
+
+        foreach ($arrayAux as $index => $value) {
+            $ereg = $ereg . (($ereg != null)? "|" : null) . $index; //Concatenate field
+        }
+    }
+
+    if ($ereg != null) {
+        foreach ($dependentFields as $value) {
+            if (preg_match("/^(?:$ereg)\|.*$/", $value)) {
+                $arrayAux = explode("|", $value);
+
+                $arrayDependentField[] = $arrayAux[1];
+            }
+        }
+    }
+
+    $dependentFields = array_unique($arrayDependentField);
+}
+
+//Completed all fields of the grid
+if (isset($_POST["grid"]) && isset($_POST["gridField"])) {
+    $arrayGridField = (array)(Bootstrap::json_decode(urldecode(stripslashes($_POST["gridField"]))));
+
+    foreach ($arrayGridField as $index => $value) {
+        $G_FORM->values[$_POST["grid"]][$_POST["row"]][$index] = $value;
+    }
+}
+
 //Parse and update the new content
-$template = PATH_CORE . 'templates/xmlform.html';
-$newContent = $G_FORM->getFields( $template, (isset( $_POST['row'] ) ? $_POST['row'] : - 1) );
+$newContent = $G_FORM->getFields(PATH_CORE . "templates" . PATH_SEP . "xmlform.html", (isset($_POST["row"])? $_POST["row"] : -1));
+
 //Returns the dependentFields's content
 $sendContent = array ();
 $r = 0;
 
+//Set data
 foreach ($dependentFields as $d) {
     $sendContent[$r]->name = $d;
-    $sendContent[$r]->content = NULL;
+    $sendContent[$r]->content = null;
+
     if (! isset( $_POST['grid'] )) {
         if (isset( $G_FORM->fields[$d] )) {
             foreach ($G_FORM->fields[$d] as $attribute => $value) {
@@ -157,18 +194,20 @@ foreach ($dependentFields as $d) {
                     break;
                 case 'options':
                     if ($sendContent[$r]->content->type != 'text') {
-                        $sendContent[$r]->content->{$attribute} = toJSArray( $value );
+                        $sendContent[$r]->content->{$attribute} = toJSArray($value);
                     } else {
-                        $sendContent[$r]->content->{$attribute} = toJSArray( (isset( $value[$_POST['row']] ) ? array ($value[$_POST['row']]) : array ()) );
+                        $sendContent[$r]->content->{$attribute} = toJSArray((isset($value[$_POST["row"]])? array($value[$_POST["row"]]) : array()));
                     }
                     break;
             }
         }
         $sendContent[$r]->value = isset( $G_FORM->values[$_POST['grid']][$_POST['row']][$d] ) ? $G_FORM->values[$_POST['grid']][$_POST['row']][$d] : '';
     }
-    $r ++;
+
+    $r = $r + 1;
 }
-echo (Bootstrap::json_encode( $sendContent ));
+
+echo Bootstrap::json_encode($sendContent);
 
 function toJSArray ($array, $type = '')
 {
@@ -215,20 +254,34 @@ function subDependencies ($k, &$G_FORM, &$aux, $grid = '')
             return array ();
         if (! isset( $G_FORM->fields[$grid]->fields[$k]->dependentFields ))
             return array ();
+
         $aux[] = $k;
+
         if (strpos( $G_FORM->fields[$grid]->fields[$k]->dependentFields, ',' ) !== false) {
             $myDependentFields = explode( ',', $G_FORM->fields[$grid]->fields[$k]->dependentFields );
         } else {
             $myDependentFields = explode( '|', $G_FORM->fields[$grid]->fields[$k]->dependentFields );
         }
+
         for ($r = 0; $r < sizeof( $myDependentFields ); $r ++) {
             if ($myDependentFields[$r] == "")
                 unset( $myDependentFields[$r] );
         }
+
         $mD = $myDependentFields;
+
         foreach( $mD as $ki) {
             $myDependentFields = array_merge( $myDependentFields , subDependencies( $ki , $G_FORM , $aux, $grid) );
         }
+
+        //Set field and the dependent field of the grid
+        foreach ($myDependentFields as $index => $value) {
+            if (!preg_match("/^.*\|.*$/", $value)) {
+                $myDependentFields[$index] = $k . "|" . $value;
+            }
+        }
     }
+
     return $myDependentFields;
 }
+

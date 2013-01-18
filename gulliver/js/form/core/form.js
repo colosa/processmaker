@@ -105,15 +105,20 @@ function G_Field ( form, element, name )
   var tempValue;
   if (me.dependentFields.length===0) return true;
   var fields=[],Fields = [],i,grid='',row=0;
+  var gridField = "";
+
   for(i in me.dependentFields) {
     if (me.dependentFields[i].dependentOf) {
       for (var j = 0; j < me.dependentFields[i].dependentOf.length; j++) {
         var oAux = me.dependentFields[i].dependentOf[j];
         if (oAux.name.indexOf('][') > -1) {
-          var aAux  = oAux.name.split('][');
-          grid      = aAux[0];
-          row       = aAux[1];
-          fieldName = aAux[2];
+          var arrayAux = oAux.name.split("][");
+          grid = arrayAux[0];
+          row  = parseInt(arrayAux[1]);
+          fieldName = arrayAux[2];
+
+          gridField = gridGetAllFieldAndValue(oAux.name, 0); //Not get current field
+
           if (Fields.length > 0){
             aux = Fields;
             aux.push('?');
@@ -145,15 +150,19 @@ function G_Field ( form, element, name )
         }
       }
     }
+
     var callServer;
+
     callServer = new leimnud.module.rpc.xmlhttp({
-      url     : me.form.ajaxServer,
-      async   : false,
-      method  : "POST",
-      args    : "function=reloadField&" + 'form='+encodeURIComponent(me.form.id)+'&fields='+encodeURIComponent(fields.toJSONString())+(grid!=''?'&grid='+grid:'')+(row>0?'&row='+row:'')
+        url: me.form.ajaxServer,
+        async: false,
+        method: "POST",
+        args: "function=reloadField" + "&form=" + encodeURIComponent(me.form.id) + "&fields=" + encodeURIComponent(fields.toJSONString()) + ((grid != "")? "&grid=" + grid + ((gridField != "")? "&gridField=" + encodeURIComponent("{" + gridField + "}") : "") : "") + ((row > 0)? "&row=" + row: "")
     });
+
     callServer.make();
     var response = callServer.xmlhttp.responseText;
+
     //Validate the response
     if (response.substr(0,1)==='[') {
       var newcont;
@@ -316,6 +325,9 @@ function G_DropDown( form, element, name )
         dd.options[key] = null;
       }
     }
+
+    dd.options.length = 0; //Delete options
+
     // the remove function is no longer reliable
     // while(dd.options.length>1) dd.remove(0);
     for(var o=0;o<content.options.length;o++) {
@@ -323,6 +335,10 @@ function G_DropDown( form, element, name )
       optn.text = content.options[o].value;
       optn.value = content.options[o].key;
       dd.options[o]=optn;
+    }
+
+    if (dd.options.length == 0) {
+        dd.options[0] = new Option("", "");
     }
   };
   if (!element) return;
@@ -3594,4 +3610,39 @@ function getNumericValue(val, decimalSeparator)
 
     return num;
 }
+
+var gridGetAllFieldAndValue = function (fieldId, swCurrentField)
+{
+    var frm = G.getObject(getField(fieldId).form);
+
+    var arrayAux = fieldId.split("][");
+    var gridName = arrayAux[0];
+    var row = parseInt(arrayAux[1]);
+    var fieldName = arrayAux[2];
+
+    var grid;
+    var gridField = "";
+    var fieldNameAux  = "";
+    var fieldValueAux = "";
+    var i1 = 0;
+    var i2 = 0;
+
+    //Get all fields of grid
+    for (i1 = 0; i1 <= frm.aElements.length - 1; i1++) {
+        if (frm.aElements[i1].name == gridName) {
+            grid = frm.aElements[i1];
+
+            for (i2 = 0; i2 <= grid.aFields.length - 1; i2++) {
+                fieldNameAux  = grid.aFields[i2].sFieldName;
+                fieldValueAux = grid.getElementByName(row, fieldNameAux).value();
+
+                if ((swCurrentField == 1 || fieldNameAux != fieldName) && typeof fieldValueAux != "undefined") {
+                    gridField = gridField + ((gridField != "")? "," : "") + "\"" + fieldNameAux + "\":\"" + fieldValueAux + "\"";
+                }
+            }
+        }
+    }
+
+    return gridField;
+};
 

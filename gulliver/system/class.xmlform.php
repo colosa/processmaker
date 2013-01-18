@@ -1,5 +1,4 @@
 <?php
-
 /**
  * class.xmlform.php
  *
@@ -1604,19 +1603,6 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                     $depValues = '+';
                 }
 
-                $aDepFields = array ();
-                $count = 0;
-                if ($this->dependentFields !== '') {
-                    $dependentFields = explode( ",", $this->dependentFields );
-                    foreach ($dependentFields as $valueDependent) {
-                        $sqlDepField = $owner->fields[$valueDependent]->sql;
-                        $count = preg_match_all( '/\@(?:([\@\%\#\=\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/', $sqlDepField, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE );
-                        for ($cnt = 0; $cnt < $count; $cnt ++) {
-                            $aDepFields[$cnt] = $match[2][$cnt][0];
-                        }
-                    }
-                }
-
                 $sOptions = 'script: function (input) { ';
 
                 $sOptions .= '  var inputValue = base64_encode(getField(\'' . $rowIdField . '[' . $this->name . '_label\').value); ';
@@ -1635,60 +1621,50 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $sOptions .= 'callback: function (obj) { ';
 
                 $sOptions .= 'if (typeof obj != "undefined") { ';
-                $sOptions .= ' var jField = { };';
-                $sOptions .= ' var sField = "[]"; ';
                 $sOptions .= ' var aFieldCurrent = {};';
                 $sOptions .= ' aFieldCurrent[\'' . $this->name . '\'] = obj.id;';
                 $sOptions .= ' var sFieldCurrent = "["+ encodeURIComponent(aFieldCurrent.toJSONString()) + "]"; ';
-
-                if ($count > 0) {
-                    for ($cnt = 0; $cnt < $count; $cnt ++) {
-                        if ( $this->name  == $aDepFields[$cnt] ) {
-                            $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = obj.id;';
-                        } else {
-                            $sOptions .= '  jField[\'' . $aDepFields[$cnt] . '\'] = getField(\'' . $rowIdField . '[' . $aDepFields[$cnt] . '\').value; ';
-                        }
-                    }
-                }
-
-                $sOptions .= ' var sField = "["+ encodeURIComponent(jField.toJSONString()) + "]"; ';
                 $sOptions .= $sCallBack . '; getField("' . $rowIdField . '[' . $this->name . '").value = obj.id;';
 
                 $sOwnerId = (isset($owner->owner->id))? $owner->owner->id : $owner->id;
                 $sOptions .= 'var indexField =  "' . $rowIdField . '[' . $this->name . '";';
                 $sOptions .= 'indexField = indexField.match(/\[[0-9]+\]/g); ';
                 $sOptions .= 'indexFieldVal = indexField[0].replace(/\[|\]/g,""); ';
-
-                $sOptions .= 'var response = ajax_function("../gulliver/defaultAjaxDynaform", "reloadField", ';
-                $sOptions .= '               "form=' . $sOwnerId . '&fields=" + sField + "&grid=' . $ownerName . '&row=" + indexFieldVal + "&aFieldCurrent=" + sFieldCurrent, "POST" ); ';
-
+                $sOptions .= 'var gridField = gridGetAllFieldAndValue("' . $ownerName . '][" + indexFieldVal + "][' . $this->name . '", 0); '; //Not get current field
+                $sOptions .= 'var response = ajax_function("../gulliver/defaultAjaxDynaform", "reloadField", "form=' . $sOwnerId . '&fields=" + sFieldCurrent + "&grid=' . $ownerName . '" + ((gridField != "")? "&gridField=" + encodeURIComponent("{" + gridField + "}") : "") + "&row=" + indexFieldVal, "POST"); ';
+                $sOptions .= '';
                 $sOptions .= 'if (response.substr(0,1) === \'[\') { ';
                 $sOptions .= '  var newcont; ';
                 $sOptions .= '  eval(\'newcont=\' + response + \';\'); ';
-
+                $sOptions .= '';
                 $sOptions .= '  for(var i = 0; i<newcont.length; i++) { ';
                 // $sOptions .= '    var depField = getField(\'' . $rowIdField . '[\' + ' . 'newcont[i].name); ';
                 $sOptions .= '    var depField = \'' . $rowIdField . '[\' + ' . 'newcont[i].name; ';
-
                 $sOptions .= '    getField(depField).value = newcont[i].value; ';
-                $sOptions .= '    if (newcont[i].content.type == \'dropdown\') { ';
+                $sOptions .= '
+                                  switch (newcont[i].content.type) {
+                                      case "dropdown":
+                                          getField(depField).options.length = 0;
 
-                $sOptions .= '      fieldLength = getField(depField).options.length; ';
+                                          for (ni = 0; ni < newcont[i].content.options.length; ni++ ){
+                                              getField(depField).options[ni] = new Option(newcont[i].content.options[ni].value, newcont[i].content.options[ni].key);
+                                          }
 
-                $sOptions .= '      for (ni = 0; ni < fieldLength; ni++ ){ ';
-                $sOptions .= '        getField(depField).options.remove(ni); ';
-                $sOptions .= '      } ';
-                $sOptions .= '      getField(depField).length = 0; ';
+                                          if (getField(depField).options.length == 0) {
+                                              getField(depField).options[0] = new Option("", "");
+                                          }
+                                          break;
+                                      case "text":
+                                          getField(depField).value = "";
 
-                $sOptions .= '      for (ni = 0; ni < newcont[i].content.options.length; ni++ ){ ';
-                $sOptions .= '        var opt = document.createElement("OPTION"); ';
-                $sOptions .= '        opt.value = newcont[i].content.options[ni].key; ';
-                $sOptions .= '        opt.text  = newcont[i].content.options[ni].value; ';
-                $sOptions .= '        getField(depField).options.add(opt); ';
-
-                $sOptions .= '      } ';
-                $sOptions .= '    } ';
-
+                                          if (newcont[i].content.options) {
+                                              if (newcont[i].content.options[0]) {
+                                                  getField(depField).value = newcont[i].content.options[0].value;
+                                              }
+                                          }
+                                          break;
+                                  }
+                ';
                 $sOptions .= '  } ';
                 $sOptions .= '} else { ';
                 $sOptions .= '  alert(\'Invalid response: \' + response); ';
@@ -3453,9 +3429,12 @@ class XmlForm_Field_Dropdown extends XmlForm_Field
             $html .= $rowId == '' ? $this->NSFieldType() : $this->NSGridType() . ' ';
             $html .= $this->NSDependentFields( true ) . ' ';
             $html .= '>';
+
             $findValue = '';
             $firstValue = '';
             $cont = 0;
+            $swOption = 0;
+
             foreach ($this->option as $optValue => $optName) {
                 settype( $optValue, 'string' );
                 $html .= '<option value="' . $optValue . '" ' . (($optValue === $value) ? 'selected="selected"' : '') . '>' . $optName . '</option>';
@@ -3466,8 +3445,11 @@ class XmlForm_Field_Dropdown extends XmlForm_Field
                 if ($firstValue == '') {
                     $firstValue = $optValue;
                 }
-                $cont ++;
+
+                $cont = $cont + 1;
+                $swOption = 1;
             }
+
             foreach ($this->sqlOption as $optValue => $optName) {
                 settype( $optValue, 'string' );
                 $html .= '<option value="' . $optValue . '" ' . (($optValue === $value) ? 'selected="selected"' : '') . '>' . $optName . '</option>';
@@ -3478,7 +3460,14 @@ class XmlForm_Field_Dropdown extends XmlForm_Field
                 if ($firstValue == '') {
                     $firstValue = $optValue;
                 }
+
+                $swOption = 1;
             }
+
+            if ($swOption == 0) {
+                $html = $html . "<option value=\"\"></option>";
+            }
+
             $html .= '</select>';
             if ($readOnlyField != '') {
                 $html .= '<input type="hidden" ';
@@ -4006,10 +3995,12 @@ class XmlForm_Field_Grid extends XmlForm_Field
             $using_template = 'grid_view';
         }
 
-        $tpl = new xmlformTemplate( $this, PATH_CORE . "templates/{$using_template}.html" );
+        $tpl = new xmlformTemplate($this, PATH_CORE . "templates" . PATH_SEP . "$using_template.html");
+
         if (! isset( $values ) || ! is_array( $values ) || sizeof( $values ) == 0) {
             $values = array_keys( $this->fields );
         }
+
         if ($therow != - 1) {
             //Check if values arrary is complete to can flip.
             $xValues = array ();
@@ -4033,12 +4024,18 @@ class XmlForm_Field_Grid extends XmlForm_Field
             }
             $values = $xValues;
         }
+
         $aValuekeys = array_keys( $values );
+
         if (count( $aValuekeys ) > 0 && (int) $aValuekeys[0] == 1) {
             $values = $this->flipValues( $values );
         }
+
         //if ($therow == 1)g::pr($values);
         $this->rows = count( reset( $values ) );
+
+        //Fields Grid only required fields of the grid, no all fields of dynaform main
+        /*
         if (isset( $owner->values )) {
             foreach ($owner->values as $key => $value) {
                 if (! isset( $values[$key] )) {
@@ -4049,6 +4046,8 @@ class XmlForm_Field_Grid extends XmlForm_Field
                 }
             }
         }
+        */
+
         foreach ($this->fields as $k => $v) {
             if (isset( $values['SYS_GRID_AGGREGATE_' . $this->name . '_' . $k] )) {
                 $this->fields[$k]->aggregate = $values['SYS_GRID_AGGREGATE_' . $this->name . '_' . $k];
@@ -5470,19 +5469,25 @@ class xmlformTemplate extends Smarty
     public function getFields (&$form, $therow = -1)
     {
         $result = array ();
+
         foreach ($form->fields as $k => $v) {
+            $field = $v;
+
             if ($form->mode != '') {
                 #@ last modification: erik
-                $v->mode = $form->mode; #@
+                $field->mode = $form->mode; #@
             } #@
+
             //if (isset($form->fields[$k]->sql)) $form->fields[$k]->executeSQL( $form );
             $value = (isset( $form->values[$k] )) ? $form->values[$k] : null;
             $result[$k] = G::replaceDataField( $form->fields[$k]->label, $form->values );
+
             if ($form->type == 'xmlform') {
-                if (in_array($v->type, array('text', 'currency', 'percentage', 'password', 'suggest', 'textarea', 'dropdown', 'yesno', 'listbox', 'checkbox', 'date', 'link', 'file'))) {
+                if (in_array($field->type, array("text", "currency", "percentage", "password", "suggest", "textarea", "dropdown", "yesno", "listbox", "checkbox", "date", "link", "file"))) {
                     $result[$k] = '<label for="form[' . $k . ']">' . $result[$k] . '</label>';
                 }
             }
+
             if (! is_array( $value )) {
                 if ($form->type == 'grid') {
                     $aAux = array ();
@@ -5496,7 +5501,7 @@ class xmlformTemplate extends Smarty
                         }
                     }
 
-                    switch ($v->type) {
+                    switch ($field->type) {
                         case "link":
                             $result["form"][$k] = $form->fields[$k]->renderGrid($aAux, array(), $form);
                             break;
@@ -5505,7 +5510,7 @@ class xmlformTemplate extends Smarty
                             break;
                     }
                 } else {
-                    switch ($v->type) {
+                    switch ($field->type) {
                         case "link":
                             $result["form"][$k] = $form->fields[$k]->render(
                                 $value,
@@ -5530,10 +5535,10 @@ class xmlformTemplate extends Smarty
                     }
                 }*/
 
-                if ($v->type == "grid") {
+                if ($field->type == "grid") {
                     $result["form"][$k] = $form->fields[$k]->renderGrid( $value, $form, $therow );
                 } else {
-                    switch ($v->type) {
+                    switch ($field->type) {
                         case "dropdown":
                             $result["form"][$k] = $form->fields[$k]->renderGrid( $value, $form, false, $therow );
                             break;
@@ -5554,11 +5559,13 @@ class xmlformTemplate extends Smarty
                 }
             }
         }
+
         foreach ($form as $name => $value) {
             if ($name !== 'fields') {
                 $result['form_' . $name] = $value;
             }
         }
+
         return $result;
     }
 

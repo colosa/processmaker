@@ -468,8 +468,9 @@ var G_Grid = function(oForm, sGridName){
                     var aObjectsScript = oNewRow.getElementsByTagName('td')[i].getElementsByTagName('script');
 
                     var sObjectType = this.aFields[i-1].sType;
+
                     if (aObjectsScript[0] != 'undefined' && sObjectType == 'suggest') {
-						if ( this.determineBrowser() == "MSIE" ) {
+                        if (this.determineBrowser() == "MSIE") {
 
                             var firstNode = aCells[i];
 
@@ -489,15 +490,13 @@ var G_Grid = function(oForm, sGridName){
                             scriptElement.text = sScriptAdjustRow;
                             parentScript.removeChild(elementScript);
                             parentScript.appendChild(scriptElement);
-
-						} else {
- 	                        var sObjScript = aObjectsScript[0].innerHTML;
-    	                    var sNewObjScript = sObjScript.replace(/\[1\]/g, '\[' + currentRow + '\]');
-            	            aObjectsScript[0].innerHTML = sNewObjScript;
-                	        eval(aObjectsScript[0].innerHTML);
-						}
+                        } else {
+                            var sObjScript = aObjectsScript[0].innerHTML;
+                            var sNewObjScript = sObjScript.replace(/\[1\]/g, "\[" + currentRow + "\]");
+                            aObjectsScript[0].innerHTML = sNewObjScript;
+                            eval(aObjectsScript[0].innerHTML);
+                        }
                     }
-
                     break;
                   case 'checkbox': //CHECKBOX
                       var attributeCheckBox = elementAttributesNS(aObjects[n], "");
@@ -599,10 +598,14 @@ var G_Grid = function(oForm, sGridName){
               for (x=0; x < aDependents.length; x++){
                 if (aDependents[x] == sObject) sw = true;
               }
+
               //Delete Options if dropdow is dependent
               //only remains empty value
               if (sw){
+                oNewSelect.options.length = 0; //Delete options
+
                 var oAux = document.createElement(aObjects[0].tagName);
+
                 for ( var j = 0; j < aObjects[0].options.length; j++) {
                   if (aObjects[0].options[j].value == ''){
                     var oOption = document.createElement('OPTION');
@@ -611,14 +614,19 @@ var G_Grid = function(oForm, sGridName){
                     oAux.options.add(oOption);
                   }
                 }
-                oNewSelect.innerHTML = ''; //Delete options
+
                 //aObjects[0].innerHTML = ''; //Delete options
+
                 for (var r =0; r < oAux.options.length; r++){
                   var xOption = document.createElement('OPTION');
                   xOption.value = oAux.options[r].value;
                   xOption.text = oAux.options[r].text;
                   //aObjects[0].options.add(xOption);
                   oNewSelect.options.add(xOption);
+                }
+
+                if (oNewSelect.options.length == 0) {
+                    oNewSelect.options[0] = new Option("", "");
                 }
               }else{
                 //Set Default Value if it's not a Dependent Field
@@ -663,6 +671,7 @@ var G_Grid = function(oForm, sGridName){
                 }
                 //TODO: Implement Default Value and Dependent Fields Trigger for grid dropdowns
               }
+
               var parentSelect = aObjects[0].parentNode;
               parentSelect.removeChild(aObjects[0]);
               parentSelect.appendChild(oNewSelect);
@@ -1154,25 +1163,25 @@ var G_Grid = function(oForm, sGridName){
         oAux = this.getElementByName(aAux[1], aFields[i]);
         sAux = sAux.replace(new RegExp(aFields[i], "g"), "parseFloat(G.cleanMask(this.getElementByName(" + aAux[1] + ", '" + aFields[i] + "').value().replace(/[$|a-zA-Z\s]/g,'') || 0, '" + (oAux.sMask ? oAux.sMask : '')
         + "').result.replace(/,/g, ''))");
-        
+
         eval("if (!document.getElementById('" + aAux[0] + '][' + aAux[1] + '][' + aFields[i] + "]')) { oContinue = false; }");
       }
     }
     eval("if (!document.getElementById('" + aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + "]')) { oContinue = false; }");
 
     var swReal=0;
-    
+
     if (oContinue) {
       //we're selecting the mask to put in the field with the formula
       for (i = 0; i < this.aFields.length; i++) {
         if(oField.sFieldName==this.aFields[i].sFieldName) {
         	maskformula=this.aFields[i].oProperties.mask;
-        	
+
         	if(this.aFields[i].oProperties.validate=='Real')
         		swReal=1;
         }
       }
-      
+
       if(maskformula!=''){
         maskDecimal=maskformula.split(";");
         if(maskDecimal.length > 1) {
@@ -1192,17 +1201,17 @@ var G_Grid = function(oForm, sGridName){
     	  else
     		  maskToPut=0;
       }
-      
+
       // clean the field and load mask execute event keypress
       document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']').value = '';
       this.executeEvent(document.getElementById(aAux[0]+']['+ aAux[1] + '][' + oField.sFieldName + ']'), 'keypress');
 
       // execute formula and set decimal
       eval("document.getElementById('" + aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + "]').value = (" + sAux + ').toFixed('+maskToPut+');');
-      
+
       // trim value
       document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value = document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value.replace(/^\s*|\s*$/g,"");
-      
+
       // set '' to field if response is NaN
       if (document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value =='NaN')
         document.getElementById(aAux[0] + '][' + aAux[1] + '][' + oField.sFieldName + ']').value = '';
