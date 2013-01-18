@@ -72,6 +72,7 @@ function run_upgrade($command, $args)
         CLI::logging(CLI::error("checksum.txt not found, integrity check is not possible") . "\n");
         if (!CLI::question("Integrity check failed, do you want to continue the upgrade?")) {
             CLI::logging("Upgrade failed\n");
+            $flag = G::isPMUnderUpdating(0);
             die();
         }
     } else {
@@ -90,6 +91,7 @@ function run_upgrade($command, $args)
         if (!(empty($checksum['missing']) || empty($checksum['diff']))) {
             if (!CLI::question("Integrity check failed, do you want to continue the upgrade?")) {
                 CLI::logging("Upgrade failed\n");
+                $flag = G::isPMUnderUpdating(0);
                 die();
             }
         }
