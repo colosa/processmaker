@@ -4327,7 +4327,7 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
                         $mask = str_replace( "%", "", $this->mask );
                         $v = date( masktophp($mask, $v) );
                     }
-                    $html = '<input ' . $this->NSRequiredValue() . ' class="module_app_input___gray" id="form[' . $owner->name . '][' . $r . '][' . $this->name . ']" name="form[' . $owner->name . '][' . $r . '][' . $this->name . ']" type ="text" size="' . $this->size . '" maxlength="' . $this->maxLength . '" value="' . $this->htmlentities( $v, ENT_COMPAT, 'utf-8' ) . '" required="' . $isRequired . '" style="display:none;' . htmlentities( $this->style, ENT_COMPAT, 'utf-8' ) . '" ' . $this->NSGridType() . '/>' . htmlentities( $v, ENT_COMPAT, 'utf-8' );
+                    $html = '<input ' . $this->NSRequiredValue() . ' class="module_app_input___gray" id="form[' . $owner->name . '][' . $r . '][' . $this->name . ']" name="form[' . $owner->name . '][' . $r . '][' . $this->name . ']" type ="text" size="' . $this->size . '" maxlength="' . $this->maxLength . '" value="' . $this->htmlentities( $v, ENT_COMPAT, 'utf-8' ) . '" pm:required="' . $isRequired . '" style="display:none;' . htmlentities( $this->style, ENT_COMPAT, 'utf-8' ) . '" ' . $this->NSGridType() . '/>' . htmlentities( $v, ENT_COMPAT, 'utf-8' );
                 } else {
                     $id = 'form[' . $owner->name . '][' . $r . '][' . $this->name . ']';
                     $html = $this->__draw_widget( $id, $v, $owner, true );
