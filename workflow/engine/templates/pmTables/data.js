@@ -130,8 +130,8 @@ Ext.onReady(function(){
       id        : tableDef.FIELDS[i].FLD_NAME,
       header    : tableDef.FIELDS[i].FLD_DESCRIPTION,
       dataIndex : tableDef.FIELDS[i].FLD_NAME,
-      width     : 40,
-      align     : 'right',
+      width     : 95,
+      align     : 'center',
       renderer  : columnRenderer
     };
     if (tableDef.FIELDS[i].FLD_AUTO_INCREMENT != 1) {
@@ -322,7 +322,7 @@ Ext.onReady(function(){
     frame:false,
     columnLines: false,
     viewConfig: {
-      forceFit:true
+      forceFit:false
     },
     store: store,
     loadMask: true,
