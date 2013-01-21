@@ -162,7 +162,7 @@ Ext.onReady(function(){
             allowBlank: true,
             listeners:{
               change: function(f,e){
-                this.setValue(this.getValue().toUpperCase());
+            	this.setValue(this.getValue().replace(" ","").toUpperCase());
               }
             }
           }
