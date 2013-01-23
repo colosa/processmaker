@@ -75,7 +75,7 @@
             <img src="images/pm.png" alt="twitter" id="twitter" />
 
             <p id="twitter_text">
-            <a href= "http://www.processmaker.com/privacy-statement" target="_blank"> Privacy Statement </a>| <a href= "http://www.processmaker.com/security-statement" target="_blank">Security Statement </a> | <a href= "http://www.processmaker.com/terms-of-service" target="_blank"> Terms of Service </a> | <a href= "http://www.processmaker.com/commercial-licensee" target="_blank"> Commercial License </a> | <a href= "http://www.processmaker.com/contact-us" target="_blank"> Contact Us </a>| <a href= "http://feeds.feedburner.com/processmaker" target="_blank"> RSS </a>
+            <a href= "http://www.processmaker.com/privacy-statement" target="_blank"> Privacy Statement </a>| <a href= "http://www.processmaker.com/security-statement" target="_blank">Security Statement </a> | <a href= "http://www.processmaker.com/terms-of-service" target="_blank"> Terms of Service </a> | <a href= "http://www.processmaker.com/commercial-license" target="_blank"> Commercial License </a> | <a href= "http://www.processmaker.com/contact-us" target="_blank"> Contact Us </a>| <a href= "http://feeds.feedburner.com/processmaker" target="_blank"> RSS </a>
             &#169; Copyright 2000 - 2012 Colosa, Inc. <a href= "http://www.colosa.com/" target="_blank"> www.colosa.com </a>
             </p>
         <!-- End Twitter -->
