@@ -106,11 +106,12 @@
     if(document.getElementById('TRI_UID')) {
         var triUid = document.getElementById('TRI_UID').value;
     }
-    var triTitle =document.getElementById('TRI_TITLE').value;
+    var triTitle = document.getElementById('TRI_TITLE').value;
 
     triTitle = triTitle.replace(/^\s*|\s*$/g,"");
     if (triTitle == '') {
-      alert(G_STRINGS.ID_REQUIRED_NAME_TRIGGERS);return false;
+        document.getElementById('TRI_TITLE').focus();
+        alert(G_STRINGS.ID_REQUIRED_NAME_TRIGGERS);return false;
     }
     document.getElementById('TRI_TITLE').value = triTitle;
 
@@ -119,9 +120,12 @@
     for (i=0; i<fieldsRequired.length; i++)
     {
         var field = document.getElementById(fieldsRequired[i]).value;
+        field = field.replace(/^\s*|\s*$/g,"");
         if (field == '') {
+            document.getElementById(fieldsRequired[i]).focus();
             alert(_('ID_REQUIRED_FIELDS_ERROR'));return false;
         }
+        document.getElementById(fieldsRequired[i]).value = field;
     }
     if(triUid==''){
         reqName=ajax_function("../triggers/triggers_Save",'lookforNameTrigger','NAMETRIGGER='+encodeURIComponent(triTitle)+'&proUid='+(document.getElementById('PRO_UID').value),'POST') ;
