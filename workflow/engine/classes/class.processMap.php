@@ -114,6 +114,7 @@ class processMap
             $oDataset = TaskPeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
+
             while ($aRow1 = $oDataset->getRow()) {
                 $oTask = null;
                 $oTask->uid = $aRow1['TAS_UID'];
@@ -198,6 +199,7 @@ class processMap
                     $oTask->derivation->to[] = $oTo;
                     $oDataset2->next();
                 }
+
                 if ($bCT) {
                     $oCriteria = new Criteria( 'workflow' );
                     $oCriteria->addSelectColumn( 'COUNT(*) AS CANT' );
@@ -243,8 +245,12 @@ class processMap
                         if (!empty($aRow2["FINISH"])) {
                             $oTask->color = "#006633"; //Green
                         } else {
-                            if ($aRow2["CANT"] == 0 || $oTask->derivation->type != 5) {
-                                $oTask->color = "#939598"; //Gray
+                            if ($oTask->derivation->type != 5) {
+                                if ($aRow2["CANT"] != 0) {
+                                    $oTask->color = "#FF0000"; //Red
+                                } else {
+                                    $oTask->color = "#939598"; //Gray
+                                }
                             } else {
                                 //$oTask->color = "#FF9900"; //Yellow
                                 $oTask->color = "#FF0000"; //Red
@@ -296,8 +302,12 @@ class processMap
                             if (!empty($aRow2["FINISH"])) {
                                 $oTask->color = "#006633"; //Green
                             } else {
-                                if ($aRow2["CANT"] == 0 || $oTask->derivation->type != 5) {
-                                    $oTask->color = "#939598"; //Gray
+                                if ($oTask->derivation->type != 5) {
+                                    if ($aRow2["CANT"] != 0) {
+                                        $oTask->color = "#FF0000"; //Red
+                                    } else {
+                                        $oTask->color = "#939598"; //Gray
+                                    }
                                 } else {
                                     $oTask->color = "#FF9900"; //Yellow
                                 }
