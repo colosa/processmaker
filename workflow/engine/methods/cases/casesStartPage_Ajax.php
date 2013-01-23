@@ -62,7 +62,7 @@ function getProcessList ()
         if (1) {
             foreach ($processList as $key => $processInfo) {
                 $tempTree['text'] = $key;
-                $tempTree['id'] = $key;
+                $tempTree['id'] = preg_replace('([^A-Za-z0-9])', '', $key);
                 $tempTree['cls'] = 'folder';
                 $tempTree['draggable'] = true;
                 $tempTree['optionType'] = "category";
@@ -79,7 +79,7 @@ function getProcessList ()
                     //print_r($processInfo);
                     $tempTreeChild['text'] = $keyChild; //ellipsis ( $keyChild, 50 );
                     //$tempTree['text']=$key;
-                    $tempTreeChild['id'] = $keyChild;
+                    $tempTreeChild['id'] = preg_replace('([^A-Za-z0-9 ()])', '', $keyChild);
                     $tempTreeChild['draggable'] = true;
                     $tempTreeChild['leaf'] = true;
                     $tempTreeChild['icon'] = '/images/icon.trigger.png';
