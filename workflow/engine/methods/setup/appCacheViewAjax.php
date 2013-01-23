@@ -16,14 +16,14 @@ switch ($request) {
         $appCacheViewEngine = $oConf->aConfig;
 
         if (isset( $appCacheViewEngine['LANG'] )) {
-            $lang = $appCacheViewEngine['LANG'];
+            $lang = (defined('SYS_LANG')) ? SYS_LANG : $appCacheViewEngine['LANG'];
             $status = strtoupper( $appCacheViewEngine['STATUS'] );
         } else {
-            $confParams = Array ('LANG' => 'en','STATUS' => ''
+            $confParams = Array ('LANG' => (defined('SYS_LANG')) ? SYS_LANG : 'en','STATUS' => ''
             );
             $oConf->aConfig = $confParams;
             $oConf->saveConfig( 'APP_CACHE_VIEW_ENGINE', '', '', '' );
-            $lang = 'en';
+            $lang = (defined('SYS_LANG')) ? SYS_LANG : 'en';
             $status = '';
         }
 
@@ -143,7 +143,7 @@ switch ($request) {
 
         //DEPRECATED $lang = $_POST['lang'];
         //there is no more support for other languages that english
-        $lang = 'en';
+        $lang = (defined('SYS_LANG')) ? SYS_LANG : 'en';
 
         try {
             //setup the appcacheview object, and the path for the sql files
