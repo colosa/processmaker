@@ -106,6 +106,10 @@ class Language extends BaseLanguage
 
     public function findById ($LAN_ID)
     {
+        if (strpos($LAN_ID, '_') !== false) {
+            $aux = split('_', $LAN_ID);
+            $LAN_ID = $aux[0];
+        }
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( LanguagePeer::LAN_ID );
         $oCriteria->addSelectColumn( LanguagePeer::LAN_NAME );
