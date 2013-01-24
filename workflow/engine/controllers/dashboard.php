@@ -45,7 +45,7 @@ class Dashboard extends Controller
                     foreach ($dashletsExist as $key => $value) {
                         $listDashletAux[$value['DAS_INS_UID']] = $key;
                     }
-                    
+
                     $dashletsShow['0'] = array();
                     foreach ($aConfiguration['ORDER']['0'] as $value) {
                         if (isset($listDashletAux[$value])) {
@@ -425,6 +425,7 @@ class Dashboard extends Controller
             $criteria = new Criteria( 'workflow' );
             $criteria->addSelectColumn( DashletPeer::DAS_UID );
             $criteria->addSelectColumn( DashletPeer::DAS_TITLE );
+            $criteria->addSelectColumn( DashletPeer::DAS_CLASS );
             //ORDER BY
             $criteria->addAscendingOrderByColumn( DashletPeer::DAS_TITLE );
 
@@ -432,8 +433,9 @@ class Dashboard extends Controller
             $dataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $dataset->next();
             while ($row = $dataset->getRow()) {
-                $dashlets[] = array ($row['DAS_UID'],$row['DAS_TITLE']
-                );
+                if ($this->pmDashlet->verifyPluginDashlet($row['DAS_CLASS'])) {
+                    $dashlets[] = array ($row['DAS_UID'],$row['DAS_TITLE']);
+                }
                 $dataset->next();
             }
 

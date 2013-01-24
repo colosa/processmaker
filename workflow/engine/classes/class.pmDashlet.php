@@ -347,23 +347,14 @@ class PMDashlet extends DashletInstance implements DashletInterface
         }
     }
 
-    private static function setIncludePath ()
-    {
-        $oPluginRegistry = &PMPluginRegistry::getSingleton();
-        $pluginsDashlets = $oPluginRegistry->getDashlets();
-        foreach ($pluginsDashlets as $pluginDashlet) {
-            set_include_path( get_include_path() . PATH_SEPARATOR . PATH_PLUGINS . $pluginDashlet . PATH_SEP );
-        }
-    }
-
-    private static function verifyPluginDashlet ($className)
+    public static function verifyPluginDashlet ($className)
     {
         // 1-- if name class is in core
         $fileExist = PATH_CORE . 'classes' . PATH_SEP . 'class.' . $className . '.php';
         if (file_exists($fileExist)) {
             return true;
         }
-        
+
         // 2-- if name class is in plugin
 
         //---- verify the name plugin of the class
@@ -372,13 +363,13 @@ class PMDashlet extends DashletInstance implements DashletInterface
         $pluginsDashlets = $oPluginRegistry->getDashlets();
 
         foreach ($pluginsDashlets as $pluginDashlet) {
-            $fileExist = PATH_PLUGINS . $pluginDashlet . PATH_SEP . $pluginDashlet . PATH_SEP . 'classes' . PATH_SEP . 'class.' . $className . '.php';
+            $fileExist = PATH_PLUGINS . $pluginDashlet . PATH_SEP . 'classes' . PATH_SEP . 'class.' . $className . '.php';
             if (file_exists($fileExist)) {
                 $pluginName = $pluginDashlet;
                 break;
             }
         }
-        
+
         //---- verify if the plugin is active
         if ($pluginName == '') {
             return false;
@@ -400,6 +391,15 @@ class PMDashlet extends DashletInstance implements DashletInterface
                 closedir( $handle );
             }
             return true;
+        }
+    }
+
+    private static function setIncludePath ()
+    {
+        $oPluginRegistry = &PMPluginRegistry::getSingleton();
+        $pluginsDashlets = $oPluginRegistry->getDashlets();
+        foreach ($pluginsDashlets as $pluginDashlet) {
+            set_include_path( get_include_path() . PATH_SEPARATOR . PATH_PLUGINS . $pluginDashlet . PATH_SEP );
         }
     }
 }
