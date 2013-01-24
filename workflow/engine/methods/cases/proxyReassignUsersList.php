@@ -46,7 +46,7 @@ function array_sort ($array, $on, $order = SORT_ASC, $query = '')
             if ($query == '') {
                 $new_array[] = $array[$k];
             } else {
-                if (preg_match( "/" . $query . "/i", $array[$k]['userFullname'] )) {
+                if (preg_match( "/" . preg_quote($query, '/') . "/i", $array[$k]['userFullname'] )) {
                     $new_array[] = $array[$k];
                 }
             }
