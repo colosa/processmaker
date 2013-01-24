@@ -135,6 +135,7 @@ class Derivation
                             break;
                     }
                     $aDerivation['NEXT_TASK']['USR_UID'] = '';
+                    $aDerivation['NEXT_TASK']['USER_ASSIGNED'] = array('USR_UID' => '');
                 } else {
                     //3. load the task information of normal NEXT_TASK
                     $aDerivation['NEXT_TASK'] = $oTask->load( $aDerivation['ROU_NEXT_TASK'] ); //print $aDerivation['ROU_NEXT_TASK']." **** ".$aDerivation['NEXT_TASK']['TAS_TYPE']."<hr>";
@@ -764,7 +765,7 @@ class Derivation
 
             if ($aSP['SP_SYNCHRONOUS'] == 0) {
                 $this->case->setDelInitDate( $currentDelegation['APP_UID'], $iNewDelIndex );
-                $aDeriveTasks = $this->prepareInformation( array ('USER_UID' => - 1,'APP_UID' => $currentDelegation['APP_UID'],'DEL_INDEX' => $iNewDelIndex
+                $aDeriveTasks = $this->prepareInformation( array ('USER_UID' => -1,'APP_UID' => $currentDelegation['APP_UID'],'DEL_INDEX' => $iNewDelIndex
                 ) );
 
                 if (isset( $aDeriveTasks[1] )) {

@@ -110,8 +110,8 @@ body {    background: #ffffff none repeat scroll 0 0 }
 
 /* === Content Styles === */
 
-#content {    
-	  padding: 10px 44px; 
+#content {
+	  padding: 10px 44px;
 	  background-image: url(../images/updating/underConstruction.png);
     background-position: right top;
     background-repeat: no-repeat;
@@ -141,7 +141,7 @@ body {    background: #ffffff none repeat scroll 0 0 }
     height: 100px;
     text-align: center;
     color: #ffffff;
-    
+
 }
 
 a.prev {
@@ -166,32 +166,31 @@ a.next {
 </style>
 </head>
 <body>
-<input id="remainingTime" type="hidden" value="<?=$_SERVER["timeRemainUpdate"];?>" />
 <div class="container">
-	
+
     <div id="header">
-    
+
     	<div id="logo">
         	<a href="index.html"><img src="../images/updating/logo.png" alt="logo"/></a>
         </div><!--end logo-->
-            
+
         <div id="contact_details">
         	<p><a href="#">info@colosa.com</a></p>
 			<p><a href="#">phone : +1-617-340-3377</a></p>
-		</div><!--end contact details-->     
-                
+		</div><!--end contact details-->
+
 	</div><!--end header-->
-              <div style="clear:both"></div> 
-              
+              <div style="clear:both"></div>
+
 	<div id="main">
 
 		 <div id="content">
-                    
+
          <div class="text">
 						<h2>This website is under updating,</h2>
                         <h2>please wait...</h2>
          </div><!--end text-->
-         <br/><br/><br/><br/>       
+         <br/><br/><br/><br/>
          <br/><br/><br/><br/>
          <div class="details">
 <br/><br/>
@@ -203,10 +202,10 @@ a.next {
 						<!--<a href="#">Directory</a> |-->
 						<a href="http://feeds.feedburner.com/processmaker">RSS</a>
 						<br>
-						&copy; Copyright 2000 - 2012 Colosa, Inc.  <a href="http://www.colosa.com">www.colosa.com</a>               
-                  </div><!--end details-->  
+						&copy; Copyright 2000 - 2012 Colosa, Inc.  <a href="http://www.colosa.com">www.colosa.com</a>
+                  </div><!--end details-->
                 </div><!--end content-->
-            
+
 </div><!--end main-->
 
 </div><!--end class container-->
