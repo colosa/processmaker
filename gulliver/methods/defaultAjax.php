@@ -125,6 +125,8 @@ for ($r = 0; $r < sizeof( $newValues ); $r ++) {
 $dependentFields = array_unique( $dependentFields );
 
 //Delete all dependencies of all fields, we're interested only in the fields sending from AJAX, this in grids
+$arrayFieldSubDependent = array();
+
 if (isset($_POST["grid"])) {
     $arrayField = (array)(Bootstrap::json_decode(urlDecode(stripslashes($_POST["fields"]))));
     $arrayDependentField = array();
@@ -140,10 +142,25 @@ if (isset($_POST["grid"])) {
 
     if ($ereg != null) {
         foreach ($dependentFields as $value) {
-            if (preg_match("/^(?:$ereg)\|.*$/", $value)) {
+            //Direct dependent fields
+            if (preg_match("/^(?:$ereg)\|[^\|]*$/", $value)) {
                 $arrayAux = explode("|", $value);
 
                 $arrayDependentField[] = $arrayAux[1];
+            }
+
+            //Subdependent fields
+            if (preg_match("/^(?:$ereg)\|.*$/", $value)) {
+                $arrayAux = explode("|", $value);
+                $index = $arrayAux[0];
+
+                unset($arrayAux[0]);
+
+                if (isset($arrayFieldSubDependent[$index])) {
+                    $arrayFieldSubDependent[$index] = array_unique(array_merge($arrayFieldSubDependent[$index], $arrayAux));
+                } else {
+                    $arrayFieldSubDependent[$index] = array_unique($arrayAux);
+                }
             }
         }
     }
@@ -153,10 +170,20 @@ if (isset($_POST["grid"])) {
 
 //Completed all fields of the grid
 if (isset($_POST["grid"]) && isset($_POST["gridField"])) {
+    //Completed all fields of the grid
     $arrayGridField = (array)(Bootstrap::json_decode(urldecode(stripslashes($_POST["gridField"]))));
 
     foreach ($arrayGridField as $index => $value) {
         $G_FORM->values[$_POST["grid"]][$_POST["row"]][$index] = $value;
+    }
+
+    //Delete all fields subdependent
+    foreach ($arrayFieldSubDependent as $index1 => $value1) {
+        $arrayAux = $value1;
+
+        foreach ($arrayAux as $value2) {
+            unset($G_FORM->values[$_POST["grid"]][$_POST["row"]][$value2]);
+        }
     }
 }
 
@@ -276,9 +303,7 @@ function subDependencies ($k, &$G_FORM, &$aux, $grid = '')
 
         //Set field and the dependent field of the grid
         foreach ($myDependentFields as $index => $value) {
-            if (!preg_match("/^.*\|.*$/", $value)) {
-                $myDependentFields[$index] = $k . "|" . $value;
-            }
+            $myDependentFields[$index] = $k . "|" . $value;
         }
     }
 
