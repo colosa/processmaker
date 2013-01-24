@@ -91,7 +91,9 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 * cache directory for temporary files (full path)
 	 */
-	define ('K_PATH_CACHE', K_PATH_MAIN.'cache/');
+	//define ('K_PATH_CACHE', K_PATH_MAIN.'cache/');
+    G::mk_dir(PATH_DATA_REPORTS . 'cache/');
+    define ('K_PATH_CACHE', PATH_DATA_REPORTS.'cache/');
 
 	/**
 	 * cache directory for temporary files (url path)
@@ -186,7 +188,8 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 * default main font name
 	 */
-	define ('PDF_FONT_NAME_MAIN', 'helvetica');
+	//define ('PDF_FONT_NAME_MAIN', 'helvetica');
+    define ('PDF_FONT_NAME_MAIN', 'timesnewroman');
 
 	/**
 	 * default main font size
@@ -196,7 +199,8 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 * default data font name
 	 */
-	define ('PDF_FONT_NAME_DATA', 'helvetica');
+	//define ('PDF_FONT_NAME_DATA', 'helvetica');
+    define ('PDF_FONT_NAME_DATA', 'arial');
 
 	/**
 	 * default data font size

@@ -25356,7 +25356,8 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 			}
 			// pixels
 			case 'px': {
-				$retval = $this->pixelsToUnits($value);
+				// $retval = $this->pixelsToUnits($value);
+				 $retval = $value / $k;
 				break;
 			}
 		}

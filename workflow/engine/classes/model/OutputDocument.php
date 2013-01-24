@@ -892,7 +892,7 @@ class OutputDocument extends BaseOutputDocument
 
         // Print text using writeHTMLCell()
         // $pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
-        $pdf->writeHTML($sContent);
+        $pdf->writeHTML($sContent, false, false, false, false, '');
         // ---------------------------------------------------------
 
         // Close and output PDF document
