@@ -413,7 +413,7 @@ var openSummaryWindow = function(appUid, delIndex, action)
         var summaryWindow = new Ext.Window({
           title: _('ID_SUMMARY'),
           layout: 'fit',
-          width: 600,
+          width: 750,
           height: 450,
           resizable: true,
           closable: true,
