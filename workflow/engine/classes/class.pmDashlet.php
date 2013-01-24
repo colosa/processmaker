@@ -224,11 +224,13 @@ class PMDashlet extends DashletInstance implements DashletInterface
                 if (! isset( $dashletsInstances[$row['DAS_INS_UID']] )) {
                     $arrayField = unserialize( $row["DAS_INS_ADDITIONAL_PROPERTIES"] );
 
-                    $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
-                    $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
-                    $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
+                    if (self::verifyPluginDashlet($row['DAS_CLASS'])) {
+                        $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
+                        $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
+                        $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
 
-                    $dashletsInstances[$row['DAS_INS_UID']] = $row;
+                        $dashletsInstances[$row['DAS_INS_UID']] = $row;
+                    }
                 }
                 $dataset->next();
             }
@@ -249,11 +251,13 @@ class PMDashlet extends DashletInstance implements DashletInterface
                 if (! isset( $dashletsInstances[$row['DAS_INS_UID']] )) {
                     $arrayField = unserialize( $row["DAS_INS_ADDITIONAL_PROPERTIES"] );
 
-                    $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
-                    $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
-                    $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
+                    if (self::verifyPluginDashlet($row['DAS_CLASS'])) {
+                        $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
+                        $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
+                        $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
 
-                    $dashletsInstances[$row['DAS_INS_UID']] = $row;
+                        $dashletsInstances[$row['DAS_INS_UID']] = $row;
+                    }
                 }
                 $dataset->next();
             }
@@ -276,11 +280,13 @@ class PMDashlet extends DashletInstance implements DashletInterface
                     if (! isset( $dashletsInstances[$row['DAS_INS_UID']] )) {
                         $arrayField = unserialize( $row["DAS_INS_ADDITIONAL_PROPERTIES"] );
 
-                        $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
-                        $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
-                        $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
+                        if (!(self::verifyPluginDashlet($row['DAS_CLASS']))) {
+                            $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
+                            $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
+                            $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
 
-                        $dashletsInstances[$row['DAS_INS_UID']] = $row;
+                            $dashletsInstances[$row['DAS_INS_UID']] = $row;
+                        }
                     }
                     $dataset->next();
                 }
@@ -305,11 +311,13 @@ class PMDashlet extends DashletInstance implements DashletInterface
                     if (! isset( $dashletsInstances[$row['DAS_INS_UID']] )) {
                         $arrayField = unserialize( $row["DAS_INS_ADDITIONAL_PROPERTIES"] );
 
-                        $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
-                        $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
-                        $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
+                        if (!(self::verifyPluginDashlet($row['DAS_CLASS']))) {
+                            $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
+                            $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
+                            $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
 
-                        $dashletsInstances[$row['DAS_INS_UID']] = $row;
+                            $dashletsInstances[$row['DAS_INS_UID']] = $row;
+                        }
                     }
                     $dataset->next();
                 }
@@ -348,4 +356,50 @@ class PMDashlet extends DashletInstance implements DashletInterface
         }
     }
 
+    private static function verifyPluginDashlet ($className)
+    {
+        // 1-- if name class is in core
+        $fileExist = PATH_CORE . 'classes' . PATH_SEP . 'class.' . $className . '.php';
+        if (file_exists($fileExist)) {
+            return true;
+        }
+        
+        // 2-- if name class is in plugin
+
+        //---- verify the name plugin of the class
+        $pluginName = '';
+        $oPluginRegistry = &PMPluginRegistry::getSingleton();
+        $pluginsDashlets = $oPluginRegistry->getDashlets();
+
+        foreach ($pluginsDashlets as $pluginDashlet) {
+            $fileExist = PATH_PLUGINS . $pluginDashlet . PATH_SEP . $pluginDashlet . PATH_SEP . 'classes' . PATH_SEP . 'class.' . $className . '.php';
+            if (file_exists($fileExist)) {
+                $pluginName = $pluginDashlet;
+                break;
+            }
+        }
+        
+        //---- verify if the plugin is active
+        if ($pluginName == '') {
+            return false;
+        } else {
+            if ($handle = opendir( PATH_PLUGINS )) {
+                while (false !== ($file = readdir( $handle ))) {
+                    if (strpos( $file, '.php', 1 ) && is_file( PATH_PLUGINS . $file )) {
+                        include_once (PATH_PLUGINS . $file);
+                        $pluginDetail = $oPluginRegistry->getPluginDetails( $file );
+                        if ($pluginDetail->sNamespace == $pluginName) {
+                            if ($pluginDetail->enabled == '1') {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                closedir( $handle );
+            }
+            return true;
+        }
+    }
 }
