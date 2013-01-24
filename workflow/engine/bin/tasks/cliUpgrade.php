@@ -105,10 +105,12 @@ function run_upgrade($command, $args)
     $count = count($workspaces);
     $first = true;
     $errors = false;
+    $countWorkspace = 1;
     $buildCacheView = array_key_exists("buildACV", $args);
     foreach ($workspaces as $index => $workspace) {
         try {
-            CLI::logging("Upgrading workspaces ($index/$count): " . CLI::info($workspace->name) . "\n");
+            $countWorkspace = $countWorkspace + $index;
+            CLI::logging("Upgrading workspaces ($countWorkspace/$count): " . CLI::info($workspace->name) . "\n");
             $workspace->upgrade($first, $buildCacheView, $workspace->name);
             $workspace->close();
             $first = false;
