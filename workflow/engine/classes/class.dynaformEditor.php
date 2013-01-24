@@ -164,9 +164,6 @@ class dynaformEditor extends WebResource
             $sName = 'dynaformEditor';
             $G_PUBLISH->publisherId = $sName;
             $oHeadPublisher = & headPublisher::getSingleton();
-            $labesTrans = G::getTranslations(Array('ID_FIELD_DYNAFORM_TEXT', 'ID_FIELD_DYNAFORM_CURRENCY', 'ID_FIELD_DYNAFORM_PERCENTAGE', 'ID_FIELD_DYNAFORM_PASSWORD', 'ID_FIELD_DYNAFORM_SUGGEST', 'ID_FIELD_DYNAFORM_TEXTAREA', 'ID_FIELD_DYNAFORM_TITLE', 'ID_FIELD_DYNAFORM_SUBTITLE', 'ID_FIELD_DYNAFORM_BUTTON', 'ID_FIELD_DYNAFORM_SUBMIT', 'ID_FIELD_DYNAFORM_RESET', 'ID_FIELD_DYNAFORM_DROPDOWN', 'ID_FIELD_DYNAFORM_YESNO', 'ID_FIELD_DYNAFORM_LISTBOX', 'ID_FIELD_DYNAFORM_CHECKBOX', 'ID_FIELD_DYNAFORM_CHECKGROUP', 'ID_FIELD_DYNAFORM_RADIOGROUP', 'DATE_LABEL', 'ID_FIELD_DYNAFORM_HIDDEN', 'ID_FIELD_DYNAFORM_LINK', 'ID_FIELD_DYNAFORM_LINK', 'ID_FIELD_DYNAFORM_FILE', 'ID_FIELD_DYNAFORM_JAVASCRIPT', 'ID_FIELD_DYNAFORM_GRID', 'ID_INDEX'
-                    ));
-            $oHeadPublisher->addScriptCode("var TRANSLATIONS = " . G::json_encode($labesTrans) . ";");
             $oHeadPublisher->setTitle(G::LoadTranslation('ID_DYNAFORM_EDITOR') . ' - ' . $Properties['DYN_TITLE']);
             $G_PUBLISH->AddContent('blank');
             $this->panelConf['title'] = '';
