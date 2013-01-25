@@ -1781,6 +1781,8 @@ class wsBase
 
             $oldFields['APP_DATA'] = array_merge( $oldFields['APP_DATA'], $Fields );
 
+            $oldFields['DEL_INDEX'] = $case['INDEX'];
+            $oldFields['TAS_UID'] = $taskId;
             $up_case = $oCase->updateCase( $caseId, $oldFields );
 
             $result = new wsResponse( 0, G::loadTranslation( 'ID_STARTED_SUCCESSFULLY' ) );
