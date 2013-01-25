@@ -964,8 +964,29 @@ class Cases
             }
             $oApp->update($Fields);
 
-            $DEL_INDEX = isset($Fields['DEL_INDEX']) ? $Fields['DEL_INDEX'] : '';
-            $TAS_UID   = isset($Fields['TAS_UID']) ? $Fields['TAS_UID'] : '';
+            $FieldsData = unserialize($Fields['APP_DATA']);
+
+            // set variable INDEX
+            $DEL_INDEX = '';
+            if (isset($Fields['DEL_INDEX'])) {
+                $DEL_INDEX = $Fields['DEL_INDEX'];
+            } else {
+                // if variable INDEX is in APP_DATA
+                if (isset($FieldsData['INDEX'])) {
+                    $DEL_INDEX = $FieldsData['INDEX'];
+                }
+            }
+
+            // set variable TAS_UID
+            $TAS_UID = '';
+            if (isset($Fields['TAS_UID'])) {
+                $TAS_UID = $Fields['TAS_UID'];
+            } else {
+                // if variable TAS_UID is in APP_DATA
+                if (isset($FieldsData['TASK'])) {
+                    $TAS_UID = $FieldsData['TASK'];
+                }
+            }
 
             G::LoadClass('reportTables');
             require_once 'classes/model/AdditionalTables.php';
