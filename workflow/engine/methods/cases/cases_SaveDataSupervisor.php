@@ -47,6 +47,7 @@ $aData['APP_STATUS'] = $Fields['APP_STATUS'];
 
 //$aData = $oCase->loadCase( $_SESSION['APPLICATION'] );
 $oCase->updateCase( $_SESSION['APPLICATION'], $aData );
+G::SendTemporalMessage( 'ID_SAVED_SUCCESSFULLY', 'info' );
 
 //go to the next step
 $aNextStep = $oCase->getNextSupervisorStep( $_SESSION['PROCESS'], $_SESSION['STEP_POSITION'] );
