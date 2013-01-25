@@ -19,6 +19,7 @@ $dateTo = isset( $_POST["dateTo"] ) ? substr( $_POST["dateTo"], 0, 10 ) : "";
 try {
     $userUid = (isset($_SESSION["USER_LOGGED"]) && $_SESSION["USER_LOGGED"] != "")? $_SESSION["USER_LOGGED"] : null;
     $result = "";
+    $solrEnabled = false;
 
     switch ($action) {
         case "search":
@@ -44,6 +45,16 @@ try {
             $solrConf["solr_instance"]
         );
 
+        if ($ApplicationSolrIndex->isSolrEnabled()) {
+            //Check if there are missing records to reindex and reindex them
+            $ApplicationSolrIndex->synchronizePendingApplications();
+            $solrEnabled = true;
+        } else{
+            $solrEnabled = false;
+        }
+    }
+
+    if ($solrEnabled) {
         $data = $ApplicationSolrIndex->getAppGridData(
             $userUid,
             $start,

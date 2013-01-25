@@ -34,6 +34,18 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
     protected $app_uid = '';
 
     /**
+     * The value for the app_change_date field.
+     * @var        int
+     */
+    protected $app_change_date;
+
+    /**
+     * The value for the app_change_trace field.
+     * @var        string
+     */
+    protected $app_change_trace;
+
+    /**
      * The value for the app_updated field.
      * @var        int
      */
@@ -62,6 +74,49 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
     {
 
         return $this->app_uid;
+    }
+
+    /**
+     * Get the [optionally formatted] [app_change_date] column value.
+     * 
+     * @param      string $format The date/time format string (either date()-style or strftime()-style).
+     *                          If format is NULL, then the integer unix timestamp will be returned.
+     * @return     mixed Formatted date/time value as string or integer unix timestamp (if format is NULL).
+     * @throws     PropelException - if unable to convert the date/time to timestamp.
+     */
+    public function getAppChangeDate($format = 'Y-m-d H:i:s')
+    {
+
+        if ($this->app_change_date === null || $this->app_change_date === '') {
+            return null;
+        } elseif (!is_int($this->app_change_date)) {
+            // a non-timestamp value was set externally, so we convert it
+            $ts = strtotime($this->app_change_date);
+            if ($ts === -1 || $ts === false) {
+                throw new PropelException("Unable to parse value of [app_change_date] as date/time value: " .
+                    var_export($this->app_change_date, true));
+            }
+        } else {
+            $ts = $this->app_change_date;
+        }
+        if ($format === null) {
+            return $ts;
+        } elseif (strpos($format, '%') !== false) {
+            return strftime($format, $ts);
+        } else {
+            return date($format, $ts);
+        }
+    }
+
+    /**
+     * Get the [app_change_trace] column value.
+     * 
+     * @return     string
+     */
+    public function getAppChangeTrace()
+    {
+
+        return $this->app_change_trace;
     }
 
     /**
@@ -96,6 +151,53 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
         }
 
     } // setAppUid()
+
+    /**
+     * Set the value of [app_change_date] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setAppChangeDate($v)
+    {
+
+        if ($v !== null && !is_int($v)) {
+            $ts = strtotime($v);
+            if ($ts === -1 || $ts === false) {
+                throw new PropelException("Unable to parse date/time value for [app_change_date] from input: " .
+                    var_export($v, true));
+            }
+        } else {
+            $ts = $v;
+        }
+        if ($this->app_change_date !== $ts) {
+            $this->app_change_date = $ts;
+            $this->modifiedColumns[] = AppSolrQueuePeer::APP_CHANGE_DATE;
+        }
+
+    } // setAppChangeDate()
+
+    /**
+     * Set the value of [app_change_trace] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setAppChangeTrace($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->app_change_trace !== $v) {
+            $this->app_change_trace = $v;
+            $this->modifiedColumns[] = AppSolrQueuePeer::APP_CHANGE_TRACE;
+        }
+
+    } // setAppChangeTrace()
 
     /**
      * Set the value of [app_updated] column.
@@ -138,14 +240,18 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
 
             $this->app_uid = $rs->getString($startcol + 0);
 
-            $this->app_updated = $rs->getInt($startcol + 1);
+            $this->app_change_date = $rs->getTimestamp($startcol + 1, null);
+
+            $this->app_change_trace = $rs->getString($startcol + 2);
+
+            $this->app_updated = $rs->getInt($startcol + 3);
 
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 2; // 2 = AppSolrQueuePeer::NUM_COLUMNS - AppSolrQueuePeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 4; // 4 = AppSolrQueuePeer::NUM_COLUMNS - AppSolrQueuePeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating AppSolrQueue object", $e);
@@ -353,6 +459,12 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
                 return $this->getAppUid();
                 break;
             case 1:
+                return $this->getAppChangeDate();
+                break;
+            case 2:
+                return $this->getAppChangeTrace();
+                break;
+            case 3:
                 return $this->getAppUpdated();
                 break;
             default:
@@ -376,7 +488,9 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
         $keys = AppSolrQueuePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getAppUid(),
-            $keys[1] => $this->getAppUpdated(),
+            $keys[1] => $this->getAppChangeDate(),
+            $keys[2] => $this->getAppChangeTrace(),
+            $keys[3] => $this->getAppUpdated(),
         );
         return $result;
     }
@@ -412,6 +526,12 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
                 $this->setAppUid($value);
                 break;
             case 1:
+                $this->setAppChangeDate($value);
+                break;
+            case 2:
+                $this->setAppChangeTrace($value);
+                break;
+            case 3:
                 $this->setAppUpdated($value);
                 break;
         } // switch()
@@ -442,7 +562,15 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
         }
 
         if (array_key_exists($keys[1], $arr)) {
-            $this->setAppUpdated($arr[$keys[1]]);
+            $this->setAppChangeDate($arr[$keys[1]]);
+        }
+
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setAppChangeTrace($arr[$keys[2]]);
+        }
+
+        if (array_key_exists($keys[3], $arr)) {
+            $this->setAppUpdated($arr[$keys[3]]);
         }
 
     }
@@ -458,6 +586,14 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
 
         if ($this->isColumnModified(AppSolrQueuePeer::APP_UID)) {
             $criteria->add(AppSolrQueuePeer::APP_UID, $this->app_uid);
+        }
+
+        if ($this->isColumnModified(AppSolrQueuePeer::APP_CHANGE_DATE)) {
+            $criteria->add(AppSolrQueuePeer::APP_CHANGE_DATE, $this->app_change_date);
+        }
+
+        if ($this->isColumnModified(AppSolrQueuePeer::APP_CHANGE_TRACE)) {
+            $criteria->add(AppSolrQueuePeer::APP_CHANGE_TRACE, $this->app_change_trace);
         }
 
         if ($this->isColumnModified(AppSolrQueuePeer::APP_UPDATED)) {
@@ -517,6 +653,10 @@ abstract class BaseAppSolrQueue extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false)
     {
+
+        $copyObj->setAppChangeDate($this->app_change_date);
+
+        $copyObj->setAppChangeTrace($this->app_change_trace);
 
         $copyObj->setAppUpdated($this->app_updated);
 

@@ -25,7 +25,7 @@ abstract class BaseAppSolrQueuePeer
     const CLASS_DEFAULT = 'classes.model.AppSolrQueue';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -33,6 +33,12 @@ abstract class BaseAppSolrQueuePeer
 
     /** the column name for the APP_UID field */
     const APP_UID = 'APP_SOLR_QUEUE.APP_UID';
+
+    /** the column name for the APP_CHANGE_DATE field */
+    const APP_CHANGE_DATE = 'APP_SOLR_QUEUE.APP_CHANGE_DATE';
+
+    /** the column name for the APP_CHANGE_TRACE field */
+    const APP_CHANGE_TRACE = 'APP_SOLR_QUEUE.APP_CHANGE_TRACE';
 
     /** the column name for the APP_UPDATED field */
     const APP_UPDATED = 'APP_SOLR_QUEUE.APP_UPDATED';
@@ -48,10 +54,10 @@ abstract class BaseAppSolrQueuePeer
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     private static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('AppUid', 'AppUpdated', ),
-        BasePeer::TYPE_COLNAME => array (AppSolrQueuePeer::APP_UID, AppSolrQueuePeer::APP_UPDATED, ),
-        BasePeer::TYPE_FIELDNAME => array ('APP_UID', 'APP_UPDATED', ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('AppUid', 'AppChangeDate', 'AppChangeTrace', 'AppUpdated', ),
+        BasePeer::TYPE_COLNAME => array (AppSolrQueuePeer::APP_UID, AppSolrQueuePeer::APP_CHANGE_DATE, AppSolrQueuePeer::APP_CHANGE_TRACE, AppSolrQueuePeer::APP_UPDATED, ),
+        BasePeer::TYPE_FIELDNAME => array ('APP_UID', 'APP_CHANGE_DATE', 'APP_CHANGE_TRACE', 'APP_UPDATED', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -61,10 +67,10 @@ abstract class BaseAppSolrQueuePeer
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     private static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('AppUid' => 0, 'AppUpdated' => 1, ),
-        BasePeer::TYPE_COLNAME => array (AppSolrQueuePeer::APP_UID => 0, AppSolrQueuePeer::APP_UPDATED => 1, ),
-        BasePeer::TYPE_FIELDNAME => array ('APP_UID' => 0, 'APP_UPDATED' => 1, ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('AppUid' => 0, 'AppChangeDate' => 1, 'AppChangeTrace' => 2, 'AppUpdated' => 3, ),
+        BasePeer::TYPE_COLNAME => array (AppSolrQueuePeer::APP_UID => 0, AppSolrQueuePeer::APP_CHANGE_DATE => 1, AppSolrQueuePeer::APP_CHANGE_TRACE => 2, AppSolrQueuePeer::APP_UPDATED => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('APP_UID' => 0, 'APP_CHANGE_DATE' => 1, 'APP_CHANGE_TRACE' => 2, 'APP_UPDATED' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -166,6 +172,10 @@ abstract class BaseAppSolrQueuePeer
     {
 
         $criteria->addSelectColumn(AppSolrQueuePeer::APP_UID);
+
+        $criteria->addSelectColumn(AppSolrQueuePeer::APP_CHANGE_DATE);
+
+        $criteria->addSelectColumn(AppSolrQueuePeer::APP_CHANGE_TRACE);
 
         $criteria->addSelectColumn(AppSolrQueuePeer::APP_UPDATED);
 

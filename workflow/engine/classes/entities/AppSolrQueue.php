@@ -6,7 +6,9 @@
  */
 class Entity_AppSolrQueue extends Entity_Base
 {
-    public $appUid = '';
+    public $appUid = "";
+    public $appChangeDate = "";
+    public $appChangeTrace = "";
     public $appUpdated = 0;
 
     private function __construct ()
@@ -26,7 +28,11 @@ class Entity_AppSolrQueue extends Entity_Base
 
         $obj->initializeObject( $data );
 
-        $requiredFields = array ("appUid","appUpdated"
+        $requiredFields = array(
+            "appUid",
+            "appChangeDate",
+            "appChangeTrace",
+            "appUpdated"
         );
 
         $obj->validateRequiredFields( $requiredFields );

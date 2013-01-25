@@ -67,6 +67,10 @@ class AppSolrQueueMapBuilder
 
         $tMap->addPrimaryKey('APP_UID', 'AppUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
+        $tMap->addColumn('APP_CHANGE_DATE', 'AppChangeDate', 'int', CreoleTypes::TIMESTAMP, true, null);
+
+        $tMap->addColumn('APP_CHANGE_TRACE', 'AppChangeTrace', 'string', CreoleTypes::VARCHAR, true, 500);
+
         $tMap->addColumn('APP_UPDATED', 'AppUpdated', 'int', CreoleTypes::TINYINT, true, null);
 
     } // doBuild()

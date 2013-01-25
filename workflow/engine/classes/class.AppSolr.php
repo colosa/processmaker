@@ -162,13 +162,20 @@ class AppSolr
     }
 
     /**
-     * Return if the Solr functionality is enabled.
+     * Return if the Solr server is currently working.
      *
      * @return boolean true:enabled functionality, false:disabled functionality
      */
     public function isSolrEnabled ()
     {
-        return $this->_solrIsEnabled;
+        G::LoadClass("searchIndex");
+
+        $searchIndex = new BpmnEngine_Services_SearchIndex($this->_solrIsEnabled, $this->_solrHost);
+
+        //Execute query
+        $solrStatusResult = $searchIndex->isEnabled($this->_solrInstance);
+
+        return $solrStatusResult;
     }
 
     /**
@@ -470,8 +477,18 @@ class AppSolr
             }
 
             // the array of data that must be returned with placeholders
-            $columsToInclude = array ('APP_CREATE_DATE','','','','APP_NUMBER','','APP_PRO_TITLE','APP_STATUS','','','APP_TITLE','APP_UID','DEL_LAST_UPDATE_DATE','','','','','','','','','DEL_MAX_PRIORITY','','','','','','PRO_UID','',''
+            $columsToInclude = array(
+                "APP_CREATE_DATE",
+                "APP_NUMBER",
+                "APP_PRO_TITLE",
+                "APP_STATUS",
+                "APP_TITLE",
+                "APP_UID",
+                "DEL_LAST_UPDATE_DATE",
+                "DEL_MAX_PRIORITY",
+                "PRO_UID"
             );
+
             // create pagination data
             $solrSearchText = null;
             $sortableCols = array ();
@@ -487,28 +504,28 @@ class AppSolr
                 switch ($sort) {
                     case 'APP_CACHE_VIEW.APP_NUMBER':
                     case 'APP_NUMBER':
-                        $sortCols[0] = 4;
+                        $sortCols[0] = 1; //4;
                         $sortableCols[0] = 'true';
                         $sortDir[0] = $dir;
                         break;
                     // multivalue field can't be ordered
                     case 'APP_TITLE':
-                        $sortCols[0] = 10;
+                        $sortCols[0] = 4; //10;
                         $sortableCols[0] = 'true';
                         $sortDir[0] = $dir;
                         break;
                     case 'APP_PRO_TITLE':
-                        $sortCols[0] = 6;
+                        $sortCols[0] = 2; //6;
                         $sortableCols[0] = 'true';
                         $sortDir[0] = $dir;
                         break;
                     case 'APP_UPDATE_DATE':
-                        $sortCols[0] = 12;
+                        $sortCols[0] = 6; //12;
                         $sortableCols[0] = 'true';
                         $sortDir[0] = $dir;
                         break;
                     default:
-                        $sortCols[0] = 4;
+                        $sortCols[0] = 1; //4;
                         $sortableCols[0] = 'true';
                         $sortDir[0] = 'desc';
                         break;
@@ -657,27 +674,39 @@ class AppSolr
                     $solrSearchText .= "(" . $search . ")";
                 }
             }
+
             // add del_index dynamic fields to list of resulting columns
-            // the fields begin in the 30th column and more
-            $columsToInclude = array_merge( $columsToInclude, $delegationIndexes );
+            $columsToIncludeFinal = array();
+            $columsToIncludeFinal = array_merge($columsToInclude, $delegationIndexes);
 
             // if is a counter no records are returned
             if ($doCount) {
                 $start = 0;
                 $limit = 0;
                 $numSortingCols = 0;
-                $columsToInclude = array ();
+                $columsToIncludeFinal = array();
             }
 
-            $data = array ('workspace' => $this->_solrInstance,            // solr instance
-                'startAfter' => intval( $start ),'pageSize' => intval( $limit ),'searchText' => $solrSearchText,'filterText' => '',            // $filter, //ex:'field1:value1,field2:[value2.1
-            // TO value2.2],field3:value3'
-            'numSortingCols' => $numSortingCols,'sortableCols' => $sortableCols,'sortCols' => $sortCols,'sortDir' => $sortDir,'includeCols' => $columsToInclude,'resultFormat' => 'json'
+            $data = array(
+                "workspace"  => $this->_solrInstance, // solr instance
+                "startAfter" => intval($start),
+                "pageSize"   => intval($limit),
+                "searchText" => $solrSearchText,
+                "filterText" => "", // $filter, //ex:"field1:value1,field2:[value2.1
+                                    // TO value2.2],field3:value3"
+                "numSortingCols" => $numSortingCols,
+                "sortableCols"   => $sortableCols,
+                "sortCols" => $sortCols,
+                "sortDir"  => $sortDir,
+                "includeCols"  => $columsToIncludeFinal,
+                "resultFormat" => "json"
             );
 
             $solrRequestData = Entity_SolrRequestData::createForRequestPagination( $data );
+
             // use search index to return list of cases
             $searchIndex = new BpmnEngine_Services_SearchIndex( $this->_solrIsEnabled, $this->_solrHost );
+
             // execute query
             $solrQueryResult = $searchIndex->getDataTablePaginatedList( $solrRequestData );
 
@@ -702,10 +731,10 @@ class AppSolr
             // number of found records
             $result['totalCount'] = $solrQueryResult->iTotalDisplayRecords;
 
-            //get all the data from database
+            // get the missing data from database
             $appUids = array ();
             foreach ($solrQueryResult->aaData as $i => $data) {
-                $appUids[] = $data[11];
+                $appUids[] = $data["APP_UID"]; //APP_UID
             }
 
             $aaappsDBData = $this->getListApplicationDelegationData($appUids, $action, $status);
@@ -713,18 +742,20 @@ class AppSolr
             if ($this->debug) {
                 $this->afterDbQueryTime = microtime( true );
             }
+
             // complete the missing data to display it in the grid.
             $delIndexes = array (); //store all the delegation indexes
             foreach ($solrQueryResult->aaData as $i => $data) {
                 //initialize array
                 $delIndexes = array ();
+
                 // complete empty values
-                $appUID = $data[11];
+                $appUID = $data["APP_UID"]; //APP_UID
 
                 //get all the delindexes
-                for ($i = 30; $i < count( $data ); $i ++) {
-                    if (is_array( $data[$i] )) {
-                        foreach ($data[$i] as $delIndex) {
+                for ($i = count($columsToInclude); $i <= count($data) - 1; $i++) {
+                    if (is_array($data[$columsToIncludeFinal[$i]])) {
+                        foreach ($data[$columsToIncludeFinal[$i]] as $delIndex) {
                             $delIndexes[] = $delIndex;
                         }
                     }
@@ -756,7 +787,15 @@ class AppSolr
                 $arrayRowAux = array();
 
                 foreach ($resultColumns as $j => $columnName) {
-                    $arrayRowAux[$columnName] = $data[$j];
+                    if (isset($data[$columnName])) {
+                        $arrayRowAux[$columnName] = $data[$columnName];
+                    } else {
+                        if ($columnName == "DEL_PRIORITY") {
+                            $arrayRowAux[$columnName] = $data["DEL_MAX_PRIORITY"]; //different name
+                        } else {
+                            $arrayRowAux[$columnName] = ""; //placeholder
+                        }
+                    }
                 }
 
                 //Remove duplicated
@@ -773,11 +812,11 @@ class AppSolr
                     $aRow = $arrayRowAux;
 
                     // convert date from solr format UTC to local time in MySQL format
-                    $solrdate = $data[0];
+                    $solrdate = $data["APP_CREATE_DATE"];
                     $localDate = date( 'Y-m-d H:i:s', strtotime( $solrdate ) );
                     $aRow['APP_CREATE_DATE'] = $localDate;
 
-                    $solrdate = $data[12];
+                    $solrdate = $data["DEL_LAST_UPDATE_DATE"];
                     $localDate = date( 'Y-m-d H:i:s', strtotime( $solrdate ) );
                     $aRow['APP_UPDATE_DATE'] = $localDate;
 
@@ -940,11 +979,11 @@ class AppSolr
         $c->addSelectColumn( AppDelegationPeer::DEL_THREAD_STATUS );
         $c->addSelectColumn( AppDelegationPeer::TAS_UID );
 
-        $c->addAlias("u", "USERS");
-        $c->addAlias("uprev", "USERS");
-        $c->addAlias("adprev", "APP_DELEGATION");
-        $c->addAlias("ctastitle", "CONTENT");
-        $c->addAlias("at", "APP_THREAD");
+        $c->addAlias("u", UsersPeer::TABLE_NAME);
+        $c->addAlias("uprev", UsersPeer::TABLE_NAME);
+        $c->addAlias("adprev", AppDelegationPeer::TABLE_NAME);
+        $c->addAlias("ctastitle", ContentPeer::TABLE_NAME);
+        $c->addAlias("at", AppThreadPeer::TABLE_NAME);
 
         $arrayCondition = array();
         $arrayCondition[] = array(AppDelegationPeer::APP_UID, ApplicationPeer::APP_UID);
@@ -1106,11 +1145,11 @@ class AppSolr
         $c->addSelectColumn( AppDelegationPeer::DEL_THREAD_STATUS );
         $c->addSelectColumn( AppDelegationPeer::TAS_UID );
 
-        $c->addAlias( 'u', 'USERS' );
-        $c->addAlias( 'uprev', 'USERS' );
-        $c->addAlias( 'adprev', 'APP_DELEGATION' );
-        $c->addAlias( 'ctastitle', 'CONTENT' );
-        $c->addAlias( 'at', 'APP_THREAD' );
+        $c->addAlias("u", UsersPeer::TABLE_NAME);
+        $c->addAlias("uprev", UsersPeer::TABLE_NAME);
+        $c->addAlias("adprev", AppDelegationPeer::TABLE_NAME);
+        $c->addAlias("ctastitle", ContentPeer::TABLE_NAME);
+        $c->addAlias("at", AppThreadPeer::TABLE_NAME);
 
         $aConditions = array ();
         $aConditions[] = array (AppDelegationPeer::USR_UID,'u.USR_UID'
@@ -1379,7 +1418,7 @@ class AppSolr
      * @param array $aaAPPUIDs Array of arrays of App_UID that must be updated,
      *        APP_UID is permitted also
      */
-    public function updateApplicationSearchIndex ($aaAPPUIDs)
+    public function updateApplicationSearchIndex($aaAPPUIDs, $saveDBRecord = true)
     {
         if (empty( $aaAPPUIDs )) {
             return;
@@ -1392,20 +1431,29 @@ class AppSolr
             $aaAPPUIDs[] = array ('APP_UID' => $APPUID
             );
         }
-        // check if index server is available
-        if (! $this->isSolrEnabled()) {
-            // store update in table and return
-            foreach ($aaAPPUIDs as $aAPPUID) {
-                $this->applicationChangedUpdateSolrQueue( $aAPPUID['APP_UID'], true );
+
+        //Check if index server is available
+        if ($saveDBRecord) {
+            if ($this->isSolrEnabled()) {
+                //Store update in table but with status updated
+                foreach ($aaAPPUIDs as $aAPPUID) {
+                    $this->applicationChangedUpdateSolrQueue($aAPPUID["APP_UID"], 0);
+                }
+            } else{
+                //Store update in table and return
+                foreach ($aaAPPUIDs as $aAPPUID) {
+                    $this->applicationChangedUpdateSolrQueue($aAPPUID["APP_UID"], true);
+                }
+
+                return;
             }
-            return;
         }
 
         if ($this->debug) {
             $this->getApplicationDataDBTime = 0;
             $this->getPreparedApplicationDataDBTime = 0;
             $this->getBuilXMLDocTime = 0;
-       
+            $this->afterUpdateSolrXMLDocTime = 0;
             $this->beforeCreateSolrXMLDocTime = microtime( true );
         }
         // create XML document
@@ -1448,13 +1496,13 @@ class AppSolr
             $this->totalTimeAcumulated += ($this->afterUpdateSolrXMLDocTime - $this->beforeCreateSolrXMLDocTime);
 
             //Solr App trunk size| Get Data from DB (s)| Prepare DB data (s) | Create XML file (s)| Create XML Document total (s)| Update Solr Document (s)
-            fwrite($fh, sprintf("%s|%s|%s|%s|%s|%s|%s|%s\r\n", 
+            fwrite($fh, sprintf("%s|%s|%s|%s|%s|%s|%s|%s\r\n",
               $this->trunkSizeAcumulated,
               $this->totalTimeAcumulated,
-              $this->getApplicationDataDBTime, 
-              $this->getPreparedApplicationDataDBTime, 
+              $this->getApplicationDataDBTime,
+              $this->getPreparedApplicationDataDBTime,
               $this->getBuilXMLDocTime,
-              ($this->afterCreateSolrXMLDocTime - $this->beforeCreateSolrXMLDocTime), 
+              ($this->afterCreateSolrXMLDocTime - $this->beforeCreateSolrXMLDocTime),
               ($this->afterUpdateSolrXMLDocTime - $this->afterCreateSolrXMLDocTime),
               ($this->afterUpdateSolrXMLDocTime - $this->beforeCreateSolrXMLDocTime)
               ));
@@ -1476,17 +1524,18 @@ class AppSolr
      *
      * @param string $appUID Application identifier
      */
-    public function deleteApplicationSearchIndex ($appUID)
+    public function deleteApplicationSearchIndex($appUID, $saveDBRecord = true)
     {
         if (empty( $appUID )) {
             return;
         }
 
         // check if index server is available
-        if (! $this->_solrIsEnabled) {
+        if ($saveDBRecord) {
             // store update in table and return
             $this->applicationChangedUpdateSolrQueue( $appUID['APP_UID'], 2 ); // delete
-            return;
+
+            //return;
         }
 
         $idQuery = "APP_UID:" . $appUID;
@@ -1514,7 +1563,7 @@ class AppSolr
         if ($this->debug) {
             $this->getApplicationDataDBTime = 0;
             $this->getPreparedApplicationDataDBTime = 0;
-            $this->getBuilXMLDocTime = 0;            
+            $this->getBuilXMLDocTime = 0;
         }
         // search data from DB
         $xmlDoc = "<?xml version='1.0' encoding='UTF-8'?>\n";
@@ -1531,7 +1580,7 @@ class AppSolr
         $aaAllAppDelData = $this->getListApplicationUpdateDelegationData( $aAPPUIDs );
         if ($this->debug) {
             $this->afterGetApplicationDataDBTime = microtime (true);
-          
+
             $this->getApplicationDataDBTime = $this->afterGetApplicationDataDBTime - $this->beforeGetApplicationDataDBTime;
         }
         foreach ($aaAPPUIDs as $aAPPUID) {
@@ -1553,10 +1602,10 @@ class AppSolr
                 $result = $this->getApplicationIndexData( $aAPPUID['APP_UID'], $aaAppData );
 
                 if ($this->debug) {
-                
+
                   $this->afterPrepareApplicationDataDBTime = microtime (true);
-                
-                  $this->getPreparedApplicationDataDBTime += $this->afterPrepareApplicationDataDBTime - $this->beforePrepareApplicationDataDBTime;                    
+
+                  $this->getPreparedApplicationDataDBTime += $this->afterPrepareApplicationDataDBTime - $this->beforePrepareApplicationDataDBTime;
                 }
 
             } catch (ApplicationWithoutDelegationRecordsException $ex) {
@@ -1617,8 +1666,8 @@ class AppSolr
 
                 if ($this->debug) {
                     $this->afterBuilXMLDocTime = microtime (true);
-                    
-                    $this->getBuilXMLDocTime += $this->afterBuilXMLDocTime - $this->afterPrepareApplicationDataDBTime;                   
+
+                    $this->getBuilXMLDocTime += $this->afterBuilXMLDocTime - $this->afterPrepareApplicationDataDBTime;
                 }
             } catch (ApplicationAPP_DATAUnserializeException $ex) {
                 // exception trying to get application information
@@ -1637,12 +1686,12 @@ class AppSolr
           if($this->debugAppInfo)
           {
             $fh = fopen("SolrAPPUIDIndexSize.txt", 'a') or die("can't open file to store Solr index time.");
-            //fwrite($fh, sprintf("APP UID %s => doc size: %s\r\n", 
+            //fwrite($fh, sprintf("APP UID %s => doc size: %s\r\n",
             //  $aAPPUID['APP_UID'], strlen($xmlCurrentDoc)));
-            fwrite($fh, sprintf("%s|%s|%s\r\n", 
+            fwrite($fh, sprintf("%s|%s|%s\r\n",
               $documentInformation ['APP_NUMBER'], $aAPPUID['APP_UID'], strlen($xmlCurrentDoc)));
             fclose($fh);
-          }            
+          }
 
         }//end foreach
 
@@ -2487,10 +2536,10 @@ class AppSolr
         $c->addSelectColumn( 'at.APP_THREAD_PARENT' );
         $c->addSelectColumn( 'at.APP_THREAD_STATUS' );
 
-        $c->addAlias( 'capp', 'CONTENT' );
-        $c->addAlias( 'cpro', 'CONTENT' );
-        $c->addAlias( 'ad', 'APP_DELEGATION' );
-        $c->addAlias( 'at', 'APP_THREAD' );
+        $c->addAlias("capp", ContentPeer::TABLE_NAME);
+        $c->addAlias("cpro", ContentPeer::TABLE_NAME);
+        $c->addAlias("ad", AppDelegationPeer::TABLE_NAME);
+        $c->addAlias("at", AppThreadPeer::TABLE_NAME);
 
         $aConditions = array ();
         $aConditions[] = array (ApplicationPeer::APP_UID,'capp.CON_ID'
@@ -2589,12 +2638,12 @@ class AppSolr
 
         $c->addAsColumn("PRO_CATEGORY_UID", "pro.PRO_CATEGORY");
 
-        $c->addAlias("capp", "CONTENT");
-        $c->addAlias("cpro", "CONTENT");
-        $c->addAlias("ad", "APP_DELEGATION");
-        $c->addAlias("at", "APP_THREAD");
-        $c->addAlias("appDely", "APP_DELAY");
-        $c->addAlias("pro", "PROCESS");
+        $c->addAlias("capp", ContentPeer::TABLE_NAME);
+        $c->addAlias("cpro", ContentPeer::TABLE_NAME);
+        $c->addAlias("ad", AppDelegationPeer::TABLE_NAME);
+        $c->addAlias("at", AppThreadPeer::TABLE_NAME);
+        $c->addAlias("appDely", AppDelayPeer::TABLE_NAME);
+        $c->addAlias("pro", ProcessPeer::TABLE_NAME);
 
         $arrayCondition = array();
         $arrayCondition[] = array(ApplicationPeer::APP_UID, "capp.CON_ID");
@@ -2720,9 +2769,25 @@ class AppSolr
      */
     public function applicationChangedUpdateSolrQueue ($AppUid, $updated)
     {
+        $traceData = $this->getCurrentTraceInfo();
+
         $oAppSolrQueue = new AppSolrQueue();
 
-        $oAppSolrQueue->createUpdate( $AppUid, $updated );
+        $oAppSolrQueue->createUpdate($AppUid, $traceData, $updated);
+    }
+
+    private function getCurrentTraceInfo()
+    {
+        $traceData = debug_backtrace();
+        $resultTraceString = "";
+
+        foreach ($traceData as $key => $value) {
+            if ($value["function"] != "getCurrentTraceInfo" && $value["function"] != "require_once") {
+                $resultTraceString .= $value["file"] . " (" . $value["line"] . ") " . $value["function"] . "\n";
+            }
+        }
+
+        return $resultTraceString;
     }
 
     /**
@@ -2730,6 +2795,10 @@ class AppSolr
      */
     public function synchronizePendingApplications ()
     {
+        if (!$this->isSolrEnabled()) {
+            throw new Exception("Error connecting to solr server.");
+        }
+
         // check table of pending updates
         $oAppSolrQueue = new AppSolrQueue();
 
@@ -2738,10 +2807,10 @@ class AppSolr
         foreach ($aAppSolrQueue as $oAppSolrQueueEntity) {
             // call the syncronization function
             if ($oAppSolrQueueEntity->appUpdated == 1) {
-                $this->updateApplicationSearchIndex( $oAppSolrQueueEntity->appUid );
+                $this->updateApplicationSearchIndex($oAppSolrQueueEntity->appUid, false);
             }
             if ($oAppSolrQueueEntity->appUpdated == 2) {
-                $this->deleteApplicationSearchIndex( $oAppSolrQueueEntity->appUid );
+                $this->deleteApplicationSearchIndex($oAppSolrQueueEntity->appUid, false);
             }
             $this->applicationChangedUpdateSolrQueue( $oAppSolrQueueEntity->appUid, 0 );
         }
@@ -2831,7 +2900,12 @@ class AppSolr
      */
     public function reindexAllApplications ($SkipRecords = 0, $indexTrunkSize = 1000)
     {
+        if (!$this->isSolrEnabled()) {
+            throw new Exception("Error connecting to solr server.");
+        }
+
         $trunk = $indexTrunkSize;
+
         // delete all documents to begin reindex
         // deleteAllDocuments();
         // commitChanges();
@@ -2846,7 +2920,7 @@ class AppSolr
 
             printf( "Indexing %d to %d \n", $skip, $skip + $trunk );
             $initTimeDoc = microtime( true );
-            $this->updateApplicationSearchIndex( $aaAPPUIds );
+            $this->updateApplicationSearchIndex($aaAPPUIds, false);
 
             $curTimeDoc = gmdate( 'H:i:s', (microtime( true ) - $initTimeDoc) );
             printf( "Indexing document time: %s \n", $curTimeDoc );

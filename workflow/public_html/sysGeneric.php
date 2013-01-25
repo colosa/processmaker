@@ -422,9 +422,6 @@ Bootstrap::registerClass('Controller',          PATH_GULLIVER . "class.controlle
 Bootstrap::registerClass('HttpProxyController', PATH_GULLIVER . "class.httpProxyController.php");
 Bootstrap::registerClass('templatePower',            PATH_GULLIVER . "class.templatePower.php");
 Bootstrap::registerClass('XmlForm_Field_SimpleText', PATH_GULLIVER . "class.xmlformExtension.php");
-Bootstrap::registerClass('Propel',          PATH_THIRDPARTY . "propel/Propel.php");
-Bootstrap::registerClass('Creole',          PATH_THIRDPARTY . "creole/Creole.php");
-Bootstrap::registerClass('Criteria',        PATH_THIRDPARTY . "propel/util/Criteria.php");
 Bootstrap::registerClass('Groups',       PATH_HOME . "engine/classes/class.groups.php");
 Bootstrap::registerClass('Tasks',        PATH_HOME . "engine/classes/class.tasks.php");
 Bootstrap::registerClass('Calendar',     PATH_HOME . "engine/classes/class.calendar.php");

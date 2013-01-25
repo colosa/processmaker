@@ -1,5 +1,4 @@
 <?php
-
 //require_once 'classes/model/om/BaseAppSolrQueue.php';
 //require_once 'classes/entities/AppSolrQueue.php';
 
@@ -31,7 +30,7 @@ class AppSolrQueue extends BaseAppSolrQueue
         }
     }
 
-    public function createUpdate ($sAppUid, $iUpdated)
+    public function createUpdate($sAppUid, $sAppChangeTrace, $iUpdated)
     {
         $con = Propel::getConnection( AppSolrQueuePeer::DATABASE_NAME );
         try {
@@ -43,8 +42,10 @@ class AppSolrQueue extends BaseAppSolrQueue
                 //$this->fromArray($aFields,BasePeer::TYPE_FIELDNAME);
                 $this->setNew( false );
                 //set field
-                $this->setAppUid( $sAppUid );
-                $this->setAppUpdated( $iUpdated );
+                $this->setAppUid($sAppUid);
+                $this->setAppChangeDate("now");
+                $this->setAppChangeTrace($sAppChangeTrace);
+                $this->setAppUpdated($iUpdated);
                 if ($this->validate()) {
                     $result = $this->save();
                 } else {
@@ -56,8 +57,10 @@ class AppSolrQueue extends BaseAppSolrQueue
             } else {
                 //create record
                 //set values
-                $this->setAppUid( $sAppUid );
-                $this->setAppUpdated( $iUpdated );
+                $this->setAppUid($sAppUid);
+                $this->setAppChangeDate("now");
+                $this->setAppChangeTrace($sAppChangeTrace);
+                $this->setAppUpdated($iUpdated);
                 if ($this->validate()) {
                     $result = $this->save();
                 } else {
@@ -84,8 +87,10 @@ class AppSolrQueue extends BaseAppSolrQueue
         try {
             $c = new Criteria();
 
-            $c->addSelectColumn( AppSolrQueuePeer::APP_UID );
-            $c->addSelectColumn( AppSolrQueuePeer::APP_UPDATED );
+            $c->addSelectColumn(AppSolrQueuePeer::APP_UID);
+            $c->addSelectColumn(AppSolrQueuePeer::APP_CHANGE_DATE);
+            $c->addSelectColumn(AppSolrQueuePeer::APP_CHANGE_TRACE);
+            $c->addSelectColumn(AppSolrQueuePeer::APP_UPDATED);
 
             //"WHERE
             $c->add( AppSolrQueuePeer::APP_UPDATED, 0, Criteria::NOT_EQUAL );
@@ -98,8 +103,10 @@ class AppSolrQueue extends BaseAppSolrQueue
 
             while (is_array( $row )) {
                 $appSolrQueue = Entity_AppSolrQueue::createEmpty();
-                $appSolrQueue->appUid = $row['APP_UID'];
-                $appSolrQueue->appUpdated = $row['APP_UPDATED'];
+                $appSolrQueue->appUid = $row["APP_UID"];
+                $appSolrQueue->appChangeDate = $row["APP_CHANGE_DATE"];
+                $appSolrQueue->appChangeTrace = $row["APP_CHANGE_TRACE"];
+                $appSolrQueue->appUpdated = $row["APP_UPDATED"];
                 $updatedApplications[] = $appSolrQueue;
                 $rs->next();
                 $row = $rs->getRow();

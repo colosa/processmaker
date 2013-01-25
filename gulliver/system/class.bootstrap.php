@@ -121,6 +121,10 @@ class Bootstrap
 
     public static function registerSystemClasses()
     {
+        self::registerClass("Propel",   PATH_THIRDPARTY . "propel" . PATH_SEP . "Propel.php");
+        self::registerClass("Creole",   PATH_THIRDPARTY . "creole" . PATH_SEP . "Creole.php");
+        self::registerClass("Criteria", PATH_THIRDPARTY . "propel" . PATH_SEP . "util" . PATH_SEP . "Criteria.php");
+
         //DATABASE propel classes used in "Cases" Options
         self::registerClass("Entity_Base",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "Base.php");
 
@@ -191,7 +195,9 @@ class Bootstrap
         self::registerClass("AppOwnerPeer",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppOwnerPeer.php");
 
         self::registerClass("BaseAppSolrQueue",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseAppSolrQueue.php");
-        self::registerClass("Entity_AppSolrQueue", PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "AppSolrQueue.php");
+        self::registerClass("Entity_SolrRequestData",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "SolrRequestData.php");
+        self::registerClass("Entity_SolrUpdateDocument", PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "SolrUpdateDocument.php");
+        self::registerClass("Entity_AppSolrQueue",       PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "AppSolrQueue.php");
         self::registerClass("AppSolrQueue",        PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppSolrQueue.php");
         self::registerClass("AppSolrQueuePeer",    PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "AppSolrQueuePeer.php");
 
@@ -313,10 +319,6 @@ class Bootstrap
         self::registerClass("BaseStepTrigger",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseStepTrigger.php");
         self::registerClass("StepTrigger",         PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "StepTrigger.php");
         self::registerClass("StepTriggerPeer",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "StepTriggerPeer.php");
-
-        self::registerClass("SolrRequestData",     PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "SolrRequestData.php");
-
-        self::registerClass("SolrUpdateDocument",  PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "entities" . PATH_SEP . "SolrUpdateDocument.php");
 
         self::registerClass("BaseSwimlanesElements",PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "om" . PATH_SEP . "BaseSwimlanesElements.php");
         self::registerClass("SwimlanesElements",   PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "SwimlanesElements.php");

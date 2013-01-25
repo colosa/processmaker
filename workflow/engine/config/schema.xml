@@ -2940,6 +2940,8 @@
       <parameter name="Comment" value="APP_SOLR_QUEUE"/>
     </vendor>
     <column name="APP_UID" type="VARCHAR" size="32" required="true" primaryKey="true" default=""/>
+    <column name="APP_CHANGE_DATE" type="TIMESTAMP" required="true" />
+    <column name="APP_CHANGE_TRACE" type="VARCHAR" size="500" required="true" />
     <column name="APP_UPDATED" type="TINYINT" required="true" default="1"/>
   </table>
 </database>
