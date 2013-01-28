@@ -18,6 +18,40 @@ require_once 'classes/model/om/BaseAdditionalTables.php';
  *
  * @package    workflow.engine.classes.model
  */
+
+function validateType ($value, $type)
+{
+    switch ($type) {
+        case 'INTEGER':
+            $value = str_replace(",", "", $value);
+            $value = str_replace(".", "", $value);
+            break;
+        case 'FLOAT':
+        case 'DOUBLE':
+            $pos = strrpos($value, ",");
+            $pos = ($pos === false) ? 0 : $pos;
+
+            $posPoint = strrpos($value, ".");
+            $posPoint = ($posPoint === false) ? 0 : $posPoint;
+
+            if ($pos > $posPoint) {
+                $value2 = substr($value, $pos+1);
+                $value1 = substr($value, 0, $pos);
+                $value1 = str_replace(".", "", $value1);
+                $value = $value1.".".$value2;
+            } else {
+                $value2 = substr($value, $posPoint+1);
+                $value1 = substr($value, 0, $posPoint);
+                $value1 = str_replace(",", "", $value1);
+                $value = $value1.".".$value2;
+            }
+            break;
+        default:
+            break;
+    }
+    return $value;
+}
+
 class AdditionalTables extends BaseAdditionalTables
 {
     public $fields = array();
@@ -669,8 +703,35 @@ class AdditionalTables extends BaseAdditionalTables
             switch ($row['ADD_TAB_TYPE']) {
                 //switching by report table type
                 case 'NORMAL':
+                    require_once 'classes/model/Fields.php';
+                    $criteriaField = new Criteria('workflow');
+                    $criteriaField->add(FieldsPeer::ADD_TAB_UID, $row['ADD_TAB_UID']);
+                    $datasetField = FieldsPeer::doSelectRS($criteriaField);
+                    $datasetField->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                    $fieldTypes = array();
+                    while ($datasetField->next()) {
+                        $rowfield = $datasetField->getRow();
+                        switch ($rowfield['FLD_TYPE']) {
+                            case 'FLOAT':
+                            case 'DOUBLE':
+                            case 'INTEGER':
+                                $fieldTypes[] = array($rowfield['FLD_NAME']=>$rowfield['FLD_TYPE']);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
                     // parsing empty values to null
                     foreach ($caseData as $i => $v) {
+                        foreach ($fieldTypes as $key => $fieldType) {
+                            foreach ($fieldType as $name => $type) {
+                                if ( strtoupper ( $i) == $name) {
+                                    $v = validateType ($v, $type);
+                                    unset($name);
+                                }
+                            }
+                        }
                         $caseData[$i] = $v === '' ? null : $v;
                     }
 

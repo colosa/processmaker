@@ -186,7 +186,6 @@ class pmTablesProxy extends HttpProxyController
                 }
             }
         }
-
         return $fields;
     }
 
@@ -1384,14 +1383,25 @@ class pmTablesProxy extends HttpProxyController
                         $arrayNode = $dynaformHandler->getArray( $node );
                         $fieldName = $arrayNode['__nodeName__'];
                         $fieldType = $arrayNode['type'];
+                        $fieldValidate = ( isset($arrayNode['validate'])) ? $arrayNode['validate'] : '';
 
-                        if (! in_array( $fieldType, $excludeFieldsList ) && ! in_array( $fieldName, $fieldsNames )) {
-                            $fields[] = array ('FIELD_UID' => $fieldName . '-' . $fieldType,'FIELD_NAME' => $fieldName,'_index' => $index ++,'_isset' => true
+                        if (! in_array( $fieldType, $excludeFieldsList ) && ! in_array( $fieldName, $fieldsNames ) ) {
+                            $fields[] = array (
+                                'FIELD_UID' => $fieldName . '-' . $fieldType,
+                                'FIELD_NAME' => $fieldName,
+                                'FIELD_VALIDATE'=>$fieldValidate,
+                                '_index' => $index ++,
+                                '_isset' => true
                             );
                             $fieldsNames[] = $fieldName;
 
                             if (in_array( $fieldType, $labelFieldsTypeList ) && ! in_array( $fieldName . '_label', $fieldsNames )) {
-                                $fields[] = array ('FIELD_UID' => $fieldName . '_label' . '-' . $fieldType,'FIELD_NAME' => $fieldName . '_label','_index' => $index ++,'_isset' => true
+                                $fields[] = array (
+                                    'FIELD_UID' => $fieldName . '_label' . '-' . $fieldType,
+                                    'FIELD_NAME' => $fieldName . '_label',
+                                    'FIELD_VALIDATE'=>$fieldValidate,
+                                    '_index' => $index ++,
+                                    '_isset' => true
                                 );
                                 $fieldsNames[] = $fieldName;
                             }

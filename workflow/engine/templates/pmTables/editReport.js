@@ -35,6 +35,7 @@ Ext.onReady(function(){
       totalProperty: 'count',
       fields : [
         {name : 'FIELD_UID'},
+        {name : 'FIELD_VALIDATE'},
         {name : 'FIELD_NAME'},
         {name : '_index'},
         {name : '_isset'}
@@ -69,6 +70,11 @@ Ext.onReady(function(){
         hidden:true,
         hideable:false
       }, {
+        dataIndex:'FIELD_VALIDATE',
+        hidden:true,
+        hideable:false
+      }
+      , {
         dataIndex:'_index',
         hidden:true,
         hideable:false
@@ -1175,6 +1181,15 @@ function setReportFields(records) {
     }
 
     var meta = mapPMFieldType(records[i].data['FIELD_UID']);
+    var typeField = meta.type;
+    var sizeField = meta.size;
+    if (records[i].data['FIELD_VALIDATE'].toUpperCase() == 'REAL') {
+      typeField = 'DOUBLE';
+      sizeField = '';
+    }
+    if (records[i].data['FIELD_VALIDATE'].toUpperCase() == 'INT') {
+      typeField = 'INTEGER';
+    }
     var row = new PMRow({
       uid  : '',
       _index      : records[i].data['_index'] !== '' ? records[i].data['_index'] : records[i].data['FIELD_DYN'],
@@ -1182,8 +1197,8 @@ function setReportFields(records) {
       field_dyn   : records[i].data['FIELD_NAME'],
       field_name  : records[i].data['FIELD_NAME'].toUpperCase(),
       field_label : records[i].data['FIELD_NAME'].toUpperCase(),
-      field_type  : meta.type,
-      field_size  : meta.size,
+      field_type  : typeField,
+      field_size  : sizeField,
       field_key   : 0,
       field_null  : 1,
       field_filter: 0,
