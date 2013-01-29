@@ -771,7 +771,7 @@ class Installer extends Controller
             define( 'HASH_INSTALLATION', $h );
             define( 'SYSTEM_HASH', $sh );
             define( 'PATH_DB', $pathShared . 'sites' . PATH_SEP );
-            define( 'SYS_SYS', 'workflow' );
+            define( 'SYS_SYS', $workspace );
 
             require_once ("propel/Propel.php");
 
