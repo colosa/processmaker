@@ -30,7 +30,6 @@
 </SAVE>
 
 <JS type="javascript"><![CDATA[
-alert (getField('LANG').VALUE);
 var bModified = false;
 var modified  = function() {
   bModified   = true;
@@ -210,4 +209,4 @@ function cancel(){
 
 ]]></JS>
 
-</dynaForm> 
+</dynaForm>
