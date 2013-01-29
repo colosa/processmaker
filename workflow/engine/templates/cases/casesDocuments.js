@@ -346,7 +346,12 @@ function openActionDialog( caller, action ) {
               json = Ext.decode( oResponse.responseText );
 
               if( json.error && typeof json.error != 'xml' ) {
-                Ext.Msg.alert( "error", json.error );
+                if (typeof(json.login) != 'undefined') {
+                    msgbox = Ext.Msg.alert( "error", json.error, function(){try{parent.parent.window.location = '../login/login';} catch(e){}} );
+                } else {
+                    msgbox = Ext.Msg.alert( "error", json.error );
+                }
+                msgbox.setIcon( Ext.MessageBox.ERROR );
                 dialog.destroy();
                 return false;
               }
@@ -826,6 +831,14 @@ datastore.on("beforeload",
     options.params.option = "gridDocuments";
     options.params.action = "expandNode";
     options.params.sendWhat = datastore.sendWhat;
+  });
+datastore.on("loadexception",
+  function(misc) {
+    try {
+      msgbox = Ext.Msg.alert('error', _('ID_LOGIN_AGAIN'), function(){try{parent.parent.window.location = '../login/login';} catch(e){}} );
+      msgbox.setIcon(Ext.MessageBox.ERROR);
+    } catch(e) {
+    }
   });
 // pluggable renders
 function renderFileName(value, p, record) {

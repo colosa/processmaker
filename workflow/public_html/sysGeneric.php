@@ -772,6 +772,7 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
         $noLoginFiles[] = 'defaultAjaxDynaform';
         $noLoginFiles[] = 'dynaforms_checkDependentFields';
         $noLoginFiles[] = 'fields_Ajax';
+        $noLoginFiles[] = 'appFolderAjax';
 
         $noLoginFolders[] = 'services';
         $noLoginFolders[] = 'tracker';

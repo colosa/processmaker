@@ -1,4 +1,11 @@
 <?php
+if (! isset ($_SESSION ['USER_LOGGED'])) {
+    $res ['success'] = false;
+    $res ['error'] = G::LoadTranslation('ID_LOGIN_AGAIN');
+    $res ['login'] = true;
+    print G::json_encode ($res);
+    die ();
+}
 if (! isset ($_REQUEST ['action'])) {
     $res ['success'] = false;
     $res ['message'] = 'You may request an action';
