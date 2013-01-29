@@ -4037,19 +4037,36 @@ class XmlForm_Field_Grid extends XmlForm_Field
         //if ($therow == 1)g::pr($values);
         $this->rows = count( reset( $values ) );
 
+        //Fields required in grid (view in sql attribute)
+        $arrayField = array();
+        $arrayFieldRequired = array();
+
+        foreach ($this->fields as $index1 => $value1) {
+            $field = $value1;
+
+            $arrayField[] = $field->name;
+
+            preg_match_all("/@[@%#\?\$\=]([A-Za-z_]\w*)/", $field->sql, $arrayMatch, PREG_SET_ORDER);
+
+            foreach ($arrayMatch as $value2) {
+                $arrayFieldRequired[] = $value2[1];
+            }
+        }
+
+        $arrayFieldRequired = array_unique($arrayFieldRequired);
+        $arrayFieldRequired = array_diff($arrayFieldRequired, $arrayField);
+
         //Fields Grid only required fields of the grid, no all fields of dynaform main
-        /*
-        if (isset( $owner->values )) {
+        if (isset($owner->values) && count($arrayFieldRequired) > 0) {
             foreach ($owner->values as $key => $value) {
-                if (! isset( $values[$key] )) {
-                    $values[$key] = array ();
+                if (in_array($key, $arrayFieldRequired) && !isset($values[$key])) {
+                    $values[$key] = array();
                     //for($r=0; $r < $this->rows ; $r++ ) {
                     $values[$key] = $value;
                     //}
                 }
             }
         }
-        */
 
         foreach ($this->fields as $k => $v) {
             if (isset( $values['SYS_GRID_AGGREGATE_' . $this->name . '_' . $k] )) {
