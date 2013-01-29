@@ -8,11 +8,13 @@ var h3OK = 1;
 
 var promptPanel;
 var lastActionPerformed = '';
+var lastTypeSelected = '';
 
 var sessionPersits = function() {
     var rpc = new leimnud.module.rpc.xmlhttp({
-        url : '../services/sessionPersists',
-        async:false
+        url: '../services/sessionPersists',
+        args: 'dynaformEditorParams=' + dynaformEditorParams,
+        async: false
     });
     rpc.make();
     var response = rpc.xmlhttp.responseText.parseJSON();
@@ -64,6 +66,21 @@ var verifyLogin = function() {
                     break;
                 case 'changeToShowHide':
                     dynaformEditor.changeToShowHide();
+                    break;
+                case 'refreshDynaformEditor':
+                    refreshDynaformEditor();
+                    break;
+                case 'fieldsSave':
+                    fieldsSave(getField('PME_XMLNODE_NAME').form);
+                    break;
+                case 'fieldsAdd':
+                    fieldsAdd(lastTypeSelected);
+                    break;
+                case '__ActionEdit':
+                    document.getElementById('dynaframe').contentWindow.__ActionEdit(document.getElementById('dynaframe').contentWindow.lastUidFHSelected);
+                    break;
+                case '__ActionDelete':
+                    document.getElementById('dynaframe').contentWindow.__ActionDelete(document.getElementById('dynaframe').contentWindow.lastUidFHSelected, document.getElementById('dynaframe').contentWindow.lastFTypeFHSelected);
                     break;
             }
             lastActionPerformed = '';
@@ -836,6 +853,11 @@ function getElementByPMClass(__class){
 
   function fieldsSave( form ) {
 
+    if (!sessionPersits()) {
+      showPrompt('fieldsSave');
+      return;
+    }
+
     var str    = document.getElementById('form[PME_XMLNODE_NAME]').value;
     var dField = new input(getField('PME_XMLNODE_NAME'));
 
@@ -880,6 +902,11 @@ function getElementByPMClass(__class){
   var typePopup = 0;
   function fieldsAdd( type,label )
   {
+    lastTypeSelected = type;
+    if (!sessionPersits()) {
+      showPrompt('fieldsAdd');
+      return;
+    }
     switch (type){
       case 'text'      : label=TRANSLATIONS.ID_FIELD_DYNAFORM_TEXT;        typePopup = 1;   break;
       case 'currency'  : label=TRANSLATIONS.ID_FIELD_DYNAFORM_CURRENCY;    typePopup = 1;  break;

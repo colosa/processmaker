@@ -3326,7 +3326,15 @@ function dynaformVerifyFieldName(){
   return true;
 }
 
-function verifyFieldName1(){
+function verifyFieldName1() {
+  if (getField('PME_VALIDATE_NAME').value == '__error_session__') {
+    showPrompt('refreshDynaformEditor');
+    return;
+  }
+  verifyFieldNameFunction();
+}
+
+function verifyFieldNameFunction() {
   var newFieldName=fieldName.value;
   var msj = _('DYNAFIELD_ALREADY_EXIST');
   var validatedFieldName=getField("PME_VALIDATE_NAME",fieldForm).value;
@@ -3358,6 +3366,9 @@ function verifyFieldName1(){
   return valid;
 }
 
+function refreshDynaformEditor() {
+  window.location.href = window.location.href.replace('#', '');
+}
 
 var objectsWithFormula = Array();
 

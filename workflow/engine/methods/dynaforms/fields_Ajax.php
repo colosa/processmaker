@@ -22,6 +22,23 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
+if (!isset($_SESSION['USER_LOGGED'])) {
+  $aux1 = new stdclass();
+  $aux2 = new stdclass();
+  $aux2->type = 'hidden';
+  $aux2->options = array();
+  $aux1->name = 'PME_VALIDATE_NAME';
+  $aux1->content = $aux2;
+  $aux1->value = '__error_session__';
+  $result = array();
+  $result[] = array('name' => 'PME_VALIDATE_NAME',
+                    'content' => array('type' => 'hidden',
+                                       'options' => array(array('key' => '__error_session__',
+                                                                'value' => '__error_session__'))),
+                    'value' => '__error_session__');
+  die(Bootstrap::json_encode($result));
+}
+
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     return $RBAC_Response;
 }

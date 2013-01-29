@@ -228,6 +228,7 @@ class dynaformEditor extends WebResource
     leimnud.event.add(window,"load",function(){ loadEditor(); });
     ');
         $oHeadPublisher->addScriptCode(' var jsMeta;var usernameLogged = "' . (isset($_SESSION['USR_USERNAME']) ? $_SESSION['USR_USERNAME'] : '') . '";var SYS_LANG = "' . SYS_LANG . '";');
+        $oHeadPublisher->addScriptCode('var dynaformEditorParams = \'' . serialize($Parameters) . '\';');
         G::RenderPage("publish", 'blank');
     }
 
