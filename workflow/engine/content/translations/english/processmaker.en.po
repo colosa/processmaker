@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.4-164-g995aa55\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-112-g33f6348\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-01-09 14:44:53\n"
+"PO-Revision-Date: 2013-01-29 15:19:47\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12494,6 +12494,18 @@ msgid "FALSE"
 msgstr "FALSE"
 
 # TRANSLATION
+# LABEL/ID_ENTER_SEARCH_CRITERIA
+#: LABEL/ID_ENTER_SEARCH_CRITERIA
+msgid "Enter a search criteria and press search"
+msgstr "Enter a search criteria and press search"
+
+# TRANSLATION
+# LABEL/ID_LOGIN_AGAIN
+#: LABEL/ID_LOGIN_AGAIN
+msgid "You have lost your session and you have to login again."
+msgstr "You have lost your session and you have to login again."
+
+# TRANSLATION
 # LABEL/ID_PMTABLE_DATA_KEEP
 #: LABEL/ID_PMTABLE_DATA_KEEP
 msgid "Keep the records of the table"
@@ -13108,8 +13120,8 @@ msgstr "The \"{0}\" function has {1} the current case, the script has stopped to
 # TRANSLATION
 # LABEL/ID_DYNAFORM_EDITOR_LOGIN_AGAIN
 #: LABEL/ID_DYNAFORM_EDITOR_LOGIN_AGAIN
-msgid "You have lost your session and you have to login to continue. Please enter you password."
-msgstr "You have lost your session and you have to login to continue. Please enter you password."
+msgid "You have lost your session and you have to login to continue. Please enter your password."
+msgstr "You have lost your session and you have to login to continue. Please enter your password."
 
 # TRANSLATION
 # LABEL/ID_DATE_FORMAT_14
@@ -14233,174 +14245,6 @@ msgstr "Continue"
 msgid "[authSources/authSources_SelectType.xml?BTN_CANCEL] Cancel"
 msgstr "Cancel"
 
-# authSources/ldapAdvancedEdit.xml?TITLE
-# authSources/ldapAdvancedEdit.xml
-#: title - TITLE
-msgid "[authSources/ldapAdvancedEdit.xml?TITLE] Authentication Source Information"
-msgstr "Authentication Source Information"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_NAME
-# authSources/ldapAdvancedEdit.xml
-#: text - AUTH_SOURCE_NAME
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_NAME] Name"
-msgstr "Name"
-
-# authSources/ldapAdvancedEdit.xml?LDAP_TYPE
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - LDAP_TYPE
-msgid "[authSources/ldapAdvancedEdit.xml?LDAP_TYPE] Type"
-msgstr "Type"
-
-# authSources/ldapAdvancedEdit.xml?LDAP_TYPE-ldap
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - LDAP_TYPE - ldap
-msgid "[authSources/ldapAdvancedEdit.xml?LDAP_TYPE-ldap]"
-msgstr "LDAP"
-
-# authSources/ldapAdvancedEdit.xml?LDAP_TYPE-ad
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - LDAP_TYPE - ad
-msgid "[authSources/ldapAdvancedEdit.xml?LDAP_TYPE-ad]"
-msgstr "Active Directory"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_SOURCE_AUTO_REGISTER
-msgid "Enabled Automatic Register"
-msgstr "Enabled Automatic Register"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER-0
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_SOURCE_AUTO_REGISTER - 0
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER-0]"
-msgstr "No"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER-1
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_SOURCE_AUTO_REGISTER - 1
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_AUTO_REGISTER-1]"
-msgstr "Yes"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_SERVER_NAME
-# authSources/ldapAdvancedEdit.xml
-#: text - AUTH_SOURCE_SERVER_NAME
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_SERVER_NAME] Server Name"
-msgstr "Server Name"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_PORT
-# authSources/ldapAdvancedEdit.xml
-#: text - AUTH_SOURCE_PORT
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_PORT] Port"
-msgstr "Port"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_SOURCE_ENABLED_TLS
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS] Enabled TLS"
-msgstr "Enabled TLS"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS-
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_SOURCE_ENABLED_TLS -
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS-]"
-msgstr "No"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS-1
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_SOURCE_ENABLED_TLS - 1
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ENABLED_TLS-1]"
-msgstr "Yes"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_SOURCE_VERSION
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION] Version"
-msgstr "Version"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION-2
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_SOURCE_VERSION - 2
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION-2]"
-msgstr "2"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION-3
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_SOURCE_VERSION - 3
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_VERSION-3]"
-msgstr "3"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_BASE_DN
-# authSources/ldapAdvancedEdit.xml
-#: text - AUTH_SOURCE_BASE_DN
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_BASE_DN] Base DN"
-msgstr "Base DN"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_ANONYMOUS
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS] Anonymous"
-msgstr "Anonymous"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS-
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_ANONYMOUS -
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS-]"
-msgstr "No"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS-1
-# authSources/ldapAdvancedEdit.xml
-#: dropdown - AUTH_ANONYMOUS - 1
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_ANONYMOUS-1]"
-msgstr "Yes"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_SEARCH_USER
-# authSources/ldapAdvancedEdit.xml
-#: text - AUTH_SOURCE_SEARCH_USER
-msgid "Search User"
-msgstr "Search User"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_PASSWORD
-# authSources/ldapAdvancedEdit.xml
-#: password - AUTH_SOURCE_PASSWORD
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_PASSWORD] Password"
-msgstr "Password"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_IDENTIFIER_FOR_USER
-# authSources/ldapAdvancedEdit.xml
-#: text - AUTH_SOURCE_IDENTIFIER_FOR_USER
-msgid "User Identifier"
-msgstr "User Identifier"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_OBJECT_CLASSES
-# authSources/ldapAdvancedEdit.xml
-#: textarea - AUTH_SOURCE_OBJECT_CLASSES
-msgid "[authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_OBJECT_CLASSES] Object Classes"
-msgstr "Object Classes"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_ATTRIBUTES
-# authSources/ldapAdvancedEdit.xml
-#: textarea - AUTH_SOURCE_ATTRIBUTES
-msgid "Filter Fields"
-msgstr "Filter Fields"
-
-# authSources/ldapAdvancedEdit.xml?AUTH_SOURCE_RETIRED_OU
-# authSources/ldapAdvancedEdit.xml
-#: text - AUTH_SOURCE_RETIRED_OU
-msgid "OU for Retired Employees OU"
-msgstr "OU for Retired Employees OU"
-
-# authSources/ldapAdvancedEdit.xml?btnSave
-# authSources/ldapAdvancedEdit.xml
-#: submit - btnSave
-msgid "[authSources/ldapAdvancedEdit.xml?btnSave] Save"
-msgstr "Save"
-
-# authSources/ldapAdvancedEdit.xml?btnCancel
-# authSources/ldapAdvancedEdit.xml
-#: button - btnCancel
-msgid "[authSources/ldapAdvancedEdit.xml?btnCancel] Cancel"
-msgstr "Cancel"
-
 # authSources/ldapEdit.xml?TITLE
 # authSources/ldapEdit.xml
 #: title - TITLE
@@ -14506,7 +14350,7 @@ msgstr "Yes"
 # authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER
 # authSources/ldapEdit.xml
 #: text - AUTH_SOURCE_SEARCH_USER
-msgid "[authSources/ldapEdit.xml?AUTH_SOURCE_SEARCH_USER] Search User"
+msgid "Search User"
 msgstr "Search User"
 
 # authSources/ldapEdit.xml?AUTH_SOURCE_PASSWORD
@@ -29608,6 +29452,12 @@ msgstr "Del Index"
 #: text - name
 msgid "Task Title"
 msgstr "Task Title"
+
+# setup/wsrTaskCase.xml?delegate
+# setup/wsrTaskCase.xml
+#: text - delegate
+msgid "Delegate Index"
+msgstr "Delegate Index"
 
 # setup/wsrTaskList.xml?guid
 # setup/wsrTaskList.xml

@@ -3503,6 +3503,8 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_FALSE','en','FALSE','2012-06-06') ;
 INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE )  VALUES 
 
+( 'LABEL','ID_ENTER_SEARCH_CRITERIA','en','Enter a search criteria and press search','2013-01-29') ,
+( 'LABEL','ID_LOGIN_AGAIN','en','You have lost your session and you have to login again.','2013-01-29') ,
 ( 'LABEL','ID_PMTABLE_DATA_KEEP','en','Keep the records of the table','2013-01-08') ,
 ( 'LABEL','ID_DYNAFORM_COPY_REQUIRED','en','Select the dynaform you want to copy/import.','2013-01-03') ,
 ( 'LABEL','ID_DYNAFORM_COPY','en','Copy/Import Dynaform','2013-01-02') ,
@@ -3580,11 +3582,11 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_PROXY_PORT','en','Port','2012-09-19') ,
 ( 'LABEL','ID_PROXY_USER','en','User','2012-09-19') ,
 ( 'LABEL','ID_PROXY_PASSWORD','en','Password','2012-09-19') ,
-( 'LABEL','ID_APP_MSG_BODY','en','Body','2012-09-19') ,
-( 'LABEL','ID_CRON_STATUS_INACTIVE','en','Inactive','2012-09-20') ,
-( 'LABEL','ID_CRON_STATUS_ACTIVE','en','Active','2012-09-20') ;
+( 'LABEL','ID_APP_MSG_BODY','en','Body','2012-09-19') ;
 INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE )  VALUES 
 
+( 'LABEL','ID_CRON_STATUS_INACTIVE','en','Inactive','2012-09-20') ,
+( 'LABEL','ID_CRON_STATUS_ACTIVE','en','Active','2012-09-20') ,
 ( 'LABEL','ID_CRON_STATUS','en','Cron status','2012-09-20') ,
 ( 'LABEL','ID_RESET_DATES','en','Reset Dates','2012-09-24') ,
 ( 'LABEL','ID_CRON_ACTIONS','en','Cron','2012-10-02') ,
@@ -3607,7 +3609,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_TIME_REQUIRED','en','Time is required','2012-10-17') ,
 ( 'LABEL','ID_CURRENT_WORKSPACE','en','Current Workspace','2012-10-29') ,
 ( 'LABEL','ID_PM_FUNCTION_CHANGE_CASE','en','The "{0}" function has {1} the current case, the script has stopped to avoid conflicts.','2012-10-29') ,
-( 'LABEL','ID_DYNAFORM_EDITOR_LOGIN_AGAIN','en','You have lost your session and you have to login to continue. Please enter you password.','2012-10-31') ,
+( 'LABEL','ID_DYNAFORM_EDITOR_LOGIN_AGAIN','en','You have lost your session and you have to login to continue. Please enter your password.','2013-01-29') ,
 ( 'LABEL','ID_DATE_FORMAT_14','en','d.m.Y','2012-11-06') ,
 ( 'LABEL','ID_TRIGGER_COPY_TITLE','en','Copy/Import Trigger','2012-11-07') ,
 ( 'LABEL','ID_TRIGGER_COPY_OPTION','en','Copy/Import Triggers from a Process','2012-11-07') ,
