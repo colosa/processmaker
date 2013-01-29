@@ -39,7 +39,9 @@ function caseNotes(){
     var appUid   = rowModel.data.APP_UID;
     var delIndex = rowModel.data.DEL_INDEX;
     var caseTitle = (rowModel.data.APP_TITLE) ? rowModel.data.APP_TITLE : rowModel.data.APP_UID;
-    openCaseNotesWindow(appUid,true);
+    var task = (typeof(rowModel.json.TAS_UID) != 'undefined') ? rowModel.json.TAS_UID : '';
+    var proid = (typeof(rowModel.json.PRO_UID) != 'undefined') ? rowModel.json.PRO_UID : '';
+    openCaseNotesWindow(appUid,true,caseTitle,proid,task);
   }else{
     msgBox(_('ID_INFORMATION'), _('ID_SELECT_ONE_AT_LEAST') );
   }
