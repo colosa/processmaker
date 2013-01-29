@@ -120,6 +120,7 @@ try {
 
     $sPMfunction = $sNameFun . " (";
     $methodParametersOnlyNames = array ();
+    $methodParametersNamesType = array ();
     if (count ( $aParametersFun ) > 0) {
         $template->newBlock ( 'paremetersTriggersGroup' );
         $template->assign ( 'PARAMETERS_LABEL', G::LoadTranslation ( 'ID_PARAMETERS' ) );
@@ -127,6 +128,7 @@ try {
             if ($v != '') {
                 $aParametersFunA = explode ( "|", $v );
                 $paramType = $aParametersFunA [0];
+                $methodParametersNamesType[] = $paramType;
                 $paramDefinition = $aParametersFunA [1];
                 $paramDefinitionA = explode ( "=", $paramDefinition );
                 $paramName = $paramDefinitionA [0];
@@ -172,6 +174,7 @@ try {
     }
     $template->gotoBlock ( '_ROOT' );
     $template->assign ('FIELDS_REQUIRED', implode ( ",", $fieldRequired ));
+    $template->assign ( 'ALLFUNCTION_TYPE', implode ( ",", $methodParametersNamesType ) );
     $template->assign ( 'ALLFUNCTION', implode ( ",", $methodParametersOnlyNames ) );
     $sPMfunction .= ");";
     $content = $template->getOutputContent ();

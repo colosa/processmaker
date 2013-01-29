@@ -34,6 +34,7 @@ $oProcessMap = new processMap( new DBConnection() );
 $aDataTriggers = $_POST;
 
 $aInfoFunction = explode( ",", $aDataTriggers['ALLFUNCTION'] );
+$aInfoFunctionType = explode( ",", $aDataTriggers['ALLFUNCTION_TYPE'] );
 
 $sPMfunction = "
 /***************************************************
@@ -51,6 +52,7 @@ $sPMfunction = "
 
 $methodParamsFinal = array ();
 //Generate params to send
+$i = 0;
 foreach ($aInfoFunction as $k => $v) {
     if ($v != '') {
 
@@ -64,8 +66,25 @@ foreach ($aInfoFunction as $k => $v) {
             if ((strstr( $aDataTriggers[$sOptionTrigger], "@@" ))) {
                 $option = trim( $aDataTriggers[$sOptionTrigger] );
             } else {
+
                 $aDataTriggers[$sOptionTrigger] = (strstr( $aDataTriggers[$sOptionTrigger], 'array' )) ? str_replace( "'", '"', $aDataTriggers[$sOptionTrigger] ) : str_replace( "'", "\'", $aDataTriggers[$sOptionTrigger] );
-                $option = (is_numeric( $aDataTriggers[$sOptionTrigger] )) ? trim( $aDataTriggers[$sOptionTrigger] ) : (strstr( $aDataTriggers[$sOptionTrigger], "array" )) ? trim( $aDataTriggers[$sOptionTrigger] ) : "'" . trim( $aDataTriggers[$sOptionTrigger] ) . "'";
+                switch(trim($aInfoFunctionType[$i])) {
+                	case 'boolean' :
+                			$option = $aDataTriggers[$sOptionTrigger];
+                			break;
+                  case 'int' :
+                      $option = intval($aDataTriggers[$sOptionTrigger]);
+                      break;
+                  case 'float' :
+                  case 'real' :
+                  case 'double' :
+                      $option = floatval($aDataTriggers[$sOptionTrigger]);
+                      break;
+                  default:
+                			$option = (is_numeric( $aDataTriggers[$sOptionTrigger] ) || is_bool($aDataTriggers[$sOptionTrigger]) ) ? trim( $aDataTriggers[$sOptionTrigger] ) : (strstr( $aDataTriggers[$sOptionTrigger], "array" )) ? trim( $aDataTriggers[$sOptionTrigger] ) : "'" . trim( $aDataTriggers[$sOptionTrigger] ) . "'";
+                      break;
+                }
+
             }
         } else {
             $option = "''";
@@ -73,7 +92,7 @@ foreach ($aInfoFunction as $k => $v) {
         $methodParamsFinal[] = $option;
 
     }
-
+		$i++;
 }
 //G::pr($methodParamsFinal);die;
 $sPMfunction .= (isset( $aDataTriggers['TRI_ANSWER'] ) && $aDataTriggers['TRI_ANSWER'] != '') ? $aDataTriggers['TRI_ANSWER'] . " = " : "";

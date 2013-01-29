@@ -37,7 +37,7 @@ $aDataTriggers = $_POST;
 $triUid = $_POST['TRI_UID'];
 
 $aInfoFunction = explode( ",", $aDataTriggers['ALLFUNCTION'] );
-
+$aInfoFunctionType = explode( ",", $aDataTriggers['ALLFUNCTION_TYPE'] );
 $sPMfunction = "
 /***************************************************
  *
@@ -52,8 +52,10 @@ $sPMfunction = "
 
 ";
 
+
 $methodParamsFinal = array ();
 //Generate params to send
+$i = 0;
 foreach ($aInfoFunction as $k => $v) {
     if ($v != '') {
 
@@ -69,8 +71,23 @@ foreach ($aInfoFunction as $k => $v) {
             } else {
 
                 $aDataTriggers[$sOptionTrigger] = (strstr( $aDataTriggers[$sOptionTrigger], 'array' )) ? str_replace( "'", '"', $aDataTriggers[$sOptionTrigger] ) : str_replace( "'", "\'", $aDataTriggers[$sOptionTrigger] );
+                switch(trim($aInfoFunctionType[$i])) {
+                	case 'boolean' :
+                			$option = $aDataTriggers[$sOptionTrigger];
+                			break;
+                  case 'int' :
+                      $option = intval($aDataTriggers[$sOptionTrigger]);
+                      break;
+                  case 'float' :
+                  case 'real' :
+                  case 'double' :
+                      $option = floatval($aDataTriggers[$sOptionTrigger]);
+                      break;
+                  default:
+                			$option = (is_numeric( $aDataTriggers[$sOptionTrigger] ) || is_bool($aDataTriggers[$sOptionTrigger]) ) ? trim( $aDataTriggers[$sOptionTrigger] ) : (strstr( $aDataTriggers[$sOptionTrigger], "array" )) ? trim( $aDataTriggers[$sOptionTrigger] ) : "'" . trim( $aDataTriggers[$sOptionTrigger] ) . "'";
+                      break;
+                }
 
-                $option = (is_numeric( $aDataTriggers[$sOptionTrigger] )) ? trim( $aDataTriggers[$sOptionTrigger] ) : (strstr( $aDataTriggers[$sOptionTrigger], "array" )) ? trim( $aDataTriggers[$sOptionTrigger] ) : "'" . trim( $aDataTriggers[$sOptionTrigger] ) . "'";
             }
         } else {
             $option = "' '";
@@ -78,7 +95,7 @@ foreach ($aInfoFunction as $k => $v) {
         $methodParamsFinal[] = $option;
 
     }
-
+		$i++;
 }
 
 $sPMfunction .= (isset( $aDataTriggers['TRI_ANSWER'] ) && $aDataTriggers['TRI_ANSWER'] != '') ? $aDataTriggers['TRI_ANSWER'] . " = " : "";

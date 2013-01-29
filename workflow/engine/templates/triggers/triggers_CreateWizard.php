@@ -75,7 +75,7 @@ try {
         $bReturnValue = false;
         $displayMode  = 'display:none';
     }
-    
+
     $aParametersFun = $methodParameters;
     $triggerWizardTemplate = PATH_TPL . 'triggers' . PATH_SEP . 'triggers_CreateWizard.html';
     $template = new TemplatePower ( $triggerWizardTemplate );
@@ -118,7 +118,7 @@ try {
 
     $sPMfunction = $sNameFun . " (";
     $methodParametersOnlyNames = array ();
-
+		$methodParametersNamesType = array ();
     if (count ( $aParametersFun ) > 0) {
         $template->newBlock ( 'paremetersTriggersGroup' );
         $template->assign ( 'PARAMETERS_LABEL', G::LoadTranslation ( 'ID_PARAMETERS' ) );
@@ -126,11 +126,12 @@ try {
             if ($v != '') {
                 $aParametersFunA = explode ( "|", $v );
                 $paramType = $aParametersFunA [0];
+                $methodParametersNamesType[] = $paramType;
                 $paramDefinition = $aParametersFunA [1];
                 $paramDefinitionA = explode ( "=", $paramDefinition );
                 $paramName = $paramDefinitionA [0];
                 $methodParametersOnlyNames [] = $paramName;
-                $paramDefaultValue = isset ( $paramDefinitionA [1] ) ? $paramDefinitionA [1] : "";
+                $paramDefaultValue = (isset($paramDefinitionA[1]))? trim($paramDefinitionA[1]) : "";
                 $paramLabel = isset ( $aParametersFunA [2] ) ? $aParametersFunA [2] : $paramName;
                 $paramDescription = isset ( $aParametersFunA [3] ) ? $aParametersFunA [3] : "";
                 $sPMfunction .= ($nrows != 2)
@@ -147,9 +148,8 @@ try {
                             . "onclick='showDynaformsFormVars($sNameTag , \"../controls/varsAjax\" , "
                             . " \"$sProUid\" , \"@@\");return;' >";
 
-                $template->assign ( 'ADD_TRI_VARIABLE', $tri_Button );
-                $template->assign ( 'ADD_TRI_VALUE',
-                                    str_replace ( "'", "", str_replace ( '"', '', $paramDefaultValue ) ) );
+                $template->assign("ADD_TRI_VARIABLE", $tri_Button);
+                $template->assign("ADD_TRI_VALUE", str_replace(array("\"", "'"), array(null, null), $paramDefaultValue));
 
                 $fieldDescription = ($paramDescription!="")?$paramDescription . "<br>":"";
                 if ($paramDefaultValue != "") {
@@ -166,6 +166,7 @@ try {
 
     $template->gotoBlock ( '_ROOT' );
     $template->assign ('FIELDS_REQUIRED', implode ( ",", $fieldRequired ));
+    $template->assign ( 'ALLFUNCTION_TYPE', implode ( ",", $methodParametersNamesType ) );
     $template->assign ( 'ALLFUNCTION', implode ( ",", $methodParametersOnlyNames ) );
     $sPMfunction .= ");";
     $content = $template->getOutputContent ();
@@ -174,4 +175,6 @@ try {
 } catch ( Exception $oException ) {
     die ( $oException->getMessage () );
 }
+
 unset ($_SESSION ['PROCESS']);
+
