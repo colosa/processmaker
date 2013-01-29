@@ -1951,7 +1951,14 @@ var gridForm = new Ext.FormPanel({
     storeCases.setBaseParam("action", action);
     storeCases.setBaseParam("start", 0);
     storeCases.setBaseParam("limit", pageSize);
-    storeCases.load();
+
+    if (action != 'search') {
+        storeCases.load();
+    } else {
+        storeCases.load( {params: { first: true}} );
+        PMExt.notify_time_out = 5;
+        PMExt.notify(_('ID_ADVANCEDSEARCH'), _('ID_ENTER_SEARCH_CRITERIA'));
+    }
     //newPopUp.add(reassignGrid);
     newPopUp.add(gridForm);
     newPopUp.addButton(btnExecReassignSelected);

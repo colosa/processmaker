@@ -15,6 +15,7 @@ $action = isset( $_GET["action"] ) ? $_GET["action"] : (isset( $_POST["action"] 
 $type = isset( $_GET["type"] ) ? $_GET["type"] : (isset( $_POST["type"] ) ? $_POST["type"] : "extjs");
 $dateFrom = isset( $_POST["dateFrom"] ) ? substr( $_POST["dateFrom"], 0, 10 ) : "";
 $dateTo = isset( $_POST["dateTo"] ) ? substr( $_POST["dateTo"], 0, 10 ) : "";
+$first = isset( $_POST["first"] ) ? true :false;
 
 try {
     $userUid = (isset($_SESSION["USER_LOGGED"]) && $_SESSION["USER_LOGGED"] != "")? $_SESSION["USER_LOGGED"] : null;
@@ -24,6 +25,13 @@ try {
     switch ($action) {
         case "search":
         case "to_reassign":
+            if ($first) {
+                $result['totalCount'] = 0;
+                $result['data'] = array();
+                $result = G::json_encode($result);
+                echo $result;
+                return ;
+            }
             $user = ($user == "CURRENT_USER")? $userUid : $user;
             $userUid = $user;
             break;
