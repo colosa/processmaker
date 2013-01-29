@@ -1963,7 +1963,8 @@ function PMFDerivateCase ($caseId, $delIndex, $bExecuteTriggersBeforeAssignment 
     $ws = new wsBase();
     $result = $ws->derivateCase( $sUserLogged, $caseId, $delIndex, $bExecuteTriggersBeforeAssignment );
     if (isset( $result->status_code )) {
-        return $result->status_code;
+        $resultArray = (array)$result;
+        return $result['status_code'];
     } else {
         return 0;
     }
