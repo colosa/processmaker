@@ -213,6 +213,7 @@ class Home extends Controller
         $this->setVar( 'cases', $cases['data'] );
         $this->setVar( 'cases_count', $cases['totalCount'] );
         $this->setVar( 'title', $title );
+        $this->setVar( 'noPerms', G::LoadTranslation( 'ID_CASES_NOTES_NO_PERMISSIONS' ));
         $this->setVar( 'appListStart', $this->appListLimit );
         $this->setVar( 'appListLimit', 10 );
         $this->setVar( 'listType', $httpData->t );
@@ -260,6 +261,7 @@ class Home extends Controller
         $this->setVar( 'cases', $cases['data'] );
         $this->setVar( 'cases_count', $cases['totalCount'] );
         $this->setVar( 'title', $title );
+        $this->setVar( 'noPerms', G::LoadTranslation( 'ID_CASES_NOTES_NO_PERMISSIONS' ));
         $this->setVar( 'appListStart', $this->appListLimit );
         $this->setVar( 'appListLimit', 10 );
         $this->setVar( 'listType', $httpData->t );

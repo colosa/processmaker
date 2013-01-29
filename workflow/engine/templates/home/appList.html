@@ -58,34 +58,57 @@
     }
   }
 
-  function addNt(appUid)
+  function addNt(appUid, proUid, tasUid)
   {
     $('textarea#note_text').val('');
-    $( "#dialog-add-note" ).dialog({
-      resizable: false,
-      height:192,
-      modal: true,
-      buttons: {
-        "Add Note": function() {
-        	var sendMail = document.getElementById('chkSendMail').checked;
-            sendMail = (sendMail == true) ? '1' : '0';
-          $(this).dialog("close");
-          $.post(
-            '../appProxy/postNote',
-            {appUid  : appUid,
-             noteText: $('textarea#note_text').val(),
-             swSendMail : sendMail},
-            function(responseText) {
-              updateNt(appUid);
-            }
-          );
-          //redirect('home/startCase?id='+id);
+    $.post(
+        '../appProxy/getNotesList',
+        {
+            appUid  : appUid,
+            pro:proUid,
+            tas:tasUid,
+            start:0,
+            limit:25
         },
-        Cancel: function() {
-          $(this).dialog( "close" );
+        function(responseText) {
+            data = jQuery.parseJSON(responseText);
+            if (typeof (data.noPerms) != 'undefined') {
+                alert(noPerms);
+                return false;
+            } else {
+                $( "#dialog-add-note" ).dialog({
+                resizable: false,
+                height:192,
+                modal: true,
+                buttons: {
+                  "Add Note": function() {
+                      var sendMail = document.getElementById('chkSendMail').checked;
+                      sendMail = (sendMail == true) ? '1' : '0';
+                    $(this).dialog("close");
+                    $.post(
+                      '../appProxy/postNote',
+                      {appUid  : appUid,
+                       noteText: $('textarea#note_text').val(),
+                       swSendMail : sendMail},
+                      function(responseText) {
+                        updateNt(appUid);
+                      }
+                    );
+                    //redirect('home/startCase?id='+id);
+                  },
+                  Cancel: function() {
+                    $(this).dialog( "close" );
+                  }
+                }
+              });
+            }
+            //updateNt(appUid);
+          
         }
-      }
-    });
+    );
+    
+    
+    
   }
 
   function updateNt(appUid)
@@ -146,6 +169,7 @@
   var appListLimit = {$appListLimit};
   var appListStart = {$appListStart};
   var listType     = '{$listType}';
+  var noPerms     = '{$noPerms}';
   </script>
   
 </head>

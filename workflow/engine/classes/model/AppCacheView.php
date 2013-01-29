@@ -151,6 +151,8 @@ class AppCacheView extends BaseAppCacheView
             $criteria = $this->addPMFieldsToCriteria('draft');
         }
 
+        $criteria->addSelectColumn(AppCacheViewPeer::TAS_UID);
+        $criteria->addSelectColumn(AppCacheViewPeer::PRO_UID);
         $criteria->add(AppCacheViewPeer::APP_STATUS, "DRAFT", CRITERIA::EQUAL);
 
         if (!empty($userUid)) {
@@ -403,6 +405,8 @@ class AppCacheView extends BaseAppCacheView
             $criteria = $this->addPMFieldsToCriteria('unassigned');
         }
 
+        $criteria->addSelectColumn(AppCacheViewPeer::TAS_UID);
+        $criteria->addSelectColumn(AppCacheViewPeer::PRO_UID);
         $criteria->add(AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL);
         $criteria->add(AppCacheViewPeer::USR_UID, '');
 
