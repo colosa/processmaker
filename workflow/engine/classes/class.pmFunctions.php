@@ -46,9 +46,8 @@ if (! class_exists( 'PMScript' )) {
  */
 
 /**
- *
  * @method
- * 
+ *
  * Retrieves the current date formated in the format "yyyy-mm-dd", with leading zeros in the
  * month and day if less than 10. This function is equivalent to PHP's date("Y-m-d").
  *
@@ -1530,7 +1529,7 @@ function PMFUserList () //its test was successfull
  * Add a input document.
  *
  * @name PMFAddInputDocument
- * @label PMF Add a input document.
+ * @label PMF Add a input document
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFAddInputDocument.28.29
  *
  * @param string(32) | $inputDocumentUid | ID of the input document | The unique ID of the input document.
@@ -2043,8 +2042,8 @@ function PMFNewCase ($processId, $userId, $taskId, $variables)
  *
  * Assigns a user to a group.
  *
- * Assigns a user to a group. Note that the logged-in user must have the PM_USERS permission in his/her role to be able to assign a user to a group. 
- * 
+ * Assigns a user to a group. Note that the logged-in user must have the PM_USERS permission in his/her role to be able to assign a user to a group.
+ *
  * @name PMFAssignUserToGroup
  * @label PMF Assign User To Group
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFNewCase.28.29
@@ -2422,18 +2421,18 @@ function PMFGetNextAssignedUser ($application, $task)
 }
 
 /**
- *
  * @method
  *
  * Returns a list or user.
  *
  * @name PMFGetUserEmailAddress
- * @label PMFGet User Email Address
+ * @label PMF Get User Email Address
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFGetUserEmailAddress.28.29
  *
- * @param string(32) or Array | $id | Case ID | Id of the case
- * @param string(32) | $APP_UID or null | Application ID | Id of the Application
- * @param string(32) | $prefix or default value 'usr' | prefix | Id of the task
- * @return array | $aRecipient | Array of the Recipient | Return an Array of the Recipient
+ * @param string(32) or Array | $id | Case ID | Id of the case.
+ * @param string(32) | $APP_UID = null | Application ID | Id of the Application.
+ * @param string(32) | $prefix = "usr" | prefix | Id of the task.
+ * @return array | $aRecipient | Array of the Recipient | Return an Array of the Recipient.
  *
  */
 function PMFGetUserEmailAddress ($id, $APP_UID = null, $prefix = 'usr')
@@ -2565,18 +2564,18 @@ function PMFGetUserEmailAddress ($id, $APP_UID = null, $prefix = 'usr')
 }
 
 /**
- *
  * @method
  *
  * Get of the cases notes an application.
  *
  * @name PMFGetCaseNotes
- * @label PMF Get of the cases notes an application.
+ * @label PMF Get of the cases notes an application
+ * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFGetCaseNotes.28.29
  *
- * @param string(32) | $applicationID | Application ID | ID of the Application
- * @param string(32) | $type or default value 'array' | type of the return value | type of the return value (array, object, string)
- * @param string(32) | $userUid default value empty string | User ID | Id of the User
- * @return array, object or string | $response | Array of the response | Return an Array or Object or String
+ * @param string(32) | $applicationID | Application ID | ID of the Application.
+ * @param string(32) | $type = "array" | type of the return value | type of the return value (array, object, string).
+ * @param string(32) | $userUid = "" | User ID | Id of the User.
+ * @return array, object or string | $response | Array of the response | Return an Array or Object or String.
  *
  */
 function PMFGetCaseNotes ($applicationID, $type = 'array', $userUid = '')
