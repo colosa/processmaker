@@ -78,21 +78,28 @@ class AppDelegation extends BaseAppDelegation
             throw (new Exception( 'Column "APP_THREAD" cannot be null.' ));
         }
 
-        //get max DEL_INDEX SELECT MAX(DEL_INDEX) AS M FROM APP_DELEGATION WHERE APP_UID="'.$Fields['APP_UID'].'"'
-        $c = new Criteria();
-        $c->clearSelectColumns();
-        $c->addSelectColumn( 'MAX(' . AppDelegationPeer::DEL_INDEX . ') ' );
-        $c->add( AppDelegationPeer::APP_UID, $sAppUid );
+        //get max DEL_INDEX
+        $criteria = new Criteria('workflow');
+        $criteria->add( AppDelegationPeer::APP_UID, $sAppUid );
+        $criteria->add( AppDelegationPeer::DEL_LAST_INDEX , 1);
+        //$criteria->addDescendingOrderByColumn(AppDelegationPeer::DEL_INDEX);
+        $criteriaIndex = clone $criteria;
 
-        $rs = AppDelegationPeer::doSelectRS( $c );
+        $rs = AppDelegationPeer::doSelectRS( $criteriaIndex );
         $rs->next();
         $row = $rs->getRow();
-        $delIndex = $row[0] + 1;
+        $delIndex = (isset($row['1'])) ? $row['1'] + 1 : 1;
+
+        // update set
+        $criteriaUpdate = new Criteria('workflow');
+        $criteriaUpdate->add(AppDelegationPeer::DEL_LAST_INDEX, 0);
+        BasePeer::doUpdate($criteria, $criteriaUpdate, Propel::getConnection('workflow'));
 
         $this->setAppUid( $sAppUid );
         $this->setProUid( $sProUid );
         $this->setTasUid( $sTasUid );
         $this->setDelIndex( $delIndex );
+        $this->setDelLastIndex(1);
         $this->setDelPrevious( $sPrevious == - 1 ? 0 : $sPrevious );
         $this->setUsrUid( $sUsrUid );
         $this->setDelType( 'NORMAL' );

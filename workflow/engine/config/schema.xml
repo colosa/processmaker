@@ -111,6 +111,7 @@
     <column name="APP_UID" type="VARCHAR" size="32" required="true" primaryKey="true" default=""/>
     <column name="DEL_INDEX" type="INTEGER" required="true" primaryKey="true" default="0"/>
     <column name="DEL_PREVIOUS" type="INTEGER" required="true" default="0"/>
+    <column name="DEL_LAST_INDEX" type="INTEGER" required="true" default="0"/>
     <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
     <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
     <column name="USR_UID" type="VARCHAR" size="32" required="true" default=""/>
@@ -2370,6 +2371,7 @@
     </vendor>
     <column name="APP_UID" type="VARCHAR" size="32" required="true" primaryKey="true" default=""/>
     <column name="DEL_INDEX" type="INTEGER" required="true" primaryKey="true" default="0"/>
+    <column name="DEL_LAST_INDEX" type="INTEGER" required="true" default="0"/>
     <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
     <column name="APP_STATUS" type="VARCHAR" size="32" required="true" default=""/>
     <column name="USR_UID" type="VARCHAR" size="32" required="true" default=""/>
@@ -2404,6 +2406,33 @@
         <parameter name="Table" value="APP_CACHE_VIEW"/>
         <parameter name="Non_unique" value="1"/>
         <parameter name="Key_name" value="indexAppNumber"/>
+        <parameter name="Seq_in_index" value="1"/>
+      </vendor>
+    </index>
+    <index name="protitle">
+      <index-column name="APP_PRO_TITLE"/>
+      <vendor type="mysql">
+        <parameter name="Table" value="APP_CACHE_VIEW"/>
+        <parameter name="Non_unique" value="1"/>
+        <parameter name="Key_name" value="protitle"/>
+        <parameter name="Seq_in_index" value="1"/>
+      </vendor>
+    </index>
+    <index name="appupdatedate">
+      <index-column name="APP_UPDATE_DATE"/>
+      <vendor type="mysql">
+        <parameter name="Table" value="APP_CACHE_VIEW"/>
+        <parameter name="Non_unique" value="1"/>
+        <parameter name="Key_name" value="appupdatedate"/>
+        <parameter name="Seq_in_index" value="1"/>
+      </vendor>
+    </index>
+    <index name="tastitle">
+      <index-column name="APP_TAS_TITLE"/>
+      <vendor type="mysql">
+        <parameter name="Table" value="APP_CACHE_VIEW"/>
+        <parameter name="Non_unique" value="1"/>
+        <parameter name="Key_name" value="tastitle"/>
         <parameter name="Seq_in_index" value="1"/>
       </vendor>
     </index>

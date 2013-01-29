@@ -69,6 +69,8 @@ class AppCacheViewMapBuilder
 
         $tMap->addPrimaryKey('DEL_INDEX', 'DelIndex', 'int', CreoleTypes::INTEGER, true, null);
 
+        $tMap->addColumn('DEL_LAST_INDEX', 'DelLastIndex', 'int', CreoleTypes::INTEGER, true, null);
+
         $tMap->addColumn('APP_NUMBER', 'AppNumber', 'int', CreoleTypes::INTEGER, true, null);
 
         $tMap->addColumn('APP_STATUS', 'AppStatus', 'string', CreoleTypes::VARCHAR, true, 32);

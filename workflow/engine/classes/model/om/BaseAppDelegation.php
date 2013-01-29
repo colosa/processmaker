@@ -46,6 +46,12 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
     protected $del_previous = 0;
 
     /**
+     * The value for the del_last_index field.
+     * @var        int
+     */
+    protected $del_last_index = 0;
+
+    /**
      * The value for the pro_uid field.
      * @var        string
      */
@@ -204,6 +210,17 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
     {
 
         return $this->del_previous;
+    }
+
+    /**
+     * Get the [del_last_index] column value.
+     * 
+     * @return     int
+     */
+    public function getDelLastIndex()
+    {
+
+        return $this->del_last_index;
     }
 
     /**
@@ -564,6 +581,28 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
         }
 
     } // setDelPrevious()
+
+    /**
+     * Set the value of [del_last_index] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setDelLastIndex($v)
+    {
+
+        // Since the native PHP type for this column is integer,
+        // we will cast the input value to an int (if it is not).
+        if ($v !== null && !is_int($v) && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->del_last_index !== $v || $v === 0) {
+            $this->del_last_index = $v;
+            $this->modifiedColumns[] = AppDelegationPeer::DEL_LAST_INDEX;
+        }
+
+    } // setDelLastIndex()
 
     /**
      * Set the value of [pro_uid] column.
@@ -994,50 +1033,52 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
 
             $this->del_previous = $rs->getInt($startcol + 2);
 
-            $this->pro_uid = $rs->getString($startcol + 3);
+            $this->del_last_index = $rs->getInt($startcol + 3);
 
-            $this->tas_uid = $rs->getString($startcol + 4);
+            $this->pro_uid = $rs->getString($startcol + 4);
 
-            $this->usr_uid = $rs->getString($startcol + 5);
+            $this->tas_uid = $rs->getString($startcol + 5);
 
-            $this->del_type = $rs->getString($startcol + 6);
+            $this->usr_uid = $rs->getString($startcol + 6);
 
-            $this->del_thread = $rs->getInt($startcol + 7);
+            $this->del_type = $rs->getString($startcol + 7);
 
-            $this->del_thread_status = $rs->getString($startcol + 8);
+            $this->del_thread = $rs->getInt($startcol + 8);
 
-            $this->del_priority = $rs->getString($startcol + 9);
+            $this->del_thread_status = $rs->getString($startcol + 9);
 
-            $this->del_delegate_date = $rs->getTimestamp($startcol + 10, null);
+            $this->del_priority = $rs->getString($startcol + 10);
 
-            $this->del_init_date = $rs->getTimestamp($startcol + 11, null);
+            $this->del_delegate_date = $rs->getTimestamp($startcol + 11, null);
 
-            $this->del_task_due_date = $rs->getTimestamp($startcol + 12, null);
+            $this->del_init_date = $rs->getTimestamp($startcol + 12, null);
 
-            $this->del_finish_date = $rs->getTimestamp($startcol + 13, null);
+            $this->del_task_due_date = $rs->getTimestamp($startcol + 13, null);
 
-            $this->del_duration = $rs->getFloat($startcol + 14);
+            $this->del_finish_date = $rs->getTimestamp($startcol + 14, null);
 
-            $this->del_queue_duration = $rs->getFloat($startcol + 15);
+            $this->del_duration = $rs->getFloat($startcol + 15);
 
-            $this->del_delay_duration = $rs->getFloat($startcol + 16);
+            $this->del_queue_duration = $rs->getFloat($startcol + 16);
 
-            $this->del_started = $rs->getInt($startcol + 17);
+            $this->del_delay_duration = $rs->getFloat($startcol + 17);
 
-            $this->del_finished = $rs->getInt($startcol + 18);
+            $this->del_started = $rs->getInt($startcol + 18);
 
-            $this->del_delayed = $rs->getInt($startcol + 19);
+            $this->del_finished = $rs->getInt($startcol + 19);
 
-            $this->del_data = $rs->getString($startcol + 20);
+            $this->del_delayed = $rs->getInt($startcol + 20);
 
-            $this->app_overdue_percentage = $rs->getFloat($startcol + 21);
+            $this->del_data = $rs->getString($startcol + 21);
+
+            $this->app_overdue_percentage = $rs->getFloat($startcol + 22);
 
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 22; // 22 = AppDelegationPeer::NUM_COLUMNS - AppDelegationPeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 23; // 23 = AppDelegationPeer::NUM_COLUMNS - AppDelegationPeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating AppDelegation object", $e);
@@ -1251,60 +1292,63 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
                 return $this->getDelPrevious();
                 break;
             case 3:
-                return $this->getProUid();
+                return $this->getDelLastIndex();
                 break;
             case 4:
-                return $this->getTasUid();
+                return $this->getProUid();
                 break;
             case 5:
-                return $this->getUsrUid();
+                return $this->getTasUid();
                 break;
             case 6:
-                return $this->getDelType();
+                return $this->getUsrUid();
                 break;
             case 7:
-                return $this->getDelThread();
+                return $this->getDelType();
                 break;
             case 8:
-                return $this->getDelThreadStatus();
+                return $this->getDelThread();
                 break;
             case 9:
-                return $this->getDelPriority();
+                return $this->getDelThreadStatus();
                 break;
             case 10:
-                return $this->getDelDelegateDate();
+                return $this->getDelPriority();
                 break;
             case 11:
-                return $this->getDelInitDate();
+                return $this->getDelDelegateDate();
                 break;
             case 12:
-                return $this->getDelTaskDueDate();
+                return $this->getDelInitDate();
                 break;
             case 13:
-                return $this->getDelFinishDate();
+                return $this->getDelTaskDueDate();
                 break;
             case 14:
-                return $this->getDelDuration();
+                return $this->getDelFinishDate();
                 break;
             case 15:
-                return $this->getDelQueueDuration();
+                return $this->getDelDuration();
                 break;
             case 16:
-                return $this->getDelDelayDuration();
+                return $this->getDelQueueDuration();
                 break;
             case 17:
-                return $this->getDelStarted();
+                return $this->getDelDelayDuration();
                 break;
             case 18:
-                return $this->getDelFinished();
+                return $this->getDelStarted();
                 break;
             case 19:
-                return $this->getDelDelayed();
+                return $this->getDelFinished();
                 break;
             case 20:
-                return $this->getDelData();
+                return $this->getDelDelayed();
                 break;
             case 21:
+                return $this->getDelData();
+                break;
+            case 22:
                 return $this->getAppOverduePercentage();
                 break;
             default:
@@ -1330,25 +1374,26 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
             $keys[0] => $this->getAppUid(),
             $keys[1] => $this->getDelIndex(),
             $keys[2] => $this->getDelPrevious(),
-            $keys[3] => $this->getProUid(),
-            $keys[4] => $this->getTasUid(),
-            $keys[5] => $this->getUsrUid(),
-            $keys[6] => $this->getDelType(),
-            $keys[7] => $this->getDelThread(),
-            $keys[8] => $this->getDelThreadStatus(),
-            $keys[9] => $this->getDelPriority(),
-            $keys[10] => $this->getDelDelegateDate(),
-            $keys[11] => $this->getDelInitDate(),
-            $keys[12] => $this->getDelTaskDueDate(),
-            $keys[13] => $this->getDelFinishDate(),
-            $keys[14] => $this->getDelDuration(),
-            $keys[15] => $this->getDelQueueDuration(),
-            $keys[16] => $this->getDelDelayDuration(),
-            $keys[17] => $this->getDelStarted(),
-            $keys[18] => $this->getDelFinished(),
-            $keys[19] => $this->getDelDelayed(),
-            $keys[20] => $this->getDelData(),
-            $keys[21] => $this->getAppOverduePercentage(),
+            $keys[3] => $this->getDelLastIndex(),
+            $keys[4] => $this->getProUid(),
+            $keys[5] => $this->getTasUid(),
+            $keys[6] => $this->getUsrUid(),
+            $keys[7] => $this->getDelType(),
+            $keys[8] => $this->getDelThread(),
+            $keys[9] => $this->getDelThreadStatus(),
+            $keys[10] => $this->getDelPriority(),
+            $keys[11] => $this->getDelDelegateDate(),
+            $keys[12] => $this->getDelInitDate(),
+            $keys[13] => $this->getDelTaskDueDate(),
+            $keys[14] => $this->getDelFinishDate(),
+            $keys[15] => $this->getDelDuration(),
+            $keys[16] => $this->getDelQueueDuration(),
+            $keys[17] => $this->getDelDelayDuration(),
+            $keys[18] => $this->getDelStarted(),
+            $keys[19] => $this->getDelFinished(),
+            $keys[20] => $this->getDelDelayed(),
+            $keys[21] => $this->getDelData(),
+            $keys[22] => $this->getAppOverduePercentage(),
         );
         return $result;
     }
@@ -1390,60 +1435,63 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
                 $this->setDelPrevious($value);
                 break;
             case 3:
-                $this->setProUid($value);
+                $this->setDelLastIndex($value);
                 break;
             case 4:
-                $this->setTasUid($value);
+                $this->setProUid($value);
                 break;
             case 5:
-                $this->setUsrUid($value);
+                $this->setTasUid($value);
                 break;
             case 6:
-                $this->setDelType($value);
+                $this->setUsrUid($value);
                 break;
             case 7:
-                $this->setDelThread($value);
+                $this->setDelType($value);
                 break;
             case 8:
-                $this->setDelThreadStatus($value);
+                $this->setDelThread($value);
                 break;
             case 9:
-                $this->setDelPriority($value);
+                $this->setDelThreadStatus($value);
                 break;
             case 10:
-                $this->setDelDelegateDate($value);
+                $this->setDelPriority($value);
                 break;
             case 11:
-                $this->setDelInitDate($value);
+                $this->setDelDelegateDate($value);
                 break;
             case 12:
-                $this->setDelTaskDueDate($value);
+                $this->setDelInitDate($value);
                 break;
             case 13:
-                $this->setDelFinishDate($value);
+                $this->setDelTaskDueDate($value);
                 break;
             case 14:
-                $this->setDelDuration($value);
+                $this->setDelFinishDate($value);
                 break;
             case 15:
-                $this->setDelQueueDuration($value);
+                $this->setDelDuration($value);
                 break;
             case 16:
-                $this->setDelDelayDuration($value);
+                $this->setDelQueueDuration($value);
                 break;
             case 17:
-                $this->setDelStarted($value);
+                $this->setDelDelayDuration($value);
                 break;
             case 18:
-                $this->setDelFinished($value);
+                $this->setDelStarted($value);
                 break;
             case 19:
-                $this->setDelDelayed($value);
+                $this->setDelFinished($value);
                 break;
             case 20:
-                $this->setDelData($value);
+                $this->setDelDelayed($value);
                 break;
             case 21:
+                $this->setDelData($value);
+                break;
+            case 22:
                 $this->setAppOverduePercentage($value);
                 break;
         } // switch()
@@ -1482,79 +1530,83 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
         }
 
         if (array_key_exists($keys[3], $arr)) {
-            $this->setProUid($arr[$keys[3]]);
+            $this->setDelLastIndex($arr[$keys[3]]);
         }
 
         if (array_key_exists($keys[4], $arr)) {
-            $this->setTasUid($arr[$keys[4]]);
+            $this->setProUid($arr[$keys[4]]);
         }
 
         if (array_key_exists($keys[5], $arr)) {
-            $this->setUsrUid($arr[$keys[5]]);
+            $this->setTasUid($arr[$keys[5]]);
         }
 
         if (array_key_exists($keys[6], $arr)) {
-            $this->setDelType($arr[$keys[6]]);
+            $this->setUsrUid($arr[$keys[6]]);
         }
 
         if (array_key_exists($keys[7], $arr)) {
-            $this->setDelThread($arr[$keys[7]]);
+            $this->setDelType($arr[$keys[7]]);
         }
 
         if (array_key_exists($keys[8], $arr)) {
-            $this->setDelThreadStatus($arr[$keys[8]]);
+            $this->setDelThread($arr[$keys[8]]);
         }
 
         if (array_key_exists($keys[9], $arr)) {
-            $this->setDelPriority($arr[$keys[9]]);
+            $this->setDelThreadStatus($arr[$keys[9]]);
         }
 
         if (array_key_exists($keys[10], $arr)) {
-            $this->setDelDelegateDate($arr[$keys[10]]);
+            $this->setDelPriority($arr[$keys[10]]);
         }
 
         if (array_key_exists($keys[11], $arr)) {
-            $this->setDelInitDate($arr[$keys[11]]);
+            $this->setDelDelegateDate($arr[$keys[11]]);
         }
 
         if (array_key_exists($keys[12], $arr)) {
-            $this->setDelTaskDueDate($arr[$keys[12]]);
+            $this->setDelInitDate($arr[$keys[12]]);
         }
 
         if (array_key_exists($keys[13], $arr)) {
-            $this->setDelFinishDate($arr[$keys[13]]);
+            $this->setDelTaskDueDate($arr[$keys[13]]);
         }
 
         if (array_key_exists($keys[14], $arr)) {
-            $this->setDelDuration($arr[$keys[14]]);
+            $this->setDelFinishDate($arr[$keys[14]]);
         }
 
         if (array_key_exists($keys[15], $arr)) {
-            $this->setDelQueueDuration($arr[$keys[15]]);
+            $this->setDelDuration($arr[$keys[15]]);
         }
 
         if (array_key_exists($keys[16], $arr)) {
-            $this->setDelDelayDuration($arr[$keys[16]]);
+            $this->setDelQueueDuration($arr[$keys[16]]);
         }
 
         if (array_key_exists($keys[17], $arr)) {
-            $this->setDelStarted($arr[$keys[17]]);
+            $this->setDelDelayDuration($arr[$keys[17]]);
         }
 
         if (array_key_exists($keys[18], $arr)) {
-            $this->setDelFinished($arr[$keys[18]]);
+            $this->setDelStarted($arr[$keys[18]]);
         }
 
         if (array_key_exists($keys[19], $arr)) {
-            $this->setDelDelayed($arr[$keys[19]]);
+            $this->setDelFinished($arr[$keys[19]]);
         }
 
         if (array_key_exists($keys[20], $arr)) {
-            $this->setDelData($arr[$keys[20]]);
+            $this->setDelDelayed($arr[$keys[20]]);
         }
 
         if (array_key_exists($keys[21], $arr)) {
-            $this->setAppOverduePercentage($arr[$keys[21]]);
+            $this->setDelData($arr[$keys[21]]);
+        }
+
+        if (array_key_exists($keys[22], $arr)) {
+            $this->setAppOverduePercentage($arr[$keys[22]]);
         }
 
     }
@@ -1578,6 +1630,10 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
 
         if ($this->isColumnModified(AppDelegationPeer::DEL_PREVIOUS)) {
             $criteria->add(AppDelegationPeer::DEL_PREVIOUS, $this->del_previous);
+        }
+
+        if ($this->isColumnModified(AppDelegationPeer::DEL_LAST_INDEX)) {
+            $criteria->add(AppDelegationPeer::DEL_LAST_INDEX, $this->del_last_index);
         }
 
         if ($this->isColumnModified(AppDelegationPeer::PRO_UID)) {
@@ -1723,6 +1779,8 @@ abstract class BaseAppDelegation extends BaseObject implements Persistent
     {
 
         $copyObj->setDelPrevious($this->del_previous);
+
+        $copyObj->setDelLastIndex($this->del_last_index);
 
         $copyObj->setProUid($this->pro_uid);
 

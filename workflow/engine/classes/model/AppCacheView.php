@@ -725,9 +725,9 @@ class AppCacheView extends BaseAppCacheView
     {
         $criteria = $this->addPMFieldsToCriteria('sent');
 
-        $criteria->addAsColumn('MAX_DEL_INDEX', 'MAX(' . AppCacheViewPeer::DEL_INDEX . ')');
+        $criteria->addAsColumn("MAX_DEL_INDEX", AppCacheViewPeer::DEL_INDEX);
         //$criteria->add(AppCacheViewPeer::USR_UID, $userUid);
-        $criteria->addGroupByColumn(AppCacheViewPeer::APP_UID);
+        $criteria->add(AppCacheViewPeer::DEL_LAST_INDEX, 1);
 
         return $criteria;
         //return $this->getSearchCriteria(false);
@@ -756,10 +756,10 @@ class AppCacheView extends BaseAppCacheView
     public function getSimpleSearchListCriteria()
     {
         $criteria = $this->addPMFieldsToCriteria('sent');
-        $criteria->addAsColumn('DEL_INDEX', 'MAX(' . AppCacheViewPeer::DEL_INDEX . ')');
+        $criteria->addAsColumn("DEL_INDEX", AppCacheViewPeer::DEL_INDEX);
         $criteria->add(AppCacheViewPeer::USR_UID, $_SESSION['USER_LOGGED']);
         //$criteria->add(AppCacheViewPeer::USR_UID, $userUid);
-        $criteria->addGroupByColumn(AppCacheViewPeer::APP_UID);
+        $criteria->add(AppCacheViewPeer::DEL_LAST_INDEX, 1);
 
         return $criteria;
         //return $this->getSearchCriteria(false);
@@ -1286,6 +1286,32 @@ class AppCacheView extends BaseAppCacheView
         }
 
         return array('found' => $found, 'count' => $count);
+    }
+
+    /**
+     * Update the field APP_DELEGATION.DEL_LAST_INDEX
+     */
+    public function updateAppDelegationDelLastIndex($lang, $recreate = false)
+    {
+        $cnn = Propel::getConnection("workflow");
+        $stmt = $cnn->createStatement();
+
+        $filenameSql = $this->pathToAppCacheFiles . "app_delegation_del_last_index_update.sql";
+
+        if (!file_exists($filenameSql)) {
+            throw (new Exception("file app_delegation_del_last_index_update.sql does not exist"));
+        }
+
+        //Delete trigger
+        $rs = $stmt->executeQuery("DROP TRIGGER IF EXISTS APP_DELEGATION_UPDATE");
+
+        //Update field
+        $rs = $stmt->executeQuery(file_get_contents($filenameSql));
+
+        //Create trigger
+        $res = $this->triggerAppDelegationUpdate($lang, $recreate);
+
+        return "done updated field in table APP_DELEGATION";
     }
 
     /**

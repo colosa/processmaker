@@ -40,6 +40,12 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
     protected $del_index = 0;
 
     /**
+     * The value for the del_last_index field.
+     * @var        int
+     */
+    protected $del_last_index = 0;
+
+    /**
      * The value for the app_number field.
      * @var        int
      */
@@ -241,6 +247,17 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
     {
 
         return $this->del_index;
+    }
+
+    /**
+     * Get the [del_last_index] column value.
+     * 
+     * @return     int
+     */
+    public function getDelLastIndex()
+    {
+
+        return $this->del_last_index;
     }
 
     /**
@@ -741,6 +758,28 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
         }
 
     } // setDelIndex()
+
+    /**
+     * Set the value of [del_last_index] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setDelLastIndex($v)
+    {
+
+        // Since the native PHP type for this column is integer,
+        // we will cast the input value to an int (if it is not).
+        if ($v !== null && !is_int($v) && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->del_last_index !== $v || $v === 0) {
+            $this->del_last_index = $v;
+            $this->modifiedColumns[] = AppCacheViewPeer::DEL_LAST_INDEX;
+        }
+
+    } // setDelLastIndex()
 
     /**
      * Set the value of [app_number] column.
@@ -1376,68 +1415,70 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
 
             $this->del_index = $rs->getInt($startcol + 1);
 
-            $this->app_number = $rs->getInt($startcol + 2);
+            $this->del_last_index = $rs->getInt($startcol + 2);
 
-            $this->app_status = $rs->getString($startcol + 3);
+            $this->app_number = $rs->getInt($startcol + 3);
 
-            $this->usr_uid = $rs->getString($startcol + 4);
+            $this->app_status = $rs->getString($startcol + 4);
 
-            $this->previous_usr_uid = $rs->getString($startcol + 5);
+            $this->usr_uid = $rs->getString($startcol + 5);
 
-            $this->tas_uid = $rs->getString($startcol + 6);
+            $this->previous_usr_uid = $rs->getString($startcol + 6);
 
-            $this->pro_uid = $rs->getString($startcol + 7);
+            $this->tas_uid = $rs->getString($startcol + 7);
 
-            $this->del_delegate_date = $rs->getTimestamp($startcol + 8, null);
+            $this->pro_uid = $rs->getString($startcol + 8);
 
-            $this->del_init_date = $rs->getTimestamp($startcol + 9, null);
+            $this->del_delegate_date = $rs->getTimestamp($startcol + 9, null);
 
-            $this->del_task_due_date = $rs->getTimestamp($startcol + 10, null);
+            $this->del_init_date = $rs->getTimestamp($startcol + 10, null);
 
-            $this->del_finish_date = $rs->getTimestamp($startcol + 11, null);
+            $this->del_task_due_date = $rs->getTimestamp($startcol + 11, null);
 
-            $this->del_thread_status = $rs->getString($startcol + 12);
+            $this->del_finish_date = $rs->getTimestamp($startcol + 12, null);
 
-            $this->app_thread_status = $rs->getString($startcol + 13);
+            $this->del_thread_status = $rs->getString($startcol + 13);
 
-            $this->app_title = $rs->getString($startcol + 14);
+            $this->app_thread_status = $rs->getString($startcol + 14);
 
-            $this->app_pro_title = $rs->getString($startcol + 15);
+            $this->app_title = $rs->getString($startcol + 15);
 
-            $this->app_tas_title = $rs->getString($startcol + 16);
+            $this->app_pro_title = $rs->getString($startcol + 16);
 
-            $this->app_current_user = $rs->getString($startcol + 17);
+            $this->app_tas_title = $rs->getString($startcol + 17);
 
-            $this->app_del_previous_user = $rs->getString($startcol + 18);
+            $this->app_current_user = $rs->getString($startcol + 18);
 
-            $this->del_priority = $rs->getString($startcol + 19);
+            $this->app_del_previous_user = $rs->getString($startcol + 19);
 
-            $this->del_duration = $rs->getFloat($startcol + 20);
+            $this->del_priority = $rs->getString($startcol + 20);
 
-            $this->del_queue_duration = $rs->getFloat($startcol + 21);
+            $this->del_duration = $rs->getFloat($startcol + 21);
 
-            $this->del_delay_duration = $rs->getFloat($startcol + 22);
+            $this->del_queue_duration = $rs->getFloat($startcol + 22);
 
-            $this->del_started = $rs->getInt($startcol + 23);
+            $this->del_delay_duration = $rs->getFloat($startcol + 23);
 
-            $this->del_finished = $rs->getInt($startcol + 24);
+            $this->del_started = $rs->getInt($startcol + 24);
 
-            $this->del_delayed = $rs->getInt($startcol + 25);
+            $this->del_finished = $rs->getInt($startcol + 25);
 
-            $this->app_create_date = $rs->getTimestamp($startcol + 26, null);
+            $this->del_delayed = $rs->getInt($startcol + 26);
 
-            $this->app_finish_date = $rs->getTimestamp($startcol + 27, null);
+            $this->app_create_date = $rs->getTimestamp($startcol + 27, null);
 
-            $this->app_update_date = $rs->getTimestamp($startcol + 28, null);
+            $this->app_finish_date = $rs->getTimestamp($startcol + 28, null);
 
-            $this->app_overdue_percentage = $rs->getFloat($startcol + 29);
+            $this->app_update_date = $rs->getTimestamp($startcol + 29, null);
+
+            $this->app_overdue_percentage = $rs->getFloat($startcol + 30);
 
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 30; // 30 = AppCacheViewPeer::NUM_COLUMNS - AppCacheViewPeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 31; // 31 = AppCacheViewPeer::NUM_COLUMNS - AppCacheViewPeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating AppCacheView object", $e);
@@ -1648,87 +1689,90 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
                 return $this->getDelIndex();
                 break;
             case 2:
-                return $this->getAppNumber();
+                return $this->getDelLastIndex();
                 break;
             case 3:
-                return $this->getAppStatus();
+                return $this->getAppNumber();
                 break;
             case 4:
-                return $this->getUsrUid();
+                return $this->getAppStatus();
                 break;
             case 5:
-                return $this->getPreviousUsrUid();
+                return $this->getUsrUid();
                 break;
             case 6:
-                return $this->getTasUid();
+                return $this->getPreviousUsrUid();
                 break;
             case 7:
-                return $this->getProUid();
+                return $this->getTasUid();
                 break;
             case 8:
-                return $this->getDelDelegateDate();
+                return $this->getProUid();
                 break;
             case 9:
-                return $this->getDelInitDate();
+                return $this->getDelDelegateDate();
                 break;
             case 10:
-                return $this->getDelTaskDueDate();
+                return $this->getDelInitDate();
                 break;
             case 11:
-                return $this->getDelFinishDate();
+                return $this->getDelTaskDueDate();
                 break;
             case 12:
-                return $this->getDelThreadStatus();
+                return $this->getDelFinishDate();
                 break;
             case 13:
-                return $this->getAppThreadStatus();
+                return $this->getDelThreadStatus();
                 break;
             case 14:
-                return $this->getAppTitle();
+                return $this->getAppThreadStatus();
                 break;
             case 15:
-                return $this->getAppProTitle();
+                return $this->getAppTitle();
                 break;
             case 16:
-                return $this->getAppTasTitle();
+                return $this->getAppProTitle();
                 break;
             case 17:
-                return $this->getAppCurrentUser();
+                return $this->getAppTasTitle();
                 break;
             case 18:
-                return $this->getAppDelPreviousUser();
+                return $this->getAppCurrentUser();
                 break;
             case 19:
-                return $this->getDelPriority();
+                return $this->getAppDelPreviousUser();
                 break;
             case 20:
-                return $this->getDelDuration();
+                return $this->getDelPriority();
                 break;
             case 21:
-                return $this->getDelQueueDuration();
+                return $this->getDelDuration();
                 break;
             case 22:
-                return $this->getDelDelayDuration();
+                return $this->getDelQueueDuration();
                 break;
             case 23:
-                return $this->getDelStarted();
+                return $this->getDelDelayDuration();
                 break;
             case 24:
-                return $this->getDelFinished();
+                return $this->getDelStarted();
                 break;
             case 25:
-                return $this->getDelDelayed();
+                return $this->getDelFinished();
                 break;
             case 26:
-                return $this->getAppCreateDate();
+                return $this->getDelDelayed();
                 break;
             case 27:
-                return $this->getAppFinishDate();
+                return $this->getAppCreateDate();
                 break;
             case 28:
-                return $this->getAppUpdateDate();
+                return $this->getAppFinishDate();
                 break;
             case 29:
+                return $this->getAppUpdateDate();
+                break;
+            case 30:
                 return $this->getAppOverduePercentage();
                 break;
             default:
@@ -1753,34 +1797,35 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getAppUid(),
             $keys[1] => $this->getDelIndex(),
-            $keys[2] => $this->getAppNumber(),
-            $keys[3] => $this->getAppStatus(),
-            $keys[4] => $this->getUsrUid(),
-            $keys[5] => $this->getPreviousUsrUid(),
-            $keys[6] => $this->getTasUid(),
-            $keys[7] => $this->getProUid(),
-            $keys[8] => $this->getDelDelegateDate(),
-            $keys[9] => $this->getDelInitDate(),
-            $keys[10] => $this->getDelTaskDueDate(),
-            $keys[11] => $this->getDelFinishDate(),
-            $keys[12] => $this->getDelThreadStatus(),
-            $keys[13] => $this->getAppThreadStatus(),
-            $keys[14] => $this->getAppTitle(),
-            $keys[15] => $this->getAppProTitle(),
-            $keys[16] => $this->getAppTasTitle(),
-            $keys[17] => $this->getAppCurrentUser(),
-            $keys[18] => $this->getAppDelPreviousUser(),
-            $keys[19] => $this->getDelPriority(),
-            $keys[20] => $this->getDelDuration(),
-            $keys[21] => $this->getDelQueueDuration(),
-            $keys[22] => $this->getDelDelayDuration(),
-            $keys[23] => $this->getDelStarted(),
-            $keys[24] => $this->getDelFinished(),
-            $keys[25] => $this->getDelDelayed(),
-            $keys[26] => $this->getAppCreateDate(),
-            $keys[27] => $this->getAppFinishDate(),
-            $keys[28] => $this->getAppUpdateDate(),
-            $keys[29] => $this->getAppOverduePercentage(),
+            $keys[2] => $this->getDelLastIndex(),
+            $keys[3] => $this->getAppNumber(),
+            $keys[4] => $this->getAppStatus(),
+            $keys[5] => $this->getUsrUid(),
+            $keys[6] => $this->getPreviousUsrUid(),
+            $keys[7] => $this->getTasUid(),
+            $keys[8] => $this->getProUid(),
+            $keys[9] => $this->getDelDelegateDate(),
+            $keys[10] => $this->getDelInitDate(),
+            $keys[11] => $this->getDelTaskDueDate(),
+            $keys[12] => $this->getDelFinishDate(),
+            $keys[13] => $this->getDelThreadStatus(),
+            $keys[14] => $this->getAppThreadStatus(),
+            $keys[15] => $this->getAppTitle(),
+            $keys[16] => $this->getAppProTitle(),
+            $keys[17] => $this->getAppTasTitle(),
+            $keys[18] => $this->getAppCurrentUser(),
+            $keys[19] => $this->getAppDelPreviousUser(),
+            $keys[20] => $this->getDelPriority(),
+            $keys[21] => $this->getDelDuration(),
+            $keys[22] => $this->getDelQueueDuration(),
+            $keys[23] => $this->getDelDelayDuration(),
+            $keys[24] => $this->getDelStarted(),
+            $keys[25] => $this->getDelFinished(),
+            $keys[26] => $this->getDelDelayed(),
+            $keys[27] => $this->getAppCreateDate(),
+            $keys[28] => $this->getAppFinishDate(),
+            $keys[29] => $this->getAppUpdateDate(),
+            $keys[30] => $this->getAppOverduePercentage(),
         );
         return $result;
     }
@@ -1819,87 +1864,90 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
                 $this->setDelIndex($value);
                 break;
             case 2:
-                $this->setAppNumber($value);
+                $this->setDelLastIndex($value);
                 break;
             case 3:
-                $this->setAppStatus($value);
+                $this->setAppNumber($value);
                 break;
             case 4:
-                $this->setUsrUid($value);
+                $this->setAppStatus($value);
                 break;
             case 5:
-                $this->setPreviousUsrUid($value);
+                $this->setUsrUid($value);
                 break;
             case 6:
-                $this->setTasUid($value);
+                $this->setPreviousUsrUid($value);
                 break;
             case 7:
-                $this->setProUid($value);
+                $this->setTasUid($value);
                 break;
             case 8:
-                $this->setDelDelegateDate($value);
+                $this->setProUid($value);
                 break;
             case 9:
-                $this->setDelInitDate($value);
+                $this->setDelDelegateDate($value);
                 break;
             case 10:
-                $this->setDelTaskDueDate($value);
+                $this->setDelInitDate($value);
                 break;
             case 11:
-                $this->setDelFinishDate($value);
+                $this->setDelTaskDueDate($value);
                 break;
             case 12:
-                $this->setDelThreadStatus($value);
+                $this->setDelFinishDate($value);
                 break;
             case 13:
-                $this->setAppThreadStatus($value);
+                $this->setDelThreadStatus($value);
                 break;
             case 14:
-                $this->setAppTitle($value);
+                $this->setAppThreadStatus($value);
                 break;
             case 15:
-                $this->setAppProTitle($value);
+                $this->setAppTitle($value);
                 break;
             case 16:
-                $this->setAppTasTitle($value);
+                $this->setAppProTitle($value);
                 break;
             case 17:
-                $this->setAppCurrentUser($value);
+                $this->setAppTasTitle($value);
                 break;
             case 18:
-                $this->setAppDelPreviousUser($value);
+                $this->setAppCurrentUser($value);
                 break;
             case 19:
-                $this->setDelPriority($value);
+                $this->setAppDelPreviousUser($value);
                 break;
             case 20:
-                $this->setDelDuration($value);
+                $this->setDelPriority($value);
                 break;
             case 21:
-                $this->setDelQueueDuration($value);
+                $this->setDelDuration($value);
                 break;
             case 22:
-                $this->setDelDelayDuration($value);
+                $this->setDelQueueDuration($value);
                 break;
             case 23:
-                $this->setDelStarted($value);
+                $this->setDelDelayDuration($value);
                 break;
             case 24:
-                $this->setDelFinished($value);
+                $this->setDelStarted($value);
                 break;
             case 25:
-                $this->setDelDelayed($value);
+                $this->setDelFinished($value);
                 break;
             case 26:
-                $this->setAppCreateDate($value);
+                $this->setDelDelayed($value);
                 break;
             case 27:
-                $this->setAppFinishDate($value);
+                $this->setAppCreateDate($value);
                 break;
             case 28:
-                $this->setAppUpdateDate($value);
+                $this->setAppFinishDate($value);
                 break;
             case 29:
+                $this->setAppUpdateDate($value);
+                break;
+            case 30:
                 $this->setAppOverduePercentage($value);
                 break;
         } // switch()
@@ -1934,115 +1982,119 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
         }
 
         if (array_key_exists($keys[2], $arr)) {
-            $this->setAppNumber($arr[$keys[2]]);
+            $this->setDelLastIndex($arr[$keys[2]]);
         }
 
         if (array_key_exists($keys[3], $arr)) {
-            $this->setAppStatus($arr[$keys[3]]);
+            $this->setAppNumber($arr[$keys[3]]);
         }
 
         if (array_key_exists($keys[4], $arr)) {
-            $this->setUsrUid($arr[$keys[4]]);
+            $this->setAppStatus($arr[$keys[4]]);
         }
 
         if (array_key_exists($keys[5], $arr)) {
-            $this->setPreviousUsrUid($arr[$keys[5]]);
+            $this->setUsrUid($arr[$keys[5]]);
         }
 
         if (array_key_exists($keys[6], $arr)) {
-            $this->setTasUid($arr[$keys[6]]);
+            $this->setPreviousUsrUid($arr[$keys[6]]);
         }
 
         if (array_key_exists($keys[7], $arr)) {
-            $this->setProUid($arr[$keys[7]]);
+            $this->setTasUid($arr[$keys[7]]);
         }
 
         if (array_key_exists($keys[8], $arr)) {
-            $this->setDelDelegateDate($arr[$keys[8]]);
+            $this->setProUid($arr[$keys[8]]);
         }
 
         if (array_key_exists($keys[9], $arr)) {
-            $this->setDelInitDate($arr[$keys[9]]);
+            $this->setDelDelegateDate($arr[$keys[9]]);
         }
 
         if (array_key_exists($keys[10], $arr)) {
-            $this->setDelTaskDueDate($arr[$keys[10]]);
+            $this->setDelInitDate($arr[$keys[10]]);
         }
 
         if (array_key_exists($keys[11], $arr)) {
-            $this->setDelFinishDate($arr[$keys[11]]);
+            $this->setDelTaskDueDate($arr[$keys[11]]);
         }
 
         if (array_key_exists($keys[12], $arr)) {
-            $this->setDelThreadStatus($arr[$keys[12]]);
+            $this->setDelFinishDate($arr[$keys[12]]);
         }
 
         if (array_key_exists($keys[13], $arr)) {
-            $this->setAppThreadStatus($arr[$keys[13]]);
+            $this->setDelThreadStatus($arr[$keys[13]]);
         }
 
         if (array_key_exists($keys[14], $arr)) {
-            $this->setAppTitle($arr[$keys[14]]);
+            $this->setAppThreadStatus($arr[$keys[14]]);
         }
 
         if (array_key_exists($keys[15], $arr)) {
-            $this->setAppProTitle($arr[$keys[15]]);
+            $this->setAppTitle($arr[$keys[15]]);
         }
 
         if (array_key_exists($keys[16], $arr)) {
-            $this->setAppTasTitle($arr[$keys[16]]);
+            $this->setAppProTitle($arr[$keys[16]]);
         }
 
         if (array_key_exists($keys[17], $arr)) {
-            $this->setAppCurrentUser($arr[$keys[17]]);
+            $this->setAppTasTitle($arr[$keys[17]]);
         }
 
         if (array_key_exists($keys[18], $arr)) {
-            $this->setAppDelPreviousUser($arr[$keys[18]]);
+            $this->setAppCurrentUser($arr[$keys[18]]);
         }
 
         if (array_key_exists($keys[19], $arr)) {
-            $this->setDelPriority($arr[$keys[19]]);
+            $this->setAppDelPreviousUser($arr[$keys[19]]);
         }
 
         if (array_key_exists($keys[20], $arr)) {
-            $this->setDelDuration($arr[$keys[20]]);
+            $this->setDelPriority($arr[$keys[20]]);
         }
 
         if (array_key_exists($keys[21], $arr)) {
-            $this->setDelQueueDuration($arr[$keys[21]]);
+            $this->setDelDuration($arr[$keys[21]]);
         }
 
         if (array_key_exists($keys[22], $arr)) {
-            $this->setDelDelayDuration($arr[$keys[22]]);
+            $this->setDelQueueDuration($arr[$keys[22]]);
         }
 
         if (array_key_exists($keys[23], $arr)) {
-            $this->setDelStarted($arr[$keys[23]]);
+            $this->setDelDelayDuration($arr[$keys[23]]);
         }
 
         if (array_key_exists($keys[24], $arr)) {
-            $this->setDelFinished($arr[$keys[24]]);
+            $this->setDelStarted($arr[$keys[24]]);
         }
 
         if (array_key_exists($keys[25], $arr)) {
-            $this->setDelDelayed($arr[$keys[25]]);
+            $this->setDelFinished($arr[$keys[25]]);
         }
 
         if (array_key_exists($keys[26], $arr)) {
-            $this->setAppCreateDate($arr[$keys[26]]);
+            $this->setDelDelayed($arr[$keys[26]]);
         }
 
         if (array_key_exists($keys[27], $arr)) {
-            $this->setAppFinishDate($arr[$keys[27]]);
+            $this->setAppCreateDate($arr[$keys[27]]);
         }
 
         if (array_key_exists($keys[28], $arr)) {
-            $this->setAppUpdateDate($arr[$keys[28]]);
+            $this->setAppFinishDate($arr[$keys[28]]);
         }
 
         if (array_key_exists($keys[29], $arr)) {
-            $this->setAppOverduePercentage($arr[$keys[29]]);
+            $this->setAppUpdateDate($arr[$keys[29]]);
+        }
+
+        if (array_key_exists($keys[30], $arr)) {
+            $this->setAppOverduePercentage($arr[$keys[30]]);
         }
 
     }
@@ -2062,6 +2114,10 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
 
         if ($this->isColumnModified(AppCacheViewPeer::DEL_INDEX)) {
             $criteria->add(AppCacheViewPeer::DEL_INDEX, $this->del_index);
+        }
+
+        if ($this->isColumnModified(AppCacheViewPeer::DEL_LAST_INDEX)) {
+            $criteria->add(AppCacheViewPeer::DEL_LAST_INDEX, $this->del_last_index);
         }
 
         if ($this->isColumnModified(AppCacheViewPeer::APP_NUMBER)) {
@@ -2241,6 +2297,8 @@ abstract class BaseAppCacheView extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false)
     {
+
+        $copyObj->setDelLastIndex($this->del_last_index);
 
         $copyObj->setAppNumber($this->app_number);
 

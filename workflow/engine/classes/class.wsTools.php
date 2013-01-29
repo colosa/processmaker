@@ -462,6 +462,10 @@ class workspaceTools
         //now check if table APPCACHEVIEW exists, and it have correct number of fields, etc.
         $res = $appCache->checkAppCacheView();
 
+        CLI::logging("-> Update DEL_LAST_INDEX field in APP_DELEGATION table\n");
+        //Update APP_DELEGATION.DEL_LAST_INDEX data
+        $res = $appCache->updateAppDelegationDelLastIndex($lang, $checkOnly);
+
         CLI::logging( "-> Creating triggers\n" );
         //now check if we have the triggers installed
         $triggers = array ();

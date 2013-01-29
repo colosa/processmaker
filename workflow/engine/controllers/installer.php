@@ -786,6 +786,9 @@ class Installer extends Controller
 
             $appCache->setPathToAppCacheFiles( PATH_METHODS . 'setup' . PATH_SEP . 'setupSchemas' . PATH_SEP );
 
+            //Update APP_DELEGATION.DEL_LAST_INDEX data
+            $res = $appCache->updateAppDelegationDelLastIndex($lang, true);
+
             //APP_DELEGATION INSERT
             $res = $appCache->triggerAppDelegationInsert( $lang, true );
 

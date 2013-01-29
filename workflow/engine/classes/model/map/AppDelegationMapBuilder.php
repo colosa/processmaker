@@ -71,6 +71,8 @@ class AppDelegationMapBuilder
 
         $tMap->addColumn('DEL_PREVIOUS', 'DelPrevious', 'int', CreoleTypes::INTEGER, true, null);
 
+        $tMap->addColumn('DEL_LAST_INDEX', 'DelLastIndex', 'int', CreoleTypes::INTEGER, true, null);
+
         $tMap->addColumn('PRO_UID', 'ProUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
         $tMap->addColumn('TAS_UID', 'TasUid', 'string', CreoleTypes::VARCHAR, true, 32);

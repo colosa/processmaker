@@ -3,7 +3,7 @@
 require_once 'propel/util/BasePeer.php';
 // The object class -- needed for instanceof checks in this class.
 // actual class may be a subclass -- as returned by AppNotesPeer::getOMClass()
-//include_once 'classes/model/AppNotes.php';
+include_once 'classes/model/AppNotes.php';
 
 /**
  * Base static class for performing query and update operations on the 'APP_NOTES' table.

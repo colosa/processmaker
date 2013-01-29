@@ -1771,7 +1771,7 @@ class wsBase
             $_SESSION['TASK'] = $taskId;
             $_SESSION['INDEX'] = $case['INDEX'];
             $_SESSION['USER_LOGGED'] = $userId;
-            $_SESSION['USR_USERNAME'] = $case['USR_USERNAME'];
+            $_SESSION['USR_USERNAME'] = (isset($case['USR_USERNAME'])) ? $case['USR_USERNAME'] : '';
             $_SESSION['STEP_POSITION'] = 0;
 
             $caseId = $case['APPLICATION'];
