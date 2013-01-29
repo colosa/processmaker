@@ -172,9 +172,18 @@ try {
                 //when the case have another user or current user doesnt have rights to this selfservice,
                 //just view the case Resume
 
+                // Get DEL_INDEX
+                $criteria = new Criteria('workflow');
+                $criteria->addSelectColumn(AppDelegationPeer::DEL_INDEX);
+                $criteria->add(AppDelegationPeer::APP_UID, $sAppUid);
+                $criteria->add(AppDelegationPeer::DEL_LAST_INDEX , 1);
+                $rs = AppDelegationPeer::doSelectRS($criteria);
+                $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                $rs->next();
+                $row = $rs->getRow();
 
                 $_SESSION['APPLICATION'] = $sAppUid;
-                $_SESSION['INDEX'] = $iDelIndex;
+                $_SESSION['INDEX'] = $row['DEL_INDEX'];
                 $_SESSION['PROCESS'] = $aFields['PRO_UID'];
                 $_SESSION['TASK'] = - 1;
                 $Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'] );
