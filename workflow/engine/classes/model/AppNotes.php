@@ -64,7 +64,7 @@ class AppNotes extends BaseAppNotes
         $oDataset->next();
 
         while ($aRow = $oDataset->getRow()) {
-            $aRow['NOTE_CONTENT'] = stripslashes( $aRow['NOTE_CONTENT'] );
+            $aRow['NOTE_CONTENT'] = htmlentities(stripslashes( $aRow['NOTE_CONTENT'] ));
             $response['notes'][] = $aRow;
             $oDataset->next();
         }
