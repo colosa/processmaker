@@ -125,34 +125,55 @@
             }
         }
 
-        function addNt(appUid)
+        function addNt(appUid, proUid, tasUid)
         {
             $('textarea#note_text').val('');
-            $( "#dialog-add-note" ).dialog({
-                resizable: false,
-                height:192,
-                modal: true,
-                buttons: {
-                    "Add Note": function() {
-                        var sendMail = document.getElementById('chkSendMail').checked;
-                        sendMail = (sendMail == true) ? '1' : '0';
-                        $(this).dialog("close");
-                        $.post(
-                            '../appProxy/postNote',
-                            {appUid  : appUid,
-                             noteText: $('textarea#note_text').val(),
-                             swSendMail : sendMail},
-                            function(responseText) {
-                                updateNt(appUid);
+            $.post(
+                '../appProxy/getNotesList',
+                {
+                    appUid  : appUid,
+                    pro:proUid,
+                    tas:tasUid,
+                    start:0,
+                    limit:25
+                },
+                function(responseText) {
+                    console.log(responseText);
+                    data = jQuery.parseJSON(responseText);
+                    console.log(data.noPerms);
+                    if (typeof (data.noPerms) != 'undefined') {
+                        alert(noPerms);
+                        return false;
+                    } else {
+                        $( "#dialog-add-note" ).dialog({
+                            resizable: false,
+                            height:192,
+                            modal: true,
+                            buttons: {
+                                "Add Note": function() {
+                                    var sendMail = document.getElementById('chkSendMail').checked;
+                                    sendMail = (sendMail == true) ? '1' : '0';
+                                    $(this).dialog("close");
+                                    $.post(
+                                        '../appProxy/postNote',
+                                        {appUid  : appUid,
+                                         noteText: $('textarea#note_text').val(),
+                                         swSendMail : sendMail},
+                                        function(responseText) {
+                                            updateNt(appUid);
+                                        }
+                                    );
+                                    //redirect('home/startCase?id='+id);
+                                },
+                                Cancel: function() {
+                                    $(this).dialog( "close" );
+                                }
                             }
-                        );
-                        //redirect('home/startCase?id='+id);
-                    },
-                    Cancel: function() {
-                        $(this).dialog( "close" );
+                        });
                     }
+                    //updateNt(appUid);
                 }
-            });
+            );
         }
         function addPanelSearch()
         {
@@ -246,6 +267,7 @@
 
         var appListLimit = {$appListLimit};
         var appListStart = {$appListStart};
+        var noPerms     = '{$noPerms}';
         var listType     = '{$listType}';
         var process = '{$arraySearch[0]}';
         var status = '{$arraySearch[1]}';
