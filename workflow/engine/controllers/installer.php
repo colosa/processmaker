@@ -232,6 +232,7 @@ class Installer extends Controller
         $noWritableFiles = array ();
 
         // pathConfig
+        $info->pathConfig = new stdclass();
         $info->pathConfig->message = 'unwriteable';
         $info->pathConfig->result = G::is_writable_r( $_REQUEST['pathConfig'], $noWritableFiles );
         if ($info->pathConfig->result) {
@@ -240,6 +241,7 @@ class Installer extends Controller
             $info->success = false;
         }
 
+        $info->pathLanguages = new stdclass();
         $info->pathLanguages->message = 'unwriteable';
         $info->pathLanguages->result = G::is_writable_r( $_REQUEST['pathLanguages'], $noWritableFiles );
         if ($info->pathLanguages->result) {
@@ -248,6 +250,7 @@ class Installer extends Controller
             $info->success = false;
         }
 
+        $info->pathPlugins = new stdclass();
         $info->pathPlugins->message = 'unwriteable';
         $info->pathPlugins->result = G::is_writable_r( $_REQUEST['pathPlugins'], $noWritableFiles );
         if ($info->pathPlugins->result) {
@@ -256,6 +259,7 @@ class Installer extends Controller
             $info->success = false;
         }
 
+        $info->pathXmlforms = new stdclass();
         $info->pathXmlforms->message = 'unwriteable';
         $info->pathXmlforms->result = G::is_writable_r( $_REQUEST['pathXmlforms'], $noWritableFiles );
         if ($info->pathXmlforms->result) {
@@ -264,6 +268,8 @@ class Installer extends Controller
             $info->success = false;
         }
 
+        $info->pathPublic = new stdclass();
+        $info->pathShared = new stdclass();
         $info->pathPublic->message = 'unwriteable';
         $info->pathPublic->result = G::is_writable_r( $_REQUEST['pathPublic'], $noWritableFiles );
         if ($info->pathPublic->result) {
@@ -296,6 +302,7 @@ class Installer extends Controller
             }
         }
 
+        $info->pathLogFile = new stdclass();
         $info->pathLogFile->message = 'Could not create the installation log';
         $info->pathLogFile->result = file_exists( $_REQUEST['pathLogFile'] );
 
@@ -598,6 +605,7 @@ class Installer extends Controller
     public function createMySQLWorkspace ()
     {
         ini_set( 'max_execution_time', '0' );
+        $info = new StdClass();
         $info->result = false;
         $info->message = '';
         $info->canRedirect = true;
@@ -1094,6 +1102,7 @@ class Installer extends Controller
 
     private function testMySQLconnection ()
     {
+        $info = new StdClass();
         $info->result = false;
         $info->message = '';
         if (! function_exists( "mysql_connect" )) {
