@@ -801,7 +801,7 @@ function changeSkin(newSkin,currentSkin){
       success: function(r, o){
         var response = Ext.util.JSON.decode(r.responseText);
         if (response.success) {
-          currentLocation = top.location.href;
+          currentLocation = parent.parent.location.href;
           createCookie ('workspaceSkin', newSkin, '1');
           if (currentSkin.substring(0,2) != 'ux') {
             if (newSkin.substring(0,2) == 'ux') {
@@ -820,9 +820,8 @@ function changeSkin(newSkin,currentSkin){
           if (point == -1) {
             newLocation = newLocation +"?s=SKINS";
           }
-          top.location.href = newLocation;
-        }
-        else {
+          parent.parent.location = newLocation;
+        } else {
           viewport.getEl().unmask();
           PMExt.error(_('ID_SKINS'), response.message);
         }
