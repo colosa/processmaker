@@ -5509,6 +5509,9 @@ class xmlformTemplate extends Smarty
             if (! is_array( $value )) {
                 if ($form->type == 'grid') {
                     $aAux = array ();
+                    if (!isset($form->values[$form->name])) {
+                        $form->values[$form->name] = array();
+                    }
                     if ($therow == - 1) {
                         for ($i = 0; $i < count( $form->values[$form->name] ); $i ++) {
                             $aAux[] = '';

@@ -216,6 +216,9 @@ class DynaFormField extends DBTable
         }
 
         // parent::Save();
+        if (!isset($Fields['XMLNODE_VALUE'])) {
+            $Fields['XMLNODE_VALUE'] = '';
+        }
         if (trim($Fields['XMLNODE_VALUE']) != "") {
             $attributes['#cdata'] = $Fields['XMLNODE_VALUE'];
         }
@@ -247,4 +250,3 @@ class DynaFormField extends DBTable
         return ($res->count() == 0);
     }
 }
- 

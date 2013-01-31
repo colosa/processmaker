@@ -59,6 +59,7 @@ $tabItems = array ();
 $i = 0;
 
 foreach ($menuTypes as $menuType) {
+    $tabItems[$i] = new stdclass();
     $tabItems[$i]->id = $menuType;
     $LABEL_TRANSLATION = G::LoadTranslation( "ID_" . strtoupper( $menuType ) );
 

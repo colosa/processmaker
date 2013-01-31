@@ -64,6 +64,9 @@ try {
             }
 
             //Validating TAS_ASSIGN_VARIABLE value
+            if (!isset($aData['TAS_ASSIGN_TYPE'])) {
+                $aData['TAS_ASSIGN_TYPE'] = 'BALANCED';
+            }
             if ($aData['TAS_ASSIGN_TYPE'] == 'SELF_SERVICE_EVALUATE') {
                 $aData['TAS_ASSIGN_TYPE'] = 'SELF_SERVICE';
             } else {

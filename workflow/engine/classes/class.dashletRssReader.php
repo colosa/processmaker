@@ -67,6 +67,7 @@ class dashletRssReader implements DashletInterface
             ) );
         }
 
+        $self = new stdclass();
         $self->rss = @simplexml_load_string( curl_exec( $pCurl ) );
         if ($self->rss) {
             $index = 0;
