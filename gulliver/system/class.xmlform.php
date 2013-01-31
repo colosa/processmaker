@@ -3241,12 +3241,12 @@ class XmlForm_Field_Submit extends XmlForm_Field
     {
         $onclick = G::replaceDataField( $this->onclick, $owner->values );
         if ($onclick != '') {
-            $onclick = "this.disabled=true;" . $onclick;
+            $onclick = $onclick . "this.disabled=true;this.form.submit();";
         }
         if ($this->mode === 'edit') {
             //      if ($this->readOnly)
             //        return '<input id="form['.$this->name.']" name="form['.$this->name.']" type=\'submit\' value=\''. $this->label .'\' disabled/>';
-            return "<input style=\"{$this->style}\" class='module_app_button___gray {$this->className}' id=\"form[{$this->name}]\" name=\"form[{$this->name}]\" type='submit' value=\"{$this->label}\" " . (($this->onclick) ? 'onclick="' . htmlentities( $onclick, ENT_COMPAT, 'utf-8' ) . '"' : 'onclick="this.disabled=true;");\'') . " />";
+            return "<input style=\"{$this->style}\" class='module_app_button___gray {$this->className}' id=\"form[{$this->name}]\" name=\"form[{$this->name}]\" type='submit' value=\"{$this->label}\" " . (($this->onclick) ? 'onclick="' . htmlentities( $onclick, ENT_COMPAT, 'utf-8' ) . '"' : 'onclick="this.disabled=true;this.form.submit();"') . " />";
         } elseif ($this->mode === 'view') {
             //return "<input style=\"{$this->style};display:none\" disabled='disabled' class='module_app_button___gray module_app_buttonDisabled___gray {$this->className}' id=\"form[{$this->name}]\" name=\"form[{$this->name}]\" type='submit' value=\"{$this->label}\" " . (($this->onclick) ? 'onclick="' . htmlentities ( $onclick, ENT_COMPAT, 'utf-8' ) . '"' : '') . " />";
             //$sLinkNextStep = 'window.open("' . $owner->fields['__DYNAFORM_OPTIONS']->xmlMenu->values['NEXT_STEP'] . '", "_self");';
