@@ -86,6 +86,7 @@ $newContent = $G_FORM->getFields( $template );
 $sendContent = array ();
 $r = 0;
 foreach ($dependentFields as $d) {
+    $sendContent[$r] = new stdclass();
     $sendContent[$r]->name = $d;
     $sendContent[$r]->content = null;
     foreach ($G_FORM->fields[$d] as $attribute => $value) {
