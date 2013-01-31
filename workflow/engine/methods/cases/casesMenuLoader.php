@@ -204,6 +204,7 @@ function getAllCounters ()
     $response = Array ();
     $i = 0;
     foreach ($aCount as $type => $count) {
+        $response[$i] = new stdclass();
         $response[$i]->item = $aTypes[$type];
         $response[$i]->count = $count;
         $i ++;
