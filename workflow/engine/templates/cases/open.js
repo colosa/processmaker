@@ -764,21 +764,28 @@ Ext.onReady(function(){
     unpauseDate = unpauseDate.format('Y-m-d');
 
     Ext.getCmp('unpauseFrm').getForm().submit({
-      url:'ajaxListener?action=pauseCase&unpauseDate=' + unpauseDate + paramsNote,
-      waitMsg:'Pausing Case '+parent._CASE_TITLE+'...',
-      timeout : 36000,
-      success : function(res, req) {
-        if(req.result.success) {
-          try {
-            parent.notify('PAUSE CASE', req.result.msg);
-          }
-          catch (e) {
-          }
-          location.href = 'casesListExtJs';
-        } else {
-          PMExt.error(_('ID_ERROR'), req.result.msg);
+        url:'ajaxListener',
+        method  : 'post',
+        params  : {
+            action: 'pauseCase',
+            unpauseDate:unpauseDate,
+            NOTE_REASON: noteReasonTxt,
+            NOTIFY_PAUSE: notifyReasonVal
+            },
+        waitMsg:'Pausing Case '+parent._CASE_TITLE+'...',
+        timeout : 36000,
+        success : function(res, req) {
+            if(req.result.success) {
+                try {
+                  parent.notify('PAUSE CASE', req.result.msg);
+                }
+                catch (e) {
+                }
+                location.href = 'casesListExtJs';
+            } else {
+                PMExt.error(_('ID_ERROR'), req.result.msg);
+            }
         }
-      }
     });
   }
 
