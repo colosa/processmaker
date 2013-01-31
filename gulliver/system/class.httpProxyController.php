@@ -26,6 +26,10 @@ class HttpProxyController
 
     private $sendResponse = true;
 
+    public function __construct() {
+        $this->__request__ = new stdclass();
+    }
+
     /**
      * Magic setter method
      *
