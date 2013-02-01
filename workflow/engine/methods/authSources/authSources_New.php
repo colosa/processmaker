@@ -39,8 +39,34 @@ $fields = array ('AUTH_SOURCE_PROVIDER' => $_REQUEST['AUTH_SOURCE_PROVIDER']);
 $G_PUBLISH = new Publisher();
 
 if (file_exists( PATH_PLUGINS . $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml' )) {
-    if (class_exists( $fields['AUTH_SOURCE_PROVIDER'] )) {
-        $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml', '', $fields, '../authSources/authSources_Save' );
+    $pluginEnabled = 0;
+
+    if (file_exists(PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . ".php")) {
+        $pluginRegistry = &PMPluginRegistry::getSingleton();
+        $pluginDetail = $pluginRegistry->getPluginDetails($fields["AUTH_SOURCE_PROVIDER"] . ".php");
+
+        if ($pluginDetail && $pluginDetail->enabled) {
+            $pluginEnabled = 1;
+        }
+    }
+
+    if ($pluginEnabled == 1) {
+        //The attributes the users
+        G::LoadClass("pmFunctions");
+
+        $data = executeQuery("DESCRIBE USERS");
+        $fieldSet = array("USR_UID", "USR_USERNAME", "USR_PASSWORD", "USR_EMAIL", "USR_CREATE_DATE", "USR_UPDATE_DATE", "USR_COUNTRY", "USR_CITY", "USR_LOCATION", "DEP_UID", "USR_RESUME", "USR_ROLE", "USR_REPORTS_TO", "USR_REPLACED_BY", "USR_UX");
+        $attributes = null;
+
+        foreach ($data as $value) {
+            if (!(in_array($value["Field"], $fieldSet))) {
+                $attributes = $attributes . $value["Field"] . "|";
+            }
+        }
+
+        $fields["AUTH_SOURCE_ATTRIBUTE_IDS"] = $attributes;
+
+        $G_PUBLISH->AddContent("xmlform", "xmlform", $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . $fields["AUTH_SOURCE_PROVIDER"] . "Edit", "", $fields, "../authSources/authSources_Save");
     } else {
         $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => G::LoadTranslation( 'ID_AUTH_SOURCE_MISSING' )) );
     }
@@ -51,4 +77,6 @@ if (file_exists( PATH_PLUGINS . $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fi
         $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => 'File: ' . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml' . ' not exists.') );
     }
 }
-G::RenderPage( 'publish', 'blank' );
+
+G::RenderPage("publish", "blank");
+
