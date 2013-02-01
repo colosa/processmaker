@@ -2206,7 +2206,7 @@ function generateCode ($iDigits = 4, $sType = 'NUMERIC')
  */
 function setCaseTrackerCode ($sApplicationUID, $sCode, $sPIN = '')
 {
-    if ($sCode != '') {
+    if ($sCode != '' || $sPIN != '') {
         G::LoadClass( 'case' );
         $oCase = new Cases();
         $aFields = $oCase->loadCase( $sApplicationUID );
