@@ -89,7 +89,9 @@ class processMap
             $oProcess = new Process();
 
             $aRow = $oProcess->load( $sProcessUID );
+            $oPM->title = new stdclass();
             $oPM->title->label = strip_tags( $aRow['PRO_TITLE'] );
+            $oPM->title->position = new stdclass();
             $oPM->title->position->x = $aRow['PRO_TITLE_X'];
             $oPM->title->position->y = $aRow['PRO_TITLE_Y'];
             $oPM->task = array ();
@@ -368,8 +370,10 @@ class processMap
             }
             $oPM->executant[] = G::LoadTranslation( 'ID_RULES_AND_USER_GROUPS' );
             $oPM->executant[] = G::LoadTranslation( 'ID_ADD_USER_OF_TASK' );
+            $oPM->tasExtra[0] = new stdclass();
             $oPM->tasExtra[0]->label = '-- ' . G::LoadTranslation( 'ID_END_OF_PROCESS' ) . ' --';
             $oPM->tasExtra[0]->uid = 'end';
+            $oPM->tasExtra[1] = new stdclass();
             $oPM->tasExtra[1]->label = '-- ' . G::LoadTranslation( 'ID_TAREA_COLGANTE' ) . ' --';
             $oPM->tasExtra[1]->uid = 'leaf';
             $oPM->guide = array ();
