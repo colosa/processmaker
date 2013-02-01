@@ -4043,6 +4043,7 @@ class XmlForm_Field_Grid extends XmlForm_Field
             $field = $value1;
 
             $arrayField[] = $field->name;
+            $arrayFieldRequired[] = "SYS_GRID_AGGREGATE_" . $this->name . "_" . $field->name;
 
             preg_match_all("/@[@%#\?\$\=]([A-Za-z_]\w*)/", $field->sql, $arrayMatch, PREG_SET_ORDER);
 
