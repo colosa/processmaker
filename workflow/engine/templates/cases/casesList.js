@@ -714,6 +714,19 @@ Ext.onReady ( function() {
     			PMExt.notify('ERROR', response.reader.jsonData.message);
     			//PMExt.error
     		}
+    	},
+    	exception: function(dp, type, action, options, response, arg)  {
+    	    responseObject = Ext.util.JSON.decode(response.responseText);
+    	    if (typeof(responseObject.error) != 'undefined') {
+    	         Ext.Msg.show({
+                  title: _('ID_ERROR'),
+                  msg: responseObject.error,
+                  fn: function(){parent.parent.location = '../login/login';},
+                  animEl: 'elId',
+                  icon: Ext.MessageBox.ERROR,
+                  buttons: Ext.MessageBox.OK
+                });
+    	    }
     	}
     }
   });

@@ -774,6 +774,7 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
         $noLoginFiles[] = 'fields_Ajax';
         $noLoginFiles[] = 'appFolderAjax';
         $noLoginFiles[] = 'steps_Ajax';
+        $noLoginFiles[] = 'proxyCasesList';
 
         $noLoginFolders[] = 'services';
         $noLoginFolders[] = 'tracker';

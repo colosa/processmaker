@@ -1,4 +1,10 @@
 <?php
+if (!isset($_SESSION['USER_LOGGED'])) {
+    $result = new stdclass();
+    $result->error = G::LoadTranslation('ID_LOGIN_AGAIN');
+    die(G::json_encode($result));
+}
+
 //Getting the extJs parameters
 $callback = isset( $_POST["callback"] ) ? $_POST["callback"] : "stcCallback1001";
 $dir = isset( $_POST["dir"] ) ? $_POST["dir"] : "DESC";
