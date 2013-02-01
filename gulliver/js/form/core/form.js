@@ -2851,6 +2851,21 @@ var validateGridForms = function(invalidFields){
   return (invalidFields);
 };
 
+var changeStatusSubmitFields = function(newStatusTo) {
+  var newStatus = newStatusTo == 'disabled';
+  var formElements = document.getElementsByTagName('form');
+  for (var i = 0; i < formElements.length; i++) {
+    var inputElements = formElements[i].getElementsByTagName('input');
+    for (var j = 0; j < inputElements.length; j++) {
+      if (typeof(inputElements[j].type) != 'undefined') {
+        if (inputElements[j].type == 'submit') {
+            inputElements[j].disabled = newStatus;
+        }
+      }
+    }
+  }
+};
+
 /**
  *
  * This function validates via javascript
@@ -2861,6 +2876,9 @@ var validateGridForms = function(invalidFields){
  **/
 
 var validateForm = function(sRequiredFields) {
+  // Disabling submit buttons
+  changeStatusSubmitFields('disabled');
+
   /**
    *  replacing the %27 code by " character (if exists), this solve the problem that " broke the properties definition into a html
    *  i.ei <form onsubmit="myaction(MyjsString)" ...   with var MyjsString = "some string that is into a variable, so this broke the html";
@@ -3121,6 +3139,8 @@ var validateForm = function(sRequiredFields) {
 
 
     alert(systemMessaggeInvalid);
+    // Enabling submit buttons
+    changeStatusSubmitFields('enabled');
     return false;
   }
   else {
