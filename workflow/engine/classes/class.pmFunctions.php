@@ -1930,6 +1930,16 @@ function PMFSendVariables ($caseId, $variables)
 
     $result = $ws->sendVariables( $caseId, $variables );
     if ($result->status_code == 0) {
+        if (isset($_SESSION['APPLICATION'])) {
+            if ($caseId == $_SESSION['APPLICATION']) {
+                global $oPMScript;
+                if (isset($oPMScript->aFields) && is_array($oPMScript->aFields)) {
+                    if (is_array($variables)) {
+                        $oPMScript->aFields = array_merge($oPMScript->aFields, $variables);
+                    }
+                }
+            }
+        }
         return 1;
     } else {
         return 0;
