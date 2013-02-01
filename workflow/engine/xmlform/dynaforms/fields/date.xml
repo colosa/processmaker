@@ -20,7 +20,7 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
 <PME_RELATIVEDATE type="dropdown" required="0" mode="edit" defaultvalue="0">
   <en>Type of date range
     <option name="1">Relative Dates</option>
-    <option name="">Static Dates</option>
+    <option name="0">Static Dates</option>
    </en>
 </PME_RELATIVEDATE>
 
