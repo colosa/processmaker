@@ -848,6 +848,10 @@ function PMFSendMessage(
     $showMessage = true,
     $delIndex = 0
 ) {
+    ini_set ( "pcre.backtrack_limit", 1000000 );
+    ini_set ( 'memory_limit', '-1' );
+    @set_time_limit ( 100000 );
+
     global $oPMScript;
 
     if (isset( $oPMScript->aFields ) && is_array( $oPMScript->aFields )) {

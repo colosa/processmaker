@@ -517,9 +517,11 @@ class adminProxy extends HttpProxyController
                         if (strtolower($_POST["UseSecureCon"]) != "no") {
                             $_POST["SMTPSecure"] = $_POST["UseSecureCon"];
                         }
+                        /*
                         if ($_POST['UseSecureCon'] == 'ssl') {
                             $_POST['MESS_SERVER'] = 'ssl://'.$_POST['MESS_SERVER'];
                         }
+                        */
                         $resp = $this->sendTestMail();
                         if ($resp->status == '1') {
                             $this->success=true;

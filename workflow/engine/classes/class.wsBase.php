@@ -770,8 +770,17 @@ class wsBase
             }
 
             $oSpool = new spoolRun();
-            $oSpool->setConfig( array ('MESS_ENGINE' => $aSetup['MESS_ENGINE'],'MESS_SERVER' => $aSetup['MESS_SERVER'],'MESS_PORT' => $aSetup['MESS_PORT'],'MESS_ACCOUNT' => $aSetup['MESS_ACCOUNT'],'MESS_PASSWORD' => $aSetup['MESS_PASSWORD'],'SMTPAuth' => $aSetup['MESS_RAUTH']
-            ) );
+            $oSpool->setConfig( 
+                array (
+                    'MESS_ENGINE' => $aSetup['MESS_ENGINE'],
+                    'MESS_SERVER' => $aSetup['MESS_SERVER'],
+                    'MESS_PORT' => $aSetup['MESS_PORT'],
+                    'MESS_ACCOUNT' => $aSetup['MESS_ACCOUNT'],
+                    'MESS_PASSWORD' => $aSetup['MESS_PASSWORD'],
+                    'SMTPSecure' => $aSetup['SMTPSecure'],
+                    'SMTPAuth' => $aSetup['MESS_RAUTH']
+                )
+            );
 
             $oCase = new Cases();
             $oldFields = $oCase->loadCase( $caseId );
