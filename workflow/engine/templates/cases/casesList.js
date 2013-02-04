@@ -2082,7 +2082,7 @@ var gridForm = new Ext.FormPanel({
   comboCategory.setValue("");
   comboProcess.setValue("");
   comboStatus.setValue("");
-  comboUser.setValue("CURRENT_USER");
+  comboUser.setValue("");
   comboAllUsers.setValue("CURRENT_USER");
 
   // hidding the buttons for the reassign
