@@ -319,8 +319,7 @@ try {
             $oProcessMap->processFilesManager( $oData->pro_uid );
             break;
         case 'exploreDirectory':
-            $objData = Bootstrap::json_decode( $_REQUEST['data'] );
-            $_SESSION['PFMDirectory'] = $objData->{'main_directory'};
+            $_SESSION["PFMDirectory"] = $oData->main_directory;
             $oProcessMap->exploreDirectory( $oData->pro_uid, $oData->main_directory, $oData->directory );
             break;
         case 'deleteFile':

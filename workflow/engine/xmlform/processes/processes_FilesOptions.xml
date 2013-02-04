@@ -6,7 +6,7 @@
 </MNU_NEWEMPTY>
 
 <MNU_UPLOAD type="link" value="" link="#" onclick="uploadFilesScreen(@QPRO_UID, @QMAIN_DIRECTORY, @QCURRENT_DIRECTORY);return false;" colAlign="left" colWidth="100">
-  <en>Upload...............</en>
+  <en>Upload</en>
 </MNU_UPLOAD>
 
 <PRO_UID type="private"/>
@@ -24,20 +24,20 @@ var oUploadFilesPanel;
 var oUploadFilesPanel;
 var uploadFilesScreen = function(PRO_UID, MAIN_DIRECTORY, CURRENT_DIRECTORY) {
 
-  var swNavigator; 
+  var swNavigator;
   if(navigator.appName=='Microsoft Internet Explorer'){
     var rv = '';
     if (new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null) {
-      rv = parseFloat(RegExp.$1);    
+      rv = parseFloat(RegExp.$1);
     }
-    
+
     if (rv >= 9) {
-      swNavigator='ie9+'; 
+      swNavigator='ie9+';
     }
-    else { 
+    else {
       swNavigator='ie';
     }
-    
+
     wd = 420;
     hg = 170;
   } else {
@@ -48,11 +48,11 @@ var uploadFilesScreen = function(PRO_UID, MAIN_DIRECTORY, CURRENT_DIRECTORY) {
 
 	CURRENT_MAIN_DIRECTORY = MAIN_DIRECTORY;
 	CURRENT_CURRENT_DIRECTORY = CURRENT_DIRECTORY;
-	
+
 	Pm.tmp.processFilesManagerPanel.events = {
   		remove: function() { oUploadFilesPanel.remove(); }.extend(this)
   	};
-	
+
   	oUploadFilesPanel = new leimnud.module.panel();
 	oUploadFilesPanel.options={
 		limit	   : true,
@@ -76,19 +76,20 @@ function editFile(pro_uid, fileName){
     var typofile = fileName.split(".");
     if( typofile[typofile.length-1].toLowerCase() != 'txt' && typofile[typofile.length-1].toLowerCase() != 'html' ){
         msgBox(G_STRINGS.HTML_FILES,"alert");return;
-    } 
+    }
 
 	oPanel = new leimnud.module.panel();
 	oPanel.options={
-		limit	   : true,
-		size	   : {w:800,h:530},
-		position   : {x:50,y:50,center:true},
-		title	   : '',
-		control    : {close:true,resize:false},
-		fx	   : {shadow:true,modal:true}
+    limit: true,
+    size: {w: 820, h: 500},
+    position: {x: 50, y: 50, center: true},
+    title: "",
+    control: {close: true, resize: false},
+    statusBar: true,
+    fx: {shadow: true, modal: true}
 	};
 	oPanel.make();
-	
+
 	var oRPC = new leimnud.module.rpc.xmlhttp({
 	  	url : 'processes_Ajax',
 	  	args: 'action=editFile&filename='+fileName+'&pro_uid='+pro_uid
@@ -107,17 +108,17 @@ function editFile(pro_uid, fileName){
 /*refresh content tiny*/
 
 function saveFile(pro_uid, fileName){
-    
+
     var fc64 = base64_encode(getField('fcontent').value);
     tinyMCE.execCommand('mceRemoveControl',false,'form[fcontent]');
     fc64 = fc64.replace(/&amp;/g, "@amp@");
     fc64 = fc64.replace(/\+/g, '%2B');
-	
+
 	var oRPC = new leimnud.module.rpc.xmlhttp({
     url : 'processes_Ajax',
 	  args: 'action=saveFile&filename='+fileName+'&pro_uid='+pro_uid+'&MAIN_DIRECTORY='+CURRENT_MAIN_DIRECTORY+'&fcontent='+fc64
  	});
- 	
+
  	oPanel.loader.show();
     oRPC.callback = function(rpc) {
         oPanel.remove();
@@ -153,12 +154,12 @@ function showCreateEmptyOptions(e, MAIN_DIRECTORY){
 function saveEmptyFile(){
 	var fileName = getField('emptyfilename').value + ".html";
 	fileName = fileName.trim();
-	
+
 	var oRPC = new leimnud.module.rpc.xmlhttp({
 	  	url : 'processes_Ajax',
 	  	args: 'action=saveFile&filename='+fileName+'&pro_uid='+CURRENT_PRO_UID+'&MAIN_DIRECTORY='+CURRENT_MAIN_DIRECTORY+'&fcontent='
   	});
-  	
+
   	oRPC.callback = function(rpc){
 		showCreateEmptyOptionsPanel.remove();
 		/// goToDirectory(CURRENT_PRO_UID, 'mailTemplates', '');
@@ -172,11 +173,12 @@ function saveEmptyFile(){
 	oRPC.make();
 }
 
-function xReaload(){    
+function xReaload(){
     goToDirectory(CURRENT_PRO_UID, CURRENT_MAIN_DIRECTORY, CURRENT_CURRENT_DIRECTORY);
 }
 
 
 ]]></JS>
 
-</dynaForm>  
+</dynaForm>
+
