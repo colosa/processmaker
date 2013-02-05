@@ -532,20 +532,25 @@ Ext.onReady(function(){
   setTimeout("timer()", parseInt(FORMATS.casesListRefreshTime) * 1000);
 });
 
-function updateCasesView() {
+function updateCasesView(viewList) {
+    var refreshList = viewList || false;
   try{
     if (document.getElementById('casesSubFrame').contentWindow.storeCases) {
-      switch (document.getElementById('casesSubFrame').contentWindow.storeCases.baseParams.action) {
-        case "todo":
-        case "unassigned":
-        case "paused":
-        case "to_revise":
-        case "to_reassign":
-            document.getElementById('casesSubFrame').contentWindow.storeCases.reload();
-            break;
-        default:
-            break;
-      }
+        if (refreshList) {
+              document.getElementById('casesSubFrame').contentWindow.storeCases.reload();
+        } else {
+            switch (document.getElementById('casesSubFrame').contentWindow.storeCases.baseParams.action) {
+                case "todo":
+                case "unassigned":
+                case "paused":
+                case "to_revise":
+                case "to_reassign":
+                    document.getElementById('casesSubFrame').contentWindow.storeCases.reload();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
   }
   catch(e){};

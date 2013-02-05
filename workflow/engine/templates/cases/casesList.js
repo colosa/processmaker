@@ -149,7 +149,7 @@ function deleteCase() {
             url: 'cases_Delete',
             success: function(response) {
               try {
-                parent.updateCasesView();
+                parent.updateCasesView(true);
               }
               catch (e) {
                 // Nothing to do
@@ -236,7 +236,7 @@ function pauseCase(date){
                     url: 'cases_Ajax',
                     success: function(response) {
                       try {
-                        parent.updateCasesView();
+                        parent.updateCasesView(true);
                       }
                       catch (e) {
                         // Nothing to do
@@ -302,7 +302,7 @@ function cancelCase(){
             url: 'cases_Ajax',
             success: function(response) {
               try {
-                parent.updateCasesView();
+                parent.updateCasesView(true);
               }
               catch (e) {
                 // Nothing to do
@@ -340,7 +340,7 @@ function callbackUnpauseCase (btn, text) {
       url: 'cases_Ajax',
       success: function(response) {
         try {
-          parent.updateCasesView();
+          parent.updateCasesView(true);
         }
         catch (e) {
           // Nothing to do
@@ -370,7 +370,7 @@ function unpauseCase() {
         url: 'cases_Ajax',
         success: function(response) {
           try {
-            parent.updateCasesView();
+            parent.updateCasesView(true);
           }
           catch (e) {
             // Nothing to do
