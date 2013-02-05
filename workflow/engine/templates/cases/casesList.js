@@ -335,7 +335,7 @@ function cancelCase(){
 
 function callbackUnpauseCase (btn, text) {
   if ( btn == 'yes' ) {
-    Ext.MessageBox.show({ progressText: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
+    Ext.MessageBox.show({ msg: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
     Ext.Ajax.request({
       url: 'cases_Ajax',
       success: function(response) {
@@ -365,7 +365,7 @@ function unpauseCase() {
 
   Ext.Msg.confirm( _('ID_CONFIRM'), _('ID_CONFIRM_UNPAUSE_CASE') , function (btn, text) {
     if ( btn == 'yes' ) {
-      Ext.MessageBox.show({ progressText: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
+      Ext.MessageBox.show({ msg: _('ID_PROCESSING'), wait:true,waitConfig: {interval:200} });
       Ext.Ajax.request({
         url: 'cases_Ajax',
         success: function(response) {
