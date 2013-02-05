@@ -23,6 +23,8 @@ var storeReassignCases;
 var grid;
 var textJump;
 
+Ext.Ajax.timeout = 4 * 60 * 1000;
+
 var caseSummary = function() {
   var rowModel = grid.getSelectionModel().getSelected();
   if (rowModel) {
@@ -1716,13 +1718,14 @@ Ext.onReady ( function() {
     items: itemToolbar
   });
 
-
+    var mask = new Ext.LoadMask(Ext.getBody(), {msg: _('ID_LOADING')});
   // create the editor grid
   grid = new Ext.grid.GridPanel({
     region: 'center',
     id: 'casesGrid',
     store: storeCases,
     cm: cm,
+    loadMask: mask,
 
     sm: new Ext.grid.RowSelectionModel({
       selectSingle: false,
@@ -1744,12 +1747,11 @@ Ext.onReady ( function() {
       emptyText: ( _('ID_NO_RECORDS_FOUND') )
     },
     listeners: {
-      rowdblclick: openCase,
-      render: function(){
-
-        //this.loadMask = new Ext.LoadMask(this.body, {msg:TRANSLATIONS.LABEL_GRID_LOADING});
-        //this.ownerCt.doLayout();
-      }
+        rowdblclick: openCase,
+        render: function(){
+            //this.loadMask = new Ext.LoadMask(this.body, {msg:TRANSLATIONS.LABEL_GRID_LOADING});
+            //this.ownerCt.doLayout();
+        }
     },
 
     tbar: tb,
@@ -1967,11 +1969,12 @@ var gridForm = new Ext.FormPanel({
     storeCases.setBaseParam("start", 0);
     storeCases.setBaseParam("limit", pageSize);
 
+    storeCases.removeAll();
     if (action != 'search') {
         storeCases.load();
     } else {
         storeCases.load( {params: { first: true}} );
-        PMExt.notify_time_out = 5;
+        PMExt.notify_time_out = 7;
         PMExt.notify(_('ID_ADVANCEDSEARCH'), _('ID_ENTER_SEARCH_CRITERIA'));
     }
     //newPopUp.add(reassignGrid);
