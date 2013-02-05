@@ -73,6 +73,22 @@ if ($action == 'paused') {
 $userUid = (isset( $_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '') ? $_SESSION['USER_LOGGED'] : null;
 $oAppCache = new AppCacheView();
 $oAppCache->confCasesList = $confCasesList;
+$solrEnabled = 0;
+if ($action == "todo" || $action == "draft" || $action == "sent" || $action == "selfservice" ||
+    $action == "unassigned" || $action == "search") {
+    $solrConfigured = ($solrConf = System::solrEnv()) !== false ? 1 : 0;
+    if ($solrConfigured == 1) {
+        G::LoadClass('AppSolr');
+        $applicationSolrIndex = new AppSolr(
+            $solrConf['solr_enabled'],
+            $solrConf['solr_host'],
+            $solrConf['solr_instance']
+        );
+        if ($applicationSolrIndex->isSolrEnabled()) {
+          $solrEnabled = 1;
+        }
+    }
+}
 
 //get values for the comboBoxes
 $processes[] = array ('',G::LoadTranslation( 'ID_ALL_PROCESS' ));
@@ -94,7 +110,7 @@ $oHeadPublisher->assign( 'processValues', $processes ); //Sending the listing of
 $oHeadPublisher->assign( 'categoryValues', $category ); //Sending the listing of categories
 $oHeadPublisher->assign( 'userValues', $users ); //Sending the listing of users
 $oHeadPublisher->assign( 'allUsersValues', $allUsers ); //Sending the listing of all users
-$oHeadPublisher->assign( "solrEnabled", (($aux = System::solrEnv()) !== false) ? 1 : 0 ); //Sending the status of solar
+$oHeadPublisher->assign( 'solrEnabled', $solrEnabled ); //Sending the status of solar
 
 //menu permissions
 /*$c = new Criteria('workflow');
