@@ -1458,18 +1458,16 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $sOptions .= '    getField(newcont[i].name).value = newcont[i].value; ';
                 $sOptions .= '    if (newcont[i].content.type == \'dropdown\') { ';
 
-                $sOptions .= '      fieldLength = getField(newcont[i].name).options.length; ';
-                $sOptions .= '      for (ni = 0; ni < fieldLength; ni++ ){ ';
-                $sOptions .= '        getField(newcont[i].name).options.remove(ni); ';
-                $sOptions .= '      } ';
-                $sOptions .= '      getField(newcont[i].name).length = 0; ';
+                $sOptions .= '   getField(newcont[i].name).options.length = 0;   ';
 
-                $sOptions .= '      for (ni = 0; ni < newcont[i].content.options.length; ni++ ){ ';
-                $sOptions .= '        var opt = document.createElement("OPTION"); ';
-                $sOptions .= '        opt.value = newcont[i].content.options[ni].key; ';
-                $sOptions .= '        opt.text  = newcont[i].content.options[ni].value; ';
-                $sOptions .= '        getField(newcont[i].name).options.add(opt); ';
-                $sOptions .= '      } ';
+                $sOptions .= '  for (ni = 0; ni < newcont[i].content.options.length; ni++ ) {
+                                getField(newcont[i].name).options[ni] = new Option(newcont[i].content.options[ni].value, newcont[i].content.options[ni].key);
+                            }
+
+                            if (getField(newcont[i].name).options.length == 0) {
+                                getField(newcont[i].name).options[0] = new Option("", "");
+                            }';
+
                 $sOptions .= '    } ';
 
                 $sOptions .= '  } ';
