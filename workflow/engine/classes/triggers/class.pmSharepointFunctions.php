@@ -27,7 +27,9 @@
 
 /**
  *
- * @method Create a DWS in Sharepoint server
+ * @method
+ *
+ * Create a DWS in Sharepoint server
  *
  * @name createDWS
  * @label Create a DWS in Sharepoint server
@@ -53,7 +55,9 @@ function createDWS ($sharepointServer, $auth, $name = "", $users = "", $title = 
 
 /**
  *
- * @method Delete a DWS in Sharepoint server
+ * @method
+ *
+ * Delete a DWS in Sharepoint server
  *
  * @name deleteDWS
  * @label Delete a DWS in Sharepoint server
@@ -81,7 +85,9 @@ function deleteDWS ($sharepointServer, $auth, $dwsname)
 
 /**
  *
- * @method Create a folder in a DWS
+ * @method
+ *
+ * Create a folder in a DWS
  *
  * @name createFolderDWS
  * @label Create a folder in a DWS
@@ -113,7 +119,9 @@ function createFolderDWS ($sharepointServer, $auth, $dwsname, $dwsFolderName)
 
 /**
  *
- * @method Delete a DWS folder
+ * @method
+ *
+ * Delete a DWS folder
  *
  * @name deleteFolderDWS
  * @label Delete a DWS folder
@@ -144,7 +152,9 @@ function deleteFolderDWS ($sharepointServer, $auth, $dwsname, $folderName)
 
 /**
  *
- * @method Get DWS data
+ * @method
+ *
+ * Get DWS data
  *
  * @name getDWSData
  * @label Get DWS data
@@ -172,7 +182,9 @@ function getDWSData ($sharepointServer, $auth, $newFileName, $dwsname, $lastUpda
 
 /**
  *
- * @method Get DWS meta data
+ * @method
+ *
+ * Get DWS meta data
  *
  * @name getDWSMetaData
  * @label Get DWS meta data
@@ -203,7 +215,9 @@ function getDWSMetaData ($sharepointServer, $auth, $newFileName, $dwsname, $id)
 
 /**
  *
- * @method Copy/Upload Documents to DWS folder
+ * @method
+ *
+ * Copy/Upload Documents to DWS folder
  *
  * @name uploadDocumentDWS
  * @label Copy/Upload Documents to DWS folder
@@ -229,7 +243,9 @@ function uploadDocumentDWS ($sharepointServer, $auth, $dwsname, $folderName, $so
 
 /**
  *
- * @method Download documents from DWS folder
+ * @method
+ *
+ * Download documents from DWS folder
  *
  * @name downloadDocumentDWS
  * @label Download DWS Documents
@@ -257,7 +273,9 @@ function downloadDocumentDWS ($sharepointServer, $auth, $dwsname, $fileName, $fi
 
 /**
  *
- * @method Get DWS Folder items
+ * @method
+ *
+ * Get DWS Folder items
  *
  * @name getDWSFolderItems
  * @label Get DWS Folder items
@@ -284,7 +302,9 @@ function getDWSFolderItems ($sharepointServer, $auth, $dwsname, $strFolderUrl)
 
 /**
  *
- * @method Get DWS Document Versions
+ * @method
+ *
+ * Get DWS Document Versions
  *
  * @name getDWSDocumentVersions
  * @label Get DWS Document Versions
@@ -322,7 +342,9 @@ function getDWSDocumentVersions ($sharepointServer, $auth, $newFileName, $dwsnam
 
 /**
  *
- * @method Delete DWS Document Version
+ * @method
+ *
+ * Delete DWS Document Version
  *
  * @name deleteDWSDocumentVersion
  * @label Delete DWS Document Version
@@ -346,7 +368,9 @@ function deleteDWSDocumentVersion ($sharepointServer, $auth, $newFileName, $dwsn
 
 /**
  *
- * @method Delete all DWS Document Versions
+ * @method
+ *
+ * Delete all DWS Document Versions
  *
  * @name deleteDWSAllDocumentVersion
  * @label Delete all DWS Document Versions
