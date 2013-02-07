@@ -35,6 +35,40 @@ G::LoadClass( 'case' );
 
 $actionAjax = isset( $_REQUEST['actionAjax'] ) ? $_REQUEST['actionAjax'] : null;
 
+if ($actionAjax == "userValues") {
+    //global $oAppCache;
+    $oAppCache = new AppCacheView();
+    $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : null;
+    $users = array();
+    $users[] = array ("USR_UID" => "", "USR_FULLNAME" => G::LoadTranslation( "ID_ALL_USERS" ));
+    $users[] = array ("USR_UID" => "CURRENT_USER", "USR_FULLNAME" => G::LoadTranslation( "ID_CURRENT_USER" ));
+
+    //now get users, just for the Search action
+    switch ($action) {
+        case 'search_simple':
+        case 'search':
+            $cUsers = new Criteria( 'workflow' );
+            $cUsers->clearSelectColumns();
+            $cUsers->addSelectColumn( UsersPeer::USR_UID );
+            $cUsers->addSelectColumn( UsersPeer::USR_FIRSTNAME );
+            $cUsers->addSelectColumn( UsersPeer::USR_LASTNAME );
+            $cUsers->addAscendingOrderByColumn( UsersPeer::USR_LASTNAME );
+            $oDataset = UsersPeer::doSelectRS( $cUsers );
+            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oDataset->next();
+            while ($aRow = $oDataset->getRow()) {
+                $users[] = array ("USR_UID" =>  $aRow['USR_UID'],"USR_FULLNAME" => $aRow['USR_LASTNAME'] . ' ' . $aRow['USR_FIRSTNAME']);
+                $oDataset->next();
+            }
+            break;
+        default:
+            return $users;
+            break;
+    }
+    //return $users;
+    return print G::json_encode( $users );
+}
+
 if ($actionAjax == "processListExtJs") {
     $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : null;
     $categoryUid = isset( $_REQUEST['CATEGORY_UID'] ) ? $_REQUEST['CATEGORY_UID'] : null;

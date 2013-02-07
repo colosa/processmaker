@@ -137,8 +137,9 @@ function getUserArray ($action, $userUid)
 {
     global $oAppCache;
     $status = array ();
-    $users[] = array ("CURRENT_USER",G::LoadTranslation( "ID_CURRENT_USER" ));
+    
     $users[] = array ("",G::LoadTranslation( "ID_ALL_USERS" ));
+    $users[] = array ("CURRENT_USER",G::LoadTranslation( "ID_CURRENT_USER" ));
 
     //now get users, just for the Search action
     switch ($action) {

@@ -860,7 +860,8 @@ Ext.onReady ( function() {
           storeCases.setBaseParam('dateTo', dateTo.getValue());
         }
         storeCases.setBaseParam('process', filterProcess);
-        storeCases.load({params:{process: filterProcess, start : 0 , limit : pageSize}});
+        //
+        //storeCases.load({params:{process: filterProcess, start : 0 , limit : pageSize}});
       }},
     iconCls: 'no-icon'  //use iconCls if placing within menu to shift to right side of menu
   });
@@ -901,7 +902,7 @@ Ext.onReady ( function() {
           btnReassign.show();
         }*/
         storeCases.setBaseParam( 'user', filterProcess);
-        storeCases.load({params:{user: filterProcess, start : 0 , limit : pageSize}});
+        //storeCases.load({params:{user: filterProcess, start : 0 , limit : pageSize}});
       }},
     iconCls: 'no-icon'  //use iconCls if placing within menu to shift to right side of menu
   });
@@ -931,7 +932,7 @@ Ext.onReady ( function() {
             filterCategory = comboCategory.value;
             storeCases.setBaseParam('category', filterCategory);
             storeCases.setBaseParam('process', '');
-            storeCases.load({params:{category: filterCategory, start : 0 , limit : pageSize}});
+            //storeCases.load({params:{category: filterCategory, start : 0 , limit : pageSize}});
 
             Ext.Ajax.request({
                 url : 'casesList_Ajax' ,
@@ -1051,43 +1052,49 @@ Ext.onReady ( function() {
         storeCases.setBaseParam( 'status', filterStatus);
         storeCases.setBaseParam( 'start', 0);
         storeCases.setBaseParam( 'limit', pageSize);
-        storeCases.load();
+        //storeCases.load();
       }},
     iconCls: 'no-icon'  //use iconCls if placing within menu to shift to right side of menu
   });
 
   // ComboBox creation processValues
   var comboUser = new Ext.form.ComboBox({
-    width         : 160,
-    boxMaxWidth   : 180,
-    editable      : true,
-    displayField  : 'USR_FULLNAME',
-    valueField    : 'USR_UID',
-    mode          : 'local',
-    forceSelection: false,
-    emptyText: _('ID_SELECT'),
-    selectOnFocus: true,
-
-    typeAhead: true,
-    mode: 'local',
-    autocomplete: true,
-    triggerAction: 'all',
-
-    store         : new Ext.data.ArrayStore({
-      fields: ['USR_UID','USR_FULLNAME'],
-      data  : userValues
-    }),
-    listeners:{
-      scope: this,
-      'select': function() {
-        filterUser = comboUser.value;
-        storeCases.setBaseParam( 'user', filterUser);
-        storeCases.setBaseParam( 'start', 0);
-        storeCases.setBaseParam( 'limit', pageSize);
-        storeCases.load();
-      }},
-    iconCls: 'no-icon'  //use iconCls if placing within menu to shift to right side of menu
-  });
+      store : new Ext.data.Store( {
+        proxy : new Ext.data.HttpProxy( {
+          url : 'casesList_Ajax?actionAjax=userValues&action='+action,
+          method : 'POST'
+        }),
+        reader : new Ext.data.JsonReader( {
+          fields : [ {
+            name : 'USR_UID'
+          }, {
+            name : 'USR_FULLNAME'
+          } ]
+        })
+      }),
+      valueField : 'USR_UID',
+      displayField : 'USR_FULLNAME',
+      triggerAction : 'all',
+      emptyText : _('ID_SELECT'),
+      selectOnFocus : true,
+      editable : true,
+      width: 180,
+      allowBlank : true,
+      autocomplete: true,
+      typeAhead: true,
+      //allowBlankText : _('ID_SHOULD_SELECT_LANGUAGE_FROM_LIST'),
+      listeners:{
+        scope: this,
+        'select': function() {
+          storeCases.setBaseParam("user", comboUser.store.getAt(0).get(comboUser.valueField));
+          filterUser = comboUser.value;
+          storeCases.setBaseParam( 'user', filterUser);
+          storeCases.setBaseParam( 'start', 0);
+          storeCases.setBaseParam( 'limit', pageSize);
+          //storeCases.load();
+        }
+      }
+    });
 
 
   var textSearch = new Ext.form.TextField ({
@@ -1106,10 +1113,16 @@ Ext.onReady ( function() {
 
   var btnSearch = new Ext.Button ({
     text: _('ID_SEARCH'),
+    iconCls: 'button_menu_ext ss_sprite ss_page_find',
+    //cls: 'x-form-toolbar-standardButton', 
     handler: doSearch
   });
 
   function doSearch(){
+    //var viewText = Ext.getCmp('casesGrid').getView();
+    viewText.emptyText = _('ID_NO_RECORDS_FOUND');
+    //Ext.getCmp('casesGrid').getView().refresh();
+    
     searchText = textSearch.getValue();
     storeCases.setBaseParam( 'search', searchText);
     storeCases.load({params:{ start : 0 , limit : pageSize }});
@@ -1674,7 +1687,13 @@ Ext.onReady ( function() {
           storeCases.setBaseParam('dateTo', dateTo.getValue());
           storeCases.load({params:{ start : 0 , limit : pageSize }});
         }
-      })
+      }),
+      "->",
+      '-',
+      textSearch,
+      resetSearchButton,
+      btnSearch ,
+      '&nbsp;&nbsp;&nbsp;'
     ];
 
   var firstToolbarSearch = new Ext.Toolbar({
@@ -1695,10 +1714,11 @@ Ext.onReady ( function() {
       "-",
       _("ID_USER"),
       comboUser,
-      '-',
-      textSearch,
-      resetSearchButton,
-      btnSearch
+      '&nbsp;&nbsp;&nbsp;'
+      //'-',
+      //textSearch,
+      //resetSearchButton,
+      //btnSearch
     ]
   });
   //alert(action);
@@ -1942,7 +1962,7 @@ var gridForm = new Ext.FormPanel({
             storeCases.setBaseParam("category", "");
             storeCases.setBaseParam("process", "");
             storeCases.setBaseParam("status", comboStatus.store.getAt(0).get(comboStatus.valueField));
-            storeCases.setBaseParam("user", comboUser.store.getAt(0).get(comboUser.valueField));
+            //storeCases.setBaseParam("user", comboUser.store.getAt(0).get(comboUser.valueField));
             storeCases.setBaseParam("search", textSearch.getValue());
             storeCases.setBaseParam("dateFrom", dateFrom.getValue());
             storeCases.setBaseParam("dateTo", dateTo.getValue());
@@ -1969,13 +1989,13 @@ var gridForm = new Ext.FormPanel({
     storeCases.setBaseParam("start", 0);
     storeCases.setBaseParam("limit", pageSize);
 
+    var viewText = Ext.getCmp('casesGrid').getView();
     storeCases.removeAll();
     if (action != 'search') {
         storeCases.load();
     } else {
+        viewText.emptyText = _('ID_ENTER_SEARCH_CRITERIA');
         storeCases.load( {params: { first: true}} );
-        PMExt.notify_time_out = 7;
-        PMExt.notify(_('ID_ADVANCEDSEARCH'), _('ID_ENTER_SEARCH_CRITERIA'));
     }
     //newPopUp.add(reassignGrid);
     newPopUp.add(gridForm);
