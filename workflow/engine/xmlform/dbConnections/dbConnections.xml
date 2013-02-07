@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm type="pagetable" menu="dbConnections/dbConnections_Options">
+<dynaForm type="pagetable" menu="dbConnections/dbConnections_Options" searchBy="DBS_DATABASE_NAME|CON_VALUE">
 
 <DBS_UID type="private" showInTable="0"/>
 
@@ -29,7 +29,18 @@
   <en>Delete</en>
 </DBS_DELETE>
 
-<GET_UID type="link" colWidth="40" value="UID" link="#" onclick="msgBox(&#039;UID: &#039;+@QDBS_UID, &#039;info&#039;);return false;"/> 
+<GET_UID type="link" colWidth="40" value="UID" link="#" onclick="msgBox(&#039;UID: &#039;+@QDBS_UID, &#039;info&#039;);return false;"/>
 
+<SEARCH type="button" onclick="pagedTableFilter(this.form);" showInTable="0">
+  <en>Apply Filter</en>
+</SEARCH>
 
-</dynaForm>  
+<PAGED_TABLE_ID type="private" showInTable="0"/>
+
+<JSFILTER type="javascript" replaceTags="1" showInTable="0">
+function pagedTableFilter(form) {
+  @#PAGED_TABLE_ID.doFilter(form);
+}
+</JSFILTER>
+
+</dynaForm>

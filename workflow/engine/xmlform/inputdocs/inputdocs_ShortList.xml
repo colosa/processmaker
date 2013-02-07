@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm sqlConnection="" menu="inputdocs/inputdocs_Options" width="100%" rowsPerPage="10">
+<dynaForm sqlConnection="" menu="inputdocs/inputdocs_Options" width="100%" rowsPerPage="10" searchBy="INP_DOC_TITLE">
 
 <INP_DOC_UID type="hidden" showInTable="0"/>
 
@@ -26,4 +26,4 @@ function pagedTableFilter(form) {
 }
 </JSFILTER>
 
-</dynaForm>  
+</dynaForm>

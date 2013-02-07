@@ -5,6 +5,7 @@
   <en>New</en>
 </MNU_ADD>
 <PAGED_TABLE_ID type="private"/>
+<PAGED_TABLE_FAST_SEARCH type="FastSearch" label="@G::LoadTranslation(ID_SEARCH)"/>
 
 <PRO_UID type="private"/>
 <inputdocsEdit type="private" defaultValue="../inputdocs/inputdocs_Edit"/>
@@ -22,7 +23,7 @@ var currentPagedTable = @#PAGED_TABLE_ID;
     sw = sw && (getField('INP_DOC_TITLE').value!='');
     return sw;
   }
-  function inputdocsSave( form ) { 
+  function inputdocsSave( form ) {
   var nameInput = getField('INP_DOC_TITLE').value;
   var proUid = getField('PRO_UID').value;
   if(getField('INP_DOC_UID').value==''){
@@ -49,10 +50,10 @@ var currentPagedTable = @#PAGED_TABLE_ID;
     }
   }
   function inputdocsDelete( uid ) {
-  
+
 	  result = ajax_function('@G::encryptlink(@#inputdocsDelete)','getRelationInfDoc','INP_DOC_UID='+uid,'POST');
 	  labelToshow = (result)?'@G::LoadTranslation(ID_MSG_CONFIRM_DELETE_IDOCUMENT)':'@G::LoadTranslation(ID_MSG_CONFIRM_DELETE_DOCUMENT)';
-  
+
     new leimnud.module.app.confirm().make({
     	label:labelToshow,
     	action:function()

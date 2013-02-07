@@ -6,6 +6,8 @@
 </MNU_ADD>
 
 <PAGED_TABLE_ID type="private"/>
+<PAGED_TABLE_FAST_SEARCH type="FastSearch" label="@G::LoadTranslation(ID_SEARCH)"/>
+
 <PRO_UID type="private"/>
 
 <dynaformsEdit type="private" defaultValue="../dynaforms/dynaforms_Edit"/>

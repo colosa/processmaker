@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm menu="outputdocs/outputdocs_Options" rowsPerPage="10">
+<dynaForm menu="outputdocs/outputdocs_Options" rowsPerPage="10" searchBy="OUT_DOC_TITLE">
 
 <OUT_DOC_UID type="hidden" showInTable="0"/>
 
@@ -32,4 +32,4 @@ function pagedTableFilter(form) {
 }
 </JSFILTER>
 
-</dynaForm>  
+</dynaForm>

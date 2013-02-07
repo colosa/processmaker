@@ -7,4 +7,11 @@
   <en>New</en>
 </MNU_ADD>
 
-</dynaForm>  
+<PAGED_TABLE_ID type="private"/>
+<PAGED_TABLE_FAST_SEARCH type="FastSearch" label="@G::LoadTranslation(ID_SEARCH)"/>
+<SEARCH_FILTER_FORM type="private"/>
+<js type="javascript" replaceTags="1"><![CDATA[
+var currentPagedTable = @#PAGED_TABLE_ID;
+]]></js>
+
+</dynaForm>
