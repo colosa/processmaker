@@ -128,6 +128,7 @@ Ext.onReady(function() {
     layout:'form',
     defaults: {width: 350},
     defaultType: 'displayfield',
+    autoScroll: true,
     items: [{
         fieldLabel: TRANSLATIONS.ID_PROCESS,
         name: 'processName',
