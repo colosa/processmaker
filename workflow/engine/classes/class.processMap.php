@@ -90,7 +90,7 @@ class processMap
 
             $aRow = $oProcess->load( $sProcessUID );
             $oPM->title = new stdclass();
-            $oPM->title->label = strip_tags( $aRow['PRO_TITLE'] );
+            $oPM->title->label = htmlentities( $aRow['PRO_TITLE'], ENT_QUOTES, 'UTF-8' );
             $oPM->title->position = new stdclass();
             $oPM->title->position->x = $aRow['PRO_TITLE_X'];
             $oPM->title->position->y = $aRow['PRO_TITLE_Y'];
@@ -127,7 +127,7 @@ class processMap
                         $aFields1 = $oTask1->load( $oTask->uid );
                         $aRow1['CON_VALUE'] = $oTask1->getTasTitle();
                     }
-                    $oTask->label = strip_tags( $aRow1['CON_VALUE'] );
+                    $oTask->label = htmlentities( $aRow1['CON_VALUE'], ENT_QUOTES, 'UTF-8' );
                 } else {
                     $oCriteria = new Criteria( 'workflow' );
                     $del = DBAdapter::getStringDelimiter();
@@ -152,9 +152,9 @@ class processMap
                     if ($oProcess->exists( $aRowx['PRO_UID'] )) {
                         //$aRowy = $oProcess->load($aRowx['PRO_UID']);
                         //$oTask->label = $aRowy['PRO_TITLE'];
-                        $oTask->label = $aRowx['TAS_TITLE'];
+                        $oTask->label = htmlentities( $aRowx['TAS_TITLE'], ENT_QUOTES, 'UTF-8' );
                     } else {
-                        $oTask->label = strip_tags( $aRow1['CON_VALUE'] );
+                        $oTask->label = htmlentities( $aRow1['CON_VALUE'], ENT_QUOTES, 'UTF-8' );
                     }
                 }
                 $oTask->taskINI = (strtolower( $aRow1['TAS_START'] ) == 'true' ? true : false);
@@ -410,7 +410,7 @@ class processMap
                     case 'text':
                         $oText = null;
                         $oText->uid = $aRow['SWI_UID'];
-                        $oText->label = strip_tags( ($aRow['CON_VALUE'] != '' ? str_replace( chr( 92 ), '&#92;', str_replace( '<', '&lt;', $aRow['CON_VALUE'] ) ) : '-') );
+                        $oText->label = htmlentities( ($aRow['CON_VALUE'] != '' ? str_replace( chr( 92 ), '&#92;', str_replace( '<', '&lt;', $aRow['CON_VALUE'] ) ) : '-'), ENT_QUOTES, 'UTF-8' );
                         // $oText->label       = '->' . $aRow ['CON_VALUE'] . '<-' ;
                         $oText->position->x = $aRow['SWI_X'];
                         $oText->position->y = $aRow['SWI_Y'];

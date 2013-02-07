@@ -252,7 +252,7 @@ var saveTaskData = function(oForm, iForm, iType)
     var res = rpc.xmlhttp.responseText.parseJSON();
 
     if (oTaskData.TAS_TITLE) {
-      Pm.data.db.task[getField("INDEX").value].label = Pm.data.db.task[getField("INDEX").value].object.elements.label.innerHTML = oTaskData.TAS_TITLE.replace(re2, "&amp;");
+      Pm.data.db.task[getField("INDEX").value].label = Pm.data.db.task[getField("INDEX").value].object.elements.label.innerHTML = htmlentities(oTaskData.TAS_TITLE, 'ENT_QUOTES');
     }
 
     if (oTaskData.TAS_START) {

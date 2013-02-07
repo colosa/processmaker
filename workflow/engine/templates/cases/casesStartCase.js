@@ -138,7 +138,8 @@ Ext.onReady(function() {
         style : {
           fontSize:'11px'
         },
-        id:"processName"
+        id:"processName",
+        htmlEncode: true
       },
       {
         xtype: 'compositefield',
@@ -169,7 +170,8 @@ Ext.onReady(function() {
             allowBlank:false,
             value: '',
             width:200,
-            id:"taskName"
+            id:"taskName",
+            htmlEncode: true
           }
         ]},
         {
@@ -192,7 +194,8 @@ Ext.onReady(function() {
           style : {
             fontSize:'11px'
           },
-          id:"processCategory"
+          id:"processCategory",
+          htmlEncode: true
         },
         {
           fieldLabel: TRANSLATIONS.ID_CALENDAR,

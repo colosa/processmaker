@@ -77,7 +77,7 @@ function getProcessList ()
                 $tempTreeChildren = array ();
                 foreach ($processList[$key] as $keyChild => $processInfoChild) {
                     //print_r($processInfo);
-                    $tempTreeChild['text'] = $keyChild; //ellipsis ( $keyChild, 50 );
+                    $tempTreeChild['text'] = htmlentities($keyChild, ENT_QUOTES, 'UTF-8'); //ellipsis ( $keyChild, 50 );
                     //$tempTree['text']=$key;
                     $tempTreeChild['id'] = preg_replace('([^A-Za-z0-9 ()])', '', $keyChild);
                     $tempTreeChild['draggable'] = true;
