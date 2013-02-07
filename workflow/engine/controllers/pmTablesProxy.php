@@ -362,7 +362,12 @@ class pmTablesProxy extends HttpProxyController
                 $table = $at->load( $row->id );
 
                 if (! isset( $table )) {
-                    throw new Exception( "Table does not exist... skipped!\n" );
+                    require_once 'classes/model/ReportTable.php';
+                    $rtOld = new ReportTable();
+                    $existReportTableOld = $rtOld->load( $row->id );
+                    if (count($existReportTableOld) == 0) {
+                        throw new Exception( "Table does not exist... skipped!\n" );    
+                    }
                 }
 
                 if ($row->type == 'CLASSIC') {
