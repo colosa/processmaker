@@ -518,7 +518,7 @@ function var_dump(obj)
 {dump+=o+'('+typeof(obj[o])+'):'+obj[o]+"\n";}}
 else
 dump=obj;return dump;}
-var currentPopupWindow;function popupWindow(title,url,width,height,callbackFn,autoSizeWidth,autoSizeHeight,modal,showModalColor){modal=(modal===false)?false:true;showModalColor=(showModalColor===false)?false:true;var myPanel=new leimnud.module.panel();currentPopupWindow=myPanel;myPanel.options={size:{w:width,h:height},position:{center:true},title:title,theme:"processmaker",control:{close:true,roll:false,drag:true,resize:false},fx:{blinkToFront:true,opacity:true,drag:true,modal:modal}};if(showModalColor===true)
+var currentPopupWindow;function popupWindow(title,url,width,height,callbackFn,autoSizeWidth,autoSizeHeight,modal,showModalColor){modal=(modal===false)?false:true;showModalColor=(showModalColor===false)?false:true;var myPanel=new leimnud.module.panel();currentPopupWindow=myPanel;myPanel.options={limit:true,size:{w:width,h:height},position:{center:true},title:title,theme:"processmaker",control:{close:true,roll:false,drag:true,resize:false},fx:{blinkToFront:true,opacity:true,drag:true,modal:modal}};if(showModalColor===true)
 {}
 else
 {myPanel.styles.fx.opacityModal.Static='0';}
