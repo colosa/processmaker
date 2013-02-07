@@ -833,10 +833,13 @@ datastore.on("beforeload",
     options.params.sendWhat = datastore.sendWhat;
   });
 datastore.on("loadexception",
-  function(misc) {
+  function(proxy, options, response, e) {
     try {
-      msgbox = Ext.Msg.alert('error', _('ID_LOGIN_AGAIN'), function(){try{parent.parent.window.location = '../login/login';} catch(e){}} );
-      msgbox.setIcon(Ext.MessageBox.ERROR);
+      responseData = Ext.decode(response.responseText);
+      if (typeof(responseData.login) != 'undefined') {
+        msgbox = Ext.Msg.alert('error', _('ID_LOGIN_AGAIN'), function(){try{parent.parent.window.location = '../login/login';} catch(e){}} );
+        msgbox.setIcon(Ext.MessageBox.ERROR);
+      }
     } catch(e) {
     }
   });
