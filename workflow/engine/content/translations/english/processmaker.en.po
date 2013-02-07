@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-112-g33f6348\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-192-g4ae9972\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-01-29 15:19:47\n"
+"PO-Revision-Date: 2013-02-06 23:17:35\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -4294,8 +4294,8 @@ msgstr "Processes"
 # TRANSLATION
 # LABEL/ID_ENTER_SEARCH_TERM
 #: LABEL/ID_ENTER_SEARCH_TERM
-msgid "enter search term"
-msgstr "enter search term"
+msgid "Enter search term"
+msgstr "Enter search term"
 
 # TRANSLATION
 # LABEL/ID_DETAILS
@@ -24608,8 +24608,8 @@ msgstr "New"
 # processes/processes_FilesOptions.xml?MNU_UPLOAD
 # processes/processes_FilesOptions.xml
 #: link - MNU_UPLOAD
-msgid "Upload..............."
-msgstr "Upload..............."
+msgid "[processes/processes_FilesOptions.xml?MNU_UPLOAD] Upload"
+msgstr "Upload"
 
 # processes/processes_Import.xml?TITLE1
 # processes/processes_Import.xml
@@ -33851,10 +33851,10 @@ msgstr "Type of date range"
 msgid "[dynaforms/fields/date.xml?PME_RELATIVEDATE-1]"
 msgstr "Relative Dates"
 
-# dynaforms/fields/date.xml?PME_RELATIVEDATE-
+# dynaforms/fields/date.xml?PME_RELATIVEDATE-0
 # dynaforms/fields/date.xml
-#: dropdown - PME_RELATIVEDATE -
-msgid "[dynaforms/fields/date.xml?PME_RELATIVEDATE-]"
+#: dropdown - PME_RELATIVEDATE - 0
+msgid "[dynaforms/fields/date.xml?PME_RELATIVEDATE-0]"
 msgstr "Static Dates"
 
 # dynaforms/fields/date.xml?PME_SUBTITLE3

@@ -2100,7 +2100,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_CLEAR_CACHE_CONFIRM1','en','Clear all cache files now?','2012-06-01') ,
 ( 'LABEL','ID_SELFSERVICE','en','Self Service','2012-06-01') ,
 ( 'LABEL','ID_PROCESSES','en','Processes','2012-06-01') ,
-( 'LABEL','ID_ENTER_SEARCH_TERM','en','enter search term','2012-06-01') ,
+( 'LABEL','ID_ENTER_SEARCH_TERM','en','Enter search term','2013-02-06') ,
 ( 'LABEL','ID_DETAILS','en','Details','2012-06-01') ,
 ( 'LABEL','ID_METHOD','en','Method','2012-06-01') ,
 ( 'JAVASCRIPT','ID_FIELD_DUPLICATE','en','Duplicate Field','2012-06-01') ,
