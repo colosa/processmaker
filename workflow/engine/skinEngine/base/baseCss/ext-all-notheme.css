@@ -1168,7 +1168,7 @@ textarea {
     height:19px;
 }
 
-.ext-webkit .x-small-editor .x-form-text{padding-top:3px;font-size:100%;}
+.ext-webkit .x-small-editor .x-form-text{padding-top:1px;font-size:100%;}
 
 .x-form-clear {
     clear:both;

@@ -292,7 +292,7 @@ Ext.onReady(function(){
         }
       }),{
         text:'X',
-        ctCls:'pm_search_x_button',
+        ctCls:'pm_search_x_button_des',
         handler: function(){
           //store.setBaseParam( 'category', '<reset>');
           store.setBaseParam('processName', '');

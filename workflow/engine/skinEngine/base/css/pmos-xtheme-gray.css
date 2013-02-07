@@ -523,6 +523,34 @@ antes funcionaba.
   margin:0;
   padding:0;
 }
+.pm_search_x_button_des{
+  /*margin-left:-21px;*/
+  display:block;
+  width:16px;
+  height:20px;
+  margin-top:2px;
+  margin-right:3px;
+}
+.ext-ie ._des {margin-top:0px !important}
+.pm_search_x_button_des .x-btn-over .x-btn-mc
+{
+  background:transparent;
+}
+.pm_search_x_button_des .x-btn-ml,.pm_search_x_button_des .x-btn-mr,
+.pm_search_x_button_des .x-btn-tc,.pm_search_x_button_des .x-btn-tl,.pm_search_x_button_des .x-btn-tr,
+.pm_search_x_button_des .x-btn-bc,.pm_search_x_button_des .x-btn-bl,.pm_search_x_button_des .x-btn-br
+{
+  display:none !important;
+}
+.pm_search_x_button_des button{
+  background:url(/images/icons_silk/search_x_button.png) no-repeat;
+  text-indent: -10000px;
+  width:16px !important;
+  height:20px !important;
+  display:block;
+  margin:0;
+  padding:0;
+}
 .pm_search_text_field input{
   border-right:none !important;
 }
