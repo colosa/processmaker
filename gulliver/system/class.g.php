@@ -4474,8 +4474,8 @@ class G
         $tplExists = true;
 
         // file has absolute path
-        if (substr( $template, 0, 1 ) != PATH_SEP) {
-            $template = PATH_TEMPLATE . $template;
+        if (strpos($template, PATH_TRUNK) === false) {
+            $template = PATH_TPL . $template;
         }
 
         // fix for template that have dot in its name but is not a valid extension

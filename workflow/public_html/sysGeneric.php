@@ -710,6 +710,10 @@ if (substr( SYS_COLLECTION, 0, 8 ) === 'gulliver') {
         if (is_callable( Array ($controllerClass,$controllerAction ) )) {
             $isControllerCall = true;
         }
+
+        if (substr(SYS_SKIN, 0, 2) != "ux" && $controllerClass == "main") {
+            $isControllerCall = false;
+        }
     }
     if (! $isControllerCall && ! file_exists( $phpFile ) && ! $isRestRequest) {
         $_SESSION['phpFileNotFound'] = $_SERVER['REQUEST_URI'];
