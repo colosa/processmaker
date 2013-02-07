@@ -422,7 +422,7 @@ Ext.onReady ( function() {
       }
     }
     metadata.attr = 'ext:qtip="' + data + '" style="'+ style +' white-space: normal; "';
-    return data;
+    return Ext.util.Format.htmlEncode(data);
   };
 
   function openLink(value, p, r){
