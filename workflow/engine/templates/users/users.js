@@ -1264,6 +1264,9 @@ function loadUserData()
                 });
 
                 comboDefaultCasesMenuOption.store.on("load", function (store) {
+                    if (comboDefaultMainMenuOption.getValue() == 'PM_CASES') {
+                        comboDefaultCasesMenuOption.enable();
+                    }
                     comboDefaultCasesMenuOption.setValue(data.user.PREF_DEFAULT_CASES_MENUSELECTED);
                 });
             } else {
