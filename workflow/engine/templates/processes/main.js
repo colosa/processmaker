@@ -311,7 +311,7 @@ Ext.onReady(function(){
         pageSize: 25,
         store: store,
         displayInfo: true,
-        displayMsg: 'Displaying Processes {0} - {1} of {2}',
+        displayMsg: _('ID_DISPLAY_PROCESSES'),
         emptyMsg: "",
         items:[]
     }),

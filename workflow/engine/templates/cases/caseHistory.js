@@ -327,7 +327,7 @@
           pageSize: 15,
           store: store,
           displayInfo: true,
-          displayMsg: 'Displaying Processes {0} - {1} of {2}',
+          displayMsg: _('ID_DISPLAY_PROCESSES'),
           emptyMsg: "",
           items:[]
         }),
