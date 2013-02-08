@@ -974,7 +974,7 @@ class Cases
 
             $oReportTables->updateTables($appFields['PRO_UID'], $sAppUid, $Fields['APP_NUMBER'], $aApplicationFields);
             $addtionalTables->updateReportTables(
-                $appFields['PRO_UID'], $sAppUid, $Fields['APP_NUMBER'], $aApplicationFields
+                $appFields['PRO_UID'], $sAppUid, $Fields['APP_NUMBER'], $aApplicationFields, $Fields['APP_STATUS']
             );
 
             //now update the priority in appdelegation table, using the defined variable in task

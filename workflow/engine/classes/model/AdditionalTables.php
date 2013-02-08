@@ -674,7 +674,7 @@ class AdditionalTables extends BaseAdditionalTables
      * @param string $appNumber
      * @param string $caseData
      */
-    public function updateReportTables($proUid, $appUid, $appNumber, $caseData)
+    public function updateReportTables($proUid, $appUid, $appNumber, $caseData, $appStatus)
     {
         G::loadClass('pmTable');
         //get all Active Report Tables
@@ -739,6 +739,7 @@ class AdditionalTables extends BaseAdditionalTables
                         // if the record already exists on the report table
                         foreach ($records as $record) {
                             //update all records
+                            $record->setAppStatus($appStatus);
                             $record->fromArray(array_change_key_case($caseData, CASE_UPPER), BasePeer::TYPE_FIELDNAME);
                             if ($record->validate()) {
                                 $record->save();
@@ -750,6 +751,7 @@ class AdditionalTables extends BaseAdditionalTables
                         $obj->fromArray(array_change_key_case($caseData, CASE_UPPER), BasePeer::TYPE_FIELDNAME);
                         $obj->setAppUid($appUid);
                         $obj->setAppNumber($appNumber);
+                        $obj->setAppStatus($appStatus);
                         $obj->save();
                     }
                     break;
