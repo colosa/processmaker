@@ -289,7 +289,7 @@ var showDynaformsFormVars = function(sFieldName, sAjaxServer, sProcess, sSymbol)
 var insertFormVar = function(sFieldName, sValue) {
 	oAux = document.getElementById(sFieldName);
 	if (oAux.setSelectionRange) {
-	  //oAux.value     = '';
+	  oAux.value     = '';
 		var rangeStart = oAux.selectionStart;
     var rangeEnd   = oAux.selectionEnd;
     var tempStr1   = oAux.value.substring(0,rangeStart);
