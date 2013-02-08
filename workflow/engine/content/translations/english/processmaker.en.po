@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-192-g4ae9972\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-223-gcdc0cdf\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-02-06 23:17:35\n"
+"PO-Revision-Date: 2013-02-08 13:33:52\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12494,6 +12494,12 @@ msgid "FALSE"
 msgstr "FALSE"
 
 # TRANSLATION
+# LABEL/ID_DISPLAY_PROCESSES
+#: LABEL/ID_DISPLAY_PROCESSES
+msgid "Displaying Processes {0} - {1} of {2}"
+msgstr "Displaying Processes {0} - {1} of {2}"
+
+# TRANSLATION
 # LABEL/ID_ENTER_SEARCH_CRITERIA
 #: LABEL/ID_ENTER_SEARCH_CRITERIA
 msgid "Enter a search criteria and press search"
@@ -19176,6 +19182,12 @@ msgstr "Edit"
 #: link - DBS_DELETE
 msgid "[dbConnections/dbConnections.xml?DBS_DELETE] Delete"
 msgstr "Delete"
+
+# dbConnections/dbConnections.xml?SEARCH
+# dbConnections/dbConnections.xml
+#: button - SEARCH
+msgid "[dbConnections/dbConnections.xml?SEARCH] Apply Filter"
+msgstr "Apply Filter"
 
 # dbConnections/dbConnections_Edit.xml?DBS_UID
 # dbConnections/dbConnections_Edit.xml
