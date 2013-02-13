@@ -51,6 +51,7 @@ if (! $ver) //This code is in the case the outputdocument won't be versioned
 $realPath = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/outdocs/' . $sAppDocUid . $ver . '.' . $ext;
 $realPath1 = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/outdocs/' . $info['basename'] . $ver . '.' . $ext;
 $realPath2 = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/outdocs/' . $info['basename'] . '.' . $ext;
+
 $sw_file_exists = false;
 if (file_exists( $realPath )) {
     $sw_file_exists = true;
@@ -61,12 +62,20 @@ if (file_exists( $realPath )) {
     $sw_file_exists = true;
     $realPath = $realPath2;
 }
+
 if (! $sw_file_exists) {
-    $error_message = "'" . $info['basename'] . $ver . '.' . $ext . "' " . G::LoadTranslation( 'ID_ERROR_STREAMING_FILE' );
+
+$oPluginRegistry = & PMPluginRegistry::getSingleton();
+    if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT )) {
+        $error_message = "'" . $info['basename'] . $ver . '.' . $ext . "' " . G::LoadTranslation( 'ID_ERROR_STREAMING_FILE' );
+    } else {
+        $error_message = "'" . $info['basename'] . $ver . '.' . $ext . "' " . G::LoadTranslation( 'ID_ERROR_FILE_NOT_EXIST' );
+    }
+
     if ((isset( $_POST['request'] )) && ($_POST['request'] == true)) {
-        $res['success'] = 'failure';
-        $res['message'] = $error_message;
-        print G::json_encode( $res );
+            $res['success'] = 'failure';
+            $res['message'] = $error_message;
+            print G::json_encode( $res );
     } else {
         G::SendMessageText( $error_message, "ERROR" );
         $backUrlObj = explode( "sys" . SYS_SYS, $_SERVER['HTTP_REFERER'] );
