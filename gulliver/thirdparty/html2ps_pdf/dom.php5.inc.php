@@ -64,7 +64,7 @@ class DOMTree {
   }
   
   function node_type() { 
-    return $this->domelement->nodeType; 
+    return @$this->domelement->nodeType; 
   }
 
   function &parent() {

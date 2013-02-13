@@ -1110,11 +1110,20 @@ class OutputDocument extends BaseOutputDocument
         }
 
         copy($sPath . $sFilename . '.html', PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.html');
-        $status = $pipeline->process(((isset($_SERVER['HTTPS']))&&($_SERVER['HTTPS']=='on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/files/' . $_SESSION['APPLICATION'] . '/outdocs/' . $sFilename . '.html', $g_media);
-
-        copy(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.pdf', $sPath . $sFilename . '.pdf');
-        unlink(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.pdf');
-        unlink(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.html');
+        try {
+            $status = $pipeline->process(((isset($_SERVER['HTTPS']))&&($_SERVER['HTTPS']=='on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/files/' . $_SESSION['APPLICATION'] . '/outdocs/' . $sFilename . '.html', $g_media);
+            copy(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.pdf', $sPath . $sFilename . '.pdf');
+            unlink(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.pdf');
+            unlink(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.html');
+        } catch (Exception $e) {
+            if ($e->getMessage() == 'Pdf not created') {
+                include_once ("classes/model/AppDocument.php");
+                list($sFileUID,$docVersion) = explode('_',$sFilename);
+                $oAppDocument = new AppDocument ();
+                $oAppDocument->remove($sFileUID,$docVersion);
+                G::SendTemporalMessage (G::loadTranslation("ID_OUTPUT_NOT_GENERATE"), "Error");
+            }
+        }
     }
 
     /**

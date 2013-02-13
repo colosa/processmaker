@@ -88,6 +88,10 @@ function _fix_display_position_float(&$css_state) {
 }
 
 function &create_pdf_box(&$root, &$pipeline) {
+  if ( !(@function_exists($root->node_type)) ) {
+    throw new Exception("Pdf not created", 1);
+  }
+
   switch ($root->node_type()) {
   case XML_DOCUMENT_NODE:
     // TODO: some magic from traverse_dom_tree

@@ -16,7 +16,7 @@ class TreeBuilder {
     // Second - object-oriented interface
     // Third - pure PHP XML parser
     if (function_exists('domxml_open_mem')) { return domxml_open_mem($xmlstring); };
-    if (class_exists('DOMDocument')) { return DOMTree::from_DOMDocument(DOMDocument::loadXML($xmlstring)); };
+    if (class_exists('DOMDocument')) { return @DOMTree::from_DOMDocument(DOMDocument::loadXML($xmlstring)); };
     if (file_exists(HTML2PS_DIR.'/classes/include.php')) {
       require_once(HTML2PS_DIR.'classes/include.php');
       import('org.active-link.xml.XML');

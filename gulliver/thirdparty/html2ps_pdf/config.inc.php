@@ -137,7 +137,9 @@ define('HTML2PS_VERSION_MINOR', 0);
 define('HTML2PS_SUBVERSON', 16);
 
 define('MAX_UNPENALIZED_FREE_FRACTION', 0.25);
-define('MAX_FREE_FRACTION',             0.5);
+if (!defined('MAX_FREE_FRACTION')) {
+    define('MAX_FREE_FRACTION', 0.5);
+};
 define('MAX_PAGE_BREAK_HEIGHT_PENALTY',  10000);
 define('MAX_PAGE_BREAK_PENALTY',       1000000);
 define('FORCED_PAGE_BREAK_BONUS',     -1000000);
