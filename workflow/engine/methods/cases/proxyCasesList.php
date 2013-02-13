@@ -106,7 +106,7 @@ try {
             $dateTo,
             $callback,
             $dir,
-            $sort,
+            (strpos($sort, ".") !== false)? $sort : "APP_CACHE_VIEW." . $sort,
             $category
         );
 

@@ -154,7 +154,26 @@ class Applications
         $Criteria->addAsColumn( 'USR_LASTNAME', 'CU.USR_LASTNAME' );
         $Criteria->addAsColumn( 'USR_USERNAME', 'CU.USR_USERNAME' );
 
-        // Fix for previous user
+        //Current delegation
+        $Criteria->addAlias("APPCVCR", AppCacheViewPeer::TABLE_NAME);
+        $Criteria->addAlias("USRCR", UsersPeer::TABLE_NAME);
+
+        $arrayCondition = array();
+        $arrayCondition[] = array(AppCacheViewPeer::APP_UID, "APPCVCR.APP_UID");
+        $arrayCondition[] = array("APPCVCR.DEL_LAST_INDEX", 1);
+        $Criteria->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $arrayCondition = array();
+        $arrayCondition[] = array("APPCVCR.USR_UID", "USRCR.USR_UID");
+        $Criteria->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $Criteria->addAsColumn("APPCVCR_APP_TAS_TITLE", "APPCVCR.APP_TAS_TITLE");
+        $Criteria->addAsColumn("USRCR_USR_UID", "USRCR.USR_UID");
+        $Criteria->addAsColumn("USRCR_USR_FIRSTNAME", "USRCR.USR_FIRSTNAME");
+        $Criteria->addAsColumn("USRCR_USR_LASTNAME", "USRCR.USR_LASTNAME");
+        $Criteria->addAsColumn("USRCR_USR_USERNAME", "USRCR.USR_USERNAME");
+
+        //Previous user
         if (($action == "todo" || $action == "selfservice" || $action == "unassigned" || $action == "paused" || $action == "to_revise" || $action == "sent") || ($status == "TO_DO" || $status == "DRAFT" || $status == "PAUSED" || $status == "CANCELLED" || $status == "COMPLETED")) {
             $Criteria->addAlias( 'PU', 'USERS' );
             $Criteria->addJoin( AppCacheViewPeer::PREVIOUS_USR_UID, 'PU.USR_UID', Criteria::LEFT_JOIN );
@@ -397,7 +416,6 @@ class Applications
         while ($aRow = $oDataset->getRow()) {
             //$aRow = $oAppCache->replaceRowUserData($aRow);
 
-
             /*
              * For participated cases, we want the last step in the case, not only the last step this user participated. To do that we get every case information again for the last step. (This could be solved by a subquery, but Propel might not support it and subqueries can be slower for larger
              * datasets).
@@ -421,8 +439,21 @@ class Applications
              $maxDataset->close();
               }*/
 
+            //Current delegation
+            if ($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") {
+                //Current task
+                $aRow["APP_TAS_TITLE"] = $aRow["APPCVCR_APP_TAS_TITLE"];
+
+                //Current user
+                $aRow["USR_UID"] = $aRow["USRCR_USR_UID"];
+                $aRow["USR_FIRSTNAME"] = $aRow["USRCR_USR_FIRSTNAME"];
+                $aRow["USR_LASTNAME"] = $aRow["USRCR_USR_LASTNAME"];
+                $aRow["USR_USERNAME"] = $aRow["USRCR_USR_USERNAME"];
+            }
+
+            //Unassigned user
             if (! isset( $aRow['APP_CURRENT_USER'] )) {
-                $aRow['APP_CURRENT_USER'] = "[Unassigned]";
+                $aRow['APP_CURRENT_USER'] = "[" . strtoupper(G::LoadTranslation("ID_UNASSIGNED")) . "]";
             }
 
             // replacing the status data with their respective translation

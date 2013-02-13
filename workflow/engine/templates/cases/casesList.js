@@ -518,6 +518,8 @@ Ext.onReady ( function() {
     if( c.id == 'unpauseLink')                  c.renderer = unpauseLink;
     if( c.dataIndex == 'CASE_SUMMARY')          c.renderer = renderSummary;
     if( c.dataIndex == 'CASE_NOTES_COUNT')      c.renderer = renderNote;
+
+    //Format the name if is disabled solr, otherwise show without format
     if (solrEnabled == 0) {
         if( c.dataIndex == 'APP_DEL_PREVIOUS_USER') c.renderer = previous_full_name;
         if( c.dataIndex == 'APP_CURRENT_USER')      c.renderer = full_name;
@@ -1114,7 +1116,7 @@ Ext.onReady ( function() {
   var btnSearch = new Ext.Button ({
     text: _('ID_SEARCH'),
     iconCls: 'button_menu_ext ss_sprite ss_page_find',
-    //cls: 'x-form-toolbar-standardButton', 
+    //cls: 'x-form-toolbar-standardButton',
     handler: doSearch
   });
 
@@ -1122,7 +1124,7 @@ Ext.onReady ( function() {
     //var viewText = Ext.getCmp('casesGrid').getView();
     viewText.emptyText = _('ID_NO_RECORDS_FOUND');
     //Ext.getCmp('casesGrid').getView().refresh();
-    
+
     searchText = textSearch.getValue();
     storeCases.setBaseParam( 'search', searchText);
     storeCases.load({params:{ start : 0 , limit : pageSize }});

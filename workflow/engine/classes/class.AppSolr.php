@@ -816,9 +816,9 @@ class AppSolr
                     $localDate = date( 'Y-m-d H:i:s', strtotime( $solrdate ) );
                     $aRow['APP_CREATE_DATE'] = $localDate;
 
-                    $solrdate = $data["DEL_LAST_UPDATE_DATE"];
-                    $localDate = date( 'Y-m-d H:i:s', strtotime( $solrdate ) );
-                    $aRow['APP_UPDATE_DATE'] = $localDate;
+                    //$solrdate = $data["DEL_LAST_UPDATE_DATE"];
+                    //$localDate = date( 'Y-m-d H:i:s', strtotime( $solrdate ) );
+                    //$aRow['APP_UPDATE_DATE'] = $localDate;
 
                     // get delegation data from DB
                     //filter data from db
@@ -839,7 +839,7 @@ class AppSolr
 
 
                     $aRow['APP_FINISH_DATE'] = null;
-                    $aRow['APP_CURRENT_USER'] = $row['USR_NAME'] . " " . $row['USR_LAST'];
+                    $aRow["APP_CURRENT_USER"] = (!empty($row["USR_NAME"]) || !empty($row["USR_LAST"]))? $row["USR_NAME"] . " " . $row["USR_LAST"] : "[" . strtoupper(G::LoadTranslation("ID_UNASSIGNED")) . "]";
                     $aRow['APP_DEL_PREVIOUS_USER'] = $row['USR_PREV_NAME'] . " " . $row['USR_PREV_LAST'];
                     $aRow['APP_OVERDUE_PERCENTAGE'] = $row['APP_OVERDUE_PERCENTAGE'];
                     $aRow['APP_TAS_TITLE'] = $row['APP_TAS_TITLE'];
@@ -864,6 +864,8 @@ class AppSolr
                     if (isset($aRow["APP_STATUS"])) {
                         $aRow["APP_STATUS"] = G::LoadTranslation("ID_" . $aRow["APP_STATUS"]);
                     }
+
+                    $aRow["APP_UPDATE_DATE"] = $row["APP_UPDATE_DATE"];
 
                     $rows[] = $aRow;
                 }
@@ -951,6 +953,8 @@ class AppSolr
      */
     public function getListApplicationDelegationData($arrayAppUid, $action, $appStatus)
     {
+        $appCacheView = new AppCacheView();
+
         $c = new Criteria();
 
         $c->addSelectColumn( AppDelegationPeer::APP_UID );
@@ -978,6 +982,7 @@ class AppSolr
         $c->addSelectColumn( AppDelegationPeer::DEL_TASK_DUE_DATE );
         $c->addSelectColumn( AppDelegationPeer::DEL_THREAD_STATUS );
         $c->addSelectColumn( AppDelegationPeer::TAS_UID );
+        $c->addSelectColumn(ApplicationPeer::APP_UPDATE_DATE);
 
         $c->addAlias("u", UsersPeer::TABLE_NAME);
         $c->addAlias("uprev", UsersPeer::TABLE_NAME);
@@ -1011,6 +1016,34 @@ class AppSolr
         $arrayCondition[] = array(AppDelegationPeer::DEL_THREAD, "at.APP_THREAD_INDEX");
         $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
+        //Current delegation
+        $c->addAlias("APPDEL", AppDelegationPeer::TABLE_NAME);
+        $c->addAlias("USRCR", UsersPeer::TABLE_NAME);
+
+        $arrayCondition = array();
+        $arrayCondition[] = array(AppDelegationPeer::APP_UID, "APPDEL.APP_UID");
+        $arrayCondition[] = array("APPDEL.DEL_LAST_INDEX", 1);
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $arrayCondition = array();
+        $arrayCondition[] = array("APPDEL.USR_UID", "USRCR.USR_UID");
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $c->addAsColumn("USRCR_USR_UID", "USRCR.USR_UID");
+        $c->addAsColumn("USRCR_USR_FIRSTNAME", "USRCR.USR_FIRSTNAME");
+        $c->addAsColumn("USRCR_USR_LASTNAME", "USRCR.USR_LASTNAME");
+        $c->addAsColumn("USRCR_USR_USERNAME", "USRCR.USR_USERNAME");
+
+        $c->addAlias("CONTASKCR", ContentPeer::TABLE_NAME);
+
+        $arrayCondition = array();
+        $arrayCondition[] = array("APPDEL.TAS_UID", "CONTASKCR.CON_ID");
+        $arrayCondition[] = array("CONTASKCR.CON_CATEGORY", DBAdapter::getStringDelimiter() . "TAS_TITLE" . DBAdapter::getStringDelimiter());
+        $arrayCondition[] = array("CONTASKCR.CON_LANG", DBAdapter::getStringDelimiter() . "en" . DBAdapter::getStringDelimiter());
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $c->addAsColumn("CONTASKCR_APP_TAS_TITLE", "CONTASKCR.CON_VALUE");
+
         $c->add(AppDelegationPeer::APP_UID, $arrayAppUid, Criteria::IN);
         //$c->add (AppDelegationPeer::DEL_INDEX, $delIndex);
 
@@ -1021,8 +1054,6 @@ class AppSolr
                 }
                 break;
             default:
-                $appCacheView = new AppCacheView();
-
                 //Paused
                 $sqlAppDelay = $appCacheView->getAppDelaySql(AppDelegationPeer::APP_UID, AppDelegationPeer::DEL_INDEX);
 
@@ -1099,7 +1130,19 @@ class AppSolr
 
         $appDataRows = array ();
         while (is_array( $row )) {
+            //Current delegation
+            if ($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") {
+                //Current task
+                $row["APP_TAS_TITLE"] = $row["CONTASKCR_APP_TAS_TITLE"];
+
+                //Current user
+                $row["USR_NAME"] = $row["USRCR_USR_FIRSTNAME"];
+                $row["USR_LAST"] = $row["USRCR_USR_LASTNAME"];
+            }
+
+            //Set data
             $appDataRows[] = $row;
+
             $rs->next();
             $row = $rs->getRow();
         }
