@@ -65,11 +65,11 @@ if (file_exists( $realPath )) {
 
 if (! $sw_file_exists) {
 
-$oPluginRegistry = & PMPluginRegistry::getSingleton();
+    $oPluginRegistry = & PMPluginRegistry::getSingleton();
     if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT )) {
-        $error_message = "'" . $info['basename'] . $ver . '.' . $ext . "' " . G::LoadTranslation( 'ID_ERROR_STREAMING_FILE' );
+        $error_message = G::LoadTranslation( 'ID_ERROR_FILE_NOT_EXIST', SYS_LANG, array('filename' => $info['basename'] . $ver . '.' . $ext) ) . ' ' . G::LoadTranslation('ID_CONTACT_ADMIN');
     } else {
-        $error_message = "'" . $info['basename'] . $ver . '.' . $ext . "' " . G::LoadTranslation( 'ID_ERROR_FILE_NOT_EXIST' );
+        $error_message = "'" . $info['basename'] . $ver . '.' . $ext . "' " . G::LoadTranslation( 'ID_ERROR_STREAMING_FILE' );
     }
 
     if ((isset( $_POST['request'] )) && ($_POST['request'] == true)) {

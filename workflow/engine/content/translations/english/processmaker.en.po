@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-230-gf9022a7\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-244-gf4b8120\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-02-13 12:52:08\n"
+"PO-Revision-Date: 2013-02-13 19:29:57\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12492,6 +12492,12 @@ msgstr "TRUE"
 #: LABEL/ID_FALSE
 msgid "FALSE"
 msgstr "FALSE"
+
+# TRANSLATION
+# LABEL/ID_ERROR_FILE_NOT_EXIST
+#: LABEL/ID_ERROR_FILE_NOT_EXIST
+msgid "The file '{filename}' does not exist, possibly the system failed to generate the file or the file was not moved correctly if the process is migrated from another server."
+msgstr "The file '{filename}' does not exist, possibly the system failed to generate the file or the file was not moved correctly if the process is migrated from another server."
 
 # TRANSLATION
 # LABEL/ID_DISPLAY_PROCESSES
