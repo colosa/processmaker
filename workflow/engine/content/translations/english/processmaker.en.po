@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-223-gcdc0cdf\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-230-gf9022a7\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-02-08 13:33:52\n"
+"PO-Revision-Date: 2013-02-13 12:52:08\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -29456,8 +29456,8 @@ msgstr "Role Title"
 # setup/wsrTaskCase.xml?guid
 # setup/wsrTaskCase.xml
 #: text - guid
-msgid "[setup/wsrTaskCase.xml?guid] Del Index"
-msgstr "Del Index"
+msgid "Task Uid"
+msgstr "Task Uid"
 
 # setup/wsrTaskCase.xml?name
 # setup/wsrTaskCase.xml
