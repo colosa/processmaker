@@ -2,7 +2,7 @@
 <dynaForm>
 
 <guid type="text" colWidth="200" align="left" titleAlign="left">
-  <en>Del Index</en>
+  <en>Task Uid</en>
 </guid>
 
 <name type="text" colWidth="280" align="left" titleAlign="left">
@@ -13,4 +13,4 @@
   <en>Delegate Index</en>
 </delegate>
 
-</dynaForm> 
+</dynaForm>

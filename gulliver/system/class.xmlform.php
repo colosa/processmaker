@@ -5123,8 +5123,10 @@ class XmlForm
 
         $newVersion = false;
         if ($forceParse || ((! file_exists( $this->parsedFile )) || (filemtime( $filename ) > filemtime( $this->parsedFile )) || (filemtime( __FILE__ ) > filemtime( $this->parsedFile ))) || (! file_exists( $this->scriptFile )) || (filemtime( $filename ) > filemtime( $this->scriptFile ))) {
-            foreach (glob( $filesToDelete ) as $fileToDelete) {
-                @unlink( $fileToDelete );
+            if (glob( $filesToDelete )) {
+                foreach (glob( $filesToDelete ) as $fileToDelete) {
+                    @unlink( $fileToDelete );
+                }
             }
             $this->tree = new Xml_Document();
             $this->tree->parseXmlFile( $filename );
