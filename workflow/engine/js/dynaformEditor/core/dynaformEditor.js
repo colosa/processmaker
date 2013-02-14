@@ -374,10 +374,13 @@ var dynaformEditor={
   },
   saveHtmlCode:function()
   {
-    var htmlCode = getField("HTML");
+    //var htmlCode = getField("HTML");
+    var contenido = document.getElementById("form[HTML]_ifr");
+    var htmlCode = contenido.contentWindow.document.body.innerHTML;
+
     todoRefreshHtmlCode = htmlCode === null;
     if (todoRefreshHtmlCode) return;
-    var response=this.ajax.set_htmlcode(this.A,htmlCode.value);
+    var response=this.ajax.set_htmlcode(this.A,htmlCode);
     if (response) {
         G.alert(response["*message"],"Error");
         this.responseAction = false;
