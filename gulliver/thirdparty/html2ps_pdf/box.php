@@ -88,11 +88,13 @@ function _fix_display_position_float(&$css_state) {
 }
 
 function &create_pdf_box(&$root, &$pipeline) {
-  if ( !(@function_exists($root->node_type)) ) {
+  if ($root != ''){
+    $valueNodeType = $root->node_type();
+  } else {
     throw new Exception("ID_OUTPUT_NOT_GENERATE", 1);
   }
 
-  switch ($root->node_type()) {
+  switch ($valueNodeType) {
   case XML_DOCUMENT_NODE:
     // TODO: some magic from traverse_dom_tree
     $box =& create_document_box($root, $pipeline);
