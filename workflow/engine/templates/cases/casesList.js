@@ -1077,7 +1077,7 @@ Ext.onReady ( function() {
       valueField : 'USR_UID',
       displayField : 'USR_FULLNAME',
       triggerAction : 'all',
-      emptyText : _('ID_SELECT'),
+      emptyText : _('ID_ALL_USERS'),
       selectOnFocus : true,
       editable : true,
       width: 180,
