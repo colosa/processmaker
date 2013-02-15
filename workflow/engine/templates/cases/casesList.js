@@ -1126,6 +1126,8 @@ Ext.onReady ( function() {
     //Ext.getCmp('casesGrid').getView().refresh();
 
     searchText = textSearch.getValue();
+    storeCases.setBaseParam('dateFrom', dateFrom.getValue());
+    storeCases.setBaseParam('dateTo', dateTo.getValue());
     storeCases.setBaseParam( 'search', searchText);
     storeCases.load({params:{ start : 0 , limit : pageSize }});
   }
@@ -1682,14 +1684,6 @@ Ext.onReady ( function() {
       ' ',
       _('ID_TO'),
       dateTo,
-      new Ext.Button ({
-        text: _('ID_FILTER_BY_DELEGATED_DATE'),
-        handler: function(){
-          storeCases.setBaseParam('dateFrom', dateFrom.getValue());
-          storeCases.setBaseParam('dateTo', dateTo.getValue());
-          storeCases.load({params:{ start : 0 , limit : pageSize }});
-        }
-      }),
       "->",
       '-',
       textSearch,
