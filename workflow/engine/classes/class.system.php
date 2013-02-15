@@ -940,7 +940,7 @@ class System
 
         // filtering no public skins (uxs, simplified)
         foreach ($baseSkins as $i => $skinName) {
-            if (strpos( $skinName, 'simplified' ) !== false || strpos( $skinName, 'uxs' ) !== false) {
+            if (strpos( $skinName, 'simplified' ) !== false || strpos( $skinName, 'uxs' ) !== false || strpos( $skinName, 'uxmodern' ) !== false) {
                 unset( $baseSkins[$i] );
             }
         }
