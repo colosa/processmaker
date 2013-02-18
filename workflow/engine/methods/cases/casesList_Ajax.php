@@ -52,6 +52,7 @@ if ($actionAjax == "userValues") {
             $cUsers->addSelectColumn( UsersPeer::USR_UID );
             $cUsers->addSelectColumn( UsersPeer::USR_FIRSTNAME );
             $cUsers->addSelectColumn( UsersPeer::USR_LASTNAME );
+            $cUsers->add( UsersPeer::USR_STATUS, 'CLOSED', Criteria::NOT_EQUAL );
             $cUsers->addAscendingOrderByColumn( UsersPeer::USR_LASTNAME );
             $oDataset = UsersPeer::doSelectRS( $cUsers );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );

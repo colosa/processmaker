@@ -100,7 +100,11 @@ class PMDashlet extends DashletInstance implements DashletInterface
                 $row['DAS_INS_TITLE'] = (isset( $arrayField['DAS_INS_TITLE'] ) && ! empty( $arrayField['DAS_INS_TITLE'] )) ? $arrayField['DAS_INS_TITLE'] : '';
                 if (! class_exists( $row['DAS_CLASS'] )) {
                     self::setIncludePath();
-                    require_once 'classes' . PATH_SEP . 'class.' . $row['DAS_CLASS'] . '.php';
+                    @include 'classes' . PATH_SEP . 'class.' . $row['DAS_CLASS'] . '.php';
+                    if (! class_exists( $row['DAS_CLASS'] )) {
+                        $dataset->next();
+                        continue;
+                    }
                 }
                 eval( "\$row['DAS_VERSION'] = defined('" . $row['DAS_CLASS'] . "::version') ? " . $row['DAS_CLASS'] . "::version : \$row['DAS_VERSION'];" );
 
@@ -151,18 +155,6 @@ class PMDashlet extends DashletInstance implements DashletInterface
                 $dataset->next();
             }
             return $dashletsInstances;
-        } catch (Exception $error) {
-            throw $error;
-        }
-    }
-
-    public function getDashletsInstancesQuantity ()
-    {
-        try {
-            $criteria = new Criteria( 'workflow' );
-            $criteria->addSelectColumn( '*' );
-            $criteria->addJoin( DashletInstancePeer::DAS_UID, DashletPeer::DAS_UID, Criteria::INNER_JOIN );
-            return DashletInstancePeer::doCount( $criteria );
         } catch (Exception $error) {
             throw $error;
         }

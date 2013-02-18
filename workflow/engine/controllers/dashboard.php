@@ -215,7 +215,7 @@ class Dashboard extends Controller
                 $data->limit = null;
             }
             $result->dashletsInstances = $this->pmDashlet->getDashletsInstances( $data->start, $data->limit );
-            $result->totalDashletsInstances = $this->pmDashlet->getDashletsInstancesQuantity();
+            $result->totalDashletsInstances = count($result->dashletsInstances);
         } catch (Exception $error) {
             $result->status = 'ERROR';
             $result->message = $error->getMessage();
