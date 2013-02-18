@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm type="xmlform" name="cases_schedulerNew" width="70%" enabletemplate="1" mode="edit">
+<dynaForm type="xmlform" name="cases/cases_Scheduler_New" width="70%" enabletemplate="1" mode="edit">
 
 <menuUser type="xmlmenu" xmlfile="cases/cases_Scheduler_NewOptions">
   <en></en>

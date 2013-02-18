@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm type="xmlform" name="cases_schedulerNew" width="500" enabletemplate="1" mode="edit">
+<dynaForm type="xmlform" name="cases/cases_Scheduler_Edit" width="500" enabletemplate="1" mode="edit">
 
 <menuUser type="xmlmenu" xmlfile="cases/cases_Scheduler_NewOptions">
   <en></en>
@@ -254,7 +254,7 @@ WHERE A.PRO_UID='@#PRO_UID' AND A.TAS_START = 'TRUE' ]]>
 <SHOW_HIDE_JS type="javascript"><![CDATA[
 
 // hideAll();
-// hideProperties();
+ hideProperties();
 
 function $_GET(q,s) {
     s = (s) ? s : self.location.search;
@@ -279,6 +279,7 @@ switch (getField('SCH_OPTION').value){
     break;
     case '4':
     getField('SCH_OPTION_VIEW').value = 'One Time Only';
+    break;
     case '5':
     getField('SCH_OPTION_VIEW').value = 'Every';
     break;
@@ -469,7 +470,7 @@ function showSelection(opt) {
                                 contractSubtitle('SELECT_3');
 
                                 document.getElementById('form[SELECT_EVERY]').style.display='none';
-                                document.getElementById('endDateTable').style.display='';
+                                document.getElementById('endDateTable').style.display='none';
                                 document.getElementById('startTime').style.display='';
                                 document.getElementById('everyTime').style.display='none';
                                 break;
