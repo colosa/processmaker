@@ -18,7 +18,10 @@ class newSiteProxy extends HttpProxyController
             $name = trim( $_POST['NW_TITLE'] );
             $inst = new Installer();
             $isset = $inst->isset_site( $name );
-            $new = ((! $isset)) ? true : false;
+            If ($isset == 1) {
+                $this->error = true;
+                die();
+            }
             $user = (isset( $_POST['NW_USERNAME'] )) ? trim( $_POST['NW_USERNAME'] ) : 'admin';
             $pass = (isset( $_POST['NW_PASSWORD'] )) ? $_POST['NW_PASSWORD'] : 'admin';
             $pass1 = (isset( $_POST['NW_PASSWORD2'] )) ? $_POST['NW_PASSWORD2'] : 'admin';
