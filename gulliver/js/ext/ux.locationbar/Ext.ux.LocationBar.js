@@ -116,6 +116,7 @@ Ext.ux.LocationBar = Ext.extend(Ext.Toolbar, {
                 if (node.isLeaf()==false && node.childNodes.length==0){
                     //console.log(node.isLeaf(),node.childNodes.length)
                     this.nodeJustLoaded=node;
+                    this.setNode(node);
                     //this.tree.getLoader().load(node);
                     //this.loadNode(node);
                 }else{
