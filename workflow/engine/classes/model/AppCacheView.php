@@ -904,9 +904,9 @@ class AppCacheView extends BaseAppCacheView
                     }
                 }
             } else {
-                //foreach ($defaultFields as $field) {
-                $oCriteria->addSelectColumn('*');
-                //}
+                foreach (AppCacheViewPeer::getFieldNames(BasePeer::TYPE_FIELDNAME) as $field) {
+                    $oCriteria->addSelectColumn("APP_CACHE_VIEW.$field");
+                }
             }
 
             //add the default and hidden DEL_INIT_DATE
@@ -1146,47 +1146,20 @@ class AppCacheView extends BaseAppCacheView
 
     public function getDefaultFields()
     {
-        return array(
-            'APP_UID',
-            'DEL_INDEX',
-            'APP_NUMBER',
-            'APP_STATUS',
-            'USR_UID',
-            'PREVIOUS_USR_UID',
-            'TAS_UID',
-            'PRO_UID',
-            'DEL_DELEGATE_DATE',
-            'DEL_INIT_DATE',
-            'DEL_TASK_DUE_DATE',
-            'DEL_FINISH_DATE',
-            'DEL_THREAD_STATUS',
-            'APP_THREAD_STATUS',
-            'APP_TITLE',
-            'APP_PRO_TITLE',
-            'APP_TAS_TITLE',
-            'APP_CURRENT_USER',
-            'APP_DEL_PREVIOUS_USER',
-            'DEL_PRIORITY',
-            'DEL_DURATION',
-            'DEL_QUEUE_DURATION',
-            'DEL_DELAY_DURATION',
-            'DEL_STARTED',
-            'DEL_FINISHED',
-            'DEL_DELAYED',
-            'APP_CREATE_DATE',
-            'APP_FINISH_DATE',
-            'APP_UPDATE_DATE',
-            'APP_OVERDUE_PERCENTAGE',
-            'APP_DELAY_UID',
-            'APP_THREAD_INDEX',
-            'APP_DEL_INDEX',
-            'APP_TYPE',
-            'APP_DELEGATION_USER',
-            'APP_ENABLE_ACTION_USER',
-            'APP_ENABLE_ACTION_DATE',
-            'APP_DISABLE_ACTION_USER',
-            'APP_DISABLE_ACTION_DATE',
-            'APP_AUTOMATIC_DISABLED_DATE'
+        return array_merge(
+            AppCacheViewPeer::getFieldNames(BasePeer::TYPE_FIELDNAME),
+            array(
+                "APP_DELAY_UID",
+                "APP_THREAD_INDEX",
+                "APP_DEL_INDEX",
+                "APP_TYPE",
+                "APP_DELEGATION_USER",
+                "APP_ENABLE_ACTION_USER",
+                "APP_ENABLE_ACTION_DATE",
+                "APP_DISABLE_ACTION_USER",
+                "APP_DISABLE_ACTION_DATE",
+                "APP_AUTOMATIC_DISABLED_DATE"
+            )
         );
     }
 

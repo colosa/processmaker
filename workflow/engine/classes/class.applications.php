@@ -155,6 +155,12 @@ class Applications
         $Criteria->addAsColumn( 'USR_USERNAME', 'CU.USR_USERNAME' );
 
         //Current delegation
+        $Criteria->addAsColumn("APPCVCR_APP_TAS_TITLE", "APPCVCR.APP_TAS_TITLE");
+        $Criteria->addAsColumn("USRCR_USR_UID", "USRCR.USR_UID");
+        $Criteria->addAsColumn("USRCR_USR_FIRSTNAME", "USRCR.USR_FIRSTNAME");
+        $Criteria->addAsColumn("USRCR_USR_LASTNAME", "USRCR.USR_LASTNAME");
+        $Criteria->addAsColumn("USRCR_USR_USERNAME", "USRCR.USR_USERNAME");
+
         $Criteria->addAlias("APPCVCR", AppCacheViewPeer::TABLE_NAME);
         $Criteria->addAlias("USRCR", UsersPeer::TABLE_NAME);
 
@@ -166,12 +172,6 @@ class Applications
         $arrayCondition = array();
         $arrayCondition[] = array("APPCVCR.USR_UID", "USRCR.USR_UID");
         $Criteria->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
-
-        $Criteria->addAsColumn("APPCVCR_APP_TAS_TITLE", "APPCVCR.APP_TAS_TITLE");
-        $Criteria->addAsColumn("USRCR_USR_UID", "USRCR.USR_UID");
-        $Criteria->addAsColumn("USRCR_USR_FIRSTNAME", "USRCR.USR_FIRSTNAME");
-        $Criteria->addAsColumn("USRCR_USR_LASTNAME", "USRCR.USR_LASTNAME");
-        $Criteria->addAsColumn("USRCR_USR_USERNAME", "USRCR.USR_USERNAME");
 
         //Previous user
         if (($action == "todo" || $action == "selfservice" || $action == "unassigned" || $action == "paused" || $action == "to_revise" || $action == "sent") || ($status == "TO_DO" || $status == "DRAFT" || $status == "PAUSED" || $status == "CANCELLED" || $status == "COMPLETED")) {
@@ -440,7 +440,7 @@ class Applications
               }*/
 
             //Current delegation
-            if ($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") {
+            if (($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") && ($status != "TO_DO")) {
                 //Current task
                 $aRow["APP_TAS_TITLE"] = $aRow["APPCVCR_APP_TAS_TITLE"];
 

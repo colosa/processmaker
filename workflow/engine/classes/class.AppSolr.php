@@ -744,7 +744,7 @@ class AppSolr
             }
 
             // complete the missing data to display it in the grid.
-            $delIndexes = array (); //store all the delegation indexes
+            //$delIndexes = array (); //store all the delegation indexes
             foreach ($solrQueryResult->aaData as $i => $data) {
                 //initialize array
                 $delIndexes = array ();
@@ -801,11 +801,14 @@ class AppSolr
                 //Remove duplicated
                 $delIndexes = array_unique($delIndexes);
 
-                //Gets the last DEL_INDEX
-                sort($delIndexes);
-                $delIndexAux = array_pop($delIndexes);
+                //Current delegation
+                if (($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") && ($status != "TO_DO")) {
+                    //Gets the last DEL_INDEX
+                    sort($delIndexes);
+                    $delIndexAux = array_pop($delIndexes);
 
-                $delIndexes = array($delIndexAux);
+                    $delIndexes = array($delIndexAux);
+                }
 
                 //Set register
                 foreach ($delIndexes as $delIndex) {
@@ -1017,32 +1020,32 @@ class AppSolr
         $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
         //Current delegation
-        $c->addAlias("APPDEL", AppDelegationPeer::TABLE_NAME);
-        $c->addAlias("USRCR", UsersPeer::TABLE_NAME);
-
-        $arrayCondition = array();
-        $arrayCondition[] = array(AppDelegationPeer::APP_UID, "APPDEL.APP_UID");
-        $arrayCondition[] = array("APPDEL.DEL_LAST_INDEX", 1);
-        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
-
-        $arrayCondition = array();
-        $arrayCondition[] = array("APPDEL.USR_UID", "USRCR.USR_UID");
-        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
-
         $c->addAsColumn("USRCR_USR_UID", "USRCR.USR_UID");
         $c->addAsColumn("USRCR_USR_FIRSTNAME", "USRCR.USR_FIRSTNAME");
         $c->addAsColumn("USRCR_USR_LASTNAME", "USRCR.USR_LASTNAME");
         $c->addAsColumn("USRCR_USR_USERNAME", "USRCR.USR_USERNAME");
 
-        $c->addAlias("CONTASKCR", ContentPeer::TABLE_NAME);
+        $c->addAlias("APPDELCR", AppDelegationPeer::TABLE_NAME);
+        $c->addAlias("USRCR", UsersPeer::TABLE_NAME);
 
         $arrayCondition = array();
-        $arrayCondition[] = array("APPDEL.TAS_UID", "CONTASKCR.CON_ID");
-        $arrayCondition[] = array("CONTASKCR.CON_CATEGORY", DBAdapter::getStringDelimiter() . "TAS_TITLE" . DBAdapter::getStringDelimiter());
-        $arrayCondition[] = array("CONTASKCR.CON_LANG", DBAdapter::getStringDelimiter() . "en" . DBAdapter::getStringDelimiter());
+        $arrayCondition[] = array(AppDelegationPeer::APP_UID, "APPDELCR.APP_UID");
+        $arrayCondition[] = array("APPDELCR.DEL_LAST_INDEX", 1);
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+
+        $arrayCondition = array();
+        $arrayCondition[] = array("APPDELCR.USR_UID", "USRCR.USR_UID");
         $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
         $c->addAsColumn("CONTASKCR_APP_TAS_TITLE", "CONTASKCR.CON_VALUE");
+
+        $c->addAlias("CONTASKCR", ContentPeer::TABLE_NAME);
+
+        $arrayCondition = array();
+        $arrayCondition[] = array("APPDELCR.TAS_UID", "CONTASKCR.CON_ID");
+        $arrayCondition[] = array("CONTASKCR.CON_CATEGORY", DBAdapter::getStringDelimiter() . "TAS_TITLE" . DBAdapter::getStringDelimiter());
+        $arrayCondition[] = array("CONTASKCR.CON_LANG", DBAdapter::getStringDelimiter() . "en" . DBAdapter::getStringDelimiter());
+        $c->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
         $c->add(AppDelegationPeer::APP_UID, $arrayAppUid, Criteria::IN);
         //$c->add (AppDelegationPeer::DEL_INDEX, $delIndex);
@@ -1131,7 +1134,7 @@ class AppSolr
         $appDataRows = array ();
         while (is_array( $row )) {
             //Current delegation
-            if ($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") {
+            if (($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") && ($appStatus != "TO_DO")) {
                 //Current task
                 $row["APP_TAS_TITLE"] = $row["CONTASKCR_APP_TAS_TITLE"];
 
