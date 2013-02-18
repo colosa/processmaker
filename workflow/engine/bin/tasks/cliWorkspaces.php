@@ -380,7 +380,7 @@ function run_workspace_backup($args, $opts) {
     $filename = PATH_DATA . "backups/$filename";
   }
   CLI::logging("Backing up to $filename\n");
-  
+
   $filesize = array_key_exists("filesize", $opts) ? $opts['filesize'] : -1;
   if($filesize >= 0)
   {
@@ -414,6 +414,9 @@ function run_workspace_backup($args, $opts) {
 
 function run_workspace_restore($args, $opts) {
   $filename = $args[0];
+
+  G::verifyPath(PATH_DATA . 'upgrade', true);
+
   if (strpos($filename, "/") === false && strpos($filename, '\\') === false) {
     $filename = PATH_DATA . "backups/$filename";
     if (!file_exists($filename) && substr_compare($filename, ".tar", -4, 4, true) != 0)
