@@ -509,16 +509,23 @@ function handleCallback(requestParams, node) {
         if( json.success ) {
           if( json.success == "success"){
             statusBarMessage( json.message, false, true );
+            if (options.params.action == 'rename') {
+              node = dirTree.getSelectionModel().getSelectedNode();  
+            }
             try {
-              if( dropEvent) {
+              if( typeof(dropEvent) != 'undefined' ) {
                 dropEvent.target.parentNode.reload();
                 dropEvent = null;
               }
-              if( node ) {
-                if( options.params.action == 'delete' || options.params.action == 'rename' ) {
+              if( typeof(node) != 'undefined' ) {
+                if( options.params.action == 'delete' ) {
                   node.parentNode.select();
+                  node.parentNode.reload();
                 }
-                node.parentNode.reload();
+                if( options.params.action == 'rename' ) {
+                  node.reload();
+                  node.select();
+                }
               } else {
                 datastore.reload();
               }
