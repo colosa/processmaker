@@ -29,6 +29,10 @@
 /* Includes */
 G::LoadClass( 'case' );
 
+if (!is_array($_POST['form'])) {
+    $_POST['form'] = array();
+}
+
 //load the variables
 $oCase = new Cases();
 $oCase->thisIsTheCurrentUser( $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['USER_LOGGED'], 'REDIRECT', 'casesListExtJs' );

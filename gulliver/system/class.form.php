@@ -610,6 +610,9 @@ class Form extends XmlForm
             if (in_array( $dataFieldName, $grids )) {
                 foreach ($dataField as $indexGrid => $dataGrid) {
                     foreach ($dataGrid as $fieldGridName => $fieldGridValue) {
+                        if (!isset($requiredFieldsGrids[$dataFieldName])) {
+                            $requiredFieldsGrids[$dataFieldName] = array();
+                        }
                         if (! is_array( $requiredFieldsGrids[$dataFieldName] )) {
                             $requiredFieldsGrids[$dataFieldName] = array ();
                         }

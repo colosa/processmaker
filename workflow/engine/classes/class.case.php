@@ -897,7 +897,7 @@ class Cases
                     }
                 }
             } else {
-                $aReturn[$mKey] = $aArray2[$mKey];
+                $aReturn[$mKey] = isset($aArray2[$mKey]) ? $aArray2[$mKey] : null;
             }
         }
         return $aReturn;
