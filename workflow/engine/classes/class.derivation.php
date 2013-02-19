@@ -84,6 +84,9 @@ class Derivation
         $taskInfo = array ();
 
         $oUser = new Users();
+        if (!class_exists('Cases')) {
+            G::LoadClass('case');
+        }
         $this->case = new Cases();
         // 1. there is no rule
         if (is_null( $aDerivation['ROU_NEXT_TASK'] )) {

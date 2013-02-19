@@ -2395,7 +2395,7 @@ function PMFRedirectToStep ($sApplicationUID, $iDelegation, $sStepType, $sStepUi
  * @return array | $array | List of users | Return a list of users
  *
  */
-function PMFGetNextAssignedUser ($application, $task)
+function PMFGetNextAssignedUser ($application, $task, $delIndex = null, $userUid = null)
 {
 
     require_once 'classes/model/AppDelegation.php';
@@ -2409,7 +2409,14 @@ function PMFGetNextAssignedUser ($application, $task)
     $TaskFields = $oTask->load( $task );
     $typeTask = $TaskFields['TAS_ASSIGN_TYPE'];
 
-    if ($typeTask == 'BALANCED') {
+    $g = new G();
+
+    $g->sessionVarSave();
+
+    $_SESSION['INDEX'] = (!is_null($delIndex) ? $delIndex : (isset($_SESSION['INDEX']) ? $_SESSION['INDEX'] : null));
+    $_SESSION['USER_LOGGED'] = (!is_null($userUid) ? $userUid : (isset($_SESSION['USER_LOGGED']) ? $_SESSION['USER_LOGGED'] : null));
+
+    if ($typeTask == 'BALANCED' && !is_null($_SESSION['INDEX']) && !is_null($_SESSION['USER_LOGGED'])) {
 
         G::LoadClass( 'derivation' );
         $oDerivation = new Derivation();
@@ -2423,6 +2430,8 @@ function PMFGetNextAssignedUser ($application, $task)
             $aUsers[] = $aUser;
         }
 
+        $g->sessionVarRestore();
+
         if (count( $aUsers ) == 1) {
             return $aUser;
         } else {
@@ -2430,6 +2439,7 @@ function PMFGetNextAssignedUser ($application, $task)
         }
 
     } else {
+        $g->sessionVarRestore();
         return false;
     }
 }
