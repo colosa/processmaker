@@ -85,6 +85,10 @@ class Main extends Controller
         $this->render();
     }
 
+    function screamFileUpgrades () {
+        G::streamFile( PATH_DATA . 'log/upgrades.log', true );
+    }
+
     function getSystemInfo ()
     {
         $this->setResponseType( 'json' );
@@ -735,6 +739,13 @@ class Main extends Controller
         $ee = class_exists( 'pmLicenseManager' ) ? " - Enterprise Edition" : '';
         $properties[] = array ('ProcessMaker Ver.',System::getVersion() . $ee,$pmSection
         );
+
+        if (file_exists(PATH_DATA. 'log/upgrades.log')) {
+            $properties[] = array ('Upgrades/Patches', '<a href="#" onclick="showUpgradedLogs(); return false;">View log</a>' ,$pmSection);
+        } else {
+            $properties[] = array ('Upgrades/Patches', 'Never upgraded' ,$pmSection);
+        }
+
         $properties[] = array ('Operating System',$redhat,$sysSection
         );
         $properties[] = array ('Time Zone',(defined( 'TIME_ZONE' )) ? TIME_ZONE : "Unknown",$sysSection
