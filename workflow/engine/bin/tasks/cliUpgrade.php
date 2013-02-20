@@ -125,6 +125,32 @@ function run_upgrade($command, $args)
     } else {
         CLI::logging("Upgrade successful\n");
     }
+
+    // SAVE Upgrades/Patches
+    $arrayPatch = glob(PATH_TRUNK . 'patch-*');
+
+    if ($arrayPatch) {
+        foreach ($arrayPatch as $value) {
+            if (file_exists($value)) {
+                // copy content the patch
+                $names = pathinfo($value);
+                $nameFile = $names['basename'];
+
+                $contentFile = file_get_contents($value);
+                $contentFile = preg_replace("[\n|\r|\n\r]", '', $contentFile);
+                CLI::logging($contentFile . ' installed (' . $nameFile . ')', PATH_DATA . 'log/upgrades.log');
+
+                // move file of patch
+                $newFile = PATH_DATA . $nameFile;
+                G::rm_dir($newFile);
+                copy($value, $newFile);
+                G::rm_dir($value);
+            }
+        }
+    } else {
+        CLI::logging('ProcessMaker ' . System::getVersion(). ' installed', PATH_DATA . 'log/upgrades.log');
+    }
+
     //setting flag to false
     $flag = G::isPMUnderUpdating(0);
 }
