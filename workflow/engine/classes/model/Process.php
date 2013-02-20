@@ -467,6 +467,7 @@ class Process extends BaseProcess
         $this->setProTriReassigned( isset( $aData['PRO_TRI_REASSIGNED'] ) ? $aData['PRO_TRI_REASSIGNED'] : '' );
         $this->setProShowDelegate( $aData['PRO_SHOW_DELEGATE'] );
         $this->setProShowDynaform( $aData['PRO_SHOW_DYNAFORM'] );
+        $this->setProDerivationScreenTpl($aData['PRO_DERIVATION_SCREEN_TPL']);
 
         // validate if the category exists
         $criteria = new Criteria( 'workflow' );
