@@ -784,7 +784,7 @@ class Main extends Controller
 
         $properties[] = array ( G::LoadTranslation('ID_SERVER_PROTOCOL') ,getenv( 'SERVER_PROTOCOL' ),$sysSection
         );
-        $properties[] = array ( G::LoadTranslation('ID_SERVER_PORT') ,getenv( 'SERVER_PORT' ),$properties
+        $properties[] = array ( G::LoadTranslation('ID_SERVER_PORT') ,getenv( 'SERVER_PORT' ),$sysSection
         );
         //$sysSection[] = array('Remote Host', getenv ('REMOTE_HOST'), $sysSection);
         $properties[] = array ( G::LoadTranslation('ID_SERVER_NAME') , getenv( 'SERVER_ADDR' ),$sysSection
