@@ -5583,6 +5583,32 @@ SELECT 'LABEL','ID_FALSE','en','FALSE','2012-06-06'
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
+SELECT 'LABEL','ID_USER_BROWSER','en','User''s Browser','2013-02-21' 
+  UNION ALL
+SELECT 'LABEL','ID_SERVER_PROTOCOL','en','Server Protocol','2013-02-21' 
+  UNION ALL
+SELECT 'LABEL','ID_SERVER_PORT','en','Server Port','2013-02-21' 
+  UNION ALL
+SELECT 'LABEL','ID_AVAILABLE_DB','en','Available DB Engines','2013-02-21' 
+  UNION ALL
+SELECT 'LABEL','ID_DATABASE_SERVER','en','Data Base Server','2013-02-21' 
+  UNION ALL
+SELECT 'LABEL','ID_DATABASE','en','Data Base','2013-02-21' 
+  UNION ALL
+SELECT 'LABEL','ID_PHP_VERSION','en','PHP Version','2013-02-21' 
+  UNION ALL
+SELECT 'LABEL','ID_WEB_SERVER','en','Web Server','2013-02-20' 
+  UNION ALL
+SELECT 'LABEL','ID_SERVER_IP','en','Server IP Address','2013-02-21' 
+  UNION ALL
+SELECT 'LABEL','ID_OPERATING_SYSTEM','en','Operating System','2013-02-20' 
+  UNION ALL
+SELECT 'LABEL','ID_UPGRADES_PATCHES','en','Upgrades/Patches','2013-02-20' 
+  UNION ALL
+SELECT 'LABEL','ID_UPGRADE_VIEW_LOG','en','View log','2013-02-20' 
+  UNION ALL
+SELECT 'LABEL','ID_UPGRADE_NEVER_UPGRADE','en','Never upgraded','2013-02-20' 
+  UNION ALL
 SELECT 'LABEL','ID_ERROR_FILE_NOT_EXIST','en','The file ''{filename}'' does not exist, possibly the system failed to generate the file or the file was not moved correctly if the process is migrated from another server.','2013-02-13' 
   UNION ALL
 SELECT 'LABEL','ID_DISPLAY_PROCESSES','en','Displaying Processes {0} - {1} of {2}','2013-02-08' 
@@ -5716,7 +5742,9 @@ SELECT 'LABEL','ID_EVENT_CONDITIONAL','en','Event Conditional','2012-08-17'
 SELECT 'LABEL','ID_PMTABLE_INVALID_FIELD_NAME','en','The following fields cannot have these names because the are reserved words "{0}"','2012-09-03' 
   UNION ALL
 SELECT 'LABEL','ID_USER_CASES_NOT_START','en','User can''t start a case because doesn''t have a starting task assigned','2012-09-05' 
-  UNION ALL
+ ;
+INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
+
 SELECT 'LABEL','ID_USERS_HAS_ASSIGNED_CASES','en','The user has assigned cases, Do you like to continue anyway?','2012-09-07' 
   UNION ALL
 SELECT 'LABEL','ID_GRID_PAGE_DISPLAYING_REPORT_PERMISSIONS_MESSAGE','en','Displaying Permissions Simple Reports {0} - {1} of {2}','2012-09-07' 
@@ -5742,9 +5770,7 @@ SELECT 'LABEL','ID_PROXY_HOST','en','Host','2012-09-19'
 SELECT 'LABEL','ID_PROXY_PORT','en','Port','2012-09-19' 
   UNION ALL
 SELECT 'LABEL','ID_PROXY_USER','en','User','2012-09-19' 
- ;
-INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
-
+  UNION ALL
 SELECT 'LABEL','ID_PROXY_PASSWORD','en','Password','2012-09-19' 
   UNION ALL
 SELECT 'LABEL','ID_APP_MSG_BODY','en','Body','2012-09-19' 

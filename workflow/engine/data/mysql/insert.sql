@@ -3503,6 +3503,19 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_FALSE','en','FALSE','2012-06-06') ;
 INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE )  VALUES 
 
+( 'LABEL','ID_USER_BROWSER','en','User''s Browser','2013-02-21') ,
+( 'LABEL','ID_SERVER_PROTOCOL','en','Server Protocol','2013-02-21') ,
+( 'LABEL','ID_SERVER_PORT','en','Server Port','2013-02-21') ,
+( 'LABEL','ID_AVAILABLE_DB','en','Available DB Engines','2013-02-21') ,
+( 'LABEL','ID_DATABASE_SERVER','en','Data Base Server','2013-02-21') ,
+( 'LABEL','ID_DATABASE','en','Data Base','2013-02-21') ,
+( 'LABEL','ID_PHP_VERSION','en','PHP Version','2013-02-21') ,
+( 'LABEL','ID_WEB_SERVER','en','Web Server','2013-02-20') ,
+( 'LABEL','ID_SERVER_IP','en','Server IP Address','2013-02-21') ,
+( 'LABEL','ID_OPERATING_SYSTEM','en','Operating System','2013-02-20') ,
+( 'LABEL','ID_UPGRADES_PATCHES','en','Upgrades/Patches','2013-02-20') ,
+( 'LABEL','ID_UPGRADE_VIEW_LOG','en','View log','2013-02-20') ,
+( 'LABEL','ID_UPGRADE_NEVER_UPGRADE','en','Never upgraded','2013-02-20') ,
 ( 'LABEL','ID_ERROR_FILE_NOT_EXIST','en','The file ''{filename}'' does not exist, possibly the system failed to generate the file or the file was not moved correctly if the process is migrated from another server.','2013-02-13') ,
 ( 'LABEL','ID_DISPLAY_PROCESSES','en','Displaying Processes {0} - {1} of {2}','2013-02-08') ,
 ( 'LABEL','ID_ENTER_SEARCH_CRITERIA','en','Enter a search criteria and press search','2013-01-29') ,
@@ -3569,7 +3582,9 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_EVENT_TIMER','en','Event Timer','2012-08-17') ,
 ( 'LABEL','ID_EVENT_CONDITIONAL','en','Event Conditional','2012-08-17') ,
 ( 'LABEL','ID_PMTABLE_INVALID_FIELD_NAME','en','The following fields cannot have these names because the are reserved words "{0}"','2012-09-03') ,
-( 'LABEL','ID_USER_CASES_NOT_START','en','User can''t start a case because doesn''t have a starting task assigned','2012-09-05') ,
+( 'LABEL','ID_USER_CASES_NOT_START','en','User can''t start a case because doesn''t have a starting task assigned','2012-09-05') ;
+INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE )  VALUES 
+
 ( 'LABEL','ID_USERS_HAS_ASSIGNED_CASES','en','The user has assigned cases, Do you like to continue anyway?','2012-09-07') ,
 ( 'LABEL','ID_GRID_PAGE_DISPLAYING_REPORT_PERMISSIONS_MESSAGE','en','Displaying Permissions Simple Reports {0} - {1} of {2}','2012-09-07') ,
 ( 'LABEL','ID_GRID_PAGE_NO_PERMISSIONS_MESSAGE','en','No Permissions to display','2012-09-07') ,
@@ -3582,9 +3597,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_PROXY_SETTINGS','en','Proxy Settings','2012-09-19') ,
 ( 'LABEL','ID_PROXY_HOST','en','Host','2012-09-19') ,
 ( 'LABEL','ID_PROXY_PORT','en','Port','2012-09-19') ,
-( 'LABEL','ID_PROXY_USER','en','User','2012-09-19') ;
-INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE )  VALUES 
-
+( 'LABEL','ID_PROXY_USER','en','User','2012-09-19') ,
 ( 'LABEL','ID_PROXY_PASSWORD','en','Password','2012-09-19') ,
 ( 'LABEL','ID_APP_MSG_BODY','en','Body','2012-09-19') ,
 ( 'LABEL','ID_CRON_STATUS_INACTIVE','en','Inactive','2012-09-20') ,

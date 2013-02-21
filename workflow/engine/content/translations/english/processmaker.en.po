@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.5-244-gf4b8120\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.8\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-02-13 19:29:57\n"
+"PO-Revision-Date: 2013-02-21 11:23:27\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12494,6 +12494,84 @@ msgid "FALSE"
 msgstr "FALSE"
 
 # TRANSLATION
+# LABEL/ID_USER_BROWSER
+#: LABEL/ID_USER_BROWSER
+msgid "User's Browser"
+msgstr "User's Browser"
+
+# TRANSLATION
+# LABEL/ID_SERVER_PROTOCOL
+#: LABEL/ID_SERVER_PROTOCOL
+msgid "Server Protocol"
+msgstr "Server Protocol"
+
+# TRANSLATION
+# LABEL/ID_SERVER_PORT
+#: LABEL/ID_SERVER_PORT
+msgid "Server Port"
+msgstr "Server Port"
+
+# TRANSLATION
+# LABEL/ID_AVAILABLE_DB
+#: LABEL/ID_AVAILABLE_DB
+msgid "Available DB Engines"
+msgstr "Available DB Engines"
+
+# TRANSLATION
+# LABEL/ID_DATABASE_SERVER
+#: LABEL/ID_DATABASE_SERVER
+msgid "Data Base Server"
+msgstr "Data Base Server"
+
+# TRANSLATION
+# LABEL/ID_DATABASE
+#: LABEL/ID_DATABASE
+msgid "Data Base"
+msgstr "Data Base"
+
+# TRANSLATION
+# LABEL/ID_PHP_VERSION
+#: LABEL/ID_PHP_VERSION
+msgid "PHP Version"
+msgstr "PHP Version"
+
+# TRANSLATION
+# LABEL/ID_WEB_SERVER
+#: LABEL/ID_WEB_SERVER
+msgid "Web Server"
+msgstr "Web Server"
+
+# TRANSLATION
+# LABEL/ID_SERVER_IP
+#: LABEL/ID_SERVER_IP
+msgid "Server IP Address"
+msgstr "Server IP Address"
+
+# TRANSLATION
+# LABEL/ID_OPERATING_SYSTEM
+#: LABEL/ID_OPERATING_SYSTEM
+msgid "Operating System"
+msgstr "Operating System"
+
+# TRANSLATION
+# LABEL/ID_UPGRADES_PATCHES
+#: LABEL/ID_UPGRADES_PATCHES
+msgid "Upgrades/Patches"
+msgstr "Upgrades/Patches"
+
+# TRANSLATION
+# LABEL/ID_UPGRADE_VIEW_LOG
+#: LABEL/ID_UPGRADE_VIEW_LOG
+msgid "View log"
+msgstr "View log"
+
+# TRANSLATION
+# LABEL/ID_UPGRADE_NEVER_UPGRADE
+#: LABEL/ID_UPGRADE_NEVER_UPGRADE
+msgid "Never upgraded"
+msgstr "Never upgraded"
+
+# TRANSLATION
 # LABEL/ID_ERROR_FILE_NOT_EXIST
 #: LABEL/ID_ERROR_FILE_NOT_EXIST
 msgid "The file '{filename}' does not exist, possibly the system failed to generate the file or the file was not moved correctly if the process is migrated from another server."
@@ -22412,7 +22490,7 @@ msgstr "ProcessMaker"
 # login/dbInfo.xml?SYSTEM
 # login/dbInfo.xml
 #: caption - SYSTEM
-msgid "Operating System"
+msgid "[login/dbInfo.xml?SYSTEM] Operating System"
 msgstr "Operating System"
 
 # login/dbInfo.xml?TIME_ZONE
@@ -22424,7 +22502,7 @@ msgstr "Time zone"
 # login/dbInfo.xml?SERVER_SOFTWARE
 # login/dbInfo.xml
 #: caption - SERVER_SOFTWARE
-msgid "Web Server"
+msgid "[login/dbInfo.xml?SERVER_SOFTWARE] Web Server"
 msgstr "Web Server"
 
 # login/dbInfo.xml?SERVER_NAME
@@ -22436,7 +22514,7 @@ msgstr "Server Name"
 # login/dbInfo.xml?SERVER_ADDR
 # login/dbInfo.xml
 #: caption - SERVER_ADDR
-msgid "Server IP Address"
+msgid "[login/dbInfo.xml?SERVER_ADDR] Server IP Address"
 msgstr "Server IP Address"
 
 # login/dbInfo.xml?PHP
@@ -22472,7 +22550,7 @@ msgstr "Available Databases"
 # login/dbInfo.xml?HTTP_USER_AGENT
 # login/dbInfo.xml
 #: caption - HTTP_USER_AGENT
-msgid "User's Browser"
+msgid "[login/dbInfo.xml?HTTP_USER_AGENT] User's Browser"
 msgstr "User's Browser"
 
 # login/dbInfo.xml?IP
