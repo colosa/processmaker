@@ -57,7 +57,7 @@ class IsoCountry extends BaseIsoCountry
         $oCriteria = new Criteria('workflow');
         $oCriteria->addSelectColumn(IsoCountryPeer::IC_UID);
         $oCriteria->addSelectColumn(IsoCountryPeer::IC_NAME);
-        $oCriteria->add(IsoCountryPeer::IC_NAME, $IC_NAME);
+        $oCriteria->add(IsoCountryPeer::IC_NAME, $IC_NAME . '%', Criteria::LIKE);
         $oDataset = IsoCountryPeer::doSelectRS($oCriteria);
         $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $oDataset->next();
