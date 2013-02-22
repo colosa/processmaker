@@ -3255,14 +3255,16 @@ var saveAndRefreshForm = function(oObject) {
  *         refreshed or submited, at least not in the traditional sense.
  **/
 
-var saveForm = function(oObject) {
+var saveForm = function(oObject, actionParameter) {
   if (oObject) {
-    ajax_post(oObject.form.action,oObject.form,'POST');
+    var actionUrl = actionParameter || oObject.form.action.replace('cases_SaveData', 'saveForm');
+    ajax_post(actionUrl, oObject.form, 'POST');
   }
   else {
     var oAux = window.document.getElementsByTagName('form');
     if (oAux.length > 0) {
-      ajax_post(oAux[0].action,oAux[0],'POST');
+      var actionUrl = actionParameter || oAux[0].action.replace('cases_SaveData', 'saveForm');
+      ajax_post(actionUrl, oAux[0], 'POST');
     }
   }
 };
