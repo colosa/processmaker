@@ -958,7 +958,9 @@ var processmap=function(){
         this.parent.dom.setStyle(task.object.elements.derivation,{
           background:""
         });
-        task.derivation={to:[]};
+        if (spec == false && typeof(rec) == 'undefined') {
+          task.derivation={to:[]};
+        }
 
         /* Delete derivation recursive */
         if(rec)
@@ -1556,6 +1558,24 @@ var processmap=function(){
                     this.dropables.derivation.unregister(data.object.dropIndex);
                     this.data.render.deleteDerivation(data.uid, true);
                     this.parent.dom.remove(data.object.elements);
+                    var taskUidDelete = this.data.db.task[data.object.dropIndex].uid;
+                    for (var i= 0; i<(this.data.db.task).length;i++) {
+                      for (var j= 0; j<(this.data.db.task[i]).length;j++) {
+                        this.data.db.task[i] = this.data.db.task[i+1];
+                      }
+                      var j = 0;
+                      var itemDelete = (this.data.db.task[i]).derivation;
+                      while (j < itemDelete.to.length) {
+                        if (itemDelete.to[j].task == taskUidDelete) {
+                          for (var k= j; k<itemDelete.to.length;k++) {
+                            itemDelete.to[k] = itemDelete.to[k+1];
+                          }
+                          (itemDelete.to).splice((itemDelete.to).length - 1,1);
+                        } else {
+                          j++;
+                        }
+                      }
+                    }
                     var r2 = new leimnud.module.rpc.xmlhttp({
                       url: this.options.dataServer,
                       args: "action=deleteTask&data=" + {
@@ -2199,7 +2219,6 @@ var processmap=function(){
     }
   }.expand(this,true);
   this.patternPanel=function(event,index,din){
-
     var options   = this.data.db.task[index];
     var db    = this.data.db, task=db.task[index];
     var derivation  = task.derivation.to;
@@ -2441,15 +2460,19 @@ processmap.prototype={
     /* Hidden processmaker menu-submenu END*/
     /* Change skin fro processmap BEGIN */
     if (this.options.rw === true) {
-      var bd = this.parent.dom.capture("tag.body 0");
-      var sm = this.parent.dom.element("pm_submenu");
-      this.parent.dom.setStyle(bd,{
-        backgroundColor:"buttonface"
-      });
-      this.parent.dom.setStyle(sm,{
-        //height:(sm.offsetHeight-21)
-        height:25
-      });
+      try {
+        var bd = this.parent.dom.capture("tag.body 0");
+        var sm = this.parent.dom.element("pm_submenu");
+        this.parent.dom.setStyle(bd,{
+          backgroundColor:"buttonface"
+        });
+        this.parent.dom.setStyle(sm,{
+          //height:(sm.offsetHeight-21)
+          height:25
+        });
+      } catch(e) {
+        
+      }
     }
 
     /* Change skin fro processmap END */
