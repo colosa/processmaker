@@ -153,12 +153,6 @@ try {
         $_SESSION['USR_USERNAME'] = $usr;
     }
 
-    if (PHP_VERSION < 5.2) {
-        setcookie(session_name(), session_id(), null, '/', '; HttpOnly');
-    } else {
-        setcookie(session_name(), session_id(), null, '/', null, null, true);
-    }
-
     $aUser = $RBAC->userObj->load($_SESSION['USER_LOGGED']);
     $RBAC->loadUserRolePermission($RBAC->sSystem, $_SESSION['USER_LOGGED']);
     //$rol = $RBAC->rolesObj->load($RBAC->aUserInfo['PROCESSMAKER']['ROLE']['ROL_UID']);

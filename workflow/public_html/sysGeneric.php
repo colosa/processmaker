@@ -224,6 +224,12 @@ define( 'PML_UPLOAD_URL', PML_SERVER . '/syspmLibrary/en/green/services/uploadPr
 define( 'PML_DOWNLOAD_URL', PML_SERVER . '/syspmLibrary/en/green/services/download' );
 
 // starting session
+$timelife = ini_get('session.gc_maxlifetime');
+if (is_null($timelife)) {
+    $timelife = 1440;
+}
+ini_set('session.gc_maxlifetime', $timelife);
+ini_set('session.cookie_lifetime', $timelife);
 session_start();
 
 $config = Bootstrap::getSystemConfiguration();
@@ -750,6 +756,11 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
     define( 'SYS_LANG_DIRECTION', $oServerConf->getLanDirection() );
 
     if ((isset( $_SESSION['USER_LOGGED'] )) && (! (isset( $_GET['sid'] )))) {
+        if (PHP_VERSION < 5.2) {
+            setcookie(session_name(), session_id(), time() + $timelife, '/', '; HttpOnly');
+        } else {
+            setcookie(session_name(), session_id(), time() + $timelife, '/', null, false, true);
+        }
         $RBAC->initRBAC();
         //using optimization with memcache, the user data will be in memcache 8 hours, or until session id goes invalid
         $memKey = 'rbacSession' . session_id();
@@ -797,6 +808,11 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
                     $_SESSION['USER_LOGGED'] = $aUser['USR_UID'];
                     $_SESSION['USR_USERNAME'] = $aUser['USR_USERNAME'];
                     $bRedirect = false;
+                    if (PHP_VERSION < 5.2) {
+                        setcookie(session_name(), session_id(), time() + $timelife, '/', '; HttpOnly');
+                    } else {
+                        setcookie(session_name(), session_id(), time() + $timelife, '/', null, false, true);
+                    }
                     $RBAC->initRBAC();
                     $RBAC->loadUserRolePermission( $RBAC->sSystem, $_SESSION['USER_LOGGED'] );
                     $memKey = 'rbacSession' . session_id();
