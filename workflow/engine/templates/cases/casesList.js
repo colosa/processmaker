@@ -1367,9 +1367,9 @@ Ext.onReady ( function() {
             root: 'data',
             fields : [
               {name : 'USR_UID'},
-              {name : 'PRO_USERNAME'},
+              {name : 'USR_USERNAME'},
               {name : 'USR_FIRSTNAME'},
-              {name : 'PRO_LASTNAME'}
+              {name : 'USR_LASTNAME'}
             ]
           })
         });
