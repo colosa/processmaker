@@ -3787,7 +3787,7 @@ class XmlForm_Field_CheckGroup extends XmlForm_Field
         } elseif ($this->mode === 'view') {
             $html = '';
             foreach ($this->options as $optionName => $option) {
-                $html .= '<input class="FormCheck" id="form[' . $this->name . '][' . $optionName . ']" name="form[' . $this->name . '][]" type=\'checkbox\' value="' . $optionName . '"' . (in_array( $optionName, $value ) ? 'checked' : '') . ' disabled><span class="FormCheck"><label for="form[' . $this->name . '][' . $optionName . ']">' . $option . '</label></span></input><br>';
+                $html .= '<input class="FormCheck" id="form[' . $this->name . '][' . $optionName . ']" type=\'checkbox\' value="' . $optionName . '"' . (in_array( $optionName, $value ) ? 'checked' : '') . ' disabled><span class="FormCheck"><label for="form[' . $this->name . '][' . $optionName . ']">' . $option . '</label></span></input><br>';
                 $html .= '<input type="hidden"  id="form[' . $this->name . '][' . $optionName . ']" name="form[' . $this->name . '][]"  value="' . ((in_array( $optionName, $value )) ? $optionName : '') . '">';
             }
             return $html;
