@@ -90,7 +90,7 @@ function getProcessList ()
                     $processInfoChild['myInbox'] = 0;
                     $processInfoChild['totalInbox'] = 0;
                     if (isset( $proData[$processInfoChild['pro_uid']] )) {
-                        $tempTreeChild['otherAttributes'] = array_merge( $processInfoChild, $proData[$processInfoChild['pro_uid']], $calendar->getCalendarFor( $processInfoChild['uid'], $processInfoChild['uid'], $processInfoChild['uid'] ) );
+                        $tempTreeChild['otherAttributes'] = array_merge( $processInfoChild, $proData[$processInfoChild['pro_uid']], $calendar->getCalendarFor( $_SESSION['USER_LOGGED'], $processInfoChild['pro_uid'], $processInfoChild['uid'] ) );
                         $tempTreeChild['otherAttributes']['PRO_TAS_TITLE'] = str_replace( ")", "", str_replace( "(", "", trim( str_replace( $tempTreeChild['otherAttributes']['PRO_TITLE'], "", $tempTreeChild['otherAttributes']["value"] ) ) ) );
                         $tempTreeChild['qtip'] = $tempTreeChild['otherAttributes']['PRO_DESCRIPTION'];
                         //$tempTree['cls']='file';

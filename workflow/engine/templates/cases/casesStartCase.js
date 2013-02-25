@@ -324,7 +324,7 @@ function showDetailsA(selectedNode) {
   if ((selectedNode)&&(selectedNode.attributes.otherAttributes)) {
     otherAttributes = selectedNode.attributes.otherAttributes;
     calendarDays=(otherAttributes.CALENDAR_WORK_DAYS).split("|");
-    calendarObj={};
+    calendarObj={0: false, 1: false, 2: false, 3: false, 4: false, 5: false, 6: false};
 
     for(i=0;i<calendarDays.length;i++){
     calendarObj[calendarDays[i]]=true;
