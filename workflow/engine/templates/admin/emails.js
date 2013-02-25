@@ -1,4 +1,12 @@
 Ext.onReady(function(){
+
+    var emailUrlValidationText = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4}))|((([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))$/i;
+    Ext.apply(Ext.form.VTypes, {
+        emailUrlValidation: function(val, field) {
+            return emailUrlValidationText.test(val);
+        }
+    });
+
   var box = new Ext.form.Checkbox({
     boxLabel: _('ID_ENABLE_EMAIL_NOTIFICATION'),//'Enable Email Notifications',
     name: 'EnableEmailNotifications',
@@ -39,9 +47,11 @@ Ext.onReady(function(){
             {
               Ext.getCmp('Password').setVisible(true);
               Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(true);
+              // Ext.getCmp('AccountFrom').allowBlank = false;
             } else {
               Ext.getCmp('Password').setVisible(false);
               Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
+              // Ext.getCmp('AccountFrom').allowBlank = true;
             }
 
             if(!Ext.getCmp('UseSecureConnection').getValue()) {
@@ -155,9 +165,11 @@ Ext.onReady(function(){
           {
             Ext.getCmp('Password').setVisible(true);
             Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(true);
+            // Ext.getCmp('AccountFrom').allowBlank = false;
           } else {
             Ext.getCmp('Password').setVisible(false);
             Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
+            // Ext.getCmp('AccountFrom').allowBlank = true;
           }
 
           if(!Ext.getCmp('UseSecureConnection').getValue()) {
@@ -271,7 +283,7 @@ Ext.onReady(function(){
         fieldLabel: _('ACCOUNT_FROM'),//'Account From',
         id:'AccountFrom',
         name:'AccountFrom',
-        vtype:'email',
+        vtype:'emailUrlValidation',
         width: 200,
         disabled: true,
         allowBlank: false,
@@ -428,9 +440,11 @@ Ext.onReady(function(){
             {
               Ext.getCmp('Password').setVisible(true);
               Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(true);
+              // Ext.getCmp('AccountFrom').allowBlank = false;
             } else {
               Ext.getCmp('Password').setVisible(false);
               Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
+              // Ext.getCmp('AccountFrom').allowBlank = true;
             }
 
             if(!Ext.getCmp('UseSecureConnection').getValue()) {
@@ -865,16 +879,18 @@ function execTest(step) {
       if (resp.success) {
         img = '/images/dialog-ok-apply.png';
         Ext.getCmp('SaveChanges').enable();
+        colorMsg = 'color:#00FF00';
       }
       else {
         img = '/images/delete.png';
         Ext.getCmp('SaveChanges').disable();
+        colorMsg = 'color:#FF0000';
       }
 
       document.getElementById('rstep'+step).innerHTML = '<img width="13" height="13" border="0" src="'+img+'">';
 
       if(resp.msg) {
-        document.getElementById('result'+step).innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#FF0000;">'+resp.msg+'</span>';
+        document.getElementById('result'+step).innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="' + colorMsg + ';">'+resp.msg+'</span>';
         Ext.getCmp('result'+step).setVisible(true);
       }
 
