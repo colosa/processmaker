@@ -1036,7 +1036,7 @@ function G_Text(form, element, name)
           action = 'move';
           break;
         case 45:
-          if (me.mType == 'currency') {
+          if (me.mType == 'currency' || (me.mType == 'text' && (me.validate == 'Real' || me.validate == 'Int'))) {
             newValue = currentValue.substring(0, currentValue.length).split('');
             for (var numI = 0; newValue.length > numI; numI++) {
               var campVal = newValue[numI];
@@ -1388,6 +1388,17 @@ function G_Text(form, element, name)
       }
 
       if (keyValid){
+        if (me.mask == "" && (me.validate == 'Real' || me.validate == 'Int') && me.mType == 'text') {
+          if (key == '-') {
+            currentValue = me.element.value;
+            if (currentValue.charAt(0) == '-') {
+              currentValue = currentValue.substring(1, currentValue.length);
+              me.element.value = currentValue;
+            } else {
+              me.element.value = '-'+currentValue;
+            }
+          }
+        }
         //APPLY MASK
         if ((me.validate == "Login" || me.validate == "NodeName") && me.mask == "") {
             return true;
