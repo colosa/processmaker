@@ -34,12 +34,6 @@
 //require_once 'classes/model/AppDelay.php';
 //require_once 'classes/model/Process.php';
 //require_once 'classes/model/Task.php';
-G::LoadClass( 'case' );
-
-$action = $_REQUEST['action'];
-unset( $_REQUEST['action'] );
-$ajax = new Ajax();
-$ajax->$action( $_REQUEST );
 
 class Ajax
 {
@@ -828,3 +822,21 @@ class Ajax
     }
 }
 
+$pluginRegistry =& PMPluginRegistry::getSingleton();
+if ($pluginRegistry->existsTrigger(PM_GET_CASES_AJAX_LISTENER)) {
+    $ajax = $pluginRegistry->executeTriggers(PM_GET_CASES_AJAX_LISTENER, null);
+} else {
+    $ajax = new Ajax();
+}
+
+if (!($ajax instanceof Ajax)) {
+    $ajax = new Ajax();
+}
+
+G::LoadClass( 'case' );
+
+$action = $_REQUEST['action'];
+
+unset( $_REQUEST['action'] );
+
+$ajax->$action( $_REQUEST );

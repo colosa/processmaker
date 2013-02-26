@@ -25,20 +25,22 @@
 
 require_once 'class.pluginRegistry.php';
 
-define('G_PLUGIN_CLASS',            1);
-define('PM_CREATE_CASE',            1001);
-define('PM_UPLOAD_DOCUMENT',        1002);
-define('PM_CASE_DOCUMENT_LIST',     1003);
-define('PM_BROWSE_CASE',            1004);
-define('PM_NEW_PROCESS_LIST',       1005);
-define('PM_NEW_PROCESS_SAVE',       1006);
-define('PM_NEW_DYNAFORM_LIST',      1007);
-define('PM_NEW_DYNAFORM_SAVE',      1008);
-define('PM_EXTERNAL_STEP',          1009);
-define('PM_CASE_DOCUMENT_LIST_ARR', 1010);
-define('PM_LOGIN',                  1011);
-define('PM_UPLOAD_DOCUMENT_BEFORE', 1012);
-define('PM_CREATE_NEW_DELEGATION',  1013);
+define('G_PLUGIN_CLASS',             1);
+define('PM_CREATE_CASE',             1001);
+define('PM_UPLOAD_DOCUMENT',         1002);
+define('PM_CASE_DOCUMENT_LIST',      1003);
+define('PM_BROWSE_CASE',             1004);
+define('PM_NEW_PROCESS_LIST',        1005);
+define('PM_NEW_PROCESS_SAVE',        1006);
+define('PM_NEW_DYNAFORM_LIST',       1007);
+define('PM_NEW_DYNAFORM_SAVE',       1008);
+define('PM_EXTERNAL_STEP',           1009);
+define('PM_CASE_DOCUMENT_LIST_ARR',  1010);
+define('PM_LOGIN',                   1011);
+define('PM_UPLOAD_DOCUMENT_BEFORE',  1012);
+define('PM_CREATE_NEW_DELEGATION',   1013);
+define('PM_SINGLE_SIGN_ON',          1014);
+define('PM_GET_CASES_AJAX_LISTENER', 1015);
 
 /**
  * @package workflow.engine.classes
