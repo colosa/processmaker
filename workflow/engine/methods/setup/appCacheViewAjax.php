@@ -34,17 +34,17 @@ switch ($request) {
         //setup the appcacheview object, and the path for the sql files
         $appCache = new AppCacheView();
         $appCache->setPathToAppCacheFiles( PATH_METHODS . 'setup' . PATH_SEP . 'setupSchemas' . PATH_SEP );
-
+				
         $res = $appCache->getMySQLVersion();
-        $result->info[] = array ('name' => 'MySQL Version','value' => $res
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_MYSQL_VERSION' ) ,'value' => $res
         );
 
         $res = $appCache->checkGrantsForUser( false );
         $currentUser = $res['user'];
         $currentUserIsSuper = $res['super'];
-        $result->info[] = array ('name' => 'Current User','value' => $currentUser
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_CURRENT_USER' ) ,'value' => $currentUser
         );
-        $result->info[] = array ('name' => 'Current User has SUPER privilege','value' => $currentUserIsSuper
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_USER_SUPER_PRIVILEGE' ) ,'value' => $currentUserIsSuper
         );
 
         try {
@@ -84,40 +84,40 @@ switch ($request) {
 
         //now check if table APPCACHEVIEW exists, and it have correct number of fields, etc.
         $res = $appCache->checkAppCacheView();
-        $result->info[] = array ('name' => 'Table APP_CACHE_VIEW','value' => $res['found']
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TABLE' ),'value' => $res['found']
         );
 
-        $result->info[] = array ('name' => 'Rows in APP_CACHE_VIEW','value' => $res['count']
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_ROWS' ),'value' => $res['count']
         );
 
         //now check if we have the triggers installed
         //APP_DELEGATION INSERT
         $res = $appCache->triggerAppDelegationInsert( $lang, false );
-        $result->info[] = array ('name' => 'Trigger APP_DELEGATION INSERT','value' => $res
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_INSERT' ),'value' => $res
         );
 
         //APP_DELEGATION Update
         $res = $appCache->triggerAppDelegationUpdate( $lang, false );
-        $result->info[] = array ('name' => 'Trigger APP_DELEGATION UPDATE','value' => $res
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_UPDATE' ),'value' => $res
         );
 
         //APPLICATION UPDATE
         $res = $appCache->triggerApplicationUpdate( $lang, false );
-        $result->info[] = array ('name' => 'Trigger APPLICATION UPDATE','value' => $res
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_APPLICATION_UPDATE' ),'value' => $res
         );
 
         //APPLICATION DELETE
         $res = $appCache->triggerApplicationDelete( $lang, false );
-        $result->info[] = array ('name' => 'Trigger APPLICATION DELETE','value' => $res
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_APPLICATION_DELETE' ),'value' => $res
         );
 
         //CONTENT UPDATE
         $res = $appCache->triggerContentUpdate( $lang, false );
-        $result->info[] = array ("name" => "Trigger CONTENT UPDATE","value" => $res
+        $result->info[] = array ("name" => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_CONTENT_UPDATE' ),"value" => $res
         );
 
         //show language
-        $result->info[] = array ('name' => 'Language','value' => $lang
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_LANGUAGE' ),'value' => $lang
         );
 
         echo G::json_encode( $result );
