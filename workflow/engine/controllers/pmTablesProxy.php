@@ -366,7 +366,7 @@ class pmTablesProxy extends HttpProxyController
                     $rtOld = new ReportTable();
                     $existReportTableOld = $rtOld->load( $row->id );
                     if (count($existReportTableOld) == 0) {
-                        throw new Exception( "Table does not exist... skipped!\n" );    
+                        throw new Exception( "Table does not exist... skipped!\n" );
                     }
                 }
 
@@ -1371,7 +1371,7 @@ class pmTablesProxy extends HttpProxyController
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
 
-            $excludeFieldsList = array ('title','subtitle','link','file','button','reset','submit','listbox','checkgroup','grid','javascript'
+            $excludeFieldsList = array ('title','subtitle','link','file','button','reset','submit','listbox','checkgroup','grid','javascript', ''
             );
 
             $labelFieldsTypeList = array ('dropdown','radiogroup'
@@ -1387,7 +1387,7 @@ class pmTablesProxy extends HttpProxyController
                     foreach ($nodeFieldsList as $node) {
                         $arrayNode = $dynaformHandler->getArray( $node );
                         $fieldName = $arrayNode['__nodeName__'];
-                        $fieldType = $arrayNode['type'];
+                        $fieldType = isset($arrayNode['type']) ? $arrayNode['type']: '';
                         $fieldValidate = ( isset($arrayNode['validate'])) ? $arrayNode['validate'] : '';
 
                         if (! in_array( $fieldType, $excludeFieldsList ) && ! in_array( $fieldName, $fieldsNames ) ) {
