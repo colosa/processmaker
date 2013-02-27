@@ -1,5 +1,5 @@
 function generatedOrder () {
-    var orderNow = [];;
+    var orderNow = [];
     orderNow[0] = [];
     orderNow[1] = [];
     orderNow[2] = [];
@@ -16,6 +16,31 @@ function generatedOrder () {
 
     return orderNow;
 }
+
+Function.prototype.defaults = function() {
+    var _f = this;
+    var _a = Array(_f.length-arguments.length).concat( Array.prototype.slice.apply(arguments));
+    return function() {
+        return _f.apply(_f, Array.prototype.slice.apply(arguments).concat( _a.slice(arguments.length, _a.length)));
+    }
+}
+var reallocate = function (cols) {
+    var cPos;
+    var dashletOrder = new Array();
+    for (var i = 0; i < Ext.getCmp('columnPos0').items.items.length; i++) {
+        dashletOrder.push(Ext.getCmp('columnPos0').items.items[i].id);
+    }
+    for (i = 0; i < Ext.getCmp('columnPos1').items.items.length; i++) {
+        dashletOrder.push(Ext.getCmp('columnPos1').items.items[i].id);
+    }
+    for (var i = 0; i < Ext.getCmp('columnPos2').items.items.length; i++) {
+        dashletOrder.push(Ext.getCmp('columnPos2').items.items[i].id);
+    }
+    for (i = 0; i < dashletOrder.length; i++) {
+        cPos = i % cols;
+        Ext.getCmp('columnPos' + cPos).add(Ext.getCmp(dashletOrder[i]));
+    }
+}.defaults(3);
 
 Ext.onReady(function(){
 
@@ -52,6 +77,8 @@ Ext.onReady(function(){
           var vp = Ext.getCmp('viewportDashboard');
           var pd = Ext.getCmp('portalDashboard');
 
+          reallocate(3);
+
           pd.items.items[0].columnWidth = 0.33;
           pd.items.items[1].columnWidth = 0.33;
           pd.items.items[2].columnWidth = 0.33;
@@ -59,6 +86,7 @@ Ext.onReady(function(){
 
           tbDashboard.items.items[0].setDisabled(true);
           tbDashboard.items.items[1].setDisabled(false);
+          tbDashboard.items.items[2].setDisabled(false);
 
           var orderNow = generatedOrder();
           Ext.Ajax.request({
@@ -97,6 +125,8 @@ Ext.onReady(function(){
           var vp = Ext.getCmp('viewportDashboard');
           var pd = Ext.getCmp('portalDashboard');
 
+          reallocate(2);
+          /*
           var dashletMove = new Array();
           for (var i = 0; i < Ext.getCmp('columnPos2').items.items.length; i++) {
             dashletMove.push(Ext.getCmp('columnPos2').items.items[i].id);
@@ -110,6 +140,7 @@ Ext.onReady(function(){
               flag = 0;
             }
           };
+         */
 
           pd.items.items[0].columnWidth = 0.49;
           pd.items.items[1].columnWidth = 0.49;
@@ -118,6 +149,7 @@ Ext.onReady(function(){
 
           tbDashboard.items.items[0].setDisabled(false);
           tbDashboard.items.items[1].setDisabled(true);
+          tbDashboard.items.items[2].setDisabled(false);
 
           var orderNow = generatedOrder();
           Ext.Ajax.request({
@@ -126,6 +158,54 @@ Ext.onReady(function(){
               positionCol1: Ext.encode(orderNow[1]),
               positionCol2: Ext.encode(orderNow[2]),
               columns: 2
+            },
+            url: 'dashboard/saveOrderDashlet',
+              success: function (res) {
+                var data = Ext.decode(res.responseText);
+                if (data.success) {
+                  Ext.MessageBox.hide();
+                }
+              },
+              failure: function () {
+                Ext.MessageBox.alert(_('ID_ERROR'), _('ID_IMPORTING_ERROR'));
+              }
+          });
+        }
+      },
+      {
+        xtype: 'tbbutton',
+        text : _("ID_DASHBOARD_BTNCOLUMNS1"),
+        handler : function(a) {
+          Ext.MessageBox.show({
+            msg: _('ID_LOADING'),
+            progressText: _('ID_SAVING'),
+            width:300,
+            wait:true,
+            waitConfig: {interval:200},
+            animEl: 'mb7'
+          });
+
+          var vp = Ext.getCmp('viewportDashboard');
+          var pd = Ext.getCmp('portalDashboard');
+
+          reallocate(1);
+
+          pd.items.items[0].columnWidth = 0.98;
+          pd.items.items[1].columnWidth = 0.01;
+          pd.items.items[2].columnWidth = 0.01;
+          pd.doLayout();
+
+          tbDashboard.items.items[0].setDisabled(false);
+          tbDashboard.items.items[1].setDisabled(false);
+          tbDashboard.items.items[2].setDisabled(true);
+
+          var orderNow = generatedOrder();
+          Ext.Ajax.request({
+            params: {
+              positionCol0: Ext.encode(orderNow[0]),
+              positionCol1: Ext.encode(orderNow[1]),
+              positionCol2: Ext.encode(orderNow[2]),
+              columns: 1
             },
             url: 'dashboard/saveOrderDashlet',
               success: function (res) {
