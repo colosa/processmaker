@@ -5558,6 +5558,24 @@ class xmlformTemplate extends Smarty
                 }*/
 
                 if ($field->type == "grid") {
+                    // Fix data for grids
+                    if (is_array($form->fields[$k]->fields)) {
+                        foreach ($form->fields[$k]->fields as $gridFieldName => $gridField) {
+                            for ($i = 1; $i <= count($value); $i++) {
+                                if (!isset($value[$i][$gridFieldName])) {
+                                    switch ($gridField->type) {
+                                        case 'checkbox':
+                                            $defaultAttribute = 'falseValue';
+                                            break;
+                                        default:
+                                            $defaultAttribute = 'defaultValue';
+                                            break;
+                                    }
+                                    $value[$i][$gridFieldName] = isset($gridField->$defaultAttribute) ? $gridField->$defaultAttribute : '';
+                                }
+                            }
+                        }
+                    }
                     $result["form"][$k] = $form->fields[$k]->renderGrid( $value, $form, $therow );
                 } else {
                     switch ($field->type) {
