@@ -235,6 +235,27 @@ Bootstrap::registerClass('BaseGroupUser',      PATH_HOME . "engine/classes/model
 Bootstrap::registerClass('Groupwf',            PATH_HOME . "engine/classes/model/Groupwf.php");
 Bootstrap::registerClass('GroupUser',          PATH_HOME . "engine/classes/model/GroupUser.php");
 
+Bootstrap::registerClass("BaseGroupwfPeer",    PATH_HOME . "engine/classes/model/om/BaseGroupwfPeer.php");
+Bootstrap::registerClass("GroupwfPeer",        PATH_HOME . "enginee/classes/model/GroupwfPeer.php");
+
+Bootstrap::registerClass("BaseGroupUserPeer",  PATH_HOME . "engine/classes/model/om/BaseGroupUserPeer.php");
+Bootstrap::registerClass("GroupUserPeer",      PATH_HOME . "engine/classes/model/GroupUserPeer.php");
+
+Bootstrap::registerClass("BaseAppDelegationPeer",PATH_HOME . "engine/classes/model/om/BaseAppDelegationPeer.php");
+Bootstrap::registerClass("BaseReportVarPeer",   PATH_HOME . "engine/classes/model/om/BaseReportVarPeer.php");
+
+Bootstrap::registerClass("BaseCaseTrackerPeer", PATH_HOME . "engine/classes/model/om/BaseCaseTrackerPeer.php");
+Bootstrap::registerClass("CaseTrackerPeer",     PATH_HOME . "engine/classes/model/CaseTrackerPeer.php");
+
+Bootstrap::registerClass("BaseCaseTrackerObjectPeer",PATH_HOME . "engine/classes/model/om/BaseCaseTrackerObjectPeer.php");
+Bootstrap::registerClass("CaseTrackerObjectPeer",    PATH_HOME . "engine/classes/model/CaseTrackerObjectPeer.php");
+
+Bootstrap::registerClass("BaseCaseSchedulerPeer",PATH_HOME . "engine/classes/model/om/BaseCaseSchedulerPeer.php");
+Bootstrap::registerClass("CaseSchedulerPeer",    PATH_HOME . "engine/classes/model/CaseSchedulerPeer.php");
+
+Bootstrap::registerClass("BaseAppNotesPeer",    PATH_HOME . "engine/classes/model/om/BaseAppNotesPeer.php");
+Bootstrap::registerClass("AppNotesPeer",        PATH_HOME . "engine/classes/model/AppNotesPeer.php");
+
 Bootstrap::registerClass('BaseInputDocumentPeer',PATH_HOME . 'engine/classes/model/om/BaseInputDocumentPeer.php');
 Bootstrap::registerClass('InputDocumentPeer',  PATH_HOME . 'engine/classes/model/InputDocumentPeer.php');
 
