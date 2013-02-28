@@ -44,7 +44,7 @@ class classCasesTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('Cases');
-        $this->assertTrue( count($methods) == 96);
+        $this->assertTrue( count($methods) == 98);
     }
 
     /**

@@ -44,7 +44,7 @@ class classdynaFormHandlerTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('dynaFormHandler');        $this->assertTrue( count($methods) == 23);
+        $methods = get_class_methods('dynaFormHandler');        $this->assertTrue( count($methods) == 24);
     }
 
     /**

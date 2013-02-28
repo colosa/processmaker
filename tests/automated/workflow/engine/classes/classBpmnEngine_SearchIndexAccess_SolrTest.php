@@ -38,12 +38,12 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('BpmnEngine_SearchIndexAccess_Solr');        $this->assertTrue( count($methods) == 12);
+        $methods = get_class_methods('BpmnEngine_SearchIndexAccess_Solr');        $this->assertTrue( count($methods) == 13);
     }
 
     /**
@@ -64,7 +64,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::isEnabled
@@ -76,7 +76,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( in_array('isEnabled', $methods ), 'exists method isEnabled' );
         $r = new ReflectionMethod('BpmnEngine_SearchIndexAccess_Solr', 'isEnabled');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::getNumberDocuments
@@ -91,7 +91,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::executeQuery
@@ -106,7 +106,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[0]->getName() == 'solrRequestData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::updateDocument
@@ -121,7 +121,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[0]->getName() == 'solrUpdateDocument');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::commitChanges
@@ -136,7 +136,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::rollbackChanges
@@ -151,7 +151,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::optimizeChanges
@@ -166,7 +166,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::getListIndexedStoredFields
@@ -181,7 +181,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::deleteAllDocuments
@@ -196,7 +196,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[0]->getName() == 'workspace');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::deleteDocument
@@ -214,7 +214,7 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[1]->getName() == 'idQuery');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers BpmnEngine_SearchIndexAccess_Solr::getFacetsList
@@ -229,6 +229,6 @@ class classBpmnEngine_SearchIndexAccess_SolrTest extends PHPUnit_Framework_TestC
         $this->assertTrue( $params[0]->getName() == 'facetRequest');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

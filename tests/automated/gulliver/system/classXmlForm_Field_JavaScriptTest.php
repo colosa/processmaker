@@ -45,7 +45,7 @@ class classXmlForm_Field_JavaScriptTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_JavaScript');        $this->assertTrue( count($methods) == 25);
+        $methods = get_class_methods('XmlForm_Field_JavaScript');        $this->assertTrue( count($methods) == 26);
     }
 
     /**

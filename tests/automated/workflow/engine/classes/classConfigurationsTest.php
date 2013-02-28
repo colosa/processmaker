@@ -38,12 +38,12 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('Configurations');        $this->assertTrue( count($methods) == 16);
+        $methods = get_class_methods('Configurations');        $this->assertTrue( count($methods) == 17);
     }
 
     /**
@@ -56,7 +56,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('Configurations', $methods ), 'exists method Configurations' );
         $r = new ReflectionMethod('Configurations', 'Configurations');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Configurations::arrayClone
@@ -74,7 +74,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'cloneObject');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Configurations::configObject
@@ -92,7 +92,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'from');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Configurations::loadConfig
@@ -126,7 +126,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == true);
         $this->assertTrue( $params[5]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Configurations::load
@@ -157,7 +157,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Configurations::saveConfig
@@ -187,7 +187,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Configurations::saveObject
@@ -220,7 +220,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == true);
         $this->assertTrue( $params[5]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Configurations::loadObject
@@ -250,7 +250,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Configurations::getConfiguration
@@ -280,7 +280,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == true);
         $this->assertTrue( $params[4]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Configurations::usersNameFormat
@@ -301,7 +301,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'lastname');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Configurations::getFormats
@@ -313,7 +313,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getFormats', $methods ), 'exists method getFormats' );
         $r = new ReflectionMethod('Configurations', 'getFormats');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Configurations::setConfig
@@ -334,7 +334,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'to');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Configurations::getDateFormats
@@ -346,7 +346,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getDateFormats', $methods ), 'exists method getDateFormats' );
         $r = new ReflectionMethod('Configurations', 'getDateFormats');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Configurations::getUserNameFormats
@@ -358,7 +358,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUserNameFormats', $methods ), 'exists method getUserNameFormats' );
         $r = new ReflectionMethod('Configurations', 'getUserNameFormats');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Configurations::getSystemDate
@@ -373,7 +373,7 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dateTime');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Configurations::getEnvSetting
@@ -393,6 +393,6 @@ class classConfigurationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
-  } 
+  }

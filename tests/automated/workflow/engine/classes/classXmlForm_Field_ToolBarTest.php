@@ -47,7 +47,7 @@ class classXmlForm_Field_ToolBarTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('XmlForm_Field_ToolBar');
-        $this->assertTrue(count($methods) == 25);
+        $this->assertTrue(count($methods) == 26);
     }
 
     /**

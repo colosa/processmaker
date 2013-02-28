@@ -45,7 +45,7 @@ class classXmlForm_Field_CaptionPercentageTest extends PHPUnit_Framework_TestCas
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_CaptionPercentage');        $this->assertTrue( count($methods) == 24);
+        $methods = get_class_methods('XmlForm_Field_CaptionPercentage');        $this->assertTrue( count($methods) == 25);
     }
 
     /**

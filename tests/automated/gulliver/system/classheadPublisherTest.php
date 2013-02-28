@@ -38,12 +38,12 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('headPublisher');        $this->assertTrue( count($methods) == 28);
+        $methods = get_class_methods('headPublisher');        $this->assertTrue( count($methods) == 27);
     }
 
     /**
@@ -56,7 +56,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('__construct', $methods ), 'exists method __construct' );
         $r = new ReflectionMethod('headPublisher', '__construct');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::getSingleton
@@ -68,7 +68,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getSingleton', $methods ), 'exists method getSingleton' );
         $r = new ReflectionMethod('headPublisher', 'getSingleton');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::setTitle
@@ -83,13 +83,13 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'title');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::addMaborakFile
     * @todo   Implement testaddMaborakFile().
     */
-    public function testaddMaborakFile()
+    /*public function testaddMaborakFile()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('addMaborakFile', $methods ), 'exists method addMaborakFile' );
@@ -102,7 +102,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }*/
 
     /**
     * @covers headPublisher::addScriptFile
@@ -121,7 +121,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '1');
-    } 
+    }
 
     /**
     * @covers headPublisher::addInstanceModule
@@ -139,7 +139,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'module');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::addClassModule
@@ -157,7 +157,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'module');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::addScriptCode
@@ -172,7 +172,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'script');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::printHeader
@@ -184,7 +184,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('printHeader', $methods ), 'exists method printHeader' );
         $r = new ReflectionMethod('headPublisher', 'printHeader');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::printRawHeader
@@ -196,7 +196,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('printRawHeader', $methods ), 'exists method printRawHeader' );
         $r = new ReflectionMethod('headPublisher', 'printRawHeader');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::clearScripts
@@ -208,7 +208,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('clearScripts', $methods ), 'exists method clearScripts' );
         $r = new ReflectionMethod('headPublisher', 'clearScripts');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::includeExtJs
@@ -220,7 +220,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('includeExtJs', $methods ), 'exists method includeExtJs' );
         $r = new ReflectionMethod('headPublisher', 'includeExtJs');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::getExtJsStylesheets
@@ -235,7 +235,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'skinName');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::getExtJsScripts
@@ -247,7 +247,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getExtJsScripts', $methods ), 'exists method getExtJsScripts' );
         $r = new ReflectionMethod('headPublisher', 'getExtJsScripts');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::getExtJsVariablesScript
@@ -259,7 +259,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getExtJsVariablesScript', $methods ), 'exists method getExtJsVariablesScript' );
         $r = new ReflectionMethod('headPublisher', 'getExtJsVariablesScript');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::getExtJsLibraries
@@ -271,7 +271,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getExtJsLibraries', $methods ), 'exists method getExtJsLibraries' );
         $r = new ReflectionMethod('headPublisher', 'getExtJsLibraries');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::usingExtJs
@@ -286,7 +286,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'library');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::setExtSkin
@@ -301,7 +301,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'skin');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::addExtJsScript
@@ -324,7 +324,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[2]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers headPublisher::AddContent
@@ -339,7 +339,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'templateHtml');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::getContent
@@ -351,7 +351,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getContent', $methods ), 'exists method getContent' );
         $r = new ReflectionMethod('headPublisher', 'getContent');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::Assign
@@ -369,7 +369,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::AssignVar
@@ -387,7 +387,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::getVars
@@ -399,7 +399,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getVars', $methods ), 'exists method getVars' );
         $r = new ReflectionMethod('headPublisher', 'getVars');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::AssignNumber
@@ -417,7 +417,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::renderExtJs
@@ -429,7 +429,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('renderExtJs', $methods ), 'exists method renderExtJs' );
         $r = new ReflectionMethod('headPublisher', 'renderExtJs');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers headPublisher::stripCodeQuotes
@@ -444,7 +444,7 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sJson');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers headPublisher::disableHeaderScripts
@@ -456,6 +456,6 @@ class classheadPublisherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('disableHeaderScripts', $methods ), 'exists method disableHeaderScripts' );
         $r = new ReflectionMethod('headPublisher', 'disableHeaderScripts');
         $params = $r->getParameters();
-    } 
+    }
 
-  } 
+  }

@@ -45,7 +45,7 @@ class classXmlForm_Field_SubmitTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_Submit');        $this->assertTrue( count($methods) == 24);
+        $methods = get_class_methods('XmlForm_Field_Submit');        $this->assertTrue( count($methods) == 25);
     }
 
     /**
@@ -60,10 +60,10 @@ class classXmlForm_Field_SubmitTest extends PHPUnit_Framework_TestCase
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'value');
         $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
+        $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[1]->getName() == 'owner');
         $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == false);
+        $this->assertTrue( $params[1]->isOptional () == true);
     }
 
   }

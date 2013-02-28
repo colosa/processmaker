@@ -47,7 +47,7 @@ class classDynaFormFieldTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('DynaFormField');
-        $this->assertTrue(count($methods) == 12);
+        $this->assertTrue(count($methods) == 15);
     }
 
     /**
@@ -130,4 +130,3 @@ class classDynaFormFieldTest extends PHPUnit_Framework_TestCase
         $params = $r->getParameters();
     }
 }
- 

@@ -38,12 +38,12 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('Processes');        $this->assertTrue( count($methods) == 141);
+        $methods = get_class_methods('Processes');        $this->assertTrue( count($methods) == 142);
     }
 
     /**
@@ -60,7 +60,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::changeDebugMode
@@ -76,7 +76,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::changeProcessParent
@@ -94,7 +94,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sParentUid');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::processExists
@@ -110,7 +110,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedProcessGUID
@@ -122,7 +122,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedProcessGUID', $methods ), 'exists method getUnusedProcessGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedProcessGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::taskExists
@@ -138,7 +138,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedTaskGUID
@@ -150,7 +150,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedTaskGUID', $methods ), 'exists method getUnusedTaskGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedTaskGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::dynaformExists
@@ -166,7 +166,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::inputExists
@@ -182,7 +182,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::outputExists
@@ -198,7 +198,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::triggerExists
@@ -214,7 +214,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::SubProcessExists
@@ -230,7 +230,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::caseTrackerObjectExists
@@ -246,7 +246,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::caseTrackerExists
@@ -262,7 +262,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::dbConnectionExists
@@ -278,7 +278,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::objectPermissionExists
@@ -294,7 +294,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::routeExists
@@ -310,7 +310,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::stageExists
@@ -326,7 +326,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::slExists
@@ -342,7 +342,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::reportTableExists
@@ -358,7 +358,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::reportVarExists
@@ -374,7 +374,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::fieldsConditionsExists
@@ -390,7 +390,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::eventExists
@@ -406,7 +406,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::caseSchedulerExists
@@ -422,7 +422,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedInputGUID
@@ -434,7 +434,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedInputGUID', $methods ), 'exists method getUnusedInputGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedInputGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedOutputGUID
@@ -446,7 +446,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedOutputGUID', $methods ), 'exists method getUnusedOutputGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedOutputGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedTriggerGUID
@@ -458,7 +458,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedTriggerGUID', $methods ), 'exists method getUnusedTriggerGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedTriggerGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedSubProcessGUID
@@ -470,7 +470,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedSubProcessGUID', $methods ), 'exists method getUnusedSubProcessGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedSubProcessGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedCaseTrackerObjectGUID
@@ -482,7 +482,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedCaseTrackerObjectGUID', $methods ), 'exists method getUnusedCaseTrackerObjectGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedCaseTrackerObjectGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedDBSourceGUID
@@ -494,7 +494,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedDBSourceGUID', $methods ), 'exists method getUnusedDBSourceGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedDBSourceGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedObjectPermissionGUID
@@ -506,7 +506,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedObjectPermissionGUID', $methods ), 'exists method getUnusedObjectPermissionGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedObjectPermissionGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedRouteGUID
@@ -518,7 +518,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedRouteGUID', $methods ), 'exists method getUnusedRouteGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedRouteGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedStageGUID
@@ -530,7 +530,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedStageGUID', $methods ), 'exists method getUnusedStageGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedStageGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedSLGUID
@@ -542,7 +542,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedSLGUID', $methods ), 'exists method getUnusedSLGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedSLGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedRTGUID
@@ -554,7 +554,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedRTGUID', $methods ), 'exists method getUnusedRTGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedRTGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedRTVGUID
@@ -566,7 +566,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedRTVGUID', $methods ), 'exists method getUnusedRTVGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedRTVGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::stepExists
@@ -582,7 +582,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedStepGUID
@@ -594,7 +594,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedStepGUID', $methods ), 'exists method getUnusedStepGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedStepGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedDynaformGUID
@@ -606,7 +606,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedDynaformGUID', $methods ), 'exists method getUnusedDynaformGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedDynaformGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedFieldConditionGUID
@@ -618,7 +618,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedFieldConditionGUID', $methods ), 'exists method getUnusedFieldConditionGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedFieldConditionGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedEventGUID
@@ -630,7 +630,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedEventGUID', $methods ), 'exists method getUnusedEventGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedEventGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::getUnusedCaseSchedulerGUID
@@ -642,7 +642,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getUnusedCaseSchedulerGUID', $methods ), 'exists method getUnusedCaseSchedulerGUID' );
         $r = new ReflectionMethod('Processes', 'getUnusedCaseSchedulerGUID');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::setProcessGUID
@@ -660,7 +660,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sNewProUid');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::setProcessParent
@@ -678,7 +678,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sParentUid');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllTaskGuid
@@ -693,7 +693,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllDynaformGuid
@@ -708,7 +708,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getProcessRow
@@ -727,7 +727,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::createProcessRow
@@ -742,7 +742,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'row');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::updateProcessRow
@@ -757,7 +757,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'row');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getSubProcessRow
@@ -772,7 +772,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getCaseTrackerRow
@@ -787,7 +787,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getCaseTrackerObjectRow
@@ -802,7 +802,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getStageRow
@@ -817,7 +817,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getFieldCondition
@@ -832,7 +832,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getEventRow
@@ -847,7 +847,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getCaseSchedulerRow
@@ -862,7 +862,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getProcessCategoryRow
@@ -877,7 +877,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getAllLanes
@@ -892,7 +892,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getTaskRows
@@ -907,7 +907,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createTaskRows
@@ -922,7 +922,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aTasks');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::updateTaskRows
@@ -937,7 +937,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aTasks');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getRouteRows
@@ -952,7 +952,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createRouteRows
@@ -967,7 +967,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aRoutes');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::updateRouteRows
@@ -982,7 +982,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aRoutes');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getLaneRows
@@ -997,7 +997,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getGatewayRows
@@ -1012,7 +1012,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createGatewayRows
@@ -1027,7 +1027,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aGateways');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createLaneRows
@@ -1042,7 +1042,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aLanes');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createSubProcessRows
@@ -1057,7 +1057,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'SubProcess');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createCaseTrackerRows
@@ -1072,7 +1072,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'CaseTracker');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createCaseTrackerObjectRows
@@ -1087,7 +1087,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'CaseTrackerObject');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createObjectPermissionsRows
@@ -1102,7 +1102,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'ObjectPermissions');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createStageRows
@@ -1117,7 +1117,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'Stage');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createFieldCondition
@@ -1135,7 +1135,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aDynaform');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createEventRows
@@ -1150,7 +1150,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'Event');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createCaseSchedulerRows
@@ -1165,7 +1165,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'CaseScheduler');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createProcessCategoryRow
@@ -1180,7 +1180,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'row');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getInputRows
@@ -1195,7 +1195,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createInputRows
@@ -1210,7 +1210,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aInput');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllInputGuid
@@ -1225,7 +1225,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getOutputRows
@@ -1240,7 +1240,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createOutputRows
@@ -1255,7 +1255,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aOutput');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllOutputGuid
@@ -1270,7 +1270,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllTriggerGuid
@@ -1285,7 +1285,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllSubProcessGuid
@@ -1300,7 +1300,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllCaseTrackerObjectGuid
@@ -1315,7 +1315,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllDBSourceGuid
@@ -1330,7 +1330,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllObjectPermissionGuid
@@ -1345,7 +1345,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllRouteGuid
@@ -1360,7 +1360,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllStageGuid
@@ -1375,7 +1375,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllSwimlanesElementsGuid
@@ -1390,7 +1390,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllReportTableGuid
@@ -1405,7 +1405,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllReportVarGuid
@@ -1420,7 +1420,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllFieldCondition
@@ -1435,7 +1435,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllEvent
@@ -1450,7 +1450,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllCaseScheduler
@@ -1465,7 +1465,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAll
@@ -1480,7 +1480,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getStepRows
@@ -1495,7 +1495,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createStepRows
@@ -1510,7 +1510,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aStep');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createStepSupervisorRows
@@ -1525,7 +1525,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aStepSupervisor');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renewAllStepGuid
@@ -1540,7 +1540,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getDynaformRows
@@ -1555,7 +1555,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getObjectPermissionRows
@@ -1570,7 +1570,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createDynaformRows
@@ -1585,7 +1585,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aDynaform');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createStepTriggerRows
@@ -1600,7 +1600,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aStepTrigger');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getStepTriggerRows
@@ -1615,7 +1615,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aTask');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getTriggerRows
@@ -1630,7 +1630,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createTriggerRows
@@ -1645,7 +1645,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aTrigger');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getGroupwfRows
@@ -1660,7 +1660,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aGroups');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getDBConnectionsRows
@@ -1675,7 +1675,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getStepSupervisorRows
@@ -1690,7 +1690,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getReportTablesRows
@@ -1705,7 +1705,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getReportTablesVarsRows
@@ -1720,7 +1720,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getTaskUserRows
@@ -1735,7 +1735,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aTask');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createTaskUserRows
@@ -1750,7 +1750,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aTaskUser');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createGroupRow
@@ -1765,7 +1765,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aGroupwf');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createDBConnectionsRows
@@ -1780,7 +1780,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aConnections');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createReportTables
@@ -1798,7 +1798,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aReportTablesVars');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::updateReportTables
@@ -1816,7 +1816,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'aReportTablesVars');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createReportTablesVars
@@ -1831,7 +1831,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aReportTablesVars');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::cleanupReportTablesReferences
@@ -1846,7 +1846,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'aReportTables');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::serializeProcess
@@ -1862,7 +1862,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers Processes::saveSerializedProcess
@@ -1877,7 +1877,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'oData');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getProcessData
@@ -1892,7 +1892,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'pmFilename');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::checkExistingGroups
@@ -1907,7 +1907,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sGroupList');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::renameExistingGroups
@@ -1922,7 +1922,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sGroupList');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::mergeExistingGroups
@@ -1937,7 +1937,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sGroupList');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::mergeExistingUsers
@@ -1958,7 +1958,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'sTaskUserList');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::disablePreviousProcesses
@@ -1973,7 +1973,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createFiles
@@ -1991,7 +1991,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'pmFilename');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::removeProcessRows
@@ -2006,7 +2006,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'sProUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::createProcessFromData
@@ -2024,7 +2024,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'pmFilename');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::updateProcessFromData
@@ -2042,7 +2042,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'pmFilename');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getStartingTaskForUser
@@ -2060,7 +2060,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'sUsrUid');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::ws_open
@@ -2078,7 +2078,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'pass');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::ws_open_public
@@ -2090,7 +2090,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('ws_open_public', $methods ), 'exists method ws_open_public' );
         $r = new ReflectionMethod('Processes', 'ws_open_public');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::ws_processList
@@ -2102,7 +2102,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('ws_processList', $methods ), 'exists method ws_processList' );
         $r = new ReflectionMethod('Processes', 'ws_processList');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Processes::downloadFile
@@ -2123,7 +2123,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[2]->getName() == 'newfilename');
         $this->assertTrue( $params[2]->isArray() == false);
         $this->assertTrue( $params[2]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::ws_processGetData
@@ -2138,7 +2138,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'proId');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::parseItemArray
@@ -2153,7 +2153,7 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'array');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Processes::getProcessFiles
@@ -2171,6 +2171,6 @@ class classProcessesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'type');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

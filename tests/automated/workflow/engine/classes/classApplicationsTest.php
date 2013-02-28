@@ -38,7 +38,7 @@ class classApplicationsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -83,39 +83,39 @@ class classApplicationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[6]->isArray() == false);
         $this->assertTrue( $params[6]->isOptional () == true);
         $this->assertTrue( $params[6]->getDefaultValue() == '');
-        $this->assertTrue( $params[7]->getName() == 'user');
+        $this->assertTrue( $params[7]->getName() == 'status');
         $this->assertTrue( $params[7]->isArray() == false);
         $this->assertTrue( $params[7]->isOptional () == true);
         $this->assertTrue( $params[7]->getDefaultValue() == '');
-        $this->assertTrue( $params[8]->getName() == 'status');
+        $this->assertTrue( $params[8]->getName() == 'type');
         $this->assertTrue( $params[8]->isArray() == false);
         $this->assertTrue( $params[8]->isOptional () == true);
         $this->assertTrue( $params[8]->getDefaultValue() == '');
-        $this->assertTrue( $params[9]->getName() == 'type');
+        $this->assertTrue( $params[9]->getName() == 'dateFrom');
         $this->assertTrue( $params[9]->isArray() == false);
         $this->assertTrue( $params[9]->isOptional () == true);
         $this->assertTrue( $params[9]->getDefaultValue() == '');
-        $this->assertTrue( $params[10]->getName() == 'dateFrom');
+        $this->assertTrue( $params[10]->getName() == 'dateTo');
         $this->assertTrue( $params[10]->isArray() == false);
         $this->assertTrue( $params[10]->isOptional () == true);
         $this->assertTrue( $params[10]->getDefaultValue() == '');
-        $this->assertTrue( $params[11]->getName() == 'dateTo');
+        $this->assertTrue( $params[11]->getName() == 'callback');
         $this->assertTrue( $params[11]->isArray() == false);
         $this->assertTrue( $params[11]->isOptional () == true);
         $this->assertTrue( $params[11]->getDefaultValue() == '');
-        $this->assertTrue( $params[12]->getName() == 'callback');
+        $this->assertTrue( $params[12]->getName() == 'dir');
         $this->assertTrue( $params[12]->isArray() == false);
         $this->assertTrue( $params[12]->isOptional () == true);
         $this->assertTrue( $params[12]->getDefaultValue() == '');
-        $this->assertTrue( $params[13]->getName() == 'dir');
+        $this->assertTrue( $params[13]->getName() == 'sort');
         $this->assertTrue( $params[13]->isArray() == false);
         $this->assertTrue( $params[13]->isOptional () == true);
-        $this->assertTrue( $params[13]->getDefaultValue() == '');
-        $this->assertTrue( $params[14]->getName() == 'sort');
+        $this->assertTrue( $params[13]->getDefaultValue() == 'APP_CACHE_VIEW.APP_NUMBER');
+        $this->assertTrue( $params[14]->getName() == 'category');
         $this->assertTrue( $params[14]->isArray() == false);
         $this->assertTrue( $params[14]->isOptional () == true);
-        $this->assertTrue( $params[14]->getDefaultValue() == 'APP_CACHE_VIEW.APP_NUMBER');
-    } 
+        $this->assertTrue( $params[14]->getDefaultValue() == '');
+    }
 
     /**
     * @covers Applications::setDefaultFields
@@ -127,7 +127,7 @@ class classApplicationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('setDefaultFields', $methods ), 'exists method setDefaultFields' );
         $r = new ReflectionMethod('Applications', 'setDefaultFields');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers Applications::getDefaultFields
@@ -142,7 +142,7 @@ class classApplicationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'action');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Applications::genericJsonResponse
@@ -169,7 +169,7 @@ class classApplicationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->getName() == 'dateFormat');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers Applications::getSteps
@@ -193,6 +193,6 @@ class classApplicationsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'proUid');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

@@ -45,7 +45,7 @@ class classXmlForm_Field_Date2Test extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_Date2');        $this->assertTrue( count($methods) == 27);
+        $methods = get_class_methods('XmlForm_Field_Date2');        $this->assertTrue( count($methods) == 28);
     }
 
     /**

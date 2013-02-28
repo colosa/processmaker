@@ -47,7 +47,7 @@ class classXmlForm_Field_TextareaPMTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('XmlForm_Field_TextareaPM');
-        $this->assertTrue(count($methods) == 24);
+        $this->assertTrue(count($methods) == 25);
     }
 
     /**
@@ -79,12 +79,12 @@ class classXmlForm_Field_TextareaPMTest extends PHPUnit_Framework_TestCase
         $r = new ReflectionMethod('XmlForm_Field_TextareaPM', 'renderGrid');
 
         $params = $r->getParameters();
-        $this->assertTrue($params[0]->getName() == 'values');
+        $this->assertTrue($params[0]->getName() == 'owner');
         $this->assertTrue($params[0]->isArray() == false);
         $this->assertTrue($params[0]->isOptional () == false);
-        $this->assertTrue($params[1]->getName() == 'owner');
+        $this->assertTrue($params[1]->getName() == 'values');
         $this->assertTrue($params[1]->isArray() == false);
-        $this->assertTrue($params[1]->isOptional () == false);
+        $this->assertTrue($params[1]->isOptional () == true);
     }
 }
 

@@ -38,7 +38,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
@@ -59,7 +59,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'className');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMDashlet::setup
@@ -74,7 +74,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dasInsUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMDashlet::render
@@ -90,7 +90,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '300');
-    } 
+    }
 
     /**
     * @covers PMDashlet::getDashletInstance
@@ -102,7 +102,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getDashletInstance', $methods ), 'exists method getDashletInstance' );
         $r = new ReflectionMethod('PMDashlet', 'getDashletInstance');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMDashlet::getDashletObject
@@ -114,7 +114,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('getDashletObject', $methods ), 'exists method getDashletObject' );
         $r = new ReflectionMethod('PMDashlet', 'getDashletObject');
         $params = $r->getParameters();
-    } 
+    }
 
     /**
     * @covers PMDashlet::getDashletsInstances
@@ -134,19 +134,19 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[1]->getDefaultValue() == '');
-    } 
+    }
 
     /**
     * @covers PMDashlet::getDashletsInstancesQuantity
     * @todo   Implement testgetDashletsInstancesQuantity().
     */
-    public function testgetDashletsInstancesQuantity()
+    /*public function testgetDashletsInstancesQuantity()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('getDashletsInstancesQuantity', $methods ), 'exists method getDashletsInstancesQuantity' );
         $r = new ReflectionMethod('PMDashlet', 'getDashletsInstancesQuantity');
         $params = $r->getParameters();
-    } 
+    }*/
 
     /**
     * @covers PMDashlet::loadDashletInstance
@@ -161,7 +161,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dasInsUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMDashlet::saveDashletInstance
@@ -176,7 +176,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'data');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMDashlet::deleteDashletInstance
@@ -191,7 +191,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'dasInsUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMDashlet::getDashletsInstancesForUser
@@ -206,7 +206,7 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'userUid');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers PMDashlet::getXTemplate
@@ -221,6 +221,6 @@ class classPMDashletTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'className');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

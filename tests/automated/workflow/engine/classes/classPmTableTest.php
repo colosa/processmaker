@@ -38,13 +38,13 @@ class classPmTableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('PmTable');
-        $this->assertTrue( count($methods) == 26);
+        $this->assertTrue( count($methods) == 27);
     }
 
     /**

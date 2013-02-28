@@ -47,7 +47,7 @@ class classXmlForm_Field_popupOptionTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('XmlForm_Field_popupOption');
-        $this->assertTrue(count($methods) == 24);
+        $this->assertTrue(count($methods) == 25);
     }
 
     /**

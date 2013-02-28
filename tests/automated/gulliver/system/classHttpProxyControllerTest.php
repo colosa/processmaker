@@ -38,12 +38,12 @@ class classHttpProxyControllerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This is the default method to test, if the class still having 
+     * This is the default method to test, if the class still having
      * the same number of methods.
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('HttpProxyController');        $this->assertTrue( count($methods) == 8);
+        $methods = get_class_methods('HttpProxyController');        $this->assertTrue( count($methods) == 9);
     }
 
     /**
@@ -62,7 +62,7 @@ class classHttpProxyControllerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[1]->getName() == 'value');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers HttpProxyController::__get
@@ -77,7 +77,7 @@ class classHttpProxyControllerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers HttpProxyController::__isset
@@ -92,7 +92,7 @@ class classHttpProxyControllerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers HttpProxyController::__unset
@@ -107,7 +107,7 @@ class classHttpProxyControllerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers HttpProxyController::call
@@ -122,7 +122,7 @@ class classHttpProxyControllerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'name');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers HttpProxyController::setHttpRequestData
@@ -137,7 +137,7 @@ class classHttpProxyControllerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'data');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers HttpProxyController::setJsonResponse
@@ -152,7 +152,7 @@ class classHttpProxyControllerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'bool');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
     /**
     * @covers HttpProxyController::setSendResponse
@@ -167,6 +167,6 @@ class classHttpProxyControllerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'val');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    } 
+    }
 
-  } 
+  }

@@ -47,7 +47,7 @@ class classXmlForm_Field_TextPMTest extends PHPUnit_Framework_TestCase
     public function testNumberOfMethodsInThisClass()
     {
         $methods = get_class_methods('XmlForm_Field_TextPM');
-        $this->assertTrue(count($methods) == 24);
+        $this->assertTrue(count($methods) == 25);
     }
 
     /**

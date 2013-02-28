@@ -45,7 +45,7 @@ class classXmlForm_Field_LinkTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_Link');        $this->assertTrue( count($methods) == 24);
+        $methods = get_class_methods('XmlForm_Field_Link');        $this->assertTrue( count($methods) == 25);
     }
 
     /**
@@ -61,11 +61,19 @@ class classXmlForm_Field_LinkTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'value');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == '');
-        $this->assertTrue( $params[1]->getName() == 'owner');
+        $this->assertTrue( $params[0]->getDefaultValue() == null);
+        $this->assertTrue( $params[1]->getName() == 'label');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == '');
+        $this->assertTrue( $params[1]->getDefaultValue() == null);
+        $this->assertTrue( $params[2]->getName() == 'owner');
+        $this->assertTrue( $params[2]->isArray() == false);
+        $this->assertTrue( $params[2]->isOptional () == true);
+        $this->assertTrue( $params[2]->getDefaultValue() == null);
+        $this->assertTrue( $params[3]->getName() == 'row');
+        $this->assertTrue( $params[3]->isArray() == false);
+        $this->assertTrue( $params[3]->isOptional () == true);
+        $this->assertTrue( $params[3]->getDefaultValue() == -1);
     }
 
     /**
@@ -78,14 +86,18 @@ class classXmlForm_Field_LinkTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( in_array('renderGrid', $methods ), 'exists method renderGrid' );
         $r = new ReflectionMethod('XmlForm_Field_Link', 'renderGrid');
         $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'values');
+        $this->assertTrue( $params[0]->getName() == 'value');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
-        $this->assertTrue( $params[0]->getDefaultValue() == Array());
-        $this->assertTrue( $params[1]->getName() == 'owner');
+        $this->assertTrue( $params[0]->getDefaultValue() == array());
+        $this->assertTrue( $params[1]->getName() == 'label');
         $this->assertTrue( $params[1]->isArray() == false);
         $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == '');
+        $this->assertTrue( $params[1]->getDefaultValue() == array());
+        $this->assertTrue( $params[2]->getName() == 'owner');
+        $this->assertTrue( $params[2]->isArray() == false);
+        $this->assertTrue( $params[2]->isOptional () == true);
+        $this->assertTrue( $params[2]->getDefaultValue() == '');
     }
 
     /**

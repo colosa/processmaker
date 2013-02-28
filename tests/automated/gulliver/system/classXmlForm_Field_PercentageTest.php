@@ -45,7 +45,7 @@ class classXmlForm_Field_PercentageTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_Percentage');        $this->assertTrue( count($methods) == 24);
+        $methods = get_class_methods('XmlForm_Field_Percentage');        $this->assertTrue( count($methods) == 25);
     }
 
     /**

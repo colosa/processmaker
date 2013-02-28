@@ -45,7 +45,7 @@ class classXmlForm_Field_cellMarkTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_cellMark');        $this->assertTrue( count($methods) == 26);
+        $methods = get_class_methods('XmlForm_Field_cellMark');        $this->assertTrue( count($methods) == 27);
     }
 
     /**

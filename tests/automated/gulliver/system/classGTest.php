@@ -123,10 +123,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $params = $r->getParameters();
         $this->assertTrue( $params[0]->getName() == 'value');
         $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-        $this->assertTrue( $params[1]->getName() == 'varN');
-        $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == false);
+        $this->assertTrue( $params[0]->isOptional () == true);
     }
 
     /**
@@ -193,7 +190,7 @@ class classGTest extends PHPUnit_Framework_TestCase
     * @covers G::setFatalErrorHandler
     * @todo   Implement testsetFatalErrorHandler().
     */
-    public function testsetFatalErrorHandler()
+    /*public function testsetFatalErrorHandler()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('setFatalErrorHandler', $methods ), 'exists method setFatalErrorHandler' );
@@ -203,13 +200,13 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    }
+    }*/
 
     /**
     * @covers G::setErrorHandler
     * @todo   Implement testsetErrorHandler().
     */
-    public function testsetErrorHandler()
+    /*public function testsetErrorHandler()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('setErrorHandler', $methods ), 'exists method setErrorHandler' );
@@ -219,13 +216,13 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == true);
         $this->assertTrue( $params[0]->getDefaultValue() == '');
-    }
+    }*/
 
     /**
     * @covers G::fatalErrorHandler
     * @todo   Implement testfatalErrorHandler().
     */
-    public function testfatalErrorHandler()
+    /*public function testfatalErrorHandler()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('fatalErrorHandler', $methods ), 'exists method fatalErrorHandler' );
@@ -234,13 +231,13 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'buffer');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    }
+    }*/
 
     /**
     * @covers G::customErrorHandler
     * @todo   Implement testcustomErrorHandler().
     */
-    public function testcustomErrorHandler()
+    /*public function testcustomErrorHandler()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('customErrorHandler', $methods ), 'exists method customErrorHandler' );
@@ -261,13 +258,13 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[4]->getName() == 'context');
         $this->assertTrue( $params[4]->isArray() == false);
         $this->assertTrue( $params[4]->isOptional () == false);
-    }
+    }*/
 
     /**
     * @covers G::showErrorSource
     * @todo   Implement testshowErrorSource().
     */
-    public function testshowErrorSource()
+    /*public function testshowErrorSource()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('showErrorSource', $methods ), 'exists method showErrorSource' );
@@ -285,13 +282,13 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'line');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    }
+    }*/
 
     /**
     * @covers G::customErrorLog
     * @todo   Implement testcustomErrorLog().
     */
-    public function testcustomErrorLog()
+    /*public function testcustomErrorLog()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('customErrorLog', $methods ), 'exists method customErrorLog' );
@@ -309,13 +306,13 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[3]->getName() == 'line');
         $this->assertTrue( $params[3]->isArray() == false);
         $this->assertTrue( $params[3]->isOptional () == false);
-    }
+    }*/
 
     /**
     * @covers G::verboseError
     * @todo   Implement testverboseError().
     */
-    public function testverboseError()
+    /*public function testverboseError()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('verboseError', $methods ), 'exists method verboseError' );
@@ -339,7 +336,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[5]->getName() == 'context');
         $this->assertTrue( $params[5]->isArray() == false);
         $this->assertTrue( $params[5]->isOptional () == false);
-    }
+    }*/
 
     /**
     * @covers G::encrypt
@@ -791,7 +788,7 @@ class classGTest extends PHPUnit_Framework_TestCase
     * @covers G::trimSourceCodeFile
     * @todo   Implement testtrimSourceCodeFile().
     */
-    public function testtrimSourceCodeFile()
+    /*public function testtrimSourceCodeFile()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('trimSourceCodeFile', $methods ), 'exists method trimSourceCodeFile' );
@@ -800,7 +797,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'filename');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    }
+    }*/
 
     /**
     * @covers G::sendHeaders
@@ -2036,7 +2033,7 @@ class classGTest extends PHPUnit_Framework_TestCase
     * @covers G::getModel
     * @todo   Implement testgetModel().
     */
-    public function testgetModel()
+    /*public function testgetModel()
     {
         $methods = get_class_methods($this->object);
         $this->assertTrue( in_array('getModel', $methods ), 'exists method getModel' );
@@ -2045,7 +2042,7 @@ class classGTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->getName() == 'model');
         $this->assertTrue( $params[0]->isArray() == false);
         $this->assertTrue( $params[0]->isOptional () == false);
-    }
+    }*/
 
     /**
     * @covers G::is_rwritable

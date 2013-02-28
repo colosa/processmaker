@@ -45,7 +45,7 @@ class classXmlForm_Field_XmlMenuTest extends PHPUnit_Framework_TestCase
     */
     public function testNumberOfMethodsInThisClass()
     {
-        $methods = get_class_methods('XmlForm_Field_XmlMenu');        $this->assertTrue( count($methods) == 25);
+        $methods = get_class_methods('XmlForm_Field_XmlMenu');        $this->assertTrue( count($methods) == 26);
     }
 
     /**
@@ -63,13 +63,13 @@ class classXmlForm_Field_XmlMenuTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $params[0]->isOptional () == false);
         $this->assertTrue( $params[1]->getName() == 'lang');
         $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == false);
+        $this->assertTrue( $params[1]->isOptional () == true);
         $this->assertTrue( $params[2]->getName() == 'home');
         $this->assertTrue( $params[2]->isArray() == false);
-        $this->assertTrue( $params[2]->isOptional () == false);
+        $this->assertTrue( $params[2]->isOptional () == true);
         $this->assertTrue( $params[3]->getName() == 'owner');
         $this->assertTrue( $params[3]->isArray() == false);
-        $this->assertTrue( $params[3]->isOptional () == false);
+        $this->assertTrue( $params[3]->isOptional () == true);
     }
 
     /**
