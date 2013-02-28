@@ -34,7 +34,7 @@
  */
 class headPublisher
 {
-    private static $instance = null;
+    public static $instance = null;
     var $scriptFiles = array ();
     var $leimnudLoad = array ();
 
@@ -62,7 +62,7 @@ class headPublisher
     var $tplVariable = array ();
 
     var $translationsFile;
-    
+
     var $leimnudInitString = '  var leimnud = new maborak();
   leimnud.make({
     zip:true,
@@ -213,7 +213,7 @@ class headPublisher
 
         $this->addScriptFile( "/js/widgets/js-calendar/unicode-letter.js" );
         //$this->addScriptFile( "/js/widgets/js-calendar/lang/" . $sysLang . ".js" );
-        
+
         $head = '';
         $head .= '<TITLE>' . $this->title . "</TITLE>\n";
         foreach ($this->scriptFiles as $file) {
@@ -222,7 +222,7 @@ class headPublisher
         if(!in_array( $this->translationsFile, $this->scriptFiles)) {
             $head .= "<script type='text/javascript' src='" . $this->translationsFile . "'></script>\n";
         }
-        
+
         $head .= "<script type='text/javascript'>\n";
         $head .= $this->leimnudInitString;
         foreach ($this->leimnudLoad as $file) {
@@ -397,7 +397,7 @@ class headPublisher
     }
 
     function getExtJsLibraries ()
-    { 
+    {
         $script = '';
         if (isset( $this->extJsLibrary ) && is_array( $this->extJsLibrary )) {
             foreach ($this->extJsLibrary as $file) {
