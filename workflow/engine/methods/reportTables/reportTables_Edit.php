@@ -44,19 +44,19 @@ if (isset( $_GET['REP_TAB_UID'] )) {
     $aFields['FIELDS'] = array ();
     $aTheFields = getDynaformsVars( $aFields['PRO_UID'], false );
 }
-$aProcessFields[] = array ('FIELD_UID' => 'char','FIELD_NAME' => 'char'
-);
+
+$aProcessFields[] = array ('FIELD_UID' => 'char','FIELD_NAME' => 'char');
 $aTheFields = getDynaformsVars( $aFields['PRO_UID'], false );
 foreach ($aTheFields as $aField) {
-    $aProcessFields[] = array ('FIELD_UID' => $aField['sName'] . '-' . $aField['sType'],'FIELD_NAME' => $aField['sName']
-    );
+    if ($aField['sType'] != 'grid') {
+         $aProcessFields[] = array ('FIELD_UID' => $aField['sName'] . '-' . $aField['sType'],'FIELD_NAME' => $aField['sName']);
+    }
 }
 $aProcessGridFields[] = array ('FIELD_UID' => 'char','FIELD_NAME' => 'char'
 );
 $aTheFields = getGridsVars( $aFields['PRO_UID'] );
 foreach ($aTheFields as $aField) {
-    $aProcessGridFields[] = array ('FIELD_UID' => $aField['sName'] . '-' . $aField['sXmlForm'],'FIELD_NAME' => $aField['sName']
-    );
+    $aProcessGridFields[] = array ('FIELD_UID' => $aField['sName'] . '-' . $aField['sXmlForm'],'FIELD_NAME' => $aField['sName']);
 }
 global $_DBArray;
 $_DBArray['processFields'] = $aProcessFields;
