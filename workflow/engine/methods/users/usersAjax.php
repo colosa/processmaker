@@ -439,8 +439,13 @@ switch ($_POST['action']) {
         if ($aFields['USR_REPLACED_BY'] != '') {
             $user = new Users();
             $u = $user->load( $aFields['USR_REPLACED_BY'] );
-            $c = new Configurations();
-            $replaced_by = $c->usersNameFormat( $u['USR_USERNAME'], $u['USR_FIRSTNAME'], $u['USR_LASTNAME'] );
+            if ($u['USR_STATUS'] == 'CLOSED') {
+                $replaced_by = '';
+                $aFields['USR_REPLACED_BY'] = '';
+            } else {
+                $c = new Configurations();
+                $replaced_by = $c->usersNameFormat( $u['USR_USERNAME'], $u['USR_FIRSTNAME'], $u['USR_LASTNAME'] );
+            }
         } else {
             $replaced_by = '';
         }
