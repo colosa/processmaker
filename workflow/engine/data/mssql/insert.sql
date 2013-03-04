@@ -1379,6 +1379,8 @@ SELECT 'LABEL','ID_USER_HAVENT_RIGHTS_PAGE','en','User does not have rights on t
   UNION ALL
 SELECT 'LABEL','ID_WRONG_PASS','en','Wrong password','2012-06-01' 
   UNION ALL
+SELECT 'LABEL','WRONG_LOGIN_CREDENTIALS','en','Wrong login credentials','2013-03-04' 
+  UNION ALL
 SELECT 'LABEL','ABOUT','en','About','2012-06-01' 
   UNION ALL
 SELECT 'LABEL','ID_PROCESSMAP_MESSAGES','en','Messages','2012-06-01' 

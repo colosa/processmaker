@@ -1375,6 +1375,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','CASES','en','Cases','2012-06-01') ,
 ( 'LABEL','ID_USER_HAVENT_RIGHTS_PAGE','en','User does not have rights on this page.','2012-06-01') ,
 ( 'LABEL','ID_WRONG_PASS','en','Wrong password','2012-06-01') ,
+( 'LABEL','WRONG_LOGIN_CREDENTIALS','en','Wrong login credentials','2013-03-04') ,
 ( 'LABEL','ABOUT','en','About','2012-06-01') ,
 ( 'LABEL','ID_PROCESSMAP_MESSAGES','en','Messages','2012-06-01') ,
 ( 'JAVASCRIPT','demo','en','test javaScript','2012-06-01') ,
