@@ -86,7 +86,7 @@ class workspaceTools
 
         $start = microtime( true );
         CLI::logging( "> Updating cache view...\n" );
-        $this->upgradeCacheView( $buildCacheView );
+        $this->upgradeCacheView( $buildCacheView, true);
         $stop = microtime( true );
         $final = $stop - $start;
         CLI::logging( "<*>   Process Updating cache view carried out in $final seconds.\n" );
@@ -427,7 +427,7 @@ class workspaceTools
      * @param bool $checkOnly only check if the upgrade is needed if true
      * @param string $lang not currently used
      */
-    public function upgradeCacheView ($fill = true)
+    public function upgradeCacheView ($fill = true, $checkOnly = false)
     {
         $this->initPropel( true );
 
