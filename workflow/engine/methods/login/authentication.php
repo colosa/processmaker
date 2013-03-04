@@ -46,12 +46,11 @@ try {
         switch ($uid) {
             //The user does doesn't exist
             case -1:
-                $errLabel = 'ID_USER_NOT_REGISTERED';
+                $errLabel = 'WRONG_LOGIN_CREDENTIALS';
                 break;
             //The password is incorrect
             case -2:
-                $errLabel = 'ID_WRONG_PASS';
-
+                $errLabel = 'WRONG_LOGIN_CREDENTIALS';
                 if (isset($_SESSION['__AUTH_ERROR__'])) {
                     G::SendMessageText($_SESSION['__AUTH_ERROR__'], "warning");
                     unset($_SESSION['__AUTH_ERROR__']);
@@ -87,7 +86,7 @@ try {
         //to avoid empty string in user field.  This will avoid a weird message "this row doesn't exist"
         if ( !isset($uid) ) {
             $uid = -1;
-            $errLabel = 'ID_USER_NOT_REGISTERED';
+            $errLabel = 'WRONG_LOGIN_CREDENTIALS';
         }
 
         if (!isset($uid) || $uid < 0) {
