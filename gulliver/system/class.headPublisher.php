@@ -25,6 +25,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
+
 /**
  * Class headPublisher
  *
@@ -34,51 +35,50 @@
  */
 class headPublisher
 {
-    public static $instance = null;
-    var $scriptFiles = array ();
-    var $leimnudLoad = array ();
 
-    /* extJsSkin  init coreLoad flag*/
-    var $extJsInit = 'false';
-    /* extJsSkin  store the current skin for the ExtJs*/
-    var $extJsSkin = '';
+    public static $instance = null;
+    public $scriptFiles = array();
+    public $leimnudLoad = array();
+
+    /* extJsSkin  init coreLoad flag */
+    public $extJsInit = 'false';
+    /* extJsSkin  store the current skin for the ExtJs */
+    public $extJsSkin = '';
 
     /* extJsScript Array, to store the file to be include  */
-    var $extJsScript = array ();
+    public $extJsScript = array();
 
     /* extJsLibrary Array, to store extended ExtJs lybraries  */
-    var $extJsLibrary = array ();
+    public $extJsLibrary = array();
 
     /* extJsContent Array, to store the file to be include in the skin content  */
-    var $extJsContent = array ();
+    public $extJsContent = array();
 
     /* extVariable array, to store the variables generated in PHP, and used in JavaScript */
-    var $extVariable = array ();
+    public $extVariable = array();
 
     /* variable array, to store the variables generated in PHP, and used in JavaScript */
-    var $vars = array ();
+    public $vars = array();
 
     /* tplVariable array, to store the variables for template power */
-    var $tplVariable = array ();
-
-    var $translationsFile;
-
-    var $leimnudInitString = '  var leimnud = new maborak();
+    public $tplVariable = array();
+    public $translationsFile;
+    public $leimnudInitString = '  var leimnud = new maborak();
   leimnud.make({
     zip:true,
     inGulliver:true,
     modules :"dom,abbr,rpc,drag,drop,app,panel,fx,grid,xmlform,validator,dashboard",
     files :""
   });';
-    var $headerScript = '
+    public $headerScript = '
   try{
     leimnud.exec(leimnud.fix.memoryLeak);
     if(leimnud.browser.isIphone){
       leimnud.iphone.make();
     }
   }catch(e){}';
-    var $disableHeaderScripts = false;
-    var $title = '';
+    public $disableHeaderScripts = false;
+    public $title = '';
 
     /**
      * Function headPublisher
@@ -87,14 +87,13 @@ class headPublisher
      * @access public
      * @return string
      */
-
-    public function __construct ()
+    public function __construct()
     {
-        $this->addScriptFile( "/js/maborak/core/maborak.js" );
+        $this->addScriptFile("/js/maborak/core/maborak.js");
         $this->translationsFile = "/js/ext/translation." . SYS_LANG . ".js";
     }
 
-    function &getSingleton ()
+    public function &getSingleton()
     {
         if (self::$instance == null) {
             self::$instance = new headPublisher();
@@ -111,7 +110,7 @@ class headPublisher
      * @param eter string LoadType
      * @return string
      */
-    function setTitle ($title)
+    public function setTitle($title)
     {
         $this->title = $title;
     }
@@ -125,7 +124,7 @@ class headPublisher
      * @param eter string LoadType
      * @return string
      */
-    function addScriptFile ($url, $LoadType = 1)
+    public function addScriptFile($url, $LoadType = 1)
     {
         if ($LoadType == 1) {
             $this->scriptFiles[$url] = $url;
@@ -144,8 +143,7 @@ class headPublisher
      * @param eter string module
      * @return string
      */
-
-    function addInstanceModule ($instance, $module)
+    public function addInstanceModule($instance, $module)
     {
         $this->headerScript .= "leimnud.Package.Load('" . $module . "',{Instance:" . $instance . ",Type:'module'});\n";
     }
@@ -159,7 +157,7 @@ class headPublisher
      * @param eter string module
      * @return string
      */
-    function addClassModule ($class, $module)
+    public function addClassModule($class, $module)
     {
         $this->headerScript .= "leimnud.Package.Load('" . $module . "',{Class:" . $class . ",Type:'module'});\n";
     }
@@ -172,7 +170,7 @@ class headPublisher
      * @param eter string script
      * @return string
      */
-    function addScriptCode ($script)
+    public function addScriptCode($script)
     {
         $this->headerScript .= $script;
     }
@@ -184,34 +182,33 @@ class headPublisher
      * @access public
      * @return string
      */
-    function printHeader ()
+    public function printHeader()
     {
         $jslabel = 'labels/en.js';
-        if (defined( 'SYS_LANG' )) {
+        if (defined('SYS_LANG')) {
             $jslabel = 'labels' . PATH_SEP . SYS_LANG . '.js';
-            if (! file_exists( PATH_CORE . 'js' . PATH_SEP . $jslabel )) {
+            if (!file_exists(PATH_CORE . 'js' . PATH_SEP . $jslabel)) {
                 $jslabel = 'labels/en.js';
             }
         }
-        if (file_exists( PATH_CORE . 'js' . PATH_SEP . $jslabel )) {
-            $this->addScriptFile( '/jscore/' . $jslabel, 1 );
+        if (file_exists(PATH_CORE . 'js' . PATH_SEP . $jslabel)) {
+            $this->addScriptFile('/jscore/' . $jslabel, 1);
         }
         if ($this->disableHeaderScripts) {
             return '';
         }
 
         // available js-calendar languages array
-        $availableJsCalendarLang = array ('ca','cn','cz','de','en','es','fr','it','jp','nl','pl','pt','ro','ru','sv'
-        );
+        $availableJsCalendarLang = array('ca', 'cn', 'cz', 'de', 'en', 'es', 'fr', 'it', 'jp', 'nl', 'pl', 'pt', 'ro', 'ru', 'sv');
 
         // get the system language without locale
-        $sysLang = explode( '-', SYS_LANG );
+        $sysLang = explode('-', SYS_LANG);
         $sysLang = $sysLang[0];
 
         // verify if the requested lang by the system is supported by js-calendar library, if not set english by default
-        $sysLang = in_array( $sysLang, $availableJsCalendarLang ) ? $sysLang : 'en';
+        $sysLang = in_array($sysLang, $availableJsCalendarLang) ? $sysLang : 'en';
 
-        $this->addScriptFile( "/js/widgets/js-calendar/unicode-letter.js" );
+        $this->addScriptFile("/js/widgets/js-calendar/unicode-letter.js");
         //$this->addScriptFile( "/js/widgets/js-calendar/lang/" . $sysLang . ".js" );
 
         $head = '';
@@ -219,7 +216,7 @@ class headPublisher
         foreach ($this->scriptFiles as $file) {
             $head .= "<script type='text/javascript' src='" . $file . "'></script>\n";
         }
-        if(!in_array( $this->translationsFile, $this->scriptFiles)) {
+        if (!in_array($this->translationsFile, $this->scriptFiles)) {
             $head .= "<script type='text/javascript' src='" . $this->translationsFile . "'></script>\n";
         }
 
@@ -245,12 +242,12 @@ class headPublisher
      * @access public
      * @return string
      */
-    function printRawHeader ()
+    public function printRawHeader()
     {
         $jslabel = '/jscore/labels/en.js';
-        if (defined( 'SYS_LANG' )) {
+        if (defined('SYS_LANG')) {
             $jslabel1 = 'labels' . PATH_SEP . SYS_LANG . '.js';
-            if (! file_exists( PATH_CORE . 'js' . PATH_SEP . $jslabel1 )) {
+            if (!file_exists(PATH_CORE . 'js' . PATH_SEP . $jslabel1)) {
                 $jslabel = '/jscore/labels/en.js';
             }
         }
@@ -265,7 +262,7 @@ class headPublisher
             $head .= "  eval(ajax_function('" . $file . "','',''));\n";
         }
         //Adapts the add events on load to simple javascript sentences.
-        $this->headerScript = preg_replace( '/\s*leimnud.event.add\s*\(\s*window\s*,\s*(?:\'|")load(?:\'|")\s*,\s*function\(\)\{(.+)\}\s*\)\s*;?/', '$1', $this->headerScript );
+        $this->headerScript = preg_replace('/\s*leimnud.event.add\s*\(\s*window\s*,\s*(?:\'|")load(?:\'|")\s*,\s*function\(\)\{(.+)\}\s*\)\s*;?/', '$1', $this->headerScript);
         $head .= $this->headerScript;
         //$head .= "</script>\n";
         return $head;
@@ -279,10 +276,10 @@ class headPublisher
      * @access public
      * @return string
      */
-    function clearScripts ()
+    public function clearScripts()
     {
-        $this->scriptFiles = array ();
-        $this->leimnudLoad = array ();
+        $this->scriptFiles = array();
+        $this->leimnudLoad = array();
         $this->leimnudInitString = '';
         $this->headerScript = '';
     }
@@ -298,14 +295,14 @@ class headPublisher
      * @access public
      * @return string
      */
-    function includeExtJs ()
+    public function includeExtJs()
     {
         $this->clearScripts();
         $head = '';
         $head .= "  <script type='text/javascript' src='/js/ext/ext-base.js'></script>\n";
         $head .= "  <script type='text/javascript' src='/js/ext/ext-all.js'></script>\n";
-        $aux = explode( '-', strtolower( SYS_LANG ) );
-        if (($aux[0] != 'en') && file_exists( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'ext' . PATH_SEP . 'locale' . PATH_SEP . 'ext-lang-' . $aux[0] . '.js' )) {
+        $aux = explode('-', strtolower(SYS_LANG));
+        if (($aux[0] != 'en') && file_exists(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'ext' . PATH_SEP . 'locale' . PATH_SEP . 'ext-lang-' . $aux[0] . '.js')) {
             $head .= "  <script type='text/javascript' src='/js/ext/locale/ext-lang-" . $aux[0] . ".js'></script>\n";
         }
 
@@ -315,7 +312,7 @@ class headPublisher
         // $head .= "  <script type='text/javascript' src='/js/ext/draw2d.js'></script>\n";
         // $head .= "  <script type='text/javascript' src='/js/ext/translation." . SYS_LANG . ".js'></script>\n";
 
-        if (! isset( $this->extJsSkin ) || $this->extJsSkin == '') {
+        if (!isset($this->extJsSkin) || $this->extJsSkin == '') {
             $this->extJsSkin = 'xtheme-gray';
             //$this->extJsSkin = 'gtheme';
         }
@@ -323,34 +320,34 @@ class headPublisher
         $head .= $this->getExtJsScripts();
         $head .= $this->getExtJsVariablesScript();
         $oServerConf = & serverConf::getSingleton();
-        if ($oServerConf->isRtl( SYS_LANG )) {
+        if ($oServerConf->isRtl(SYS_LANG)) {
             $head .= "  <script type='text/javascript' src='/js/ext/extjs_rtl.js'></script>\n";
         }
 
         return $head;
     }
 
-    function getExtJsStylesheets ($skinName)
+    public function getExtJsStylesheets($skinName)
     {
         $script = "  <link rel='stylesheet' type='text/css' href='/css/$skinName.css' />\n";
         //$script .= "  <script type='text/javascript' src='/js/ext/translation." . SYS_LANG . ".js'></script>\n";
         /*
-        $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/ext-all-notheme.css' />\n";
-        $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/" . $this->extJsSkin.".css' />\n";
+          $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/ext-all-notheme.css' />\n";
+          $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/" . $this->extJsSkin.".css' />\n";
 
-        // <!-- DEPRECATED, this will be removed in a future - the three next lines
-        if (file_exists ( PATH_HTML . 'skins' . PATH_SEP . 'ext' . PATH_SEP . 'pmos-' . $this->extJsSkin . '.css' )) {
+          // <!-- DEPRECATED, this will be removed in a future - the three next lines
+          if (file_exists ( PATH_HTML . 'skins' . PATH_SEP . 'ext' . PATH_SEP . 'pmos-' . $this->extJsSkin . '.css' )) {
           $script .= "  <link rel='stylesheet' type='text/css' href='/skins/ext/pmos-" . $this->extJsSkin . ".css' />\n";
-        }
-        //DEPRECATED, this will be removed in a future -->
+          }
+          //DEPRECATED, this will be removed in a future -->
 
-        //new interactive css decorator
-        $script .= "  <link rel='stylesheet' type='text/css' href='/gulliver/loader?t=extjs-cssExtended&s=".$this->extJsSkin."' />\n";
-        $script .= "  <link rel='stylesheet' type='text/css' href='/images/icons_silk/sprite.css' />\n";
-        */
+          //new interactive css decorator
+          $script .= "  <link rel='stylesheet' type='text/css' href='/gulliver/loader?t=extjs-cssExtended&s=".$this->extJsSkin."' />\n";
+          $script .= "  <link rel='stylesheet' type='text/css' href='/images/icons_silk/sprite.css' />\n";
+         */
         // Load external/plugin css
         // NOTE is necesary to move this to decorator server
-        if (class_exists( 'PMPluginRegistry' )) {
+        if (class_exists('PMPluginRegistry')) {
             $oPluginRegistry = & PMPluginRegistry::getSingleton();
             $registeredCss = $oPluginRegistry->getRegisteredCss();
             foreach ($registeredCss as $cssFile) {
@@ -360,10 +357,10 @@ class headPublisher
         return $script;
     }
 
-    function getExtJsScripts ()
+    public function getExtJsScripts()
     {
         $script = '';
-        if (isset( $this->extJsScript ) && is_array( $this->extJsScript )) {
+        if (isset($this->extJsScript) && is_array($this->extJsScript)) {
             foreach ($this->extJsScript as $key => $file) {
                 $script .= "  <script type='text/javascript' src='" . $file . ".js'></script>\n";
             }
@@ -371,40 +368,40 @@ class headPublisher
         return $script;
     }
 
-    function getExtJsVariablesScript ()
+    public function getExtJsVariablesScript()
     {
         $script = '';
-        if (count( $this->extVariable ) > 0) {
+        if (count($this->extVariable) > 0) {
             $script = "<script language='javascript'>\n";
             foreach ($this->extVariable as $key => $val) {
                 $name = $val['name'];
                 $value = $val['value'];
-                $variablesValues = G::json_encode( $value );
-                $variablesValues = $this->stripCodeQuotes( $variablesValues );
+                $variablesValues = G::json_encode($value);
+                $variablesValues = $this->stripCodeQuotes($variablesValues);
                 //        var_dump($variablesValues);
                 //        echo "<br>";
                 $script .= "  var $name = " . $variablesValues . ";\n";
                 /*
-                if ($val ['type'] == 'number')
+                  if ($val ['type'] == 'number')
                   $script .= "  var $name = $value;\n";
-                else
+                  else
                   $script .= "  var $name = '$value';\n";
-                */
+                 */
             }
             $script .= "</script>\n";
         }
         return $script;
     }
 
-    function getExtJsLibraries ()
+    public function getExtJsLibraries()
     {
         $script = '';
-        if (isset( $this->extJsLibrary ) && is_array( $this->extJsLibrary )) {
+        if (isset($this->extJsLibrary) && is_array($this->extJsLibrary)) {
             foreach ($this->extJsLibrary as $file) {
                 $script .= "  <script type='text/javascript' src='/js/ext/" . $file . ".js'></script>\n";
             }
         }
-        if(!in_array( $this->translationsFile, $this->extJsLibrary)) {
+        if (!in_array($this->translationsFile, $this->extJsLibrary)) {
             $script .= "  <script type='text/javascript' src='" . $this->translationsFile . "'></script>\n";
         }
         return $script;
@@ -418,12 +415,12 @@ class headPublisher
      * @param (String) http js path library
      * @return none
      */
-    function usingExtJs ($library)
+    public function usingExtJs($library)
     {
-        if (! is_string( $library )) {
-            throw new Exception( 'headPublisher::usingExt->ERROR - the parameter should be a js path string' );
+        if (!is_string($library)) {
+            throw new Exception('headPublisher::usingExt->ERROR - the parameter should be a js path string');
         }
-        array_push( $this->extJsLibrary, $library );
+        array_push($this->extJsLibrary, $library);
     }
 
     /**
@@ -433,7 +430,7 @@ class headPublisher
      * @access public
      * @return string
      */
-    function setExtSkin ($skin)
+    public function setExtSkin($skin)
     {
         $this->extJsSkin = $skin;
     }
@@ -455,72 +452,72 @@ class headPublisher
      * @access public
      * @return string
      */
-    function addExtJsScript ($filename, $debug = false, $isExternal = false)
+    public function addExtJsScript($filename, $debug = false, $isExternal = false)
     {
         $sPath = PATH_TPL;
         //if the template  file doesn't exists, then try with the plugins folders
 
 
-        if (! is_file( $sPath . $filename . ".js" )) {
-            $aux = explode( PATH_SEP, $filename );
+        if (!is_file($sPath . $filename . ".js")) {
+            $aux = explode(PATH_SEP, $filename);
             //check if G_PLUGIN_CLASS is defined, because publisher can be called without an environment
-            if (count( $aux ) == 2 && defined( 'G_PLUGIN_CLASS' )) {
+            if (count($aux) == 2 && defined('G_PLUGIN_CLASS')) {
                 $oPluginRegistry = & PMPluginRegistry::getSingleton();
-                if ($oPluginRegistry->isRegisteredFolder( $aux[0] )) {
+                if ($oPluginRegistry->isRegisteredFolder($aux[0])) {
                     $sPath = PATH_PLUGINS;
                 }
             }
         }
 
-        if (! $isExternal) {
+        if (!$isExternal) {
             $jsFilename = $sPath . $filename . '.js';
         } else {
             $jsFilename = $filename . '.js';
         }
 
-        if (! file_exists( $jsFilename )) {
+        if (!file_exists($jsFilename)) {
             return;
         }
 
-        $mtime = filemtime( $jsFilename );
-        G::mk_dir( PATH_C . 'ExtJs' );
+        $mtime = filemtime($jsFilename);
+        G::mk_dir(PATH_C . 'ExtJs');
         if ($debug) {
-            $cacheName = str_replace( '/', '_', $filename );
+            $cacheName = str_replace('/', '_', $filename);
             $cacheFilename = PATH_C . 'ExtJs' . PATH_SEP . $cacheName . '.js';
-            file_put_contents( $cacheFilename, file_get_contents( $jsFilename ) );
+            file_put_contents($cacheFilename, file_get_contents($jsFilename));
         } else {
-            $cacheName = md5( $mtime . $jsFilename );
+            $cacheName = md5($mtime . $jsFilename);
             $cacheFilename = PATH_C . 'ExtJs' . PATH_SEP . $cacheName . '.js';
 
-            if (! file_exists( $cacheFilename )) {
+            if (!file_exists($cacheFilename)) {
                 require_once (PATH_THIRDPARTY . 'jsmin/jsmin.php');
-                $content = JSMin::minify( file_get_contents( $jsFilename ) );
-                file_put_contents( $cacheFilename, $content );
+                $content = JSMin::minify(file_get_contents($jsFilename));
+                file_put_contents($cacheFilename, $content);
             }
         }
 
         $this->extJsScript[] = '/extjs/' . $cacheName;
 
         //hook for registered javascripts from plugins
-        if (class_exists( 'PMPluginRegistry' )) {
+        if (class_exists('PMPluginRegistry')) {
             $oPluginRegistry = & PMPluginRegistry::getSingleton();
-            $pluginJavascripts = $oPluginRegistry->getRegisteredJavascriptBy( $filename );
+            $pluginJavascripts = $oPluginRegistry->getRegisteredJavascriptBy($filename);
         } else {
-            $pluginJavascripts = array ();
+            $pluginJavascripts = array();
         }
 
-        if (count( $pluginJavascripts ) > 0) {
+        if (count($pluginJavascripts) > 0) {
             if ($debug) {
                 foreach ($pluginJavascripts as $pluginJsFile) {
                     $jsPluginCacheName = '';
-                    if (substr( $pluginJsFile, - 3 ) != '.js') {
+                    if (substr($pluginJsFile, - 3) != '.js') {
                         $pluginJsFile .= '.js';
                     }
 
-                    if (file_exists( PATH_PLUGINS . $pluginJsFile )) {
-                        $jsPluginCacheName = str_replace( '/', '_', str_replace( '.js', '', $pluginJsFile ) );
+                    if (file_exists(PATH_PLUGINS . $pluginJsFile)) {
+                        $jsPluginCacheName = str_replace('/', '_', str_replace('.js', '', $pluginJsFile));
                         $cacheFilename = PATH_C . 'ExtJs' . PATH_SEP . $jsPluginCacheName . ".js";
-                        file_put_contents( $cacheFilename, file_get_contents( PATH_PLUGINS . $pluginJsFile ) );
+                        file_put_contents($cacheFilename, file_get_contents(PATH_PLUGINS . $pluginJsFile));
                     }
                     if ($jsPluginCacheName != '') {
                         $this->extJsScript[] = '/extjs/' . $jsPluginCacheName;
@@ -529,18 +526,18 @@ class headPublisher
             } else {
                 foreach ($pluginJavascripts as $pluginJsFile) {
                     $jsPluginCacheName = '';
-                    if (substr( $pluginJsFile, - 3 ) !== '.js') {
+                    if (substr($pluginJsFile, - 3) !== '.js') {
                         $pluginJsFile .= '.js';
                     }
-                    if (file_exists( PATH_PLUGINS . $pluginJsFile )) {
-                        $mtime = filemtime( PATH_PLUGINS . $pluginJsFile );
-                        $jsPluginCacheName = md5( $mtime . $pluginJsFile );
+                    if (file_exists(PATH_PLUGINS . $pluginJsFile)) {
+                        $mtime = filemtime(PATH_PLUGINS . $pluginJsFile);
+                        $jsPluginCacheName = md5($mtime . $pluginJsFile);
                         $cacheFilename = PATH_C . 'ExtJs' . PATH_SEP . $jsPluginCacheName . '.js';
 
-                        if (! file_exists( $cacheFilename )) {
+                        if (!file_exists($cacheFilename)) {
                             require_once (PATH_THIRDPARTY . 'jsmin/jsmin.php');
-                            $content = JSMin::minify( file_get_contents( PATH_PLUGINS . $pluginJsFile ) );
-                            file_put_contents( $cacheFilename, $content );
+                            $content = JSMin::minify(file_get_contents(PATH_PLUGINS . $pluginJsFile));
+                            file_put_contents($cacheFilename, $content);
                         }
                     }
                     if ($jsPluginCacheName != '') {
@@ -565,12 +562,12 @@ class headPublisher
      * @access public
      * @return string
      */
-    function AddContent ($templateHtml)
+    public function AddContent($templateHtml)
     {
         $this->extJsContent[] = $templateHtml;
     }
 
-    function getContent ()
+    public function getContent()
     {
         return $this->extJsContent;
     }
@@ -584,18 +581,18 @@ class headPublisher
      * @access public
      * @return string
      */
-    function Assign ($variable, $value)
+    public function Assign($variable, $value)
     {
-        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'string'
+        $this->extVariable[] = array('name' => $variable, 'value' => $value, 'type' => 'string'
         );
     }
 
-    function AssignVar ($name, $value)
+    public function AssignVar($name, $value)
     {
         $this->vars[$name] = $value;
     }
 
-    function getVars ()
+    public function getVars()
     {
         return $this->vars;
     }
@@ -609,10 +606,9 @@ class headPublisher
      * @access public
      * @return string
      */
-    function AssignNumber ($variable, $value)
+    public function AssignNumber($variable, $value)
     {
-        $this->extVariable[] = array ('name' => $variable,'value' => $value,'type' => 'number'
-        );
+        $this->extVariable[] = array('name' => $variable, 'value' => $value, 'type' => 'number');
     }
 
     /**
@@ -624,29 +620,29 @@ class headPublisher
      * @access public
      * @return string
      */
-    function renderExtJs ()
+    public function renderExtJs()
     {
         $body = '';
-        if (isset( $this->extJsContent ) && is_array( $this->extJsContent )) {
+        if (isset($this->extJsContent) && is_array($this->extJsContent)) {
             foreach ($this->extJsContent as $key => $file) {
                 $sPath = PATH_TPL;
                 //if the template  file doesn't exists, then try with the plugins folders
-                if (! is_file( $sPath . $file . ".html" )) {
-                    $aux = explode( PATH_SEP, $file );
+                if (!is_file($sPath . $file . ".html")) {
+                    $aux = explode(PATH_SEP, $file);
                     //check if G_PLUGIN_CLASS is defined, because publisher can be called without an environment
-                    if (count( $aux ) == 2 && defined( 'G_PLUGIN_CLASS' )) {
+                    if (count($aux) == 2 && defined('G_PLUGIN_CLASS')) {
                         $oPluginRegistry = & PMPluginRegistry::getSingleton();
-                        if ($oPluginRegistry->isRegisteredFolder( $aux[0] )) {
+                        if ($oPluginRegistry->isRegisteredFolder($aux[0])) {
                             $sPath = PATH_PLUGINS;
                         }
                     }
                 }
 
-                $template = new TemplatePower( $sPath . $file . '.html' );
+                $template = new TemplatePower($sPath . $file . '.html');
                 $template->prepare();
 
                 foreach ($this->getVars() as $k => $v) {
-                    $template->assign( $k, $v );
+                    $template->assign($k, $v);
                 }
 
                 $body .= $template->getOutputContent();
@@ -655,24 +651,24 @@ class headPublisher
         return $body;
     }
 
-    function stripCodeQuotes ($sJson)
+    public function stripCodeQuotes($sJson)
     {
-        $fields = array ("editor","renderer"
+        $fields = array("editor", "renderer"
         );
         foreach ($fields as $field) {
             $pattern = '/"(' . $field . ')":"[a-zA-Z.()]*"/';
             //      echo $pattern."<br>";
-            preg_match( $pattern, $sJson, $matches );
+            preg_match($pattern, $sJson, $matches);
             //      var_dump ($matches);
-                //      echo "<br>";
-            if (! empty( $matches )) {
+            //      echo "<br>";
+            if (!empty($matches)) {
                 $rendererMatch = $matches[0];
-                $replaceBy = explode( ":", $matches[0] );
-                $replaceBy[1] = str_replace( '"', '', $replaceBy[1] );
-                $tmpString = implode( ":", $replaceBy );
-                $sJson = str_replace( $rendererMatch, $tmpString, $sJson );
+                $replaceBy = explode(":", $matches[0]);
+                $replaceBy[1] = str_replace('"', '', $replaceBy[1]);
+                $tmpString = implode(":", $replaceBy);
+                $sJson = str_replace($rendererMatch, $tmpString, $sJson);
                 //        var_dump ($sJson);
-                    //        echo "<br>";
+                //        echo "<br>";
             }
         }
         return $sJson;
@@ -687,9 +683,9 @@ class headPublisher
      * @access public
      * @return string
      */
-    function disableHeaderScripts ()
+    public function disableHeaderScripts()
     {
         $this->disableHeaderScripts = true;
     }
 }
-
+ 
