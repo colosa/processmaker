@@ -33,8 +33,8 @@
  */
 class ToolBar extends form
 {
-    var $type = 'toolbar';
-    var $align = 'left';
+    public $type = 'toolbar';
+    public $align = 'left';
 }
 
 /**
@@ -44,11 +44,12 @@ class ToolBar extends form
  */
 class XmlForm_Field_ToolBar extends XmlForm_Field
 {
-    var $xmlfile = '';
-    var $type = 'toolbar';
-    var $toolBar;
-    var $home = '';
-    var $withoutLabel = true;
+
+    public $xmlfile = '';
+    public $type = 'toolbar';
+    public $toolBar;
+    public $home = '';
+    public $withoutLabel = true;
 
     /**
      * Constructor of the class XmlForm_Field_ToolBar
@@ -59,9 +60,9 @@ class XmlForm_Field_ToolBar extends XmlForm_Field
      * @param string $owner
      * @return void
      */
-    function XmlForm_Field_ToolBar ($xmlNode, $lang = 'en', $home = '', $owner)
+    public function XmlForm_Field_ToolBar($xmlNode, $lang = 'en', $home = '', $owner = ' ')
     {
-        parent::XmlForm_Field( $xmlNode, $lang, $home, $owner );
+        parent::XmlForm_Field($xmlNode, $lang, $home, $owner);
         $this->home = $home;
     }
 
@@ -71,14 +72,14 @@ class XmlForm_Field_ToolBar extends XmlForm_Field
      * @param string $value
      * @return string
      */
-    function render ($value)
+    public function render($value)
     {
-        $this->toolBar = new toolBar( $this->xmlfile, $this->home );
+        $this->toolBar = new toolBar($this->xmlfile, $this->home);
         $template = PATH_CORE . 'templates/' . $this->type . '.html';
-        $out = $this->toolBar->render( $template, $scriptCode );
+        $out = $this->toolBar->render($template, $scriptCode);
         $oHeadPublisher = & headPublisher::getSingleton();
-        $oHeadPublisher->addScriptFile( $this->toolBar->scriptURL );
-        $oHeadPublisher->addScriptCode( $scriptCode );
+        $oHeadPublisher->addScriptFile($this->toolBar->scriptURL);
+        $oHeadPublisher->addScriptCode($scriptCode);
         return $out;
     }
 }
@@ -90,23 +91,24 @@ class XmlForm_Field_ToolBar extends XmlForm_Field
  */
 class XmlForm_Field_toolButton extends XmlForm_Field
 {
-    var $file = '';
-    var $fileAlt = '';
-    var $url = '';
-    var $urlAlt = '';
-    var $home = 'public_html';
+
+    public $file = '';
+    public $fileAlt = '';
+    public $url = '';
+    public $urlAlt = '';
+    public $home = 'public_html';
     /* types of buttons:
      *    image
      *    text
      *    image/text
      *    text/image
      */
-    var $buttonType = 'image';
-    var $withoutLabel = false;
-    var $buttonStyle = '';
-    /*$hoverMethod : back | switch*/
-    var $hoverMethod = 'back';
-    var $class;
+    public $buttonType = 'image';
+    public $withoutLabel = false;
+    public $buttonStyle = '';
+    /* $hoverMethod : back | switch */
+    public $hoverMethod = 'back';
+    public $class;
 
     /**
      * Prints the components of the toolBar
@@ -114,19 +116,23 @@ class XmlForm_Field_toolButton extends XmlForm_Field
      * @param string $value
      * @return string
      */
-    function render ($value)
+    public function render($value)
     {
         $url = $this->file;
-        if ($this->home === "methods")
-            $url = G::encryptlink( SYS_URI . $url );
-        if ($this->home === "public_html")
+        if ($this->home === "methods") {
+            $url = G::encryptlink(SYS_URI . $url);
+        }
+        if ($this->home === "public_html") {
             $url = '/' . $url;
+        }
         $urlAlt = $this->fileAlt;
         if ($this->fileAlt !== '') {
-            if ($this->home === "methods")
-                $urlAlt = G::encryptlink( SYS_URI . $urlAlt );
-            if ($this->home === "public_html")
+            if ($this->home === "methods") {
+                $urlAlt = G::encryptlink(SYS_URI . $urlAlt);
+            }
+            if ($this->home === "public_html") {
                 $urlAlt = '/' . $urlAlt;
+            }
         }
         $this->url = $url;
         $this->urlAlt = $urlAlt;
@@ -134,26 +140,26 @@ class XmlForm_Field_toolButton extends XmlForm_Field
             case 'image':
                 $html = '';
                 if ($this->hoverMethod === 'back') {
-                    $html = '<img src="' . htmlentities( $url, ENT_QUOTES, 'utf-8' ) . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . ' onmouseover=\'backImage(this,"url(' . htmlentities( $urlAlt, ENT_QUOTES, 'utf-8' ) . ') no-repeat")\' onmouseout=\'backImage(this,"")\' title=\'' . addslashes( $this->label ) . '\' />';
+                    $html = '<img src="' . htmlentities($url, ENT_QUOTES, 'utf-8') . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . ' onmouseover=\'backImage(this,"url(' . htmlentities($urlAlt, ENT_QUOTES, 'utf-8') . ') no-repeat")\' onmouseout=\'backImage(this,"")\' title=\'' . addslashes($this->label) . '\' />';
                 } elseif ($this->hoverMethod === 'switch') {
-                    $html = '<img src="' . htmlentities( $url, ENT_QUOTES, 'utf-8' ) . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . ' onmouseover=\'switchImage(this,"' . htmlentities( $url, ENT_QUOTES, 'utf-8' ) . '","' . htmlentities( $urlAlt, ENT_QUOTES, 'utf-8' ) . '")\' onmouseout=\'switchImage(this,"' . htmlentities( $url, ENT_QUOTES, 'utf-8' ) . '","' . htmlentities( $urlAlt, ENT_QUOTES, 'utf-8' ) . '")\'/>';
+                    $html = '<img src="' . htmlentities($url, ENT_QUOTES, 'utf-8') . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . ' onmouseover=\'switchImage(this,"' . htmlentities($url, ENT_QUOTES, 'utf-8') . '","' . htmlentities($urlAlt, ENT_QUOTES, 'utf-8') . '")\' onmouseout=\'switchImage(this,"' . htmlentities($url, ENT_QUOTES, 'utf-8') . '","' . htmlentities($urlAlt, ENT_QUOTES, 'utf-8') . '")\'/>';
                 } else {
-                    $html = '<img src="' . htmlentities( $url, ENT_QUOTES, 'utf-8' ) . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . '/>';
+                    $html = '<img src="' . htmlentities($url, ENT_QUOTES, 'utf-8') . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . '/>';
                 }
                 break;
             case 'text':
-                $html = $this->htmlentities( $this->label, ENT_QUOTES, 'utf-8' );
+                $html = $this->htmlentities($this->label, ENT_QUOTES, 'utf-8');
                 break;
             case 'html':
-                $html = '<div ' . ' onmouseover=\'backImage(this,"url(' . htmlentities( $urlAlt, ENT_QUOTES, 'utf-8' ) . ') no-repeat")\' onmouseout=\'backImage(this,"")\'  style="width:25px;height:25px;margin-bottom:3px">' . $this->label . '</div>';
+                $html = '<div ' . ' onmouseover=\'backImage(this,"url(' . htmlentities($urlAlt, ENT_QUOTES, 'utf-8') . ') no-repeat")\' onmouseout=\'backImage(this,"")\'  style="width:25px;height:25px;margin-bottom:3px">' . $this->label . '</div>';
 
                 //$html=$this->label;
                 break;
             case 'image/text':
-                $html = '<img src="' . htmlentities( $url, ENT_QUOTES, 'utf-8' ) . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . '/><br/>' . $this->htmlentities( $this->label, ENT_QUOTES, 'utf-8' );
+                $html = '<img src="' . htmlentities($url, ENT_QUOTES, 'utf-8') . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . '/><br/>' . $this->htmlentities($this->label, ENT_QUOTES, 'utf-8');
                 break;
             case 'text/image':
-                $html = $this->htmlentities( $this->label, ENT_QUOTES, 'utf-8' ) . '<br/><img src="' . htmlentities( $url, ENT_QUOTES, 'utf-8' ) . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . '/>';
+                $html = $this->htmlentities($this->label, ENT_QUOTES, 'utf-8') . '<br/><img src="' . htmlentities($url, ENT_QUOTES, 'utf-8') . '"' . (($this->style) ? ' style="' . $this->style . '"' : '') . '/>';
                 break;
             case 'dropdown':
                 $html = '';
@@ -180,12 +186,11 @@ class XmlForm_Field_toolButton extends XmlForm_Field
                 break;
             case 'class':
                 $html = '<a href="#" onclick="' . $this->onclick . '" onmouseover="backImage(this, \'url(/images/dynamicForm/hover.gif) no-repeat\')" onmouseout="backImage(this, \'\')"  style="height:25px;margin-bottom:3px">
-                 <div class="' . $this->class . '" title="' . strip_tags( $this->label ) . '" style="height:25px;margin-bottom:3px"></div>
+                 <div class="' . $this->class . '" title="' . strip_tags($this->label) . '" style="height:25px;margin-bottom:3px"></div>
                </a>';
                 return $html;
-
         }
-        return '<a class="toolButton" ' . (($this->buttonStyle) ? ' style="' . $this->buttonStyle . '"' : '') . (($this->onclick) ? ' onclick="' . htmlentities( $this->onclick, ENT_QUOTES, 'utf-8' ) . '"' : '') . '>' . $html . '</a>';
+        return '<a class="toolButton" ' . (($this->buttonStyle) ? ' style="' . $this->buttonStyle . '"' : '') . (($this->onclick) ? ' onclick="' . htmlentities($this->onclick, ENT_QUOTES, 'utf-8') . '"' : '') . '>' . $html . '</a>';
     }
 }
-?>
+ 
