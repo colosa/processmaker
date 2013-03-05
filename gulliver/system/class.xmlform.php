@@ -5561,7 +5561,8 @@ class xmlformTemplate extends Smarty
                     // Fix data for grids
                     if (is_array($form->fields[$k]->fields)) {
                         foreach ($form->fields[$k]->fields as $gridFieldName => $gridField) {
-                            for ($i = 1; $i <= count($value); $i++) {
+                            $valueLength = count($value);
+                            for ($i = 1; $i <= $valueLength; $i++) {
                                 if (!isset($value[$i][$gridFieldName])) {
                                     switch ($gridField->type) {
                                         case 'checkbox':
