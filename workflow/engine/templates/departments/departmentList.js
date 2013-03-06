@@ -3,6 +3,25 @@
  * Jan 31th, 2011
  */
 
+function sizeHeight()
+{
+    var sHeight = 0;
+    if (typeof window.innerHeight != 'undefined') {
+        sHeight = window.innerHeight;
+    } else if (typeof document.documentElement != 'undefined'
+          && typeof document.documentElement.clientHeight != 'undefined'
+          && document.documentElement.clientHeight != 0) {
+        sHeight = document.documentElement.clientHeight;
+    } else {
+      sHeight = document.getElementsByTagName('body')[0].clientHeight;
+    }
+    return sHeight;
+}
+
+Ext.EventManager.onWindowResize(function () {
+    treePanel.setSize('100%', sizeHeight());
+});
+
 //Keyboard Events
 new Ext.KeyMap(document,
     [
@@ -189,10 +208,11 @@ Ext.onReady(function() {
 
   treePanel = new Ext.ux.tree.TreeGrid({
     title: _('ID_DEPARTMENTS'),
-    autoScroll: false,
-    //width: 720,
-    //height: 300,
+    autoScroll: true,
+    width: '10%',
+    height: sizeHeight(),
     id: 'treePanel',
+    enableDD: true,
     columns:[{
       header: _('ID_DEPARTMENT_NAME'),
       dataIndex: 'DEP_TITLE',
@@ -210,8 +230,8 @@ Ext.onReady(function() {
       tpl: new Ext.XTemplate('{DEP_STATUS:this.formatStatus}', {
         formatStatus: function(v) {
           switch(v){
-            case 'ACTIVE': return '<font color="green">' + _('ID_ACTIVE') + '</font>'; break;
-            case 'INACTIVE': return '<font color="red">' + _('ID_INACTIVE') + '</font>'; break;
+            case 'ACTIVE':return '<font color="green">' + _('ID_ACTIVE') + '</font>';break;
+            case 'INACTIVE':return '<font color="red">' + _('ID_INACTIVE') + '</font>';break;
           }
         }
       })
@@ -237,7 +257,8 @@ Ext.onReady(function() {
 
   viewport = new Ext.Viewport({
     layout: 'anchor',
-    autoScroll: true,
+    //autoScroll: true,
+    //autoHeight: true,
     items: [treePanel]
   });
 
@@ -399,7 +420,7 @@ EditDepartmentAction = function(){
   editForm.getForm().findField('manager').getStore().addListener('load',function(s,r,o){
     editForm.getForm().findField('manager').setValue(dep_node.attributes.DEP_MANAGER);
   });
-  editForm.getForm().findField('manager').store.load({params: {DEP_UID: dep_node.attributes.DEP_UID }});
+  editForm.getForm().findField('manager').store.load({params: {DEP_UID: dep_node.attributes.DEP_UID}});
   w = new Ext.Window({
     title: _('ID_EDIT_DEPARTMENT'),
     autoHeight: true,
@@ -421,7 +442,7 @@ DeleteDepartmentAction = function(){
   viewport.getEl().mask(_('ID_PROCESSING'));
   Ext.Ajax.request({
     url: 'departments_Ajax',
-    params: {action: 'canDeleteDepartment', dep_uid: DEP_UID },
+    params: {action: 'canDeleteDepartment', dep_uid: DEP_UID},
     success: function(r,o){
       viewport.getEl().unmask();
       var response = Ext.util.JSON.decode(r.responseText);
