@@ -2230,6 +2230,14 @@ function setCaseTrackerCode ($sApplicationUID, $sCode, $sPIN = '')
             $aFields['APP_PIN'] = md5( $sPIN );
         }
         $oCase->updateCase( $sApplicationUID, $aFields );
+        if (isset($_SESSION['APPLICATION'])) {
+            if ($sApplicationUID == $_SESSION['APPLICATION']) {
+                global $oPMScript;
+                if (isset($oPMScript->aFields) && is_array($oPMScript->aFields)) {
+                    $oPMScript->aFields['PIN'] = $aFields['APP_DATA']['PIN'];
+                }
+            }
+        }
         return 1;
     } else {
         return 0;
