@@ -739,9 +739,6 @@ Ext.onReady(function(){
 });
 
 
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 
 function createReportTable()
@@ -1046,7 +1043,7 @@ FailureFields = function(){
 SaveFieldsReportTable = function(arr_avail, function_success, function_failure){
   var sw_response;
   //Ext.MessageBox.show({ msg: 'Match Fields', wait:true,waitConfig: {interval:200} });
-  lmask = new Ext.LoadMask(Ext.getBody(),{msg:'Processing...'});
+  lmask = new Ext.LoadMask(Ext.getBody(),{msg:_('ID_PROCESSING')});
   lmask.show();
 
   Ext.Ajax.request({

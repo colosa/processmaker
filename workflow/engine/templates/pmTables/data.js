@@ -501,7 +501,7 @@ ImportPMTableCSV = function(){
                 if(uploader.getForm().isValid()){
                   uploader.getForm().submit({
                     url      : '../pmTablesProxy/importCSV',
-                    waitMsg  : 'Uploading file...',
+                    waitMsg  : _('ID_UPLOADING_FILE'),
                     success  : function(o, resp){
                       w.close();
                       infoGrid.store.reload();

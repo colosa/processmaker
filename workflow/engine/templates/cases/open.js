@@ -655,7 +655,7 @@ Ext.onReady(function(){
             }
           },
           failure: function ( result, request) {
-            Ext.MessageBox.alert('Failed', result.responseText);
+            Ext.MessageBox.alert( _('ID_FAILED') , result.responseText);
           }
         });
       });
@@ -686,7 +686,7 @@ Ext.onReady(function(){
         new Ext.form.DateField({
           id:   'unpauseDate',
           format: 'Y-m-d',
-          fieldLabel: 'Unpause Date',
+          fieldLabel: _('ID_UNPAUSE_DATE'),
           name: 'unpauseDate',
           allowBlank: false,
           value: filterDate,
@@ -714,7 +714,7 @@ Ext.onReady(function(){
           handler : Actions.pauseCase,
           disabled:false
         },{
-          text : 'Cancel',
+          text : _('ID_CANCEL'),
           handler : function() {
             win.close();
           }
@@ -732,7 +732,7 @@ Ext.onReady(function(){
 
 
     var win = new Ext.Window({
-      title: 'Pause Case',
+      title: _('ID_PAUSE_CASE'),
       width: 370,
       height: 230,
       layout:'fit',
@@ -1107,7 +1107,7 @@ Ext.onReady(function(){
   {
     rowSelected = adHocUserGrid.getSelectionModel().getSelected();
     PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_ADHOCUSER_CASE'), function(){
-      var loadMask = new Ext.LoadMask(document.body, {msg:'Assignment case...'});
+      var loadMask = new Ext.LoadMask(document.body, {msg:_('ID_ASSIGNMENT_CASE')});
       loadMask.show();
       Ext.Ajax.request({
         url : '../adhocUserProxy/reassignCase' ,
@@ -1125,7 +1125,7 @@ Ext.onReady(function(){
           }
         },
         failure: function ( result, request) {
-          Ext.MessageBox.alert('Failed', result.responseText);
+          Ext.MessageBox.alert(_('ID_FAILED'), result.responseText);
         }
       });
      });

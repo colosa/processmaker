@@ -26,7 +26,7 @@ new Ext.KeyMap(document, {
         document.location = document.location;
       }
       else
-        Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+        Ext.Msg.alert( _('ID_REFRESH_LABEL') , _('ID_REFRESH_MESSAGE') );
   }
 });
 

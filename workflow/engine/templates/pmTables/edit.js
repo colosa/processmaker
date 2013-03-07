@@ -786,7 +786,7 @@ function createReportTable()
         if (dbg) {
           _showDebugWin(resp.responseText);
         } else {
-          PMExt.error('ERROR', 'Something was wrong.');
+          PMExt.error('ERROR', _('ID_SOMETHING_WRONG'));
         }
       }
     },
@@ -1003,8 +1003,8 @@ var DDLoadFields = function(){
         var meta = mapPMFieldType(records[i].data['FIELD_UID']);
         var row = new PMRow({
           uid  : '',
-          field_uid  : records[i].data['FIELD_UID'],
-          field_dyn  : records[i].data['FIELD_NAME'],
+          field_uid   : records[i].data['FIELD_UID'],
+          field_dyn   : records[i].data['FIELD_NAME'],
           field_name  : records[i].data['FIELD_NAME'].toUpperCase(),
           field_label : records[i].data['FIELD_NAME'].toUpperCase(),
           field_type  : meta.type,

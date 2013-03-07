@@ -419,7 +419,7 @@ Login.sendFpRequest = function()
   Login.forgotPasswordForm.getForm().submit({
     method: 'POST',
     waitTitle: '',
-    waitMsg: 'Sending Request...',
+    waitMsg: _('ID_SENDING_REQUEST'),
     success: function(form, action)
     {
       serverResponse = Ext.util.JSON.decode(action.response.responseText);

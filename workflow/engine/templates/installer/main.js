@@ -28,8 +28,8 @@ Ext.onReady(function(){
       },
       cards : steps,
       loadMaskConfig: {
-        'default': 'Checking...',
-        'finishing': 'Finishing...'
+        'default': _('ID_CHECKING'),
+        'finishing': _('ID_FINISHING')
       },
       listeners: {
         finish: finishInstallation

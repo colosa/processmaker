@@ -95,7 +95,7 @@ Ext.onReady(function(){
       url: 'newSite',
       success: function(response){
         var existMsg = '<span style="color: red;">(Exists)</span>';
-        var noExistsMsg = '<span style="color: green;">(No exists)</span>';
+        var noExistsMsg = '<span style="color: green;">('+ _('ID_NO_EXIST') +')</span>';
         var response = Ext.util.JSON.decode(response.responseText);
         Ext.get('wfDatabaseSpan').dom.innerHTML = (response.wfDatabaseExists ? existMsg : noExistsMsg);
         Ext.get('rbDatabaseSpan').dom.innerHTML = (response.rbDatabaseExists ? existMsg : noExistsMsg);
@@ -139,12 +139,12 @@ Ext.onReady(function(){
   });
 
   steps[setIndex++] = new Ext.ux.Wiz.Card({
-    title: 'Database Configuration',
+    title: _('ID_DATABASE_CONFIGURATION') ,
     monitorValid: false,
     items: [
       {
         border: false,
-        html: 'Database Configuration',
+        html: _('ID_DATABASE_CONFIGURATION') ,
         bodyStyle: 'background:none;padding-top:0px;padding-bottom:5px;font-weight:bold;font-size:1.3em;'
       },
       {
@@ -169,7 +169,7 @@ Ext.onReady(function(){
                 labelWidth: 160,
                 items: [
                   new Ext.form.ComboBox({
-                    fieldLabel: 'Database Engine',
+                    fieldLabel: _('ID_DATABASE_ENGINE'),
                     width: 200,
                     store: storeDatabase,
                     displayField: 'label',
@@ -195,7 +195,7 @@ Ext.onReady(function(){
                   }),
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Host Name',
+                    fieldLabel: _('ID_HOST_NAME_LABEL'),
                     width: 180,
                     id: 'db_hostname',
                     value: DB_HOST,
@@ -210,7 +210,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Port',
+                    fieldLabel: _('ID_PORT'),
                     width: 180,
                     id: 'db_port',
                     value: DB_PORT,
@@ -225,7 +225,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Username',
+                    fieldLabel: _('ID_USERNAME'),
                     width: 180,
                     id: 'db_username',
                     value: DB_USER,
@@ -240,7 +240,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Password',
+                    fieldLabel: _('ID_CACHE_PASSWORD'),
 	                  inputType: 'password',
                     width: 180,
                     id: 'db_password',
@@ -255,7 +255,7 @@ Ext.onReady(function(){
                     id: 'db_message'
                   },
                   new Ext.Button({
-                    text: ' Test Connection',
+                    text: _('ID_TEST_CONNECTION'),
                     handler: testConnection,
                     scope: this
                   })
@@ -272,7 +272,7 @@ Ext.onReady(function(){
   });
 
   steps[setIndex++] = new Ext.ux.Wiz.Card({
-    title: 'Workspace Configuration',
+    title: _('ID_WORKSPACE_CONFIGURATION'),
     monitorValid: false,
     defaults: {
       labelStyle: 'font-size:11px'
@@ -280,7 +280,7 @@ Ext.onReady(function(){
     items: [
       {
         border: false,
-        html: 'Workspace Configuration',
+        html: _('ID_WORKSPACE_CONFIGURATION'),
         bodyStyle: 'background:none;padding-top:0px;padding-bottom:5px;font-weight:bold;font-size:1.3em;'
       },
       {
@@ -306,7 +306,7 @@ Ext.onReady(function(){
                 items:[
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Workspace Name',
+                    fieldLabel: _('ID_WORKSPACE_NAME'),
                     value:'workflow',
                     maxLength: 29,
                     validator: function(v){
@@ -326,7 +326,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Admin Username',
+                    fieldLabel: _('ID_ADMIN_USERNAME'),
                     value:'admin',
                     validator: function(v){
                         var t = /^[a-zA-Z_0-9.@-]+$/;
@@ -340,7 +340,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Admin Password',
+                    fieldLabel: _('ID_ADMIN_PASSWORD_LABEL'),
                     inputType: 'password',
                     id: 'adminPassword',
                     enableKeyEvents: true,
@@ -350,7 +350,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Confirm Admin Password',
+                    fieldLabel: _('ID_ADMIN_PASSWORD'),
                     inputType: 'password',
                     id: 'confirmPassword',
                     enableKeyEvents: true,
@@ -368,7 +368,7 @@ Ext.onReady(function(){
                 //title: 'ProcessMaker Databases',
                 items:[
                  new Ext.form.Checkbox({
-              	   boxLabel: 'Change Database names',
+              	   boxLabel: _('ID_CHANGE_DATABASE_NAME'),
               	   id: 'changeDBNames',
                    handler: function() {
                      if (this.getValue()) {
@@ -392,7 +392,7 @@ Ext.onReady(function(){
                  }),
                  {
                     xtype: 'textfield',
-                    fieldLabel: 'Workflow Database Name <span id="wfDatabaseSpan"></span>',
+                    fieldLabel: _('ID_WF_DATABASE_NAME') + '<span id="wfDatabaseSpan"></span>',
                     id: 'wfDatabase',
                     value:'wf_workflow',
                     allowBlank: false,
@@ -409,7 +409,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Rbac Database Name <span id="rbDatabaseSpan"></span>',
+                    fieldLabel: _('ID_RB_DATABASE_NAME') + '<span id="rbDatabaseSpan"></span>',
                     id: 'rbDatabase',
                     value:'rb_workflow',
                     allowBlank: false,
@@ -426,7 +426,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype: 'textfield',
-                    fieldLabel: 'Report Database Name <span id="rpDatabaseSpan"></span>',
+                    fieldLabel: _('ID_RP_DATABASE_NAME') + '<span id="rpDatabaseSpan"></span>',
                     id: 'rpDatabase',
                     value:'rp_workflow',
                     allowBlank: false,
@@ -442,7 +442,7 @@ Ext.onReady(function(){
                     }}
                   },
                   new Ext.form.Checkbox({
-              	    boxLabel: "Delete Databases if exists",
+              	    boxLabel: _('ID_DELETE_DATABASES'),
               	    id: 'deleteDB',
               	    handler: function() {
               	      wizard.onClientValidation(2, false);
@@ -454,7 +454,7 @@ Ext.onReady(function(){
                   },
                   new Ext.Button({
                     id: 'checkWSConfiguration',
-                    text: ' Check Workspace Configuration',
+                    text: _('ID_CHECK_WORKSPACE_CONFIGURATION'),
                     handler: checkWorkspaceConfiguration,
                     scope: this
                   })
@@ -509,7 +509,7 @@ Ext.onReady(function(){
             'action': 'createWorkspace',
           	'db_engine': Ext.getCmp('db_engine').getValue(),
           	'db_hostname': Ext.getCmp('db_hostname').getValue(),
-        	  'db_username': Ext.getCmp('db_username').getValue(),
+        	'db_username': Ext.getCmp('db_username').getValue(),
           	'db_password': Ext.getCmp('db_password').getValue(),
           	'db_port': Ext.getCmp('db_port').getValue(),
             'pathConfig': pathConfig,

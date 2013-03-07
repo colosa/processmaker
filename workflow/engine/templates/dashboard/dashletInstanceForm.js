@@ -123,7 +123,7 @@ Ext.onReady(function() {
                       },
              failure: function (result, request) {
                         myMask.hide();
-                        Ext.MessageBox.alert('Alert', 'Ajax communication failed');
+                        Ext.MessageBox.alert(_('ID_ALERT'), _('ID_AJAX_COMMUNICATION_FAILED'));
                       }
            });
       }
