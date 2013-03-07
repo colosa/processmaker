@@ -331,6 +331,9 @@ function sendNote()
 
   Ext.getCmp('caseNoteText').focus();
   Ext.getCmp('caseNoteText').reset();
+  Ext.getCmp('caseNoteText').setDisabled(true);
+  Ext.getCmp('sendBtn').setDisabled(true);
+  Ext.getCmp('addCancelBtn').setDisabled(true);
   statusBarMessage( _('ID_CASES_NOTE_POSTING'), true);
   Ext.Ajax.request({
     url : '../appProxy/postNote' ,
@@ -342,10 +345,16 @@ function sendNote()
     success: function ( result, request ) {
       var data = Ext.util.JSON.decode(result.responseText);
       if(data.success=="success"){
+        Ext.getCmp('caseNoteText').setDisabled(false);
+        Ext.getCmp('sendBtn').setDisabled(false);
+        Ext.getCmp('addCancelBtn').setDisabled(false);
         statusBarMessage( _('ID_CASES_NOTE_POST_SUCCESS'), false,true);
         storeNotes.load();
       }
-      else{
+      else {
+        Ext.getCmp('caseNoteText').setDisabled(false);
+        Ext.getCmp('sendBtn').setDisabled(false);
+        Ext.getCmp('addCancelBtn').setDisabled(false);
         statusBarMessage( _('ID_CASES_NOTE_POST_ERROR'), false,false);
         Ext.MessageBox.alert(_('ID_CASES_NOTE_POST_ERROR'), data.message);
 
