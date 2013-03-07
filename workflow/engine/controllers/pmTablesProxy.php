@@ -317,7 +317,7 @@ class pmTablesProxy extends HttpProxyController
             if ($isReportTable && $alterTable) {
                 // the table was create successfully but we're catching problems while populating table
                 try {
-                    $oAdditionalTables->populateReportTable( $data['REP_TAB_NAME'], $pmTable->getDataSource(), $data['REP_TAB_TYPE'], $data['PRO_UID'], $data['REP_TAB_GRID'] );
+                    $oAdditionalTables->populateReportTable( $data['REP_TAB_NAME'], $pmTable->getDataSource(), $data['REP_TAB_TYPE'], $data['PRO_UID'], $data['REP_TAB_GRID'], $addTabData['ADD_TAB_UID'] );
                 } catch (Exception $e) {
                     $result->message = $result->msg = $e->getMessage();
                 }
@@ -883,7 +883,7 @@ class pmTablesProxy extends HttpProxyController
                         $table = $additionalTable->loadByName( $tableNameMap[$contentSchema['ADD_TAB_NAME']] );
                         if ($table['PRO_UID'] != '') {
                             // is a report table, try populate it
-                            $additionalTable->populateReportTable( $table['ADD_TAB_NAME'], pmTable::resolveDbSource( $table['DBS_UID'] ), $table['ADD_TAB_TYPE'], $table['PRO_UID'], $table['ADD_TAB_GRID'] );
+                            $additionalTable->populateReportTable( $table['ADD_TAB_NAME'], pmTable::resolveDbSource( $table['DBS_UID'] ), $table['ADD_TAB_TYPE'], $table['PRO_UID'], $table['ADD_TAB_GRID'], $table['ADD_TAB_UID'] );
                         }
                         break;
                     case '@DATA':
@@ -1214,7 +1214,7 @@ class pmTablesProxy extends HttpProxyController
         $additionalTables = new AdditionalTables();
         $table = $additionalTables->load( $httpData->id );
         if ($table['PRO_UID'] != '') {
-            $additionalTables->populateReportTable( $table['ADD_TAB_NAME'], pmTable::resolveDbSource( $table['DBS_UID'] ), $table['ADD_TAB_TYPE'], $table['PRO_UID'], $table['ADD_TAB_GRID'] );
+            $additionalTables->populateReportTable( $table['ADD_TAB_NAME'], pmTable::resolveDbSource( $table['DBS_UID'] ), $table['ADD_TAB_TYPE'], $table['PRO_UID'], $table['ADD_TAB_GRID'], $table['ADD_TAB_UID'] );
             $result->message = 'generated for table ' . $table['ADD_TAB_NAME'];
         }
 

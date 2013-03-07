@@ -591,7 +591,7 @@ class AdditionalTables extends BaseAdditionalTables
      * @param string $sGrid
      * @return number
      */
-    public function populateReportTable($tableName, $sConnection = 'rp', $type = 'NORMAL', $processUid = '', $gridKey = '')
+    public function populateReportTable($tableName, $sConnection = 'rp', $type = 'NORMAL', $processUid = '', $gridKey = '', $addTabUid = '')
     {
         require_once "classes/model/Application.php";
 
@@ -621,11 +621,41 @@ class AdditionalTables extends BaseAdditionalTables
             $rs = $stmt->executeQuery($deleteSql);
             // getting the case data
             $caseData = unserialize($row['APP_DATA']);
+            
+            $fieldTypes = array();
+            
+            if ($addTabUid != '') {
+                require_once 'classes/model/Fields.php';
+                $criteriaField = new Criteria('workflow');
+                $criteriaField->add(FieldsPeer::ADD_TAB_UID, $addTabUid);
+                $datasetField = FieldsPeer::doSelectRS($criteriaField);
+                $datasetField->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                while ($datasetField->next()) {
+                    $rowfield = $datasetField->getRow();
+                    switch ($rowfield['FLD_TYPE']) {
+                        case 'FLOAT':
+                        case 'DOUBLE':
+                        case 'INTEGER':
+                            $fieldTypes[] = array($rowfield['FLD_NAME']=>$rowfield['FLD_TYPE']);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
 
             // quick fix
             // map all empty values as NULL for Database
             foreach ($caseData as $dKey => $dValue) {
                 if (!is_array($dValue)) {
+                    foreach ($fieldTypes as $key => $fieldType) {
+                        foreach ($fieldType as $name => $type) {
+                            if (strtoupper($dKey) == $name) {
+                                $caseData[$dKey] = validateType ($dValue, $type);
+                                unset($name);
+                            }
+                        }
+                    }
                     // normal fields
                     if (trim($dValue) === '') {
                         $caseData[$dKey] = null;
