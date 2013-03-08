@@ -336,6 +336,7 @@ _b.AutoSuggest.prototype.createList = function(arr)
 		// (as HTML, not DOM)
 		//
 		var val = arr[i].value;
+		val = val.split('&quot;').join('"');
 		var st = val.toLowerCase().indexOf( this.sInp.toLowerCase() );
 		var output = val.substring(0,st) + "<em>" + val.substring(st, st+this.sInp.length) + "</em>" + val.substring(st+this.sInp.length);
 

@@ -135,16 +135,9 @@ if( isset($request) ){
         header ("Pragma: no-cache"); // HTTP/1.0
 
         if (isset($_REQUEST['json'])) {
-          header("Content-Type: application/json");
-          echo "{\"status\":0,  \"results\": [";
-          $arr = array();
-          $aReplace = array("(\r\n)", "(\n\r)", "(\n)", "(\r)");
-          for ($i=0;$i<count($aResults);$i++) {
-            $arr[] = "{\"id\": \"".$aResults[$i]['id']."\", \"value\": \"". html_entity_decode(preg_replace($aReplace, "", $aResults[$i]['value']))."\", \"info\": \"".$aResults[$i]['info']."\"}";
-          }
-          echo implode(", ", $arr);
-          echo "]}";
-        } else {
+            header("Content-Type: application/json");
+            echo json_encode(array("status" => 0, "results" => $aResults));
+         } else {
           header("Content-Type: text/xml");
 
           echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?><results>";
