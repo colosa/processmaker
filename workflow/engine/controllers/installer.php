@@ -5,6 +5,8 @@
  *
  * @author Erik A. O. <erik@colosa.com>
  */
+global $translation;
+include PATH_LANGUAGECONT."translation.".SYS_LANG;
 
 class Installer extends Controller
 {
@@ -31,16 +33,6 @@ class Installer extends Controller
 
     public function index ($httpData)
     {
-        $step1_txt = 'If any of these items is not supported (marked as No) then please take actions to correct them.<br><br>' . 'Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br><br>' .
-        //'(*) MSSQL Support is optional.<br><br>' .
-        '(*) OpenSSL is optional.<br><br>' . '(*) LDAP is optional.';
-
-        $step2_txt = 'These settings are recommended for PHP in order to ensure full compatibility with ProcessMaker. <> ' . 'However, ProcessMaker still operate if your settings do not quite match the recommended';
-        $step3_txt = 'In order for ProcessMaker to work correctly, it needs to be able read and write to certain directories and their files.<br>' . 'Make sure to give read and write access to the directories listed below and all their subdirectories and files.';
-        $step4_txt = 'ProcessMaker stores all of its data in a database. Enter the address and port number used by the database. Also enter' . 'the username and password of the database user who will set up the databases used by ProcessMaker<br>';
-        $step5_txt = 'ProcessMaker uses workspaces to store data in the database. Please enter a valid workspace name and a username and password to login' . ' as the administrator.';
-        $step6_txt = 'xxx';
-
         $licenseContent = file_get_contents( PATH_TRUNK . 'LICENSE.txt' );
 
         $this->includeExtJS( 'installer/CardLayout', false );
@@ -52,12 +44,6 @@ class Installer extends Controller
         $this->includeExtJS( 'installer/main', false );
 
         $this->setJSVar( 'licenseTxt', $licenseContent );
-        $this->setJSVar( 'step1_txt', $step1_txt );
-        $this->setJSVar( 'step2_txt', $step2_txt );
-        $this->setJSVar( 'step3_txt', $step3_txt );
-        $this->setJSVar( 'step4_txt', $step4_txt );
-        $this->setJSVar( 'step5_txt', $step5_txt );
-        $this->setJSVar( 'step6_txt', $step6_txt );
 
         $this->setJSVar( 'path_config', $this->path_config );
         $this->setJSVar( 'path_languages', $this->path_languages );
@@ -74,8 +60,8 @@ class Installer extends Controller
 
     public function newSite ()
     {
-        $textStep1 = 'ProcessMaker stores all of its data in a database. This screen gives the installation program the information needed to create this database.<br><br>' . 'If you are installing ProcessMaker on a remote web server, you will need to get this information from your Database Server.';
-        $textStep2 = 'ProcessMaker uses a workspaces to store data. Please select a valid workspace name and credentials to log in it.';
+        $textStep1 = G::LoadTranslation('ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP4_1');
+        $textStep2 = G::LoadTranslation('ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP5');
 
         $this->includeExtJS( 'installer/CardLayout', false );
         $this->includeExtJS( 'installer/Wizard', false );
@@ -106,6 +92,8 @@ class Installer extends Controller
 
     public function getSystemInfo ()
     {
+        //$echo "<script> document.write(TRANSLATIONS) </script>";
+        //print_r ($valu);die();
         $this->setResponseType( 'json' );
 
         // PHP info and verification
@@ -141,23 +129,23 @@ class Installer extends Controller
 
         // MSSQL info and verification
         $info->mssql->result = false;
-        $info->mssql->version = 'not enabled';
+        $info->mssql->version = G::LoadTranslation('ID_NOT_ENABLED');
         if (function_exists( 'mssql_query' )) {
             $info->mssql->result = true;
-            $info->mssql->version = 'enabled';
+            $info->mssql->version = G::LoadTranslation('ID_ENABLED');
         }
 
         // OpenSSL info
         $info->openssl->result = false;
-        $info->openssl->version = 'not enabled';
+        $info->openssl->version = G::LoadTranslation('ID_NOT_ENABLED');
         if (function_exists( 'openssl_open' )) {
             $info->openssl->result = true;
-            $info->openssl->version = 'enabled';
+            $info->openssl->version = G::LoadTranslation('ID_ENABLED');
         }
 
         // Curl info
         $info->curl->result = false;
-        $info->curl->version = 'not enabled';
+        $info->curl->version = G::LoadTranslation('ID_NOT_ENABLED');
         if (function_exists( 'curl_version' )) {
             $info->curl->result = true;
             $version = curl_version();
@@ -167,15 +155,15 @@ class Installer extends Controller
 
         // DOMDocument info
         $info->dom->result = false;
-        $info->dom->version = 'not enabled';
+        $info->dom->version = G::LoadTranslation('ID_NOT_ENABLED');
         if (class_exists( 'DOMDocument' )) {
             $info->dom->result = true;
-            $info->dom->version = 'enabled';
+            $info->dom->version = G::LoadTranslation('ID_ENABLED');
         }
 
         // GD info
         $info->gd->result = false;
-        $info->gd->version = 'not enabled';
+        $info->gd->version = G::LoadTranslation('ID_NOT_ENABLED');
         if (function_exists( 'gd_info' )) {
             $info->gd->result = true;
             $gdinfo = gd_info();
@@ -184,26 +172,26 @@ class Installer extends Controller
 
         // Multibyte info
         $info->multibyte->result = false;
-        $info->multibyte->version = 'not enabled';
+        $info->multibyte->version = G::LoadTranslation('ID_NOT_ENABLED');
         if (function_exists( 'mb_check_encoding' )) {
             $info->multibyte->result = true;
-            $info->multibyte->version = 'enabled';
+            $info->multibyte->version = G::LoadTranslation('ID_ENABLED');
         }
 
         // soap info
         $info->soap->result = false;
-        $info->soap->version = 'not enabled';
+        $info->soap->version = G::LoadTranslation('ID_NOT_ENABLED');
         if (class_exists( 'SoapClient' )) {
             $info->soap->result = true;
-            $info->soap->version = 'enabled';
+            $info->soap->version = G::LoadTranslation('ID_ENABLED');
         }
 
         // ldap info
         $info->ldap->result = false;
-        $info->ldap->version = 'not enabled';
+        $info->ldap->version = G::LoadTranslation('ID_NOT_ENABLED');
         if (function_exists( 'ldap_connect' )) {
             $info->ldap->result = true;
-            $info->ldap->version = 'enabled';
+            $info->ldap->version = G::LoadTranslation('ID_ENABLED');
         }
 
         // memory limit verification
@@ -233,60 +221,60 @@ class Installer extends Controller
 
         // pathConfig
         $info->pathConfig = new stdclass();
-        $info->pathConfig->message = 'unwriteable';
+        $info->pathConfig->message = G::LoadTranslation('ID_INDEX_NOT_WRITEABLE');
         $info->pathConfig->result = G::is_writable_r( $_REQUEST['pathConfig'], $noWritableFiles );
         if ($info->pathConfig->result) {
-            $info->pathConfig->message = 'writeable';
+            $info->pathConfig->message = G::LoadTranslation('ID_WRITEABLE');
         } else {
             $info->success = false;
         }
 
         $info->pathLanguages = new stdclass();
-        $info->pathLanguages->message = 'unwriteable';
+        $info->pathLanguages->message = G::LoadTranslation('ID_INDEX_NOT_WRITEABLE');
         $info->pathLanguages->result = G::is_writable_r( $_REQUEST['pathLanguages'], $noWritableFiles );
         if ($info->pathLanguages->result) {
-            $info->pathLanguages->message = 'writeable';
+            $info->pathLanguages->message = G::LoadTranslation('ID_WRITEABLE');
         } else {
             $info->success = false;
         }
 
         $info->pathPlugins = new stdclass();
-        $info->pathPlugins->message = 'unwriteable';
+        $info->pathPlugins->message = G::LoadTranslation('ID_INDEX_NOT_WRITEABLE');
         $info->pathPlugins->result = G::is_writable_r( $_REQUEST['pathPlugins'], $noWritableFiles );
         if ($info->pathPlugins->result) {
-            $info->pathPlugins->message = 'writeable';
+            $info->pathPlugins->message = G::LoadTranslation('ID_WRITEABLE');
         } else {
             $info->success = false;
         }
 
         $info->pathXmlforms = new stdclass();
-        $info->pathXmlforms->message = 'unwriteable';
+        $info->pathXmlforms->message = G::LoadTranslation('ID_INDEX_NOT_WRITEABLE');
         $info->pathXmlforms->result = G::is_writable_r( $_REQUEST['pathXmlforms'], $noWritableFiles );
         if ($info->pathXmlforms->result) {
-            $info->pathXmlforms->message = 'writeable';
+            $info->pathXmlforms->message = G::LoadTranslation('ID_WRITEABLE');
         } else {
             $info->success = false;
         }
 
-        $info->pathPublic = new stdclass();
+        $info->pathPublic = new stdclass();
         $info->pathShared = new stdclass();
-        $info->pathPublic->message = 'unwriteable';
+        $info->pathPublic->message = G::LoadTranslation('ID_INDEX_NOT_WRITEABLE');
         $info->pathPublic->result = G::is_writable_r( $_REQUEST['pathPublic'], $noWritableFiles );
         if ($info->pathPublic->result) {
-            $info->pathShared->message = 'writeable';
+            $info->pathShared->message = G::LoadTranslation('ID_WRITEABLE');
         } else {
             $info->success = false;
         }
 
-        $info->pathShared->message = 'unwriteable';
+        $info->pathShared->message = G::LoadTranslation('ID_INDEX_NOT_WRITEABLE');
         $info->pathShared->result = G::is_writable_r( $_REQUEST['pathShared'], $noWritableFiles );
         if ($info->pathShared->result) {
-            $info->pathShared->message = 'writeable';
+            $info->pathShared->message = G::LoadTranslation('ID_WRITEABLE');
         } else {
             G::verifyPath( $_REQUEST['pathShared'], true );
             $info->pathShared->result = G::is_writable_r( $_REQUEST['pathShared'], $noWritableFiles );
             if ($info->pathShared->result) {
-                $info->pathShared->message = 'writeable';
+                $info->pathShared->message = G::LoadTranslation('ID_WRITEABLE');
             } else {
                 $info->success = false;
             }
@@ -303,17 +291,17 @@ class Installer extends Controller
         }
 
         $info->pathLogFile = new stdclass();
-        $info->pathLogFile->message = 'Could not create the installation log';
+        $info->pathLogFile->message = G::LoadTranslation('ID_CREATE_LOG_INSTALLATION');
         $info->pathLogFile->result = file_exists( $_REQUEST['pathLogFile'] );
 
         if ($info->pathLogFile->result) {
-            $info->pathLogFile->message = 'Installation log created';
+            $info->pathLogFile->message = G::LoadTranslation('ID_INSTALLATION_LOG');
         }
 
         if ($info->success) {
-            $info->notify = 'Success, all required directories are writable.';
+            $info->notify = G::LoadTranslation('ID_SUCCESS_DIRECTORIES_WRITABLE');
         } else {
-            $info->notify = 'Some directories and/or files inside it are not writable.';
+            $info->notify = G::LoadTranslation('ID_DIRECTORIES_NOT_WRITABLE');
         }
 
         $info->noWritableFiles = $noWritableFiles;
@@ -354,10 +342,10 @@ class Installer extends Controller
             G::mk_dir( dirname( $pathShared ) );
             $fpt = fopen( $logFile, 'w' );
             if ($fpt !== null) {
-                fwrite( $fpt, sprintf( "%s %s\n", date( 'Y:m:d H:i:s' ), '----- starting log file ------' ) );
+                fwrite( $fpt, sprintf( "%s %s\n", date( 'Y:m:d H:i:s' ), '----- '. G::LoadTranslation('ID_STARTING_LOG_FILE') .' ------' ) );
                 fclose( $fpt );
             } else {
-                throw (new Exception( sprintf( "File '%s' is not writeable. Please check permission before continue", $logFile ) ));
+                throw (new Exception( G::LoadTranslation('ID_FILE_NOT_WRITEABLE', SYS_LANG, Array($logFile) ) ));
                 return $false;
             }
         }
@@ -405,7 +393,7 @@ class Installer extends Controller
         $query = @mysql_query( $sql, $this->link );
         if (! $query) {
             $errorMessage = mysql_error( $this->link );
-            $this->installLog( 'MySQL error: ' . $errorMessage );
+            $this->installLog( G::LoadTranslation('ID_MYSQL_ERROR', SYS_LANG, Array($errorMessage) ) );
             throw new Exception( $errorMessage );
             return false;
         }
@@ -422,7 +410,7 @@ class Installer extends Controller
         $query = @mssql_query( $sql, $this->link );
         if (! $query) {
             $errorMessage = mssql_get_last_message();
-            $this->installLog( 'MSSQL error: ' . $errorMessage );
+            $this->installLog( G::LoadTranslation('ID_MYSQL_ERROR', SYS_LANG, Array($errorMessage) ));
             throw (new Exception( $errorMessage ));
             return false;
         }
@@ -440,10 +428,10 @@ class Installer extends Controller
     public function mysqlFileQuery ($file)
     {
         if (! is_file( $file )) {
-            throw (new Exception( sprintf( "File $file is not a valid sql file", $file ) ));
+            throw (new Exception( G::LoadTranslation('ID_SQL_FILE_INVALID', SYS_LANG, Array($file) ) ));
             return $false;
         }
-        $this->installLog( 'Procesing: ' . $file );
+        $this->installLog( G::LoadTranslation('ID_PROCESING', SYS_LANG, Array($file) ));
         $startTime = microtime( true );
         // $content = file_get_contents($file);
         // $queries = explode(';', $content);
@@ -509,7 +497,7 @@ class Installer extends Controller
         }
 
         $endTime = microtime( true );
-        $this->installLog( sprintf( 'File: %s processed in %3.2f seconds', basename( $file ), $endTime - $startTime ) );
+        $this->installLog( G::LoadTranslation('ID_FILE_PROCESSED', SYS_LANG, Array(basename( $file ), $endTime - $startTime )) );
         return true;
     }
 
@@ -523,10 +511,10 @@ class Installer extends Controller
     public function mssqlFileQuery ($file)
     {
         if (! is_file( $file )) {
-            throw (new Exception( sprintf( "File $file is not a valid sql file", $file ) ));
+            throw (new Exception( G::LoadTranslation('ID_SQL_FILE_INVALID', SYS_LANG, Array($file) )));
             return $false;
         }
-        $this->installLog( 'Procesing: ' . $file );
+        $this->installLog( G::LoadTranslation('ID_PROCESING', SYS_LANG, Array($file) ));
         $startTime = microtime( true );
         $content = file_get_contents( $file );
         $queries = explode( ';', $content );
@@ -535,14 +523,13 @@ class Installer extends Controller
             $query = @mssql_query( $sql, $this->link );
             if (! $query) {
                 $errorMessage = mssql_get_last_message();
-
-                $this->installLog( sprintf( 'MSSQL error: %s  Query: %s ', $errorMessage, $sql ) );
+                $this->installLog( G::LoadTranslation('ID_MYSQL_ERROR',SYS_LANG, Array( $errorMessage . G::LoadTranslation('ID_QUERY') .": ". $sql) ));
                 throw (new Exception( $errorMessage ));
                 return false;
             }
         }
         $endTime = microtime( true );
-        $this->installLog( sprintf( 'File: %s processed in %3.2f seconds', basename( $file ), $endTime - $startTime ) );
+        $this->installLog( G::LoadTranslation('ID_FILE_PROCESSED', SYS_LANG, Array(basename( $file ), $endTime - $startTime )) );
         return true;
     }
 
@@ -632,12 +619,12 @@ class Installer extends Controller
         }
 
         $this->installLog( '-------------------------------------------' );
-        $this->installLog( sprintf( "Creating workspace '%s' ", $workspace ) );
+        $this->installLog( G::LoadTranslation('ID_CREATING_WORKSPACE', SYS_LANG, Array($workspace)));
 
         try {
             $db_host = ($db_port != '' && $db_port != 3306) ? $db_hostname . ':' . $db_port : $db_hostname;
             $this->link = @mysql_connect( $db_host, $db_username, $db_password );
-            $this->installLog( sprintf( "Connected to server %s:%d using user: '%s' ", $db_hostname, $db_port, $db_username ) );
+            $this->installLog( G::LoadTranslation('ID_CONNECT_TO_SERVER', SYS_LANG, Array($db_hostname, $db_port, $db_username ) ));
 
             if ($deleteDB) {
                 $q = sprintf( 'DROP DATABASE IF EXISTS %s;', $wf, $wf );
@@ -694,7 +681,7 @@ class Installer extends Controller
             $dbText .= sprintf( "  define ('DB_REPORT_USER', '%s' );\n", $rp );
             $dbText .= sprintf( "  define ('DB_REPORT_PASS', '%s' );\n", $rpPass );
 
-            $this->installLog( "Creating: " . $db_file );
+            $this->installLog( G::LoadTranslation('ID_CREATING', SYS_LANG, Array($db_file) ));
             file_put_contents( $db_file, $dbText );
 
             // Generate the databases.php file
@@ -714,7 +701,7 @@ class Installer extends Controller
             $dbData .= sprintf( "\$dbReportPass = '%s';\n", $rpPass );
             $databasesText = str_replace( '{dbData}', $dbData, @file_get_contents( PATH_HOME . 'engine/templates/installer/databases.tpl' ) );
 
-            $this->installLog( 'Creating: ' . $databases_file );
+            $this->installLog( G::LoadTranslation('ID_CREATING', SYS_LANG, Array($databases_file) ));
             file_put_contents( $databases_file, $databasesText );
 
             // Execute scripts to create and populates databases
@@ -769,7 +756,7 @@ class Installer extends Controller
                 $dbText .= sprintf( "  define('PATH_C',            '%s');\n", $pathShared . 'compiled/' );
                 $dbText .= sprintf( "  define('HASH_INSTALLATION', '%s');\n", $h );
                 $dbText .= sprintf( "  define('SYSTEM_HASH',       '%s');\n", $sh );
-                $this->installLog( "Creating: " . FILE_PATHS_INSTALLED );
+                $this->installLog( G::LoadTranslation('ID_CREATING', SYS_LANG, Array(FILE_PATHS_INSTALLED) ));
                 file_put_contents( FILE_PATHS_INSTALLED, $dbText );
             }
 
@@ -830,9 +817,9 @@ class Installer extends Controller
                 G::update_php_ini( $envFile, $updatedConf );
             } catch (Exception $e) {
                 $info->result = false;
-                $info->message = "ProcessMaker couldn't write on configuration file: $envFile.<br/>";
-                $info->message .= "The new ProcessMaker UI couldn't be applied on installation, you can enable it after from Admin->System settings.";
-                $this->installLog( "Installed but with error, couldn't update env.ini" );
+                $info->message = G::LoadTranslation('ID_PROCESSMAKER_WRITE_CONFIG_INDEX', SYS_LANG, Array($envFile));
+                $info->message .= G::LoadTranslation('ID_PROCESSMAKER_UI_NOT_INSTALL');
+                $this->installLog( G::LoadTranslation('ID_INSTALL_BUT_ERROR', SYS_LANG, Array('env.ini')));
                 return $info;
             }
 
@@ -845,17 +832,17 @@ class Installer extends Controller
                 ) );
             } catch (Exception $e) {
                 $info->result = false;
-                $info->message = "ProcessMaker couldn't write on configuration file: " . PATH_HTML . "index.html.<br/>";
-                $info->message .= "The new ProcessMaker UI couldn't be applied on installation, you can enable it after from Admin->System settings.";
-                $this->installLog( "Installed but with error, couldn't update index.html" );
+                $info->message = G::LoadTranslation('ID_PROCESSMAKER_WRITE_CONFIG_INDEX', SYS_LANG, Array(PATH_HTML . "index.html."));
+                $info->message .= G::LoadTranslation('ID_PROCESSMAKER_UI_NOT_INSTALL');
+                $this->installLog( G::LoadTranslation('ID_INSTALL_BUT_ERROR', SYS_LANG, Array('index.html')));
                 return $info;
             }
 
-            $this->installLog( "Index File updated $indexFileUpdated with lang: {$sysConf['default_lang']}, skin: {$sysConf['default_skin']} " );
-            $this->installLog( "Install completed Succesfully" );
+            $this->installLog( G::LoadTranslation('ID_INDEX_FILE_UPDATED', SYS_LANG, Array($indexFileUpdated, $sysConf['default_lang'],$sysConf['default_skin'])));
+            $this->installLog( G::LoadTranslation('ID_INSTALL_SUCESS') );
 
             $info->result = true;
-            $info->message = 'Succesfully OK';
+            $info->message = G::LoadTranslation('ID_INSTALL_SUCESS');
         } catch (Exception $e) {
             $info->canRedirect = false;
             $info->result = false;
@@ -892,12 +879,12 @@ class Installer extends Controller
         }
 
         $this->installLog( '-------------------------------------------' );
-        $this->installLog( sprintf( "Creating workspace '%s' ", $workspace ) );
+        $this->installLog( G::LoadTranslation('ID_CREATING_WORKSPACE', SYS_LANG, Array($workspace) ) );
 
         try {
             $db_host = ($db_port != '' && $db_port != 1433) ? $db_hostname . ':' . $db_port : $db_hostname;
             $this->link = @mssql_connect( $db_host, $db_username, $db_password );
-            $this->installLog( sprintf( "Connected to server %s:%d using user: '%s' ", $db_hostname, $db_port, $db_username ) );
+            $this->installLog( G::LoadTranslation('ID_CONNECT_TO_SERVER', SYS_LANG, Array( $db_hostname, $db_port, $db_username )) );
 
             $this->mssqlQuery( 'USE [master]' );
 
@@ -957,7 +944,7 @@ class Installer extends Controller
             $dbText .= sprintf( "  define ('DB_REPORT_USER', '%s' );\n", $rp );
             $dbText .= sprintf( "  define ('DB_REPORT_PASS', '%s' );\n", $rpPass );
 
-            $this->installLog( "Creating: " . $db_file );
+            $this->installLog( G::LoadTranslation('ID_CREATING', SYS_LANG, Array($db_file) ));
             file_put_contents( $db_file, $dbText );
 
             // Generate the databases.php file
@@ -977,7 +964,7 @@ class Installer extends Controller
             $dbData .= sprintf( "\$dbReportPass = '%s';\n", $rpPass );
             $databasesText = str_replace( '{dbData}', $dbData, @file_get_contents( PATH_HOME . 'engine/templates/installer/databases.tpl' ) );
 
-            $this->installLog( 'Creating: ' . $databases_file );
+            $this->installLog( G::LoadTranslation('ID_CREATING', SYS_LANG, Array($databases_file) ));
             file_put_contents( $databases_file, $databasesText );
 
             //execute scripts to create and populates databases
@@ -1032,12 +1019,12 @@ class Installer extends Controller
                 $dbText .= sprintf( "  define ('PATH_C',           '%s' );\n", $pathShared . 'compiled/' );
                 $dbText .= sprintf( "  define ('HASH_INSTALLATION', '%s' );\n", $h );
                 $dbText .= sprintf( "  define ('SYSTEM_HASH',       '%s' );\n", $sh );
-                $this->installLog( "Creating: " . FILE_PATHS_INSTALLED );
+                $this->installLog( G::LoadTranslation('ID_CREATING', SYS_LANG, Array(FILE_PATHS_INSTALLED) ));
                 file_put_contents( FILE_PATHS_INSTALLED, $dbText );
             }
-            $this->installLog( "Install completed Succesfully" );
+            $this->installLog( G::LoadTranslation('ID_INSTALL_SUCESS') );
             $info->result = true;
-            $info->message = 'Succesfully';
+            $info->message = G::LoadTranslation('ID_INSTALL_SUCESS');
             $info->url = '/sys' . $_REQUEST['workspace'] . '/en/classic/main/login';
         } catch (Exception $e) {
             $info->result = false;
@@ -1091,7 +1078,7 @@ class Installer extends Controller
             $info->rpDatabaseExists = (@mssql_num_rows( $dataset ) > 0);
         }
 
-        $info->errMessage = 'Database already exists, check "Delete Databases if exists" to overwrite the exiting databases.';
+        $info->errMessage = G::LoadTranslation('ID_DATABASE_EXISTS_OVERWRITE');
 
         return $info;
     }
@@ -1106,7 +1093,7 @@ class Installer extends Controller
         $info->result = false;
         $info->message = '';
         if (! function_exists( "mysql_connect" )) {
-            $info->message = 'php-mysql is Not Installed';
+            $info->message = G::LoadTranslation('ID_PHP_MYSQL_NOT _INSTALL');
             return $info;
         }
         $db_hostname = $_REQUEST['db_hostname'];
@@ -1115,14 +1102,14 @@ class Installer extends Controller
         $db_password = $_REQUEST['db_password'];
         $fp = @fsockopen( $db_hostname, $db_port, $errno, $errstr, 30 );
         if (! $fp) {
-            $info->message .= "Connection Error: $errstr ($errno)";
+            $info->message .= G::LoadTranslation('ID_CONNECTION_ERROR', SYS_LANG, Array($errstr ($errno)));
             return $info;
         }
 
         $db_host = ($db_port != '' && $db_port != 1433) ? $db_hostname . ':' . $db_port : $db_hostname;
         $link = @mysql_connect( $db_host, $db_username, $db_password );
         if (! $link) {
-            $info->message .= "Connection Error: unable to connect to MySQL using provided credentials.";
+            $info->message .= G::LoadTranslation('ID_MYSQL_CREDENTIALS_WRONG');
             return $info;
         }
         $res = @mysql_query( "SELECT * FROM `information_schema`.`USER_PRIVILEGES` where (GRANTEE = \"'$db_username'@'$db_hostname'\" OR GRANTEE = \"'$db_username'@'%'\") and PRIVILEGE_TYPE = 'SUPER' ", $link );
@@ -1131,10 +1118,10 @@ class Installer extends Controller
         @mysql_free_result( $res );
         @mysql_close( $link );
         if (! $hasSuper) {
-            $info->message .= "Connection Error: User '$db_username' can't create databases and Users <br>Please provide an user with SUPER privilege.";
+            $info->message .= G::LoadTranslation('ID_CONNECTION_ERROR_PRIVILEGE', SYS_LANG, Array($db_username));
             return $info;
         }
-        $info->message .= "Succesfully connected to MySQL Server";
+        $info->message .= G::LoadTranslation('ID_MYSQL_SUCCESS_CONNECT');
         $info->result = true;
         return $info;
     }
@@ -1144,7 +1131,7 @@ class Installer extends Controller
         $info->result = false;
         $info->message = '';
         if (! function_exists( "mssql_connect" )) {
-            $info->message = 'php-mssql is Not Installed';
+            $info->message = G::LoadTranslation('ID_PHP_MSSQL_NOT_INSTALLED');
             return $info;
         }
 
@@ -1155,14 +1142,14 @@ class Installer extends Controller
 
         $fp = @fsockopen( $db_hostname, $db_port, $errno, $errstr, 30 );
         if (! $fp) {
-            $info->message .= "Connection Error: $errstr ($errno)";
+            $info->message .= G::LoadTranslation('ID_CONNECTION_ERROR', SYS_LANG, Array($errstr ($errno)));
             return $info;
         }
 
         $db_host = ($db_port != '' && $db_port != 1433) ? $db_hostname . ':' . $db_port : $db_hostname;
         $link = @mssql_connect( $db_host, $db_username, $db_password );
         if (! $link) {
-            $info->message .= "Connection Error: unable to connect to MSSQL using provided credentials.";
+            $info->message .= G::LoadTranslation('ID_MYSQL_CREDENTIALS_WRONG');
             return $info;
         }
 
@@ -1202,11 +1189,11 @@ class Installer extends Controller
         mssql_free_result( $res );
 
         if (! ($hasSysAdmin || ($hasSecurityAdmin && $hasDbCreator))) {
-            $info->message .= "Connection Error: User '$db_username' can't create databases and Users <br>Please provide an user with sysadmin role or dbcreator and securityadmin roles.";
+            $info->message .= G::LoadTranslation('ID_CONNECTION_ERROR_SECURITYADMIN', SYS_LANG, Array($db_username) );
             return $info;
         }
 
-        $info->message .= "Succesfully connected to MSSQL Server";
+        $info->message .= G::LoadTranslation('ID_MSSQL_SUCCESS_CONNECT');
         $info->result = true;
         return $info;
     }

@@ -52,37 +52,37 @@ Ext.onReady(function(){
   var checkWorkspaceConfiguration = function() {
     var canInstall = false;
     if (!Ext.getCmp('workspace').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter a valid Workspace Name.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_VALID_WORKSPACE'), false));
       wizard.onClientValidation(2, false);
       return;
     }
     if (!Ext.getCmp('adminUsername').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter a valid Admin Username.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_VALID_ADMIN_NAME'), false));
       wizard.onClientValidation(2, false);
       return;
     }
     if (Ext.getCmp('adminPassword').getValue() == '') {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter the Admin Password.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_VALID_ADMIN_PASSWORD'), false));
       wizard.onClientValidation(2, false);
       return;
     }
     if (Ext.getCmp('adminPassword').getValue() != Ext.getCmp('confirmPassword').getValue()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('The password confirmation is incorrect.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_PASSWORD_CONFIRMATION_INCORRECT'), false));
       wizard.onClientValidation(2, false);
       return;
     }
     if (!Ext.getCmp('wfDatabase').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter the Workflow Database Name.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_WORKFLOW_DATABASE_NAME'), false));
       wizard.onClientValidation(2, false);
       return;
     }
     if (!Ext.getCmp('rbDatabase').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter the Rbac Database Name.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_RBAC_DATABASE_NAME'), false));
       wizard.onClientValidation(2, false);
       return;
     }
     if (!Ext.getCmp('rpDatabase').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter the Report Database Name.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_REPORT_DATABASE_NAME'), false));
       wizard.onClientValidation(2, false);
       return;
     }

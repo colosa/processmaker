@@ -28,7 +28,7 @@ Ext.onReady(function(){
   });
 
   var cmbLanguages = new Ext.form.ComboBox({
-      fieldLabel: 'Language',
+      fieldLabel: _('ID_LANGUAGES'),
       store: store,
       labelWidth: 200,
       displayField:'label',
@@ -36,7 +36,7 @@ Ext.onReady(function(){
       mode: 'local',
       forceSelection: true,
       triggerAction: 'all',
-      emptyText:'Select a language...',
+      emptyText:_('ID_EMPTY_LANGUAGE'),
       selectOnFocus:true
   });
 
@@ -101,9 +101,9 @@ Ext.onReady(function(){
 
         permissionInfo.error1 = response.noWritableFiles
 
-        //type = response.success ? 'success' : 'warning';
+        //type = response.success ? 'success' : _('ID_WARNING');
         if (!response.success)
-          PMExt.error('WARNING', response.notify + ' <a href="#" onclick="showPermissionInfo(1); return false;">Show non-writable files.</a>');
+          PMExt.error(_('ID_WARNING'), response.notify + ' <a href="#" onclick="showPermissionInfo(1); return false;">Show non-writable files.</a>');
 
       },
       failure: function(){},
@@ -149,7 +149,7 @@ Ext.onReady(function(){
         Ext.getCmp('db_message').setValue(getFieldOutput(response.message, response.result));
 
         if (!response.result)
-          PMExt.notify('WARNING', response.message, 'warning');
+          PMExt.notify(_('ID_WARNING'), response.message, _('ID_WARNING'));
 
         wizard.onClientValidation(3, response.result);
         wizard.showLoadMask(false);
@@ -168,37 +168,37 @@ Ext.onReady(function(){
   function checkWorkspaceConfiguration() {
     var canInstall = false;
     if (!Ext.getCmp('workspace').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter a valid Workspace Name.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_VALID_WORKSPACE'), false));
       wizard.onClientValidation(4, false);
       return;
     }
     if (!Ext.getCmp('adminUsername').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter a valid Admin Username.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_VALID_ADMIN_NAME'), false));
       wizard.onClientValidation(4, false);
       return;
     }
     if (Ext.getCmp('adminPassword').getValue() == '') {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter the Admin Password.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_VALID_ADMIN_PASSWORD'), false));
       wizard.onClientValidation(4, false);
       return;
     }
     if (Ext.getCmp('adminPassword').getValue() != Ext.getCmp('confirmPassword').getValue()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('The password confirmation is incorrect.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_PASSWORD_CONFIRMATION_INCORRECT'), false));
       wizard.onClientValidation(4, false);
       return;
     }
     if (!Ext.getCmp('wfDatabase').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter the Workflow Database Name.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_WORKFLOW_DATABASE_NAME'), false));
       wizard.onClientValidation(4, false);
       return;
     }
     if (!Ext.getCmp('rbDatabase').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter the Rbac Database Name.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_RBAC_DATABASE_NAME'), false));
       wizard.onClientValidation(4, false);
       return;
     }
     if (!Ext.getCmp('rpDatabase').isValid()) {
-      Ext.getCmp('finish_message').setValue(getFieldOutput('Please enter the Report Database Name.', false));
+      Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_REPORT_DATABASE_NAME'), false));
       wizard.onClientValidation(4, false);
       return;
     }
@@ -210,8 +210,8 @@ Ext.onReady(function(){
     Ext.Ajax.request({
       url: 'checkDatabases',
       success: function(response){
-        var existMsg = '<span style="color: red;">(Exists)</span>';
-        var noExistsMsg = '<span style="color: green;">(No exists)</span>';
+        var existMsg = '<span style="color: red;">' + _('ID_EXIST') + '</span>';
+        var noExistsMsg = '<span style="color: green;">' + _('ID_NO_EXIST') + '</span>';
         var response = Ext.util.JSON.decode(response.responseText);
         Ext.get('wfDatabaseSpan').dom.innerHTML = (response.wfDatabaseExists ? existMsg : noExistsMsg);
         Ext.get('rbDatabaseSpan').dom.innerHTML = (response.rbDatabaseExists ? existMsg : noExistsMsg);
@@ -221,11 +221,11 @@ Ext.onReady(function(){
         wizard.onClientValidation(4, dbFlag);
 
         if (dbFlag) {
-          Ext.getCmp('finish_message').setValue(getFieldOutput('The data is correct.', true));
+          Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_DATA_CORRECT'), true));
         }
         else {
-          Ext.getCmp('finish_message').setValue(getFieldOutput('Not Passed.', false));
-          PMExt.notify('WARNING', response.errMessage, 'warning', 4)
+          Ext.getCmp('finish_message').setValue(getFieldOutput(_('ID_NOT_PASSED'), false));
+          PMExt.notify(_('ID_WARNING'), response.errMessage, _('ID_WARNING'), 4)
         }
         wizard.showLoadMask(false);
       },
@@ -247,7 +247,7 @@ Ext.onReady(function(){
   var setIndex = 0;
 
   steps[setIndex++] = new Ext.ux.Wiz.Card({
-    title : 'Pre-installation check',
+    title : _('ID_PREINSTALLATION'),
     monitorValid : false,
     labelAlign: 'left',
     labelWidth: 200,
@@ -256,7 +256,7 @@ Ext.onReady(function(){
     items : [
       {
         border    : false,
-        html      : 'Pre-installation check',
+        html      : _('ID_PREINSTALLATION'),
         bodyStyle : 'background:none;padding-top:0px;padding-bottom:5px;font-weight:bold;font-size:1.3em;'
       },
       {
@@ -268,7 +268,7 @@ Ext.onReady(function(){
             region: 'west',
             width: 250,
             bodyStyle : 'padding:10px;font-size:1.2em;',
-            html: step1_txt
+            html: _('ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION')
           },
 
           {
@@ -278,12 +278,12 @@ Ext.onReady(function(){
             items:[
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'PHP Version >= 5.2.10',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_PHP'),
                 id  : 'php'
               },
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'MySQL Support',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_MYSQL'),
                 id  : 'mysql'
               }/*,
               {
@@ -293,47 +293,47 @@ Ext.onReady(function(){
               }*/,
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'cURL Version',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_CURL'),
                 id  : 'curl'
               },
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'OpenSSL Version (*)',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_OPENSSL'),
                 id  : 'openssl'
               },
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'DOM/XML Support',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_DOMXML'),
                 id  : 'dom'
               },
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'GD Support',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_GD'),
                 id  : 'gd'
               },
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'Multibyte Strings Support',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_MULTIBYTESTRING'),
                 id  : 'multibyte'
               },
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'Soap Support',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_SOAP'),
                 id  : 'soap'
               },
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'LDAP Support (*)',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_LDAP'),
                 id  : 'ldap'
               },
               {
                 xtype     : 'displayfield',
-                fieldLabel: 'Memory Limit >= 80M',
+                fieldLabel: _('ID_PROCESSMAKER_REQUIREMENTS_MEMORYLIMIT'),
                 id: 'memory',
                 value: '5.0 or greater'
               },
               new Ext.Button({
-                text : 'Check Again',
+                text : _('ID_CHECK_AGAIN'),
                 handler  : getSystemInfo,
                 scope    : this
               })
@@ -349,7 +349,7 @@ Ext.onReady(function(){
 
   // third card with Directory File Permission
   steps[setIndex++] = new Ext.ux.Wiz.Card({
-    title:'Directory File Permission',
+    title:_('ID_DIRECTORY_FILE_PERMISSION'),
     monitorValid : false,
     labelAlign: 'left',
     labelWidth: 200,
@@ -359,7 +359,7 @@ Ext.onReady(function(){
     items : [
       {
         border    : false,
-        html:'Directory/File Permission',
+        html: _('ID_DIRECTORY_FILE_PERMISSION'),
         bodyStyle : 'background:none;padding-top:0px;padding-bottom:5px;font-weight:bold;font-size:1.3em;'
       },
       {
@@ -371,7 +371,7 @@ Ext.onReady(function(){
             region: 'north',
             height: 55,
             bodyStyle : 'padding:10px;font-size:1.2em;',
-            html: step3_txt
+            html: _('ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP3_1')
           },
           {
             region: 'center',
@@ -382,7 +382,7 @@ Ext.onReady(function(){
             items:[
               {
                 xtype: 'textfield',
-                fieldLabel: '<span id="pathConfigSpan"></span> Config Directory',
+                fieldLabel: '<span id="pathConfigSpan"></span> '+_('ID_CONFIG_DIRECTORY'),
                 id: 'pathConfig',
                 width: 430,
                 value: path_config,
@@ -390,7 +390,7 @@ Ext.onReady(function(){
               },
               {
                 xtype: 'textfield',
-                fieldLabel: '<span id="pathLanguagesSpan"></span> Language Directory',
+                fieldLabel: '<span id="pathLanguagesSpan"></span> '+ _('ID_LANGUAJE_DIRECTORY'),
                 id: 'pathLanguages',
                 width: 430,
                 value: path_languages,
@@ -398,7 +398,7 @@ Ext.onReady(function(){
               },
               {
                 xtype: 'textfield',
-                fieldLabel: '<span id="pathPluginsSpan"></span> Plugins Directory',
+                fieldLabel: '<span id="pathPluginsSpan"></span> ' + _('ID_PLUGINS_DIRECTORY'),
                 id: 'pathPlugins',
                 width: 430,
                 value: path_plugins,
@@ -406,7 +406,7 @@ Ext.onReady(function(){
               },
               {
                 xtype: 'textfield',
-                fieldLabel: '<span id="pathXmlformsSpan"></span> Xmlform Directory Directory',
+                fieldLabel: '<span id="pathXmlformsSpan"></span> ' + _('ID_XMLFROM_DIRECTORY'),
                 id: 'pathXmlforms',
                 width: 430,
                 value: path_xmlforms,
@@ -414,7 +414,7 @@ Ext.onReady(function(){
               },
               {
                 xtype: 'textfield',
-                fieldLabel: '<span id="pathPublicSpan"></span> Public Index file',
+                fieldLabel: '<span id="pathPublicSpan"></span> ' + _('ID_PUBLIC_INDEX_FILE'),
                 id: 'pathPublic',
                 width: 430,
                 value: path_public,
@@ -422,13 +422,13 @@ Ext.onReady(function(){
               },
               {
                 xtype: 'textfield',
-                fieldLabel: '<span id="pathSharedSpan"></span> Workflow Data Directory',
+                fieldLabel: '<span id="pathSharedSpan"></span> ' + _('ID_WORFLOW_DATA_DIRECTORY'),
                 id: 'pathShared',
                 width: 430,
                 value: path_shared,
                 enableKeyEvents: true,
                 allowBlank: false,
-                blankText: '"Workflow Data Directory" is required',
+                blankText: _('ID_WORKFLOW_DATA_DIRECTORY_REQUIRED'),
                 selectOnFocus: true,
                 msgTarget: 'side',
                 listeners: {keyup: function() {
@@ -443,14 +443,14 @@ Ext.onReady(function(){
               },
               {
                 xtype: 'textfield',
-                fieldLabel: '<span id="pathLogFileSpan"></span> Installation log file',
+                fieldLabel: '<span id="pathLogFileSpan"></span> ' + _('ID_INSTALLATION_LOG'),
                 id: 'pathLogFile',
                 width: 430,
                 value: path_shared + 'log' + path_sep + 'install.log',
                 disabled: true
               },
               new Ext.Button({
-                text : 'Check Again',
+                text : _('ID_CHECK_AGAIN'),
                 handler  : getPermissionInfo,
                 scope    : this
               })
@@ -468,7 +468,7 @@ Ext.onReady(function(){
 
   // third card with input field email-address
   steps[setIndex++] = new Ext.ux.Wiz.Card({
-    title:'ProcessMaker Open Source License',
+    title:_('ID_PROCESSMAKER_LICENSE'),
     //monitorValid : false,
     defaults     : {
       labelStyle : 'font-size:12px'
@@ -476,7 +476,7 @@ Ext.onReady(function(){
     items : [
       {
         border    : false,
-        html:'ProcessMaker Open Source License',
+        html:_('ID_PROCESSMAKER_LICENSE'),
         bodyStyle : 'background:none;padding-top:0px;padding-bottom:5px;font-weight:bold;font-size:1.3em;'
       },
       {
@@ -522,12 +522,12 @@ Ext.onReady(function(){
 
 // fourth card Database Configuration
   steps[setIndex++] = new Ext.ux.Wiz.Card({
-    title        : 'Database Configuration',
+    title        : _('ID_DATABASE_CONFIGURATION'),
     monitorValid : false,
     items : [
       {
         border    : false,
-        html      : 'Database Configuration',
+        html      : _('ID_DATABASE_CONFIGURATION'),
         bodyStyle : 'background:none;padding-top:0px;padding-bottom:5px;font-weight:bold;font-size:1.3em;'
       },
       {
@@ -539,7 +539,7 @@ Ext.onReady(function(){
             region: 'west',
             width: 200,
             bodyStyle : 'padding:10px;font-size:1.2em;',
-            html: step4_txt
+            html: _('ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP4_1')
           },
           {
             region: 'center',
@@ -552,7 +552,7 @@ Ext.onReady(function(){
                 labelWidth: 160,
                 items:[
                   new Ext.form.ComboBox({
-                    fieldLabel: 'Database Engine',
+                    fieldLabel: _('ID_DATABASE_ENGINE'),
                     width : 200,
                     store : storeDatabase,
                     displayField : 'label',
@@ -578,7 +578,7 @@ Ext.onReady(function(){
                   }),
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Host Name',
+                    fieldLabel: _('ID_HOST_NAME_LABEL'),
                     width : 180,
                     id: 'db_hostname',
                     value :'localhost',
@@ -593,7 +593,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Port',
+                    fieldLabel: _('ID_PORT'),
                     width : 180,
                     id: 'db_port',
                     value :'',
@@ -608,7 +608,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Username',
+                    fieldLabel: _('ID_USERNAME'),
                     width : 180,
                     id: 'db_username',
                     value :'root',
@@ -623,7 +623,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Password',
+                    fieldLabel: _('ID_PASSWORD'),
                     inputType : 'password',
                     value     : '',
                     width : 180,
@@ -639,7 +639,7 @@ Ext.onReady(function(){
                     id  : 'db_message'
                   },
                   new Ext.Button({
-                    text : ' Test Connection',
+                    text : _('ID_TEST_CONNECTION'),
                     handler  : testConnection,
                     scope    : this
                   })
@@ -657,7 +657,7 @@ Ext.onReady(function(){
 
 
   steps[setIndex++] = new Ext.ux.Wiz.Card({
-    title        : 'Workspace Configuration',
+    title        : _('ID_WORKSPACE_CONFIGURATION'),
     monitorValid : false,
     defaults     : {
       labelStyle : 'font-size:11px'
@@ -665,7 +665,7 @@ Ext.onReady(function(){
     items : [
       {
         border    : false,
-        html      : 'Workspace Configuration',
+        html      : _('ID_WORKSPACE_CONFIGURATION'),
         bodyStyle : 'background:none;padding-top:0px;padding-bottom:5px;font-weight:bold;font-size:1.3em;'
       },
       {
@@ -677,7 +677,7 @@ Ext.onReady(function(){
             region: 'west',
             width: 200,
             bodyStyle : 'padding:10px;font-size:1.2em;',
-            html: step5_txt
+            html: _('ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP5')
           },
           {
             region: 'center',
@@ -691,7 +691,7 @@ Ext.onReady(function(){
                 items:[
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Workspace Name',
+                    fieldLabel: _('ID_WORKSPACE_NAME'),
                     value  :'workflow',
                     maxLength: 29,
                     validator  : function(v){
@@ -711,7 +711,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Admin Username',
+                    fieldLabel: _('ID_ADMIN_USERNAME'),
                     value  :'admin',
                     validator  : function(v){
                         var t = /^[a-zA-Z_0-9.@-]+$/;
@@ -725,7 +725,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Admin Password',
+                    fieldLabel: _('ID_ADMIN_PASSWORD_LABEL'),
                     inputType : 'password',
                     id: 'adminPassword',
                     enableKeyEvents: true,
@@ -736,7 +736,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Confirm Admin Password',
+                    fieldLabel: _('ID_ADMIN_PASSWORD'),
                     inputType : 'password',
                     id : 'confirmPassword',
                     enableKeyEvents: true,
@@ -755,7 +755,7 @@ Ext.onReady(function(){
                 //title: 'ProcessMaker Databases',
                 items:[
                  new Ext.form.Checkbox({
-                   boxLabel: 'Change Database names',
+                   boxLabel: _('ID_CHANGE_DATABASE_NAME'),
                    id : 'changeDBNames',
                    handler: function() {
                      if (this.getValue()) {
@@ -779,7 +779,7 @@ Ext.onReady(function(){
                  }),
                  {
                     xtype     : 'textfield',
-                    fieldLabel: 'Workflow Database Name <span id="wfDatabaseSpan"></span>',
+                    fieldLabel: _('ID_WF_DATABASE_NAME') + ' <span id="wfDatabaseSpan"></span>',
                     id : 'wfDatabase',
                     value  :'wf_workflow',
                     allowBlank : false,
@@ -796,7 +796,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Rbac Database Name <span id="rbDatabaseSpan"></span>',
+                    fieldLabel: _('ID_RB_DATABASE_NAME') + ' <span id="rbDatabaseSpan"></span>',
                     id : 'rbDatabase',
                     value  :'rb_workflow',
                     allowBlank : false,
@@ -813,7 +813,7 @@ Ext.onReady(function(){
                   },
                   {
                     xtype     : 'textfield',
-                    fieldLabel: 'Report Database Name <span id="rpDatabaseSpan"></span>',
+                    fieldLabel: _('ID_RP_DATABASE_NAME') + ' <span id="rpDatabaseSpan"></span>',
                     id : 'rpDatabase',
                     value  :'rp_workflow',
                     allowBlank : false,
@@ -829,7 +829,7 @@ Ext.onReady(function(){
                     }}
                   },
                   new Ext.form.Checkbox({
-                    boxLabel   : "Delete Databases if exists",
+                    boxLabel   : _('ID_DELETE_DATABASES'),
                     id : 'deleteDB',
                     handler: function() {
                       wizard.onClientValidation(4, false);
@@ -841,7 +841,7 @@ Ext.onReady(function(){
                   },
                   new Ext.Button({
                     id: 'checkWSConfiguration',
-                    text: ' Check Workspace Configuration',
+                    text: _('ID_CHECK_WORKSPACE_CONFIGURATION'),
                     handler: checkWorkspaceConfiguration,
                     scope: this
                   })
@@ -872,7 +872,7 @@ function showPermissionInfo()
 
   w = new Ext.Window({
     layout: 'fit',
-    title: 'Non-writable Files',
+    title: _('ID_NON_WRITABLE_FILES'),
     width: 550,
     height: 180,
     closable: true,
