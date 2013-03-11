@@ -136,7 +136,7 @@ if( isset($request) ){
 
         if (isset($_REQUEST['json'])) {
             header("Content-Type: application/json");
-            echo json_encode(array("status" => 0, "results" => $aResults));
+            echo Bootstrap::json_encode(array("status" => 0, "results" => $aResults));
          } else {
           header("Content-Type: text/xml");
 
