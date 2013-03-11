@@ -43,7 +43,7 @@ Ext.ux.Wiz = Ext.extend(Ext.Window, {
      * msg-text to show, and the value is the message text itself. Defaults to
      <pre><code>
 {
-    default : 'Saving...'
+    default : _('ID_SAVING')
 }
      </code></pre>
      *
@@ -52,7 +52,7 @@ Ext.ux.Wiz = Ext.extend(Ext.Window, {
      * various messages.
 <pre><code>
 this.loadMaskConfig = {
-    default    : 'Saving...',
+    default    : _('ID_SAVING'),
     validating : 'Please wait, validating input...',
 };
 // loadMask will be shown, displaying the message 'Please wait, validating input...'
@@ -60,7 +60,7 @@ this.showLoadMask(true, 'validating');
      </code></pre>
      */
     loadMaskConfig : {
-        'default' : 'Saving...'
+        'default' : _('ID_SAVING')
     },
 
     /**
@@ -105,25 +105,25 @@ this.showLoadMask(true, 'validating');
      * @cfg {String} previousButtonText The text to render the previous-button with.
      * Defaults to "&lt; Back" (< Back)
      */
-    previousButtonText : '&lt; Previous',
+    previousButtonText : _('ID_PREVIUS'),
 
     /**
      * @cfg {String} nextButtonText The text to render the next-button with.
      * Defaults to "Next &gt;" (Next >)
      */
-    nextButtonText : 'Next &gt;',
+    nextButtonText : _('ID_NEXT'),
 
     /**
      * @cfg {String} cancelButtonText The text to render the cancel-button with.
      * Defaults to "Cancel"
      */
-    cancelButtonText : 'Cancel',
+    cancelButtonText : _('ID_CANCEL'),
 
     /**
      * @cfg {String} finishButtonText The text to render the next-button with when the last
      * step of the wizard is reached. Defaults to "Finish"
      */
-    finishButtonText : 'Finish',
+    finishButtonText : _('ID_FINISH'),
 
     /**
      * @cfg {Object} headerConfig A config-object to use with {@link Ext.ux.Wiz.Header}.

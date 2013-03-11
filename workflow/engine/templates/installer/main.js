@@ -42,7 +42,7 @@ Ext.onReady(function(){
 
 function finishInstallation()
 {
-  wizard.showLoadMask(true, 'finishing');
+  wizard.showLoadMask(true, _('ID_FINISH'));
   Ext.Ajax.request({
     url: 'createWorkspace',
     success: function(response){
@@ -54,8 +54,8 @@ function finishInstallation()
 
         //Ext.msgBoxSlider.msgTopCenter(
         PMExt.info(
-          'ProcessMaker Installation',
-          'ProcessMaker was successfully installed<br/>Workspace "' + Ext.getCmp('workspace').getValue() + '" was installed correctly.',
+          _('ID_PROCESSMAKER_INSTALLATION'),
+          response.messageFinish,
           function(){
             _redirect(response.uri);
           }
