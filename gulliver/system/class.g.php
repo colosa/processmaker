@@ -1,4 +1,4 @@
-<?php
+    <?php
 /**
  * class.g.php
  * @package gulliver.system
@@ -2052,7 +2052,41 @@ class G
             }
             return $untranslatedMark . $msgID . $untranslatedMark;
         }
+    }
 
+    /**
+     * Function LoadTranslation
+     *
+     * @author Brayan Osmar Pereyra Suxo "Cochalo". <brayan@colosa.com>
+     * @access public
+     * @param eter string name plugin
+     * @param eter string id msg
+     * @param eter array data
+     * @return string
+     */
+    public function LoadTranslationPlugin ($namePlugin, $msgID, $data = null)
+    {
+        eval('global $translation' . $namePlugin . ';');
+
+        $existId = false;
+        eval('if (isset( $translation' . $namePlugin . '[$msgID])) { $existId = true; }');
+        if ($existId) {
+            eval('$translationString = preg_replace( "[\n|\r|\n\r]", " ", $translation' . $namePlugin . '[$msgID] );');
+            if (isset( $data ) && is_array( $data )) {
+                foreach ($data as $label => $value) {
+                    $translationString = str_replace( '{' . $label . '}', $value, $translationString );
+                }
+            }
+
+            return $translationString;
+        } else {
+            if (defined( "UNTRANSLATED_MARK" )) {
+                $untranslatedMark = strip_tags( UNTRANSLATED_MARK );
+            } else {
+                $untranslatedMark = "**";
+            }
+            return $untranslatedMark . $msgID . $untranslatedMark;
+        }
     }
 
     /**
