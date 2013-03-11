@@ -180,9 +180,9 @@ Ext.onReady(function(){
         name : 'SKIN_NAME'
       },
 
-        {
-            name : 'SKIN_WORKSPACE'
-        },
+		{
+		    name : 'SKIN_WORKSPACE'
+		},
 
       {
         name : 'SKIN_DESCRIPTION'
@@ -531,10 +531,10 @@ newSkin = function(){
               } else {
                 Ext.getCmp("newDialog").destroy();
                 if( !action.result ) {
-                  Ext.MessageBox.alert("error", action.response.responseText);
+                  Ext.MessageBox.alert( _('ID_ERROR') , action.response.responseText);
                   return;
                 }
-                Ext.MessageBox.alert("error", action.result.error);
+                Ext.MessageBox.alert( _('ID_ERROR') , action.result.error);
               }
             },
             scope: Ext.getCmp("newform"),
@@ -651,10 +651,10 @@ importSkin = function(){
               Ext.getCmp("importDialog").destroy();
 
               if( !action.result ) {
-                Ext.MessageBox.alert("error", _('ID_ERROR'));
-                return;
+                Ext.MessageBox.alert( _('ID_ERROR') , _('ID_ERROR'));
+                return; 
               }
-              Ext.MessageBox.alert("error", action.result.error);
+              Ext.MessageBox.alert( _('ID_ERROR') , action.result.error);
 
             },
             scope: Ext.getCmp("uploadform"),
@@ -721,7 +721,7 @@ exportSkin = function(){
           viewport.getEl().unmask();
         }else{
           viewport.getEl().unmask();
-          Ext.Msg.alert('Alert', resp.message);
+          Ext.Msg.alert( _('ID_ALERT') , resp.message);
         //PMExt.error(_('ID_SKINS'),_('ID_MSG_CANNOT_EXPORT_SKIN'));
         }
       },

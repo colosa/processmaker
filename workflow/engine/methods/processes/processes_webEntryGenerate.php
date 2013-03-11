@@ -29,7 +29,7 @@ try {
     $user = $oTask->assignUsertoTask( $sTASKS );
 
     if ($user == 0) {
-        throw (new Exception( "The task '" . $TaskFields['TAS_TITLE'] . "' doesn't have users." ));
+        throw (new Exception( G::LoadTranslation('ID_TASK') . "'" . $TaskFields['TAS_TITLE'] . "'" . G::LoadTranslation('ID_NOT_HAVE_USERS')));
     }
 
     if (G::is_https())

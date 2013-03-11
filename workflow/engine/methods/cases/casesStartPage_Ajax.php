@@ -1,13 +1,13 @@
 <?php
 if (! isset( $_REQUEST['action'] )) {
     $res['success'] = 'failure';
-    $res['message'] = 'You may request an action';
+    $res['message'] = G::LoadTranslation( 'ID_REQUEST_ACTION' );
     print G::json_encode( $res );
     die();
 }
 if (! function_exists( $_REQUEST['action'] )) {
     $res['success'] = 'failure';
-    $res['message'] = 'The requested action does not exist';
+    $res['message'] = G::LoadTranslation( 'ID_REQUEST_ACTION_NOT_EXIST' );
     print G::json_encode( $res );
     die();
 }
@@ -127,7 +127,7 @@ function getProcessList ()
         $processList = $processListTree;
     } else {
         $processList['success'] = 'failure';
-        $processList['message'] = 'User can\'t start process';
+        $processList['message'] = G::LoadTranslation('ID_USER_PROCESS_NOT_START');
     }
     print G::json_encode( $processList );
     die();

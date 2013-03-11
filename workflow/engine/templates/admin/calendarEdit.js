@@ -80,7 +80,7 @@
         {
          xtype: 'textfield',
          width:  70,
-         fieldLabel: 'Name',
+         fieldLabel: _('ID_NAME'),
          name      : 'td1',
          allowBlank: true
         },
@@ -92,7 +92,7 @@
         {
          xtype: 'textfield',
          width:  70,
-         fieldLabel: 'Name',
+         fieldLabel: _('ID_NAME'),
          name      : 'td2',
          allowBlank: true
         },
@@ -103,7 +103,7 @@
         },
         {
           xtype: 'box',
-          fieldLabel: 'Filename',
+          fieldLabel: _('ID_FILENAME'),
           name: 'filename',
           autoEl: {
             style: 'margin-top:5px',
@@ -909,7 +909,7 @@ Ext.onReady( function() {
                   items           : [
                     {
                       xtype       : 'compositefield',
-                      hideLabel  : true,
+                      hideLabel   : true,
                       layout : 'fit',
                       labelWidth : 100,
                       items : [

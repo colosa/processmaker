@@ -17,11 +17,11 @@ var removeButton;
 var removeAllButton;
 var tmp1 = new Array();
 var pageSize = 50;
-var mainMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
+var mainMask = new Ext.LoadMask(Ext.getBody(), {msg: _('ID_PLEASE_WAIT') });
 var bbarpaging;
 //main
 Ext.onReady(function(){
-  mainMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
+  mainMask = new Ext.LoadMask(Ext.getBody(), {msg: _('ID_PLEASE_WAIT') });
   var fm = Ext.form;
   var fieldsCount = 0;
 
@@ -135,7 +135,7 @@ Ext.onReady(function(){
       store: storeA,
       displayInfo: true,
       displayMsg: '{0} - {1} of {2}',
-      emptyMsg: 'No records'/*,
+      emptyMsg: _('ID_NO_RECORDS')/*,
       items: ['-',_('ID_PAGE_SIZE')+':',comboPageSize]*/
   });
 
@@ -339,8 +339,8 @@ Ext.onReady(function(){
         dataIndex: 'field_autoincrement',
         align: 'center',
         width: 100,
-        trueText: 'Yes',
-        falseText: 'No',
+        trueText: _('ID_YES'),
+        falseText: _('ID_NO'),
         editor: {
             xtype: 'checkbox'
         }
@@ -355,8 +355,8 @@ Ext.onReady(function(){
         dataIndex: 'field_filter',
         align: 'center',
         width: 50,
-        trueText: 'Yes',
-        falseText: 'No',
+        trueText: _('ID_YES'),
+        falseText: _('ID_NO'),
         editor: {
             xtype: 'checkbox'
         }
@@ -424,7 +424,7 @@ Ext.onReady(function(){
     sm             : sm,
     store          : store,
     plugins        : [editor, checkColumn],
-    loadMask: {message:'Loading...'},
+    loadMask: {message: _('ID_LOADING_GRID')},
     tbar           : [
       {
         icon: '/images/add-row-after.png',
@@ -893,7 +893,6 @@ Ext.onReady(function(){
       if(TABLE.ADD_TAB_TYPE != 'GRID')
         loadFieldNormal();
     }
-
   }
 
   DDLoadFields();

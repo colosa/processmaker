@@ -33,7 +33,7 @@ class Services_Rest_Step
                 $criteria->addSelectColumn(StepPeer::STEP_CONDITION);
                 $criteria->addSelectColumn(StepPeer::STEP_POSITION);
                 $criteria->addSelectColumn(StepPeer::STEP_MODE);
-                
+
                 $dataset = AppEventPeer::doSelectRS($criteria);
                 $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -88,7 +88,7 @@ class Services_Rest_Step
             $obj->setStepCondition($stepCondition);
             $obj->setStepPosition($stepPosition);
             $obj->setStepMode($stepMode);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -115,7 +115,7 @@ class Services_Rest_Step
             $obj->setStepCondition($stepCondition);
             $obj->setStepPosition($stepPosition);
             $obj->setStepMode($stepMode);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -133,16 +133,16 @@ class Services_Rest_Step
     protected function delete($stepUid)
     {
         $conn = Propel::getConnection(StepPeer::DATABASE_NAME);
-        
+
         try {
             $conn->begin();
-        
+
             $obj = StepPeer::retrieveByPK($stepUid);
             if (! is_object($obj)) {
-                throw new RestException(412, 'Record does not exist.');
+                throw new RestException(412, G::LoadTranslation('ID_RECORD_DOES_NOT_EXIST'));
             }
             $obj->delete();
-        
+
             $conn->commit();
         } catch (Exception $e) {
             $conn->rollback();

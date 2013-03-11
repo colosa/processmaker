@@ -37,7 +37,7 @@ class Services_Rest_SubProcess
                 $criteria->addSelectColumn(SubProcessPeer::SP_VARIABLES_OUT);
                 $criteria->addSelectColumn(SubProcessPeer::SP_VARIABLES_IN);
                 $criteria->addSelectColumn(SubProcessPeer::SP_GRID_IN);
-                
+
                 $dataset = AppEventPeer::doSelectRS($criteria);
                 $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -96,7 +96,7 @@ class Services_Rest_SubProcess
             $obj->setSpVariablesOut($spVariablesOut);
             $obj->setSpVariablesIn($spVariablesIn);
             $obj->setSpGridIn($spGridIn);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -127,7 +127,7 @@ class Services_Rest_SubProcess
             $obj->setSpVariablesOut($spVariablesOut);
             $obj->setSpVariablesIn($spVariablesIn);
             $obj->setSpGridIn($spGridIn);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -145,16 +145,16 @@ class Services_Rest_SubProcess
     protected function delete($spUid)
     {
         $conn = Propel::getConnection(SubProcessPeer::DATABASE_NAME);
-        
+
         try {
             $conn->begin();
-        
+
             $obj = SubProcessPeer::retrieveByPK($spUid);
             if (! is_object($obj)) {
-                throw new RestException(412, 'Record does not exist.');
+                throw new RestException(412, G::LoadTranslation('ID_RECORD_DOES_NOT_EXIST'));
             }
             $obj->delete();
-        
+
             $conn->commit();
         } catch (Exception $e) {
             $conn->rollback();

@@ -201,7 +201,7 @@ switch ($action) {
                 }
 
                 if (in_array( strtoupper( $data['REP_TAB_NAME'] ), $aReservedWords )) {
-                    throw new Exception( 'Could not create the table with the name "' . $data['REP_TAB_NAME'] . '" because it is a reserved word.' );
+                    throw new Exception( G::LoadTranslation('ID_NOT_CREATE_TABLE') . '"' . $data['REP_TAB_NAME'] . '"' . G::LoadTranslation('ID_RESERVED_WORD') );
                 }
                 //create record
                 $addTabUid = $oAdditionalTables->create( $repTabData );

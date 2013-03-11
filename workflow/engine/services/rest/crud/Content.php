@@ -30,7 +30,7 @@ class Services_Rest_Content
                 $criteria->addSelectColumn(ContentPeer::CON_ID);
                 $criteria->addSelectColumn(ContentPeer::CON_LANG);
                 $criteria->addSelectColumn(ContentPeer::CON_VALUE);
-                
+
                 $dataset = AppEventPeer::doSelectRS($criteria);
                 $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -82,7 +82,7 @@ class Services_Rest_Content
             $obj->setConId($conId);
             $obj->setConLang($conLang);
             $obj->setConValue($conValue);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -103,7 +103,7 @@ class Services_Rest_Content
             $obj = ContentPeer::retrieveByPK($conCategory, $conParent, $conId, $conLang);
 
             $obj->setConValue($conValue);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -121,16 +121,16 @@ class Services_Rest_Content
     protected function delete($conCategory, $conParent, $conId, $conLang)
     {
         $conn = Propel::getConnection(ContentPeer::DATABASE_NAME);
-        
+
         try {
             $conn->begin();
-        
+
             $obj = ContentPeer::retrieveByPK($conCategory, $conParent, $conId, $conLang);
             if (! is_object($obj)) {
-                throw new RestException(412, 'Record does not exist.');
+                throw new RestException(412, G::LoadTranslation('ID_RECORD_DOES_NOT_EXIST') ) ;
             }
             $obj->delete();
-        
+
             $conn->commit();
         } catch (Exception $e) {
             $conn->rollback();

@@ -171,7 +171,7 @@ function processSchemaFile ()
         $oDataBase = new database( $DB_ADAPTER, $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME );
 
         if (! $oDataBase->isConnected()) {
-            $oDataBase->logQuery( 'Does not exist an available connection!' );
+            $oDataBase->logQuery( G::LoadTranslation('ID_DOES_NOT_EXIST_AVAILABLE_CONNECTION') );
             return null;
         }
 

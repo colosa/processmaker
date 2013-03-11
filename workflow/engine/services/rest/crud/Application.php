@@ -41,7 +41,7 @@ class Services_Rest_Application
                 $criteria->addSelectColumn(ApplicationPeer::APP_UPDATE_DATE);
                 $criteria->addSelectColumn(ApplicationPeer::APP_DATA);
                 $criteria->addSelectColumn(ApplicationPeer::APP_PIN);
-                
+
                 $dataset = AppEventPeer::doSelectRS($criteria);
                 $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -104,7 +104,7 @@ class Services_Rest_Application
             $obj->setAppUpdateDate($appUpdateDate);
             $obj->setAppData($appData);
             $obj->setAppPin($appPin);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -139,7 +139,7 @@ class Services_Rest_Application
             $obj->setAppUpdateDate($appUpdateDate);
             $obj->setAppData($appData);
             $obj->setAppPin($appPin);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -157,16 +157,16 @@ class Services_Rest_Application
     protected function delete($appUid)
     {
         $conn = Propel::getConnection(ApplicationPeer::DATABASE_NAME);
-        
+
         try {
             $conn->begin();
-        
+
             $obj = ApplicationPeer::retrieveByPK($appUid);
             if (! is_object($obj)) {
-                throw new RestException(412, 'Record does not exist.');
+                throw new RestException(412, G::LoadTranslation('ID_RECORD_DOES_NOT_EXIST'));
             }
             $obj->delete();
-        
+
             $conn->commit();
         } catch (Exception $e) {
             $conn->rollback();

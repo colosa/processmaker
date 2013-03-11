@@ -50,7 +50,7 @@ Ext.onReady(function(){
   var tools = [{
     id:'gear',
     handler: function(){
-      Ext.Msg.alert('Message', 'The Settings tool was clicked.');
+      Ext.Msg.alert(_('ID_MESSAGE'), _('ID_SETTING_MESSAGE'));
     }
   },{
     id:'close',
