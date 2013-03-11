@@ -617,14 +617,8 @@
 }
 .module_ListBoxView
 { 
-  
   color: white;
-  background:#CCDDFF;
-  padding:1px;
-  border:1px solid #AAA;
-  padding-left:3px; 
-  background-position:0px 0px; 
-  font  :normal 8pt sans-serif; 
+  background: #0A246A;
 }
 .module_app_inputHover___gray
 {

@@ -3583,23 +3583,19 @@ class XmlForm_Field_Listbox extends XmlForm_Field
             $html .= $this->renderHint();
             return $html;
         } elseif ($this->mode === 'view') {
-            $html = '<select multiple id="form[' . $this->name . ']" name="form[' . $this->name . '][]" size="' . $this->size . '" ' . $this->NSFieldType() . ' disabled>'; //disabled>';
+            $html = '<select multiple="multiple" id="form[' . $this->name . ']" name="form[' . $this->name . '][]" size="' . $this->size . '" ' . $this->NSFieldType() . ' style="background: none;" disabled="disabled">';
             foreach ($this->option as $optionName => $option) {
-                if ((in_array( $optionName, $value )) == 1) {
-                    $html .= ' <option  class="module_ListBoxView" value="' . $optionName . '" ' . ((in_array( $optionName, $value )) ? 'selected' : '') . '>' . $option . '</option>';
-                } else {
-                    $html .= '<option value="' . $optionName . '" ' . ((in_array( $optionName, $value )) ? 'selected' : '') . '>' . $option . '</option>';
-                }
+                $html .= '<option value="' . $optionName . '" ' . ((in_array( $optionName, $value )) ? 'class="module_ListBoxView" selected="selected"' : '') . '>' . $option . '</option>';
             }
             foreach ($this->sqlOption as $optionName => $option) {
-                $html .= '<option value="' . $optionName . '" ' . ((in_array( $optionName, $value )) ? 'selected' : '') . '>' . $option . '</option>';
+                $html .= '<option value="' . $optionName . '" ' . ((in_array( $optionName, $value )) ? 'class="module_ListBoxView" selected="selected"' : '') . '>' . $option . '</option>';
             }
             $html .= '</select>';
             foreach ($this->option as $optionName => $option) {
-                $html .= '<input style="color:white;" type="hidden"  id="form[' . $this->name . ']" name="form[' . $this->name . '][]" value="' . ((in_array( $optionName, $value )) ? $optionName : '') . '">';
+                $html .= '<input type="hidden" id="form[' . $this->name . ']" name="form[' . $this->name . '][]" value="' . ((in_array( $optionName, $value )) ? $optionName : '') . '">';
             }
             foreach ($this->sqlOption as $optionName => $option) {
-                $html .= '<input type="hidden"  id="form[' . $this->name . ']" name="form[' . $this->name . '][]" value="' . ((in_array( $optionName, $value )) ? $optionName : '') . '">';
+                $html .= '<input type="hidden" id="form[' . $this->name . ']" name="form[' . $this->name . '][]" value="' . ((in_array( $optionName, $value )) ? $optionName : '') . '">';
             }
             return $html;
         } else {
