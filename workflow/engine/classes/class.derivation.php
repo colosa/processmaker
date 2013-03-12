@@ -417,7 +417,7 @@ class Derivation
                 $userFields['USR_EMAIL'] = '';
 
                 //get the report_to user & its full info
-                $useruid = $this->getDenpendentUser( $this->checkReplacedByUser( $tasInfo['USER_UID'] ) );
+                $useruid = $this->checkReplacedByUser( $this->getDenpendentUser( $tasInfo['USER_UID'] ) );
 
                 if (isset( $useruid ) && $useruid != '') {
                     $userFields = $this->getUsersFullNameFromArray( $useruid );
