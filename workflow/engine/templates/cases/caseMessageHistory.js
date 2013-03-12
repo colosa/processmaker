@@ -517,7 +517,7 @@ var ActionTabFrameGlobal = '';
           }
         ],
         bbar: new Ext.PagingToolbar({
-          pageSize: 10,
+          pageSize: 20,
           store: store,
           displayInfo: true,
           displayMsg: _('ID_DISPLAY_PROCESSES'),
@@ -536,7 +536,7 @@ var ActionTabFrameGlobal = '';
         }
       });
 
-    processesGrid.store.load({params: {"function":"languagesList"}});
+    processesGrid.store.load({params: {"actionAjax":"messageHistoryGridList_JXP"}});
 
       processesGrid.store.on(
         'load',

@@ -25,6 +25,14 @@
 $actionAjax = isset( $_REQUEST['actionAjax'] ) ? $_REQUEST['actionAjax'] : null;
 
 if ($actionAjax == 'messageHistoryGridList_JXP') {
+    
+    if (!isset($_REQUEST['start'])) {
+        $_REQUEST['start'] = 0;
+    }
+    
+    if (!isset($_REQUEST['limit'])) {
+        $_REQUEST['limit'] = 20;
+    }
 
     G::LoadClass( 'case' );
     G::LoadClass( "BasePeer" );
@@ -32,16 +40,22 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
     global $G_PUBLISH;
     $oCase = new Cases();
 
-    $appMessageArray = $oCase->getHistoryMessagesTrackerExt( $_SESSION['APPLICATION'] );
+    $appMessageArray = $oCase->getHistoryMessagesTrackerExt( $_SESSION['APPLICATION'], $_REQUEST['start'], $_REQUEST['limit']);
+    $appMessageCountArray = $oCase->getHistoryMessagesTrackerExt( $_SESSION['APPLICATION']);
 
     $result = new stdClass();
     $aProcesses = Array ();
 
-    $totalCount = 0;
     foreach ($appMessageArray as $index => $value) {
         if ($appMessageArray[$index]['APP_MSG_SHOW_MESSAGE'] == 1) {
             $appMessageArray[$index]['ID_MESSAGE'] = $appMessageArray[$index]['APP_UID'] . '_' . $appMessageArray[$index]['APP_MSG_UID'];
             $aProcesses[] = $appMessageArray[$index];
+        }
+    }
+    
+    $totalCount = 0;
+    foreach ($appMessageCountArray as $index => $value) {
+        if ($appMessageCountArray[$index]['APP_MSG_SHOW_MESSAGE'] == 1) {
             $totalCount ++;
         }
     }

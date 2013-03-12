@@ -5751,7 +5751,7 @@ class Cases
      * @return array
      */
 
-    public function getHistoryMessagesTrackerExt($sApplicationUID)
+    public function getHistoryMessagesTrackerExt($sApplicationUID, $start = null, $limit = null)
     {
         G::LoadClass('ArrayPeer');
         global $_DBArray;
@@ -5760,6 +5760,12 @@ class Cases
         $oCriteria = new Criteria('workflow');
         $oCriteria->add(AppMessagePeer::APP_UID, $sApplicationUID);
         $oCriteria->addAscendingOrderByColumn(AppMessagePeer::APP_MSG_DATE);
+        if (!is_null($start)) {
+            $oCriteria->setOffset($start);
+        }
+        if (!is_null($limit)) {
+            $oCriteria->setLimit($limit);
+        }
         $oDataset = AppMessagePeer::doSelectRS($oCriteria);
         $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $oDataset->next();
