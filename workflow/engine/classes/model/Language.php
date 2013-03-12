@@ -541,6 +541,267 @@ class Language extends BaseLanguage
         }
         G::streamFile( $sPOFile, true );
     }
+    function updateLanguagePlugin ($plugin, $idLanguage)
+    {
+        if (!file_exists(PATH_PLUGINS . $plugin)) {
+            throw new Exception( 'The plugin ' . $plugin . ' not exist' );
+            die();
+        }
+        if (!file_exists(PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po')) {
+            throw new Exception( 'The not exist the file ' . $plugin . '.' . $idLanguage . '.po' );
+            die();
+        }
+        $languageFile = PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po' ;//PATH_LANGUAGECONT . $plugin . '.' . $idLanguage;
+        try {
+            G::LoadSystem( 'i18n_po' );
+            $POFile = new i18n_PO( $languageFile );
+            $POFile->readInit();
+            $POHeaders = $POFile->getHeaders();
+
+            $oTranslation = new Translation();
+            $countItems = 0;
+            $countItemsSuccess = 0;
+            $errorMsg = '';
+
+            while ($rowTranslation = $POFile->getTranslation()) {
+                $countItems ++;
+                if (! isset( $POFile->translatorComments[0] ) || ! isset( $POFile->translatorComments[1] ) || ! isset( $POFile->references[0] )) {
+                    throw new Exception( 'The .po file doesn\'t have valid directives for Processmaker!' );
+                }
+
+                foreach ($POFile->translatorComments as $a => $aux) {
+                    $identifier = '';
+                    $context = '';
+                    $aux = trim( $aux );
+                    if ($aux == 'TRANSLATION') {
+                        $identifier = $aux;
+                    } else {
+                        $var = explode( '/', $aux );
+                        if ($var[0] == 'LABEL') {
+                            $context = $aux;
+                        }
+                        if ($var[0] == 'JAVASCRIPT') {
+                            $context = $aux;
+                        }
+                    }
+                    if ($identifier == '' && $context == '') {
+                        $context = $aux;
+                    }
+                    if (preg_match( '/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml\?)/', $aux, $match )) {
+                        $identifier = $aux;
+                    } else {
+                        if (preg_match( '/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml$)/', $aux, $match )) {
+                            $context = $aux;
+                        }
+                    }
+                }
+
+                $reference = $POFile->references[0];
+
+                if ($identifier != 'TRANSLATION') {
+                    $xmlForm = $context;
+                    //erik: expresion to prevent and hable correctly dropdown values like -1, -2 etc.
+                    preg_match( '/^([\w_]+)\s-\s([\w_]+)\s*-*\s*([\w\W]*)$/', $reference, $match );
+
+                    if (! file_exists( PATH_PLUGINS . $plugin . PATH_SEP . $xmlForm )) {
+                        $errorMsg .= 'file doesn\'t exist: ' . PATH_PLUGINS . $plugin . $xmlForm . "\n";
+                        continue;
+                    }
+
+                    if (count( $match ) < 4) {
+                        $near = isset( $rowTranslation['msgid'] ) ? $rowTranslation['msgid'] : (isset( $rowTranslation['msgstr'] ) ? $rowTranslation['msgstr'] : '');
+                        $errorMsg .= "Invalid Translation reference: \"$reference\",  near -> " . strip_tags($near) . "\n";
+                        continue;
+                    }
+
+                    G::LoadSystem( 'dynaformhandler' );
+                    $dynaform = new dynaFormHandler( PATH_PLUGINS . $plugin . PATH_SEP . $xmlForm );
+                    $fieldName = $match[2];
+
+                    $codes = explode( '-', $reference );
+
+                    if (sizeof( $codes ) == 2) {
+                        //is a normal node
+                        $dynaform->addChilds( $fieldName, Array ($idLanguage => stripcslashes( str_replace( chr( 10 ), '', $rowTranslation['msgstr'] ) )
+                        ) );
+                    } elseif (sizeof( $codes ) > 2) {
+                        //is a node child for a language node
+                        $name = $match[3] == "''" ? '' : $match[3];
+                        $childNode = Array (
+                            Array ('name' => 'option','value' => $rowTranslation['msgstr'],'attributes' =>
+                                Array ('name' => $name)
+                            )
+                        );
+
+                        $dynaform->addChilds( $fieldName, Array ($idLanguage => null
+                        ), $childNode );
+                    }
+                    $countItemsSuccess ++;
+                }
+            }
+
+            $trn = new Translation();
+            $trn->generateFileTranslationPlugin( $plugin, $idLanguage );
+            $trn->addTranslationEnvironmentPlugins( $plugin, $idLanguage, $POHeaders, $countItemsSuccess );
+
+            //fill the results
+            $results = new stdClass();
+            $results->recordsCount = $countItems;
+            $results->recordsCountSuccess = $countItemsSuccess;
+            $results->lang = $languageID;
+            $results->headers = $POHeaders;
+            $results->errMsg = $errorMsg;
+
+            return $results;
+        } catch (Exception $oError) {
+            throw ($oError);
+        }
+    }
+
+    function createLanguagePlugin ($plugin, $idLanguage)
+    {
+        G::LoadSystem( 'i18n_po' );
+        G::LoadClass( "system" );
+
+        //creating the .po file
+        //$sPOFile = PATH_LANGUAGECONT . $plugin . '.' . $idLanguage . '.po';
+        $sPOFile = PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po';
+        $poFile = new i18n_PO( $sPOFile );
+        $poFile->buildInit();
+
+        $language = new Language();
+
+        $locale = $language;
+        $_TARGET_LANG = $idLanguage;
+        $_BASE_LANG = 'en';
+
+        //setting headers
+        $poFile->addHeader( 'Project-Id-Version', $plugin );
+        $poFile->addHeader( 'POT-Creation-Date', '' );
+        $poFile->addHeader( 'PO-Revision-Date', date( 'Y-m-d H:i:s' ) );
+        $poFile->addHeader( 'Last-Translator', '' );
+        $poFile->addHeader( 'Language-Team', 'Colosa Developers Team <developers@colosa.com>' );
+        $poFile->addHeader( 'MIME-Version', '1.0' );
+        $poFile->addHeader( 'Content-Type', 'text/plain; charset=utf-8' );
+        $poFile->addHeader( 'Content-Transfer_Encoding', '8bit' );
+        $poFile->addHeader( 'X-Poedit-Language', ucwords( $idLanguage ) );
+        $poFile->addHeader( 'X-Poedit-SourceCharset', 'utf-8' );
+        $poFile->addHeader( 'Content-Transfer-Encoding', '8bit' );
+
+        $aLabels = array ();
+        $aMsgids = array ('' => true
+        );
+        //global $translations;
+        include PATH_PLUGINS . $plugin . PATH_SEP . 'translations'. PATH_SEP . 'translation.php';
+
+        foreach ($translations as $id => $translation) {
+            $msgid = trim( $translation);
+            $msgstr = trim( $translation );
+            $poFile->addTranslatorComment( 'TRANSLATION' );
+            $poFile->addTranslatorComment( 'LABEL/' . $id );
+            $poFile->addReference( 'LABEL/'. $id );
+
+            $poFile->addTranslation( stripcslashes( $msgid ), stripcslashes( $msgstr ) );
+            $aMsgids[$msgid] = true;
+        }
+
+        //now find labels in xmlforms
+        $aExceptionFields = array ('','javascript','hidden','phpvariable','private','toolbar','xmlmenu','toolbutton','cellmark','grid','CheckboxTable'
+        );
+        $aXMLForms = glob( PATH_PLUGINS . $plugin . PATH_SEP  . '*.xml' );
+        $aXMLForms2 = glob( PATH_PLUGINS . $plugin . PATH_SEP  . '*/*.xml' );
+        $aXMLForms = array_merge( $aXMLForms, $aXMLForms2 );
+        $aXMLForms3 = glob( PATH_PLUGINS . $plugin . PATH_SEP  . '*/*/*.xml' );
+        $aXMLForms = array_merge( $aXMLForms, $aXMLForms3 );
+        $aEnglishLabel = array ();
+        $aOptions = array ();
+        $nodesNames = Array ();
+
+        G::loadSystem( 'dynaformhandler' );
+
+        foreach ($aXMLForms as $xmlFormPath) {
+            $xmlFormFile = str_replace( chr( 92 ), '/', $xmlFormPath );
+            $xmlFormFile = str_replace( PATH_PLUGINS . $plugin . PATH_SEP , '', $xmlFormPath );
+            $dynaForm = new dynaFormHandler( $xmlFormPath );
+            $dynaNodes = $dynaForm->getFields();
+            //get all fields of each xmlform
+            foreach ($dynaNodes as $oNode) {
+                $sNodeName = $oNode->nodeName;
+                $arrayNode = $dynaForm->getArray( $oNode );
+                //if has not native language translation
+                if (! isset( $arrayNode[$_BASE_LANG] ) || ! isset( $arrayNode['type'] ) || (isset( $arrayNode['type'] ) && in_array( $arrayNode['type'], $aExceptionFields ))) {
+                    continue; //just continue with the next node
+                }
+                // Getting the Base Origin Text
+                if (! is_array( $arrayNode[$_BASE_LANG] )) {
+                    $originNodeText = trim( $arrayNode[$_BASE_LANG] );
+                } else {
+                    $langNode = $arrayNode[$_BASE_LANG][0];
+                    $originNodeText = $langNode['__nodeText__'];
+                }
+                // Getting the Base Target Text
+                if (isset( $arrayNode[$_TARGET_LANG] )) {
+                    if (! is_array( $arrayNode[$_TARGET_LANG] )) {
+                        $targetNodeText = trim( $arrayNode[$_TARGET_LANG] );
+                    } else {
+                        $langNode = $arrayNode[$_TARGET_LANG][0];
+                        $targetNodeText = $langNode['__nodeText__'];
+                    }
+                } else {
+                    $targetNodeText = $originNodeText;
+                }
+                $nodeName = $arrayNode['__nodeName__'];
+                $nodeType = $arrayNode['type'];
+                $msgid = $originNodeText;
+                // if the nodeName already exists in the po file, we need to create other msgid
+                if (isset( $aMsgids[$msgid] )) {
+                    $msgid = '[' . $xmlFormFile . '?' . $nodeName . '] ' . $originNodeText;
+                }
+                $poFile->addTranslatorComment( $xmlFormFile . '?' . $nodeName );
+                $poFile->addTranslatorComment( $xmlFormFile );
+                $poFile->addReference( $nodeType . ' - ' . $nodeName );
+                $poFile->addTranslation( stripslashes( $msgid ), stripslashes( $targetNodeText ) );
+
+                $aMsgids[$msgid] = true;
+                //if this node has options child nodes
+                if (isset( $arrayNode[$_BASE_LANG] ) && isset( $arrayNode[$_BASE_LANG][0] ) && isset( $arrayNode[$_BASE_LANG][0]['option'] )) {
+                    $originOptionNode = $arrayNode[$_BASE_LANG][0]['option']; //get the options
+                    $targetOptionExists = false;
+                    if (isset( $arrayNode[$_TARGET_LANG] ) && isset( $arrayNode[$_TARGET_LANG][0] ) && isset( $arrayNode[$_TARGET_LANG][0]['option'] )) {
+                        $targetOptionNode = $arrayNode[$_TARGET_LANG][0]['option'];
+                        $targetOptionExists = true;
+                    }
+                    if (! is_array( $originOptionNode )) {
+                        if (is_string( $originOptionNode )) {
+                            $poFile->addTranslatorComment( $xmlFormFile . '?' . $nodeName . '-' . $originOptionNode );
+                            $poFile->addTranslatorComment( $xmlFormFile );
+                            $poFile->addReference( $nodeType . ' - ' . $nodeName . ' - ' . $originOptionNode );
+                            $poFile->addTranslation( stripslashes( $msgid ), stripslashes( $originOptionNode ) );
+                        }
+                    } else {
+                        foreach ($originOptionNode as $optionNode) {
+                            $optionName = $optionNode['name'];
+                            $originOptionValue = $optionNode['__nodeText__'];
+                            if ($targetOptionExists) {
+                                $targetOptionValue = getMatchDropdownOptionValue( $optionName, $targetOptionNode );
+                                if ($targetOptionValue === false) {
+                                    $targetOptionValue = $originOptionValue;
+                                }
+                            } else {
+                                $targetOptionValue = $originOptionValue;
+                            }
+                            $msgid = '[' . $xmlFormFile . '?' . $nodeName . '-' . $optionName . ']';
+                            $poFile->addTranslatorComment( $xmlFormFile . '?' . $nodeName . '-' . $optionName );
+                            $poFile->addTranslatorComment( $xmlFormFile );
+                            $poFile->addReference( $nodeType . ' - ' . $nodeName . ' - ' . $optionName );
+                            $poFile->addTranslation( $msgid, stripslashes( $targetOptionValue ) );
+                        }
+                    }
+                }
+            } //end foreach
+        }
+        //G::streamFile( $sPOFile, true );
+    }
 }
 // Language
 
