@@ -882,6 +882,9 @@ class OutputDocument extends BaseOutputDocument
         // print standard ASCII chars, you can use core fonts like
         // helvetica or times to reduce file size.
         //$pdf->SetFont('dejavusans', '', 14, '', true);
+        if (preg_match('/[\x{30FF}\x{3040}-\x{309F}\x{4E00}-\x{9FFF}\x{0E00}-\x{0E7F}]/u', $sContent, $matches)) {// Detect chinese, japanese, thai
+            $pdf->SetFont('kozminproregular');
+        }
 
         // Add a page
         // This method has several options, check the source code documentation for more information.
@@ -893,10 +896,11 @@ class OutputDocument extends BaseOutputDocument
         // Print text using writeHTMLCell()
         // $pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
         if (mb_detect_encoding($sContent) == 'UTF-8') {
-		  $sContent = utf8_decode($sContent);
+		  $sContent = mb_convert_encoding($sContent, 'HTML-ENTITIES', 'UTF-8');
 		}
 		$doc = new DOMDocument('1.0', 'UTF-8');
 		$doc->loadHtml($sContent);
+		$doc->encoding='UTF-8';
         $pdf->writeHTML($doc->saveXML(), false, false, false, false, '');
         // ---------------------------------------------------------
 
