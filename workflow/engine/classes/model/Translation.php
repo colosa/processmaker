@@ -225,6 +225,80 @@ class Translation extends BaseTranslation
         //to do: uniform  coderror structures for all classes
     }
 
+    /* Load strings from plugin translation.php.
+     * @parameter $languageId   (es|en|...).
+    */
+    public function generateFileTranslationPlugin ($plugin, $languageId = '')
+    {
+        $translation = Array ();
+        $translationJS = Array ();
+
+        if ($languageId === '') {
+            $languageId = defined( 'SYS_LANG' ) ? SYS_LANG : 'en';
+        }
+        include PATH_PLUGINS . $plugin . PATH_SEP . 'translations'. PATH_SEP . 'translation.php';
+
+        $cacheFile = PATH_LANGUAGECONT . $plugin . "." . $languageId;
+        $cacheFileJS = PATH_CORE . 'js' . PATH_SEP . 'labels' . PATH_SEP . $languageId . ".js";
+
+        foreach ($translations as $key => $row) {
+            $translation[$key] = $row;
+        }
+
+        try {
+            if (! is_dir( dirname( $cacheFile ) )) {
+                G::mk_dir( dirname( $cacheFile ) );
+            }
+            if (! is_dir( dirname( $cacheFileJS ) )) {
+                G::mk_dir( dirname( $cacheFileJS ) );
+            }
+            $f = fopen( $cacheFile, 'w+' );
+            fwrite( $f, "<?php\n" );
+            fwrite( $f, '$translation' . $plugin . ' =' . 'unserialize(\'' . addcslashes( serialize( $translation ), '\\\'' ) . "');\n" );
+            fwrite( $f, "?>" );
+            fclose( $f );
+
+            $f = fopen( $cacheFileJS, 'w' );
+            fwrite( $f, "var G_STRINGS =" . Bootstrap::json_encode( $translationJS ) . ";\n" );
+            fclose( $f );
+
+            $res['cacheFile'] = $cacheFile;
+            $res['cacheFileJS'] = $cacheFileJS;
+            $res['rows'] = count( $translation );
+            $res['rowsJS'] = count( $translationJS );
+            return $res;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function addTranslationEnvironmentPlugins ($plugin, $locale, $headers, $numRecords)
+    {
+        $filePath = PATH_DATA . "META-INF" . PATH_SEP . $plugin . ".env";
+        $environments = Array ();
+
+        if (file_exists( $filePath )) {
+            $environments = unserialize( file_get_contents( $filePath ) );
+        }
+
+        $environment['LOCALE'] = $locale;
+        $environment['HEADERS'] = $headers;
+        $environment['DATE'] = date( 'Y-m-d H:i:s' );
+        $environment['NUM_RECORDS'] = $numRecords;
+        $environment['LANGUAGE'] = $headers['X-Poedit-Language'];
+
+        if (strpos( $locale, self::$localeSeparator ) !== false) {
+            list ($environment['LAN_ID'], $environment['IC_UID']) = explode( self::$localeSeparator, strtoupper( $locale ) );
+            $environments[$environment['LAN_ID']][$environment['IC_UID']] = $environment;
+        } else {
+            $environment['LAN_ID'] = strtoupper( $locale );
+            $environment['IC_UID'] = '';
+            $environments[$locale]['__INTERNATIONAL__'] = $environment;
+        }
+
+        file_put_contents( $filePath, serialize( $environments ) );
+    }
+
     public function remove ($sCategory, $sId, $sLang)
     {
         $oTranslation = TranslationPeer::retrieveByPK( $sCategory, $sId, $sLang );
