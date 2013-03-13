@@ -31,6 +31,7 @@ catch(z){
   rc=/^(true|false|null|\[.*\]|\{.*\}|".*"|\d+|\d+\.\d+)$/;
 }
 
+itemSelected = "";
 var conn = new Ext.data.Connection();
 
 streamFilefromPM=function(fileStream) {
@@ -235,6 +236,7 @@ function expandNode( node, dir ) {
 function handleNodeClick( sm, node ) {
   if( node && node.id ) {
     // console.log("Node Clicked: "+node);
+    itemSelected = node.id;
     chDir( node.id );
   }
 }
@@ -840,13 +842,13 @@ datastore.paramNames["sort"] = "order";
 
 datastore.on("beforeload",
   function(ds, options) {
-    options.params.dir = options.params.dir ? options.params.dir
-    : ds.directory;
+    options.params.dir  = options.params.dir ? options.params.dir : ds.directory;
     options.params.node = options.params.dir ? options.params.dir : ds.directory;
     options.params.option = "gridDocuments";
     options.params.action = "expandNode";
     options.params.sendWhat = datastore.sendWhat;
   });
+
 datastore.on("loadexception",
   function(proxy, options, response, e) {
     try {
@@ -1955,13 +1957,18 @@ var documentsTab = {
         // console.log("tree editor created");
 
         // console.log("before the first chdir");
-        chDir('');
+        // chDir('');
+        chDir(itemSelected);
         // console.log("starting locatiobar first time");
         Ext.getCmp("locationbarcmp").tree = Ext.getCmp("dirTreePanel");
         Ext.getCmp("locationbarcmp").initComponent();
-        var node = dirTree.getNodeById("root");
+
+        if (itemSelected == "") {
+            itemSelected = "root";
+        }
+        var node = dirTree.getNodeById(itemSelected);
         node.select();
-        datastore.directory = 'root';
+        datastore.directory = itemSelected;
       // console.log("location abr started first time");
 
       }
