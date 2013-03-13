@@ -58,7 +58,8 @@ foreach ($aAux1 as $aAux2) {
 
 $oProcessMap = new processMap( new DBConnection() );
 $aTriggersList = $oProcessMap->getTriggers( $_SESSION['PROCESS'] );
-$aTriggersFileds = Array ('TRI_UID' => 'char','TRI_TITLE' => 'char');
+$aTriggersFileds = array ();
+$aTriggersFileds[] = array ('TRI_UID' => 'char','TRI_TITLE' => 'char');
 
 foreach ($aTriggersList as $i => $v) {
     unset( $aTriggersList[$i]['PRO_UID'] );
