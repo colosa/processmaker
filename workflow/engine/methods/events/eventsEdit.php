@@ -36,8 +36,6 @@ if (isset( $_GET['EVN_UID'] )) {
     require_once 'classes/model/Event.php';
     $oEvent = new Event();
     $aFields = $oEvent->load( $_GET['EVN_UID'] );
-    //G::pr($aFields);
-    //die;
 } else {
     $aFields = array ('PRO_UID' => $_GET['PRO_UID'] );
 }
