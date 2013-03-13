@@ -582,6 +582,8 @@ $oPluginRegistry = & PMPluginRegistry::getSingleton();
 
 if (file_exists( $sSerializedFile )) {
     $oPluginRegistry->unSerializeInstance( file_get_contents( $sSerializedFile ) );
+    $attributes = $oPluginRegistry->getAttributes();
+    Bootstrap::LoadTranslationPlugins( defined( 'SYS_LANG' ) ? SYS_LANG : "en" , $attributes);
 }
 
 // setup propel definitions and logging

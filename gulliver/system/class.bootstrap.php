@@ -835,6 +835,36 @@ class Bootstrap
     }
 
     /**
+     * Function LoadTranslationPlugins
+     * It generates a global Translation variable for plugins
+     *
+     * Per script
+     *
+     * @author Brayan Pereyra <cochalo>. <brayan@colosa.com>
+     * @access public
+     * @param  string lang
+     * @param  array list plugins active
+     * @return void
+     */
+    public function LoadTranslationPlugins ($lang = SYS_LANG, $listPluginsActive)
+    {
+        if ( ! ( is_array ( $listPluginsActive ) ) ) {
+            return null;
+        }
+
+        foreach ($listPluginsActive['_aPluginDetails'] as $key => $value) {
+            $namePlugin = trim($key);
+            $translation = array();
+            if (file_exists(PATH_LANGUAGECONT . $namePlugin . '.' . $lang)) {
+                eval('global $translation'.$namePlugin.';');
+                require_once (PATH_LANGUAGECONT . $namePlugin . '.' . $lang); // load the foreign translations table
+                eval('$translation'.$namePlugin.' = $translation;');
+            }
+        }
+        return true;
+    }
+
+    /**
      * Render Page
      *
      * @author Fernando Ontiveros Lira <fernando@colosa.com>
