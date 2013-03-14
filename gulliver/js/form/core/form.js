@@ -998,9 +998,12 @@ function G_Text(form, element, name)
       currentSel = dataWOMask.cursor;
       cursorStart = currentSel.selectionStart;
       cursorEnd = currentSel.selectionEnd;
-      action = 'mask';
-      swPeriod = false;
-      switch(keyCode){
+
+      var action = "mask";
+      var swPeriod = false;
+      var i = 0;
+
+      switch (keyCode) {
         case 0:
           action = 'none';
           break;
@@ -1036,71 +1039,86 @@ function G_Text(form, element, name)
           action = 'move';
           break;
         case 45:
-          if (me.mType == 'currency' || (me.mType == 'text' && (me.validate == 'Real' || me.validate == 'Int'))) {
-            newValue = currentValue.substring(0, currentValue.length).split('');
-            for (var numI = 0; newValue.length > numI; numI++) {
-              var campVal = newValue[numI];
-              if ((typeof(campVal) === 'number' || typeof(campVal) === 'string') && (campVal !== '') && (!isNaN(campVal))) {
-                newValue = currentValue.substring(0, numI-1);
-                newValue += '-' + currentValue.substring(numI);
-                numI = newValue.length + 1;
-                newCursor = cursorStart+1;
-              } else {
-                if (campVal == '-') {
-                  newValue = currentValue.substring(0, numI-1);
-                  newValue += currentValue.substring(numI+1);
-                  newCursor = cursorStart-1;
-                  numI = newValue.length + 1;
+            if (me.mType == "currency" || (me.mType == "text" && (me.validate == "Real" || me.validate == "Int"))) {
+                newValue = currentValue.substring(0, currentValue.length).split("");
+
+                if (newValue.length > 0) {
+                    for (i = 0; i <= newValue.length - 1; i++) {
+                        var campVal = newValue[i];
+
+                        if ((typeof campVal == "number" || typeof campVal == "string") && campVal != "" && !isNaN(campVal)) {
+                            newValue = currentValue.substring(0, i - 1);
+                            newValue = newValue + "-" + currentValue.substring(i);
+                            i = newValue.length + 1;
+                            newCursor = cursorStart + 1;
+                        } else {
+                            if (campVal == "-") {
+                                newValue = currentValue.substring(0, i - 1);
+                                newValue = newValue + currentValue.substring(i + 1);
+                                newCursor = cursorStart - 1;
+                                i = newValue.length + 1;
+                            }
+                        }
+                    }
+
+                    if (newValue.join) {
+                        newValue = newValue.join("");
+                    }
+                } else {
+                    //default
+                    newKey = String.fromCharCode(keyCode);
+                    newValue = currentValue.substring(0, cursorStart);
+                    newValue = newValue + newKey;
+                    newValue = newValue + currentValue.substring(cursorEnd, currentValue.length);
+                    newCursor = cursorStart + 1;
                 }
-              }
             }
-            if (newValue.join) {
-              newValue = newValue.join('');
-            }
-          }
-          break;
+            break;
         default:
-          newKey = String.fromCharCode(keyCode);
-          newValue  = currentValue.substring(0, cursorStart);
-          newValue += newKey;
-          newValue += currentValue.substring(cursorEnd, currentValue.length);
-          newCursor = cursorStart + 1;
-          break;
+            newKey = String.fromCharCode(keyCode);
+            newValue = currentValue.substring(0, cursorStart);
+            newValue = newValue + newKey;
+            newValue = newValue + currentValue.substring(cursorEnd, currentValue.length);
+            newCursor = cursorStart + 1;
+            break;
       }
-      if (newCursor < 0)  newCursor = 0;
+
+      if (newCursor < 0) {
+          newCursor = 0;
+      }
+
       if (keyCode != 8 && keyCode != 46 && keyCode != 35 && keyCode != 36 && keyCode != 37 && keyCode != 39){
-        testData = dataWOMask.result;
-        tamData = testData.length;
-        cleanMask = me.getCleanMask();
-        tamMask = cleanMask.length;
-        sw = false;
+        var testData = dataWOMask.result;
+        var tamData = testData.length;
+        var cleanMask = me.getCleanMask();
+        var tamMask = cleanMask.length;
+        var sw = false;
+
         if (testData.indexOf(me.comma_separator) == -1){
           aux = cleanMask.split('_');
           tamMask = aux[0].length;
           sw = true;
         }
-        if (tamData >= tamMask){
-          var minusExi;
-          for (var numI = 0; newValue.length > numI; numI++) {
-            var campVal = newValue[numI];
-            if ((typeof(campVal) === 'number' || typeof(campVal) === 'string') && (campVal !== '') && (!isNaN(campVal))) {
-              minusExi = false;
-            } else {
-              if (campVal == '-') {
-                minusExi = true;
-                numI = newValue.length + 1;
-              }
-            }
-          }
 
-          if (!(keyCode == 45 || (minusExi && tamMask >= tamData))) {
-            if (sw && !swPeriod && testData.indexOf(me.comma_separator) == -1){
-              action = 'none';
+        if (tamData >= tamMask) {
+            var swMinus = false;
+
+            if (/^.*\-.*$/.test(newValue)) {
+                swMinus = true;
             }
-            if (!sw) action = 'none';
-          }
+
+            if (!(keyCode == 45 || (swMinus && tamMask >= tamData))) {
+                if (sw && !swPeriod){
+                    action = "none";
+                }
+
+                if (!sw) {
+                    action = "none";
+                }
+            }
         }
       }
+
       switch(action){
         case 'mask': case 'move':
           dataNewMask = me.replaceMasks(newValue, newCursor);
@@ -1913,14 +1931,26 @@ function G()
 
   //Apply a mask to a number
    this.ApplyMask = function(num, mask, cursor, dir, comma_sep){
-     myOut = '';
-     myCursor = cursor;
-     if (num.length == 0) return {result: '', cursor: 0};
-     switch(dir){
+     var myOut = "";
+     var myCursor = cursor;
+     var key = "";
+
+     if (num.length == 0) {
+         return {result: "", cursor: 0};
+     }
+
+     switch (dir) {
        case 'forward':
-         iMask = mask.split('');
-         value = _getOnlyNumbers(num,'');
-         iNum = value.split('');
+         iMask = mask.split("");
+         value = _getOnlyNumbers(num, "");
+         iNum = value.split("");
+
+         var swMinus = (iNum.length > 0 && iNum[0] == "-")? 1 : 0;
+
+         if (swMinus == 1) {
+             key = iNum.shift();
+         }
+
          for(e=0; e < iMask.length && iNum.length > 0; e++){
            switch(iMask[e]){
              case '#': case '0': case 'd': case 'm': case 'y': case 'Y':
@@ -1934,6 +1964,10 @@ function G()
               if (e < myCursor) myCursor++;
               break;
            }
+         }
+
+         if (swMinus == 1) {
+             myOut = "-" + myOut;
          }
          break;
        case 'reverse':
@@ -2072,6 +2106,8 @@ function G()
           }
         }
         else if(cursor == num.length){
+          var last = 0;
+
           for(l=0; l < aOut.length; l++){
             switch(aOut[l]){
               case '0': case '1': case '2': case '3': case '4':
