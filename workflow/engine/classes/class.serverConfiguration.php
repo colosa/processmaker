@@ -35,13 +35,14 @@
  */
 class serverConf
 {
-    private $_aProperties = array ();
-    private $_aHeartbeatConfig = array ();
-    private $_aWSapces = array ();
-    private $aWSinfo = array ();
-    private $pluginsA = array ();
-    private $errors = array ();
-    private static $instance = NULL;
+
+    private $_aProperties = array();
+    private $_aHeartbeatConfig = array();
+    private $_aWSapces = array();
+    private $aWSinfo = array();
+    private $pluginsA = array();
+    private $errors = array();
+    private static $instance = null;
     private $haveSetupData = false;
     private $beatType = 'starting';
     private $ip;
@@ -57,14 +58,13 @@ class serverConf
     public $logins;
     private $lanDirection;
     private $lanLanguage;
-    public $workspaces = array ();
-    public $rtlLang = array ('ar','iw','fa'
-    );
+    public $workspaces = array();
+    public $rtlLang = array('ar', 'iw', 'fa');
     public $filePath = '';
 
-    public function __construct ()
+    public function __construct()
     {
-        if (defined( 'PATH_DATA' )) {
+        if (defined('PATH_DATA')) {
             $this->filePath = PATH_DATA . 'srvConf.singleton';
         }
     }
@@ -75,12 +75,12 @@ class serverConf
      *
      * @return object
      */
-    function &getSingleton ()
+    public function &getSingleton()
     {
-        if (self::$instance == NULL) {
+        if (self::$instance == null) {
             self::$instance = new serverConf();
-            if ((file_exists( self::$instance->filePath )) && (filesize( self::$instance->filePath ) > 0)) {
-                self::$instance->unSerializeInstance( file_get_contents( self::$instance->filePath ) );
+            if ((file_exists(self::$instance->filePath)) && (filesize(self::$instance->filePath) > 0)) {
+                self::$instance->unSerializeInstance(file_get_contents(self::$instance->filePath));
             }
         }
         return self::$instance;
@@ -92,9 +92,9 @@ class serverConf
      *
      * @return void
      */
-    function serializeInstance ()
+    public function serializeInstance()
     {
-        return serialize( self::$instance );
+        return serialize(self::$instance);
     }
 
     /**
@@ -103,13 +103,13 @@ class serverConf
      * @param string $serialized
      * @return void
      */
-    function unSerializeInstance ($serialized)
+    public function unSerializeInstance($serialized)
     {
-        if (self::$instance == NULL) {
+        if (self::$instance == null) {
             self::$instance = new serverConf();
         }
 
-        if ($instance = @unserialize( $serialized )) {
+        if ($instance = @unserialize($serialized)) {
             self::$instance = $instance;
         }
     }
@@ -120,12 +120,11 @@ class serverConf
      *
      * @return void
      */
-
-    function saveSingleton ()
+    public function saveSingleton()
     {
-        if (defined( 'PATH_DATA' )) {
+        if (defined('PATH_DATA')) {
             $this->filePath = PATH_DATA . 'srvConf.singleton';
-            $size = file_put_contents( $this->filePath, $this->serializeInstance() );
+            $size = file_put_contents($this->filePath, $this->serializeInstance());
         }
     }
 
@@ -136,7 +135,7 @@ class serverConf
      * @param string $propertyName
      * @param string $propertyValue
      */
-    function setProperty ($propertyName, $propertyValue)
+    public function setProperty($propertyName, $propertyValue)
     {
         $this->_aProperties[$propertyName] = $propertyValue;
         $this->saveSingleton();
@@ -149,10 +148,10 @@ class serverConf
      * @param string $propertyName
      * @return void
      */
-    function unsetProperty ($propertyName)
+    public function unsetProperty($propertyName)
     {
-        if (isset( $this->_aProperties[$propertyName] )) {
-            unset( $this->_aProperties[$propertyName] );
+        if (isset($this->_aProperties[$propertyName])) {
+            unset($this->_aProperties[$propertyName]);
             $this->saveSingleton();
         }
     }
@@ -164,9 +163,9 @@ class serverConf
      * @param string $propertyName
      * @return string/null
      */
-    function getProperty ($propertyName)
+    public function getProperty($propertyName)
     {
-        if (isset( $this->_aProperties[$propertyName] )) {
+        if (isset($this->_aProperties[$propertyName])) {
             return $this->_aProperties[$propertyName];
         } else {
             return null;
@@ -179,19 +178,21 @@ class serverConf
      *
      * @return void
      */
-    function sucessfulLogin ()
+    public function sucessfulLogin()
     {
-        $this->logins ++;
-        if (isset( $this->workspaces[SYS_SYS] ) && isset( $this->workspaces[SYS_SYS]['WSP_LOGINS'] ))
-            $this->workspaces[SYS_SYS]['WSP_LOGINS'] ++;
+        $this->logins++;
+        if (isset($this->workspaces[SYS_SYS]) && isset($this->workspaces[SYS_SYS]['WSP_LOGINS'])) {
+            $this->workspaces[SYS_SYS]['WSP_LOGINS']++;
+        }
 
-        if (isset( $this->workspaces[SYS_SYS] ) && ! isset( $this->workspaces[SYS_SYS]['WSP_LOGINS'] ))
+        if (isset($this->workspaces[SYS_SYS]) && !isset($this->workspaces[SYS_SYS]['WSP_LOGINS'])) {
             $this->workspaces[SYS_SYS]['WSP_LOGINS'] = 1;
+        }
 
         $this->saveSingleton();
     }
 
-    function setWsInfo ($wsname, $info)
+    public function setWsInfo($wsname, $info)
     {
         $this->aWSinfo[$wsname] = $info;
     }
@@ -202,11 +203,12 @@ class serverConf
      * @param string $wsName
      * @return void
      */
-    function changeStatusWS ($wsName)
+    public function changeStatusWS($wsName)
     {
 
-        if (isset( $this->_aWSapces[$wsName] )) { //Enable WS
-            unset( $this->_aWSapces[$wsName] );
+        if (isset($this->_aWSapces[$wsName])) {
+            //Enable WS
+            unset($this->_aWSapces[$wsName]);
         } else {
             $this->_aWSapces[$wsName] = 'disabled';
         }
@@ -220,9 +222,9 @@ class serverConf
      * @param $wsname
      * @return boolean
      */
-    function isWSDisabled ($wsName)
+    public function isWSDisabled($wsName)
     {
-        return isset( $this->_aWSapces[$wsName] );
+        return isset($this->_aWSapces[$wsName]);
     }
 
     /**
@@ -232,14 +234,16 @@ class serverConf
      *
      * @return boolean
      */
-    function checkIfHostNameHasChanged ()
+    public function checkIfHostNameHasChanged()
     {
         //removed the PM_VERSION control, because when an upgrade is done, the haveSetupData has to be changed.
-        if ($this->ip != getenv( 'SERVER_ADDR' ))
+        if ($this->ip != getenv('SERVER_ADDR')) {
             return false;
+        }
 
-        if ($this->host != getenv( 'SERVER_NAME' ))
+        if ($this->host != getenv('SERVER_NAME')) {
             return false;
+        }
 
         return $this->haveSetupData;
     }
@@ -251,17 +255,18 @@ class serverConf
      * param
      * @return array
      */
-    function getWSList ()
+    public function getWSList()
     {
         $dir = PATH_DB;
-        $wsArray = array ();
-        if (file_exists( $dir )) {
-            if ($handle = opendir( $dir )) {
-                while (false !== ($file = readdir( $handle ))) {
+        $wsArray = array();
+        if (file_exists($dir)) {
+            if ($handle = opendir($dir)) {
+                while (false !== ($file = readdir($handle))) {
                     if (($file != ".") && ($file != "..")) {
-                        if (file_exists( PATH_DB . $file . '/db.php' )) { //print $file."/db.php <hr>";
-                            $statusl = ($this->isWSDisabled( $file )) ? 'DISABLED' : 'ENABLED';
-                            if (isset( $this->aWSinfo[$file] )) {
+                        if (file_exists(PATH_DB . $file . '/db.php')) {
+                            //print $file."/db.php <hr>";
+                            $statusl = ($this->isWSDisabled($file)) ? 'DISABLED' : 'ENABLED';
+                            if (isset($this->aWSinfo[$file])) {
                                 $wsInfo = $this->aWSinfo[$file];
                             } else {
                                 $wsInfo['num_processes'] = "not gathered yet";
@@ -269,19 +274,17 @@ class serverConf
                                 ;
                                 $wsInfo['num_users'] = "not gathered yet";
                             }
-                            $wsArray[$file] = array ('WSP_ID' => $file,'WSP_NAME' => $file,'WSP_STATUS' => $statusl,'WSP_PROCESS_COUNT' => $wsInfo['num_processes'],'WSP_CASES_COUNT' => $wsInfo['num_cases'],'WSP_USERS_COUNT' => isset( $wsInfo['num_users'] ) ? $wsInfo['num_users'] : ""
-                            );
-                            if (isset( $this->workspaces[$file]['WSP_LOGINS'] ))
+                            $wsArray[$file] = array ('WSP_ID' => $file,'WSP_NAME' => $file,'WSP_STATUS' => $statusl,'WSP_PROCESS_COUNT' => $wsInfo['num_processes'],'WSP_CASES_COUNT' => $wsInfo['num_cases'],'WSP_USERS_COUNT' => isset( $wsInfo['num_users'] ) ? $wsInfo['num_users'] : "");
+                            if (isset($this->workspaces[$file]['WSP_LOGINS'])) {
                                 $wsArray[$file]['WSP_LOGINS'] = $this->workspaces[$file]['WSP_LOGINS'];
-
+                            }
                         }
                     }
                 }
-                closedir( $handle );
+                closedir($handle);
             }
         }
         return $wsArray;
-
     }
 
     /**
@@ -294,27 +297,27 @@ class serverConf
      * @param string $wsName
      * @return array
      */
-    function getWorkspaceInfo ($wsName)
+    public function getWorkspaceInfo($wsName)
     {
-        $aResult = Array ('num_processes' => '0','num_cases' => '0'
+        $aResult = Array('num_processes' => '0', 'num_cases' => '0'
         );
-        $result = array ();
+        $result = array();
         require_once 'classes/model/Process.php';
         require_once 'classes/model/Application.php';
         require_once 'classes/model/Users.php';
 
-        $Criteria = new Criteria( 'workflow' );
-        $Criteria->add( ProcessPeer::PRO_STATUS, 'ACTIVE', CRITERIA::EQUAL );
-        $aResult['num_processes'] = ProcessPeer::doCount( $Criteria );
+        $Criteria = new Criteria('workflow');
+        $Criteria->add(ProcessPeer::PRO_STATUS, 'ACTIVE', CRITERIA::EQUAL);
+        $aResult['num_processes'] = ProcessPeer::doCount($Criteria);
 
-        $Criteria = new Criteria( 'workflow' );
-        $Criteria->add( ApplicationPeer::APP_STATUS, 'COMPLETED', CRITERIA::NOT_EQUAL );
-        $aResult['num_cases'] = ApplicationPeer::doCount( $Criteria );
+        $Criteria = new Criteria('workflow');
+        $Criteria->add(ApplicationPeer::APP_STATUS, 'COMPLETED', CRITERIA::NOT_EQUAL);
+        $aResult['num_cases'] = ApplicationPeer::doCount($Criteria);
 
-        $Criteria = new Criteria( 'workflow' );
-        $Criteria->add( UsersPeer::USR_STATUS, array ('DELETED','DISABLED'
-        ), CRITERIA::NOT_IN );
-        $aResult['num_users'] = UsersPeer::doCount( $Criteria );
+        $Criteria = new Criteria('workflow');
+        $Criteria->add(UsersPeer::USR_STATUS, array('DELETED', 'DISABLED'
+                ), CRITERIA::NOT_IN);
+        $aResult['num_users'] = UsersPeer::doCount($Criteria);
         return $aResult;
     }
 
@@ -324,7 +327,7 @@ class serverConf
      *
      * @return array
      */
-    function getPluginsList ()
+    public function getPluginsList()
     {
         return $this->pluginsA;
     }
@@ -333,30 +336,31 @@ class serverConf
      * *
      * Register a PLugin
      */
-    function addPlugin ($workspace, $info)
+    public function addPlugin($workspace, $info)
     {
         $this->pluginsA[$workspace] = $info;
     }
 
-    function getDBVersion ()
+    public function getDBVersion()
     {
         $sMySQLVersion = '?????';
-        if (defined( "DB_HOST" )) {
-            G::LoadClass( 'net' );
-            G::LoadClass( 'dbConnections' );
-            $dbNetView = new NET( DB_HOST );
-            $dbNetView->loginDbServer( DB_USER, DB_PASS );
+        if (defined("DB_HOST")) {
+            G::LoadClass('net');
+            G::LoadClass('dbConnections');
+            $dbNetView = new NET(DB_HOST);
+            $dbNetView->loginDbServer(DB_USER, DB_PASS);
 
-            $dbConns = new dbConnections( '' );
+            $dbConns = new dbConnections('');
             $availdb = '';
             foreach ($dbConns->getDbServicesAvailables() as $key => $val) {
-                if ($availdb != '')
+                if ($availdb != '') {
                     $availdb .= ', ';
+                }
                 $availdb .= $val['name'];
             }
 
             try {
-                $sMySQLVersion = $dbNetView->getDbServerVersion( 'mysql' );
+                $sMySQLVersion = $dbNetView->getDbServerVersion('mysql');
             } catch (Exception $oException) {
                 $sMySQLVersion = '?????';
             }
@@ -370,10 +374,10 @@ class serverConf
      *
      * @return void
      */
-    function resetLogins ()
+    public function resetLogins()
     {
         $this->logins = 0;
-        if (is_array( $this->workspaces )) {
+        if (is_array($this->workspaces)) {
             foreach ($this->workspaces as $wsName => $wsinfo) {
                 $this->workspaces[$wsName]['WSP_LOGINS'] = 0;
             }
@@ -386,25 +390,26 @@ class serverConf
      * @param void
      * @return string
      */
-    function getLanDirection ()
+    public function getLanDirection()
     {
-        if (! isset( $this->lanDirection )) {
+        if (!isset($this->lanDirection)) {
             $this->lanDirection = 'L';
         }
-        if (defined( 'SYS_LANG' )) {
+        if (defined('SYS_LANG')) {
             //if we already have the landirection for this language, just return from serverConf
-            if ($this->lanLanguage == SYS_LANG)
+            if ($this->lanLanguage == SYS_LANG) {
                 return $this->lanDirection;
+            }
 
-                //if not , we need to query Database, in order to get the direction
+            //if not , we need to query Database, in order to get the direction
             $this->lanDirection = 'L'; //default value;
             $this->lanLanguage = SYS_LANG;
             require_once 'classes/model/Language.php';
             $oLang = new Language();
             try {
-                $aLang = $oLang->load( SYS_LANG );
-                if (isset( $aLang['LAN_DIRECTION'] )) {
-                    $this->lanDirection = strtoupper( $aLang['LAN_DIRECTION'] );
+                $aLang = $oLang->load(SYS_LANG);
+                if (isset($aLang['LAN_DIRECTION'])) {
+                    $this->lanDirection = strtoupper($aLang['LAN_DIRECTION']);
                 }
                 $this->saveSingleton();
             } catch (Exception $e) {
@@ -422,7 +427,7 @@ class serverConf
      * @param string $propertyValue
      * @param string $workspace
      */
-    function setHeartbeatProperty ($propertyName, $propertyValue, $workspace)
+    public function setHeartbeatProperty($propertyName, $propertyValue, $workspace)
     {
         $this->_aHeartbeatConfig[$workspace][$propertyName] = $propertyValue;
         $this->saveSingleton();
@@ -436,10 +441,11 @@ class serverConf
      * @param string $workspace
      * @return void
      */
-    function unsetHeartbeatProperty ($propertyName, $workspace)
+    public function unsetHeartbeatProperty($propertyName, $workspace)
     {
-        if (isset( $this->_aHeartbeatConfig[$workspace][$propertyName] ))
-            unset( $this->_aHeartbeatConfig[$workspace][$propertyName] );
+        if (isset($this->_aHeartbeatConfig[$workspace][$propertyName])) {
+            unset($this->_aHeartbeatConfig[$workspace][$propertyName]);
+        }
         $this->saveSingleton();
     }
 
@@ -450,19 +456,19 @@ class serverConf
      * @param string $propertyName
      * @return string/null
      */
-    function getHeartbeatProperty ($propertyName, $workspace)
+    public function getHeartbeatProperty($propertyName, $workspace)
     {
-        if (isset( $this->_aHeartbeatConfig[$workspace][$propertyName] )) {
+        if (isset($this->_aHeartbeatConfig[$workspace][$propertyName])) {
             return $this->_aHeartbeatConfig[$workspace][$propertyName];
         } else {
             return null;
         }
     }
 
-    function isRtl ($lang = SYS_LANG)
+    public function isRtl($lang = SYS_LANG)
     {
-        $lang = substr( $lang, 0, 2 );
-        return in_array( $lang, $this->rtlLang );
+        $lang = substr($lang, 0, 2);
+        return in_array($lang, $this->rtlLang);
     }
-
 }
+ 
