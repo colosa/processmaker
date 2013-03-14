@@ -34,11 +34,11 @@
  */
 class Xml_Node
 {
-    var $name = '';
-    var $type = '';
-    var $value = ''; //maybe not necesary
-    var $attributes = array ();
-    var $children = array ();
+    public $name = '';
+    public $type = '';
+    public $value = ''; //maybe not necesary
+    public $attributes = array ();
+    public $children = array ();
 
     /**
      * Function Xml_Node
@@ -51,7 +51,7 @@ class Xml_Node
      * @param eter string attributes
      * @return string
      */
-    function Xml_Node ($name, $type, $value, $attributes = array())
+    public function Xml_Node ($name, $type, $value, $attributes = array())
     {
         $this->name = $name;
         $this->type = $type;
@@ -68,7 +68,7 @@ class Xml_Node
      * @param eter string value
      * @return string
      */
-    function addAttribute ($name, $value)
+    public function addAttribute ($name, $value)
     {
         $this->attributes[$name] = $value;
         return true;
@@ -82,7 +82,7 @@ class Xml_Node
      * @param eter string childNode
      * @return string
      */
-    function addChildNode ($childNode)
+    public function addChildNode ($childNode)
     {
         if (is_object( $childNode ) && strcasecmp( get_class( $childNode ), 'Xml_Node' ) == 0) {
             $this->type = 'open';
@@ -101,7 +101,7 @@ class Xml_Node
      * @access public
      * @return string
      */
-    function toTree ()
+    public function toTree ()
     {
         $arr = new Xml_Node( $this->name, $this->type, $this->value, $this->attributes );
         unset( $arr->parent );
@@ -112,7 +112,7 @@ class Xml_Node
         return $arr;
     }
 
-    function toArray ($obj = null)
+    public function toArray ($obj = null)
     {
         $arr = array ();
         if (! isset( $obj )) {
@@ -136,7 +136,7 @@ class Xml_Node
      * @param eter string xpath
      * @return string
      */
-    function &findNode ($xpath)
+    public function &findNode ($xpath)
     {
         $n = null;
         $p = explode( '/', $xpath );
@@ -180,7 +180,7 @@ class Xml_Node
      * @param eter string xpath
      * @return string
      */
-    function getXML ()
+    public function getXML ()
     {
         switch ($this->type) {
             case 'open':
@@ -237,7 +237,7 @@ class Xml_Node
         return $xml;
     }
 
-    function getCDATAValue ()
+    public function getCDATAValue ()
     {
         $cdata = htmlentities( $this->value, ENT_QUOTES, 'utf-8' );
         if ($this->value === $cdata) {
@@ -257,7 +257,7 @@ class Xml_Node
  */
 class Xml_document extends Xml_Node
 {
-    var $currentNode;
+    public $currentNode;
 
     /**
      * Function Xml_document
@@ -266,7 +266,7 @@ class Xml_document extends Xml_Node
      * @access public
      * @return string
      */
-    function Xml_document ()
+    public function Xml_document ()
     {
         $this->currentNode = &$this;
     }
@@ -280,7 +280,7 @@ class Xml_document extends Xml_Node
      * @param eter string content
      * @return string
      */
-    function parseXmlFile ($filename, $content = "")
+    public function parseXmlFile ($filename, $content = "")
     { //$content is a new variable, if it has any value then use it instead of the file content.
         if ($content == "") {
             if (! file_exists( $filename )) {
@@ -333,7 +333,7 @@ class Xml_document extends Xml_Node
      * @param eter string xpath
      * @return string
      */
-    function &findNode ($xpath)
+    public function &findNode ($xpath)
     {
         if (substr( $xpath, 0, 1 ) == '/') {
             return parent::findNode( substr( $xpath, 1 ) );
@@ -357,7 +357,7 @@ class Xml_document extends Xml_Node
      * @access public
      * @return string $xml
      */
-    function getXML ()
+    public function getXML ()
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
         $xml .= $this->children[0]->getXML();
@@ -370,7 +370,7 @@ class Xml_document extends Xml_Node
      * @access public
      * @return void
      */
-    function save ($filename)
+    public function save ($filename)
     {
         $xml = $this->getXML();
         $fp = fopen( $filename, 'w' );
