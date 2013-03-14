@@ -16,7 +16,7 @@ Ext.onReady(function(){
       }),
       valueField     : 'LAN_ID',
       displayField   : 'LAN_NAME', 
-      emptyText      : 'Select',
+      emptyText      : _('ID_SELECT'),
       selectOnFocus  : true,
       editable       : false,
       allowBlank     : false,

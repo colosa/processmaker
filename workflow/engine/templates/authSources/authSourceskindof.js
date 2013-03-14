@@ -53,7 +53,7 @@ Ext.onReady(function(){
       typeAhead: true,
       mode: 'local',
       triggerAction: 'all',
-      emptyText:'Choose an option...',
+      emptyText: _('ID_CHOOSE_OPTION') + '...',
         editable: false,
       selectOnFocus:true,
       listeners:{
@@ -111,7 +111,7 @@ Ext.onReady(function(){
       typeAhead: true,
       mode: 'local',
       triggerAction: 'all',
-      emptyText:'Choose an option...',
+      emptyText:  _('ID_CHOOSE_OPTION') + '...',
       editable: false,
       selectOnFocus:true
   });
@@ -130,7 +130,7 @@ Ext.onReady(function(){
       typeAhead: true,
       mode: 'local',
       triggerAction: 'all',
-      emptyText:'Choose an option...',
+      emptyText:  _('ID_CHOOSE_OPTION') + '...',
       editable: false,
       selectOnFocus:true
   });
@@ -165,7 +165,7 @@ Ext.onReady(function(){
       mode: 'local',
       allowBlank: false,
       triggerAction: 'all',
-      emptyText:'Choose an option...',
+      emptyText:  _('ID_CHOOSE_OPTION') + '...',
       editable: false,
       selectOnFocus:true,
 //      width: 110,

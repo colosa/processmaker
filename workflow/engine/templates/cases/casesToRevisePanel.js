@@ -20,7 +20,7 @@ var tree = new Ext.tree.TreePanel({
     dataUrl: casesPanelUrl,
     root: {
         nodeType : 'async',
-        text     : 'To Revise',
+        text     : _('ID_TO_REVISE'),
         id       : 'node-root'
     },
     listeners: {

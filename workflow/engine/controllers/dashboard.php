@@ -173,7 +173,7 @@ class Dashboard extends Controller
     {
         try {
             if (! isset( $_SESSION['USER_LOGGED'] )) {
-                throw new Exception( 'The session has expired.' );
+                throw new Exception( G::LoadTranslation('ID_SESSION_EXPIRED') );
             }
             return $this->pmDashlet->getDashletsInstancesForUser( $_SESSION['USER_LOGGED'] );
         } catch (Exception $error) {

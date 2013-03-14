@@ -62,7 +62,7 @@ var Login = function() {
       Ext.getCmp('userTxt').focus(true, 1000);
 
       if (typeof errMsg != 'undefined') {
-        Ext.msgBoxSlider.msgTopCenter('alert', 'ERROR', errMsg, 10);
+        Ext.msgBoxSlider.msgTopCenter('alert', _('ID_ERROR') , errMsg, 10);
       }
 
       if (typeof flyNotify != 'undefined') {
@@ -369,7 +369,7 @@ Login.initComponents = function()
       {
         xtype: 'iframepanel',
         defaultSrc : '../services/login_getStarted.php',
-        loadMask:{msg:_('ID_LOADING')+'...'},
+        loadMask:{msg:_('ID_LOADING')},
         bodyStyle:{height: (PMExt.getBrowser().screen.height-60) + 'px', overflow:'auto'},
         width:588
       }
@@ -419,7 +419,7 @@ Login.sendFpRequest = function()
   Login.forgotPasswordForm.getForm().submit({
     method: 'POST',
     waitTitle: '',
-    waitMsg: 'Sending Request...',
+    waitMsg: _('ID_SENDING_REQUEST'),
     success: function(form, action)
     {
       serverResponse = Ext.util.JSON.decode(action.response.responseText);

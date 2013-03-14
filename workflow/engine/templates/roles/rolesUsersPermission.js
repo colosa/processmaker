@@ -16,7 +16,7 @@ new Ext.KeyMap(document, {
     		e.stopEvent();
     		document.location = document.location;
     	}else{
-    		Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+    		Ext.Msg.alert( _('ID_REFRESH_LABEL'), _('ID_REFRESH_MESSAGE'));
     	}
     }
 });
@@ -411,9 +411,9 @@ Ext.onReady(function(){
     });
     
     availableUGrid = new Ext.grid.GridPanel({
-		    layout			: 'fit',
-		    title: _('ID_AVAILABLE_USERS'),
-		    region          : 'center',
+	    layout			: 'fit',
+	    title			: _('ID_AVAILABLE_USERS'),
+	    region          : 'center',
     	ddGroup         : 'assignedUGridDDGroup',
         store           : storeX,
         cm          	: cmodelU,
@@ -439,9 +439,9 @@ Ext.onReady(function(){
     });
     
     assignedUGrid = new Ext.grid.GridPanel({
-		    layout			: 'fit',
-		    title: _('ID_ASSIGNED_USERS'),
-			ddGroup         : 'availableUGridDDGroup',
+	    layout			: 'fit',
+	    title			: _('ID_ASSIGNED_USERS'),
+		ddGroup         : 'availableUGridDDGroup',
         store           : storeU,
         cm          	: cmodelU,
         sm				: smodelU,

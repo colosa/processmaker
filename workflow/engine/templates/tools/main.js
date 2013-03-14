@@ -143,7 +143,7 @@ Ext.onReady(function(){
         pageSize: 15,
         store: store,
         displayInfo: true,
-        displayMsg: 'Displaying items {0} - {1} of {2}',
+        displayMsg: _('ID_GRID_PAGE_DISPLAYING_ITEMS'),
         emptyMsg: "",
         items:[
         ]
@@ -206,7 +206,7 @@ Ext.onReady(function(){
       readOnly: true
     })],
     bbar: [{
-      text: 'Save',
+      text: _('ID_SAVE'),
       iconCls: 'ss_sprite ss_disk',
       handler: saveEdit
     }]
@@ -233,7 +233,7 @@ var edit = function(){
       activator.setIcon('');
     },
     failure: function ( result, request) {
-      Ext.MessageBox.alert('Failed', result.responseText);
+      Ext.MessageBox.alert( _('ID_FAILED') , result.responseText);
     }
   });
 }
@@ -265,7 +265,7 @@ var frm = new Ext.FormPanel( {
       width: 350  
     },  {
       id: 'label',
-      fieldLabel: 'Label',
+      fieldLabel: _('ID_LABEL'),
       xtype:'textarea',
       width: 350,
       height: 50
@@ -283,7 +283,7 @@ var frm = new Ext.FormPanel( {
 });
 
 newLabelWin = new Ext.Window({
-  title: 'New Translation',
+  title: _('ID_NEW_TRANSLATION'),
   layout:'fit',
   title: _('ID_NEW'),
   width: 490,
@@ -308,7 +308,7 @@ function saveNew()
   
   Ext.getCmp('formNew').getForm().submit( {
     url : 'ajaxListener?action=save&id'+id+'&label='+label,
-    waitMsg : 'Saving...',
+    waitMsg : _('ID_SAVING'),
     timeout : 36000,
     success : function(obj, resp) {
       Ext.getCmp('grid').store.reload();
@@ -339,12 +339,12 @@ function saveEdit()
           grid.store.reload();
           setTimeout('selectRow()', 1100);
         } else
-          PMExt.error('Error', result.msg);
+          PMExt.error( _('ID_ERROR'), result.msg);
       },
       params: {action:'save', id: rows[0].get('TRN_ID'), label: Ext.getCmp('editValue').getValue()}
     });
     
-  } else PMExt.error('ERROR', 'Just select one item from the list to edit!');
+  } else PMExt.error( _('ID_ERROR'), _('ID_SELECT_ONE_ITEM_FROM_LIST'));
 }
 
 function removeLabel()
@@ -357,12 +357,10 @@ function removeLabel()
 
     IDS = ids.join(',');
 
-    Ext.Msg.confirm(
-      'Delete',
-      'Delete the selected translations?',
+    Ext.Msg.confirm( _('ID_DELETE'), _('ID_DELETE_TRANSLATIONS'),
       function(btn, text){
         if ( btn == 'yes' ){
-          Ext.MessageBox.show({ msg:'Deleting elements...', wait:true,waitConfig: {interval:200} });
+          Ext.MessageBox.show({ msg: _('ID_DELETING_ELEMENTS') , wait:true,waitConfig: {interval:200} });
           Ext.Ajax.request({
             url: 'ajaxListener',
             success: function(response) {
@@ -372,7 +370,7 @@ function removeLabel()
                 PMExt.notify('REMOVE', result.msg);
                 Ext.getCmp('grid').store.reload();
               } else
-                PMExt.error('Error', result.msg);
+                PMExt.error( _('ID_ERROR'), result.msg);
             },
             params: {action:'delete', IDS: IDS}
           });
@@ -380,14 +378,14 @@ function removeLabel()
       }
     );
   } else {
-    PMExt.error('ERROR', 'Select a item from list please');
+    PMExt.error( _('ID_ERROR'), _('ID_NO_SELECTION_WARNING'));
   }
   
 }
 
 function rebuild()
 {
-  Ext.MessageBox.show({ msg: 'Rebuilding translations..', wait:true,waitConfig: {interval:200} });
+  Ext.MessageBox.show({ msg: _('ID_REBUILDING_TRANSLATIONS') + '...' , wait:true,waitConfig: {interval:200} });
   Ext.Ajax.request({
     url: 'ajaxListener',
     params: {action:'rebuild'},
@@ -396,15 +394,15 @@ function rebuild()
       result = Ext.util.JSON.decode(response.responseText);
       if(result.success){
         
-        var text = 'Cache file: ' + result.cacheFile + '<br/>';
+        var text = _('ID_CACHE_FILE') + result.cacheFile + '<br/>';
         //text += 'JS Cache file: ' + result.cacheFileJS + '<br/>';
-        text += 'Rows: ' + result.rows + '<br/>';
+        text += _('ID_ROWS')+': ' + result.rows + '<br/>';
         //text += 'JS ROws: ' + result.rowsJS + '<br/>';
         
         //PMExt.info('Result', text);
         PMExt.notify('REBUILD SUCCESS', text);
       } else
-        PMExt.error('Error', result.msg);
+        PMExt.error( _('ID_ERROR'), result.msg);
     }
   });
 }

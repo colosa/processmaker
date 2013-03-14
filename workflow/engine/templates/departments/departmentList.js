@@ -37,7 +37,7 @@ new Ext.KeyMap(document,
            e.stopEvent();
            document.location = document.location;
          }else{
-           Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+           Ext.Msg.alert(_('ID_REFRESH_LABEL'), _('ID_REFRESH_MESSAGE'));
          }
        }
      },
@@ -182,8 +182,8 @@ Ext.onReady(function() {
            ,
            {
              xtype: 'combo',
-             fieldLabel: 'Manager',
-             hiddenName: 'manager',
+             fieldLabel: _('ID_MANAGER'),
+             hiddenName: _('ID_MANAGER'),
              typeAhead: true,
              mode: 'local',
              store: comboDepManager,
@@ -203,7 +203,7 @@ Ext.onReady(function() {
   });
 
   rootNode = new Ext.tree.AsyncTreeNode({
-    text:'Departments'
+    text: _('ID_DEPARTMENTS')
   });
 
   treePanel = new Ext.ux.tree.TreeGrid({

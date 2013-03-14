@@ -156,7 +156,7 @@ Ext.onReady(function(){
       {header: _('ID_ROLE'), dataIndex: 'USR_ROLE', width: 50, hidden:false, align:'left'},
       {header: _('ID_STATUS'), dataIndex: 'USR_STATUS', width: 50, hidden: true, align: 'center', renderer: render_status},
       {
-        header: 'User experience',
+        header: _('ID_USER_EXPERIENCE'),
         dataIndex: 'USR_UX',
         width: 50,
         editor: new Ext.form.ComboBox({
@@ -188,7 +188,7 @@ Ext.onReady(function(){
   });
 
   usersGrid = new Ext.grid.EditorGridPanel({
-    title: 'Users',
+    title: _('ID_USERS'),
     //region: 'center',
     layout: 'fit',
     id: 'usersGrid',
@@ -264,8 +264,7 @@ Ext.onReady(function(){
       {id:'GRP_UID', dataIndex: 'USR_UID', hidden:true, hideable:false},
       {header: _('ID_GROUP_NAME'), dataIndex: 'CON_VALUE', width: 100, align:'left'},
       {header: _('ID_STATUS'), dataIndex: 'GRP_STATUS', width: 100, align:'center', renderer: render_status},
-      {
-        header: 'User experience',
+      {header: _('ID_USER_EXPERIENCE'),
         dataIndex: 'GRP_UX',
         width: 50,
         editor: new Ext.form.ComboBox({

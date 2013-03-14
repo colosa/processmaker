@@ -54,7 +54,7 @@ try {
     if (isset( $stdObj->pro_uid ))
         $sProUid = $stdObj->pro_uid;
     else
-        throw (new Exception( 'the process uid is not defined!.' ));
+        throw (new Exception( G::LoadTranslation('ID_PROCESS_UID_NOT_DEFINED') ));
 
         /* Includes */
     G::LoadClass( 'processes' );

@@ -16,7 +16,7 @@ new Ext.KeyMap(document, {
         e.stopEvent();
         document.location = document.location;
       }else{
-        Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+    	  Ext.Msg.alert(_('ID_REFRESH_LABEL'), _('ID_REFRESH_MESSAGE'));
       }
     }
 });
@@ -209,7 +209,7 @@ Ext.onReady(function(){
     store       : storeA,
     displayInfo : true,
     displayMsg  : '{0} - {1} of {2}',
-    emptyMsg    : 'No records',
+    emptyMsg    : _('ID_NO_RECORDS_FOUND') ,
     items: ['-', _('ID_PAGE_SIZE')+':', comboPageSizeAvailable ]
   });
 
@@ -270,7 +270,7 @@ Ext.onReady(function(){
     store       : storeP,
     displayInfo : true,
     displayMsg  : '{0} - {1} of {2}',
-    emptyMsg    : 'No records',
+    emptyMsg    : _('ID_NO_RECORDS_FOUND'),
     items: ['-', _('ID_PAGE_SIZE')+':', comboPageSizeAssigned ]
   });
 

@@ -60,13 +60,13 @@ streamFilefromPM=function(fileStream) {
         });
       }else{
 
-        msgbox = Ext.Msg.alert('Error', results.message);
+        msgbox = Ext.Msg.alert( _('ID_ERROR'), results.message);
         msgbox.setIcon( Ext.MessageBox.ERROR );
       }
     },
     failure: function() {
       if (results.message) {
-        Ext.Msg.alert('Infomation',results.message);
+        Ext.Msg.alert( _('ID_INFORMATION'),results.message);
       }
 
     }
@@ -350,16 +350,16 @@ function openActionDialog(caller, action, dataAux)
 
               if( json.error && typeof json.error != 'xml' ) {
                 if (typeof(json.login) != 'undefined') {
-                    msgbox = Ext.Msg.alert( "error", json.error, function(){try{parent.parent.window.location = '../login/login';} catch(e){}} );
+                    msgbox = Ext.Msg.alert( _('ID_ERROR') , json.error, function(){try{parent.parent.window.location = '../login/login';} catch(e){}} );
                 } else {
-                    msgbox = Ext.Msg.alert( "error", json.error );
+                    msgbox = Ext.Msg.alert( _('ID_ERROR') , json.error );
                 }
                 msgbox.setIcon( Ext.MessageBox.ERROR );
                 dialog.destroy();
                 return false;
               }
             } catch(e) {
-              msgbox = Ext.Msg.alert( "error", "JSON Decode Error: " + e.message );
+              msgbox = Ext.Msg.alert( _('ID_ERROR') , "JSON Decode Error: " + e.message );
               msgbox.setIcon( Ext.MessageBox.ERROR );
               return false;
             }
@@ -436,7 +436,7 @@ function openActionDialog(caller, action, dataAux)
               dialog.center();
             }
           } else if( !response || !oResponse.responseText) {
-            msgbox = Ext.Msg.alert( "error", "Received an empty response");
+            msgbox = Ext.Msg.alert( _('ID_ERROR') , _('ID_RECEIVED_EMPTY_RESPONSE') );
             msgbox.setIcon( Ext.MessageBox.ERROR );
 
           }
@@ -554,7 +554,7 @@ function handleCallback(requestParams, node) {
         }
       }
       else {
-        Ext.Msg.alert( 'Error', 'Failed to connect to the server.');
+        Ext.Msg.alert( _('ID_ERROR'), _('ID_SERVER_COMMUNICATION_ERROR'));
       }
 
     }
@@ -714,11 +714,11 @@ function statusBarMessage( msg, isLoading, success ) {
     Ext.msgBoxSlider.msg('', msg );
   } else {
     statusBar.setStatus({
-      text: 'Error: ' + msg,
+      text: _('ID_ERROR') +': ' + msg,
       iconCls: 'error',
       clear: true
     });
-    Ext.msgBoxSlider.msg('Error', msg );
+    Ext.msgBoxSlider.msg(_('ID_ERROR'), msg );
 
   }
 
