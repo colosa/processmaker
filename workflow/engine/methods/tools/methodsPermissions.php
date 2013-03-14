@@ -1,4 +1,5 @@
 <?php
+
 /**
  * methodsPermissions.php
  *
@@ -21,9 +22,8 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-
 $G_PUBLISH = new Publisher();
-$G_PUBLISH->AddContent( 'view', 'tools/methodsPermissions' );
+$G_PUBLISH->AddContent('view', 'tools/methodsPermissions');
 
-G::RenderPage( 'publish' );
+G::RenderPage('publish');
 
