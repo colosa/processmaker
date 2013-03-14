@@ -60,8 +60,7 @@ function RoleList ($params)
 {
     $x = ifPermission( $params->sessionId, 'PM_USERS' );
     if ($x == 0) {
-        $result[] = array ('guid' => 24,'name' => 'You do not have privileges'
-        );
+        $result[] = array ('guid' => 24,'name' => G::LoadTranslation('ID_NOT_PRIVILEGES'));
         return $result;
     }
 
@@ -76,8 +75,7 @@ function GroupList ($params)
 {
     $x = ifPermission( $params->sessionId, 'PM_USERS' );
     if ($x == 0) {
-        $result[] = array ('guid' => 24,'name' => 'You do not have privileges'
-        );
+        $result[] = array ('guid' => 24,'name' => G::LoadTranslation('ID_NOT_PRIVILEGES'));
         return $result;
     }
 
@@ -94,7 +92,7 @@ function CaseList ($params)
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        return new wsResponse( 9, 'Session expired' );
+        return new wsResponse( 9, G::LoadTranslation('ID_SESSION_EXPIRED') );
     }
 
     G::LoadClass( 'sessions' );
@@ -113,8 +111,7 @@ function UserList ($params)
 {
     $x = ifPermission( $params->sessionId, 'PM_USERS' );
     if ($x == 0) {
-        $result[] = array ('guid' => 24,'name' => 'You do not have privileges'
-        );
+        $result[] = array ('guid' => 24,'name' => G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
 
@@ -131,7 +128,7 @@ function SendMessage ($params)
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        $result = new wsResponse( 24, "You do not have privileges" );
+        $result = new wsResponse( 24, G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
     G::LoadClass( 'wsBase' );
@@ -161,7 +158,7 @@ function SendVariables ($params)
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        $result = new wsResponse( 24, "You do not have privileges" );
+        $result = new wsResponse( 24, G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
     G::LoadClass( 'wsBase' );
@@ -189,7 +186,7 @@ function GetVariables ($params)
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        $result = new wsResponse( 24, "You do not have privileges" );
+        $result = new wsResponse( 24, G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
 
@@ -207,7 +204,7 @@ function DerivateCase ($params)
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        $result = new wsResponse( 24, "You do not have privileges" );
+        $result = new wsResponse( 24, G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
 
@@ -228,7 +225,7 @@ function executeTrigger ($params)
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        $result = new wsResponse( 24, "You do not have privileges" );
+        $result = new wsResponse( 24, G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
 
@@ -248,7 +245,7 @@ function NewCaseImpersonate ($params)
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        $result = new wsResponse( 24, "You do not have privileges" );
+        $result = new wsResponse( 24, G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
     G::LoadClass( 'wsBase' );
@@ -272,7 +269,7 @@ function NewCase ($params)
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        $result = new wsResponse( 24, "You do not have privileges" );
+        $result = new wsResponse( 24, G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
 
@@ -333,7 +330,7 @@ function AssignUserToGroup ($params)
     $x = ifPermission( $params->sessionId, 'PM_USERS' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        $result = new wsResponse( 24, "You do not have privileges" );
+        $result = new wsResponse( 24, G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
     G::LoadClass( 'sessions' );
@@ -341,7 +338,7 @@ function AssignUserToGroup ($params)
     $user = $sessions->getSessionUser( $params->sessionId );
     if (! is_array( $user )) {
         G::LoadClass( 'wsResponse' );
-        return new wsResponse( 3, 'User not registered in the system' );
+        return new wsResponse( 3, G::LoadTranslation('ID_USER_NOT_REGISTERED_SYSTEM') );
     }
 
     G::LoadClass( 'wsBase' );
@@ -356,7 +353,7 @@ function CreateUser ($params)
     $x = ifPermission( $params->sessionId, 'PM_USERS' );
     if ($x == 0) {
         G::LoadClass( 'wsResponse' );
-        $result = new wsResponse( 24, "You do not have privileges" );
+        $result = new wsResponse( 24, G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
     G::LoadClass( 'wsBase' );
@@ -369,8 +366,7 @@ function TaskList ($params)
 {
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
-        $result[] = array ('guid' => 24,'name' => 'You do not have privileges'
-        );
+        $result[] = array ('guid' => 24,'name' => G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
     G::LoadClass( 'wsBase' );
@@ -389,8 +385,7 @@ function TaskCase ($params)
     ifSessionExpiredBreakThis( $params->sessionId );
     $x = ifPermission( $params->sessionId, 'PM_CASES' );
     if ($x == 0) {
-        $result[] = array ('guid' => 24,'name' => 'You do not have privileges'
-        );
+        $result[] = array ('guid' => 24,'name' => G::LoadTranslation('ID_NOT_PRIVILEGES') );
         return $result;
     }
     G::LoadClass( 'wsBase' );
@@ -418,7 +413,7 @@ function ifSessionExpiredBreakThis ($sessionId)
     $session = $oSessions->verifySession( $sessionId );
     if ($session == '') {
         G::LoadClass( 'wsResponse' );
-        return new wsResponse( 9, 'Session expired' );
+        return new wsResponse( 9, G::LoadTranslation('ID_SESSION_EXPIRED') );
     }
 }
 

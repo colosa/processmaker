@@ -323,9 +323,8 @@ class Main extends Controller
         $this->setVar( 'logo_company', $this->getCompanyLogo() );
         $this->setVar( 'pmos_version', System::getVersion() );
 
-        $footerText = 'Copyright &copy; 2003-' . date( 'Y' ) . ' Colosa, Inc. All rights reserved.';
-        $adviseText = 'Supplied free of charge with no support, certification, warranty,
-            maintenance nor indemnity by Colosa and its Certified Partners. ';
+        $footerText = G::LoadTranslation('ID_COPYRIGHT_FROM') . date( 'Y' ) . G::LoadTranslation('ID_COPYRIGHT_COL');
+        $adviseText = G::LoadTranslation('ID_COLOSA_AND_CERTIFIED_PARTNERS');
         $this->setVar( 'footer_text', $footerText );
         $this->setVar( 'advise_text', $adviseText );
 

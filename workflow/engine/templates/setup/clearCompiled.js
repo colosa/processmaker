@@ -6,7 +6,7 @@ Ext.onReady(function() {
       {
         xtype      : 'checkbox',
         name       : 'javascriptCache',
-        fieldLabel : 'Terms of Use',
+        fieldLabel : _('ID_TERMS_USE'),
         hideLabel  : true,
         id         : 'javascriptCache',
         boxLabel   : _('ID_JAVASCRIPT_CACHE'),
@@ -17,7 +17,7 @@ Ext.onReady(function() {
       {
         xtype      : 'checkbox',
         name       : 'metadataCache',
-        fieldLabel : 'Terms of Use',
+        fieldLabel : _('ID_TERMS_USE'),
         hideLabel  : true,
         id         : 'metadataCache',
         boxLabel   : _('ID_FORMS_METADATA_CACHE'),
@@ -28,7 +28,7 @@ Ext.onReady(function() {
       {
         xtype      : 'checkbox',
         name       : 'htmlCache',
-        fieldLabel : 'Terms of Use',
+        fieldLabel : _('ID_TERMS_USE'),
         hideLabel  : true,
         id         : 'htmlCache',
         boxLabel   : _('ID_FORMS_HTML_CACHE'),

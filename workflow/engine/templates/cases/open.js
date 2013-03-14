@@ -251,7 +251,7 @@ Ext.onReady(function(){
           title: _('ID_CASE') +' ' + _APP_NUM,
           frameConfig:{name:'openCaseFrame', id:'openCaseFrame'},
           defaultSrc : uri,
-          loadMask:{msg:_('ID_LOADING_GRID')+'...'},
+          loadMask:{msg: _('ID_LOADING_GRID') },
           bodyStyle:{height: (PMExt.getBrowser().screen.height-60) + 'px', overflow:'auto'},
           width:screenWidth
 
@@ -390,7 +390,7 @@ Ext.onReady(function(){
         win.show();
       },
       failure: function ( result, request) {
-        Ext.MessageBox.alert('Failed', result.responseText);
+        Ext.MessageBox.alert( _('ID_FAILED') , result.responseText);
       }
     });
   }
@@ -449,7 +449,7 @@ Ext.onReady(function(){
         win.show();
       },
       failure: function ( result, request) {
-        Ext.MessageBox.alert('Failed', result.responseText);
+        Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
       }
     });
   }
@@ -538,12 +538,12 @@ Ext.onReady(function(){
                   location.href = 'casesListExtJs';
                 },
                 failure: function ( result, request) {
-                  Ext.MessageBox.alert('Failed', result.responseText);
+                  Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
                 }
               });
             }
           },{
-            text: 'Cancel',
+            text: _('ID_CANCEL'),
             handler: function(){
                 msgCancel.close();
             }
@@ -655,7 +655,7 @@ Ext.onReady(function(){
             }
           },
           failure: function ( result, request) {
-            Ext.MessageBox.alert('Failed', result.responseText);
+            Ext.MessageBox.alert( _('ID_FAILED') , result.responseText);
           }
         });
       });
@@ -686,7 +686,7 @@ Ext.onReady(function(){
         new Ext.form.DateField({
           id:   'unpauseDate',
           format: 'Y-m-d',
-          fieldLabel: 'Unpause Date',
+          fieldLabel: _('ID_UNPAUSE_DATE'),
           name: 'unpauseDate',
           allowBlank: false,
           value: filterDate,
@@ -714,7 +714,7 @@ Ext.onReady(function(){
           handler : Actions.pauseCase,
           disabled:false
         },{
-          text : 'Cancel',
+          text : _('ID_CANCEL'),
           handler : function() {
             win.close();
           }
@@ -732,7 +732,7 @@ Ext.onReady(function(){
 
 
     var win = new Ext.Window({
-      title: 'Pause Case',
+      title: _('ID_PAUSE_CASE'),
       width: 370,
       height: 230,
       layout:'fit',
@@ -772,18 +772,18 @@ Ext.onReady(function(){
             NOTE_REASON: noteReasonTxt,
             NOTIFY_PAUSE: notifyReasonVal
             },
-        waitMsg:'Pausing Case '+parent._CASE_TITLE+'...',
+        waitMsg: _('ID_PAUSING_CASE')+parent._CASE_TITLE+'...',
         timeout : 36000,
         success : function(res, req) {
             if(req.result.success) {
                 try {
-                  parent.notify('PAUSE CASE', req.result.msg);
+                  parent.notify( _('ID_PAUSE_CASE') , req.result.msg);
                 }
                 catch (e) {
                 }
                 location.href = 'casesListExtJs';
             } else {
-                PMExt.error(_('ID_ERROR'), req.result.msg);
+                PMExt.error( _('ID_ERROR'), req.result.msg);
             }
         }
     });
@@ -792,7 +792,7 @@ Ext.onReady(function(){
   Actions.unpauseCase = function()
   {
     PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_UNPAUSE_CASE'), function(){
-      var loadMask = new Ext.LoadMask(document.body, {msg:'Unpausing case...'});
+      var loadMask = new Ext.LoadMask(document.body, {msg: _('ID_UNPAUSING_CASE') });
       loadMask.show();
 
       Ext.Ajax.request({
@@ -813,7 +813,7 @@ Ext.onReady(function(){
           }
         },
         failure: function ( result, request) {
-          Ext.MessageBox.alert('Failed', result.responseText);
+          Ext.MessageBox.alert( _('ID_FAILED') , result.responseText);
         }
       });
     });
@@ -822,7 +822,7 @@ Ext.onReady(function(){
   Actions.deleteCase = function()
   {
     PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_DELETE_CASE'), function(){
-      var loadMask = new Ext.LoadMask(document.body, {msg:'Deleting case...'});
+      var loadMask = new Ext.LoadMask(document.body, {msg: _('ID_DELETING_CASE') });
       loadMask.show();
       Ext.Ajax.request({
         url : '../adhocUserProxy/deleteCase',
@@ -841,7 +841,7 @@ Ext.onReady(function(){
           }
         },
         failure: function ( result, request) {
-          Ext.MessageBox.alert('Failed', result.responseText);
+          Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
         }
       });
     });
@@ -850,7 +850,7 @@ Ext.onReady(function(){
   Actions.reactivateCase = function()
   {
     PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_REACTIVATE_CASE'), function(){
-      var loadMask = new Ext.LoadMask(document.body, {msg:'Reactivating case...'});
+      var loadMask = new Ext.LoadMask(document.body, {msg: _('ID_REACTIVATING_CASE') });
       loadMask.show();
       Ext.Ajax.request({
         url : 'ajaxListener' ,
@@ -870,7 +870,7 @@ Ext.onReady(function(){
           }
         },
         failure: function ( result, request) {
-          Ext.MessageBox.alert('Failed', result.responseText);
+          Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
         }
       });
     });
@@ -1007,7 +1007,7 @@ Ext.onReady(function(){
         title: menuSelectedTitle[name],
         frameConfig:{name: name + 'Frame', id: name + 'Frame'},
         defaultSrc : uri,
-        loadMask:{msg:_('ID_LOADING_GRID')+'...'},
+        loadMask:{msg:_('ID_LOADING_GRID')},
         autoWidth: true,
         closable:true,
         autoScroll: true,
@@ -1054,7 +1054,7 @@ Ext.onReady(function(){
      pageSize: 8,
      store: store,
      displayInfo: true,
-     displayMsg: 'Displaying Users {0} - {1} of {2}',
+     displayMsg: _('ID_GRID_PAGE_DISPLAYING_USERS_MESSAGE'),
      emptyMsg: "",
      items:[]
     });
@@ -1107,7 +1107,7 @@ Ext.onReady(function(){
   {
     rowSelected = adHocUserGrid.getSelectionModel().getSelected();
     PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_ADHOCUSER_CASE'), function(){
-      var loadMask = new Ext.LoadMask(document.body, {msg:'Assignment case...'});
+      var loadMask = new Ext.LoadMask(document.body, {msg:_('ID_ASSIGNMENT_CASE')});
       loadMask.show();
       Ext.Ajax.request({
         url : '../adhocUserProxy/reassignCase' ,
@@ -1125,7 +1125,7 @@ Ext.onReady(function(){
           }
         },
         failure: function ( result, request) {
-          Ext.MessageBox.alert('Failed', result.responseText);
+          Ext.MessageBox.alert(_('ID_FAILED'), result.responseText);
         }
       });
      });

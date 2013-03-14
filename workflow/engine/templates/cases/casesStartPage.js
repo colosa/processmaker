@@ -144,7 +144,7 @@ Ext.extend(
 				},
 				failure : function() {
 					dashboardTabPanels.activateDefaultTab();
-					Ext.Msg.alert('Status', 'Unable to get Dashboards');
+					Ext.Msg.alert( _('ID_STATUS'), _('ID_UNABLE_GET_DASHBOARDS'));
 				}
 			});
 		}

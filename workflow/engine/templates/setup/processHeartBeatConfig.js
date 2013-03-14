@@ -7,7 +7,7 @@ Ext.onReady(function() {
         xtype      : 'checkbox',
         checked    : heartBeatChecked,
         name       : 'acceptHB',
-        fieldLabel : 'Terms of Use',
+        fieldLabel : _('ID_TERMS_USE'),
         hideLabel  : true,
         id         : 'ch_ii',
         style      : 'margin-top:15px',

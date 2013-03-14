@@ -58,7 +58,7 @@ Ext.onReady(function(){
   });
 
   genDataReportButton = new Ext.Action({
-    text: 'Regenerate Data Report',
+    text: _('ID_REGENERATE_DATA_REPORT'),
     iconCls: 'silk-add',
     icon: '/images/database-tool.png',
     handler: genDataReport,
@@ -464,8 +464,8 @@ ImportPMTableCSV = function(){
         items : [{
             xtype      : 'fileuploadfield',
             id         : 'csv-file',
-            emptyText  : 'Select a file',
-            fieldLabel : 'CSV File',
+            emptyText  : _('ID_SELECT_FILE'),
+            fieldLabel : _('ID_CSV_FILE'),
             name       : 'form[CSV_FILE]',
             buttonText : '',
             buttonCfg  : {
@@ -474,7 +474,7 @@ ImportPMTableCSV = function(){
         }, {
           xtype         : 'combo',
           id            : 'csv-delimiter',
-          fieldLabel    : 'Delimited by',
+          fieldLabel    : _('ID_DELIMITED_BY'),
           hiddenName    : 'form[CSV_DELIMITER]',
           mode          : 'local',
           store         : comboDelimiter,
@@ -501,7 +501,7 @@ ImportPMTableCSV = function(){
                 if(uploader.getForm().isValid()){
                   uploader.getForm().submit({
                     url      : '../pmTablesProxy/importCSV',
-                    waitMsg  : 'Uploading file...',
+                    waitMsg  : _('ID_UPLOADING_FILE'),
                     success  : function(o, resp){
                       w.close();
                       infoGrid.store.reload();
@@ -576,7 +576,7 @@ ExportPMTableCSV = function(){
         items : [{
           xtype         : 'combo',
           id            : 'csv_delimiter',
-          fieldLabel    : 'Delimited by',
+          fieldLabel    : _('ID_DELIMITED_BY'),
           hiddenName    : 'form[CSV_DELIMITER]',
           mode          : 'local',
           store         : comboDelimiter,

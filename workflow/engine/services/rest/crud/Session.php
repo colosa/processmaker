@@ -32,7 +32,7 @@ class Services_Rest_Session
                 $criteria->addSelectColumn(SessionPeer::SES_INIT_DATE);
                 $criteria->addSelectColumn(SessionPeer::SES_DUE_DATE);
                 $criteria->addSelectColumn(SessionPeer::SES_END_DATE);
-                
+
                 $dataset = AppEventPeer::doSelectRS($criteria);
                 $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -86,7 +86,7 @@ class Services_Rest_Session
             $obj->setSesInitDate($sesInitDate);
             $obj->setSesDueDate($sesDueDate);
             $obj->setSesEndDate($sesEndDate);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -112,7 +112,7 @@ class Services_Rest_Session
             $obj->setSesInitDate($sesInitDate);
             $obj->setSesDueDate($sesDueDate);
             $obj->setSesEndDate($sesEndDate);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -130,16 +130,16 @@ class Services_Rest_Session
     protected function delete($sesUid)
     {
         $conn = Propel::getConnection(SessionPeer::DATABASE_NAME);
-        
+
         try {
             $conn->begin();
-        
+
             $obj = SessionPeer::retrieveByPK($sesUid);
             if (! is_object($obj)) {
-                throw new RestException(412, 'Record does not exist.');
+                throw new RestException(412, G::LoadTranslation('ID_RECORD_DOES_NOT_EXIST'));
             }
             $obj->delete();
-        
+
             $conn->commit();
         } catch (Exception $e) {
             $conn->rollback();

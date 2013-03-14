@@ -160,7 +160,7 @@ new Ext.KeyMap(document, {
         document.getElementById('setup-frame').src = document.getElementById('setup-frame').src;
       }
       else
-    Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+    Ext.Msg.alert( _('ID_REFRESH_LABEL'), _('ID_REFRESH_MESSAGE'));
   }
 });
 

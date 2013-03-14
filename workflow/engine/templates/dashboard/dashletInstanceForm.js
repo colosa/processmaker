@@ -123,7 +123,7 @@ Ext.onReady(function() {
                       },
              failure: function (result, request) {
                         myMask.hide();
-                        Ext.MessageBox.alert('Alert', 'Ajax communication failed');
+                        Ext.MessageBox.alert(_('ID_ALERT'), _('ID_AJAX_COMMUNICATION_FAILED'));
                       }
            });
       }
@@ -208,7 +208,7 @@ Ext.onReady(function() {
        text:    _('ID_SAVE'),
        handler: function () {
          if (dashletInstanceFrm.getForm().isValid()) {
-           var myMask = new Ext.LoadMask(Ext.getBody(), {msg: 'Saving. Please wait...'});
+           var myMask = new Ext.LoadMask(Ext.getBody(), {msg: _('ID_SAVING_LABEL') + '.' + _('ID_PLEASE_WAIT') });
            myMask.show();
            Ext.Ajax.request({
              url:      'saveDashletInstance',

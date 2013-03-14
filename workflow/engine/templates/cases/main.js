@@ -33,7 +33,8 @@ Ext.onReady(function(){
         updateCasesTree();
       }
       else
-        Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+        //Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+       	Ext.Msg.alert(_('ID_REFRESH_LABEL'),_('ID_REFRESH_MESSAGE'));
     }
   });
 
@@ -131,7 +132,7 @@ Ext.onReady(function(){
 
                   },
                   render: function(){
-                    this.loadMask = new Ext.LoadMask(this.body, { msg:'Loading...' });
+                    this.loadMask = new Ext.LoadMask(this.body, { msg:_('ID_LOADING_GRID') });
                   }
                 }
               });
@@ -398,7 +399,7 @@ Ext.onReady(function(){
       items: [],
       listeners:{
         show:function() {
-          this.loadMask = new Ext.LoadMask(this.body, { msg:'Loading. Please wait...' });
+          this.loadMask = new Ext.LoadMask(this.body, { msg:_('ID_LOADING') });
         }
       }
     });

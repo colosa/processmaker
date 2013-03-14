@@ -34,7 +34,7 @@
           }
         }
         if (!http_request){
-          alert('This browser is not supported.');
+          alert( _('ID_BROWSER_NOT_SUPPORTED') );
           return false;
         }
 
@@ -81,7 +81,7 @@
               document.location = document.location;
             }
             else{
-              Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+              Ext.Msg.alert( _('ID_REFRESH_LABEL'), _('ID_REFRESH_MESSAGE'));
             }
 
         }
@@ -334,7 +334,7 @@
         listeners: {
           rowdblclick: emptyReturn,
           render: function(){
-            this.loadMask = new Ext.LoadMask(this.body, {msg:'Loading...'});
+            this.loadMask = new Ext.LoadMask(this.body, {msg: _('ID_LOADING_GRID') });
             processesGrid.getSelectionModel().on('rowselect', function(){
               var rowSelected = processesGrid.getSelectionModel().getSelected();
 

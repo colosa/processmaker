@@ -96,7 +96,7 @@ try {
             $oUser->load( $val['USR_UID'] );
             $delegations[$key]['USR_NAME'] = $oUser->getUsrFirstname() . ' ' . $oUser->getUsrLastname();
         } else {
-            $delegations[$key]['USR_NAME'] = 'Unknow user (Sub-Process User)';
+            $delegations[$key]['USR_NAME'] = G::LoadTranslation('ID_UNKNOW_USER') . G::LoadTranslation('ID_SUBPROCESS_USER');
         }
     }
     $Fields['CANT_DELEGATIONS'] = count( $delegations );

@@ -221,12 +221,12 @@ Ext.onReady(function(){
   if (TABLE !== false && TABLE.ADD_TAB_TAG == 'plugin@simplereport') {
     cmColumns.push({
         xtype: 'booleancolumn',
-        header: 'Filter',
+        header: _('ID_FILTER'),
         dataIndex: 'field_filter',
         align: 'center',
         width: 50,
-        trueText: 'Yes',
-        falseText: 'No',
+        trueText: _('ID_YES'),
+        falseText: _('ID_NO'),
         editor: {
             xtype: 'checkbox'
         }
@@ -739,9 +739,6 @@ Ext.onReady(function(){
 });
 
 
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 
 function createReportTable()
@@ -769,12 +766,12 @@ function createReportTable()
     //row.data['FIELD_FILTER'] = typeof(row.data['FIELD_FILTER']) != 'undefined' && row.data['FIELD_FILTER'] ? true : false;
 
     if(row.data['field_name'].trim() == '') {
-      PMExt.error(_('ID_ERROR'), 'Field Name for "'+row.data['field_dyn']+'" is required.');
+      PMExt.error(_('ID_ERROR'), _('ID_FIELD_NAME_FOR')+'"'+row.data['field_dyn']+'"'+ _('ID_IS_REQUIRED'));
       return false;
     }
 
     if((row.data['field_type'] == 'VARCHAR' || row.data['field_type'] == 'INT') && row.data['field_name'] == '') {
-      PMExt.error(_('ID_ERROR'), 'Field size for "'+row.data['field_type']+'": '+row.data['field_name']+'" please.');
+      PMExt.error(_('ID_ERROR'), _('ID_FIELD_SIZE_FOR')+'"'+row.data['field_type']+'": '+row.data['field_name']+'"'+ _('ID_PLEASE'));
       return false;
     }
 
@@ -928,12 +925,12 @@ saveReportTables = function(){
     row.data['FIELD_FILTER'] = typeof(row.data['FIELD_FILTER']) != 'undefined' && row.data['FIELD_FILTER'] ? true : false;
 
     if(row.data['FIELD_NAME'].trim() == '') {
-      PMExt.error(_('ID_ERROR'), 'Set a Phisical Field Name for "'+row.data['FIELD_DYNAFORM']+'" dynaform field please.');
+      PMExt.error(_('ID_ERROR'), _('ID_PMTABLES_ALERT8') + '"'+row.data['FIELD_DYNAFORM']+'"'+_('ID_DYNAFORM_FIELD')+' '+ _('ID_PLEASE'));
       return false;
     }
 
     if((row.data['FIELD_TYPE'] == 'VARCHAR' || row.data['FIELD_TYPE'] == 'INT') && row.data['FIELD_SIZE'] == '') {
-      PMExt.error(_('ID_ERROR'), 'Set a field size for "'+row.data['FIELD_TYPE']+'": '+row.data['FIELD_NAME']+'" please.');
+      PMExt.error(_('ID_ERROR'), _('ID_PMTABLES_ALERT5') + '"'+row.data['FIELD_TYPE']+'": '+row.data['FIELD_NAME'] + '"' + _('ID_PLEASE'));
       return false;
     }
 
@@ -955,7 +952,7 @@ saveReportTables = function(){
         data: Ext.util.JSON.encode(data)
       },
       success: function(obj, resp){
-        PMExt.notify('DONE', 'Report table saved Successfully');
+        PMExt.notify( _('ID_DONE') , _('ID_REPORT_SAVE') );
         Ext.getCmp('reportTableGrid').getStore().reload();
         Ext.getCmp('newRepTab').close();
         Ext.getCmp('winEditFields').close();
@@ -1046,7 +1043,7 @@ FailureFields = function(){
 SaveFieldsReportTable = function(arr_avail, function_success, function_failure){
   var sw_response;
   //Ext.MessageBox.show({ msg: 'Match Fields', wait:true,waitConfig: {interval:200} });
-  lmask = new Ext.LoadMask(Ext.getBody(),{msg:'Processing...'});
+  lmask = new Ext.LoadMask(Ext.getBody(),{msg:_('ID_PROCESSING')});
   lmask.show();
 
   Ext.Ajax.request({

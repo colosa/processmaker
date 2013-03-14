@@ -1013,7 +1013,7 @@ Ext.onReady ( function() {
       text: _('ID_SUBMIT'),
       handler:function(){
         Ext.Msg.alert('OK','save ?');
-        Ext.Msg.prompt('Name','please enter your name: ',function(btn,text){
+        Ext.Msg.prompt(_('ID_NAME'),'please enter your name: ',function(btn,text){
           if(btn=='ok') {
             alert('ok');
           }

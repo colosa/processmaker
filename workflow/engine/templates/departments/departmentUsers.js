@@ -15,7 +15,7 @@ new Ext.KeyMap(document, {
       e.stopEvent();
       document.location = document.location;
     }else{
-      Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+      Ext.Msg.alert(_('ID_REFRESH_LABEL'), _('ID_REFRESH_MESSAGE'));
     }
   }
 });
@@ -200,12 +200,12 @@ Ext.onReady(function(){
   });
 
   availableGrid = new Ext.grid.GridPanel({
-    layout      : 'fit',
+    layout    : 'fit',
     title : _('ID_AVAILABLE_USERS'),
-    region          : 'center',
-    ddGroup         : 'assignedGridDDGroup',
-    store           : storeA,
-    cm            : cmodelP,
+    region    : 'center',
+    ddGroup   : 'assignedGridDDGroup',
+    store     : storeA,
+    cm        : cmodelP,
     sm        : smodelA,
     enableDragDrop  : true,
     stripeRows      : true,
@@ -304,8 +304,6 @@ Ext.onReady(function(){
     xtype: 'panel',
     tbar: ['<b>'+_('ID_DEPARTMENT') + ' : ' + DEPARTMENT.DEP_TITLE  + '</b>',{xtype: 'tbfill'},backButton]
   });
-
-
 
   //LOAD ALL PANELS
   viewport = new Ext.Viewport({
@@ -534,7 +532,7 @@ UpdateSupervisor = function(){
 render_status = function(v){
   switch(v){
   case 'ACTIVE': return '<font color="green">' + _('ID_ACTIVE') + '</font>'; break;
-  case 'INACTIVE': return '<font color="red">' + _('ID_INACTIVE') + '</font>';; break;
-  case 'VACATION': return '<font color="blue">' + _('ID_VACATION') + '</font>';; break;
+  case 'INACTIVE': return '<font color="red">' + _('ID_INACTIVE') + '</font>'; break;
+  case 'VACATION': return '<font color="blue">' + _('ID_VACATION') + '</font>'; break;
   }
 };

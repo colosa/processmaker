@@ -15,7 +15,7 @@ new Ext.KeyMap(document, {
         document.location = document.location;
       }
       else
-        Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+        Ext.Msg.alert( _('ID_REFRESH_LABEL'), _('ID_REFRESH_MESSAGE') );
   }
 });
 
@@ -140,7 +140,7 @@ Ext.onReady(function(){
     ],
     listeners: {
       render: function(){
-        this.loadMask = new Ext.LoadMask(this.body, {msg:'Loading...'});
+        this.loadMask = new Ext.LoadMask(this.body, {msg: _('ID_LOADING_GRID')});
         //this.ownerCt.doLayout();
         Grid.getSelectionModel().on('rowselect', function(){
 

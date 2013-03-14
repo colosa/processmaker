@@ -14,7 +14,7 @@ new Ext.KeyMap(document, [{
             e.stopEvent();
             document.location = document.location;
         } else {
-          Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+          Ext.Msg.alert(_('ID_REFRESH_LABEL'), _('ID_REFRESH_MESSAGE'));
         }
     }
 }
@@ -64,10 +64,10 @@ Ext.onReady(function(){
       boxMaxWidth   : 90,
       editable      : false,
       mode          : 'local',
-      emptyText: _('ID_SELECT_STATUS'),
+      emptyText		: _('ID_SELECT_STATUS'),
       store         : new Ext.data.ArrayStore({
-          fields: ['id', 'value'],
-          data  : statusValues
+          fields	: ['id', 'value'],
+          data  	: statusValues
       }),
       valueField    : 'id',
       displayField  : 'value',
@@ -91,7 +91,7 @@ Ext.onReady(function(){
       boxMaxWidth   : 150,
       editable      : false,
       mode          : 'local',
-      emptyText: _('ID_EMPTY_TYPE'),
+      emptyText		: _('ID_EMPTY_TYPE'),
       store         : new Ext.data.ArrayStore({
           fields: ['id', 'value'],
           data  : typeValues
