@@ -464,6 +464,7 @@ class headPublisher
             if (count($aux) == 2 && defined('G_PLUGIN_CLASS')) {
                 $oPluginRegistry = & PMPluginRegistry::getSingleton();
                 if ($oPluginRegistry->isRegisteredFolder($aux[0])) {
+                    array_push($this->extJsLibrary, 'translation.' . trim($aux[0]) . '.' . SYS_LANG);
                     $sPath = PATH_PLUGINS;
                 }
             }
