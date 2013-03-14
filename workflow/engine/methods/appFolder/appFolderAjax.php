@@ -406,10 +406,10 @@ function expandNode()
                     case "BOTH":
                         $strExpander = null;
                         $mimeInformation = getMime($obj["APP_DOC_FILENAME"] . ".pdf");
-                        $strExpander = $strExpander . "<a href=\"javascript:openActionDialog(this, 'download', 'pdf');\" style=\"color: #000000; text-decoration: none;\"><img src=\"/images/documents/extension/pdf.png\" style=\"margin-left: 25px; border: 0;\" alt=\"\" /> <b>" . $obj["APP_DOC_FILENAME"] . ".pdf</b> (" . $mimeInformation["description"] . ")</a>";
+                        $strExpander = $strExpander . "<a href=\"javascript:;\" onclick=\"openActionDialog(this, 'download', 'pdf'); return false;\" style=\"color: #000000; text-decoration: none;\"><img src=\"/images/documents/extension/pdf.png\" style=\"margin-left: 25px; border: 0;\" alt=\"\" /> <b>" . $obj["APP_DOC_FILENAME"] . ".pdf</b> (" . $mimeInformation["description"] . ")</a>";
                         $strExpander = $strExpander . "<br />";
                         $mimeInformation = getMime($obj["APP_DOC_FILENAME"] . ".doc");
-                        $strExpander = $strExpander . "<a href=\"javascript:openActionDialog(this, 'download', 'doc');\" style=\"color: #000000; text-decoration: none;\"><img src=\"/images/documents/extension/doc.png\" style=\"margin-left: 25px; border: 0;\" alt=\"\" /> <b>" . $obj["APP_DOC_FILENAME"] . ".doc</b> (" . $mimeInformation["description"] . ")</a>";
+                        $strExpander = $strExpander . "<a href=\"javascript:;\" onclick=\"openActionDialog(this, 'download', 'doc'); return false;\" style=\"color: #000000; text-decoration: none;\"><img src=\"/images/documents/extension/doc.png\" style=\"margin-left: 25px; border: 0;\" alt=\"\" /> <b>" . $obj["APP_DOC_FILENAME"] . ".doc</b> (" . $mimeInformation["description"] . ")</a>";
 
                         $tempTree["outDocGenerate"] = $strExpander;
 
