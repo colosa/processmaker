@@ -2,6 +2,7 @@
 
 class Services_Rest_OutputDocument
 {
+
     /**
      * Implementation for 'GET' method for Rest API
      *
@@ -10,7 +11,7 @@ class Services_Rest_OutputDocument
      * @return array $result Returns array within multiple records or a single record depending if
      *                       a single selection was requested passing id(s) as param
      */
-    protected function get($outDocUid=null)
+    protected function get($outDocUid = null)
     {
         $result = array();
         try {
@@ -44,7 +45,7 @@ class Services_Rest_OutputDocument
                 $criteria->addSelectColumn(OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OPEN_PASSWORD);
                 $criteria->addSelectColumn(OutputDocumentPeer::OUT_DOC_PDF_SECURITY_OWNER_PASSWORD);
                 $criteria->addSelectColumn(OutputDocumentPeer::OUT_DOC_PDF_SECURITY_PERMISSIONS);
-                
+
                 $dataset = AppEventPeer::doSelectRS($criteria);
                 $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -65,7 +66,7 @@ class Services_Rest_OutputDocument
                             $paramValues .= "NULL";
                         }
                     }
-                    throw new RestException(417, "table OutputDocument ($paramValues)" );
+                    throw new RestException(417, "table OutputDocument ($paramValues)");
                 }
             }
         } catch (RestException $e) {
@@ -76,6 +77,5 @@ class Services_Rest_OutputDocument
 
         return $result;
     }
-
-
 }
+

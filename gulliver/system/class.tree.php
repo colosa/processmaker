@@ -1,4 +1,5 @@
 <?php
+
 /**
  * class.tree.php
  *
@@ -25,27 +26,27 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-
 /**
  *
  * @package gulliver.system
  */
-G::LoadSystem( 'objectTemplate' );
+G::LoadSystem('objectTemplate');
 
 class Tree extends Xml_Node
 {
-    var $template = 'tree.html';
-    var $nodeType = 'base';
-    var $nodeClass = 'treeNode';
-    var $contentClass = 'treeContent';
-    var $width = '100%';
-    var $contentWidth = '360';
-    var $contracted = false;
-    var $showSign = true;
-    var $isChild = false;
-    var $plus = "<span style='position:absolute; width:16px;height:22px;cursor:pointer;'onclick='tree.expand(this.parentNode);'>&nbsp;</span>";
-    var $minus = "<span  style='position:absolute; width:16px;height:22px;cursor:pointer' onclick='tree.contract(this.parentNode);'>&nbsp;</span>";
-    var $point = "<span style='position:absolute; width:5px;height:10px;cursor:pointer;'  onclick='tree.select(this.parentNode);'>&nbsp;</span>";
+
+    public $template = 'tree.html';
+    public $nodeType = 'base';
+    public $nodeClass = 'treeNode';
+    public $contentClass = 'treeContent';
+    public $width = '100%';
+    public $contentWidth = '360';
+    public $contracted = false;
+    public $showSign = true;
+    public $isChild = false;
+    public $plus = "<span style='position:absolute; width:16px;height:22px;cursor:pointer;'onclick='tree.expand(this.parentNode);'>&nbsp;</span>";
+    public $minus = "<span  style='position:absolute; width:16px;height:22px;cursor:pointer' onclick='tree.contract(this.parentNode);'>&nbsp;</span>";
+    public $point = "<span style='position:absolute; width:5px;height:10px;cursor:pointer;'  onclick='tree.select(this.parentNode);'>&nbsp;</span>";
 
     /**
      * Tree
@@ -54,18 +55,18 @@ class Tree extends Xml_Node
      *
      * @return none
      */
-    public function Tree ($xmlnode = null)
+    public function Tree($xmlnode = null)
     {
-        if (! isset( $xmlnode )) {
+        if (!isset($xmlnode)) {
             return;
         }
-        if (isset( $xmlnode->attributes['nodeType'] )) {
+        if (isset($xmlnode->attributes['nodeType'])) {
             $this->nodeType = $xmlnode->attributes['nodeType'];
         }
         foreach ($xmlnode as $key => $value) {
             if ($key === 'children') {
                 foreach ($xmlnode->children as $key => $value) {
-                    $this->children[$key] = new Tree( $value->toTree() );
+                    $this->children[$key] = new Tree($value->toTree());
                 }
             } elseif ($key === 'attributes') {
                 foreach ($xmlnode->attributes as $key => $value) {
@@ -86,10 +87,9 @@ class Tree extends Xml_Node
      *
      * @return object(Tree) $newNode
      */
-
-    public function &addChild ($name, $label, $attributes = array())
+    public function &addChild($name, $label, $attributes = array())
     {
-        $newNode = new Tree( new Xml_Node( $name, 'open', $label, $attributes ) );
+        $newNode = new Tree(new Xml_Node($name, 'open', $label, $attributes));
         $this->children[] = & $newNode;
         return $newNode;
     }
@@ -99,15 +99,15 @@ class Tree extends Xml_Node
      *
      * @return string '<span>...</span>'
      */
-    public function printPlus ()
+    public function printPlus()
     {
         $plus = 'none';
         $minus = 'none';
         $point = 'none';
         if ($this->showSign) {
-            if ((sizeof( $this->children ) > 0) && ($this->contracted)) {
+            if ((sizeof($this->children) > 0) && ($this->contracted)) {
                 $plus = '';
-            } elseif ((sizeof( $this->children ) > 0) && (! $this->contracted)) {
+            } elseif ((sizeof($this->children) > 0) && (!$this->contracted)) {
                 $minus = '';
             } else {
                 $point = '';
@@ -121,7 +121,7 @@ class Tree extends Xml_Node
      *
      * @return $this->value
      */
-    public function printLabel ()
+    public function printLabel()
     {
         return $this->value;
     }
@@ -131,7 +131,7 @@ class Tree extends Xml_Node
      *
      * @return string $html
      */
-    public function printContent ()
+    public function printContent()
     {
         $html = '';
         $row = 0;
@@ -150,11 +150,10 @@ class Tree extends Xml_Node
      *
      * @return $obj->printObject( array( 'node' => &$this ) )
      */
-    public function render ()
+    public function render()
     {
-        $obj = new objectTemplate( $this->template );
-        return $obj->printObject( array ('node' => &$this
-        ) );
+        $obj = new objectTemplate($this->template);
+        return $obj->printObject(array('node' => &$this));
     }
 }
 

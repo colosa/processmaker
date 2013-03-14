@@ -1,4 +1,5 @@
 <?php
+
 /**
  * class.groups.php
  *
@@ -34,7 +35,6 @@ require_once 'classes/model/Users.php';
  * @package workflow.engine.ProcessMaker
  * @copyright 2007 COLOSA
  */
-
 class Groups
 {
 
@@ -44,16 +44,16 @@ class Groups
      * @param string $sGroupUID
      * @return array
      */
-    function getUsersOfGroup ($sGroupUID)
+    public function getUsersOfGroup($sGroupUID)
     {
         try {
-            $aUsers = array ();
+            $aUsers = array();
             $oCriteria = new Criteria();
-            $oCriteria->addJoin( UsersPeer::USR_UID, GroupUserPeer::USR_UID, Criteria::LEFT_JOIN );
-            $oCriteria->add( GroupUserPeer::GRP_UID, $sGroupUID );
-            $oCriteria->add( UsersPeer::USR_STATUS, 'ACTIVE' );
-            $oDataset = UsersPeer::doSelectRS( $oCriteria );
-            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oCriteria->addJoin(UsersPeer::USR_UID, GroupUserPeer::USR_UID, Criteria::LEFT_JOIN);
+            $oCriteria->add(GroupUserPeer::GRP_UID, $sGroupUID);
+            $oCriteria->add(UsersPeer::USR_STATUS, 'ACTIVE');
+            $oDataset = UsersPeer::doSelectRS($oCriteria);
+            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $oDataset->next();
 
             while ($aRow = $oDataset->getRow()) {
@@ -72,22 +72,22 @@ class Groups
      * @param string $sUserUID
      * @return array
      */
-    function getActiveGroupsForAnUser ($sUserUID)
+    public function getActiveGroupsForAnUser($sUserUID)
     {
         try {
             $oCriteria = new Criteria();
-            $oCriteria->addSelectColumn( GroupUserPeer::GRP_UID );
-            $oCriteria->addSelectColumn( GroupwfPeer::GRP_STATUS );
-            $oCriteria->add( GroupUserPeer::USR_UID, $sUserUID );
-            $oCriteria->add( GroupwfPeer::GRP_STATUS, 'ACTIVE' );
-            $oCriteria->addJoin( GroupUserPeer::GRP_UID, GroupwfPeer::GRP_UID, Criteria::LEFT_JOIN );
-            $oDataset = GroupUserPeer::doSelectRS( $oCriteria );
-            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oCriteria->addSelectColumn(GroupUserPeer::GRP_UID);
+            $oCriteria->addSelectColumn(GroupwfPeer::GRP_STATUS);
+            $oCriteria->add(GroupUserPeer::USR_UID, $sUserUID);
+            $oCriteria->add(GroupwfPeer::GRP_STATUS, 'ACTIVE');
+            $oCriteria->addJoin(GroupUserPeer::GRP_UID, GroupwfPeer::GRP_UID, Criteria::LEFT_JOIN);
+            $oDataset = GroupUserPeer::doSelectRS($oCriteria);
+            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $oDataset->next();
 
-            $aGroups = array ();
+            $aGroups = array();
             $aRow = $oDataset->getRow();
-            while (is_array( $aRow )) {
+            while (is_array($aRow)) {
                 $aGroups[] = $aRow['GRP_UID'];
                 $oDataset->next();
                 $aRow = $oDataset->getRow();
@@ -104,16 +104,16 @@ class Groups
      * @param string $GrpUid, $UsrUid
      * @return array
      */
-    function addUserToGroup ($GrpUid, $UsrUid)
+    public function addUserToGroup($GrpUid, $UsrUid)
     {
         try {
-            $oGrp = GroupUserPeer::retrieveByPk( $GrpUid, $UsrUid );
-            if (is_object( $oGrp ) && get_class( $oGrp ) == 'GroupUser') {
+            $oGrp = GroupUserPeer::retrieveByPk($GrpUid, $UsrUid);
+            if (is_object($oGrp) && get_class($oGrp) == 'GroupUser') {
                 return true;
             } else {
                 $oGrp = new GroupUser();
-                $oGrp->setGrpUid( $GrpUid );
-                $oGrp->setUsrUid( $UsrUid );
+                $oGrp->setGrpUid($GrpUid);
+                $oGrp->setUsrUid($UsrUid);
                 $oGrp->Save();
             }
         } catch (exception $oError) {
@@ -121,15 +121,15 @@ class Groups
         }
     }
 
-    /*
-  * Remove a user from group
-  * @param string $GrpUid, $UsrUid
-  * @return array
-  */
-    function removeUserOfGroup ($GrpUid, $UsrUid)
+    /**
+     * Remove a user from group
+     * @param string $GrpUid, $UsrUid
+     * @return array
+     */
+    public function removeUserOfGroup($GrpUid, $UsrUid)
     {
         $gu = new GroupUser();
-        $gu->remove( $GrpUid, $UsrUid );
+        $gu->remove($GrpUid, $UsrUid);
     }
 
     /**
@@ -138,13 +138,13 @@ class Groups
      * @param none
      * @return $objects
      */
-    function getAllGroups ()
+    public function getAllGroups()
     {
         try {
             $criteria = new Criteria();
-            $criteria->add( GroupwfPeer::GRP_UID, "", Criteria::NOT_EQUAL );
-            $con = Propel::getConnection( GroupwfPeer::DATABASE_NAME );
-            $objects = GroupwfPeer::doSelect( $criteria, $con );
+            $criteria->add(GroupwfPeer::GRP_UID, "", Criteria::NOT_EQUAL);
+            $con = Propel::getConnection(GroupwfPeer::DATABASE_NAME);
+            $objects = GroupwfPeer::doSelect($criteria, $con);
             return $objects;
         } catch (exception $e) {
             throw $e;
@@ -157,16 +157,16 @@ class Groups
      * @param $sUserUid user uid
      * @return an array of group objects
      */
-    function getUserGroups ($sUserUID)
+    public function getUserGroups($sUserUID)
     {
         try {
             $criteria = new Criteria();
-            $criteria->add( GroupwfPeer::GRP_UID, "", Criteria::NOT_EQUAL );
-            $criteria->add( GroupUserPeer::USR_UID, $sUserUID );
-            $criteria->add( GroupwfPeer::GRP_STATUS, 'ACTIVE' );
-            $criteria->addJoin( GroupUserPeer::GRP_UID, GroupwfPeer::GRP_UID, Criteria::LEFT_JOIN );
-            $con = Propel::getConnection( GroupwfPeer::DATABASE_NAME );
-            $objects = GroupwfPeer::doSelect( $criteria, $con );
+            $criteria->add(GroupwfPeer::GRP_UID, "", Criteria::NOT_EQUAL);
+            $criteria->add(GroupUserPeer::USR_UID, $sUserUID);
+            $criteria->add(GroupwfPeer::GRP_STATUS, 'ACTIVE');
+            $criteria->addJoin(GroupUserPeer::GRP_UID, GroupwfPeer::GRP_UID, Criteria::LEFT_JOIN);
+            $con = Propel::getConnection(GroupwfPeer::DATABASE_NAME);
+            $objects = GroupwfPeer::doSelect($criteria, $con);
             return $objects;
         } catch (exception $e) {
             throw $e;
@@ -180,34 +180,33 @@ class Groups
      * @param string $sUserUid
      * @return object
      */
-
-    function getAvailableGroupsCriteria ($sUserUid, $filter = '')
+    public function getAvailableGroupsCriteria($sUserUid, $filter = '')
     {
         try {
-            $oCriteria = new Criteria( 'workflow' );
-            $oCriteria->addSelectColumn( GroupUserPeer::GRP_UID );
-            $oCriteria->add( GroupUserPeer::USR_UID, $sUserUid );
-            $oCriteria->add( GroupUserPeer::GRP_UID, '', Criteria::NOT_EQUAL );
-            $oDataset = GroupUserPeer::doSelectRS( $oCriteria );
-            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->addSelectColumn(GroupUserPeer::GRP_UID);
+            $oCriteria->add(GroupUserPeer::USR_UID, $sUserUid);
+            $oCriteria->add(GroupUserPeer::GRP_UID, '', Criteria::NOT_EQUAL);
+            $oDataset = GroupUserPeer::doSelectRS($oCriteria);
+            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $oDataset->next();
-            $gUIDs = array ();
+            $gUIDs = array();
             while ($aRow = $oDataset->getRow()) {
                 $gUIDs[] = $aRow['GRP_UID'];
                 $oDataset->next();
             }
-            $oCriteria = new Criteria( 'workflow' );
-            $oCriteria->addSelectColumn( GroupwfPeer::GRP_UID );
-            $oCriteria->addSelectColumn( GroupwfPeer::GRP_STATUS );
-            $oCriteria->addSelectColumn( ContentPeer::CON_VALUE );
-            $oCriteria->addJoin( GroupwfPeer::GRP_UID, ContentPeer::CON_ID, Criteria::LEFT_JOIN );
-            $oCriteria->add( GroupwfPeer::GRP_UID, $gUIDs, Criteria::NOT_IN );
-            $oCriteria->add( GroupwfPeer::GRP_STATUS, 'ACTIVE' );
-            $oCriteria->add( ContentPeer::CON_CATEGORY, 'GRP_TITLE' );
-            $oCriteria->add( ContentPeer::CON_LANG, SYS_LANG );
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->addSelectColumn(GroupwfPeer::GRP_UID);
+            $oCriteria->addSelectColumn(GroupwfPeer::GRP_STATUS);
+            $oCriteria->addSelectColumn(ContentPeer::CON_VALUE);
+            $oCriteria->addJoin(GroupwfPeer::GRP_UID, ContentPeer::CON_ID, Criteria::LEFT_JOIN);
+            $oCriteria->add(GroupwfPeer::GRP_UID, $gUIDs, Criteria::NOT_IN);
+            $oCriteria->add(GroupwfPeer::GRP_STATUS, 'ACTIVE');
+            $oCriteria->add(ContentPeer::CON_CATEGORY, 'GRP_TITLE');
+            $oCriteria->add(ContentPeer::CON_LANG, SYS_LANG);
 
             if ($filter != '') {
-                $oCriteria->add( ContentPeer::CON_VALUE, '%' . $filter . '%', Criteria::LIKE );
+                $oCriteria->add(ContentPeer::CON_VALUE, '%' . $filter . '%', Criteria::LIKE);
             }
 
             return $oCriteria;
@@ -223,24 +222,23 @@ class Groups
      * @param string $sUserUid
      * @return object
      */
-
-    function getAssignedGroupsCriteria ($sUserUid, $filter = '')
+    public function getAssignedGroupsCriteria($sUserUid, $filter = '')
     {
         try {
-            $oCriteria = new Criteria( 'workflow' );
-            $oCriteria->addSelectColumn( GroupwfPeer::GRP_UID );
-            $oCriteria->addSelectColumn( GroupwfPeer::GRP_STATUS );
-            $oCriteria->addSelectColumn( GroupwfPeer::GRP_LDAP_DN );
-            $oCriteria->addSelectColumn( ContentPeer::CON_VALUE );
-            $oCriteria->addJoin( GroupUserPeer::GRP_UID, GroupwfPeer::GRP_UID, Criteria::LEFT_JOIN );
-            $oCriteria->addJoin( GroupwfPeer::GRP_UID, ContentPeer::CON_ID, Criteria::LEFT_JOIN );
-            $oCriteria->add( GroupUserPeer::USR_UID, $sUserUid, Criteria::EQUAL );
-            $oCriteria->add( GroupwfPeer::GRP_STATUS, 'ACTIVE' );
-            $oCriteria->add( ContentPeer::CON_CATEGORY, 'GRP_TITLE' );
-            $oCriteria->add( ContentPeer::CON_LANG, SYS_LANG );
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->addSelectColumn(GroupwfPeer::GRP_UID);
+            $oCriteria->addSelectColumn(GroupwfPeer::GRP_STATUS);
+            $oCriteria->addSelectColumn(GroupwfPeer::GRP_LDAP_DN);
+            $oCriteria->addSelectColumn(ContentPeer::CON_VALUE);
+            $oCriteria->addJoin(GroupUserPeer::GRP_UID, GroupwfPeer::GRP_UID, Criteria::LEFT_JOIN);
+            $oCriteria->addJoin(GroupwfPeer::GRP_UID, ContentPeer::CON_ID, Criteria::LEFT_JOIN);
+            $oCriteria->add(GroupUserPeer::USR_UID, $sUserUid, Criteria::EQUAL);
+            $oCriteria->add(GroupwfPeer::GRP_STATUS, 'ACTIVE');
+            $oCriteria->add(ContentPeer::CON_CATEGORY, 'GRP_TITLE');
+            $oCriteria->add(ContentPeer::CON_LANG, SYS_LANG);
 
             if ($filter != '') {
-                $oCriteria->add( ContentPeer::CON_VALUE, '%' . $filter . '%', Criteria::LIKE );
+                $oCriteria->add(ContentPeer::CON_VALUE, '%' . $filter . '%', Criteria::LIKE);
             }
 
             return $oCriteria;
@@ -249,16 +247,16 @@ class Groups
         }
     }
 
-    function getGroupsForUser ($usrUid)
+    public function getGroupsForUser($usrUid)
     {
-        $criteria = $this->getAssignedGroupsCriteria( $usrUid );
-        $criteria->addAscendingOrderByColumn( ContentPeer::CON_VALUE );
-        $dataset = GroupwfPeer::doSelectRS( $criteria );
-        $dataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $criteria = $this->getAssignedGroupsCriteria($usrUid);
+        $criteria->addAscendingOrderByColumn(ContentPeer::CON_VALUE);
+        $dataset = GroupwfPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $dataset->next();
-        $groups = array ();
+        $groups = array();
         while ($row = $dataset->getRow()) {
-            if (! isset( $groups[$row['GRP_UID']] )) {
+            if (!isset($groups[$row['GRP_UID']])) {
                 $groups[$row['GRP_UID']] = $row;
             }
             $dataset->next();
@@ -272,12 +270,12 @@ class Groups
      * @param string $sUsrUid
      * @return void
      */
-    public function removeUserOfAllGroups ($sUserUID = '')
+    public function removeUserOfAllGroups($sUserUID = '')
     {
         try {
-            $oCriteria = new Criteria( 'workflow' );
-            $oCriteria->add( GroupUserPeer::USR_UID, $sUserUID );
-            GroupUserPeer::doDelete( $oCriteria );
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->add(GroupUserPeer::USR_UID, $sUserUID);
+            GroupUserPeer::doDelete($oCriteria);
         } catch (exception $oError) {
             throw ($oError);
         }
@@ -289,21 +287,21 @@ class Groups
      * @param string $sGroupUID
      * @return array
      */
-    function getUsersGroupCriteria ($sGroupUID = '')
+    public function getUsersGroupCriteria($sGroupUID = '')
     {
         require_once 'classes/model/GroupUser.php';
         require_once 'classes/model/Users.php';
         try {
-            $oCriteria = new Criteria( 'workflow' );
-            $oCriteria->addSelectColumn( GroupUserPeer::GRP_UID );
-            $oCriteria->addSelectColumn( UsersPeer::USR_UID );
-            $oCriteria->addSelectColumn( UsersPeer::USR_USERNAME );
-            $oCriteria->addSelectColumn( UsersPeer::USR_FIRSTNAME );
-            $oCriteria->addSelectColumn( UsersPeer::USR_LASTNAME );
-            $oCriteria->addSelectColumn( UsersPeer::USR_EMAIL );
-            $oCriteria->addJoin( GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN );
-            $oCriteria->add( GroupUserPeer::GRP_UID, $sGroupUID );
-            $oCriteria->add( UsersPeer::USR_STATUS, 'ACTIVE' );
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->addSelectColumn(GroupUserPeer::GRP_UID);
+            $oCriteria->addSelectColumn(UsersPeer::USR_UID);
+            $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
+            $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+            $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+            $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
+            $oCriteria->addJoin(GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+            $oCriteria->add(GroupUserPeer::GRP_UID, $sGroupUID);
+            $oCriteria->add(UsersPeer::USR_STATUS, 'ACTIVE');
             return $oCriteria;
         } catch (exception $oError) {
             throw ($oError);
@@ -316,19 +314,19 @@ class Groups
      * @param string $sGroupUID
      * @return array
      */
-    function getUserGroupsCriteria ($sUserUID = '')
+    public function getUserGroupsCriteria($sUserUID = '')
     {
         require_once 'classes/model/GroupUser.php';
         require_once 'classes/model/Users.php';
         try {
-            $oCriteria = new Criteria( 'workflow' );
-            $oCriteria->addSelectColumn( UsersPeer::USR_UID );
-            $oCriteria->addSelectColumn( GroupUserPeer::GRP_UID );
-            $oCriteria->addSelectColumn( UsersPeer::USR_FIRSTNAME );
-            $oCriteria->addSelectColumn( UsersPeer::USR_LASTNAME );
-            $oCriteria->addJoin( GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN );
-            $oCriteria->add( GroupUserPeer::GRP_UID, $sUserUID );
-            $oCriteria->add( UsersPeer::USR_STATUS, 'ACTIVE' );
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->addSelectColumn(UsersPeer::USR_UID);
+            $oCriteria->addSelectColumn(GroupUserPeer::GRP_UID);
+            $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+            $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+            $oCriteria->addJoin(GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+            $oCriteria->add(GroupUserPeer::GRP_UID, $sUserUID);
+            $oCriteria->add(UsersPeer::USR_STATUS, 'ACTIVE');
             return $oCriteria;
         } catch (exception $oError) {
             throw ($oError);
@@ -341,17 +339,17 @@ class Groups
      * @param string $sGroupUid
      * @return integer $cnt
      */
-    function getNumberGroups ($sUserUID)
+    public function getNumberGroups($sUserUID)
     {
         try {
-            $allGroups = $this->getUserGroups( $sUserUID );
+            $allGroups = $this->getUserGroups($sUserUID);
             $cnt = 0;
             foreach ($allGroups as $group) {
-                $cnt ++;
+                $cnt++;
             }
             return $cnt;
         } catch (exception $oError) {
-            print_r( $oError );
+            print_r($oError);
         }
     }
 
@@ -361,28 +359,28 @@ class Groups
      * @param string $sGroupUID
      * @return object
      */
-    function getAvailableUsersCriteria ($sGroupUID = '')
+    public function getAvailableUsersCriteria($sGroupUID = '')
     {
         try {
-            $oCriteria = new Criteria( 'workflow' );
-            $oCriteria->addSelectColumn( UsersPeer::USR_UID );
-            $oCriteria->addJoin( GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN );
-            $oCriteria->add( GroupUserPeer::GRP_UID, $sGroupUID );
-            $oCriteria->add( UsersPeer::USR_STATUS, 'ACTIVE' );
-            $oDataset = UsersPeer::doSelectRS( $oCriteria );
-            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->addSelectColumn(UsersPeer::USR_UID);
+            $oCriteria->addJoin(GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+            $oCriteria->add(GroupUserPeer::GRP_UID, $sGroupUID);
+            $oCriteria->add(UsersPeer::USR_STATUS, 'ACTIVE');
+            $oDataset = UsersPeer::doSelectRS($oCriteria);
+            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $oDataset->next();
-            $aUIDs = array ();
+            $aUIDs = array();
             while ($aRow = $oDataset->getRow()) {
                 $aUIDs[] = $aRow['USR_UID'];
                 $oDataset->next();
             }
-            $oCriteria = new Criteria( 'workflow' );
-            $oCriteria->addSelectColumn( UsersPeer::USR_UID );
-            $oCriteria->addSelectColumn( UsersPeer::USR_FIRSTNAME );
-            $oCriteria->addSelectColumn( UsersPeer::USR_LASTNAME );
-            $oCriteria->add( UsersPeer::USR_UID, $aUIDs, Criteria::NOT_IN );
-            $oCriteria->add( UsersPeer::USR_STATUS, 'ACTIVE' );
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->addSelectColumn(UsersPeer::USR_UID);
+            $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+            $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+            $oCriteria->add(UsersPeer::USR_UID, $aUIDs, Criteria::NOT_IN);
+            $oCriteria->add(UsersPeer::USR_STATUS, 'ACTIVE');
             return $oCriteria;
         } catch (exception $oError) {
             throw ($oError);
@@ -396,11 +394,11 @@ class Groups
      * @param $UsrUid user Uid
      * @return 1/0 if it's or not assigned
      */
-    function verifyUsertoGroup ($GrpUid, $UsrUid)
+    public function verifyUsertoGroup($GrpUid, $UsrUid)
     {
         try {
-            $oGrp = GroupUserPeer::retrieveByPk( $GrpUid, $UsrUid );
-            if (is_object( $oGrp ) && get_class( $oGrp ) == 'GroupUser') {
+            $oGrp = GroupUserPeer::retrieveByPk($GrpUid, $UsrUid);
+            if (is_object($oGrp) && get_class($oGrp) == 'GroupUser') {
                 return 1;
             } else {
                 return 0;
@@ -416,22 +414,23 @@ class Groups
      * @param $sGroupUid group Uid
      * @return 1/0 if exist or not
      */
-    function verifyGroup ($sGroupUID)
+    public function verifyGroup($sGroupUID)
     {
         try {
-            $aUsers = array ();
+            $aUsers = array();
             $oCriteria = new Criteria();
             //$oCriteria->addJoin(UsersPeer::USR_UID, GroupUserPeer::USR_UID, Criteria::LEFT_JOIN);
-            $oCriteria->add( GroupwfPeer::GRP_UID, $sGroupUID );
+            $oCriteria->add(GroupwfPeer::GRP_UID, $sGroupUID);
             //$oCriteria->add(UsersPeer::USR_STATUS, 'ACTIVE');
-            $oDataset = GroupwfPeer::doSelectRS( $oCriteria );
-            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oDataset = GroupwfPeer::doSelectRS($oCriteria);
+            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $oDataset->next();
             $aRow = $oDataset->getRow();
-            if (is_array( $aRow ))
+            if (is_array($aRow)) {
                 return 1;
-            else
+            } else {
                 return 0;
+            }
         } catch (exception $oError) {
             throw ($oError);
         }
@@ -444,14 +443,14 @@ class Groups
      * @return an array of objects/false/exception object
      *
      */
-    public function load ($GrpUid)
+    public function load($GrpUid)
     {
         try {
             $criteria = new Criteria();
-            $criteria->add( GroupwfPeer::GRP_UID, $GrpUid, Criteria::EQUAL );
-            $con = Propel::getConnection( GroupwfPeer::DATABASE_NAME );
-            $objects = GroupwfPeer::doSelect( $criteria, $con );
-            if (is_array( $objects ) && count( $objects ) > 0) {
+            $criteria->add(GroupwfPeer::GRP_UID, $GrpUid, Criteria::EQUAL);
+            $con = Propel::getConnection(GroupwfPeer::DATABASE_NAME);
+            $objects = GroupwfPeer::doSelect($criteria, $con);
+            if (is_array($objects) && count($objects) > 0) {
                 return $objects[0];
             } else {
                 return false;
@@ -461,3 +460,4 @@ class Groups
         }
     }
 }
+

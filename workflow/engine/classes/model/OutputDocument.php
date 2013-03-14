@@ -1,4 +1,5 @@
 <?php
+
 /**
  * OutputDocument.php
  * @package    workflow.engine.classes.model
@@ -23,7 +24,6 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-
 //require_once ("classes/model/om/BaseOutputDocument.php");
 //require_once ("classes/model/Content.php");
 
@@ -40,6 +40,7 @@
  */
 class OutputDocument extends BaseOutputDocument
 {
+
     /**
      * This value goes in the content table
      * @var string
@@ -66,7 +67,7 @@ class OutputDocument extends BaseOutputDocument
 
     public function __construct()
     {
-        $javaInput  = PATH_C . 'javaBridgePM' . PATH_SEP . 'input'  . PATH_SEP;
+        $javaInput = PATH_C . 'javaBridgePM' . PATH_SEP . 'input' . PATH_SEP;
         $javaOutput = PATH_C . 'javaBridgePM' . PATH_SEP . 'output' . PATH_SEP;
 
         G::mk_dir($javaInput);
@@ -79,14 +80,14 @@ class OutputDocument extends BaseOutputDocument
             $oOutputDocument = OutputDocumentPeer::retrieveByPK($sOutDocUid);
 
             if (is_null($oOutputDocument)) {
-                  return false;
+                return false;
             }
 
             $aFields = $oOutputDocument->toArray(BasePeer::TYPE_FIELDNAME);
-            $aFields['OUT_DOC_TITLE']       = $oOutputDocument->getOutDocTitle();
+            $aFields['OUT_DOC_TITLE'] = $oOutputDocument->getOutDocTitle();
             $aFields['OUT_DOC_DESCRIPTION'] = $oOutputDocument->getOutDocDescription();
-            $aFields['OUT_DOC_FILENAME']    = $oOutputDocument->getOutDocFilename();
-            $aFields['OUT_DOC_TEMPLATE']    = $oOutputDocument->getOutDocTemplate();
+            $aFields['OUT_DOC_FILENAME'] = $oOutputDocument->getOutDocFilename();
+            $aFields['OUT_DOC_TEMPLATE'] = $oOutputDocument->getOutDocTemplate();
             $this->fromArray($aFields, BasePeer::TYPE_FIELDNAME);
 
             return $aFields;
@@ -96,10 +97,11 @@ class OutputDocument extends BaseOutputDocument
     }
 
     /*
-    * Load the application document registry
-    * @param string $sAppDocUid
-    * @return variant
-    */
+     * Load the application document registry
+     * @param string $sAppDocUid
+     * @return variant
+     */
+
     public function load($sOutDocUid)
     {
         try {
@@ -107,11 +109,11 @@ class OutputDocument extends BaseOutputDocument
 
             if (!is_null($oOutputDocument)) {
                 $aFields = $oOutputDocument->toArray(BasePeer::TYPE_FIELDNAME);
-                $aFields['OUT_DOC_TITLE']       = $oOutputDocument->getOutDocTitle();
-                $aFields['PRO_UID']             = $oOutputDocument->getProUid();
+                $aFields['OUT_DOC_TITLE'] = $oOutputDocument->getOutDocTitle();
+                $aFields['PRO_UID'] = $oOutputDocument->getProUid();
                 $aFields['OUT_DOC_DESCRIPTION'] = $oOutputDocument->getOutDocDescription();
-                $aFields['OUT_DOC_FILENAME']    = $oOutputDocument->getOutDocFilename();
-                $aFields['OUT_DOC_TEMPLATE']    = $oOutputDocument->getOutDocTemplate();
+                $aFields['OUT_DOC_FILENAME'] = $oOutputDocument->getOutDocFilename();
+                $aFields['OUT_DOC_TEMPLATE'] = $oOutputDocument->getOutDocTemplate();
                 $this->fromArray($aFields, BasePeer::TYPE_FIELDNAME);
 
                 return $aFields;
@@ -127,13 +129,13 @@ class OutputDocument extends BaseOutputDocument
      * Create the application document registry
      * @param array $aData
      * @return string
-    **/
+     * */
     public function create($aData)
     {
         $oConnection = Propel::getConnection(OutputDocumentPeer::DATABASE_NAME);
 
         try {
-            if (isset($aData['OUT_DOC_UID']) && $aData['OUT_DOC_UID']== '') {
+            if (isset($aData['OUT_DOC_UID']) && $aData['OUT_DOC_UID'] == '') {
                 unset($aData['OUT_DOC_UID']);
             }
 
@@ -181,7 +183,7 @@ class OutputDocument extends BaseOutputDocument
                     $sMessage .= $oValidationFailure->getMessage() . '<br />';
                 }
 
-                throw (new Exception('The registry cannot be created!<br />'.$sMessage));
+                throw (new Exception('The registry cannot be created!<br />' . $sMessage));
             }
         } catch (Exception $oError) {
             $oConnection->rollback();
@@ -194,7 +196,7 @@ class OutputDocument extends BaseOutputDocument
      * Update the application document registry
      * @param array $aData
      * @return string
-    **/
+     * */
     public function update($aData)
     {
         $oConnection = Propel::getConnection(OutputDocumentPeer::DATABASE_NAME);
@@ -236,7 +238,7 @@ class OutputDocument extends BaseOutputDocument
                         $sMessage .= $oValidationFailure->getMessage() . '<br />';
                     }
 
-                    throw (new Exception('The registry cannot be updated!<br />'.$sMessage));
+                    throw (new Exception('The registry cannot be updated!<br />' . $sMessage));
                 }
             } else {
                 throw (new Exception('This row doesn\'t exist!'));
@@ -252,7 +254,7 @@ class OutputDocument extends BaseOutputDocument
      * Remove the application document registry
      * @param array $aData
      * @return string
-    **/
+     * */
     public function remove($sOutDocUid)
     {
         $oConnection = Propel::getConnection(OutputDocumentPeer::DATABASE_NAME);
@@ -289,10 +291,7 @@ class OutputDocument extends BaseOutputDocument
         if ($this->out_doc_title == '') {
             try {
                 $this->out_doc_title = Content::load(
-                    'OUT_DOC_TITLE',
-                    '',
-                    $this->getOutDocUid(),
-                    (defined('SYS_LANG')? SYS_LANG : 'en')
+                    'OUT_DOC_TITLE', '', $this->getOutDocUid(), (defined('SYS_LANG') ? SYS_LANG : 'en')
                 );
             } catch (Exception $oError) {
                 throw ($oError);
@@ -311,7 +310,7 @@ class OutputDocument extends BaseOutputDocument
     public function setOutDocTitle($sValue)
     {
         if ($sValue !== null && !is_string($sValue)) {
-            $sValue = (string)$sValue;
+            $sValue = (string) $sValue;
         }
 
         if ($this->out_doc_title !== $sValue || $sValue === '') {
@@ -319,11 +318,7 @@ class OutputDocument extends BaseOutputDocument
                 $this->out_doc_title = $sValue;
 
                 $iResult = Content::addContent(
-                    'OUT_DOC_TITLE',
-                    '',
-                    $this->getOutDocUid(),
-                    (defined('SYS_LANG')? SYS_LANG : 'en'),
-                    $this->out_doc_title
+                    'OUT_DOC_TITLE', '', $this->getOutDocUid(), (defined('SYS_LANG') ? SYS_LANG : 'en'), $this->out_doc_title
                 );
             } catch (Exception $oError) {
                 $this->out_doc_title = '';
@@ -342,10 +337,7 @@ class OutputDocument extends BaseOutputDocument
         if ($this->out_doc_description == '') {
             try {
                 $this->out_doc_description = Content::load(
-                    'OUT_DOC_DESCRIPTION',
-                    '',
-                    $this->getOutDocUid(),
-                    (defined('SYS_LANG')? SYS_LANG : 'en')
+                    'OUT_DOC_DESCRIPTION', '', $this->getOutDocUid(), (defined('SYS_LANG') ? SYS_LANG : 'en')
                 );
             } catch (Exception $oError) {
                 throw ($oError);
@@ -364,7 +356,7 @@ class OutputDocument extends BaseOutputDocument
     public function setOutDocDescription($sValue)
     {
         if ($sValue !== null && !is_string($sValue)) {
-            $sValue = (string)$sValue;
+            $sValue = (string) $sValue;
         }
 
         if ($this->out_doc_description !== $sValue || $sValue === '') {
@@ -372,11 +364,7 @@ class OutputDocument extends BaseOutputDocument
                 $this->out_doc_description = $sValue;
 
                 $iResult = Content::addContent(
-                    'OUT_DOC_DESCRIPTION',
-                    '',
-                    $this->getOutDocUid(),
-                    (defined('SYS_LANG')? SYS_LANG : 'en'),
-                    $this->out_doc_description
+                    'OUT_DOC_DESCRIPTION', '', $this->getOutDocUid(), (defined('SYS_LANG') ? SYS_LANG : 'en'), $this->out_doc_description
                 );
             } catch (Exception $oError) {
                 $this->out_doc_description = '';
@@ -395,10 +383,7 @@ class OutputDocument extends BaseOutputDocument
         if ($this->out_doc_filename == '') {
             try {
                 $this->out_doc_filename = Content::load(
-                    'OUT_DOC_FILENAME',
-                    '',
-                    $this->getOutDocUid(),
-                    (defined('SYS_LANG')? SYS_LANG : 'en')
+                    'OUT_DOC_FILENAME', '', $this->getOutDocUid(), (defined('SYS_LANG') ? SYS_LANG : 'en')
                 );
             } catch (Exception $oError) {
                 throw ($oError);
@@ -417,7 +402,7 @@ class OutputDocument extends BaseOutputDocument
     public function setOutDocFilename($sValue)
     {
         if ($sValue !== null && !is_string($sValue)) {
-            $sValue = (string)$sValue;
+            $sValue = (string) $sValue;
         }
 
         if ($this->out_doc_filename !== $sValue || $sValue === '') {
@@ -425,11 +410,7 @@ class OutputDocument extends BaseOutputDocument
                 $this->out_doc_filename = $sValue;
 
                 $iResult = Content::addContent(
-                    'OUT_DOC_FILENAME',
-                    '',
-                    $this->getOutDocUid(),
-                    (defined('SYS_LANG')? SYS_LANG : 'en'),
-                    $this->out_doc_filename
+                    'OUT_DOC_FILENAME', '', $this->getOutDocUid(), (defined('SYS_LANG') ? SYS_LANG : 'en'), $this->out_doc_filename
                 );
             } catch (Exception $oError) {
                 $this->out_doc_filename = '';
@@ -448,10 +429,7 @@ class OutputDocument extends BaseOutputDocument
         if ($this->out_doc_template == '') {
             try {
                 $this->out_doc_template = Content::load(
-                    'OUT_DOC_TEMPLATE',
-                    '',
-                    $this->getOutDocUid(),
-                    (defined('SYS_LANG')? SYS_LANG : 'en')
+                    'OUT_DOC_TEMPLATE', '', $this->getOutDocUid(), (defined('SYS_LANG') ? SYS_LANG : 'en')
                 );
             } catch (Exception $oError) {
                 throw ($oError);
@@ -470,7 +448,7 @@ class OutputDocument extends BaseOutputDocument
     public function setOutDocTemplate($sValue)
     {
         if ($sValue !== null && !is_string($sValue)) {
-            $sValue = (string)$sValue;
+            $sValue = (string) $sValue;
         }
 
         if ($this->out_doc_template !== $sValue || $sValue === '') {
@@ -478,11 +456,7 @@ class OutputDocument extends BaseOutputDocument
                 $this->out_doc_template = $sValue;
 
                 $iResult = Content::addContent(
-                    'OUT_DOC_TEMPLATE',
-                    '',
-                    $this->getOutDocUid(),
-                    (defined('SYS_LANG')? SYS_LANG : 'en'),
-                    $this->out_doc_template
+                    'OUT_DOC_TEMPLATE', '', $this->getOutDocUid(), (defined('SYS_LANG') ? SYS_LANG : 'en'), $this->out_doc_template
                 );
             } catch (Exception $oError) {
                 $this->out_doc_template = '';
@@ -493,22 +467,15 @@ class OutputDocument extends BaseOutputDocument
     }
 
     /*
-    * Generate the output document
-    * @param string $sUID
-    * @param array $aFields
-    * @param string $sPath
-    * @return variant
-    */
-    public function generate(
-        $sUID,
-        $aFields,
-        $sPath,
-        $sFilename,
-        $sContent,
-        $sLandscape = false,
-        $sTypeDocToGener = 'BOTH',
-        $aProperties = array()
-    ) {
+     * Generate the output document
+     * @param string $sUID
+     * @param array $aFields
+     * @param string $sPath
+     * @return variant
+     */
+
+    public function generate($sUID, $aFields, $sPath, $sFilename, $sContent, $sLandscape = false, $sTypeDocToGener = 'BOTH', $aProperties = array())
+    {
         if (($sUID != '') && is_array($aFields) && ($sPath != '')) {
             $sContent = G::replaceDataGridField($sContent, $aFields);
 
@@ -518,46 +485,46 @@ class OutputDocument extends BaseOutputDocument
             $oFile = fopen($sPath . $sFilename . '.doc', 'wb');
 
             $size = array();
-            $size["Letter"]         = "216mm  279mm";
-            $size["Legal"]          = "216mm  357mm";
-            $size["Executive"]      = "184mm  267mm";
-            $size["B5"]             = "182mm  257mm";
-            $size["Folio"]          = "216mm  330mm";
-            $size["A0Oversize"]     = "882mm  1247mm";
-            $size["A0"]             = "841mm  1189mm";
-            $size["A1"]             = "594mm  841mm";
-            $size["A2"]             = "420mm  594mm";
-            $size["A3"]             = "297mm  420mm";
-            $size["A4"]             = "210mm  297mm";
-            $size["A5"]             = "148mm  210mm";
-            $size["A6"]             = "105mm  148mm";
-            $size["A7"]             = "74mm   105mm";
-            $size["A8"]             = "52mm   74mm";
-            $size["A9"]             = "37mm   52mm";
-            $size["A10"]            = "26mm   37mm";
-            $size["Screenshot640"]  = "640mm  480mm";
-            $size["Screenshot800"]  = "800mm  600mm";
+            $size["Letter"] = "216mm  279mm";
+            $size["Legal"] = "216mm  357mm";
+            $size["Executive"] = "184mm  267mm";
+            $size["B5"] = "182mm  257mm";
+            $size["Folio"] = "216mm  330mm";
+            $size["A0Oversize"] = "882mm  1247mm";
+            $size["A0"] = "841mm  1189mm";
+            $size["A1"] = "594mm  841mm";
+            $size["A2"] = "420mm  594mm";
+            $size["A3"] = "297mm  420mm";
+            $size["A4"] = "210mm  297mm";
+            $size["A5"] = "148mm  210mm";
+            $size["A6"] = "105mm  148mm";
+            $size["A7"] = "74mm   105mm";
+            $size["A8"] = "52mm   74mm";
+            $size["A9"] = "37mm   52mm";
+            $size["A10"] = "26mm   37mm";
+            $size["Screenshot640"] = "640mm  480mm";
+            $size["Screenshot800"] = "800mm  600mm";
             $size["Screenshot1024"] = "1024mm 768mm";
 
-            $sizeLandscape["Letter"]         = "279mm  216mm";
-            $sizeLandscape["Legal"]          = "357mm  216mm";
-            $sizeLandscape["Executive"]      = "267mm  184mm";
-            $sizeLandscape["B5"]             = "257mm  182mm";
-            $sizeLandscape["Folio"]          = "330mm  216mm";
-            $sizeLandscape["A0Oversize"]     = "1247mm 882mm";
-            $sizeLandscape["A0"]             = "1189mm 841mm";
-            $sizeLandscape["A1"]             = "841mm  594mm";
-            $sizeLandscape["A2"]             = "594mm  420mm";
-            $sizeLandscape["A3"]             = "420mm  297mm";
-            $sizeLandscape["A4"]             = "297mm  210mm";
-            $sizeLandscape["A5"]             = "210mm  148mm";
-            $sizeLandscape["A6"]             = "148mm  105mm";
-            $sizeLandscape["A7"]             = "105mm  74mm";
-            $sizeLandscape["A8"]             = "74mm   52mm";
-            $sizeLandscape["A9"]             = "52mm   37mm";
-            $sizeLandscape["A10"]            = "37mm   26mm";
-            $sizeLandscape["Screenshot640"]  = "480mm  640mm";
-            $sizeLandscape["Screenshot800"]  = "600mm  800mm";
+            $sizeLandscape["Letter"] = "279mm  216mm";
+            $sizeLandscape["Legal"] = "357mm  216mm";
+            $sizeLandscape["Executive"] = "267mm  184mm";
+            $sizeLandscape["B5"] = "257mm  182mm";
+            $sizeLandscape["Folio"] = "330mm  216mm";
+            $sizeLandscape["A0Oversize"] = "1247mm 882mm";
+            $sizeLandscape["A0"] = "1189mm 841mm";
+            $sizeLandscape["A1"] = "841mm  594mm";
+            $sizeLandscape["A2"] = "594mm  420mm";
+            $sizeLandscape["A3"] = "420mm  297mm";
+            $sizeLandscape["A4"] = "297mm  210mm";
+            $sizeLandscape["A5"] = "210mm  148mm";
+            $sizeLandscape["A6"] = "148mm  105mm";
+            $sizeLandscape["A7"] = "105mm  74mm";
+            $sizeLandscape["A8"] = "74mm   52mm";
+            $sizeLandscape["A9"] = "52mm   37mm";
+            $sizeLandscape["A10"] = "37mm   26mm";
+            $sizeLandscape["Screenshot640"] = "480mm  640mm";
+            $sizeLandscape["Screenshot800"] = "600mm  800mm";
             $sizeLandscape["Screenshot1024"] = "768mm  1024mm";
 
             if (!isset($aProperties['media'])) {
@@ -624,11 +591,11 @@ class OutputDocument extends BaseOutputDocument
             <style>
             <!--
             @page WordSection1
-             {size:'.$media.';
-             margin-left:'.$marginLeft.'mm;
-             margin-right:'.$marginRight.'mm;
-             margin-bottom:'.$marginBottom.'mm;
-             margin-top:'.$marginTop.'mm;
+             {size:' . $media . ';
+             margin-left:' . $marginLeft . 'mm;
+             margin-right:' . $marginRight . 'mm;
+             margin-bottom:' . $marginBottom . 'mm;
+             margin-top:' . $marginTop . 'mm;
              mso-header-margin:35.4pt;
              mso-footer-margin:35.4pt;
              mso-paper-source:0;}
@@ -663,24 +630,17 @@ class OutputDocument extends BaseOutputDocument
                 } else {
                     $this->generateHtml2ps_pdf($sUID, $aFields, $sPath, $sFilename, $sContent, $sLandscape, $aProperties);
                 }
-
             }
             //end if $sTypeDocToGener
             /* End - Create .pdf */
         } else {
             return PEAR::raiseError(
-                null,
-                G_ERROR_USER_UID,
-                null,
-                null,
-                'You tried to call to a generate method without send the Output Document UID, fields to use and the file path!',
-                'G_Error',
-                true
+                null, G_ERROR_USER_UID, null, null, 'You tried to call to a generate method without send the Output Document UID, fields to use and the file path!', 'G_Error', true
             );
         }
     }
 
-    public function generateHtml2pdf($sUID, $aFields, $sPath, $sFilename, $sContent, $sLandscape = false, $aProperties = array() )
+    public function generateHtml2pdf($sUID, $aFields, $sPath, $sFilename, $sContent, $sLandscape = false, $aProperties = array())
     {
 
         // define("MAX_FREE_FRACTION", 1);
@@ -691,20 +651,20 @@ class OutputDocument extends BaseOutputDocument
 
         // define Save file
         $sOutput = 2;
-        $sOrientation = ($sLandscape == false)? 'P' : 'L';
-        $sLang = (defined('SYS_LANG'))? SYS_LANG : 'en';
+        $sOrientation = ($sLandscape == false) ? 'P' : 'L';
+        $sLang = (defined('SYS_LANG')) ? SYS_LANG : 'en';
         $sMedia = $aProperties['media'];
         // margin define
         define("MINIMAL_MARGIN", 15);
         $marges = array(MINIMAL_MARGIN, MINIMAL_MARGIN, MINIMAL_MARGIN, MINIMAL_MARGIN);
         if (isset($aProperties['margins'])) {
-           // Default marges (left, top, right, bottom)
-           $margins = $aProperties['margins'];
-           $margins['left']   = ($margins['left']>0)? $margins['left']: MINIMAL_MARGIN;
-           $margins['top']    = ($margins['top']>0)? $margins['top']: MINIMAL_MARGIN;
-           $margins['right']  = ($margins['right']>0)? $margins['right']: MINIMAL_MARGIN;
-           $margins['bottom'] = ($margins['bottom']>0)? $margins['bottom']: MINIMAL_MARGIN;
-           $marges = array($margins['left'], $margins['top'], $margins['right'], $margins['bottom'] );
+            // Default marges (left, top, right, bottom)
+            $margins = $aProperties['margins'];
+            $margins['left'] = ($margins['left'] > 0) ? $margins['left'] : MINIMAL_MARGIN;
+            $margins['top'] = ($margins['top'] > 0) ? $margins['top'] : MINIMAL_MARGIN;
+            $margins['right'] = ($margins['right'] > 0) ? $margins['right'] : MINIMAL_MARGIN;
+            $margins['bottom'] = ($margins['bottom'] > 0) ? $margins['bottom'] : MINIMAL_MARGIN;
+            $marges = array($margins['left'], $margins['top'], $margins['right'], $margins['bottom']);
         }
 
         $html2pdf = new HTML2PDF($sOrientation, $sMedia, $sLang, true, 'UTF-8', $marges);
@@ -718,7 +678,7 @@ class OutputDocument extends BaseOutputDocument
         if (isset($aProperties['pdfSecurity'])) {
             $pdfSecurity = $aProperties['pdfSecurity'];
             $userPass = G::decrypt($pdfSecurity['openPassword'], $sUID);
-            $ownerPass = ($pdfSecurity['ownerPassword'] != '') ? G::decrypt($pdfSecurity['ownerPassword'], $sUID): null;
+            $ownerPass = ($pdfSecurity['ownerPassword'] != '') ? G::decrypt($pdfSecurity['ownerPassword'], $sUID) : null;
             $permissions = explode("|", $pdfSecurity['permissions']);
             $html2pdf->pdf->SetProtection($permissions, $userPass, $ownerPass);
         }
@@ -749,7 +709,6 @@ class OutputDocument extends BaseOutputDocument
         copy(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.pdf', $sPath . $sFilename . '.pdf');
         unlink(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.pdf');
         unlink(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.html');
-
     }
 
     public function generateTcpdf($sUID, $aFields, $sPath, $sFilename, $sContent, $sLandscape = false, $aProperties = array())
@@ -757,7 +716,7 @@ class OutputDocument extends BaseOutputDocument
         require_once (PATH_THIRDPARTY . "tcpdf" . PATH_SEP . "config" . PATH_SEP . "lang" . PATH_SEP . "eng.php");
         require_once (PATH_THIRDPARTY . "tcpdf" . PATH_SEP . "tcpdf.php");
 
-        $nrt     = array("\n",    "\r",    "\t");
+        $nrt = array("\n", "\r", "\t");
         $nrthtml = array("(n /)", "(r /)", "(t /)");
 
         $strContentAux = str_replace($nrt, $nrthtml, $sContent);
@@ -827,9 +786,9 @@ class OutputDocument extends BaseOutputDocument
 
         // define Save file
         $sOutput = 2;
-        $sOrientation = ($sLandscape == false)? PDF_PAGE_ORIENTATION : 'L';
+        $sOrientation = ($sLandscape == false) ? PDF_PAGE_ORIENTATION : 'L';
         $sMedia = (isset($aProperties['media'])) ? $aProperties['media'] : PDF_PAGE_FORMAT;
-        $sLang = (defined('SYS_LANG'))? SYS_LANG : 'en';
+        $sLang = (defined('SYS_LANG')) ? SYS_LANG : 'en';
 
         // create new PDF document
         $pdf = new TCPDF($sOrientation, PDF_UNIT, $sMedia, true, 'UTF-8', false);
@@ -841,10 +800,10 @@ class OutputDocument extends BaseOutputDocument
         $pdf->SetSubject($sFilename);
 
         $margins = $aProperties['margins'];
-        $margins["left"]   = ($margins["left"] >= 0)?   $margins["left"]: PDF_MARGIN_LEFT;
-        $margins["top"]    = ($margins["top"] >= 0)?    $margins["top"]: PDF_MARGIN_TOP;
-        $margins["right"]  = ($margins["right"] >= 0)?  $margins["right"]: PDF_MARGIN_RIGHT;
-        $margins["bottom"] = ($margins["bottom"] >= 0)? $margins["bottom"]: PDF_MARGIN_BOTTOM;
+        $margins["left"] = ($margins["left"] >= 0) ? $margins["left"] : PDF_MARGIN_LEFT;
+        $margins["top"] = ($margins["top"] >= 0) ? $margins["top"] : PDF_MARGIN_TOP;
+        $margins["right"] = ($margins["right"] >= 0) ? $margins["right"] : PDF_MARGIN_RIGHT;
+        $margins["bottom"] = ($margins["bottom"] >= 0) ? $margins["bottom"] : PDF_MARGIN_BOTTOM;
 
         $pdf->setPrintHeader(false);
         $pdf->setPrintFooter(false);
@@ -858,7 +817,7 @@ class OutputDocument extends BaseOutputDocument
         // set some language dependent data:
         $lg = array();
         $lg['a_meta_charset'] = 'UTF-8';
-        $lg['a_meta_dir'] = ($oServerConf->isRtl($sLang)) ? 'rtl' : 'ltr' ;
+        $lg['a_meta_dir'] = ($oServerConf->isRtl($sLang)) ? 'rtl' : 'ltr';
         $lg['a_meta_language'] = $sLang;
         $lg['w_page'] = 'page';
 
@@ -868,12 +827,11 @@ class OutputDocument extends BaseOutputDocument
         if (isset($aProperties['pdfSecurity'])) {
             $pdfSecurity = $aProperties['pdfSecurity'];
             $userPass = G::decrypt($pdfSecurity['openPassword'], $sUID);
-            $ownerPass = ($pdfSecurity['ownerPassword'] != '') ? G::decrypt($pdfSecurity['ownerPassword'], $sUID): null;
+            $ownerPass = ($pdfSecurity['ownerPassword'] != '') ? G::decrypt($pdfSecurity['ownerPassword'], $sUID) : null;
             $permissions = explode("|", $pdfSecurity['permissions']);
             $pdf->SetProtection($permissions, $userPass, $ownerPass);
         }
         // ---------------------------------------------------------
-
         // set default font subsetting mode
         $pdf->setFontSubsetting(true);
 
@@ -882,7 +840,8 @@ class OutputDocument extends BaseOutputDocument
         // print standard ASCII chars, you can use core fonts like
         // helvetica or times to reduce file size.
         //$pdf->SetFont('dejavusans', '', 14, '', true);
-        if (preg_match('/[\x{30FF}\x{3040}-\x{309F}\x{4E00}-\x{9FFF}\x{0E00}-\x{0E7F}]/u', $sContent, $matches)) {// Detect chinese, japanese, thai
+        // Detect chinese, japanese, thai
+        if (preg_match('/[\x{30FF}\x{3040}-\x{309F}\x{4E00}-\x{9FFF}\x{0E00}-\x{0E7F}]/u', $sContent, $matches)) {
             $pdf->SetFont('kozminproregular');
         }
 
@@ -892,18 +851,16 @@ class OutputDocument extends BaseOutputDocument
 
         // set text shadow effect
         //$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
-
         // Print text using writeHTMLCell()
         // $pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
         if (mb_detect_encoding($sContent) == 'UTF-8') {
-		  $sContent = mb_convert_encoding($sContent, 'HTML-ENTITIES', 'UTF-8');
-		}
-		$doc = new DOMDocument('1.0', 'UTF-8');
-		$doc->loadHtml($sContent);
-		$doc->encoding='UTF-8';
+            $sContent = mb_convert_encoding($sContent, 'HTML-ENTITIES', 'UTF-8');
+        }
+        $doc = new DOMDocument('1.0', 'UTF-8');
+        $doc->loadHtml($sContent);
+        $doc->encoding = 'UTF-8';
         $pdf->writeHTML($doc->saveXML(), false, false, false, false, '');
         // ---------------------------------------------------------
-
         // Close and output PDF document
         // This method has several options, check the source code documentation for more information.
         //$pdf->Output('example_00.pdf', 'I');
@@ -924,7 +881,7 @@ class OutputDocument extends BaseOutputDocument
         }
     }
 
-    public function generateHtml2ps_pdf($sUID, $aFields, $sPath, $sFilename, $sContent, $sLandscape = false, $aProperties = array() )
+    public function generateHtml2ps_pdf($sUID, $aFields, $sPath, $sFilename, $sContent, $sLandscape = false, $aProperties = array())
     {
 
         define("MAX_FREE_FRACTION", 1);
@@ -936,33 +893,33 @@ class OutputDocument extends BaseOutputDocument
         parse_config_file(PATH_THIRDPARTY . 'html2ps_pdf/html2ps.config');
 
         $GLOBALS['g_config'] = array(
-            'cssmedia'                => 'screen',
-            'media'                   => 'Letter',
-            'scalepoints'             => false,
-            'renderimages'            => true,
-            'renderfields'            => true,
-            'renderforms'             => false,
-            'pslevel'                 => 3,
-            'renderlinks'             => true,
-            'pagewidth'               => 800,
-            'landscape'               => $sLandscape,
-            'method'                  => 'fpdf',
-            'margins'                 => array('left' => 15, 'right' => 15, 'top' => 15, 'bottom' => 15,),
-            'encoding'                => '',
-            'ps2pdf'                  => false,
-            'compress'                => false,
-            'output'                  => 2,
-            'pdfversion'              => '1.3',
+            'cssmedia' => 'screen',
+            'media' => 'Letter',
+            'scalepoints' => false,
+            'renderimages' => true,
+            'renderfields' => true,
+            'renderforms' => false,
+            'pslevel' => 3,
+            'renderlinks' => true,
+            'pagewidth' => 800,
+            'landscape' => $sLandscape,
+            'method' => 'fpdf',
+            'margins' => array('left' => 15, 'right' => 15, 'top' => 15, 'bottom' => 15,),
+            'encoding' => '',
+            'ps2pdf' => false,
+            'compress' => false,
+            'output' => 2,
+            'pdfversion' => '1.3',
             'transparency_workaround' => false,
             'imagequality_workaround' => false,
-            'draw_page_border'        => isset($_REQUEST['pageborder']),
-            'debugbox'                => false,
-            'html2xhtml'              => true,
-            'mode'                    => 'html',
-            'smartpagebreak'          => true
+            'draw_page_border' => isset($_REQUEST['pageborder']),
+            'debugbox' => false,
+            'html2xhtml' => true,
+            'mode' => 'html',
+            'smartpagebreak' => true
         );
 
-        $GLOBALS['g_config']= array_merge($GLOBALS['g_config'],$aProperties);
+        $GLOBALS['g_config'] = array_merge($GLOBALS['g_config'], $aProperties);
         $g_media = Media::predefined($GLOBALS['g_config']['media']);
         $g_media->set_landscape($GLOBALS['g_config']['landscape']);
         $g_media->set_margins($GLOBALS['g_config']['margins']);
@@ -971,20 +928,18 @@ class OutputDocument extends BaseOutputDocument
 
         if (isset($GLOBALS['g_config']['pdfSecurity'])) {
             if (isset($GLOBALS['g_config']['pdfSecurity']['openPassword']) &&
-                $GLOBALS['g_config']['pdfSecurity']['openPassword'] != ""
+                    $GLOBALS['g_config']['pdfSecurity']['openPassword'] != ""
             ) {
                 $GLOBALS['g_config']['pdfSecurity']['openPassword'] = G::decrypt(
-                    $GLOBALS['g_config']['pdfSecurity']['openPassword'],
-                    $sUID
+                                $GLOBALS['g_config']['pdfSecurity']['openPassword'], $sUID
                 );
             }
 
             if (isset($GLOBALS['g_config']['pdfSecurity']['ownerPassword']) &&
-                $GLOBALS['g_config']['pdfSecurity']['ownerPassword'] != ""
+                    $GLOBALS['g_config']['pdfSecurity']['ownerPassword'] != ""
             ) {
                 $GLOBALS['g_config']['pdfSecurity']['ownerPassword'] = G::decrypt(
-                    $GLOBALS['g_config']['pdfSecurity']['ownerPassword'],
-                    $sUID
+                                $GLOBALS['g_config']['pdfSecurity']['ownerPassword'], $sUID
                 );
             }
 
@@ -1023,7 +978,7 @@ class OutputDocument extends BaseOutputDocument
         $pipeline->pre_tree_filters = array();
         $header_html = '';
         $footer_html = '';
-        $filter      = new PreTreeFilterHeaderFooter($header_html, $footer_html);
+        $filter = new PreTreeFilterHeaderFooter($header_html, $footer_html);
         $pipeline->pre_tree_filters[] = $filter;
 
         if ($GLOBALS['g_config']['renderfields']) {
@@ -1056,16 +1011,16 @@ class OutputDocument extends BaseOutputDocument
                 $pipeline->output_driver = new OutputDriverPDFLIB16($GLOBALS['g_config']['pdfversion']);
                 break;
             case 'fpdf':
-                    $pipeline->output_driver = new OutputDriverFPDF();
+                $pipeline->output_driver = new OutputDriverFPDF();
                 break;
             case 'png':
-                    $pipeline->output_driver = new OutputDriverPNG();
+                $pipeline->output_driver = new OutputDriverPNG();
                 break;
             case 'pcl':
-                    $pipeline->output_driver = new OutputDriverPCL();
+                $pipeline->output_driver = new OutputDriverPCL();
                 break;
             default:
-                    die('Unknown output method');
+                die('Unknown output method');
         }
 
         if (isset($GLOBALS['g_config']['watermarkhtml'])) {
@@ -1077,7 +1032,7 @@ class OutputDocument extends BaseOutputDocument
         $pipeline->output_driver->set_watermark($watermark_text);
 
         if ($watermark_text != '') {
-            $dispatcher =& $pipeline->getDispatcher();
+            $dispatcher = & $pipeline->getDispatcher();
         }
 
         if ($GLOBALS['g_config']['debugbox']) {
@@ -1120,7 +1075,7 @@ class OutputDocument extends BaseOutputDocument
 
         copy($sPath . $sFilename . '.html', PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.html');
         try {
-            $status = $pipeline->process(((isset($_SERVER['HTTPS']))&&($_SERVER['HTTPS']=='on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/files/' . $_SESSION['APPLICATION'] . '/outdocs/' . $sFilename . '.html', $g_media);
+            $status = $pipeline->process(((isset($_SERVER['HTTPS'])) && ($_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/files/' . $_SESSION['APPLICATION'] . '/outdocs/' . $sFilename . '.html', $g_media);
             copy(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.pdf', $sPath . $sFilename . '.pdf');
             unlink(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.pdf');
             unlink(PATH_OUTPUT_FILE_DIRECTORY . $sFilename . '.html');
@@ -1129,7 +1084,7 @@ class OutputDocument extends BaseOutputDocument
                 include_once 'classes/model/AppDocument.php';
                 $dataDocument = explode('_', $sFilename);
                 if (!isset($dataDocument[1])) {
-                  $dataDocument[1] = 1;
+                    $dataDocument[1] = 1;
                 }
                 $oAppDocument = new AppDocument();
                 $oAppDocument->remove($dataDocument[0], $dataDocument[1]);
@@ -1148,9 +1103,9 @@ class OutputDocument extends BaseOutputDocument
         $con = Propel::getConnection(OutputDocumentPeer::DATABASE_NAME);
 
         try {
-            $oObj = OutputDocumentPeer::retrieveByPk( $sUid );
+            $oObj = OutputDocumentPeer::retrieveByPk($sUid);
 
-            if (is_object($oObj) && get_class ($oObj) == 'OutputDocument') {
+            if (is_object($oObj) && get_class($oObj) == 'OutputDocument') {
                 return true;
             } else {
                 return false;

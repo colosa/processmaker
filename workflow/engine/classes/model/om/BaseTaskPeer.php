@@ -14,8 +14,8 @@ include_once 'classes/model/Task.php';
  */
 abstract class BaseTaskPeer
 {
-
     /** the default database name for this class */
+
     const DATABASE_NAME = 'workflow';
 
     /** the table name for this class */
@@ -172,18 +172,17 @@ abstract class BaseTaskPeer
     /** The PHP to DB Name Mapping */
     private static $phpNameMap = null;
 
-
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
-    private static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('ProUid', 'TasUid', 'TasType', 'TasDuration', 'TasDelayType', 'TasTemporizer', 'TasTypeDay', 'TasTimeunit', 'TasAlert', 'TasPriorityVariable', 'TasAssignType', 'TasAssignVariable', 'TasGroupVariable', 'TasMiInstanceVariable', 'TasMiCompleteVariable', 'TasAssignLocation', 'TasAssignLocationAdhoc', 'TasTransferFly', 'TasLastAssigned', 'TasUser', 'TasCanUpload', 'TasViewUpload', 'TasViewAdditionalDocumentation', 'TasCanCancel', 'TasOwnerApp', 'StgUid', 'TasCanPause', 'TasCanSendMessage', 'TasCanDeleteDocs', 'TasSelfService', 'TasStart', 'TasToLastUser', 'TasSendLastEmail', 'TasDerivation', 'TasPosx', 'TasPosy', 'TasWidth', 'TasHeight', 'TasColor', 'TasEvnUid', 'TasBoundary', 'TasDerivationScreenTpl', 'TasSelfserviceTimeout', 'TasSelfserviceTime', 'TasSelfserviceTimeUnit', 'TasSelfserviceTriggerUid', ),
-        BasePeer::TYPE_COLNAME => array (TaskPeer::PRO_UID, TaskPeer::TAS_UID, TaskPeer::TAS_TYPE, TaskPeer::TAS_DURATION, TaskPeer::TAS_DELAY_TYPE, TaskPeer::TAS_TEMPORIZER, TaskPeer::TAS_TYPE_DAY, TaskPeer::TAS_TIMEUNIT, TaskPeer::TAS_ALERT, TaskPeer::TAS_PRIORITY_VARIABLE, TaskPeer::TAS_ASSIGN_TYPE, TaskPeer::TAS_ASSIGN_VARIABLE, TaskPeer::TAS_GROUP_VARIABLE, TaskPeer::TAS_MI_INSTANCE_VARIABLE, TaskPeer::TAS_MI_COMPLETE_VARIABLE, TaskPeer::TAS_ASSIGN_LOCATION, TaskPeer::TAS_ASSIGN_LOCATION_ADHOC, TaskPeer::TAS_TRANSFER_FLY, TaskPeer::TAS_LAST_ASSIGNED, TaskPeer::TAS_USER, TaskPeer::TAS_CAN_UPLOAD, TaskPeer::TAS_VIEW_UPLOAD, TaskPeer::TAS_VIEW_ADDITIONAL_DOCUMENTATION, TaskPeer::TAS_CAN_CANCEL, TaskPeer::TAS_OWNER_APP, TaskPeer::STG_UID, TaskPeer::TAS_CAN_PAUSE, TaskPeer::TAS_CAN_SEND_MESSAGE, TaskPeer::TAS_CAN_DELETE_DOCS, TaskPeer::TAS_SELF_SERVICE, TaskPeer::TAS_START, TaskPeer::TAS_TO_LAST_USER, TaskPeer::TAS_SEND_LAST_EMAIL, TaskPeer::TAS_DERIVATION, TaskPeer::TAS_POSX, TaskPeer::TAS_POSY, TaskPeer::TAS_WIDTH, TaskPeer::TAS_HEIGHT, TaskPeer::TAS_COLOR, TaskPeer::TAS_EVN_UID, TaskPeer::TAS_BOUNDARY, TaskPeer::TAS_DERIVATION_SCREEN_TPL, TaskPeer::TAS_SELFSERVICE_TIMEOUT, TaskPeer::TAS_SELFSERVICE_TIME, TaskPeer::TAS_SELFSERVICE_TIME_UNIT, TaskPeer::TAS_SELFSERVICE_TRIGGER_UID, ),
-        BasePeer::TYPE_FIELDNAME => array ('PRO_UID', 'TAS_UID', 'TAS_TYPE', 'TAS_DURATION', 'TAS_DELAY_TYPE', 'TAS_TEMPORIZER', 'TAS_TYPE_DAY', 'TAS_TIMEUNIT', 'TAS_ALERT', 'TAS_PRIORITY_VARIABLE', 'TAS_ASSIGN_TYPE', 'TAS_ASSIGN_VARIABLE', 'TAS_GROUP_VARIABLE', 'TAS_MI_INSTANCE_VARIABLE', 'TAS_MI_COMPLETE_VARIABLE', 'TAS_ASSIGN_LOCATION', 'TAS_ASSIGN_LOCATION_ADHOC', 'TAS_TRANSFER_FLY', 'TAS_LAST_ASSIGNED', 'TAS_USER', 'TAS_CAN_UPLOAD', 'TAS_VIEW_UPLOAD', 'TAS_VIEW_ADDITIONAL_DOCUMENTATION', 'TAS_CAN_CANCEL', 'TAS_OWNER_APP', 'STG_UID', 'TAS_CAN_PAUSE', 'TAS_CAN_SEND_MESSAGE', 'TAS_CAN_DELETE_DOCS', 'TAS_SELF_SERVICE', 'TAS_START', 'TAS_TO_LAST_USER', 'TAS_SEND_LAST_EMAIL', 'TAS_DERIVATION', 'TAS_POSX', 'TAS_POSY', 'TAS_WIDTH', 'TAS_HEIGHT', 'TAS_COLOR', 'TAS_EVN_UID', 'TAS_BOUNDARY', 'TAS_DERIVATION_SCREEN_TPL', 'TAS_SELFSERVICE_TIMEOUT', 'TAS_SELFSERVICE_TIME', 'TAS_SELFSERVICE_TIME_UNIT', 'TAS_SELFSERVICE_TRIGGER_UID', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, )
+    private static $fieldNames = array(
+        BasePeer::TYPE_PHPNAME => array('ProUid', 'TasUid', 'TasType', 'TasDuration', 'TasDelayType', 'TasTemporizer', 'TasTypeDay', 'TasTimeunit', 'TasAlert', 'TasPriorityVariable', 'TasAssignType', 'TasAssignVariable', 'TasGroupVariable', 'TasMiInstanceVariable', 'TasMiCompleteVariable', 'TasAssignLocation', 'TasAssignLocationAdhoc', 'TasTransferFly', 'TasLastAssigned', 'TasUser', 'TasCanUpload', 'TasViewUpload', 'TasViewAdditionalDocumentation', 'TasCanCancel', 'TasOwnerApp', 'StgUid', 'TasCanPause', 'TasCanSendMessage', 'TasCanDeleteDocs', 'TasSelfService', 'TasStart', 'TasToLastUser', 'TasSendLastEmail', 'TasDerivation', 'TasPosx', 'TasPosy', 'TasWidth', 'TasHeight', 'TasColor', 'TasEvnUid', 'TasBoundary', 'TasDerivationScreenTpl', 'TasSelfserviceTimeout', 'TasSelfserviceTime', 'TasSelfserviceTimeUnit', 'TasSelfserviceTriggerUid',),
+        BasePeer::TYPE_COLNAME => array(TaskPeer::PRO_UID, TaskPeer::TAS_UID, TaskPeer::TAS_TYPE, TaskPeer::TAS_DURATION, TaskPeer::TAS_DELAY_TYPE, TaskPeer::TAS_TEMPORIZER, TaskPeer::TAS_TYPE_DAY, TaskPeer::TAS_TIMEUNIT, TaskPeer::TAS_ALERT, TaskPeer::TAS_PRIORITY_VARIABLE, TaskPeer::TAS_ASSIGN_TYPE, TaskPeer::TAS_ASSIGN_VARIABLE, TaskPeer::TAS_GROUP_VARIABLE, TaskPeer::TAS_MI_INSTANCE_VARIABLE, TaskPeer::TAS_MI_COMPLETE_VARIABLE, TaskPeer::TAS_ASSIGN_LOCATION, TaskPeer::TAS_ASSIGN_LOCATION_ADHOC, TaskPeer::TAS_TRANSFER_FLY, TaskPeer::TAS_LAST_ASSIGNED, TaskPeer::TAS_USER, TaskPeer::TAS_CAN_UPLOAD, TaskPeer::TAS_VIEW_UPLOAD, TaskPeer::TAS_VIEW_ADDITIONAL_DOCUMENTATION, TaskPeer::TAS_CAN_CANCEL, TaskPeer::TAS_OWNER_APP, TaskPeer::STG_UID, TaskPeer::TAS_CAN_PAUSE, TaskPeer::TAS_CAN_SEND_MESSAGE, TaskPeer::TAS_CAN_DELETE_DOCS, TaskPeer::TAS_SELF_SERVICE, TaskPeer::TAS_START, TaskPeer::TAS_TO_LAST_USER, TaskPeer::TAS_SEND_LAST_EMAIL, TaskPeer::TAS_DERIVATION, TaskPeer::TAS_POSX, TaskPeer::TAS_POSY, TaskPeer::TAS_WIDTH, TaskPeer::TAS_HEIGHT, TaskPeer::TAS_COLOR, TaskPeer::TAS_EVN_UID, TaskPeer::TAS_BOUNDARY, TaskPeer::TAS_DERIVATION_SCREEN_TPL, TaskPeer::TAS_SELFSERVICE_TIMEOUT, TaskPeer::TAS_SELFSERVICE_TIME, TaskPeer::TAS_SELFSERVICE_TIME_UNIT, TaskPeer::TAS_SELFSERVICE_TRIGGER_UID,),
+        BasePeer::TYPE_FIELDNAME => array('PRO_UID', 'TAS_UID', 'TAS_TYPE', 'TAS_DURATION', 'TAS_DELAY_TYPE', 'TAS_TEMPORIZER', 'TAS_TYPE_DAY', 'TAS_TIMEUNIT', 'TAS_ALERT', 'TAS_PRIORITY_VARIABLE', 'TAS_ASSIGN_TYPE', 'TAS_ASSIGN_VARIABLE', 'TAS_GROUP_VARIABLE', 'TAS_MI_INSTANCE_VARIABLE', 'TAS_MI_COMPLETE_VARIABLE', 'TAS_ASSIGN_LOCATION', 'TAS_ASSIGN_LOCATION_ADHOC', 'TAS_TRANSFER_FLY', 'TAS_LAST_ASSIGNED', 'TAS_USER', 'TAS_CAN_UPLOAD', 'TAS_VIEW_UPLOAD', 'TAS_VIEW_ADDITIONAL_DOCUMENTATION', 'TAS_CAN_CANCEL', 'TAS_OWNER_APP', 'STG_UID', 'TAS_CAN_PAUSE', 'TAS_CAN_SEND_MESSAGE', 'TAS_CAN_DELETE_DOCS', 'TAS_SELF_SERVICE', 'TAS_START', 'TAS_TO_LAST_USER', 'TAS_SEND_LAST_EMAIL', 'TAS_DERIVATION', 'TAS_POSX', 'TAS_POSY', 'TAS_WIDTH', 'TAS_HEIGHT', 'TAS_COLOR', 'TAS_EVN_UID', 'TAS_BOUNDARY', 'TAS_DERIVATION_SCREEN_TPL', 'TAS_SELFSERVICE_TIMEOUT', 'TAS_SELFSERVICE_TIME', 'TAS_SELFSERVICE_TIME_UNIT', 'TAS_SELFSERVICE_TRIGGER_UID',),
+        BasePeer::TYPE_NUM => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,)
     );
 
     /**
@@ -192,11 +191,11 @@ abstract class BaseTaskPeer
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
-    private static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('ProUid' => 0, 'TasUid' => 1, 'TasType' => 2, 'TasDuration' => 3, 'TasDelayType' => 4, 'TasTemporizer' => 5, 'TasTypeDay' => 6, 'TasTimeunit' => 7, 'TasAlert' => 8, 'TasPriorityVariable' => 9, 'TasAssignType' => 10, 'TasAssignVariable' => 11, 'TasGroupVariable' => 12, 'TasMiInstanceVariable' => 13, 'TasMiCompleteVariable' => 14, 'TasAssignLocation' => 15, 'TasAssignLocationAdhoc' => 16, 'TasTransferFly' => 17, 'TasLastAssigned' => 18, 'TasUser' => 19, 'TasCanUpload' => 20, 'TasViewUpload' => 21, 'TasViewAdditionalDocumentation' => 22, 'TasCanCancel' => 23, 'TasOwnerApp' => 24, 'StgUid' => 25, 'TasCanPause' => 26, 'TasCanSendMessage' => 27, 'TasCanDeleteDocs' => 28, 'TasSelfService' => 29, 'TasStart' => 30, 'TasToLastUser' => 31, 'TasSendLastEmail' => 32, 'TasDerivation' => 33, 'TasPosx' => 34, 'TasPosy' => 35, 'TasWidth' => 36, 'TasHeight' => 37, 'TasColor' => 38, 'TasEvnUid' => 39, 'TasBoundary' => 40, 'TasDerivationScreenTpl' => 41, 'TasSelfserviceTimeout' => 42, 'TasSelfserviceTime' => 43, 'TasSelfserviceTimeUnit' => 44, 'TasSelfserviceTriggerUid' => 45, ),
-        BasePeer::TYPE_COLNAME => array (TaskPeer::PRO_UID => 0, TaskPeer::TAS_UID => 1, TaskPeer::TAS_TYPE => 2, TaskPeer::TAS_DURATION => 3, TaskPeer::TAS_DELAY_TYPE => 4, TaskPeer::TAS_TEMPORIZER => 5, TaskPeer::TAS_TYPE_DAY => 6, TaskPeer::TAS_TIMEUNIT => 7, TaskPeer::TAS_ALERT => 8, TaskPeer::TAS_PRIORITY_VARIABLE => 9, TaskPeer::TAS_ASSIGN_TYPE => 10, TaskPeer::TAS_ASSIGN_VARIABLE => 11, TaskPeer::TAS_GROUP_VARIABLE => 12, TaskPeer::TAS_MI_INSTANCE_VARIABLE => 13, TaskPeer::TAS_MI_COMPLETE_VARIABLE => 14, TaskPeer::TAS_ASSIGN_LOCATION => 15, TaskPeer::TAS_ASSIGN_LOCATION_ADHOC => 16, TaskPeer::TAS_TRANSFER_FLY => 17, TaskPeer::TAS_LAST_ASSIGNED => 18, TaskPeer::TAS_USER => 19, TaskPeer::TAS_CAN_UPLOAD => 20, TaskPeer::TAS_VIEW_UPLOAD => 21, TaskPeer::TAS_VIEW_ADDITIONAL_DOCUMENTATION => 22, TaskPeer::TAS_CAN_CANCEL => 23, TaskPeer::TAS_OWNER_APP => 24, TaskPeer::STG_UID => 25, TaskPeer::TAS_CAN_PAUSE => 26, TaskPeer::TAS_CAN_SEND_MESSAGE => 27, TaskPeer::TAS_CAN_DELETE_DOCS => 28, TaskPeer::TAS_SELF_SERVICE => 29, TaskPeer::TAS_START => 30, TaskPeer::TAS_TO_LAST_USER => 31, TaskPeer::TAS_SEND_LAST_EMAIL => 32, TaskPeer::TAS_DERIVATION => 33, TaskPeer::TAS_POSX => 34, TaskPeer::TAS_POSY => 35, TaskPeer::TAS_WIDTH => 36, TaskPeer::TAS_HEIGHT => 37, TaskPeer::TAS_COLOR => 38, TaskPeer::TAS_EVN_UID => 39, TaskPeer::TAS_BOUNDARY => 40, TaskPeer::TAS_DERIVATION_SCREEN_TPL => 41, TaskPeer::TAS_SELFSERVICE_TIMEOUT => 42, TaskPeer::TAS_SELFSERVICE_TIME => 43, TaskPeer::TAS_SELFSERVICE_TIME_UNIT => 44, TaskPeer::TAS_SELFSERVICE_TRIGGER_UID => 45, ),
-        BasePeer::TYPE_FIELDNAME => array ('PRO_UID' => 0, 'TAS_UID' => 1, 'TAS_TYPE' => 2, 'TAS_DURATION' => 3, 'TAS_DELAY_TYPE' => 4, 'TAS_TEMPORIZER' => 5, 'TAS_TYPE_DAY' => 6, 'TAS_TIMEUNIT' => 7, 'TAS_ALERT' => 8, 'TAS_PRIORITY_VARIABLE' => 9, 'TAS_ASSIGN_TYPE' => 10, 'TAS_ASSIGN_VARIABLE' => 11, 'TAS_GROUP_VARIABLE' => 12, 'TAS_MI_INSTANCE_VARIABLE' => 13, 'TAS_MI_COMPLETE_VARIABLE' => 14, 'TAS_ASSIGN_LOCATION' => 15, 'TAS_ASSIGN_LOCATION_ADHOC' => 16, 'TAS_TRANSFER_FLY' => 17, 'TAS_LAST_ASSIGNED' => 18, 'TAS_USER' => 19, 'TAS_CAN_UPLOAD' => 20, 'TAS_VIEW_UPLOAD' => 21, 'TAS_VIEW_ADDITIONAL_DOCUMENTATION' => 22, 'TAS_CAN_CANCEL' => 23, 'TAS_OWNER_APP' => 24, 'STG_UID' => 25, 'TAS_CAN_PAUSE' => 26, 'TAS_CAN_SEND_MESSAGE' => 27, 'TAS_CAN_DELETE_DOCS' => 28, 'TAS_SELF_SERVICE' => 29, 'TAS_START' => 30, 'TAS_TO_LAST_USER' => 31, 'TAS_SEND_LAST_EMAIL' => 32, 'TAS_DERIVATION' => 33, 'TAS_POSX' => 34, 'TAS_POSY' => 35, 'TAS_WIDTH' => 36, 'TAS_HEIGHT' => 37, 'TAS_COLOR' => 38, 'TAS_EVN_UID' => 39, 'TAS_BOUNDARY' => 40, 'TAS_DERIVATION_SCREEN_TPL' => 41, 'TAS_SELFSERVICE_TIMEOUT' => 42, 'TAS_SELFSERVICE_TIME' => 43, 'TAS_SELFSERVICE_TIME_UNIT' => 44, 'TAS_SELFSERVICE_TRIGGER_UID' => 45, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, )
+    private static $fieldKeys = array(
+        BasePeer::TYPE_PHPNAME => array('ProUid' => 0, 'TasUid' => 1, 'TasType' => 2, 'TasDuration' => 3, 'TasDelayType' => 4, 'TasTemporizer' => 5, 'TasTypeDay' => 6, 'TasTimeunit' => 7, 'TasAlert' => 8, 'TasPriorityVariable' => 9, 'TasAssignType' => 10, 'TasAssignVariable' => 11, 'TasGroupVariable' => 12, 'TasMiInstanceVariable' => 13, 'TasMiCompleteVariable' => 14, 'TasAssignLocation' => 15, 'TasAssignLocationAdhoc' => 16, 'TasTransferFly' => 17, 'TasLastAssigned' => 18, 'TasUser' => 19, 'TasCanUpload' => 20, 'TasViewUpload' => 21, 'TasViewAdditionalDocumentation' => 22, 'TasCanCancel' => 23, 'TasOwnerApp' => 24, 'StgUid' => 25, 'TasCanPause' => 26, 'TasCanSendMessage' => 27, 'TasCanDeleteDocs' => 28, 'TasSelfService' => 29, 'TasStart' => 30, 'TasToLastUser' => 31, 'TasSendLastEmail' => 32, 'TasDerivation' => 33, 'TasPosx' => 34, 'TasPosy' => 35, 'TasWidth' => 36, 'TasHeight' => 37, 'TasColor' => 38, 'TasEvnUid' => 39, 'TasBoundary' => 40, 'TasDerivationScreenTpl' => 41, 'TasSelfserviceTimeout' => 42, 'TasSelfserviceTime' => 43, 'TasSelfserviceTimeUnit' => 44, 'TasSelfserviceTriggerUid' => 45,),
+        BasePeer::TYPE_COLNAME => array(TaskPeer::PRO_UID => 0, TaskPeer::TAS_UID => 1, TaskPeer::TAS_TYPE => 2, TaskPeer::TAS_DURATION => 3, TaskPeer::TAS_DELAY_TYPE => 4, TaskPeer::TAS_TEMPORIZER => 5, TaskPeer::TAS_TYPE_DAY => 6, TaskPeer::TAS_TIMEUNIT => 7, TaskPeer::TAS_ALERT => 8, TaskPeer::TAS_PRIORITY_VARIABLE => 9, TaskPeer::TAS_ASSIGN_TYPE => 10, TaskPeer::TAS_ASSIGN_VARIABLE => 11, TaskPeer::TAS_GROUP_VARIABLE => 12, TaskPeer::TAS_MI_INSTANCE_VARIABLE => 13, TaskPeer::TAS_MI_COMPLETE_VARIABLE => 14, TaskPeer::TAS_ASSIGN_LOCATION => 15, TaskPeer::TAS_ASSIGN_LOCATION_ADHOC => 16, TaskPeer::TAS_TRANSFER_FLY => 17, TaskPeer::TAS_LAST_ASSIGNED => 18, TaskPeer::TAS_USER => 19, TaskPeer::TAS_CAN_UPLOAD => 20, TaskPeer::TAS_VIEW_UPLOAD => 21, TaskPeer::TAS_VIEW_ADDITIONAL_DOCUMENTATION => 22, TaskPeer::TAS_CAN_CANCEL => 23, TaskPeer::TAS_OWNER_APP => 24, TaskPeer::STG_UID => 25, TaskPeer::TAS_CAN_PAUSE => 26, TaskPeer::TAS_CAN_SEND_MESSAGE => 27, TaskPeer::TAS_CAN_DELETE_DOCS => 28, TaskPeer::TAS_SELF_SERVICE => 29, TaskPeer::TAS_START => 30, TaskPeer::TAS_TO_LAST_USER => 31, TaskPeer::TAS_SEND_LAST_EMAIL => 32, TaskPeer::TAS_DERIVATION => 33, TaskPeer::TAS_POSX => 34, TaskPeer::TAS_POSY => 35, TaskPeer::TAS_WIDTH => 36, TaskPeer::TAS_HEIGHT => 37, TaskPeer::TAS_COLOR => 38, TaskPeer::TAS_EVN_UID => 39, TaskPeer::TAS_BOUNDARY => 40, TaskPeer::TAS_DERIVATION_SCREEN_TPL => 41, TaskPeer::TAS_SELFSERVICE_TIMEOUT => 42, TaskPeer::TAS_SELFSERVICE_TIME => 43, TaskPeer::TAS_SELFSERVICE_TIME_UNIT => 44, TaskPeer::TAS_SELFSERVICE_TRIGGER_UID => 45,),
+        BasePeer::TYPE_FIELDNAME => array('PRO_UID' => 0, 'TAS_UID' => 1, 'TAS_TYPE' => 2, 'TAS_DURATION' => 3, 'TAS_DELAY_TYPE' => 4, 'TAS_TEMPORIZER' => 5, 'TAS_TYPE_DAY' => 6, 'TAS_TIMEUNIT' => 7, 'TAS_ALERT' => 8, 'TAS_PRIORITY_VARIABLE' => 9, 'TAS_ASSIGN_TYPE' => 10, 'TAS_ASSIGN_VARIABLE' => 11, 'TAS_GROUP_VARIABLE' => 12, 'TAS_MI_INSTANCE_VARIABLE' => 13, 'TAS_MI_COMPLETE_VARIABLE' => 14, 'TAS_ASSIGN_LOCATION' => 15, 'TAS_ASSIGN_LOCATION_ADHOC' => 16, 'TAS_TRANSFER_FLY' => 17, 'TAS_LAST_ASSIGNED' => 18, 'TAS_USER' => 19, 'TAS_CAN_UPLOAD' => 20, 'TAS_VIEW_UPLOAD' => 21, 'TAS_VIEW_ADDITIONAL_DOCUMENTATION' => 22, 'TAS_CAN_CANCEL' => 23, 'TAS_OWNER_APP' => 24, 'STG_UID' => 25, 'TAS_CAN_PAUSE' => 26, 'TAS_CAN_SEND_MESSAGE' => 27, 'TAS_CAN_DELETE_DOCS' => 28, 'TAS_SELF_SERVICE' => 29, 'TAS_START' => 30, 'TAS_TO_LAST_USER' => 31, 'TAS_SEND_LAST_EMAIL' => 32, 'TAS_DERIVATION' => 33, 'TAS_POSX' => 34, 'TAS_POSY' => 35, 'TAS_WIDTH' => 36, 'TAS_HEIGHT' => 37, 'TAS_COLOR' => 38, 'TAS_EVN_UID' => 39, 'TAS_BOUNDARY' => 40, 'TAS_DERIVATION_SCREEN_TPL' => 41, 'TAS_SELFSERVICE_TIMEOUT' => 42, 'TAS_SELFSERVICE_TIME' => 43, 'TAS_SELFSERVICE_TIME_UNIT' => 44, 'TAS_SELFSERVICE_TRIGGER_UID' => 45,),
+        BasePeer::TYPE_NUM => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,)
     );
 
     /**
@@ -209,6 +208,7 @@ abstract class BaseTaskPeer
         include_once 'classes/model/map/TaskMapBuilder.php';
         return BasePeer::getMapBuilder('classes.model.map.TaskMapBuilder');
     }
+
     /**
      * Gets a map (hash) of PHP names to DB column names.
      *
@@ -230,6 +230,7 @@ abstract class BaseTaskPeer
         }
         return self::$phpNameMap;
     }
+
     /**
      * Translates a fieldname to another type
      *
@@ -257,7 +258,6 @@ abstract class BaseTaskPeer
      *                      TYPE_COLNAME, TYPE_FIELDNAME, TYPE_NUM
      * @return     array A list of field names
      */
-
     static public function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
         if (!array_key_exists($type, self::$fieldNames)) {
@@ -280,7 +280,7 @@ abstract class BaseTaskPeer
      */
     public static function alias($alias, $column)
     {
-        return str_replace(TaskPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(TaskPeer::TABLE_NAME . '.', $alias . '.', $column);
     }
 
     /**
@@ -388,7 +388,6 @@ abstract class BaseTaskPeer
         $criteria->addSelectColumn(TaskPeer::TAS_SELFSERVICE_TIME_UNIT);
 
         $criteria->addSelectColumn(TaskPeer::TAS_SELFSERVICE_TRIGGER_UID);
-
     }
 
     const COUNT = 'COUNT(TASK.TAS_UID)';
@@ -428,6 +427,7 @@ abstract class BaseTaskPeer
             return 0;
         }
     }
+
     /**
      * Method to select one object from the DB.
      *
@@ -447,6 +447,7 @@ abstract class BaseTaskPeer
         }
         return null;
     }
+
     /**
      * Method to do selects.
      *
@@ -460,6 +461,7 @@ abstract class BaseTaskPeer
     {
         return TaskPeer::populateObjects(TaskPeer::doSelectRS($criteria, $con));
     }
+
     /**
      * Prepares the Criteria object and uses the parent doSelect()
      * method to get a ResultSet.
@@ -492,6 +494,7 @@ abstract class BaseTaskPeer
         // rows indexed numerically.
         return BasePeer::doSelect($criteria, $con);
     }
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -512,10 +515,10 @@ abstract class BaseTaskPeer
             $obj = new $cls();
             $obj->hydrate($rs);
             $results[] = $obj;
-
         }
         return $results;
     }
+
     /**
      * Returns the TableMap related to this peer.
      * This method is not needed for general use but a specific application could have a need.
@@ -603,7 +606,6 @@ abstract class BaseTaskPeer
 
             $comparison = $criteria->getComparison(TaskPeer::TAS_UID);
             $selectCriteria->add(TaskPeer::TAS_UID, $criteria->remove(TaskPeer::TAS_UID), $comparison);
-
         } else {
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
@@ -650,7 +652,7 @@ abstract class BaseTaskPeer
      *              if supported by native driver or if emulated using Propel.
      * @throws     PropelException Any exceptions caught during processing will be
      *       rethrown wrapped into a PropelException.
-    */
+     */
     public static function doDelete($values, $con = null)
     {
         if ($con === null) {
@@ -707,7 +709,7 @@ abstract class BaseTaskPeer
             $dbMap = Propel::getDatabaseMap(TaskPeer::DATABASE_NAME);
             $tableMap = $dbMap->getTable(TaskPeer::TABLE_NAME);
 
-            if (! is_array($cols)) {
+            if (!is_array($cols)) {
                 $cols = array($cols);
             }
 
@@ -719,63 +721,80 @@ abstract class BaseTaskPeer
             }
         } else {
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_TYPE))
-            $columns[TaskPeer::TAS_TYPE] = $obj->getTasType();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_TYPE)) {
+                $columns[TaskPeer::TAS_TYPE] = $obj->getTasType();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_TIMEUNIT))
-            $columns[TaskPeer::TAS_TIMEUNIT] = $obj->getTasTimeunit();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_TIMEUNIT)) {
+                $columns[TaskPeer::TAS_TIMEUNIT] = $obj->getTasTimeunit();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_ALERT))
-            $columns[TaskPeer::TAS_ALERT] = $obj->getTasAlert();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_ALERT)) {
+                $columns[TaskPeer::TAS_ALERT] = $obj->getTasAlert();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_ASSIGN_TYPE))
-            $columns[TaskPeer::TAS_ASSIGN_TYPE] = $obj->getTasAssignType();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_ASSIGN_TYPE)) {
+                $columns[TaskPeer::TAS_ASSIGN_TYPE] = $obj->getTasAssignType();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_ASSIGN_LOCATION))
-            $columns[TaskPeer::TAS_ASSIGN_LOCATION] = $obj->getTasAssignLocation();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_ASSIGN_LOCATION)) {
+                $columns[TaskPeer::TAS_ASSIGN_LOCATION] = $obj->getTasAssignLocation();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_ASSIGN_LOCATION_ADHOC))
-            $columns[TaskPeer::TAS_ASSIGN_LOCATION_ADHOC] = $obj->getTasAssignLocationAdhoc();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_ASSIGN_LOCATION_ADHOC)) {
+                $columns[TaskPeer::TAS_ASSIGN_LOCATION_ADHOC] = $obj->getTasAssignLocationAdhoc();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_TRANSFER_FLY))
-            $columns[TaskPeer::TAS_TRANSFER_FLY] = $obj->getTasTransferFly();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_TRANSFER_FLY)) {
+                $columns[TaskPeer::TAS_TRANSFER_FLY] = $obj->getTasTransferFly();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_UPLOAD))
-            $columns[TaskPeer::TAS_CAN_UPLOAD] = $obj->getTasCanUpload();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_UPLOAD)) {
+                $columns[TaskPeer::TAS_CAN_UPLOAD] = $obj->getTasCanUpload();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_VIEW_UPLOAD))
-            $columns[TaskPeer::TAS_VIEW_UPLOAD] = $obj->getTasViewUpload();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_VIEW_UPLOAD)) {
+                $columns[TaskPeer::TAS_VIEW_UPLOAD] = $obj->getTasViewUpload();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_VIEW_ADDITIONAL_DOCUMENTATION))
-            $columns[TaskPeer::TAS_VIEW_ADDITIONAL_DOCUMENTATION] = $obj->getTasViewAdditionalDocumentation();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_VIEW_ADDITIONAL_DOCUMENTATION)) {
+                $columns[TaskPeer::TAS_VIEW_ADDITIONAL_DOCUMENTATION] = $obj->getTasViewAdditionalDocumentation();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_CANCEL))
-            $columns[TaskPeer::TAS_CAN_CANCEL] = $obj->getTasCanCancel();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_CANCEL)) {
+                $columns[TaskPeer::TAS_CAN_CANCEL] = $obj->getTasCanCancel();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_PAUSE))
-            $columns[TaskPeer::TAS_CAN_PAUSE] = $obj->getTasCanPause();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_PAUSE)) {
+                $columns[TaskPeer::TAS_CAN_PAUSE] = $obj->getTasCanPause();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_SEND_MESSAGE))
-            $columns[TaskPeer::TAS_CAN_SEND_MESSAGE] = $obj->getTasCanSendMessage();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_SEND_MESSAGE)) {
+                $columns[TaskPeer::TAS_CAN_SEND_MESSAGE] = $obj->getTasCanSendMessage();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_DELETE_DOCS))
-            $columns[TaskPeer::TAS_CAN_DELETE_DOCS] = $obj->getTasCanDeleteDocs();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_CAN_DELETE_DOCS)) {
+                $columns[TaskPeer::TAS_CAN_DELETE_DOCS] = $obj->getTasCanDeleteDocs();
+            }
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_SELF_SERVICE)) {
+                $columns[TaskPeer::TAS_SELF_SERVICE] = $obj->getTasSelfService();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_SELF_SERVICE))
-            $columns[TaskPeer::TAS_SELF_SERVICE] = $obj->getTasSelfService();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_START)) {
+                $columns[TaskPeer::TAS_START] = $obj->getTasStart();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_START))
-            $columns[TaskPeer::TAS_START] = $obj->getTasStart();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_TO_LAST_USER)) {
+                $columns[TaskPeer::TAS_TO_LAST_USER] = $obj->getTasToLastUser();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_TO_LAST_USER))
-            $columns[TaskPeer::TAS_TO_LAST_USER] = $obj->getTasToLastUser();
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_SEND_LAST_EMAIL)) {
+                $columns[TaskPeer::TAS_SEND_LAST_EMAIL] = $obj->getTasSendLastEmail();
+            }
 
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_SEND_LAST_EMAIL))
-            $columns[TaskPeer::TAS_SEND_LAST_EMAIL] = $obj->getTasSendLastEmail();
-
-        if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_DERIVATION))
-            $columns[TaskPeer::TAS_DERIVATION] = $obj->getTasDerivation();
-
+            if ($obj->isNew() || $obj->isColumnModified(TaskPeer::TAS_DERIVATION)) {
+                $columns[TaskPeer::TAS_DERIVATION] = $obj->getTasDerivation();
+            }
         }
 
         return BasePeer::doValidate(TaskPeer::DATABASE_NAME, TaskPeer::TABLE_NAME, $columns);
@@ -829,7 +848,6 @@ abstract class BaseTaskPeer
         return $objs;
     }
 }
-
 
 // static code to register the map builder for this Peer with the main Propel class
 if (Propel::isInit()) {
