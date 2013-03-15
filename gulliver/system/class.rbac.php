@@ -558,8 +558,7 @@ class RBAC
      */
     public function createPermision ($sCode)
     {
-        return $this->permissionsObj->create( array ('PER_CODE' => $sCode
-        ) );
+        return $this->permissionsObj->create( array ('PER_CODE' => $sCode) );
     }
 
     /**
