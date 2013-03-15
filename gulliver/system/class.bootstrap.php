@@ -579,7 +579,7 @@ class Bootstrap
         //trick to generate the translation.language.js file , merging two files
         if (strtolower($typefile) == 'js' && $typearray[0] == 'translation') {
             Bootstrap::sendHeaders($filename, 'text/javascript', $download, $downloadFileName);
-            $output = Bootstrap::streamJSTranslationFile($filename, $typearray[1]);
+            $output = Bootstrap::streamJSTranslationFile($filename, $typearray[count($typearray)-2]);
             echo $output;
             return;
         }
@@ -830,6 +830,35 @@ class Bootstrap
             $translation = $foreignTranslations;
         } else {
             $translation = array_merge($defaultTranslations, $foreignTranslations);
+        }
+        return true;
+    }
+
+    /**
+     * Function LoadTranslationPlugins
+     * It generates a global Translation variable for plugins
+     *
+     * Per script
+     *
+     * @author Brayan Pereyra <cochalo>. <brayan@colosa.com>
+     * @access public
+     * @param  string lang
+     * @param  array list plugins active
+     * @return void
+     */
+    public function LoadTranslationPlugins ($lang = SYS_LANG, $listPluginsActive)
+    {
+        if ( ! ( is_array ( $listPluginsActive ) ) ) {
+            return null;
+        }
+
+        foreach ($listPluginsActive['_aPluginDetails'] as $key => $value) {
+            $namePlugin = trim($key);
+            $translation = array();
+            if (file_exists(PATH_LANGUAGECONT . $namePlugin . '.' . $lang)) {
+                eval('global $translation'.$namePlugin.';');
+                require_once (PATH_LANGUAGECONT . $namePlugin . '.' . $lang);
+            }
         }
         return true;
     }
@@ -1140,37 +1169,54 @@ class Bootstrap
      */
     public function streamJSTranslationFile($filename, $locale = 'en')
     {
-        $defaultTranslations = Array();
-        $foreignTranslations = Array();
+        $typearray = explode('.', basename($filename));
+        $typeCount = count($typearray);
+        $typeName  = ($typeCount > 3) ? $typearray[1] : $typearray[0];
+        $typeName  = trim($typeName);
+        $fileConst = ($typeName == 'translation') ? 'translation.' . $locale : 'translation.' . $typeName . '.' . $locale;
 
-        //if the default translations table doesn't exist we can't proceed
-        if (!is_file(PATH_LANGUAGECONT . 'translation.en')) {
+        if ($typeName == 'translation') {
+            $defaultTranslations = Array();
+            $foreignTranslations = Array();
+            $calendarJs = '';
+
+            //load the translations table
+            if (is_file(PATH_LANGUAGECONT . 'translation.en')) {
+                require_once (PATH_LANGUAGECONT . 'translation.en');
+                $defaultTranslations = $translation;
+            }
+
+            //if some foreign language was requested and its translation file exists
+            if ($locale != 'en' && file_exists(PATH_LANGUAGECONT . 'translation.' . $locale)) {
+                require_once (PATH_LANGUAGECONT . 'translation.' . $locale); //load the foreign translations table
+                $foreignTranslations = $translation;
+            }
+
+            if (defined("SHOW_UNTRANSLATED_AS_TAG") && SHOW_UNTRANSLATED_AS_TAG != 0) {
+                $translation = $foreignTranslations;
+            } else {
+                $translation = array_merge($defaultTranslations, $foreignTranslations);
+            }
+
+            $calendarJsFile = PATH_GULLIVER_HOME . "js/widgets/js-calendar/lang/" . $locale . ".js";
+            if (!file_exists($calendarJsFile)) {
+                $calendarJsFile = PATH_GULLIVER_HOME . "js/widgets/js-calendar/lang/en.js";
+            }
+            $calendarJs = file_get_contents($calendarJsFile) . "\n";
+
+            return $calendarJs . 'var TRANSLATIONS = ' . Bootstrap::json_encode($translation) . ';';
+        } else {
+            unset($typearray[0]);
+            unset($typearray[count($typearray)]);
+            $newName = implode('.', $typearray);
+            if (file_exists(PATH_LANGUAGECONT . $newName)) {
+                require_once (PATH_LANGUAGECONT . $newName);
+                $return = '';
+                eval('$return = "var TRANSLATIONS_" . strtoupper($typeName) . " = " . Bootstrap::json_encode($translation' . $typeName . ') . ";";');
+                return $return;
+            }
             return;
         }
-        //load the translations table
-        require_once (PATH_LANGUAGECONT . 'translation.en');
-        $defaultTranslations = $translation;
-
-        //if some foreign language was requested and its translation file exists
-        if ($locale != 'en' && file_exists(PATH_LANGUAGECONT . 'translation.' . $locale)) {
-            require_once (PATH_LANGUAGECONT . 'translation.' . $locale); //load the foreign translations table
-            $foreignTranslations = $translation;
-        }
-
-        if (defined("SHOW_UNTRANSLATED_AS_TAG") && SHOW_UNTRANSLATED_AS_TAG != 0) {
-            $translation = $foreignTranslations;
-        } else {
-            $translation = array_merge($defaultTranslations, $foreignTranslations);
-        }
-
-        $calendarJs = '';
-        $calendarJsFile = PATH_GULLIVER_HOME . "js/widgets/js-calendar/lang/" . $locale . ".js";
-        if (!file_exists($calendarJsFile)) {
-            $calendarJsFile = PATH_GULLIVER_HOME . "js/widgets/js-calendar/lang/en.js";
-        }
-        $calendarJs = file_get_contents($calendarJsFile) . "\n";
-
-        return $calendarJs . 'var TRANSLATIONS = ' . Bootstrap::json_encode($translation) . ';';
     }
 
     /**
