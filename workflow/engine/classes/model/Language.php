@@ -543,6 +543,9 @@ class Language extends BaseLanguage
             throw new Exception( 'The plugin ' . $plugin . ' not exist' );
             die();
         }
+        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translation.php')) {
+            throw new Exception( 'Translation.php not exist in plugin ' .  $plugin);
+        }
         if (!file_exists(PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po')) {
             throw new Exception( 'The file ' . $plugin . '.' . $idLanguage . '.po not exists' );
             die();
@@ -656,6 +659,10 @@ class Language extends BaseLanguage
 
     function createLanguagePlugin ($plugin, $idLanguage)
     {
+        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translation.php')) {
+            throw new Exception( 'Translation.php not exist in plugin ' .  $plugin);
+        }
+
         G::LoadSystem( 'i18n_po' );
         G::LoadClass( "system" );
 

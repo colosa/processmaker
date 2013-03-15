@@ -230,6 +230,13 @@ class Translation extends BaseTranslation
     */
     public function generateFileTranslationPlugin ($plugin, $languageId = '')
     {
+        if (!file_exists(PATH_PLUGINS . $plugin . 'translations' . PATH_SEP . 'translation.php')) {
+            return;
+        }
+
+        if (!file_exists(PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $languageId . '.po')) {
+            return;
+        }
         $translation = Array ();
         $translationJS = Array ();
 
@@ -243,6 +250,37 @@ class Translation extends BaseTranslation
 
         foreach ($translations as $key => $row) {
             $translation[$key] = $row;
+        }
+        $languageFile = PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $languageId . '.po' ;
+        G::LoadSystem( 'i18n_po' );
+        $POFile = new i18n_PO( $languageFile );
+        $POFile->readInit();
+        while ($rowTranslation = $POFile->getTranslation()) {
+            foreach ($POFile->translatorComments as $a => $aux) {
+                $aux = trim( $aux );
+                if ($aux == 'TRANSLATION') {
+                    $identifier = $aux;
+                } else {
+                    $var = explode( '/', $aux );
+                    if ($var[0] == 'LABEL') {
+                        $context = $aux;
+                    }
+                    if ($var[0] == 'JAVASCRIPT') {
+                        $context = $aux;
+                    }
+                }
+                if (preg_match( '/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml\?)/', $aux, $match )) {
+                    $identifier = $aux;
+                } else {
+                    if (preg_match( '/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml$)/', $aux, $match )) {
+                        $context = $aux;
+                    }
+                }
+            }
+            if ($identifier == 'TRANSLATION') {
+                list ($category, $id) = explode( '/', $context );
+                $translation[$id] = $rowTranslation['msgstr'] ;
+            }
         }
 
         try {
