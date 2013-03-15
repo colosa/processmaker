@@ -858,6 +858,8 @@ class Bootstrap
             if (file_exists(PATH_LANGUAGECONT . $namePlugin . '.' . $lang)) {
                 eval('global $translation'.$namePlugin.';');
                 require_once (PATH_LANGUAGECONT . $namePlugin . '.' . $lang);
+            } else {
+                Translation::generateFileTranslationPlugin($namePlugin, $lang);
             }
         }
         return true;

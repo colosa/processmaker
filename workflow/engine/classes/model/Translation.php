@@ -230,6 +230,10 @@ class Translation extends BaseTranslation
     */
     public function generateFileTranslationPlugin ($plugin, $languageId = '')
     {
+        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translation.php')) {
+            return;
+        }
+
         $translation = Array ();
         $translationJS = Array ();
 
