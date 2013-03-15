@@ -868,8 +868,10 @@ class Bootstrap
                 eval('global $translation'.$namePlugin.';');
                 require_once (PATH_LANGUAGECONT . $namePlugin . '.' . $lang);
             } else {
-                eval('global $translation'.$namePlugin.';');
-                require_once (PATH_LANGUAGECONT . $namePlugin . '.en');
+                if (file_exists(PATH_LANGUAGECONT . $namePlugin . '.en')) {
+                    eval('global $translation'.$namePlugin.';');
+                    require_once (PATH_LANGUAGECONT . $namePlugin . '.en');
+                }
             }
         }
         return true;
