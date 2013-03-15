@@ -855,9 +855,23 @@ class Bootstrap
         foreach ($listPluginsActive['_aPluginDetails'] as $key => $value) {
             $namePlugin = trim($key);
             $translation = array();
+            
+            if (!file_exists(PATH_LANGUAGECONT . $namePlugin . '.en')) {
+                Translation::generateFileTranslationPlugin($namePlugin, 'en');
+            }
+            
+            if ( ($lang != 'en') && (!file_exists(PATH_LANGUAGECONT . $namePlugin . '.' . $lang)) ) {
+                Translation::generateFileTranslationPlugin($namePlugin, $lang);
+            }
+
             if (file_exists(PATH_LANGUAGECONT . $namePlugin . '.' . $lang)) {
                 eval('global $translation'.$namePlugin.';');
                 require_once (PATH_LANGUAGECONT . $namePlugin . '.' . $lang);
+            } else {
+                if (file_exists(PATH_LANGUAGECONT . $namePlugin . '.en')) {
+                    eval('global $translation'.$namePlugin.';');
+                    require_once (PATH_LANGUAGECONT . $namePlugin . '.en');
+                }
             }
         }
         return true;
