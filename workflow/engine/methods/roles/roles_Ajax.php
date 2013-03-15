@@ -223,6 +223,11 @@ switch ($REQUEST) {
         $arrUsers = explode( ',', $USR_UID );
         foreach ($arrUsers as $aUID) {
             $RBAC->deleteUserRole( $ROL_UID, $aUID );
+            if ($aUID == '00000000000000000000000000000001') {
+                $sData['USR_UID'] = $aUID;
+                $sData['ROL_UID'] = '00000000000000000000000000000002';
+                $RBAC->assignUserToRole( $sData );
+            }
         }
         break;
     case 'rolesList':

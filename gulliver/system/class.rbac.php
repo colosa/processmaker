@@ -558,10 +558,20 @@ class RBAC
      */
     public function createPermision ($sCode)
     {
-        return $this->permissionsObj->create( array ('PER_CODE' => $sCode
-        ) );
+        return $this->permissionsObj->create( array ('PER_CODE' => $sCode) );
     }
 
+    /**
+     * Return Permision System PROCESSMAKER_ADMIN
+     *
+     * @access public
+     *
+     * @return type
+     */
+    public function getPermisionSystem()
+    {
+        return $this->permissionsObj->getPerSystem();
+    }
     /**
      * loading role by code
      *
