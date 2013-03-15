@@ -24,12 +24,15 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-if (! defined( 'JAVA_BRIDGE_PATH' ))
+if (! defined( 'JAVA_BRIDGE_PATH' )) {
     define( 'JAVA_BRIDGE_PATH', 'JavaBridgePM' );
-if (! defined( 'JAVA_BRIDGE_PORT' ))
+}
+if (! defined( 'JAVA_BRIDGE_PORT' )) {
     define( 'JAVA_BRIDGE_PORT', '8080' );
-if (! defined( 'JAVA_BRIDGE_HOST' ))
+}
+if (! defined( 'JAVA_BRIDGE_HOST' )) {
     define( 'JAVA_BRIDGE_HOST', '127.0.0.1' );
+}
 
 /**
  *
@@ -37,9 +40,9 @@ if (! defined( 'JAVA_BRIDGE_HOST' ))
  */
 class JavaBridgePM
 {
-    var $JavaBridgeDir = JAVA_BRIDGE_PATH;
-    var $JavaBridgePort = JAVA_BRIDGE_PORT;
-    var $JavaBridgeHost = JAVA_BRIDGE_HOST;
+    public $JavaBridgeDir = JAVA_BRIDGE_PATH;
+    public $JavaBridgePort = JAVA_BRIDGE_PORT;
+    public $JavaBridgeHost = JAVA_BRIDGE_HOST;
 
     /**
      * checkJavaExtension
@@ -48,7 +51,7 @@ class JavaBridgePM
      *
      * @return true or false
      */
-    function checkJavaExtension ()
+    public function checkJavaExtension ()
     {
         try {
             if (! extension_loaded( 'java' )) {
@@ -58,8 +61,9 @@ class JavaBridgePM
                     $includedFiles = get_included_files();
                     $found = false;
                     foreach ($includedFiles as $filename) {
-                        if ($urlJavaInc == $filename)
+                        if ($urlJavaInc == $filename) {
                             $found = true;
+                        }
                     }
                     if (! $found) {
                         throw new Exception( 'The PHP/Java Bridge is not defined' );
@@ -86,7 +90,7 @@ class JavaBridgePM
      * @param string $className
      * @return s boolean success
      */
-    function convertValue ($value, $className)
+    public function convertValue ($value, $className)
     {
         // if we are a string, just use the normal conversion
         // methods from the java extension...
@@ -94,10 +98,10 @@ class JavaBridgePM
             if ($className == 'java.lang.String') {
                 $temp = new Java( 'java.lang.String', $value );
                 return $temp;
-            } else if ($className == 'java.lang.Boolean' || $className == 'java.lang.Integer' || $className == 'java.lang.Long' || $className == 'java.lang.Short' || $className == 'java.lang.Double' || $className == 'java.math.BigDecimal') {
+            } elseif ($className == 'java.lang.Boolean' || $className == 'java.lang.Integer' || $className == 'java.lang.Long' || $className == 'java.lang.Short' || $className == 'java.lang.Double' || $className == 'java.math.BigDecimal') {
                 $temp = new Java( $className, $value );
                 return $temp;
-            } else if ($className == 'java.sql.Timestamp' || $className == 'java.sql.Time') {
+            } elseif ($className == 'java.sql.Timestamp' || $className == 'java.sql.Time') {
                 $temp = new Java( $className );
                 $javaObject = $temp->valueOf( $value );
                 return $javaObject;
@@ -119,7 +123,7 @@ class JavaBridgePM
      * @param object $template
      * @return void
      */
-    function generateJrxmlFromDynaform ($outDocUid, $dynaformUid, $template)
+    public function generateJrxmlFromDynaform ($outDocUid, $dynaformUid, $template)
     {
         require_once 'classes/model/Dynaform.php';
         $dyn = new Dynaform();
@@ -129,8 +133,9 @@ class JavaBridgePM
         $reportTpl = PATH_TPL . 'javaBridgePM/classic.xml';
         $reportFilename = PATH_DYNAFORM . $aFields['PRO_UID'] . PATH_SEP . $outDocUid . '.jrxml';
         foreach ($xmlFields as $key => $val) {
-            if ($val->type == 'submit' || $val->type == 'button' || $val->type == 'title' || $val->type == 'subtitle')
+            if ($val->type == 'submit' || $val->type == 'button' || $val->type == 'title' || $val->type == 'subtitle') {
                 unset( $xmlFields[$key] );
+            }
         }
 
         //$sqlSentence = 'SELECT * from ' . $tableName;
@@ -168,6 +173,5 @@ class JavaBridgePM
         $iSize = file_put_contents( $reportFilename, $content );
         printf( "saved %s bytes in file %s \n", $iSize, $reportFilename );
     }
-
 }
 

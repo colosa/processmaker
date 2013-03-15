@@ -31,7 +31,7 @@ Ext.onReady(function(){
             document.location = document.location;
           }
           else{
-            Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+            Ext.Msg.alert( _('ID_REFRESH_LABEL') , _('ID_REFRESH_MESSAGE') );
           }
         }
     });
@@ -262,7 +262,7 @@ Ext.onReady(function(){
     cmodelColumns.push({id:'ADD_TAB_UID', dataIndex: 'ADD_TAB_UID', hidden:true, hideable:false});
     cmodelColumns.push({dataIndex: 'ADD_TAB_TAG', hidden:true, hideable:false});
     cmodelColumns.push({header: _('ID_NAME'), dataIndex: 'ADD_TAB_NAME', width: 300, align:'left', renderer: function(v,p,r){
-      return r.get('TYPE') == 'CLASSIC'? v + '&nbsp<span style="font-size:9px; color:green">(old version)</font>' : v;
+      return r.get('TYPE') == 'CLASSIC'? v + '&nbsp<span style="font-size:9px; color:green">('+ _('ID_OLD_VERSION') +')</font>' : v;
     }});
     cmodelColumns.push({header: _('ID_DESCRIPTION'), dataIndex: 'ADD_TAB_DESCRIPTION', width: 400, hidden:false, align:'left', renderer: function(v,p,r){
       if (r.get('ADD_TAB_TAG')) {
@@ -285,7 +285,7 @@ Ext.onReady(function(){
 
     cmodelColumns.push({dataIndex: "DBS_UID", hidden: true, hideable: false});
 
-    cmodelColumns.push({header: 'Records', dataIndex: 'NUM_ROWS', width: 90, align:'left'});
+    cmodelColumns.push({header: _('ID_RECORDS'), dataIndex: 'NUM_ROWS', width: 90, align:'left'});
 
     if (PRO_UID === false) {
       cmodelColumns.push({header: _('ID_PROCESS'), dataIndex: 'PRO_TITLE', width: 180, align:'left'});
@@ -345,7 +345,7 @@ Ext.onReady(function(){
       listeners: {
         rowdblclick: EditPMTable,
         render: function(){
-          this.loadMask = new Ext.LoadMask(this.body, {msg:'loading'});
+          this.loadMask = new Ext.LoadMask(this.body, {msg: _('ID_LOADING_GRID')});
         }
       },
       view: new Ext.grid.GroupingView({

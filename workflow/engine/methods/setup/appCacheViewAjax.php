@@ -36,6 +36,7 @@ switch ($request) {
         $appCache->setPathToAppCacheFiles( PATH_METHODS . 'setup' . PATH_SEP . 'setupSchemas' . PATH_SEP );
 				
         $res = $appCache->getMySQLVersion();
+        //load translations  G::LoadTranslation
         $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_MYSQL_VERSION' ) ,'value' => $res
         );
 

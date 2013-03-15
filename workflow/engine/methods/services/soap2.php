@@ -61,7 +61,7 @@ function ProcessList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_FACTORY' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2" . G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
 
         return array ("processes" => $o
@@ -105,7 +105,7 @@ function RoleList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_USERS' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
 
         return array ("roles" => $o
@@ -132,7 +132,7 @@ function GroupList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_USERS' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
 
         return array ("groups" => $o
@@ -159,7 +159,7 @@ function DepartmentList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_USERS' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
 
         return array ("departments" => $o
@@ -189,7 +189,7 @@ function CaseList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
         $o->status = '';
         $o->delIndex = '';
@@ -259,7 +259,7 @@ function UserList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_USERS' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
 
         return array ("users" => $o
@@ -287,7 +287,7 @@ function triggerList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
         $o->processId = '';
 
@@ -322,7 +322,7 @@ function outputDocumentList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->filename = '';
         $o->docId = '';
         $o->version = '';
@@ -369,7 +369,7 @@ function inputDocumentList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->filename = '';
         $o->docId = '';
         $o->version = '';
@@ -410,7 +410,7 @@ function inputDocumentProcessList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
         $o->description = '';
 
@@ -434,7 +434,7 @@ function removeDocument ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $result = new wsResponse( 2, "Insufficient privileges to execute this function" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION') );
 
         return $result;
     }
@@ -454,7 +454,7 @@ function SendMessage ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result->getPayloadArray();
     }
@@ -474,7 +474,7 @@ function getCaseInfo ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -494,7 +494,7 @@ function SendVariables ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -533,7 +533,7 @@ function GetVariables ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $result = new wsGetVariableResponse( 2, "You do not have privileges", null );
+        $result = new wsGetVariableResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES'), null );
 
         return $result;
     }
@@ -555,7 +555,7 @@ function GetVariablesNames ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $result = new wsGetVariableResponse( 2, "You do not have privileges", null );
+        $result = new wsGetVariableResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES'), null );
 
         return $result;
     }
@@ -578,7 +578,7 @@ function DerivateCase ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -605,7 +605,7 @@ function RouteCase ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -631,7 +631,7 @@ function executeTrigger ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -655,7 +655,7 @@ function NewCaseImpersonate ($params)
     }
 
     if (ifPermission( $params->sessionId, "PM_CASES" ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -697,7 +697,7 @@ function NewCase ($params)
     }
 
     if (ifPermission( $params->sessionId, "PM_CASES" ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -782,7 +782,7 @@ function AssignUserToGroup ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_USERS' ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result->getPayloadArray();
     }
@@ -811,7 +811,7 @@ function AssignUserToDepartment ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_USERS' ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result->getPayloadArray();
     }
@@ -822,7 +822,7 @@ function AssignUserToDepartment ($params)
     $user = $sessions->getSessionUser( $params->sessionId );
 
     if (! is_array( $user )) {
-        return new wsResponse( 3, 'User not registered in the system' );
+        return new wsResponse( 3, G::LoadTranslation('ID_USER_NOT_REGISTERED_SYSTEM') );
     }
 
     $ws = new wsBase();
@@ -840,7 +840,7 @@ function CreateUser ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_USERS' ) == 0) {
-        $result = new wsCreateUserResponse( 2, "You do not have privileges" );
+        $result = new wsCreateUserResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -861,7 +861,7 @@ function updateUser ($params)
     }
 
     if (ifPermission( $params->sessionId, "PM_USERS" ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -882,7 +882,7 @@ function informationUser($params)
     }
 
     if (ifPermission($params->sessionId, "PM_USERS") == 0) {
-        $result = new wsResponse(2, "You do not have privileges");
+        $result = new wsResponse(2, G::LoadTranslation('ID_NOT_PRIVILEGES'));
 
         return $result;
     }
@@ -904,7 +904,7 @@ function CreateGroup ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_USERS' ) == 0) {
-        $result = new wsCreateGroupResponse( 2, "You do not have privileges", '' );
+        $result = new wsCreateGroupResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES'), '' );
 
         return $result;
     }
@@ -924,7 +924,7 @@ function CreateDepartment ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_USERS' ) == 0) {
-        $result = new wsCreateUserResponse( 2, "You do not have privileges" );
+        $result = new wsCreateUserResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -948,7 +948,7 @@ function TaskList ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2" . G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
 
         return array ("tasks" => $o
@@ -980,7 +980,7 @@ function TaskCase ($params)
     }
 
     if (ifPermission( $params->sessionId, 'PM_CASES' ) == 0) {
-        $o->guid = "2 Insufficient privileges to execute this function";
+        $o->guid = "2".G::LoadTranslation('ID_INSUFFICIENT_PRIVILEGES_FUNCTION');
         $o->name = '';
 
         return array ("taskCases" => $o
@@ -1062,9 +1062,9 @@ function isValidSession ($sessionId)
     $session = $oSessions->verifySession( $sessionId );
 
     if (is_array( $session )) {
-        return new wsResponse( 0, 'Session active' );
+        return new wsResponse( 0, G::LoadTranslation('ID_SESSION_ACTIVE') );
     } else {
-        return new wsResponse( 9, 'Session expired' );
+        return new wsResponse( 9, G::LoadTranslation('ID_SESSION_EXPIRED') );
     }
 }
 
@@ -1118,7 +1118,7 @@ function deleteCase ($params)
     }
 
     if (ifPermission( $params->sessionId, "PM_CASES" ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -1138,7 +1138,7 @@ function cancelCase ($params)
     }
 
     if (ifPermission( $params->sessionId, "PM_CASES" ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -1158,7 +1158,7 @@ function pauseCase ($params)
     }
 
     if (ifPermission( $params->sessionId, "PM_CASES" ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -1179,7 +1179,7 @@ function unpauseCase ($params)
     }
 
     if (ifPermission( $params->sessionId, "PM_CASES" ) == 0) {
-        $result = new wsResponse( 2, "You do not have privileges" );
+        $result = new wsResponse( 2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }
@@ -1199,7 +1199,7 @@ function addCaseNote($params)
     }
 
     if (ifPermission($params->sessionId, "PM_CASES") == 0) {
-        $result = new wsResponse(2, "You do not have privileges");
+        $result = new wsResponse(2, G::LoadTranslation('ID_NOT_PRIVILEGES') );
 
         return $result;
     }

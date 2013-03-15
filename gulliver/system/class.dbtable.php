@@ -39,15 +39,16 @@
  */
 class DBTable
 {
-    var $_dbc;
-    var $_dbses;
-    var $_dset;
-    var $table_name;
-    var $table_keys;
-    var $Fields = null;
-    var $is_new;
-    var $errorLevel;
-    var $debug = false;
+
+    public $_dbc;
+    public $_dbses;
+    public $_dset;
+    public $table_name;
+    public $table_keys;
+    public $Fields = null;
+    public $is_new;
+    public $errorLevel;
+    public $debug = false;
 
     /**
      * Initiate a database conecction using default values
@@ -57,11 +58,11 @@ class DBTable
      * @param object $objConnection conecction string
      * @return void
      */
-    function dBTable ($objConnection = null, $strTable = "", $arrKeys = array( 'UID' ))
+    public function dBTable($objConnection = null, $strTable = "", $arrKeys = array('UID'))
     {
         $this->_dbc = null;
         $this->_dbses = null;
-        $this->SetTo( $objConnection, $strTable, $arrKeys );
+        $this->SetTo($objConnection, $strTable, $arrKeys);
     }
 
     /**
@@ -74,25 +75,25 @@ class DBTable
      * @param array $arrKeys table keys defaultvalue=UID
      * @return void
      */
-    function setTo ($objDBConnection, $strTable = "", $arrKeys = array( 'UID' ))
+    public function setTo($objDBConnection, $strTable = "", $arrKeys = array('UID'))
     {
 
         $this->_dbc = $objDBConnection;
-        if ($this->_dbc != null && strcasecmp( get_class( $objDBConnection ), 'dbconnection' ) == 0) {
-            $this->_dbses = new DBSession( $this->_dbc );
-            $this->_dbses->UseDB( DB_NAME );
+        if ($this->_dbc != null && strcasecmp(get_class($objDBConnection), 'dbconnection') == 0) {
+            $this->_dbses = new DBSession($this->_dbc);
+            $this->_dbses->UseDB(DB_NAME);
         } else {
-            $dberror = PEAR::raiseError( null, DB_ERROR_OBJECT_NOT_DEFINED, null, 'null', "You tried to call to a DBTable function without create an instance of DBConnection", 'G_Error', true );
+            $dberror = PEAR::raiseError(null, DB_ERROR_OBJECT_NOT_DEFINED, null, 'null', "You tried to call to a DBTable function without create an instance of DBConnection", 'G_Error', true);
             //DBconnection::logError( $dberror );
             return $dberror;
         }
         $this->is_new = true;
         $this->Fields = null;
         $this->table_name = $strTable;
-        if (is_array( $arrKeys )) {
+        if (is_array($arrKeys)) {
             $this->table_keys = $arrKeys;
         } else {
-            $this->table_keys = array (0 => $arrKeys
+            $this->table_keys = array(0 => $arrKeys
             );
         }
         $this->errorLevel = $this->_dbc->errorLevel;
@@ -105,23 +106,23 @@ class DBTable
      * @access public
      * @return void
      */
-    function loadEmpty ()
+    public function loadEmpty()
     {
         $stQry = "DESCRIBE `" . $this->table_name . "`";
-        $dset = $this->_dbses->execute( $stQry );
+        $dset = $this->_dbses->execute($stQry);
         //$dset = new DBRecordSet( $this->_dbses->Result );
         $nlim = $dset->Count();
         $this->Fields = null;
-        for ($ncount = 0; $ncount < $nlim; $ncount ++) {
+        for ($ncount = 0; $ncount < $nlim; $ncount++) {
             $data = $dset->Read();
             $fname = $data['Field'];
             $fval = "";
-            $ftypearr = explode( $data['Type'], '(' );
+            $ftypearr = explode($data['Type'], '(');
             $ftype = $ftypearr[0];
 
             if ($data['Key'] == 'PRI') {
-                if (is_array( $this->table_keys )) {
-                    $this->table_keys[count( $this->table_keys ) - 1] = $fname;
+                if (is_array($this->table_keys)) {
+                    $this->table_keys[count($this->table_keys) - 1] = $fname;
                 } else {
                     $this->table_keys[0] = $fname;
                 }
@@ -152,7 +153,7 @@ class DBTable
      * @param string $strWhere string which contains conditions
      * @return strint
      */
-    function loadWhere ($strWhere)
+    public function loadWhere($strWhere)
     {
         $this->Fields = null;
 
@@ -160,8 +161,8 @@ class DBTable
         if ($strWhere != "") {
             $stQry .= " WHERE " . $strWhere;
         }
-        $this->_dset = $this->_dbses->Execute( $stQry, $this->debug, $this->errorLevel );
-        if (DB::isError( $this->_dset )) {
+        $this->_dset = $this->_dbses->Execute($stQry, $this->debug, $this->errorLevel);
+        if (DB::isError($this->_dset)) {
             return $this->_dset;
         }
 
@@ -184,13 +185,13 @@ class DBTable
      * @param array array of arguments key values
      * @return void
      */
-    function load ()
+    public function load()
     {
         //    bug::traceRoute();
         $ncount = 0;
         $stWhere = "";
         $arrKeys = func_get_args();
-        if (isset( $arrKeys[0] ) && is_array( $arrKeys[0] )) {
+        if (isset($arrKeys[0]) && is_array($arrKeys[0])) {
             foreach ($this->table_keys as $key => $val) {
                 if ($stWhere == "") {
                     $stWhere .= " $val = '" . $arrKeys[0][$val] . "' ";
@@ -205,10 +206,10 @@ class DBTable
                 } else {
                     $stWhere .= " AND " . $this->table_keys[$ncount] . "='" . $val . "'";
                 }
-                $ncount ++;
+                $ncount++;
             }
         }
-        return $this->LoadWhere( $stWhere );
+        return $this->LoadWhere($stWhere);
     }
 
     /**
@@ -219,15 +220,15 @@ class DBTable
      * @param eter string seq
      * @return string
      */
-    function nextvalPGSql ($seq)
+    public function nextvalPGSql($seq)
     {
         $stQry = " Select NEXTVAL( '$seq' ) ";
-        $dset = $this->_dbses->Execute( $stQry );
+        $dset = $this->_dbses->Execute($stQry);
         $row = $dset->Read();
-        if (is_array( $row )) {
+        if (is_array($row)) {
             return $row['NEXTVAL'];
         }
-        die( "Sequence '$seq' is not exist!!" );
+        die("Sequence '$seq' is not exist!!");
         return - 1;
     }
 
@@ -239,11 +240,11 @@ class DBTable
      * @return boolean
      *
      */
-    function insert ()
+    public function insert()
     {
         $strFields = "";
         $strValues = "";
-        if (defined( 'DB_ADAPTER' )) {
+        if (defined('DB_ADAPTER')) {
             $DBEngine = DB_ADAPTER;
         } else {
             $DBEngine = 'mysql';
@@ -251,23 +252,23 @@ class DBTable
         foreach ($this->Fields as $field => $val) {
             $strFields .= $field . ",";
             $iskey = false;
-            if (isset( $this->table_keys ) && is_array( $this->table_keys )) {
-                $iskey = in_array( $field, $this->table_keys ) && strtoupper( substr( trim( $val ), 0, 7 ) ) == "NEXTVAL";
+            if (isset($this->table_keys) && is_array($this->table_keys)) {
+                $iskey = in_array($field, $this->table_keys) && strtoupper(substr(trim($val), 0, 7)) == "NEXTVAL";
             }
-            $dbcType = isset( $this->_dbc->type ) ? $this->_dbc->type : $DBEngine;
+            $dbcType = isset($this->_dbc->type) ? $this->_dbc->type : $DBEngine;
             // Commented by new format of textarea in javascript
-            if (! $iskey) {
+            if (!$iskey) {
                 $val = "'" . $val . "'";
             }
-                ///--  $val = "'" . G::sqlEscape( $val , $dbcType ) . "'";
+            ///--  $val = "'" . G::sqlEscape( $val , $dbcType ) . "'";
             $strValues .= $val . ", ";
         }
-        $strFields = substr( $strFields, 0, strlen( $strFields ) - 1 );
-        $strValues = substr( $strValues, 0, strlen( $strValues ) - 1 );
+        $strFields = substr($strFields, 0, strlen($strFields) - 1);
+        $strValues = substr($strValues, 0, strlen($strValues) - 1);
 
         $stQry = "INSERT INTO `" . $this->table_name . "` ( " . $strFields . " ) values ( " . $strValues . " ) ";
 
-        $result = $this->_dbses->Execute( $stQry, $this->debug );
+        $result = $this->_dbses->Execute($stQry, $this->debug);
         return $result;
     }
 
@@ -278,14 +279,14 @@ class DBTable
      * @access public
      * @return boolean
      */
-    function update ()
+    public function update()
     {
         $stQry = "";
 
         $stWhere = '';
-        $remainKeys = array ();
+        $remainKeys = array();
 
-        if (defined( 'DB_ADAPTER' )) {
+        if (defined('DB_ADAPTER')) {
             $DBEngine = DB_ADAPTER;
         } else {
             $DBEngine = 'mysql';
@@ -296,21 +297,21 @@ class DBTable
         }
         foreach ($this->Fields as $field => $val) {
             $iskey = false;
-            $iskey = in_array( $field, $this->table_keys );
+            $iskey = in_array($field, $this->table_keys);
             if ($iskey == false) {
                 $stQry .= $field . "='" . $val . "', ";
                 // Commented by new format of textarea in javascript
                 ///-- $stQry .= $field . "='" . G::sqlEscape ( $val, isset( $this->_dbc->type) ? $this->_dbc->type : $DBEngine ) . "', ";
             } else {
                 if ($stWhere == "") {
-                    $stWhere .= $field . "='" . G::sqlEscape( $val, isset( $this->_dbc->type ) ? $this->_dbc->type : $DBEngine ) . "'";
+                    $stWhere .= $field . "='" . G::sqlEscape($val, isset($this->_dbc->type) ? $this->_dbc->type : $DBEngine ) . "'";
                 } else {
-                    $stWhere .= " AND " . $field . "='" . G::sqlEscape( $val, isset( $this->_dbc->type ) ? $this->_dbc->type : $DBEngine ) . "'";
+                    $stWhere .= " AND " . $field . "='" . G::sqlEscape($val, isset($this->_dbc->type) ? $this->_dbc->type : $DBEngine ) . "'";
                 }
                 $remainKeys[$field] = true;
             }
         }
-        foreach ($remainKeys as $field => $bool)
+        foreach ($remainKeys as $field => $bool) {
             if ($bool == false) {
                 if ($stWhere != "") {
                     $stWhere = " AND ";
@@ -318,20 +319,21 @@ class DBTable
                 $stWhere .= $field . "= ''";
                 $remainKeys[$field] = true;
             }
+        }
 
-        $stQry = trim( $stQry );
-        $stQry = substr( $stQry, 0, strlen( $stQry ) - 1 ); //to remove the last comma ,
-        if (! $stQry) {
+        $stQry = trim($stQry);
+        $stQry = substr($stQry, 0, strlen($stQry) - 1); //to remove the last comma ,
+        if (!$stQry) {
             return;
         }
         $stQry = "UPDATE `" . $this->table_name . "` SET  " . $stQry;
-        $stWhere = trim( $stWhere );
+        $stWhere = trim($stWhere);
         if ($stWhere != "") {
             $stQry .= " WHERE " . $stWhere;
         }
         $result = false;
 
-        $result = $this->_dbses->execute( $stQry, $this->debug, $this->errorLevel );
+        $result = $this->_dbses->execute($stQry, $this->debug, $this->errorLevel);
         $this->is_new = false;
         return $result;
     }
@@ -345,7 +347,7 @@ class DBTable
      * @access public
      * @return boolean
      */
-    function save ()
+    public function save()
     {
         if ($this->is_new == true) {
             return $this->Insert();
@@ -361,13 +363,13 @@ class DBTable
      * @access public
      * @return boolean
      */
-    function delete ()
+    public function delete()
     {
         $stQry = "delete from `" . $this->table_name . "` ";
 
         $stWhere = '';
-        $remainKeys = array ();
-        if (defined( 'DB_ADAPTER' )) {
+        $remainKeys = array();
+        if (defined('DB_ADAPTER')) {
             $DBEngine = DB_ADAPTER;
         } else {
             $DBEngine = 'mysql';
@@ -375,21 +377,21 @@ class DBTable
         foreach ($this->table_keys as $k => $v) {
             $remainKeys[$v] = false;
         }
-        if (is_array( $this->Fields )) {
+        if (is_array($this->Fields)) {
             foreach ($this->Fields as $field => $val) {
                 $iskey = false;
-                $iskey = in_array( $field, $this->table_keys );
+                $iskey = in_array($field, $this->table_keys);
                 if ($iskey == true) {
                     if ($stWhere == "") {
-                        $stWhere .= $field . "='" . G::sqlEscape( $val, isset( $this->_dbc->type ) ? $this->_dbc->type : $DBEngine ) . "'";
+                        $stWhere .= $field . "='" . G::sqlEscape($val, isset($this->_dbc->type) ? $this->_dbc->type : $DBEngine ) . "'";
                     } else {
-                        $stWhere .= " AND " . $field . "='" . G::sqlEscape( $val, isset( $this->_dbc->type ) ? $this->_dbc->type : $DBEngine ) . "'";
+                        $stWhere .= " AND " . $field . "='" . G::sqlEscape($val, isset($this->_dbc->type) ? $this->_dbc->type : $DBEngine ) . "'";
                     }
                     $remainKeys[$field] = true;
                 }
             }
         }
-        foreach ($remainKeys as $field => $bool)
+        foreach ($remainKeys as $field => $bool) {
             if ($bool == false) {
                 if ($stWhere != "") {
                     $stWhere .= " AND ";
@@ -397,17 +399,18 @@ class DBTable
                 $stWhere .= $field . "= ''";
                 $remainKeys[$field] = true;
             }
+        }
 
-        $stQry = trim( $stQry );
-        $stWhere = trim( $stWhere );
+        $stQry = trim($stQry);
+        $stWhere = trim($stWhere);
         if ($stWhere == '') {
-            $dberror = PEAR::raiseError( null, G_ERROR_WARNING_MESSAGE, null, 'null', "You tried to call delete method without WHERE clause, if you want to delete all records use dbsession", 'G_Error', true );
-            DBconnection::logError( $dberror, $this->errorLevel );
+            $dberror = PEAR::raiseError(null, G_ERROR_WARNING_MESSAGE, null, 'null', "You tried to call delete method without WHERE clause, if you want to delete all records use dbsession", 'G_Error', true);
+            DBconnection::logError($dberror, $this->errorLevel);
             return $dberror;
         }
         $stQry .= " WHERE " . $stWhere;
 
-        $result = $this->_dbses->execute( $stQry, $this->debug, $this->errorLevel );
+        $result = $this->_dbses->execute($stQry, $this->debug, $this->errorLevel);
         $this->is_new = false;
         return $result;
     }
@@ -421,9 +424,9 @@ class DBTable
      * @access public
      * @return boolean
      */
-    function next ()
+    public function next()
     {
         $this->Fields = $this->_dset->read();
     }
 }
-
+ 

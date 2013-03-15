@@ -2,14 +2,14 @@
 
 if (! isset( $_REQUEST['action'] )) {
     $res['success'] = false;
-    $res['error'] = $res['message'] = 'You may request an action';
+    $res['error'] = $res['message'] = G::LoadTranslation('ID_REQUEST_ACTION');
 
     print G::json_encode( $res );
     die();
 }
 if (! function_exists( $_REQUEST['action'] )) {
     $res['success'] = false;
-    $res['error'] = $res['message'] = 'The requested action does not exist';
+    $res['error'] = $res['message'] = G::LoadTranslation('ID_REQUEST_ACTION_NOT_EXIST');
 
     print G::json_encode( $res );
     die();
@@ -18,7 +18,7 @@ $restrictedFunctions = array ('copy_skin_folder','addTarFolder'
 );
 if (in_array( $_REQUEST['action'], $restrictedFunctions )) {
     $res['success'] = false;
-    $res['error'] = $res['message'] = 'The requested action does not exist *';
+    $res['error'] = $res['message'] = G::LoadTranslation('ID_REQUEST_ACTION_NOT_EXIST');
     print G::json_encode( $res );
     die();
 }

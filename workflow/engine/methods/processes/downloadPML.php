@@ -24,7 +24,7 @@ try {
     //getting the ProUid from the file recently downloaded
     $oData = $oProcess->getProcessData( $localPath . $newfilename );
     if (is_null( $oData )) {
-        throw new Exception( 'Error' );
+        throw new Exception( G::LoadTranslation( 'ID_ERROR' ) );
     }
     $Fields['IMPORT_OPTION'] = 2;
     $Fields['PRO_FILENAME'] = $newfilename;

@@ -366,7 +366,7 @@ class pmTablesProxy extends HttpProxyController
                     $rtOld = new ReportTable();
                     $existReportTableOld = $rtOld->load( $row->id );
                     if (count($existReportTableOld) == 0) {
-                        throw new Exception( "Table does not exist... skipped!\n" );
+                        throw new Exception( G::LoadTranslation('ID_TABLE_NOT_EXIST_SKIPPED') );
                     }
                 }
 
@@ -388,10 +388,10 @@ class pmTablesProxy extends HttpProxyController
 
         if ($errors == '') {
             $result->success = true;
-            $result->message = "$count tables removed Successfully.";
+            $result->message = $count.G::LoadTranslation( 'ID_TABLES_REMOVED_SUCCESSFULLY' );
         } else {
             $result->success = false;
-            $result->message = "$count tables removed but with errors.\n$errors";
+            $result->message = $count. G::LoadTranslation( 'ID_TABLES_REMOVED_WITH_ERRORS' ) .$errors;
         }
 
         $result->errors = $errors;
@@ -486,7 +486,7 @@ class pmTablesProxy extends HttpProxyController
                     foreach ($obj->getValidationFailures() as $objValidationFailure) {
                         $msg .= $objValidationFailure->getMessage() . "\n";
                     }
-                    throw new Exception( 'Error trying insert into "' . $table['ADD_TAB_NAME'] . "\"\n" . $msg );
+                    throw new Exception( G::LoadTranslation('ID_ERROR_TRYING_INSERT'). '"' . $table['ADD_TAB_NAME'] . "\"\n" . $msg );
                 }
 
                 $index = G::encrypt( implode( ',', $primaryKeysValues ), 'pmtable' );
@@ -496,7 +496,7 @@ class pmTablesProxy extends HttpProxyController
 
             if ($toSave) {
                 $result->success = true;
-                $result->message = 'Record saved successfully';
+                $result->message = G::LoadTranslation('ID_RECORD_SAVED_SUCCESFULLY');
                 $result->rows = $obj->toArray( BasePeer::TYPE_FIELDNAME );
                 $result->rows['__index__'] = $index;
             } else {
@@ -1374,8 +1374,7 @@ class pmTablesProxy extends HttpProxyController
             $excludeFieldsList = array ('title','subtitle','link','file','button','reset','submit','listbox','checkgroup','grid','javascript', ''
             );
 
-            $labelFieldsTypeList = array ('dropdown','radiogroup'
-            );
+            $labelFieldsTypeList = array ('dropdown','radiogroup');
             G::loadSystem( 'dynaformhandler' );
             $index = 0;
 

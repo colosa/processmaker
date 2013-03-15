@@ -17,7 +17,7 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle, proUid, taskUid)
 {
   Ext.MessageBox.show({
     msg: _('ID_CASE_NOTES_LOADING'),
-    progressText: 'Saving...',
+    progressText: _('ID_SAVING'),
     width:300,
     wait:true,
     waitConfig: {interval:200},
@@ -385,7 +385,7 @@ function statusBarMessage( msg, isLoading, success ) {
       });
     } else {
       statusBar.setStatus({
-        text: 'Error: ' + msg,
+        text: _('ID_ERROR') + ': ' + msg,
         iconCls: 'x-status-error',
         clear: true
       });

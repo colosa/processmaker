@@ -2132,23 +2132,23 @@ function __()
 
   var existTranslations = true;
   var existIdLabel = true;
-  eval("if( typeof TRANSLATIONS_" + argv[0] + " != 'undefined' && TRANSLATIONS_" + argv[0] + ") { existTranslations = true; } else { existTranslations = false; }");
-  if (existTranslations) {  
-    eval("if( typeof TRANSLATIONS_" + argv[0] + "[argv[1]] != 'undefined' ) { existIdLabel = true; } else { existIdLabel = false; }");
+  eval("if( typeof TRANSLATIONS_" + argv[0].toUpperCase() + " != 'undefined' && TRANSLATIONS_" + argv[0].toUpperCase() + ") { existTranslations = true; } else { existTranslations = false; }");
+  if (existTranslations) {
+    eval("if( typeof TRANSLATIONS_" + argv[0].toUpperCase() + "[argv[1]] != 'undefined' ) { existIdLabel = true; } else { existIdLabel = false; }");
     if (existIdLabel) {
       if (argc > 2) {
-        eval("trn = TRANSLATIONS_" + argv[0] + "[argv[0]];");
+        eval("trn = TRANSLATIONS_" + argv[0].toUpperCase() + "[argv[0]];");
         for (i = 2; i < argv.length; i++) {
           trn = trn.replace('{'+(i-2)+'}', argv[i]);
         }        
       } else {
-        eval("trn = TRANSLATIONS_" + argv[0] + "[argv[0]];");
+        eval("trn = TRANSLATIONS_" + argv[0].toUpperCase() + "[argv[1]];");
       }
     } else {
       trn = '**' + argv[1] + '**';
     }
   } else {
-    PMExt.error('Processmaker JS Core Error', 'The TRANSLATIONS ' + argv[0] + ' global object is not loaded!');
+    PMExt.error('Processmaker JS Core Error', 'The TRANSLATIONS ' + argv[0].toUpperCase() + ' global object is not loaded!');
     trn = '';
   }
   return trn;

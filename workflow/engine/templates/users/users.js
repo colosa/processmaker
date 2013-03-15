@@ -544,8 +544,8 @@ Ext.onReady(function () {
               },
               failure: function () {
                 Ext.MessageBox.show({
-                  title: 'Error',
-                  msg: 'Failed to store data',
+                  title: _('ID_ERROR'),
+                  msg: _('ID_FAILED_STORE_DATA'),
                   buttons: Ext.MessageBox.OK,
                   animEl: 'mb9',
                   icon: Ext.MessageBox.ERROR
@@ -1015,8 +1015,8 @@ function validateUserName() {
     },
     failure: function () {
       Ext.MessageBox.show({
-        title: 'Error',
-        msg: 'Failed to store data',
+        title: _('ID_ERROR'),
+        msg: _('ID_FAILED_STORE_DATA'),
         buttons: Ext.MessageBox.OK,
         animEl: 'mb9',
         icon: Ext.MessageBox.ERROR

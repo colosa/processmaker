@@ -406,10 +406,10 @@ function expandNode()
                     case "BOTH":
                         $strExpander = null;
                         $mimeInformation = getMime($obj["APP_DOC_FILENAME"] . ".pdf");
-                        $strExpander = $strExpander . "<a href=\"javascript:openActionDialog(this, 'download', 'pdf');\" style=\"color: #000000; text-decoration: none;\"><img src=\"/images/documents/extension/pdf.png\" style=\"margin-left: 25px; border: 0;\" alt=\"\" /> <b>" . $obj["APP_DOC_FILENAME"] . ".pdf</b> (" . $mimeInformation["description"] . ")</a>";
+                        $strExpander = $strExpander . "<a href=\"javascript:;\" onclick=\"openActionDialog(this, 'download', 'pdf'); return false;\" style=\"color: #000000; text-decoration: none;\"><img src=\"/images/documents/extension/pdf.png\" style=\"margin-left: 25px; border: 0;\" alt=\"\" /> <b>" . $obj["APP_DOC_FILENAME"] . ".pdf</b> (" . $mimeInformation["description"] . ")</a>";
                         $strExpander = $strExpander . "<br />";
                         $mimeInformation = getMime($obj["APP_DOC_FILENAME"] . ".doc");
-                        $strExpander = $strExpander . "<a href=\"javascript:openActionDialog(this, 'download', 'doc');\" style=\"color: #000000; text-decoration: none;\"><img src=\"/images/documents/extension/doc.png\" style=\"margin-left: 25px; border: 0;\" alt=\"\" /> <b>" . $obj["APP_DOC_FILENAME"] . ".doc</b> (" . $mimeInformation["description"] . ")</a>";
+                        $strExpander = $strExpander . "<a href=\"javascript:;\" onclick=\"openActionDialog(this, 'download', 'doc'); return false;\" style=\"color: #000000; text-decoration: none;\"><img src=\"/images/documents/extension/doc.png\" style=\"margin-left: 25px; border: 0;\" alt=\"\" /> <b>" . $obj["APP_DOC_FILENAME"] . ".doc</b> (" . $mimeInformation["description"] . ")</a>";
 
                         $tempTree["outDocGenerate"] = $strExpander;
 
@@ -944,8 +944,8 @@ function copyMoveAction($type)
     $itemField["displayField"]  = "FOLDER_NAME";
     $itemField["selectOnFocus"] = true;
     $itemField["tpl"]           = '<tpl for="."><div ext:qtip="{field2}" class="x-combo-list-item">{field2}</div></tpl>';
-    $itemField["fieldLabel"]    = "Destination";
-    $itemField["emptyText"]     = "Select a directory...";
+    $itemField["fieldLabel"]    = G::LoadTranslation('ID_DESTINATION');
+    $itemField["emptyText"]     = G::LoadTranslation('ID_SELECT_DIRECTORY');
     $itemField["width"] = 390;
     $itemField["allowBlank"]=false;
     $copyDialog["items"][]=$itemField;
@@ -1359,11 +1359,11 @@ function uploadExternalDocument()
                     $response['message']=$err_msg;
                     $response['success']=false;
                 } elseif ($emptyInstances==$uploadedInstances) {
-                    $response['error']="You may upload at least one file";
-                    $response['message']="You may upload at least one file";
+                    $response['error']= G::LoadTranslation('ID_UPLOAD_LEAST_FILE');
+                    $response['message']= G::LoadTranslation('ID_UPLOAD_LEAST_FILE');
                     $response['success']=false;
                 } else {
-                    $response['error']="Upload complete";
+                    $response['error']= G::LoadTranslation('ID_UPLOAD_COMPLETE');
                     $response['message']="Upload complete";
                     $response['success']=true;
                 }
@@ -1409,7 +1409,7 @@ function newFolder()
     $formNewFolder["id"]= "simpleform";
     $formNewFolder["labelWidth"]=125;
     $formNewFolder["url"]="../appFolder/appFolderAjax.php";
-    $formNewFolder["dialogtitle"]= "Create New Folder";
+    $formNewFolder["dialogtitle"]= G::LoadTranslation('ID_CREATE_FOLDER');
     $formNewFolder["frame"]= true;
     $formNewFolder["items"]= array();
 

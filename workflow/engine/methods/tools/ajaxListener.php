@@ -1,4 +1,5 @@
 <?php
+
 /**
  * tools/ajaxListener.php Ajax Listener for Cases rpc requests
  *
@@ -21,47 +22,45 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-
 /**
  *
  * @author Erik Amaru Ortiz <erik@colosa.com>
  * @date Jan 10th, 2010
  */
-
 require "classes/model/Translation.php";
 
 $action = $_REQUEST['action'];
-unset( $_REQUEST['action'] );
+unset($_REQUEST['action']);
 $ajax = new Ajax();
-$ajax->$action( $_REQUEST );
+$ajax->$action($_REQUEST);
 
 class Ajax
 {
 
-    function getList ($params)
+    public function getList($params)
     {
-        $search = isset( $params['search'] ) ? $params['search'] : null;
-        $params['dateFrom'] = str_replace( 'T00:00:00', '', $params['dateFrom'] );
-        $params['dateTo'] = str_replace( 'T00:00:00', '', $params['dateTo'] );
-        $result = Translation::getAll( 'en', $params['start'], $params['limit'], $search, $params['dateFrom'], $params['dateTo'] );
+        $search = isset($params['search']) ? $params['search'] : null;
+        $params['dateFrom'] = str_replace('T00:00:00', '', $params['dateFrom']);
+        $params['dateTo'] = str_replace('T00:00:00', '', $params['dateTo']);
+        $result = Translation::getAll('en', $params['start'], $params['limit'], $search, $params['dateFrom'], $params['dateTo']);
         //$result = Translation::getAll('en', $params['start'], $params['limit'], $search);
 
 
-        /*foreach($result->data as $i=>$row){
-        $result->data[$i]['TRN_VALUE'] = substr($row['TRN_VALUE'], 0, 15) . '...';
-        }*/
+        /* foreach($result->data as $i=>$row){
+          $result->data[$i]['TRN_VALUE'] = substr($row['TRN_VALUE'], 0, 15) . '...';
+          } */
 
-        echo G::json_encode( $result );
+        echo G::json_encode($result);
     }
 
-    function save ()
+    public function save()
     {
         try {
             require_once ("classes/model/Translation.php");
             $id = $_POST['id'];
-            $label = preg_replace( "[\n|\r|\n\r]", ' ', $_POST['label'] );
+            $label = preg_replace("[\n|\r|\n\r]", ' ', $_POST['label']);
 
-            $res = Translation::addTranslation( 'LABEL', $id, 'en', $label );
+            $res = Translation::addTranslation('LABEL', $id, 'en', $label);
             if ($res['codError'] < 0) {
                 $result->success = false;
                 $result->msg = $res['message'];
@@ -69,51 +68,48 @@ class Ajax
                 $result->success = true;
                 $result->msg = 'Label ' . $id . ' saved Successfully!';
             }
-
         } catch (Exception $e) {
             $result->success = false;
             $result->msg = $e->getMessage();
         }
-        print G::json_encode( $result );
+        print G::json_encode($result);
     }
 
-    function delete ()
+    public function delete()
     {
         require_once ("classes/model/Translation.php");
-        $ids = explode( ',', $_POST['IDS'] );
+        $ids = explode(',', $_POST['IDS']);
         $category = 'LABEL';
 
         try {
             foreach ($ids as $id) {
-                $tr = TranslationPeer::retrieveByPK( $category, $id, 'en' );
-                if ((is_object( $tr ) && get_class( $tr ) == 'Translation')) {
+                $tr = TranslationPeer::retrieveByPK($category, $id, 'en');
+                if ((is_object($tr) && get_class($tr) == 'Translation')) {
                     $tr->delete();
                 }
             }
 
             $result->success = true;
             $result->msg = 'Deleted Successfully!';
-
         } catch (Exception $e) {
             $result->success = false;
             $result->msg = $e->getMessage();
         }
-        print G::json_encode( $result );
+        print G::json_encode($result);
     }
 
-    function rebuild ()
+    public function rebuild()
     {
         try {
             require_once ("classes/model/Translation.php");
             $t = new Translation();
-            $result = Translation::generateFileTranslation( 'en' );
+            $result = Translation::generateFileTranslation('en');
             $result['success'] = true;
-
         } catch (Exception $e) {
             $result->success = false;
             $result->msg = $e->getMessage();
         }
-        print G::json_encode( $result );
+        print G::json_encode($result);
     }
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * processes/ajaxListener.php Ajax Listener for Cases rpc requests
  *
@@ -21,67 +22,64 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-
 /**
  *
  * @author Erik Amaru Ortiz <erik@colosa.com>
  * @date Jan 10th, 2010
  */
-
 $action = $_REQUEST['action'];
-unset( $_REQUEST['action'] );
+unset($_REQUEST['action']);
 
 $ajax = new Ajax();
-$ajax->$action( $_REQUEST );
+$ajax->$action($_REQUEST);
 
 class Ajax
 {
 
-    function categoriesList ()
+    public function categoriesList()
     {
         require_once "classes/model/ProcessCategory.php";
 
         $processCategory = new ProcessCategory();
-        $defaultOption = Array ();
-        $defaultOption[] = Array ('CATEGORY_UID' => '<reset>','CATEGORY_NAME' => G::LoadTranslation( 'ID_ALL' )
-        );
-        $defaultOption[] = Array ('CATEGORY_UID' => '','CATEGORY_NAME' => G::LoadTranslation( 'ID_PROCESS_NO_CATEGORY' )
-        );
+        $defaultOption = Array();
+        $defaultOption[] = Array('CATEGORY_UID' => '<reset>', 'CATEGORY_NAME' => G::LoadTranslation('ID_ALL'));
+        $defaultOption[] = Array('CATEGORY_UID' => '', 'CATEGORY_NAME' => G::LoadTranslation('ID_PROCESS_NO_CATEGORY'));
 
-        $response->rows = array_merge( $defaultOption, $processCategory->getAll( 'array' ) );
+        $response->rows = array_merge($defaultOption, $processCategory->getAll('array'));
 
-        echo G::json_encode( $response );
+        echo G::json_encode($response);
     }
 
-    function processCategories ()
+    public function processCategories()
     {
         require_once "classes/model/ProcessCategory.php";
 
         $processCategory = new ProcessCategory();
-        $defaultOption = Array ();
-        $defaultOption[] = Array ('CATEGORY_UID' => '','CATEGORY_NAME' => G::LoadTranslation( 'ID_PROCESS_NO_CATEGORY' )
-        );
+        $defaultOption = Array();
+        $defaultOption[] = Array('CATEGORY_UID' => '', 'CATEGORY_NAME' => G::LoadTranslation('ID_PROCESS_NO_CATEGORY'));
 
-        $response->rows = array_merge( $defaultOption, $processCategory->getAll( 'array' ) );
+        $response->rows = array_merge($defaultOption, $processCategory->getAll('array'));
 
-        echo G::json_encode( $response );
+        echo G::json_encode($response);
     }
 
-    function saveProcess ()
+    public function saveProcess()
     {
         try {
             require_once 'classes/model/Task.php';
-            G::LoadClass( 'processMap' );
+            G::LoadClass('processMap');
             $oProcessMap = new ProcessMap();
 
-            if (! isset( $_POST['PRO_UID'] )) {
+            if (!isset($_POST['PRO_UID'])) {
 
-                if (Process::existsByProTitle( $_POST['PRO_TITLE'] )) {
-                    $result = array ('success' => false,'msg' => 'Process Save Error','errors' => array ('PRO_TITLE' => G::LoadTranslation( 'ID_PROCESSTITLE_ALREADY_EXISTS', SYS_LANG, $_POST )
-                    )
+                if (Process::existsByProTitle($_POST['PRO_TITLE'])) {
+                    $result = array(
+                        'success' => false,
+                        'msg'     => 'Process Save Error',
+                        'errors'  => array('PRO_TITLE' => G::LoadTranslation('ID_PROCESSTITLE_ALREADY_EXISTS', SYS_LANG, $_POST))
                     );
-                    print G::json_encode( $result );
-                    exit( 0 );
+                    print G::json_encode($result);
+                    exit(0);
                 }
 
                 $processData['USR_UID'] = $_SESSION['USER_LOGGED'];
@@ -89,138 +87,135 @@ class Ajax
                 $processData['PRO_DESCRIPTION'] = $_POST['PRO_DESCRIPTION'];
                 $processData['PRO_CATEGORY'] = $_POST['PRO_CATEGORY'];
 
-                $sProUid = $oProcessMap->createProcess( $processData );
+                $sProUid = $oProcessMap->createProcess($processData);
 
                 //call plugins
                 $oData['PRO_UID'] = $sProUid;
-                $oData['PRO_TEMPLATE'] = (isset( $_POST['PRO_TEMPLATE'] ) && $_POST['PRO_TEMPLATE'] != '') ? $_POST['form']['PRO_TEMPLATE'] : '';
+                $oData['PRO_TEMPLATE'] = (isset($_POST['PRO_TEMPLATE']) && $_POST['PRO_TEMPLATE'] != '') ? $_POST['form']['PRO_TEMPLATE'] : '';
                 $oData['PROCESSMAP'] = $oProcessMap;
 
                 $oPluginRegistry = & PMPluginRegistry::getSingleton();
-                $oPluginRegistry->executeTriggers( PM_NEW_PROCESS_SAVE, $oData );
-
+                $oPluginRegistry->executeTriggers(PM_NEW_PROCESS_SAVE, $oData);
             } else {
                 //$oProcessMap->updateProcess($_POST['form']);
                 $sProUid = $_POST['PRO_UID'];
             }
 
             //Save Calendar ID for this process
-            if (isset( $_POST['PRO_CALENDAR'] )) {
-                G::LoadClass( "calendar" );
+            if (isset($_POST['PRO_CALENDAR'])) {
+                G::LoadClass("calendar");
                 $calendarObj = new Calendar();
-                $calendarObj->assignCalendarTo( $sProUid, $_POST['PRO_CALENDAR'], 'PROCESS' );
+                $calendarObj->assignCalendarTo($sProUid, $_POST['PRO_CALENDAR'], 'PROCESS');
             }
 
             $result->success = true;
             $result->PRO_UID = $sProUid;
-            $result->msg = G::LoadTranslation( 'ID_CREATE_PROCESS_SUCCESS' );
+            $result->msg = G::LoadTranslation('ID_CREATE_PROCESS_SUCCESS');
         } catch (Exception $e) {
             $result->success = false;
             $result->msg = $e->getMessage();
         }
 
-        print G::json_encode( $result );
+        print G::json_encode($result);
     }
 
-    function changeStatus ()
+    public function changeStatus()
     {
-        $ids = explode( ',', $_REQUEST['UIDS'] );
+        $ids = explode(',', $_REQUEST['UIDS']);
 
-        G::LoadClass( 'processes' );
+        G::LoadClass('processes');
         $oProcess = new Processes();
-        if (count( $ids ) > 0) {
-            foreach ($ids as $id)
-                $oProcess->changeStatus( $id );
+        if (count($ids) > 0) {
+            foreach ($ids as $id) {
+                $oProcess->changeStatus($id);
+            }
         }
     }
 
-    function changeDebugMode ()
+    public function changeDebugMode()
     {
-        $ids = explode( ',', $_REQUEST['UIDS'] );
+        $ids = explode(',', $_REQUEST['UIDS']);
 
-        G::LoadClass( 'processes' );
+        G::LoadClass('processes');
         $oProcess = new Processes();
-        if (count( $ids ) > 0) {
-            foreach ($ids as $id)
-                $oProcess->changeDebugMode( $id );
+        if (count($ids) > 0) {
+            foreach ($ids as $id) {
+                $oProcess->changeDebugMode($id);
+            }
         }
     }
 
-    function getUsers ($params)
+    public function getUsers($params)
     {
         require_once 'classes/model/Users.php';
-        G::LoadClass( 'configuration' );
+        G::LoadClass('configuration');
         $conf = new Configurations();
 
-        $search = isset( $params['search'] ) ? $params['search'] : null;
-        $users = Users::getAll( $params['start'], $params['limit'], $search );
+        $search = isset($params['search']) ? $params['search'] : null;
+        $users = Users::getAll($params['start'], $params['limit'], $search);
 
         foreach ($users->data as $i => $user) {
-            $users->data[$i]['USER'] = $conf->getEnvSetting( 'format', Array ('userName' => $user['USR_USERNAME'],'firstName' => $user['USR_FIRSTNAME'],'lastName' => $user['USR_LASTNAME']
-            ) );
+            $users->data[$i]['USER'] = $conf->getEnvSetting('format', Array('userName' => $user['USR_USERNAME'], 'firstName' => $user['USR_FIRSTNAME'], 'lastName' => $user['USR_LASTNAME']));
         }
-        print G::json_encode( $users );
+        print G::json_encode($users);
     }
 
-    function getGroups ($params)
+    public function getGroups($params)
     {
         require_once 'classes/model/Groupwf.php';
-        $search = isset( $params['search'] ) ? $params['search'] : null;
-        $groups = Groupwf::getAll( $params['start'], $params['limit'], $search );
+        $search = isset($params['search']) ? $params['search'] : null;
+        $groups = Groupwf::getAll($params['start'], $params['limit'], $search);
 
-        print G::json_encode( $groups );
+        print G::json_encode($groups);
     }
 
-    function assignUsersTask ($param)
+    public function assignUsersTask($param)
     {
         try {
             require_once 'classes/model/TaskUser.php';
             require_once 'classes/model/Task.php';
             $oTaskUser = new TaskUser();
-            $UIDS = explode( ',', $param['UIDS'] );
+            $UIDS = explode(',', $param['UIDS']);
             $TU_TYPE = 1;
 
             foreach ($UIDS as $UID) {
-                if ($_POST['TU_RELATION'] == 1)
-                    $oTaskUser->create( array ('TAS_UID' => $param['TAS_UID'],'USR_UID' => $UID,'TU_TYPE' => $TU_TYPE,'TU_RELATION' => 1
-                    ) );
-                else
-                    $oTaskUser->create( array ('TAS_UID' => $param['TAS_UID'],'USR_UID' => $UID,'TU_TYPE' => $TU_TYPE,'TU_RELATION' => 2
-                    ) );
+                if ($_POST['TU_RELATION'] == 1) {
+                    $oTaskUser->create(array('TAS_UID' => $param['TAS_UID'], 'USR_UID' => $UID, 'TU_TYPE' => $TU_TYPE, 'TU_RELATION' => 1));
+                } else {
+                    $oTaskUser->create(array('TAS_UID' => $param['TAS_UID'], 'USR_UID' => $UID, 'TU_TYPE' => $TU_TYPE, 'TU_RELATION' => 2));
+                }
             }
-            $task = TaskPeer::retrieveByPk( $param['TAS_UID'] );
+            $task = TaskPeer::retrieveByPk($param['TAS_UID']);
 
             $result->success = true;
-            if (count( $UIDS ) > 1)
-                $result->msg = __( 'ID_ACTORS_ASSIGNED_SUCESSFULLY', SYS_LANG, Array (count( $UIDS ),$task->getTasTitle()
-                ) );
-            else
-                $result->msg = __( 'ID_ACTOR_ASSIGNED_SUCESSFULLY', SYS_LANG, Array ('tas_title' => $task->getTasTitle()
-                ) );
+            if (count($UIDS) > 1) {
+                $result->msg = __('ID_ACTORS_ASSIGNED_SUCESSFULLY', SYS_LANG, Array(count($UIDS), $task->getTasTitle()));
+            } else {
+                $result->msg = __('ID_ACTOR_ASSIGNED_SUCESSFULLY', SYS_LANG, Array('tas_title' => $task->getTasTitle()));
+            }
         } catch (Exception $e) {
             $result->success = false;
             $result->msg = $e->getMessage();
         }
 
-        print G::json_encode( $result );
+        print G::json_encode($result);
     }
 
-    function removeUsersTask ($param)
+    public function removeUsersTask($param)
     {
         try {
             require_once 'classes/model/TaskUser.php';
             $oTaskUser = new TaskUser();
-            $USR_UIDS = explode( ',', $param['USR_UID'] );
-            $TU_RELATIONS = explode( ',', $param['TU_RELATION'] );
+            $USR_UIDS = explode(',', $param['USR_UID']);
+            $TU_RELATIONS = explode(',', $param['TU_RELATION']);
             $TU_TYPE = 1;
 
             foreach ($USR_UIDS as $i => $USR_UID) {
                 if ($TU_RELATIONS[$i] == 1) {
 
-                    $oTaskUser->remove( $param['TAS_UID'], $USR_UID, $TU_TYPE, 1 );
-
+                    $oTaskUser->remove($param['TAS_UID'], $USR_UID, $TU_TYPE, 1);
                 } else {
-                    $oTaskUser->remove( $param['TAS_UID'], $USR_UID, $TU_TYPE, 2 );
+                    $oTaskUser->remove($param['TAS_UID'], $USR_UID, $TU_TYPE, 2);
                 }
             }
 
@@ -231,19 +226,19 @@ class Ajax
             $result->msg = $e->getMessage();
         }
 
-        print G::json_encode( $result );
+        print G::json_encode($result);
     }
 
-    function getUsersTask ($param)
+    public function getUsersTask($param)
     {
         require_once 'classes/model/TaskUser.php';
-        G::LoadClass( 'configuration' );
-        $usersTaskList = Array ();
+        G::LoadClass('configuration');
+        $usersTaskList = Array();
         $task = new TaskUser();
         $conf = new Configurations();
         $TU_TYPE = 1;
 
-        $usersTask = $task->getUsersTask( $param['TAS_UID'], $TU_TYPE );
+        $usersTask = $task->getUsersTask($param['TAS_UID'], $TU_TYPE);
 
         foreach ($usersTask->data as $userTask) {
             $usersTaskListItem['TAS_UID'] = $userTask['TAS_UID'];
@@ -251,8 +246,9 @@ class Ajax
                 $usersTaskListItem['USR_USERNAME'] = $userTask['USR_USERNAME'];
                 $usersTaskListItem['USR_FIRSTNAME'] = $userTask['USR_FIRSTNAME'];
                 $usersTaskListItem['USR_LASTNAME'] = $userTask['USR_LASTNAME'];
-            } else
+            } else {
                 $usersTaskListItem['NAME'] = $userTask['GRP_TITLE'];
+            }
 
             $usersTaskListItem['TU_RELATION'] = $userTask['TU_RELATION'];
             $usersTaskListItem['USR_UID'] = $userTask['USR_UID'];
@@ -263,33 +259,33 @@ class Ajax
         $result->data = $usersTaskList;
         $result->totalCount = $usersTask->totalCount;
 
-        print G::json_encode( $result );
+        print G::json_encode($result);
     }
 
-    function getProcessDetail ($param)
+    public function getProcessDetail($param)
     {
         require_once 'classes/model/Process.php';
 
         $PRO_UID = $param['PRO_UID'];
 
-        G::loadClass( 'tasks' );
+        G::loadClass('tasks');
         $tasks = new Tasks();
-        $process = ProcessPeer::retrieveByPk( $PRO_UID );
+        $process = ProcessPeer::retrieveByPk($PRO_UID);
 
-        $tasksList = $tasks->getAllTasks( $PRO_UID );
+        $tasksList = $tasks->getAllTasks($PRO_UID);
 
         $rootNode->id = $process->getProUid();
         $rootNode->type = 'process';
-        $rootNode->typeLabel = G::LoadTranslation( 'ID_PROCESS' );
+        $rootNode->typeLabel = G::LoadTranslation('ID_PROCESS');
         $rootNode->text = $process->getProTitle();
-        $rootNode->leaf = count( $tasksList ) > 0 ? false : true;
+        $rootNode->leaf = count($tasksList) > 0 ? false : true;
         $rootNode->iconCls = 'ss_sprite ss_application';
         $rootNode->expanded = true;
         foreach ($tasksList as $task) {
             $node = new stdClass();
             $node->id = $task['TAS_UID'];
             $node->type = 'task';
-            $node->typeLabel = G::LoadTranslation( 'ID_TASK' );
+            $node->typeLabel = G::LoadTranslation('ID_TASK');
             $node->text = $task['TAS_TITLE'];
             $node->iconCls = 'ss_sprite ss_layout';
             $node->leaf = true;
@@ -297,23 +293,23 @@ class Ajax
         }
 
         $treeDetail[] = $rootNode;
-        print G::json_encode( $treeDetail );
+        print G::json_encode($treeDetail);
     }
 
-    function getProperties ($param)
+    public function getProperties($param)
     {
         switch ($param['type']) {
             case 'process':
                 require_once 'classes/model/ProcessCategory.php';
                 require_once 'classes/model/CalendarDefinition.php';
 
-                G::LoadClass( 'processMap' );
-                $oProcessMap = new processMap( new DBConnection() );
-                $process = $oProcessMap->editProcessNew( $param['UID'] );
-                $category = ProcessCategoryPeer::retrieveByPk( $process['PRO_CATEGORY'] );
-                $categoryName = is_object( $category ) ? $category->getCategoryName() : '';
-                $calendar = CalendarDefinitionPeer::retrieveByPk( $process['PRO_CALENDAR'] );
-                $calendarName = is_object( $calendar ) ? $calendar->getCalendarName() : '';
+                G::LoadClass('processMap');
+                $oProcessMap = new processMap(new DBConnection());
+                $process = $oProcessMap->editProcessNew($param['UID']);
+                $category = ProcessCategoryPeer::retrieveByPk($process['PRO_CATEGORY']);
+                $categoryName = is_object($category) ? $category->getCategoryName() : '';
+                $calendar = CalendarDefinitionPeer::retrieveByPk($process['PRO_CALENDAR']);
+                $calendarName = is_object($calendar) ? $calendar->getCalendarName() : '';
 
                 $properties['Title'] = $process['PRO_TITLE'];
                 $properties['Description'] = $process['PRO_DESCRIPTION'];
@@ -324,11 +320,10 @@ class Ajax
                 $result->sucess = true;
                 $result->prop = $properties;
                 break;
-
             case 'task':
                 require_once 'classes/model/Task.php';
                 $task = new Task();
-                $taskData = $task->load( $param['UID'] );
+                $taskData = $task->load($param['UID']);
 
                 $properties['Title'] = $taskData['TAS_TITLE'];
                 $properties['Description'] = $taskData['TAS_DESCRIPTION'];
@@ -341,10 +336,10 @@ class Ajax
                 break;
         }
 
-        print G::json_encode( $result );
+        print G::json_encode($result);
     }
 
-    function saveProperties ($param)
+    public function saveProperties($param)
     {
         try {
             $result->sucess = true;
@@ -354,7 +349,7 @@ class Ajax
                 case 'process':
                     require_once 'classes/model/ProcessCategory.php';
                     require_once 'classes/model/CalendarDefinition.php';
-                    G::LoadClass( 'processMap' );
+                    G::LoadClass('processMap');
                     $oProcessMap = new ProcessMap();
                     $process['PRO_UID'] = $param['UID'];
 
@@ -371,25 +366,24 @@ class Ajax
                             break;
                         case 'Category':
                             $fieldName = 'PRO_CATEGORY';
-                            $category = ProcessCategory::loadByCategoryName( $param['value'] );
+                            $category = ProcessCategory::loadByCategoryName($param['value']);
                             $param['value'] = $category[0]['CATEGORY_UID'];
                             break;
                         case 'Calendar':
                             $fieldName = 'PRO_CALENDAR';
-                            $calendar = CalendarDefinition::loadByCalendarName( $param['value'] );
+                            $calendar = CalendarDefinition::loadByCalendarName($param['value']);
 
-                            G::LoadClass( "calendar" );
+                            G::LoadClass("calendar");
                             $calendarObj = new Calendar();
-                            $calendarObj->assignCalendarTo( $process['PRO_UID'], $calendar['CALENDAR_UID'], 'PROCESS' );
+                            $calendarObj->assignCalendarTo($process['PRO_UID'], $calendar['CALENDAR_UID'], 'PROCESS');
                             break;
                     }
 
                     if ($fieldName != 'PRO_CALENDAR') {
                         $process[$fieldName] = $param['value'];
-                        $oProcessMap->updateProcess( $process );
+                        $oProcessMap->updateProcess($process);
                     }
                     break;
-
                 case 'task':
                     require_once 'classes/model/Task.php';
                     $oTask = new Task();
@@ -407,12 +401,12 @@ class Ajax
                             break;
                         case 'Starting Task':
                             $fieldName = 'TAS_START';
-                            $param['value'] = strtoupper( $param['value'] );
+                            $param['value'] = strtoupper($param['value']);
                             break;
                     }
                     $task[$fieldName] = $param['value'];
-                    print_r( $task );
-                    $oTask->update( $task );
+                    print_r($task);
+                    $oTask->update($task);
 
                     break;
             }
@@ -421,47 +415,43 @@ class Ajax
             $result->msg = $e->getMessage();
         }
 
-        print G::json_encode( $result );
+        print G::json_encode($result);
     }
 
-    function getCategoriesList ()
+    public function getCategoriesList()
     {
         require_once "classes/model/ProcessCategory.php";
 
         $processCategory = new ProcessCategory();
-        $defaultOption = Array ();
-        $defaultOption[] = Array ('CATEGORY_UID' => '','CATEGORY_NAME' => ''
-        );
+        $defaultOption = Array();
+        $defaultOption[] = Array('CATEGORY_UID' => '', 'CATEGORY_NAME' => '');
 
-        $response->rows = array_merge( $defaultOption, $processCategory->getAll( 'array' ) );
+        $response->rows = array_merge($defaultOption, $processCategory->getAll('array'));
 
-        print G::json_encode( $response );
+        print G::json_encode($response);
     }
 
-    function getCaledarList ()
+    public function getCaledarList()
     {
-        G::LoadClass( 'calendar' );
+        G::LoadClass('calendar');
         $calendar = new CalendarDefinition();
-        $calendarObj = $calendar->getCalendarList( true, true );
-        $calendarObj['array'][0] = Array ('CALENDAR_UID' => '','CALENDAR_NAME' => ''
-        );
+        $calendarObj = $calendar->getCalendarList(true, true);
+        $calendarObj['array'][0] = Array('CALENDAR_UID' => '', 'CALENDAR_NAME' => '');
 
         $response->rows = $calendarObj['array'];
 
-        print G::json_encode( $response );
+        print G::json_encode($response);
     }
 
-    function getPMVariables ($param)
+    public function getPMVariables($param)
     {
-        G::LoadClass( 'processMap' );
-        $oProcessMap = new processMap( new DBConnection() );
-        $response->rows = getDynaformsVars( $param['PRO_UID'] );
+        G::LoadClass('processMap');
+        $oProcessMap = new processMap(new DBConnection());
+        $response->rows = getDynaformsVars($param['PRO_UID']);
         foreach ($response->rows as $i => $var) {
             $response->rows[$i]['sName'] = "@@{$var['sName']}";
         }
-        print G::json_encode( $response );
+        print G::json_encode($response);
     }
-
 }
-
 

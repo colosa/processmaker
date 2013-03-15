@@ -30,7 +30,7 @@ class Services_Rest_Translation
                 $criteria->addSelectColumn(TranslationPeer::TRN_LANG);
                 $criteria->addSelectColumn(TranslationPeer::TRN_VALUE);
                 $criteria->addSelectColumn(TranslationPeer::TRN_UPDATE_DATE);
-                
+
                 $dataset = AppEventPeer::doSelectRS($criteria);
                 $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -82,7 +82,7 @@ class Services_Rest_Translation
             $obj->setTrnLang($trnLang);
             $obj->setTrnValue($trnValue);
             $obj->setTrnUpdateDate($trnUpdateDate);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -104,7 +104,7 @@ class Services_Rest_Translation
 
             $obj->setTrnValue($trnValue);
             $obj->setTrnUpdateDate($trnUpdateDate);
-            
+
             $obj->save();
         } catch (Exception $e) {
             throw new RestException(412, $e->getMessage());
@@ -122,16 +122,16 @@ class Services_Rest_Translation
     protected function delete($trnCategory, $trnId, $trnLang)
     {
         $conn = Propel::getConnection(TranslationPeer::DATABASE_NAME);
-        
+
         try {
             $conn->begin();
-        
+
             $obj = TranslationPeer::retrieveByPK($trnCategory, $trnId, $trnLang);
             if (! is_object($obj)) {
-                throw new RestException(412, 'Record does not exist.');
+                throw new RestException(412, G::LoadTranslation('ID_RECORD_DOES_NOT_EXIST'));
             }
             $obj->delete();
-        
+
             $conn->commit();
         } catch (Exception $e) {
             $conn->rollback();

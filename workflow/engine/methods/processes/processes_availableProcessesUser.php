@@ -1,4 +1,5 @@
 <?php
+
 /**
  * processes_availableProcessesUser.php
  *
@@ -22,34 +23,31 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-
- /**
-  * @Description This is a callback for the View of all groups from a determinated user
-  * @author Everth S. Berrios Morales <everth@colosa.com>
-  * @Date 19/05/2008
-  * @LastModification none
-  */
+/**
+ * @Description This is a callback for the View of all groups from a determinated user
+ * @author Everth S. Berrios Morales <everth@colosa.com>
+ * @Date 19/05/2008
+ * @LastModification none
+ */
 try {
-  $sProUid=$oData->PRO_UID;
+    $sProUid = $oData->PRO_UID;
 
-  require_once 'classes/model/Users.php';
-  require_once 'classes/model/ProcessUser.php';
+    require_once 'classes/model/Users.php';
+    require_once 'classes/model/ProcessUser.php';
 
-  G::LoadClass('processMap');
-  $oProcessMap = new ProcessMap();
-  $c = $oProcessMap->listNoProcessesUser($sProUid);
-  global $RBAC;
-  $RBAC->loadUserRolePermission($RBAC->sSystem, $_SESSION['USER_LOGGED']);
+    G::LoadClass('processMap');
+    $oProcessMap = new ProcessMap();
+    $c = $oProcessMap->listNoProcessesUser($sProUid);
+    global $RBAC;
+    $RBAC->loadUserRolePermission($RBAC->sSystem, $_SESSION['USER_LOGGED']);
 
-  $G_PUBLISH = new Publisher;
-  $G_PUBLISH->AddContent('propeltable', 'paged-table', 'processes/processes_availableProcessesUser', $c, array('PRO_UID' => $sProUid));
-  G::RenderPage( 'publish', 'raw' );
-
+    $G_PUBLISH = new Publisher;
+    $G_PUBLISH->AddContent('propeltable', 'paged-table', 'processes/processes_availableProcessesUser', $c, array('PRO_UID' => $sProUid));
+    G::RenderPage('publish', 'raw');
+} catch (Exception $e) {
+    $G_PUBLISH = new Publisher;
+    $aMessage['MESSAGE'] = $e->getMessage();
+    $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showMessage', '', $aMessage);
+    G::RenderPage('publish', 'raw');
 }
-catch ( Exception $e ){
-  $G_PUBLISH = new Publisher;
-	$aMessage['MESSAGE'] = $e->getMessage();
-  $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showMessage', '', $aMessage );
-  G::RenderPage('publish', 'raw' );
-}
-?>
+

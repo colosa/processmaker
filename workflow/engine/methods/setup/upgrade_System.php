@@ -53,7 +53,7 @@ $oSystem = new System();
 
 try {
     if (! $oSystem->verifyFileForUpgrade()) {
-        throw (new Exception( "There was an error uploading the file, probably the file size if greater than upload_max_filesize parameter in php.ini, please check this parameter and try again." ));
+        throw (new Exception( G::LoadTranslation( 'ID_ERROR_UPLOADING_FILENAME')) );
     }
     $oSystem->cleanupUpgradeDirectory();
     $oSystem->getUpgradedFilesList();

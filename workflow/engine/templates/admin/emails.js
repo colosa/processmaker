@@ -264,7 +264,7 @@ Ext.onReady(function(){
         boxLabel: _('REQUIRE_AUTHENTICATION'),//'Require authentication',
         id:'RequireAuthentication',
         name:'RequireAuthentication',
-        validateMessage: 'You really should do it.',
+        validateMessage: _('ID_REALLY_SHOULD'),
         validateField: true,
         disabled : true,
         handler: function() {
@@ -756,8 +756,8 @@ var testMethod = function()
             ( Ext.getCmp('eMailto').getValue() == '' ||
               /^[0-9a-z_\-\.]+@[0-9a-z\-\.]+\.[a-z]{2,4}$/i.test(Ext.getCmp('eMailto').getValue()) != true ) ) {
         Ext.MessageBox.show({
-          title: 'Error',
-          msg: '"Mail to" does not contain a valid email address format.',
+          title: _('ID_ERROS'),
+          msg: _('ID_MAIL_TO_NOT_VALID_ADDRESS'),
           buttons: Ext.MessageBox.OK,
           animEl: 'mb9',
           icon: Ext.MessageBox.ERROR
