@@ -27,7 +27,9 @@
  * @author Erik Amaru Ortiz <erik@colosa.com>
  * @date Jan 10th, 2010
  */
-require "classes/model/Translation.php";
+if (! class_exists( 'Translation' )) {
+    require "classes/model/Translation.php";
+}
 
 $action = $_REQUEST['action'];
 unset($_REQUEST['action']);
@@ -56,7 +58,6 @@ class Ajax
     public function save()
     {
         try {
-            require_once ("classes/model/Translation.php");
             $id = $_POST['id'];
             $label = preg_replace("[\n|\r|\n\r]", ' ', $_POST['label']);
 
@@ -77,7 +78,6 @@ class Ajax
 
     public function delete()
     {
-        require_once ("classes/model/Translation.php");
         $ids = explode(',', $_POST['IDS']);
         $category = 'LABEL';
 
@@ -101,7 +101,6 @@ class Ajax
     public function rebuild()
     {
         try {
-            require_once ("classes/model/Translation.php");
             $t = new Translation();
             $result = Translation::generateFileTranslation('en');
             $result['success'] = true;
