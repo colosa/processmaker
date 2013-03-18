@@ -11,47 +11,47 @@
   </saveasDyna>
   <!--.-->
   <separator3 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
-  <text type="toolButton" onclick="fieldsAdd('text')" class="ss_sprite button_toolbar ss_textfield" buttonType="class">
+  <text type="toolButton" onclick="fieldsAdd('text');return false;" class="ss_sprite button_toolbar ss_textfield" buttonType="class">
     <en>Text field</en>
   </text>
-  <currency type="toolButton" class="ss_sprite button_toolbar ss_textfield_currency" onclick="fieldsAdd('currency')" buttonType="class">
+  <currency type="toolButton" class="ss_sprite button_toolbar ss_textfield_currency" onclick="fieldsAdd('currency');return false;" buttonType="class">
     <en>Currency</en>
   </currency>
-  <percentage type="toolButton" class="ss_sprite button_toolbar ss_textfield_percentage" onclick="fieldsAdd('percentage')" buttonType="class">
+  <percentage type="toolButton" class="ss_sprite button_toolbar ss_textfield_percentage" onclick="fieldsAdd('percentage');return false;" buttonType="class">
     <en>Percentage</en>
   </percentage>
-  <!--<password type="toolButton" onclick="fieldsAdd('password')" file="images/dynamicForm/password.gif" fileAlt="images/dynamicForm/hover.gif" home="public_html" style="height:18px;width:18px;" buttonType="html">
+  <!--<password type="toolButton" onclick="fieldsAdd('password');return false;" file="images/dynamicForm/password.gif" fileAlt="images/dynamicForm/hover.gif" home="public_html" style="height:18px;width:18px;" buttonType="html">
     <en><![CDATA[<div class="ss_sprite button_toolbar ss_textfield_key" title="Password"></div>]]></en>
   </password>-->
-  <suggest type="toolButton" class="ss_sprite button_toolbar ss_lightbulb" onclick="fieldsAdd('suggest')" buttonType="class">
+  <suggest type="toolButton" class="ss_sprite button_toolbar ss_lightbulb" onclick="fieldsAdd('suggest');return false;" buttonType="class">
     <en>Suggest</en>
   </suggest>
-  <textarea type="toolButton" class="ss_sprite button_toolbar ss_textarea" onclick="fieldsAdd('textarea')" buttonType="class">
+  <textarea type="toolButton" class="ss_sprite button_toolbar ss_textarea" onclick="fieldsAdd('textarea');return false;" buttonType="class">
     <en>TextArea</en>
   </textarea>
   <!--.-->
   <separator5 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
-  <dropdown type="toolButton" class="ss_sprite button_toolbar ss_dropdown" onclick="fieldsAdd('dropdown')" buttonType="class">
+  <dropdown type="toolButton" class="ss_sprite button_toolbar ss_dropdown" onclick="fieldsAdd('dropdown');return false;" buttonType="class">
     <en>Dropdown</en>
   </dropdown>
-  <yesno type="toolButton" class="ss_sprite button_toolbar ss_yesno" onclick="fieldsAdd('yesno')" buttonType="class">
+  <yesno type="toolButton" class="ss_sprite button_toolbar ss_yesno" onclick="fieldsAdd('yesno');return false;" buttonType="class">
     <en>Yes/No</en>
   </yesno>
   <separator5 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
-  <checkbox type="toolButton" class="ss_sprite button_toolbar ss_check" onclick="fieldsAdd('checkbox')" buttonType="class">
+  <checkbox type="toolButton" class="ss_sprite button_toolbar ss_check" onclick="fieldsAdd('checkbox');return false;" buttonType="class">
     <en>Checkbox</en>
   </checkbox>
   <separator7 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
-  <date type="toolButton" class="ss_sprite button_toolbar ss_date" onclick="fieldsAdd('date')" buttonType="class">
+  <date type="toolButton" class="ss_sprite button_toolbar ss_date" onclick="fieldsAdd('date');return false;" buttonType="class">
     <en>Date</en>
   </date>
-  <hidden type="toolButton" class="ss_sprite button_toolbar ss_hidden" onclick="fieldsAdd('hidden')" buttonType="class">
+  <hidden type="toolButton" class="ss_sprite button_toolbar ss_hidden" onclick="fieldsAdd('hidden');return false;" buttonType="class">
     <en>Hidden</en>
   </hidden>
-  <link type="toolButton" class="ss_sprite button_toolbar ss_link" onclick="fieldsAdd('link')" buttonType="class">
+  <link type="toolButton" class="ss_sprite button_toolbar ss_link" onclick="fieldsAdd('link');return false;" buttonType="class">
     <en>Link</en>
   </link>
-  <file type="toolButton" class="ss_sprite button_toolbar ss_upload" onclick="fieldsAdd('file')" buttonType="class">
+  <file type="toolButton" class="ss_sprite button_toolbar ss_upload" onclick="fieldsAdd('file');return false;" buttonType="class">
     <en>File</en>
   </file>
   <separator10 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>

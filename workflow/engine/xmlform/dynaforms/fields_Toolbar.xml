@@ -11,87 +11,87 @@
   </saveasDyna>
   <!--.-->
   <separator2 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html"  buttonStyle=""/>
-  <text type="toolButton" class="ss_sprite button_toolbar ss_textfield" onclick="fieldsAdd('text')" buttonType="class">
+  <text type="toolButton" class="ss_sprite button_toolbar ss_textfield" onclick="fieldsAdd('text');return false;" buttonType="class">
     <en>Text field</en>
   </text>
-  <currency type="toolButton" class="ss_sprite button_toolbar ss_textfield_currency" onclick="fieldsAdd('currency')" buttonType="class">
+  <currency type="toolButton" class="ss_sprite button_toolbar ss_textfield_currency" onclick="fieldsAdd('currency');return false;" buttonType="class">
     <en>Currency</en>
   </currency>
-  <percentage type="toolButton" class="ss_sprite button_toolbar ss_textfield_percentage" onclick="fieldsAdd('percentage')" buttonType="class">
+  <percentage type="toolButton" class="ss_sprite button_toolbar ss_textfield_percentage" onclick="fieldsAdd('percentage');return false;" buttonType="class">
     <en>Percentage</en>
   </percentage>
-  <password type="toolButton" class="ss_sprite button_toolbar ss_textfield_key" onclick="fieldsAdd('password')" buttonType="class">
+  <password type="toolButton" class="ss_sprite button_toolbar ss_textfield_key" onclick="fieldsAdd('password');return false;" buttonType="class">
     <en>Password</en>
   </password>
-  <suggest type="toolButton" class="ss_sprite button_toolbar ss_lightbulb" onclick="fieldsAdd('suggest')" buttonType="class">
+  <suggest type="toolButton" class="ss_sprite button_toolbar ss_lightbulb" onclick="fieldsAdd('suggest');return false;" buttonType="class">
     <en>Suggest</en>
   </suggest>
-  <textarea type="toolButton" class="ss_sprite button_toolbar ss_textarea" onclick="fieldsAdd('textarea')" buttonType="class">
+  <textarea type="toolButton" class="ss_sprite button_toolbar ss_textarea" onclick="fieldsAdd('textarea');return false;" buttonType="class">
     <en>TextArea</en>
   </textarea>
   <!--.-->
   <separator3 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
-  <title type="toolButton" class="ss_sprite button_toolbar ss_title"  onclick="fieldsAdd('title')" buttonType="class">
+  <title type="toolButton" class="ss_sprite button_toolbar ss_title"  onclick="fieldsAdd('title');return false;" buttonType="class">
     <en>Title</en>
   </title>
-  <subtitle type="toolButton" class="ss_sprite button_toolbar ss_subtitle" onclick="fieldsAdd('subtitle')" buttonType="class">
+  <subtitle type="toolButton" class="ss_sprite button_toolbar ss_subtitle" onclick="fieldsAdd('subtitle');return false;" buttonType="class">
     <en>Subtitle</en>
   </subtitle>
   <!--.-->
   <separator4 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
-  <button type="toolButton" class="ss_sprite button_toolbar ss_button" onclick="fieldsAdd('button')" buttonType="class">
+  <button type="toolButton" class="ss_sprite button_toolbar ss_button" onclick="fieldsAdd('button');return false;" buttonType="class">
     <en>Button</en>
   </button>
-  <submit type="toolButton" class="ss_sprite button_toolbar ss_submit" onclick="fieldsAdd('submit')" buttonType="class">
+  <submit type="toolButton" class="ss_sprite button_toolbar ss_submit" onclick="fieldsAdd('submit');return false;" buttonType="class">
     <en>Submit</en>
   </submit>
-  <reset type="toolButton" class="ss_sprite button_toolbar ss_reset" onclick="fieldsAdd('reset')" buttonType="class">
+  <reset type="toolButton" class="ss_sprite button_toolbar ss_reset" onclick="fieldsAdd('reset');return false;" buttonType="class">
     <en>Reset</en>
   </reset>
   <!--.-->
   <separator5 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html"  buttonStyle=""/>
-  <dropdown type="toolButton" class="ss_sprite button_toolbar ss_dropdown" onclick="fieldsAdd('dropdown')" buttonType="class">
+  <dropdown type="toolButton" class="ss_sprite button_toolbar ss_dropdown" onclick="fieldsAdd('dropdown');return false;" buttonType="class">
     <en>Dropdown</en>
   </dropdown>
-  <yesno type="toolButton" class="ss_sprite button_toolbar ss_yesno" onclick="fieldsAdd('yesno')" buttonType="class">
+  <yesno type="toolButton" class="ss_sprite button_toolbar ss_yesno" onclick="fieldsAdd('yesno');return false;" buttonType="class">
     <en>Yes/No</en>
   </yesno>
-  <listbox type="toolButton" class="ss_sprite button_toolbar ss_listbox" onclick="fieldsAdd('listbox')" buttonType="class">
+  <listbox type="toolButton" class="ss_sprite button_toolbar ss_listbox" onclick="fieldsAdd('listbox');return false;" buttonType="class">
     <en>Listbox</en>
   </listbox>
   <!--.-->
   <separator6 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html"  buttonStyle=""/>
-  <checkbox type="toolButton" class="ss_sprite button_toolbar ss_check" onclick="fieldsAdd('checkbox')" buttonType="class">
+  <checkbox type="toolButton" class="ss_sprite button_toolbar ss_check" onclick="fieldsAdd('checkbox');return false;" buttonType="class">
     <en>Checkbox</en>
   </checkbox>
-  <checkgroup type="toolButton" class="ss_sprite button_toolbar ss_checkgroup" onclick="fieldsAdd('checkgroup')" buttonType="class">
+  <checkgroup type="toolButton" class="ss_sprite button_toolbar ss_checkgroup" onclick="fieldsAdd('checkgroup');return false;" buttonType="class">
     <en>CheckGroup</en>
   </checkgroup>
-  <radiogroup type="toolButton" class="ss_sprite button_toolbar ss_radiogroup" onclick="fieldsAdd('radiogroup')" buttonType="class">
+  <radiogroup type="toolButton" class="ss_sprite button_toolbar ss_radiogroup" onclick="fieldsAdd('radiogroup');return false;" buttonType="class">
     <en>RadioGroup</en>
   </radiogroup>
   <!--.-->
   <separator7 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
-  <date type="toolButton" class="ss_sprite button_toolbar ss_date" onclick="fieldsAdd('date')" buttonType="class">
+  <date type="toolButton" class="ss_sprite button_toolbar ss_date" onclick="fieldsAdd('date');return false;" buttonType="class">
     <en>Date</en>
   </date>
-  <hidden type="toolButton" class="ss_sprite button_toolbar ss_hidden" onclick="fieldsAdd('hidden')" buttonType="class">
+  <hidden type="toolButton" class="ss_sprite button_toolbar ss_hidden" onclick="fieldsAdd('hidden');return false;" buttonType="class">
     <en>Hidden</en>
   </hidden>
-  <link type="toolButton" class="ss_sprite button_toolbar ss_link" onclick="fieldsAdd('link')" buttonType="class">
+  <link type="toolButton" class="ss_sprite button_toolbar ss_link" onclick="fieldsAdd('link');return false;" buttonType="class">
     <en>Link</en>
   </link>
-  <file type="toolButton" class="ss_sprite button_toolbar ss_upload" onclick="fieldsAdd('file')" buttonType="class">
+  <file type="toolButton" class="ss_sprite button_toolbar ss_upload" onclick="fieldsAdd('file');return false;" buttonType="class">
     <en>File</en>
   </file>
   <!--.-->
   <separator8 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html"  buttonStyle=""/>
-  <javascript type="toolButton" class="ss_sprite button_toolbar ss_js" onclick="fieldsAdd('javascript')" buttonType="class">
+  <javascript type="toolButton" class="ss_sprite button_toolbar ss_js" onclick="fieldsAdd('javascript');return false;" buttonType="class">
     <en>Javascript</en>
   </javascript>
   <!--.-->
   <separator9 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
-  <grid type="toolButton" class="ss_sprite button_toolbar ss_table" onclick="fieldsAdd('grid')" buttonType="class">
+  <grid type="toolButton" class="ss_sprite button_toolbar ss_table" onclick="fieldsAdd('grid');return false;" buttonType="class">
     <en>Grid</en>
   </grid>
   <separator10 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>
