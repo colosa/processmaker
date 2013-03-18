@@ -30,7 +30,8 @@ $conf = new Configurations();
 $oHeadPublisher->addExtJsScript( 'processes/main', true ); //adding a javascript file .js
 $oHeadPublisher->addContent( 'processes/main' ); //adding a html file  .html.
 
-
+$valueShow = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : true;
+$oHeadPublisher->assign( 'PARTNER_FLAG', $valueShow );
 $oHeadPublisher->assign( 'pageSize', $conf->getEnvSetting( 'casesListRowNumber' ) );
 
 G::RenderPage( 'publish', 'extJs' );

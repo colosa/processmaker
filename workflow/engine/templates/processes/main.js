@@ -263,12 +263,15 @@ Ext.onReady(function(){
           importProcessGlobal.processFileType = "pm";
           importProcess();
         }
-      },{
-        text: _('ID_BROWSE_LIBRARY'),
-        iconCls: 'button_menu_ext ss_sprite  ss_world',
-        //icon: '/images/icon-pmwebservices.png',
-        handler: browseLibrary
       },
+	  PARTNER_FLAG ?
+	  [{
+		  text: _('ID_BROWSE_LIBRARY'),
+		  iconCls: 'button_menu_ext ss_sprite  ss_world',
+		  //icon: '/images/icon-pmwebservices.png',
+		  handler: browseLibrary
+		},
+	  ] : [],
       {
         xtype: 'tbfill'
       },{

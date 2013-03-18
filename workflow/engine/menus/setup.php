@@ -62,8 +62,11 @@ if ($RBAC->userCanAccess('PM_SETUP') == 1) {
   $G_TMP_MENU->AddIdRawOption('DASHBOARD', '../dashboard/dashletsList', ucfirst(G::LoadTranslation('ID_DASHBOARD')), '', '', 'settings');
 }
 //tools options
-if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1) {
-  $G_TMP_MENU->AddIdRawOption('PLUGINS',   'pluginsMain', 'Plugins Manager', 'icon-plugins.png', '', 'plugins');
+if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1 ) {
+    $valueShow = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : true;
+    if ($valueShow) {
+        $G_TMP_MENU->AddIdRawOption('PLUGINS',   'pluginsMain', 'Plugins Manager', 'icon-plugins.png', '', 'plugins');
+    }
 }
 
 //users options
