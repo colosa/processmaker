@@ -537,20 +537,20 @@ class Language extends BaseLanguage
         }
         G::streamFile( $sPOFile, true );
     }
-    function updateLanguagePlugin ($plugin, $idLanguage)
+    public function updateLanguagePlugin ($plugin, $idLanguage)
     {
         if (!file_exists(PATH_PLUGINS . $plugin)) {
             throw new Exception( 'The plugin ' . $plugin . ' not exist' );
             die();
         }
-        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translation.php')) {
-            throw new Exception( 'Translation.php not exist in plugin ' .  $plugin);
+        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translations.php')) {
+            throw new Exception( 'Translations.php not exist in plugin ' .  $plugin);
         }
-        if (!file_exists(PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po')) {
+        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po')) {
             throw new Exception( 'The file ' . $plugin . '.' . $idLanguage . '.po not exists' );
             die();
         }
-        $languageFile = PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po' ;//PATH_LANGUAGECONT . $plugin . '.' . $idLanguage;
+        $languageFile = PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po' ;
         try {
             G::LoadSystem( 'i18n_po' );
             $POFile = new i18n_PO( $languageFile );
@@ -657,9 +657,9 @@ class Language extends BaseLanguage
         }
     }
 
-    function createLanguagePlugin ($plugin, $idLanguage)
+    public function createLanguagePlugin ($plugin, $idLanguage)
     {
-        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translation.php')) {
+        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translations.php')) {
             throw new Exception( 'Translation.php not exist in plugin ' .  $plugin);
         }
 
@@ -667,7 +667,7 @@ class Language extends BaseLanguage
         G::LoadClass( "system" );
 
         //creating the .po file
-        $sPOFile = PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po';
+        $sPOFile = PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po';
         $poFile = new i18n_PO( $sPOFile );
         $poFile->buildInit();
 
@@ -693,7 +693,7 @@ class Language extends BaseLanguage
         $aLabels = array ();
         $aMsgids = array ('' => true
         );
-        include PATH_PLUGINS . $plugin . PATH_SEP . 'translations'. PATH_SEP . 'translation.php';
+        include PATH_PLUGINS . $plugin . PATH_SEP . 'translations'. PATH_SEP . 'translations.php';
 
         foreach ($translations as $id => $translation) {
             $msgid = trim( $translation);

@@ -230,11 +230,11 @@ class Translation extends BaseTranslation
     */
     public function generateFileTranslationPlugin ($plugin, $languageId = '')
     {
-        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translation.php')) {
+        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translations.php')) {
             return;
         }
 
-        if (!file_exists(PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $languageId . '.po')) {
+        if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $languageId . '.po')) {
             return;
         }
         $translation = Array ();
@@ -243,7 +243,7 @@ class Translation extends BaseTranslation
         if ($languageId === '') {
             $languageId = defined( 'SYS_LANG' ) ? SYS_LANG : 'en';
         }
-        include PATH_PLUGINS . $plugin . PATH_SEP . 'translations'. PATH_SEP . 'translation.php';
+        include PATH_PLUGINS . $plugin . PATH_SEP . 'translations'. PATH_SEP . 'translations.php';
 
         $cacheFile = PATH_LANGUAGECONT . $plugin . "." . $languageId;
         $cacheFileJS = PATH_CORE . 'js' . PATH_SEP . 'labels' . PATH_SEP . $languageId . ".js";
@@ -251,7 +251,7 @@ class Translation extends BaseTranslation
         foreach ($translations as $key => $row) {
             $translation[$key] = $row;
         }
-        $languageFile = PATH_CORE . 'content' . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $languageId . '.po' ;
+        $languageFile = PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $languageId . '.po' ;
         G::LoadSystem( 'i18n_po' );
         $POFile = new i18n_PO( $languageFile );
         $POFile->readInit();
