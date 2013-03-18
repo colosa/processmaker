@@ -109,6 +109,7 @@ class pmTables extends Controller
         $this->setJSVar( 'columnsTypes', $columnsTypesList );
         $this->setJSVar( 'dataNumRows', $dataNumRows );
         $this->setJSVar( '_plugin_permissions', $repTabPluginPermissions );
+        $this->setJSVar( 'sizeTableName', $this->getSizeTableName());
 
         G::RenderPage( 'publish', 'extJs' );
     }
@@ -179,6 +180,30 @@ class pmTables extends Controller
             }
         }
         return $repTabPluginPermissions;
+    }
+    /**
+     *
+     * Return of size ok the engine on course.
+     *
+     * @return int
+     */
+    public function getSizeTableName()
+    {
+        switch (DB_ADAPTER) {
+            case 'mysql':
+                $tableSize = 64;
+                break;
+            case 'mssql':
+                $tableSize = 128;
+                break;
+            case 'oci8':
+                $tableSize = 30;
+            default:
+                $tableSize = 30;
+                break;
+        }
+        $tableSize = $tableSize - 4; // Prefix PMT_
+        return $tableSize;
     }
 }
 

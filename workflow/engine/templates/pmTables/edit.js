@@ -547,10 +547,11 @@ Ext.onReady(function(){
     xtype:'textfield',
     emptyText: _("ID_SET_A_TABLE_NAME"),
     width: 250,
+    autoCreate: {tag: "input", type: "text", autocomplete: "off", maxlength: sizeTableName },
     stripCharsRe: /(\W+)/g,
     listeners:{
       change: function(){
-        this.setValue(this.getValue().toUpperCase())
+        this.setValue(this.getValue().toUpperCase());
       }
     }
   });
