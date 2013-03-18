@@ -858,7 +858,6 @@ class OutputDocument extends BaseOutputDocument
         }
         $doc = new DOMDocument('1.0', 'UTF-8');
         $doc->loadHtml($sContent);
-        $doc->encoding = 'UTF-8';
         $pdf->writeHTML($doc->saveXML(), false, false, false, false, '');
         // ---------------------------------------------------------
         // Close and output PDF document
