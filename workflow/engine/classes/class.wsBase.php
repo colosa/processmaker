@@ -1816,16 +1816,17 @@ class wsBase
      * @param string $processId
      * @param string $userId
      * @param string $variables
+     * @param string $taskId, must be in the starting group.
      * @return $result will return an object
      */
-    public function newCaseImpersonate ($processId, $userId, $variables)
+    public function newCaseImpersonate ($processId, $userId, $variables, $taskId = '0')
     {
         try {
             if (is_array( $variables )) {
                 if (count( $variables ) > 0) {
                     $c = count( $variables );
                     $Fields = $variables;
-
+                } else {
                     if ($c == 0) {
                         //Si no tenenmos ninguna variables en el array variables.
                         $result = new wsResponse( 10, G::loadTranslation( 'ID_ARRAY_VARIABLES_EMPTY' ) );
@@ -1856,15 +1857,42 @@ class wsBase
             }
 
             $oCase = new Cases();
-
-            $arrayTask = $processes->getStartingTaskForUser( $processId, null );
-            $numTasks = count( $arrayTask );
+/*
+ tasks:Array ( 
+ [0] => Array ( [PRO_UID] => 48898179550b51b9908f7b2033136339 [TAS_UID] => 45666481750b51f7eab9ee2007583801 [TAS_TYPE] => NORMAL [TAS_DURATION] => 1 [TAS_DELAY_TYPE] => [TAS_TEMPORIZER] => 0 [TAS_TYPE_DAY] => [TAS_TIMEUNIT] => DAYS [TAS_ALERT] => FALSE [TAS_PRIORITY_VARIABLE] => [TAS_ASSIGN_TYPE] => BALANCED [TAS_ASSIGN_VARIABLE] => @@SYS_NEXT_USER_TO_BE_ASSIGNED [TAS_GROUP_VARIABLE] => [TAS_MI_INSTANCE_VARIABLE] => @@SYS_VAR_TOTAL_INSTANCE [TAS_MI_COMPLETE_VARIABLE] => @@SYS_VAR_TOTAL_INSTANCES_COMPLETE [TAS_ASSIGN_LOCATION] => FALSE [TAS_ASSIGN_LOCATION_ADHOC] => FALSE [TAS_TRANSFER_FLY] => FALSE [TAS_LAST_ASSIGNED] => 00000000000000000000000000000001 [TAS_USER] => 0 [TAS_CAN_UPLOAD] => FALSE [TAS_VIEW_UPLOAD] => FALSE [TAS_VIEW_ADDITIONAL_DOCUMENTATION] => FALSE [TAS_CAN_CANCEL] => FALSE [TAS_OWNER_APP] => FALSE [STG_UID] => [TAS_CAN_PAUSE] => FALSE [TAS_CAN_SEND_MESSAGE] => TRUE [TAS_CAN_DELETE_DOCS] => FALSE [TAS_SELF_SERVICE] => FALSE [TAS_START] => TRUE [TAS_TO_LAST_USER] => FALSE [TAS_SEND_LAST_EMAIL] => FALSE [TAS_DERIVATION] => NORMAL [TAS_POSX] => 307 [TAS_POSY] => 108 [TAS_WIDTH] => 165 [TAS_HEIGHT] => 40 [TAS_COLOR] => [TAS_EVN_UID] => [TAS_BOUNDARY] => [TAS_DERIVATION_SCREEN_TPL] => [TAS_SELFSERVICE_TIMEOUT] => 0 [TAS_SELFSERVICE_TIME] => [TAS_SELFSERVICE_TIME_UNIT] => [TAS_SELFSERVICE_TRIGGER_UID] => [TAS_TITLE] => Task 1 [TAS_DESCRIPTION] => [TAS_DEF_TITLE] => [TAS_DEF_DESCRIPTION] => [TAS_DEF_PROC_CODE] => [TAS_DEF_MESSAGE] => [TAS_DEF_SUBJECT_MESSAGE] => ) )
+ 
+ tasks:Array ( 
+ [0] => Array ( [PRO_UID] => 48898179550b51b9908f7b2033136339 [TAS_UID] => 45666481750b51f7eab9ee2007583801 [TAS_TYPE] => NORMAL [TAS_DURATION] => 1 [TAS_DELAY_TYPE] => [TAS_TEMPORIZER] => 0 [TAS_TYPE_DAY] => [TAS_TIMEUNIT] => DAYS [TAS_ALERT] => FALSE [TAS_PRIORITY_VARIABLE] => [TAS_ASSIGN_TYPE] => BALANCED [TAS_ASSIGN_VARIABLE] => @@SYS_NEXT_USER_TO_BE_ASSIGNED [TAS_GROUP_VARIABLE] => [TAS_MI_INSTANCE_VARIABLE] => @@SYS_VAR_TOTAL_INSTANCE [TAS_MI_COMPLETE_VARIABLE] => @@SYS_VAR_TOTAL_INSTANCES_COMPLETE [TAS_ASSIGN_LOCATION] => FALSE [TAS_ASSIGN_LOCATION_ADHOC] => FALSE [TAS_TRANSFER_FLY] => FALSE [TAS_LAST_ASSIGNED] => 00000000000000000000000000000001 [TAS_USER] => 0 [TAS_CAN_UPLOAD] => FALSE [TAS_VIEW_UPLOAD] => FALSE [TAS_VIEW_ADDITIONAL_DOCUMENTATION] => FALSE [TAS_CAN_CANCEL] => FALSE [TAS_OWNER_APP] => FALSE [STG_UID] => [TAS_CAN_PAUSE] => FALSE [TAS_CAN_SEND_MESSAGE] => TRUE [TAS_CAN_DELETE_DOCS] => FALSE [TAS_SELF_SERVICE] => FALSE [TAS_START] => TRUE [TAS_TO_LAST_USER] => FALSE [TAS_SEND_LAST_EMAIL] => FALSE [TAS_DERIVATION] => NORMAL [TAS_POSX] => 307 [TAS_POSY] => 108 [TAS_WIDTH] => 165 [TAS_HEIGHT] => 40 [TAS_COLOR] => [TAS_EVN_UID] => [TAS_BOUNDARY] => [TAS_DERIVATION_SCREEN_TPL] => [TAS_SELFSERVICE_TIMEOUT] => 0 [TAS_SELFSERVICE_TIME] => [TAS_SELFSERVICE_TIME_UNIT] => [TAS_SELFSERVICE_TRIGGER_UID] => [TAS_TITLE] => Task 1 [TAS_DESCRIPTION] => [TAS_DEF_TITLE] => [TAS_DEF_DESCRIPTION] => [TAS_DEF_PROC_CODE] => [TAS_DEF_MESSAGE] => [TAS_DEF_SUBJECT_MESSAGE] => ) 
+ [1] => Array ( [PRO_UID] => 48898179550b51b9908f7b2033136339 [TAS_UID] => 551374020514741e0b4b638012841349 [TAS_TYPE] => NORMAL [TAS_DURATION] => 1 [TAS_DELAY_TYPE] => [TAS_TEMPORIZER] => 0 [TAS_TYPE_DAY] => [TAS_TIMEUNIT] => DAYS [TAS_ALERT] => FALSE [TAS_PRIORITY_VARIABLE] => [TAS_ASSIGN_TYPE] => BALANCED [TAS_ASSIGN_VARIABLE] => @@SYS_NEXT_USER_TO_BE_ASSIGNED [TAS_GROUP_VARIABLE] => [TAS_MI_INSTANCE_VARIABLE] => @@SYS_VAR_TOTAL_INSTANCE [TAS_MI_COMPLETE_VARIABLE] => @@SYS_VAR_TOTAL_INSTANCES_COMPLETE [TAS_ASSIGN_LOCATION] => FALSE [TAS_ASSIGN_LOCATION_ADHOC] => FALSE [TAS_TRANSFER_FLY] => FALSE [TAS_LAST_ASSIGNED] => 00000000000000000000000000000001 [TAS_USER] => 0 [TAS_CAN_UPLOAD] => FALSE [TAS_VIEW_UPLOAD] => FALSE [TAS_VIEW_ADDITIONAL_DOCUMENTATION] => FALSE [TAS_CAN_CANCEL] => FALSE [TAS_OWNER_APP] => FALSE [STG_UID] => [TAS_CAN_PAUSE] => FALSE [TAS_CAN_SEND_MESSAGE] => TRUE [TAS_CAN_DELETE_DOCS] => FALSE [TAS_SELF_SERVICE] => FALSE [TAS_START] => TRUE [TAS_TO_LAST_USER] => FALSE [TAS_SEND_LAST_EMAIL] => FALSE [TAS_DERIVATION] => NORMAL [TAS_POSX] => 306 [TAS_POSY] => 178 [TAS_WIDTH] => 165 [TAS_HEIGHT] => 40 [TAS_COLOR] => [TAS_EVN_UID] => [TAS_BOUNDARY] => [TAS_DERIVATION_SCREEN_TPL] => [TAS_SELFSERVICE_TIMEOUT] => 0 [TAS_SELFSERVICE_TIME] => [TAS_SELFSERVICE_TIME_UNIT] => [TAS_SELFSERVICE_TRIGGER_UID] => [TAS_TITLE] => Task 7 [TAS_DESCRIPTION] => [TAS_DEF_TITLE] => [TAS_DEF_DESCRIPTION] => [TAS_DEF_PROC_CODE] => [TAS_DEF_MESSAGE] => [TAS_DEF_SUBJECT_MESSAGE] => ) ) 
+  */
+            $numTasks = 0;
+            echo $taskId . "<br>";
+            if ($taskId != '0') {
+                $task = new Tasks();
+                $steps = $task->getStepsOfTask ($taskId);
+                if ($taskId != '' && count($steps) > 0) {
+                    $aTasks = $processes->getStartingTaskForUser( $processId, null );
+                    foreach ($aTasks as $task) {
+                        if ($task['TAS_UID'] == $taskId) {
+                             $arrayTask[0]['TAS_UID'] = $taskId;
+                             $numTasks = 1;
+                        }
+                    }
+                } else {
+                    $result = new wsResponse( 11, G::loadTranslation( 'ID_INVALID_PROCESS' ) . " " . $processId . "!!" );
+                    return $result; 
+                }
+            } else {
+                $arrayTask = $processes->getStartingTaskForUser( $processId, null );
+                echo "tasks:".print_r($arrayTask,true) . "<br>";
+                $numTasks = count( $arrayTask );
+            }
 
             if ($numTasks == 1) {
                 $case = $oCase->startCase( $arrayTask[0]['TAS_UID'], $userId );
                 $caseId = $case['APPLICATION'];
                 $caseNumber = $case['CASE_NUMBER'];
-
+                
                 $oldFields = $oCase->loadCase( $caseId );
 
                 $oldFields['APP_DATA'] = array_merge( $oldFields['APP_DATA'], $Fields );
