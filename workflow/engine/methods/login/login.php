@@ -158,18 +158,22 @@ G::LoadClass('serverConfiguration');
 //Bootstrap::LoadClass('serverConfiguration');
 //get the serverconf singleton, and check if we can send the heartbeat
 $oServerConf = & serverConf::getSingleton();
+$partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
+if (!$partnerFlag) {
+    $sflag = $oServerConf->getHeartbeatProperty('HB_OPTION', 'HEART_BEAT_CONF');
+    $sflag = (trim($sflag) != '') ? $sflag : '1';
 
-$sflag = $oServerConf->getHeartbeatProperty('HB_OPTION', 'HEART_BEAT_CONF');
-$sflag = (trim($sflag) != '') ? $sflag : '1';
+    //get date of next beat
+    $nextBeatDate = $oServerConf->getHeartbeatProperty('HB_NEXT_BEAT_DATE', 'HEART_BEAT_CONF');
 
-//get date of next beat
-$nextBeatDate = $oServerConf->getHeartbeatProperty('HB_NEXT_BEAT_DATE', 'HEART_BEAT_CONF');
-
-//if flag to send heartbeat is enabled, and it is time to send heartbeat, sent it using asynchronous beat.
-if (($sflag == "1") && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {
-    $oHeadPublisher =& headPublisher::getSingleton();
-    //To do: we need to change to ExtJs
-    $oHeadPublisher->addScriptCode('var flagHeartBeat = 1;');
+    //if flag to send heartbeat is enabled, and it is time to send heartbeat, sent it using asynchronous beat.
+    if (($sflag == "1") && ((strtotime("now") > $nextBeatDate) || is_null($nextBeatDate))) {
+        $oHeadPublisher =& headPublisher::getSingleton();
+        //To do: we need to change to ExtJs
+        $oHeadPublisher->addScriptCode('var flagHeartBeat = 1;');
+    } else {
+        $oHeadPublisher->addScriptCode('var flagHeartBeat = 0;');
+    }
 } else {
     $oHeadPublisher->addScriptCode('var flagHeartBeat = 0;');
 }
