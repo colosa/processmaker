@@ -241,7 +241,8 @@
                         <xs:element name="sessionId" type="xs:string"/>
                         <xs:element name="processId" type="xs:string"/>
                         <xs:element name="userId" type="xs:string"/>
-                       <xs:element name="variables" maxOccurs="unbounded" type="ns0:variableStruct"/>
+                        <xs:element name="variables" maxOccurs="unbounded" type="ns0:variableStruct"/>
+                        <xs:element name="taskId" type="xs:string"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>

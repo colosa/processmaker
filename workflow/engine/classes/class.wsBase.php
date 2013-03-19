@@ -1816,18 +1816,18 @@ class wsBase
      * @param string $processId
      * @param string $userId
      * @param string $variables
+     * @param string $taskId, must be in the starting group.
      * @return $result will return an object
      */
-    public function newCaseImpersonate ($processId, $userId, $variables)
+    public function newCaseImpersonate ($processId, $userId, $variables, $taskId = '')
     {
         try {
             if (is_array( $variables )) {
                 if (count( $variables ) > 0) {
                     $c = count( $variables );
                     $Fields = $variables;
-
+                } else {
                     if ($c == 0) {
-                        //Si no tenenmos ninguna variables en el array variables.
                         $result = new wsResponse( 10, G::loadTranslation( 'ID_ARRAY_VARIABLES_EMPTY' ) );
 
                         return $result;
@@ -1857,8 +1857,19 @@ class wsBase
 
             $oCase = new Cases();
 
-            $arrayTask = $processes->getStartingTaskForUser( $processId, null );
-            $numTasks = count( $arrayTask );
+            $numTasks = 0;
+            if ($taskId != '') {
+                $aTasks = $processes->getStartingTaskForUser( $processId, null );
+                foreach ($aTasks as $task) {
+                    if ($task['TAS_UID'] == $taskId) {
+                        $arrayTask[0]['TAS_UID'] = $taskId;
+                        $numTasks = 1;
+                    }
+                }
+            } else {
+                $arrayTask = $processes->getStartingTaskForUser( $processId, null );
+                $numTasks = count( $arrayTask );
+            }
 
             if ($numTasks == 1) {
                 $case = $oCase->startCase( $arrayTask[0]['TAS_UID'], $userId );
