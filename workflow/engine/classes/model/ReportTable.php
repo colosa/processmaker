@@ -26,7 +26,9 @@
  */
 
 //require_once 'classes/model/Content.php';
-//require_once 'classes/model/om/BaseReportTable.php';
+if (!class_exists('BaseReportTable')) {
+    require_once 'classes/model/om/BaseReportTable.php';
+}
 
 /**
  * Skeleton subclass for representing a row from the 'REPORT_TABLE' table.

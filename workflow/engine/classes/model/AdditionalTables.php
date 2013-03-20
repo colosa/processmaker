@@ -681,6 +681,9 @@ class AdditionalTables extends BaseAdditionalTables
                     $obj->fromArray($caseData, BasePeer::TYPE_FIELDNAME);
                     $obj->setAppUid($row['APP_UID']);
                     $obj->setAppNumber($row['APP_NUMBER']);
+                    if (method_exists($obj, 'setAppStatus')) {
+                        $obj->setAppStatus($row['APP_STATUS']);
+                    }
                     $obj->fromArray(array_change_key_case($gridRow, CASE_UPPER), BasePeer::TYPE_FIELDNAME);
                     $obj->setRow($i);
                     $obj->save();
@@ -691,6 +694,9 @@ class AdditionalTables extends BaseAdditionalTables
                 $obj->fromArray(array_change_key_case($caseData, CASE_UPPER), BasePeer::TYPE_FIELDNAME);
                 $obj->setAppUid($row['APP_UID']);
                 $obj->setAppNumber($row['APP_NUMBER']);
+                if (method_exists($obj, 'setAppStatus')) {
+                    $obj->setAppStatus($row['APP_STATUS']);
+                }
                 $obj->save();
                 $obj = null;
             }

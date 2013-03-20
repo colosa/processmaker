@@ -887,7 +887,7 @@ class OutputDocument extends BaseOutputDocument
         define('PATH_OUTPUT_FILE_DIRECTORY', PATH_HTML . 'files/' . $_SESSION['APPLICATION'] . '/outdocs/');
         G::verifyPath(PATH_OUTPUT_FILE_DIRECTORY, true);
         require_once (PATH_THIRDPARTY . 'html2ps_pdf/config.inc.php');
-        @require_once (PATH_THIRDPARTY . 'html2ps_pdf/pipeline.factory.class.php');
+        require_once (PATH_THIRDPARTY . 'html2ps_pdf/pipeline.factory.class.php');
 
         parse_config_file(PATH_THIRDPARTY . 'html2ps_pdf/html2ps.config');
 

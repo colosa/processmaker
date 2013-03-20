@@ -553,6 +553,9 @@ class ReportTables
     public function updateTables ($sProcessUid, $sApplicationUid, $iApplicationNumber, $aFields)
     {
         try {
+            if (!class_exists('ReportTablePeer')) {
+			  require_once 'classes/model/ReportTablePeer.php';
+			}
             //get all Active Report Tables
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->add( ReportTablePeer::PRO_UID, $sProcessUid );
