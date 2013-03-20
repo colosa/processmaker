@@ -847,7 +847,11 @@ function CreateUser ($params)
 
     $ws = new wsBase();
 
-    $res = $ws->createUser( $params->userId, $params->firstname, $params->lastname, $params->email, $params->role, $params->password, ((isset( $params->dueDate )) ? $params->dueDate : null), ((isset( $params->status )) ? $params->status : null) );
+    try {
+        $res = $ws->createUser( $params->userId, $params->firstname, $params->lastname, $params->email, $params->role, $params->password, ((isset( $params->dueDate )) ? $params->dueDate : null), ((isset( $params->status )) ? $params->status : null) );
+    } catch(Exception $oError) {
+        return $oError->getMessage();
+    }
 
     return $res;
 }
