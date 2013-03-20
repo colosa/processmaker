@@ -1058,7 +1058,12 @@ class wsBase
             $arrayData["USR_AUTH_USER_DN"] = "";
             $arrayData["USR_STATUS"] = ($status == "ACTIVE") ? 1 : 0;
 
-            $userUid = $RBAC->createUser( $arrayData, $strRole );
+            try {
+                $userUid = $RBAC->createUser( $arrayData, $strRole );
+            } catch(Exception $oError) {
+                $result =  new wsCreateUserResponse(100, $oError->getMessage(), null );
+                return $result;
+            }
 
             $arrayData["USR_UID"] = $userUid;
             $arrayData["USR_STATUS"] = $status;
