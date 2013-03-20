@@ -62,7 +62,14 @@ foreach ($_POST['aUsers'] as $sUser) {
         $aUser['sDN'] = str_replace( $match, $newMatch, $aUser['sDN'] );
     }
     $aData['USR_AUTH_USER_DN'] = $aUser['sDN'];
-    $sUserUID = $RBAC->createUser( $aData, 'PROCESSMAKER_OPERATOR' );
+    try {
+        $sUserUID = $RBAC->createUser( $aData, 'PROCESSMAKER_OPERATOR' );
+    } catch(Exception $oError) {
+        $G_PUBLISH = new Publisher();
+        $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => $oError->getMessage()) );
+        G::RenderPage("publish", "blank");
+        die();
+    }
     $aData['USR_STATUS'] = 'ACTIVE';
     $aData['USR_UID'] = $sUserUID;
     $aData['USR_PASSWORD'] = md5( $sUserUID ); //fake :p

@@ -41,6 +41,9 @@ define('PM_UPLOAD_DOCUMENT_BEFORE',  1012);
 define('PM_CREATE_NEW_DELEGATION',   1013);
 define('PM_SINGLE_SIGN_ON',          1014);
 define('PM_GET_CASES_AJAX_LISTENER', 1015);
+define('PM_BEFORE_CREATE_USER',      1016);
+
+
 
 /**
  * @package workflow.engine.classes

@@ -1137,8 +1137,11 @@ function WSCreateUser ($userId, $password, $firstname, $lastname, $email, $role,
     $params = array ("sessionId" => $sessionId,"userId" => $userId,"firstname" => $firstname,"lastname" => $lastname,"email" => $email,"role" => $role,"password" => $password,"dueDate" => $dueDate,"status" => $status
     );
 
-    $result = $client->__soapCall( "CreateUser", array ($params
-    ) );
+    try {
+        $result = $client->__soapCall( "CreateUser", array ($params) );
+    } catch(Exception $oError) {
+        return $oError->getMessage();
+    }
 
     $fields["status_code"] = $result->status_code;
     $fields["message"] = $result->message;

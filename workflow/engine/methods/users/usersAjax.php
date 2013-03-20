@@ -147,7 +147,11 @@ switch ($_POST['action']) {
                 //fixing bug in inactive user when the admin create a new user.
                 $statusWF = $form['USR_STATUS'];
                 $aData['USR_STATUS'] = $form['USR_STATUS'] == 'ACTIVE' ? 1 : 0;
-                $sUserUID = $RBAC->createUser($aData, $form['USR_ROLE']);
+                try {
+                    $sUserUID = $RBAC->createUser($aData, $form['USR_ROLE']);
+                } catch(Exception $oError) {
+                    throw new Exception($oError->getMessage());
+                }
                 $aData['USR_STATUS'] = $statusWF;
                 $aData['USR_UID'] = $sUserUID;
                 $aData['USR_PASSWORD'] = md5($sUserUID); //fake :p
