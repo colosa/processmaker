@@ -270,7 +270,7 @@ Ext.onReady(function(){
 		  iconCls: 'button_menu_ext ss_sprite  ss_world',
 		  //icon: '/images/icon-pmwebservices.png',
 		  handler: browseLibrary
-		},
+		}
 	  ] : [],
       {
         xtype: 'tbfill'
