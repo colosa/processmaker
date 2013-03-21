@@ -223,8 +223,13 @@ define( 'PML_WSDL_URL', PML_SERVER . '/syspmLibrary/en/green/services/wsdl' );
 define( 'PML_UPLOAD_URL', PML_SERVER . '/syspmLibrary/en/green/services/uploadProcess' );
 define( 'PML_DOWNLOAD_URL', PML_SERVER . '/syspmLibrary/en/green/services/download' );
 
+$config = Bootstrap::getSystemConfiguration();
 // starting session
-$timelife = ini_get('session.gc_maxlifetime');
+if (isset($config['session.gc_maxlifetime'])) {
+    $timelife = $config['session.gc_maxlifetime'];
+} else {
+    $timelife = ini_get('session.gc_maxlifetime');
+}
 if (is_null($timelife)) {
     $timelife = 1440;
 }
@@ -232,7 +237,6 @@ ini_set('session.gc_maxlifetime', $timelife);
 ini_set('session.cookie_lifetime', $timelife);
 session_start();
 
-$config = Bootstrap::getSystemConfiguration();
 
 $e_all = defined( 'E_DEPRECATED' ) ? E_ALL & ~ E_DEPRECATED : E_ALL;
 $e_all = defined( 'E_STRICT' ) ? $e_all & ~ E_STRICT : $e_all;
