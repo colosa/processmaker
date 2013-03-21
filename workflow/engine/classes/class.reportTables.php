@@ -646,32 +646,34 @@ class ReportTables
 
                             $aAux = explode( '-', $aRow['REP_TAB_GRID'] );
                             if (isset( $aFields[$aAux[0]] )) {
-                                foreach ($aFields[$aAux[0]] as $iRow => $aGridRow) {
-                                    $sQuery = 'INSERT INTO `' . $aRow['REP_TAB_NAME'] . '` (';
-                                    $sQuery .= '`APP_UID`,`APP_NUMBER`,`ROW`';
-                                    foreach ($aTableFields as $aField) {
-                                        $sQuery .= ',`' . $aField['sFieldName'] . '`';
-                                    }
-                                    $sQuery .= ") VALUES ('" . $sApplicationUid . "'," . (int) $iApplicationNumber . ',' . $iRow;
-                                    foreach ($aTableFields as $aField) {
-                                        switch ($aField['sType']) {
-                                            case 'number':
-                                                $sQuery .= ',' . (isset( $aGridRow[$aField['sFieldName']] ) ? (float) str_replace( ',', '', $aGridRow[$aField['sFieldName']] ) : '0');
-                                                break;
-                                            case 'char':
-                                            case 'text':
-                                                if (! isset( $aGridRow[$aField['sFieldName']] )) {
-                                                    $aGridRow[$aField['sFieldName']] = '';
-                                                }
-                                                $sQuery .= ",'" . (isset( $aGridRow[$aField['sFieldName']] ) ? mysql_real_escape_string( $aGridRow[$aField['sFieldName']] ) : '') . "'";
-                                                break;
-                                            case 'date':
-                                                $sQuery .= ",'" . (isset( $aGridRow[$aField['sFieldName']] ) ? $aGridRow[$aField['sFieldName']] : '') . "'";
-                                                break;
+                                if (is_array($aFields[$aAux[0]])) {
+                                    foreach ($aFields[$aAux[0]] as $iRow => $aGridRow) {
+                                        $sQuery = 'INSERT INTO `' . $aRow['REP_TAB_NAME'] . '` (';
+                                        $sQuery .= '`APP_UID`,`APP_NUMBER`,`ROW`';
+                                        foreach ($aTableFields as $aField) {
+                                            $sQuery .= ',`' . $aField['sFieldName'] . '`';
                                         }
+                                        $sQuery .= ") VALUES ('" . $sApplicationUid . "'," . (int) $iApplicationNumber . ',' . $iRow;
+                                        foreach ($aTableFields as $aField) {
+                                            switch ($aField['sType']) {
+                                                case 'number':
+                                                    $sQuery .= ',' . (isset( $aGridRow[$aField['sFieldName']] ) ? (float) str_replace( ',', '', $aGridRow[$aField['sFieldName']] ) : '0');
+                                                    break;
+                                                case 'char':
+                                                case 'text':
+                                                    if (! isset( $aGridRow[$aField['sFieldName']] )) {
+                                                        $aGridRow[$aField['sFieldName']] = '';
+                                                    }
+                                                    $sQuery .= ",'" . (isset( $aGridRow[$aField['sFieldName']] ) ? mysql_real_escape_string( $aGridRow[$aField['sFieldName']] ) : '') . "'";
+                                                    break;
+                                                case 'date':
+                                                    $sQuery .= ",'" . (isset( $aGridRow[$aField['sFieldName']] ) ? $aGridRow[$aField['sFieldName']] : '') . "'";
+                                                    break;
+                                            }
+                                        }
+                                        $sQuery .= ')';
+                                        $rs = $stmt->executeQuery( $sQuery );
                                     }
-                                    $sQuery .= ')';
-                                    $rs = $stmt->executeQuery( $sQuery );
                                 }
                             }
                         }

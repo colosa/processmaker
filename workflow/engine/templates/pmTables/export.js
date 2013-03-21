@@ -166,7 +166,7 @@ Export.submit = function()
       if (result.success) {
         location.href = result.link;
       } else {
-        PMExt.error(_('ID_ERROR'), result.message));
+        PMExt.error(_('ID_ERROR'), result.message);
       }
     },
     failure: function(obj, resp){
