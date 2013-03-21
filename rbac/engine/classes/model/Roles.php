@@ -84,6 +84,11 @@ class Roles extends BaseRoles {
             $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $oDataset->next();
             $aRow = $oDataset->getRow();
+            
+            $roles = new Roles();
+        	$roles->load($aRow['ROL_UID']);
+        	$aRow['ROL_NAME'] = $roles->getRolName();
+            
             if (is_array($aRow)) {
                 return $aRow;
             } else {
@@ -168,10 +173,6 @@ class Roles extends BaseRoles {
     return $result;
 	}
 
-
-
-
-
     function getAllRoles($systemCode = 'PROCESSMAKER') {
         $c = $this->listAllRoles($systemCode);
 		    $rs = RolesPeer::DoSelectRs($c);
@@ -187,7 +188,6 @@ class Roles extends BaseRoles {
         }
         return $aRows;
     }
-
 
     function listAllPermissions($systemCode = 'PROCESSMAKER') {
         try {

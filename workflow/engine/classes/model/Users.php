@@ -141,6 +141,11 @@ class Users extends BaseUsers
                 $aFields["USR_COUNTRY_NAME"]  = (!empty($aIsoCountry["IC_NAME"]))? $aIsoCountry["IC_NAME"] : "";
                 $aFields["USR_CITY_NAME"]     = (!empty($aIsoSubdivision["IS_NAME"]))? $aIsoSubdivision["IS_NAME"] : "";
                 $aFields["USR_LOCATION_NAME"] = (!empty($aIsoLocation["IL_NAME"]))? $aIsoLocation["IL_NAME"] : "";
+                
+                require_once PATH_RBAC . "model/Roles.php";
+                $roles = new Roles();
+                $role = $roles->loadByCode($aFields['USR_ROLE']);
+                $aFields['USR_ROLE_NAME'] = $role['ROL_NAME'];
 
                 $result = $aFields;
 
