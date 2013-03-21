@@ -591,7 +591,7 @@ class ReportTables
                                             if (! isset( $aFields[$aField['sFieldName']] )) {
                                                 $aFields[$aField['sFieldName']] = '';
                                             }
-                                            $sQuery .= "'" . (isset( $aFields[$aField['sFieldName']] ) ? mysql_real_escape_string( $aFields[$aField['sFieldName']] ) : '') . "',";
+                                            $sQuery .= "'" . (isset( $aFields[$aField['sFieldName']] ) ? @mysql_real_escape_string( $aFields[$aField['sFieldName']] ) : '') . "',";
                                             break;
                                         case 'date':
                                             $mysqlDate = (isset( $aFields[$aField['sFieldName']] ) ? $aFields[$aField['sFieldName']] : '');

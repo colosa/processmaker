@@ -1196,7 +1196,7 @@ function loadUserData()
                 Ext.getCmp("USR_REPLACED_BY2").setText(data.user.REPLACED_NAME);
                 Ext.getCmp("USR_DUE_DATE2").setText(data.user.USR_DUE_DATE);
                 Ext.getCmp("USR_STATUS2").setText(_('ID_' + data.user.USR_STATUS));
-                Ext.getCmp("USR_ROLE2").setText(data.user.USR_ROLE);
+                Ext.getCmp("USR_ROLE2").setText(data.user.USR_ROLE_NAME);
 
                 Ext.getCmp("PREF_DEFAULT_MAIN_MENU_OPTION2").setText(data.user.MENUSELECTED_NAME);
                 Ext.getCmp("PREF_DEFAULT_CASES_MENUSELECTED2").setText(data.user.CASES_MENUSELECTED_NAME);

@@ -84,6 +84,11 @@ class Roles extends BaseRoles {
             $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $oDataset->next();
             $aRow = $oDataset->getRow();
+            
+            $roles = new Roles();
+        	$roles->load($aRow['ROL_UID']);
+        	$aRow['ROL_NAME'] = $roles->getRolName();
+            
             if (is_array($aRow)) {
                 return $aRow;
             } else {
