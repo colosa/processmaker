@@ -97,7 +97,7 @@ switch ($_POST['action']) {
         $roles = new Roles();
         $rolesData = $roles->getAllRoles();
         foreach ($rolesData as $rowid => $row) {
-            $oData[] = array('ROL_UID' => $row['ROL_CODE'], 'ROL_CODE' => $row['ROL_CODE']);
+            $oData[] = array('ROL_UID' => $row['ROL_CODE'], 'ROL_CODE' => $row['ROL_NAME']);
         }
         print (G::json_encode($oData));
         break;
@@ -613,4 +613,3 @@ switch ($_POST['action']) {
         echo G::json_encode($response);
         break;
 }
- 

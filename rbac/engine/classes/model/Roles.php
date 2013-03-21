@@ -168,10 +168,6 @@ class Roles extends BaseRoles {
     return $result;
 	}
 
-
-
-
-
     function getAllRoles($systemCode = 'PROCESSMAKER') {
         $c = $this->listAllRoles($systemCode);
 		    $rs = RolesPeer::DoSelectRs($c);
@@ -187,7 +183,6 @@ class Roles extends BaseRoles {
         }
         return $aRows;
     }
-
 
     function listAllPermissions($systemCode = 'PROCESSMAKER') {
         try {
