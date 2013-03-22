@@ -84,7 +84,6 @@ Ext.onReady(function(){
   });
 
   cmbTimeZone.setValue(sysConf.time_zone);
-console.log(sysConf);
   saveButton = new Ext.Action({
     text : _('ID_SAVE_SETTINGS'),
     disabled : true,
