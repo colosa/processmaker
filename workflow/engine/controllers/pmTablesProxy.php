@@ -307,6 +307,8 @@ class pmTablesProxy extends HttpProxyController
                 FieldsPeer::doDelete( $oCriteria );
             }
 
+            $addTabData['ADD_TAB_UID'] = $addTabUid;
+
             // Updating pmtable fields
             foreach ($columns as $i => $column) {
                 $field = array ('FLD_UID' => $column->uid,'FLD_INDEX' => $i,'ADD_TAB_UID' => $addTabUid,'FLD_NAME' => $column->field_name,'FLD_DESCRIPTION' => $column->field_label,'FLD_TYPE' => $column->field_type,'FLD_SIZE' => $column->field_size == '' ? null : $column->field_size,'FLD_NULL' => $column->field_null ? 1 : 0,'FLD_AUTO_INCREMENT' => $column->field_autoincrement ? 1 : 0,'FLD_KEY' => $column->field_key ? 1 : 0,'FLD_FOREIGN_KEY' => 0,'FLD_FOREIGN_KEY_TABLE' => '','FLD_DYN_NAME' => $column->field_dyn,'FLD_DYN_UID' => $column->field_uid,'FLD_FILTER' => (isset( $column->field_filter ) && $column->field_filter) ? 1 : 0
