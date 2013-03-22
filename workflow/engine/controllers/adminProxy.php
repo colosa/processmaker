@@ -86,6 +86,13 @@ class adminProxy extends HttpProxyController
             $updatedConf['proxy_pass'] = G::encrypt($httpData->proxy_pass, 'proxy_pass');
         }
 
+        $sessionGcMaxlifetime = ini_get('session.gc_maxlifetime');
+        if (($httpData->max_life_time != "")  && ($sessionGcMaxlifetime != $httpData->max_life_time)) {
+            if (!isset($sysConf['session.gc_maxlifetime']) || ($sysConf['session.gc_maxlifetime'] != $httpData->max_life_time)) {
+                $updatedConf['session.gc_maxlifetime'] = $httpData->max_life_time;
+            }
+        }
+
         if ($updateRedirector) {
             if (!file_exists(PATH_HTML . 'index.html')) {
                 throw new Exception('The index.html file is not writable on workflow/public_html directory.');
