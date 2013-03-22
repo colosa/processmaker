@@ -692,12 +692,6 @@ msgid "Edit process"
 msgstr "Edit process"
 
 # TRANSLATION
-# JAVASCRIPT/curriculum
-#: JAVASCRIPT/curriculum
-msgid "Resume"
-msgstr "Resume"
-
-# TRANSLATION
 # JAVASCRIPT/ID_OPEN_SEARCH
 #: JAVASCRIPT/ID_OPEN_SEARCH
 msgid "Advanced Search"
@@ -32426,8 +32420,8 @@ msgstr "Photo"
 # users/users_EditLDAP.xml?USR_RESUME
 # users/users_EditLDAP.xml
 #: file - USR_RESUME
-msgid "[users/users_EditLDAP.xml?USR_RESUME] Résumé"
-msgstr "Résumé"
+msgid "[users/users_EditLDAP.xml?USR_RESUME] Resume"
+msgstr "Resume"
 
 # users/users_EditLDAP.xml?MAX_FILES_SIZE
 # users/users_EditLDAP.xml

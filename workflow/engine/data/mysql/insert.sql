@@ -1486,7 +1486,6 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_CANCEL_CASE','en','Cancel Case','2012-06-01') ,
 ( 'LABEL','ID_YOU_ARE_FIRST_STEP','en','You are in the first step!','2012-06-01') ,
 ( 'JAVASCRIPT','EDIT_PROCESS','en','Edit process','2012-06-01') ,
-( 'JAVASCRIPT','curriculum','en','Resume','2012-06-01') ,
 ( 'JAVASCRIPT','ID_OPEN_SEARCH','en','Advanced Search','2012-06-01') ,
 ( 'JAVASCRIPT','ID_CLOSE_SEARCH','en','Close Search','2012-06-01') ,
 ( 'JAVASCRIPT','ID_URL_OF_LINK','en','Enter the URL for the link','2012-06-01') ,

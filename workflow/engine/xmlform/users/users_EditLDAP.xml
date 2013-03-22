@@ -14,7 +14,7 @@
     <en>Photo</en>    
   </USR_PHOTO>
   <USR_RESUME type="file" group="1">
-    <en>Résumé</en>    
+    <en>Resume</en>    
   </USR_RESUME>
   <MAX_FILES_SIZE type="edit" mode="view">
     <en>Max upload files size in bytes</en>
