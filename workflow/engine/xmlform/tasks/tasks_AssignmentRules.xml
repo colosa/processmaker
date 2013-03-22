@@ -299,6 +299,7 @@ var insertFormVar = function(sFieldName, sValue) {
 	else {
 	  if (document.selection) {
 	    oAux.focus();
+      oAux.value   = '';
       document.selection.createRange().text = sValue;
 	  }
 	}
