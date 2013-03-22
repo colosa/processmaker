@@ -84,7 +84,6 @@ Ext.onReady(function(){
   });
 
   cmbTimeZone.setValue(sysConf.time_zone);
-
   saveButton = new Ext.Action({
     text : _('ID_SAVE_SETTINGS'),
     disabled : true,
@@ -101,7 +100,21 @@ Ext.onReady(function(){
         name      : 'memory_limit',
         fieldLabel: _('ID_MEMORY_LIMIT'),
         allowBlank: false,
+        autoCreate: {tag: "input", type: "text", autocomplete: "off", maxlength: 15 },
         value: sysConf.memory_limit,
+        listeners:{
+          change: function(){
+            changeSettings();
+          }
+        }
+      }, {
+        xtype: 'numberfield',
+        id        : 'max_life_time',
+        name      : 'max_life_time',
+        fieldLabel: _('ID_MAX_LIFETIME'),
+        // allowBlank: false,
+        autoCreate: {tag: "input", type: "text", autocomplete: "off", maxlength: 15 },
+        value: sysConf.session_gc_maxlifetime,
         listeners:{
           change: function(){
             changeSettings();
