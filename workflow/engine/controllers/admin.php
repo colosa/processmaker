@@ -44,6 +44,11 @@ class Admin extends Controller
         // $c = new Configurations();
         // $configPage = $c->getConfiguration('usersList', 'pageSize','',$_SESSION['USER_LOGGED']);
         // $Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;
+        if (isset($sysConf["session.gc_maxlifetime"])) {
+            $sysConf["session_gc_maxlifetime"] = $sysConf["session.gc_maxlifetime"];
+        } else {
+            $sysConf["session_gc_maxlifetime"] = ini_get('session.gc_maxlifetime');
+        }
 
         $this->setJSVar( 'skinsList', $skins );
         $this->setJSVar( 'languagesList', $languagesList );
