@@ -58,7 +58,7 @@
 <en>Show print dynaform button</en>
 </PRINTDYNAFORM>
 
-<ADJUSTGRIDSWIDTH type="checkbox" falseValue="0" value="0" defaultvalue="0" labelOnRight="0">
+<ADJUSTGRIDSWIDTH type="checkbox" falseValue="0" value="1" defaultvalue="0" labelOnRight="0">
   <en>Adjust the grid width to the width of the main form</en>
 </ADJUSTGRIDSWIDTH>
 <!--<ENABLETEMPLATE type="checkbox" value="1" defaultvalue="0" labelOnRight="0">
