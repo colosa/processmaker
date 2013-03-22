@@ -10036,8 +10036,8 @@ msgstr "Please select a photo"
 # TRANSLATION
 # LABEL/ID_RESUME
 #: LABEL/ID_RESUME
-msgid "Résumé"
-msgstr "Résumé"
+msgid "Resume"
+msgstr "Resume"
 
 # TRANSLATION
 # LABEL/ID_USER_ID

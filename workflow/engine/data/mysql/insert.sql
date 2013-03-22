@@ -3081,7 +3081,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_EMAIL_ENTER_VALID','en','Please enter a valid email address.','2012-06-01') ,
 ( 'LABEL','ID_PROFILE','en','Profile','2012-06-01') ,
 ( 'LABEL','ID_PLEASE_SELECT_PHOTO','en','Please select a photo','2012-06-01') ,
-( 'LABEL','ID_RESUME','en','Résumé','2012-06-01') ,
+( 'LABEL','ID_RESUME','en','Resume','2012-06-01') ,
 ( 'LABEL','ID_USER_ID','en','User ID (*)','2012-06-01') ,
 ( 'LABEL','ID_PHONE','en','Phone','2012-06-01') ,
 ( 'LABEL','ID_NEW_PASSWORD','en','New Password','2012-06-01') ,
