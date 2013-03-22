@@ -394,12 +394,44 @@ class Applications
             $totalCount = AppCacheViewPeer::doCount($CriteriaCount, $distinct);
         }
 
-        //add sortable options
-        if ($sort != '') {
-            if ($dir == 'DESC') {
-                $Criteria->addDescendingOrderByColumn( $sort );
+        //Add sortable options
+        if ($sort != "") {
+            //Current delegation (*)
+            if (($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") && ($status != "TO_DO")) {
+                switch ($sort) {
+                    case "APP_CACHE_VIEW.APP_CURRENT_USER":
+                        $sort = "USRCR_USR_LASTNAME";
+
+                        $confEnvSetting = $conf->getConfiguration("ENVIRONMENT_SETTINGS", "");
+
+                        if (is_array($confEnvSetting)) {
+                            $arrayAux = explode(" ", str_replace(array("(", ")", ","), array(null, null, null), $confEnvSetting["format"]));
+
+                            if (isset($arrayAux[0])) {
+                                switch (trim($arrayAux[0])) {
+                                    case "@userName":
+                                        $sort = "USRCR_USR_USERNAME";
+                                        break;
+                                    case "@firstName":
+                                        $sort = "USRCR_USR_FIRSTNAME";
+                                        break;
+                                    case "@lastName":
+                                        $sort = "USRCR_USR_LASTNAME";
+                                        break;
+                                }
+                            }
+                        }
+                        break;
+                    case "APP_CACHE_VIEW.APP_TAS_TITLE":
+                        $sort = "APPCVCR_APP_TAS_TITLE";
+                        break;
+                }
+            }
+
+            if ($dir == "DESC") {
+                $Criteria->addDescendingOrderByColumn($sort);
             } else {
-                $Criteria->addAscendingOrderByColumn( $sort );
+                $Criteria->addAscendingOrderByColumn($sort);
             }
         }
 
@@ -444,7 +476,7 @@ class Applications
              $maxDataset->close();
               }*/
 
-            //Current delegation
+            //Current delegation (*)
             if (($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") && ($status != "TO_DO")) {
                 //Current task
                 $aRow["APP_TAS_TITLE"] = $aRow["APPCVCR_APP_TAS_TITLE"];
