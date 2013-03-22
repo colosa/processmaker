@@ -44,6 +44,11 @@ class Admin extends Controller
         // $c = new Configurations();
         // $configPage = $c->getConfiguration('usersList', 'pageSize','',$_SESSION['USER_LOGGED']);
         // $Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;
+        if (isset($sysConf["session.gc_maxlifetime"])) {
+            $sysConf["session_gc_maxlifetime"] = $sysConf["session.gc_maxlifetime"];
+        } else {
+            $sysConf["session_gc_maxlifetime"] = ini_get('session.gc_maxlifetime');
+        }
 
         $this->setJSVar( 'skinsList', $skins );
         $this->setJSVar( 'languagesList', $languagesList );
@@ -90,7 +95,8 @@ class Admin extends Controller
             $fields = $calendarObj->getCalendarInfoE( $CalendarUid );
             $fields['OLD_NAME'] = $fields['CALENDAR_NAME'];
         }
-        if (! isset( $fields['CALENDAR_UID'] )) { //For a new Calendar
+        // For a new Calendar
+        if (! isset( $fields['CALENDAR_UID'] )) {
             $fields['CALENDAR_UID'] = $CalendarUid;
             $fields['OLD_NAME'] = '';
 
@@ -99,7 +105,8 @@ class Admin extends Controller
             $fields['BUSINESS_DAY'][1]['CALENDAR_BUSINESS_START'] = "09:00";
             $fields['BUSINESS_DAY'][1]['CALENDAR_BUSINESS_END'] = "17:00";
         }
-        if ((isset( $_GET['cp'] )) && ($_GET['cp'] == 1)) { // Copy Calendar
+        // Copy Calendar
+        if ((isset( $_GET['cp'] )) && ($_GET['cp'] == 1)) {
             $fields['CALENDAR_UID'] = G::GenerateUniqueID();
             $fields['CALENDAR_NAME'] = G::LoadTranslation( "ID_COPY_OF" ) . " " . $fields['CALENDAR_NAME'];
             $fields['OLD_NAME'] = $fields['CALENDAR_NAME'];
