@@ -196,8 +196,8 @@ class Installer
             @mkdir($path_site . "xmlForms", 0777, true);
 
             $db_text = "<?php\n" . "// Processmaker configuration\n" . "define ('DB_ADAPTER', 'mysql' );\n" . "define ('DB_HOST', '" . $this->options['database']['hostname'] . ":" . $myPort . "' );\n" . "define ('DB_NAME', '" . $wf . "' );\n" . "define ('DB_USER', '" . (($this->cc_status == 1) ? $wf : $this->options['database']['username']) . "' );\n" . "define ('DB_PASS', '" . (($this->cc_status == 1) ? $this->options['password'] : $this->options['database']['password']) . "' );\n" . "define ('DB_RBAC_HOST', '" . $this->options['database']['hostname'] . ":" . $myPort . "' );\n" . "define ('DB_RBAC_NAME', '" . $rb . "' );\n" . "define ('DB_RBAC_USER', '" . (($this->cc_status == 1) ? $rb : $this->options['database']['username']) . "' );\n" . "define ('DB_RBAC_PASS', '" . (($this->cc_status == 1) ? $this->options['password'] : $this->options['database']['password']) . "' );\n" . "define ('DB_REPORT_HOST', '" . $this->options['database']['hostname'] . ":" . $myPort . "' );\n" . "define ('DB_REPORT_NAME', '" . $rp . "' );\n" . "define ('DB_REPORT_USER', '" . (($this->cc_status == 1) ? $rp : $this->options['database']['username']) . "' );\n" . "define ('DB_REPORT_PASS', '" . (($this->cc_status == 1) ? $this->options['password'] : $this->options['database']['password']) . "' );\n" . "?>";
-            if (defined('PARTNER_FLAG')) {
-                $dbText .= "define ('PARTNER_FLAG', " . (PARTNER_FLAG ? 'true' : 'false') . ");\n";
+            if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
+                $dbText .= "define ('PARTNER_FLAG', " . (PARTNER_FLAG ? 'true' :  ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
             }
             $fp = @fopen($db_file, "w");
             $this->log("Create: " . $db_file . "  => " . ((!$fp) ? $fp : "OK") . "\n", $fp === false);
