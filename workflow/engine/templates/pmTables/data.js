@@ -112,7 +112,7 @@ Ext.onReady(function(){
         columnAlign = 'right';
         columnEditor = {
           xtype      : 'numberfield',
-          format     : 'Y-m-d',
+          decimalPrecision : 8,
           allowBlank : true
         }; 
         break;
