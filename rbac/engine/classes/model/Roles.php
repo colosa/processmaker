@@ -84,11 +84,11 @@ class Roles extends BaseRoles {
             $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $oDataset->next();
             $aRow = $oDataset->getRow();
-            
+
             $roles = new Roles();
         	$roles->load($aRow['ROL_UID']);
         	$aRow['ROL_NAME'] = $roles->getRolName();
-            
+
             if (is_array($aRow)) {
                 return $aRow;
             } else {
@@ -336,10 +336,27 @@ class Roles extends BaseRoles {
         $result = RolesPeer::doSelectRS($oCriteria);
         $result->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $result->next();
+
         $row = $result->getRow();
         $ret = $row['ROL_CODE'];
 
         return $ret;
+    }
+
+    function getRolUidByCode($ROL_CODE) {
+        $oCriteria = new Criteria('rbac');
+        $oCriteria->addSelectColumn(RolesPeer::ROL_UID);
+        $oCriteria->addSelectColumn(RolesPeer::ROL_CODE);
+
+        $oCriteria->add(RolesPeer::ROL_CODE, $ROL_CODE);
+
+        $result = RolesPeer::doSelectRS($oCriteria);
+        $result->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $result->next();
+        $row = $result->getRow();
+        $code = $row['ROL_UID'];
+
+        return $code;
     }
 
     //Added by Enrique at Feb 9th, 2011

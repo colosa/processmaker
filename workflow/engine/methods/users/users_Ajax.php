@@ -345,29 +345,38 @@ try {
             require_once 'classes/model/LoginLog.php';
             require_once 'classes/model/Department.php';
             require_once 'classes/model/AppCacheView.php';
+            require_once PATH_RBAC . "model/Roles.php";
+            require_once ("classes/model/Content.php");
+
             global $RBAC;
-            G::LoadClass('configuration');
-            $co = new Configurations();
-            $config = $co->getConfiguration('usersList', 'pageSize', '', $_SESSION['USER_LOGGED']);
+
             $limit_size = isset($config['pageSize']) ? $config['pageSize'] : 20;
             $start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
             $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : $limit_size;
             $filter = isset($_REQUEST['textFilter']) ? $_REQUEST['textFilter'] : '';
+
+            G::LoadClass('configuration');
+            $co = new Configurations();
+            $config = $co->getConfiguration('usersList', 'pageSize', '', $_SESSION['USER_LOGGED']);
+
             $auths = isset($_REQUEST['auths']) ? $_REQUEST['auths'] : '';
             $sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : '';
             $dir = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : 'ASC';
             $aUsers = Array();
+
             if ($auths != '') {
                 $aUsers = $RBAC->getListUsersByAuthSource($auths);
             }
+
             $oCriteria = new Criteria('workflow');
             $oCriteria->addSelectColumn('COUNT(*) AS CNT');
             if ($filter != '') {
                 $cc = $oCriteria->getNewCriterion(UsersPeer::USR_USERNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_FIRSTNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_LASTNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_EMAIL, '%' . $filter . '%', Criteria::LIKE))));
                 $oCriteria->add($cc);
             }
-            $oCriteria->add(UsersPeer::USR_STATUS, array('CLOSED'
-                    ), Criteria::NOT_IN);
+
+            $oCriteria->add(UsersPeer::USR_STATUS, array('CLOSED'), Criteria::NOT_IN);
+
             if ($auths != '') {
                 $totalRows = sizeof($aUsers);
             } else {
@@ -377,6 +386,7 @@ try {
                 $row = $oDataset->getRow();
                 $totalRows = $row['CNT'];
             }
+
             $oCriteria->clearSelectColumns();
             $oCriteria->addSelectColumn(UsersPeer::USR_UID);
             $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
@@ -392,24 +402,15 @@ try {
             $oCriteria->addAsColumn('DEP_TITLE', 0);
             $oCriteria->addAsColumn('TOTAL_CASES', 0);
             $oCriteria->addAsColumn('DUE_DATE_OK', 1);
+
             $sep = "'";
-            $oCriteria->add(UsersPeer::USR_STATUS, array('CLOSED'
-                    ), Criteria::NOT_IN);
+            $oCriteria->add(UsersPeer::USR_STATUS, array('CLOSED'), Criteria::NOT_IN);
+
             if ($filter != '') {
                 $cc = $oCriteria->getNewCriterion(UsersPeer::USR_USERNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_FIRSTNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_LASTNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_EMAIL, '%' . $filter . '%', Criteria::LIKE))));
                 $oCriteria->add($cc);
             }
-            //      $sw_add = false;
-            //      for ($i=0; $i < sizeof($aUsers); $i++){
-            //        if ($i>0){
-            //          $tmpL = $tmpL->addOr($oCriteria->getNewCriterion(UsersPeer::USR_UID, $aUsers[$i],Criteria::EQUAL));
-            //        }else{
-            //          $uList = $oCriteria->getNewCriterion(UsersPeer::USR_UID, $aUsers[$i],Criteria::EQUAL);
-            //          $tmpL = $uList;
-            //          $sw_add = true;
-            //        }
-            //      }
-            //      if ($sw_add) $oCriteria->add($uList);
+
             if (sizeof($aUsers) > 0) {
                 $oCriteria->add(UsersPeer::USR_UID, $aUsers, Criteria::IN);
             } elseif ($totalRows == 0 && $auths != '') {
@@ -424,6 +425,7 @@ try {
             }
             $oCriteria->setOffset($start);
             $oCriteria->setLimit($limit);
+
             $oDataset = UsersPeer::DoSelectRs($oCriteria);
             $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
@@ -434,6 +436,7 @@ try {
             $Department = new Department();
             $aDepart = $Department->getAllDepartmentsByUser();
             $aAuthSources = $RBAC->getAllAuthSourcesByUser();
+            $uRole = Array();
 
             require_once PATH_CONTROLLERS . 'adminProxy.php';
             $uxList = adminProxy::getUxTypesList();
@@ -441,6 +444,17 @@ try {
             $rows = Array();
             while ($oDataset->next()) {
                 $row = $oDataset->getRow();
+
+                $oRoles = new Roles();
+                $uRole = $oRoles->getRolUidByCode($row['USR_ROLE']);
+
+                if($uRole){
+                    $content = new Content();
+                    $rNames = $content->getContentById($uRole);
+                }
+
+                $row['USR_ROLE'] = isset($rNames)? $rNames : '';
+
                 $row['DUE_DATE_OK'] = (date('Y-m-d') > date('Y-m-d', strtotime($row['USR_DUE_DATE']))) ? 0 : 1;
                 $row['LAST_LOGIN'] = isset($aLogin[$row['USR_UID']]) ? $aLogin[$row['USR_UID']] : '';
                 $row['TOTAL_CASES'] = isset($aCases[$row['USR_UID']]) ? $aCases[$row['USR_UID']] : 0;

@@ -493,5 +493,31 @@ class Content extends BaseContent
         }
         return $aRoles;
     }
+
+    public function getContentById ( $ROL_UID, $sys_lang = SYS_LANG)
+    {
+        if (! isset( $sys_lang )) {
+            $sys_lang = 'en';
+        }
+
+        $oCriteria = new Criteria( 'workflow' );
+        $oCriteria->clearSelectColumns();
+        $oCriteria->addSelectColumn( ContentPeer::CON_ID );
+        $oCriteria->addAsColumn( 'ROL_NAME', ContentPeer::CON_VALUE );
+        //$oCriteria->addAsColumn('ROL_UID', ContentPeer::CON_ID);
+        $oCriteria->add( ContentPeer::CON_CATEGORY, 'ROL_NAME' );
+        $oCriteria->add( ContentPeer::CON_LANG, $sys_lang );
+        $oCriteria->add( ContentPeer::CON_ID, $ROL_UID );
+
+        $result = ContentPeer::doSelectRS( $oCriteria );
+        $result->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        $result->next();
+        $row = $result->getRow();
+        $value = $row['ROL_NAME'];
+
+        return $value;
+    }
+
 }
 
