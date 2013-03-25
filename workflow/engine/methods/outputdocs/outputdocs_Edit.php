@@ -61,13 +61,30 @@ try {
     
     switch ($type) {
         case 'HTML':
-            //$G_PUBLISH->AddContent('xmlform', 'xmlform', 'outputdocs/outputdocs_Edit', '', $aFields , '../outputdocs/outputdocs_Save');
-            $oHeadPublisher = & headPublisher::getSingleton();
-            $oHeadPublisher->assign( 'OUT_DOC_UID', $_GET['OUT_DOC_UID'] );
-            $translations = G::getTranslations( Array ('ID_FILE','ID_OUT_PUT_DOC_UPLOAD_TITLE','ID_UPLOADING_FILE','ID_UPLOAD','ID_CANCEL','ID_SAVE','ID_LOAD_FROM_FILE','ID_SELECT_TEMPLATE_FILE','ID_ALERT_MESSAGE','ID_INVALID_FILE') );
-            //      $oHeadPublisher->assign('TRANSLATIONS', $translations);
-            $oHeadPublisher->addExtJsScript( 'outputdocs/htmlEditor', false ); //adding a javascript file .js
-            G::RenderPage( 'publish', 'extJs' );
+            global $G_PUBLISH;
+            $G_PUBLISH = new Publisher();
+            $fcontent  = '';
+            $proUid    = '';
+            $filename  = '';
+            $title  = '';
+            require_once 'classes/model/OutputDocument.php';
+            $oOutputDocument = new OutputDocument();
+            if (isset( $_REQUEST['OUT_DOC_UID'] )) {
+                $aFields = $oOutputDocument->load( $_REQUEST['OUT_DOC_UID'] );
+                $fcontent = $aFields['OUT_DOC_TEMPLATE'];
+                $proUid   = $aFields['PRO_UID'];
+                $filename = $aFields['OUT_DOC_FILENAME'];
+                $title    = $aFields['OUT_DOC_TITLE'];
+            }
+            $aData = Array (
+                'PRO_UID' => $proUid,
+                'OUT_DOC_TEMPLATE' => $fcontent,
+                'FILENAME' => $filename,
+                'OUT_DOC_UID'=> $_REQUEST['OUT_DOC_UID'],
+                'OUT_DOC_TITLE'=> $title,
+            );
+            $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'outputdocs/outputdocs_Edit', '', $aData );
+            G::RenderPage( 'publish', 'blank' );
             die();
             break;
         case 'JRXML':
