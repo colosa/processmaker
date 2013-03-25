@@ -17,6 +17,8 @@
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
 			<cssFile file="xmlcolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="jscolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+			<cssFile file="csscolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+			<cssFile file="phpcolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</skin>
 		<blank>
@@ -49,6 +51,8 @@
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
 			<cssFile file="xmlcolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="jscolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+			<cssFile file="csscolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+			<cssFile file="phpcolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</extjs>
 	</cssFiles>
