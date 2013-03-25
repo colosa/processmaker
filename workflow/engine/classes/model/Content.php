@@ -493,5 +493,6 @@ class Content extends BaseContent
         }
         return $aRoles;
     }
+
 }
 
