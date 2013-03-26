@@ -501,6 +501,15 @@ Ext.onReady(function () {
   var passwordFields = new Ext.form.FieldSet({
     title : _('ID_CHANGE_PASSWORD'),
     items : [
+       {
+          xtype      : "textfield",
+          id         : "currentPassword",
+          name       : "currentPassword",
+          fieldLabel : _("ID_PASSWORD_CURRENT"),
+          inputType  : "password",
+          hidden     : (typeof EDITPROFILE != "undefined" && EDITPROFILE == 1)? false : true,
+          width      : 260
+      },
       {
         id         : 'USR_NEW_PASS',
         fieldLabel : _('ID_NEW_PASSWORD'),
@@ -1027,6 +1036,48 @@ function validateUserName() {
   });
 }
 
+function userFrmEditSubmit()
+{
+    Ext.getCmp("USR_STATUS").setDisabled(readMode);
+    Ext.getCmp("frmDetails").getForm().submit({
+      url    : "usersAjax",
+      params : {
+        action   : "saveUser",
+        USR_UID  : USR_UID,
+        USR_CITY : global.IS_UID
+      },
+      waitMsg : _("ID_SAVING"),
+      timeout : 36000,
+      success : function (obj, resp) {
+        if (!infoMode) {
+          location.href = "users_List";
+        } else {
+         location.href = "../users/myInfo?type=reload";
+        }
+
+      },
+      failure : function (obj, resp) {
+        if (typeof resp.result  == "undefined")
+        {
+          Ext.Msg.alert(_("ID_ERROR"), _("ID_SOME_FIELDS_REQUIRED"));
+        } else{
+          if (resp.result.msg){
+            var message = resp.result.msg.split(",");
+            Ext.Msg.alert(_("ID_WARNING"), "<strong>"+message[0]+"<strong><br/><br/>"+message[1]+"<br/><br/>"+message[2]);
+          }
+
+          if (resp.result.fileError) {
+            Ext.Msg.alert(_("ID_ERROR"), _("ID_FILE_TOO_BIG"));
+          }
+
+          if (resp.result.error) {
+            Ext.Msg.alert(_("ID_ERROR"), resp.result.error);
+          }
+        }
+      }
+    });
+}
+
 function saveUser()
 {
   if (Ext.getCmp('USR_USERNAME').getValue() != '') {
@@ -1069,46 +1120,40 @@ function saveUser()
   var confPass = frmDetails.getForm().findField('USR_CNF_PASS').getValue();
 
   if (confPass === newPass) {
-    Ext.getCmp('USR_STATUS').setDisabled(readMode);
-    Ext.getCmp('frmDetails').getForm().submit({
-      url    : 'usersAjax',
-      params : {
-        action   : 'saveUser',
-        USR_UID  : USR_UID,
-        USR_CITY : global.IS_UID
-      },
-      waitMsg : _('ID_SAVING'),
-      timeout : 36000,
-      success : function (obj, resp) {
-        if (!infoMode) {
-          location.href = 'users_List';
+      if(typeof(EDITPROFILE) != "undefined" && EDITPROFILE == 1 && newPass != "") {
+        var currentPassword = Ext.getCmp("currentPassword").getValue();
+
+        if(currentPassword != "") {
+            Ext.Ajax.request({
+                url:    "usersAjax",
+                method: "POST",
+
+                params: {
+                    action:   "passwordValidate",
+                    password: currentPassword
+                },
+
+                success: function (response, opts) {
+                    var dataRespuesta = eval("(" + response.responseText + ")");
+
+                    if (dataRespuesta.result == "OK") {
+                        userFrmEditSubmit();
+                    } else {
+                        Ext.MessageBox.alert(_("ID_ERROR"), _("ID_PASSWORD_CURRENT_INCORRECT"));
+                    }
+                },
+                failure: function (response, opts){
+                  //
+                }
+           });
         } else {
-         location.href = '../users/myInfo?type=reload';
+            Ext.MessageBox.alert(_("ID_ERROR"), _("ID_PASSWORD_CURRENT_ENTER"));
         }
+    } else {
+        userFrmEditSubmit();
+    }
 
-      },
-      failure : function (obj, resp) {
-        if (typeof resp.result  == "undefined")
-        {
-          Ext.Msg.alert(_('ID_ERROR'), _('ID_SOME_FIELDS_REQUIRED'));
-        } else{
-          if (resp.result.msg){
-            var message = resp.result.msg.split(',');
-            Ext.Msg.alert(_('ID_WARNING'), '<strong>'+message[0]+'<strong><br/><br/>'+message[1]+'<br/><br/>'+message[2]);
-          }
-
-          if (resp.result.fileError) {
-            Ext.Msg.alert(_('ID_ERROR'), _('ID_FILE_TOO_BIG'));
-          }
-
-          if (resp.result.error) {
-            Ext.Msg.alert(_('ID_ERROR'), resp.result.error);
-          }
-        }
-      }
-    });
-  }
-  else {
+  } else {
     Ext.Msg.alert(_('ID_ERROR'), _('ID_PASSWORDS_DONT_MATCH'));
   }
 }

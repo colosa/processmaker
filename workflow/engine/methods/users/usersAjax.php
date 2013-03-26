@@ -612,4 +612,19 @@ switch ($_POST['action']) {
         $response['descriptionText'] = $span . $gif . $text . '</span>';
         echo G::json_encode($response);
         break;
+    case "passwordValidate":
+        $messageResultLogin = "";
+        $password = $_POST["password"];
+        $resultLogin = $RBAC->VerifyLogin($_SESSION["USR_USERNAME"], $password);
+
+        if($resultLogin ==  $_SESSION["USER_LOGGED"]) {
+            $messageResultLogin = "OK";
+        } else {
+            $messageResultLogin = "ERROR";
+        }
+
+        $response = array();
+        $response["result"] = $messageResultLogin;
+        echo G::json_encode($response);
+        break;
 }
