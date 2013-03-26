@@ -3,6 +3,87 @@ require_once ('classes/model/AppCacheView.php');
 
 $request = isset( $_POST['request'] ) ? $_POST['request'] : (isset( $_GET['request'] ) ? $_GET['request'] : null);
 
+function testConnection($type, $server, $user, $passwd, $port = 'none', $dbName = "")
+{
+
+    if (($port == 'none') || ($port == '') || ($port == 0)) {
+        //setting defaults ports
+        switch ($type) {
+            case 'mysql':
+                $port = 3306;
+                break;
+            case 'pgsql':
+                $port = 5432;
+                break;
+            case 'mssql':
+                $port = 1433;
+                break;
+            case 'oracle':
+                $port = 1521;
+                break;
+        }
+    }
+
+    G::LoadClass('net');
+    $Server = new NET($server);
+
+    if ($Server->getErrno() == 0) {
+        $Server->scannPort($port);
+        if ($Server->getErrno() == 0) {
+            $Server->loginDbServer($user, $passwd);
+            $Server->setDataBase($dbName, $port);
+            if ($Server->errno == 0) {
+                $response = $Server->tryConnectServer($type);
+                if ($response->status == 'SUCCESS') {
+                    if ($Server->errno == 0) {
+                        $message = "";
+                        $response = $Server->tryConnectServer($type);
+                        $connDatabase = @mysql_connect($server, $user, $passwd);
+                        $dbNameTest = "PROCESSMAKERTESTDC";
+                        $db = @mysql_query("CREATE DATABASE " . $dbNameTest, $connDatabase);
+                        $success = false;
+                        if (!$db) {
+                            $message = mysql_error();;
+                        } else {
+                            $usrTest = "wfrbtest";
+                            $chkG = "GRANT ALL PRIVILEGES ON `" . $dbNameTest . "`.* TO " . $usrTest . "@'%' IDENTIFIED BY 'sample' WITH GRANT OPTION";
+                            $ch = @mysql_query($chkG, $connDatabase);
+                            if (!$ch) {
+                                $message = mysql_error();
+                            } else {
+                                $sqlCreateUser = "CREATE USER '" . $user . "_usertest'@'%' IDENTIFIED BY 'sample'";
+                                $result = @mysql_query($sqlCreateUser, $connDatabase);
+                                if (!$result) {
+                                    $message = mysql_error();
+                                } else {
+                                    $success = true;
+                                    $message = G::LoadTranslation('ID_SUCCESSFUL_CONNECTION');
+                                }
+                                $sqlDropUser = "DROP USER '" . $user . "_usertest'@'%'";
+                                @mysql_query($sqlDropUser, $connDatabase);
+
+                                @mysql_query("DROP USER " . $usrTest . "@'%'", $connDatabase);
+                            }
+                            @mysql_query("DROP DATABASE " . $dbNameTest, $connDatabase);
+                        }
+                        return array($success, ($message != "")? $message : $Server->error);
+                    } else {
+                        return array(false, $Server->error);
+                    }
+                } else {
+                    return array(false, $Server->error);
+                }
+            } else {
+                return array(false, $Server->error);
+            }
+        } else {
+            return array(false, $Server->error);
+        }
+    } else {
+        return array(false, $Server->error);
+    }
+}
+
 switch ($request) {
     //check if the APP_CACHE VIEW table and their triggers are installed
     case 'info':
@@ -19,8 +100,7 @@ switch ($request) {
             $lang = (defined('SYS_LANG')) ? SYS_LANG : $appCacheViewEngine['LANG'];
             $status = strtoupper( $appCacheViewEngine['STATUS'] );
         } else {
-            $confParams = Array ('LANG' => (defined('SYS_LANG')) ? SYS_LANG : 'en','STATUS' => ''
-            );
+            $confParams = Array ('LANG' => (defined('SYS_LANG')) ? SYS_LANG : 'en','STATUS' => '');
             $oConf->aConfig = $confParams;
             $oConf->saveConfig( 'APP_CACHE_VIEW_ENGINE', '', '', '' );
             $lang = (defined('SYS_LANG')) ? SYS_LANG : 'en';
@@ -34,26 +114,22 @@ switch ($request) {
         //setup the appcacheview object, and the path for the sql files
         $appCache = new AppCacheView();
         $appCache->setPathToAppCacheFiles( PATH_METHODS . 'setup' . PATH_SEP . 'setupSchemas' . PATH_SEP );
-				
+
         $res = $appCache->getMySQLVersion();
         //load translations  G::LoadTranslation
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_MYSQL_VERSION' ) ,'value' => $res
-        );
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_MYSQL_VERSION' ) ,'value' => $res);
 
         $res = $appCache->checkGrantsForUser( false );
         $currentUser = $res['user'];
         $currentUserIsSuper = $res['super'];
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_CURRENT_USER' ) ,'value' => $currentUser
-        );
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_USER_SUPER_PRIVILEGE' ) ,'value' => $currentUserIsSuper
-        );
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_CURRENT_USER' ) ,'value' => $currentUser);
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_USER_SUPER_PRIVILEGE' ) ,'value' => $currentUserIsSuper);
 
         try {
             PROPEL::Init( PATH_METHODS . 'dbConnections/rootDbConnections.php' );
             $con = Propel::getConnection( "root" );
         } catch (Exception $e) {
-            $result->info[] = array ('name' => 'Checking MySql Root user','value' => 'failed'
-            );
+            $result->info[] = array ('name' => 'Checking MySql Root user','value' => 'failed');
             $result->error = true;
             $result->errorMsg = $e->getMessage();
         }
@@ -62,19 +138,15 @@ switch ($request) {
         if (! $currentUserIsSuper && ! $result->error) {
             $res = $appCache->checkGrantsForUser( true );
             if (! isset( $res['error'] )) {
-                $result->info[] = array ('name' => 'Root User','value' => $res['user']
-                );
-                $result->info[] = array ('name' => 'Root User has SUPER privilege','value' => $res['super']
-                );
+                $result->info[] = array ('name' => 'Root User','value' => $res['user']);
+                $result->info[] = array ('name' => 'Root User has SUPER privilege','value' => $res['super']);
             } else {
-                $result->info[] = array ('name' => 'Error','value' => $res['msg']
-                );
+                $result->info[] = array ('name' => 'Error','value' => $res['msg']);
             }
 
             $res = $appCache->setSuperForUser( $currentUser );
             if (! isset( $res['error'] )) {
-                $result->info[] = array ('name' => 'Setting SUPER privilege','value' => 'Successfully'
-                );
+                $result->info[] = array ('name' => 'Setting SUPER privilege','value' => 'Successfully');
             } else {
                 $result->error = true;
                 $result->errorMsg = $res['msg'];
@@ -85,41 +157,33 @@ switch ($request) {
 
         //now check if table APPCACHEVIEW exists, and it have correct number of fields, etc.
         $res = $appCache->checkAppCacheView();
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TABLE' ),'value' => $res['found']
-        );
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TABLE' ),'value' => $res['found']);
 
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_ROWS' ),'value' => $res['count']
-        );
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_ROWS' ),'value' => $res['count']);
 
         //now check if we have the triggers installed
         //APP_DELEGATION INSERT
         $res = $appCache->triggerAppDelegationInsert( $lang, false );
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_INSERT' ),'value' => $res
-        );
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_INSERT' ),'value' => $res);
 
         //APP_DELEGATION Update
         $res = $appCache->triggerAppDelegationUpdate( $lang, false );
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_UPDATE' ),'value' => $res
-        );
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_UPDATE' ),'value' => $res);
 
         //APPLICATION UPDATE
         $res = $appCache->triggerApplicationUpdate( $lang, false );
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_APPLICATION_UPDATE' ),'value' => $res
-        );
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_APPLICATION_UPDATE' ),'value' => $res);
 
         //APPLICATION DELETE
         $res = $appCache->triggerApplicationDelete( $lang, false );
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_APPLICATION_DELETE' ),'value' => $res
-        );
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_APPLICATION_DELETE' ),'value' => $res);
 
         //CONTENT UPDATE
         $res = $appCache->triggerContentUpdate( $lang, false );
-        $result->info[] = array ("name" => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_CONTENT_UPDATE' ),"value" => $res
-        );
+        $result->info[] = array ("name" => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_CONTENT_UPDATE' ),"value" => $res);
 
         //show language
-        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_LANGUAGE' ),'value' => $lang
-        );
+        $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_LANGUAGE' ),'value' => $lang);
 
         echo G::json_encode( $result );
         break;
@@ -131,8 +195,7 @@ switch ($request) {
 
         $langs = $Translations->getTranslationEnvironments();
         foreach ($langs as $lang) {
-            $result->rows[] = Array ('LAN_ID' => $lang['LOCALE'],'LAN_NAME' => $lang['LANGUAGE']
-            );
+            $result->rows[] = Array ('LAN_ID' => $lang['LOCALE'],'LAN_NAME' => $lang['LANGUAGE']);
         }
 
         print (G::json_encode( $result )) ;
@@ -186,8 +249,7 @@ switch ($request) {
 
 
             //set status in config table
-            $confParams = Array ('LANG' => $lang,'STATUS' => 'active'
-            );
+            $confParams = Array ('LANG' => $lang,'STATUS' => 'active');
             $conf->aConfig = $confParams;
             $conf->saveConfig( 'APP_CACHE_VIEW_ENGINE', '', '', '' );
 
@@ -198,35 +260,46 @@ switch ($request) {
             echo G::json_encode( $result );
 
         } catch (Exception $e) {
-            $confParams = Array ('lang' => $lang,'status' => 'failed'
-            );
+            $confParams = Array ('lang' => $lang,'status' => 'failed');
             $appCacheViewEngine = $oServerConf->setProperty( 'APP_CACHE_VIEW_ENGINE', $confParams );
 
             echo '{success: false, msg:"' . $e->getMessage() . '"}';
         }
         break;
     case 'recreate-root':
-        $sh = md5( filemtime( PATH_GULLIVER . "/class.g.php" ) );
-        $h = G::encrypt( $_POST['host'] . $sh . $_POST['user'] . $sh . $_POST['password'] . $sh . (1), $sh );
-        $insertStatements = "define ( 'HASH_INSTALLATION','{$h}' );  \ndefine ( 'SYSTEM_HASH', '{$sh}' ); \n";
-        $lines = array ();
-        $content = '';
-        $filename = PATH_HOME . 'engine' . PATH_SEP . 'config' . PATH_SEP . 'paths_installed.php';
-        $lines = file( $filename );
+        $user = $_POST['user'];
+        $passwd = $_POST['password'];
+        $server = $_POST['host'];
+        $aServer = split(":", $server);
+        $serverName = $aServer[0];
+        $port = (count($aServer)>1) ? $aServer[1] : "none";
+        list($sucess, $msgErr) = testConnection(DB_ADAPTER, $serverName, $user, $passwd, $port);
 
-        $count = 1;
-        foreach ($lines as $line_num => $line) {
-            $pos = strpos( $line, "define" );
-            if ($pos !== false && $count < 3) {
-                $content = $content . $line;
-                $count ++;
+        if ($sucess) {
+            $sh = md5( filemtime( PATH_GULLIVER . "/class.g.php" ) );
+            $h = G::encrypt( $_POST['host'] . $sh . $_POST['user'] . $sh . $_POST['password'] . $sh . (1), $sh );
+            $insertStatements = "define ( 'HASH_INSTALLATION','{$h}' );  \ndefine ( 'SYSTEM_HASH', '{$sh}' ); \n";
+            $lines = array ();
+            $content = '';
+            $filename = PATH_HOME . 'engine' . PATH_SEP . 'config' . PATH_SEP . 'paths_installed.php';
+            $lines = file( $filename );
+
+            $count = 1;
+            foreach ($lines as $line_num => $line) {
+                $pos = strpos( $line, "define" );
+                if ($pos !== false && $count < 3) {
+                    $content = $content . $line;
+                    $count ++;
+                }
             }
-        }
-        $content = "<?php \n" . $content . "\n" . $insertStatements . "\n";
-        if (file_put_contents( $filename, $content ) != false) {
-            echo G::loadTranslation( 'ID_MESSAGE_ROOT_CHANGE_SUCESS' );
+            $content = "<?php \n" . $content . "\n" . $insertStatements . "\n";
+            if (file_put_contents( $filename, $content ) != false) {
+                echo G::loadTranslation( 'ID_MESSAGE_ROOT_CHANGE_SUCESS' );
+            } else {
+                echo G::loadTranslation( 'ID_MESSAGE_ROOT_CHANGE_FAILURE' );
+            }
         } else {
-            echo G::loadTranslation( 'ID_MESSAGE_ROOT_CHANGE_FAILURE' );
+            echo $msgErr;
         }
         break;
 }
