@@ -669,6 +669,7 @@ Ext.onReady(function(){
     nDay = '' + (parseInt(curDate[2])+1);
     nDay = nDay.length == 1 ? '0' + nDay : nDay;
     filterDate += nDay;
+    filterTime = ('0' + curDate[3]).slice(-2) + ':' + ('0' + curDate[4]).slice(-2) + ' ' + curDate[5];
 
     var fieldset = {
       xtype : 'fieldset',
@@ -691,6 +692,14 @@ Ext.onReady(function(){
           allowBlank: false,
           value: filterDate,
           minValue: filterDate
+        }),
+        new Ext.form.TimeField({
+          id: 'unpauseTime',
+          fieldLabel: _('ID_UNPAUSE_TIME'),
+          name: 'unpauseTime',
+          value: filterTime,
+          minValue: filterTime,
+          format: 'h:i A'
         }),
         {
           xtype: 'textarea',
@@ -726,15 +735,15 @@ Ext.onReady(function(){
       id: 'unpauseFrm',
       labelAlign : 'right',
       //bodyStyle : 'padding:5px 5px 0',
-      width : 250,
+      width : 260,
       items : [fieldset]
     });
 
 
     var win = new Ext.Window({
       title: _('ID_PAUSE_CASE'),
-      width: 370,
-      height: 230,
+      width: 380,
+      height: 250,
       layout:'fit',
       autoScroll:true,
       modal: true,
