@@ -21,7 +21,7 @@
 
 <TRI_WEBBOT type="textareapm" class="formLabel" cols="55" rows="13" width="100%" height="380px" showVars="1" process="@#PRO_UID">
 </TRI_WEBBOT>
-<SAVE type="button" onclick="triggerSave1(this.form);">
+<SAVE type="button" onclick="document.getElementById('form[TRI_WEBBOT]').value = triggerEditor.getCode(); triggerSave1(this.form);">
   <en>Save</en>
 </SAVE>
 <BTN_CANCEL type="button" onclick="cancel();triggerFromLibrary()">
@@ -30,6 +30,15 @@
 
 
 <JS type="JavaScript"><![CDATA[
+var triggerEditor = CodeMirror.fromTextArea('form[TRI_WEBBOT]', {
+    height: "220px",
+    width: "80%",
+    parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
+    "../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js",
+    "../contrib/php/js/parsephphtmlmixed.js"],
+    stylesheet: ["css/xmlcolors.css", "css/jscolors.css", "css/csscolors.css", "css/phpcolors.css" ],
+    path: "js/", lineNumbers: true, continuousScanning: 500, parserConfig: { phpOnly:true} });
+
 getField('TRI_TITLE').form.onsubmit = function() {return false;};
 var _oVarsPanel_;
 var showDynaformsFormVars = function(sFieldName, sAjaxServer, sProcess, sSymbol) {
@@ -66,21 +75,32 @@ var showDynaformsFormVars = function(sFieldName, sAjaxServer, sProcess, sSymbol)
 };
 
 var insertFormVar = function(sFieldName, sValue) {
-	oAux = document.getElementById(sFieldName);
-	if (oAux.setSelectionRange) {
-		var rangeStart = oAux.selectionStart;
-    var rangeEnd   = oAux.selectionEnd;
-    var tempStr1   = oAux.value.substring(0,rangeStart);
-    var tempStr2   = oAux.value.substring(rangeEnd);
-    oAux.value     = tempStr1 + sValue + tempStr2;
-	}
-	else {
-	  if (document.selection) {
-	    oAux.focus();
-      document.selection.createRange().text = sValue;
-	  }
-	}
-	_oVarsPanel_.remove();
+    //DEPRECATED
+	//oAux = document.getElementById(sFieldName);
+	//if (oAux.setSelectionRange) {
+	//	var rangeStart = oAux.selectionStart;
+    //var rangeEnd   = oAux.selectionEnd;
+    //var tempStr1   = oAux.value.substring(0,rangeStart);
+    //var tempStr2   = oAux.value.substring(rangeEnd);
+    //oAux.value     = tempStr1 + sValue + tempStr2;
+	//}
+	//else {
+	//  if (document.selection) {
+	//    oAux.focus();
+    //  document.selection.createRange().text = sValue;
+	//  }
+	//}
+	
+	if (triggerEditor.selection() == "") {
+        pos = triggerEditor.cursorPosition();
+        line = triggerEditor.cursorLine();
+        triggerEditor.insertIntoLine(line, pos.character, sValue);
+    } else {
+        triggerEditor.replaceSelection(sValue);
+    }
+    _oVarsPanel_.remove();
+    triggerEditor.focus();
+    triggerEditor.focusIfIE();
 };
 
 function cancel(){

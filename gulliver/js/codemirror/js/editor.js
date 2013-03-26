@@ -420,8 +420,10 @@ var Editor = (function(){
 
     if (!Editor.Parser)
       throw "No parser loaded.";
-    if (options.parserConfig && Editor.Parser.configure)
+    if (options.parserConfig && Editor.Parser.configure) {
       Editor.Parser.configure(options.parserConfig);
+      Editor.Parser.options = options;
+    }
 
     if (!options.readOnly && !internetExplorer)
       select.setCursorPos(container, {node: null, offset: 0});

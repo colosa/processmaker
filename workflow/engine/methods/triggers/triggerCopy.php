@@ -25,6 +25,7 @@ if (isset($_GET["TRI_UID"]) && !empty($_GET["TRI_UID"])) {
 
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent("xmlform", "xmlform", "triggers/triggerCopy", "", $arrayField, "../triggers/triggers_Save");
-
+$oHeadPublisher =& headPublisher::getSingleton();
+$oHeadPublisher->addScriptFile('/js/codemirror/js/codemirror.js', 1);
 G::RenderPage("publish", "raw");
 

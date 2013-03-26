@@ -63,9 +63,10 @@ if (isset( $_GET['TRI_UID'] )) {
     $xmlform = 'triggers/triggersProperties';
     $xmlform_action = '../triggers/triggers_Save';
 }
-
 G::LoadClass( 'xmlfield_InputPM' );
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $xmlform, '', $aFields, $xmlform_action );
+$oHeadPublisher =& headPublisher::getSingleton();
+$oHeadPublisher->addScriptFile('/js/codemirror/js/codemirror.js', 1);
 G::RenderPage( 'publish', 'raw' );
 

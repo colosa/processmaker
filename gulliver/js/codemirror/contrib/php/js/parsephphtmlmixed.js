@@ -19,6 +19,8 @@ var PHPHTMLMixedParser = Editor.Parser = (function() {
     var htmlParser = XMLParser.make(stream), localParser = null,
         inTag = false, lastAtt = null, phpParserState = null;
     var iter = {next: top, copy: copy};
+    if (Editor.Parser.options && Editor.Parser.options.parserConfig.phpOnly == true)
+        iter.next = local(PHPParser, "?>");
 
     function top() {
       var token = htmlParser.next();
@@ -48,6 +50,10 @@ var PHPHTMLMixedParser = Editor.Parser = (function() {
           iter.next = local(CSSParser, "</style");
         lastAtt = null;
         inTag = false;
+      }
+      else if (token.type == "xml-text" && token.style == "xml-text") {
+        if (Editor.Parser.options && Editor.Parser.options.parserConfig.phpOnly == true)
+            iter.next = local(PHPParser, "?>");
       }
       return token;
     }
