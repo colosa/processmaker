@@ -666,16 +666,57 @@ class Language extends BaseLanguage
         G::LoadSystem( 'i18n_po' );
         G::LoadClass( "system" );
 
-        //creating the .po file
-        $sPOFile = PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po';
-        $poFile = new i18n_PO( $sPOFile );
-        $poFile->buildInit();
-
         $language = new Language();
 
         $locale = $language;
         $targetLang = $idLanguage;
         $baseLang = 'en';
+
+        $aLabels = array ();
+        $aMsgids = array ('' => true
+        );
+        include PATH_PLUGINS . $plugin . PATH_SEP . 'translations'. PATH_SEP . 'translations.php';
+        $translatedText = array();
+
+        if (file_exists( PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po' )) {
+            //reading the .po file
+            G::LoadSystem( 'i18n_po' );
+            $POFile = new i18n_PO( PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po' );
+            $POFile->readInit();
+
+            while ($rowTranslation = $POFile->getTranslation()) {
+                foreach ($POFile->translatorComments as $a => $aux) {
+                    $aux = trim( $aux );
+                    if ($aux == 'TRANSLATION') {
+                        $identifier = $aux;
+                    } else {
+                        $var = explode( '/', $aux );
+                        if ($var[0] == 'LABEL') {
+                            $context = $aux;
+                        }
+                        if ($var[0] == 'JAVASCRIPT') {
+                            $context = $aux;
+                        }
+                    }
+                    if (preg_match( '/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml\?)/', $aux, $match )) {
+                        $identifier = $aux;
+                    } else {
+                        if (preg_match( '/^([\w-]+)\/([\w-]+\/*[\w-]*\.xml$)/', $aux, $match )) {
+                            $context = $aux;
+                        }
+                    }
+                }
+                if ($identifier == 'TRANSLATION') {
+                    list ($category, $id) = explode( '/', $context );
+                    $translatedText[$id] = $rowTranslation['msgstr'];
+                }
+            }
+        }
+
+        //creating the .po file
+        $sPOFile = PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $idLanguage . '.po';
+        $poFile = new i18n_PO( $sPOFile );
+        $poFile->buildInit();
 
         //setting headers
         $poFile->addHeader( 'Project-Id-Version', $plugin );
@@ -690,14 +731,16 @@ class Language extends BaseLanguage
         $poFile->addHeader( 'X-Poedit-SourceCharset', 'utf-8' );
         $poFile->addHeader( 'Content-Transfer-Encoding', '8bit' );
 
-        $aLabels = array ();
-        $aMsgids = array ('' => true
-        );
-        include PATH_PLUGINS . $plugin . PATH_SEP . 'translations'. PATH_SEP . 'translations.php';
 
         foreach ($translations as $id => $translation) {
             $msgid = trim( $translation);
             $msgstr = trim( $translation );
+            foreach ($translatedText as $key => $value) {
+                if ($id == $key) {
+                    $msgstr = trim( $value );
+                    break;
+                }
+            }
             $poFile->addTranslatorComment( 'TRANSLATION' );
             $poFile->addTranslatorComment( 'LABEL/' . $id );
             $poFile->addReference( 'LABEL/'. $id );
