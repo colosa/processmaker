@@ -24,6 +24,7 @@
  */
 global $G_TMP_MENU;
 global $RBAC;
+$partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
 
 if ($RBAC->userCanAccess('PM_SETUP') == 1 ) {
   //settings options
@@ -42,7 +43,10 @@ if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1) {
 
 if ($RBAC->userCanAccess('PM_SETUP') == 1 ) {
   $G_TMP_MENU->AddIdRawOption('SKINS', 'skinsList', G::LoadTranslation('ID_SKINS'), 'icon-skins.png', '', 'settings');
-  $G_TMP_MENU->AddIdRawOption('HEARTBEAT', 'processHeartBeatConfig', G::LoadTranslation('ID_HEARTBEAT_CONFIG'), "heartBeat.jpg",'', 'settings');
+    if (!$partnerFlag) {
+        $G_TMP_MENU->AddIdRawOption('HEARTBEAT', 'processHeartBeatConfig', G::LoadTranslation('ID_HEARTBEAT_CONFIG'), "heartBeat.jpg",'', 'settings');
+    }
+  
   $G_TMP_MENU->AddIdRawOption('ENVIRONMENT_SETTINGS', 'environmentSettings', G::LoadTranslation('ID_ENVIRONMENT_SETTINGS'), "",'', 'settings');
 }
 
@@ -63,7 +67,6 @@ if ($RBAC->userCanAccess('PM_SETUP') == 1) {
 }
 //tools options
 if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1 ) {
-    $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
     if (!$partnerFlag) {
         $G_TMP_MENU->AddIdRawOption('PLUGINS',   'pluginsMain', 'Plugins Manager', 'icon-plugins.png', '', 'plugins');
     }
