@@ -28,7 +28,7 @@ class Dashboard extends Controller
         try {
             $dashletsExist = $this->getDashletsInstancesForCurrentUser();
             $dashletsHide  = array();
-            $dashletColumns = 3;
+            $dashletColumns = 2;
 
             G::LoadClass( 'configuration' );
             $oConfiguration = new Configurations();
@@ -447,4 +447,3 @@ class Dashboard extends Controller
 
     // Functions for the dasboards administration module - End
 }
-

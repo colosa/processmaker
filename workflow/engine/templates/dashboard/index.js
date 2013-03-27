@@ -42,6 +42,7 @@ var reallocate = function (cols) {
     }
 }.defaults(3);
 
+
 Ext.onReady(function(){
 
   Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
@@ -141,7 +142,6 @@ Ext.onReady(function(){
             }
           };
          */
-
           pd.items.items[0].columnWidth = 0.49;
           pd.items.items[1].columnWidth = 0.49;
           pd.items.items[2].columnWidth = 0.01;
@@ -320,28 +320,47 @@ Ext.onReady(function(){
     }
   }
 
-
-  pd.doLayout();
-
-  if (dashletsColumns == 2) {
-    tbDashboard.items.items[0].setDisabled(false);
-    tbDashboard.items.items[1].setDisabled(true);
-
-    var pd = Ext.getCmp('portalDashboard');
-
-    pd.items.items[0].columnWidth = 0.49;
-    pd.items.items[1].columnWidth = 0.49;
-    pd.items.items[2].columnWidth = 0.01;
-    pd.doLayout();
-  } else {
-    var pd = Ext.getCmp('portalDashboard');
-
-    pd.items.items[0].columnWidth = 0.33;
-    pd.items.items[1].columnWidth = 0.33;
-    pd.items.items[2].columnWidth = 0.33;
     pd.doLayout();
 
-    tbDashboard.items.items[0].setDisabled(true);
-    tbDashboard.items.items[1].setDisabled(false);
-  }
+    switch(dashletsColumns) {
+        case 1:
+            var pd = Ext.getCmp("portalDashboard");
+            reallocate(1);
+
+            pd.items.items[0].columnWidth = 0.98;
+            pd.items.items[1].columnWidth = 0.01;
+            pd.items.items[2].columnWidth = 0.01;
+            pd.doLayout();
+
+            tbDashboard.items.items[0].setDisabled(false);
+            tbDashboard.items.items[1].setDisabled(false);
+            tbDashboard.items.items[2].setDisabled(true);
+            break;
+        case 2:
+            var pd = Ext.getCmp("portalDashboard");
+            reallocate(2);
+
+            pd.items.items[0].columnWidth = 0.49;
+            pd.items.items[1].columnWidth = 0.49;
+            pd.items.items[2].columnWidth = 0.01;
+            pd.doLayout();
+
+            tbDashboard.items.items[0].setDisabled(false);
+            tbDashboard.items.items[1].setDisabled(true);
+            tbDashboard.items.items[2].setDisabled(false);
+            break;
+        case 3:
+            var pd = Ext.getCmp("portalDashboard");
+            reallocate(3);
+
+            pd.items.items[0].columnWidth = 0.33;
+            pd.items.items[1].columnWidth = 0.33;
+            pd.items.items[2].columnWidth = 0.33;
+            pd.doLayout();
+
+            tbDashboard.items.items[0].setDisabled(true);
+            tbDashboard.items.items[1].setDisabled(false);
+            tbDashboard.items.items[2].setDisabled(false);
+            break;
+    }
 });
