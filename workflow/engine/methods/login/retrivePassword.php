@@ -115,7 +115,7 @@ if ($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL'
         G::SendTemporalMessage ($e->getMessage(), "warning", 'string');
     }
 } else {
-    $msg = G::LoadTranslation('ID_USER') . ' ' . $data['USR_USERNAME'] . ' '. G::LoadTranslation('ID_IS_NOT_REGISTERED');
+    $msg = G::LoadTranslation('ID_USER') . ' ' . htmlentities($data['USR_USERNAME'], ENT_QUOTES, 'UTF-8') . ' '. G::LoadTranslation('ID_IS_NOT_REGISTERED');
     G::SendTemporalMessage ($msg, "warning", 'string');
     G::header('location: forgotPassword');
 }
