@@ -31,6 +31,7 @@ $oHeadPublisher->addExtJsScript( 'users/users', true ); //adding a javascript fi
 // $oHeadPublisher->addContent('users/users'); //adding a html file  .html.
 $oHeadPublisher->assign( 'USR_UID', $aFields['USR_UID'] );
 $oHeadPublisher->assign( 'infoMode', true );
+$oHeadPublisher->assign( 'EDITPROFILE', 1);
 $oHeadPublisher->assign( 'canEdit', $canEdit );
 $oHeadPublisher->assign( 'MAX_FILES_SIZE', ' (' . $UPLOAD_MAX_SIZE . ') ' );
 $oHeadPublisher->assign( 'MODE', '' );
