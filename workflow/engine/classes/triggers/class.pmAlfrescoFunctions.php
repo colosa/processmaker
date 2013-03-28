@@ -318,7 +318,7 @@ function getFolderChildren($alfrescoServerUrl, $folderId, $user, $pwd)
  * @return string | $result | Response
  *
  */
-function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docType, $user, $pwd, $dir = 'Sites', $path = '')
+function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docType, $user, $pwd, $path = '', $dir = 'Sites')
 {
     if (!(file_exists($fileSource))) {
         G::SendTemporalMessage('ID_FILE_PLUGIN_NOT_EXISTS', 'error', 'labels', null, null, array('pluginFile' => $fileSource));
