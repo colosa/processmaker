@@ -482,10 +482,12 @@ class Applications
                 $aRow["APP_TAS_TITLE"] = $aRow["APPCVCR_APP_TAS_TITLE"];
 
                 //Current user
-                $aRow["USR_UID"] = $aRow["USRCR_USR_UID"];
-                $aRow["USR_FIRSTNAME"] = $aRow["USRCR_USR_FIRSTNAME"];
-                $aRow["USR_LASTNAME"] = $aRow["USRCR_USR_LASTNAME"];
-                $aRow["USR_USERNAME"] = $aRow["USRCR_USR_USERNAME"];
+                if ($action != "to_reassign" ) {
+                    $aRow["USR_UID"] = $aRow["USRCR_USR_UID"];
+                    $aRow["USR_FIRSTNAME"] = $aRow["USRCR_USR_FIRSTNAME"];
+                    $aRow["USR_LASTNAME"] = $aRow["USRCR_USR_LASTNAME"];
+                    $aRow["USR_USERNAME"] = $aRow["USRCR_USR_USERNAME"];
+                }
             }
 
             //Unassigned user

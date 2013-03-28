@@ -59,8 +59,8 @@ if (is_array( $aData )) {
         $rs->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $rs->next();
         $row = $rs->getRow();
-        $aCase = $oCases->loadCaseInCurrentDelegation( $data->APP_UID );
-        $oCases->reassignCase( $aCase['APP_UID'], $aCase['DEL_INDEX'], ($aCase['USR_UID'] != '' ? $aCase['USR_UID'] : $_SESSION['USER_LOGGED']), $data->APP_REASSIGN_USER_UID );
+        //$aCase = $oCases->loadCaseInCurrentDelegation( $data->APP_UID );
+        $oCases->reassignCase( $row['APP_UID'], $row['DEL_INDEX'], ($row['USR_UID'] != '' ? $row['USR_UID'] : $_SESSION['USER_LOGGED']), $data->APP_REASSIGN_USER_UID );
         $currentCasesReassigned ++;
         $casesReassignedCount ++;
         $serverResponse[] = array ('APP_REASSIGN_USER' => $data->APP_REASSIGN_USER,'APP_TITLE' => $data->APP_TITLE,'TAS_TITLE' => $data->APP_TAS_TITLE,'REASSIGNED_CASES' => $currentCasesReassigned

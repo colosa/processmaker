@@ -22,6 +22,7 @@ var storeCases;
 var storeReassignCases;
 var grid;
 var textJump;
+var ids = '';
 
 function formatAMPM(date, initVal) {
   var hours = date.getHours();
@@ -2154,6 +2155,7 @@ function reassign(){
          ids += rows[i].get('APP_UID') + "|" + rows[i].get('TAS_UID')+ "|" + rows[i].get('DEL_INDEX');
     }
     storeReassignCases.setBaseParam( 'APP_UIDS', ids);
+	//storeReassignCases.setBaseParam( 'action', 'to_reassign');
     storeReassignCases.load();
 
     newPopUp.show();
