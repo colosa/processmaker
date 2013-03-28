@@ -21,6 +21,17 @@ ActionTabFrameGlobal.tabName = '';
 ActionTabFrameGlobal.tabTitle = '';
 ActionTabFrameGlobal.tabData = '';
 
+function formatAMPM(date, initVal) {
+  var hours = date.getHours();
+  var minutes = (initVal === true)? ((date.getMinutes()<15)? 0: ((date.getMinutes()<30)? 15: ((date.getMinutes()<45)? 30: 45))): date.getMinutes();
+  var ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+}
+
 Ext.onReady(function(){
   openToRevisePanel = function() {
     var treeToRevise = new Ext.tree.TreePanel({
@@ -669,6 +680,7 @@ Ext.onReady(function(){
     nDay = '' + (parseInt(curDate[2])+1);
     nDay = nDay.length == 1 ? '0' + nDay : nDay;
     filterDate += nDay;
+    filterTime = ('0' + curDate[3]).slice(-2) + ':' + ('0' + curDate[4]).slice(-2) + ' ' + curDate[5];
 
     var fieldset = {
       xtype : 'fieldset',
@@ -691,6 +703,14 @@ Ext.onReady(function(){
           allowBlank: false,
           value: filterDate,
           minValue: filterDate
+        }),
+        new Ext.form.TimeField({
+          id: 'unpauseTime',
+          fieldLabel: _('ID_UNPAUSE_TIME'),
+          name: 'unpauseTime',
+          value: filterTime,
+          minValue: formatAMPM(new Date(), true),
+          format: 'h:i A'
         }),
         {
           xtype: 'textarea',
@@ -726,15 +746,15 @@ Ext.onReady(function(){
       id: 'unpauseFrm',
       labelAlign : 'right',
       //bodyStyle : 'padding:5px 5px 0',
-      width : 250,
+      width : 260,
       items : [fieldset]
     });
 
 
     var win = new Ext.Window({
       title: _('ID_PAUSE_CASE'),
-      width: 370,
-      height: 230,
+      width: 380,
+      height: 250,
       layout:'fit',
       autoScroll:true,
       modal: true,
@@ -755,20 +775,22 @@ Ext.onReady(function(){
     var paramsNote = '&NOTE_REASON=' + noteReasonTxt + '&NOTIFY_PAUSE=' + notifyReasonVal;
 
     var unpauseDate = Ext.getCmp('unpauseDate').getValue();
+    var vUnpauseTime = Ext.getCmp('unpauseTime').getValue();
     if( unpauseDate == '') {
       //Ext.getCmp('submitPauseCase').setDisabled(true);
       return;
-    } else
+    } else {
       //Ext.getCmp('submitPauseCase').enable();
-
-    unpauseDate = unpauseDate.format('Y-m-d');
+      unpauseDate = unpauseDate.format('Y-m-d');
+    }
 
     Ext.getCmp('unpauseFrm').getForm().submit({
         url:'ajaxListener',
         method  : 'post',
         params  : {
             action: 'pauseCase',
-            unpauseDate:unpauseDate,
+            unpauseDate: unpauseDate,
+            unpauseTime: vUnpauseTime,
             NOTE_REASON: noteReasonTxt,
             NOTIFY_PAUSE: notifyReasonVal
             },

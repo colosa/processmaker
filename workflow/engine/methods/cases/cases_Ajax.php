@@ -372,7 +372,7 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
         // End save
 
 
-        $unpauseDate = $_POST['unpausedate'];
+        $unpauseDate = $_POST['unpausedate'] . ' '. $_REQUEST['unpauseTime'];
         $oCase = new Cases();
         if (isset( $_POST['APP_UID'] ) && isset( $_POST['DEL_INDEX'] )) {
             $APP_UID = $_POST['APP_UID'];

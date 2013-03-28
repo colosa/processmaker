@@ -81,7 +81,7 @@ $oStep = $oStep->loadByProcessTaskPosition( $case['PRO_UID'], $case['TAS_UID'], 
 $oHeadPublisher->assign( 'uri', $script . $uri );
 $oHeadPublisher->assign( '_APP_NUM', '#: ' . $case['APP_NUMBER'] );
 $oHeadPublisher->assign( '_ENV_CURRENT_DATE', $conf->getSystemDate( date( 'Y-m-d' ) ) );
-$oHeadPublisher->assign( '_ENV_CURRENT_DATE_NO_FORMAT', date( 'Y-m-d' ) );
+$oHeadPublisher->assign( '_ENV_CURRENT_DATE_NO_FORMAT', date( 'Y-m-d-h-i-A' ) );
 $oHeadPublisher->assign( 'idfirstform', is_null( $oStep ) ? '' : $oStep->getStepUidObj() );
 G::RenderPage( 'publish', 'extJs' );
 

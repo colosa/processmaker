@@ -490,7 +490,7 @@ class Ajax
     public function pauseCase()
     {
         try {
-            $unpauseDate = $_REQUEST['unpauseDate'];
+            $unpauseDate = $_REQUEST['unpauseDate'] . ' '. $_REQUEST['unpauseTime'];
             $oCase = new Cases();
             if (isset($_POST['APP_UID']) && isset($_POST['DEL_INDEX'])) {
                 $APP_UID = $_POST['APP_UID'];
