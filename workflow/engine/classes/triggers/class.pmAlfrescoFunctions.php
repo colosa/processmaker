@@ -200,11 +200,12 @@ function deleteObject($alfrescoServerUrl, $objetcId, $user, $pwd)
  * @param string | $pathFolder | Folder Name
  * @param string | $user | Valid Admin username to connect to Alfresco server
  * @param string | $pwd | Valid Admin password to connect to Alfresco server
+ * @param string | $mainFolder | The main folder in alfreco to save the files
  *
  * @return string | $result | Response
  *
  */
-function downloadDoc($alfrescoServerUrl, $pathFile, $pathFolder, $user, $pwd)
+function downloadDoc($alfrescoServerUrl, $pathFile, $pathFolder, $user, $pwd, $mainFolder = 'Sites')
 {
     if (!(G::verifyPath($pathFolder))) {
         G::SendTemporalMessage('ID_FILE_PLUGIN_NOT_EXISTS', 'error', 'labels', null, null, array('pluginFile' => $pathFolder));
@@ -215,7 +216,7 @@ function downloadDoc($alfrescoServerUrl, $pathFile, $pathFolder, $user, $pwd)
     $dataPathFile = pathinfo($pathFile);
     $nameFile = $dataPathFile['basename'];
 
-    $alfresco_url = "$alfrescoServerUrl" . PATH_SEP . "s" . PATH_SEP . "cmis" . PATH_SEP . "p" . PATH_SEP . "Sites" . PATH_SEP . "$pathFile";
+    $alfresco_url = "$alfrescoServerUrl" . PATH_SEP . "s" . PATH_SEP . "cmis" . PATH_SEP . "p" . PATH_SEP . $mainFolder . PATH_SEP . "$pathFile";
     $alfresco_exec = RestClient::get($alfresco_url, $user, $pwd, 'application/atom+xml');
     $sXmlArray = $alfresco_exec->getResponse();
     $sXmlArray = eregi_replace("[\n|\r|\n\r]", '', $sXmlArray);
@@ -314,11 +315,12 @@ function getFolderChildren($alfrescoServerUrl, $folderId, $user, $pwd)
  * @param string | $user | Valid Admin username to connect to Alfresco server
  * @param string | $pwd | Valid Admin password to connect to Alfresco server
  * @param string | $path | Path of document to be Uploaded
+ * @param string | $mainFolder | The main folder in alfreco to save the files
  *
  * @return string | $result | Response
  *
  */
-function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docType, $user, $pwd, $path = '')
+function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docType, $user, $pwd, $path = '', $mainFolder= 'Sites')
 {
     if (!(file_exists($fileSource))) {
         G::SendTemporalMessage('ID_FILE_PLUGIN_NOT_EXISTS', 'error', 'labels', null, null, array('pluginFile' => $fileSource));
@@ -331,11 +333,11 @@ function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docTy
     $fileContent = base64_encode($fileContent);
 
     if ($path != '') {
-        createFolder($alfrescoServerUrl, 'Sites', $path, $user, $pwd);
+        createFolder($alfrescoServerUrl, $mainFolder, $path, $user, $pwd);
         $path = $path . PATH_SEP;
     }
 
-    $alfresco_url = "$alfrescoServerUrl/s/cmis/p/Sites/" . $path . "children";
+    $alfresco_url = "$alfrescoServerUrl/s/cmis/p/$mainFolder/" . $path . "children";
     $xmlData = array();
     $xmlData = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:cmisra="http://docs.oasis-open.org/ns/cmis/restatom/200908/" xmlns:cmis="http://docs.oasis-open.org/ns/cmis/core/200908/"><title>' . $title . '</title><summary>' . $description . '</summary><content type="application/' . $docType . '">' . $fileContent . '</content><cmisra:object><cmis:properties><cmis:propertyId propertyDefinitionId="cmis:objectTypeId"><cmis:value>cmis:document</cmis:value></cmis:propertyId></cmis:properties></cmisra:object></entry>';
 
@@ -347,4 +349,3 @@ function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docTy
 
     return $aXmlArray;
 }
- 
