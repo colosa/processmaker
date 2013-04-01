@@ -2219,7 +2219,7 @@ function generateCode ($iDigits = 4, $sType = 'NUMERIC')
  * @param string(32) | $sApplicationUID | Case ID | The unique ID for a case (which can be found with WSCaseList()
  * @param string(32) | $sCode | New Code for case | The new code for a case, which will be stored in the field wf_<WORKSPACE>.APPLICATION.APP_CODE
  * @param string(32) | $sPIN = "" | New Code PIN for case |The new code for a case.
- * @return int | $result | Result | If successful, returns zero, otherwise a non-zero error number.
+ * @return int | $result | Result | If successful, returns one, otherwise zero or error number.
  *
  */
 function setCaseTrackerCode ($sApplicationUID, $sCode, $sPIN = '')
