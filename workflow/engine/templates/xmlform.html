@@ -82,19 +82,26 @@
   {* TODO: include file='xmlformScript.html' *}
   var form_{$form->id};
   var object_{$form->name};
-  var i;
-  if (typeof(__aObjects__) === 'undefined') {literal}{{/literal}
-    var __aObjects__ = [];
-    {literal}}{/literal}
+
+  if (typeof(__aObjects__) == "undefined") {literal}{{/literal}
+      var __aObjects__ = [];
+  {literal}}{/literal}
+
     function loadForm_{$form->id}(ajaxServer)
     {literal}{{/literal}
-    if (typeof(G_Form)==='undefined') return alert('form.js was not loaded');
+      var i = 0;
+
+      if (typeof(G_Form) == "undefined") {literal}{{/literal}
+          return alert("form.js was not loaded");
+      {literal}}{/literal}
+
       form_{$form->id}=new G_Form(document.getElementById('{$form->id}'),'{$form->id}');
       object_{$form->name} = form_{$form->id};
       __aObjects__.push(object_{$form->name});
       var myForm=form_{$form->id};
       if (myForm.aElements===undefined) alert("{$form->name}");
-        myForm.ajaxServer=ajaxServer;
+      myForm.ajaxServer = ajaxServer;
+
         //{$form->ajaxSubmit}
         {if isset($form->ajaxSubmit) && ($form->ajaxSubmit)}
           {literal}
@@ -109,6 +116,7 @@
         {/if}
         {foreach from=$form->fields item=field key=name}
           i = myForm.aElements.length;
+
           {if (($field->type==='dropdown') || $field->type==='listbox')}
             myForm.aElements[i] = new G_DropDown(myForm, myForm.element.elements['form[{$name}]'],'{$name}');
             myForm.aElements[i].setAttributes({$field->getAttributes()});
