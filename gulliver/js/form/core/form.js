@@ -315,32 +315,12 @@ function G_DropDown( form, element, name )
   var me=this;
   this.parent = G_Field;
   this.parent( form, element, name );
-  this.setContent=function(content) {
-    var dd=me.element;
-    var browser = getBrowserClient();
-    if ((browser.name=='msie') || ((browser.name == 'firefox') && (browser.version < 12))){
-      while(dd.options.length>1) dd.remove(0);
-    } else {
-      for (var key in dd.options){
-        dd.options[key] = null;
-      }
-    }
 
-    dd.options.length = 0; //Delete options
-
-    // the remove function is no longer reliable
-    // while(dd.options.length>1) dd.remove(0);
-    for(var o=0;o<content.options.length;o++) {
-      var optn = $dce("OPTION");
-      optn.text = content.options[o].value;
-      optn.value = content.options[o].key;
-      dd.options[o]=optn;
-    }
-
-    if (dd.options.length == 0) {
-        dd.options[0] = new Option("", "");
-    }
+  this.setContent = function (content)
+  {
+      dropDownSetOption(me, content);
   };
+
   if (!element) return;
   leimnud.event.add(this.element,'change',this.updateDepententFields);
 }
@@ -3691,7 +3671,7 @@ function getNumericValue(val, decimalSeparator)
     return num;
 }
 
-var gridGetAllFieldAndValue = function (fieldId, swCurrentField)
+function gridGetAllFieldAndValue(fieldId, swCurrentField)
 {
     var frm = G.getObject(getField(fieldId).form);
 
@@ -3724,5 +3704,67 @@ var gridGetAllFieldAndValue = function (fieldId, swCurrentField)
     }
 
     return gridField;
-};
+}
+
+function dropDownSetOption(elem, arrayOption)
+{
+    var selectdd = elem.element;
+    var arraySelectddAttribute = document.getElementById("form[" + elem.name + "]").attributes;
+    var optGroupAux;
+    var optionAux;
+    var swOptGroup = 0;
+    var swOptGroupPrev = 0;
+    var swAppend = 0;
+    var i = 0;
+
+    for (i = 0; i <= arraySelectddAttribute.length - 1; i++) {
+        if (arraySelectddAttribute[i].name == "pm:optgroup") {
+            swOptGroup = parseInt(arraySelectddAttribute[i].value);
+        }
+    }
+
+    //selectdd.options.length = 0; //Delete options
+    selectdd.innerHTML = "";
+
+    for (i = 0; i <= arrayOption.options.length - 1; i++) {
+        if (swOptGroup == 1 && /^optgroup\d+$/.test(arrayOption.options[i].key)) {
+            optGroupAux = document.createElement("optgroup");
+
+            //selectdd.appendChild(optGroupAux);
+
+            optGroupAux.label = arrayOption.options[i].value;
+
+            swOptGroupPrev = 1;
+            swAppend = 1;
+        } else {
+            if (swOptGroupPrev == 1) {
+                //Append optGroupAux
+                if (swAppend == 1) {
+                    selectdd.appendChild(optGroupAux);
+
+                    swAppend = 0;
+                }
+
+                //Append optionAux
+                optionAux = document.createElement("option");
+
+                optGroupAux.appendChild(optionAux);
+
+                optionAux.value = arrayOption.options[i].key;
+                optionAux.text = arrayOption.options[i].value;
+            } else {
+                optionAux = document.createElement("option");
+
+                selectdd.appendChild(optionAux);
+
+                optionAux.value = arrayOption.options[i].key;
+                optionAux.text = arrayOption.options[i].value;
+            }
+        }
+    }
+
+    if (selectdd.options.length == 0) {
+        selectdd.options[0] = new Option("", "");
+    }
+}
 

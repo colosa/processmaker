@@ -1454,22 +1454,24 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $sOptions .= '  var newcont; ';
                 $sOptions .= '  eval(\'newcont=\' + response + \';\'); ';
                 $sOptions .= '  for(var i = 0; i<newcont.length; i++) { ';
-                $sOptions .= '    var j = getField(newcont[i].name); ';
+                //$sOptions .= '    var j = getField(newcont[i].name); ';
                 $sOptions .= '    getField(newcont[i].name).value = newcont[i].value; ';
-                $sOptions .= '    if (newcont[i].content.type == \'dropdown\') { ';
+                $sOptions .= '
+                                  switch (newcont[i].content.type) {
+                                      case "dropdown":
+                                          dropDownSetOption({element: getField(newcont[i].name), name: newcont[i].name}, newcont[i].content);
+                                          break;
+                                      case "text":
+                                          getField(newcont[i].name).value = "";
 
-                $sOptions .= '   getField(newcont[i].name).options.length = 0;   ';
-
-                $sOptions .= '  for (ni = 0; ni < newcont[i].content.options.length; ni++ ) {
-                                getField(newcont[i].name).options[ni] = new Option(newcont[i].content.options[ni].value, newcont[i].content.options[ni].key);
-                            }
-
-                            if (getField(newcont[i].name).options.length == 0) {
-                                getField(newcont[i].name).options[0] = new Option("", "");
-                            }';
-
-                $sOptions .= '    } ';
-
+                                          if (newcont[i].content.options) {
+                                              if (newcont[i].content.options[0]) {
+                                                  getField(newcont[i].name).value = newcont[i].content.options[0].value;
+                                              }
+                                          }
+                                          break;
+                                  }
+                ';
                 $sOptions .= '  } ';
                 $sOptions .= '} else { ';
                 $sOptions .= '  alert(\'Invalid response: \' + response); ';
@@ -1636,21 +1638,12 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $sOptions .= '  eval(\'newcont=\' + response + \';\'); ';
                 $sOptions .= '';
                 $sOptions .= '  for(var i = 0; i<newcont.length; i++) { ';
-                // $sOptions .= '    var depField = getField(\'' . $rowIdField . '[\' + ' . 'newcont[i].name); ';
-                $sOptions .= '    var depField = \'' . $rowIdField . '[\' + ' . 'newcont[i].name; ';
+                $sOptions .= '    var depField = "' . $rowIdField . '[" + newcont[i].name; ';
                 $sOptions .= '    getField(depField).value = newcont[i].value; ';
                 $sOptions .= '
                                   switch (newcont[i].content.type) {
                                       case "dropdown":
-                                          getField(depField).options.length = 0;
-
-                                          for (ni = 0; ni < newcont[i].content.options.length; ni++ ){
-                                              getField(depField).options[ni] = new Option(newcont[i].content.options[ni].value, newcont[i].content.options[ni].key);
-                                          }
-
-                                          if (getField(depField).options.length == 0) {
-                                              getField(depField).options[0] = new Option("", "");
-                                          }
+                                          dropDownSetOption({element: getField(depField), name: depField}, newcont[i].content);
                                           break;
                                       case "text":
                                           getField(depField).value = "";
@@ -3356,10 +3349,11 @@ class XmlForm_Field_Dropdown extends XmlForm_Field
     public $required = false;
     public $dependentFields = '';
     public $readonly = false;
-    public $option = array ();
+    public $optgroup = 0;
+    public $option = array();
     public $sqlConnection = 0;
     public $sql = '';
-    public $sqlOption = array ();
+    public $sqlOption = array();
     public $saveLabel = 0;
     public $modeGridDrop = '';
     public $renderMode = '';
@@ -3427,43 +3421,82 @@ class XmlForm_Field_Dropdown extends XmlForm_Field
             $html .= $this->NSGridLabel() . ' ';
             $html .= $rowId == '' ? $this->NSFieldType() : $this->NSGridType() . ' ';
             $html .= $this->NSDependentFields( true ) . ' ';
-            $html .= '>';
+            $html = $html . (($this->optgroup == 1)? "pm:optgroup=\"1\" " : null);
+            $html = $html . ">";
 
             $findValue = '';
             $firstValue = '';
-            $cont = 0;
+            $count = 0;
             $swOption = 0;
 
-            foreach ($this->option as $optValue => $optName) {
-                settype( $optValue, 'string' );
-                $html .= '<option value="' . $optValue . '" ' . (($optValue === $value) ? 'selected="selected"' : '') . '>' . $optName . '</option>';
-                if ($optValue === $value) {
-                    $findValue = $optValue;
-                    $displayLabel = $optName;
-                }
-                if ($firstValue == '') {
-                    $firstValue = $optValue;
-                }
+            $htmlOptGroup = null;
+            $swOptGroupPrev = 0;
+            $swAppend = 0;
 
-                $cont = $cont + 1;
-                $swOption = 1;
+            foreach ($this->option as $optValue => $optName) {
+                settype($optValue, "string");
+
+                if ($this->optgroup == 1 && preg_match("/^optgroup\d+$/", $optValue)) {
+                    if ($swOptGroupPrev == 1 && $swAppend == 1) {
+                        $html = $html . "</optgroup>";
+                    }
+
+                    $htmlOptGroup = "<optgroup label=\"$optName\">";
+                    $swOptGroupPrev = 1;
+                    $swAppend = 0;
+                } else {
+                    $html = $html . $htmlOptGroup . "<option value=\"$optValue\"" . (($optValue == $value)? " selected=\"selected\"" : null) . ">$optName</option>";
+                    $htmlOptGroup = null;
+                    $swAppend = 1;
+
+                    if ($optValue === $value) {
+                        $findValue = $optValue;
+                        $displayLabel = $optName;
+                    }
+
+                    if ($firstValue == "") {
+                        $firstValue = $optValue;
+                    }
+
+                    $count = $count + 1;
+                    $swOption = 1;
+                }
             }
 
             foreach ($this->sqlOption as $optValue => $optName) {
-                settype( $optValue, 'string' );
-                $html .= '<option value="' . $optValue . '" ' . (($optValue === $value) ? 'selected="selected"' : '') . '>' . $optName . '</option>';
-                if ($optValue === $value) {
-                    $findValue = $optValue;
-                    $displayLabel = $optName;
-                }
-                if ($firstValue == '') {
-                    $firstValue = $optValue;
-                }
+                settype($optValue, "string");
 
-                $swOption = 1;
+                if ($this->optgroup == 1 && preg_match("/^optgroup\d+$/", $optValue)) {
+                    if ($swOptGroupPrev == 1 && $swAppend == 1) {
+                        $html = $html . "</optgroup>";
+                    }
+
+                    $htmlOptGroup = "<optgroup label=\"$optName\">";
+                    $swOptGroupPrev = 1;
+                    $swAppend = 0;
+                } else {
+                    $html = $html . $htmlOptGroup . "<option value=\"$optValue\"" . (($optValue == $value)? " selected=\"selected\"" : null) . ">$optName</option>";
+                    $htmlOptGroup = null;
+                    $swAppend = 1;
+
+                    if ($optValue === $value) {
+                        $findValue = $optValue;
+                        $displayLabel = $optName;
+                    }
+
+                    if ($firstValue == "") {
+                        $firstValue = $optValue;
+                    }
+
+                    $swOption = 1;
+                }
             }
 
-            if ($swOption == 0) {
+            if ($swOption == 1) {
+                if ($swOptGroupPrev == 1 && $swAppend == 1) {
+                    $html = $html . "</optgroup>";
+                }
+            } else {
                 $html = $html . "<option value=\"\"></option>";
             }
 
@@ -3474,8 +3507,8 @@ class XmlForm_Field_Dropdown extends XmlForm_Field
                 $html .= 'name="form' . $rowId . '[' . $this->name . ']" ';
                 $html .= 'value="' . (($findValue != '') ? $findValue : $firstValue) . '" />';
             }
-            $this->selectedValue = ($findValue != '') ? $findValue : ($cont == 0) ? $firstValue : '';
 
+            $this->selectedValue = ($findValue != "")? $findValue : ($count == 0)? $firstValue : "";
         } else {
             //Render Field showing only value;
             foreach ($this->option as $optValue => $optName) {

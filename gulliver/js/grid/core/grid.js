@@ -266,7 +266,7 @@ var G_Grid = function(oForm, sGridName){
     for (i = 0; i <= arrayAux1.length - 1; i++) {
         arrayAux2 = arrayAux1[i].split("=");
 
-        if (typeof arrayAux2[1] != "undefined") {
+        if (typeof(arrayAux2[1]) != "undefined") {
             a = arrayAux2[0].trim();
             v = stringReplace("\\\"", "", arrayAux2[1]);
 
@@ -400,7 +400,7 @@ var G_Grid = function(oForm, sGridName){
               aObjects[0].name = newID;
               attributes = elementAttributesNS(aObjects[0], 'pm');
 
-              if (typeof attributes.defaultvalue != "undefined" && attributes.defaultvalue != "") {
+              if (typeof(attributes.defaultvalue) != "undefined" && attributes.defaultvalue != "") {
                   defaultValue = attributes.defaultvalue;
               } else {
                   defaultValue = "";
@@ -501,14 +501,14 @@ var G_Grid = function(oForm, sGridName){
                   case 'checkbox': //CHECKBOX
                       var attributeCheckBox = elementAttributesNS(aObjects[n], "");
 
-                      if (defaultValue == "" || (typeof attributeCheckBox.falseValue != "undefined" && defaultValue == attributeCheckBox.falseValue) || (typeof attributeCheckBox.falsevalue != "undefined" && defaultValue == attributeCheckBox.falsevalue)) {
+                      if (defaultValue == "" || (typeof(attributeCheckBox.falseValue) != "undefined" && defaultValue == attributeCheckBox.falseValue) || (typeof(attributeCheckBox.falsevalue) != "undefined" && defaultValue == attributeCheckBox.falsevalue)) {
                           aObjects[n].checked = false;
                       } else {
                           aObjects[n].checked = true;
                       }
                       break;
                   case 'hidden': //HIDDEN
-                    if ((attributes.gridtype != 'yesno' && attributes.gridtype != 'dropdown') || typeof attributes.gridtype == 'undefined') {
+                    if ((attributes.gridtype != "yesno" && attributes.gridtype != "dropdown") || typeof(attributes.gridtype) == "undefined") {
                         aObjects[n].value = defaultValue;
                         newID = aObjects[n].id.replace(/\[1\]/g, '\[' + currentRow + '\]');
                         aObjects[n].id = newID;
@@ -593,6 +593,7 @@ var G_Grid = function(oForm, sGridName){
               }
               var aDependents = this.allDependentFields.split(',');
               sObject = this.getObjectName(newID);
+
               //Check if dropdow is dependent
               var sw = false;
               for (x=0; x < aDependents.length; x++){
@@ -601,7 +602,8 @@ var G_Grid = function(oForm, sGridName){
 
               //Delete Options if dropdow is dependent
               //only remains empty value
-              if (sw){
+              if (sw) {
+                /*
                 oNewSelect.options.length = 0; //Delete options
 
                 var oAux = document.createElement(aObjects[0].tagName);
@@ -624,52 +626,18 @@ var G_Grid = function(oForm, sGridName){
                   //aObjects[0].options.add(xOption);
                   oNewSelect.options.add(xOption);
                 }
+                */
+                  //oNewSelect.options.length = 0; //Delete options
+                  oNewSelect.innerHTML = "";
 
-                if (oNewSelect.options.length == 0) {
-                    oNewSelect.options[0] = new Option("", "");
-                }
-              }else{
-                //Set Default Value if it's not a Dependent Field
-                if (defaultValue != ''){
-                  var oAux = document.createElement(aObjects[0].tagName);
-                  for ( var j = 0; j < aObjects[0].options.length; j++) {
-                    var oOption = document.createElement('OPTION');
-                    oOption.value = aObjects[0].options[j].value;
-                    oOption.text = aObjects[0].options[j].text;
-                    if (aObjects[0].options[j].value === defaultValue){
-                      oOption.setAttribute('selected','selected');
-                    }
-                    oAux.options.add(oOption);
+                  if (oNewSelect.options.length == 0) {
+                      oNewSelect.options[0] = new Option("", "");
                   }
-                  //aObjects[0].innerHTML = ''; //Delete options
-                  oNewSelect.innerHTML = ''; //Delete options
-                  for (var r =0; r < oAux.options.length; r++){
-                    var xOption = document.createElement('OPTION');
-                    xOption.value = oAux.options[r].value;
-                    xOption.text = oAux.options[r].text;
-                    if (_BROWSER.name == 'msie'){
-                      if (oAux.options[r].getAttribute('selected') != ''){
-                        xOption.setAttribute('selected','selected');
-                      }
-                    }else{
-                      if (oAux.options[r].getAttribute('selected') == 'selected'){
-                        xOption.setAttribute('selected','selected');
-                      }
-                    }
-                    //aObjects[0].options.add(xOption);
-                    oNewSelect.options.add(xOption);
-                  }
-                }else{
-                  //Copy all options
-                  var oAux = document.createElement(aObjects[0].tagName);
-                  for ( var j = 0; j < aObjects[0].options.length; j++) {
-                    var oOption = document.createElement('OPTION');
-                    oOption.value = aObjects[0].options[j].value;
-                    oOption.text = aObjects[0].options[j].text;
-                    oNewSelect.options.add(oOption);
-                  }
-                }
-                //TODO: Implement Default Value and Dependent Fields Trigger for grid dropdowns
+              } else {
+                  //Set Default Value if it's not a Dependent Field
+                  selectCloneOption.call(oNewSelect, aObjects[0], defaultValue);
+
+                  //TODO: Implement Default Value and Dependent Fields Trigger for grid dropdowns
               }
 
               var parentSelect = aObjects[0].parentNode;
@@ -768,7 +736,7 @@ var G_Grid = function(oForm, sGridName){
 
   this.deleteGridRow = function (sRow, bWithoutConfirm)
   {
-      if (typeof bWithoutConfirm == "undefined") {
+      if (typeof(bWithoutConfirm) == "undefined") {
           bWithoutConfirm = false;
       }
 
@@ -870,27 +838,17 @@ var G_Grid = function(oForm, sGridName){
             }
 
             break;
-          case '<selec':
-            aObjects1 = oCell1.getElementsByTagName('select');
-            aObjects2 = oCell2.getElementsByTagName('select');
-            if (aObjects1 && aObjects2) {
-              var vValue = aObjects2[0].value;
-              /*
-               * for (var j = (aObjects1[0].options.length-1);
-               * j >= 0; j--) { aObjects1[0].options[j] =
-               * null; }
-               */
-              aObjects1[0].options.length = 0;
-              for ( var j = 0; j < aObjects2[0].options.length; j++) {
-                var optn = $dce("OPTION");
-                optn.text = aObjects2[0].options[j].text;
-                optn.value = aObjects2[0].options[j].value;
-                aObjects1[0].options[j] = optn;
+          case "<selec":
+              aObjects1 = oCell1.getElementsByTagName("select");
+              aObjects2 = oCell2.getElementsByTagName("select");
+
+              if (aObjects1 && aObjects2) {
+                  selectCloneOption.call(aObjects1[0], aObjects2[0], "");
+
+                  aObjects1[0].value = aObjects2[0].value;
+                  aObjects1[0].className = aObjects2[0].className;
               }
-              aObjects1[0].value = vValue;
-              aObjects1[0].className = aObjects2[0].className;
-            }
-            break;
+              break;
           case '<texta':
             aObjects1 = oCell1.getElementsByTagName('textarea');
             aObjects2 = oCell2.getElementsByTagName('textarea');
@@ -1322,26 +1280,16 @@ var G_Grid = function(oForm, sGridName){
             }
             //oCell1.innerHTML= aux.innerHTM;
             break;
-          case '<selec':
-            aObjects1 = oCell1.getElementsByTagName('select');
-            aObjects2 = oCell2.getElementsByTagName('select');
-            if (aObjects1 && aObjects2) {
-              var vValue = aObjects2[0].value;
-              /*
-               * for (var j = (aObjects1[0].options.length-1);
-               * j >= 0; j--) { aObjects1[0].options[j] =
-               * null; }
-               */
-              aObjects1[0].options.length = 0;
-              for ( var j = 0; j < aObjects2[0].options.length; j++) {
-                var optn = $dce("OPTION");
-                optn.text = aObjects2[0].options[j].text;
-                optn.value = aObjects2[0].options[j].value;
-                aObjects1[0].options[j] = optn;
+          case "<selec":
+              aObjects1 = oCell1.getElementsByTagName("select");
+              aObjects2 = oCell2.getElementsByTagName("select");
+
+              if (aObjects1 && aObjects2) {
+                  selectCloneOption.call(aObjects1[0], aObjects2[0], "");
+
+                  aObjects1[0].value = aObjects2[0].value;
               }
-              aObjects1[0].value = vValue;
-            }
-            break;
+              break;
           case '<texta':
             aObjects1 = oCell1.getElementsByTagName('textarea');
             aObjects2 = oCell2.getElementsByTagName('textarea');
@@ -1488,5 +1436,85 @@ function deleteRowOnDynaform(grid, sRow) {
     }
   }.extend(this);
   oRPC.make();
+}
+
+function selectCloneOption(selectOrigin, defaultValue)
+{
+    var arrayOption = [];
+    var arrayOptGroup = [];
+    var arrayOptGroupOption = [];
+    var arrayAux = [];
+    var optGroupAux;
+    var optionAux;
+    var i1 = 0;
+    var i2 = 0;
+    var i3 = 0;
+    var swSelected = 0;
+
+    //this.options.length = 0; //Delete options
+    this.innerHTML = "";
+
+    for (i1 = 0; i1 <= selectOrigin.options.length - 1; i1++) {
+        if (selectOrigin.options[i1].parentNode.nodeName.toLowerCase() != "optgroup") {
+            arrayOption.push(["option", selectOrigin.options[i1].value, selectOrigin.options[i1].text]);
+        } else {
+            if (typeof(arrayAux[selectOrigin.options[i1].parentNode.label]) == "undefined") {
+                arrayAux[selectOrigin.options[i1].parentNode.label] = 1;
+                arrayOption.push(["optgroup", 1, selectOrigin.options[i1].parentNode.label]);
+            }
+        }
+    }
+
+    for (i1 = 0; i1 <= arrayOption.length - 1; i1++) {
+        if (arrayOption[i1][0] == "option") {
+            //this.appendChild(new Option(arrayOption[i1][2], arrayOption[i1][1]));
+            optionAux = document.createElement("option");
+
+            this.appendChild(optionAux);
+
+            optionAux.value = arrayOption[i1][1];
+            optionAux.text = arrayOption[i1][2];
+
+            if (swSelected == 0 && defaultValue != "" && arrayOption[i1][1] == defaultValue) {
+                optionAux.setAttribute("selected", "selected");
+                swSelected = 1;
+            }
+        } else {
+            arrayOptGroup = selectOrigin.getElementsByTagName("optgroup");
+
+            for (i2 = 0; i2 <= arrayOptGroup.length - 1; i2++) {
+                if (arrayOptGroup[i2].label == arrayOption[i1][2]) {
+                    arrayOptGroupOption = arrayOptGroup[i2].getElementsByTagName("option");
+
+                    if (arrayOptGroupOption.length > 0) {
+                        optGroupAux = document.createElement("optgroup");
+
+                        this.appendChild(optGroupAux);
+
+                        optGroupAux.label = arrayOptGroup[i2].label;
+
+                        for (i3 = 0; i3 <= arrayOptGroupOption.length - 1; i3++) {
+                            //optGroupAux.appendChild(new Option(arrayOptGroupOption[i3].text, arrayOptGroupOption[i3].value));
+                            optionAux = document.createElement("option");
+
+                            optGroupAux.appendChild(optionAux);
+
+                            optionAux.value = arrayOptGroupOption[i3].value;
+                            optionAux.text = arrayOptGroupOption[i3].text;
+
+                            if (swSelected == 0 && defaultValue != "" && arrayOptGroupOption[i3].value == defaultValue) {
+                                optionAux.setAttribute("selected", "selected");
+                                swSelected = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (this.options.length == 0) {
+        this.options[0] = new Option("", "");
+    }
 }
 

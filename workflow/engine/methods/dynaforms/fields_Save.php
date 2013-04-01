@@ -55,6 +55,8 @@ if (isset($_POST['form']['PME_READONLY'])) {
     $_POST['form']['PME_READONLY'] = 0;
 }
 
+$_POST["form"]["PME_OPTGROUP"] = (isset($_POST["form"]["PME_OPTGROUP"]) && !empty($_POST["form"]["PME_OPTGROUP"]))? intval($_POST["form"]["PME_OPTGROUP"]) : 0;
+
 if (isset($_POST['form']['PME_SAVELABEL'])) {
     if ($_POST['form']['PME_SAVELABEL'] == '') {
         $_POST['form']['PME_SAVELABEL'] = 0;
@@ -131,6 +133,7 @@ if (file_exists(PATH_XMLFORM . 'dynaforms/fields/' . $type . '.xml')) {
         }
     }
 }
+
 foreach ($_POST['form'] as $key => $value) {
     if (substr($key, 0, 4) === 'PME_') {
         $res[substr($key, 4)] = $value;
@@ -138,6 +141,7 @@ foreach ($_POST['form'] as $key => $value) {
         $res[$key] = $value;
     }
 }
+
 $_POST['form'] = $res;
 
 $dbc = new DBConnection(PATH_DYNAFORM . $file . '.xml', '', '', '', 'myxml');
@@ -261,3 +265,4 @@ if (isset($sType) && $sType === 'javascript') {
     $editor = new dynaformEditorAjax($_POST);
     $editor->set_javascript($A, $fieldName, $sCode);
 }
+

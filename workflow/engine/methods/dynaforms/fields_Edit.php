@@ -137,7 +137,17 @@ if (! (isset( $fields->Fields['XMLNODE_NAME'] ) && ($fields->Fields['XMLNODE_NAM
     if (! is_array( $options ) || count( $options ) == 0) {
         $options = array ('' => '' );
     }
-    $Fields['PME_OPTIONS'] = array ('NAME' => array_keys( $options ),'LABEL' => array_values( $options ) );
+
+    $arrayOptionName = array_keys($options);
+    $arrayOptionLabel = array_values($options);
+    $arrayOptionOptGroup = array();
+
+    foreach ($arrayOptionName as $value) {
+        $arrayOptionOptGroup[] = (preg_match("/^optgroup\d+$/", $value))? 1 : 0;
+    }
+
+    $Fields["PME_OPTIONS"] = array("NAME" => $arrayOptionName, "LABEL" => $arrayOptionLabel, "OPTGROUP" => $arrayOptionOptGroup);
+
     $type = strtolower( $fields->Fields['TYPE'] );
     if ($type === 'checkbox') {
         if ($Fields['PME_DEFAULTVALUE'] === $Fields['PME_VALUE']) {
