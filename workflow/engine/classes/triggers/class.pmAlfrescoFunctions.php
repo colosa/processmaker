@@ -347,4 +347,3 @@ function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docTy
 
     return $aXmlArray;
 }
- 
