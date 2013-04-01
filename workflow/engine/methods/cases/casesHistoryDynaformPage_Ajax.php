@@ -381,8 +381,20 @@ if ($actionAjax == 'dynaformChangeLogViewHistory') {
     $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['NEXT_STEP'] = '#';
     $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['NEXT_ACTION'] = 'return false;';
     $G_PUBLISH->AddContent( 'dynaform', 'xmlform', $_SESSION['PROCESS'] . '/' . $_POST['DYN_UID'], '', $Fields['APP_DATA'], '', '', 'view' );
-
     ?>
+
+    <script language="javascript">
+    window.onload = function () {
+        var inputs = document.getElementsByTagName('input');
+        for(var i= 0; i<inputs.length; i++) {
+            if(inputs[i].type == 'button' || inputs[i].type == 'submit')
+                {
+            	   inputs[i].disabled = true;
+                }
+            }
+    };
+    </script>
+
     <script language="javascript">
     <?php
     global $G_FORM;
