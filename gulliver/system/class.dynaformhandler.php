@@ -225,9 +225,7 @@ class dynaFormHandler
             unset($attributes['#text']);
         }
         if (isset($attributes['#cdata'])) {
-            $newnode->appendChild($this->dom->createTextNode("\n"));
             $newnode->appendChild($this->dom->createCDATASection($attributes['#cdata']));
-            $newnode->appendChild($this->dom->createTextNode("\n"));
             unset($attributes['#cdata']);
         }
 
