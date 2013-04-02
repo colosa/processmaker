@@ -113,6 +113,8 @@ if ($actionAjax == "processListExtJs") {
             $conds[] = array (ContentPeer::CON_LANG,$del . $lang . $del);
             $cProcess->addJoinMC( $conds, Criteria::LEFT_JOIN );
             $cProcess->add( ProcessPeer::PRO_STATUS, 'ACTIVE' );
+            $cProcess->addAscendingOrderByColumn(ContentPeer::CON_VALUE);
+
             $oDataset = ProcessPeer::doSelectRS( $cProcess );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
@@ -135,11 +137,9 @@ if ($actionAjax == "processListExtJs") {
             break;
         case 'to_reassign':
             $cProcess = $oAppCache->getToReassignListCriteria($userUid);
-            $cProcess->addAscendingOrderByColumn( AppCacheViewPeer::APP_PRO_TITLE );
             break;
         case 'gral':
             $cProcess = $oAppCache->getGeneralListCriteria();
-            $cProcess->addAscendingOrderByColumn( AppCacheViewPeer::APP_PRO_TITLE );
             break;
         case 'todo':
         default:
@@ -158,6 +158,9 @@ if ($actionAjax == "processListExtJs") {
         $cProcess->addJoin( AppCacheViewPeer::PRO_UID, 'CP.PRO_UID', Criteria::LEFT_JOIN );
         $cProcess->addAsColumn( 'CATEGORY_UID', 'CP.PRO_CATEGORY' );
     }
+
+    $cProcess->addAscendingOrderByColumn(AppCacheViewPeer::APP_PRO_TITLE);
+
     $oDataset = AppCacheViewPeer::doSelectRS( $cProcess );
     $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
     $oDataset->next();
