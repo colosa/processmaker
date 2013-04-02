@@ -620,6 +620,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
      */
     public function set_javascript($A, $fieldName, $sCode, $meta = '')
     {
+
         if ($fieldName == '___pm_boot_strap___') {
             return 0;
         }
