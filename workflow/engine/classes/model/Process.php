@@ -387,6 +387,7 @@ class Process extends BaseProcess
             }
         }
 
+        usort( $processes, 'ordProcessByProTitle' );
         return $processes;
     }
 
