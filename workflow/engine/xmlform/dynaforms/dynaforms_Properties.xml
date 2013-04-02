@@ -53,7 +53,7 @@
   <option name="prompt">Show prompt</option>
   </en>
 </NEXTSTEPSAVE>
- 
+
 <PRINTDYNAFORM type="checkbox" falseValue="0" value="1" defaultvalue="0" labelOnRight="0">
 <en>Show print dynaform button</en>
 </PRINTDYNAFORM>
@@ -156,7 +156,7 @@ function validateGridConversion(proUid,dynUid){
          msgBox("Grid forms can not contain the following fields: <br>" + response,"alert");
          return false;
       }
-    
+
 
     }.extend(this);
     isTrue = oRPC.make();
@@ -184,7 +184,7 @@ function changeToolbar(type){
       args  : 'TOOLBAR=' + type + '&FILE=' + file + '&PRO_UID=' + proUid + '&DYN_UID=' + dynUid + '&DYN_TITLE=' + dynTitle
     });
     oRPC.callback = function(oRPC) {
-      
+
       getElementsByClassNameCrossBrowser("panel_headerBar___processmaker",document,"div")[0].innerHTML = oRPC.xmlhttp.responseText;
       document.getElementById("publisherContent[0]").style.display = "inline";
       document.getElementById("publisherContent[0]").style.position = "absolute";
@@ -214,4 +214,4 @@ orderButtons();
 }*/
 ]]>
 </sdfsdf>
-</dynaForm> 
+</dynaForm>

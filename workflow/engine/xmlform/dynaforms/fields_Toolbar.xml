@@ -21,7 +21,7 @@
     <en>Percentage</en>
   </percentage>
   <password type="toolButton" class="ss_sprite button_toolbar ss_textfield_key" onclick="fieldsAdd('password');return false;" buttonType="class">
-    <en>Password</en>
+    <en>Password------------</en>
   </password>
   <suggest type="toolButton" class="ss_sprite button_toolbar ss_lightbulb" onclick="fieldsAdd('suggest');return false;" buttonType="class">
     <en>Suggest</en>

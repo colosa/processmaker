@@ -945,4 +945,3 @@ function getElementByPMClass(__class){
 
     return false;
   }
-
