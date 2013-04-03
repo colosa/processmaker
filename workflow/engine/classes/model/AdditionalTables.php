@@ -621,9 +621,9 @@ class AdditionalTables extends BaseAdditionalTables
             $rs = $stmt->executeQuery($deleteSql);
             // getting the case data
             $caseData = unserialize($row['APP_DATA']);
-            
+
             $fieldTypes = array();
-            
+
             if ($addTabUid != '') {
                 require_once 'classes/model/Fields.php';
                 $criteriaField = new Criteria('workflow');
@@ -875,6 +875,16 @@ class AdditionalTables extends BaseAdditionalTables
             $oCriteria->getNewCriterion(AdditionalTablesPeer::ADD_TAB_NAME, '%' . $filter . '%', Criteria::LIKE)->addOr(
             $oCriteria->getNewCriterion(AdditionalTablesPeer::ADD_TAB_DESCRIPTION, '%' . $filter . '%', Criteria::LIKE))
             );
+        }
+
+        if (isset($_POST['sort'])) {
+            if ($_POST['dir'] == 'ASC') {
+                eval('$oCriteria->addAscendingOrderByColumn(AdditionalTablesPeer::' . $_POST['sort'] . ');');
+            } else {
+                eval('$oCriteria->addDescendingOrderByColumn(AdditionalTablesPeer::' . $_POST['sort'] . ');');
+            }
+        } else {
+            //$oCriteria->addAscendingOrderByColumn(AdditionalTablesPeer::ADD_TAB_UID);
         }
 
         $criteriaCount = clone $oCriteria;

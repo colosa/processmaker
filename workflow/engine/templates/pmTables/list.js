@@ -194,6 +194,7 @@ Ext.onReady(function(){
 
     store = new Ext.data.GroupingStore( {
       autoLoad: false,
+      remoteSort: true,
       proxy : new Ext.data.HttpProxy({
         url: 'pmTablesProxy/getList' + (PRO_UID? '?pro_uid='+PRO_UID: '')
       }),
