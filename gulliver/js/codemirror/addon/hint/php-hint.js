@@ -44,59 +44,188 @@
   };
 
   var SPACE = " ";
-
-  var formatDateFunction = ("formatDate($date,$format,$language) formatDate($date,$format)").split(SPACE);
-  var getCurrentDateFunction = ("getCurrentDate()").split(SPACE);
-  var getCurrentTimeFunction = ("getCurrentTime()").split(SPACE);
-  var literalDateFunction = ("literalDate($date,$Language) literalDate($date)").split(SPACE);
-  var capitalizeFunction = ("capitalize($textToConvert)").split(SPACE);
-  var lowerCaseFunction = ("lowerCase($textToConvert)").split(SPACE);
-  var upperCaseFunction = ("upperCase($textToConvert)").split(SPACE);
-  var userInfoFunction = ("userInfo($USER_ID)").split(SPACE);
-  var executeQueryFunction = ("executeQuery($sqlStatement,$DBConnectionUID) executeQuery($sqlStatement)").split(SPACE);
+  var arrayFunctions = [];
+  
+  var formatDate = "formatDate";
+  var formatDateFunction = [formatDate+"($date,$format,$language);",formatDate+"($date,$format);"];
+  arrayFunctions[formatDate] = formatDateFunction;
+  
+  var getCurrentDate = "getCurrentDate";
+  var getCurrentDateFunction = [getCurrentDate+"()"];
+  arrayFunctions[getCurrentDate] = getCurrentDateFunction;
+  
+  var getCurrentTime = "getCurrentTime";
+  var getCurrentTimeFunction = [getCurrentTime+"()"];
+  arrayFunctions[getCurrentTime] = getCurrentTimeFunction;
+  
+  var literalDate = "literalDate";
+  var literalDateFunction = [literalDate+"($date,$Language)",literalDate+"($date)"];
+  arrayFunctions[literalDate] = literalDateFunction;
+  
+  var capitalize = "capitalize";
+  var capitalizeFunction = [capitalize+"($textToConvert)"];
+  arrayFunctions[capitalize] = capitalizeFunction;
+  
+  var lowerCase = "lowerCase";
+  var lowerCaseFunction = [lowerCase+"($textToConvert)"];
+  arrayFunctions[lowerCase] = lowerCaseFunction;
+  
+  var upperCase = "upperCase";
+  var upperCaseFunction = [upperCase+"($textToConvert)"];
+  arrayFunctions[upperCase] = upperCaseFunction;
+  
+  var userInfo = "userInfo";
+  var userInfoFunction = [userInfo+"($USER_ID)"];
+  arrayFunctions[userInfo] = userInfoFunction;
+  
+  var executeQuery = "executeQuery";
+  var executeQueryFunction = [executeQuery+"($sqlStatement,$DBConnectionUID)",executeQuery+"($sqlStatement)"];
+  arrayFunctions[executeQuery] = executeQueryFunction;
+  
+  var orderGrid = "orderGrid";
   var orderGridFunction = ("orderGrid($gridName,$field,$criteria) orderGrid($gridName,$field)").split(SPACE);
-  var evaluateFunctionFunction = ("evaluateFunction($gridName,$Expression)").split(SPACE);
+  arrayFunctions[orderGrid] = orderGridFunction;
+  
+  var evaluateFunction = "evaluateFunction";
+  var evaluateFunctionFunction = [evaluateFunction+"($gridName,$Expression)"];
+  arrayFunctions[evaluateFunction] = evaluateFunctionFunction;
+  
+  var PMFTaskCase = "PMFTaskCase";
+  var PMFTaskCaseFunction = [PMFTaskCase+"($caseId)"];
+  arrayFunctions[PMFTaskCase] = PMFTaskCaseFunction;
+  
+  var PMFTaskList = "PMFTaskList";
+  var PMFTaskListFunction = [PMFTaskList+"($userId)"];
+  arrayFunctions[PMFTaskList] = PMFTaskListFunction;
+  
+  var PMFUserList = "PMFUserList";
+  var PMFUserListFunction = [PMFUserList+"()"];
+  arrayFunctions[PMFUserList] = PMFUserListFunction;
+  
+  var PMFGroupList = "PMFGroupList";
+  var PMFGroupListFunction = [PMFGroupList+"()"];
+  arrayFunctions[PMFGroupList] = PMFGroupListFunction;
+  
+  var PMFRoleList = "PMFRoleList";
+  var PMFRoleListFunction = [PMFRoleList+"()"];
+  arrayFunctions[PMFRoleList] = PMFRoleListFunction;
+  
+  var PMFCaseList = "PMFCaseList";
+  var PMFCaseListFunction = [PMFCaseList+"($userId)",PMFCaseList+"()"];
+  arrayFunctions[PMFCaseList] = PMFCaseListFunction;
+  
+  var PMFProcessList = "PMFProcessList";
+  var PMFProcessListFunction = [PMFProcessList+"()"];
+  arrayFunctions[PMFProcessList] = PMFProcessListFunction;
+  
+  var PMFSendVariables = "PMFSendVariables";
+  var PMFSendVariablesFunction = [PMFSendVariables+"($caseId,$variables)"];
+  arrayFunctions[PMFSendVariables] = PMFSendVariablesFunction;
+  
+  var PMFDerivateCase = "PMFDerivateCase";
+  var PMFDerivateCaseFunction = [PMFDerivateCase+"($caseId,$delegation,$executeTriggersBeforeAssigment)",PMFDerivateCase+"($caseId,$delegation)"];
+  arrayFunctions[PMFDerivateCase] = PMFDerivateCaseFunction;
+  
+  var PMFNewCaseImpersonate = "PMFNewCaseImpersonate";
+  var PMFNewCaseImpersonateFunction = [PMFNewCaseImpersonate+"($processId,$userId,$variables)"];
+  arrayFunctions[PMFNewCaseImpersonate] = PMFNewCaseImpersonateFunction;
+  
+  var PMFNewCase = "PMFNewCase";
+  var PMFNewCaseFunction = [PMFNewCase+"($processId,$userId,$taskId,$variables)"];
+  arrayFunctions[PMFNewCase] = PMFNewCaseFunction;
+  
+  var PMFPauseCase = "PMFPauseCase";
+  var PMFPauseCaseFunction = [PMFPauseCase+"($caseUid,$delIndex,$userUid,$unpauseDate)",PMFPauseCase+"($caseUid,$delIndex,$userUid)"];
+  arrayFunctions[PMFPauseCase] = PMFPauseCaseFunction;
+  
+  var PMFAssignUserToGroup = "PMFAssignUserToGroup";
+  var PMFAssignUserToGroupFunction = [PMFAssignUserToGroup+"($userId,$groupId)"];
+  arrayFunctions[PMFAssignUserToGroup] = PMFAssignUserToGroupFunction;
+  
+  var PMFCreateUser = "PMFCreateUser";
+  var PMFCreateUserFunction = [PMFCreateUser+"($userId,$password,$firstname,$lastname,$email,$role)"];
+  arrayFunctions[PMFCreateUser] = PMFCreateUserFunction;
+  
+  var PMFUpdateUser = "PMFUpdateUser";
+  var PMFUpdateUserFunction = [PMFUpdateUser+"($userUid,$userName,$firstName,$lastName,$email,$dueDate,$status,$role,$password)"];
+  arrayFunctions[PMFUpdateUser] = PMFUpdateUserFunction;
+  
+  var PMFInformationUser = "PMFInformationUser";
+  var PMFInformationUserFunction = [PMFInformationUser+"($userUid)"];
+  arrayFunctions[PMFInformationUser] = PMFInformationUserFunction;
+  
+  var generateCode = "generateCode";
+  var generateCodeFunction = [generateCode+"($size,$type)"];
+  arrayFunctions[generateCode] = generateCodeFunction;
+  
+  var setCaseTrackerCode = "setCaseTrackerCode";
+  var setCaseTrackerCodeFunction = [setCaseTrackerCode+"($caseId,$code,$pin)"];
+  arrayFunctions[setCaseTrackerCode] = setCaseTrackerCodeFunction;
+  
+  var jumping = "jumping";
+  var jumpingFunction = [jumping+"($caseId,$delegation)"];
+  arrayFunctions[jumping] = jumpingFunction;
+   
+  var PMFRedirectToStep = "PMFRedirectToStep";
+  var PMFRedirectToStepFunction = [PMFRedirectToStep+"($caseId,$delegation,$stepType,$stepId)"];
+  arrayFunctions[PMFRedirectToStep] = PMFRedirectToStepFunction;
+  
+  var pauseCase = "pauseCase";
+  var pauseCaseFunction = [pauseCase+"($caseId,$delegation,$userId,$unpauseDate)",pauseCase+"($caseId,$delegation,$userId)"];
+  arrayFunctions[pauseCase] = pauseCaseFunction;
+  
+  var PMFUnpauseCase = "PMFUnpauseCase";
+  var PMFUnpauseCaseFunction = [PMFUnpauseCase+"($caseId,$delegation,$userId,$unpauseDate)",PMFUnpauseCase+"($caseId,$delegation,$userId)"];
+  arrayFunctions[PMFUnpauseCase] = PMFUnpauseCaseFunction;
 
-  var PMFTaskCaseFunction = ("PMFTaskCase($caseId)").split(SPACE);
-  var PMFTaskListFunction = ("PMFTaskList($userId)").split(SPACE);
-  var PMFUserListFunction = ("PMFUserList()").split(SPACE);
-  var PMFGroupListFunction = ("PMFGroupList()").split(SPACE);
-  var PMFRoleListFunction = ("PMFRoleList()").split(SPACE);
-  var PMFCaseListFunction = ("PMFCaseList($userId) PMFCaseList()").split(SPACE);
-  var PMFProcessListFunction = ("PMFProcessList()").split(SPACE);
-  var PMFSendVariablesFunction = ("PMFSendVariables($caseId,$variables)").split(SPACE);
-  var PMFDerivateCaseFunction = ("PMFDerivateCase($caseId,$delegation,$executeTriggersBeforeAssigment) PMFDerivateCase($caseId,$delegation)").split(SPACE);
-  var PMFNewCaseImpersonateFunction = ("PMFNewCaseImpersonate($processId,$userId,$variables)").split(SPACE);
-  var PMFNewCaseFunction = ("PMFNewCase($processId,$userId,$taskId,$variables)").split(SPACE);
-  var PMFPauseCaseFunction = ("PMFPauseCase($caseUid,$delIndex,$userUid,$unpauseDate) PMFPauseCase($caseUid,$delIndex,$userUid)").split(SPACE);
-  var PMFAssignUserToGroupFunction = ("PMFAssignUserToGroup($userId,$groupId)").split(SPACE);
-  var PMFCreateUserFunction = ("PMFCreateUser($userId,$password,$firstname,$lastname,$email,$role)").split(SPACE);
-  var PMFUpdateUserFunction = ("PMFUpdateUser($userUid,$userName,$firstName,$lastName,$email,$dueDate,$status,$role,$password)").split(SPACE);
-  var PMFInformationUserFunction = ("PMFInformationUser($userUid)").split(SPACE);
-  var generateCodeFunction = ("generateCode($size,$type)").split(SPACE);
-  var setCaseTrackerCodeFunction = ("setCaseTrackerCode($caseId,$code,$pin)").split(SPACE);
-  var jumpingFunction = ("jumping($caseId,$delegation)").split(SPACE);
-  var PMFRedirectToStepFunction = ("PMFRedirectToStep($caseId,$delegation,$stepType,$stepId)").split(SPACE);
-  var pauseCaseFunction = ("pauseCase($caseId,$delegation,$userId,$unpauseDate) pauseCase($caseId,$delegation,$userId)").split(SPACE);
-  var PMFSendMessageFunction = ("PMFSendMessage($caseId,$from,$to,$cc,$bcc,$subject,$template,$fields,$attachments) PMFSendMessage($caseId,$from,$to,$cc,$bcc,$subject,$template,$fields) PMFSendMessage($caseId,$from,$to,$cc,$bcc,$subject,$template)").split(SPACE);
-  var PMFgetLabelOptionFunction = ("PMFgetLabelOption($processId,$dynaformId,$fieldName,$optionId)").split(SPACE);
-  var PMFGenerateOutputDocumentFunction = ("PMFGenerateOutputDocument($outputID)").split(SPACE);
-  var PMFGetUserEmailAddressFunction = ("PMFGetUserEmailAddress($id,$APP_UID,$prefix) PMFGetUserEmailAddress($id,$APP_UID) PMFGetUserEmailAddress($id)").split(SPACE);
-  var PMFGetNextAssignedUserFunction = ("PMFGetNextAssignedUser($application,$task)").split(SPACE);
+  var PMFSendMessage = "PMFSendMessage";
+  var PMFSendMessageFunction = [PMFSendMessage+"($caseId,$from,$to,$cc,$bcc,$subject,$template,$fields,$attachments)",PMFSendMessage+"($caseId,$from,$to,$cc,$bcc,$subject,$template,$fields)",PMFSendMessage+"($caseId,$from,$to,$cc,$bcc,$subject,$template)"];
+  arrayFunctions[PMFSendMessage] = PMFSendMessageFunction;
+  
+  var PMFgetLabelOption = "PMFgetLabelOption";
+  var PMFgetLabelOptionFunction = [PMFgetLabelOption+"($processId,$dynaformId,$fieldName,$optionId)"];
+  arrayFunctions[PMFgetLabelOption] = PMFgetLabelOptionFunction;
+  
+  var PMFGenerateOutputDocument = "PMFGenerateOutputDocument";
+  var PMFGenerateOutputDocumentFunction = [PMFGenerateOutputDocument+"($outputID)"];
+  arrayFunctions[PMFGenerateOutputDocument] = PMFGenerateOutputDocumentFunction;
+  
+  var PMFGetUserEmailAddress = "PMFGetUserEmailAddress";
+  var PMFGetUserEmailAddressFunction = [PMFGetUserEmailAddress+"($id,$APP_UID,$prefix)",PMFGetUserEmailAddress+"($id,$APP_UID)",PMFGetUserEmailAddress+"($id)"];
+  arrayFunctions[PMFGetUserEmailAddress] = PMFGetUserEmailAddressFunction;
+  
+  var PMFGetNextAssignedUser = "PMFGetNextAssignedUser";
+  var PMFGetNextAssignedUserFunction = (PMFGetNextAssignedUser+"($application,$task)").split(SPACE);
+  arrayFunctions[PMFGetNextAssignedUser] = PMFGetNextAssignedUserFunction;
+  
+  var PMFDeleteCase = "PMFDeleteCase";
   var PMFDeleteCaseFunction = ("PMFDeleteCase($caseId)").split(SPACE);
-  var PMFCancelCaseFunction = ("PMFCancelCase($caseUid,$delIndex,$userUid)").split(SPACE);
-  var PMFAddInputDocumentFunction = ("PMFAddInputDocument($inputDocumentUid,$appDocUid,$docVersion,$appDocType,$appDocComment,$inputDocumentAction,$caseUid,$delIndex,$taskUid,$userUid,$option,$file) PMFAddInputDocument($inputDocumentUid,$appDocUid,$docVersion,$appDocType,$appDocComment,$inputDocumentAction,$caseUid,$delIndex,$taskUid,$userUid,$option) PMFAddInputDocument($inputDocumentUid,$appDocUid,$docVersion,$appDocType,$appDocComment,$inputDocumentAction,$caseUid,$delIndex,$taskUid,$userUid)").split(SPACE);
-  var PMFAddCaseNoteFunction = ("PMFAddCaseNote($caseUid,$processUid,$taskUid,$userUid,$note,$sendMail)").split(SPACE);
-  var PMFGetCaseNotesFunction = ("PMFGetCaseNotes($applicationID,$type,$userUid) PMFGetCaseNotes($applicationID,$type) PMFGetCaseNotes($applicationID)").split(SPACE);
+  arrayFunctions[PMFDeleteCase] = PMFDeleteCaseFunction;
+  
+  var PMFCancelCase = "PMFCancelCase";
+  var PMFCancelCaseFunction = [PMFCancelCase+"($caseUid,$delIndex,$userUid)"];
+  arrayFunctions[PMFCancelCase] = PMFCancelCaseFunction;
+  
+  var PMFAddInputDocument = "PMFAddInputDocument";
+  var PMFAddInputDocumentFunction = [PMFAddInputDocument+"($inputDocumentUid,$appDocUid,$docVersion,$appDocType,$appDocComment,$inputDocumentAction,$caseUid,$delIndex,$taskUid,$userUid,$option,$file)",PMFAddInputDocument+"($inputDocumentUid,$appDocUid,$docVersion,$appDocType,$appDocComment,$inputDocumentAction,$caseUid,$delIndex,$taskUid,$userUid,$option)",PMFAddInputDocument+"($inputDocumentUid,$appDocUid,$docVersion,$appDocType,$appDocComment,$inputDocumentAction,$caseUid,$delIndex,$taskUid,$userUid)"];
+  arrayFunctions[PMFAddInputDocument] = PMFAddInputDocumentFunction;
+  
+  var PMFAddCaseNote = "PMFAddCaseNote";
+  var PMFAddCaseNoteFunction = [PMFAddCaseNote+"($caseUid,$processUid,$taskUid,$userUid,$note,$sendMail)"];
+  arrayFunctions[PMFAddCaseNote] = PMFAddCaseNoteFunction;
+  
+  var PMFGetCaseNotes = "PMFGetCaseNotes";
+  var PMFGetCaseNotesFunction = [PMFGetCaseNotes+"($applicationID,$type,$userUid);",PMFGetCaseNotes+"($applicationID,$type)",PMFGetCaseNotes+"($applicationID)"];
+  arrayFunctions[PMFGetCaseNotes] = PMFGetCaseNotesFunction;
+  
+  var phpPMFunctions = [formatDate,getCurrentDate,getCurrentTime,literalDate,capitalize,lowerCase,upperCase,userInfo,executeQuery,orderGrid,
+  evaluateFunction,PMFTaskCase,PMFTaskList,PMFUserList,PMFGroupList,PMFRoleList,PMFCaseList,PMFProcessList,PMFSendVariables,PMFDerivateCase,
+  PMFNewCaseImpersonate,PMFNewCase,PMFPauseCase,PMFUnpauseCase,PMFAssignUserToGroup,PMFCreateUser,PMFUpdateUser,PMFInformationUser,        
+  generateCode,setCaseTrackerCode,jumping,PMFRedirectToStep,pauseCase,PMFSendMessage,PMFgetLabelOption,PMFGenerateOutputDocument,   
+  PMFGetUserEmailAddress,PMFGetNextAssignedUser,PMFDeleteCase,PMFCancelCase,PMFAddInputDocument,PMFAddCaseNote,PMFGetCaseNotes];
 
-  var phpPMFunctions = ("formatDate getCurrentDate getCurrentTime literalDate capitalize lowerCase upperCase userInfo executeQuery orderGrid " +
-  "evaluateFunction PMFTaskCase PMFTaskList PMFUserList PMFGroupList PMFRoleList PMFCaseList PMFProcessList PMFSendVariables PMFDerivateCase " +
-  "PMFNewCaseImpersonate PMFNewCase PMFPauseCase PMFUnpauseCase PMFAssignUserToGroup PMFCreateUser PMFUpdateUser PMFInformationUser " +        
-  "generateCode setCaseTrackerCode jumping PMFRedirectToStep pauseCase PMFSendMessage PMFgetLabelOption PMFGenerateOutputDocument " +    
-  "PMFGetUserEmailAddress PMFGetNextAssignedUser PMFDeleteCase PMFCancelCase PMFAddInputDocument PMFAddCaseNote PMFGetCaseNotes").split(SPACE);
-
-  var phpKeywords = ("break case catch continue default delete do else false for function " +
-                  "if new return switch throw true try var void while").split(SPACE);
+  var phpKeywords = ("break case catch continue default do else false for function " +
+                  "if new return switch throw true try var while").split(SPACE);
 
   function getCompletions(functionName, keywords, options) {
     
@@ -113,103 +242,25 @@
          found.push(str);
       }
     }
-
-    if (functionName == "formatDate") {
-	forEach( formatDateFunction, yesAdd);
-    } else if (functionName == "getCurrentDate") {
-	forEach( getCurrentDateFunction, yesAdd);
-    } else if (functionName == "getCurrentTime") {
-        forEach( getCurrentTimeFunction, yesAdd);
-    } else if (functionName == "literalDate") {
-	forEach( literalDateFunction, yesAdd);
-    } else if (functionName == "capitalize") {
-	forEach( capitalizeFunction, yesAdd);
-    } else if (functionName == "lowerCase") {
-	forEach( lowerCaseFunction, yesAdd);
-    } else if (functionName == "upperCase") {
-	forEach( upperCaseFunction, yesAdd);
-    } else if (functionName == "evaluateFunction") {
-	forEach( evaluateFunctionFunction, yesAdd);
-    } else if (functionName == "userInfo") {
-	forEach( userInfoFunction, yesAdd);
-    } else if (functionName == "executeQuery") {
-	forEach( executeQueryFunction, yesAdd);
-    } else if (functionName == "orderGrid") {
-	forEach( orderGridFunction, yesAdd);
-    } else if (functionName == "PMFTaskCase") {
-	forEach( PMFTaskCaseFunction, yesAdd);
-    } else if (functionName == "PMFTaskList") {
-	forEach( PMFTaskListFunction, yesAdd);
-    } else if (functionName == "PMFUserList") {
-	forEach( PMFUserListFunction, yesAdd);
-    } else if (functionName == "PMFGroupList") {
-	forEach( PMFGroupListFunction, yesAdd);
-    } else if (functionName == "PMFRoleList") {
-	forEach( PMFRoleListFunction, yesAdd);
-    } else if (functionName == "PMFCaseList") {
-	forEach( PMFCaseListFunction, yesAdd);
-    } else if (functionName == "PMFProcessList") {
-	forEach( PMFProcessListFunction, yesAdd);
-    } else if (functionName == "PMFSendVariables") {
-	forEach( PMFSendVariablesFunction, yesAdd);
-    } else if (functionName == "PMFNewCase") {
-	forEach( PMFNewCaseFunction, yesAdd);
-    } else if (functionName == "PMFPauseCase") {
-	forEach( PMFPauseCaseFunction, yesAdd);
-    } else if (functionName == "PMFUnpauseCase") {
-	forEach( PMFUnpauseCaseFunction, yesAdd);
-    } else if (functionName == "PMFAssignUserToGroup") {
-	forEach( PMFAssignUserToGroupFunction, yesAdd);
-    } else if (functionName == "PMFCreateUser") {
-	forEach( PMFCreateUserFunction, yesAdd);
-    } else if (functionName == "PMFUpdateUser") {
-	forEach( PMFUpdateUserFunction, yesAdd);
-    } else if (functionName == "PMFInformationUser") {
-	forEach( PMFInformationUserFunction, yesAdd);
-    } else if (functionName == "generateCode") {
-	forEach( generateCodeFunction, yesAdd);
-    } else if (functionName == "setCaseTrackerCode") {
-	forEach( setCaseTrackerCodeFunction, yesAdd);
-    } else if (functionName == "jumping") {
-	forEach( jumpingFunction, yesAdd);
-    } else if (functionName == "PMFRedirectToStep") {
-	forEach( PMFRedirectToStepFunction, yesAdd);
-    } else if (functionName == "pauseCase") {
-	forEach( pauseCaseFunction, yesAdd);
-    } else if (functionName == "PMFSendMessage") {
-	forEach( PMFSendMessageFunction, yesAdd);
-    } else if (functionName == "PMFgetLabelOption") {
-	forEach( PMFgetLabelOptionFunction, yesAdd);
-    } else if (functionName == "PMFGenerateOutputDocument") {
-	forEach( PMFGenerateOutputDocumentFunction, yesAdd);
-    } else if (functionName == "PMFGetUserEmailAddress") {
-	forEach( PMFGetUserEmailAddressFunction, yesAdd);
-    } else if (functionName == "PMFGetNextAssignedUser") {
-	forEach( PMFGetNextAssignedUserFunction, yesAdd);
-    } else if (functionName == "PMFDeleteCase") {
-	forEach( PMFDeleteCaseFunction, yesAdd);
-    } else if (functionName == "PMFCancelCase") {
-	forEach( PMFCancelCaseFunction, yesAdd);
-    } else if (functionName == "PMFAddInputDocument") {
-	forEach( PMFAddInputDocumentFunction, yesAdd);
-    } else if (functionName == "PMFAddCaseNote") {
-	forEach( PMFAddCaseNoteFunction, yesAdd);
-    } else if (functionName == "PMFGetCaseNotes") {
-	forEach( PMFGetCaseNotesFunction, yesAdd);
-    } else if (functionName == "PMFNewCaseImpersonate") {
-        forEach( PMFNewCaseImpersonateFunction, yesAdd);
-    } else if (functionName.trim() == "") {
-	forEach (phpKeywords, yesAdd);
-        forEach (keywords, yesAdd);
-    } else if (functionName == "=") {
-        forEach (phpPMFunctions, yesAdd);
+    
+    arrayFunction = arrayFunctions[functionName];
+	
+    if (arrayFunction != undefined) {
+      forEach( arrayFunction, yesAdd);
     } else {
-        for (index = 0; index < phpKeywords.length; index++) {
-	        if ( phpKeywords[index].indexOf(functionName) == 0 ) {
-		        found.push(phpKeywords[index]);
-	        }
-        } 
-        forEach(keywords, maybeAdd);
+      if (functionName.trim() == "") {
+  	  forEach (phpKeywords, yesAdd);
+	  forEach (keywords, yesAdd);
+      } else if (functionName == "=") {
+	  forEach (phpPMFunctions, yesAdd);
+      } else {
+	  for (index = 0; index < phpKeywords.length; index++) {
+	      if ( phpKeywords[index].indexOf(functionName) == 0 ) {
+	          found.push(phpKeywords[index]);
+	      }
+	  } 
+	  forEach(keywords, maybeAdd);
+      }
     }
     return found;
   }
