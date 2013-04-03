@@ -137,7 +137,7 @@ function getUserArray ($action, $userUid)
 {
     global $oAppCache;
     $status = array ();
-    
+
     $users[] = array ("",G::LoadTranslation( "ID_ALL_USERS" ));
     $users[] = array ("CURRENT_USER",G::LoadTranslation( "ID_CURRENT_USER" ));
 
@@ -175,6 +175,8 @@ function getCategoryArray ()
     $criteria = new Criteria( 'workflow' );
     $criteria->addSelectColumn( ProcessCategoryPeer::CATEGORY_UID );
     $criteria->addSelectColumn( ProcessCategoryPeer::CATEGORY_NAME );
+    $criteria->addAscendingOrderByColumn(ProcessCategoryPeer::CATEGORY_NAME);
+
     $dataset = ProcessCategoryPeer::doSelectRS( $criteria );
     $dataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
     $dataset->next();
