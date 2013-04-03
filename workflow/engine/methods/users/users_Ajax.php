@@ -203,6 +203,13 @@ try {
             $aFields['USR_STATUS'] = 'CLOSED';
             $aFields['USR_USERNAME'] = '';
             $oUser->update($aFields);
+
+            //Delete Dashboard
+            require_once 'classes/model/DashletInstance.php';
+            $criteria = new Criteria( 'workflow' );
+            $criteria->add( DashletInstancePeer::DAS_INS_OWNER_UID, $UID );
+            $criteria->add( DashletInstancePeer::DAS_INS_OWNER_TYPE , 'USER');
+            DashletInstancePeer::doDelete( $criteria );
             break;
         case 'changeUserStatus':
             $response = new stdclass();
