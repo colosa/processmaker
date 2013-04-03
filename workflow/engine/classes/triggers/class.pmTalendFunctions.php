@@ -36,7 +36,7 @@
  * @param string | $wsdl | Talend Web Service (including ?WSDL)
  * @param array(array(n1 v1) array(n2 v2) array(nN vN)) | $params | Array of params. Pairs of param Name Value
  * @param string | $message | Message to be displayed
- * @return array | $return | Talend Array
+ * @return array | $return | Talend Array |
  *
  */
 function executeTalendWebservice ($wsdl, $message, $params = array())

@@ -37,7 +37,7 @@
  * @param string | $folderName | Folder Name
  * @param string | $protocol | protpcol server http https
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 include_once PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'api' . PATH_SEP . "class.zimbraApi.php";
@@ -72,7 +72,7 @@ function getZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName, $proto
  * @param string | $preAuthKey | Server Key for SSO authentication
  * @param string | $protocol | protpcol server http https
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function getZimbraContactList($ServerUrl, $username, $preAuthKey, $protocol = 'http')
@@ -106,7 +106,7 @@ function getZimbraContactList($ServerUrl, $username, $preAuthKey, $protocol = 'h
  * @param string | $preAuthKey | Server Key for SSO authentication
  * @param string | $protocol | protpcol server http https
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function getZimbraTaskList($ServerUrl, $username, $preAuthKey, $protocol = 'http')
@@ -143,7 +143,7 @@ function getZimbraTaskList($ServerUrl, $username, $preAuthKey, $protocol = 'http
  * @param string | $preAuthKey | Server Key for SSO authentication
  * @param string | $protocol | protpcol server http https
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function getZimbraAppointmentList($ServerUrl, $username, $preAuthKey, $protocol = 'http')
@@ -182,7 +182,7 @@ function getZimbraAppointmentList($ServerUrl, $username, $preAuthKey, $protocol 
  * @param string | $color | Color of Folder
  * @param string | $protocol | protpcol server http https
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function createZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName, $color, $protocol = 'http')
@@ -223,7 +223,7 @@ function createZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName, $co
  * @param string | $otherDataValue | Corresponding Date or Value
  * @param string | $protocol | protpcol server http https
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function createZimbraContacts($ServerUrl, $username, $preAuthKey, $firstName, $lastName, $email, $otherData, $otherDataValue, $protocol = 'http')
@@ -272,7 +272,7 @@ function createZimbraContacts($ServerUrl, $username, $preAuthKey, $firstName, $l
  * @param string | $percent | Percentage of Task Completed
  * @param string | $protocol | protpcol server http https
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function createZimbraTask($ServerUrl, $username, $preAuthKey, $subject, $taskName, $friendlyName, $userEmail, $priority, $allDay, $class, $location, $dueDate, $status, $percent, $protocol = 'http')
@@ -326,7 +326,7 @@ function createZimbraTask($ServerUrl, $username, $preAuthKey, $subject, $taskNam
  * @param string | $tz | Time Zone
  * @param string | $protocol | protpcol server http https
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function createZimbraAppointment($ServerUrl, $username, $preAuthKey, $subject, $appointmentName, $friendlyName, $userEmail, $domainName, $schedule, $cutype, $allDay, $isOrg, $rsvp, $atFriendlyName, $role, $location, $ptst, $startDate, $endDate, $tz = '', $protocol = 'http')
@@ -366,7 +366,7 @@ function createZimbraAppointment($ServerUrl, $username, $preAuthKey, $subject, $
  * @param string | $fileLocation | Absolute path of the File to be uploaded.
  * @param string | $protocol | protpcol server http https
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function uploadZimbraFile($ServerUrl, $username, $preAuthKey, $folderName, $fileLocation, $protocol = 'http')

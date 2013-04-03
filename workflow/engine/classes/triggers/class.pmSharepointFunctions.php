@@ -41,7 +41,7 @@
  * @param string | $title | Title of DWS
  * @param string | $documents | Document that need to be attached to DWS
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function createDWS ($sharepointServer, $auth, $name = "", $users = "", $title = "", $documents = "", $result = "")
@@ -66,7 +66,7 @@ function createDWS ($sharepointServer, $auth, $name = "", $users = "", $title = 
  * @param string | $auth | Valid Auth string to connect to server | user:password
  * @param string | $dwsname | Name of DWS to be deleted
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function deleteDWS ($sharepointServer, $auth, $dwsname)
@@ -97,7 +97,7 @@ function deleteDWS ($sharepointServer, $auth, $dwsname)
  * @param string | $dwsname | Name of DWS
  * @param string | $dwsFolderName | Name of DWS folder
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function createFolderDWS ($sharepointServer, $auth, $dwsname, $dwsFolderName)
@@ -131,7 +131,7 @@ function createFolderDWS ($sharepointServer, $auth, $dwsname, $dwsFolderName)
  * @param string | $dwsname | Name of DWS
  * @param string | $delDwsFolderName | Name of DWS folder to be deleted
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 
@@ -165,7 +165,7 @@ function deleteFolderDWS ($sharepointServer, $auth, $dwsname, $folderName)
  * @param string | $dwsname | Name of DWS
  * @param string | $lastUpdate | LastUpdate
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function getDWSData ($sharepointServer, $auth, $newFileName, $dwsname, $lastUpdate)
@@ -196,7 +196,7 @@ function getDWSData ($sharepointServer, $auth, $newFileName, $dwsname, $lastUpda
  * @param string | $id | ID
  *
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function getDWSMetaData ($sharepointServer, $auth, $newFileName, $dwsname, $id)
@@ -229,7 +229,7 @@ function getDWSMetaData ($sharepointServer, $auth, $newFileName, $dwsname, $id)
  * @param string | $sourceUrl | Absolute path of the file to upload
  * @param string | $filename | Name of the File to Upload
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function uploadDocumentDWS ($sharepointServer, $auth, $dwsname, $folderName, $sourceUrl, $filename)
@@ -256,7 +256,7 @@ function uploadDocumentDWS ($sharepointServer, $auth, $dwsname, $folderName, $so
  * @param string | $fileName | File to be downloaded
  * @param string | $fileLocation | Location to be downloaded into
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function downloadDocumentDWS ($sharepointServer, $auth, $dwsname, $fileName, $fileLocation)
@@ -285,7 +285,7 @@ function downloadDocumentDWS ($sharepointServer, $auth, $dwsname, $fileName, $fi
  * @param string | $dwsname | Name of the DWS
  * @param string | $strFolderUrl | Folder URL
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function getDWSFolderItems ($sharepointServer, $auth, $dwsname, $strFolderUrl)
@@ -314,7 +314,7 @@ function getDWSFolderItems ($sharepointServer, $auth, $dwsname, $strFolderUrl)
  * @param string | $newFileName | Name of New File
  * @param string | $dwsname | Name of DWS
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function getDWSDocumentVersions ($sharepointServer, $auth, $newFileName, $dwsname)
@@ -355,7 +355,7 @@ function getDWSDocumentVersions ($sharepointServer, $auth, $newFileName, $dwsnam
  * @param string | $dwsname | Name of DWS
  * @param string | $versionNum | Version No.
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function deleteDWSDocumentVersion ($sharepointServer, $auth, $newFileName, $dwsname, $versionNum)
@@ -380,7 +380,7 @@ function deleteDWSDocumentVersion ($sharepointServer, $auth, $newFileName, $dwsn
  * @param string | $newFileName | Name of File
  * @param string | $dwsname | Name of DWS
  *
- * @return string | $result | Response
+ * @return string | $result | Response |
  *
  */
 function deleteDWSAllDocumentVersion ($sharepointServer, $auth, $newFileName, $dwsname)
