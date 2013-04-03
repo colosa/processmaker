@@ -94,7 +94,7 @@ Ext.onReady(function(){
         {header: '', dataIndex: 'namespace', width: 100, hidden:true, hideable:false},
         {header: 'classname', dataIndex: 'className', width: 300, hidden:true, hideable:false},
         {header: _('ID_TITLE'), dataIndex: 'title'},
-        {header: _('ID_VERSION'), dataIndex: 'version', width: 50},
+        {header: _('ID_VERSION'), dataIndex: 'version', width: 50, sortable: false},
         {header: _('ID_STATUS'), dataIndex: 'status_label', width: 40, renderer:function(v,p,r){
           color = r.get('status') == '1'? 'green': 'red';
           return String.format("<font color='{0}'>{1}</font>", color, v);
