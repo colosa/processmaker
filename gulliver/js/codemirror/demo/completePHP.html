@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Autocomplete Demo</title>
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <script src="../lib/codemirror.js"></script>
+    <script src="../addon/edit/matchbrackets.js"></script>
+    <script src="../mode/htmlmixed/htmlmixed.js"></script>
+    <script src="../mode/xml/xml.js"></script>
+    <script src="../mode/javascript/javascript.js"></script>
+    <script src="../mode/css/css.js"></script>
+    <script src="../mode/clike/clike.js"></script>
+
+    <script src="../addon/hint/show-hint.js"></script>
+    <link rel="stylesheet" href="../addon/hint/show-hint.css">
+    <script src="../addon/hint/php-hint.js"></script>
+    <script src="../mode/php/php.js"></script>
+    <link rel="stylesheet" href="../doc/docs.css">
+  </head>
+  <body>
+    <h2>CodeMirror: Autocomplete demo</h2>
+
+    <form><textarea id="code" name="code">
+function getData($data) {
+    $tre = $data . " fffoX ";
+    return $tre;
+}
+
+$sa = "";
+PMFAddInputDocument(
+
+$list = array("a" => 1, "b" => 2, "c" => 4 );
+</textarea></form>
+<button onclick="gettext()">get Text</button>
+<button onclick="insertText()">insert</button>
+<button onclick="mark()">replace marked</button>
+<p>Press <strong>ctrl-space</strong> to activate autocompletion. See
+the code (<a href="../addon/hint/show-hint.js">here</a>
+and <a href="../addon/hint/php-hint.js">here</a>) to figure out
+how it works.</p>
+
+    <script>
+      CodeMirror.commands.autocomplete = function(cm) {
+        CodeMirror.showHint(cm, CodeMirror.phpHint);
+      }
+
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "application/x-httpd-php",
+        PMEnabled: true,
+        indentUnit: 2,
+        indentWithTabs: false,
+        extraKeys: {"Ctrl-Space": "autocomplete"}
+      });
+      editor.save();
+      //editor.toTextArea(); //reset to the textArea
+      alert(editor.getTextArea().value);
+      editor.focus();
+      CodeMirror.commands.selectAll(editor);
+      
+function gettext() {
+      var cur = editor.getCursor();
+      var text1 = editor.getLine(cur.line);
+      alert("text: ''" + text1 + "''");
+}
+
+function insertText() {
+	var cur = editor.getCursor();
+	editor.replaceRange("******", cur);
+}
+
+function mark() {
+	var from = editor.getCursor();
+	var to ;
+	editor.replaceSelection("$$$$$$$");
+}
+    </script>
+  </body>
+</html>

@@ -220,8 +220,14 @@ class dynaformEditor extends WebResource
         $oHeadPublisher->addScriptFile('/jscore/dynaformEditor/core/dynaformEditor.js');
         //$oHeadPublisher->addScriptFile('/js/dveditor/core/dveditor.js');
         //$oHeadPublisher->addScriptFile('/codepress/codepress.js',1);
-        $oHeadPublisher->addScriptFile('/js/codemirror/js/codemirror.js', 1);
-
+        $oHeadPublisher->addScriptFile('/js/codemirror/lib/codemirror.js', 1);
+        //Xml codemirror 3.13
+        $oHeadPublisher->addScriptFile('/js/codemirror/mode/xml/xml.js', 1);
+        $oHeadPublisher->addScriptFile('/js/codemirror/addon/selection/active-line.js', 1);
+        //Javascript codemirror 3.13
+        $oHeadPublisher->addScriptFile('/js/codemirror/addon/edit/closebrackets.js', 1);
+        $oHeadPublisher->addScriptFile('/js/codemirror/mode/javascript/javascript.js', 1);
+        
         $oHeadPublisher->addScriptFile('/js/grid/core/grid.js');
         $oHeadPublisher->addScriptCode('
     var DYNAFORM_URL="' . $Parameters['URL'] . '";

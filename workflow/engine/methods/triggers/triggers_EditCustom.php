@@ -37,5 +37,17 @@ $xmlform = 'triggers/triggersCustom';
 G::LoadClass( 'xmlfield_InputPM' );
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $xmlform, '', $aFields, '../triggers/triggers_Save' );
+$oHeadPublisher =& headPublisher::getSingleton();
+//$oHeadPublisher->addScriptFile('/js/codemirror/js/codemirror.js', 1);
+$oHeadPublisher->addScriptFile('/js/codemirror/lib/codemirror.js', 1);
+$oHeadPublisher->addScriptFile("/js/codemirror/addon/edit/matchbrackets.js",1);
+$oHeadPublisher->addScriptFile("/js/codemirror/mode/htmlmixed/htmlmixed.js",1);
+$oHeadPublisher->addScriptFile("/js/codemirror/mode/xml/xml.js",1);
+$oHeadPublisher->addScriptFile("/js/codemirror/mode/javascript/javascript.js",1);
+$oHeadPublisher->addScriptFile("/js/codemirror/mode/css/css.js",1);
+$oHeadPublisher->addScriptFile("/js/codemirror/mode/clike/clike.js",1);
+$oHeadPublisher->addScriptFile("/js/codemirror/addon/hint/show-hint.js",1);
+$oHeadPublisher->addScriptFile("/js/codemirror/addon/hint/php-hint.js",1);
+$oHeadPublisher->addScriptFile("/js/codemirror/mode/php/php.js",1);
 G::RenderPage( 'publish', 'raw' );
 

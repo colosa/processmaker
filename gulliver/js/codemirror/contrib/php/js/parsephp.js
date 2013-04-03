@@ -77,7 +77,11 @@ var PHPParser = Editor.Parser = (function() {
   function indentPHP(lexical) {
     return function(firstChars) {
       var firstChar = firstChars && firstChars.charAt(0), type = lexical.type;
-      var closing = firstChar == type;
+      if (type == "block") {
+        var closing = true;
+      } else {
+        var closing = firstChar == type;
+      }
       if (type == "form" && firstChar == "{")
         return lexical.indented;
       else if (type == "stat" || type == "form")

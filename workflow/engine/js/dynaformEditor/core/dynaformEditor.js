@@ -444,7 +444,7 @@ var dynaformEditor={
     if( ! xmlEditor ) {
       clientWinSize = getClientWindowSize();
 
-        xmlEditor = CodeMirror.fromTextArea('form[XML]', {
+        /*xmlEditor = CodeMirror.fromTextArea('form[XML]', {
         height: (clientWinSize.height - 120) + "px",
         width: (_BROWSER.name == 'msie' ? '100%' : '98%'),
         parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
@@ -453,8 +453,13 @@ var dynaformEditor={
         stylesheet: ["css/xmlcolors.css", "css/jscolors.css"],
         path: "js/",
         lineNumbers: true,
-        continuousScanning: 500
-      });
+        continuousScanning: 500 });*/
+        
+        xmlEditor = CodeMirror.fromTextArea(document.getElementById("form[XML]"), {
+        mode: "application/xml",
+        styleActiveLine: true,
+        lineNumbers: true,
+        lineWrapping: true });
     }
   },
   changeToHtmlCode:function()
@@ -514,15 +519,20 @@ var dynaformEditor={
       {
         clientWinSize = getClientWindowSize();
         startJSCodePress();
-        jsEditor = CodeMirror.fromTextArea('form[JS]', {
+        
+        /*jsEditor = CodeMirror.fromTextArea('form[JS]', {
           height: (clientWinSize.height - 140) + "px",
           width: (_BROWSER.name == 'msie' ? '100%' : '98%'),
           parserfile: ["tokenizejavascript.js", "parsejavascript.js"],
           stylesheet: ["css/jscolors.css"],
           path: "js/",
           lineNumbers: true,
-          continuousScanning: 500
-        });
+          continuousScanning: 500 });*/
+          
+          jsEditor = CodeMirror.fromTextArea(document.getElementById("form[JS]"), {
+          mode: "javascript",
+          lineNumbers: true,
+          lineWrapping: true });
       }
     } else {
       showRowById('JS_TITLE');
@@ -684,8 +694,10 @@ var dynaformEditor={
   {
     //if (JSCodePress)
     if( jsEditor ) {
-      if(typeof jsEditor.setCode == 'function')
-        jsEditor.setCode(newCode);
+        if(typeof jsEditor.setValue == 'function')
+        {
+            jsEditor.setValue(newCode);//jsEditor.setCode(newCode);
+        }
     }
     else
     {
@@ -703,7 +715,7 @@ var dynaformEditor={
   setXMLCode:function(newCode)
   {
     if( xmlEditor ) {
-      xmlEditor.setCode(newCode);
+      xmlEditor.setValue(newCode);//setCode(newCode);
     } else {
       var code = getField("XML","dynaforms_XmlEditor");
       code.value = newCode;

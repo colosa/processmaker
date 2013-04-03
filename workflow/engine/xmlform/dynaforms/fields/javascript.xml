@@ -39,10 +39,9 @@ if (navigator.appName != "Microsoft Internet Explorer") {
   }
 }
 
-
-var fieldForm="javascript";
-var fieldName=getField("PME_XMLNODE_NAME",fieldForm);
-var savedFieldName=fieldName.value;
+var fieldForm      = "javascript";
+var fieldName      = getField("PME_XMLNODE_NAME",fieldForm);
+var savedFieldName = fieldName.value;
 var pme_validating;
 leimnud.event.add(fieldName, 'change', {method:dynaformVerifyFieldName, instance:fieldName, event:true});
 
@@ -50,7 +49,7 @@ function cancel(){
     currentPopupWindow.remove();
 }
 
-var jsEditorPrompt = CodeMirror.fromTextArea('form[PME_CODE]', {
+/*var jsEditorPrompt = CodeMirror.fromTextArea('form[PME_CODE]', {
   height: "170px",
   width: "430px",
   parserfile: ["tokenizejavascript.js", "parsejavascript.js"],
@@ -58,12 +57,20 @@ var jsEditorPrompt = CodeMirror.fromTextArea('form[PME_CODE]', {
   path: "js/",
   lineNumbers: true,
   continuousScanning: 500
-});
+});*/
+
+var jsEditorPrompt = CodeMirror.fromTextArea(document.getElementById("form[PME_CODE]"), {
+          mode: "javascript",
+          lineNumbers: true,
+          lineWrapping: true });
+jsEditorPrompt.setSize(430, 170);
 
 function saveJavascript()
 {
-  jsEditorPrompt.setCode(jsEditorPrompt.getCode());
+  document.getElementById('form[PME_CODE]').value = jsEditorPrompt.getValue();
   jsEditorPrompt.save();
+  //jsEditorPrompt.setCode(jsEditorPrompt.getCode());
+  //jsEditorPrompt.save();
 }
 
 function setFocus1() {

@@ -956,6 +956,14 @@ var tokenizePHP = (function() {
       "SplQueue", "SplStack", "SQLite3", "SQLite3Result", "SQLite3Stmt", "SQLiteDatabase",
       "SQLiteException", "SQLiteResult", "SQLiteUnbuffered", "Svn", "SvnNode", "SvnWc",
       "SvnWcSchedule", "XSLTProcessor", "ZipArchive",
+      "PMFTaskCase","PMFTaskList","PMFUserList","PMFGroupList",
+      "PMFRoleList","PMFCaseList","PMFProcessList","PMFSendVariables",
+      "PMFDerivateCase","PMFNewCaseImpersonate","PMFNewCase","PMFPauseCase",
+      "PMFUnpauseCase","PMFAssignUserToGroup","PMFCreateUser","PMFUpdateUser",
+      "PMFInformationUser","generateCode","setCaseTrackerCode","jumping",
+      "PMFRedirectToStep","pauseCase","PMFSendMessage","PMFgetLabelOption",
+      "PMFGenerateOutputDocument","PMFGetUserEmailAddress","PMFGetNextAssignedUser","PMFDeleteCase",
+      "PMFCancelCase","PMFAddInputDocument","PMFAddCaseNote","PMFGetCaseNotes"
     ].forEach(function(element, index, array) {
       result[element] = token("t_string", "php-predefined-class");
     });
