@@ -117,8 +117,9 @@ var main = function(){
         minSize: 175,
         maxSize: 400,
         collapsible: true,
+        collapseMode:'mini',
+        hideCollapseTool: true,
         animCollapse: true,
-        
         margins: '0 0 0 5',
         activeTab: 0,
         enableTabScroll: true,
