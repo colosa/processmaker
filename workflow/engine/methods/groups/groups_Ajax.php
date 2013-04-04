@@ -178,6 +178,13 @@ switch ($_POST['action']) {
         $criteria = new Criteria( 'workflow' );
         $criteria->add(ObjectPermissionPeer::USR_UID, $_POST['GRP_UID']);
         ObjectPermissionPeer::doDelete( $criteria );
+        
+        //Delete supervisors assignments
+        require_once 'classes/model/ProcessUser.php';
+        $criteria = new Criteria( 'workflow' );
+        $criteria->add(ProcessUserPeer::USR_UID, $_POST['GRP_UID']);
+        $criteria->add(ProcessUserPeer::PU_TYPE, 'GROUP_SUPERVISOR');
+        ProcessUserPeer::doDelete( $criteria );
 
         echo '{success: true}';
         break;
