@@ -5499,6 +5499,32 @@ class xmlformTemplate extends Smarty
      */
     public function printJSFile (&$form)
     {
+        //JS designer>preview
+        if (isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"]) && preg_match("/^.*dynaforms_Editor\?.*PRO_UID=.*DYN_UID=.*$/", $_SERVER["HTTP_REFERER"]) && preg_match("/^.*dynaforms\/dynaforms_Ajax.*$/", $_SERVER["REQUEST_URI"])) {
+            $js = null;
+
+            foreach ($form->fields as $index => $value) {
+                $field = $value;
+
+                if ($field->type == "javascript" && !empty($field->code)) {
+                    $js = $js . " " . $field->code;
+                }
+            }
+
+            if ($js != null) {
+                $form->jsDesignerPreview = "
+                //JS designer>preview
+                $js
+
+                loadForm_" . $form->id . "(\"../gulliver/defaultAjaxDynaform\");
+
+                if (typeof(dynaformOnload) != \"undefined\") {
+                    dynaformOnload();
+                }
+                ";
+            }
+        }
+
         $this->assign( 'form', $form );
         $this->assign( 'printTemplate', false );
         $this->assign( 'printJSFile', true );
