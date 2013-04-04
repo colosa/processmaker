@@ -114,6 +114,7 @@
             sub.sendObj = false;
           {/literal}
         {/if}
+
         {foreach from=$form->fields item=field key=name}
           i = myForm.aElements.length;
 
@@ -174,8 +175,14 @@
           {/if}
         {/if}
       {/foreach}
-      {literal}}{/literal}
+    {literal}}{/literal}
+
+    {if (isset($form->jsDesignerPreview))}
+        {$form->jsDesignerPreview}
     {/if}
-    {if $printJavaScript}
-      leimnud.event.add(window,'load',function(){literal}{{/literal}loadForm_{$form->id}('{$form->ajaxServer}');if (typeof(dynaformOnload) !== 'undefined') {literal}{dynaformOnload();}}{/literal});
-    {/if}
+{/if}
+
+{if $printJavaScript}
+    leimnud.event.add(window,'load',function(){literal}{{/literal}loadForm_{$form->id}('{$form->ajaxServer}');if (typeof(dynaformOnload) != 'undefined') {literal}{dynaformOnload();}}{/literal});
+{/if}
+

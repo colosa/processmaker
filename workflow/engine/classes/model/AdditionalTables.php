@@ -649,9 +649,9 @@ class AdditionalTables extends BaseAdditionalTables
             foreach ($caseData as $dKey => $dValue) {
                 if (!is_array($dValue)) {
                     foreach ($fieldTypes as $key => $fieldType) {
-                        foreach ($fieldType as $name => $type) {
+                        foreach ($fieldType as $name => $theType) {
                             if (strtoupper($dKey) == $name) {
-                                $caseData[$dKey] = validateType ($dValue, $type);
+                                $caseData[$dKey] = validateType ($dValue, $theType);
                                 unset($name);
                             }
                         }
@@ -787,7 +787,9 @@ class AdditionalTables extends BaseAdditionalTables
                         $obj->fromArray(array_change_key_case($caseData, CASE_UPPER), BasePeer::TYPE_FIELDNAME);
                         $obj->setAppUid($appUid);
                         $obj->setAppNumber($appNumber);
-                        $obj->setAppStatus($appStatus);
+                        if (method_exists($obj, 'setAppStatus')) {
+                            $obj->setAppStatus($appStatus);
+                        }
                         $obj->save();
                     }
                     break;
@@ -807,6 +809,9 @@ class AdditionalTables extends BaseAdditionalTables
                         $obj->fromArray(array_change_key_case($gridRow, CASE_UPPER), BasePeer::TYPE_FIELDNAME);
                         $obj->setAppUid($appUid);
                         $obj->setAppNumber($appNumber);
+                        if (method_exists($obj, 'setAppStatus')) {
+                            $obj->setAppStatus($appStatus);
+                        }
                         $obj->setRow($i);
                         $obj->save();
                     }

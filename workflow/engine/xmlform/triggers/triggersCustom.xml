@@ -9,7 +9,7 @@
 </TITLE>
 <TRI_UID type="hidden"/>
 
-<TRI_TITLE type="text" size="80" maxlength="100">
+<TRI_TITLE type="text" size="80" maxlength="100" required="1">
   <en>Title</en>
 </TRI_TITLE>
 <TRI_PARAM type="hidden" value=""/>
