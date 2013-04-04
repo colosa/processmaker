@@ -232,6 +232,11 @@ class Applications
 
         if ($dateFrom != '') {
             if ($dateTo != '') {
+                if ($dateFrom == $dateTo) {
+                    $dateAux = $dateFrom;
+                    $dateFrom = $dateAux . " 00:00:00";
+                    $dateTo = $dateAux . " 23:23:59";
+               }
                 $Criteria->add( $Criteria->getNewCriterion( AppCacheViewPeer::DEL_DELEGATE_DATE, $dateFrom, Criteria::GREATER_EQUAL )->addAnd( $Criteria->getNewCriterion( AppCacheViewPeer::DEL_DELEGATE_DATE, $dateTo, Criteria::LESS_EQUAL ) ) );
                 $CriteriaCount->add( $CriteriaCount->getNewCriterion( AppCacheViewPeer::DEL_DELEGATE_DATE, $dateFrom, Criteria::GREATER_EQUAL )->addAnd( $Criteria->getNewCriterion( AppCacheViewPeer::DEL_DELEGATE_DATE, $dateTo, Criteria::LESS_EQUAL ) ) );
             } else {
