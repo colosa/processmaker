@@ -5,12 +5,15 @@ PMExtJSCommon = function() {
 
   this.confirm = function(title, msg, fnYes, fnNo)
   {
+    // Commented by conflicts with other buttons
+    /*
     if (typeof(_) != 'undefined') {
       Ext.MessageBox.buttonText = {
         yes     : _('ID_YES'),
         no      : _('ID_NO')
       };
     }
+    */
     Ext.MessageBox.confirm(title, msg, function(btn, text){
       if ( btn == 'yes' )
         setTimeout(fnYes, 0)
