@@ -11,7 +11,7 @@
   <en>Allow user defined timing control</en>
 </TAS_TRANSFER_FLY>
 
-<TAS_DURATION type="text" size="3" maxlength="3" defaultvalue="1" required="1" validate="Int" group="1" dependentfields="" linkfield="" strto="UPPER" readonly="0" noshowingrid="0" readonlyingrid="0" totalizeable="0" sqlconnection="">
+<TAS_DURATION type="text" size="3" maxlength="3" defaultvalue="1" required="1" validate="Any" mask="###" group="1" dependentfields="" linkfield="" strto="UPPER" readonly="0" noshowingrid="0" readonlyingrid="0" totalizeable="0" sqlconnection="">
   <en>Task duration</en>
 </TAS_DURATION>
 
@@ -71,4 +71,4 @@ leimnud.event.add(getField('TAS_TRANSFER_FLY'), 'click', function() {
 });
 ]]></JS>
 
-</dynaForm>  
+</dynaForm>
