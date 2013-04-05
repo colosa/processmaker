@@ -88,6 +88,11 @@ class Configurations // extends Configuration
             }
         }
     }
+    
+    public function exists($cfgID)
+    {
+        return $this->Configuration->exists($cfgID,"",'','','');
+    }
 
     /**
      * configObject

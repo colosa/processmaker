@@ -390,8 +390,14 @@ class SkinEngine
         $smarty->assign('workspace', defined('SYS_SYS')?SYS_SYS: '');
         $uws = (isset($_SESSION['USR_ROLENAME']) && $_SESSION['USR_ROLENAME'] != '')? strtolower(G::LoadTranslation('ID_WORKSPACE_USING')): G::LoadTranslation('ID_WORKSPACE_USING');
         $smarty->assign('workspace_label', $uws);
-        $smarty->assign('udate', G::getformatedDate(date('Y-m-d'), 'M d, yyyy', SYS_LANG));
-
+        
+        G::LoadClass( "configuration" );
+        $conf = new Configurations();
+        if (defined('SYS_SYS') && $conf->exists("ENVIRONMENT_SETTINGS")) {
+            $smarty->assign('udate', $conf->getSystemDate(date('Y-m-d')));
+        } else {
+            $smarty->assign('udate', G::getformatedDate(date('Y-m-d'), 'M d, yyyy', SYS_LANG));
+        }
       }
 
       if (defined('SYS_SYS')) {
@@ -642,8 +648,15 @@ class SkinEngine
         $smarty->assign('workspace', defined('SYS_SYS')?SYS_SYS: '');
         $uws = (isset($_SESSION['USR_ROLENAME']) && $_SESSION['USR_ROLENAME'] != '')? strtolower(G::LoadTranslation('ID_WORKSPACE_USING')): G::LoadTranslation('ID_WORKSPACE_USING');
         $smarty->assign('workspace_label', $uws);
-        $smarty->assign('udate', G::getformatedDate(date('Y-m-d'), 'M d, yyyy', SYS_LANG));
-
+        
+        G::LoadClass( "configuration" );
+        $conf = new Configurations();
+        if ( defined('SYS_SYS') && $conf->exists("ENVIRONMENT_SETTINGS")) {
+            $smarty->assign('udate', $conf->getSystemDate(date('Y-m-d')));
+        } else {
+            $smarty->assign('udate', G::getformatedDate(date('Y-m-d'), 'M d, yyyy', SYS_LANG));
+        }
+    
       }
       if(class_exists('pmLicenseManager')){
         $pmLicenseManagerO = &pmLicenseManager::getSingleton();
