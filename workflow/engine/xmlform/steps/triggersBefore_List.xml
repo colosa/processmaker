@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dynaForm sqlConnection="" menu="steps/triggersBefore_Options" width="100%" disableFooter="1" rowsPerPage="100">
+<dynaForm sqlConnection="" menu="steps/triggersBefore_Options" width="100%" disableFooter="1" rowsPerPage="100" sortable="0" >
 
 <STEP_UID type="hidden" showInTable="0"/>
 
