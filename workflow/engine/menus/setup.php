@@ -61,7 +61,9 @@ if ($RBAC->userCanAccess('PM_SETUP') == 1) {
 
   $G_TMP_MENU->AddIdRawOption('PM_TABLES', '../pmTables', G::LoadTranslation('ID_ADDITIONAL_TABLES'), 'icon-tables.png','', 'settings');
 
+if (!$partnerFlag) {
   $G_TMP_MENU->AddIdRawOption('WEBSERVICES', 'webServices', G::LoadTranslation('ID_WEB_SERVICES'), 'icon-webservices.png', '', 'settings');
+}
   $G_TMP_MENU->AddIdRawOption('LOGIN', 'loginSettings', G::LoadTranslation('LOGIN'), "",'', 'settings');
   $G_TMP_MENU->AddIdRawOption('DASHBOARD', '../dashboard/dashletsList', ucfirst(G::LoadTranslation('ID_DASHBOARD')), '', '', 'settings');
 }
