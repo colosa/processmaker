@@ -55,7 +55,7 @@ WHERE
 <PRO_DERIVATION_SCREEN_TPL type="dropdown" sqlconnection="dbarray">
   SELECT FILE,NAME FROM _TEMPLATES1
   <en>Routing Screen Template
-	<option name="">- Default -</option>
+  <option name="">- Default -</option>
   </en>
 </PRO_DERIVATION_SCREEN_TPL>
 
@@ -126,15 +126,12 @@ var verifyProcessInformation = function(oForm) {
             oAux.focus();
             bContinue = false;
         }
-
         var regExp =  /^(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\..*)(\..+)?$)[^\x00-\x1f\\?*:\";|/]+$/;
-
-        if (oAux.value.search(regExp)==-1) {
+        if (regExp.test(oAux.value)) {
             alert('@G::LoadTranslation(ID_INVALID_PROCESS_NAME)');
             oAux.focus();
             bContinue = false;
         }
-
         if (bContinue) {
             ajax_post(oForm.action, oForm, 'POST');
             Pm.data.db.title.label = Pm.data.db.title.object.elements.label.innerHTML = getField('PRO_TITLE').value.escapeHTML();
