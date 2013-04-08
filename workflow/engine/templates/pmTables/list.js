@@ -275,9 +275,11 @@ Ext.onReady(function(){
             break;
         }
       }
-      return r.get('ADD_TAB_TAG') ? '<span style="font-size:9px; color:green">'+tag+':</span> '+ v : v;
-    }});
+      
+      v = Ext.util.Format.htmlEncode(v);
 
+      return r.get("ADD_TAB_TAG") ? "<span style = \"font-size:9px; color:green\">" + tag + ":</span> "+ v : v;
+    }});
     cmodelColumns.push({header: _('ID_TABLE_TYPE'), dataIndex: 'PRO_UID', width: 120, align:'left', renderer: function(v,p,r){
       color = r.get('PRO_UID') ? 'blue' : 'green';
       value = r.get('PRO_UID') ? _('ID_REPORT_TABLE') : _('ID_PMTABLE');
