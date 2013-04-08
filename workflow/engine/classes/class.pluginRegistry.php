@@ -1430,11 +1430,8 @@ class PMPluginRegistry
     {
         $language = new Language();
         $pathPluginTranslations = PATH_PLUGINS . $namePlugin . PATH_SEP . 'translations' . PATH_SEP;
-        G::pr($pathPluginTranslations . 'translations.php');
         if (file_exists($pathPluginTranslations . 'translations.php')) {
-            G::pr($pathPluginTranslations . $namePlugin . '.' . SYS_LANG . '.po');
             if (!file_exists($pathPluginTranslations . $namePlugin . '.' . SYS_LANG . '.po')) {
-                G::pr('cochalo');
                 $language->createLanguagePlugin($namePlugin, SYS_LANG);
             }
             $language->updateLanguagePlugin($namePlugin, SYS_LANG);
