@@ -205,10 +205,39 @@ class Installer
             $this->log("Write: " . $db_file . "  => " . ((!$ff) ? $ff : "OK") . "\n", $ff === false);
 
             fclose($fp);
+            $this->set_configuration();
             $this->set_admin();
         }
         return $test;
     }
+
+    /**
+     * set_configuration
+     *
+     * @return void
+     */
+    public function set_configuration()
+    {
+        $oConf = new Configuration();
+        $dataCondif = $oConf->getAll();
+        if (count($dataCondif)) {
+            foreach ($dataCondif as $value) {
+                if ($value['CFG_UID'] == 'ENVIRONMENT_SETTINGS') {
+                    $query = 'INSERT INTO CONFIGURATION (CFG_UID, OBJ_UID, CFG_VALUE, PRO_UID, USR_UID, APP_UID) VALUES';
+                    $query .= "('" .
+                        $value['CFG_UID']   . "', '".
+                        $value['OBJ_UID']   . "', '".
+                        $value['CFG_VALUE'] . "', '".
+                        $value['PRO_UID']   . "', '".
+                        $value['USR_UID']   . "', '".
+                        $value['APP_UID']   . "')";
+                    mysql_select_db($this->wf_site_name, $this->connection_database);
+                    $this->run_query($query, "Copy configuracion environment");
+                    break;
+                }
+            }
+        }
+    } 
 
     /**
      * set_admin

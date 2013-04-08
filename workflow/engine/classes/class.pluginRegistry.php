@@ -239,6 +239,7 @@ class PMPluginRegistry
                 $this->_aPlugins[$detail->sNamespace] = $oPlugin;
                 if (method_exists( $oPlugin, 'enable' )) {
                     $oPlugin->enable();
+                    $this->verifyTranslation($detail->sNamespace); 
                 }
                 return true;
             }
@@ -1424,5 +1425,17 @@ class PMPluginRegistry
     {
         return get_object_vars( $this );
     }
+
+    public function verifyTranslation ($namePlugin)
+    {
+        $language = new Language();
+        $pathPluginTranslations = PATH_PLUGINS . $namePlugin . PATH_SEP . 'translations' . PATH_SEP;
+        if (file_exists($pathPluginTranslations . 'translations.php')) {
+            if (!file_exists($pathPluginTranslations . $namePlugin . '.' . SYS_LANG . '.po')) {
+                $language->createLanguagePlugin($namePlugin, SYS_LANG);
+            }
+            $language->updateLanguagePlugin($namePlugin, SYS_LANG);
+        }
+    } 
 }
 
