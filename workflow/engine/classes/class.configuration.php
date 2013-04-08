@@ -314,6 +314,29 @@ class Configurations // extends Configuration
             return null;
         }
     }
+    
+    
+    public function userNameFormat($username, $fullname)
+    {
+        
+        try {
+            if (!isset($this->UserConfig)) {
+                $this->UserConfig = $this->getConfiguration('ENVIRONMENT_SETTINGS', '');
+            }
+            if (isset($this->UserConfig['format'])) {
+                $name = explode(' ',$fullname);
+                $aux = '';
+                $aux = str_replace('@userName', $username, $this->UserConfig['format']);
+                $aux = str_replace('@firstName', isset($name[0])?$name[0]:'', $aux);
+                $aux = str_replace('@lastName', isset($name[1])?$name[1]:'', $aux);
+                return $aux;
+            } else {
+                return $username;
+            }
+        } catch (Exception $oError) {
+            return null;
+        }
+    }
 
     /**
      * getFormats
