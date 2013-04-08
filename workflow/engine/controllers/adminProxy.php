@@ -224,17 +224,17 @@ class adminProxy extends HttpProxyController
 
         if ($type == 'assoc') {
             $list = array(
-                'NORMAL' => 'Normal',
-                'SIMPLIFIED' => 'Simplified',
-                'SWITCHABLE' => 'Switchable',
-                'SINGLE' => 'Single Application'
+                'NORMAL'     => G::loadTranslation('ID_UXS_NORMAL'),
+                'SIMPLIFIED' => G::loadTranslation('ID_UXS_SIMPLIFIED'),
+                'SWITCHABLE' => G::loadTranslation('ID_UXS_SWITCHABLE'),
+                'SINGLE'     => G::loadTranslation('ID_UXS_SINGLE')
             );
         } else {
             $list = array(
-                array('NORMAL', 'Normal'),
-                array('SIMPLIFIED', 'Simplified'),
-                array('SWITCHABLE', 'Switchable'),
-                array('SINGLE', 'Single Application')
+                array('NORMAL',     G::loadTranslation('ID_UXS_NORMAL') ),
+                array('SIMPLIFIED', G::loadTranslation('ID_UXS_SIMPLIFIED') ),
+                array('SWITCHABLE', G::loadTranslation('ID_UXS_SWITCHABLE') ),
+                array('SINGLE',     G::loadTranslation('ID_UXS_SINGLE') )
             );
         }
         return $list;
