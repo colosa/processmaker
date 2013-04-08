@@ -274,6 +274,10 @@ class SkinEngine
         }
 
         if ($sw == 1) {
+            if ($ie == 10) {
+                $ie = 8;
+            }
+
             $doctype = null;
             $meta    = "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$ie\" />";
         }
@@ -390,7 +394,7 @@ class SkinEngine
         $smarty->assign('workspace', defined('SYS_SYS')?SYS_SYS: '');
         $uws = (isset($_SESSION['USR_ROLENAME']) && $_SESSION['USR_ROLENAME'] != '')? strtolower(G::LoadTranslation('ID_WORKSPACE_USING')): G::LoadTranslation('ID_WORKSPACE_USING');
         $smarty->assign('workspace_label', $uws);
-        
+
         G::LoadClass( "configuration" );
         $conf = new Configurations();
         if (defined('SYS_SYS') && $conf->exists("ENVIRONMENT_SETTINGS")) {
@@ -603,7 +607,19 @@ class SkinEngine
     }
     else {
       $smarty->template_dir = $this->layoutFile['dirname'];
-      $header = '';
+
+      $meta = null;
+      $header = null;
+
+      if (preg_match("/^.*\(.*MSIE (\d+)\..+\).*$/", $_SERVER["HTTP_USER_AGENT"], $arrayMatch)) {
+          $ie = intval($arrayMatch[1]);
+
+          if ($ie == 10) {
+              $ie = 8;
+
+              $meta = "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=$ie\" />";
+          }
+      }
 
       if (isset($oHeadPublisher)) {
         if (defined('SYS_SYS')) {
@@ -612,6 +628,9 @@ class SkinEngine
         $header = $oHeadPublisher->printHeader();
         $header .= $oHeadPublisher->getExtJsStylesheets($this->cssFileName);
       }
+
+      $smarty->assign("meta", $meta);
+      $smarty->assign("header", $header);
 
       $footer = '';
 
@@ -647,7 +666,7 @@ class SkinEngine
         $smarty->assign('workspace', defined('SYS_SYS')?SYS_SYS: '');
         $uws = (isset($_SESSION['USR_ROLENAME']) && $_SESSION['USR_ROLENAME'] != '')? strtolower(G::LoadTranslation('ID_WORKSPACE_USING')): G::LoadTranslation('ID_WORKSPACE_USING');
         $smarty->assign('workspace_label', $uws);
-        
+
         G::LoadClass( "configuration" );
         $conf = new Configurations();
         if ( defined('SYS_SYS') && $conf->exists("ENVIRONMENT_SETTINGS")) {
@@ -677,7 +696,6 @@ class SkinEngine
       }
 
       $smarty->assign('linklogout', $logout);
-      $smarty->assign('header', $header);
       $smarty->assign('footer', $footer);
       $smarty->assign('tpl_menu', PATH_TEMPLATE . 'menu.html');
       $smarty->assign('tpl_submenu', PATH_TEMPLATE . 'submenu.html');

@@ -1,10 +1,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="shortcut icon" href="/images/favicon.ico"   type="image/x-icon"/>
-    {$header}
-
+      {$meta}
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+      {$header}
   </head>
   <body>
     <table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" id="pm_main_table">
@@ -19,7 +18,7 @@
                   {if $user_logged neq ''}
                     {$msgVer}<label class="textBlue">{$userfullname} <a href="../users/myInfo">{$user}</a> | </label>
                     {if $switch_interface}
-                    <label class="textBlue"><a href="../home">{$switch_interface_label}</a> | </label>                   
+                    <label class="textBlue"><a href="../home">{$switch_interface_label}</a> | </label>
                     {/if}
                     <a href="{$linklogout}" class="tableOption">{$logout}</a>&nbsp;&nbsp;<br/>
                     <label class="textBlack"><b>{$rolename}</b> {$workspace_label} <b><u>{$workspace}</u></b> &nbsp; &nbsp; <br/>
