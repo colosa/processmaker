@@ -398,6 +398,8 @@ class SkinEngine
         } else {
             $smarty->assign('udate', G::getformatedDate(date('Y-m-d'), 'M d, yyyy', SYS_LANG));
         }
+        $name = $conf->userNameFormat(isset($_SESSION['USR_USERNAME']) ? $_SESSION['USR_USERNAME']: '', isset($_SESSION['USR_FULLNAME']) ? htmlentities($_SESSION['USR_FULLNAME'] , ENT_QUOTES, 'UTF-8'): '');
+        $smarty->assign('user',$name);
       }
 
       if (defined('SYS_SYS')) {
@@ -639,9 +641,6 @@ class SkinEngine
         $smarty->assign('user_logged', (isset($_SESSION['USER_LOGGED'])? $_SESSION['USER_LOGGED'] : ''));
         $smarty->assign('switch_interface', $switch_interface);
         $smarty->assign('switch_interface_label', G::LoadTranslation('ID_SWITCH_INTERFACE'));
-
-        $smarty->assign('userfullname', isset($_SESSION['USR_FULLNAME']) ? htmlentities($_SESSION['USR_FULLNAME'] , ENT_QUOTES, 'UTF-8'): '');
-        $smarty->assign('user', isset($_SESSION['USR_USERNAME']) ? '(' . $_SESSION['USR_USERNAME'] . ')' : '');
         $smarty->assign('rolename', isset($_SESSION['USR_ROLENAME']) ? $_SESSION['USR_ROLENAME'] . '' : '');
         $smarty->assign('pipe', isset($_SESSION['USR_USERNAME']) ? ' | ' : '');
         $smarty->assign('logout', G::LoadTranslation('ID_LOGOUT'));
@@ -656,7 +655,8 @@ class SkinEngine
         } else {
             $smarty->assign('udate', G::getformatedDate(date('Y-m-d'), 'M d, yyyy', SYS_LANG));
         }
-    
+        $name = $conf->userNameFormat(isset($_SESSION['USR_USERNAME']) ? $_SESSION['USR_USERNAME']: '', isset($_SESSION['USR_FULLNAME']) ? htmlentities($_SESSION['USR_FULLNAME'] , ENT_QUOTES, 'UTF-8'): '');
+        $smarty->assign('user',$name);
       }
       if(class_exists('pmLicenseManager')){
         $pmLicenseManagerO = &pmLicenseManager::getSingleton();
