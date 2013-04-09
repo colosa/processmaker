@@ -138,7 +138,7 @@ CREATE TABLE ".$this->quoteIdentifier($table->getName())."
 			if(isset($vendorSpecific['Type'])) {
 				$mysqlTableType = $vendorSpecific['Type'];
 			} else {
-				$mysqlTableType = 'MyISAM';
+				$mysqlTableType = 'InnoDB';
 			}
 		}
 
