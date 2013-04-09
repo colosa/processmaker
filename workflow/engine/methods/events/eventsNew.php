@@ -46,7 +46,7 @@ foreach ($aAux1 as $aAux2) {
 }
 
 $oProcessMap = new processMap( new DBConnection() );
-$aTriggersList = $oProcessMap->getTriggers( $_SESSION['PROCESS'] );
+$aTriggersList = $oProcessMap->getTriggers( $_GET['PRO_UID'] );
 $aTriggersFileds = Array ('TRI_UID' => 'char','TRI_TITLE' => 'char');
 
 foreach ($aTriggersList as $i => $v) {
