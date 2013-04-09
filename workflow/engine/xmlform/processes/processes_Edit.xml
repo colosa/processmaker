@@ -55,7 +55,7 @@ WHERE
 <PRO_DERIVATION_SCREEN_TPL type="dropdown" sqlconnection="dbarray">
   SELECT FILE,NAME FROM _TEMPLATES1
   <en>Routing Screen Template
-	<option name="">- Default -</option>
+  <option name="">- Default -</option>
   </en>
 </PRO_DERIVATION_SCREEN_TPL>
 
@@ -115,7 +115,6 @@ WHERE
 var validateNameProcess = true;
 var naProcess = new input(getField('PRO_TITLE'));
 naProcess.passed();
-
 var verifyProcessInformation = function(oForm) {
     if (validateNameProcess) {
         var oAux;
@@ -126,15 +125,12 @@ var verifyProcessInformation = function(oForm) {
             oAux.focus();
             bContinue = false;
         }
-
-        var regExp =  /^(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\..*)(\..+)?$)[^\x00-\x1f\\?*:\";|/]+$/;
-
-        if (oAux.value.search(regExp)==-1) {
+        var regEx =  /^(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\..*)(\..+)?$)[^\x00-\x1f\\?*\";|/]+$/;
+        if (oAux.value.match(regEx)==null) {
             alert('@G::LoadTranslation(ID_INVALID_PROCESS_NAME)');
             oAux.focus();
             bContinue = false;
         }
-
         if (bContinue) {
             ajax_post(oForm.action, oForm, 'POST');
             Pm.data.db.title.label = Pm.data.db.title.object.elements.label.innerHTML = getField('PRO_TITLE').value.escapeHTML();
@@ -145,7 +141,6 @@ var verifyProcessInformation = function(oForm) {
         nProcess.focus();
     }
 };
-
 leimnud.event.add(getField('PRO_TITLE'), 'change', function() {
     var nProcess = new input(getField('PRO_TITLE'));
     getField('PRO_TITLE').value = getField('PRO_TITLE').value.replace(/^\s*|\s*$/g,"");
@@ -161,7 +156,6 @@ leimnud.event.add(getField('PRO_TITLE'), 'change', function() {
         nProcess.focus();
     }
 });
-
 function cancel() {
   Pm.tmp.editProcessPanel.remove();
 }
