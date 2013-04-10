@@ -636,7 +636,7 @@ class Ajax
                             http_request.overrideMimeType('text/xml');
                         }
                     }
-                    elseif (window.ActiveXObject) {
+                    else if (window.ActiveXObject) {
                         // IE
                         try {
                             http_request = new ActiveXObject("Msxml2.XMLHTTP");
