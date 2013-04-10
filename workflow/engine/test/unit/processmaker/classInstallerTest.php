@@ -86,12 +86,12 @@
   $t->todo( "call to method make_site using  ");
 
 
-  //checking method 'set_admin'
-  $t->can_ok( $obj,      'set_admin',   'set_admin() is callable' );
+  //checking method 'setAdmin'
+  $t->can_ok( $obj,      'setAdmin',   'setAdmin() is callable' );
 
-  //$result = $obj->set_admin ( );
-  //$t->isa_ok( $result,      'NULL',   'call to method set_admin ');
-  $t->todo( "call to method set_admin using  ");
+  //$result = $obj->setAdmin ( );
+  //$t->isa_ok( $result,      'NULL',   'call to method setAdmin ');
+  $t->todo( "call to method setAdmin using  ");
 
 
   //checking method 'query_sql_file'
