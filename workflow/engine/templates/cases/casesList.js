@@ -23,6 +23,7 @@ var storeReassignCases;
 var grid;
 var textJump;
 var ids = '';
+var winReassignInCasesList;
 
 function formatAMPM(date, initVal) {
   var hours = date.getHours();
@@ -1305,6 +1306,8 @@ Ext.onReady ( function() {
     var rowSelected = Ext.getCmp('reassignGrid').getSelectionModel().getSelected();
     if( rowSelected ) {
       PMExt.confirm(_('ID_CONFIRM'), _('ID_REASSIGN_CONFIRM'), function(){
+        var loadMask = new Ext.LoadMask(winReassignInCasesList.getEl(), {msg: _('ID_PROCESSING')});
+        loadMask.show();
         Ext.Ajax.request({
           url : 'casesList_Ajax' ,
           params : {actionAjax : 'reassignCase', USR_UID: rowSelected.data.USR_UID, APP_UID: APP_UID, DEL_INDEX:DEL_INDEX},
@@ -1319,10 +1322,16 @@ Ext.onReady ( function() {
               }
               location.href = 'casesListExtJs';
             } else {
+              var loadMask = new Ext.LoadMask(winReassignInCasesList.getEl(), {msg: _('ID_PROCESSING')});
+              loadMask.hide();
+              winReassignInCasesList.hide();
               alert(data.msg);
             }
           },
           failure: function ( result, request) {
+            var loadMask = new Ext.LoadMask(winReassignInCasesList.getEl(), {msg: _('ID_PROCESSING')});
+            loadMask.hide();
+            winReassignInCasesList.hide();
             if (typeof(result.responseText) != 'undefined') {
               Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
             }
@@ -1332,36 +1341,8 @@ Ext.onReady ( function() {
     }
   }
 
-  reassingCaseToUser = function()
-  {
-    var APP_UID = optionMenuReassignGlobal.APP_UID;
-    var DEL_INDEX = optionMenuReassignGlobal.DEL_INDEX;
-
-    var rowSelected = Ext.getCmp('reassignGrid').getSelectionModel().getSelected();
-    if( rowSelected ) {
-      PMExt.confirm(_('ID_CONFIRM'), _('ID_REASSIGN_CONFIRM'), function(){
-        Ext.Ajax.request({
-          url : 'casesList_Ajax' ,
-          params : {actionAjax : 'reassignCase', USR_UID: rowSelected.data.USR_UID, APP_UID: APP_UID, DEL_INDEX:DEL_INDEX},
-          success: function ( result, request ) {
-            var data = Ext.util.JSON.decode(result.responseText);
-            if( data.status == 0 ) {
-              parent.notify('', data.msg);
-              location.href = 'casesListExtJs';
-            } else {
-              alert(data.msg);
-            }
-          },
-          failure: function ( result, request) {
-            if (typeof(result.responseText) != 'undefined') {
-              Ext.MessageBox.alert(_('ID_FAILED'), result.responseText);
-            }
-          }
-        });
-      });
-    }
-  }
   //optionMenuPause.setMinValue('2010-11-04');
+  
   var optionMenuReassignGlobal = {};
   optionMenuReassignGlobal.APP_UID = "";
   optionMenuReassignGlobal.DEL_INDEX = "";
@@ -1452,7 +1433,7 @@ Ext.onReady ( function() {
           }
         });
 
-        var win = new Ext.Window({
+        winReassignInCasesList = new Ext.Window({
           title: '',
           width: 450,
           height: 280,
@@ -1462,7 +1443,7 @@ Ext.onReady ( function() {
           maximizable: false,
           items: [grid]
         });
-        win.show();
+        winReassignInCasesList.show();
       }
     }
   });
