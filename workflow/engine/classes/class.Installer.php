@@ -205,9 +205,137 @@ class Installer
             $this->log("Write: " . $db_file . "  => " . ((!$ff) ? $ff : "OK") . "\n", $ff === false);
 
             fclose($fp);
-            $this->set_admin();
+            $this->setPartner();
+            $this->setConfiguration();
+            $this->setAdmin();
         }
         return $test;
+    }
+
+    /**
+     * set_partner
+     *
+     * @return void
+     */
+    public function setPartner()
+    {
+        $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
+        if ($partnerFlag) {
+            // Execute sql for partner
+            $pathMysqlPartner = PATH_CORE . 'data' . PATH_SEP . 'partner' . PATH_SEP . 'mysql' . PATH_SEP;
+            if (G::verifyPath($pathMysqlPartner)) {
+                $res = array();
+                $filesSlq = glob($pathMysqlPartner . '*.sql');
+                foreach ($filesSlq as $value) {
+                    $this->query_sql_file($value, $this->connection_database);
+                }
+            }
+
+            // Execute to change of skin
+            $pathSkinPartner = PATH_CORE . 'data' . PATH_SEP . 'partner' . PATH_SEP . 'skin' . PATH_SEP;
+            if (G::verifyPath($pathSkinPartner)) {
+                $res = array();
+                $fileTar = glob($pathSkinPartner . '*.tar');
+                foreach ($fileTar as $value) {
+                    $dataFile = pathinfo($value);
+                    $nameSkinTmp = $dataFile['filename'];
+                    G::LoadThirdParty( 'pear/Archive', 'Tar' );
+                    $tar = new Archive_Tar( $value );
+
+                    $pathSkinTmp = $pathSkinPartner . 'tmp' . PATH_SEP;
+                    G::rm_dir($pathSkinTmp);
+                    G::verifyPath($pathSkinTmp, true);
+                    chmod( $pathSkinTmp, 0777);
+                    $tar->extract($pathSkinTmp);
+
+                    $pathSkinName = $pathSkinTmp . $nameSkinTmp . PATH_SEP;
+                    chmod( $pathSkinName, 0777);
+                    G::verifyPath(PATH_CORE . 'skinEngine' . PATH_SEP . 'tmp', true);
+                    $skinClassic = PATH_CORE . 'skinEngine' . PATH_SEP . 'tmp' . PATH_SEP;
+
+                    if (is_dir($pathSkinName)) {
+                        $this->copyFile($pathSkinName, $skinClassic);
+                    }
+
+                    G::rm_dir(PATH_CORE . 'skinEngine' . PATH_SEP . 'base');
+                    rename(PATH_CORE . 'skinEngine' . PATH_SEP . 'tmp', PATH_CORE . 'skinEngine' . PATH_SEP . 'base');
+                    G::rm_dir(PATH_CORE . 'skinEngine' . PATH_SEP . 'tmp');
+
+                    break;
+                }
+            }
+        }
+    }
+
+    function copyFile($fromDir, $toDir, $chmod=0777)
+    {
+        $errors = array();
+        $messages = array();
+
+        if (!is_writable($toDir))  {
+            $errors[]='target '.$toDir.' is not writable';
+        }
+        if (!is_dir($toDir)) {
+            $errors[]='target '.$toDir.' is not a directory';
+        }
+        if (!is_dir($fromDir)) {
+            $errors[]='source '.$fromDir.' is not a directory';
+        }
+        if (!empty($errors)) {
+            return false;
+        }
+
+        $exceptions = array ('.','..');
+        $handle = opendir($fromDir);
+        while (false !== ($item=readdir($handle))) {
+            if (!in_array($item,$exceptions)) {
+                $from = str_replace('//','/',$fromDir.'/'.$item);
+                $to = str_replace('//','/',$toDir.'/'.$item);
+                if (is_file($from)) {
+                    if (@copy($from,$to)) {
+                        chmod($to,$chmod);
+                        touch($to,filemtime($from));
+                    }
+                }
+
+                if (is_dir($from)) {
+                    if (@mkdir($to)) {
+                        chmod($to,$chmod);
+                    }
+                    $this->copyFile($from,$to,$chmod);
+                }
+            }
+        }
+
+        closedir($handle);
+    }
+
+    /**
+     * set_configuration
+     *
+     * @return void
+     */
+    public function setConfiguration()
+    {
+        $oConf = new Configuration();
+        $dataCondif = $oConf->getAll();
+        if (count($dataCondif)) {
+            foreach ($dataCondif as $value) {
+                if ($value['CFG_UID'] == 'ENVIRONMENT_SETTINGS') {
+                    $query = 'INSERT INTO CONFIGURATION (CFG_UID, OBJ_UID, CFG_VALUE, PRO_UID, USR_UID, APP_UID) VALUES';
+                    $query .= "('" .
+                        $value['CFG_UID']   . "', '".
+                        $value['OBJ_UID']   . "', '".
+                        $value['CFG_VALUE'] . "', '".
+                        $value['PRO_UID']   . "', '".
+                        $value['USR_UID']   . "', '".
+                        $value['APP_UID']   . "')";
+                    mysql_select_db($this->wf_site_name, $this->connection_database);
+                    $this->run_query($query, "Copy configuracion environment");
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -215,7 +343,7 @@ class Installer
      *
      * @return void
      */
-    public function set_admin()
+    public function setAdmin()
     {
         mysql_select_db($this->wf_site_name, $this->connection_database);
         //  The mysql_escape_string function has been DEPRECATED as of PHP 5.3.0.
