@@ -75,7 +75,6 @@ function cronArraySet ($str, $filter)
 
 function cronDataGet ($filter, $r, $i)
 {
-    $r = $r + 1; //+ 1, to determine the next page
     $i = $i + 1;
 
     $arrayData = array ();
@@ -85,66 +84,29 @@ function cronDataGet ($filter, $r, $i)
 
     $file = PATH_DATA . "log" . PATH_SEP . "cron.log";
 
-    if (file_exists( $file )) {
-        $fh = fopen( $file, "r" );
+    if (file_exists($file)) {
+        $arrayFileData = file($file);
 
-        for ($pos = 0; fseek( $fh, $pos, SEEK_END ) !== - 1; $pos --) {
-            $char = fgetc( $fh );
+        for ($k = 0; $k <= count($arrayFileData) - 1; $k++) {
+            $strAux = $arrayFileData[$k];
 
-            if ($char == "\n") {
-                $strAux = trim( $strAux );
+            if (!empty($strAux)) {
+                $arrayAux = cronArraySet($strAux, $filter);
 
-                if (! empty( $strAux )) {
-                    $arrayAux = cronArraySet( $strAux, $filter );
+                if (count($arrayAux) > 0) {
+                    $cont = $cont + 1;
 
-                    if (count( $arrayAux ) > 0) {
-                        $cont = $cont + 1;
-
-                        if ($cont >= $i && count( $arrayData ) + 1 <= $r) {
-                            $arrayData[] = $arrayAux;
-                            $numRec = $cont;
-                        }
+                    if ($cont >= $i && count($arrayData) + 1 <= $r) {
+                        $arrayData[] = $arrayAux;
                     }
                 }
-
-                if (count( $arrayData ) == $r) {
-                    break;
-                }
-
-                $strAux = null;
-                $char = null;
-            }
-
-            $strAux = $char . $strAux;
-        }
-
-        $strAux = trim( $strAux );
-
-        if (! empty( $strAux )) {
-            $arrayAux = cronArraySet( $strAux, $filter );
-
-            if (count( $arrayAux ) > 0) {
-                $cont = $cont + 1;
-
-                if ($cont >= $i && count( $arrayData ) + 1 <= $r) {
-                    $arrayData[] = $arrayAux;
-                    $numRec = $cont;
-                }
             }
         }
-
-        fclose( $fh );
     }
 
-    //Delete element
-    $r = $r - 1;
+    $numRec = $cont;
 
-    if (count( $arrayData ) > $r) {
-        $arrayAux = array_pop( $arrayData );
-    }
-
-    return array ($numRec,$arrayData
-    );
+    return array($numRec, $arrayData);
 }
 
 $option = (isset( $_REQUEST["option"] )) ? $_REQUEST["option"] : null;
