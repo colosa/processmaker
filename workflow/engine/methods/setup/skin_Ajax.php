@@ -1,5 +1,4 @@
 <?php
-
 if (! isset( $_REQUEST['action'] )) {
     $res['success'] = false;
     $res['error'] = $res['message'] = G::LoadTranslation('ID_REQUEST_ACTION');
@@ -119,26 +118,30 @@ function newSkin ($baseSkin = 'classic')
                 //Commmon copy/paste of a folder + xmlrepalce
                 copy_skin_folder( PATH_CUSTOM_SKINS . $skinBase, PATH_CUSTOM_SKINS . $skinFolder, array ("config.xml"
                 ) );
-                $pathBase = PATH_CUSTOM_SKINS . $skinBase;
+                $pathBase = PATH_CUSTOM_SKINS . $skinBase . PATH_SEP;
                 break;
         }
+
         //ReBuild config file
         //TODO: Improve this pre_replace lines
-        $configFileOriginal = $pathBase . PATH_SEP . 'config.xml';
+        $configFileOriginal = $pathBase . "config.xml";
         $configFileFinal = PATH_CUSTOM_SKINS . $skinFolder . PATH_SEP . 'config.xml';
         $xmlConfiguration = file_get_contents( $configFileOriginal );
 
         $workspace = ($_REQUEST['workspace'] == 'global') ? '' : SYS_SYS;
-        $xmlConfigurationObj = G::xmlParser( $xmlConfiguration );
-        $skinInformationArray = $skinFilesArray = $xmlConfigurationObj->result['skinConfiguration']['__CONTENT__']['information']['__CONTENT__'];
+
+        $xmlConfigurationObj = G::xmlParser($xmlConfiguration);
+        $skinInformationArray = $xmlConfigurationObj->result["skinConfiguration"]["__CONTENT__"]["information"]["__CONTENT__"];
+
         $xmlConfiguration = preg_replace( '/(<id>)(.+?)(<\/id>)/i', '<id>' . G::generateUniqueID() . '</id><!-- $2 -->', $xmlConfiguration );
-        if (isset( $skinInformationArray['workspace'] )) {
-            $workspace = ($skinInformationArray['workspace'] != '') ? ($skinInformationArray['workspace']."|".$workspace) : $workspace;
-            $xmlConfiguration = preg_replace( "/(<workspace>)(.+?)(<\/modifiedDate>)/i", "<workspace>" . $workspace . "</workspace><!-- $2 -->", $xmlConfiguration );
-            $xmlConfiguration = preg_replace( "/(<name>)(.+?)(<\/name>)/i", "<name>" . $skinName . "</name><!-- $2 -->", $xmlConfiguration );
+
+        if ($workspace != "" && isset($skinInformationArray["workspace"]["__VALUE__"])) {
+            $workspace = (!empty($skinInformationArray["workspace"]["__VALUE__"]))? $skinInformationArray["workspace"]["__VALUE__"] . "|" . $workspace : $workspace;
+
+            $xmlConfiguration = preg_replace("/(<workspace>)(.*)(<\/workspace>)/i", "<workspace>" . $workspace . "</workspace><!-- $2 -->", $xmlConfiguration);
+            $xmlConfiguration = preg_replace("/(<name>)(.*)(<\/name>)/i", "<name>" . $skinName . "</name><!-- $2 -->", $xmlConfiguration);
         } else {
-            $xmlConfiguration = preg_replace( "/(<name>)(.+?)(<\/name>)/i", "<name>" . $skinName . "</name><!-- $2 -->
-                <workspace>" . $workspace . "</workspace>", $xmlConfiguration );
+            $xmlConfiguration = preg_replace("/(<name>)(.*)(<\/name>)/i", "<name>" . $skinName . "</name><!-- $2 -->\n<workspace>" . $workspace . "</workspace>", $xmlConfiguration);
         }
 
         $xmlConfiguration = preg_replace( "/(<description>)(.+?)(<\/description>)/i", "<description>" . $skinDescription . "</description><!-- $2 -->", $xmlConfiguration );
@@ -245,14 +248,16 @@ function importSkin ()
         $xmlConfiguration = file_get_contents( $configFileOriginal );
 
         $workspace = ($_REQUEST['workspace'] == 'global') ? '' : SYS_SYS;
-        $xmlConfigurationObj = G::xmlParser( $xmlConfiguration );
-        $skinInformationArray = $skinFilesArray = $xmlConfigurationObj->result['skinConfiguration']['__CONTENT__']['information']['__CONTENT__'];
-        if (isset( $skinInformationArray['workspace'] )) {
-            $workspace = ($skinInformationArray['workspace'] != '') ? ($skinInformationArray['workspace']."|".$workspace) : $workspace;
-            $xmlConfiguration = preg_replace( "/(<workspace>)(.+?)(<\/modifiedDate>)/i", "<workspace>" . $workspace . "</workspace><!-- $2 -->", $xmlConfiguration );
+
+        $xmlConfigurationObj = G::xmlParser($xmlConfiguration);
+        $skinInformationArray = $xmlConfigurationObj->result["skinConfiguration"]["__CONTENT__"]["information"]["__CONTENT__"];
+
+        if ($workspace != "" && isset($skinInformationArray["workspace"]["__VALUE__"])) {
+            $workspace = (!empty($skinInformationArray["workspace"]["__VALUE__"]))? $skinInformationArray["workspace"]["__VALUE__"] . "|" . $workspace : $workspace;
+
+            $xmlConfiguration = preg_replace("/(<workspace>)(.*)(<\/workspace>)/i", "<workspace>" . $workspace . "</workspace><!-- $2 -->", $xmlConfiguration);
         } else {
-            $xmlConfiguration = preg_replace( "/(<name>)(.+?)(<\/name>)/i", "<name>".$skinName."</name><!-- $2 -->
-                <workspace>" . $workspace . "</workspace>", $xmlConfiguration );
+            $xmlConfiguration = preg_replace("/(<name>)(.*)(<\/name>)/i", "<name>" . $skinName . "</name><!-- $2 -->\n<workspace>" . $workspace . "</workspace>", $xmlConfiguration);
         }
 
         file_put_contents( $configFileFinal, $xmlConfiguration );
