@@ -529,8 +529,8 @@
     }
     
     var viewport = new Ext.Viewport({
-      layout: 'border',
-      autoScroll: true,
+      layout: 'fit',
+      autoScroll: false,
       items: [
         processesGrid
       ]
