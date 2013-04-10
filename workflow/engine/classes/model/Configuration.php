@@ -130,5 +130,26 @@ class Configuration extends BaseConfiguration
         $oRow = ConfigurationPeer::retrieveByPK( $CfgUid, $ObjUid, $ProUid, $UsrUid, $AppUid );
         return (( get_class ($oRow) == 'Configuration' )&&(!is_null($oRow)));
     }
+
+    public function getAll ()
+    {
+        $oCriteria = new Criteria( 'workflow' );
+
+        $oCriteria->addSelectColumn( ConfigurationPeer::CFG_UID );
+        $oCriteria->addSelectColumn( ConfigurationPeer::OBJ_UID );
+        $oCriteria->addSelectColumn( ConfigurationPeer::CFG_VALUE );
+        $oCriteria->addSelectColumn( ConfigurationPeer::PRO_UID );
+        $oCriteria->addSelectColumn( ConfigurationPeer::USR_UID );
+        $oCriteria->addSelectColumn( ConfigurationPeer::APP_UID );
+
+        //execute the query
+        $oDataset = ConfigurationPeer::doSelectRS( $oCriteria );
+        $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $aRows = array ();
+        while ($oDataset->next()) {
+            $aRows[] = $oDataset->getRow();
+        }
+        return $aRows;
+    }
 }
 
