@@ -21,7 +21,7 @@ var main = function(){
   
   Ext.state.Manager.setProvider(cookiep);
  
-  for(i=0; i<tabItems.length; i++){
+  for(i=0; i < tabItems.length; i++) {
     
     items[i] = new Ext.tree.TreePanel({
       title: tabItems[i].title,

@@ -55,7 +55,6 @@ class Roles extends BaseRoles {
     * Function load
     * access public
    */
-
     public function load($Uid) {
         try {
             $oRow = RolesPeer::retrieveByPK($Uid);
@@ -137,49 +136,49 @@ class Roles extends BaseRoles {
 
 		$oCriteria2->addSelectColumn('COUNT(*) AS CNT');
 		$oCriteria2->add(RolesPeer::ROL_UID, '', Criteria::NOT_EQUAL);
-    $oCriteria2->add(SystemsPeer::SYS_CODE, $systemCode);
-    $oCriteria2->add(RolesPeer::ROL_CREATE_DATE, '', Criteria::NOT_EQUAL);
-    $oCriteria2->add(RolesPeer::ROL_UPDATE_DATE, '', Criteria::NOT_EQUAL);
-    $oCriteria2->addJoin(RolesPeer::ROL_SYSTEM, SystemsPeer::SYS_UID);
-	  if ($filter != ''){
-      $oCriteria2->add(RolesPeer::ROL_CODE, '%'.$filter.'%', Criteria::LIKE);
-    }
-    $result['COUNTER'] = $oCriteria2;
-    $oCriteria = new Criteria('rbac');
-    $oCriteria->clear();
-    $oCriteria->addSelectColumn(RolesPeer::ROL_UID);
-    $oCriteria->addSelectColumn(RolesPeer::ROL_PARENT);
-    $oCriteria->addSelectColumn(RolesPeer::ROL_SYSTEM);
-    $oCriteria->addSelectColumn(SystemsPeer::SYS_CODE);
-    $oCriteria->addSelectColumn(RolesPeer::ROL_CODE);
-    $oCriteria->addSelectColumn(RolesPeer::ROL_CREATE_DATE);
-    $oCriteria->addSelectColumn(RolesPeer::ROL_UPDATE_DATE);
-    $oCriteria->addSelectColumn(RolesPeer::ROL_STATUS);
-    $oCriteria->add(RolesPeer::ROL_UID, '', Criteria::NOT_EQUAL);
-    $oCriteria->add(SystemsPeer::SYS_CODE, $systemCode);
-    $oCriteria->add(RolesPeer::ROL_CREATE_DATE, '', Criteria::NOT_EQUAL);
-    $oCriteria->add(RolesPeer::ROL_UPDATE_DATE, '', Criteria::NOT_EQUAL);
-    $oCriteria->addJoin(RolesPeer::ROL_SYSTEM, SystemsPeer::SYS_UID);
-
-    if ($filter != ''){
-      $oCriteria->add(RolesPeer::ROL_CODE, '%'.$filter.'%', Criteria::LIKE);
-    }
-
-    $oCriteria->setOffset($start);
-    $oCriteria->setLimit($limit);
-
-    $result['LIST'] = $oCriteria;
-
-    return $result;
+        $oCriteria2->add(SystemsPeer::SYS_CODE, $systemCode);
+        $oCriteria2->add(RolesPeer::ROL_CREATE_DATE, '', Criteria::NOT_EQUAL);
+        $oCriteria2->add(RolesPeer::ROL_UPDATE_DATE, '', Criteria::NOT_EQUAL);
+        $oCriteria2->addJoin(RolesPeer::ROL_SYSTEM, SystemsPeer::SYS_UID);
+    	if ($filter != '') {
+          $oCriteria2->add(RolesPeer::ROL_CODE, '%'.$filter.'%', Criteria::LIKE);
+        }
+        $result['COUNTER'] = $oCriteria2;
+        $oCriteria = new Criteria('rbac');
+        $oCriteria->clear();
+        $oCriteria->addSelectColumn(RolesPeer::ROL_UID);
+        $oCriteria->addSelectColumn(RolesPeer::ROL_PARENT);
+        $oCriteria->addSelectColumn(RolesPeer::ROL_SYSTEM);
+        $oCriteria->addSelectColumn(SystemsPeer::SYS_CODE);
+        $oCriteria->addSelectColumn(RolesPeer::ROL_CODE);
+        $oCriteria->addSelectColumn(RolesPeer::ROL_CREATE_DATE);
+        $oCriteria->addSelectColumn(RolesPeer::ROL_UPDATE_DATE);
+        $oCriteria->addSelectColumn(RolesPeer::ROL_STATUS);
+        $oCriteria->add(RolesPeer::ROL_UID, '', Criteria::NOT_EQUAL);
+        $oCriteria->add(SystemsPeer::SYS_CODE, $systemCode);
+        $oCriteria->add(RolesPeer::ROL_CREATE_DATE, '', Criteria::NOT_EQUAL);
+        $oCriteria->add(RolesPeer::ROL_UPDATE_DATE, '', Criteria::NOT_EQUAL);
+        $oCriteria->addJoin(RolesPeer::ROL_SYSTEM, SystemsPeer::SYS_UID);
+    
+        if ($filter != '') {
+          $oCriteria->add(RolesPeer::ROL_CODE, '%'.$filter.'%', Criteria::LIKE);
+        }
+    
+        $oCriteria->setOffset($start);
+        $oCriteria->setLimit($limit);
+    
+        $result['LIST'] = $oCriteria;
+    
+        return $result;
 	}
 
     function getAllRoles($systemCode = 'PROCESSMAKER') {
         $c = $this->listAllRoles($systemCode);
-		    $rs = RolesPeer::DoSelectRs($c);
+		$rs = RolesPeer::DoSelectRs($c);
         $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
         $aRows = Array();
-        while($rs->next()){
+        while($rs->next()) {
         	$row = $rs->getRow();
         	$o = new Roles();
         	$o->load($row['ROL_UID']);
@@ -548,6 +547,7 @@ class Roles extends BaseRoles {
 
             $oDataset = RolesPeer::doSelectRS($criteria);
             $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
             return $oDataset;
 
         } catch( exception $e ) {
@@ -607,6 +607,7 @@ class Roles extends BaseRoles {
         $o = new RolesPermissions();
         $o->setPerUid($sData['PER_UID']);
         $o->setRolUid($sData['ROL_UID']);
+        $o->setPermissionName($sData['PER_NAME']);
         $o->save();
     }
 

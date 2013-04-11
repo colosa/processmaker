@@ -41,8 +41,13 @@ if ($TYPE_DATA == 'show')
     $oDataset = $RBAC->getAllPermissions( $ROL_UID, $RBAC->sSystem, $filter, 1 );
 
 $rows = Array ();
+$per = new RolesPermissions();
 while ($oDataset->next()) {
-    $rows[] = $oDataset->getRow();
+    $row = $oDataset->getRow();
+    $per->setPerUid($row['PER_UID']);
+    $row['PER_NAME'] = $per->getPermissionName();
+    $rows[] = $row;
 }
+
 echo '{permissions: ' . G::json_encode( $rows ) . '}';
 

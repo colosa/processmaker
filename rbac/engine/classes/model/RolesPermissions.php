@@ -41,8 +41,21 @@ require_once 'classes/model/om/BaseRolesPermissions.php';
  *
  * @package  rbac-classes-model
  */
-class RolesPermissions extends BaseRolesPermissions {
-  function create($aData) {
+class RolesPermissions extends BaseRolesPermissions 
+{
+  /**
+   * The value for the permission_name field.
+   * @var        string
+   */
+  protected $permission_name = '';
+    
+  /**
+   * 
+   * @param array $aData
+   * @return boolean
+   */
+  function create($aData)
+  {
     try {
       $oCriteria = new Criteria('rbac');
       $oCriteria->add(RolesPermissionsPeer::ROL_UID, $aData['ROL_UID']);
@@ -51,8 +64,11 @@ class RolesPermissions extends BaseRolesPermissions {
       $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
       $oDataset->next();
       $aRow = $oDataset->getRow();
-      if (is_array($aRow)) return true;
-
+      if (is_array($aRow)) {
+          return true;
+      }
+      $this->permission_name = $aData['PER_NAME'];
+      
       $oRolesPermissions = new RolesPermissions();
       $oRolesPermissions->fromArray($aData, BasePeer::TYPE_FIELDNAME);
       $iResult = $oRolesPermissions->save();
@@ -61,5 +77,38 @@ class RolesPermissions extends BaseRolesPermissions {
     catch (Exception $oError) {
       throw($oError);
     }
+  }
+  
+  /**
+   * @return string
+   */
+  public function getPermissionName()
+  {
+      if ($this->getPerUid() == '') {
+          throw (new Exception("Error in getPerName, the PER_UID can't be blank"));
+      }
+      $lang = defined('SYS_LANG') ? SYS_LANG : 'en';
+      $this->permission_name = Content::load('PER_NAME', '', $this->getPerUid(), $lang);
+      return $this->permission_name;
+  }
+  
+  /**    
+   * 
+   * @param string $name
+   */
+  public function setPermissionName($name)
+  {
+      if ($this->getPerUid() == '') {
+          throw (new Exception("Error in setPerTitle, the PER_UID can't be blank"));
+      }
+      if ($name !== null && ! is_string($name)) {
+          $name = (string)$name;
+      }
+  
+      if ($this->permission_name !== $name || $name === '') {
+          $this->permission_name = $name;
+          $lang = defined('SYS_LANG') ? SYS_LANG : 'en';
+          $res = Content::addContent('PER_NAME', '', $this->getPerUid(), $lang, $this->permission_name);
+      }
   }
 } // RolesPermissions
