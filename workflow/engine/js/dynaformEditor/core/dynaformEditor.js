@@ -375,12 +375,8 @@ var dynaformEditor={
   saveHtmlCode:function()
   {
     //var htmlCode = getField("HTML");
-    var htmlField = document.getElementById("form[HTML]_ifr");
-    var htmlCode = htmlField.contentWindow.document.body.innerHTML;
+    var response = this.ajax.set_htmlcode(this.A, tinyMCE.activeEditor.getContent());
 
-    todoRefreshHtmlCode = htmlCode === null;
-    if (todoRefreshHtmlCode) return;
-    var response=this.ajax.set_htmlcode(this.A,htmlCode);
     if (response) {
         G.alert(response["*message"],"Error");
         this.responseAction = false;
@@ -454,7 +450,7 @@ var dynaformEditor={
         path: "js/",
         lineNumbers: true,
         continuousScanning: 500 });*/
-        
+
         xmlEditor = CodeMirror.fromTextArea(document.getElementById("form[XML]"), {
         mode: "application/xml",
         styleActiveLine: true,
@@ -519,7 +515,7 @@ var dynaformEditor={
       {
         clientWinSize = getClientWindowSize();
         startJSCodePress();
-        
+
         /*jsEditor = CodeMirror.fromTextArea('form[JS]', {
           height: (clientWinSize.height - 140) + "px",
           width: (_BROWSER.name == 'msie' ? '100%' : '98%'),
@@ -528,7 +524,7 @@ var dynaformEditor={
           path: "js/",
           lineNumbers: true,
           continuousScanning: 500 });*/
-          
+
           jsEditor = CodeMirror.fromTextArea(document.getElementById("form[JS]"), {
           mode: "javascript",
           lineNumbers: true,

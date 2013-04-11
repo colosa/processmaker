@@ -12,12 +12,12 @@
 	  <en/>
 	</fcontent>
 
-	<ACCEPT type="button" onclick="saveFile(@@pro_uid, @@filename);">
+	<ACCEPT type="button" onclick="getField('fcontent').value = tinyMCE.activeEditor.getContent(); saveFile(@@pro_uid, @@filename);">
 	  <en>Save</en>
 	</ACCEPT>
     <BTN_CANCEL type="button" onclick="cancel();">
       <en>Cancel</en>
-    </BTN_CANCEL>	
+    </BTN_CANCEL>
 
 
 <JS type="javascript" replacetags="1"><![CDATA[
@@ -28,5 +28,5 @@ function cancel() {
 }
 
 ]]></JS>
-    
-</dynaForm>  
+
+</dynaForm>
