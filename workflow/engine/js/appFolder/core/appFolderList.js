@@ -72,7 +72,7 @@ function getPMFolderSearchResult(searchKeyword,type){
 	}
 
 function getPMFolderTags(rootfolder){
-  document.getElementById('tags_cloud').innerHTML = "<img src='/images/classicloader_B.gif' >";//"Loading..";
+  document.getElementById('tags_cloud').innerHTML = "<img src='/images/classic/loader_B.gif' >";//"Loading..";
 	var oRPC = new leimnud.module.rpc.xmlhttp({
       url   : 'appFolderAjax',
       async : false,
