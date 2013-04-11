@@ -26,15 +26,15 @@
             outputdocsEditor.remove();
         }
     }
-    if (( _BROWSER.name == 'msie' ) && ( _BROWSER.version < '9' )) {
-        function outputdocsSave( form ) {
-            tinyMCE.execCommand('mceRemoveControl',false,'form[OUT_DOC_TEMPLATE]');
-            form.action = '../outputdocs/outputdocs_Save';
-            ajax_post( form.action, form, 'POST' );
-            window.close();
-        }
-    }
 
+if ( typeof outputdocsSave  == 'undefined'){
+    function outputdocsSave( form ) {
+        tinyMCE.execCommand('mceRemoveControl',false,'form[OUT_DOC_TEMPLATE]');
+        form.action = '../outputdocs/outputdocs_Save';
+        ajax_post( form.action, form, 'POST' );
+        window.close();
+    }
+}
 ]]></JS>
 
 </dynaForm>
