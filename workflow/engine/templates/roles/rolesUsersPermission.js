@@ -139,7 +139,7 @@ Ext.onReady(function(){
         },
         columns: [
             {id:'PER_UID', dataIndex: 'PER_UID', hidden:true, hideable:false},
-            {header: _('ID_PERMISSION_CODE'), dataIndex: 'PER_CODE', width: 60, align:'left'},
+            {header: _('ID_PERMISSION_CODE'), dataIndex: 'PER_CODE', width: 60, align:'left', hidden: !PARTNER_FLAG ? false : true},
             {header: _('ID_PERMISSION_NAME'), dataIndex: 'PER_NAME', width: 60, align:'left'}
         ]
     });

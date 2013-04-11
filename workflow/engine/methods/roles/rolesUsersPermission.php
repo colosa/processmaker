@@ -49,7 +49,7 @@ $G_ID_SUB_MENU_SELECTED = 'ROLES';
 $G_PUBLISH = new Publisher();
 
 $oHeadPublisher = & headPublisher::getSingleton();
-
+$oHeadPublisher->assign("PARTNER_FLAG", (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false);
 $oHeadPublisher->addExtJsScript( 'roles/rolesUsersPermission', false ); //adding a javascript file .js
 $oHeadPublisher->addContent( 'roles/rolesUsersPermission' ); //adding a html file  .html.
 

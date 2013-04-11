@@ -172,7 +172,7 @@ Ext.onReady(function(){
     frame: true,
     items:[
            {xtype: 'textfield', name: 'rol_uid', hidden: true },
-           {xtype: 'textfield', fieldLabel: _('ID_CODE'), name: 'code', width: 250, allowBlank: false, readOnly: true },
+           {xtype: 'textfield', fieldLabel: _('ID_CODE'), name: 'code', width: 250, allowBlank: false, readOnly: true, hidden: !PARTNER_FLAG ? false : true},
            {xtype: 'textfield', fieldLabel: _('ID_NAME'), name: 'name', width: 200, allowBlank: false},
            {
              xtype: 'combo', 
@@ -239,7 +239,7 @@ Ext.onReady(function(){
     },
     columns: [
               {id:'ROL_UID', dataIndex: 'ROL_UID', hidden:true, hideable:false},
-              {header: _('ID_CODE'), dataIndex: 'ROL_CODE', width: 220, align:'left'},
+              {header: _('ID_CODE'), dataIndex: 'ROL_CODE', width: 220, align:'left', hidden: !PARTNER_FLAG ? false : true},
               {header: _('ID_NAME'), dataIndex: 'ROL_NAME', width: 180, hidden:false, align:'left'},
               {header: _('ID_STATUS'), dataIndex: 'ROL_STATUS', width: 80, hidden: false, align: 'center', renderer: status_role},
               {header: _('ID_ACTIVE_USERS'), dataIndex: 'TOTAL_USERS', width: 80, hidden: false, align: 'center'},

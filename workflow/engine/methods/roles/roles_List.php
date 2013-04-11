@@ -56,6 +56,7 @@ $oHeadPublisher = & headPublisher::getSingleton();
 
 $oHeadPublisher->addExtJsScript( 'roles/rolesList', false ); //adding a javascript file .js
 $oHeadPublisher->addContent( 'roles/rolesList' ); //adding a html file  .html.
+$oHeadPublisher->assign( 'PARTNER_FLAG', (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false);
 $oHeadPublisher->assign( 'FORMATS', $c->getFormats() );
 $oHeadPublisher->assign( 'CONFIG', $Config );
 G::RenderPage( 'publish', 'extJs' );
