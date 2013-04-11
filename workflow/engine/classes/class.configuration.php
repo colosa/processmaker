@@ -326,7 +326,7 @@ class Configurations // extends Configuration
             if (isset($this->UserConfig['format'])) {
                 $name = explode(' ',$fullname);
                 $aux = '';
-                $aux = str_replace('@userName', $username, $this->UserConfig['format']);
+                $aux = str_replace('@userName', trim($username), $this->UserConfig['format']);
                 $aux = str_replace('@firstName', isset($name[0])?$name[0]:'', $aux);
                 $aux = str_replace('@lastName', isset($name[1])?$name[1]:'', $aux);
                 return $aux;
