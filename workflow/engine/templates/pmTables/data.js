@@ -19,16 +19,16 @@ var isReport;
 Ext.onReady(function(){
 
   pageSize = 20; //parseInt(CONFIG.pageSize);
-  
+
   isReport = tableDef.PRO_UID ? true : false;
-  
+
   newButton = new Ext.Action({
     text    : _('ID_ADD_ROW'),
     iconCls : 'button_menu_ext ss_sprite ss_add',
     handler : NewPMTableRow,
     disabled: (isReport ? true : false)
   });
-  
+
   editButton = new Ext.Action({
     text     : _('ID_EDIT'),
     iconCls  : 'button_menu_ext ss_sprite  ss_pencil',
@@ -64,34 +64,35 @@ Ext.onReady(function(){
     handler: genDataReport,
     disabled: false
   });
-  
+
   backButton = new Ext.Action({
     text    : _('ID_BACK'),
     icon    : '/images/back-icon.png',
     handler : BackPMList
   });
-  
+
   contextMenu = new Ext.menu.Menu({
       items : [ editButton, deleteButton ]
   });
-  
+
   //This loop loads columns and fields to store and column model
   _columns    = new Array();
   _fields     = new Array();
   _idProperty = '__index__';
 
- //default generated id
+  //default generated id
   _columns.push({
     id     : _idProperty,
-    hidden : true
+    hidden : true,
+    hideable: false
   });
 
   _fields.push({name: _idProperty});
-  
+
   for (i=0;i<tableDef.FIELDS.length; i++) {
     switch (tableDef.FIELDS[i].FLD_TYPE) {
       case 'DATE':
-        columnRenderer = function (value) { 
+        columnRenderer = function (value) {
           if (!value) return;
 
           if (!value.dateFormat)
@@ -99,12 +100,12 @@ Ext.onReady(function(){
           else
             return value.dateFormat('Y-m-d');
         }
-        columnAlign = 'left';  
+        columnAlign = 'left';
         columnEditor = {
           xtype      : 'datefield',
           format     : 'Y-m-d',
           allowBlank : true
-        }; 
+        };
         break;
 
       case 'INTEGER': case 'INT': case 'FLOAT': case 'DOUBLE' :
@@ -114,9 +115,9 @@ Ext.onReady(function(){
           xtype      : 'numberfield',
           decimalPrecision : 8,
           allowBlank : true
-        }; 
+        };
         break;
-      
+
       default:
         columnRenderer = {};
         columnAlign = 'left';
@@ -144,15 +145,14 @@ Ext.onReady(function(){
       }
     }
     _columns.push(column);
-    
+
     _fields.push({name: tableDef.FIELDS[i].FLD_NAME});
 
     if(_idProperty == '' && tableDef.FIELDS[i].FLD_KEY) {
       _idProperty = tableDef.FIELDS[i].FLD_NAME;
     }
   }
-  
-  
+
   smodel = new Ext.grid.CheckboxSelectionModel({
     listeners:{
       selectionchange : function(sm){
@@ -167,7 +167,6 @@ Ext.onReady(function(){
            case 1:
              editButton.enable();
              deleteButton.enable();
-             
              break;
            default:
              editButton.disable();
@@ -184,9 +183,9 @@ Ext.onReady(function(){
       saveText  : _("ID_UPDATE"),
       listeners : {
   	    afteredit : {
-  	      fn:function(rowEditor, obj, data, rowIndex ){            	  
+  	      fn:function(rowEditor, obj, data, rowIndex ){
     		    if (data.phantom === true) {
-    			  //store.reload(); // only if it is an insert 
+    			  //store.reload(); // only if it is an insert
     	    	}
   	      }
   	    }
@@ -200,19 +199,19 @@ Ext.onReady(function(){
 
   // all exception events
   Ext.data.DataProxy.addListener('exception', function(proxy, type, action, options, res) {
-    
+
     if (typeof res.responseText != 'undefined') {
       response = Ext.util.JSON.decode(res.responseText);
       msg = response.message;
     }
-    
+
     if (typeof res.raw != 'undefined') {
       msg = res.raw.msg;
     }
 
-    if(msg == '$$' || typeof msg == 'undefined') 
+    if(msg == '$$' || typeof msg == 'undefined')
       return false;
-    
+
 
     PMExt.error(_('ID_ERROR'), msg);
     infoGrid.store.reload();
@@ -242,7 +241,7 @@ Ext.onReady(function(){
     idProperty : _idProperty,
     totalProperty: 'count'
   })
-  
+
   store = new Ext.data.Store({
     proxy : proxy,
     reader : reader,
@@ -257,13 +256,13 @@ Ext.onReady(function(){
     },
     columns: _columns
   });
-  
+
   storePageSize = new Ext.data.SimpleStore({
     fields: ['size'],
      data: [['20'],['30'],['40'],['50'],['100']],
      autoLoad: true
   });
-    
+
   comboPageSize = new Ext.form.ComboBox({
     typeAhead     : false,
     mode          : 'local',
@@ -281,9 +280,9 @@ Ext.onReady(function(){
       }
     }
   });
-    
+
   comboPageSize.setValue(pageSize);
-  
+
   bbarpaging = new Ext.PagingToolbar({
     pageSize: pageSize,
     store: store,
@@ -292,9 +291,9 @@ Ext.onReady(function(){
     emptyMsg: _('ID_GRID_PAGE_NO_ROWS_MESSAGE'),
     items: ['-',_('ID_PAGE_SIZE')+':',comboPageSize]
   });
-  
+
   if (!isReport) {
-    tbar = [ 
+    tbar = [
       newButton,
       '-',
       editButton,
@@ -304,9 +303,8 @@ Ext.onReady(function(){
       exportButton
     ];
   }
-  else 
+  else
     tbar = [genDataReportButton];
-  
 
   infoGridConfig = {
     region: 'center',
@@ -331,23 +329,23 @@ Ext.onReady(function(){
     tbar: tbar,
     bbar: bbarpaging
   }
-  
+
   if (!isReport) {
     infoGridConfig.plugins = new Array();
     infoGridConfig.plugins.push(editor);
   }
-  
+
   infoGrid = new Ext.grid.GridPanel(infoGridConfig);
-  
+
   if (!isReport) {
-    infoGrid.on('rowcontextmenu', 
+    infoGrid.on('rowcontextmenu',
       function (grid, rowIndex, evt) {
           var sm = grid.getSelectionModel();
           sm.selectRow(rowIndex, sm.isSelected(rowIndex));
       },
       this
     );
-      
+
     infoGrid.on('contextmenu', function(evt){evt.preventDefault();}, this);
     infoGrid.addListener('rowcontextmenu',onMessageContextMenu, this);
   }
@@ -391,14 +389,14 @@ NewPMTableRow = function(){
   }
   var PMRow = infoGrid.getStore().recordType;
   //var meta = mapPMFieldType(records[i].data['FIELD_UID']);
-  
+
   for(i=0; i<_fields.length; i++) {
     props.prototype[_fields[i].name] = '';
   }
 
   var row = new PMRow(new props);
   len = infoGrid.getStore().data.length;
-  
+
   editor.stopEditing();
   store.insert(len, row);
   infoGrid.getView().refresh();
@@ -407,7 +405,7 @@ NewPMTableRow = function(){
 };
 
 //Load PM Table Edition Row Form
-EditPMTableRow = function(){ 
+EditPMTableRow = function(){
   var row = Ext.getCmp('infoGrid').getSelectionModel().getSelected();
   var selIndex = store.indexOfId(row.id);
   editor.stopEditing();
@@ -418,7 +416,7 @@ EditPMTableRow = function(){
 
 //Confirm PM Table Row Deletion Tasks
 DeletePMTableRow = function(){
-  
+
   PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_REMOVE_FIELD'), function(){
     var records = Ext.getCmp('infoGrid').getSelectionModel().getSelections();
     Ext.each(records, Ext.getCmp('infoGrid').store.remove, Ext.getCmp('infoGrid').store);
@@ -432,12 +430,12 @@ DeletePMTableRow = function(){
 //};
 
 ImportPMTableCSV = function(){
-      
+
   var comboDelimiter = new Ext.data.SimpleStore({
                           fields : ['id', 'value'],
                           data   : [[';', 'SemiColon (;)'],
                                     [',', 'Comma (,)']]
-                       });      
+                       });
   var w = new Ext.Window({
     title       : '',
     width       : 440,
@@ -484,7 +482,7 @@ ImportPMTableCSV = function(){
           triggerAction : 'all',
           emptyText     : _('ID_SELECT'),
           selectOnFocus : true
-          
+
         },{
           xtype : 'hidden',
           name  : 'form[ADD_TAB_UID]',
@@ -510,21 +508,21 @@ ImportPMTableCSV = function(){
                     },
                     failure: function(o, resp){
                       w.close();
-                      Ext.MessageBox.show({title: '', 
+                      Ext.MessageBox.show({title: '',
                                             msg     : resp.result.message,
-                                            buttons : Ext.MessageBox.OK, 
-                                            animEl  : 'mb9', 
-                                            fn      : function(){}, 
+                                            buttons : Ext.MessageBox.OK,
+                                            animEl  : 'mb9',
+                                            fn      : function(){},
                                             icon    : Ext.MessageBox.ERROR
                                           });
                     }
                   });
                 }
               } else {
-                Ext.MessageBox.show({ title   : '', 
+                Ext.MessageBox.show({ title   : '',
                                       msg     : _('ID_INVALID_EXTENSION') + ' ' + fileType,
                                       buttons : Ext.MessageBox.OK,
-                                      animEl  : 'mb9', 
+                                      animEl  : 'mb9',
                                       fn      : function(){},
                                       icon    : Ext.MessageBox.ERROR
                                     });
@@ -646,7 +644,7 @@ ExportPMTableCSV = function(){
         }]
       })
     ]
-    
+
   });
   w.show();
 }
