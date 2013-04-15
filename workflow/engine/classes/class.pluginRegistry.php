@@ -239,7 +239,6 @@ class PMPluginRegistry
                 $this->_aPlugins[$detail->sNamespace] = $oPlugin;
                 if (method_exists( $oPlugin, 'enable' )) {
                     $oPlugin->enable();
-                    $this->verifyTranslation($detail->sNamespace); 
                 }
                 return true;
             }
