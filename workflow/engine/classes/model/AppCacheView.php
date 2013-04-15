@@ -469,7 +469,7 @@ class AppCacheView extends BaseAppCacheView
         $oCriteria = new Criteria('workflow');
         $oCriteria->addSelectColumn(ProcessUserPeer::PRO_UID);
         $oCriteria->add(ProcessUserPeer::PU_TYPE, 'GROUP_SUPERVISOR');
-        $oCriteria->addJoin(ProcessUserPeer::USR_UID, GroupUserPeer::USR_UID, Criteria::LEFT_JOIN);
+        $oCriteria->addJoin(ProcessUserPeer::USR_UID, GroupUserPeer::GRP_UID, Criteria::LEFT_JOIN);
 
         if (!empty($userUid)) {
             $oCriteria->add(GroupUserPeer::USR_UID, $userUid);
