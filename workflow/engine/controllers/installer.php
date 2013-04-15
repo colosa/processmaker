@@ -256,7 +256,8 @@ class Installer extends Controller
             $info->success = false;
         }
 
-        $info->pathPublic = new stdclass();
+        $info->pathPublic = new stdclass();
+
         $info->pathShared = new stdclass();
         $info->pathPublic->message = G::LoadTranslation('ID_INDEX_NOT_WRITEABLE');
         $info->pathPublic->result = G::is_writable_r( $_REQUEST['pathPublic'], $noWritableFiles );
@@ -362,6 +363,9 @@ class Installer extends Controller
      */
     public function createWorkspace ()
     {
+        if (file_exists($this->path_shared . 'partner.info')) {
+            $_REQUEST['PARTNER_FLAG'] = true;
+        }
         $this->setResponseType( 'json' );
         if ($_REQUEST['db_engine'] == 'mysql') {
             $info = $this->createMySQLWorkspace();
@@ -718,6 +722,11 @@ class Installer extends Controller
             $this->mysqlQuery( $query );
             $this->mysqlFileQuery( PATH_HOME . 'engine/data/mysql/schema.sql' );
             $this->mysqlFileQuery( PATH_HOME . 'engine/data/mysql/insert.sql' );
+
+            if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
+                $this->setPartner();
+                $this->setConfiguration();
+            }
 
             // Create the triggers
             if (file_exists( PATH_HOME . 'engine/methods/setup/setupSchemas/triggerAppDelegationInsert.sql' ) && file_exists( PATH_HOME . 'engine/methods/setup/setupSchemas/triggerAppDelegationUpdate.sql' ) && file_exists( PATH_HOME . 'engine/methods/setup/setupSchemas/triggerApplicationUpdate.sql' ) && file_exists( PATH_HOME . 'engine/methods/setup/setupSchemas/triggerApplicationDelete.sql' ) && file_exists( PATH_HOME . 'engine/methods/setup/setupSchemas/triggerContentUpdate.sql' )) {
@@ -1204,6 +1213,106 @@ class Installer extends Controller
         $info->message .= G::LoadTranslation('ID_MSSQL_SUCCESS_CONNECT');
         $info->result = true;
         return $info;
+    }
+
+    public function setPartner()
+    {
+        if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
+            // Execute sql for partner
+            $pathMysqlPartner = PATH_CORE . 'data' . PATH_SEP . 'partner' . PATH_SEP . 'mysql' . PATH_SEP;
+            if (G::verifyPath($pathMysqlPartner)) {
+                $res = array();
+                $filesSlq = glob($pathMysqlPartner . '*.sql');
+                foreach ($filesSlq as $value) {
+                    $this->mysqlFileQuery($value);
+                }
+            }
+
+            // Execute to change of skin
+            $pathSkinPartner = PATH_CORE . 'data' . PATH_SEP . 'partner' . PATH_SEP . 'skin' . PATH_SEP;
+            if (G::verifyPath($pathSkinPartner)) {
+                $res = array();
+                $fileTar = glob($pathSkinPartner . '*.tar');
+                foreach ($fileTar as $value) {
+                    $dataFile = pathinfo($value);
+                    $nameSkinTmp = $dataFile['filename'];
+                    G::LoadThirdParty( 'pear/Archive', 'Tar' );
+                    $tar = new Archive_Tar( $value );
+
+                    $pathSkinTmp = $pathSkinPartner . 'tmp' . PATH_SEP;
+                    G::rm_dir($pathSkinTmp);
+                    G::verifyPath($pathSkinTmp, true);
+                    chmod( $pathSkinTmp, 0777);
+                    $tar->extract($pathSkinTmp);
+
+                    $pathSkinName = $pathSkinTmp . $nameSkinTmp . PATH_SEP;
+                    chmod( $pathSkinName, 0777);
+                    G::verifyPath(PATH_CORE . 'skinEngine' . PATH_SEP . 'tmp', true);
+                    $skinClassic = PATH_CORE . 'skinEngine' . PATH_SEP . 'tmp' . PATH_SEP;
+
+                    if (is_dir($pathSkinName)) {
+                        $this->copyFile($pathSkinName, $skinClassic);
+                    }
+
+                    G::rm_dir(PATH_CORE . 'skinEngine' . PATH_SEP . 'base');
+                    rename(PATH_CORE . 'skinEngine' . PATH_SEP . 'tmp', PATH_CORE . 'skinEngine' . PATH_SEP . 'base');
+                    G::rm_dir(PATH_CORE . 'skinEngine' . PATH_SEP . 'tmp');
+
+                    break;
+                }
+            }
+        }
+    }
+
+    function copyFile($fromDir, $toDir, $chmod=0777)
+    {
+        $errors = array();
+        $messages = array();
+
+        if (!is_writable($toDir))  {
+            $errors[]='target '.$toDir.' is not writable';
+        }
+        if (!is_dir($toDir)) {
+            $errors[]='target '.$toDir.' is not a directory';
+        }
+        if (!is_dir($fromDir)) {
+            $errors[]='source '.$fromDir.' is not a directory';
+        }
+        if (!empty($errors)) {
+            return false;
+        }
+
+        $exceptions = array ('.','..');
+        $handle = opendir($fromDir);
+        while (false !== ($item=readdir($handle))) {
+            if (!in_array($item,$exceptions)) {
+                $from = str_replace('//','/',$fromDir.'/'.$item);
+                $to = str_replace('//','/',$toDir.'/'.$item);
+                if (is_file($from)) {
+                    if (@copy($from,$to)) {
+                        chmod($to,$chmod);
+                        touch($to,filemtime($from));
+                    }
+                }
+
+                if (is_dir($from)) {
+                    if (@mkdir($to)) {
+                        chmod($to,$chmod);
+                    }
+                    $this->copyFile($from,$to,$chmod);
+                }
+            }
+        }
+
+        closedir($handle);
+    }
+
+    public function setConfiguration()
+    {
+        $query = 'INSERT INTO CONFIGURATION (CFG_UID, CFG_VALUE) VALUES';
+        $query .= "('ENVIRONMENT_SETTINGS', " 
+               . '\'"a:9:{s:6:"format";s:32:"@userName (@firstName @lastName)";s:10:"dateFormat";s:6:"D M, Y";s:23:"startCaseHideProcessInf";b:0;s:19:"casesListDateFormat";s:13:"F j, Y, g:i a";s:18:"casesListRowNumber";i:20;s:20:"casesListRefreshTime";i:120;s:26:"login_enableForgotPassword";b:0;s:27:"login_enableVirtualKeyboard";b:0;s:21:"login_defaultLanguage";s:5:"pt-BR";}\')';
+        $this->mysqlQuery($query);
     }
 }
 
