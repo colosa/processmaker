@@ -4897,6 +4897,49 @@ class G
             }
         }
     }
+
+    public static function browserCacheFilesSetUid()
+    {
+        $arrayData = array();
+        $arrayData["browser_cache_files_uid"] = G::generateUniqueID();
+
+        G::update_php_ini(PATH_CONFIG . "env.ini", $arrayData);
+    }
+
+    public static function browserCacheFilesGetUid()
+    {
+        $sysConf = System::getSystemConfiguration(PATH_CONFIG . "env.ini");
+
+        return (isset($sysConf["browser_cache_files_uid"]))? $sysConf["browser_cache_files_uid"] : null;
+    }
+
+    public static function browserCacheFilesSetUrl($url)
+    {
+        $browserCacheFilesUid = self::browserCacheFilesGetUid();
+
+        if ($browserCacheFilesUid != null) {
+            $arrayLibrary = array();
+
+            $library = json_decode(file_get_contents(PATH_HOME . "engine" . PATH_SEP . "bin" . PATH_SEP . "tasks" . PATH_SEP . "libraries.json"));
+
+            foreach ($library as $index => $value) {
+                $lib = $value;
+
+                if ($lib->build) {
+                    $arrayLibrary[] = $lib->name . ".js";
+                }
+            }
+
+            $arrayAux = explode("/", $url);
+            $n = count($arrayAux);
+
+            if ($n > 0 && !empty($arrayAux[$n - 1]) && array_search($arrayAux[$n - 1], $arrayLibrary) !== false) {
+                $url = $url . ((strpos($arrayAux[$n - 1], "?") !== false)? "&c=" : "?c=") . $browserCacheFilesUid;
+            }
+        }
+
+        return $url;
+    }
 }
 
 /**

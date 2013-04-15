@@ -29,6 +29,11 @@ $oTemplatePower->newBlock('users');
 $oTemplatePower->assign('USR_UID', $aUser['USR_UID']);
 $oTemplatePower->assign('USR_FULLNAME', $aData['USR_FIRSTNAME'] . ' ' . $aData['USR_LASTNAME'] . ' (' . $aData['USR_USERNAME'] . ')');
 */
+
+$browserCacheFilesUid = G::browserCacheFilesGetUid();
+
+$oTemplatePower->assign("BROWSER_CACHE_FILES_UID", ($browserCacheFilesUid != null)? "?c=" . $browserCacheFilesUid : null);
+
 $G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
 
 G::RenderPage( 'publish', 'raw' );

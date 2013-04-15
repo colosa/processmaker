@@ -138,16 +138,19 @@ try {
         $oStep = new Step();
         $sUidGrids = $oStep->lookingforUidGrids( $sPRO_UID, $sDYNAFORM );
 
-        $template->assign( 'siteUrl', $http . $_SERVER['HTTP_HOST'] );
-        $template->assign( 'sysSys', SYS_SYS );
-        $template->assign( 'sysLang', SYS_LANG );
-        $template->assign( 'sysSkin', SYS_SKIN );
-        $template->assign( 'processUid', $sPRO_UID );
-        $template->assign( 'dynaformUid', $sDYNAFORM );
-        $template->assign( 'taskUid', $sTASKS );
-        $template->assign( 'dynFileName', $sPRO_UID . '/' . $sDYNAFORM );
-        $template->assign( 'formId', $G_FORM->id );
-        $template->assign( 'scriptCode', $scriptCode );
+        $browserCacheFilesUid = G::browserCacheFilesGetUid();
+
+        $template->assign("BROWSER_CACHE_FILES_UID", ($browserCacheFilesUid != null)? "?c=" . $browserCacheFilesUid : null);
+        $template->assign("siteUrl", $http . $_SERVER["HTTP_HOST"]);
+        $template->assign("sysSys", SYS_SYS);
+        $template->assign("sysLang", SYS_LANG);
+        $template->assign("sysSkin", SYS_SKIN);
+        $template->assign("processUid", $sPRO_UID);
+        $template->assign("dynaformUid", $sDYNAFORM);
+        $template->assign("taskUid", $sTASKS);
+        $template->assign("dynFileName", $sPRO_UID . "/" . $sDYNAFORM);
+        $template->assign("formId", $G_FORM->id);
+        $template->assign("scriptCode", $scriptCode);
 
         if (sizeof( $sUidGrids ) > 0) {
             foreach ($sUidGrids as $k => $v) {
@@ -166,5 +169,4 @@ try {
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', $aMessage );
     G::RenderPage( 'publish', 'raw' );
 }
-
 

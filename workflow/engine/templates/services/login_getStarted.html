@@ -1,124 +1,125 @@
 <html>
 <head>
-<script type='text/javascript' src='/js/maborak/core/maborak.js'></script>
-<script type='text/javascript'>
-  var leimnud = new maborak();
-  leimnud.make({
-    zip:true,
-    inGulliver:true,
-    modules :"dom,abbr,rpc,drag,drop,app,panel,fx,grid,xmlform,validator,dashboard",
-    files :""
-  });
-  try{
-    leimnud.exec(leimnud.fix.memoryLeak);
-    if(leimnud.browser.isIphone){
-      leimnud.iphone.make();
+    <script type="text/javascript" src="/js/maborak/core/maborak.js{BROWSER_CACHE_FILES_UID}"></script>
+    <script type="text/javascript">
+    var leimnud = new maborak();
+
+    leimnud.make({
+        zip: true,
+        inGulliver: true,
+        modules: "dom,abbr,rpc,drag,drop,app,panel,fx,grid,xmlform,validator,dashboard",
+        files: ""
+    });
+
+    try {
+        leimnud.exec(leimnud.fix.memoryLeak);
+
+        if (leimnud.browser.isIphone) {
+            leimnud.iphone.make();
+        }
+    } catch (e) {
     }
-  }catch(e){}      
+    </script>
 
-</script>
+    <style type="text/css">
+    body, table {
+     font-family: tahoma,arial,verdana,sans-serif;
+    }
+    span.cMargLeft { padding-left: 20; }
 
-<style type="text/css">
-body, table {
-	font-family: tahoma,arial,verdana,sans-serif;
-}
-span.cMargLeft { padding-left: 20; }
+    .cell2 {
+      font-size: 13px;
+      background: #fff;
+      border-right: #fff  1px solid;
+      padding-right: 10px;
+      border-top: #fff 1px solid;
+      padding-top: 10px;
+      border-left: #fff 1px solid;
+      padding-left: 10px;
+      border-bottom: #fff 1px solid;
+      padding-bottom: 10px;
+    }
 
-.cell2 {
-  font-size: 13px;
-  background: #fff;
-  border-right: #fff  1px solid;  
-  padding-right: 10px;
-  border-top: #fff 1px solid;    
-  padding-top: 10px;
-  border-left: #fff 1px solid;   
-  padding-left: 10px;
-  border-bottom: #fff 1px solid; 
-  padding-bottom: 10px;
-}
+    span.cNeg {
+     color: #002c72;
+     font-weight: bold;
+    }
+    span.cLow {
+        color: #002c72;
+    }
 
-span.cNeg {
-	color: #002c72;
-	font-weight: bold;
-}
-span.cLow {
-    color: #002c72;
-}
+    </style>
+    <!--[if IE]>
+    <style type="text/css">
+    span.cMargLeft { padding-left: 9; }
 
-</style>
-<!--[if IE]>
-<style>
-  span.cMargLeft { padding-left: 9; }
-
-.cell2 {
-  font-size: 12px !important;
-  padding-top: 1px !important;
-  padding-bottom: 1px !important;
-}
-</style>
-<![endif]-->
+    .cell2 {
+      font-size: 12px !important;
+      padding-top: 1px !important;
+      padding-bottom: 1px !important;
+    }
+    </style>
+    <![endif]-->
 </head>
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-   <td> 
-    <a target="_blank" href="http://www.processmaker.com">
-      <img src="/images/get_started.png" border="0" width="163" height="438">
-    </a>
-  </td>
-  <td class="cell2" valign="top">
-	  <span class="cLow"><strong>Get Started</strong></span>
-	  <p><span class="cLow">Welcome to ProcessMaker!</span></p>
-	  <p><span class="cLow">To get started, log in using the following credentials.  You can change them later:</span></p>
-	 	<span class="cNeg">Username:</span><span class="cLow"> admin</span><br>
-	  <span class="cNeg">Password:</span><span class="cLow"> admin</span>
-   	<p><span class="cLow">We suggest you follow our 7 easy videos to automate your workflow.  You can see a demo of each step at&nbsp;<a target="_blank" href="http://www.processmaker.com/demos/">http://www.processmaker.com/demos/</a> </span></p>
-   	
-    <span class="cLow">Other Resources:</span><br/><br/>
-   	
-    <span class="cLow"><a target="_blank" href="http://library.processmaker.com">PM Library </a>- Import Templates</span><br/>
-   	
-    <span class="cLow"><a target="_blank" href="http://wiki.processmaker.com">PM Wiki </a>- Manuals</span><br/>
-	  
-    <span class="cLow"><a target="_blank" href="http://forum.processmaker.com">PM Forum </a>- Ask Questions</span><br/>
-	  
-    <p><span class="cLow">We hope you enjoy using ProcessMaker. For more information about our enterprise support and consulting services <a target="_blank" href="http://www.processmaker.com/contact-us">contact us.</a> 
-	  </span></p>
-    <p><span class="cLow">The ProcessMaker Team</span></p>
-    
- 
-      <input type="checkbox" name="getStarted" id="getStarted" onclick="saveConfig();"><span class="cLow">Don't show me again</span>
-   
-	</td>
-</tr>
-</table> 
-</body> 
+    <tr>
+        <td>
+            <a target="_blank" href="http://www.processmaker.com"><img src="/images/get_started.png" border="0" width="163" height="438"></a>
+        </td>
+        <td class="cell2" valign="top">
+            <span class="cLow"><strong>Get Started</strong></span>
+            <p><span class="cLow">Welcome to ProcessMaker!</span></p>
+            <p><span class="cLow">To get started, log in using the following credentials.  You can change them later:</span></p>
+            <span class="cNeg">Username:</span><span class="cLow"> admin</span><br>
+            <span class="cNeg">Password:</span><span class="cLow"> admin</span>
+             <p><span class="cLow">We suggest you follow our 7 easy videos to automate your workflow.  You can see a demo of each step at&nbsp;<a target="_blank" href="http://www.processmaker.com/demos/">http://www.processmaker.com/demos/</a> </span></p>
+
+             <span class="cLow">Other Resources:</span><br/><br/>
+
+             <span class="cLow"><a target="_blank" href="http://library.processmaker.com">PM Library </a>- Import Templates</span><br/>
+
+             <span class="cLow"><a target="_blank" href="http://wiki.processmaker.com">PM Wiki </a>- Manuals</span><br/>
+
+             <span class="cLow"><a target="_blank" href="http://forum.processmaker.com">PM Forum </a>- Ask Questions</span><br/>
+
+             <p><span class="cLow">We hope you enjoy using ProcessMaker. For more information about our enterprise support and consulting services <a target="_blank" href="http://www.processmaker.com/contact-us">contact us.</a>
+            </span></p>
+            <p><span class="cLow">The ProcessMaker Team</span></p>
+
+            <input type="checkbox" name="getStarted" id="getStarted" onclick="saveConfig();"><span class="cLow">Don't show me again</span>
+        </td>
+    </tr>
+</table>
+</body>
 </html>
 
+<script type="text/javascript">
+var saveConfig = function()
+{
+    if (document.getElementById("getStarted").checked == true) {
+        var oRPC = new leimnud.module.rpc.xmlhttp({
+            url   : "../login/login_Ajax",
+            async : false,
+            method: "POST",
+            args  : "function=getStarted_save"
+        });
 
-<script>
-var saveConfig = function() {
-  if(document.getElementById("getStarted").checked==true) {
-    var oRPC = new leimnud.module.rpc.xmlhttp({
-      url   : '../login/login_Ajax',
-      async : false,
-      method: 'POST',
-      args  : 'function=getStarted_save'
-    });
-    oRPC.make();
-  }
-  
-  if(panel) {
-  	if(panel.remove) {
-  		panel.remove();
-      return false;
+        oRPC.make();
     }
-  }
 
-  if(window.parent) {
-  	if (parent.Ext) {
-  		parent.Ext.getCmp('gettingStartedWindow').close();
-  	}
-  }
-}
+    if (panel) {
+        if (panel.remove) {
+            panel.remove();
+            return false;
+        }
+    }
+
+    if (window.parent) {
+        if (parent.Ext) {
+            parent.Ext.getCmp("gettingStartedWindow").close();
+        }
+    }
+};
 </script>
+

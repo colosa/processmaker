@@ -1,5 +1,4 @@
 <?php
-
 /**
  * class.headPublisher.php
  *
@@ -126,6 +125,8 @@ class headPublisher
      */
     public function addScriptFile($url, $LoadType = 1)
     {
+        $url = G::browserCacheFilesSetUrl($url);
+
         if ($LoadType == 1) {
             $this->scriptFiles[$url] = $url;
         }
@@ -213,21 +214,25 @@ class headPublisher
 
         $head = '';
         $head .= '<TITLE>' . $this->title . "</TITLE>\n";
+
         foreach ($this->scriptFiles as $file) {
             $head .= "<script type='text/javascript' src='" . $file . "'></script>\n";
         }
+
         if (!in_array($this->translationsFile, $this->scriptFiles)) {
             $head .= "<script type='text/javascript' src='" . $this->translationsFile . "'></script>\n";
         }
 
         $head .= "<script type='text/javascript'>\n";
         $head .= $this->leimnudInitString;
+
         foreach ($this->leimnudLoad as $file) {
             $head .= "  leimnud.Package.Load(false, {Type: 'file', Path: '" . $file . "', Absolute : true});\n";
         }
+
         $head .= $this->headerScript;
         $head .= "</script>\n";
-        $head .= "<script type='text/javascript' src='/js/maborak/core/maborak.loader.js'></script>\n";
+        $head .= "<script type=\"text/javascript\" src=\"" . G::browserCacheFilesSetUrl("/js/maborak/core/maborak.loader.js") . "\"></script>\n";
         return $head;
     }
 
@@ -689,4 +694,4 @@ class headPublisher
         $this->disableHeaderScripts = true;
     }
 }
- 
+

@@ -138,46 +138,6 @@ class PmBootstrap extends Bootstrap
         }
     }
 
-    public function loadLeimud()
-    {
-        $oHeadPublisher = headPublisher::getSingleton();
-
-        // Defining the maborak js file, this file is the concat of many js files and here we are including all of them.
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/maborak.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/common.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/effects.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/webResource.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'dveditor/core/dveditor.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'tinymce/jscripts/tiny_mce/tiny_mce.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/tree/tree.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'json/core/json.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'form/core/form.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'form/core/pagedTable.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'grid/core/grid.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.panel.js'    , true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.validator.js', true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.app.js'      , true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.rpc.js'      , true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.fx.js'       , true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.drag.js'     , true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.drop.js'     , true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.dom.js'      , true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.abbr.js'     , true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.dashboard.js', true );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/js-calendar/js-calendar.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/suggest/bsn.AutoSuggest_2.1.3.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/tooltip/pmtooltip.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'thirdparty/krumo/krumo.js' );
-        $oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/calendar/pmcalendar.js' , true );
-        $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'cases/core/cases.js' , true );
-        $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'cases/core/cases_Step.js', true );
-        $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'processmap/core/processmap.js', true );
-        $oHeadPublisher->addMaborakFile(PATH_CORE          . 'js' . PATH_SEP . 'appFolder/core/appFolderList.js', true );
-        $oHeadPublisher->addMaborakFile(PATH_THIRDPARTY    . 'htmlarea/editor.js', true );
-
-        //$oHeadPublisher->addMaborakFile(PATH_GULLIVER_HOME . 'js' . PATH_SEP . "widgets/jscalendar/lang/calendar-" . SYS_LANG . ".js");
-    }
-
     public function dispatchResource()
     {
         $realPath = $this->matchRoute['path'];
