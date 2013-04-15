@@ -295,6 +295,41 @@ try {
         die;
     }
 
+    ///// VERIFY PLUGIN ENTERPRISE IF IS ENABLED AND PARTNER FLAG EXIST
+    $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
+    if ($partnerFlag) {
+        $flagEnableEnterprise = true;
+        G::loadClass('PMPluginRegistry');
+        $sSerializedFile = PATH_DATA_SITE . 'plugin.singleton';
+        $oPluginRegistry = & PMPluginRegistry::getSingleton();
+        if (file_exists( $sSerializedFile )) {
+            $oPluginRegistry->unSerializeInstance( file_get_contents( $sSerializedFile ) );
+            $attributes = $oPluginRegistry->getAttributes();
+            if ( isset($attributes['_aPluginDetails']['enterprise']) &&
+                 $attributes['_aPluginDetails']['enterprise']->enabled == 1
+                ) {
+                $flagEnableEnterprise = false;
+            }
+        }
+
+        if ($flagEnableEnterprise) {
+            $pluginFile = 'enterprise.php';
+            require_once (PATH_PLUGINS . $pluginFile);
+            $details = $oPluginRegistry->getPluginDetails( $pluginFile );
+            @$oPluginRegistry->enablePlugin( $details->sNamespace );
+            @$oPluginRegistry->setupPlugins();
+
+            $language = new Language();
+            $pathPluginTranslations = PATH_PLUGINS . 'enterprise' . PATH_SEP . 'translations' . PATH_SEP;
+            if (file_exists($pathPluginTranslations . 'translations.php')) {
+                if (!file_exists($pathPluginTranslations . 'enterprise' . '.' . SYS_LANG . '.po')) {
+                    @$language->createLanguagePlugin('enterprise', SYS_LANG);
+                }
+                @$language->updateLanguagePlugin('enterprise', SYS_LANG);
+            }
+        }
+    }
+
     $oHeadPublisher = &headPublisher::getSingleton();
     $oHeadPublisher->extJsInit = true;
 
