@@ -435,9 +435,6 @@ class Main extends Controller
             if (strpos( $menu['target'], 'cases/main' ) !== false) {
                 $menus[$i]['target'] = str_replace( 'cases/main', 'cases/main_init', $menus[$i]['target'] );
             }
-            if (strpos( $menu['target'], 'bpmn/main' ) !== false) {
-                $menus[$i]['target'] = str_replace( 'bpmn/main', 'bpmn/mainInit', $menus[$i]['target'] );
-            }
             if (strpos( $menu['target'], 'processes/main' ) !== false) {
                 $menus[$i]['target'] = str_replace( 'processes/main', 'processes/mainInit', $menus[$i]['target'] );
             }

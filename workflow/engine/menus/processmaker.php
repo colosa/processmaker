@@ -38,7 +38,6 @@ if ($RBAC->userCanAccess('PM_CASES') == 1) {
 
 // DESIGNER MODULE
 if ($RBAC->userCanAccess('PM_FACTORY') == 1 ) {
-  //$G_TMP_MENU->AddIdRawOption('BPMN', 'bpmn/main', 'BPMN DESIGNER','', '', '', 'x-pm-bpmn');
   $G_TMP_MENU->AddIdRawOption('PROCESSES', 'processes/main', G::LoadTranslation('ID_DESIGNER'), '', '', '', 'x-pm-designer');
 }
 
