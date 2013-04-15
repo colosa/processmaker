@@ -130,7 +130,7 @@ switch ($_POST['action']) {
             if ($form['USR_UID'] == '') {
                 $criteria = new Criteria();
                 $criteria->addSelectColumn(UsersPeer::USR_USERNAME);
-                $criteria->add(UsersPeer::USR_USERNAME, $_POST['USR_USERNAME']);
+                $criteria->add(UsersPeer::USR_USERNAME, utf8_encode($_POST['USR_USERNAME']));
                 if (UsersPeer::doCount($criteria) > 0) {
                     throw new Exception(G::LoadTranslation('ID_USERNAME_ALREADY_EXISTS', array('USER_ID' => $_POST['USR_USERNAME'])));
                 }
@@ -584,7 +584,7 @@ switch ($_POST['action']) {
         $oCriteria = new Criteria();
         $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
 
-        $oCriteria->add(UsersPeer::USR_USERNAME, $_POST['NEW_USERNAME']);
+        $oCriteria->add(UsersPeer::USR_USERNAME, utf8_encode($_POST['NEW_USERNAME']));
         if ($USR_UID != '') {
             $oCriteria->add(UsersPeer::USR_UID, array($_POST['USR_UID']), Criteria::NOT_IN);
         }

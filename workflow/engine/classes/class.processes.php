@@ -2426,12 +2426,14 @@ class Processes
      */
     public function createTaskUserRows ($aTaskUser)
     {
-        foreach ($aTaskUser as $key => $row) {
-            $oTaskUser = new TaskUser();
-            if ($oTaskUser->TaskUserExists( $row['TAS_UID'], $row['USR_UID'], $row['TU_TYPE'], $row['TU_RELATION'] )) {
-                $oTaskUser->remove( $row['TAS_UID'], $row['USR_UID'], $row['TU_TYPE'], $row['TU_RELATION'] );
+        if (is_array($aTaskUser)) {
+            foreach ($aTaskUser as $key => $row) {
+                $oTaskUser = new TaskUser();
+                if ($oTaskUser->TaskUserExists( $row['TAS_UID'], $row['USR_UID'], $row['TU_TYPE'], $row['TU_RELATION'] )) {
+                    $oTaskUser->remove( $row['TAS_UID'], $row['USR_UID'], $row['TU_TYPE'], $row['TU_RELATION'] );
+                }
+                $res = $oTaskUser->create( $row );
             }
-            $res = $oTaskUser->create( $row );
         }
         return;
     }
