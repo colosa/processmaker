@@ -77,7 +77,7 @@ systemInfo.application = {
             width: 250,
             height: 300,
 
-            html: _("ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION")
+            html: _("ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION") + _("ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION2")
         });
 
         var frmfsCenter = new Ext.form.FieldSet({
@@ -89,7 +89,7 @@ systemInfo.application = {
             border: false,
             labelWidth: 200,
             width: 430,
-            height: 320,
+            height: 350,
             items: [
                 {
                     xtype: "displayfield",
