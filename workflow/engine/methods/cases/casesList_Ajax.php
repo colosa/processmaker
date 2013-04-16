@@ -213,7 +213,7 @@ if ($actionAjax == 'reassignCase') {
 
 if ($actionAjax == 'showHistoryMessage') {
     ?>
-    <link rel="stylesheet" type="text/css" href="/css/classic.css" />
+    <link rel="stylesheet" type="text/css" href="/css/tempus.css" />
     <style type="text/css">
     html {
 	    color: black !important;
@@ -272,7 +272,7 @@ if ($actionAjax == 'showDynaformListHistory') {
     $_POST["TAS_UID"] = $_REQUEST["TAS_UID"];
 
     ?>
-    <link rel="stylesheet" type="text/css" href="/css/classic.css" />
+    <link rel="stylesheet" type="text/css" href="/css/tempus.css" />
     <style type="text/css">
     html {
         color: black !important;
@@ -471,7 +471,7 @@ if ($actionAjax == 'showDynaformListHistory') {
 if ($actionAjax == 'dynaformChangeLogViewHistory') {
 
     ?>
-    <link rel="stylesheet" type="text/css" href="/css/classic.css" />
+    <link rel="stylesheet" type="text/css" href="/css/tempus.css" />
     <style type="text/css">
     html {
 	    color: black !important;
@@ -523,7 +523,7 @@ if ($actionAjax == 'dynaformChangeLogViewHistory') {
 }
 if ($actionAjax == 'historyDynaformGridPreview') {
     ?>
-    <link rel="stylesheet" type="text/css" href="/css/classic.css" />
+    <link rel="stylesheet" type="text/css" href="/css/tempus.css" />
     <style type="text/css">
     html {
 	    color: black !important;

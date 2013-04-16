@@ -12730,8 +12730,8 @@ msgstr "The language that is set by default applies directly when the domain is 
 # TRANSLATION
 # LABEL/ID_MESSAGE_SYSTEM2
 #: LABEL/ID_MESSAGE_SYSTEM2
-msgid "(eg.- http://127.0.0.1:8081/sys/en/classic/login/login), it should be emphasized that this configuration is for all environments."
-msgstr "(eg.- http://127.0.0.1:8081/sys/en/classic/login/login), it should be emphasized that this configuration is for all environments."
+msgid "(eg.- http://127.0.0.1:8081/sys/en/tempus/login/login), it should be emphasized that this configuration is for all environments."
+msgstr "(eg.- http://127.0.0.1:8081/sys/en/tempus/login/login), it should be emphasized that this configuration is for all environments."
 
 # TRANSLATION
 # LABEL/ID_PROCESSMAP_SEQUENTIAL

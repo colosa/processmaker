@@ -13,6 +13,8 @@
   </iframe>
   </body>
   <script>
+    var content = document.getElementById('logo');
+    content = (content != null) ? 60 : 90;
     if ( document.getElementById('pm_submenu') )
       document.getElementById('pm_submenu').style.display = 'none';
       document.documentElement.style.overflowY = 'hidden';
@@ -23,7 +25,7 @@
     
     function autoResizeScreen() {
       oCasesFrame    = document.getElementById('casesFrame');
-      height = getClientWindowSize().height-90;
+      height = getClientWindowSize().height-content;//90
       oCasesFrame.style.height = height;
       oCasesSubFrame = oCasesFrame.contentWindow.document.getElementById('casesSubFrame');
         if(oCasesSubFrame){

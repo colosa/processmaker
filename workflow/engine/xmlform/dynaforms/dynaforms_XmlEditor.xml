@@ -3,7 +3,7 @@
 
 
 <URL type="phpvariable"/>
-<XML withoutLabel="1" type="textarea" rows="30" cols="60" defaultvalue="" group="0" enablehtml="0" style="width:100%;font-family:">
+<XML withoutLabel="1" type="textarea" rows="60" cols="60" defaultvalue="" group="0" enablehtml="0" style="width:100%;font-family:">
 <en>XML</en>
 </XML>
 <PME_RESIZE_JS type="javascript"><![CDATA[

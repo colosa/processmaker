@@ -1,0 +1,153 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {php} if ((int)$_SESSION['USER_LOGGED'] == 0) {{/php}
+    <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+    <!--Message: To upgrade Internet Explorer Document Mode-->
+    <script type="text/javascript" src="/skins/tempus/js/placeHolder.js"></script>
+    {php}}else{{/php}
+    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
+    {php}}{/php}
+    {$header}
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For Opera -->
+    <link rel="icon" type="image/png" href="/skins/tempus/images/favicon195.png">
+
+    <!-- For all Navigators -->
+    <link rel="shortcut icon" href="/skins/tempus/images/favicon48.ico" type="image/x-icon"/>
+
+    <!-- For iPhone 4 Retina display: -->
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/skins/tempus/images/favicon114.png">
+    <!-- For iPad: -->
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/skins/tempus/images/favicon72.png">
+</head>
+<body>
+
+{php}if ((int)$_SESSION['USER_LOGGED'] != 0) { {/php}
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" id="pm_main_table">
+    <tr>
+        <td valign="top">
+            <table id="headerLayout" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td width="219px"  valign="top"><img id="logo" src="{$logo_company}"><!--<div id="logo" class="logoLogin"></div>--></td>
+                <td align="left" valign="bottom">
+                    <div class="headerInfo"> <a href="../users/myInfo">{$userfullname} </a> |  {$udate}.
+                        {if $switch_interface}
+                        | <a href="../../uxs/home">{$switch_interface_label}</a> | 
+                        {/if}
+                        <a><span class="msgskin">{$msgVer}<!--<span class="msgNumber">10</span>--></span></a>
+                        <a class="logoutLink" href="{$linklogout}" name="Logout System"></a>
+                    </div>
+                    <div id="mainMenuDrop">
+                        <ul id="pm_menu">
+                            {foreach from=$menus item=field key=name}
+                            {if $field.icon neq ""}
+                            <li  id="{$field.idName}" class="{if $field.classname eq 'SelectedMenu'}SelectedMenu{/if} nivel1">
+                                <a  href="{$field.target}" name="{$field.label}">
+                                    <img src="{$field.icon}" border="0" alt="{$field.label}"/>
+                                    {$field.label}
+                                </a>
+                                {if $field.subMenu neq 0}
+                                <ul id="pm_submenu_{$field.idName}">
+                                {foreach from=$field.subMenu item=fields key=names}
+                                    {if $fields.icon neq ""}
+                                    <li  id="{$fields.idName}" class="{if $fields.classname eq 'SelectedMenu'}SelectedMenu{/if} nivel1">
+                                        <a href="{$fields.target}" {$fields.onclick} {$fields.elementclass}>
+                                            <img src="{$field.icon}" border="0" alt="{$fields.label}"/>
+                                            {$fields.label}
+                                        </a>
+                                    </li>
+                                    {else}
+                                    <li  id="{$fields.idName}"
+                                          class="{$fields.sclassname}">
+                                        <a href="{$fields.target}" {$fields.onclick} {$fields.elementclass}>
+                                            {$fields.label}
+                                        </a>
+                                    </li>
+                                    {/if}
+                                {/foreach}
+                                </ul>
+                                {/if}
+                            </li>
+                            {else}
+                            <li  id="{$field.idName}" class="{if $field.classname eq 'SelectedMenu'}SelectedMenu{/if} nivel1">
+                                <a href="{$field.target}" name="{$field.label}">
+                                    {$field.label}
+                                </a>
+                                {if $field.subMenu neq 0}
+                                <ul id="pm_submenu_{$field.idName}">
+                                {foreach from=$field.subMenu item=fields key=names}
+                                    {if $fields.icon neq ""}
+                                    <li  id="{$fields.idName}" class="{if $fields.classname eq 'SelectedMenu'}SelectedMenu{/if} nivel1">
+                                        <a href="{$fields.target}" {$fields.onclick} {$fields.elementclass}>
+                                            <img src="{$fields.icon}" border="0" alt="{$fields.label}"/>
+                                            {$fields.label}
+                                        </a>
+                                    </li>
+                                    {else}
+                                    <li  id="{$fields.idName}"
+                                          class="{$fields.sclassname}">
+                                        <a href="{$fields.target}" {$fields.onclick} {$fields.elementclass}>
+                                            {$fields.label}
+                                        </a>
+                                    </li>
+                                    {/if}
+                                {/foreach}
+                                </ul>
+                                {/if}
+                            </li>
+                            {/if}
+                            {/foreach}
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" align="center" style="border: 3px solid #666667;">
+            {php}
+            global $G_TEMPLATE;
+            if ($G_TEMPLATE != '') G::LoadTemplate($G_TEMPLATE);
+            {/php}
+        </td>
+    </tr>
+    </table>
+{php}}{/php}
+
+{php} if ((int)$_SESSION['USER_LOGGED'] == 0) { {/php}
+    <div class="mainPageLogin">
+        <div class="loginContainer">
+            <div class="boxTop"><div class="a">&nbsp;</div><div class="b">&nbsp;</div><div class="c">&nbsp;</div></div>
+            <div id="contentLogo" class="content">
+                <div id='logo' class="logoLogin"></div>
+                {php}
+                    global $G_TEMPLATE;
+                    if ($G_TEMPLATE != '') G::LoadTemplate($G_TEMPLATE);
+                {/php}
+            </div>
+            <div class="boxBottom"><div class="a">&nbsp;</div><div class="b">&nbsp;</div><div class="c">&nbsp;</div></div>
+        </div>
+    </div>
+
+    <!--Footer-->
+    <div class="Footer">
+        <div class="contentFoot">
+            <div class="legalFoot">&nbsp;&nbsp;&nbsp;All rights reserved.<br>
+            &nbsp;&nbsp;&nbsp;Supplied free of charge with no support, certification, warranty,<br>
+            &nbsp;&nbsp;&nbsp;maintenance nor indemnity by Colosa and its Certified Partners. </div>
+            <div class="linksFoot">| <a href="http://www.colosa.com">Colosa</a> | <a href="http://bugs.processmaker.com">BugTracker</a> |</div>
+            <div class="poweredFoot">
+                <div class="socialFoot">
+                    <a class="faceFoot linkFoot" href="https://www.facebook.com/processmaker"></a>
+                    <a class="tweetFoot linkFoot" href="http://twitter.com/processmaker"></a>
+                    <a class="youFoot linkFoot" href="http://www.youtube.com/processmaker#play/uploads"></a>
+                    <a class="rssFoot linkFoot" href="http://feeds.feedburner.com/processmaker"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+{php}}{/php}
+</body>
+</html>

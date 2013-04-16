@@ -4,7 +4,7 @@ $content = file_get_contents( $filewsdl );
 $lang = defined( 'SYS_LANG' ) ? SYS_LANG : 'en';
 
 $http = (isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
-$endpoint = $http . '://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . '/sys' . SYS_SYS . '/' . $lang . '/classic/services/soap2';
+$endpoint = $http . '://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . '/sys' . SYS_SYS . '/' . $lang . '/tempus/services/soap2';
 
 $content = str_replace( "___SOAP_ADDRESS___", $endpoint, $content );
 

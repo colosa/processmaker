@@ -611,7 +611,7 @@ class Ajax
             $G_PUBLISH = new Publisher();
             $G_PUBLISH->AddContent('view', 'cases/cases_DynaformHistory');
             ?>
-            <link rel="stylesheet" type="text/css" href="/css/classic.css" />
+            <link rel="stylesheet" type="text/css" href="/css/tempus.css" />
             <style type="text/css">
                 html {
                     color: black !important;
@@ -746,7 +746,7 @@ class Ajax
     public function dynaformViewFromHistory()
     {
         ?>
-        <link rel="stylesheet" type="text/css" href="/css/classic.css" />
+        <link rel="stylesheet" type="text/css" href="/css/tempus.css" />
 
         <script type="text/javascript">
             //!Code that simulated reload library javascript maborak

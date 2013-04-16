@@ -70,9 +70,9 @@ function skinList ()
     echo G::json_encode( $skinListArray );
 }
 
-function newSkin ($baseSkin = 'classic')
+function newSkin ($baseSkin = 'tempus')
 {
-    $skinBase = $baseSkin != "" ? strtolower( $baseSkin ) : 'classic';
+    $skinBase = $baseSkin != "" ? strtolower( $baseSkin ) : 'tempus';
     if ((isset( $_REQUEST['skinBase'] )) && ($_REQUEST['skinBase'] != "")) {
         $skinBase = strtolower( $_REQUEST['skinBase'] );
     }
@@ -96,7 +96,7 @@ function newSkin ($baseSkin = 'classic')
         if (is_dir( PATH_CUSTOM_SKINS . $skinFolder )) {
             throw (new Exception( G::LoadTranslation( 'ID_SKIN_ALREADY_EXISTS' ) ));
         }
-        if (strtolower( $skinFolder ) == 'classic') {
+        if (strtolower( $skinFolder ) == 'classic' || strtolower( $skinFolder ) == 'tempus' ) {
             throw (new Exception( G::LoadTranslation( 'ID_SKIN_ALREADY_EXISTS' ) ));
         }
 
@@ -113,6 +113,12 @@ function newSkin ($baseSkin = 'classic')
                 copy_skin_folder( G::ExpandPath( "skinEngine" ) . 'base' . PATH_SEP, PATH_CUSTOM_SKINS . $skinFolder, array ("config.xml","baseCss"
                 ) );
                 $pathBase = G::ExpandPath( "skinEngine" ) . 'base' . PATH_SEP;
+                break;
+            case 'tempus':
+                //Special Copy of this dir + xmlreplace
+                copy_skin_folder( G::ExpandPath( "skinEngine" ) . 'tempus' . PATH_SEP, PATH_CUSTOM_SKINS . $skinFolder, array ("config.xml"
+                ) );
+                $pathBase = G::ExpandPath( "skinEngine" ) . 'tempus' . PATH_SEP;
                 break;
             default:
                 //Commmon copy/paste of a folder + xmlrepalce
@@ -326,7 +332,7 @@ function deleteSkin ()
         if (! (isset( $_REQUEST['SKIN_FOLDER_ID'] ))) {
             throw (new Exception( G::LoadTranslation( 'ID_SKIN_FOLDER_REQUIRED' ) ));
         }
-        if (($_REQUEST['SKIN_FOLDER_ID']) == "classic") {
+        if (($_REQUEST['SKIN_FOLDER_ID']) == "classic" || ($_REQUEST['SKIN_FOLDER_ID']) == "tempus" ) {
             throw (new Exception( G::LoadTranslation( 'ID_SKIN_FOLDER_NOT_DELETEABLE' ) ));
         }
         $folderId = $_REQUEST['SKIN_FOLDER_ID'];

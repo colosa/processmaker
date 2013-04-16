@@ -189,7 +189,7 @@ class PmBootstrap extends Bootstrap
                 break;
 
             case 'sysNamed' :
-                header('location : ' . $_SERVER['REQUEST_URI'] . '/' .SYS_LANG. '/classic/login/login' );
+                header('location : ' . $_SERVER['REQUEST_URI'] . '/' .SYS_LANG. '/tempus/login/login' );
                 die;
                 break;
 
@@ -380,7 +380,7 @@ class PmBootstrap extends Bootstrap
             } else if (strpos($_SERVER['REQUEST_URI'], '/home') !== false){ //verify is it is using the uxs skin for simplified interface
                 $loginUrl = 'home/login';
             } else {
-                $loginUrl = 'login/login'; // just set up the classic login
+                $loginUrl = 'login/login'; // just set up the tempus login
             }
 
             if (empty($_POST)) {

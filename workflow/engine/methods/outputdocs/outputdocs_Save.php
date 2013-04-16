@@ -71,7 +71,7 @@ try {
             $outDocUid = $oOutputDocument->create( $aData );
             G::LoadClass( 'javaBridgePM' );
             $jbpm = new JavaBridgePM();
-            print $jbpm->generateJrxmlFromDynaform( $outDocUid, $dynaformUid, 'classic' );
+            print $jbpm->generateJrxmlFromDynaform( $outDocUid, $dynaformUid, 'tempus' );
         } else {
             $outDocUid = $oOutputDocument->create( $aData );
         }

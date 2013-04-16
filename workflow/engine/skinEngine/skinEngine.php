@@ -231,7 +231,7 @@ class SkinEngine
       $body   = $oHeadPublisher->getExtJsScripts();
 
       //default
-      $templateFile = G::ExpandPath( "skinEngine" ).'base'.PATH_SEP .'extJsInitLoad.html';
+      $templateFile = G::ExpandPath( "skinEngine" ) . (($this->mainSkin == 'tempus') ? 'tempus' : 'base') .PATH_SEP .'extJsInitLoad.html';
       //Custom skins
       if (defined('PATH_CUSTOM_SKINS') && is_dir(PATH_CUSTOM_SKINS . $this->mainSkin)) {
         $templateFile = PATH_CUSTOM_SKINS . $this->mainSkin . PATH_SEP .'extJsInitLoad.html';
@@ -644,10 +644,65 @@ class SkinEngine
       }
 
       $oMenu = new Menu();
+      $oSubMenu = new Menu();
       $menus = $oMenu->generateArrayForTemplate($G_MAIN_MENU, 'SelectedMenu', 'mainMenu', $G_MENU_SELECTED, $G_ID_MENU_SELECTED);
+      //Add of submenu
+      foreach($menus as $key => $value) {
+          $menus[$key]['label'] = ucfirst (strtolower($value['label'])); 
+          $target = explode('/', $value['target']);
+          $amount = count ($target);
+          $file = PATH_CORE . $target[$amount -2] . PATH_SEP . $target[$amount-1].".php";
+          if (!file_exists($file)) {
+              $file = PATH_PLUGINS . $target[$amount -2] . PATH_SEP . $target[$amount-1].".php";
+          }
+          if (file_exists($file)) {
+              $ar=fopen($file,"r");
+              $countGlobal = 0;
+              $delete = array('"', "'");
+              $gSubMenu ='';
+              $gIdMenuSelected ='';
+              $gIdSubMenuSelected ='';
+              while (!feof($ar))
+              {
+                  $line=fgets($ar);
+                  $lineJump=nl2br($line);
+
+                  $result = strpos($lineJump, '$G_SUB_MENU');
+                  if($result !== FALSE){
+                      $cad = explode('=', $lineJump);
+                      $gSubMenu = explode(';', $cad[1]);
+                      $gSubMenu = trim(str_replace($delete, "", $gSubMenu[0]));
+                      $countGlobal++;
+                  }
+                  $result = strpos($lineJump, '$G_ID_MENU_SELECTED');
+                  if($result !== FALSE){
+                      $cad = explode('=', $lineJump);
+                      $gIdMenuSelected = explode(';', $cad[1]);
+                      $gIdMenuSelected = trim(str_replace($delete, "", $gIdMenuSelected[0]));
+                      $countGlobal++;
+                  }
+                  $result = strpos($lineJump, '$G_ID_SUB_MENU_SELECTED');
+                  if($result !== FALSE){
+                      $cad = explode('=', $lineJump);
+                      $gIdSubMenuSelected = explode(';', $cad[1]);
+                      $gIdSubMenuSelected = trim(str_replace($delete, "", $gIdSubMenuSelected[0]));
+                      $countGlobal++;
+                  }
+                  if ($countGlobal == 3) {
+                      break;
+                  }
+              }
+              fclose($ar);
+              $subMenus = '';
+              if ($gSubMenu != '' && $gIdMenuSelected != '' && $gIdSubMenuSelected != '') {
+                  $subMenus = $oSubMenu->generateArrayForTemplate($gSubMenu, '', 'subMenu', $gIdMenuSelected, $gIdSubMenuSelected);
+              }
+              $menus[$key]['subMenu'] = $subMenus;
+          }
+      }
       $smarty->assign('menus', $menus);
 
-      $oSubMenu = new Menu();
+      
       $subMenus = $oSubMenu->generateArrayForTemplate($G_SUB_MENU, 'selectedSubMenu', 'subMenu', $G_SUB_MENU_SELECTED, $G_ID_SUB_MENU_SELECTED);
       $smarty->assign('subMenus', $subMenus);
 
@@ -657,6 +712,7 @@ class SkinEngine
       if (NO_DISPLAY_USERNAME == 0) {
         $switch_interface = isset($_SESSION['user_experience']) && $_SESSION['user_experience'] == 'SWITCHABLE';
 
+        $smarty->assign('userfullname', isset($_SESSION['USR_FULLNAME']) ? htmlentities($_SESSION['USR_FULLNAME'] , ENT_QUOTES, 'UTF-8'): '');
         $smarty->assign('user_logged', (isset($_SESSION['USER_LOGGED'])? $_SESSION['USER_LOGGED'] : ''));
         $smarty->assign('switch_interface', $switch_interface);
         $smarty->assign('switch_interface_label', G::LoadTranslation('ID_SWITCH_INTERFACE'));
@@ -718,11 +774,11 @@ class SkinEngine
           $sCompanyLogo = "/sys".SYS_SYS."/".SYS_LANG."/".SYS_SKIN."/setup/showLogoFile.php?id=".base64_encode($sCompanyLogo);
         }
         else {
-          $sCompanyLogo = $oPluginRegistry->getCompanyLogo('/images/processmaker.logo.jpg');
+          $sCompanyLogo = $oPluginRegistry->getCompanyLogo('/images/processmaker.logo.png');
         }
       }
       else {
-        $sCompanyLogo = '/images/processmaker.logo.jpg';
+        $sCompanyLogo = '/images/processmaker.logo.png';
       }
 
       $smarty->assign('logo_company', $sCompanyLogo);
