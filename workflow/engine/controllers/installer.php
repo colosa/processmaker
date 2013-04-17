@@ -363,8 +363,9 @@ class Installer extends Controller
      */
     public function createWorkspace ()
     {
-        if (file_exists($this->path_shared . 'partner.info')) {
-            $_REQUEST['PARTNER_FLAG'] = true;
+        $pathSharedPartner = trim( $_REQUEST['pathShared'] );
+        if (file_exists($pathSharedPartner.'partner.info')) {
+            $_REQUEST['PARTNER_FLAG'] = true;    
         }
         $this->setResponseType( 'json' );
         if ($_REQUEST['db_engine'] == 'mysql') {
@@ -839,7 +840,7 @@ class Installer extends Controller
             $sysConf = System::getSystemConfiguration( $envFile );
 
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
-                $this->buildParternExtras($db_username, $db_password, $_REQUEST['workspace'], SYS_LANG);
+                $this->buildParternExtras($adminUsername, $adminPassword, $_REQUEST['workspace'], SYS_LANG);
             } else {
                 try {
                     // update the main index file
@@ -1336,9 +1337,9 @@ class Installer extends Controller
         $user = urlencode($username);
         $pass = urlencode($password);
         $lang = urlencode($lang);
-         
+
         $ch = curl_init();
-         
+
         // set URL and other appropriate options
         curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/login/authentication");
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -1349,7 +1350,7 @@ class Installer extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, "form[USR_USERNAME]=$user&form[USR_PASSWORD]=$pass&form[USER_LANG]=$lang");
         curl_setopt($ch, CURLOPT_TIMEOUT, 90);
-         
+
         $output = curl_exec($ch);
         curl_close($ch);
 
@@ -1358,10 +1359,11 @@ class Installer extends Controller
          */
 
         $ch = curl_init();
+        $postData = array();
 
         // File to upload/post
         $postData['form[LANGUAGE_FILENAME]'] = "@".PATH_CORE."content/translations/processmaker.$lang.po";
-        
+
         curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/languages_Import");
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_VERBOSE, 0);
@@ -1372,26 +1374,29 @@ class Installer extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_setopt($ch, CURLOPT_TIMEOUT, 90);
-        
-         
+
         $output = curl_exec($ch);
         curl_close($ch);
 
         /** 
-         * Upload plugin file
+         * Upload skin file
          */
 
         $ch = curl_init();
+        $postData = array();
 
-        // resolv the plugin name
-        $plugins = glob(PATH_CORE."plugins/*.tar");
-        if (count($plugins) > 0) {
-            $pluginName = $plugins[0];
-            
+        $skins = glob(PATH_CORE."data/partner/*.tar");
+        if (count($skins) > 0) {
+            $skin = $skins[0];
+
+            $postData['overwrite_files'] = "on";
+            $postData['workspace'] = "global";
+            $postData['option'] = "standardupload";
+            $postData['action'] = "importSkin";
             // File to upload/post
-            $postData['form[PLUGIN_FILENAME]'] = "@{$pluginName}";
-            //http://pmos/sysworkflow/en/classic/setup/skin_Ajax
-            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/pluginsImportFile");
+            $postData['uploadedFile'] = "@".$skin;
+
+            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/skin_Ajax");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
@@ -1404,22 +1409,22 @@ class Installer extends Controller
 
             $output = curl_exec($ch);
             curl_close($ch);
-        } 
+        }
+
+        /**
+         * Upload plugin file
+         */
 
         $ch = curl_init();
+        $postData = array();
+        // resolv the plugin name
+        $plugins = glob(PATH_CORE."plugins/*.tar");
+        if (count($plugins) > 0) {
+            $pluginName = $plugins[0];
 
-        $skins = glob(PATH_CORE."data/partner/*.tar");
-        if (count($skins) > 0) {
-            $skin = $skins[0];
-
-            $postData['overwrite_files'] = "on";
-            $postData['workspace'] = "global";
-            $postData['option'] = "standardupload";
-            $postData['action'] = "importSkin";
             // File to upload/post
-            $postData['uploadedFile'] = "@".$skin;
-            
-            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/skin_Ajax");
+            $postData['form[PLUGIN_FILENAME]'] = "@{$pluginName}";
+            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/pluginsImportFile");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
@@ -1428,13 +1433,13 @@ class Installer extends Controller
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 90);        
-            
-            echo $output = curl_exec($ch);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 90);
+
+
+            $output = curl_exec($ch);
             curl_close($ch);
         }
 
     }
 }
-
 
