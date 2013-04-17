@@ -28,7 +28,9 @@
 
 /**
  *
- * @method Executes a Talend Web Service..
+ * @method
+ *
+ * Executes a Talend Web Service..
  *
  * @name executeTalendWebservice
  * @label Executes a Talend Web Service.
