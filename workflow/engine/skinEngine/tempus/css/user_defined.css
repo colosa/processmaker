@@ -1,0 +1,195 @@
+/*
+* aqua is the new Green
+*/
+body
+{
+	margin		:0px;
+	/*background-color:#ddd;*/
+	color		:#808080;
+	font		:normal 8pt sans-serif,Tahoma,MiscFixed;
+
+}
+
+
+/*form.formDefault .FormTitle{
+  background:#888;
+  border-bottom:1px solid #000;
+  color:#EEE;*/
+  /*text-shadow:0 1px 0px rgba(0,0,0,1);*/
+/*}*/
+/*form.formDefault .FormSubTitle{
+  background:#999;
+  color:#EEE;
+}*/
+
+.pagedTableDefault .pagedTable .RowPointer{
+  /*background: #ADE3F7;*/
+  color: #000 !important;
+  background-color:#C4EEF8;
+  background-image:url(/skins/tempus/images/grid/gridOver.png);
+  background-repeat: repeat-x;
+}
+.x-grid3-row:nth-child(odd) { 
+	background-color:#fff;
+}
+.x-grid3-row:nth-child(even) { 
+	background-color:#F4F4F4;
+}
+.x-grid3-row-selected .x-grid3-cell {
+  color: #fff !important;
+  background-color: #00A2E5;
+  /*background-image:url(/skins/tempus/images/grid/gridSelected.png);*/
+  /*background-repeat: repeat-x;*/
+  
+}
+.x-grid3-row-over .x-grid3-cell {
+  color: #fff !important;
+  background-color: #00A2E5;
+  /*background-image:url(/skins/tempus/images/grid/gridOver.png);*/
+  /*background-repeat: repeat-x;*/
+}
+.x-grid3-row-over .x-grid3-cell .x-grid3-cell-inner{
+	color: #fff !important;
+	background-color: #00A2E5;
+  /*background-image:url(/skins/tempus/images/grid/gridOver.png);*/
+  /*background-repeat: repeat-x;*/
+  
+}
+
+.x-grid3-hd-inner{
+  /*color:#fff;*/
+  /*text-shadow:#000 0px 1px 1px;*/
+}
+.x-panel-header-text{
+	color:#414141;
+	font-size:12px;
+/*	font-family: 'Lucida Sans Unicode','Lucida Grande',sans-serif;
+	text-transform: uppercase;*/
+	font-weight: bold;
+	/*text-shadow:#000 0px 1px 1px;*/
+}
+
+#pm_main_table .mainMenuBG{
+  border-top:2px solid #333;
+  background-image:none;
+  background-color:#666;
+  /*background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #232D38),color-stop(0.97, #778A9F));
+  background-image: -moz-linear-gradient(center bottom,#232D38 0%,#778A9F 97%);*/
+}
+ul#pm_menu li.SelectedMenu,ul#pm_menu li:hover{
+  background-image:none;
+  background-color: #eee;
+  /*background-image: -webkit-gradient ( linear, left bottom, left top, color-stop(0.39, rgb(245,245,245)), color-stop(0.83, rgb(227,227,227))  );
+  background-image:  -moz-linear-gradient( center bottom, rgb(245,245,245) 39%, rgb(227,227,227) 83%  );*/
+}
+ul#pm_menu li.SelectedMenu a,ul#pm_menu li:hover a{
+  color:#333;
+}
+
+/*TREE del CASES*/
+#ext-gen38.x-tree-root-ct .x-tree-node-el{
+  background:#ffffff;
+ /* border-bottom:1px solid #232D38;
+  border-top:1px solid #232D38;*/
+}
+#ext-gen38.x-tree-root-ct .x-tree-node-leaf{
+  background:#ffffff;
+}
+#ext-gen38.x-tree-root-ct .x-tree-node-over
+{
+  background:#E8E8E8;
+}
+#ext-gen38.x-tree-root-ct .x-tree-node-over a span
+{
+  /*color:#ffffff ;*/
+}
+.x-tree-node-el .x-unselectable .x-tree-node-expanded a.x-tree-node-anchor:hover span
+{
+  color:#7A7A7A ;
+  cursor: default;
+}
+.x-tree-node-el .x-tree-node-leaf .x-unselectable a.x-tree-node-anchor:hover span
+{
+  color:#ffffff ;
+  cursor: default !important;	
+}
+.x-tree-node-expanded
+{
+  color:#000000; !important;
+}
+/*Item selecciondo en el TREE*/
+.x-tree-root-ct .x-tree-selected{
+  /*background:#0099cc !important;*/
+  color: #000 !important;  
+	/*border: 1px solid #BBBBBB;*/
+	background: #00A2E5 !important;
+	line-height: 16px;
+}
+.x-tree-node .x-tree-selected{
+  /*background:#0099cc !important;*/
+  color: #000 !important;  
+	/*border: 1px solid #BBBBBB;*/
+	background: #00A2E5; !important;
+	line-height: 16px;
+}
+/*.x-tree-root-ct .x-tree-selected a.x-tree-node-anchor span{
+  color: #ffffff !important;
+}*/
+/*TEXTOS*/
+.Footer .content,.Footer .content a,.textBlue,.logout a,.textBlack{ /*,form.formDefault a,form.formSearch a,div.treeParent .treeNode a, div.treeBase .treeNode a*/
+  color:#333;
+}
+
+.x-btn-text, .xtb-text{
+	color:#8E6936;
+}
+
+.x-window button.x-btn-text, .x-form-label-right button.x-btn-text, .x-form button.x-btn-text {
+	color:#000;
+}
+
+/*Borde del refresher en Cases*/
+#ext-gen35.x-panel-tbar-noheader{
+  border-bottom:1px #aaa solid;
+}
+.GridRowPending{
+	background-color: #FFFFD1 !important;	
+}
+.GridRowNew{
+	background-color: #CCFCDA !important;	
+}
+.detailArea{
+	background-color: #E3F0F6 !important;
+    background-image: url("/skins/tempus/images/form/fielText.png") !important;
+    background-repeat: repeat-x !important;
+    border: 0 none !important;
+    color    :#333333;
+    font    :normal 8pt sans-serif;
+    border: 1px solid white !important;	
+	
+}
+.detailTable{
+	border-bottom: 2px solid #ccc;
+	text-transform: uppercase;
+	background-color: #D5D5D5;
+    background-image: url("/skins/tempus/images/grid/grid3-hrow.gif");
+    background-position: center top;
+    background-repeat: repeat-x;
+    color: #545454;
+    height: 25px;
+    padding-left: 10px;
+}
+.detailLabel{
+	font-style: italic;	
+	border-bottom: 1px dotted #ccc;
+}
+.detailField{
+	background-color:	#E3F0F6 !important;
+    background-image:	url("/skins/tempus/images/form/fielText.png") !important;
+    background-repeat:	repeat-x !important;
+    border:	0 none !important;
+    color:	#333333;
+    font:	normal 8pt sans-serif;
+    border: 1px solid white !important;
+}
+

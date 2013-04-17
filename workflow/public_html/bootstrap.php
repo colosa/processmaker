@@ -186,7 +186,7 @@
         die;
         break;
       case 'sysNamed' :
-        header('location : ' . $_SERVER['REQUEST_URI'] . '/' .SYS_LANG. '/classic/login/login' );
+        header('location : ' . $_SERVER['REQUEST_URI'] . '/' .SYS_LANG. '/tempus/login/login' );
         die;
         break;
       case 'jsMethod' :
@@ -350,7 +350,7 @@
             $controller->call($controllerAction);
           }
         }
-        else { // classic sysLogin interface
+        else { // tempus sysLogin interface
           require_once( PATH_METHODS . "login/sysLogin.php" ) ;
           die();
         }
@@ -661,7 +661,7 @@
             $loginUrl = 'home/login';
           }
           else {
-            $loginUrl = 'login/login'; // just set up the classic login
+            $loginUrl = 'login/login'; // just set up the tempus login
           }
 
           if (empty($_POST)) {

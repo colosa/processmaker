@@ -439,7 +439,7 @@ function WSOpen ($force = false)
 {
     if (isset( $_SESSION["WS_SESSION_ID"] ) || $force) {
         if (! isset( $_SESSION["WS_END_POINT"] )) {
-            $defaultEndpoint = "http://" . $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . "/sys" . SYS_SYS . "/en/classic/services/wsdl2";
+            $defaultEndpoint = "http://" . $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . "/sys" . SYS_SYS . "/en/tempus/services/wsdl2";
         }
 
         $endpoint = isset( $_SESSION["WS_END_POINT"] ) ? $_SESSION["WS_END_POINT"] : $defaultEndpoint;

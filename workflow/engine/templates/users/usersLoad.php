@@ -17,6 +17,8 @@
 </iframe>
 </body>
 <script>
+  var content = document.getElementById('logo');
+  content = (content != null) ? 60 : 105;
   oClientWinSize = getClientWindowSize();
   h = getStyle(document.getElementById('pm_menu'),'top');
   h = h.replace("px", "");
@@ -28,7 +30,7 @@
   {
     oCasesFrame    = document.getElementById('frameMain');
     oClientWinSize = getClientWindowSize();
-    height         = oClientWinSize.height - 105;
+    height         = oClientWinSize.height - content;// 105;
     oCasesFrame.style.height = height;
   }
   function getStyle(targetElement,styleProp)

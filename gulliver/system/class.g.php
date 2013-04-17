@@ -868,10 +868,10 @@ class G
 
         $configurationFile = '';
         if ($skinName == "jscolors") {
-            $skinName = "classic";
+            $skinName = "tempus";
         }
         if ($skinName == "xmlcolors") {
-            $skinName = "classic";
+            $skinName = "tempus";
         }
         if ($skinName == "classic") {
             $configurationFile = G::ExpandPath( "skinEngine" ) . 'base' . PATH_SEP . 'config.xml';

@@ -70,7 +70,7 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
 if ($actionAjax == 'showHistoryMessage') {
 
     ?>
-    <link rel="stylesheet" type="text/css" href="/css/classic.css" />
+    <link rel="stylesheet" type="text/css" href="/css/tempus.css" />
     <style type="text/css">
     html {
         color: black !important;

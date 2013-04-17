@@ -9,6 +9,8 @@
 </iframe>
 </body>
 <script>
+  var content = document.getElementById('logo');
+  content = (content != null) ? 60 : 90;
   oClientWinSize = getClientWindowSize();
   if ( document.getElementById('pm_submenu') ) 
     document.getElementById('pm_submenu').style.display = 'none';
@@ -17,7 +19,7 @@
   function autoResizeScreen() {
     oCasesFrame    = document.getElementById('adminFrame');
     oClientWinSize = getClientWindowSize();
-    height = oClientWinSize.height-90;
+    height = oClientWinSize.height-content;//90
     oCasesFrame.style.height = height;
     oCasesSubFrame = oCasesFrame.contentWindow.document.getElementById('setup-frame');
 

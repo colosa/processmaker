@@ -1,0 +1,3437 @@
+@font-face {
+    font-family: 'armataregular';
+    src: url('/skins/tempus/fonts/armata-regular-webfont.eot');
+    src: url('/skins/tempus/fonts/armata-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/skins/tempus/fonts/armata-regular-webfont.woff') format('woff'),
+         url('/skins/tempus/fonts/armata-regular-webfont.ttf') format('truetype'),
+         url('/skins/tempus/fonts/armata-regular-webfont.svg#armataregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'roboto_condensedregular';
+    src: url('/skins/tempus/fonts/robotocondensed-regular-webfont.eot');
+    src: url('/skins/tempus/fonts/robotocondensed-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/skins/tempus/fonts/robotocondensed-regular-webfont.woff') format('woff'),
+         url('/skins/tempus/fonts/robotocondensed-regular-webfont.ttf') format('truetype'),
+         url('/skins/tempus/fonts/robotocondensed-regular-webfont.svg#roboto_condensedregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+html, body
+{
+	margin		:0px;
+	color		:#808080;
+	font		:normal 8pt sans-serif,Tahoma,MiscFixed;
+	cursor: default !important;
+}
+a{
+	color: #00a2e5;
+	text-decoration: none;
+}
+a:hover, a:visited{
+	text-decoration: underline;
+}
+.headerInfo{
+	color: #676767;
+  font-family: 'armataregular';
+	font-weight: normal; 
+  font-size: 10px;
+  min-width: 400px;
+  padding-right: 10px;
+  text-align: left;	
+  margin-bottom: 4px;	
+  padding-left: 20px;
+  height: 20px;
+}
+.mainPageLogin
+{
+background: #fcfcfc; /* Old browsers */
+background: -moz-linear-gradient(top,  #fcfcfc 0%, #e8e9ea 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fcfcfc), color-stop(100%,#e8e9ea)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #fcfcfc 0%,#e8e9ea 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #fcfcfc 0%,#e8e9ea 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #fcfcfc 0%,#e8e9ea 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #fcfcfc 0%,#e8e9ea 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#e8e9ea',GradientType=0 ); /* IE6-9 */
+	height: 100%;
+	width: 100%;
+	display: block;
+	position: absolute;
+	z-index: 0;
+}
+.mainPageBlank
+{
+	background: #ededed; /* Old browsers */
+	filter: none;
+}	
+.Footer
+{
+	font		:normal 8pt sans-serif,Tahoma,MiscFixed;
+	color		:#000;
+	text-align	:center;
+	width: 100%;
+	min-width: 850px;
+	position: absolute;
+	bottom: 0px;
+	z-index: 100px;
+}
+.gearFoot{
+	background: transparent url(/skins/tempus/images/layout/footer01.png) no-repeat left top scroll;
+	height:44px;
+	width:100%;		
+}
+.contentFoot{
+	background-color: #fff;
+  border-top: 1px solid #666667;
+  color: #666667;
+  height: 45px;
+  width: 100%;
+}
+.legalFoot{
+	width:33%;
+	float: left;		
+	text-align: left;	
+	line-height: 11px;
+	font-size: 10px;
+	padding-top: 5px;
+}
+.linksFoot{
+	width:34%;		
+	float: left;
+	text-align: center;
+}
+.linksFoot a{
+	color: #666667;
+	line-height: 45px;
+	text-decoration: none; 
+}
+.linksFoot a:hover{
+	text-decoration: underline;	
+}
+.socialFoot{
+	width: 32px;
+	margin-right: 145px;
+	margin-top: 6px;
+	float: right;		
+}
+.linkFoot{
+	width: 16px;
+  height: 16px;
+  display: inline-block;
+  float: left;	
+}
+.faceFoot{
+  background: transparent url(/skins/tempus/images/layout/faceIcon.png) no-repeat right center scroll;  
+}
+.faceFoot:hover{
+  background: transparent url(/skins/tempus/images/layout/faceIconOver.png) no-repeat right center scroll;  
+}
+.tweetFoot{
+  background: transparent url(/skins/tempus/images/layout/tweetIcon.png) no-repeat right center scroll;  
+}
+.tweetFoot:hover{
+  background: transparent url(/skins/tempus/images/layout/tweetIconOver.png) no-repeat right center scroll;  
+}
+.youFoot{
+  background: transparent url(/skins/tempus/images/layout/youIcon.png) no-repeat right center scroll;  
+}
+.youFoot:hover{
+  background: transparent url(/skins/tempus/images/layout/youIconOver.png) no-repeat right center scroll;  
+}
+.rssFoot{
+  background: transparent url(/skins/tempus/images/layout/rssIcon.png) no-repeat right center scroll;
+}
+.rssFoot:hover{
+  background: transparent url(/skins/tempus/images/layout/rssIconOver.png) no-repeat right center scroll;
+}
+.poweredFoot{
+	background: transparent url(/skins/tempus/images/layout/poweredBy.png) no-repeat right center scroll;
+	height:45px;
+	width: 33%;
+	float: left;
+}
+.temporalMess
+{
+    border-radius: 6px 6px 6px 6px;    
+    width: 80%;
+    margin: auto;
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 20px;
+    font-family: 'armataregular';    
+    height: 20px;
+    padding: 3px;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+    font-weight: normal;
+}
+.iconMess{
+		display: inline;
+    float: left;
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+}
+.warningMess{
+border: 1px solid #d8c97f;
+background: #f9f6e2; /* Old browsers */
+background: -moz-linear-gradient(top,  #f9f6e2 0%, #e6d981 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9f6e2), color-stop(100%,#e6d981)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #f9f6e2 0%,#e6d981 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #f9f6e2 0%,#e6d981 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #f9f6e2 0%,#e6d981 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #f9f6e2 0%,#e6d981 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f6e2', endColorstr='#e6d981',GradientType=0 ); /* IE6-9 */
+}
+.errorMess{
+border: 1px solid #b77979;
+background: #f5dcdc; /* Old browsers */
+background: -moz-linear-gradient(top,  #f5dcdc 0%, #d4b3b3 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5dcdc), color-stop(100%,#d4b3b3)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #f5dcdc 0%,#d4b3b3 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #f5dcdc 0%,#d4b3b3 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #f5dcdc 0%,#d4b3b3 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #f5dcdc 0%,#d4b3b3 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5dcdc', endColorstr='#d4b3b3',GradientType=0 ); /* IE6-9 */
+}
+.infoMess{
+border: 1px solid #7fb5d7;
+background: #d5edf7; /* Old browsers */
+background: -moz-linear-gradient(top,  #d5edf7 0%, #c4d6e5 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d5edf7), color-stop(100%,#c4d6e5)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #d5edf7 0%,#c4d6e5 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #d5edf7 0%,#c4d6e5 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #d5edf7 0%,#c4d6e5 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #d5edf7 0%,#c4d6e5 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5edf7', endColorstr='#c4d6e5',GradientType=0 ); /* IE6-9 */
+}
+.iconWarningMess{
+		background: transparent url("/skins/tempus/images/icons/warning.png") left center no-repeat scroll;
+}
+.iconErrorMess{
+		background: transparent url("/skins/tempus/images/icons/error.png") left center no-repeat scroll;		
+}
+.iconInfoMess{
+		background: transparent url("/skins/tempus/images/icons/info.png") left center no-repeat scroll;		
+}
+#temporalMessageERROR
+{
+    background-color: #FFABA9;
+    background-image: url("/skins/tempus/images/icons/error.png");
+    background-position: 6px center;
+    background-repeat: no-repeat;
+    border-color: #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    border-style: solid;
+    border-width: 1px;
+    color: #FFFFFF;
+    display: inline-block;
+    font: bold 10px/18pt Tahoma,sans-serif,MiscFixed;
+    height: 25px;
+    padding: 3px 5px 3px 30px;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+}
+#temporalMessageWARNING
+{
+    background-color: #FFF7D8;
+    background-image: url("/skins/tempus/images/icons/warning.png");
+    background-position: 6px center;
+    background-repeat: no-repeat;
+    border-color: #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    border-style: solid;
+    border-width: 1px;
+    color: #555555;
+    display: inline-block;
+    font: bold 10px/18pt Tahoma,sans-serif,MiscFixed;
+    height: 25px;
+    padding: 3px 5px 3px 30px;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+}
+#temporalMessageINFO
+{
+  	background-color: #AAE5FF;
+    background-image: url("/skins/tempus/images/icons/info.png");
+    background-position: 6px center;
+    background-repeat: no-repeat;
+    border-color: #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    border-style: solid;
+    border-width: 1px;
+    color: #555555;
+    display: inline-block;
+    font: bold 10px/18pt Tahoma,sans-serif,MiscFixed;
+    height: 25px;
+    padding: 3px 5px 3px 30px;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+}
+#fullLogin #temporalMessageERROR, #fullLogin #temporalMessageWARNING, #fullLogin #temporalMessageINFO
+{
+    margin: 0 95px 0 0;
+    float: right;
+}
+.userGroupTitle
+{
+	color	:#636363;
+	font-family: 'armataregular';
+	font-size: 10px;
+	padding-left:10px;
+}
+.userGroupLink
+{
+	padding:0px;
+	padding-left:10px;
+	padding-bottom:10px;
+	
+}
+.userGroupLink a
+{
+	color	:#0099cc;
+	text-decoration:none;
+	font	:bold 8pt Tahoma,sans-serif,MiscFixed;
+}
+.userGroupLink a:hover
+{
+	color	:#FFA500;
+}
+span.treePlusLink
+{
+	background-color:#E68B2C;
+	color:white;
+	font:normal 7pt Tahoma,MiscFixed;
+	text-decoration:none;
+	padding-left:1px;
+	padding-right:1px;
+	overflow:hidden;
+	cursor:pointer;
+}
+span.treePlusLink:hover
+{
+	color:#EFC395;
+}
+span.XtreeMinus
+{
+	background-color:#0099cc;
+	color:white;
+	font:normal 7pt Tahoma,MiscFixed;
+	text-decoration:none;
+	padding-left:1px;
+	padding-right:1px;
+	overflow:hidden;
+	cursor:pointer;
+}
+span.XtreeMinus:hover
+{
+	background-color:#EFC395;
+}
+/* leimnud.app.menuRight CSS begin */
+/* Processmaker CSS  begin */
+.pm_separator___processmaker
+{
+}
+.pm_separatorOn___processmaker
+{
+}
+.pm_separatorOff___processmaker,.pm_separatorOn___processmaker
+{
+	height: 7px;
+	cursor:pointer;
+	text-align:center;
+	overflow:hidden;
+}
+.pm_separatorDOff___processmaker,.pm_separatorDOn___processmaker, .pm_separatorOver___processmaker, .pm_separatorOut___processmaker
+{
+	height:7px;
+	width:100%;
+	background-color:#0099cc;
+	background-color:buttonface;
+	border-color:buttonhighlight buttonshadow buttonshadow buttonhighlight;
+	border-style:solid;
+	border-width:1px 0pt;
+	overflow:hidden;
+}
+.pm_separatorDOff___processmaker
+{
+	background:url(/js/maborak/core/images/separator.up.gif);
+	background-repeat:no-repeat;
+	background-position:center top;
+
+}
+.pm_separatorDOn___processmaker
+{
+	background:url(/js/maborak/core/images/separator.down.gif);
+	background-repeat:no-repeat;
+	background-position:center center;
+}
+.pm_separatorOver___processmaker
+{
+	background-color:#ffffff;
+}
+.pm_separatorOut___processmaker
+{
+	background-color:buttonface;
+}
+.processmap_task___firefox
+{
+	position	: absolute;
+	height		: 30px;
+	width		: 150px;
+	background-color: #0099cc;
+	border		: 1px solid #0099cc;
+	z-index		: 10;
+	overflow	: hidden;
+	cursor		: move;
+}
+.processmap_task_label___firefox
+{
+	color:white;
+	text-align:center;
+	cursor:text;
+	padding-top:11;
+}
+.processmap_text___firefox
+{
+	position	: absolute;
+	cursor		: move;
+	background-color:red;
+}
+.processmap_title___firefox
+{
+}
+.panel_content___processmaker {
+    background-color: #FFFFFF;
+    border: 1px solid #919B9C;
+    color: black;
+    font: 8pt Tahoma,MiscFixed;
+    overflow: auto;
+    padding-top: 15px;
+    position: relative;
+    text-align: center;
+    padding-top: 15px;
+}
+/*theme firefox end*/
+/*theme processmap begin*/
+.processmap_task___processmaker
+{
+	position	: absolute;
+	height		: 40px;
+	height		: 38px;
+	width		: 171px;
+	width		: 164px;
+	z-index		: 10;
+	overflow	: hidden;
+	cursor		: move;
+	background	: url(/images/borderTask.gif);
+	background-color:#0099cc;
+	vertical-align:middle;
+	display:table-cell;
+}
+.processmap_task_label___processmaker
+{
+	color:#FFF;
+	text-align:center;
+	margin:10;
+	vertical-align:middle;
+	cursor:move;
+}
+.processmap_text___processmaker
+{
+	position	: absolute;
+	z-index		: 10;
+	cursor		: move;
+	font		: bold 8pt Tahoma,MiscFixed;
+}
+.processmap_title___processmaker
+{
+	position	:absolute;
+	cursor		:move;
+	font		:bold 13pt Tahoma,MiscFixed;
+}
+/*theme processmap end*/
+.pm__toolbar{
+    align:left;
+    font-size:1;
+    line-height:31px;
+}
+.processmap_toolbarItem___processmaker
+{
+	margin:0px;
+	border:1px solid #CEC6B5;
+	background:#EFEFEF url(/images/dynamicForm/toolbar.buttonbg.gif) repeat-x scroll 0%;
+}
+.processmap_toolbarItem___processmaker:hover
+{
+	margin:0px;
+	background-color:buttonface;
+	border-color:buttonhighlight buttonshadow buttonshadow buttonhighlight;
+	border-style:solid;
+	/*border-width:1px 0pt;*/
+	border:1px solid #316AC5;
+	background:#C1D2EE;
+	background-color: #C1D2EE;
+}
+/* Menues */
+TD.subMenu {
+	background-image: url('/skins/tempus/images/icons/bsm.jpg');
+	background-repeat: repeat-x;
+	height: 25px;
+}
+A.subMenu {
+	font-family: Tahoma;
+	font-size: 10px;
+	color: #005791;
+	font-weight: bold;
+	padding-top: 5px;
+	text-transform:uppercase;
+	text-decoration: none;
+}
+
+A.subMenu:hover {
+  font-family: Tahoma;
+	font-size: 10px;
+	color: #092148;
+	font-weight: bold;
+	padding-top: 5px;
+	text-transform:uppercase;
+	text-decoration: none;
+}
+TD.selectedSubMenu {
+	background-image: url('/js/maborak/core/images/silverBackgroundSubMenu.jpg');
+	background-repeat: repeat-x;
+	height: 26px;
+	left: 46px;
+	top: 98px;
+}
+A.selectedSubMenu {
+	font-family: Tahoma;
+	font-size: 10px;
+	color: #005791;
+	font-weight: bold;
+	padding-top: 5px;
+	text-transform:uppercase;
+	text-decoration: none;
+}
+A.selectedSubMenu:hover {
+	font-family: Tahoma;
+	font-size: 10px;
+	color: #005791;
+	font-weight: bold;
+	padding-top: 5px;
+	text-transform:uppercase;
+	text-decoration: none;
+}
+/* Menues END */
+a.linkInBlue
+{
+	font:normal 8pt Tahoma,MiscFixed;
+	color:#0099cc;
+	text-decoration:none;
+}
+a.linkInBlue:hover
+{
+	color:#9B9B9B;
+}
+/* Box Bottom Model Blue END */
+/* BoxPanel Bottom Model BEGIN */
+.boxTopPanel
+{
+	height:15px;
+	padding-left:24px;
+	padding-right:24px;
+	position:relative;
+	overflow:hidden;
+}
+.boxTopPanel div.a, .boxTopPanel div.c
+{
+	position:absolute;
+	width:25px;
+	height:15px;
+}
+.boxTopPanel div.a
+{
+	left:0px;
+	top:0px;
+	background-image:url(/skins/tempus/images/icons/ftlL.png);
+	background-color:#1b313b;
+}
+.boxTopPanel div.c
+{
+	top:0px;
+	right:0px;
+	background-image:url(/skins/tempus/images/icons/ftrL.png);
+	background-color:#1b313b;
+}
+.boxTopPanel div.b
+{
+	width:100%;
+	height:16px;
+	background: #1b313b url(/skins/tempus/images/icons/ftc.png) repeat-x;
+}
+/* BoxPanel Bottom Model END */
+/* XmlForm BEGIN  */
+/* form BEGIN  */
+form{
+	font:normal 11px sans-serif,MiscFixed;
+	color:#808080;
+}
+form table{
+	font:normal 11px sans-serif,MiscFixed;
+	color:#808080;
+}
+form.formDefault select
+{
+	font:normal 11px sans-serif,MiscFixed;
+	color:#000;
+  background-color: #fff;
+  border: 1px solid #E2DCD0;
+}
+form.formDefault table
+{
+	font:normal 11px sans-serif,MiscFixed;
+	color:#808080;
+	line-height:180%;
+}
+form.formDefault td
+{
+}
+form.formDefault .content
+{
+	background-color: #ffffff;
+  border-left: 1px solid #f1f1f1;
+  border-right: 1px solid #f1f1f1;
+}
+form.formDefault input.FormField
+{
+	border: 1px solid #CCC;
+	background: #FFFFFF url(/skins/tempus/images/icons/input_back.gif) repeat-x;
+	color:#333333;
+	font-family: 'armataregular';
+	font-size: 10px;
+	font-weight: normal;	
+}
+form.formDefault input.FormFieldInvalid
+{
+	border: 1px solid red;
+}
+form.formDefault input.FormFieldValid
+{
+	border: 1px solid green;
+}
+form.formDefault .FormLabel
+{
+	color: #808080;
+  padding-right: 5px;
+  text-align: right;
+  font-family: 'armataregular';
+  font-size: 10px;
+	font-weight: normal;
+}
+form.formDefault .FormFieldContent
+{	
+	padding:3px;
+	text-align: left;	
+	font-size:10px;	
+	background-color: transparent; 
+	color: #000000; 
+	border-collapse: collapse;	
+}
+form.formDefault textarea.FormTextArea
+{
+	border: 1px solid #CCC;
+	color:#333333;
+	font:normal 11px Arial,Helvetica,sans-serif;
+	overflow:auto;
+}
+form.formDefault textarea.FormTextPM
+{
+	border: 1px solid #CCC;
+	background: #FFFFFF url(/skins/tempus/images/icons/input_back.gif) repeat-x;
+	color:#333;
+	font:normal 12 Courier New, monospace ;
+	overflow:auto;
+}
+form.formDefault .FormButton
+{
+	text-align:center;
+	background-color: transparent; 
+	border-collapse: collapse;	
+}
+form.formDefault .FormButton input
+{
+	margin: 3px;	
+}
+input.checkEnable {
+	border: 1px solid #78E700;	
+}
+form.formDefault a
+{
+ color: #00a2e5;
+ cursor: pointer;
+ text-decoration: none;
+}
+form.formDefault .FormTitle a
+{
+	text-decoration:none;
+	color:#ED6600;
+	cursor:pointer;
+}
+form.formDefault a:hover
+{
+	cursor:pointer;
+}
+form.formDefault td.withoutLabel, form.formDefault td.withoutLabel table td
+{
+	padding:0px;
+	height:8px;
+}
+.FormTitle .FormTitle{
+	border:none;
+}
+/* form END  */
+/* formSearch BEGIN  */
+form.formSearch input, input
+{
+	font-size:8pt;
+}
+form.formSearch a
+{
+	color:#0099cc;
+	text-decoration:none;
+}
+form.formSearch a:hover
+{
+	color:#fff;
+}
+form.formSearch
+{
+	padding:5px 10px;	
+}
+form.formSearch .content
+{
+	border-left:1px solid #99BBE8;
+	border-right:1px solid #99BBE8;
+	background-color:#D0DEF0;
+	padding:10px;
+}
+form.formSearch input.FormField
+{
+	border: 1px solid #99BBE8;
+	color:#333333;
+	font:normal 11px Arial,Helvetica,sans-serif;
+	width:200px;
+}
+form.formSearch .FormLabel
+{
+	color:#000;
+	text-align:center;
+	padding-right:10px;
+	width:40%;
+}
+form.formSearch .FormFieldContent
+{
+	color:#000;
+	background-color:#EFEFEF;
+	padding-left:5px;
+	width:60%;
+	text-align: left;
+}
+form.formSearch .Record
+{
+	width:80%;
+}
+
+/* formSearch END  */
+/* pagedTable BEGIN  */
+.pagedTableDefault
+{
+	border-left:1px solid #DADADA;
+	border-right:1px solid #DADADA;
+	background-color:#FFF;
+	padding-left:5px;
+	padding-right:5px;
+}
+.pagedTableDefault .subtitle
+{
+	font-weight: bold;
+	color: #000;
+  font-size: 12px;
+  padding-left: 10px;
+}
+.pagedTableDefault, .pagedTableDefault table
+{
+	font:normal 11px sans-serif,MiscFixed;
+	color:#808080;
+}
+.pagedTableDefault, .pagedTableDefault .headerContent .tableOption a
+{
+	color: #0099cc;
+	text-decoration:none;
+}
+.pagedTableDefault, .pagedTableDefault .headerContent .tableOption a:hover
+{
+	color:#0099cc;
+}
+.pagedTableDefault td
+{
+	padding:0px;
+}
+.pagedTableDefault .pagedTable td
+{
+	padding:5px;
+}
+.pagedTableDefault .pagedTable
+{
+	border:1px solid #DFDFDF;
+	border-collapse:collapse;
+	color:#27373F;
+}
+.pagedTable td{
+  text-align:left;
+}
+.pagedTableDefault .pagedTable .Row1
+{
+	background-color:#FFF;
+}
+.pagedTableDefault .pagedTable .Row2
+{
+	background-color:#EEE;
+}
+tr.Selected
+{
+	background-color:#FFF1D8;
+}
+.pagedTableDefault .pagedTable .RowPointer
+{
+	color: #fff !important;
+  background-color:#00A2E5;
+  /*background-image:url(/skins/tempus/images/grid/gridOver.png);*/
+  /*background-repeat: repeat-x;*/
+}
+.pagedTableDefault .cellSelected1
+{
+font-weight:bold;
+}
+.pagedTableDefault .cellSelected2
+{
+font-weight:bold;
+}
+.pagedTableDefault .pagedTable a
+{
+	color:#FCA61B;
+	line-height: 8px;
+}
+.pagedTableDefault .pagedTable a:hover
+{
+	color:#a0a0a0;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader
+{
+    background-color: #FFFFFF !important;
+    background-image: url("/js/maborak/core/images/silverBackgroundTableTitle.jpg") !important;
+    background-position: center bottom !important;
+    background-repeat: repeat-x !important;
+    border-bottom: 1px solid #FFFFFF;
+    color: #5B5B5B;
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 10px;
+    overflow: hidden;
+    padding: 3px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    font-weight: bold;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader img
+{
+    width: 0px;
+    height: 0px;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader a
+{
+	text-decoration:none;
+	padding-left:5px;
+	font:normal 8pt Tahoma, sans-serif,MiscFixed;
+	font-size:10px;
+	font-weight: bold;
+	color:#666;
+	text-align: left;
+	display:block;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader a:hover
+{
+	color:#9B9B9B;
+}
+/*Adicion Rube*/
+.pagedTableDefault .pagedTable .masterDetailMain
+{
+	background-image:url(/skins/tempus/images/masterDetailMain.png);
+  background-repeat: repeat-x;
+	text-decoration:none;
+	color:#5B5B5B;
+	padding-left:5px;
+	font:normal 8pt Tahoma, sans-serif,MiscFixed;
+	font-weight: bold;
+}
+.pagedTableDefault .pagedTable .masterDetailOther
+{
+	background-image:url(/skins/tempus/images/masterDetailOther.png);
+  background-repeat: repeat-x;
+	text-decoration:none;
+	color:#5B5B5B;
+	padding-left:5px;
+	font:normal 8pt Tahoma, sans-serif,MiscFixed;
+	font-weight: bold;
+}
+/*Fin Adicion Rube*/
+.pagedTableDefault .pagedTable .RowLink
+{
+	text-align	:center;
+}
+.pagedTable tr{
+	padding:3px 0;
+}
+.pagedTableDefault .pagedTable .RowLink a{
+	display:block;
+}
+A.firstPage {
+	background-image: url('/skins/tempus/images/grid/pagination_1_first.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	padding-left:21px;
+	padding-top:20px;
+	line-height:40px;
+	text-decoration:none;
+}
+A.noFirstPage {
+	background-image: url('/skins/tempus/images/grid/nopagination_1_first.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	padding-left:21px;
+	padding-top:20px;
+	line-height:40px;
+	text-decoration:none;
+}
+A.previousPage {
+	background-image: url('/skins/tempus/images/grid/pagination_1_previous.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	padding-left:21px;
+	padding-top:20px;
+	line-height:40px;
+	text-decoration:none;
+}
+A.noPreviousPage {
+	background-image: url('/skins/tempus/images/grid/nopagination_1_previous.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	padding-left:21px;
+	padding-top:20px;
+	line-height:40px;
+	text-decoration:none;
+}
+A.nextPage {
+	background-image: url('/skins/tempus/images/grid/pagination_1_next.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	padding-left:21px;
+	padding-top:20px;
+	line-height:40px;
+	text-decoration:none;
+}
+A.noNextPage {
+	background-image: url('/skins/tempus/images/grid/nopagination_1_next.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	padding-left:21px;
+	padding-top:20px;
+	line-height:40px;
+	text-decoration:none;
+}
+A.lastPage {
+	background-image: url('/skins/tempus/images/grid/pagination_1_last.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	padding-left:21px;
+	padding-top:20px;
+	line-height:40px;
+	text-decoration:none;
+}
+A.noLastPage {
+	background-image: url('/skins/tempus/images/grid/nopagination_1_last.png');
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	padding-left:21px;
+	padding-top:20px;
+	line-height:40px;
+	text-decoration:none;
+}
+/* pagedTable END  */
+/* Grid BEGIN */
+div.pattern .content
+{
+	padding-left:5px;
+	padding-right:5px;
+	border-left:1px solid #DADADA;
+	border-right:1px solid #DADADA;
+	background-color:#FFF;
+}
+div.pattern .FormTitle
+{
+	font-weight:bold;
+	color: #dffbf4;	
+	padding:2px;
+}
+div.grid
+{
+	font:normal 11px sans-serif,MiscFixed;
+	margin-top:7px;
+}
+div.grid .content
+{
+  background-color: #ffffff;
+  border-left: 1px solid #f1f1f1;
+  border-right: 1px solid #f1f1f1;
+  width: 100%;
+}
+html>body div.grid .content
+{
+  width: auto;
+}
+div.grid .tableGrid
+{
+  width:100%;
+  border-spacing: 1px;
+}
+div.grid .tableGrid .tableGrid td
+{
+  text-align: center;
+}
+/*div.grid .tableGrid a.tableOption, div.grid .tableGrid a.GridLink
+{
+	background: #cccc;
+  background: -moz-linear-gradient(top,  #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(50%,#f1f1f1), color-stop(51%,#e1e1e1), color-stop(100%,#f6f6f6));
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
+	background: -o-linear-gradient(top,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
+	background: -ms-linear-gradient(top,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
+	background: linear-gradient(to bottom,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 );
+  border: 1px solid #707070;
+  border-radius: 4px 4px 4px 4px;
+  color: #000000;
+  font-size: 8px;
+  padding: 3px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+div.grid .tableGrid a:hover.tableOption, div.grid .tableGrid a:hover.GridLink
+{
+	background: #e1f3fc;
+	background: -moz-linear-gradient(top,  #e1f3fc 0%, #d1ecf9 50%, #bee3f7 51%, #afdef8 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e1f3fc), color-stop(50%,#d1ecf9), color-stop(51%,#bee3f7), color-stop(100%,#afdef8));
+	background: -webkit-linear-gradient(top,  #e1f3fc 0%,#d1ecf9 50%,#bee3f7 51%,#afdef8 100%);
+	background: -o-linear-gradient(top,  #e1f3fc 0%,#d1ecf9 50%,#bee3f7 51%,#afdef8 100%);
+	background: -ms-linear-gradient(top,  #e1f3fc 0%,#d1ecf9 50%,#bee3f7 51%,#afdef8 100%);
+	background: linear-gradient(to bottom,  #e1f3fc 0%,#d1ecf9 50%,#bee3f7 51%,#afdef8 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ccc', endColorstr='#fff',GradientType=0 );
+}*/
+div.grid .tableGrid .vFormTitle
+{
+	color: #676767;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 15px;
+  text-align: center;
+  text-transform: uppercase; 
+}
+/* Grid END */
+/* Tree BEGIN */
+div.treeBase .content
+{
+	padding-left:5px;
+	padding-right:5px;
+	border-left:1px solid #DADADA;
+	border-right:1px solid #DADADA;
+	background-color:#FFF;
+}
+.treeNode
+{
+	padding-bottom:10px;
+	font:normal 8pt Tahoma,sans-serif,MiscFixed;
+	color:#808080;
+}
+div.treeBase table td.a
+{
+	width:16px;
+	height:10px;
+}
+div.treeBase table td.b
+{
+	font:normal 8pt Tahoma,sans-serif,MiscFixed;
+	color:#dffbf4;
+	text-align:left;
+}
+/* TreeParent BEGIN */
+div.treeParent
+{
+}
+div.treeParent table
+{
+	font:normal 8pt Tahoma,sans-serif,MiscFixed;
+	color:#444444;
+}
+div.treeParent .treeMinus
+{
+	width:16px;
+	height:22px;
+	display:block;
+	position:relative;
+	background-image:url(/images/minus.gif);
+	background-repeat:no-repeat;
+	overflow:hidden;
+}
+div.treeParent .treePlus
+{
+	width:16px;
+	height:22px;
+	background-image:url(/images/plus.gif);
+	background-repeat:no-repeat;
+	display:block;
+}
+div.treeParent .treePointer
+{
+	width:1px;
+	height:22px;
+	display:block;
+}
+div.treeParent td.c
+{
+	background-image:url(/images/ftv2vertline.gif);
+	background-repeat:repeat-y;
+}
+div.treeParent td.d
+{
+	background-image:url(/images/ftv2node.gif);
+	background-repeat:repeat-y;
+}
+div.treeParent .treeNode
+{
+	padding:2px;
+	padding-bottom:1px;
+	font-weight:bold;
+}
+div.treeParent .treeNode a, div.treeBase .treeNode a
+{
+	color:#0099cc;
+	font-weight:normal;
+	text-decoration:none;
+}
+div.treeParent .treeNode a:hover, div.treeBase .treeNode a:hover
+{
+	color:#FFA500;
+}
+div.treeParent .FormField
+{
+	background-color:#FFF;
+	padding-bottom:10px;
+}
+div.treeParent .FormField a
+{
+	font-size:8pt !important;
+	color:red;
+}
+div.treeParent .FormTitle
+{
+	font-weight:bold;
+	color: #dffbf4;
+	padding:2px;
+}
+/* TreeParent END */
+/* TreeChild BEGIN */
+div.treeChild td.b
+{
+	padding-right:10px;
+}
+div.treeChild td.a
+{
+	width:10px;
+	height:22px;
+	background:none;
+}
+div.treeChild .c
+{
+	background-image:url(/images/ftv2vertline.gif);
+	background-repeat:repeat-y;
+}
+/* TreeChild END */
+div.treeChild
+{
+	padding-left:1px;
+}
+div.treeParent .content .treeNode a.selected
+{
+	color:white;
+	background-color:#0099cc;
+}
+div.treeParent table
+{
+}
+div.treeParent .subcontent
+{
+	padding-left:5px;
+	padding-right:5px;
+	border-left:1px solid #99BBE8;
+	border-right:1px solid #99BBE8;
+	background-color:#D0DEF0;
+}
+/* Tree END */
+/* XmlForm END  */
+/**************************** Start -> JSCalendar Widget by Erik Amaru Ortiz <erik@colosa.com> *********************************/
+/* The main calendar widget.  DIV containing a table. */
+div.calendar { position: relative; }
+.calendar, .calendar table {
+  border: 1px solid #6F7F75;
+  font-size: 10px;
+  color: #000;
+  cursor: default;
+  background: #F0F2F0;
+  font-family: tahoma,verdana,sans-serif;
+  z-index:1000;
+}
+/* Header part -- contains navigation buttons and day names. */
+.calendar .button { /* "<<", "<", ">", ">>" buttons have this class */
+  text-align: center;    /* They are the navigation buttons */
+  padding: 2px;          /* Make the buttons seem like they're pressing */
+}
+.calendar .nav {
+  background: #6F7F75 url(menuarrow2.gif) no-repeat 100% 100%;
+}
+.calendar thead .title { /* This holds the current "month, year" */
+  font-weight: bold;      /* Pressing it will take you to the current date */
+  text-align: center;
+  background: #000;
+  color: #fff;
+  padding: 2px;
+}
+.calendar thead tr { /* Row <TR> containing navigation buttons */
+  background: #6F7F75; /*e*/
+  color: #fff;
+}
+.calendar thead .daynames { /* Row <TR> containing the day names */
+  background: #E9F2E9;
+}
+.calendar thead .name { /* Cells <TD> containing the day names */
+  border-bottom: 1px solid #B5CFBF;
+  padding: 2px;
+  text-align: center;
+  color: #000;
+}
+.calendar thead .weekend { /* How a weekend day name shows in header */
+  color: #a66;
+}
+.calendar thead .hilite { /* How do the buttons in header appear when hover */
+  background-color: #B5CFBF; /*e*/
+  color: #000;
+  border: 1px solid #000;
+  padding: 1px;
+}
+.calendar thead .active { /* Active (pressed) buttons in header */
+  background-color: #6F7F75; /*e*/
+  border: 1px solid #FFF;
+  color: #FFF;
+  padding: 2px 0px 0px 2px;
+}
+/* The body part -- contains all the days in month. */
+.calendar tbody .day { /* Cells <TD> containing month days dates */
+  width: 2em;
+  color: #456;
+  text-align: right;
+  padding: 2px 4px 2px 2px;
+}
+.calendar tbody .day.othermonth {
+  font-size: 80%;
+  color: #bbb;
+}
+.calendar tbody .day.othermonth.oweekend {
+  color: #fbb;
+}
+.calendar table .wn {
+  padding: 2px 3px 2px 2px;
+  border-right: 1px solid #000;
+  background: #A4BBAD; /*here*/
+}
+.calendar tbody .rowhilite td { /* the rowwwwwww*/
+  background: #C9E5D4;
+}
+.calendar tbody .rowhilite td.wn {
+  background: #F1F8FC;
+}
+.calendar tbody td.hilite { /* Hovered cells <TD> */
+  background: #E9F2E9;
+  padding: 1px 3px 1px 1px;
+  border: 1px solid #6F7F75;
+}
+.calendar tbody td.active { /* Active (pressed) cells <TD> */
+  background: #6F7F75;
+  color: #FFF;
+  padding: 2px 2px 0px 2px;
+}
+
+.calendar tbody td.selected { /* Cell showing today date */
+  font-weight: bold;
+  border: 1px solid #000;
+  padding: 1px 3px 1px 1px;
+  background: #fff;
+  color: #000;
+}
+.calendar tbody td.weekend { /* Cells showing weekend days */
+  color: #a66;
+}
+.calendar tbody td.today { /* Cell showing selected date */
+  font-weight: bold;
+  color: #D50000;
+}
+.calendar tbody .disabled { color: #999; }
+.calendar tbody .emptycell { /* Empty cells (the best is to hide them) */
+  visibility: hidden;
+}
+.calendar tbody .emptyrow { /* Empty row (some months need less than 6 rows) */
+  display: none;
+}
+/* The footer part -- status bar and "Close" button */
+.calendar tfoot .footrow { /* The <TR> in footer (only one right now) */
+  text-align: center;
+  background: #206A9B;
+  color: #fff;
+}
+.calendar tfoot .ttip { /* Tooltip (status bar) cell <TD> */
+  background: #000;
+  color: #fff;
+  border-top: 1px solid #206A9B;
+  padding: 1px;
+}
+.calendar tfoot .hilite { /* Hover style for buttons in footer */
+  background: #B8DAF0;
+  border: 1px solid #178AEB;
+  color: #000;
+  padding: 1px;
+}
+.calendar tfoot .active { /* Active (pressed) style for buttons in footer */
+  background: #006AA9;
+  padding: 2px 0px 0px 2px;
+}
+/* Combo boxes (menus that display months/years for direct selection) */
+.calendar .combo {
+  position: absolute;
+  display: none;
+  top: 0px;
+  left: 0px;
+  width: 4em;
+  cursor: default;
+  border: 1px solid #655;
+  background: #def;
+  color: #000;
+  font-size: 90%;
+  z-index: 100;
+}
+.calendar .combo .label,
+.calendar .combo .label-IEfix {
+  text-align: center;
+  padding: 1px;
+}
+.calendar .combo .label-IEfix {
+  width: 4em;
+}
+.calendar .combo .hilite {
+  background: #34ABFA;
+  border-top: 1px solid #46a;
+  border-bottom: 1px solid #46a;
+  font-weight: bold;
+}
+.calendar .combo .active {
+  border-top: 1px solid #46a;
+  border-bottom: 1px solid #46a;
+  background: #F1F8FC;
+  font-weight: bold;
+}
+.calendar td.time {
+  border-top: 1px solid #000;
+  padding: 1px 0px;
+  text-align: center;
+  background-color: #E9F2E9;
+}
+.calendar td.time .hour,
+.calendar td.time .minute,
+.calendar td.time .ampm {
+  padding: 0px 3px 0px 4px;
+  border: 1px solid #889;
+  font-weight: bold;
+  background-color: #E9F2E9;
+}
+.calendar td.time .ampm {
+  text-align: center;
+}
+.calendar td.time .colon {
+  padding: 0px 2px 0px 3px;
+  font-weight: bold;
+}
+
+.calendar td.time span.hilite { /*e*/
+  border-color: #000;
+  background-color: #6F7F75;
+  color: #fff;
+}
+.calendar td.time span.active {
+  border-color: red;
+  background-color: #000;
+  color: #A5FF00;
+}
+/**************************** End -> JSCalendar Widget by Erik Amaru Ortiz <erik@colosa.com> *********************************/
+/**************************** Start -> Suggest Widget by Erik Amaru Ortiz <erik@colosa.com>  *********************************/
+/*
+================================================
+autosuggest, inquisitor style
+================================================
+*/
+input.module_app_suggest{
+  color:#BC6C0B;
+  font:8pt sans-serif;
+  padding:1px 1px 1px 3px;
+}
+div.autosuggest
+{
+	position: absolute;
+	background-position: top;
+	background-repeat: no-repeat;
+	padding: 8px 2px 0 3px;
+	z-index:1000;
+}
+div.autosuggest div.as_header,
+div.autosuggest div.as_footer
+{
+	position: relative;
+	height: 0px;
+	padding: 0 6px;	
+	background-position: top right;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+div.autosuggest div.as_footer
+{	
+}
+div.autosuggest div.as_header div.as_corner,
+div.autosuggest div.as_footer div.as_corner
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 6px;
+	width: 6px;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+div.autosuggest div.as_footer div.as_corner
+{
+}
+div.autosuggest div.as_header div.as_bar,
+div.autosuggest div.as_footer div.as_bar
+{
+	height: 6px;
+	overflow: hidden;
+	background-color: #F4F4F4;
+}
+div.autosuggest ul
+{
+	list-style: none;
+	margin: 0 0 -4px 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #fff;
+  border: 1px #C3C3C3 solid;
+  color: #000;
+}
+div.autosuggest ul li
+{
+	color: #ccc;
+	padding: 0;
+	margin: 0 4px 4px;
+	text-align: left;
+}
+div.autosuggest ul li a
+{
+	color: #000;
+	display: block;
+	text-decoration: none;
+	background-color: #fff;
+	position: relative;
+	padding: 0;
+	width: 100%;
+}
+div.autosuggest ul li a:hover
+{
+	background-color: #F4F4F4;
+}
+div.autosuggest ul li.as_highlight a:hover
+{
+	background-color: #FFDDA8;  /*erik -- back sel color*/
+}
+div.autosuggest ul li a span
+{
+	display: block;
+	padding: 1px 0px;
+	font-weight: normal;
+}
+div.autosuggest ul li a span small
+{
+	font-weight: normal;
+	color: #999;
+}
+div.autosuggest ul li.as_highlight a span small
+{
+	color: red;
+}
+div.autosuggest ul li.as_highlight a
+{
+	color: #000;
+	background-color: #DDD7D0;   /* erik -- hover*/	
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
+div.autosuggest ul li.as_highlight a span
+{	
+	background-position: bottom left;
+	background-repeat: no-repeat;
+}
+div.autosuggest ul li a .tl,
+div.autosuggest ul li a .tr
+{
+	background-color: transparent;
+	background-repeat: no-repeat;
+	width: 6px;
+	height: 6px;
+	position: absolute;
+	top: 0;
+	padding: 0;
+	margin: 0;
+}
+div.autosuggest ul li a .tr
+{
+	right: 0;
+}
+div.autosuggest ul li.as_highlight a .tl
+{
+	left: 0;
+	background-position: bottom left;
+}
+div.autosuggest ul li.as_highlight a .tr
+{
+	right: 0;	
+	background-position: bottom right;
+}
+div.autosuggest ul li.as_warning
+{
+	font-weight: normal;
+	text-align: center;
+  color: #ECECEC;
+}
+div.autosuggest ul em
+{
+	font-style: normal;
+	color: #000;
+  font-weight: bold;
+}
+.textBlue{
+	font:normal 8pt Tahoma,sans-serif,MiscFixed;
+	color:#0099cc;
+	text-decoration:none;
+}
+.textBlack{
+	font:normal 8pt Tahoma,sans-serif,MiscFixed;
+	color:#808080;
+	text-decoration:none;
+}
+
+/**************************** End -> Suggest Widget by Erik Amaru Ortiz <erik@colosa.com>  *********************************/
+.tableGrid_view
+{
+	width: 100%;
+	border-top: 0px solid #DADADA;
+	border-bottom: 0px solid #DADADA;
+	border-left: 0px solid #DADADA;
+	border-right: 0px solid #DADADA;
+	padding: 0px;
+}
+table.tableGrid_view td
+{
+	border-top: 1px solid #DADADA;
+	border-bottom: 1px solid #DADADA;
+	border-left: 0px solid #DADADA;
+	border-right: 0px solid #DADADA;
+	padding: 0px;
+}
+.ui-widget-header {
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:#5C9CCC url(/skins/tempus/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png) repeat-x scroll 50% 50%;
+	border:1px solid #4297D7;
+	color:#FFFFFF;
+	font-weight:bold;
+	font-size: 10px;
+}
+/**************************** new calendar **********************************************/
+.DHTMLSuite_calendar{	/* Main div for the calendar */
+	border:1px solid #8F8F8F;
+	background-color:#FFF;
+	width:220px;
+	position:relative;
+	overflow:hidden;
+	font-size: 10px;
+}
+.DHTMLSuite_calendarContent{	/* Sub div inside DHTMLSuite_calendar - this is the div where content is added */
+	position:relative;	/* IMPORTANT - This must always be like this in order to make it possible to position sub elements correctly, especially the iframe */
+	z-index:10;	/* IMPORTANT - This must always be like this in order to make it possible to position sub elements correctly, especially the iframe */
+	background-color:#FFF;
+	font-family: Trebuchet MS, Lucida Sans Unicode, Arial, sans-serif;
+	font-size: 10px;
+}
+/*******************
+ START CSS FOR THE HEADER ROW - WpmgE YOU SEE MONTH AND YEAR
+********************/
+.DHTMLSuite_calendar .DHTMLSuite_calendarHeading{	/* Heading of calendar, where you see the month and year */
+	background-image:url(/skins/tempus/images/calendar/calendar_heading.png);
+	background-repeat:repeat-x;
+	height:21px;
+	border-bottom:1px solid #8F8F8F;
+	font-size: 10px;
+}
+.DHTMLSuite_calendarHeadingTxt{	/* Inner div in the heading  */
+	padding:1px;
+	text-align:center;
+	font-size: 10px;
+}
+.DHTMLSuite_calendarCloseButton{	/* Close button at the top right corner of the calendar */
+	background-image:url(/skins/tempus/images/calendar/calendar-close.gif);
+	background-repeat:no-repeat;
+	width:13px;
+	height:13px;
+	position:absolute;
+	right:3px;
+	top:3px;
+	padding:1px;
+	background-position:center center;
+	cursor:pointer;
+	font-size: 10px;
+}
+.DHTMLSuite_calendarHeaderMonthAndYear{	/* Div elements for year and month in the heading */
+	padding:1px;
+	padding-right:2px;
+	padding-left:2px;
+	cursor:pointer;
+	line-height:17px;
+	font-size: 10px;
+	font-weight: bold;
+}
+.DHTMLSuite_calendarHeaderMonthAndYearOver{	/* Mouse over effect - month and year in the heading */
+	background-color:#FFF;
+	border:1px solid #8F8F8F;
+	padding:0px;
+	padding-left:1px;
+	padding-right:1px;
+	font-size: 10px;
+}
+/*******************
+ START CSS FOR THE TIME BAR - THE DIV WpmgE YOU SEE "Time: " and the hour and minute
+********************/
+.DHTMLSuite_calendar_timeBar{	/* Time bar - where users can select hour and minutes */
+	background-color:#D3D3D3;
+	height:21px;
+	border-top:1px solid #8F8F8F;
+	text-align:center;
+	position:relative;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_timeBarHourAndMinute{	/* General rules for the displayed hours and minutes - the ones you can click on the bring out the drop down boxes */
+	padding:1px;
+	padding-left:2px;
+	padding-right:2px;
+	margin-right:2px;
+	cursor:pointer;
+	font-size: 10px;
+}
+.DHTMLSuite_calendarTimeBarHourAndMinuteOver{	/* Mouse over effect for the hour and minute displayed in the time bar */
+	background-color:#FFF;
+	border:1px solid #8F8F8F;
+	padding:0px;
+	padding-left:1px;
+	padding-right:1px;
+	font-size: 10px;
+}
+.DHTMLSuite_calendarTimeBarTimeString{	/* String "Time:" */
+	position:absolute;
+	left:2px;
+	top:2px;
+	font-size: 10px;
+}
+/*******************
+ START CSS FOR THE NAVIGATION BAR - THE DIV WITH THE LEFT AND RIGHT ARROWS
+********************/
+.DHTMLSuite_calendar_navigationBar{	/* Navigation bar below the heading */
+	background-color:#D3D3D3;
+	height:17px;
+	border-bottom:1px solid #8F8F8F;
+	position:relative;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_navigationBarToday{	/* Div for the string "Today" in the navigation bar */
+	text-align:center;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_navigationBarToday span{	/* The "Today" string inside the navigation bar */
+	cursor:pointer;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_btnNextYear,.DHTMLSuite_calendar_btnPreviousYear,.DHTMLSuite_calendar_btnNextMonth,.DHTMLSuite_calendar_btnPreviousMonth{	/* Buttons - previous/next month and year */
+	position:absolute;
+	background-repeat:no-repeat;
+	background-position:center center;
+	width:13px;
+	height:13px;
+	padding:1px;
+	top:1px;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_btnNextYear{	/* Next year button */
+	background-image:url(/skins/tempus/images/calendar/calendar-next-year.gif);
+	right:2px;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_btnPreviousYear{	/* Previous year button */
+	background-image:url(/skins/tempus/images/calendar/calendar-previous-year.gif);
+	left:2px;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_btnNextMonth{	/* Next month button */
+	background-image:url(/skins/tempus/images/calendar/calendar-next-month.gif);
+	right:18px;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_btnPreviousMonth{	/* Previous month button */
+	background-image:url(/skins/tempus/images/calendar/calendar-previous-month.gif);
+	left:18px;
+	font-size: 10px;
+}
+/*******************
+
+ START CSS FOR THE MAIN DIV CONTAINING ALL THE DAYS WITHIN A MONTH AND HEADINGS (weeks, days(Mon-Sun) etc.)
+
+********************/
+.DHTMLSuite_calendar_monthView{	/* Main div element for the days in a month */
+
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView_headerCell{	/* Main div element for the days in a month */
+	background-color:#FFF;
+	border-bottom:1px solid #8F8F8F;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView_firstColumn{	/* First column - the week column */
+	background-color:#D3D3D3;
+	border-right:1px solid #8F8F8F;
+	text-align:left;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView td{	/* Default css for all the cells inside the calendar, i.e. week heading, label for the days, and the days */
+	text-align:center;
+	cursor:default;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView_headerSunday{	/* Sunday in the header */
+	color:red;
+	border-bottom:1px solid #8F8F8F;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView_daysInOtherMonths{	/* Days in previous or next month, i.e. before start of current displayed month or after days in the currently displayed month */
+	color:#999;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView_daysInThisMonth{	/* Layout - ordinary days(mon-sat) in this month */
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView_sundayInThisMonth{	/* Layout - sundays in current displayed month */
+	color:red;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView_initialDate{	/* Inital set date, example: the date in an input field which you are populating with the calendar */
+	background-color:#8F8F8F;
+	color:white;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView_invalidDate{	/* Inital set date, example: the date in an input field which you are populating with the calendar */
+	color:#AAA;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_monthView_currentDate{	/* Date of today */
+	background-color:#dfe9fa;
+	font-size: 10px;
+	font-weight: bold;
+}
+/***************************************************
+*
+* START CSS -  DROP DOWN BOXES
+*
+*
+***************************************************/
+/*** MINUTES ***/
+.DHTMLSuite_calendar_minuteDropDown{	/* Drop down box for minutes */
+	background-color:#D3D3D3;
+	border:1px solid #8F8F8F;
+	width:23px;
+	padding:1px;
+	text-align:center;
+	/* You shouldn't change these 3 options */
+	position:absolute;
+	z-index:152000;
+	cursor:pointer;
+	font-size: 10px;
+
+}
+.DHTMLSuite_calendar_minuteDropDownCurrentMinute{	/* Minute in drop down when it's equal to current minute of the display, i.e. the minute you see where you click on the drop down */
+	color:red;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_dropdownAMinuteOver{
+	background-color:#dfe9fa;
+	font-size: 10px;
+}
+/*** HOURS ***/
+.DHTMLSuite_calendar_hourDropDown{	/* Drop down box for hours */
+	background-color:#D3D3D3;
+	border:1px solid #8F8F8F;
+	width:23px;
+	position:absolute;
+	z-index:152000;
+	padding:1px;
+	cursor:pointer;
+	font-size:10px;
+	text-align:center;
+}
+.DHTMLSuite_calendar_dropdownAnHourOver{
+	background-color:#dfe9fa;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_hourDropDownCurrentHour{
+	color:red;
+	font-size: 10px;
+}
+/*** MONTHS ***/
+.DHTMLSuite_calendar_monthDropDown{
+	background-color:#D3D3D3;
+	border:1px solid #8F8F8F;
+	width:70px;
+	position:absolute;
+	z-index:152000;
+	cursor:pointer;
+	padding:1px;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_dropDownAMonth{
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_dropdownAMonthOver{
+	background-color:#dfe9fa;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_yearDropDownCurrentMonth{
+	color:red;
+	font-size: 10px;
+}
+/***** YEAR ****/
+.DHTMLSuite_calendar_yearDropDown{
+	background-color:#D3D3D3;
+	border:1px solid #8F8F8F;
+	width:30px;
+	position:absolute;
+	z-index:152000;
+	cursor:pointer;
+	padding:1px;
+	font-size: 10px;
+	text-align:center;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_dropDownAYear{
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_dropdownAYearOver{
+	background-color:#dfe9fa;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_yearDropDownCurrentYear{	/* Current year */
+	color:red;
+	font-size: 10px;
+}
+/* UP AND DOWN ARROWS INSIDE DROP DOWNS **/
+.DHTMLSuite_calendar_dropDown_arrowUp{	/* Drop down - moving to previous year */
+	background-image:url(/skins/tempus/images/calendar/calendar-dropdown-up.gif);
+	background-repeat:no-repeat;
+	background-position:center center;
+	height:8px;
+	font-size: 10px;
+}
+.DHTMLSuite_calendar_dropDown_arrowDown{	/* Drop down - moving to previous year */
+	background-image:url(/skins/tempus/images/calendar/calendar-dropdown-down.gif);
+	background-repeat:no-repeat;
+	background-position:center center;
+	height:8px;
+	font-size: 10px;
+}
+.DHTMLSuite_calendarDropDown_dropDownArrowOver{
+	background-color:#dfe9fa;
+	font-size: 10px;
+}
+/* IT'S IMPORTANT TO HAVE THIS CSS RULE AT THE BOTTOM IN ORDER TO MAKE THE PADDING OVERRIDE PADDING OF OTpmg ELEMENTS */
+.DHTMLSuite_calendarButtonOver{	/* Mouse over effect for the close button */
+	background-color:#FFF;	/* White background color */
+	border:1px solid #8F8F8F;	/* Blue border */
+	padding:0px;	/* The sum border+padding of this element should be the same as border+padding of .DHTMLSuite_calendarCloseButton */
+	font-size: 10px;
+}
+.DHTMLSuite_calendarDayOver{	/* Mouse over effect - days in the calendar, i.e. days in current displayed month */
+	background-color:#D3D3D3;
+	font-size: 10px;
+}
+/* YOU SHOULD NEVER MODIFY THIS ONE */
+.DHTMLSuite_calendar_iframe{	/* Iframe used to cover select boxes below in older IE browsers(version 6 and prior) */
+	position:absolute;
+	top:1px;
+	left:1px;
+	z-index:1;
+	font-size: 10px;
+}
+.calendar_picker_min{
+	cursor:pointer;
+	background-image:url(/skins/tempus/images/btncal_min.png);
+	float:left; width:96px; height:23px;
+	color:#000;
+	font-size: 10px;
+}
+.calendar_picker{
+	cursor:pointer;
+	background-image:url(/skins/tempus/images/btncal.png);
+	float:left; width:121px; height:23px;
+	color:#000;
+	font-size: 10px;
+}
+
+/*@start:  PM tooltip -> neyek <erik@colosa.com> */
+#pmtooltip{
+		background-color:#EEE;
+		border:1px solid #000;
+		position:absolute;
+		display:none;
+		z-index:20000;
+		padding:2px;
+		font-size:0.9em;
+		font-family: "Trebuchet MS", "Lucida Sans Unicode", Arial, sans-serif;
+}
+#pmtooltipShadow{
+		position:absolute;
+		background-color:#555;
+		display:none;
+		z-index:10000;
+}
+/*@end:  PM tooltip */
+/**
+ * (init) Dynaform Handler styles */
+#sortable {list-style-type: none;margin: 2; padding: 0; width: 700px;}
+#sortable li {margin: 1px 1px 1px 1px;padding: 1px;padding-left: 0px;font-size: 12px;height: 28px;}
+#sortable li span {position: absolute;margin-left: -1.3em;}
+.dtext{padding-top: 0px;font-size: 12px;color:blue;}
+.dynalist td{font-size: 10px;color: #000;}
+#jq-siteContain {width: 910px;margin: 0 auto;}
+#jq-content {background: #181c21 url(images/bg_home_content.gif) top repeat-x;padding: 4em 40px;border-bottom: 1px solid #000;}
+#jq-intro {padding-top: 1em;width: 515px;margin-bottom: 3.5em;}
+#jq-intro li {float: left;font-size: 1.4em;}
+#jq-intro li a { color: #5DB0E6; font-weight: bold; text-decoration: underline; float: left; background: url(images/icon_check_whiteOnDarkBlue.gif) left no-repeat; padding: 0 30px 0 23px;}
+#jq-intro li p {font-size: .9em;}
+body.jq-enhanced #jq-intro li {position: relative;}
+html.js div.jq-checkpointSubhead {display: none;}
+body.jq-enhanced #jq-intro li div.jq-checkpointSubhead { position: absolute; width: 253px; height: 54px; background: url(/skins/tempus/images/bg_ctaTooltip.png) 0 0 no-repeat; top: -1.5em; left: -35%; z-index: 100;}
+body.jq-enhanced #jq-intro li div.jq-checkpointSubhead p{font-size: 1em; padding: 10px 5px 0 50px; color: #AE0001; font-weight: bold; line-height: 1.3em; margin: 0; cursor: pointer;}
+.toggler { font-size:10px;height: 200px; position: relative;}
+#effect { width:180px;font-size:10px;height: 135px; padding: 0.4em; position: relative; background: #fff; }
+#effect h3 { font-size:10px;margin: 0; padding: 0.4em; text-align: center; }
+
+.current_selected_item{
+   border:2px solid #6BDCFF;
+   background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;
+   font-weight: bold;
+   color: #2e6e9e;
+   outline: none;
+
+}
+/*
+ *  (end) Dybaform Handler styles **/
+/*extendend fields styles*/
+#fieldshandler_items_table{
+    direction: ltr;
+}
+.htmleditor{    
+    background:#FFFFFF url(../skins/tempus/images/input_back.gif) repeat-x scroll 0 0;
+    border:1px solid #AAAAAA;
+    color:#333333;
+    font-family:sans-serif;
+    font-size:8pt;
+    font-size-adjust:none;
+    font-stretch:normal;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+    line-height:normal;
+    padding:1px 1px 1px 3px;
+}
+.FormTextPM{
+    direction: ltr;
+}
+.directionSide1{
+    direction: ltr;
+    text-align: left;
+}
+.directionSide2{
+    direction: rtl;
+    text-align: right;
+}
+.pm__dynavars{
+	direction:ltr;
+	font-weight:bold;
+}
+.tag_cloud { padding: 3px; text-decoration: none; }
+.tag_cloud:link  { color: #0099cc; }
+.tag_cloud:visited { color: #0099cc; }
+.tag_cloud:hover { color: #ffffff; background: #0099cc; }
+.tag_cloud:active { color: #ffffff; background: #ACFC65; }
+input.notValidateThisFields {
+    position: absolute;
+    left: -9999px;
+}
+input#DynaformRequiredFields {
+    position: absolute;
+    left: -9999px;
+}
+/*
+*	COMMON LAYOUT PANE FORMATTING -----------------resizer panel -------------------------------------------
+*/
+.pane ,				/* outer pane class */
+.ui-layout-pane {	/* inner pane class */
+	background-color: #fff;
+	border: 0px solid #8E8E8E;
+	padding: 3px;/* alignment & padding is on the inner-divs */
+	overflow: hidden; /* will be auto-set to 'hidden' for any pane with a 'scrolling content div' */
+}
+/*
+*	OUTER-LAYOUT PANE FORMATTING
+*/
+.pane-north ,
+.pane-south ,
+.pane-west ,
+.pane-east {
+	overflow:		auto; /*neyek1*/
+}
+.pane-north {
+	border-bottom:	none;
+}
+.pane-north .content ,
+.pane-south .content {
+	text-align: center;
+}
+.pane-center {
+	/* show off the inner-layout inside the outer-center-pane*/
+	background-color: #F6F6F6;
+	padding: 0px; /* for outer layout */
+}
+.ui-layout-center .footer  { border-top: 1px solid #BBB; }
+/*
+*	INNER-LAYOUT PANE FORMATTING
+*/
+.ui-layout-center .ui-layout-pane {
+	padding: 10px;
+}
+.ui-layout-center .ui-layout-north ,
+.ui-layout-center .ui-layout-south {
+	text-align: center;
+}
+.ui-layout-center .ui-layout-center {
+	padding: 0 !important; /* inner divs have padding */
+}
+.ui-layout-center .ui-layout-content {
+	padding: 0px;
+}
+.ui-layout-center .ui-layout-center h3 {
+	font-size: 1em;
+	padding: 5px;
+	margin: 0;
+}
+/*
+*  OUTER LAYOUT RESIZERS & TOGGLERS --resizable panel
+*  By. Erik <erik@colosa.com>
+*/
+.resizer-south-dragging ,
+.resizer-south:hover		{ background: #DCDCDC }
+.resizer-west-dragging ,
+.resizer-west-open:hover	{ background: #DCDCDC }
+.resizer-east-dragging ,
+.resizer-east-open:hover	{ background: #DCDCDC }
+.resizer-west-open ,
+.resizer-east-open {
+	background-color: #999;
+}
+.resizer-dragging-limit	{ background: #FF3300 !important; }
+/* IE6 * HACK - always show resizer graphics because IE6 cannot understand elem:hover */
+/** html .resizer-north		{ background: url(../img/resizable-n.gif) repeat-x center !important; } */
+* html .resizer-south		{ background: #DCDCDC }
+* html .resizer-west-open	{ background: #DCDCDC }
+* html .resizer-east-open	{ background: #DCDCDC }
+/** html .resizer-north , */
+* html .resizer-south ,
+* html .resizer-west-open ,
+* html .resizer-east-open {
+	/*opacity: 0.1 !important;
+	filter: alpha(opacity=10) !important;*/
+}
+/*
+*	SIMPLE TOGGLER BUTTONS (used on Outer Layout North/South only)
+*/
+.toggler-north-open ,
+.toggler-south-closed 		{ background: #DCDCDC }
+.toggler-north-closed ,
+.toggler-south-open   		{ background: #DCDCDC }
+/*
+*	extJS-STYLE RESIZER/SLIDER-BAR (CLOSED)
+*/
+.resizer-west-closed ,
+.resizer-east-closed {
+	background: #B4B4B4 url(/skins/tempus/images/separator-v.gif) center no-repeat ;
+	border-top: 1px solid #8E8E8E;
+	border-bottom: 1px solid #8E8E8E;
+}
+.resizer-west-closed:hover ,
+.resizer-east-closed:hover {
+	background: #D1E6FC;
+}
+span.button-pin ,
+span.button-close {
+	position:	absolute;
+	top:		0;
+	width: 		20px;
+	height:		20px;
+	z-index:	2;
+	display:	block;
+	cursor: 	pointer;
+}
+span.button-close-west	{ left:	 0; }
+span.button-close-east	{ right: 0; }
+span.button-pin-west	{ right: 1px; }
+span.button-pin-east	{ left:	 1px; }
+/* CUSTOM pin-buttons */
+span.button-pin-up 		  		{ background: url(/skins/tempus/images/pin-up-off.gif) no-repeat center; }
+span.button-pin-up:hover   		{ background: url(/skins/tempus/images/pin-up-on.gif)  no-repeat center; }
+span.button-pin-down 	  		{ background: url(/skins/tempus/images/pin-dn-off.gif) no-repeat center; }
+span.button-pin-down:hover 		{ background: url(/skins/tempus/images/pin-dn-on.gif)  no-repeat center; }
+/* CUSTOM close-buttons */
+span.button-close-west			{ background: url(/skins/tempus/images/go-lt-off.gif) no-repeat center; }
+span.button-close-west:hover	{ background: url(/skins/tempus/images/go-lt-on.gif)  no-repeat center; }
+span.button-close-east			{ background: url(/skins/tempus/images/go-rt-off.gif) no-repeat center; }
+span.button-close-east:hover	{ background: url(/skins/tempus/images/go-rt-on.gif)  no-repeat center; }
+/* STANDARD toggler-buttons - when the east/west panes are 'closed' */
+.toggler-west-closed		{ background: url(/skins/tempus/images/go-rt-off.gif) no-repeat center; }
+.toggler-west-closed:hover	{ background: url(/skins/tempus/images/go-rt-on.gif)  no-repeat center; }
+.toggler-east-closed		{ background: url(/skins/tempus/images/go-lt-off.gif) no-repeat center; }
+.toggler-east-closed:hover	{ background: url(/skins/tempus/images/go-lt-on.gif)  no-repeat center; }
+/*
+*	INNER LAYOUT RESIZERS & TOGGLERS
+*
+*	These styles target 'children of center pane', so only affect the Inner Layout
+*	This layout has applyDefaultCSS=true, so use !important to override defaults
+*/
+.ui-layout-center .ui-layout-resizer-closed:hover	{ background: #FFEDCA !important; }
+.ui-layout-center .ui-layout-resizer-open:hover ,
+.ui-layout-center .ui-layout-resizer-dragging	{ background: #C4E1A4 !important; }
+.ui-layout-center .ui-layout-resizer-dragging-limit	{ background: #FF3300 !important; }
+.ui-layout-center .ui-layout-resizer-north ,
+.ui-layout-center .ui-layout-resizer-south	{ border-left:  1px solid #BBB !important; border-right: 1px solid #BBB !important; }
+.ui-layout-center .ui-layout-resizer-north-closed{ border-top:   1px solid #BBB !important; }
+.ui-layout-center .ui-layout-resizer-south-closed{ border-bottom:1px solid #BBB !important; }
+.ui-layout-center .ui-layout-resizer-west-closed	{ border-left:  1px solid #BBB !important; }
+.ui-layout-center .ui-layout-resizer-east-closed	{ border-right: 1px solid #BBB !important; }
+.ui-layout-center .ui-layout-resizer:hover .ui-layout-toggler:hover {
+	background: #FD9 !important;
+	border-color: #CB7 !important;
+}
+.ui-layout-center .ui-layout-resizer-sliding .ui-layout-toggler {
+	display: none !important;
+}
+.ui-layout-center .ui-layout-resizer-sliding:hover .ui-layout-toggler {
+	display: block !important;
+}
+/** cpanel settings **/
+#cpanel div.icon {
+	text-align: center;
+	margin-right: 2px;
+	float: left;
+	margin-bottom: 2px;
+	background: #ffffff; /* Old browsers */
+	height: 32px;
+}
+#cpanel div.iconbox {
+  text-align: center;
+  margin-right: 5px;
+  float: left;
+  margin-bottom: 5px;
+  background-color: #fff;
+}
+#cpanel div.icon a {
+	display: block;
+	float: left;
+	padding: 0px;
+	color: #535353;
+	font-family: arial,FreeSans,Helvetica,sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+	vertical-align: middle;
+	text-decoration: none;
+}
+#cpanel div.icon img {
+	width: 0px;
+	height: 0px;
+}
+#cpanel div.icon a:hover {
+	border-bottom: 1px dotted #535353;
+	color: #535353;
+}
+#cpanel div.iconbox div {
+  display: block;
+  float: left;
+  border: 1px solid #CACACA;
+  height: 32px;
+  width: 200px;
+  color: #666;
+  vertical-align: middle;
+  text-decoration: none; 
+}
+#cpanel div.iconbox div:hover {
+  border-left: 1px solid #808080;
+  border-top: 1px solid #808080;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background: #EFEFEF;
+  color: #0B55C4;
+}
+#cpanel img  { padding: 2px 0; margin: 0 auto; }
+#cpanel span { display: block; text-align: center; }
+a.iconmenu {
+    color:#005791;
+    font-family:Tahoma;
+    font-size:10px;
+    font-weight:bold;
+    text-decoration:none;
+}
+.DynarchCalendar {
+	border: 1px solid #aaa !important;
+	border-radius: 10px !important;
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 10px;
+  line-height: 14px;
+  position: relative;
+  cursor: default;
+  background: none no-repeat scroll 50% 30px #F4F4F4 !important;
+}
+.DynarchCalendar table {
+  border-collapse: collapse;
+  line-height: 14px;
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 10px;
+  width: 100%;
+}
+.DynarchCalendar-topBar {
+	border-top: 1px solid #aaa !important;
+  border-radius: 10px 10px 0 0 !important;
+  background: #E0E0E0 !important;
+  padding: 5px 0 0 0;  
+}
+table.DynarchCalendar-titleCont {
+  font-size: 130%;
+  color: #808080;
+  text-align: center;
+  z-index: 9;
+  position: relative;
+  margin-top: -6px;
+}
+.DynarchCalendar-title div {
+  padding: 5px 17px;
+}
+.DynarchCalendar-hover-title div {
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 4px 16px;
+  background-image: url("/js/widgets/js-calendar/css/img/drop-down.gif");
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+}
+.DynarchCalendar-pressed-title div {
+  border: 1px solid #000;
+  padding: 4px 16px;
+  background-color: #777;
+  color: #fff;
+  background-image: url("/js/widgets/js-calendar/css/img/drop-up.gif");
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+}
+.DynarchCalendar-bottomBar {
+  border-top: 1px solid #aaa !important;
+  border-radius: 0 0 10px 10px !important;
+  background: #00a2e5 !important;
+  padding: 2px 0px;
+  position: relative;
+  text-align: center;
+}
+.DynarchCalendar-bottomBar table{
+	width: auto !important;	
+}
+.DynarchCalendar-bottomBar-today {
+  padding: 2px 0px;
+  color:#fff;
+}
+.DynarchCalendar-hover-bottomBar-today {
+  border: 1px solid #000;
+  background-color: #fff;
+  padding: 1px 14px;
+}
+.DynarchCalendar-pressed-bottomBar-today {
+  border: 1px solid #000;
+  background-color: #777;
+  color: #fff;
+  padding: 1px 14px;
+}
+.DynarchCalendar-body {
+  position: relative;
+  overflow: hidden;
+  padding-top: 5px;
+}
+.DynarchCalendar-first-col { padding-left: 5px; }
+.DynarchCalendar-last-col { padding-right: 5px; }
+.DynarchCalendar-animBody-backYear {
+  position: absolute;
+  top: -100%;
+  left: 0;
+}
+.DynarchCalendar-animBody-back {
+  position: absolute;
+  top: 5px;
+  left: -100%;
+}
+.DynarchCalendar-animBody-fwd {
+  position: absolute;
+  top: 5px;
+  left: 100%;
+}
+.DynarchCalendar-animBody-now {
+  position: absolute;
+  top: 5px;
+  left: 0;
+}
+.DynarchCalendar-animBody-fwdYear {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+.DynarchCalendar-dayNames {
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #F4F4F4;
+  border-top: 1px solid #AAAAAA;
+}
+.DynarchCalendar-dayNames div { font-weight: bold; color: #000000; /*text-shadow: 1px 1px 1px #777; */}
+.DynarchCalendar-navBtn {
+  position: absolute;
+  top: 5px;
+  z-index: 10;
+}
+.DynarchCalendar-navBtn div {
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  height: 15px;
+  width: 16px;
+  padding: 1px;
+}
+.DynarchCalendar-hover-navBtn div {
+  border: 1px solid #000;
+  padding: 0;
+  background-color: #fff;
+}
+.DynarchCalendar-pressed-navBtn div {
+  border: 1px solid #000;
+  padding: 0;
+  background-color: #777;
+  color: #fff;
+}
+.DynarchCalendar-prevMonth {
+  left: 25px;
+}
+.DynarchCalendar-nextMonth {
+  left: 100%;
+  margin-left: -43px;
+}
+.DynarchCalendar-prevYear {
+  left: 5px;
+}
+.DynarchCalendar-nextYear {
+  left: 100%;
+  margin-left: -23px;
+}
+.DynarchCalendar-prevMonth div {
+	background-image: url("/skins/tempus/images/shared/left-btn.png");
+}
+.DynarchCalendar-nextMonth div {
+	background-image: url("/skins/tempus/images/shared/right-btn.png");
+}
+.DynarchCalendar-prevYear div {
+	background-image: url("/skins/tempus/images/shared/left-btnx2.png");	
+}
+.DynarchCalendar-nextYear div {
+	background-image: url("/skins/tempus/images/shared/right-btnx2.png");
+}
+.DynarchCalendar-menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ddd;
+  overflow: hidden;
+}
+.DynarchCalendar-menu table td div {
+  text-align: center;
+  font-weight: bold;
+  padding: 3px 5px;
+}
+.DynarchCalendar-menu table td div.DynarchCalendar-menu-month {
+  width: 4em;
+  text-align: center;
+}
+.DynarchCalendar-menu table td div.DynarchCalendar-hover-navBtn {
+  border: 1px solid #000;
+  padding: 2px 4px;
+  background-color: #fff;
+  color: #000;
+}
+.DynarchCalendar-menu table td div.DynarchCalendar-pressed-navBtn {
+  border: 1px solid #000;
+  padding: 2px 4px;
+  background-color: #777;
+  color: #fff !important;
+}
+.DynarchCalendar-menu-year {
+  text-align: center;
+  font: 16px "lucida grande",tahoma,verdana,sans-serif;
+  font-weight: bold;
+  width: 100%;
+}
+.DynarchCalendar-menu-sep {
+  height: 1px; font-size: 1px; line-height: 1px;
+  overflow: hidden;
+  border-top: 1px solid #888;
+  background: #fff;
+  margin-top: 4px; margin-bottom: 3px;
+}
+.DynarchCalendar-time td { font-weight: bold; font-size: 120%; }
+.DynarchCalendar-time-hour, .DynarchCalendar-time-minute { padding: 1px 3px; }
+.DynarchCalendar-time-down { background: url("/js/widgets/js-calendar/css/img/time-down.png") no-repeat 50% 50%; width: 11px; height: 8px; opacity: 0.5; }
+.DynarchCalendar-time-up { background: url("/js/widgets/js-calendar/css/img/time-up.png") no-repeat 50% 50%; width: 11px; height: 8px; opacity: 0.5; }
+.DynarchCalendar-time-sep { padding: 0 2px; }
+.DynarchCalendar-hover-time { background-color: #444; color: #fff; opacity: 1; }
+.DynarchCalendar-pressed-time { background-color: #000; color: #fff; opacity: 1; }
+.DynarchCalendar-time-am { padding: 1px; width: 2.5em; text-align: center; }
+/* body */
+.DynarchCalendar-hover-week { background-color: #ddd; }
+.DynarchCalendar-dayNames div, .DynarchCalendar-day, .DynarchCalendar-weekNumber {
+  width: 1.7em;
+  padding: 2px;
+  text-align: center;
+}
+.DynarchCalendar-weekNumber {
+  border-right: 1px solid #aaa;
+  margin-right: 4px;
+  width: 2em !important;
+  padding-right: 8px !important;
+}
+.DynarchCalendar-day {
+  text-align: center;	
+	color: #565347;	
+  border: 1px solid #C4BFA9;
+  border-collapse: collapse;
+  margin: 1px;  
+ }
+.DynarchCalendar-day-othermonth {
+	color: #888;
+	text-align: center;
+  color: #222;
+  background-image: none;  
+  border: none;  
+}
+.DynarchCalendar-weekend { color: #c22; background-color: #E0E0E0;}
+.DynarchCalendar-day-today { color: #000; font-weight: bold; }
+
+.DynarchCalendar-day-disabled {
+  opacity: 0.5;
+}
+.DynarchCalendar-hover-date {
+  padding: 2px 3px;
+  background-color: #E6F3F9;
+  border: 1px solid #0099cc;
+  margin: 0 !important;
+  color: #0099cc;
+}
+.DynarchCalendar-day-othermonth.DynarchCalendar-hover-date { border-color: #aaa; color: #888; }
+.DynarchCalendar-dayNames .DynarchCalendar-weekend { color: #808080; font-weight: bold;}
+.DynarchCalendar-day-othermonth.DynarchCalendar-weekend { color: #d88; }
+.DynarchCalendar-day-selected {
+  padding: 2px 3px;
+  margin: 1px;
+  background-color: #aaa;
+  color: #000 !important;
+}
+.DynarchCalendar-day-today.DynarchCalendar-day-selected { background-color: #999; }
+/* focus */
+.DynarchCalendar-focusLink {
+  position: absolute;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.DynarchCalendar-focused {
+  border-color: #000;  
+}
+.DynarchCalendar-focused .DynarchCalendar-topBar, .DynarchCalendar-focused .DynarchCalendar-bottomBar {
+  background-color: #ccc;
+  border-color: #aaaaaa;
+  color:#fff;
+}
+.DynarchCalendar-focused .DynarchCalendar-hover-week {
+  background-color: #ccc;
+}
+.DynarchCalendar-tooltip {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+.DynarchCalendar-tooltipCont {
+  margin: 0 5px 0 5px;
+  border: 1px solid #aaa;
+  border-top: 0;
+  padding: 3px 6px;
+  background: #ddd;
+}
+.DynarchCalendar-focused .DynarchCalendar-tooltipCont {
+  background: #ccc;
+  border-color: #000;
+}
+@media print {
+  .DynarchCalendar-day-selected {
+    padding: 2px 3px;
+    border: 1px solid #000;
+    margin: 0 !important;
+  }
+}
+.DynarchCalendar-title, .DynarchCalendar-title div {
+  font-weight: bold;
+  font-size: 12px;
+  background-color: #00a2e5;
+  border-radius: 8px 8px 0 0;
+  color: #FFFFFF;
+}
+.DynarchCalendar-focused {background-color: #fff;}
+.DynarchCalendar-hover-title,
+.DynarchCalendar-hover-navBtn,
+.DynarchCalendar-hover-bottomBar-today,
+.DynarchCalendar-menu table td div.DynarchCalendar-hover-navBtn {
+  background: #69BDDC url("/skins/tempus/images/shared/bgCrystalCyan.png") repeat-x 0 50%;
+  color: #ffffff;
+}
+.DynarchCalendar-hover-bottomBar-today{border: 1px solid #ffffff !important;}
+.DynarchCalendar-hover-title div,
+.DynarchCalendar-hover-navBtn div { background-color: #F4F4F4; color: #0099cc !important;}
+.DynarchCalendar-pressed-title,
+.DynarchCalendar-pressed-navBtn,
+.DynarchCalendar-pressed-bottomBar-today,
+.DynarchCalendar-menu table td div.DynarchCalendar-pressed-navBtn {
+  background-color: #ccc;
+}
+.DynarchCalendar-pressed-title div,
+.DynarchCalendar-pressed-navBtn div { background-color: #F4F4F4; color: #0099cc !important;}
+.DynarchCalendar-hover-week,
+.DynarchCalendar-focused .DynarchCalendar-hover-week {background-color: #ccc;}
+.DynarchCalendar {background: url("/js/widgets/js-calendar/css/steel/steel.jpg") no-repeat 50% 30px;}
+.DynarchCalendar-day-selected {
+  background-color: transparent;
+  border: 1px solid #C4BFA9;
+  color: #565347;
+  font-weight: bold;  
+}
+.DynarchCalendar-day-today.DynarchCalendar-day-selected {
+  background-color: #F4F4F4;
+  color: #0099cc;
+}
+/*.DynarchCalendar-topCont{display: block !important;}*/
+
+button.x-btn-text:focus,.x-combo-selected{
+  outline:none;
+}
+/* STYLES */
+/* HEADER */
+.logoutLink {
+    background-image: url("/skins/tempus/images/menu/menu.png");    background-position: center -658px;    background-repeat: no-repeat;    color: #666667 !important;    font-size: 10px;    width: 20px;
+    height: 20px;    white-space: nowrap;
+    display: inline-block;
+    vertical-align: bottom;
+}
+.logoutLink:hover{
+    background-color: #666667;    background-position: center -724px;}
+.msgskin {
+	color: #666667 !important;
+	white-space: nowrap;
+	background: #fff url("/skins/tempus/images/menu/notificationOn.png") no-repeat 2px center;
+	padding: 2px 3px 2px 20px;
+	/*border-left: 1px solid #00a2e5;*/
+	/*border-right: 1px solid #00a2e5;*/
+	font-size: 10px;
+	
+}
+.msgskin .msgNumber{
+	padding: 2px;
+	border: 1px solid #878787;
+	font-size: 10px;	
+}
+.msgskin a{
+	color: #C7E00B !important;
+	text-decoration: none;
+}
+/* HEADER */
+form.formDefault .FormTitle {
+    background-color: #EFEFEF;
+    color: #666667;
+    font-family: 'roboto_condensedregular';
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 4px 5px;
+    text-align: left;
+    text-transform: uppercase;
+}
+form.formDefault .FormMessage {
+		color: #00a2e5;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    text-align: left;
+    line-height: 12px;
+    padding: 5px;    
+}
+form.formDefault .FormTitle a{
+	text-transform: none;
+}
+form.formDefault .FormSubTitle
+{
+    border-bottom: 1px solid #00A2E5;
+    background-color: transparent;
+    color: #00A2E5;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 0 5px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+form.formDefault .FormFieldContent br, form.formDefault .FormFieldContentRadio br {
+    /*display: none;*/
+}
+#pm_main_table .pmgmainMenuBG {
+    width: 100%;
+    color: #c1d72f !important;
+    margin: 0px !important;
+}
+form.formDefault .FormTitleInfo {
+ background-color: #F2F7FF !important;
+    background-image: url("/skins/tempus/images/form/infoTitle.png") !important;
+    background-position: left center !important;
+    background-repeat: no-repeat !important;
+    color: #152E5E;
+    font-size: 7pt;
+    height: 12px;
+    padding-left: 20px;
+}
+/* MENU TAB*/
+table#pm_menu td{
+			height: 22px;
+}   
+table#pm_menu td .contentTab{
+			width:100%;
+} 
+table#pm_menu td.SelectedMenu a, table#pm_menu td.mainMenu a {
+		font-weight:normal;
+		font-size:10px;
+		text-decoration: none;
+		text-transform: uppercase;
+}
+table#pm_menu td.SelectedMenu a, table#pm_menu td.mainMenu a {
+		white-space: nowrap;
+    color: #fff;
+}
+table#pm_menu td.SelectedMenu a:hover, table#pm_menu td.mainMenu a:hover {
+		text-decoration: underline;
+}
+table#pm_menu td.SelectedMenu{
+		height:22px; 
+}
+table#pm_menu td.mainMenu{
+		height:22px; 
+}
+table#pm_menu td.SelectedMenu .a, table#pm_menu td.mainMenu .a{
+		background-repeat:no-repeat;
+		height: 22px;
+		width: 17px !important;
+}
+table#pm_menu td.SelectedMenu .c, table#pm_menu td.mainMenu .c{
+		background-repeat:no-repeat;
+		height: 22px;
+		width: 10px !important;
+}
+table#pm_menu td.SelectedMenu .a{
+    background-image: url('/skins/tempus/images/menu/menu_on_01.png');
+    background-repeat:no-repeat;
+    width: 17px;
+}
+table#pm_menu td.SelectedMenu .b{
+    background-image: url('/skins/tempus/images/menu/menu_on_02.png');
+    background-position:bottom;
+		background-repeat:repeat-x;
+}
+table#pm_menu td.SelectedMenu .c{
+    background-image: url('/skins/tempus/images/menu/menu_on_04.png');
+    background-repeat:no-repeat;
+}
+
+table#pm_menu td.mainMenu .a{
+    background-image: url('/skins/tempus/images/menu/menu_off_01.png');
+    background-repeat:no-repeat;
+}
+table#pm_menu td.mainMenu .b{
+    background-image: url('/skins/tempus/images/menu/menu_off_02.png');
+		background-repeat:repeat-x;
+}		
+		
+ table#pm_menu td.mainMenu .c{
+    background-image: url('/skins/tempus/images/menu/menu_off_04.png');
+    background-repeat:no-repeat;
+}
+table#pm_menu td.mainMenu a.mainMenuHome{
+ 		background: transparent url('/skins/tempus/images/menu/homeOff.png') no-repeat center center scroll;
+    width: 40px;
+    display: block;
+    height: 17px;
+    border-right: 2px solid #014b63;
+    margin-right: 10px;
+}
+table#pm_menu td.SelectedMenu a.mainMenuHome{
+ 		background: transparent url('/skins/tempus/images/menu/home.png') no-repeat center center scroll;
+    width: 40px;
+    height: 17px;
+    display: block;
+    border-right: 2px solid #0099cc;
+    margin-right: 10px;
+}
+/*SUBMENU TAB*/
+ul#pm_submenu{
+  list-style: none;
+  margin:0;
+  padding:0 0 0 2px;
+}
+ul#pm_submenu li{
+  float:left;
+  margin:1px 1px 0 0;
+  padding:3px;
+}
+ul#pm_submenu a{
+  	color: #333333;
+    display: block;
+    font-size: 9px;
+    font-weight: bold;
+    height: auto !important;
+    line-height: 18px;
+    padding-top: 0;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+ul#pm_submenu a img{
+  float:left;
+  max-height: 20px;
+}
+ul#pm_submenu li.SelectedSubMenu{
+    background-image: url('/skins/tempus/images/submenu/submenuon_02.png') !important;
+		background-repeat:repeat-x !important;
+    padding-left:6px !important;
+		padding-right:6px !important;
+		height:20px !important; 
+		position:relative !important;
+		overflow:hidden !important;	
+}
+ul#pm_submenu li.SelectedSubMenu a{
+  color: #fff !important;
+}
+ul#pm_submenu li.SubMenu a{
+  color: #6D6D6D !important;
+}
+ul#pm_submenu li.SubMenu a:hover, ul#pm_submenu li.SelectedSubMenu a:hover{
+ 	text-decoration: underline;
+}
+ul#pm_submenu li.SelectedSubMenu .a, ul#pm_submenu li.SelectedSubMenu .c{
+    position:absolute;
+		background-repeat:no-repeat !important;
+		height: 20px !important;
+		width: 6px !important;
+}
+ul#pm_submenu li.SelectedSubMenu .a{
+    background-image: url('/skins/tempus/images/submenu/submenuon_01.png') !important;
+    left:0px;
+		top:0px;
+}
+ul#pm_submenu li.SelectedSubMenu .c{
+    background-image: url('/skins/tempus/images/submenu/submenuon_04.png') !important;
+    top:0px;
+		right:0px;
+}
+ul#pm_submenu li.SubMenu{
+  /*  background-image: url('/skins/tempus/images/submenu/submenu_02.png') !important/;
+		background-repeat:repeat-x !important;*/
+    padding-left:6px !important;
+		padding-right:6px !important;
+		height:20px !important; 
+		position:relative !important;
+		overflow:hidden !important;
+}
+ul#pm_submenu li.SubMenu .a, ul#pm_submenu li.SubMenu .c{
+    position:absolute;
+		background-repeat:no-repeat !important;
+		height: 20px !important;
+		width: 6px !important;
+}
+ul#pm_submenu li.SubMenu .a{
+   /* background-image: url('/skins/tempus/images/submenu/submenu_01.png') !important;*/
+    left:0px;
+		top:0px;
+}
+ul#pm_submenu li.SubMenu .c{
+    /*background-image: url('/skins/tempus/images/submenu/submenu_04.png') !important;*/
+    top:0px;
+		right:0px;
+}
+
+/*END SUBMENU TAB*/
+
+/* Box Top Model */
+.boxTop, .boxTopBlue
+{
+	height:5px;
+	padding-left:5px;
+	padding-right:5px;
+	position:relative;
+	overflow:hidden;
+}
+.boxTop div, .boxTopBlue div
+{
+	background-color:#FFF;
+}
+.boxTop div.a, .boxTop div.c, .boxTopBlue div.a, .boxTopBlue div.c
+{
+	position:absolute;
+	height:5px;
+}
+.boxTop div.a, .boxTopBlue div.a
+{
+	left:0px;
+	top:0px;
+	width:5px;
+	/*background-image:url(/skins/tempus/images/box/box_01.png) !important;
+	background-color:transparent;*/
+	background-image: none;
+	border-top: 1px solid #666667;
+	border-left: 1px solid #666667;
+}
+.boxTop div.c, .boxTopBlue div.c
+{
+	top:0px;
+	right:0px;
+	width:5px;
+	/*background-image:url(/skins/tempus/images/box/box_04.png) !important;
+	background-color:transparent;*/
+	background-image: none;
+	border-top: 1px solid #666667;
+	border-right: 1px solid #666667;	
+}
+.boxTop div.b, .boxTopBlue div.b
+{
+	width:100%;
+	height:5px;
+	/*background-image:url(/skins/tempus/images/box/box_02.png) !important;
+	background-repeat:repeat-x;*/
+	background-image: none;
+	border-top: 1px solid #666667;
+}
+/* Box Top Model END */
+/* Box Bottom Model */
+.boxBottom, .boxBottomBlue
+{
+	height:6px;
+	padding-left:5px;
+	padding-right:5px;
+	position:relative;
+	overflow:hidden;
+	background-color: #fff;
+}
+.boxBottom div.a, .boxBottom div.c, .boxBottomBlue div.a, .boxBottomBlue div.c
+{
+	position:absolute;
+	width:5px;
+	height:5px;
+}
+.boxBottom div.a, .boxBottomBlue div.a
+{
+	left:0px;
+	bottom:0px;
+	/*background-image:url(/skins/tempus/images/box/box_08.png) !important;
+	background-color:transparent;*/
+	background-image: none;
+	border-bottom: 1px solid #666667;
+	border-left: 1px solid #666667;
+}
+.boxBottom div.c, .boxBottomBlue div.c
+{
+	bottom:0px;
+	right:0px;
+	/*background-image:url(/skins/tempus/images/box/box_10.png) !important;
+	background-color:transparent;*/
+	background-image: none;
+	border-bottom: 1px solid #666667;
+	border-right: 1px solid #666667;
+}
+.boxBottom div.b, .boxBottomBlue div.b
+{
+	width:100%;
+	height:6px;
+	background-image:url(/skins/tempus/images/box/box_11.png) !important;
+	background-repeat:repeat-x;
+	background-color:transparent;
+	background-position: left top;
+	/*border-bottom: 1px solid #666667;	*/
+}
+/* Box Bottom Model END */
+form.formDefault .content, div.treeBase .content, .loginContainer .content
+{
+	background-color:#ffffff;
+	border-left:1px solid #666667;
+	border-right:1px solid #666667;	
+}
+.loginContainer .content
+{
+	padding-top: 8px;
+}
+.loginContainer{
+    display: inline-block;
+    height: 250px;
+    left: 45%;
+    margin-left: -155px;
+    margin-top: -125px;
+    position: absolute;
+    top: 45%;
+    width: 450px;
+    z-index: 200;
+}
+.contentLogin{
+	 display: table;       
+   margin: 0px auto;
+   text-align: center;
+}
+.logoLogin{
+	background-image:url(/skins/tempus/images/layout/logo.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	margin: auto;
+	width: 220;
+	height: 50px;
+	position: relative;
+}
+.pagedTableFooter a {
+ padding-left: 21px !important;
+}
+.boxContentBlue, .pagedTableDefault {
+    background-color: #ffffff;
+    border-left: 1px solid #666667;
+    border-right: 1px solid #666667;
+    padding: 5px;
+}
+/*Estilos añadidos en la version 2.38*/
+.app_menuRight_container___processmaker {
+    background-color: #FAFAFA;
+    border: 1px solid #868686;
+    overflow: hidden;
+    position: absolute;
+    z-index: 10000;
+}
+.app_menuRight_option___processmaker, .app_menuRight_option_over___processmaker, .app_menuRight_optionNull___processmaker {
+    border: 0 solid #FBFFF2;
+    color: black;
+    cursor: default;
+    height: 29px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+}
+.app_menuRight_option_image___processmaker, .app_menuRight_option_image_over___processmaker, .app_menuRight_option_imageNull___processmaker {
+    background-color: #E9EEEE;
+    border-right: 1px solid #C5C5C5;
+    cursor: default;
+    height: 31px;
+    left: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    width: 26px;
+}
+.app_menuRight_option_text___processmaker {
+    color: #003366;
+    cursor: default;
+    font: 8pt Arial, Helvetica, sans-serif;
+    left: 30px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    top: 8px;
+}
+.app_menuRight_option_over___processmaker {
+		background-color: #DCF1FC;
+		background-repeat: repeat-x;
+}
+.processmap_task_label___processmaker {
+    color: #FFFFFF;
+    cursor: move;
+    margin: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+.processmap_text___processmaker {
+    cursor: move;
+    font: bold 8pt Tahoma,MiscFixed;
+    position: absolute;
+    z-index: 10;
+}
+.panel_containerWindow___processmaker {
+    border: 1px solid #AAAAAA;
+    overflow: hidden;
+}
+.panel_frontend___processmaker {
+    background-color: #E0DFE3;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+}
+.panel_titleBar___processmaker {
+    background-color: white;
+    background-image: url("/images/ext/gray/window/top-bottom.png");
+    background-position: 0 -1px;
+    background-repeat: repeat-x;
+    border-bottom: 0 solid #DBE0E5;
+    height: 23px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+.panel_title___processmaker {
+    color: #444444;
+    font: bold 8pt tahoma,MiscFixed;
+    height: 23px;
+    padding-left: 5px;
+    padding-top: 5px;
+    text-align: center;
+    text-shadow: 0 1px 1px #FFFFFF;
+    width: 100%;
+    z-index: 1;
+}
+.panel_close___processmaker {
+    background: url("/images/ext/gray/panel/tool-sprites.gif") no-repeat scroll 0 0 transparent;
+    border: 0 solid red;
+    cursor: pointer;
+    font: 0 tahoma;
+    padding: 0;
+    position: absolute;
+    top: 4px;
+    z-index: 2;
+}
+.panel_modal___processmaker {
+    background-color: black;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+.panel_tab___processmaker {
+    overflow-x: scroll;
+    padding-bottom: 14px;
+    position: absolute;
+    z-index: 3;
+}
+.panel_tabOptionSelectedH___processmaker, .panel_tabOptionOverH___processmaker, .panel_tabOptionSelectedOverH___processmaker {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #F9F9F9;
+    background-image: url("/images/classic/panel.tabSelected.1x3.gif");
+    background-position: 0 -1px;
+    background-repeat: repeat-x;
+    border-color: #E68B2C #919B9C #F9F9F9;
+    border-left: 1px solid #919B9C;
+    border-right: 1px solid #919B9C;
+    border-style: solid;
+    border-width: 1px;
+    color: #000000;
+    font: 8pt Tahoma,MiscFixed;
+    height: 22px;
+    max-height: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-align: center;
+}
+.panel_tabOptionH___processmaker {
+    background-color: #F9F9F9;
+    border: 1px solid #919B9C;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: black;
+    cursor: pointer;
+    font: 8pt Tahoma,MiscFixed;
+    height: 20px;
+    max-height: 9px;
+    overflow: hidden;
+    position: absolute;
+    text-align: center;
+}
+.pagedTableDefault .pagedTable .RowLink a:hover, .module_app_button___gray:hover, .button_pm:hover, .module_app_buttonHover___gray, .module_app_buttonjs___gray.module_app_buttonHover___gray {
+    background: url("/images/ext/gray/button/btn.gif") repeat-x scroll 0 -2168px transparent;
+    border: 1px solid #666666;
+}
+.pagedTableDefault .pagedTable .RowLink a {
+    display: block;
+}
+.pagedTableDefault .pagedTable .RowLink a {
+   /* color: #333333;*/
+}
+.panel_shadow___processmaker {
+    background-color: #000000;
+    position: absolute;
+}
+.x-tab-strip-wrap{
+	  display: none !important;	
+}
+.panel_content___processmaker .formDefault .borderForm .content {
+    height: auto !important;
+}
+.userField{    			
+	background: #fff url(/skins/tempus/images/form/user-silhouette.png) no-repeat left center scroll; 
+	padding-left: 38px;
+	padding-right: 15px;	
+}
+.userPass{
+	background: #fff url(/skins/tempus/images/form/lock_disable.png) no-repeat left center scroll;	
+	padding-left: 38px;
+	padding-right: 15px;
+}
+.userField, .userPass, .userLogin{
+	display: block;
+  margin: 10px auto;
+	font-family: 'armataregular';
+  font-size: 10px;
+	font-weight: normal;  
+}
+
+
+#mainMenuDrop{
+	border:none;
+	border:0px;
+	margin:0px;
+	padding:0px;
+	font-family:'armataregular';
+	font-size:12px;	
+	color:#8e8e8e;
+	float: left;
+	padding-left: 20px;
+}
+#mainMenuDrop ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+#mainMenuDrop li{
+	float:left;
+	position: relative;
+}           
+#mainMenuDrop li.nivel1>a{
+	height: 16px;
+	border-left: 1px dotted #CCCCCC;
+	padding: 3px 5px;
+    text-transform:capitalize;
+}
+#mainMenuDrop li.nivel1:hover>a{
+	color: #fff;	
+}              
+#mainMenuDrop li a{
+	color:#666666;
+	display:block;	
+	text-align:center;
+	text-decoration:none;	
+}
+
+#mainMenuDrop .active, #mainMenuDrop li a:hover, #mainMenuDrop li.nivel1:hover, #mainMenuDrop li.SelectedMenu{
+	background-color:#666667;
+	color:#ffffff !important;
+	text-decoration:none;
+}
+#mainMenuDrop li ul{
+	background:#EDEDED;
+	border: 3px solid #666667;	
+	display:none;
+	height:auto;
+	/*filter:alpha(opacity=85);
+	opacity:0.85;*/ /*transparency to the dropdown menu*/
+	position:absolute;
+	z-index:200;	
+	right: 0;
+}
+#mainMenuDrop li:hover ul{
+	display:block;
+	float: left;
+}
+#mainMenuDrop li li {
+	display:block;
+	float:none;
+}
+#mainMenuDrop li ul a{
+	display:block;
+	font-size:12px;
+	font-style:normal;
+	text-align:left;
+	padding: 5px;	
+	white-space: nowrap;
+}
+#mainMenuDrop li ul a:hover{
+		background:#666667;
+		color:#fff;
+		opacity:1.0;
+		filter:alpha(opacity=100);
+	/*	padding: 5px;*/
+}
+
+.menuIcon{
+	background-image: url(/skins/tempus/images/menu/menu.png) ;
+	background-repeat: no-repeat;	
+	/*width: 16px;*/
+	height: 16px;
+		padding: 2px 8px 2px 30px;	
+}
+.SelectedMenu > a{color: #fff !important;}
+.adminIcon{ background-position: 8px 2px;} 
+.adminIcon:hover, .SelectedMenu .adminIcon{ background-position: 8px -64px;} 
+.dashboardIcon{ background-position: 8px -130px;} 
+.dashboardIcon:hover, .SelectedMenu .dashboardIcon{ background-position: 8px -196px;} 
+.designerIcon{ background-position: 8px -262px;} 
+.designerIcon:hover, .SelectedMenu .designerIcon{ background-position: 8px -328px;} 
+.featuresIcon{ background-position: 8px -394px;} 
+#mainMenuDrop li.nivel1:hover>a.featuresIcon,  .featuresIcon:hover{ background-position: 8px -460px;} 
+.homeIcon{ background-position: 8px -526px;} 
+.homeIcon:hover, .SelectedMenu .homeIcon{ background-position: 8px -592px;} 
+.logoutIcon{ background-position: 8px -658px;} 
+.logoutIcon:hover, .SelectedMenu { background-position: 8px -724px;} 
+.userIcon{ background-position: 8px -790px;} 
+#mainMenuDrop li.nivel1:hover>a.userIcon, .userIcon:hover{ background-position: 8px -856px;} 
+
+.formIcon{
+	background-image: url(/skins/tempus/images/form/form.png) ;
+	background-repeat: no-repeat;	
+	height: 16px;	
+	padding: 2px 4px 2px 18px;
+	line-height: 16px;
+}
+.formIcon:hover{
+	background-color: #00a2e5;	
+	color: #fff;
+}
+.formIcon-add{ background-position: 0 0;} 
+.formIcon-add:hover{ background-position: 0 -36px;} 
+.formIcon-close{ background-position: 0 -72px;} 
+.formIcon-close:hover{ background-position: 0 -108px;} 
+.formIcon-date{ background-position: 0 -144px;} 
+.formIcon-date:hover{ background-position: 0 -180px;} 
+.formIcon-delete{ background-position: 0 -216px;} 
+.formIcon-delete:hover{ background-position: 0 -252px;} 
+.formIcon-less{ background-position: 0 -288px;} 
+.formIcon-less:hover{ background-position: 0 -324px;} 
+.formIcon-next{ background-position: 0 -360px;} 
+.formIcon-next:hover{ background-position: 0 -396px;} 
+.formIcon-previous{ background-position: 0 -432px;} 
+.formIcon-previous:hover{ background-position: 0 -468px;} 
+.formIcon-required{ background-position: 0 -504px;} 
+.formIcon-required:hover{ background-position: 0 -540px;} 
+.tableGrid .Record img, .FormDate img{
+	width: 0px;
+	height: 0px;	
+}
+.tableGrid .Record a{
+	background-image: url(/skins/tempus/images/form/form.png);
+	background-position: 0 0;
+	background-repeat: no-repeat;	
+	height: 16px;	
+	padding: 1px 4px 1px 18px;	
+	line-height: 16px;	
+}
+.tableGrid .Record a:hover{
+	background-position: 0 -36px;
+	background-color: #00a2e5;	
+	color: #fff;
+	text-decoration: none;
+}
+.tableGrid .tableGrid td{
+	/*vertical-align: top;*/
+}
+.tableGrid .tableGrid a{
+/*	background-image: url(/skins/tempus/images/form/form.png);
+	background-position: 0 -216px;
+	background-repeat: no-repeat;		
+	padding: 1px 4px 1px 12px;	*/
+	height: 16px;	
+	line-height: 16px;	
+	vertical-align: bottom;
+	margin: auto;
+}
+
+
+.tableGrid .tableGrid a:hover{
+/*	background-position: 0 -252px;
+	background-color: #00a2e5;	
+	color: #fff;*/
+	text-decoration: none;
+}
+.FormDate a[id*="date1"]{
+	background-image: url(/skins/tempus/images/form/form.png);
+	background-position: 0 -144px;
+	background-repeat: no-repeat;	
+	height: 16px;
+	width: 16px;	
+	padding: 6px 4px 6px 16px;	
+	line-height: 16px;	
+	vertical-align: bottom;
+	margin: auto;
+}
+.FormDate a[id*="date1"]:hover{
+	background-position: 0 -180px;	
+	color: #fff;
+	text-decoration: none;
+}
+.FormDate a{
+	background-image: url(/skins/tempus/images/form/form.png);
+	background-position: 0 -72px;
+	background-repeat: no-repeat;	
+	height: 16px;
+	width: 16px;	
+	padding: 10px 4px 6px 16px;	
+	line-height: 16px;	
+	vertical-align: bottom;
+	margin: auto;
+}
+.FormDate a:hover{
+	background-position: 0 -108px;
+	color: #fff;
+	text-decoration: none;
+}
+.FormRequiredText{
+		
+}
+ .tooltipPM{display:inline;position:relative}
+ .tooltipPM:hover{text-decoration:none; cursor: pointer;}
+ .tooltipPM:hover:after{
+   background: #ccc; /*#111;*/
+   /*background:rgba(0,0,0,.8);*/
+   border-radius:7px;
+   top:0%; /*acomoda el tool tip verticalmente desde la parte de arriba de la capa.*/
+   color:#fff;
+   content:attr(name);
+   display:block;
+   right:120%; /*acomoda el tooltipPM en x*/
+   padding:2px 5px;
+   position:absolute;
+   white-space:nowrap;  /*Para que se muestre en una linea*/
+   /*width: 90px;*/
+   z-index:9000;
+   text-transform: capitalize;
+   font-size: 10px;
+  }
+  .tooltipPM:hover:before{
+    border:solid;
+    border-color: transparent #ccc ;  /*#111 transparent;*/ /*da la forma triangular de la flechita*/
+    border-width: 5px 0px 5px 10px; /*alto de la flecha apunta arriba o abajo dependiendo del 0*/
+    top:4px; /*acomoda la flecha verticalmente desde la parte de arriba de la capa - el alto de la flecha*/
+    content:"";
+    display:block;
+    left:-20%;
+    position:absolute;
+    z-index:19000;
+   }
+
+.loginContainer #contentLogo > table{
+margin: auto;
+}
+.loginContainer #contentLogo form.formDefault .FormTitle{
+    border: none;
+    background: none;
+    display: none;
+}
+
+.loginContainer #contentLogo .content{
+    border: none;
+}
+.loginContainer #contentLogo .boxTop, .loginContainer #contentLogo .boxBottom{
+    display: none;
+}
+
+/*#contentLogo form.formDefault .FormTitle span {
+    border-bottom: 1px dotted #666667;
+    color: #666667;
+    display: block;
+    font-family: 'roboto_condensedregular';
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 10px 0;
+    text-align: center;
+    text-transform: uppercase;
+}*/

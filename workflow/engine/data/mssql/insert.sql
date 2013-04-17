@@ -5661,7 +5661,7 @@ SELECT 'LABEL','ID_MESSAGE_LOGIN','en','The default language that is configured 
   UNION ALL
 SELECT 'LABEL','ID_MESSAGE_SYSTEM','en','The language that is set by default applies directly when the domain is entered (eg.- http://127.0.0.1:8081), the system reads the configuration and redirects the link to the selected language','2012-07-10' 
   UNION ALL
-SELECT 'LABEL','ID_MESSAGE_SYSTEM2','en','(eg.- http://127.0.0.1:8081/sys/en/classic/login/login), it should be emphasized that this configuration is for all environments.','2012-07-10' 
+SELECT 'LABEL','ID_MESSAGE_SYSTEM2','en','(eg.- http://127.0.0.1:8081/sys/en/tempus/login/login), it should be emphasized that this configuration is for all environments.','2012-07-10' 
   UNION ALL
 SELECT 'LABEL','ID_PROCESSMAP_SEQUENTIAL','en','Sequential','2012-07-11' 
   UNION ALL
