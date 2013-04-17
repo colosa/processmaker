@@ -421,6 +421,7 @@ Ext.onReady(function () {
         xtype      : 'textfield',
         width      : 260,
         allowBlank : false,
+        hidden     : (typeof EDITPROFILE != "undefined" && EDITPROFILE == 1)? true : false,
         listeners: {
           blur : function(ob)
           {
