@@ -822,26 +822,36 @@ class Installer extends Controller
             G::loadClass( 'system' );
             $envFile = PATH_CONFIG . 'env.ini';
 
-            //writting for new installtions to use the classic skin
-            $updatedConf['default_skin'] = 'classic';
-            $info->uri = '/sys' . $_REQUEST['workspace'] . '/en/classic/login/login';
-
-            try {
-                G::update_php_ini( $envFile, $updatedConf );
-            } catch (Exception $e) {
-                $info->result = false;
-                $info->message = G::LoadTranslation('ID_PROCESSMAKER_WRITE_CONFIG_INDEX', SYS_LANG, Array($envFile));
-                $info->message .= G::LoadTranslation('ID_PROCESSMAKER_UI_NOT_INSTALL');
-                $this->installLog( G::LoadTranslation('ID_INSTALL_BUT_ERROR', SYS_LANG, Array('env.ini')));
-                return $info;
-            }
-
             // getting configuration from env.ini
             $sysConf = System::getSystemConfiguration( $envFile );
+
+            $langUri = 'en';
+            if (isset($sysConf['default_lang'])) {
+                $langUri = $sysConf['default_lang'];
+            }
+
+            $skinUri = 'classic';
+            if (isset($sysConf['default_skin'])) {
+                $skinUri = $sysConf['default_skin'];
+            }
+
+            $updatedConf['default_lang'] = $langUri;
+            $updatedConf['default_skin'] = $skinUri;
+            $info->uri =  PATH_SEP . 'sys' . $_REQUEST['workspace'] . PATH_SEP . $langUri . PATH_SEP . $skinUri . PATH_SEP . 'login' . PATH_SEP . 'login';
 
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $this->buildParternExtras($adminUsername, $adminPassword, $_REQUEST['workspace'], SYS_LANG);
             } else {
+                try {
+                    G::update_php_ini( $envFile, $updatedConf );
+                } catch (Exception $e) {
+                    $info->result = false;
+                    $info->message = G::LoadTranslation('ID_PROCESSMAKER_WRITE_CONFIG_INDEX', SYS_LANG, Array($envFile));
+                    $info->message .= G::LoadTranslation('ID_PROCESSMAKER_UI_NOT_INSTALL');
+                    $this->installLog( G::LoadTranslation('ID_INSTALL_BUT_ERROR', SYS_LANG, Array('env.ini')));
+                    return $info;
+                }
+
                 try {
                     // update the main index file
                     $indexFileUpdated = System::updateIndexFile(array('lang' => 'en','skin' => $updatedConf['default_skin']));
