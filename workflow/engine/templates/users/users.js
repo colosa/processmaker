@@ -1249,31 +1249,6 @@ function loadUserData()
                 //
             }
 
-            storeCountry.load();
-
-            storeRegion.load({
-                params: {
-                    IC_UID : data.user.USR_COUNTRY
-                }
-            });
-
-            storeLocation.load({
-                params: {
-                    IC_UID : data.user.USR_COUNTRY,
-                    IS_UID : data.user.USR_CITY
-                }
-            });
-
-            storeReplacedBy.load();
-
-            storeCalendar.load();
-
-            storeRole.load();
-
-            storeDefaultMainMenuOption.load();
-
-            storeDefaultCasesMenuOption.load();
-
             comboCountry.store.on("load", function(store) {
                 comboCountry.setValue(data.user.USR_COUNTRY);
             });
@@ -1306,12 +1281,15 @@ function loadUserData()
             if (infoMode) {
                 comboDefaultMainMenuOption.store.on("load", function (store) {
                     comboDefaultMainMenuOption.setValue(data.user.PREF_DEFAULT_MENUSELECTED);
+
+                    storeDefaultCasesMenuOption.load();
                 });
 
                 comboDefaultCasesMenuOption.store.on("load", function (store) {
                     if (comboDefaultMainMenuOption.getValue() == 'PM_CASES') {
                         comboDefaultCasesMenuOption.enable();
                     }
+
                     comboDefaultCasesMenuOption.setValue(data.user.PREF_DEFAULT_CASES_MENUSELECTED);
                 });
             } else {
@@ -1325,6 +1303,31 @@ function loadUserData()
             }
 
             previousUsername = Ext.getCmp("USR_USERNAME").getValue();
+
+            storeCountry.load();
+
+            storeRegion.load({
+                params: {
+                    IC_UID : data.user.USR_COUNTRY
+                }
+            });
+
+            storeLocation.load({
+                params: {
+                    IC_UID : data.user.USR_COUNTRY,
+                    IS_UID : data.user.USR_CITY
+                }
+            });
+
+            storeReplacedBy.load();
+
+            storeCalendar.load();
+
+            storeRole.load();
+
+            storeDefaultMainMenuOption.load();
+
+            //storeDefaultCasesMenuOption.load();
         },
         failure: function (r, o) {
             //viewport.getEl().unmask();
