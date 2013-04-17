@@ -3621,6 +3621,10 @@ class processMap
                     $sObjectType = G::LoadTranslation('ID_CASES_NOTES');
                     $sObject = 'N/A';
                     break;
+                case 'MSGS_HISTORY':
+                    $sObjectType = G::LoadTranslation('ID_ALL');
+                    $sObject = G::LoadTranslation('ID_ALL');
+                    break;
                 default:
                     $sObjectType = G::LoadTranslation('ID_ALL');
                     $sObject = G::LoadTranslation('ID_ALL');
@@ -3635,8 +3639,7 @@ class processMap
             //Obtain action (permission)
             $sAction = G::LoadTranslation('ID_' . $aRow['OP_ACTION']);
             //Add to array
-            $aObjectsPermissions[] = array('OP_UID' => $aRow['OP_UID'], 'TASK_TARGET' => $sTaskTarget, 'GROUP_USER' => $sUserGroup, 'TASK_SOURCE' => $sTaskSource, 'OBJECT_TYPE' => $sObjectType, 'OBJECT' => $sObject, 'PARTICIPATED' => $sParticipated, 'ACTION' => $sAction, 'OP_CASE_STATUS' => $aRow['OP_CASE_STATUS']
-            );
+            $aObjectsPermissions[] = array('OP_UID' => $aRow['OP_UID'], 'TASK_TARGET' => $sTaskTarget, 'GROUP_USER' => $sUserGroup, 'TASK_SOURCE' => $sTaskSource, 'OBJECT_TYPE' => $sObjectType, 'OBJECT' => $sObject, 'PARTICIPATED' => $sParticipated, 'ACTION' => $sAction, 'OP_CASE_STATUS' => $aRow['OP_CASE_STATUS']);
             $oDataset->next();
         }
         global $_DBArray;
@@ -3894,8 +3897,12 @@ class processMap
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher();
         $G_PUBLISH->AddContent('xmlform', 'xmlform', 'processes/processes_NewObjectPermission', '',
-                    array('GROUP_USER' => $usersGroups, 'LANG' => SYS_LANG, 'PRO_UID' => $sProcessUID, 'ID_DELETE' => G::LoadTranslation('ID_DELETE')
-                ), 'processes_SaveObjectPermission');
+            array('GROUP_USER' => $usersGroups,
+                  'LANG' => SYS_LANG,
+                  'PRO_UID' => $sProcessUID,
+                  'ID_DELETE' => G::LoadTranslation('ID_DELETE'),
+                  'ID_RESEND' => G::LoadTranslation('ID_RESEND')
+            ), 'processes_SaveObjectPermission');
         G::RenderPage('publish', 'raw');
         return true;
     }
@@ -4048,6 +4055,7 @@ class processMap
 
         $aFields['GROUP_USER'] = $usersGroups;
         $aFields['ID_DELETE'] = G::LoadTranslation('ID_DELETE');
+        $aFields['ID_RESEND'] = G::LoadTranslation('ID_RESEND');
 
         global $G_PUBLISH;
         $G_PUBLISH = new Publisher();
