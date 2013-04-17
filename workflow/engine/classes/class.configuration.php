@@ -508,7 +508,6 @@ class Configurations // extends Configuration
         $oConf = new Configurations();
         $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
         $creationDateMask = isset($oConf->aConfig['dateFormat']) ? $oConf->aConfig['dateFormat'] : '';
-
         if ($creationDateMask != '') {
             if (strpos($dateTime, ' ') !== false) {
                 list ($date, $time) = explode(' ', $dateTime);
@@ -517,7 +516,23 @@ class Configurations // extends Configuration
                 $dateTime = date($creationDateMask, mktime($h, $i, $s, $m, $d, $y));
             } else {
                 list ($y, $m, $d) = explode('-', $dateTime);
-                $dateTime = date($creationDateMask, mktime(0, 0, 0, $m, $d, $y));
+                $newCreation = '';
+                $maskTime = array('d' => '%d', 'D' => '%a', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%h', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%P', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
+                $creationDateMask = trim($creationDateMask);
+                for ($i = 0; $i < strlen($creationDateMask); $i++) {
+                    if ($creationDateMask[$i] == ' ' || $creationDateMask[$i] == ',') {
+                        $newCreation .= $creationDateMask[$i];
+                    } else {
+                        $newCreation .= $maskTime[$creationDateMask[$i]];
+                    }
+                }
+                if (substr(SYS_LANG,0,2) == 'pt') {
+                    setlocale(LC_TIME,"pt_BR");
+                } else if (substr(SYS_LANG,0,2) == 'es') {
+                    setlocale(LC_TIME,"es_ES");
+                }
+
+                $dateTime = utf8_encode(strftime($newCreation, mktime(0, 0, 0, $m, $d, $y)));
             }
         }
 
