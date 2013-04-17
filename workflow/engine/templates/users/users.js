@@ -394,6 +394,7 @@ Ext.onReady(function () {
     selectOnFocus : true,
     editable      : false,
     allowBlank    : false,
+    hidden        : (typeof(ROLE) != "undefined" && ROLE == "PROCESSMAKER_ADMIN")? false : true,
     triggerAction : 'all',
     mode          : 'local'
   });
@@ -421,6 +422,8 @@ Ext.onReady(function () {
         xtype      : 'textfield',
         width      : 260,
         allowBlank : false,
+        hidden     : (typeof EDITPROFILE != "undefined" && EDITPROFILE == 1)? true : false,
+        hidden     : (typeof(ROLE) != "undefined" && ROLE == "PROCESSMAKER_ADMIN")? false : true,
         listeners: {
           blur : function(ob)
           {

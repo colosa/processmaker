@@ -30,6 +30,7 @@ $oHeadPublisher = & headPublisher::getSingleton();
 $oHeadPublisher->addExtJsScript( 'users/users', true ); //adding a javascript file .js
 // $oHeadPublisher->addContent('users/users'); //adding a html file  .html.
 $oHeadPublisher->assign( 'USR_UID', $aFields['USR_UID'] );
+$oHeadPublisher->assign( 'ROLE', $aFields['USR_ROLE']);
 $oHeadPublisher->assign( 'infoMode', true );
 $oHeadPublisher->assign( 'EDITPROFILE', 1);
 $oHeadPublisher->assign( 'canEdit', $canEdit );
