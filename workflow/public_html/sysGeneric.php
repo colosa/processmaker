@@ -522,7 +522,7 @@ if (defined( 'SYS_TEMP' ) && SYS_TEMP != '') {
                     $controller->setHttpRequestData( $_REQUEST );
                     $controller->call( $controllerAction );
                 }
-            } else { // classic sysLogin interface
+            } else { // tempus sysLogin interface
                 require_once (PATH_METHODS . "login/sysLogin.php");
                 die();
             }
@@ -826,7 +826,7 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
                 } else if (strpos( $_SERVER['REQUEST_URI'], '/home' ) !== false) { //verify is it is using the uxs skin for simplified interface
                     $loginUrl = 'home/login';
                 } else {
-                    $loginUrl = 'login/login'; // just set up the classic login
+                    $loginUrl = 'login/login'; // just set up the tempus login
                 }
 
                 if (empty( $_POST )) {

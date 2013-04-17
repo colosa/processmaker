@@ -3542,7 +3542,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','APP_TITLE_CASE_LABEL_UPDATE','en','The System has detected that the changes on case labels will affect more than 1000 records, so the work will be scheduled by the cron to perform the update the next time the cron will run.','2012-07-03') ,
 ( 'LABEL','ID_MESSAGE_LOGIN','en','The default language that is configured in this place is for the "dropdown" of the languages that are displaying on the login screen, this configuration is set for each workspace.','2012-07-10') ,
 ( 'LABEL','ID_MESSAGE_SYSTEM','en','The language that is set by default applies directly when the domain is entered (eg.- http://127.0.0.1:8081), the system reads the configuration and redirects the link to the selected language','2012-07-10') ,
-( 'LABEL','ID_MESSAGE_SYSTEM2','en','(eg.- http://127.0.0.1:8081/sys/en/classic/login/login), it should be emphasized that this configuration is for all environments.','2012-07-10') ,
+( 'LABEL','ID_MESSAGE_SYSTEM2','en','(eg.- http://127.0.0.1:8081/sys/en/tempus/login/login), it should be emphasized that this configuration is for all environments.','2012-07-10') ,
 ( 'LABEL','ID_PROCESSMAP_SEQUENTIAL','en','Sequential','2012-07-11') ,
 ( 'LABEL','ID_PROCESSMAP_SELECTION','en','Selection','2012-07-11') ,
 ( 'LABEL','ID_PROCESSMAP_EVALUATION','en','Evaluation','2012-07-11') ,

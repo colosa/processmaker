@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<skinConfiguration>
+    <information>
+        <id>1861572265149e5792ebaf7010981850</id>
+        <name>TEMPUS</name>
+        <workspace></workspace>
+        <description>New default skin for ProcessMaker</description>
+        <author>ProcessMaker Team - eLiZ</author>
+        <version>2.5</version>
+        <createDate>2013-03-20 12:36:09</createDate>
+        <modifiedDate>2013-03-20 12:36:09</modifiedDate>
+        <dropdownMenu>1</dropdownMenu>
+    </information>
+    <cssFiles>
+        <skin>
+            <cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="form.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
+            <cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
+            <cssFile file="xmlcolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="jscolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+        </skin>
+        <blank>
+            <cssFile file="style.css" enabledBrowsers="ALL"	disabledBrowsers=""></cssFile>
+            <cssFile file="sprite.css" disabledBrowsers="" enabledBrowsers="ALL"></cssFile>
+            <cssFile file="user_defined.css" disabledBrowsers="" enabledBrowsers="ALL" ></cssFile>
+            <cssFile file="form.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
+        </blank>
+        <submenu>
+            <cssFile file="style.css" enabledBrowsers="ALL"	disabledBrowsers=""></cssFile>
+            <cssFile file="sprite_ie.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
+            <cssFile file="sprite.css"	enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
+            <cssFile file="form.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
+        </submenu>
+        <raw>
+        </raw>
+        <tracker>
+            <cssFile file="style.css" enabledBrowsers="ALL"	disabledBrowsers=""></cssFile>
+            <cssFile file="sprite.css" disabledBrowsers="" enabledBrowsers="ALL"></cssFile>
+            <cssFile file="user_defined.css" disabledBrowsers="" enabledBrowsers="ALL" ></cssFile>
+            <cssFile file="form.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
+        </tracker>
+        <extjs>
+            <cssFile file="xtheme-tempus.css" enabledBrowsers="ALL"	disabledBrowsers=""></cssFile>
+            <cssFile file="pmos-xtheme-tempus.css" enabledBrowsers="ALL"	disabledBrowsers=""></cssFile>				
+            <cssFile file="sprite.css" disabledBrowsers=""	enabledBrowsers="ALL"></cssFile>
+            <cssFile file="user_defined.css" disabledBrowsers="" enabledBrowsers="ALL" ></cssFile>
+            <cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
+            <cssFile file="xmlcolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+            <cssFile file="jscolors.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
+        </extjs>
+    </cssFiles>
+</skinConfiguration>

@@ -822,9 +822,9 @@ class Installer extends Controller
             G::loadClass( 'system' );
             $envFile = PATH_CONFIG . 'env.ini';
 
-            //writting for new installtions to use the classic skin
-            $updatedConf['default_skin'] = 'classic';
-            $info->uri = '/sys' . $_REQUEST['workspace'] . '/en/classic/login/login';
+            //writting for new installtions to use the tempus skin
+            $updatedConf['default_skin'] = 'tempus';
+            $info->uri = '/sys' . $_REQUEST['workspace'] . '/en/tempus/login/login';
 
             try {
                 G::update_php_ini( $envFile, $updatedConf );
@@ -1038,7 +1038,7 @@ class Installer extends Controller
             $this->installLog( "Install completed Succesfully" );
             $info->result = true;
             $info->message = 'Succesfully';
-            $info->url = '/sys' . $_REQUEST['workspace'] . '/en/classic/main/login';
+            $info->url = '/sys' . $_REQUEST['workspace'] . '/en/tempus/main/login';
         } catch (Exception $e) {
             $info->result = false;
             $info->message = $e->getMessage();

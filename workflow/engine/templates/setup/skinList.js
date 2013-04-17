@@ -130,7 +130,7 @@ Ext.onReady(function(){
     listeners:{
       rowselect: function(sm){
         rowSelected = infoGrid.getSelectionModel().getSelected();
-        if((rowSelected.data.SKIN_FOLDER_ID)&&((rowSelected.data.SKIN_FOLDER_ID!="classic"))){
+        if((rowSelected.data.SKIN_FOLDER_ID)&&((rowSelected.data.SKIN_FOLDER_ID!="classic") && (rowSelected.data.SKIN_FOLDER_ID!="tempus") )) {
           exportButton.enable();
           deleteButton.enable();
         }else{
@@ -694,7 +694,7 @@ importSkin = function(){
 exportSkin = function(){
   viewport.getEl().mask(_('ID_SKIN_EXPORTING'));
   rowSelected = infoGrid.getSelectionModel().getSelected();
-  if((rowSelected.data.SKIN_FOLDER_ID)&&((rowSelected.data.SKIN_FOLDER_ID!="classic"))){
+  if((rowSelected.data.SKIN_FOLDER_ID)&&((rowSelected.data.SKIN_FOLDER_ID!="classic") && (rowSelected.data.SKIN_FOLDER_ID!="tempus") )) {
     Ext.Ajax.request({
       url: 'skin_Ajax',
       params: {

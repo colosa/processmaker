@@ -249,7 +249,7 @@ class Publisher
                 $template = PATH_CORE . 'templates/' . $Part['Template'] . '.html';
 
                 //erik: new feature, now templates such as xmlform.html can be personalized via skins
-                if (defined( 'SYS_SKIN' ) && strtolower( SYS_SKIN ) != 'classic') {
+                if (defined( 'SYS_SKIN' ) && strtolower( SYS_SKIN ) != 'classic' && strtolower( SYS_SKIN ) != 'tempus') {
                     // First, verify if the template exists on Custom skins path
                     if (is_file( PATH_CUSTOM_SKINS . SYS_SKIN . PATH_SEP . $Part['Template'] . '.html' )) {
                         $template = PATH_CUSTOM_SKINS . SYS_SKIN . PATH_SEP . $Part['Template'] . '.html';

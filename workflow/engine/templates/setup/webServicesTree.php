@@ -42,7 +42,7 @@ if (isset ( $_GET ['x'] )) {
     }
 } else {
 	if (! isset ( $_SESSION ['END_POINT'] )) {
-		//$wsdl = 'http://'.$_SERVER['HTTP_HOST'].'/sys'.SYS_SYS.'/en/classic/services/wsdl';
+		//$wsdl = 'http://'.$_SERVER['HTTP_HOST'].'/sys'.SYS_SYS.'/en/tempus/services/wsdl';
 		$wsdl = 'http://' . $_SERVER ['HTTP_HOST'];
 		$workspace = SYS_SYS;
 	} else {
@@ -51,7 +51,7 @@ if (isset ( $_GET ['x'] )) {
 	}
 }
 
-$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/en/classic/services/wsdl2';
+$defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVER_PORT'] . '/sys' . SYS_SYS . '/en/tempus/services/wsdl2';
 
 $wsdl = isset ( $_SESSION ['END_POINT'] ) ? $_SESSION ['END_POINT'] : $defaultEndpoint;
 
