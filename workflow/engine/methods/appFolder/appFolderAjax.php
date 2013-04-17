@@ -941,6 +941,7 @@ function copyMoveAction($type)
     $itemField["triggerAction"] = "all";
     $itemField["store"]         = $folderResult;
     $itemField["valueField"]    = "FOLDER_UID";
+    $itemField["editable"]    = false;
     $itemField["displayField"]  = "FOLDER_NAME";
     $itemField["selectOnFocus"] = true;
     $itemField["tpl"]           = '<tpl for="."><div ext:qtip="{field2}" class="x-combo-list-item">{field2}</div></tpl>';
