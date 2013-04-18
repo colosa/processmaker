@@ -520,10 +520,10 @@ class Configurations // extends Configuration
                 $maskTime = array('d' => '%d', 'D' => '%a', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%h', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%P', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
                 $creationDateMask = trim($creationDateMask);
                 for ($i = 0; $i < strlen($creationDateMask); $i++) {
-                    if ($creationDateMask[$i] == ' ' || $creationDateMask[$i] == ',') {
-                        $newCreation .= $creationDateMask[$i];
-                    } else {
+                    if ($creationDateMask[$i] != ' ' && isset($maskTime[$creationDateMask[$i]])) {
                         $newCreation .= $maskTime[$creationDateMask[$i]];
+                    } else {
+                        $newCreation .= $creationDateMask[$i];
                     }
                 }
 
