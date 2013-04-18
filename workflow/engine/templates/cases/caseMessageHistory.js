@@ -7,9 +7,139 @@
       window.parent.tabIframeWidthFix2(idIframe);
     }
 
+    function windowPreviewMessage(rowSelected) {
+        windowMessage = new Ext.Window({
+            title: '',
+            width: 600,
+            height: 420,
+            border: false,
+            layout : 'fit',
+            items:
+            [
+              {
+                xtype: 'form',
+                frame: true,
+                border: false,
+                defaults: {
+                    width: 150
+                },
+                items: [
+                  {
+                    xtype: 'textfield',
+                    fieldLabel: _("ID_FROM"),
+                    id:'From',
+                    anchor: '100%',
+                    arrowAlign:'center',
+                    readOnly: true,
+                    name: 'From'
+                  },
+                  {
+                    xtype: 'textfield',
+                    fieldLabel: _("ID_TO"),
+                    id: 'To',
+                    anchor: '100%',
+                    arrowAlign:'center',
+                    readOnly: true,
+                    name: 'To'
+                  },
+                  {
+                    xtype: 'textfield',
+                    fieldLabel: _('ID_SUBJECT'),
+                    id: 'Subjet',
+                    anchor: '100%',
+                    arrowAlign:'center',
+                    readOnly: true,
+                    name: 'Subjet'
+                  },
+                  {
+                    xtype: 'textfield',
+                    fieldLabel: _("DATE_LABEL"),
+                    id: 'date',
+                    arrowAlign:'center',
+                    readOnly: true,
+                    name: 'Status'
+                  },
+                  {
+                    name : 'body',
+                    id:'body',
+                    hideLabel:true,
+                    xtype: 'htmleditor',
+                    autoScroll: true,
+                    readOnly: true,
+                    x: 1,
+                    y: 1,
+                    enableAlignments:false,
+                    enableColors:false,
+                    enableFont:false,
+                    enableFontSize:false,
+                    enableFormat:false,
+                    enableLinks:false,
+                    enableLists:false,
+                    enableSourceEdit:false,
+                    anchor: '100%',
+                    height: 260
+                  }
+                ]
+              }
+            ]
+        });
+
+        //load fields from rowSelect
+        Ext.getCmp('From').setValue(rowSelected.data.APP_MSG_FROM);
+        Ext.getCmp('To').setValue(rowSelected.data.APP_MSG_TO);
+        Ext.getCmp('Subjet').setValue(rowSelected.data.APP_MSG_SUBJECT);
+        Ext.getCmp('date').setValue(rowSelected.data.APP_MSG_DATE);
+        Ext.getCmp('body').setValue(rowSelected.data.APP_MSG_BODY);
+
+        //show windows message
+        windowMessage.show(windowMessage);
+
+    }
+
+    function resendDialog(rowSelected) {
+
+        Ext.Msg.show({
+            title:'',
+            msg: _('ID_ARE_YOU_SURE_RESEND')+"?",
+            buttons: Ext.Msg.OKCANCEL,
+            icon: Ext.MessageBox.QUESTION,
+            fn: function(btn, text){
+                if(btn=='ok'){
+                    //!dataGrid
+                    var idMessage = rowSelected.data.ID_MESSAGE;
+                    var subjectMessage = rowSelected.data.APP_MSG_SUBJECT;
+                    var dateMessage = rowSelected.data.APP_MSG_DATE;
+
+                    var tabName = 'sendMailMessage_'+idMessage;
+                    var tabTitle = 'Resend('+subjectMessage+' '+dateMessage+')';
+
+                    ActionTabFrameGlobal.tabName = tabName;
+                    ActionTabFrameGlobal.tabTitle = tabTitle;
+
+                    //window.parent.Actions.tabFrame(tabName);
+                    var tabNameArray = tabName.split('_');
+                    var APP_UID = tabNameArray[1];
+                    var APP_MSG_UID = tabNameArray[2];
+
+                    messageHistoryGridListMask = new Ext.LoadMask(Ext.getBody(), {msg:_('ID_LOADING')});
+                    messageHistoryGridListMask.show();
+
+                    var url = "caseMessageHistory_Ajax.php?actionAjax=sendMailMessage_JXP&APP_UID="+APP_UID+"&APP_MSG_UID="+APP_MSG_UID;
+                    ajaxPostRequest(url,'caseMessageHistory_RSP');
+
+                }
+
+            },
+            animEl: 'elId'
+        });
+    }
+
+
     previewMessage = function() {
       var rowSelected =  Ext.getCmp('processesGrid').getSelectionModel().getSelected();
       if (rowSelected) {
+        windowPreviewMessage(rowSelected);
+        /*
         windowMessage = new Ext.Window({
           title: '',
           width: 600,
@@ -95,6 +225,8 @@
 
         //show windows message
         windowMessage.show(windowMessage);
+        */
+
       }
       else {
         Ext.Msg.show({
@@ -326,7 +458,8 @@ var ActionTabFrameGlobal = '';
               {name : 'APP_MSG_FROM'},
               {name : 'APP_MSG_TO'},
               {name : 'APP_MSG_STATUS'},
-              {name : 'APP_MSG_BODY'}
+              {name : 'APP_MSG_BODY'},
+              {name : 'MSGS_HISTORY'}
 
             ]
           }
@@ -389,7 +522,7 @@ var ActionTabFrameGlobal = '';
         enableHdMenu: true,
         frame:false,
         //plugins: expander,
-        cls : 'grid_with_checkbox',
+        // cls : 'grid_with_checkbox',
         columnLines: true,
         viewConfig: {
           forceFit:true
@@ -408,9 +541,53 @@ var ActionTabFrameGlobal = '';
             {header: _("ID_FROM"), dataIndex: 'APP_MSG_FROM', width: 60, renderer: escapeHtml},
             {header: _("ID_TO"), dataIndex: 'APP_MSG_TO', width: 60, renderer: escapeHtml},
             {header: _("ID_STATUS"), dataIndex: 'APP_MSG_STATUS', width: 50},
-            {header: _("ID_APP_MSG_BODY"), dataIndex: 'APP_MSG_BODY', width: 50,hidden:true}          ]
+            {header: _("ID_APP_MSG_BODY"), dataIndex: 'APP_MSG_BODY', width: 50,hidden:true},
+            {id:'MSGS_HISTORY', dataIndex: 'MSGS_HISTORY', hidden:true, hideable:false},
+            {
+                // header: _("ID_RESEND"),
+                xtype: 'actioncolumn',
+                width: 60,
+                items: [
+                {
+                     getClass: function(v, meta, rec) {
+                         this.items[0].tooltip = _("ID_RESEND");
+                         if (rec.get('MSGS_HISTORY') === 'RESEND') {
+                             return 'button_menu_ext ss_sprite ss_email_attach';
+                         } else {
+                             return 'button_menu_ext ss_sprite ss_lock';
+                         }
+                     },
+                     handler: function(grid, rowIndex, colIndex) {
+                         var rec = store.getAt(rowIndex);
+                         if (rec.get('MSGS_HISTORY') === 'RESEND') {
+                            resendDialog(rec);
+                         }
+                    }
+                },
+                {
+                     getClass: function(v, meta, rec) {
+                         this.items[1].tooltip = _("ID_PREVIEW");
+                         if (rec.get('MSGS_HISTORY') === 'VIEW' || rec.get('MSGS_HISTORY') === 'RESEND') {
+                             return 'button_menu_ext ss_sprite ss_magnifier';
+                         } else {
+                             return 'button_menu_ext ss_sprite ss_cancel';
+                         }
+                     },
+                     handler: function(grid, rowIndex, colIndex) {
+                         var rec = store.getAt(rowIndex);
+                         if (rec.get('MSGS_HISTORY') === 'VIEW' || rec.get('MSGS_HISTORY') === 'RESEND') {
+                             windowPreviewMessage(rec);
+                         }
+                    }
+                }
+
+                ]
+            }
+
+          ]
         }),
         store: store,
+/*
         tbar:[
           {
             text:_("ID_RESEND"),
@@ -419,52 +596,10 @@ var ActionTabFrameGlobal = '';
             icon: '/images/mail-send16x16.png',
             handler: function(){
 
-              var rowSelected = processesGrid.getSelectionModel().getSelected();
+                var rowSelected = processesGrid.getSelectionModel().getSelected();
 
                 if( rowSelected ){
-                  //!dataGrid
-
-
-                  // Show a dialog using config options:
-                  Ext.Msg.show({
-                    title:'',
-                    msg: _('ID_ARE_YOU_SURE_RESEND')+"?",
-                    buttons: Ext.Msg.OKCANCEL,
-                    icon: Ext.MessageBox.QUESTION,
-                    fn: function(btn, text){
-                      if(btn=='ok'){
-                        //!dataGrid
-                        var idMessage = rowSelected.data.ID_MESSAGE;
-                        var subjectMessage = rowSelected.data.APP_MSG_SUBJECT;
-                        var dateMessage = rowSelected.data.APP_MSG_DATE;
-
-                        var tabName = 'sendMailMessage_'+idMessage;
-                        var tabTitle = 'Resend('+subjectMessage+' '+dateMessage+')';
-
-                        ActionTabFrameGlobal.tabName = tabName;
-                        ActionTabFrameGlobal.tabTitle = tabTitle;
-
-                        //window.parent.Actions.tabFrame(tabName);
-                        var tabNameArray = tabName.split('_');
-                        var APP_UID = tabNameArray[1];
-                        var APP_MSG_UID = tabNameArray[2];
-
-
-                        messageHistoryGridListMask = new Ext.LoadMask(Ext.getBody(), {msg:_('ID_LOADING')});
-                        messageHistoryGridListMask.show();
-
-
-
-                        var url = "caseMessageHistory_Ajax.php?actionAjax=sendMailMessage_JXP&APP_UID="+APP_UID+"&APP_MSG_UID="+APP_MSG_UID;
-                        ajaxPostRequest(url,'caseMessageHistory_RSP');
-
-
-                      }
-
-                    },
-                    animEl: 'elId'
-                  });
-
+                  resendDialog(rowSelected);
                 }
                 else{
                   Ext.Msg.show({
@@ -479,8 +614,6 @@ var ActionTabFrameGlobal = '';
                   });
                 }
 
-
-
             },
             disabled:false
           },
@@ -493,22 +626,21 @@ var ActionTabFrameGlobal = '';
             iconCls: 'button_menu_ext',
             icon: '/images/documents/_filefind.png',
             handler: function(){
-	      var rowSelected = processesGrid.getSelectionModel().getSelected();
+	          var rowSelected = processesGrid.getSelectionModel().getSelected();
 
-	      if (rowSelected) {
+	          if (rowSelected) {
                 previewMessage();
-	      }
-	      else {
-		Ext.Msg.show({
-		  title:'',
-		  msg: _("ID_NO_SELECTION_WARNING"),
-		  buttons: Ext.Msg.INFO,
-		  fn: function(){},
-		  animEl: 'elId',
-		  icon: Ext.MessageBox.INFO,
-		  buttons: Ext.MessageBox.OK
-		});
-	      }
+	          } else {
+		        Ext.Msg.show({
+		          title:'',
+		          msg: _("ID_NO_SELECTION_WARNING"),
+		          buttons: Ext.Msg.INFO,
+		          fn: function(){},
+		          animEl: 'elId',
+		          icon: Ext.MessageBox.INFO,
+		          buttons: Ext.MessageBox.OK
+		        });
+	          }
             },
             disabled:false
           },
@@ -516,6 +648,8 @@ var ActionTabFrameGlobal = '';
             xtype: 'tbfill'
           }
         ],
+*/
+
         bbar: new Ext.PagingToolbar({
           pageSize: 20,
           store: store,
@@ -525,7 +659,7 @@ var ActionTabFrameGlobal = '';
           items:[]
         }),
         listeners: {
-          rowdblclick: previewMessage,
+          // rowdblclick: previewMessage,
           render: function(){
             this.loadMask = new Ext.LoadMask(this.body, {msg:'Loading...'});
             processesGrid.getSelectionModel().on('rowselect', function(){
