@@ -34,6 +34,25 @@ $G_ID_MENU_SELECTED = 'USERS';
 $G_ID_SUB_MENU_SELECTED = 'AUTH_SOURCES';
 
 $G_PUBLISH = new Publisher();
+$fields = $RBAC->getAuthSource( $_GET['sUID'] );
+if (file_exists( PATH_PLUGINS . $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fields['AUTH_SOURCE_PROVIDER'] . 'Edit.xml' )) {
+    $pluginEnabled = 0;
+    
+    if (file_exists(PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . ".php")) {
+        $pluginRegistry = &PMPluginRegistry::getSingleton();
+        $pluginDetail = $pluginRegistry->getPluginDetails($fields["AUTH_SOURCE_PROVIDER"] . ".php");
+    
+        if ($pluginDetail && $pluginDetail->enabled) {
+            $pluginEnabled = 1;
+        }
+    }
+
+    if ($pluginEnabled == 0) {
+       $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => G::LoadTranslation( 'ID_AUTH_SOURCE_MISSING' ) ) );
+       G::RenderPage( 'publish', 'blank' );
+    }
+}
+
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'authSources/authSources_SearchUsers', '', array ('AUTH_SOURCE_UID' => $_GET['sUID']), '../authSources/authSources_ImportUsers' );
 G::RenderPage( 'publish', 'blank' );
 
