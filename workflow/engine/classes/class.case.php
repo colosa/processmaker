@@ -980,7 +980,7 @@ class Cases
             require_once 'classes/model/AdditionalTables.php';
             $oReportTables = new ReportTables();
             $addtionalTables = new additionalTables();
-            
+
             if (!isset($Fields['APP_NUMBER'])) {
                 $Fields['APP_NUMBER'] = $appFields['APP_NUMBER'];
             }
@@ -5085,7 +5085,13 @@ class Cases
         $aCase = $this->loadCase($APP_UID);
         $USER_PERMISSIONS = Array();
         $GROUP_PERMISSIONS = Array();
-        $RESULT = Array("DYNAFORM" => Array(), "INPUT" => Array(), "OUTPUT" => Array(), "CASES_NOTES" => 0);
+        $RESULT = Array(
+            "DYNAFORM" => Array(),
+            "INPUT" => Array(),
+            "OUTPUT" => Array(),
+            "CASES_NOTES" => 0,
+            "MSGS_HISTORY" => ""
+        );
 
         //permissions per user
         $oCriteria = new Criteria('workflow');
@@ -5342,6 +5348,10 @@ class Cases
                     case 'CASES_NOTES':
                         $RESULT['CASES_NOTES'] = 1;
                         break;
+                    case 'MSGS_HISTORY':
+                        $RESULT['MSGS_HISTORY'] = $ACTION;
+                        break;
+
                 }
             }
         }
@@ -5349,7 +5359,8 @@ class Cases
             "DYNAFORMS" => $RESULT['DYNAFORM'],
             "INPUT_DOCUMENTS" => $RESULT['INPUT'],
             "OUTPUT_DOCUMENTS" => $RESULT['OUTPUT'],
-            "CASES_NOTES" => $RESULT['CASES_NOTES']
+            "CASES_NOTES" => $RESULT['CASES_NOTES'],
+            "MSGS_HISTORY" => $RESULT['MSGS_HISTORY']
         );
     }
 
@@ -6503,4 +6514,3 @@ class Cases
         return false;
     }
 }
- 

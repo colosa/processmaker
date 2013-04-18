@@ -44,6 +44,7 @@
     <option name="INPUT">Input Document</option>
     <option name="OUTPUT">Output Document</option>
     <option name="CASES_NOTES">Cases Notes</option>
+    <option name="MSGS_HISTORY">Messages History</option>
   </en>
 </OP_OBJ_TYPE>
 <ALL type="dropdown" mode="edit" sqlConnection="dbarray">
@@ -65,33 +66,36 @@
   <en>Output Document<option name="">All</option></en>
 </OUTPUTS>
 <OP_ACTION type="dropdown" mode="edit">
-  <en>Permission<option name="VIEW">View</option><option name="BLOCK">Block</option><option name="DELETE">Delete</option></en>
+  <en>Permission
+      <option name="VIEW">View</option>
+      <option name="BLOCK">Block</option>
+      <option name="DELETE">Delete</option>
+      <option name="RESEND">Resend</option>
+  </en>
 </OP_ACTION>
 
 <CREATE type="button" onclick="saveObjectPermission(this.form);">
   <en>Save</en>
 </CREATE>
 <ID_DELETE type="private"/>
+<ID_RESEND type="private"/>
 <JS type="javascript"><![CDATA[
 var aOptions = [];
 var getOptions = function() {
-  var oAux = getField('OP_ACTION');
-  for (var i = 0; i < oAux.options.length; i++) {
-    if (oAux.options[i].value != 'DELETE') {
-      aOptions.push({label:oAux.options[i].text, value: oAux.options[i].value});
+    var oAux = getField('OP_ACTION');
+    for (var i = 0; i < oAux.options.length; i++) {
+    if (oAux.options[i].value != 'DELETE' && oAux.options[i].value != 'RESEND') {
+            aOptions.push({label:oAux.options[i].text, value: oAux.options[i].value});
+        }
     }
-  }
 };
 var rebuildOptionsWhenLoad = function(sType) {
-  var selectedValue = getField('OP_ACTION').value;
-  switch (sType) {
-    case 'INPUT':
-    case 'OUTPUT':
-      var oAux = getField('OP_ACTION');
-      while (oAux.options.length) {
+    var selectedValue = getField('OP_ACTION').value;
+    var oAux = getField('OP_ACTION');
+    while (oAux.options.length) {
         oAux.remove(0);
-      }
-      for (var i = 0; i < aOptions.length; i++) {
+    }
+    for (var i = 0; i < aOptions.length; i++) {
         var oOption = document.createElement('OPTION');
         oOption.value = aOptions[i].value;
         oOption.text = aOptions[i].label;
@@ -99,156 +103,168 @@ var rebuildOptionsWhenLoad = function(sType) {
           oOption.selected = true;
         }
         oAux.options.add(oOption);
-      }
-      var oOption = document.createElement('OPTION');
-      oOption.value = 'DELETE';
-      oOption.text = '@#ID_DELETE';
-      if (oOption.value == selectedValue) {
-        oOption.selected = true;
-      }
-      oAux.options.add(oOption);
-    break
-    default:
-      var oAux = getField('OP_ACTION');
-      while (oAux.options.length) {
-        oAux.remove(0);
-      }
-      for (var i = 0; i < aOptions.length; i++) {
-        var oOption = document.createElement('OPTION');
-        oOption.value = aOptions[i].value;
-        oOption.text = aOptions[i].label;
-        if (oOption.value == selectedValue) {
-          oOption.selected = true;
-        }
-        oAux.options.add(oOption);
-      }
-    break;
-  }
-  oAux.value = selectedValue;
+    }
+
+    switch (sType) {
+        case 'INPUT':
+        case 'OUTPUT':
+            var oOption = document.createElement('OPTION');
+            oOption.value = 'DELETE';
+            oOption.text = '@#ID_DELETE';
+            if (oOption.value == selectedValue) {
+              oOption.selected = true;
+            }
+            oAux.options.add(oOption);
+        break;
+        case 'MSGS_HISTORY':
+            var oOption = document.createElement('OPTION');
+            oOption.value = 'RESEND';
+            oOption.text = '@#ID_RESEND';
+            if (oOption.value == selectedValue) {
+              oOption.selected = true;
+            }
+            oAux.options.add(oOption);
+        break;
+        default:
+        break;
+    }
+
+    oAux.value = selectedValue;
 };
 var rebuildOptions = function(sType) {
-  switch (sType) {
-    case 'INPUT':
-    case 'OUTPUT':
-      var oAux = getField('OP_ACTION');
-      while (oAux.options.length) {
+    var oAux = getField('OP_ACTION');
+    while (oAux.options.length) {
         oAux.remove(0);
-      }
-      for (var i = 0; i < aOptions.length; i++) {
+    }
+    for (var i = 0; i < aOptions.length; i++) {
         var oOption = document.createElement('OPTION');
         oOption.value = aOptions[i].value;
         oOption.text = aOptions[i].label;
         oAux.options.add(oOption);
-      }
-      var oOption = document.createElement('OPTION');
-      oOption.value = 'DELETE';
-      oOption.text = '@#ID_DELETE';
-      oAux.options.add(oOption);
-    break
-    default:
-      var oAux = getField('OP_ACTION');
-      while (oAux.options.length) {
-        oAux.remove(0);
-      }
-      for (var i = 0; i < aOptions.length; i++) {
-        var oOption = document.createElement('OPTION');
-        oOption.value = aOptions[i].value;
-        oOption.text = aOptions[i].label;
-        oAux.options.add(oOption);
-      }
-    break;
-  }
+    }
+
+    switch (sType) {
+        case 'INPUT':
+        case 'OUTPUT':
+            var oOption = document.createElement('OPTION');
+            oOption.value = 'DELETE';
+            oOption.text = '@#ID_DELETE';
+            oAux.options.add(oOption);
+        break;
+        case 'MSGS_HISTORY' :
+            var oOption = document.createElement('OPTION');
+            oOption.value = 'RESEND';
+            oOption.text = '@#ID_RESEND';
+            oAux.options.add(oOption);
+        break;
+        default:
+        break;
+    }
+
 };
-if(getField('OP_OBJ_TYPE').value=='ANY')
- { hideRowById('ALL' );
-   hideRowById( 'DYNAFORMS' );
-   hideRowById( 'INPUTS' );
-	 hideRowById( 'OUTPUTS' );
-   showRowById( 'OP_ACTION' );
- }
-if(getField('OP_OBJ_TYPE').value=='DYNAFORM')
- { hideRowById( 'ALL' );
-   hideRowById( 'INPUTS' );
-	 hideRowById( 'OUTPUTS' );
-   showRowById( 'OP_ACTION' );
- }
-if(getField('OP_OBJ_TYPE').value=='INPUT')
- { hideRowById( 'ALL' );
-   hideRowById( 'DYNAFORMS' );
-	 hideRowById( 'OUTPUTS' );
-   showRowById( 'OP_ACTION' );
- }
-if(getField('OP_OBJ_TYPE').value=='OUTPUT')
- { hideRowById( 'ALL' );
-   hideRowById( 'DYNAFORMS' );
-	 hideRowById( 'INPUTS' );
-   showRowById( 'OP_ACTION' );
- }
-if(getField('OP_OBJ_TYPE').value=='CASES_NOTES')
- { hideRowById( 'ALL' );
-   hideRowById( 'DYNAFORMS' );
-   hideRowById( 'INPUTS' );
-   hideRowById( 'OUTPUTS' );
-   hideRowById( 'OP_ACTION' );
- } 
- getOptions();
- rebuildOptionsWhenLoad(getField('OP_OBJ_TYPE').value);
+if (getField('OP_OBJ_TYPE').value=='ANY') {
+    hideRowById('ALL' );
+    hideRowById( 'DYNAFORMS' );
+    hideRowById( 'INPUTS' );
+    hideRowById( 'OUTPUTS' );
+    showRowById( 'OP_ACTION' );
+}
+if (getField('OP_OBJ_TYPE').value=='DYNAFORM') {
+    hideRowById( 'ALL' );
+    hideRowById( 'INPUTS' );
+    hideRowById( 'OUTPUTS' );
+    showRowById( 'OP_ACTION' );
+}
+if (getField('OP_OBJ_TYPE').value=='INPUT') {
+    hideRowById( 'ALL' );
+    hideRowById( 'DYNAFORMS' );
+    hideRowById( 'OUTPUTS' );
+    showRowById( 'OP_ACTION' );
+}
+if (getField('OP_OBJ_TYPE').value=='OUTPUT') {
+    hideRowById( 'ALL' );
+    hideRowById( 'DYNAFORMS' );
+    hideRowById( 'INPUTS' );
+    showRowById( 'OP_ACTION' );
+}
+if (getField('OP_OBJ_TYPE').value=='CASES_NOTES') {
+    hideRowById( 'ALL' );
+    hideRowById( 'DYNAFORMS' );
+    hideRowById( 'INPUTS' );
+    hideRowById( 'OUTPUTS' );
+    hideRowById( 'OP_ACTION' );
+}
+if (getField('OP_OBJ_TYPE').value=='MSGS_HISTORY') {
+    hideRowById('ALL');
+    hideRowById('DYNAFORMS');
+    hideRowById('INPUTS');
+    hideRowById('OUTPUTS');
+    showRowById('OP_ACTION');
+}
+
+getOptions();
+rebuildOptionsWhenLoad(getField('OP_OBJ_TYPE').value);
 
 leimnud.event.add(document.getElementById('form[OP_OBJ_TYPE]'), 'change', function() {
-	if(getField('OP_OBJ_TYPE').value=='DYNAFORM')
-	 { hideRowById( 'ALL' );
-	   hideRowById( 'INPUTS' );
-		 hideRowById( 'OUTPUTS' );
-		 showRowById( 'DYNAFORMS' );
-     showRowById( 'OP_ACTION' );
-	 }
-	if(getField('OP_OBJ_TYPE').value=='INPUT')
-	 { hideRowById( 'ALL' );
-	   hideRowById( 'DYNAFORMS' );
-		 hideRowById( 'OUTPUTS' );
-		 showRowById( 'INPUTS' );
-     showRowById( 'OP_ACTION' );
-	 }
-	if(getField('OP_OBJ_TYPE').value=='OUTPUT')
-	 { hideRowById( 'ALL' );
-	   hideRowById( 'DYNAFORMS' );
-		 hideRowById( 'INPUTS' );
-		 showRowById( 'OUTPUTS' );
-     showRowById( 'OP_ACTION' );
-	 }
-  if(getField('OP_OBJ_TYPE').value=='CASES_NOTES')
-   { hideRowById( 'ALL' );
-     hideRowById( 'DYNAFORMS' );
-     hideRowById( 'INPUTS' );
-     hideRowById( 'OUTPUTS' );
-     hideRowById( 'OP_ACTION' );
-   }
-	if(getField('OP_OBJ_TYPE').value=='ANY')
-   { hideRowById('ALL' );
-     hideRowById( 'DYNAFORMS' );
-     hideRowById( 'INPUTS' );
-	   hideRowById( 'OUTPUTS' );
-     showRowById( 'OP_ACTION' );
-   }
-   rebuildOptions(getField('OP_OBJ_TYPE').value);
+    if (getField('OP_OBJ_TYPE').value=='DYNAFORM') {
+        hideRowById( 'ALL' );
+        hideRowById( 'INPUTS' );
+        hideRowById( 'OUTPUTS' );
+        showRowById( 'DYNAFORMS' );
+        showRowById( 'OP_ACTION' );
+    }
+    if (getField('OP_OBJ_TYPE').value=='INPUT') {
+        hideRowById( 'ALL' );
+        hideRowById( 'DYNAFORMS' );
+        hideRowById( 'OUTPUTS' );
+        showRowById( 'INPUTS' );
+        showRowById( 'OP_ACTION' );
+    }
+    if (getField('OP_OBJ_TYPE').value=='OUTPUT') {
+        hideRowById( 'ALL' );
+        hideRowById( 'DYNAFORMS' );
+        hideRowById( 'INPUTS' );
+        showRowById( 'OUTPUTS' );
+        showRowById( 'OP_ACTION' );
+    }
+    if (getField('OP_OBJ_TYPE').value=='CASES_NOTES') {
+        hideRowById( 'ALL' );
+        hideRowById( 'DYNAFORMS' );
+        hideRowById( 'INPUTS' );
+        hideRowById( 'OUTPUTS' );
+        hideRowById( 'OP_ACTION' );
+    }
+    if (getField('OP_OBJ_TYPE').value=='ANY') {
+        hideRowById('ALL' );
+        hideRowById( 'DYNAFORMS' );
+        hideRowById( 'INPUTS' );
+        hideRowById( 'OUTPUTS' );
+        showRowById( 'OP_ACTION' );
+    }
+    if (getField('OP_OBJ_TYPE').value=='MSGS_HISTORY') {
+        hideRowById('ALL');
+        hideRowById('DYNAFORMS');
+        hideRowById('INPUTS');
+        hideRowById('OUTPUTS');
+        showRowById('OP_ACTION');
+    }
+
+    rebuildOptions(getField('OP_OBJ_TYPE').value);
 });
 
 leimnud.event.add(document.getElementById('form[OP_CASE_STATUS]'), 'change', function() {
-  var target = document.getElementById('form[TAS_UID]');
-  var origin = document.getElementById('form[OP_TASK_SOURCE]');
-  var participate = document.getElementById('form[OP_PARTICIPATE]');
-  if (document.getElementById('form[OP_CASE_STATUS]').value=='COMPLETED')
-  {
-     hideRowById(target);
-		 hideRowById(origin);
-		 hideRowById(participate);
-  }
-  else
-  {
-     showRowById(target);
-		 showRowById(origin);
-		 showRowById(participate);
-  }
+    var target = document.getElementById('form[TAS_UID]');
+    var origin = document.getElementById('form[OP_TASK_SOURCE]');
+    var participate = document.getElementById('form[OP_PARTICIPATE]');
+    if (document.getElementById('form[OP_CASE_STATUS]').value=='COMPLETED') {
+        hideRowById(target);
+        hideRowById(origin);
+        hideRowById(participate);
+    } else {
+        showRowById(target);
+        showRowById(origin);
+        showRowById(participate);
+    }
 });
 
 ]]></JS>

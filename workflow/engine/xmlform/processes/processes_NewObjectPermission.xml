@@ -44,6 +44,7 @@
     <option name="INPUT">Input Document</option>
     <option name="OUTPUT">Output Document</option>
     <option name="CASES_NOTES">Cases Notes</option>
+    <option name="MSGS_HISTORY">Messages History</option>
   </en>
 </OP_OBJ_TYPE>
 <ALL type="dropdown" mode="edit" sqlConnection="dbarray">
@@ -65,7 +66,10 @@
   <en>Output Document<option name="">All</option></en>
 </OUTPUTS>
 <OP_ACTION type="dropdown" mode="edit">
-  <en>Permission<option name="VIEW">View</option><option name="BLOCK">Block</option></en>
+  <en>Permission
+      <option name="VIEW">View</option>
+      <option name="BLOCK">Block</option>
+  </en>
 </OP_ACTION>
 
 <BTN_CANCEL type="button" onclick="cancel();">
@@ -76,6 +80,7 @@
   <en>Create</en>
 </CREATE>
 <ID_DELETE type="private"/>
+<ID_RESEND type="private"/>
 <JS type="javascript"><![CDATA[
 var aOptions = [];
 var getOptions = function() {
@@ -85,35 +90,33 @@ var getOptions = function() {
   }
 };
 var rebuildOptions = function(sType) {
+
+  var oAux = getField('OP_ACTION');
+  while (oAux.options.length) {
+    oAux.remove(0);
+  }
+  for (var i = 0; i < aOptions.length; i++) {
+    var oOption = document.createElement('OPTION');
+    oOption.value = aOptions[i].value;
+    oOption.text = aOptions[i].label;
+    oAux.options.add(oOption);
+  }
+
   switch (sType) {
     case 'INPUT':
     case 'OUTPUT':
-      var oAux = getField('OP_ACTION');
-      while (oAux.options.length) {
-        oAux.remove(0);
-      }
-      for (var i = 0; i < aOptions.length; i++) {
-        var oOption = document.createElement('OPTION');
-        oOption.value = aOptions[i].value;
-        oOption.text = aOptions[i].label;
-        oAux.options.add(oOption);
-      }
       var oOption = document.createElement('OPTION');
       oOption.value = 'DELETE';
       oOption.text = '@#ID_DELETE';
       oAux.options.add(oOption);
-    break
+    break;
+    case 'MSGS_HISTORY' :
+      var oOption = document.createElement('OPTION');
+      oOption.value = 'RESEND';
+      oOption.text = '@#ID_RESEND';
+      oAux.options.add(oOption);
+    break;
     default:
-      var oAux = getField('OP_ACTION');
-      while (oAux.options.length) {
-        oAux.remove(0);
-      }
-      for (var i = 0; i < aOptions.length; i++) {
-        var oOption = document.createElement('OPTION');
-        oOption.value = aOptions[i].value;
-        oOption.text = aOptions[i].label;
-        oAux.options.add(oOption);
-      }
     break;
   }
 };
@@ -178,6 +181,17 @@ leimnud.event.add(getField('OP_OBJ_TYPE'), 'change', function() {
       hideRowById('INPUTS');
       hideRowById('OUTPUTS');
       hideRowById('OP_ACTION');
+    break;
+    case 'MSGS_HISTORY':
+      getField('ALL').value = '';
+      getField('DYNAFORMS').value = '';
+      getField('INPUTS').value = '';
+      getField('OUTPUTS').value = (getField('OUTPUTS').options[0] ? getField('OUTPUTS').options[0].value : '');
+      hideRowById('ALL');
+      hideRowById('DYNAFORMS');
+      hideRowById('INPUTS');
+      hideRowById('OUTPUTS');
+      showRowById('OP_ACTION');
     break;
   }
   rebuildOptions(vValue);
