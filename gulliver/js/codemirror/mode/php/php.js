@@ -11,6 +11,168 @@
       return "string";
     };
   }
+  
+  var PM_keywords = function(){
+    function PMkey() {return {style: "PMbuiltin"};}
+  var PMfunctions = {
+      "formatDate":PMkey(), "CurrentDate":PMkey(), "CurrentTime":PMkey(),
+      "literalDate":PMkey(), "capitalize":PMkey(), "lowerCase":PMkey(),
+      "upperCase":PMkey(), "userInfo":PMkey(), "executeQuery":PMkey(),
+      "orderGrid":PMkey(), "evaluateFunction":PMkey(), "PMFTaskCase":PMkey(),
+      "PMFTaskList":PMkey(), "PMFUserList":PMkey(), "PMFGroupList":PMkey(),
+      "PMFRoleList":PMkey(), "PMFCaseList":PMkey(), "PMFProcessList":PMkey(),
+      "PMFSendVariables":PMkey(), "PMFDerivateCase":PMkey(), "PMFNewCaseImpersonate":PMkey(),
+      "PMFNewCase":PMkey(), "PMFPauseCase":PMkey(), "PMFUnpauseCase":PMkey(),
+      "PMFAssignUserToGroup":PMkey(), "PMFCreateUser":PMkey(), "PMFUpdateUser":PMkey(),
+      "PMFInformationUser":PMkey(), "generateCode":PMkey(), "setCaseTrackerCode":PMkey(),
+      "jumping":PMkey(), "PMFRedirectToStep":PMkey(), "pauseCase":PMkey(),
+      "PMFSendMessage":PMkey(), "PMFgetLabelOption":PMkey(), "PMFGenerateOutputDocument":PMkey(),
+      "PMFGetUserEmailAddress":PMkey(), "PMFGetNextAssignedUser":PMkey(), "PMFDeleteCase":PMkey(),
+      "PMFCancelCase":PMkey(), "PMFAddInputDocument":PMkey(), "PMFAddCaseNote":PMkey(),
+      "PMFGetCaseNotes":PMkey()};
+    return PMfunctions;
+  }();
+  
+    var php_keywords = function(){
+    function phpbuild() {return {style: "builtin"};}
+    function phpatom() {return {style: "atom"};}
+    var Phpfunctions = {
+      "func_num_args":phpbuild(),"func_get_arg":phpbuild(),"func_get_args":phpbuild(),"strlen":phpbuild(),"strcmp":phpbuild(),
+      "strncmp":phpbuild(),"strcasecmp":phpbuild(),"strncasecmp":phpbuild(),"each error_reporting":phpbuild(),"define":phpbuild(),
+      "defined":phpbuild(),"trigger_error":phpbuild(),"user_error":phpbuild(),"set_error_handler":phpbuild(),"restore_error_handler":phpbuild(),
+      "get_declared_classes":phpbuild(),"get_loaded_extensions":phpbuild(),"extension_loaded":phpbuild(),"get_extension_funcs":phpbuild(),
+      "debug_backtrace":phpbuild(),"constant":phpbuild(),"bin2hex":phpbuild(),"sleep":phpbuild(),"usleep":phpbuild(),"time":phpbuild(),
+      "mktime":phpbuild(),"gmmktime":phpbuild(),"strftime":phpbuild(),"gmstrftime":phpbuild(),"strtotime":phpbuild(),"date":phpbuild(),
+      "gmdate":phpbuild(),"getdate":phpbuild(),"localtime":phpbuild(),"checkdate":phpbuild(),"flush":phpbuild(),"wordwrap":phpbuild(),
+      "htmlspecialchars":phpbuild(),"htmlentities":phpbuild(),"html_entity_decode":phpbuild(),"md5":phpbuild(),"md5_file":phpbuild(),
+      "crc32 getimagesize":phpbuild(),"image_type_to_mime_type":phpbuild(),"phpinfo":phpbuild(),"phpversion":phpbuild(),
+      "phpcredits":phpbuild(),"strnatcmp":phpbuild(),"strnatcasecmp":phpbuild(),"substr_count":phpbuild(),"strspn":phpbuild(),
+      "strcspn":phpbuild(),"strtok":phpbuild(),"strtoupper":phpbuild(),"strtolower":phpbuild(),"strpos":phpbuild(),
+      "strrpos":phpbuild(),"strrev":phpbuild(),"hebrev":phpbuild(),"hebrevc":phpbuild(),"nl2br":phpbuild(),"basename":phpbuild(),
+      "dirname":phpbuild(),"pathinfo":phpbuild(),"stripslashes":phpbuild(),"stripcslashes":phpbuild(),"strstr":phpbuild(),
+      "stristr":phpbuild(),"strrchr":phpbuild(),"str_shuffle":phpbuild(),"str_word_count":phpbuild(),"strcoll":phpbuild(),
+      "substr":phpbuild(),"substr_replace":phpbuild(),"quotemeta":phpbuild(),"ucfirst":phpbuild(),"ucwords":phpbuild(),
+      "strtr":phpbuild(),"addslashes":phpbuild(),"addcslashes":phpbuild(),"rtrim":phpbuild(),"str_replace":phpbuild(),
+      "str_repeat":phpbuild(),"count_chars":phpbuild(),"chunk_split":phpbuild(),"trim":phpbuild(),"ltrim":phpbuild(),
+      "strip_tags":phpbuild(),"similar_text":phpbuild(),"explode":phpbuild(),"implode":phpbuild(),"setlocale":phpbuild(),
+      "localeconv":phpbuild(),"parse_str":phpbuild(),"str_pad":phpbuild(),"chop":phpbuild(),"strchr":phpbuild(),"sprintf":phpbuild(),
+      "printf":phpbuild(),"vprintf":phpbuild(),"vsprintf":phpbuild(),"sscanf":phpbuild(),"fscanf":phpbuild(),"parse_url":phpbuild(),
+      "urlencode":phpbuild(),"urldecode":phpbuild(),"rawurlencode":phpbuild(),"rawurldecode":phpbuild(),"readlink":phpbuild(),
+      "linkinfo":phpbuild(),"link":phpbuild(),"unlink":phpbuild(),"exec":phpbuild(),"system":phpbuild(),"escapeshellcmd":phpbuild(),
+      "escapeshellarg":phpbuild(),"passthru":phpbuild(),"shell_exec":phpbuild(),"proc_open":phpbuild(),"proc_close":phpbuild(),
+      "rand":phpbuild(),"srand":phpbuild(),"getrandmax":phpbuild(),"mt_rand":phpbuild(),"mt_srand":phpbuild(),
+      "mt_getrandmax":phpbuild(),"base64_decode":phpbuild(),"base64_encode":phpbuild(),"abs":phpbuild(),"ceil":phpbuild(),
+      "floor":phpbuild(),"round":phpbuild(),"is_finite":phpbuild(),"is_nan":phpbuild(),"is_infinite":phpbuild(),"bindec":phpbuild(),
+      "hexdec":phpbuild(),"octdec":phpbuild(),"decbin":phpbuild(),"decoct":phpbuild(),"dechex":phpbuild(),"base_convert":phpbuild(),
+      "number_format":phpbuild(),"fmod":phpbuild(),"ip2long":phpbuild(),"long2ip":phpbuild(),"getenv":phpbuild(),"putenv":phpbuild(),
+      "getopt":phpbuild(),"microtime":phpbuild(),"gettimeofday":phpbuild(),"getrusage":phpbuild(),"uniqid":phpbuild(),
+      "quoted_printable_decode":phpbuild(),"set_time_limit":phpbuild(),"get_cfg_var":phpbuild(),"magic_quotes_runtime":phpbuild(),
+      "set_magic_quotes_runtime":phpbuild(),"get_magic_quotes_gpc":phpbuild(),"get_magic_quotes_runtime":phpbuild(),
+      "import_request_variables":phpbuild(),"error_log":phpbuild(),"serialize":phpbuild(),"unserialize":phpbuild(),
+      "memory_get_usage":phpbuild(),"var_dump":phpbuild(),"var_export":phpbuild(),"debug_zval_dump":phpbuild(),"print_r":phpbuild(),
+      "highlight_file":phpbuild(),"show_source":phpbuild(),"highlight_string":phpbuild(),"ini_get":phpbuild(),"ini_get_all":phpbuild(),
+      "ini_set":phpbuild(),"ini_alter":phpbuild(),"ini_restore":phpbuild(),"get_include_path":phpbuild(),"set_include_path":phpbuild(),
+      "restore_include_path":phpbuild(),"setcookie":phpbuild(),"header":phpbuild(),"headers_sent":phpbuild(),
+      "connection_aborted":phpbuild(),"connection_status":phpbuild(),"ignore_user_abort":phpbuild(),"parse_ini_file":phpbuild(),
+      "is_uploaded_file":phpbuild(),"move_uploaded_file":phpbuild(),"intval":phpbuild(),"floatval":phpbuild(),"doubleval":phpbuild(),
+      "strval":phpbuild(),"gettype":phpbuild(),"settype":phpbuild(),"is_null":phpbuild(),"is_resource":phpbuild(),"is_bool":phpbuild(),
+      "is_long":phpbuild(),"is_float":phpbuild(),"is_int":phpbuild(),"is_integer":phpbuild(),"is_double":phpbuild(),
+      "is_real":phpbuild(),"is_numeric":phpbuild(),"is_string":phpbuild(),"is_array":phpbuild(),"is_object":phpbuild(),
+      "is_scalar":phpbuild(),"ereg":phpbuild(),"ereg_replace":phpbuild(),"eregi":phpbuild(),"eregi_replace":phpbuild(),
+      "split":phpbuild(),"spliti":phpbuild(),"join":phpbuild(),"sql_regcase":phpbuild(),"dl":phpbuild(),"pclose":phpbuild(),
+      "popen":phpbuild(),"readfile":phpbuild(),"rewind":phpbuild(),"rmdir":phpbuild(),"umask":phpbuild(),"fclose":phpbuild(),
+      "feof":phpbuild(),"fgetc":phpbuild(),"fgets":phpbuild(),"fgetss":phpbuild(),"fread":phpbuild(),"fopen":phpbuild(),
+      "fpassthru":phpbuild(),"ftruncate":phpbuild(),"fstat":phpbuild(),"fseek":phpbuild(),"ftell":phpbuild(),"fflush":phpbuild(),
+      "fwrite":phpbuild(),"fputs":phpbuild(),"mkdir":phpbuild(),"rename":phpbuild(),"copy":phpbuild(),"tempnam":phpbuild(),
+      "tmpfile":phpbuild(),"file":phpbuild(),"file_get_contents":phpbuild(),"stream_select":phpbuild(),
+      "stream_context_create":phpbuild(),"stream_context_set_params":phpbuild(),"stream_context_set_option":phpbuild(),
+      "stream_context_get_options":phpbuild(),"stream_filter_prepend":phpbuild(),"stream_filter_append":phpbuild(),
+      "fgetcsv":phpbuild(),"flock":phpbuild(),"get_meta_tags":phpbuild(),"stream_set_write_buffer":phpbuild(),
+      "set_file_buffer":phpbuild(),"set_socket_blocking":phpbuild(),"stream_set_blocking":phpbuild(),"socket_set_blocking":phpbuild(),
+      "stream_get_meta_data":phpbuild(),"stream_register_wrapper":phpbuild(),"stream_wrapper_register":phpbuild(),
+      "stream_set_timeout":phpbuild(),"socket_set_timeout":phpbuild(),"socket_get_status":phpbuild(),"realpath":phpbuild(),
+      "fnmatch":phpbuild(),"fsockopen":phpbuild(),"pfsockopen":phpbuild(),"pack":phpbuild(),"unpack":phpbuild(),
+      "get_browser":phpbuild(),"crypt":phpbuild(),"opendir":phpbuild(),"closedir":phpbuild(),"chdir":phpbuild(),
+      "getcwd":phpbuild(),"rewinddir":phpbuild(),"readdir":phpbuild(),"dir":phpbuild(),"glob":phpbuild(),"fileatime":phpbuild(),
+      "filectime":phpbuild(),"filegroup":phpbuild(),"fileinode":phpbuild(),"filemtime":phpbuild(),"fileowner":phpbuild(),
+      "fileperms":phpbuild(),"filesize":phpbuild(),"filetype":phpbuild(),"file_exists":phpbuild(),"is_writable":phpbuild(),
+      "is_writeable":phpbuild(),"is_readable":phpbuild(),"is_executable":phpbuild(),"is_file":phpbuild(),"is_dir":phpbuild(),
+      "is_link":phpbuild(),"stat":phpbuild(),"lstat":phpbuild(),"chown":phpbuild(),"touch":phpbuild(),"clearstatcache":phpbuild(),
+      "mail":phpbuild(),"ob_start":phpbuild(),"ob_flush":phpbuild(),"ob_clean":phpbuild(),"ob_end_flush":phpbuild(),
+      "ob_end_clean":phpbuild(),"ob_get_flush":phpbuild(),"ob_get_clean":phpbuild(),"ob_get_length":phpbuild(),
+      "ob_get_level":phpbuild(),"ob_get_status":phpbuild(),"ob_get_contents":phpbuild(),"ob_implicit_flush":phpbuild(),
+      "ob_list_handlers":phpbuild(),"ksort":phpbuild(),"krsort":phpbuild(),"natsort":phpbuild(),"natcasesort":phpbuild(),
+      "asort":phpbuild(),"arsort":phpbuild(),"sort":phpbuild(),"rsort":phpbuild(),"usort":phpbuild(),"uasort":phpbuild(),
+      "uksort":phpbuild(),"shuffle":phpbuild(),"array_walk":phpbuild(),"count":phpbuild(),"end":phpbuild(),"prev":phpbuild(),
+      "next":phpbuild(),"reset":phpbuild(),"current":phpbuild(),"key":phpbuild(),"min":phpbuild(),"max":phpbuild(),
+      "in_array":phpbuild(),"array_search":phpbuild(),"extract":phpbuild(),"compact":phpbuild(),"array_fill":phpbuild(),
+      "range":phpbuild(),"array_multisort":phpbuild(),"array_push":phpbuild(),"array_pop":phpbuild(),"array_shift":phpbuild(),
+      "array_unshift":phpbuild(),"array_splice":phpbuild(),"array_slice":phpbuild(),"array_merge":phpbuild(),
+      "array_merge_recursive":phpbuild(),"array_keys":phpbuild(),"array_values":phpbuild(),"array_count_values":phpbuild(),
+      "array_reverse":phpbuild(),"array_reduce":phpbuild(),"array_pad":phpbuild(),"array_flip":phpbuild(),
+      "array_change_key_case":phpbuild(),"array_rand":phpbuild(),"array_unique":phpbuild(),"array_intersect":phpbuild(),
+      "array_intersect_assoc":phpbuild(),"array_diff":phpbuild(),"array_diff_assoc":phpbuild(),"array_sum":phpbuild(),
+      "array_filter":phpbuild(),"array_map":phpbuild(),"array_chunk":phpbuild(),"array_key_exists":phpbuild(),"pos":phpbuild(),
+      "sizeof":phpbuild(),"key_exists":phpbuild(),"assert":phpbuild(),"assert_options":phpbuild(),"version_compare":phpbuild(),
+      "ftok":phpbuild(),"str_rot13":phpbuild(),"aggregate":phpbuild(),"session_name":phpbuild(),"session_module_name":phpbuild(),
+      "session_save_path":phpbuild(),"session_id":phpbuild(),"session_regenerate_id":phpbuild(),"session_decode":phpbuild(),
+      "session_register":phpbuild(),"session_unregister":phpbuild(),"session_is_registered":phpbuild(),"session_encode":phpbuild(),
+      "session_start":phpbuild(),"session_destroy":phpbuild(),"session_unset":phpbuild(),"session_set_save_handler":phpbuild(),
+      "session_cache_limiter":phpbuild(),"session_cache_expire":phpbuild(),"session_set_cookie_params":phpbuild(),
+      "session_get_cookie_params":phpbuild(),"session_write_close":phpbuild(),"preg_match":phpbuild(),"preg_match_all":phpbuild(),
+      "preg_replace":phpbuild(),"preg_replace_callback":phpbuild(),"preg_split":phpbuild(),"preg_quote":phpbuild(),
+      "preg_grep":phpbuild(),"overload":phpbuild(),"ctype_alnum":phpbuild(),"ctype_alpha":phpbuild(),"ctype_cntrl":phpbuild(),
+      "ctype_digit":phpbuild(),"ctype_lower":phpbuild(),"ctype_graph":phpbuild(),"ctype_print":phpbuild(),"ctype_punct":phpbuild(),
+      "ctype_space":phpbuild(),"ctype_upper":phpbuild(),"ctype_xdigit":phpbuild(),"virtual":phpbuild(),
+      "apache_request_headers":phpbuild(),"apache_note":phpbuild(),"apache_lookup_uri":phpbuild(),"apache_child_terminate":phpbuild(),
+      "apache_setenv":phpbuild(),"apache_response_headers":phpbuild(),"apache_get_version":phpbuild(),
+      "getallheaders":phpbuild(),"mysql_connect":phpbuild(),"mysql_pconnect":phpbuild(),"mysql_close":phpbuild(),
+      "mysql_select_db":phpbuild(),"mysql_create_db":phpbuild(),"mysql_drop_db":phpbuild(),"mysql_query":phpbuild(),
+      "mysql_unbuffered_query":phpbuild(),"mysql_db_query":phpbuild(),"mysql_list_dbs":phpbuild(),"mysql_list_tables":phpbuild(),
+      "mysql_list_fields":phpbuild(),"mysql_list_processes":phpbuild(),"mysql_error":phpbuild(),"mysql_errno":phpbuild(),
+      "mysql_affected_rows":phpbuild(),"mysql_insert_id":phpbuild(),"mysql_result":phpbuild(),"mysql_num_rows":phpbuild(),
+      "mysql_num_fields":phpbuild(),"mysql_fetch_row":phpbuild(),"mysql_fetch_array":phpbuild(),"mysql_fetch_assoc":phpbuild(),
+      "mysql_fetch_object":phpbuild(),"mysql_data_seek":phpbuild(),"mysql_fetch_lengths":phpbuild(),"mysql_fetch_field":phpbuild(),
+      "mysql_field_seek":phpbuild(),"mysql_free_result":phpbuild(),"mysql_field_name":phpbuild(),"mysql_field_table":phpbuild(),
+      "mysql_field_len":phpbuild(),"mysql_field_type":phpbuild(),"mysql_field_flags":phpbuild(),"mysql_escape_string":phpbuild(),
+      "mysql_real_escape_string":phpbuild(),"mysql_stat":phpbuild(),"mysql_thread_id":phpbuild(),"mysql_client_encoding":phpbuild(),
+      "mysql_get_client_info":phpbuild(),"mysql_get_host_info":phpbuild(),"mysql_get_proto_info":phpbuild(),
+      "mysql_get_server_info":phpbuild(),"mysql_info":phpbuild(),"mysql":phpbuild(),"mysql_fieldname":phpbuild(),
+      "mysql_fieldtable":phpbuild(),"mysql_fieldlen":phpbuild(),"mysql_fieldtype":phpbuild(),"mysql_fieldflags":phpbuild(),
+      "mysql_selectdb":phpbuild(),"mysql_createdb":phpbuild(),"mysql_dropdb":phpbuild(),"mysql_freeresult":phpbuild(),
+      "mysql_numfields":phpbuild(),"mysql_numrows":phpbuild(),"mysql_listdbs":phpbuild(),"mysql_listtables":phpbuild(),
+      "mysql_listfields":phpbuild(),"mysql_db_name":phpbuild(),"mysql_dbname":phpbuild(),"mysql_tablename":phpbuild(),
+      "mysql_table_name":phpbuild(),"pg_connect":phpbuild(),"pg_pconnect":phpbuild(),"pg_close":phpbuild(),
+      "pg_connection_status":phpbuild(),"pg_connection_busy":phpbuild(),"pg_connection_reset":phpbuild(),"pg_host":phpbuild(),
+      "pg_dbname":phpbuild(),"pg_port":phpbuild(),"pg_tty":phpbuild(),"pg_options":phpbuild(),"pg_ping":phpbuild(),
+      "pg_query":phpbuild(),"pg_send_query":phpbuild(),"pg_cancel_query":phpbuild(),"pg_fetch_result":phpbuild(),
+      "pg_fetch_row":phpbuild(),"pg_fetch_assoc":phpbuild(),"pg_fetch_array":phpbuild(),"pg_fetch_object":phpbuild(),
+      "pg_fetch_all":phpbuild(),"pg_affected_rows":phpbuild(),"pg_get_result":phpbuild(),"pg_result_seek":phpbuild(),
+      "pg_result_status":phpbuild(),"pg_free_result":phpbuild(),"pg_last_oid":phpbuild(),"pg_num_rows":phpbuild(),
+      "pg_num_fields":phpbuild(),"pg_field_name":phpbuild(),"pg_field_num":phpbuild(),"pg_field_size":phpbuild(),
+      "pg_field_type":phpbuild(),"pg_field_prtlen":phpbuild(),"pg_field_is_null":phpbuild(),"pg_get_notify":phpbuild(),
+      "pg_get_pid":phpbuild(),"pg_result_error":phpbuild(),"pg_last_error":phpbuild(),"pg_last_notice":phpbuild(),
+      "pg_put_line":phpbuild(),"pg_end_copy":phpbuild(),"pg_copy_to":phpbuild(),"pg_copy_from":phpbuild(),"pg_trace":phpbuild(),
+      "pg_untrace":phpbuild(),"pg_lo_create":phpbuild(),"pg_lo_unlink":phpbuild(),"pg_lo_open":phpbuild(),"pg_lo_close":phpbuild(),
+      "pg_lo_read":phpbuild(),"pg_lo_write":phpbuild(),"pg_lo_read_all":phpbuild(),"pg_lo_import":phpbuild(),"pg_lo_export":phpbuild(),
+      "pg_lo_seek":phpbuild(),"pg_lo_tell":phpbuild(),"pg_escape_string":phpbuild(),"pg_escape_bytea":phpbuild(),
+      "pg_unescape_bytea":phpbuild(),"pg_client_encoding":phpbuild(),"pg_set_client_encoding":phpbuild(),"pg_meta_data":phpbuild(),
+      "pg_convert":phpbuild(),"pg_insert":phpbuild(),"pg_update":phpbuild(),"pg_delete":phpbuild(),"pg_select":phpbuild(),
+      "pg_exec":phpbuild(),"pg_getlastoid":phpbuild(),"pg_cmdtuples":phpbuild(),"pg_errormessage":phpbuild(),"pg_numrows":phpbuild(),
+      "pg_numfields":phpbuild(),"pg_fieldname":phpbuild(),"pg_fieldsize":phpbuild(),"pg_fieldtype":phpbuild(),"pg_fieldnum":phpbuild(),
+      "pg_fieldprtlen":phpbuild(),"pg_fieldisnull":phpbuild(),"pg_freeresult":phpbuild(),"pg_result":phpbuild(),
+      "pg_loreadall":phpbuild(),"pg_locreate":phpbuild(),"pg_lounlink":phpbuild(),"pg_loopen":phpbuild(),"pg_loclose":phpbuild(),
+      "pg_loread":phpbuild(),"pg_lowrite":phpbuild(),"pg_loimport":phpbuild(),"pg_loexport":phpbuild(),"echo":phpbuild(),
+      "print":phpbuild(),"global":phpbuild(),"static":phpbuild(),"exit":phpbuild(),"array":phpbuild(),"empty":phpbuild(),
+      "eval":phpbuild(),"isset":phpbuild(),"unset":phpbuild(),"die":phpbuild(),"include":phpbuild(),"require":phpbuild(),
+      "include_once":phpbuild(),"require_once":phpbuild(),
+      "true":phpatom(),"false":phpatom(),"null":phpatom(),"TRUE":phpatom(),"FALSE":phpatom(),"NULL":phpatom(),
+      "__CLASS__":phpatom(),"__DIR__":phpatom(),"__FILE__":phpatom(),"__LINE__":phpatom(),"__METHOD__":phpatom(),
+      "__FUNCTION__":phpatom(),"__NAMESPACE__":phpatom()};
+    return Phpfunctions;
+  }();
+  
+  
   var phpConfig = {
     name: "clike",
     keywords: keywords("abstract and array as break case catch class clone const continue declare default " +
@@ -20,8 +182,6 @@
                        "die echo empty exit eval include include_once isset list require require_once return " +
                        "print unset __halt_compiler self static parent"),
     blockKeywords: keywords("catch do else elseif for foreach if switch try while"),
-    atoms: keywords("true false null TRUE FALSE NULL __CLASS__ __DIR__ __FILE__ __LINE__ __METHOD__ __FUNCTION__ __NAMESPACE__"),
-    builtin: keywords("func_num_args func_get_arg func_get_args strlen strcmp strncmp strcasecmp strncasecmp each error_reporting define defined trigger_error user_error set_error_handler restore_error_handler get_declared_classes get_loaded_extensions extension_loaded get_extension_funcs debug_backtrace constant bin2hex sleep usleep time mktime gmmktime strftime gmstrftime strtotime date gmdate getdate localtime checkdate flush wordwrap htmlspecialchars htmlentities html_entity_decode md5 md5_file crc32 getimagesize image_type_to_mime_type phpinfo phpversion phpcredits strnatcmp strnatcasecmp substr_count strspn strcspn strtok strtoupper strtolower strpos strrpos strrev hebrev hebrevc nl2br basename dirname pathinfo stripslashes stripcslashes strstr stristr strrchr str_shuffle str_word_count strcoll substr substr_replace quotemeta ucfirst ucwords strtr addslashes addcslashes rtrim str_replace str_repeat count_chars chunk_split trim ltrim strip_tags similar_text explode implode setlocale localeconv parse_str str_pad chop strchr sprintf printf vprintf vsprintf sscanf fscanf parse_url urlencode urldecode rawurlencode rawurldecode readlink linkinfo link unlink exec system escapeshellcmd escapeshellarg passthru shell_exec proc_open proc_close rand srand getrandmax mt_rand mt_srand mt_getrandmax base64_decode base64_encode abs ceil floor round is_finite is_nan is_infinite bindec hexdec octdec decbin decoct dechex base_convert number_format fmod ip2long long2ip getenv putenv getopt microtime gettimeofday getrusage uniqid quoted_printable_decode set_time_limit get_cfg_var magic_quotes_runtime set_magic_quotes_runtime get_magic_quotes_gpc get_magic_quotes_runtime import_request_variables error_log serialize unserialize memory_get_usage var_dump var_export debug_zval_dump print_r highlight_file show_source highlight_string ini_get ini_get_all ini_set ini_alter ini_restore get_include_path set_include_path restore_include_path setcookie header headers_sent connection_aborted connection_status ignore_user_abort parse_ini_file is_uploaded_file move_uploaded_file intval floatval doubleval strval gettype settype is_null is_resource is_bool is_long is_float is_int is_integer is_double is_real is_numeric is_string is_array is_object is_scalar ereg ereg_replace eregi eregi_replace split spliti join sql_regcase dl pclose popen readfile rewind rmdir umask fclose feof fgetc fgets fgetss fread fopen fpassthru ftruncate fstat fseek ftell fflush fwrite fputs mkdir rename copy tempnam tmpfile file file_get_contents stream_select stream_context_create stream_context_set_params stream_context_set_option stream_context_get_options stream_filter_prepend stream_filter_append fgetcsv flock get_meta_tags stream_set_write_buffer set_file_buffer set_socket_blocking stream_set_blocking socket_set_blocking stream_get_meta_data stream_register_wrapper stream_wrapper_register stream_set_timeout socket_set_timeout socket_get_status realpath fnmatch fsockopen pfsockopen pack unpack get_browser crypt opendir closedir chdir getcwd rewinddir readdir dir glob fileatime filectime filegroup fileinode filemtime fileowner fileperms filesize filetype file_exists is_writable is_writeable is_readable is_executable is_file is_dir is_link stat lstat chown touch clearstatcache mail ob_start ob_flush ob_clean ob_end_flush ob_end_clean ob_get_flush ob_get_clean ob_get_length ob_get_level ob_get_status ob_get_contents ob_implicit_flush ob_list_handlers ksort krsort natsort natcasesort asort arsort sort rsort usort uasort uksort shuffle array_walk count end prev next reset current key min max in_array array_search extract compact array_fill range array_multisort array_push array_pop array_shift array_unshift array_splice array_slice array_merge array_merge_recursive array_keys array_values array_count_values array_reverse array_reduce array_pad array_flip array_change_key_case array_rand array_unique array_intersect array_intersect_assoc array_diff array_diff_assoc array_sum array_filter array_map array_chunk array_key_exists pos sizeof key_exists assert assert_options version_compare ftok str_rot13 aggregate session_name session_module_name session_save_path session_id session_regenerate_id session_decode session_register session_unregister session_is_registered session_encode session_start session_destroy session_unset session_set_save_handler session_cache_limiter session_cache_expire session_set_cookie_params session_get_cookie_params session_write_close preg_match preg_match_all preg_replace preg_replace_callback preg_split preg_quote preg_grep overload ctype_alnum ctype_alpha ctype_cntrl ctype_digit ctype_lower ctype_graph ctype_print ctype_punct ctype_space ctype_upper ctype_xdigit virtual apache_request_headers apache_note apache_lookup_uri apache_child_terminate apache_setenv apache_response_headers apache_get_version getallheaders mysql_connect mysql_pconnect mysql_close mysql_select_db mysql_create_db mysql_drop_db mysql_query mysql_unbuffered_query mysql_db_query mysql_list_dbs mysql_list_tables mysql_list_fields mysql_list_processes mysql_error mysql_errno mysql_affected_rows mysql_insert_id mysql_result mysql_num_rows mysql_num_fields mysql_fetch_row mysql_fetch_array mysql_fetch_assoc mysql_fetch_object mysql_data_seek mysql_fetch_lengths mysql_fetch_field mysql_field_seek mysql_free_result mysql_field_name mysql_field_table mysql_field_len mysql_field_type mysql_field_flags mysql_escape_string mysql_real_escape_string mysql_stat mysql_thread_id mysql_client_encoding mysql_get_client_info mysql_get_host_info mysql_get_proto_info mysql_get_server_info mysql_info mysql mysql_fieldname mysql_fieldtable mysql_fieldlen mysql_fieldtype mysql_fieldflags mysql_selectdb mysql_createdb mysql_dropdb mysql_freeresult mysql_numfields mysql_numrows mysql_listdbs mysql_listtables mysql_listfields mysql_db_name mysql_dbname mysql_tablename mysql_table_name pg_connect pg_pconnect pg_close pg_connection_status pg_connection_busy pg_connection_reset pg_host pg_dbname pg_port pg_tty pg_options pg_ping pg_query pg_send_query pg_cancel_query pg_fetch_result pg_fetch_row pg_fetch_assoc pg_fetch_array pg_fetch_object pg_fetch_all pg_affected_rows pg_get_result pg_result_seek pg_result_status pg_free_result pg_last_oid pg_num_rows pg_num_fields pg_field_name pg_field_num pg_field_size pg_field_type pg_field_prtlen pg_field_is_null pg_get_notify pg_get_pid pg_result_error pg_last_error pg_last_notice pg_put_line pg_end_copy pg_copy_to pg_copy_from pg_trace pg_untrace pg_lo_create pg_lo_unlink pg_lo_open pg_lo_close pg_lo_read pg_lo_write pg_lo_read_all pg_lo_import pg_lo_export pg_lo_seek pg_lo_tell pg_escape_string pg_escape_bytea pg_unescape_bytea pg_client_encoding pg_set_client_encoding pg_meta_data pg_convert pg_insert pg_update pg_delete pg_select pg_exec pg_getlastoid pg_cmdtuples pg_errormessage pg_numrows pg_numfields pg_fieldname pg_fieldsize pg_fieldtype pg_fieldnum pg_fieldprtlen pg_fieldisnull pg_freeresult pg_result pg_loreadall pg_locreate pg_lounlink pg_loopen pg_loclose pg_loread pg_lowrite pg_loimport pg_loexport echo print global static exit array empty eval isset unset die include require include_once require_once"),
     multiLineStrings: true,
     hooks: {
       "$": function(stream) {
@@ -39,6 +199,10 @@
       "#": function(stream) {
         while (!stream.eol() && !stream.match("?>", false)) stream.next();
         return "comment";
+      },
+      "@": function(stream) {
+        stream.eatWhile(/[\w\@@_]/);
+        return "variable-3";
       },
       "/": function(stream) {
         if (stream.eat("/")) {
@@ -91,7 +255,23 @@
         state.curState = state.html;
         return "meta";
       } else {
-        return phpMode.token(stream, state.curState);
+          var token = phpMode.token(stream, state.curState);
+          if(token == "keyword") {
+            stream.eatWhile(/[\w\$_]/);
+            var word = stream.current();
+            known = PM_keywords[word];
+            if (known) {
+              return known.style;
+            }else{
+              known = php_keywords[word];
+              if (known) {
+                 return known.style;
+              }else{
+                 return "meta";
+              }
+            }
+          }
+        return token;
       }
     }
 
