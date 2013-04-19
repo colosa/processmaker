@@ -33,6 +33,19 @@ function loadEditor()
   dynaformEditor.A="@#URL";
   dynaformEditor.dynUid="@#DYN_UID";
   dynaformEditor._run();
+    //Add css Codemirror
+    var head = document.getElementsByTagName('head')[0];
+    var s = document.createElement('link');
+    s.setAttribute('href', '/js/codemirror/lib/codemirror.css');
+    s.setAttribute('type', 'text/css');
+    s.setAttribute('rel', 'stylesheet');
+    head.appendChild(s);
+
+    var s = document.createElement('link');
+    s.setAttribute('href', '/js/codemirror/addon/hint/show-hint.css');
+    s.setAttribute('type', 'text/css');
+    s.setAttribute('rel', 'stylesheet');
+    head.appendChild(s);
   mainPanel.events.remove = function()
   {
     var canClose=dynaformEditor.close();

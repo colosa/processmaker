@@ -46,6 +46,20 @@
 	  }
 	}
 */
+    //Add css Codemirror
+    var head = document.getElementsByTagName('head')[0];
+    var s = document.createElement('link');
+    s.setAttribute('href', '/js/codemirror/lib/codemirror.css');
+    s.setAttribute('type', 'text/css');
+    s.setAttribute('rel', 'stylesheet');
+    head.appendChild(s);
+
+    var s = document.createElement('link');
+    s.setAttribute('href', '/js/codemirror/addon/hint/show-hint.css');
+    s.setAttribute('type', 'text/css');
+    s.setAttribute('rel', 'stylesheet');
+    head.appendChild(s);
+
   var windowWidth = 600;
   var windowHeight = 460;
 

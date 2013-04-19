@@ -93,7 +93,7 @@
 	    indentWithTabs: false,
 	    readOnly: true
 	});
-	triggerEditor.setSize(350,200);
+	triggerEditor.setSize(400,200);
     
     function cancel()
     {

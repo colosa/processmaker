@@ -22,7 +22,19 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 $G_PUBLISH = new Publisher();
-$oTemplatePower = new TemplatePower( PATH_TPL . 'services/login_getStarted.html' );
+
+$fileGetStart = PATH_SKINS . SYS_SKIN . PATH_SEP . 'login_getStarted.html';
+if (!file_exists($fileGetStart)) {
+    $fileGetStart = PATH_SKIN_ENGINE . SYS_SKIN . PATH_SEP . 'login_getStarted.html';
+    if (!file_exists($fileGetStart)) {
+        $fileGetStart = PATH_CUSTOM_SKINS . SYS_SKIN . PATH_SEP . 'login_getStarted.html';
+        if (!file_exists($fileGetStart)) {
+            $fileGetStart = PATH_TPL . 'services/login_getStarted.html';
+        }
+    }
+}
+
+$oTemplatePower = new TemplatePower( $fileGetStart );
 $oTemplatePower->prepare();
 /*
 $oTemplatePower->newBlock('users');

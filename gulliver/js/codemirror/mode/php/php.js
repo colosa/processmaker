@@ -81,7 +81,6 @@
         state.pending = null;
         var cur = stream.current(), openPHP = cur.search(/<\?/);
         if (openPHP != -1) {
-          alert("openPHP");   
           if (style == "string" && /\"$/.test(cur) && !/\?>/.test(cur)) state.pending = '"';
           else state.pending = {end: stream.pos, style: style};
           stream.backUp(cur.length - openPHP);

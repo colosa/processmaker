@@ -52,7 +52,7 @@ var triggerEditor = CodeMirror.fromTextArea(document.getElementById("form[TRI_WE
     indentWithTabs: false,
     extraKeys: {"Ctrl-Space": "autocomplete"}
 });
-triggerEditor.setSize(400,250);
+triggerEditor.setSize(450,245);
 
 getField('TRI_TITLE').form.onsubmit = function() {return false;};
 var _oVarsPanel_;
