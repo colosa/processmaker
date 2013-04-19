@@ -509,6 +509,8 @@ class Form extends XmlForm
                                     $values[$k] = $this->fields[$k]->maskValue( $newValues[$k], $this );
                                 }
                         }
+                    } else {
+                        $values[$k] = $newValues[$k];
                     }
                 } else {
                     if (isset( $_FILES["form"]["name"][$k] )) {
