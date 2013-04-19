@@ -509,6 +509,10 @@ class Form extends XmlForm
                                     $values[$k] = $this->fields[$k]->maskValue( $newValues[$k], $this );
                                 }
                         }
+                    } else {
+                        if ($v->type == 'checkgroup') {
+                            $values[$k] = null;
+                        }
                     }
                 } else {
                     if (isset( $_FILES["form"]["name"][$k] )) {

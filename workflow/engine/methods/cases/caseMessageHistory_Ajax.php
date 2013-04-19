@@ -25,11 +25,11 @@
 $actionAjax = isset( $_REQUEST['actionAjax'] ) ? $_REQUEST['actionAjax'] : null;
 
 if ($actionAjax == 'messageHistoryGridList_JXP') {
-    
+
     if (!isset($_REQUEST['start'])) {
         $_REQUEST['start'] = 0;
     }
-    
+
     if (!isset($_REQUEST['limit'])) {
         $_REQUEST['limit'] = 20;
     }
@@ -46,13 +46,37 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
     $result = new stdClass();
     $aProcesses = Array ();
 
-    foreach ($appMessageArray as $index => $value) {
-        if ($appMessageArray[$index]['APP_MSG_SHOW_MESSAGE'] == 1) {
-            $appMessageArray[$index]['ID_MESSAGE'] = $appMessageArray[$index]['APP_UID'] . '_' . $appMessageArray[$index]['APP_MSG_UID'];
-            $aProcesses[] = $appMessageArray[$index];
+
+    $proUid	= $_SESSION['PROCESS'];
+    $appUid = $_SESSION['APPLICATION'];
+    $tasUid	= $_SESSION['TASK'];
+    $usrUid = $_SESSION['USER_LOGGED'];
+
+    $respView = $oCase->getAllObjectsFrom( $proUid, $appUid, $tasUid, $usrUid, 'VIEW' );
+    $respBlock = $oCase->getAllObjectsFrom( $proUid, $appUid, $tasUid, $usrUid, 'BLOCK' );
+    $respResend = $oCase->getAllObjectsFrom( $proUid, $appUid, $tasUid, $usrUid, 'RESEND' );
+
+    if ($respView['MSGS_HISTORY'] != "" ) {
+        $respMess = $respView['MSGS_HISTORY'];
+    } else {
+        if ( $respBlock['MSGS_HISTORY'] != "" ) {
+            $respMess = $respBlock['MSGS_HISTORY'];
+        } else {
+            if ($respResend['MSGS_HISTORY'] != "") {
+                $respMess = $respResend['MSGS_HISTORY'];
+            } else {
+                $respMess = "";
+            }
         }
     }
-    
+
+    foreach ($appMessageArray as $index => $value) {
+        if ($appMessageArray[$index]['APP_MSG_SHOW_MESSAGE'] == 1  && $respMess != 'BLOCK' ) {
+            $appMessageArray[$index]['ID_MESSAGE'] = $appMessageArray[$index]['APP_UID'] . '_' . $appMessageArray[$index]['APP_MSG_UID'];
+            $aProcesses[] = array_merge($appMessageArray[$index], array('MSGS_HISTORY' => $respMess));
+        }
+    }
+
     $totalCount = 0;
     foreach ($appMessageCountArray as $index => $value) {
         if ($appMessageCountArray[$index]['APP_MSG_SHOW_MESSAGE'] == 1) {
