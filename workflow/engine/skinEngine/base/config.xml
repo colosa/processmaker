@@ -15,8 +15,6 @@
 			<cssFile file="form.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
-			<cssFile file="codemirror.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
-			<cssFile file="show-hint.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</skin>
 		<blank>
@@ -25,8 +23,6 @@
 			<cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
 			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
-			<cssFile file="codemirror.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
-			<cssFile file="show-hint.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</blank>
 		<raw>
 		</raw>
@@ -36,8 +32,6 @@
 			<cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
 			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
-			<cssFile file="codemirror.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
-			<cssFile file="show-hint.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</submenu>
 		<tracker>
             <cssFile file="style.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
@@ -51,8 +45,6 @@
 			<cssFile file="pmos-xtheme-gray.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="sprite_ie7.css" enabledBrowsers="ie7" disabledBrowsers="ALL"></cssFile>
 			<cssFile file="sprite.css" enabledBrowsers="ALL" disabledBrowsers="ie7"></cssFile>
-			<cssFile file="codemirror.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
-			<cssFile file="show-hint.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 			<cssFile file="rtl.css" enabledBrowsers="ALL" disabledBrowsers=""></cssFile>
 		</extjs>
 	</cssFiles>
