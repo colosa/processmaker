@@ -506,8 +506,10 @@ class Configurations // extends Configuration
     public function getSystemDate($dateTime)
     {
         $oConf = new Configurations();
+        $dateFormat = 'D M, Y';
         $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
         $creationDateMask = isset($oConf->aConfig['dateFormat']) ? $oConf->aConfig['dateFormat'] : '';
+        $creationDateMask = ($creationDateMask == '') ? $dateFormat : $creationDateMask;
         if ($creationDateMask != '') {
             if (strpos($dateTime, ' ') !== false) {
                 list ($date, $time) = explode(' ', $dateTime);
@@ -517,7 +519,7 @@ class Configurations // extends Configuration
             } else {
                 list ($y, $m, $d) = explode('-', $dateTime);
                 $newCreation = '';
-                $maskTime = array('d' => '%d', 'D' => '%a', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%h', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%P', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
+                $maskTime = array('d' => '%d', 'D' => '%a', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%m', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%P', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
                 $creationDateMask = trim($creationDateMask);
                 for ($i = 0; $i < strlen($creationDateMask); $i++) {
                     if ($creationDateMask[$i] != ' ' && isset($maskTime[$creationDateMask[$i]])) {
@@ -540,7 +542,6 @@ class Configurations // extends Configuration
                 $dateTime = utf8_encode(strftime($newCreation, mktime(0, 0, 0, $m, $d, $y)));
             }
         }
-
         return $dateTime;
     }
 
