@@ -43,7 +43,7 @@ var triggerEditor = CodeMirror.fromTextArea(document.getElementById("form[TRI_WE
     indentWithTabs: false,
     extraKeys: {"Ctrl-Space": "autocomplete"}
 });
-triggerEditor.setSize(800,400);
+triggerEditor.setSize(890, 440);
 
 var _oVarsPanel_;
 var showDynaformsFormVars = function(sFieldName, sAjaxServer, sProcess, sSymbol) {
