@@ -1323,9 +1323,10 @@ class Installer extends Controller
 
     public function setConfiguration()
     {
-        $query = 'INSERT INTO CONFIGURATION (CFG_UID, CFG_VALUE) VALUES';
-        $query .= "('ENVIRONMENT_SETTINGS', " 
-               . '\'"a:9:{s:6:"format";s:32:"@userName (@firstName @lastName)";s:10:"dateFormat";s:6:"D M, Y";s:23:"startCaseHideProcessInf";b:0;s:19:"casesListDateFormat";s:13:"F j, Y, g:i a";s:18:"casesListRowNumber";i:20;s:20:"casesListRefreshTime";i:120;s:26:"login_enableForgotPassword";b:0;s:27:"login_enableVirtualKeyboard";b:0;s:21:"login_defaultLanguage";s:5:"pt-BR";}\')';
+        $query = <<<EOL
+INSERT INTO CONFIGURATION (CFG_UID, CFG_VALUE) VALUES
+('ENVIRONMENT_SETTINGS', 'a:3:{s:26:"login_enableForgotPassword";b:0;s:27:"login_enableVirtualKeyboard";b:0;s:21:"login_defaultLanguage";s:5:"pt-BR";}');
+EOL;
         $this->mysqlQuery($query);
     }
 

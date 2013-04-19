@@ -19,3 +19,4 @@ upgrade.log
 workflow/engine/gulliver
 workflow/public_html/index.html
 .DS_Store
+.idea
