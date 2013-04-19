@@ -105,6 +105,9 @@ var fieldSeparator=getField("PME_COMMA_SEPARATOR",fieldForm);
 var fieldMask=getField("PME_MASK",fieldForm);
 var savedFieldName=fieldName.value;
 var pme_validating;
+var separatorOld;
+var separatorNew;
+
 fieldName.focus();
 fieldName.select();
 leimnud.event.add(fieldName, 'change', {method:dynaformVerifyFieldName, instance:fieldName, event:true});
@@ -135,9 +138,7 @@ function replaceAll( text, search, change ) {
     return text;
 }
 
-function checkSeparator() {
-    var separatorOld;
-    var separatorNew;
+function selectSeparator() {
     switch (fieldSeparator.value) {
         case '.':
             separatorOld = ',';
@@ -152,42 +153,34 @@ function checkSeparator() {
             separatorNew = '.';
             break;
     }
-    var mask = fieldMask.value;
-    if (fieldVal.value !== 'Int'){
-        var amount = fieldMask.value.length;
-        var separator = mask.substring(amount-3, amount-2);
-        mask = mask.substring(0, amount-3);
+}
+function changeVal (positionSeparator) {
+    var maskDecimal = '';
+    var maskInteger = fieldMask.value;
+    if (positionSeparator > 0) {
+      maskDecimal = fieldMask.value.substring(positionSeparator + 1, fieldMask.value.length);
+      maskInteger = fieldMask.value.substring(0, positionSeparator);
     }
-    mask = replaceAll(mask , separatorNew, separatorOld);
-    if (fieldVal.value !== 'Int'){
-        mask = mask.concat(separatorNew, '##');
+    maskInteger = replaceAll(maskInteger , separatorNew, separatorOld);
+
+    if (fieldVal.value === 'Int'){
+      fieldMask.value = maskInteger;
     }
-    fieldMask.value = mask;
+    if (fieldVal.value === 'Real'){
+      if (maskDecimal == '' || (maskDecimal.length > 6)) {
+        maskDecimal = '######';
+      }
+      fieldMask.value = maskInteger + separatorNew + maskDecimal;
+    }
+}
+function checkSeparator() {
+    selectSeparator();
+    changeVal (fieldMask.value.indexOf(separatorOld));
 }
 
-function checkVal(){
-  if (fieldVal.value === 'Int'){
-    aux = fieldMask.value;
-    aux = aux.replace('.000','');
-    var amount = fieldMask.value.length;
-    var sw = 0;
-    var i = 0;
-    while (sw == 0) {
-        if(aux.charAt(amount - i - 1) == ',' || aux.charAt(amount - i - 1) == '.') {
-            sw = 1;
-        } else {
-            i++;
-        }
-    }
-    if (i <= 2) {
-        aux = aux.substring(0, amount - i - 1);
-    }
-    fieldMask.value = aux;
-  }
-  if (fieldVal.value === 'Real'){
-    fieldMask.value = fieldMask.value+'.##';
-  }
-  checkSeparator();
+function checkVal() {
+    selectSeparator();
+    changeVal (fieldMask.value.indexOf(separatorNew));
 }
 
 ]]></PME_JS>
