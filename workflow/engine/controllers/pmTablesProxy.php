@@ -203,6 +203,9 @@ class pmTablesProxy extends HttpProxyController
             $data['PRO_UID'] = trim( $data['PRO_UID'] );
             $data['columns'] = G::json_decode( stripslashes( $httpData->columns ) ); //decofing data columns
 
+            if ( $data['PRO_UID'] == "") {
+                throw new Exception( G::loadTranslation( 'ID_PROCESS_IS_REQUIRED' ) );
+            }
 
             $isReportTable = $data['PRO_UID'] != '' ? true : false;
             $oAdditionalTables = new AdditionalTables();
