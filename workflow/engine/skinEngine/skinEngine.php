@@ -363,10 +363,26 @@ class SkinEngine
 
       if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {
         $freeOfChargeText = "";
-        if (! defined('SKIP_FREE_OF_CHARGE_TEXT')) {
-          $freeOfChargeText = "Supplied free of charge with no support, certification, warranty, <br>maintenance nor indemnity by Colosa and its Certified Partners.";
+        if (! defined('SKIP_FREE_OF_CHARGE_TEXT'))
+        $freeOfChargeText = "Supplied free of charge with no support, certification, warranty, <br>maintenance nor indemnity by Colosa and its Certified Partners.";
+        if(class_exists('pmLicenseManager')) $freeOfChargeText="";
+
+        $fileFooter = PATH_SKINS . SYS_SKIN . PATH_SEP . 'footer.html';
+        if (file_exists($fileFooter)) {
+          $footer .= file_get_contents($fileFooter);
+        } else {
+          $fileFooter = PATH_SKIN_ENGINE . SYS_SKIN . PATH_SEP . 'footer.html';
+          if (file_exists($fileFooter)) {
+            $footer .= file_get_contents($fileFooter);
+          } else {
+            $fileFooter = PATH_CUSTOM_SKINS . SYS_SKIN . PATH_SEP . 'footer.html';
+            if (file_exists($fileFooter)) {
+              $footer .= file_get_contents($fileFooter);
+            } else {
+              $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " <a href=\"http://www.colosa.com\" alt=\"Colosa, Inc.\" target=\"_blank\">Colosa, Inc.</a> All rights reserved.<br /> $freeOfChargeText " . "<br><br/><a href=\"http://www.processmaker.com\" alt=\"Powered by ProcessMaker - Open Source Workflow & Business Process Management (BPM) Management Software\" title=\"Powered by ProcessMaker\" target=\"_blank\"><img src=\"/images/PowerdbyProcessMaker.png\" border=\"0\" /></a>";
+            }
+          }
         }
-        $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " <a href=\"http://www.colosa.com\" alt=\"Colosa, Inc.\" target=\"_blank\">Colosa, Inc.</a> All rights reserved.<br /> $freeOfChargeText " . "<br><br/><a href=\"http://www.processmaker.com\" alt=\"Powered by ProcessMaker - Open Source Workflow & Business Process Management (BPM) Management Software\" title=\"Powered by ProcessMaker\" target=\"_blank\"><img src=\"/images/PowerdbyProcessMaker.png\" border=\"0\" /></a>";
       }
 
       $oMenu = new Menu();
@@ -463,7 +479,22 @@ class SkinEngine
       $footer = '';
 
       if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {
-        $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " Colosa, Inc. All rights reserved.";
+        $fileFooter = PATH_SKINS . SYS_SKIN . PATH_SEP . 'footer.html';
+        if (file_exists($fileFooter)) {
+          $footer .= file_get_contents($fileFooter);
+        } else {
+          $fileFooter = PATH_SKIN_ENGINE . SYS_SKIN . PATH_SEP . 'footer.html';
+          if (file_exists($fileFooter)) {
+            $footer .= file_get_contents($fileFooter);
+          } else {
+            $fileFooter = PATH_CUSTOM_SKINS . SYS_SKIN . PATH_SEP . 'footer.html';
+            if (file_exists($fileFooter)) {
+              $footer .= file_get_contents($fileFooter);
+            } else {
+              $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " <a href=\"http://www.colosa.com\" alt=\"Colosa, Inc.\" target=\"_blank\">Colosa, Inc.</a> All rights reserved.<br /> $freeOfChargeText " . "<br><br/><a href=\"http://www.processmaker.com\" alt=\"Powered by ProcessMaker - Open Source Workflow & Business Process Management (BPM) Management Software\" title=\"Powered by ProcessMaker\" target=\"_blank\"><img src=\"/images/PowerdbyProcessMaker.png\" border=\"0\" /></a>";
+            }
+          }
+        }
       }
 
       //menu
@@ -635,12 +666,27 @@ class SkinEngine
       $footer = '';
 
       if (strpos($_SERVER['REQUEST_URI'], '/login/login') !== false) {
-
         $freeOfChargeText = "";
         if (! defined('SKIP_FREE_OF_CHARGE_TEXT'))
         $freeOfChargeText = "Supplied free of charge with no support, certification, warranty, <br>maintenance nor indemnity by Colosa and its Certified Partners.";
         if(class_exists('pmLicenseManager')) $freeOfChargeText="";
-        $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " <a href=\"http://www.colosa.com\" alt=\"Colosa, Inc.\" target=\"_blank\">Colosa, Inc.</a> All rights reserved.<br /> $freeOfChargeText " . "<br><br/><a href=\"http://www.processmaker.com\" alt=\"Powered by ProcessMaker - Open Source Workflow & Business Process Management (BPM) Management Software\" title=\"Powered by ProcessMaker\" target=\"_blank\"><img src=\"/images/PowerdbyProcessMaker.png\" border=\"0\" /></a>";
+
+        $fileFooter = PATH_SKINS . SYS_SKIN . PATH_SEP . 'footer.html';
+        if (file_exists($fileFooter)) {
+          $footer .= file_get_contents($fileFooter);
+        } else {
+          $fileFooter = PATH_SKIN_ENGINE . SYS_SKIN . PATH_SEP . 'footer.html';
+          if (file_exists($fileFooter)) {
+            $footer .= file_get_contents($fileFooter);
+          } else {
+            $fileFooter = PATH_CUSTOM_SKINS . SYS_SKIN . PATH_SEP . 'footer.html';
+            if (file_exists($fileFooter)) {
+              $footer .= file_get_contents($fileFooter);
+            } else {
+              $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " <a href=\"http://www.colosa.com\" alt=\"Colosa, Inc.\" target=\"_blank\">Colosa, Inc.</a> All rights reserved.<br /> $freeOfChargeText " . "<br><br/><a href=\"http://www.processmaker.com\" alt=\"Powered by ProcessMaker - Open Source Workflow & Business Process Management (BPM) Management Software\" title=\"Powered by ProcessMaker\" target=\"_blank\"><img src=\"/images/PowerdbyProcessMaker.png\" border=\"0\" /></a>";
+            }
+          }
+        }
       }
 
       $oMenu = new Menu();
