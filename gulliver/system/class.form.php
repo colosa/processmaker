@@ -510,7 +510,9 @@ class Form extends XmlForm
                                 }
                         }
                     } else {
-                        $values[$k] = $newValues[$k];
+                        if($v->type == 'checkgroup'){
+                            $values[$k] = $newValues[$k];
+                        }
                     }
                 } else {
                     if (isset( $_FILES["form"]["name"][$k] )) {
