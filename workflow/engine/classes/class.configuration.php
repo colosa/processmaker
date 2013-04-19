@@ -479,6 +479,8 @@ class Configurations // extends Configuration
         $arrayFormat[] = array("id" => "m.d.y", "name" => G::LoadTranslation("ID_DATE_FORMAT_7"));  //"m.d.y"           i.e: "11.17.10"
         $arrayFormat[] = array("id" => "j, n, Y", "name" => G::LoadTranslation("ID_DATE_FORMAT_8"));  //"j, n, Y"         i.e: "17,11,2010"
         $arrayFormat[] = array("id" => "D M j G:i:s T Y", "name" => G::LoadTranslation("ID_DATE_FORMAT_9"));  //"D M j G:i:s T Y" i.e: "Thu Nov 17 10:48:18 BOT 2010"
+        $arrayFormat[] = array("id" => "M d, Y", "name" => G::LoadTranslation("ID_DATE_FORMAT_15")); //"M d, Y"          i.e: "November 15, 2010"
+        $arrayFormat[] = array("id" => "m D, Y", "name" => G::LoadTranslation("ID_DATE_FORMAT_16")); //"D M, Y"          i.e: "Thu 01, 2010"
         $arrayFormat[] = array("id" => "D d M, Y", "name" => G::LoadTranslation("ID_DATE_FORMAT_10")); //"D d M, Y"        i.e: "Thu 17 Nov, 2010"
         $arrayFormat[] = array("id" => "D M, Y", "name" => G::LoadTranslation("ID_DATE_FORMAT_11")); //"D M, Y"          i.e: "Thu Nov, 2010"
         $arrayFormat[] = array("id" => "d M, Y", "name" => G::LoadTranslation("ID_DATE_FORMAT_12")); //"d M, Y"          i.e: "17 Nov, 2010"
@@ -506,7 +508,7 @@ class Configurations // extends Configuration
     public function getSystemDate($dateTime)
     {
         $oConf = new Configurations();
-        $dateFormat = 'D M, Y';
+        $dateFormat = 'M d, Y';
         $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
         $creationDateMask = isset($oConf->aConfig['dateFormat']) ? $oConf->aConfig['dateFormat'] : '';
         $creationDateMask = ($creationDateMask == '') ? $dateFormat : $creationDateMask;
@@ -519,7 +521,7 @@ class Configurations // extends Configuration
             } else {
                 list ($y, $m, $d) = explode('-', $dateTime);
                 $newCreation = '';
-                $maskTime = array('d' => '%d', 'D' => '%a', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%m', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%P', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
+                $maskTime = array('d' => '%d', 'D' => '%A', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%B', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%P', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
                 $creationDateMask = trim($creationDateMask);
                 for ($i = 0; $i < strlen($creationDateMask); $i++) {
                     if ($creationDateMask[$i] != ' ' && isset($maskTime[$creationDateMask[$i]])) {
