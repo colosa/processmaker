@@ -3,13 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Server Error :: </title>
-<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <style>
 
 .box {
     -moz-border-radius:6px; /* Rounded edges in Firefox */
-  background-image: url(/images/classic/info.gif);
   color :#000;
   border-style:solid;
   border-width:1px;
@@ -55,4 +53,3 @@
 </div>
 </body>
 </html>
-

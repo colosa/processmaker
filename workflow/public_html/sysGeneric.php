@@ -501,8 +501,12 @@ if (defined( 'SYS_TEMP' ) && SYS_TEMP != '') {
         // including workspace shared classes -> particularlly for pmTables
         set_include_path( get_include_path() . PATH_SEPARATOR . PATH_WORKSPACE );
     } else {
-        Bootstrap::SendTemporalMessage( 'ID_NOT_WORKSPACE', "error" );
-        Bootstrap::header( 'location: /sys/' . SYS_LANG . '/' . SYS_SKIN . '/main/sysLogin?errno=2' );
+        if (SYS_LANG != '' && SYS_SKIN != '') {
+            Bootstrap::SendTemporalMessage( 'ID_NOT_WORKSPACE', "error" );
+            Bootstrap::header( 'location: /sys/' . SYS_LANG . '/' . SYS_SKIN . '/main/sysLogin?errno=2' );
+        } else {
+            header('location: /errors/error404.php?url=' . urlencode($_SERVER['REQUEST_URI']));
+        }
         die();
     }
 } else { //when we are in global pages, outside any valid workspace
