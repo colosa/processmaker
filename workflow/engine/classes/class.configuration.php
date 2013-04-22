@@ -532,12 +532,30 @@ class Configurations // extends Configuration
                 }
 
                 $langLocate = SYS_LANG;
-                if (SYS_LANG == 'es') {
-                    $langLocate = 'es_ES';
-                } else if (strlen(SYS_LANG) > 2) {
-                    $langLocate = str_replace('-', '_', SYS_LANG);
+                if (G::toLower(PHP_OS) == 'linux' || G::toLower(PHP_OS) == 'darwin') {
+                    if (SYS_LANG == 'es') {
+                        $langLocate = 'es_ES';
+                    } else if (strlen(SYS_LANG) > 2) {
+                        $langLocate = str_replace('-', '_', SYS_LANG);
+                    } else {
+                        $langLocate = 'en_US';
+                    }
                 } else {
-                    $langLocate = 'en_US';
+                    switch (SYS_LANG) {
+                        case 'es':
+                        case 'es_ES':
+                            $langLocate = 'ESN';
+                            break;
+                        case 'pt':
+                        case 'pt-BR':
+                            $langLocate = 'PTB';
+                            break;
+                        case 'en':
+                        case 'en_US':
+                        default:
+                            $langLocate = 'EST';
+                            break;
+                    }
                 }
 
                 setlocale(LC_TIME, $langLocate);
