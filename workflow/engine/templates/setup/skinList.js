@@ -132,7 +132,13 @@ Ext.onReady(function(){
         rowSelected = infoGrid.getSelectionModel().getSelected();
         if((rowSelected.data.SKIN_FOLDER_ID)&&((rowSelected.data.SKIN_FOLDER_ID!="classic"))){
           exportButton.enable();
-          deleteButton.enable();
+          
+          if (rowSelected.data.SKIN_STATUS!='Inactive') {
+            deleteButton.disable();
+          } else {
+            deleteButton.enable();
+          }
+
         }else{
           exportButton.disable();
           deleteButton.disable();
@@ -363,6 +369,7 @@ showdate = function (value){
 
 selectedSkin = function (value){
     if(gotWildCard(value)){
+        deleteButton.disable();
         return setBoldItalic(value.substring(1));
     }
     return value;

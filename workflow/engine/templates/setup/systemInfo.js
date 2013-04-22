@@ -76,8 +76,7 @@ systemInfo.application = {
             bodyStyle: "padding: 10px; font: 0.80em arial;",
             width: 250,
             height: 300,
-
-            html: _("ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION") + _("ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION2")
+            html: _("ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION") +'<br><br>'+ _("ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION2") +'<br><br>'+ _("ID_PROCESSMAKER_REQUIREMENTS_OPENSSL_OPTIONAL") +'<br><br>'+ _("ID_PROCESSMAKER_REQUIREMENTS_LDAP_OPTIONAL")
         });
 
         var frmfsCenter = new Ext.form.FieldSet({

@@ -45,25 +45,33 @@ function skinList ()
     G::loadClass( 'system' );
 
     $skinList = System::getSkingList();
-
     $wildcard = '';
     if (isset( $_REQUEST['activeskin'] )) {
         $wildcard = '@';
     }
+    
+    $classicSkin = '';
+    if (defined('PARTNER_FLAG')) {
+        $classicSkin = '00000000000000000000000000000001';
+    }
+    
     foreach ($skinList['skins'] as $key => $value) {
-        if ($value['SKIN_FOLDER_ID'] != 'simplified' && $value['SKIN_FOLDER_ID'] != 'uxs' && $value['SKIN_FOLDER_ID'] != 'uxmodern') {
-            if ($skinList['currentSkin'] == $value['SKIN_FOLDER_ID']) {
-                $value['SKIN_STATUS'] = $wildcard . G::LoadTranslation( 'ID_ACTIVE' );
-                $value['SKIN_NAME'] = $wildcard . $value['SKIN_NAME'];
-                $value['SKIN_WORKSPACE'] = $wildcard . $value['SKIN_WORKSPACE'];
-                $value['SKIN_DESCRIPTION'] = $wildcard . $value['SKIN_DESCRIPTION'];
-                $value['SKIN_AUTHOR'] = $wildcard . $value['SKIN_AUTHOR'];
-                $value['SKIN_CREATEDATE'] = $wildcard . $value['SKIN_CREATEDATE'];
-                $value['SKIN_MODIFIEDDATE'] = $wildcard . $value['SKIN_MODIFIEDDATE'];
-            } else {
-                $value['SKIN_STATUS'] = G::LoadTranslation( 'ID_INACTIVE' );
+        if ($value['SKIN_ID'] != $classicSkin) {
+            if ($value['SKIN_FOLDER_ID'] != 'simplified' && $value['SKIN_FOLDER_ID'] != 'uxs' && $value['SKIN_FOLDER_ID'] != 'uxmodern') {
+                if ($skinList['currentSkin'] == $value['SKIN_FOLDER_ID']) {
+                    $value['SKIN_STATUS'] = $wildcard . G::LoadTranslation( 'ID_ACTIVE' );
+                    $value['SKIN_NAME'] = $wildcard . $value['SKIN_NAME'];
+                    $value['SKIN_WORKSPACE'] = $wildcard . $value['SKIN_WORKSPACE'];
+                    $value['SKIN_DESCRIPTION'] = $wildcard . $value['SKIN_DESCRIPTION'];
+                    $value['SKIN_AUTHOR'] = $wildcard . $value['SKIN_AUTHOR'];
+                    $value['SKIN_CREATEDATE'] = $wildcard . $value['SKIN_CREATEDATE'];
+                    $value['SKIN_MODIFIEDDATE'] = $wildcard . $value['SKIN_MODIFIEDDATE'];
+                } else {
+                    $value['SKIN_STATUS'] = G::LoadTranslation( 'ID_INACTIVE' );
+                }
+                
+                $skinListArray['skins'][] = $value;
             }
-            $skinListArray['skins'][] = $value;
         }
     }
     $skinListArray['currentSkin'] = $skinList['currentSkin'];
