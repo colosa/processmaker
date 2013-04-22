@@ -182,6 +182,7 @@ Ext.onReady(function() {
     autoHeight  : false,
     height      : 800,
     multiSelect : true,
+    autoScroll: true,
     overClass   : 'x-view-over', 
     itemSelector: 'div.thumb-wrap',
     emptyText   : _('ID_NO_IMAGES_TO_DISPLAY'),
