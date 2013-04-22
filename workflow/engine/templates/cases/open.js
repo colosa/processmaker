@@ -121,7 +121,7 @@ Ext.onReady(function(){
               var actionMenu = Ext.getCmp('actionMenu');
               actionMenu.menu.removeAll();
               for(j=0; j<data[i].options.length; j++) {
-            	if(!data[i].options[j].hide){
+            	 if(!data[i].options[j].hide){
                   actionMenu.menu.add({
                     text: data[i].options[j].text,
                     handler: data[i].options[j].fn != '' ? Actions[data[i].options[j].fn] : function(){}
@@ -759,6 +759,7 @@ Ext.onReady(function(){
       autoScroll:true,
       modal: true,
       maximizable: false,
+      resizable: false,
       items: [frm]
     });
     win.show();
