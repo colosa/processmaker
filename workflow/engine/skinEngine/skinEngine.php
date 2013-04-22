@@ -263,7 +263,7 @@ class SkinEngine
     $meta    = null;
     $dirBody = null;
 
-    if (preg_match("/^.*\(.*MSIE (\d+)\..+\).*$/", $_SERVER["HTTP_USER_AGENT"], $arrayMatch)) {
+    if (isset($_SERVER["HTTP_USER_AGENT"]) && preg_match("/^.*\(.*MSIE (\d+)\..+\).*$/", $_SERVER["HTTP_USER_AGENT"], $arrayMatch)) {
         $ie = intval($arrayMatch[1]);
         $swTrident = (preg_match("/^.*Trident.*$/", $_SERVER["HTTP_USER_AGENT"]))? 1 : 0; //Trident only in IE8+
 

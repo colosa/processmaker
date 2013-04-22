@@ -337,7 +337,9 @@ class Installer extends Controller
         if (substr( $pathShared, - 1 ) != '/') {
             $pathShared .= '/';
         }
-        $logFile = $pathShared . 'log/install.log';
+        $pathSharedLog =  $pathShared . 'log/';
+        G::verifyPath($pathSharedLog, true);
+        $logFile = $pathSharedLog . 'install.log';
 
         if (! is_file( $logFile )) {
             G::mk_dir( dirname( $pathShared ) );
@@ -839,6 +841,7 @@ class Installer extends Controller
             $updatedConf['default_skin'] = $skinUri;
             $info->uri =  PATH_SEP . 'sys' . $_REQUEST['workspace'] . PATH_SEP . $langUri . PATH_SEP . $skinUri . PATH_SEP . 'login' . PATH_SEP . 'login';
 
+            $indexFileUpdated = true;
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $this->buildParternExtras($adminUsername, $adminPassword, $_REQUEST['workspace'], SYS_LANG);
             } else {
