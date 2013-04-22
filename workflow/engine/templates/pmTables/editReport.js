@@ -910,12 +910,21 @@ function createReportTable()
 {
   var tableName        = Ext.getCmp('REP_TAB_NAME').getValue().trim();
   var tableDescription = Ext.getCmp('REP_TAB_DSC').getValue().trim();
-
+  
   //validate table name
   if(Ext.getCmp('REP_TAB_NAME').getValue().trim() == '') {
     Ext.getCmp('REP_TAB_NAME').focus();
     PMExt.error(_('ID_ERROR'), _('ID_TABLE_NAME_IS_REQUIRED'), function(){
       Ext.getCmp('REP_TAB_NAME').focus();
+    });
+    return false;
+  }
+  
+  //validate process
+  if(Ext.getCmp('PROCESS').getValue().trim() == '') {
+    Ext.getCmp('PROCESS').focus();
+    PMExt.error(_('ID_ERROR'), _('ID_PROCESS_IS_REQUIRED'), function(){
+      Ext.getCmp('PROCESS').focus();
     });
     return false;
   }
