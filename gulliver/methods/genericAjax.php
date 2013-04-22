@@ -222,11 +222,11 @@ function sortByChar($aRows, $charSel)
  */
 function queryModified($sqlParsed, $inputSel = "")
 {
-
   if(!empty($sqlParsed['SELECT'])) {
+    $sqlSelectOptions = (isset($sqlParsed["OPTIONS"]) && count($sqlParsed["OPTIONS"]) > 0)? implode(" ", $sqlParsed["OPTIONS"]) : null;
 
-    $sqlSelect = "SELECT ";
-    $aSelect   = $sqlParsed['SELECT'];
+    $sqlSelect = "SELECT $sqlSelectOptions ";
+    $aSelect   = $sqlParsed["SELECT"];
 
     $sFieldSel = (count($aSelect)>1 ) ? $aSelect[1]['base_expr'] : $aSelect[0]['base_expr'];
     foreach($aSelect as $key => $value ) {
