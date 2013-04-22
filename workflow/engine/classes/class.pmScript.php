@@ -335,9 +335,12 @@ class PMScript
             for ($i = 0; $i < $iOcurrences; $i ++) {
                 // if the variables for that condition has not been previously defined then $variableIsDefined
                 // is set to false
-                if (! isset( $this->aFields[$aMatch[2][$i][0]] )) {
-                    // $variableIsDefined = false;
+                if (!isset($this->aFields[$aMatch[2][$i][0]]) && !isset($aMatch[5][$i][0])) {
                     $this->aFields[$aMatch[2][$i][0]] = '';
+                } else {
+                    if (!isset($this->aFields[$aMatch[2][$i][0]])) {
+                        eval("\$this->aFields['" . $aMatch[2][$i][0] . "']" . $aMatch[5][$i][0] . " = '';");
+                    }
                 }
                 $sAux = substr( $this->sScript, $iAux, $aMatch[0][$i][1] - $iAux );
                 if (! $bEqual) {
