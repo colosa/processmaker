@@ -551,7 +551,7 @@ class Configurations // extends Configuration
                             $langLocate = 'PTB';
                             break;
                         case 'en':
-                        case 'en_US':
+                        case 'en-US':
                         default:
                             $langLocate = 'EST';
                             break;

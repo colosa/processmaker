@@ -1335,8 +1335,14 @@ EOL;
         ini_set('max_execution_time', '0');
         ini_set('memory_limit', '256M');
 
-        $serv = 'http://'.$_SERVER['SERVER_NAME'];
-
+        $serv = 'http://';
+        if (isset($_SERVER['HTTPS']) && trim($_SERVER['HTTPS']) != '') {
+            $serv = 'https://';
+        }
+        $serv .= $_SERVER['SERVER_NAME'];
+        if (isset($_SERVER['SERVER_PORT']) && trim($_SERVER['SERVER_PORT']) != '') {
+            $serv .= ':' . $_SERVER['SERVER_PORT'];
+        }
 
         // create session
         $cookiefile =  sys_get_temp_dir() . PATH_SEP . 'curl-session';
