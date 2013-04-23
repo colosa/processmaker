@@ -843,7 +843,7 @@ class Installer extends Controller
 
             $indexFileUpdated = true;
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
-                $this->buildParternExtras($adminUsername, $adminPassword, $_REQUEST['workspace'], SYS_LANG);
+                $this->buildParternExtras($adminUsername, $adminPassword, $_REQUEST['workspace'], $langUri);
             } else {
                 try {
                     G::update_php_ini( $envFile, $updatedConf );
