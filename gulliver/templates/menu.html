@@ -1,19 +1,58 @@
-<ul id="pm_menu">
-	{foreach from=$menus item=field key=name}
-	{if $field.icon neq ""}
-	<li  id="{$field.idName}" class="{$field.classname}">
-		<a href="{$field.target}" >
-			<img src="{$field.icon}" border="0" alt="{$field.label}"/>
-			{$field.label}
-		</a>
-	</li>
-	{else}
-	<li  id="{$field.idName}"
-		  class="{$field.classname}">
-		<a href="{$field.target}">
-			{$field.label}
-		</a>
-	</li>
-	{/if}
-	{/foreach}
+<ul id="dropdownMenu">
+    {foreach from=$menus item=field key=name}
+    {if $field.icon neq ""}
+    <li>
+        <a href="{$field.target}" >
+            <img src="{$field.icon}" border="0" alt="{$field.label}"/>
+            {$field.label}
+        </a>
+        {if $field.subMenu neq 0}
+            <ul>
+            {foreach from=$field.subMenu item=fields key=names}
+                {if $fields.icon neq ""}
+                <li>
+                    <a href="{$fields.target}" {$fields.onclick} >
+                        <img src="{$field.icon}" border="0" alt="{$fields.label}"/>
+                        {$fields.label}
+                    </a>
+                </li>
+                {else}
+                <li>
+                    <a href="{$fields.target}" {$fields.onclick} >
+                        {$fields.label}
+                    </a>
+                </li>
+                {/if}
+            {/foreach}
+            </ul>
+        {/if}
+    </li>
+    {else}
+    <li {if $field.classname eq 'SelectedMenu'}class="SelectedMenu"{/if}>
+        <a href="{$field.target}">
+            {$field.label}
+        </a>
+        {if $field.subMenu neq 0}
+            <ul>
+            {foreach from=$field.subMenu item=fields key=names}
+                {if $fields.icon neq ""}
+                <li>
+                    <a href="{$fields.target}" {$fields.onclick} >
+                        <img src="{$field.icon}" border="0" alt="{$fields.label}"/>
+                        {$fields.label}
+                    </a>
+                </li>
+                {else}
+                <li>
+                    <a href="{$fields.target}" {$fields.onclick} >
+                        {$fields.label}
+                    </a>
+                </li>
+                {/if}
+            {/foreach}
+            </ul>
+        {/if}
+    </li>
+    {/if}
+    {/foreach}
 </ul>
