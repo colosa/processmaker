@@ -1383,17 +1383,7 @@ EOL;
 
         // File to upload/post
         $postData['form[LANGUAGE_FILENAME]'] = "@".PATH_CORE."content/translations/processmaker.$lang.po";
-				$url = "$serv/sys{$workspace}/{$lang}/classic/setup/languages_Import";
-				
-				error_log('2 lenguaje-----------------');
-				
-				error_log('--- LENGUAJE');
-				error_log($postData['form[LANGUAGE_FILENAME]']);
-				
-				error_log('--- URL');
-				error_log($url);
-				
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/languages_Import");
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_VERBOSE, 0);
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
@@ -1403,10 +1393,8 @@ EOL;
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_setopt($ch, CURLOPT_TIMEOUT, 90);
+
         $output = curl_exec($ch);
-        
-        error_log('-- RESP');
-        error_log($output);
         curl_close($ch);
 
         /** 
