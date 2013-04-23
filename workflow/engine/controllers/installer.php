@@ -1372,6 +1372,8 @@ EOL;
         curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
         $output = curl_exec($ch);
+        error_log('1 logeo-----------------');
+        error_log($output);
         curl_close($ch);
 
         /** 
@@ -1394,8 +1396,9 @@ EOL;
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_setopt($ch, CURLOPT_TIMEOUT, 90);
-
         $output = curl_exec($ch);
+        error_log('2 lenguaje-----------------');
+        error_log($output);
         curl_close($ch);
 
         /** 
@@ -1428,6 +1431,8 @@ EOL;
             curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
             $output = curl_exec($ch);
+            error_log('3 skin-----------------');
+            error_log($output);
             curl_close($ch);
         }
 
@@ -1457,6 +1462,8 @@ EOL;
 
 
             $output = curl_exec($ch);
+            error_log('4 plugin-----------------');
+            error_log($output);
             curl_close($ch);
         }
 
