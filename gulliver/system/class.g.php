@@ -1395,31 +1395,28 @@ class G
         if ($lang === '') {
             $lang = defined( SYS_LANG ) ? SYS_LANG : 'en';
         }
+
         $aux = explode( ' ', $date ); //para dividir la fecha del dia
         $date = explode( '-', isset( $aux[0] ) ? $aux[0] : '00-00-00' ); //para obtener los dias, el mes, y el año.
         $time = explode( ':', isset( $aux[1] ) ? $aux[1] : '00:00:00' ); //para obtener las horas, minutos, segundos.
-
 
         $year = (int) ((isset( $date[0] )) ? $date[0] : '0'); //year
         $month = (int) ((isset( $date[1] )) ? $date[1] : '0'); //month
         $day = (int) ((isset( $date[2] )) ? $date[2] : '0'); //day
 
-
         $h = isset( $time[0] ) ? $time[0] : '00'; //hour
         $i = isset( $time[1] ) ? $time[1] : '00'; //minute
         $s = isset( $time[2] ) ? $time[2] : '00'; //second
 
-
         $MONTHS = Array ();
-        for ($i = 1; $i <= 12; $i ++) {
-            $MONTHS[$i] = G::LoadTranslation( "ID_MONTH_$i", $lang );
+        for ($j = 1; $j <= 12; $j ++) {
+          $MONTHS[$j] = G::LoadTranslation( "ID_MONTH_$j", $lang );
         }
 
         $d = (int) $day;
         $dd = G::complete_field( $day, 2, 1 );
 
         //missing D
-
 
         $M = $MONTHS[$month];
         $m = (int) $month;
