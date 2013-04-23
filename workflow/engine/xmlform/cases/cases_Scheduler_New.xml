@@ -46,7 +46,7 @@
 </TAS_UID>
 
 <SCH_NAME type="text" maxlength="100" validate="Any" required="1" readonly="0" size="40" mode="edit" mask="" strto="" dependentfields="" defaultvalue="" hint="" formula="" function="" sqlconnection="" savelabel="0">
-<en>Description</en>
+<en>Name</en>
 </SCH_NAME>
 
 <SCH_OPTION type="dropdown" required="1" readonly="0" savelabel="0" mode="edit" options="Array">
@@ -623,6 +623,9 @@ function case_userSchedulerValidate(username, password) {
  */
 
 function validateSchedulerFields(){
+
+getField("SCH_NAME").value = getField("SCH_NAME").value.trim();
+
 var validFields = true;
 var requiredFields = '';
 var badFormatFields = '';
