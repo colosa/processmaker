@@ -1,5 +1,4 @@
 <?php
-
 /**
  * class.headPublisher.php
  *
@@ -213,21 +212,33 @@ class headPublisher
 
         $head = '';
         $head .= '<TITLE>' . $this->title . "</TITLE>\n";
+
+        $browserCacheFilesUid = G::browserCacheFilesGetUid();
+
+        $head = $head . "
+        <script type=\"text/javascript\">
+        var BROWSER_CACHE_FILES_UID = \"" . (($browserCacheFilesUid != null && file_exists(PATH_TRUNK . "gulliver" . PATH_SEP . "js" . PATH_SEP . "maborak" . PATH_SEP . "core" . PATH_SEP . "maborak.$browserCacheFilesUid.js"))? $browserCacheFilesUid : null) . "\";
+        </script>
+        ";
+
         foreach ($this->scriptFiles as $file) {
-            $head .= "<script type='text/javascript' src='" . $file . "'></script>\n";
+            $head = $head . "<script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl($file) . "\"></script>\n";
         }
+
         if (!in_array($this->translationsFile, $this->scriptFiles)) {
             $head .= "<script type='text/javascript' src='" . $this->translationsFile . "'></script>\n";
         }
 
         $head .= "<script type='text/javascript'>\n";
         $head .= $this->leimnudInitString;
+
         foreach ($this->leimnudLoad as $file) {
             $head .= "  leimnud.Package.Load(false, {Type: 'file', Path: '" . $file . "', Absolute : true});\n";
         }
+
         $head .= $this->headerScript;
         $head .= "</script>\n";
-        $head .= "<script type='text/javascript' src='/js/maborak/core/maborak.loader.js'></script>\n";
+        $head .= "<script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/maborak/core/maborak.loader.js") . "\"></script>\n";
         return $head;
     }
 
@@ -255,7 +266,7 @@ class headPublisher
         //$head .= "<script language='javascript'>\n";
         foreach ($this->scriptFiles as $file) {
             if (($file != "/js/maborak/core/maborak.js") && ($file != $jslabel)) {
-                $head .= "  eval(ajax_function('" . $file . "','',''));\n";
+                $head = $head . "  eval(ajax_function(\"" . G::browserCacheFilesUrl($file) . "\", \"\", \"\"));\n";
             }
         }
         foreach ($this->leimnudLoad as $file) {
@@ -689,4 +700,4 @@ class headPublisher
         $this->disableHeaderScripts = true;
     }
 }
- 
+

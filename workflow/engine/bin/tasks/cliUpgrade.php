@@ -119,12 +119,6 @@ function run_upgrade($command, $args)
             $errors = true;
         }
     }
-    if ($errors) {
-        CLI::logging("Upgrade finished but there were errors upgrading workspaces.\n");
-        CLI::logging(CLI::error("Please check the log above to correct any issues.")."\n");
-    } else {
-        CLI::logging("Upgrade successful\n");
-    }
 
     // SAVE Upgrades/Patches
     $arrayPatch = glob(PATH_TRUNK . 'patch-*');
@@ -149,6 +143,19 @@ function run_upgrade($command, $args)
         }
     } else {
         CLI::logging('ProcessMaker ' . System::getVersion(). ' installed', PATH_DATA . 'log/upgrades.log');
+    }
+
+    //Safe upgrade for JavaScript files
+    CLI::logging("\nSafe upgrade for files cached by the browser\n\n");
+
+    G::browserCacheFilesSetUid();
+
+    //Status
+    if ($errors) {
+        CLI::logging("Upgrade finished but there were errors upgrading workspaces.\n");
+        CLI::logging(CLI::error("Please check the log above to correct any issues.") . "\n");
+    } else {
+        CLI::logging("Upgrade successful\n");
     }
 
     //setting flag to false

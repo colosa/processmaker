@@ -41,6 +41,9 @@ $oTemplatePower->newBlock('users');
 $oTemplatePower->assign('USR_UID', $aUser['USR_UID']);
 $oTemplatePower->assign('USR_FULLNAME', $aData['USR_FIRSTNAME'] . ' ' . $aData['USR_LASTNAME'] . ' (' . $aData['USR_USERNAME'] . ')');
 */
+
+$oTemplatePower->assign("URL_MABORAK_JS", G::browserCacheFilesUrl("/js/maborak/core/maborak.js"));
+
 $G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
 
 G::RenderPage( 'publish', 'raw' );
