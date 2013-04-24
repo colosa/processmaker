@@ -222,6 +222,9 @@ class headPublisher
         if(!in_array( $this->translationsFile, $this->scriptFiles)) {
             $head .= "<script type='text/javascript' src='" . $this->translationsFile . "'></script>\n";
         }
+        if ( preg_match('/MSIE/i',$_SERVER['HTTP_USER_AGENT']) ) {
+            $head .= "<script type='text/javascript' src='/js/scriptIE.js'></script>\n";
+        }
 
         $head .= "<script type='text/javascript'>\n";
         $head .= $this->leimnudInitString;
