@@ -25,11 +25,11 @@
 $actionAjax = isset( $_REQUEST['actionAjax'] ) ? $_REQUEST['actionAjax'] : null;
 
 if ($actionAjax == 'messageHistoryGridList_JXP') {
-    
+
     if (!isset($_REQUEST['start'])) {
         $_REQUEST['start'] = 0;
     }
-    
+
     if (!isset($_REQUEST['limit'])) {
         $_REQUEST['limit'] = 20;
     }
@@ -46,13 +46,44 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
     $result = new stdClass();
     $aProcesses = Array ();
 
-    foreach ($appMessageArray as $index => $value) {
-        if ($appMessageArray[$index]['APP_MSG_SHOW_MESSAGE'] == 1) {
-            $appMessageArray[$index]['ID_MESSAGE'] = $appMessageArray[$index]['APP_UID'] . '_' . $appMessageArray[$index]['APP_MSG_UID'];
-            $aProcesses[] = $appMessageArray[$index];
+
+    $proUid	= $_SESSION['PROCESS'];
+    $appUid = $_SESSION['APPLICATION'];
+    $tasUid	= $_SESSION['TASK'];
+    $usrUid = $_SESSION['USER_LOGGED'];
+
+    $respView = $oCase->getAllObjectsFrom( $proUid, $appUid, $tasUid, $usrUid, 'VIEW' );
+    $respBlock = $oCase->getAllObjectsFrom( $proUid, $appUid, $tasUid, $usrUid, 'BLOCK' );
+    $respResend = $oCase->getAllObjectsFrom( $proUid, $appUid, $tasUid, $usrUid, 'RESEND' );
+
+    $delIndex = array();
+    $respMess = "";
+    if (count($respView['MSGS_HISTORY'])>0) {
+        $respMess = $respView['MSGS_HISTORY']['PERMISSION'];
+        $delIndex = $respView['MSGS_HISTORY']['DEL_INDEX'];
+    } else {
+        if (count($respBlock['MSGS_HISTORY'])>0) {
+            $respMess = $respBlock['MSGS_HISTORY']['PERMISSION'];
+            $delIndex = $respView['MSGS_HISTORY']['DEL_INDEX'];
+        } else {
+            if (count($respResend['MSGS_HISTORY'])>0) {
+                $respMess = $respResend['MSGS_HISTORY']['PERMISSION'];
+                $delIndex = $respView['MSGS_HISTORY']['DEL_INDEX'];
+            }
         }
     }
-    
+
+    foreach ($appMessageArray as $index => $value) {
+        if (($appMessageArray[$index]['APP_MSG_SHOW_MESSAGE'] == 1  && $respMess != 'BLOCK' ) && 
+            ($appMessageArray[$index]['DEL_INDEX'] == 0 || in_array($appMessageArray[$index]['DEL_INDEX'], $delIndex ))) {
+            $appMessageArray[$index]['ID_MESSAGE'] = $appMessageArray[$index]['APP_UID'] . '_' . $appMessageArray[$index]['APP_MSG_UID'];
+            if ($respMess == 'BLOCK' || $respMess == '') {
+                $appMessageArray[$index]['APP_MSG_BODY'] = "";
+            }
+            $aProcesses[] = array_merge($appMessageArray[$index], array('MSGS_HISTORY' => $respMess));
+        }
+    }
+
     $totalCount = 0;
     foreach ($appMessageCountArray as $index => $value) {
         if ($appMessageCountArray[$index]['APP_MSG_SHOW_MESSAGE'] == 1) {

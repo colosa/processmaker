@@ -42,10 +42,11 @@ if ($access != 1) {
             break;
     }
 }
-if (isset( $_POST['form'] ))
+if (isset( $_POST['form'] )) {
     $sValue = $_POST['form']; //For old processmap
-else
+} else {
     $sValue = $_POST; //For new processmap EXtjs
+}
 
 
 list ($iRelation, $sUserGroup) = explode( '|', $sValue['GROUP_USER'] );
@@ -69,8 +70,7 @@ switch ($sValue['OP_OBJ_TYPE']) {
 }
 require_once 'classes/model/ObjectPermission.php';
 $oOP = new ObjectPermission();
-$aData = array ('OP_UID' => G::generateUniqueID(),'PRO_UID' => $sValue['PRO_UID'],'TAS_UID' => $sValue['TAS_UID'],'USR_UID' => (string) $sUserGroup,'OP_USER_RELATION' => $iRelation,'OP_TASK_SOURCE' => $sValue['OP_TASK_SOURCE'],'OP_PARTICIPATE' => $sValue['OP_PARTICIPATE'],'OP_OBJ_TYPE' => $sValue['OP_OBJ_TYPE'],'OP_OBJ_UID' => $sObjectUID,'OP_ACTION' => $sValue['OP_ACTION'],'OP_CASE_STATUS' => $sValue['OP_CASE_STATUS']
-);
+$aData = array ('OP_UID' => G::generateUniqueID(),'PRO_UID' => $sValue['PRO_UID'],'TAS_UID' => $sValue['TAS_UID'],'USR_UID' => (string) $sUserGroup,'OP_USER_RELATION' => $iRelation,'OP_TASK_SOURCE' => $sValue['OP_TASK_SOURCE'],'OP_PARTICIPATE' => $sValue['OP_PARTICIPATE'],'OP_OBJ_TYPE' => $sValue['OP_OBJ_TYPE'],'OP_OBJ_UID' => $sObjectUID,'OP_ACTION' => $sValue['OP_ACTION'],'OP_CASE_STATUS' => $sValue['OP_CASE_STATUS']);
 $oOP->fromArray( $aData, BasePeer::TYPE_FIELDNAME );
 $oOP->save();
 G::LoadClass( 'processMap' );
