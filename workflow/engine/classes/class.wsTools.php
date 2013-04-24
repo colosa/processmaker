@@ -302,7 +302,7 @@ class workspaceTools
             $names = explode(".", basename($poFile));
             $extension = array_pop($names);
             $langid = array_pop($names);
-            if (strcasecmp($langid, "en") != 0 && $first) {
+            if ($first) {
                 CLI::logging("Updating XML form translations with $poName\n");
                 Language::import($poFile, true, false);
             }
