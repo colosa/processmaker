@@ -965,7 +965,7 @@ class System
                 $res['SKIN_FOLDER_ID'] = strtolower( $folderId );
 
                 foreach ($skinInformationArray as $keyInfo => $infoValue) {
-                    $res['SKIN_' . strtoupper( $keyInfo )] = $infoValue['__VALUE__'];
+                    $res['SKIN_' . strtoupper( $keyInfo )] = (isset($infoValue['__VALUE__'])) ? $infoValue['__VALUE__'] : '';
                 }
                 $res['SKIN_CREATEDATE'] = (isset($res['SKIN_CREATEDATE'])) ? $res['SKIN_CREATEDATE']: '';
                 $res['SKIN_MODIFIEDDATE'] = (isset($res['SKIN_MODIFIEDDATE'])) ? $res['SKIN_MODIFIEDDATE']: '';
