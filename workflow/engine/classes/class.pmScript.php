@@ -340,6 +340,8 @@ class PMScript
                 } else {
                     if (!isset($this->aFields[$aMatch[2][$i][0]])) {
                         eval("\$this->aFields['" . $aMatch[2][$i][0] . "']" . $aMatch[5][$i][0] . " = '';");
+                    } else {
+                        eval("if (!isset(\$this->aFields['" . $aMatch[2][$i][0] . "']" . $aMatch[5][$i][0] . ")) {\$this->aFields['" . $aMatch[2][$i][0] . "']" . $aMatch[5][$i][0] . " = '';}");
                     }
                 }
                 $sAux = substr( $this->sScript, $iAux, $aMatch[0][$i][1] - $iAux );
