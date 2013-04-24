@@ -672,7 +672,7 @@ class SkinEngine
                 $menus[$key]['subMenu'] = $subMenus;
             }
         }
-      $smarty->assign('menus', $menus);
+        $smarty->assign('menus', $menus);
 
       if (! defined('NO_DISPLAY_USERNAME')) {
         define('NO_DISPLAY_USERNAME', 0);
