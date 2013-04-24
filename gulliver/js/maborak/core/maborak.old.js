@@ -16,9 +16,9 @@
 ***************************************************************************/
 var maborak = function(forceCssLoad){
 	this.info={
-		version	:"0.3",
-		name	:"maborak",
-		file	:"maborak.js"
+     version: "0.3",
+     name: "maborak",
+     file: "maborak" + ((BROWSER_CACHE_FILES_UID != "")? "." + BROWSER_CACHE_FILES_UID : "") + ".js"
 	},
 
 	this.forceCssLoad = forceCssLoad ? true : false;
@@ -743,7 +743,7 @@ var maborak = function(forceCssLoad){
 		{
 			return this.replace(new RegExp(tagScript, 'img'), '');
 		};
-		
+
 		/**
 		 * Return first letters as uppercase, rest lower.
 		 */
@@ -753,7 +753,7 @@ var maborak = function(forceCssLoad){
 		        return $1.toUpperCase();
 		    });
 		};
-		
+
 		/**
 		*	XMLSerializer Crossbrowser
 		*/
@@ -1140,6 +1140,7 @@ var maborak = function(forceCssLoad){
 					}
 				}
 				//alert(this.parent.options.thisIsNotPM);
+    /*
 				if (tl.length > 0) {
 					var script = $dce("script");
 					this.parent.dom.capture("tag.head 0").appendChild(script);
@@ -1152,6 +1153,7 @@ var maborak = function(forceCssLoad){
 						this.write(script);
 					}
 				}
+    */
 			}
 			else
 			{
@@ -1161,7 +1163,7 @@ var maborak = function(forceCssLoad){
 					if (!this.isset()) {
 						//if (this.options.noWrite === false && this.type!='module')
 						//{
-							this.src = this.source();
+       this.src = stringReplace("maborak\\.loader\\.js", "maborak.loader"  + ((BROWSER_CACHE_FILES_UID != "")? "." + BROWSER_CACHE_FILES_UID : "") +  ".js", this.source());
 							var script = $dce("script");
 							this.parent.dom.capture("tag.head 0").appendChild(script);
 							//script.src	=	this.src+"?d="+Math.random();

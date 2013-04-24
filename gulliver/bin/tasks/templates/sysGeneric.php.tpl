@@ -54,30 +54,6 @@ $docuroot = explode ( PATH_SEP , $_SERVER['DOCUMENT_ROOT'] );
  /*** enable ERROR_LOG_NOTICE_ERROR to log Notices messages in default apache log ***/
   //  define ( 'ERROR_LOG_NOTICE_ERROR', true );
 
-//  ************* creat headPublisher singleton *****************
-  G::LoadSystem('headPublisher');
-  $oHeadPublisher =& headPublisher::getSingleton();
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/maborak.js' );   
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/common.js' );     
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/core/webResource.js' );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'dveditor/core/dveditor.js' ); 
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'common/tree/tree.js' );       
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'json/core/json.js' );         
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'form/core/form.js' );         
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'form/core/pagedTable.js' );   
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'grid/core/grid.js' );         
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.panel.js'    , true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.validator.js', true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.app.js'      , true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.rpc.js'      , true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.fx.js'       , true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.drag.js'     , true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.drop.js'     , true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.dom.js'      , true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.abbr.js'     , true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'maborak/core/module.dashboard.js', true );
-  $oHeadPublisher->addMaborakFile( PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'widgets/jscalendar/calendar.js' );
-
 //************ defining Virtual URLs ****************/
   $virtualURITable = array();
   $virtualURITable['/plugin/(*)']                    = 'plugin';
@@ -172,7 +148,7 @@ $docuroot = explode ( PATH_SEP , $_SERVER['DOCUMENT_ROOT'] );
   G::LoadSystem('tree');
 
   $oHeadPublisher =& headPublisher::getSingleton();
-  
+
   //***************** database and workspace definition  ************************
   //if SYS_TEMP exists, the URL has a workspace, now we need to verify if exists their db.php file
   if ( defined('SYS_TEMP') && SYS_TEMP != '')

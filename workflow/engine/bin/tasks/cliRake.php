@@ -85,6 +85,13 @@ function minify_javascript($command, $args)
 
         }
     }
+
+    //Safe upgrade for JavaScript files
+    CLI::logging("\nSafe upgrade for files cached by the browser\n\n");
+
+    G::browserCacheFilesSetUid();
+
+    //Done
     CLI::logging("BUILD-JS DONE\n");
 }
 

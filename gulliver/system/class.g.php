@@ -4894,6 +4894,89 @@ class G
             }
         }
     }
+
+    public static function browserCacheFilesGetLibraryJs()
+    {
+        $arrayLibrary = array();
+
+        $library = G::json_decode(file_get_contents(PATH_HOME . "engine" . PATH_SEP . "bin" . PATH_SEP . "tasks" . PATH_SEP . "libraries.json"));
+
+        foreach ($library as $index => $value) {
+            $lib = $value;
+
+            if ($lib->build) {
+                if (substr($lib->build_js_to, -1) != "/") {
+                    $lib->build_js_to = $lib->build_js_to . "/";
+                }
+
+                $arrayLibrary[$lib->name] = PATH_TRUNK . $lib->build_js_to;
+            }
+        }
+
+        return $arrayLibrary;
+    }
+
+    public static function browserCacheFilesSetUid()
+    {
+        //Set UID
+        $uid = G::generateUniqueID();
+
+        $arrayData = array();
+        $arrayData["browser_cache_files_uid"] = $uid;
+
+        G::update_php_ini(PATH_CONFIG . "env.ini", $arrayData);
+
+        //Set file JavaScript
+        $arrayLibrary = G::browserCacheFilesGetLibraryJs();
+
+        foreach ($arrayLibrary as $index => $value) {
+            $name = $index;
+            $path = $value;
+
+            foreach (glob($path . $name . "*") as $file) {
+                if (preg_match("/^\.\w{32}\.js$/i", str_replace($path . $name, null, $file))) {
+                    @unlink($file); //Delete old file
+                }
+            }
+
+            @copy($path . $name . ".js", $path . $name . "." . $uid . ".js"); //Create new file
+        }
+    }
+
+    public static function browserCacheFilesGetUid()
+    {
+        $sysConf = System::getSystemConfiguration(PATH_CONFIG . "env.ini");
+
+        return (isset($sysConf["browser_cache_files_uid"]))? $sysConf["browser_cache_files_uid"] : null;
+    }
+
+    public static function browserCacheFilesUrl($url)
+    {
+        $browserCacheFilesUid = self::browserCacheFilesGetUid();
+
+        if ($browserCacheFilesUid != null) {
+            $arrayAux = explode("/", $url);
+            $n = count($arrayAux);
+
+            if ($n > 0 && !empty($arrayAux[$n - 1])) {
+                $name = $arrayAux[$n - 1];
+
+                if (preg_match("/^(.*)\.js$/i", $name, $arrayMatch)) {
+                    $arrayLibrary = G::browserCacheFilesGetLibraryJs();
+
+                    if (isset($arrayLibrary[$arrayMatch[1]])) {
+                        $path = $arrayLibrary[$arrayMatch[1]];
+
+                        if (file_exists($path . $arrayMatch[1] . "." . $browserCacheFilesUid . ".js")) {
+                            $url = str_replace($name, $arrayMatch[1] . "." . $browserCacheFilesUid . ".js", $url);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $url;
+    }
 }
 
 /**
