@@ -97,6 +97,7 @@ Ext.onReady(function() {
   cmbDateFormat = new Ext.form.ComboBox({
     fieldLabel : _('ID_GLOBAL_DATE_FORMAT'),
     hiddenName : 'dateFormat',
+    width: 330,
     store : storeDateFormat,
     mode: 'remote',
     valueField : 'id',
@@ -143,6 +144,7 @@ Ext.onReady(function() {
   cmbCasesDateFormat = new Ext.form.ComboBox({
     fieldLabel : _('ID_CASES_DATE_MASK'),
     hiddenName : 'casesListDateFormat',
+    width: 330,
     store : storeCasesDateFormat,
     valueField : 'id',
     displayField : 'name',
