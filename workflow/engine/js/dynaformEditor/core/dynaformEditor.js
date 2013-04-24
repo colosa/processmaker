@@ -366,7 +366,7 @@ var dynaformEditor={
         var todoRefreshXmlCode = xmlCode === null;
         if (todoRefreshXmlCode) return;
         var res = this.ajax.set_xmlcode(this.A, encodeURIComponent(xmlCode));
-        if (res!=="") G.alert(res);
+        if (res!=="" && typeof(res) == 'string') G.alert(res);
         this.responseAction = true;
     } else {
         this.responseAction = false;
@@ -378,8 +378,10 @@ var dynaformEditor={
     var response = this.ajax.set_htmlcode(this.A, tinyMCE.activeEditor.getContent());
 
     if (response) {
-        G.alert(response["*message"],"Error");
-        this.responseAction = false;
+        if (typeof(response["*message"]) != 'undefined') {
+            G.alert(response["*message"],"Error");
+            this.responseAction = false;
+        }
     } else {
         this.responseAction = true;
     }
