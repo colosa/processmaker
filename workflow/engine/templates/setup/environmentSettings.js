@@ -23,8 +23,7 @@ Ext.onReady(function() {
     items: [
       {xtype: 'label', fieldLabel: _('IS_USER_NAME_DISPLAY_FORMAT'), id: 'lblFullName', width: 400},
       {xtype: 'label', fieldLabel: _('ID_GLOBAL_DATE_FORMAT'), id: 'lblDateFormat', width: 400},
-      {xtype: 'label', fieldLabel: _('ID_CASE_LIST') +': '+_('ID_CASES_DATE_MASK'), id: 'lblCasesDateFormat', width: 400}
-      //,
+      {xtype: 'label', fieldLabel: _('ID_CASE_LIST') +': '+_('ID_CASES_DATE_MASK'), id: 'lblCasesDateFormat', width: 400}//,
       //{xtype: "label", fieldLabel: _("ID_CASE_LIST") + ": " +_("ID_CASES_ROW_NUMBER"), id: "lblCasesRowsList", width: 400},
       //{xtype: "label", fieldLabel: _("ID_CASE_LIST") + ": " + _("ID_REFRESH_TIME_SECONDS"), id: "lblCasesRefreshTime", width: 400}
     ]
@@ -97,6 +96,7 @@ Ext.onReady(function() {
   cmbDateFormat = new Ext.form.ComboBox({
     fieldLabel : _('ID_GLOBAL_DATE_FORMAT'),
     hiddenName : 'dateFormat',
+    width: 330,
     store : storeDateFormat,
     mode: 'remote',
     valueField : 'id',
@@ -143,6 +143,7 @@ Ext.onReady(function() {
   cmbCasesDateFormat = new Ext.form.ComboBox({
     fieldLabel : _('ID_CASES_DATE_MASK'),
     hiddenName : 'casesListDateFormat',
+    width: 330,
     store : storeCasesDateFormat,
     valueField : 'id',
     displayField : 'name',
