@@ -6,8 +6,5 @@
 <LABEL type="text" size="19">
     <en>Label</en>
 </LABEL>
-<OPTGROUP type="checkbox" value="1" falsevalue="0" defaultvalue="0">
-    <en>Option Group</en>
-</OPTGROUP>
 </dynaForm>
 

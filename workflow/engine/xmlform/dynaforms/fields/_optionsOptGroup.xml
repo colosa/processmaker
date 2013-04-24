@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dynaForm name="_optionsOptGroup" type="grid" width="100%" editRow="0" insertRow="0">
+<NAME type="text" validate="Field" size="19">
+    <en>Value</en>
+</NAME>
+<LABEL type="text" size="19">
+    <en>Label</en>
+</LABEL>
+<OPTGROUP type="checkbox" value="1" falsevalue="0" defaultvalue="0">
+    <en>Option Group</en>
+</OPTGROUP>
+</dynaForm>
+

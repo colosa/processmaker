@@ -73,7 +73,7 @@ select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE XMLNODE_NAME <> @@
   <en>Options</en>
 </PME_SUBTITLE4>
 
-<PME_OPTIONS type="grid" xmlgrid="dynaforms/fields/_options" editRow="" deleteRow="1" insertRow="1" sqlconnection="XMLDB" />
+<PME_OPTIONS type="grid" xmlgrid="dynaforms/fields/_optionsOptGroup" editRow="" deleteRow="1" insertRow="1" sqlconnection="XMLDB" />
 
 <BTN_CANCEL type="button" onclick="cancel();">
   <en>Cancel</en>
