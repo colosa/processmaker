@@ -909,12 +909,18 @@ function copyMoveAction($type)
     $paths = array();
     $folderResult = findChilds('/', '', $paths);
     $withCombo = 30;
+    $folderSelected = $oPMFolder->load($dir);
+
+    $root = array("/","/");
+    array_unshift ($folderResult, $root);
+    $folderResultSel = array();
     foreach ($folderResult as $key => $value) {
         $count = strlen($value[1]);
         $withCombo = ($count>$withCombo) ? $count : $withCombo;
+        if ($folderSelected['FOLDER_PARENT_UID'] != $value[0] && $dir != $value[0]) {
+            $folderResultSel[] = $value;
+        }
     }
-    $root = array("/","/");
-    array_unshift ($folderResult,$root);
 
     $dirCompletePath=$oPMFolder->getFolderStructure($dir);
     $copyDialog["xtype"]        = "form";
@@ -939,7 +945,7 @@ function copyMoveAction($type)
     $itemField["name"]          = "new_dir_label";
     $itemField["mode"]          = "local";
     $itemField["triggerAction"] = "all";
-    $itemField["store"]         = $folderResult;
+    $itemField["store"]         = $folderResultSel;
     $itemField["valueField"]    = "FOLDER_UID";
     $itemField["editable"]    = false;
     $itemField["displayField"]  = "FOLDER_NAME";
@@ -1100,6 +1106,11 @@ function copyMoveExecuteTree($uidFolder, $newUidFolder)
     $appFoder = new AppFolder ();
     $folderContent = $appFoder->getFolderContent($uidFolder);
     $folderOrigin = $appFoder->getFolderStructure($uidFolder);
+
+    if ($newUidFolder == $folderOrigin[$uidFolder]['PARENT'] && $_REQUEST['action'] == 'moveExecute') {
+        return $uidFolder;
+    }
+
     $FolderParentUid = trim($newUidFolder);//$form['FOLDER_PARENT_UID'];
     $FolderName = $folderOrigin[$uidFolder]['NAME'];
     $newFolderContent = $appFoder->createFolder ($FolderName, $FolderParentUid, "new");
