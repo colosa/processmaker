@@ -24,7 +24,9 @@
  *
  */
 
-//require_once 'classes/model/om/BaseConfiguration.php';
+if (!class_exists('BaseConfiguration')) {
+    require_once 'classes/model/om/BaseConfiguration.php';
+}
 //require_once 'classes/model/Content.php';
 
 
