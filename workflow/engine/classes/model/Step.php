@@ -365,7 +365,7 @@ class Step extends BaseStep
         $aRow = $oDataset->getRow();
 
         if ($aRow['DYN_TYPE'] != 'xmlform') {
-
+            $check = 0;
             $oC1 = new Criteria( 'workflow' );
             $oC1->add( DynaformPeer::PRO_UID, $sproUid );
             $oC1->add( DynaformPeer::DYN_TYPE, "xmlform" );
