@@ -344,6 +344,7 @@ $virtualURITable['/update/(*)'] = PATH_GULLIVER_HOME . 'methods/update/';
 $virtualURITable['/css/(*)'] = PATH_HTML . 'css/'; //ugly
 $virtualURITable['/skin/(*)'] = PATH_HTML;
 $virtualURITable['/skins/(*)'] = PATH_HTML . 'skins/'; //ugly
+$virtualURITable['/images/(*)'] = PATH_HTML . 'images/'; //ugly
 $virtualURITable['/[a-zA-Z][a-zA-Z0-9]{0,}/'] = 'errorFile';
 
 $isRestRequest = false;
