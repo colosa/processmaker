@@ -209,7 +209,9 @@ class dynaformEditor extends WebResource
         $G_PUBLISH->AddContent('blank');
         $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_PREVIEW"), $sName . '[3]', 'dynaformEditor.changeToPreview', 'dynaformEditor.saveCurrentView');
         $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_XML"), $sName . '[4]', 'dynaformEditor.changeToXmlCode', 'dynaformEditor.saveCurrentView');
-        $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_HTML"), $sName . '[5]', 'dynaformEditor.changeToHtmlCode', 'dynaformEditor.saveCurrentView');
+        if ($Properties['DYN_TYPE'] != 'grid') {
+            $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_HTML"), $sName . '[5]', 'dynaformEditor.changeToHtmlCode', 'dynaformEditor.saveCurrentView');
+        }
         $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_FIELDS_LIST"), $sName . '[6]', 'dynaformEditor.changeToFieldsList', 'dynaformEditor.saveCurrentView');
         $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_JAVASCRIPTS"), $sName . '[7]', 'dynaformEditor.changeToJavascripts', 'dynaformEditor.saveCurrentView');
         $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_PROPERTIES"), $sName . '[8]', 'dynaformEditor.changeToProperties', 'dynaformEditor.saveCurrentView');
@@ -227,7 +229,7 @@ class dynaformEditor extends WebResource
         //Javascript codemirror 3.13
         $oHeadPublisher->addScriptFile('/js/codemirror/addon/edit/closebrackets.js', 1);
         $oHeadPublisher->addScriptFile('/js/codemirror/mode/javascript/javascript.js', 1);
-        
+
         $oHeadPublisher->addScriptFile('/js/grid/core/grid.js');
         $oHeadPublisher->addScriptCode('
     var DYNAFORM_URL="' . $Parameters['URL'] . '";
