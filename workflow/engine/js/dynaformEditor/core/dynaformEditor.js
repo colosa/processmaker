@@ -43,8 +43,17 @@ var verifyLogin = function() {
                 case 'saveJavascript':
                     dynaformEditor.saveJavascript();
                     break;
+                case 'changeJavascriptCode':
+                    dynaformEditor.changeJavascriptCode(false);
+                    break;
                 case 'close':
                     dynaformEditor.close();
+                    break;
+                case 'saveProperties':
+                    dynaformEditor.saveProperties(false);
+                    break;
+                case 'changeFormType':
+                    changeFormType(false);
                     break;
                 case 'changeToPreview':
                     dynaformEditor.changeToPreview();
@@ -329,7 +338,7 @@ var dynaformEditor={
         this.saveJavascript();
         break;
       case "properties":
-        this.saveProperties();
+        this.saveProperties(false);
         break;
     }
   },
@@ -354,7 +363,7 @@ var dynaformEditor={
         this.saveJavascript();
         break;
       case "properties":
-        this.saveProperties();
+        this.saveProperties(false);
         break;
     }
   },
@@ -402,13 +411,20 @@ var dynaformEditor={
     }
     this.responseAction = true;
   },
-  saveProperties:function()
+  saveProperties:function(checkSessionPersists)
   {
+    checkSessionPersists = typeof(checkSessionPersists) != 'undefined' ? checkSessionPersists : true;
+    if (checkSessionPersists) {
+        if (!sessionPersits()) {
+            showPrompt('saveProperties');
+            return;
+        }
+    }
     var form=this.views["properties"].getElementsByTagName("form")[0];
     var post=ajax_getForm(form);
     var response=this.ajax.set_properties(this.A,this.dynUid,post);
-                if (response!=0){
-                   G.alert(response["*message"]);
+    if (typeof(response["*message"])==="string") {
+        G.alert(response["*message"]);
     }
     this.responseAction = true;
   },
@@ -785,8 +801,15 @@ var dynaformEditor={
       showRowById('JS_TITLE');hideRowById('JS_LIST');hideRowById('JS');}
 
   },
-  changeJavascriptCode:function()
+  changeJavascriptCode:function(checkSessionPersists)
   {
+    checkSessionPersists = typeof(checkSessionPersists) != 'undefined' ? checkSessionPersists : true;
+    if (checkSessionPersists) {
+      if (!sessionPersits()) {
+        showPrompt('changeJavascriptCode');
+        return;
+      }
+    }
     var field=getField("JS_LIST","dynaforms_JSEditor");
     var value=field.value;
     if (this.currentJS)
