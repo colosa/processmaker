@@ -16,6 +16,7 @@ class Installer extends Controller
     public $path_xmlforms;
     public $path_shared;
     public $path_sep;
+    public $systemName;
 
     public $link; #resource for database connection
 
@@ -29,6 +30,7 @@ class Installer extends Controller
         $this->path_public = PATH_HOME . 'public_html/index.html';
         $this->path_shared = PATH_TRUNK . 'shared/';
         $this->path_sep = PATH_SEP;
+        $this->systemName = '';
     }
 
     public function index ($httpData)
@@ -367,6 +369,7 @@ class Installer extends Controller
     {
         $pathSharedPartner = trim( $_REQUEST['pathShared'] );
         if (file_exists($pathSharedPartner.'partner.info')) {
+            $this->systemName = $this->getSystemName($pathSharedPartner);
             $_REQUEST["PARTNER_FLAG"] = true;
         }
         $this->setResponseType( 'json' );
@@ -691,9 +694,8 @@ class Installer extends Controller
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
-                $systemName = $this->getSystemName();
-                if ($systemName != '') {
-                    $dbText .= "  define ('SYSTEM_NAME', " . $systemName . ");\n";
+                if ($this->systemName != '') {
+                    $dbText .= "  define ('SYSTEM_NAME', " . $this->systemName . ");\n";
                 }
             }
 
@@ -982,9 +984,8 @@ class Installer extends Controller
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
-                $systemName = $this->getSystemName();
-                if ($systemName != '') {
-                    $dbText .= "  define ('SYSTEM_NAME', " . $systemName . ");\n";
+                if ($this->systemName != '') {
+                    $dbText .= "  define ('SYSTEM_NAME', " . $this->systemName . ");\n";
                 }
             }
 
@@ -1078,10 +1079,9 @@ class Installer extends Controller
         return $info;
     }
 
-    public function getSystemName ()
+    public function getSystemName ($siteShared)
     {
         $systemName = ''
-        $siteShared = $this->path_shared;
         if (substr( $siteShared, - 1 ) != '/') {
             $siteShared .= '/';
         }
