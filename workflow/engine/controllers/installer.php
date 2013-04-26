@@ -368,7 +368,7 @@ class Installer extends Controller
     public function createWorkspace ()
     {
         $pathSharedPartner = trim( $_REQUEST['pathShared'] );
-        if (file_exists($pathSharedPartner.'partner.info')) {
+        if (file_exists(trim($pathSharedPartner,PATH_SEP). PATH_SEP .'partner.info')) {
             $this->systemName = $this->getSystemName($pathSharedPartner);
             $_REQUEST["PARTNER_FLAG"] = true;
         }
