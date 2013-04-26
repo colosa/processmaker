@@ -691,9 +691,7 @@ class Installer extends Controller
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
-                error_log('1 --------');
-                error_log($pathSharedSites);
-                $systemName = $this->getNameSystem($pathSharedSites);
+                $systemName = $this->getSystemName();
                 if ($systemName != '') {
                     $dbText .= "  define ('SYSTEM_NAME', " . $systemName . ");\n";
                 }
@@ -984,7 +982,7 @@ class Installer extends Controller
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
-                $systemName = $this->getNameSystem($pathShared);
+                $systemName = $this->getSystemName();
                 if ($systemName != '') {
                     $dbText .= "  define ('SYSTEM_NAME', " . $systemName . ");\n";
                 }
@@ -1080,20 +1078,14 @@ class Installer extends Controller
         return $info;
     }
 
-    public function getNameSystem ($siteShared = '')
+    public function getSystemName ()
     {
-        $systemName = '';
-        error_log('PASE --------');
-        error_log($siteShared);
-        if ($siteShared == '') {
-            $siteShared = trim( $_REQUEST['pathShared'] );
-        }
-				
+        $systemName = ''
+        $siteShared = $this->path_shared;
         if (substr( $siteShared, - 1 ) != '/') {
             $siteShared .= '/';
         }
-        error_log('2 --------');
-				error_log($siteShared . 'partner.info');
+
         if (file_exists($siteShared . 'partner.info')) {
             $dataInfo = parse_ini_file($siteShared . 'partner.info');
             if (isset($dataInfo['system_name'])) {
