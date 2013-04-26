@@ -1081,7 +1081,7 @@ class Installer extends Controller
 
     public function getSystemName ($siteShared)
     {
-        $systemName = ''
+        $systemName = '';
         if (substr( $siteShared, - 1 ) != '/') {
             $siteShared .= '/';
         }
