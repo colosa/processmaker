@@ -690,7 +690,9 @@ class Installer extends Controller
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
-                $systemName = $this->getNameSystem();
+                error_log('1 --------');
+                error_log($pathShared);
+                $systemName = $this->getNameSystem($pathShared);
                 if ($systemName != '') {
                     $dbText .= "  define ('SYSTEM_NAME', " . $systemName . ");\n";
                 }
@@ -1083,11 +1085,12 @@ class Installer extends Controller
         if ($pathShared == '') {
             $pathShared = trim( $_REQUEST['pathShared'] );
         }
-
+				
         if (substr( $pathShared, - 1 ) != '/') {
             $pathShared .= '/';
         }
-
+        error_log('2 --------');
+				error_log($pathShared . 'partner.info');
         if (file_exists($pathShared . 'partner.info')) {
             $dataInfo = parse_ini_file($pathShared . 'partner.info');
             if (isset($dataInfo['system_name'])) {
