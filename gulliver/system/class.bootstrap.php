@@ -579,8 +579,13 @@ class Bootstrap
         //trick to generate the translation.language.js file , merging two files
         if (strtolower($typefile) == 'js' && $typearray[0] == 'translation') {
             Bootstrap::sendHeaders($filename, 'text/javascript', $download, $downloadFileName);
-            $output = Bootstrap::streamJSTranslationFile($filename, $typearray[count($typearray)-2]);
+
+            $filename = str_replace(implode(".", $typearray), $typearray[0] . "." . $typearray[1] . "." . $typearray[count($typearray) - 1], $filename);
+
+            $output = Bootstrap::streamJSTranslationFile($filename, $typearray[1]);
+
             echo $output;
+
             return;
         }
 
@@ -855,11 +860,11 @@ class Bootstrap
         foreach ($listPluginsActive['_aPluginDetails'] as $key => $value) {
             $namePlugin = trim($key);
             $translation = array();
-            
+
             if (!file_exists(PATH_LANGUAGECONT . $namePlugin . '.en')) {
                 Translation::generateFileTranslationPlugin($namePlugin, 'en');
             }
-            
+
             if ( ($lang != 'en') && (!file_exists(PATH_LANGUAGECONT . $namePlugin . '.' . $lang)) ) {
                 Translation::generateFileTranslationPlugin($namePlugin, $lang);
             }
@@ -3004,4 +3009,4 @@ class Bootstrap
         return strtoupper(PHP_OS) == "LINUX";
     }
 }
- 
+

@@ -277,10 +277,11 @@ class Main extends Controller
         $this->setVar( 'advise_text', $adviseText );
         $loginScript = $this->getHeadPublisher()->getExtJsLibraries();
         $loginScript .= $this->getHeadPublisher()->getExtJsScripts();
-        $this->setVar( 'login_script', $loginScript );
-        $this->setVar( 'login_vars', $this->getHeadPublisher()->getExtJsVariablesScript() );
+        $this->setVar("login_script", $loginScript);
+        $this->setVar("login_vars", $this->getHeadPublisher()->getExtJsVariablesScript());
+        $this->setVar("URL_TRANSLATION_JS", G::browserCacheFilesUrl("/js/ext/translation.en.js"));
 
-        $this->setLayout( 'pm-modern-login' );
+        $this->setLayout("pm-modern-login");
 
         $this->render();
     }
@@ -342,10 +343,11 @@ class Main extends Controller
 
         $loginScript = $this->getHeadPublisher()->getExtJsLibraries();
         $loginScript .= $this->getHeadPublisher()->getExtJsScripts();
-        $this->setVar( 'login_script', $loginScript );
-        $this->setVar( 'login_vars', $this->getHeadPublisher()->getExtJsVariablesScript() );
+        $this->setVar("login_script", $loginScript);
+        $this->setVar("login_vars", $this->getHeadPublisher()->getExtJsVariablesScript());
+        $this->setVar("URL_TRANSLATION_JS", G::browserCacheFilesUrl("/js/ext/translation.en.js"));
 
-        $this->setLayout( 'pm-modern-login' );
+        $this->setLayout("pm-modern-login");
 
         $this->render();
     }

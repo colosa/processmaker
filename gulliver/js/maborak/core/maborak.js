@@ -1,5 +1,5 @@
 
-var maborak=function(forceCssLoad){this.info={version:"0.3",name:"maborak",file:"maborak.js"},this.forceCssLoad=forceCssLoad?true:false;this.make=function(options)
+var maborak=function(forceCssLoad){this.info={version:"0.3",name:"maborak",file:"maborak"+((BROWSER_CACHE_FILES_UID!="")?"."+BROWSER_CACHE_FILES_UID:"")+".js"},this.forceCssLoad=forceCssLoad?true:false;this.make=function(options)
 {this.protoCore();this.module={debug:function(flag){this.flag=flag||false;this.log=function(v)
 {if(typeof console!='undefined'&&this.flag===true)
 {console.log(v||'');}};return this;}}.expand(this);this.options={thisIsNotPM:false}.concat(options||{});this.report=new this.bitacora();this.loadMethods([this.checkBrowser],this);this.event=this.factory(this.mantis,true);this.tools=this.factory(this.extended.tools,true);this.file=this.factory(this.fileCore,true);this.dom=this.factory(this.extended.D0M,true);this.iphone=this.factory(this.iphoneBrowser,true);this.cookie=this.factory(this.extended.cookie,true);this.Package=new this.PackageCore(this,this.file.db);this.report.add("Class loaded.");this.info.base=this.tools.baseJS(this.info.file);this.info.images=this.info.base+"images/";this.path_root=this.tools.path_root(this.info.base)+"/";if(this.options.modules){this.Package.Load(this.options.modules,{Instance:this,Type:"module"});}
@@ -183,11 +183,10 @@ return rf;};};this.PackageCore=function(parent,db)
 {this.options={zip:false}.concat(options||{});if(arguments.length<2||!this.check()){return false;}
 this.toLoad=((this.options.Absolute===true)?this.options.Path:file).split(",");if(this.type==='module'&&(this.options.zip===true||this.parent.options.zip===true))
 {var tl=[];for(var i=this.toLoad.length;i>0;i--)
-{this.name=this.toLoad[this.toLoad.length-i];if(!this.isset()){tl.push(this.name);this.write(false);}}
-if(tl.length>0){var script=$dce("script");this.parent.dom.capture("tag.head 0").appendChild(script);script.src=(this.parent.options.inGulliver===true)?this.path+'maborak.loader.js':this.path+'server/maborak.loader.php?load='+tl.join(',');script.type="text/javascript";script.charset=this.parent.charset;if(this.type=="module"){this.write(script);}}}
+{this.name=this.toLoad[this.toLoad.length-i];if(!this.isset()){tl.push(this.name);this.write(false);}}}
 else
 {for(var i=this.toLoad.length;i>0;i--)
-{this.name=this.toLoad[this.toLoad.length-i];if(!this.isset()){this.src=this.source();var script=$dce("script");this.parent.dom.capture("tag.head 0").appendChild(script);script.src=this.src;script.type="text/javascript";script.charset=this.parent.charset;if(this.type=="module"){this.write(script);}}}}
+{this.name=this.toLoad[this.toLoad.length-i];if(!this.isset()){this.src=stringReplace("maborak\\.loader\\.js","maborak.loader"+((BROWSER_CACHE_FILES_UID!="")?"."+BROWSER_CACHE_FILES_UID:"")+".js",this.source());var script=$dce("script");this.parent.dom.capture("tag.head 0").appendChild(script);script.src=this.src;script.type="text/javascript";script.charset=this.parent.charset;if(this.type=="module"){this.write(script);}}}}
 delete this.Class;delete this.file;delete this.info;delete this.path;delete this.toLoad;delete this.type;delete this.src;return true;};this.source=function()
 {if(this.type=="module")
 {return this.path+"module."+this.name+".js";}

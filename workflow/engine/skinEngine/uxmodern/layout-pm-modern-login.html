@@ -5,7 +5,7 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
   <link rel='stylesheet' type='text/css' href='/css/{$_skin}-extJs.css' />
 </head>
-  
+
 <body class="x-pm-login-body">
 
   <br/> <br/>
@@ -13,9 +13,9 @@
     <tr>
       <td>
         <div class="companyLogo"><img src="{$logo_company}"/></div>
-        
+
         <div id="loading-mask">&nbsp;</div>
-        
+
         <div id="loading">
           <table width="100%" height="25" border="0" cellspacing="0" cellpadding="0" class="headerLeftSection">
             <tr>
@@ -48,13 +48,13 @@
       </td>
     </tr>
   </table>
-  
+
   <script type="text/javascript">document.getElementById('loading-message').innerHTML = 'Loading Core API...';</script>
   <script type='text/javascript' src='/js/ext/ext-base.js'></script>
   <script type="text/javascript">document.getElementById('loading-message').innerHTML = 'Loading Components...';</script>
   <script type='text/javascript' src='/js/ext/ext-all.js'></script>
   <script type="text/javascript">document.getElementById('loading-message').innerHTML = 'Initializing...';</script>
-  <script type='text/javascript' src='/js/ext/translation.en.js'></script>
+  <script type="text/javascript" src="{$URL_TRANSLATION_JS}"></script>
 {$login_script}
 {$login_vars}
 </body>

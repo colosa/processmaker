@@ -367,7 +367,7 @@ class Installer extends Controller
     {
         $pathSharedPartner = trim( $_REQUEST['pathShared'] );
         if (file_exists($pathSharedPartner.'partner.info')) {
-            $_REQUEST['PARTNER_FLAG'] = true;    
+            $_REQUEST["PARTNER_FLAG"] = true;
         }
         $this->setResponseType( 'json' );
         if ($_REQUEST['db_engine'] == 'mysql') {
@@ -382,13 +382,13 @@ class Installer extends Controller
     public function forceTogenerateTranslationsFiles ($url)
     {
         $ch = curl_init();
-        curl_setopt( $ch, CURLOPT_URL, (isset( $_SERVER['HTTPS'] ) ? ($_SERVER['HTTPS'] != '' ? 'https://' : 'http://') : 'http://') . $_SERVER['HTTP_HOST'] . '/js/ext/translation.en.js?r=' . rand( 1, 10000 ) );
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt( $ch, CURLOPT_FRESH_CONNECT, 1 );
-        curl_setopt( $ch, CURLOPT_TIMEOUT, 60 );
-        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 20 );
-        curl_exec( $ch );
-        curl_close( $ch );
+        curl_setopt($ch, CURLOPT_URL, G::browserCacheFilesUrl((isset($_SERVER["HTTPS"])? (($_SERVER["HTTPS"] != "")? "https://" : "http://") : "http://") . $_SERVER["HTTP_HOST"] . "/js/ext/translation.en.js?r=" . rand(1, 10000)));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+        curl_exec($ch);
+        curl_close($ch);
     }
 
     /**
@@ -1407,7 +1407,7 @@ EOL;
         $output = curl_exec($ch);
         curl_close($ch);
 
-        /** 
+        /**
          * Upload translation .po file
          */
 
@@ -1430,7 +1430,7 @@ EOL;
         $output = curl_exec($ch);
         curl_close($ch);
 
-        /** 
+        /**
          * Upload skin file
          */
 
