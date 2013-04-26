@@ -690,7 +690,7 @@ class Installer extends Controller
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
-                $systemName = $this->getNameSystem($pathShared);
+                $systemName = $this->getNameSystem();
                 if ($systemName != '') {
                     $dbText .= "  define ('SYSTEM_NAME', " . $systemName . ");\n";
                 }

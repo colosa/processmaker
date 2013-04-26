@@ -734,7 +734,7 @@ class Main extends Controller
         $properties = array ();
         $ee = class_exists( 'pmLicenseManager' ) ? " - Enterprise Edition" : '';
         $systemName = 'ProcessMaker';
-        if (!defined('SYSTEM_NAME')) {
+        if (defined('SYSTEM_NAME')) {
             $systemName = SYSTEM_NAME;
         }
         $properties[] = array ($systemName. ' Ver.', System::getVersion() . $ee, $pmSection);
