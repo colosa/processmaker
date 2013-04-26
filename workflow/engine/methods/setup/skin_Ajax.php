@@ -1,5 +1,4 @@
 <?php
-
 if (! isset( $_REQUEST['action'] )) {
     $res['success'] = false;
     $res['error'] = $res['message'] = 'You may request an action';
@@ -127,6 +126,7 @@ function newSkin ($baseSkin = 'classic')
         //TODO: Improve this pre_replace lines
         $configFileOriginal = $pathBase . "config.xml";
         $configFileFinal = PATH_CUSTOM_SKINS . $skinFolder . PATH_SEP . 'config.xml';
+
         $xmlConfiguration = file_get_contents( $configFileOriginal );
 
         $workspace = ($_REQUEST['workspace'] == 'global') ? '' : SYS_SYS;
@@ -136,8 +136,8 @@ function newSkin ($baseSkin = 'classic')
 
         $xmlConfiguration = preg_replace( '/(<id>)(.+?)(<\/id>)/i', '<id>' . G::generateUniqueID() . '</id><!-- $2 -->', $xmlConfiguration );
 
-        if ($workspace != "" && isset($skinInformationArray["workspace"]["__VALUE__"])) {
-            $workspace = (!empty($skinInformationArray["workspace"]["__VALUE__"]))? $skinInformationArray["workspace"]["__VALUE__"] . "|" . $workspace : $workspace;
+        if (isset($skinInformationArray["workspace"]["__VALUE__"])) {
+            $workspace = ($workspace != "" && !empty($skinInformationArray["workspace"]["__VALUE__"]))? $skinInformationArray["workspace"]["__VALUE__"] . "|" . $workspace : $workspace;
 
             $xmlConfiguration = preg_replace("/(<workspace>)(.*)(<\/workspace>)/i", "<workspace>" . $workspace . "</workspace><!-- $2 -->", $xmlConfiguration);
             $xmlConfiguration = preg_replace("/(<name>)(.*)(<\/name>)/i", "<name>" . $skinName . "</name><!-- $2 -->", $xmlConfiguration);
@@ -253,8 +253,8 @@ function importSkin ()
         $xmlConfigurationObj = G::xmlParser($xmlConfiguration);
         $skinInformationArray = $xmlConfigurationObj->result["skinConfiguration"]["__CONTENT__"]["information"]["__CONTENT__"];
 
-        if ($workspace != "" && isset($skinInformationArray["workspace"]["__VALUE__"])) {
-            $workspace = (!empty($skinInformationArray["workspace"]["__VALUE__"]))? $skinInformationArray["workspace"]["__VALUE__"] . "|" . $workspace : $workspace;
+        if (isset($skinInformationArray["workspace"]["__VALUE__"])) {
+            $workspace = ($workspace != "" && !empty($skinInformationArray["workspace"]["__VALUE__"]))? $skinInformationArray["workspace"]["__VALUE__"] . "|" . $workspace : $workspace;
 
             $xmlConfiguration = preg_replace("/(<workspace>)(.*)(<\/workspace>)/i", "<workspace>" . $workspace . "</workspace><!-- $2 -->", $xmlConfiguration);
         } else {
