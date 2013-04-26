@@ -733,8 +733,11 @@ class Main extends Controller
 
         $properties = array ();
         $ee = class_exists( 'pmLicenseManager' ) ? " - Enterprise Edition" : '';
-        $properties[] = array ('ProcessMaker Ver.',System::getVersion() . $ee,$pmSection
-        );
+        $systemName = 'ProcessMaker';
+        if (!defined('SYSTEM_NAME')) {
+            $systemName = SYSTEM_NAME;
+        }
+        $properties[] = array ($systemName. ' Ver.', System::getVersion() . $ee, $pmSection);
 
         if (file_exists(PATH_DATA. 'log/upgrades.log')) {
             $properties[] = array (G::LoadTranslation('ID_UPGRADES_PATCHES'), '<a href="#" onclick="showUpgradedLogs(); return false;">' . G::LoadTranslation( 'ID_UPGRADE_VIEW_LOG') . '</a>' ,$pmSection);

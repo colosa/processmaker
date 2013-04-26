@@ -688,7 +688,12 @@ class Installer extends Controller
             $dbText .= sprintf( "  define ('DB_REPORT_USER', '%s' );\n", $rp );
             $dbText .= sprintf( "  define ('DB_REPORT_PASS', '%s' );\n", $rpPass );
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
-                $dbText .= "define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
+                $dbText .= "\n";
+                $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
+                $systemName = $this->getNameSystem($pathShared);
+                if ($systemName != '') {
+                    $dbText .= "  define ('SYSTEM_NAME', " . $systemName . ");\n";
+                }
             }
 
             $this->installLog( G::LoadTranslation('ID_CREATING', SYS_LANG, Array($db_file) ));
@@ -974,7 +979,12 @@ class Installer extends Controller
             $dbText .= sprintf( "  define ('DB_REPORT_USER', '%s' );\n", $rp );
             $dbText .= sprintf( "  define ('DB_REPORT_PASS', '%s' );\n", $rpPass );
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
-                $dbText .= "define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
+                $dbText .= "\n";
+                $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
+                $systemName = $this->getNameSystem($pathShared);
+                if ($systemName != '') {
+                    $dbText .= "  define ('SYSTEM_NAME', " . $systemName . ");\n";
+                }
             }
 
             $this->installLog( G::LoadTranslation('ID_CREATING', SYS_LANG, Array($db_file) ));
@@ -1065,6 +1075,26 @@ class Installer extends Controller
             $info->message = $e->getMessage();
         }
         return $info;
+    }
+
+    public function getNameSystem ($pathShared = '')
+    {
+        $systemName = '';
+        if ($pathShared == '') {
+            $pathShared = trim( $_REQUEST['pathShared'] );
+        }
+
+        if (substr( $pathShared, - 1 ) != '/') {
+            $pathShared .= '/';
+        }
+
+        if (file_exists($pathShared . 'partner.info')) {
+            $dataInfo = parse_ini_file($pathShared . 'partner.info');
+            if (isset($dataInfo['system_name'])) {
+                $systemName = trim($dataInfo['system_name']);
+            }
+        }
+        return $systemName;
     }
 
     public function getEngines ()
