@@ -302,12 +302,12 @@ class workspaceTools
             $names = explode(".", basename($poFile));
             $extension = array_pop($names);
             $langid = array_pop($names);
+            CLI::logging("Updating database translations with $poName\n");
+            Language::import($poFile, false, true);
             if ($first) {
                 CLI::logging("Updating XML form translations with $poName\n");
                 Language::import($poFile, true, false);
             }
-            CLI::logging("Updating database translations with $poName\n");
-            Language::import($poFile, false, true);
         }
     }
 
