@@ -3806,7 +3806,17 @@ class XmlForm_Field_CheckGroup extends XmlForm_Field
             $i = 0;
             $html = '';
             foreach ($this->options as $optionName => $option) {
-                $html .= '<input id="form[' . $this->name . '][' . $optionName . ']" name="form[' . $this->name . '][]" type=\'checkbox\' value="' . $optionName . '"' . (in_array( $optionName, $value ) ? 'checked' : '') . '><span class="FormCheck"><label for="form[' . $this->name . '][' . $optionName . ']">' . $option . '</label></span></input>';
+                $swCheked = 0;
+
+                foreach ($value as $index2 => $value2) {
+                    if (strlen($value2 . "") > 0 && $value2 == $optionName) {
+                          $swCheked = 1;
+                          break;
+                    }
+                }
+
+                $html = $html . "<input type=\"checkbox\" id=\"form[" . $this->name . "][" . $optionName . "]\" name=\"form[" . $this->name . "][]\" value=\"" . $optionName . "\"" . (($swCheked == 1) ? " checked=\"checked\" " : "") . "><span class=\"FormCheck\"><label for=\"form[" . $this->name . "][" . $optionName . "]\">" . $option . "</label></span></input>";
+
                 if (++ $i == count( $this->options )) {
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->renderHint();
                 }
@@ -3816,8 +3826,17 @@ class XmlForm_Field_CheckGroup extends XmlForm_Field
         } elseif ($this->mode === 'view') {
             $html = '';
             foreach ($this->options as $optionName => $option) {
-                $html .= '<input class="FormCheck" id="form[' . $this->name . '][' . $optionName . ']" type=\'checkbox\' value="' . $optionName . '"' . (in_array( $optionName, $value ) ? 'checked' : '') . ' disabled><span class="FormCheck"><label for="form[' . $this->name . '][' . $optionName . ']">' . $option . '</label></span></input><br>';
-                $html .= '<input type="hidden" name="form[' . $this->name . '][]"  value="' . ((in_array( $optionName, $value )) ? $optionName : '') . '">';
+                $swCheked = 0;
+
+                foreach ($value as $index2 => $value2) {
+                    if (strlen($value2 . "") > 0 && $value2 == $optionName) {
+                          $swCheked = 1;
+                          break;
+                    }
+                }
+
+                $html = $html . "<input class=\"FormCheck\" type=\"checkbox\" id=\"form[" . $this->name . "][" . $optionName . "]\" value=\"" . $optionName . "\"" . (($swCheked == 1) ? " checked=\"checked\" " : "") . " disabled=\"disabled\"><span class=\"FormCheck\"><label for=\"form[" . $this->name . "][" . $optionName . "]\">" . $option . "</label></span></input><br />";
+                $html = $html . "<input type=\"hidden\" name=\"form[" . $this->name . "][]\"  value=\"" . (($swCheked == 1) ? $optionName : "") . "\">";
             }
             return $html;
         } else {
