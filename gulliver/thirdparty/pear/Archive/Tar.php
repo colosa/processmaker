@@ -917,6 +917,12 @@ class Archive_Tar extends PEAR
         if ($v_filename == '')
             continue;
 
+        if($v_filename == $p_remove_dir.'/plugin.singleton')
+            continue;
+
+        if($v_filename == $p_remove_dir.'/ee')
+            continue;
+
        	// ----- ignore files and directories matching the ignore regular expression
        	if ($this->_ignore_regexp && preg_match($this->_ignore_regexp, '/'.$v_filename)) {
             $this->_warning("File '$v_filename' ignored");
@@ -1090,12 +1096,12 @@ class Archive_Tar extends PEAR
         $v_magic = 'ustar ';
 
         $v_version = ' ';
-        
+
         if (function_exists('posix_getpwuid'))
         {
           $userinfo = posix_getpwuid($v_info[4]);
           $groupinfo = posix_getgrgid($v_info[5]);
-          
+
           $v_uname = $userinfo['name'];
           $v_gname = $groupinfo['name'];
         }
@@ -1179,7 +1185,7 @@ class Archive_Tar extends PEAR
         {
           $userinfo = posix_getpwuid($p_uid);
           $groupinfo = posix_getgrgid($p_gid);
-          
+
           $v_uname = $userinfo['name'];
           $v_gname = $groupinfo['name'];
         }
@@ -1188,7 +1194,7 @@ class Archive_Tar extends PEAR
           $v_uname = '';
           $v_gname = '';
         }
-        
+
         $v_devmajor = '';
 
         $v_devminor = '';
