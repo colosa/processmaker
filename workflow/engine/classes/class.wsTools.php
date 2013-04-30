@@ -1104,10 +1104,10 @@ class workspaceTools
                 }
             }
 
-            if($workspace->path . "/ee") {
+            if(file_exists($workspace->path . "/ee")) {
                 G::rm_dir($workspace->path . "/ee");
             }
-            if($workspace->path . "/plugin.singleton") {
+            if(file_exists($workspace->path . "/plugin.singleton")) {
                 G::rm_dir($workspace->path . "/plugin.singleton");
             }
 
