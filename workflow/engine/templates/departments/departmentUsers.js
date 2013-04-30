@@ -341,10 +341,13 @@ DDLoadUsers = function(){
     var records =  ddSource.dragData.selections;
     var arrAux = new Array();
     for (var r=0; r < records.length; r++){
-      arrAux[r] = records[r].data['USR_UID'];
+      if (records[r].data['USR_SUPERVISOR']==false) {
+        arrAux[r] = records[r].data['USR_UID'];
+      }else{
+        PMExt.notify(_('ID_DEPARTMENTS'),_('ID_DELETE_SUPERVISOR'));
+      };
     }
     DeleteDepartmentUser(arrAux,RefreshUsers,FailureProcess);
-    return true;
   }
 });
 
@@ -427,7 +430,11 @@ RemoveGroupsAction = function(){
   rowsSelected = assignedGrid.getSelectionModel().getSelections();
   var arrAux = new Array();
   for(var a=0; a < rowsSelected.length; a++){
-    arrAux[a] = rowsSelected[a].get('USR_UID');
+    if (rowsSelected[a].get('USR_SUPERVISOR')==false) {
+      arrAux[a] = rowsSelected[a].get('USR_UID');
+    }else{
+      PMExt.notify(_('ID_DEPARTMENTS'),_('ID_DELETE_SUPERVISOR'));
+    };
   }
   DeleteDepartmentUser(arrAux,RefreshUsers,FailureProcess);
 };
