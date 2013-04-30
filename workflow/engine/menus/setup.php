@@ -75,7 +75,7 @@ if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1 ) {
 }
 
 //users options
-if ($RBAC->userCanAccess('PM_SETUP') == 1 || $RBAC->userCanAccess('PM_USERS') == 1) {
+if ($RBAC->userCanAccess('PM_USERS') == 1) {
   $G_TMP_MENU->AddIdRawOption('USERS', '../users/users_List', G::LoadTranslation('ID_USERS_LIST'), 'icon-webservices.png', '', 'users');
 
   $G_TMP_MENU->AddIdRawOption('GROUPS', '../groups/groups', G::LoadTranslation('ID_GROUPS'), '', '', 'users');
@@ -83,7 +83,7 @@ if ($RBAC->userCanAccess('PM_SETUP') == 1 || $RBAC->userCanAccess('PM_USERS') ==
   $G_TMP_MENU->AddIdRawOption('ROLES', '../roles/roles_List', G::LoadTranslation('ID_ROLES'), '', '', 'users');
 }
 
-if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1) {
+if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1 && $RBAC->userCanAccess('PM_USERS') == 1) {
   $G_TMP_MENU->AddIdRawOption('AUTHSOURCES', '../authSources/authSources_List', G::LoadTranslation('ID_AUTH_SOURCES'), '', '', 'users');
   $G_TMP_MENU->AddIdRawOption('UX', '../admin/uxList', G::LoadTranslation('ID_USER_EXPERIENCE'), '', '', 'users');
   $G_TMP_MENU->AddIdRawOption('SYSTEM', '../admin/system', G::LoadTranslation('ID_SYSTEM'), '', '', 'settings');
