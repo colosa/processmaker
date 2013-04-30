@@ -1104,6 +1104,13 @@ class workspaceTools
                 }
             }
 
+            if(file_exists($workspace->path . "/ee")) {
+                G::rm_dir($workspace->path . "/ee");
+            }
+            if(file_exists($workspace->path . "/plugin.singleton")) {
+                G::rm_dir($workspace->path . "/plugin.singleton");
+            }
+
             CLI::logging("> Changing file permissions\n");
             $shared_stat = stat(PATH_DATA);
             if ($shared_stat !== false) {
