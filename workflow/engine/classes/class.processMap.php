@@ -2137,6 +2137,8 @@ class processMap
         try {
             $oProcess = new Process();
             $aFields = $oProcess->load($sProcessUID);
+            $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
+            $aFields['PARTNER_FLAG'] = $partnerFlag;
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
             $G_PUBLISH->AddContent('propeltable', 'paged-table', 'triggers/triggers_ShortList', $this->getTriggersCriteria($sProcessUID), $aFields);

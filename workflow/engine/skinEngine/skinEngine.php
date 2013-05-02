@@ -11,6 +11,7 @@ define('SE_LAYOUT_NOT_FOUND', 6);
 
 class SkinEngine
 {
+  private $skinDefault = '';
 
   private $layout   = '';
   private $template = '';
@@ -41,16 +42,16 @@ class SkinEngine
     $this->content = $content;
     $this->skinVariants = array('blank','extjs','raw','tracker','submenu');
     $this->skinsBasePath = G::ExpandPath("skinEngine");
-
+    $sysConf = System::getSystemConfiguration( PATH_CONFIG . 'env.ini' );
+    $this->skinDefault = (isset($sysConf['default_skin']) && $sysConf['default_skin'] != '') ? $sysConf['default_skin'] : 'classic';
     $this->_init();
   }
 
   private function _init()
   {
-
     // setting default skin
     if (!isset($this->skin) || $this->skin == "") {
-      $this->skin = "classic";
+      $this->skin = $this->skinDefault;
     }
 
     // deprecated submenu type ""green-submenu"" now is mapped to "submenu"
@@ -73,7 +74,7 @@ class SkinEngine
 
     // setting default skin
     if (!isset($_SESSION['currentSkin'])) {
-      $_SESSION['currentSkin'] = "classic";
+      $_SESSION['currentSkin'] = $this->skinDefault;
     }
 
     $this->mainSkin = $_SESSION['currentSkin'];
@@ -100,7 +101,13 @@ class SkinEngine
         $skinObject = $this->skinsBasePath . $this->mainSkin;
       }
       else { //Skin doesn't exist
-        $this->mainSkin = "classic";
+        $this->mainSkin = $this->skinDefault;
+        if (defined('PATH_CUSTOM_SKINS') && is_dir(PATH_CUSTOM_SKINS . $this->mainSkin)) { // check this skin on user skins path
+	        $skinObject = PATH_CUSTOM_SKINS . $this->mainSkin;
+	      }
+	      else if (is_dir($this->skinsBasePath . $this->mainSkin)) { // check this skin on core skins path
+	        $skinObject = $this->skinsBasePath . $this->mainSkin;
+	      }
       }
     }
 

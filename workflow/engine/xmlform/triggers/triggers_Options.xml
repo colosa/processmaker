@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dynaForm type="xmlmenu">
 
-<MNU_ADD type="link" value='' link="#" onclick="triggerFromLibrary(); return false;" colAlign="left" colWidth="100">
+<MNU_ADD type="link" value='' link="#" onclick="if('@%PARTNER_FLAG' == '' || '@%PARTNER_FLAG' == 0) { triggerFromLibrary(); } else { triggerNewCustom(); } return false;" colAlign="left" colWidth="100">
   <en>New</en>
 </MNU_ADD>
 
@@ -9,6 +9,7 @@
 
 
 <PRO_UID type="private"/>
+<PARTNER_FLAG type="private"/>
 <FIELDS_REQUIRED type="private"/>
 
 <triggersEdit type="private" defaultValue="../triggers/triggers_Edit"/>
