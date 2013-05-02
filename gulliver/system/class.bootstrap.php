@@ -580,9 +580,15 @@ class Bootstrap
         if (strtolower($typefile) == 'js' && $typearray[0] == 'translation') {
             Bootstrap::sendHeaders($filename, 'text/javascript', $download, $downloadFileName);
 
-            $filename = str_replace(implode(".", $typearray), $typearray[0] . "." . $typearray[1] . "." . $typearray[count($typearray) - 1], $filename);
+            if ($typearray[1] != "enterprise") {
+                $arrayAux = array($typearray[0], $typearray[1], $typearray[count($typearray) - 1]);
 
-            $output = Bootstrap::streamJSTranslationFile($filename, $typearray[1]);
+                $filename = str_replace(implode(".", $typearray), implode(".", $arrayAux), $filename);
+
+                $typearray = $arrayAux;
+            }
+
+            $output = Bootstrap::streamJSTranslationFile($filename, $typearray[count($typearray) - 2]);
 
             echo $output;
 
