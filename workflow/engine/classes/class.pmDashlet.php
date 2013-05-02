@@ -272,7 +272,7 @@ class PMDashlet extends DashletInstance implements DashletInterface
                     if (! isset( $dashletsInstances[$row['DAS_INS_UID']] )) {
                         $arrayField = unserialize( $row["DAS_INS_ADDITIONAL_PROPERTIES"] );
 
-                        if (!(self::verifyPluginDashlet($row['DAS_CLASS']))) {
+                        if (self::verifyPluginDashlet($row["DAS_CLASS"])) {
                             $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
                             $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
                             $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
@@ -303,7 +303,7 @@ class PMDashlet extends DashletInstance implements DashletInterface
                     if (! isset( $dashletsInstances[$row['DAS_INS_UID']] )) {
                         $arrayField = unserialize( $row["DAS_INS_ADDITIONAL_PROPERTIES"] );
 
-                        if (!(self::verifyPluginDashlet($row['DAS_CLASS']))) {
+                        if (self::verifyPluginDashlet($row["DAS_CLASS"])) {
                             $row['DAS_XTEMPLATE'] = $this->getXTemplate( $row['DAS_CLASS'] );
                             $row["DAS_TITLE"] = (isset( $arrayField["DAS_INS_TITLE"] ) && ! empty( $arrayField["DAS_INS_TITLE"] )) ? $arrayField["DAS_INS_TITLE"] : $row["DAS_TITLE"];
                             $row["DAS_TITLE"] = $row["DAS_TITLE"] . ((isset( $arrayField["DAS_INS_SUBTITLE"] ) && ! empty( $arrayField["DAS_INS_SUBTITLE"] )) ? str_replace( "@@USR_USERNAME", $_SESSION["USR_USERNAME"], $arrayField["DAS_INS_SUBTITLE"] ) : null);
