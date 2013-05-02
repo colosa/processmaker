@@ -115,14 +115,6 @@ class dashletProcessMakerCommunity implements DashletInterface
       </div>
       <div class=\"clearf\"></div>
 
-      <div class=\"icon\"><img src=\"/images/dashlets/community_library.png\" style=\"border: medium none;\"></div>
-      <div class=\"description\">
-        <strong>LIBRARY - </strong><a href=\"http://library.processmaker.com/\" target=\"_blank\" title=\"http://library.processmaker.com\">http://library.processmaker.com</a>
-        <br />
-        Download Process Map templates from the Library for use in ProcessMaker. &nbsp;We're adding new processes all the time, so look out for new templates!
-      </div>
-      <div class=\"clearf\"></div>
-
       <div class=\"icon\"><img src=\"/images/dashlets/community_blog.png\" style=\"border: medium none;\"></div>
       <div class=\"description\">
         <strong>BLOG - </strong><a href=\"http://blog.processmaker.com/\" target=\"_blank\" title=\"http://blog.processmaker.com\">http://processmakerblog.com</a>
