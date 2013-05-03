@@ -956,6 +956,11 @@ class System
                 $folderId = 'classic';
             }
 
+            $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
+            if ($partnerFlag && ($folderId == 'classic')){
+                continue;
+            }
+
             $xmlConfiguration = file_get_contents( $configInformation );
             $xmlConfigurationObj = G::xmlParser( $xmlConfiguration );
 
