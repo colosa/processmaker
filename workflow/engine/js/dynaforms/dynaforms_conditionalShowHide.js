@@ -555,6 +555,10 @@ var Conditional = function(DYN_UID){
     }
 
     this.saveCondition = function(){
+    	if (!sessionPersits()) {
+    	    showPrompt('conditionalShowHide');
+    	    return;
+    	}
         var oTmp;
         this.canSave = true;
         oUID = getField('FCD_UID');
