@@ -20,6 +20,7 @@
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
+ *
  */
 $_SERVER["QUERY_STRING"] = isset($_SERVER["QUERY_STRING"])?$_SERVER["QUERY_STRING"]:'';
 $_REQUEST["sProcess"] = isset($_REQUEST["sProcess"])?$_REQUEST["sProcess"]:'';
@@ -39,24 +40,24 @@ $html .= '</tr>';
 
 $html .= '<tr>';
 $html .= '<td width="50%">';
-$html .= '<label for="type_label">Type Variable</label>';
+$html .= '<label for="type_label">'.G::LoadTranslation('ID_TINY_TYPE_VARIABLE').'</label>';
 $html .= '</td>';
 
 $html .= '<td width="25%">';
-$html .= '<label for="prefix_label">Prefix</label>';
+$html .= '<label for="prefix_label">'.G::LoadTranslation('ID_PREFIX').'</label>';
 $html .= '</td>';
 
 $html .= '<td width="25%">';
-$html .= '<label for="variables_label">Search</label>';
+$html .= '<label for="variables_label">'.G::LoadTranslation( 'ID_SEARCH').'</label>';
 $html .= '</td>';
 $html .= '</tr>';
 
 $html .= '<tr>';
 $html .= '<td width="25%">';
 $html .= '<select name="type_variables" id="type_variables">';
-$html .= '<option value="all">All Variables</option>';
-$html .= '<option value="system">System Variables</option>';
-$html .= '<option value="process">Process Variables</option>';
+$html .= '<option value="all">'.G::LoadTranslation( 'ID_TINY_ALL_VARIABLES' ).'</option>';
+$html .= '<option value="system">'.G::LoadTranslation( 'ID_TINY_SYSTEM_VARIABLES' ).'</option>';
+$html .= '<option value="process">'.G::LoadTranslation( 'ID_TINY_PROCESS_VARIABLES' ).'</option>';
 $html .= '</select> &nbsp;&nbsp;&nbsp;&nbsp;';
 $html .= '</td>';
 
@@ -78,7 +79,7 @@ $html .= '<input type="text" id="search" size="15">';
 $html .= '</td>';
 $html .= '</tr>';
 $html .= '<tr>';
-$html .= '<tr><td><label for="prefix_label">Variables</label></td></tr>';
+$html .= '<tr><td><label for="prefix_label">'.G::LoadTranslation( 'ID_VARIABLES' ).'</label></td></tr>';
 $html .= '<tr>';
 
 $html .= '<td colspan="3">';
@@ -113,11 +114,11 @@ $html .= '</div>';
 $html .= '<br>';
 $html .= '<table border="1" width="90%" align="center">';
 $html .= '<tr width="40%">';
-$html .= '<td>Result</td>';
+$html .= '<td>'.G::LoadTranslation('ID_RESULT').'</td>';
 $html .= '<td><span id="selectedVariableLabel">@@SYS_LANG</span></td>';
 $html .= '</tr>';
 $html .= '<tr width="60%">';
-$html .= '<td>Description</td>';
+$html .= '<td>'.G::LoadTranslation('ID_DESCRIPTION').'</td>';
 $html .= '<td><span id="desc_variables">'.G::LoadTranslation('ID_SYSTEM').'</span></td>';
 $html .= '</tr>';
 $html .= '</table>';

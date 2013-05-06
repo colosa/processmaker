@@ -1207,7 +1207,7 @@ class AppCacheView extends BaseAppCacheView
             $row = $rs1->getRow();
 
             if (is_array($row = $rs1->getRow())) {
-                $super = true;
+                $super = G::LoadTranslation('ID_TRUE'); //true;
             }
 
             return array('user' => $mysqlUser, 'super' => $super);
@@ -1244,11 +1244,11 @@ class AppCacheView extends BaseAppCacheView
         $sql = "SHOW TABLES";
         $rs1 = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);
         $rs1->next();
-        $found = false;
+        $found = G::LoadTranslation('ID_FALSE');//false;
 
         while (is_array($row = $rs1->getRow()) && !$found) {
             if (strtolower($row[0]) == 'app_cache_view') {
-                $found = true;
+                $found = G::LoadTranslation('ID_TRUE');//true;
             }
 
             $rs1->next();
@@ -1366,10 +1366,9 @@ class AppCacheView extends BaseAppCacheView
             $sql = str_replace('{lang}', $lang, $sql);
             $stmt->executeQuery($sql);
 
-            return 'created';
+            return G::LoadTranslation('ID_CREATED');
         }
-
-        return 'exists';
+            return G::LoadTranslation('ID_EXIST');
     }
 
     /**
@@ -1413,10 +1412,10 @@ class AppCacheView extends BaseAppCacheView
             $sql = str_replace('{lang}', $lang, $sql);
             $stmt->executeQuery($sql);
 
-            return 'created';
+            return G::LoadTranslation('ID_CREATED');
         }
 
-        return 'exists';
+        return G::LoadTranslation('ID_EXIST');
     }
 
     /**
@@ -1458,10 +1457,10 @@ class AppCacheView extends BaseAppCacheView
             $sql = str_replace('{lang}', $lang, $sql);
             $stmt->executeQuery($sql);
 
-            return 'created';
+            return G::LoadTranslation('ID_CREATED');
         }
 
-        return 'exists';
+        return G::LoadTranslation('ID_EXIST');
     }
 
     /**
@@ -1503,10 +1502,10 @@ class AppCacheView extends BaseAppCacheView
             $sql = str_replace('{lang}', $lang, $sql);
             $stmt->executeQuery($sql);
 
-            return 'created';
+            return G::LoadTranslation('ID_CREATED');
         }
 
-        return 'exists';
+        return G::LoadTranslation('ID_EXIST');
     }
 
     public function triggerContentUpdate($lang, $recreate = false)
@@ -1542,10 +1541,10 @@ class AppCacheView extends BaseAppCacheView
 
             $stmt->executeQuery($sql);
 
-            return "created";
+            return G::LoadTranslation('ID_CREATED');
         }
 
-        return "exists";
+        return G::LoadTranslation('ID_EXIST');
     }
 
     /**
