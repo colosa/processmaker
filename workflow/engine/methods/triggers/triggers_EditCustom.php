@@ -28,6 +28,8 @@ require_once ('classes/model/Triggers.php');
 
 $aFields['PRO_UID'] = $_GET['PRO_UID'];
 $aFields['TRI_TYPE'] = 'SCRIPT';
+$partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
+$aFields['PARTNER_FLAG'] = $partnerFlag;
 if (isset( $_GET['TRI_UID'] ) && ($_GET['TRI_UID'] != "")) {
     $oTrigger = new Triggers();
     $aFields = $oTrigger->load( $_GET['TRI_UID'] );
