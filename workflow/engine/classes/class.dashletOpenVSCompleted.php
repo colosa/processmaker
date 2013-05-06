@@ -26,16 +26,29 @@ class dashletOpenVSCompleted implements DashletInterface
         $contextTimeStore->xtype = 'arraystore';
         $contextTimeStore->fields = array ('id','value'
         );
-        $contextTimeStore->data = array (array ('TODAY','Today'
-        ),array ('YESTERDAY','Yesterday'
-        ),array ('THIS_WEEK','This week'
-        ),array ('PREVIOUS_WEEK','Previous Week'
-        ),array ('THIS_MONTH','This Month'
-        ),array ('PREVIOUS_MONTH','Previous Month'
-        ),array ('THIS_YEAR','This Year'
-        ),array ('PREVIOUS_YEAR','Previous Year'
-        )
-        );
+        if (defined('PARTNER_FLAG')) {
+            $contextTimeStore->data = array (array ('TODAY','Hoje'
+            ),array ('YESTERDAY','Ontem'
+            ),array ('THIS_WEEK','Essa semana'
+            ),array ('PREVIOUS_WEEK','Semana anterior'
+            ),array ('THIS_MONTH','Este mês'
+            ),array ('PREVIOUS_MONTH','Mês Anterior'
+            ),array ('THIS_YEAR','Este ano'
+            ),array ('PREVIOUS_YEAR','Ano anterior'
+            )
+            );
+        } else {
+            $contextTimeStore->data = array (array ('TODAY','Today'
+            ),array ('YESTERDAY','Yesterday'
+            ),array ('THIS_WEEK','This week'
+            ),array ('PREVIOUS_WEEK','Previous Week'
+            ),array ('THIS_MONTH','This Month'
+            ),array ('PREVIOUS_MONTH','Previous Month'
+            ),array ('THIS_YEAR','This Year'
+            ),array ('PREVIOUS_YEAR','Previous Year'
+            )
+            );
+        }
 
         $contextTime = new stdclass();
         $contextTime->xtype = 'combo';
