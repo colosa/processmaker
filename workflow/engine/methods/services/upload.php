@@ -106,7 +106,7 @@ if (isset( $_FILES ) && $_FILES["ATTACH_FILE"]["error"] == 0) {
         $ext = (isset( $info["extension"] )) ? $info["extension"] : "";
 
         //Save the file
-        echo $sPathName = PATH_DOCUMENT . $sAppUid . PATH_SEP;
+        echo $sPathName = PATH_DOCUMENT . G::getPathFromUID($sAppUid) . PATH_SEP;
         echo $sFileName = $sAppDocUid . "_" . $iDocVersion . "." . $ext;
         print G::uploadFile( $_FILES["ATTACH_FILE"]["tmp_name"], $sPathName, $sFileName );
         print ("* The file " . $_FILES["ATTACH_FILE"]["name"] . " was uploaded successfully in case " . $sAppUid . " as input document..\n") ;

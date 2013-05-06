@@ -46,8 +46,16 @@ class CLI
     public static function taskName ($name)
     {
         self::$currentTask = $name;
-        self::$tasks[$name] = array ('name' => $name,'description' => null,'args' => array (),'function' => null,'opt' => array ('short' => '','long' => array (),'descriptions' => array ()
-        )
+        self::$tasks[$name] = array (
+            'name' => $name,
+            'description' => null,
+            'args' => array (),
+            'function' => null,
+            'opt' => array (
+                'short' => '',
+                'long' => array (),
+                'descriptions' => array ()
+            )
         );
     }
 

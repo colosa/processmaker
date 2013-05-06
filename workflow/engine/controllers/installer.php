@@ -216,7 +216,6 @@ class Installer extends Controller
     public function getPermissionInfo ()
     {
         $this->setResponseType( 'json' );
-
         $info = new StdClass();
         $info->success = true;
         $noWritableFiles = array ();
@@ -289,6 +288,7 @@ class Installer extends Controller
             if (is_dir( $aux['dirname'] )) {
                 if (! file_exists( $_REQUEST['pathLogFile'] )) {
                     @file_put_contents( $_REQUEST['pathLogFile'], '' );
+                    chmod($_REQUEST['pathShared'], 0770);
                 }
             }
         }

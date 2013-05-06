@@ -411,7 +411,7 @@ try {
 
                     $sFilename = $aFields['APP_DOC_UID'] . "_" . $lastDocVersion;
 
-                    $pathOutput = PATH_DOCUMENT . $_SESSION['APPLICATION'] . PATH_SEP . 'outdocs' . PATH_SEP;
+                    $pathOutput = PATH_DOCUMENT . G::getPathFromUID($_SESSION['APPLICATION']) . PATH_SEP . 'outdocs' . PATH_SEP;
                     G::mk_dir( $pathOutput );
                     switch ($aOD['OUT_DOC_TYPE']) {
                         case 'HTML':
@@ -518,7 +518,7 @@ try {
                     if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT ) && class_exists( 'uploadDocumentData' )) {
                         $triggerDetail = $oPluginRegistry->getTriggerInfo( PM_UPLOAD_DOCUMENT );
 
-                        $sPathName = PATH_DOCUMENT . $_SESSION['APPLICATION'] . PATH_SEP;
+                        $sPathName = PATH_DOCUMENT . G::getPathFromUID($_SESSION['APPLICATION']) . PATH_SEP;
 
                         $oData['APP_UID'] = $_SESSION['APPLICATION'];
                         $oData['ATTACHMENT_FOLDER'] = true;

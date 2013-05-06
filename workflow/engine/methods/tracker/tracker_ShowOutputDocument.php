@@ -47,9 +47,9 @@ $ver = (isset( $_GET['v'] ) && $_GET['v'] != '') ? '_' . $_GET['v'] : '';
 if (! $ver) //This code is in the case the outputdocument won't be versioned
     $ver = '_1';
 
-$realPath = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/outdocs/' . $sAppDocUid . $ver . '.' . $ext;
-$realPath1 = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/outdocs/' . $info['basename'] . $ver . '.' . $ext;
-$realPath2 = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/outdocs/' . $info['basename'] . '.' . $ext;
+$realPath = PATH_DOCUMENT . G::getPathFromUID($oAppDocument->Fields['APP_UID']) . '/outdocs/' . $sAppDocUid . $ver . '.' . $ext;
+$realPath1 = PATH_DOCUMENT . G::getPathFromUID($oAppDocument->Fields['APP_UID']) . '/outdocs/' . $info['basename'] . $ver . '.' . $ext;
+$realPath2 = PATH_DOCUMENT . G::getPathFromUID($oAppDocument->Fields['APP_UID']) . '/outdocs/' . $info['basename'] . '.' . $ext;
 $sw_file_exists = false;
 if (file_exists( $realPath )) {
     $sw_file_exists = true;

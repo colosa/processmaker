@@ -4426,6 +4426,7 @@ class processMap
                     $aDirectories[] = array('PATH' => ($sCurrentDirectory != '' ? $sCurrentDirectory . PATH_SEP : '') . $sObject, 'DIRECTORY' => $sObject );
                 } else {
                     $aAux = pathinfo($sPath);
+                    $aAux['extension'] = (isset($aAux['extension'])?$aAux['extension']:'');
                     $aFiles[] = array('FILE' => $sObject, 'EXT' => $aAux['extension'] );
                 }
             }

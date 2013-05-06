@@ -225,6 +225,7 @@ try {
 
                         //Get the Custom Folder ID (create if necessary)
                         $oFolder = new AppFolder();
+                        $documentFileStructure = $oFolder->getFolderStructure();
 
                         $aFields = array ("APP_UID" => $_SESSION["APPLICATION"],"DEL_INDEX" => $_SESSION["INDEX"],"USR_UID" => $_SESSION["USER_LOGGED"],"DOC_UID" => $indocUid,"APP_DOC_TYPE" => "INPUT","APP_DOC_CREATE_DATE" => date( "Y-m-d H:i:s" ),"APP_DOC_COMMENT" => "","APP_DOC_TITLE" => "","APP_DOC_FILENAME" => $arrayFileName[$i],"FOLDER_UID" => $oFolder->createFromPath( $aID["INP_DOC_DESTINATION_PATH"] ),"APP_DOC_TAGS" => $oFolder->parseTags( $aID["INP_DOC_TAGS"] ),"APP_DOC_FIELDNAME" => $fieldName
                         );
@@ -240,9 +241,9 @@ try {
                     $sAppDocUid = $oAppDocument->getAppDocUid();
                     $aInfo = pathinfo( $oAppDocument->getAppDocFilename() );
                     $sExtension = ((isset( $aInfo["extension"] )) ? $aInfo["extension"] : "");
-                    $sPathName = PATH_DOCUMENT . $_SESSION["APPLICATION"] . PATH_SEP;
+                    $pathUID = G::getPathFromUID($_SESSION["APPLICATION"]);
+                    $sPathName = PATH_DOCUMENT . $pathUID . PATH_SEP;// . $documentFileStructure;
                     $sFileName = $sAppDocUid . "_" . $iDocVersion . "." . $sExtension;
-
                     G::uploadFile( $arrayFileTmpName[$i], $sPathName, $sFileName );
 
                     //Plugin Hook PM_UPLOAD_DOCUMENT for upload document

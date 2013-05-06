@@ -177,8 +177,12 @@ class Translation extends BaseTranslation
 
             //$json = new Services_JSON(); DEPRECATED
             $f = fopen( $cacheFileJS, 'w' );
-            fwrite( $f, "var G_STRINGS =" . Bootstrap::json_encode( $translationJS ) . ";\n" );
-            fclose( $f );
+            if ($f==false) {
+               echo "Error: Cannot write into cachefilejs: $cacheFileJS\n"; 
+            } else {
+              fwrite( $f, "var G_STRINGS =" . Bootstrap::json_encode( $translationJS ) . ";\n" );
+              fclose( $f );
+            }
 
             $res['cacheFile'] = $cacheFile;
             $res['cacheFileJS'] = $cacheFileJS;
