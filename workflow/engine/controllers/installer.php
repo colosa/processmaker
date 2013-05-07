@@ -1410,6 +1410,19 @@ EOL;
         $postData = array();
 
         // File to upload/post
+        $parm1 = "@".PATH_CORE."content/translations/processmaker.$lang.po";
+
+        error_log('parm1 ------');
+        error_log($parm1);
+        error_log('------');
+
+        $parm2 = "$serv/sys{$workspace}/{$lang}/classic/setup/languages_Import";
+
+        error_log('parm2 ------');
+        error_log($parm2);
+        error_log('------');
+
+
         $postData['form[LANGUAGE_FILENAME]'] = "@".PATH_CORE."content/translations/processmaker.$lang.po";
         curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/languages_Import");
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -1423,7 +1436,9 @@ EOL;
         curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
         $output = curl_exec($ch);
+        error_log('respuesta ------');
         error_log($output);
+        error_log('------');
         curl_close($ch);
 
         /**
