@@ -233,6 +233,7 @@ class Dashboard extends Controller
             }
             $dashlets = $this->getDashlets();
             $this->setJSVar( 'storeDasUID', $dashlets );
+            
             if ($data->DAS_INS_UID != '') {
                 $this->pmDashlet->setup( $data->DAS_INS_UID );
                 $this->setJSVar( 'dashletInstance', $this->pmDashlet->getDashletInstance() );

@@ -1,3 +1,41 @@
+<?php
+    $skin = '';
+    if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING']!= '')) {
+        $url = urldecode($_SERVER['QUERY_STRING']);
+        $urlParts = explode('/', $url);
+        $skin = $urlParts['3'];
+    } else {
+        if (!class_exists('System')) {
+            require_once (PATH_HOME . "engine/classes/class.system.php");
+            $sysConf = System::getSystemConfiguration( PATH_CONFIG . 'env.ini' );
+            if (isset($sysConf['default_skin']) && ($sysConf['default_skin']!='')) {
+                $skin = $sysConf['default_skin'];
+            }
+        }
+    }
+
+    if ($skin != '') {
+        $dir = pathinfo(__FILE__);
+        $template = $dir['filename'];
+
+        $fileTemplate = PATH_SKINS . $skin . PATH_SEP . $template. '.html';
+        if (!file_exists($fileTemplate)) {
+            $fileTemplate = PATH_SKIN_ENGINE . $skin . PATH_SEP . $template. '.html';
+            if (!file_exists($fileTemplate)) {
+                $fileTemplate = PATH_CUSTOM_SKINS . $skin . PATH_SEP . $template. '.html';
+                if (!file_exists($fileTemplate)) {
+                    $fileTemplate = '';
+                }
+            }
+        }
+
+        if ($fileTemplate != '') {
+            $contentTemplate = file_get_contents($fileTemplate);
+            print ($contentTemplate);
+            die;
+        }
+    }
+?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <META http-equiv="Content-Type" content="text/html; charset=utf-8" />

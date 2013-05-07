@@ -24,7 +24,8 @@
 <SAVE type="button" onclick="document.getElementById('form[TRI_WEBBOT]').value = triggerEditor.getValue(); triggerSave1(this.form);">
   <en>Save</en>
 </SAVE>
-<BTN_CANCEL type="button" onclick="cancel();triggerFromLibrary()">
+<PARTNER_FLAG type="private"/>
+<BTN_CANCEL type="button" onclick="cancel(); if('@%PARTNER_FLAG' == '' || '@%PARTNER_FLAG' == 0) { triggerFromLibrary(); }">
   <en>Cancel</en>
 </BTN_CANCEL>
 
