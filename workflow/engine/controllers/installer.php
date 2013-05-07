@@ -1361,7 +1361,7 @@ EOL;
         $this->mysqlQuery($query);
     }
 
-    public function buildParternExtras($username, $password, $workspace, $lang, $skin)
+    public function buildParternExtras($username, $password, $workspace, $lang, $skinName)
     {
         ini_set('max_execution_time', '0');
         ini_set('memory_limit', '256M');
@@ -1389,7 +1389,7 @@ EOL;
         $ch = curl_init();
 
         // set URL and other appropriate options
-        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skin}/login/authentication");
+        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/login/authentication");
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiefile);
@@ -1416,7 +1416,7 @@ EOL;
         error_log($parm1);
         error_log('------');
 
-        $parm2 = "$serv/sys{$workspace}/{$lang}/{$skin}/setup/languages_Import";
+        $parm2 = "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/languages_Import";
 
         error_log('parm2 ------');
         error_log($parm2);
@@ -1424,7 +1424,7 @@ EOL;
 
 
         $postData['form[LANGUAGE_FILENAME]'] = "@".PATH_CORE."content/translations/processmaker.$lang.po";
-        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skin}/setup/languages_Import");
+        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/languages_Import");
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_VERBOSE, 0);
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
@@ -1461,9 +1461,9 @@ EOL;
 
             error_log('** SKIN **');
             error_log('archivo -> ' . $postData['uploadedFile']);
-            error_log('link -> ' . "$serv/sys{$workspace}/{$lang}/{$skin}/setup/skin_Ajax");
-
-            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skin}/setup/skin_Ajax");
+            error_log('link -> ' . "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/skin_Ajax");
+http://127.0.0.1:80/sysworkflow/pt-BR/C:/Users/erik/AppData/Roaming/DocSystem-4_4/docsystem/workflow/engine/data/partner/silverflex.tar/setup/skin_Ajax
+            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/skin_Ajax");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
@@ -1494,12 +1494,12 @@ EOL;
 
             error_log('** PLUGIN **');
             error_log('archivo -> ' . "@{$pluginName}");
-            error_log('link -> ' . "$serv/sys{$workspace}/{$lang}/{$skin}/setup/pluginsImportFile");
+            error_log('link -> ' . "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/pluginsImportFile");
 
 
             // File to upload/post
             $postData['form[PLUGIN_FILENAME]'] = "@{$pluginName}";
-            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skin}/setup/pluginsImportFile");
+            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/pluginsImportFile");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
