@@ -1482,6 +1482,7 @@ EOL;
          * Upload plugin file
          */
 
+
         $ch = curl_init();
         $postData = array();
         // resolv the plugin name
@@ -1493,9 +1494,9 @@ EOL;
             error_log('archivo -> ' . "@{$pluginName}");
             error_log('link -> ' . "$serv/sys{$workspace}/{$lang}/{$skin}/setup/pluginsImportFile");
 
+
             // File to upload/post
             $postData['form[PLUGIN_FILENAME]'] = "@{$pluginName}";
-            error_log(message)
             curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skin}/setup/pluginsImportFile");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
