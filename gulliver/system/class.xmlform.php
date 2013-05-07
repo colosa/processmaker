@@ -3599,6 +3599,15 @@ class XmlForm_Field_Listbox extends XmlForm_Field
         if (! is_array( $value )) {
             $value = explode( '|', $value );
         }
+
+        $arrayAux = array();
+
+        foreach ($value as $index2 => $value2) {
+            $arrayAux[] = $value2 . "";
+        }
+
+        $value = $arrayAux;
+
         if ($this->mode === 'edit') {
             $itemWidth = '';
             if ($this->width != '') {
@@ -3606,10 +3615,10 @@ class XmlForm_Field_Listbox extends XmlForm_Field
             }
             $html = '<select multiple="multiple" id="form[' . $this->name . ']" name="form[' . $this->name . '][]" size="' . $this->size . '" ' . $itemWidth . '  ' . $this->NSFieldType() . '>';
             foreach ($this->option as $optionName => $option) {
-                $html .= '<option value="' . $optionName . '" ' . ((in_array( $optionName, $value )) ? 'selected' : '') . '>' . $option . '</option>';
+                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "selected=\"selected\"" : "") . ">" . $option . "</option>";
             }
             foreach ($this->sqlOption as $optionName => $option) {
-                $html .= '<option value="' . $optionName . '" ' . ((in_array( $optionName, $value )) ? 'selected' : '') . '>' . $option . '</option>';
+                $html .= "<option value=\"" . $optionName . " \" " . ((in_array( $optionName . "", $value )) ? "selected=\"selected\" " : "") . ">" . $option . "</option>";
             }
             $html .= '</select>';
 
@@ -3618,17 +3627,17 @@ class XmlForm_Field_Listbox extends XmlForm_Field
         } elseif ($this->mode === 'view') {
             $html = '<select multiple="multiple" id="form[' . $this->name . ']" name="form[' . $this->name . '][]" size="' . $this->size . '" ' . $this->NSFieldType() . ' style="background: none;" disabled="disabled">';
             foreach ($this->option as $optionName => $option) {
-                $html .= '<option value="' . $optionName . '" ' . ((in_array( $optionName, $value )) ? 'class="module_ListBoxView" selected="selected"' : '') . '>' . $option . '</option>';
+                $html .= "<option value=\"" . $optionName . " \" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" : "") . ">" . $option . "</option>";
             }
             foreach ($this->sqlOption as $optionName => $option) {
-                $html .= '<option value="' . $optionName . '" ' . ((in_array( $optionName, $value )) ? 'class="module_ListBoxView" selected="selected"' : '') . '>' . $option . '</option>';
+                $html .= "<option value=\"" . $optionName . " \" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" : "") . ">" . $option . "</option>";
             }
             $html .= '</select>';
             foreach ($this->option as $optionName => $option) {
-                $html .= '<input type="hidden" id="form[' . $this->name . ']" name="form[' . $this->name . '][]" value="' . ((in_array( $optionName, $value )) ? $optionName : '') . '">';
+                $html .= "<input type=\"hidden\" id=\"form[" . $this->name . "]\" name=\"form[" . $this->name . "][]\" value=\"" . ((in_array( $optionName . "", $value )) ? $optionName : "__NULL__") . "\">";
             }
             foreach ($this->sqlOption as $optionName => $option) {
-                $html .= '<input type="hidden" id="form[' . $this->name . ']" name="form[' . $this->name . '][]" value="' . ((in_array( $optionName, $value )) ? $optionName : '') . '">';
+                $html .= "<input type=\"hidden\" id=\"form[" . $this->name . "]\" name=\"form[" . $this->name . "][]\" value=\"" . ((in_array( $optionName . "", $value )) ? $optionName : "__NULL__") . "\">";
             }
             return $html;
         } else {
@@ -3802,11 +3811,21 @@ class XmlForm_Field_CheckGroup extends XmlForm_Field
         if (! is_array( $value )) {
             $value = explode( '|', $value );
         }
+
+        $arrayAux = array();
+
+        foreach ($value as $index2 => $value2) {
+            $arrayAux[] = $value2 . "";
+        }
+
+        $value = $arrayAux;
+
         if ($this->mode === 'edit') {
             $i = 0;
             $html = '';
             foreach ($this->options as $optionName => $option) {
-                $html .= '<input id="form[' . $this->name . '][' . $optionName . ']" name="form[' . $this->name . '][]" type=\'checkbox\' value="' . $optionName . '"' . (in_array( $optionName, $value ) ? 'checked' : '') . '><span class="FormCheck"><label for="form[' . $this->name . '][' . $optionName . ']">' . $option . '</label></span></input>';
+                $html .= "<input type=\"checkbox\" id=\"form[" . $this->name . "][" . $optionName . "]\" name=\"form[" . $this->name . "][]\"  value=\"" . $optionName . "\"" . (in_array( $optionName . "", $value ) ? "checked = \"checked\" " : "") . "><span class=\"FormCheck\"><label for=\"form[" . $this->name . "][" . $optionName . "]\">" . $option . "</label></span></input>";
+
                 if (++ $i == count( $this->options )) {
                     $html .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->renderHint();
                 }
@@ -3816,8 +3835,8 @@ class XmlForm_Field_CheckGroup extends XmlForm_Field
         } elseif ($this->mode === 'view') {
             $html = '';
             foreach ($this->options as $optionName => $option) {
-                $html .= '<input class="FormCheck" id="form[' . $this->name . '][' . $optionName . ']" type=\'checkbox\' value="' . $optionName . '"' . (in_array( $optionName, $value ) ? 'checked' : '') . ' disabled><span class="FormCheck"><label for="form[' . $this->name . '][' . $optionName . ']">' . $option . '</label></span></input><br>';
-                $html .= '<input type="hidden" name="form[' . $this->name . '][]"  value="' . ((in_array( $optionName, $value )) ? $optionName : '') . '">';
+                $html .= "<input class=\"FormCheck\" type=\"checkbox\" id=\"form[" . $this->name . "][" . $optionName . "]\" value=\"" . $optionName . "\"" . (in_array( $optionName . "", $value ) ? " checked=\"checked\" " : "") . " disabled=\"disabled\"><span class=\"FormCheck\"><label for=\"form[" . $this->name . "][" . $optionName . "]\">" . $option . "</label></span></input><br />";
+                $html .= "<input type=\"hidden\" name=\"form[" . $this->name . "][]\"  value=\"" . ((in_array( $optionName . "", $value )) ? $optionName : "__NULL__") . "\">";
             }
             return $html;
         } else {

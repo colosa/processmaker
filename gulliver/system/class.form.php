@@ -61,19 +61,43 @@ class Form extends XmlForm
      * @access public
      * @return string
      */
+
     public function setDefaultValues ()
     {
         foreach ($this->fields as $name => $content) {
             if (is_object( $content ) && get_class( $content ) != '__PHP_Incomplete_Class') {
                 if (isset( $content->defaultValue )) {
-                    $this->values[$name] = $content->defaultValue;
+                    switch ($content->type) {
+                        case "checkgroup":
+                        case "listbox":
+                            $defaultValueAux = trim($content->defaultValue);
+
+                            if ($defaultValueAux != "") {
+                                $this->values[$name] = $content->defaultValue;
+                            } else {
+                                $this->values[$name] = "__NULL__";
+                            }
+                            break;
+                        default:
+                            $this->values[$name] = $content->defaultValue;
+                            break;
+                    }
                 } else {
-                    $this->values[$name] = '';
+                    switch ($content->type) {
+                        case "checkgroup":
+                        case "listbox":
+                            $this->values[$name] = "__NULL__";
+                            break;
+                        default:
+                            $this->values[$name] = "";
+                            break;
+                    }
                 }
             } else {
                 $this->values[$name] = '';
             }
         }
+
         foreach ($this->fields as $k => $v) {
             if (is_object( $v )) {
                 //julichu
@@ -117,6 +141,7 @@ class Form extends XmlForm
             trigger_error( 'Faild to create cache file "' . $xmlform->parsedFile . '".', E_USER_ERROR );
         }
         $this->setDefaultValues();
+
         //to do: review if you can use the same form twice. in order to use once or not.
         //DONE: Use require to be able to use the same xmlform more than once.
         foreach ($this->fields as $k => $v) {
@@ -229,6 +254,7 @@ class Form extends XmlForm
         if (! is_array( $newValues )) {
             return;
         }
+
         foreach ($this->fields as $k => $v) {
             if (array_key_exists( $k, $newValues )) {
                 if (is_array( $newValues[$k] )) {
@@ -362,9 +388,9 @@ class Form extends XmlForm
                                     $values[$k] = $values[$k . "_label"] = null;
                                     foreach ($newValues[$k] as $i => $value) {
                                         //if $value is empty continue with the next loop, because this is a not selected/checked item
-                                        if (trim( $value ) == '') {
-                                            continue;
-                                        }
+                                        //if (trim( $value ) == '') {
+                                        //    continue;
+                                        //}
 
                                         $values[$k] .= (($i != 0) ? "|" : null) . $value;
 
@@ -510,8 +536,13 @@ class Form extends XmlForm
                                 }
                         }
                     } else {
-                        if ($v->type == 'checkgroup') {
-                            $values[$k] = null;
+                        switch ($v->type) {
+                            case "checkgroup":
+                            case "listbox":
+                                //This value is added when the user does not mark any checkbox
+                                $values[$k . "_label"] = "__NULL__";
+                                $values[$k] = "__NULL__";
+                                break;
                         }
                     }
                 } else {
