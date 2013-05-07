@@ -1475,6 +1475,8 @@ EOL;
             curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
             $output = curl_exec($ch);
+            error_log('respuesta ----');
+            error_log($output);
             curl_close($ch);
         }
 
@@ -1509,6 +1511,8 @@ EOL;
             curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
             $output = curl_exec($ch);
+            error_log('respuesta ----');
+            error_log($output);
             curl_close($ch);
         }
 
