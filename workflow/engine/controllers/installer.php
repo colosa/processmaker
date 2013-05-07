@@ -1408,7 +1408,7 @@ EOL;
 
         $ch = curl_init();
         $postData = array();
-
+        error_log('** LENGUAJE **');
         // File to upload/post
         $parm1 = "@".PATH_CORE."content/translations/processmaker.$lang.po";
 
@@ -1459,6 +1459,10 @@ EOL;
             // File to upload/post
             $postData['uploadedFile'] = "@".$skin;
 
+            error_log('** SKIN **');
+            error_log('archivo -> ' . $postData['uploadedFile']);
+            error_log('link -> ' . "$serv/sys{$workspace}/{$lang}/{$skin}/setup/skin_Ajax");
+
             curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skin}/setup/skin_Ajax");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
@@ -1485,8 +1489,13 @@ EOL;
         if (count($plugins) > 0) {
             $pluginName = $plugins[0];
 
+            error_log('** PLUGIN **');
+            error_log('archivo -> ' . "@{$pluginName}");
+            error_log('link -> ' . "$serv/sys{$workspace}/{$lang}/{$skin}/setup/pluginsImportFile");
+
             // File to upload/post
             $postData['form[PLUGIN_FILENAME]'] = "@{$pluginName}";
+            error_log(message)
             curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skin}/setup/pluginsImportFile");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
