@@ -127,7 +127,7 @@ class Configuration extends BaseConfiguration
         }
     }
 
-    public function exists($CfgUid, $ObjUid, $ProUid, $UsrUid, $AppUid)
+    public function exists($CfgUid, $ObjUid='', $ProUid='', $UsrUid='', $AppUid='')
     {
         $oRow = ConfigurationPeer::retrieveByPK( $CfgUid, $ObjUid, $ProUid, $UsrUid, $AppUid );
         return (( get_class ($oRow) == 'Configuration' )&&(!is_null($oRow)));
