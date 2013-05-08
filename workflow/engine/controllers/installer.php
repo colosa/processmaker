@@ -1403,6 +1403,45 @@ EOL;
         curl_close($ch);
 
         /**
+         * Upload translation .po file
+         */
+
+        $ch = curl_init();
+        $postData = array();
+        error_log('** LENGUAJE **');
+        // File to upload/post
+        $parm1 = "@".PATH_CORE."content/translations/processmaker.$lang.po";
+
+        error_log('parm1 ------');
+        error_log($parm1);
+        error_log('------');
+
+        $parm2 = "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/languages_Import";
+
+        error_log('parm2 ------');
+        error_log($parm2);
+        error_log('------');
+
+
+        $postData['form[LANGUAGE_FILENAME]'] = "@".PATH_CORE."content/translations/processmaker.$lang.po";
+        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/languages_Import");
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiefile);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 90);
+
+        $output = curl_exec($ch);
+        error_log('respuesta ------');
+        error_log($output);
+        error_log('------');
+        curl_close($ch);
+
+        /**
          * Upload skin file
          */
 
@@ -1475,45 +1514,6 @@ EOL;
             error_log($output);
             curl_close($ch);
         }
-
-        /**
-         * Upload translation .po file
-         */
-
-        $ch = curl_init();
-        $postData = array();
-        error_log('** LENGUAJE **');
-        // File to upload/post
-        $parm1 = "@".PATH_CORE."content/translations/processmaker.$lang.po";
-
-        error_log('parm1 ------');
-        error_log($parm1);
-        error_log('------');
-
-        $parm2 = "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/languages_Import";
-
-        error_log('parm2 ------');
-        error_log($parm2);
-        error_log('------');
-
-
-        $postData['form[LANGUAGE_FILENAME]'] = "@".PATH_CORE."content/translations/processmaker.$lang.po";
-        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/languages_Import");
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_VERBOSE, 0);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiefile);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 90);
-
-        $output = curl_exec($ch);
-        error_log('respuesta ------');
-        error_log($output);
-        error_log('------');
-        curl_close($ch);
     }
 }
 
