@@ -303,7 +303,7 @@ class G
     /**
      * ************* path functions ****************
      */
-    public function mk_dir ($strPath, $rights = 0777)
+    public function mk_dir ($strPath, $rights = 0770)
     {
         $folder_path = array ($strPath);
         $oldumask = umask( 0 );
@@ -2600,7 +2600,7 @@ class G
      * @param integer $permission
      * @return void
      */
-    public function uploadFile ($file, $path, $nameToSave, $permission = 0666)
+    public function uploadFile ($file, $path, $nameToSave, $permission = 0660)
     {
         try {
             if ($file == '') {
@@ -4801,6 +4801,11 @@ class G
 
         if (@file_put_contents( $file, $content ) === false) {
             throw new Exception( "G::update_php_ini() -> can't update file: $file" );
+         } else {
+            //first a raw permission check
+            if(fileperms($file) != 33200) {
+                chmod ($file, 0660);
+            }
         }
     }
 
