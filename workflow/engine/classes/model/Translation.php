@@ -294,6 +294,7 @@ class Translation extends BaseTranslation
             if (! is_dir( dirname( $cacheFileJS ) )) {
                 G::mk_dir( dirname( $cacheFileJS ) );
             }
+
             $f = fopen( $cacheFile, 'w+' );
             fwrite( $f, "<?php\n" );
             fwrite( $f, '$translation' . $plugin . ' =' . 'unserialize(\'' . addcslashes( serialize( $translation ), '\\\'' ) . "');\n" );
