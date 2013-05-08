@@ -199,7 +199,7 @@ class Installer
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $dbText .= "define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
                 if (defined('SYSTEM_NAME')) {
-                    $dbText .= "  define ('SYSTEM_NAME', " . SYSTEM_NAME . ");\n";
+                    $dbText .= "  define ('SYSTEM_NAME', '" . SYSTEM_NAME . "');\n";
                 }
             }
             $fp = @fopen($db_file, "w");

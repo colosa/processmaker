@@ -695,7 +695,7 @@ class Installer extends Controller
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
                 if ($this->systemName != '') {
-                    $dbText .= "  define ('SYSTEM_NAME', " . $this->systemName . ");\n";
+                    $dbText .= "  define ('SYSTEM_NAME', '" . $this->systemName . "');\n";
                 }
             }
 
@@ -985,7 +985,7 @@ class Installer extends Controller
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
                 if ($this->systemName != '') {
-                    $dbText .= "  define ('SYSTEM_NAME', " . $this->systemName . ");\n";
+                    $dbText .= "  define ('SYSTEM_NAME', '" . $this->systemName . "');\n";
                 }
             }
 
@@ -1408,20 +1408,7 @@ EOL;
 
         $ch = curl_init();
         $postData = array();
-        error_log('** LENGUAJE **');
         // File to upload/post
-        $parm1 = "@".PATH_CORE."content/translations/processmaker.$lang.po";
-
-        error_log('parm1 ------');
-        error_log($parm1);
-        error_log('------');
-
-        $parm2 = "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/languages_Import";
-
-        error_log('parm2 ------');
-        error_log($parm2);
-        error_log('------');
-
 
         $postData['form[LANGUAGE_FILENAME]'] = "@".PATH_CORE."content/translations/processmaker.$lang.po";
         curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/languages_Import");
@@ -1436,9 +1423,6 @@ EOL;
         curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
         $output = curl_exec($ch);
-        error_log('respuesta ------');
-        error_log($output);
-        error_log('------');
         curl_close($ch);
 
         /**
@@ -1459,9 +1443,6 @@ EOL;
             // File to upload/post
             $postData['uploadedFile'] = "@".$skin;
 
-            error_log('** SKIN **');
-            error_log('archivo -> ' . $postData['uploadedFile']);
-            error_log('link -> ' . "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/skin_Ajax");
             curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/skin_Ajax");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
@@ -1474,8 +1455,6 @@ EOL;
             curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
             $output = curl_exec($ch);
-            error_log('respuesta ----');
-            error_log($output);
             curl_close($ch);
         }
 
@@ -1483,18 +1462,12 @@ EOL;
          * Upload plugin file
          */
 
-
         $ch = curl_init();
         $postData = array();
         // resolv the plugin name
         $plugins = glob(PATH_CORE."plugins/*.tar");
         if (count($plugins) > 0) {
             $pluginName = $plugins[0];
-
-            error_log('** PLUGIN **');
-            error_log('archivo -> ' . "@{$pluginName}");
-            error_log('link -> ' . "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/pluginsImportFile");
-
 
             // File to upload/post
             $postData['form[PLUGIN_FILENAME]'] = "@{$pluginName}";
@@ -1510,8 +1483,6 @@ EOL;
             curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
             $output = curl_exec($ch);
-            error_log('respuesta ----');
-            error_log($output);
             curl_close($ch);
         }
     }
