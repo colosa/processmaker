@@ -915,5 +915,29 @@ class Configurations // extends Configuration
 
         return array("caseColumns" => $caseColumns, "caseReaderFields" => $caseReaderFields, "rowsperpage" => 20, "dateformat" => "M d, Y");
     }
+    /**
+     * Set the current Directory structure version, default value 1.
+     * Note.- TAKE CARE for the version value, input/output couln't work at the wrong version.
+     * @param integer $version
+     */
+    public function setDirectoryStructureVer($version = 1)
+    {
+        $obj = '';
+        $this->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
+        $this->aConfig['directoryStructure'] = $version;
+        $this->saveConfig('ENVIRONMENT_SETTINGS', $obj);
+    }
+
+    /**
+     * Get the current directory structure version if the array iten 'directoryStructure' doesn't exists it will returns 1.
+     * @return integer
+     */
+    public function getDirectoryStructureVer()
+    {
+        $obj = '';
+        $this->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
+        $ver = isset($this->aConfig['directoryStructure']) ? $this->aConfig['directoryStructure'] : 1;
+        return $ver;
+    }
 }
  

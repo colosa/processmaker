@@ -89,6 +89,13 @@ class workspaceTools
         $stop = microtime(true);
         $final = $stop - $start;
         CLI::logging("<*>   Process Updating cache view carried out in $final seconds.\n");
+        
+        $start = microtime(true);
+        CLI::logging("> Updating cases directories structure...\n");
+        $this->upgradeCasesDirectoryStructure($workSpace);
+        $stop = microtime(true);
+        $final = $stop - $start;
+        CLI::logging("<*>   Process Updating directories structure carried out in $final seconds.\n");
     }
 
     /**
@@ -480,6 +487,97 @@ class workspaceTools
         $oCriteria->add(ConfigurationPeer::OBJ_UID, array("todo", "draft", "sent", "unassigned", "paused", "cancelled"), Criteria::NOT_IN);
         ConfigurationPeer::doDelete($oCriteria);
         // end of reset
+    }
+
+    /**
+     * fix the 32K issue, by migrating /files directory structure to an uid tree structure based.
+     * @param $workspace got the site(s) the manager wants to upgrade
+     */
+    public function upgradeCasesDirectoryStructure ($workspace)
+    {
+        define('PATH_DOCUMENT',  PATH_DATA . 'sites/' . $workspace . '/' . 'files/');
+        $doclevel = explode('/', PATH_DOCUMENT);
+        $length = sizeof(PATH_DOCUMENT);
+        $filesDir = $doclevel[$length - 1];
+
+        if (is_dir(PATH_DOCUMENT) && is_writable($filesDir)) {
+            CLI::logging("Error:" . PATH_DOCUMENT . " is not writable... please check the su permissions.\n");
+            return;
+        }
+
+        $directory = array();
+        $blackHoleDir = G::getBlackHoleDir();
+        $directory = glob(PATH_DOCUMENT . "*", GLOB_ONLYDIR);
+        $dirslength = sizeof($directory);
+
+        if (! @chdir(PATH_DOCUMENT)) {
+            CLI::logging("Cannot use Document directory. The upgrade must be done as root.\n");
+            return;
+        }
+
+        //Start migration
+        for ($index = 0; $index < $dirslength; $index++) {
+            $depthdirlevel = explode('/', $directory[$index]);
+            $lastlength = sizeof($depthdirlevel);
+            $UIdDir = $depthdirlevel[$lastlength - 1];
+            $lenDir = strlen($UIdDir);
+
+            if ($lenDir == 32 && $UIdDir != $blackHoleDir) {
+                $len = count(scandir($UIdDir));
+                if ($len > 2) {
+                    //lenght = 2, because the function check . and .. dir links
+                    $newDiretory = G::getPathFromUIDPlain($UIdDir);
+                    CLI::logging("Migrating $UIdDir to $newDiretory\n");
+                    G::mk_dir($newDiretory);
+                    //echo `cp -R $UIdDir/* $newDiretory/`;
+                    if (G::recursive_copy($UIdDir, $newDiretory)) {
+                        CLI::logging("Removing $UIdDir...\n");
+                        G::rm_dir($UIdDir);
+                        rmdir($UIdDir);//remove the diretory itself, G::rm_dir cannot do it
+                    } else {
+                        CLI::logging("Error: Failure at coping from $UIdDir...\n");
+                    }                        
+                } else {
+                    CLI::logging("$UIdDir is empty, removing it\n");
+                    rmdir($UIdDir);//remove the diretory itself
+                }
+            }
+        }
+
+        //Start '0' directory migration
+        $black = PATH_DOCUMENT . $blackHoleDir . '/';
+        if (is_dir($black)) {
+            $newpattern = array();
+            $file = glob($black . '*.*');//files only
+            $dirlen = count($file);
+
+            for ($index = 0; $index < $dirlen; $index++) {
+                $levelfile = explode('/', $file[$index]);
+                $lastlevel = sizeof($levelfile);
+                $goalFile = $levelfile[$lastlevel - 1];
+                $newpattern = G::getPathFromFileUIDPlain($blackHoleDir, $goalFile);
+                CLI::logging("Migrating $blackHoleDir file: $goalFile\n");
+                G::mk_dir($blackHoleDir . '/' . $newpattern[0]);
+                //echo `cp -R $black$goalFile $black$newpattern[0]/$newpattern[1]`;
+                if (copy($black . $goalFile, $black . $newpattern[0] . '/' . $newpattern[1])) {
+                    unlink($file[$index]);
+                } else {
+                    CLI::logging("Error: Failure at copy $file[$index] files...\n");
+                }     
+            }
+        }
+
+        //Set value of 2 to the directory structure version.
+        $this->initPropel(true);
+        G::LoadClass("configuration");
+        $conf = new Configurations();
+        if ($conf->exists("ENVIRONMENT_SETTINGS")) {
+            $conf->setDirectoryStructureVer(2);
+            CLI::logging("Please notice Version Directory Structure is 2 now.\n");
+        } else {
+            CLI::logging("Error: Issue found at try to use ENVIRONMENT_SETTINGS row.\n");
+            return;
+        }
     }
 
     /**

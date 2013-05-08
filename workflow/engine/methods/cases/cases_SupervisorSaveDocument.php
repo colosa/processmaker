@@ -36,7 +36,7 @@ try {
     //save the file
     if (! empty( $_FILES['form'] )) {
         if ($_FILES['form']['error']['APP_DOC_FILENAME'] == 0) {
-            $sPathName = PATH_DOCUMENT . $_GET['APP_UID'] . PATH_SEP;
+            $sPathName = PATH_DOCUMENT . G::getPathFromUID($_GET['APP_UID']) . PATH_SEP;
             $sFileName = $sAppDocUid . '.' . $ext;
             G::uploadFile( $_FILES['form']['tmp_name']['APP_DOC_FILENAME'], $sPathName, $sFileName );
 

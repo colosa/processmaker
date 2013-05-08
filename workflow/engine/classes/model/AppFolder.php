@@ -434,7 +434,7 @@ class AppFolder extends BaseAppFolder
                         $info = pathinfo($oAppDocument->getAppDocFilename());
 
                         $version = (!empty($docVersion))? "_" . $docVersion : "_1";
-                        $outDocPath = PATH_DOCUMENT . $row1["APP_UID"] . PATH_SEP . "outdocs" . PATH_SEP;
+                        $outDocPath = PATH_DOCUMENT . G::getPathFromUID($row1["APP_UID"]) . PATH_SEP . "outdocs" . PATH_SEP;
 
                         if (file_exists($outDocPath . $appDocUid . $version . ".pdf") ||
                             file_exists($outDocPath . $info["basename"] . $version . ".pdf") ||

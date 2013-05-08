@@ -1708,7 +1708,7 @@ function PMFGenerateOutputDocument ($outputID, $sApplication = null, $index = nu
     }
     $sFilename = $aFields['APP_DOC_UID'] . "_" . $lastDocVersion;
 
-    $pathOutput = PATH_DOCUMENT . $sApplication . PATH_SEP . 'outdocs' . PATH_SEP; //G::pr($sFilename);die;
+    $pathOutput = PATH_DOCUMENT . G::getPathFromUID($sApplication) . PATH_SEP . 'outdocs' . PATH_SEP; //G::pr($sFilename);die;
     G::mk_dir( $pathOutput );
 
     $aProperties = array ();
@@ -1747,7 +1747,7 @@ function PMFGenerateOutputDocument ($outputID, $sApplication = null, $index = nu
         $oAppDocument1 = new AppDocument();
         $oAppDocument1->update( $aFields );
 
-        $sPathName = PATH_DOCUMENT . $sApplication . PATH_SEP;
+        $sPathName = PATH_DOCUMENT . G::getPathFromUID($sApplication) . PATH_SEP;
 
         $oData['APP_UID'] = $sApplication;
         $oData['ATTACHMENT_FOLDER'] = true;

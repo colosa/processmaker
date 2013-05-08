@@ -313,12 +313,13 @@ class G
 
         while ($parent_folder_path = array_pop( $folder_path )) {
             if (! @is_dir( $parent_folder_path )) {
-                if (! @mkdir( $parent_folder_path, $rights )) {
-                    //trigger_error ("Can't create folder \"$parent_folder_path\".", E_USER_WARNING);
-                    umask( $oldumask );
+                if (! @mkdir( $parent_folder_path, $rights)) {
+                    error_log( "Can't create folder \"$parent_folder_path\"");
+                    //umask( $oldumask );
                 }
             }
         }
+        umask($oldumask);
     }
 
     /**
@@ -357,6 +358,53 @@ class G
         } else {
             @unlink( $dirName );
         }
+    }
+
+    /**
+     * Delete all the directory tree cotents.
+     * @param string $dir
+     * @return void
+     */
+    public function delTree($dir)
+    {
+        $files = glob( $dir . '*', GLOB_MARK );
+        foreach ($files as $file ) {
+            if (substr( $file, -1 ) == '/' ) {
+                $this->delTree( $file );
+            } else {
+                unlink( $file );
+            }
+        }
+        if (is_dir($dir)) {
+            rmdir( $dir );
+        }
+    }
+
+    /**
+     * Recursive copy
+     * @param string $source
+     * @param string $destination
+     * @return boolean
+     */
+    function recursive_copy ($source, $destination) {
+        if ($source == $destination) {
+            return false;
+        }
+        $dir = opendir($source);
+        if (! file_exists($destination)) {
+            @mkdir($destination);
+        }
+        while (false !== ( $file = readdir($dir))) {
+            if (( $file != '.' ) && ( $file != '..' )) {
+                if ( is_dir($source . '/' . $file) ) {
+                    self::recursive_copy($source . '/' . $file, $destination . '/' . $file);
+                } else {
+                    copy($source . '/' . $file, $destination . '/' . $file);
+                }
+            }
+        }
+        closedir($dir);
+        return true;
     }
 
     /**
@@ -2412,6 +2460,133 @@ class G
             }
         }
         return $new_val;
+    }
+
+    /**
+     * Extract the structure version value from serializated table field and check it.
+     * @return true if the version is bigger than 1
+     */
+    public function gotDirectoryStructureVer2()
+    {
+        G::LoadClass( "configuration" );
+        $configuration = new Configurations();
+        if (defined('SYS_SYS') && $configuration->exists("ENVIRONMENT_SETTINGS")) {
+            return ($configuration->getDirectoryStructureVer() > 1);
+        }
+        return false;
+    }
+
+    /**
+     * Get the default blank directory 0 for external files
+     */
+    public function getBlackHoleDir()
+    {
+        //len32:12345678901234567890123456789012
+        return "00000000000000000000000000000000";
+    }
+
+    /**
+     * Funtion used to fix 32K issue related to ext3 max subdirectory storage, but checking Version first.
+     * @param string $uid
+     * @param int $splitSize
+     * @param int $pieces
+     * @return string xxx/xxx/xxx/xxxxxxxxxxxxxxxxxxxxx
+     */
+    public function getPathFromUID($uid, $splitSize = 3, $pieces = 3)
+    {
+        if (! G::gotDirectoryStructureVer2()) {
+            return $uid;
+        }
+        return G::getPathFromUIDPlain($uid, $splitSize, $pieces);
+    }
+
+    /**
+     * Funtion used to fix 32K issue related to ext3 max subdirectory storage.
+     * @param string $uid
+     * @param int $splitSize
+     * @param int $pieces
+     * @return string xxx/xxx/xxx/xxxxxxxxxxxxxxxxxxxxx
+     */
+    public function getPathFromUIDPlain($uid, $splitSize = 3, $pieces = 3)
+    {
+        $dirArray = array();
+        if (is_string($uid) && strlen($uid) >= 32 && $uid != G::getBlackHoleDir()) {
+            for ($i = 0; $i < $pieces; $i++) {
+                $dirArray[] = substr($uid, 0, $splitSize);
+                $len = strlen($uid);
+                $uid = substr($uid, $splitSize, $len);
+            }
+        }
+        $dirArray[] = $uid;
+        $newfileStructure = implode($dirArray, '/');
+        return $newfileStructure;
+    }
+
+    /**
+     * Get the uid from the splitted directory + filename.
+     * @param string $path
+     * @return string
+     */
+    public function getUIDfromPath($path)
+    {
+        $uid = '';
+        $item = explode($path, '/');
+        $len = sizeof($item);
+        for ($i = 0; $i < $len; $i++) {
+            $uid .= $item[$i];
+        }
+        if (strlen($uid) != 32){
+            return "invalid";
+        }
+        return $uid;
+    }
+
+    /**
+     * Get the file stored in '0' dir as splitted, but checking version first.
+     * @param string $appUid
+     * @param string $fileUid
+     * @param int $splitSize
+     * @param int $pieces
+     * @return array index:0 got the path, index:1 got the filename
+     */
+    public function getPathFromFileUID($appUid, $fileUid, $splitSize = 3, $pieces = 3)
+    {
+        if (! G::gotDirectoryStructureVer2()) {
+            $response = array();
+            $response[] = '';
+            $response[] = $fileUid;
+            return $response;
+        }
+        return G::getPathFromFileUIDPlain($appUid, $fileUid, $splitSize, $pieces);
+    }
+
+    /**
+     * Get the file stored in '0' dir as splitted.
+     * @param string $appUid
+     * @param string $fileUid
+     * @param int $splitSize
+     * @param int $pieces
+     * @return array index:0 got the path, index:1 got the filename
+     */
+    public function getPathFromFileUIDPlain($appUid, $fileUid, $splitSize = 3, $pieces = 3)
+    {
+        $response = array();
+        if ($appUid == G::getBlackHoleDir()) {
+            $dirArray = array();
+            if (is_string($fileUid) && strlen($fileUid) >= 32) {
+                for ($i = 0; $i < $pieces; $i++) {
+                    $dirArray[] = substr($fileUid, 0, $splitSize);
+                    $len = strlen($fileUid);
+                    $fileUid = substr($fileUid, $splitSize, $len);
+                }
+            }
+            $response[] = implode($dirArray, '/') . '/';
+            $response[] = $fileUid;
+        } else {
+            $response[] = '';
+            $response[] = $fileUid;
+        }
+        return $response;
     }
 
     /**

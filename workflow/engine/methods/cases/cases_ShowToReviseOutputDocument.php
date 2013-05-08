@@ -57,6 +57,6 @@ if (! isset( $_GET['ext'] )) {
     }
 }
 
-$realPath = PATH_DOCUMENT . $_SESSION['APPLICATION'] . '/outdocs/' . $info['basename'] . '.' . $ext;
+$realPath = PATH_DOCUMENT . G::getPathFromUID($_SESSION['APPLICATION']) . '/outdocs/' . $info['basename'] . '.' . $ext;
 G::streamFile( $realPath, true );
 
