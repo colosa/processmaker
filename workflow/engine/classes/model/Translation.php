@@ -177,10 +177,10 @@ class Translation extends BaseTranslation
 
             //$json = new Services_JSON(); DEPRECATED
             $f = fopen( $cacheFileJS, 'w' );
-            if ($f==false) {
-               echo "Error: Cannot write into cachefilejs: $cacheFileJS\n"; 
+            if ($f == false) {
+               error_log("Error: Cannot write into cachefilejs: $cacheFileJS\n"); 
             } else {
-              fwrite( $f, "var G_STRINGS =" . Bootstrap::json_encode( $translationJS ) . ";\n" );
+              fwrite( $f, "var G_STRINGS =" . Bootstrap::json_encode( $translationJS ) . ";\n");
               fclose( $f );
             }
 
@@ -413,7 +413,6 @@ class Translation extends BaseTranslation
         if (! file_exists( $filePath )) {
             //the transaltions table file doesn't exist, then build it
 
-
             if (! is_dir( dirname( $this->envFilePath ) )) {
                 G::mk_dir( dirname( $this->envFilePath ) );
             }
@@ -422,7 +421,7 @@ class Translation extends BaseTranslation
 
             $params = self::getInfoFromPOFile( $basePOFile );
             $this->addTranslationEnvironment( $params['LOCALE'], $params['HEADERS'], $params['COUNT'] );
-            //getting more lanuguage translations
+            //getting more language translations
             $files = glob( $translationsPath . "*.po" );
             foreach ($files as $file) {
                 $params = self::getInfoFromPOFile( $file );

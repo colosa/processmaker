@@ -71,7 +71,7 @@ if (file_exists( $realPath )) {
 }
 
 if (! $sw_file_exists) {
-    $error_message = "'" .$realPath."  " .$realPath1." ". $oAppDocument->Fields['APP_DOC_FILENAME'] . "' " . G::LoadTranslation( 'ID_ERROR_STREAMING_FILE' );
+    $error_message = G::LoadTranslation( 'ID_ERROR_STREAMING_FILE' );
     if ((isset( $_POST['request'] )) && ($_POST['request'] == true)) {
         $res['success'] = 'failure';
         $res['message'] = $error_message;
