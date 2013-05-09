@@ -216,7 +216,6 @@ class Installer extends Controller
     public function getPermissionInfo ()
     {
         $this->setResponseType( 'json' );
-
         $info = new StdClass();
         $info->success = true;
         $noWritableFiles = array ();
@@ -289,6 +288,7 @@ class Installer extends Controller
             if (is_dir( $aux['dirname'] )) {
                 if (! file_exists( $_REQUEST['pathLogFile'] )) {
                     @file_put_contents( $_REQUEST['pathLogFile'], '' );
+                    chmod($_REQUEST['pathShared'], 0770);
                 }
             }
         }
@@ -695,7 +695,7 @@ class Installer extends Controller
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
                 if ($this->systemName != '') {
-                    $dbText .= "  define ('SYSTEM_NAME', " . $this->systemName . ");\n";
+                    $dbText .= "  define ('SYSTEM_NAME', '" . $this->systemName . "');\n";
                 }
             }
 
@@ -851,7 +851,7 @@ class Installer extends Controller
 
             $indexFileUpdated = true;
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
-                $this->buildParternExtras($adminUsername, $adminPassword, $_REQUEST['workspace'], $langUri);
+                $this->buildParternExtras($adminUsername, $adminPassword, $_REQUEST['workspace'], $langUri, $skinUri);
             } else {
                 try {
                     G::update_php_ini( $envFile, $updatedConf );
@@ -985,7 +985,7 @@ class Installer extends Controller
                 $dbText .= "\n";
                 $dbText .= "  define ('PARTNER_FLAG', " . ((defined('PARTNER_FLAG')) ? PARTNER_FLAG : ((isset($_REQUEST['PARTNER_FLAG'])) ? $_REQUEST['PARTNER_FLAG']:'false')) . ");\n";
                 if ($this->systemName != '') {
-                    $dbText .= "  define ('SYSTEM_NAME', " . $this->systemName . ");\n";
+                    $dbText .= "  define ('SYSTEM_NAME', '" . $this->systemName . "');\n";
                 }
             }
 
@@ -1361,7 +1361,7 @@ EOL;
         $this->mysqlQuery($query);
     }
 
-    public function buildParternExtras($username, $password, $workspace, $lang)
+    public function buildParternExtras($username, $password, $workspace, $lang, $skinName)
     {
         ini_set('max_execution_time', '0');
         ini_set('memory_limit', '256M');
@@ -1389,7 +1389,7 @@ EOL;
         $ch = curl_init();
 
         // set URL and other appropriate options
-        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/login/authentication");
+        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/login/authentication");
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiefile);
@@ -1408,10 +1408,10 @@ EOL;
 
         $ch = curl_init();
         $postData = array();
-
         // File to upload/post
+
         $postData['form[LANGUAGE_FILENAME]'] = "@".PATH_CORE."content/translations/processmaker.$lang.po";
-        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/languages_Import");
+        curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/languages_Import");
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_VERBOSE, 0);
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
@@ -1443,7 +1443,7 @@ EOL;
             // File to upload/post
             $postData['uploadedFile'] = "@".$skin;
 
-            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/skin_Ajax");
+            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/skin_Ajax");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
@@ -1471,7 +1471,7 @@ EOL;
 
             // File to upload/post
             $postData['form[PLUGIN_FILENAME]'] = "@{$pluginName}";
-            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/classic/setup/pluginsImportFile");
+            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/pluginsImportFile");
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_VERBOSE, 0);
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
@@ -1485,7 +1485,6 @@ EOL;
             $output = curl_exec($ch);
             curl_close($ch);
         }
-
     }
 }
 
