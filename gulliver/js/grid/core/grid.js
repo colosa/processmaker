@@ -769,6 +769,7 @@ var G_Grid = function(oForm, sGridName){
     var iRow = Number(sRow);
     var iRowAux = iRow + 1;
     var lastItem = oObj.oGrid.rows.length - 2;
+    var elemNodeName = "";
     var elem2ParentNode;
     var elem2Id   = "";
     var elem2Name = "";
@@ -776,13 +777,17 @@ var G_Grid = function(oForm, sGridName){
 
     deleteRowOnDynaform(oObj, iRow);
 
+    var i = 0;
+
     while (iRowAux <= (lastItem)) {
       for (i = 1; i < oObj.oGrid.rows[iRowAux - 1].cells.length; i++) {
         var oCell1 = oObj.oGrid.rows[iRowAux - 1].cells[i];
         var oCell2 = oObj.oGrid.rows[iRowAux].cells[i];
 
-        switch (oCell1.innerHTML.replace(/^\s+|\s+$/g, '').substr(0, 6).toLowerCase()){
-          case '<input':
+        elemNodeName = oCell1.innerHTML.substring(oCell1.innerHTML.indexOf("<") + 1, oCell1.innerHTML.indexOf(" ")).toLowerCase();
+
+        switch (elemNodeName) {
+          case "input":
             aObjects1 = oCell1.getElementsByTagName('input');
             aObjects2 = oCell2.getElementsByTagName('input');
 
@@ -838,7 +843,7 @@ var G_Grid = function(oForm, sGridName){
             }
 
             break;
-          case "<selec":
+          case "select":
               aObjects1 = oCell1.getElementsByTagName("select");
               aObjects2 = oCell2.getElementsByTagName("select");
 
@@ -849,7 +854,7 @@ var G_Grid = function(oForm, sGridName){
                   aObjects1[0].className = aObjects2[0].className;
               }
               break;
-          case '<texta':
+          case "textarea":
             aObjects1 = oCell1.getElementsByTagName('textarea');
             aObjects2 = oCell2.getElementsByTagName('textarea');
             if (aObjects1 && aObjects2) {
@@ -857,13 +862,34 @@ var G_Grid = function(oForm, sGridName){
               aObjects1[0].className = aObjects2[0].className;
             }
             break;
+          case "a":
+              aObjects1 = oCell1.getElementsByTagName("a");
+              aObjects2 = oCell2.getElementsByTagName("a");
+
+              if (aObjects1 && aObjects2) {
+                  if (oCell1.innerHTML.indexOf("deleteGridRow") == -1) {
+                      var iAux = 0;
+                      var swLink = 0;
+
+                      for (iAux = 0; iAux <= aObjects1[0].attributes.length - 1; iAux++) {
+                          if (aObjects1[0].attributes[iAux].name == "pm:field" && aObjects1[0].attributes[iAux].value == "pm:field") {
+                              swLink = 1;
+                              break;
+                          }
+                      }
+
+                      if (swLink == 1) {
+                          aObjects1[0].href = aObjects2[0].href;
+                          aObjects1[0].innerHTML = aObjects2[0].innerHTML;
+                      } else {
+                          oCell1.innerHTML = oCell2.innerHTML;
+                      }
+                  }
+              }
+              break;
           default:
             if (( oCell2.innerHTML.indexOf('changeValues') == 111 || oCell2.innerHTML.indexOf('changeValues') == 115 ) ) {
               break;
-            }
-
-            if (oCell2.innerHTML.toLowerCase().indexOf('deletegridrow') == -1) {
-              oCell1.innerHTML = oCell2.innerHTML;
             }
           break;
         }
@@ -873,8 +899,6 @@ var G_Grid = function(oForm, sGridName){
 
     //Delete row
     this.oGrid.deleteRow(lastItem);
-
-    var i = 0;
 
     for (i = 0; i <= this.aFields.length - 1; i++) {
         this.aElements.pop();

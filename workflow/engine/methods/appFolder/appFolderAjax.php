@@ -1258,7 +1258,7 @@ function uploadExternalDocument()
                 $aID=array('INP_DOC_DESTINATION_PATH'=>$folderStructure['PATH']);
             }
 
-            $oAppDocument = new AppDocument();
+            
 
             //Get the Custom Folder ID (create if necessary)
             $oFolder=new AppFolder();
@@ -1272,6 +1272,7 @@ function uploadExternalDocument()
                 $fileTags="EXTERNAL";
             }
             foreach ($quequeUpload as $key => $fileObj) {
+                $oAppDocument = new AppDocument();
                 switch ($actionType) {
                     case "R":
                         //replace
@@ -1333,15 +1334,18 @@ function uploadExternalDocument()
                 }
                 $sAppDocUid = $oAppDocument->getAppDocUid();
                 $iDocVersion = $oAppDocument->getDocVersion();
+
                 $info = pathinfo($oAppDocument->getAppDocFilename());
                 $ext = (isset($info['extension']) ? $info['extension'] : '');
-
                 //save the file
                 //if (!empty($_FILES['form'])) {
                 //if ($_FILES['form']['error']['APP_DOC_FILENAME'] == 0) {
-                $sPathName = PATH_DOCUMENT . $appId . PATH_SEP;
-                $sFileName = $sAppDocUid . "_".$iDocVersion. '.' . $ext;
-                G::uploadFile($fileObj['tempName'], $sPathName, $sFileName);
+                $sPathName = PATH_DOCUMENT . G::getPathFromUID($appId) . PATH_SEP;
+                $file = G::getPathFromFileUID($appId, $sAppDocUid);
+                $sPathName .= $file[0];
+                $sFileName = $file[1] . "_" . $iDocVersion . '.' . $ext;
+
+                G::uploadFile($fileObj['tempName'], $sPathName, $sFileName); //upload
 
                 //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
                 $oPluginRegistry =& PMPluginRegistry::getSingleton();

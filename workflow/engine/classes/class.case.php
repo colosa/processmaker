@@ -3602,7 +3602,7 @@ class Cases
         $docVersion = $appDocument->getDocVersion();
         $arrayInfo = pathinfo($appDocument->getAppDocFilename());
         $extension = (isset($arrayInfo["extension"])) ? $arrayInfo["extension"] : null;
-        $strPathName = PATH_DOCUMENT . $applicationUid . PATH_SEP;
+        $strPathName = PATH_DOCUMENT . G::getPathFromUID($applicationUid) . PATH_SEP;
         $strFileName = $appDocUid . "_" . $docVersion . "." . $extension;
 
         switch ($option) {

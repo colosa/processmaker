@@ -47,8 +47,8 @@ if (isset( $_GET['b'] )) {
     $bDownload = true;
 }
 
-$realPath = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/' . $sAppDocUid . '_' . $iDocVersion . '.' . $ext;
-$realPath1 = PATH_DOCUMENT . $oAppDocument->Fields['APP_UID'] . '/' . $sAppDocUid . '.' . $ext;
+$realPath = PATH_DOCUMENT . G::getPathFromUID($oAppDocument->Fields['APP_UID']) . '/' . $sAppDocUid . '_' . $iDocVersion . '.' . $ext;
+$realPath1 = PATH_DOCUMENT . G::getPathFromUID($oAppDocument->Fields['APP_UID']) . '/' . $sAppDocUid . '.' . $ext;
 $sw_file_exists = false;
 if (file_exists( $realPath )) {
     $sw_file_exists = true;
