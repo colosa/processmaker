@@ -475,8 +475,8 @@ newSkin = function(){
       {
         xtype:'textfield',
         id:'skinAuthor',
-        emptyText :'ProcessMaker Team',
-        value :'ProcessMaker Team',
+        emptyText : _('ID_SKIN_TEAM'),
+        value : _('ID_SKIN_TEAM'),
         allowBlank: false,
         width:200,
         fieldLabel:_('ID_AUTHOR')
