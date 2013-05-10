@@ -3282,3 +3282,88 @@ button.x-btn-text:focus,.x-combo-selected{
 }
 
 
+ul#dropdownMenu {
+    list-style: none;
+    margin:0;
+    padding:0 0 0 13px;
+}
+ul#dropdownMenu li {
+    float:left;
+    margin:0 2px 0 0;
+    padding:0;
+    -moz-border-radius:3px 3px 0 0;
+    border-radius:3px 3px 0 0;
+    display: inline;
+}
+ul#dropdownMenu a {
+    font-weight: bold;
+    color:#fff;
+    font-size:11px;
+    text-decoration: none;
+    display:block;
+    padding:5px 30px;
+    text-transform: uppercase;
+}
+ul#dropdownMenu li.SelectedMenu,
+ul#dropdownMenu li:hover {
+    border-radius:3px 3px 0 0;
+    background-color: #eee;
+    background-image: -webkit-gradient ( linear, left bottom, left top, color-stop(0.39, rgb(245,245,245)), color-stop(0.83, rgb(227,227,227))  );
+    background-image:  -moz-linear-gradient( center bottom, rgb(245,245,245) 39%, rgb(227,227,227) 83%  );
+    display: block;
+}
+ul#dropdownMenu li.SelectedMenu a,
+ul#dropdownMenu li:hover a {
+    color:#333333;
+}
+ul#dropdownMenu  ul {
+    margin: 0;
+    border:0px solid #347898;
+    padding: 0;
+    width: 240px;
+    list-style: none;
+    display: none;
+    position: absolute;
+    /*top: 25px;*/
+    background: #347898;
+    opacity: 0.9;
+    -moz-opacity: 0.8;
+    border-radius:0 0 3px 3px;
+}
+
+ul#dropdownMenu ul li {
+    width: 240px;
+    float: left; /*For IE 7 lack of compliance*/
+    display: block !important;
+    display: inline; /*For IE*/
+    border-radius:3px 3px 3px 3px;
+}
+ul#dropdownMenu a:hover,
+ul#dropdownMenu li:hover a {
+    color: #000000;
+}
+ul#dropdownMenu a:hover,
+ul#dropdownMenu li.iehover a {
+    border-radius:3px 3px 3px 3px;
+    color: #000000;
+    background-color: #eee;
+    background-image: -webkit-gradient ( linear, left bottom, left top, color-stop(0.39, rgb(245,245,245)), color-stop(0.83, rgb(227,227,227))  );
+    background-image:  -moz-linear-gradient( center bottom, rgb(245,245,245) 39%, rgb(227,227,227) 83%  );
+    display: block;
+}
+
+ul#dropdownMenu li.iehover ul a {
+    border-radius:3px 3px 3px 3px;
+    color: #000000;
+    background-color: #347898;
+    display: block;
+}
+
+ul#dropdownMenu li:hover ul,
+ul#dropdownMenu ul li:hover ul,
+ul#dropdownMenu ul ul li:hover ul,
+ul#dropdownMenu li.iehover ul,
+ul#dropdownMenu ul li.iehover ul,
+ul#dropdownMenu ul ul li.iehover ul {
+    display: block;
+}

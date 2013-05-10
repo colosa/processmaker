@@ -114,6 +114,12 @@ function newSkin ($baseSkin = 'classic')
                 ) );
                 $pathBase = G::ExpandPath( "skinEngine" ) . 'base' . PATH_SEP;
                 break;
+            case 'neoclassic':
+                //Special Copy of this dir + xmlreplace
+                copy_skin_folder( G::ExpandPath( "skinEngine" ) . 'neoclassic' . PATH_SEP, PATH_CUSTOM_SKINS . $skinFolder, array ("config.xml","baseCss"
+                ) );
+                $pathBase = G::ExpandPath( "skinEngine" ) . 'neoclassic' . PATH_SEP;
+                break;
             default:
                 //Commmon copy/paste of a folder + xmlrepalce
                 copy_skin_folder( PATH_CUSTOM_SKINS . $skinBase, PATH_CUSTOM_SKINS . $skinFolder, array ("config.xml"

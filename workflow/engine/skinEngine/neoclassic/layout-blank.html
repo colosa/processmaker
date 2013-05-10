@@ -1,0 +1,24 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="shortcut icon" href="/images/favicon.ico"   type="image/x-icon"/>
+  {$header}
+ 
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#000000" vlink="#000000" alink="#999999" marginheight="0" marginwidth="0" leftmargin="0" topmargin="0" rightmargin="0">
+<table width="100%" cellspacing="0" cellpadding="0" height="100%">
+	
+	<tr>
+		<td width="100%" valign="top">
+		{php}
+      global $G_TEMPLATE;
+      if ($G_TEMPLATE != '')
+      {
+        G::LoadTemplate($G_TEMPLATE);
+      }
+    {/php}
+		</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,1739 @@
+/*!
+ * Variables
+ */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.svg#OpenSansLightItalic') format('svg');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.svg#OpenSansItalic') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.svg#OpenSansSemiboldItalic') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
+/*Colores*/
+.btn {
+  background-image: none;
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #f1f1f1;
+  background-image: -moz-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#dddddd));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -o-linear-gradient(top, #ffffff, #dddddd);
+  background-image: linear-gradient(to bottom, #ffffff, #dddddd);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffdddddd', GradientType=0);
+  border-color: #dddddd #dddddd #b7b7b7;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #dddddd;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #ccc;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: capitalize;
+  text-decoration: none;
+  line-height: 14px;
+  color: #000;
+}
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+  color: #333333;
+  background-color: #dddddd;
+  *background-color: #d0d0d0;
+}
+.btn:active,
+.btn.active {
+  background-color: #c4c4c4 \9;
+}
+.btn:hover {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn:hover:hover,
+.btn:hover:focus,
+.btn:hover:active,
+.btn:hover.active,
+.btn:hover.disabled,
+.btn:hover[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.btn:hover:active,
+.btn:hover.active {
+  background-color: #e6e6e6 \9;
+}
+.btn:focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn:focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-over {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn-over:hover,
+.btn-over:focus,
+.btn-over:active,
+.btn-over.active,
+.btn-over.disabled,
+.btn-over[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.btn-over:active,
+.btn-over.active {
+  background-color: #e6e6e6 \9;
+}
+.btn-focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn-focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-no-button {
+  background: none;
+  border: 1px transparent solid;
+}
+.link {
+  color: #00a1e4;
+  text-decoration: none;
+}
+.link:hover {
+  color: #00597e;
+}
+.link-hover {
+  color: #00597e;
+}
+/*
+botones del tinymce
+.o2k7Skin .mceButton{
+	.btn();
+}
+*//*!
+ * Ext JS Library 3.2.1
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+.ext-el-mask {
+  background-color: #ccc;
+}
+.ext-el-mask-msg {
+  border-color: #999;
+  background-color: #dddddd;
+  background-image: url(/skins/neoclassic/images/ext/gray/panel/white-top-bottom.gif);
+  background-position: 0 -1px;
+}
+.ext-el-mask-msg div {
+  background-color: #eee;
+  border-color: #dddddd;
+  color: #222;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-mask-loading div {
+  background-color: #fbfbfb;
+  background-image: url(/skins/neoclassic/images/ext/default/grid/loading.gif);
+}
+.x-item-disabled {
+  color: gray;
+}
+.x-item-disabled * {
+  color: gray !important;
+}
+.x-splitbar-proxy {
+  background-color: #aaa;
+}
+.x-color-palette a {
+  border-color: #fff;
+}
+.x-color-palette a:hover,
+.x-color-palette a.x-color-palette-sel {
+  border-color: #CFCFCF;
+  background-color: #eaeaea;
+}
+.x-color-palette em:hover,
+.x-color-palette span:hover {
+  background-color: #eaeaea;
+}
+.x-color-palette em {
+  border-color: #aca899;
+}
+.x-ie-shadow {
+  background-color: #777;
+}
+.x-shadow .xsmc {
+  background: #f3f3f3;
+}
+.loading-indicator {
+  font-size: 11px;
+  background-image: url(/skins/neoclassic/images/ext/default/grid/loading.gif);
+}
+.x-spotlight {
+  background-color: #ccc;
+}
+.x-tab-panel-header,
+.x-tab-panel-footer {
+  background-color: #dddddd;
+  border-color: #dddddd;
+  overflow: hidden;
+  zoom: 1;
+}
+.x-tab-panel-header,
+.x-tab-panel-footer {
+  border-color: #dddddd;
+}
+ul.x-tab-strip-top {
+  background-color: #dddddd;
+  border-bottom-color: #dddddd;
+}
+ul.x-tab-strip-bottom {
+  background-color: #dbdbdb;
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tab-strip-btm-bg.gif);
+  border-top-color: #dddddd;
+}
+.x-tab-panel-header-plain .x-tab-strip-spacer,
+.x-tab-panel-footer-plain .x-tab-strip-spacer {
+  border-color: #dddddd;
+  background-color: #eaeaea;
+}
+.x-tab-strip span.x-tab-strip-text {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #333;
+}
+.x-tab-strip-over span.x-tab-strip-text {
+  color: #111;
+}
+.x-tab-strip-active span.x-tab-strip-text {
+  color: #333;
+  font-weight: bold;
+}
+.x-tab-strip-disabled .x-tabs-text {
+  color: #aaaaaa;
+}
+.x-tab-strip-top .x-tab-right,
+.x-tab-strip-top .x-tab-left,
+.x-tab-strip-top .x-tab-strip-inner {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tabs-sprite.gif);
+}
+.x-tab-strip-bottom .x-tab-right {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tab-btm-inactive-right-bg.gif);
+}
+.x-tab-strip-bottom .x-tab-left {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tab-btm-inactive-left-bg.gif);
+}
+.x-tab-strip-bottom .x-tab-strip-over .x-tab-left {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tab-btm-over-left-bg.gif);
+}
+.x-tab-strip-bottom .x-tab-strip-over .x-tab-right {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tab-btm-over-right-bg.gif);
+}
+.x-tab-strip-bottom .x-tab-strip-active .x-tab-right {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tab-btm-right-bg.gif);
+}
+.x-tab-strip-bottom .x-tab-strip-active .x-tab-left {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tab-btm-left-bg.gif);
+}
+.x-tab-strip .x-tab-strip-closable a.x-tab-strip-close {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tab-close.gif);
+}
+.x-tab-strip .x-tab-strip-closable a.x-tab-strip-close:hover {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/tab-close.gif);
+}
+.x-tab-panel-body {
+  border-color: #dddddd;
+  background-color: #fff;
+}
+.x-tab-panel-body-top {
+  border-top: 0 none;
+}
+.x-tab-panel-body-bottom {
+  border-bottom: 0 none;
+}
+.x-tab-scroller-left {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/scroll-left.gif);
+  border-bottom-color: #dddddd;
+}
+.x-tab-scroller-left-over {
+  background-position: 0 0;
+}
+.x-tab-scroller-left-disabled {
+  background-position: -18px 0;
+  opacity: .5;
+  -moz-opacity: .5;
+  filter: alpha(opacity=50);
+  cursor: default;
+}
+.x-tab-scroller-right {
+  background-image: url(/skins/neoclassic/images/ext/gray/tabs/scroll-right.gif);
+  border-bottom-color: #dddddd;
+}
+.x-tab-panel-bbar .x-toolbar,
+.x-tab-panel-tbar .x-toolbar {
+  border-color: #dddddd;
+}
+.x-form-field {
+  font: normal 12px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-form-text,
+textarea.x-form-field {
+  background-color: #fff;
+  background-image: url(/skins/neoclassic/images/ext/default/form/text-bg.gif);
+  border-color: #C1C1C1;
+}
+.x-form-select-one {
+  background-color: #fff;
+  border-color: #C1C1C1;
+}
+.x-form-check-group-label {
+  border-bottom: 1px solid #dddddd;
+  color: #333;
+}
+.x-editor .x-form-check-wrap {
+  background-color: #fff;
+}
+.x-form-field-wrap .x-form-trigger {
+  background-image: url(/skins/neoclassic/images/ext/gray/form/trigger.gif);
+  border-bottom-color: #b5b8c8;
+}
+.x-form-field-wrap .x-form-date-trigger {
+  background-image: url(/skins/neoclassic/images/ext/gray/form/date-trigger.gif);
+}
+.x-form-field-wrap .x-form-clear-trigger {
+  background-image: url(/skins/neoclassic/images/ext/gray/form/clear-trigger.gif);
+}
+.x-form-field-wrap .x-form-search-trigger {
+  background-image: url(/skins/neoclassic/images/ext/gray/form/search-trigger.gif);
+}
+.x-trigger-wrap-focus .x-form-trigger {
+  border-bottom-color: #777777;
+}
+.x-item-disabled .x-form-trigger-over {
+  border-bottom-color: #b5b8c8;
+}
+.x-item-disabled .x-form-trigger-click {
+  border-bottom-color: #b5b8c8;
+}
+.x-form-focus,
+textarea.x-form-focus {
+  border-color: #777777;
+}
+.x-form-invalid,
+textarea.x-form-invalid {
+  background-color: #fff;
+  background-image: url(/skins/neoclassic/images/ext/default/grid/invalid_line.gif);
+  border-color: #c30;
+}
+.ext-webkit .x-form-invalid {
+  background-color: #fee;
+  border-color: #ff7870;
+}
+.x-form-inner-invalid,
+textarea.x-form-inner-invalid {
+  background-color: #fff;
+  background-image: url(/skins/neoclassic/images/ext/default/grid/invalid_line.gif);
+}
+.x-form-grow-sizer {
+  font: normal 12px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-form-item {
+  font: normal 12px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-form-invalid-msg {
+  color: #c0272b;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  background-image: url(/skins/neoclassic/images/ext/default/shared/warning.gif);
+}
+.x-form-empty-field {
+  color: gray;
+}
+.x-small-editor .x-form-field {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.ext-webkit .x-small-editor .x-form-field {
+  font: normal 12px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-form-invalid-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/form/exclamation.gif);
+}
+.x-fieldset {
+  border-color: #CCCCCC;
+}
+.x-fieldset legend {
+  font: bold 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #777777;
+}
+.x-btn {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-btn button {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #333;
+}
+.x-btn em {
+  font-style: normal;
+  font-weight: normal;
+}
+.x-btn {
+  background-image: none;
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #f1f1f1;
+  background-image: -moz-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#dddddd));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -o-linear-gradient(top, #ffffff, #dddddd);
+  background-image: linear-gradient(to bottom, #ffffff, #dddddd);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffdddddd', GradientType=0);
+  border-color: #dddddd #dddddd #b7b7b7;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #dddddd;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #ccc;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: capitalize;
+  text-decoration: none;
+  line-height: 14px;
+  color: #000;
+}
+.x-btn:hover,
+.x-btn:focus,
+.x-btn:active,
+.x-btn.active,
+.x-btn.disabled,
+.x-btn[disabled] {
+  color: #333333;
+  background-color: #dddddd;
+  *background-color: #d0d0d0;
+}
+.x-btn:active,
+.x-btn.active {
+  background-color: #c4c4c4 \9;
+}
+.x-btn:hover {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.x-btn:hover:hover,
+.x-btn:hover:focus,
+.x-btn:hover:active,
+.x-btn:hover.active,
+.x-btn:hover.disabled,
+.x-btn:hover[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.x-btn:hover:active,
+.x-btn:hover.active {
+  background-color: #e6e6e6 \9;
+}
+.x-btn:focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.x-btn:focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.x-btn-over:hover {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.x-btn-over:hover:hover,
+.x-btn-over:hover:focus,
+.x-btn-over:hover:active,
+.x-btn-over:hover.active,
+.x-btn-over:hover.disabled,
+.x-btn-over:hover[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.x-btn-over:hover:active,
+.x-btn-over:hover.active {
+  background-color: #e6e6e6 \9;
+}
+.x-panel-tbar .x-btn,
+.x-toolbar .x-btn {
+  background: none;
+  border: 1px transparent solid;
+}
+.x-panel-tbar .x-btn-over:hover,
+.x-toolbar .x-btn-over:hover {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.x-panel-tbar .x-btn-over:hover:hover,
+.x-toolbar .x-btn-over:hover:hover,
+.x-panel-tbar .x-btn-over:hover:focus,
+.x-toolbar .x-btn-over:hover:focus,
+.x-panel-tbar .x-btn-over:hover:active,
+.x-toolbar .x-btn-over:hover:active,
+.x-panel-tbar .x-btn-over:hover.active,
+.x-toolbar .x-btn-over:hover.active,
+.x-panel-tbar .x-btn-over:hover.disabled,
+.x-toolbar .x-btn-over:hover.disabled,
+.x-panel-tbar .x-btn-over:hover[disabled],
+.x-toolbar .x-btn-over:hover[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.x-panel-tbar .x-btn-over:hover:active,
+.x-toolbar .x-btn-over:hover:active,
+.x-panel-tbar .x-btn-over:hover.active,
+.x-toolbar .x-btn-over:hover.active {
+  background-color: #e6e6e6 \9;
+}
+.x-btn-click .x-btn-text,
+.x-btn-menu-active .x-btn-text,
+.x-btn-pressed .x-btn-text {
+  color: #000;
+}
+.x-btn-disabled * {
+  color: gray !important;
+}
+.x-btn-mc em.x-btn-arrow {
+  background-image: url(/skins/neoclassic/images/ext/default/button/arrow.gif);
+}
+.x-btn-mc em.x-btn-split {
+  background-image: url(/skins/neoclassic/images/ext/default/button/s-arrow.gif);
+}
+.x-btn-over .x-btn-mc em.x-btn-split,
+.x-btn-click .x-btn-mc em.x-btn-split,
+.x-btn-menu-active .x-btn-mc em.x-btn-split,
+.x-btn-pressed .x-btn-mc em.x-btn-split {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/s-arrow-o.gif);
+}
+.x-btn-mc em.x-btn-arrow-bottom {
+  background-image: url(/skins/neoclassic/images/ext/default/button/s-arrow-b-noline.gif);
+}
+.x-btn-mc em.x-btn-split-bottom {
+  background-image: url(/skins/neoclassic/images/ext/default/button/s-arrow-b.gif);
+}
+.x-btn-over .x-btn-mc em.x-btn-split-bottom,
+.x-btn-click .x-btn-mc em.x-btn-split-bottom,
+.x-btn-menu-active .x-btn-mc em.x-btn-split-bottom,
+.x-btn-pressed .x-btn-mc em.x-btn-split-bottom {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/s-arrow-bo.gif);
+}
+.x-btn-group-header {
+  color: #666;
+}
+.x-btn-group-tc {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/group-tb.gif);
+}
+.x-btn-group-tl {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/group-cs.gif);
+}
+.x-btn-group-tr {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/group-cs.gif);
+}
+.x-btn-group-bc {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/group-tb.gif);
+}
+.x-btn-group-bl {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/group-cs.gif);
+}
+.x-btn-group-br {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/group-cs.gif);
+}
+.x-btn-group-ml {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/group-lr.gif);
+}
+.x-btn-group-mr {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/group-lr.gif);
+}
+.x-btn-group-notitle .x-btn-group-tc {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/group-tb.gif);
+}
+.x-toolbar {
+  border-color: #dddddd;
+  background-color: #dddddd;
+}
+.x-toolbar td,
+.x-toolbar span,
+.x-toolbar input,
+.x-toolbar div,
+.x-toolbar select,
+.x-toolbar label {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-toolbar .x-item-disabled {
+  color: gray;
+}
+.x-toolbar .x-item-disabled * {
+  color: gray;
+}
+.x-toolbar .x-btn-mc em.x-btn-split {
+  background-image: url(/skins/neoclassic/images/ext/default/button/s-arrow-noline.gif);
+}
+.x-toolbar .x-btn-over .x-btn-mc em.x-btn-split,
+.x-toolbar .x-btn-click .x-btn-mc em.x-btn-split,
+.x-toolbar .x-btn-menu-active .x-btn-mc em.x-btn-split,
+.x-toolbar .x-btn-pressed .x-btn-mc em.x-btn-split {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/s-arrow-o.gif);
+}
+.x-toolbar .x-btn-mc em.x-btn-split-bottom {
+  background-image: url(/skins/neoclassic/images/ext/default/button/s-arrow-b-noline.gif);
+}
+.x-toolbar .x-btn-over .x-btn-mc em.x-btn-split-bottom,
+.x-toolbar .x-btn-click .x-btn-mc em.x-btn-split-bottom,
+.x-toolbar .x-btn-menu-active .x-btn-mc em.x-btn-split-bottom,
+.x-toolbar .x-btn-pressed .x-btn-mc em.x-btn-split-bottom {
+  background-image: url(/skins/neoclassic/images/ext/gray/button/s-arrow-bo.gif);
+}
+.x-toolbar .xtb-sep {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/grid-split.gif);
+}
+.x-tbar-page-first {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/page-first.gif) !important;
+}
+.x-tbar-loading {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/refresh.gif) !important;
+}
+.x-tbar-page-last {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/page-last.gif) !important;
+}
+.x-tbar-page-next {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/page-next.gif) !important;
+}
+.x-tbar-page-prev {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/page-prev.gif) !important;
+}
+.x-item-disabled .x-tbar-loading {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/loading.gif) !important;
+}
+.x-item-disabled .x-tbar-page-first {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/page-first-disabled.gif) !important;
+}
+.x-item-disabled .x-tbar-page-last {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/page-last-disabled.gif) !important;
+}
+.x-item-disabled .x-tbar-page-next {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/page-next-disabled.gif) !important;
+}
+.x-item-disabled .x-tbar-page-prev {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/page-prev-disabled.gif) !important;
+}
+.x-paging-info {
+  color: #444;
+}
+.x-toolbar-more-icon {
+  background-image: url(/skins/neoclassic/images/ext/gray/toolbar/more.gif) !important;
+}
+.x-resizable-handle {
+  background-color: #fff;
+}
+.x-resizable-over .x-resizable-handle-east,
+.x-resizable-pinned .x-resizable-handle-east,
+.x-resizable-over .x-resizable-handle-west,
+.x-resizable-pinned .x-resizable-handle-west {
+  background-image: url(/skins/neoclassic/images/ext/gray/sizer/e-handle.gif);
+}
+.x-resizable-over .x-resizable-handle-south,
+.x-resizable-pinned .x-resizable-handle-south,
+.x-resizable-over .x-resizable-handle-north,
+.x-resizable-pinned .x-resizable-handle-north {
+  background-image: url(/skins/neoclassic/images/ext/gray/sizer/s-handle.gif);
+}
+.x-resizable-over .x-resizable-handle-north,
+.x-resizable-pinned .x-resizable-handle-north {
+  background-image: url(/skins/neoclassic/images/ext/gray/sizer/s-handle.gif);
+}
+.x-resizable-over .x-resizable-handle-southeast,
+.x-resizable-pinned .x-resizable-handle-southeast {
+  background-image: url(/skins/neoclassic/images/ext/gray/sizer/se-handle.gif);
+}
+.x-resizable-over .x-resizable-handle-northwest,
+.x-resizable-pinned .x-resizable-handle-northwest {
+  background-image: url(/skins/neoclassic/images/ext/gray/sizer/nw-handle.gif);
+}
+.x-resizable-over .x-resizable-handle-northeast,
+.x-resizable-pinned .x-resizable-handle-northeast {
+  background-image: url(/skins/neoclassic/images/ext/gray/sizer/ne-handle.gif);
+}
+.x-resizable-over .x-resizable-handle-southwest,
+.x-resizable-pinned .x-resizable-handle-southwest {
+  background-image: url(/skins/neoclassic/images/ext/gray/sizer/sw-handle.gif);
+}
+.x-resizable-proxy {
+  border-color: #565656;
+}
+.x-resizable-overlay {
+  background-color: #fff;
+}
+.x-grid3 {
+  background-color: #fff;
+}
+.x-grid-panel .x-panel-mc .x-panel-body {
+  border-color: #dddddd;
+}
+.x-grid3-hd-row td,
+.x-grid3-row td,
+.x-grid3-summary-row td {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-grid3-hd-row td {
+  border-left-color: #eee;
+  border-right-color: #dddddd;
+}
+.x-grid-row-loading {
+  background-color: #fff;
+  background-image: url(/skins/neoclassic/images/ext/default/shared/loading-balls.gif);
+}
+.x-grid3-row {
+  border-color: #ededed;
+  border-top-color: #fff;
+}
+.x-grid3-row-alt {
+  background-color: #fafafa;
+}
+.x-grid3-row-over {
+  border-color: #dddddd;
+  background-color: #efefef;
+  background-image: url(/skins/neoclassic/images/ext/default/grid/row-over.gif);
+}
+.x-grid3-resize-proxy {
+  background-color: #777;
+}
+.x-grid3-resize-marker {
+  background-color: #777;
+}
+.x-grid3-header {
+  background-color: #eeeeee;
+}
+.x-grid3-header-pop {
+  border-left-color: #dddddd;
+}
+.x-grid3-header-pop-inner {
+  border-left-color: #eee;
+  background-image: url(/skins/neoclassic/images/ext/default/grid/hd-pop.gif);
+}
+td.x-grid3-hd-over .x-grid3-hd-inner,
+td.sort-desc .x-grid3-hd-inner,
+td.sort-asc .x-grid3-hd-inner,
+td.x-grid3-hd-menu-open .x-grid3-hd-inner {
+  background-color: #dddddd;
+}
+.sort-asc .x-grid3-sort-icon {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/sort_asc.gif);
+}
+.sort-desc .x-grid3-sort-icon {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/sort_desc.gif);
+}
+.x-grid3-cell-text,
+.x-grid3-hd-text {
+  color: #000;
+}
+.x-grid3-split {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/grid-split.gif);
+}
+.x-grid3-hd-text {
+  color: #333;
+}
+.x-dd-drag-proxy .x-grid3-hd-inner {
+  background-color: #f9f9f9;
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/grid3-hrow-over2.gif);
+  border-color: #ACACAC;
+}
+.col-move-top {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/col-move-top.gif);
+}
+.col-move-bottom {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/col-move-bottom.gif);
+}
+.x-grid3-row-selected {
+  background-color: #CCCCCC;
+  background-image: none;
+  border-color: #ACACAC;
+}
+.x-grid3-cell-selected {
+  background-color: #CBCBCB !important;
+  color: #000;
+}
+.x-grid3-cell-selected span {
+  color: #000 !important;
+}
+.x-grid3-cell-selected .x-grid3-cell-text {
+  color: #000;
+}
+.x-grid3-locked td.x-grid3-row-marker,
+.x-grid3-locked .x-grid3-row-selected td.x-grid3-row-marker {
+  background-color: #ebeadb !important;
+  background-image: url(/skins/neoclassic/images/ext/default/grid/grid-hrow.gif) !important;
+  color: #000;
+  border-top-color: #fff;
+  border-right-color: #6fa0df !important;
+}
+.x-grid3-locked td.x-grid3-row-marker div,
+.x-grid3-locked .x-grid3-row-selected td.x-grid3-row-marker div {
+  color: #333 !important;
+}
+.x-grid3-dirty-cell {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/dirty.gif);
+}
+.x-grid3-topbar,
+.x-grid3-bottombar {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-grid3-bottombar .x-toolbar {
+  border-top-color: #a9bfd3;
+}
+.x-props-grid .x-grid3-td-name .x-grid3-cell-inner {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/grid3-special-col-bg.gif) !important;
+  color: #000 !important;
+}
+.x-props-grid .x-grid3-body .x-grid3-td-name {
+  background-color: #fff !important;
+  border-right-color: #eee;
+}
+.xg-hmenu-sort-asc .x-menu-item-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/hmenu-asc.gif);
+}
+.xg-hmenu-sort-desc .x-menu-item-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/hmenu-desc.gif);
+}
+.xg-hmenu-lock .x-menu-item-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/hmenu-lock.gif);
+}
+.xg-hmenu-unlock .x-menu-item-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/hmenu-unlock.gif);
+}
+.x-grid3-hd-btn {
+  background-color: #f9f9f9;
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/grid3-hd-btn.gif);
+}
+.x-grid3-body .x-grid3-td-expander {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/grid3-special-col-bg.gif);
+}
+.x-grid3-row-expander {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/row-expand-sprite.gif);
+}
+.x-grid3-body .x-grid3-td-checker {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/grid3-special-col-bg.gif);
+}
+.x-grid3-row-checker,
+.x-grid3-hd-checker {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/row-check-sprite.gif);
+}
+.x-grid3-body .x-grid3-td-numberer {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/grid3-special-col-bg.gif);
+}
+.x-grid3-body .x-grid3-td-numberer .x-grid3-cell-inner {
+  color: #444;
+}
+.x-grid3-body .x-grid3-td-row-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/grid3-special-col-bg.gif);
+}
+.x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer,
+.x-grid3-body .x-grid3-row-selected .x-grid3-td-checker,
+.x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/grid3-special-col-sel-bg.gif);
+}
+.x-grid3-check-col {
+  background-image: url(/skins/neoclassic/images/ext/default/menu/unchecked.gif);
+}
+.x-grid3-check-col-on {
+  background-image: url(/skins/neoclassic/images/ext/default/menu/checked.gif);
+}
+.x-grid-group,
+.x-grid-group-body,
+.x-grid-group-hd {
+  zoom: 1;
+}
+.x-grid-group-hd {
+  border-bottom-color: #dddddd;
+}
+.x-grid-group-hd div.x-grid-group-title {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/group-collapse.gif);
+  color: #5F5F5F;
+  font: bold 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-grid-group-collapsed .x-grid-group-hd div.x-grid-group-title {
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/group-expand.gif);
+}
+.x-group-by-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/group-by.gif);
+}
+.x-cols-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/columns.gif);
+}
+.x-show-groups-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/group-by.gif);
+}
+.x-grid-empty {
+  color: gray;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-grid-with-col-lines .x-grid3-row td.x-grid3-cell {
+  border-right-color: #ededed;
+}
+.x-grid-with-col-lines .x-grid3-row {
+  border-top-color: #ededed;
+}
+.x-grid-with-col-lines .x-grid3-row-selected {
+  border-top-color: #B9B9B9;
+}
+.x-dd-drag-ghost {
+  color: #000;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  border-color: #dddddd #bbbbbb #bbbbbb #dddddd;
+  background-color: #fff;
+}
+.x-dd-drop-nodrop .x-dd-drop-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/dd/drop-no.gif);
+}
+.x-dd-drop-ok .x-dd-drop-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/dd/drop-yes.gif);
+}
+.x-dd-drop-ok-add .x-dd-drop-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/dd/drop-add.gif);
+}
+.x-view-selector {
+  background-color: #D6D6D6;
+  border-color: #888888;
+}
+.x-tree-node-expanded .x-tree-node-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/folder-open.gif);
+}
+.x-tree-node-leaf .x-tree-node-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/leaf.gif);
+}
+.x-tree-node-collapsed .x-tree-node-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/folder.gif);
+}
+.x-tree-node-loading .x-tree-node-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/loading.gif) !important;
+}
+.x-tree-node .x-tree-node-inline-icon {
+  background-image: none;
+}
+.x-tree-node-loading a span {
+  font-style: italic;
+  color: #444444;
+}
+.ext-ie .x-tree-node-el input {
+  width: 15px;
+  height: 15px;
+}
+.x-tree-lines .x-tree-elbow {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/elbow.gif);
+}
+.x-tree-lines .x-tree-elbow-plus {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/elbow-plus.gif);
+}
+.x-tree-lines .x-tree-elbow-minus {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/elbow-minus.gif);
+}
+.x-tree-lines .x-tree-elbow-end {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/elbow-end.gif);
+}
+.x-tree-lines .x-tree-elbow-end-plus {
+  background-image: url(/skins/neoclassic/images/ext/gray/tree/elbow-end-plus.gif);
+}
+.x-tree-lines .x-tree-elbow-end-minus {
+  background-image: url(/skins/neoclassic/images/ext/gray/tree/elbow-end-minus.gif);
+}
+.x-tree-lines .x-tree-elbow-line {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/elbow-line.gif);
+}
+.x-tree-no-lines .x-tree-elbow-plus {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/elbow-plus-nl.gif);
+}
+.x-tree-no-lines .x-tree-elbow-minus {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/elbow-minus-nl.gif);
+}
+.x-tree-no-lines .x-tree-elbow-end-plus {
+  background-image: url(/skins/neoclassic/images/ext/gray/tree/elbow-end-plus-nl.gif);
+}
+.x-tree-no-lines .x-tree-elbow-end-minus {
+  background-image: url(/skins/neoclassic/images/ext/gray/tree/elbow-end-minus-nl.gif);
+}
+.x-tree-arrows .x-tree-elbow-plus {
+  background-image: url(/skins/neoclassic/images/ext/gray/tree/arrows.gif);
+}
+.x-tree-arrows .x-tree-elbow-minus {
+  background-image: url(/skins/neoclassic/images/ext/gray/tree/arrows.gif);
+}
+.x-tree-arrows .x-tree-elbow-end-plus {
+  background-image: url(/skins/neoclassic/images/ext/gray/tree/arrows.gif);
+}
+.x-tree-arrows .x-tree-elbow-end-minus {
+  background-image: url(/skins/neoclassic/images/ext/gray/tree/arrows.gif);
+}
+.x-tree-node {
+  color: #000;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-tree-node a,
+.x-dd-drag-ghost a {
+  color: #000;
+}
+.x-tree-node a span,
+.x-dd-drag-ghost a span {
+  color: #000;
+}
+.x-tree-node .x-tree-node-disabled a span {
+  color: gray !important;
+}
+.x-tree-node div.x-tree-drag-insert-below {
+  border-bottom-color: #36c;
+}
+.x-tree-node div.x-tree-drag-insert-above {
+  border-top-color: #36c;
+}
+.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-below a {
+  border-bottom-color: #36c;
+}
+.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-above a {
+  border-top-color: #36c;
+}
+.x-tree-node .x-tree-drag-append a span {
+  background-color: #dddddd;
+  border-color: gray;
+}
+.x-tree-node .x-tree-node-over {
+  background-color: #eee;
+}
+.x-tree-node .x-tree-selected {
+  background-color: #dddddd;
+}
+.x-tree-drop-ok-append .x-dd-drop-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/drop-add.gif);
+}
+.x-tree-drop-ok-above .x-dd-drop-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/drop-over.gif);
+}
+.x-tree-drop-ok-below .x-dd-drop-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/drop-under.gif);
+}
+.x-tree-drop-ok-between .x-dd-drop-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/tree/drop-between.gif);
+}
+.x-date-picker {
+  border-color: #585858;
+  background-color: #fff;
+}
+.x-date-middle,
+.x-date-left,
+.x-date-right {
+  background-image: url(/skins/neoclassic/images/ext/gray/shared/hd-sprite.gif);
+  color: #fff;
+  font: bold 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-date-middle .x-btn .x-btn-text {
+  color: #fff;
+}
+.x-date-middle .x-btn-mc em.x-btn-arrow {
+  background-image: url(/skins/neoclassic/images/ext/gray/toolbar/btn-arrow-light.gif);
+}
+.x-date-right a {
+  background-image: url(/skins/neoclassic/images/ext/gray/shared/right-btn.gif);
+}
+.x-date-left a {
+  background-image: url(/skins/neoclassic/images/ext/gray/shared/left-btn.gif);
+}
+.x-date-inner th {
+  background-color: #D8D8D8;
+  background-image: url(/skins/neoclassic/images/ext/gray/panel/white-top-bottom.gif);
+  border-bottom-color: #AFAFAF;
+  font: normal 10px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #595959;
+}
+.x-date-inner td {
+  border-color: #fff;
+}
+.x-date-inner a {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #000;
+}
+.x-date-inner .x-date-active {
+  color: #000;
+}
+.x-date-inner .x-date-selected a {
+  background-image: none;
+  background-color: #D8D8D8;
+  border-color: #DCDCDC;
+}
+.x-date-inner .x-date-today a {
+  border-color: darkred;
+}
+.x-date-inner .x-date-selected span {
+  font-weight: bold;
+}
+.x-date-inner .x-date-prevday a,
+.x-date-inner .x-date-nextday a {
+  color: #aaa;
+}
+.x-date-bottom {
+  border-top-color: #AFAFAF;
+  background-color: #D8D8D8;
+  background: #d8d8d8 url(/skins/neoclassic/images/ext/gray/panel/white-top-bottom.gif) 0 -2px;
+}
+.x-date-inner a:hover,
+.x-date-inner .x-date-disabled a:hover {
+  color: #000;
+  background-color: #D8D8D8;
+}
+.x-date-inner .x-date-disabled a {
+  background-color: #eee;
+  color: #bbb;
+}
+.x-date-mmenu {
+  background-color: #eee !important;
+}
+.x-date-mmenu .x-menu-item {
+  font-size: 10px;
+  color: #000;
+}
+.x-date-mp {
+  background-color: #fff;
+}
+.x-date-mp td {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-date-mp-btns button {
+  background-color: #4E565F;
+  color: #fff;
+  border-color: #C0C0C0 #434343 #434343 #C0C0C0;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-date-mp-btns {
+  background-color: #D8D8D8;
+  background: #d8d8d8 url(/skins/neoclassic/images/ext/gray/panel/white-top-bottom.gif) 0 -2px;
+}
+.x-date-mp-btns td {
+  border-top-color: #AFAFAF;
+}
+td.x-date-mp-month a,
+td.x-date-mp-year a {
+  color: #333;
+}
+td.x-date-mp-month a:hover,
+td.x-date-mp-year a:hover {
+  color: #333;
+  background-color: #FDFDFD;
+}
+td.x-date-mp-sel a {
+  background-color: #D8D8D8;
+  background: #d8d8d8 url(/skins/neoclassic/images/ext/gray/panel/white-top-bottom.gif) 0 -2px;
+  border-color: #DCDCDC;
+}
+.x-date-mp-ybtn a {
+  background-image: url(/skins/neoclassic/images/ext/gray/panel/tool-sprites.gif);
+}
+td.x-date-mp-sep {
+  border-right-color: #D7D7D7;
+}
+.x-tip .x-tip-close {
+  background-image: url(/skins/neoclassic/images/ext/gray/qtip/close.gif);
+}
+.x-tip .x-tip-tc,
+.x-tip .x-tip-tl,
+.x-tip .x-tip-tr,
+.x-tip .x-tip-bc,
+.x-tip .x-tip-bl,
+.x-tip .x-tip-br,
+.x-tip .x-tip-ml,
+.x-tip .x-tip-mr {
+  background-image: url(/skins/neoclassic/images/ext/gray/qtip/tip-sprite.gif);
+}
+.x-tip .x-tip-mc {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-tip .x-tip-ml {
+  background-color: #fff;
+}
+.x-tip .x-tip-header-text {
+  font: bold 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #444;
+}
+.x-tip .x-tip-body {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #444;
+}
+.x-form-invalid-tip .x-tip-tc,
+.x-form-invalid-tip .x-tip-tl,
+.x-form-invalid-tip .x-tip-tr,
+.x-form-invalid-tip .x-tip-bc,
+.x-form-invalid-tip .x-tip-bl,
+.x-form-invalid-tip .x-tip-br,
+.x-form-invalid-tip .x-tip-ml,
+.x-form-invalid-tip .x-tip-mr {
+  background-image: url(/skins/neoclassic/images/ext/default/form/error-tip-corners.gif);
+}
+.x-form-invalid-tip .x-tip-body {
+  background-image: url(/skins/neoclassic/images/ext/default/form/exclamation.gif);
+}
+.x-tip-anchor {
+  background-image: url(/skins/neoclassic/images/ext/gray/qtip/tip-anchor-sprite.gif);
+}
+.x-menu {
+  background-color: #f0f0f0;
+  background-image: url(/skins/neoclassic/images/ext/default/menu/menu.gif);
+}
+.x-menu-floating {
+  border-color: #7D7D7D;
+}
+.x-menu-nosep {
+  background-image: none;
+}
+.x-menu-list-item {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-menu-item-arrow {
+  background-image: url(/skins/neoclassic/images/ext/gray/menu/menu-parent.gif);
+}
+.x-menu-sep {
+  background-color: #e0e0e0;
+  border-bottom-color: #fff;
+}
+a.x-menu-item {
+  color: #222;
+}
+.x-menu-item-active {
+  background-image: url(/skins/neoclassic/images/ext/gray/menu/item-over.gif);
+  background-color: #f1f1f1;
+  border-color: #ACACAC;
+}
+.x-menu-item-active a.x-menu-item {
+  border-color: #ACACAC;
+}
+.x-menu-check-item .x-menu-item-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/menu/unchecked.gif);
+}
+.x-menu-item-checked .x-menu-item-icon {
+  background-image: url(/skins/neoclassic/images/ext/default/menu/checked.gif);
+}
+.x-menu-item-checked .x-menu-group-item .x-menu-item-icon {
+  background-image: url(/skins/neoclassic/images/ext/gray/menu/group-checked.gif);
+}
+.x-menu-group-item .x-menu-item-icon {
+  background-image: none;
+}
+.x-menu-plain {
+  background-color: #fff !important;
+}
+.x-menu .x-date-picker {
+  border-color: #AFAFAF;
+}
+.x-cycle-menu .x-menu-item-checked {
+  border-color: #B9B9B9 !important;
+  background-color: #F1F1F1;
+}
+.x-menu-scroller-top {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-top.gif);
+}
+.x-menu-scroller-bottom {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-bottom.gif);
+}
+.x-box-tl {
+  background-image: url(/skins/neoclassic/images/ext/default/box/corners.gif);
+}
+.x-box-tc {
+  background-image: url(/skins/neoclassic/images/ext/default/box/tb.gif);
+}
+.x-box-tr {
+  background-image: url(/skins/neoclassic/images/ext/default/box/corners.gif);
+}
+.x-box-ml {
+  background-image: url(/skins/neoclassic/images/ext/default/box/l.gif);
+}
+.x-box-mc {
+  background-color: #eee;
+  background-image: url(/skins/neoclassic/images/ext/default/box/tb.gif);
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #393939;
+  font-size: 12px;
+}
+.x-box-mc h3 {
+  font-size: 14px;
+  font-weight: bold;
+}
+.x-box-mr {
+  background-image: url(/skins/neoclassic/images/ext/default/box/r.gif);
+}
+.x-box-bl {
+  background-image: url(/skins/neoclassic/images/ext/default/box/corners.gif);
+}
+.x-box-bc {
+  background-image: url(/skins/neoclassic/images/ext/default/box/tb.gif);
+}
+.x-box-br {
+  background-image: url(/skins/neoclassic/images/ext/default/box/corners.gif);
+}
+.x-box-blue .x-box-bl,
+.x-box-blue .x-box-br,
+.x-box-blue .x-box-tl,
+.x-box-blue .x-box-tr {
+  background-image: url(/skins/neoclassic/images/ext/default/box/corners-blue.gif);
+}
+.x-box-blue .x-box-bc,
+.x-box-blue .x-box-mc,
+.x-box-blue .x-box-tc {
+  background-image: url(/skins/neoclassic/images/ext/default/box/tb-blue.gif);
+}
+.x-box-blue .x-box-mc {
+  background-color: #c3daf9;
+}
+.x-box-blue .x-box-mc h3 {
+  color: #17385b;
+}
+.x-box-blue .x-box-ml {
+  background-image: url(/skins/neoclassic/images/ext/default/box/l-blue.gif);
+}
+.x-box-blue .x-box-mr {
+  background-image: url(/skins/neoclassic/images/ext/default/box/r-blue.gif);
+}
+.x-combo-list {
+  border-color: #ccc;
+  background-color: #dddddd;
+  font: normal 12px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-combo-list-inner {
+  background-color: #fff;
+}
+.x-combo-list-hd {
+  font: bold 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #333;
+  background-image: url(/skins/neoclassic/images/ext/default/layout/panel-title-light-bg.gif);
+  border-bottom-color: #BCBCBC;
+}
+.x-resizable-pinned .x-combo-list-inner {
+  border-bottom-color: #BEBEBE;
+}
+.x-combo-list-item {
+  border-color: #fff;
+}
+.x-combo-list .x-combo-selected {
+  border-color: #777 !important;
+  background-color: #f0f0f0;
+}
+.x-combo-list .x-toolbar {
+  border-top-color: #BCBCBC;
+}
+.x-combo-list-small {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-panel {
+  border-color: #dddddd;
+}
+.x-panel-header {
+  color: #333;
+  font-weight: bold;
+  font-size: 11px;
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  border-color: #dddddd;
+  background: #dddddd;
+  border-bottom: 1px solid #ccc;
+}
+.x-panel-body {
+  border-color: #dddddd;
+  background-color: #ffffff;
+  border-width: 1px;
+}
+.x-panel-body .x-panel-body {
+  border: #dddddd 1px solid;
+}
+.x-panel-bbar .x-toolbar,
+.x-panel-tbar .x-toolbar {
+  border-color: #dddddd;
+}
+.x-panel-tbar-noheader .x-toolbar,
+.x-panel-mc .x-panel-tbar .x-toolbar {
+  border-top-color: #dddddd;
+}
+.x-panel-body-noheader,
+.x-panel-mc .x-panel-body {
+  border-top-color: #dddddd;
+}
+.x-panel-tl .x-panel-header {
+  color: #333;
+  font: bold 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-panel-tc {
+  background: #dddddd;
+}
+.x-panel-tl,
+.x-panel-tr,
+.x-panel-bl,
+.x-panel-br {
+  background-color: #dddddd;
+  border-bottom-color: #dddddd;
+}
+.x-panel-bl,
+.x-panel-br {
+  background-color: #f3f3f3;
+}
+.x-panel-bl {
+  border: #dddddd 1px solid;
+  border-top: none;
+  border-right: none;
+}
+.x-panel-br {
+  border: #dddddd 1px solid;
+  border-top: none;
+  border-left: none;
+  border-bottom: none;
+}
+.x-panel-mc {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  background-color: #f1f1f1;
+}
+.x-panel-ml {
+  background-color: #f3f3f3;
+  border-left: 1px solid #dddddd;
+}
+.x-panel-mr {
+  background-color: #f3f3f3;
+  border-right: 1px solid #dddddd;
+}
+.x-tool {
+  background-image: url(/skins/neoclassic/images/ext/gray/panel/tool-sprites.gif);
+}
+.x-panel-ghost {
+  background-color: #f2f2f2;
+}
+.x-panel-ghost ul {
+  border-color: #dddddd;
+}
+.x-panel-dd-spacer {
+  border-color: #dddddd;
+}
+.x-panel-fbar td,
+.x-panel-fbar span,
+.x-panel-fbar input,
+.x-panel-fbar div,
+.x-panel-fbar select,
+.x-panel-fbar label {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-window-proxy {
+  background-color: #fcfcfc;
+  border-color: #dddddd;
+}
+.x-window-tl .x-window-header {
+  color: #555;
+  font: bold 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-window-tc {
+  background: #dddddd;
+}
+.x-window-tl {
+  background: #dddddd;
+  border-top: #aaa 1px solid;
+  border-left: #aaa 1px solid;
+}
+.x-window-tr {
+  background: #dddddd;
+  border-right: #aaa 1px solid;
+}
+.x-window-bc {
+  background-image: url(/skins/neoclassic/images/ext/gray/window/top-bottom.png);
+}
+.x-window-bl {
+  background-image: url(/skins/neoclassic/images/ext/gray/window/left-corners.png);
+}
+.x-window-br {
+  background-image: url(/skins/neoclassic/images/ext/gray/window/right-corners.png);
+}
+.x-window-mc {
+  border-color: #ccc;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  background-color: #e8e8e8;
+}
+.x-window-ml {
+  background-image: url(/skins/neoclassic/images/ext/gray/window/left-right.png);
+}
+.x-window-mr {
+  background-image: url(/skins/neoclassic/images/ext/gray/window/left-right.png);
+}
+.x-window-maximized .x-window-tc {
+  background-color: #fff;
+}
+.x-window-bbar .x-toolbar {
+  border-top-color: #dddddd;
+}
+.x-panel-ghost .x-window-tl {
+  border-bottom-color: #dddddd;
+}
+.x-panel-collapsed .x-window-tl {
+  border-bottom-color: #dddddd;
+}
+.x-dlg-mask {
+  background-color: #ccc;
+}
+.x-window-plain .x-window-mc {
+  background-color: #E8E8E8;
+  border-color: #D0D0D0 #EEEEEE #EEEEEE #D0D0D0;
+}
+.x-window-plain .x-window-body {
+  border-color: #EEEEEE #D0D0D0 #D0D0D0 #EEEEEE;
+}
+body.x-body-masked .x-window-plain .x-window-mc {
+  background-color: #f3f3f3;
+}
+.x-html-editor-wrap {
+  border-color: #BCBCBC;
+  background-color: #fff;
+}
+.x-html-editor-tb .x-btn-text {
+  background-image: url(/skins/neoclassic/images/ext/default/editor/tb-sprite.gif);
+}
+.x-panel-noborder .x-panel-header-noborder {
+  border-bottom-color: #dddddd;
+}
+.x-panel-noborder .x-panel-tbar-noborder .x-toolbar {
+  border-bottom-color: #dddddd;
+}
+.x-panel-noborder .x-panel-bbar-noborder .x-toolbar {
+  border-top-color: #dddddd;
+}
+.x-tab-panel-bbar-noborder .x-toolbar {
+  border-top-color: #dddddd;
+}
+.x-tab-panel-tbar-noborder .x-toolbar {
+  border-bottom-color: #dddddd;
+}
+.x-border-layout-ct {
+  background-color: #ffffff;
+}
+.x-accordion-hd {
+  color: #222;
+  font-weight: normal;
+  background-image: url(/skins/neoclassic/images/ext/gray/panel/light-hd.gif);
+}
+.x-layout-collapsed {
+  background-color: #dfdfdf;
+  border-color: #dddddd;
+}
+.x-layout-collapsed-over {
+  background-color: #e7e7e7;
+}
+.x-layout-split-west .x-layout-mini {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-left.gif);
+}
+.x-layout-split-east .x-layout-mini {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-right.gif);
+}
+.x-layout-split-north .x-layout-mini {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-top.gif);
+}
+.x-layout-split-south .x-layout-mini {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-bottom.gif);
+}
+.x-layout-cmini-west .x-layout-mini {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-right.gif);
+}
+.x-layout-cmini-east .x-layout-mini {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-left.gif);
+}
+.x-layout-cmini-north .x-layout-mini {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-bottom.gif);
+}
+.x-layout-cmini-south .x-layout-mini {
+  background-image: url(/skins/neoclassic/images/ext/default/layout/mini-top.gif);
+}
+.x-progress-wrap {
+  border-color: #8E8E8E;
+}
+.x-progress-inner {
+  background-color: #E7E7E7;
+  background-image: url(/skins/neoclassic/images/ext/gray/qtip/bg.gif);
+}
+.x-progress-bar {
+  background-color: #BCBCBC;
+  background-image: url(/skins/neoclassic/images/ext/gray/progress/progress-bg.gif);
+  border-top-color: #E2E2E2;
+  border-bottom-color: #A4A4A4;
+  border-right-color: #A4A4A4;
+}
+.x-progress-text {
+  font-size: 11px;
+  font-weight: bold;
+  color: #fff;
+}
+.x-progress-text-back {
+  color: #5F5F5F;
+}
+.x-list-header {
+  background-color: #f9f9f9;
+  background-image: url(/skins/neoclassic/images/ext/gray/grid/grid3-hrow2.gif);
+}
+.x-list-header-inner div em {
+  border-left-color: #dddddd;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-list-body dt em {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-list-over {
+  background-color: #eee;
+}
+.x-list-selected {
+  background-color: #adadae;
+}
+.x-list-resizer {
+  border-left-color: #555;
+  border-right-color: #555;
+}
+.x-list-header-inner em.sort-asc,
+.x-list-header-inner em.sort-desc {
+  background-image: none;
+  border-color: #dddddd;
+}
+.x-slider-horz,
+.x-slider-horz .x-slider-end,
+.x-slider-horz .x-slider-inner {
+  background-image: url(/skins/neoclassic/images/ext/default/slider/slider-bg.png);
+}
+.x-slider-horz .x-slider-thumb {
+  background-image: url(/skins/neoclassic/images/ext/gray/slider/slider-thumb.png);
+}
+.x-slider-vert,
+.x-slider-vert .x-slider-end,
+.x-slider-vert .x-slider-inner {
+  background-image: url(/skins/neoclassic/images/ext/default/slider/slider-v-bg.png);
+}
+.x-slider-vert .x-slider-thumb {
+  background-image: url(/skins/neoclassic/images/ext/gray/slider/slider-v-thumb.png);
+}
+.x-window-dlg .ext-mb-text,
+.x-window-dlg .x-window-header-text {
+  font-size: 12px;
+}
+.x-window-dlg .ext-mb-textarea {
+  font: normal 12px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-window-dlg .x-msg-box-wait {
+  background-image: url(/skins/neoclassic/images/ext/default/grid/loading.gif);
+}
+.x-window-dlg .ext-mb-info {
+  background-image: url(/skins/neoclassic/images/ext/gray/window/icon-info.gif);
+}
+.x-window-dlg .ext-mb-warning {
+  background-image: url(/skins/neoclassic/images/ext/gray/window/icon-warning.gif);
+}
+.x-window-dlg .ext-mb-question {
+  background-image: url(/skins/neoclassic/images/ext/gray/window/icon-question.gif);
+}
+.x-window-dlg .ext-mb-error {
+  background-image: url(/skins/neoclassic/images/ext/gray/window/icon-error.gif);
+}

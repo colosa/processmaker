@@ -1,0 +1,1669 @@
+/*!
+ * Variables
+ */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.svg#OpenSansLightItalic') format('svg');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.svg#OpenSansItalic') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.svg#OpenSansSemiboldItalic') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
+/*Colores*/
+.btn {
+  background-image: none;
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #f1f1f1;
+  background-image: -moz-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#dddddd));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -o-linear-gradient(top, #ffffff, #dddddd);
+  background-image: linear-gradient(to bottom, #ffffff, #dddddd);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffdddddd', GradientType=0);
+  border-color: #dddddd #dddddd #b7b7b7;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #dddddd;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #ccc;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: capitalize;
+  text-decoration: none;
+  line-height: 14px;
+  color: #000;
+}
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+  color: #333333;
+  background-color: #dddddd;
+  *background-color: #d0d0d0;
+}
+.btn:active,
+.btn.active {
+  background-color: #c4c4c4 \9;
+}
+.btn:hover {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn:hover:hover,
+.btn:hover:focus,
+.btn:hover:active,
+.btn:hover.active,
+.btn:hover.disabled,
+.btn:hover[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.btn:hover:active,
+.btn:hover.active {
+  background-color: #e6e6e6 \9;
+}
+.btn:focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn:focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-over {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn-over:hover,
+.btn-over:focus,
+.btn-over:active,
+.btn-over.active,
+.btn-over.disabled,
+.btn-over[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.btn-over:active,
+.btn-over.active {
+  background-color: #e6e6e6 \9;
+}
+.btn-focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn-focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-no-button {
+  background: none;
+  border: 1px transparent solid;
+}
+.link {
+  color: #00a1e4;
+  text-decoration: none;
+}
+.link:hover {
+  color: #00597e;
+}
+.link-hover {
+  color: #00597e;
+}
+/*
+botones del tinymce
+.o2k7Skin .mceButton{
+	.btn();
+}
+*//*!
+ * Ext JS Library 3.2.1
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+/*
+ * FileUploadField component styles
+ */
+.x-form-file-wrap {
+  position: relative;
+  height: 22px;
+}
+.x-form-file-wrap .x-form-file {
+  position: absolute;
+  right: 0;
+  -moz-opacity: 0;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  z-index: 2;
+  height: 22px;
+}
+.x-form-file-wrap .x-form-file-btn {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+.x-form-file-wrap .x-form-file-text {
+  position: absolute;
+  left: 0;
+  z-index: 3;
+  color: #777;
+}
+.x-locationbar {
+  padding-left: 5px;
+}
+.x-locationbar .x-locationbar-location {
+  background-color: white;
+  border-top: 1px solid #96969D;
+  border-bottom: 1px solid #96969D;
+}
+.x-locationbar .x-locationbar-location-first {
+  border-left: 1px solid #96969D;
+}
+.x-locationbar .x-locationbar-location-last {
+  border-right: 1px solid #96969D;
+}
+.x-locationbar-folder-icon {
+  background-image: url("/skins/neoclassic/images/ext/gray/locationbar/location_folder.png") !important;
+}
+.x-locationbar-back-icon {
+  background-image: url("/skins/neoclassic/images/ext/gray/locationbar/location_back.png") !important;
+}
+.x-locationbar-forward-icon {
+  background-image: url("/skins/neoclassic/images/ext/gray/locationbar/location_forward.png") !important;
+}
+.x-locationbar-reload-icon {
+  background-image: url("/skins/neoclassic/images/ext/gray/locationbar/location_reload.png") !important;
+}
+.x-locationbar .x-btn-menu-arrow-wrap .x-btn-center button {
+  background: transparent url(/skins/neoclassic/images/ext/gray/locationbar/btn-arrow.gif) no-repeat scroll 0pt 3px;
+  width: 12px;
+}
+.x-locationbar .x-btn-menu-active .x-btn-menu-arrow-wrap .x-btn-center button {
+  background-position: 0pt -97px;
+}
+.x-locationbar .x-btn-click .x-btn-center,
+.x-locationbar .x-btn-pressed .x-btn-center,
+.x-locationbar .x-btn-menu-active .x-btn-center {
+  background: transparent url(/skins/neoclassic/images/ext/gray/locationbar/tb-btn-sprite.gif) repeat-x scroll 0pt -105px;
+}
+/*Los botones de EXT solamente s even iguales en los x-form*/
+.x-window button.x-btn-text,
+.x-form-label-right button.x-btn-text,
+.x-form button.x-btn-text {
+  font-size: 10px;
+  font-weight: 400;
+}
+.x-window .x-btn-small,
+.x-form-label-right .x-btn-small,
+.x-form .x-btn-small {
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+/*Texto en ExtJS*/
+.x-btn-text,
+.xtb-text {
+  color: #333;
+}
+.x-btn-pressed .x-btn-text {
+  color: #000;
+}
+/*Tabs con C-cono en EXT*/
+.x-tab-strip span.x-tab-strip-text {
+  padding: 4px 0;
+  font-weight: normal;
+}
+.ext-gecko .x-tab-strip span.x-tab-strip-text,
+.ext-webkit .x-tab-strip span.x-tab-strip-text {
+  height: 12px;
+}
+button.x-btn-text:focus,
+.x-combo-selected {
+  -moz-outline-style: none;
+  outline: none;
+}
+.icon-activate {
+  background-image: url("/skins/neoclassic/images/activate.png");
+}
+.icon-deactivate {
+  background-image: url("/skins/neoclassic/images/deactivate.png");
+}
+.icon-debug {
+  background-image: url("/skins/neoclassic/images/debug.png");
+}
+.icon-debug-disabled {
+  background-image: url("/skins/neoclassic/images/debug_disabled.png");
+}
+.icon-geometry {
+  background-image: url("/skins/neoclassic/images/ToolUseGeometry.png");
+}
+/* Cases Styles */
+/**
+ * Cases Interface styles
+ */
+#details-panel .x-panel-body {
+  padding: 10px;
+  background: #eee;
+  color: #555;
+}
+#details-panel a:link,
+#details-panel a:visited {
+  color: #369;
+}
+#details-panel h2 {
+  color: #369;
+  font-size: 15px;
+}
+#details-panel p {
+  margin-bottom: 5px;
+}
+.x-tree-node-icon {
+  width: 18px !important;
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png);
+  height: 18px;
+}
+.ICON_FOLDERS {
+  /*.ss_folder_explore*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -7777px !important;
+}
+.x-tab-strip-text.ICON_FOLDERS {
+  /*.ss_folder_explore*/
+
+  background-position: 0 -7776px !important;
+}
+.x-tab-strip-inner .x-tab-strip-text.ICON_FOLDERS {
+  background-position: 0 -7775px !important;
+}
+.ICON_CASES_FOLDERS {
+  /*background-image: url(/skins/neoclassic/images/icons_silk/cases-inbox.png) !important;*/
+
+}
+.ICON_CASES_INBOX {
+  /*ss_folder_page*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -7957px !important;
+}
+.ICON_CASES_DRAFT {
+  /*ss_pencil*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -12439px !important;
+}
+.ICON_CASES_SENT {
+  /*ss_page_white_go*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -11773px !important;
+}
+.ICON_CASES_SELFSERVICE {
+  /*ss_arrow_rotate_anticlockwise */
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -955px !important;
+}
+.ICON_CASES_PAUSED {
+  /*ss_clock*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0px -4969px !important;
+}
+.ICON_CASES_COMPLETED {
+  background-image: url(/skins/neoclassic/images/cases-completed1.png) !important;
+}
+.ICON_CASES_CANCELLED {
+  background-image: url(/skins/neoclassic/images/cases-cancelled.png) !important;
+}
+.ICON_CASES_FOLDERS {
+  /*ss_report */
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -13213px !important;
+}
+.ICON_SEARCHS {
+  background-image: url(/skins/neoclassic/images/cases-search.png) !important;
+  /*ss_find*/
+
+  /*background-position:0 -7453px !important;*/
+
+}
+.ICON_CASES_SEARCH {
+  /*ss_page_find*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -11089px !important;
+}
+.ICON_ADMIN {
+  /*ss_user_suit*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -17371px !important;
+}
+.ICON_CASES_TO_REVISE {
+  /*ss_page_white_magnify*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -11881px !important;
+}
+.ICON_CASES_TO_REASSIGN {
+  /*ss_arrow_rotate_clockwise*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -973px !important;
+}
+.ICON_CASES_START_PAGE {
+  /*ss_chart_pie*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -3925px !important;
+}
+.ICON_CASES_START_CASE {
+  /*ss_add*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -19px !important;
+}
+.ICON_CASES_HOME {
+  /*ss_house*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -8497px !important;
+}
+.ICON_CONSOLIDATED_CASES {
+  /*ss_consolidated_cases*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -18500px !important;
+}
+.ICON_CASES_DELETE {
+  background-image: url(/skins/neoclassic/images/delete-16x16.gif) !important;
+}
+.ICON_CASES_CANCEL {
+  background-image: url(/skins/neoclassic/images/deactivate.png) !important;
+}
+.ICON_CASES_UNPAUSE {
+  background-image: url(/skins/neoclassic/images/activate.png) !important;
+}
+.ICON_CASES_OPEN {
+  background-image: url(/skins/neoclassic/images/edit.gif) !important;
+}
+.ICON_UX {
+  background-image: url(/skins/neoclassic/images/user-experience-icon.png) !important;
+}
+.ICON_SYSTEM {
+  background-image: url("/skins/neoclassic/images/icons_silk/sprites.png") !important;
+  background-position: 0 -10351px !important;
+}
+/**
+ * style for case list grid
+ */
+.x-grid3-col-openLink {
+  padding: 1px;
+  background: #eee;
+  text-align: center;
+}
+.x-grid3-col-openLink a {
+  color: black;
+  border-color: #ff0;
+}
+.x-grid3-col-openLink a:hover {
+  background: #0ee;
+}
+/*Tables*/
+.x-grid3-row-table {
+  padding: 0px 0;
+}
+.x-grid3-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+.x-grid3-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.x-grid3-row.x-grid3-row-over {
+  background: #edf3f6;
+  cursor: pointer;
+}
+.x-grid3-hd-inner {
+  font-size: 11px;
+  font-weight: bold;
+  color: #333;
+}
+.x-grid3-col-openLink,
+.x-grid3-col-deleteLink {
+  background: none;
+  height: 18px;
+}
+.x-grid3-col-openLink a:after {
+  content: '';
+}
+.x-grid3-row.x-grid3-row-selected {
+  background-color: #ffecb1;
+}
+/*Checkboxes*/
+.grid_with_checkbox .x-grid3-header-offset {
+  padding-left: 18px !important;
+}
+.grid_with_checkbox .x-grid3-row {
+  background-image: url(/skins/neoclassic/images/icons_silk/unchecked.png) !important;
+  background-repeat: no-repeat !important;
+  padding-left: 18px !important;
+}
+.grid_with_checkbox .x-grid3-row.x-grid3-row-selected {
+  background-image: url(/skins/neoclassic/images/icons_silk/checked.png) !important;
+  background-repeat: no-repeat !important;
+  padding-left: 18px !important;
+}
+/*
+Pone en mayC:suclas el texto que se encuentra en el toolbar de arriba
+*/
+.x-panel-tbar .x-toolbar-cell {
+  text-transform: capitalize;
+}
+/*TREE*/
+#ext-gen38.x-tree-root-ct .x-tree-node-el {
+  background: #eee;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  cursor: auto;
+  border-bottom: 1px solid #dddddd;
+  border-top: 1px solid #dddddd;
+}
+#ext-gen38.x-tree-root-ct .x-tree-node-leaf {
+  background: #fff;
+  padding-top: 0;
+  padding-bottom: 0;
+  cursor: pointer;
+  border-bottom: none;
+  border-top: none;
+}
+#ext-gen38.x-tree-root-ct .x-tree-node .x-tree-node {
+  padding-bottom: 0;
+}
+#ext-gen38.x-tree-root-ct .x-tree-node-over {
+  background: #eee;
+}
+#ext-gen38.x-tree-root-ct .x-tree-node-leaf {
+  padding-left: 16px;
+}
+/*Eliminamos los restos del tree*/
+#ext-gen38.x-tree-root-ct .x-tree-elbow,
+#ext-gen38.x-tree-root-ct .x-tree-elbow-line,
+#ext-gen38.x-tree-root-ct .x-tree-elbow-end,
+#ext-gen38.x-tree-root-ct .x-tree-node-indent img {
+  background: none;
+  width: 0px;
+}
+/*Cambiamos el menos y mC!s*/
+#ext-gen38.x-tree-root-ct .x-tree-elbow-minus,
+#ext-gen38.x-tree-root-ct .x-tree-elbow-end-minus {
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -2395px !important;
+}
+#ext-gen38.x-tree-root-ct .x-tree-elbow-plus,
+#ext-gen38.x-tree-root-ct .x-tree-elbow-end-plus {
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -2359px !important;
+}
+/*Item selecciondo en el TREE*/
+.x-tree-root-ct .x-tree-selected {
+  background: #C3D7DF !important;
+}
+/*REFRESHER*/
+#ext-gen35.x-panel-tbar-noheader {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  height: 27px;
+  z-index: 1000 !important;
+  width: 28px !important;
+  border-bottom: 1px #ccc solid;
+}
+#ext-gen35.x-panel-tbar-noheader .x-toolbar-layout-ct {
+  width: 28px !important;
+}
+#ext-gen35.x-panel-tbar-noheader .x-toolbar-left .x-toolbar-cell.x-locationbar-location {
+  display: none;
+  /*borra el espacio de la izquierda*/
+
+}
+/*
+antes funcionaba.
+#ext-gen35.x-panel-tbar-noheader .x-toolbar-left{
+  display:none;
+}*/
+#ext-gen35.x-panel-tbar-noheader .x-toolbar-right {
+  text-align: left !important;
+}
+/*StartCase*/
+.x-tab-strip-text.ICON_CASES_START_CASE {
+  background-position: 0px -17px !important;
+}
+/*Dashboard*/
+.x-tab-strip-text.ICON_CASES_START_PAGE {
+  background-position: 0px -3923px !important;
+}
+.row_updated {
+  /*background:#FFFDEF;*/
+
+  font-weight: bold;
+}
+/*STARTCASE RIGHT PANEL*/
+#process-detail-panel .details .details-info {
+  padding: 10px;
+}
+#process-detail-panel .details .details-info table td {
+  padding: 5px;
+}
+.icon-expand-all {
+  /*ss_bullet_toggle_plus*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -2359px !important;
+}
+.icon-collapse-all {
+  /*ss_bullet_toggle_minus*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -2395px !important;
+}
+#startCaseTreePanel .x-tree-elbow-end-minus,
+#startCaseTreePanel .x-tree-elbow-end-plus,
+#startCaseTreePanel .x-tree-elbow-minus,
+#startCaseTreePanel .x-tree-elbow-plus,
+#startCaseTreePanel .x-tree-elbow-line,
+#startCaseTreePanel .x-tree-node-indent {
+  display: none;
+}
+/*Search Button*/
+.pm_search_x_button {
+  /*margin-left:-21px;*/
+
+  display: block;
+  width: 16px;
+  height: 20px;
+  margin-top: 1px;
+  margin-right: 3px;
+}
+.ext-ie .pm_search_x_button {
+  margin-top: 0px !important;
+}
+.pm_search_x_button .x-btn-over .x-btn-mc {
+  background: transparent;
+}
+.pm_search_x_button .x-btn-ml,
+.pm_search_x_button .x-btn-mr,
+.pm_search_x_button .x-btn-tc,
+.pm_search_x_button .x-btn-tl,
+.pm_search_x_button .x-btn-tr,
+.pm_search_x_button .x-btn-bc,
+.pm_search_x_button .x-btn-bl,
+.pm_search_x_button .x-btn-br {
+  display: none !important;
+}
+.pm_search_x_button button {
+  background: url(/skins/neoclassic/images/icons_silk/search_x_button.png) no-repeat;
+  text-indent: -10000px;
+  width: 16px !important;
+  height: 20px !important;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.pm_search_x_button_des {
+  /*margin-left:-21px;*/
+
+  display: block;
+  width: 16px;
+  height: 20px;
+  margin-top: 2px;
+  margin-right: 3px;
+}
+.ext-ie ._des {
+  margin-top: 0px !important;
+}
+.pm_search_x_button_des .x-btn-over .x-btn-mc {
+  background: transparent;
+}
+.pm_search_x_button_des .x-btn-ml,
+.pm_search_x_button_des .x-btn-mr,
+.pm_search_x_button_des .x-btn-tc,
+.pm_search_x_button_des .x-btn-tl,
+.pm_search_x_button_des .x-btn-tr,
+.pm_search_x_button_des .x-btn-bc,
+.pm_search_x_button_des .x-btn-bl,
+.pm_search_x_button_des .x-btn-br {
+  display: none !important;
+}
+.pm_search_x_button_des button {
+  background: url(/skins/neoclassic/images/icons_silk/search_x_button.png) no-repeat;
+  text-indent: -10000px;
+  width: 16px !important;
+  height: 20px !important;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.pm_search_text_field input {
+  border-right: none !important;
+}
+.ext-ie8 .pm_search_text_field input {
+  margin-top: 1px !important;
+}
+.pm_search_text_field input:focus,
+.pm_search_text_field .x-form-focus {
+  border: 1px solid #c1c1c1 !important;
+  border-right: none !important;
+}
+.ICON_STEPS {
+  background-image: url(/skins/neoclassic/images/steps.png) !important;
+}
+.ICON_ASSIGN_TASK {
+  background-image: url(/skins/neoclassic/images/flechav1A.png) !important;
+}
+/* CSS BPMN */
+#x-shapes p {
+  type: none;
+  margin-left: 9px;
+}
+#x-shapes-task {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-startEvent {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-interEvent {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-endEvent {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-gateways {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-dataobject {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-group {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-annotation {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-pool {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-lane {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-milestone {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-sequence {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-association {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+#x-shapes-message {
+  height: 25;
+  padding: 0px 2px 2px 0px;
+}
+.toolbar-item {
+  display: table-cell;
+  background-color: #fff;
+  width: 50px !important;
+  height: 25px !important;
+  border: 1px;
+  border-style: solid;
+  border-color: #ccc;
+  font-size: 12px;
+  padding: 1px 1px 1px 1px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 7px;
+  vertical-align: middle !important;
+  text-align: center;
+}
+#x-shapes p:hover {
+  border-left: 1px solid #808080;
+  border-top: 1px solid #808080;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background: #EFEFEF;
+  border-color: #98bf21;
+}
+.btn-panel-pmtoolbar {
+  font-size: 11px;
+  font-weight: bold;
+  width: 50;
+}
+.icon-users-adhoc {
+  background-image: url('/skins/neoclassic/images/icon-users.png') !important;
+}
+.icon-groups-adhoc {
+  background-image: url('/skins/neoclassic/images/icon-groups.png') !important;
+}
+/* CSS Setup */
+.pm-tree-node1 {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed !important;
+  border: 1px solid #CACACA;
+  height: 20px;
+  width: 99%;
+  color: #666;
+  vertical-align: middle;
+  text-decoration: none;
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+}
+.ICON_CASES_LIST_SETUP {
+  background-image: url(/skins/neoclassic/images/icon-pmcaseslist-conf.png) !important;
+  width: 15px !important;
+  height: 15px !important;
+}
+.ICON_APPCACHEVIEW_SETUP {
+  background-image: url(/skins/neoclassic/images/icon-pmappcacheview-rebuild.png) !important;
+  width: 15px !important;
+  height: 15px !important;
+}
+.ICON_CASES_NOTES {
+  /*ss_comment*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -4501px !important;
+}
+.ICON_ADDITIONAL_TABLES {
+  /*ss_database_table*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -5815px !important;
+}
+.ICON_PM_TABLES {
+  /*ss_database_table*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -5815px !important;
+}
+.ICON_LANGUAGES {
+  /*ss_text_dropcaps*/
+
+  background-image: url(/skins/neoclassic/images/icon-languages.png) !important;
+  width: 18px !important;
+  height: 15px !important;
+}
+.ICON_PLUGINS {
+  /*ss_plugin*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -12961px !important;
+}
+.ICON_UPGRADE {
+  /*ss_package_go*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -10873px !important;
+}
+.ICON_EMAILS {
+  /*ss_email_edit*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -6715px !important;
+}
+.ICON_WEBSERVICES {
+  /*ss_server_connect*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -14095px !important;
+}
+.ICON_SKINS {
+  background-image: url(/skins/neoclassic/images/icon-pmskins.png) !important;
+  width: 15px !important;
+  height: 15px !important;
+}
+.ICON_LOGO {
+  background-image: url(/skins/neoclassic/images/icon-pmlogo-15x15.png) !important;
+  width: 15px !important;
+  height: 15px !important;
+}
+.ICON_CLEAR_CACHE {
+  background-image: url(/skins/neoclassic/images/icon-pmclear-cache.png) !important;
+  width: 15px !important;
+  height: 15px !important;
+}
+.ICON_CALENDAR {
+  /*ss_calendar*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -2899px !important;
+}
+.ICON_LOG_CASE_SCHEDULER {
+  /*ss_timeline_marker*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -17011px !important;
+}
+.ICON_EVENT {
+  /*ss_table_gear*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -15517px !important;
+}
+.ICON_CRON {
+  /*ss_time*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -16939px !important;
+}
+.ICON_PROCESS_CATEGORY {
+  /*ss_sitemap_color*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -14833px !important;
+}
+.ICON_LOGIN {
+  /*ss_key*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -8929px !important;
+}
+.ICON_DASHBOARD {
+  background-image: url(/skins/neoclassic/images/icon-dashboard.png) !important;
+  width: 15px !important;
+  height: 15px !important;
+}
+.ICON_PM_REQUIREMENTS {
+  /*ss_wrench*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -17821px !important;
+}
+.ICON_PHP_INFO {
+  background-image: url(/skins/neoclassic/images/documents/extension/php.png) !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+.ICON_INFORMATION {
+  /*ss_information*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -8749px !important;
+}
+/* Language Support module styles*/
+.upload-icon {
+  background: url('/skins/neoclassic/images/cases-documents.png') no-repeat 0 0 !important;
+}
+#fi-button-msg {
+  border: 2px solid #ccc;
+  padding: 5px 10px;
+  background: #eee;
+  margin: 5px;
+  float: left;
+}
+.ICON_HEARTBEAT {
+  /*ss_heart*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -8335px !important;
+}
+.ICON_USERS {
+  /*ss_user*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -17173px !important;
+  height: 11px;
+}
+.ICON_ROLES {
+  /*ss_application_key*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -325px !important;
+}
+.ICON_GROUPS {
+  /*ss_group*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -8173px !important;
+  height: 11px;
+}
+.ICON_DEPARTAMENTS {
+  /*ss_chart_organisation*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -3871px !important;
+}
+.ICON_AUTHSOURCES {
+  /*ss_key*/
+
+  background-image: url(/skins/neoclassic/images/icons_silk/sprites.png) !important;
+  background-position: 0 -8929px !important;
+}
+.x-headBlock {
+  background-color: #EEEEEE;
+}
+.x-grid-empty {
+  text-align: center;
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  font-size: 15px;
+  color: black ;
+  filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=80)";
+  opacity: .55;
+  -moz-opacity: .55;
+}
+/**
+ * --Row Editor UX Lib CSS--
+ */
+.ext-ie .x-row-editor .x-form-text {
+  margin: 0 !important;
+}
+.x-row-editor-header {
+  height: 2px;
+  overflow: hidden;
+  background: transparent url(../images/ext/default/row-editor-bg.gif) repeat-x 0 0;
+}
+.x-row-editor-footer {
+  height: 2px;
+  overflow: hidden;
+  background: transparent url(../images/ext/default/row-editor-bg.gif) repeat-x 0 -2px;
+}
+.ext-ie .x-row-editor-footer {
+  margin-top: -1px;
+}
+.x-row-editor-body {
+  overflow: hidden;
+  zoom: 1;
+  background: #ebf2fb;
+  padding-top: 2px;
+}
+.x-row-editor .x-btns {
+  position: absolute;
+  top: 28px;
+  left: 20px;
+  padding-left: 5px;
+  background: transparent url(../images/ext/default/row-editor-btns.gif) no-repeat 0 0;
+}
+.x-row-editor .x-btns .x-plain-bwrap {
+  padding-right: 5px;
+  background: transparent url(../images/ext/default/row-editor-btns.gif) no-repeat right -31px;
+}
+.x-row-editor .x-btns .x-plain-body {
+  background: transparent url(../images/ext/default/row-editor-btns.gif) repeat-x 0 -62px;
+  height: 31px;
+}
+.x-row-editor .x-btns .x-table-layout-cell {
+  padding: 3px;
+}
+/* Fixes for IE6/7 trigger fields */
+.ext-ie6 .x-row-editor .x-form-field-wrap .x-form-trigger,
+.ext-ie7 .x-row-editor .x-form-field-wrap .x-form-trigger {
+  top: 1px;
+}
+.ext-ie6 .x-row-editor .x-form-field-trigger-wrap,
+.ext-ie7 .x-row-editor .x-form-field-trigger-wrap {
+  margin-top: -1px;
+}
+.errorTip .x-tip-body ul {
+  list-style-type: disc;
+  margin-left: 15px;
+}
+.note-item {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding: 3px 3px 3px 3px;
+  border: 1px solid #fff;
+  border-bottom: 1px solid #eeeeee;
+  white-space: normal;
+  color: #555;
+}
+.note-item h3 {
+  display: block;
+  font: inherit;
+  font-weight: bold;
+  color: #222;
+}
+.note-item h3 span {
+  float: right;
+  font-weight: normal;
+  margin: 0 0 5px 5px;
+  width: 50px;
+  display: block;
+  clear: none;
+}
+/* default-layout */
+.x-user-bar {
+  color: #fff;
+  font-size: 8px;
+  font-weight: bold;
+}
+.x-pm-tabmenu {
+  color: #000 !important;
+  padding-left: 32px !important;
+  padding-right: 15px !important;
+  padding-top: 5px !important;
+  padding-bottom: 8px !important;
+  font: 13px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-pm-home {
+  background-image: url(/skins/neoclassic/images/homeIcon.png) !important;
+}
+.x-pm-bpmn {
+  background-image: url(/skins/neoclassic/images/bpmnIcon.png) !important;
+}
+.x-pm-designer {
+  background-image: url(/skins/neoclassic/images/designerIcon.png) !important;
+}
+.x-pm-setup {
+  background-image: url(/skins/neoclassic/images/setupIcon.png) !important;
+}
+.x-pm-profile {
+  background-image: url(/skins/neoclassic/images/profile-icontab.png) !important;
+}
+.x-pm-dashboard {
+  background-image: url(/skins/neoclassic/images/dashboard.png) !important;
+}
+.x-pm-toolbars {
+  background-color: #F0F0F0;
+  background-image: url("/skins/neoclassic/images/ext/gray/toolbar/bg.gif");
+  border-color: #D0D0D0;
+}
+.x-pm-logout-icon {
+  background-image: url(/skins/neoclassic/images/logout.gif);
+}
+.x-pm-headerbar1 {
+  background-color: #32405a;
+  background-image: url("/skins/neoclassic/images/header_bg.jpg");
+  color: #fff;
+  padding: 0px;
+  font: 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 12px;
+}
+.x-pm-headerbar2 {
+  background-color: #000;
+  background-image: url("/skins/neoclassic/images/canvastile_bg1.jpg");
+  color: #fff;
+  padding: 5px;
+  font: 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 12px;
+}
+.headerRightSection {
+  font: 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #fff;
+}
+.headerLeftSection {
+  font: 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #fff;
+}
+.headerLeftSideBar a:hover {
+  color: orange;
+}
+.headerLeftSideBar a {
+  font: bold 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #fff;
+  text-decoration: none;
+}
+.headerRightSideBar a:hover {
+  color: orange;
+}
+a.login {
+  font: 7pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #00004e;
+  text-decoration: none;
+}
+a.login:hover {
+  color: blue;
+}
+.headerRightSideBar a {
+  font: 15px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #fff;
+  text-decoration: none;
+  vertical-align: top;
+}
+.headerRightSideBar {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 0px;
+  padding-right: 5px;
+  color: #fff;
+  display: table-cell;
+  vertical-align: top !important;
+}
+#user-avatar {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 0px;
+  padding-right: 10px;
+  color: #fff;
+  display: table-cell;
+  vertical-align: top !important;
+}
+.headerRightSideBar label {
+  font: 9pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #fff;
+  display: inline-block;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.headerLeftSideBar {
+  padding-top: 0px;
+  padding-bottom: 17px;
+  padding-left: 0px;
+  padding-right: 5px;
+}
+.companyLogo {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 0px;
+}
+.ux-auth-warning {
+  background: url("../images/ext/default/warning.png") no-repeat center left;
+  padding: 2px;
+  padding-left: 20px;
+  font-weight: bold;
+}
+.ux-auth-header-icon {
+  background: url("../images/ext/default/locked.png") 0 4px no-repeat !important;
+}
+/*!
+ * Ext JS Library 3.3.3
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
+/* StatusBar - structure */
+.x-statusbar .x-status-text {
+  cursor: default;
+  /*
+    height: 21px;
+    line-height: 21px;
+    padding: 0 4px;
+*/
+
+}
+.x-statusbar .x-status-busy {
+  padding-left: 25px !important;
+  background: transparent no-repeat 3px 2px;
+}
+.x-toolbar div.xtb-text .x-statusbar .x-status-text-panel {
+  border-top: 1px solid;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+  padding: 2px 8px 2px 5px;
+}
+/* StatusBar word processor example styles */
+#word-status .x-status-text-panel .spacer {
+  width: 60px;
+  font-size: 0;
+  line-height: 0;
+}
+#word-status .x-status-busy {
+  padding-left: 25px !important;
+  background: transparent no-repeat 3px 2px;
+}
+#word-status .x-status-saved {
+  padding-left: 25px !important;
+  background: transparent no-repeat 3px 2px;
+}
+/* StatusBar form validation example styles */
+.x-statusbar .x-status-error {
+  cursor: pointer;
+  padding-left: 25px !important;
+  background: transparent no-repeat 3px 2px;
+}
+.x-statusbar .x-status-valid {
+  padding-left: 25px !important;
+  background: transparent no-repeat 3px 2px;
+}
+.x-status-error-list {
+  font: 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  position: absolute;
+  z-index: 9999;
+  border-top: 1px solid;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+  padding: 5px 10px;
+}
+.x-status-error-list li {
+  cursor: pointer;
+  list-style: disc;
+  margin-left: 10px;
+}
+.x-status-error-list li a {
+  text-decoration: none;
+}
+.x-status-error-list li a:hover {
+  text-decoration: underline;
+}
+/* *********************************************************** */
+/* *********************************************************** */
+/* *********************************************************** */
+/* StatusBar - visual */
+.x-statusbar .x-status-busy {
+  background-image: url(../images/ext/default/loading.gif);
+}
+.x-statusbar .x-status-text-panel {
+  border-color: #99bbe8 #fff #fff #99bbe8;
+}
+/* StatusBar word processor example styles */
+#word-status .x-status-text {
+  color: #777;
+}
+#word-status .x-status-busy {
+  background-image: url(../images/ext/default/saving.gif);
+}
+#word-status .x-status-saved {
+  background-image: url(../images/ext/default/saved.png);
+}
+/* StatusBar form validation example styles */
+.x-statusbar .x-status-error {
+  color: #C33;
+  background-image: url(../images/ext/default/exclamation.gif);
+}
+.x-statusbar .x-status-valid {
+  background-image: url(../images/ext/default/accept.png);
+}
+.x-status-error-list {
+  border-color: #C33;
+}
+.x-status-error-list li a {
+  color: #15428B;
+}
+/** Virtual keyboard UX*/
+.ux-virtualkeyboard-icon {
+  background-image: url(../images/ext/default/keyboard.png) ! important;
+}
+.ux-accented-icon {
+  background-image: url(../images/ext/default/accented.png) ! important;
+}
+.x-keyboard .x-toolbar {
+  border-width: 1px;
+}
+.x-keyboard .x-panel-body {
+  padding: 5px;
+}
+.x-keyboard .x-panel-body tbody tr td {
+  margin: 0px;
+  padding: 0px 6px 3px 6px;
+}
+.x-keyboard .x-panel-body tbody tr td div {
+  text-align: center;
+  position: relative;
+  height: 0px;
+}
+table.keys {
+  height: 20px;
+  white-space: nowrap;
+  width: 100%;
+  border-spacing: 0 2px 2px 0;
+}
+table.keyboardInputCenter {
+  width: auto;
+  margin: 0 auto;
+}
+#spacebar {
+  width: 150px;
+}
+table.keys tbody tr td {
+  vertical-align: middle;
+  text-align: center;
+  padding: 0px 5px;
+  white-space: pre;
+  /*font:normal 11px 'Lucida Console',monospace;*/
+
+  font: 0.69em "Open Sans", Tahoma, sans-serif, MiscFixed;
+  border-top: 1px solid #99BBE8;
+  border-right: 1px solid #15428B;
+  border-bottom: 1px solid #15428B;
+  border-left: 1px solid #99BBE8;
+  background-color: #D0DEF0;
+  cursor: default;
+  min-width: 0.75em;
+  -moz-user-select: none;
+}
+table.keys tbody tr td.last {
+  width: 99%;
+  margin: 10px;
+}
+table.keys tbody tr td.alive {
+  background-color: #ccccdd;
+}
+table.keys tbody tr td.target {
+  background-color: #ddddcc;
+}
+table.keys tbody tr td.hover {
+  border-top: 1px solid #99BBE8;
+  border-right: 1px solid #15428B;
+  border-bottom: 1px solid #15428B;
+  border-left: 1px solid #99BBE8;
+  background-color: #99BBE8;
+}
+table.keys tbody tr td.pressed,
+table.keys tbody tr td.dead {
+  border-top: 1px solid #15428B;
+  border-right: 1px solid #99BBE8;
+  border-bottom: 1px solid #99BBE8;
+  border-left: 1px solid #15428B;
+  background-color: #99BBE8;
+}
+.keyboardInputInitiator {
+  margin-left: 3px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+/* BPMN Text Rotation */
+.rotateText {
+  font-family: Arial;
+  font-size: 10pt;
+  display: table;
+  text-align: center;
+  /* for firefox, safari, chrome, etc. */
+
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  /* For Opera*/
+
+  -khtml-transform: rotate(-90deg);
+  /* For Lunix*/
+
+  /* for ie */
+
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+.rotateText p {
+  display: table-cell;
+  vertical-align: middle;
+}
+.rotateTextIE {
+  font-family: Arial;
+  font-size: 10pt;
+  display: table;
+  text-align: center;
+  writing-mode: tb-rl;
+  filter: flipv fliph;
+}
+.normalText {
+  font-family: Arial;
+  font-size: 10pt;
+  display: table;
+  text-align: center;
+}
+.normalText p {
+  display: table-cell;
+  vertical-align: middle;
+}
+.normalTopText {
+  font-family: Arial;
+  font-size: 10pt;
+  display: table;
+  text-align: center;
+}
+.x-padding-left {
+  padding-left: 175px;
+}
+.x-pm-startcase-btn {
+  background-image: url(/skins/neoclassic/images/start.png) !important;
+  color: #000 !important;
+  padding-left: 25px !important;
+  padding-right: 2px !important;
+  padding-top: 5px !important;
+  padding-bottom: 8px !important;
+  font: 12px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-pm-notes-btn {
+  background-image: url(/skins/neoclassic/images/notes.png) !important;
+  color: #000 !important;
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+  padding-top: 30px !important;
+  padding-bottom: 5px !important;
+  font: 12px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-toolbar1 .x-btn-tl {
+  background-position: 0 0;
+}
+.x-toolbar1 .x-btn-tr {
+  background-position: -3px 0;
+}
+.x-toolbar1 .x-btn-tc {
+  background-position: 0 -6px;
+}
+.x-toolbar1 .x-btn-ml {
+  background-position: 0 -24px;
+}
+.x-toolbar1 .x-btn-mr {
+  background-position: -3px -24px;
+}
+.x-toolbar1 .x-btn-mc {
+  background-position: 0 -1096px;
+}
+.x-toolbar1 .x-btn-bl {
+  background-position: 0 -3px;
+}
+.x-toolbar1 .x-btn-br {
+  background-position: -3px -3px;
+}
+.x-toolbar1 .x-btn-bc {
+  background-position: 0 -15px;
+}
+.x-text-plain {
+  font-weight: bold;
+}
+#oAuth {
+  background-color: #fff;
+  text-shadow: #fff 0 1px 0;
+}
+#oAuth ul {
+  position: relative;
+  display: block;
+  height: auto;
+  font-size: 85%;
+}
+#oAuth ul li img {
+  margin-bottom: 1px;
+}
+#oAuth ul li {
+  float: left;
+  padding: 10px 10px;
+  margin: 5px;
+  /*    margin: 10px 0 0 25px;*/
+
+  text-align: center;
+  line-height: 1.25em;
+  color: #333;
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  height: 35px;
+  width: 35px;
+  overflow: hidden;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+#oAuth ul li.oAuth-hover {
+  background-color: #eee;
+}
+#oAuth ul li.x-view-selected {
+  background-color: rgba(100, 100, 100, 0.15);
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+#oAuth ul li img {
+  /*    display: block;*/
+
+}
+#oAuth li strong {
+  color: #000;
+  display: block;
+}
+#oAuth li span {
+  color: #999;
+}
+/* Case Notes styles */
+.x-cnotes-source {
+  border: 1px solid #EDEDED;
+  background-color: #fff;
+  cursor: pointer;
+}
+.x-cnotes-view td {
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 12px;
+}
+td.x-cnotes-label {
+  /*background-color: @grayDark;*/
+
+  border: 1px solid #EDEDED;
+  font-weight: bold;
+  text-align: right;
+  width: 40px;
+  padding: 0px 3px 0px 0px;
+}
+.x-cnotes-over {
+  background-color: #EBEBEB;
+  cursor: pointer;
+}
+.x-cnotes-selected {
+  background-color: #DFE8F6;
+  cursor: pointer;
+}
+.user-from {
+  font-size: 12px;
+  font-weight: bold;
+}
+.x-message {
+  /*       top rig top  left */
+
+  padding: 5px 5px 5px 10px;
+  font: 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #465070;
+}
+.replace {
+  display: none;
+}
+/** new Ext layouts **/
+.x-pm-login-body {
+  background: none repeat scroll 0 0 #32405a;
+  background-image: url("/skins/neoclassic/images/canvastile_bg2.jpg");
+}
+#loading-message {
+  padding-left: 10px !important;
+  color: #fff;
+  font: bold 10px/1.9 "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.x-pm-footer {
+  background-image: url("/skins/neoclassic/images/canvastile_bg2.jpg");
+  position: absolute;
+  bottom: 0;
+}
+.x-pm-footer-text {
+  color: #fff;
+  font: 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.x-pm-footer-advisetext {
+  color: #fff;
+  font: 6pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding-top: 0px;
+  padding-bottom: 15px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.x-date-middle .x-btn {
+  background: transparent;
+  border: 1px solid transparent;
+}
+.x-date-middle .x-btn.x-btn-over .x-btn-text {
+  color: #333;
+}
+.x-tab-strip-wrap {
+  border-bottom: #ccc 1px solid;
+}
+.x-form-label-right label.x-form-item-label {
+  font-size: 11px;
+}
+#ext-comp-1010.xtb-text {
+  font-size: 9px;
+}

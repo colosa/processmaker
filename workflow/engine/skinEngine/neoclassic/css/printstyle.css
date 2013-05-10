@@ -1,0 +1,592 @@
+/*!
+ * Variables
+ */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.svg#OpenSansLightItalic') format('svg');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.svg#OpenSansItalic') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.svg#OpenSansSemiboldItalic') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
+/*Colores*/
+.btn {
+  background-image: none;
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #f1f1f1;
+  background-image: -moz-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#dddddd));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -o-linear-gradient(top, #ffffff, #dddddd);
+  background-image: linear-gradient(to bottom, #ffffff, #dddddd);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffdddddd', GradientType=0);
+  border-color: #dddddd #dddddd #b7b7b7;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #dddddd;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #ccc;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: capitalize;
+  text-decoration: none;
+  line-height: 14px;
+  color: #000;
+}
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+  color: #333333;
+  background-color: #dddddd;
+  *background-color: #d0d0d0;
+}
+.btn:active,
+.btn.active {
+  background-color: #c4c4c4 \9;
+}
+.btn:hover {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn:hover:hover,
+.btn:hover:focus,
+.btn:hover:active,
+.btn:hover.active,
+.btn:hover.disabled,
+.btn:hover[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.btn:hover:active,
+.btn:hover.active {
+  background-color: #e6e6e6 \9;
+}
+.btn:focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn:focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-over {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn-over:hover,
+.btn-over:focus,
+.btn-over:active,
+.btn-over.active,
+.btn-over.disabled,
+.btn-over[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.btn-over:active,
+.btn-over.active {
+  background-color: #e6e6e6 \9;
+}
+.btn-focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn-focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-no-button {
+  background: none;
+  border: 1px transparent solid;
+}
+.link {
+  color: #00a1e4;
+  text-decoration: none;
+}
+.link:hover {
+  color: #00597e;
+}
+.link-hover {
+  color: #00597e;
+}
+/*
+botones del tinymce
+.o2k7Skin .mceButton{
+	.btn();
+}
+*/body {
+  margin: 0px;
+  background-color: #FFFFFF !important;
+  color: #000000;
+  font: normal 8pt sans-serif, Tahoma, MiscFixed;
+}
+@media print {
+  a:link,
+  a:visited {
+    text-decoration: none;
+    color: black;
+  }
+}
+@media print {
+  @page  {
+    margin: 10%;
+  }
+  blockquote,
+  pre {
+    page-break-inside: avoid;
+  }
+}
+.GridLink {
+  visibility: hidden !important;
+}
+.page-break {
+  page-break-before: always;
+}
+input[type=submit],
+input[type=button] {
+  visibility: hidden !important;
+}
+input[type=file] {
+  visibility: hidden !important;
+  display: none !important;
+  overflow: hidden !important;
+}
+.FormRequiredTextMessage {
+  visibility: hidden !important;
+}
+.tableOption {
+  visibility: hidden !important;
+}
+.boxTop div.a,
+.boxTop div.b,
+.boxTop div.c {
+  visibility: hidden !important;
+}
+form.formDefault .FormButton {
+  visibility: hidden !important;
+}
+.Record {
+  visibility: hidden !important;
+  overflow: hidden !important;
+  display: none !important;
+}
+/**------------------------------------------**/
+/* Box Top Model BEGIN */
+.boxTop,
+.boxTopBlue {
+  height: 9px;
+  padding-left: 8px;
+  padding-right: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.boxTop div,
+.boxTopBlue div {
+  background-color: #FFF;
+}
+.boxTop div.a,
+.boxTop div.c,
+.boxTopBlue div.a,
+.boxTopBlue div.c {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+}
+.boxTop div.a,
+.boxTopBlue div.a {
+  left: 0px;
+  top: 0px;
+  background-image: url(../images/ftl.png);
+  background-color: transparent;
+}
+.boxTop div.c,
+.boxTopBlue div.c {
+  top: 0px;
+  right: 0px;
+  background-image: url(../images/ftr.png);
+  background-color: transparent;
+}
+.boxTop div.b,
+.boxTopBlue div.b {
+  width: 100%;
+  height: 9px;
+  border-top: 1px solid #DADADA;
+  background-color: #FFF;
+}
+/* Box Top Model END */
+/* Box Bottom Model BEGIN */
+.boxBottom,
+.boxBottomBlue {
+  visibility: hidden;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+}
+.boxBottom div.a,
+.boxBottom div.c,
+.boxBottomBlue div.a,
+.boxBottomBlue div.c {
+  visibility: hidden;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+}
+.boxBottom div.a,
+.boxBottomBlue div.a {
+  visibility: hidden;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+}
+.boxBottom div.c,
+.boxBottomBlue div.c {
+  visibility: hidden;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+}
+.boxBottom div.b,
+.boxBottomBlue div.b {
+  visibility: hidden;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+}
+/* Box Bottom Model END */
+/* Box Bottom Model Blue BEGIN */
+.boxBottomBlue div.c {
+  visibility: hidden;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+}
+.boxBottomBlue div.a {
+  visibility: hidden;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+}
+.boxBottomBlue div.b {
+  visibility: hidden;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+}
+/* Box Bottom Model Blue END */
+/* BoxPanel Bottom Model BEGIN */
+.boxTopPanel {
+  height: 15px;
+  padding-left: 24px;
+  padding-right: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.boxTopPanel div.a,
+.boxTopPanel div.c {
+  position: absolute;
+  width: 25px;
+  height: 15px;
+}
+.boxTopPanel div.a {
+  left: 0px;
+  top: 0px;
+  background-image: url(../images/ftlL.png);
+  background-color: transparent;
+}
+.boxTopPanel div.c {
+  top: 0px;
+  right: 0px;
+  background-image: url(../images/ftrL.png);
+  background-color: transparent;
+}
+.boxTopPanel div.b {
+  width: 100%;
+  height: 16px;
+  background: transparent url(../images/ftc.png) repeat-x;
+}
+/* BoxPanel Bottom Model END */
+/* XmlForm BEGIN  */
+/* form BEGIN  */
+form {
+  font: normal 11px sans-serif, MiscFixed;
+  color: #808080;
+}
+form table {
+  font: normal 11px sans-serif, MiscFixed;
+  color: #808080;
+}
+form.formDefault select {
+  font: normal 11px sans-serif, MiscFixed;
+  color: #000;
+}
+form.formDefault table {
+  font: normal 11px sans-serif, MiscFixed;
+  color: #808080;
+  line-height: 180%;
+}
+form.formDefault td {
+  padding: 2px;
+}
+form.formDefault .content {
+  background-color: #FFF;
+  border: 1px solid #CCC;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+form.formDefault input.FormField {
+  border: 1px solid #CCC;
+  background: #ffffff url(../images/input_back.gif) repeat-x;
+  color: #333333;
+  font: normal 11px Arial, Helvetica, sans-serif;
+}
+form.formDefault input.FormFieldInvalid {
+  border: 1px solid red;
+}
+form.formDefault input.FormFieldValid {
+  border: 1px solid green;
+}
+form.formDefault .FormLabel {
+  color: #808080;
+  text-align: right;
+  padding-right: 5px;
+}
+form.formDefault .FormFieldContent {
+  color: #000;
+  background-color: #EFEFEF;
+  padding-left: 5px;
+}
+form.formDefault textarea.FormTextArea {
+  border: 1px solid #CCC;
+  background: #ffffff url(../images/input_back.gif) repeat-x;
+  color: #333333;
+  font: normal 11px Arial, Helvetica, sans-serif;
+  overflow: auto;
+}
+form.formDefault textarea.FormTextPM {
+  border: 1px solid #CCC;
+  background: #ffffff url(../images/input_back.gif) repeat-x;
+  color: #333333;
+  font: normal 12 Courier New, monospace ;
+  overflow: auto;
+}
+form.formDefault .FormTitle {
+  color: #000;
+  padding-left: 5px;
+  font-weight: bold;
+  background-color: #E0EFE6;
+}
+form.formDefault .FormSubTitle {
+  background-color: #D1DEDF !important;
+  color: black;
+}
+form.formDefault .FormButton {
+  text-align: center;
+}
+form.formDefault a {
+  text-decoration: none;
+  color: #006699;
+}
+form.formDefault a:hover {
+  color: orange;
+}
+form.formDefault td.withoutLabel,
+form.formDefault td.withoutLabel table td {
+  padding: 0px;
+  height: 8px;
+}
+/* form END  */
+/* pagedTable BEGIN  */
+.pagedTableDefault {
+  border-left: 1px solid #DADADA;
+  border-right: 1px solid #DADADA;
+  background-color: #FFF;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.pagedTableDefault,
+.pagedTableDefault table {
+  font: normal 11px sans-serif, MiscFixed;
+  color: #808080;
+}
+.pagedTableDefault,
+.pagedTableDefault .headerContent .tableOption a {
+  color: #2078A8;
+  text-decoration: none;
+}
+.pagedTableDefault,
+.pagedTableDefault .headerContent .tableOption a:hover {
+  color: orange;
+}
+.pagedTableDefault td {
+  padding: 0px;
+}
+.pagedTableDefault .pagedTable td {
+  padding: 5px;
+}
+.pagedTableDefault .pagedTable {
+  border: 1px solid #DFDFDF;
+  border-collapse: collapse;
+  color: #27373F;
+}
+.pagedTable td {
+  text-align: left;
+}
+.pagedTableDefault .pagedTable .Row1 {
+  background-color: #FFF;
+}
+.pagedTableDefault .pagedTable .Row2 {
+  background-color: #EEE;
+}
+tr.Selected {
+  background-color: #D8DDFF;
+}
+.pagedTableDefault .pagedTable .RowPointer {
+  background-color: #E0EAEF;
+}
+.pagedTableDefault .cellSelected1 {
+  font-weight: bold;
+}
+.pagedTableDefault .cellSelected2 {
+  font-weight: bold;
+}
+.pagedTableDefault .pagedTable a {
+  color: #FFF;
+}
+.pagedTableDefault .pagedTable a:hover {
+  color: orange;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader {
+  border-bottom: 0px solid #DFDFDF;
+  background-color: #E0E9EF;
+  background-color: #6F7F75;
+  color: #5B5B5B;
+  font-weight: bold;
+  background-image: url(/js/maborak/core/images/silverBackgroundTableTitle.jpg);
+  background-repeat: repeat-x;
+  height: 26px;
+  padding: 0px;
+  overflow: hidden;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader a {
+  text-decoration: none;
+  color: #5B5B5B;
+  padding-left: 5px;
+  font: normal 8pt Tahoma, sans-serif, MiscFixed;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader a:hover {
+  color: orange;
+}
+/* Grid BEGIN */
+div.pattern .content {
+  padding-left: 5px;
+  padding-right: 5px;
+  border-left: 1px solid #DADADA;
+  border-right: 1px solid #DADADA;
+  background-color: #FFF;
+}
+div.pattern .FormTitle {
+  font-weight: bold;
+  color: black;
+  background-color: #E0EFE6;
+  padding: 2px;
+}
+div.grid {
+  font: normal 11px sans-serif, MiscFixed;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 7px;
+}
+div.grid .content {
+  padding-left: 5px;
+  padding-right: 5px;
+  border-left: 1px solid #DADADA;
+  border-right: 1px solid #DADADA;
+  background-color: #FFF;
+  width: 100%;
+}
+html > body div.grid .content {
+  width: auto;
+}
+div.grid .tableGrid {
+  width: 100%;
+}
+/* Grid End */
+/* XmlForm END  */
+.tableGrid_view {
+  width: 100%;
+  border-top: 0px solid #DADADA;
+  border-bottom: 0px solid #DADADA;
+  border-left: 0px solid #DADADA;
+  border-right: 0px solid #DADADA;
+  padding: 0px;
+}
+table.tableGrid_view td {
+  border-top: 1px solid #DADADA;
+  border-bottom: 1px solid #DADADA;
+  border-left: 0px solid #DADADA;
+  border-right: 0px solid #DADADA;
+  padding: 0px;
+}

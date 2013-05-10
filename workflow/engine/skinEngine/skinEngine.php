@@ -362,7 +362,7 @@ class SkinEngine
         if (! defined('SKIP_FREE_OF_CHARGE_TEXT')) {
           $freeOfChargeText = "Supplied free of charge with no support, certification, warranty, <br>maintenance nor indemnity by Colosa and its Certified Partners.";
         }
-        $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " <a href=\"http://www.colosa.com\" alt=\"Colosa, Inc.\" target=\"_blank\">Colosa, Inc.</a> All rights reserved.<br /> $freeOfChargeText " . "<br><br/><a href=\"http://www.processmaker.com\" alt=\"Powered by ProcessMaker - Open Source Workflow & Business Process Management (BPM) Management Software\" title=\"Powered by ProcessMaker\" target=\"_blank\"><img src=\"/images/PowerdbyProcessMaker.png\" border=\"0\" /></a>";
+        $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " <a href=\"http://www.colosa.com\" alt=\"Colosa, Inc.\" target=\"_blank\">Colosa, Inc.</a> All rights reserved.<br /> $freeOfChargeText " . "<br><br/><a href=\"http://www.processmaker.com\" alt=\"Powered by ProcessMaker - Open Source Workflow & Business Process Management (BPM) Management Software\" title=\"Powered by ProcessMaker\" target=\"_blank\"></a>";
       }
 
       $oMenu = new Menu();
@@ -613,16 +613,66 @@ class SkinEngine
         if (! defined('SKIP_FREE_OF_CHARGE_TEXT'))
         $freeOfChargeText = "Supplied free of charge with no support, certification, warranty, <br>maintenance nor indemnity by Colosa and its Certified Partners.";
         if(class_exists('pmLicenseManager')) $freeOfChargeText="";
-        $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " <a href=\"http://www.colosa.com\" alt=\"Colosa, Inc.\" target=\"_blank\">Colosa, Inc.</a> All rights reserved.<br /> $freeOfChargeText " . "<br><br/><a href=\"http://www.processmaker.com\" alt=\"Powered by ProcessMaker - Open Source Workflow & Business Process Management (BPM) Management Software\" title=\"Powered by ProcessMaker\" target=\"_blank\"><img src=\"/images/PowerdbyProcessMaker.png\" border=\"0\" /></a>";
+        $footer .= "<br />Copyright &copy; 2003-" . date('Y') . " <a href=\"http://www.colosa.com\" alt=\"Colosa, Inc.\" target=\"_blank\">Colosa, Inc.</a> All rights reserved.<br /> $freeOfChargeText " . "<br><br/><a href=\"http://www.processmaker.com\" alt=\"Powered by ProcessMaker - Open Source Workflow & Business Process Management (BPM) Management Software\" title=\"Powered by ProcessMaker\" target=\"_blank\"></a>";
       }
 
-      $oMenu = new Menu();
-      $menus = $oMenu->generateArrayForTemplate($G_MAIN_MENU, 'SelectedMenu', 'mainMenu', $G_MENU_SELECTED, $G_ID_MENU_SELECTED);
-      $smarty->assign('menus', $menus);
+        $oMenu = new Menu();
+        $oSubMenu = new Menu();
+        $menus = $oMenu->generateArrayForTemplate($G_MAIN_MENU, 'SelectedMenu', 'mainMenu', $G_MENU_SELECTED, $G_ID_MENU_SELECTED);
+        //Add of submenu
+        foreach($menus as $key => $value) {
+            $target = explode('/', $value['target']);
+            $amount = count ($target);
+            $file = PATH_CORE . $target[$amount -2] . PATH_SEP . $target[$amount-1].".php";
+            if (!file_exists($file)) {
+                $file = PATH_PLUGINS . $target[$amount -2] . PATH_SEP . $target[$amount-1].".php";
+            }
+            if (file_exists($file)) {
+                $ar=fopen($file,"r");
+                $countGlobal = 0;
+                $delete = array('"', "'");
+                $gSubMenu ='';
+                $gIdMenuSelected ='';
+                $gIdSubMenuSelected ='';
+                while (!feof($ar))
+                {
+                    $line=fgets($ar);
+                    $lineJump=nl2br($line);
 
-      $oSubMenu = new Menu();
-      $subMenus = $oSubMenu->generateArrayForTemplate($G_SUB_MENU, 'selectedSubMenu', 'subMenu', $G_SUB_MENU_SELECTED, $G_ID_SUB_MENU_SELECTED);
-      $smarty->assign('subMenus', $subMenus);
+                    $result = strpos($lineJump, '$G_SUB_MENU');
+                    if ($result !== FALSE) {
+                        $cad = explode('=', $lineJump);
+                        $gSubMenu = explode(';', $cad[1]);
+                        $gSubMenu = trim(str_replace($delete, "", $gSubMenu[0]));
+                        $countGlobal++;
+                    }
+                    $result = strpos($lineJump, '$G_ID_MENU_SELECTED');
+                    if ($result !== FALSE) {
+                        $cad = explode('=', $lineJump);
+                        $gIdMenuSelected = explode(';', $cad[1]);
+                        $gIdMenuSelected = trim(str_replace($delete, "", $gIdMenuSelected[0]));
+                        $countGlobal++;
+                    }
+                    $result = strpos($lineJump, '$G_ID_SUB_MENU_SELECTED');
+                    if ($result !== FALSE) {
+                        $cad = explode('=', $lineJump);
+                        $gIdSubMenuSelected = explode(';', $cad[1]);
+                        $gIdSubMenuSelected = trim(str_replace($delete, "", $gIdSubMenuSelected[0]));
+                        $countGlobal++;
+                    }
+                    if ($countGlobal == 3) {
+                        break;
+                    }
+                }
+                fclose($ar);
+                $subMenus = '';
+                if ($gSubMenu != '' && $gIdMenuSelected != '' && $gIdSubMenuSelected != '') {
+                    $subMenus = $oSubMenu->generateArrayForTemplate($gSubMenu, '', 'subMenu', $gIdMenuSelected, $gIdSubMenuSelected);
+                }
+                $menus[$key]['subMenu'] = $subMenus;
+            }
+        }
+        $smarty->assign('menus', $menus);
 
       if (! defined('NO_DISPLAY_USERNAME')) {
         define('NO_DISPLAY_USERNAME', 0);

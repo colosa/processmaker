@@ -1,0 +1,1113 @@
+/*!
+ * Variables
+ */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.svg#OpenSansLightItalic') format('svg');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.svg#OpenSansItalic') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.svg#OpenSansSemiboldItalic') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
+/*Colores*/
+.btn {
+  background-image: none;
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #f1f1f1;
+  background-image: -moz-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#dddddd));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -o-linear-gradient(top, #ffffff, #dddddd);
+  background-image: linear-gradient(to bottom, #ffffff, #dddddd);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffdddddd', GradientType=0);
+  border-color: #dddddd #dddddd #b7b7b7;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #dddddd;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #ccc;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: capitalize;
+  text-decoration: none;
+  line-height: 14px;
+  color: #000;
+}
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+  color: #333333;
+  background-color: #dddddd;
+  *background-color: #d0d0d0;
+}
+.btn:active,
+.btn.active {
+  background-color: #c4c4c4 \9;
+}
+.btn:hover {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn:hover:hover,
+.btn:hover:focus,
+.btn:hover:active,
+.btn:hover.active,
+.btn:hover.disabled,
+.btn:hover[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.btn:hover:active,
+.btn:hover.active {
+  background-color: #e6e6e6 \9;
+}
+.btn:focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn:focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-over {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn-over:hover,
+.btn-over:focus,
+.btn-over:active,
+.btn-over.active,
+.btn-over.disabled,
+.btn-over[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.btn-over:active,
+.btn-over.active {
+  background-color: #e6e6e6 \9;
+}
+.btn-focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn-focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-no-button {
+  background: none;
+  border: 1px transparent solid;
+}
+.link {
+  color: #00a1e4;
+  text-decoration: none;
+}
+.link:hover {
+  color: #00597e;
+}
+.link-hover {
+  color: #00597e;
+}
+/*
+botones del tinymce
+.o2k7Skin .mceButton{
+	.btn();
+}
+*//** form controls styles form.css */
+body {
+  color: black;
+}
+.pm_separator {
+  height: -1px;
+}
+form {
+  margin: 0px;
+}
+INPUT {
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 10pt;
+}
+/* Theme processmaker */
+.app_menuRight_container___processmaker {
+  position: absolute;
+  border: 1px solid #868686;
+  background-color: #FAFAFA;
+  overflow: hidden;
+  z-index: 10000;
+}
+.app_menuRight_shadow___processmaker {
+  position: absolute;
+  border: 1px solid black;
+  background-color: black;
+  overflow: hidden;
+  z-index: 9999;
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+}
+.app_menuRight_separator___processmaker {
+  padding: 0;
+  margin-left: 30px;
+  margin-right: 5px;
+  position: relative;
+  cursor: default;
+  border-top: 1px solid #C5C5C5;
+  border-bottom: 0px solid red;
+  overflow: hidden;
+}
+.app_menuRight_option___processmaker,
+.app_menuRight_option_over___processmaker,
+.app_menuRight_optionNull___processmaker {
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+  cursor: default;
+  color: black;
+  background-color: "";
+  height: 29px;
+  overflow: hidden;
+  border: 0px solid #FBFFF2;
+}
+.app_menuRight_option_over___processmaker {
+  background-color: #edf3f6;
+}
+.app_menuRight_option_image___processmaker,
+.app_menuRight_option_image_over___processmaker,
+.app_menuRight_option_imageNull___processmaker {
+  width: 26px;
+  height: 31px;
+  padding: 0px;
+  position: absolute;
+  overflow: hidden;
+  cursor: pointer;
+  left: 0;
+  top: 0;
+  background-color: #eeeeee;
+  border-right: 1px solid #C5C5C5;
+}
+.app_menuRight_option_image_over___processmaker {
+  background-color: #eeeeee;
+  border-right-width: 1px;
+}
+.app_menuRight_option_image_element___processmaker {
+  position: absolute;
+  top: 2;
+}
+.app_menuRight_option_text___processmaker {
+  padding: 0px;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #333333;
+  position: absolute;
+  cursor: pointer;
+  left: 30px;
+  top: 8px;
+  overflow: hidden;
+}
+.app_menuRight_option_imageNull___processmaker {
+  width: 26px;
+}
+/* leimnud.app.menuRight CSS end */
+/* processmap Theme.Panels begin */
+.panel_containerWindow___processmaker {
+  border: 1px solid #C0C0C0;
+  border: 1px solid #1983BD;
+  border: 1px solid #66667E;
+  border: 1px solid #AAA;
+  overflow: hidden;
+  /*border: 1px solid #5394BF;
+    border-left:1px solid #8BBDDF;
+    border-top:1px solid #8BBDDF;*/
+
+}
+.panel_modal___processmaker {
+  position: absolute;
+  background-color: black;
+  left: 0px;
+  top: 0px;
+}
+.panel_iframe___processmaker {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: white;
+  overflow: hidden;
+  z-index: 1;
+  top: 0px;
+  left: 0px;
+}
+.panel_backend___processmaker {
+  /*width:100%;*/
+
+  height: 100%;
+  position: absolute;
+  background-color: white;
+  overflow: hidden;
+  z-index: 1;
+  top: 0px;
+  left: 0px;
+}
+.panel_frontend___processmaker {
+  /*width: 100%;*/
+
+  height: 100%;
+  position: absolute;
+  background-color: #f3f3f3;
+  overflow: hidden;
+  z-index: 2;
+  top: 0px;
+  left: 0px;
+}
+.panel_titleBar___processmaker {
+  position: relative;
+  height: 23px;
+  overflow: hidden;
+  background: #dddddd;
+  border-bottom: 0px solid #DBE0E5;
+  width: 100%;
+}
+.panel_title___processmaker {
+  text-align: center;
+  width: 100%;
+  height: 23px;
+  color: #000;
+  /*color:#FFF;*/
+
+  font: bold 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding-left: 5px;
+  padding-top: 5px;
+  z-index: 1;
+  color: #333333;
+}
+.panel_close___processmaker {
+  position: absolute;
+  top: 4px;
+  font: normal 0pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding: 0px;
+  border: 0px solid red;
+  z-index: 2;
+  cursor: pointer;
+  background: url("/skins/neoclassic/images/ext/gray/panel/tool-sprites.gif") 0 0 no-repeat;
+}
+.panel_roll___processmaker {
+  position: absolute;
+  top: 4;
+  font: normal 0pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding: 0px;
+  border: 0px solid red;
+  z-index: 2;
+  cursor: pointer;
+  background: url(/skins/neoclassic/images/classic/roll.static.gif);
+  background-repeat: no-repeat;
+}
+.panel_resize___processmaker {
+  position: absolute;
+  right: 1px;
+  width: 11px;
+  height: 11px;
+  overflow: hidden;
+  z-index: 333333;
+  bottom: 1px;
+  background: url(/skins/neoclassic/images/classic/panel.resize.11x11.png?rand=234);
+  background-repeat: no-repeat;
+}
+.panel_headerBar___processmaker {
+  position: relative;
+  height: 25px;
+  overflow: hidden;
+  background-color: transparent;
+}
+.panel_shadow___processmaker {
+  position: absolute;
+  background-color: #000;
+}
+.panel_tab___processmaker {
+  position: absolute;
+  z-index: 3;
+  padding-bottom: 14px;
+  overflow-x: scroll;
+}
+.panel_tabH___processmaker {
+  position: absolute;
+}
+.panel_tabOptionH___processmaker {
+  text-align: center;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  position: absolute;
+  cursor: pointer;
+  border: 1px solid #919B9C;
+  background-color: #F9F9F9;
+  color: black;
+  height: 20px;
+  max-height: 9px;
+  overflow: hidden;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+}
+.panel_tabOptionOverH___processmaker {
+  cursor: pointer;
+}
+.panel_tabOptionSelectedH___processmaker,
+.panel_tabOptionOverH___processmaker,
+.panel_tabOptionSelectedOverH___processmaker {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  border: 1px solid #FF9900;
+  border: 1px solid #919B9C;
+  border-bottom: 1px solid #F9F9F9;
+  border-top-color: #E68B2C;
+  background-color: #FBFFF2;
+  background-color: #F9F9F9;
+  color: #000000;
+  text-align: center;
+  position: absolute;
+  background-image: url('/skins/neoclassic/images/classic/panel.tabSelected.1x3.gif');
+  background-repeat: repeat-x;
+  background-position: 0px -1px;
+  height: 22px;
+  max-height: 10px;
+  overflow: hidden;
+  /*    -moz-border-radius-topleft:4px;
+    -moz-border-radius-topright:4px;*/
+
+}
+.panel_tabOption___processmaker {
+  text-align: left;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  border: 1px solid #A3A2BC;
+  border: 1px solid #FF9900;
+  position: absolute;
+  background-color: #FFE6BF;
+  cursor: pointer;
+  color: black;
+}
+.panel_tabOptionOver___processmaker {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  cursor: pointer;
+  text-align: left;
+  border: 1px solid #FF9900;
+  color: #666666;
+  background-color: white;
+}
+.panel_tabOptionSelected___processmaker,
+.panel_tabOptionSelectedOver___processmaker {
+  font: bold 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  border: 1px solid #FF9900;
+  border-right: 1px solid #FFF;
+  background-color: #FBFFF2;
+  color: #000000;
+  text-align: left;
+  position: absolute;
+}
+.panel_tabOptionSelectedOver___processmaker {
+  color: #EA560F;
+}
+.panel_content___processmaker {
+  position: relative;
+  color: black;
+  font: normal 9pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  text-align: justify;
+  border: 1px solid #A3A2BC;
+  border: 1px solid #FF9900;
+  border: 1px solid #919B9C;
+  /*border-left:1px solid #1983BD;
+    border-top:1px solid #1983BD;
+    border-right:1px solid #59A5D9;
+    border-bottom:1px solid #59A5D9;*/
+
+  background-color: #E8F2F7;
+  background-color: #FFFFFF;
+  background-color: #F9F9F9;
+  background-color: #FFF;
+  overflow: auto;
+  padding-top: 15px;
+}
+.panel_statusBar___processmaker {
+  position: relative;
+  overflow: hidden;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding: 0px;
+  margin: 0px;
+  /*background-color:white;*/
+
+  background-color: transparent;
+  min-height: 25px;
+}
+.panel_status___processmaker {
+  text-align: center;
+  padding: 2;
+  padding-left: 5px;
+  color: #666666;
+}
+/* processmap Theme.Panels end */
+/*    Theme leimnud.module.grid    BEGIN */
+/*    gray    BEGIN */
+.app_grid_headerBar___gray {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding: 3px;
+  text-align: center;
+  border: 1px solid #AAA;
+  /*border:1px solid #FF9D3F;*/
+
+  border-bottom: 0px solid red;
+  background-color: #E8E8E8;
+  background: url(/skins/neoclassic/images/classic/grid.title.gray.gif);
+  background-position: 0px -10px;
+}
+.app_grid_table___gray {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0px;
+}
+.app_grid_title___gray {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  border: 1px solid #cbcbcb;
+  border: 1px solid #aaa;
+  background-color: #D0DEF0;
+  background: url(/skins/neoclassic/images/classic/grid.title.gray.gif);
+  text-align: center;
+  padding: 4px;
+  height: 25px;
+  color: #000;
+  cursor: default;
+  background-position: 0px 0px;
+}
+.app_grid_data___gray {
+  padding: 5px;
+  border: 1px solid #dfdfdf;
+  color: #333;
+  overflow: auto;
+  background-color: #FFF;
+}
+.app_grid_data___gray select {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  width: 100%;
+}
+.app_grid_bg1___gray {
+  background-color: #e0e0e0;
+  border-color: #cbcbcb;
+  border-color: #aaa;
+  text-align: center;
+  font-size: 7pt;
+  color: #000;
+  cursor: default;
+}
+.app_grid_bg2___gray {
+  background-color: #e0e0e0;
+  border: 1px solid #e0e0e0;
+  text-align: center;
+  color: #000;
+}
+.app_grid_pDf___gray,
+.app_grid_pDp___gray,
+.app_grid_pDn___gray,
+.app_grid_pDl___gray,
+.app_grid_pDfDisabled___gray,
+.app_grid_pDpDisabled___gray,
+.app_grid_pDnDisabled___gray,
+.app_grid_pDlDisabled___gray {
+  width: 16px;
+  height: 16px;
+  text-decoration: none;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 3px;
+  margin-right: 3px;
+  overflow: none;
+  background-repeat: no-repeat;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.app_grid_pDf___gray {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-first.gif);
+}
+.app_grid_pDf___gray:hover {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-first-disabled.gif);
+}
+.app_grid_pDfDisabled___gray {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-first-disabled.gif);
+  cursor: default;
+}
+.app_grid_pDp___gray {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-prev.gif);
+}
+.app_grid_pDp___gray:hover {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-prev-disabled.gif);
+}
+.app_grid_pDpDisabled___gray {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-prev-disabled.gif);
+  cursor: default;
+}
+.app_grid_pDn___gray {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-next.gif);
+}
+.app_grid_pDn___gray:hover {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-next-disabled.gif);
+}
+.app_grid_pDnDisabled___gray {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-next-disabled.gif);
+  cursor: default;
+}
+.app_grid_pDl___gray {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-last.gif);
+}
+.app_grid_pDl___gray:hover {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-last-disabled.gif);
+}
+.app_grid_pDlDisabled___gray {
+  background: url(/skins/neoclassic/images/classic/module.grid/page-last-disabled.gif);
+  cursor: default;
+}
+.app_grid_pDC___gray {
+  width: 35px;
+  height: 18px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border: 1px solid #919B9C;
+  text-align: center;
+}
+/*    gray    END */
+/*    Theme leimnud.module.grid.paginator    BEGIN */
+.app_grid_paginatorHeader___gray {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: black;
+  padding: 10px;
+  text-align: center;
+}
+.app_grid_paginatorLink___gray {
+  background-color: #E0E0E0;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin: 2px;
+  border: 1px solid #CBCBCB;
+  color: black;
+  cursor: hand;
+  text-decoration: none;
+  background: url(/skins/neoclassic/images/classic/grid.title.gray.gif);
+  background-position: 0px -10px;
+}
+.app_grid_paginatorLink___gray:hover {
+  background-color: #FFF;
+  border: 1px solid #66667E;
+  color: #66667E;
+}
+.app_grid_paginatorLinkSelected___gray {
+  background-color: #fff;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin: 2px;
+  border: 1px solid #CBCBCB;
+  color: black;
+  cursor: hand;
+  text-decoration: none;
+  cursor: default;
+}
+/*    Theme leimnud.module.app.button    BEGIN */
+.module_app_button___gray,
+.module_app_buttonjs___gray {
+  border: 1px solid #afafaf;
+  margin-left: 2px;
+  cursor: pointer;
+  background: url(/skins/neoclassic/images/classic/grid.title.gray.gif);
+  background-position: 0px 0px;
+}
+.module_app_button___gray:hover,
+.module_app_buttonHover___gray {
+  border: 1px solid #AAA;
+  background-position: 0px -8px;
+}
+.module_app_buttonDisabled___gray {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  border: 1px solid #9f9f9f;
+  background-position: 0px -10px;
+  color: #9f9f9f;
+  cursor: default;
+}
+/*    Theme leimnud.module.app.button    END */
+/*    Theme leimnud.module.app.input    BEGIN */
+.module_app_input___gray {
+  padding: 1px;
+  border: 1px solid #AAA;
+  padding-left: 3px;
+  background: #ffffff url(/skins/neoclassic/images/classic/input_back.gif) repeat-x;
+  background-position: 0px 0px;
+  color: #333333;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.module_app_input___gray_readOnly {
+  padding: 1px;
+  border: 1px solid #AAA;
+  padding-left: 3px;
+  background: #EBEBE4;
+  /*#FFFFFF url(/skins/neoclassic/images/classic/input_back.gif) repeat-x;*/
+
+  background-position: 0px 0px;
+  color: #333333;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.module_ListBoxView {
+  color: white;
+  background: #0A246A;
+}
+.module_app_inputHover___gray {
+  border: 1px solid #AAA;
+}
+.module_app_inputPassed___gray {
+  padding: 1px;
+  border: 1px solid green;
+  padding-left: 2px;
+  padding-right: 20px;
+  background: #ffffff url(/skins/neoclassic/images/classic/ok.png) no-repeat;
+  background-position: 99% 50%;
+  color: #000000;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.module_app_inputFailed___gray {
+  border: 1px solid red;
+  padding: 1px;
+  padding-left: 2px;
+  padding-right: 20px;
+  background: #ffffff url(/skins/neoclassic/images/classic/failed.png) no-repeat;
+  background-position: 99% 50%;
+  color: #000000;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.module_app_inputFailed_ie___gray {
+  filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=-1, OffY=-1, color=#ff0000) progid:DXImageTransform.Microsoft.dropshadow(OffX=1, OffY=1, color=#ff0000);
+}
+.module_app_inputPassed_ie___gray {
+  filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=-1, OffY=-1, color=#008000) progid:DXImageTransform.Microsoft.dropshadow(OffX=1, OffY=1, color=#008000);
+}
+.module_app_inputDisabled___gray {
+  background-color: #f0f0f0;
+  color: #9f9f9f;
+}
+/*    Theme leimnud.module.app.input    END */
+.module_app_select___gray {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  border-top-style: double;
+  width: 100%;
+}
+/*    Theme leimnud.module.rss    BEGIN */
+.module_rss_container___gray,
+.module_rss_title___gray,
+.module_rss_header___gray,
+.module_rss_separator___gray,
+.module_rss_item___gray {
+  border: 1px solid #AAA;
+  text-align: justify;
+}
+.module_rss_title___gray,
+.module_rss_header___gray,
+.module_rss_itemHeader___gray {
+  background: url(/skins/neoclassic/images/classic/grid.title.gray.gif);
+}
+.module_rss_itemContainer___gray {
+  border-top: 1px solid #cbcbcb;
+  overflow: hidden;
+  padding: 2px;
+  background-color: #EEE;
+  height: 1px;
+}
+.module_rss_container___gray,
+.module_rss_separator_gray {
+  background-color: #DFDFDF;
+}
+.module_rss_container___gray {
+  padding: 3px;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  width: 200px;
+}
+.module_rss_title___gray {
+  border-bottom-width: 0px;
+  text-align: center;
+  padding: 4px;
+  color: #000;
+  cursor: default;
+  background-position: 0px 0px;
+}
+.module_rss_header___gray {
+  padding: 1px;
+  text-align: right;
+  border-bottom-width: 0px;
+  background-position: 0px -10px;
+}
+.module_rss_separator___gray {
+  border-bottom-width: 0px;
+  padding: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow: hidden;
+}
+.module_rss_item___gray {
+  border-bottom-width: 0px;
+  overflow: hidden;
+}
+.module_rss_itemLast___gray {
+  border-bottom-width: 1px;
+}
+.module_rss_itemHeader___gray {
+  padding: 5px;
+  background-position: 0px -10px;
+  position: relative;
+  cursor: pointer;
+}
+.module_rss_itemPubDate___gray {
+  color: #808080;
+  font: normal 7pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding: 5px;
+}
+.module_rss_itemHr___gray {
+  border-color: #808080;
+}
+.module_rss_itemTitle___gray {
+  color: #000;
+}
+.module_rss_itemReaded___gray {
+  color: #7f7f7f;
+}
+.module_rss_itemOver {
+  background-position: 0px -50px;
+}
+.module_rss_itemButtons___gray {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+}
+.module_rss_itemLink___gray {
+  text-align: right;
+  padding-top: 10px;
+}
+/*    Theme leimnud.module.rss    END */
+/* toolbar estilo facebook */
+div#toolbar {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 20px;
+  z-index: 9999999;
+}
+.toolbar_container {
+  width: 100%;
+  text-align: center;
+  height: 25px;
+}
+.toolbar_wrapper {
+  background-image: url(/skins/neoclassic/images/bar_bg_bw.gif);
+  background-position: 0 -1px;
+  border: 1px solid #B5B5B5;
+  height: 30px;
+  margin-left: 5%;
+  margin-right: 5%;
+  text-align: left;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.toolbar_item {
+  border-right: 1px solid #B5B5B5;
+  padding-top: 3px;
+  padding-bottom: 6px;
+  padding-right: 15px;
+  padding-left: 25px;
+  position: relative;
+  display: inline;
+  text-align: center;
+}
+.toolbar_item_section {
+  position: absolute;
+  border: 1px solid #B5B5B5;
+  width: 150px;
+  height: 300px;
+  background-color: white;
+  bottom: 21px;
+  left: -1px;
+  color: black;
+  display: none;
+}
+@media screen {
+  div#toolbar {
+    position: fixed;
+  }
+  /* Don't do this at home */
+  * html {
+    overflow-y: hidden;
+  }
+  * html body {
+    overflow-y: auto;
+  }
+  * html div#toolbar {
+    position: absolute;
+  }
+  /* All done. */
+}
+#toolbar a:link,
+#toolbar a:visited {
+  color: #666;
+  text-decoration: none;
+}
+#toolbar a:hover {
+  color: #000;
+}
+#toolbar img {
+  position: absolute;
+  left: 5px;
+  top: 3px;
+}
+/*Botones*/
+.pagedTableDefault .pagedTable .RowLink a,
+.module_app_button___gray,
+.button_pm,
+.module_app_buttonjs___gray,
+.module_app_buttonDisabled___gray {
+  background-image: none;
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #f1f1f1;
+  background-image: -moz-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#dddddd));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -o-linear-gradient(top, #ffffff, #dddddd);
+  background-image: linear-gradient(to bottom, #ffffff, #dddddd);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffdddddd', GradientType=0);
+  border-color: #dddddd #dddddd #b7b7b7;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #dddddd;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #ccc;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: capitalize;
+  text-decoration: none;
+  line-height: 14px;
+  color: #000;
+  margin: 2px 0;
+  padding: 2px 5px;
+}
+.pagedTableDefault .pagedTable .RowLink a:hover,
+.module_app_button___gray:hover,
+.button_pm:hover,
+.module_app_buttonjs___gray:hover,
+.module_app_buttonDisabled___gray:hover,
+.pagedTableDefault .pagedTable .RowLink a:focus,
+.module_app_button___gray:focus,
+.button_pm:focus,
+.module_app_buttonjs___gray:focus,
+.module_app_buttonDisabled___gray:focus,
+.pagedTableDefault .pagedTable .RowLink a:active,
+.module_app_button___gray:active,
+.button_pm:active,
+.module_app_buttonjs___gray:active,
+.module_app_buttonDisabled___gray:active,
+.pagedTableDefault .pagedTable .RowLink a.active,
+.module_app_button___gray.active,
+.button_pm.active,
+.module_app_buttonjs___gray.active,
+.module_app_buttonDisabled___gray.active,
+.pagedTableDefault .pagedTable .RowLink a.disabled,
+.module_app_button___gray.disabled,
+.button_pm.disabled,
+.module_app_buttonjs___gray.disabled,
+.module_app_buttonDisabled___gray.disabled,
+.pagedTableDefault .pagedTable .RowLink a[disabled],
+.module_app_button___gray[disabled],
+.button_pm[disabled],
+.module_app_buttonjs___gray[disabled],
+.module_app_buttonDisabled___gray[disabled] {
+  color: #333333;
+  background-color: #dddddd;
+  *background-color: #d0d0d0;
+}
+.pagedTableDefault .pagedTable .RowLink a:active,
+.module_app_button___gray:active,
+.button_pm:active,
+.module_app_buttonjs___gray:active,
+.module_app_buttonDisabled___gray:active,
+.pagedTableDefault .pagedTable .RowLink a.active,
+.module_app_button___gray.active,
+.button_pm.active,
+.module_app_buttonjs___gray.active,
+.module_app_buttonDisabled___gray.active {
+  background-color: #c4c4c4 \9;
+}
+.pagedTableDefault .pagedTable .RowLink a:hover,
+.module_app_button___gray:hover,
+.button_pm:hover,
+.module_app_buttonjs___gray:hover,
+.module_app_buttonDisabled___gray:hover {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.pagedTableDefault .pagedTable .RowLink a:hover:hover,
+.module_app_button___gray:hover:hover,
+.button_pm:hover:hover,
+.module_app_buttonjs___gray:hover:hover,
+.module_app_buttonDisabled___gray:hover:hover,
+.pagedTableDefault .pagedTable .RowLink a:hover:focus,
+.module_app_button___gray:hover:focus,
+.button_pm:hover:focus,
+.module_app_buttonjs___gray:hover:focus,
+.module_app_buttonDisabled___gray:hover:focus,
+.pagedTableDefault .pagedTable .RowLink a:hover:active,
+.module_app_button___gray:hover:active,
+.button_pm:hover:active,
+.module_app_buttonjs___gray:hover:active,
+.module_app_buttonDisabled___gray:hover:active,
+.pagedTableDefault .pagedTable .RowLink a:hover.active,
+.module_app_button___gray:hover.active,
+.button_pm:hover.active,
+.module_app_buttonjs___gray:hover.active,
+.module_app_buttonDisabled___gray:hover.active,
+.pagedTableDefault .pagedTable .RowLink a:hover.disabled,
+.module_app_button___gray:hover.disabled,
+.button_pm:hover.disabled,
+.module_app_buttonjs___gray:hover.disabled,
+.module_app_buttonDisabled___gray:hover.disabled,
+.pagedTableDefault .pagedTable .RowLink a:hover[disabled],
+.module_app_button___gray:hover[disabled],
+.button_pm:hover[disabled],
+.module_app_buttonjs___gray:hover[disabled],
+.module_app_buttonDisabled___gray:hover[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  *background-color: #f2f2f2;
+}
+.pagedTableDefault .pagedTable .RowLink a:hover:active,
+.module_app_button___gray:hover:active,
+.button_pm:hover:active,
+.module_app_buttonjs___gray:hover:active,
+.module_app_buttonDisabled___gray:hover:active,
+.pagedTableDefault .pagedTable .RowLink a:hover.active,
+.module_app_button___gray:hover.active,
+.button_pm:hover.active,
+.module_app_buttonjs___gray:hover.active,
+.module_app_buttonDisabled___gray:hover.active {
+  background-color: #e6e6e6 \9;
+}
+.pagedTableDefault .pagedTable .RowLink a:focus,
+.module_app_button___gray:focus,
+.button_pm:focus,
+.module_app_buttonjs___gray:focus,
+.module_app_buttonDisabled___gray:focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.pagedTableDefault .pagedTable .RowLink a:focus::-moz-focus-inner,
+.module_app_button___gray:focus::-moz-focus-inner,
+.button_pm:focus::-moz-focus-inner,
+.module_app_buttonjs___gray:focus::-moz-focus-inner,
+.module_app_buttonDisabled___gray:focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.pagedTableDefault .pagedTable .RowLink a {
+  color: #333;
+  /*cursor:pointer;*/
+
+}
+/*FOCUS*/
+.pagedTableDefault .pagedTable .RowLink a:focus,
+.module_app_button___gray:focus,
+.button_pm:focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.pagedTableDefault .pagedTable .RowLink a:focus::-moz-focus-inner,
+.module_app_button___gray:focus::-moz-focus-inner,
+.button_pm:focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+/*NO BUTTON*/
+.pagedTableDefault .pagedTable .RowLink a:empty {
+  display: none;
+  margin: 0;
+}
+/*DISABLED*/
+.pagedTableDefault .pagedTable .RowLink a.module_app_buttonDisabled___gray,
+.module_app_buttonDisabled___gray {
+  border: 1px solid #bbb;
+  background-position: 0 -3240px;
+  color: #9f9f9f;
+  cursor: default;
+}
+.pagedTableDefault .pagedTable .RowLink a.module_app_buttonDisabled___gray:hover,
+.module_app_buttonDisabled___gray:hover {
+  background: url("/skins/neoclassic/images/ext/gray/button/btn.gif") repeat-x scroll 0 -3240px transparent;
+}
