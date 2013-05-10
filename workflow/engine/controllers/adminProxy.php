@@ -485,15 +485,23 @@ class adminProxy extends HttpProxyController
                             if (strtoupper($UseSecureCon) == 'TLS') {
                                 $smtp->Hello($hello);
                             }
-                            if ( $smtp->Authenticate($user, $passwd) ) {
+                            if ($smtp->Authenticate($user, $passwd) ) {
                                 $this->success = true;
                             } else {
-                                $this->success = false;
-                                $this->msg = $smtp->error['error'];
+                                if (strtoupper($UseSecureCon) == 'TLS') {
+                                    $this->success = true;
+                                } else {
+                                    $this->success = false;
+                                    $smtpError = $smtp->getError();
+                                    $this->msg = $smtpError['error'];
+                                    // $this->msg = $smtp->error['error'];
+                                }
                             }
                         } else {
                             $this->success = false;
-                            $this->msg = $smtp->error['error'];
+                            $smtpError = $smtp->getError();
+                            $this->msg = $smtpError['error'];
+                            // $this->msg = $smtp->error['error'];
                         }
                     } catch (Exception $e) {
                         $this->success = false;
@@ -534,7 +542,9 @@ class adminProxy extends HttpProxyController
                             $this->success=true;
                         } else {
                             $this->success=false;
-                            $this->msg=$smtp->error['error'];
+                            $smtpError = $smtp->getError();
+                            $this->msg = $smtpError['error'];
+                            // $this->msg = $smtp->error['error'];
                         }
                     } catch (Exception $e) {
                         $this->success = false;
