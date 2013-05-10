@@ -1,0 +1,3477 @@
+/*!
+ * Variables
+ */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Light-webfont.eot');
+  src: url('/skins/neoclassic/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.eot');
+  src: url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.svg#OpenSansLightItalic') format('svg');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.eot');
+  src: url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.eot');
+  src: url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.svg#OpenSansItalic') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.eot');
+  src: url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.eot');
+  src: url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.svg#OpenSansSemiboldItalic') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
+/*
+@font-face {
+    font-family: 'OpenSansBold';
+    src: url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.eot');
+    src: url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.woff') format('woff'),
+         url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.ttf') format('truetype'),
+         url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.svg#OpenSansBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'OpenSansBoldItalic';
+    src: url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.eot');
+    src: url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.woff') format('woff'),
+         url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.ttf') format('truetype'),
+         url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.svg#OpenSansBoldItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+*//*Colores*/
+.btn {
+  background-image: none;
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #f1f1f1;
+  background-image: -moz-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#dddddd));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dddddd);
+  background-image: -o-linear-gradient(top, #ffffff, #dddddd);
+  background-image: linear-gradient(to bottom, #ffffff, #dddddd);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffdddddd', GradientType=0);
+  border-color: #dddddd #dddddd #b7b7b7;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  background-color: #dddddd;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #ccc;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: capitalize;
+  text-decoration: none;
+  line-height: 14px;
+  color: #000;
+}
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+  color: #333333;
+  background-color: #dddddd;
+  background-color: #d0d0d0;
+}
+.btn:active,
+.btn.active {
+  background-color: #c4c4c4 \9;
+}
+.btn:hover {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn:hover:hover,
+.btn:hover:focus,
+.btn:hover:active,
+.btn:hover.active,
+.btn:hover.disabled,
+.btn:hover[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  background-color: #f2f2f2;
+}
+.btn:hover:active,
+.btn:hover.active {
+  background-color: #e6e6e6 \9;
+}
+.btn:focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn:focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-over {
+  color: #333333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  background-color: #ebebeb;
+  background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+  background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+  background-image: linear-gradient(to bottom, #dddddd, #ffffff);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
+  border-color: #ffffff #ffffff #d9d9d9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  background-color: #ffffff;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border: 1px solid #aaa;
+}
+.btn-over:hover,
+.btn-over:focus,
+.btn-over:active,
+.btn-over.active,
+.btn-over.disabled,
+.btn-over[disabled] {
+  color: #333333;
+  background-color: #ffffff;
+  background-color: #f2f2f2;
+}
+.btn-over:active,
+.btn-over.active {
+  background-color: #e6e6e6 \9;
+}
+.btn-focus {
+  border: 1px solid #45626F;
+  outline: 0;
+}
+.btn-focus::-moz-focus-inner {
+  border: 1px solid transparent;
+}
+.btn-no-button {
+  background: none;
+  border: 1px transparent solid;
+}
+.link {
+  color: #00a1e4;
+  text-decoration: none;
+}
+.link:hover {
+  color: #00597e;
+}
+.link-hover {
+  color: #00597e;
+}
+/*
+botones del tinymce
+.o2k7Skin .mceButton{
+	.btn();
+}
+*/body {
+  margin: 0px;
+  background-color: #ffffff;
+  color: #333333;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+a,
+img {
+  padding: 0;
+  margin: 0;
+}
+img {
+  border: 0 none;
+}
+.Footer {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #000;
+  height: 0px;
+  padding-top: 100px;
+  text-align: center;
+}
+.Footer .image {
+  /*background-image: url(/skins/neoclassic/images/classic/bf.jpg);
+	background-repeat: repeat-x;
+	height:10px;*/
+
+}
+.Footer .content {
+  color: black;
+  padding: 10px;
+}
+.Footer .content a {
+  color: #006699;
+  text-decoration: none;
+}
+.Footer .content a:hover {
+  color: orange;
+}
+.logout a {
+  font-size: 11px;
+  color: #00a1e4;
+  text-decoration: none;
+}
+.logout a:hover {
+  color: #00597e;
+}
+.temporalMessageERROR {
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+  background-image: url(/skins/neoclassic/images/classic/error.gif);
+  color: #ffffff;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ffffff;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  text-decoration: none;
+  height: 25px;
+  padding: 0 20px;
+  vertical-align: middle;
+  font-weight: bold;
+}
+.temporalMessageWARNING {
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+  background-image: url(/skins/neoclassic/images/classic/warning.png);
+  color: #555555;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ffffff;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  text-decoration: none;
+  height: 25px;
+  padding: 0 20px;
+  vertical-align: middle;
+  font-weight: bold;
+}
+.temporalMessageINFO {
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+  background-image: url(/skins/neoclassic/images/classic/message.png);
+  color: #000000;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ffffff;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  text-decoration: none;
+  height: 25px;
+  padding: 0 20px;
+  vertical-align: middle;
+  font-weight: bold;
+}
+.userGroupTitle {
+  color: black;
+  font: bold 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding-left: 10px;
+}
+.userGroupLink {
+  padding: 0px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+.userGroupLink a {
+  color: #00a1e4;
+  text-decoration: none;
+  font: bold 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.userGroupLink a:hover {
+  color: #00597e;
+}
+.userGroupLink a:hover {
+  color: #00597e;
+}
+span.treePlusLink {
+  background-color: #E68B2C;
+  color: white;
+  font: normal 7pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  text-decoration: none;
+  padding-left: 1px;
+  padding-right: 1px;
+  overflow: hidden;
+  cursor: pointer;
+}
+span.treePlusLink:hover {
+  color: #EFC395;
+}
+span.XtreeMinus {
+  background-color: #006699;
+  color: white;
+  font: normal 7pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  text-decoration: none;
+  padding-left: 1px;
+  padding-right: 1px;
+  overflow: hidden;
+  cursor: pointer;
+}
+span.XtreeMinus:hover {
+  background-color: #EFC395;
+}
+/* leimnud.app.menuRight CSS begin */
+/* Processmaker CSS  begin */
+.pm_separatorOff___processmaker,
+.pm_separatorOn___processmaker {
+  height: 7px;
+  cursor: pointer;
+  text-align: center;
+  overflow: hidden;
+}
+.pm_separatorDOff___processmaker,
+.pm_separatorDOn___processmaker,
+.pm_separatorOver___processmaker,
+.pm_separatorOut___processmaker {
+  height: 7px;
+  width: 100%;
+  background-color: #C1D2EE;
+  background-color: buttonface;
+  border-color: buttonhighlight buttonshadow buttonshadow buttonhighlight;
+  border-style: solid;
+  border-width: 1px 0pt;
+  overflow: hidden;
+}
+.pm_separatorDOff___processmaker {
+  background: url(/js/maborak/core/images/separator.up.gif);
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+.pm_separatorDOn___processmaker {
+  background: url(/js/maborak/core/images/separator.down.gif);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+.pm_separatorOver___processmaker {
+  background-color: #edf3f6;
+}
+.pm_separatorOut___processmaker {
+  background-color: buttonface;
+}
+/* Processmaker CSS  end */
+/* processmap Theme.Task begin */
+/*theme firefox begin*/
+.processmap_task___firefox {
+  position: absolute;
+  height: 30px;
+  width: 150px;
+  background-color: #006699;
+  border: 1px solid #006699;
+  z-index: 10;
+  overflow: hidden;
+  cursor: move;
+}
+.processmap_task_label___firefox {
+  color: white;
+  text-align: center;
+  cursor: text;
+  padding-top: 11px;
+}
+.processmap_text___firefox {
+  position: absolute;
+  cursor: move;
+  background-color: red;
+}
+/*theme firefox end*/
+/*theme processmap begin*/
+.processmap_task___processmaker {
+  position: absolute;
+  height: 40px;
+  height: 38px;
+  width: 171px;
+  width: 164px;
+  z-index: 10;
+  overflow: hidden;
+  cursor: move;
+  /*background	: url(/js/processmap/core/images/bg_task.gif);
+	background	: url(/skins/neoclassic/images/fondotask.png);*/
+
+  /*background-color:#006699;*/
+
+  /*background-color:#6F6F6F;*/
+
+  background: url(/skins/neoclassic/images/borderTask.gif);
+  background-color: #0576C4;
+  background-color: #006699;
+  vertical-align: middle;
+  display: table-cell;
+  font-family: Arial, Tahoma, sans-serif;
+  font-size: 8pt;
+}
+.processmap_task_label___processmaker {
+  color: #FFF;
+  text-align: center;
+  /*position:absolute;*/
+
+  margin: 10px;
+  vertical-align: middle;
+  cursor: move;
+}
+.processmap_text___processmaker {
+  position: absolute;
+  z-index: 10;
+  cursor: move;
+  font: bold 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+.processmap_title___processmaker {
+  position: absolute;
+  cursor: move;
+  font: bold 13pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+/*theme processmap end*/
+.pm__toolbar {
+  align: left;
+  font-size: 1em;
+  line-height: 31px;
+}
+.processmap_toolbarItem___processmaker {
+  margin: 0px;
+  border: 1px solid #CEC6B5;
+  background: #efefef url(/skins/neoclassic/images/dynamicForm/toolbar.buttonbg.gif) repeat-x scroll 0%;
+}
+.processmap_toolbarItem___processmaker:hover {
+  margin: 0px;
+  background-color: buttonface;
+  border-color: buttonhighlight buttonshadow buttonshadow buttonhighlight;
+  border-style: solid;
+  /*border-width:1px 0pt;*/
+
+  border: 1px solid #316AC5;
+  background: #C1D2EE;
+  background-color: #C1D2EE;
+}
+/* processmap Theme.Task end */
+/* processmap Theme.Panels begin */
+/* processmap Theme.Panels end */
+/*	Theme leimnud.module.grid	BEGIN */
+/*	Theme leimnud.module.grid	END */
+/* Menues */
+TD.mainMenuBG {
+  background-image: url(/skins/neoclassic/images/ext/gray/toolbar/bg.gif);
+  background-repeat: repeat-x;
+  /*height: 25px;*/
+
+  left: 46px;
+  top: 72px;
+  direction: ltr;
+  text-align: left;
+}
+TD.mainMenu {
+  background-image: url(/skins/neoclassic/images/classic/bm.jpg);
+  background-repeat: repeat-x;
+  height: 25px;
+  left: 46px;
+  top: 72px;
+  direction: ltr;
+  text-align: center;
+}
+A.mainMenu {
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 11px;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding-top: 6px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+A.mainMenu:hover {
+  color: #D3D3D3;
+  font-weight: bold;
+  text-decoration: none;
+}
+TD.SelectedMenu {
+  background-image: url(/skins/neoclassic/images/classic/bsms.jpg);
+  background-repeat: repeat-x;
+  top: 72px;
+  height: 26px;
+}
+A.SelectedMenu {
+  vertical-align: middle;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  padding-top: 6px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.SelectedMenu:hover {
+  vertical-align: middle;
+  font-size: 11px;
+  color: #005791;
+  text-align: center;
+  padding-top: 6px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+TD.subMenu {
+  background-image: url('/skins/neoclassic/images/classic/bsm.jpg');
+  background-repeat: repeat-x;
+  height: 25px;
+}
+A.subMenu {
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 10px;
+  color: #005791;
+  font-weight: bold;
+  padding-top: 5px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+A.subMenu:hover {
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 10px;
+  color: #092148;
+  font-weight: bold;
+  padding-top: 5px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+TD.selectedSubMenu {
+  background-image: url('/js/maborak/core/images/silverBackgroundSubMenu.jpg');
+  background-repeat: repeat-x;
+  height: 26px;
+  left: 46px;
+  top: 98px;
+}
+A.selectedSubMenu {
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 10px;
+  color: #005791;
+  font-weight: bold;
+  padding-top: 5px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+A.selectedSubMenu:hover {
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 10px;
+  color: #005791;
+  font-weight: bold;
+  padding-top: 5px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+/* Menues END */
+/* Box Top Model BEGIN */
+.boxTop,
+.boxTopBlue {
+  height: 9px;
+  padding-left: 8px;
+  padding-right: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.boxTop div,
+.boxTopBlue div {
+  background-color: #FFF;
+}
+.boxTop div.a,
+.boxTop div.c,
+.boxTopBlue div.a,
+.boxTopBlue div.c {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+}
+.boxTop div.a,
+.boxTopBlue div.a {
+  left: 0px;
+  top: 0px;
+  background-image: url(/skins/neoclassic/images/classic/ftl.png);
+  background-color: transparent;
+}
+.boxTop div.c,
+.boxTopBlue div.c {
+  top: 0px;
+  right: 0px;
+  background-image: url(/skins/neoclassic/images/classic/ftr.png);
+  background-color: transparent;
+}
+.boxTop div.b,
+.boxTopBlue div.b {
+  width: 100%;
+  height: 9px;
+  border-top: 1px solid #DADADA;
+  background-color: #FFF;
+}
+.boxTop,
+.boxTopBlue {
+  display: none;
+}
+/* Box Top Model END */
+/* Box Top Model Blue BEGIN */
+.boxTopBlue div.c {
+  background-image: url(/skins/neoclassic/images/classic/ftr.blue.gif);
+  background-color: transparent;
+}
+.boxTopBlue div.a {
+  background-image: url(/skins/neoclassic/images/classic/ftl.blue.gif);
+  background-color: transparent;
+}
+.boxTopBlue div.b {
+  border-top: 1px solid #99BBE8;
+  background-color: #D0DEF0;
+}
+/* Box Top Model Blue END */
+/* Box Bottom Model BEGIN */
+.boxBottom,
+.boxBottomBlue {
+  height: 15px;
+  padding-left: 24px;
+  padding-right: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.boxBottom div.a,
+.boxBottom div.c,
+.boxBottomBlue div.a,
+.boxBottomBlue div.c {
+  position: absolute;
+  width: 25px;
+  height: 15px;
+}
+.boxBottom div.a,
+.boxBottomBlue div.a {
+  left: 0px;
+  top: 0px;
+  background-image: url(/skins/neoclassic/images/classic/fbl.png);
+  background-color: transparent;
+}
+.boxBottom div.c,
+.boxBottomBlue div.c {
+  top: 0px;
+  right: 0px;
+  background-image: url(/skins/neoclassic/images/classic/fbr.png);
+  background-color: transparent;
+}
+.boxBottom div.b,
+.boxBottomBlue div.b {
+  width: 100%;
+  height: 16px;
+  border-bottom: 1px solid #DADADA;
+  background: transparent url(/skins/neoclassic/images/classic/fbc.png) repeat-x;
+}
+.boxBottom,
+.boxBottomBlue {
+  display: none;
+}
+/* Box Bottom Model END */
+/* Box Bottom Model Blue BEGIN */
+.boxBottomBlue div.c {
+  background-image: url(/skins/neoclassic/images/classic/fbr.blue.png);
+  background-color: transparent;
+}
+.boxBottomBlue div.a {
+  background-image: url(/skins/neoclassic/images/classic/fbl.blue.png);
+  background-color: transparent;
+}
+.boxBottomBlue div.b {
+  width: 100%;
+  height: 16px;
+  border-bottom: 1px solid #DADADA;
+  background: transparent url(/skins/neoclassic/images/classic/fbc.blue.png) repeat-x;
+}
+.boxContentBlue {
+  border: 1px solid #9eccdf;
+  padding-right: 5px;
+  padding-left: 5px;
+  background-color: #d8eaf2;
+}
+a.linkInBlue {
+  color: #00a1e4;
+  text-decoration: none;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+a.linkInBlue:hover {
+  color: #00597e;
+}
+/* Box Bottom Model Blue END */
+/* BoxPanel Bottom Model BEGIN */
+.boxTopPanel {
+  height: 15px;
+  padding-left: 24px;
+  padding-right: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.boxTopPanel div.a,
+.boxTopPanel div.c {
+  position: absolute;
+  width: 25px;
+  height: 15px;
+}
+.boxTopPanel div.a {
+  left: 0px;
+  top: 0px;
+  background-image: url(/skins/neoclassic/images/classic/ftlL.png);
+  background-color: transparent;
+}
+.boxTopPanel div.c {
+  top: 0px;
+  right: 0px;
+  background-image: url(/skins/neoclassic/images/classic/ftrL.png);
+  background-color: transparent;
+}
+.boxTopPanel div.b {
+  width: 100%;
+  height: 16px;
+  background: transparent url(/skins/neoclassic/images/classic/ftc.png) repeat-x;
+}
+/* BoxPanel Bottom Model END */
+/* XmlForm BEGIN  */
+/* form BEGIN  */
+form {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #333333;
+}
+form table {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #666666;
+}
+form.formDefault select {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #000;
+}
+form.formDefault table {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #666666;
+  line-height: 180%;
+}
+form.formDefault td {
+  padding: 5px 3px 5px;
+}
+form.formDefault .content,
+.pagedTableDefault {
+  background-color: #FFF;
+  border: #dddddd 1px solid;
+}
+.pagedTableDefault {
+  padding: 10px;
+  margin: 10px 0;
+}
+form.formDefault input.FormField {
+  border: 1px solid #CCC;
+  background: #ffffff url(/skins/neoclassic/images/classic/input_back.gif) repeat-x;
+  color: #333333;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+form.formDefault input.FormFieldInvalid {
+  border: 1px solid red;
+}
+form.formDefault input.FormFieldValid {
+  border: 1px solid green;
+}
+form.formDefault .FormLabel {
+  color: #666666;
+  text-align: right;
+  padding-right: 5px;
+  /* width:180; */
+
+  vertical-align: top;
+}
+form.formDefault .FormFieldContent {
+  color: #000;
+  padding-left: 5px;
+  text-align: left;
+  background-color: #ffffff;
+  font-size: 11px;
+}
+form.formDefault textarea.FormTextArea {
+  border: 1px solid #CCC;
+  background: #ffffff url(/skins/neoclassic/images/classic/input_back.gif) repeat-x;
+  color: #333333;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  overflow: auto;
+}
+form.formDefault textarea.FormTextPM {
+  border: 1px solid #CCC;
+  background: #ffffff url(/skins/neoclassic/images/classic/input_back.gif) repeat-x;
+  color: #333;
+  font: normal 12px Courier New, monospace ;
+  overflow: auto;
+}
+form.formDefault td.FormTitle,
+form.formDefault td.FormSubTitle {
+  color: #333;
+  padding: 2px 5px 2px 10px;
+  font-weight: bold;
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+form.formDefault td.FormTitle {
+  color: #ffffff;
+  background: #888888;
+  border-bottom: 1px solid #626262;
+}
+form.formDefault .FormSubTitle {
+  background: #eeeeee;
+  color: #333;
+  border-bottom: 1px #dddddd solid;
+}
+form.formDefault .FormButton {
+  text-align: center;
+}
+form.formDefault a {
+  color: #00a1e4;
+  text-decoration: none;
+}
+form.formDefault a:hover {
+  color: #00597e;
+}
+form.formDefault td.withoutLabel,
+form.formDefault td.withoutLabel table td {
+  padding: 0px;
+  height: 8px;
+}
+.FormTitle .FormTitle {
+  border: none;
+}
+/* form END  */
+/* formSearch BEGIN  */
+form.formSearch input,
+input {
+  font-size: 8pt;
+}
+form.formSearch a {
+  color: #00a1e4;
+  text-decoration: none;
+}
+form.formSearch a:hover {
+  color: #00597e;
+}
+form.formSearch {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  /*	width:100%;*/
+
+  padding-left: 10px;
+  padding-right: 10px;
+  /*	padding-left:10%;
+	padding-right:10%;*/
+
+}
+form.formSearch .content {
+  border-left: 1px solid #99BBE8;
+  border-right: 1px solid #99BBE8;
+  background-color: #D0DEF0;
+  padding: 10px;
+}
+form.formSearch input.FormField {
+  border: 1px solid #99BBE8;
+  color: #333333;
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  width: 200px;
+}
+form.formSearch .FormLabel {
+  color: #000;
+  text-align: center;
+  padding-right: 10px;
+  width: 40%;
+}
+form.formSearch .FormFieldContent {
+  color: #000;
+  background-color: #EFEFEF;
+  padding-left: 5px;
+  width: 60%;
+  text-align: left;
+}
+form.formSearch .Record {
+  width: 80%;
+}
+/* formSearch END  */
+/* pagedTable BEGIN  */
+.pagedTableDefault {
+  border-left: 1px solid #DADADA;
+  border-right: 1px solid #DADADA;
+  background-color: #FFF;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.pagedTableDefault .subtitle {
+  font-weight: bold;
+  color: #000;
+  font-size: 13px;
+  padding-left: 10px;
+}
+.pagedTableDefault,
+.pagedTableDefault table {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #666666;
+}
+.pagedTableDefault .headerContent {
+  padding-bottom: 5px;
+}
+.pagedTableDefault,
+.pagedTableDefault .headerContent .tableOption a {
+  color: #00a1e4;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pagedTableDefault:hover,
+.pagedTableDefault .headerContent .tableOption a:hover {
+  color: #00597e;
+}
+.pagedTableDefault,
+.pagedTableDefault .headerContent .tableOption a:hover {
+  color: #00597e;
+}
+.pagedTableDefault td {
+  padding: 0px;
+}
+.pagedTableDefault .pagedTable td {
+  padding: 5px;
+}
+.pagedTableDefault .pagedTable {
+  border: 1px solid #DFDFDF;
+  border-collapse: collapse;
+  color: #333333;
+}
+.pagedTable td {
+  text-align: left;
+}
+.pagedTableDefault .pagedTable .Row1 {
+  background-color: #FFF;
+}
+.pagedTableDefault .pagedTable .Row2 {
+  background-color: #f9f9f9;
+}
+tr.Selected {
+  background-color: #D8DDFF;
+}
+.pagedTableDefault .pagedTable .RowPointer {
+  background-color: #edf3f6;
+}
+.pagedTableDefault .cellSelected1 {
+  font-weight: bold;
+}
+.pagedTableDefault .cellSelected2 {
+  font-weight: bold;
+}
+.pagedTableDefault .pagedTable a {
+  color: #666666;
+  text-decoration: none;
+  padding-left: 5px;
+  font: bold 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  white-space: nowrap;
+}
+.pagedTableDefault .pagedTable a:hover {
+  color: #00597e;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader {
+  border-bottom: 0px solid #DFDFDF;
+  background-color: #6F7F75;
+  color: #5B5B5B;
+  font-weight: bold;
+  background-repeat: repeat-x;
+  height: 26px;
+  padding: 0px;
+  overflow: hidden;
+  background-color: #eeeeee;
+  vertical-align: middle;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader img {
+  float: left;
+  margin-top: 2px;
+  margin-left: 5px;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader a {
+  text-decoration: none;
+  padding-left: 5px;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 11px;
+  font-weight: bold;
+  color: #333333;
+  text-align: left;
+  display: block;
+  position: relative;
+  padding-right: 10px;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader a img {
+  position: absolute;
+  top: 3px;
+  right: -1px;
+}
+.pagedTableDefault .pagedTable .pagedTableHeader a:hover {
+  color: #00597e;
+}
+/*Adicion Rube*/
+.pagedTableDefault .pagedTable .masterDetailMain {
+  background-image: url(/skins/neoclassic/images/masterDetailMain.png);
+  background-repeat: repeat-x;
+  text-decoration: none;
+  color: #5B5B5B;
+  padding-left: 5px;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-weight: bold;
+}
+.pagedTableDefault .pagedTable .masterDetailOther {
+  background-image: url(/skins/neoclassic/images/masterDetailOther.png);
+  background-repeat: repeat-x;
+  text-decoration: none;
+  color: #5B5B5B;
+  padding-left: 5px;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-weight: bold;
+}
+/*Fin Adicion Rube*/
+.pagedTableDefault .pagedTable .RowLink {
+  /*background-color:#6F7F75;*/
+
+  text-align: center;
+}
+.pagedTable tr {
+  padding: 3px 0;
+}
+.pagedTableDefault .pagedTable .RowLink a {
+  display: block;
+  white-space: nowrap;
+}
+A.firstPage {
+  background-image: url('/skins/neoclassic/images/firstPage.gif');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  padding-left: 21px;
+  padding-top: 20px;
+  line-height: 40px;
+  text-decoration: none;
+}
+A.noFirstPage {
+  background-image: url('/skins/neoclassic/images/firstPage.gif');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  padding-left: 21px;
+  padding-top: 20px;
+  line-height: 40px;
+  text-decoration: none;
+}
+A.previousPage {
+  background-image: url('/skins/neoclassic/images/previousPage.gif');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  padding-left: 21px;
+  padding-top: 20px;
+  line-height: 40px;
+  text-decoration: none;
+}
+A.noPreviousPage {
+  background-image: url('/skins/neoclassic/images/previousPage.gif');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  padding-left: 21px;
+  padding-top: 20px;
+  line-height: 40px;
+  text-decoration: none;
+}
+A.nextPage {
+  background-image: url('/skins/neoclassic/images/nextPage.gif');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  padding-left: 21px;
+  padding-top: 20px;
+  line-height: 40px;
+  text-decoration: none;
+}
+A.noNextPage {
+  background-image: url('/skins/neoclassic/images/nextPage.gif');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  padding-left: 21px;
+  padding-top: 20px;
+  line-height: 40px;
+  text-decoration: none;
+}
+A.lastPage {
+  background-image: url('/skins/neoclassic/images/lastPage.gif');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  padding-left: 21px;
+  padding-top: 20px;
+  line-height: 40px;
+  text-decoration: none;
+}
+A.noLastPage {
+  background-image: url('/skins/neoclassic/images/lastPage.gif');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  padding-left: 21px;
+  padding-top: 20px;
+  line-height: 40px;
+  text-decoration: none;
+}
+/* pagedTable END  */
+/* Grid BEGIN */
+div.pattern .content {
+  padding-left: 5px;
+  padding-right: 5px;
+  border-left: 1px solid #DADADA;
+  border-right: 1px solid #DADADA;
+  background-color: #FFF;
+}
+div.pattern .FormTitle {
+  font-weight: bold;
+  color: black;
+  /*background-color:#E0EFE6;*/
+
+  padding: 2px;
+}
+div.grid {
+  font: normal 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 7px;
+}
+div.grid .content {
+  padding-left: 5px;
+  padding-right: 5px;
+  border-left: 1px solid #DADADA;
+  border-right: 1px solid #DADADA;
+  background-color: #FFF;
+  width: 100%;
+}
+html > body div.grid .content {
+  width: auto;
+}
+div.grid .tableGrid {
+  width: 100%;
+}
+div.grid .tableGrid .vFormTitle {
+  /*	color:#006699;*/
+
+}
+/* Grid END */
+/* Tree BEGIN */
+div.treeBase .content {
+  padding: 5px;
+  border: 1px solid #dddddd;
+  background-color: #FFF;
+}
+.treeNode {
+  padding-bottom: 10px;
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #808080;
+}
+div.treeBase table td.a {
+  width: 16px;
+  height: 10px;
+}
+div.treeBase table td.b {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: black;
+  text-align: left;
+}
+/* TreeParent BEGIN */
+div.treeParent table {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: black;
+}
+div.treeParent .treeMinus {
+  width: 16px;
+  height: 22px;
+  display: block;
+  position: relative;
+  background-image: url(/skins/neoclassic/images/minus.gif);
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+div.treeParent .treePlus {
+  width: 16px;
+  height: 22px;
+  background-image: url(/skins/neoclassic/images/plus.gif);
+  background-repeat: no-repeat;
+  display: block;
+}
+div.treeParent .treePointer {
+  width: 1px;
+  height: 22px;
+  display: block;
+}
+div.treeParent td.c {
+  background-image: url(/skins/neoclassic/images/ftv2vertline.gif);
+  background-repeat: repeat-y;
+}
+div.treeParent td.d {
+  background-image: url(/skins/neoclassic/images/ftv2node.gif);
+  background-repeat: repeat-y;
+}
+div.treeParent .treeNode {
+  padding: 2px;
+  padding-bottom: 1px;
+  font-weight: bold;
+}
+div.treeParent .treeNode a,
+div.treeBase .treeNode a {
+  color: #00a1e4;
+  text-decoration: none;
+}
+div.treeParent .treeNode a:hover,
+div.treeBase .treeNode a:hover {
+  color: #00597e;
+}
+div.treeParent .treeNode a:hover,
+div.treeBase .treeNode a:hover {
+  color: #00597e;
+}
+div.treeParent .FormField {
+  background-color: #FFF;
+  padding-bottom: 10px;
+}
+div.treeParent .FormField a {
+  font-size: 8pt !important;
+  color: red;
+}
+div.treeParent .FormTitle {
+  /*	font:bold 8pt @serifFontFamily;
+	font:normal 11px @serifFontFamily;*/
+
+  font-weight: bold;
+  color: black;
+  /*background-color:#E0EFE6;*/
+
+  padding: 2px;
+}
+/* TreeParent END */
+/* TreeChild BEGIN */
+div.treeChild td.b {
+  padding-right: 10px;
+}
+div.treeChild td.a {
+  width: 10px;
+  height: 22px;
+  background: none;
+}
+div.treeChild .c {
+  background-image: url(/skins/neoclassic/images/ftv2vertline.gif);
+  background-repeat: repeat-y;
+}
+/* TreeChild END */
+div.treeChild {
+  padding-left: 1px;
+}
+div.treeParent .content .treeNode a.selected {
+  color: white;
+  background-color: #006699;
+}
+/*div.treeParent div.treeParent .content
+{
+	border-left:1px solid #99BBE8;
+	border-right:1px solid #99BBE8;
+	background-color:#D0DEF0;
+}
+div.treeParent div.treeParent .boxTop div.a
+{
+	background-image:url(/skins/neoclassic/images/classic/ftl.blue.gif);
+}
+div.treeParent div.treeParent .boxTop div.b
+{
+	border-top:1px solid #99BBE8;
+	background-color:#D0DEF0;
+}
+div.treeParent div.treeParent .boxTop div.c
+{
+	background-image:url(/skins/neoclassic/images/classic/ftr.blue.gif);
+}
+div.treeParent div.treeParent .boxBottom div.a
+{
+	background-image:url(/skins/neoclassic/images/classic/fbl.blue.png);
+}
+div.treeParent div.treeParent .boxBottom div.b
+{
+	background-image:url(/skins/neoclassic/images/classic/fbc.blue.png);
+}
+div.treeParent div.treeParent .boxBottom div.c
+{
+	background-image:url(/skins/neoclassic/images/classic/fbr.blue.png);
+}*/
+div.treeParent .subcontent {
+  padding-left: 5px;
+  padding-right: 5px;
+  border-left: 1px solid #99BBE8;
+  border-right: 1px solid #99BBE8;
+  background-color: #D0DEF0;
+}
+/* Tree END */
+/* XmlForm END  */
+/**************************** Start -> JSCalendar Widget by Erik Amaru Ortiz <erik@colosa.com> *********************************/
+/* The main calendar widget.  DIV containing a table. */
+div.calendar {
+  position: relative;
+}
+.calendar,
+.calendar table {
+  border: 1px solid #6F7F75;
+  font-size: 11px;
+  color: #000;
+  cursor: default;
+  background: #F0F2F0;
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  z-index: 1000;
+}
+/* Header part -- contains navigation buttons and day names. */
+.calendar .button {
+  /* "<<", "<", ">", ">>" buttons have this class */
+
+  text-align: center;
+  /* They are the navigation buttons */
+
+  padding: 2px;
+  /* Make the buttons seem like they're pressing */
+
+}
+.calendar .nav {
+  background: #6f7f75 url(menuarrow2.gif) no-repeat 100% 100%;
+}
+.calendar thead .title {
+  /* This holds the current "month, year" */
+
+  font-weight: bold;
+  /* Pressing it will take you to the current date */
+
+  text-align: center;
+  background: #000;
+  color: #fff;
+  padding: 2px;
+}
+.calendar thead tr {
+  /* Row <TR> containing navigation buttons */
+
+  background: #6F7F75;
+  /*e*/
+
+  color: #fff;
+}
+.calendar thead .daynames {
+  /* Row <TR> containing the day names */
+
+  background: #E9F2E9;
+}
+.calendar thead .name {
+  /* Cells <TD> containing the day names */
+
+  border-bottom: 1px solid #B5CFBF;
+  padding: 2px;
+  text-align: center;
+  color: #000;
+}
+.calendar thead .weekend {
+  /* How a weekend day name shows in header */
+
+  color: #a66;
+}
+.calendar thead .hilite {
+  /* How do the buttons in header appear when hover */
+
+  background-color: #B5CFBF;
+  /*e*/
+
+  color: #000;
+  border: 1px solid #000;
+  padding: 1px;
+}
+.calendar thead .active {
+  /* Active (pressed) buttons in header */
+
+  background-color: #6F7F75;
+  /*e*/
+
+  border: 1px solid #FFF;
+  color: #FFF;
+  padding: 2px 0px 0px 2px;
+}
+/* The body part -- contains all the days in month. */
+.calendar tbody .day {
+  /* Cells <TD> containing month days dates */
+
+  width: 2em;
+  color: #456;
+  text-align: right;
+  padding: 2px 4px 2px 2px;
+}
+.calendar tbody .day.othermonth {
+  font-size: 80%;
+  color: #bbb;
+}
+.calendar tbody .day.othermonth.oweekend {
+  color: #fbb;
+}
+.calendar table .wn {
+  padding: 2px 3px 2px 2px;
+  border-right: 1px solid #000;
+  background: #A4BBAD;
+  /*here*/
+
+}
+.calendar tbody .rowhilite td {
+  /* the rowwwwwww*/
+
+  background: #C9E5D4;
+}
+.calendar tbody .rowhilite td.wn {
+  background: #F1F8FC;
+}
+.calendar tbody td.hilite {
+  /* Hovered cells <TD> */
+
+  background: #E9F2E9;
+  padding: 1px 3px 1px 1px;
+  border: 1px solid #6F7F75;
+}
+.calendar tbody td.active {
+  /* Active (pressed) cells <TD> */
+
+  background: #6F7F75;
+  color: #FFF;
+  padding: 2px 2px 0px 2px;
+}
+.calendar tbody td.selected {
+  /* Cell showing today date */
+
+  font-weight: bold;
+  border: 1px solid #000;
+  padding: 1px 3px 1px 1px;
+  background: #fff;
+  color: #000;
+}
+.calendar tbody td.weekend {
+  /* Cells showing weekend days */
+
+  color: #a66;
+}
+.calendar tbody td.today {
+  /* Cell showing selected date */
+
+  font-weight: bold;
+  color: #D50000;
+}
+.calendar tbody .disabled {
+  color: #999;
+}
+.calendar tbody .emptycell {
+  /* Empty cells (the best is to hide them) */
+
+  visibility: hidden;
+}
+.calendar tbody .emptyrow {
+  /* Empty row (some months need less than 6 rows) */
+
+  display: none;
+}
+/* The footer part -- status bar and "Close" button */
+.calendar tfoot .footrow {
+  /* The <TR> in footer (only one right now) */
+
+  text-align: center;
+  background: #206A9B;
+  color: #fff;
+}
+.calendar tfoot .ttip {
+  /* Tooltip (status bar) cell <TD> */
+
+  background: #000;
+  color: #fff;
+  border-top: 1px solid #206A9B;
+  padding: 1px;
+}
+.calendar tfoot .hilite {
+  /* Hover style for buttons in footer */
+
+  background: #B8DAF0;
+  border: 1px solid #178AEB;
+  color: #000;
+  padding: 1px;
+}
+.calendar tfoot .active {
+  /* Active (pressed) style for buttons in footer */
+
+  background: #006AA9;
+  padding: 2px 0px 0px 2px;
+}
+/* Combo boxes (menus that display months/years for direct selection) */
+.calendar .combo {
+  position: absolute;
+  display: none;
+  top: 0px;
+  left: 0px;
+  width: 4em;
+  cursor: default;
+  border: 1px solid #655;
+  background: #def;
+  color: #000;
+  font-size: 90%;
+  z-index: 100;
+}
+.calendar .combo .label,
+.calendar .combo .label-IEfix {
+  text-align: center;
+  padding: 1px;
+}
+.calendar .combo .label-IEfix {
+  width: 4em;
+}
+.calendar .combo .hilite {
+  background: #34ABFA;
+  border-top: 1px solid #46a;
+  border-bottom: 1px solid #46a;
+  font-weight: bold;
+}
+.calendar .combo .active {
+  border-top: 1px solid #46a;
+  border-bottom: 1px solid #46a;
+  background: #F1F8FC;
+  font-weight: bold;
+}
+.calendar td.time {
+  border-top: 1px solid #000;
+  padding: 1px 0px;
+  text-align: center;
+  background-color: #E9F2E9;
+}
+.calendar td.time .hour,
+.calendar td.time .minute,
+.calendar td.time .ampm {
+  padding: 0px 3px 0px 4px;
+  border: 1px solid #889;
+  font-weight: bold;
+  background-color: #E9F2E9;
+}
+.calendar td.time .ampm {
+  text-align: center;
+}
+.calendar td.time .colon {
+  padding: 0px 2px 0px 3px;
+  font-weight: bold;
+}
+.calendar td.time span.hilite {
+  /*e*/
+
+  border-color: #000;
+  background-color: #6F7F75;
+  color: #fff;
+}
+.calendar td.time span.active {
+  border-color: red;
+  background-color: #000;
+  color: #A5FF00;
+}
+/**************************** End -> JSCalendar Widget by Erik Amaru Ortiz <erik@colosa.com> *********************************/
+/**************************** Start -> Suggest Widget by Erik Amaru Ortiz <erik@colosa.com>  *********************************/
+/*
+================================================
+autosuggest, inquisitor style
+================================================
+*/
+input.module_app_suggest {
+  color: #333333;
+  font: 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  padding: 1px 1px 1px 3px;
+}
+div.autosuggest {
+  position: absolute;
+  background-position: top;
+  background-repeat: no-repeat;
+  padding: 8px 2px 0 3px;
+  overflow: auto;
+  z-index: 1000;
+}
+div.autosuggest div.as_header,
+div.autosuggest div.as_footer {
+  position: relative;
+  height: 0px;
+  padding: 0 6px;
+  background-position: top right;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+div.autosuggest div.as_header div.as_corner,
+div.autosuggest div.as_footer div.as_corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 6px;
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+div.autosuggest div.as_header div.as_bar,
+div.autosuggest div.as_footer div.as_bar {
+  height: 6px;
+  overflow: hidden;
+  background-color: #333;
+}
+div.autosuggest ul {
+  list-style: none;
+  margin: 0 0 -4px 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px #C3C3C3 solid;
+  color: #000;
+}
+div.autosuggest ul li {
+  color: #ccc;
+  padding: 0;
+  margin: 0 4px 4px;
+  text-align: left;
+}
+div.autosuggest ul li a {
+  color: #000;
+  display: block;
+  text-decoration: none;
+  background-color: transparent;
+  /*text-shadow: #000 0px 0px 5px;*/
+
+  position: relative;
+  padding: 0;
+  width: 100%;
+}
+div.autosuggest ul li a:hover {
+  background-color: #444;
+}
+div.autosuggest ul li.as_highlight a:hover {
+  background-color: #D1DEDF;
+  /*erik -- back sel color*/
+
+}
+div.autosuggest ul li a span {
+  display: block;
+  padding: 1px 0px;
+  font-weight: normal;
+}
+div.autosuggest ul li a span small {
+  font-weight: normal;
+  color: #999;
+}
+div.autosuggest ul li.as_highlight a span small {
+  color: red;
+}
+div.autosuggest ul li.as_highlight a {
+  color: #000;
+  background-color: #D1DEDF;
+  /* erik -- hover*/
+
+  background-position: bottom right;
+  background-repeat: no-repeat;
+}
+div.autosuggest ul li.as_highlight a span {
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+div.autosuggest ul li a .tl,
+div.autosuggest ul li a .tr {
+  /*background-image: transparent;*/
+
+  background-repeat: no-repeat;
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  top: 0;
+  padding: 0;
+  margin: 0;
+}
+div.autosuggest ul li a .tr {
+  right: 0;
+}
+div.autosuggest ul li.as_highlight a .tl {
+  left: 0;
+  background-position: bottom left;
+}
+div.autosuggest ul li.as_highlight a .tr {
+  right: 0;
+  background-position: bottom right;
+}
+div.autosuggest ul li.as_warning {
+  font-weight: normal;
+  text-align: center;
+  color: #A0A0A0;
+}
+div.autosuggest ul em {
+  font-style: normal;
+  color: #000;
+  font-weight: bold;
+}
+.textBlue {
+  color: #00597e;
+  font-size: 11px;
+}
+.textBlack {
+  font: normal 8pt "Open Sans", Tahoma, sans-serif, MiscFixed;
+  color: #666666;
+  text-decoration: none;
+}
+/**************************** End -> Suggest Widget by Erik Amaru Ortiz <erik@colosa.com>  *********************************/
+.tableGrid_view {
+  width: 100%;
+  border-top: 0px solid #DADADA;
+  border-bottom: 0px solid #DADADA;
+  border-left: 0px solid #DADADA;
+  border-right: 0px solid #DADADA;
+  padding: 0px;
+}
+table.tableGrid_view td {
+  border-top: 1px solid #DADADA;
+  border-bottom: 1px solid #DADADA;
+  border-left: 0px solid #DADADA;
+  border-right: 0px solid #DADADA;
+  padding: 0px;
+}
+.ui-widget-header {
+  -moz-background-clip: border;
+  -moz-background-inline-policy: continuous;
+  /*-moz-background-origin:padding;*/
+
+  background: #5c9ccc url(/skins/neoclassic/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png) repeat-x scroll 50% 50%;
+  border: 1px solid #4297D7;
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 11px;
+}
+/**************************** new calendar **********************************************/
+.DHTMLSuite_calendar {
+  /* Main div for the calendar */
+
+  border: 1px solid #8F8F8F;
+  background-color: #FFF;
+  width: 220px;
+  position: relative;
+  overflow: hidden;
+  font-size: 11px;
+}
+.DHTMLSuite_calendarContent {
+  /* Sub div inside DHTMLSuite_calendar - this is the div where content is added */
+
+  position: relative;
+  z-index: 10;
+  /* IMPORTANT - This must always be like this in order to make it possible to position sub elements correctly, especially the iframe */
+
+  background-color: #FFF;
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 11px;
+}
+/*******************
+
+ START CSS FOR THE HEADER ROW - WHERE YOU SEE MONTH AND YEAR
+
+********************/
+.DHTMLSuite_calendar .DHTMLSuite_calendarHeading {
+  /* Heading of calendar, where you see the month and year */
+
+  background-image: url(/skins/neoclassic/images/calendar/calendar_heading.png);
+  background-repeat: repeat-x;
+  height: 21px;
+  border-bottom: 1px solid #8F8F8F;
+  font-size: 11px;
+}
+.DHTMLSuite_calendarHeadingTxt {
+  /* Inner div in the heading  */
+
+  padding: 1px;
+  text-align: center;
+  font-size: 11px;
+}
+.DHTMLSuite_calendarCloseButton {
+  /* Close button at the top right corner of the calendar */
+
+  background-image: url(/skins/neoclassic/images/calendar/calendar-close.gif);
+  background-repeat: no-repeat;
+  width: 13px;
+  height: 13px;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  padding: 1px;
+  background-position: center center;
+  cursor: pointer;
+  font-size: 11px;
+}
+.DHTMLSuite_calendarHeaderMonthAndYear {
+  /* Div elements for year and month in the heading */
+
+  padding: 1px;
+  padding-right: 2px;
+  padding-left: 2px;
+  cursor: pointer;
+  line-height: 17px;
+  font-weight: bold;
+  font-size: 11px;
+}
+.DHTMLSuite_calendarHeaderMonthAndYearOver {
+  /* Mouse over effect - month and year in the heading */
+
+  background-color: #FFF;
+  border: 1px solid #8F8F8F;
+  padding: 0px;
+  padding-left: 1px;
+  padding-right: 1px;
+  font-size: 11px;
+}
+/*******************
+
+ START CSS FOR THE TIME BAR - THE DIV WHERE YOU SEE "Time: " and the hour and minute
+
+********************/
+.DHTMLSuite_calendar_timeBar {
+  /* Time bar - where users can select hour and minutes */
+
+  background-color: #D3D3D3;
+  height: 21px;
+  border-top: 1px solid #8F8F8F;
+  text-align: center;
+  position: relative;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_timeBarHourAndMinute {
+  /* General rules for the displayed hours and minutes - the ones you can click on the bring out the drop down boxes */
+
+  padding: 1px;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-right: 2px;
+  cursor: pointer;
+  font-size: 11px;
+}
+.DHTMLSuite_calendarTimeBarHourAndMinuteOver {
+  /* Mouse over effect for the hour and minute displayed in the time bar */
+
+  background-color: #FFF;
+  border: 1px solid #8F8F8F;
+  padding: 0px;
+  padding-left: 1px;
+  padding-right: 1px;
+  font-size: 11px;
+}
+.DHTMLSuite_calendarTimeBarTimeString {
+  /* String "Time:" */
+
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  font-size: 11px;
+}
+/*******************
+
+ START CSS FOR THE NAVIGATION BAR - THE DIV WITH THE LEFT AND RIGHT ARROWS
+
+********************/
+.DHTMLSuite_calendar_navigationBar {
+  /* Navigation bar below the heading */
+
+  background-color: #D3D3D3;
+  height: 17px;
+  border-bottom: 1px solid #8F8F8F;
+  position: relative;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_navigationBarToday {
+  /* Div for the string "Today" in the navigation bar */
+
+  text-align: center;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_navigationBarToday span {
+  /* The "Today" string inside the navigation bar */
+
+  cursor: pointer;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_btnNextYear,
+.DHTMLSuite_calendar_btnPreviousYear,
+.DHTMLSuite_calendar_btnNextMonth,
+.DHTMLSuite_calendar_btnPreviousMonth {
+  /* Buttons - previous/next month and year */
+
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 13px;
+  height: 13px;
+  padding: 1px;
+  top: 1px;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_btnNextYear {
+  /* Next year button */
+
+  background-image: url(/skins/neoclassic/images/calendar/calendar-next-year.gif);
+  right: 2px;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_btnPreviousYear {
+  /* Previous year button */
+
+  background-image: url(/skins/neoclassic/images/calendar/calendar-previous-year.gif);
+  left: 2px;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_btnNextMonth {
+  /* Next month button */
+
+  background-image: url(/skins/neoclassic/images/calendar/calendar-next-month.gif);
+  right: 18px;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_btnPreviousMonth {
+  /* Previous month button */
+
+  background-image: url(/skins/neoclassic/images/calendar/calendar-previous-month.gif);
+  left: 18px;
+  font-size: 11px;
+}
+/*******************
+
+ START CSS FOR THE MAIN DIV CONTAINING ALL THE DAYS WITHIN A MONTH AND HEADINGS (weeks, days(Mon-Sun) etc.)
+
+********************/
+.DHTMLSuite_calendar_monthView {
+  /* Main div element for the days in a month */
+
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView_headerCell {
+  /* Main div element for the days in a month */
+
+  background-color: #FFF;
+  border-bottom: 1px solid #8F8F8F;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView_firstColumn {
+  /* First column - the week column */
+
+  background-color: #D3D3D3;
+  border-right: 1px solid #8F8F8F;
+  text-align: left;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView td {
+  /* Default css for all the cells inside the calendar, i.e. week heading, label for the days, and the days */
+
+  text-align: center;
+  cursor: default;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView_headerSunday {
+  /* Sunday in the header */
+
+  color: red;
+  border-bottom: 1px solid #8F8F8F;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView_daysInOtherMonths {
+  /* Days in previous or next month, i.e. before start of current displayed month or after days in the currently displayed month */
+
+  color: #999;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView_daysInThisMonth {
+  /* Layout - ordinary days(mon-sat) in this month */
+
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView_sundayInThisMonth {
+  /* Layout - sundays in current displayed month */
+
+  color: red;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView_initialDate {
+  /* Inital set date, example: the date in an input field which you are populating with the calendar */
+
+  background-color: #8F8F8F;
+  color: white;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView_invalidDate {
+  /* Inital set date, example: the date in an input field which you are populating with the calendar */
+
+  color: #AAA;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_monthView_currentDate {
+  /* Date of today */
+
+  background-color: #dfe9fa;
+  font-size: 11px;
+  font-weight: bold;
+}
+/***************************************************
+*
+* START CSS -  DROP DOWN BOXES
+*
+*
+***************************************************/
+/*** MINUTES ***/
+.DHTMLSuite_calendar_minuteDropDown {
+  /* Drop down box for minutes */
+
+  background-color: #D3D3D3;
+  border: 1px solid #8F8F8F;
+  width: 23px;
+  padding: 1px;
+  text-align: center;
+  /* You shouldn't change these 3 options */
+
+  position: absolute;
+  z-index: 152000;
+  cursor: pointer;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_minuteDropDownCurrentMinute {
+  /* Minute in drop down when it's equal to current minute of the display, i.e. the minute you see where you click on the drop down */
+
+  color: red;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_dropdownAMinuteOver {
+  background-color: #dfe9fa;
+  font-size: 11px;
+}
+/*** HOURS ***/
+.DHTMLSuite_calendar_hourDropDown {
+  /* Drop down box for hours */
+
+  background-color: #D3D3D3;
+  border: 1px solid #8F8F8F;
+  width: 23px;
+  position: absolute;
+  z-index: 152000;
+  padding: 1px;
+  cursor: pointer;
+  font-size: 11px;
+  text-align: center;
+}
+.DHTMLSuite_calendar_dropdownAnHourOver {
+  background-color: #dfe9fa;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_hourDropDownCurrentHour {
+  color: red;
+  font-size: 11px;
+}
+/*** MONTHS ***/
+.DHTMLSuite_calendar_monthDropDown {
+  background-color: #D3D3D3;
+  border: 1px solid #8F8F8F;
+  width: 70px;
+  position: absolute;
+  z-index: 152000;
+  cursor: pointer;
+  padding: 1px;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_dropDownAMonth {
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_dropdownAMonthOver {
+  background-color: #dfe9fa;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_yearDropDownCurrentMonth {
+  color: red;
+  font-size: 11px;
+}
+/***** YEAR ****/
+.DHTMLSuite_calendar_yearDropDown {
+  background-color: #D3D3D3;
+  border: 1px solid #8F8F8F;
+  width: 30px;
+  position: absolute;
+  z-index: 152000;
+  cursor: pointer;
+  padding: 1px;
+  font-size: 12px;
+  text-align: center;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_dropDownAYear {
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_dropdownAYearOver {
+  background-color: #dfe9fa;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_yearDropDownCurrentYear {
+  /* Current year */
+
+  color: red;
+  font-size: 11px;
+}
+/* UP AND DOWN ARROWS INSIDE DROP DOWNS **/
+.DHTMLSuite_calendar_dropDown_arrowUp {
+  /* Drop down - moving to previous year */
+
+  background-image: url(/skins/neoclassic/images/calendar/calendar-dropdown-up.gif);
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 8px;
+  font-size: 11px;
+}
+.DHTMLSuite_calendar_dropDown_arrowDown {
+  /* Drop down - moving to previous year */
+
+  background-image: url(/skins/neoclassic/images/calendar/calendar-dropdown-down.gif);
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 8px;
+  font-size: 11px;
+}
+.DHTMLSuite_calendarDropDown_dropDownArrowOver {
+  background-color: #dfe9fa;
+  font-size: 11px;
+}
+/* IT'S IMPORTANT TO HAVE THIS CSS RULE AT THE BOTTOM IN ORDER TO MAKE THE PADDING OVERRIDE PADDING OF OTHER ELEMENTS */
+.DHTMLSuite_calendarButtonOver {
+  /* Mouse over effect for the close button */
+
+  background-color: #FFF;
+  /* White background color */
+
+  border: 1px solid #8F8F8F;
+  /* Blue border */
+
+  padding: 0px;
+  /* The sum border+padding of this element should be the same as border+padding of .DHTMLSuite_calendarCloseButton */
+
+  font-size: 11px;
+}
+.DHTMLSuite_calendarDayOver {
+  /* Mouse over effect - days in the calendar, i.e. days in current displayed month */
+
+  background-color: #D3D3D3;
+  font-size: 11px;
+}
+/* YOU SHOULD NEVER MODIFY THIS ONE */
+.DHTMLSuite_calendar_iframe {
+  /* Iframe used to cover select boxes below in older IE browsers(version 6 and prior) */
+
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  z-index: 1;
+  font-size: 11px;
+}
+.calendar_picker_min {
+  cursor: pointer;
+  background-image: url(/skins/neoclassic/images/btncal_min.png);
+  float: left;
+  width: 96px;
+  height: 23px;
+  /*font-weight: bold;*/
+
+  color: #000;
+  font-size: 11px;
+}
+.calendar_picker {
+  cursor: pointer;
+  background-image: url(/skins/neoclassic/images/btncal.png);
+  float: left;
+  width: 121px;
+  height: 23px;
+  /*font-weight: bold;*/
+
+  color: #000;
+  font-size: 11px;
+}
+/*@start:  PM tooltip -> neyek <erik@colosa.com> */
+#pmtooltip {
+  background-color: #EEE;
+  border: 1px solid #000;
+  position: absolute;
+  display: none;
+  z-index: 20000;
+  padding: 2px;
+  font-size: 0.9em;
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+}
+#pmtooltipShadow {
+  position: absolute;
+  background-color: #555;
+  display: none;
+  z-index: 10000;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+  -khtml-opacity: 0.7;
+  -moz-opacity: 0.7;
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+}
+/*@end:  PM tooltip */
+/**
+ * (init) Dynaform Handler styles */
+#sortable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 700px;
+}
+#sortable li {
+  margin: 1px 1px 1px 1px;
+  padding: 1px;
+  padding-left: 1px;
+  font-size: 13px;
+  height: 28px;
+}
+/*#sortable li:hover {background: orange;}*/
+#sortable li span {
+  position: absolute;
+  margin-left: -1.3em;
+}
+.dtext {
+  padding-top: 0px;
+  font-size: 13px;
+  color: blue;
+}
+.dynalist td {
+  font-size: 10px;
+  color: #000;
+}
+#jq-siteContain {
+  width: 910px;
+  margin: 0 auto;
+}
+#jq-content {
+  background: #181c21 url(images/bg_home_content.gif) top repeat-x;
+  padding: 4em 40px;
+  border-bottom: 1px solid #000;
+}
+#jq-intro {
+  padding-top: 1em;
+  width: 515px;
+  margin-bottom: 3.5em;
+}
+#jq-intro li {
+  float: left;
+  font-size: 1.4em;
+}
+#jq-intro li a {
+  color: #5DB0E6;
+  font-weight: bold;
+  text-decoration: underline;
+  float: left;
+  background: url(images/icon_check_whiteOnDarkBlue.gif) left no-repeat;
+  padding: 0 30px 0 23px;
+}
+#jq-intro li p {
+  font-size: .9em;
+}
+body.jq-enhanced #jq-intro li {
+  position: relative;
+}
+html.js div.jq-checkpointSubhead {
+  display: none;
+}
+body.jq-enhanced #jq-intro li div.jq-checkpointSubhead {
+  position: absolute;
+  width: 253px;
+  height: 54px;
+  background: url(/skins/neoclassic/images/bg_ctaTooltip.png) 0 0 no-repeat;
+  top: -1.5em;
+  left: -35%;
+  z-index: 100;
+}
+body.jq-enhanced #jq-intro li div.jq-checkpointSubhead p {
+  font-size: 1em;
+  padding: 10px 5px 0 50px;
+  color: #AE0001;
+  font-weight: bold;
+  line-height: 1.3em;
+  margin: 0;
+  cursor: pointer;
+}
+.toggler {
+  font-size: 10px;
+  height: 200px;
+  position: relative;
+}
+#effect {
+  width: 180px;
+  font-size: 10px;
+  height: 135px;
+  padding: 0.4em;
+  position: relative;
+  background: #fff;
+}
+#effect h3 {
+  font-size: 10px;
+  margin: 0;
+  padding: 0.4em;
+  text-align: center;
+}
+.current_selected_item {
+  border: 2px solid orange;
+  background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;
+  font-weight: bold;
+  color: #2e6e9e;
+  outline: none;
+}
+/*
+ *  (end) Dybaform Handler styles **/
+/*extendend fields styles*/
+#fieldshandler_items_table {
+  direction: ltr;
+}
+.htmleditor {
+  -x-system-font: none;
+  background: #ffffff url(../images/input_back.gif) repeat-x scroll 0 0;
+  border: 1px solid #AAAAAA;
+  color: #333333;
+  font-family: sans-serif;
+  font-size: 8pt;
+  font-size-adjust: none;
+  font-stretch: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: normal;
+  padding: 1px 1px 1px 3px;
+  direction: ltr;
+}
+.FormTextPM {
+  direction: ltr;
+}
+.directionSide1 {
+  direction: ltr;
+  align: left;
+}
+.directionSide2 {
+  direction: rtl;
+  align: right;
+}
+.pm__dynavars {
+  direction: ltr;
+  font-weight: bold;
+}
+.tag_cloud {
+  padding: 3px;
+  text-decoration: none;
+}
+.tag_cloud:link {
+  color: #006699;
+}
+.tag_cloud:visited {
+  color: #006699;
+}
+.tag_cloud:hover {
+  color: #ffffff;
+  background: #006699;
+}
+.tag_cloud:active {
+  color: #ffffff;
+  background: #ACFC65;
+}
+input.notValidateThisFields {
+  position: absolute;
+  left: -9999px;
+}
+input#DynaformRequiredFields {
+  position: absolute;
+  left: -9999px;
+}
+/*
+*	COMMON LAYOUT PANE FORMATTING -----------------resizer panel -------------------------------------------
+*/
+.pane,
+.ui-layout-pane {
+  /* inner pane class */
+
+  background-color: #fff;
+  border: 0px solid #777;
+  padding: 3px;
+  /* alignment & padding is on the inner-divs */
+
+  overflow: none;
+  /* will be auto-set to 'hidden' for any pane with a 'scrolling content div' */
+
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+}
+/*
+*	OUTER-LAYOUT PANE FORMATTING
+*/
+.pane-north,
+.pane-south,
+.pane-west,
+.pane-east {
+  overflow: auto;
+  /*neyek1*/
+
+}
+.pane-north {
+  border-bottom: none;
+}
+.pane-north .content,
+.pane-south .content {
+  text-align: center;
+}
+.pane-center {
+  /* show off the inner-layout inside the outer-center-pane*/
+
+  background-color: #F6F6F6;
+  padding: 0px;
+  /* for outer layout */
+
+}
+.ui-layout-center .footer {
+  border-top: 1px solid #BBB;
+}
+/*
+*	INNER-LAYOUT PANE FORMATTING
+*/
+.ui-layout-center .ui-layout-pane {
+  padding: 10px;
+}
+.ui-layout-center .ui-layout-north,
+.ui-layout-center .ui-layout-south {
+  text-align: center;
+}
+.ui-layout-center .ui-layout-center {
+  padding: 0 !important;
+  /* inner divs have padding */
+
+}
+.ui-layout-center .ui-layout-content {
+  padding: 0px;
+}
+.ui-layout-center .ui-layout-center h3 {
+  font-size: 1em;
+  padding: 5px;
+  margin: 0;
+}
+/*
+*  OUTER LAYOUT RESIZERS & TOGGLERS --resizable panel
+*  By. Erik <erik@colosa.com>
+*/
+/* north-pane is not resizable
+.resizer-north-dragging ,
+.resizer-north:hover		{ background: url(../img/resizable-n.gif) repeat-x center; }*/
+.resizer-south-dragging,
+.resizer-south:hover {
+  background: #dcdcdc;
+}
+.resizer-west-dragging,
+.resizer-west-open:hover {
+  background: #dcdcdc;
+}
+.resizer-east-dragging,
+.resizer-east-open:hover {
+  background: #dcdcdc;
+}
+.resizer-west-open,
+.resizer-east-open {
+  background-color: #999;
+  opacity: 0.1;
+  filter: alpha(opacity=10);
+}
+.resizer-west-open:hover,
+.resizer-east-open:hover {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.resizer-dragging {
+  /* see draggable.opacity option
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	*/
+
+}
+.resizer-dragging-limit {
+  background: #FF3300 !important;
+}
+/* IE6 * HACK - always show resizer graphics because IE6 cannot understand elem:hover */
+/** html .resizer-north		{ background: url(../img/resizable-n.gif) repeat-x center !important; } */
+* html .resizer-south {
+  background: #dcdcdc;
+}
+* html .resizer-west-open {
+  background: #dcdcdc;
+}
+* html .resizer-east-open {
+  background: #dcdcdc;
+}
+/** html .resizer-north , */
+* html .resizer-south,
+* html .resizer-west-open,
+* html .resizer-east-open {
+  opacity: 0.1 !important;
+  filter: alpha(opacity=10) !important;
+}
+/*
+*	SIMPLE TOGGLER BUTTONS (used on Outer Layout North/South only)
+*/
+.toggler-north-open,
+.toggler-south-closed {
+  background: #dcdcdc;
+}
+.toggler-north-closed,
+.toggler-south-open {
+  background: #dcdcdc;
+}
+/*
+.toggler-east-closed ,
+.toggler-west-open    { background: url(../img/toggle-lt.gif) no-repeat center right; }
+.toggler-west-closed ,
+.toggler-east-open    { background: url(../img/toggle-rt.gif) no-repeat center left; }
+*/
+/*
+*	extJS-STYLE RESIZER/SLIDER-BAR (CLOSED)
+*/
+.resizer-west-closed,
+.resizer-east-closed {
+  background: #b4b4b4 url(/skins/neoclassic/images/separator-v.gif) center no-repeat;
+  border-top: 1px solid #777;
+  border-bottom: 1px solid #777;
+}
+.resizer-west-closed:hover,
+.resizer-east-closed:hover {
+  background: #D1E6FC;
+}
+span.button-pin,
+span.button-close {
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+  display: block;
+  cursor: pointer;
+}
+span.button-close-west {
+  left: 0;
+}
+span.button-close-east {
+  right: 0;
+}
+span.button-pin-west {
+  right: 1px;
+}
+span.button-pin-east {
+  left: 1px;
+}
+/* CUSTOM pin-buttons */
+span.button-pin-up {
+  background: url(/skins/neoclassic/images/pin-up-off.gif) no-repeat center;
+}
+span.button-pin-up:hover {
+  background: url(/skins/neoclassic/images/pin-up-on.gif) no-repeat center;
+}
+span.button-pin-down {
+  background: url(/skins/neoclassic/images/pin-dn-off.gif) no-repeat center;
+}
+span.button-pin-down:hover {
+  background: url(/skins/neoclassic/images/pin-dn-on.gif) no-repeat center;
+}
+/* CUSTOM close-buttons */
+span.button-close-west {
+  background: url(/skins/neoclassic/images/go-lt-off.gif) no-repeat center;
+}
+span.button-close-west:hover {
+  background: url(/skins/neoclassic/images/go-lt-on.gif) no-repeat center;
+}
+span.button-close-east {
+  background: url(/skins/neoclassic/images/go-rt-off.gif) no-repeat center;
+}
+span.button-close-east:hover {
+  background: url(/skins/neoclassic/images/go-rt-on.gif) no-repeat center;
+}
+/* STANDARD toggler-buttons - when the east/west panes are 'closed' */
+.toggler-west-closed {
+  background: url(/skins/neoclassic/images/go-rt-off.gif) no-repeat center;
+}
+.toggler-west-closed:hover {
+  background: url(/skins/neoclassic/images/go-rt-on.gif) no-repeat center;
+}
+.toggler-east-closed {
+  background: url(/skins/neoclassic/images/go-lt-off.gif) no-repeat center;
+}
+.toggler-east-closed:hover {
+  background: url(/skins/neoclassic/images/go-lt-on.gif) no-repeat center;
+}
+/*
+*	INNER LAYOUT RESIZERS & TOGGLERS
+*
+*	These styles target 'children of center pane', so only affect the Inner Layout
+*	This layout has applyDefaultCSS=true, so use !important to override defaults
+*/
+.ui-layout-center .ui-layout-resizer-closed:hover {
+  background: #FFEDCA !important;
+}
+.ui-layout-center .ui-layout-resizer-open:hover,
+.ui-layout-center .ui-layout-resizer-dragging {
+  background: #C4E1A4 !important;
+}
+.ui-layout-center .ui-layout-resizer-dragging-limit {
+  background: #FF3300 !important;
+}
+.ui-layout-center .ui-layout-resizer-north,
+.ui-layout-center .ui-layout-resizer-south {
+  border-left: 1px solid #BBB !important;
+  border-right: 1px solid #BBB !important;
+}
+.ui-layout-center .ui-layout-resizer-north-closed {
+  border-top: 1px solid #BBB !important;
+}
+.ui-layout-center .ui-layout-resizer-south-closed {
+  border-bottom: 1px solid #BBB !important;
+}
+.ui-layout-center .ui-layout-resizer-west-closed {
+  border-left: 1px solid #BBB !important;
+}
+.ui-layout-center .ui-layout-resizer-east-closed {
+  border-right: 1px solid #BBB !important;
+}
+.ui-layout-center .ui-layout-resizer:hover .ui-layout-toggler {
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+.ui-layout-center .ui-layout-resizer:hover .ui-layout-toggler:hover {
+  opacity: 1;
+  filter: alpha(opacity=100);
+  background: #FD9 !important;
+  border-color: #CB7 !important;
+}
+.ui-layout-center .ui-layout-resizer-sliding {
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+}
+.ui-layout-center .ui-layout-resizer-sliding:hover {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.ui-layout-center .ui-layout-resizer-sliding .ui-layout-toggler {
+  display: none !important;
+}
+.ui-layout-center .ui-layout-resizer-sliding:hover .ui-layout-toggler {
+  display: block !important;
+}
+/** cpanel settings **/
+#cpanel div.icon {
+  text-align: center;
+  margin-right: 2px;
+  float: left;
+  margin-bottom: 2px;
+  background-color: #fff;
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+}
+#cpanel div.iconbox {
+  text-align: center;
+  margin-right: 5px;
+  float: left;
+  margin-bottom: 5px;
+  background-color: #fff;
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+}
+#cpanel div.icon a {
+  display: block;
+  float: left;
+  border: 1px solid #CACACA;
+  height: 32px;
+  width: 200px;
+  color: #666;
+  vertical-align: middle;
+  text-decoration: none;
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+}
+#cpanel div.icon a:hover {
+  border-left: 1px solid #808080;
+  border-top: 1px solid #808080;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background: #EFEFEF;
+  color: #0B55C4;
+}
+#cpanel div.iconbox div {
+  display: block;
+  float: left;
+  border: 1px solid #CACACA;
+  height: 32px;
+  width: 200px;
+  color: #666;
+  vertical-align: middle;
+  text-decoration: none;
+  -moz-border-radius: 6px;
+  /* Rounded edges in Firefox */
+
+}
+#cpanel div.iconbox div:hover {
+  border-left: 1px solid #808080;
+  border-top: 1px solid #808080;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background: #EFEFEF;
+  color: #0B55C4;
+}
+#cpanel img {
+  padding: 2px 0;
+  margin: 0 auto;
+}
+#cpanel span {
+  display: block;
+  text-align: center;
+}
+a.iconmenu {
+  color: #005791;
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 10px;
+  font-weight: bold;
+  text-decoration: none;
+}
+div.grid {
+  font: 11px "Open Sans", Tahoma, sans-serif, MiscFixed;
+  margin-top: 2px;
+  padding-left: 4px;
+  padding-right: 0;
+}
+/* js-calendar styles*/
+/*jscal2.css*/
+/* CSS */
+.DynarchCalendar {
+  border: 1px solid #aaa;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  background: #e8e8e8;
+  font: 11px "lucida grande", tahoma, verdana, sans-serif;
+  line-height: 14px;
+  position: relative;
+  cursor: default;
+}
+.DynarchCalendar table {
+  border-collapse: collapse;
+  font: 11px "lucida grande", tahoma, verdana, sans-serif;
+  line-height: 14px;
+}
+.DynarchCalendar-topBar {
+  border-bottom: 1px solid #aaa;
+  background: #dddddd;
+  padding: 5px 0 0 0;
+}
+table.DynarchCalendar-titleCont {
+  font-size: 130%;
+  font-weight: bold;
+  color: #444;
+  text-align: center;
+  z-index: 9;
+  position: relative;
+  margin-top: -6px;
+}
+.DynarchCalendar-title div {
+  padding: 5px 17px;
+  text-shadow: 1px 1px 1px #777;
+}
+.DynarchCalendar-hover-title div {
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 4px 16px;
+  background-image: url("/js/widgets/js-calendar/css/img/drop-down.gif");
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+}
+.DynarchCalendar-pressed-title div {
+  border: 1px solid #000;
+  padding: 4px 16px;
+  background-color: #777;
+  color: #fff;
+  background-image: url("/js/widgets/js-calendar/css/img/drop-up.gif");
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+}
+.DynarchCalendar-bottomBar {
+  border-top: 1px solid #aaa;
+  background: #dddddd;
+  padding: 2px;
+  position: relative;
+  text-align: center;
+}
+.DynarchCalendar-bottomBar-today {
+  padding: 2px 15px;
+}
+.DynarchCalendar-hover-bottomBar-today {
+  border: 1px solid #000;
+  background-color: #fff;
+  padding: 1px 14px;
+}
+.DynarchCalendar-pressed-bottomBar-today {
+  border: 1px solid #000;
+  background-color: #777;
+  color: #fff;
+  padding: 1px 14px;
+}
+.DynarchCalendar-body {
+  position: relative;
+  overflow: hidden;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.DynarchCalendar-first-col {
+  padding-left: 5px;
+}
+.DynarchCalendar-last-col {
+  padding-right: 5px;
+}
+.DynarchCalendar-animBody-backYear {
+  position: absolute;
+  top: -100%;
+  left: 0;
+}
+.DynarchCalendar-animBody-back {
+  position: absolute;
+  top: 5px;
+  left: -100%;
+}
+.DynarchCalendar-animBody-fwd {
+  position: absolute;
+  top: 5px;
+  left: 100%;
+}
+.DynarchCalendar-animBody-now {
+  position: absolute;
+  top: 5px;
+  left: 0;
+}
+.DynarchCalendar-animBody-fwdYear {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+.DynarchCalendar-dayNames {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.DynarchCalendar-dayNames div {
+  font-weight: bold;
+  color: #444;
+  text-shadow: 1px 1px 1px #777;
+}
+.DynarchCalendar-navBtn {
+  position: absolute;
+  top: 5px;
+  z-index: 10;
+}
+.DynarchCalendar-navBtn div {
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  height: 15px;
+  width: 16px;
+  padding: 1px;
+}
+.DynarchCalendar-hover-navBtn div {
+  border: 1px solid #000;
+  padding: 0;
+  background-color: #fff;
+}
+.DynarchCalendar-navDisabled {
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+}
+.DynarchCalendar-pressed-navBtn div {
+  border: 1px solid #000;
+  padding: 0;
+  background-color: #777;
+  color: #fff;
+}
+.DynarchCalendar-prevMonth {
+  left: 25px;
+}
+.DynarchCalendar-nextMonth {
+  left: 100%;
+  margin-left: -43px;
+}
+.DynarchCalendar-prevYear {
+  left: 5px;
+}
+.DynarchCalendar-nextYear {
+  left: 100%;
+  margin-left: -23px;
+}
+.DynarchCalendar-prevMonth div {
+  background-image: url("/js/widgets/js-calendar/css/img/nav-left.gif");
+}
+.DynarchCalendar-nextMonth div {
+  background-image: url("/js/widgets/js-calendar/css/img/nav-right.gif");
+}
+.DynarchCalendar-prevYear div {
+  background-image: url("/js/widgets/js-calendar/css/img/nav-left-x2.gif");
+}
+.DynarchCalendar-nextYear div {
+  background-image: url("/js/widgets/js-calendar/css/img/nav-right-x2.gif");
+}
+.DynarchCalendar-menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #dddddd;
+  overflow: hidden;
+  opacity: 0.85;
+  filter: alpha(opacity=85);
+}
+.DynarchCalendar-menu table td div {
+  text-align: center;
+  font-weight: bold;
+  padding: 3px 5px;
+}
+.DynarchCalendar-menu table td div.DynarchCalendar-menu-month {
+  width: 4em;
+  text-align: center;
+}
+.DynarchCalendar-menu table td div.DynarchCalendar-hover-navBtn {
+  border: 1px solid #000;
+  padding: 2px 4px;
+  background-color: #fff;
+  color: #000;
+}
+.DynarchCalendar-menu table td div.DynarchCalendar-pressed-navBtn {
+  border: 1px solid #000;
+  padding: 2px 4px;
+  background-color: #777;
+  color: #fff !important;
+}
+.DynarchCalendar-menu-year {
+  text-align: center;
+  font: 16px "lucida grande", tahoma, verdana, sans-serif;
+  font-weight: bold;
+}
+.DynarchCalendar-menu-sep {
+  height: 1px;
+  font-size: 1px;
+  line-height: 1px;
+  overflow: hidden;
+  border-top: 1px solid #888;
+  background: #fff;
+  margin-top: 4px;
+  margin-bottom: 3px;
+}
+.DynarchCalendar-time td {
+  font-weight: bold;
+  font-size: 120%;
+}
+.DynarchCalendar-time-hour,
+.DynarchCalendar-time-minute {
+  padding: 1px 3px;
+}
+.DynarchCalendar-time-down {
+  background: url("/js/widgets/js-calendar/css/img/time-down.png") no-repeat 50% 50%;
+  width: 11px;
+  height: 8px;
+  opacity: 0.5;
+}
+.DynarchCalendar-time-up {
+  background: url("/js/widgets/js-calendar/css/img/time-up.png") no-repeat 50% 50%;
+  width: 11px;
+  height: 8px;
+  opacity: 0.5;
+}
+.DynarchCalendar-time-sep {
+  padding: 0 2px;
+}
+.DynarchCalendar-hover-time {
+  background-color: #444;
+  color: #fff;
+  opacity: 1;
+}
+.DynarchCalendar-pressed-time {
+  background-color: #000;
+  color: #fff;
+  opacity: 1;
+}
+.DynarchCalendar-time-am {
+  padding: 1px;
+  width: 2.5em;
+  text-align: center;
+}
+/* body */
+.DynarchCalendar-hover-week {
+  background-color: #dddddd;
+}
+.DynarchCalendar-dayNames div,
+.DynarchCalendar-day,
+.DynarchCalendar-weekNumber {
+  width: 1.7em;
+  padding: 3px 4px;
+  text-align: center;
+}
+.DynarchCalendar-weekNumber {
+  border-right: 1px solid #aaa;
+  margin-right: 4px;
+  width: 2em !important;
+  padding-right: 8px !important;
+}
+.DynarchCalendar-day {
+  text-align: right;
+  color: #222;
+}
+.DynarchCalendar-day-othermonth {
+  color: #888;
+}
+.DynarchCalendar-weekend {
+  color: #c22;
+}
+.DynarchCalendar-day-today {
+  color: #00f;
+  font-weight: bold;
+}
+.DynarchCalendar-day-disabled {
+  opacity: 0.5;
+  text-shadow: 2px 1px 1px #fff;
+}
+.DynarchCalendar-hover-date {
+  padding: 2px 3px;
+  background-color: #eef;
+  border: 1px solid #88c;
+  margin: 0 !important;
+  color: #000;
+}
+.DynarchCalendar-day-othermonth.DynarchCalendar-hover-date {
+  border-color: #aaa;
+  color: #888;
+}
+.DynarchCalendar-dayNames .DynarchCalendar-weekend {
+  color: #c22;
+}
+.DynarchCalendar-day-othermonth.DynarchCalendar-weekend {
+  color: #d88;
+}
+.DynarchCalendar-day-selected {
+  padding: 2px 3px;
+  margin: 1px;
+  background-color: #aaa;
+  color: #000 !important;
+}
+.DynarchCalendar-day-today.DynarchCalendar-day-selected {
+  background-color: #999;
+}
+/* focus */
+.DynarchCalendar-focusLink {
+  position: absolute;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.DynarchCalendar-focused {
+  border-color: #000;
+}
+.DynarchCalendar-focused .DynarchCalendar-topBar,
+.DynarchCalendar-focused .DynarchCalendar-bottomBar {
+  background-color: #ccc;
+  border-color: #336;
+}
+.DynarchCalendar-focused .DynarchCalendar-hover-week {
+  background-color: #ccc;
+}
+.DynarchCalendar-tooltip {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+.DynarchCalendar-tooltipCont {
+  margin: 0 5px 0 5px;
+  border: 1px solid #aaa;
+  border-top: 0;
+  padding: 3px 6px;
+  background: #dddddd;
+}
+.DynarchCalendar-focused .DynarchCalendar-tooltipCont {
+  background: #ccc;
+  border-color: #000;
+}
+@media print {
+  .DynarchCalendar-day-selected {
+    padding: 2px 3px;
+    border: 1px solid #000;
+    margin: 0 !important;
+  }
+}
+/*border-radius.css*/
+/* This is for Gecko-based browsers */
+.DynarchCalendar {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.DynarchCalendar-title,
+.DynarchCalendar-title div {
+  -moz-border-radius: 0 0 4px 4px;
+  -webkit-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+}
+.DynarchCalendar-topBar {
+  -moz-border-radius: 4px 4px 0 0;
+  -webkit-border-radius: 4px;
+  border-radius: 4px 4px 0 0;
+}
+.DynarchCalendar-bottomBar {
+  -moz-border-radius: 0 0 4px 4px;
+  -webkit-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+}
+.DynarchCalendar-bottomBar-today {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.DynarchCalendar-navBtn,
+.DynarchCalendar-navBtn div {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.DynarchCalendar-menu {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.DynarchCalendar-menu table td div {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.DynarchCalendar-weekNumber {
+  -moz-border-radius: 4px 0 0 4px;
+  -webkit-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+.DynarchCalendar-day {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.DynarchCalendar-day-disabled {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+.DynarchCalendar-tooltipCont {
+  -moz-border-radius: 0 0 5px 5px;
+  -webkit-border-radius: 5px;
+}
+.DynarchCalendar-time-hour,
+.DynarchCalendar-time-minute {
+  -moz-border-radius: 3px 0 0 3px;
+  -webkit-border-radius: 3px;
+}
+.DynarchCalendar-time-am {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+/*steal.css*/
+.DynarchCalendar-focused {
+  background-color: #fff;
+}
+.DynarchCalendar-topBar {
+  background: url("/js/widgets/js-calendar/css/steel/brushed-steel.jpg") no-repeat 50% 0;
+}
+.DynarchCalendar-bottomBar {
+  background: url("/js/widgets/js-calendar/css/steel/brushed-steel.jpg") no-repeat 50% 50%;
+}
+.DynarchCalendar-hover-title,
+.DynarchCalendar-hover-navBtn,
+.DynarchCalendar-hover-bottomBar-today,
+.DynarchCalendar-menu table td div.DynarchCalendar-hover-navBtn {
+  background: #ddddee url("/js/widgets/js-calendar/css/steel/coolbg.png") repeat-x 0 50%;
+}
+.DynarchCalendar-hover-title div,
+.DynarchCalendar-hover-navBtn div {
+  background-color: transparent;
+}
+.DynarchCalendar-pressed-title,
+.DynarchCalendar-pressed-navBtn,
+.DynarchCalendar-pressed-bottomBar-today,
+.DynarchCalendar-menu table td div.DynarchCalendar-pressed-navBtn {
+  background: #444455 url("/js/widgets/js-calendar/css/steel/coolbg.png") repeat-x 0 50%;
+}
+.DynarchCalendar-pressed-title div,
+.DynarchCalendar-pressed-navBtn div {
+  background-color: transparent;
+}
+.DynarchCalendar-hover-week,
+.DynarchCalendar-focused .DynarchCalendar-hover-week {
+  background: #dddddd url("/js/widgets/js-calendar/css/steel/coolbg.png") repeat-x 0 50%;
+}
+.DynarchCalendar {
+  background: url("/js/widgets/js-calendar/css/steel/steel.jpg") no-repeat 50% 30px;
+}
+.DynarchCalendar-day-selected {
+  background-color: #1864fc;
+  color: #fff !important;
+  background-image: url("/js/widgets/js-calendar/css/steel/coolbg.png");
+  background-position: 0 50%;
+  background-repeat: repeat-x;
+}
+.DynarchCalendar-day-today.DynarchCalendar-day-selected {
+  background-color: #1864fc;
+  color: #fff !important;
+}
+.DynarchCalendar-focused .DynarchCalendar-body {
+  background: url("/js/widgets/js-calendar/css/shadow-b.png") repeat-x 0 0;
+}
+/*Menu Principal*/
+#pm_main_table .mainMenuBG {
+  border-top:2px solid #b1cedb;
+  background: #676767;
+  background-image:none;
+}
+ul#pm_menu {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 13px;
+}
+ul#pm_menu li {
+  float: left;
+  padding: 0;
+  height: 25px;
+}
+ul#pm_menu a {
+  color: #fff;
+  font-size: 13px;
+  text-decoration: none;
+  display: block;
+  padding: 0px 25px;
+  text-transform: uppercase;
+  line-height: 25px;
+}
+ul#pm_menu li.SelectedMenu,
+ul#pm_menu li:hover {
+  background: #00a1e4;
+}
+ul#pm_submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 2px;
+}
+ul#pm_submenu li {
+  float: left;
+  margin: 1px 1px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+  padding: 3px;
+}
+ul#pm_submenu a {
+  white-space: nowrap;
+  font-weight: bold;
+  color: #333;
+  font-size: 10px;
+  text-decoration: none;
+  display: block;
+  padding-top: 0px;
+  text-transform: uppercase;
+  line-height: 18px;
+  height: auto !important;
+  /*IE se pone loco con el height 18px del ss_sprite*/
+
+}
+ul#pm_submenu a img {
+  float: left;
+  max-height: 18px;
+}
+ul#pm_submenu li.SelectedSubMenu,
+ul#pm_submenu li:hover {
+  background-color: #CCC;
+}
+ul#pm_submenu li.SelectedSubMenu a,
+ul#pm_submenu li:hover a {
+  color: #333;
+}
+button.x-btn-text:focus,
+.x-combo-selected {
+  -moz-outline-style: none;
+  outline: none;
+}
+.CodeMirror-line-numbers {
+  width: 2.2em;
+  color: #aaa;
+  background-color: #fff;
+  text-align: right;
+  padding-right: .3em;
+  font-size: 10pt;
+  font-family: monospace;
+  padding-top: .4em;
+  line-height: normal;
+}
+/** erik: Simplified Stylesheet exteded */
+.ux {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #E8E8E8;
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  /*-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.6);*/
+
+  /*-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.6);*/
+
+  min-height: 20px;
+  padding: 12px;
+}
+.ux form button {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: -moz-linear-gradient(#ffffff, #e1e1e1) repeat scroll 0 0 transparent;
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e1e1e1));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#E1E1E1');
+  /* IE6,IE7 */
+
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#E1E1E1')";
+  /* IE8 */
+
+  border-color: -moz-use-text-color -moz-use-text-color #ebebeb;
+  border-radius: 4px 4px 4px 4px;
+  border-style: none none solid;
+  border-width: medium medium 1px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 12px;
+  font-weight: bold;
+  height: 34px;
+  margin-left: 1px;
+  overflow: visible;
+  padding: 0 13px;
+  position: relative;
+  text-shadow: 1px 1px 0 #FFFFFF;
+  top: 1px;
+  white-space: nowrap;
+}
+.ux form button:hover {
+  background: -moz-linear-gradient(#0ca6dd, #0770a0) repeat scroll 0 0 transparent;
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#0ca6dd), to(#0770a0));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0CA6DD', endColorstr='#0770A0');
+  /* IE6,IE7 */
+
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#0CA6DD', endColorstr='#0770A0')";
+  /* IE8 */
+
+  border-bottom-color: #0770A0;
+  color: #FFFFFF;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+}
+.ux form input[type="submit"] {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: -moz-linear-gradient(#ffffff, #e1e1e1) repeat scroll 0 0 transparent;
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e1e1e1));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#E1E1E1');
+  /* IE6,IE7 */
+
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#E1E1E1')";
+  /* IE8 */
+
+  border-color: -moz-use-text-color -moz-use-text-color #ebebeb;
+  border-radius: 4px 4px 4px 4px;
+  border-style: none none solid;
+  border-width: medium medium 1px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Open Sans", Tahoma, sans-serif, MiscFixed;
+  font-size: 12px;
+  font-weight: bold;
+  height: 34px;
+  margin-left: 1px;
+  overflow: visible;
+  padding: 0 13px;
+  position: relative;
+  text-shadow: 1px 1px 0 #FFFFFF;
+  top: 1px;
+  white-space: nowrap;
+}
+.ux form input[type="submit"]:hover {
+  background: -moz-linear-gradient(#0ca6dd, #0770a0) repeat scroll 0 0 transparent;
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#0ca6dd), to(#0770a0));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0CA6DD', endColorstr='#0770A0');
+  /* IE6,IE7 */
+
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#0CA6DD', endColorstr='#0770A0')";
+  /* IE8 */
+
+  border-bottom-color: #0770A0;
+  color: #FFFFFF;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+}
+.ux h1 {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: -moz-linear-gradient(#829aa8, #405a6a) repeat scroll 0 0 transparent;
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#829aa8), to(#405a6a));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#829AA8', endColorstr='#405A6A');
+  /* IE6,IE7 */
+
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#829AA8', endColorstr='#405A6A')";
+  /* IE8 */
+
+  border-color: #677C89 #677C89 #6B808D;
+  border-radius: 3px 3px 0 0;
+  border-style: solid;
+  border-width: 1px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+  padding: 8px 18px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.698);
+  border-radius: 5px 5px 0px 0px;
+  -moz-border-radius: 5px 5px 0px 0px;
+  /* Firefox */
+
+  -webkit-border-radius: 5px 5px 0px 0px;
+  /* Safari, Chrome */
+
+}

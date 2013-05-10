@@ -3,9 +3,9 @@
   name="dynaforms_Properties"
   type="xmlform"
   width="450"
-  height="450"
+  height="auto"
 >
-
+<!--height="450"-->
 <PME_PROPERTIES_TITLE type="title">
   <en>Properties</en>
 </PME_PROPERTIES_TITLE>

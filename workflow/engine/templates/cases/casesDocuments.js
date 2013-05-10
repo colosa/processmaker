@@ -83,24 +83,7 @@ function rootNodeCreate()
         text: "/",
         draggable: false,
         expanded: true,
-        cls: "folder",
-
-        listeners: {
-            beforeload: function (nodeRoot) {
-                nodeRoot.setIcon("");
-            },
-            load: function (nodeRoot) {
-                nodeRoot.setIcon("/images/ext/default/tree/folder.gif");
-            },
-            expand: function (nodeRoot) {
-                if (nodeRoot.hasChildNodes()) {
-                    nodeRoot.setIcon("/images/ext/default/tree/folder-open.gif");
-                }
-            },
-            collapse: function (nodeRoot) {
-                nodeRoot.setIcon("/images/ext/default/tree/folder.gif");
-            }
-        }
+        cls: "folder"
     });
 
     return node;
