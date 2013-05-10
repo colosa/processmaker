@@ -220,3 +220,8 @@
 .o2k7Skin span.mce_restoredraft {background-position:-20px -40px}
 .o2k7Skin span.mce_spellchecker {background-position:-540px -20px}
 .o2k7Skin span.mce_visualblocks {background-position: -40px -40px}
+
+
+a.mce_pmSimpleUploader, a.mce_pmVariablePicker, a.mce_pmGrids { border: 1px solid #BBBBBB; border-width: 1px 0 1px 0; background: #EEEEEE !important;}
+a.mce_pmSimpleUploader:hover, a.mce_pmVariablePicker:hover, a.mce_pmGrids:hover {background: #FFDB6F !important;}
+a.mce_pmSimpleUploader img, a.mce_pmVariablePicker img, a.mce_pmGrids img {margin: 0.25em 0 0 0.25em !important; width: 14px !important; height: 14px !important;}
