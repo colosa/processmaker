@@ -775,7 +775,9 @@ class AdditionalTables extends BaseAdditionalTables
                         // if the record already exists on the report table
                         foreach ($records as $record) {
                             //update all records
-                            $record->setAppStatus($appStatus);
+                            if (method_exists($record, 'setAppStatus')) {
+                                $record->setAppStatus($appStatus);
+                            }
                             $record->fromArray(array_change_key_case($caseData, CASE_UPPER), BasePeer::TYPE_FIELDNAME);
                             if ($record->validate()) {
                                 $record->save();
