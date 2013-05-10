@@ -11,22 +11,26 @@
         <td id="pm_header" valign="top">
           <table width="100%" height="32" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
             <tr>
-              <td width="50%" rowspan="2" valign="center"><img src="{$logo_company}"/></td>
-              <td width="50%" height="16" align="right" valign="top">
-                <div align="right" class="logout">
-                  <small>
-                  {if $user_logged neq ''}
-                    {$msgVer}<label class="textBlue">{$userfullname} <a href="../users/myInfo">{$user}</a> | </label>
-                    {if $switch_interface}
-                    <label class="textBlue"><a href="../../uxs/home">{$switch_interface_label}</a> | </label>
+                {if $user_logged neq ''}
+                <td width="50%" rowspan="2" valign="center"><img src="{$logo_company}"/></td>
+                <td width="50%" height="16" align="right" valign="top">
+                  <div align="right" class="logout">
+                    <small>
+                    {if $user_logged neq ''}
+                      {$msgVer}<label class="textBlue">{$userfullname} <a href="../users/myInfo">{$user}</a> | </label>
+                      {if $switch_interface}
+                      <label class="textBlue"><a href="../../uxs/home">{$switch_interface_label}</a> | </label>
+                      {/if}
+                      <a href="{$linklogout}" class="tableOption">{$logout}</a>&nbsp;&nbsp;<br/>
+                      <label class="textBlack"><b>{$rolename}</b> {$workspace_label} <b><u>{$workspace}</u></b> &nbsp; &nbsp; <br/>
+                      {$udate}</label>&nbsp; &nbsp;
                     {/if}
-                    <a href="{$linklogout}" class="tableOption">{$logout}</a>&nbsp;&nbsp;<br/>
-                    <label class="textBlack"><b>{$rolename}</b> {$workspace_label} <b><u>{$workspace}</u></b> &nbsp; &nbsp; <br/>
-                    {$udate}</label>&nbsp; &nbsp;
-                  {/if}
-                  </small>
-                </div>
-              </td>
+                    </small>
+                  </div>
+                </td>
+                {else}
+                <td width="100%" style="padding-top: 10px"><img style="display: block; margin-left: auto; margin-right: auto;" src="{$logo_company}"/></td>
+                {/if}
             </tr>
             <tr>
               <td width="50%" height="16" valign="bottom" class="title">
@@ -40,9 +44,14 @@
         <td>
           <table width="100%" cellspacing="0" cellpadding="0" border="0" >
             <tr>
+              {if $user_logged neq ''}
               <td width="100%" class="mainMenuBG" style="height:25px">
                 {include file="$tpl_menu"}
               </td>
+              {else}
+              <td width="100%" style="height:25px">
+              </td>
+              {/if}
             </tr>
             {if (count($subMenus)>0) }
             <tr>

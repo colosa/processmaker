@@ -3,72 +3,41 @@
  */
 @font-face {
   font-family: 'Open Sans';
-  src: url('/skins/neoclassic/fonts/OpenSans-Light-webfont.eot');
   src: url('/skins/neoclassic/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.eot');
   src: url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-LightItalic-webfont.svg#OpenSansLightItalic') format('svg');
   font-weight: 300;
   font-style: italic;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.eot');
   src: url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.eot');
   src: url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Italic-webfont.svg#OpenSansItalic') format('svg');
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.eot');
   src: url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.eot');
   src: url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.eot?#iefix') format('embedded-opentype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.woff') format('woff'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.ttf') format('truetype'), url('/skins/neoclassic/fonts/OpenSans-SemiboldItalic-webfont.svg#OpenSansSemiboldItalic') format('svg');
   font-weight: bold;
   font-style: italic;
 }
-/*
-@font-face {
-    font-family: 'OpenSansBold';
-    src: url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.eot');
-    src: url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.woff') format('woff'),
-         url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.ttf') format('truetype'),
-         url('/skins/neoclassic/fonts/OpenSans-Bold-webfont.svg#OpenSansBold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'OpenSansBoldItalic';
-    src: url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.eot');
-    src: url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.woff') format('woff'),
-         url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.ttf') format('truetype'),
-         url('/skins/neoclassic/fonts/OpenSans-BoldItalic-webfont.svg#OpenSansBoldItalic') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-*//*Colores*/
+/*Colores*/
 .btn {
   background-image: none;
   color: #333333;
@@ -83,7 +52,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffdddddd', GradientType=0);
   border-color: #dddddd #dddddd #b7b7b7;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  background-color: #dddddd;
+  *background-color: #dddddd;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -103,7 +72,7 @@
 .btn[disabled] {
   color: #333333;
   background-color: #dddddd;
-  background-color: #d0d0d0;
+  *background-color: #d0d0d0;
 }
 .btn:active,
 .btn.active {
@@ -122,7 +91,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
   border-color: #ffffff #ffffff #d9d9d9;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  background-color: #ffffff;
+  *background-color: #ffffff;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -136,7 +105,7 @@
 .btn:hover[disabled] {
   color: #333333;
   background-color: #ffffff;
-  background-color: #f2f2f2;
+  *background-color: #f2f2f2;
 }
 .btn:hover:active,
 .btn:hover.active {
@@ -162,7 +131,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#ffffffff', GradientType=0);
   border-color: #ffffff #ffffff #d9d9d9;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  background-color: #ffffff;
+  *background-color: #ffffff;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -176,7 +145,7 @@
 .btn-over[disabled] {
   color: #333333;
   background-color: #ffffff;
-  background-color: #f2f2f2;
+  *background-color: #f2f2f2;
 }
 .btn-over:active,
 .btn-over.active {
@@ -3253,9 +3222,7 @@ table.DynarchCalendar-titleCont {
 }
 /*Menu Principal*/
 #pm_main_table .mainMenuBG {
-  border-top:2px solid #b1cedb;
   background: #676767;
-  background-image:none;
 }
 ul#pm_menu {
   list-style: none;
@@ -3275,6 +3242,7 @@ ul#pm_menu a {
   padding: 0px 25px;
   text-transform: uppercase;
   line-height: 25px;
+  font-weight: bold;
 }
 ul#pm_menu li.SelectedMenu,
 ul#pm_menu li:hover {
