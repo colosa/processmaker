@@ -313,6 +313,7 @@ class RBAC
      */
     public function VerifyLogin ($strUser, $strPass)
     {
+
         if (strlen( $strPass ) == 0) {
             return - 2;
         }
@@ -336,7 +337,6 @@ class RBAC
         }
         //Hook for RBAC plugins
         if ($sAuthType != "mysql" && $sAuthType != "") {
-
             $res = $this->VerifyWithOtherAuthenticationSource( $sAuthType, $this->userObj->fields, $strPass );
             return $res;
         } else {
@@ -487,7 +487,7 @@ class RBAC
      */
     public function changeUserStatus ($sUserUID = '', $sStatus = 'ACTIVE')
     {
-        if ($sStatus == 'ACTIVE') {
+        if ($sStatus === 'ACTIVE') {
             $sStatus = 1;
         }
 
