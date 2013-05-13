@@ -138,8 +138,8 @@ class workspaceTools
          * ((define('(<key>)2', ')1 (<value>)3 (');)4 )0
          */
         $dbPrefix = array('DB_NAME' => 'wf_', 'DB_USER' => 'wf_', 'DB_RBAC_NAME' => 'rb_', 'DB_RBAC_USER' => 'rb_', 'DB_REPORT_NAME' => 'rp_', 'DB_REPORT_USER' => 'rp_');
-        $key = $matches['key'];
-        $value = $matches['value'];
+        $key = isset($matches['key']) ? $matches['key'] : $matches[2];
+        $value = isset($matches['value']) ? $matches['value'] : $matches[3];
         if (array_search($key, array('DB_HOST', 'DB_RBAC_HOST', 'DB_REPORT_HOST')) !== false) {
             /* Change the database hostname for these keys */
             $value = $this->newHost;
