@@ -164,11 +164,15 @@ switch ($request) {
                             if ($smtp->Authenticate( $user, $passwd )) {
                                 print (SUCCESSFUL . ',' . $smtp->status) ;
                             } else {
-                                print (FAILED . ',' . $smtp->error['error']) ;
+                                $smtpError = $smtp->getError();
+                                print (FAILED . ',' . $smtpError['error']);
+                                // print (FAILED . ',' . $smtp->error['error']) ;
                             }
 
                         } else {
-                            print (FAILED . ',' . $smtp->error['error']) ;
+                            $smtpError = $smtp->getError();
+                            print (FAILED . ',' . $smtpError['error']);
+                            // print (FAILED . ',' . $smtp->error['error']) ;
                         }
                     } catch (Exception $e) {
                         print (FAILED . ',' . $e->getMessage()) ;
