@@ -840,7 +840,7 @@ class Installer extends Controller
                 $langUri = $sysConf['default_lang'];
             }
 
-            $skinUri = 'classic';
+            $skinUri = 'neoclassic';
             if (isset($sysConf['default_skin'])) {
                 $skinUri = $sysConf['default_skin'];
             }
@@ -1070,7 +1070,7 @@ class Installer extends Controller
             $this->installLog( G::LoadTranslation('ID_INSTALL_SUCESS') );
             $info->result = true;
             $info->message = G::LoadTranslation('ID_INSTALL_SUCESS');
-            $info->url = '/sys' . $_REQUEST['workspace'] . '/en/classic/main/login';
+            $info->url = '/sys' . $_REQUEST['workspace'] . '/en/neoclassic/login/login';
             $info->messageFinish = G::LoadTranslation('ID_PROCESSMAKER_SUCCESS_INSTALLED', SYS_LANG, Array($workspace));;
         } catch (Exception $e) {
             $info->result = false;

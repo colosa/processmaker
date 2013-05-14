@@ -31,7 +31,7 @@ class Home extends Controller
 
         // getting the ux type from user o group conf.
         $this->userUxType = isset( $_SESSION['user_experience'] ) ? $_SESSION['user_experience'] : 'SIMPLIFIED';
-        $this->lastSkin = isset( $_SESSION['user_last_skin'] ) ? $_SESSION['user_last_skin'] : 'classic';
+        $this->lastSkin = isset( $_SESSION['user_last_skin'] ) ? $_SESSION['user_last_skin'] : 'neoclassic';
         $this->userUxBaseTemplate = (is_dir( PATH_CUSTOM_SKINS . 'uxs' )) ? PATH_CUSTOM_SKINS . 'simplified' . PATH_SEP . 'templates' : 'home';
 
         if (isset( $_SESSION['USER_LOGGED'] ) && ! empty( $_SESSION['USER_LOGGED'] )) {
