@@ -4523,8 +4523,8 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
             $min = '%M';
             $sec = '%S';
             $sizehour = strpos( $mask, $hour );
-            $sizemin = strpos( $mask, $hour );
-            $sizesec = strpos( $mask, $hour );
+            $sizemin = strpos( $mask, $min );
+            $sizesec = strpos( $mask, $sec );
             $Time = 'false';
 
             if (($sizehour !== false) && ($sizemin !== false) && ($sizesec !== false)) {
@@ -4566,6 +4566,70 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
             $html .= $this->renderHint();
         }
         return $html;
+    }
+    
+    public function maskDateValue ($value, $field)
+    {
+        $value = trim($value);
+        $mask = $field->mask;
+        if ($value == '' || $mask == '') {
+            return $value;
+        }
+        if (strpos( $mask, '%' ) === false) {
+            if (strpos( $mask, '-' ) !== false) {
+                $separator = '-';
+            }
+            if (strpos( $mask, '/' ) !== false) {
+                $separator = '/';
+            }
+            if (strpos( $mask, '.' ) !== false) {
+                $separator = '.';
+            }
+
+            $maskparts = explode( $separator, $mask );
+            $mask = '';
+            foreach ($maskparts as $part) {
+                if ($mask != '') {
+                    $mask .= $separator;
+                }
+                if ($part == 'yyyy') {
+                    $part = 'Y';
+                }
+                if ($part == 'dd') {
+                    $part = 'd';
+                }
+                if ($part == 'mm') {
+                    $part = 'm';
+                }
+                if ($part == 'yy') {
+                    $part = 'y';
+                }
+                $mask .= '%' . $part;
+            }
+        }
+        
+        $withHours = (strpos($mask, '%H') !== false || strpos($mask, '%M') !== false || strpos($mask, '%S') !== false);
+
+        $tmp = str_replace( "%", "", $mask );
+        return $this->date_create_from_format($tmp, $value, $withHours);
+    }
+    
+    function date_create_from_format( $dformat, $dvalue, $withHours = false )
+    {
+        $schedule = $dvalue;
+        $schedule_format = str_replace(array('Y','m','d','H','M','S'),array('%Y','%m','%d','%H','%M','%S') ,$dformat);
+        $ugly = strptime($schedule, $schedule_format);
+        $ymd = sprintf(
+            '%04d-%02d-%02d %02d:%02d:%02d',
+            $ugly['tm_year'] + 1900,
+            $ugly['tm_mon'] + 1,
+            $ugly['tm_mday'], 
+            $ugly['tm_hour'], 
+            $ugly['tm_min'], 
+            $ugly['tm_sec']
+        );
+        $new_schedule = new DateTime($ymd);
+        return $new_schedule->format('Y-m-d' . ($withHours ? ' H:i:s' : ''));
     }
 }
 

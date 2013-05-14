@@ -507,6 +507,9 @@ class Form extends XmlForm
                                                             $values[$k][$j] = $newValues[$k][$j];
                                                             $values[$k][$j][$kk . "_label"] = $newValues[$k][$j][$kk . "_label"];
                                                             break;
+                                                        case 'date':
+                                                            $values[$k][$j][$kk] = $this->fields[$k]->fields[$kk]->maskDateValue( $newValues[$k][$j][$kk], $this->fields[$k]->fields[$kk] );
+                                                            break;
                                                         default:
                                                             //If there are no dropdowns previously setted and the evaluated field is not a dropdown
                                                             //only then rewritte the $values
@@ -529,6 +532,9 @@ class Form extends XmlForm
                                         $values[$k][$j] = $this->fields[$k]->maskValue( $newValues[$k][$j], $this );
                                     }
                                 }
+                                break;
+                            case 'date':
+                                $values[$k] = $this->fields[$k]->maskDateValue( $newValues[$k], $this->fields[$k] );
                                 break;
                             default:
                                 if ($this->fields[$k]->validateValue( $newValues[$k], $this )) {
