@@ -289,33 +289,38 @@ var saveTaskData = function(oForm, iForm, iType)
 
 var showTriggers = function(sStep, sType)
 {
+  var idAux = "";
+  var sStepAux = sStep;
+
   var oRPC = new leimnud.module.rpc.xmlhttp({
-    url   : '../steps/steps_Ajax',
+    url   : "../steps/steps_Ajax",
     async : false,
-    method: 'POST',
-    args  : 'action=showTriggers&sProcess=' + Pm.options.uid + '&sStep=' + sStep + '&sType=' + sType
+    method: "POST",
+    args  : "action=showTriggers&sProcess=" + Pm.options.uid + "&sStep=" + sStep + "&sType=" + sType
   });
 
   oRPC.make();
-
-  document.getElementById('triggersSpan_' + sStep + '_' + sType).innerHTML = oRPC.xmlhttp.responseText;
+  document.getElementById("triggersSpan_" + sStep + "_" + sType).innerHTML = oRPC.xmlhttp.responseText;
   scs = oRPC.xmlhttp.responseText.extractScript();
   scs.evalScript();
+  var tri = document.getElementById("TRIG_"+sStep+"_" + sType);
 
-  var tri = document.getElementById('TRIG_'+sStep+'_'+sType);
   if (tri) {
   	oRPC = new leimnud.module.rpc.xmlhttp({
-      url   : '../steps/steps_Ajax',
+      url   : "../steps/steps_Ajax",
       async : false,
-      method: 'POST',
-      args  : 'action=counterTriggers&sStep='+sStep+'&sType='+sType
+      method: "POST",
+      args  : "action=counterTriggers&sStep="+sStep+"&sType="+sType
     });
+
     oRPC.make();
-    aAux = oRPC.xmlhttp.responseText.split('|');
-    tri.innerHTML=aAux[1];
-    var tri = document.getElementById('TRIG_'+sStep);
+    aAux = oRPC.xmlhttp.responseText.split("|");
+    tri.innerHTML = aAux[1];
+    idAux = (sStepAux.charAt(0) != "-")? "TRIG_" + sStepAux : "TRIG_";
+    var tri = document.getElementById(idAux);
+
     if (tri) {
-    	tri.innerHTML=aAux[0];
+    	tri.innerHTML = aAux[0];
     }
   }
 };

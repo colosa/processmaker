@@ -165,17 +165,33 @@ try {
             $oStepTrigger->remove( $aData['sStep'], $_SESSION['TASK'], $aData['sTrigger'], $aData['sType'] );
             break;
         case 'counterTriggers':
-            G::LoadClass( 'processMap' );
-            $oProcessMap = new ProcessMap();
-            $oCriteria1 = $oProcessMap->getStepTriggersCriteria( $aData['sStep'], $_SESSION['TASK'], $aData['sType'] );
-            if ($aData['sType'] == 'BEFORE') {
-                $oCriteria2 = $oProcessMap->getStepTriggersCriteria( $aData['sStep'], $_SESSION['TASK'], 'AFTER' );
+            G::LoadClass("processMap");
+
+            $processMap = new ProcessMap();
+
+            $criteria1 = $processMap->getStepTriggersCriteria($aData["sStep"], $_SESSION["TASK"], $aData["sType"]);
+            $cantity = StepTriggerPeer::doCount($criteria1);
+
+            if ($aData["sStep"][0] != "-") {
+                if ($aData["sType"] == "BEFORE") {
+                    $criteria2 = $processMap->getStepTriggersCriteria($aData["sStep"], $_SESSION["TASK"], "AFTER");
+                } else {
+                    $criteria2 = $processMap->getStepTriggersCriteria($aData["sStep"], $_SESSION["TASK"], "BEFORE");
+                }
+
+                $total = $cantity + StepTriggerPeer::doCount($criteria2);
             } else {
-                $oCriteria2 = $oProcessMap->getStepTriggersCriteria( $aData['sStep'], $_SESSION['TASK'], 'BEFORE' );
+                $criteria  = $processMap->getStepTriggersCriteria(-1, $_SESSION["TASK"], "BEFORE");
+                $cantity1 = StepTriggerPeer::doCount($criteria);
+                $criteria  = $processMap->getStepTriggersCriteria(-2, $_SESSION["TASK"], "BEFORE");
+                $cantity2 = StepTriggerPeer::doCount($criteria);
+                $criteria  = $processMap->getStepTriggersCriteria(-2, $_SESSION["TASK"], "AFTER");
+                $cantity3 = StepTriggerPeer::doCount($criteria);
+
+                $total = $cantity1 + $cantity2 + $cantity3;
             }
-            $iCantity = StepTriggerPeer::doCount( $oCriteria1 );
-            $iTotal = $iCantity + StepTriggerPeer::doCount( $oCriteria2 );
-            echo $iTotal . '|' . $iCantity;
+
+            echo $total . "|" . $cantity;
             break;
     }
 } catch (Exception $oException) {
