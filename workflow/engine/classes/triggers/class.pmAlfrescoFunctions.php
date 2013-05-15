@@ -36,7 +36,7 @@
  * @param string | $user | Valid Admin username to connect to Alfresco server
  * @param string | $pwd | Valid Admin password to connect to Alfresco server
  *
- * @return string | $result | Response |
+ * @return object | $result | Response |
  *
  */
 G::LoadSystem('restClient');
@@ -174,7 +174,7 @@ function createFolder($alfrescoServerUrl, $parentFolder, $folderName, $user, $pw
  * @param string | $user | Valid Admin username to connect to Alfresco server
  * @param string | $pwd | Valid Admin password to connect to Alfresco server
  *
- * @return string | $result | Response |
+ * @return object | $result | Response |
  *
  */
 function deleteObject($alfrescoServerUrl, $objetcId, $user, $pwd)
@@ -183,7 +183,7 @@ function deleteObject($alfrescoServerUrl, $objetcId, $user, $pwd)
     $alfresco_exec = RestClient::delete($alfresco_url, $user, $pwd, "application/atom+xml");
 
     $alfresco_res = G::json_decode($alfresco_exec->getResponse());
-    echo($alfresco_res);
+
     return $alfresco_res;
 }
 
@@ -255,7 +255,7 @@ function downloadDoc($alfrescoServerUrl, $pathFile, $pathFolder, $user, $pwd, $m
  * @param string | $user | Valid Admin username to connect to Alfresco server
  * @param string | $pwd | Valid Admin password to connect to Alfresco server
  *
- * @return string | $result | Response |
+ * @return object | $result | Response |
  *
  */
 function getCheckedoutFiles($alfrescoServerUrl, $user, $pwd)
@@ -284,7 +284,7 @@ function getCheckedoutFiles($alfrescoServerUrl, $user, $pwd)
  * @param string | $user | Valid Admin username to connect to Alfresco server
  * @param string | $pwd | Valid Admin password to connect to Alfresco server
  *
- * @return string | $result | Response |
+ * @return object | $result | Response |
  *
  */
 function getFolderChildren($alfrescoServerUrl, $folderId, $user, $pwd)
@@ -317,7 +317,7 @@ function getFolderChildren($alfrescoServerUrl, $folderId, $user, $pwd)
  * @param string | $path | Path of document to be Uploaded
  * @param string | $mainFolder | The main folder in alfreco to save the files
  *
- * @return string | $result | Response |
+ * @return object | $result | Response |
  *
  */
 function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docType, $user, $pwd, $path = '', $mainFolder= 'Sites')
