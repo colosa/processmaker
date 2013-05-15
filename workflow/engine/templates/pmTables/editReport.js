@@ -312,7 +312,7 @@ Ext.onReady(function(){
           editor: new fm.ComboBox({
               typeAhead: true,
               triggerAction: 'all',
-              editable: true,
+              editable: false,
               lazyRender: true,
               mode: 'local',
               displayField:'type',
