@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.0.46-testing.9\n"
+"Project-Id-Version: ProcessMaker (Branch master) docSystem-373-g0bee2a7\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-03-04 11:23:27\n"
+"PO-Revision-Date: 2013-05-15 15:36:52\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -36,12 +36,6 @@ msgstr "User does not have rights on this page."
 #: LABEL/ID_WRONG_PASS
 msgid "Wrong password"
 msgstr "Wrong password"
-
-# TRANSLATION
-# LABEL/WRONG_LOGIN_CREDENTIALS
-#: LABEL/WRONG_LOGIN_CREDENTIALS
-msgid "Wrong login credentials"
-msgstr "Wrong login credentials"
 
 # TRANSLATION
 # LABEL/ABOUT
@@ -690,6 +684,12 @@ msgstr "You are in the first step!"
 #: JAVASCRIPT/EDIT_PROCESS
 msgid "Edit process"
 msgstr "Edit process"
+
+# TRANSLATION
+# JAVASCRIPT/curriculum
+#: JAVASCRIPT/curriculum
+msgid "Resume"
+msgstr "Resume"
 
 # TRANSLATION
 # JAVASCRIPT/ID_OPEN_SEARCH
@@ -10030,7 +10030,7 @@ msgstr "Please select a photo"
 # TRANSLATION
 # LABEL/ID_RESUME
 #: LABEL/ID_RESUME
-msgid "Resume"
+msgid "[LABEL/ID_RESUME] Resume"
 msgstr "Resume"
 
 # TRANSLATION
@@ -12494,6 +12494,1218 @@ msgid "FALSE"
 msgstr "FALSE"
 
 # TRANSLATION
+# LABEL/ID_DATE_FORMAT_15
+#: LABEL/ID_DATE_FORMAT_15
+msgid "M d, Y"
+msgstr "M d, Y"
+
+# TRANSLATION
+# LABEL/ID_DATE_FORMAT_16
+#: LABEL/ID_DATE_FORMAT_16
+msgid "m D, Y"
+msgstr "m D, Y"
+
+# TRANSLATION
+# LABEL/ID_EXPIRES_IN
+#: LABEL/ID_EXPIRES_IN
+msgid "Expires in"
+msgstr "Expires in"
+
+# TRANSLATION
+# LABEL/ID_INSTALLING_WORKSPACE
+#: LABEL/ID_INSTALLING_WORKSPACE
+msgid "Installing workspace..."
+msgstr "Installing workspace..."
+
+# TRANSLATION
+# LABEL/MSGS_HISTORY
+#: LABEL/MSGS_HISTORY
+msgid "[LABEL/MSGS_HISTORY] Messages History"
+msgstr "Messages History"
+
+# TRANSLATION
+# LABEL/ID_EMPTY_ROW
+#: LABEL/ID_EMPTY_ROW
+msgid "You can't leave an empty row."
+msgstr "You can't leave an empty row."
+
+# TRANSLATION
+# LABEL/ID_PAUSE_DATE
+#: LABEL/ID_PAUSE_DATE
+msgid "Pause Date"
+msgstr "Pause Date"
+
+# TRANSLATION
+# LABEL/ID_PERMISSION_NAME
+#: LABEL/ID_PERMISSION_NAME
+msgid "Permission Name"
+msgstr "Permission Name"
+
+# TRANSLATION
+# LABEL/ID_UXS_SINGLE
+#: LABEL/ID_UXS_SINGLE
+msgid "Single Application"
+msgstr "Single Application"
+
+# TRANSLATION
+# LABEL/ID_CASE_CANCELLED
+#: LABEL/ID_CASE_CANCELLED
+msgid "The case {0} was cancelled!"
+msgstr "The case {0} was cancelled!"
+
+# TRANSLATION
+# LABEL/ID_UXS_SWITCHABLE
+#: LABEL/ID_UXS_SWITCHABLE
+msgid "Switchable"
+msgstr "Switchable"
+
+# TRANSLATION
+# LABEL/ID_UXS_SIMPLIFIED
+#: LABEL/ID_UXS_SIMPLIFIED
+msgid "Mobile"
+msgstr "Mobile"
+
+# TRANSLATION
+# LABEL/ID_UXS_NORMAL
+#: LABEL/ID_UXS_NORMAL
+msgid "[LABEL/ID_UXS_NORMAL] Normal"
+msgstr "Normal"
+
+# TRANSLATION
+# LABEL/ID_GROUPS_SYNCHRONIZE
+#: LABEL/ID_GROUPS_SYNCHRONIZE
+msgid "Synchronize Groups"
+msgstr "Synchronize Groups"
+
+# TRANSLATION
+# LABEL/ID_DEPARTMENTS_SYNCHRONIZE
+#: LABEL/ID_DEPARTMENTS_SYNCHRONIZE
+msgid "Synchronize Departments"
+msgstr "Synchronize Departments"
+
+# TRANSLATION
+# LABEL/ID_UNPAUSE_TIME
+#: LABEL/ID_UNPAUSE_TIME
+msgid "Unpause Time"
+msgstr "Unpause Time"
+
+# TRANSLATION
+# LABEL/ID_PASSWORD_CURRENT
+#: LABEL/ID_PASSWORD_CURRENT
+msgid "Current Password"
+msgstr "Current Password"
+
+# TRANSLATION
+# LABEL/ID_PASSWORD_CURRENT_ENTER
+#: LABEL/ID_PASSWORD_CURRENT_ENTER
+msgid "Enter the current password"
+msgstr "Enter the current password"
+
+# TRANSLATION
+# LABEL/ID_PASSWORD_CURRENT_INCORRECT
+#: LABEL/ID_PASSWORD_CURRENT_INCORRECT
+msgid "The current password is incorrect"
+msgstr "The current password is incorrect"
+
+# TRANSLATION
+# LABEL/ID_MAX_LIFETIME
+#: LABEL/ID_MAX_LIFETIME
+msgid "Maximum lifetime cleaned up"
+msgstr "Maximum lifetime cleaned up"
+
+# TRANSLATION
+# LABEL/ID_SUCCESSFUL_CONNECTION
+#: LABEL/ID_SUCCESSFUL_CONNECTION
+msgid "Successful connection"
+msgstr "Successful connection"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_SUCCESS_INSTALLED
+#: LABEL/ID_PROCESSMAKER_SUCCESS_INSTALLED
+msgid "ProcessMaker was successfully installed<br/>Workspace <b>\" {0} \" </b> was installed correctly."
+msgstr "ProcessMaker was successfully installed<br/>Workspace <b>\" {0} \" </b> was installed correctly."
+
+# TRANSLATION
+# LABEL/ID_CONNECTION_ERROR
+#: LABEL/ID_CONNECTION_ERROR
+msgid "Connection Error: {0}"
+msgstr "Connection Error: {0}"
+
+# TRANSLATION
+# LABEL/ID_PHP_MYSQL_NOT _INSTALL
+#: LABEL/ID_PHP_MYSQL_NOT _INSTALL
+msgid "php-mysql is Not Installed"
+msgstr "php-mysql is Not Installed"
+
+# TRANSLATION
+# LABEL/ID_COPYRIGHT_COL
+#: LABEL/ID_COPYRIGHT_COL
+msgid "Colosa, Inc. All rights reserved"
+msgstr "Colosa, Inc. All rights reserved"
+
+# TRANSLATION
+# LABEL/ID_COPYRIGHT_FROM
+#: LABEL/ID_COPYRIGHT_FROM
+msgid "Copyright &copy; 2003-"
+msgstr "Copyright &copy; 2003-"
+
+# TRANSLATION
+# LABEL/ID_STARTING_LOG_FILE
+#: LABEL/ID_STARTING_LOG_FILE
+msgid "Starting log file"
+msgstr "Starting log file"
+
+# TRANSLATION
+# LABEL/ID_WRITEABLE
+#: LABEL/ID_WRITEABLE
+msgid "Writeable"
+msgstr "Writeable"
+
+# TRANSLATION
+# LABEL/ID_NOT_ENABLED
+#: LABEL/ID_NOT_ENABLED
+msgid "Not Enabled"
+msgstr "Not Enabled"
+
+# TRANSLATION
+# LABEL/ID_FILE_NOT_WRITEABLE
+#: LABEL/ID_FILE_NOT_WRITEABLE
+msgid "File '{0}' is not writeable. Please check permission before continue"
+msgstr "File '{0}' is not writeable. Please check permission before continue"
+
+# TRANSLATION
+# LABEL/ID_SQL_FILE_INVALID
+#: LABEL/ID_SQL_FILE_INVALID
+msgid "File {0} is not a valid sql file"
+msgstr "File {0} is not a valid sql file"
+
+# TRANSLATION
+# LABEL/ID_INSTALL_BUT_ERROR
+#: LABEL/ID_INSTALL_BUT_ERROR
+msgid "Installed but with error, couldn't update {0}"
+msgstr "Installed but with error, couldn't update {0}"
+
+# TRANSLATION
+# LABEL/ID_CREATING
+#: LABEL/ID_CREATING
+msgid "Creating : {0}"
+msgstr "Creating : {0}"
+
+# TRANSLATION
+# LABEL/ID_CONNECT_TO_SERVER
+#: LABEL/ID_CONNECT_TO_SERVER
+msgid "Connected to server {0} :{1}  using user: '{2}'"
+msgstr "Connected to server {0} :{1}  using user: '{2}'"
+
+# TRANSLATION
+# LABEL/ID_RECORD_DOES_NOT_EXIST
+#: LABEL/ID_RECORD_DOES_NOT_EXIST
+msgid "Record does not exist"
+msgstr "Record does not exist"
+
+# TRANSLATION
+# LABEL/ID_INDEX_FILE_UPDATED
+#: LABEL/ID_INDEX_FILE_UPDATED
+msgid "Index File updated {0} with lang: {{1}}, skin: {{2}}"
+msgstr "Index File updated {0} with lang: {{1}}, skin: {{2}}"
+
+# TRANSLATION
+# LABEL/ID_QUERY
+#: LABEL/ID_QUERY
+msgid "Query"
+msgstr "Query"
+
+# TRANSLATION
+# LABEL/ID_CREATING_WORKSPACE
+#: LABEL/ID_CREATING_WORKSPACE
+msgid "Creating workspace {0}"
+msgstr "Creating workspace {0}"
+
+# TRANSLATION
+# LABEL/ID_FILE_PROCESSED
+#: LABEL/ID_FILE_PROCESSED
+msgid "File: {0} processed in {1} seconds"
+msgstr "File: {0} processed in {1} seconds"
+
+# TRANSLATION
+# LABEL/ID_PROCESING
+#: LABEL/ID_PROCESING
+msgid "Procesing :  {0}"
+msgstr "Procesing :  {0}"
+
+# TRANSLATION
+# LABEL/ID_REMOVED
+#: LABEL/ID_REMOVED
+msgid "Removed"
+msgstr "Removed"
+
+# TRANSLATION
+# LABEL/ID_CAN_NOT_REMOVED
+#: LABEL/ID_CAN_NOT_REMOVED
+msgid "Can not be removed"
+msgstr "Can not be removed"
+
+# TRANSLATION
+# LABEL/ID_MYSQL_ERROR
+#: LABEL/ID_MYSQL_ERROR
+msgid "MySQL error: {0}"
+msgstr "MySQL error: {0}"
+
+# TRANSLATION
+# LABEL/ID_DOES_NOT_EXIST_AVAILABLE_CONNECTION
+#: LABEL/ID_DOES_NOT_EXIST_AVAILABLE_CONNECTION
+msgid "Does not exist an available connection"
+msgstr "Does not exist an available connection"
+
+# TRANSLATION
+# LABEL/ID_INSUFFICIENT_PRIVILEGES_FUNCTION
+#: LABEL/ID_INSUFFICIENT_PRIVILEGES_FUNCTION
+msgid "Insufficient privileges to execute this function"
+msgstr "Insufficient privileges to execute this function"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_UI_NOT_INSTALL
+#: LABEL/ID_PROCESSMAKER_UI_NOT_INSTALL
+msgid "The new ProcessMaker UI couldn't be applied on installation, you can enable it after from Admin->System settings."
+msgstr "The new ProcessMaker UI couldn't be applied on installation, you can enable it after from Admin->System settings."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_WRITE_CONFIG_INDEX
+#: LABEL/ID_PROCESSMAKER_WRITE_CONFIG_INDEX
+msgid "ProcessMaker couldn't write on configuration file: {0}<br/>"
+msgstr "ProcessMaker couldn't write on configuration file: {0}<br/>"
+
+# TRANSLATION
+# LABEL/ID_SESSION_ACTIVE
+#: LABEL/ID_SESSION_ACTIVE
+msgid "Session active"
+msgstr "Session active"
+
+# TRANSLATION
+# LABEL/ID_SESSION_EXPIRED
+#: LABEL/ID_SESSION_EXPIRED
+msgid "The session has expired."
+msgstr "The session has expired."
+
+# TRANSLATION
+# LABEL/ID_NOT_PRIVILEGES
+#: LABEL/ID_NOT_PRIVILEGES
+msgid "You do not have privileges"
+msgstr "You do not have privileges"
+
+# TRANSLATION
+# LABEL/ID_INSTALL_SUCESS
+#: LABEL/ID_INSTALL_SUCESS
+msgid "Install completed Succesfully"
+msgstr "Install completed Succesfully"
+
+# TRANSLATION
+# LABEL/ID_RESERVED_WORD
+#: LABEL/ID_RESERVED_WORD
+msgid "because it is a reserved word"
+msgstr "because it is a reserved word"
+
+# TRANSLATION
+# LABEL/ID_NOT_CREATE_TABLE
+#: LABEL/ID_NOT_CREATE_TABLE
+msgid "Could not create the table with the name"
+msgstr "Could not create the table with the name"
+
+# TRANSLATION
+# LABEL/ID_NOT_HAVE_USERS
+#: LABEL/ID_NOT_HAVE_USERS
+msgid "doesn't have users."
+msgstr "doesn't have users."
+
+# TRANSLATION
+# LABEL/ID_AGREE
+#: LABEL/ID_AGREE
+msgid "I agree"
+msgstr "I agree"
+
+# TRANSLATION
+# LABEL/ID_PROCESS_UID_NOT_DEFINED
+#: LABEL/ID_PROCESS_UID_NOT_DEFINED
+msgid "the process uid is not defined!"
+msgstr "the process uid is not defined!"
+
+# TRANSLATION
+# LABEL/ID_MYSQL_SUCCESS_CONNECT
+#: LABEL/ID_MYSQL_SUCCESS_CONNECT
+msgid "Succesfully connected to MySQL Server"
+msgstr "Succesfully connected to MySQL Server"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_INSTALLATION
+#: LABEL/ID_PROCESSMAKER_INSTALLATION
+msgid "ProcessMaker Installation"
+msgstr "ProcessMaker Installation"
+
+# TRANSLATION
+# LABEL/ID_MSSQL_SUCCESS_CONNECT
+#: LABEL/ID_MSSQL_SUCCESS_CONNECT
+msgid "Succesfully connected to MSSQL Server"
+msgstr "Succesfully connected to MSSQL Server"
+
+# TRANSLATION
+# LABEL/ID_CONNECTION_ERROR_SECURITYADMIN
+#: LABEL/ID_CONNECTION_ERROR_SECURITYADMIN
+msgid "Connection Error: User \"{0}\"  can't create databases and Users <br>Please provide an user with sysadmin role or dbcreator and securityadmin roles."
+msgstr "Connection Error: User \"{0}\"  can't create databases and Users <br>Please provide an user with sysadmin role or dbcreator and securityadmin roles."
+
+# TRANSLATION
+# LABEL/ID_PHP_MSSQL_NOT_INSTALLED
+#: LABEL/ID_PHP_MSSQL_NOT_INSTALLED
+msgid "php-mssql is Not Installed"
+msgstr "php-mssql is Not Installed"
+
+# TRANSLATION
+# LABEL/ID_CONNECTION_ERROR_PRIVILEGE
+#: LABEL/ID_CONNECTION_ERROR_PRIVILEGE
+msgid "Connection Error: User \"{0}\" can't create databases and Users <br>Please provide an user with SUPER privilege."
+msgstr "Connection Error: User \"{0}\" can't create databases and Users <br>Please provide an user with SUPER privilege."
+
+# TRANSLATION
+# LABEL/ID_DATABASE_EXISTS_OVERWRITE
+#: LABEL/ID_DATABASE_EXISTS_OVERWRITE
+msgid "Database already exists, check \"Delete Databases if exists\" to overwrite the exiting databases."
+msgstr "Database already exists, check \"Delete Databases if exists\" to overwrite the exiting databases."
+
+# TRANSLATION
+# LABEL/ID_USER_PROCESS_NOT_START
+#: LABEL/ID_USER_PROCESS_NOT_START
+msgid "User can not start process"
+msgstr "User can not start process"
+
+# TRANSLATION
+# LABEL/ID_REQUEST_ACTION_NOT_EXIST
+#: LABEL/ID_REQUEST_ACTION_NOT_EXIST
+msgid "The requested action does not exist"
+msgstr "The requested action does not exist"
+
+# TRANSLATION
+# LABEL/ID_REQUEST_ACTION
+#: LABEL/ID_REQUEST_ACTION
+msgid "You may request an action"
+msgstr "You may request an action"
+
+# TRANSLATION
+# LABEL/ID_MYSQL_CREDENTIALS_WRONG
+#: LABEL/ID_MYSQL_CREDENTIALS_WRONG
+msgid "Connection Error: unable to connect to MySQL using provided credentials."
+msgstr "Connection Error: unable to connect to MySQL using provided credentials."
+
+# TRANSLATION
+# LABEL/ID_UNKNOW_USER
+#: LABEL/ID_UNKNOW_USER
+msgid "Unknow user"
+msgstr "Unknow user"
+
+# TRANSLATION
+# LABEL/ID_SUBPROCESS_USER
+#: LABEL/ID_SUBPROCESS_USER
+msgid "(Sub-Process User)"
+msgstr "(Sub-Process User)"
+
+# TRANSLATION
+# LABEL/ID_SUCCESS_DIRECTORIES_WRITABLE
+#: LABEL/ID_SUCCESS_DIRECTORIES_WRITABLE
+msgid "Success, all required directories are writable."
+msgstr "Success, all required directories are writable."
+
+# TRANSLATION
+# LABEL/ID_DIRECTORIES_NOT_WRITABLE
+#: LABEL/ID_DIRECTORIES_NOT_WRITABLE
+msgid "Some directories and/or files inside it are not writable"
+msgstr "Some directories and/or files inside it are not writable"
+
+# TRANSLATION
+# LABEL/ID_DOES_NOT_EXIST
+#: LABEL/ID_DOES_NOT_EXIST
+msgid "does not exist"
+msgstr "does not exist"
+
+# TRANSLATION
+# LABEL/ID_CREATE_LOG_INSTALLATION
+#: LABEL/ID_CREATE_LOG_INSTALLATION
+msgid "Could not create the installation log"
+msgstr "Could not create the installation log"
+
+# TRANSLATION
+# LABEL/ID_PREVIUS
+#: LABEL/ID_PREVIUS
+msgid "Previus"
+msgstr "Previus"
+
+# TRANSLATION
+# LABEL/ID_UPLOAD_COMPLETE
+#: LABEL/ID_UPLOAD_COMPLETE
+msgid "Upload complete"
+msgstr "Upload complete"
+
+# TRANSLATION
+# LABEL/ID_CREATE_FOLDER
+#: LABEL/ID_CREATE_FOLDER
+msgid "Create New Folder"
+msgstr "Create New Folder"
+
+# TRANSLATION
+# LABEL/ID_UPLOAD_LEAST_FILE
+#: LABEL/ID_UPLOAD_LEAST_FILE
+msgid "You may upload at least one file"
+msgstr "You may upload at least one file"
+
+# TRANSLATION
+# LABEL/ID_SELECT_DIRECTORY
+#: LABEL/ID_SELECT_DIRECTORY
+msgid "Select a directory"
+msgstr "Select a directory"
+
+# TRANSLATION
+# LABEL/ID_DESTINATION
+#: LABEL/ID_DESTINATION
+msgid "Destination"
+msgstr "Destination"
+
+# TRANSLATION
+# LABEL/ID_FAILED_STORE_DATA
+#: LABEL/ID_FAILED_STORE_DATA
+msgid "Failed to store data"
+msgstr "Failed to store data"
+
+# TRANSLATION
+# LABEL/ID_DELETE_TRANSLATIONS
+#: LABEL/ID_DELETE_TRANSLATIONS
+msgid "Delete the selected translations?"
+msgstr "Delete the selected translations?"
+
+# TRANSLATION
+# LABEL/ID_PMTABLES_ALERT8
+#: LABEL/ID_PMTABLES_ALERT8
+msgid "Set a Phisical Field Name for:"
+msgstr "Set a Phisical Field Name for:"
+
+# TRANSLATION
+# LABEL/ID_EMPTY_LANGUAGE
+#: LABEL/ID_EMPTY_LANGUAGE
+msgid "Select a Language"
+msgstr "Select a Language"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_LICENSE
+#: LABEL/ID_PROCESSMAKER_LICENSE
+msgid "ProcessMaker Open Source License"
+msgstr "ProcessMaker Open Source License"
+
+# TRANSLATION
+# LABEL/ID_PLEASE
+#: LABEL/ID_PLEASE
+msgid "please"
+msgstr "please"
+
+# TRANSLATION
+# LABEL/ID_IS_REQUIRED
+#: LABEL/ID_IS_REQUIRED
+msgid "is required"
+msgstr "is required"
+
+# TRANSLATION
+# LABEL/ID_FIELD_SIZE_FOR
+#: LABEL/ID_FIELD_SIZE_FOR
+msgid "Field size for"
+msgstr "Field size for"
+
+# TRANSLATION
+# LABEL/ID_FIELD_NAME_FOR
+#: LABEL/ID_FIELD_NAME_FOR
+msgid "Field Name for"
+msgstr "Field Name for"
+
+# TRANSLATION
+# LABEL/ID_REGENERATE_DATA_REPORT
+#: LABEL/ID_REGENERATE_DATA_REPORT
+msgid "Regenerate Data Report"
+msgstr "Regenerate Data Report"
+
+# TRANSLATION
+# LABEL/ID_DELETING_CASE
+#: LABEL/ID_DELETING_CASE
+msgid "Deleting case..."
+msgstr "Deleting case..."
+
+# TRANSLATION
+# LABEL/ID_REACTIVATING_CASE
+#: LABEL/ID_REACTIVATING_CASE
+msgid "Reactivating case..."
+msgstr "Reactivating case..."
+
+# TRANSLATION
+# LABEL/ID_SAVING_LABEL
+#: LABEL/ID_SAVING_LABEL
+msgid "Saving"
+msgstr "Saving"
+
+# TRANSLATION
+# LABEL/ID_UNPAUSING_CASE
+#: LABEL/ID_UNPAUSING_CASE
+msgid "Unpausing case..."
+msgstr "Unpausing case..."
+
+# TRANSLATION
+# LABEL/ID_PAUSING_CASE
+#: LABEL/ID_PAUSING_CASE
+msgid "Pausing Case"
+msgstr "Pausing Case"
+
+# TRANSLATION
+# LABEL/ID_UNABLE_GET_DASHBOARDS
+#: LABEL/ID_UNABLE_GET_DASHBOARDS
+msgid "Unable to get Dashboards"
+msgstr "Unable to get Dashboards"
+
+# TRANSLATION
+# LABEL/ID_RECEIVED_EMPTY_RESPONSE
+#: LABEL/ID_RECEIVED_EMPTY_RESPONSE
+msgid "Received an empty response"
+msgstr "Received an empty response"
+
+# TRANSLATION
+# LABEL/ID_BROWSER_NOT_SUPPORTED
+#: LABEL/ID_BROWSER_NOT_SUPPORTED
+msgid "This browser is not supported."
+msgstr "This browser is not supported."
+
+# TRANSLATION
+# LABEL/ID_CHOOSE_OPTION
+#: LABEL/ID_CHOOSE_OPTION
+msgid "Choose an option"
+msgstr "Choose an option"
+
+# TRANSLATION
+# LABEL/ID_MAIL_TO_NOT_VALID_ADDRESS
+#: LABEL/ID_MAIL_TO_NOT_VALID_ADDRESS
+msgid "\"Mail to\" does not contain a valid email address format"
+msgstr "\"Mail to\" does not contain a valid email address format"
+
+# TRANSLATION
+# LABEL/ID_REALLY_SHOULD
+#: LABEL/ID_REALLY_SHOULD
+msgid "You really should do it"
+msgstr "You really should do it"
+
+# TRANSLATION
+# LABEL/ID_MSG_CONFIRM_DELETE_CONDITION
+#: LABEL/ID_MSG_CONFIRM_DELETE_CONDITION
+msgid "Are you sure to delete this condition?"
+msgstr "Are you sure to delete this condition?"
+
+# TRANSLATION
+# LABEL/ID_DIAGRAM_VALIDATED_CORRECTLY
+#: LABEL/ID_DIAGRAM_VALIDATED_CORRECTLY
+msgid "Diagram has been validated correctly."
+msgstr "Diagram has been validated correctly."
+
+# TRANSLATION
+# LABEL/ID_PROJECT_DOWNLOAD_CORRECTLY
+#: LABEL/ID_PROJECT_DOWNLOAD_CORRECTLY
+msgid "Project Downloaded correctly."
+msgstr "Project Downloaded correctly."
+
+# TRANSLATION
+# LABEL/ID_PROJECT_SHARED_CORRECTLY
+#: LABEL/ID_PROJECT_SHARED_CORRECTLY
+msgid "Project has been shared correctly."
+msgstr "Project has been shared correctly."
+
+# TRANSLATION
+# LABEL/ID_PROJECT_PUBLISHED_CORRECTLY
+#: LABEL/ID_PROJECT_PUBLISHED_CORRECTLY
+msgid "Project has been published correctly."
+msgstr "Project has been published correctly."
+
+# TRANSLATION
+# LABEL/ID_RECORD_SAVED_SUCCESFULLY
+#: LABEL/ID_RECORD_SAVED_SUCCESFULLY
+msgid "Record saved successfully"
+msgstr "Record saved successfully"
+
+# TRANSLATION
+# LABEL/ID_ERROR_TRYING_INSERT
+#: LABEL/ID_ERROR_TRYING_INSERT
+msgid "Error trying insert into"
+msgstr "Error trying insert into"
+
+# TRANSLATION
+# LABEL/ID_TABLES_REMOVED_WITH_ERRORS
+#: LABEL/ID_TABLES_REMOVED_WITH_ERRORS
+msgid "tables removed but with errors"
+msgstr "tables removed but with errors"
+
+# TRANSLATION
+# LABEL/ID_TABLES_REMOVED_SUCCESSFULLY
+#: LABEL/ID_TABLES_REMOVED_SUCCESSFULLY
+msgid "tables removed Successfully"
+msgstr "tables removed Successfully"
+
+# TRANSLATION
+# LABEL/ID_TABLE_NOT_EXIST_SKIPPED
+#: LABEL/ID_TABLE_NOT_EXIST_SKIPPED
+msgid "Table does not exist... skipped!"
+msgstr "Table does not exist... skipped!"
+
+# TRANSLATION
+# LABEL/ID_NOT_WORKSPACE_SPECIFIED
+#: LABEL/ID_NOT_WORKSPACE_SPECIFIED
+msgid "No workspace specified!"
+msgstr "No workspace specified!"
+
+# TRANSLATION
+# LABEL/ID_BAD_REQUEST
+#: LABEL/ID_BAD_REQUEST
+msgid "Bad Request!"
+msgstr "Bad Request!"
+
+# TRANSLATION
+# LABEL/ID_COLOSA_AND_CERTIFIED_PARTNERS
+#: LABEL/ID_COLOSA_AND_CERTIFIED_PARTNERS
+msgid "Supplied free of charge with no support, certification, warranty,maintenance nor indemnity by Colosa and its Certified Partners."
+msgstr "Supplied free of charge with no support, certification, warranty,maintenance nor indemnity by Colosa and its Certified Partners."
+
+# TRANSLATION
+# LABEL/ID_COPYRIGHT
+#: LABEL/ID_COPYRIGHT
+msgid "Copyright Â© 2003-2011 Colosa, Inc. All rights reserved."
+msgstr "Copyright Â© 2003-2011 Colosa, Inc. All rights reserved."
+
+# TRANSLATION
+# LABEL/ID_LOGIN_WITH_FACEBOOK
+#: LABEL/ID_LOGIN_WITH_FACEBOOK
+msgid "Login with Facebook!!"
+msgstr "Login with Facebook!!"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP6
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP6
+msgid "xxx"
+msgstr "xxx"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP5
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP5
+msgid "ProcessMaker uses a workspaces to store data. Please select a valid workspace name and credentials to log in it."
+msgstr "ProcessMaker uses a workspaces to store data. Please select a valid workspace name and credentials to log in it."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP4_2
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP4_2
+msgid "If you are installing ProcessMaker on a remote web server, you will need to get this information from your Database Server."
+msgstr "If you are installing ProcessMaker on a remote web server, you will need to get this information from your Database Server."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP4_1
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP4_1
+msgid "ProcessMaker stores all of its data in a database. This screen gives the installation program the information needed to create this database."
+msgstr "ProcessMaker stores all of its data in a database. This screen gives the installation program the information needed to create this database."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP3_2
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP3_2
+msgid "If you see <font color=\"red\">\"unwriteable\"</font> you need to change the permissions on the file or directory to allow ProcessMaker to write to it."
+msgstr "If you see <font color=\"red\">\"unwriteable\"</font> you need to change the permissions on the file or directory to allow ProcessMaker to write to it."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP3_1
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP3_1
+msgid "In order for ProcessMaker to function correctly it needs to be able to access or write to certain files or directories."
+msgstr "In order for ProcessMaker to function correctly it needs to be able to access or write to certain files or directories."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP2_2
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP2_2
+msgid "However, ProcessMaker still operate if your settings do not quite match the recommended."
+msgstr "However, ProcessMaker still operate if your settings do not quite match the recommended."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP2_1
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP2_1
+msgid "These settings are recommended for PHP in order to ensure full compatibility with ProcessMaker."
+msgstr "These settings are recommended for PHP in order to ensure full compatibility with ProcessMaker."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP1_2
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP1_2
+msgid "Failure to do so could lead to your ProcessMaker! installation not functioning correctly."
+msgstr "Failure to do so could lead to your ProcessMaker! installation not functioning correctly."
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP1_1
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION_STEP1_1
+msgid "If any of these items is not supported (marked as No) then please take actions to correct them."
+msgstr "If any of these items is not supported (marked as No) then please take actions to correct them."
+
+# TRANSLATION
+# LABEL/ID_LDAP_OPTIONAL
+#: LABEL/ID_LDAP_OPTIONAL
+msgid "LDAP is optional."
+msgstr "LDAP is optional."
+
+# TRANSLATION
+# LABEL/ID_MSSQL_SUPPORT_OPTIONAL
+#: LABEL/ID_MSSQL_SUPPORT_OPTIONAL
+msgid "MSSQL Support is optional."
+msgstr "MSSQL Support is optional."
+
+# TRANSLATION
+# LABEL/ID_OPENSSL_OPTIONAL
+#: LABEL/ID_OPENSSL_OPTIONAL
+msgid "OpenSSL is optional."
+msgstr "OpenSSL is optional."
+
+# TRANSLATION
+# LABEL/ID_RESOLVE_APPLICATION_ID
+#: LABEL/ID_RESOLVE_APPLICATION_ID
+msgid "Can not resolve the Apllication ID for this request."
+msgstr "Can not resolve the Apllication ID for this request."
+
+# TRANSLATION
+# LABEL/ID_PROJECT_WAS_NOT_SET
+#: LABEL/ID_PROJECT_WAS_NOT_SET
+msgid "The Project ID was not set!"
+msgstr "The Project ID was not set!"
+
+# TRANSLATION
+# LABEL/ID_REBUILD_SUCCESS
+#: LABEL/ID_REBUILD_SUCCESS
+msgid "REBUILD SUCCESS"
+msgstr "REBUILD SUCCESS"
+
+# TRANSLATION
+# LABEL/ID_PROCESS_WAS_NOT_SET
+#: LABEL/ID_PROCESS_WAS_NOT_SET
+msgid "The Process ID was not set!"
+msgstr "The Process ID was not set!"
+
+# TRANSLATION
+# LABEL/ID_REBUILDING_TRANSLATIONS
+#: LABEL/ID_REBUILDING_TRANSLATIONS
+msgid "Rebuilding translations"
+msgstr "Rebuilding translations"
+
+# TRANSLATION
+# LABEL/ID_CACHE_FILE
+#: LABEL/ID_CACHE_FILE
+msgid "Cache file:"
+msgstr "Cache file:"
+
+# TRANSLATION
+# LABEL/ID_NEW_TRANSLATION
+#: LABEL/ID_NEW_TRANSLATION
+msgid "New Translation"
+msgstr "New Translation"
+
+# TRANSLATION
+# LABEL/ID_SELECT_ONE_ITEM_FROM_LIST
+#: LABEL/ID_SELECT_ONE_ITEM_FROM_LIST
+msgid "Just select one item from the list to edit"
+msgstr "Just select one item from the list to edit"
+
+# TRANSLATION
+# LABEL/ID_GRID_PAGE_DISPLAYING_ITEMS
+#: LABEL/ID_GRID_PAGE_DISPLAYING_ITEMS
+msgid "Displaying items {0} - {1} of {2}"
+msgstr "Displaying items {0} - {1} of {2}"
+
+# TRANSLATION
+# LABEL/ID_DISPLAYING_DB_CONNECTION
+#: LABEL/ID_DISPLAYING_DB_CONNECTION
+msgid "Displaying DB Connection {0} - {1} of {2}"
+msgstr "Displaying DB Connection {0} - {1} of {2}"
+
+# TRANSLATION
+# LABEL/ID_TERMS_USE
+#: LABEL/ID_TERMS_USE
+msgid "Terms of use"
+msgstr "Terms of use"
+
+# TRANSLATION
+# LABEL/ID_NO_DB_CONNECTION
+#: LABEL/ID_NO_DB_CONNECTION
+msgid "No DB Connection to display"
+msgstr "No DB Connection to display"
+
+# TRANSLATION
+# LABEL/WRONG_LOGIN_CREDENTIALS
+#: LABEL/WRONG_LOGIN_CREDENTIALS
+msgid "Wrong login credentials"
+msgstr "Wrong login credentials"
+
+# TRANSLATION
+# LABEL/ID_PLEASE_WAIT
+#: LABEL/ID_PLEASE_WAIT
+msgid "Please wait..."
+msgstr "Please wait..."
+
+# TRANSLATION
+# LABEL/ID_NO_RECORDS
+#: LABEL/ID_NO_RECORDS
+msgid "No records"
+msgstr "No records"
+
+# TRANSLATION
+# LABEL/ID_DELIMITED_BY
+#: LABEL/ID_DELIMITED_BY
+msgid "Delimited by"
+msgstr "Delimited by"
+
+# TRANSLATION
+# LABEL/ID_CSV_FILE
+#: LABEL/ID_CSV_FILE
+msgid "CSV File"
+msgstr "CSV File"
+
+# TRANSLATION
+# LABEL/ID_RECORDS
+#: LABEL/ID_RECORDS
+msgid "Records"
+msgstr "Records"
+
+# TRANSLATION
+# LABEL/ID_OLD_VERSION
+#: LABEL/ID_OLD_VERSION
+msgid "old version"
+msgstr "old version"
+
+# TRANSLATION
+# LABEL/ID_SOMETHING_WRONG
+#: LABEL/ID_SOMETHING_WRONG
+msgid "Something was wrong"
+msgstr "Something was wrong"
+
+# TRANSLATION
+# LABEL/ID_SENDING_REQUEST
+#: LABEL/ID_SENDING_REQUEST
+msgid "Sending Request..."
+msgstr "Sending Request..."
+
+# TRANSLATION
+# LABEL/ID_ADMIN_PASSWORD_LABEL
+#: LABEL/ID_ADMIN_PASSWORD_LABEL
+msgid "Admin Password"
+msgstr "Admin Password"
+
+# TRANSLATION
+# LABEL/ID_FINISHING
+#: LABEL/ID_FINISHING
+msgid "Finishing..."
+msgstr "Finishing..."
+
+# TRANSLATION
+# LABEL/ID_NON_WRITABLE_FILES
+#: LABEL/ID_NON_WRITABLE_FILES
+msgid "Non-writable Files"
+msgstr "Non-writable Files"
+
+# TRANSLATION
+# LABEL/ID_CHECK_WORKSPACE_CONFIGURATION
+#: LABEL/ID_CHECK_WORKSPACE_CONFIGURATION
+msgid "Check Workspace Configuration"
+msgstr "Check Workspace Configuration"
+
+# TRANSLATION
+# LABEL/ID_DELETE_DATABASES
+#: LABEL/ID_DELETE_DATABASES
+msgid "Delete Databases if exists"
+msgstr "Delete Databases if exists"
+
+# TRANSLATION
+# LABEL/ID_RP_DATABASE_NAME
+#: LABEL/ID_RP_DATABASE_NAME
+msgid "Report Database Name"
+msgstr "Report Database Name"
+
+# TRANSLATION
+# LABEL/ID_RB_DATABASE_NAME
+#: LABEL/ID_RB_DATABASE_NAME
+msgid "Rbac Database Name"
+msgstr "Rbac Database Name"
+
+# TRANSLATION
+# LABEL/ID_WF_DATABASE_NAME
+#: LABEL/ID_WF_DATABASE_NAME
+msgid "Workflow Database Name"
+msgstr "Workflow Database Name"
+
+# TRANSLATION
+# LABEL/ID_CHANGE_DATABASE_NAME
+#: LABEL/ID_CHANGE_DATABASE_NAME
+msgid "Change Database names"
+msgstr "Change Database names"
+
+# TRANSLATION
+# LABEL/ID_ADMIN_USERNAME
+#: LABEL/ID_ADMIN_USERNAME
+msgid "Admin Username"
+msgstr "Admin Username"
+
+# TRANSLATION
+# LABEL/ID_ADMIN_PASSWORD
+#: LABEL/ID_ADMIN_PASSWORD
+msgid "Confirm Admin Password"
+msgstr "Confirm Admin Password"
+
+# TRANSLATION
+# LABEL/ID_WORKSPACE_NAME
+#: LABEL/ID_WORKSPACE_NAME
+msgid "Workspace Name"
+msgstr "Workspace Name"
+
+# TRANSLATION
+# LABEL/ID_WORKSPACE_CONFIGURATION
+#: LABEL/ID_WORKSPACE_CONFIGURATION
+msgid "Workspace Configuration"
+msgstr "Workspace Configuration"
+
+# TRANSLATION
+# LABEL/ID_HOST_NAME_LABEL
+#: LABEL/ID_HOST_NAME_LABEL
+msgid "Host Name"
+msgstr "Host Name"
+
+# TRANSLATION
+# LABEL/ID_DATABASE_ENGINE
+#: LABEL/ID_DATABASE_ENGINE
+msgid "Database Engine"
+msgstr "Database Engine"
+
+# TRANSLATION
+# LABEL/ID_DATABASE_CONFIGURATION
+#: LABEL/ID_DATABASE_CONFIGURATION
+msgid "Database Configuration"
+msgstr "Database Configuration"
+
+# TRANSLATION
+# LABEL/ID_INSTALLATION_LOG
+#: LABEL/ID_INSTALLATION_LOG
+msgid "Installation log file"
+msgstr "Installation log file"
+
+# TRANSLATION
+# LABEL/ID_WORFLOW_DATA_DIRECTORY
+#: LABEL/ID_WORFLOW_DATA_DIRECTORY
+msgid "Workflow Data Directory"
+msgstr "Workflow Data Directory"
+
+# TRANSLATION
+# LABEL/ID_WORKFLOW_DATA_DIRECTORY_REQUIRED
+#: LABEL/ID_WORKFLOW_DATA_DIRECTORY_REQUIRED
+msgid "\"Workflow Data Directory\" is required."
+msgstr "\"Workflow Data Directory\" is required."
+
+# TRANSLATION
+# LABEL/ID_PUBLIC_INDEX_FILE
+#: LABEL/ID_PUBLIC_INDEX_FILE
+msgid "Public Index file"
+msgstr "Public Index file"
+
+# TRANSLATION
+# LABEL/ID_PLUGINS_DIRECTORY
+#: LABEL/ID_PLUGINS_DIRECTORY
+msgid "Plugins Directory"
+msgstr "Plugins Directory"
+
+# TRANSLATION
+# LABEL/ID_XMLFROM_DIRECTORY
+#: LABEL/ID_XMLFROM_DIRECTORY
+msgid "Xmlform Directory"
+msgstr "Xmlform Directory"
+
+# TRANSLATION
+# LABEL/ID_LANGUAJE_DIRECTORY
+#: LABEL/ID_LANGUAJE_DIRECTORY
+msgid "Language Directory"
+msgstr "Language Directory"
+
+# TRANSLATION
+# LABEL/ID_CONFIG_DIRECTORY
+#: LABEL/ID_CONFIG_DIRECTORY
+msgid "Config Directory"
+msgstr "Config Directory"
+
+# TRANSLATION
+# LABEL/ID_NOT_PASSED
+#: LABEL/ID_NOT_PASSED
+msgid "Not Passed."
+msgstr "Not Passed."
+
+# TRANSLATION
+# LABEL/ID_PREINSTALLATION
+#: LABEL/ID_PREINSTALLATION
+msgid "Pre-installation check"
+msgstr "Pre-installation check"
+
+# TRANSLATION
+# LABEL/ID_DIRECTORY_FILE_PERMISSION
+#: LABEL/ID_DIRECTORY_FILE_PERMISSION
+msgid "Directory File Permission"
+msgstr "Directory File Permission"
+
+# TRANSLATION
+# LABEL/ID_DATA_CORRECT
+#: LABEL/ID_DATA_CORRECT
+msgid "The data is correct."
+msgstr "The data is correct."
+
+# TRANSLATION
+# LABEL/ID_EXIST
+#: LABEL/ID_EXIST
+msgid "Exist"
+msgstr "Exist"
+
+# TRANSLATION
+# LABEL/ID_NO_EXIST
+#: LABEL/ID_NO_EXIST
+msgid "No exists"
+msgstr "No exists"
+
+# TRANSLATION
+# LABEL/ID_REPORT_DATABASE_NAME
+#: LABEL/ID_REPORT_DATABASE_NAME
+msgid "Please enter the Report Database Name."
+msgstr "Please enter the Report Database Name."
+
+# TRANSLATION
+# LABEL/ID_WORKFLOW_DATABASE_NAME
+#: LABEL/ID_WORKFLOW_DATABASE_NAME
+msgid "Please enter the Workflow Database Name"
+msgstr "Please enter the Workflow Database Name"
+
+# TRANSLATION
+# LABEL/ID_RBAC_DATABASE_NAME
+#: LABEL/ID_RBAC_DATABASE_NAME
+msgid "Please enter the Rbac Database Name."
+msgstr "Please enter the Rbac Database Name."
+
+# TRANSLATION
+# LABEL/ID_PASSWORD_CONFIRMATION_INCORRECT
+#: LABEL/ID_PASSWORD_CONFIRMATION_INCORRECT
+msgid "The password confirmation is incorrect."
+msgstr "The password confirmation is incorrect."
+
+# TRANSLATION
+# LABEL/ID_VALID_ADMIN_PASSWORD
+#: LABEL/ID_VALID_ADMIN_PASSWORD
+msgid "Please enter the Admin Password."
+msgstr "Please enter the Admin Password."
+
+# TRANSLATION
+# LABEL/ID_VALID_ADMIN_NAME
+#: LABEL/ID_VALID_ADMIN_NAME
+msgid "Please enter a valid Admin Username."
+msgstr "Please enter a valid Admin Username."
+
+# TRANSLATION
+# LABEL/ID_VALID_WORKSPACE
+#: LABEL/ID_VALID_WORKSPACE
+msgid "Please enter a valid Workspace Name."
+msgstr "Please enter a valid Workspace Name."
+
+# TRANSLATION
+# LABEL/ID_SETTING_MESSAGE
+#: LABEL/ID_SETTING_MESSAGE
+msgid "The Settings tool was clicked"
+msgstr "The Settings tool was clicked"
+
+# TRANSLATION
+# LABEL/ID_MESSAGE
+#: LABEL/ID_MESSAGE
+msgid "Message"
+msgstr "Message"
+
+# TRANSLATION
+# LABEL/ID_ASSIGNMENT_CASE
+#: LABEL/ID_ASSIGNMENT_CASE
+msgid "Assignment case..."
+msgstr "Assignment case..."
+
+# TRANSLATION
+# LABEL/ID_UNPAUSE_DATE
+#: LABEL/ID_UNPAUSE_DATE
+msgid "Unpause Date"
+msgstr "Unpause Date"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_LANGUAGE
+#: LABEL/ID_CACHE_BUILDER_LANGUAGE
+msgid "[LABEL/ID_CACHE_BUILDER_LANGUAGE] Language"
+msgstr "Language"
+
+# TRANSLATION
+# LABEL/ID_DASHBOARD_BTNCOLUMNS1
+#: LABEL/ID_DASHBOARD_BTNCOLUMNS1
+msgid "One Column"
+msgstr "One Column"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_TRIGGER_CONTENT_UPDATE
+#: LABEL/ID_CACHE_BUILDER_TRIGGER_CONTENT_UPDATE
+msgid "Trigger CONTENT UPDATE"
+msgstr "Trigger CONTENT UPDATE"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_TRIGGER_APPLICATION_UPDATE
+#: LABEL/ID_CACHE_BUILDER_TRIGGER_APPLICATION_UPDATE
+msgid "Trigger APPLICATION UPDATE"
+msgstr "Trigger APPLICATION UPDATE"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_TRIGGER_APPLICATION_DELETE
+#: LABEL/ID_CACHE_BUILDER_TRIGGER_APPLICATION_DELETE
+msgid "Trigger APPLICATION DELETE"
+msgstr "Trigger APPLICATION DELETE"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_TRIGGER_UPDATE
+#: LABEL/ID_CACHE_BUILDER_TRIGGER_UPDATE
+msgid "Trigger APP_DELEGATION UPDATE"
+msgstr "Trigger APP_DELEGATION UPDATE"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_ROWS
+#: LABEL/ID_CACHE_BUILDER_ROWS
+msgid "Rows in APP_CACHE_VIEW"
+msgstr "Rows in APP_CACHE_VIEW"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_TRIGGER_INSERT
+#: LABEL/ID_CACHE_BUILDER_TRIGGER_INSERT
+msgid "Trigger APP_DELEGATION INSERT"
+msgstr "Trigger APP_DELEGATION INSERT"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_TABLE
+#: LABEL/ID_CACHE_BUILDER_TABLE
+msgid "Table APP_CACHE_VIEW"
+msgstr "Table APP_CACHE_VIEW"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_USER_SUPER_PRIVILEGE
+#: LABEL/ID_CACHE_BUILDER_USER_SUPER_PRIVILEGE
+msgid "Current User has SUPER privilege"
+msgstr "Current User has SUPER privilege"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_CURRENT_USER
+#: LABEL/ID_CACHE_BUILDER_CURRENT_USER
+msgid "[LABEL/ID_CACHE_BUILDER_CURRENT_USER] Current User"
+msgstr "Current User"
+
+# TRANSLATION
+# LABEL/ID_CACHE_BUILDER_MYSQL_VERSION
+#: LABEL/ID_CACHE_BUILDER_MYSQL_VERSION
+msgid "MySQL Version"
+msgstr "MySQL Version"
+
+# TRANSLATION
 # LABEL/ID_USER_BROWSER
 #: LABEL/ID_USER_BROWSER
 msgid "User's Browser"
@@ -13294,8 +14506,14 @@ msgstr "Check again"
 # TRANSLATION
 # LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION
 #: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION
-msgid "If any of these items is not supported (marked as No) then please take actions to correct them.<br /><br />Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br /><br />(*) OpenSSL is optional.<br /><br />(*) LDAP is optional."
-msgstr "If any of these items is not supported (marked as No) then please take actions to correct them.<br /><br />Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br /><br />(*) OpenSSL is optional.<br /><br />(*) LDAP is optional."
+msgid "If any of these items is not supported (marked as No) then please take actions to correct them.<br />"
+msgstr "If any of these items is not supported (marked as No) then please take actions to correct them.<br />"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION2
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_DESCRIPTION2
+msgid "Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br />"
+msgstr "Failure to do so could lead to your ProcessMaker installation not functioning correctly!<br />"
 
 # TRANSLATION
 # LABEL/ID_PROCESSMAKER_REQUIREMENTS_PHP
@@ -13411,6 +14629,120 @@ msgstr "Restart labels with system fields"
 msgid "Restart labels with system fields, with the ID for its translation"
 msgstr "Restart labels with system fields, with the ID for its translation"
 
+# TRANSLATION
+# LABEL/ID_SKIN_TEAM
+#: LABEL/ID_SKIN_TEAM
+msgid "ProcessMaker Team"
+msgstr "ProcessMaker Team"
+
+# TRANSLATION
+# LABEL/ID_CREATED
+#: LABEL/ID_CREATED
+msgid "Created"
+msgstr "Created"
+
+# TRANSLATION
+# LABEL/ID_PREVIOUS_YEAR
+#: LABEL/ID_PREVIOUS_YEAR
+msgid "Previous Year"
+msgstr "Previous Year"
+
+# TRANSLATION
+# LABEL/ID_THIS_YEAR
+#: LABEL/ID_THIS_YEAR
+msgid "This Year"
+msgstr "This Year"
+
+# TRANSLATION
+# LABEL/ID_PREVIOUS_MONTH
+#: LABEL/ID_PREVIOUS_MONTH
+msgid "Previous Month"
+msgstr "Previous Month"
+
+# TRANSLATION
+# LABEL/ID_THIS_MONTH
+#: LABEL/ID_THIS_MONTH
+msgid "This Month"
+msgstr "This Month"
+
+# TRANSLATION
+# LABEL/ID_THIS_WEEK
+#: LABEL/ID_THIS_WEEK
+msgid "This Week"
+msgstr "This Week"
+
+# TRANSLATION
+# LABEL/ID_PREVIOUS_WEEK
+#: LABEL/ID_PREVIOUS_WEEK
+msgid "Previous Week"
+msgstr "Previous Week"
+
+# TRANSLATION
+# LABEL/ID_YESTERDAY
+#: LABEL/ID_YESTERDAY
+msgid "Yesterday"
+msgstr "Yesterday"
+
+# TRANSLATION
+# LABEL/ID_TODAY
+#: LABEL/ID_TODAY
+msgid "Today"
+msgstr "Today"
+
+# TRANSLATION
+# LABEL/ID_TINY_TYPE_VARIABLE
+#: LABEL/ID_TINY_TYPE_VARIABLE
+msgid "Type Variable"
+msgstr "Type Variable"
+
+# TRANSLATION
+# LABEL/ID_TINY_PROCESS_VARIABLES
+#: LABEL/ID_TINY_PROCESS_VARIABLES
+msgid "Process Variables"
+msgstr "Process Variables"
+
+# TRANSLATION
+# LABEL/ID_TINY_SYSTEM_VARIABLES
+#: LABEL/ID_TINY_SYSTEM_VARIABLES
+msgid "System Variables"
+msgstr "System Variables"
+
+# TRANSLATION
+# LABEL/ID_TINY_ALL_VARIABLES
+#: LABEL/ID_TINY_ALL_VARIABLES
+msgid "All variables"
+msgstr "All variables"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_OPENSSL_OPTIONAL
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_OPENSSL_OPTIONAL
+msgid "Open SSL is optional"
+msgstr "Open SSL is optional"
+
+# TRANSLATION
+# LABEL/ID_PROCESSMAKER_REQUIREMENTS_LDAP_OPTIONAL
+#: LABEL/ID_PROCESSMAKER_REQUIREMENTS_LDAP_OPTIONAL
+msgid "LDAP is optional"
+msgstr "LDAP is optional"
+
+# TRANSLATION
+# LABEL/ID_VALID_TO
+#: LABEL/ID_VALID_TO
+msgid "[LABEL/ID_VALID_TO] To"
+msgstr "To"
+
+# TRANSLATION
+# LABEL/ID_VALID_FROM
+#: LABEL/ID_VALID_FROM
+msgid "[LABEL/ID_VALID_FROM] From"
+msgstr "From"
+
+# TRANSLATION
+# LABEL/ID_UPGRADE_SYSTEM
+#: LABEL/ID_UPGRADE_SYSTEM
+msgid "[LABEL/ID_UPGRADE_SYSTEM] Upgrade System"
+msgstr "Upgrade System"
+
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
 #: text - ADD_TAB_NAME
@@ -13444,13 +14776,13 @@ msgstr "Import Data from CSV file"
 # additionalTables/additionalTablesDataImportForm.xml?CSV_FILE
 # additionalTables/additionalTablesDataImportForm.xml
 #: file - CSV_FILE
-msgid "CSV File"
+msgid "[additionalTables/additionalTablesDataImportForm.xml?CSV_FILE] CSV File"
 msgstr "CSV File"
 
 # additionalTables/additionalTablesDataImportForm.xml?CSV_DELIMITER
 # additionalTables/additionalTablesDataImportForm.xml
 #: dropdown - CSV_DELIMITER
-msgid "Delimited by"
+msgid "[additionalTables/additionalTablesDataImportForm.xml?CSV_DELIMITER] Delimited by"
 msgstr "Delimited by"
 
 # additionalTables/additionalTablesDataImportForm.xml?CSV_DELIMITER-;
@@ -13978,7 +15310,7 @@ msgstr "Creator"
 # appFolder/appFolderDocumentInfo.xml?APP_DOC_CREATE_DATE
 # appFolder/appFolderDocumentInfo.xml
 #: caption - APP_DOC_CREATE_DATE
-msgid "Created"
+msgid "[appFolder/appFolderDocumentInfo.xml?APP_DOC_CREATE_DATE] Created"
 msgstr "Created"
 
 # appFolder/appFolderDocumentList.xml?APP_DOC_FILENAME
@@ -17500,8 +18832,8 @@ msgstr "Task"
 # cases/cases_Scheduler_New.xml?SCH_NAME
 # cases/cases_Scheduler_New.xml
 #: text - SCH_NAME
-msgid "[cases/cases_Scheduler_New.xml?SCH_NAME] Description"
-msgstr "Description"
+msgid "[cases/cases_Scheduler_New.xml?SCH_NAME] Name"
+msgstr "Name"
 
 # cases/cases_Scheduler_New.xml?SCH_OPTION
 # cases/cases_Scheduler_New.xml
@@ -24533,6 +25865,12 @@ msgstr "Output Document"
 msgid "[processes/processes_EditObjectPermission.xml?OP_OBJ_TYPE-CASES_NOTES]"
 msgstr "Cases Notes"
 
+# processes/processes_EditObjectPermission.xml?OP_OBJ_TYPE-MSGS_HISTORY
+# processes/processes_EditObjectPermission.xml
+#: dropdown - OP_OBJ_TYPE - MSGS_HISTORY
+msgid "[processes/processes_EditObjectPermission.xml?OP_OBJ_TYPE-MSGS_HISTORY]"
+msgstr "Messages History"
+
 # processes/processes_EditObjectPermission.xml?ALL
 # processes/processes_EditObjectPermission.xml
 #: dropdown - ALL
@@ -24604,6 +25942,12 @@ msgstr "Block"
 #: dropdown - OP_ACTION - DELETE
 msgid "[processes/processes_EditObjectPermission.xml?OP_ACTION-DELETE]"
 msgstr "Delete"
+
+# processes/processes_EditObjectPermission.xml?OP_ACTION-RESEND
+# processes/processes_EditObjectPermission.xml
+#: dropdown - OP_ACTION - RESEND
+msgid "[processes/processes_EditObjectPermission.xml?OP_ACTION-RESEND]"
+msgstr "Resend"
 
 # processes/processes_EditObjectPermission.xml?CREATE
 # processes/processes_EditObjectPermission.xml
@@ -25120,6 +26464,12 @@ msgstr "Output Document"
 #: dropdown - OP_OBJ_TYPE - CASES_NOTES
 msgid "[processes/processes_NewObjectPermission.xml?OP_OBJ_TYPE-CASES_NOTES]"
 msgstr "Cases Notes"
+
+# processes/processes_NewObjectPermission.xml?OP_OBJ_TYPE-MSGS_HISTORY
+# processes/processes_NewObjectPermission.xml
+#: dropdown - OP_OBJ_TYPE - MSGS_HISTORY
+msgid "[processes/processes_NewObjectPermission.xml?OP_OBJ_TYPE-MSGS_HISTORY]"
+msgstr "Messages History"
 
 # processes/processes_NewObjectPermission.xml?ALL
 # processes/processes_NewObjectPermission.xml
@@ -29240,7 +30590,7 @@ msgstr "Subject"
 # setup/wsSendMessage.xml?MESSAGE
 # setup/wsSendMessage.xml
 #: textarea - MESSAGE
-msgid "Message"
+msgid "[setup/wsSendMessage.xml?MESSAGE] Message"
 msgstr "Message"
 
 # setup/wsSendMessage.xml?ACTIONB
@@ -33503,6 +34853,24 @@ msgstr "Value"
 msgid "[dynaforms/fields/_options.xml?LABEL] Label"
 msgstr "Label"
 
+# dynaforms/fields/_optionsOptGroup.xml?NAME
+# dynaforms/fields/_optionsOptGroup.xml
+#: text - NAME
+msgid "[dynaforms/fields/_optionsOptGroup.xml?NAME] Value"
+msgstr "Value"
+
+# dynaforms/fields/_optionsOptGroup.xml?LABEL
+# dynaforms/fields/_optionsOptGroup.xml
+#: text - LABEL
+msgid "[dynaforms/fields/_optionsOptGroup.xml?LABEL] Label"
+msgstr "Label"
+
+# dynaforms/fields/_optionsOptGroup.xml?OPTGROUP
+# dynaforms/fields/_optionsOptGroup.xml
+#: checkbox - OPTGROUP
+msgid "Option Group"
+msgstr "Option Group"
+
 # dynaforms/fields/button.xml?PME_TITLE
 # dynaforms/fields/button.xml
 #: title - PME_TITLE
@@ -34156,6 +35524,12 @@ msgstr "Required"
 #: checkbox - PME_READONLY
 msgid "[dynaforms/fields/dropdown.xml?PME_READONLY] Read Only"
 msgstr "Read Only"
+
+# dynaforms/fields/dropdown.xml?PME_OPTGROUP
+# dynaforms/fields/dropdown.xml
+#: checkbox - PME_OPTGROUP
+msgid "Include Option Group"
+msgstr "Include Option Group"
 
 # dynaforms/fields/dropdown.xml?PME_DEPENDENTFIELDS
 # dynaforms/fields/dropdown.xml

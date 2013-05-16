@@ -4614,11 +4614,109 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
         return $this->date_create_from_format($tmp, $value, $withHours);
     }
     
+    function date_parse_from_format($format, $date) {
+        $returnArray = array('hour' => 0, 'minute' => 0, 'second' => 0,
+                            'month' => 0, 'day' => 0, 'year' => 0);
+     
+        $dateArray = array();
+         
+        // array of valid date codes with keys for the return array as the values
+        $validDateTimeCode = array('Y' => 'year', 'y' => 'year',
+                                    'm' => 'month', 'n' => 'month',
+                                    'd' => 'day', 'j' => 'day',
+                                    'H' => 'hour', 'G' => 'hour',
+                                    'i' => 'minute', 's' => 'second');
+         
+        /* create an array of valid keys for the return array
+         * in the order that they appear in $format
+         */
+        for ($i = 0 ; $i <= strlen($format) - 1 ; $i++) {
+            $char = substr($format, $i, 1);
+             
+            if (array_key_exists($char, $validDateTimeCode)) {
+                $dateArray[$validDateTimeCode[$char]] = '';
+            }
+        }
+         
+        // create array of reg ex things for each date part
+        $regExArray = array('.' => '\.', // escape the period
+                             
+                            // parse d first so we dont mangle the reg ex
+                            // day
+                            'd' => '(\d{2})',
+                             
+                            // year
+                            'Y' => '(\d{4})',
+                            'y' => '(\d{2})',
+                             
+                            // month
+                            'm' => '(\d{2})',
+                            'n' => '(\d{1,2})',
+                             
+                            // day
+                            'j' => '(\d{1,2})',
+                             
+                            // hour
+                            'H' => '(\d{2})',
+                            'G' => '(\d{1,2})',
+                             
+                            // minutes
+                            'i' => '(\d{2})',
+                             
+                            // seconds
+                            's' => '(\d{2})');
+         
+        // create a full reg ex string to parse the date with
+        $regEx = str_replace(array_keys($regExArray),
+                                array_values($regExArray),
+                                $format);
+                                     
+        // Parse the date
+        preg_match("#$regEx#", $date, $matches);
+         
+        // some checks...
+        if (!is_array($matches) ||
+            $matches[0] != $date ||
+            sizeof($dateArray) != (sizeof($matches) - 1)) {
+            return $returnArray;
+        }
+         
+        // an iterator for the $matches array
+        $i = 1;
+         
+        foreach ($dateArray AS $key => $value) {
+            $dateArray[$key] = $matches[$i++];
+             
+            if (array_key_exists($key, $returnArray)) {
+                $returnArray[$key] = $dateArray[$key];
+            }
+        }
+         
+        return $returnArray;
+    }
+    
+    function strptime($format, $date) {
+        $dateArray = array();
+         
+        $dateArray = $this->date_parse_from_format($format, $date);
+         
+        if (is_array($dateArray)) {
+            return mktime($dateArray['hour'],
+                            $dateArray['minute'],
+                            $dateArray['second'],
+                            $dateArray['month'],
+                            $dateArray['day'],
+                            $dateArray['year']);
+        } else {
+            return 0;
+        }   
+    }
+    
     function date_create_from_format( $dformat, $dvalue, $withHours = false )
     {
         $schedule = $dvalue;
         $schedule_format = str_replace(array('Y','m','d','H','M','S'),array('%Y','%m','%d','%H','%M','%S') ,$dformat);
-        $ugly = strptime($schedule, $schedule_format);
+        $ugly = $this->strptime($schedule, $schedule_format);
         $ymd = sprintf(
             '%04d-%02d-%02d %02d:%02d:%02d',
             $ugly['tm_year'] + 1900,
