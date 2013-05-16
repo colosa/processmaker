@@ -28,7 +28,7 @@ var verifyLogin = function() {
     }
 	var rpc = new leimnud.module.rpc.xmlhttp({
         url : '../login/authentication',
-        args: 'form[USR_USERNAME]=' + usernameLogged + '&form[USR_PASSWORD]=' + document.getElementById('thePassword').value.trim() + '&form[USR_LANG]=' + SYS_LANG
+        args: 'form[USR_USERNAME]=' + __usernameLogged__ + '&form[USR_PASSWORD]=' + document.getElementById('thePassword').value.trim() + '&form[USR_LANG]=' + SYS_LANG
     });
     rpc.callback = function(rpc) {
         if (rpc.xmlhttp.responseText.indexOf('form[USR_USERNAME]') == -1) {
@@ -106,7 +106,7 @@ var showPrompt = function(lastAction) {
     promptPanel.options={
     	statusBarButtons:[{value: _('LOGIN')}],
     	position:{center:true},
-    	size:{w:300,h:110},
+        size:{w:300,h:125},
     	control:{
     		close:false,
     		resize:false

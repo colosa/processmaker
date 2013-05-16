@@ -90,6 +90,7 @@ class headPublisher
     {
         $this->addScriptFile("/js/maborak/core/maborak.js");
         $this->translationsFile = "/js/ext/translation." . SYS_LANG . ".js";
+        $this->addScriptCode(' var __usernameLogged__ = "' . (isset($_SESSION['USR_USERNAME']) ? $_SESSION['USR_USERNAME'] : '') . '";var SYS_LANG = "' . SYS_LANG . '";');
     }
 
     public function &getSingleton()

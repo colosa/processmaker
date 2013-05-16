@@ -2903,6 +2903,15 @@ var changeStatusSubmitFields = function(newStatusTo) {
  **/
 
 var validateForm = function(sRequiredFields) {
+
+    sFormName = document.getElementById('__DynaformName__');
+    if ((typeof(sFormName) != 'undefined' && sFormName != 'login') && (typeof(__usernameLogged__) != 'undefined' && __usernameLogged__ != '') ) {
+        if (!sessionPersits()) {
+            showPromptLogin('session');
+            return false;
+        }
+    }
+
   // Disabling submit buttons
   changeStatusSubmitFields('disabled');
 
@@ -3268,6 +3277,109 @@ var saveAndRefreshForm = function(oObject) {
       oAux[0].submit();
     }
   }
+};
+
+
+/**
+ * @function sessionPersits
+ *
+ * @returns {@exp;response@pro;status}
+ */
+var sessionPersits = function() {
+    var rpc = new leimnud.module.rpc.xmlhttp({
+        url: '../services/sessionPersists',
+        args: 'dynaformRestoreValues=' + __dynaformSVal__,
+        async: false
+    });
+    rpc.make();
+    var response = rpc.xmlhttp.responseText.parseJSON();
+    return response.status;
+};
+
+/**
+ * @function showPromptLogin
+ *
+ * @param {type} lastAction
+ * @returns {showPrompt}
+ */
+var showPromptLogin = function(lastAction) {
+    lastActionPerformed = lastAction;
+    promptPanel = new leimnud.module.panel();
+    promptPanel.options={
+        statusBarButtons:[{value: _('LOGIN')}],
+        position:{center:true},
+        size:{w:300,h:130},
+        control:{
+            close:false,
+            resize:false
+        },
+        fx:{
+            modal:true
+        }
+    };
+    promptPanel.setStyle={
+        content:{
+            padding:10,
+            paddingBottom:2,
+            textAlign:'left',
+            paddingLeft:50,
+            backgroundRepeat:'no-repeat',
+            backgroundPosition:'10 50%',
+            backgroundColor:'transparent',
+            borderWidth:0
+        }
+    };
+    promptPanel.make();
+    promptPanel.addContent(_('ID_DYNAFORM_EDITOR_LOGIN_AGAIN'));
+    promptPanel.addContent('<br />');
+    var thePassword = $dce('input');
+    thePassword.type = 'password';
+    thePassword.id = 'thePassword';
+    leimnud.dom.setStyle(thePassword,{
+        font:'normal 8pt Tahoma,MiscFixed',
+        color:'#000',
+        width:'100%',
+        marginTop:3,
+        backgroundColor:'white',
+        border:'1px solid #919B9C'
+    });
+    promptPanel.addContent(thePassword);
+    thePassword.focus();
+    thePassword.onkeyup=function(evt)
+    {
+        var evt = (window.event)?window.event:evt;
+        var key = (evt.which)?evt.which:evt.keyCode;
+        if(key == 13) {
+            verifyLogin();
+        }
+    }.extend(this);
+    promptPanel.fixContent();
+    promptPanel.elements.statusBarButtons[0].onmouseup = verifyLogin;
+};
+
+/**
+ * @function verifyLogin
+ *
+ * @returns {unresolved}
+ */
+var verifyLogin = function() {
+    if (document.getElementById('thePassword').value.trim() == '') {
+        alert(_('ID_WRONG_PASS'));
+        return;
+    }
+    var rpc = new leimnud.module.rpc.xmlhttp({
+        url : '../login/authentication',
+        args: 'form[USR_USERNAME]=' + __usernameLogged__ + '&form[USR_PASSWORD]=' + document.getElementById('thePassword').value.trim() + '&form[USR_LANG]=' + SYS_LANG
+    });
+    rpc.callback = function(rpc) {
+        if (rpc.xmlhttp.responseText.indexOf('form[USR_USERNAME]') == -1) {
+            promptPanel.remove();
+            lastActionPerformed = '';
+        } else {
+            alert(_('ID_WRONG_PASS'));
+        }
+    }.extend(this);
+    rpc.make();
 };
 
 /**
