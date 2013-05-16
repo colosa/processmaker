@@ -27,8 +27,9 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
 //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
 
-require_once ('classes/model/Dynaform.php');
-require_once ('classes/model/Content.php');
+require_once ("classes" . PATH_SEP . "model" . PATH_SEP . "Dynaform.php");
+require_once ("classes" . PATH_SEP . "model" . PATH_SEP . "FieldCondition.php");
+require_once ("classes" . PATH_SEP . "model" . PATH_SEP . "Content.php");
 
 if (isset( $_POST['function'] )) {
     $sfunction = $_POST['function'];
@@ -224,6 +225,17 @@ if (isset( $sfunction ) && $sfunction == 'lookforNameDynaform') {
                     copy($fileHtml, $fileHtmlCopy);
 
                     chmod($fileHtmlCopy, 0777);
+                }
+
+                //Copy if there are conditions attached to the dynaform
+                $fieldCondition = new FieldCondition();
+                $arrayCondition = $fieldCondition->getAllByDynUid($aData["COPY_DYNAFORM_UID"]);
+
+                foreach ($arrayCondition as $condition) {
+                    $condition["FCD_UID"] = "";
+                    $condition["FCD_DYN_UID"] = $dynaformUid;
+
+                    $fieldCondition->quickSave($condition);
                 }
 
                 umask($umaskOld);
