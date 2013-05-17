@@ -60,7 +60,7 @@ class workspaceTools
      *
      * @param bool $first true if this is the first workspace to be upgrade
      */
-    public function upgrade($first = false, $buildCacheView = false, $workSpace = SYS_SYS)
+    public function upgrade($first = false, $buildCacheView = false, $workSpace = SYS_SYS, $lang = 'en')
     {
         $start = microtime(true);
         CLI::logging("> Updating database...\n");
@@ -85,7 +85,7 @@ class workspaceTools
 
         $start = microtime(true);
         CLI::logging("> Updating cache view...\n");
-        $this->upgradeCacheView($buildCacheView, true);
+        $this->upgradeCacheView($buildCacheView, true, $lang);
         $stop = microtime(true);
         $final = $stop - $start;
         CLI::logging("<*>   Process Updating cache view carried out in $final seconds.\n");
@@ -424,11 +424,9 @@ class workspaceTools
      * @param bool $checkOnly only check if the upgrade is needed if true
      * @param string $lang not currently used
      */
-    public function upgradeCacheView($fill = true, $checkOnly = false)
+    public function upgradeCacheView($fill = true, $checkOnly = false, $lang = "en")
     {
         $this->initPropel(true);
-
-        $lang = "en";
 
         //require_once ('classes/model/AppCacheView.php');
         //check the language, if no info in config about language, the default is 'en'
@@ -472,7 +470,7 @@ class workspaceTools
         $triggers[] = $appCache->triggerContentUpdate($lang, $checkOnly);
 
         if ($fill) {
-            CLI::logging("-> Rebuild Cache View\n");
+            CLI::logging("-> Rebuild Cache View with language $lang...\n");
             //build using the method in AppCacheView Class
             $res = $appCache->fillAppCacheView($lang);
             //set status in config table
@@ -571,7 +569,7 @@ class workspaceTools
         $this->initPropel(true);
         G::LoadClass("configuration");
         $conf = new Configurations();
-            if ($conf->exists("ENVIRONMENT_SETTINGS")) {
+        if ($conf->exists("ENVIRONMENT_SETTINGS")) {
             $conf->setDirectoryStructureVer(2);
             CLI::logging(CLI::info("Version Directory Structure is 2 now.\n"));
         } else {
@@ -1126,7 +1124,7 @@ class workspaceTools
      * @param string $newWorkspaceName if defined, supplies the name for the
      * workspace to restore to
      */
-    static public function restore($filename, $srcWorkspace, $dstWorkspace = null, $overwrite = true)
+    static public function restore($filename, $srcWorkspace, $dstWorkspace = null, $overwrite = true, $lang = 'en')
     {
         G::LoadThirdParty('pear/Archive', 'Tar');
         $backup = new Archive_Tar($filename);
@@ -1164,6 +1162,15 @@ class workspaceTools
         if (isset($srcWorkspace) && !in_array("$srcWorkspace.meta", array_map(BASENAME, $metaFiles))) {
             throw new Exception("Workspace $srcWorkspace not found in backup");
         }
+        
+        $version = System::getVersion();
+        $version = explode('-', $version);
+        $versionPresent = ( isset($version[0])) ? $version[0] : '';
+        CLI::logging(CLI::warning("
+            Note.- If you try to execute a restore from a generated backup on a recent version of Processmaker 
+            than version you are using currently to restore it, it may be occur errors on the restore process,
+            it shouldn't be restaured generated backups on later versions than version when the restore is executed") . "\n");
+
         foreach ($metaFiles as $metaFile) {
             $metadata = G::json_decode(file_get_contents($metaFile));
             if ($metadata->version != 1) {
@@ -1235,7 +1242,31 @@ class workspaceTools
                 $workspace->createDBUser($dbName, $db->pass, "%", $dbName);
             }
 
-            $workspace->upgradeCacheView(false);
+            $version = explode('-', $metadata->PM_VERSION);
+            $versionOld = ( isset($version[0])) ? $version[0] : '';
+            CLI::logging(CLI::info("$versionOld < $versionPresent") . "\n");
+
+            if ( $versionOld < $versionPresent) {
+                $start = microtime(true);
+                CLI::logging("> Updating database...\n");
+                $workspace->upgradeDatabase();
+                $stop = microtime(true);
+                $final = $stop - $start;
+                CLI::logging("<*>   Process Updating database carried out in $final seconds.\n");
+
+                $start = microtime(true);
+                CLI::logging("> Updating cases directories structure...\n");
+                $workspace->upgradeCasesDirectoryStructure($workspaceName);
+                $stop = microtime(true);
+                $final = $stop - $start;
+                CLI::logging("<*>   Process Updating directories structure carried out in $final seconds.\n");
+            }
+            $start = microtime(true);
+            CLI::logging("> Updating cache view...\n");
+            $workspace->upgradeCacheView(true, false, $lang);
+            $stop = microtime(true);
+            $final = $stop - $start;
+            CLI::logging("<*>   Process Updating cache view carried out in $final seconds.\n");
 
             mysql_close($link);
         }
