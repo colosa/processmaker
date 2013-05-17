@@ -100,7 +100,7 @@ class AppProxy extends HttpProxyController
         }
 
         if (! isset( $appUid )) {
-            throw new Exception( 'Can\'t resolve the Apllication ID for this request.' );
+            throw new Exception(G::LoadTranslation("ID_CANT_RESOLVE_APLICATION"));
         }
 
         $usrUid = (isset( $_SESSION['USER_LOGGED'] )) ? $_SESSION['USER_LOGGED'] : "";

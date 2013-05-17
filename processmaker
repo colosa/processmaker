@@ -2,7 +2,7 @@
 <?php
 
   $scriptDir = dirname(__FILE__).'/';
-  
+
   define("PROCESSMAKER_PATH", $scriptDir);
   define("WORKFLOW_PATH", $scriptDir . 'workflow/');
   define("WORKFLOW_BIN_PATH", $scriptDir . 'workflow/engine/bin/');

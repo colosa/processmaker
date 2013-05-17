@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" /> 
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+
   <link rel="stylesheet" href="/css/simplified.css" media="screen" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="/js/jquery/css/smoothness/jquery-ui-1.8.17.custom.css" type="text/css">
   <!--<link rel="stylesheet" href="/js/jquery/css/redmond/jquery-ui-1.7.2.custom.css" type="text/css">-->
@@ -54,7 +54,7 @@
       d.hide('slow');
     }
     else {
-      d.show('slow');
+      d.show({/literal}"{translate label="ID_SLOW"}"{literal});
     }
   }
 
@@ -81,10 +81,10 @@
                 height:192,
                 modal: true,
                 buttons: {
-                  "Add Note": function() {
+                  {/literal}"{translate label="ID_ADD_NOTE"}"{literal}: function() {
                       var sendMail = document.getElementById('chkSendMail').checked;
                       sendMail = (sendMail == true) ? '1' : '0';
-                    $(this).dialog("close");
+                      $(this).dialog({/literal}"{translate label="ID_CLOSE"}"{literal});
                     $.post(
                       '../appProxy/postNote',
                       {appUid  : appUid,
@@ -97,18 +97,15 @@
                     //redirect('home/startCase?id='+id);
                   },
                   Cancel: function() {
-                    $(this).dialog( "close" );
+                    //$(this).dialog( "close" );
+                    $(this).dialog({/literal}"{translate label="ID_CLOSE"}"{literal});
                   }
                 }
               });
             }
             //updateNt(appUid);
-          
         }
     );
-    
-    
-    
   }
 
   function updateNt(appUid)
@@ -120,24 +117,24 @@
         data = jQuery.parseJSON(resp);
         content = $('div#m_'+appUid);
         content.html('');
-        
+
         for (i=0; i<data.notes.length; i++) {
           r = data.notes[i];
-          
+
           s = '<div class="appMessage"><table border="0"><tr>' +
                 '<td width="50" valign="top">'+
                   '<img border="0" src="../users/users_ViewPhotoGrid?pUID='+r.USR_UID+'" width="40" height="40"/>' +
                 '</td><td>' +
                   '<h3>'+r.USR_FIRSTNAME+' '+r.USR_LASTNAME+' ('+r.USR_USERNAME+')</h3>' +
                   '<p><pre>'+r.NOTE_CONTENT+'</pre>' +
-                  '<div class="appMessageDate">Posted at '+r.NOTE_DATE+'</div>' +
+                  '<div class="appMessageDate">{translate label="ID_POSTED_AT"} '+r.NOTE_DATE+'</div>' +
                 '</td></tr></table></div>';
-          
+
           content.append(s);
           $('#n_'+appUid).show('slow');
         }
         d = $('#m_'+appUid);
-        d.show('slow');
+        d.show({/literal}"{translate label="ID_SLOW"}"{literal});
       }
     );
     return true;
@@ -153,10 +150,10 @@
 
           if(jQuery.trim(html) != ''){
             $("#commentlist").append(html);
-            $('#loadmorebutton').html('Load More');
+            $('#loadmorebutton').html( {/literal}"{translate label="ID_LOAD_MORE"}"{literal} );
           }
           else {
-            $('#loadmorebutton').replaceWith('<center>No more applications to show.</center>');
+            $('#loadmorebutton').replaceWith({/literal}"<center> {translate label="ID_NO_MORE_APPLICATIONS"}</center>"{literal});
           }
         }
       });
@@ -171,10 +168,10 @@
   var listType     = '{$listType}';
   var noPerms     = '{$noPerms}';
   </script>
-  
+
 </head>
 
-<body onload="resize()" onresize="resize()" > 
+<body onload="resize()" onresize="resize()" >
   <center>
     <div class="content-header" style="text-align:left">
       <h1 style="padding: 10px">{$title} ({$cases_count})</h1>
@@ -184,19 +181,19 @@
 
       {if $cases_count > $appListLimit}
       <center>
-        <a href="#" style="color:#1F98C7; font-size:12px; font-weight:bold;" id="loadmorebutton">Load More</a>
+        <a href="#" style="color:#1F98C7; font-size:12px; font-weight:bold;" id="loadmorebutton">{translate label="ID_LOAD_MORE"}</a>
       </center>
       {/if}
     </div>
   </center>
 
-  <div id="dialog-add-note" title="Case Note" style="display:none">
+  <div id="dialog-add-note" title="{translate label="ID_CASE_NOTE"}" style="display:none">
     <p><!-- <span class="ui-icon ui-icon-document" style="float:left; margin:0 7px 20px 0;"></span> -->
     <span id="startAppTitle"/>
     <textarea id="note_text" rows="2" cols="22"></textarea>
     <div class="x-form-check-wrap" id="ext-gen160" style="font-size:11px">
       <input type="checkbox" name="chkSendMail" id="chkSendMail" autocomplete="off" class=" x-form-checkbox x-form-field" checked="">
-      <label class="x-form-cb-label" for="chkSendMail" id="ext-gen161">Send email (Case Participants)</label>
+      <label class="x-form-cb-label" for="chkSendMail" id="ext-gen161">{translate label="ID_SEND_EMAIL_CASE_PARTICIPANTS"}</label>
     </div>
     </p>
   </div>
