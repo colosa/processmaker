@@ -876,11 +876,19 @@ function G_Text(form, element, name)
       switch(chars[c]){
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9':
-        case me.comma_separator:
           newValue += chars[c];
           newCont++;
           if (c + 1 == cursor.selectionStart){
             newCursor = newCont;
+          }
+          break;
+        case me.comma_separator:
+          if(me.mType != 'date') {
+              newValue += chars[c];
+              newCont++;
+              if (c + 1 == cursor.selectionStart){
+                newCursor = newCont;
+              }
           }
           break;
         case '-':
@@ -1110,8 +1118,8 @@ function G_Text(form, element, name)
           //me.setSelectionRange(newCursor,newCursor);
           //break;
       }
-    }
-    else{
+    } else{
+      //no mask
       currentValue = me.element.value;
       currentSel = me.getCursorPosition();
       cursorStart = currentSel.selectionStart;
