@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
 
   <link rel="shortcut icon" href="/images/favicon.ico"   type="image/x-icon"/>
   <!--<link rel="stylesheet" href="/js/jquery/css/redmond/jquery-ui-1.7.2.custom.css" type="text/css">-->
@@ -10,7 +10,7 @@
 
   <script type="text/javascript" src="/js/jquery/jquery-1.7.1.min.js"></script>
   <script type="text/javascript" src="/js/jquery/jquery-ui-1.8.17.min.js"></script>
-  
+
   {if $clientBrowser neq 'msie'}
   <style>
   {literal}
@@ -31,11 +31,11 @@
     var h = $(window).height() - 42;
     $('iframe').height(h)
   }
-  
+
   function redirect(url)
   {
     var $iframe = $('#iframex');
-    $iframe.attr('src', url);   
+    $iframe.attr('src', url);
     return false;
   }
 
@@ -48,37 +48,38 @@
       height:160,
       modal: true,
       buttons: {
-        "Start Case": function() {
+        {/literal}"{translate label="ID_CASE_START"}"{literal}: function() {
           $( this ).dialog( "close" );
           redirect('home/startCase?id='+id);
         },
-        Cancel: function() {
+
+        {/literal}"{translate label="ID_CANCEL"}"{literal}: function() {
           $( this ).dialog( "close" );
         }
       }
     });
   }
 
-  /*function setActive(o) 
+  /*function setActive(o)
   {
     if (o.id == 'inboxOp') {
       o.setAttribute('class', 'active');
     }
     else {
-      o.setAttribute('class', ''); 
+      o.setAttribute('class', '');
     }
   }*/
 
   //$("div.topbar ul li a").
 
- 
+
   </script>
   {/literal}
 
 </head>
-<body onload="resize()" onresize="resize()" > 
+<body onload="resize()" onresize="resize()" >
   <div class="global-nav">
-    <!-- start topbar -->     
+    <!-- start topbar -->
     <div class="topbar" id="corpBar">
       <div class="topbar-bg"></div>
       <div class="topbar-inner">
@@ -106,7 +107,7 @@
               </li>
               {/foreach}
             {/if}
-            
+
             {if $canStartCase neq false && count($mnuNewCase) > 0}
             <li class="account">
               <a class="menu user-actions" href="javascript:;" title="{$mnuNewCase.label}" id="_new">
@@ -122,7 +123,7 @@
               </ul>
             </li>
             {/if}
-          </ul> 
+          </ul>
 
           <ul class="nav secondary-nav">
             <li class="account">
@@ -135,9 +136,9 @@
                 <!--<li><a href="#" accesskey="s" id="settings_link">Settings</a></li>
                 <li><a href="#" accesskey="?" id="help_link">Help</a></li>-->
                 {if $userUxType eq 'SWITCHABLE'}
-                <li><a href="{$switchLink}" accesskey="?" id="help_link">Switch Interface</a></li>
+                <li><a href="{$switchLink}" accesskey="?" id="help_link">{translate label="ID_SWITCH_INTERFACE"}</a></li>
                 {/if}
-                <li><a href="home/login" accesskey="l" id="sign_out_link">Sign out</a></li>
+                <li><a href="home/login" accesskey="l" id="sign_out_link">{translate label="ID_SIGN_OUT"}</a></li>
               </ul>
             </li>
           </ul>
@@ -145,18 +146,18 @@
         </div> <!-- /fixed-container -->
       </div> <!-- /topbar-inner -->
     </div>
-    <!-- end topbar -->     
+    <!-- end topbar -->
   </div>
 
   <iframe id="iframex" name="iframex" src="home/appList" width="100%" height="800" scrolling="yes" frameborder="0"></iframe>
-  
+
   <div id="dialog-confirm" title="Confirm" style="display:none">
     <p>
-    Start a new case for:<br/>
+    {translate label="ID_START_A_NEW_CASE_FOR"}<br/>
     <span class="ui-icon ui-icon-document" style="float:left; margin:0 7px 20px 0;"></span><span id="startAppTitle"/></p>
   </div>
 
-  {literal} 
+  {literal}
   <script type="text/javascript">
     // Javascript to toggle the dropdowns
     $(document).ready(function(){
@@ -179,7 +180,7 @@
         return false;
       });
 
-      
+
       // To hide some actived menu clicking on inner iframe content
       $('iframe').load(function(){
         var iframeDoc = $('iframe').contents().get(0);
@@ -191,7 +192,7 @@
 
       })
 
-     
+
       $('ul.primary-nav').children('li').children('a').click(function(i, el){
         $('ul.primary-nav').children('li').children('a').attr('class', 'menu user-actions');
         $(this).attr('class', 'menu user-actions active');

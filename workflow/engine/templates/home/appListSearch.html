@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" /> 
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+
     <link rel="stylesheet" href="/css/simplified.css" media="screen" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/js/jquery/css/smoothness/jquery-ui-1.8.17.custom.css" type="text/css">
     <!--<link rel="stylesheet" href="/js/jquery/css/redmond/jquery-ui-1.7.2.custom.css" type="text/css">-->
@@ -50,7 +50,7 @@
             background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#dbdbdb 100%); /* IE10+ */
             background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#dbdbdb 100%); /* W3C */
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dbdbdb',GradientType=0 ); /* IE6-9 */
-            
+
             border: 1px solid #FFFFFF;
             color: #565656;
             text-decoration: none;
@@ -94,7 +94,7 @@
             $("#searchText").val(null);
             redirect();
         }
-        
+
         function redirect()
         {
             var src = $("#iframex", window.parent.document).attr('src');
@@ -150,10 +150,10 @@
                             height:192,
                             modal: true,
                             buttons: {
-                                "Add Note": function() {
+                                {/literal}"{translate label="ID_ADD_NOTE"}"{literal}: function() {
                                     var sendMail = document.getElementById('chkSendMail').checked;
                                     sendMail = (sendMail == true) ? '1' : '0';
-                                    $(this).dialog("close");
+                                    $(this).dialog( "close" );
                                     $.post(
                                         '../appProxy/postNote',
                                         {appUid  : appUid,
@@ -165,8 +165,8 @@
                                     );
                                     //redirect('home/startCase?id='+id);
                                 },
-                                Cancel: function() {
-                                    $(this).dialog( "close" );
+                                {/literal}"{translate label="ID_CANCEL"}"{literal}: function() {
+                                    $(this).dialog("close");
                                 }
                             }
                         });
@@ -219,7 +219,7 @@
                               '</td><td>' +
                                 '<h3>'+r.USR_FIRSTNAME+' '+r.USR_LASTNAME+' ('+r.USR_USERNAME+')</h3>' +
                                 '<p><pre>'+r.NOTE_CONTENT+'</pre>' +
-                                '<div class="appMessageDate">Posted at '+r.NOTE_DATE+'</div>' +
+                                '<div class="appMessageDate">{translate label="ID_POSTED_AT"} '+r.NOTE_DATE+'</div>' +
                               '</td></tr></table></div>';
 
                         content.append(s);
@@ -239,13 +239,13 @@
                     url: "getApps?t="+listType+"&start="+appListStart+"&limit="+appListLimit,
                     success: function(html){
                         appListStart += appListLimit;
-    
+
                         if(jQuery.trim(html) != ''){
                             $("#commentlist").append(html);
-                            $('#loadmorebutton').html('Load More');
+                            $('#loadmorebutton').html( {/literal}"{translate label="ID_LOAD_MORE"}"{literal} );
                         }
                         else {
-                            $('#loadmorebutton').replaceWith('<center>No more applications to show.</center>');
+                            $('#loadmorebutton').replaceWith(<center>{/literal}"{translate label="ID_NO_MORE_APPLICATIONS"}"{literal}</center>);
                         }
                     }
                 });
@@ -313,8 +313,8 @@
             <div style = "float: right;"><b>{$searchTitle}:</b>
                 <input type="text" size="27" maxlength="60" value="" id='searchText' placeholder="{$searchTitle}...">
             </div>
-            
-            
+
+
         </div>
 
         <div id='panelDown' style = "display: none; width: 95%;">
@@ -354,19 +354,19 @@
 
       {if $cases_count > $appListLimit}
       <center>
-        <a href="#" style="color:#1F98C7; font-size:12px; font-weight:bold;" id="loadmorebutton">Load More</a>
+        <a href="#" style="color:#1F98C7; font-size:12px; font-weight:bold;" id="loadmorebutton">{translate label="ID_LOAD_MORE"}</a>
       </center>
       {/if}
     </div>
   </center>
 
-  <div id="dialog-add-note" title="Case Note" style="display:none">
+  <div id="dialog-add-note" title="{translate label="ID_CASE_NOTE"}" style="display:none">
     <p><!-- <span class="ui-icon ui-icon-document" style="float:left; margin:0 7px 20px 0;"></span> -->
     <span id="startAppTitle"/>
     <textarea id="note_text" rows="2" cols="22"></textarea>
     <div class="x-form-check-wrap" id="ext-gen160" style="font-size:11px">
       <input type="checkbox" name="chkSendMail" id="chkSendMail" autocomplete="off" class=" x-form-checkbox x-form-field" checked="">
-      <label class="x-form-cb-label" for="chkSendMail" id="ext-gen161">Send email (Case Participants)</label>
+      <label class="x-form-cb-label" for="chkSendMail" id="ext-gen161">{translate label="ID_SEND_EMAIL_CASE_PARTICIPANTS"}</label>
     </div>
     </p>
   </div>

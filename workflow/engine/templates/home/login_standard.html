@@ -11,29 +11,29 @@
       function start() {
         //Fade in the Popup
         $('#login').fadeIn(1000);
-        
+
         //Set the center alignment padding + border see css style
         var popMargTop = ($('#login').height() + 24) / 2;
-        var popMargLeft = ($('#login').width() + 24) / 2; 
-        
+        var popMargLeft = ($('#login').width() + 24) / 2;
+
         if (!jQuery.browser.msie) {
-          $('#login').css({ 
+          $('#login').css({
             'margin-top' : -popMargTop,
             'margin-left' : -popMargLeft
           });
-          
+
           // Add the mask to body
           $('body').append('<div id="mask"></div>');
           $('#mask').fadeIn(0);
         }
         else {
-          $('#login').css({ 
+          $('#login').css({
             'margin-top' : (($(window).height()/2) - 140)
           });
         }
         return false;
       }
-      
+
       start();
       //$('#login').fadeIn(1000);
     });
@@ -47,9 +47,9 @@
       $('#login').width(w-50);
 
       var popMargTop = ($('#login').height() + 24) / 2;
-      var popMargLeft = ($('#login').width() + 5) / 2; 
-      
-      $('#login').css({ 
+      var popMargLeft = ($('#login').width() + 5) / 2;
+
+      $('#login').css({
           'margin-top' : -popMargTop,
           'margin-left' : -popMargLeft
       });
@@ -64,13 +64,13 @@
 <center>
   <form method="post" action="../login/authentication">
     <div id="login" class="login_form">
-      <h1>Sign In</h1>
+      <h1>{translate label="ID_SIGN_IN"}</h1>
 
       <div class="login_message">{$msg}</div>
 
       <table border=0 width="100%" cellspacing="0" cellpadding="0" class="formbody">
         <tr>
-          <td><label for="login_field">Username</label></td>
+          <td><label for="login_field">{translate label="ID_USERNAME"}</label></td>
         </tr>
         <tr>
           <td>
@@ -78,7 +78,7 @@
           </td>
         </tr>
         <tr>
-          <td><label for="password">Password</label></td>
+          <td><label for="password">{translate label="ID_PASSWORD"}</label></td>
         </tr>
         <tr>
           <td>
@@ -87,16 +87,13 @@
         </tr>
         <tr>
           <td align="center">
-            <label class="submit_btn"><input type="submit" value="Log in" tabindex="3" name="commit" /></label>
+            <label class="submit_btn"><input type="submit" value="{translate label="ID_LOGIN"}" tabindex="3" name="commit" /></label>
           </td>
         </tr>
       </table>
-    </div>     
+    </div>
   </form>
 </center>
 </body>
 
 </html>
-
-
-

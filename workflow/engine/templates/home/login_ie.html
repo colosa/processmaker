@@ -19,7 +19,7 @@
     height: 140px;
     margin-top: -140px;
     margin-left: -210px;
-    overflow: none;          
+    overflow: none;
   }
 
   </style>
@@ -37,16 +37,16 @@
         <td valign='top'>
           <table cellspacing="0" cellpadding="0" border="0" width="100%">
             <tr>
-              <td class='FormTitle' colspan="2" align=""><span id='form[TITLE]' name='form[TITLE]' >Login</span></td>
+              <td class='FormTitle' colspan="2" align=""><span id='form[TITLE]' name='form[TITLE]' >{translate label="ID_LOGIN"}</span></td>
             </tr>
             <tr>
-              <td class='FormLabel' width="40%">User</td>
+              <td class='FormLabel' width="40%">{translate label="ID_USER"}</td>
               <td class='FormFieldContent' width='240' >
                 <input class="module_app_input___gray" name="form[USR_USERNAME]" type="text" size="30" maxlength="50" value=""/>
               </td>
             </tr>
             <tr>
-              <td class='FormLabel' width="40%">Password</td>
+              <td class='FormLabel' width="40%">{translate label="ID_PASSWORD"}</td>
               <td class='FormFieldContent' width='240' >
                 <input class="module_app_input___gray" name="form[USR_PASSWORD]" type ="password" size="31" maxlength="50" value=""/>
               </td>
@@ -58,7 +58,7 @@
             <tr>
               <td class='FormButton' colspan="2" align="">
                 <br/>
-                <input class='module_app_button___gray ' name="form[BSUBMIT]" type='submit' value="Login" />
+                <input class='module_app_button___gray ' name="form[BSUBMIT]" type='submit' value="{translate label="ID_LOGIN"}" />
               </td>
             </tr>
           </table>
@@ -73,5 +73,3 @@
 </body>
 
 </html>
-
-

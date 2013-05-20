@@ -190,13 +190,13 @@ class Home extends Controller
         // setting main list title
         switch ($httpData->t) {
             case 'todo':
-                $title = 'My Inbox';
+                $title = G::LoadTranslation("ID_MY_INBOX");
                 break;
             case 'draft':
-                $title = 'My Drafts';
+                $title = G::LoadTranslation("ID_MY_DRAFTS");
                 break;
             case 'unassigned':
-                $title = 'Unassigned Inbox';
+                $title = G::LoadTranslation("ID_UNASSIGNED_INBOX");
                 break;
             default:
                 $title = ucwords( $httpData->t );
@@ -548,10 +548,10 @@ class Home extends Controller
         switch ($action) {
             case "simple_search":
             case "search":
-                //In search action, the query to obtain all process is too slow, so we need to query directly to 
+                //In search action, the query to obtain all process is too slow, so we need to query directly to
                 //process and content tables, and for that reason we need the current language in AppCacheView.
                 G::loadClass("configuration");
-                $oConf = new Configurations; 
+                $oConf = new Configurations;
                 $oConf->loadConfig($x, "APP_CACHE_VIEW_ENGINE", "", "", "", "");
                 $appCacheViewEngine = $oConf->aConfig;
                 $lang = isset($appCacheViewEngine["LANG"])? $appCacheViewEngine["LANG"] : "en";

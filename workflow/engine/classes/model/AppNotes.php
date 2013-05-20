@@ -102,11 +102,11 @@ class AppNotes extends BaseAppNotes
             //return array ( 'codError' => -100, 'rowsAffected' => 0, 'message' => $msg );
         }
         if ($msg != "") {
-            $response['success'] = 'failure';
+            $response['success'] = G::LoadTranslation("ID_FAILURE");
             $response['message'] = $msg;
         } else {
-            $response['success'] = 'success';
-            $response['message'] = 'Saved...';
+            $response['success'] = G::LoadTranslation("ID_SUCCESS");
+            $response['message'] = G::LoadTranslation("ID_SAVED2");
         }
 
         if ($notify) {
@@ -140,10 +140,10 @@ class AppNotes extends BaseAppNotes
             $oCriteria->add( ConfigurationPeer::USR_UID, '' );
             $oCriteria->add( ConfigurationPeer::APP_UID, '' );
             if (ConfigurationPeer::doCount( $oCriteria ) == 0) {
-                $oConfiguration->create( array ('CFG_UID' => 'Emails','OBJ_UID' => '','CFG_VALUE' => '','PRO_UID' => '','USR_UID' => '','APP_UID' => '') );
+                $oConfiguration->create( array ('CFG_UID' => 'Emails', 'OBJ_UID' => '','CFG_VALUE' => '','PRO_UID' => '','USR_UID' => '','APP_UID' => '') );
                 $aConfiguration = array ();
             } else {
-                $aConfiguration = $oConfiguration->load( 'Emails', '', '', '', '' );
+                $aConfiguration = $oConfiguration->load('Emails', '', '', '', '' );
                 if ($aConfiguration['CFG_VALUE'] != '') {
                     $aConfiguration = unserialize( $aConfiguration['CFG_VALUE'] );
                     $passwd = $aConfiguration['MESS_PASSWORD'];
