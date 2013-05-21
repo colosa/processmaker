@@ -17,6 +17,7 @@ var removeAllButton;
 
 var store;
 var editor;
+var selCombo='';
 
 Ext.onReady(function(){
 
@@ -118,7 +119,21 @@ Ext.onReady(function(){
         }
     }
   });
-  //check column for table columns grid
+  
+  var sizeField = new fm.NumberField({
+                      name: 'sizeEdit',
+                      id: 'sizeEdit',
+                      allowBlank: true,
+                      allowDecimals: false,
+                      allowNegative: false, 
+                      disabled: true,
+                      nanText: 'This field should content a number',
+                      minValue: 1,
+                      maxValue: 99,
+                      minLength: 0
+                  });
+  
+  //check column for tablesizeField columns grid
   var checkColumn = new Ext.grid.CheckColumn({
     header: 'Filter',
     dataIndex: 'FIELD_FILTER',
@@ -192,10 +207,56 @@ Ext.onReady(function(){
               forceSelection: true,
               store: new Ext.data.SimpleStore({
                   fields: ['type_id', 'type'],
-                  //data : [['VARCHAR',_("ID_VARCHAR")],['TEXT',_("ID_TEXT")],['DATE',_("ID_DATE")],['INT',_("ID_INT")],['FLOAT',_("ID_FLOAT")]],
                   data: columnsTypes,
                   sortInfo: {field:'type_id', direction:'ASC'}
-              })
+              }),
+              listeners: {
+                  'select': function(combo, row, index) {
+                      if( cm && cm instanceof Ext.grid.ColumnModel) {
+                          if(selCombo != combo.getValue()) {
+                              Ext.getCmp('sizeEdit').setValue('');
+                          }
+                          selCombo = combo.getValue();
+                          if(selCombo != 'DOUBLE'
+                              && selCombo != 'TIME'
+                              && selCombo != 'DATE'
+                              && selCombo != 'DATETIME'
+                              && selCombo != 'BOOLEAN'
+                              && selCombo != 'REAL'
+                              && selCombo != 'FLOAT') {
+                              Ext.getCmp('sizeEdit').enable();
+                          } else {
+                              Ext.getCmp('sizeEdit').disable();
+                          }
+                          if(selCombo == 'CHAR' || selCombo == 'VARCHAR') {
+                              Ext.getCmp('sizeEdit').setMaxValue(((selCombo == 'CHAR')?255:999));
+                              sizeField.getEl().dom.maxLength = 3;
+                              Ext.getCmp('field_null').enable();
+                              Ext.getCmp('field_null').setValue(true);
+                          } else {
+                              Ext.getCmp('sizeEdit').setMaxValue(99);
+                              sizeField.getEl().dom.maxLength = 2;
+                              Ext.getCmp('field_null').disable();
+                              Ext.getCmp('field_null').setValue(false);
+                          }
+                          if( selCombo == 'CHAR' 
+                              || selCombo == 'VARCHAR' 
+                              || selCombo == 'TIME'
+                              || selCombo == 'DATE'
+                              || selCombo == 'DATETIME'
+                              || selCombo == 'BOOLEAN'
+                              || selCombo == 'REAL'
+                              || selCombo == 'FLOAT'
+                              || selCombo == 'DOUBLE') {
+                              Ext.getCmp('field_primary_key').disable();
+                              Ext.getCmp('field_incre').disable();
+                          } else {
+                              Ext.getCmp('field_primary_key').enable();
+                              Ext.getCmp('field_incre').enable();
+                          }
+                      }
+                  }//select
+              }
           })
       }, {
           id: 'field_size',
@@ -203,9 +264,7 @@ Ext.onReady(function(){
           dataIndex: 'field_size',
           width: 50,
           align: 'right',
-          editor: new fm.NumberField({
-            allowBlank: true
-          })
+          editor: sizeField
       }, {
         xtype: 'booleancolumn',
         header: _('ID_NULL'),
@@ -215,7 +274,10 @@ Ext.onReady(function(){
         trueText: _('ID_YES'),
         falseText: _('ID_NO'),
         editor: {
-            xtype: 'checkbox'
+            xtype: 'checkbox',
+            id: 'field_null',
+            checked: false,
+            disabled: true
         }
       }, {
         xtype: 'booleancolumn',
@@ -226,7 +288,10 @@ Ext.onReady(function(){
         trueText: _('ID_YES'),
         falseText: _('ID_NO'),
         editor: {
-            xtype: 'checkbox'
+            xtype: 'checkbox',
+            id: 'field_primary_key',
+            disabled: true,
+            inputValue: 'always'
         }
       }, {
         xtype: 'booleancolumn',
@@ -237,7 +302,10 @@ Ext.onReady(function(){
         trueText: _('ID_YES'),
         falseText: _('ID_NO'),
         editor: {
-            xtype: 'checkbox'
+            xtype: 'checkbox',
+            id: 'field_incre',
+            disabled: true,
+            inputValue: 'always'
         }
       }
   ];
