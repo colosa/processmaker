@@ -207,7 +207,7 @@ Ext.onReady(function() {
     }
   });
 
-  txtCasesRefreshTime = new Ext.form.TextField({
+  txtCasesRefreshTime = new Ext.form.NumberField({
       id: "txtCasesRefreshTime",
       name: "txtCasesRefreshTime",
 
@@ -215,6 +215,9 @@ Ext.onReady(function() {
       fieldLabel: _("ID_REFRESH_TIME_SECONDS"),
       maskRe: /^\d*$/,
       enableKeyEvents: true,
+      
+      minValue: 90,
+      maxValue: 14400,
 
       listeners: {
           keyup: function (txt, e)
