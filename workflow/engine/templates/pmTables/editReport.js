@@ -426,6 +426,7 @@ Ext.onReady(function(){
   var cm = new Ext.grid.ColumnModel({
     // specify any defaults for each column
     defaults: {
+        resizable: false,
         sortable: true // columns are not sortable by default
     },
     columns:cmColumns
