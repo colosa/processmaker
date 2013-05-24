@@ -277,8 +277,14 @@ Ext.onReady(function() {
         waitMsg : _('ID_SAVING_ENVIRONMENT_SETTINGS')+'...',
         timeout : 36000,
         success : function(res, req) {
-        PMExt.notify(_('ID_PM_ENV_SETTINGS_TITLE'), req.result.msg);
-        saveButton.disable();
+            PMExt.notify(_('ID_PM_ENV_SETTINGS_TITLE'), req.result.msg);
+            saveButton.disable();
+            currentLocation = parent.parent.location.href;
+            //frame = parent.location.href;
+            //settingsPage = location.href;
+            //location = settingsPage;
+            //parent.location = frame;
+            parent.parent.location = currentLocation; 
         }
       });
     }
