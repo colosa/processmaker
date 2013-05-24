@@ -1209,6 +1209,7 @@ rowExpander, {
   header: _("ID_MODIFIED"),
   dataIndex: "appDocCreateDate",
   width: 100,
+  sortable: true,
   renderer: renderModifiedDate
 }, {
   header: _("ID_OWNER"),
