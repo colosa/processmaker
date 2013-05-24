@@ -432,11 +432,11 @@ var G_Grid = function(oForm, sGridName){
                       var a2 = document.createElement('a');
 
                         if( a2.style.setAttribute ) {
-                          var styleText = "position:relative;top:0px;left:-19px;";
+                          var styleText = "position: relative; top: 2px; left: -13px;";
                           a2.style.setAttribute("cssText", styleText );
                         }
                         else {
-                          var styleText = "position:relative;top:0px;left:-22px;";
+                          var styleText = "position: relative; top: 2px; left: -16px;";
                           a2.setAttribute("style", styleText );
                         }
 
