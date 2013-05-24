@@ -10,6 +10,7 @@ Calendar.LANG("en", "English", {
   mn : [ "January","February","March","April","May","June","July","August","September","October","November","December" ],
   smn : [ "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" ],
   dn : [ "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" ],
-  sdn : [ "Su","Mo","Tu","We","Th","Fr","Sa","Su" ]
+  sdn : [ "Su","Mo","Tu","We","Th","Fr","Sa","Su" ],
+  done: "Done" //Appears in bottom bar
 });
 }

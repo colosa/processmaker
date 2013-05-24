@@ -10,6 +10,7 @@ if (typeof Calendar!='undefined' ) {
         mn : [ "januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december" ],
         smn : [ "jan","feb","mar","apr","maj","jun","jul","aug","sep","okt","nov","dec" ],
         dn : [ "söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag","söndag" ],
-        sdn : [ "sö","må","ti","on","to","fr","lö","sö" ]
+        sdn : [ "sö","må","ti","on","to","fr","lö","sö" ],
+        done: "Klar" //Appears in bottom bar
 });
 }

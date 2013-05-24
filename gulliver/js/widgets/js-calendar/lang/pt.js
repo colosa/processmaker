@@ -10,6 +10,7 @@ if (typeof Calendar!='undefined' ) {
         mn : [ "Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro" ],
         smn : [ "Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez" ],
         dn : [ "Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado","Domingo" ],
-        sdn : [ "Dom","Seg","Ter","Qua","Qui","Sex","Sab","Dom" ]
+        sdn : [ "Dom","Seg","Ter","Qua","Qui","Sex","Sab","Dom" ],
+        done: "Feito" //Appears in bottom bar
 });
 }

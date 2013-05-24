@@ -10,6 +10,7 @@ Calendar.LANG("ro", "Română", {
         mn : [ "Ianuarie","Februarie","Martie","Aprilie","Mai","Iunie","Iulie","August","Septembrie","Octombrie","Noiembrie","Decembrie" ],
         smn : [ "Ian","Feb","Mar","Apr","Mai","Iun","Iul","Aug","Sep","Oct","Noi","Dec" ],
         dn : [ "Duminică","Luni","Marţi","Miercuri","Joi","Vineri","Sâmbătă","Duminică" ],
-        sdn : [ "Du","Lu","Ma","Mi","Jo","Vi","Sâ","Du" ]
+        sdn : [ "Du","Lu","Ma","Mi","Jo","Vi","Sâ","Du" ],
+        done: "Făcut" //Appears in bottom bar
 });
 }

@@ -10,6 +10,7 @@ if (typeof Calendar!='undefined' ) {
         mn : [ "Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December" ],
         smn : [ "Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec" ],
         dn : [ "Zondag","Maandag","Dinsdag","Woensdag","Donderdag","Vrijdag","Zaterdag","Zondag" ],
-        sdn : [ "Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo" ]
+        sdn : [ "Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo" ],
+        done: "Gedaan" //Appears in bottom bar
 });
 }

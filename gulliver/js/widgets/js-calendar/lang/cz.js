@@ -10,6 +10,7 @@ Calendar.LANG("cz", "Czech", {
         mn : [ "Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec" ],
         smn : [ "Led", "Úno", "Bře", "Dub", "Kvě", "Črn", "Črc", "Srp", "Zář", "Říj", "Lis", "Pro" ],
         dn : [ "Neděle","Pondělí","Úterý","Středa","Čtvrtek","Pátek","Sobota","Neděle" ],
-        sdn : [ "Ne", "Po", "Út", "St", "Čt", "Pá", "So", "Ne" ]
+        sdn : [ "Ne", "Po", "Út", "St", "Čt", "Pá", "So", "Ne" ],
+        done: "Hotový" //Appears in bottom bar
 });
 }

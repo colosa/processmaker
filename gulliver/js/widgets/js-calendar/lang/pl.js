@@ -10,6 +10,7 @@ if (typeof Calendar!='undefined' ) {
         mn : [ "Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec","Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień" ],
         smn : [ "Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru" ],
         dn : [ "Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela" ],
-        sdn : [ "Ni","Po","Wt","Śr","Cz","Pi","So","Ni" ]
+        sdn : [ "Ni","Po","Wt","Śr","Cz","Pi","So","Ni" ],
+        done: "Sporządzono" //Appears in bottom bar
 });
 }

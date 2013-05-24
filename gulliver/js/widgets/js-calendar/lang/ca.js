@@ -10,6 +10,7 @@ Calendar.LANG("ca", "Catalan", {
     mn : [ "gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre" ],
     smn : [ "gen","feb","mar","abr","mai","jun","jul","ago","set","oct","nov","des" ],
     dn : [ "diumenge","dilluns","dimarts","dimecres","dijous","divendres","dissabte","diumenge" ],
-    sdn : [ "dg","dl","dt","dc","dj","dv","ds","dg" ]
+    sdn : [ "dg","dl","dt","dc","dj","dv","ds","dg" ],
+    done: "Fet" //Appears in bottom bar
 });
 }
