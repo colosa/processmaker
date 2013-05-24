@@ -712,7 +712,16 @@ class SkinEngine
       if (NO_DISPLAY_USERNAME == 0) {
         $switch_interface = isset($_SESSION['user_experience']) && $_SESSION['user_experience'] == 'SWITCHABLE';
 
+        $tacker = '';
+        foreach ($menus as $kye => $tab) {
+            if (strpos($tab['target'], 'tracker') !== false ) {
+                $tacker = true;
+                break;
+            }
+        }
+
         $smarty->assign('user_logged', (isset($_SESSION['USER_LOGGED'])? $_SESSION['USER_LOGGED'] : ''));
+        $smarty->assign('tracker', $tacker);
         $smarty->assign('switch_interface', $switch_interface);
         $smarty->assign('switch_interface_label', G::LoadTranslation('ID_SWITCH_INTERFACE'));
         $smarty->assign('rolename', isset($_SESSION['USR_ROLENAME']) ? $_SESSION['USR_ROLENAME'] . '' : '');
