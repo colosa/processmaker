@@ -2973,4 +2973,28 @@
     <column name="APP_CHANGE_TRACE" type="VARCHAR" size="500" required="true" />
     <column name="APP_UPDATED" type="TINYINT" required="true" default="1"/>
   </table>
+  <table name="SEQUENCES">
+    <vendor type="mysql">
+      <parameter name="Name" value="SEQUENCES"/>
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Version" value="10"/>
+      <parameter name="Row_format" value="Dynamic"/>
+      <parameter name="Rows" value="2"/>
+      <parameter name="Avg_row_length" value="128"/>
+      <parameter name="Data_length" value="6768"/>
+      <parameter name="Max_data_length" value="281474976710655"/>
+      <parameter name="Index_length" value="5120"/>
+      <parameter name="Data_free" value="0"/>
+      <parameter name="Auto_increment" value=""/>
+      <parameter name="Create_time" value="2013-05-17 11:21:20"/>
+      <parameter name="Update_time" value="2013-05-17 11:48:16"/>
+      <parameter name="Check_time" value=""/>
+      <parameter name="Collation" value="utf8_general_ci"/>
+      <parameter name="Checksum" value=""/>
+      <parameter name="Create_options" value=""/>
+      <parameter name="Comment" value="Sequences, Controls the numerical sequence of a table"/>
+    </vendor>
+    <column name="SEQ_NAME" type="VARCHAR" size="50" required="true" primaryKey="true" default=""/>
+    <column name="SEQ_VALUE" type="INTEGER" required="true" default="0"/>
+  </table>
 </database>

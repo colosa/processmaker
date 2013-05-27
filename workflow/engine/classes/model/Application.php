@@ -347,6 +347,7 @@ class Application extends BaseApplication
      */
     public function create($sProUid, $sUsrUid)
     {
+        require_once ("classes/model/Sequences.php");
         $con = Propel::getConnection('workflow');
 
         try {
@@ -371,16 +372,23 @@ class Application extends BaseApplication
             $c = new Criteria();
             $c->clearSelectColumns();
 
-            $c->addSelectColumn('MAX(' . ApplicationPeer::APP_NUMBER . ')'); //the appnumber is based in all processes
-                                                                             //active, not only in the specified
-                                                                             //process guid
+            $oSequences = new Sequences();
+            $oSequences->lockSequenceTable();
 
-            $result = ApplicationPeer::doSelectRS($c);
-            $result->next();
-            $row = $result->getRow();
+            if ($oSequences->nameExists("APP_NUMBER") ) {
+                $maxNumber = $oSequences->getSequeceNumber("APP_NUMBER");
+            } else {
+                $c->addSelectColumn('MAX(' . ApplicationPeer::APP_NUMBER . ')'); //the appnumber is based in all processes
+                                                                                 //active, not only in the specified
+                                                                                 //process guid
+                $result = ApplicationPeer::doSelectRS($c);
+                $result->next();
+                $row = $result->getRow();
+                $maxNumber = $row[0] + 1;
+            }
 
-            $maxNumber = $row[0] + 1;
             $this->setAppNumber($maxNumber);
+            $oSequences->changeSequence('APP_NUMBER', $maxNumber);
 
             if ($this->validate()) {
                 $con->begin();
@@ -395,6 +403,7 @@ class Application extends BaseApplication
 
                 $con->commit();
 
+                $oSequences->unlockSequenceTable();
                 return $this->getAppUid();
             } else {
                 $msg = '';
@@ -402,6 +411,7 @@ class Application extends BaseApplication
                 foreach ($this->getValidationFailures() as $objValidationFailure) {
                     $msg .= $objValidationFailure->getMessage() . "<br/>";
                 }
+                $oSequences->unlockSequenceTable();
 
                 throw (new PropelException('The APPLICATION row cannot be created!', new PropelException($msg)));
             }
