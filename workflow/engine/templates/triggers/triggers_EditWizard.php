@@ -153,7 +153,7 @@ try {
                 $template->assign ( 'ADD_TRI_VARIABLE', $tri_Button );
                 // $template->assign ( 'ADD_TRI_VALUE', str_replace ( "'", "",
                 //                     str_replace ( '"', '', $paramDefaultValue ) ) );
-                $paramValue = $_GET[trim( str_replace( "$", "", $paramName ) )];
+                $paramValue = isset($_GET[trim( str_replace( "$", "", $paramName ) )]) ? $_GET[trim( str_replace( "$", "", $paramName ) )] : '';
                 $template->assign ( 'ADD_TRI_VALUE', str_replace("\'", "&apos;", $paramValue) );
                 //turn single quotes to double quotes into an array asignation
                 $template->assign ( 'ADD_TRI_VALUE', str_replace("'", "&#34;", $paramValue) );

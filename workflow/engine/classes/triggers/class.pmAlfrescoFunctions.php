@@ -208,9 +208,9 @@ function deleteObject($alfrescoServerUrl, $objetcId, $user, $pwd)
 function downloadDoc($alfrescoServerUrl, $pathFile, $pathFolder, $user, $pwd, $mainFolder = 'Sites')
 {
     if (!(G::verifyPath($pathFolder))) {
-        G::SendTemporalMessage('ID_FILE_PLUGIN_NOT_EXISTS', 'error', 'labels', null, null, array('pluginFile' => $pathFolder));
-        G::header('Location: ' . $_SERVER['HTTP_REFERER']);
-        die;
+        $result = new stdclass();
+        $result->error = G::Loadtranslation('ID_FILE_PLUGIN_NOT_EXISTS', SYS_LANG, array('pluginFile' => $pathFolder));
+        return $result;
     }
 
     $dataPathFile = pathinfo($pathFile);
@@ -223,9 +223,9 @@ function downloadDoc($alfrescoServerUrl, $pathFile, $pathFolder, $user, $pwd, $m
     $xmlObject = simplexml_load_string((string) $sXmlArray);
 
     if (!isset($xmlObject->content)) {
-        G::SendTemporalMessage('ID_FILE_PLUGIN_NOT_EXISTS', 'error', 'labels', null, null, array('pluginFile' => $nameFile . ' in Alfresco'));
-        G::header('Location: ' . $_SERVER['HTTP_REFERER']);
-        die;
+        $result = new stdclass();
+        $result->error = G::Loadtranslation('ID_FILE_PLUGIN_NOT_EXISTS', SYS_LANG, array('pluginFile' => $nameFile));
+        return $result;
     }
 
     $linkContent = (string) $xmlObject->content->attributes()->src;
@@ -323,9 +323,9 @@ function getFolderChildren($alfrescoServerUrl, $folderId, $user, $pwd)
 function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docType, $user, $pwd, $path = '', $mainFolder= 'Sites')
 {
     if (!(file_exists($fileSource))) {
-        G::SendTemporalMessage('ID_FILE_PLUGIN_NOT_EXISTS', 'error', 'labels', null, null, array('pluginFile' => $fileSource));
-        G::header('Location: ' . $_SERVER['HTTP_REFERER']);
-        die;
+        $result = new stdclass();
+        $result->error = G::Loadtranslation('ID_FILE_PLUGIN_NOT_EXISTS', SYS_LANG, array('pluginFile' => $fileSource));
+        return $result;
     }
     $filep       = fopen($fileSource, "r");
     $fileLength  = filesize($fileSource);
