@@ -202,7 +202,7 @@ class pmTables extends Controller
                 $tableSize = 30;
                 break;
         }
-        $tableSize = $tableSize - 4; // Prefix PMT_
+        $tableSize = $tableSize - 8; // Prefix PMT_
         return $tableSize;
     }
 }
