@@ -76,6 +76,8 @@ if (isset( $parameters->TO )) {
     //echo '<pre>';print_r($parameters->TO);
     foreach ($parameters->TO as $item) {
         $row = explode( '|', $item );
+        $row[1] = trim($row[1]);
+
         switch ($row[0]) {
             case 'usr':
                 require_once ('classes/model/Users.php');
@@ -117,6 +119,8 @@ if (isset( $parameters->CC )) {
     $paramCC[] = Array ('id' => 'char','name' => 'char' );
     foreach ($parameters->CC as $item) {
         $row = explode( '|', $item );
+        $row[1] = trim($row[1]);
+
         switch ($row[0]) {
             case 'usr':
                 require_once ('classes/model/Users.php');
@@ -156,6 +160,8 @@ if (isset( $parameters->BCC )) {
     $paramBCC[] = Array ('id' => 'char','name' => 'char' );
     foreach ($parameters->BCC as $item) {
         $row = explode( '|', $item );
+        $row[1] = trim($row[1]);
+
         switch ($row[0]) {
             case 'usr':
                 require_once ('classes/model/Users.php');
