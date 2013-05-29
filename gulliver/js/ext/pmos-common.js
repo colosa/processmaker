@@ -113,19 +113,25 @@ PMExtJSCommon = function() {
         }),
         groupField: 'section'
       }),
-      columns : [{
-        width : labelColumnWidth,
-        dataIndex : 'label',
-        renderer: function(v){return '<b><font color="#465070">'+v+'</font></b>'},
-        align: 'right'
-      },
-      {
-        width : valueColumnWidth,
-        dataIndex : 'value'
-      },{
-        hidden: true,
-        dataIndex : 'section'
-      }],
+      columns : [
+        {
+            width : labelColumnWidth,
+            dataIndex : "label",
+            renderer: function(v){return "<b><font color=\"#465070\">"+v+"</font></b>"},
+            align: "right"
+        },
+        {
+            width : valueColumnWidth,
+            dataIndex : "value",
+            renderer: function (v) {
+                return Ext.util.Format.htmlEncode(v);
+            }
+        },
+        {
+            hidden: true,
+            dataIndex : "section"
+        }
+      ],
       autoHeight : true,
       columnLines: true,
       trackMouseOver:false,
