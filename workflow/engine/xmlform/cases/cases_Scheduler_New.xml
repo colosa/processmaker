@@ -16,7 +16,8 @@
 <![CDATA[ SELECT count( * )+1 AS UID FROM CASE_SCHEDULER  ]]>
 <en></en>
 </SCH_UID>
-
+<SCH_LIST type="hidden" >
+</SCH_LIST>
 <PHP_CURRENT_DATE type="hidden" >
 </PHP_CURRENT_DATE>
 
@@ -230,7 +231,7 @@
 <en>Start a case based on following registered Plugin.</en>
 </SELECT_PLUGIN>
 
-<SAVE type="submit"  onClick="if(validateSchedulerFields()) {return true;} else {return false;}">
+<SAVE type="button"  onClick="validateSchedulerFields(this.form)">
 <en>Save</en>
 </SAVE>
 
@@ -241,7 +242,6 @@
 <SHOW_HIDE_JS type="javascript"><![CDATA[
 hideAll();
 hideProperties();
-
 
 
 function $_GET(q,s) {
@@ -622,149 +622,160 @@ function case_userSchedulerValidate(username, password) {
  * @return true/false boolean
  */
 
-function validateSchedulerFields(){
+function validateSchedulerFields(oForm) {
 
-getField("SCH_NAME").value = getField("SCH_NAME").value.trim();
+    var schedulerTitle = document.getElementById('form[SCH_NAME]').value;
+    schedulerTitle = schedulerTitle.replace(/^\s*|\s*$/g,"");
+    if (schedulerTitle == '') {
+        document.getElementById('form[SCH_NAME]').focus();
+        msgBox("@G::LoadTranslation(ID_REQUIRED_NAME_CASE_SCHEDULER)", 'alert');
+        return false;
+    }
+    
+    var listNames = document.getElementById('form[SCH_LIST]').value;
+    listNames = listNames.split("^");
+    if (schedulerTitle.toLowerCase() == (listNames[i]).toLowerCase()) {
+        if (schedulerTitle == listNames[i]) {
+            document.getElementById('form[SCH_NAME]').focus();
+            msgBox("@G::LoadTranslation(ID_DUPLICATE_CASE_SCHEDULER_NAME)", 'alert');
+            return false;
+        }
+    }
+    getField("SCH_NAME").value = schedulerTitle;
 
-var validFields = true;
-var requiredFields = '';
-var badFormatFields = '';
-var startDate = document.getElementById('form[SCH_START_DATE]').value;
-var endDate = document.getElementById('form[SCH_END_DATE]').value;
+    var validFields = true;
+    var requiredFields = '';
+    var badFormatFields = '';
+    var startDate = document.getElementById('form[SCH_START_DATE]').value;
+    var endDate = document.getElementById('form[SCH_END_DATE]').value;
 
-startDate = startDate.split("-");
-endDate = endDate.split("-");
-startDate = new Date(startDate[0],startDate[1],startDate[2]);
-endDate   = new Date(endDate[0],endDate[1],endDate[2]);
+    startDate = startDate.split("-");
+    endDate = endDate.split("-");
+    startDate = new Date(startDate[0],startDate[1],startDate[2]);
+    endDate   = new Date(endDate[0],endDate[1],endDate[2]);
 
-    if (document.getElementById('form[SCH_START_DATE]').value==''){
-        requiredFields = requiredFields + 'Start Date,';
-        validFields = false;
-    } else {
-        if (document.getElementById('form[SCH_END_DATE]').value!='')
-            if (startDate>endDate){
-                badFormatFields = badFormatFields + 'Start Date can\'t be greater than End Date';
+        if (document.getElementById('form[SCH_START_DATE]').value=='') {
+            requiredFields = requiredFields + 'Start Date,';
+            validFields = false;
+        } else {
+            if (document.getElementById('form[SCH_END_DATE]').value!='') {
+                if (startDate>endDate) {
+                    badFormatFields = badFormatFields + 'Start Date can\'t be greater than End Date';
+                    validFields = false;
+                }
+            }
+        }
+        // check if the field time is compliant with the regular expression
+        // for time format hh:mm
+        var regExpString = "([0-1]\\d|2[0-3]):([0-5]\\d)";
+        var timeRegexp = new RegExp(regExpString);
+        if (document.getElementById('form[SCH_OPTION]').value != 5) {
+            if (!timeRegexp.test(document.getElementById('form[SCH_START_TIME]').value)) {
+                msgBox('The time format is invalid','alert');
+                return false;
+            }
+            if (document.getElementById('form[SCH_START_TIME]').value=='') {
+                requiredFields = requiredFields + 'Execution Time,';
                 validFields = false;
             }
-    }
-    // check if the field time is compliant with the regular expression
-    // for time format hh:mm
-    var regExpString = "([0-1]\\d|2[0-3]):([0-5]\\d)";
-    var timeRegexp = new RegExp(regExpString);
-    if (document.getElementById('form[SCH_OPTION]').value != 5) {
-      if (!timeRegexp.test(document.getElementById('form[SCH_START_TIME]').value)){
-        msgBox('The time format is invalid','alert');
-        return false;
-      }
-      if (document.getElementById('form[SCH_START_TIME]').value==''){
-          requiredFields = requiredFields + 'Execution Time,';
-          validFields = false;
-      }
-    } else {
-      if (document.getElementById('form[SCH_REPEAT_EVERY]').value==''){
-          requiredFields = requiredFields + 'Every,';
-          validFields = false;
-      }
-    }
-    switch(document.getElementById('form[SCH_OPTION]').value){
-        // daily
-        case '1':
-            //if(document.getElementById('form[SCH_DAYS_PERFORM_TASK][1]').checked==true||document.getElementById('form[SCH_DAYS_PERFORM_TASK][2]').checked==true||document.getElementById('form[SCH_DAYS_PERFORM_TASK][3]').checked==true){
+        } else {
+            if (document.getElementById('form[SCH_REPEAT_EVERY]').value=='') {
+                requiredFields = requiredFields + 'Every,';
+                validFields = false;
+            }
+        }
+        switch (document.getElementById('form[SCH_OPTION]').value) {
+            // daily
+            case '1':
+                //if(document.getElementById('form[SCH_DAYS_PERFORM_TASK][1]').checked==true||document.getElementById('form[SCH_DAYS_PERFORM_TASK][2]').checked==true||document.getElementById('form[SCH_DAYS_PERFORM_TASK][3]').checked==true){
                 if(document.getElementById('form[SCH_DAYS_PERFORM_TASK]').value!=''){
                     validFields = true;
                 } else {
                     requiredFields = requiredFields + 'Weekdays,';
                     validFields = false;
                 }
-
-        break;
-        // weekly
-        case '2':
-            if (document.getElementById('form[SCH_EVERY_DAYS]').value==''){
-                requiredFields = requiredFields + 'Number of Weeks,';
-                validFields = false;
-            } else {
-                for (week=1;week<=4;week++){
-                    weekIdOne = 'form[SCH_WEEK_DAYS]['+week+']';
-                    if (document.getElementById(weekIdOne).checked==true){
-                        validFields = true;
-                        break;
-                    } else {
-                        validFields = false;
-                    }
-                }
-                if (!validFields){
-                    for (week=1;week<=3;week++){
-                        weekIdTwo = 'form[SCH_WEEK_DAYS_2]['+(week+4)+']';
-                        if (document.getElementById(weekIdTwo).checked==true){
+                break;
+                // weekly
+            case '2':
+                if (document.getElementById('form[SCH_EVERY_DAYS]').value=='') {
+                    requiredFields = requiredFields + 'Number of Weeks,';
+                    validFields = false;
+                } else {
+                    for (week=1;week<=4;week++) {
+                        weekIdOne = 'form[SCH_WEEK_DAYS]['+week+']';
+                        if (document.getElementById(weekIdOne).checked==true) {
                             validFields = true;
                             break;
                         } else {
                             validFields = false;
                         }
                     }
-                }
-                if (!validFields){
-                    requiredFields = requiredFields + 'Weeks,';
-                    validFields = false;
-                }
-            }
-        break;
-        //monthly
-        case '3':
-            if (document.getElementById('form[SCH_START_DAY][1]').checked==true||document.getElementById('form[SCH_START_DAY][2]').checked==true){
-                for (month=1;month<=4;month++){
-                    monthIdOne = 'form[SCH_MONTHS]['+month+']';
-                    monthIdTwo = 'form[SCH_MONTHS_2]['+(month+4)+']';
-                    monthIdThree = 'form[SCH_MONTHS_3]['+(month+8)+']';
-
-                    if (document.getElementById(monthIdOne).checked==true||document.getElementById(monthIdTwo).checked==true||document.getElementById(monthIdThree).checked==true){
-                        validFields = true;
-                        break;
-                    } else {
+                    if (!validFields){
+                        for (week=1;week<=3;week++){
+                            weekIdTwo = 'form[SCH_WEEK_DAYS_2]['+(week+4)+']';
+                            if (document.getElementById(weekIdTwo).checked==true) {
+                                validFields = true;
+                                break;
+                            } else {
+                                validFields = false;
+                            }
+                        }
+                    }
+                    if (!validFields){
+                        requiredFields = requiredFields + 'Weeks,';
                         validFields = false;
                     }
                 }
-                if (!validFields){
-                    requiredFields = requiredFields + 'Months,';
+                break;
+                //monthly
+            case '3':
+                if (document.getElementById('form[SCH_START_DAY][1]').checked==true||document.getElementById('form[SCH_START_DAY][2]').checked==true){
+                    for (month=1;month<=4;month++){
+                        monthIdOne = 'form[SCH_MONTHS]['+month+']';
+                        monthIdTwo = 'form[SCH_MONTHS_2]['+(month+4)+']';
+                        monthIdThree = 'form[SCH_MONTHS_3]['+(month+8)+']';
+
+                        if (document.getElementById(monthIdOne).checked==true||document.getElementById(monthIdTwo).checked==true||document.getElementById(monthIdThree).checked==true){
+                            validFields = true;
+                            break;
+                        } else {
+                            validFields = false;
+                        }
+                    }
+                    if (!validFields){
+                        requiredFields = requiredFields + 'Months,';
+                        validFields = false;
+                    }
+                } else {
+                    requiredFields = requiredFields + 'Start Day,';
                     validFields = false;
                 }
-            } else {
-                requiredFields = requiredFields + 'Start Day,';
+                break;
+            //run once
+            case '4':
+                validFields = true;
+                break;
+            //run every
+            case '5':
+                validFields = true;
+                break;
+            default:
                 validFields = false;
-            }
-
-
-        break;
-        //run once
-        case '4':
-
-                validFields = true;
-
-        break;
-        //run every
-        case '5':
-
-                validFields = true;
-
-        break;
-        default:
-            validFields = false;
-        break;
-    }
-    if (requiredFields!='') {
-        var message = "The fields "+requiredFields+" can\'t be empty";
-        msgBox(message, 'alert');
-        return false;
-    } else {
-        if (badFormatFields!=''){
-            var message =  badFormatFields;
+            break;
+        }
+        if (requiredFields!='') {
+            var message = "The fields "+requiredFields+" can\'t be empty";
             msgBox(message, 'alert');
             return false;
         } else {
-            return true;
+            if (badFormatFields!='') {
+                var message =  badFormatFields;
+                msgBox(message, 'alert');
+                return false;
+            } else {
+                oForm.submit();
+            }
         }
-    }
 }
 
 function resetForm(){

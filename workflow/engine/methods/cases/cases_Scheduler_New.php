@@ -86,6 +86,11 @@ try {
 
     $aFields['UID_SCHEDULER'] = "scheduler";
 
+    $aFields['SCH_LIST'] = '';
+    foreach ($_SESSION['_DBArray']['cases_scheduler'] as $key => $item) {
+        $aFields['SCH_LIST'] .=  htmlspecialchars($item['SCH_NAME'], ENT_QUOTES) . '^';
+    }
+
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'cases/cases_Scheduler_New.xml', '', $aFields, 'cases_Scheduler_Save' );
     G::RenderPage( 'publishBlank', 'blank' );
 

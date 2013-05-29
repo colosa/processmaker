@@ -125,6 +125,12 @@ try {
     $aFields['PHP_START_DATE'] = date( 'Y-m-d' );
     $aFields['PHP_END_DATE'] = date( 'Y-m-d', mktime( 0, 0, 0, date( 'm' ), date( 'd' ), date( 'Y' ) + 5 ) );
 
+    $aFields['SCH_LIST'] = '';
+    foreach ($_SESSION['_DBArray']['cases_scheduler'] as $key => $item) {
+        $aFields['SCH_LIST'] .= ($item['SCH_UID'] != $_GET['SCH_UID']) ? htmlspecialchars($item['SCH_NAME'], ENT_QUOTES) . '^' : '' ;
+    }
+
+
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'cases/cases_Scheduler_Edit.xml', '', $aFields, 'cases_Scheduler_Update' );
 
     G::RenderPage( 'publishBlank', 'blank' );
