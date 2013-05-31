@@ -1442,5 +1442,18 @@ CREATE TABLE `APP_SOLR_QUEUE`
 	`APP_UPDATED` TINYINT default 1 NOT NULL,
 	PRIMARY KEY (`APP_UID`)
 )ENGINE=InnoDB  DEFAULT CHARSET='utf8' COMMENT='APP_SOLR_QUEUE';
+#-----------------------------------------------------------------------------
+#-- SEQUENCES
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `SEQUENCES`;
+
+
+CREATE TABLE `SEQUENCES`
+(
+	`SEQ_NAME` VARCHAR(50) default '' NOT NULL,
+	`SEQ_VALUE` INTEGER default 0 NOT NULL,
+	PRIMARY KEY (`SEQ_NAME`)
+)ENGINE=InnoDB  DEFAULT CHARSET='utf8' COMMENT='Sequences, Controls the numerical sequence of a table';
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

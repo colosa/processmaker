@@ -347,6 +347,7 @@ class Application extends BaseApplication
      */
     public function create($sProUid, $sUsrUid)
     {
+        require_once ("classes/model/Sequences.php");
         $con = Propel::getConnection('workflow');
 
         try {
@@ -371,16 +372,14 @@ class Application extends BaseApplication
             $c = new Criteria();
             $c->clearSelectColumns();
 
-            $c->addSelectColumn('MAX(' . ApplicationPeer::APP_NUMBER . ')'); //the appnumber is based in all processes
-                                                                             //active, not only in the specified
-                                                                             //process guid
+            $oSequences = new Sequences();
+            $oSequences->lockSequenceTable();
 
-            $result = ApplicationPeer::doSelectRS($c);
-            $result->next();
-            $row = $result->getRow();
+            $maxNumber = $oSequences->getSequeceNumber("APP_NUMBER");
 
-            $maxNumber = $row[0] + 1;
             $this->setAppNumber($maxNumber);
+            $oSequences->changeSequence('APP_NUMBER', $maxNumber);
+            $oSequences->unlockSequenceTable();
 
             if ($this->validate()) {
                 $con->begin();
