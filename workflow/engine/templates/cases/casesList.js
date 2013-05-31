@@ -776,7 +776,7 @@ Ext.onReady ( function() {
   storeCases.on('load',function(){var viewport = Ext.getCmp("viewportcases");viewport.doLayout();})
 
   // create the Data Store for processes
-  var storeProcesses = new Ext.data.JsonStore({
+ /* var storeProcesses = new Ext.data.JsonStore({
     root: 'data',
     totalProperty: 'totalCount',
     idProperty: 'index',
@@ -788,7 +788,7 @@ Ext.onReady ( function() {
       url: 'proxyProcessList?t=new'
     })
   });
-  storeProcesses.setDefaultSort('APP_PRO_TITLE', 'asc');
+  storeProcesses.setDefaultSort('APP_PRO_TITLE', 'asc');*/
 
   // creating the button for filters
   var btnRead = new Ext.Button ({
