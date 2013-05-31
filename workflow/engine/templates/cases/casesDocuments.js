@@ -32,6 +32,7 @@ catch(z){
 }
 
 itemSelected = "";
+lastDir = "";
 var conn = new Ext.data.Connection();
 
 streamFilefromPM=function(fileStream) {
@@ -221,6 +222,7 @@ function handleNodeClick( sm, node ) {
     // console.log("Node Clicked: "+node);
     itemSelected = node.id;
     chDir( node.id );
+    itemSelected = "";
   }
 }
 
@@ -261,6 +263,7 @@ function getURLParam( strParamName, myWindow){
 
 function openActionDialog(caller, action, dataAux)
 {
+  itemSelected = "openActionDialog";
   // console.log("Dialog open: "+caller+" ->"+action);
   var dialog;
   var selectedRows = ext_itemgrid.getSelectionModel().getSelections();
@@ -486,7 +489,7 @@ function openActionDialog(caller, action, dataAux)
 			 * messageText, false, true ); }else{ alert("sadasd"); }
 			 */
       break;
-    case 'rename':
+    case 'rename':node.select();
       dirTreeEd.triggerEdit(Ext.getCmp('dirTreePanel').getSelectionModel().getSelectedNode());
       break;
   }
@@ -741,8 +744,7 @@ function var_dump(obj) {
   }
 }// end function var_dump
 
-var datastore;
-datastore = new Ext.data.Store({
+var datastore = new Ext.data.Store({
   proxy : new Ext.data.HttpProxy({
     url : "../appFolder/appFolderAjax.php",
     directory : "/",
@@ -821,18 +823,34 @@ datastore = new Ext.data.Store({
   ])),
 
   // turn on remote sorting
-  remoteSort : false
+  remoteSort : true
 });
-datastore.paramNames["dir"] = "direction";
-datastore.paramNames["sort"] = "order";
-
+//datastore.paramNames["dir"] = "direction";
+//datastore.paramNames["sort"] = "order";
+  
 datastore.on("beforeload",
   function(ds, options) {
-    options.params.dir  = options.params.dir ? options.params.dir : ds.directory;
-    options.params.node = options.params.dir ? options.params.dir : ds.directory;
+
+    options.params.dir  = (itemSelected.length === 0) ? options.params.dir : ds.directory;
+    options.params.node = (itemSelected.length === 0) ? options.params.dir : ds.directory;
     options.params.option = "gridDocuments";
-    options.params.action = "expandNode";
-    options.params.sendWhat = datastore.sendWhat;
+    options.params.sendWhat = datastore.sendWhat;    
+    if (options.params.dir == "ASC" || options.params.dir == "DESC") {
+ 	options.params.action = "sort";
+        options.params.node = ds.directory;
+    } else {
+        if (ds.sortInfo) {
+            options.params.sort = ds.sortInfo.field;
+            options.params.dir = ds.sortInfo.direction;
+            options.params.action = "sort";
+            options.params.node = ds.directory;
+        } else {
+            options.params.action = "expandNode";
+        } 
+    }
+    if(ds.directory != "") {
+      lastDir = ds.directory;
+    }
   });
 
 datastore.on("loadexception",
@@ -1209,6 +1227,7 @@ rowExpander, {
   header: _("ID_MODIFIED"),
   dataIndex: "appDocCreateDate",
   width: 100,
+  sortable: true,
   renderer: renderModifiedDate
 }, {
   header: _("ID_OWNER"),
@@ -1338,6 +1357,7 @@ function handleRowClick(sm, rowIndex) {//alert(rowIndex);
 function loadDir() {
   // console.info("loadDir");
   // console.trace();
+  itemSelected = "loadDir";
   datastore.load({
     params : {
       start: 0,
@@ -1926,10 +1946,7 @@ var documentsTab = {
 
         var tsm = dirTree.getSelectionModel();
         // console.log("tried to gtet selection model");
-        tsm.on('selectionchange',
-          handleNodeClick);
-
-
+        tsm.on('selectionchange', handleNodeClick);
 
         // create the editor for the directory
         // tree
@@ -1944,6 +1961,9 @@ var documentsTab = {
 
         // console.log("before the first chdir");
         // chDir('');
+        if(itemSelected == "" || itemSelected == "loadDir" || itemSelected == "openActionDialog") {
+            itemSelected = lastDir;
+        }
         chDir(itemSelected);
         // console.log("starting locatiobar first time");
         Ext.getCmp("locationbarcmp").tree = Ext.getCmp("dirTreePanel");
@@ -1955,6 +1975,7 @@ var documentsTab = {
         var node = dirTree.getNodeById(itemSelected);
         node.select();
         datastore.directory = itemSelected;
+        itemSelected = "";
       // console.log("location abr started first time");
 
       }

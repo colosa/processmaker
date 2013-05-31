@@ -388,6 +388,127 @@ class AppFolder extends BaseAppFolder
         return $response;
     }
 
+    public function getDirectoryContentSortedBy ($folderID, $docIdFilter = array(), $keyword = null, $searchType = null, $limit = 0, $start = 0, $user = '', $onlyActive = false, $direction = 'ASC', $ColumnSort = 'appDocCreateDate')
+    {
+        G::LoadClass( 'case' );
+        $oCase = new Cases();
+        G::LoadClass( 'process' );
+        $oProcess = new Process();
+    
+        $oAppDocument = new AppDocument();
+        $oCriteria = new Criteria();
+    
+        if ((is_array( $docIdFilter )) && (count( $docIdFilter ) > 0)) {
+            //Search by App Doc UID no matter what Folder it is
+            $oCriteria->add( AppDocumentPeer::APP_DOC_UID, $docIdFilter, CRITERIA::IN );
+        } elseif ($folderID != null) {
+            if ($folderID == "/") {
+                $oCriteria->add( AppDocumentPeer::FOLDER_UID, array ('root','',null), CRITERIA::IN );
+            } else {
+                $oCriteria->add( AppDocumentPeer::FOLDER_UID, $folderID );
+            }
+        } elseif ($searchType == "TAG") {
+            $oCriteria->add( AppDocumentPeer::APP_DOC_TAGS, "%" . $keyword . "%", CRITERIA::LIKE );
+        }
+    
+        if ($user != '') {
+            require_once ("classes/model/AppDelegation.php");
+            $criteria = new Criteria();
+            $criteria->addSelectColumn( AppDelegationPeer::APP_UID );
+            $criteria->setDistinct();
+    
+            $conditions = array ();
+            $conditions[] = array (AppDelegationPeer::APP_UID,AppDocumentPeer::APP_UID);
+            $conditions[] = array (AppDelegationPeer::DEL_INDEX,AppDocumentPeer::DEL_INDEX);
+    
+            $criteria->addJoinMC( $conditions, Criteria::LEFT_JOIN );
+    
+            $criteria->add( AppDelegationPeer::USR_UID, $user );
+    
+            $rs2 = AppDocumentPeer::doSelectRS( $criteria );
+    
+            $rs2->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $data = array ();
+            while ($rs2->next()) {
+                $row = $rs2->getRow();
+                $data[] = $row['APP_UID'];
+            }
+            $oCriteria->add( AppDocumentPeer::APP_UID, $data, CRITERIA::IN );
+        }
+    
+        if ($onlyActive) {
+            $oCriteria->add( AppDocumentPeer::APP_DOC_STATUS, 'ACTIVE' );
+        }
+    
+        $numRecTotal = AppDocumentPeer::doCount($oCriteria);
+    
+        $oCase->verifyTable();
+    
+        //Need to review hot to get the Column Type name 
+        switch($ColumnSort) {
+            case 'appDocCreateDate' : $ColumnSort = AppDocumentPeer::APP_DOC_CREATE_DATE; break;
+            //...
+            default: break;
+        }
+        
+        if($direction == 'ASC') {
+            $oCriteria->addAscendingOrderByColumn( $ColumnSort );
+        } else {
+            $oCriteria->addDescendingOrderByColumn( $ColumnSort );
+        }
+    
+        $response['documents'] = array ();
+    
+        $oCriteria->setLimit( $limit );
+        $oCriteria->setOffset( $start );
+    
+        $rs = AppDocumentPeer::doSelectRS( $oCriteria );
+        $rs->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $rs->next();
+        $filesResult = array ();
+        while (is_array( $row = $rs->getRow() )) {
+            //**** start get Doc Info
+            $oApp = new Application();
+            if (($oApp->exists( $row['APP_UID'] )) || ($row['APP_UID'] == "00000000000000000000000000000000")) {
+                //$completeInfo = array("APP_DOC_FILENAME" => $row ["APP_DOC_UID"],"APP_DOC_UID"=>$row ['APP_UID']);
+                $completeInfo = $this->getCompleteDocumentInfo( $row['APP_UID'], $row['APP_DOC_UID'], $row['DOC_VERSION'], $row['DOC_UID'], $row['USR_UID'] );
+                $oAppDocument = new AppDocument();
+                $lastVersion = $oAppDocument->getLastAppDocVersion( $row['APP_DOC_UID'], $row['APP_UID'] );
+    
+                if ($completeInfo['APP_DOC_STATUS'] != "DELETED") {
+                    if (in_array($row["APP_DOC_UID"], $completeInfo["INPUT_DOCUMENTS"]) || in_array($row["APP_DOC_UID"], $completeInfo["OUTPUT_DOCUMENTS"]) || in_array($completeInfo["USR_UID"], array($_SESSION["USER_LOGGED"], "-1")) || $user == "") {
+                        if (count( $docIdFilter ) > 0) {
+                            if (in_array( $row['APP_DOC_UID'], $docIdFilter )) {
+                                $response['documents'][] = $completeInfo;
+                            }
+                        } else {
+                            if ($lastVersion == $row["DOC_VERSION"]) {
+                                //Only Last Document version
+                                if ($searchType == "ALL") {
+                                    //If search in name of docs is active then filter
+                                    if (stripos($completeInfo["APP_DOC_FILENAME"], $keyword) !== false || stripos($completeInfo["APP_DOC_TAGS"], $keyword) !== false) {
+                                        $response["documents"][] = $completeInfo;
+                                    }
+                                } else {
+                                    //No search filter active
+                                    $response["documents"][] = $completeInfo;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    
+            $rs->next();
+        }
+    
+        $response["totalDocumentsCount"] = $numRecTotal;
+    
+        return $response;
+    }
+    
+    
+    
     public function getCompleteDocumentInfo ($appUid, $appDocUid, $docVersion, $docUid, $usrId)
     {
         //require_once ("classes/model/AppDocument.php");
