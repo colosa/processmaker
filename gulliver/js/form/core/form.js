@@ -2811,11 +2811,12 @@ var validateGridForms = function(invalidFields){
   }
 
   for(j=0; j<grids.length; j++){
-
     fields = grids[j].getElementsByTagName('input');
+
     for(i=0; i<fields.length; i++){
       var vtext = new input(fields[i]);
-      if (fields[i].getAttribute("pm:required")=="1"&&fields[i].value==''){
+
+      if (fields[i].getAttribute("pm:required") == "1" && fields[i].value.trim() == "") {
         $label = fields[i].name.split("[");
         $labelPM = fields[i].getAttribute("pm:label");
         if ($labelPM == '' || $labelPM == null){
@@ -2838,12 +2839,13 @@ var validateGridForms = function(invalidFields){
     textAreas = grids[j].getElementsByTagName('textarea');
     for(i=0; i<textAreas.length; i++){
       var vtext = new input(textAreas[i]);
-      if (textAreas[i].getAttribute("pm:required")=="1"&&textAreas[i].value==''){
+
+      if (textAreas[i].getAttribute("pm:required") == "1" && textAreas[i].value.trim() == "") {
         $label = textAreas[i].name.split("[");
         $labelPM = textAreas[i].getAttribute("pm:label");
-        if ($labelPM == '' || $labelPM == null){
+        if ($labelPM == '' || $labelPM == null) {
           $fieldName = $label[3].split("]")[0]+ " " + $label[2].split("]")[0];
-        }else{
+        } else {
           $fieldName = $labelPM + " " + $label[2].split("]")[0];
         }
         fieldGridName = $label[1] + "[" + $label[2] + "[" + $label[3].split("]")[0];
@@ -2862,12 +2864,12 @@ var validateGridForms = function(invalidFields){
     for(i=0; i<dropdowns.length; i++){
       var vtext = new input(dropdowns[i]);
 
-      if (dropdowns[i].getAttribute("pm:required")=="1"&&dropdowns[i].value==''){
+      if (dropdowns[i].getAttribute("pm:required") == "1" && dropdowns[i].value.trim() == "") {
         $label = dropdowns[i].name.split("[");
         $labelPM = dropdowns[i].getAttribute("pm:label");
-        if ($labelPM == '' || $labelPM == null){
+        if ($labelPM == '' || $labelPM == null) {
           $fieldName = $label[3].split("]")[0]+ " " + $label[2].split("]")[0];
-        }else{
+        } else {
           $fieldName = $labelPM + " " + $label[2].split("]")[0];
         }
         fieldGridName = $label[1] + "[" + $label[2] + "[" + $label[3].split("]")[0];
@@ -2952,44 +2954,52 @@ var validateForm = function(sRequiredFields) {
                     switch(aRequiredFields[i].type) {
                         case 'suggest':
                             var vtext1 = new input(getField(aRequiredFields[i].name+'_label'));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
                                 vtext1.failed();
                             } else {
                                vtext1.passed();
                             }
                             break;
+
                         case 'text':
                             var vtext = new input(getField(aRequiredFields[i].name));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
-                                    vtext.failed();
-                            }
-                            else {
+                                vtext.failed();
+                            } else {
                                 vtext.passed();
                             }
                             break;
+
                         case 'dropdown':
                             var vtext = new input(getField(aRequiredFields[i].name));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
                                 vtext.failed();
                             } else {
                                 vtext.passed();
                             }
                             break;
+
                         case 'textarea':
                             var vtext = new input(getField(aRequiredFields[i].name));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
                                 vtext.failed();
                             } else {
                                 vtext.passed();
                             }
                             break;
+
                         case 'password':
                             var vpass = new input(getField(aRequiredFields[i].name));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
                                 vpass.failed();
                             } else {
@@ -2999,7 +3009,8 @@ var validateForm = function(sRequiredFields) {
 
                         case 'currency':
                             var vcurr = new input(getField(aRequiredFields[i].name));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
                                 vcurr.failed();
                             } else {
@@ -3009,7 +3020,8 @@ var validateForm = function(sRequiredFields) {
 
                         case 'percentage':
                             var vper = new input(getField(aRequiredFields[i].name));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
                                 vper.failed();
                             } else {
@@ -3019,25 +3031,30 @@ var validateForm = function(sRequiredFields) {
 
                         case 'yesno':
                             var vtext = new input(getField(aRequiredFields[i].name));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
                                 vtext.failed();
                             } else {
                                 vtext.passed();
                             }
                             break;
+
                         case 'date':
                             var vtext = new input(getField(aRequiredFields[i].name));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
                                 vtext.failed();
                             } else {
                                 vtext.passed();
                             }
                             break;
+
                         case 'file':
                             var vtext = new input(getField(aRequiredFields[i].name));
-                            if(getField(aRequiredFields[i].name).value=='') {
+
+                            if (getField(aRequiredFields[i].name).value.trim() == "") {
                                 invalid_fields.push(aRequiredFields[i].label);
                                 vtext.failed();
                             } else {
@@ -3090,7 +3107,7 @@ var validateForm = function(sRequiredFields) {
                     }
                 }
 
-                if(validate != '') {
+                if (validate != '') {
                     //validate_fields
                     switch(aRequiredFields[i].type) {
                         case 'suggest':
@@ -3098,14 +3115,16 @@ var validateForm = function(sRequiredFields) {
 
                         case 'text':
 
-                            if(validate == "Email") {
+                            if (validate == "Email") {
                                 var vtext = new input(getField(aRequiredFields[i].name));
-                                if(getField(aRequiredFields[i].name).value!='') {
+
+                                if (getField(aRequiredFields[i].name).value.trim() != "") {
                                     var email = getField(aRequiredFields[i].name);
                                     //var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
                                     //var filter = /^[\w\_\-\.ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±]{2,255}@[\w\_\-]{2,255}\.[a-z]{1,3}\.?[a-z]{0,3}$/;
                                     var filter =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-                                    if (!filter.test(email.value)&&email.value!="") {
+
+                                    if (!filter.test(email.value.trim()) && email.value != "") {
                                         fielEmailInvalid.push(aRequiredFields[i].label);
                                         vtext.failed();
                                         email.focus();
