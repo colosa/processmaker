@@ -13,7 +13,7 @@ var lastTypeSelected = '';
 var sessionPersits = function() {
     var rpc = new leimnud.module.rpc.xmlhttp({
         url: '../services/sessionPersists',
-        args: 'dynaformEditorParams=' + dynaformEditorParams,
+        args: 'dynaformEditorParams=' + dynaformEditorParams + (lastActionPerformed != '' ? '&DYN_UID=' + __DYN_UID__ : ''),
         async: false
     });
     rpc.make();

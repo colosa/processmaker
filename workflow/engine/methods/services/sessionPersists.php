@@ -3,6 +3,33 @@ $response = new stdclass();
 $response->status = isset($_SESSION['USER_LOGGED']);
 if (isset($_REQUEST['dynaformEditorParams'])) {
     $_SESSION['Current_Dynafom']['Parameters'] = unserialize(stripslashes($_REQUEST['dynaformEditorParams']));
+    if (isset($_REQUEST['DYN_UID'])) {
+        $dynaform = new dynaform();
+        $dynaform->load($_REQUEST['DYN_UID']);
+
+        G::LoadClass('dynaformEditor');
+        $editor = new dynaformEditor(array());
+        $editor->file = $dynaform->getDynFilename();
+        $editor->home = PATH_DYNAFORM;
+        $editor->title = $dynaform->getDynTitle();
+        $editor->dyn_uid = $dynaform->getDynUid();
+        $editor->pro_uid = $dynaform->getProUid();
+        $editor->dyn_type = $dynaform->getDynType();
+        $editor->dyn_title = $dynaform->getDynTitle();
+        $editor->dyn_description = $dynaform->getDynDescription();
+        $editor->dyn_editor = 'processmap';
+        $editor->_setUseTemporalCopy(true);
+
+        $A = isset($_SESSION['Current_Dynafom']['Parameters']['URL']) ? $_SESSION['Current_Dynafom']['Parameters']['URL'] : '';
+        $form = new Form($dynaform->getProUid() . '/' . $dynaform->getDynUid(), PATH_DYNAFORM, SYS_LANG, true);
+        $properties = array('A' => $A, 'DYN_UID' => $dynaform->getDynUid(), 'PRO_UID' => $dynaform->getProUid(), 'DYN_TITLE' => $dynaform->getDynTitle(),
+                            'DYN_TYPE' => $dynaform->getDynType(), 'DYN_DESCRIPTION' => $dynaform->getDynDescription(), 'WIDTH' => $form->width,
+                            'MODE' => $form->mode, 'PRINTDYNAFORM' => $form->printdynaform, 'ADJUSTGRIDSWIDTH' => $form->adjustgridswidth,
+                            'NEXTSTEPSAVE' => $form->nextstepsave);
+        $tmp = $editor->_getTmpData();
+        $tmp['Properties'] = $properties;
+        $editor->_setTmpData($tmp);
+    }
 }
 if (isset($_REQUEST['dynaformRestoreValues'])) {
     $aRetValues = unserialize(stripslashes($_REQUEST['dynaformRestoreValues']));
