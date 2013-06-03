@@ -178,14 +178,10 @@ try {
 //Obtain previous and next step - End
 
 $aRequiredFields = array(
-    'APPLICATION'   => $Fields['APP_DATA']['APPLICATION'],
-    'PROCESS'       => $Fields['APP_DATA']['PROCESS'],
-    'TASK'          => $Fields['APP_DATA']['TASK'],
-    'INDEX'         => $Fields['APP_DATA']['INDEX'],
-    'APP_DATA'      => $Fields['APP_DATA']
+    'APP_DATA' => $Fields['APP_DATA']
 );
-$oHeadPublisher->addScriptCode('var __dynaformSVal__ = \'' . serialize($aRequiredFields) . '\';');
 
+$oHeadPublisher->addScriptCode('var __dynaformSVal__ = \'' . base64_encode(serialize($aRequiredFields)) . '\'; ');
 try {
     //Add content content step - Start
     $oApp = ApplicationPeer::retrieveByPK( $_SESSION['APPLICATION'] );
