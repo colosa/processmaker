@@ -367,7 +367,7 @@ function sendNote()
         storeNotes.load();
       } else if (data.lostSession) {
     	  Ext.Msg.show({
-              title : TRANSLATIONS.ID_CASES_NOTE_POST_ERROR,
+              title : _('ID_CASES_NOTE_POST_ERROR'),
               msg : data.message,
               icon : Ext.MessageBox.ERROR,
               buttons : Ext.Msg.OK,

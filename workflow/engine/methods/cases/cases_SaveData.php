@@ -26,7 +26,7 @@
 if (!isset($_SESSION['USER_LOGGED'])) {
 	    G::SendTemporalMessage( 'ID_LOGIN_AGAIN', 'warning', 'labels' );
 	    die( '<script type="text/javascript">
-                top.location = "../login/login";
+                    parent.location = "../cases/casesStartPage?action=startCase";
               </script>');
 }
 

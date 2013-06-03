@@ -254,7 +254,6 @@ var dynaformEditor={
   },
   save:function() {
     if (!sessionPersits()) {
-    	alert('Jen');
         showPrompt('save');
         return;
     }
