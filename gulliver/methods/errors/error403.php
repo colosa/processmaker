@@ -22,7 +22,7 @@
 					<h2>Access denied!</h2>
 					<h5>Somebody prohibited this page, or the URL is incorrect.</h5>
 				</td>
-				<td align="right"><img src="images/pmlogo.png" alt="www.colosa.com" id="colosa" /></td>
+				<td align="right"><img src="/images/processmaker.logo2.png" alt="www.processmaker.com" id="processmaker" /></td>
 		  </tr></table>
 
 		</div>
@@ -76,7 +76,7 @@
 
 			<p id="twitter_text">
             <a href= "http://www.processmaker.com/privacy-statement" target="_blank"> Privacy Statement </a>| <a href= "http://www.processmaker.com/security-statement" target="_blank">Security Statement </a> | <a href= "http://www.processmaker.com/terms-of-service" target="_blank"> Terms of Service </a> | <a href= "http://www.processmaker.com/commercial-license" target="_blank"> Commercial License </a> | <a href= "http://www.processmaker.com/contact-us" target="_blank"> Contact Us </a>| <a href= "http://feeds.feedburner.com/processmaker" target="_blank"> RSS </a>
-            &#169; Copyright 2000 - 2012 Colosa, Inc. <a href= "http://www.colosa.com/" target="_blank"> www.colosa.com </a>
+            &#169; Copyright 2000 - <?php echo date('Y'); ?> Colosa, Inc. <a href= "http://www.colosa.com/" target="_blank"> www.colosa.com </a>
             </p>
 	    <!-- End Twitter -->
 			<div id="socialmedia" style="float:left;text-align: right; margin-top: 20px;">

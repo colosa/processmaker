@@ -171,12 +171,12 @@ a.next {
     <div id="header">
 
     	<div id="logo">
-        	<a href="index.html"><img src="../images/updating/logo.png" alt="logo"/></a>
+        	<a href="http://www.processmaker.com" target="_blank"><img src="../images/processmaker.logo.jpg" alt="logo"/></a>
         </div><!--end logo-->
 
         <div id="contact_details">
-        	<p><a href="#">info@colosa.com</a></p>
-			<p><a href="#">phone : +1-617-340-3377</a></p>
+        	<p><a href="mailto:info@colosa.com">info@colosa.com</a></p>
+			<p>phone : +1-617-340-3377</p>
 		</div><!--end contact details-->
 
 	</div><!--end header-->
@@ -187,8 +187,9 @@ a.next {
 		 <div id="content">
 
          <div class="text">
-						<h2>This website is under updating,</h2>
-                        <h2>please wait...</h2>
+						<h2>This application is being updated.</h2>
+						<h2>It will be back online shortly.</h2>
+						<h2>Thank you for your patience.</h2>
          </div><!--end text-->
          <br/><br/><br/><br/>
          <br/><br/><br/><br/>
@@ -202,7 +203,7 @@ a.next {
 						<!--<a href="#">Directory</a> |-->
 						<a href="http://feeds.feedburner.com/processmaker">RSS</a>
 						<br>
-						&copy; Copyright 2000 - 2012 Colosa, Inc.  <a href="http://www.colosa.com">www.colosa.com</a>
+						&copy; Copyright 2000 - <?php echo date('Y'); ?> Colosa, Inc.  <a href="http://www.colosa.com">www.colosa.com</a>
                   </div><!--end details-->
                 </div><!--end content-->
 
