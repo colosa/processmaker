@@ -91,10 +91,10 @@ class AppNotes extends BaseAppNotes
         if ($this->validate()) {
             // we save it, since we get no validation errors, or do whatever else you like.
             $res = $this->save();
-            $msg = '';
+            $msg = "";
         } else {
             // Something went wrong. We can now get the validationFailures and handle them.
-            $msg = '';
+            $msg = "";
             $validationFailuresArray = $this->getValidationFailures();
             foreach ($validationFailuresArray as $objValidationFailure) {
                 $msg .= $objValidationFailure->getMessage() . "<br/>";
@@ -105,8 +105,8 @@ class AppNotes extends BaseAppNotes
             $response['success'] = G::LoadTranslation("ID_FAILURE");
             $response['message'] = $msg;
         } else {
-            $response['success'] = G::LoadTranslation("ID_SUCCESS");
-            $response['message'] = G::LoadTranslation("ID_SAVED2");
+            $response['success'] = "success";
+            $response['message'] = G::LoadTranslation("ID_SAVED");
         }
 
         if ($notify) {
@@ -123,7 +123,6 @@ class AppNotes extends BaseAppNotes
 
             $this->sendNoteNotification( $appUid, $usrUid, $noteContent, $noteRecipients );
         }
-
         return $response;
     }
 

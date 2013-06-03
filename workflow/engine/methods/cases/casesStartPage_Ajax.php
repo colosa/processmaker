@@ -1,4 +1,12 @@
 <?php
+if (!isset($_SESSION['USER_LOGGED'])) {
+    $res = new stdclass();
+    $res->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+    $res->lostSession = true;
+    $res->success = true;
+    print G::json_encode( $res );
+    die();
+}
 if (! isset( $_REQUEST['action'] )) {
     $res['success'] = 'failure';
     $res['message'] = G::LoadTranslation( 'ID_REQUEST_ACTION' );
@@ -207,7 +215,6 @@ function lookinginforContentProcess ($sproUid)
 function startCase ()
 {
     G::LoadClass( 'case' );
-
     /* GET , POST & $_SESSION Vars */
     /* unset any variable, because we are starting a new case */
     if (isset( $_SESSION['APPLICATION'] )) {

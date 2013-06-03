@@ -1,4 +1,11 @@
 <?php
+if (!isset($_SESSION['USER_LOGGED'])) {
+    $response = new stdclass();
+    $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+    $response->lostSession = true;
+    print G::json_encode( $response );
+    die();
+}
 
 /**
  * App controller
@@ -21,6 +28,14 @@ class AppProxy extends HttpProxyController
      */
     function getNotesList ($httpData)
     {
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
+
         $appUid = null;
 
         if (isset( $httpData->appUid ) && trim( $httpData->appUid ) != "") {
@@ -91,7 +106,6 @@ class AppProxy extends HttpProxyController
     function postNote ($httpData)
     {
         //require_once ("classes/model/AppNotes.php");
-
         //extract(getExtJSParams());
         if (isset( $httpData->appUid ) && trim( $httpData->appUid ) != "") {
             $appUid = $httpData->appUid;
@@ -105,17 +119,23 @@ class AppProxy extends HttpProxyController
 
         $usrUid = (isset( $_SESSION['USER_LOGGED'] )) ? $_SESSION['USER_LOGGED'] : "";
         $noteContent = addslashes( $httpData->noteText );
-
         //Disabling the controller response because we handle a special behavior
         $this->setSendResponse(false);
-
-        //Add note case
+        //Add note cases
         $appNote = new AppNotes();
         $response = $appNote->addCaseNote($appUid, $usrUid, $noteContent, intval($httpData->swSendMail));
 
         //Send the response to client
         @ini_set("implicit_flush", 1);
         ob_start();
+
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
         echo G::json_encode($response);
         @ob_flush();
         @flush();

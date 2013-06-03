@@ -21,7 +21,12 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-
+if (!isset($_SESSION['USER_LOGGED'])) {
+	    G::SendTemporalMessage( 'ID_LOGIN_AGAIN', 'warning', 'labels' );
+	    die( '<script type="text/javascript">
+                    parent.location = "../cases/casesListExtJs?action=selfservice";
+              </script>');
+}
 /* Permissions */
 switch ($RBAC->userCanAccess( 'PM_CASES' )) {
     case - 2:
@@ -63,12 +68,12 @@ $validation = (SYS_SKIN != 'uxs') ? 'true' : 'false';
 die( '<script type="text/javascript">
   if (' . $validation . ') {
       if (window.parent.frames.length != 0) {
-          parent.location = "open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] . '&action=unassigned";
+              parent.location = "open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] . '&action=unassigned";
       } else {
-          window.location = "../cases/cases_Open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] . '&action=unassigned";
+            window.location = "../cases/cases_Open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] . '&action=unassigned";
       }
   } else {
-      window.location = "../cases/cases_Open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] . '&action=unassigned";
+       window.location = "../cases/cases_Open?APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] . '&action=unassigned";
   }
   </script>' );
 
