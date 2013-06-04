@@ -421,19 +421,43 @@
             
               var rowSelected = processesGrid.getSelectionModel().getSelected();
             
-                if( rowSelected ){               
-                  //uploadDocumentGridGlobal construct                 
-                  uploadDocumentGridDownloadGlobal.APP_DOC_UID   = rowSelected.data.APP_DOC_UID;
-                  uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK   = rowSelected.data.DOWNLOAD_LINK;
-                  uploadDocumentGridDownloadGlobal.TITLE   = rowSelected.data.TITLE;
-                  
-                  var APP_DOC_UID = uploadDocumentGridDownloadGlobal.APP_DOC_UID;
-                  var DOWNLOAD_LINK = uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK;
-                  var TITLE = uploadDocumentGridDownloadGlobal.TITLE;
-                  
-                  uploadDocumentGridDownload();
-                }
-                else{
+                if( rowSelected ){
+                	Ext.Ajax.request({
+                    url : 'cases_ShowDocument' ,
+                    params : {actionAjax : 'verifySession'},
+                    success: function ( result, request ) {
+                      var data = Ext.util.JSON.decode(result.responseText);
+                      if( data.lostSession ) {
+                       Ext.Msg.show({
+                              title: _('ID_ERROR'),
+                              msg: data.message,
+                              animEl: 'elId',
+                              icon: Ext.MessageBox.ERROR,
+                              buttons: Ext.MessageBox.OK,
+                              fn : function(btn) {
+                             top.location = '../login/login';
+                              }
+                          });
+                      } else {
+                     //uploadDocumentGridGlobal construct
+                          uploadDocumentGridDownloadGlobal.APP_DOC_UID = rowSelected.data.APP_DOC_UID;
+                          uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK = rowSelected.data.DOWNLOAD_LINK;
+                          uploadDocumentGridDownloadGlobal.TITLE = rowSelected.data.TITLE;
+                          
+                          var APP_DOC_UID = uploadDocumentGridDownloadGlobal.APP_DOC_UID;
+                          var DOWNLOAD_LINK = uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK;
+                          var TITLE = uploadDocumentGridDownloadGlobal.TITLE;
+                          
+                          uploadDocumentGridDownload();
+                      }
+                    },
+                    failure: function ( result, request) {
+                      if (typeof(result.responseText) != 'undefined') {
+                        Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+                      }
+                    }
+                 });
+                } else{
                   Ext.Msg.show({
                     title:'',
                     msg: TRANSLATIONS.ID_NO_SELECTION_WARNING,

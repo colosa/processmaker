@@ -1,8 +1,11 @@
 <?php
 if (!isset($_SESSION['USER_LOGGED'])) {
-    $result = new stdclass();
-    $result->error = G::LoadTranslation('ID_LOGIN_AGAIN');
-    die(G::json_encode($result));
+    $responseObject = new stdclass();
+    $responseObject->error = G::LoadTranslation('ID_LOGIN_AGAIN');
+    $responseObject->success = true;
+    $responseObject->lostSession = true;
+    print G::json_encode( $responseObject );
+    die();
 }
 
 //Getting the extJs parameters

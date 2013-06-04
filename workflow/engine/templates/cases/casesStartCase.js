@@ -63,21 +63,96 @@ Ext.onReady(function() {
         text : 'X',
         ctCls : 'pm_search_x_button',
         handler : function() {
-          Ext.getCmp('processesFilter').setValue('');
-          startCaseFilter.clear();
+        	Ext.Ajax.request({
+                url : 'casesStartPage_Ajax' ,
+                params : {action : 'verifySession'},
+                success: function ( result, request ) {
+                  var data = Ext.util.JSON.decode(result.responseText);
+                  if( data.lostSession ) {
+                   Ext.Msg.show({
+                          title: _('ID_ERROR'),
+                          msg: data.message,
+                          animEl: 'elId',
+                          icon: Ext.MessageBox.ERROR,
+                          buttons: Ext.MessageBox.OK,
+                          fn : function(btn) {
+                         location = location;
+                          }
+                        });
+                  } else {
+                      Ext.getCmp('processesFilter').setValue('');
+                      startCaseFilter.clear();
+                  }
+                },
+                failure: function ( result, request) {
+                 if (typeof(result.responseText) != 'undefined') {
+                         Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+                     }
+                }
+           });
         }
       }, ' ', ' ', {
         iconCls : 'icon-expand-all',
         tooltip :  _('ID_EXPAND_ALL'),
         handler : function() {
-          Ext.getCmp("startCaseTreePanel").root.expand(true);
+        	Ext.Ajax.request({
+                url : 'casesStartPage_Ajax' ,
+                params : {action : 'verifySession'},
+                success: function ( result, request ) {
+                  var data = Ext.util.JSON.decode(result.responseText);
+                  if( data.lostSession ) {
+                   Ext.Msg.show({
+                          title: _('ID_ERROR'),
+                          msg: data.message,
+                          animEl: 'elId',
+                          icon: Ext.MessageBox.ERROR,
+                          buttons: Ext.MessageBox.OK,
+                          fn : function(btn) {
+                         location = location;
+                          }
+                        });
+                  } else {
+                 Ext.getCmp("startCaseTreePanel").root.expand(true);
+                  }
+                },
+                failure: function ( result, request) {
+                 if (typeof(result.responseText) != 'undefined') {
+                         Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+                     }
+                }
+           });
         },
         scope : this
       }, '-', {
         iconCls : 'icon-collapse-all',
         tooltip : _('ID_COLLAPSE_ALL'),
         handler : function() {
-          Ext.getCmp("startCaseTreePanel").root.collapse(true);
+        	Ext.Ajax.request({
+                url : 'casesStartPage_Ajax' ,
+                params : {action : 'verifySession'},
+                success: function ( result, request ) {
+                  var data = Ext.util.JSON.decode(result.responseText);
+                  if( data.lostSession ) {
+                   Ext.Msg.show({
+                          title: _('ID_ERROR'),
+                          msg: data.message,
+                          animEl: 'elId',
+                          icon: Ext.MessageBox.ERROR,
+                          buttons: Ext.MessageBox.OK,
+                          fn : function(btn) {
+                         location = location;
+                          }
+                        });
+                  } else {
+                     Ext.getCmp("startCaseTreePanel").root.collapse(true);
+                  }
+                },
+                failure: function ( result, request) {
+                 if (typeof(result.responseText) != 'undefined') {
+                         Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+                     }
+                }
+           });
         },
         scope : this
       }, ' ', ' ', {
@@ -86,8 +161,33 @@ Ext.onReady(function() {
         icon : '/images/refresh.gif',
 
         handler : function() {
-          tree = Ext.getCmp('startCaseTreePanel');
-          tree.getLoader().load(tree.root);
+        	Ext.Ajax.request({
+                url : 'casesStartPage_Ajax' ,
+                params : {action : 'verifySession'},
+                success: function ( result, request ) {
+                  var data = Ext.util.JSON.decode(result.responseText);
+                  if( data.lostSession ) {
+                   Ext.Msg.show({
+                          title: _('ID_ERROR'),
+                          msg: data.message,
+                          animEl: 'elId',
+                          icon: Ext.MessageBox.ERROR,
+                          buttons: Ext.MessageBox.OK,
+                          fn : function(btn) {
+                         location = location;
+                          }
+                        });
+                  } else {
+                      tree = Ext.getCmp('startCaseTreePanel');
+                      tree.getLoader().load(tree.root);
+                  }
+                },
+                failure: function ( result, request) {
+                 if (typeof(result.responseText) != 'undefined') {
+                         Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+                     }
+                }
+           });
         }
       }
     ],
@@ -96,7 +196,32 @@ Ext.onReady(function() {
             openCaseA(n);
         },
         click : function(n) {
-            showDetailsA(n);
+        	Ext.Ajax.request({
+                url : 'casesStartPage_Ajax' ,
+                params : {action : 'verifySession'},
+                success: function ( result, request ) {
+                  var data = Ext.util.JSON.decode(result.responseText);
+                  if( data.lostSession ) {
+                   Ext.Msg.show({
+                          title: _('ID_ERROR'),
+                          msg: data.message,
+                          animEl: 'elId',
+                          icon: Ext.MessageBox.ERROR,
+                          buttons: Ext.MessageBox.OK,
+                          fn : function(btn) {
+                         location = location;
+                          }
+                        });
+                  } else {
+                      showDetailsA(n);
+                  }
+                },
+                failure: function ( result, request) {
+                 if (typeof(result.responseText) != 'undefined') {
+                         Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+                     }
+                }
+           });
         },
         load: function(node){
             if (node.childNodes.length == 0)
@@ -289,8 +414,17 @@ function openCaseA(n){
           var res = Ext.util.JSON.decode(response.responseText);
           if (res.openCase) {
               window.location = res.openCase.PAGE;
-          }
-          else {
+          }else if (res.lostSession) {
+              Ext.Msg.show({
+                       title : TRANSLATIONS.ID_ERROR_CREATING_NEW_CASE, // 'Error creating a new Case',
+                       msg : res.message,
+                       icon : Ext.MessageBox.ERROR,
+                       buttons : Ext.Msg.OK,
+                       fn : function(btn) {
+                          location = location;
+                       }
+                  }); 
+          } else {
             Ext.Msg.show({
               title : TRANSLATIONS.ID_ERROR_CREATING_NEW_CASE, // 'Error creating a new Case',
               msg : '<textarea cols="50" rows="10">'

@@ -1,5 +1,11 @@
 <?php
-
+if (!isset($_SESSION['USER_LOGGED'])) {
+    $response = new stdclass();
+    $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+    $response->lostSession = true;
+    print G::json_encode( $response );
+    die();
+}
 /**
  * App controller
  *
@@ -21,6 +27,13 @@ class AppProxy extends HttpProxyController
      */
     function getNotesList ($httpData)
     {
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
         $appUid = null;
 
         if (isset( $httpData->appUid ) && trim( $httpData->appUid ) != "") {
@@ -116,6 +129,13 @@ class AppProxy extends HttpProxyController
         //Send the response to client
         @ini_set("implicit_flush", 1);
         ob_start();
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
         echo G::json_encode($response);
         @ob_flush();
         @flush();

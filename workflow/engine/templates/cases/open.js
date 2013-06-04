@@ -345,149 +345,322 @@ Ext.onReady(function(){
 
   Actions.processMap = function()
   {
-    Actions.tabFrame('processMap');
+		Ext.Ajax.request({
+            url : 'ajaxListener' ,
+            params : {action : 'verifySession'},
+            success: function ( result, request ) {
+              var data = Ext.util.JSON.decode(result.responseText);
+              if( data.lostSession ) {
+               Ext.Msg.show({
+                      title: _('ID_ERROR'),
+                      msg: data.message,
+                      animEl: 'elId',
+                      icon: Ext.MessageBox.ERROR,
+                      buttons: Ext.MessageBox.OK,
+                      fn : function(btn) {
+                     location = location;
+                      }
+                    });
+              } else {
+                 Actions.tabFrame('processMap');
+              }
+			},
+			failure: function ( result, request) {
+			if (typeof(result.responseText) != 'undefined') {
+			    Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+			}
+            }
+       });
   }
 
   Actions.processInformation = function()
   {
-    Ext.Ajax.request({
-      url : 'ajaxListener' ,
-      params : {action : 'getProcessInformation'},
-      success: function ( result, request ) {
-        var data = Ext.util.JSON.decode(result.responseText);
+		Ext.Ajax.request({
+	          url : 'ajaxListener' ,
+	          params : {action : 'getProcessInformation'},
+	          success: function ( result, request ) {
+	          var data = Ext.util.JSON.decode(result.responseText);
+	          if( data.lostSession ) {
+	              Ext.Msg.show({
+	                  title: _('ID_ERROR'),
+	                  msg: data.message,
+	                  animEl: 'elId',
+	                  icon: Ext.MessageBox.ERROR,
+	                  buttons: Ext.MessageBox.OK,
+	                  fn : function(btn) {
+	                   location = location;
+	                  }
+	              });
+	          } else {
+	              fieldset = {
+	                  xtype : 'fieldset',
+	                  autoHeight : true,
+	                  defaults : {
+	                      width : 170,
+	                      xtype:'label',
+	                      labelStyle : 'padding: 0px;',
+	                      style: 'font-weight: bold'
+	                  },
+	                  items : [
+	                      {fieldLabel: _('ID_TITLE'), text: data.PRO_TITLE},
+	                      {fieldLabel: _('ID_DESCRIPTION'), text: data.PRO_DESCRIPTION},
+	                      {fieldLabel: _('ID_CATEGORY'), text: data.PRO_CATEGORY_LABEL},
+	                      {fieldLabel: _('ID_AUTHOR'), text: data.PRO_AUTHOR},
+	                      {fieldLabel: _('ID_CREATE_DATE'), text: data.PRO_CREATE_DATE}
+	                 ]
+	             }
 
-        fieldset = {
-          xtype : 'fieldset',
-          autoHeight  : true,
-          defaults    : {
-            width : 170,
-            xtype:'label',
-            labelStyle : 'padding: 0px;',
-            style: 'font-weight: bold'
-          },
-          items       : [
-            {fieldLabel: _('ID_TITLE'), text: data.PRO_TITLE},
-            {fieldLabel: _('ID_DESCRIPTION'), text: data.PRO_DESCRIPTION},
-            {fieldLabel: _('ID_CATEGORY'), text: data.PRO_CATEGORY_LABEL},
-            {fieldLabel: _('ID_AUTHOR'), text: data.PRO_AUTHOR},
-            {fieldLabel: _('ID_CREATE_DATE'), text: data.PRO_CREATE_DATE}
-          ]
-        }
+	          var frm = new Ext.FormPanel( {
+	              labelAlign : 'right',
+	              bodyStyle : 'padding:5px 5px 0',
+	              width : 400,
+	              autoScroll:true,
+	              items : [fieldset],
+	              buttons : [{
+	                  text : 'OK',
+	                  handler : function() {
+	                      win.close();
+	                  }
+	              }]
+	          });
 
-        var frm = new Ext.FormPanel( {
-          labelAlign : 'right',
-          bodyStyle : 'padding:5px 5px 0',
-          width : 400,
-          autoScroll:true,
-          items : [fieldset],
-          buttons : [{
-            text : 'OK',
-            handler : function() {
-              win.close();
-            }
-          }]
-        });
-
-        var win = new Ext.Window({
-          title: '',
-          width: 450,
-          height: 280,
-          layout:'fit',
-          autoScroll:true,
-          modal: true,
-          maximizable: false,
-          items: [frm]
-        });
-        win.show();
-      },
-      failure: function ( result, request) {
-        Ext.MessageBox.alert( _('ID_FAILED') , result.responseText);
-      }
-    });
+	          var win = new Ext.Window({
+	              title: '',
+	              width: 450,
+	              height: 280,
+	              layout:'fit',
+	              autoScroll:true,
+	              modal: true,
+	              maximizable: false,
+	              items: [frm]
+	          });
+	          win.show();
+	      }},
+	      failure: function ( result, request) {
+	          Ext.MessageBox.alert('Failed', result.responseText);
+	      }
+	    });
   }
 
   Actions.taskInformation = function()
   {
-    Ext.Ajax.request({
-      url : 'ajaxListener' ,
-      params : {action : 'getTaskInformation'},
-      success: function ( result, request ) {
-        var data = Ext.util.JSON.decode(result.responseText);
-
-        fieldset = {
-          xtype : 'fieldset',
-          autoHeight  : true,
-          defaults    : {
-            width : 170,
-            xtype:'label',
-            labelStyle : 'padding: 0px;',
-            style: 'font-weight: bold'
-          },
-          items       : [
-            {fieldLabel: _('ID_TITLE'), text: data.TAS_TITLE},
-            {fieldLabel: _('ID_DESCRIPTION'), text: data.TAS_DESCRIPTION},
-            {fieldLabel: _('ID_INIT_DATE'), text: data.INIT_DATE},
-            {fieldLabel: _('ID_DUE_DATE'), text: data.DUE_DATE},
-            {fieldLabel: _('ID_FINISH_DATE'), text: data.FINISH},
-            {fieldLabel: _('ID_TASK_DURATION'), text: data.DURATION}
-          ]
-        }
-
-        var frm = new Ext.FormPanel( {
-          labelAlign : 'right',
-          bodyStyle : 'padding:5px 5px 0',
-          width : 400,
-          autoScroll:true,
-          items : [fieldset],
-          buttons : [{
-            text : 'OK',
-            handler : function() {
-              win.close();
-            }
-          }]
-        });
-
-        var win = new Ext.Window({
-          title: '',
-          width: 450,
-          height: 280,
-          layout:'fit',
-          autoScroll:true,
-          modal: true,
-          maximizable: false,
-          items: [frm]
-        });
-        win.show();
-      },
-      failure: function ( result, request) {
-        Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
-      }
-    });
+	  Ext.Ajax.request({
+	      url : 'ajaxListener' ,
+	      params : {action : 'getTaskInformation'},
+	      success: function ( result, request ) {
+	        var data = Ext.util.JSON.decode(result.responseText);
+	        if( data.lostSession ) {
+	              Ext.Msg.show({
+	                  title: _('ID_ERROR'),
+	                  msg: data.message,
+	                  animEl: 'elId',
+	                  icon: Ext.MessageBox.ERROR,
+	                  buttons: Ext.MessageBox.OK,
+	                  fn : function(btn) {
+	                   location = location;
+	                  }
+	              });
+	          } else {
+				fieldset = {
+				xtype : 'fieldset',
+				autoHeight : true,
+				defaults : {
+				width : 170,
+				xtype:'label',
+				labelStyle : 'padding: 0px;',
+				style: 'font-weight: bold'
+				},
+				items : [
+				{fieldLabel: _('ID_TITLE'), text: data.TAS_TITLE},
+				{fieldLabel: _('ID_DESCRIPTION'), text: data.TAS_DESCRIPTION},
+				{fieldLabel: _('ID_INIT_DATE'), text: data.INIT_DATE},
+				{fieldLabel: _('ID_DUE_DATE'), text: data.DUE_DATE},
+				{fieldLabel: _('ID_FINISH_DATE'), text: data.FINISH},
+				{fieldLabel: _('ID_TASK_DURATION'), text: data.DURATION}
+				]
+				}
+			
+				var frm = new Ext.FormPanel( {
+				labelAlign : 'right',
+				bodyStyle : 'padding:5px 5px 0',
+				width : 400,
+				autoScroll:true,
+				items : [fieldset],
+				buttons : [{
+				text : 'OK',
+				handler : function() {
+				win.close();
+				}
+				}]
+				});
+			
+				var win = new Ext.Window({
+				title: '',
+				width: 450,
+				height: 280,
+				layout:'fit',
+				autoScroll:true,
+				modal: true,
+				maximizable: false,
+				items: [frm]
+				});
+				win.show();
+	      }
+	      },
+	      failure: function ( result, request) {
+	        Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+	      }
+	    });
   }
 
   Actions.caseHistory = function()
   {
-    Actions.tabFrame('caseHistory');
+		Ext.Ajax.request({
+            url : 'ajaxListener' ,
+            params : {action : 'verifySession'},
+            success: function ( result, request ) {
+              var data = Ext.util.JSON.decode(result.responseText);
+              if( data.lostSession ) {
+               Ext.Msg.show({
+                      title: _('ID_ERROR'),
+                      msg: data.message,
+                      animEl: 'elId',
+                      icon: Ext.MessageBox.ERROR,
+                      buttons: Ext.MessageBox.OK,
+                      fn : function(btn) {
+                     location = location;
+                      }
+                    });
+              } else {
+                  Actions.tabFrame('caseHistory');
+              }
+			},
+			failure: function ( result, request) {
+			if (typeof(result.responseText) != 'undefined') {
+			    Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+			}
+            }
+       });
   }
 
   Actions.messageHistory = function()
   {
-    Actions.tabFrame('messageHistory');
+		Ext.Ajax.request({
+            url : 'ajaxListener' ,
+            params : {action : 'verifySession'},
+            success: function ( result, request ) {
+              var data = Ext.util.JSON.decode(result.responseText);
+              if( data.lostSession ) {
+               Ext.Msg.show({
+                      title: _('ID_ERROR'),
+                      msg: data.message,
+                      animEl: 'elId',
+                      icon: Ext.MessageBox.ERROR,
+                      buttons: Ext.MessageBox.OK,
+                      fn : function(btn) {
+                     location = location;
+                      }
+                    });
+              } else {
+                  Actions.tabFrame('messageHistory');
+              }
+			},
+			failure: function ( result, request) {
+			if (typeof(result.responseText) != 'undefined') {
+			    Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+			}
+            }
+       });
   }
 
   Actions.dynaformHistory = function()
   {
-    Actions.tabFrame('dynaformHistory');
+	  Ext.Ajax.request({
+          url : 'ajaxListener' ,
+          params : {action : 'verifySession'},
+          success: function ( result, request ) {
+            var data = Ext.util.JSON.decode(result.responseText);
+            if( data.lostSession ) {
+             Ext.Msg.show({
+                    title: _('ID_ERROR'),
+                    msg: data.message,
+                    animEl: 'elId',
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK,
+                    fn : function(btn) {
+                   location = location;
+                    }
+                  });
+            } else {
+                Actions.tabFrame('dynaformHistory');
+            }
+			},
+			failure: function ( result, request) {
+			if (typeof(result.responseText) != 'undefined') {
+			    Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+			}
+          }
+     });
   }
 
   Actions.uploadedDocuments = function()
   {
-    Actions.tabFrame('uploadedDocuments');
+		Ext.Ajax.request({
+            url : 'ajaxListener' ,
+            params : {action : 'verifySession'},
+            success: function ( result, request ) {
+              var data = Ext.util.JSON.decode(result.responseText);
+              if( data.lostSession ) {
+               Ext.Msg.show({
+                      title: _('ID_ERROR'),
+                      msg: data.message,
+                      animEl: 'elId',
+                      icon: Ext.MessageBox.ERROR,
+                      buttons: Ext.MessageBox.OK,
+                      fn : function(btn) {
+                     location = location;
+                      }
+                    });
+              } else {
+                  Actions.tabFrame('uploadedDocuments');
+              }
+			},
+			failure: function ( result, request) {
+			if (typeof(result.responseText) != 'undefined') {
+			    Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+			}
+            }
+       });
   }
 
   Actions.generatedDocuments = function()
   {
-    Actions.tabFrame('generatedDocuments');
+		Ext.Ajax.request({
+            url : 'ajaxListener' ,
+            params : {action : 'verifySession'},
+            success: function ( result, request ) {
+              var data = Ext.util.JSON.decode(result.responseText);
+              if( data.lostSession ) {
+               Ext.Msg.show({
+                      title: _('ID_ERROR'),
+                      msg: data.message,
+                      animEl: 'elId',
+                      icon: Ext.MessageBox.ERROR,
+                      buttons: Ext.MessageBox.OK,
+                      fn : function(btn) {
+                     location = location;
+                      }
+                    });
+              } else {
+                  Actions.tabFrame('generatedDocuments');
+              }
+			},
+			failure: function ( result, request) {
+			if (typeof(result.responseText) != 'undefined') {
+			    Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+			}
+            }
+       });
   }
 
   Actions.cancelCase = function()
@@ -641,7 +814,32 @@ Ext.onReady(function(){
       maximizable: false,
       items: [grid]
     });
-    win.show();
+	Ext.Ajax.request({
+        url : 'ajaxListener' ,
+        params : {action : 'verifySession'},
+        success: function ( result, request ) {
+          var data = Ext.util.JSON.decode(result.responseText);
+          if( data.lostSession ) {
+           Ext.Msg.show({
+                  title: _('ID_ERROR'),
+                  msg: data.message,
+                  animEl: 'elId',
+                  icon: Ext.MessageBox.ERROR,
+                  buttons: Ext.MessageBox.OK,
+                  fn : function(btn) {
+                 location = location;
+                  }
+                });
+          } else {
+         win.show();
+          }
+        },
+        failure: function ( result, request) {
+         if (typeof(result.responseText) != 'undefined') {
+                 Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+             }
+        }
+   });
   }
 
   Actions.reassignCase = function()
@@ -762,54 +960,102 @@ Ext.onReady(function(){
       resizable: false,
       items: [frm]
     });
-    win.show();
+	Ext.Ajax.request({
+        url : 'ajaxListener' ,
+        params : {action : 'verifySession'},
+        success: function ( result, request ) {
+          var data = Ext.util.JSON.decode(result.responseText);
+          if( data.lostSession ) {
+           Ext.Msg.show({
+                  title: _('ID_ERROR'),
+                  msg: data.message,
+                  animEl: 'elId',
+                  icon: Ext.MessageBox.ERROR,
+                  buttons: Ext.MessageBox.OK,
+                  fn : function(btn) {
+                 location = location;
+                  }
+                });
+          } else {
+              win.show();
+          }
+        },
+        failure: function ( result, request) {
+         if (typeof(result.responseText) != 'undefined') {
+                 Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+             }
+        }
+   });
   }
 
   Actions.pauseCase = function()
   {
-    if (Ext.getCmp('noteReason').getValue() != '') {
-      var noteReasonTxt = _('ID_CASE_PAUSE_LABEL_NOTE') + ' ' + Ext.getCmp('noteReason').getValue();
-    } else {
-      var noteReasonTxt = '';
-    }
-    var notifyReasonVal = Ext.getCmp('notifyReason').getValue() == true ? 1 : 0;
-    var paramsNote = '&NOTE_REASON=' + noteReasonTxt + '&NOTIFY_PAUSE=' + notifyReasonVal;
-
-    var unpauseDate = Ext.getCmp('unpauseDate').getValue();
-    var vUnpauseTime = Ext.getCmp('unpauseTime').getValue();
-    if( unpauseDate == '') {
-      //Ext.getCmp('submitPauseCase').setDisabled(true);
-      return;
-    } else {
-      //Ext.getCmp('submitPauseCase').enable();
-      unpauseDate = unpauseDate.format('Y-m-d');
-    }
-
-    Ext.getCmp('unpauseFrm').getForm().submit({
-        url:'ajaxListener',
-        method  : 'post',
-        params  : {
-            action: 'pauseCase',
-            unpauseDate: unpauseDate,
-            unpauseTime: vUnpauseTime,
-            NOTE_REASON: noteReasonTxt,
-            NOTIFY_PAUSE: notifyReasonVal
-            },
-        waitMsg: _("ID_PAUSING_CASE") + stringReplace("\\: ", "", _APP_NUM) + "...",
-        timeout : 36000,
-        success : function(res, req) {
-            if(req.result.success) {
-                try {
-                  parent.notify( _('ID_PAUSE_CASE') , req.result.msg);
-                }
-                catch (e) {
-                }
-                location.href = 'casesListExtJs';
+	  Ext.Ajax.request({
+          url : 'ajaxListener' ,
+          params : {action : 'verifySession'},
+          success: function ( result, request ) {
+            var data = Ext.util.JSON.decode(result.responseText);
+            if( data.lostSession ) {
+             Ext.Msg.show({
+                    title: _('ID_ERROR'),
+                    msg: data.message,
+                    animEl: 'elId',
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.MessageBox.OK,
+                    fn : function(btn) {
+                   location = location;
+                    }
+                  });
             } else {
-                PMExt.error( _('ID_ERROR'), req.result.msg);
-            }
-        }
-    });
+           if (Ext.getCmp('noteReason').getValue() != '') {
+				var noteReasonTxt = _('ID_CASE_PAUSE_LABEL_NOTE') + ' ' + Ext.getCmp('noteReason').getValue();
+				} else {
+				var noteReasonTxt = '';
+				}
+				var notifyReasonVal = Ext.getCmp('notifyReason').getValue() == true ? 1 : 0;
+				var paramsNote = '&NOTE_REASON=' + noteReasonTxt + '&NOTIFY_PAUSE=' + notifyReasonVal;
+				
+				var unpauseDate = Ext.getCmp('unpauseDate').getValue();
+				if( unpauseDate == '') {
+				//Ext.getCmp('submitPauseCase').setDisabled(true);
+				return;
+				} else
+				//Ext.getCmp('submitPauseCase').enable();
+				
+				unpauseDate = unpauseDate.format('Y-m-d');
+				
+				Ext.getCmp('unpauseFrm').getForm().submit({
+				url:'ajaxListener',
+				method : 'post',
+				params : {
+				action: 'pauseCase',
+				unpauseDate:unpauseDate,
+				NOTE_REASON: noteReasonTxt,
+				NOTIFY_PAUSE: notifyReasonVal
+				},
+				waitMsg:'Pausing Case '+stringReplace("\\: ", "", _APP_NUM)+'...',
+				timeout : 36000,
+				success : function(res, req) {
+				if(req.result.success) {
+				try {
+				parent.notify('PAUSE CASE', req.result.msg);
+				}
+				catch (e) {
+				}
+				location.href = 'casesListExtJs';
+				} else {
+				PMExt.error(_('ID_ERROR'), req.result.msg);
+				}
+				}
+				});
+		  }
+		  },
+          failure: function ( result, request) {
+           if (typeof(result.responseText) != 'undefined') {
+                   Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+               }
+          }
+     });
   }
 
   Actions.unpauseCase = function()
@@ -844,30 +1090,50 @@ Ext.onReady(function(){
 
   Actions.deleteCase = function()
   {
-    PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_DELETE_CASE'), function(){
-      var loadMask = new Ext.LoadMask(document.body, {msg: _('ID_DELETING_CASE') });
-      loadMask.show();
-      Ext.Ajax.request({
-        url : '../adhocUserProxy/deleteCase',
-        success: function ( result, request ) {
-          loadMask.hide();
-          var data = Ext.util.JSON.decode(result.responseText);
-          if( data.success ) {
-            try {
-              parent.PMExt.notify(_('ID_DELETE_ACTION'), data.msg);
-            }
-            catch (e) {
-            }
-            location.href = 'casesListExtJs';
-          } else {
-            PMExt.error(_('ID_ERROR'), data.msg);
-          }
-        },
-        failure: function ( result, request) {
-          Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
-        }
-      });
-    });
+		Ext.Ajax.request({
+            url : 'casesList_Ajax' ,
+            params : {actionAjax : 'verifySession'},
+            success: function ( result, request ) {
+              var data = Ext.util.JSON.decode(result.responseText);
+              if( data.lostSession ) {
+               Ext.Msg.show({
+                      title: _('ID_ERROR'),
+                      msg: data.message,
+                      animEl: 'elId',
+                      icon: Ext.MessageBox.ERROR,
+                      buttons: Ext.MessageBox.OK,
+                      fn : function(btn) {
+                     location = location;
+                      }
+                    });
+              } else {
+				PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_DELETE_CASE'), function(){
+				var loadMask = new Ext.LoadMask(document.body, {msg:'Deleting case...'});
+				loadMask.show();
+				Ext.Ajax.request({
+				url : '../adhocUserProxy/deleteCase',
+				success: function ( result, request ) {
+				loadMask.hide();
+				var data = Ext.util.JSON.decode(result.responseText);
+				if( data.success ) {
+					try {
+					   parent.PMExt.notify(_('ID_DELETE_ACTION'), data.msg);
+					}
+					catch (e) {
+					}
+					location.href = 'casesListExtJs';
+				} else {
+				    PMExt.error(_('ID_ERROR'), data.msg);
+				}
+				},
+				failure: function ( result, request) {
+				Ext.MessageBox.alert('Failed', result.responseText);
+				}
+				});
+				});
+              }
+             }
+     });
   }
 
   Actions.reactivateCase = function()
@@ -902,143 +1168,168 @@ Ext.onReady(function(){
   //
   Actions.tabFrame = function(name)
   {
-    tabId = name + 'MenuOption';
-    var uri = 'ajaxListener?action=' + name;
-    var TabPanel = Ext.getCmp('caseTabPanel');
-    var tab = TabPanel.getItem(tabId);
-    //!dataInput
-    var tabName =  ActionTabFrameGlobal.tabName;
-    var tabTitle = ActionTabFrameGlobal.tabTitle;
+		Ext.Ajax.request({
+	          url : 'casesList_Ajax' ,
+	          params : {action : 'verifySession'},
+	          success: function ( result, request ) {
+	            var data = Ext.util.JSON.decode(result.responseText);
+	            if( data.lostSession ) {
+	             Ext.Msg.show({
+	                    title: _('ID_ERROR'),
+	                    msg: data.message,
+	                    animEl: 'elId',
+	                    icon: Ext.MessageBox.ERROR,
+	                    buttons: Ext.MessageBox.OK,
+	                    fn : function(btn) {
+	                   location = location;
+	                    }
+	                  });
+	            } else {
+	             tabId = name + 'MenuOption';
+	                var uri = 'ajaxListener?action=' + name;
+	                var TabPanel = Ext.getCmp('caseTabPanel');
+	                var tab = TabPanel.getItem(tabId);
+	                //!dataInput
+	                var tabName = ActionTabFrameGlobal.tabName;
+	                var tabTitle = ActionTabFrameGlobal.tabTitle;
 
-    //!dataSystem
-    var loadMaskMsg = _('ID_LOADING_GRID');
+	                //!dataSystem
+	                var loadMaskMsg = _('ID_LOADING_GRID');
 
-    if (name == "dynaformViewFromHistory") {
-      var responseObject = Ext.util.JSON.decode(historyGridListChangeLogGlobal.viewDynaformName);
-      var dynTitle = responseObject.dynTitle;
-      var md5Hash = responseObject.md5Hash;
-      name = "dynaformViewFromHistory"+md5Hash;
-    }
+	                if (name == "dynaformViewFromHistory") {
+	                  var responseObject = Ext.util.JSON.decode(historyGridListChangeLogGlobal.viewDynaformName);
+	                  var dynTitle = responseObject.dynTitle;
+	                  var md5Hash = responseObject.md5Hash;
+	                  name = "dynaformViewFromHistory"+md5Hash;
+	                }
 
-    var caseHistoryIframeRest = name!="caseHistory"?0:-20;
-    tabId = name + 'MenuOption';
-    var uri = 'ajaxListener?action=' + name;
+	                var caseHistoryIframeRest = name!="caseHistory"?0:-20;
+	                tabId = name + 'MenuOption';
+	                var uri = 'ajaxListener?action=' + name;
 
-    if (name.indexOf("changeLogTab") != -1) {
-      var uri = 'ajaxListener?action=' + 'changeLogTab';
-      //!historyGridListChangeLogGlobal
-      historyGridListChangeLogGlobal.idHistory = historyGridListChangeLogGlobal.idHistory;
-      historyGridListChangeLogGlobal.tasTitle = historyGridListChangeLogGlobal.tasTitle;
-      //dataSystem
-      idHistory = historyGridListChangeLogGlobal.idHistory;
-      var tasTitle = historyGridListChangeLogGlobal.tasTitle;
-      menuSelectedTitle[name] = tasTitle;
-      Actions[name];
-      uri += "&idHistory="+idHistory;
-    }
+	                if (name.indexOf("changeLogTab") != -1) {
+	                  var uri = 'ajaxListener?action=' + 'changeLogTab';
+	                  //!historyGridListChangeLogGlobal
+	                  historyGridListChangeLogGlobal.idHistory = historyGridListChangeLogGlobal.idHistory;
+	                  historyGridListChangeLogGlobal.tasTitle = historyGridListChangeLogGlobal.tasTitle;
+	                  //dataSystem
+	                  idHistory = historyGridListChangeLogGlobal.idHistory;
+	                  var tasTitle = historyGridListChangeLogGlobal.tasTitle;
+	                  menuSelectedTitle[name] = tasTitle;
+	                  Actions[name];
+	                  uri += "&idHistory="+idHistory;
+	                }
 
-    if (name.indexOf("dynaformViewFromHistory") != -1) {
-      var uri = 'ajaxListener?action=' + 'dynaformViewFromHistory';
-      uri += '&DYN_UID='+historyGridListChangeLogGlobal.viewIdDin+'&HISTORY_ID='+historyGridListChangeLogGlobal.viewIdHistory;
-      menuSelectedTitle[name] = 'View('+dynTitle+' '+historyGridListChangeLogGlobal.dynDate+')';
-    }
+	                if (name.indexOf("dynaformViewFromHistory") != -1) {
+	                  var uri = 'ajaxListener?action=' + 'dynaformViewFromHistory';
+	                  uri += '&DYN_UID='+historyGridListChangeLogGlobal.viewIdDin+'&HISTORY_ID='+historyGridListChangeLogGlobal.viewIdHistory;
+	                  menuSelectedTitle[name] = 'View('+dynTitle+' '+historyGridListChangeLogGlobal.dynDate+')';
+	                }
 
-    if (name.indexOf("previewMessage") != -1) {
-      var uri = 'caseMessageHistory_Ajax?actionAjax=' + 'showHistoryMessage';
-      var tabNameArray = tabName.split('_');
-      var APP_UID = tabNameArray[1];
-      var APP_MSG_UID = tabNameArray[2];
-      uri += '&APP_UID='+APP_UID+'&APP_MSG_UID='+APP_MSG_UID;
-      menuSelectedTitle[tabName] = tabTitle;
-    }
+	                if (name.indexOf("previewMessage") != -1) {
+	                  var uri = 'caseMessageHistory_Ajax?actionAjax=' + 'showHistoryMessage';
+	                  var tabNameArray = tabName.split('_');
+	                  var APP_UID = tabNameArray[1];
+	                  var APP_MSG_UID = tabNameArray[2];
+	                  uri += '&APP_UID='+APP_UID+'&APP_MSG_UID='+APP_MSG_UID;
+	                  menuSelectedTitle[tabName] = tabTitle;
+	                }
 
-    if (name.indexOf("previewMessage") != -1) {
-      var uri = 'caseMessageHistory_Ajax?actionAjax=' + 'showHistoryMessage';
-      var tabNameArray = tabName.split('_');
-      var APP_UID = tabNameArray[1];
-      var APP_MSG_UID = tabNameArray[2];
-      uri += '&APP_UID='+APP_UID+'&APP_MSG_UID='+APP_MSG_UID;
-      menuSelectedTitle[tabName] = tabTitle;
-    }
+	                if (name.indexOf("previewMessage") != -1) {
+	                  var uri = 'caseMessageHistory_Ajax?actionAjax=' + 'showHistoryMessage';
+	                  var tabNameArray = tabName.split('_');
+	                  var APP_UID = tabNameArray[1];
+	                  var APP_MSG_UID = tabNameArray[2];
+	                  uri += '&APP_UID='+APP_UID+'&APP_MSG_UID='+APP_MSG_UID;
+	                  menuSelectedTitle[tabName] = tabTitle;
+	                }
 
-    if (name.indexOf("sendMailMessage") != -1) {
-      var uri = 'caseMessageHistory_Ajax?actionAjax=' + 'sendMailMessage_JXP';
-      var tabNameArray = tabName.split('_');
-      var APP_UID = tabNameArray[1];
-      var APP_MSG_UID = tabNameArray[2];
-      uri += '&APP_UID='+APP_UID+'&APP_MSG_UID='+APP_MSG_UID;
-      menuSelectedTitle[tabName] = tabTitle;
-    }
+	                if (name.indexOf("sendMailMessage") != -1) {
+	                  var uri = 'caseMessageHistory_Ajax?actionAjax=' + 'sendMailMessage_JXP';
+	                  var tabNameArray = tabName.split('_');
+	                  var APP_UID = tabNameArray[1];
+	                  var APP_MSG_UID = tabNameArray[2];
+	                  uri += '&APP_UID='+APP_UID+'&APP_MSG_UID='+APP_MSG_UID;
+	                  menuSelectedTitle[tabName] = tabTitle;
+	                }
 
-    if (name=="dynaformHistory") {
-      var uri = 'casesHistoryDynaformPage_Ajax?actionAjax=historyDynaformPage';
-    }
+	                if (name=="dynaformHistory") {
+	                  var uri = 'casesHistoryDynaformPage_Ajax?actionAjax=historyDynaformPage';
+	                }
 
-    if (name.indexOf("historyDynaformGridHistory") != -1) {
-      var historyDynaformGridHistoryGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
-      var tabTitle = ActionTabFrameGlobal.tabTitle;
-      var PRO_UID = historyDynaformGridHistoryGlobal.PRO_UID;
-      var APP_UID = historyDynaformGridHistoryGlobal.APP_UID;
-      var TAS_UID = historyDynaformGridHistoryGlobal.TAS_UID;
-      var DYN_UID = historyDynaformGridHistoryGlobal.DYN_UID;
-      var DYN_TITLE = historyDynaformGridHistoryGlobal.DYN_TITLE;
-      var uri = 'casesHistoryDynaformPage_Ajax?actionAjax=showDynaformListHistory';
-      uri += '&PRO_UID='+PRO_UID+'&APP_UID='+APP_UID+'&TAS_UID='+TAS_UID+'&DYN_UID='+DYN_UID;
-      menuSelectedTitle[name] = tabTitle;
-    }
+	                if (name.indexOf("historyDynaformGridHistory") != -1) {
+	                  var historyDynaformGridHistoryGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
+	                  var tabTitle = ActionTabFrameGlobal.tabTitle;
+	                  var PRO_UID = historyDynaformGridHistoryGlobal.PRO_UID;
+	                  var APP_UID = historyDynaformGridHistoryGlobal.APP_UID;
+	                  var TAS_UID = historyDynaformGridHistoryGlobal.TAS_UID;
+	                  var DYN_UID = historyDynaformGridHistoryGlobal.DYN_UID;
+	                  var DYN_TITLE = historyDynaformGridHistoryGlobal.DYN_TITLE;
+	                  var uri = 'casesHistoryDynaformPage_Ajax?actionAjax=showDynaformListHistory';
+	                  uri += '&PRO_UID='+PRO_UID+'&APP_UID='+APP_UID+'&TAS_UID='+TAS_UID+'&DYN_UID='+DYN_UID;
+	                  menuSelectedTitle[name] = tabTitle;
+	                }
 
-    if (name.indexOf("dynaformChangeLogViewHistory") != -1) {
-      var showDynaformHistoryGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
-      var tabTitle = ActionTabFrameGlobal.tabTitle;
-      var dynUID = showDynaformHistoryGlobal.dynUID;
-      var tablename = showDynaformHistoryGlobal.tablename;
-      var dynDate = showDynaformHistoryGlobal.dynDate;
-      var dynTitle = showDynaformHistoryGlobal.dynTitle;
-      var uri = 'casesHistoryDynaformPage_Ajax?actionAjax=dynaformChangeLogViewHistory';
-      uri += '&DYN_UID='+dynUID+'&HISTORY_ID='+tablename;
-      menuSelectedTitle[name] = tabTitle;
-    }
+	                if (name.indexOf("dynaformChangeLogViewHistory") != -1) {
+	                  var showDynaformHistoryGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
+	                  var tabTitle = ActionTabFrameGlobal.tabTitle;
+	                  var dynUID = showDynaformHistoryGlobal.dynUID;
+	                  var tablename = showDynaformHistoryGlobal.tablename;
+	                  var dynDate = showDynaformHistoryGlobal.dynDate;
+	                  var dynTitle = showDynaformHistoryGlobal.dynTitle;
+	                  var uri = 'casesHistoryDynaformPage_Ajax?actionAjax=dynaformChangeLogViewHistory';
+	                  uri += '&DYN_UID='+dynUID+'&HISTORY_ID='+tablename;
+	                  menuSelectedTitle[name] = tabTitle;
+	                }
 
-    if (name.indexOf("historyDynaformGridPreview") != -1) {
-      var historyDynaformGridPreviewGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
-      var tabTitle = ActionTabFrameGlobal.tabTitle;
-      var DYN_UID = historyDynaformGridPreviewGlobal.DYN_UID;
-      var uri = 'casesHistoryDynaformPage_Ajax?actionAjax=historyDynaformGridPreview';
-      uri += '&DYN_UID='+DYN_UID;
-      menuSelectedTitle[name] = tabTitle;
-    }
+	                if (name.indexOf("historyDynaformGridPreview") != -1) {
+	                  var historyDynaformGridPreviewGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
+	                  var tabTitle = ActionTabFrameGlobal.tabTitle;
+	                  var DYN_UID = historyDynaformGridPreviewGlobal.DYN_UID;
+	                  var uri = 'casesHistoryDynaformPage_Ajax?actionAjax=historyDynaformGridPreview';
+	                  uri += '&DYN_UID='+DYN_UID;
+	                  menuSelectedTitle[name] = tabTitle;
+	                }
 
-    if (name == "uploadDocumentGridDownload") {
-      var uploadDocumentGridDownloadGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
-      var APP_DOC_UID = uploadDocumentGridDownloadGlobal.APP_DOC_UID;
-      var DOWNLOAD_LINK = uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK;
-      var TITLE = uploadDocumentGridDownloadGlobal.TITLE;
-      var uri = DOWNLOAD_LINK;
-      menuSelectedTitle[name] = ActionTabFrameGlobal.tabTitle;
-    }
+	                if (name == "uploadDocumentGridDownload") {
+	                  var uploadDocumentGridDownloadGlobal = Ext.util.JSON.decode(ActionTabFrameGlobal.tabData);
+	                  var APP_DOC_UID = uploadDocumentGridDownloadGlobal.APP_DOC_UID;
+	                  var DOWNLOAD_LINK = uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK;
+	                  var TITLE = uploadDocumentGridDownloadGlobal.TITLE;
+	                  var uri = DOWNLOAD_LINK;
+	                  menuSelectedTitle[name] = ActionTabFrameGlobal.tabTitle;
+	                }
 
-    if (name == "generatedDocuments") {
-      var uri = 'casesGenerateDocumentPage_Ajax.php?actionAjax=casesGenerateDocumentPage';
-    }
+	                if (name == "generatedDocuments") {
+	                  var uri = 'casesGenerateDocumentPage_Ajax.php?actionAjax=casesGenerateDocumentPage';
+	                }
 
-    if( tab ) {
-      TabPanel.setActiveTab(tabId);
-    }
-    else {
-      TabPanel.add({
-        id: tabId,
-        title: menuSelectedTitle[name],
-        frameConfig:{name: name + 'Frame', id: name + 'Frame'},
-        defaultSrc : uri,
-        loadMask:{msg:_('ID_LOADING_GRID')},
-        autoWidth: true,
-        closable:true,
-        autoScroll: true,
-        bodyStyle:{height: (PMExt.getBrowser().screen.height-60) + 'px', overflow:'auto'}
-      }).show();
+	                if( tab ) {
+	                  TabPanel.setActiveTab(tabId);
+	                }
+	                else {
+	                  TabPanel.add({
+	                    id: tabId,
+	                    title: menuSelectedTitle[name],
+	                    frameConfig:{name: name + 'Frame', id: name + 'Frame'},
+	                    defaultSrc : uri,
+	                    loadMask:{msg:_('ID_LOADING_GRID')+'...'},
+	                    autoWidth: true,
+	                    closable:true,
+	                    autoScroll: true,
+	                    bodyStyle:{height: (PMExt.getBrowser().screen.height-60) + 'px', overflow:'auto'}
+	                  }).show();
 
-      TabPanel.doLayout();
-    }
+	                  TabPanel.doLayout();
+	                }
+	            }
+	          },
+	          failure: function ( result, request) {
+	            if (typeof(result.responseText) != 'undefined') {
+	              Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+	            }
+	          }
+	     }); 
   }
 
 });

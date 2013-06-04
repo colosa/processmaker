@@ -1,4 +1,11 @@
 <?php
+if (!isset($_SESSION['USER_LOGGED'])) {
+    $response = new stdclass();
+    $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+    $response->lostSession = true;
+    print G::json_encode( $response );
+    die();
+}
 $callback = isset( $_POST['callback'] ) ? $_POST['callback'] : 'stcCallback1001';
 $dir = isset( $_POST['dir'] ) ? $_POST['dir'] : 'DESC';
 $sort = isset( $_POST['sort'] ) ? $_POST['sort'] : '';

@@ -348,19 +348,44 @@
             
               var rowSelected = processesGrid.getSelectionModel().getSelected();
             
-                if( rowSelected ){               
-                  //generateDocumentGridGlobal construct                 
-                  generateDocumentGridDownloadGlobal.APP_DOC_UID = rowSelected.data.APP_DOC_UID;
-                  generateDocumentGridDownloadGlobal.FILEDOC = rowSelected.data.FILEDOC;
-                  generateDocumentGridDownloadGlobal.FILEPDF = rowSelected.data.FILEPDF;
-                  generateDocumentGridDownloadGlobal.DOWNLOAD = 'FILEDOC';
-                  
-                  var APP_DOC_UID = generateDocumentGridDownloadGlobal.APP_DOC_UID;
-                  var FILEDOC = generateDocumentGridDownloadGlobal.FILEDOC;
-                  var FILEPDF = generateDocumentGridDownloadGlobal.FILEPDF;
-                  var DOWNLOAD = generateDocumentGridDownloadGlobal.DOWNLOAD;
-                  
-                  generateDocumentGridDownload();
+              if( rowSelected ){
+                  Ext.Ajax.request({
+                         url : 'cases_ShowDocument' ,
+                         params : {actionAjax : 'verifySession'},
+                         success: function ( result, request ) {
+                           var data = Ext.util.JSON.decode(result.responseText);
+                           if( data.lostSession ) {
+                            Ext.Msg.show({
+                                   title: _('ID_ERROR'),
+                                   msg: data.message,
+                                   animEl: 'elId',
+                                   icon: Ext.MessageBox.ERROR,
+                                   buttons: Ext.MessageBox.OK,
+                                   fn : function(btn) {
+                                  location = location;
+                                   }
+                               });
+                           } else {
+							 //generateDocumentGridGlobal construct
+							 generateDocumentGridDownloadGlobal.APP_DOC_UID = rowSelected.data.APP_DOC_UID;
+							 generateDocumentGridDownloadGlobal.FILEDOC = rowSelected.data.FILEDOC;
+							 generateDocumentGridDownloadGlobal.FILEPDF = rowSelected.data.FILEPDF;
+							 generateDocumentGridDownloadGlobal.DOWNLOAD = 'FILEDOC';
+							
+							 var APP_DOC_UID = generateDocumentGridDownloadGlobal.APP_DOC_UID;
+							 var FILEDOC = generateDocumentGridDownloadGlobal.FILEDOC;
+							 var FILEPDF = generateDocumentGridDownloadGlobal.FILEPDF;
+							 var DOWNLOAD = generateDocumentGridDownloadGlobal.DOWNLOAD;
+							
+							 generateDocumentGridDownload();
+                           }
+                         },
+                         failure: function ( result, request) {
+                           if (typeof(result.responseText) != 'undefined') {
+                             Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+                           }
+                         }
+                    });
                 }
                 else{
                   Ext.Msg.show({
@@ -389,19 +414,44 @@
             
               var rowSelected = processesGrid.getSelectionModel().getSelected();
             
-                if( rowSelected ){               
-                  //generateDocumentGridGlobal construct                 
-                  generateDocumentGridDownloadGlobal.APP_DOC_UID = rowSelected.data.APP_DOC_UID;
-                  generateDocumentGridDownloadGlobal.FILEDOC = rowSelected.data.FILEDOC;
-                  generateDocumentGridDownloadGlobal.FILEPDF = rowSelected.data.FILEPDF;
-                  generateDocumentGridDownloadGlobal.DOWNLOAD = 'FILEPDF';
-                  
-                  var APP_DOC_UID = generateDocumentGridDownloadGlobal.APP_DOC_UID;
-                  var FILEDOC = generateDocumentGridDownloadGlobal.FILEDOC;
-                  var FILEPDF = generateDocumentGridDownloadGlobal.FILEPDF;
-                  var DOWNLOAD = generateDocumentGridDownloadGlobal.DOWNLOAD;
-                  
-                  generateDocumentGridDownload();
+              if( rowSelected ){
+                  Ext.Ajax.request({
+                         url : 'cases_ShowDocument' ,
+                         params : {actionAjax : 'verifySession'},
+                         success: function ( result, request ) {
+                           var data = Ext.util.JSON.decode(result.responseText);
+                           if( data.lostSession ) {
+                            Ext.Msg.show({
+                                   title: _('ID_ERROR'),
+                                   msg: data.message,
+                                   animEl: 'elId',
+                                   icon: Ext.MessageBox.ERROR,
+                                   buttons: Ext.MessageBox.OK,
+                                   fn : function(btn) {
+                                  location = location;
+                                   }
+                               });
+                           } else {
+								//generateDocumentGridGlobal construct
+								generateDocumentGridDownloadGlobal.APP_DOC_UID = rowSelected.data.APP_DOC_UID;
+								generateDocumentGridDownloadGlobal.FILEDOC = rowSelected.data.FILEDOC;
+								generateDocumentGridDownloadGlobal.FILEPDF = rowSelected.data.FILEPDF;
+								generateDocumentGridDownloadGlobal.DOWNLOAD = 'FILEPDF';
+								
+								var APP_DOC_UID = generateDocumentGridDownloadGlobal.APP_DOC_UID;
+								var FILEDOC = generateDocumentGridDownloadGlobal.FILEDOC;
+								var FILEPDF = generateDocumentGridDownloadGlobal.FILEPDF;
+								var DOWNLOAD = generateDocumentGridDownloadGlobal.DOWNLOAD;
+								
+								generateDocumentGridDownload();
+                           }
+                         },
+                         failure: function ( result, request) {
+                           if (typeof(result.responseText) != 'undefined') {
+                             Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+                           }
+                         }
+                    });
                 }
                 else{
                   Ext.Msg.show({

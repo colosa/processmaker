@@ -31,11 +31,11 @@
 function transactionLog($transactionName){
     if (extension_loaded('newrelic')) {
         $baseName="ProcessMaker";
-        
+
         //Application base name
         newrelic_set_appname ($baseName);
-        
-        
+
+
         //Custom parameters
         if(defined("SYS_SYS")){
             newrelic_add_custom_parameter ("workspace", SYS_SYS);
@@ -61,10 +61,10 @@ function transactionLog($transactionName){
         if(defined("PATH_DATA_SITE")){
             newrelic_add_custom_parameter ("path_site", PATH_DATA_SITE);
         }
-        
+
         //Show correct transaction name
         if(defined("SYS_SYS")){
-            newrelic_set_appname ("PM-".SYS_SYS.";$baseName");            
+            newrelic_set_appname ("PM-".SYS_SYS.";$baseName");
         }
         if(defined("PATH_CORE")){
             $transactionName=str_replace(PATH_CORE,"",$transactionName);
@@ -374,8 +374,8 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
 
         if (file_exists( $pluginFilename )) {
             //NewRelic Snippet - By JHL
-            transactionLog($pluginFilename);            
-            
+            transactionLog($pluginFilename);
+
             Bootstrap::streamFile( $pluginFilename );
         }
         die();
@@ -400,7 +400,7 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
         if (file_exists( $fileToBeStreamed )) {
             //NewRelic Snippet - By JHL
             transactionLog($fileToBeStreamed);
-            
+
             Bootstrap::streamFile( $fileToBeStreamed );
         }
         die();
@@ -428,7 +428,7 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
                 $realPath[0] .= strpos( basename( $realPath[0] ), '.' ) === false ? '.php' : '';
                 //NewRelic Snippet - By JHL
                 transactionLog($realPath[0]);
-                
+
                 Bootstrap::streamFile( $realPath[0] );
                 die();
             }
@@ -531,7 +531,7 @@ if (! defined( 'PATH_DATA' ) || ! file_exists( PATH_DATA )) {
         $installer->setHttpRequestData( $_REQUEST );
         //NewRelic Snippet - By JHL
         transactionLog($controllerAction);
-        
+
         $installer->call( $controllerAction );
     } else {
         $_SESSION['phpFileNotFound'] = $_SERVER['REQUEST_URI'];
@@ -870,6 +870,17 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
         $noLoginFiles[] = 'appFolderAjax';
         $noLoginFiles[] = 'steps_Ajax';
         $noLoginFiles[] = 'proxyCasesList';
+        $noLoginFiles[] = 'casesStartPage_Ajax';
+        $noLoginFiles[] = 'appProxy';
+        $noLoginFiles[] = 'cases_Ajax';
+        $noLoginFiles[] = 'casesList_Ajax';
+        $noLoginFiles[] = 'proxyReassignCasesList';
+        $noLoginFiles[] = 'ajaxListener';
+        $noLoginFiles[] = 'cases_Step';
+        $noLoginFiles[] = 'cases_ShowOutputDocument';
+        $noLoginFiles[] = 'cases_ShowDocument';
+        $noLoginFiles[] = 'cases_CatchExecute';
+        $noLoginFiles[] = 'cases_SaveData';
 
         $noLoginFolders[] = 'services';
         $noLoginFolders[] = 'tracker';

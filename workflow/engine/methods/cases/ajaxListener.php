@@ -33,7 +33,19 @@
 //require_once 'classes/model/AppDelay.php';
 //require_once 'classes/model/Process.php';
 //require_once 'classes/model/Task.php';
-
+if(isset($_REQUEST['action']) && $_REQUEST['action'] == "verifySession" ) {
+    if (!isset($_SESSION['USER_LOGGED'])) {
+        $response = new stdclass();
+        $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+        $response->lostSession = true;
+        print G::json_encode( $response );
+        die();
+    } else {
+        $response = new stdclass();
+        print G::json_encode( $response );
+        die();
+    }
+}
 class Ajax
 {
 
@@ -73,6 +85,13 @@ class Ajax
 
     public function steps()
     {
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
         G::LoadClass('applications');
         $applications = new Applications();
 
@@ -296,6 +315,13 @@ class Ajax
 
     public function getProcessInformation()
     {
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
         $process = new Process();
         $processData = $process->load($_SESSION['PROCESS']);
         require_once 'classes/model/Users.php';
@@ -314,6 +340,13 @@ class Ajax
 
     public function getTaskInformation()
     {
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
         $task = new Task();
         if ($_SESSION['TASK'] == '-1') {
             $_SESSION['TASK'] = $_SESSION['CURRENT_TASK'];
@@ -364,6 +397,13 @@ class Ajax
 
     public function uploadedDocuments()
     {
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
         global $G_PUBLISH;
         G::loadClass('configuration');
 
@@ -457,6 +497,13 @@ class Ajax
 
     public function getUsersToReassign()
     {
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
         $case = new Cases();
         $result->data = $case->getUsersToReassign($_SESSION['TASK'], $_SESSION['USER_LOGGED']);
 
@@ -594,6 +641,13 @@ class Ajax
 
     public function changeLogTab()
     {
+        if (!isset($_SESSION['USER_LOGGED'])) {
+            $response = new stdclass();
+            $response->message = G::LoadTranslation('ID_LOGIN_AGAIN');
+            $response->lostSession = true;
+            print G::json_encode( $response );
+            die();
+        }
         try {
             global $G_PUBLISH;
             require_once 'classes/model/AppHistory.php';

@@ -42,7 +42,7 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle, proUid, taskUid)
       limit:startRecord+loadSize
     },
     listeners:{
-      load:function(){
+      load:function(response){
         Ext.MessageBox.hide();
         if ( typeof(storeNotes.reader.jsonData.noPerms != 'undefined') &&
            (storeNotes.reader.jsonData.noPerms == '1') ) {
@@ -68,7 +68,22 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle, proUid, taskUid)
         caseNotesWindow.show();
         newNoteAreaActive = false;
         newNoteHandler();
+      },
+      exception: function(dp, type, action, options, response, arg)  {
+      responseObject = Ext.util.JSON.decode(response.responseText);
+      if (responseObject.lostSession) {
+           Ext.Msg.show({
+              title: _('ID_ERROR'),
+              msg: responseObject.message,
+              animEl: 'elId',
+              icon: Ext.MessageBox.ERROR,
+              buttons: Ext.MessageBox.OK,
+              fn : function(btn) {
+                location = location;
+              }
+            });
       }
+    }
     }
   });
   storeNotes.load();
@@ -350,8 +365,17 @@ function sendNote()
         Ext.getCmp('addCancelBtn').setDisabled(false);
         statusBarMessage( _('ID_CASES_NOTE_POST_SUCCESS'), false,true);
         storeNotes.load();
-      }
-      else {
+      } else if (data.lostSession) {
+        Ext.Msg.show({
+              title : _('ID_CASES_NOTE_POST_ERROR'),
+              msg : data.message,
+              icon : Ext.MessageBox.ERROR,
+              buttons : Ext.Msg.OK,
+              fn : function(btn) {
+                location = location;
+              }
+         });
+      } else {
         Ext.getCmp('caseNoteText').setDisabled(false);
         Ext.getCmp('sendBtn').setDisabled(false);
         Ext.getCmp('addCancelBtn').setDisabled(false);
@@ -476,8 +500,17 @@ var openSummaryWindow = function(appUid, delIndex, action)
         summaryWindow.add(summaryTabs);
         summaryWindow.doLayout();
         summaryWindow.show();
-      }
-      else {
+      } else if (response.lostSession) {
+          Ext.Msg.show({
+              title : "ERROR",
+              msg : response.message,
+              icon : Ext.MessageBox.ERROR,
+              buttons : Ext.Msg.OK,
+              fn : function(btn) {
+                   location = location;
+              }
+          });
+      } else {
         PMExt.warning(_('ID_WARNING'), response.message);
       }
       summaryWindowOpened = false;

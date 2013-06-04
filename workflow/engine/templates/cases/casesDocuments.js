@@ -453,33 +453,58 @@ function openActionDialog(caller, action, dataAux)
       var urlDownload = ext_itemgrid.getSelectionModel().getSelected().get("downloadLink");
 
       if (selectedRows.length == 1) {
-          if (ext_itemgrid.getSelectionModel().getSelected().get("appDocType") == "Output" && ext_itemgrid.getSelectionModel().getSelected().get("outDocGenerate") != "") {
-              dataAux = (dataAux != "")? dataAux : "pdf";
+    	  Ext.Ajax.request({
+              url : 'ajaxListener' ,
+              params : {action : 'verifySession'},
+              success: function ( result, request ) {
+                var data = Ext.util.JSON.decode(result.responseText);
+                if( data.lostSession ) {
+                 Ext.Msg.show({
+                        title: _('ID_ERROR'),
+                        msg: data.message,
+                        animEl: 'elId',
+                        icon: Ext.MessageBox.ERROR,
+                        buttons: Ext.MessageBox.OK,
+                        fn : function(btn) {
+                       location = location;
+                        }
+                      });
+                } else {
+                 if (ext_itemgrid.getSelectionModel().getSelected().get("appDocType") == "Output" && ext_itemgrid.getSelectionModel().getSelected().get("outDocGenerate") != "") {
+                        dataAux = (dataAux != "")? dataAux : "pdf";
 
-              urlDownload = stringReplace("&ext=.{3,}&", "&ext=" + dataAux + "&", urlDownload);
-          }
+                        urlDownload = stringReplace("&ext=.{3,}&", "&ext=" + dataAux + "&", urlDownload);
+                    }
 
-          if (ext_itemgrid.getSelectionModel().getSelected().get("appDocPlugin") != "") {
-              messageText = _("ID_DOWNLOADING_FILE") + " " + ext_itemgrid.getSelectionModel().getSelected().get("name");
-              statusBarMessage(messageText, true, true);
+                    if (ext_itemgrid.getSelectionModel().getSelected().get("appDocPlugin") != "") {
+                        messageText = _("ID_DOWNLOADING_FILE") + " " + ext_itemgrid.getSelectionModel().getSelected().get("name");
+                        statusBarMessage(messageText, true, true);
 
-              try {
-                  Ext.destroy(Ext.get("downloadIframe"));
-              } catch (e) {
+                        try {
+                            Ext.destroy(Ext.get("downloadIframe"));
+                        } catch (e) {
+                        }
+
+                        Ext.DomHelper.append(document.body, {
+                            tag: "iframe",
+                            id: "downloadIframe",
+                            frameBorder: 0,
+                            width: 0,
+                            height: 0,
+                            css: "display: none; visibility: hidden; height: 0px;",
+                            src: urlDownload
+                        });
+                    } else {
+                       streamFilefromPM(urlDownload);
+                    }
+                }
+              },
+              failure: function ( result, request) {
+               if (typeof(result.responseText) != 'undefined') {
+                       Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
+                   }
               }
-
-              Ext.DomHelper.append(document.body, {
-                  tag: "iframe",
-                  id: "downloadIframe",
-                  frameBorder: 0,
-                  width: 0,
-                  height: 0,
-                  css: "display: none; visibility: hidden; height: 0px;",
-                  src: urlDownload
-              });
-          } else {
-             streamFilefromPM(urlDownload);
-          }
+         });
       }
 
       /*
