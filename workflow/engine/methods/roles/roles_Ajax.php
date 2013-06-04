@@ -162,6 +162,12 @@ switch ($REQUEST) {
         foreach ($aUserIuds as $key => $val) {
             $sData['USR_UID'] = $val;
             $sData['ROL_UID'] = $ROL_UID;
+            if ($sData['USR_UID'] == '00000000000000000000000000000001') {
+                if ($sData['ROL_UID'] != 'PROCESSMAKER_ADMIN') {
+                    echo '{userRole: true}';
+                    break;
+                }
+            }
             $RBAC->assignUserToRole( $sData );
         }
 
