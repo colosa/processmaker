@@ -1039,7 +1039,7 @@ class AppCacheView extends BaseAppCacheView
             $criteria->getNewCriterion(AppCacheViewPeer::DEL_THREAD_STATUS, "OPEN"))
         )->addOr(
             //Paused
-            $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "PAUSED")->addAnd(
+            $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, array("DRAFT", "TO_DO"), Criteria::IN)->addAnd(
             $criteria->getNewCriterion(AppCacheViewPeer::APP_UID, AppCacheViewPeer::APP_UID . " IN ($sqlAppDelay)", Criteria::CUSTOM))
         )->addOr(
             //Cancelled - getCancelled()

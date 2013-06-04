@@ -3776,7 +3776,6 @@ class Cases
         $oAppDelay = new AppDelay();
         $oAppDelay->create($aData);
 
-        $aFields['APP_STATUS'] = 'PAUSED';
         $oApplication->update($aFields);
 
         //update searchindex
@@ -5370,13 +5369,13 @@ class Cases
 
                             while ($aRow = $oDataset->getRow()) {
                                 if ($TASK_SOURCE == $aRow['TAS_UID']) {
-                                    $delIndex[] = $aRow['DEL_INDEX'];  
+                                    $delIndex[] = $aRow['DEL_INDEX'];
                                 }
                                 $oDataset->next();
                             }
 
                             $RESULT['MSGS_HISTORY'] = array_merge(array('DEL_INDEX' => $delIndex), $RESULT['MSGS_HISTORY']);
-                        } 
+                        }
                         break;
 
                 }
