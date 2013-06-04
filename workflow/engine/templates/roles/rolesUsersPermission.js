@@ -753,7 +753,17 @@ SaveUsersRole = function(arr_usr, function_success, function_failure){
 	Ext.Ajax.request({
 		url: 'roles_Ajax',
 		params: {request: 'assignUserToRole', ROL_UID: ROLES.ROL_UID, aUsers: arr_usr.join(',')},
-		success: function(){
+		success: function( result, request ){
+				    var data = Ext.util.JSON.decode(result.responseText);
+		            if( data.userRole ) {
+		             Ext.Msg.show({
+		                  title: _('ID_WARNING'),
+		                  msg: _('ID_ADMINISTRATOR_ROLE_CANT_CHANGED'),
+		                  animEl: 'elId',
+		                  icon: Ext.MessageBox.WARNING,
+		                  buttons: Ext.MessageBox.OK
+		             });
+		            }
 					viewport.getEl().unmask();
 					function_success();
 				  },
