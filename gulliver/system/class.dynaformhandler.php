@@ -142,6 +142,7 @@ class dynaFormHandler
     //attributes (String node-name, Array attributes(atribute-name =>attribute-value, ..., ...), Array childs(child-name=>child-content), Array Child-childs())
     public function add($name, $attributes, $childs, $childs_childs = null)
     {
+
         $newnode = $this->root->appendChild($this->dom->createElement($name));
         if (isset($attributes['#cdata'])) {
             $newnode->appendChild($this->dom->createTextNode("\n"));
@@ -155,7 +156,11 @@ class dynaFormHandler
         if (is_array($childs)) {
             foreach ($childs as $child_name => $child_text) {
                 $newnode_child = $newnode->appendChild($this->dom->createElement($child_name));
-                $newnode_child->appendChild($this->dom->createTextNode($child_text));
+                if (strip_tags($child_text) !== $child_text) {
+                    $newnode_child->appendChild($this->dom->createCDATASection($child_text));
+                } else {
+                   $newnode_child->appendChild($this->dom->createTextNode($child_text));
+                }
                 if ($childs_childs != null and is_array($childs_childs)) {
                     foreach ($childs_childs as $cc) {
                         $ccmode = $newnode_child->appendChild($this->dom->createElement($cc['name']));
