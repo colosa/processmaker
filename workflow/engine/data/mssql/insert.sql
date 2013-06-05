@@ -5614,6 +5614,8 @@ SELECT 'LABEL','MSGS_HISTORY','en','Messages History','2013-04-17'
   UNION ALL
 SELECT 'LABEL','ID_EMPTY_ROW','en','You can''t leave an empty row.','2013-04-17' 
   UNION ALL
+SELECT 'LABEL','ID_MY_DRAFTS','en','My Drafts','2013-05-15' 
+  UNION ALL
 SELECT 'LABEL','ID_PAUSE_DATE','en','Pause Date','2013-04-09' 
   UNION ALL
 SELECT 'LABEL','ID_PERMISSION_NAME','en','Permission Name','2013-04-12' 
@@ -5759,11 +5761,11 @@ SELECT 'LABEL','ID_UPLOAD_LEAST_FILE','en','You may upload at least one file','2
 SELECT 'LABEL','ID_SELECT_DIRECTORY','en','Select a directory','2013-03-07' 
   UNION ALL
 SELECT 'LABEL','ID_DESTINATION','en','Destination','2013-03-07' 
-  UNION ALL
-SELECT 'LABEL','ID_FAILED_STORE_DATA','en','Failed to store data','2013-03-07' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
+SELECT 'LABEL','ID_FAILED_STORE_DATA','en','Failed to store data','2013-03-07' 
+  UNION ALL
 SELECT 'LABEL','ID_DELETE_TRANSLATIONS','en','Delete the selected translations?','2013-03-07' 
   UNION ALL
 SELECT 'LABEL','ID_PMTABLES_ALERT8','en','Set a Phisical Field Name for:','2013-03-07' 
@@ -5921,11 +5923,11 @@ SELECT 'LABEL','ID_RB_DATABASE_NAME','en','Rbac Database Name','2013-03-01'
 SELECT 'LABEL','ID_WF_DATABASE_NAME','en','Workflow Database Name','2013-03-01' 
   UNION ALL
 SELECT 'LABEL','ID_CHANGE_DATABASE_NAME','en','Change Database names','2013-03-01' 
-  UNION ALL
-SELECT 'LABEL','ID_ADMIN_USERNAME','en','Admin Username','2013-03-01' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
+SELECT 'LABEL','ID_ADMIN_USERNAME','en','Admin Username','2013-03-01' 
+  UNION ALL
 SELECT 'LABEL','ID_ADMIN_PASSWORD','en','Confirm Admin Password','2013-03-01' 
   UNION ALL
 SELECT 'LABEL','ID_WORKSPACE_NAME','en','Workspace Name','2013-03-01' 
@@ -6083,11 +6085,11 @@ SELECT 'LABEL','ID_EMPTY_NODENAME','en','The name field is empty','2013-05-15'
 SELECT 'LABEL','ID_TAS_DURATION_REQUIRE','en','Duration task required','2013-05-15' 
   UNION ALL
 SELECT 'LABEL','ID_NAME_TAS_TITLE_REQUIRE','en','Task title required','2013-05-15' 
-  UNION ALL
-SELECT 'LABEL','APP_TITLE_CASE_LABEL_UPDATE','en','The System has detected that the changes on case labels will affect more than 1000 records, so the work will be scheduled by the cron to perform the update the next time the cron will run.','2013-05-15' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
+SELECT 'LABEL','APP_TITLE_CASE_LABEL_UPDATE','en','The System has detected that the changes on case labels will affect more than 1000 records, so the work will be scheduled by the cron to perform the update the next time the cron will run.','2013-05-15' 
+  UNION ALL
 SELECT 'LABEL','ID_MESSAGE_LOGIN','en','The default language that is configured in this place is for the "dropdown" of the languages that are displaying on the login screen, this configuration is set for each workspace.','2013-05-15' 
   UNION ALL
 SELECT 'LABEL','ID_MESSAGE_SYSTEM','en','The language that is set by default applies directly when the domain is entered (eg.- http://127.0.0.1:8081), the system reads the configuration and redirects the link to the selected language','2013-05-15' 
@@ -6245,11 +6247,11 @@ SELECT 'LABEL','ID_CRON_ACTIONS_LOG','en','Cron Actions Log','2013-05-15'
 SELECT 'LABEL','ID_AUTH_SOURCE_MISSING','en','The plugin that is related to this authentication source was removed or disabled, please consult to your system administrator.','2013-05-15' 
   UNION ALL
 SELECT 'LABEL','ID_TRIGGER_REQUIRED','en','Trigger is required','2013-05-15' 
-  UNION ALL
-SELECT 'LABEL','ID_TIME_REQUIRED','en','Time is required','2013-05-15' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
+SELECT 'LABEL','ID_TIME_REQUIRED','en','Time is required','2013-05-15' 
+  UNION ALL
 SELECT 'LABEL','ID_CURRENT_WORKSPACE','en','Current Workspace','2013-05-15' 
   UNION ALL
 SELECT 'LABEL','ID_PM_FUNCTION_CHANGE_CASE','en','The "{0}" function has {1} the current case, the script has stopped to avoid conflicts.','2013-05-15' 
@@ -6361,6 +6363,58 @@ SELECT 'LABEL','ID_VALID_TO','en','To','2013-05-09'
 SELECT 'LABEL','ID_VALID_FROM','en','From','2013-05-09' 
   UNION ALL
 SELECT 'LABEL','ID_UPGRADE_SYSTEM','en','Upgrade System','2013-05-09' 
+  UNION ALL
+SELECT 'LABEL','ID_UNASSIGNED_INBOX','en','Unassigned Inbox','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_LOAD_MORE','en','Load More','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_SIGN_OUT','en','Sign out','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_START_A_NEW_CASE_FOR','en','Start a new case for:','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_LOGIN','en','Login','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_SIGN_IN','en','Sign In','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_REFRESH_VIEW','en','Refresh view','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_FINISHED_REFRESH_VIEW_SEE_SLOPE_WORK','en','You are now finished. Please refresh your view to see if you have any more work pending.','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_SEND_EMAIL_CASE_PARTICIPANTS','en','Send Email (Case Participants)','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_ADD_NOTE','en','Add Note','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_NO_MORE_APPLICATIONS','en','No more applications to show.','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_START','en','Start Case','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_TRIGGER_EDITOR_HINT_ADVISE_MESSAGE','en','Press Ctrl + Space in the Editor, to get the function list','2013-05-23' 
+  UNION ALL
+SELECT 'LABEL','ID_SAVED2 ','en','Saved...','2013-05-17' 
+  UNION ALL
+SELECT 'LABEL','ID_FAILED_VALIDATION_CLASS','en','Failed Validation in class','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_UID_DOESNT_EXIST','en','The row ''{USR_UID}'' in table USER doesn''t exist!','2013-05-17' 
+  UNION ALL
+SELECT 'LABEL','ID_FAILED_VALIDATION_IN_CLASS','en','Failed Validation in class','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_NOTE','en','Case Note','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_SLOW','en','slow','2013-05-16' 
+  UNION ALL
+SELECT 'LABEL','ID_FAILED_VALIDATIONS_IN_CLASS','en','Failed Validation in class {CLASS}.','2013-05-17' 
+  UNION ALL
+SELECT 'LABEL','ID_ERROR_CHANGE_SEQUENCE_NUMBER','en','Unable to generate numerical sequence another user performing the same request.','2013-05-21' 
+  UNION ALL
+SELECT 'LABEL','ID_CANT_RESOLVE_APPLICATION','en','Can''t resolve the Aplication ID for this request.','2013-05-17' 
+  UNION ALL
+SELECT 'LABEL','ID_FAILED_VALIDATION_IN_CLASS1','en','Failed Validation in class {CLASS}.','2013-05-17' 
+ ;
+INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
+
+SELECT 'LABEL','ID_REQUIRED_NAME_CASE_SCHEDULER','en','You forgot the name of the Case Scheduler','2013-05-28' 
+  UNION ALL
+SELECT 'LABEL','ID_DUPLICATE_CASE_SCHEDULER_NAME','en','Duplicate Case Scheduler name.','2013-05-28' 
  ;
 
 INSERT INTO ISO_LOCATION ([IC_UID],[IL_UID],[IL_NAME],[IL_NORMAL_NAME],[IS_UID]) 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) docSystem-373-g0bee2a7\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.5.1-testing.2\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-05-15 15:36:52\n"
+"PO-Revision-Date: 2013-06-05 13:33:25\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -12506,12 +12506,6 @@ msgid "m D, Y"
 msgstr "m D, Y"
 
 # TRANSLATION
-# LABEL/ID_DATE_FORMAT_17
-#: LABEL/ID_DATE_FORMAT_17
-msgid "d de F de Y"
-msgstr "d de F de Y"
-
-# TRANSLATION
 # LABEL/ID_EXPIRES_IN
 #: LABEL/ID_EXPIRES_IN
 msgid "Expires in"
@@ -12534,6 +12528,12 @@ msgstr "Messages History"
 #: LABEL/ID_EMPTY_ROW
 msgid "You can't leave an empty row."
 msgstr "You can't leave an empty row."
+
+# TRANSLATION
+# LABEL/ID_MY_DRAFTS
+#: LABEL/ID_MY_DRAFTS
+msgid "My Drafts"
+msgstr "My Drafts"
 
 # TRANSLATION
 # LABEL/ID_PAUSE_DATE
@@ -13056,6 +13056,12 @@ msgstr "Saving"
 #: LABEL/ID_UNPAUSING_CASE
 msgid "Unpausing case..."
 msgstr "Unpausing case..."
+
+# TRANSLATION
+# LABEL/ID_MY_INBOX
+#: LABEL/ID_MY_INBOX
+msgid "My inbox"
+msgstr "My inbox"
 
 # TRANSLATION
 # LABEL/ID_PAUSING_CASE
@@ -14748,6 +14754,156 @@ msgstr "From"
 #: LABEL/ID_UPGRADE_SYSTEM
 msgid "[LABEL/ID_UPGRADE_SYSTEM] Upgrade System"
 msgstr "Upgrade System"
+
+# TRANSLATION
+# LABEL/ID_UNASSIGNED_INBOX
+#: LABEL/ID_UNASSIGNED_INBOX
+msgid "Unassigned Inbox"
+msgstr "Unassigned Inbox"
+
+# TRANSLATION
+# LABEL/ID_LOAD_MORE
+#: LABEL/ID_LOAD_MORE
+msgid "Load More"
+msgstr "Load More"
+
+# TRANSLATION
+# LABEL/ID_SIGN_OUT
+#: LABEL/ID_SIGN_OUT
+msgid "Sign out"
+msgstr "Sign out"
+
+# TRANSLATION
+# LABEL/ID_START_A_NEW_CASE_FOR
+#: LABEL/ID_START_A_NEW_CASE_FOR
+msgid "Start a new case for:"
+msgstr "Start a new case for:"
+
+# TRANSLATION
+# LABEL/ID_LOGIN
+#: LABEL/ID_LOGIN
+msgid "[LABEL/ID_LOGIN] Login"
+msgstr "Login"
+
+# TRANSLATION
+# LABEL/ID_SIGN_IN
+#: LABEL/ID_SIGN_IN
+msgid "Sign In"
+msgstr "Sign In"
+
+# TRANSLATION
+# LABEL/ID_REFRESH_VIEW
+#: LABEL/ID_REFRESH_VIEW
+msgid "Refresh view"
+msgstr "Refresh view"
+
+# TRANSLATION
+# LABEL/ID_FINISHED_REFRESH_VIEW_SEE_SLOPE_WORK
+#: LABEL/ID_FINISHED_REFRESH_VIEW_SEE_SLOPE_WORK
+msgid "You are now finished. Please refresh your view to see if you have any more work pending."
+msgstr "You are now finished. Please refresh your view to see if you have any more work pending."
+
+# TRANSLATION
+# LABEL/ID_SEND_EMAIL_CASE_PARTICIPANTS
+#: LABEL/ID_SEND_EMAIL_CASE_PARTICIPANTS
+msgid "Send Email (Case Participants)"
+msgstr "Send Email (Case Participants)"
+
+# TRANSLATION
+# LABEL/ID_ADD_NOTE
+#: LABEL/ID_ADD_NOTE
+msgid "Add Note"
+msgstr "Add Note"
+
+# TRANSLATION
+# LABEL/ID_NO_MORE_APPLICATIONS
+#: LABEL/ID_NO_MORE_APPLICATIONS
+msgid "No more applications to show."
+msgstr "No more applications to show."
+
+# TRANSLATION
+# LABEL/ID_CASE_START
+#: LABEL/ID_CASE_START
+msgid "[LABEL/ID_CASE_START] Start Case"
+msgstr "Start Case"
+
+# TRANSLATION
+# LABEL/ID_TRIGGER_EDITOR_HINT_ADVISE_MESSAGE
+#: LABEL/ID_TRIGGER_EDITOR_HINT_ADVISE_MESSAGE
+msgid "Press Ctrl + Space in the Editor, to get the function list"
+msgstr "Press Ctrl + Space in the Editor, to get the function list"
+
+# TRANSLATION
+# LABEL/ID_SAVED2
+#: LABEL/ID_SAVED2
+msgid "Saved..."
+msgstr "Saved..."
+
+# TRANSLATION
+# LABEL/ID_FAILED_VALIDATION_CLASS
+#: LABEL/ID_FAILED_VALIDATION_CLASS
+msgid "Failed Validation in class"
+msgstr "Failed Validation in class"
+
+# TRANSLATION
+# LABEL/ID_USER_UID_DOESNT_EXIST
+#: LABEL/ID_USER_UID_DOESNT_EXIST
+msgid "The row '{USR_UID}' in table USER doesn't exist!"
+msgstr "The row '{USR_UID}' in table USER doesn't exist!"
+
+# TRANSLATION
+# LABEL/ID_FAILED_VALIDATION_IN_CLASS
+#: LABEL/ID_FAILED_VALIDATION_IN_CLASS
+msgid "[LABEL/ID_FAILED_VALIDATION_IN_CLASS] Failed Validation in class"
+msgstr "Failed Validation in class"
+
+# TRANSLATION
+# LABEL/ID_CASE_NOTE
+#: LABEL/ID_CASE_NOTE
+msgid "Case Note"
+msgstr "Case Note"
+
+# TRANSLATION
+# LABEL/ID_SLOW
+#: LABEL/ID_SLOW
+msgid "slow"
+msgstr "slow"
+
+# TRANSLATION
+# LABEL/ID_FAILED_VALIDATIONS_IN_CLASS
+#: LABEL/ID_FAILED_VALIDATIONS_IN_CLASS
+msgid "Failed Validation in class {CLASS}."
+msgstr "Failed Validation in class {CLASS}."
+
+# TRANSLATION
+# LABEL/ID_ERROR_CHANGE_SEQUENCE_NUMBER
+#: LABEL/ID_ERROR_CHANGE_SEQUENCE_NUMBER
+msgid "Unable to generate numerical sequence another user performing the same request."
+msgstr "Unable to generate numerical sequence another user performing the same request."
+
+# TRANSLATION
+# LABEL/ID_CANT_RESOLVE_APPLICATION
+#: LABEL/ID_CANT_RESOLVE_APPLICATION
+msgid "Can't resolve the Aplication ID for this request."
+msgstr "Can't resolve the Aplication ID for this request."
+
+# TRANSLATION
+# LABEL/ID_FAILED_VALIDATION_IN_CLASS1
+#: LABEL/ID_FAILED_VALIDATION_IN_CLASS1
+msgid "[LABEL/ID_FAILED_VALIDATION_IN_CLASS1] Failed Validation in class {CLASS}."
+msgstr "Failed Validation in class {CLASS}."
+
+# TRANSLATION
+# LABEL/ID_REQUIRED_NAME_CASE_SCHEDULER
+#: LABEL/ID_REQUIRED_NAME_CASE_SCHEDULER
+msgid "You forgot the name of the Case Scheduler"
+msgstr "You forgot the name of the Case Scheduler"
+
+# TRANSLATION
+# LABEL/ID_DUPLICATE_CASE_SCHEDULER_NAME
+#: LABEL/ID_DUPLICATE_CASE_SCHEDULER_NAME
+msgid "Duplicate Case Scheduler name."
+msgstr "Duplicate Case Scheduler name."
 
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
@@ -18262,8 +18418,8 @@ msgstr "Properties"
 # cases/cases_Scheduler_Edit.xml?SCH_NAME
 # cases/cases_Scheduler_Edit.xml
 #: text - SCH_NAME
-msgid "[cases/cases_Scheduler_Edit.xml?SCH_NAME] Description"
-msgstr "Description"
+msgid "[cases/cases_Scheduler_Edit.xml?SCH_NAME] Name"
+msgstr "Name"
 
 # cases/cases_Scheduler_Edit.xml?TAS_UID
 # cases/cases_Scheduler_Edit.xml
@@ -18639,7 +18795,7 @@ msgstr "Start a case based on following registered Plugin."
 
 # cases/cases_Scheduler_Edit.xml?UPDATE
 # cases/cases_Scheduler_Edit.xml
-#: submit - UPDATE
+#: button - UPDATE
 msgid "[cases/cases_Scheduler_Edit.xml?UPDATE] Update"
 msgstr "Update"
 
@@ -19227,7 +19383,7 @@ msgstr "Start a case based on following registered Plugin."
 
 # cases/cases_Scheduler_New.xml?SAVE
 # cases/cases_Scheduler_New.xml
-#: submit - SAVE
+#: button - SAVE
 msgid "[cases/cases_Scheduler_New.xml?SAVE] Save"
 msgstr "Save"
 
