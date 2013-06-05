@@ -1198,7 +1198,7 @@
     <column name="TAS_PRIORITY_VARIABLE" type="VARCHAR" size="100" required="true" default=""/>
     <column name="TAS_ASSIGN_TYPE" type="VARCHAR" size="30" required="true" default="BALANCED"/>
     <column name="TAS_ASSIGN_VARIABLE" type="VARCHAR" size="100" required="true" default="@@SYS_NEXT_USER_TO_BE_ASSIGNED"/>
-    <column name="TAS_GROUP_VARIABLE" type="VARCHAR" size="100" required="false" default="@@SYS_GROUP_TO_BE_ASSIGNED"/>
+    <column name="TAS_GROUP_VARIABLE" type="VARCHAR" size="100" required="false"/>
     <column name="TAS_MI_INSTANCE_VARIABLE" type="VARCHAR" size="100" required="true" default="@@SYS_VAR_TOTAL_INSTANCE"/>
     <column name="TAS_MI_COMPLETE_VARIABLE" type="VARCHAR" size="100" required="true" default="@@SYS_VAR_TOTAL_INSTANCES_COMPLETE"/>
     <column name="TAS_ASSIGN_LOCATION" type="VARCHAR" size="20" required="true" default="FALSE"/>
