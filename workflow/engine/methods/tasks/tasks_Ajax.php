@@ -69,6 +69,9 @@ try {
             }
             if ($aData['TAS_ASSIGN_TYPE'] == 'SELF_SERVICE_EVALUATE') {
                 $aData['TAS_ASSIGN_TYPE'] = 'SELF_SERVICE';
+                if(trim($aData['TAS_GROUP_VARIABLE']) == '') {
+                   $aData['TAS_GROUP_VARIABLE'] = '@@SYS_GROUP_TO_BE_ASSIGNED';
+                }
             } else {
                 $aData['TAS_GROUP_VARIABLE'] = '';
             }

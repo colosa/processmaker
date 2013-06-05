@@ -598,13 +598,17 @@ class workspaceTools
      * @param bool $checkOnly only check if the upgrade is needed if true
      * @return array bool upgradeSchema for more information
      */
-    public function upgradeDatabase($checkOnly = false)
+    public function upgradeDatabase ($checkOnly = false)
     {
+        G::LoadClass("patch");
+        $this->initPropel( true );
+        patch::is_11835Applicable();
         $systemSchema = System::getSystemSchema();
-        $this->upgradeSchema($systemSchema);
+        $this->upgradeSchema( $systemSchema );
         $this->upgradeData();
+        patch::execute_11835();
         return true;
-    }
+    }	
 
     /**
      * Upgrade this workspace database from a schema
