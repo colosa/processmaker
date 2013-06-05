@@ -10,16 +10,21 @@ G::LoadClass("System");
  *
  */
 
-class patch
+abstract class patch
 {
-    static private $isPathchable = false;
-    
+    static protected $isPathchable = false;
+    abstract static public function isApplicable();
+    abstract static public function execute();
+}
+
+class p11835 extends patch 
+{
     /*
      * Note.- Use before upgrade DB.
      * Check if the table TASK has the field TAS_GROUP_VARIABLE
      * @return boolean
      */
-    static public function is_11835Applicable()
+    static public function isApplicable()
     {
         patch::$isPathchable = false;
         $con = Propel::getConnection("workflow");
@@ -30,7 +35,6 @@ class patch
             if ($row ['Field'] == "TAS_GROUP_VARIABLE") {
                 $version = System::getVersion ();
                 $version = explode('-',$version);
-                //$pos = strpos($version,'2.5.1-testing');
                 if ($version[0] == '2.5.1') {
                     echo "Version " . $version[0] . " Patch\n";
                     patch::$isPathchable = true;
@@ -48,7 +52,7 @@ class patch
      * if the current task has asignated users, means SELF_SERVICE only, 
      * otherwise leave TAS_GROUP_VARIABLE as it is.
      */
-    static public function execute_11835()
+    static public function execute()
     {
         //Check if this is the version to apply the patch
         $count = 0;
@@ -79,5 +83,4 @@ class patch
         echo $count. " records where patched to use SELF_SERVICE feature.\n";
     }
 }
-
 

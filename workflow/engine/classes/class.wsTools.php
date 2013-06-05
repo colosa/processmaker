@@ -602,11 +602,11 @@ class workspaceTools
     {
         G::LoadClass("patch");
         $this->initPropel( true );
-        patch::is_11835Applicable();
+        p11835::isApplicable();
         $systemSchema = System::getSystemSchema();
         $this->upgradeSchema( $systemSchema );
         $this->upgradeData();
-        patch::execute_11835();
+        p11835::execute();
         return true;
     }	
 
