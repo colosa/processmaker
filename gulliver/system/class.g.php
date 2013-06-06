@@ -370,7 +370,7 @@ class G
         $files = glob( $dir . '*', GLOB_MARK );
         foreach ($files as $file ) {
             if (substr( $file, -1 ) == '/' ) {
-                $this->delTree( $file );
+                self::delTree( $file );
             } else {
                 unlink( $file );
             }

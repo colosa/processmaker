@@ -579,8 +579,7 @@ class Bootstrap
         //trick to generate the translation.language.js file , merging two files
         if (strtolower($typefile) == 'js' && $typearray[0] == 'translation') {
             Bootstrap::sendHeaders($filename, 'text/javascript', $download, $downloadFileName);
-
-            if ($typearray[1] != "enterprise") {
+            if ($typearray[1] != "enterprise" && $typearray[1] != "pmCaseArchive") {
                 $arrayAux = array($typearray[0], $typearray[1], $typearray[count($typearray) - 1]);
 
                 $filename = str_replace(implode(".", $typearray), implode(".", $arrayAux), $filename);
