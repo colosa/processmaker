@@ -473,12 +473,15 @@ class headPublisher
         if (!is_file($sPath . $filename . ".js")) {
             $aux = explode(PATH_SEP, $filename);
             //check if G_PLUGIN_CLASS is defined, because publisher can be called without an environment
-            if (count($aux) == 2 && defined('G_PLUGIN_CLASS')) {
+            if (count($aux) > 2 && defined('G_PLUGIN_CLASS')) {
+                $keyPlugin = count($aux)-2;
+
                 $oPluginRegistry = & PMPluginRegistry::getSingleton();
-                if ($oPluginRegistry->isRegisteredFolder($aux[0])) {
-                    array_push($this->extJsLibrary, 'translation.' . trim($aux[0]) . '.' . SYS_LANG);
-                    $sPath = PATH_PLUGINS;
+                if (!($oPluginRegistry->isRegisteredFolder($aux[$keyPlugin]))) {
+                    $keyPlugin --;
                 }
+                array_push($this->extJsLibrary, 'translation.' . trim($aux[$keyPlugin]) . '.' . SYS_LANG);
+                $sPath = PATH_PLUGINS;
             }
         }
 
