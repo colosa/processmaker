@@ -354,7 +354,7 @@ Ext.onReady(function(){
     height:100,
      autoWidth : true,
      stateful : true,
-     stateId : 'grid',
+     stateId : 'gridUserLists',
      enableColumnResize: true,
      enableHdMenu: true,
      frame:false,

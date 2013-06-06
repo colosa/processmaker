@@ -306,7 +306,7 @@
         width:'',
         title : '',
         stateful : true,
-        stateId : 'grid',
+        stateId : 'gridGenerateDoc',
         enableColumnResize: true,
         enableHdMenu: true,
         frame:false,

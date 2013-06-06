@@ -53,7 +53,7 @@ Ext.onReady(function(){
     //width:'300',
     title : '',
     stateful : true,
-    stateId : 'grid',
+    stateId : 'gridTooldMain',
     enableColumnResize: true,
     enableHdMenu: true,
     //frame:false,

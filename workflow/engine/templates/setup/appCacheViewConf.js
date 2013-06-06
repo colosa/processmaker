@@ -41,7 +41,7 @@ Ext.onReady(function() {
       title : _('ID_CACHE_TITLE_INFO'), // 'Workflow Applications Cache Info',
       // config options for stateful behavior
       stateful : true,
-      stateId : 'grid',
+      stateId : 'gridAppCacheView',
       enableColumnHide: false,
       enableColumnResize: false,
       enableHdMenu: false

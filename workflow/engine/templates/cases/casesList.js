@@ -1454,7 +1454,7 @@ Ext.onReady ( function() {
              width:'300',
              title : '',
              stateful : true,
-             stateId : 'grid',
+             stateId : 'gridCasesList',
              enableColumnResize: true,
              enableHdMenu: true,
              frame:false,

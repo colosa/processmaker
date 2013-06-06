@@ -380,7 +380,7 @@
         width:'',
         title : '',
         stateful : true,
-        stateId : 'grid',
+        stateId : 'gridUploadDoc',
         enableColumnResize: true,
         enableHdMenu: true,
         frame:false,

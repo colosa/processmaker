@@ -251,7 +251,7 @@
         width:'',
         title : '',
         stateful : true,
-        stateId : 'grid',
+        stateId : 'gridCaseHistory',
         enableColumnResize: true,
         enableHdMenu: true,
         frame:false,

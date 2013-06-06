@@ -321,7 +321,7 @@ Ext.onReady(function(){
       autoWidth : true,
       title : (PRO_UID? _('ID_REPORT_TABLES') : _('ID_PMTABLE')),
       stateful : true,
-      stateId : 'grid',
+      stateId : 'gridList',
       enableColumnResize: true,
       enableHdMenu: true,
       frame:false,

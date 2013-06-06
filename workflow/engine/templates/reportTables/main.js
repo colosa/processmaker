@@ -330,7 +330,7 @@ Ext.onReady(function(){
       autoWidth : true,
       title : _('ID_REPORT_TABLES'),
       stateful : true,
-      stateId : 'grid',
+      stateId : 'gridReportMain',
       enableColumnResize: true,
       enableHdMenu: true,
       frame:false,

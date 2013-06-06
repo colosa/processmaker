@@ -517,7 +517,7 @@ var ActionTabFrameGlobal = '';
         width:'',
         title : '',
         stateful : true,
-        stateId : 'grid',
+        stateId : 'gridCaseMessageHistory',
         enableColumnResize: true,
         enableHdMenu: true,
         frame:false,

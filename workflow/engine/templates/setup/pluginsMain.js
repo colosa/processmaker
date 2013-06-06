@@ -72,7 +72,7 @@ Ext.onReady(function(){
     width:'',
     title : '',
     stateful : true,
-    stateId : 'grid',
+    stateId : 'gridPluginMain',
     enableColumnResize: true,
     enableHdMenu: true,
     frame:false,

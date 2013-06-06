@@ -167,7 +167,7 @@ Ext.onReady(function(){
     width:'',
     title : '',
     stateful : true,
-    stateId : 'grid',
+    stateId : 'gridProcessMain',
     enableColumnResize: true,
     enableHdMenu: true,
     frame:false,

@@ -229,7 +229,7 @@ Ext.onReady(function(){
     autoWidth : true,
     title : '',
     stateful : true,
-    stateId : 'grid',
+    stateId : 'gridSetupLanguage',
     enableColumnHide: false,
     enableColumnResize: true,
     enableHdMenu: false,

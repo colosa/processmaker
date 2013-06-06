@@ -325,7 +325,7 @@ Ext.onReady(function(){
     autoWidth : true,
     //title : _('ID_PM_TABLE') + " : " + tableDef.ADD_TAB_NAME,
     stateful : true,
-    stateId : 'grid',
+    stateId : 'gridData',
     enableColumnResize: true,
     enableHdMenu: true,
     frame:false,

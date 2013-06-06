@@ -96,7 +96,7 @@ Ext.onReady(function(){
     height          : 100,
     width           : 200,
     stateful        : true,
-    stateId         : 'grid',
+    stateId         : 'gridReportEdit',
     enableColumnResize : true,
     enableHdMenu  : true,
     frame      : false,

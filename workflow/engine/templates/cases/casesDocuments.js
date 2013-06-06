@@ -1181,7 +1181,7 @@ var getGrid = function( data, element) {
     border: false,
     width: '100%',
     stateful: true,
-    stateId: 'grid',
+    stateId: 'gridCasesDocuments',
     header:false,
     headerAsText:false,
     hideHeaders:true,
