@@ -122,10 +122,7 @@ PMExtJSCommon = function() {
         },
         {
             width : valueColumnWidth,
-            dataIndex : "value",
-            renderer: function (v) {
-                return Ext.util.Format.htmlEncode(v);
-            }
+            dataIndex : "value"
         },
         {
             hidden: true,

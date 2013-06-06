@@ -252,20 +252,19 @@ class AppProxy extends HttpProxyController
         $currentUser = $applicationFields['CURRENT_USER'] != '' ? $applicationFields['CURRENT_USER'] : '[' . G::LoadTranslation( 'ID_UNASSIGNED' ) . ']';
 
         $data[] = array ('label' => $labels['PRO_TITLE'],'value' => $processData['PRO_TITLE'],'section' => $labels['TITLE1']);
-        $data[] = array ('label' => $labels['TITLE'],'value' => $applicationFields['TITLE'],'section' => $labels['TITLE1']);
+        $data[] = array ("label" => $labels["TITLE"], "value" => htmlentities($applicationFields["TITLE"], ENT_QUOTES, "UTF-8"), "section" => $labels["TITLE1"]);
         $data[] = array ('label' => $labels['APP_NUMBER'],'value' => $applicationFields['APP_NUMBER'],'section' => $labels['TITLE1']);
         $data[] = array ('label' => $labels['STATUS'],'value' => $applicationFields['STATUS'],'section' => $labels['TITLE1']);
         $data[] = array ('label' => $labels['APP_UID'],'value' => $applicationFields['APP_UID'],'section' => $labels['TITLE1']);
         $data[] = array ('label' => $labels['CREATOR'],'value' => $applicationFields['CREATOR'],'section' => $labels['TITLE1']);
         $data[] = array ('label' => $labels['CREATE_DATE'],'value' => $applicationFields['CREATE_DATE'],'section' => $labels['TITLE1']);
         $data[] = array ('label' => $labels['UPDATE_DATE'],'value' => $applicationFields['UPDATE_DATE'],'section' => $labels['TITLE1']);
-        $data[] = array ('label' => $labels['DESCRIPTION'],'value' => $applicationFields['DESCRIPTION'],'section' => $labels['TITLE1']);
+        $data[] = array ("label" => $labels["DESCRIPTION"], "value" => htmlentities($applicationFields["DESCRIPTION"], ENT_QUOTES, "UTF-8"), "section" => $labels["TITLE1"]);
 
         // note added by krlos pacha carlos[at]colosa[dot]com
         //getting this field if it doesn't exist. Related 7994 bug
         $taskData['TAS_TITLE'] = (array_key_exists( 'TAS_TITLE', $taskData )) ? $taskData['TAS_TITLE'] : Content::Load( "TAS_TITLE", "", $applicationFields['TAS_UID'], SYS_LANG );
-
-        $data[] = array ('label' => $labels['TAS_TITLE'],'value' => $taskData['TAS_TITLE'],'section' => $labels['TITLE2']);
+        $data[] = array ("label" => $labels["TAS_TITLE"], "value" => htmlentities($taskData["TAS_TITLE"], ENT_QUOTES, "UTF-8"), "section" => $labels["TITLE2"]);
         $data[] = array ('label' => $labels['CURRENT_USER'],'value' => $currentUser,'section' => $labels['TITLE2']);
         $data[] = array ('label' => $labels['DEL_DELEGATE_DATE'],'value' => $applicationFields['DEL_DELEGATE_DATE'],'section' => $labels['TITLE2']);
         $data[] = array ('label' => $labels['DEL_INIT_DATE'],'value' => $applicationFields['DEL_INIT_DATE'],'section' => $labels['TITLE2']);

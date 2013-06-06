@@ -487,7 +487,7 @@ INPUT {
   background-color: #F9F9F9;
   background-color: #FFF;
   overflow: auto;
-  padding-top: 15px;
+  padding-top: 0px;
 }
 .panel_statusBar___processmaker {
   position: relative;
