@@ -482,7 +482,7 @@ class headPublisher
                     $flagPlugin = true;
                 } else {
                     $keyPlugin --;
-                    if ($oPluginRegistry->isRegisteredFolder($aux[$keyPlugin]))) {
+                    if ($oPluginRegistry->isRegisteredFolder($aux[$keyPlugin])) {
                         $flagPlugin = true;
                     }
                 }
