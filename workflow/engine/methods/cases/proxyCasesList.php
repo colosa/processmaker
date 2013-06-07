@@ -26,6 +26,10 @@ $dateFrom = isset( $_POST["dateFrom"] ) ? substr( $_POST["dateFrom"], 0, 10 ) : 
 $dateTo = isset( $_POST["dateTo"] ) ? substr( $_POST["dateTo"], 0, 10 ) : "";
 $first = isset( $_POST["first"] ) ? true :false;
 
+if ($sort == 'CASE_SUMMARY' || $sort == 'CASE_NOTES_COUNT') {
+    $sort = 'APP_NUMBER';//DEFAULT VALUE
+}
+
 try {
     $userUid = (isset($_SESSION["USER_LOGGED"]) && $_SESSION["USER_LOGGED"] != "")? $_SESSION["USER_LOGGED"] : null;
     $result = "";

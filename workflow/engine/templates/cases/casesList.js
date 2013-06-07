@@ -573,6 +573,9 @@ Ext.onReady ( function() {
     if( c.dataIndex == 'CASE_SUMMARY')          c.renderer = renderSummary;
     if( c.dataIndex == 'CASE_NOTES_COUNT')      c.renderer = renderNote;
 
+    if( c.dataIndex == 'CASE_SUMMARY')          c.sortable = false;
+    if( c.dataIndex == 'CASE_NOTES_COUNT')      c.sortable = false;
+
     //Format the name if is disabled solr, otherwise show without format
     if (solrEnabled == 0) {
         if( c.dataIndex == 'APP_DEL_PREVIOUS_USER') c.renderer = previous_full_name;
