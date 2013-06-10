@@ -4631,7 +4631,11 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
             $ugly['tm_min'],
             $ugly['tm_sec']
         );
-        $new_schedule = new DateTime($ymd);
+        try {
+            $new_schedule = new DateTime($ymd);
+        } catch (Exception $error) {
+            $new_schedule = new DateTime();
+        }
         return $new_schedule->format('Y-m-d' . ($withHours ? ' H:i:s' : ''));
     }
 }
