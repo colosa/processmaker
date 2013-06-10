@@ -473,7 +473,7 @@ class headPublisher
         if (!is_file($sPath . $filename . ".js")) {
             $aux = explode(PATH_SEP, $filename);
             //check if G_PLUGIN_CLASS is defined, because publisher can be called without an environment
-            if (count($aux) > 2 && defined('G_PLUGIN_CLASS')) {
+            if (count($aux) > 1 && defined('G_PLUGIN_CLASS')) {
                 $flagPlugin = false;
                 $keyPlugin = count($aux)-2;
 
