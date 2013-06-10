@@ -5953,11 +5953,47 @@ if (!function_exists('strptime')) {
             return false;
         }
 
+        if (!isset($out['S'])) {
+            $out['S'] = 0;
+        } else {
+            $out['S'] = (int) $out['S'];
+        }
+
+        if (!isset($out['M'])) {
+            $out['M'] = 0;
+        } else {
+            $out['M'] = (int) $out['M'];
+        }
+
+        if (!isset($out['H'])) {
+            $out['H'] = 0;
+        } else {
+            $out['H'] = (int) $out['H'];
+        }
+
+        if (!isset($out['d'])) {
+            $out['d'] = 0;
+        } else {
+            $out['d'] = (int) $out['d'];
+        }
+
+        if (!isset($out['m'])) {
+            $out['m'] = 0;
+        } else {
+            $out['m'] = (int) $out['m'];
+        }
+
+        if (!isset($out['Y'])) {
+            $out['Y'] = 0;
+        } else {
+            $out['Y'] = (int) $out['Y'];
+        }
+
         $ret = array(
-            "tm_sec"  => (int) isset($out['S']) ? $out['S'] : 0,
-            "tm_min"  => (int) isset($out['M']) ? $out['M'] : 0,
-            "tm_hour" => (int) isset($out['H']) ? $out['H'] : 0,
-            "tm_mday" => (int) $out['d'],
+            "tm_sec"  => $out['S'],
+            "tm_min"  => $out['M'],
+            "tm_hour" => $out['H'],
+            "tm_mday" => $out['d'],
             "tm_mon"  => $out['m'] ? $out['m'] - 1 : 0,
             "tm_year" => $out['Y'] > 1900 ? $out['Y'] - 1900 : 0,
         );
