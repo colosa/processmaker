@@ -20,7 +20,11 @@ $action = isset( $_GET['action'] ) ? $_GET['action'] : (isset( $_POST['action'] 
 $type = isset( $_GET['type'] ) ? $_GET['type'] : (isset( $_POST['type'] ) ? $_POST['type'] : 'extjs');
 $user = isset( $_POST['user'] ) ? $_POST['user'] : '';
 
-$sentUids = explode( ',', $_POST['APP_UIDS'] );
+if (isset($_POST['APP_UIDS'])) {
+    $sentUids = explode( ',', $_POST['APP_UIDS'] );
+} else {
+    $sentUids = array();
+}
 
 $allUidsRecords = array ();
 $allTasUids = array ();
