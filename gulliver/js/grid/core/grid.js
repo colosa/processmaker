@@ -734,32 +734,41 @@ var G_Grid = function(oForm, sGridName){
     }
   };
 
-  this.deleteGridRow = function (sRow, bWithoutConfirm)
-  {
-      if (typeof(bWithoutConfirm) == "undefined") {
-          bWithoutConfirm = false;
-      }
-
-      if (this.oGrid.rows.length == 3) {
-          new leimnud.module.app.alert().make({
-              label: G_STRINGS.ID_MSG_NODELETE_GRID_ITEM
-          });
-
-          return false;
-      }
-
-      if (bWithoutConfirm) {
-          this.deleteRowWC(this, sRow);
-      } else {
-          new leimnud.module.app.confirm().make({
-              label: G_STRINGS.ID_MSG_DELETE_GRID_ITEM,
-              action: function ()
-                {
-                    this.deleteRowWC(this, sRow);
-                }.extend(this)
-          });
-      }
-  };
+    this.deleteGridRow = function (sRow, bWithoutConfirm)
+    {
+        if (typeof(bWithoutConfirm) == "undefined") {
+            bWithoutConfirm = false;
+        }
+        if (this.oGrid.rows.length == 2) {
+            new leimnud.module.app.alert().make({
+                label: G_STRINGS.ID_MSG_NODELETE_GRID_ITEM
+            });
+            return false;
+        }
+        if (bWithoutConfirm) {
+            if (this.oGrid.rows.length == 3) {
+                this.clearRowWC(this, sRow);
+            } else {
+                this.deleteRowWC(this, sRow);
+            }
+        } else {
+            if (this.oGrid.rows.length == 3) {
+                new leimnud.module.app.confirm().make({
+                    label: _('ID_MSG_CLEAR_GRID_FIRST_ITEM'),
+                    action: function () {
+                        this.clearRowWC(this, sRow);
+                    }.extend(this)
+                });
+            } else {
+                new leimnud.module.app.confirm().make({
+                    label: G_STRINGS.ID_MSG_DELETE_GRID_ITEM,
+                    action: function () {
+                        this.deleteRowWC(this, sRow);
+                    }.extend(this)
+                });
+            }
+        }
+    };
 
   this.deleteRowWC = function (oObj, aRow)
   {
@@ -929,6 +938,43 @@ var G_Grid = function(oForm, sGridName){
         oObj.ondeleterow(iRow);
     }
   };
+
+    this.clearRowWC = function (oObj, aRow)
+    {
+        var i = 0;
+        var elemNodeName = '';
+        var objects = '';
+        for (i = 1; i < oObj.oGrid.rows[1].cells.length; i++) {
+            var oCell1 = oObj.oGrid.rows[1].cells[i];
+            elemNodeName = oCell1.innerHTML.substring(oCell1.innerHTML.indexOf("<") + 1, oCell1.innerHTML.indexOf(" ")).toLowerCase();
+            switch (elemNodeName) {
+                case "input":
+                    objects = oCell1.getElementsByTagName('input');
+                    if (objects[0].type == 'checkbox') {
+                        document.getElementById(objects[0].id).checked = false ;
+                    } else {
+                        document.getElementById(objects[0].id).value = '';
+                        fieldSuggest = (objects[0].id).substring(0, (objects[0].id).length-7) + "]";
+                        if ( document.getElementById(fieldSuggest) != null) {
+                            document.getElementById(fieldSuggest).value = '';
+                            oObj.aElements[i-1].updateDepententFields();
+                        }
+                    }
+                    break;
+                case "select":
+                    objects = oCell1.getElementsByTagName("select");
+                    document.getElementById(objects[0].id).selectedIndex = "" ;
+                    oObj.aElements[i-1].updateDepententFields();
+                    break;
+                case "textarea":
+                    objects = oCell1.getElementsByTagName('textarea');
+                    document.getElementById(objects[0].id).value = '' ;
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
   ///////////////////////////////////////////////////////////////////////////////////
 
