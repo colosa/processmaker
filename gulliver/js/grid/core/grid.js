@@ -942,6 +942,9 @@ var G_Grid = function(oForm, sGridName){
     this.clearRowWC = function (oObj, aRow)
     {
         var i = 0;
+        var j = 0;
+        var iAux = 0;
+        var pmLabel = '';
         var elemNodeName = '';
         var objects = '';
         for (i = 1; i < oObj.oGrid.rows[1].cells.length; i++) {
@@ -957,9 +960,31 @@ var G_Grid = function(oForm, sGridName){
                         fieldSuggest = (objects[0].id).substring(0, (objects[0].id).length-7) + "]";
                         if ( document.getElementById(fieldSuggest) != null) {
                             document.getElementById(fieldSuggest).value = '';
-                            oObj.aElements[i-1].updateDepententFields();
                         }
                     }
+                    if (oObj.aFunctions.length>0) {
+                        pmLabel = '';
+                        for (iAux = 0; iAux <= objects[0].attributes.length - 1; iAux++) {
+                            if ( objects[0].attributes[iAux].name == "pm:label" ) {
+                                pmLabel = objects[0].attributes[iAux].nodeValue;
+                                break;
+                            }
+                        }
+                        for (j = 0; j < oObj.aFunctions.length; j++) {
+                            if ( pmLabel != '' && pmLabel == oObj.aFunctions[j].sFieldName) {
+                                switch (oObj.aFunctions[j].sFunction) {
+                                    case "sum":
+                                        oObj.sum(false, document.getElementById(objects[0].id));
+                                        break;
+                                    case "avg":
+                                        oObj.avg(false, document.getElementById(objects[0].id));
+                                        break;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    oObj.aElements[i-1].updateDepententFields();
                     break;
                 case "select":
                     objects = oCell1.getElementsByTagName("select");
@@ -975,7 +1000,6 @@ var G_Grid = function(oForm, sGridName){
             }
         }
     };
-
   ///////////////////////////////////////////////////////////////////////////////////
 
   this.assignFunctions = function (aFields, sEvent, iRow)
