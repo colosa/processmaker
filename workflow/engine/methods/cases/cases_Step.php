@@ -219,12 +219,15 @@ try {
             $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['DYNUIDPRINT'] = $_GET['UID'];
 
             $oHeadPublisher = & headPublisher::getSingleton();
-            $oHeadPublisher->addScriptCode( "
-      if (typeof parent != 'undefined') {
-        if (parent.setNode) {
-          parent.setNode('" . $_GET['UID'] . "');
-        }
-      }" );
+
+            if(!isset($_SESSION["PROCESSMAKER_RUN_OUTSIDE_MAIN_APPLICATION"])) {
+                $oHeadPublisher->addScriptCode( "
+                                                    if (typeof parent != 'undefined') {
+                                                        if (parent.setNode) {
+                                                            parent.setNode('" . $_GET['UID'] . "');
+                                                        }
+                                                    }" );
+            }
 
             $oStep = new Step();
             $oStep = $oStep->loadByProcessTaskPosition( $_SESSION['PROCESS'], $_SESSION['TASK'], $_GET['POSITION'] );
@@ -996,16 +999,20 @@ try {
 
 $oHeadPublisher = & headPublisher::getSingleton();
 $oHeadPublisher->addScriptFile( "/jscore/cases/core/cases_Step.js" );
-$oHeadPublisher->addScriptCode( "
-  if (typeof parent != 'undefined') {
-    if (parent.showCaseNavigatorPanel) {
-      parent.showCaseNavigatorPanel('$sStatus');
-    }
 
-    if (parent.setCurrent) {
-      parent.setCurrent('" . $_GET['UID'] . "');
-    }
-  }" );
+if(!isset($_SESSION["PROCESSMAKER_RUN_OUTSIDE_MAIN_APPLICATION"])) {
+    $oHeadPublisher->addScriptCode( "
+                                        if (typeof parent != 'undefined') {
+                                            if (parent.showCaseNavigatorPanel) {
+                                                parent.showCaseNavigatorPanel('$sStatus');
+                                            }
+
+                                            if (parent.setCurrent) {
+                                                parent.setCurrent('" . $_GET['UID'] . "');
+                                            }
+                                        }" );
+
+}
 
 G::RenderPage( 'publish', 'blank' );
 
