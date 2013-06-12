@@ -215,8 +215,12 @@ class dynaformEditor extends WebResource
         $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_FIELDS_LIST"), $sName . '[6]', 'dynaformEditor.changeToFieldsList', 'dynaformEditor.saveCurrentView');
         $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_JAVASCRIPTS"), $sName . '[7]', 'dynaformEditor.changeToJavascripts', 'dynaformEditor.saveCurrentView');
         $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_PROPERTIES"), $sName . '[8]', 'dynaformEditor.changeToProperties', 'dynaformEditor.saveCurrentView');
+
         //for showHide tab option @Neyek
-        $G_PUBLISH->AddContent('panel-tab', G::LoadTranslation("ID_CONDITIONS_EDITOR"), $sName . '[9]', 'dynaformEditor.changeToShowHide', 'dynaformEditor.saveShowHide');
+        if ($Properties["DYN_TYPE"] != "grid") {
+            $G_PUBLISH->AddContent("panel-tab", G::LoadTranslation("ID_CONDITIONS_EDITOR"), $sName . "[9]", "dynaformEditor.changeToShowHide", "dynaformEditor.saveShowHide");
+        }
+
         $G_PUBLISH->AddContent('panel-close');
         $oHeadPublisher->addScriptFile("/js/maborak/core/maborak.loader.js",2);
         $oHeadPublisher->addScriptFile('/jscore/dynaformEditor/core/dynaformEditor.js');
