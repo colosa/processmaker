@@ -138,8 +138,6 @@ try {
         $oStep = new Step();
         $sUidGrids = $oStep->lookingforUidGrids( $sPRO_UID, $sDYNAFORM );
 
-        $browserCacheFilesUid = G::browserCacheFilesGetUid();
-
         $template->assign("URL_MABORAK_JS", G::browserCacheFilesUrl("/js/maborak/core/maborak.js"));
         $template->assign("URL_TRANSLATION_ENV_JS", G::browserCacheFilesUrl("/jscore/labels/" . SYS_LANG . ".js"));
         $template->assign("siteUrl", $http . $_SERVER["HTTP_HOST"]);

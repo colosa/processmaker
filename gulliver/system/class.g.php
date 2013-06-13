@@ -5080,21 +5080,19 @@ class G
         $arrayLibrary = array();
 
         //Translations /js/ext/translation.en.js
-        $arrayLibrary["translation"] = ""; //Not use null
+        //Translations /js/ext/translation.xxx.en.js //xxx is an plugin
+        $arrayLibrary["translation"] = 1; //Not use null
 
         //Translation environment /jscore/labels/en.js
-        $translationEnvFilePath = PATH_DATA . "META-INF" . PATH_SEP . "translations.env";
-
-        if (file_exists($translationEnvFilePath)) {
-            $arrayData = unserialize(file_get_contents($translationEnvFilePath));
-            $path = PATH_CORE . "js" . PATH_SEP . "labels" . PATH_SEP;
+        if (file_exists(PATH_DATA . "META-INF" . PATH_SEP . "translations.env")) {
+            $arrayData = unserialize(file_get_contents(PATH_DATA . "META-INF" . PATH_SEP . "translations.env"));
 
             foreach ($arrayData as $index1 => $value1) {
                 foreach ($value1 as $index2 => $value2) {
                     $record = $value2;
 
-                    if (file_exists($path . $record["LOCALE"] . ".js")) {
-                        $arrayLibrary[$record["LOCALE"]] = $path;
+                    if (file_exists(PATH_CORE . "js" . PATH_SEP . "labels" . PATH_SEP . $record["LOCALE"] . ".js")) {
+                        $arrayLibrary[$record["LOCALE"]] = 1;
                     }
                 }
             }
@@ -5111,7 +5109,7 @@ class G
                     $lib->build_js_to = $lib->build_js_to . "/";
                 }
 
-                $arrayLibrary[$lib->name] = PATH_TRUNK . $lib->build_js_to;
+                $arrayLibrary[$lib->name] = 1;
             }
         }
 
@@ -5120,33 +5118,12 @@ class G
 
     public static function browserCacheFilesSetUid()
     {
-        //Set UID
         $uid = G::generateUniqueID();
 
         $arrayData = array();
         $arrayData["browser_cache_files_uid"] = $uid;
 
         G::update_php_ini(PATH_CONFIG . "env.ini", $arrayData);
-
-        //Set file JavaScript
-        $arrayLibrary = G::browserCacheFilesGetLibraryJs();
-
-        foreach ($arrayLibrary as $index => $value) {
-            $name = $index;
-            $path = $value;
-
-            if (!empty($path)) {
-                foreach (glob($path . $name . "*") as $file) {
-                    if (preg_match("/^\.\w{32}\.js$/i", str_replace($path . $name, null, $file))) {
-                        @unlink($file); //Delete old file
-                    }
-                }
-
-                if (file_exists($path . $name . ".js")) {
-                    @copy($path . $name . ".js", $path . $name . "." . $uid . ".js"); //Create new file
-                }
-            }
-        }
     }
 
     public static function browserCacheFilesGetUid()
@@ -5175,20 +5152,7 @@ class G
                     $arrayLibrary = G::browserCacheFilesGetLibraryJs();
 
                     if (isset($arrayLibrary[$index])) {
-                        $path = $arrayLibrary[$index];
-                        $sw = 0;
-
-                        if (!empty($path)) {
-                            if (file_exists($path . $arrayMatch[1] . "." . $browserCacheFilesUid . ".js")) {
-                                $sw = 1;
-                            }
-                        } else {
-                            $sw = 1;
-                        }
-
-                        if ($sw == 1) {
-                            $url = str_replace($name, $arrayMatch[1] . "." . $browserCacheFilesUid . ".js", $url);
-                        }
+                        $url = str_replace($name, $arrayMatch[1] . "." . $browserCacheFilesUid . ".js", $url);
                     }
                 }
             }

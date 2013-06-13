@@ -72,6 +72,7 @@ function transactionLog($transactionName){
         newrelic_name_transaction ($transactionName);
     }
 }
+
 // Defining the PATH_SEP constant, he we are defining if the the path separator symbol will be '\\' or '/'
 define( 'PATH_SEP', '/' );
 
@@ -316,6 +317,15 @@ if (! defined( 'PATH_C' )) {
     define( 'PATH_LANGUAGECONT', PATH_HOME . 'engine/content/languages/' );
 }
 
+//Call Gulliver Classes
+Bootstrap::LoadThirdParty("smarty/libs", "Smarty.class");
+
+//Loading the autoloader libraries feature
+spl_autoload_register(array("Bootstrap", "autoloadClass"));
+
+Bootstrap::registerClass("G",      PATH_GULLIVER . "class.g.php");
+Bootstrap::registerClass("System", PATH_HOME . "engine/classes/class.system.php");
+
 // defining Virtual URLs
 $virtualURITable = array ();
 $virtualURITable['/plugin/(*)'] = 'plugin';
@@ -405,6 +415,7 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
         }
         die();
     }
+
     switch ($realPath) {
         case 'jsMethod':
             Bootstrap::parseURI( getenv( "REQUEST_URI" ) );
@@ -421,6 +432,7 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
             die();
             break;
         default:
+            //Process files loaded with tag head in HTML
             if (substr( $realPath, 0, 12 ) == 'rest-service') {
                 $isRestRequest = true;
             } else {
@@ -434,13 +446,6 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
             }
     }
 } //virtual URI parser
-
-// Call Gulliver Classes
-Bootstrap::LoadThirdParty( 'smarty/libs', 'Smarty.class' );
-//loading the autoloader libraries feature
-spl_autoload_register(array('Bootstrap', 'autoloadClass'));
-Bootstrap::registerClass('G', PATH_GULLIVER . "class.g.php");
-Bootstrap::registerClass('System',        PATH_HOME . "engine/classes/class.system.php");
 
 // the request correspond to valid php page, now parse the URI
 Bootstrap::parseURI( getenv( "REQUEST_URI" ), $isRestRequest );
