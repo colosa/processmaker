@@ -69,13 +69,10 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
   <en>Mode<option name="edit">Edit</option><option name="view">View</option></en>
 </PME_MODE>
 
-
-
-
 <PME_SUBTITLE_OP type="title" enableHTML="1">
   <en>Operations</en>
 </PME_SUBTITLE_OP>
-<PME_FORMULA type="text" maxlength="50" size="30" defaultvalue="">
+<PME_FORMULA type="text" maxlength="500" size="30" defaultvalue="">
   <en>Formula</en>
 </PME_FORMULA>
 <PME_FUNCTION type="dropdown">
@@ -117,15 +114,15 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
 	leimnud.event.add(fieldVal, 'change', {method:checkVal, instance:fieldVal, event:true});
     leimnud.event.add(fieldMask, 'change', {method:checkVal, instance:fieldMask, event:true});
     leimnud.event.add(fieldSeparator, 'change', {method:checkSeparator, instance:fieldSeparator, event:true});
-	
+
 	var dyntype="@#PME_DYN_TYPE";
-	
+
 	if(dyntype != 'grid'){
 	  //hideRowById('PME_SUBTITLE_OP');
 	  //hideRowById('PME_FORMULA');
 	  hideRowById('PME_FUNCTION');
 	}
-	
+
 function cancel(){
     currentPopupWindow.remove();
 }

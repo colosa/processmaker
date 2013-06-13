@@ -220,7 +220,7 @@ try {
 
             $oHeadPublisher = & headPublisher::getSingleton();
 
-            if(!isset($_SESSION["PM_RUN_OUTSIDE_MAIN_APP"])) {
+            if (!isset($_SESSION["PM_RUN_OUTSIDE_MAIN_APP"])) {
                 $oHeadPublisher->addScriptCode( "
                                                     if (typeof parent != 'undefined') {
                                                         if (parent.setNode) {
@@ -1000,7 +1000,7 @@ try {
 $oHeadPublisher = & headPublisher::getSingleton();
 $oHeadPublisher->addScriptFile( "/jscore/cases/core/cases_Step.js" );
 
-if(!isset($_SESSION["PM_RUN_OUTSIDE_MAIN_APP"])) {
+if (!isset($_SESSION["PM_RUN_OUTSIDE_MAIN_APP"])) {
     $oHeadPublisher->addScriptCode( "
                                         if (typeof parent != 'undefined') {
                                             if (parent.showCaseNavigatorPanel) {

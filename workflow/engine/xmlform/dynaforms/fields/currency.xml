@@ -70,13 +70,12 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
 <PME_SUBTITLE_OP type="title" enableHTML="1">
   <en>Operations</en>
 </PME_SUBTITLE_OP>
-<PME_FORMULA type="text" maxlength="50" size="30" defaultvalue="">
+<PME_FORMULA type="text" maxlength="500" size="30" defaultvalue="">
   <en>Formula</en>
 </PME_FORMULA>
 <PME_FUNCTION type="dropdown">
   <en>Function<option name="">None</option><option name="sum">SUM</option><option name="avg">AVG</option></en>
 </PME_FUNCTION>
-
 
 <PME_SUBTITLE2 type="title" enableHTML="1">
   <en>Data</en>
@@ -126,7 +125,7 @@ if(dyntype != 'grid'){
   //hideRowById('PME_FORMULA');
   hideRowById('PME_FUNCTION');
 }
-      
+
 function cancel(){
     currentPopupWindow.remove();
 }

@@ -72,7 +72,7 @@ select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE	XMLNODE_NAME <> @@
 <PME_SUBTITLE_OP type="title" enableHTML="1">
   <en>Operations</en>
 </PME_SUBTITLE_OP>
-<PME_FORMULA type="text" maxlength="50" size="30" defaultvalue="">
+<PME_FORMULA type="text" maxlength="500" size="30" defaultvalue="">
   <en>Formula</en>
 </PME_FORMULA>
 <PME_FUNCTION type="dropdown">
@@ -102,15 +102,15 @@ select XMLNODE_NAME, XMLNODE_NAME AS NAME FROM dynaForm WHERE	XMLNODE_NAME <> @@
 
 <PME_JS type="javascript"><![CDATA[
 
-	var fieldForm="text"; 
+	var fieldForm="text";
 	var fieldName=getField("PME_XMLNODE_NAME",fieldForm);
 	var savedFieldName=fieldName.value;
 	var pme_validating;
 	fieldName.focus();
 	fieldName.select();
-	
+
 	leimnud.event.add(fieldName, 'change', {method:dynaformVerifyFieldName, instance:fieldName, event:true});
-	
+
 	hideRowById('PME_SUBTITLE_OP');
   hideRowById('PME_FORMULA');
   hideRowById('PME_FUNCTION');
@@ -149,7 +149,7 @@ function cancel(){
     currentPopupWindow.remove();
 }
 
-/*    
+/*
     if (getField('PME_VALIDATE').value == 'Int' || getField('PME_VALIDATE').value == 'Real') {
 	  showRowById('PME_SUBTITLE_OP');
     showRowById('PME_FORMULA');
@@ -157,7 +157,7 @@ function cancel(){
     if(dyntype=='grid')
       showRowById('PME_FUNCTION');
      else hideRowById('PME_FUNCTION');
-	   } 
+	   }
 	leimnud.event.add(getField('PME_VALIDATE'), 'change', function() {
 	    if (this.value == 'Int' || this.value == 'Real') {
 	          showRowById('PME_SUBTITLE_OP');
@@ -174,4 +174,4 @@ function cancel(){
 	});
 */
 ]]></PME_JS>
-</dynaForm>  
+</dynaForm>
