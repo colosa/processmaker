@@ -634,11 +634,13 @@ function validateSchedulerFields(oForm) {
     
     var listNames = document.getElementById('form[SCH_LIST]').value;
     listNames = listNames.split("^");
-    if (schedulerTitle.toLowerCase() == (listNames[i]).toLowerCase()) {
-        if (schedulerTitle == listNames[i]) {
-            document.getElementById('form[SCH_NAME]').focus();
-            msgBox("@G::LoadTranslation(ID_DUPLICATE_CASE_SCHEDULER_NAME)", 'alert');
-            return false;
+    for (var i= 1; i<listNames.length; i++) {
+        if (schedulerTitle.toLowerCase() == (listNames[i]).toLowerCase()) {
+            if (schedulerTitle == listNames[i]) {
+                document.getElementById('form[SCH_NAME]').focus();
+                msgBox("@G::LoadTranslation(ID_DUPLICATE_CASE_SCHEDULER_NAME)", 'alert');
+                return false;
+            }
         }
     }
     getField("SCH_NAME").value = schedulerTitle;

@@ -269,8 +269,10 @@ class CaseScheduler extends BaseCaseScheduler
         $oCriteria = $this->getAllCriteria();
         $oCriteria->addAnd( CaseSchedulerPeer::SCH_STATE, 'INACTIVE', Criteria::NOT_EQUAL );
         $oCriteria->addAnd( CaseSchedulerPeer::SCH_STATE, 'PROCESSED', Criteria::NOT_EQUAL );
-        $oCriteria->add( CaseSchedulerPeer::SCH_TIME_NEXT_RUN, $dCurrentDate, Criteria::GREATER_EQUAL );
-        $oCriteria->addAnd( CaseSchedulerPeer::SCH_TIME_NEXT_RUN, $dNextDay, Criteria::LESS_EQUAL );
+        $oCriteria->add( $oCriteria->getNewCriterion(CaseSchedulerPeer::SCH_TIME_NEXT_RUN, $dCurrentDate, Criteria::GREATER_EQUAL )->
+                        addAnd( $oCriteria->getNewCriterion(  CaseSchedulerPeer::SCH_TIME_NEXT_RUN, $dNextDay, Criteria::LESS_EQUAL ) )->
+                        addOr( $oCriteria->getNewCriterion( CaseSchedulerPeer::SCH_OPTION, '5', Criteria::GREATER_EQUAL ) )
+                        );
         $oCriteria->add( CaseSchedulerPeer::SCH_END_DATE, null, Criteria::EQUAL );
         $oCriteria->addOr( CaseSchedulerPeer::SCH_END_DATE, $dCurrentDate, Criteria::GREATER_EQUAL );
         $oDataset = CaseSchedulerPeer::doSelectRS( $oCriteria );
@@ -321,6 +323,7 @@ class CaseScheduler extends BaseCaseScheduler
             $sActualDataHour = date( 'H', strtotime( $aRow['SCH_TIME_NEXT_RUN'] ) );
             $sActualDataMinutes = date( 'i', strtotime( $aRow['SCH_TIME_NEXT_RUN'] ) );
             $dActualSysHour = date( 'H', $nTime );
+            $dActualSysHour = ($dActualSysHour == '00') ? '24' : $dActualSysHour;
             $dActualSysMinutes = date( 'i', $nTime );
             $sActualDataTime = strtotime( $aRow['SCH_TIME_NEXT_RUN'] );
             $sActualSysTime = strtotime( $nTime );
