@@ -688,6 +688,7 @@ class adminProxy extends HttpProxyController
             $aFields['SMTPSecure']               = $_POST['UseSecureCon'];
             $aFields['SMTPSecure']               = ($aFields['SMTPSecure'] == 'No') ? 'none' : $aFields['SMTPSecure'];
             $aFields['MAIL_TO']                  = $_POST['eMailto'];
+            $aFields['MESS_FROM_NAME']           = $_POST['FromName'];
             $aFields['MESS_TRY_SEND_INMEDIATLY'] = $_POST['SendaTestMail'];//isset($_POST['form']['MESS_TRY_SEND_INMEDIATLY']) ? $_POST['form']['MESS_TRY_SEND_INMEDIATLY'] : '';
             $aFields['MESS_TRY_SEND_INMEDIATLY'] = ($aFields['MESS_TRY_SEND_INMEDIATLY'] == 'true') ? '1' : $aFields['MESS_TRY_SEND_INMEDIATLY'];
             $CfgUid='Emails';
