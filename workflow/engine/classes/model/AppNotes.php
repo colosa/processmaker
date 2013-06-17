@@ -177,8 +177,13 @@ class AppNotes extends BaseAppNotes
             $configNoteNotification['subject'] = G::LoadTranslation( 'ID_MESSAGE_SUBJECT_NOTE_NOTIFICATION' ) . " @#APP_TITLE ";
             $configNoteNotification['body'] = G::LoadTranslation( 'ID_CASE' ) . ": @#APP_TITLE<br />" . G::LoadTranslation( 'ID_AUTHOR' ) . ": $authorName<br /><br />$noteContent";
 
+            /*
             if ($sFrom == '') {
                 $sFrom = '"ProcessMaker"';
+            }
+            */
+            if (isset($aConfiguration['MESS_FROM_NAME']) && $aConfiguration['MESS_FROM_NAME'] != '') {
+                $sFrom = $aConfiguration['MESS_FROM_NAME'];
             }
 
             $hasEmailFrom = preg_match( '/(.+)@(.+)\.(.+)/', $sFrom, $match );

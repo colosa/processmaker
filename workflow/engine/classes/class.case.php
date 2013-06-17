@@ -4829,9 +4829,13 @@ class Cases
             if ($aTaskInfo['TAS_SEND_LAST_EMAIL'] != 'TRUE') {
                 return false;
             }
-
+            /*
             if ($sFrom == '') {
                 $sFrom = '"ProcessMaker"';
+            }
+            */
+            if (isset($aConfiguration['MESS_FROM_NAME']) && $aConfiguration['MESS_FROM_NAME'] != '') {
+                $sFrom = $aConfiguration['MESS_FROM_NAME'];
             }
 
             $hasEmailFrom = preg_match('/(.+)@(.+)\.(.+)/', $sFrom, $match);

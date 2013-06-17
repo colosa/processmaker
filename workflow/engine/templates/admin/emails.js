@@ -70,11 +70,15 @@ Ext.onReady(function(){
           if(Ext.getCmp('SendaTestMail').checked) {
             Ext.getCmp('eMailto').setVisible(true);
             Ext.getCmp('eMailto').getEl().up('.x-form-item').setDisplayed(true);
+            Ext.getCmp('eFromName').setVisible(true);
+            Ext.getCmp('eFromName').getEl().up('.x-form-item').setDisplayed(true);
           }
           else {
             Ext.getCmp('eMailto').setVisible(false);
             Ext.getCmp('eMailto').getEl().up('.x-form-item').setDisplayed(false);
             Ext.getCmp('eMailto').setValue(' ');
+            Ext.getCmp('eFromName').setVisible(false);
+            Ext.getCmp('eFromName').getEl().up('.x-form-item').setDisplayed(false);
           }
 
         }
@@ -98,11 +102,15 @@ Ext.onReady(function(){
             Ext.getCmp('eMailto').setVisible(true);
             Ext.getCmp('eMailto').setVisible(true);
             Ext.getCmp('eMailto').setValue('');
+            Ext.getCmp('eFromName').setVisible(true);
+            Ext.getCmp('eFromName').getEl().up('.x-form-item').setDisplayed(true);
           }
           else {
             Ext.getCmp('eMailto').setVisible(false);
             Ext.getCmp('eMailto').getEl().up('.x-form-item').setDisplayed(false);
             Ext.getCmp('eMailto').setValue(' ');
+            Ext.getCmp('eFromName').setVisible(false);
+            Ext.getCmp('eFromName').getEl().up('.x-form-item').setDisplayed(false);
           }
 
           Ext.getCmp('UseSecureConnection').setVisible(false);
@@ -388,6 +396,14 @@ Ext.onReady(function(){
         allowBlank: false
       },
       {
+        xtype: 'textfield',
+        fieldLabel: _('ID_FROM_NAME'),
+        id:'eFromName',
+        name:'eFromName',
+        width: 250,
+        disabled : true
+      },
+      {
         id:'UseSecureConnection',
         name:'UseSecureConnection',
         xtype: 'radiogroup',
@@ -430,6 +446,9 @@ Ext.onReady(function(){
                   Ext.getCmp('Password').setVisible(false);
                   Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
 
+                  Ext.getCmp('eFromName').setVisible(false);
+                  Ext.getCmp('eFromName').getEl().up('.x-form-item').setDisplayed(false);
+
                   Ext.getCmp('UseSecureConnection').setVisible(false);
                   Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(false);
                 } else {
@@ -452,6 +471,9 @@ Ext.onReady(function(){
                     Ext.getCmp('Password').getEl().up('.x-form-item').setDisplayed(false);
                     // Ext.getCmp('AccountFrom').allowBlank = true;
                   }
+
+                  Ext.getCmp('eFromName').setVisible(true);
+                  Ext.getCmp('eFromName').getEl().up('.x-form-item').setDisplayed(true);
 
                   if(!Ext.getCmp('UseSecureConnection').getValue()) {
                     Ext.getCmp('UseSecureConnection').setValue('No');
@@ -483,6 +505,12 @@ Ext.onReady(function(){
                 else {
                   Ext.getCmp('eMailto').setValue(res.data.MAIL_TO);
                 }
+                if(!res.data.MESS_FROM_NAME) {
+                  Ext.getCmp('eFromName').setValue(' ');
+                } else {
+                  Ext.getCmp('eFromName').setValue(res.data.MESS_FROM_NAME);
+                }
+
             }
         }
       }
@@ -526,6 +554,8 @@ Ext.onReady(function(){
   Ext.getCmp('SendaTestMail').getEl().up('.x-form-item').setDisplayed(false);
   Ext.getCmp('eMailto').setVisible(false);
   Ext.getCmp('eMailto').getEl().up('.x-form-item').setDisplayed(false);
+  Ext.getCmp('eFromName').setVisible(false);
+  Ext.getCmp('eFromName').getEl().up('.x-form-item').setDisplayed(false);
   Ext.getCmp('UseSecureConnection').setVisible(false);
   Ext.getCmp('UseSecureConnection').getEl().up('.x-form-item').setDisplayed(false);
   Ext.getCmp('Test').setVisible(false);
@@ -725,6 +755,7 @@ var EditMethod = function()
   Ext.getCmp('Password').setDisabled(false);
   Ext.getCmp('SendaTestMail').setDisabled(false);
   Ext.getCmp('eMailto').setDisabled(false);
+  Ext.getCmp('eFromName').setDisabled(false);
   Ext.getCmp('UseSecureConnection').setDisabled(false);
   Ext.getCmp('Test').setVisible(true);
   Ext.getCmp('SaveChanges').setVisible(true);
@@ -745,6 +776,7 @@ var UnEditMethod = function()
   Ext.getCmp('Password').setDisabled(true);
   Ext.getCmp('SendaTestMail').setDisabled(true);
   Ext.getCmp('eMailto').setDisabled(true);
+  Ext.getCmp('eFromName').setDisabled(true);
   Ext.getCmp('UseSecureConnection').setDisabled(true);
   Ext.getCmp('Test').setVisible(false);
   Ext.getCmp('SaveChanges').setVisible(false);
@@ -924,6 +956,7 @@ saveMethod=function() {
       UseSecureCon:UseSecureConnection,
       SendaTestMail : Ext.getCmp('SendaTestMail').getValue() ,
       eMailto :  Ext.getCmp('eMailto').getValue(),
+      FromName: Ext.getCmp('eFromName').getValue(),
       EnableEmailNotifications : Ext.getCmp('EnableEmailNotifications').getValue(),
       EmailEngine : Ext.getCmp('EmailEngine').getValue(),
       background: 'true'
