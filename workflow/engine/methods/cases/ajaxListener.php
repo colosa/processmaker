@@ -109,6 +109,7 @@ class Ajax
             $item['hrefTarget'] = 'casesSubFrame';
             $item['text'] = $step['title'];
             $item['url'] = '../' . $step['url'];
+            $item["type"] = $step["type"];
 
             switch ($step['type']) {
                 case 'DYNAFORM':

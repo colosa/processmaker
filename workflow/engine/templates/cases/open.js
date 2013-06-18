@@ -186,6 +186,8 @@ Ext.onReady(function(){
   }
 
   if (typeof(treeToReviseTitle) == 'undefined') {
+    var loadMaskStep = new Ext.LoadMask(Ext.getBody(), {msg: _("ID_LOADING_GRID")});
+
     var casesStepTree = new Ext.tree.TreePanel({
       id: 'casesStepTree',
       autoWidth: true,
@@ -204,10 +206,101 @@ Ext.onReady(function(){
         render: function() {
           this.getRootNode().expand();
         },
-        click: function(tp) {
-          if( tp.attributes.url ){
-            document.getElementById('openCaseFrame').src = tp.attributes.url;
-          }
+        click: function (node, evt)
+        {
+            var nodeCurrentSelected = this.getSelectionModel().getSelectedNode();
+            var swNodeCurrentSelect = 0;
+
+            if (node.attributes.url) {
+                //Set load event
+                if (navigator.userAgent.toLowerCase().indexOf("msie") != -1) {
+                    document.getElementById("openCaseFrame").onreadystatechange = function ()
+                    {
+                        if (document.getElementById("openCaseFrame").readyState == "complete") {
+                            loadMaskStep.hide();
+                        }
+                    };
+                } else {
+                    document.getElementById("openCaseFrame").onload = function ()
+                    {
+                        loadMaskStep.hide();
+                    };
+                }
+
+                //Check step current
+                var swForm = 1;
+
+                if (nodeCurrentSelected.attributes.id == "-1") {
+                    swForm = 0;
+                }
+
+                if (nodeCurrentSelected.attributes.type != "DYNAFORM") {
+                    swForm = 0;
+                }
+
+                if (swForm == 1) {
+                    var requiredField = "";
+                    var swRequiredField = 1;
+
+                    if (window.frames["openCaseFrame"].document.getElementById("DynaformRequiredFields")) {
+                        requiredField = window.frames["openCaseFrame"].document.getElementById("DynaformRequiredFields").value;
+
+                        if (requiredField != "") {
+                            swRequiredField = (window.frames["openCaseFrame"].validateForm(requiredField))? 1 : 0;
+                        }
+                    }
+
+                    if (swRequiredField == 1) {
+                        Ext.MessageBox.show({
+                            title: _("ID_CONFIRM"),
+                            msg: _("ID_DYNAFORM_SAVE_CHANGES"),
+                            icon:  Ext.MessageBox.QUESTION,
+                            buttons: {ok: _("ID_ACCEPT"), cancel: _("ID_CANCEL")},
+                            fn: function (btn)
+                            {
+                                loadMaskStep.show();
+
+                                if (btn == "ok") {
+                                    var frm = window.frames["openCaseFrame"].document.getElementsByTagName("form");
+
+                                    if (frm.length > 0) {
+                                        var result = window.frames["openCaseFrame"].ajax_post(
+                                            frm[0].action.replace("cases_SaveData", "saveForm"),
+                                            frm[0],
+                                            "POST",
+                                            function (responseText)
+                                            {
+                                                //Set URL and redirect
+                                                document.getElementById("openCaseFrame").src = node.attributes.url;
+                                            },
+                                            true
+                                        );
+                                    } else {
+                                        //Set URL and redirect
+                                        document.getElementById("openCaseFrame").src = node.attributes.url;
+                                    }
+                                } else {
+                                    //Set URL and redirect
+                                    document.getElementById("openCaseFrame").src = node.attributes.url;
+                                }
+                            }
+                        });
+                    } else {
+                        swNodeCurrentSelect = 1;
+                    }
+                } else {
+                    loadMaskStep.show();
+
+                    //Set URL and redirect
+                    document.getElementById("openCaseFrame").src = node.attributes.url;
+                }
+            } else {
+                swNodeCurrentSelect = 1;
+            }
+
+            if (swNodeCurrentSelect == 1) {
+                setTimeout(function () { setNode(nodeCurrentSelected.attributes.id); }, 1);
+            }
         }
       }
     })
@@ -479,7 +572,7 @@ Ext.onReady(function(){
 				{fieldLabel: _('ID_TASK_DURATION'), text: data.DURATION}
 				]
 				}
-			
+
 				var frm = new Ext.FormPanel( {
 				labelAlign : 'right',
 				bodyStyle : 'padding:5px 5px 0',
@@ -493,7 +586,7 @@ Ext.onReady(function(){
 				}
 				}]
 				});
-			
+
 				var win = new Ext.Window({
 				title: '',
 				width: 450,
@@ -1014,16 +1107,16 @@ Ext.onReady(function(){
 				}
 				var notifyReasonVal = Ext.getCmp('notifyReason').getValue() == true ? 1 : 0;
 				var paramsNote = '&NOTE_REASON=' + noteReasonTxt + '&NOTIFY_PAUSE=' + notifyReasonVal;
-				
+
 				var unpauseDate = Ext.getCmp('unpauseDate').getValue();
 				if( unpauseDate == '') {
 				//Ext.getCmp('submitPauseCase').setDisabled(true);
 				return;
 				} else
 				//Ext.getCmp('submitPauseCase').enable();
-				
+
 				unpauseDate = unpauseDate.format('Y-m-d');
-				
+
 				Ext.getCmp('unpauseFrm').getForm().submit({
 				url:'ajaxListener',
 				method : 'post',
@@ -1329,7 +1422,7 @@ Ext.onReady(function(){
 	              Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
 	            }
 	          }
-	     }); 
+	     });
   }
 
 });
