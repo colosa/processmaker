@@ -54,19 +54,35 @@ if ($actionAjax == "userValues") {
     switch ($action) {
         case 'search_simple':
         case 'search':
+            G::LoadClass("configuration");
+
+            $conf = new Configurations();
+
+            $confEnvSetting = $conf->getConfiguration("ENVIRONMENT_SETTINGS", "");
+            $formatUserName = null;
+
+            if (is_array($confEnvSetting) && isset($confEnvSetting["format"])) {
+                $formatUserName = $confEnvSetting["format"];
+            }
+
             $cUsers = new Criteria( 'workflow' );
             $cUsers->clearSelectColumns();
-            $cUsers->addSelectColumn( UsersPeer::USR_UID );
-            $cUsers->addSelectColumn( UsersPeer::USR_FIRSTNAME );
-            $cUsers->addSelectColumn( UsersPeer::USR_LASTNAME );
+            $cUsers->addSelectColumn(UsersPeer::USR_UID);
+            $cUsers->addSelectColumn(UsersPeer::USR_USERNAME);
+            $cUsers->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+            $cUsers->addSelectColumn(UsersPeer::USR_LASTNAME);
             $cUsers->add( UsersPeer::USR_STATUS, 'CLOSED', Criteria::NOT_EQUAL );
-            $cUsers->addAscendingOrderByColumn( UsersPeer::USR_LASTNAME );
+            $cUsers->addAscendingOrderByColumn(UsersPeer::TABLE_NAME . "." . $conf->userNameFormatGetFirstFieldByUsersTable());
             $oDataset = UsersPeer::doSelectRS( $cUsers );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-            $oDataset->next();
-            while ($aRow = $oDataset->getRow()) {
-                $users[] = array ("USR_UID" =>  $aRow['USR_UID'],"USR_FULLNAME" => $aRow['USR_LASTNAME'] . ' ' . $aRow['USR_FIRSTNAME']);
-                $oDataset->next();
+
+            while ($oDataset->next()) {
+                $row = $oDataset->getRow();
+
+                $usrFullName = $conf->usersNameFormatBySetParameters($formatUserName, $row["USR_USERNAME"], $row["USR_FIRSTNAME"], $row["USR_LASTNAME"]);
+                $usrFullName = (!empty($usrFullName))? $usrFullName : $row["USR_LASTNAME"] . " " . $row["USR_FIRSTNAME"];
+
+                $users[] = array("USR_UID" => $row["USR_UID"], "USR_FULLNAME" => $usrFullName);
             }
             break;
         default:

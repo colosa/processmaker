@@ -315,7 +315,6 @@ class Configurations // extends Configuration
         }
     }
 
-
     public function userNameFormat($username, $fullname)
     {
 
@@ -336,6 +335,48 @@ class Configurations // extends Configuration
         } catch (Exception $oError) {
             return null;
         }
+    }
+
+    public function usersNameFormatBySetParameters($formatUserName, $userName, $firstName, $lastName)
+    {
+        $usersNameFormat = (!empty($formatUserName))? str_replace(array("@userName", "@firstName", "@lastName"), array($userName, $firstName, $lastName), $formatUserName) : null;
+        $usersNameFormat = trim($usersNameFormat);
+
+        return $usersNameFormat;
+    }
+
+    /**
+     * Gets the first field of the UserName format
+     *
+     * Returns the field, based on the field name in the USERS table
+     *
+     * @return string Return the field
+     */
+    public function userNameFormatGetFirstFieldByUsersTable()
+    {
+        $field = "USR_LASTNAME";
+
+        $confEnvSetting = $this->getConfiguration("ENVIRONMENT_SETTINGS", "");
+
+        if (is_array($confEnvSetting) && isset($confEnvSetting["format"])) {
+            $arrayAux = explode(" ", str_replace(array("(", ")", ","), array(null, null, null), $confEnvSetting["format"]));
+
+            if (isset($arrayAux[0])) {
+                switch (trim($arrayAux[0])) {
+                    case "@userName":
+                        $field = "USR_USERNAME";
+                        break;
+                    case "@firstName":
+                        $field = "USR_FIRSTNAME";
+                        break;
+                    case "@lastName":
+                        $field = "USR_LASTNAME";
+                        break;
+                }
+            }
+        }
+
+        return $field;
     }
 
     /**
@@ -524,9 +565,9 @@ class Configurations // extends Configuration
                 $newCreation = '';
                 $maskTime = array('d' => '%d', 'D' => '%A', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%B', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%P', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
                 $creationDateMask = trim($creationDateMask);
-                
+
                 if (strpos($creationDateMask, ' \\d\\e ') !== false) {
-                    $creationDateMask = str_replace(' \\d\\e ', ' [xx] ', $creationDateMask);  
+                    $creationDateMask = str_replace(' \\d\\e ', ' [xx] ', $creationDateMask);
                 }
 
 
@@ -569,15 +610,15 @@ class Configurations // extends Configuration
                 $dateTime = utf8_encode(strftime($newCreation, mktime(0, 0, 0, $m, $d, $y)));
 
                 if (strpos($dateTime, ' ') !== false) {
-                    $dateTime = ucwords($dateTime);    
+                    $dateTime = ucwords($dateTime);
                 }
-                
+
                 if (strpos($dateTime, ' [xx] ') !== false) {
-                    $dateTime = str_replace('[xx]', ' de ', $dateTime);  
+                    $dateTime = str_replace('[xx]', ' de ', $dateTime);
                 }
             }
 
-            
+
         }
 
         return $dateTime;
