@@ -248,8 +248,11 @@ class processMap
                                     $oTask->color = "#939598"; //Gray
                                 }
                             } else {
-                                //$oTask->color = "#FF9900"; //Yellow
-                                $oTask->color = "#FF0000"; //Red
+                                if ($aRow3) {
+                                    $oTask->color = "#FF0000"; //Red
+                                } else {
+                                    $oTask->color = "#939598"; //Gray
+                                }
                             }
                         }
                     }
