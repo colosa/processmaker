@@ -8,6 +8,7 @@
 G::LoadSystem('dbMaintenance');
 G::LoadClass("cli");
 G::LoadClass("multipleFilesBackup");
+G::LoadSystem('rbac' );
 
 /**
  * class workspaceTools
@@ -89,7 +90,7 @@ class workspaceTools
         $stop = microtime(true);
         $final = $stop - $start;
         CLI::logging("<*>   Updating cache view Process took $final seconds.\n");
-        
+
         $start = microtime(true);
         CLI::logging("> Updating cases directories structure...\n");
         $this->upgradeCasesDirectoryStructure($workSpace);
@@ -459,6 +460,20 @@ class workspaceTools
         CLI::logging("-> Update DEL_LAST_INDEX field in APP_DELEGATION table\n");
         //Update APP_DELEGATION.DEL_LAST_INDEX data
         $res = $appCache->updateAppDelegationDelLastIndex($lang, $checkOnly);
+
+        CLI::logging("-> Update table RBAC Permissions... \n");
+        //Update table RBAC permissions
+        Bootstrap::LoadSystem( 'rbac' );
+        $RBAC = & RBAC::getSingleton();
+        $RBAC->initRBAC();
+        $resutl = $RBAC->verifyPermissions();
+        if (count($resutl) > 1) {
+            foreach($resutl as $item) {
+                CLI::logging("    $item... \n");
+            }
+        } else {
+            CLI::logging("    No Changes... \n");
+        }
 
         CLI::logging("-> Creating triggers\n");
         //now check if we have the triggers installed
