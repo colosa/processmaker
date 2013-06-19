@@ -237,7 +237,14 @@ class AppNotes extends BaseAppNotes
             }
             //Send derivation notification - End
         } catch (Exception $oException) {
-            throw $oException;
+            $result = new stdclass();
+            $result->success = false;
+            $message = $result->msg = $oException->getMessage();
+            $configMessage = G::LoadTranslation( 'ID_MAIL_CONFIGURATION_ERROR' ) . "<br /><br />$message";
+            $result->message = $configMessage;
+            print G::json_encode( $result );
+            die();
+            //throw $oException;
         }
     }
 
@@ -266,4 +273,3 @@ class AppNotes extends BaseAppNotes
         return $response;
     }
 }
-
