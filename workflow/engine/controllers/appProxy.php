@@ -124,7 +124,16 @@ class AppProxy extends HttpProxyController
 
         //Add note case
         $appNote = new AppNotes();
-        $response = $appNote->addCaseNote($appUid, $usrUid, $noteContent, intval($httpData->swSendMail));
+        try {
+            $response = $appNote->addCaseNote($appUid, $usrUid, $noteContent, intval($httpData->swSendMail));
+        } catch (Exception $error) {
+            $response = new stdclass();
+            $response->success  = 'success';
+            $response->message  = G::LoadTranslation('ID_ERROR_SEND_NOTIFICATIONS');
+            $response->message .= '<br /><br />' . $error->getMessage() . '<br /><br />';
+            $response->message .= G::LoadTranslation('ID_CONTACT_ADMIN');
+            die(G::json_encode($response));
+        }
 
         //Send the response to client
         @ini_set("implicit_flush", 1);

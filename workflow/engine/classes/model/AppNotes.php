@@ -105,8 +105,8 @@ class AppNotes extends BaseAppNotes
             $response['success'] = G::LoadTranslation("ID_FAILURE");
             $response['message'] = $msg;
         } else {
-            $response['success'] = "success";
-            $response['message'] = G::LoadTranslation("ID_SAVED");
+            $response['success'] = 'success';
+            $response['message'] = '';
         }
 
         if ($notify) {

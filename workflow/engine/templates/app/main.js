@@ -363,8 +363,21 @@ function sendNote()
         Ext.getCmp('caseNoteText').setDisabled(false);
         Ext.getCmp('sendBtn').setDisabled(false);
         Ext.getCmp('addCancelBtn').setDisabled(false);
-        statusBarMessage( _('ID_CASES_NOTE_POST_SUCCESS'), false,true);
-        storeNotes.load();
+        if (data.message != '') {
+            Ext.Msg.show({
+                title : _('ID_CASES_NOTE_POST_ERROR'),
+                msg : data.message,
+                icon : Ext.MessageBox.WARNING,
+                buttons : Ext.Msg.OK,
+                fn : function(btn) {
+                    statusBarMessage( _('ID_CASES_NOTE_POST_SUCCESS'), false,true);
+                    storeNotes.load();
+                }
+            });
+        } else {
+            statusBarMessage( _('ID_CASES_NOTE_POST_SUCCESS'), false,true);
+            storeNotes.load();
+        }
       } else if (data.lostSession) {
         Ext.Msg.show({
               title : _('ID_CASES_NOTE_POST_ERROR'),
