@@ -1170,5 +1170,44 @@ class RBAC
             }
         }
     }
+    /**
+     * this function permissions
+     *
+     *
+     * @access public
+     *
+     */
+    public function verifyPermissions ()
+    {
+        $message = array();
+        $listPermissions = $this->loadPermissionAdmin();
+        $criteria = new Criteria( 'rbac' );
+        $dataset = PermissionsPeer::doSelectRS( $criteria );
+        $dataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $dataset->next();
+        $aRow = $dataset->getRow();
+        while (is_array( $aRow )) {
+            foreach($listPermissions as $key => $item) {
+                if ($aRow['PER_UID'] == $item['PER_UID'] ) {
+                    unset($listPermissions[$key]);
+                    break;
+                }
+            }
+            $dataset->next();
+            $aRow = $dataset->getRow();
+        }
+        foreach($listPermissions as $key => $item) {
+            $data['PER_UID']         = $item['PER_UID'];
+            $data['PER_CODE']        = $item['PER_CODE'];
+            $data['PER_CREATE_DATE'] = date('Y-m-d H:i:s');
+            $data['PER_UPDATE_DATE'] = $data['PER_CREATE_DATE'];
+            $data['PER_STATUS']      = 1;
+            $permission              = new Permissions();
+            $permission->fromArray($data, BasePeer::TYPE_FIELDNAME);
+            $permission->save();
+            $message[] = 'Add permission missing ' . $item['PER_CODE'];
+        }
+        return $message;
+    }
 }
 

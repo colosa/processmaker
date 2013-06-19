@@ -89,7 +89,7 @@ class workspaceTools
         $stop = microtime(true);
         $final = $stop - $start;
         CLI::logging("<*>   Updating cache view Process took $final seconds.\n");
-        
+
         $start = microtime(true);
         CLI::logging("> Updating cases directories structure...\n");
         $this->upgradeCasesDirectoryStructure($workSpace);
@@ -459,6 +459,20 @@ class workspaceTools
         CLI::logging("-> Update DEL_LAST_INDEX field in APP_DELEGATION table\n");
         //Update APP_DELEGATION.DEL_LAST_INDEX data
         $res = $appCache->updateAppDelegationDelLastIndex($lang, $checkOnly);
+
+        CLI::logging("-> Verifying roles permissions in RBAC \n");
+        //Update table RBAC permissions
+        Bootstrap::LoadSystem( 'rbac' );
+        $RBAC = & RBAC::getSingleton();
+        $RBAC->initRBAC();
+        $result = $RBAC->verifyPermissions();
+        if (count($result) > 1) {
+            foreach($result as $item) {
+                CLI::logging("    $item... \n");
+            }
+        } else {
+            CLI::logging("    All roles permissions already updated \n");
+        }
 
         CLI::logging("-> Creating triggers\n");
         //now check if we have the triggers installed
