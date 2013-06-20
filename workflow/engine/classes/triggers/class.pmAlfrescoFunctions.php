@@ -342,10 +342,22 @@ function uploadDoc($alfrescoServerUrl, $fileSource, $title, $description, $docTy
     $xmlData = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:cmisra="http://docs.oasis-open.org/ns/cmis/restatom/200908/" xmlns:cmis="http://docs.oasis-open.org/ns/cmis/core/200908/"><title>' . $title . '</title><summary>' . $description . '</summary><content type="application/' . $docType . '">' . $fileContent . '</content><cmisra:object><cmis:properties><cmis:propertyId propertyDefinitionId="cmis:objectTypeId"><cmis:value>cmis:document</cmis:value></cmis:propertyId></cmis:properties></cmisra:object></entry>';
 
     $alfresco_exec = RestClient::post($alfresco_url, $xmlData, $user, $pwd, "application/atom+xml");
-    $sXmlArray     = $alfresco_exec->getResponse();
-    $sXmlArray     = trim($sXmlArray);
-    $xXmlArray     = simplexml_load_string($sXmlArray);
-    $aXmlArray     = @G::json_decode(@G::json_encode($xXmlArray), 1);
-
+    $response = $alfresco_exec->getHeaders();
+    switch ($response['code']) {
+        case '201':
+            //Created
+            $sXmlArray     = $alfresco_exec->getResponse();
+            $sXmlArray     = trim($sXmlArray);
+            $xXmlArray     = simplexml_load_string($sXmlArray);
+            $aXmlArray     = @G::json_decode(@G::json_encode($xXmlArray), 1);
+            break;
+        case '409':
+            //file exists
+            $aXmlArray = 'There is already a file with the same name:   ' . $title;
+            break;
+        default:
+            $aXmlArray = $response['message'];
+            break;
+    }
     return $aXmlArray;
 }
