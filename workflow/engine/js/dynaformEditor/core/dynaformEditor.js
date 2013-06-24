@@ -458,6 +458,11 @@ var dynaformEditor={
     if( ! xmlEditor ) {
       clientWinSize = getClientWindowSize();
 
+        if (_BROWSER.name == 'msie') {
+          var content_withoutLabel = document.getElementById("form[XML]").parentNode;
+          content_withoutLabel.style.height = (clientWinSize.height - 140) + 'px';
+        }
+
         /*xmlEditor = CodeMirror.fromTextArea('form[XML]', {
         height: (clientWinSize.height - 120) + "px",
         width: (_BROWSER.name == 'msie' ? '100%' : '98%'),
@@ -532,6 +537,11 @@ var dynaformEditor={
       if( ! jsEditor )
       {
         clientWinSize = getClientWindowSize();
+
+        if (_BROWSER.name == 'msie') {
+          var content_withoutLabel = document.getElementById("form[JS]").parentNode;
+          content_withoutLabel.style.height = (clientWinSize.height - 140) + 'px';
+        }
         startJSCodePress();
 
         /*jsEditor = CodeMirror.fromTextArea('form[JS]', {
@@ -544,9 +554,9 @@ var dynaformEditor={
           continuousScanning: 500 });*/
 
           jsEditor = CodeMirror.fromTextArea(document.getElementById("form[JS]"), {
-          mode: "javascript",
-          lineNumbers: true,
-          lineWrapping: true });
+            mode: "javascript",
+            lineNumbers: true,
+            lineWrapping: true });
       }
     } else {
       showRowById('JS_TITLE');
