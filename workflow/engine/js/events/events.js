@@ -9,7 +9,7 @@ var eventsNewAction = function(oForm) {
     return false;
   }
 
-  if (oForm.onsubmit()) {
+  if (oForm) {
     oRPC = new leimnud.module.rpc.xmlhttp({
       url   : '../events/eventsNewAction',
       method: 'POST',
@@ -164,7 +164,7 @@ var EventCompose = function(t){
                         // previous calls for the old component
                         // url : '../events/eventsAjax',
                         // args: 'request=showDynavars',
-                        // the control for assign dynavars is the same as 
+                        // the control for assign dynavars is the same as
                         // the other sections inside processmaker
 		  	url : '../controls/varsAjax',
 		  	args: 'sSymbol=@@&displayOption=event'
