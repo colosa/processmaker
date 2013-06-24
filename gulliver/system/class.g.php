@@ -5160,6 +5160,47 @@ class G
 
         return $url;
     }
+
+    public static function skinGetPathToSrcByVirtualUri($option)
+    {
+        $path = "";
+        $ereg = "";
+        $strSearch = "";
+
+        switch ($option) {
+            case "errors":
+                $ereg = "/^\/errors\/.*$/";
+                $strSearch = "/errors/";
+                break;
+            case "update":
+                $ereg = "/^\/update\/.*$/";
+                $strSearch = "/update/";
+                break;
+        }
+
+        if (preg_match($ereg, $_SERVER["REQUEST_URI"])) {
+            $strAux = str_replace($strSearch, null, $_SERVER["REQUEST_URI"]);
+
+            if ($strAux != "") {
+                $arrayAux = explode("?", $strAux);
+                $fileTemplate = $arrayAux[0];
+
+                if (file_exists(PATH_SKIN_ENGINE . $_SESSION["currentSkin"] . PATH_SEP . $fileTemplate)) {
+                    $path = PATH_SKIN_ENGINE . $_SESSION["currentSkin"] . PATH_SEP;
+                }
+
+                if (file_exists(PATH_SKINS . $_SESSION["currentSkin"] . PATH_SEP . $fileTemplate)) {
+                    $path = PATH_SKINS . $_SESSION["currentSkin"] . PATH_SEP;
+                }
+
+                if (file_exists(PATH_CUSTOM_SKINS . $_SESSION["currentSkin"] . PATH_SEP . $fileTemplate)) {
+                    $path = PATH_CUSTOM_SKINS . $_SESSION["currentSkin"] . PATH_SEP;
+                }
+            }
+        }
+
+        return $path;
+    }
 }
 
 /**

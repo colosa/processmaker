@@ -469,7 +469,7 @@ INPUT {
 .panel_tabOptionSelectedOver___processmaker {
   color: #EA560F;
 }
-.panel_content___processmaker {
+.panel_content___processmaker{
   position: relative;
   color: black;
   font: normal 9pt "Open Sans", Tahoma, sans-serif, MiscFixed;
@@ -487,8 +487,12 @@ INPUT {
   background-color: #F9F9F9;
   background-color: #FFF;
   overflow: auto;
-  padding-top: 0px;
 }
+
+.panel_content___processmaker > table {
+  margin-top: 13px;
+}
+
 .panel_statusBar___processmaker {
   position: relative;
   overflow: hidden;
