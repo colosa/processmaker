@@ -410,6 +410,7 @@
             <xs:element name="processId" type="xs:string"/>
             <xs:element name="taskId" type="xs:string"/>
             <xs:element name="variables" maxOccurs="unbounded" type="xs0:variableListStruct"/>
+            <xs:element name="executeTriggers" minOccurs="0" maxOccurs="unbounded" type="xs:integer"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>

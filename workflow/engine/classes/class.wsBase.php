@@ -770,7 +770,7 @@ class wsBase
             }
 
             $oSpool = new spoolRun();
-            $oSpool->setConfig( 
+            $oSpool->setConfig(
                 array (
                     'MESS_ENGINE' => $aSetup['MESS_ENGINE'],
                     'MESS_SERVER' => $aSetup['MESS_SERVER'],
@@ -1706,10 +1706,13 @@ class wsBase
      * @param string $userId
      * @param string $taskId
      * @param string $variables
+     * @param int $executeTriggers : Optional parameter. The execution all triggers of the task, according to your steps, 1 yes 0 no.
      * @return $result will return an object
      */
-    public function newCase ($processId, $userId, $taskId, $variables)
+    public function newCase($processId, $userId, $taskId, $variables, $executeTriggers = 0)
     {
+        //$executeTriggers, this parameter is not important, it may be the last parameter in the method
+
         $g = new G();
 
         try {
@@ -1737,7 +1740,6 @@ class wsBase
             }
 
             $oCase = new Cases();
-            $oTask = new Tasks();
             $startingTasks = $oCase->getStartCases( $userId );
             array_shift( $startingTasks ); //remove the first row, the header row
             $founded = '';
@@ -1778,6 +1780,7 @@ class wsBase
                 return $result;
             }
 
+            //Start case
             $case = $oCase->startCase( $taskId, $userId );
 
             $_SESSION['APPLICATION'] = $case['APPLICATION'];
@@ -1799,6 +1802,22 @@ class wsBase
             $oldFields['TAS_UID'] = $taskId;
             $up_case = $oCase->updateCase( $caseId, $oldFields );
 
+            //Execute all triggers of the task, according to your steps
+            if ($executeTriggers == 1) {
+                $task = new Tasks();
+                $arrayStep = $task->getStepsOfTask($taskId);
+
+                foreach ($arrayStep as $step) {
+                    $arrayField = $oCase->loadCase($caseId);
+
+                    $arrayField["APP_DATA"] = $oCase->executeTriggers($taskId, $step["STEP_TYPE_OBJ"], $step["STEP_UID_OBJ"], "BEFORE", $arrayField["APP_DATA"]);
+                    $arrayField["APP_DATA"] = $oCase->executeTriggers($taskId, $step["STEP_TYPE_OBJ"], $step["STEP_UID_OBJ"], "AFTER", $arrayField["APP_DATA"]);
+
+                    $arrayField = $oCase->updateCase($caseId, $arrayField);
+                }
+            }
+
+            //Response
             $result = new wsResponse( 0, G::loadTranslation( 'ID_STARTED_SUCCESSFULLY' ) );
             $result->caseId = $caseId;
             $result->caseNumber = $caseNr;

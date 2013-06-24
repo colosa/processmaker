@@ -589,7 +589,7 @@ function DerivateCase ($params)
     $oStd->wsSessionId = $params->sessionId;
 
     $ws = new wsBase( $oStd );
-    $res = $ws->derivateCase( $user['USR_UID'], $params->caseId, $params->delIndex );
+    $res = $ws->derivateCase($user["USR_UID"], $params->caseId, $params->delIndex, true);
 
     return $res;
 }
@@ -616,7 +616,7 @@ function RouteCase ($params)
     $oStd->wsSessionId = $params->sessionId;
 
     $ws = new wsBase( $oStd );
-    $res = $ws->derivateCase( $user['USR_UID'], $params->caseId, $params->delIndex );
+    $res = $ws->derivateCase($user["USR_UID"], $params->caseId, $params->delIndex, true);
 
     return $res;
 
@@ -765,7 +765,8 @@ function NewCase ($params)
     $params->variables = $field;
 
     $ws = new wsBase();
-    $res = $ws->newCase( $params->processId, $userId, $params->taskId, $params->variables );
+
+    $res = $ws->newCase($params->processId, $userId, $params->taskId, $params->variables, (isset($params->executeTriggers))? (int)($params->executeTriggers) : 0);
 
     // we need to register the case id for a stored session variable. like a normal Session.
     $oSession->registerGlobal( "APPLICATION", $res->caseId );
