@@ -160,6 +160,18 @@ EOT
 CLI::taskArg('workspace-name', true, true);
 CLI::taskRun(run_translation_upgrade);
 
+CLI::taskName('update-structure-directories');
+CLI::taskDescription(<<<EOT
+  Updating the structure directories of a workspaces
+
+  Specify the WORKSPACE to updating to a different workspace name.
+EOT
+);
+//CLI::taskArg('workspace', true);
+CLI::taskOpt("workspace", "Select which workspace to updating the structure of directories, if multiple workspaces are present in the archive.",
+             "w:", "workspace=");
+CLI::taskRun(runStructureDirectories);
+
   /**
    * Function run_info
    * access public
@@ -460,4 +472,22 @@ function run_workspace_restore($args, $opts) {
   }
 }
 
-?>
+function runStructureDirectories($command, $args) {
+    $workspaces = get_workspaces_from_args($command);
+    $count = count($workspaces);
+    $errors = false;
+    $countWorkspace = 0;
+    foreach ($workspaces as $index => $workspace) {
+        try {
+            $countWorkspace++;
+            CLI::logging("Updating workspaces ($countWorkspace/$count): " . CLI::info($workspace->name) . "\n");
+            $workspace->updateStructureDirectories($workspace->name);
+            $workspace->close();
+        } catch (Exception $e) {
+            CLI::logging("Errors upgrading workspace " . CLI::info($workspace->name) . ": " . CLI::error($e->getMessage()) . "\n");
+            $errors = true;
+        }
+    }
+}
+
+
