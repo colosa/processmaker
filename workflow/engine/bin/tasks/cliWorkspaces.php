@@ -160,15 +160,15 @@ EOT
 CLI::taskArg('workspace-name', true, true);
 CLI::taskRun(run_translation_upgrade);
 
-CLI::taskName('update-structure-directories');
+CLI::taskName('migrate-cases-folders');
 CLI::taskDescription(<<<EOT
-  Updating the structure directories of a workspaces
+  Migrating cases folders of the workspaces
 
-  Specify the WORKSPACE to updating to a different workspace name.
+  Specify the WORKSPACE to migrate from a existing workspace.
 EOT
 );
 //CLI::taskArg('workspace', true);
-CLI::taskOpt("workspace", "Select which workspace to updating the structure of directories, if multiple workspaces are present in the archive.",
+CLI::taskOpt("workspace", "Select which workspace to migrate the cases folders, if multiple workspaces are present in the server.",
              "w:", "workspace=");
 CLI::taskRun(runStructureDirectories);
 
