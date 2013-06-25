@@ -241,7 +241,13 @@ Ext.onReady(function(){
                           }
 
                           //String
-                          if (selCombo == "CHAR" || selCombo == "VARCHAR" || selCombo == "LONGVARCHAR") {
+                          if (selCombo == "CHAR" || selCombo == "VARCHAR") {
+                              swAI = 0;
+                          }
+
+
+                          if (selCombo == "LONGVARCHAR") {
+                              swPK = 0;
                               swAI = 0;
                           }
 

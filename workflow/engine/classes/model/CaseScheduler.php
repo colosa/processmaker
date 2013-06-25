@@ -396,7 +396,12 @@ class CaseScheduler extends BaseCaseScheduler
                         $paramsRouteLogResult = $paramsLogResultFromPlugin['paramsRouteLogResult'];
                     } else {
                         eprint( " - Creating the new case............." );
-                        $result = $client->__SoapCall( 'NewCase', array ($params) );
+
+                        $paramsAux = $params;
+                        $paramsAux["executeTriggers"] = 1;
+
+                        $result = $client->__SoapCall("NewCase", array($paramsAux));
+
                         if ($result->status_code == 0) {
                             eprintln( "OK+ CASE #{$result->caseNumber} was created!", 'green' );
 
@@ -499,7 +504,10 @@ class CaseScheduler extends BaseCaseScheduler
                     $paramsLog = array ('PRO_UID' => $processId,'TAS_UID' => $taskId,'SCH_UID' => $sSchedulerUid,'USR_NAME' => $user,'RESULT' => '','EXEC_DATE' => date( 'Y-m-d' ),'EXEC_HOUR' => date( 'H:i:s' ),'WS_CREATE_CASE_STATUS' => '','WS_ROUTE_CASE_STATUS' => ''
                     );
 
-                    $result = $client->__SoapCall( 'NewCase', array ($params) );
+                    $paramsAux = $params;
+                    $paramsAux["executeTriggers"] = 1;
+
+                    $result = $client->__SoapCall("NewCase", array($paramsAux));
 
                     eprint( " - Creating the new case............." );
                     if ($result->status_code == 0) {
