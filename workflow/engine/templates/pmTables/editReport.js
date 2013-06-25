@@ -979,15 +979,16 @@ function createReportTable()
     });
     return false;
   }
-  
-  //validate process
-  if(Ext.getCmp('PROCESS').getValue().trim() == '') {
-    Ext.getCmp('PROCESS').focus();
-    PMExt.error(_('ID_ERROR'), _('ID_PROCESS_IS_REQUIRED'), function(){
-      Ext.getCmp('PROCESS').focus();
-    });
-    return false;
-  }
+
+    //validate process
+    PRO_UID = (PRO_UID !== false) ? PRO_UID : ((Ext.getCmp('PROCESS').getValue().trim() != '') ? Ext.getCmp('PROCESS').getValue().trim() : '');
+    if(PRO_UID == '') {
+        Ext.getCmp('PROCESS').focus();
+        PMExt.error(_('ID_ERROR'), _('ID_PROCESS_IS_REQUIRED'), function(){
+            Ext.getCmp('PROCESS').focus();
+        });
+        return false;
+    }
 
   // validate table name length
   if(tableName.length < 4) {
