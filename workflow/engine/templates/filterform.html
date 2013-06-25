@@ -3,7 +3,7 @@
 <form id="form[{$form->id}]" name="form[{$form->name}]" action="{$form->action}" method="post" style="margin:0px;" class="formSearch">
 <table class="borderForm" id="{$form->name}" name="{$form->name}" class="basicTable" width='{$form->width}' cellspacing="0" cellpadding="0" style="display:none;width:{$form->width};">
   <tr>
-    <td valign='top'>        
+    <td valign='top'>
 {if isset($form->title) && $form->title !=='' }
    <table class="Header"  width='100%'>
      <tr>
@@ -70,6 +70,7 @@ var form_{$form->id};
 var i;
 function loadForm_{$form->id}(ajaxServer)
 {literal}{{/literal}
+swSubmitValidateForm = 1;
 if (typeof(G_Form)==='undefined') return alert('form.js was not loaded');
   form_{$form->id}=new G_Form(document.getElementById('form[{$form->id}]'),'{$form->id}');
   var myForm=form_{$form->id};

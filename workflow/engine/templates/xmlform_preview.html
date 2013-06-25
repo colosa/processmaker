@@ -93,6 +93,7 @@ if (typeof(__aObjects__) === 'undefined') {literal}{{/literal}
 {literal}}{/literal}
 function loadForm_{$form->id}(ajaxServer)
 {literal}{{/literal}
+swSubmitValidateForm = 1;
 if (typeof(G_Form)==='undefined') return alert('form.js was not loaded');
   form_{$form->id}=new G_Form(document.getElementById('{$form->id}'),'{$form->id}');
   object_{$form->name} = form_{$form->id};

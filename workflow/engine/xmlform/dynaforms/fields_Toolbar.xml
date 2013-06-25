@@ -3,10 +3,10 @@
   <PRO_UID type="private" />
   <DYN_UID type="private" />
   <!--<separator1 type="toolButton" file="images/dynamicForm/separatorTable.gif" home="public_html" buttonStyle=""/>-->
-  <saveDyna type="toolButton" class="ss_sprite button_toolbar ss_disk" onclick="dynaformEditor.save()" home="public_html" buttonType="class">
+  <saveDyna type="toolButton" class="ss_sprite button_toolbar ss_disk" onclick="dynaformEditor.save();return false;" home="public_html" buttonType="class">
     <en>Save</en>
   </saveDyna>
-  <saveasDyna type="toolButton" class="ss_sprite button_toolbar ss_disk_multiple" onclick="dynaformEditor.save_as()" buttonType="class">
+  <saveasDyna type="toolButton" class="ss_sprite button_toolbar ss_disk_multiple" onclick="dynaformEditor.save_as();return false;" buttonType="class">
     <en>Save as</en>
   </saveasDyna>
   <!--.-->
