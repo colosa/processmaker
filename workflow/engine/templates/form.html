@@ -80,6 +80,7 @@ var form_{$form->id};
 var i;
 function loadForm_{$form->id}(ajaxServer)
 {literal}{{/literal}
+swSubmitValidateForm = 1;
 if (typeof(G_Form)==='undefined') return alert('form.js was not loaded');
   form_{$form->id}=new G_Form(document.getElementById('{$form->id}'),'{$form->id}');
   var myForm=form_{$form->id};

@@ -89,7 +89,14 @@ class workspaceTools
         $stop = microtime(true);
         $final = $stop - $start;
         CLI::logging("<*>   Updating cache view Process took $final seconds.\n");
+    }
 
+    /**
+     * Updating cases directories structure
+     *
+     */
+    public function updateStructureDirectories($workSpace = SYS_SYS)
+    {
         $start = microtime(true);
         CLI::logging("> Updating cases directories structure...\n");
         $this->upgradeCasesDirectoryStructure($workSpace);
@@ -583,13 +590,11 @@ class workspaceTools
         $this->initPropel(true);
         G::LoadClass("configuration");
         $conf = new Configurations();
-        if ($conf->exists("ENVIRONMENT_SETTINGS")) {
-            $conf->setDirectoryStructureVer(2);
-            CLI::logging(CLI::info("Version Directory Structure is 2 now.\n"));
-        } else {
-            CLI::logging(CLI::error("Error: found at try to use ENVIRONMENT_SETTINGS row.\n"));
-            return;
+        if (!$conf->exists("ENVIRONMENT_SETTINGS")) {
+            $conf->saveConfig( 'ENVIRONMENT_SETTINGS', '' );
         }
+        $conf->setDirectoryStructureVer(2);
+        CLI::logging(CLI::info("Version Directory Structure is 2 now.\n"));
     }
 
     /**
