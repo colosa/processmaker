@@ -2614,7 +2614,7 @@ class G
                 G::verifyPath( $path, true );
             }
             move_uploaded_file( $file, $path . "/" . $nameToSave );
-            chmod( $path . "/" . $nameToSave, $permission );
+            @chmod( $path . "/" . $nameToSave, $permission );
             umask( $oldumask );
         } catch (Exception $oException) {
             throw $oException;
@@ -2676,7 +2676,7 @@ class G
         imagecopyresampled( $image_p, $image, 0, 0, 0, 0, $resWidth, $resHeight, $width, $height );
         $outputFn( $image_p, $saveTo );
 
-        chmod( $saveTo, 0666 );
+        @chmod( $saveTo, 0666 );
     }
 
     /**
