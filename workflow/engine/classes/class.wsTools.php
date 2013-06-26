@@ -555,7 +555,7 @@ class workspaceTools
                         rmdir($UIdDir);//remove the diretory itself, G::rm_dir cannot do it
                     } else {
                         CLI::logging(CLI::error("Error: Failure at coping from $UIdDir...\n"));
-                    }                        
+                    }
                 } else {
                     CLI::logging("$UIdDir is empty, removing it\n");
                     rmdir($UIdDir);//remove the diretory itself
@@ -582,7 +582,7 @@ class workspaceTools
                     unlink($file[$index]);
                 } else {
                     CLI::logging(CLI::error("Error: Failure at copy $file[$index] files...\n"));
-                }     
+                }
             }
         }
 
@@ -633,7 +633,7 @@ class workspaceTools
         $this->upgradeData();
         p11835::execute();
         return true;
-    }	
+    }
 
     /**
      * Upgrade this workspace database from a schema
@@ -1191,12 +1191,12 @@ class workspaceTools
         if (isset($srcWorkspace) && !in_array("$srcWorkspace.meta", array_map(BASENAME, $metaFiles))) {
             throw new Exception("Workspace $srcWorkspace not found in backup");
         }
-        
+
         $version = System::getVersion();
         $version = explode('-', $version);
         $versionPresent = ( isset($version[0])) ? $version[0] : '';
         CLI::logging(CLI::warning("
-            Note.- If you try to execute a restore from a generated backup on a recent version of Processmaker 
+            Note.- If you try to execute a restore from a generated backup on a recent version of Processmaker
             than version you are using currently to restore it, it may be occur errors on the restore process,
             it shouldn't be restaured generated backups on later versions than version when the restore is executed") . "\n");
 
@@ -1296,7 +1296,7 @@ class workspaceTools
             $stop = microtime(true);
             $final = $stop - $start;
             CLI::logging("<*>   Updating cache view Process took $final seconds.\n");
-            
+
 
             mysql_close($link);
         }
@@ -1306,6 +1306,56 @@ class workspaceTools
         G::rm_dir($tempDirectory);
 
         CLI::logging(CLI::info("Done restoring") . "\n");
+    }
+
+    public static function hotfixInstall($file)
+    {
+        $result = array();
+
+        $dirHotfix = PATH_DATA . "hotfixes";
+
+        $arrayPathInfo = pathinfo($file);
+
+        $f = ($arrayPathInfo["dirname"] == ".")? $dirHotfix . PATH_SEP . $file : $file;
+
+        $swv  = 1;
+        $msgv = "";
+
+        if (!file_exists($dirHotfix)) {
+            G::mk_dir($dirHotfix, 0777);
+        }
+
+        if (!file_exists($f)) {
+            $swv  = 0;
+            $msgv = $msgv . (($msgv != "")? "\n": null) . "- The file \"$f\" does not exist";
+        }
+
+        if ($arrayPathInfo["extension"] != "tar") {
+            $swv  = 0;
+            $msgv = $msgv . (($msgv != "")? "\n": null) . "- The file extension \"$file\" is not \"tar\"";
+        }
+
+        if ($swv == 1) {
+            G::LoadThirdParty("pear/Archive", "Tar");
+
+            //Extract
+            $tar = new Archive_Tar($f);
+
+            $swTar = $tar->extract(PATH_OUTTRUNK); //true on success, false on error
+
+            if ($swTar) {
+                $result["status"] = 1;
+                $result["message"] = "- Hotfix installed successfully \"$f\"";
+            } else {
+                $result["status"] = 0;
+                $result["message"] = "- Could not extract file \"$f\"";
+            }
+        } else {
+            $result["status"] = 0;
+            $result["message"] = $msgv;
+        }
+
+        return $result;
     }
 }
 
