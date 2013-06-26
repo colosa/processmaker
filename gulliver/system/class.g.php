@@ -4804,7 +4804,7 @@ class G
          } else {
             //first a raw permission check
             if(fileperms($file) != 33200) {
-                chmod ($file, 0660);
+                @chmod ($file, 0660);
             }
         }
     }
