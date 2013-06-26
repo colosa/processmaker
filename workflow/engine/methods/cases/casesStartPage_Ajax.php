@@ -250,11 +250,6 @@ function startCase ()
 
         $_SESSION['CASES_REFRESH'] = true;
 
-        // Execute Events
-        require_once 'classes/model/Event.php';
-        $event = new Event();
-        $event->createAppEvents( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['TASK'] );
-
         $oCase = new Cases();
         $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] );
 

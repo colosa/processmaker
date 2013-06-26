@@ -360,11 +360,6 @@ class Home extends Controller
         $_SESSION['STEP_POSITION'] = 0;
         $_SESSION['CASES_REFRESH'] = true;
 
-        // Execute Events
-        require_once 'classes/model/Event.php';
-        $event = new Event();
-        $event->createAppEvents( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['TASK'] );
-
         $oCase = new Cases();
         $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] );
         //../cases/cases_Open?APP_UID={$APP.APP_UID}&DEL_INDEX={$APP.DEL_INDEX}&action=todo
