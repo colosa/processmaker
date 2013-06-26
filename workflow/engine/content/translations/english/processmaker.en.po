@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ProcessMaker (Branch master) 2.5.1-testing.2\n"
+"Project-Id-Version: ProcessMaker (Branch master) 2.5.1-testing.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-06-05 13:33:25\n"
+"PO-Revision-Date: 2013-06-26 12:29:31\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -5236,8 +5236,8 @@ msgstr "Off"
 # TRANSLATION
 # LABEL/ID_NO_SELECTION_WARNING
 #: LABEL/ID_NO_SELECTION_WARNING
-msgid "Select a item from the list please."
-msgstr "Select a item from the list please."
+msgid "One item should be selected in order to execute the action."
+msgstr "One item should be selected in order to execute the action."
 
 # TRANSLATION
 # JAVASCRIPT/ID_REQUIRED_NAME_TRIGGERS
@@ -12940,8 +12940,8 @@ msgstr "Could not create the installation log"
 # TRANSLATION
 # LABEL/ID_PREVIUS
 #: LABEL/ID_PREVIUS
-msgid "Previus"
-msgstr "Previus"
+msgid "[LABEL/ID_PREVIUS] Previous"
+msgstr "Previous"
 
 # TRANSLATION
 # LABEL/ID_UPLOAD_COMPLETE
@@ -14904,6 +14904,30 @@ msgstr "You forgot the name of the Case Scheduler"
 #: LABEL/ID_DUPLICATE_CASE_SCHEDULER_NAME
 msgid "Duplicate Case Scheduler name."
 msgstr "Duplicate Case Scheduler name."
+
+# TRANSLATION
+# LABEL/ID_MSG_CLEAR_GRID_FIRST_ITEM
+#: LABEL/ID_MSG_CLEAR_GRID_FIRST_ITEM
+msgid "Do you want to clear the information from the first row?"
+msgstr "Do you want to clear the information from the first row?"
+
+# TRANSLATION
+# LABEL/ID_FROM_NAME
+#: LABEL/ID_FROM_NAME
+msgid "From name"
+msgstr "From name"
+
+# TRANSLATION
+# LABEL/ID_ACCEPT
+#: LABEL/ID_ACCEPT
+msgid "[LABEL/ID_ACCEPT] Accept"
+msgstr "Accept"
+
+# TRANSLATION
+# LABEL/ID_ERROR_SEND_NOTIFICATIONS
+#: LABEL/ID_ERROR_SEND_NOTIFICATIONS
+msgid "The following error has occurred when trying to send the notifications:"
+msgstr "The following error has occurred when trying to send the notifications:"
 
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
