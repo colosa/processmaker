@@ -591,6 +591,12 @@ class workspaceTools
         G::LoadClass("configuration");
         $conf = new Configurations();
         if (!$conf->exists("ENVIRONMENT_SETTINGS")) {
+            $conf->aConfig = array ("format" => '@userName (@firstName @lastName)',
+                                "dateFormat" => 'd/m/Y',
+                                "startCaseHideProcessInf" => false,
+                                "casesListDateFormat" => 'Y-m-d H:i:s',
+                                "casesListRowNumber" => 25,
+                                "casesListRefreshTime" => 120 );
             $conf->saveConfig( 'ENVIRONMENT_SETTINGS', '' );
         }
         $conf->setDirectoryStructureVer(2);
