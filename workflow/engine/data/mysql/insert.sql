@@ -2280,7 +2280,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_PRO_CREATE_DATE','en','Create Date','2013-05-15') ,
 ( 'LABEL','ID_ON','en','On','2013-05-15') ,
 ( 'LABEL','ID_OFF','en','Off','2013-05-15') ,
-( 'LABEL','ID_NO_SELECTION_WARNING','en','Select a item from the list please.','2013-05-15') ,
+( 'LABEL','ID_NO_SELECTION_WARNING','en','One item should be selected in order to execute the action.','2013-06-14') ,
 ( 'JAVASCRIPT','ID_REQUIRED_NAME_TRIGGERS','en','You forgot the title of the trigger','2013-05-15') ,
 ( 'JAVASCRIPT','ID_EXIST_PROCESS','en','There is a process with the same name. this process will not save','2013-05-15') ,
 ( 'JAVASCRIPT','ID_EXIST_DYNAFORM','en','There is a Dynaform with the same name in this process. It is not saving','2013-05-15') ,
@@ -3596,7 +3596,7 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 ( 'LABEL','ID_DIRECTORIES_NOT_WRITABLE','en','Some directories and/or files inside it are not writable','2013-03-07') ,
 ( 'LABEL','ID_DOES_NOT_EXIST','en','does not exist','2013-03-07') ,
 ( 'LABEL','ID_CREATE_LOG_INSTALLATION','en','Could not create the installation log','2013-03-07') ,
-( 'LABEL','ID_PREVIUS','en','Previus','2013-03-07') ,
+( 'LABEL','ID_PREVIUS','en','Previous','2013-06-13') ,
 ( 'LABEL','ID_UPLOAD_COMPLETE','en','Upload complete','2013-03-07') ,
 ( 'LABEL','ID_CREATE_FOLDER','en','Create New Folder','2013-03-07') ,
 ( 'LABEL','ID_UPLOAD_LEAST_FILE','en','You may upload at least one file','2013-03-07') ,
@@ -3933,7 +3933,11 @@ INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE 
 INSERT INTO TRANSLATION (TRN_CATEGORY,TRN_ID,TRN_LANG,TRN_VALUE,TRN_UPDATE_DATE )  VALUES 
 
 ( 'LABEL','ID_REQUIRED_NAME_CASE_SCHEDULER','en','You forgot the name of the Case Scheduler','2013-05-28') ,
-( 'LABEL','ID_DUPLICATE_CASE_SCHEDULER_NAME','en','Duplicate Case Scheduler name.','2013-05-28') ;
+( 'LABEL','ID_DUPLICATE_CASE_SCHEDULER_NAME','en','Duplicate Case Scheduler name.','2013-05-28') ,
+( 'LABEL','ID_MSG_CLEAR_GRID_FIRST_ITEM','en','Do you want to clear the information from the first row?','2013-06-13') ,
+( 'LABEL','ID_FROM_NAME','en','From name','2013-06-14') ,
+( 'LABEL','ID_ACCEPT','en','Accept','2013-06-17') ,
+( 'LABEL','ID_ERROR_SEND_NOTIFICATIONS','en','The following error has occurred when trying to send the notifications:','2013-06-19') ;
 
 INSERT INTO ISO_LOCATION (IC_UID,IL_UID,IL_NAME,IL_NORMAL_NAME,IS_UID)  VALUES 
 ('AD','','',' ','') ,

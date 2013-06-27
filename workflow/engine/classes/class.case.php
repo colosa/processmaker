@@ -1960,6 +1960,12 @@ class Cases
                 G::LoadClass('derivation');
                 $oDerivation = new Derivation();
                 $oDerivation->setTasLastAssigned($sTasUid, $sUsrUid);
+
+                // Execute Events
+                require_once 'classes/model/Event.php';
+                $event = new Event();
+                $event->createAppEvents($sProUid, $sAppUid, $iDelIndex, $sTasUid);
+
                 //update searchindex
                 if ($this->appSolr != null) {
                     $this->appSolr->updateApplicationSearchIndex($sAppUid);

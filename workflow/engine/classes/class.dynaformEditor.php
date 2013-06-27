@@ -543,6 +543,18 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
     public function set_htmlcode($A, $htmlcode)
     {
         try {
+            $iOcurrences = preg_match_all('/\{[\S*\<[^\>]*\S*\s*\>*\S*]*\$\S*\<[^\>]*\S*\s*\>*\S*\}/im', $htmlcode, $matches);
+            if ($iOcurrences) {
+                if (isset($matches[0])) {
+                    $tagsHtml = $matches[0];
+                    foreach ($tagsHtml as $value) {
+                        $aTagVar =  str_replace("{", "&#123;", $value);
+                        $aTagVar =  str_replace("}", "&#125;", $aTagVar);
+                        $aTagVar =  str_replace("$", "&#36;", $aTagVar);
+                        $htmlcode = str_replace($value, $aTagVar, $htmlcode);
+                    }
+                }
+            }
             $file = G::decrypt($A, URL_KEY);
             $form = new Form($file, PATH_DYNAFORM, SYS_LANG, true);
             $filename = substr($form->fileName, 0, - 3) . ($form->type === 'xmlform' ? '' : '.' . $form->type) . 'html';

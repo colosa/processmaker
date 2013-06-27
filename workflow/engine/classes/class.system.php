@@ -1096,10 +1096,10 @@ class System
 
         $md5 = array ();
         if ($readGlobalIniFile) {
-            $md5[] = md5_file( $globalIniFile );
+            $md5[] = @md5_file( $globalIniFile );
         }
         if ($readWsIniFile) {
-            $md5[] = md5_file( $wsIniFile );
+            $md5[] = @md5_file( $wsIniFile );
         }
         $hash = implode( '-', $md5 );
 

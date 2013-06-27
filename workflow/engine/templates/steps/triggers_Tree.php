@@ -93,6 +93,7 @@ try {
   $iCantidad2 = StepTriggerPeer::doCount($oCriteria);
   $oCriteria  = $oProcessMap->getStepTriggersCriteria(-2, $_SESSION['TASK'], 'AFTER');
   $iCantidad3 = StepTriggerPeer::doCount($oCriteria);
+
   $oNode             =& $oTree->addChild('-1', '&nbsp;&nbsp;<span onclick="tree.expand(this.parentNode);" style="cursor: pointer;">[<b> ' . G::LoadTranslation('ID_ASSIGN_TASK') . ' </b>] ' . ' - ' . G::LoadTranslation('ID_TRIGGERS'). ' (<span id="TRIG_'.$aRow['STEP_UID'] . '">' . ($iCantidad1 + $iCantidad2 + $iCantidad3) . '</span>)' . '</span>', array('nodeType'=>'parent'));
   $oNode->contracted = true;
   $oAux1             =& $oNode->addChild('before_node', '<span onclick="tree.expand(this.parentNode);showTriggers(\'-1\', \'BEFORE\');" style="cursor: pointer;">' . G::LoadTranslation('ID_BEFORE_ASSIGNMENT') . ' - ' . G::LoadTranslation('ID_TRIGGERS'). ' (<span id="TRIG_-1_BEFORE">'. $iCantidad1 .'</span>) </span>', array('nodeType'=>'parent'));
@@ -107,7 +108,27 @@ try {
   $oAux1->plus       = "<span  style='cursor:pointer;display:block;width:15;height:10px;' onclick='tree.expand(this.parentNode);showTriggers(\"-2\", \"AFTER\");'></span>";
   $oAux1->contracted = true;
   $oAux2             =& $oAux1->addChild('-2_after_node', '<span id="triggersSpan_-2_AFTER"></span>', array('nodeType'=>'parentBlue'));
-  echo $oTree->render();
+
+  $javascript = "
+  <script type=\"text/javascript\">
+  //Add css Codemirror
+  var head = document.getElementsByTagName(\"head\")[0];
+  var s = document.createElement(\"link\");
+
+  s.setAttribute(\"href\", \"/js/codemirror/lib/codemirror.css\");
+  s.setAttribute(\"type\", \"text/css\");
+  s.setAttribute(\"rel\", \"stylesheet\");
+  head.appendChild(s);
+
+  var s = document.createElement(\"link\");
+  s.setAttribute(\"href\", \"/js/codemirror/addon/hint/show-hint.css\");
+  s.setAttribute(\"type\", \"text/css\");
+  s.setAttribute(\"rel\", \"stylesheet\");
+  head.appendChild(s);
+  </script>
+  ";
+
+  echo $javascript . $oTree->render();
 }
 catch (Exception $oException) {
 	die($oException->getMessage());
