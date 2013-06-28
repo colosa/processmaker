@@ -184,7 +184,11 @@ try {
 //Obtain previous and next step - End
 
 $aRequiredFields = array(
-    'APP_DATA' => $Fields['APP_DATA']
+    'APPLICATION'   => $Fields['APP_DATA']['APPLICATION'],
+    'PROCESS'       => $Fields['APP_DATA']['PROCESS'],
+    'TASK'          => $Fields['APP_DATA']['TASK'],
+    'INDEX'         => $Fields['APP_DATA']['INDEX'],
+    'TRIGGER_DEBUG' => $Fields['APP_DATA']['TRIGGER_DEBUG']
 );
 
 $oHeadPublisher->addScriptCode('var __dynaformSVal__ = \'' . base64_encode(serialize($aRequiredFields)) . '\'; ');
