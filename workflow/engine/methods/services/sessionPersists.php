@@ -34,25 +34,21 @@ if (isset($_REQUEST['dynaformEditorParams'])) {
 if (isset($_REQUEST['dynaformRestoreValues'])) {
 
     $aRetValues = unserialize(stripslashes(base64_decode($_REQUEST['dynaformRestoreValues'])));
-
-    if (isset($aRetValues['APP_DATA'])) {
-        $_SESSION['APP_DATA'] = $aRetValues['APP_DATA'];
-
-        if (isset($aRetValues['APP_DATA']['APPLICATION'])) {
-            $_SESSION['APPLICATION'] = $aRetValues['APP_DATA']['APPLICATION'];
-        }
-        if (isset($aRetValues['APP_DATA']['PROCESS'])) {
-            $_SESSION['PROCESS'] = $aRetValues['APP_DATA']['PROCESS'];
-        }
-        if (isset($aRetValues['APP_DATA']['TASK'])) {
-            $_SESSION['TASK'] = $aRetValues['APP_DATA']['TASK'];
-        }
-        if (isset($aRetValues['APP_DATA']['INDEX'])) {
-            $_SESSION['INDEX'] = $aRetValues['APP_DATA']['INDEX'];
-        }
-        if (isset($aRetValues['APP_DATA']['TRIGGER_DEBUG'])) {
-            $_SESSION['TRIGGER_DEBUG'] = $aRetValues['APP_DATA']['TRIGGER_DEBUG'];
-        }
+ 
+    if (isset($aRetValues['APPLICATION'])) {
+        $_SESSION['APPLICATION'] = $aRetValues['APPLICATION'];
+    }
+    if (isset($aRetValues['PROCESS'])) {
+        $_SESSION['PROCESS'] = $aRetValues['PROCESS'];
+    }
+    if (isset($aRetValues['TASK'])) {
+        $_SESSION['TASK'] = $aRetValues['TASK'];
+    }
+    if (isset($aRetValues['INDEX'])) {
+        $_SESSION['INDEX'] = $aRetValues['INDEX'];
+    }
+    if (isset($aRetValues['TRIGGER_DEBUG'])) {
+        $_SESSION['TRIGGER_DEBUG'] = $aRetValues['TRIGGER_DEBUG'];
     }
 }
 die(G::json_encode($response));
