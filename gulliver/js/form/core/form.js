@@ -2906,7 +2906,7 @@ var validateForm = function(sRequiredFields) {
         swSubmitValidateForm = 0;
 
         sFormName = document.getElementById('__DynaformName__');
-        if ((typeof(sFormName) != 'undefined' && sFormName != 'login') && (typeof(__usernameLogged__) != 'undefined' && __usernameLogged__ != '') ) {
+        if (typeof(__dynaformSVal__) != 'undefined' && (typeof(sFormName) != 'undefined' && sFormName != 'login') && (typeof(__usernameLogged__) != 'undefined' && __usernameLogged__ != '') ) {
             if (!sessionPersits()) {
                 showPromptLogin('session');
 
