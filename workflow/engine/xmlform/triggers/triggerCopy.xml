@@ -65,7 +65,7 @@
     <en>Script</en>
 </TRI_WEBBOT>
 
-<BTNCOPYSAVE type="button" onclick="document.getElementById('form[TRI_WEBBOT]').value = triggerEditor.getCode(); triggerSave1(this.form);">
+<BTNCOPYSAVE type="button" onclick="document.getElementById('form[TRI_WEBBOT]').value = triggerEditor.getValue(); triggerSave1(this.form);">
     <en>Copy/Import and Save</en>
 </BTNCOPYSAVE>
 
@@ -94,7 +94,7 @@
 	    readOnly: true
 	});
 	triggerEditor.setSize(400,200);
-    
+
     function cancel()
     {
         currentPopupWindow.remove();
