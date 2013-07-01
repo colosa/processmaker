@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="overflow-y: hidden;">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
   <title>Site under Updating</title>
 <style>
 
@@ -9,8 +9,8 @@
 
 @font-face {
     font-family: 'PTSansRegular';
-    src: url('../images/updating/fonts/pt-sans/PTS55F-webfont.eot');
-    src: url('../images/updating/fonts/pt-sans/PTS55F-webfont.eot?#iefix') format('embedded-opentype'), url('../images/updating/fonts/pt-sans/PTS55F-webfont.woff') format('woff'), url('images/updating/fonts/pt-sans/PTS55F-webfont.ttf') format('truetype'), url('../images/updating/fonts/pt-sans/PTS55F-webfont.svg#PTSansRegular') format('svg');
+    src: url('images/updating/fonts/pt-sans/PTS55F-webfont.eot');
+    src: url('images/updating/fonts/pt-sans/PTS55F-webfont.eot?#iefix') format('embedded-opentype'), url('images/updating/fonts/pt-sans/PTS55F-webfont.woff') format('woff'), url('images/updating/fonts/pt-sans/PTS55F-webfont.ttf') format('truetype'), url('images/updating/fonts/pt-sans/PTS55F-webfont.svg#PTSansRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -69,7 +69,7 @@ body {    background: #ffffff none repeat scroll 0 0 }
 }
 
 #main {
-    background:  #ffffff url(../images/updating/page_background.png) no-repeat scroll 0 0;
+    background:  #ffffff url(images/updating/page_background.png) no-repeat scroll 0 0;
     margin: 0 auto;
     padding: 0;
     height: 430px;
@@ -112,7 +112,7 @@ body {    background: #ffffff none repeat scroll 0 0 }
 
 #content {
 	  padding: 10px 44px;
-	  background-image: url(../images/updating/underConstruction.png);
+	  background-image: url(images/updating/underConstruction.png);
     background-position: right top;
     background-repeat: no-repeat;
 	}
@@ -171,10 +171,11 @@ a.next {
     <div id="header">
 
     	<div id="logo">
-        	<a href="http://www.processmaker.com" target="_blank"><img src="../images/processmaker.logo.jpg" alt="logo"/></a>
+        	<a href="http://www.processmaker.com" target="_blank"><img src="images/processmaker.logo.jpg" alt="logo"/></a>
         </div><!--end logo-->
 
         <div id="contact_details">
+
         	<p><a href="mailto:info@colosa.com">info@colosa.com</a></p>
 			<p>phone : +1-617-340-3377</p>
 		</div><!--end contact details-->
