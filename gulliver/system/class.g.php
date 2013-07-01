@@ -5160,6 +5160,62 @@ class G
 
         return $url;
     }
+
+    public static function skinGetPathToSrcByVirtualUri($option, $sysConf)
+    {
+        $path = "";
+        $ereg = "";
+        $strSearch = "";
+
+        switch ($option) {
+            case "errors":
+                $ereg = "/^\/errors\/.*$/";
+                $strSearch = "/errors/";
+                break;
+            case "update":
+                $ereg = "/^\/update\/.*$/";
+                $strSearch = "/update/";
+                break;
+        }
+
+        if (preg_match($ereg, $_SERVER["REQUEST_URI"])) {
+            $strAux = str_replace($strSearch, null, $_SERVER["REQUEST_URI"]);
+
+            if ($strAux != "") {
+                $skin = "base"; //classic
+
+                if (isset($_SESSION["currentSkin"])) {
+                    $skin = $_SESSION["currentSkin"];
+                } else {
+
+                    if (isset($sysConf["default_skin"])) {
+                        $skin = $sysConf["default_skin"];
+                    }
+                }
+
+                $arrayAux = explode("?", $strAux);
+                $fileTemplate = $arrayAux[0];
+
+                if (file_exists(PATH_SKIN_ENGINE . "base" . PATH_SEP . $fileTemplate)) {
+                    $path = PATH_SKIN_ENGINE . "base" . PATH_SEP;
+                }
+
+                if (file_exists(PATH_SKIN_ENGINE . $skin . PATH_SEP . $fileTemplate)) {
+                    $path = PATH_SKIN_ENGINE . $skin . PATH_SEP;
+                }
+
+                if (file_exists(PATH_SKINS . $skin . PATH_SEP . $fileTemplate)) {
+                    $path = PATH_SKINS . $skin . PATH_SEP;
+                }
+
+                if (file_exists(PATH_CUSTOM_SKINS . $skin . PATH_SEP . $fileTemplate)) {
+                    $path = PATH_CUSTOM_SKINS . $skin . PATH_SEP;
+                }
+            }
+        }
+
+        return $path;
+    }
 }
 
 /**

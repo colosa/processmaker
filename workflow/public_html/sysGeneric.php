@@ -326,6 +326,9 @@ spl_autoload_register(array("Bootstrap", "autoloadClass"));
 Bootstrap::registerClass("G",      PATH_GULLIVER . "class.g.php");
 Bootstrap::registerClass("System", PATH_HOME . "engine/classes/class.system.php");
 
+$skinPathErrors = G::skinGetPathToSrcByVirtualUri("errors", $config);
+$skinPathUpdate = G::skinGetPathToSrcByVirtualUri("update", $config);
+
 // defining Virtual URLs
 $virtualURITable = array ();
 $virtualURITable['/plugin/(*)'] = 'plugin';
@@ -341,7 +344,7 @@ if (defined( 'PATH_C' )) {
 $virtualURITable['/htmlarea/(*)'] = PATH_THIRDPARTY . 'htmlarea/';
 //$virtualURITable['/sys[a-zA-Z][a-zA-Z0-9]{0,}()/'] = 'sysNamed';
 $virtualURITable['/(sys*)'] = FALSE;
-$virtualURITable['/errors/(*)'] = PATH_GULLIVER_HOME . 'methods/errors/';
+$virtualURITable["/errors/(*)"] = ($skinPathErrors != "")? $skinPathErrors : PATH_GULLIVER_HOME . "methods" . PATH_SEP . "errors" . PATH_SEP;
 $virtualURITable['/gulliver/(*)'] = PATH_GULLIVER_HOME . 'methods/';
 $virtualURITable['/controls/(*)'] = PATH_GULLIVER_HOME . 'methods/controls/';
 $virtualURITable['/html2ps_pdf/(*)'] = PATH_THIRDPARTY . 'html2ps_pdf/';
@@ -349,7 +352,7 @@ $virtualURITable['/html2ps_pdf/(*)'] = PATH_THIRDPARTY . 'html2ps_pdf/';
 //$virtualURITable['/skins/'] = 'errorFile';
 //$virtualURITable['/files/'] = 'errorFile';
 $virtualURITable['/rest/(*)'] = 'rest-service';
-$virtualURITable['/update/(*)'] = PATH_GULLIVER_HOME . 'methods/update/';
+$virtualURITable["/update/(*)"] = ($skinPathUpdate != "")? $skinPathUpdate : PATH_GULLIVER_HOME . "methods" . PATH_SEP . "update" . PATH_SEP;
 //$virtualURITable['/(*)'] = PATH_HTML;
 $virtualURITable['/css/(*)'] = PATH_HTML . 'css/'; //ugly
 $virtualURITable['/skin/(*)'] = PATH_HTML;
@@ -450,8 +453,7 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
 // the request correspond to valid php page, now parse the URI
 Bootstrap::parseURI( getenv( "REQUEST_URI" ), $isRestRequest );
 
-//Bootstrap::mylog("sys_temp: ".SYS_TEMP);
-
+// Bootstrap::mylog("sys_temp: ".SYS_TEMP);
 if (Bootstrap::isPMUnderUpdating()) {
     header( "location: /update/updating.php" );
     if (DEBUG_TIME_LOG)
@@ -813,7 +815,7 @@ if (substr( SYS_COLLECTION, 0, 8 ) === 'gulliver') {
         $pluginName = SYS_COLLECTION;
         $pluginResourceRequest = explode('/', rtrim(SYS_TARGET, '/'));
         $isPluginController = true;
-        
+
         if ($pluginResourceRequest > 0) {
             $controllerClass = $pluginResourceRequest[0];
 
@@ -821,7 +823,7 @@ if (substr( SYS_COLLECTION, 0, 8 ) === 'gulliver') {
                 $controllerAction = 'index';
             } else {
                 $controllerAction = $pluginResourceRequest[1];
-            }   
+            }
         }
 
         $pluginControllerPath = PATH_PLUGINS . $pluginName . PATH_SEP . 'controllers' . PATH_SEP;
@@ -986,12 +988,12 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
         $controller = new $controllerClass();
         $controller->setHttpRequestData($_REQUEST);//NewRelic Snippet - By JHL
         transactionLog($controllerAction);
-        
+
         if ($isPluginController) {
             $controller->setPluginName($pluginName);
             $controller->setPluginHomeDir(PATH_PLUGINS . $pluginName . PATH_SEP);
         }
-        
+
         $controller->call($controllerAction);
     } elseif ($isRestRequest) {
         //NewRelic Snippet - By JHL

@@ -1,46 +1,8 @@
-<?php
-    $skin = '';
-    if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING']!= '')) {
-        $url = urldecode($_SERVER['QUERY_STRING']);
-        $urlParts = explode('/', $url);
-        $skin = $urlParts['3'];
-    } else {
-        if (!class_exists('System')) {
-            require_once (PATH_HOME . "engine/classes/class.system.php");
-            $sysConf = System::getSystemConfiguration( PATH_CONFIG . 'env.ini' );
-            if (isset($sysConf['default_skin']) && ($sysConf['default_skin']!='')) {
-                $skin = $sysConf['default_skin'];
-            }
-        }
-    }
-
-    if ($skin != '') {
-        $dir = pathinfo(__FILE__);
-        $template = $dir['filename'];
-
-        $fileTemplate = PATH_SKINS . $skin . PATH_SEP . $template. '.html';
-        if (!file_exists($fileTemplate)) {
-            $fileTemplate = PATH_SKIN_ENGINE . $skin . PATH_SEP . $template. '.html';
-            if (!file_exists($fileTemplate)) {
-                $fileTemplate = PATH_CUSTOM_SKINS . $skin . PATH_SEP . $template. '.html';
-                if (!file_exists($fileTemplate)) {
-                    $fileTemplate = '';
-                }
-            }
-        }
-
-        if ($fileTemplate != '') {
-            $contentTemplate = file_get_contents($fileTemplate);
-            print ($contentTemplate);
-            die;
-        }
-    }
-?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <META http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
-  <link href="style1.css" type="text/css" rel="stylesheet"/>
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
+  <link href="css2/style1.css" type="text/css" rel="stylesheet"/>
 </head>
 <body style="margin: 0px; overflow: auto;">
     <!-- Warp around everything -->
@@ -60,7 +22,7 @@
                     <h2>Oops, page not found!</h2>
                     <h5>This page may be busy or the URL incorrect.</h5>
                 </td>
-                <td align="right"><img src="/images/processmaker.logo2.png" alt="www.colosa.com" id="colosa" /></td>
+                <td align="right"><img src="images/processmaker.logo2.png" alt="www.colosa.com" id="colosa" /></td>
           </tr></table>
 
         </div>
