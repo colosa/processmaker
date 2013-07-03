@@ -1171,59 +1171,56 @@ class AppSolr
         }
 
         // validate phrase in case of date
-        if (($searchText [1] == "[")) {
+        if (($searchText [1] == "[")) 
+          {
           // validate date range format
           // use regular expresion to validate it [yyyy-mm-dd TO yyyy-mm-dd]
-          $reg = "/:\[(\d\d\d\d-\d\d-\d\d|\*)\sTO\s(\d\d\d\d-\d\d-\d\d|\*)\]/";
-          // convert date to utc
-          $matched = preg_match ($reg, $searchText, $matches);
-          if ($matched == 1) {
-            // the date interval is valid
-            // convert to SOlr format
-            $fromDateOriginal = $matches [1];
-            $fromDate = $matches [1];
-            
-            $toDateOriginal = $matches [2];
-            $toDate = $matches [2];
-            
-            if ($fromDateOriginal != '*') {
-              // TODO complete date creation
-              // list($year, $month, $day) = sscanf($fromDateOriginal,
-              // '%04d/%02d/%02d');
-              // $fromDateDatetime = new DateTime($fromDateOriginal);
-              // $fromDateDatetime = date_create_from_format ( 'Y-m-d',
-              // $fromDateOriginal );
-              // $fromDateDatetime->getTimestamp ()
-              $fromDate = gmdate ("Y-m-d\T00:00:00\Z", strtotime ($fromDateOriginal));
-            }
-            if ($toDateOriginal != '*') {
-              // list($year, $month, $day) = sscanf($fromDateOriginal,
-              // '%04d/%02d/%02d');
-              // $toDateDatetime = new DateTime($toDateOriginal);
-              // $toDateDatetime = date_create_from_format ( 'Y-m-d',
-              // $toDateOriginal );
-              $toDate = gmdate ("Y-m-d\T23:59:59.999\Z", strtotime ($toDateOriginal));
-            }
-            $searchText = ":[" . $fromDate . " TO " . $toDate . "]";
+          $result1 = strpos($searchText, '-');        
+          if ($result1 !== false)
+             {
+              $reg = "/:\[(\d\d\d\d-\d\d-\d\d|\*)\sTO\s(\d\d\d\d-\d\d-\d\d|\*)\]/";
+              // convert date to utc
+              $matched = preg_match ($reg, $searchText, $matches);
+              if ($matched == 1) 
+                 {
+                 // the date interval is valid
+                 // convert to SOlr format
+                 $fromDateOriginal = $matches [1];
+                 $fromDate = $matches [1];            
+                 $toDateOriginal = $matches [2];
+                 $toDate = $matches [2];            
+                 if ($fromDateOriginal != '*') 
+                    {              
+                    $fromDate = gmdate ("Y-m-d\T00:00:00\Z", strtotime ($fromDateOriginal));
+                    }
+                 if ($toDateOriginal != '*') 
+                    {
+                    // list($year, $month, $day) = sscanf($fromDateOriginal,
+                    // '%04d/%02d/%02d');
+                    // $toDateDatetime = new DateTime($toDateOriginal);
+                    // $toDateDatetime = date_create_from_format ( 'Y-m-d',
+                    // $toDateOriginal );
+                    $toDate = gmdate ("Y-m-d\T23:59:59.999\Z", strtotime ($toDateOriginal));
+                    }
+                 $searchText = ":[" . $fromDate . " TO " . $toDate . "]";
+                 }
+              }
           }
-          else {
-            throw new InvalidIndexSearchTextException ("Invalid search text. Expected date interval format => {variable_name}:[YYYY-MM-DD TO YYYY-MM-DD]");
-          }
-        }
 
         // validate phrase in case of < and <=
         $result1 = strpos($searchText, '<');        
         if($result1 !== false)
-        {
+          {
           $result = strpos($searchText, '<=');  
           if($result !== false)
-             {
-             $v1 = str_replace( '<=', '', $searchText ); 
-             $v2 = str_replace( ':', '', $v1);                                  
-             $v3 = str_replace( '<','' ,':[* TO '.$v2.']' );                 
-             $searchText = $v3;            
-             }      
-          else {
+            {
+            $v1 = str_replace( '<=', '', $searchText ); 
+            $v2 = str_replace( ':', '', $v1);                                  
+            $v3 = str_replace( '<','' ,':[* TO '.$v2.']' );                 
+            $searchText = $v3;            
+            }      
+          else 
+            {
             $v1 = str_replace( '<', '', $searchText ); 
             $v2 = str_replace( ':', '', $v1);               
             $v3 = (int) $v2-1;          
@@ -1237,33 +1234,21 @@ class AppSolr
           {
           $result = strpos($searchText, '>=');  
           if($result !== false)
-             {
-             $v1 = str_replace( '>=', '', $searchText ); 
-             $v2 = str_replace( ':', '', $v1);                                  
-             $v3 = str_replace( '>','' ,':['.$v2.' TO *]' );                  
-             $searchText = $v3;            
-             }      
-          else {
-             $v1 = str_replace( '>', '', $searchText );    
-             $v2 = str_replace( ':', '', $v1 );    
-             $v3 = (int) $v2+1;          
-             $v4 = str_replace( '>','' ,':['.$v3.' TO *]' );                
-             $searchText = $v4;      
-             }                               
-          }
-        // validate phrase in case of |
-        $result2 = strpos($searchText, '|');
-        if($result2 !== false)
-          {        
-          $v1 = str_replace( '|', ' TO ', $searchText );
-          $v2 = str_replace( ':', '', $v1 );                  
-          $v3 = str_replace( '','' ,':['.$v2.']' );                
-          $searchText = $v3;                   
-          }
-
-        $formattedSearchText .= $indexFieldName . $searchText;
-        $includeToken = true;
-      }
+            {
+            $v1 = str_replace( '>=', '', $searchText ); 
+            $v2 = str_replace( ':', '', $v1);                                  
+            $v3 = str_replace( '>','' ,':['.$v2.' TO *]' );                  
+            $searchText = $v3;            
+            }      
+          else 
+            {
+            $v1 = str_replace( '>', '', $searchText );    
+            $v2 = str_replace( ':', '', $v1 );    
+            $v3 = (int) $v2+1;          
+            $v4 = str_replace( '>','' ,':['.$v3.' TO *]' );                
+            $searchText = $v4;      
+            }                               
+          }          
         $formattedSearchText .= $indexFieldName . $searchText;
         $includeToken = true;
       }
@@ -1287,7 +1272,7 @@ class AppSolr
    * @return array delegation records
    */
   public function getApplicationDelegationsIndex($appUID)
-  {
+  { 
     $delIndexes = array ();
     
     $c = new Criteria ();
@@ -3052,33 +3037,31 @@ class AppSolr
     $trunk = $indexTrunkSize;
 
     if(!$this->isSolrEnabled())
-      throw new Exception(date('Y-m-d H:i:s:u') . " Error connecting to solr server.");
+        throw new Exception(date('Y-m-d H:i:s:u') . " Error connecting to solr server.");
 
-    // delete all documents to begin reindex
-    // deleteAllDocuments();
-    // commitChanges();
-    // print "Deleted all documents \n";
-    // search trunks of id's to regenerate index
-    $numRows = $this->getCountApplicationsPMOS2 ();
-    print "Total number of records: " . $numRows . "\n";
-    //
-    $initTimeAll = microtime (true);
+        // delete all documents to begin reindex
+        // deleteAllDocuments();
+        // commitChanges();
+        // print "Deleted all documents \n";
+        // search trunks of id's to regenerate index
+        $numRows = $this->getCountApplicationsPMOS2 ();
+        print "Total number of records: " . $numRows . "\n";
+        //
+        $initTimeAll = microtime (true);
 
-    for ($skip = $SkipRecords; $skip <= $numRows;) {
-      $aaAPPUIds = $this->getPagedApplicationUids ($skip, $trunk);
-        
-      printf ("Indexing %d to %d \n", $skip, $skip + $trunk);
-      $initTimeDoc = microtime (true);
-      $this->updateApplicationSearchIndex ($aaAPPUIds, false);
-      
-      $curTimeDoc = gmdate ('H:i:s', (microtime (true) - $initTimeDoc));
-      printf ("Indexing document time: %s \n", $curTimeDoc);
-      $skip += $trunk;
+        for ($skip = $SkipRecords; $skip <= $numRows;) {
+            $aaAPPUIds = $this->getPagedApplicationUids ($skip, $trunk);
+            printf ("Indexing %d to %d \n", $skip, $skip + $trunk);
+            $initTimeDoc = microtime (true);
+            $this->updateApplicationSearchIndex ($aaAPPUIds, false);
+            $curTimeDoc = gmdate ('H:i:s', (microtime (true) - $initTimeDoc));
+            printf ("Indexing document time: %s \n", $curTimeDoc);
+            $skip += $trunk;
     }
-    
-    $curTimeDoc = gmdate ('H:i:s', (microtime (true) - $initTimeAll));
-    printf ("Total reindex time: %s \n", $curTimeDoc);
-    printf ("Reindex completed successfully!!.\n");
+        $curTimeDoc = gmdate ('H:i:s', (microtime (true) - $initTimeAll));
+        printf ("Total reindex time: %s \n", $curTimeDoc);
+        printf ("Reindex completed successfully!!.\n");
   }
 
 }
+
