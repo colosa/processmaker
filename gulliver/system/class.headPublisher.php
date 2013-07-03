@@ -214,11 +214,9 @@ class headPublisher
         $head = '';
         $head .= '<TITLE>' . $this->title . "</TITLE>\n";
 
-        $browserCacheFilesUid = G::browserCacheFilesGetUid();
-
         $head = $head . "
         <script type=\"text/javascript\">
-        var BROWSER_CACHE_FILES_UID = \"" . (($browserCacheFilesUid != null && file_exists(PATH_TRUNK . "gulliver" . PATH_SEP . "js" . PATH_SEP . "maborak" . PATH_SEP . "core" . PATH_SEP . "maborak.$browserCacheFilesUid.js"))? $browserCacheFilesUid : null) . "\";
+        var BROWSER_CACHE_FILES_UID = \"" . G::browserCacheFilesGetUid() . "\";
         </script>
         ";
 
@@ -310,12 +308,14 @@ class headPublisher
     public function includeExtJs()
     {
         $this->clearScripts();
-        $head = '';
-        $head .= "  <script type='text/javascript' src='/js/ext/ext-base.js'></script>\n";
-        $head .= "  <script type='text/javascript' src='/js/ext/ext-all.js'></script>\n";
+
+        $head = "";
+        $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/ext-base.js") . "\"></script>\n";
+        $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/ext-all.js") . "\"></script>\n";
+
         $aux = explode('-', strtolower(SYS_LANG));
         if (($aux[0] != 'en') && file_exists(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'ext' . PATH_SEP . 'locale' . PATH_SEP . 'ext-lang-' . $aux[0] . '.js')) {
-            $head .= "  <script type='text/javascript' src='/js/ext/locale/ext-lang-" . $aux[0] . ".js'></script>\n";
+            $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/locale/ext-lang-" . $aux[0] . ".js") . "\"></script>\n";
         }
 
         // enabled for particular use
@@ -333,7 +333,7 @@ class headPublisher
         $head .= $this->getExtJsVariablesScript();
         $oServerConf = & serverConf::getSingleton();
         if ($oServerConf->isRtl(SYS_LANG)) {
-            $head .= "  <script type='text/javascript' src='/js/ext/extjs_rtl.js'></script>\n";
+            $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/extjs_rtl.js") . "\"></script>\n";
         }
 
         return $head;
@@ -374,7 +374,7 @@ class headPublisher
         $script = '';
         if (isset($this->extJsScript) && is_array($this->extJsScript)) {
             foreach ($this->extJsScript as $key => $file) {
-                $script .= "  <script type='text/javascript' src='" . $file . ".js'></script>\n";
+                $script = $script . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl($file . ".js") . "\"></script>\n";
             }
         }
         return $script;
@@ -410,7 +410,7 @@ class headPublisher
         $script = '';
         if (isset($this->extJsLibrary) && is_array($this->extJsLibrary)) {
             foreach ($this->extJsLibrary as $file) {
-                $script .= "  <script type='text/javascript' src='/js/ext/" . $file . ".js'></script>\n";
+                $script = $script . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/" . $file . ".js") . "\"></script>\n";
             }
         }
         if (!in_array($this->translationsFile, $this->extJsLibrary)) {
