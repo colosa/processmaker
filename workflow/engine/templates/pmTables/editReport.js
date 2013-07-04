@@ -236,21 +236,21 @@ Ext.onReady(function(){
     id: 'FIELD_FILTER',
     width: 55
   });
-  
+
   var sizeField = new fm.NumberField({
                       name: 'sizeEdit',
                       id: 'sizeEdit',
                       allowBlank: true,
                       allowDecimals: false,
-                      allowNegative: false, 
+                      allowNegative: false,
                       disabled: true,
                       nanText: 'This field should content a number',
                       minValue: 1,
                       maxValue: 99,
                       minLength: 0
                   });
-  
-  
+
+
   //columns for table columns grid
   var cmColumns = [
       {
@@ -338,8 +338,20 @@ Ext.onReady(function(){
                   //data : [['VARCHAR',_("ID_VARCHAR")],['TEXT',_("ID_TEXT")],['DATE',_("ID_DATE")],['INT',_("ID_INT")],['FLOAT',_("ID_FLOAT")]],
                   data: columnsTypes,
                   sortInfo: {field:'type_id', direction:'ASC'}
-              }),    
+              }),
               listeners: {
+                  beforerender: function (combo)
+                  {
+                      if (combo.getValue() == "" && combo.store.getAt(0)) {
+                          combo.setValue(combo.store.getAt(0).get(combo.valueField));
+                      }
+                  },
+                  beforeshow: function (combo)
+                  {
+                      if (combo.getValue() == "" && combo.store.getAt(0)) {
+                          combo.setValue(combo.store.getAt(0).get(combo.valueField));
+                      }
+                  },
                   'select': function(combo, row, index) {
                       if( cm && cm instanceof Ext.grid.ColumnModel) {
                           if(selCombo != combo.getValue()) {
@@ -364,8 +376,8 @@ Ext.onReady(function(){
                               Ext.getCmp('sizeEdit').setMaxValue(99);
                               sizeField.getEl().dom.maxLength = 2;
                           }
-                          if( selCombo == 'CHAR' 
-                              || selCombo == 'VARCHAR' 
+                          if( selCombo == 'CHAR'
+                              || selCombo == 'VARCHAR'
                               || selCombo == 'TIME'
                               || selCombo == 'DATE'
                               || selCombo == 'DATETIME'
@@ -389,7 +401,7 @@ Ext.onReady(function(){
           align: 'right',
           editor: sizeField
       }, {
-        
+
         xtype: 'booleancolumn',
         header: _('ID_AUTO_INCREMENT'),
         dataIndex: 'field_autoincrement',
@@ -970,7 +982,7 @@ function createReportTable()
 {
   var tableName        = Ext.getCmp('REP_TAB_NAME').getValue().trim();
   var tableDescription = Ext.getCmp('REP_TAB_DSC').getValue().trim();
-  
+
   //validate table name
   if(Ext.getCmp('REP_TAB_NAME').getValue().trim() == '') {
     Ext.getCmp('REP_TAB_NAME').focus();
@@ -1191,7 +1203,7 @@ loadFieldNormal = function(){
             Ext.getCmp('assignedGrid').store.removeAll();
           }
       });
-  } 
+  }
 };
 
 loadFieldsGrids = function(){

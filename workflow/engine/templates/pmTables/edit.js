@@ -211,6 +211,18 @@ Ext.onReady(function(){
                   sortInfo: {field:'type_id', direction:'ASC'}
               }),
               listeners: {
+                  beforerender: function (combo)
+                  {
+                      if (combo.getValue() == "" && combo.store.getAt(0)) {
+                          combo.setValue(combo.store.getAt(0).get(combo.valueField));
+                      }
+                  },
+                  beforeshow: function (combo)
+                  {
+                        if (combo.getValue() == "" && combo.store.getAt(0)) {
+                            combo.setValue(combo.store.getAt(0).get(combo.valueField));
+                        }
+                  },
                   'select': function(combo, row, index) {
                       if( cm && cm instanceof Ext.grid.ColumnModel) {
                           if(selCombo != combo.getValue()) {
