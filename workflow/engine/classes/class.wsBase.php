@@ -1813,6 +1813,10 @@ class wsBase
                     $arrayField["APP_DATA"] = $oCase->executeTriggers($taskId, $step["STEP_TYPE_OBJ"], $step["STEP_UID_OBJ"], "BEFORE", $arrayField["APP_DATA"]);
                     $arrayField["APP_DATA"] = $oCase->executeTriggers($taskId, $step["STEP_TYPE_OBJ"], $step["STEP_UID_OBJ"], "AFTER", $arrayField["APP_DATA"]);
 
+                    unset($arrayField['APP_STATUS']);
+                    unset($arrayField['APP_PROC_STATUS']);
+                    unset($arrayField['APP_PROC_CODE']);
+                    unset($arrayField['APP_PIN']);
                     $arrayField = $oCase->updateCase($caseId, $arrayField);
                 }
             }
@@ -2067,6 +2071,10 @@ class wsBase
 
                             //$appFields = $oCase->loadCase( $caseId );
                             $appFields['APP_DATA'] = $oPMScript->aFields;
+                            unset($appFields['APP_STATUS']);
+                            unset($appFields['APP_PROC_STATUS']);
+                            unset($appFields['APP_PROC_CODE']);
+                            unset($appFields['APP_PIN']);
                             $oCase->updateCase( $caseId, $appFields );
                         }
                     }
@@ -2114,6 +2122,10 @@ class wsBase
                         $varTriggers .= "&nbsp;- " . nl2br( htmlentities( $oTrigger->getTriTitle(), ENT_QUOTES ) ) . "<br/>";
                         //$appFields = $oCase->loadCase( $caseId );
                         $appFields['APP_DATA'] = $oPMScript->aFields;
+                        unset($appFields['APP_STATUS']);
+                        unset($appFields['APP_PROC_STATUS']);
+                        unset($appFields['APP_PROC_CODE']);
+                        unset($appFields['APP_PIN']);
                         //$appFields['APP_DATA']['APPLICATION'] = $caseId;
                         $oCase->updateCase( $caseId, $appFields );
                     }

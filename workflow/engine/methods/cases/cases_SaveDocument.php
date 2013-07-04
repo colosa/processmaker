@@ -108,7 +108,7 @@ if ($_SESSION["TRIGGER_DEBUG"]["NUM_TRIGGERS"] > 0) {
 //Save data
 $arrayData = array();
 $arrayData["APP_NUMBER"] = $arrayField["APP_NUMBER"];
-$arrayData["APP_PROC_STATUS"] = $arrayField["APP_PROC_STATUS"];
+//$arrayData["APP_PROC_STATUS"] = $arrayField["APP_PROC_STATUS"];
 $arrayData["APP_DATA"]  = $arrayField["APP_DATA"];
 $arrayData["DEL_INDEX"] = $_SESSION["INDEX"];
 $arrayData["TAS_UID"]   = $_SESSION["TASK"];
