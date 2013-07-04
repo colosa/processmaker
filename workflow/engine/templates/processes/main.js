@@ -455,7 +455,7 @@ function newProcess(){
         fieldLabel: _('ID_TITLE'),
         xtype:'textfield',
         width: 260,
-        maskRe: /^(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\..*)(\..+)?$)[^\x00-\x1f\\?*:\";|/]+$/i,
+        maskRe: /^(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\...*)(\..+)?$)[^\x00-\x1f\\?*\";|/]+$/i,
         allowBlank: false
       },  {
         id: 'PRO_DESCRIPTION',
