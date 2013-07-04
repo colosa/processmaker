@@ -571,6 +571,14 @@ class Bootstrap
      */
     public function streamFile($file, $download = false, $downloadFileName = '')
     {
+        $fileNameIni = $file;
+
+        $browserCacheFilesUid = G::browserCacheFilesGetUid();
+
+        if ($browserCacheFilesUid != null) {
+            $file = str_replace(".$browserCacheFilesUid", null, $file);
+        }
+
         $folderarray = explode('/', $file);
         $typearray   = explode('.', basename($file));
         $typefile    = $typearray[count($typearray) - 1];
@@ -578,15 +586,7 @@ class Bootstrap
 
         //trick to generate the translation.language.js file , merging two files
         if (strtolower($typefile) == 'js' && $typearray[0] == 'translation') {
-            Bootstrap::sendHeaders($filename, 'text/javascript', $download, $downloadFileName);
-
-            if ($typearray[1] != "enterprise") {
-                $arrayAux = array($typearray[0], $typearray[1], $typearray[count($typearray) - 1]);
-
-                $filename = str_replace(implode(".", $typearray), implode(".", $arrayAux), $filename);
-
-                $typearray = $arrayAux;
-            }
+            Bootstrap::sendHeaders($fileNameIni, "text/javascript", $download, $downloadFileName);
 
             $output = Bootstrap::streamJSTranslationFile($filename, $typearray[count($typearray) - 2]);
 
@@ -597,7 +597,7 @@ class Bootstrap
 
         //trick to generate the big css file for ext style .
         if (strtolower($typefile) == 'css' && $folderarray[count($folderarray) - 2] == 'css') {
-            Bootstrap::sendHeaders($filename, 'text/css', $download, $downloadFileName);
+            Bootstrap::sendHeaders($fileNameIni, "text/css", $download, $downloadFileName);
             $output = Bootstrap::streamCSSBigFile($typearray[0]);
             echo $output;
             return;
@@ -606,59 +606,59 @@ class Bootstrap
         if (file_exists($filename)) {
             switch (strtolower($typefile)) {
                 case 'swf':
-                    Bootstrap::sendHeaders($filename, 'application/x-shockwave-flash', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "application/x-shockwave-flash", $download, $downloadFileName);
                     break;
                 case 'js':
-                    Bootstrap::sendHeaders($filename, 'text/javascript', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "text/javascript", $download, $downloadFileName);
                     break;
                 case 'htm':
                 case 'html':
-                    Bootstrap::sendHeaders($filename, 'text/html', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "text/html", $download, $downloadFileName);
                     break;
                 case 'htc':
-                    Bootstrap::sendHeaders($filename, 'text/plain', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "text/plain", $download, $downloadFileName);
                     break;
                 case 'json':
-                    Bootstrap::sendHeaders($filename, 'text/plain', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "text/plain", $download, $downloadFileName);
                     break;
                 case 'gif':
-                    Bootstrap::sendHeaders($filename, 'image/gif', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "image/gif", $download, $downloadFileName);
                     break;
                 case 'png':
-                    Bootstrap::sendHeaders($filename, 'image/png', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "image/png", $download, $downloadFileName);
                     break;
                 case 'jpg':
-                    Bootstrap::sendHeaders($filename, 'image/jpg', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "image/jpg", $download, $downloadFileName);
                     break;
                 case 'css':
-                    Bootstrap::sendHeaders($filename, 'text/css', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "text/css", $download, $downloadFileName);
                     break;
                 case 'xml':
-                    Bootstrap::sendHeaders($filename, 'text/xml', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "text/xml", $download, $downloadFileName);
                     break;
                 case 'txt':
-                    Bootstrap::sendHeaders($filename, 'text/html', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "text/html", $download, $downloadFileName);
                     break;
                 case 'doc':
                 case 'pdf':
                 case 'pm':
                 case 'po':
-                    Bootstrap::sendHeaders($filename, 'application/octet-stream', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "application/octet-stream", $download, $downloadFileName);
                     break;
                 case 'php':
                     if ($download) {
-                        Bootstrap::sendHeaders($filename, 'text/plain', $download, $downloadFileName);
+                        Bootstrap::sendHeaders($fileNameIni, "text/plain", $download, $downloadFileName);
                     } else {
                         require_once ($filename);
                         return;
                     }
                     break;
                 case 'tar':
-                    Bootstrap::sendHeaders($filename, 'application/x-tar', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "application/x-tar", $download, $downloadFileName);
                     break;
                 default:
                     //throw new Exception ( "Unknown type of file '$file'. " );
-                    Bootstrap::sendHeaders($filename, 'application/octet-stream', $download, $downloadFileName);
+                    Bootstrap::sendHeaders($fileNameIni, "application/octet-stream", $download, $downloadFileName);
                     break;
             }
         } else {
