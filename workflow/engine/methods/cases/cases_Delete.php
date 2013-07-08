@@ -43,7 +43,12 @@ try {
     $oCase = new Cases();
     if (isset( $_POST['APP_UIDS'] )) {
         $ids = explode( ',', $_POST['APP_UIDS'] );
+
+        G::LoadClass("pmTable");
+        $pmTable = new PmTable();
+
         foreach ($ids as $id) {
+            $pmTable->reportTableDeleteRecord($id);
             $oCase->removeCase( $id );
         }
 

@@ -864,5 +864,58 @@ class PmTable
         $m->execute( $args );
         $m->runBuild();
     }
+
+    public function reportTableDeleteRecord($applicationUid)
+    {
+        $criteria1 = new Criteria("workflow");
+
+        //SELECT
+        $criteria1->addSelectColumn(ApplicationPeer::PRO_UID);
+
+        //FROM
+
+        //WHERE
+        $criteria1->add(ApplicationPeer::APP_UID, $applicationUid);
+
+        //QUERY
+        $rsCriteria1 = ApplicationPeer::doSelectRS($criteria1);
+        $rsCriteria1->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        while ($rsCriteria1->next()) {
+            $row1 = $rsCriteria1->getRow();
+            $processUid = $row1["PRO_UID"];
+
+            $criteria2 = new Criteria("workflow");
+
+            //SELECT
+            $criteria2->addSelectColumn(AdditionalTablesPeer::ADD_TAB_NAME);
+
+            //FROM
+
+            //WHERE
+            $criteria2->add(AdditionalTablesPeer::PRO_UID, $processUid);
+
+            //QUERY
+            $rsCriteria2 = AdditionalTablesPeer::doSelectRS($criteria2);
+            $rsCriteria2->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+            while ($rsCriteria2->next()) {
+                $row2 = $rsCriteria2->getRow();
+                $tableName = $row2["ADD_TAB_NAME"];
+
+                $tableName = str_replace("_", " ", $tableName);
+                $tableName = str_replace(" ", "", ucwords(strtolower($tableName)));
+
+                //DELETE
+                require_once (PATH_WORKSPACE . "classes" . PATH_SEP . "$tableName.php");
+
+                $criteria3 = new Criteria("workflow");
+
+                eval("\$criteria3->add(" . $tableName . "Peer::APP_UID, \$applicationUid);");
+                eval($tableName . "Peer::doDelete(\$criteria3);");
+            }
+
+        }
+    }
 }
 

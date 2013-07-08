@@ -61,6 +61,11 @@ class adhocUserProxy extends HttpProxyController
             $caseData = $app->load( $applicationUID );
             $data['APP_NUMBER'] = $caseData['APP_NUMBER'];
 
+            G::LoadClass("pmTable");
+
+            $pmTable = new PmTable();
+            $pmTable->reportTableDeleteRecord($applicationUID);
+
             $oCase = new Cases();
             $oCase->removeCase( $applicationUID );
 
@@ -74,4 +79,3 @@ class adhocUserProxy extends HttpProxyController
 
 }
 //End adhocUserProxy
-
