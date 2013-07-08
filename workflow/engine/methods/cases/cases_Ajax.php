@@ -757,37 +757,11 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
         //print_r($data);
 
 
-        $oConfiguration = new Configuration();
-        $sDelimiter = DBAdapter::getStringDelimiter();
-        $oCriteria = new Criteria( 'workflow' );
-        $oCriteria->add( ConfigurationPeer::CFG_UID, 'Emails' );
-        $oCriteria->add( ConfigurationPeer::OBJ_UID, '' );
-        $oCriteria->add( ConfigurationPeer::PRO_UID, '' );
-        $oCriteria->add( ConfigurationPeer::USR_UID, '' );
-        $oCriteria->add( ConfigurationPeer::APP_UID, '' );
-        if (ConfigurationPeer::doCount( $oCriteria ) == 0) {
-            $oConfiguration->create( array ('CFG_UID' => 'Emails','OBJ_UID' => '','CFG_VALUE' => '','PRO_UID' => '','USR_UID' => '','APP_UID' => ''
-            ) );
-            $aConfiguration = array ();
-        } else {
-            $aConfiguration = $oConfiguration->load( 'Emails', '', '', '', '' );
-            if ($aConfiguration['CFG_VALUE'] != '') {
-                $aConfiguration = unserialize( $aConfiguration['CFG_VALUE'] );
-            } else {
-                $aConfiguration = array ();
-            }
-        }
+        G::LoadClass("system");
 
-        $oSpool = new spoolRun();
-        if ($aConfiguration['MESS_RAUTH'] == false || (is_string($aConfiguration['MESS_RAUTH']) && $aConfiguration['MESS_RAUTH'] == 'false')) {
-            $aConfiguration['MESS_RAUTH'] = 0;
-        } else {
-            $aConfiguration['MESS_RAUTH'] = 1;
-        }
+        $aSetup = System::getEmailConfiguration();
 
-        $oSpool->setConfig( array ('MESS_ENGINE' => $aConfiguration['MESS_ENGINE'],'MESS_SERVER' => $aConfiguration['MESS_SERVER'],'MESS_PORT' => $aConfiguration['MESS_PORT'],'MESS_ACCOUNT' => $aConfiguration['MESS_ACCOUNT'],'MESS_PASSWORD' => $aConfiguration['MESS_PASSWORD'],'SMTPAuth' => $aConfiguration['MESS_RAUTH']
-        ) );
-        $passwd = $oSpool->config['MESS_PASSWORD'];
+        $passwd = $aSetup['MESS_PASSWORD'];
         $passwdDec = G::decrypt( $passwd, 'EMAILENCRYPT' );
         $auxPass = explode( 'hash:', $passwdDec );
         if (count( $auxPass ) > 1) {
@@ -798,7 +772,25 @@ switch (($_POST['action']) ? $_POST['action'] : $_REQUEST['action']) {
                 $passwd = implode( '', $auxPass );
             }
         }
-        $oSpool->config['MESS_PASSWORD'] = $passwd;
+        $aSetup['MESS_PASSWORD'] = $passwd;
+        if ($aSetup['MESS_RAUTH'] == false || (is_string($aSetup['MESS_RAUTH']) && $aSetup['MESS_RAUTH'] == 'false')) {
+            $aSetup['MESS_RAUTH'] = 0;
+        } else {
+            $aSetup['MESS_RAUTH'] = 1;
+        }
+
+        $oSpool = new spoolRun();
+        $oSpool->setConfig(
+            array (
+                'MESS_ENGINE' => $aSetup['MESS_ENGINE'],
+                'MESS_SERVER' => $aSetup['MESS_SERVER'],
+                'MESS_PORT' => $aSetup['MESS_PORT'],
+                'MESS_ACCOUNT' => $aSetup['MESS_ACCOUNT'],
+                'MESS_PASSWORD' => $aSetup['MESS_PASSWORD'],
+                'SMTPSecure' => $aSetup['SMTPSecure'],
+                'SMTPAuth' => $aSetup['MESS_RAUTH']
+            )
+        );
         $oSpool->create( array ('msg_uid' => $data['MSG_UID'],'app_uid' => $data['APP_UID'],'del_index' => $data['DEL_INDEX'],'app_msg_type' => $data['APP_MSG_TYPE'],'app_msg_subject' => $data['APP_MSG_SUBJECT'],'app_msg_from' => $data['APP_MSG_FROM'],'app_msg_to' => $data['APP_MSG_TO'],'app_msg_body' => $data['APP_MSG_BODY'],'app_msg_cc' => $data['APP_MSG_CC'],'app_msg_bcc' => $data['APP_MSG_BCC'],'app_msg_attach' => $data['APP_MSG_ATTACH'],'app_msg_template' => $data['APP_MSG_TEMPLATE'],'app_msg_status' => 'pending'
         ) );
         $oSpool->sendMail();
