@@ -313,40 +313,42 @@ class wsBase
      * @param string $userId
      * @return $result will return an object
      */
-    public function caseList ($userId)
+    public function caseList($userUid)
     {
         try {
-            $result = array ();
-            $oCriteria = new Criteria( 'workflow' );
-            $del = DBAdapter::getStringDelimiter();
-            $oCriteria->addSelectColumn( ApplicationPeer::APP_UID );
-            $oCriteria->addSelectColumn( ApplicationPeer::APP_NUMBER );
-            $oCriteria->addSelectColumn( ApplicationPeer::APP_STATUS );
-            $oCriteria->addSelectColumn( AppDelegationPeer::DEL_INDEX );
-            $oCriteria->addSelectColumn( ApplicationPeer::PRO_UID );
-            $oCriteria->addAsColumn( 'CASE_TITLE', 'C1.CON_VALUE' );
-            $oCriteria->addAlias( "C1", 'CONTENT' );
-            $caseTitleConds = array ();
-            $caseTitleConds[] = array (ApplicationPeer::APP_UID,'C1.CON_ID'
-            );
-            $caseTitleConds[] = array ('C1.CON_CATEGORY',$del . 'APP_TITLE' . $del
-            );
-            $caseTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del
-            );
-            $oCriteria->addJoinMC( $caseTitleConds, Criteria::LEFT_JOIN );
+            $criteria = new Criteria("workflow");
 
-            $oCriteria->addJoin( ApplicationPeer::APP_UID, AppDelegationPeer::APP_UID, Criteria::LEFT_JOIN );
+            $criteria->addSelectColumn(AppCacheViewPeer::APP_UID);
+            $criteria->addSelectColumn(AppCacheViewPeer::DEL_INDEX);
+            $criteria->addSelectColumn(AppCacheViewPeer::APP_NUMBER);
+            $criteria->addSelectColumn(AppCacheViewPeer::APP_STATUS);
+            $criteria->addSelectColumn(AppCacheViewPeer::PRO_UID);
 
-            $oCriteria->add( ApplicationPeer::APP_STATUS, array ('TO_DO','DRAFT'
-            ), Criteria::IN );
-            $oCriteria->add( AppDelegationPeer::USR_UID, $userId );
-            $oCriteria->add( AppDelegationPeer::DEL_FINISH_DATE, null, Criteria::ISNULL );
-            $oCriteria->addDescendingOrderByColumn( ApplicationPeer::APP_NUMBER );
-            $oDataset = ApplicationPeer::doSelectRS( $oCriteria );
-            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-            $oDataset->next();
+            $criteria->add(AppCacheViewPeer::USR_UID, $userUid);
 
-            while ($aRow = $oDataset->getRow()) {
+            $criteria->add(
+                //ToDo - getToDo()
+                $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "TO_DO", CRITERIA::EQUAL)->addAnd(
+                $criteria->getNewCriterion(AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL))->addAnd(
+                $criteria->getNewCriterion(AppCacheViewPeer::APP_THREAD_STATUS, "OPEN"))->addAnd(
+                $criteria->getNewCriterion(AppCacheViewPeer::DEL_THREAD_STATUS, "OPEN"))
+            )->addOr(
+                //Draft - getDraft()
+                $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "DRAFT", CRITERIA::EQUAL)->addAnd(
+                $criteria->getNewCriterion(AppCacheViewPeer::APP_THREAD_STATUS, "OPEN"))->addAnd(
+                $criteria->getNewCriterion(AppCacheViewPeer::DEL_THREAD_STATUS, "OPEN"))
+            );
+
+            $criteria->addDescendingOrderByColumn(AppCacheViewPeer::APP_NUMBER);
+
+            $rsCriteria = AppCacheViewPeer::doSelectRS($criteria);
+            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+            $result = array();
+
+            while ($rsCriteria->next()) {
+                $aRow = $rsCriteria->getRow();
+
                 /*
                 $result[] = array(
                     'guid'     => $aRow['APP_UID'],
@@ -360,7 +362,6 @@ class wsBase
                                   'status' => $aRow['APP_STATUS'],
                                   'delIndex' => $aRow['DEL_INDEX'],
                                   'processId' => $aRow['PRO_UID']);
-                $oDataset->next();
             }
 
             return $result;
