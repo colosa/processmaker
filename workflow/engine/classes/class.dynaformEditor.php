@@ -543,15 +543,15 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
     public function set_htmlcode($A, $htmlcode)
     {
         try {
-            $iOcurrences = preg_match_all('/\{[\S*\<[^\>]*\S*\s*\>*\S*]*\$\S*\<[^\>]*\S*\s*\>*\S*\}/im', $htmlcode, $matches);
+            $iOcurrences = preg_match_all('/\{\$\S*\s*\}/im', $htmlcode, $matches);
             if ($iOcurrences) {
                 if (isset($matches[0])) {
                     $tagsHtml = $matches[0];
                     foreach ($tagsHtml as $value) {
-                        $aTagVar =  str_replace("{", "&#123;", $value);
-                        $aTagVar =  str_replace("}", "&#125;", $aTagVar);
-                        $aTagVar =  str_replace("$", "&#36;", $aTagVar);
-                        $htmlcode = str_replace($value, $aTagVar, $htmlcode);
+                        $aTagVar = strip_tags($value);
+                        if ($value != $aTagVar) {
+                            $htmlcode = str_replace($value, $aTagVar, $htmlcode);
+                        }
                     }
                 }
             }
