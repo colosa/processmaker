@@ -2380,6 +2380,10 @@ function PMFRedirectToStep ($sApplicationUID, $iDelegation, $sStepType, $sStepUi
             // save data
             if (! is_null( $oPMScript )) {
                 $aFields['APP_DATA'] = $oPMScript->aFields;
+                unset($aFields['APP_STATUS']);
+                unset($aFields['APP_PROC_STATUS']);
+                unset($aFields['APP_PROC_CODE']);
+                unset($aFields['APP_PIN']);
                 $oCase->updateCase( $sApplicationUID, $aFields );
             }
 

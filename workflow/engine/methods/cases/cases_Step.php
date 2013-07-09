@@ -170,6 +170,10 @@ if (isset( $_GET['breakpoint'] )) {
 
 
 //Save data - Start
+unset($Fields['APP_STATUS']);
+unset($Fields['APP_PROC_STATUS']);
+unset($Fields['APP_PROC_CODE']);
+unset($Fields['APP_PIN']);
 $oCase->updateCase( $_SESSION['APPLICATION'], $Fields );
 //Save data - End
 
@@ -527,6 +531,10 @@ try {
                     //Execute after triggers - End
 
                     //Save data - Start
+                    unset($Fields['APP_STATUS']);
+                    unset($Fields['APP_PROC_STATUS']);
+                    unset($Fields['APP_PROC_CODE']);
+                    unset($Fields['APP_PIN']);
                     $oCase->updateCase( $_SESSION['APPLICATION'], $Fields );
                     //Save data - End
 

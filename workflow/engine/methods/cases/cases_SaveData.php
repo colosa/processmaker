@@ -143,13 +143,13 @@ try {
     //save data
     $aData = array ();
     $aData['APP_NUMBER'] = $Fields['APP_NUMBER'];
-    $aData['APP_PROC_STATUS'] = $Fields['APP_PROC_STATUS'];
+    //$aData['APP_PROC_STATUS'] = $Fields['APP_PROC_STATUS'];
     $aData['APP_DATA'] = $Fields['APP_DATA'];
     $aData['DEL_INDEX'] = $_SESSION['INDEX'];
     $aData['TAS_UID'] = $_SESSION['TASK'];
     $aData['CURRENT_DYNAFORM'] = $_GET['UID'];
     $aData['USER_UID'] = $_SESSION['USER_LOGGED'];
-    $aData['APP_STATUS'] = $Fields['APP_STATUS'];
+    //$aData['APP_STATUS'] = $Fields['APP_STATUS'];
     $aData['PRO_UID'] = $_SESSION['PROCESS'];
 
     $oCase->updateCase( $_SESSION['APPLICATION'], $aData );

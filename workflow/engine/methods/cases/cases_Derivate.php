@@ -78,6 +78,10 @@ try {
     $appFields['DEL_INDEX'] = $_SESSION['INDEX'];
     $appFields['TAS_UID'] = $_SESSION['TASK'];
 
+    unset($appFields['APP_STATUS']);
+    unset($appFields['APP_PROC_STATUS']);
+    unset($appFields['APP_PROC_CODE']);
+    unset($appFields['APP_PIN']);
     $oCase->updateCase( $_SESSION['APPLICATION'], $appFields ); //Save data
 
 
@@ -99,6 +103,10 @@ try {
         $_SESSION['TRIGGER_DEBUG']['info'][1]['TRIGGERS_NAMES'] = $oCase->getTriggerNames( $triggers );
         $_SESSION['TRIGGER_DEBUG']['info'][1]['TRIGGERS_VALUES'] = $triggers;
     }
+    unset($appFields['APP_STATUS']);
+    unset($appFields['APP_PROC_STATUS']);
+    unset($appFields['APP_PROC_CODE']);
+    unset($appFields['APP_PIN']);
     $oCase->updateCase( $_SESSION['APPLICATION'], $appFields );
 
     // Send notifications - Start

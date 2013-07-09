@@ -5950,7 +5950,7 @@ class Cases
         //save data
         $aData = array();
         $aData['APP_NUMBER'] = $Fields['APP_NUMBER'];
-        $aData['APP_PROC_STATUS'] = $Fields['APP_PROC_STATUS'];
+        //$aData['APP_PROC_STATUS'] = $Fields['APP_PROC_STATUS'];
         $aData['APP_DATA'] = $Fields['APP_DATA'];
         $aData['DEL_INDEX'] = $iIndex;
         $aData['TAS_UID'] = $sTask;
@@ -6544,6 +6544,10 @@ class Cases
             $oPMScript->setScript($webBotTrigger);
             $oPMScript->execute();
             $aFields['APP_DATA'] = array_merge($aFields['APP_DATA'], $oPMScript->aFields);
+            unset($aFields['APP_STATUS']);
+            unset($aFields['APP_PROC_STATUS']);
+            unset($aFields['APP_PROC_CODE']);
+            unset($aFields['APP_PIN']);
             $this->updateCase($aFields['APP_UID'], $aFields);
             return true;
         }
