@@ -924,6 +924,8 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
         $noLoginFiles[] = 'cases_ShowDocument';
         $noLoginFiles[] = 'cases_CatchExecute';
         $noLoginFiles[] = 'cases_SaveData';
+        $noLoginFiles[] = 'cases_Derivate';
+        $noLoginFiles[] = 'cases_NextStep';
 
         $noLoginFolders[] = 'services';
         $noLoginFolders[] = 'tracker';

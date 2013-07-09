@@ -21,7 +21,12 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-
+if (!isset($_SESSION['USER_LOGGED'])) {
+    G::SendTemporalMessage( 'ID_LOGIN_AGAIN', 'warning', 'labels' );
+    die( '<script type="text/javascript">
+              parent.location = "../cases/casesStartPage?action=startCase";
+          </script>');
+}
 /* Permissions */
 switch ($RBAC->userCanAccess( 'PM_CASES' )) {
     case - 2:
