@@ -423,13 +423,17 @@ class pmTablesProxy extends HttpProxyController
 
         $primaryKeys = $additionalTables->getPrimaryKeys();
 
-        foreach ($result['rows'] as $i => $row) {
-            $primaryKeysValues = array ();
-            foreach ($primaryKeys as $key) {
-                $primaryKeysValues[] = isset( $row[$key['FLD_NAME']] ) ? $row[$key['FLD_NAME']] : '';
-            }
+        if (is_array($result['rows'])) {
+            foreach ($result['rows'] as $i => $row) {
+                $primaryKeysValues = array ();
+                foreach ($primaryKeys as $key) {
+                    $primaryKeysValues[] = isset( $row[$key['FLD_NAME']] ) ? $row[$key['FLD_NAME']] : '';
+                }
 
-            $result['rows'][$i]['__index__'] = G::encrypt( implode( ',', $primaryKeysValues ), 'pmtable' );
+                $result['rows'][$i]['__index__'] = G::encrypt( implode( ',', $primaryKeysValues ), 'pmtable' );
+            }
+        } else {
+            $result['rows'] = array();
         }
 
         return $result;
