@@ -6554,4 +6554,63 @@ class Cases
         }
         return false;
     }
+
+    public function reportTableDeleteRecord($applicationUid)
+    {
+        $criteria1 = new Criteria("workflow");
+
+        //SELECT
+        $criteria1->addSelectColumn(ApplicationPeer::PRO_UID);
+
+        //FROM
+
+        //WHERE
+        $criteria1->add(ApplicationPeer::APP_UID, $applicationUid);
+
+        //QUERY
+        $rsCriteria1 = ApplicationPeer::doSelectRS($criteria1);
+        $rsCriteria1->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        $rsCriteria1->next();
+        $row1 = $rsCriteria1->getRow();
+
+        $processUid = $row1["PRO_UID"];
+
+        $criteria2 = new Criteria("workflow");
+
+        //SELECT
+        $criteria2->addSelectColumn(AdditionalTablesPeer::ADD_TAB_NAME);
+
+        //FROM
+
+        //WHERE
+
+        $criteria2->add(AdditionalTablesPeer::PRO_UID, $processUid);
+
+        //QUERY
+        $rsCriteria2 = AdditionalTablesPeer::doSelectRS($criteria2);
+        $rsCriteria2->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        G::LoadClass("pmTable");
+        $pmTable = new PmTable();
+
+        while ($rsCriteria2->next()) {
+            try {
+                $row2 = $rsCriteria2->getRow();
+                $tableName = $row2["ADD_TAB_NAME"];
+                $pmTableName = $pmTable->toCamelCase($tableName);
+
+                //DELETE
+                require_once (PATH_WORKSPACE . "classes" . PATH_SEP . "$pmTableName.php");
+
+                $criteria3 = new Criteria("workflow");
+
+                eval("\$criteria3->add(" . $pmTableName . "Peer::APP_UID, \$applicationUid);");
+                eval($pmTableName . "Peer::doDelete(\$criteria3);");
+
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+    }
 }
