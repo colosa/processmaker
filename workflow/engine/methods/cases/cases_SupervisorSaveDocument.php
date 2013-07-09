@@ -40,6 +40,23 @@ try {
             $sFileName = $sAppDocUid . '.' . $ext;
             G::uploadFile( $_FILES['form']['tmp_name']['APP_DOC_FILENAME'], $sPathName, $sFileName );
 
+            $case = new Cases();
+            //Load the fields
+            $arrayField = $case->loadCase($_SESSION["APPLICATION"]);
+            $arrayField["APP_DATA"] = array_merge($arrayField["APP_DATA"], G::getSystemConstants());
+
+            $arrayField["APP_DATA"]["NewDoc"] = $_FILES['form']['name']['APP_DOC_FILENAME'];
+
+            //Save data
+            $arrayData = array();
+            $arrayData["APP_NUMBER"] = $arrayField["APP_NUMBER"];
+            $arrayData["APP_PROC_STATUS"] = $arrayField["APP_PROC_STATUS"];
+            $arrayData["APP_DATA"]  = $arrayField["APP_DATA"];
+            $arrayData["DEL_INDEX"] = $_SESSION["INDEX"];
+            $arrayData["TAS_UID"]   = $_SESSION["TASK"];
+
+            $case->updateCase($_SESSION["APPLICATION"], $arrayData);
+
             //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
             $oPluginRegistry = & PMPluginRegistry::getSingleton();
             if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT ) && class_exists( 'uploadDocumentData' )) {
