@@ -956,6 +956,7 @@ class Cases
                 }
                 if ((is_array($FieldsDifference)) && (count($FieldsDifference) > 0)) {
                     //There are changes
+                    $Fields['APP_STATUS'] = (isset($Fields['APP_STATUS'])) ? $Fields['APP_STATUS'] : $FieldsBefore['APP_STATUS'];
                     $appHistory = new AppHistory();
                     $aFieldsHistory = $Fields;
                     $aFieldsHistory['APP_DATA'] = serialize($FieldsDifference);
