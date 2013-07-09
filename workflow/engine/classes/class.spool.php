@@ -139,9 +139,14 @@ class spoolRun
     public function create ($aData)
     {
         if (is_array($aData['app_msg_attach'])) {
-            $attachment = implode(",", $aData['app_msg_attach']);
-            $aData['app_msg_attach'] = $attachment;
+            $attachment = $aData['app_msg_attach'];
+        } else {
+            $attachment = @unserialize($aData['app_msg_attach']);
+            if ($attachment === false) {
+                $attachment = explode(',', $aData['app_msg_attach']);
+            }
         }
+        $aData['app_msg_attach'] = serialize($attachment);
         $aData['app_msg_show_message'] = (isset($aData['app_msg_show_message'])) ? $aData['app_msg_show_message'] : 1;
         $sUID = $this->db_insert( $aData );
 
@@ -184,7 +189,7 @@ class spoolRun
         $this->fileData['cc'] = $sCC;
         $this->fileData['bcc'] = $sBCC;
         $this->fileData['template'] = $sTemplate;
-        $this->fileData['attachments'] = is_array( $aAttachment ) ? $aAttachment : ($aAttachment != '' ? explode( ',', $aAttachment ) : array ());
+        $this->fileData['attachments'] = $aAttachment;
         $this->fileData['envelope_to'] = array ();
         $this->fileData["contentTypeIsHtml"] = $bContentTypeIsHtml;
 
@@ -443,8 +448,12 @@ class spoolRun
 
                     $oPHPMailer->Body = $msBody;
 
-                    if (is_array( $this->fileData['attachments'] )) {
-                        foreach ($this->fileData['attachments'] as $key => $fileAttach) {
+                    $attachment = @unserialize($this->fileData['attachments']);
+                    if ($attachment === false) {
+                        $attachment = $this->fileData['attachments'];
+                    }
+                    if (is_array($attachment)) {
+                        foreach ($attachment as $key => $fileAttach) {
                             if (file_exists( $fileAttach )) {
                                 $oPHPMailer->AddAttachment( $fileAttach, is_int( $key ) ? '' : $key );
                             }
