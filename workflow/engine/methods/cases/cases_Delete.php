@@ -46,7 +46,6 @@ try {
         foreach ($ids as $id) {
             $oCase->removeCase( $id );
         }
-
         if (count( $_POST['APP_UIDS'] ) > 1) {
             echo 'The Case was deleted successfully';
         } else {

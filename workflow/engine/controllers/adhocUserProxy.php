@@ -74,4 +74,3 @@ class adhocUserProxy extends HttpProxyController
 
 }
 //End adhocUserProxy
-
