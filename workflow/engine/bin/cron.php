@@ -79,57 +79,63 @@ if (!$bCronIsRunning) {
     $arrayCron = array("bCronIsRunning" => "1", "sLastExecution" => date("Y-m-d H:i:s"));
     @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
 
-    //Data
-    $ws    = null;
-    $argsx = null;
-    $sDate = null;
-    $dateSystem = date("Y-m-d H:i:s");
+    try {
+        //Data
+        $ws    = null;
+        $argsx = null;
+        $sDate = null;
+        $dateSystem = date("Y-m-d H:i:s");
 
-    for ($i = 1; $i <= count($argv) - 1; $i++) {
-        if (strpos($argv[$i], "+d") !== false) {
-            $sDate = substr($argv[$i],2);
-        } else {
-            if (strpos($argv[$i], "+w") !== false) {
-                $ws = substr($argv[$i], 2);
+        for ($i = 1; $i <= count($argv) - 1; $i++) {
+            if (strpos($argv[$i], "+d") !== false) {
+                $sDate = substr($argv[$i],2);
             } else {
-                $argsx = $argsx . " " . $argv[$i];
-            }
-        }
-    }
-
-    //If $sDate is not set, so take the system time
-    if ($sDate != null) {
-        eprintln("[Applying date filter: $sDate]");
-    } else {
-        $sDate = $dateSystem;
-    }
-
-    if ($ws == null) {
-        $oDirectory = dir(PATH_DB);
-        $cws = 0;
-
-        while($sObject = $oDirectory->read()) {
-            if (($sObject != ".") && ($sObject != "..")) {
-                if (is_dir(PATH_DB . $sObject)) {
-                    if (file_exists(PATH_DB . $sObject . PATH_SEP . "db.php")) {
-                        $cws = $cws + 1;
-
-                        system("php -f \"" . dirname(__FILE__) . PATH_SEP . "cron_single.php\" $sObject \"$sDate\" \"$dateSystem\" $argsx", $retval);
-                    }
+                if (strpos($argv[$i], "+w") !== false) {
+                    $ws = substr($argv[$i], 2);
+                } else {
+                    $argsx = $argsx . " " . $argv[$i];
                 }
             }
         }
-    } else {
-        $cws = 1;
 
-        system("php -f \"" . dirname(__FILE__) . PATH_SEP . "cron_single.php\" $ws \"$sDate\" \"$dateSystem\" $argsx", $retval);
+        //If $sDate is not set, so take the system time
+        if ($sDate != null) {
+            eprintln("[Applying date filter: $sDate]");
+        } else {
+            $sDate = $dateSystem;
+        }
+
+        if ($ws == null) {
+            $oDirectory = dir(PATH_DB);
+            $cws = 0;
+
+            while($sObject = $oDirectory->read()) {
+                if (($sObject != ".") && ($sObject != "..")) {
+                    if (is_dir(PATH_DB . $sObject)) {
+                        if (file_exists(PATH_DB . $sObject . PATH_SEP . "db.php")) {
+                            $cws = $cws + 1;
+
+                            system("php -f \"" . dirname(__FILE__) . PATH_SEP . "cron_single.php\" $sObject \"$sDate\" \"$dateSystem\" $argsx", $retval);
+                        }
+                    }
+                }
+            }
+        } else {
+            $cws = 1;
+
+            system("php -f \"" . dirname(__FILE__) . PATH_SEP . "cron_single.php\" $ws \"$sDate\" \"$dateSystem\" $argsx", $retval);
+        }
+
+        eprintln("Finished $cws workspaces processed.");
+    } catch (Exception $e) {
+        eprintln("Has produced the following error:", "red");
+        eprintln("* " . $e->getMessage());
+        eprintln("[DONE]", "green");
     }
 
     //End cron
     $arrayCron = array("bCronIsRunning" => "0", "sLastExecution" => date("Y-m-d H:i:s"));
     @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
-
-    eprintln("Finished $cws workspaces processed.");
 } else {
     eprintln("The cron is running, please wait for it to finish.\nStarted in $sLastExecution");
 }
