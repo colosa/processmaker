@@ -36,6 +36,7 @@ class pmTables extends Controller
         $this->setView( 'pmTables/list' );
 
         //assigning js variables
+        $this->setJSVar( 'flagProcessmap', (isset($_REQUEST['flagProcessmap'])) ? $_REQUEST['flagProcessmap'] : 0);
         $this->setJSVar( 'FORMATS', $c->getFormats() );
         $this->setJSVar( 'CONFIG', $Config );
         $this->setJSVar( 'PRO_UID', isset( $_GET['PRO_UID'] ) ? $_GET['PRO_UID'] : false );
@@ -102,6 +103,7 @@ class pmTables extends Controller
 
         $this->includeExtJS( 'pmTables/' . $jsFile );
 
+        $this->setJSVar( 'flagProcessmap', (isset($_REQUEST['flagProcessmap'])) ? $_REQUEST['flagProcessmap'] : 0);
         $this->setJSVar( 'ADD_TAB_UID', $addTabUid );
         $this->setJSVar( 'PRO_UID', isset( $_GET['PRO_UID'] ) ? $_GET['PRO_UID'] : false );
         $this->setJSVar( 'TABLE', $table );
