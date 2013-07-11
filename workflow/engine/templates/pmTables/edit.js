@@ -243,20 +243,29 @@ Ext.onReady(function(){
                           }
 
                           //Numbers
-                          if (selCombo == "INTEGER" || selCombo == "BIGINT" || selCombo == "TINYINT" || selCombo == "SMALLINT") {
+                          if (selCombo == "INTEGER" || selCombo == "BIGINT") {
                              //Enable All
                           }
 
-                          if (selCombo == "DECIMAL" || selCombo == "DOUBLE" || selCombo == "FLOAT" || selCombo == "REAL") {
+                          if (selCombo == "TINYINT" || selCombo == "SMALLINT") {
+                             swSize = 0;
+                          }
+
+                          if (selCombo == "DECIMAL" || selCombo == "FLOAT") {
                               swPK = 0;
                               swAI = 0;
+                          }
+
+                          if (selCombo == "DOUBLE" || selCombo == "REAL") {
+                             swSize = 0;
+                             swPK = 0;
+                             swAI = 0;
                           }
 
                           //String
                           if (selCombo == "CHAR" || selCombo == "VARCHAR") {
                               swAI = 0;
                           }
-
 
                           if (selCombo == "LONGVARCHAR") {
                               swPK = 0;
@@ -290,7 +299,6 @@ Ext.onReady(function(){
                           } else {
                               Ext.getCmp("field_incre").disable();
                               Ext.getCmp("field_incre").setValue(false);
-
                           }
 
                           if (swSize == 1) {
