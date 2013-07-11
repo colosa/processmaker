@@ -736,28 +736,29 @@ class AdditionalTables extends BaseAdditionalTables
             eval('$c->add(' . $className . 'Peer::APP_UID, \'' . $appUid . '\');');
             eval('$records = ' . $className . 'Peer::doSelect($c);');
 
+            //Select all types
+            require_once 'classes/model/Fields.php';
+            $criteriaField = new Criteria('workflow');
+            $criteriaField->add(FieldsPeer::ADD_TAB_UID, $row['ADD_TAB_UID']);
+            $datasetField = FieldsPeer::doSelectRS($criteriaField);
+            $datasetField->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            $fieldTypes = array();
+            while ($datasetField->next()) {
+                $rowfield = $datasetField->getRow();
+                switch ($rowfield['FLD_TYPE']) {
+                    case 'FLOAT':
+                    case 'DOUBLE':
+                    case 'INTEGER':
+                        $fieldTypes[] = array($rowfield['FLD_NAME']=>$rowfield['FLD_TYPE']);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             switch ($row['ADD_TAB_TYPE']) {
                 //switching by report table type
                 case 'NORMAL':
-                    require_once 'classes/model/Fields.php';
-                    $criteriaField = new Criteria('workflow');
-                    $criteriaField->add(FieldsPeer::ADD_TAB_UID, $row['ADD_TAB_UID']);
-                    $datasetField = FieldsPeer::doSelectRS($criteriaField);
-                    $datasetField->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-                    $fieldTypes = array();
-                    while ($datasetField->next()) {
-                        $rowfield = $datasetField->getRow();
-                        switch ($rowfield['FLD_TYPE']) {
-                            case 'FLOAT':
-                            case 'DOUBLE':
-                            case 'INTEGER':
-                                $fieldTypes[] = array($rowfield['FLD_NAME']=>$rowfield['FLD_TYPE']);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-
                     // parsing empty values to null
                     foreach ($caseData as $i => $v) {
                         foreach ($fieldTypes as $key => $fieldType) {
@@ -808,6 +809,18 @@ class AdditionalTables extends BaseAdditionalTables
                     // save all grid rows on grid type report table
                     foreach ($gridData as $i => $gridRow) {
                         eval('$obj = new ' . $className . '();');
+                        //Parsing values
+                        foreach ($gridRow as $i => $v) {
+                            foreach ($fieldTypes as $key => $fieldType) {
+                                foreach ($fieldType as $name => $type) {
+                                    if ( strtoupper ( $i) == $name) {
+                                        $v = validateType ($v, $type);
+                                        unset($name);
+                                    }
+                                }
+                            }
+                            $gridRow[$i] = $v === '' ? null : $v;
+                        }
                         $obj->fromArray(array_change_key_case($gridRow, CASE_UPPER), BasePeer::TYPE_FIELDNAME);
                         $obj->setAppUid($appUid);
                         $obj->setAppNumber($appNumber);
