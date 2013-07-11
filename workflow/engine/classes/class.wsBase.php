@@ -313,65 +313,233 @@ class wsBase
      * @param string $userId
      * @return $result will return an object
      */
-    public function caseList ($userId)
+    public function caseList($userUid)
     {
         try {
-            $result = array ();
-            $oCriteria = new Criteria( 'workflow' );
-            $del = DBAdapter::getStringDelimiter();
-            $oCriteria->addSelectColumn( ApplicationPeer::APP_UID );
-            $oCriteria->addSelectColumn( ApplicationPeer::APP_NUMBER );
-            $oCriteria->addSelectColumn( ApplicationPeer::APP_STATUS );
-            $oCriteria->addSelectColumn( AppDelegationPeer::DEL_INDEX );
-            $oCriteria->addSelectColumn( ApplicationPeer::PRO_UID );
-            $oCriteria->addAsColumn( 'CASE_TITLE', 'C1.CON_VALUE' );
-            $oCriteria->addAlias( "C1", 'CONTENT' );
-            $caseTitleConds = array ();
-            $caseTitleConds[] = array (ApplicationPeer::APP_UID,'C1.CON_ID'
-            );
-            $caseTitleConds[] = array ('C1.CON_CATEGORY',$del . 'APP_TITLE' . $del
-            );
-            $caseTitleConds[] = array ('C1.CON_LANG',$del . SYS_LANG . $del
-            );
-            $oCriteria->addJoinMC( $caseTitleConds, Criteria::LEFT_JOIN );
+            $solrEnabled = 0;
 
-            $oCriteria->addJoin( ApplicationPeer::APP_UID, AppDelegationPeer::APP_UID, Criteria::LEFT_JOIN );
+            if (($solrEnv = System::solrEnv()) !== false) {
+                G::LoadClass("AppSolr");
 
-            $oCriteria->add( ApplicationPeer::APP_STATUS, array ('TO_DO','DRAFT'
-            ), Criteria::IN );
-            $oCriteria->add( AppDelegationPeer::USR_UID, $userId );
-            $oCriteria->add( AppDelegationPeer::DEL_FINISH_DATE, null, Criteria::ISNULL );
-            $oCriteria->addDescendingOrderByColumn( ApplicationPeer::APP_NUMBER );
-            $oDataset = ApplicationPeer::doSelectRS( $oCriteria );
-            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-            $oDataset->next();
-
-            while ($aRow = $oDataset->getRow()) {
-                /*
-                $result[] = array(
-                    'guid'     => $aRow['APP_UID'],
-                    'name'     => $aRow['CASE_TITLE'],
-                    'status'   => $aRow['APP_STATUS'],
-                    'delIndex' => $aRow['DEL_INDEX']
+                $appSolr = new AppSolr(
+                    $solrEnv["solr_enabled"],
+                    $solrEnv["solr_host"],
+                    $solrEnv["solr_instance"]
                 );
-                */
-                $result[] = array('guid' => $aRow['APP_UID'],
-                                  'name' => $aRow['APP_NUMBER'],
-                                  'status' => $aRow['APP_STATUS'],
-                                  'delIndex' => $aRow['DEL_INDEX'],
-                                  'processId' => $aRow['PRO_UID']);
-                $oDataset->next();
+
+                if ($appSolr->isSolrEnabled() && $solrEnv["solr_enabled"] == true) {
+                    //Check if there are missing records to reindex and reindex them
+                    $appSolr->synchronizePendingApplications();
+
+                    $solrEnabled = 1;
+                }
             }
 
-            return $result;
-        } catch (Exception $e) {
-            $result[] = array ('guid' => $e->getMessage(),
-                               'name' => $e->getMessage(),
-                               'status' => $e->getMessage(),
-                               'status' => $e->getMessage(),
-                               'processId' => $e->getMessage());
+            if ($solrEnabled == 1) {
+                try {
+                    G::LoadClass("searchIndex");
 
-            return $result;
+                    $arrayData = array();
+
+                    $delegationIndexes = array();
+                    $columsToInclude = array("APP_UID");
+                    $solrSearchText = null;
+
+                    //Todo
+                    $solrSearchText = $solrSearchText . (($solrSearchText != null)? " OR " : null) . "(APP_STATUS:TO_DO AND APP_ASSIGNED_USERS:" . $userUid . ")";
+                    $delegationIndexes[] = "APP_ASSIGNED_USER_DEL_INDEX_" . $userUid . "_txt";
+
+                    //Draft
+                    $solrSearchText = $solrSearchText . (($solrSearchText != null)? " OR " : null) . "(APP_STATUS:DRAFT AND APP_DRAFT_USER:" . $userUid . ")";
+                    //Index is allways 1
+
+                    $solrSearchText = "($solrSearchText)";
+
+                    //Add del_index dynamic fields to list of resulting columns
+                    $columsToIncludeFinal = array_merge($columsToInclude, $delegationIndexes);
+
+                    $solrRequestData = Entity_SolrRequestData::createForRequestPagination(
+                        array(
+                            "workspace"  => $solrEnv["solr_instance"],
+                            "startAfter" => 0,
+                            "pageSize"   => 1000,
+                            "searchText" => $solrSearchText,
+                            "numSortingCols" => 1,
+                            "sortCols" => array("APP_NUMBER"),
+                            "sortDir"  => array(strtolower("DESC")),
+                            "includeCols"  => $columsToIncludeFinal,
+                            "resultFormat" => "json"
+                        )
+                    );
+
+                    //Use search index to return list of cases
+                    $searchIndex = new BpmnEngine_Services_SearchIndex($appSolr->isSolrEnabled(), $solrEnv["solr_host"]);
+
+                    //Execute query
+                    $solrQueryResult = $searchIndex->getDataTablePaginatedList($solrRequestData);
+
+                    //$rows = array();
+
+                    //Number of found records
+                    //$numRecTotal = $solrQueryResult->iTotalDisplayRecords;
+
+                    //print_r($solrQueryResult->aaData); exit(0);
+
+                    //Get the missing data from database
+                    $arrayApplicationUid = array();
+
+                    foreach ($solrQueryResult->aaData as $i => $data) {
+                        $arrayApplicationUid[] = $data["APP_UID"];
+                    }
+
+                    $aaappsDBData = $appSolr->getListApplicationDelegationData($arrayApplicationUid);
+
+                    foreach ($solrQueryResult->aaData as $i => $data) {
+                        //Initialize array
+                        $delIndexes = array(); //Store all the delegation indexes
+
+                        //Complete empty values
+                        $applicationUid = $data["APP_UID"]; //APP_UID
+
+                        //Get all the indexes returned by Solr as columns
+                        for($i = count($columsToInclude); $i <= count($data) - 1; $i++) {
+                            if (is_array($data[$columsToIncludeFinal[$i]])) {
+                                foreach ($data[$columsToIncludeFinal[$i]] as $delIndex) {
+                                    $delIndexes[] = $delIndex;
+                                }
+                            }
+                        }
+
+                        //Verify if the delindex is an array
+                        //if is not check different types of repositories
+                        //the delegation index must always be defined.
+                        if (count($delIndexes) == 0) {
+                            ////if is draft
+                            //if ($action == "draft") {
+                                $delIndexes[] = 1; // the first default index
+                            //} else {
+                            //    //error an index must always be defined
+                            //    print date("Y-m-d H:i:s:u") . " Delegation not defined\n";
+                            //}
+                        }
+
+                        //Remove duplicated
+                        $delIndexes = array_unique($delIndexes);
+
+                        //Get records
+                        foreach ($delIndexes as $delIndex) {
+                            $aRow = array();
+
+                            //Copy result values to new row from Solr server
+                            $aRow["APP_UID"] = $data["APP_UID"];
+
+                            //Get delegation data from DB
+                            //Filter data from db
+                            $indexes = $appSolr->aaSearchRecords($aaappsDBData, array(
+                                "APP_UID" => $applicationUid,
+                                "DEL_INDEX" => $delIndex
+                            ));
+
+                            foreach ($indexes as $index) {
+                                $row = $aaappsDBData[$index];
+                            }
+
+                            if(!isset($row))
+                            {
+                                //$fh = fopen("SolrAppWithoutDelIndex.txt", "a") or die("can't open file to store Solr search time.");
+                                //fwrite($fh, sprintf("Solr AppUid: %s DelIndex: %s not found.\r\n", $applicationUid, $delIndex));
+                                //fclose($fh);
+                                continue;
+                            }
+
+                            $aRow["APP_NUMBER"] = $row["APP_NUMBER"];
+                            $aRow["APP_STATUS"] = $row["APP_STATUS"];
+                            $aRow["PRO_UID"]    = $row["PRO_UID"];
+                            $aRow["DEL_INDEX"]  = $row["DEL_INDEX"];
+
+                            //$rows[] = $aRow;
+
+                            $arrayData[] = array(
+                                "guid" => $aRow["APP_UID"],
+                                "name" => $aRow["APP_NUMBER"],
+                                "status" => $aRow["APP_STATUS"],
+                                "delIndex" => $aRow["DEL_INDEX"],
+                                "processId" => $aRow["PRO_UID"]
+                            );
+                        }
+                    }
+
+                    return $arrayData;
+                } catch (InvalidIndexSearchTextException $e) {
+                    $arrayData = array();
+
+                    $arrayData[] = array (
+                        "guid" => $e->getMessage(),
+                        "name" => $e->getMessage(),
+                        "status" => $e->getMessage(),
+                        "delIndex" => $e->getMessage(),
+                        "processId" => $e->getMessage()
+                    );
+
+                    return $arrayData;
+                }
+            } else {
+                $arrayData = array();
+
+                $criteria = new Criteria("workflow");
+
+                $criteria->addSelectColumn(AppCacheViewPeer::APP_UID);
+                $criteria->addSelectColumn(AppCacheViewPeer::DEL_INDEX);
+                $criteria->addSelectColumn(AppCacheViewPeer::APP_NUMBER);
+                $criteria->addSelectColumn(AppCacheViewPeer::APP_STATUS);
+                $criteria->addSelectColumn(AppCacheViewPeer::PRO_UID);
+
+                $criteria->add(AppCacheViewPeer::USR_UID, $userUid);
+
+                $criteria->add(
+                    //ToDo - getToDo()
+                    $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "TO_DO", CRITERIA::EQUAL)->addAnd(
+                    $criteria->getNewCriterion(AppCacheViewPeer::DEL_FINISH_DATE, null, Criteria::ISNULL))->addAnd(
+                    $criteria->getNewCriterion(AppCacheViewPeer::APP_THREAD_STATUS, "OPEN"))->addAnd(
+                    $criteria->getNewCriterion(AppCacheViewPeer::DEL_THREAD_STATUS, "OPEN"))
+                )->addOr(
+                    //Draft - getDraft()
+                    $criteria->getNewCriterion(AppCacheViewPeer::APP_STATUS, "DRAFT", CRITERIA::EQUAL)->addAnd(
+                    $criteria->getNewCriterion(AppCacheViewPeer::APP_THREAD_STATUS, "OPEN"))->addAnd(
+                    $criteria->getNewCriterion(AppCacheViewPeer::DEL_THREAD_STATUS, "OPEN"))
+                );
+
+                $criteria->addDescendingOrderByColumn(AppCacheViewPeer::APP_NUMBER);
+
+                $rsCriteria = AppCacheViewPeer::doSelectRS($criteria);
+                $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+                while ($rsCriteria->next()) {
+                    $row = $rsCriteria->getRow();
+
+                    $arrayData[] = array(
+                        "guid" => $row["APP_UID"],
+                        "name" => $row["APP_NUMBER"],
+                        "status" => $row["APP_STATUS"],
+                        "delIndex" => $row["DEL_INDEX"],
+                        "processId" => $row["PRO_UID"]
+                    );
+                }
+
+                return $arrayData;
+            }
+        } catch (Exception $e) {
+            $arrayData = array();
+
+            $arrayData[] = array (
+                "guid" => $e->getMessage(),
+                "name" => $e->getMessage(),
+                "status" => $e->getMessage(),
+                "delIndex" => $e->getMessage(),
+                "processId" => $e->getMessage()
+            );
+
+            return $arrayData;
         }
     }
 
