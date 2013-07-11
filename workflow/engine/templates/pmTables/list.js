@@ -413,11 +413,13 @@ capitalize = function(s){
 DoNothing = function(){};
 
 //Load New PM Table Forms
-NewReportTable = function(){
-  if(PRO_UID !== false)
-    location.href = 'pmTables/edit?PRO_UID='+PRO_UID+'&tableType=report';
-  else
-    location.href = 'pmTables/edit?tableType=report';
+NewReportTable = function() {
+    var processmap =  (typeof('PROCESSMAP') != 'undefined') ? PROCESSMAP : 0;
+    if(PRO_UID !== false) {
+        location.href = 'pmTables/edit?PRO_UID='+PRO_UID+'&tableType=report&PROCESSMAP='+processmap;
+    } else {
+        location.href = 'pmTables/edit?tableType=report&PROCESSMAP='+processmap;
+    }
 };
 
 NewReportTableOld = function(){

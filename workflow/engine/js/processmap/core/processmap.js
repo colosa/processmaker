@@ -157,7 +157,7 @@ var processmap=function(){
                 r.make();
               }.extend(this),
               reportTables:function(){
-                  var url = "../pmTables?PRO_UID=" + this.options.uid;
+                  var url = "../pmTables?PRO_UID=" + this.options.uid+"&PROCESSMAP=1";
                   var isIE = (navigator.userAgent.toLowerCase().indexOf("msie") != -1)? 1 : 0;
 
                   if (isIE == 1) {
