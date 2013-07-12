@@ -93,6 +93,16 @@ $oHeadPublisher->assign( "tabActive", $tabActive );
 $oHeadPublisher->assign( "tabItems", $tabItems );
 $oHeadPublisher->assign( "_item_selected", (($adminSelected != null) ? $adminSelected : "") );
 
+$oServerConf = & serverConf::getSingleton();
+if ($oServerConf->isRtl( SYS_LANG )) {
+    $regionTreePanel = 'east';
+    $regionDebug = 'west';
+} else {
+    $regionTreePanel = 'west';
+    $regionDebug = 'east';
+}
+$oHeadPublisher->assign( 'regionTreePanel', $regionTreePanel );
+
 G::RenderPage( "publish", "extJs" );
 
 //this patch enables the load of the plugin list panel inside de main admin panel iframe

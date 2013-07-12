@@ -1,16 +1,16 @@
 /*
  * @author: Erik A. Ortiz
- * Aug 20th, 2010 
+ * Aug 20th, 2010
  */
 
 var _NODE_SELECTED;
 var main = function(){
   var cookiep =  new Ext.state.CookieProvider();
-  
+
   var items = [];
   var nodeLoad = [];
   var i;
-  
+
   if (tabActive != "") {
     for(i = 0; i<= tabItems.length - 1; i++) {
       if (tabItems[i].id == tabActive) {
@@ -18,11 +18,11 @@ var main = function(){
       }
     }
   }
-  
+
   Ext.state.Manager.setProvider(cookiep);
- 
+
   for(i=0; i < tabItems.length; i++) {
-    
+
     items[i] = new Ext.tree.TreePanel({
       title: tabItems[i].title,
       id: tabItems[i].id,
@@ -34,7 +34,7 @@ var main = function(){
       enableDD:true,
       containerScroll: true,
       border: false,
-        
+
       width: 250,
       height: 120,
       dropConfig: {appendOnly:true},
@@ -46,18 +46,18 @@ var main = function(){
         click: function (node, e) {
           if (node.attributes.url) {
             document.getElementById("setup-frame").src = node.attributes.url;
-            
+
             _NODE_SELECTED = node.attributes.id;
           }
         },
         render: function (tp) {
           var loader = tp.getLoader();
           var node;
-          
+
           loader.on("load", function () {
             if (_item_selected != "") {
               node = tp.getNodeById(_item_selected);
-              
+
               if (typeof node == "undefined") {
                 node = tp.getRootNode().childNodes[0];
               }
@@ -65,19 +65,19 @@ var main = function(){
             else {
               node = tp.getRootNode().childNodes[0];
             }
-            
+
             if (node) {
               if (node.attributes.url) {
                 document.getElementById("setup-frame").src = node.attributes.url;
-              
+
                 node.select();
                 _NODE_SELECTED = node.attributes.id;
               }
             }
-            
+
             if (typeof(nodeLoad[tp.id]) == "undefined") {
               node = tp.getRootNode().childNodes[0];
-              
+
               if (node) {
                 nodeLoad[tp.id] = [];
                 nodeLoad[tp.id]["id"] = node.attributes.id;
@@ -92,7 +92,7 @@ var main = function(){
 
             if (node.attributes.url) {
               document.getElementById("setup-frame").src = node.attributes.url;
-              
+
               node.select();
               _NODE_SELECTED = node.attributes.id;
             }
@@ -109,7 +109,7 @@ var main = function(){
     layout: 'border',
     items: [
       new Ext.TabPanel({
-        region: 'west',
+        region: regionTreePanel,
         id: 'west-panel', // see Ext.getCmp() below
         title: 'West',
         split: true,
@@ -144,7 +144,7 @@ var main = function(){
     ]
   });
   //oClientWinSize = parent.getClientWindowSize();
-  //parent.document.getElementById('adminFrame').style.height = oClientWinSize.height-105;  
+  //parent.document.getElementById('adminFrame').style.height = oClientWinSize.height-105;
 }
 
 new Ext.KeyMap(document, {
