@@ -88,7 +88,15 @@ class AppDelegation extends BaseAppDelegation
         $rs = AppDelegationPeer::doSelectRS( $criteriaIndex );
         $rs->next();
         $row = $rs->getRow();
-        $delIndex = (isset($row['1'])) ? $row['1'] + 1 : 1;
+
+        if (isset($row['1'])) {
+            $delIndex = $row['1'] + 1;
+        } else {
+            G::LoadClass( 'case' );
+            $oCase     = new Cases();
+            $deleIndex = $oCase->getCurrentDelegationCase( $sAppUid );
+            $delIndex  = (isset($deleIndex)) ? $deleIndex + 1 : 1;
+        }
 
         // update set
         $criteriaUpdate = new Criteria('workflow');
