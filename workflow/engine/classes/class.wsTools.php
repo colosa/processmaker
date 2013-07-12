@@ -547,8 +547,9 @@ class workspaceTools
                     //lenght = 2, because the function check . and .. dir links
                     $newDiretory = G::getPathFromUIDPlain($UIdDir);
                     CLI::logging("Migrating $UIdDir to $newDiretory\n");
-                    G::mk_dir($newDiretory);
+                    G::mk_dir($newDiretory, 0777);
                     //echo `cp -R $UIdDir/* $newDiretory/`;
+
                     if (G::recursive_copy($UIdDir, $newDiretory)) {
                         CLI::logging("Removing $UIdDir...\n");
                         G::rm_dir($UIdDir);
@@ -576,8 +577,9 @@ class workspaceTools
                 $goalFile = $levelfile[$lastlevel - 1];
                 $newpattern = G::getPathFromFileUIDPlain($blackHoleDir, $goalFile);
                 CLI::logging("Migrating $blackHoleDir file: $goalFile\n");
-                G::mk_dir($blackHoleDir . '/' . $newpattern[0]);
+                G::mk_dir($blackHoleDir . PATH_SEP . $newpattern[0], 0777);
                 //echo `cp -R $black$goalFile $black$newpattern[0]/$newpattern[1]`;
+
                 if (copy($black . $goalFile, $black . $newpattern[0] . '/' . $newpattern[1])) {
                     unlink($file[$index]);
                 } else {

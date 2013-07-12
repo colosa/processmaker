@@ -391,9 +391,11 @@ class G
             return false;
         }
         $dir = opendir($source);
-        if (! file_exists($destination)) {
-            @mkdir($destination);
+
+        if (!file_exists($destination)) {
+            G::mk_dir($destination, 0777);
         }
+
         while (false !== ( $file = readdir($dir))) {
             if (( $file != '.' ) && ( $file != '..' )) {
                 if ( is_dir($source . '/' . $file) ) {
