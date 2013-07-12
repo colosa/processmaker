@@ -810,16 +810,16 @@ class AdditionalTables extends BaseAdditionalTables
                     foreach ($gridData as $i => $gridRow) {
                         eval('$obj = new ' . $className . '();');
                         //Parsing values
-                        foreach ($gridRow as $i => $v) {
+                        foreach ($gridRow as $j => $v) {
                             foreach ($fieldTypes as $key => $fieldType) {
                                 foreach ($fieldType as $name => $type) {
-                                    if ( strtoupper ( $i) == $name) {
+                                    if ( strtoupper ( $j) == $name) {
                                         $v = validateType ($v, $type);
                                         unset($name);
                                     }
                                 }
                             }
-                            $gridRow[$i] = $v === '' ? null : $v;
+                            $gridRow[$j] = $v === '' ? null : $v;
                         }
                         $obj->fromArray(array_change_key_case($gridRow, CASE_UPPER), BasePeer::TYPE_FIELDNAME);
                         $obj->setAppUid($appUid);
