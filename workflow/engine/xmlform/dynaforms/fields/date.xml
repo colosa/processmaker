@@ -44,14 +44,13 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
   <en><![CDATA[<b>Data Codes:</b> A number followed by a letter to indicate the unit of time (d=day m=month y=year).<br/>Use negative numbers for past dates and positive numbers for future dates<br />    <b>NOTE.</b> When these relative dates are set have the priority, leave empty to use <i>Start and End dates</i>.]]></en>
 </PMED_AFTERBEFORE_DESC>
 
-<PME_BEFOREDATE type="text" defaultvalue="0m">
+<PME_BEFOREDATE type="text" defaultvalue="">
   <en>Start Relative Date</en>
 </PME_BEFOREDATE>
 
-<PME_AFTERDATE type="text" defaultvalue="1y">
+<PME_AFTERDATE type="text" defaultvalue="">
   <en>End Relative Date</en>
 </PME_AFTERDATE>
-
 
 <PME_SUBTITLE3x type="subtitle" enableHTML="1">
   <en><![CDATA[<b>Mask: </b>%Y=Year, %m=Month, %d=Day]]></en>
@@ -79,7 +78,6 @@ SELECT XMLNODE_NAME, TYPE FROM dynaForm WHERE XMLNODE_NAME = @@PME_XMLNODE_NAME
 <PME_SHOWTIME type="checkbox" falseValue="0" value="1" defaultvalue="0" labelOnRight="0">
   <en>Show time</en>
 </PME_SHOWTIME>
-
 
 <PME_DEFAULTVALUE_SEL type="dropdown" maxlength="50" size="30" defaultvalue="">
   <en>Default<option name="empty">Empty</option><option name="today">Today</option><option name="val">Value</option></en>
