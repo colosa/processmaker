@@ -105,6 +105,7 @@ if ($action == "uploadFileNewProcess") {
                 $tempName = $_FILES['form']['tmp_name']['PROCESS_FILENAME'];
                 //$action = "none";
                 G::uploadFile( $tempName, $path, $filename );
+
             }
         }
 
@@ -157,15 +158,9 @@ if ($action == "uploadFileNewProcess") {
             }
         }
 
-        //replacing a nonexistent user for the current user
-        $UsrUid = $oData->process['PRO_CREATE_USER'];
+        //replacing the processOwner user for the current user
 
-        G::LoadClass( 'Users' );
-        $user = new Users();
-        if (!$user->userExists( $UsrUid ))
-        {
-            $oData->process['PRO_CREATE_USER'] = $_SESSION['USER_LOGGED'];
-        }
+        $oData->process['PRO_CREATE_USER'] = $_SESSION['USER_LOGGED'];
 
         //!respect of the groups
 
