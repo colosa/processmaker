@@ -183,7 +183,7 @@ Ext.onReady(function() {
            {
              xtype: 'combo',
              fieldLabel: _('ID_MANAGER'),
-             hiddenName: _('ID_MANAGER'),
+             hiddenName: "manager",
              typeAhead: true,
              mode: 'local',
              store: comboDepManager,
