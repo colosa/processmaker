@@ -33,6 +33,7 @@ class PMDashlet extends DashletInstance implements DashletInterface
     {
         try {
             $this->dashletInstance = $this->loadDashletInstance( $dasInsUid );
+            
             if (! isset( $this->dashletInstance['DAS_CLASS'] )) {
                 throw new Exception( G::LoadTranslation( 'ID_ERROR_OBJECT_NOT_EXISTS' ) . ' - Probably the plugin related is disabled' );
             }
@@ -78,7 +79,7 @@ class PMDashlet extends DashletInstance implements DashletInterface
 
 
     public function getDashletsInstances ($start = null, $limit = null)
-    {
+    {   
         try {
             $dashletsInstances = array ();
             $criteria = new Criteria( 'workflow' );
@@ -96,6 +97,9 @@ class PMDashlet extends DashletInstance implements DashletInterface
             while ($row = $dataset->getRow()) {
                 $arrayField = unserialize( $row["DAS_INS_ADDITIONAL_PROPERTIES"] );
 
+                if (strstr($row['DAS_TITLE'], '*')) {
+                    $row['DAS_TITLE'] = G::LoadTranslationPlugin('advancedDashboards', str_replace("*","",$row['DAS_TITLE']));    
+                }//G::pr($row['DAS_TITLE']);
                 $row['DAS_INS_STATUS_LABEL'] = ($row['DAS_INS_STATUS'] == '1' ? G::LoadTranslation( 'ID_ACTIVE' ) : G::LoadTranslation( 'ID_INACTIVE' ));
                 $row['DAS_INS_TITLE'] = (isset( $arrayField['DAS_INS_TITLE'] ) && ! empty( $arrayField['DAS_INS_TITLE'] )) ? $arrayField['DAS_INS_TITLE'] : '';
                 if (! class_exists( $row['DAS_CLASS'] )) {
@@ -154,6 +158,7 @@ class PMDashlet extends DashletInstance implements DashletInterface
                 }
                 $dataset->next();
             }
+
             return $dashletsInstances;
         } catch (Exception $error) {
             throw $error;

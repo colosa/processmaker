@@ -147,7 +147,7 @@ class Dashboard extends Controller
     }
 
     public function renderDashletInstance ($data)
-    {
+    {   
         try {
             if (! isset( $data->DAS_INS_UID )) {
                 $data->DAS_INS_UID = '';
@@ -163,6 +163,7 @@ class Dashboard extends Controller
                 $width = $_REQUEST['w'];
             }
             $this->pmDashlet->render( $width );
+            //G::pr($this->pmDashlet->setup( $width ));die;
         } catch (Exception $error) {
             //ToDo: Show the error message
             echo $error->getMessage();
@@ -203,7 +204,7 @@ class Dashboard extends Controller
     }
 
     public function getDashletsInstances ($data)
-    {
+    {   
         $this->setResponseType( 'json' );
         $result = new stdclass();
         $result->status = 'OK';
@@ -226,7 +227,7 @@ class Dashboard extends Controller
     public function dashletInstanceForm ($data)
     {
         try {
-            $this->includeExtJS( 'dashboard/dashletInstanceForm', false );
+            $this->includeExtJS( 'dashboard/dashletInstanceForm', true, true );
             $this->setView( 'dashboard/dashletInstanceForm' );
             if (! isset( $data->DAS_INS_UID )) {
                 $data->DAS_INS_UID = '';
@@ -434,8 +435,14 @@ class Dashboard extends Controller
             $dataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $dataset->next();
             while ($row = $dataset->getRow()) {
+                if (strstr($row['DAS_TITLE'], '_')) {
+                    $row['DAS_TITLE'] = str_replace('*', '', $row['DAS_TITLE']);
+                    $row['DAS_TITLE'] = G::LoadTranslationPlugin('advancedDashboards', $row['DAS_TITLE']);          
+                }
+
                 if ($this->pmDashlet->verifyPluginDashlet($row['DAS_CLASS'])) {
                     $dashlets[] = array ($row['DAS_UID'],$row['DAS_TITLE']);
+                
                 }
                 $dataset->next();
             }
@@ -443,6 +450,7 @@ class Dashboard extends Controller
         } catch (Exception $error) {
             throw $error;
         }
+        //G::pr($dashlets);die;
         return $dashlets;
     }
 
