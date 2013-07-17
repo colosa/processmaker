@@ -82,13 +82,26 @@ class AppDelegation extends BaseAppDelegation
         $criteria = new Criteria('workflow');
         $criteria->add( AppDelegationPeer::APP_UID, $sAppUid );
         $criteria->add( AppDelegationPeer::DEL_LAST_INDEX , 1);
-        //$criteria->addDescendingOrderByColumn(AppDelegationPeer::DEL_INDEX);
+
         $criteriaIndex = clone $criteria;
 
-        $rs = AppDelegationPeer::doSelectRS( $criteriaIndex );
-        $rs->next();
-        $row = $rs->getRow();
-        $delIndex = (isset($row['1'])) ? $row['1'] + 1 : 1;
+        $rs = AppDelegationPeer::doSelectRS($criteriaIndex);
+        $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        $delIndex = 1;
+
+        if ($rs->next()) {
+            $row = $rs->getRow();
+
+            $delIndex = (isset($row["DEL_INDEX"]))? $row["DEL_INDEX"] + 1 : 1;
+        } else {
+            G::LoadClass("case");
+
+            $case = new Cases();
+            $delIndexAux = $case->getCurrentDelegationCase($sAppUid);
+
+            $delIndex = (isset($delIndexAux))? $delIndexAux + 1 : 1;
+        }
 
         // update set
         $criteriaUpdate = new Criteria('workflow');
