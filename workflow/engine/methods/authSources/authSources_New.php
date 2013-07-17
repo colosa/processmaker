@@ -63,9 +63,17 @@ if (file_exists( PATH_PLUGINS . $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fi
                 $attributes = $attributes . $value["Field"] . "|";
             }
         }
-
         $fields["AUTH_SOURCE_ATTRIBUTE_IDS"] = $attributes;
+        if (file_exists(PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . $fields["AUTH_SOURCE_PROVIDER"] . 'Flag')) {
+            $oHeadPublisher = & headPublisher::getSingleton ();
 
+            $oHeadPublisher->assign("Fields", $fields);
+            $oHeadPublisher->addExtJsScript (PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . 'js' . PATH_SEP . 'library', false, true );
+            $oHeadPublisher->addExtJsScript (PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . 'js' . PATH_SEP . 'ldapAdvancedForm', false, true );
+            $oHeadPublisher->addExtJsScript (PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . 'js' . PATH_SEP . 'ldapAdvancedList', false, true );
+            G::RenderPage ('publish', 'extJs');
+            die();
+        }
         $G_PUBLISH->AddContent("xmlform", "xmlform", $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . $fields["AUTH_SOURCE_PROVIDER"] . "Edit", "", $fields, "../authSources/authSources_Save");
     } else {
         $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => G::LoadTranslation( 'ID_AUTH_SOURCE_MISSING' )) );
