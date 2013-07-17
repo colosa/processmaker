@@ -237,34 +237,34 @@ class dashletOpenVSCompleted implements DashletInterface
         $this->completed = $casesCompleted + $casesTodo;
         switch ($config['DAS_INS_CONTEXT_TIME']) {
             case 'TODAY':
-                $this->centerLabel = 'Today';
+                $this->centerLabel = G::LoadTranslation('ID_TODAY');
                 break;
             case 'YESTERDAY':
-                $this->centerLabel = 'Yesterday';
+                $this->centerLabel = G::LoadTranslation('ID_YESTERDAY');
                 break;
             case 'THIS_WEEK':
-                $this->centerLabel = 'This week';
+                $this->centerLabel = G::LoadTranslation('ID_THIS_WEEK');
                 break;
             case 'PREVIOUS_WEEK':
-                $this->centerLabel = 'Previous week';
+                $this->centerLabel = G::LoadTranslation('ID_PREVIOUS_WEEK');
                 break;
             case 'THIS_MONTH':
-                $this->centerLabel = 'This month';
+                $this->centerLabel = G::LoadTranslation('ID_THIS_MONTH');
                 break;
             case 'PREVIOUS_MONTH':
-                $this->centerLabel = 'Previous month';
+                $this->centerLabel = G::LoadTranslation('ID_PREVIOUS_MONTH');
                 break;
             case 'THIS_QUARTER':
-                $this->centerLabel = 'This quarter';
+                $this->centerLabel = G::LoadTranslation('ID_THIS_QUARTER');
                 break;
             case 'PREVIOUS_QUARTER':
-                $this->centerLabel = 'Previous quarter';
+                $this->centerLabel = G::LoadTranslation('ID_PREVIOUS_QUARTER');
                 break;
             case 'THIS_YEAR':
-                $this->centerLabel = 'This year';
+                $this->centerLabel = G::LoadTranslation('ID_THIS_YEAR');
                 break;
             case 'PREVIOUS_YEAR':
-                $this->centerLabel = 'Previous year';
+                $this->centerLabel = G::LoadTranslation('ID_PREVIOUS_YEAR');
                 break;
             default:
                 $this->centerLabel = '';
