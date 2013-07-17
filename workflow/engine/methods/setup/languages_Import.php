@@ -81,9 +81,9 @@ try {
     $messs = $renegerateContent->upgradeContent();
 
     $result->msg = G::LoadTranslation( 'IMPORT_LANGUAGE_SUCCESS' ) . "\n";
-    $result->msg .= "PO File num. records: " . $importResults->recordsCount . "\n";
-    $result->msg .= "Success Records: " . $importResults->recordsCountSuccess . "\n";
-    $result->msg .= "Failed Records: " . ($importResults->recordsCount - $importResults->recordsCountSuccess) . "\n";
+    $result->msg .= G::LoadTranslation("ID_FILE_NUM_RECORD") . $importResults->recordsCount . "\n";
+    $result->msg .= G::LoadTranslation("ID_SUCCESS_RECORD") . $importResults->recordsCountSuccess . "\n";
+    $result->msg .= G::LoadTranslation("ID_FAILED_RECORD") . ($importResults->recordsCount - $importResults->recordsCountSuccess) . "\n";
 
     if ($importResults->errMsg != '') {
         $result->msg .= "Errors registered: \n" . $importResults->errMsg . "\n";
