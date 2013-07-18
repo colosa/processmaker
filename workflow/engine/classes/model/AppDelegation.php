@@ -78,19 +78,41 @@ class AppDelegation extends BaseAppDelegation
             throw (new Exception( 'Column "APP_THREAD" cannot be null.' ));
         }
 
-        //get max DEL_INDEX
-        $criteria = new Criteria('workflow');
-        $criteria->add( AppDelegationPeer::APP_UID, $sAppUid );
-        $criteria->add( AppDelegationPeer::DEL_LAST_INDEX , 1);
-        //$criteria->addDescendingOrderByColumn(AppDelegationPeer::DEL_INDEX);
+        //Get max DEL_INDEX
+        $criteria = new Criteria("workflow");
+        $criteria->add(AppDelegationPeer::APP_UID, $sAppUid);
+        $criteria->add(AppDelegationPeer::DEL_LAST_INDEX, 1);
+
         $criteriaIndex = clone $criteria;
 
-        $rs = AppDelegationPeer::doSelectRS( $criteriaIndex );
-        $rs->next();
-        $row = $rs->getRow();
-        $delIndex = (isset($row['1'])) ? $row['1'] + 1 : 1;
+        $rs = AppDelegationPeer::doSelectRS($criteriaIndex);
+        $rs->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
-        // update set
+        $delIndex = 1;
+
+        if ($rs->next()) {
+            $row = $rs->getRow();
+
+            $delIndex = (isset($row["DEL_INDEX"]))? $row["DEL_INDEX"] + 1 : 1;
+        } else {
+            $criteriaDelIndex = new Criteria("workflow");
+
+            $criteriaDelIndex->addSelectColumn(AppDelegationPeer::DEL_INDEX);
+            $criteriaDelIndex->addSelectColumn(AppDelegationPeer::DEL_DELEGATE_DATE);
+            $criteriaDelIndex->add(AppDelegationPeer::APP_UID, $sAppUid);
+            $criteriaDelIndex->addDescendingOrderByColumn(AppDelegationPeer::DEL_DELEGATE_DATE);
+
+            $rsCriteriaDelIndex = AppDelegationPeer::doSelectRS($criteriaDelIndex);
+            $rsCriteriaDelIndex->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+            if ($rsCriteriaDelIndex->next()) {
+                $row = $rsCriteriaDelIndex->getRow();
+
+                $delIndex = (isset($row["DEL_INDEX"]))? $row["DEL_INDEX"] + 1 : 1;
+            }
+        }
+
+        //Update set
         $criteriaUpdate = new Criteria('workflow');
         $criteriaUpdate->add(AppDelegationPeer::DEL_LAST_INDEX, 0);
         BasePeer::doUpdate($criteria, $criteriaUpdate, Propel::getConnection('workflow'));
