@@ -1528,7 +1528,7 @@ function G_Text(form, element, name)
       }
 
       if (this.validate == "Email") {
-        var pat = /^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,6}$/;
+        var pat = /^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,9}$/;
 
         if(!pat.test(this.element.value))
         {
@@ -3122,7 +3122,8 @@ var validateForm = function(sRequiredFields) {
                                     var email = getField(aRequiredFields[i].name);
                                     //var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
                                     //var filter = /^[\w\_\-\.ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±]{2,255}@[\w\_\-]{2,255}\.[a-z]{1,3}\.?[a-z]{0,3}$/;
-                                    var filter =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                                    // var filter = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                                    var filter = /^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,9}$/;
 
                                     if (!filter.test(email.value.trim()) && email.value != "") {
                                         fielEmailInvalid.push(aRequiredFields[i].label);

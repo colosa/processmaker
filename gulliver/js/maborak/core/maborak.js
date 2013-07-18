@@ -1062,7 +1062,7 @@ var decimalSet=numberSet[1];var decimalCade=decimalSet.split('');var countDecima
 if(countDecimalNow<countDecimal){for(;countDecimalNow<countDecimal;countDecimalNow++){decimalString+='0';}
 me.element.value=pluginAfter+numberSet[0]+separatorField+decimalString+pluginDecimal;}}
 break;}}
-if(this.validate=="Email"){var pat=/^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,6}$/;if(!pat.test(this.element.value))
+if(this.validate=="Email"){var pat=/^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,9}$/;if(!pat.test(this.element.value))
 {if(this.element.value==""){this.element.className="module_app_input___gray";return;}
 else{this.element.className=this.element.className.split(" ")[0]+" FormFieldInvalid";}}
 else
@@ -1221,7 +1221,7 @@ if(bOneChecked==false)
 invalid_fields.push(aRequiredFields[i].label);break;case'checkgroup':var bOneChecked=false;var aAux=document.getElementsByName('form['+aRequiredFields[i].name+'][]');for(var k=0;k<aAux.length;k++){if(aAux[k].checked){bOneChecked=true;k=aAux.length;}}
 if(!bOneChecked){invalid_fields.push(aRequiredFields[i].label);}
 break;}}
-if(validate!=''){switch(aRequiredFields[i].type){case'suggest':break;case'text':if(validate=="Email"){var vtext=new input(getField(aRequiredFields[i].name));if(getField(aRequiredFields[i].name).value.trim()!=""){var email=getField(aRequiredFields[i].name);var filter=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;if(!filter.test(email.value.trim())&&email.value!=""){fielEmailInvalid.push(aRequiredFields[i].label);vtext.failed();email.focus();}else{vtext.passed();}}}
+if(validate!=''){switch(aRequiredFields[i].type){case'suggest':break;case'text':if(validate=="Email"){var vtext=new input(getField(aRequiredFields[i].name));if(getField(aRequiredFields[i].name).value.trim()!=""){var email=getField(aRequiredFields[i].name);var filter=/^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,9}$/;if(!filter.test(email.value.trim())&&email.value!=""){fielEmailInvalid.push(aRequiredFields[i].label);vtext.failed();email.focus();}else{vtext.passed();}}}
 break;}}}}
 invalid_fields=validateGridForms(invalid_fields);if(invalid_fields.length>0||fielEmailInvalid.length>0){for(j=0;j<invalid_fields.length;j++){sMessage+=(j>0)?', ':'';sMessage+=invalid_fields[j];}
 var emailInvalidMessage="";for(j=0;j<fielEmailInvalid.length;j++){emailInvalidMessage+=(j>0)?', ':'';emailInvalidMessage+=fielEmailInvalid[j];}
