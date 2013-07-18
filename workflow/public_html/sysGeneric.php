@@ -927,6 +927,7 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
         $noLoginFiles[] = 'cases_Derivate';
         $noLoginFiles[] = 'cases_NextStep';
         $noLoginFiles[] = 'genericAjax';
+        $noLoginFiles[] = 'casesSaveDataView'; 
 
         $noLoginFolders[] = 'services';
         $noLoginFolders[] = 'tracker';
