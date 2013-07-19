@@ -380,11 +380,10 @@ function getDynaformsVars ($sProcessUID, $bSystemVars = true, $bIncMulSelFields 
     if ($bSystemVars) {
         $aAux = G::getSystemConstants();
         foreach ($aAux as $sName => $sValue) {
-            $aFields[] = array ('sName' => $sName,'sType' => 'system','sLabel' => 'System variable');
+            $aFields[] = array ('sName' => $sName,'sType' => 'system','sLabel' => G::LoadTranslation('ID_TINY_SYSTEM_VARIABLES'));
         }
         //we're adding the ping variable to the system list
-        $aFields[] = array ('sName' => 'PIN','sType' => 'system','sLabel' => 'System variable'
-        );
+        $aFields[] = array ('sName' => 'PIN','sType' => 'system','sLabel' => G::LoadTranslation('ID_TINY_SYSTEM_VARIABLES'));
     }
 
     $aInvalidTypes = array("title", "subtitle", "file", "button", "reset", "submit", "javascript");
