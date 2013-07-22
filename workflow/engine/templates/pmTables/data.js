@@ -132,6 +132,13 @@ Ext.onReady(function(){
         };
     }
 
+    if (blank == false) {
+        columnEditor.validator = function (text)
+        {
+            return (this.allowBlank == false && Ext.util.Format.trim(text).length == 0)? _("ID_FIELD_REQUIRED") : true;
+        };
+    }
+
     column = {
       id        : tableDef.FIELDS[i].FLD_NAME,
       header    : tableDef.FIELDS[i].FLD_DESCRIPTION,
