@@ -26,7 +26,7 @@
     </en>
 </PROCESS_UID>
 
-<TRIGGER_UID type="dropdown" dependentfields="TRI_DESCRIPTION,TRI_WEBBOT" >
+<TRIGGER_UID type="dropdown" dependentfields="TRI_WEBBOT,TRI_DESCRIPTION,TRIGGER_UID_AUX" >
     <![CDATA[
     SELECT TGR.TRI_UID, CON.CON_VALUE
     FROM   TRIGGERS AS TGR, CONTENT AS CON
@@ -40,6 +40,15 @@
         <option name="">- Select a trigger -</option>
     </en>
 </TRIGGER_UID>
+
+<TRIGGER_UID_AUX type="text" maxlength="64" validate="Any" size="15" mode="edit">
+    <![CDATA[
+    SELECT TGR.TRI_UID
+    FROM   TRIGGERS AS TGR
+    WHERE  TGR.TRI_UID = '@#TRIGGER_UID'
+    ]]>
+    <en></en>
+</TRIGGER_UID_AUX>
 
 <TRI_TITLE type="text" size="70" maxlength="100" required="1" >
     <en>Title of the new trigger</en>
@@ -55,7 +64,7 @@
     <en>Description of the new trigger</en>
 </TRI_DESCRIPTION>
 
-<TRI_WEBBOT type="textarea" rows="10" cols="67" readonly="1" onChange="alert('des:'+document.getElementById('form[TRI_WEBBOT]').value); triggerEditor.setCode(document.getElementById('form[TRI_WEBBOT]').value);">
+<TRI_WEBBOT type="textarea" rows="10" cols="67" readonly="1">
     <![CDATA[
     SELECT TGR.TRI_WEBBOT
     FROM   TRIGGERS AS TGR
@@ -100,8 +109,21 @@
         currentPopupWindow.remove();
     }
 
+    function triggerCheckWebbotTimer()
+    {
+        var triUid = getField("TRIGGER_UID_AUX").value;
+
+        if (triUid != triUidPrev) {
+            triggerEditor.setValue(document.getElementById("form[TRI_WEBBOT]").value);
+            triUidPrev = triUid;
+        } else {
+            setTimeout("triggerCheckWebbotTimer()", 100);
+        }
+    }
+
     var cboTriggerUid = getField("TRIGGER_UID");
     var txtTgrTitle = getField("TRI_TITLE");
+    var triUidPrev = "";
 
     leimnud.event.add(
         getField("PROCESS_UID"),
@@ -109,6 +131,8 @@
         function ()
         {
             txtTgrTitle.value = "";
+            triggerEditor.setValue("");
+            triUidPrev= "";
         }
     );
 
@@ -117,14 +141,13 @@
         "change",
         function ()
         {
-            txtTgrTitle.value = "";
-
             if (cboTriggerUid.value != "") {
                 txtTgrTitle.value = cboTriggerUid.options[cboTriggerUid.selectedIndex].text;
-            }
-            if (triggerEditor) {
-                triggerEditor.setValue(document.getElementById('form[TRI_WEBBOT]').value);
-            	//triggerEditor.setCode(document.getElementById('form[TRI_WEBBOT]').value);
+                setTimeout("triggerCheckWebbotTimer()", 100);
+            } else {
+                txtTgrTitle.value = "";
+                triggerEditor.setValue("");
+                triUidPrev= "";
             }
         }
     );
