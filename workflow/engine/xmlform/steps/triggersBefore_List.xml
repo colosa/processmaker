@@ -13,15 +13,13 @@
 
 <triggersEdit type="hidden" defaultValue="../triggers/triggers_Edit"/>
 
-<EDIT type="link" colWidth="" value="@G::LoadTranslation(ID_EDIT)" link="#" onclick="popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID=' + @QTRI_UID , 770, 510); return false;"/>
+<EDIT type="link" colWidth="" value="@G::LoadTranslation(ID_EDIT)" link="#" onclick="popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID=' + @QTRI_UID , 930, 600); return false;"/>
 
 <CONDITION type="link" colWidth="" value="@G::LoadTranslation(ID_CONDITION)" link="#" onclick="editTriggerCondition(@QSTEP_UID, @QTRI_UID, &#039;BEFORE&#039;);return false;"/>
- 
+
 <UP type="link" colWidth="" value="@G::LoadTranslation(ID_UP)" link="#" onclick="upTrigger(@QSTEP_UID, @QTRI_UID, &#039;BEFORE&#039;, @QST_POSITION);return false;"/>
 
 <DOWN type="link" colWidth="" value="@G::LoadTranslation(ID_DOWN)" link="#" onclick="downTrigger(@QSTEP_UID, @QTRI_UID, &#039;BEFORE&#039;, @QST_POSITION);return false;"/>
 
 <DELETE type="link" colWidth="" value="@G::LoadTranslation(ID_DE_ASSIGN)" link="#" onclick="ofToAssignTrigger(@QSTEP_UID, @QTRI_UID, &#039;BEFORE&#039;, @QST_POSITION);return false;"><en></en></DELETE>
-
-
-</dynaForm> 
+</dynaForm>
