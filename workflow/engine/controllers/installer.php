@@ -1500,7 +1500,7 @@ class Installer extends Controller
         }
 
         set_include_path(PATH_PM_ENTERPRISE . PATH_SEPARATOR . get_include_path());
-        require_once 'classes/model/AddonsManager.php');
+        require_once ('classes/model/AddonsManager.php');
         $plugins = glob(PATH_CORE."plugins/*.php");
         foreach ($plugins as $value) {
             $dataPlugin = pathinfo($value);
