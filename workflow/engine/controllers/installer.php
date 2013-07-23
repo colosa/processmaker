@@ -1492,9 +1492,9 @@ class Installer extends Controller
         }
 
         $plugins = glob(PATH_CORE."plugins/*.php");
-        //$plugins = array('advancedDashboards');
         foreach ($plugins as $value) {
-            $namePlugin = str_replace('.php', '', $value);
+            $dataPlugin = pathinfo($value);
+            $namePlugin = $dataPlugin['filename'];
             error_log('---------->'.$namePlugin);
             if ($value != 'enterprise') {
                 $ch = curl_init();
