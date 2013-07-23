@@ -1495,7 +1495,7 @@ class Installer extends Controller
          * Active plugins to enterprise
          */
 
-        require_once ('classes/model/AddonsManager.php');
+        require_once (PATH_PLUGINS . 'enterprise' . PATH_SEP . 'classes/model/AddonsManager.php');
         $plugins = glob(PATH_CORE."plugins/*.php");
         foreach ($plugins as $value) {
             $dataPlugin = pathinfo($value);
