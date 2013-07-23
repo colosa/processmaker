@@ -1519,6 +1519,7 @@ class Installer extends Controller
                     $postData['addon']  = $namePlugin;
                     $postData['store']  = $dataStore['STORE_ID'];
 
+                    error_log($postData);
                     curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/enterprise/addonsStoreAction");
                     curl_setopt($ch, CURLOPT_HEADER, 0);
                     curl_setopt($ch, CURLOPT_VERBOSE, 0);
@@ -1531,6 +1532,7 @@ class Installer extends Controller
                     curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
                     $output = curl_exec($ch);
+                    error_log('res=>' . $output);
                     curl_close($ch);
                 }
             }
