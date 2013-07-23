@@ -1501,7 +1501,7 @@ class Installer extends Controller
 
         set_include_path(PATH_PM_ENTERPRISE . PATH_SEPARATOR . get_include_path());
         require_once ('classes/model/AddonsStore.php');
-
+        G::loadClass( 'PMPluginRegistry' );
         $res = AddonsStore::addonList();
         error_log($res);
         die;
