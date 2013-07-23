@@ -1506,10 +1506,10 @@ class Installer extends Controller
             $dataPlugin = pathinfo($value);
             $namePlugin = $dataPlugin['filename'];
             if ($value != 'enterprise') {
-                $oCriteria = new Criteria( 'workflow' );
+                $oCriteria = new Criteria();
                 $oCriteria->addSelectColumn( AddonsManagerPeer::STORE_ID );
                 $oCriteria->add( AddonsManagerPeer::ADDON_NAME, $namePlugin, Criteria::EQUAL );
-                $oDataset  = ApplicationPeer::doSelectRs( $oCriteria );
+                $oDataset  = AddonsManagerPeer::doSelectRs( $oCriteria );
                 $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
                 if ($oDataset->next()) {
                     $dataStore = $oDataset->getRow();
