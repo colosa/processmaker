@@ -20,6 +20,7 @@ var NOTIFIER_FLAG = false;
 var result;
 var _action = '';
 var _CASE_TITLE;
+var skipload = false;
 
 Ext.onReady(function(){
   new Ext.KeyMap(document, {
@@ -229,6 +230,9 @@ Ext.onReady(function(){
 
   var loader = treeMenuItems.getLoader();
   loader.on("load", function(){
+    if (skipload) {
+      return;
+    };
     document.getElementById('casesSubFrame').src = defaultOption;
 
     // check if a case was open directly
