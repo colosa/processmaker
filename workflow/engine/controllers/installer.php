@@ -1498,13 +1498,12 @@ class Installer extends Controller
         if (!defined("PATH_PM_ENTERPRISE")) {
             define("PATH_PM_ENTERPRISE", PATH_CORE . "/plugins/enterprise/");
         }
-
         set_include_path(PATH_PM_ENTERPRISE . PATH_SEPARATOR . get_include_path());
         require_once ('classes/model/AddonsStore.php');
-        G::loadClass( 'PMPluginRegistry' );
+        G::loadClass( 'pluginRegistry' );
         $res = AddonsStore::addonList();
+        error_log('11');
         error_log($res);
-        die;
         $plugins = glob(PATH_CORE."plugins/*.php");
         foreach ($plugins as $value) {
             $dataPlugin = pathinfo($value);
