@@ -11,7 +11,7 @@
       return "string";
     };
   }
-  
+
   var PM_keywords = function(){
     function PMkey() {return {style: "PMbuiltin"};}
   var PMfunctions = {
@@ -32,7 +32,7 @@
       "PMFGetCaseNotes":PMkey()};
     return PMfunctions;
   }();
-  
+
     var php_keywords = function(){
     function phpbuild() {return {style: "builtin"};}
     function phpatom() {return {style: "atom"};}
@@ -171,8 +171,8 @@
       "__FUNCTION__":phpatom(),"__NAMESPACE__":phpatom()};
     return Phpfunctions;
   }();
-  
-  
+
+
   var phpConfig = {
     name: "clike",
     keywords: keywords("abstract and array as break case catch class clone const continue declare default " +
@@ -221,7 +221,7 @@
     function dispatch(stream, state) {
       var isPHP = state.curMode == phpMode;
       if (stream.sol() && state.pending != '"') state.pending = null;
-      
+
       if (!isPHP) {
         if (stream.match(/^<\?\w*/)) {
           state.curMode = phpMode;
@@ -300,7 +300,27 @@
         if ((state.curMode != phpMode && /^\s*<\//.test(textAfter)) ||
             (state.curMode == phpMode && /^\?>/.test(textAfter)))
           return htmlMode.indent(state.html, textAfter);
-        return state.curMode.indent(state.curState, textAfter);
+
+        var firstChar = textAfter && textAfter.charAt(0);
+        var lastChar  = textAfter && textAfter != "" && textAfter.charAt(textAfter.length - 1);
+
+        if (state.curState.context.type == "statement") {
+            if (state.curState.context.prev.type == "}") { //{
+                return state.curState.context.indented;
+            } else {
+                if (firstChar == "}") {
+                    if (lastChar == "{") {
+                        return state.curState.context.indented - config.indentUnit;
+                    } else {
+                        return state.curState.context.indented - state.curState.context.prev.indented;
+                    }
+                } else {
+                    return state.curState.context.prev.indented;
+                }
+            }
+        } else {
+            return state.curMode.indent(state.curState, textAfter);
+        }
       },
 
       electricChars: "/{}:",
