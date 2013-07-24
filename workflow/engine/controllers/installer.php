@@ -1495,15 +1495,6 @@ class Installer extends Controller
          * Active plugins to enterprise
          */
 
-        if (!defined("PATH_PM_ENTERPRISE")) {
-            define("PATH_PM_ENTERPRISE", PATH_CORE . "/plugins/enterprise/");
-        }
-        set_include_path(PATH_PM_ENTERPRISE . PATH_SEPARATOR . get_include_path());
-        require_once ('classes/model/AddonsStore.php');
-        G::loadClass( 'pluginRegistry' );
-        $res = AddonsStore::addonList();
-        error_log('11');
-        error_log($res);
         $plugins = glob(PATH_CORE."plugins/*.php");
         foreach ($plugins as $value) {
             $dataPlugin = pathinfo($value);
