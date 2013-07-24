@@ -1506,20 +1506,21 @@ class Installer extends Controller
             $dataPlugin = pathinfo($value);
             $namePlugin = $dataPlugin['filename'];
             if ($value != 'enterprise') {
-                $oCriteria = new Criteria();
-                $oCriteria->addSelectColumn( AddonsManagerPeer::STORE_ID );
-                $oCriteria->add( AddonsManagerPeer::ADDON_NAME, $namePlugin, Criteria::EQUAL );
-                $oDataset  = AddonsManagerPeer::doSelectRs( $oCriteria );
-                $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-                if ($oDataset->next()) {
-                    $dataStore = $oDataset->getRow();
+                $db_host = trim( $_REQUEST['db_hostname'] );
+                $db_username = trim( $_REQUEST['db_username'] );
+                $db_password = trim( $_REQUEST['db_password'] );
+                $wf = trim( $_REQUEST['wfDatabase'] );
+
+                $link = @mysql_connect( $db_host, $db_username, $db_password );
+                @mysql_select_db($wf, $link);
+                $res = mysql_query( "SELECT STORE_ID FROM ADDONS_MANAGER WHERE ADDON_NAME = '" . $namePlugin . "'", $link );
+                if ($row = mysql_fetch_array( $res )) {
                     $ch = curl_init();
                     $postData = array();
                     $postData['action'] = "enable";
                     $postData['addon']  = $namePlugin;
-                    $postData['store']  = $dataStore['STORE_ID'];
+                    $postData['store']  = $row['STORE_ID'];
 
-                    error_log($postData);
                     curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/enterprise/addonsStoreAction");
                     curl_setopt($ch, CURLOPT_HEADER, 0);
                     curl_setopt($ch, CURLOPT_VERBOSE, 0);
