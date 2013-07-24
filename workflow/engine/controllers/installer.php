@@ -1533,7 +1533,6 @@ class Installer extends Controller
                     curl_setopt($ch, CURLOPT_TIMEOUT, 90);
 
                     $output = curl_exec($ch);
-                    error_log('res=>' . $output);
                     curl_close($ch);
                 }
             }
