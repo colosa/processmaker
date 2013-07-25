@@ -736,7 +736,7 @@ class Installer extends Controller
 
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
                 $this->setPartner();
-                $this->setConfiguration();
+                //$this->setConfiguration();
             }
 
             // Create the triggers
