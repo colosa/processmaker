@@ -101,6 +101,16 @@ switch ($_POST['action']) {
         }
         print (G::json_encode($oData));
         break;
+    case 'getUserLogedRole':
+        require_once 'classes/model/Users.php';
+        $oUser = new Users();
+        $aUserLog = $oUser->loadDetailed($_SESSION['USER_LOGGED']);
+		print (G::json_encode(array(
+            'USR_UID' => $aUserLog['USR_UID'],
+            'USR_USERNAME' => $aUserLog['USR_USERNAME'],
+            'USR_ROLE' => $aUserLog['USR_ROLE']
+        )));
+        break;
     case 'saveUser':
         try {
             $form = $_POST;

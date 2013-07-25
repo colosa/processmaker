@@ -33,6 +33,11 @@ var canEdit = true;
 var flagPoliciesPassword = false;
 var flagValidateUsername = false;
 //var rendeToPage='document.body';
+var userLogedName = '';
+var userLogedRole = '';
+var userRoleLoad = '';
+
+const PROCESSMAKER_ADMIN = 'PROCESSMAKER_ADMIN';
 
 global.IC_UID        = '';
 global.IS_UID        = '';
@@ -42,6 +47,8 @@ global.aux           = '';
 Ext.onReady(function () {
   Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
   Ext.QuickTips.init();
+
+  getUserLogedRoleRequest();
 
   box = new Ext.BoxComponent({
     width          : 100,
@@ -1079,6 +1086,26 @@ function userFrmEditSubmit()
     });
 }
 
+function getUserLogedRoleRequest() {
+    var retVal;
+    Ext.Ajax.request({
+        url:    "usersAjax",
+        method: "POST",
+        params: {
+            action: "getUserLogedRole"
+        },
+        success: function (response, opts) {
+            var dataRetval = Ext.util.JSON.decode(response.responseText);
+            userLogedName = dataRetval.USR_USERNAME;
+            userLogedRole = dataRetval.USR_ROLE;
+        },
+        failure: function (response, opts) {
+            userLogedName = '';
+            userLogedRole = '';
+        }
+    });
+}
+
 function saveUser()
 {
   if (Ext.getCmp('USR_USERNAME').getValue() != '') {
@@ -1097,10 +1124,20 @@ function saveUser()
     }
 
     if (USR_UID == '00000000000000000000000000000001') {
-    	if (Ext.getCmp('USR_ROLE').getValue() != 'PROCESSMAKER_ADMIN') {
+        if (Ext.getCmp('USR_ROLE').getValue() != PROCESSMAKER_ADMIN) {
     		Ext.Msg.alert( _('ID_ERROR'), _('ID_ADMINISTRATOR_ROLE_CANT_CHANGED'));
             return false;
     	}
+    } else {
+        if (typeof(userRoleLoad) != 'undefined') {
+            if (Ext.getCmp('USR_ROLE').getValue() != userRoleLoad ) {
+                if (userLogedRole != PROCESSMAKER_ADMIN && Ext.getCmp('USR_ROLE').getValue() == PROCESSMAKER_ADMIN) {
+                    Ext.Msg.alert( _('ID_ERROR'), userLogedName + ' ' + _('ID_USER_ROLE_CANT_CHANGED_TO_ADMINISTRATOR'));
+                    return false;
+                }
+            }
+
+        }
     }
 
   } else {
@@ -1249,6 +1286,8 @@ function loadUserData()
             } else {
                 //
             }
+
+            userRoleLoad = data.user.USR_ROLE;
 
             comboCountry.store.on("load", function(store) {
                 comboCountry.setValue(data.user.USR_COUNTRY);
