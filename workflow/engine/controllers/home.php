@@ -320,7 +320,7 @@ class Home extends Controller
                 break;
         }
 
-        $cases = $apps->getAll( $user, $start, $limit, $type, $filter, $search, $process, $status, $type, $dateFrom, $dateTo, $callback, $dir, $sort, $category);
+        $cases = $apps->getAll( $user, $start, $limit, $type, $filter, $search, $process, $status, $type, $dateFrom, $dateTo, $callback, $dir, $sort, $category, false);
 
         // formating & complitting apps data with 'Notes'
         foreach ($cases['data'] as $i => $row) {

@@ -16,7 +16,8 @@ class Applications
         $callback = null,
         $dir = null,
         $sort = "APP_CACHE_VIEW.APP_NUMBER",
-        $category = null
+        $category = null,
+        $configuration = true
     ) {
         $callback = isset($callback)? $callback : "stcCallback1001";
         $dir = isset($dir)? $dir : "DESC";
@@ -45,11 +46,12 @@ class Applications
 
         $oAppCache = new AppCacheView();
 
-        //get data configuration
-        $conf = new Configurations();
-        $confCasesList = $conf->getConfiguration("casesList", ($action == "search" || $action == "simple_search")? "search" : $action);
-        $oAppCache->confCasesList = $confCasesList;
-
+        if ($configuration == true) {
+            //get data configuration
+            $conf = new Configurations();
+            $confCasesList = $conf->getConfiguration("casesList", ($action == "search" || $action == "simple_search")? "search" : $action);
+            $oAppCache->confCasesList = $confCasesList;
+        }
         // get the action based list
         switch ($action) {
             case "draft":
@@ -440,8 +442,7 @@ class Applications
         $result = array ();
         $result['totalCount'] = $totalCount;
         $rows = array ();
-        $aPriorities = array ('1' => 'VL','2' => 'L','3' => 'N','4' => 'H','5' => 'VH'
-        );
+        $aPriorities = array ('1' => 'VL','2' => 'L','3' => 'N','4' => 'H','5' => 'VH');
         $index = $start;
         while ($aRow = $oDataset->getRow()) {
             //$aRow = $oAppCache->replaceRowUserData($aRow);
