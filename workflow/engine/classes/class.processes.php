@@ -3866,7 +3866,11 @@ class Processes
         }
 
         if (! file_exists( $dir . "unassignedMessage.html" )) {
-            @copy( PATH_TPL . "mails" . PATH_SEP . "unassignedMessage.html", $dir . "unassignedMessage.html" );
+            if (defined('PARTNER_FLAG')) {
+                @copy( PATH_TPL . "mails" . PATH_SEP . "unassignedMessagePartner.html", $dir . G::LoadTranslation('ID_UNASSIGNED_MESSAGE'));
+            } else {
+                @copy( PATH_TPL . "mails" . PATH_SEP . "unassignedMessage.html", $dir . G::LoadTranslation('ID_UNASSIGNED_MESSAGE'));    
+            }
         }
 
         $files = glob( $dir . "*.*" );
@@ -3874,9 +3878,8 @@ class Processes
         foreach ($files as $file) {
             $fileName = basename( $file );
 
-            if ($fileName != "alert_message.html" && $fileName != "unassignedMessage.html") {
-                $filesList[] = array ("filepath" => $file,"filename" => $fileName
-                );
+            if ($fileName != "alert_message.html" && $fileName != G::LoadTranslation('ID_UNASSIGNED_MESSAGE')) {
+                $filesList[] = array ("filepath" => $file,"filename" => $fileName);
             }
         }
         return $filesList;

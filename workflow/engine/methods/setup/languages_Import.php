@@ -86,7 +86,7 @@ try {
     $result->msg .= G::LoadTranslation("ID_FAILED_RECORD") . ($importResults->recordsCount - $importResults->recordsCountSuccess) . "\n";
 
     if ($importResults->errMsg != '') {
-        $result->msg .= "Errors registered: \n" . $importResults->errMsg . "\n";
+        $result->msg .= G::LoadTranslation("ID_ERROR_REGISTERED"). " \n" . $importResults->errMsg . "\n";
     }
 
     //$result->msg = htmlentities($result->msg);
