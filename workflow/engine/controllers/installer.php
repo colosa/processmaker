@@ -1506,11 +1506,13 @@ class Installer extends Controller
             $dataPlugin = pathinfo($value);
             $namePlugin = $dataPlugin['filename'];
             if ($value != 'enterprise') {
-                $db_host = trim( $_REQUEST['db_hostname'] );
+                $db_hostname = trim( $_REQUEST['db_hostname'] );
+                $db_port = trim( $_REQUEST['db_port'] );
                 $db_username = trim( $_REQUEST['db_username'] );
                 $db_password = trim( $_REQUEST['db_password'] );
                 $wf = trim( $_REQUEST['wfDatabase'] );
 
+                $db_host = ($db_port != '' && $db_port != 3306) ? $db_hostname . ':' . $db_port : $db_hostname;
                 $link = @mysql_connect( $db_host, $db_username, $db_password );
                 @mysql_select_db($wf, $link);
                 $res = mysql_query( "SELECT STORE_ID FROM ADDONS_MANAGER WHERE ADDON_NAME = '" . $namePlugin . "'", $link );
