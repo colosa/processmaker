@@ -71,14 +71,11 @@ function getLoadTreeMenuData ()
     //now build the menu in xml format
     $xml = '<menu_cases>';
     $i = 0;
-    foreach ($menuCases as $menu => $aMenuBlock) {
-        if (isset( $aMenuBlock['blockItems'] ) && sizeof( $aMenuBlock['blockItems'] ) > 0) {
-            $urlProperty = "";
-            if ((isset( $aMenuBlock['link'] )) && ($aMenuBlock['link'] != "")) {
-                $urlProperty = "url='" . $aMenuBlock['link'] . "'";
-            }
-            $xml .= '<menu_block blockTitle="' . $aMenuBlock['blockTitle'] . '" id="' . $menu . '" ' . $urlProperty . '>';
-            foreach ($aMenuBlock['blockItems'] as $id => $aMenu) {
+    if ($_POST['node'] != 'xnode-11') {
+        $menuCases = $menuCases[$_POST['node']];
+        if (isset( $menuCases['blockItems'] ) && sizeof( $menuCases['blockItems'] ) > 0) {
+            
+            foreach ($menuCases['blockItems'] as $id => $aMenu) {
                 $i ++;
                 if (isset( $aMenu['cases_count'] ) && $aMenu['cases_count'] !== '') {
                     $nofifier = "cases_count=\"{$aMenu['cases_count']}\" ";
@@ -88,14 +85,34 @@ function getLoadTreeMenuData ()
                 $xml .= '<option title="' . $aMenu['label'] . '" id="' . $id . '" ' . $nofifier . ' url="' . $aMenu['link'] . '">';
                 $xml .= '</option>';
             }
-            $xml .= '</menu_block>';
-        } elseif (isset( $aMenuBlock['blockType'] ) && $aMenuBlock['blockType'] == "blockNestedTree") {
-            $xml .= '<menu_block blockTitle="' . $aMenuBlock['blockTitle'] . '" blockNestedTree = "' . $aMenuBlock['loaderurl'] . '" id="' . $menu . '" folderId="0">';
-            $xml .= '</menu_block>';
-        } elseif (isset( $aMenuBlock['blockType'] ) && $aMenuBlock['blockType'] == "blockHeaderNoChild") {
-            $xml .= '<menu_block blockTitle="' . $aMenuBlock['blockTitle'] . '" blockHeaderNoChild="blockHeaderNoChild" url = "' . $aMenuBlock['link'] . '" id="' . $menu . '">';
-            //$xml .= '<option title="" id="" ></option>';
-            $xml .= '</menu_block>';
+        }
+    } else {
+        foreach ($menuCases as $menu => $aMenuBlock) {
+            if (isset( $aMenuBlock['blockItems'] ) && sizeof( $aMenuBlock['blockItems'] ) > 0) {
+                $urlProperty = "";
+                if ((isset( $aMenuBlock['link'] )) && ($aMenuBlock['link'] != "")) {
+                    $urlProperty = "url='" . $aMenuBlock['link'] . "'";
+                }
+                $xml .= '<menu_block blockTitle="' . $aMenuBlock['blockTitle'] . '" id="' . $menu . '" ' . $urlProperty . '>';
+                foreach ($aMenuBlock['blockItems'] as $id => $aMenu) {
+                    $i ++;
+                    if (isset( $aMenu['cases_count'] ) && $aMenu['cases_count'] !== '') {
+                        $nofifier = "cases_count=\"{$aMenu['cases_count']}\" ";
+                    } else {
+                        $nofifier = '';
+                    }
+                    $xml .= '<option title="' . $aMenu['label'] . '" id="' . $id . '" ' . $nofifier . ' url="' . $aMenu['link'] . '">';
+                    $xml .= '</option>';
+                }
+                $xml .= '</menu_block>';
+            } elseif (isset( $aMenuBlock['blockType'] ) && $aMenuBlock['blockType'] == "blockNestedTree") {
+                $xml .= '<menu_block blockTitle="' . $aMenuBlock['blockTitle'] . '" blockNestedTree = "' . $aMenuBlock['loaderurl'] . '" id="' . $menu . '" folderId="0">';
+                $xml .= '</menu_block>';
+            } elseif (isset( $aMenuBlock['blockType'] ) && $aMenuBlock['blockType'] == "blockHeaderNoChild") {
+                $xml .= '<menu_block blockTitle="' . $aMenuBlock['blockTitle'] . '" blockHeaderNoChild="blockHeaderNoChild" url = "' . $aMenuBlock['link'] . '" id="' . $menu . '">';
+                //$xml .= '<option title="" id="" ></option>';
+                $xml .= '</menu_block>';
+            }
         }
     }
     $xml .= '</menu_cases>';
