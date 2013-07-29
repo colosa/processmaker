@@ -672,6 +672,7 @@ class OutputDocument extends BaseOutputDocument
         $html2pdf->pdf->SetAuthor($aFields['USR_USERNAME']);
         $html2pdf->pdf->SetTitle('Processmaker');
         $html2pdf->pdf->SetSubject($sFilename);
+        $html2pdf->pdf->SetCompression(true);
 
         //$html2pdf->pdf->SetKeywords('HTML2PDF, TCPDF, processmaker');
 
@@ -798,6 +799,7 @@ class OutputDocument extends BaseOutputDocument
         $pdf->SetAuthor($aFields['USR_USERNAME']);
         $pdf->SetTitle('Processmaker');
         $pdf->SetSubject($sFilename);
+        $pdf->SetCompression(true);
 
         $margins = $aProperties['margins'];
         $margins["left"] = ($margins["left"] >= 0) ? $margins["left"] : PDF_MARGIN_LEFT;
@@ -906,7 +908,7 @@ class OutputDocument extends BaseOutputDocument
             'margins' => array('left' => 15, 'right' => 15, 'top' => 15, 'bottom' => 15,),
             'encoding' => '',
             'ps2pdf' => false,
-            'compress' => false,
+            'compress' => true,
             'output' => 2,
             'pdfversion' => '1.3',
             'transparency_workaround' => false,
