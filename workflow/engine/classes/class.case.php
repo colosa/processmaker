@@ -5932,6 +5932,7 @@ class Cases
         $oCriteria->addSelectColumn(AppDocumentPeer::APP_DOC_TYPE);
         $oCriteria->addSelectColumn(AppDocumentPeer::APP_DOC_CREATE_DATE);
         $oCriteria->addSelectColumn(AppDocumentPeer::APP_DOC_INDEX);
+        $oCriteria->addSelectColumn(AppDocumentPeer::DOC_VERSION);
 
         $oCriteria->add(ApplicationPeer::PRO_UID, $PRO_UID);
         $oCriteria->addJoin(ApplicationPeer::APP_UID, AppDocumentPeer::APP_UID);
