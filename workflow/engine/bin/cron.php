@@ -3,7 +3,6 @@
  * cron.php
  * @package workflow-engine-bin
  */
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 ini_set('memory_limit', '300M'); // nore: this may need to be higher for many projects
@@ -58,15 +57,24 @@ $bCronIsRunning = false;
 $sLastExecution = null;
 $processcTimeProcess = 0;
 $processcTimeStart   = 0;
-
 if (file_exists(PATH_DATA . "cron")) {
-    $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
-    $bCronIsRunning = (boolean)($arrayCron["bCronIsRunning"]);
-    $sLastExecution = $arrayCron["sLastExecution"];
-    $processcTimeProcess = (isset($arrayCron["processcTimeProcess"]))? intval($arrayCron["processcTimeProcess"]) : 10; //Minutes
-    $processcTimeStart   = (isset($arrayCron["processcTimeStart"]))? $arrayCron["processcTimeStart"] : 0;
+    $force = false;
+    for ($i = 1; $i <= count($argv) - 1; $i++) {
+        if (strpos($argv[$i], "+force") !== false) {
+            $force = true;
+            break;
+        }
+    }
+    if (!$force) {
+        $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+        $bCronIsRunning = (boolean)($arrayCron["bCronIsRunning"]);
+        $sLastExecution = $arrayCron["sLastExecution"];
+        $processcTimeProcess = (isset($arrayCron["processcTimeProcess"]))? intval($arrayCron["processcTimeProcess"]) : 10; //Minutes
+        $processcTimeStart   = (isset($arrayCron["processcTimeStart"]))? $arrayCron["processcTimeStart"] : 0;
+    } else {
+        G::rm_dir(PATH_DATA . "cron");
+    }
 }
-
 if ($bCronIsRunning && $processcTimeStart != 0) {
     if ((time() - $processcTimeStart) > ($processcTimeProcess * 60)) {
         //Cron finished his execution for some reason
@@ -138,5 +146,6 @@ if (!$bCronIsRunning) {
     @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
 } else {
     eprintln("The cron is running, please wait for it to finish.\nStarted in $sLastExecution");
+    eprintln("If do you want force the execution use the option '+force', example: php -f +wworkflow +force" ,"green");
 }
 
