@@ -260,7 +260,7 @@ class Translation extends BaseTranslation
         $POFile = new i18n_PO( $languageFile );
         $POFile->readInit();
         while ($rowTranslation = $POFile->getTranslation()) {
-            $context = '';
+            $context = "";
             foreach ($POFile->translatorComments as $a => $aux) {
                 $aux = trim( $aux );
                 if ($aux == 'TRANSLATION') {
@@ -282,7 +282,7 @@ class Translation extends BaseTranslation
                     }
                 }
             }
-            if ($identifier == 'TRANSLATION' && $context != '') {
+            if ($identifier == "TRANSLATION" && $context != "") {
                 list ($category, $id) = explode( '/', $context );
                 $translation[$id] = $rowTranslation['msgstr'] ;
             }
