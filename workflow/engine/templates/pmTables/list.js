@@ -47,6 +47,7 @@ Ext.onReady(function(){
         handler: newPMTable
       });
     }
+    var flagProcessmap =  (typeof('flagProcessmap') != 'undefined') ? flagProcessmap : 0;
 
     newMenuOptions.push({
       text: _('ID_NEW_REPORT_TABLE'),
@@ -414,7 +415,6 @@ DoNothing = function(){};
 
 //Load New PM Table Forms
 NewReportTable = function() {
-    var flagProcessmap =  (typeof('flagProcessmap') != 'undefined') ? flagProcessmap : 0;
     if(PRO_UID !== false) {
         location.href = 'pmTables/edit?PRO_UID='+PRO_UID+'&tableType=report&flagProcessmap='+flagProcessmap;
     } else {
