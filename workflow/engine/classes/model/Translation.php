@@ -178,7 +178,7 @@ class Translation extends BaseTranslation
             //$json = new Services_JSON(); DEPRECATED
             $f = fopen( $cacheFileJS, 'w' );
             if ($f == false) {
-               error_log("Error: Cannot write into cachefilejs: $cacheFileJS\n"); 
+               error_log("Error: Cannot write into cachefilejs: $cacheFileJS\n");
             } else {
               fwrite( $f, "var G_STRINGS =" . Bootstrap::json_encode( $translationJS ) . ";\n");
               fclose( $f );
@@ -260,6 +260,7 @@ class Translation extends BaseTranslation
         $POFile = new i18n_PO( $languageFile );
         $POFile->readInit();
         while ($rowTranslation = $POFile->getTranslation()) {
+            $context = '';
             foreach ($POFile->translatorComments as $a => $aux) {
                 $aux = trim( $aux );
                 if ($aux == 'TRANSLATION') {
@@ -281,7 +282,7 @@ class Translation extends BaseTranslation
                     }
                 }
             }
-            if ($identifier == 'TRANSLATION') {
+            if ($identifier == 'TRANSLATION' && $context != '') {
                 list ($category, $id) = explode( '/', $context );
                 $translation[$id] = $rowTranslation['msgstr'] ;
             }

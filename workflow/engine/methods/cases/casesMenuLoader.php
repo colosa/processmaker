@@ -68,8 +68,73 @@ function getLoadTreeMenuData ()
             }
         }
     }
-    //now build the menu in xml format
-    $xml = '<menu_cases>';
+
+    // Build xml nodes for a specific child node by its "id" on var "$_POST['node']" passed in a POST request
+    if (isset($_POST['node']) && in_array($_POST['node'], array_keys($menuCases))) {
+        $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?><menu_cases />');
+
+        if (array_key_exists('blockItems', $menuCases[$_POST['node']]) && is_array($menuCases[$_POST['node']]['blockItems'])) {
+            foreach ($menuCases[$_POST['node']]['blockItems'] as $key => $item) {
+                $option = $xml->addChild('option');
+                $option->addAttribute('id', $key);
+                $option->addAttribute('title', $item['label']);
+                $option->addAttribute('url', $item['link']);
+
+                if (! empty($item['cases_count'])) {
+                    $option->addAttribute('cases_count', $item['cases_count']);
+                }
+            }
+        }
+
+        echo $xml->asXML();
+        die;
+    }
+
+    // Build xml document for all tree nodes
+    $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?><menu_cases />');
+    foreach ($menuCases as $menuId => $menuBlock) {
+        if (isset($menuBlock['blockItems']) && count($menuBlock['blockItems']) > 0) {
+            // adding "menu_block" node
+            $menuBlockNode = $xml->addChild('menu_block');
+            $menuBlockNode->addAttribute('id', $menuId);
+            $menuBlockNode->addAttribute('blockTitle', $menuBlock['blockTitle']);
+
+            if (! empty($menuBlock['link'])) {
+                $menuBlockNode->addAttribute('url', $menuBlock['link']);
+            }
+
+            // adding "menu_block" childs nodes
+            foreach ($menuBlock['blockItems'] as $id => $menu)
+            {
+                $option = $menuBlockNode->addChild('option');
+                $option->addAttribute('id', $id);
+                $option->addAttribute('title', $menu['label']);
+                $option->addAttribute('url', $menu['link']);
+
+                if (! empty($menu['cases_count'])) {
+                    $option->addAttribute('cases_count', $menu['cases_count']);
+                }
+            }
+        } elseif (isset($menuBlock['blockType']) && $menuBlock['blockType'] == "blockNestedTree") {
+            $menuBlockNode = $xml->addChild('menu_block');
+            $menuBlockNode->addAttribute('id', $menuId);
+            $menuBlockNode->addAttribute('folderId', "0");
+            $menuBlockNode->addAttribute('blockTitle', $menuBlock['blockTitle']);
+            $menuBlockNode->addAttribute('blockNestedTree', $menuBlock['loaderurl']);
+        } elseif (isset($menuBlock['blockType']) && $menuBlock['blockType'] == "blockHeaderNoChild") {
+            $menuBlockNode = $xml->addChild('menu_block');
+            $menuBlockNode->addAttribute('id', $menuId);
+            $menuBlockNode->addAttribute('blockTitle', $menuBlock['blockTitle']);
+            $menuBlockNode->addAttribute('blockHeaderNoChild', "blockHeaderNoChild");
+            $menuBlockNode->addAttribute('url', $menuBlock['link']);
+        }
+    }
+
+    echo $xml->asXML();
+    die;
+
+    // Build xml document for all tree nodes
+    /*$xml = '<menu_cases>';
     $i = 0;
     foreach ($menuCases as $menu => $aMenuBlock) {
         if (isset( $aMenuBlock['blockItems'] ) && sizeof( $aMenuBlock['blockItems'] ) > 0) {
@@ -100,7 +165,7 @@ function getLoadTreeMenuData ()
     }
     $xml .= '</menu_cases>';
 
-    print $xml;
+    print $xml;*/
 }
 
 // get the process summary of specific case list type,
