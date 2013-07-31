@@ -33,6 +33,9 @@ var canEdit = true;
 var flagPoliciesPassword = false;
 var flagValidateUsername = false;
 //var rendeToPage='document.body';
+var userRoleLoad = '';
+
+var PROCESSMAKER_ADMIN = 'PROCESSMAKER_ADMIN';
 
 global.IC_UID        = '';
 global.IS_UID        = '';
@@ -1079,6 +1082,7 @@ function userFrmEditSubmit()
     });
 }
 
+
 function saveUser()
 {
   if (Ext.getCmp('USR_USERNAME').getValue() != '') {
@@ -1097,7 +1101,7 @@ function saveUser()
     }
 
     if (USR_UID == '00000000000000000000000000000001') {
-    	if (Ext.getCmp('USR_ROLE').getValue() != 'PROCESSMAKER_ADMIN') {
+        if (Ext.getCmp('USR_ROLE').getValue() != PROCESSMAKER_ADMIN) {
     		Ext.Msg.alert( _('ID_ERROR'), _('ID_ADMINISTRATOR_ROLE_CANT_CHANGED'));
             return false;
     	}
@@ -1138,7 +1142,29 @@ function saveUser()
                     var dataRespuesta = Ext.util.JSON.decode(response.responseText);
 
                     if (dataRespuesta.result == "OK") {
-                        userFrmEditSubmit();
+                        Ext.Ajax.request({
+                            url:    "usersAjax",
+                            method: "POST",
+                            params: {
+                                action: "getUserLogedRole"
+                            },
+                            success: function (response, opts) {
+                                var dataRetval = Ext.util.JSON.decode(response.responseText);
+                                if (typeof(userRoleLoad) != 'undefined') {
+                                    if (Ext.getCmp('USR_ROLE').getValue() != userRoleLoad ) {
+                                        if (dataRetval.USR_ROLE != PROCESSMAKER_ADMIN && Ext.getCmp('USR_ROLE').getValue() == PROCESSMAKER_ADMIN) {
+                                            Ext.Msg.alert( _('ID_ERROR'), dataRetval.USR_USERNAME + ' ' + _('ID_USER_ROLE_CANT_CHANGED_TO_ADMINISTRATOR'));
+                                            return false;
+                                        } else {
+                                            userFrmEditSubmit();
+                                        }
+                                    }
+                                }
+                            },
+                            failure: function (response, opts) {
+                            }
+                        });
+
                     } else {
                         Ext.MessageBox.alert(_("ID_ERROR"), _("ID_PASSWORD_CURRENT_INCORRECT"));
                     }
@@ -1151,7 +1177,28 @@ function saveUser()
             Ext.MessageBox.alert(_("ID_ERROR"), _("ID_PASSWORD_CURRENT_ENTER"));
         }
     } else {
-        userFrmEditSubmit();
+        Ext.Ajax.request({
+            url:    "usersAjax",
+            method: "POST",
+            params: {
+                action: "getUserLogedRole"
+            },
+            success: function (response, opts) {
+                var dataRetval = Ext.util.JSON.decode(response.responseText);
+                if (typeof(userRoleLoad) != 'undefined') {
+                    if (Ext.getCmp('USR_ROLE').getValue() != userRoleLoad ) {
+                        if (dataRetval.USR_ROLE != PROCESSMAKER_ADMIN && Ext.getCmp('USR_ROLE').getValue() == PROCESSMAKER_ADMIN) {
+                            Ext.Msg.alert( _('ID_ERROR'), dataRetval.USR_USERNAME + ' ' + _('ID_USER_ROLE_CANT_CHANGED_TO_ADMINISTRATOR'));
+                            return false;
+                        } else {
+                            userFrmEditSubmit();
+                        }
+                    }
+                }
+            },
+            failure: function (response, opts) {
+            }
+        });
     }
 
   } else {
@@ -1162,6 +1209,7 @@ function saveUser()
 //Load data
 function loadData()
 {
+
     comboCountry.store.load();
 
 
@@ -1249,6 +1297,8 @@ function loadUserData()
             } else {
                 //
             }
+
+            userRoleLoad  = data.user.USR_ROLE;
 
             comboCountry.store.on("load", function(store) {
                 comboCountry.setValue(data.user.USR_COUNTRY);
