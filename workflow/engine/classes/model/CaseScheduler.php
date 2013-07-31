@@ -412,17 +412,23 @@ class CaseScheduler extends BaseCaseScheduler
                             $paramsLogResult = 'SUCCESS';
                             $params = array ('sessionId' => $sessionId,'caseId' => $caseId,'delIndex' => "1");
                             eprint( " - Routing the case #$caseNumber.............." );
-                            $result = $client->__SoapCall( 'RouteCase', array ($params) );
-
-                            if ($result->status_code == 0) {
-                                $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
-                                $retMsg = explode( "Debug", $paramsLog['WS_ROUTE_CASE_STATUS'] );
-                                $retMsg = $retMsg[0];
-                                eprintln( "OK+ $retMsg", 'green' );
-                                $paramsRouteLogResult = 'SUCCESS';
-                            } else {
-                                $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
-                                eprintln( "FAILED-> {$paramsLog ['WS_ROUTE_CASE_STATUS']}", 'red' );
+                            try {
+                                $result = $client->__SoapCall( 'RouteCase', array ($params) );
+                                if ($result->status_code == 0) {
+                                    $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
+                                    $retMsg = explode( "Debug", $paramsLog['WS_ROUTE_CASE_STATUS'] );
+                                    $retMsg = $retMsg[0];
+                                    eprintln( "OK+ $retMsg", 'green' );
+                                    $paramsRouteLogResult = 'SUCCESS';
+                                } else {
+                                    $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
+                                    eprintln( "FAILED-> {$paramsLog ['WS_ROUTE_CASE_STATUS']}", 'red' );
+                                    $paramsRouteLogResult = 'FAILED';
+                                }
+                            } catch (Exception $oError) {
+                                setExecutionResultMessage('    WITH ERRORS', 'error');
+                                $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $oError->getMessage());
+                                eprintln("  '-".strip_tags($oError->getMessage()), 'red');
                                 $paramsRouteLogResult = 'FAILED';
                             }
                         } else {
@@ -520,21 +526,27 @@ class CaseScheduler extends BaseCaseScheduler
 
                         $params = array ('sessionId' => $sessionId,'caseId' => $caseId,'delIndex' => "1"
                         );
-                        $result = $client->__SoapCall( 'RouteCase', array ($params
-                        ) );
-                        eprint( " - Routing the case #$caseNumber.............." );
-                        if ($result->status_code == 0) {
-                            $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
-                            $retMsg = explode( "Debug", $paramsLog['WS_ROUTE_CASE_STATUS'] );
-                            $retMsg = $retMsg[0];
-                            eprintln( "OK+ $retMsg", 'green' );
-                            $paramsRouteLogResult = 'SUCCESS';
-                        } else {
-                            eprintln( "FAILED-> {$paramsLog ['WS_ROUTE_CASE_STATUS']}", 'red' );
-                            $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
+                        try {
+                            $result = $client->__SoapCall( 'RouteCase', array ($params
+                            ) );
+                            eprint( " - Routing the case #$caseNumber.............." );
+                            if ($result->status_code == 0) {
+                                $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
+                                $retMsg = explode( "Debug", $paramsLog['WS_ROUTE_CASE_STATUS'] );
+                                $retMsg = $retMsg[0];
+                                eprintln( "OK+ $retMsg", 'green' );
+                                $paramsRouteLogResult = 'SUCCESS';
+                            } else {
+                                eprintln( "FAILED-> {$paramsLog ['WS_ROUTE_CASE_STATUS']}", 'red' );
+                                $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $result->message );
+                                $paramsRouteLogResult = 'FAILED';
+                            }
+                        } catch (Exception $oError) {
+                            setExecutionResultMessage('    WITH ERRORS', 'error');
+                            $paramsLog['WS_ROUTE_CASE_STATUS'] = strip_tags( $oError->getMessage());
+                            eprintln("  '-".strip_tags($oError->getMessage()), 'red');
                             $paramsRouteLogResult = 'FAILED';
                         }
-
                     } else {
                         $paramsLog['WS_CREATE_CASE_STATUS'] = strip_tags( $result->message );
                         eprintln( "FAILED->{$paramsLog ['WS_CREATE_CASE_STATUS']}", 'red' );
