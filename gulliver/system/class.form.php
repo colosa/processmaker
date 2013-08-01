@@ -469,7 +469,7 @@ class Form extends XmlForm
                                                     switch ($this->fields[$k]->fields[$kk]->type) {
                                                         case "dropdown":
                                                             //We need to know which fields are dropdowns
-                                                            $values[$k][$j] = $newValues[$k][$j];
+                                                            $values[$k][$j][$kk] = $newValues[$k][$j][$kk];
 
                                                             if ($this->fields[$k]->validateValue( $newValues[$k][$j], $this )) {
                                                                 //If the dropdown has otions
@@ -504,7 +504,7 @@ class Form extends XmlForm
                                                             }
                                                             break;
                                                         case "link":
-                                                            $values[$k][$j] = $newValues[$k][$j];
+                                                            $values[$k][$j][$kk] = $newValues[$k][$j][$kk];
                                                             $values[$k][$j][$kk . "_label"] = $newValues[$k][$j][$kk . "_label"];
                                                             break;
                                                         case 'date':
@@ -513,7 +513,7 @@ class Form extends XmlForm
                                                         default:
                                                             //If there are no dropdowns previously setted and the evaluated field is not a dropdown
                                                             //only then rewritte the $values
-                                                            $values[$k][$j] = $this->fields[$k]->maskValue( $newValues[$k][$j], $this );
+                                                            $values[$k][$j][$kk] = $this->fields[$k]->fields[$kk]->maskValue( $newValues[$k][$j][$kk], $this->fields[$k]->fields[$kk] );
                                                             break;
                                                     }
                                                 } else {
