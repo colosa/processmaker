@@ -198,6 +198,7 @@ Ext.onReady(function(){
              displayField: 'value',
              valueField:'value',
              allowBlank: false,
+             editable:false,
              triggerAction: 'all',
              emptyText: _('ID_SELECT_STATUS'),
              selectOnFocus:true

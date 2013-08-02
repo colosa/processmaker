@@ -175,6 +175,7 @@ Ext.onReady(function() {
              displayField: 'value',
              valueField:'id',
              allowBlank: false,
+             editable: false,
              triggerAction: 'all',
              emptyText: _('ID_SELECT_STATUS'),
              selectOnFocus:true
@@ -190,6 +191,7 @@ Ext.onReady(function() {
              displayField: 'USR_VALUE',
              valueField:'USR_UID',
              allowBlank: true,
+             editable: false,
              triggerAction: 'all',
              emptyText: '',
              selectOnFocus:true
