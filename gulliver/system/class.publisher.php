@@ -69,6 +69,7 @@ class Publisher
         if ($mode != '') {
             $this->localMode = $mode;
         }
+
         $pos = 0;
         if (is_array( $this->Parts )) {
             $pos = count( $this->Parts );
@@ -89,6 +90,7 @@ class Publisher
             $this->Parts[$pos]['RenderedContent'] = ob_get_contents();
         }
         ob_end_clean();
+        unset($_SESSION['CURRENT_DYN_UID']);
     }
 
     /**
