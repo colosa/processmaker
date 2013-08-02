@@ -726,9 +726,9 @@ class SkinEngine
         G::LoadClass( "configuration" );
         $conf = new Configurations();
         if ( defined('SYS_SYS') && $conf->exists("ENVIRONMENT_SETTINGS")) {
-            $smarty->assign('udate', $conf->getSystemDate(date('Y-m-d')));
+            $smarty->assign('udate', $conf->getSystemDate(date('Y-m-d H:i:s')));
         } else {
-            $smarty->assign('udate', G::getformatedDate(date('Y-m-d'), 'M d, yyyy', SYS_LANG));
+            $smarty->assign('udate', G::getformatedDate(date('Y-m-d H:i:s'), 'M d, yyyy', SYS_LANG));
         }
         $name = $conf->userNameFormat(isset($_SESSION['USR_USERNAME']) ? $_SESSION['USR_USERNAME']: '', isset($_SESSION['USR_FULLNAME']) ? htmlentities($_SESSION['USR_FULLNAME'] , ENT_QUOTES, 'UTF-8'): '');
         $smarty->assign('user',$name);

@@ -22,7 +22,6 @@ switch ($request) {
         break;
     case "getCasesListDateFormat":
         $result->rows = Configurations::getDateFormats();
-        ;
         print (G::json_encode( $result )) ;
         break;
     case "getCasesListRowNumber":
