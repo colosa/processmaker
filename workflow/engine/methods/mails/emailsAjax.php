@@ -5,6 +5,7 @@ require_once 'classes/model/Content.php';
 require_once 'classes/model/AppMessage.php';
 require_once 'classes/model/AppDelegation.php';
 require_once 'classes/model/Application.php';
+
 switch($req){
     case 'MessageList':
         $start      = (isset($_REQUEST['start']))?      $_REQUEST['start']      : '0';
@@ -28,13 +29,25 @@ switch($req){
         if ($proUid != '') {
             $criteria->add( ApplicationPeer::PRO_UID, $proUid);
         }
-        if ($dateFrom != '') {
-            if ($dateTo != '') {
+
+        if ($dateFrom != "") {
+            if ($dateTo != "") {
+                if ($dateFrom == $dateTo) {
+                    $dateSame = $dateFrom;
+                    $dateFrom = $dateSame . " 00:00:00";
+                    $dateTo = $dateSame . " 23:59:59";
+                } else {
+                    $dateFrom = $dateFrom . " 00:00:00";
+                    $dateTo = $dateTo . " 23:59:59";
+                }
+
                 $criteria->add( $criteria->getNewCriterion( AppMessagePeer::APP_MSG_DATE, $dateFrom, Criteria::GREATER_EQUAL )->addAnd( $criteria->getNewCriterion( AppMessagePeer::APP_MSG_DATE, $dateTo, Criteria::LESS_EQUAL ) ) );
             } else {
+                $dateFrom = $dateFrom . " 00:00:00";
                 $criteria->add( AppMessagePeer::APP_MSG_DATE, $dateFrom, Criteria::GREATER_EQUAL );
             }
-        } elseif ($dateTo != '') {
+        } elseif ($dateTo != "") {
+            $dateTo = $dateTo . " 23:59:59";
             $criteria->add( AppMessagePeer::APP_MSG_DATE, $dateTo, Criteria::LESS_EQUAL );
         }
 
@@ -53,7 +66,7 @@ switch($req){
         $criteria->addSelectColumn(AppMessagePeer::APP_MSG_TYPE);
         $criteria->addSelectColumn(AppMessagePeer::APP_MSG_SUBJECT);
         $criteria->addSelectColumn(AppMessagePeer::APP_MSG_FROM);
-        
+
         $criteria->addSelectColumn(AppMessagePeer::APP_MSG_TO);
         $criteria->addSelectColumn(AppMessagePeer::APP_MSG_BODY);
         $criteria->addSelectColumn(AppMessagePeer::APP_MSG_STATUS);
@@ -73,13 +86,25 @@ switch($req){
         if ($proUid != '') {
             $criteria->add( ApplicationPeer::PRO_UID, $proUid);
         }
-        if ($dateFrom != '') {
-            if ($dateTo != '') {
+
+        if ($dateFrom != "") {
+            if ($dateTo != "") {
+                if ($dateFrom == $dateTo) {
+                    $dateSame = $dateFrom;
+                    $dateFrom = $dateSame . " 00:00:00";
+                    $dateTo = $dateSame . " 23:59:59";
+                } else {
+                    $dateFrom = $dateFrom . " 00:00:00";
+                    $dateTo = $dateTo . " 23:59:59";
+                }
+
                 $criteria->add( $criteria->getNewCriterion( AppMessagePeer::APP_MSG_DATE, $dateFrom, Criteria::GREATER_EQUAL )->addAnd( $criteria->getNewCriterion( AppMessagePeer::APP_MSG_DATE, $dateTo, Criteria::LESS_EQUAL ) ) );
             } else {
+                $dateFrom = $dateFrom . " 00:00:00";
                 $criteria->add( AppMessagePeer::APP_MSG_DATE, $dateFrom, Criteria::GREATER_EQUAL );
             }
-        } elseif ($dateTo != '') {
+        } elseif ($dateTo != "") {
+            $dateTo = $dateTo . " 23:59:59";
             $criteria->add( AppMessagePeer::APP_MSG_DATE, $dateTo, Criteria::LESS_EQUAL );
         }
 
