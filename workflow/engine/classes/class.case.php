@@ -3806,6 +3806,14 @@ class Cases
 
     public function unpauseCase($sApplicationUID, $iDelegation, $sUserUID)
     {
+        //Verify status of the case
+        $oDelay = new AppDelay();
+        if (method_exists($oDelay, 'isPaused')) {
+            if ($oDelay->isPaused($sApplicationUID, $iDelegation) === false) {
+                return false;
+            }
+        }
+
         //get information about current $iDelegation row
         $oAppDelegation = new AppDelegation();
         $aFieldsDel = $oAppDelegation->Load($sApplicationUID, $iDelegation);
