@@ -1,9 +1,9 @@
 /*
  * @author: Douglas Medrano
- * May 03, 2011 
- */ 
+ * May 03, 2011
+ */
     md5 = function(s,raw,hexcase,chrsz){
-      raw = raw || false;	
+      raw = raw || false;
       hexcase = hexcase || false;
       chrsz = chrsz || 8;
         function safe_add(x, y){
@@ -29,7 +29,7 @@
         function md5_ii(a, b, c, d, x, s, t){
          return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
         }
-       
+
         function core_md5(x, len){
           x[len >> 5] |= 0x80 << ((len) % 32);
           x[(((len + 64) >>> 9) << 4) + 14] = len;
@@ -129,7 +129,7 @@
             }
           return str;
         }
-        
+
         function binl2hex(binarray){
           var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
           var str = "";
@@ -140,30 +140,30 @@
         }
       return (raw ? binl2str(core_md5(str2binl(s), s.length * chrsz)) : binl2hex(core_md5(str2binl(s), s.length * chrsz))	);
     };
-  
+
     function ajaxPostRequest(url, callback_function, id){
       var d = new Date();
       var time = d.getTime();
       url= url + '&nocachetime='+time;
-      var return_xml=false;    
+      var return_xml=false;
       var http_request = false;
-      
+
         if (window.XMLHttpRequest){ // Mozilla, Safari,...
           http_request = new XMLHttpRequest();
             if (http_request.overrideMimeType){
-              http_request.overrideMimeType('text/xml'); 
+              http_request.overrideMimeType('text/xml');
             }
         }
         else if (window.ActiveXObject){// IE
           try{
             http_request = new ActiveXObject("Msxml2.XMLHTTP");
-          } 
+          }
           catch (e){
               try{
                 http_request = new ActiveXObject("Microsoft.XMLHTTP");
               }
               catch (e){
-               
+
               }
           }
         }
@@ -171,17 +171,17 @@
           alert( _('ID_BROWSER_NOT_SUPPORTED') );
           return false;
         }
-        
+
         http_request.onreadystatechange = function(){
             if (http_request.readyState == 4){
                 if (http_request.status == 200){
                     if (return_xml){
                       eval(callback_function + '(http_request.responseXML)');
                     }
-                    else{		               	
-                      eval(callback_function + '(http_request.responseText, \''+id+'\')');			
+                    else{
+                      eval(callback_function + '(http_request.responseText, \''+id+'\')');
                     }
-                } 
+                }
                 else{
                   alert('Error found on request:(Code: ' + http_request.status + ')');
                 }
@@ -190,27 +190,27 @@
       http_request.open('GET', url, true);
       http_request.send(null);
     }
-    
+
     function ajaxPostRequestUrlIntact(url, callback_function, id){
-      var return_xml=false;    
+      var return_xml=false;
       var http_request = false;
-      
+
         if (window.XMLHttpRequest){ // Mozilla, Safari,...
           http_request = new XMLHttpRequest();
             if (http_request.overrideMimeType){
-              http_request.overrideMimeType('text/xml'); 
+              http_request.overrideMimeType('text/xml');
             }
         }
         else if (window.ActiveXObject){// IE
           try{
             http_request = new ActiveXObject("Msxml2.XMLHTTP");
-          } 
+          }
           catch (e){
               try{
                 http_request = new ActiveXObject("Microsoft.XMLHTTP");
               }
               catch (e){
-               
+
               }
           }
         }
@@ -218,17 +218,17 @@
           alert( _('ID_BROWSER_NOT_SUPPORTED') );
           return false;
         }
-        
+
         http_request.onreadystatechange = function(){
             if (http_request.readyState == 4){
                 if (http_request.status == 200){
                     if (return_xml){
                       eval(callback_function + '(http_request.responseXML)');
                     }
-                    else{		               	
-                      eval(callback_function + '(http_request.responseText, \''+id+'\')');			
+                    else{
+                      eval(callback_function + '(http_request.responseText, \''+id+'\')');
                     }
-                } 
+                }
                 else{
                   alert('Error found on request:(Code: ' + http_request.status + ')');
                 }
@@ -237,10 +237,10 @@
       http_request.open('GET', url, true);
       http_request.send(null);
     }
-    
+
   var processesGrid;
   var store;
-  
+
     new Ext.KeyMap(
       document,
       {
@@ -263,44 +263,44 @@
     Ext.onReady(function(){
       Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
       Ext.QuickTips.init();
-      
-      uploadDocumentGrid();
-    
-    });    
 
-  
+      uploadDocumentGrid();
+
+    });
+
+
   var uploadDocumentGridDownloadGlobal = {};
       uploadDocumentGridDownloadGlobal.APP_DOC_UID = '';
-      
+
   function uploadDocumentGridDownload(){
-    
+
     //!uploadDocumentGridDownloadGlobalSystem
     var APP_DOC_UID = uploadDocumentGridDownloadGlobal.APP_DOC_UID;
     var DOWNLOAD_LINK = uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK;
     var TITLE = uploadDocumentGridDownloadGlobal.TITLE;
-    
+
     var urlString = window.location.href;
     var urlArray = urlString.split("/");
     urlArray.pop();
     urlStrin = urlArray.join("/")+"/"+DOWNLOAD_LINK;
-    
+
     window.location.href= DOWNLOAD_LINK;
   }
-  
+
   var uploadDocumentGridGlobal = {};
       uploadDocumentGridGlobal.ref = "";
-  
+
   function uploadDocumentGrid(){
-  
+
     //dataGlobalConstructor
     uploadDocumentGridGlobal.ref = 'cases_Ajax.php';
-  
+
     //dataGlobal
     uploadDocumentGridGlobal.ref = uploadDocumentGridGlobal.ref;
-    
+
     //!dataSystemGlobal
     var ref = uploadDocumentGridGlobal.ref;
-    
+
     //!dataSystem
     var url = ref+'?action=uploadDocumentGrid_Ajax';
       store = new Ext.data.GroupingStore({
@@ -309,7 +309,7 @@
           {
             url: url
           }
-        ),    
+        ),
         reader : new Ext.data.JsonReader
         (
           {
@@ -321,29 +321,31 @@
               {name : 'DOWNLOAD_LINK'},
               {name : 'TITLE'},
               {name : 'APP_DOC_COMMENT'},
-              {name : 'TYPE'},              
+              {name : 'TYPE'},
               {name : 'DOC_VERSION'},
               {name : 'ORIGIN'},
               {name : 'CREATED_BY'},
               {name : 'CREATE_DATE'}
             ]
           }
-        ) 
+        )
       });
-    
+
       var expander = new Ext.ux.grid.RowExpander({
         tpl : new Ext.Template(
           '<p><b>'+TRANSLATIONS.ID_PRO_DESCRIPTION+':</b> {PRO_DESCRIPTION}</p><br>'
         )
       });
-  
-  
-      startDateRender = function(v){
-        var dateString = "-";
-          if(v!="-"){
-            dateString = _DF(v,"m/d/Y H:i:s");      
+
+      startDateRender = function (v)
+      {
+          var dateString = "-";
+
+          if (v != "-") {
+              dateString = _DF(v, FORMATS.casesListDateFormat);
           }
-        return dateString;    
+
+          return dateString;
       }
       escapeHtml = function(v){
         var pre = document.createElement('pre');
@@ -351,7 +353,7 @@
         pre.appendChild(text);
         return pre.innerHTML;
       }
-    
+
       actionRenderingTranslation = function(v){
         var actionTranslate = "";
         if(v=="PAUSE"){
@@ -368,9 +370,9 @@
         }
         else if(v==""||v==null){
           actionTranslate = _("ID_DERIVATED");
-        }  
+        }
         return actionTranslate;
-      };        
+      };
       var processesGrid = new Ext.grid.GridPanel({
         region: 'center',
         layout: 'fit',
@@ -386,15 +388,15 @@
         frame:false,
         //plugins: expander,
         cls : 'grid_with_checkbox',
-        columnLines: true,    
+        columnLines: true,
         viewConfig: {
           forceFit:true
-        },    
+        },
         cm: new Ext.grid.ColumnModel({
           defaults: {
               width: 200,
               sortable: true
-          },    
+          },
           columns:
           [
             {id:'APP_DOC_UID', dataIndex: 'APP_DOC_UID', hidden:true, hideable:false},
@@ -406,21 +408,21 @@
             {header: _("ID_ORIGIN_TASK"), dataIndex: 'ORIGIN', width: 70},
             {header: _("ID_CREATED_BY"), dataIndex: 'CREATED_BY', width: 70},
             {header: _("ID_CREATE_DATE"), dataIndex: 'CREATE_DATE', width: 70,renderer:startDateRender}
-            
+
           ]
         }),
         store: store,
         tbar:[
           {
-          
+
             text:_("ID_DOWNLOAD"),
             id:'sendMailMessageFormRadioId',
             iconCls: 'button_menu_ext',
             icon: '/images/documents/_downGreen.png',
             handler: function(){
-            
+
               var rowSelected = processesGrid.getSelectionModel().getSelected();
-            
+
                 if( rowSelected ){
                 	Ext.Ajax.request({
                     url : 'cases_ShowDocument' ,
@@ -443,11 +445,11 @@
                           uploadDocumentGridDownloadGlobal.APP_DOC_UID = rowSelected.data.APP_DOC_UID;
                           uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK = rowSelected.data.DOWNLOAD_LINK;
                           uploadDocumentGridDownloadGlobal.TITLE = rowSelected.data.TITLE;
-                          
+
                           var APP_DOC_UID = uploadDocumentGridDownloadGlobal.APP_DOC_UID;
                           var DOWNLOAD_LINK = uploadDocumentGridDownloadGlobal.DOWNLOAD_LINK;
                           var TITLE = uploadDocumentGridDownloadGlobal.TITLE;
-                          
+
                           uploadDocumentGridDownload();
                       }
                     },
@@ -467,7 +469,7 @@
                     icon: Ext.MessageBox.INFO,
                     buttons: Ext.MessageBox.OK
 
-                  });                            
+                  });
                 }
             },
             disabled:false
@@ -504,9 +506,9 @@
                 });
             }
         }
-      });  
+      });
     processesGrid.store.load({params: {"function":"languagesList"}});
-    
+
       processesGrid.store.on(
         'load',
         function()
@@ -518,16 +520,16 @@
           single: true
         }
       );
-      
+
     processesGrid.addListener('rowcontextmenu', emptyReturn,this);
     processesGrid.on('rowcontextmenu', function (grid, rowIndex, evt) {
       var sm = grid.getSelectionModel();
       sm.selectRow(rowIndex, sm.isSelected(rowIndex));
-      
+
       var rowSelected = Ext.getCmp('processesGrid').getSelectionModel().getSelected();
       var activator = Ext.getCmp('activator2');
       var debug = Ext.getCmp('debug');
-      
+
       if( rowSelected.data.PRO_STATUS == 'ACTIVE' ){
         activator.setIconClass('icon-deactivate');
         activator.setText(TRANSLATIONS.ID_DEACTIVATE);
@@ -535,7 +537,7 @@
         activator.setIconClass('icon-activate');
         activator.setText(TRANSLATIONS.ID_ACTIVATE);
       }
-  
+
       if( rowSelected.data.PRO_DEBUG == 1){
         debug.setIconClass('icon-debug-disabled');
         debug.setText(_('ID_DISABLE_DEBUG'));
@@ -544,19 +546,19 @@
         debug.setText(_('ID_ENABLE_DEBUG'));
       }
     }, this);
-    
+
     processesGrid.on('contextmenu', function (evt) {
       evt.preventDefault();
     }, this);
-    
+
     function emptyReturn(){
     }
-    
+
     var viewport = new Ext.Viewport({
       layout: 'fit',
       autoScroll: false,
       items: [
         processesGrid
       ]
-    });    
+    });
   }

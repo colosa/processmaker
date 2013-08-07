@@ -4129,6 +4129,12 @@ class Cases
 
     public function getAllUploadedDocumentsCriteria($sProcessUID, $sApplicationUID, $sTasKUID, $sUserUID)
     {
+        G::LoadClass("configuration");
+
+        $conf = new Configurations();
+
+        $confEnvSetting = $conf->getFormats();
+
         //verifica si existe la tabla OBJECT_PERMISSION
         $this->verifyTable();
         $listing = false;
@@ -4218,13 +4224,16 @@ class Cases
             }
             $aAux = $oAppDocument->load($aRow['APP_DOC_UID'], $aRow['DOC_VERSION']);
             $lastVersion = $oAppDocument->getLastAppDocVersion($aRow['APP_DOC_UID'], $sApplicationUID);
+
             try {
                 $aAux1 = $oUser->load($aAux['USR_UID']);
-                $sUser = $aAux1['USR_FIRSTNAME'] . ' ' . $aAux1['USR_LASTNAME'];
+
+                $sUser = $conf->usersNameFormatBySetParameters($confEnvSetting["format"], $aAux1["USR_USERNAME"], $aAux1["USR_FIRSTNAME"], $aAux1["USR_LASTNAME"]);
             } catch (Exception $oException) {
                 //$sUser = '(USER DELETED)';
                 $sUser = '***';
             }
+
             $aFields = array(
                 'APP_DOC_UID' => $aAux['APP_DOC_UID'],
                 'DOC_UID' => $aAux['DOC_UID'],
@@ -4302,12 +4311,15 @@ class Cases
             }
             $aAux = $oAppDocument->load($aRow['APP_DOC_UID'], $aRow['DOC_VERSION']);
             $lastVersion = $oAppDocument->getLastAppDocVersion($aRow['APP_DOC_UID'], $sApplicationUID);
+
             try {
                 $aAux1 = $oUser->load($aAux['USR_UID']);
-                $sUser = $aAux1['USR_FIRSTNAME'] . ' ' . $aAux1['USR_LASTNAME'];
+
+                $sUser = $conf->usersNameFormatBySetParameters($confEnvSetting["format"], $aAux1["USR_USERNAME"], $aAux1["USR_FIRSTNAME"], $aAux1["USR_LASTNAME"]);
             } catch (Exception $oException) {
                 $sUser = '***';
             }
+
             $aFields = array(
                 'APP_DOC_UID' => $aAux['APP_DOC_UID'],
                 'DOC_UID' => $aAux['DOC_UID'],
@@ -4364,12 +4376,15 @@ class Cases
             $aTask = array('TAS_TITLE' => '[ ' . G::LoadTranslation('ID_SUPERVISOR') . ' ]');
             $aAux = $oAppDocument->load($aRow['APP_DOC_UID'], $aRow['DOC_VERSION']);
             $lastVersion = $oAppDocument->getLastAppDocVersion($aRow['APP_DOC_UID'], $sApplicationUID);
+
             try {
                 $aAux1 = $oUser->load($aAux['USR_UID']);
-                $sUser = $aAux1['USR_FIRSTNAME'] . ' ' . $aAux1['USR_LASTNAME'];
+
+                $sUser = $conf->usersNameFormatBySetParameters($confEnvSetting["format"], $aAux1["USR_USERNAME"], $aAux1["USR_FIRSTNAME"], $aAux1["USR_LASTNAME"]);
             } catch (Exception $oException) {
                 $sUser = '***';
             }
+
             $aFields = array(
                 'APP_DOC_UID' => $aAux['APP_DOC_UID'],
                 'DOC_UID' => $aAux['DOC_UID'],
@@ -4434,6 +4449,12 @@ class Cases
 
     public function getAllGeneratedDocumentsCriteria($sProcessUID, $sApplicationUID, $sTasKUID, $sUserUID)
     {
+        G::LoadClass("configuration");
+
+        $conf = new Configurations();
+
+        $confEnvSetting = $conf->getFormats();
+
         //verifica si la tabla OBJECT_PERMISSION
         $this->verifyTable();
         $listing = false;
@@ -4590,9 +4611,11 @@ class Cases
                         }
                         break;
                 }
+
                 try {
                     $aAux1 = $oUser->load($aAux['USR_UID']);
-                    $sUser = $aAux1['USR_FIRSTNAME'] . ' ' . $aAux1['USR_LASTNAME'];
+
+                    $sUser = $conf->usersNameFormatBySetParameters($confEnvSetting["format"], $aAux1["USR_USERNAME"], $aAux1["USR_FIRSTNAME"], $aAux1["USR_LASTNAME"]);
                 } catch (Exception $oException) {
                     $sUser = '(USER DELETED)';
                 }

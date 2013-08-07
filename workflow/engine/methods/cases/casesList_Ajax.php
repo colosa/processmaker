@@ -58,12 +58,7 @@ if ($actionAjax == "userValues") {
 
             $conf = new Configurations();
 
-            $confEnvSetting = $conf->getConfiguration("ENVIRONMENT_SETTINGS", "");
-            $formatUserName = null;
-
-            if (is_array($confEnvSetting) && isset($confEnvSetting["format"])) {
-                $formatUserName = $confEnvSetting["format"];
-            }
+            $confEnvSetting = $conf->getFormats();
 
             $cUsers = new Criteria( 'workflow' );
             $cUsers->clearSelectColumns();
@@ -79,8 +74,7 @@ if ($actionAjax == "userValues") {
             while ($oDataset->next()) {
                 $row = $oDataset->getRow();
 
-                $usrFullName = $conf->usersNameFormatBySetParameters($formatUserName, $row["USR_USERNAME"], $row["USR_FIRSTNAME"], $row["USR_LASTNAME"]);
-                $usrFullName = (!empty($usrFullName))? $usrFullName : $row["USR_LASTNAME"] . " " . $row["USR_FIRSTNAME"];
+                $usrFullName = $conf->usersNameFormatBySetParameters($confEnvSetting["format"], $row["USR_USERNAME"], $row["USR_FIRSTNAME"], $row["USR_LASTNAME"]);
 
                 $users[] = array("USR_UID" => $row["USR_UID"], "USR_FULLNAME" => $usrFullName);
             }

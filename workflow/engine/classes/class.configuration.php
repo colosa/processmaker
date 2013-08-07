@@ -339,7 +339,7 @@ class Configurations // extends Configuration
 
     public function usersNameFormatBySetParameters($formatUserName, $userName, $firstName, $lastName)
     {
-        $usersNameFormat = (!empty($formatUserName))? str_replace(array("@userName", "@firstName", "@lastName"), array($userName, $firstName, $lastName), $formatUserName) : null;
+        $usersNameFormat = str_replace(array("@userName", "@firstName", "@lastName"), array($userName, $firstName, $lastName), $formatUserName);
         $usersNameFormat = trim($usersNameFormat);
 
         return $usersNameFormat;
@@ -356,23 +356,21 @@ class Configurations // extends Configuration
     {
         $field = "USR_LASTNAME";
 
-        $confEnvSetting = $this->getConfiguration("ENVIRONMENT_SETTINGS", "");
+        $confEnvSetting = $this->getFormats();
 
-        if (is_array($confEnvSetting) && isset($confEnvSetting["format"])) {
-            $arrayAux = explode(" ", str_replace(array("(", ")", ","), array(null, null, null), $confEnvSetting["format"]));
+        $arrayAux = explode(" ", str_replace(array("(", ")", ","), array(null, null, null), $confEnvSetting["format"]));
 
-            if (isset($arrayAux[0])) {
-                switch (trim($arrayAux[0])) {
-                    case "@userName":
-                        $field = "USR_USERNAME";
-                        break;
-                    case "@firstName":
-                        $field = "USR_FIRSTNAME";
-                        break;
-                    case "@lastName":
-                        $field = "USR_LASTNAME";
-                        break;
-                }
+        if (isset($arrayAux[0])) {
+            switch (trim($arrayAux[0])) {
+                case "@userName":
+                    $field = "USR_USERNAME";
+                    break;
+                case "@firstName":
+                    $field = "USR_FIRSTNAME";
+                    break;
+                case "@lastName":
+                    $field = "USR_LASTNAME";
+                    break;
             }
         }
 
