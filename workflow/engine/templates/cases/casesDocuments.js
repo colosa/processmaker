@@ -514,7 +514,8 @@ function openActionDialog(caller, action, dataAux)
 			 * messageText, false, true ); }else{ alert("sadasd"); }
 			 */
       break;
-    case 'rename':node.select();
+    //case 'rename':node.select();
+    case 'rename':
       dirTreeEd.triggerEdit(Ext.getCmp('dirTreePanel').getSelectionModel().getSelectedNode());
       break;
   }
@@ -852,14 +853,14 @@ var datastore = new Ext.data.Store({
 });
 //datastore.paramNames["dir"] = "direction";
 //datastore.paramNames["sort"] = "order";
-  
+
 datastore.on("beforeload",
   function(ds, options) {
 
     options.params.dir  = (itemSelected.length === 0) ? options.params.dir : ds.directory;
     options.params.node = (itemSelected.length === 0) ? options.params.dir : ds.directory;
     options.params.option = "gridDocuments";
-    options.params.sendWhat = datastore.sendWhat;    
+    options.params.sendWhat = datastore.sendWhat;
     if (options.params.dir == "ASC" || options.params.dir == "DESC") {
  	options.params.action = "sort";
         options.params.node = ds.directory;
@@ -871,7 +872,7 @@ datastore.on("beforeload",
             options.params.node = ds.directory;
         } else {
             options.params.action = "expandNode";
-        } 
+        }
     }
     if(ds.directory != "") {
       lastDir = ds.directory;
@@ -1752,6 +1753,31 @@ var documentsTab = {
         fn : function(node, text, oldText) {
           if (text == oldText)
             return true;
+
+          var nameDirectorySelected = node.attributes.name;
+          var pnode = node.parentNode;
+          var nameNew = text;
+          var sw = 1;
+
+          for (var i = 0; i <= pnode.childNodes.length - 1 && sw == 1; i++) {
+              var nodeChild = pnode.childNodes[i];
+              var nameDirectory = nodeChild.attributes.name;
+
+              if (nameDirectory != nameDirectorySelected) {
+                  if (nameDirectory == nameNew) {
+                      sw = 0;
+                  }
+              }
+          }
+
+          if (sw == 0) {
+              Ext.MessageBox.alert(_("ID_ERROR"), _("ID_DIRECTORY_NAME_EXISTS_ENTER_ANOTHER", nameDirectory));
+              node.text = oldText;
+              dirTreeEd.triggerEdit(Ext.getCmp("dirTreePanel").getSelectionModel().getSelectedNode());
+
+              return true;
+          }
+
           var requestParams = getRequestParams();
           var dir = node.parentNode.id.replace(/_RRR_/g, '/');
           if (dir == 'root')
