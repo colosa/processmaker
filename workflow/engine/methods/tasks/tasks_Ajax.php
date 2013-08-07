@@ -64,8 +64,14 @@ try {
             }
 
             //Validating TAS_ASSIGN_VARIABLE value
+
             if (!isset($aData['TAS_ASSIGN_TYPE'])) {
-                $aData['TAS_ASSIGN_TYPE'] = 'BALANCED';
+                $derivate_type = $oTask->kgetassigType($_SESSION['PROCESS'],$aData['TAS_UID']);
+                if(is_null($derivate_type)){
+                    $aData['TAS_ASSIGN_TYPE'] = 'BALANCED';
+                }else{
+                    $aData['TAS_ASSIGN_TYPE'] = $derivate_type['TAS_ASSIGN_TYPE'];
+                }
             }
             if ($aData['TAS_ASSIGN_TYPE'] == 'SELF_SERVICE_EVALUATE') {
                 $aData['TAS_ASSIGN_TYPE'] = 'SELF_SERVICE';
