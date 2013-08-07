@@ -5,6 +5,11 @@ Ext.chart.Chart.CHART_URL = '/images/charts.swf';
 Ext.FlashComponent.EXPRESS_INSTALL_URL = '/images/expressinstall.swf';
 // The Quicktips are used for the toolbar and Tree mouseover tooltips!
 
+// Refresh treePanel
+if (typeof(parent.timer) != 'undefined') {
+  parent.timer();
+}
+
 
 var conn = new Ext.data.Connection();
 
