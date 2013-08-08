@@ -358,36 +358,56 @@ Ext.onReady(function(){
                               Ext.getCmp('sizeEdit').setValue('');
                           }
                           selCombo = combo.getValue();
-                          if(selCombo != 'DOUBLE'
-                              && selCombo != 'TIME'
-                              && selCombo != 'DATE'
-                              && selCombo != 'DATETIME'
-                              && selCombo != 'BOOLEAN'
-                              && selCombo != 'REAL'
-                              && selCombo != 'FLOAT') {
-                              Ext.getCmp('sizeEdit').enable();
-                          } else {
-                              Ext.getCmp('sizeEdit').disable();
+
+                          var swSize = 1;  //Enable
+                          var swAI = 1;
+
+                          //Date
+                          if (selCombo == "TIME" || selCombo == "DATE" || selCombo == "DATETIME") {
+                              swSize = 0;  //Disable
+                              swAI = 0;
                           }
-                          if(selCombo == 'CHAR' || selCombo == 'VARCHAR') {
-                              Ext.getCmp('sizeEdit').setMaxValue(((selCombo == 'CHAR')?255:999));
-                              sizeField.getEl().dom.maxLength = 3;
-                          } else {
-                              Ext.getCmp('sizeEdit').setMaxValue(99);
-                              sizeField.getEl().dom.maxLength = 2;
+
+                          //Numbers
+                          if (selCombo == "BIGINT" || selCombo == "INTEGER" || selCombo == "SMALLINT" || selCombo == "TINYINT") {
+                              //Enable All
                           }
-                          if( selCombo == 'CHAR'
-                              || selCombo == 'VARCHAR'
-                              || selCombo == 'TIME'
-                              || selCombo == 'DATE'
-                              || selCombo == 'DATETIME'
-                              || selCombo == 'BOOLEAN'
-                              || selCombo == 'REAL'
-                              || selCombo == 'FLOAT'
-                              || selCombo == 'DOUBLE') {
-                              Ext.getCmp('field_incre').disable();
+
+                          if (selCombo == "DECIMAL" || selCombo == "FLOAT" || selCombo == "REAL" || selCombo == "DOUBLE") {
+                              swSize = 0;
+                              swAI = 0;
+                          }
+
+                          if (selCombo == "CHAR" || selCombo =="VARCHAR" || selCombo == "LONGVARCHAR") {
+                             var swAI = 0;
+                          }
+
+                          //Boolean
+                          if (selCombo == "BOOLEAN") {
+                              swSize = 0;
+                              swAI = 0;
+                          }
+
+                          if (swAI == 1) {
+                              Ext.getCmp("field_incre").enable();
                           } else {
-                              Ext.getCmp('field_incre').enable();
+                              Ext.getCmp("field_incre").disable();
+                              Ext.getCmp("field_incre").setValue(false);
+                          }
+
+                          if (swSize == 1) {
+                              Ext.getCmp("sizeEdit").enable();
+
+                              if (selCombo == "CHAR" || selCombo =="VARCHAR" || selCombo == "LONGVARCHAR") {
+                                  Ext.getCmp("sizeEdit").setMaxValue(((selCombo == "CHAR") ? 255 : 999));
+                                  sizeField.getEl().dom.maxLength = 3;
+                              } else {
+                                  Ext.getCmp("sizeEdit").setMaxValue(99);
+                                  sizeField.getEl().dom.maxLength = 2;
+                              }
+                          } else {
+                              Ext.getCmp("sizeEdit").disable();
+                              Ext.getCmp("sizeEdit").setValue("");
                           }
                       }
                   }//select
