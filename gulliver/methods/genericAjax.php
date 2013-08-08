@@ -60,8 +60,13 @@ if( isset($request) ){
         // Remplace values for dependent fields
         $aDependentFieldsKeys  = explode("|", base64_decode(str_rot13($_GET['dependentFieldsKeys'])));
         $aDependentFieldsValue = explode("|", $_GET['dependentFieldsValue']);
-        if($aDependentFieldsKeys){
-          $SQL = str_replace($aDependentFieldsKeys, $aDependentFieldsValue, $SQL);
+        if ($aDependentFieldsKeys) {
+            $aDependentFields = array();
+            foreach ($aDependentFieldsKeys as $nKey => $sFieldVar ) {
+                $sKeyDepFields = substr($sFieldVar, 2);
+                $aDependentFields[$sKeyDepFields] = $aDependentFieldsValue[$nKey];
+            }
+            $SQL = G::replaceDataField($SQL, $aDependentFields);
         }
 
         // Parsed SQL Structure
