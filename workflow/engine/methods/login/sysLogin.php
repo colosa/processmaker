@@ -22,6 +22,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
+
 if (isset ($_POST['form']['USER_ENV'])) {
     session_destroy();
     session_start();
@@ -31,9 +32,24 @@ if (isset ($_POST['form']['USER_ENV'])) {
     die ();
 }
 
+//Save session variables
+$arraySession = array();
+
+if (isset($_SESSION["G_MESSAGE"])) {
+    $arraySession["G_MESSAGE"] = $_SESSION["G_MESSAGE"];
+}
+
+if (isset($_SESSION["G_MESSAGE_TYPE"])) {
+    $arraySession["G_MESSAGE_TYPE"] = $_SESSION["G_MESSAGE_TYPE"];
+}
+
+//Initialize session
 session_destroy();
 session_start();
 session_regenerate_id();
+
+//Restore session variables
+$_SESSION = array_merge($_SESSION, $arraySession);
 
 //Required classes for dbArray work
 //require_once ("propel/Propel.php");
