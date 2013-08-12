@@ -408,7 +408,9 @@ if (Bootstrap::virtualURI( $_SERVER['REQUEST_URI'], $virtualURITable, $realPath 
 
         //Get that path in array
         $paths = explode( PATH_SEP, $forQuery[0] );
-        $fileToBeStreamed = str_replace( "/skin/", PATH_CUSTOM_SKINS, $_SERVER['REQUEST_URI'] );
+        $url = (preg_match("/^(.*)\?.*$/", $_SERVER["REQUEST_URI"], $arrayMatch))? $arrayMatch[1] : $_SERVER["REQUEST_URI"];
+
+        $fileToBeStreamed = str_replace("/skin/", PATH_CUSTOM_SKINS, $url);
 
         if (file_exists( $fileToBeStreamed )) {
             //NewRelic Snippet - By JHL
@@ -927,7 +929,7 @@ if (! defined( 'EXECUTE_BY_CRON' )) {
         $noLoginFiles[] = 'cases_Derivate';
         $noLoginFiles[] = 'cases_NextStep';
         $noLoginFiles[] = 'genericAjax';
-        $noLoginFiles[] = 'casesSaveDataView'; 
+        $noLoginFiles[] = 'casesSaveDataView';
 
         $noLoginFolders[] = 'services';
         $noLoginFolders[] = 'tracker';
