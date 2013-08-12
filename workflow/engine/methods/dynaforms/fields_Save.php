@@ -132,6 +132,9 @@ if (file_exists(PATH_XMLFORM . 'dynaforms/fields/' . $type . '.xml')) {
             }
         }
     }
+    if ($type === 'date' && isset($_POST['form']['PME_EDITABLE'])) {
+        $_POST['form']['PME_EDITABLE'] =  (empty($_POST['form']['PME_EDITABLE'])) ? 0 : $_POST['form']['PME_EDITABLE'];
+    }
 }
 
 foreach ($_POST['form'] as $key => $value) {
@@ -229,8 +232,18 @@ unset($FieldAttributes['XMLNODE_VALUE']);
 unset($FieldAttributes['BTN_CANCEL']);
 unset($FieldAttributes['SAVELABEL']);
 foreach ($FieldAttributes as $key => $value) {
-    if ($value != "") {
-        $FieldAttrib[strtolower($key)] = $value;
+    switch (gettype($value)) {
+        case 'string':
+            if (!empty($value)) {
+                $FieldAttrib[strtolower($key)] = $value;
+            }        
+        break;
+        case 'integer':
+            $FieldAttrib[strtolower($key)] = $value;
+        break;
+        default:
+            //Nothing
+        break;
     }
 }
 
