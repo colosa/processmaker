@@ -230,6 +230,7 @@ function saveSettings()
   Ext.getCmp('frm').getForm().submit( {
     url : '../adminProxy/saveSystemConf',
     waitMsg : _('ID_SAVING_PROCESS'),
+    waitTitle : "",
     timeout : 36000,
     success : function(obj, resp) {
       //nothing to do

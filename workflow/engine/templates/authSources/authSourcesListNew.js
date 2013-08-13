@@ -94,6 +94,7 @@ var cboxAuthSourse = new Ext.form.ComboBox({
        window.location = 'authSources_New?AUTH_SOURCE_PROVIDER='+formAuthSourceOptoins.getForm().findField('AUTH_SOURCE_PROVIDER').getValue();
        return false;*/
     formAuthSourceOptoins.getForm().submit({ 
+    waitTitle : "",
     url: '../adminProxy/testingOption',
     params: {
     action     : 'test',

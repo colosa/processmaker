@@ -151,6 +151,7 @@ Ext.onReady(function(){
                             action : 'test'
                             },
                             waitMsg : _('ID_NEW_SITE_TESTING'),
+                            waitTitle : "",
                             timeout : 3600,
                             success: function(f,a){
                              nwTitle    =formNewSite.getForm().findField('NW_TITLE').getValue();

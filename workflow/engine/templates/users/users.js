@@ -1051,6 +1051,7 @@ function userFrmEditSubmit()
         USR_CITY : global.IS_UID
       },
       waitMsg : _("ID_SAVING"),
+      waitTitle : "",
       timeout : 36000,
       success : function (obj, resp) {
         if (!infoMode) {

@@ -76,6 +76,7 @@ function clearCache () {
   Ext.getCmp('frmCache').getForm().submit({
     url     : 'clearCompiledAjax',
     waitMsg : _('ID_SAVING_PROCESS'),
+    waitTitle : "",
     timeout : 36000,
     success : function(obj, resp) {
       message = '';

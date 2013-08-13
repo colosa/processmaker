@@ -1118,7 +1118,8 @@ Ext.onReady(function(){
 				unpauseDate = unpauseDate.format('Y-m-d');
 
 				Ext.getCmp('unpauseFrm').getForm().submit({
-				url:'ajaxListener',
+				waitTitle : "",
+        url:'ajaxListener',
 				method : 'post',
 				params : {
 				action: 'pauseCase',

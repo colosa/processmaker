@@ -296,7 +296,7 @@ Login.submit = function()
 
   Login.form.getForm().submit({
     method: 'POST',
-    //waitTitle: '',
+    waitTitle: '',
     //waitMsg: 'Verifying User...',
     success: function(form, action)
     {

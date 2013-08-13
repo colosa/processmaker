@@ -331,6 +331,7 @@ SaveNewCategory = function(){
       if (resp){
         viewport.getEl().mask(_('ID_PROCESSING'));
         newForm.getForm().submit({
+          waitTitle : "",
           success: function(f,a){
             viewport.getEl().unmask();
             CloseWindow(); //Hide popup widow
@@ -380,6 +381,7 @@ UpdateCategory = function(){
       if (resp){
         viewport.getEl().mask(_('ID_PROCESSING'));
         editForm.getForm().submit({
+          waitTitle : "",
           success: function(f,a){
             viewport.getEl().unmask();
             CloseWindow(); //Hide popup widow

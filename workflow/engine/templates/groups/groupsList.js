@@ -411,6 +411,7 @@ DuplicateGroupName = function(){
 //Save New Group
 SaveNewGroup = function(){
   newForm.getForm().submit({
+    waitTitle : "",
     success: function(f,a){
       CloseWindow(); //Hide popup widow
       newForm.getForm().reset(); //Set empty form to next use
@@ -468,6 +469,7 @@ SaveEditGroupAction = function(){
 //Save Edit Group
 SaveEditGroup = function(){
   editForm.getForm().submit({
+    waitTitle : "",
     success: function(f,a){
       CloseWindow(); //Hide popup widow
       DoSearch(); //Reload store grid

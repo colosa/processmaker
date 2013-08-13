@@ -275,6 +275,7 @@ Ext.onReady(function() {
       formSettings.getForm().submit({
         url : 'environmentSettingsAjax?request=save&r=' + Math.random(),
         waitMsg : _('ID_SAVING_ENVIRONMENT_SETTINGS')+'...',
+        waitTitle : "",
         timeout : 36000,
         success : function(res, req) {
             PMExt.notify(_('ID_PM_ENV_SETTINGS_TITLE'), req.result.msg);

@@ -141,6 +141,7 @@ Ext.onReady(function(){
                     uploader.getForm().submit({
                       url: 'outputdocs_Ajax?action=setTemplateFile',
                       waitMsg: _('ID_UPLOADING_FILE'),
+                      waitTitle : "",
                       success: function (o, resp) {
                         w.close();
 

@@ -523,6 +523,7 @@ newSkin = function(){
           Ext.getCmp("newform").getForm().submit({
             //reset: true,
             reset: false,
+            waitTitle : "",
             success: function(form, action) {
 
               store.reload();
@@ -647,6 +648,7 @@ importSkin = function(){
           Ext.getCmp("uploadform").getForm().submit({
             //reset: true,
             reset: false,
+            waitTitle : "",
             success: function(form, action) {
 
               store.reload();

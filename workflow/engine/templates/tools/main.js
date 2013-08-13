@@ -309,6 +309,7 @@ function saveNew()
   Ext.getCmp('formNew').getForm().submit( {
     url : 'ajaxListener?action=save&id'+id+'&label='+label,
     waitMsg : _('ID_SAVING'),
+    waitTitle : "",
     timeout : 36000,
     success : function(obj, resp) {
       Ext.getCmp('grid').store.reload();
