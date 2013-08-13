@@ -3618,7 +3618,7 @@ class XmlForm_Field_Listbox extends XmlForm_Field
                 $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "selected=\"selected\"" : "") . ">" . $option . "</option>";
             }
             foreach ($this->sqlOption as $optionName => $option) {
-                $html .= "<option value=\"" . $optionName . " \" " . ((in_array( $optionName . "", $value )) ? "selected=\"selected\" " : "") . ">" . $option . "</option>";
+                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "selected=\"selected\" " : "") . ">" . $option . "</option>";
             }
             $html .= '</select>';
 
@@ -3627,10 +3627,10 @@ class XmlForm_Field_Listbox extends XmlForm_Field
         } elseif ($this->mode === 'view') {
             $html = '<select multiple="multiple" id="form[' . $this->name . ']" name="form[' . $this->name . '][]" size="' . $this->size . '" ' . $this->NSFieldType() . ' style="background: none;" disabled="disabled">';
             foreach ($this->option as $optionName => $option) {
-                $html .= "<option value=\"" . $optionName . " \" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" : "") . ">" . $option . "</option>";
+                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" : "") . ">" . $option . "</option>";
             }
             foreach ($this->sqlOption as $optionName => $option) {
-                $html .= "<option value=\"" . $optionName . " \" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" : "") . ">" . $option . "</option>";
+                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" : "") . ">" . $option . "</option>";
             }
             $html .= '</select>';
             foreach ($this->option as $optionName => $option) {

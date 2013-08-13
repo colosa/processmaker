@@ -196,6 +196,7 @@ $r = 0;
 
 //Set data
 foreach ($dependentFields as $d) {
+    $d = trim($d);
     $sendContent[$r]->name = $d;
     $sendContent[$r]->content = null;
 
