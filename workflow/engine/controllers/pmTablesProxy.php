@@ -907,6 +907,15 @@ class pmTablesProxy extends HttpProxyController
                             if ($table !== false) {
                                 if (! $isReport) {
                                     if (count( $contentData ) > 0) {
+                                        $oAdditionalTables->load( $table['ADD_TAB_UID'], true );
+                                        $primaryKeys = $oAdditionalTables->getPrimaryKeys();
+                                        // Obtain a list of columns
+                                        $primaryKeyColumn = array();
+                                        foreach ($contentData as $key => $row) {
+                                            $primaryKeyColumn[$key]  = $row[$primaryKeys[0]['FLD_NAME']];
+                                        }
+                                        unset($row);
+                                        array_multisort($primaryKeyColumn, SORT_ASC, $contentData);
                                         foreach ($contentData as $row) {
                                             $data = new StdClass();
                                             $data->id = $table['ADD_TAB_UID'];
