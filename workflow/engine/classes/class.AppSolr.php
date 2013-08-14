@@ -1171,84 +1171,79 @@ class AppSolr
         }
 
         // validate phrase in case of date
-        if (($searchText [1] == "[")) 
-          {
-          // validate date range format
-          // use regular expresion to validate it [yyyy-mm-dd TO yyyy-mm-dd]
-          $result1 = strpos($searchText, '-');        
-          if ($result1 !== false)
-             {
-              $reg = "/:\[(\d\d\d\d-\d\d-\d\d|\*)\sTO\s(\d\d\d\d-\d\d-\d\d|\*)\]/";
-              // convert date to utc
-              $matched = preg_match ($reg, $searchText, $matches);
-              if ($matched == 1) 
-                 {
-                 // the date interval is valid
-                 // convert to SOlr format
-                 $fromDateOriginal = $matches [1];
-                 $fromDate = $matches [1];            
-                 $toDateOriginal = $matches [2];
-                 $toDate = $matches [2];            
-                 if ($fromDateOriginal != '*') 
-                    {              
-                    $fromDate = gmdate ("Y-m-d\T00:00:00\Z", strtotime ($fromDateOriginal));
+        if (($searchText [1] == "[")) {
+            // validate date range format
+            // use regular expresion to validate it [yyyy-mm-dd TO yyyy-mm-dd]
+            $result1 = strpos($searchText, '-');
+            if ($result1 !== false) {
+                $result2 = strpos($searchText, 'TO');
+                if ($result2 !== false) {
+                    $reg = "/:\[(\d\d\d\d-\d\d-\d\d|\*)\sTO\s(\d\d\d\d-\d\d-\d\d|\*)\]/";
+                    // convert date to utc
+                    $matched = preg_match ($reg, $searchText, $matches);
+                    if ($matched == 1) {
+                        // the date interval is valid
+                        // convert to SOlr format
+                        $fromDateOriginal = $matches [1];
+                        $fromDate = $matches [1];
+                        $toDateOriginal = $matches [2];
+                        $toDate = $matches [2];
+                        if ($fromDateOriginal != '*') {
+                            $fromDate = gmdate ("Y-m-d\T00:00:00\Z", strtotime ($fromDateOriginal));
+                        }
+                        if ($toDateOriginal != '*') {
+                            // list($year, $month, $day) = sscanf($fromDateOriginal,
+                            // '%04d/%02d/%02d');
+                            // $toDateDatetime = new DateTime($toDateOriginal);
+                            // $toDateDatetime = date_create_from_format ( 'Y-m-d',
+                            // $toDateOriginal );
+                            $toDate = gmdate ("Y-m-d\T23:59:59.999\Z", strtotime ($toDateOriginal));
+                        }
+                        $searchText = ":[" . $fromDate . " TO " . $toDate . "]";
                     }
-                 if ($toDateOriginal != '*') 
-                    {
-                    // list($year, $month, $day) = sscanf($fromDateOriginal,
-                    // '%04d/%02d/%02d');
-                    // $toDateDatetime = new DateTime($toDateOriginal);
-                    // $toDateDatetime = date_create_from_format ( 'Y-m-d',
-                    // $toDateOriginal );
-                    $toDate = gmdate ("Y-m-d\T23:59:59.999\Z", strtotime ($toDateOriginal));
-                    }
-                 $searchText = ":[" . $fromDate . " TO " . $toDate . "]";
-                 }
-              }
-          }
+                } else {
+                    $searchText = str_replace( "[", "", $searchText );
+                    $searchText = str_replace( "]", "", $searchText );
+                    $searchText = str_replace( ":", "", $searchText );
+                    $searchText = ":[" . $searchText . "T00:00:00Z TO " . $searchText . "T23:59:59.999Z]";
+                }
+            }
+        }
 
         // validate phrase in case of < and <=
-        $result1 = strpos($searchText, '<');        
-        if($result1 !== false)
-          {
-          $result = strpos($searchText, '<=');  
-          if($result !== false)
-            {
-            $v1 = str_replace( '<=', '', $searchText ); 
-            $v2 = str_replace( ':', '', $v1);                                  
-            $v3 = str_replace( '<','' ,':[* TO '.$v2.']' );                 
-            $searchText = $v3;            
-            }      
-          else 
-            {
-            $v1 = str_replace( '<', '', $searchText ); 
-            $v2 = str_replace( ':', '', $v1);               
-            $v3 = (int) $v2-1;          
-            $v4 = str_replace( '<','' ,':[* TO '.$v3.']' );                 
-            $searchText = $v4;
+        $result1 = strpos($searchText, '<');
+        if($result1 !== false) {
+            $result = strpos($searchText, '<=');
+            if($result !== false) {
+                $v1 = str_replace( '<=', '', $searchText );
+                $v2 = str_replace( ':', '', $v1);
+                $v3 = str_replace( '<','' ,':[* TO '.$v2.']' );
+                $searchText = $v3;
+            } else {
+                $v1 = str_replace( '<', '', $searchText );
+                $v2 = str_replace( ':', '', $v1);
+                $v3 = (int) $v2-1;
+                $v4 = str_replace( '<','' ,':[* TO '.$v3.']' );
+                $searchText = $v4;
             }                    
-          }
+        }
         // validate phrase in case of > and >=
         $result2 = strpos($searchText, '>');
-        if($result2 !== false)
-          {
-          $result = strpos($searchText, '>=');  
-          if($result !== false)
-            {
-            $v1 = str_replace( '>=', '', $searchText ); 
-            $v2 = str_replace( ':', '', $v1);                                  
-            $v3 = str_replace( '>','' ,':['.$v2.' TO *]' );                  
-            $searchText = $v3;            
-            }      
-          else 
-            {
-            $v1 = str_replace( '>', '', $searchText );    
-            $v2 = str_replace( ':', '', $v1 );    
-            $v3 = (int) $v2+1;          
-            $v4 = str_replace( '>','' ,':['.$v3.' TO *]' );                
-            $searchText = $v4;      
-            }                               
-          }          
+        if($result2 !== false) {
+            $result = strpos($searchText, '>=');
+            if($result !== false) {
+                $v1 = str_replace( '>=', '', $searchText );
+                $v2 = str_replace( ':', '', $v1);
+                $v3 = str_replace( '>','' ,':['.$v2.' TO *]' );
+                $searchText = $v3;
+            } else {
+                $v1 = str_replace( '>', '', $searchText );
+                $v2 = str_replace( ':', '', $v1 );
+                $v3 = (int) $v2+1;
+                $v4 = str_replace( '>','' ,':['.$v3.' TO *]' );
+                $searchText = $v4;
+            }
+        }
         $formattedSearchText .= $indexFieldName . $searchText;
         $includeToken = true;
       }
@@ -1259,6 +1254,7 @@ class AppSolr
         // next token
       $tok = strtok (" ");
     }
+
     // remove last AND
     $formattedSearchText = substr_replace ($formattedSearchText, "", - 5);
     return $formattedSearchText;
@@ -2323,16 +2319,15 @@ class AppSolr
       $dynaformFileNames = $this->getProcessDynaformFileNames ($documentInformation ['PRO_UID']);
       $dynaformFields = array ();
       foreach ($dynaformFileNames as $dynaformFileName) {
-          if (is_file(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
-             filesize(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') >0 ) {
-          $dyn = new dynaFormHandler (PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml');
-          $dynaformFields [] = $dyn->getFields ();
-        }
-        if (is_file(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
-             filesize(PATH_DATA . '/sites/workflow/xmlForms/' . $dynaformFileName ['DYN_FILENAME'] . '.xml') == 0 )  {
-          
-          throw new ApplicationWithCorruptDynaformException(date('Y-m-d H:i:s:u') . "Application with corrupt dynaform. APP_UID: " . $AppUID . "\n");
-        }
+          if (is_file(PATH_DYNAFORM . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
+             filesize(PATH_DYNAFORM . $dynaformFileName ['DYN_FILENAME'] . '.xml') >0 ) {
+              $dyn = new dynaFormHandler (PATH_DYNAFORM . $dynaformFileName ['DYN_FILENAME'] . '.xml');
+              $dynaformFields [] = $dyn->getFields ();
+          }
+          if (is_file(PATH_DYNAFORM . $dynaformFileName ['DYN_FILENAME'] . '.xml') && 
+             filesize(PATH_DYNAFORM . $dynaformFileName ['DYN_FILENAME'] . '.xml') == 0 ) {
+              throw new ApplicationWithCorruptDynaformException(date('Y-m-d H:i:s:u') . "Application with corrupt dynaform. APP_UID: " . $AppUID . "\n");
+          }
       }
       
       foreach ($dynaformFields as $aDynFormFields) {
@@ -2352,7 +2347,7 @@ class AppSolr
       // create cache of dynaformfields
       //$oMemcache->set ("SOLR_DYNAFORM_FIELD_TYPES_" . $documentInformation ['PRO_UID'], $dynaformFieldTypes);
     //}
-    // return result values
+    // return result values      
     $result = array (
         $documentInformation,
         $dynaformFieldTypes,
