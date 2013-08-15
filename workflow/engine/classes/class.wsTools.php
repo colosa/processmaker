@@ -1057,39 +1057,60 @@ class workspaceTools
      * @param string $filename the script filename
      * @param string $database the database to execute this script into
      */
-    private function executeSQLScript($database, $filename)
+    private function executeSQLScript($database, $filename, $parameters)
     {
         mysql_query("CREATE DATABASE IF NOT EXISTS " . mysql_real_escape_string($database));
-        mysql_select_db($database);
-        $script = file_get_contents($filename);
-        $lines = explode("\n", $script);
-        $previous = null;
-        foreach ($lines as $j => $line) {
-            // Remove comments from the script
-            $line = trim($line);
-            if (strpos($line, "--") === 0) {
-                $line = substr($line, 0, strpos($line, "--"));
+        // Check for safe mode
+        if ( !ini_get('safe_mode') ) {
+            $command = 'mysql'
+            . ' --host=' . $parameters['dbHost']
+            . ' --user=' . $parameters['dbUser']
+            . ' --password=' . $parameters['dbPass']
+            . ' --database=' . mysql_real_escape_string($database)
+            . ' --execute="SOURCE '.$filename.'"';
+            shell_exec($command);
+
+        } else {
+            //If the safe mode of the server is actived
+            try {
+                mysql_select_db($database);
+                $script = file_get_contents($filename);
+                
+                $lines = explode(";\n", $script);
+                $previous = null;
+                foreach ($lines as $j => $line) {
+                    // Remove comments from the script
+                    $line = trim($line);
+                    if (strpos($line, "--") === 0) {
+                        $line = substr($line, 0, strpos($line, "--"));
+                    }
+                    if (empty($line)) {
+                        continue;
+                    }
+                    // Concatenate the previous line, if any, with the current
+                    if ($previous) {
+                        $line = $previous . " " . $line;
+                    }
+                    $previous = null;
+                    // If the current line doesnt end with ; then put this line together
+                    // with the next one, thus supporting multi-line statements.
+                    if (strrpos($line, ";") != strlen($line) - 1) {
+                        $previous = $line;
+                        continue;
+                    }
+                    $line = substr($line, 0, strrpos($line, ";"));
+                    $result = mysql_query($line);
+                    if ($result === false) {
+                        throw new Exception("Error when running script '$filename', line $j, query '$line': " . mysql_error());
+                    }
+                }
+            } catch (Exception $e) {
+                CLI::logging(CLI::error("Error:" . "There are problems running script '$filename': " . $e));
             }
-            if (empty($line)) {
-                continue;
-            }
-            // Concatenate the previous line, if any, with the current
-            if ($previous) {
-                $line = $previous . " " . $line;
-            }
-            $previous = null;
-            // If the current line doesnt end with ; then put this line together
-            // with the next one, thus supporting multi-line statements.
-            if (strrpos($line, ";") != strlen($line) - 1) {
-                $previous = $line;
-                continue;
-            }
-            $line = substr($line, 0, strrpos($line, ";"));
-            $result = mysql_query($line);
-            if ($result === false) {
-                throw new Exception("Error when running script '$filename', line $j, query '$line': " . mysql_error());
-            }
+            
         }
+        
+
     }
 
     static public function restoreLegacy($directory)
@@ -1254,7 +1275,7 @@ class workspaceTools
                 CLI::logging(CLI::error("Could not get the shared folder permissions, not changing workspace permissions") . "\n");
             }
             list ($dbHost, $dbUser, $dbPass) = @explode(SYSTEM_HASH, G::decrypt(HASH_INSTALLATION, SYSTEM_HASH));
-
+            $aParameters = array('dbHost'=>$dbHost,'dbUser'=>$dbUser,'dbPass'=>$dbPass);
             CLI::logging("> Connecting to system database in '$dbHost'\n");
             $link = mysql_connect($dbHost, $dbUser, $dbPass);
             @mysql_query("SET NAMES 'utf8';");
@@ -1268,7 +1289,7 @@ class workspaceTools
             foreach ($metadata->databases as $db) {
                 $dbName = $newDBNames[$db->name];
                 CLI::logging("+> Restoring database {$db->name} to $dbName\n");
-                $workspace->executeSQLScript($dbName, "$tempDirectory/{$db->name}.sql");
+                $workspace->executeSQLScript($dbName, "$tempDirectory/{$db->name}.sql",$aParameters);
                 $workspace->createDBUser($dbName, $db->pass, "localhost", $dbName);
                 $workspace->createDBUser($dbName, $db->pass, "%", $dbName);
             }
