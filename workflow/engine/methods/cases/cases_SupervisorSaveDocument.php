@@ -25,7 +25,8 @@
 try {
     //save info
     G::LoadClass( 'case' );
-
+    G::LoadClass( 'tasks' );
+            
     $oAppDocument = new AppDocument();
     $aFields = array ('APP_UID' => $_GET['APP_UID'],'DEL_INDEX' => 100000,'USR_UID' => $_SESSION['USER_LOGGED'],'DOC_UID' => $_GET['UID'],'APP_DOC_TYPE' => $_POST['form']['APP_DOC_TYPE'],'APP_DOC_CREATE_DATE' => date( 'Y-m-d H:i:s' ),'APP_DOC_COMMENT' => isset( $_POST['form']['APP_DOC_COMMENT'] ) ? $_POST['form']['APP_DOC_COMMENT'] : '','APP_DOC_TITLE' => '','APP_DOC_FILENAME' => isset( $_FILES['form']['name']['APP_DOC_FILENAME'] ) ? $_FILES['form']['name']['APP_DOC_FILENAME'] : ''
     );
@@ -38,6 +39,7 @@ try {
         if ($_FILES['form']['error']['APP_DOC_FILENAME'] == 0) {
             $sPathName = PATH_DOCUMENT . G::getPathFromUID($_GET['APP_UID']) . PATH_SEP;
             $sFileName = $sAppDocUid . '.' . $ext;
+            $sOriginalName = $_FILES['form']['name']['APP_DOC_FILENAME'];
             G::uploadFile( $_FILES['form']['tmp_name']['APP_DOC_FILENAME'], $sPathName, $sFileName );
 
             //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
@@ -49,6 +51,65 @@ try {
                 unlink( $sPathName . $sFileName );
             }
             //end plugin
+            
+            //update AppData with the current file uploaded
+            $oCase = new Cases();
+            $aAppDataFields = $oCase->loadCase( $_GET['APP_UID'] );
+
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->addSelectColumn(AppDelegationPeer::TAS_UID);
+            $oCriteria->add(AppDelegationPeer::APP_UID, $_GET['APP_UID'], CRITERIA::EQUAL);
+            $oCriteria->addAscendingOrderByColumn(AppDelegationPeer::DEL_INDEX);
+            $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
+            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            
+            $oDataset->next();
+            $oTask = new Tasks();
+
+            $aDynaforms = array();
+            while ($aRow = $oDataset->getRow()) {
+                $aSteps = $oTask->getStepsOfTask($aRow['TAS_UID']);
+                if (is_array($aSteps)) {
+                    foreach ($aSteps as $key => $value) {
+                        $oCriteriaStep = new Criteria('workflow');
+                        $oCriteriaStep->addSelectColumn(StepPeer::STEP_UID_OBJ);
+                        $sStepId = (isset($value['STEP_UID'])) ? $value['STEP_UID'] : 0 ;
+                        $oCriteriaStep->add(StepPeer::STEP_UID, $sStepId, CRITERIA::EQUAL);
+                        $oCriteriaStep->add(StepPeer::STEP_TYPE_OBJ, 'DYNAFORM', CRITERIA::EQUAL);
+                        $oDataSetStep = StepPeer::doSelectRS($oCriteriaStep);
+                        $oDataSetStep->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                        $oDataSetStep->next();
+                        $aRows = $oDataSetStep->getRow();
+
+                        if (is_array($aRows) && !in_array($aRows['STEP_UID_OBJ'], $aDynaforms)) {
+                            $aDynaforms[] = $aRows['STEP_UID_OBJ'];
+                        }
+                    }
+                    unset($value);    
+                }
+                $oDataset->next();
+            }
+
+            
+            if (count($aDynaforms) > 0) {
+                require_once ("classes/model/Dynaform.php");
+                $dynInstance = new Dynaform();
+                foreach ($aDynaforms as $key => $value) {
+                    $aAllFields = $dynInstance->getDynaformFields($value);
+                    if (is_array($aAllFields)) {
+                        foreach ($aAllFields as $kInput => $input) {
+                            $aPropertiesField = get_object_vars($input);
+                            if ($aPropertiesField['type'] == 'file' && $aPropertiesField['input'] == $_GET['UID'] && !empty($aAppDataFields['APP_DATA'][$kInput])) {
+                                $aAppDataFields['APP_DATA'][$kInput] = $sOriginalName;
+                                $oCase->updateCase( $_GET['APP_UID'], $aAppDataFields );
+                            }
+                        }
+                        unset($input);
+                    }
+                }
+                unset($value);
+            }
+            //End Update AppData with the current file uploaded
         }
     }
     //go to the next step
