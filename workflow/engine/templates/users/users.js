@@ -1126,7 +1126,9 @@ function saveUser()
   var confPass = frmDetails.getForm().findField('USR_CNF_PASS').getValue();
 
   if (confPass === newPass) {
+console.log("Dentro de password no modificado");
       if(typeof(EDITPROFILE) != "undefined" && EDITPROFILE == 1 && newPass != "") {
+console.log("Entro por then");
         var currentPassword = Ext.getCmp("currentPassword").getValue();
 
         if(currentPassword != "") {
@@ -1159,6 +1161,9 @@ function saveUser()
                                         } else {
                                             userFrmEditSubmit();
                                         }
+                                    } else {
+                                        // Another field changed
+                                        userFrmEditSubmit();
                                     }
                                 }
                             },
@@ -1194,6 +1199,9 @@ function saveUser()
                         } else {
                             userFrmEditSubmit();
                         }
+                    } else {
+                        // Another field changed
+                        userFrmEditSubmit();
                     }
                 }
             },
