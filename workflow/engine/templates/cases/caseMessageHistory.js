@@ -2,12 +2,14 @@
  * @author: Douglas Medrano
  * May 03, 2011
  */
-
+    //var windowMessage;
+    windowMessage = new Object();
     function onResizeIframe(idIframe){
       window.parent.tabIframeWidthFix2(idIframe);
     }
 
     function windowPreviewMessage(rowSelected) {
+        
         windowMessage = new Ext.Window({
             title: '',
             width: 600,
@@ -135,111 +137,6 @@
     }
 
 
-    previewMessage = function() {
-      var rowSelected =  Ext.getCmp('processesGrid').getSelectionModel().getSelected();
-      if (rowSelected) {
-        windowPreviewMessage(rowSelected);
-        /*
-        windowMessage = new Ext.Window({
-          title: '',
-          width: 600,
-          height: 420,
-          border: false,
-          layout : 'fit',
-          items:
-          [
-            {
-              xtype: 'form',
-              frame: true,
-              border: false,
-              defaults: {
-                width: 150
-              },
-              items: [
-                {
-                  xtype: 'textfield',
-                  fieldLabel: _("ID_FROM"),
-                  id:'From',
-                  anchor: '100%',
-                  arrowAlign:'center',
-                  readOnly: true,
-                  name: 'From'
-                },
-                {
-                  xtype: 'textfield',
-                  fieldLabel: _("ID_TO"),
-                  id: 'To',
-                  anchor: '100%',
-                  arrowAlign:'center',
-                  readOnly: true,
-                  name: 'To'
-                },
-                {
-                  xtype: 'textfield',
-                  fieldLabel: _('ID_SUBJECT'),
-                  id: 'Subjet',
-                  anchor: '100%',
-                  arrowAlign:'center',
-                  readOnly: true,
-                  name: 'Subjet'
-                },
-                {
-                  xtype: 'textfield',
-                  fieldLabel: _("DATE_LABEL"),
-                  id: 'date',
-                  arrowAlign:'center',
-                  readOnly: true,
-                  name: 'Status'
-                },
-                {
-                  name : 'body',
-                  id:'body',
-                  hideLabel:true,
-                  xtype: 'htmleditor',
-                  autoScroll: true,
-                  readOnly: true,
-                  x: 1,
-                  y: 1,
-                  enableAlignments:false,
-                  enableColors:false,
-                  enableFont:false,
-                  enableFontSize:false,
-                  enableFormat:false,
-                  enableLinks:false,
-                  enableLists:false,
-                  enableSourceEdit:false,
-                  anchor: '100%',
-                  height: 260
-                }
-              ]
-            }
-          ]
-        });
-
-        //load fields from rowSelect
-        Ext.getCmp('From').setValue(rowSelected.data.APP_MSG_FROM);
-        Ext.getCmp('To').setValue(rowSelected.data.APP_MSG_TO);
-        Ext.getCmp('Subjet').setValue(rowSelected.data.APP_MSG_SUBJECT);
-        Ext.getCmp('date').setValue(rowSelected.data.APP_MSG_DATE);
-        Ext.getCmp('body').setValue(rowSelected.data.APP_MSG_BODY);
-
-        //show windows message
-        windowMessage.show(windowMessage);
-        */
-
-      }
-      else {
-        Ext.Msg.show({
-          title:'',
-          msg: _("ID_NO_SELECTION_WARNING"),
-          buttons: Ext.Msg.INFO,
-          fn: function(){},
-          animEl: 'elId',
-          icon: Ext.MessageBox.INFO,
-          buttons: Ext.MessageBox.OK
-        });
-      }
-    }
 
     function ajaxPostRequest(url, callback_function, id){
       var d = new Date();
@@ -419,12 +316,6 @@ var ActionTabFrameGlobal = '';
         buttons: Ext.MessageBox.OK
       });
 
-
-
-
-
-
-
       Ext.destroy(Ext.getCmp('processesGrid'));
 
       messageHistoryGridList();
@@ -576,7 +467,10 @@ var ActionTabFrameGlobal = '';
                      handler: function(grid, rowIndex, colIndex) {
                          var rec = store.getAt(rowIndex);
                          if (rec.get('MSGS_HISTORY') === 'VIEW' || rec.get('MSGS_HISTORY') === 'RESEND') {
-                             windowPreviewMessage(rec);
+                            if ( typeof windowMessage === 'object' && typeof windowMessage.close === 'function'){
+                                windowMessage.close();  
+                            }
+                            windowPreviewMessage(rec);
                          }
                     }
                 }
@@ -587,79 +481,17 @@ var ActionTabFrameGlobal = '';
           ]
         }),
         store: store,
-/*
-        tbar:[
-          {
-            text:_("ID_RESEND"),
-            id:'sendMailMessageFormRadioId',
-            iconCls: 'button_menu_ext',
-            icon: '/images/mail-send16x16.png',
-            handler: function(){
 
-                var rowSelected = processesGrid.getSelectionModel().getSelected();
-
-                if( rowSelected ){
-                  resendDialog(rowSelected);
-                }
-                else{
-                  Ext.Msg.show({
-                    title:'',
-                    msg: TRANSLATIONS.ID_NO_SELECTION_WARNING,
-                    buttons: Ext.Msg.INFO,
-                    fn: function(){},
-                    animEl: 'elId',
-                    icon: Ext.MessageBox.INFO,
-                    buttons: Ext.MessageBox.OK
-
-                  });
-                }
-
-            },
-            disabled:false
-          },
-          {
-            xtype: 'tbseparator'
-          },
-          {
-            text:_("ID_PREVIEW"),
-            id:'viewMailMessageFormRadioId',
-            iconCls: 'button_menu_ext',
-            icon: '/images/documents/_filefind.png',
-            handler: function(){
-	          var rowSelected = processesGrid.getSelectionModel().getSelected();
-
-	          if (rowSelected) {
-                previewMessage();
-	          } else {
-		        Ext.Msg.show({
-		          title:'',
-		          msg: _("ID_NO_SELECTION_WARNING"),
-		          buttons: Ext.Msg.INFO,
-		          fn: function(){},
-		          animEl: 'elId',
-		          icon: Ext.MessageBox.INFO,
-		          buttons: Ext.MessageBox.OK
-		        });
-	          }
-            },
-            disabled:false
-          },
-          {
-            xtype: 'tbfill'
-          }
-        ],
-*/
 
         bbar: new Ext.PagingToolbar({
           pageSize: 20,
           store: store,
           displayInfo: true,
-          displayMsg: _('ID_DISPLAY_PROCESSES'),
+          displayMsg: _('ID_GRID_PAGE_DISPLAYING_ITEMS'),
           emptyMsg: "",
           items:[]
         }),
         listeners: {
-          // rowdblclick: previewMessage,
           render: function(){
             this.loadMask = new Ext.LoadMask(this.body, {msg:'Loading...'});
             processesGrid.getSelectionModel().on('rowselect', function(){

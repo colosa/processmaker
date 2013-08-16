@@ -5890,6 +5890,8 @@ class Cases
         $aMessages = array();
 
         while ($aRow = $oDataset->getRow()) {
+            //Head for IE quirks mode
+            $sBody = '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'.$aRow['APP_MSG_BODY'];
             $aMessages[] = array('APP_MSG_UID' => $aRow['APP_MSG_UID'],
                 'APP_UID' => $aRow['APP_UID'],
                 'DEL_INDEX' => $aRow['DEL_INDEX'],
@@ -5897,7 +5899,7 @@ class Cases
                 'APP_MSG_SUBJECT' => $aRow['APP_MSG_SUBJECT'],
                 'APP_MSG_FROM' => $aRow['APP_MSG_FROM'],
                 'APP_MSG_TO' => $aRow['APP_MSG_TO'],
-                'APP_MSG_BODY' => $aRow['APP_MSG_BODY'],
+                'APP_MSG_BODY' => $sBody,
                 'APP_MSG_DATE' => $aRow['APP_MSG_DATE'],
                 'APP_MSG_CC' => $aRow['APP_MSG_CC'],
                 'APP_MSG_BCC' => $aRow['APP_MSG_BCC'],
