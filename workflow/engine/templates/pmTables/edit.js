@@ -446,6 +446,7 @@ Ext.onReady(function(){
     ddGroup         : 'availableGridDDGroup',
     enableDragDrop  : true,
     enableColumnResize : true,
+    enableColumnMove: false,
     viewConfig    : {forceFit:true},
     cm: cm,
     sm: sm,
