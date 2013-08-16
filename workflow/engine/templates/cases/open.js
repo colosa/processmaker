@@ -762,6 +762,7 @@ Ext.onReady(function(){
       width:500,
       plain: true,
       modal: true,
+      resizable: false,
       title: _('ID_CONFIRM'),
       items: [
         new Ext.FormPanel({
@@ -904,6 +905,7 @@ Ext.onReady(function(){
       layout:'fit',
       autoScroll:true,
       modal: true,
+      resizable: false,
       maximizable: false,
       items: [grid]
     });
