@@ -543,7 +543,7 @@ class dynaformEditorAjax extends dynaformEditor implements iDynaformEditorAjax
     public function set_htmlcode($A, $htmlcode)
     {
         try {
-            $iOcurrences = preg_match_all('/\{\$\S*\s*\}/im', $htmlcode, $matches);
+            $iOcurrences = preg_match_all('/\{\$.*?\}/im', $htmlcode, $matches);
             if ($iOcurrences) {
                 if (isset($matches[0])) {
                     $tagsHtml = $matches[0];
