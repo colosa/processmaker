@@ -1159,6 +1159,9 @@ function saveUser()
                                         } else {
                                             userFrmEditSubmit();
                                         }
+                                    } else {
+                                        // Another field changed
+                                        userFrmEditSubmit();
                                     }
                                 }
                             },
@@ -1194,6 +1197,9 @@ function saveUser()
                         } else {
                             userFrmEditSubmit();
                         }
+                    } else {
+                        // Another field changed
+                        userFrmEditSubmit();
                     }
                 }
             },
