@@ -978,6 +978,7 @@ Ext.onReady(function(){
     var fieldset = {
       xtype : 'fieldset',
       labelWidth: 150,
+      width:380,
       //autoHeight  : true,
       defaults    : {
         width : 170,
@@ -1047,12 +1048,13 @@ Ext.onReady(function(){
     var win = new Ext.Window({
       title: _('ID_PAUSE_CASE'),
       width: 380,
-      height: 250,
+      height: 260,
       layout:'fit',
       autoScroll:true,
       modal: true,
       maximizable: false,
       resizable: false,
+      draggable: false,
       items: [frm]
     });
 	Ext.Ajax.request({
