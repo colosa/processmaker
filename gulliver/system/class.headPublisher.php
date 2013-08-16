@@ -313,9 +313,16 @@ class headPublisher
         $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/ext-base.js") . "\"></script>\n";
         $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/ext-all.js") . "\"></script>\n";
 
-        $aux = explode('-', strtolower(SYS_LANG));
-        if (($aux[0] != 'en') && file_exists(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'ext' . PATH_SEP . 'locale' . PATH_SEP . 'ext-lang-' . $aux[0] . '.js')) {
-            $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/locale/ext-lang-" . $aux[0] . ".js") . "\"></script>\n";
+        if (SYS_LANG != 'en') {
+            $tempLang = str_replace('-', '_', SYS_LANG);
+            if (file_exists(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'ext' . PATH_SEP . 'locale' . PATH_SEP . 'ext-lang-' . $tempLang . '.js')) {
+                $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/locale/ext-lang-" . $tempLang . ".js") . "\"></script>\n";
+            } else {
+                $aux = explode('-', strtolower(SYS_LANG));
+                if (file_exists(PATH_GULLIVER_HOME . 'js' . PATH_SEP . 'ext' . PATH_SEP . 'locale' . PATH_SEP . 'ext-lang-' . $aux[0] . '.js')) {
+                    $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/locale/ext-lang-" . $aux[0] . ".js") . "\"></script>\n";
+                }
+            }
         }
 
         // enabled for particular use

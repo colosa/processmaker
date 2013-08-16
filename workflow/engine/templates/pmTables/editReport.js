@@ -1218,7 +1218,7 @@ loadFieldNormal = function(){
   });
   var assignedGridGotData = Ext.getCmp('assignedGrid').getStore().getCount() > 0;
   if(assignedGridGotData) {
-      Ext.MessageBox.confirm('Confirm', 'The row data that you recently created will be deleted?', function(button) {
+      Ext.MessageBox.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_ASSIGNED_GRID'), function(button) {
           if(button=='yes'){
             Ext.getCmp('assignedGrid').store.removeAll();
           }

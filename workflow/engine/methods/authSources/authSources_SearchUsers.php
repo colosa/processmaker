@@ -50,6 +50,26 @@ if (file_exists( PATH_PLUGINS . $fields['AUTH_SOURCE_PROVIDER'] . PATH_SEP . $fi
     if ($pluginEnabled == 0) {
        $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => G::LoadTranslation( 'ID_AUTH_SOURCE_MISSING' ) ) );
        G::RenderPage( 'publish', 'blank' );
+    } else {
+        G::LoadClass('configuration');
+        $c = new Configurations();
+        $configPage = $c->getConfiguration('additionalTablesList', 'pageSize','',$_SESSION['USER_LOGGED']);
+        $Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;
+
+        $oHeadPublisher = & headPublisher::getSingleton ();
+
+        $oHeadPublisher->assign("FORMATS", $c->getFormats());
+        $oHeadPublisher->assign("CONFIG", $Config);
+
+        if (file_exists(PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . $fields["AUTH_SOURCE_PROVIDER"] . 'Flag')) {
+            $oHeadPublisher = & headPublisher::getSingleton ();
+
+            $oHeadPublisher->assign("Fields", $fields);
+            $oHeadPublisher->addExtJsScript (PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . 'js' . PATH_SEP . 'library', false, true );
+            $oHeadPublisher->addExtJsScript (PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . 'js' . PATH_SEP . 'ldapAdvancedSearch', false, true );
+            G::RenderPage ('publish', 'extJs');
+            die();
+        }
     }
 }
 

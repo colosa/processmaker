@@ -245,6 +245,15 @@ if(Ext.grid.GridView){
    });
 }
 
+
+if(Ext.grid.GroupingView){
+  Ext.apply(Ext.grid.GroupingView.prototype, {
+    emptyGroupText : '(Nenhum)',
+    groupByText    : 'Grupo por este campo',
+    showGroupsText : 'Mostrar em Grupos'
+  });
+}
+
 if(Ext.grid.PropertyColumnModel){
    Ext.apply(Ext.grid.PropertyColumnModel.prototype, {
       nameText   : "Nome",
@@ -258,6 +267,8 @@ if (Ext.ux.grid.RowEditor) {
   Ext.ux.grid.RowEditor.prototype.cancelBtnText = "Cancelar";
   Ext.ux.grid.RowEditor.prototype.saveText = "Salvar";
   Ext.ux.grid.RowEditor.prototype.cancelText = "Cancelar";
+  Ext.ux.grid.RowEditor.prototype.errorText = "Erros";
+  Ext.ux.grid.RowEditor.prototype.commitChangesText = "Você precisa atualizar ou cancelar suas alterações";
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
