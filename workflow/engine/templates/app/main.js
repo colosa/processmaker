@@ -106,7 +106,7 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle, proUid, taskUid)
                       '<td class="x-cnotes-label"><img border="0" src="../users/users_ViewPhotoGrid?pUID={USR_UID}" width="40" height="40"/></td>' +
                       '<td class="x-cnotes-name">'+
                         '<p class="user-from">{user}</p>'+
-                        '<p style="width: 260px; overflow-x:auto;", class="x-editable x-message">{NOTE_CONTENT}</p> '+
+                        '<p style="width: 260px; overflow-x:auto; height: 40px;", class="x-editable x-message">{NOTE_CONTENT}</p> '+
                         '<p class="x-editable"><small>'+_('ID_POSTED_AT')+'<i> {NOTE_DATE}</i></small></p>'+
                       '</td>' +
                     '</tr>' +
