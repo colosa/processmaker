@@ -4366,13 +4366,6 @@ class Cases
         $oCriteria->add(AppDocumentPeer::APP_DOC_TYPE, array('INPUT'), Criteria::IN);
         $oCriteria->add(AppDocumentPeer::APP_DOC_STATUS, array('ACTIVE'), Criteria::IN);
         $oCriteria->add(AppDocumentPeer::DEL_INDEX, 100000);
-
-        $oCriteria->add(
-                $oCriteria->getNewCriterion(
-                                AppDocumentPeer::APP_DOC_UID, $aObjectPermissions['INPUT_DOCUMENTS'], Criteria::IN
-                        )->
-                        addOr($oCriteria->getNewCriterion(AppDocumentPeer::USR_UID, array($sUserUID, '-1'), Criteria::IN)));
-
         $oCriteria->addJoin(AppDocumentPeer::APP_UID, ApplicationPeer::APP_UID, Criteria::LEFT_JOIN);
         $oCriteria->add(ApplicationPeer::PRO_UID, $sProcessUID);
         $oCriteria->addAscendingOrderByColumn(AppDocumentPeer::APP_DOC_INDEX);
