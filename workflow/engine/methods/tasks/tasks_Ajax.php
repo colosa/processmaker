@@ -46,7 +46,8 @@ try {
             if (isset( $aData['SEND_EMAIL'] )) {
                 $aData['TAS_SEND_LAST_EMAIL'] = $aData['SEND_EMAIL'] == 'TRUE' ? 'TRUE' : 'FALSE';
             } else {
-                $aData['TAS_SEND_LAST_EMAIL'] = 'FALSE';
+                $aTaskInfo = $oTask->load($aData['TAS_UID']);
+                $aData['TAS_SEND_LAST_EMAIL'] = is_null($aTaskInfo['TAS_SEND_LAST_EMAIL']) ? 'FALSE' : $aTaskInfo['TAS_SEND_LAST_EMAIL'];
             }
 
             //Additional configuration
