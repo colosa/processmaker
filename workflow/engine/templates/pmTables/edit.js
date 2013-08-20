@@ -145,22 +145,26 @@ Ext.onReady(function(){
       {
           id: 'uid',
           dataIndex: 'uid',
-          hidden: true
+          hidden: true,
+          hideable:false
       },
       {
           id: 'field_uid',
           dataIndex: 'field_uid',
-          hidden: true
+          hidden: true,
+          hideable:false
       },
       {
           id: 'field_key',
           dataIndex: 'field_key',
-          hidden: true
+          hidden: true,
+          hideable:false
       },
       {
           id: 'field_null',
           dataIndex: 'field_null',
-          hidden: true
+          hidden: true,
+          hideable:false
       },
       {
           id: 'field_dyn',
