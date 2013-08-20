@@ -377,8 +377,16 @@ CloseWindow = function(){
 //Save New Role
 SaveNewRole = function(){
   rol_code = newForm.getForm().findField('code').getValue();
-  rol_code.trim();
-  if (rol_code == '') return;
+  rol_code = rol_code.trim();
+
+  rol_name = newForm.getForm().findField('name').getValue();
+  rol_name = rol_name.trim();
+
+
+  if (rol_code == '' || rol_name == '') {
+      Ext.Msg.alert(_('ID_WARNING'),_('ID_COMPLETE_FIELDS'));
+      return;
+  }
   viewport.getEl().mask(_('ID_PROCESSING'));
   Ext.Ajax.request({
     url: 'roles_Ajax',
@@ -422,8 +430,12 @@ SaveNewRole = function(){
 UpdateRole = function(){
   rowSelected = infoGrid.getSelectionModel().getSelected();
   rol_code = editForm.getForm().findField('code').getValue();
-  rol_code.trim();
-  if (rol_code == '') return;
+  rol_code = rol_code.trim();
+
+  if (rol_code == '') {
+      Ext.Msg.alert('Alert!','Invalid Code');
+      return;
+  }
   viewport.getEl().mask(_('ID_PROCESSING'));
   Ext.Ajax.request({
     url: 'roles_Ajax',
