@@ -4946,7 +4946,7 @@ class Cases
                             G::verifyPath($pathEmail, true); //Create if it does not exist
                             $fileTemplate = $pathEmail . G::LoadTranslation('ID_UNASSIGNED_MESSAGE');
 
-                            if (!file_exists($fileTemplate)) {
+                            if ((!file_exists($fileTemplate)) && file_exists(PATH_TPL . "mails" . PATH_SEP . G::LoadTranslation('ID_UNASSIGNED_MESSAGE'))) {
                                 @copy(PATH_TPL . "mails" . PATH_SEP . G::LoadTranslation('ID_UNASSIGNED_MESSAGE'), $fileTemplate);
                             }
 

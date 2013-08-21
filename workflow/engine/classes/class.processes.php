@@ -3865,7 +3865,7 @@ class Processes
             @copy( PATH_TPL . "mails" . PATH_SEP . "alert_message.html", $dir . "alert_message.html" );
         }
 
-        if (! file_exists( $dir . "unassignedMessage.html" )) {
+        if ( (!file_exists( $dir . "unassignedMessage.html")) && file_exists($dir . G::LoadTranslation('ID_UNASSIGNED_MESSAGE'))) {
             if (defined('PARTNER_FLAG')) {
                 @copy( PATH_TPL . "mails" . PATH_SEP . "unassignedMessagePartner.html", $dir . G::LoadTranslation('ID_UNASSIGNED_MESSAGE'));
             } else {

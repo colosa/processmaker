@@ -70,7 +70,7 @@ if (!$partnerFlag) {
 //tools options
 if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') == 1 ) {
     if (!$partnerFlag) {
-        $G_TMP_MENU->AddIdRawOption('PLUGINS',   'pluginsMain', 'Plugins Manager', 'icon-plugins.png', '', 'plugins');
+        $G_TMP_MENU->AddIdRawOption('PLUGINS',   'pluginsMain', G::LoadTranslation('ID_PLUGINS_MANAGER'), 'icon-plugins.png', '', 'plugins');
     }
 }
 
