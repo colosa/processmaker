@@ -644,6 +644,7 @@ class Language extends BaseLanguage
             $trn = new Translation();
             $trn->generateFileTranslationPlugin( $plugin, $idLanguage );
             $trn->addTranslationEnvironmentPlugins( $plugin, $idLanguage, $POHeaders, $countItemsSuccess );
+            $languageID = (isset($languageID)) ? $languageID : $idLanguage;
 
             //fill the results
             $results = new stdClass();
