@@ -50,6 +50,7 @@ require_once 'classes/model/FieldCondition.php';
 require_once 'classes/model/Event.php';
 require_once 'classes/model/CaseScheduler.php';
 require_once 'classes/model/ProcessCategory.php';
+require_once 'classes/model/Configuration.php';
 
 G::LoadClass( 'tasks' );
 G::LoadClass( 'reportTables' );
@@ -2583,7 +2584,7 @@ class Processes
      * @return boolean
      */
     public function serializeProcess ($sProUid = '')
-    {
+    {   
         $oProcess = new Process();
         $oData->process = $this->getProcessRow( $sProUid, false );
         $oData->tasks = $this->getTaskRows( $sProUid );
@@ -2611,6 +2612,7 @@ class Processes
         $oData->event = $this->getEventRow( $sProUid );
         $oData->caseScheduler = $this->getCaseSchedulerRow( $sProUid );
         $oData->processCategory = $this->getProcessCategoryRow( $sProUid );
+        $oData->taskExtraProperties = $this->getTaskExtraPropertiesRows( $sProUid ); 
         $this->getGroupwfSupervisor( $sProUid, $oData);
 
         //krumo ($oData);die;
@@ -3212,6 +3214,26 @@ class Processes
     }
 
     /**
+     * The current method is for filter every row that exist in 
+     * the Configuration table 
+     *
+     * @param array $aTaskExtraProperties
+     * @return void
+     */
+    public function createTaskExtraPropertiesRows ($aTaskExtraProperties)
+    {
+        foreach ($aTaskExtraProperties as $key => $row) {
+            $oConfig = new Configuration();
+
+            if ($oConfig->exists( $row['CFG_UID'], $row['OBJ_UID'], $row['PRO_UID'], $row['USR_UID'], $row['APP_UID']) ) {
+                $oConfig->remove( $row['CFG_UID'], $row['OBJ_UID'], $row['PRO_UID'], $row['USR_UID'], $row['APP_UID'] );
+            }
+            $res = $oConfig->create( $row );
+        }
+        return;
+    }
+
+    /**
      * this function remove all Process except the PROCESS ROW
      *
      * @param string $sProUid
@@ -3238,6 +3260,7 @@ class Processes
             $oStage = new Stage();
             $oEvent = new Event();
             $oCaseScheduler = new CaseScheduler();
+            $oConfig = new Configuration();
 
             //Delete the tasks of process
             $oCriteria = new Criteria( 'workflow' );
@@ -3484,6 +3507,21 @@ class Processes
                 $oDataset->next();
             }
 
+            //Delete the TaskExtraProperties of the process
+            $oCriteria = new Criteria( 'workflow' );
+            $oCriteria->add( TaskPeer::PRO_UID, $sProUid );
+            $oCriteria->add( ConfigurationPeer::CFG_UID, 'TAS_EXTRA_PROPERTIES' );
+            $oCriteria->addJoin( ConfigurationPeer::OBJ_UID, TaskPeer::TAS_UID );
+            $oDataset = ConfigurationPeer::doSelectRS( $oCriteria );
+            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oDataset->next();
+            while ($aRow = $oDataset->getRow()) {
+                if ($oConfig->exists($aRow['CFG_UID'], $aRow['OBJ_UID'], $aRow['PRO_UID'], $aRow['USR_UID'], $aRow['APP_UID'])) {
+                    $oConfig->remove( $aRow['CFG_UID'], $aRow['OBJ_UID'], $aRow['PRO_UID'], $aRow['USR_UID'], $aRow['APP_UID'] );
+                }
+                $oDataset->next();
+            }
+
             return true;
         } catch (Exception $oError) {
             throw ($oError);
@@ -3514,28 +3552,6 @@ class Processes
         $aRoutesUID = $this->createRouteRows( $oData->routes );
         $this->createLaneRows( $oData->lanes );
 
-        /*if(!isset($oData->gateways)){
-           //Adding gateway information while importing processes from older version
-          //Making compatible with old export process
-          $oRoutes = $oData->routes;
-          for($i=0;$i<count($oRoutes);$i++){
-              $routeUID  = $aRoutesUID[$i];
-              $routeType = $oRoutes[$i]['ROU_TYPE'];
-              $sTaskUID  = $oRoutes[$i]['TAS_UID'];
-              $sNextTask = $oRoutes[$i]['ROU_NEXT_TASK'];
-              if($routeType != 'SEQUENTIAL')
-              {
-                  $oProcessMap = new processMap();
-                  $sGatewayUID = $oProcessMap->saveNewGateway($oData->process['PRO_UID'], $sTaskUID, $sNextTask, $routeType );
-
-                  //Updating Route table (GAT_UID column) after inserting Gateway data into GATEWAY table
-                  $aData  = array('ROU_UID'=>$routeUID,'GAT_UID'=>$sGatewayUID);
-                  $oRoute = new Route();
-                  $oRoute->update($aData);
-              }
-         }
-        }
-        else*/
 
         if (isset( $oData->gateways )) {
             $this->createGatewayRows( $oData->gateways );
@@ -3564,6 +3580,8 @@ class Processes
 
         $this->createCaseSchedulerRows( isset( $oData->caseScheduler ) ? $oData->caseScheduler : array () );
 
+        //Create data related to Configuration table
+        $this->createTaskExtraPropertiesRows( isset( $oData->taskExtraProperties ) ? $oData->taskExtraProperties : array () );
         // and finally create the files, dynaforms (xml and html), emailTemplates and Public files
         $this->createFiles( $oData, $pmFilename );
     }
@@ -3602,6 +3620,7 @@ class Processes
         $this->createEventRows( $oData->event );
         $this->createCaseSchedulerRows( $oData->caseScheduler );
         $this->createProcessCategoryRow( isset( $oData->processCategory ) ? $oData->processCategory : null );
+        $this->createTaskExtraPropertiesRows( isset( $oData->taskExtraProperties ) ? $oData->taskExtraProperties : array () );
     }
 
     /**
@@ -3883,6 +3902,37 @@ class Processes
             }
         }
         return $filesList;
+    }
+
+    /**
+    * get rows related to Task extra properties of the process seleceted
+    *
+    * @param $proId process Uid
+    * @return $result
+    */
+    public function getTaskExtraPropertiesRows( $proId )
+    {
+        try {
+            
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->add( TaskPeer::PRO_UID, $proId );
+            $oCriteria->add( ConfigurationPeer::CFG_UID, 'TAS_EXTRA_PROPERTIES' );
+            $oCriteria->addJoin( ConfigurationPeer::OBJ_UID, TaskPeer::TAS_UID );
+            $oDataset = ConfigurationPeer::doSelectRS( $oCriteria );
+            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oDataset->next();
+            
+            $aConfRows = array();
+            while ($aRow = $oDataset->getRow()) {
+                $aConfRows[] = $aRow;
+                $oDataset->next();
+            }
+
+            return $aConfRows;
+
+        } catch (Exception $oError) {
+            throw ($oError);
+        }
     }
 }
 //end class processes
