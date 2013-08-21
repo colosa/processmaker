@@ -1060,19 +1060,20 @@ class workspaceTools
     private function executeSQLScript($database, $filename, $parameters)
     {
         mysql_query("CREATE DATABASE IF NOT EXISTS " . mysql_real_escape_string($database));
-        
+
         // Check for safe mode and if mysql exist on server
         $flagFunction = '';
         if ( !ini_get('safe_mode') ) {
             $flagFunction = shell_exec('mysql --version');
         }
-        
+
         if ( !ini_get('safe_mode') && !is_null($flagFunction) ) {
             $command = 'mysql'
             . ' --host=' . $parameters['dbHost']
             . ' --user=' . $parameters['dbUser']
             . ' --password=' . $parameters['dbPass']
             . ' --database=' . mysql_real_escape_string($database)
+            . ' --default_character_set utf8'
             . ' --execute="SOURCE '.$filename.'"';
             shell_exec($command);
 
@@ -1081,7 +1082,7 @@ class workspaceTools
             try {
                 mysql_select_db($database);
                 $script = file_get_contents($filename);
-                
+
                 $lines = explode(";\n", $script);
                 $previous = null;
                 foreach ($lines as $j => $line) {
@@ -1113,9 +1114,9 @@ class workspaceTools
             } catch (Exception $e) {
                 CLI::logging(CLI::error("Error:" . "There are problems running script '$filename': " . $e));
             }
-            
+
         }
-        
+
 
     }
 
