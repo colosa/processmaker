@@ -87,7 +87,7 @@ Date.dayNames = [
 
 if(Ext.MessageBox){
    Ext.MessageBox.buttonText = {
-      ok     : "OK",
+      ok     : "Correto",
       cancel : "Cancelar",
       yes    : "Sim",
       no     : "N&atilde;o"
@@ -133,7 +133,7 @@ if(Ext.DatePicker){
       monthYearText     : 'Escolha um M&ecirc;s (Control+Cima/Baixo para mover entre os anos)',
       todayTip          : "{0} (Espa&ccedil;o)",
       format            : "d/m/Y",
-      okText            : "&#160;OK&#160;",
+      okText            : "&#160;Correto&#160;",
       cancelText        : "Cancelar",
       startDay          : 0
    });

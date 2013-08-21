@@ -82,7 +82,7 @@ Date.getShortDayName = function(day) {
 
 if(Ext.MessageBox){
   Ext.MessageBox.buttonText = {
-    ok     : "OK",
+    ok     : "Correto",
     cancel : "Cancelar",
     yes    : "Sim",
     no     : "N&atilde;o"
@@ -111,7 +111,7 @@ if(Ext.DatePicker){
     monthYearText     : 'Escolha um m&ecirc;s (Control+Up/Down ava&ccedil;ar/recuar anos)',
     todayTip          : "{0} (barra de espa�o)",
     format            : "y/m/d",
-    okText            : "*OK*",
+    okText            : "*Correto*",
     cancelText        : "Cancelar",
     startDay          : 0
   });
