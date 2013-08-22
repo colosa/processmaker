@@ -409,6 +409,7 @@ var G_Grid = function(oForm, sGridName){
               for(n=0; n < aObjects.length; n++){
                 switch(aObjects[n].type){
                   case 'text': //TEXTBOX, CURRENCY, PERCENTAGE, DATEPICKER
+                  case 'password': // PASSWORD
                     aObjects[n].className = "module_app_input___gray";
 
                     tags = oNewRow.getElementsByTagName('td')[i].getElementsByTagName('a');
