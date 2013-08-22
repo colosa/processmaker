@@ -823,5 +823,20 @@ abstract class BaseConfiguration extends BaseObject implements Persistent
         }
         return self::$peer;
     }
+
+    /**
+     * Set properties related to Configuration table
+     * 
+     * @return void
+     */
+    public function setProperties()
+    {
+        $this->cfg_uid = '';
+        $this->obj_uid = '';
+        $this->cfg_value = '';
+        $this->pro_uid = '';
+        $this->usr_uid = '';
+        $this->app_uid = '';
+    }
 }
 
