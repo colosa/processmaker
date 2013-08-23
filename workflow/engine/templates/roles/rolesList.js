@@ -143,8 +143,36 @@ Ext.onReady(function(){
     url: 'roles_Ajax?request=saveNewRole',
     frame: true, 	
     items:[
-           {xtype: 'textfield', fieldLabel: _('ID_CODE'), name: 'code', width: 250, allowBlank: false},
-           {xtype: 'textfield', fieldLabel: _('ID_NAME'), name: 'name', width: 200, allowBlank: false},
+           {xtype: 'textfield', fieldLabel: _('ID_CODE'), name: 'code', width: 250, allowBlank: false,
+            listeners: {
+              blur : function(ob)
+             {
+                if(this.getValue().length == 0){
+                  Ext.MessageBox.show({
+                    title: _('ID_WARNING'),
+                    msg: _('ID_PLEASE_ENTER_REQUIRED_FIELDS'),
+                    buttons: Ext.MessageBox.OK,
+                    animEl: 'mb9',
+                    icon: Ext.MessageBox.WARNING
+                  });
+                }
+             }
+            }},
+           {xtype: 'textfield', fieldLabel: _('ID_NAME'), name: 'name', width: 200, allowBlank: false,
+            listeners: {
+              blur : function(ob)
+             {
+                if(this.getValue().length == 0){
+                  Ext.MessageBox.show({
+                    title: _('ID_WARNING'),
+                    msg: _('ID_PLEASE_ENTER_REQUIRED_FIELDS'),
+                    buttons: Ext.MessageBox.OK,
+                    animEl: 'mb9',
+                    icon: Ext.MessageBox.WARNING
+                  });
+                }
+             }
+            }}, 
            {
              xtype: 'combo', 
              fieldLabel: _('ID_STATUS'), 
@@ -174,7 +202,21 @@ Ext.onReady(function(){
     items:[
            {xtype: 'textfield', name: 'rol_uid', hidden: true },
            {xtype: 'textfield', fieldLabel: _('ID_CODE'), name: 'code', width: 250, allowBlank: false, readOnly: true, hidden: !PARTNER_FLAG ? false : true},
-           {xtype: 'textfield', fieldLabel: _('ID_NAME'), name: 'name', width: 200, allowBlank: false},
+           {xtype: 'textfield', fieldLabel: _('ID_NAME'), name: 'name', width: 200, allowBlank: false, 
+            listeners: {
+              blur : function(ob)
+             {
+                if(this.getValue().length == 0){
+                  Ext.MessageBox.show({
+                    title: _('ID_WARNING'),
+                    msg: _('ID_PLEASE_ENTER_REQUIRED_FIELDS'),
+                    buttons: Ext.MessageBox.OK,
+                    animEl: 'mb9',
+                    icon: Ext.MessageBox.WARNING
+                  });
+                }
+             }
+            }},
            {
              xtype: 'combo', 
              fieldLabel: _('ID_STATUS'), 
@@ -242,7 +284,7 @@ Ext.onReady(function(){
     columns: [
               {id:'ROL_UID', dataIndex: 'ROL_UID', hidden:true, hideable:false},
               {header: _('ID_CODE'), dataIndex: 'ROL_CODE', width: 220, align:'left', hidden: !PARTNER_FLAG ? false : true},
-              {header: _('ID_NAME'), dataIndex: 'ROL_NAME', width: 180, hidden:false, align:'left'},
+              {header: _('ID_NAME'), dataIndex: 'ROL_NAME', width: 180, hidden:false, align:'left', renderer: function(v){return Ext.util.Format.htmlEncode(v);}},
               {header: _('ID_STATUS'), dataIndex: 'ROL_STATUS', width: 80, hidden: false, align: 'center', renderer: status_role},
               {header: _('ID_ACTIVE_USERS'), dataIndex: 'TOTAL_USERS', width: 80, hidden: false, align: 'center'},
               {header: _('ID_PRO_CREATE_DATE'), dataIndex: 'ROL_CREATE_DATE', width: 90, hidden:false, align:'center', renderer: render_date},
@@ -377,15 +419,17 @@ CloseWindow = function(){
 //Save New Role
 SaveNewRole = function(){
   rol_code = newForm.getForm().findField('code').getValue();
-  rol_code = rol_code.trim();
-
-  rol_name = newForm.getForm().findField('name').getValue();
-  rol_name = rol_name.trim();
-
-  if (rol_code == '' || rol_name == '') {
-      Ext.Msg.alert(_('ID_WARNING'),_('ID_COMPLETE_FIELDS'));
+  if( !(/^[_\w]+$/i.test(rol_code))) {
+      Ext.Msg.alert(_('ID_WARNING'),_('ID_ROLE_CODE_INVALID_CHARACTER'));
       return;
   }
+
+  rol_name = newForm.getForm().findField('name').getValue();
+  if( rol_name == null || rol_name.length == 0 || /^\s+$/.test(rol_name)) {
+      Ext.Msg.alert(_('ID_WARNING'),_('ID_ROLE_NAME_NOT_EMPTY'));
+      return;
+  }
+
   viewport.getEl().mask(_('ID_PROCESSING'));
   Ext.Ajax.request({
     url: 'roles_Ajax',
@@ -429,15 +473,17 @@ SaveNewRole = function(){
 UpdateRole = function(){
   rowSelected = infoGrid.getSelectionModel().getSelected();
   rol_code = editForm.getForm().findField('code').getValue();
-  rol_code = rol_code.trim();
-
-  rol_name = newForm.getForm().findField('name').getValue();
-  rol_name = rol_name.trim();
-
-  if (rol_code == '' || rol_name == '') {
-      Ext.Msg.alert(_('ID_WARNING'),_('ID_COMPLETE_FIELDS'));
+  if( rol_code == null || rol_code.length == 0 || !(/^[_\w]+$/i.test(rol_code))) {
+      Ext.Msg.alert(_('ID_WARNING'),_('ID_ROLE_CODE_INVALID_CHARACTER'));
       return;
   }
+
+  rol_name = newForm.getForm().findField('name').getValue();
+  if( rol_name == null || rol_name.length == 0 || /^\s+$/.test(rol_name)) {
+      Ext.Msg.alert(_('ID_WARNING'),_('ID_ROLE_NAME_NOT_EMPTY'));
+      return;
+  }
+
   viewport.getEl().mask(_('ID_PROCESSING'));
   Ext.Ajax.request({
     url: 'roles_Ajax',
