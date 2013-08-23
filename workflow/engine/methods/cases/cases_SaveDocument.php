@@ -93,6 +93,29 @@ if ($_SESSION["TRIGGER_DEBUG"]["NUM_TRIGGERS"] > 0) {
     $_SESSION["TRIGGER_DEBUG"]["TRIGGERS_VALUES"] = $arrayTrigger;
 }
 
+
+
+
+//Add Input Document
+if (isset($_FILES) && isset($_FILES["form"]) && count($_FILES["form"]) > 0) {
+    $appDocUid = $case->addInputDocument(
+        $inputDocumentUid,
+        $appDocUid,
+        $docVersion,
+        $appDocType,
+        $appDocComment,
+        $actionType,
+        $_SESSION["APPLICATION"],
+        $_SESSION["INDEX"],
+        $_SESSION["TASK"],
+        $_SESSION["USER_LOGGED"],
+        "xmlform",
+        $_FILES["form"]["name"]["APP_DOC_FILENAME"],
+        $_FILES["form"]["error"]["APP_DOC_FILENAME"],
+        $_FILES["form"]["tmp_name"]["APP_DOC_FILENAME"]
+    );
+}
+
 if ($_SESSION["TRIGGER_DEBUG"]["NUM_TRIGGERS"] > 0) {
     //Trigger - Execute after - Start
     $arrayField["APP_DATA"] = $case->executeTriggers(
@@ -114,26 +137,6 @@ $arrayData["DEL_INDEX"] = $_SESSION["INDEX"];
 $arrayData["TAS_UID"]   = $_SESSION["TASK"];
 
 $case->updateCase($_SESSION["APPLICATION"], $arrayData);
-
-//Add Input Document
-if (isset($_FILES) && isset($_FILES["form"]) && count($_FILES["form"]) > 0) {
-    $appDocUid = $case->addInputDocument(
-        $inputDocumentUid,
-        $appDocUid,
-        $docVersion,
-        $appDocType,
-        $appDocComment,
-        $actionType,
-        $_SESSION["APPLICATION"],
-        $_SESSION["INDEX"],
-        $_SESSION["TASK"],
-        $_SESSION["USER_LOGGED"],
-        "xmlform",
-        $_FILES["form"]["name"]["APP_DOC_FILENAME"],
-        $_FILES["form"]["error"]["APP_DOC_FILENAME"],
-        $_FILES["form"]["tmp_name"]["APP_DOC_FILENAME"]
-    );
-}
 
 //go to the next step
 //if (!isset($_POST['form']['MORE'])) {
