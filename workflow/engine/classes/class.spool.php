@@ -497,6 +497,10 @@ class spoolRun
 
                     $oPHPMailer->IsHTML($this->fileData["contentTypeIsHtml"]);
 
+                    if ( $this->config['MESS_ENGINE'] == 'MAIL') {
+                        $oPHPMailer->WordWrap = 300;
+                    }
+
                     if ($oPHPMailer->Send()) {
                         $this->error = '';
                         $this->status = 'sent';
