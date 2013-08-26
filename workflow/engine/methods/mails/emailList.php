@@ -43,8 +43,8 @@ $G_ID_SUB_MENU_SELECTED = 'EMAILS';
 $userUid = (isset( $_SESSION['USER_LOGGED'] ) && $_SESSION['USER_LOGGED'] != '') ? $_SESSION['USER_LOGGED'] : null;
 $status = array (
     array ('',G::LoadTranslation( 'ID_ALL' )),
-    array ("sent", "Sent"),
-    array ("pending", "Pending")
+    array ("sent", G::LoadTranslation( 'ID_SENT' )),
+    array ("pending", G::LoadTranslation( 'ID_PENDING' ))
 );
 
 $processes = getProcessArray( $userUid );

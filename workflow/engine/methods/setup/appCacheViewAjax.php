@@ -255,7 +255,7 @@ switch ($request) {
 
             $response = new StdClass();
             $result->success = true;
-            $result->msg = "Completed successfully";
+            $result->msg = G::LoadTranslation('ID_TITLE_COMPLETED');
 
             echo G::json_encode( $result );
 
