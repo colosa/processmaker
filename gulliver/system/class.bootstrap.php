@@ -85,7 +85,7 @@ class Bootstrap
         }
 
         // default configuration
-        $config = array('debug' => 0, 'debug_sql' => 0, 'debug_time' => 0, 'debug_calendar' => 0, 'wsdl_cache' => 1, 'memory_limit' => '128M', 'time_zone' => 'America/New_York', 'memcached' => 0, 'memcached_server' => '', 'default_skin' => 'neoclassic', 'default_lang' => 'en', 'proxy_host' => '', 'proxy_port' => '', 'proxy_user' => '', 'proxy_pass' => '' );
+        $config = array('debug' => 0, 'debug_sql' => 0, 'debug_time' => 0, 'debug_calendar' => 0, 'wsdl_cache' => 1, 'memory_limit' => "256M", 'time_zone' => 'America/New_York', 'memcached' => 0, 'memcached_server' => '', 'default_skin' => 'neoclassic', 'default_lang' => 'en', 'proxy_host' => '', 'proxy_port' => '', 'proxy_user' => '', 'proxy_pass' => '' );
 
         // read the global env.ini configuration file
         if ($readGlobalIniFile && ($globalConf = @parse_ini_file($globalIniFile)) !== false) {

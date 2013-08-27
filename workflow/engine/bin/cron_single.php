@@ -5,7 +5,8 @@
  */
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-ini_set('memory_limit', '128M');
+
+ini_set("memory_limit", "256M");
 
 if (!defined('SYS_LANG')) {
     define('SYS_LANG', 'en');
