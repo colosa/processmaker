@@ -5303,9 +5303,7 @@ class Cases
                         $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
                         $oDataset->next();
                         while ($aRow = $oDataset->getRow()) {
-                            if ($TASK_SOURCE == $aRow['TAS_UID']) {
-                                $delIndex[] = $aRow['DEL_INDEX'];
-                            }
+                            $delIndex[] = $aRow['DEL_INDEX'];
                             $oDataset->next();
                         }
                         $RESULT['MSGS_HISTORY'] = array_merge(array('DEL_INDEX' => $delIndex), $RESULT['MSGS_HISTORY']);
@@ -5432,9 +5430,7 @@ class Cases
                             $oDataset->next();
 
                             while ($aRow = $oDataset->getRow()) {
-                                if ($TASK_SOURCE == $aRow['TAS_UID']) {
-                                    $delIndex[] = $aRow['DEL_INDEX'];
-                                }
+                                $delIndex[] = $aRow['DEL_INDEX'];
                                 $oDataset->next();
                             }
 
