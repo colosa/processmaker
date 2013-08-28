@@ -3028,7 +3028,7 @@ class XmlForm_Field_Checkbox extends XmlForm_Field
     public $required = false;
     public $value = 'on';
     public $falseValue = 'off';
-    public $labelOnRight = true;
+    public $labelOnRight = false;
     public $readOnly = false;
 
     /**
