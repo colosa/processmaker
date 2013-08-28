@@ -1164,7 +1164,7 @@ class Installer extends Controller
         $db_password = $_REQUEST['db_password'];
         $fp = @fsockopen( $db_hostname, $db_port, $errno, $errstr, 30 );
         if (! $fp) {
-            $info->message .= G::LoadTranslation('ID_CONNECTION_ERROR', SYS_LANG, Array($errstr ($errno)));
+            $info->message .= G::LoadTranslation('ID_CONNECTION_ERROR', SYS_LANG, Array("$errstr ($errno)"));
             return $info;
         }
 
@@ -1204,7 +1204,7 @@ class Installer extends Controller
 
         $fp = @fsockopen( $db_hostname, $db_port, $errno, $errstr, 30 );
         if (! $fp) {
-            $info->message .= G::LoadTranslation('ID_CONNECTION_ERROR', SYS_LANG, Array($errstr ($errno)));
+            $info->message .= G::LoadTranslation('ID_CONNECTION_ERROR', SYS_LANG, Array("$errstr ($errno)"));
             return $info;
         }
 
