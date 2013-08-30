@@ -35,6 +35,14 @@ class Installer extends Controller
 
     public function index ($httpData)
     {
+        $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
+        if ($partnerFlag){
+            $this->includeExtJS( 'installer/stopInstall');
+            $this->setView( 'installer/mainStopInstall' );
+            G::RenderPage( 'publish', 'extJs' );
+            return;
+        }
+
         $licenseContent = file_get_contents( PATH_TRUNK . 'LICENSE.txt' );
 
         $this->includeExtJS( 'installer/CardLayout', false );
