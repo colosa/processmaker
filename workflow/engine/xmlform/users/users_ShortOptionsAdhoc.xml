@@ -70,5 +70,19 @@ var changeView = function(iType)
   Pm.tmp.usersPanel.currentRPC.make();
 };
 
+var usersGroup = function(GRP_UID, c){
+	var div = document.getElementById('users'+c);
+	div.style.display = (div.style.display == 'none') ? 'block' : 'none';
+
+	var oRPC = new leimnud.module.rpc.xmlhttp({
+    url   : '../users/users_Ajax',
+    async : false,
+    method: 'POST',
+    args  : 'function=usersGroup&GRP_UID=' + GRP_UID
+  });
+  oRPC.make();
+  div.innerHTML=oRPC.xmlhttp.responseText;
+};
+    
 ]]></js>
 </dynaForm> 
