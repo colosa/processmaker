@@ -63,6 +63,10 @@ try {
             $oProcessMap = new ProcessMap();
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
+
+            $oStepTrigger = new StepTrigger();
+            $oStepTrigger->orderPosition( $aData['sStep'], $_SESSION['TASK'], $aData['sType']);
+
             if ($aData['sType'] == 'BEFORE') {
                 $G_PUBLISH->AddContent( 'propeltable', 'paged-table', 'steps/triggersBefore_List', $oProcessMap->getStepTriggersCriteria( $aData['sStep'], $_SESSION['TASK'], $aData['sType'] ), array ('STEP' => $aData['sStep']) );
             } else {
@@ -114,12 +118,16 @@ try {
             }
             break;
         case 'assignTrigger':
-            $aFields = array ('STEP_UID' => $aData['STEP_UID'],'TAS_UID' => $_SESSION['TASK'],'TRI_UID' => $aData['TRI_UID'],'ST_TYPE' => $aData['ST_TYPE']
+            $aFields = array (
+                'STEP_UID' => $aData['STEP_UID'],
+                'TAS_UID' => $_SESSION['TASK'],
+                'TRI_UID' => $aData['TRI_UID'],
+                'ST_TYPE' => $aData['ST_TYPE']
             );
             $oStepTrigger = new StepTrigger();
             $oStepTrigger->create( $aFields );
             $aFields['ST_CONDITION'] = $aData['ST_CONDITION'];
-            $aFields['ST_POSITION'] = ($oStepTrigger->getNextPosition( $aData['STEP_UID'], $aData['ST_TYPE'] ) - 1);
+            $aFields['ST_POSITION'] = ($oStepTrigger->getNextPosition( $aData['STEP_UID'], $aData['ST_TYPE'], $_SESSION['TASK'] ) - 1 );
             $oStepTrigger->update( $aFields );
             break;
         case 'editTriggerCondition':

@@ -173,18 +173,59 @@ class StepTrigger extends BaseStepTrigger
         }
     }
 
-    public function getNextPosition ($sStepUID, $sType)
+    public function getNextPosition ($sStepUID, $sType, $sTaskId = '')
     {
         try {
             $oCriteria = new Criteria( 'workflow' );
             $oCriteria->addSelectColumn( '(COUNT(*) + 1) AS POSITION' );
             $oCriteria->add( StepTriggerPeer::STEP_UID, $sStepUID );
             $oCriteria->add( StepTriggerPeer::ST_TYPE, $sType );
+            if ($sTaskId != '') {
+                $oCriteria->add( StepTriggerPeer::TAS_UID , $sTaskId );
+            }
             $oDataset = StepTriggerPeer::doSelectRS( $oCriteria );
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             $aRow = $oDataset->getRow();
             return (int) $aRow['POSITION'];
+        } catch (Exception $oException) {
+            throw $oException;
+        }
+    }
+
+    /**
+     *
+     *
+     * @param type $sStepUID
+     * @param type $sTaskUID
+     * @param type $sType
+     *
+     * @throws Exception
+     */
+    public function orderPosition ($sStepUID, $sTaskUID, $sType)
+    {
+        try {
+            $oCriteria = new Criteria( 'workflow' );
+            $oCriteria->add( StepTriggerPeer::STEP_UID, $sStepUID );
+            $oCriteria->add( StepTriggerPeer::TAS_UID, $sTaskUID );
+            $oCriteria->add( StepTriggerPeer::ST_TYPE, $sType );
+            $oCriteria->addAscendingOrderByColumn(StepTriggerPeer::ST_POSITION);
+            $oDataset = StepTriggerPeer::doSelectRS( $oCriteria );
+
+            $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $oDataset->next();
+            $aRow = $oDataset->getRow();
+            if ((int)$aRow['ST_POSITION'] > 1 ) {
+                $rowNro = 1;
+                while ($aRow = $oDataset->getRow()) {
+                    $oStep = StepTriggerPeer::retrieveByPK( $aRow['STEP_UID'], $aRow['TAS_UID'], $aRow['TRI_UID'], $aRow['ST_TYPE'] );
+                    $oStep->setStPosition( $rowNro );
+                    $oStep->save();
+                    $oDataset->next();
+                    $rowNro++;
+                }
+            }
+
         } catch (Exception $oException) {
             throw $oException;
         }
@@ -199,6 +240,7 @@ class StepTrigger extends BaseStepTrigger
             $oCriteria->add( StepTriggerPeer::ST_TYPE, $sType );
             $oCriteria->add( StepTriggerPeer::ST_POSITION, $iPosition, '>' );
             $oDataset = StepTriggerPeer::doSelectRS( $oCriteria );
+
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
             while ($aRow = $oDataset->getRow()) {
