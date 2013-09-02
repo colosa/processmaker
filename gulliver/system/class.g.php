@@ -340,20 +340,21 @@ class G
                 if ($file == $dirName . '/.' || $file == $dirName . '/..') {
                     continue;
                 }
+
                 if (is_dir( $file )) {
                     G::rm_dir( $file );
-
-                    if (strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN') {
-                        $dirNameWin = str_replace( '/', '\\', $dirName );
-                        exec( 'DEL /F /S /Q ' . $dirNameWin . '', $res );
-                        exec( 'RD /S /Q ' . $dirNameWin . '', $res );
-                    } else {
-                        @rmdir( $file );
-                    }
-
                 } else {
                     @unlink( $file );
                 }
+            }
+
+            if (strtoupper(substr(PHP_OS, 0, 3)) === "WIN") {
+                $dirName = str_replace("/", "\\", $dirName);
+
+                exec("DEL /F /S /Q " . $dirName . "", $res);
+                exec("RD /S /Q " . $dirName . "", $res);
+            } else {
+                @rmdir($dirName);
             }
         } else {
             @unlink( $dirName );
