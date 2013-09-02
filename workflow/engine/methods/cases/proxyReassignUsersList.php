@@ -58,7 +58,7 @@ function array_sort ($array, $on, $order = SORT_ASC, $query = '')
 
 
 $appUid = isset( $_POST['application'] ) ? $_POST['application'] : '';
-//  $processUid = isset($_POST['process'])     ? $_POST['process'] : '';
+//$processUid = isset($_POST['process'])     ? $_POST['process'] : '';
 $TaskUid = isset( $_POST['task'] ) ? $_POST['task'] : '';
 $sReassignFromUser = isset( $_POST['currentUser'] ) ? $_POST['currentUser'] : '';
 
@@ -71,11 +71,81 @@ $aUsersInvolved = Array();
 
 $ConfEnv = $oConf->getFormats();
 $rows = $oCases->getUsersToReassign($TaskUid, $sReassignFromUser);
-
-foreach($rows as $row) {
+$flagSupervisors = false;
+foreach ($rows as $row) {
     $sCaseUser = G::getFormatUserList( $ConfEnv['format'], $row );
     $aUsersInvolved[] = array ('userUid' => $row['USR_UID'], 'userFullname' => $sCaseUser);
+    if ($row['USR_UID'] == $_SESSION['USER_LOGGED']) {
+        $flagSupervisors = true;
+    }
 }
+
+if (!$flagSupervisors) {
+    G::LoadClass('application');
+    $application = new Application();
+    $appData = $application->Load($appUid);
+
+    $aResp =array();
+    $sProcessUID =$appData ['PRO_UID'];
+
+    // Users
+    $oCriteria = new Criteria('workflow');
+    $oCriteria->addSelectColumn(ProcessUserPeer::PU_UID);
+    $oCriteria->addSelectColumn(ProcessUserPeer::USR_UID);
+    $oCriteria->addSelectColumn(ProcessUserPeer::PRO_UID);
+    $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+    $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+    $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
+    $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
+    $oCriteria->addJoin(ProcessUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+    $oCriteria->add(ProcessUserPeer::PU_TYPE, 'SUPERVISOR');
+    $oCriteria->add(ProcessUserPeer::PRO_UID, $sProcessUID);
+    $oCriteria->add(ProcessUserPeer::USR_UID, $_SESSION['USER_LOGGED']);
+    $oCriteria->addAscendingOrderByColumn(UsersPeer::USR_FIRSTNAME);
+    $oDataset = ProcessUserPeer::doSelectRS($oCriteria);
+    $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+    $flagSupervisors = false;
+
+    if ($oDataset->next()) {
+        $aRow = $oDataset->getRow();
+        $supervisors = G::getFormatUserList( $ConfEnv['format'], $aRow );
+        $aUsersInvolved[] = array ('userUid' => $aRow['USR_UID'], 'userFullname' => $supervisors);
+        $flagSupervisors = true;
+    }
+
+    if (!$flagSupervisors) {
+        // Groups
+        $oCriteria = new Criteria('workflow');
+        $oCriteria->addSelectColumn(ProcessUserPeer::PU_UID);
+        $oCriteria->addSelectColumn(ProcessUserPeer::USR_UID);
+        $oCriteria->addSelectColumn(ProcessUserPeer::PRO_UID);
+
+        $oCriteria->addSelectColumn(UsersPeer::USR_UID);
+        $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+        $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+        $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
+        $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
+
+        $oCriteria->addJoin(ProcessUserPeer::USR_UID, GroupUserPeer::GRP_UID, Criteria::LEFT_JOIN);
+        $oCriteria->addJoin(GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+
+        $oCriteria->add(ProcessUserPeer::PU_TYPE, 'GROUP_SUPERVISOR');
+        $oCriteria->add(ProcessUserPeer::PRO_UID, $sProcessUID);
+        $oCriteria->add(GroupUserPeer::USR_UID, $_SESSION['USER_LOGGED']);
+
+        $oDataset = ProcessUserPeer::doSelectRS($oCriteria);
+        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        if ($oDataset->next()) {
+            $aRow = $oDataset->getRow();
+            $supervisors = G::getFormatUserList( $ConfEnv['format'], $aRow );
+            $aUsersInvolved[] = array ('userUid' => $aRow['USR_UID'], 'userFullname' => $supervisors);
+        }
+
+    }
+}
+
+
 
 //            $oTmp = new stdClass();
 //            $oTmp->items = $aUsersInvolved;
