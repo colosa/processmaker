@@ -586,7 +586,7 @@ RefreshGroups = function(){
 SaveChangesAuthForm = function(){
   viewport.getEl().mask(_('ID_PROCESSING'));
   authForm.getForm().submit({
-    waitTitle : "",
+    waitTitle : "&nbsp;",
     success: function(f,a){
       LoadAuthForm();
       viewport.getEl().unmask();

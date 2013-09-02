@@ -103,7 +103,7 @@ function saveSettings()
   Ext.getCmp('frm').getForm().submit( {  
     url : 'loginSettingsAjax?request=saveSettings',
     waitMsg : _('ID_SAVING_PROCESS'),
-    waitTitle : "",
+    waitTitle : "&nbsp;",
     timeout : 36000,
     success : function(obj, resp) {
       //nothing to do

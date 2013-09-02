@@ -297,7 +297,7 @@ Ext.onReady(function(){
  }
  function saveAuthSources(){
    formAuthSourceE.getForm().submit({
-      waitTitle : "",
+      waitTitle : "&nbsp;",
       url: '../adminProxy/saveAuthSources',
       params: {
   //                            action : 'tryit',

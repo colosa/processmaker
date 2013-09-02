@@ -254,7 +254,7 @@ Ext.onReady(function() {
           panelRightTop.getForm().submit({
             url     : '../adminProxy/uploadImage',
             waitMsg : _('ID_LOADING'),
-            waitTitle : "",
+            waitTitle : "&nbsp;",
             success : function(form, o) {
               obj = Ext.util.JSON.decode(o.response.responseText);
               if (obj.failed == '0' && obj.uploaded != '0') {

@@ -35,8 +35,8 @@ class Installer extends Controller
 
     public function index ($httpData)
     {
-        $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
-        if ($partnerFlag){
+
+        if ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') && (file_exists($this->path_shared . 'partner.info'))){
             $this->includeExtJS( 'installer/stopInstall');
             $this->setView( 'installer/mainStopInstall' );
             G::RenderPage( 'publish', 'extJs' );

@@ -986,7 +986,7 @@ function uploadDocument()
                 Ext.getCmp("uploadform").getForm().submit({
                     //reset: true,
                     reset: false,
-                    waitTitle : "",
+                    waitTitle : "&nbsp;",
                     success: function(form, action) {
 
                         datastore.reload();
@@ -1741,7 +1741,7 @@ function newFolder()
                 Ext.getCmp("simpleform").getForm().submit({
                     //reset: true,
                     reset: false,
-                    waitTitle : "",
+                    waitTitle : "&nbsp;",
                     success: function(form, action) {
                         statusBarMessage(action.result.message, false, true);
                         try{

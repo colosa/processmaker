@@ -503,7 +503,7 @@ function saveProcess()
   Ext.getCmp('newProcessForm').getForm().submit( {
     url : '../processProxy/saveProcess',
     waitMsg : _('ID_SAVING_PROCESS'),
-    waitTitle : "",
+    waitTitle : "&nbsp;",
     timeout : 36000,
     success : function(obj, resp) {
       location.href = 'processes_Map?PRO_UID='+resp.result.PRO_UID;
@@ -791,7 +791,7 @@ importProcessExistGroup = function()
                 uploader.getForm().submit({
                   url     : 'processes_Import_Ajax',
                   waitMsg : _('ID_UPLOADING_PROCESS_FILE'),
-                  waitTitle : "",
+                  waitTitle : "&nbsp;",
                   success : function(o, resp) {
                     var resp_            = Ext.util.JSON.decode(resp.response.responseText);
                     var sNewProUid       = resp_.sNewProUid;
@@ -920,7 +920,7 @@ importProcessExistProcess = function()
                 uploader.getForm().submit({
                   url     : 'processes_Import_Ajax',
                   waitMsg : _('ID_UPLOADING_PROCESS_FILE'),
-                  waitTitle : "",
+                  waitTitle : "&nbsp;",
                   success: function(o, resp) {
                     var resp_      = Ext.util.JSON.decode(resp.response.responseText);
                     var sNewProUid = resp_.sNewProUid;
@@ -1025,7 +1025,7 @@ importProcess = function()
                   uploader.getForm().submit({
                     url     : 'processes_Import_Ajax',
                     waitMsg : _('ID_UPLOADING_PROCESS_FILE'),
-                    waitTitle : "",
+                    waitTitle : "&nbsp;",
                     success : function(o, resp) {
 
                       var resp_ = Ext.util.JSON.decode(resp.response.responseText);

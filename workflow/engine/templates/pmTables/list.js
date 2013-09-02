@@ -545,7 +545,7 @@ ImportPMTable = function(){
                 uploader.getForm().submit({
                   url: 'pmTablesProxy/import',
                   waitMsg: _('ID_UPLOADING_FILE'),
-                  waitTitle : "",
+                  waitTitle : "&nbsp;",
                   success: function(o, resp){
                     var result = Ext.util.JSON.decode(resp.response.responseText);
 

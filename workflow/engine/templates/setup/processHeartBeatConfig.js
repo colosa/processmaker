@@ -67,7 +67,7 @@ function saveOption()
   Ext.getCmp('frmHeart').getForm().submit( {  
     url     : 'processHeartBeatAjax?action=saveOption',
     waitMsg : _('ID_SAVING_PROCESS'),
-    waitTitle : "",
+    waitTitle : "&nbsp;",
     timeout : 36000,
     success : function(obj, resp) {
       //nothing to do
