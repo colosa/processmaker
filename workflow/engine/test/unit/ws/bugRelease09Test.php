@@ -46,17 +46,6 @@
   if ( $foundProcess ) {
     $t->is( $foundProcess, true,  'Process for' .$uidName[1]. 'is present in this Workspace');
   }
-  else {
-    $res = ws_importProcessFromLibrary ( $process_uid_library , '' , 3, PML_USER_ID, PML_USER_PASS );
-    if ( $res->status_code == 0 ) {
-      $t->is( $res->status_code, 0,  'Process imported from Library successfully');
-      $t->diag( '  processTitle ' . $res->processTitle  );
-      $t->diag( '  category     ' . $res->category      );
-      $t->diag( '  version      ' . $res->version       );
-    }
-    else
-      throw ( new Exception ( $res->message . ".  Process '". $uid_Process ."' ") );
-  }
 
   }
   //creating an user, if this user exists just skip this lines
@@ -343,4 +332,3 @@
   $t->is( $foundUser2, true,  'user2 is present in Group employees');
   $t->is( $foundUser3, true,  'user3 is present in Group finance');
 
-  

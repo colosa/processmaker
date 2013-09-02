@@ -740,30 +740,7 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="importProcessFromLibraryRequest">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="sessionId" type="xs:string"/>
-            <xs:element name="processId" type="xs:string"/>
-            <xs:element name="version"      minOccurs="0" type="xs:string"/>
-            <xs:element name="importOption" minOccurs="0" type="xs:string"/>
-            <xs:element name="usernameLibrary" minOccurs="0" type="xs:string"/>
-            <xs:element name="passwordLibrary" minOccurs="0" type="xs:string"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="importProcessFromLibraryResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="status_code"  type="xs:integer"/>
-            <xs:element name="message"      type="xs:string"/>
-            <xs:element name="processId"    minOccurs="0" type="xs:string"/>
-            <xs:element name="processTitle" minOccurs="0" type="xs:string"/>
-            <xs:element name="category"     minOccurs="0" type="xs:string"/>
-            <xs:element name="version"      minOccurs="0" type="xs:string"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
+
       <xs:complexType name="getCaseNotesStruct">
         <xs:sequence>
           <xs:element name="full_name"          type="xs:string"/>
@@ -1085,12 +1062,6 @@
   <message name="removeDocumentResponse">
     <part name="parameters" element="xs0:removeDocumentResponse"/>
   </message>
-  <message name="importProcessFromLibraryRequest">
-    <part name="parameters" element="xs0:importProcessFromLibraryRequest"/>
-  </message>
-  <message name="importProcessFromLibraryResponse">
-    <part name="parameters" element="xs0:importProcessFromLibraryResponse"/>
-  </message>
   <message name="getCaseNotesRequest">
     <part name="parameters" element="xs0:getCaseNotesRequest"/>
   </message>
@@ -1263,10 +1234,6 @@
     <operation name="removeDocument">
       <input message="xs0:removeDocumentRequest"/>
       <output message="xs0:removeDocumentResponse"/>
-    </operation>
-    <operation name="importProcessFromLibrary">
-      <input message="xs0:importProcessFromLibraryRequest"/>
-      <output message="xs0:importProcessFromLibraryResponse"/>
     </operation>
     <operation name="getCaseNotes">
       <input message="xs0:getCaseNotesRequest"/>
@@ -1590,15 +1557,6 @@
     </operation>
     <operation name="removeDocument">
       <soap12:operation soapAction="urn:removeDocument" soapActionRequired="true" style="document"/>
-      <input>
-        <soap12:body use="literal"/>
-      </input>
-      <output>
-        <soap12:body use="literal"/>
-      </output>
-    </operation>
-    <operation name="importProcessFromLibrary">
-      <soap12:operation soapAction="urn:importProcessFromLibrary" soapActionRequired="true" style="document"/>
       <input>
         <soap12:body use="literal"/>
       </input>

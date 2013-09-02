@@ -616,24 +616,6 @@ function ws_systemInformation() {
   return $result;
 }
 
-function ws_importProcessFromLibrary($processId, $version = '', $importOption = '', $usernameLibrary = '', $passwordLibrary = '') {
-  global $sessionId;
-  global $client;
-
-  $params = array (
-    'sessionId' => $sessionId,
-    'processId' => $processId,
-    'version' => $version,
-    'importOption' => $importOption,
-    'usernameLibrary' => $usernameLibrary,
-    'passwordLibrary' => $passwordLibrary
-  );
-  $result = $client->__SoapCall('importProcessFromLibrary', array (
-    $params
-  ));
-  return $result;
-}
-
 function ws_InputDocumentList($caseId) {
   global $sessionId;
   global $client;

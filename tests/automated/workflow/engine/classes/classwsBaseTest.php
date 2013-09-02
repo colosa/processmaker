@@ -666,37 +666,6 @@ class classwsBaseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * @covers wsBase::importProcessFromLibrary
-    * @todo   Implement testimportProcessFromLibrary().
-    */
-    public function testimportProcessFromLibrary()
-    {
-        $methods = get_class_methods($this->object);
-        $this->assertTrue( in_array('importProcessFromLibrary', $methods ), 'exists method importProcessFromLibrary' );
-        $r = new ReflectionMethod('wsBase', 'importProcessFromLibrary');
-        $params = $r->getParameters();
-        $this->assertTrue( $params[0]->getName() == 'processId');
-        $this->assertTrue( $params[0]->isArray() == false);
-        $this->assertTrue( $params[0]->isOptional () == false);
-        $this->assertTrue( $params[1]->getName() == 'version');
-        $this->assertTrue( $params[1]->isArray() == false);
-        $this->assertTrue( $params[1]->isOptional () == true);
-        $this->assertTrue( $params[1]->getDefaultValue() == '');
-        $this->assertTrue( $params[2]->getName() == 'importOption');
-        $this->assertTrue( $params[2]->isArray() == false);
-        $this->assertTrue( $params[2]->isOptional () == true);
-        $this->assertTrue( $params[2]->getDefaultValue() == '');
-        $this->assertTrue( $params[3]->getName() == 'usernameLibrary');
-        $this->assertTrue( $params[3]->isArray() == false);
-        $this->assertTrue( $params[3]->isOptional () == true);
-        $this->assertTrue( $params[3]->getDefaultValue() == '');
-        $this->assertTrue( $params[4]->getName() == 'passwordLibrary');
-        $this->assertTrue( $params[4]->isArray() == false);
-        $this->assertTrue( $params[4]->isOptional () == true);
-        $this->assertTrue( $params[4]->getDefaultValue() == '');
-    }
-
-    /**
     * @covers wsBase::getCaseNotes
     * @todo   Implement testgetCaseNotes().
     */

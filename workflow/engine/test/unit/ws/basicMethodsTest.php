@@ -103,7 +103,6 @@
   $t->is( $methods[18] , 'taskCaseResponse taskCase(taskCaseRequest $parameters)'              ,  'taskCase');
   $t->is( $methods[19] , 'systemInformationResponse systemInformation(systemInformationRequest $parameters)',  'systemInformation');
   $t->is( $methods[20] , 'triggerListResponse triggerList(triggerListRequest $parameters)'     ,  'triggerList');
-  $t->is( $methods[21] , 'importProcessFromLibraryResponse importProcessFromLibrary(importProcessFromLibraryRequest $parameters)'     ,  'importProcessFromLibraryRequest');
 
   $t->diag('--------------- defined WSDL types --------------------' );
 
@@ -159,8 +158,6 @@
   $type47 = "struct triggerListRequest {\n string sessionId;\n}";
   $type48 = "struct triggerListStruct {\n string guid;\n string name;\n string processId;\n}";
   $type49 = "struct triggerListResponse {\n triggerListStruct triggers;\n}";
-  $type50 = "struct importProcessFromLibraryRequest {\n string sessionId;\n string processId;\n string version;\n string importOption;\n string usernameLibrary;\n string passwordLibrary;\n}";
-  $type51 = "struct importProcessFromLibraryResponse {\n integer status_code;\n string message;\n string processId;\n string processTitle;\n string category;\n string version;\n}";
 
   $t->is( $types[0 ] , $type0    ,  'login                     ' );
   $t->is( $types[1 ] , $type1    ,  'loginResponse             ' );
@@ -255,17 +252,6 @@
 
   if ( $foundProcess ) {
     $t->is( $foundProcess, true,  'Sequential Process is present in this Workspace');
-  }
-  else {
-    $res = ws_importProcessFromLibrary ( PROCESS_UID_LIBRARY , '' );
-    if ( $res->status_code == 0 ) {
-      $t->is( $res->status_code, 0,  'Process imported from Library successfully');
-      $t->diag( '  processTitle ' . $res->processTitle  );
-      $t->diag( '  category     ' . $res->category      );
-      $t->diag( '  version      ' . $res->version       );
-    }
-    else
-      throw ( new Exception ( $res->message . ".  Process '". PROCESS_UID ."' ") );
   }
 
   //checking the groupList
@@ -504,9 +490,3 @@
   $res = ws_getCaseInfo ($caseId, $delIndex);
   $t->is( $res->status_code , 0 ,  'ws_getCaseInfo status_code = 0');
   $t->is( $res->caseStatus , 'COMPLETED' ,  'ws_getCaseInfo caseStatus = ' . $res->caseStatus );
-
-
-
-
-
-

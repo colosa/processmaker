@@ -1026,20 +1026,6 @@ function systemInformation ($params)
     return $res;
 }
 
-function importProcessFromLibrary ($params)
-{
-    $vsResult = isValidSession( $params->sessionId );
-
-    if ($vsResult->status_code !== 0) {
-        return $vsResult;
-    }
-
-    $ws = new wsBase();
-    $res = $ws->importProcessFromLibrary( $params->processId, $params->version, $params->importOption, $params->usernameLibrary, $params->passwordLibrary );
-
-    return $res;
-}
-
 function getCaseNotes ($params)
 {
     $vsResult = isValidSession( $params->sessionId );
@@ -1258,7 +1244,6 @@ $server->addFunction("TaskList");
 $server->addFunction("TaskCase");
 $server->addFunction("ReassignCase");
 $server->addFunction("systemInformation");
-$server->addFunction("importProcessFromLibrary");
 $server->addFunction("removeUserFromGroup");
 $server->addFunction("getCaseNotes");
 $server->addFunction("deleteCase");
