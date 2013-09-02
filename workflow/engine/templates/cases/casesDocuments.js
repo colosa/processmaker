@@ -466,7 +466,7 @@ function openActionDialog(caller, action, dataAux)
                         icon: Ext.MessageBox.ERROR,
                         buttons: Ext.MessageBox.OK,
                         fn : function(btn) {
-                       location = location;
+                        top.location = top.location;
                         }
                       });
                 } else {
