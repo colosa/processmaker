@@ -105,6 +105,29 @@ class Content extends BaseContent
     }
 
     /*
+    * Change the value of all records
+    * @param string $ConCategory
+    * @param string  $ConParent
+    * @param string $ConId
+    * @param string $ConValue
+    * @return void
+    *
+    */
+    public function updateEqualValue ($ConCategory, $ConParent, $ConId, $ConValue)
+    {
+        $con = Propel::getConnection('workflow');
+        $c1 = new Criteria('workflow');
+        $c1->add(ContentPeer::CON_CATEGORY, $ConCategory);
+        $c1->add(ContentPeer::CON_PARENT, $ConParent);
+        $c1->add(ContentPeer::CON_ID, $ConId);
+
+        // update set
+        $c2 = new Criteria('workflow');
+        $c2->add(ContentPeer::CON_VALUE, $ConValue);
+        BasePeer::doUpdate($c1, $c2, $con);
+    }
+
+    /*
     * Load the content row and the Save automatically the row for the destination language
     * @param string $ConCategory
     * @param string  $ConParent
@@ -174,25 +197,27 @@ class Content extends BaseContent
 
             if (is_null( $con )) {
                 $con = new Content();
+                $con->setConCategory( $ConCategory );
+                if ($con->getConParent() != $ConParent) {
+                    $con->setConParent( $ConParent );
+                }
+                $con->setConId( $ConId );
+                $con->setConLang( $ConLang );
+                $con->setConValue( $ConValue );
+                if ($con->validate()) {
+                    $res = $con->save();
+                    return $res;
+                } else {
+                    $e = new Exception( "Error in addcontent, the row $ConCategory, $ConParent, $ConId, $ConLang is not Valid" );
+                    throw ($e);
+                }
             } else {
                 if ($con->getConParent() == $ConParent && $con->getConCategory() == $ConCategory && $con->getConValue() == $ConValue && $con->getConLang() == $ConLang && $con->getConId() == $ConId) {
                     return true;
                 }
             }
-            $con->setConCategory( $ConCategory );
-            if ($con->getConParent() != $ConParent) {
-                $con->setConParent( $ConParent );
-            }
-            $con->setConId( $ConId );
-            $con->setConLang( $ConLang );
-            $con->setConValue( $ConValue );
-            if ($con->validate()) {
-                $res = $con->save();
-                return $res;
-            } else {
-                $e = new Exception( "Error in addcontent, the row $ConCategory, $ConParent, $ConId, $ConLang is not Valid" );
-                throw ($e);
-            }
+            Content::updateEqualValue( $ConCategory, $ConParent, $ConId, $ConValue );
+            return true;
         } catch (Exception $e) {
             throw ($e);
         }
