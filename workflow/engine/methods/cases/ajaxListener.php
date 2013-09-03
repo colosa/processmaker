@@ -507,7 +507,7 @@ class Ajax
             die();
         }
         $case = new Cases();
-        $result->data = $case->getUsersToReassign($_SESSION['TASK'], $_SESSION['USER_LOGGED']);
+        $result->data = $case->getUsersToReassign($_SESSION['TASK'], $_SESSION['USER_LOGGED'], $_SESSION['PROCESS']);
 
         print G::json_encode($result);
     }

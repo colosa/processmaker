@@ -6432,7 +6432,7 @@ class Cases
         }
     }
 
-    public function getUsersToReassign($TAS_UID, $USR_UID)
+    public function getUsersToReassign($TAS_UID, $USR_UID, $PRO_UID=null)
     {
         G::LoadClass('groups');
         G::LoadClass('tasks');
@@ -6493,6 +6493,60 @@ class Cases
         $rows = Array();
         while ($rs->next()) {
             $rows[] = $rs->getRow();
+        }
+
+        if ($PRO_UID != null) {
+            //Add supervisor
+            // Users
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->addSelectColumn(ProcessUserPeer::PU_UID);
+            $oCriteria->addSelectColumn(ProcessUserPeer::USR_UID);
+            $oCriteria->addSelectColumn(ProcessUserPeer::PRO_UID);
+            $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+            $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+            $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
+            $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
+            $oCriteria->addJoin(ProcessUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+            $oCriteria->add(ProcessUserPeer::PU_TYPE, 'SUPERVISOR');
+            $oCriteria->add(ProcessUserPeer::PRO_UID, $PRO_UID);
+            $oCriteria->add(ProcessUserPeer::USR_UID, $USR_UID);
+            $oCriteria->addAscendingOrderByColumn(UsersPeer::USR_FIRSTNAME);
+            $oDataset = ProcessUserPeer::doSelectRS($oCriteria);
+            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            $flagSupervisors = false;
+
+            if ($oDataset->next()) {
+                $rows[] = $oDataset->getRow();
+                $flagSupervisors = true;
+            }
+
+            if (!$flagSupervisors) {
+                // Groups
+                $oCriteria = new Criteria('workflow');
+                $oCriteria->addSelectColumn(ProcessUserPeer::PU_UID);
+                $oCriteria->addSelectColumn(ProcessUserPeer::USR_UID);
+                $oCriteria->addSelectColumn(ProcessUserPeer::PRO_UID);
+
+                $oCriteria->addSelectColumn(UsersPeer::USR_UID);
+                $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+                $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+                $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
+                $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
+
+                $oCriteria->addJoin(ProcessUserPeer::USR_UID, GroupUserPeer::GRP_UID, Criteria::LEFT_JOIN);
+                $oCriteria->addJoin(GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
+
+                $oCriteria->add(ProcessUserPeer::PU_TYPE, 'GROUP_SUPERVISOR');
+                $oCriteria->add(ProcessUserPeer::PRO_UID, $PRO_UID);
+                $oCriteria->add(GroupUserPeer::USR_UID, $USR_UID);
+
+                $oDataset = ProcessUserPeer::doSelectRS($oCriteria);
+                $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+                if ($oDataset->next()) {
+                    $rows[] = $oDataset->getRow();
+                }
+            }
         }
 
         return $rows;
