@@ -64,6 +64,12 @@ try {
             $bClassFile = true;
     }
 
+    $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
+    if (($sClassName == 'enterprise') && ($partnerFlag)) {
+        $pathFileFlag = PATH_DATA . 'flagNewLicence';
+        file_put_contents($pathFileFlag, 'New Enterprise');
+    }
+
     $oPluginRegistry = & PMPluginRegistry::getSingleton();
     $pluginFile = $sClassName . '.php';
 
