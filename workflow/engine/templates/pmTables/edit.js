@@ -200,6 +200,7 @@ Ext.onReady(function(){
           dataIndex: 'field_type',
           width: 75,
           editor: new fm.ComboBox({
+              id: "fieldType",
               typeAhead: true,
               editable: false,
               lazyRender: true,
@@ -232,93 +233,15 @@ Ext.onReady(function(){
                           if(selCombo != combo.getValue()) {
                               Ext.getCmp('sizeEdit').setValue('');
                           }
+
                           selCombo = combo.getValue();
 
-                          var swSize = 1; //Enable
-                          var swNull = 1;
-                          var swPK = 1;
-                          var swAI = 1;
+                          var fieldNull = Ext.getCmp("field_null");
+                          var fieldPrimaryKey = Ext.getCmp("field_primary_key");
+                          var fieldInc = Ext.getCmp("field_incre");
+                          var sizeEdit = Ext.getCmp("sizeEdit");
 
-                          //Date
-                          if (selCombo == "DATE" || selCombo == "DATETIME" || selCombo == "TIME") {
-                              swSize = 0; //Disable
-                              swPK = 0;
-                              swAI = 0;
-                          }
-
-                          //Numbers
-                          if (selCombo == "INTEGER" || selCombo == "BIGINT") {
-                             //Enable All
-                          }
-
-                          if (selCombo == "TINYINT" || selCombo == "SMALLINT") {
-                             swSize = 0;
-                          }
-
-                          if (selCombo == "DECIMAL" || selCombo == "FLOAT") {
-                              swPK = 0;
-                              swAI = 0;
-                          }
-
-                          if (selCombo == "DOUBLE" || selCombo == "REAL") {
-                             swSize = 0;
-                             swPK = 0;
-                             swAI = 0;
-                          }
-
-                          //String
-                          if (selCombo == "CHAR" || selCombo == "VARCHAR") {
-                              swAI = 0;
-                          }
-
-                          if (selCombo == "LONGVARCHAR") {
-                              swPK = 0;
-                              swAI = 0;
-                          }
-
-                          //Boolean
-                          if (selCombo == "BOOLEAN") {
-                              swSize = 0;
-                              swNull = 0;
-                              swPK = 0;
-                              swAI = 0;
-                          }
-
-                          if (swNull == 1) {
-                              Ext.getCmp("field_null").enable();
-                          } else {
-                              Ext.getCmp("field_null").disable();
-                              Ext.getCmp("field_null").setValue(false);
-                          }
-
-                          if (swPK == 1) {
-                              Ext.getCmp("field_primary_key").enable();
-                          } else {
-                              Ext.getCmp("field_primary_key").disable();
-                              Ext.getCmp("field_primary_key").setValue(false);
-                          }
-
-                          if (swAI == 1) {
-                              Ext.getCmp("field_incre").enable();
-                          } else {
-                              Ext.getCmp("field_incre").disable();
-                              Ext.getCmp("field_incre").setValue(false);
-                          }
-
-                          if (swSize == 1) {
-                              Ext.getCmp("sizeEdit").enable();
-
-                              if (selCombo == "CHAR" || selCombo == "VARCHAR" || selCombo == "LONGVARCHAR") {
-                                  Ext.getCmp("sizeEdit").setMaxValue(((selCombo == "CHAR") ? 255 : 999));
-                                  sizeField.getEl().dom.maxLength = 3;
-                              } else {
-                                  Ext.getCmp("sizeEdit").setMaxValue(99);
-                                  sizeField.getEl().dom.maxLength = 2;
-                              }
-                          } else {
-                              Ext.getCmp("sizeEdit").disable();
-                              Ext.getCmp("sizeEdit").setValue("");
-                          }
+                          editorFieldsEnableDisable(selCombo, fieldNull, fieldPrimaryKey, fieldInc, sizeEdit);
                       }
                   }//select
               }
@@ -428,10 +351,24 @@ Ext.onReady(function(){
   });
 
   editor.on({
-    afteredit: function(roweditor, changes, record, rowIndex) {
-      //
+    beforeedit: function(roweditor, rowIndex)
+    {
+        setTimeout(
+            function ()
+            {
+                var fieldTypeValue = Ext.getCmp("fieldType").getValue();
+                var fieldNull = Ext.getCmp("field_null");
+                var fieldPrimaryKey = Ext.getCmp("field_primary_key");
+                var fieldInc = Ext.getCmp("field_incre");
+                var sizeEdit = Ext.getCmp("sizeEdit");
+
+                editorFieldsEnableDisable(fieldTypeValue, fieldNull, fieldPrimaryKey, fieldInc, sizeEdit);
+            },
+            250
+        );
     },
-    afteredit: function(roweditor, rowIndex) {
+    afteredit: function(roweditor, changes, r, rowIndex)
+    {
       row = assignedGrid.getSelectionModel().getSelected();
       //if a column was set as PK so can't be null
       if (row.get('field_key') == true) {
@@ -996,6 +933,95 @@ function removeColumn()
   });
 }
 
+function editorFieldsEnableDisable(fieldTypeValue, fieldNull, fieldPrimaryKey, fieldInc, sizeEdit)
+{
+    var swSize = 1; //Enable
+    var swNull = 1;
+    var swPK = 1;
+    var swAI = 1;
+
+    //Date
+    if (fieldTypeValue == "DATE" || fieldTypeValue == "DATETIME" || fieldTypeValue == "TIME") {
+        swSize = 0; //Disable
+        swPK = 0;
+        swAI = 0;
+    }
+
+    //Numbers
+    if (fieldTypeValue == "INTEGER" || fieldTypeValue == "BIGINT") {
+       //Enable All
+    }
+
+    if (fieldTypeValue == "TINYINT" || fieldTypeValue == "SMALLINT") {
+       swSize = 0;
+    }
+
+    if (fieldTypeValue == "DECIMAL" || fieldTypeValue == "FLOAT") {
+        swPK = 0;
+        swAI = 0;
+    }
+
+    if (fieldTypeValue == "DOUBLE" || fieldTypeValue == "REAL") {
+       swSize = 0;
+       swPK = 0;
+       swAI = 0;
+    }
+
+    //String
+    if (fieldTypeValue == "CHAR" || fieldTypeValue == "VARCHAR") {
+        swAI = 0;
+    }
+
+    if (fieldTypeValue == "LONGVARCHAR") {
+        swPK = 0;
+        swAI = 0;
+    }
+
+    //Boolean
+    if (fieldTypeValue == "BOOLEAN") {
+        swSize = 0;
+        swNull = 0;
+        swPK = 0;
+        swAI = 0;
+    }
+
+    //Set enable/disable
+    if (swNull == 1) {
+        fieldNull.enable();
+    } else {
+        fieldNull.disable();
+        fieldNull.setValue(false);
+    }
+
+    if (swPK == 1) {
+        fieldPrimaryKey.enable();
+    } else {
+        fieldPrimaryKey.disable();
+        fieldPrimaryKey.setValue(false);
+    }
+
+    if (swAI == 1) {
+        fieldInc.enable();
+    } else {
+        fieldInc.disable();
+        fieldInc.setValue(false);
+    }
+
+    if (swSize == 1) {
+        sizeEdit.enable();
+
+        if (fieldTypeValue == "CHAR" || fieldTypeValue == "VARCHAR" || fieldTypeValue == "LONGVARCHAR") {
+            sizeEdit.setMaxValue(((fieldTypeValue == "CHAR") ? 255 : 999));
+            sizeEdit.getEl().dom.maxLength = 3;
+        } else {
+            sizeEdit.setMaxValue(99);
+            sizeEdit.getEl().dom.maxLength = 2;
+        }
+    } else {
+        sizeEdit.disable();
+        sizeEdit.setValue("");
+    }
+}
 
 ////ASSIGNBUTON FUNCTIONALITY
 AssignFieldsAction = function(){
