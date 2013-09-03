@@ -506,8 +506,11 @@ class Ajax
             print G::json_encode( $response );
             die();
         }
+        G::LoadClass( 'tasks' );
+        $task = new Task();
+        $tasks = $task->load($_SESSION['TASK']);
         $case = new Cases();
-        $result->data = $case->getUsersToReassign($_SESSION['TASK'], $_SESSION['USER_LOGGED']);
+        $result->data = $case->getUsersToReassign($_SESSION['TASK'], $_SESSION['USER_LOGGED'], $tasks['PRO_UID']);
 
         print G::json_encode($result);
     }

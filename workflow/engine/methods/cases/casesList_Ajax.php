@@ -193,7 +193,10 @@ if ($actionAjax == "processListExtJs") {
 if ($actionAjax == "getUsersToReassign") {
     $_SESSION['TASK'] = $_REQUEST['TAS_UID'];
     $case = new Cases();
-    $result->data = $case->getUsersToReassign( $_SESSION['TASK'], $_SESSION['USER_LOGGED'] );
+    G::LoadClass( 'tasks' );
+    $task = new Task();
+    $tasks = $task->load($_SESSION['TASK']);
+    $result->data = $case->getUsersToReassign( $_SESSION['TASK'], $_SESSION['USER_LOGGED'], $tasks['PRO_UID'] );
     print G::json_encode( $result );
 }
 if ($actionAjax == 'reassignCase') {
