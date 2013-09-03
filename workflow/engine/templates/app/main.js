@@ -79,7 +79,15 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle, proUid, taskUid)
               icon: Ext.MessageBox.ERROR,
               buttons: Ext.MessageBox.OK,
               fn : function(btn) {
-                location = location;
+                try 
+                     {
+                       prnt = parent.parent;
+                       top.location = top.location;
+                     }
+                   catch (err) 
+                      {
+                       parent.location = parent.location;
+                      }
               }
             });
       }
@@ -385,7 +393,15 @@ function sendNote()
               icon : Ext.MessageBox.ERROR,
               buttons : Ext.Msg.OK,
               fn : function(btn) {
-                location = location;
+                try 
+                     {
+                       prnt = parent.parent;
+                       top.location = top.location;
+                     }
+                   catch (err) 
+                      {
+                       parent.location = parent.location;
+                      }
               }
          });
       } else {
@@ -520,7 +536,15 @@ var openSummaryWindow = function(appUid, delIndex, action)
               icon : Ext.MessageBox.ERROR,
               buttons : Ext.Msg.OK,
               fn : function(btn) {
-                   location = location;
+                   try 
+                     {
+                       prnt = parent.parent;
+                       top.location = top.location;
+                     }
+                   catch (err) 
+                      {
+                       parent.location = parent.location;
+                      }
               }
           });
       } else {

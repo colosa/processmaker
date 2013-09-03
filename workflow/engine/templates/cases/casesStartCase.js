@@ -81,7 +81,15 @@ Ext.onReady(function() {
                           icon: Ext.MessageBox.ERROR,
                           buttons: Ext.MessageBox.OK,
                           fn : function(btn) {
-                         location = location;
+                            try 
+                                  {
+                                    prnt = parent.parent;
+                                    top.location = top.location;
+                                  }
+                                catch (err) 
+                                  {
+                                    parent.location = parent.location;
+                                  }
                           }
                         });
                   } else {
@@ -113,7 +121,15 @@ Ext.onReady(function() {
                           icon: Ext.MessageBox.ERROR,
                           buttons: Ext.MessageBox.OK,
                           fn : function(btn) {
-                         location = location;
+                            try 
+                                  {
+                                    prnt = parent.parent;
+                                    top.location = top.location;
+                                  }
+                                catch (err) 
+                                  {
+                                    parent.location = parent.location;
+                                  }
                           }
                         });
                   } else {
@@ -145,7 +161,15 @@ Ext.onReady(function() {
                           icon: Ext.MessageBox.ERROR,
                           buttons: Ext.MessageBox.OK,
                           fn : function(btn) {
-                         location = location;
+                            try 
+                                  {
+                                    prnt = parent.parent;
+                                    top.location = top.location;
+                                  }
+                                catch (err) 
+                                  {
+                                    parent.location = parent.location;
+                                  }
                           }
                         });
                   } else {
@@ -179,7 +203,15 @@ Ext.onReady(function() {
                           icon: Ext.MessageBox.ERROR,
                           buttons: Ext.MessageBox.OK,
                           fn : function(btn) {
-                         location = location;
+                            try 
+                                  {
+                                    prnt = parent.parent;
+                                    top.location = top.location;
+                                  }
+                                catch (err) 
+                                  {
+                                    parent.location = parent.location;
+                                  }
                           }
                         });
                   } else {
@@ -214,7 +246,15 @@ Ext.onReady(function() {
                           icon: Ext.MessageBox.ERROR,
                           buttons: Ext.MessageBox.OK,
                           fn : function(btn) {
-                         location = location;
+                            try 
+                                  {
+                                    prnt = parent.parent;
+                                    top.location = top.location;
+                                  }
+                                catch (err) 
+                                  {
+                                    parent.location = parent.location;
+                                  }
                           }
                         });
                   } else {
@@ -426,7 +466,15 @@ function openCaseA(n){
                        icon : Ext.MessageBox.ERROR,
                        buttons : Ext.Msg.OK,
                        fn : function(btn) {
-                          location = location;
+                          try 
+                                  {
+                                    prnt = parent.parent;
+                                    top.location = top.location;
+                                  }
+                                catch (err) 
+                                  {
+                                    parent.location = parent.location;
+                                  }
                        }
                   }); 
           } else {

@@ -466,7 +466,15 @@ function openActionDialog(caller, action, dataAux)
                         icon: Ext.MessageBox.ERROR,
                         buttons: Ext.MessageBox.OK,
                         fn : function(btn) {
-                       location = location;
+                          try 
+                                  {
+                                    prnt = parent.parent;
+                                    top.location = top.location;
+                                  }
+                                catch (err) 
+                                  {
+                                    parent.location = parent.location;
+                                  }
                         }
                       });
                 } else {
