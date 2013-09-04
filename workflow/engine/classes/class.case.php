@@ -5289,25 +5289,45 @@ class Cases
                         $delIndex = array();
 
                         $oCriteria = new Criteria('workflow');
+                        if ($USER_RELATION == 1) {
+                            //Users
+                            $oCriteria->add(AppDelegationPeer::APP_UID, $APP_UID);
+                            $oCriteria->add(AppDelegationPeer::PRO_UID, $PRO_UID);
+                            if ($aCase['APP_STATUS'] != 'COMPLETED') {
+                                if ($TASK_SOURCE != '' && $TASK_SOURCE != "0" && $TASK_SOURCE != 0) {
+                                    $oCriteria->add(AppDelegationPeer::TAS_UID, $TASK_SOURCE);
+                                }
+                            }
+                            $oCriteria->add(AppDelegationPeer::USR_UID, $USER);
 
-                        $oCriteria->add(AppDelegationPeer::APP_UID, $APP_UID);
-                        $oCriteria->add(AppDelegationPeer::PRO_UID, $PRO_UID);
-                        if ($aCase['APP_STATUS'] != 'COMPLETED') {
-                            if ($TASK_SOURCE != '' && $TASK_SOURCE != "0" && $TASK_SOURCE != 0) {
-                                $oCriteria->add(AppDelegationPeer::TAS_UID, $TASK_SOURCE);
+                            $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
+                            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                            $oDataset->next();
+                            while ($aRow = $oDataset->getRow()) {
+                                $delIndex[] = $aRow['DEL_INDEX'];
+                                $oDataset->next();
+                            }
+                        } else {
+                            //Groups
+                            $oCriteria->addJoin(GroupUserPeer::USR_UID, AppDelegationPeer::USR_UID, Criteria::LEFT_JOIN);
+                            $oCriteria->add(GroupUserPeer::GRP_UID, $USER);
+                            $oCriteria->add(AppDelegationPeer::APP_UID, $APP_UID);
+                            $oCriteria->add(AppDelegationPeer::PRO_UID, $PRO_UID);
+                            if ($aCase['APP_STATUS'] != 'COMPLETED') {
+                                if ($TASK_SOURCE != '' && $TASK_SOURCE != "0" && $TASK_SOURCE != 0) {
+                                    $oCriteria->add(AppDelegationPeer::TAS_UID, $TASK_SOURCE);
+                                }
+                            }
+
+                            $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
+                            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                            $oDataset->next();
+                            while ($aRow = $oDataset->getRow()) {
+                                $delIndex[] = $aRow['DEL_INDEX'];
+                                $oDataset->next();
                             }
                         }
-                        $oCriteria->add(AppDelegationPeer::USR_UID, $USER);
-
-                        $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
-                        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-                        $oDataset->next();
-                        while ($aRow = $oDataset->getRow()) {
-                            $delIndex[] = $aRow['DEL_INDEX'];
-                            $oDataset->next();
-                        }
                         $RESULT['MSGS_HISTORY'] = array_merge(array('DEL_INDEX' => $delIndex), $RESULT['MSGS_HISTORY']);
-
                         break;
                     case 'DYNAFORM':
                         $oCriteria = new Criteria('workflow');
@@ -5415,25 +5435,41 @@ class Cases
                         $delIndex = array();
                         if ($TASK_SOURCE != "" && (int)$TASK_SOURCE != 0) {
                             $oCriteria = new Criteria('workflow');
-
-                            $oCriteria->add(AppDelegationPeer::APP_UID, $APP_UID);
-                            $oCriteria->add(AppDelegationPeer::PRO_UID, $PRO_UID);
-                            if ($aCase['APP_STATUS'] != 'COMPLETED') {
-                                if ($TASK_SOURCE != '' && $TASK_SOURCE != "0" && $TASK_SOURCE != 0) {
-                                    $oCriteria->add(AppDelegationPeer::TAS_UID, $TASK_SOURCE);
+                            if ($USER_RELATION == 1) {
+                                $oCriteria->add(AppDelegationPeer::APP_UID, $APP_UID);
+                                $oCriteria->add(AppDelegationPeer::PRO_UID, $PRO_UID);
+                                if ($aCase['APP_STATUS'] != 'COMPLETED') {
+                                    if ($TASK_SOURCE != '' && $TASK_SOURCE != "0" && $TASK_SOURCE != 0) {
+                                        $oCriteria->add(AppDelegationPeer::TAS_UID, $TASK_SOURCE);
+                                    }
+                                }
+                                $oCriteria->add(AppDelegationPeer::USR_UID, $USER);
+                                $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
+                                $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                                $oDataset->next();
+                                while ($aRow = $oDataset->getRow()) {
+                                    $delIndex[] = $aRow['DEL_INDEX'];
+                                    $oDataset->next();
+                                }
+                            } else {
+                                //Groups
+                                $oCriteria->addJoin(GroupUserPeer::USR_UID, AppDelegationPeer::USR_UID, Criteria::LEFT_JOIN);
+                                $oCriteria->add(GroupUserPeer::GRP_UID, $USER);
+                                $oCriteria->add(AppDelegationPeer::APP_UID, $APP_UID);
+                                $oCriteria->add(AppDelegationPeer::PRO_UID, $PRO_UID);
+                                if ($aCase['APP_STATUS'] != 'COMPLETED') {
+                                    if ($TASK_SOURCE != '' && $TASK_SOURCE != "0" && $TASK_SOURCE != 0) {
+                                        $oCriteria->add(AppDelegationPeer::TAS_UID, $TASK_SOURCE);
+                                    }
+                                }
+                                $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
+                                $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                                $oDataset->next();
+                                while ($aRow = $oDataset->getRow()) {
+                                    $delIndex[] = $aRow['DEL_INDEX'];
+                                    $oDataset->next();
                                 }
                             }
-                            $oCriteria->add(AppDelegationPeer::USR_UID, $USER);
-
-                            $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
-                            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-                            $oDataset->next();
-
-                            while ($aRow = $oDataset->getRow()) {
-                                $delIndex[] = $aRow['DEL_INDEX'];
-                                $oDataset->next();
-                            }
-
                             $RESULT['MSGS_HISTORY'] = array_merge(array('DEL_INDEX' => $delIndex), $RESULT['MSGS_HISTORY']);
                         }
                         break;

@@ -42,7 +42,6 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
 
     $appMessageArray = $oCase->getHistoryMessagesTrackerExt( $_SESSION['APPLICATION'], true, $_REQUEST['start'], $_REQUEST['limit']);
     $appMessageCountArray = $oCase->getHistoryMessagesTrackerExt( $_SESSION['APPLICATION'], true);
-
     $result = new stdClass();
     $aProcesses = Array ();
 
@@ -61,7 +60,6 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
 
     if (count($respBlock["MSGS_HISTORY"]) > 0) {
         $respMess = $respBlock["MSGS_HISTORY"]["PERMISSION"];
-
         if (isset($respBlock["MSGS_HISTORY"]["DEL_INDEX"])) {
             $delIndex = $respBlock["MSGS_HISTORY"]["DEL_INDEX"];
         }
@@ -69,7 +67,6 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
 
     if (count($respView["MSGS_HISTORY"]) > 0) {
         $respMess = $respView["MSGS_HISTORY"]["PERMISSION"];
-
         if (isset($respView["MSGS_HISTORY"]["DEL_INDEX"])) {
             $delIndex = $respView["MSGS_HISTORY"]["DEL_INDEX"];
         }
@@ -77,9 +74,8 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
 
     if (count($respResend["MSGS_HISTORY"]) > 0) {
         $respMess = $respResend["MSGS_HISTORY"]["PERMISSION"];
-
-        if (isset($respBlock["MSGS_HISTORY"]["DEL_INDEX"])) {
-            $delIndex = $respBlock["MSGS_HISTORY"]["DEL_INDEX"];
+        if (isset($respResend["MSGS_HISTORY"]["DEL_INDEX"])) {
+            $delIndex = $respResend["MSGS_HISTORY"]["DEL_INDEX"];
         }
     }
 
