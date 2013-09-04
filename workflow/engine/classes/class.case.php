@@ -5290,6 +5290,7 @@ class Cases
 
                         $oCriteria = new Criteria('workflow');
 
+                        //Users
                         $oCriteria->add(AppDelegationPeer::APP_UID, $APP_UID);
                         $oCriteria->add(AppDelegationPeer::PRO_UID, $PRO_UID);
                         if ($aCase['APP_STATUS'] != 'COMPLETED') {
@@ -5298,6 +5299,26 @@ class Cases
                             }
                         }
                         $oCriteria->add(AppDelegationPeer::USR_UID, $USER);
+
+                        $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
+                        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                        $oDataset->next();
+                        while ($aRow = $oDataset->getRow()) {
+                            $delIndex[] = $aRow['DEL_INDEX'];
+                            $oDataset->next();
+                        }
+
+                        //Groups
+                        $oCriteria = new Criteria('workflow');
+                        $oCriteria->addJoin(GroupUserPeer::USR_UID, AppDelegationPeer::USR_UID, Criteria::LEFT_JOIN);
+                        $oCriteria->add(GroupUserPeer::GRP_UID, $USER);
+                        $oCriteria->add(AppDelegationPeer::APP_UID, $APP_UID);
+                        $oCriteria->add(AppDelegationPeer::PRO_UID, $PRO_UID);
+                        if ($aCase['APP_STATUS'] != 'COMPLETED') {
+                            if ($TASK_SOURCE != '' && $TASK_SOURCE != "0" && $TASK_SOURCE != 0) {
+                                $oCriteria->add(AppDelegationPeer::TAS_UID, $TASK_SOURCE);
+                            }
+                        }
 
                         $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
                         $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
@@ -5429,6 +5450,25 @@ class Cases
                             $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
                             $oDataset->next();
 
+                            while ($aRow = $oDataset->getRow()) {
+                                $delIndex[] = $aRow['DEL_INDEX'];
+                                $oDataset->next();
+                            }
+
+                            //Groups
+                            $oCriteria = new Criteria('workflow');
+                            $oCriteria->addJoin(GroupUserPeer::USR_UID, AppDelegationPeer::USR_UID, Criteria::LEFT_JOIN);
+                            $oCriteria->add(GroupUserPeer::GRP_UID, $USER);
+                            $oCriteria->add(AppDelegationPeer::APP_UID, $APP_UID);
+                            $oCriteria->add(AppDelegationPeer::PRO_UID, $PRO_UID);
+                            if ($aCase['APP_STATUS'] != 'COMPLETED') {
+                                if ($TASK_SOURCE != '' && $TASK_SOURCE != "0" && $TASK_SOURCE != 0) {
+                                    $oCriteria->add(AppDelegationPeer::TAS_UID, $TASK_SOURCE);
+                                }
+                            }
+                            $oDataset = AppDelegationPeer::doSelectRS($oCriteria);
+                            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+                            $oDataset->next();
                             while ($aRow = $oDataset->getRow()) {
                                 $delIndex[] = $aRow['DEL_INDEX'];
                                 $oDataset->next();
