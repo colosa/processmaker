@@ -72,7 +72,7 @@ $aUsersInvolved = Array();
 $ConfEnv = $oConf->getFormats();
 G::LoadClass( 'tasks' );
 $task = new Task();
-$tasks = $task->load($_SESSION['TASK']);
+$tasks = $task->load($TaskUid);
 $rows = $oCases->getUsersToReassign($TaskUid, $_SESSION['USER_LOGGED'], $tasks['PRO_UID']);
 foreach ($rows as $row) {
     $sCaseUser = G::getFormatUserList( $ConfEnv['format'], $row );
