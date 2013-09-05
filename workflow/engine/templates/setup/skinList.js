@@ -147,7 +147,7 @@ Ext.onReady(function(){
             exportButton.enable();
             
             if(rowSelected.data.SKIN_STATUS=='Inactive'){
-                deleteButton.enable();
+                deleteButton.enable(); 
             }
         }
       },
