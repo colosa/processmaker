@@ -4549,7 +4549,7 @@ class processMap
     {
         try {
             $oTask = new Task();
-            $oNewTask->label = 'Sub-Process'; //G::LoadTranslation('ID_TASK');
+            $oNewTask->label = G::LoadTranslation('ID_SUBPROCESS');
             $oNewTask->uid = $oTask->create(array('PRO_UID' => $sProcessUID, 'TAS_TITLE' => $oNewTask->label, 'TAS_POSX' => $iX, 'TAS_POSY' => $iY, 'TAS_TYPE' => 'SUBPROCESS' ));
             //$oJSON = new Services_JSON();
 
