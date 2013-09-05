@@ -135,7 +135,7 @@ Ext.onReady(function(){
       pageSize: pageSize,
       store: storeA,
       displayInfo: true,
-      displayMsg: '{0} - {1} of {2}',
+      displayMsg: '{0} - {1} ' + _('ID_DISPLAY_OF') + ' {2}',
       emptyMsg: _('ID_NO_RECORDS')/*,
       items: ['-',_('ID_PAGE_SIZE')+':',comboPageSize]*/
   });
