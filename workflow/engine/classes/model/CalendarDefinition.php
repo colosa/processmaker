@@ -106,10 +106,10 @@ class CalendarDefinition extends BaseCalendarDefinition
         $tr = CalendarDefinitionPeer::retrieveByPK( $CalendarUid );
 
         $defaultCalendar['CALENDAR_UID'] = "00000000000000000000000000000001";
-        $defaultCalendar['CALENDAR_NAME'] = "Default";
+        $defaultCalendar['CALENDAR_NAME'] = G::LoadTranslation('ID_DEFAULT_CALENDAR');
         $defaultCalendar['CALENDAR_CREATE_DATE'] = date( "Y-m-d" );
         $defaultCalendar['CALENDAR_UPDATE_DATE'] = date( "Y-m-d" );
-        $defaultCalendar['CALENDAR_DESCRIPTION'] = "Default";
+        $defaultCalendar['CALENDAR_DESCRIPTION'] = G::LoadTranslation('ID_DEFAULT_CALENDAR');
         $defaultCalendar['CALENDAR_STATUS'] = "ACTIVE";
         $defaultCalendar['CALENDAR_WORK_DAYS'] = "1|2|3|4|5";
         $defaultCalendar['CALENDAR_WORK_DAYS'] = explode( "|", "1|2|3|4|5" );
@@ -151,10 +151,10 @@ class CalendarDefinition extends BaseCalendarDefinition
         //if exists the row in the database propel will update it, otherwise will insert.
         $tr = CalendarDefinitionPeer::retrieveByPK( $CalendarUid );
         $defaultCalendar['CALENDAR_UID'] = "00000000000000000000000000000001";
-        $defaultCalendar['CALENDAR_NAME'] = "Default";
+        $defaultCalendar['CALENDAR_NAME'] = G::LoadTranslation('ID_DEFAULT_CALENDAR');
         $defaultCalendar['CALENDAR_CREATE_DATE'] = date( "Y-m-d" );
         $defaultCalendar['CALENDAR_UPDATE_DATE'] = date( "Y-m-d" );
-        $defaultCalendar['CALENDAR_DESCRIPTION'] = "Default";
+        $defaultCalendar['CALENDAR_DESCRIPTION'] = G::LoadTranslation('ID_DEFAULT_CALENDAR');
         $defaultCalendar['CALENDAR_STATUS'] = "ACTIVE";
         $defaultCalendar['CALENDAR_WORK_DAYS'] = "1|2|3|4|5";
         $defaultCalendar['CALENDAR_WORK_DAYS'] = explode( "|", "1|2|3|4|5" );
@@ -244,7 +244,7 @@ class CalendarDefinition extends BaseCalendarDefinition
         $defaultCalendars[] = '00000000000000000000000000000001';
         if (in_array( $aData['CALENDAR_UID'], $defaultCalendars )) {
             $CalendarStatus = 'ACTIVE';
-            $CalendarName = 'Default';
+            $CalendarName = G::LoadTranslation('ID_DEFAULT_CALENDAR');
         }
         $CalendarWorkDays = isset( $aData['CALENDAR_WORK_DAYS'] ) ? implode( "|", $aData['CALENDAR_WORK_DAYS'] ) : "";
 

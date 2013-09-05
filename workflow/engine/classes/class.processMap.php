@@ -950,8 +950,8 @@ class processMap
                     $aRow['DYN_TITLE'] = Content::Load("DYN_TITLE", "", $aRow['DYN_UID'], SYS_LANG);
                 }
                 $aBB[] = array('STEP_UID' => $aRow['DYN_UID'], 'STEP_TITLE' => $aRow['DYN_TITLE'], 'STEP_TYPE_OBJ' => 'DYNAFORM', 'STEP_MODE' => '<select id="STEP_MODE_' . $aRow['DYN_UID'] . '">
-                                            <option value="EDIT">Edit</option>
-                                            <option value="VIEW">View</option>
+                                            <option value="EDIT">' . G::LoadTranslation('ID_EDIT') . '</option>
+                                            <option value="VIEW">' . G::LoadTranslation('ID_VIEW') . '</option>
                                            </select>'
                 );
                 $oDataset->next();
@@ -4549,7 +4549,7 @@ class processMap
     {
         try {
             $oTask = new Task();
-            $oNewTask->label = 'Sub-Process'; //G::LoadTranslation('ID_TASK');
+            $oNewTask->label = G::LoadTranslation('ID_SUBPROCESS');
             $oNewTask->uid = $oTask->create(array('PRO_UID' => $sProcessUID, 'TAS_TITLE' => $oNewTask->label, 'TAS_POSX' => $iX, 'TAS_POSY' => $iY, 'TAS_TYPE' => 'SUBPROCESS' ));
             //$oJSON = new Services_JSON();
 
