@@ -130,7 +130,8 @@ Ext.onReady(function(){
     listeners:{
       rowselect: function(sm){
         rowSelected = infoGrid.getSelectionModel().getSelected();
-        if((rowSelected.data.SKIN_FOLDER_ID)&&((rowSelected.data.SKIN_FOLDER_ID!="classic"))){
+        
+        if((rowSelected.data.SKIN_FOLDER_ID)&&(rowSelected.data.SKIN_FOLDER_ID!="classic")&&(rowSelected.data.SKIN_FOLDER_ID!="neoclassic")){
           exportButton.enable();
           
           if (rowSelected.data.SKIN_STATUS!='Inactive') {
