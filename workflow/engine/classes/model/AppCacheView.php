@@ -1244,11 +1244,11 @@ class AppCacheView extends BaseAppCacheView
         $sql = "SHOW TABLES";
         $rs1 = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);
         $rs1->next();
-        $found = G::LoadTranslation('ID_FALSE');//false;
+        $found = false;
 
         while (is_array($row = $rs1->getRow()) && !$found) {
             if (strtolower($row[0]) == 'app_cache_view') {
-                $found = G::LoadTranslation('ID_TRUE');//true;
+                $found = true;
             }
 
             $rs1->next();
@@ -1261,7 +1261,7 @@ class AppCacheView extends BaseAppCacheView
             $oCriteria = new Criteria('workflow');
             $count = AppCacheViewPeer::doCount($oCriteria);
         }
-
+        $found = $found ? G::LoadTranslation('ID_TRUE') : G::LoadTranslation('ID_FALSE');
         return array('found' => $found, 'count' => $count);
     }
 
