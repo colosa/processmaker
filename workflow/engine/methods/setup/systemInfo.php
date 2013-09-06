@@ -3,7 +3,7 @@ $option = (isset($_GET["option"]))? $_GET["option"] : null;
 
 switch ($option) {
     case "phpinfo":
-        phpinfo();
+        phpinfo(INFO_GENERAL + INFO_CREDITS + INFO_CONFIGURATION + INFO_MODULES + INFO_ENVIRONMENT + INFO_VARIABLES);
         break;
     case "php":
         $oHeadPublisher = &headPublisher::getSingleton();
