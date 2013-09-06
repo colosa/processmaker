@@ -51,17 +51,6 @@ Ext.onReady(function(){
         }
       },
       {
-        name: 'virtualKeyboad',
-        xtype: 'checkbox',
-        checked: virtualKeyboad,
-        fieldLabel: _('ID_ENABLE_VIRTUAL_KEYBOARD'),
-        listeners:{
-          check:function(){
-            changeSettings();
-          }
-        }
-      },
-      {
         xtype: 'panel',
         anchor: '100%',
         bodyStyle:'padding:5px',
