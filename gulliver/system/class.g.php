@@ -1747,33 +1747,36 @@ class G
             $arrayGrid = array_unique($arrayGrid);
 
             foreach ($arrayGrid as $index => $value) {
-                $grdName = $value;
+                if($value !== "") {
+                    $grdName = $value;
 
-                $strContentAux1 = $strContentAux;
-                $strContentAux  = null;
+                    $strContentAux1 = $strContentAux;
+                    $strContentAux  = null;
 
-                $ereg = "/^(.*)@>" . $grdName . "(.*)@<" . $grdName . "(.*)$/";
+                    $ereg = "/^(.*)@>" . $grdName . "(.*)@<" . $grdName . "(.*)$/";
 
-                while (preg_match($ereg, $strContentAux1, $arrayMatch2)) {
-                    $strData = null;
+                    while (preg_match($ereg, $strContentAux1, $arrayMatch2)) {
+                        $strData = null;
 
-                    if (isset($aFields[$grdName]) && is_array($aFields[$grdName])) {
-                        foreach ($aFields[$grdName] as $aRow) {
-                            foreach ($aRow as $sKey => $vValue) {
-                                if (!is_array($vValue)) {
-                                    $aRow[$sKey] = nl2br($aRow[$sKey]);
+                        if (isset($aFields[$grdName]) && is_array($aFields[$grdName])) {
+                            foreach ($aFields[$grdName] as $aRow) {
+                                foreach ($aRow as $sKey => $vValue) {
+                                    if (!is_array($vValue)) {
+                                        $aRow[$sKey] = nl2br($aRow[$sKey]);
+                                    }
                                 }
-                            }
 
-                            $strData = $strData . G::replaceDataField($arrayMatch2[2], $aRow);
+                                $strData = $strData . G::replaceDataField($arrayMatch2[2], $aRow);
+                            }
                         }
+
+                        $strContentAux1 = $arrayMatch2[1];
+                        $strContentAux  = $strData . $arrayMatch2[3] . $strContentAux;
                     }
 
-                    $strContentAux1 = $arrayMatch2[1];
-                    $strContentAux  = $strData . $arrayMatch2[3] . $strContentAux;
+                    $strContentAux = $strContentAux1 . $strContentAux;
+                
                 }
-
-                $strContentAux = $strContentAux1 . $strContentAux;
             }
         }
 
