@@ -218,7 +218,7 @@ function downloadDoc($alfrescoServerUrl, $pathFile, $pathFolder, $user, $pwd, $m
 
     $alfresco_url = "$alfrescoServerUrl" . PATH_SEP . "s" . PATH_SEP . "cmis" . PATH_SEP . "p" . PATH_SEP . $mainFolder . PATH_SEP . "$pathFile";
     $alfresco_exec = RestClient::get($alfresco_url, $user, $pwd, 'application/atom+xml');
-    $sXmlArray = $alfresco_exec->getResponse();
+    $sXmlArray = $alfresco_exec->getResponse(); 
     $sXmlArray = preg_replace("[\n|\r|\n\r]", '', $sXmlArray);
     $xmlObject = simplexml_load_string((string) $sXmlArray);
 
@@ -231,7 +231,7 @@ function downloadDoc($alfrescoServerUrl, $pathFile, $pathFolder, $user, $pwd, $m
     $linkContent = (string) $xmlObject->content->attributes()->src;
     $alfresco_exec = RestClient::get($linkContent, $user, $pwd, 'application/atom+xml');
     $sXmlArray = $alfresco_exec->getResponse();
-    $content = preg_replace("[\n|\r|\n\r]", '', $sXmlArray);
+    $content = preg_replace("[^\x0A|^\x0D|\x0Ax0D|\x0Dx0A]", '', $sXmlArray);
 
     if ('/' != substr($pathFolder, -1)) {
         $pathFolder .= '/';
