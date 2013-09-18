@@ -158,25 +158,25 @@ function deleteCase() {
                 icon: Ext.MessageBox.ERROR,
                 buttons: Ext.MessageBox.OK,
                 fn : function(btn) {
-                   try 
+                   try
                      {
                        prnt = parent.parent;
                        top.location = top.location;
                      }
-                   catch (err) 
+                   catch (err)
                       {
                        parent.location = parent.location;
                       }
-                } 
+                }
               });
         } else {
 		  if( rows.length > 0 ) {
 		    ids = Array();
 		    for(i=0; i<rows.length; i++)
 		      ids[i] = rows[i].get('APP_UID');
-		
+
 		    APP_UIDS = ids.join(',');
-		
+
 		    Ext.Msg.confirm(
 		      _('ID_CONFIRM'),
 		      (rows.length == 1) ? _('ID_MSG_CONFIRM_DELETE_CASE') : _('ID_MSG_CONFIRM_DELETE_CASES'),
@@ -1199,7 +1199,7 @@ Ext.onReady ( function() {
 
   var resetSearchButton = {
     text:'X',
-	  ctCls:'pm_search_x_button',
+	   ctCls:"pm_search_x_button_des",
     handler: function(){
       textSearch.setValue('');
       doSearch();
@@ -1329,12 +1329,12 @@ Ext.onReady ( function() {
                         icon: Ext.MessageBox.ERROR,
                         buttons: Ext.MessageBox.OK,
                         fn : function(btn) {
-                          try 
+                          try
                             {
                              prnt = parent.parent;
                              top.location = top.location;
                             }
-                          catch (err) 
+                          catch (err)
                               {
                                parent.location = parent.location;
                               }
@@ -1349,7 +1349,7 @@ Ext.onReady ( function() {
                   Ext.MessageBox.alert( _('ID_FAILED'), result.responseText);
                 }
               }
-         }); 
+         });
       }
     })
   });
@@ -1410,7 +1410,7 @@ Ext.onReady ( function() {
   }
 
   //optionMenuPause.setMinValue('2010-11-04');
-  
+
   var optionMenuReassignGlobal = {};
   optionMenuReassignGlobal.APP_UID = "";
   optionMenuReassignGlobal.DEL_INDEX = "";
@@ -1432,12 +1432,12 @@ Ext.onReady ( function() {
                       icon: Ext.MessageBox.ERROR,
                       buttons: Ext.MessageBox.OK,
                       fn : function(btn) {
-                        try 
+                        try
                           {
                            prnt = parent.parent;
                            top.location = top.location;
                           }
-                        catch (err) 
+                        catch (err)
                           {
                            parent.location = parent.location;
                           }
@@ -2242,12 +2242,12 @@ function reassign(){
                 icon: Ext.MessageBox.ERROR,
                 buttons: Ext.MessageBox.OK,
                 fn : function(btn) {
-                  try 
+                  try
                      {
                        prnt = parent.parent;
                        top.location = top.location;
                      }
-                   catch (err) 
+                   catch (err)
                       {
                        parent.location = parent.location;
                       }
@@ -2258,17 +2258,17 @@ function reassign(){
 		    ids = '';
 		    for(i=0; i<rows.length; i++) {
 		      // filtering duplicate tasks
-		
+
 		         if( i != 0 ) ids += ',';
 		         ids += rows[i].get('APP_UID') + "|" + rows[i].get('TAS_UID')+ "|" + rows[i].get('DEL_INDEX');
 		    }
 		    storeReassignCases.setBaseParam( 'APP_UIDS', ids);
 			//storeReassignCases.setBaseParam( 'action', 'to_reassign');
 		    storeReassignCases.load();
-		
+
 		    newPopUp.show();
 		    comboUsersToReassign.disable();
-		
+
 		    //grid = reassignGrid.store.data;
 		    //Ext.Msg.alert ( grid );
 		/*

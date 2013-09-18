@@ -4,7 +4,7 @@
  */
 
 //Keyboard Events
-new Ext.KeyMap(document, 
+new Ext.KeyMap(document,
     [
      {
        key: Ext.EventObject.F5,
@@ -77,7 +77,7 @@ Ext.onReady(function(){
     text: _('ID_EDIT'),
     iconCls: 'button_menu_ext ss_sprite  ss_pencil',
     handler: EditRole,
-    disabled: true	
+    disabled: true
   });
 
   deleteButton = new Ext.Action({
@@ -130,7 +130,7 @@ Ext.onReady(function(){
 
   clearTextButton = new Ext.Action({
     text: 'X',
-    ctCls:'pm_search_x_button',
+    ctCls:"pm_search_x_button_des",
     handler: GridByDefault
   });
 
@@ -141,7 +141,7 @@ Ext.onReady(function(){
 
   newForm = new Ext.FormPanel({
     url: 'roles_Ajax?request=saveNewRole',
-    frame: true, 	
+    frame: true,
     items:[
            {xtype: 'textfield', fieldLabel: _('ID_CODE'), name: 'code', width: 250, allowBlank: false,
             listeners: {
@@ -172,17 +172,17 @@ Ext.onReady(function(){
                   });
                 }
              }
-            }}, 
+            }},
            {
-             xtype: 'combo', 
-             fieldLabel: _('ID_STATUS'), 
+             xtype: 'combo',
+             fieldLabel: _('ID_STATUS'),
              hiddenName: 'status',
              typeAhead: true,
-             mode: 'local', 
-             store: comboStatusStore, 
-             displayField: 'value', 
+             mode: 'local',
+             store: comboStatusStore,
+             displayField: 'value',
              valueField:'id',
-             allowBlank: false, 
+             allowBlank: false,
              editable:false,
              triggerAction: 'all',
              emptyText: _('ID_SELECT_STATUS'),
@@ -202,7 +202,7 @@ Ext.onReady(function(){
     items:[
            {xtype: 'textfield', name: 'rol_uid', hidden: true },
            {xtype: 'textfield', fieldLabel: _('ID_CODE'), name: 'code', width: 250, allowBlank: false, readOnly: true, hidden: !PARTNER_FLAG ? false : true},
-           {xtype: 'textfield', fieldLabel: _('ID_NAME'), name: 'name', width: 200, allowBlank: false, 
+           {xtype: 'textfield', fieldLabel: _('ID_NAME'), name: 'name', width: 200, allowBlank: false,
             listeners: {
               blur : function(ob)
              {
@@ -218,15 +218,15 @@ Ext.onReady(function(){
              }
             }},
            {
-             xtype: 'combo', 
-             fieldLabel: _('ID_STATUS'), 
+             xtype: 'combo',
+             fieldLabel: _('ID_STATUS'),
              hiddenName: 'status',
              typeAhead: true,
-             mode: 'local', 
-             store: comboStatusStore, 
-             displayField: 'value', 
+             mode: 'local',
+             store: comboStatusStore,
+             displayField: 'value',
              valueField:'id',
-             allowBlank: false, 
+             allowBlank: false,
              editable:false,
              triggerAction: 'all',
              emptyText: _('ID_SELECT_STATUS'),
@@ -358,7 +358,7 @@ Ext.onReady(function(){
     })
   });
 
-  infoGrid.on('rowcontextmenu', 
+  infoGrid.on('rowcontextmenu',
       function (grid, rowIndex, evt) {
     var sm = grid.getSelectionModel();
     sm.selectRow(rowIndex, sm.isSelected(rowIndex));
@@ -366,10 +366,10 @@ Ext.onReady(function(){
   this
   );
 
-  infoGrid.on('contextmenu', 
+  infoGrid.on('contextmenu',
       function (evt) {
     evt.preventDefault();
-  }, 
+  },
   this
   );
 
@@ -457,9 +457,9 @@ SaveNewRole = function(){
                 break;
             }
           }
-        });  
+        });
       }else{
-        PMExt.error(_('ID_ROLES'),_('ID_ROLE_EXISTS'));        
+        PMExt.error(_('ID_ROLES'),_('ID_ROLE_EXISTS'));
       }
     },
     failure: function(r,o){
@@ -630,7 +630,7 @@ GridByDefault = function(){
 
 //Do Search Function
 DoSearch = function(){
-  infoGrid.store.load({params: {textFilter: searchText.getValue()}});	
+  infoGrid.store.load({params: {textFilter: searchText.getValue()}});
 };
 
 //Render Date Function

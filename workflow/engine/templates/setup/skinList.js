@@ -120,20 +120,19 @@ Ext.onReady(function(){
 
   clearTextButton = new Ext.Action({
     text: 'X',
-    ctCls:'pm_search_x_button',
+    ctCls:"pm_search_x_button_des",
     handler: GridByDefault
   });
-
 
   smodel = new Ext.grid.RowSelectionModel({
     singleSelect: true,
     listeners:{
       rowselect: function(sm){
         rowSelected = infoGrid.getSelectionModel().getSelected();
-        
+
         if((rowSelected.data.SKIN_FOLDER_ID)&&(rowSelected.data.SKIN_FOLDER_ID!="classic")&&(rowSelected.data.SKIN_FOLDER_ID!="neoclassic")){
           exportButton.enable();
-          
+
           if (rowSelected.data.SKIN_STATUS!='Inactive') {
             deleteButton.disable();
           } else {
@@ -662,7 +661,7 @@ importSkin = function(){
 
               if( !action.result ) {
                 Ext.MessageBox.alert( _('ID_ERROR') , _('ID_ERROR'));
-                return; 
+                return;
               }
               Ext.MessageBox.alert( _('ID_ERROR') , action.result.error);
 

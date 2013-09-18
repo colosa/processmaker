@@ -123,10 +123,9 @@ Ext.onReady(function(){
 
   clearTextButton = new Ext.Action({
     text: 'X',
-    ctCls:'pm_search_x_button',
+    ctCls:"pm_search_x_button_des",
     handler: GridByDefault
   });
-
 
   smodel = new Ext.grid.RowSelectionModel({
     singleSelect: true,

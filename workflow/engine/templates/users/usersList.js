@@ -155,8 +155,8 @@ Ext.onReady(function(){
   });
 
   clearTextButton = new Ext.Action({
-    text: 'X',
-     ctCls:'pm_search_x_button',
+     text: 'X',
+     ctCls:"pm_search_x_button_des",
      handler: GridByDefault
   });
 

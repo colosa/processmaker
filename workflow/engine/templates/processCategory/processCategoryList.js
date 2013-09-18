@@ -76,7 +76,7 @@ Ext.onReady(function(){
     text: _('ID_EDIT'),
     iconCls: 'button_menu_ext ss_sprite  ss_pencil',
     handler: EditCategory,
-    disabled: true	
+    disabled: true
   });
 
   deleteButton = new Ext.Action({
@@ -116,13 +116,13 @@ Ext.onReady(function(){
 
   clearTextButton = new Ext.Action({
     text: 'X',
-    ctCls:'pm_search_x_button',
+    ctCls:"pm_search_x_button_des",
     handler: GridByDefault
   });
 
   newForm = new Ext.FormPanel({
     url: 'processCategory_Ajax?action=saveNewCategory',
-    frame: true, 	
+    frame: true,
     items:[
            {xtype: 'textfield', fieldLabel: _('ID_CATEGORY_NAME'), name: 'category', width: 250, allowBlank: false}
            ],
@@ -185,7 +185,7 @@ Ext.onReady(function(){
     columns: [
               {id:'CATEGORY_UID', dataIndex: 'CATEGORY_UID', hidden:true, hideable:false},
               {header: _('ID_CATEGORY_NAME'), dataIndex: 'CATEGORY_NAME', width: 500, hidden:false, align:'left'},
-              {header: _('ID_PROCESSES'), dataIndex: 'TOTAL_PROCESSES', width: 100, hidden: false, align: 'center'}  
+              {header: _('ID_PROCESSES'), dataIndex: 'TOTAL_PROCESSES', width: 100, hidden: false, align: 'center'}
               ]
   });
 
@@ -258,7 +258,7 @@ Ext.onReady(function(){
     })
   });
 
-  infoGrid.on('rowcontextmenu', 
+  infoGrid.on('rowcontextmenu',
       function (grid, rowIndex, evt) {
     var sm = grid.getSelectionModel();
     sm.selectRow(rowIndex, sm.isSelected(rowIndex));
@@ -266,10 +266,10 @@ Ext.onReady(function(){
   this
   );
 
-  infoGrid.on('contextmenu', 
+  infoGrid.on('contextmenu',
       function (evt) {
     evt.preventDefault();
-  }, 
+  },
   this
   );
 
@@ -459,7 +459,7 @@ DeleteCategory = function(){
                   deleteButton.disable(); //Disable Delete Button
                   resp = Ext.decode(r.responseText);
                   if (resp.success){
-                    PMExt.notify(_('ID_PROCESS_CATEGORY'),_('ID_CATEGORY_SUCCESS_DELETE'));	
+                    PMExt.notify(_('ID_PROCESS_CATEGORY'),_('ID_CATEGORY_SUCCESS_DELETE'));
                   }else{
                     PMExt.error(_('ID_ERROR'),_('ID_MSG_AJAX_FAILURE'));
                   }
@@ -487,7 +487,7 @@ GridByDefault = function(){
 
 //Do Search Function
 DoSearch = function(){
-  infoGrid.store.load({params: {textFilter: searchText.getValue()}});	
+  infoGrid.store.load({params: {textFilter: searchText.getValue()}});
 };
 
 //Update Page Size Configuration

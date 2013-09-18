@@ -64,45 +64,45 @@ var cal_default = '00000000000000000000000000000001';
 
 Ext.onReady(function(){
     Ext.QuickTips.init();
-    
+
     pageSize = parseInt(CONFIG.pageSize);
-    
+
     newButton = new Ext.Action({
     	text: _('ID_NEW'),
     	iconCls: 'button_menu_ext ss_sprite  ss_add',
     	handler: NewCalendarAction
     });
-    
+
     editButton = new Ext.Action({
     	text: _('ID_EDIT'),
     	iconCls: 'button_menu_ext ss_sprite  ss_pencil',
     	handler: EditCalendarAction,
-    	disabled: true	
+    	disabled: true
     });
-    
+
     deleteButton = new Ext.Action({
     	text: _('ID_DELETE'),
     	iconCls: 'button_menu_ext ss_sprite  ss_delete',
     	handler: DeleteButtonAction,
     	disabled: true
     });
-    
+
     copyButton = new Ext.Action({
     	text: _('ID_COPY'),
     	iconCls: 'button_menu_ext ss_sprite ss_calendar_add',
     	handler: CopyButtonAction,
     	disabled: true
     });
-    
+
     searchButton = new Ext.Action({
     	text: _('ID_SEARCH'),
     	handler: DoSearch
     });
-    
+
     contextMenu = new Ext.menu.Menu({
     	items: [editButton, deleteButton,'-',copyButton]
     });
-    
+
     searchText = new Ext.form.TextField ({
         id: 'searchTxt',
         ctCls:'pm_search_text_field',
@@ -121,14 +121,14 @@ Ext.onReady(function(){
           		 }
         }
     });
-    
+
     clearTextButton = new Ext.Action({
     	text: 'X',
-    	ctCls:'pm_search_x_button',
+    	ctCls:"pm_search_x_button_des",
     	handler: GridByDefault
     });
-    
-   
+
+
     smodel = new Ext.grid.RowSelectionModel({
     	singleSelect: true,
     	listeners:{
@@ -145,7 +145,7 @@ Ext.onReady(function(){
     		}
     	}
     });
-    
+
     store = new Ext.data.GroupingStore( {
         proxy : new Ext.data.HttpProxy({
             url: 'calendar_Ajax?action=calendarList'
@@ -164,7 +164,7 @@ Ext.onReady(function(){
     		    ]
     	})
     });
-    
+
     cmodel = new Ext.grid.ColumnModel({
         defaults: {
             width: 50,
@@ -180,13 +180,13 @@ Ext.onReady(function(){
             {header: _('ID_TASKS'), dataIndex: 'TOTAL_TASKS', width: 69, align:'center'}
             ]
     });
-    
+
     storePageSize = new Ext.data.SimpleStore({
         fields: ['size'],
          data: [['20'],['30'],['40'],['50'],['100']],
          autoLoad: true
       });
-        
+
     comboPageSize = new Ext.form.ComboBox({
       typeAhead     : false,
       mode          : 'local',
@@ -204,9 +204,9 @@ Ext.onReady(function(){
           }
         }
       });
-        
+
       comboPageSize.setValue(pageSize);
-      
+
       bbarpaging = new Ext.PagingToolbar({
         pageSize: pageSize,
         store: store,
@@ -215,8 +215,8 @@ Ext.onReady(function(){
         emptyMsg: _('ID_GRID_PAGE_NO_CALENDAR_MESSAGE'),
         items: ['-',_('ID_PAGE_SIZE')+':',comboPageSize]
       });
-    
-    
+
+
     infoGrid = new Ext.grid.GridPanel({
     	region: 'center',
     	layout: 'fit',
@@ -247,15 +247,15 @@ Ext.onReady(function(){
     		groupTextTpl: '{text}'
     	})
     });
-    
-    infoGrid.on('rowcontextmenu', 
+
+    infoGrid.on('rowcontextmenu',
     		function (grid, rowIndex, evt) {
         		var sm = grid.getSelectionModel();
         		sm.selectRow(rowIndex, sm.isSelected(rowIndex));
     		},
     		this
     );
-    
+
     infoGrid.on('contextmenu', function(evt){evt.preventDefault();}, this);
     infoGrid.addListener('rowcontextmenu',onMessageContextMenu, this);
     infoGrid.store.load();
@@ -293,7 +293,7 @@ GridByDefault = function(){
 
 //Do Search Function
 DoSearch = function(){
-   infoGrid.store.load({params: {textFilter: searchText.getValue()}});	
+   infoGrid.store.load({params: {textFilter: searchText.getValue()}});
 };
 
 //Edit Calendar Action
@@ -333,13 +333,13 @@ DeleteButtonAction = function(){
     	    		failure: function(r,o){
     	    		  viewport.getEl().unmask();
     	    		}
-    	    	});	
+    	    	});
     		}
-    	  }		
+    	  }
     	);
       }else{
-    	 PMExt.error(_('ID_CALENDARS'),_('ID_MSG_CANNOT_DELETE_CALENDAR')); 
-      }	
+    	 PMExt.error(_('ID_CALENDARS'),_('ID_MSG_CANNOT_DELETE_CALENDAR'));
+      }
     },
     failure: function(r,o){
       viewport.getEl().unmask();
@@ -359,7 +359,7 @@ render_status = function(v){
 //Members Button Action
 CopyButtonAction = function(){
   rowSelected = infoGrid.getSelectionModel().getSelected();
-  if (rowSelected){    
+  if (rowSelected){
     location.href = '../admin/calendarEdit?cp=1&id=' + rowSelected.data.CALENDAR_UID;
   }
 };

@@ -77,7 +77,7 @@ Ext.onReady(function(){
 
   clearTextButton = new Ext.Action({
     text: 'X',
-    ctCls:'pm_search_x_button',
+    ctCls:"pm_search_x_button_des",
     handler: GridByDefault
   });
 
@@ -218,7 +218,7 @@ Ext.onReady(function(){
     })
   });
 
-  infoGrid.on('rowcontextmenu', 
+  infoGrid.on('rowcontextmenu',
       function (grid, rowIndex, evt) {
     var sm = grid.getSelectionModel();
     sm.selectRow(rowIndex, sm.isSelected(rowIndex));
@@ -226,10 +226,10 @@ Ext.onReady(function(){
   this
   );
 
-  infoGrid.on('contextmenu', 
+  infoGrid.on('contextmenu',
       function (evt) {
     evt.preventDefault();
-  }, 
+  },
   this
   );
 
@@ -270,7 +270,7 @@ ShowSelectedLog = function(){
     Ext.getCmp('cstatus').setText(rowSelected.data.WS_CREATE_CASE_STATUS);
     Ext.getCmp('rstatus').setText(rowSelected.data.WS_ROUTE_CASE_STATUS);
     w = new Ext.Window({
-      autoHeight: true, 
+      autoHeight: true,
       width: 550,
       resizable: false,
       closable: false,
@@ -305,5 +305,3 @@ UpdatePageConfig = function(pageSize){
     params: {action:'updatePageSize', size: pageSize}
   });
 };
-
-
