@@ -499,12 +499,12 @@ function popupWindow ( title , url, width, height, callbackFn , autoSizeWidth, a
 		position:{center:true},
 		title: title,
 		theme: "processmaker",
-		control: { close :true, roll	:false, drag	:true, resize	:false},
+		control: { close :true, roll	:false, drag	:false, resize	:false},
 		fx: {
 			//shadow	:true,
 			blinkToFront:true,
 			opacity	:true,
-			drag:true,
+			drag:false,
 			modal: modal
 		      //opacityModal:{static:'1'}
 		}

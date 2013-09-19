@@ -48,8 +48,8 @@ var processmap=function(){
               //target  :this.options.target,
               statusBar:false,
               //titleBar:false,
-              control :{drag:false,resize:false,close:true, drag:true},
-              fx  :{opacity:false,rolled:false,modal:true, drag:true}
+              control :{drag:false,resize:false,close:true, drag:false},
+              fx  :{opacity:false,rolled:false,modal:true, drag:false}
             };
             this.panels.buildingBlocks.make();
             this.panels.buildingBlocks.events={
@@ -221,8 +221,8 @@ var processmap=function(){
             statusBar:false,
             elementToDrag:"content",
             cursorToDrag:"default",
-            control :{drag:true,resize:false},
-            fx :{opacity:true,shadow:false}
+            control :{drag:false,resize:false},
+            fx :{opacity:true,shadow:false,drag:false}
            };
            panel.setStyle={
             containerWindow:{border:"1px solid buttonshadow"},
@@ -363,9 +363,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_EDIT_PROCESS+": "+ moldTitle(this.data.db.title.label,700),//this.data.db.title.label,s
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -393,9 +393,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_EXPORT_PROCESS+": "+moldTitle(this.data.db.title.label,600),//this.data.db.title.label,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -450,9 +450,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_OBJECT_PERMISSIONS,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -481,9 +481,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_PROCESS_SUPERVISORS,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -511,9 +511,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_SUPERVISORS_DYNAFORMS,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -541,9 +541,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_SUPERVISORS_INPUTS,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -573,9 +573,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_WEB_ENTRY,
               theme :this.options.theme,
-              control :{close:true,resize:true},fx:{modal:true},
+              control :{close:true,resize:true,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -604,9 +604,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_CASE_TRACKER,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -635,9 +635,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_CASE_TRACKER_OBJECTS,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -666,9 +666,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESS_FILES_MANAGER,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{shadow:true,modal:true}
+              fx  :{shadow:true,modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -759,9 +759,9 @@ var processmap=function(){
                 position:{x:50,y:50,center:true},
                 title :G_STRINGS.ID_EVENT_MESSAGE,
                 theme :this.options.theme,
-                control :{close:true,resize:false},fx:{modal:true},
+                control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
                 statusBar:false,
-                fx :{shadow:true,modal:true}
+                fx :{shadow:true,modal:true,drag:false}
               };
               panel.make();
               panel.loader.show();
@@ -792,9 +792,9 @@ var processmap=function(){
                 position:{x:50,y:50,center:true},
                 title :G_STRINGS.ID_EVENT_MESSAGE,
                 theme :this.options.theme,
-                control :{close:true,resize:false},fx:{modal:true},
+                control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
                 statusBar:false,
-                fx :{shadow:true,modal:true}
+                fx :{shadow:true,modal:true,drag:false}
               };
               panel.make();
               panel.loader.show();
@@ -825,9 +825,9 @@ var processmap=function(){
                 position:{x:50,y:50,center:true},
                 title :G_STRINGS.ID_EVENT_MULTIPLE,
                 theme :this.options.theme,
-                control :{close:true,resize:false},fx:{modal:true},
+                control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
                 statusBar:false,
-                fx :{shadow:true,modal:true}
+                fx :{shadow:true,modal:true,drag:false}
               };
               panel.make();
               panel.loader.show();
@@ -1407,10 +1407,12 @@ var processmap=function(){
               theme:this.options.theme,
               statusBar:false,
               control:{
-                close:true
+                close:true,
+                drag:false
               },
               fx:{
-                modal:true
+                modal:true,
+                drag:false
             }};
             panel.tab={
               width :300,
@@ -1444,9 +1446,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_USERS_AND_GROUPS+": "+task.label.substr(0,30) + (task.label.length>=30 ? "..." : "") ,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{modal:true}
+              fx  :{modal:true,drag:false}
             };
             panel.events = { //neyek
               remove: function() {
@@ -1482,9 +1484,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_USERS_AND_GROUPS_ADHOC+": "+task.label.substr(0,27) + (task.label.length>=27 ? "..." : "") ,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{modal:true}
+              fx  :{modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -1659,10 +1661,12 @@ var processmap=function(){
               ],
               control:{
                 close:true,
-                resize:false
+                resize:false,
+                drag:false
               },
               fx:{
-                modal:true
+                modal:true,
+                drag:false
               }
             };
 
@@ -1786,9 +1790,9 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_PROPERTIES,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{close:true,resize:false,drag:false},fx:{modal:true,drag:false},
               statusBar:false,
-              fx  :{modal:true}
+              fx  :{modal:true,drag:false}
             };
             panel.make();
             panel.loader.show();
@@ -1840,7 +1844,7 @@ var processmap=function(){
                 theme    : 'processmaker',
                 statusBar: false,
                 control  : {drag:false,resize:false,close:true},
-                fx       : {opacity:true,rolled:false,modal:true}
+                fx       : {opacity:true,rolled:false,modal:true,drag:false}
               };
               this.oTaskDetailsPanel.make();
               this.oTaskDetailsPanel.events = {
@@ -2284,8 +2288,8 @@ var processmap=function(){
         position:{x:50,y:50,center:true},
         title :G_STRINGS.ID_PROCESSMAP_WORKFLOW_PATTERNS+": "+task.label,
         theme :this.options.theme,
-        control :{close:true,resize:true},
-        fx  :{modal:true}
+        control :{close:true,resize:true,drag:false},
+        fx  :{modal:true,drag:false}
       };
       panel.make();
       panel.loader.show();
@@ -2491,12 +2495,13 @@ processmap.prototype={
       title:"",
       titleBar:false,
       control:{
-        //drag  :false,
+        drag  :false,
         resize:false
       },
       fx:{
         opacity:false,
         shadow:false,
+        drag:false,
         blinkToFront:false
       },
       theme:this.options.theme,
@@ -2707,8 +2712,8 @@ function showDbConnectionsList(PRO_UID)
       title :G_STRINGS.ID_DBS_LIST,
       theme :"processmaker",
       statusBar:false,
-      control :{resize:false,roll:false,drag:true},
-      fx  :{modal:true,opacity:true,blinkToFront:false,fadeIn:false,drag:true}
+      control :{resize:false,roll:false,drag:false},
+      fx  :{modal:true,opacity:true,blinkToFront:false,fadeIn:false,drag:false}
     };
     mainPanel.events = {
       remove: function() { delete(mainPanel); }.extend(this)
@@ -2741,8 +2746,8 @@ function showCaseSchedulerList(PRO_UID)
       title :G_STRINGS.ID_PROCESSMAP_CASE_SCHEDULER_TITLE,
       theme :"processmaker",
       statusBar:false,
-      control :{resize:false,roll:false,drag:true},
-      fx  :{modal:true,opacity:true,blinkToFront:false,fadeIn:false,drag:true}
+      control :{resize:false,roll:false,drag:false},
+      fx  :{modal:true,opacity:true,blinkToFront:false,fadeIn:false,drag:false}
     };
     mainPanel.events = {
       remove: function() { delete(mainPanel); }.extend(this)
@@ -2776,8 +2781,8 @@ function showLogCaseSchedulerList(PRO_UID)
       title :"Case Scheduler Log List",
       theme :"processmaker",
       statusBar:false,
-      control :{resize:false,roll:false,drag:true},
-      fx  :{modal:true,opacity:true,blinkToFront:false,fadeIn:false,drag:true}
+      control :{resize:false,roll:false,drag:false},
+      fx  :{modal:true,opacity:true,blinkToFront:false,fadeIn:false,drag:false}
     };
     mainPanel.events = {
       remove: function() { delete(mainPanel); }.extend(this)
