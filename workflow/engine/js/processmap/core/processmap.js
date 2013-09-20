@@ -2112,7 +2112,8 @@ var processmap=function(){
           left:text.position.x,
           cursor:((this.options.rw===true)?"move":"default")
         });
-        a.innerHTML=text.label;
+        a.appendChild(document.createTextNode(''));
+        a.childNodes[0].data=text.label;
         this.panels.editor.elements.content.appendChild(a);
         if(this.options.rw===true)
         {
@@ -2136,14 +2137,14 @@ var processmap=function(){
                 }*/
                 new this.parent.module.app.prompt().make({
                   label:G_STRINGS.ID_PROCESSMAP_EDIT_TEXT_CHANGE_TO,
-                  value:text.label.escapeHTML(),
+                  value:text.label,
                   action:function(text,tObj){
                     if(text.trim()!=="" && tObj.label!=text)
                     {
-                      tObj.label = tObj.object.elements.label.innerHTML=text.escapeHTML();
+                      tObj.label = tObj.object.elements.label.childNodes[0].data = text;
                       var r = new leimnud.module.rpc.xmlhttp({
                         url : this.options.dataServer,
-                        args  : "action=updateText&data="+{uid:tObj.uid,label:tObj.label.unescapeHTML()}.toJSONString()
+                        args  : "action=updateText&data="+{uid:tObj.uid,label:tObj.label}.toJSONString()
                       });
                       r.make();
                     }

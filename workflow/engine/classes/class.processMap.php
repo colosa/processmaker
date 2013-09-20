@@ -403,8 +403,7 @@ class processMap
                     case 'text':
                         $oText = null;
                         $oText->uid = $aRow['SWI_UID'];
-                        $oText->label = htmlentities(($aRow['CON_VALUE'] != '' ? str_replace(chr(92), '&#92;', str_replace('<', '&lt;', $aRow['CON_VALUE'])) : '-'), ENT_QUOTES, 'UTF-8');
-                        // $oText->label       = '->' . $aRow ['CON_VALUE'] . '<-' ;
+                        $oText->label       = $aRow ['CON_VALUE'];
                         $oText->position->x = $aRow['SWI_X'];
                         $oText->position->y = $aRow['SWI_Y'];
                         $oPM->text[] = $oText;
