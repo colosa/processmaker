@@ -210,7 +210,6 @@ class Installer
 
             fclose($fp);
             $this->setPartner();
-            $this->setConfiguration();
             $this->setAdmin();
         }
         return $test;
