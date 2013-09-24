@@ -40,7 +40,11 @@ try {
     //$oJSON = new Services_JSON();
 
     if (isset($_REQUEST['data'])) {
-        $oData = Bootstrap::json_decode(stripslashes($_REQUEST['data']));
+        if($_REQUEST['action']=="addText"||$_REQUEST['action']=="updateText") {
+            $oData = Bootstrap::json_decode($_REQUEST['data']);
+        } else {
+            $oData = Bootstrap::json_decode(stripslashes($_REQUEST['data']));
+        }
         //$oData = $oJSON->decode( stripslashes( $_REQUEST['data'] ) );
         $sOutput = '';
         $sTask = '';
