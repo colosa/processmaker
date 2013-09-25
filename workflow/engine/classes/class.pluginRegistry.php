@@ -1427,6 +1427,7 @@ class PMPluginRegistry
 
     public function verifyTranslation ($namePlugin)
     {
+        error_log("TRADUCCION--- PLUGIN=>" . $namePlugin . '--- IDIOMA=>' . SYS_LANG);
         $language = new Language();
         $pathPluginTranslations = PATH_PLUGINS . $namePlugin . PATH_SEP . 'translations' . PATH_SEP;
         if (file_exists($pathPluginTranslations . 'translations.php')) {
