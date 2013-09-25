@@ -511,7 +511,7 @@ var processmap=function(){
               position:{x:50,y:50,center:true},
               title :G_STRINGS.ID_PROCESSMAP_SUPERVISORS_DYNAFORMS,
               theme :this.options.theme,
-              control :{close:true,resize:false},fx:{modal:true},
+              control :{limit:true,close:true,resize:false},fx:{modal:true},
               statusBar:false,
               fx  :{shadow:true,modal:true}
             };
@@ -2771,6 +2771,7 @@ function showLogCaseSchedulerList(PRO_UID)
 {
   mainPanel = new leimnud.module.panel();
   mainPanel.options = {
+	  limit :true,
       size  :{w:640,h:450},
       position:{x:0,y:0,center:true},
       title :"Case Scheduler Log List",
