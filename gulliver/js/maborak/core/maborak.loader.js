@@ -592,11 +592,13 @@ else if(this.type=="group")
 {this.parent.dom.setStyle(this.options.elements[i],{left:this.elementStart[i].x+(cursor.x-this.cursorStart.x),top:this.elementStart[i].y+(cursor.y-this.cursorStart.y)});}}
 else if(this.type=="link")
 {if(this.options.limit===true)
-{var rng=this.parent.dom.positionRange(this.linkRef,false,true);rG={l:true,t:true};for(i=0;i<this.linkRef.length;i++)
+{rG={l:true,t:true};for(i=0;i<this.linkRef.length;i++)
 {tL=parseInt(this.elementStart[i].x+(cursor.x-this.cursorStart.x),10);tT=parseInt(this.elementStart[i].y+(cursor.y-this.cursorStart.y),10);if(tL<0){rG.l=false;}
 if(tT<0){rG.t=false;}}
 for(i=0;i<this.linkRef.length;i++)
-{tL=parseInt(this.elementStart[i].x+(cursor.x-this.cursorStart.x),10);tT=parseInt(this.elementStart[i].y+(cursor.y-this.cursorStart.y),10);if(rG.l)
+{tL=parseInt(this.elementStart[i].x+(cursor.x-this.cursorStart.x),10);tT=parseInt(this.elementStart[i].y+(cursor.y-this.cursorStart.y),10);if(tL>(screen.width-(element.clientWidth+25))){rG.l=false;}
+if(tT>(screen.height-(element.clientHeight+200))){rG.t=false;}
+if(rG.l)
 {this.parent.dom.setStyle(this.linkRef[i],{left:tL});}
 if(rG.t)
 {this.parent.dom.setStyle(this.linkRef[i],{top:tT});}}}
@@ -1005,7 +1007,7 @@ mainPanel=new leimnud.module.panel();mainPanel.options={limit:true,size:{w:850,h
 function showNewProcessMap(PRO_UID)
 {window.location="../bpmnDesigner?id="+PRO_UID;}
 function showLogCaseSchedulerList(PRO_UID)
-{mainPanel=new leimnud.module.panel();mainPanel.options={size:{w:640,h:450},position:{x:0,y:0,center:true},title:"Case Scheduler Log List",theme:"processmaker",statusBar:false,control:{resize:false,roll:false,drag:true},fx:{modal:true,opacity:true,blinkToFront:false,fadeIn:false,drag:true}};mainPanel.events={remove:function(){delete(mainPanel);}.extend(this)};mainPanel.make();mainPanel.loader.show();var oRPC=new leimnud.module.rpc.xmlhttp({url:'processes_Ajax',args:'action=log_case_scheduler&PRO_UID='+PRO_UID});oRPC.callback=function(rpc){mainPanel.loader.hide();var scs=rpc.xmlhttp.responseText.extractScript();mainPanel.addContent(rpc.xmlhttp.responseText);scs.evalScript();}.extend(this);oRPC.make();}
+{mainPanel=new leimnud.module.panel();mainPanel.options={limit:true,size:{w:640,h:450},position:{x:0,y:0,center:true},title:"Case Scheduler Log List",theme:"processmaker",statusBar:false,control:{resize:false,roll:false,drag:true},fx:{modal:true,opacity:true,blinkToFront:false,fadeIn:false,drag:true}};mainPanel.events={remove:function(){delete(mainPanel);}.extend(this)};mainPanel.make();mainPanel.loader.show();var oRPC=new leimnud.module.rpc.xmlhttp({url:'processes_Ajax',args:'action=log_case_scheduler&PRO_UID='+PRO_UID});oRPC.callback=function(rpc){mainPanel.loader.hide();var scs=rpc.xmlhttp.responseText.extractScript();mainPanel.addContent(rpc.xmlhttp.responseText);scs.evalScript();}.extend(this);oRPC.make();}
 function exitEditor()
 {location.href='../processes/mainInit';}
 function moldTitle(title,size)
