@@ -267,6 +267,73 @@ class Installer
                     break;
                 }
             }
+
+            //ACTIVE ENTERPRISE
+
+            ini_set('max_execution_time', '0');
+            ini_set('memory_limit', '256M');
+
+            $serv = 'http://';
+            if (isset($_SERVER['HTTPS']) && trim($_SERVER['HTTPS']) != '') {
+                $serv = 'https://';
+            }
+            $serv .= $_SERVER['SERVER_NAME'];
+            if (isset($_SERVER['SERVER_PORT']) && trim($_SERVER['SERVER_PORT']) != '') {
+                $serv .= ':' . $_SERVER['SERVER_PORT'];
+            }
+
+            // create session
+            $cookiefile =  sys_get_temp_dir() . PATH_SEP . 'curl-session';
+
+            $fp = fopen($cookiefile, "w");
+            fclose($fp);
+            chmod($cookiefile, 0777);
+
+            $user = urlencode($this->options['admin']['username']);
+            $pass = urlencode($this->options['admin']['password']);
+            $workspace = $this->options['name'];
+            $lang = SYS_LANG;
+            $skinName = SYS_SKIN;
+
+            $ch = curl_init();
+
+            // set URL and other appropriate options
+            curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/login/authentication");
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiefile);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "form[USR_USERNAME]=$user&form[USR_PASSWORD]=$pass&form[USER_LANG]=$lang");
+            curl_setopt($ch, CURLOPT_TIMEOUT, 90);
+
+            $output = curl_exec($ch);
+            curl_close($ch);
+
+            $ch = curl_init();
+            $postData = array();
+            // resolv the plugin name
+            $plugins = glob(PATH_CORE."plugins/*.tar");
+            if (count($plugins) > 0) {
+                $pluginName = $plugins[0];
+
+                // File to upload/post
+                $postData['form[PLUGIN_FILENAME]'] = "@{$pluginName}";
+                curl_setopt($ch, CURLOPT_URL, "$serv/sys{$workspace}/{$lang}/{$skinName}/setup/pluginsImportFile");
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_VERBOSE, 0);
+                curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
+                curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiefile);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 90);
+
+                $output = curl_exec($ch);
+                curl_close($ch);
+            }
         }
     }
 
