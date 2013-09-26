@@ -4383,6 +4383,11 @@ tinymce.html.Writer = function(settings) {
 			if (attrs) {
 				for (i = 0, l = attrs.length; i < l; i++) {
 					attr = attrs[i];
+                                        
+                                        if( attr.value.indexOf("expand") >= 0 ) {
+                                            attr.value = attr.value.substring(0, attr.value.indexOf("expand"));
+                                        }
+                                        
 					html.push(' ', attr.name, '="', encode(attr.value, true), '"');
 				}
 			}
