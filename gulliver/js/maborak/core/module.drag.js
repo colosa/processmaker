@@ -268,7 +268,6 @@ leimnud.Package.Public({
 			{
 				if(this.options.limit===true)
 				{
-					var rng=this.parent.dom.positionRange(this.linkRef,false,true);
 					rG={
 						l:true,
 						t:true
@@ -284,6 +283,12 @@ leimnud.Package.Public({
 					{
 						tL=parseInt(this.elementStart[i].x+(cursor.x-this.cursorStart.x),10);
 						tT=parseInt(this.elementStart[i].y+(cursor.y-this.cursorStart.y),10);
+						if (tL > (screen.width - (element.clientWidth + 25))) {
+			                rG.l = false;
+			            }
+			            if (tT > (screen.height - (element.clientHeight + 200))) {
+			                rG.t = false;
+			            } 
 						if(rG.l)
 						{
 							this.parent.dom.setStyle(this.linkRef[i],{

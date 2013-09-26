@@ -2772,6 +2772,7 @@ function showLogCaseSchedulerList(PRO_UID)
 {
   mainPanel = new leimnud.module.panel();
   mainPanel.options = {
+      limit :true,
       size  :{w:640,h:450},
       position:{x:0,y:0,center:true},
       title :"Case Scheduler Log List",

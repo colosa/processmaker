@@ -14,6 +14,7 @@ var oPanel;
 function newDbConnection() {
 	oPanel = new leimnud.module.panel();
 	oPanel.options = {
+		limit :true,
 	  	size	:{w:450,h:380},
 	  	position:{x:0,y:0,center:true},
 	  	title	:G_STRINGS.ID_DBS_NEW,
@@ -129,6 +130,7 @@ function editDbConnection(DBS_UID)
 
 	oPanel = new leimnud.module.panel();
 	oPanel.options = {
+		limit :true,
 		size	:{w:450,h:380},
 	  	position:{x:0,y:0,center:true},
 	  	title	:G_STRINGS.ID_DBS_EDIT,
@@ -235,6 +237,7 @@ function testDBConnection()
 		var myPanel = new leimnud.module.panel();
 		currentPopupWindow = myPanel;
 		myPanel.options = {
+			limit :true,
 			size:{w:500,h:400},
 			position:{center:true},
 			title: G_STRINGS.DBCONNECTIONS_TEST,
