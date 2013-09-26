@@ -1547,6 +1547,46 @@ class AppCacheView extends BaseAppCacheView
         return G::LoadTranslation('ID_EXIST');
     }
 
+    public function triggerSubApplicationInsert($lang, $recreate = false)
+    {
+        $cnn = Propel::getConnection("workflow");
+        $stmt = $cnn->createStatement();
+
+        $rs = $stmt->executeQuery("SHOW TRIGGERS", ResultSet::FETCHMODE_ASSOC);
+        $found = false;
+
+        while ($rs->next()) {
+            $row = $rs->getRow();
+
+            if (strtolower($row["Trigger"] == "SUB_APPLICATION_INSERT") && strtoupper($row["Table"]) == "SUB_APPLICATION") {
+                $found = true;
+            }
+        }
+
+        if ($recreate) {
+            $rs = $stmt->executeQuery("DROP TRIGGER IF EXISTS SUB_APPLICATION_INSERT");
+            $found = false;
+        }
+
+        if (!$found) {
+            $filenameSql = $this->pathToAppCacheFiles . "triggerSubApplicationInsert.sql";
+
+            if (!file_exists($filenameSql)) {
+                throw (new Exception("file triggerSubApplicationInsert.sql doesn't exist"));
+            }
+
+            $sql = file_get_contents($filenameSql);
+            $sql = str_replace("{lang}", $lang, $sql);
+
+            $stmt->executeQuery($sql);
+
+            return G::LoadTranslation("ID_CREATED");
+        }
+
+        return G::LoadTranslation("ID_EXIST");
+    }
+
+
     /**
      * Retrieve the SQL code to create the APP_CACHE_VIEW triggers.
      *
@@ -1559,6 +1599,7 @@ class AppCacheView extends BaseAppCacheView
             'triggerApplicationUpdate.sql',
             'triggerAppDelegationUpdate.sql',
             'triggerAppDelegationInsert.sql',
+            "triggerSubApplicationInsert.sql",
             'triggerContentUpdate.sql'
         );
 

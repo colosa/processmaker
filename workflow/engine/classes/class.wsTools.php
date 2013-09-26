@@ -488,6 +488,7 @@ class workspaceTools
         $triggers[] = $appCache->triggerAppDelegationUpdate($lang, $checkOnly);
         $triggers[] = $appCache->triggerApplicationUpdate($lang, $checkOnly);
         $triggers[] = $appCache->triggerApplicationDelete($lang, $checkOnly);
+        $triggers[] = $appCache->triggerSubApplicationInsert($lang, $checkOnly);
         $triggers[] = $appCache->triggerContentUpdate($lang, $checkOnly);
 
         if ($fill) {

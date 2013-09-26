@@ -178,6 +178,9 @@ switch ($request) {
         $res = $appCache->triggerApplicationDelete( $lang, false );
         $result->info[] = array ('name' => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_APPLICATION_DELETE' ),'value' => $res);
 
+        //SUB_APPLICATION INSERT
+        $res = $appCache->triggerSubApplicationInsert($lang, false);
+
         //CONTENT UPDATE
         $res = $appCache->triggerContentUpdate( $lang, false );
         $result->info[] = array ("name" => G::LoadTranslation ( 'ID_CACHE_BUILDER_TRIGGER_CONTENT_UPDATE' ),"value" => $res);
@@ -237,11 +240,12 @@ switch ($request) {
             $res = $appCache->triggerApplicationDelete( $lang, true );
             //$result->info[] = array ('name' => 'Trigger APPLICATION DELETE',              'value'=> $res);
 
+            //SUB_APPLICATION INSERT
+            $res = $appCache->triggerSubApplicationInsert($lang, false);
 
             //CONTENT UPDATE
             $res = $appCache->triggerContentUpdate( $lang, true );
             //$result->info[] = array("name" => "Trigger CONTENT UPDATE", "value" => $res);
-
 
             //build using the method in AppCacheView Class
             $res = $appCache->fillAppCacheView( $lang );

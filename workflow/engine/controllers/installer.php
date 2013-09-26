@@ -753,7 +753,9 @@ class Installer extends Controller
                 $this->mysqlQuery( @file_get_contents( PATH_HOME . 'engine/methods/setup/setupSchemas/triggerAppDelegationUpdate.sql' ) );
                 $this->mysqlQuery( @file_get_contents( PATH_HOME . 'engine/methods/setup/setupSchemas/triggerApplicationUpdate.sql' ) );
                 $this->mysqlQuery( @file_get_contents( PATH_HOME . 'engine/methods/setup/setupSchemas/triggerApplicationDelete.sql' ) );
+                $this->mysqlQuery(@file_get_contents(PATH_HOME . "engine/methods/setup/setupSchemas/triggerSubApplicationInsert.sql"));
                 $this->mysqlQuery( @file_get_contents( PATH_HOME . 'engine/methods/setup/setupSchemas/triggerContentUpdate.sql' ) );
+
                 $this->mysqlQuery( "INSERT INTO `CONFIGURATION` (
                             `CFG_UID`,
                             `CFG_VALUE`
@@ -826,6 +828,9 @@ class Installer extends Controller
 
             //APPLICATION DELETE
             $res = $appCache->triggerApplicationDelete( $lang, true );
+
+            //SUB_APPLICATION INSERT
+            $res = $appCache->triggerSubApplicationInsert($lang, false);
 
             //CONTENT UPDATE
             $res = $appCache->triggerContentUpdate( $lang, true );
@@ -1038,6 +1043,7 @@ class Installer extends Controller
                 $this->mssqlQuery( @file_get_contents( PATH_HOME . 'engine/plugins/enterprise/data/triggerAppDelegationUpdate.sql' ) );
                 $this->mssqlQuery( @file_get_contents( PATH_HOME . 'engine/plugins/enterprise/data/triggerApplicationUpdate.sql' ) );
                 $this->mssqlQuery( @file_get_contents( PATH_HOME . 'engine/plugins/enterprise/data/triggerApplicationDelete.sql' ) );
+                $this->mysqlQuery(@file_get_contents(PATH_HOME . "engine/methods/setup/setupSchemas/triggerSubApplicationInsert.sql"));
                 $this->mssqlQuery( @file_get_contents( PATH_HOME . 'engine/plugins/enterprise/data/triggerContentUpdate.sql' ) );
                 $this->mssqlQuery( "INSERT INTO CONFIGURATION (
                             CFG_UID,
@@ -1366,7 +1372,7 @@ class Installer extends Controller
         $value = array(
             'login_defaultLanguage' => "pt-BR",
             "dateFormat" => 'd \d\e F \d\e Y'
-        ); 
+        );
 
         $value = serialize($value);
         $query = "INSERT INTO CONFIGURATION (CFG_UID, CFG_VALUE) VALUES ('ENVIRONMENT_SETTINGS', '".mysql_real_escape_string($value)."')";
