@@ -965,7 +965,7 @@ class Configurations // extends Configuration
                 break;
         }
 
-        return array("caseColumns" => $caseColumns, "caseReaderFields" => $caseReaderFields, "rowsperpage" => 20, "dateformat" => "M d, Y");
+        return array("caseColumns" => $caseColumns, "caseReaderFields" => $caseReaderFields, "rowsperpage" => 25, "dateformat" => "M d, Y");
     }
     /**
      * Set the current Directory structure version, default value 1.
