@@ -557,11 +557,8 @@ class Configurations // extends Configuration
                 list ($date, $time) = explode(' ', $dateTime);
                 list ($y, $m, $d) = explode('-', $date);
                 list ($h, $i, $s) = explode(':', $time);
-                $dateTime = date($creationDateMask, mktime($h, $i, $s, $m, $d, $y));
-            } else {
-                list ($y, $m, $d) = explode('-', $dateTime);
                 $newCreation = '';
-                $maskTime = array('d' => '%d', 'D' => '%A', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%B', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%P', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
+                $maskTime = array('d' => '%d', 'D' => '%A', 'j' => '%e', 'l' => '%A', 'G' => '%I', 'g' => '%i', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%B', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%p', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
                 $creationDateMask = trim($creationDateMask);
 
                 if (strpos($creationDateMask, ' \\d\\e ') !== false) {
@@ -605,7 +602,7 @@ class Configurations // extends Configuration
                 }
 
                 setlocale(LC_TIME, $langLocate);
-                $dateTime = utf8_encode(strftime($newCreation, mktime(0, 0, 0, $m, $d, $y)));
+                $dateTime = utf8_encode(strftime($newCreation, mktime($h, $i, $s, $m, $d, $y)));
 
                 if (strpos($dateTime, ' ') !== false) {
                     $dateTime = ucwords($dateTime);
@@ -615,8 +612,6 @@ class Configurations // extends Configuration
                     $dateTime = str_replace('[xx]', ' de ', $dateTime);
                 }
             }
-
-
         }
 
         return $dateTime;
