@@ -558,7 +558,7 @@ class Configurations // extends Configuration
                 list ($y, $m, $d) = explode('-', $date);
                 list ($h, $i, $s) = explode(':', $time);
                 $newCreation = '';
-                $maskTime = array('d' => '%d', 'D' => '%A', 'j' => '%e', 'l' => '%A', 'G' => '%I', 'g' => '%i', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%B', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%p', 'A' => '%p', 'g' => '%l', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
+                $maskTime = array('d' => '%d', 'D' => '%A', 'j' => '%d', 'l' => '%A', 'G' => '%I', 'g' => '%i', 'N' => '%u', 'S' => '%d', 'w' => '%w', 'z' => '%j', 'W' => '%W', 'F' => '%B', 'm' => '%m', 'M' => '%B', 'n' => '%m', 'o' => '%Y', 'Y' => '%Y', 'y' => '%g', 'a' => '%p', 'A' => '%p', 'g' => '%I', 'G' => '%k', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S');
                 $creationDateMask = trim($creationDateMask);
 
                 if (strpos($creationDateMask, ' \\d\\e ') !== false) {
