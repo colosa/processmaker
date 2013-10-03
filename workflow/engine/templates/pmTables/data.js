@@ -196,9 +196,39 @@ Ext.onReady(function(){
   });
 
   //row editor for table columns grid
+  var flagShowMessageError = 1;
+
   if (!isReport) {
     editor = new Ext.ux.grid.RowEditor({
       saveText  : _("ID_UPDATE"),
+      isValid: function ()
+      {
+           var valid = true;
+           this.items.each(function(f) {
+               if(!f.isValid(true)){
+                   valid = false;
+
+                   if (valid) {
+                       flagShowMessageError = 1;
+                   }
+
+                   return false;
+               }
+           });
+
+           if (valid) {
+               flagShowMessageError = 1;
+           }
+
+           return valid;
+      },
+      showTooltip: function (msg)
+      {
+           if (flagShowMessageError == 1) {
+               Ext.msgBoxSlider.msgTopCenter("error", _("ID_ERROR"), msg, 3);
+               flagShowMessageError = 0;
+           }
+      },
       listeners : {
         afteredit : {
           fn:function(rowEditor, obj, data, rowIndex ){
@@ -206,6 +236,10 @@ Ext.onReady(function(){
             //store.reload(); // only if it is an insert
             }
           }
+        },
+        canceledit: function (grid, obj)
+        {
+            flagShowMessageError = 1;
         }
       }
     });
