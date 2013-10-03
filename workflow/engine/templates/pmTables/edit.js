@@ -242,6 +242,8 @@ Ext.onReady(function(){
                           var sizeEdit = Ext.getCmp("sizeEdit");
 
                           editorFieldsEnableDisable(selCombo, fieldNull, fieldPrimaryKey, fieldInc, sizeEdit);
+
+                          flagShowMessageError = 1;
                       }
                   }//select
               }
@@ -339,13 +341,45 @@ Ext.onReady(function(){
       ]
   });
   //row editor for table columns grid
+  var flagShowMessageError = 1;
+
   editor = new Ext.ux.grid.RowEditor({
     saveText: _("ID_UPDATE"),
+    isValid: function ()
+    {
+        var valid = true;
+        this.items.each(function(f) {
+            if(!f.isValid(true)){
+                valid = false;
+
+                if (valid) {
+                    flagShowMessageError = 1;
+                }
+
+                return false;
+            }
+        });
+
+        if (valid) {
+            flagShowMessageError = 1;
+        }
+
+        return valid;
+    },
+    showTooltip: function (msg)
+    {
+        if (flagShowMessageError == 1) {
+            Ext.msgBoxSlider.msgTopCenter("error", _("ID_ERROR"), msg, 3);
+            flagShowMessageError = 0;
+        }
+    },
     listeners: {
       canceledit: function(grid,obj){
         if ( grid.record.data.field_label == '' && grid.record.data.field_name == '') {
           store.remove(grid.record);
         }
+
+        flagShowMessageError = 1;
       }
     }
   });
