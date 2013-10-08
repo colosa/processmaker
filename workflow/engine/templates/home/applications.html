@@ -19,7 +19,7 @@
   </p>
   <p class="time">
     {if $APP.APP_DEL_PREVIOUS_USER != ''}
-    From {$APP.APP_DEL_PREVIOUS_USER}, send at
+    {translate label="ID_FROM"} {$APP.APP_DEL_PREVIOUS_USER}, {translate label="ID_SEND_AT"}
     {/if}
     {$APP.DEL_DELEGATE_DATE}
   </p>

@@ -3,15 +3,15 @@
   <span class="commentnumber">
     #{$APP.APP_NUMBER}
   </span>
-  
+
   <span id="n_{$APP.APP_UID}" class="notes-link" style="display:{if $APP.NOTES_COUNT neq 0}block{else}none{/if}">
     <a href="#" onclick="showNt('{$APP.APP_UID}'); return false;"><img src="/images/simplified/messages-grey.png" height="20" width="20" border="0"></a>
   </span>
-  
+
   <span class="notes-plus-link">
     <a href="#" onclick="addNt('{$APP.APP_UID}', '{$APP.PRO_UID}', '{$APP.TAS_UID}'); return false;"><img src="/images/simplified/messages-grey-plus.png" height="21" width="21" border="0"></a>
   </span>
-  
+
   <p>
     <cite>
       <a href="../cases/cases_Open?APP_UID={$APP.APP_UID}&DEL_INDEX={$APP.DEL_INDEX}&action=todo">{$APP.APP_TITLE}</a>
@@ -19,13 +19,13 @@
   </p>
   <p class="time">
     {if $APP.APP_DEL_PREVIOUS_USER != ''}
-    From {$APP.APP_DEL_PREVIOUS_USER}, send at
+    {translate label="ID_FROM"} {$APP.APP_DEL_PREVIOUS_USER}, {translate label="ID_SEND_AT"}
     {/if}
     {$APP.DEL_DELEGATE_DATE}
   </p>
   <p>{$APP.APP_PRO_TITLE}
   <br/>{$APP.APP_TAS_TITLE}</p>
-  
+
   <div id="m_{$APP.APP_UID}" class="appMessages">
   {if $APP.NOTES_COUNT neq 0}
     {foreach from=$APP.NOTES_LIST key=k item=NOTE}
