@@ -575,7 +575,7 @@ function handleFatalErrors ($buffer)
     if (preg_match( '/(error<\/b>:)(.+)(<br)/', $buffer, $regs )) {
         $err = preg_replace( '/<.*?>/', '', $regs[2] );
         $aAux = explode( ' in ', $err );
-        $sCode = $_SESSION['_CODE_'];
+        $sCode = isset($_SESSION['_CODE_']) ? $_SESSION['_CODE_'] : null;
         unset( $_SESSION['_CODE_'] );
         registerError( 2, $aAux[0], 0, $sCode );
         if (strpos( $_SERVER['REQUEST_URI'], '/cases/cases_Step' ) !== false) {
@@ -604,7 +604,7 @@ function handleFatalErrors ($buffer)
             die();
         } else {
             $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] );
-            if ($_SESSION['TRIGGER_DEBUG']['ISSET']) {
+            if (isset($_SESSION['TRIGGER_DEBUG']['ISSET']) && $_SESSION['TRIGGER_DEBUG']['ISSET']) {
                 $_SESSION['TRIGGER_DEBUG']['TIME'] = 'AFTER';
                 $_SESSION['TRIGGER_DEBUG']['BREAKPAGE'] = $aNextStep['PAGE'];
                 $aNextStep['PAGE'] = $aNextStep['PAGE'] . '&breakpoint=triggerdebug';
