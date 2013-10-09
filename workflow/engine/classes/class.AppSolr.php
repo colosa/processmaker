@@ -1996,12 +1996,14 @@ class AppSolr
                     $value = intval ($value);
                   }
                   else {
-                    $typeSufix = '_ti'; 
+                    $typeSufix = '_ti';
+                    $value = str_replace( ',', '', $value );
                     $value = intval ($value);
                   }
                   break;
                 case 'Real' :
                   $typeSufix = '_td';
+                  $value = str_replace( ',', '', $value );
                   $value = floatval ($value);
                   break;
                 case 'date' :
