@@ -16,8 +16,10 @@
   {literal}
   body {
     padding-top : 40px !important;
-    overflow    : hidden;
+    overflow    : scroll;
   }
+  ::-webkit-scrollbar {width: 6px; height: 4px; background: transparent ; }
+  ::-webkit-scrollbar-thumb { background-color: #808080 ; -webkit-border-radius: 1ex; }
   </style>
   {/literal}
   {/if}
@@ -113,14 +115,24 @@
               <a class="menu user-actions" href="javascript:;" title="{$mnuNewCase.label}" id="_new">
                 <img src="{$mnuNewCase.icon}" alt="" />
               </a>
-
-              <ul class="menu-dropdown" style="width: 360px">
+              {if count($processList) <= 6}
+              <ul class="menu-dropdown" style="width: 210px; height: auto; overflow-y: auto;">
                 {foreach from=$processList key=id item=proc}
                 <li>
                   <a href="javascript:;" onclick="appStart('{$proc.uid}', '{$proc.value}')" accesskey="s" title="" id="settings_link">{$proc.value}</a>
                 </li>
                 {/foreach}
               </ul>
+              {/if}
+              {if count($processList) > 6}
+              <ul class="menu-dropdown" style="width: 210px; height: 600%; overflow-y: auto;">
+                {foreach from=$processList key=id item=proc}
+                <li>
+                  <a href="javascript:;" onclick="appStart('{$proc.uid}', '{$proc.value}')" accesskey="s" title="" id="settings_link">{$proc.value}</a>
+                </li>
+                {/foreach}
+              </ul>
+              {/if}
             </li>
             {/if}
           </ul>
