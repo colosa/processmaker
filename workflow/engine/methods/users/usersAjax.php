@@ -7,7 +7,8 @@ switch ($_POST['action']) {
         require_once ("classes/model/IsoCountry.php");
         $c = new Criteria();
         $c->add(IsoCountryPeer::IC_UID, null, Criteria::ISNOTNULL);
-
+        $c->addAscendingOrderByColumn(IsoCountryPeer::IC_NAME);
+        
         $countries = IsoCountryPeer::doSelect($c);
         foreach ($countries as $rowid => $row) {
             $oData[] = Array('IC_UID' => $row->getICUid(), 'IC_NAME' => $row->getICName());
