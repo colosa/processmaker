@@ -4380,8 +4380,8 @@ class processMap
 
         $aDirectories = array();
         $aDirectories[] = array('DIRECTORY' => 'char');
-        $aDirectories[] = array('DIRECTORY' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'mailTemplates\', \'\');" class="pagedTableHeader">' . G::loadTranslation('ID_TEMPLATES') . '</a>' );
-        $aDirectories[] = array('DIRECTORY' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'public\', \'\');" class="pagedTableHeader">' . G::loadTranslation('ID_PUBLIC') . '</a>' );
+        $aDirectories[] = array('DIRECTORY' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'mailTemplates\', \'\');return false;" class="pagedTableHeader">' . G::loadTranslation('ID_TEMPLATES') . '</a>' );
+        $aDirectories[] = array('DIRECTORY' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'public\', \'\');return false;" class="pagedTableHeader">' . G::loadTranslation('ID_PUBLIC') . '</a>' );
 
         $_DBArray = (isset($_SESSION['_DBArray']) ? $_SESSION['_DBArray'] : '');
         $_DBArray['directories'] = $aDirectories;
@@ -4435,17 +4435,17 @@ class processMap
         }
         $oDirectory->close();
         if ($sCurrentDirectory == '') {
-            $aTheFiles[] = array('PATH' => '<a href="#" onclick="goToHome(\'' . $sProcessUID . '\');" class="pagedTableHeader">..</a>', 'EDIT' => '', 'DOWNLOAD_TEXT' => '', 'DOWNLOAD_JS' => '', 'DELETE_TEXT' => '', 'DELETE_JS' => '' );
+            $aTheFiles[] = array('PATH' => '<a href="#" onclick="goToHome(\'' . $sProcessUID . '\');return false;" class="pagedTableHeader">..</a>', 'EDIT' => '', 'DOWNLOAD_TEXT' => '', 'DOWNLOAD_JS' => '', 'DELETE_TEXT' => '', 'DELETE_JS' => '' );
         } else {
             $aAux = explode(PATH_SEP, $sCurrentDirectory);
             array_pop($aAux);
-            $aTheFiles[] = array('PATH' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . implode(PATH_SEP, $aAux) . '\');" class="pagedTableHeader">..</a>', 'EDIT' => '', 'DOWNLOAD_TEXT' => '', 'DOWNLOAD_JS' => '', 'DELETE_TEXT' => '', 'DELETE_JS' => '' );
+            $aTheFiles[] = array('PATH' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . implode(PATH_SEP, $aAux) . '\');return false;" class="pagedTableHeader">..</a>', 'EDIT' => '', 'DOWNLOAD_TEXT' => '', 'DOWNLOAD_JS' => '', 'DELETE_TEXT' => '', 'DELETE_JS' => '' );
         }
         foreach ($aDirectories as $aDirectories) {
-            $aTheFiles[] = array('PATH' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $aDirectories['PATH'] . '\');" class="pagedTableHeader">' . $aDirectories['DIRECTORY'] . '</a>', 'EDIT' => '', 'DOWNLOAD_TEXT' => '', 'DOWNLOAD_JS' => '', 'DELETE_TEXT' => G::LoadTranslation('ID_DELETE'), 'DELETE_JS' => 'deleteDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aDirectories['DIRECTORY'] . '\');' );
+            $aTheFiles[] = array('PATH' => '<a href="#" onclick="goToDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $aDirectories['PATH'] . '\');return false;" class="pagedTableHeader">' . $aDirectories['DIRECTORY'] . '</a>', 'EDIT' => '', 'DOWNLOAD_TEXT' => '', 'DOWNLOAD_JS' => '', 'DELETE_TEXT' => G::LoadTranslation('ID_DELETE'), 'DELETE_JS' => 'deleteDirectory(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aDirectories['DIRECTORY'] . '\');return false;' );
         }
         foreach ($aFiles as $aFile) {
-            $aTheFiles[] = array('PATH' => $aFile['FILE'], 'EDIT' => ($sMainDirectory == 'mailTemplates' ? 'Edit' : ''), 'EDIT_JS' => "editFile('{$sProcessUID}', @@PATH)", 'DOWNLOAD_TEXT' => G::LoadTranslation('ID_DOWNLOAD'), 'DOWNLOAD_JS' => 'downloadFile(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aFile['FILE'] . '\');', 'DELETE_TEXT' => G::LoadTranslation('ID_DELETE'), 'DELETE_JS' => 'deleteFile(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aFile['FILE'] . '\');' );
+            $aTheFiles[] = array('PATH' => $aFile['FILE'], 'EDIT' => ($sMainDirectory == 'mailTemplates' ? 'Edit' : ''), 'EDIT_JS' => "editFile('{$sProcessUID}', @@PATH);return false;", 'DOWNLOAD_TEXT' => G::LoadTranslation('ID_DOWNLOAD'), 'DOWNLOAD_JS' => 'downloadFile(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aFile['FILE'] . '\');return false;', 'DELETE_TEXT' => G::LoadTranslation('ID_DELETE'), 'DELETE_JS' => 'deleteFile(\'' . $sProcessUID . '\', \'' . $sMainDirectory . '\', \'' . $sCurrentDirectory . '\', \'' . $aFile['FILE'] . '\');return false;' );
         }
         global $_DBArray;
         $_DBArray = (isset($_SESSION['_DBArray']) ? $_SESSION['_DBArray'] : '');
