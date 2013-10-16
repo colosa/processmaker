@@ -343,7 +343,7 @@ class AdditionalTables extends BaseAdditionalTables
         }
     }
 
-    public function getAllData($sUID, $start = null, $limit = null, $keyOrderUppercase = true)
+    public function getAllData($sUID, $start = null, $limit = null, $keyOrderUppercase = true, $filter = '')
     {
         $addTab = new AdditionalTables();
         $aData = $addTab->load($sUID, true);
@@ -378,6 +378,26 @@ class AdditionalTables extends BaseAdditionalTables
         $oCriteriaCount = clone $oCriteria;
         //$count = $sClassPeerName::doCount($oCriteria);
         eval('$count = ' . $sClassPeerName . '::doCount($oCriteria);');
+
+        if ($filter != '' && is_string($filter)) {
+            eval('$fieldsTable = ' . $sClassPeerName . '::getFieldNames(BasePeer::TYPE_FIELDNAME);');
+            $countField = count($fieldsTable);
+            $stringOr = '$oCriteria->add(';
+            $cont = 1;
+            foreach ($fieldsTable as $value) {
+                if ($cont == $countField) {
+                    $stringOr .= '$oCriteria->getNewCriterion(' . $sClassPeerName . '::' . strtoupper($value) . ', "%' . $filter . '%", Criteria::LIKE)';
+                } else {
+                    $stringOr .= '$oCriteria->getNewCriterion(' . $sClassPeerName . '::' . strtoupper($value) . ', "%' . $filter . '%", Criteria::LIKE)->addOr(';
+                }
+                $cont++;
+            }
+            for ($c = 1; $c < $countField; $c ++) {
+                $stringOr .= ')';
+            }
+            $stringOr .= ');';
+            eval($stringOr);
+        }
 
         if (isset($limit)) {
             $oCriteria->setLimit($limit);
