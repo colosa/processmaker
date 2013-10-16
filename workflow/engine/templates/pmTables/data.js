@@ -71,8 +71,38 @@ Ext.onReady(function(){
     handler : BackPMList
   });
 
+  searchButton = new Ext.Action({
+    text: _('ID_SEARCH'),
+    handler: DoSearch
+  });
+
   contextMenu = new Ext.menu.Menu({
-      items : [ editButton, deleteButton ]
+	    items : [ editButton, deleteButton ]
+  });
+  
+  searchText = new Ext.form.TextField ({
+    id: 'searchTxt',
+    ctCls:'pm_search_text_field',
+    allowBlank: true,
+    width: 150,
+    emptyText: _('ID_ENTER_SEARCH_TERM'),
+    listeners: {
+      specialkey: function(f,e){
+        if (e.getKey() == e.ENTER) {
+          DoSearch();
+        }
+      },
+      focus: function(f,e) {
+        var row = infoGrid.getSelectionModel().getSelected();
+        infoGrid.getSelectionModel().deselectRow(infoGrid.getStore().indexOf(row));
+      }
+    }
+  });
+
+  clearTextButton = new Ext.Action({
+    text: 'X',
+    ctCls:'pm_search_x_button',
+    handler: GridByDefault
   });
 
   //This loop loads columns and fields to store and column model
@@ -352,11 +382,19 @@ Ext.onReady(function(){
       deleteButton,
       '-',
       importButton,
-      exportButton
+      exportButton,
+      '->',
+      searchText,
+      clearTextButton,
+      searchButton
     ];
   }
   else
-    tbar = [genDataReportButton];
+    tbar = [genDataReportButton, 
+            '->',
+            searchText,
+            clearTextButton,
+            searchButton];
 
   infoGridConfig = {
     region: 'center',
@@ -422,6 +460,17 @@ onMessageContextMenu = function (grid, rowIndex, e) {
 
 
 /////JS FUNCTIONS
+
+//Do Search Function
+DoSearch = function(){
+   infoGrid.store.load({params: {textFilter: searchText.getValue()}});
+};
+
+//Load Grid By Default
+GridByDefault = function(){
+  searchText.reset();
+  infoGrid.store.load();
+};
 
 //Capitalize String Function
 capitalize = function(s){

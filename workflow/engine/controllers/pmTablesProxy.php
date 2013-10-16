@@ -416,10 +416,16 @@ class pmTablesProxy extends HttpProxyController
         $limit_size = isset( $config['pageSize'] ) ? $config['pageSize'] : 20;
         $start = isset( $httpData->start ) ? $httpData->start : 0;
         $limit = isset( $httpData->limit ) ? $httpData->limit : $limit_size;
+        $filter = isset( $httpData->textFilter ) ? $httpData->textFilter : '';
 
         $additionalTables = new AdditionalTables();
         $table = $additionalTables->load( $httpData->id, true );
-        $result = $additionalTables->getAllData( $httpData->id, $start, $limit );
+
+        if ($filter != '') {
+            $result = $additionalTables::getAllData( $httpData->id, $start, $limit, true, $filter);
+        } else {
+            $result = $additionalTables->getAllData( $httpData->id, $start, $limit );
+        }
 
         $primaryKeys = $additionalTables->getPrimaryKeys();
 
