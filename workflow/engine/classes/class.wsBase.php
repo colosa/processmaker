@@ -3288,5 +3288,30 @@ class wsBase
             return $result;
         }
     }
+    
+    /**
+     * ClaimCase
+     *
+     * @param string $userId
+     * @param string $guid
+     * @param string $delIndex
+     * @return $result will return an object
+     */
+    public function claimCase($userId, $guid, $delIndex)
+    {
+        try {
+            G::LoadClass('case');
+            $oCase = new Cases();
+            $oCase->loadCase($guid);
+            $oCase->setCatchUser($guid, $delIndex, $userId);
+
+            $result = new wsResponse(0, G::LoadTranslation("ID_COMMAND_EXECUTED_SUCCESSFULLY"));
+            return $result;
+        } catch (Exception $e) {
+
+            $result = new wsResponse(100, $e->getMessage());
+            return $result;
+        }
+    }
 }
 
