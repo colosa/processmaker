@@ -873,6 +873,24 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="claimCaseRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="sessionId" type="xs:string"/>
+            <xs:element name="guid" type="xs:string"/>
+            <xs:element name="delIndex" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="claimCaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="status_code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="timestamp" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
   </types>
 
@@ -1101,6 +1119,12 @@
   <message name="addCaseNoteResponse">
     <part name="parameters" element="xs0:addCaseNoteResponse"/>
   </message>
+  <message name="claimCaseRequest">
+    <part name="parameters" element="xs0:claimCaseRequest"/>
+  </message>
+  <message name="claimCaseResponse">
+    <part name="parameters" element="xs0:claimCaseResponse"/>
+  </message>
 
   <portType name="ProcessMakerServiceSoap">
     <operation name="login">
@@ -1262,6 +1286,10 @@
     <operation name="addCaseNote">
       <input message="xs0:addCaseNoteRequest"/>
       <output message="xs0:addCaseNoteResponse"/>
+    </operation>
+    <operation name="claimCase">
+      <input message="xs0:claimCaseRequest"/>
+      <output message="xs0:claimCaseResponse"/>
     </operation>
   </portType>
 
@@ -1620,6 +1648,15 @@
     </operation>
     <operation name="addCaseNote">
       <soap12:operation soapAction="urn:addCaseNote" soapActionRequired="true" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="claimCase">
+        <soap12:operation soapAction="urn:claimCase" soapActionRequired="true" style="document"/>
       <input>
         <soap12:body use="literal"/>
       </input>

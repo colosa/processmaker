@@ -1208,6 +1208,30 @@ function addCaseNote($params)
     return $result;
 }
 
+function ClaimCase($params)
+{
+    $vsResult = isValidSession($params->sessionId);
+    if ($vsResult->status_code !== 0) {
+        return $vsResult;
+    }
+
+    if (ifPermission($params->sessionId, 'PM_CASES') == 0) {
+        $result = new wsResponse(2, G::LoadTranslation('ID_NOT_PRIVILEGES'));
+
+        return $result;
+    }
+
+    G::LoadClass('sessions');
+
+    $oSessions = new Sessions();
+    $session = $oSessions->getSessionUser($params->sessionId);
+
+    $ws = new wsBase();
+    $res = $ws->claimCase($session['USR_UID'], $params->guid, $params->delIndex);
+
+    return $res;
+}
+
 $server = new SoapServer($wsdl);
 
 $server->addFunction("Login");
@@ -1251,5 +1275,6 @@ $server->addFunction("cancelCase");
 $server->addFunction("pauseCase");
 $server->addFunction("unpauseCase");
 $server->addFunction("addCaseNote");
+$server->addFunction("ClaimCase");
 $server->handle();
 
