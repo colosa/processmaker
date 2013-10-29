@@ -1279,6 +1279,12 @@ function dropDownSetOption(elem,arrayOption)
 selectdd.innerHTML="";for(i=0;i<=arrayOption.options.length-1;i++){if(swOptGroup==1&&/^optgroup\d+$/.test(arrayOption.options[i].key)){optGroupAux=document.createElement("optgroup");optGroupAux.label=arrayOption.options[i].value;swOptGroupPrev=1;swAppend=1;}else{if(swOptGroupPrev==1){if(swAppend==1){selectdd.appendChild(optGroupAux);swAppend=0;}
 optionAux=document.createElement("option");optGroupAux.appendChild(optionAux);optionAux.value=arrayOption.options[i].key;optionAux.text=arrayOption.options[i].value;}else{optionAux=document.createElement("option");selectdd.appendChild(optionAux);optionAux.value=arrayOption.options[i].key;optionAux.text=arrayOption.options[i].value;}}}
 if(selectdd.options.length==0){selectdd.options[0]=new Option("","");}}
+function dynaFormPrint(arrayForm,link,width,height,left,top,resizable)
+{var frm=arrayForm[0];var flagRequiredField=1;var requiredField=frm.DynaformRequiredFields.value;if(requiredField!=""){flagRequiredField=(validateForm(requiredField))?1:0;}
+if(flagRequiredField==1){swSubmitValidateForm=1;new leimnud.module.app.confirm().make({label:_("ID_DYNAFORM_SAVE_CHANGES"),action:function()
+{if(frm.length>0){var result=ajax_post(frm.action,frm,"POST",function(responseText)
+{popUp(link,width,height,left,top,resizable);},true);}},cancel:function()
+{popUp(link,width,height,left,top,resizable);}});}}
 function G_PagedTable()
 {this.id='';this.name='';this.event='';this.element=null;this.field='';this.ajaxUri='';this.currentOrder='';this.currentFilter='';this.currentPage=1;this.totalRows=0;this.rowsPerPage=25;this.onInsertField='';this.onDeleteField='';this.afterDeleteField='';this.onUpdateField='';this.form;var me=this;function loadTable(func,uri){var div=document.getElementById('table['+me.id+']');var newContent=ajax_function(me.ajaxUri,func,uri);if(div.outerHTML){div.outerHTML=div.outerHTML.split(div.innerHTML).join(newContent);}else{div.innerHTML=newContent;}
 var myScripts=div.getElementsByTagName('SCRIPT');for(var rr=0;rr<myScripts.length;rr++){try{if(myScripts[rr].innerHTML!=='')

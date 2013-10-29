@@ -3900,3 +3900,42 @@ function dropDownSetOption(elem, arrayOption)
     }
 }
 
+function dynaFormPrint(arrayForm, link, width, height, left, top, resizable)
+{
+    var frm = arrayForm[0];
+    var flagRequiredField = 1;
+    var requiredField = frm.DynaformRequiredFields.value;
+
+    if (requiredField != "") {
+        flagRequiredField = (validateForm(requiredField))? 1 : 0;
+    }
+
+    if (flagRequiredField == 1) {
+        swSubmitValidateForm = 1;
+
+        new leimnud.module.app.confirm().make({
+            label: _("ID_DYNAFORM_SAVE_CHANGES"),
+
+            action: function ()
+            {
+                if (frm.length > 0) {
+                    var result = ajax_post(
+                        frm.action,
+                        frm,
+                        "POST",
+                        function (responseText)
+                        {
+                            popUp(link, width, height, left, top, resizable);
+                        },
+                        true
+                    );
+                }
+            },
+
+            cancel: function()
+            {
+                popUp(link, width, height, left, top, resizable);
+            }
+        });
+    }
+}

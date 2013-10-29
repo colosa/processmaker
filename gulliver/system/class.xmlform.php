@@ -1749,9 +1749,10 @@ class XmlForm_Field_Print extends XmlForm_Field_SimpleText //by neyek
         $value = G::replaceDataField( $this->value, $owner->values );
         $label = G::replaceDataField( $this->label, $owner->values );
 
-        $html = '<a href="#" onclick="popUp(\'' . $this->htmlentities( $link, ENT_QUOTES, 'utf-8' ) . '\', ' . $this->width . ', ' . $this->height . ', ' . $this->left . ', ' . $this->top . ', ' . $this->resizable . '); return false;" >
-            <image title="' . $this->htmlentities( $label, ENT_QUOTES, 'utf-8' ) . '" src="/images/printer.png" width="15" height="15" border="0"/>
-       </a>';
+        $html = '<a href="javascript:;" onclick="dynaFormPrint(document.getElementsByTagName(\'form\'), \'' . $this->htmlentities( $link, ENT_QUOTES, 'utf-8' ) . '\', ' . $this->width . ', ' . $this->height . ', ' . $this->left . ', ' . $this->top . ', ' . $this->resizable . '); return false;">
+                  <image title="' . $this->htmlentities( $label, ENT_QUOTES, 'utf-8' ) . '" src="/images/printer.png" width="15" height="15" border="0"/>
+                  </a>';
+
         return $html;
     }
 }
