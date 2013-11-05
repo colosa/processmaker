@@ -564,30 +564,51 @@ function executePlugins()
     if (!is_dir($pathCronPlugins)) {
         return false;
     }
+    
+    
+    
+    G::LoadClass("pluginRegistry");
+    $oPluginRegistry = & PMPluginRegistry::getSingleton();    
+    $skippedPlugins=array();
 
     if ($handle = opendir($pathCronPlugins)) {
+    	    eprintln("Executing Plugins", 'blue');
         while (false !== ($file = readdir($handle))) {
             if (strpos($file, '.php',1) && is_file($pathCronPlugins . $file)) {
                 $filename  = str_replace('.php' , '', $file);
-                $className = $filename . 'ClassCron';
-
-                include_once ( $pathCronPlugins . $file );  //$filename. ".php"
-
-                $oPlugin = new $className();
-
-                if (method_exists($oPlugin, 'executeCron')) {
-                    $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
-                    $arrayCron["processcTimeProcess"] = 60; //Minutes
-                    $arrayCron["processcTimeStart"]   = time();
-                    @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
-
-                    $oPlugin->executeCron();
-                    setExecutionMessage("Executing Plugins");
-                    setExecutionResultMessage('DONE');
+                
+                if($oPluginRegistry->getStatusPlugin ($filename)){//Only execute if the plugin is enambled for this WS                
+                        $className = $filename . 'ClassCron';                
+                        include_once ( $pathCronPlugins . $file );  //$filename. ".php"
+                        $oPlugin = new $className();
+                        if (method_exists($oPlugin, 'executeCron')) {
+                                $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+                                $arrayCron["processcTimeProcess"] = 60; //Minutes
+                                $arrayCron["processcTimeStart"]   = time();
+                                @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
+                                
+                                //Try to execute Plugin Cron. If there is an error then continue with the next plugin
+                                setExecutionMessage("--- Executing Plugin: $filename");
+                                try{
+                                        $oPlugin->executeCron();                    
+                                        setExecutionResultMessage('DONE');
+                                }catch(Exception $e){
+                                        setExecutionResultMessage('FAILED', 'error');
+                                        eprintln("  '-".$e->getMessage(), 'red');
+                                        saveLog('executePlugins', 'error', 'Error executing Plugin '.$filename.': ' . $e->getMessage());
+                                }
+                        }
+                }else{
+                        $skippedPlugins[]=$filename;
                 }
+                
             }
         }
     }
+    eprintln(">> Skipped plugins <<: ".implode(", ",$skippedPlugins), 'green');
+    eprintln("|- End of Executing Plugins", 'blue');
+    
+    
 }
 
 function calculateDuration()
