@@ -34,7 +34,6 @@ $oProcess = new Process();
 $memkey = 'no memcache';
 $memcacheUsed = 'not used';
 $totalCount = 0;
-
 if (isset( $_POST['category'] ) && $_POST['category'] !== '<reset>') {
     if (isset( $_POST['processName'] ))
         $proData = $oProcess->getAllProcesses( $start, $limit, $_POST['category'], $_POST['processName'] );
@@ -54,12 +53,14 @@ if (isset( $_POST['category'] ) && $_POST['category'] !== '<reset>') {
         $memkeyTotal = $memkey . '-total';
         $memcacheUsed = 'yes';
         if (($proData = $memcache->get( $memkey )) === false || ($totalCount = $memcache->get( $memkeyTotal )) === false) {
-            $proData = $oProcess->getAllProcesses( $start, $limit );
+        	$proData = $oProcess->getAllProcesses( $start, $limit );
             $totalCount = $oProcess->getAllProcessesCount();
             $memcache->set( $memkey, $proData, PMmemcached::ONE_HOUR );
             $memcache->set( $memkeyTotal, $totalCount, PMmemcached::ONE_HOUR );
             $memcacheUsed = 'no';
-        }
+        } else {
+        	$proData = $oProcess->orderMemcache($proData, $start, $limit);
+       }
     }
 }
 $r = new stdclass();
