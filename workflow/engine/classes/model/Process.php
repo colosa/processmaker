@@ -387,7 +387,7 @@ class Process extends BaseProcess
             }
         }
 
-        usort( $processes, 'ordProcessByProTitle' );
+        usort( $processes, 'ordProcess' );
         return $processes;
     }
 
@@ -587,9 +587,9 @@ class Process extends BaseProcess
         }
     }
 
-    public function getAllProcesses ($start, $limit, $category = null, $processName = null, $counters = true, $reviewSubProcess = false)
+    public function getAllProcesses ($start, $limit, $category = null, $processName = null, $counters = true, $reviewSubProcess = false, $dir = 'ASC')
     {
-        require_once PATH_RBAC . "model/RbacUsers.php";
+    	require_once PATH_RBAC . "model/RbacUsers.php";
         require_once "classes/model/ProcessCategory.php";
         require_once "classes/model/Users.php";
 
@@ -629,14 +629,7 @@ class Process extends BaseProcess
 
         $this->tmpCriteria = clone $oCriteria;
 
-        if ($start != '') {
-            $oCriteria->setOffset( $start );
-        }
-        if ($limit != '' && ! isset( $category ) && ! isset( $processName )) {
-            $oCriteria->setLimit( $limit );
-        }
-
-            //execute a query to obtain numbers, how many cases there are by process
+        //execute a query to obtain numbers, how many cases there are by process
         if ($counters) {
             $casesCnt = $this->getCasesCountInAllProcesses();
         }
@@ -741,8 +734,22 @@ class Process extends BaseProcess
             $aProcesses[] = $process;
 
         }
+        
+        $memcache = & PMmemcached::getSingleton( SYS_SYS );
+        if (isset($memcache) && $memcache->enabled == 1 ) {
+        	return $aProcesses;
+        }
 
-        usort( $aProcesses, 'ordProcessByProTitle' );
+        if ($limit == '') {
+        	$limit = count($aProcesses);
+        }
+        if ($dir=='ASC') {
+            usort( $aProcesses, 'ordProcessAsc' );
+        } else {
+            usort( $aProcesses, 'ordProcessDesc' );
+        }
+        $aProcesses = array_splice($aProcesses, $start, $limit);
+
         return $aProcesses;
     }
 
@@ -848,16 +855,39 @@ class Process extends BaseProcess
             $r = $memcache->delete( $memkeyTotal );
         }
     }
+    
+    public function orderMemcache($dataMemcache, $start, $limit, $dir)
+    {
+    	if ($dir=='ASC') {
+    	    usort( $dataMemcache, 'ordProcessAsc' );
+    	} else {
+    		usort( $dataMemcache, 'ordProcessDesc' );
+    	}
+    	$dataMemcache = array_splice($dataMemcache, $start, $limit);
+    	return $dataMemcache;
+    }
 }
 
-function ordProcessByProTitle ($a, $b)
+function ordProcessAsc ($a, $b)
+{	
+        if ($a[$_POST['sort']] > $b[$_POST['sort']]) {
+            return 1;
+        } elseif ($a[$_POST['sort']] < $b[$_POST['sort']]) {
+            return - 1;
+        } else {
+            return 0;
+        }
+    
+}
+
+function ordProcessDesc ($a, $b)
 {
-    if ($a['PRO_TITLE'] > $b['PRO_TITLE']) {
-        return 1;
-    } elseif ($a['PRO_TITLE'] < $b['PRO_TITLE']) {
-        return - 1;
-    } else {
-        return 0;
-    }
+		if ($a[$_POST['sort']] > $b[$_POST['sort']]) {
+			return - 1;
+		} elseif ($a[$_POST['sort']] < $b[$_POST['sort']]) {
+			return 1;
+		} else {
+			return 0;
+		}
 }
 

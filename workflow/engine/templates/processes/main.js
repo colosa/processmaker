@@ -37,6 +37,7 @@ Ext.onReady(function(){
 
   store = new Ext.data.GroupingStore( {
   //var store = new Ext.data.Store( {
+	remoteSort: true,
     proxy : new Ext.data.HttpProxy({
       url: 'processesList'
     }),
