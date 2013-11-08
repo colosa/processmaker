@@ -74,7 +74,8 @@
 
   // Additional functions required in triggers
   function triggerEditWizardSource (sUID){
-    popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID=' + sUID +'&BYPASS=1' , 770, 510);
+    //popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID=' + sUID +'&BYPASS=1' , 770, 510);
+    //window.open('@G::encryptlink(@#triggersEdit)?TRI_UID=' + sUID +'&BYPASS=1','@G::LoadTranslation(ID_EDIT_TRIGGERS)'.replace(/\s/g,'_'),'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=930,height=600,top=85,left=140');
   }
 
   function triggerSave(form)

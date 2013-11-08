@@ -90,8 +90,14 @@ var insertFormVar = function(sFieldName, sValue) {
 };
 
 function cancel(){
-    currentPopupWindow.remove();
+    //currentPopupWindow.remove();
+    window.close();
 }
 
+function triggerSave1(form){
+    window.close();
+    ajax_post(form.action, form, 'POST');
+}
+    
 ]]></JS>
 </dynaForm> 

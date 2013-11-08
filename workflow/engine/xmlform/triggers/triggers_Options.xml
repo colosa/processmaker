@@ -47,6 +47,7 @@
 	  }
 	}
 */
+/*
     //Add css Codemirror
     var head = document.getElementsByTagName('head')[0];
     var s = document.createElement('link');
@@ -60,6 +61,7 @@
     s.setAttribute('type', 'text/css');
     s.setAttribute('rel', 'stylesheet');
     head.appendChild(s);
+*/
 
   var windowWidth = 600;
   var windowHeight = 460;
@@ -96,7 +98,8 @@
   }
 
   function triggerEdit(sUID) {
-    popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID='+ sUID , 930, 600);
+    //popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID='+ sUID , 930, 600);
+    window.open('@G::encryptlink(@#triggersEdit)?TRI_UID='+ sUID,'@G::LoadTranslation(ID_EDIT_TRIGGERS)'.replace(/\s/g,'_'),'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=930,height=600,top=85,left=140');
   }
 
   function triggerProperties( sUID ) {

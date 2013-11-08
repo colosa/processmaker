@@ -74,7 +74,7 @@
     <en>Script</en>
 </TRI_WEBBOT>
 
-<BTNCOPYSAVE type="button" onclick="document.getElementById('form[TRI_WEBBOT]').value = triggerEditor.getValue(); triggerSave1(this.form);">
+<BTNCOPYSAVE type="button" onclick="/*document.getElementById('form[TRI_WEBBOT]').value = triggerEditor.getValue();*/ triggerSave1(this.form);">
     <en>Copy/Import and Save</en>
 </BTNCOPYSAVE>
 
@@ -93,7 +93,7 @@
     stylesheet: ["css/xmlcolors.css", "css/jscolors.css", "css/csscolors.css", "css/phpcolors.css" ],
     path: "js/", lineNumbers: true, continuousScanning: 500, readOnly:true, parserConfig: { phpOnly:true} });
     */
-    var triggerEditor = CodeMirror.fromTextArea(document.getElementById("form[TRI_WEBBOT]"), {
+    /*var triggerEditor = CodeMirror.fromTextArea(document.getElementById("form[TRI_WEBBOT]"), {
 	    lineNumbers: true,
 	    matchBrackets: true,
 	    mode: "application/x-httpd-php",
@@ -102,7 +102,7 @@
 	    indentWithTabs: false,
 	    readOnly: true
 	});
-	triggerEditor.setSize(400,200);
+	triggerEditor.setSize(400,200);*/
 
     function cancel()
     {
@@ -114,8 +114,19 @@
         var triUid = getField("TRIGGER_UID_AUX").value;
 
         if (triUid != triUidPrev) {
-            triggerEditor.setValue(document.getElementById("form[TRI_WEBBOT]").value);
+            //triggerEditor.setValue(document.getElementById("form[TRI_WEBBOT]").value);
+            
             triUidPrev = triUid;
+            var oRPC = new leimnud.module.rpc.xmlhttp({
+                url : 'processes_TriggersFormatCode',
+                args : 'code='+document.getElementById("form[TRI_WEBBOT]").value
+            });
+            oRPC.callback = function(rpc) {
+              document.getElementById("form[TRI_WEBBOT]").style.display="none";
+              document.getElementById("code").innerHTML = rpc.xmlhttp.responseText;
+            };
+            oRPC.make();
+            
         } else {
             setTimeout("triggerCheckWebbotTimer()", 100);
         }
@@ -131,7 +142,7 @@
         function ()
         {
             txtTgrTitle.value = "";
-            triggerEditor.setValue("");
+            //triggerEditor.setValue("");
             triUidPrev= "";
         }
     );
@@ -146,7 +157,7 @@
                 setTimeout("triggerCheckWebbotTimer()", 100);
             } else {
                 txtTgrTitle.value = "";
-                triggerEditor.setValue("");
+                //triggerEditor.setValue("");
                 triUidPrev= "";
             }
         }

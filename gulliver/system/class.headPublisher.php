@@ -37,6 +37,7 @@ class headPublisher
 
     public static $instance = null;
     public $scriptFiles = array();
+    public $cssFiles = array();
     public $leimnudLoad = array();
 
     /* extJsSkin  init coreLoad flag */
@@ -134,6 +135,11 @@ class headPublisher
         }
     }
 
+    public function addCssFile($url)
+    {
+        $this->cssFiles[$url] = $url;
+    }
+
     /**
      * Function addInstanceModule
      *
@@ -214,6 +220,10 @@ class headPublisher
         $head = '';
         $head .= '<TITLE>' . $this->title . "</TITLE>\n";
 
+        foreach ($this->cssFiles as $file) {
+            $head = $head . " <link rel=\"stylesheet\" href=\"" . G::browserCacheFilesUrl($file) . "\">\n";
+        }
+        
         $head = $head . "
         <script type=\"text/javascript\">
         var BROWSER_CACHE_FILES_UID = \"" . G::browserCacheFilesGetUid() . "\";

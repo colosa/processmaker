@@ -19,9 +19,9 @@
   <en>Description</en>
 </TRI_DESCRIPTION>
 
-<TRI_WEBBOT type="textareapm" class="formLabel" cols="55" rows="13" width="100%" height="380px" showVars="1" process="@#PRO_UID">
+<TRI_WEBBOT type="textareapm" class="formLabel" cols="55" rows="13" width="100%" height="380px" showVars="1" process="@#PRO_UID" style="display:none">
 </TRI_WEBBOT>
-<SAVE type="button" onclick="document.getElementById('form[TRI_WEBBOT]').value = triggerEditor.getValue(); triggerSave1(this.form);">
+<SAVE type="button" onclick="/*document.getElementById('form[TRI_WEBBOT]').value = triggerEditor.getValue();*/ triggerSave1(this.form);">
   <en>Save</en>
 </SAVE>
 <PARTNER_FLAG type="private"/>
@@ -40,7 +40,7 @@
     stylesheet: ["css/xmlcolors.css", "css/jscolors.css", "css/csscolors.css", "css/phpcolors.css" ],
     path: "js/", lineNumbers: true, continuousScanning: 500, parserConfig: { phpOnly:true} });*/
 
-CodeMirror.commands.autocomplete = function(cm) {
+/*CodeMirror.commands.autocomplete = function(cm) {
     CodeMirror.showHint(cm, CodeMirror.phpHint);
 }
 
@@ -53,7 +53,7 @@ var triggerEditor = CodeMirror.fromTextArea(document.getElementById("form[TRI_WE
     indentWithTabs: false,
     extraKeys: {"Ctrl-Space": "autocomplete"}
 });
-triggerEditor.setSize(450,245);
+triggerEditor.setSize(450,245);*/
 
 getField('TRI_TITLE').form.onsubmit = function() {return false;};
 var _oVarsPanel_;
@@ -90,7 +90,7 @@ var showDynaformsFormVars = function(sFieldName, sAjaxServer, sProcess, sSymbol)
   oRPC.make();
 };
 
-var insertFormVar = function(sFieldName, sValue) {
+/*var insertFormVar = function(sFieldName, sValue) {
     if (triggerEditor.getSelection() == "") {
 	    triggerEditor.replaceRange(sValue, triggerEditor.getCursor());
     } else {
@@ -98,7 +98,7 @@ var insertFormVar = function(sFieldName, sValue) {
     }
     _oVarsPanel_.remove();
     triggerEditor.focus();
-};
+};*/
 
 function cancel(){
     currentPopupWindow.remove();

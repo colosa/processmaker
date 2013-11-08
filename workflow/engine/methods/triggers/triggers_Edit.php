@@ -68,6 +68,8 @@ $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $xmlform, '', $aFields, $xmlform_action );
 $oHeadPublisher =& headPublisher::getSingleton();
 //$oHeadPublisher->addScriptFile('/js/codemirror/js/codemirror.js', 1);
+$oHeadPublisher->addCssFile('/js/codemirror/lib/codemirror.css', 1);
+$oHeadPublisher->addCssFile('/js/codemirror/addon/hint/show-hint.css', 1);
 $oHeadPublisher->addScriptFile('/js/codemirror/lib/codemirror.js', 1);
 $oHeadPublisher->addScriptFile("/js/codemirror/addon/edit/matchbrackets.js",1);
 $oHeadPublisher->addScriptFile("/js/codemirror/mode/htmlmixed/htmlmixed.js",1);
@@ -79,5 +81,11 @@ $oHeadPublisher->addScriptFile("/js/codemirror/addon/hint/show-hint.js",1);
 $oHeadPublisher->addScriptFile("/js/codemirror/addon/hint/php-hint.js",1);
 $oHeadPublisher->addScriptFile("/js/codemirror/mode/php/php.js",1);
 
-G::RenderPage( 'publish', 'raw' );
+//Hack: CodeMirror needed to run Internet Explorer
+$ie = (strrpos($_SERVER['HTTP_USER_AGENT'], "MSIE") === false ) ? false : true;
+if ($ie) {
+    echo "<!DOCTYPE html>\n";
+}
+
+G::RenderPage( 'publish', 'blank' );
 

@@ -13,7 +13,10 @@
 
 <triggersEdit type="hidden" defaultValue="../triggers/triggers_Edit"/>
 
-<EDIT type="link" colWidth="" value="@G::LoadTranslation(ID_EDIT)" link="#" onclick="popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID=' + @QTRI_UID , 930, 600); return false;"/>
+<EDIT type="link" colWidth="" value="@G::LoadTranslation(ID_EDIT)" link="#" onclick="
+/*popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID=' + @QTRI_UID , 930, 600); */
+window.open('@G::encryptlink(@#triggersEdit)?TRI_UID=' + @QTRI_UID,'@G::LoadTranslation(ID_EDIT_TRIGGERS)'.replace(/\s/g,'_'),'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=930,height=600,top=85,left=140');
+return false;"/>
 
 <CONDITION type="link" colWidth="" value="@G::LoadTranslation(ID_CONDITION)" link="#" onclick="editTriggerCondition(@QSTEP_UID, @QTRI_UID, &#039;AFTER&#039;);return false;"/>
 
