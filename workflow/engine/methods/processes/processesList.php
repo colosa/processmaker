@@ -47,7 +47,9 @@ if (isset( $_POST['category'] ) && $_POST['category'] !== '<reset>') {
     if (isset( $_POST['processName'] )) {
         $memkey = 'processList-' . $start . '-' . $limit . '-' . $_POST['processName'];
         $memcacheUsed = 'yes';
-        if (($proData = $memcache->get( $memkey )) === false) {
+        $proData = $memcache->get( $memkey );
+        $proData = $oProcess->orderMemcache($proData, $start, $limit);
+        if ($proData === false) {
             $proData = $oProcess->getAllProcesses( $start, $limit, null, $_POST['processName']);
             $memcache->set( $memkey, $proData, PMmemcached::ONE_HOUR );
             $memcacheUsed = 'no';
