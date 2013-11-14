@@ -328,6 +328,7 @@ var ActionTabFrameGlobal = '';
 
   function messageHistoryGridList(){
       store = new Ext.data.GroupingStore({
+        remoteSort: true,
         proxy : new Ext.data.HttpProxy
         (
           {
