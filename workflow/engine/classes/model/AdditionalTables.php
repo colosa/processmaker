@@ -112,6 +112,13 @@ class AdditionalTables extends BaseAdditionalTables
             $this->fields[] = $oDataset->getRow();
         }
 
+        foreach ($this->fields as $field) {
+        	if ($field['FLD_TYPE'] == 'TIMESTAMP') {
+        		$indx = $field['FLD_INDEX'];
+        		$this->fields[$indx]['FLD_TYPE'] = 'DATETIME';
+        	}
+        }
+
         return $this->fields;
     }
 
