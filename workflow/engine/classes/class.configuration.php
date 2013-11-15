@@ -315,26 +315,16 @@ class Configurations // extends Configuration
         }
     }
 
-    public function userNameFormat($username, $fullname)
+    public function userNameFormat($username, $fullname, $usrUid = '')
     {
-
-        try {
-            if (!isset($this->UserConfig)) {
-                $this->UserConfig = $this->getConfiguration('ENVIRONMENT_SETTINGS', '');
-            }
-            if (isset($this->UserConfig['format'])) {
-                $name = explode(' ',$fullname);
-                $aux = '';
-                $aux = str_replace('@userName', trim($username), $this->UserConfig['format']);
-                $aux = str_replace('@firstName', isset($name[0])?$name[0]:'', $aux);
-                $aux = str_replace('@lastName', isset($name[1])?$name[1]:'', $aux);
-                return $aux;
-            } else {
-                return $username;
-            }
-        } catch (Exception $oError) {
-            return null;
+        $aux = '';
+        if ($usrUid != '') {
+            $oUser = UsersPeer::retrieveByPK($_SESSION['USER_LOGGED']);
+            $aux = str_replace('@userName', trim($username), $this->UserConfig['format']);
+            $aux = str_replace('@firstName', $oUser->getUsrFirstname(), $aux);
+            $aux = str_replace('@lastName', $oUser->getUsrLastname(), $aux);
         }
+        return $aux;
     }
 
     public function usersNameFormatBySetParameters($formatUserName, $userName, $firstName, $lastName)
@@ -548,7 +538,8 @@ class Configurations // extends Configuration
     public function getSystemDate($dateTime)
     {
         $oConf = new Configurations();
-        $dateFormat = 'M d, Y';
+        $oConf->getFormats();
+        $dateFormat = $oConf->UserConfig['dateFormat'];
         $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
         $creationDateMask = isset($oConf->aConfig['dateFormat']) ? $oConf->aConfig['dateFormat'] : '';
         $creationDateMask = ($creationDateMask == '') ? $dateFormat : $creationDateMask;
