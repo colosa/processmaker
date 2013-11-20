@@ -518,8 +518,6 @@ class AppSolr
           'includeCols' => $columsToIncludeFinal,
           'resultFormat' => 'json' 
       );
-      
-      
       $solrRequestData = Entity_SolrRequestData::createForRequestPagination ($data);
       // use search index to return list of cases
       $searchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
@@ -622,7 +620,6 @@ class AppSolr
           }
           /*elseif ($action == 'search') {
             // get all the indexes
-
             //$delIndexes = $this->getApplicationDelegationsIndex ($appUID);
             $indexes = $this->aaSearchRecords ($aaappsDBData, array (
                 'APP_UID' => $appUID
@@ -648,6 +645,7 @@ class AppSolr
         //var_dump($delIndexes);
 
 
+        $row = '';
         foreach ($delIndexes as $delIndex) {
           $aRow = array ();
 
@@ -1384,7 +1382,6 @@ class AppSolr
           'workspace' => $this->_solrInstance,
           'document' => $xmlDoc 
       );
-      
       $oSolrUpdateDocument = Entity_SolrUpdateDocument::createForRequest ($data);
       
       G::LoadClass ('searchIndex');
@@ -1392,7 +1389,6 @@ class AppSolr
       $oSearchIndex = new BpmnEngine_Services_SearchIndex ($this->_solrIsEnabled, $this->_solrHost);
 
       $oSearchIndex->updateIndexDocument ($oSolrUpdateDocument);
-
           
       if($this->debug)
       {
@@ -1401,11 +1397,11 @@ class AppSolr
       // commit changes no required because of the commitwithin option
       //$oSearchIndex->commitIndexChanges ($this->_solrInstance);
       //change status in db to indexed
-      if ($saveDBRecord) {
-        foreach ($aaAPPUIDs as $aAPPUID) {
-          $this->applicationChangedUpdateSolrQueue ($aAPPUID ['APP_UID'], 0);
-        }      
-      }
+        if ($saveDBRecord) {
+            foreach ($aaAPPUIDs as $aAPPUID) {
+                $this->applicationChangedUpdateSolrQueue ($aAPPUID ['APP_UID'], 0);
+            }
+        }
 
     }
     catch(Exception $ex) {
@@ -2094,17 +2090,59 @@ class AppSolr
                   break;
               }
               if ($typeSufix != '*') {
+                $value = trim($value);
+                $pairs = array(
+                    "\x03" => "",
+                    "\x04" => "",
+                    "\x05" => "",
+                    "\x06" => "",
+                    "\x07" => "",
+                    "\x08" => "",
+                    "\x0E" => "",
+                    "\x16" => "",
+                    "\x00-" => "",
+                    "\x09" => "",
+                    "\x11" => "",
+                    "\x12" => "",
+                    "\x14-" => "",
+                    "\x1f" => "",
+                    "\x7f" => "",
+                );
+                $value = strtr($value, $pairs);
                 $writer->startElement ("field");
                 $writer->writeAttribute ('name', trim ($k) . $typeSufix);
+                $writer->startCData ();
                 $writer->text ($value);
+                $writer->endCData();
                 $writer->endElement ();
               }
             }
             else {
-              $writer->startElement ("field");
-              $writer->writeAttribute ('name', trim ($k) . '_t');
-              $writer->text ($value);
-              $writer->endElement ();
+                $value = trim($value);
+                $pairs = array(
+                    "\x03" => "",
+                    "\x04" => "",
+                    "\x05" => "",
+                    "\x06" => "",
+                    "\x07" => "",
+                    "\x08" => "",
+                    "\x0E" => "",
+                    "\x16" => "",
+                    "\x00-" => "",
+                    "\x09" => "",
+                    "\x11" => "",
+                    "\x12" => "",
+                    "\x14-" => "",
+                    "\x1f" => "",
+                    "\x7f" => "",
+                );
+                $value = strtr($value, $pairs);
+                $writer->startElement ("field");
+                $writer->writeAttribute ('name', trim ($k) . '_t');
+                $writer->startCData ();
+                $writer->text ($value);
+                $writer->endCData();
+                $writer->endElement ();
             }
           }
         } // foreach unserialized data
