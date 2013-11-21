@@ -5247,6 +5247,58 @@ class G
         $filtro = new InputFilter($tagsArray , $attrArray, $tagsMethod, $attrMethod, $xssAuto);
         return $filtro->process($data);
     }
+    
+    /**
+     * Stores the message in the log file, if the file exceeds the size specified 
+     * log file is renamed and a new one is created.
+     * 
+     * $fileName = "filename";
+     * $fileExtension = ".log";
+     * $fileSeparatorVersion = "_";
+     * $limitSize = 1000000;
+     * 
+     * 10000000 -> approximately 10 megabytes
+     * 1000000 -> approximately 1 megabytes
+     * 
+     * @param type $message
+     */
+    public static function log($message)
+    {
+        clearstatcache();
+        $limitSize = 1000000;
+        $fileName = "cron";
+        $fileExtension = ".log";
+        $fileSeparatorVersion = "_";
+        $path = PATH_DATA . "log" . PATH_SEP;
+
+        $fullName = $fileName . $fileExtension;
+        $filePath = $path . $fullName;
+
+        if (file_exists($filePath)) {
+            $size = filesize($filePath);
+            if ($size >= $limitSize) {
+                $directorio = opendir($path);
+                $mayor = 0;
+                while ($archivo = readdir($directorio)) {
+                    if (!is_dir($archivo) &&
+                            strpos($archivo, $fileExtension) !== false &&
+                            strpos($archivo, $fileName . $fileSeparatorVersion) !== false) {
+                        $number = str_replace($fileExtension, "", $archivo);
+                        $number = str_replace($fileName, "", $number);
+                        $number = str_replace($fileSeparatorVersion, "", $number);
+                        if ($number > $mayor) {
+                            $mayor = $number;
+                        }
+                    }
+                }
+                $c = $mayor + 1;
+                rename($filePath, $path . $fileName . $fileSeparatorVersion . $c . $fileExtension);
+            }
+        }
+        $file = fopen($filePath, "a+");
+        fwrite($file, $message);
+        fclose($file);
+    }
 }
 
 /**
