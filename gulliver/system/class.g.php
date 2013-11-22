@@ -5247,6 +5247,21 @@ class G
         $filtro = new InputFilter($tagsArray , $attrArray, $tagsMethod, $attrMethod, $xssAuto);
         return $filtro->process($data);
     }
+    
+    /**
+     * Stores a message in the log file, if the file size exceeds 
+     * specified log file is renamed and a new one is created.
+     * 
+     * @param type $message
+     * @param type $pathData
+     * @param type $file
+     */
+    public function log($message, $pathData = PATH_DATA, $file = 'cron.log')
+    {
+        G::LoadSystem('logger');
+        $oLogger = logger::getSingleton($pathData, PATH_SEP, $file);
+        $oLogger->write($message);
+    }
 }
 
 /**
