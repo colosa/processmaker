@@ -134,6 +134,12 @@ class workspaceTools
         $this->dbHost = $values["DB_HOST"];
         $this->dbUser = $values["DB_USER"];
         $this->dbPass = $values["DB_PASS"];
+
+        $this->dbRbacHost = $values["DB_RBAC_HOST"];
+        $this->dbRbacName = $values["DB_RBAC_NAME"];
+        $this->dbRbacUser = $values["DB_RBAC_USER"];
+        $this->dbRbacPass = $values["DB_RBAC_PASS"];
+
         return $this->dbInfo = $values;
     }
 
@@ -330,20 +336,25 @@ class workspaceTools
      *
      * @return database connection
      */
-    private function getDatabase()
+    private function getDatabase($rbac = false)
     {
         if (isset($this->db) && $this->db->isConnected()) {
             return $this->db;
         }
+
         G::LoadSystem('database_' . strtolower($this->dbAdapter));
-        $this->db = new database($this->dbAdapter, $this->dbHost, $this->dbUser, $this->dbPass, $this->dbName);
+        if ($rbac = true){
+            $this->db = new database($this->dbAdapter, $this->dbRbacHost, $this->dbRbacUser, $this->dbRbacPass, $this->dbRbacName);
+        } else {
+        	$this->db = new database($this->dbAdapter, $this->dbHost, $this->dbUser, $this->dbPass, $this->dbName);
+        }
         if (!$this->db->isConnected()) {
             $this->db->logQuery('No available connection to database!');
             throw new Exception("Could not connect to database");
         }
         return $this->db;
     }
-
+    
     /**
      * Close any database opened with getDatabase
      */
@@ -370,9 +381,13 @@ class workspaceTools
      *
      * @return array with the database schema
      */
-    public function getSchema()
+    public function getSchema($rbac = false)
     {
-        $oDataBase = $this->getDatabase();
+        if($rbac == false){
+        	$oDataBase = $this->getDatabase();
+        } else {
+        	$oDataBase = $this->getDatabase(true);
+        }
 
         $aOldSchema = array();
 
@@ -632,7 +647,9 @@ class workspaceTools
         $this->initPropel( true );
         p11835::isApplicable();
         $systemSchema = System::getSystemSchema();
+        $systemSchemaRbac = System::getSystemSchemaRbac();// obtiene el Schema de Rbac
         $this->upgradeSchema( $systemSchema );
+        $this->upgradeSchema( $systemSchemaRbac, false, true );// Hace Upgrade de Rbac
         $this->upgradeData();
         p11835::execute();
         return true;
@@ -646,7 +663,7 @@ class workspaceTools
      * @return array bool the changes if checkOnly is true, else return
      * true on success
      */
-    public function upgradeSchema($schema, $checkOnly = false)
+    public function upgradeSchema($schema, $checkOnly = false, $rbac = false)
     {
         $dbInfo = $this->getDBInfo();
 
@@ -654,9 +671,12 @@ class workspaceTools
             throw new Exception("Only MySQL is supported");
         }
 
-        $workspaceSchema = $this->getSchema();
+        $workspaceSchema = $this->getSchema($rbac); 
+
         $changes = System::compareSchema($workspaceSchema, $schema);
+
         $changed = (count($changes['tablesToAdd']) > 0 || count($changes['tablesToAlter']) > 0 || count($changes['tablesWithNewIndex']) > 0 || count($changes['tablesToAlterIndex']) > 0);
+
         if ($checkOnly || (!$changed)) {
             if ($changed) {
                 return $changes;
@@ -666,7 +686,8 @@ class workspaceTools
             }
         }
 
-        $oDataBase = $this->getDatabase();
+        $oDataBase = $this->getDatabase($rbac);
+ 
         $oDataBase->iFetchType = MYSQL_NUM;
 
         $oDataBase->logQuery(count($changes));

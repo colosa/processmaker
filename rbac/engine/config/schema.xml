@@ -199,7 +199,7 @@
     <column name="AUTH_SOURCE_BASE_DN" type="VARCHAR" size="128" required="true" default="" />
     <column name="AUTH_ANONYMOUS" type="INTEGER" default="0" />
     <column name="AUTH_SOURCE_SEARCH_USER" type="VARCHAR" size="128" required="true" default="" />
-    <column name="AUTH_SOURCE_PASSWORD" type="VARCHAR" size="32" required="true" default="" />
+    <column name="AUTH_SOURCE_PASSWORD" type="VARCHAR" size="150" required="true" default="" />
     <column name="AUTH_SOURCE_ATTRIBUTES" type="VARCHAR" size="255" required="true" default="" />
     <column name="AUTH_SOURCE_OBJECT_CLASSES" type="VARCHAR" size="255" required="true" default="" />
     <column name="AUTH_SOURCE_DATA" type="LONGVARCHAR" />

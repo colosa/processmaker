@@ -683,6 +683,16 @@ class System
     }
 
     /**
+     * Retrieves the system schema rbac.
+     *
+     * @return schema content in an array
+     */
+    public static function getSystemSchemaRbac ()
+    {
+    	return System::getSchema( PATH_TRUNK . "rbac/engine/config/schema.xml" );
+    }
+
+    /**
      * Retrieves the schema for a plugin.
      *
      * @param string $pluginName name of the plugin
