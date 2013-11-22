@@ -877,12 +877,7 @@ function saveLog($sSource, $sType, $sDescription)
         }
 
         G::verifyPath(PATH_DATA . "log" . PATH_SEP, true);
-
-        //setExecutionMessage( PATH_DATA."log".PATH_SEP);
-
-        $oFile = @fopen(PATH_DATA . "log" . PATH_SEP . "cron.log", "a+");
-        @fwrite($oFile, date("Y-m-d H:i:s") . " | $sObject | " . $sSource . " | $sType | " . $sDescription . "\n");
-        @fclose($oFile);
+        G::log(date("Y-m-d H:i:s") . " | $sObject | " . $sSource . " | $sType | " . $sDescription . "\n", PATH_DATA);
     } catch (Exception $e) {
         //CONTINUE
     }

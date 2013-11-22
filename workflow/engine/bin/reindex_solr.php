@@ -336,17 +336,15 @@ function saveLog($sSource, $sType, $sDescription)
     global $isDebug;
     if ($isDebug)
       print date ('H:i:s') . " ($sSource) $sType $sDescription <br>\n";
-    @fwrite ($oFile, date ('Y-m-d H:i:s') . '(' . $sSource . ') ' . $sDescription . "\n");
     
     G::verifyPath (PATH_DATA . 'log' . PATH_SEP, true);
+    $message = date ('Y-m-d H:i:s') . '(' . $sSource . ') ' . $sDescription . "\n";
     if ($sType == 'action') {
-      $oFile = @fopen (PATH_DATA . 'log' . PATH_SEP . 'cron.log', 'a+');
+      G::log($message, PATH_DATA);
     }
     else {
-      $oFile = @fopen (PATH_DATA . 'log' . PATH_SEP . 'cronError.log', 'a+');
+      G::log($message, PATH_DATA, 'cronError.log');
     }
-    @fwrite ($oFile, date ('Y-m-d H:i:s') . '(' . $sSource . ') ' . $sDescription . "\n");
-    @fclose ($oFile);
   }
   catch (Exception $oError) {
     // CONTINUE
