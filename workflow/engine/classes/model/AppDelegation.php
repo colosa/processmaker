@@ -135,7 +135,6 @@ class AppDelegation extends BaseAppDelegation
 
         $this->setDelTaskDueDate( $delTaskDueDate['DUE_DATE'] ); // Due date formatted
 
-
         if ((defined( "DEBUG_CALENDAR_LOG" )) && (DEBUG_CALENDAR_LOG)) {
             $this->setDelData( $delTaskDueDate['DUE_DATE_LOG'] ); // Log of actions made by Calendar Engine
         } else {
@@ -292,10 +291,17 @@ class AppDelegation extends BaseAppDelegation
         }
 
         //use the dates class to calculate dates
-        $dates = new dates();
-        $iDueDate = $dates->calculateDate( $this->getDelDelegateDate(), $aData['TAS_DURATION'], $aData['TAS_TIMEUNIT'],         //hours or days, ( we only accept this two types or maybe weeks
-        $aData['TAS_TYPE_DAY'],         //working or calendar days
-        $this->getUsrUid(), $task->getProUid(), $aData['TAS_UID'], $aCalendarUID );
+        $calendar = new calendar();
+
+        if ($calendar->pmCalendarUid == '') {
+        	$calendar->getCalendar(null, $task->getProUid());
+        	$calendar->getCalendarData();
+        }
+
+        $iDueDate = $calendar->calculateDate( $this->getDelDelegateDate(), $aData['TAS_DURATION'], $aData['TAS_TIMEUNIT']         //hours or days, ( we only accept this two types or maybe weeks
+        //$aData['TAS_TYPE_DAY'],         //working or calendar days
+        // $this->getUsrUid(), $task->getProUid(), $aData['TAS_UID'], $aCalendarUID 
+        );
 
         return $iDueDate;
     }
