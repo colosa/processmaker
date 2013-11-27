@@ -174,9 +174,15 @@ class UsersProperties extends BaseUsersProperties
             }
         }
         if (PPP_EXPIRATION_IN > 0) {
-            G::LoadClass( 'dates' );
-            $oDates = new dates();
-            $fDays = $oDates->calculateDuration( date( 'Y-m-d H:i:s' ), $sLastUpdate );
+            G::LoadClass( 'calendar' );
+            $oCalendar = new calendar();
+
+            if ($calendar->pmCalendarUid == '') {
+            	$calendar->pmCalendarUid = '00000000000000000000000000000001';
+            	$calendar->getCalendarData();
+            }
+
+            $fDays = $oCalendar->calculateDuration( date( 'Y-m-d H:i:s' ), $sLastUpdate );
             if ($fDays > (PPP_EXPIRATION_IN * 24)) {
                 $aErrors[] = 'ID_PPP_EXPIRATION_IN';
             }

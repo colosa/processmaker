@@ -116,6 +116,7 @@ Bootstrap::registerClass('Holiday',            PATH_HOME . "engine/classes/model
 Bootstrap::registerClass('Task',               PATH_HOME . "engine/classes/model/Task.php");
 Bootstrap::registerClass('TaskPeer',           PATH_HOME . "engine/classes/model/TaskPeer.php");
 Bootstrap::registerClass('dates',              PATH_HOME . "engine/classes/class.dates.php");
+Bootstrap::registerClass('calendar',           PATH_HOME . "engine/classes/class.calendar.php");
 Bootstrap::registerClass('AppDelegation',      PATH_HOME . "engine/classes/model/AppDelegation.php");
 Bootstrap::registerClass('BaseAppDelegationPeer',PATH_HOME . "engine/classes/model/om/BaseAppDelegationPeer.php");
 Bootstrap::registerClass('AppDelegationPeer',  PATH_HOME . "engine/classes/model/AppDelegationPeer.php");
@@ -807,7 +808,7 @@ function executeCaseSelfService()
         setExecutionMessage("Unassigned case");
         saveLog("unassignedCase", "action", "Unassigned case", "c");
 
-        $date = new dates();
+        $calendar = new calendar();
 
         while ($rsCriteria->next()) {
             $row = $rsCriteria->getRow();
@@ -822,11 +823,16 @@ function executeCaseSelfService()
             $taskSelfServiceTimeUnit = $row["TAS_SELFSERVICE_TIME_UNIT"];
             $taskSelfServiceTriggerUid = $row["TAS_SELFSERVICE_TRIGGER_UID"];
 
-            $dueDate = $date->calculateDate(
+            if ($calendar->pmCalendarUid == '') {
+            	$calendar->getCalendar(null, $appcacheProUid, $taskUid);
+            	$calendar->getCalendarData();
+            }
+            
+            $dueDate = $calendar->calculateDate(
                 $appcacheDelDelegateDate,
                 $taskSelfServiceTime,
-                $taskSelfServiceTimeUnit, //HOURS|DAYS
-                1
+                $taskSelfServiceTimeUnit //HOURS|DAYS
+                //1
             );
 
             if (time() > $dueDate["DUE_DATE_SECONDS"]) {

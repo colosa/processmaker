@@ -421,8 +421,8 @@ class Event extends BaseEvent
         try {
             $rowsCreated = 0;
             $rowsRejected = 0;
-            G::LoadClass( 'dates' );
-            $oDates = new dates();
+            G::LoadClass( 'calendar' );
+            $oCalendar = new calendar();
 
             //SELECT
             //  EVENT.PRO_UID,
@@ -503,16 +503,21 @@ class Event extends BaseEvent
                 $estimatedDuration = (float) $aData['EVN_TAS_ESTIMATED_DURATION'];
                 $when = (float) $aData['EVN_WHEN'];
                 $whenOccurs = $aData['EVN_WHEN_OCCURS'];
-
+ 
+                if ($oCalendar->pmCalendarUid == '') {
+                	$oCalendar->getCalendar(null, $aData['PRO_UID'], $aData['TAS_UID']);
+                	$oCalendar->getCalendarData();
+                }
+                
                 if ($whenOccurs == 'AFTER_TIME') {
                     //for multiple $sDueDate = date('Y-m-d H:i:s', $oDates->calculateDate($aData['DEL_DELEGATE_DATE'], $estimatedDuration, 'days', 1));
                     $sDueDate = $aData['DEL_TASK_DUE_DATE'];
-                    $calculatedDueDateA = $oDates->calculateDate( $sDueDate, $when, 'days', 1 );
+                    $calculatedDueDateA = $oCalendar->calculateDate( $sDueDate, $when, 'days' );
                     $sActionDate = date( 'Y-m-d H:i:s', $calculatedDueDateA['DUE_DATE_SECONDS'] );
                     $validStartDate = ($sActionDate >= $aData['DEL_DELEGATE_DATE']);
                 } else {
                     $sDueDate = $aData['DEL_DELEGATE_DATE'];
-                    $calculatedDueDateA = $oDates->calculateDate( $sDueDate, $when, 'days', 1 );
+                    $calculatedDueDateA = $oCalendar->calculateDate( $sDueDate, $when, 'days' );
                     $sActionDate = date( 'Y-m-d H:i:s', $calculatedDueDateA['DUE_DATE_SECONDS'] );
                     $validStartDate = ($sActionDate >= $aData['DEL_DELEGATE_DATE']);
                 }
@@ -542,8 +547,8 @@ class Event extends BaseEvent
         try {
             $rowsCreated = 0;
             $rowsRejected = 0;
-            G::LoadClass( 'dates' );
-            $oDates = new dates();
+            G::LoadClass( 'calendar' );
+            $oCalendar = new calendar();
             // SELECT TASK2.* ,
             //   EVENT.EVN_UID, EVENT.PRO_UID, EVENT.EVN_TAS_UID_FROM,
             //   EVENT.EVN_TAS_ESTIMATED_DURATION, EVENT.EVN_WHEN,
@@ -614,16 +619,21 @@ class Event extends BaseEvent
                 $estimatedDuration = (float) $aData['EVN_TAS_ESTIMATED_DURATION'];
                 $when = (float) $aData['EVN_WHEN'];
                 $whenOccurs = $aData['EVN_WHEN_OCCURS'];
+                
+                if ($oCalendar->pmCalendarUid == '') {
+                	$oCalendar->getCalendar(null, $aData['PRO_UID'], $aData['TAS_UID']);
+                	$oCalendar->getCalendarData();
+                }
 
                 if ($whenOccurs == 'AFTER_TIME') {
                     //for multiple $sDueDate = date('Y-m-d H:i:s', $oDates->calculateDate($aData['DEL_DELEGATE_DATE'], $estimatedDuration, 'days', 1));
                     $sDueDate = $aData['DEL_TASK_DUE_DATE'];
-                    $calculatedDueDateA = $oDates->calculateDate( $sDueDate, $when, 'days', 1 );
+                    $calculatedDueDateA = $oCalendar->calculateDate( $sDueDate, $when, 'days' );
                     $sActionDate = date( 'Y-m-d H:i:s', $calculatedDueDateA['DUE_DATE_SECONDS'] );
                     $validStartDate = ($sActionDate >= $aData['DEL_DELEGATE_DATE']);
                 } else {
                     $sDueDate = $aData['DEL_DELEGATE_DATE'];
-                    $calculatedDueDateA = $oDates->calculateDate( $sDueDate, $when, 'days', 1 );
+                    $calculatedDueDateA = $oCalendar->calculateDate( $sDueDate, $when, 'days' );
                     $sActionDate = date( 'Y-m-d H:i:s', $calculatedDueDateA['DUE_DATE_SECONDS'] );
                     $validStartDate = ($sActionDate >= $aData['DEL_DELEGATE_DATE']);
                 }
@@ -861,8 +871,8 @@ class Event extends BaseEvent
 
     public function toCalculateTime ($aData, $iDate = null)
     {
-        G::LoadClass( 'dates' );
-        $oDates = new dates();
+        G::LoadClass( 'calendar' );
+        $oCalendar = new calendar();
 
         $iDate = isset( $iDate ) ? $iDate : date( 'Y-m-d H:i:s' );
 
@@ -870,14 +880,18 @@ class Event extends BaseEvent
         $when = $aData['EVN_WHEN']; //how many days
         $whenOccurs = $aData['EVN_WHEN_OCCURS']; //time on action (AFTER_TIME/TASK_STARTED)
 
+        if ($oCalendar->pmCalendarUid == '') {
+        	$oCalendar->getCalendar(null, $aData['PRO_UID'], $aData['TAS_UID']);
+        	$oCalendar->getCalendarData();
+        }
 
         if ($whenOccurs == 'TASK_STARTED') {
 
-            $calculatedDueDateA = $oDates->calculateDate( $iDate, $when, 'days', 1 );
+            $calculatedDueDateA = $oCalendar->calculateDate( $iDate, $when, 'days' );
 
             $sActionDate = date( 'Y-m-d H:i:s', $calculatedDueDateA['DUE_DATE_SECONDS'] );
         } else {
-            $calculatedDueDateA = $oDates->calculateDate( $iDate, $estimatedDuration + $when, 'days', 1 );
+            $calculatedDueDateA = $oCalendar->calculateDate( $iDate, $estimatedDuration + $when, 'days' );
             $sActionDate = date( 'Y-m-d H:i:s', $calculatedDueDateA['DUE_DATE_SECONDS'] );
         }
 
