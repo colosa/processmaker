@@ -96,6 +96,22 @@ try {
         fclose( $templateHd1 );
     }
 
+    $criteria = processMap::getDynaformsCriteria($PRO_UID);
+    //FROM
+    //WHERE
+    //QUERY
+    $rsCriteria = DynaformPeer::doSelectRS($criteria);
+    $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+    $arrayData = array();
+
+    while ($rsCriteria->next()) {
+        $row = $rsCriteria->getRow();
+
+        $arrayData[] = array("value" => $row["DYN_UID"], "text" => htmlentities($row["DYN_TITLE"], ENT_QUOTES, "utf-8"));
+    }
+
+    echo G::json_encode(array("data" => $arrayData, "length" => count($arrayData)));
 } catch (Exception $e) {
     return (array) $e;
 }

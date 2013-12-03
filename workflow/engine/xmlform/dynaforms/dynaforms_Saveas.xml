@@ -37,16 +37,38 @@ function dynaformSaveas ( frm ) {
      reqName=ajax_function('dynaforms_Save','lookforNameDynaform','NAMEDYNAFORM='+encodeURIComponent(nameDynaForm)+'&proUid='+encodeURIComponent(proUid),'POST') ;
        if(!reqName){
          msgBox('@G::LoadTranslation(ID_EXIST_DYNAFORM)','alert');
-       }else {
-         ajax_post( frm.action, frm, 'POST' );
-         currentPopupWindow.remove();
+       } else {
+           var result = ajax_post(
+               frm.action,
+               frm,
+               "POST",
+               function (responseText)
+               {
+                    var dataResponse = eval("(" + responseText + ")"); //json
+                    var elementSelected = document.getElementById("_dynaformsList_").value;
+                    document.getElementById("_dynaformsList_").length = 0;
+
+                    for (var i = 0; i <= dataResponse.length - 1; i++) {
+                        var value = dataResponse.data[i].value;
+                        var text = dataResponse.data[i].text;
+
+                        if (value == elementSelected) {
+                            document.getElementById("_dynaformsList_").options[i] = new Option(text, value, "", "selected");
+                        } else {
+                            document.getElementById("_dynaformsList_").options[i] = new Option(text, value);
+                        }
+                    }
+               }
+           );
+
+           currentPopupWindow.remove();
        }
-    }
-    else {
+    } else {
       alert(G_STRINGS.ID_TITLE_EMPTY);
       return;
     }
-  }
+}
+
 getField('DYN_TITLE').form.onsubmit = function() {return false;};
 
 function cancel(){
@@ -55,4 +77,4 @@ function cancel(){
 
 ]]></JS>
 
-</dynaForm> 
+</dynaForm>
