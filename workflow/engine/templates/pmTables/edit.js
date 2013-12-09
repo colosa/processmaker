@@ -681,6 +681,7 @@ Ext.onReady(function(){
                   xtype: "checkbox",
                   id: "chkKeepData",
                   name: "chkKeepData",
+                  checked : true,
                   boxLabel: _("ID_PMTABLE_DATA_KEEP")
               }
           ]
