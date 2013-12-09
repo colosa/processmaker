@@ -81,6 +81,9 @@ try {
             case -5:
                 $errLabel = 'ID_AUTHENTICATION_SOURCE_INVALID';
                 break;
+            case -6:
+                $errLabel = 'ID_ROLE_INACTIVE';
+                break;
         }
 
         //to avoid empty string in user field.  This will avoid a weird message "this row doesn't exist"

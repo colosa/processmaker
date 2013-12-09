@@ -59,6 +59,7 @@ class RbacUsers extends BaseRbacUsers
      *  -2: password errado
      *  -3: usuario inactivo
      *  -4: usuario vencido
+     *  -6: role inactivo
      *  n : uid de usuario
      */
     public function verifyLogin($sUsername, $sPassword)
@@ -88,6 +89,10 @@ class RbacUsers extends BaseRbacUsers
                         }
                         if ($aFields['USR_STATUS'] != 1) {
                             return -3;
+                        }
+                        $role = $this->verifyRolUser($aFields['USR_UID']);
+                        if ($role['ROL_STATUS'] == 0) {
+                            return -6;
                         }
                         return $aFields['USR_UID'];
                     } else {
@@ -292,6 +297,28 @@ class RbacUsers extends BaseRbacUsers
             $aUsers[] = $row['USR_UID'];
         }
         return $aUsers;
+    }
+
+    public function verifyRolUser($UsrUid)
+    {
+        $con = Propel::getConnection(UsersRolesPeer::DATABASE_NAME);
+        try {
+            $c = new Criteria( 'rbac' );
+            $c->clearSelectColumns();
+            $c->addSelectColumn ( RolesPeer::ROL_UID );
+            $c->addSelectColumn ( RolesPeer::ROL_CODE );
+            $c->addSelectColumn ( RolesPeer::ROL_STATUS );
+            $c->addJoin ( UsersRolesPeer::ROL_UID, RolesPeer::ROL_UID );
+            $c->add ( UsersRolesPeer::USR_UID, $UsrUid );
+            $rs = UsersRolesPeer::doSelectRs( $c );
+            $rs->setFetchmode (ResultSet::FETCHMODE_ASSOC);
+            $rs->next();
+            $row = $rs->getRow();
+            return $row;
+        }
+        catch (Exception $oError) {
+          throw($oError);
+        }
     }
 }
 

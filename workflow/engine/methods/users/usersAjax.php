@@ -160,7 +160,7 @@ switch ($_POST['action']) {
                 $aData['USR_AUTH_USER_DN'] = $form['USR_AUTH_USER_DN'];
                 //fixing bug in inactive user when the admin create a new user.
                 $statusWF = $form['USR_STATUS'];
-                $aData['USR_STATUS'] = $form['USR_STATUS'] == 'ACTIVE' ? 1 : 0;
+                $aData['USR_STATUS'] = $form['USR_STATUS'] ;//== 'ACTIVE' ? 1 : 0;
                 try {
                     $sUserUID = $RBAC->createUser($aData, $form['USR_ROLE']);
                 } catch(Exception $oError) {
