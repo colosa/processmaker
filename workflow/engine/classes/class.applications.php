@@ -422,6 +422,24 @@ class Applications
                         break;
                 }
             }
+            if (isset( $oAppCache->confCasesList['PMTable'] ) && ! empty( $oAppCache->confCasesList['PMTable'] )) {
+                $additionalTableUid = $oAppCache->confCasesList["PMTable"];
+
+                $additionalTable = AdditionalTablesPeer::retrieveByPK($additionalTableUid);
+                $tableName = $additionalTable->getAddTabName();
+
+                $additionalTable = new AdditionalTables();
+                $tableData = $additionalTable->load($additionalTableUid, true);
+
+                $tableField = array();
+
+                $fieldTable = explode(".", $sort);
+                foreach ($tableData["FIELDS"] as $arrayField) {
+                    if ($fieldTable[1] == $arrayField["FLD_NAME"]) {
+                        $sort =  strtoupper($tableName) . "." . $fieldTable[1];
+                    }
+                }
+            }
 
             if ($dir == "DESC") {
                 $Criteria->addDescendingOrderByColumn($sort);
