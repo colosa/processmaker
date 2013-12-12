@@ -3920,7 +3920,7 @@ class XmlForm_Field_Grid extends XmlForm_Field
     public $fields = array ();
     public $scriptURL;
     public $id = '';
-
+    //public $fieldsSize = 0;
     /**
      * Function XmlForm_Field_Grid
      *
@@ -4023,10 +4023,10 @@ class XmlForm_Field_Grid extends XmlForm_Field
             if ($fieldsSize > 100) {
                 $owner->width = '100%';
             }
-
         }
         //  else
         //  $owner->width = $fieldsSize . 'em';
+        //$owner->fieldsSize = $fieldsSize;
         return $this->renderGrid( $emptyRow, $owner );
 
     }
@@ -4040,7 +4040,7 @@ class XmlForm_Field_Grid extends XmlForm_Field
      * @return string
      */
     public function renderGrid ($values, $owner = null, $therow = -1)
-    {
+    {   
         $this->id = $this->owner->id . $this->name;
         $using_template = 'grid';
 
@@ -5745,6 +5745,7 @@ class xmlformTemplate extends Smarty
                             }
                         }
                     }
+                    $result["form"][$k] = $form->fields[$k]->render($value, $form); ////aqi cambieeeee!!!!
                     $result["form"][$k] = $form->fields[$k]->renderGrid( $value, $form, $therow );
                 } else {
                     switch ($field->type) {
