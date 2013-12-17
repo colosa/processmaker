@@ -536,14 +536,14 @@ class Configurations // extends Configuration
     }
 
     public function getSystemDate($dateTime, $type='dateFormat')
-    {
+    {   
         $oConf = new Configurations();
         $oConf->getFormats();
         $dateFormat = $oConf->UserConfig['dateFormat'];
         $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
         $creationDateMask = isset($oConf->aConfig[$type]) ? $oConf->aConfig[$type] : '';
         $creationDateMask = ($creationDateMask == '') ? $dateFormat : $creationDateMask;
-        if ($creationDateMask != '') {
+        if ($creationDateMask != '') { 
             if (strpos($dateTime, ' ') !== false) {
                 list ($date, $time) = explode(' ', $dateTime);
                 list ($y, $m, $d) = explode('-', $date);
@@ -556,7 +556,6 @@ class Configurations // extends Configuration
                     $creationDateMask = str_replace(' \\d\\e ', ' [xx] ', $creationDateMask);
                 }
 
-
                 for ($i = 0; $i < strlen($creationDateMask); $i++) {
                     if ($creationDateMask[$i] != ' ' && isset($maskTime[$creationDateMask[$i]])) {
                         $newCreation .= $maskTime[$creationDateMask[$i]];
@@ -564,15 +563,23 @@ class Configurations // extends Configuration
                         $newCreation .= $creationDateMask[$i];
                     }
                 }
-
+                
                 $langLocate = SYS_LANG;
+                
+                require_once 'model/Language.php';
+                $oLang = new Language();
+                $aLang = $oLang->findLocationByLanId(SYS_LANG);
+                $location = isset($aLang['LAN_LOCATION'])?$aLang['LAN_LOCATION']:'';
+                
                 if (G::toLower(PHP_OS) == 'linux' || G::toLower(PHP_OS) == 'darwin') {
                     if (SYS_LANG == 'es') {
                         $langLocate = 'es_ES';
                     } else if (strlen(SYS_LANG) > 2) {
                         $langLocate = str_replace('-', '_', SYS_LANG);
+                    } else if ($location != '') {
+                        $langLocate = SYS_LANG.'_'.$location;
                     } else {
-                        $langLocate = 'en_US';
+                        $langLocate = 'en_US';                        
                     }
                 } else {
                     switch (SYS_LANG) {
@@ -591,7 +598,7 @@ class Configurations // extends Configuration
                             break;
                     }
                 }
-
+                
                 setlocale(LC_TIME, $langLocate . ".utf8");
                 $dateTime = strftime($newCreation, mktime($h, $i, $s, $m, $d, $y));
 

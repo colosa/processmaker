@@ -34,6 +34,9 @@ abstract class BaseLanguagePeer
     /** the column name for the LAN_ID field */
     const LAN_ID = 'LANGUAGE.LAN_ID';
 
+    /** the column name for the LAN_LOCATION field */
+    const LAN_LOCATION = 'LANGUAGE.LAN_LOCATION';
+
     /** the column name for the LAN_NAME field */
     const LAN_NAME = 'LANGUAGE.LAN_NAME';
 
@@ -63,10 +66,10 @@ abstract class BaseLanguagePeer
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     private static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('LanId', 'LanName', 'LanNativeName', 'LanDirection', 'LanWeight', 'LanEnabled', 'LanCalendar', ),
-        BasePeer::TYPE_COLNAME => array (LanguagePeer::LAN_ID, LanguagePeer::LAN_NAME, LanguagePeer::LAN_NATIVE_NAME, LanguagePeer::LAN_DIRECTION, LanguagePeer::LAN_WEIGHT, LanguagePeer::LAN_ENABLED, LanguagePeer::LAN_CALENDAR, ),
-        BasePeer::TYPE_FIELDNAME => array ('LAN_ID', 'LAN_NAME', 'LAN_NATIVE_NAME', 'LAN_DIRECTION', 'LAN_WEIGHT', 'LAN_ENABLED', 'LAN_CALENDAR', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('LanId', 'LanLocation', 'LanName', 'LanNativeName', 'LanDirection', 'LanWeight', 'LanEnabled', 'LanCalendar', ),
+        BasePeer::TYPE_COLNAME => array (LanguagePeer::LAN_ID, LanguagePeer::LAN_LOCATION, LanguagePeer::LAN_NAME, LanguagePeer::LAN_NATIVE_NAME, LanguagePeer::LAN_DIRECTION, LanguagePeer::LAN_WEIGHT, LanguagePeer::LAN_ENABLED, LanguagePeer::LAN_CALENDAR, ),
+        BasePeer::TYPE_FIELDNAME => array ('LAN_ID', 'LAN_LOCATION', 'LAN_NAME', 'LAN_NATIVE_NAME', 'LAN_DIRECTION', 'LAN_WEIGHT', 'LAN_ENABLED', 'LAN_CALENDAR', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7,)
     );
 
     /**
@@ -76,10 +79,10 @@ abstract class BaseLanguagePeer
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     private static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('LanId' => 0, 'LanName' => 1, 'LanNativeName' => 2, 'LanDirection' => 3, 'LanWeight' => 4, 'LanEnabled' => 5, 'LanCalendar' => 6, ),
-        BasePeer::TYPE_COLNAME => array (LanguagePeer::LAN_ID => 0, LanguagePeer::LAN_NAME => 1, LanguagePeer::LAN_NATIVE_NAME => 2, LanguagePeer::LAN_DIRECTION => 3, LanguagePeer::LAN_WEIGHT => 4, LanguagePeer::LAN_ENABLED => 5, LanguagePeer::LAN_CALENDAR => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('LAN_ID' => 0, 'LAN_NAME' => 1, 'LAN_NATIVE_NAME' => 2, 'LAN_DIRECTION' => 3, 'LAN_WEIGHT' => 4, 'LAN_ENABLED' => 5, 'LAN_CALENDAR' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('LanId' => 0, 'LanLocation' => 1, 'LanName' => 2, 'LanNativeName' => 3, 'LanDirection' => 4, 'LanWeight' => 5, 'LanEnabled' => 6, 'LanCalendar' => 7, ),
+        BasePeer::TYPE_COLNAME => array (LanguagePeer::LAN_ID => 0, LanguagePeer::LAN_LOCATION => 1, LanguagePeer::LAN_NAME => 2, LanguagePeer::LAN_NATIVE_NAME => 3, LanguagePeer::LAN_DIRECTION => 4, LanguagePeer::LAN_WEIGHT => 5, LanguagePeer::LAN_ENABLED => 6, LanguagePeer::LAN_CALENDAR => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('LAN_ID' => 0, 'LAN_LOCATION' => 1, 'LAN_NAME' => 2, 'LAN_NATIVE_NAME' => 3, 'LAN_DIRECTION' => 4, 'LAN_WEIGHT' => 5, 'LAN_ENABLED' => 6, 'LAN_CALENDAR' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7,)
     );
 
     /**
@@ -181,6 +184,8 @@ abstract class BaseLanguagePeer
     {
 
         $criteria->addSelectColumn(LanguagePeer::LAN_ID);
+
+        $criteria->addSelectColumn(LanguagePeer::LAN_LOCATION);
 
         $criteria->addSelectColumn(LanguagePeer::LAN_NAME);
 

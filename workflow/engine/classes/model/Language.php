@@ -133,6 +133,17 @@ class Language extends BaseLanguage
         return $oDataset->getRow();
     }
 
+    public function findLocationByLanId ($LAN_ID)
+    {   
+        $oCriteria = new Criteria( 'workflow' );
+        $oCriteria->addSelectColumn( LanguagePeer::LAN_LOCATION );
+        $oCriteria->add( LanguagePeer::LAN_ID, $LAN_ID, Criteria::LIKE );
+        $oDataset = LanguagePeer::doSelectRS( $oCriteria );
+        $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $oDataset->next();
+        
+        return $oDataset->getRow();
+    }
     /*
      * Import a language file
      *
