@@ -22,19 +22,15 @@
  *
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
  */
 
 //require_once 'classes/model/om/BaseLanguage.php';
-
 //require_once 'classes/model/Content.php';
 //require_once 'classes/model/IsoCountry.php';
 //require_once 'classes/model/Translation.php';
 
 /**
  * Skeleton subclass for representing a row from the 'LANGUAGE' table.
- *
- *
  *
  * You should add additional methods to this class to meet the
  * application requirements. This class will only be generated as
@@ -133,6 +129,16 @@ class Language extends BaseLanguage
         return $oDataset->getRow();
     }
 
+    public function findLocationByLanId ($LAN_ID)
+    {   
+        $oCriteria = new Criteria( 'workflow' );
+        $oCriteria->addSelectColumn( LanguagePeer::LAN_LOCATION );
+        $oCriteria->add( LanguagePeer::LAN_ID, $LAN_ID, Criteria::LIKE );
+        $oDataset = LanguagePeer::doSelectRS( $oCriteria );
+        $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $oDataset->next();
+        return $oDataset->getRow();
+    }
     /*
      * Import a language file
      *

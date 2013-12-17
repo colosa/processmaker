@@ -1,18 +1,12 @@
 <?php
-
 require_once 'propel/om/BaseObject.php';
-
 require_once 'propel/om/Persistent.php';
 
-
 include_once 'propel/util/Criteria.php';
-
 include_once 'classes/model/LanguagePeer.php';
 
 /**
  * Base class that represents a row from the 'LANGUAGE' table.
- *
- * 
  *
  * @package    workflow.classes.model.om
  */

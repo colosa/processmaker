@@ -27,9 +27,7 @@
  */
 //
 // It works with the table CONFIGURATION in a WF dataBase
-//
 // Copyright (C) 2007 COLOSA
-//
 // License: LGPL, see LICENSE
 ////////////////////////////////////////////////////
 
@@ -556,7 +554,6 @@ class Configurations // extends Configuration
                     $creationDateMask = str_replace(' \\d\\e ', ' [xx] ', $creationDateMask);
                 }
 
-
                 for ($i = 0; $i < strlen($creationDateMask); $i++) {
                     if ($creationDateMask[$i] != ' ' && isset($maskTime[$creationDateMask[$i]])) {
                         $newCreation .= $maskTime[$creationDateMask[$i]];
@@ -566,11 +563,19 @@ class Configurations // extends Configuration
                 }
 
                 $langLocate = SYS_LANG;
+
+                require_once 'model/Language.php';
+                $language = new language();
+                $location = $language->findLocationByLanId(SYS_LANG);
+                $location = $location['LAN_LOCATION'];    
+
                 if (G::toLower(PHP_OS) == 'linux' || G::toLower(PHP_OS) == 'darwin') {
                     if (SYS_LANG == 'es') {
                         $langLocate = 'es_ES';
                     } else if (strlen(SYS_LANG) > 2) {
                         $langLocate = str_replace('-', '_', SYS_LANG);
+                    } else if ($location) {
+                        $langLocate = SYS_LANG.'_'.$location;
                     } else {
                         $langLocate = 'en_US';
                     }
