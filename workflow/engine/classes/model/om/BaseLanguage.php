@@ -1,18 +1,12 @@
 <?php
-
 require_once 'propel/om/BaseObject.php';
-
 require_once 'propel/om/Persistent.php';
 
-
 include_once 'propel/util/Criteria.php';
-
 include_once 'classes/model/LanguagePeer.php';
 
 /**
  * Base class that represents a row from the 'LANGUAGE' table.
- *
- * 
  *
  * @package    workflow.classes.model.om
  */
@@ -32,6 +26,12 @@ abstract class BaseLanguage extends BaseObject implements Persistent
      * @var        string
      */
     protected $lan_id = '';
+
+    /**
+     * The value for the lan_location field.
+     * @var        string
+     */
+    protected $lan_location = '';
 
     /**
      * The value for the lan_name field.
@@ -92,6 +92,17 @@ abstract class BaseLanguage extends BaseObject implements Persistent
     {
 
         return $this->lan_id;
+    }
+
+    /**
+     * Get the [lan_location] column value.
+     * 
+     * @return     string
+     */
+    public function getLanLocation()
+    {
+
+        return $this->lan_location;
     }
 
     /**
@@ -181,6 +192,28 @@ abstract class BaseLanguage extends BaseObject implements Persistent
         }
 
     } // setLanId()
+
+    /**
+     * Set the value of [lan_location] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setLanLocation($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->lan_location !== $v || $v === '') {
+            $this->lan_location = $v;
+            $this->modifiedColumns[] = LanguagePeer::LAN_LOCATION;
+        }
+
+    } // setLanLocation()
 
     /**
      * Set the value of [lan_name] column.
@@ -333,17 +366,19 @@ abstract class BaseLanguage extends BaseObject implements Persistent
 
             $this->lan_id = $rs->getString($startcol + 0);
 
-            $this->lan_name = $rs->getString($startcol + 1);
+            $this->lan_location = $rs->getString($startcol + 1);
 
-            $this->lan_native_name = $rs->getString($startcol + 2);
+            $this->lan_name = $rs->getString($startcol + 2);
 
-            $this->lan_direction = $rs->getString($startcol + 3);
+            $this->lan_native_name = $rs->getString($startcol + 3);
 
-            $this->lan_weight = $rs->getInt($startcol + 4);
+            $this->lan_direction = $rs->getString($startcol + 4);
 
-            $this->lan_enabled = $rs->getString($startcol + 5);
+            $this->lan_weight = $rs->getInt($startcol + 5);
 
-            $this->lan_calendar = $rs->getString($startcol + 6);
+            $this->lan_enabled = $rs->getString($startcol + 6);
+
+            $this->lan_calendar = $rs->getString($startcol + 7);
 
             $this->resetModified();
 
@@ -558,21 +593,24 @@ abstract class BaseLanguage extends BaseObject implements Persistent
                 return $this->getLanId();
                 break;
             case 1:
-                return $this->getLanName();
+                return $this->getLanLocation();
                 break;
             case 2:
-                return $this->getLanNativeName();
+                return $this->getLanName();
                 break;
             case 3:
-                return $this->getLanDirection();
+                return $this->getLanNativeName();
                 break;
             case 4:
-                return $this->getLanWeight();
+                return $this->getLanDirection();
                 break;
             case 5:
-                return $this->getLanEnabled();
+                return $this->getLanWeight();
                 break;
             case 6:
+                return $this->getLanEnabled();
+                break;
+            case 7:
                 return $this->getLanCalendar();
                 break;
             default:
@@ -596,12 +634,13 @@ abstract class BaseLanguage extends BaseObject implements Persistent
         $keys = LanguagePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getLanId(),
-            $keys[1] => $this->getLanName(),
-            $keys[2] => $this->getLanNativeName(),
-            $keys[3] => $this->getLanDirection(),
-            $keys[4] => $this->getLanWeight(),
-            $keys[5] => $this->getLanEnabled(),
-            $keys[6] => $this->getLanCalendar(),
+            $keys[1] => $this->getLanLocation(),
+            $keys[2] => $this->getLanName(),
+            $keys[3] => $this->getLanNativeName(),
+            $keys[4] => $this->getLanDirection(),
+            $keys[5] => $this->getLanWeight(),
+            $keys[6] => $this->getLanEnabled(),
+            $keys[7] => $this->getLanCalendar(),
         );
         return $result;
     }
@@ -637,21 +676,24 @@ abstract class BaseLanguage extends BaseObject implements Persistent
                 $this->setLanId($value);
                 break;
             case 1:
-                $this->setLanName($value);
+                $this->setLanLocation($value);
                 break;
             case 2:
-                $this->setLanNativeName($value);
+                $this->setLanName($value);
                 break;
             case 3:
-                $this->setLanDirection($value);
+                $this->setLanNativeName($value);
                 break;
             case 4:
-                $this->setLanWeight($value);
+                $this->setLanDirection($value);
                 break;
             case 5:
-                $this->setLanEnabled($value);
+                $this->setLanWeight($value);
                 break;
             case 6:
+                $this->setLanEnabled($value);
+                break;
+            case 7:
                 $this->setLanCalendar($value);
                 break;
         } // switch()
@@ -705,6 +747,10 @@ abstract class BaseLanguage extends BaseObject implements Persistent
             $this->setLanCalendar($arr[$keys[6]]);
         }
 
+        if (array_key_exists($keys[7], $arr)) {
+            $this->setLanCalendar($arr[$keys[7]]);
+        }
+
     }
 
     /**
@@ -718,6 +764,10 @@ abstract class BaseLanguage extends BaseObject implements Persistent
 
         if ($this->isColumnModified(LanguagePeer::LAN_ID)) {
             $criteria->add(LanguagePeer::LAN_ID, $this->lan_id);
+        }
+
+        if ($this->isColumnModified(LanguagePeer::LAN_LOCATION)) {
+            $criteria->add(LanguagePeer::LAN_ID, $this->lan_location);
         }
 
         if ($this->isColumnModified(LanguagePeer::LAN_NAME)) {
@@ -797,6 +847,8 @@ abstract class BaseLanguage extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false)
     {
+
+        $copyObj->setLanName($this->lan_location);
 
         $copyObj->setLanName($this->lan_name);
 
