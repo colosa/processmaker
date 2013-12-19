@@ -2748,10 +2748,10 @@ class XmlForm_Field_Link extends XmlForm_Field
 
         $html = "<a class=\"tableOption\" href=\"" . $this->htmlentities($link, ENT_QUOTES, "utf-8") . "\"";
         $html = $html . " id=\"form[$id]\" name=\"form[$id]\" pm:field=\"pm:field\"";
-        if ((eregi("chrome", $_SERVER['HTTP_USER_AGENT']))) {
-            $html = $html . (($this->onclick)? " onclick=\"" . htmlentities($onclick, ENT_QUOTES, "utf-8") . " return false;\"" : " onclick=\"return false;\"");
+        if ((strrpos($_SERVER['HTTP_USER_AGENT'], "Chrome") === false ? false : true) && trim($link) === "#") {
+            $html = $html . " onclick=\"" . htmlentities($onclick, ENT_QUOTES, "utf-8") . " return false;\"";
         } else {
-            $html = $html . (($this->onclick)? " onclick=\"" . htmlentities($onclick, ENT_QUOTES, "utf-8") . "\"" : null);
+            $html = $html . (($this->onclick) ? " onclick=\"" . htmlentities($onclick, ENT_QUOTES, "utf-8") . "\"" : null);
         }
         $html = $html . (($this->target)? " target=\"" . htmlentities($target, ENT_QUOTES, "utf-8") . "\"" : null);
 
