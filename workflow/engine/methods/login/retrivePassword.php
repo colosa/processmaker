@@ -11,7 +11,7 @@ $user = new Users();
 
 $userData = $rbacUser->getByUsername($data['USR_USERNAME']);
 
-if ($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL']) {
+if ($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL'] && $userData['USR_AUTH_TYPE'] === '' ) {
     $aSetup = getEmailConfiguration();
     if (count($aSetup) == 0 || !isset($aSetup['MESS_ENGINE'])) {
         G::SendTemporalMessage ('ID_EMAIL_ENGINE_IS_NOT_ENABLED', "warning");
@@ -27,7 +27,13 @@ if ($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL'
       $rbacUser->update($aData);
       $user->update($aData);
     */
-    $sFrom    = ($aSetup['MESS_ACCOUNT'] != '' ? $aSetup['MESS_ACCOUNT'] . ' ' : '') . '<' . $aSetup['MESS_ACCOUNT'] . '>';
+    
+    if ($aSetup['MESS_ENGINE'] === 'MAIL') {
+        $sFrom = '<' . $userData['USR_EMAIL'] . '>';
+    } else {
+        $sFrom = ($aSetup['MESS_ACCOUNT'] != '' ? $aSetup['MESS_ACCOUNT'] . ' ' : '') . '<' . $aSetup['MESS_ACCOUNT'] . '>';
+    }
+    
     $sSubject = G::LoadTranslation('ID_RESET_PASSWORD').' - ProcessMaker' ;
     $msg = '<h3>ProcessMaker Forgot password Service</h3>';
     $msg .='<p>'.G::LoadTranslation('ID_YOUR_USERMANE_IS').' :  <strong>'.$userData['USR_USERNAME'].'</strong></p>';
@@ -115,7 +121,11 @@ if ($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL'
         G::SendTemporalMessage ($e->getMessage(), "warning", 'string');
     }
 } else {
-    $msg = G::LoadTranslation('ID_USER') . ' ' . htmlentities($data['USR_USERNAME'], ENT_QUOTES, 'UTF-8') . ' '. G::LoadTranslation('ID_IS_NOT_REGISTERED');
+    if ($userData['USR_AUTH_TYPE'] === '') {
+        $msg = G::LoadTranslation('ID_USER') . ' ' . htmlentities($data['USR_USERNAME'], ENT_QUOTES, 'UTF-8') . ' '. G::LoadTranslation('ID_IS_NOT_REGISTERED');
+    } else {
+        $msg = G::LoadTranslation('ID_USER_NOT_FUNCTIONALITY');
+    }
     G::SendTemporalMessage ($msg, "warning", 'string');
     G::header('location: forgotPassword');
 }
