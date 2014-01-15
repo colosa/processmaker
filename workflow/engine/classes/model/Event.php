@@ -303,7 +303,7 @@ class Event extends BaseEvent
                     $oTP = new TemplatePower( PATH_TPL . 'events' . PATH_SEP . 'sendMessage.tpl' );
                     $oTP->prepare();
 
-                    $oTP->assign( 'from', 'info@processmaker.com' );
+                    $oTP->assign( 'from', '<info@processmaker.com>' );
                     $oTP->assign( 'subject', addslashes( $aData['EVN_ACTION_PARAMETERS']['SUBJECT'] ) );
                     $oTP->assign( 'template', $aData['EVN_ACTION_PARAMETERS']['TEMPLATE'] );
                     $oTP->assign( 'timestamp', date( "l jS \of F Y h:i:s A" ) );

@@ -58,9 +58,9 @@ try {
         ) ) ));
     }
     foreach ($aFiles as $key => $val) {
-        if ($val['filename'] == $sClassName . '.php')
+        if (trim($val['filename']) == $sClassName . '.php')
             $bMainFile = true;
-        if ($val['filename'] == $sClassName . PATH_SEP . 'class.' . $sClassName . '.php')
+        if (trim($val['filename']) == $sClassName . PATH_SEP . 'class.' . $sClassName . '.php')
             $bClassFile = true;
     }
 
