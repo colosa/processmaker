@@ -243,7 +243,7 @@ Ext.onReady(function(){
                       allowBlank: true,
                       allowDecimals: false,
                       allowNegative: false,
-                      disabled: true,
+                      disabled: false,
                       nanText: 'This field should content a number',
                       minValue: 1,
                       maxValue: 99,
