@@ -280,7 +280,7 @@ if (is_null($timelife)) {
     $timelife = 1440;
 }
 ini_set('session.gc_maxlifetime', $timelife);
-if (preg_match("/msie/i", $_SERVER ['HTTP_USER_AGENT']) != 1 || $config['ie_cookie_lifetime'] == 1) {
+if (preg_match("/msie/i", isset($_SERVER ['HTTP_USER_AGENT']) ? $_SERVER ['HTTP_USER_AGENT'] : '') != 1 || $config['ie_cookie_lifetime'] == 1) {
     ini_set('session.cookie_lifetime', $timelife);
 }
 session_start();
