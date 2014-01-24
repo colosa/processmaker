@@ -332,7 +332,9 @@ class Dashboard extends Controller
                         $users[] = array ('OWNER_UID' => $user['USR_UID'],'OWNER_NAME' => $user['USR_FIRSTNAME'] . ' ' . $user['USR_LASTNAME']
                         );
                     }
-
+                    usort($users, function($str1, $str2) {
+                        return strcmp(strtolower($str1["OWNER_NAME"]), strtolower($str2["OWNER_NAME"]));
+                    });
                     $result->total = $allUsers->totalCount;
                     $result->owners = $users;
                     break;
