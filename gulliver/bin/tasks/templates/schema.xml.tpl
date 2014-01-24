@@ -126,6 +126,16 @@
         <parameter name="Extra" value=""/>
       </vendor>
     </column>
+    <column name="LAN_LOCATION" type="VARCHAR" size="4" required="true" default=""/>
+      <vendor type="mysql">
+        <parameter name="Field" value="LAN_LOCATION"/>
+        <parameter name="Type" value="varchar(4)"/>
+        <parameter name="Null" value="NO"/>
+        <parameter name="Key" value=""/>
+        <parameter name="Default" value=""/>
+        <parameter name="Extra" value=""/>
+      </vendor>
+    </column>
     <column name="LAN_NATIVE_NAME" type="VARCHAR" size="30" required="true" default="">
       <vendor type="mysql">
         <parameter name="Field" value="LAN_NATIVE_NAME"/>
