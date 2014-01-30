@@ -241,53 +241,65 @@ Ext.onReady(function(){
                 if (swForm == 1) {
                     var requiredField = "";
                     var swRequiredField = 1;
+                    var dynaformChange ="";
+                    var swDynaformChange = 0;
+
+                    if (window.frames["openCaseFrame"].document.getElementsByTagName("form")) {
+                    	dynaformChange = window.frames["openCaseFrame"].document.getElementsByTagName("form").item(0);
+                    	swDynaformChange = (window.frames["openCaseFrame"].dynaFormChanged(dynaformChange))? 1 : 0;
+                    }
 
                     if (window.frames["openCaseFrame"].document.getElementById("DynaformRequiredFields")) {
                         requiredField = window.frames["openCaseFrame"].document.getElementById("DynaformRequiredFields").value;
-
                         if (requiredField != "") {
                             swRequiredField = (window.frames["openCaseFrame"].validateForm(requiredField))? 1 : 0;
                         }
                     }
 
-                    if (swRequiredField == 1) {
-                        Ext.MessageBox.show({
-                            title: _("ID_CONFIRM"),
-                            msg: _("ID_DYNAFORM_SAVE_CHANGES"),
-                            icon:  Ext.MessageBox.QUESTION,
-                            buttons: {ok: _("ID_ACCEPT"), cancel: _("ID_CANCEL")},
-                            fn: function (btn)
-                            {
-                                loadMaskStep.show();
+                    if (swDynaformChange) {
+	                    if ((swRequiredField == 1)){
+	                        Ext.MessageBox.show({
+	                            title: _("ID_CONFIRM"),
+	                            msg: _("ID_DYNAFORM_SAVE_CHANGES"),
+	                            icon:  Ext.MessageBox.QUESTION,
+	                            buttons: {ok: _("ID_ACCEPT"), cancel: _("ID_CANCEL")},
+	                            fn: function (btn)
+	                            {
+	                                loadMaskStep.show();
 
-                                if (btn == "ok") {
-                                    var frm = window.frames["openCaseFrame"].document.getElementsByTagName("form");
+	                                if (btn == "ok") {
+	                                    var frm = window.frames["openCaseFrame"].document.getElementsByTagName("form");
 
-                                    if (frm.length > 0) {
-                                        var result = window.frames["openCaseFrame"].ajax_post(
-                                            frm[0].action.replace("cases_SaveData", "saveForm"),
-                                            frm[0],
-                                            "POST",
-                                            function (responseText)
-                                            {
-                                                //Set URL and redirect
-                                                document.getElementById("openCaseFrame").src = node.attributes.url;
-                                            },
-                                            true
-                                        );
-                                    } else {
-                                        //Set URL and redirect
-                                        document.getElementById("openCaseFrame").src = node.attributes.url;
-                                    }
-                                } else {
-                                    //Set URL and redirect
-                                    document.getElementById("openCaseFrame").src = node.attributes.url;
-                                }
-                            }
-                        });
-                    } else {
-                        swNodeCurrentSelect = 1;
-                    }
+	                                    if (frm.length > 0) {
+	                                        var result = window.frames["openCaseFrame"].ajax_post(
+	                                            frm[0].action.replace("cases_SaveData", "saveForm"),
+	                                            frm[0],
+	                                            "POST",
+	                                            function (responseText)
+	                                            {
+	                                                //Set URL and redirect
+	                                                document.getElementById("openCaseFrame").src = node.attributes.url;
+	                                            },
+	                                            true
+	                                        );
+	                                    } else {
+	                                        //Set URL and redirect
+	                                        document.getElementById("openCaseFrame").src = node.attributes.url;
+	                                    }
+	                                } else {
+	                                    //Set URL and redirect
+	                                    document.getElementById("openCaseFrame").src = node.attributes.url;
+	                                }
+	                            }
+	                        });
+	                    } else {
+	                    	swNodeCurrentSelect = 1;
+	                    }
+                	} else {
+	                	loadMaskStep.show();
+	                    //Set URL and redirect
+	                    document.getElementById("openCaseFrame").src = node.attributes.url;	
+                	}
                 } else {
                     loadMaskStep.show();
 
