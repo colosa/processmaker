@@ -523,7 +523,7 @@ div.topbar ul.primary-nav li ul {
   left: 0;
 }
 div.topbar ul.secondary-nav li ul {
-  right: 0;
+  left: 0 !important;
 }
 div.topbar ul li ul li {
   float: none;
