@@ -151,6 +151,39 @@ class PMScript
      */
     public function setScript ($sScript = '')
     {
+        $nrt     = array("\n",    "\r",    "\t");
+        $nrthtml = array("(n /)", "(r /)", "(t /)");
+
+        $script = $sScript;
+        $script = str_replace($nrt, $nrthtml, $script);
+
+        while (preg_match("/^(.*)\/\*(.*)$/", $script, $arrayMatch)) {
+            $scriptAux = "";
+
+            if (preg_match("/^.*\*\/.*$/", $arrayMatch[2])) {
+                $arrayAux = explode("*/", $arrayMatch[2]);
+                unset($arrayAux[0]);
+                $scriptAux = implode("*/", $arrayAux);
+            }
+
+            $script = $arrayMatch[1] . $scriptAux;
+        }
+
+        while (preg_match("/^(.*)(?:\/\/|#)(.*)$/", $script, $arrayMatch)) {
+            $scriptAux = "";
+
+            if (preg_match("/^.*\(n\s\/\).*$/", $arrayMatch[2])) {
+                $arrayAux = explode("(n /)", $arrayMatch[2]);
+                unset($arrayAux[0]);
+                $scriptAux = implode("(n /)", $arrayAux);
+            }
+
+            $script = $arrayMatch[1] . $scriptAux;
+        }
+
+        $script = str_replace($nrthtml, $nrt, $script);
+        $sScript = $script;
+
         $this->sScript = $sScript;
     }
 
