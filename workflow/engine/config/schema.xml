@@ -781,6 +781,7 @@
     <column name="OUT_DOC_PDF_SECURITY_OPEN_PASSWORD" type="VARCHAR" size="32" required="false" default=""/>
     <column name="OUT_DOC_PDF_SECURITY_OWNER_PASSWORD" type="VARCHAR" size="32" required="false" default=""/>
     <column name="OUT_DOC_PDF_SECURITY_PERMISSIONS" type="VARCHAR" size="150" required="false" default=""/>
+    <column name="OUT_DOC_OPEN_TYPE" type="INTEGER" default="0"/>
     <validator column="OUT_DOC_UID">
       <rule name="maxLength" value="32" message="Output Document UID can be no larger than ${value} in size"/>
       <rule name="required" message="Output Document UID is required."/>
