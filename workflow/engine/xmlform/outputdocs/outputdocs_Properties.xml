@@ -88,6 +88,10 @@
   <en>PDF Security<option name="0">Disabled</option><option name="1">Enabled</option></en>
 </OUT_DOC_PDF_SECURITY_ENABLED>
 
+<OUT_DOC_OPEN_TYPE type="dropdown">
+  <en>By clicking on the generated file link<option name="0">Download the file</option><option name="1">Open the file</option></en>
+</OUT_DOC_OPEN_TYPE>
+
 <OUT_DOC_PDF_SECURITY_OPEN_PASSWORD type="password"  >
   <en>Open Password</en>
 </OUT_DOC_PDF_SECURITY_OPEN_PASSWORD>
@@ -182,18 +186,17 @@ var verifyTitle = function(oForm)
 	  var OutPutID = getField('OUT_DOC_UID').value;
 	  if(OutPutID==''){
 		  reqName=ajax_function('../outputdocs/outputdocs_Ajax','lookForNameOutput','NAMEOUTPUT='+encodeURIComponent(nameOutPut)+'&proUid='+encodeURIComponent(proUid),'POST') ;
-		  if(reqName){
+		  if(reqName){ 
 			 outputdocsPropertiesSave(oForm);
 	    } else {
 		   alert(G_STRINGS.ID_EXIST_OUTPUTDOCUMENT);return false;
 		  }
-	  }else{
+	  }else{ 
 	    outputdocsPropertiesSave(oForm);
 	  }
   }
 
 }
-
 
 function cancel(){
     currentPopupWindow.remove();
@@ -209,6 +212,7 @@ if ((getField('OUT_DOC_GENERATE').value == 'PDF')||(getField('OUT_DOC_GENERATE')
   }
   togglePDFSecurity();
 }
+
 function togglePDFSecurity(){
 if ((getField('OUT_DOC_PDF_SECURITY_ENABLED').value == '0')) {
     hideRow('PDF_SECURITY_SETTINGS');
@@ -223,7 +227,7 @@ leimnud.event.add(getField('OUT_DOC_GENERATE'), 'change', function() {
 });
 
 
-  leimnud.event.add(getField('OUT_DOC_PDF_SECURITY_ENABLED'), 'change', function() {
+leimnud.event.add(getField('OUT_DOC_PDF_SECURITY_ENABLED'), 'change', function() {
   togglePDFSecurity();
 });
 

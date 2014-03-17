@@ -131,7 +131,7 @@ class OutputDocument extends BaseOutputDocument
      * @return string
      * */
     public function create($aData)
-    {
+    {      
         $oConnection = Propel::getConnection(OutputDocumentPeer::DATABASE_NAME);
 
         try {
@@ -153,7 +153,7 @@ class OutputDocument extends BaseOutputDocument
 
             $oOutputDocument = new OutputDocument();
             $oOutputDocument->fromArray($aData, BasePeer::TYPE_FIELDNAME);
-
+            
             if ($oOutputDocument->validate()) {
                 $oConnection->begin();
 

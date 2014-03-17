@@ -1,5 +1,5 @@
-<?php
-if (!isset($_SESSION['USER_LOGGED'])) {
+<?php  
+if (!isset($_SESSION['USER_LOGGED'])) { 
     if ((isset( $_POST['request'] )) && ($_POST['request'] == true)) {
         $response = new stdclass();
         $response->message = G::LoadTranslation('ID_LOGIN_AGAIN1');
@@ -41,11 +41,18 @@ if (!isset($_SESSION['USER_LOGGED'])) {
  */
 
 require_once ("classes/model/AppDocumentPeer.php");
+require_once ("classes/model/OutputDocumentPeer.php");
 
 $oAppDocument = new AppDocument();
 $oAppDocument->Fields = $oAppDocument->load( $_GET['a'], (isset( $_GET['v'] )) ? $_GET['v'] : null );
 
 $sAppDocUid = $oAppDocument->getAppDocUid();
+$sDocUid = $oAppDocument->Fields['DOC_UID'];
+
+$oOutputDocument = new OutputDocument();
+$oOutputDocument->Fields = $oOutputDocument->getByUid( $sDocUid );
+$download = $oOutputDocument->Fields['OUT_DOC_OPEN_TYPE'];
+
 $info = pathinfo( $oAppDocument->getAppDocFilename() );
 if (! isset( $_GET['ext'] )) {
     $ext = $info['extension'];
@@ -101,9 +108,7 @@ if (! $sw_file_exists) {
         $res['success'] = 'success';
         $res['message'] = $info['basename'] . $ver . '.' . $ext;
         print G::json_encode( $res );
-    } else {
-        G::streamFile( $realPath, true, $info['basename'] . $ver . '.' . $ext );
-    }
+    } else { 
+        G::streamFile( $realPath, $download, $info['basename'] . $ver . '.' . $ext );
+    } 
 }
-//G::streamFile ( $realPath, true);
-

@@ -374,6 +374,7 @@ CREATE TABLE `OUTPUT_DOCUMENT`
 	`OUT_DOC_PDF_SECURITY_OPEN_PASSWORD` VARCHAR(32) default '',
 	`OUT_DOC_PDF_SECURITY_OWNER_PASSWORD` VARCHAR(32) default '',
 	`OUT_DOC_PDF_SECURITY_PERMISSIONS` VARCHAR(150) default '',
+	`OUT_DOC_OPEN_TYPE` INTEGER default 0,
 	PRIMARY KEY (`OUT_DOC_UID`)
 )ENGINE=InnoDB  DEFAULT CHARSET='utf8';
 #-----------------------------------------------------------------------------
