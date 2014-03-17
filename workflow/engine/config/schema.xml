@@ -761,6 +761,7 @@
       <parameter name="Create_options" value=""/>
       <parameter name="Comment" value=""/>
     </vendor>
+    
     <column name="OUT_DOC_UID" type="VARCHAR" size="32" required="true" primaryKey="true" default=""/>
     <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
     <column name="OUT_DOC_REPORT_GENERATOR" type="VARCHAR" size="10" required="true" default="HTML2PDF"/>
@@ -770,7 +771,8 @@
     <column name="OUT_DOC_RIGHT_MARGIN" type="INTEGER" default="15"/>
     <column name="OUT_DOC_TOP_MARGIN" type="INTEGER" default="15"/>
     <column name="OUT_DOC_BOTTOM_MARGIN" type="INTEGER" default="15"/>
-    <column name="OUT_DOC_GENERATE" type="VARCHAR" size="10" required="true" default="BOTH"/>
+    <column name="OUT_DOC_GENERATE
+      " type="VARCHAR" size="10" required="true" default="BOTH"/>
     <column name="OUT_DOC_TYPE" type="VARCHAR" size="32" required="true" default="HTML"/>
     <column name="OUT_DOC_CURRENT_REVISION" type="INTEGER" default="0"/>
     <column name="OUT_DOC_FIELD_MAPPING" type="LONGVARCHAR" required="false"/>
@@ -781,6 +783,8 @@
     <column name="OUT_DOC_PDF_SECURITY_OPEN_PASSWORD" type="VARCHAR" size="32" required="false" default=""/>
     <column name="OUT_DOC_PDF_SECURITY_OWNER_PASSWORD" type="VARCHAR" size="32" required="false" default=""/>
     <column name="OUT_DOC_PDF_SECURITY_PERMISSIONS" type="VARCHAR" size="150" required="false" default=""/>
+    <column name="OUT_DOC_OPEN_TYPE" type="INTEGER" default="0"/>
+
     <validator column="OUT_DOC_UID">
       <rule name="maxLength" value="32" message="Output Document UID can be no larger than ${value} in size"/>
       <rule name="required" message="Output Document UID is required."/>
