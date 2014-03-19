@@ -740,6 +740,7 @@
     <column name="LEX_VALUE" type="VARCHAR" size="128" required="true" default=""/>
     <column name="LEX_CAPTION" type="VARCHAR" size="128" required="true" default=""/>
   </table>
+  
   <table name="OUTPUT_DOCUMENT">
     <vendor type="mysql">
       <parameter name="Name" value="OUTPUT_DOCUMENT"/>
@@ -781,6 +782,7 @@
     <column name="OUT_DOC_PDF_SECURITY_OPEN_PASSWORD" type="VARCHAR" size="32" required="false" default=""/>
     <column name="OUT_DOC_PDF_SECURITY_OWNER_PASSWORD" type="VARCHAR" size="32" required="false" default=""/>
     <column name="OUT_DOC_PDF_SECURITY_PERMISSIONS" type="VARCHAR" size="150" required="false" default=""/>
+    <column name="OUT_DOC_OPEN_TYPE" type="INTEGER" default="0"/>
     <validator column="OUT_DOC_UID">
       <rule name="maxLength" value="32" message="Output Document UID can be no larger than ${value} in size"/>
       <rule name="required" message="Output Document UID is required."/>
@@ -796,6 +798,7 @@
       <rule name="validValues" value="HTML|ITEXT|JRXML|ACROFORM" message="Please select a valid Output Document Type."/>
     </validator>
   </table>
+
   <table name="PROCESS">
     <vendor type="mysql">
       <parameter name="Name" value="PROCESS"/>

@@ -7,8 +7,6 @@ include_once 'creole/CreoleTypes.php';
 /**
  * This class adds structure of 'OUTPUT_DOCUMENT' table to 'workflow' DatabaseMap object.
  *
- *
- *
  * These statically-built map classes are used by Propel to do runtime db structure discovery.
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
@@ -104,6 +102,8 @@ class OutputDocumentMapBuilder
         $tMap->addColumn('OUT_DOC_PDF_SECURITY_OWNER_PASSWORD', 'OutDocPdfSecurityOwnerPassword', 'string', CreoleTypes::VARCHAR, false, 32);
 
         $tMap->addColumn('OUT_DOC_PDF_SECURITY_PERMISSIONS', 'OutDocPdfSecurityPermissions', 'string', CreoleTypes::VARCHAR, false, 150);
+
+        $tMap->addColumn('OUT_DOC_OPEN_TYPE', 'OutDocOpenType', 'int', CreoleTypes::INTEGER, false, null);
 
         $tMap->addValidator('OUT_DOC_UID', 'maxLength', 'propel.validator.MaxLengthValidator', '32', 'Output Document UID can be no larger than 32 in size');
 

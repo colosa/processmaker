@@ -4,14 +4,12 @@ require_once 'propel/om/BaseObject.php';
 
 require_once 'propel/om/Persistent.php';
 
-
 include_once 'propel/util/Criteria.php';
 
 include_once 'classes/model/OutputDocumentPeer.php';
 
 /**
  * Base class that represents a row from the 'OUTPUT_DOCUMENT' table.
- *
  * 
  *
  * @package    workflow.classes.model.om
@@ -146,6 +144,12 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
      * @var        string
      */
     protected $out_doc_pdf_security_permissions = '';
+
+    /**
+     * The value for the out_doc_open_type field.
+     * @var        int
+     */
+    protected $out_doc_open_type = 0;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -379,6 +383,17 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
     {
 
         return $this->out_doc_pdf_security_permissions;
+    }
+
+    /**
+     * Get the [out_doc_open_type] column value.
+     * 
+     * @return     int
+     */
+    public function getOutDocOpenType()
+    {
+
+        return $this->out_doc_open_type;
     }
 
     /**
@@ -822,6 +837,28 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
     } // setOutDocPdfSecurityPermissions()
 
     /**
+     * Set the value of [out_doc_open_type] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setOutDocOpenType($v)
+    {
+
+        // Since the native PHP type for this column is integer,
+        // we will cast the input value to an int (if it is not).
+        if ($v !== null && !is_int($v) && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->out_doc_open_type !== $v || $v === 0) {
+            $this->out_doc_open_type = $v;
+            $this->modifiedColumns[] = OutputDocumentPeer::OUT_DOC_OPEN_TYPE;
+        }
+
+    } // setOutDocOpenType()
+
+    /**
      * Hydrates (populates) the object variables with values from the database resultset.
      *
      * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -878,12 +915,14 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
             $this->out_doc_pdf_security_permissions = $rs->getString($startcol + 19);
 
+            $this->out_doc_open_type = $rs->getInt($startcol + 20);
+
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 20; // 20 = OutputDocumentPeer::NUM_COLUMNS - OutputDocumentPeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 21; // 21 = OutputDocumentPeer::NUM_COLUMNS - OutputDocumentPeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating OutputDocument object", $e);
@@ -1147,6 +1186,9 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
             case 19:
                 return $this->getOutDocPdfSecurityPermissions();
                 break;
+            case 20:
+                return $this->getOutDocOpenType();
+                break;
             default:
                 return null;
                 break;
@@ -1187,6 +1229,7 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
             $keys[17] => $this->getOutDocPdfSecurityOpenPassword(),
             $keys[18] => $this->getOutDocPdfSecurityOwnerPassword(),
             $keys[19] => $this->getOutDocPdfSecurityPermissions(),
+            $keys[20] => $this->getOutDocOpenType(),
         );
         return $result;
     }
@@ -1277,6 +1320,9 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
                 break;
             case 19:
                 $this->setOutDocPdfSecurityPermissions($value);
+                break;
+            case 20:
+                $this->setOutDocOpenType($value);
                 break;
         } // switch()
     }
@@ -1381,6 +1427,10 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
             $this->setOutDocPdfSecurityPermissions($arr[$keys[19]]);
         }
 
+        if (array_key_exists($keys[20], $arr)) {
+            $this->setOutDocOpenType($arr[$keys[20]]);
+        }
+
     }
 
     /**
@@ -1470,6 +1520,10 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
 
         if ($this->isColumnModified(OutputDocumentPeer::OUT_DOC_PDF_SECURITY_PERMISSIONS)) {
             $criteria->add(OutputDocumentPeer::OUT_DOC_PDF_SECURITY_PERMISSIONS, $this->out_doc_pdf_security_permissions);
+        }
+
+        if ($this->isColumnModified(OutputDocumentPeer::OUT_DOC_OPEN_TYPE)) {
+            $criteria->add(OutputDocumentPeer::OUT_DOC_OPEN_TYPE, $this->out_doc_open_type);
         }
 
 
@@ -1563,6 +1617,8 @@ abstract class BaseOutputDocument extends BaseObject implements Persistent
         $copyObj->setOutDocPdfSecurityOwnerPassword($this->out_doc_pdf_security_owner_password);
 
         $copyObj->setOutDocPdfSecurityPermissions($this->out_doc_pdf_security_permissions);
+
+        $copyObj->setOutDocOpenType($this->out_doc_open_type);
 
 
         $copyObj->setNew(true);
