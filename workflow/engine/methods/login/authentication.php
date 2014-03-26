@@ -195,10 +195,12 @@ try {
 
     /**log in table Login**/
     require_once 'classes/model/LoginLog.php';
+    $g = new G();
+
     $weblog=new LoginLog();
     $aLog['LOG_UID']            = G::generateUniqueID();
     $aLog['LOG_STATUS']         = 'ACTIVE';
-    $aLog['LOG_IP']             = $_SERVER['REMOTE_ADDR'];
+    $aLog['LOG_IP']             = $g->getIpAddress();
     $aLog['LOG_SID']            = session_id();
     $aLog['LOG_INIT_DATE']      = date('Y-m-d H:i:s');
     //$aLog['LOG_END_DATE']       = '0000-00-00 00:00:00';
