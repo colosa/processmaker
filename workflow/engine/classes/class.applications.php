@@ -408,7 +408,8 @@ class Applications
                 }
             }
 
-            $totalCount = AppCacheViewPeer::doCount($CriteriaCount, $distinct);
+            //$totalCount = AppCacheViewPeer::doCount($CriteriaCount, $distinct);
+            $totalCount = AppCacheViewPeer::doCount($Criteria, $distinct);
         }
 
         //Add sortable options
@@ -473,7 +474,7 @@ class Applications
         $oDataset = AppCacheViewPeer::doSelectRS( $Criteria );
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
-//g::pr($oDataset);
+
         $result = array ();
         $result['totalCount'] = $totalCount;
         $rows = array ();
