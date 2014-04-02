@@ -156,11 +156,20 @@ class Applications
         $Criteria->addAsColumn( 'USR_LASTNAME', 'CU.USR_LASTNAME' );
         $Criteria->addAsColumn( 'USR_USERNAME', 'CU.USR_USERNAME' );
 
+        $CriteriaCount->addAlias( 'CU', 'USERS' );
+        $CriteriaCount->addJoin( AppCacheViewPeer::USR_UID, 'CU.USR_UID', Criteria::LEFT_JOIN );
+        $CriteriaCount->addAsColumn( 'USR_UID', 'CU.USR_UID' );
+        $CriteriaCount->addAsColumn( 'USR_FIRSTNAME', 'CU.USR_FIRSTNAME' );
+        $CriteriaCount->addAsColumn( 'USR_LASTNAME', 'CU.USR_LASTNAME' );
+        $CriteriaCount->addAsColumn( 'USR_USERNAME', 'CU.USR_USERNAME' );
+
         //Current delegation
         if ($action == "to_reassign") {
             $Criteria->addAsColumn("APPCVCR_APP_TAS_TITLE", "APP_CACHE_VIEW.APP_TAS_TITLE");
+            $CriteriaCount->addAsColumn("APPCVCR_APP_TAS_TITLE", "APP_CACHE_VIEW.APP_TAS_TITLE");
         } else {
             $Criteria->addAsColumn("APPCVCR_APP_TAS_TITLE", "APPCVCR.APP_TAS_TITLE");
+            $CriteriaCount->addAsColumn("APPCVCR_APP_TAS_TITLE", "APPCVCR.APP_TAS_TITLE");
         }
 
         $Criteria->addAsColumn("USRCR_USR_UID", "USRCR.USR_UID");
@@ -168,17 +177,27 @@ class Applications
         $Criteria->addAsColumn("USRCR_USR_LASTNAME", "USRCR.USR_LASTNAME");
         $Criteria->addAsColumn("USRCR_USR_USERNAME", "USRCR.USR_USERNAME");
 
+        $CriteriaCount->addAsColumn("USRCR_USR_UID", "USRCR.USR_UID");
+        $CriteriaCount->addAsColumn("USRCR_USR_FIRSTNAME", "USRCR.USR_FIRSTNAME");
+        $CriteriaCount->addAsColumn("USRCR_USR_LASTNAME", "USRCR.USR_LASTNAME");
+        $CriteriaCount->addAsColumn("USRCR_USR_USERNAME", "USRCR.USR_USERNAME");
+
         $Criteria->addAlias("APPCVCR", AppCacheViewPeer::TABLE_NAME);
         $Criteria->addAlias("USRCR", UsersPeer::TABLE_NAME);
+
+        $CriteriaCount->addAlias("APPCVCR", AppCacheViewPeer::TABLE_NAME);
+        $CriteriaCount->addAlias("USRCR", UsersPeer::TABLE_NAME);
 
         $arrayCondition = array();
         $arrayCondition[] = array(AppCacheViewPeer::APP_UID, "APPCVCR.APP_UID");
         $arrayCondition[] = array("APPCVCR.DEL_LAST_INDEX", 1);
         $Criteria->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+        $CriteriaCount->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
         $arrayCondition = array();
         $arrayCondition[] = array("APPCVCR.USR_UID", "USRCR.USR_UID");
         $Criteria->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+        $CriteriaCount->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
         //Previous user
         if (($action == "todo" || $action == "selfservice" || $action == "unassigned" || $action == "paused" || $action == "to_revise" || $action == "sent") || ($status == "TO_DO" || $status == "DRAFT" || $status == "PAUSED" || $status == "CANCELLED" || $status == "COMPLETED")) {
@@ -187,6 +206,12 @@ class Applications
             $Criteria->addAsColumn( 'PREVIOUS_USR_FIRSTNAME', 'PU.USR_FIRSTNAME' );
             $Criteria->addAsColumn( 'PREVIOUS_USR_LASTNAME', 'PU.USR_LASTNAME' );
             $Criteria->addAsColumn( 'PREVIOUS_USR_USERNAME', 'PU.USR_USERNAME' );
+
+            $CriteriaCount->addAlias( 'PU', 'USERS' );
+            $CriteriaCount->addJoin( AppCacheViewPeer::PREVIOUS_USR_UID, 'PU.USR_UID', Criteria::LEFT_JOIN );
+            $CriteriaCount->addAsColumn( 'PREVIOUS_USR_FIRSTNAME', 'PU.USR_FIRSTNAME' );
+            $CriteriaCount->addAsColumn( 'PREVIOUS_USR_LASTNAME', 'PU.USR_LASTNAME' );
+            $CriteriaCount->addAsColumn( 'PREVIOUS_USR_USERNAME', 'PU.USR_USERNAME' );
         }
 
         /*
@@ -471,6 +496,7 @@ class Applications
 
         //execute the query
         $oDataset = AppCacheViewPeer::doSelectRS( $Criteria );
+        
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
 //g::pr($oDataset);
