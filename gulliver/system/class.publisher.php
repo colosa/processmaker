@@ -49,7 +49,6 @@ class Publisher
     /* PHP 4 doesn't provide destructor where to free $scriptFileHandler resource */
     //var $scriptFileHandler = false;
 
-
     /**
      * Add content in $Parts array
      *
@@ -62,14 +61,14 @@ class Publisher
      * @param $arrData
      * @param $strTarget
      * @return void
-     *
-     */
+     **/
+
     public function AddContent ($strType = "form", $strLayout = "form", $strName = "", $strContent = "", $arrData = null, $strTarget = "", $ajaxServer = '', $mode = '', $bAbsolutePath = false)
     {
         if ($mode != '') {
             $this->localMode = $mode;
         }
-
+        
         $pos = 0;
         if (is_array( $this->Parts )) {
             $pos = count( $this->Parts );
@@ -80,7 +79,6 @@ class Publisher
         //This is needed to prepare the "header content"
         //before to send the body content. ($oHeadPublisher)
         ob_start();
-
         $this->RenderContent0( $pos );
         if ((ob_get_contents() !== '') && ($this->publisherId !== '') && ($strType != 'template')) {
             $this->Parts[$pos]['RenderedContent'] = '<DIV id="' . $this->publisherId . '[' . $pos . ']" style="' . ((is_string( $strContent )) ? $strContent : '') . '; margin:0px;" align="center">';
@@ -90,6 +88,7 @@ class Publisher
             $this->Parts[$pos]['RenderedContent'] = ob_get_contents();
         }
         ob_end_clean();
+        $_SESSION['CONDITION_DYN_UID'] = isset($_SESSION['CURRENT_DYN_UID'])? $_SESSION['CURRENT_DYN_UID']: $_SESSION['CONDITION_DYN_UID']; 
         unset($_SESSION['CURRENT_DYN_UID']);
     }
 
@@ -117,7 +116,7 @@ class Publisher
      *
      */
     public function RenderContent0 ($intPos = 0, $showXMLFormName = false)
-    {
+    {   
         global $G_FORM;
         global $G_TABLE;
         global $G_TMP_TARGET;
@@ -147,7 +146,7 @@ class Publisher
                 $G_FORM = $APP_FORM;
                 break;
             case 'xmlform':
-            case 'dynaform':
+            case 'dynaform': 
                 global $G_FORM;
 
                 if ($Part['AbsolutePath']) {
@@ -285,20 +284,23 @@ class Publisher
                  *
                  * @author Erik A. Ortiz <erik@colosa.com>
                  * @date Fri Feb 19, 2009
-                 */
-                if ($this->publishType == 'dynaform') {
-                    if (isset( $_SESSION['CURRENT_DYN_UID'] )) {
+                 */ //G::pr($_SESSION);die;
+                if ($this->publishType == 'dynaform') { 
+                    if (isset( $_SESSION['CURRENT_DYN_UID'] ) || isset( $_SESSION['CONDITION_DYN_UID'] )) {
                         require_once "classes/model/FieldCondition.php";
                         $oFieldCondition = new FieldCondition();
 
                         #This dynaform has show/hide field conditions
-                        $ConditionalShowHideRoutines = $oFieldCondition->getConditionScript( $_SESSION['CURRENT_DYN_UID'] );
+                        
+                        $ConditionalShowHideRoutines = $oFieldCondition->getConditionScript( isset($_SESSION['CURRENT_DYN_UID'])? $_SESSION['CURRENT_DYN_UID']:$_SESSION['CONDITION_DYN_UID']);
                     }
                 }
 
                 if (isset( $ConditionalShowHideRoutines ) && $ConditionalShowHideRoutines) {
                     G::evalJScript( $ConditionalShowHideRoutines );
+                    unset($_SESSION['CONDITION_DYN_UID']);
                 }
+
                 break;
             case 'pagedtable':
                 global $G_FORM;
@@ -642,4 +644,3 @@ class Publisher
         $G_TABLE = null;
     }
 }
-
