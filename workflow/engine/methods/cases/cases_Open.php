@@ -40,7 +40,6 @@ if ($RBAC->userCanAccess( 'PM_CASES' ) != 1) {
 /* Includes */
 require_once 'classes/model/AppDelay.php';
 G::LoadClass( 'case' );
-
 $oCase = new Cases();
 
 //cleaning the case session data
@@ -49,7 +48,7 @@ Cases::clearCaseSessionData();
 try {
     //Loading data for a Jump request
     if (! isset( $_GET['APP_UID'] ) && isset( $_GET['APP_NUMBER'] )) {
-        $_GET['APP_UID'] = $oCase->getApplicationUIDByNumber( $_GET['APP_NUMBER'] );
+        $_GET['APP_UID'] = $oCase->getApplicationUIDByNumber( $_GET['APP_NUMBER'] ); 
         $_GET['DEL_INDEX'] = $oCase->getCurrentDelegation( $_GET['APP_UID'], $_SESSION['USER_LOGGED'] );
 
         //if the application doesn't exist
@@ -75,6 +74,7 @@ try {
 
     //loading application data
     $aFields = $oCase->loadCase( $sAppUid, $iDelIndex );
+
     //  g::pr($aFields);
     //  die;
 
@@ -83,7 +83,7 @@ try {
         case 'DRAFT':
         case 'TO_DO':
             //check if the case is in pause, check a valid record in table APP_DELAY
-            if (AppDelay::isPaused( $sAppUid, $iDelIndex )) {
+            if (AppDelay::isPaused( $sAppUid, $iDelIndex )) { 
                 //the case is paused show only the resume
                 $_SESSION['APPLICATION'] = $sAppUid;
                 $_SESSION['INDEX'] = $iDelIndex;
@@ -101,11 +101,12 @@ try {
             
             if ($_action == 'search') {
                 //verify if the case is with teh current user
-                
+            
                 $c = new Criteria( 'workflow' );
                 $c->add( AppDelegationPeer::APP_UID, $sAppUid );
                 $c->addAscendingOrderByColumn( AppDelegationPeer::DEL_INDEX );
                 $oDataset = AppDelegationPeer::doSelectRs( $c );
+               
                 $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
                 $oDataset->next();
                 $aData = $oDataset->getRow();
@@ -151,7 +152,7 @@ try {
             }
 
             //if the current users is in the AppDelegation row, then open the case
-            if (($aDelegation['USR_UID'] == $_SESSION['USER_LOGGED']) && $_action != 'sent') {
+            if (($aDelegation['USR_UID'] == $_SESSION['USER_LOGGED']) && $_action != 'sent') { 
                 $_SESSION['APPLICATION'] = $sAppUid;
                 $_SESSION['INDEX'] = $iDelIndex;
 
@@ -185,7 +186,13 @@ try {
                 $row = $rs->getRow();
 
                 $_SESSION['APPLICATION'] = $sAppUid;
-                $_SESSION['INDEX'] = $row['DEL_INDEX'];
+                
+                if ($_action == 'search') { //for advanced search list
+                    $_SESSION['INDEX'] = $iDelIndex;
+                } else {
+                    $_SESSION['INDEX'] = $row['DEL_INDEX'];
+                }
+
                 $_SESSION['PROCESS'] = $aFields['PRO_UID'];
                 $_SESSION['TASK'] = - 1;
                 $Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'] );

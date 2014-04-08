@@ -496,7 +496,7 @@ class Applications
         
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
-//g::pr($oDataset);
+
         $result = array ();
         $result['totalCount'] = $totalCount;
         $rows = array ();
@@ -509,6 +509,7 @@ class Applications
              * For participated cases, we want the last step in the case, not only the last step this user participated. To do that we get every case information again for the last step. (This could be solved by a subquery, but Propel might not support it and subqueries can be slower for larger
              * datasets).
              */
+
              /*if ($action == 'sent' || $action == 'search') {
              $maxCriteria = new Criteria('workflow');
              $maxCriteria->add(AppCacheViewPeer::APP_UID, $aRow['APP_UID'], Criteria::EQUAL);
@@ -526,15 +527,15 @@ class Applications
              }
 
              $maxDataset->close();
-              }*/
+             }*/
 
-            //Current delegation (*)
-            if (($action == "sent" || $action == "search" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") && ($status != "TO_DO")) {
+            //Current delegation
+            if (($action == "sent" || $action == "simple_search" || $action == "to_revise" || $action == "to_reassign") && ($status != "TO_DO")) {    
                 //Current task
                 $aRow["APP_TAS_TITLE"] = $aRow["APPCVCR_APP_TAS_TITLE"];
 
                 //Current user
-                if ($action != "to_reassign" ) {
+                if (($action != "to_reassign") && ($action != "search")) {
                     $aRow["USR_UID"] = $aRow["USRCR_USR_UID"];
                     $aRow["USR_FIRSTNAME"] = $aRow["USRCR_USR_FIRSTNAME"];
                     $aRow["USR_LASTNAME"] = $aRow["USRCR_USR_LASTNAME"];
