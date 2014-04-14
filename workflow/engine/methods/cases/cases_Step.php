@@ -320,7 +320,7 @@ try {
                     $oHeadPublisher = & headPublisher::getSingleton();
                     $titleDocument = "<h3>" . $Fields['INP_DOC_TITLE'] . "<br><small>" . G::LoadTranslation( 'ID_INPUT_DOCUMENT' ) . "</small></h3>";
                     if ($Fields['INP_DOC_DESCRIPTION']) { 
-                        $titleDocument .= " " . str_replace( "\n", "", str_replace( "'", "\'", nl2br( html_entity_decode($Fields['INP_DOC_DESCRIPTION'], ENT_COMPAT | ENT_HTML401, "UTF-8") ) ) ) . "";
+                        $titleDocument .= " " . str_replace( "\n", "", str_replace( "'", "\'", nl2br( html_entity_decode($Fields['INP_DOC_DESCRIPTION'], null, "UTF-8") ) ) ) . "";
                     }
 
                     $oHeadPublisher->addScriptCode( "documentName='{$titleDocument}';" );
