@@ -4881,7 +4881,7 @@ class Cases
 
             $hasEmailFrom = preg_match('/(.+)@(.+)\.(.+)/', $sFrom, $match);
 
-            if (!$hasEmailFrom || strpos($sFrom, $aConfiguration['MESS_ACCOUNT']) === false) {
+            if (!$hasEmailFrom || ($aConfiguration["MESS_ACCOUNT"] != '' && strpos($sFrom, $aConfiguration["MESS_ACCOUNT"]) === false)) {
                 if (($aConfiguration['MESS_ENGINE'] != 'MAIL') && ($aConfiguration['MESS_ACCOUNT'] != '')) {
                     $sFrom .= ' <' . $aConfiguration['MESS_ACCOUNT'] . '>';
                 } else {
