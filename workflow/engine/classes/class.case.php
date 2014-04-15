@@ -4881,22 +4881,14 @@ class Cases
 
             $hasEmailFrom = preg_match('/(.+)@(.+)\.(.+)/', $sFrom, $match);
 
-            if (!$hasEmailFrom || strpos($sFrom, $aConfiguration['MESS_ACCOUNT']) === false) {
-                if (($aConfiguration['MESS_ENGINE'] != 'MAIL') && ($aConfiguration['MESS_ACCOUNT'] != '')) {
-                    $sFrom .= ' <' . $aConfiguration['MESS_ACCOUNT'] . '>';
+            if (!$hasEmailFrom || ($aConfiguration["MESS_ACCOUNT"] != '' && strpos($sFrom, $aConfiguration["MESS_ACCOUNT"]) === false)) {
+                if (trim($aConfiguration["MESS_ACCOUNT"]) != "") {
+                    $sFrom = "\"" . stripslashes($sFrom) . "\" <" . $aConfiguration["MESS_ACCOUNT"] . ">";
                 } else {
-                    if (($aConfiguration['MESS_ENGINE'] == 'MAIL')) {
-                        $sFrom .= ' <info@' . gethostbyaddr('127.0.0.1') . '>';
+                    if ($aConfiguration["MESS_ENGINE"] == "MAIL" && $sFrom != '') {
+                        $sFrom = "\"" . stripslashes($sFrom) . "\"";
                     } else {
-                        if ($aConfiguration['MESS_SERVER'] != '') {
-                            if (($sAux = @gethostbyaddr($aConfiguration['MESS_SERVER']))) {
-                                $sFrom .= ' <info@' . $sAux . '>';
-                            } else {
-                                $sFrom .= ' <info@' . $aConfiguration['MESS_SERVER'] . '>';
-                            }
-                        } else {
-                            $sFrom .= ' <info@processmaker.com>';
-                        }
+                        $sFrom = $sFrom . " <info@" . ((isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"] != "")? $_SERVER["HTTP_HOST"] : "processmaker.com") . ">";
                     }
                 }
             }
