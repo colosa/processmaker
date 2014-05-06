@@ -227,6 +227,35 @@ class headPublisher
         $head = $head . "
         <script type=\"text/javascript\">
         var BROWSER_CACHE_FILES_UID = \"" . G::browserCacheFilesGetUid() . "\";
+        var windowCode = {};
+        window.onbeforeunload = function (e) {
+            var count = 0;
+            for (var i in windowCode) {
+                if (typeof windowCode[i] === 'object' && windowCode[i].closed === false) {
+                    count = count + 1;
+                }
+            }
+            if (count > 0) {
+                return _('ID_UNSAVED_TRIGGERS_WINDOW');
+            }
+        };
+        if (window.addEventListener) {
+            window.addEventListener('unload', function (e) {
+                for (var i in windowCode) {
+                    if (typeof windowCode[i] === 'object' && windowCode[i].close) {
+                        windowCode[i].close();
+                    }
+                }
+            });
+        } else {
+            window.attachEvent('onunload', function (e) {
+                for (var i in windowCode) {
+                    if (typeof windowCode[i] === 'object' && windowCode[i].close) {
+                        windowCode[i].close();
+                    }
+                }
+            });
+        }
         </script>
         ";
 

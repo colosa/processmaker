@@ -13,15 +13,14 @@
 
 <JS type="javascript" replaceTags="1" showInTable="1">
 <![CDATA[
-var windowCode = new Array();
 function triggerEdit(sTRI_UID,modified){
     if(parseInt(modified) == 0){
-        if ( !windowCode[sTRI_UID] ) {
+        if ( parent.windowCode[sTRI_UID] && !parent.windowCode[sTRI_UID].closed ) {
+            parent.windowCode[sTRI_UID].focus();
+        } else {
             var windowOpen = window.open('@G::encryptlink(@#triggersEdit)?TRI_UID=' + sTRI_UID,'@G::LoadTranslation(ID_EDIT_TRIGGERS)'.replace(/\s/g,'_')+(function(s){var r='';for(var i in s)if(typeof s[i]=='string')r+=s[i].charCodeAt(0);return r;})(document.cookie)+sTRI_UID,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=950,height=570,top='+((screen.height-570)/2)+',left='+((screen.width-950)/2));
             windowOpen.focus();
-            windowCode[sTRI_UID]=windowOpen;
-        } else {
-            windowCode[sTRI_UID].focus();
+            parent.windowCode[sTRI_UID]=windowOpen;
         }
     } else {
         popupWindow('@G::LoadTranslation(ID_EDIT_TRIGGERS)', '@G::encryptlink(@#triggersEdit)?TRI_UID='+ sTRI_UID + '&STEP_UID=' + '@#STEP' + '&ST_TYPE=AFTER', 930, 600);
