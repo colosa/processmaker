@@ -562,8 +562,19 @@ class Installer extends Controller
     public function setGrantPrivilegesMySQL ($psUser, $psPassword, $psDatabase, $host)
     {
         $host = ($host == 'localhost' || $host == '127.0.0.1' ? 'localhost' : '%');
-        $query = sprintf( "GRANT ALL PRIVILEGES ON `%s`.* TO %s@'%s' IDENTIFIED BY '%s' WITH GRANT OPTION", $psDatabase, $psUser, $host, $psPassword );
-        $this->mysqlQuery( $query );
+        $sql = sprintf( "GRANT ALL PRIVILEGES ON `%s`.* TO %s@'%s' IDENTIFIED BY '%s' WITH GRANT OPTION", $psDatabase, $psUser, $host, $psPassword );
+        $query = @mysql_query( $sql, $this->link );
+        if (! $query) {
+            $errorMessage = mysql_error( $this->link );
+            $this->installLog( G::LoadTranslation('ID_MYSQL_ERROR', SYS_LANG, Array($errorMessage) ) );
+            if (mysql_errno( $this->link) == 1410 ){
+                $errorMessage .= '. ' . G::LoadTranslation('ID_INSTALL_USE_CURRENT_USER');
+            }
+            throw new Exception( $errorMessage );
+            return false;
+        }
+        @mysql_free_result( $query );
+        $this->installLog( $sql );
     }
 
     /**
@@ -631,6 +642,7 @@ class Installer extends Controller
         $adminPassword = trim( $_REQUEST['adminPassword'] );
         $adminUsername = trim( $_REQUEST['adminUsername'] );
         $deleteDB = ($_REQUEST['deleteDB'] == 'true');
+        $userLogged = ($_REQUEST['userLogged'] == 'true');
 
         if (substr( $pathShared, - 1 ) != '/') {
             $pathShared .= '/';
@@ -666,12 +678,25 @@ class Installer extends Controller
             $this->mysqlQuery( $q );
 
             // CREATE users and GRANT Privileges
-            $wfPass = G::generate_password( 12 );
-            $rbPass = G::generate_password( 12 );
-            $rpPass = G::generate_password( 12 );
-            $this->setGrantPrivilegesMySQL( $wf, $wfPass, $wf, $db_hostname );
-            $this->setGrantPrivilegesMySQL( $rb, $rbPass, $rb, $db_hostname );
-            $this->setGrantPrivilegesMySQL( $rp, $rpPass, $rp, $db_hostname );
+            $wf_workpace = $wf;
+            $rb_workpace = $rb;
+            $rp_workpace = $rp;
+            if (!$userLogged) {
+                $wfPass = G::generate_password( 12 );
+                $rbPass = G::generate_password( 12 );
+                $rpPass = G::generate_password( 12 );
+                $this->setGrantPrivilegesMySQL( $wf, $wfPass, $wf, $db_hostname );
+                $this->setGrantPrivilegesMySQL( $rb, $rbPass, $rb, $db_hostname );
+                $this->setGrantPrivilegesMySQL( $rp, $rpPass, $rp, $db_hostname );
+            } else {
+                $wfPass = $db_password;
+                $rbPass = $db_password;
+                $rpPass = $db_password;
+                $wf = $db_username;
+                $rb = $db_username;
+                $rp = $db_username;
+            }
+
 
             // Generate the db.php file and folders
             $pathSharedSites = $pathShared;
@@ -688,15 +713,15 @@ class Installer extends Controller
             $dbText .= sprintf( "// Processmaker configuration\n" );
             $dbText .= sprintf( "  define ('DB_ADAPTER',     '%s' );\n", 'mysql' );
             $dbText .= sprintf( "  define ('DB_HOST',        '%s' );\n", $db_host );
-            $dbText .= sprintf( "  define ('DB_NAME',        '%s' );\n", $wf );
+            $dbText .= sprintf( "  define ('DB_NAME',        '%s' );\n", $wf_workpace );
             $dbText .= sprintf( "  define ('DB_USER',        '%s' );\n", $wf );
             $dbText .= sprintf( "  define ('DB_PASS',        '%s' );\n", $wfPass );
             $dbText .= sprintf( "  define ('DB_RBAC_HOST',   '%s' );\n", $db_host );
-            $dbText .= sprintf( "  define ('DB_RBAC_NAME',   '%s' );\n", $rb );
+            $dbText .= sprintf( "  define ('DB_RBAC_NAME',   '%s' );\n", $rb_workpace );
             $dbText .= sprintf( "  define ('DB_RBAC_USER',   '%s' );\n", $rb );
             $dbText .= sprintf( "  define ('DB_RBAC_PASS',   '%s' );\n", $rbPass );
             $dbText .= sprintf( "  define ('DB_REPORT_HOST', '%s' );\n", $db_host );
-            $dbText .= sprintf( "  define ('DB_REPORT_NAME', '%s' );\n", $rp );
+            $dbText .= sprintf( "  define ('DB_REPORT_NAME', '%s' );\n", $rp_workpace );
             $dbText .= sprintf( "  define ('DB_REPORT_USER', '%s' );\n", $rp );
             $dbText .= sprintf( "  define ('DB_REPORT_PASS', '%s' );\n", $rpPass );
             if (defined('PARTNER_FLAG') || isset($_REQUEST['PARTNER_FLAG'])) {
@@ -714,15 +739,15 @@ class Installer extends Controller
             $databases_file = $path_site . 'databases.php';
             $dbData = sprintf( "\$dbAdapter    = '%s';\n", 'mysql' );
             $dbData .= sprintf( "\$dbHost       = '%s';\n", $db_host );
-            $dbData .= sprintf( "\$dbName       = '%s';\n", $wf );
+            $dbData .= sprintf( "\$dbName       = '%s';\n", $wf_workpace );
             $dbData .= sprintf( "\$dbUser       = '%s';\n", $wf );
             $dbData .= sprintf( "\$dbPass       = '%s';\n", $wfPass );
             $dbData .= sprintf( "\$dbRbacHost   = '%s';\n", $db_host );
-            $dbData .= sprintf( "\$dbRbacName   = '%s';\n", $rb );
+            $dbData .= sprintf( "\$dbRbacName   = '%s';\n", $rb_workpace );
             $dbData .= sprintf( "\$dbRbacUser   = '%s';\n", $rb );
             $dbData .= sprintf( "\$dbRbacPass   = '%s';\n", $rbPass );
             $dbData .= sprintf( "\$dbReportHost = '%s';\n", $db_host );
-            $dbData .= sprintf( "\$dbReportName = '%s';\n", $rp );
+            $dbData .= sprintf( "\$dbReportName = '%s';\n", $rp_workpace );
             $dbData .= sprintf( "\$dbReportUser = '%s';\n", $rp );
             $dbData .= sprintf( "\$dbReportPass = '%s';\n", $rpPass );
             $databasesText = str_replace( '{dbData}', $dbData, @file_get_contents( PATH_HOME . 'engine/templates/installer/databases.tpl' ) );
@@ -731,13 +756,13 @@ class Installer extends Controller
             file_put_contents( $databases_file, $databasesText );
 
             // Execute scripts to create and populates databases
-            $query = sprintf( "USE %s;", $rb );
+            $query = sprintf( "USE %s;", $rb_workpace );
             $this->mysqlQuery( $query );
 
             $this->mysqlFileQuery( PATH_RBAC_HOME . 'engine/data/mysql/schema.sql' );
             $this->mysqlFileQuery( PATH_RBAC_HOME . 'engine/data/mysql/insert.sql' );
 
-            $query = sprintf( "USE %s;", $wf );
+            $query = sprintf( "USE %s;", $wf_workpace );
             $this->mysqlQuery( $query );
             $this->mysqlFileQuery( PATH_HOME . 'engine/data/mysql/schema.sql' );
             $this->mysqlFileQuery( PATH_HOME . 'engine/data/mysql/insert.sql' );
@@ -768,13 +793,13 @@ class Installer extends Controller
             }
 
             // Change admin user
-            $query = sprintf( "USE %s;", $wf );
+            $query = sprintf( "USE %s;", $wf_workpace );
             $this->mysqlQuery( $query );
 
             $query = sprintf( "UPDATE USERS SET USR_USERNAME = '%s', USR_PASSWORD = '%s' WHERE USR_UID = '00000000000000000000000000000001' ", $adminUsername, md5( $adminPassword ) );
             $this->mysqlQuery( $query );
 
-            $query = sprintf( "USE %s;", $rb );
+            $query = sprintf( "USE %s;", $rb_workpace );
             $this->mysqlQuery( $query );
 
             $query = sprintf( "UPDATE USERS SET USR_USERNAME = '%s', USR_PASSWORD = '%s' WHERE USR_UID = '00000000000000000000000000000001' ", $adminUsername, md5( $adminPassword ) );
@@ -1188,7 +1213,7 @@ class Installer extends Controller
             $info->message .= G::LoadTranslation('ID_MYSQL_CREDENTIALS_WRONG');
             return $info;
         }
-        $res = @mysql_query( "SELECT * FROM `information_schema`.`USER_PRIVILEGES` where (GRANTEE = \"'$db_username'@'$db_hostname'\" OR GRANTEE = \"'$db_username'@'%'\") and PRIVILEGE_TYPE = 'SUPER' ", $link );
+        $res = @mysql_query( "SELECT * FROM `information_schema`.`USER_PRIVILEGES` where (GRANTEE = \"'$db_username'@'$db_hostname'\" OR GRANTEE = \"'$db_username'@'%'\") ", $link );
         $row = @mysql_fetch_array( $res );
         $hasSuper = is_array( $row );
         @mysql_free_result( $res );

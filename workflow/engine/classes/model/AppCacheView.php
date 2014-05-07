@@ -1200,7 +1200,7 @@ class AppCacheView extends BaseAppCacheView
 
             $sql = "SELECT *
                     FROM `information_schema`.`USER_PRIVILEGES`
-                    WHERE GRANTEE = \"'$mysqlUser'\" and PRIVILEGE_TYPE = 'SUPER' ";
+                    WHERE GRANTEE = \"'$mysqlUser'\" ";
 
             $rs1 = $stmt->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
             $rs1->next();

@@ -137,11 +137,11 @@ Ext.onReady(function(){
   // test database Connection
   function testConnection() {
     wizard.showLoadMask(true);
-  	if ((Ext.getCmp('db_engine').getValue() == '') || !Ext.getCmp('db_hostname').isValid() || !Ext.getCmp('db_username').isValid()) {
+    if ((Ext.getCmp('db_engine').getValue() == '') || !Ext.getCmp('db_hostname').isValid() || !Ext.getCmp('db_username').isValid()) {
       wizard.onClientValidation(3, false);
       wizard.showLoadMask(false);
       return false;
-  	}
+    }
     Ext.Ajax.request({
       url: 'testConnection',
       success: function(response){
@@ -156,11 +156,11 @@ Ext.onReady(function(){
       },
       failure: function(){},
       params: {
-      	'db_engine'  : Ext.getCmp('db_engine').getValue(),
-      	'db_hostname': Ext.getCmp('db_hostname').getValue(),
-      	'db_username': Ext.getCmp('db_username').getValue(),
-      	'db_password': Ext.getCmp('db_password').getValue(),
-      	'db_port'    : Ext.getCmp('db_port').getValue()
+        'db_engine'  : Ext.getCmp('db_engine').getValue(),
+        'db_hostname': Ext.getCmp('db_hostname').getValue(),
+        'db_username': Ext.getCmp('db_username').getValue(),
+        'db_password': Ext.getCmp('db_password').getValue(),
+        'db_port'    : Ext.getCmp('db_port').getValue()
       }
     });
   }
@@ -231,15 +231,15 @@ Ext.onReady(function(){
       },
       failure: function(){},
       params: {
-      	'db_engine'  : Ext.getCmp('db_engine').getValue(),
-      	'db_hostname': Ext.getCmp('db_hostname').getValue(),
-      	'db_username': Ext.getCmp('db_username').getValue(),
-      	'db_password': Ext.getCmp('db_password').getValue(),
-      	'db_port'    : Ext.getCmp('db_port').getValue(),
-      	'wfDatabase' : Ext.getCmp('wfDatabase').getValue(),
-      	'rbDatabase' : Ext.getCmp('rbDatabase').getValue(),
-      	'rpDatabase' : Ext.getCmp('rpDatabase').getValue()
-      	}
+        'db_engine'  : Ext.getCmp('db_engine').getValue(),
+        'db_hostname': Ext.getCmp('db_hostname').getValue(),
+        'db_username': Ext.getCmp('db_username').getValue(),
+        'db_password': Ext.getCmp('db_password').getValue(),
+        'db_port'    : Ext.getCmp('db_port').getValue(),
+        'wfDatabase' : Ext.getCmp('wfDatabase').getValue(),
+        'rbDatabase' : Ext.getCmp('rbDatabase').getValue(),
+        'rpDatabase' : Ext.getCmp('rpDatabase').getValue()
+        }
     });
   }
 
@@ -262,7 +262,7 @@ Ext.onReady(function(){
       {
         xtype:'panel',
         layout:'border',
-        height: 340,
+        height: 380,
         items:[
           {
             region: 'west',
@@ -365,7 +365,7 @@ Ext.onReady(function(){
       {
         xtype:'panel',
         layout:'border',
-        height: 300,
+        height: 380,
         items:[
           {
             region: 'north',
@@ -482,7 +482,7 @@ Ext.onReady(function(){
       {
         xtype:'panel',
         layout:'border',
-        height: 340,
+        height: 380,
         items:[
           {
             region: 'center',
@@ -491,8 +491,8 @@ Ext.onReady(function(){
               new Ext.form.TextArea({
                 name       : 'license',
                 readOnly   : true,
-                width      : 510,
-                height     : 280,
+                width      : 600,
+                height     : 330,
                 style      : 'font-size:13px',
                 value      : licenseTxt
               }),
@@ -533,7 +533,7 @@ Ext.onReady(function(){
       {
         xtype:'panel',
         layout:'border',
-        height: 360,
+        height: 380,
         items:[
           {
             region: 'west',
@@ -671,7 +671,7 @@ Ext.onReady(function(){
       {
         xtype:'panel',
         layout:'border',
-        height: 360,
+        height: 380,
         items:[
           {
             region: 'west',
@@ -835,6 +835,13 @@ Ext.onReady(function(){
                       wizard.onClientValidation(4, false);
                     }
                   }),
+                    new Ext.form.Checkbox({
+                        boxLabel: _('ID_INSTALL_USE_CURRENT_USER'),
+                        id : 'createUserLogged',
+                        handler: function() {
+                            wizard.onClientValidation(4, false);
+                        }
+                    }),
                   {
                     xtype     : 'displayfield',
                     id  : 'finish_message'

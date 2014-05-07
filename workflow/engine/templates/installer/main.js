@@ -10,7 +10,7 @@ Ext.onReady(function(){
     Ext.QuickTips.init();
 
     wizard = new Ext.ux.Wiz({
-      height: 520,
+      height: 555,
       width : 780,
       id    : 'wizard',
       closable: false,
@@ -87,23 +87,24 @@ function finishInstallation()
     },
     failure: function(){Ext.MessageBox.hide(); wizard.showLoadMask(false);},
     params: {
-      'db_engine'     : Ext.getCmp('db_engine'    ).getValue(),
-      'db_hostname'   : Ext.getCmp('db_hostname'  ).getValue(),
-      'db_username'   : Ext.getCmp('db_username'  ).getValue(),
-      'db_password'   : Ext.getCmp('db_password'  ).getValue(),
-      'db_port'       : Ext.getCmp('db_port'      ).getValue(),
-      'pathConfig'    : Ext.getCmp('pathConfig'   ).getValue(),
-      'pathLanguages' : Ext.getCmp('pathLanguages').getValue(),
-      'pathPlugins'   : Ext.getCmp('pathPlugins'  ).getValue(),
-      'pathXmlforms'  : Ext.getCmp('pathXmlforms' ).getValue(),
-      'pathShared'    : Ext.getCmp('pathShared'   ).getValue(),
-      'workspace'     : Ext.getCmp('workspace'    ).getValue(),
-      'adminUsername' : Ext.getCmp('adminUsername').getValue(),
-      'adminPassword' : Ext.getCmp('adminPassword').getValue(),
-      'wfDatabase'    : Ext.getCmp('wfDatabase'   ).getValue(),
-      'rbDatabase'    : Ext.getCmp('rbDatabase'   ).getValue(),
-      'rpDatabase'    : Ext.getCmp('rpDatabase'   ).getValue(),
-      'deleteDB'      : Ext.getCmp('deleteDB'     ).getValue()
+      'db_engine'     : Ext.getCmp('db_engine'        ).getValue(),
+      'db_hostname'   : Ext.getCmp('db_hostname'      ).getValue(),
+      'db_username'   : Ext.getCmp('db_username'      ).getValue(),
+      'db_password'   : Ext.getCmp('db_password'      ).getValue(),
+      'db_port'       : Ext.getCmp('db_port'          ).getValue(),
+      'pathConfig'    : Ext.getCmp('pathConfig'       ).getValue(),
+      'pathLanguages' : Ext.getCmp('pathLanguages'    ).getValue(),
+      'pathPlugins'   : Ext.getCmp('pathPlugins'      ).getValue(),
+      'pathXmlforms'  : Ext.getCmp('pathXmlforms'     ).getValue(),
+      'pathShared'    : Ext.getCmp('pathShared'       ).getValue(),
+      'workspace'     : Ext.getCmp('workspace'        ).getValue(),
+      'adminUsername' : Ext.getCmp('adminUsername'    ).getValue(),
+      'adminPassword' : Ext.getCmp('adminPassword'    ).getValue(),
+      'wfDatabase'    : Ext.getCmp('wfDatabase'       ).getValue(),
+      'rbDatabase'    : Ext.getCmp('rbDatabase'       ).getValue(),
+      'rpDatabase'    : Ext.getCmp('rpDatabase'       ).getValue(),
+      'deleteDB'      : Ext.getCmp('deleteDB'         ).getValue(),
+      'userLogged'    : Ext.getCmp('createUserLogged' ).getValue()
     },
     timeout: 180000
   });
