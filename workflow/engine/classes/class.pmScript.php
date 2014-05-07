@@ -225,7 +225,7 @@ class PMScript
             for ($i = 0; $i < $iOcurrences; $i ++) {
                 $sAux = substr( $this->sScript, $iAux, $aMatch[0][$i][1] - $iAux );
                 if (! $bEqual) {
-                    if (strpos( $sAux, '==' ) !== false) {
+                    if (strpos( $sAux, '==' ) !== false || strpos($sAux, '!=') !== false) {
                         $bEqual = false;
                     } else {
                         if (strpos( $sAux, '=' ) !== false) {
