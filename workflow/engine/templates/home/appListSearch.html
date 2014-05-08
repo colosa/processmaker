@@ -78,7 +78,7 @@
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007eb5', endColorstr='#003d5a',GradientType=0 ); /* IE6-9 */
         }
     </style>
-    <script>
+    <script type="text/javascript" language="javascript" >
         function resize()
         {
             var h = $(document.body).height() - 52;
@@ -242,10 +242,10 @@
 
                         if(jQuery.trim(html) != ''){
                             $("#commentlist").append(html);
-                            $('#loadmorebutton').html( {/literal}"{translate label="ID_LOAD_MORE"}"{literal} );
+                            $('#loadmorebutton').html('{/literal}"{translate label="ID_LOAD_MORE"}"{literal}');
                         }
                         else {
-                            $('#loadmorebutton').replaceWith(<center>{/literal}"{translate label="ID_NO_MORE_APPLICATIONS"}"{literal}</center>);
+                            $('#loadmorebutton').replaceWith('<center>{/literal}"{translate label="ID_NO_MORE_APPLICATIONS"}"{literal}</center>');
                         }
                     }
                 });
