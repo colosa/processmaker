@@ -1053,7 +1053,7 @@ class AppCacheView extends BaseAppCacheView
         if (!$doCount) {
             //Completed - getCompleted()
             $criteria->addGroupByColumn(AppCacheViewPeer::APP_UID);
-
+            $criteria->addGroupByColumn(AppCacheViewPeer::DEL_INDEX);
             //$criteria->addGroupByColumn(AppCacheViewPeer::USR_UID);
         }
 

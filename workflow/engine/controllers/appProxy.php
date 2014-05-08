@@ -181,7 +181,7 @@ class AppProxy extends HttpProxyController
             throw new Exception( G::LoadTranslation( 'ID_NO_PERMISSION_NO_PARTICIPATED' ) );
         }
 
-        if (($httpData->action == 'sent') || ($httpData->action == 'search')){ // Get the last valid delegation for participated list
+        if (($httpData->action == 'sent')){ // Get the last valid delegation for participated list
             $criteria = new Criteria();
             $criteria->addSelectColumn(AppDelegationPeer::DEL_INDEX);
             $criteria->add(AppDelegationPeer::APP_UID, $httpData->appUid);

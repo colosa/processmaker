@@ -185,7 +185,11 @@ try {
                 $row = $rs->getRow();
 
                 $_SESSION['APPLICATION'] = $sAppUid;
-                $_SESSION['INDEX'] = $row['DEL_INDEX'];
+                if($_action=='search'){
+                    $_SESSION['INDEX'] = $iDelIndex;
+                } else {
+                    $_SESSION['INDEX'] = $row['DEL_INDEX'];
+                }
                 $_SESSION['PROCESS'] = $aFields['PRO_UID'];
                 $_SESSION['TASK'] = - 1;
                 //$Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'] );
