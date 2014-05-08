@@ -2157,7 +2157,7 @@ class XmlForm_Field_Currency extends XmlForm_Field_SimpleText
      * @return string
      */
     public function renderGrid ($values = array(), $owner = null)
-    {   
+    {
         $result = array ();
         $r = 1;
         if ($owner->mode != 'view') {
@@ -2926,10 +2926,10 @@ class XmlForm_Field_File extends XmlForm_Field
      * @return string
      */
     public function render ($value = null, $owner = null, $rowId = null, $row = -1, $therow = -1)
-    {   
+    {
         $permission = false;
         $url = null;
-        
+
         switch ($owner->type) {
             case "xmlform":
                 $pmtype = $this->NSFieldType();
@@ -2949,7 +2949,7 @@ class XmlForm_Field_File extends XmlForm_Field
 
             $criteria = new Criteria();
             $criteria->add( AppDocumentPeer::APP_DOC_UID, $arrayPermission["INPUT_DOCUMENTS"], Criteria::IN );
-           
+
             switch ($owner->type) {
                 case "xmlform":
                     break;
@@ -3149,7 +3149,7 @@ class XmlForm_Field_Checkbox extends XmlForm_Field
      * @return string
      */
     public function render ($value = null, $owner = null)
-    {   
+    {
         if (($this->pmconnection != '') && ($this->pmfield != '') && $value == null) {
             $value = $this->getPMTableValue( $owner );
         }
@@ -3723,6 +3723,7 @@ class XmlForm_Field_Listbox extends XmlForm_Field
         }
 
         $value = $arrayAux;
+        $color = (preg_match("/^.*chrome.*$/i", $_SERVER["HTTP_USER_AGENT"]))? " style=\"color: #000000;\"" : "";
 
         if ($this->mode === 'edit') {
             $itemWidth = '';
@@ -3731,10 +3732,10 @@ class XmlForm_Field_Listbox extends XmlForm_Field
             }
             $html = '<select multiple="multiple" id="form[' . $this->name . ']" ' . $this->NSFieldType() . ' name="form[' . $this->name . '][]" size="' . $this->size . '" ' . $itemWidth . '  ' . $this->NSFieldType() . '>';
             foreach ($this->option as $optionName => $option) {
-                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "selected=\"selected\"" : "") . ">" . $option . "</option>";
+                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "selected=\"selected\"" . $color : "") . ">" . $option . "</option>";
             }
             foreach ($this->sqlOption as $optionName => $option) {
-                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "selected=\"selected\" " : "") . ">" . $option . "</option>";
+                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "selected=\"selected\"" . $color : "") . ">" . $option . "</option>";
             }
             $html .= '</select>';
 
@@ -3743,10 +3744,10 @@ class XmlForm_Field_Listbox extends XmlForm_Field
         } elseif ($this->mode === 'view') {
             $html = '<select multiple="multiple" id="form[' . $this->name . ']" ' . $this->NSFieldType() . ' name="form[' . $this->name . '][]" size="' . $this->size . '" ' . $this->NSFieldType() . ' style="background: none;" disabled="disabled">';
             foreach ($this->option as $optionName => $option) {
-                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" : "") . ">" . $option . "</option>";
+                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" . $color : "") . ">" . $option . "</option>";
             }
             foreach ($this->sqlOption as $optionName => $option) {
-                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" : "") . ">" . $option . "</option>";
+                $html .= "<option value=\"" . $optionName . "\" " . ((in_array( $optionName . "", $value )) ? "class=\"module_ListBoxView\" selected=\"selected\"" . $color : "") . ">" . $option . "</option>";
             }
             $html .= '</select>';
             foreach ($this->option as $optionName => $option) {
@@ -4521,7 +4522,7 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
      * @return <String>
      */
     public function __draw_widget ($pID, $value, $owner = '', $inGrid = false)
-    {   
+    {
         $startDate = G::replaceDataField( $this->startDate, $owner->values );
         $endDate = G::replaceDataField( $this->endDate, $owner->values );
         $beforeDate = G::replaceDataField( $this->beforeDate, $owner->values );
@@ -4647,13 +4648,13 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
             }
 
             $sizeend = $this->size;
-            
+
             if ($this->required) {
                 $isRequired = '1';
             } else {
                 $isRequired = '0';
             }
-                
+
             if ($this->editable != "0") {
                 $html = '<input ' . $pmtype . ' pm:required="' . $isRequired . '" id="' . $pID . '" name="' . $pID . '" pm:mask="' . $mask . '" pm:start="' . $startDate . '" pm:end="' . $endDate . '" pm:time="' . $Time . '" class="module_app_input___gray" size="' . $sizeend . '" value="' . $value . '" pm:defaultvalue="' . $defaultValue . '" />';
                 $html .= '<a onclick="removeValue(\'' . $pID . '\'); return false;" style="position:relative;left:-17px;top:2px;" ><img src="/images/icons_silk/calendar_x_button.png" /></a>';
