@@ -19,7 +19,6 @@ class AppProxy extends HttpProxyController
 
     /**
      * Get Notes List
-     *
      * @param int $httpData->start
      * @param int $httpData->limit
      * @param string $httpData->appUid (optionalif it is not passed try use $_SESSION['APPLICATION'])
@@ -180,8 +179,8 @@ class AppProxy extends HttpProxyController
         if ($RBAC->userCanAccess( 'PM_ALLCASES' ) < 0 && $case->userParticipatedInCase( $httpData->appUid, $_SESSION['USER_LOGGED'] ) == 0) {
             throw new Exception( G::LoadTranslation( 'ID_NO_PERMISSION_NO_PARTICIPATED' ) );
         }
-
-        if (($httpData->action == 'sent')){ // Get the last valid delegation for participated list
+        // Get the last valid delegation for participated list
+        if (($httpData->action == 'sent')){ 
             $criteria = new Criteria();
             $criteria->addSelectColumn(AppDelegationPeer::DEL_INDEX);
             $criteria->add(AppDelegationPeer::APP_UID, $httpData->appUid);

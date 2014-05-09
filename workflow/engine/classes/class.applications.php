@@ -415,7 +415,6 @@ class Applications
             // first check if there is a PMTable defined within the list,
             // the issue that brokes the normal criteria query seems to be fixed
             if (isset( $oAppCache->confCasesList['PMTable'] ) && ! empty( $oAppCache->confCasesList['PMTable'] )) {
-                // then
                 $oAdditionalTables = AdditionalTablesPeer::retrieveByPK( $oAppCache->confCasesList['PMTable'] );
                 $tableName = $oAdditionalTables->getAddTabName();
                 $tableNameAux = $tableName;

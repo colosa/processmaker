@@ -185,8 +185,8 @@ try {
                 $row = $rs->getRow();
 
                 $_SESSION['APPLICATION'] = $sAppUid;
-                if($_action=='search'){
-                    $_SESSION['INDEX'] = $iDelIndex;
+                if($_action=='search'){ //for Advanced Search List
+                    $_SESSION['INDEX'] = $iDe lIndex;
                 } else {
                     $_SESSION['INDEX'] = $row['DEL_INDEX'];
                 }
