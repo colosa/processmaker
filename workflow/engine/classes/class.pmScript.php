@@ -258,9 +258,19 @@ class PMScript
                 }
                 if ($i < $iOcurrences - 1 && $count_equal > 0) {
                     $sw_evaluate = false;
+                    $ii = $aMatch[0][$i][1] + strlen($aMatch[0][$i][0]);
+                    $ss = substr($this->sScript, $ii, $aMatch[0][$i + 1][1] - $ii);
+                    if (strpos($ss, ';') !== false && strpos($ss, '=') === false) {
+                        $sw_evaluate = true;
+                    }
                 }
                 if ($i == $iOcurrences - 1 && $count_equal > 0) {
                     $sw_evaluate = false;
+                    $ii = $aMatch[0][$i - 1][1] + strlen($aMatch[0][$i - 1][0]);
+                    $ss = substr($this->sScript, $ii, $aMatch[0][$i][1] - $ii);
+                    if (strpos($ss, ';') !== false && strpos($ss, '=') === false) {
+                        $sw_evaluate = true;
+                    }
                 }
                 /** patch1 end */
                 $iAux = $aMatch[0][$i][1] + strlen( $aMatch[0][$i][0] );
