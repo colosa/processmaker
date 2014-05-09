@@ -217,6 +217,9 @@ class PMScript
      */
     public function execute ()
     {
+        $count_equal = 0; 
+        $sw_equal = false;
+        $sw_evaluate = true;
         $sScript = "";
         $iAux = 0;
         $bEqual = false;
@@ -225,17 +228,20 @@ class PMScript
             for ($i = 0; $i < $iOcurrences; $i ++) {
                 $sAux = substr( $this->sScript, $iAux, $aMatch[0][$i][1] - $iAux );
                 if (! $bEqual) {
-                    if (strpos( $sAux, '==' ) !== false) {
+                    if (strpos($sAux, '==') !== false || strpos($sAux, '===') !== false || strpos($sAux, '!=') !== false || strpos($sAux, '<>') !== false || strpos($sAux, '!==') !== false || strpos($sAux, '<') !== false || strpos($sAux, '>') !== false || strpos($sAux, '<=') !== false || strpos($sAux, '>=') !== false) {
                         $bEqual = false;
                     } else {
                         if (strpos( $sAux, '=' ) !== false) {
                             $bEqual = true;
+                            $sw_equal = true;
                         }
                     }
                 }
                 if ($bEqual) {
                     if (strpos( $sAux, ';' ) !== false) {
                         $bEqual = false;
+                        $count_equal = 0;
+                        $sw_equal = false;
                     }
                 }
                 if ($bEqual) {
@@ -246,10 +252,21 @@ class PMScript
                     }
                 }
                 $sScript .= $sAux;
+                /** patch1: support for the expression: @@a = @@b = @@c = @@d; */
+                if ($sw_equal === true) {
+                    $count_equal = $count_equal + 1;
+                }
+                if ($i < $iOcurrences - 1 && $count_equal > 0) {
+                    $sw_evaluate = false;
+                }
+                if ($i == $iOcurrences - 1 && $count_equal > 0) {
+                    $sw_evaluate = false;
+                }
+                /** patch1 end */
                 $iAux = $aMatch[0][$i][1] + strlen( $aMatch[0][$i][0] );
                 switch ($aMatch[1][$i][0]) {
                     case '@':
-                        if ($bEqual) {
+                        if ($bEqual && $sw_evaluate) {
                             if (! isset( $aMatch[5][$i][0] )) {
                                 $sScript .= "pmToString(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
                             } else {
@@ -262,9 +279,10 @@ class PMScript
                                 $sScript .= "\$this->aFields" . (isset( $aMatch[2][$i][0] ) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
                             }
                         }
+                        $sw_evaluate = true;
                         break;
                     case '%':
-                        if ($bEqual) {
+                        if ($bEqual && $sw_evaluate) {
                             if (! isset( $aMatch[5][$i][0] )) {
                                 $sScript .= "pmToInteger(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
                             } else {
@@ -277,9 +295,10 @@ class PMScript
                                 $sScript .= "\$this->aFields" . (isset( $aMatch[2][$i][0] ) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
                             }
                         }
+                        $sw_evaluate = true;
                         break;
                     case '#':
-                        if ($bEqual) {
+                        if ($bEqual && $sw_evaluate) {
                             if (! isset( $aMatch[5][$i][0] )) {
                                 $sScript .= "pmToFloat(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
                             } else {
@@ -292,9 +311,10 @@ class PMScript
                                 $sScript .= "\$this->aFields" . (isset( $aMatch[2][$i][0] ) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
                             }
                         }
+                        $sw_evaluate = true;
                         break;
                     case '?':
-                        if ($bEqual) {
+                        if ($bEqual && $sw_evaluate) {
                             if (! isset( $aMatch[5][$i][0] )) {
                                 $sScript .= "pmToUrl(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
                             } else {
@@ -307,9 +327,10 @@ class PMScript
                                 $sScript .= "\$this->aFields" . (isset( $aMatch[2][$i][0] ) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
                             }
                         }
+                        $sw_evaluate = true;
                         break;
                     case '$':
-                        if ($bEqual) {
+                        if ($bEqual && $sw_evaluate) {
                             if (! isset( $aMatch[5][$i][0] )) {
                                 $sScript .= "pmSqlEscape(\$this->aFields['" . $aMatch[2][$i][0] . "'])";
                             } else {
@@ -322,6 +343,7 @@ class PMScript
                                 $sScript .= "\$this->aFields" . (isset( $aMatch[2][$i][0] ) ? "['" . $aMatch[2][$i][0] . "']" : '') . $aMatch[5][$i][0];
                             }
                         }
+                        $sw_evaluate = true;
                         break;
                     case '=':
                         if ($bEqual) {
