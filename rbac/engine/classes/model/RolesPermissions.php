@@ -92,6 +92,28 @@ class RolesPermissions extends BaseRolesPermissions
       return $this->permission_name;
   }
   
+  
+  /**
+   * @return string
+   */
+  public function getPermissionsByRolUid($rolUid = '')
+  {
+	  try {
+	  	  $oCriteria = new Criteria('rbac');
+	      $oCriteria->add(RolesPermissionsPeer::ROL_UID, $rolUid);
+	      $oDataset = RolesPermissionsPeer::doSelectRS($oCriteria);
+	      $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+	      $res = array();
+	      while ($oDataset->next()) {
+	      		$res[] = $aRow = $oDataset->getRow();
+	      }
+	      return $res;
+	    }
+	    catch (Exception $oError) {
+	      throw($oError);
+	    }
+  }
+  
   /**    
    * 
    * @param string $name
