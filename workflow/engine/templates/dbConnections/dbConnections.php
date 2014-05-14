@@ -30,12 +30,12 @@
  * @LastModification 30/05/2008
  */
 
-	G::LoadClass('tree');
-    G::LoadClass('net');
-    $host = new net($_POST['server']);
-    $width_content = '430px';
-    
-    $html = '
+G::LoadClass('tree');
+G::LoadClass('net');
+
+$width_content = '430px';
+
+$html = '
 	<div class="boxTopBlue"><div class="a"></div><div class="b"></div><div class="c"></div></div>
 	<div class="boxContentBlue">
 		<table style="margin:0px;" cellspacing="0" cellpadding="0">
@@ -45,30 +45,44 @@
 		</table>
 	</div>
 	<div class="boxBottomBlue"><div class="a"></div><div class="b"></div><div class="c"></div></div>
-	';
+ ';
 
-	$port = $_POST['port'];
-	if( $port == 'default' ){
-		//setting defaults ports
-		switch ($_POST['type']){
-			case 'mysql':  $port = 3306; break;
-			case 'pgsql':  $port = 5432; break;
-			case 'mssql':  $port = 1433; break;
-			case 'oracle': $port = 1521; break;
-		}
-		$_POST['port'] = $port;
-		$port = "default ($port)";
-	}
-	
-	$tests = Array('',
-	      G::loadTranslation('ID_HOST_NAME').'  <b>'.$_POST['server'].'</b>',
-				G::loadTranslation('ID_CHECK_PORT').'  <b>'.$port.'</b>',
-				G::loadTranslation('ID_CONNECT_HOST').'  <b>'.$host->ip.':'.$_POST['port'].'</b>',
+$flagTns = ($_POST["type"] == "oracle" && $_POST["connectionType"] == "TNS")? 1 : 0;
+
+if ($flagTns == 0) {
+    $host = new NET($_POST["server"]);
+
+    $port = $_POST["port"];
+
+    if ($port == "default") {
+        //setting defaults ports
+        switch ($_POST["type"]) {
+            case "mysql":  $port = 3306; break;
+            case "pgsql":  $port = 5432; break;
+            case "mssql":  $port = 1433; break;
+            case "oracle": $port = 1521; break;
+        }
+
+        $_POST["port"] = $port;
+        $port = "default ($port)";
+    }
+
+    $tests = array(
+        "",
+        G::loadTranslation('ID_HOST_NAME').'  <b>'.$_POST['server'].'</b>',
+        G::loadTranslation('ID_CHECK_PORT').'  <b>'.$port.'</b>',
+        G::loadTranslation('ID_CONNECT_HOST').'  <b>'.$host->ip.':'.$_POST['port'].'</b>',
         G::loadTranslation('ID_OPEN_DB').'['.$_POST['db_name'].'] '.G::loadTranslation('ID_IN').'  '.$_POST['type'].' '.G::loadTranslation('ID_SERVICE')
     );
-	
+} else {
+    $tests = array(
+        "",
+        "Test TNS" . " <strong>" . $_POST["tns"] . "</strong>"
+    );
+}
+
 	$n = Array('','uno','dos','tres','cuatro','cinco');
-	
+
 	for($i=1; $i<count($tests);$i++)
 	{
 		$html .= "
@@ -92,7 +106,7 @@
 		</table>
 		</div>";
 	}
-	
+
 	echo '<div class="grid" style="width:'.$width_content.'">
 	<div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
 	<div class="content" style="">
@@ -106,8 +120,7 @@
 	</div>
 	<div class="boxBottom"><div class="a"></div><div class="b"></div><div class="c"></div></div>
 	</div>';
-	
+
 
 	print ("<div id='bnt_abort' style='display:block'><input type=button class='module_app_button___gray' onclick='jvascript:abortTestConnection()' value='ABORT'></div>");
 	print ("<div id='bnt_ok' style='display:none'><input type=button class='module_app_button___gray' onclick='jvascript:cancelTestConnection()' value='DONE'></div>");
-    

@@ -25,13 +25,34 @@ class NET
     public $errno;
     public $errstr;
 
+    public function __construct()
+    {
+        $a = func_get_args();
+        $f = "__construct" . func_num_args();
+
+        if (method_exists($this, $f)) {
+            call_user_func_array(array($this, $f), $a);
+        }
+    }
+
+    /**
+     * This function is the constructor of the class net
+     *
+     * return void
+     */
+    public function __construct0()
+    {
+        $this->errno = 0;
+        $this->error = "";
+    }
+
     /**
      * This function is the constructor of the class net
      *
      * @param string $pHost
      * @return void
      */
-    public function __construct ($pHost)
+    public function __construct1($pHost)
     {
         $this->errno = 0;
         $this->errstr = "";
@@ -181,16 +202,20 @@ class NET
      * This function tries to connect to server
      *
      * @param string $pDbDriver
+     * @param array  $arrayServerData
+     *
      * @return void
      */
-    public function tryConnectServer ($pDbDriver)
+    public function tryConnectServer($pDbDriver, array $arrayServerData = array())
     {
         if ($this->errno != 0) {
             return 0;
         }
         $stat = new Stat();
 
-        if (isset( $this->db_user ) && (isset( $this->db_passwd ) || ('' == $this->db_passwd)) && isset( $this->db_sourcename )) {
+        $flagTns = (isset($arrayServerData["connectionType"]) && $arrayServerData["connectionType"] == "TNS")? 1 : 0;
+
+        if (isset($this->db_user) && (isset($this->db_passwd) || $this->db_passwd == "") && (isset($this->db_sourcename) || $flagTns == 1)) {
             switch ($pDbDriver) {
                 case 'mysql':
                     if ($this->db_passwd == '') {
@@ -247,11 +272,17 @@ class NET
                     }
                     break;
                 case 'oracle':
-                    $this->db_port = (($this->db_port == "") || ($this->db_port == 0)) ? "1521" : $this->db_port;
                     try {
-                        $link = $conn = @oci_connect( $this->db_user, $this->db_passwd, "(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP) (HOST=$this->ip) (PORT=$this->db_port) )) (CONNECT_DATA=(SERVICE_NAME=$this->db_sourcename)))" );
-                        if ($link) {
-                            $stat->status = 'SUCCESS';
+                        if ($flagTns == 0) {
+                            $this->db_port = ($this->db_port == "" || $this->db_port == 0)? "1521" : $this->db_port;
+
+                            $cnn = @oci_connect($this->db_user, $this->db_passwd, "(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP) (HOST=$this->ip) (PORT=$this->db_port) )) (CONNECT_DATA=(SERVICE_NAME=$this->db_sourcename)))");
+                        } else {
+                            $cnn = @oci_connect($this->db_user, $this->db_passwd, $arrayServerData["tns"]);
+                        }
+
+                        if ($cnn) {
+                            $stat->status = "SUCCESS";
                             $this->errstr = "";
                             $this->errno = 0;
                         } else {
@@ -279,9 +310,11 @@ class NET
      * This function tries to open to the DB
      *
      * @param string $pDbDriver
+     * @param array  $arrayServerData
+     *
      * @return void
      */
-    public function tryOpenDataBase ($pDbDriver)
+    public function tryOpenDataBase($pDbDriver, array $arrayServerData = array())
     {
         if ($this->errno != 0) {
             return 0;
@@ -290,7 +323,9 @@ class NET
         set_time_limit( 0 );
         $stat = new Stat();
 
-        if (isset( $this->db_user ) && (isset( $this->db_passwd ) || ('' == $this->db_passwd)) && isset( $this->db_sourcename )) {
+        $flagTns = (isset($arrayServerData["connectionType"]) && $arrayServerData["connectionType"] == "TNS")? 1 : 0;
+
+        if (isset($this->db_user) && (isset($this->db_passwd) || $this->db_passwd == "") && (isset($this->db_sourcename) || $flagTns == 1)) {
             switch ($pDbDriver) {
                 case 'mysql':
                     $link = @mysql_connect( $this->ip . (($this->db_port != '') && ($this->db_port != 0) ? ':' . $this->db_port : ''), $this->db_user, $this->db_passwd );
@@ -366,16 +401,22 @@ class NET
                     }
                     break;
                 case 'oracle':
-                    $this->db_port = (($this->db_port == "") || ($this->db_port == 0)) ? "1521" : $this->db_port;
-                    $link = @oci_connect( $this->db_user, $this->db_passwd, "(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP) (HOST=$this->ip) (PORT=$this->db_port) )) (CONNECT_DATA=(SERVICE_NAME=$this->db_sourcename)))" );
-                    if ($link) {
-                        $stid = @oci_parse( $link, 'select AUTHENTICATION_TYPE from v$session_connect_info' );
+                    if ($flagTns == 0) {
+                        $this->db_port = ($this->db_port == "" || $this->db_port == 0)? "1521" : $this->db_port;
+
+                        $cnn = @oci_connect($this->db_user, $this->db_passwd, "(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP) (HOST=$this->ip) (PORT=$this->db_port) )) (CONNECT_DATA=(SERVICE_NAME=$this->db_sourcename)))");
+                    } else {
+                        $cnn = @oci_connect($this->db_user, $this->db_passwd, $arrayServerData["tns"]);
+                    }
+
+                    if ($cnn) {
+                        $stid = @oci_parse($cnn, 'select AUTHENTICATION_TYPE from v$session_connect_info');
                         $result = @oci_execute( $stid, OCI_DEFAULT );
                         if ($result) {
                             $stat->status = 'SUCCESS';
                             $this->errstr = "";
                             $this->errno = 0;
-                            @oci_close( $link );
+                            @oci_close($cnn);
                         } else {
                             $this->error = "the user $this->db_user doesn't have privileges to run queries!";
                             $this->errstr = "NET::ORACLE->Couldn't execute any query on this server!";
