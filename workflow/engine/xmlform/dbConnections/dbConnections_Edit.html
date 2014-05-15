@@ -1,4 +1,4 @@
-<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>  
+<form id="{$form_id}" name="{$form_name}" action="{$form_action}" class="{$form_className}" method="post" encType="multipart/form-data" style="margin:0px;" onsubmit='return validateForm("{$form_objectRequiredFields}".parseJSON());'>
 
   <div class="borderForm" style="padding-left: 0pt; padding-right: 0pt;">
 		<div class="boxTop"><div class="a"></div><div class="b"></div><div class="c"></div></div>
@@ -15,47 +15,58 @@
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$DBS_UID}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DBS_UID} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_UID}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_UID}</td>
               </tr>
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$DBS_TYPE}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DBS_TYPE} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_TYPE}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_TYPE}</td>
               </tr>
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$DBS_ENCODE}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DBS_ENCODE} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_ENCODE}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_ENCODE}</td>
               </tr>
+
+              <tr>
+                  <td class="FormLabel" width="{$form_labelWidth}">{$DBS_CONNECTION_TYPE} </td>
+                  <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_CONNECTION_TYPE}</td>
+              </tr>
+
+              <tr>
+                  <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$DBS_TNS}</td>
+                  <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_TNS}</td>
+              </tr>
+
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$DBS_SERVER}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DBS_SERVER} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_SERVER}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_SERVER}</td>
               </tr>
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$DBS_DATABASE_NAME}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DBS_DATABASE_NAME} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_DATABASE_NAME}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_DATABASE_NAME}</td>
               </tr>
                                                 <tr>
-              <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$DBS_USERNAME}</td>
+              <td class="FormLabel" width="{$form_labelWidth}"><span id="userName"><font color="red">*  </font></span>{$DBS_USERNAME}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DBS_USERNAME} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_USERNAME}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_USERNAME}</td>
               </tr>
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$DBS_PASSWORD}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DBS_PASSWORD} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_PASSWORD}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_PASSWORD}</td>
               </tr>
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}"><font color="red">*  </font>{$DBS_PORT}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DBS_PORT} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_PORT}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_PORT}</td>
               </tr>
                                                 <tr>
               <td class="FormLabel" width="{$form_labelWidth}">{$DBS_DESCRIPTION}</td>
               <!-- <td class='FormFieldContent' width="{$form_width}" >{$form.DBS_DESCRIPTION} </td>  //-->
-              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_DESCRIPTION}</td> 
+              <td class="FormFieldContent" width="{$form_fieldContentWidth}">{$form.DBS_DESCRIPTION}</td>
               </tr>
                                                <tr>
               <td class="FormButton" colspan="2" align="center"></td>
@@ -73,5 +84,5 @@
                               <script type="text/javascript">
     {$form.JS}
   </script>
-  
-</form>	
+
+</form>

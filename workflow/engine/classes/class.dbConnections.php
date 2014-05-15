@@ -424,8 +424,14 @@ class dbConnections
         if ($aInfoCon['DBS_PASSWORD'] != '') {
             $aPassw = explode( '_', $aInfoCon['DBS_PASSWORD'] );
             $passw = $aPassw[0];
-            if (sizeof( $aPassw ) > 1)
-                $passw = ($passw == 'none') ? "" : G::decrypt( $passw, $aInfoCon['DBS_DATABASE_NAME'] );
+
+            $flagTns = ($aInfoCon["DBS_TYPE"] == "oracle" && $aInfoCon["DBS_CONNECTION_TYPE"] == "TNS")? 1 : 0;
+
+            if (sizeof($aPassw) > 1 && $flagTns == 0) {
+                $passw = ($passw == "none")? "" : G::decrypt($passw, $aInfoCon["DBS_DATABASE_NAME"]);
+            } else {
+                $passw = ($passw == "none")? "" : G::decrypt($passw, $aInfoCon["DBS_TNS"]);
+            }
         }
         return $passw;
     }
