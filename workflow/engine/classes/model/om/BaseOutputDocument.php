@@ -4,14 +4,15 @@ require_once 'propel/om/BaseObject.php';
 
 require_once 'propel/om/Persistent.php';
 
+
 include_once 'propel/util/Criteria.php';
 
 include_once 'classes/model/OutputDocumentPeer.php';
 
 /**
  * Base class that represents a row from the 'OUTPUT_DOCUMENT' table.
- * 
  *
+ * 
  *
  * @package    workflow.classes.model.om
  */

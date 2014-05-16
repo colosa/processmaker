@@ -103,7 +103,7 @@ abstract class BaseTask extends BaseObject implements Persistent
      * The value for the tas_group_variable field.
      * @var        string
      */
-    protected $tas_group_variable = '@@SYS_GROUP_TO_BE_ASSIGNED';
+    protected $tas_group_variable;
 
     /**
      * The value for the tas_mi_instance_variable field.
@@ -1090,7 +1090,7 @@ abstract class BaseTask extends BaseObject implements Persistent
             $v = (string) $v;
         }
 
-        if ($this->tas_group_variable !== $v || $v === '@@SYS_GROUP_TO_BE_ASSIGNED') {
+        if ($this->tas_group_variable !== $v) {
             $this->tas_group_variable = $v;
             $this->modifiedColumns[] = TaskPeer::TAS_GROUP_VARIABLE;
         }

@@ -82,6 +82,18 @@ abstract class BaseDbSource extends BaseObject implements Persistent
     protected $dbs_encode = '';
 
     /**
+     * The value for the dbs_connection_type field.
+     * @var        string
+     */
+    protected $dbs_connection_type = 'NORMAL';
+
+    /**
+     * The value for the dbs_tns field.
+     * @var        string
+     */
+    protected $dbs_tns = '';
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -192,6 +204,28 @@ abstract class BaseDbSource extends BaseObject implements Persistent
     {
 
         return $this->dbs_encode;
+    }
+
+    /**
+     * Get the [dbs_connection_type] column value.
+     * 
+     * @return     string
+     */
+    public function getDbsConnectionType()
+    {
+
+        return $this->dbs_connection_type;
+    }
+
+    /**
+     * Get the [dbs_tns] column value.
+     * 
+     * @return     string
+     */
+    public function getDbsTns()
+    {
+
+        return $this->dbs_tns;
     }
 
     /**
@@ -393,6 +427,50 @@ abstract class BaseDbSource extends BaseObject implements Persistent
     } // setDbsEncode()
 
     /**
+     * Set the value of [dbs_connection_type] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setDbsConnectionType($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->dbs_connection_type !== $v || $v === 'NORMAL') {
+            $this->dbs_connection_type = $v;
+            $this->modifiedColumns[] = DbSourcePeer::DBS_CONNECTION_TYPE;
+        }
+
+    } // setDbsConnectionType()
+
+    /**
+     * Set the value of [dbs_tns] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setDbsTns($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->dbs_tns !== $v || $v === '') {
+            $this->dbs_tns = $v;
+            $this->modifiedColumns[] = DbSourcePeer::DBS_TNS;
+        }
+
+    } // setDbsTns()
+
+    /**
      * Hydrates (populates) the object variables with values from the database resultset.
      *
      * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -427,12 +505,16 @@ abstract class BaseDbSource extends BaseObject implements Persistent
 
             $this->dbs_encode = $rs->getString($startcol + 8);
 
+            $this->dbs_connection_type = $rs->getString($startcol + 9);
+
+            $this->dbs_tns = $rs->getString($startcol + 10);
+
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 9; // 9 = DbSourcePeer::NUM_COLUMNS - DbSourcePeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 11; // 11 = DbSourcePeer::NUM_COLUMNS - DbSourcePeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating DbSource object", $e);
@@ -663,6 +745,12 @@ abstract class BaseDbSource extends BaseObject implements Persistent
             case 8:
                 return $this->getDbsEncode();
                 break;
+            case 9:
+                return $this->getDbsConnectionType();
+                break;
+            case 10:
+                return $this->getDbsTns();
+                break;
             default:
                 return null;
                 break;
@@ -692,6 +780,8 @@ abstract class BaseDbSource extends BaseObject implements Persistent
             $keys[6] => $this->getDbsPassword(),
             $keys[7] => $this->getDbsPort(),
             $keys[8] => $this->getDbsEncode(),
+            $keys[9] => $this->getDbsConnectionType(),
+            $keys[10] => $this->getDbsTns(),
         );
         return $result;
     }
@@ -749,6 +839,12 @@ abstract class BaseDbSource extends BaseObject implements Persistent
                 break;
             case 8:
                 $this->setDbsEncode($value);
+                break;
+            case 9:
+                $this->setDbsConnectionType($value);
+                break;
+            case 10:
+                $this->setDbsTns($value);
                 break;
         } // switch()
     }
@@ -809,6 +905,14 @@ abstract class BaseDbSource extends BaseObject implements Persistent
             $this->setDbsEncode($arr[$keys[8]]);
         }
 
+        if (array_key_exists($keys[9], $arr)) {
+            $this->setDbsConnectionType($arr[$keys[9]]);
+        }
+
+        if (array_key_exists($keys[10], $arr)) {
+            $this->setDbsTns($arr[$keys[10]]);
+        }
+
     }
 
     /**
@@ -854,6 +958,14 @@ abstract class BaseDbSource extends BaseObject implements Persistent
 
         if ($this->isColumnModified(DbSourcePeer::DBS_ENCODE)) {
             $criteria->add(DbSourcePeer::DBS_ENCODE, $this->dbs_encode);
+        }
+
+        if ($this->isColumnModified(DbSourcePeer::DBS_CONNECTION_TYPE)) {
+            $criteria->add(DbSourcePeer::DBS_CONNECTION_TYPE, $this->dbs_connection_type);
+        }
+
+        if ($this->isColumnModified(DbSourcePeer::DBS_TNS)) {
+            $criteria->add(DbSourcePeer::DBS_TNS, $this->dbs_tns);
         }
 
 
@@ -935,6 +1047,10 @@ abstract class BaseDbSource extends BaseObject implements Persistent
         $copyObj->setDbsPort($this->dbs_port);
 
         $copyObj->setDbsEncode($this->dbs_encode);
+
+        $copyObj->setDbsConnectionType($this->dbs_connection_type);
+
+        $copyObj->setDbsTns($this->dbs_tns);
 
 
         $copyObj->setNew(true);
