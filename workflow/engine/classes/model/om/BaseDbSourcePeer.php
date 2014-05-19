@@ -25,7 +25,7 @@ abstract class BaseDbSourcePeer
     const CLASS_DEFAULT = 'classes.model.DbSource';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 11;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -58,6 +58,12 @@ abstract class BaseDbSourcePeer
     /** the column name for the DBS_ENCODE field */
     const DBS_ENCODE = 'DB_SOURCE.DBS_ENCODE';
 
+    /** the column name for the DBS_CONNECTION_TYPE field */
+    const DBS_CONNECTION_TYPE = 'DB_SOURCE.DBS_CONNECTION_TYPE';
+
+    /** the column name for the DBS_TNS field */
+    const DBS_TNS = 'DB_SOURCE.DBS_TNS';
+
     /** The PHP to DB Name Mapping */
     private static $phpNameMap = null;
 
@@ -69,10 +75,10 @@ abstract class BaseDbSourcePeer
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     private static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('DbsUid', 'ProUid', 'DbsType', 'DbsServer', 'DbsDatabaseName', 'DbsUsername', 'DbsPassword', 'DbsPort', 'DbsEncode', ),
-        BasePeer::TYPE_COLNAME => array (DbSourcePeer::DBS_UID, DbSourcePeer::PRO_UID, DbSourcePeer::DBS_TYPE, DbSourcePeer::DBS_SERVER, DbSourcePeer::DBS_DATABASE_NAME, DbSourcePeer::DBS_USERNAME, DbSourcePeer::DBS_PASSWORD, DbSourcePeer::DBS_PORT, DbSourcePeer::DBS_ENCODE, ),
-        BasePeer::TYPE_FIELDNAME => array ('DBS_UID', 'PRO_UID', 'DBS_TYPE', 'DBS_SERVER', 'DBS_DATABASE_NAME', 'DBS_USERNAME', 'DBS_PASSWORD', 'DBS_PORT', 'DBS_ENCODE', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('DbsUid', 'ProUid', 'DbsType', 'DbsServer', 'DbsDatabaseName', 'DbsUsername', 'DbsPassword', 'DbsPort', 'DbsEncode', 'DbsConnectionType', 'DbsTns', ),
+        BasePeer::TYPE_COLNAME => array (DbSourcePeer::DBS_UID, DbSourcePeer::PRO_UID, DbSourcePeer::DBS_TYPE, DbSourcePeer::DBS_SERVER, DbSourcePeer::DBS_DATABASE_NAME, DbSourcePeer::DBS_USERNAME, DbSourcePeer::DBS_PASSWORD, DbSourcePeer::DBS_PORT, DbSourcePeer::DBS_ENCODE, DbSourcePeer::DBS_CONNECTION_TYPE, DbSourcePeer::DBS_TNS, ),
+        BasePeer::TYPE_FIELDNAME => array ('DBS_UID', 'PRO_UID', 'DBS_TYPE', 'DBS_SERVER', 'DBS_DATABASE_NAME', 'DBS_USERNAME', 'DBS_PASSWORD', 'DBS_PORT', 'DBS_ENCODE', 'DBS_CONNECTION_TYPE', 'DBS_TNS', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -82,10 +88,10 @@ abstract class BaseDbSourcePeer
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     private static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('DbsUid' => 0, 'ProUid' => 1, 'DbsType' => 2, 'DbsServer' => 3, 'DbsDatabaseName' => 4, 'DbsUsername' => 5, 'DbsPassword' => 6, 'DbsPort' => 7, 'DbsEncode' => 8, ),
-        BasePeer::TYPE_COLNAME => array (DbSourcePeer::DBS_UID => 0, DbSourcePeer::PRO_UID => 1, DbSourcePeer::DBS_TYPE => 2, DbSourcePeer::DBS_SERVER => 3, DbSourcePeer::DBS_DATABASE_NAME => 4, DbSourcePeer::DBS_USERNAME => 5, DbSourcePeer::DBS_PASSWORD => 6, DbSourcePeer::DBS_PORT => 7, DbSourcePeer::DBS_ENCODE => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('DBS_UID' => 0, 'PRO_UID' => 1, 'DBS_TYPE' => 2, 'DBS_SERVER' => 3, 'DBS_DATABASE_NAME' => 4, 'DBS_USERNAME' => 5, 'DBS_PASSWORD' => 6, 'DBS_PORT' => 7, 'DBS_ENCODE' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('DbsUid' => 0, 'ProUid' => 1, 'DbsType' => 2, 'DbsServer' => 3, 'DbsDatabaseName' => 4, 'DbsUsername' => 5, 'DbsPassword' => 6, 'DbsPort' => 7, 'DbsEncode' => 8, 'DbsConnectionType' => 9, 'DbsTns' => 10, ),
+        BasePeer::TYPE_COLNAME => array (DbSourcePeer::DBS_UID => 0, DbSourcePeer::PRO_UID => 1, DbSourcePeer::DBS_TYPE => 2, DbSourcePeer::DBS_SERVER => 3, DbSourcePeer::DBS_DATABASE_NAME => 4, DbSourcePeer::DBS_USERNAME => 5, DbSourcePeer::DBS_PASSWORD => 6, DbSourcePeer::DBS_PORT => 7, DbSourcePeer::DBS_ENCODE => 8, DbSourcePeer::DBS_CONNECTION_TYPE => 9, DbSourcePeer::DBS_TNS => 10, ),
+        BasePeer::TYPE_FIELDNAME => array ('DBS_UID' => 0, 'PRO_UID' => 1, 'DBS_TYPE' => 2, 'DBS_SERVER' => 3, 'DBS_DATABASE_NAME' => 4, 'DBS_USERNAME' => 5, 'DBS_PASSWORD' => 6, 'DBS_PORT' => 7, 'DBS_ENCODE' => 8, 'DBS_CONNECTION_TYPE' => 9, 'DBS_TNS' => 10, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -203,6 +209,10 @@ abstract class BaseDbSourcePeer
         $criteria->addSelectColumn(DbSourcePeer::DBS_PORT);
 
         $criteria->addSelectColumn(DbSourcePeer::DBS_ENCODE);
+
+        $criteria->addSelectColumn(DbSourcePeer::DBS_CONNECTION_TYPE);
+
+        $criteria->addSelectColumn(DbSourcePeer::DBS_TNS);
 
     }
 

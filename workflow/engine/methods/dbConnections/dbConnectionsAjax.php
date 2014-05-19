@@ -144,8 +144,16 @@ switch ($action) {
         if (strpos( $_POST['server'], "\\" )) {
             $_POST['port'] = 'none';
         }
-        $aData = Array ('DBS_UID' => $_POST['dbs_uid'],'PRO_UID' => $_SESSION['PROCESS'],'DBS_TYPE' => $_POST['type'],'DBS_SERVER' => $_POST['server'],'DBS_DATABASE_NAME' => $_POST['db_name'],'DBS_USERNAME' => $_POST['user'],'DBS_PASSWORD' => (($_POST['passwd'] == 'none') ? "" : G::encrypt( $_POST['passwd'], $_POST['db_name'] )) . "_2NnV3ujj3w",'DBS_PORT' => (($_POST['port'] == 'none') ? "" : $_POST['port']),'DBS_ENCODE' => $_POST['enc']
-        );
+
+        $flagTns = ($_POST["type"] == "oracle" && $_POST["connectionType"] == "TNS")? 1 : 0;
+
+        if ($flagTns == 0) {
+            $_POST["connectionType"] = "NORMAL";
+
+            $aData = array("DBS_UID" => $_POST["dbs_uid"], "PRO_UID" => $_SESSION["PROCESS"], "DBS_TYPE" => $_POST["type"], "DBS_SERVER" => $_POST["server"], "DBS_DATABASE_NAME" => $_POST["db_name"], "DBS_USERNAME" => $_POST["user"], "DBS_PASSWORD" => (($_POST["passwd"] == "none")? "" : G::encrypt($_POST["passwd"], $_POST["db_name"])) . "_2NnV3ujj3w", "DBS_PORT" => (($_POST["port"] == "none")? "" : $_POST["port"]), "DBS_ENCODE" => $_POST["enc"], "DBS_CONNECTION_TYPE" => $_POST["connectionType"], "DBS_TNS" => "");
+        } else {
+            $aData = array("DBS_UID" => $_POST["dbs_uid"], "PRO_UID" => $_SESSION["PROCESS"], "DBS_TYPE" => $_POST["type"], "DBS_SERVER" => "", "DBS_DATABASE_NAME" => "", "DBS_USERNAME" => $_POST["user"], "DBS_PASSWORD" => (($_POST["passwd"] == "none")? "" : G::encrypt($_POST["passwd"], $_POST["tns"])) . "_2NnV3ujj3w", "DBS_PORT" => "", "DBS_ENCODE" => "", "DBS_CONNECTION_TYPE" => $_POST["connectionType"], "DBS_TNS" => $_POST["tns"]);
+        }
 
         $oDBSource->update( $aData );
         $oContent->addContent( 'DBS_DESCRIPTION', '', $_POST['dbs_uid'], SYS_LANG, $_POST['desc'] );
@@ -156,8 +164,17 @@ switch ($action) {
         if (strpos( $_POST['server'], "\\" )) {
             $_POST['port'] = 'none';
         }
-        $aData = Array ('PRO_UID' => $_SESSION['PROCESS'],'DBS_TYPE' => $_POST['type'],'DBS_SERVER' => $_POST['server'],'DBS_DATABASE_NAME' => $_POST['db_name'],'DBS_USERNAME' => $_POST['user'],'DBS_PASSWORD' => (($_POST['passwd'] == 'none') ? "" : G::encrypt( $_POST['passwd'], $_POST['db_name'] )) . "_2NnV3ujj3w",'DBS_PORT' => (($_POST['port'] == 'none') ? "" : $_POST['port']),'DBS_ENCODE' => $_POST['enc']
-        );
+
+        $flagTns = ($_POST["type"] == "oracle" && $_POST["connectionType"] == "TNS")? 1 : 0;
+
+        if ($flagTns == 0) {
+            $_POST["connectionType"] = "NORMAL";
+
+            $aData = array("PRO_UID" => $_SESSION["PROCESS"], "DBS_TYPE" => $_POST["type"], "DBS_SERVER" => $_POST["server"], "DBS_DATABASE_NAME" => $_POST["db_name"], "DBS_USERNAME" => $_POST["user"], "DBS_PASSWORD" => (($_POST["passwd"] == "none")? "" : G::encrypt($_POST["passwd"], $_POST["db_name"])) . "_2NnV3ujj3w", "DBS_PORT" => (($_POST["port"] == "none") ? "" : $_POST["port"]), "DBS_ENCODE" => $_POST["enc"], "DBS_CONNECTION_TYPE" => $_POST["connectionType"], "DBS_TNS" => "");
+        } else {
+            $aData = array("PRO_UID" => $_SESSION["PROCESS"], "DBS_TYPE" => $_POST["type"], "DBS_SERVER" => "", "DBS_DATABASE_NAME" => "", "DBS_USERNAME" => $_POST["user"], "DBS_PASSWORD" => (($_POST["passwd"] == "none")? "" : G::encrypt($_POST["passwd"], $_POST["tns"])) . "_2NnV3ujj3w", "DBS_PORT" => "", "DBS_ENCODE" => "", "DBS_CONNECTION_TYPE" => $_POST["connectionType"], "DBS_TNS" => $_POST["tns"]);
+        }
+
         $newid = $oDBSource->create( $aData );
         $sDelimiter = DBAdapter::getStringDelimiter();
         $oContent->addContent( 'DBS_DESCRIPTION', '', $newid, SYS_LANG, $_POST['desc'] );
@@ -186,90 +203,138 @@ switch ($action) {
         break;
     case 'testConnection':
         sleep( 0 );
-        $step = $_POST['step'];
-        $type = $_POST['type'];
-        $server = $_POST['server'];
-        $db_name = $_POST['db_name'];
-        $user = $_POST['user'];
-        $passwd = ($_POST['passwd'] == 'none') ? "" : $_POST['passwd'];
-        $port = $_POST['port'];
 
-        if (($port == 'none') || ($port == 0)) {
-            //setting defaults ports
-            switch ($type) {
-                case 'mysql':
-                    $port = 3306;
-                    break;
-                case 'pgsql':
-                    $port = 5432;
-                    break;
-                case 'mssql':
-                    $port = 1433;
-                    break;
-                case 'oracle':
-                    $port = 1521;
-                    break;
+        G::LoadClass("net");
+
+        define("SUCCESSFULL", "SUCCESSFULL");
+        define("FAILED", "FAILED");
+
+        $step = $_POST["step"];
+        $type = $_POST["type"];
+
+        $user = $_POST["user"];
+        $passwd = ($_POST["passwd"] == "none")? "" : $_POST["passwd"];
+
+        $flagTns = ($_POST["type"] == "oracle" && $_POST["connectionType"] == "TNS")? 1 : 0;
+
+        if ($flagTns == 0) {
+            $server = $_POST["server"];
+            $db_name = $_POST["db_name"];
+            $port = $_POST["port"];
+
+            if ($port == "none" || $port == 0) {
+                //setting defaults ports
+                switch ($type) {
+                    case "mysql":
+                        $port = 3306;
+                        break;
+                    case "pgsql":
+                        $port = 5432;
+                        break;
+                    case "mssql":
+                        $port = 1433;
+                        break;
+                    case "oracle":
+                        $port = 1521;
+                        break;
+                }
             }
-        }
 
-        G::LoadClass( 'net' );
-        $Server = new NET( $server );
+            $Server = new NET($server);
 
-        define( "SUCCESSFULL", 'SUCCESSFULL' );
-        define( "FAILED", 'FAILED' );
-
-        switch ($step) {
-            case 1:
-                if ($Server->getErrno() == 0) {
-                    print (SUCCESSFULL . ',') ;
-                } else {
-                    print (FAILED . ',' . $Server->error) ;
-                }
-                break;
-            case 2:
-                $Server->scannPort( $port );
-                if ($Server->getErrno() == 0) {
-                    print (SUCCESSFULL . ',') ;
-                } else {
-                    print (FAILED . ',' . $Server->error) ;
-                }
-                break;
-            case 3:
-                $Server->loginDbServer( $user, $passwd );
-                $Server->setDataBase( $db_name, $port );
-
-                if ($Server->errno == 0) {
-                    $response = $Server->tryConnectServer( $type );
-                    if ($response->status == 'SUCCESS') {
-                        print (SUCCESSFULL . ',') ;
+            switch ($step) {
+                case 1:
+                    if ($Server->getErrno() == 0) {
+                        echo SUCCESSFULL . ",";
                     } else {
-                        print (FAILED . ',' . $Server->error) ;
+                        echo FAILED . "," . $Server->error;
                     }
-                } else {
-                    print (FAILED . ',' . $Server->error) ;
-                }
-                break;
-            case 4:
-                $Server->loginDbServer( $user, $passwd );
-                $Server->setDataBase( $db_name, $port );
-                if ($Server->errno == 0) {
-                    $response = $Server->tryConnectServer( $type );
-                    if ($response->status == 'SUCCESS') {
-                        $response = $Server->tryOpenDataBase( $type );
-                        if ($response->status == 'SUCCESS') {
-                            print (SUCCESSFULL . ',' . $Server->error) ;
+                    break;
+                case 2:
+                    $Server->scannPort($port);
+
+                    if ($Server->getErrno() == 0) {
+                        echo SUCCESSFULL . ",";
+                    } else {
+                        echo FAILED . "," . $Server->error;
+                    }
+                    break;
+                case 3:
+                    $Server->loginDbServer($user, $passwd);
+                    $Server->setDataBase($db_name, $port);
+
+                    if ($Server->errno == 0) {
+                        $response = $Server->tryConnectServer($type);
+
+                        if ($response->status == "SUCCESS") {
+                            echo SUCCESSFULL . ",";
                         } else {
-                            print (FAILED . ',' . $Server->error) ;
+                            echo FAILED . "," . $Server->error;
                         }
                     } else {
-                        print (FAILED . ',' . $Server->error) ;
+                        echo FAILED . "," . $Server->error;
                     }
-                } else {
-                    print (FAILED . ',' . $Server->error) ;
-                }
-                break;
-            default:
-                print ('finished') ;
+                    break;
+                case 4:
+                    $Server->loginDbServer($user, $passwd);
+                    $Server->setDataBase($db_name, $port);
+
+                    if ($Server->errno == 0) {
+                        $response = $Server->tryConnectServer($type);
+
+                        if ($response->status == "SUCCESS") {
+                            $response = $Server->tryOpenDataBase($type);
+
+                            if ($response->status == "SUCCESS") {
+                                echo SUCCESSFULL . "," . $Server->error;
+                            } else {
+                                echo FAILED . "," . $Server->error;
+                            }
+                        } else {
+                            echo FAILED . "," . $Server->error;
+                        }
+                    } else {
+                        echo FAILED . "," . $Server->error;
+                    }
+                    break;
+                default:
+                    echo "finished";
+                    break;
+            }
+        } else {
+            $connectionType = $_POST["connectionType"];
+            $tns = $_POST["tns"];
+
+            $net = new NET();
+
+            switch ($step) {
+                case 1:
+                    $net->loginDbServer($user, $passwd);
+
+                    if ($net->errno == 0) {
+                        $arrayServerData = array("connectionType" => $connectionType, "tns" => $tns);
+
+                        $response = $net->tryConnectServer($type, $arrayServerData);
+
+                        if ($response->status == "SUCCESS") {
+                            $response = $net->tryOpenDataBase($type, $arrayServerData);
+
+                            if ($response->status == "SUCCESS") {
+                                echo SUCCESSFULL . "," . $net->error;
+                            } else {
+                                echo FAILED . "," . $net->error;
+                            }
+                        } else {
+                            echo FAILED . "," . $net->error;
+                        }
+                    } else {
+                        echo FAILED . "," . $net->error;
+                    }
+                    break;
+                default:
+                    echo "finished";
+                    break;
+            }
         }
         break;
     case 'showEncodes':

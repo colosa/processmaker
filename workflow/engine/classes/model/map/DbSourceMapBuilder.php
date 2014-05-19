@@ -83,6 +83,10 @@ class DbSourceMapBuilder
 
         $tMap->addColumn('DBS_ENCODE', 'DbsEncode', 'string', CreoleTypes::VARCHAR, false, 32);
 
+        $tMap->addColumn('DBS_CONNECTION_TYPE', 'DbsConnectionType', 'string', CreoleTypes::VARCHAR, false, 32);
+
+        $tMap->addColumn('DBS_TNS', 'DbsTns', 'string', CreoleTypes::VARCHAR, false, 256);
+
     } // doBuild()
 
 } // DbSourceMapBuilder

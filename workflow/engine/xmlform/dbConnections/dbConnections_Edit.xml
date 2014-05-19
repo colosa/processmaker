@@ -7,13 +7,24 @@
 </DBS_UID>
 
 <DBS_TYPE type="dropdown" sqlconnection="dbarray">
- SELECT * FROM BDCONNECTIONS 
+ SELECT * FROM BDCONNECTIONS
  <en>Engine<option name="">...</option></en>
 </DBS_TYPE>
 
-<DBS_ENCODE type="dropdown"> 
+<DBS_ENCODE type="dropdown">
  <en>Encode<option name="">...</option></en>
-</DBS_ENCODE> 
+</DBS_ENCODE>
+
+<DBS_CONNECTION_TYPE type="dropdown" defaultvalue="NORMAL" required="0" readonly="0" optgroup="0" mode="edit">
+    <en>Select type connection
+        <option name="NORMAL">Normal</option>
+        <option name="TNS">TNS</option>
+				</en>
+</DBS_CONNECTION_TYPE>
+
+<DBS_TNS type="text" size="25" maxlength="100" defaultvalue="" required="true">
+  <en>TNS</en>
+</DBS_TNS>
 
 <DBS_SERVER type="text" size="25" maxlength="100" defaultvalue="" required="true">
   <en>Server</en>
@@ -53,17 +64,21 @@
 
 <JS type="javascript"><![CDATA[
 	hideRowById('DBS_ENCODE');
-	
+
 	leimnud.event.add(getField('DBS_TYPE'), 'change', function() {
 		showEncodes('@#DBS_ENCODE');
 		onChangeType();
 	}.extend(getField('DBS_TYPE')));
 	showEncodes('@#DBS_ENCODE');
-	
+
     function cancel(){
         oPanel.remove();
-    }		
-	
+    }
+
+ leimnud.event.add(getField("DBS_CONNECTION_TYPE"), "change", function() {
+    showEncodes();
+ });
+
 ]]></JS>
 
-</dynaForm> 
+</dynaForm>

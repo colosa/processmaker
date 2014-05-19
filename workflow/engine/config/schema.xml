@@ -1657,6 +1657,8 @@
     <column name="DBS_PASSWORD" type="VARCHAR" size="32" default=""/>
     <column name="DBS_PORT" type="INTEGER" default="0"/>
     <column name="DBS_ENCODE" type="VARCHAR" size="32" default=""/>
+    <column name="DBS_CONNECTION_TYPE" type="VARCHAR" size="32" default="NORMAL"/>
+    <column name="DBS_TNS" type="VARCHAR" size="256" default=""/>
     <index name="indexDBSource">
       <index-column name="PRO_UID"/>
       <vendor type="mysql">

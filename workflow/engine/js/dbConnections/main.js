@@ -56,7 +56,10 @@ var saveDBConnection = function() {
 	var desc 	= $('form[DBS_DESCRIPTION]').value;
 	var enc 	= $('form[DBS_ENCODE]').value;
 
-  	var uri = 'action=saveConnection&type='+type+'&server='+server+'&db_name='+db_name+'&user='+user+'&passwd='+passwd+'&port='+port+'&desc='+desc+'&enc='+enc;
+ var connectionType = getField("DBS_CONNECTION_TYPE").value;
+ var tns = getField("DBS_TNS").value;
+
+ var uri = 'action=saveConnection&type='+type+'&server='+server+'&db_name='+db_name+'&user='+user+'&passwd='+passwd+'&port='+port+'&desc='+desc+'&enc='+enc + "&connectionType=" + connectionType + "&tns=" + tns;
 
   	var oRPC = new leimnud.module.rpc.xmlhttp({
   		url : PROCESS_REQUEST_FILE,
@@ -97,7 +100,10 @@ function saveEditDBConnection()
 	var desc 	= $('form[DBS_DESCRIPTION]').value;
 	var enc 	= $('form[DBS_ENCODE]').value;
 
-  	var uri = 'action=saveEditConnection&type='+type+'&server='+server+'&db_name='+db_name+'&user='+user+'&passwd='+passwd+'&port='+port+'&dbs_uid='+dbs_uid+'&desc='+desc+'&enc='+enc;
+ var connectionType = getField("DBS_CONNECTION_TYPE").value;
+ var tns = getField("DBS_TNS").value;
+
+ var uri = 'action=saveEditConnection&type='+type+'&server='+server+'&db_name='+db_name+'&user='+user+'&passwd='+passwd+'&port='+port+'&dbs_uid='+dbs_uid+'&desc='+desc+'&enc='+enc + "&connectionType=" + connectionType + "&tns=" + tns;
 
   	var oRPC = new leimnud.module.rpc.xmlhttp({
   		url : PROCESS_REQUEST_FILE,
@@ -231,6 +237,10 @@ function testDBConnection()
 		var user = $('form[DBS_USERNAME]').value;
 		var passwd = $('form[DBS_PASSWORD]').value;
 		var port = $('form[DBS_PORT]').value;
+
+  var connectionType = getField("DBS_CONNECTION_TYPE").value;
+  var tns = getField("DBS_TNS").value;
+
 		if(port.trim() == ''){
 			port = 'default';
 		}
@@ -256,7 +266,7 @@ function testDBConnection()
 		myPanel.loader.show();
 
 		var requestfile = PROCESS_REQUEST_FILE;
-	    var uri = 'action=showTestConnection&type='+type+'&server='+server+'&db_name='+db_name+'&user='+user+'&passwd='+passwd+'&port='+port;
+  var uri = 'action=showTestConnection&type='+type+'&server='+server+'&db_name='+db_name+'&user='+user+'&passwd='+passwd+'&port='+port + "&connectionType=" + connectionType + "&tns=" + tns;
 
 		var ajax = AJAX();
 		ajax.open("POST", requestfile, true);
@@ -298,8 +308,11 @@ function testHost(step)
 		var port = 'none';
 	}
 
+ var connectionType = getField("DBS_CONNECTION_TYPE").value;
+ var tns = getField("DBS_TNS").value;
+
 	var requestfile = PROCESS_REQUEST_FILE;
-	var uri = 'action=testConnection&step='+step+'&type='+type+'&server='+server+'&db_name='+db_name+'&user='+user+'&port='+port+'&passwd='+passwd;
+ var uri = 'action=testConnection&step='+step+'&type='+type+'&server='+server+'&db_name='+db_name+'&user='+user+'&port='+port+'&passwd='+passwd + "&connectionType=" + connectionType + "&tns=" + tns;
 
 	var ajax = AJAX();
 	mainRequest = ajax;
@@ -370,68 +383,78 @@ function cancelTestConnection()
 	currentPopupWindow.remove();
 }
 
-
-
 function validateFields()
 {
-	if( getField('DBS_PORT').value.trim() == '' || getField('DBS_PORT').value.trim() == '0' ) {
-		onChangeType();
-	}
+    if (FLAG_DBS_TNS == 1) {
+        var res = true;
+        var tns = new input(getField("DBS_TNS"));
 
-	var res = true;
-	var o = new input(getField('DBS_SERVER'));
-	if($('form[DBS_SERVER]').value == '') {
-		//new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_MSG4});
-		o.failed();
-		res = false;
-	} else
-		o.passed();
+        if($("form[DBS_TNS]").value == "") {
+		          tns.failed();
+		          res = false;
+	       } else {
+            tns.passed();
+        }
+    } else {
+        if( getField('DBS_PORT').value.trim() == '' || getField('DBS_PORT').value.trim() == '0' ) {
+	       	   onChangeType();
+	       }
 
-	var o = new input(getField('DBS_DATABASE_NAME'));
-	if($('form[DBS_DATABASE_NAME]').value == '') {
-		//new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_MSG5});
-		o.failed();
-		res = false;
-	} else
-		o.passed();
+	       var res = true;
+	       var o = new input(getField('DBS_SERVER'));
+	       if($('form[DBS_SERVER]').value == '') {
+            //new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_MSG4});
+            o.failed();
+            res = false;
+	       } else
+            o.passed();
 
-	var o = new input(getField('DBS_USERNAME'));
-	if($('form[DBS_USERNAME]').value == '') {
-		//new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_MSG6});
-		o.failed();
-		res = false;
-	} else
-		o.passed();
+	       var o = new input(getField('DBS_DATABASE_NAME'));
+	       if($('form[DBS_DATABASE_NAME]').value == '') {
+            //new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_MSG5});
+            o.failed();
+            res = false;
+	       } else
+            o.passed();
 
-	/*var o = new input(getField('DBS_PORT'));
-	if($('form[DBS_PORT]').value == '') {
-		o.failed();
-		res = false;
-	} else
-		o.passed();*/
+	       var o = new input(getField('DBS_USERNAME'));
+	       if($('form[DBS_USERNAME]').value == '') {
+            //new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_MSG6});
+            o.failed();
+            res = false;
+	       } else
+            o.passed();
 
-	var o = new input(getField('DBS_TYPE'));
-	if($('form[DBS_TYPE]').value == '0') {
-		o.failed();
-		res = false;
-	} else
-		o.passed();
+	       /*var o = new input(getField('DBS_PORT'));
+	       if($('form[DBS_PORT]').value == '') {
+	       	o.failed();
+	       	res = false;
+	       } else
+	       	o.passed();*/
 
-	oType = getField('DBS_TYPE');
-	if( oType.value != 'mssql' && oType.value != 'oracle' ){
-		var o = new input(getField('DBS_ENCODE'));
-		if($('form[DBS_ENCODE]').value == '0') {
-			o.failed();
-			res = false;
-		} else
-			o.passed();
-	}
+	       var o = new input(getField('DBS_TYPE'));
+	       if($('form[DBS_TYPE]').value == '0') {
+            o.failed();
+            res = false;
+	       } else
+            o.passed();
 
+	       oType = getField('DBS_TYPE');
+	       if( oType.value != 'mssql' && oType.value != 'oracle' ){
+            var o = new input(getField('DBS_ENCODE'));
+            if($('form[DBS_ENCODE]').value == '0') {
+                o.failed();
+                res = false;
+            } else
+                o.passed();
+	       }
+    }
 
-	if(!res){
-		new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_ALERT});
-	}
-	return res;
+	   if(!res){
+		      new leimnud.module.app.alert().make({label: G_STRINGS.DBCONNECTIONS_ALERT});
+	   }
+
+	   return res;
 }
 
 var onChangeType = function() {
@@ -456,10 +479,25 @@ var onChangeType = function() {
 
 };
 
+var FLAG_DBS_TNS = 0;
+
 function showEncodes(pre){
 	oType = getField('DBS_TYPE');
 	//if( oType.value != 'mssql' && oType.value != 'oracle' ){
 	if( oType.value != 'oracle' ){
+    FLAG_DBS_TNS = 0;
+
+    hideRowById("DBS_CONNECTION_TYPE");
+
+    getField("DBS_TNS").value = "";
+    hideRowById("DBS_TNS");
+
+    showRowById("DBS_SERVER");
+    showRowById("DBS_DATABASE_NAME");
+    showRowById("DBS_USERNAME");
+    showRowById("DBS_PASSWORD");
+    showRowById("DBS_PORT");
+
 		showRowById('DBS_ENCODE');
 		var o = new input(getField('DBS_TYPE'));
 		if($('form[DBS_TYPE]').value == '0') {
@@ -499,6 +537,40 @@ function showEncodes(pre){
 		}.extend(this);
 		oRPC.make();
 	} else {
-		hideRowById('DBS_ENCODE');
+    hideRowById('DBS_ENCODE');
+
+    showRowById("DBS_CONNECTION_TYPE");
+    showRowById("DBS_SERVER");
+    showRowById("DBS_DATABASE_NAME");
+    showRowById("DBS_USERNAME");
+    showRowById("DBS_PASSWORD");
+    showRowById("DBS_PORT");
+
+    var connectionType = getField("DBS_CONNECTION_TYPE").value;
+
+    if (connectionType == "TNS") {
+        FLAG_DBS_TNS = 1;
+
+        document.getElementById("userName").style.display = "none";
+        removeRequiredById("DBS_USERNAME");
+
+        showRowById("DBS_TNS");
+
+        hideRowById("DBS_SERVER");
+        hideRowById("DBS_DATABASE_NAME");
+        hideRowById("DBS_PORT");
+
+        getField("DBS_USERNAME").required = false;
+        getField("DBS_PASSWORD").required = false;
+    } else {
+        FLAG_DBS_TNS = 0;
+
+        getField("DBS_TNS").value = "";
+
+        hideRowById("DBS_TNS");
+
+        document.getElementById("userName").style.display = "inline";
+        enableRequiredById("DBS_USERNAME");
+    }
 	}
 }
