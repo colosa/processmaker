@@ -43,6 +43,7 @@ var smodel;
 var newButton;
 var editButton;
 var deleteButton;
+var statusButton;
 //var searchButton;
 //var searchText;
 //var clearTextButton;
@@ -72,6 +73,13 @@ Ext.onReady(function(){
     iconCls: 'button_menu_ext ss_sprite  ss_delete',
     handler: deleteDashletInstance,
     disabled: true
+  });
+
+  statusButton = new Ext.Action({
+	text: _('ID_STATUS'),
+	iconCls: 'silk-add',
+	handler: statusDashletInstance,
+	disabled: true
   });
 
   /*searchButton = new Ext.Action({
@@ -105,10 +113,10 @@ Ext.onReady(function(){
   });*/
 
   contextMenu = new Ext.menu.Menu({
-    items: [editButton, deleteButton]
+    items: [editButton, deleteButton, statusButton]
   });
 
-  actionButtons = [newButton, '-', editButton, deleteButton/*, {xtype: 'tbfill'}, searchText, clearTextButton, searchButton*/];
+  actionButtons = [newButton, '-', editButton, deleteButton, statusButton/*, {xtype: 'tbfill'}, searchText, clearTextButton, searchButton*/];
 
   smodel = new Ext.grid.RowSelectionModel({
     singleSelect: true,
@@ -116,6 +124,7 @@ Ext.onReady(function(){
       rowselect: function(sm, index, record){
         editButton.enable();
         deleteButton.enable();
+        statusButton.enable();
         if (typeof(_rowselect) !== 'undefined') {
           if (Ext.isArray(_rowselect)) {
             for (var i = 0; i < _rowselect.length; i++) {
@@ -125,10 +134,20 @@ Ext.onReady(function(){
             }
           }
         }
+
+        if( record.data.DAS_INS_STATUS_LABEL == 'Active' ){
+        	statusButton.setIconClass('icon-activate');
+        	statusButton.setText( _('ID_DEACTIVATE') );
+        } else {
+        	statusButton.setIconClass('icon-deactivate');
+        	statusButton.setText( _('ID_ACTIVATE') );
+        } 
+        
       },
       rowdeselect: function(sm, index, record){
         editButton.disable();
         deleteButton.disable();
+        statusButton.disable();
         if (typeof(_rowdeselect) !== 'undefined') {
           if (Ext.isArray(_rowdeselect)) {
             for (var i = 0; i < _rowdeselect.length; i++) {
@@ -352,6 +371,7 @@ deleteDashletInstance = function(){
             //doSearch();
             editButton.disable();
             deleteButton.disable();
+            statusButton.disable();
             infoGrid.store.load();
           },
           failure: function(r, o){
@@ -361,4 +381,55 @@ deleteDashletInstance = function(){
       }
     });
   }
+};
+
+//Status Dashlet Instance Action
+statusDashletInstance = function(){
+	  var rows = infoGrid.getSelectionModel().getSelections();
+	  if( rows.length > 0 ) {
+	    for(i=0; i<rows.length; i++) {
+	    	var status;
+	    	if(rows[i].data.DAS_INS_STATUS_LABEL == "Active"){
+	    		status = 0;
+	    	} else {
+	    		status = 1;
+	    	}
+
+	    	var data = {
+	    		DAS_INS_UID: rows[i].data.DAS_INS_UID,
+	    		DAS_INS_TITLE: rows[i].data.DAS_INS_TITLE,
+	    		DAS_UID: rows[i].data.DAS_INS_UID,
+	    		DAS_INS_STATUS: status,
+	    		DAS_STATUS: status
+	    	};
+
+	    	Ext.Ajax.request({
+	             url:      'saveDashletInstance',
+	             method:   'POST',
+	             params:   data,
+	             success:  function (result, request) {
+	                         editButton.disable();
+	                         deleteButton.disable();
+	                         statusButton.disable();
+
+	                         statusButton.setIconClass('silk-add');
+	                     	 statusButton.setText( _('ID_STATUS') );
+	                     	 infoGrid.store.load();
+	                      },
+	             failure: function (result, request) {
+	                        Ext.MessageBox.alert( _('ID_ALERT'), _('ID_AJAX_COMMUNICATION_FAILED') );
+	                      }
+	        });
+	    }
+	  } else {
+	     Ext.Msg.show({
+	      title:'',
+	      msg: _('ID_NO_SELECTION_WARNING'),
+	      buttons: Ext.Msg.INFO,
+	      fn: function(){},
+	      animEl: 'elId',
+	      icon: Ext.MessageBox.INFO,
+	      buttons: Ext.MessageBox.OK
+	    });
+	  }
 };

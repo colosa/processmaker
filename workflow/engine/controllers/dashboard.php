@@ -176,7 +176,7 @@ class Dashboard extends Controller
             if (! isset( $_SESSION['USER_LOGGED'] )) {
                 throw new Exception( G::LoadTranslation('ID_SESSION_EXPIRED') );
             }
-            return $this->pmDashlet->getDashletsInstancesForUser( $_SESSION['USER_LOGGED'] );
+            return $this->pmDashlet->getDashletsInstancesForUser( $_SESSION['USER_LOGGED']);
         } catch (Exception $error) {
             throw $error;
         }
