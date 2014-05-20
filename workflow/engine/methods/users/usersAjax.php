@@ -303,7 +303,25 @@ switch ($_POST['action']) {
                         $aUserProperty['USR_LOGGED_NEXT_TIME'] = $form['USR_LOGGED_NEXT_TIME'];
                         $aUserProperty['USR_PASSWORD_HISTORY'] = serialize($aHistory);
                         $oUserProperty->update($aUserProperty);
+                    } else {
+                        require_once 'classes/model/Users.php';
+                        $oUser = new Users();
+                        $aUser = $oUser->load($aData['USR_UID']);
+                        require_once 'classes/model/UsersProperties.php';
+                        $oUserProperty = new UsersProperties();
+                        $aUserProperty = $oUserProperty->loadOrCreateIfNotExists($aData['USR_UID'], array('USR_PASSWORD_HISTORY' => serialize(array(md5($aUser['USR_PASSWORD'])))));
+                        $aUserProperty['USR_LOGGED_NEXT_TIME'] = $form['USR_LOGGED_NEXT_TIME'];
+                        $oUserProperty->update($aUserProperty);
                     }
+                } else {
+                    require_once 'classes/model/Users.php';
+                    $oUser = new Users();
+                    $aUser = $oUser->load($aData['USR_UID']);
+                    require_once 'classes/model/UsersProperties.php';
+                    $oUserProperty = new UsersProperties();
+                    $aUserProperty = $oUserProperty->loadOrCreateIfNotExists($aData['USR_UID'], array('USR_PASSWORD_HISTORY' => serialize(array(md5($aUser['USR_PASSWORD'])))));
+                    $aUserProperty['USR_LOGGED_NEXT_TIME'] = $form['USR_LOGGED_NEXT_TIME'];
+                    $oUserProperty->update($aUserProperty);
                 }
                 $aData['USR_FIRSTNAME'] = $form['USR_FIRSTNAME'];
                 $aData['USR_LASTNAME'] = $form['USR_LASTNAME'];
@@ -508,11 +526,14 @@ switch ($_POST['action']) {
 
         $aFields['CASES_MENUSELECTED_NAME'] = $casesMenuSelected;
         
-        require_once 'classes/model/UsersProperties.php';
-        $oUserProperty = new UsersProperties();
-        $aFieldsUserProperty = $oUserProperty->load($_POST['USR_UID']);
-        $aFields['USR_LOGGED_NEXT_TIME'] = $aFieldsUserProperty['USR_LOGGED_NEXT_TIME'];
-        
+        try {
+            require_once 'classes/model/UsersProperties.php';
+            $oUserProperty = new UsersProperties();
+            $aFieldsUserProperty = $oUserProperty->load($_POST['USR_UID']);
+            $aFields['USR_LOGGED_NEXT_TIME'] = $aFieldsUserProperty['USR_LOGGED_NEXT_TIME'];
+        } catch(Exception $e){
+            $aFields['USR_LOGGED_NEXT_TIME'] = 0;
+        }
         $result->success = true;
         $result->user = $aFields;
 
