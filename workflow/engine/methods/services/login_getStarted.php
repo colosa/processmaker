@@ -41,8 +41,21 @@ $oTemplatePower->newBlock('users');
 $oTemplatePower->assign('USR_UID', $aUser['USR_UID']);
 $oTemplatePower->assign('USR_FULLNAME', $aData['USR_FIRSTNAME'] . ' ' . $aData['USR_LASTNAME'] . ' (' . $aData['USR_USERNAME'] . ')');
 */
+$userName = 'Admin';
+require_once 'classes/model/Users.php';
+$oCriteria = new Criteria( 'workflow' );
+$oCriteria->addSelectColumn( UsersPeer::USR_USERNAME);
+$oCriteria->add( UsersPeer::USR_UID, '00000000000000000000000000000001', Criteria::IN );
+$oDataset = UsersPeer::doSelectRS( $oCriteria );
+$oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+$aData = array ();
+if ($oDataset->next()) {
+    $aData = $oDataset->getRow();
+    $userName = $aData['USR_USERNAME'];
+}
 
 $oTemplatePower->assign("URL_MABORAK_JS", G::browserCacheFilesUrl("/js/maborak/core/maborak.js"));
+$oTemplatePower->assign("name", $userName);
 
 $G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
 
