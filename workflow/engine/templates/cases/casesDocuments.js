@@ -1122,16 +1122,24 @@ var gridtb = new Ext.Toolbar(
   '-',
   new Ext.Toolbar.Button({
     text : TRANSLATIONS.ID_SHOW_DIRS,
+    id: 'showOrHiDirs',
     enableToggle : true,
     pressed : false,
     handler : function(btn, e) {
-      if (btn.pressed) {
-        datastore.sendWhat = 'both';
-        loadDir();
-      } else {
-        datastore.sendWhat = 'files';
-        loadDir();
-      }
+        if (btn.pressed) {
+            datastore.sendWhat = 'both';
+            loadDir();
+        } else {
+            datastore.sendWhat = 'files';
+            loadDir();
+        }
+        if (showDirs) {
+            Ext.getCmp("showOrHiDirs").setText(TRANSLATIONS.ID_SHOW_DIRS);
+            showDirs = false;
+        } else {
+            Ext.getCmp("showOrHiDirs").setText(TRANSLATIONS.ID_HIDE_DIRS);
+            showDirs = true;
+        }
     }
   }), '-', new Ext.form.TextField({
     name : "filterValue",
