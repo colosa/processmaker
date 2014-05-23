@@ -185,7 +185,7 @@ class AppFolder extends BaseAppFolder
      * @param string(32) $folderID
      * @return multitype:
      */
-    public function getFolderList ($folderID, $limit = 0, $start = 0)
+    public function getFolderList ($folderID, $limit = 0, $start = 0, $direction = 'ASC', $sort = "appDocCreateDate", $search = null)
     {
         $Criteria = new Criteria( 'workflow' );
         $Criteria->clearSelectColumns()->clearOrderByColumns();
@@ -195,7 +195,29 @@ class AppFolder extends BaseAppFolder
         $Criteria->addSelectColumn( AppFolderPeer::FOLDER_CREATE_DATE );
         $Criteria->addSelectColumn( AppFolderPeer::FOLDER_UPDATE_DATE );
         $Criteria->add( appFolderPeer::FOLDER_PARENT_UID, $folderID, CRITERIA::EQUAL );
-        $Criteria->addAscendingOrderByColumn( AppFolderPeer::FOLDER_NAME );
+
+        if ($search) {
+            $Criteria->add(
+                $Criteria->getNewCriterion( AppFolderPeer::FOLDER_NAME, '%' . $search . '%', Criteria::LIKE )
+            );
+        }
+
+        switch($sort) {
+            case 'appDocCreateDate' :
+                $ColumnSort = AppFolderPeer::FOLDER_CREATE_DATE;
+                break;
+            case 'name' :
+                $ColumnSort = AppFolderPeer::FOLDER_NAME;
+                break;
+            default:
+                break;
+        }
+
+        if($direction == 'ASC') {
+            $Criteria->addAscendingOrderByColumn( $ColumnSort );
+        } else {
+            $Criteria->addDescendingOrderByColumn( $ColumnSort );
+        }
 
         $response['folders'] = array ();
 
@@ -264,7 +286,7 @@ class AppFolder extends BaseAppFolder
         return $folderArray;
     }
 
-    public function getFolderContent ($folderID, $docIdFilter = array(), $keyword = null, $searchType = null, $limit = 0, $start = 0, $user = '', $onlyActive = false)
+    public function getFolderContent ($folderID, $docIdFilter = array(), $keyword = null, $searchType = null, $limit = 0, $start = 0, $user = '', $onlyActive = false, $search = null)
     {
         //require_once ("classes/model/AppDocument.php");
         //require_once ("classes/model/InputDocument.php");
@@ -278,6 +300,21 @@ class AppFolder extends BaseAppFolder
 
         $oAppDocument = new AppDocument();
         $oCriteria = new Criteria();
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_DOC_UID);
+        $oCriteria->addSelectColumn( AppDocumentPeer::DOC_VERSION);
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_UID);
+        $oCriteria->addSelectColumn( AppDocumentPeer::DEL_INDEX);
+        $oCriteria->addSelectColumn( AppDocumentPeer::DOC_UID);
+        $oCriteria->addSelectColumn( AppDocumentPeer::USR_UID);
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_DOC_TYPE);
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_DOC_CREATE_DATE);
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_DOC_INDEX);
+        $oCriteria->addSelectColumn( AppDocumentPeer::FOLDER_UID);
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_DOC_PLUGIN);
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_DOC_TAGS);
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_DOC_STATUS);
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_DOC_STATUS_DATE);
+        $oCriteria->addSelectColumn( AppDocumentPeer::APP_DOC_FIELDNAME);
 
         if ((is_array( $docIdFilter )) && (count( $docIdFilter ) > 0)) {
             //Search by App Doc UID no matter what Folder it is
@@ -319,6 +356,24 @@ class AppFolder extends BaseAppFolder
 
         if ($onlyActive) {
             $oCriteria->add( AppDocumentPeer::APP_DOC_STATUS, 'ACTIVE' );
+        }
+
+        $oCriteria->addSelectColumn( ContentPeer::CON_VALUE . ' AS NAME');
+        $oCriteria->add( ContentPeer::CON_CATEGORY, "APP_DOC_FILENAME");
+        $oCriteria->add( ContentPeer::CON_LANG, SYS_LANG);
+        $oCriteria->addJoin( AppDocumentPeer::APP_DOC_UID, ContentPeer::CON_ID, Criteria::LEFT_JOIN );
+
+        $oCriteria->addSelectColumn( UsersPeer::USR_FIRSTNAME);
+        $oCriteria->addSelectColumn( UsersPeer::USR_LASTNAME);
+        $oCriteria->addJoin( AppDocumentPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN );
+
+        if ($search) {
+            $oCriteria->add(
+                $oCriteria->getNewCriterion( ContentPeer::CON_VALUE, '%' . $search . '%', Criteria::LIKE )->
+                    addOr( $oCriteria->getNewCriterion( AppDocumentPeer::APP_DOC_CREATE_DATE, '%' . $search . '%', Criteria::LIKE )->
+                    addOr( $oCriteria->getNewCriterion( UsersPeer::USR_FIRSTNAME, '%' . $search . '%', Criteria::LIKE )->
+                    addOr( $oCriteria->getNewCriterion( UsersPeer::USR_LASTNAME, '%' . $search . '%', Criteria::LIKE ))))
+                );
         }
 
         $numRecTotal = AppDocumentPeer::doCount($oCriteria);
@@ -388,7 +443,7 @@ class AppFolder extends BaseAppFolder
         return $response;
     }
 
-    public function getDirectoryContentSortedBy ($folderID, $docIdFilter = array(), $keyword = null, $searchType = null, $limit = 0, $start = 0, $user = '', $onlyActive = false, $direction = 'ASC', $ColumnSort = 'appDocCreateDate')
+    public function getDirectoryContentSortedBy ($folderID, $docIdFilter = array(), $keyword = null, $searchType = null, $limit = 0, $start = 0, $user = '', $onlyActive = false, $direction = 'ASC', $ColumnSort = 'appDocCreateDate', $search = null)
     {
         G::LoadClass( 'case' );
         $oCase = new Cases();
@@ -460,6 +515,19 @@ class AppFolder extends BaseAppFolder
         $oCriteria->add( ContentPeer::CON_CATEGORY, "APP_DOC_FILENAME");
         $oCriteria->add( ContentPeer::CON_LANG, SYS_LANG);
         $oCriteria->addJoin( AppDocumentPeer::APP_DOC_UID, ContentPeer::CON_ID, Criteria::LEFT_JOIN );
+
+        $oCriteria->addSelectColumn( UsersPeer::USR_FIRSTNAME);
+        $oCriteria->addSelectColumn( UsersPeer::USR_LASTNAME);
+        $oCriteria->addJoin( AppDocumentPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN );
+
+        if ($search) {
+            $oCriteria->add(
+                $oCriteria->getNewCriterion( ContentPeer::CON_VALUE, '%' . $search . '%', Criteria::LIKE )->
+                    addOr( $oCriteria->getNewCriterion( AppDocumentPeer::APP_DOC_CREATE_DATE, '%' . $search . '%', Criteria::LIKE )->
+                    addOr( $oCriteria->getNewCriterion( UsersPeer::USR_FIRSTNAME, '%' . $search . '%', Criteria::LIKE )->
+                    addOr( $oCriteria->getNewCriterion( UsersPeer::USR_LASTNAME, '%' . $search . '%', Criteria::LIKE ))))
+                );
+        }
 
         $numRecTotal = AppDocumentPeer::doCount($oCriteria);
 

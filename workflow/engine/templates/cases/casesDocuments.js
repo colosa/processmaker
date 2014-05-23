@@ -1159,19 +1159,18 @@ var gridtb = new Ext.Toolbar(
   }), new Ext.Toolbar.Button({
     text : '&nbsp;X&nbsp;',
     handler : function() {
-      datastore.clearFilter();
-      Ext.getCmp("filterField").setValue("");
+        datastore.clearFilter();
+        Ext.getCmp("filterField").setValue("");
+        datastore.setBaseParam( 'search', '');
+        datastore.load({params:{ start : 0 , limit : 100 }});
     }
   })
 
   ]);
 function filterDataStore(btn, e) {
-  var filterVal = Ext.getCmp("filterField").getValue();
-  if (filterVal.length > 1) {
-    datastore.filter('name', eval('/' + filterVal + '/gi'));
-  } else {
-    datastore.clearFilter();
-  }
+    var filterVal = Ext.getCmp("filterField").getValue();
+    datastore.setBaseParam( 'search', filterVal);
+    datastore.load({params:{ start : 0 , limit : 100 }});
 }
 // add a paging toolbar to the grid's footer
 var gridbb = new Ext.PagingToolbar({
