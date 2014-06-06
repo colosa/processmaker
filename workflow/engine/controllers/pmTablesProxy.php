@@ -769,6 +769,9 @@ class pmTablesProxy extends HttpProxyController
             $sType = fread( $fp, $fsData );
 
             // first create the tables structures
+            $tableNameAux = "";
+            $arrayTableField = array();
+
             while (! feof( $fp )) {
                 switch ($sType) {
                     case '@META':
@@ -784,6 +787,8 @@ class pmTablesProxy extends HttpProxyController
                         $additionalTable = new additionalTables();
                         $tableExists = $additionalTable->loadByName( $contentSchema['ADD_TAB_NAME'] );
                         $tableNameMap[$contentSchema['ADD_TAB_NAME']] = $contentSchema['ADD_TAB_NAME'];
+
+                        $tableNameAux = $additionalTable->getPHPName($contentSchema["ADD_TAB_NAME"]);
 
                         if ($overWrite) {
                             if ($tableExists !== false) {
@@ -814,6 +819,8 @@ class pmTablesProxy extends HttpProxyController
                             );
                             $columns[] = $column;
                         }
+
+                        $arrayTableField = $columns;
 
                         $tableData = new stdClass();
                         $tableData->REP_TAB_UID = $contentSchema['ADD_TAB_UID'];
@@ -877,9 +884,46 @@ class pmTablesProxy extends HttpProxyController
             $fp = fopen( $PUBLIC_ROOT_PATH . $filename, "rb" );
             $fsData = intval( fread( $fp, 9 ) );
             $sType = fread( $fp, $fsData );
+
+            //Verify Primary Key Auto-Increment
+            $flagPkAutoIncrement = 0;
+
+            foreach ($arrayTableField as $value) {
+                if ($value["field_key"] . "" == "1" && $value["field_autoincrement"] . "" == "1") {
+                    $flagPkAutoIncrement = 1;
+                    break;
+                }
+            }
+
+            if ($flagPkAutoIncrement == 1) {
+                $fileBasePeer = PATH_DATA . "sites" . PATH_SEP . SYS_SYS . PATH_SEP . "classes" . PATH_SEP . "om". PATH_SEP . "Base" . $tableNameAux . "Peer.php";
+
+                if (file_exists($fileBasePeer)) {
+                    $fh = fopen($fileBasePeer, "r");
+
+                    if ($fh) {
+                        $content = "";
+
+                        while (!feof($fh)) {
+                            $line = fgets($fh, 4096); //Read a line.
+
+                            if (preg_match("/^.*criteria.*auto\-increment.*$/", $line)) {
+                                $line = "//" . $line;
+                            }
+
+                            $content = $content . $line;
+                        }
+
+                        fclose($fh);
+
+                        unlink($fileBasePeer);
+
+                        file_put_contents($fileBasePeer, $content);
+                    }
+                }
+            }
+
             // data processing
-
-
             while (! feof( $fp )) {
 
                 switch ($sType) {
