@@ -71,12 +71,13 @@ var editStagesMap = function(sProcessUID) {
   };
   oPanel.events = {
   	remove: function() { 
-  	  delete(oPanel); 
-  	  if(typeof menu_edit != "undefined" && menu_edit.maked === true){
-  	      menu_edit.remove();
-  	  } else if (typeof menu_add != "undefined" && menu_add.maked === true) {
+  	  delete(oPanel);
+  	  try{
   	      menu_add.remove();
-  	  }
+          for(var i=0;i<menu_edit_items.length;i++){
+              menu_edit_items[i].remove();
+          }
+      }catch(e){}
   	}.extend(this)
   };
 	oPanel.make();

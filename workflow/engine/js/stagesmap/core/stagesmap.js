@@ -1,5 +1,5 @@
+var menu_edit_items = [];
 var stagesmap=function(){
-	var menu_edit_items = [];
 	this.data={
 		load:function(){
 			var r = new leimnud.module.rpc.xmlhttp({
@@ -371,11 +371,6 @@ var stagesmap=function(){
 						  },args:[a,c,index,options.object.drag]}),
 
 						finish	:this.parent.closure({instance:this,method:function(div,divC,uid,drag){
-							for(var j=0;j<this.data.db.stages.length;j++){
-								if(menu_edit_items[j].options.target.textContent == options.label){
-									menu_edit = menu_edit_items[j];
-								}
-							}
 							if(!drag.moved){return false;}
 							var pos  = this.parent.dom.position(div);
 							var h=pos;
