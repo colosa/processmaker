@@ -21,6 +21,14 @@ class Applications
     ) {
         $callback = isset($callback)? $callback : "stcCallback1001";
         $dir = isset($dir)? $dir : "DESC";
+
+        if (isset($sort)) {
+            G::LoadClass('phpSqlParser');
+            $parser = new PHPSQLParser($sort);
+            $sort = $parser->parsed;
+            $sort = $sort[''][0];
+        }
+
         $sort = isset($sort)? $sort : "";
         $start = isset($start)? $start : "0";
         $limit = isset($limit)? $limit : "25";
@@ -493,10 +501,10 @@ class Applications
 
         //execute the query
         $oDataset = AppCacheViewPeer::doSelectRS( $Criteria );
-        
+
         $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         $oDataset->next();
-//g::pr($oDataset);
+        //g::pr($oDataset);
         $result = array ();
         $result['totalCount'] = $totalCount;
         $rows = array ();

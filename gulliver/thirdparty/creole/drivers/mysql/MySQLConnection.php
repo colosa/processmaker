@@ -199,7 +199,11 @@ class MySQLConnection extends ConnectionCommon implements Connection {
         }//echo $sql . '<br /><br />';
         $result = @mysql_query($sql, $this->dblink);
         if (!$result) {
-            throw new SQLException('Could not execute query', mysql_error($this->dblink), $sql);
+            if (isset($_SESSION['PROCESSMAKER_ENV']['debug_sql']) && $_SESSION['PROCESSMAKER_ENV']['debug_sql'] == 1) {
+                throw new SQLException('Could not execute query', mysql_error($this->dblink), $sql);
+            } else {
+                throw new SQLException('It is not possible to execute the query. Please contact your system administrator');
+            }
         }
         return new MySQLResultSet($this, $result, $fetchmode);
     }
