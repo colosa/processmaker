@@ -36,6 +36,7 @@ try {
             die();
             break;
     }
+    $RBAC->requirePermissions('PM_USERS');
     G::LoadInclude('ajax');
     if (isset($_POST['form'])) {
         $_POST = $_POST['form'];

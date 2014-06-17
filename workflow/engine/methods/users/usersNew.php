@@ -1,5 +1,17 @@
 <?php
-
+switch ($_REQUEST['MODE']) {
+    case 'new':
+        $RBAC->requirePermissions('PM_SETUP');
+        $RBAC->requirePermissions('PM_USERS');
+        break;
+    case 'edit':
+        $RBAC->requirePermissions('PM_EDITPERSONALINFO');
+        break;
+    default:
+        G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
+        G::header( 'location: ../login/login' );
+        break;
+}
 //calculating the max upload file size;
 $POST_MAX_SIZE = ini_get( 'post_max_size' );
 $mul = substr( $POST_MAX_SIZE, - 1 );
