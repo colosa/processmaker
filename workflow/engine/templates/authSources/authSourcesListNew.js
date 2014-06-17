@@ -93,36 +93,40 @@ var cboxAuthSourse = new Ext.form.ComboBox({
       else
        window.location = 'authSources_New?AUTH_SOURCE_PROVIDER='+formAuthSourceOptoins.getForm().findField('AUTH_SOURCE_PROVIDER').getValue();
        return false;*/
-    formAuthSourceOptoins.getForm().submit({ 
-    waitTitle : "&nbsp;",
-    url: '../adminProxy/testingOption',
-    params: {
-    action     : 'test',
-    optionAuthS: formAuthSourceOptoins.getForm().findField('AUTH_SOURCE_PROVIDER').getValue()
-    },
-    method: 'POST',
-    waitMsg : _('ID_LOADING_GRID'),
-    timeout : 500,
-    success: function(f,a){
-    resp = Ext.util.JSON.decode(a.response.responseText);
-//                            alert(resp.optionAuthS);return false;
-//                            alert(resp.sUID);return false;
-    if (resp.success){
-      if(resp.optionAuthS=='ldap')
-//       window.location = 'authSources_kindof?sUID='+resp.sUID+'&sprovider='+resp.optionAuthS;
-        window.location = 'authSources_kindof?sprovider='+resp.optionAuthS;
-      else
-       window.location = 'authSources_New?AUTH_SOURCE_PROVIDER='+resp.optionAuthS;
+    if (formAuthSourceOptoins.getForm().findField('AUTH_SOURCE_PROVIDER').getValue() != '') {
+        formAuthSourceOptoins.getForm().submit({ 
+            waitTitle : "&nbsp;",
+            url: '../adminProxy/testingOption',
+            params: {
+              action     : 'test',
+              optionAuthS: formAuthSourceOptoins.getForm().findField('AUTH_SOURCE_PROVIDER').getValue()
+            },
+            method: 'POST',
+            waitMsg : _('ID_LOADING_GRID'),
+            timeout : 500,
+            success: function(f,a){
+              resp = Ext.util.JSON.decode(a.response.responseText);
+              //alert(resp.optionAuthS);return false;
+              //alert(resp.sUID);return false;
+              if (resp.success){
+                if(resp.optionAuthS=='ldap')
+                //window.location = 'authSources_kindof?sUID='+resp.sUID+'&sprovider='+resp.optionAuthS;
+                  window.location = 'authSources_kindof?sprovider='+resp.optionAuthS;
+                else
+                 window.location = 'authSources_New?AUTH_SOURCE_PROVIDER='+resp.optionAuthS;
+              }
+            },
+          
+            failure: function(f,a){
+                if (a.failureType === Ext.form.Action.CONNECT_FAILURE){
+                    Ext.Msg.alert( _('ID_FAILURE'), _('ID_SERVER_REPORTED')+':'+a.response.status+' '+a.response.statusText);
+                }
+                if (a.failureType === Ext.form.Action.SERVER_INVALID){
+                    Ext.Msg.alert( _('ID_WARNING'), _('ID_YOU_HAVE_ERROR'));
+                }
+            }
+        });
+    } else {
+        Ext.Msg.alert( _('ID_FAILURE'), _('ID_CHOOSE_PROVIDER'));
     }
-
-    },
-    failure: function(f,a){
-        if (a.failureType === Ext.form.Action.CONNECT_FAILURE){
-            Ext.Msg.alert( _('ID_FAILURE'), _('ID_SERVER_REPORTED')+':'+a.response.status+' '+a.response.statusText);
-        }
-        if (a.failureType === Ext.form.Action.SERVER_INVALID){
-            Ext.Msg.alert( _('ID_WARNING'), _('ID_YOU_HAVE_ERROR'));
-        }
-    }
-});
  }

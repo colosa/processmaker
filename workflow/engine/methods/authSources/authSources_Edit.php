@@ -98,21 +98,19 @@ if ($fields['AUTH_SOURCE_PROVIDER'] == 'ldap') {
         if ($pluginEnabled == 1) {
             //The attributes the users
             G::LoadClass("pmFunctions");
-
             $data = executeQuery("DESCRIBE USERS");
-            $fieldSet = array("USR_UID", "USR_USERNAME", "USR_PASSWORD", "USR_EMAIL", "USR_CREATE_DATE", "USR_UPDATE_DATE", "USR_COUNTRY", "USR_CITY", "USR_LOCATION", "DEP_UID", "USR_RESUME", "USR_ROLE", "USR_REPORTS_TO", "USR_REPLACED_BY", "USR_UX");
+            $fieldSet = array("USR_UID", "USR_USERNAME", "USR_PASSWORD", "USR_EMAIL", "USR_CREATE_DATE", "USR_UPDATE_DATE", "USR_COUNTRY", "USR_CITY", "DEP_UID", "USR_RESUME", "USR_ROLE", "USR_REPLACED_BY", "USR_UX");
             $attributes = null;
 
             foreach ($data as $value) {
                 if (!(in_array($value["Field"], $fieldSet))) {
-                    $attributes = $attributes . $value["Field"] . "|";
+                    $attributes .= $value["Field"] . "|";
                 }
             }
-
+            
             $fields["AUTH_SOURCE_ATTRIBUTE_IDS"] = $attributes;
             if (file_exists(PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . $fields["AUTH_SOURCE_PROVIDER"] . 'Flag')) {
                 $oHeadPublisher = & headPublisher::getSingleton ();
-
                 $oHeadPublisher->assign("Fields", $fields);
                 $oHeadPublisher->addExtJsScript (PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . 'js' . PATH_SEP . 'library', false, true );
                 $oHeadPublisher->addExtJsScript (PATH_PLUGINS . $fields["AUTH_SOURCE_PROVIDER"] . PATH_SEP . 'js' . PATH_SEP . 'ldapAdvancedForm', false, true );
