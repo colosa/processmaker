@@ -208,10 +208,12 @@ try {
             break;
         default: //APP_STATUS <> DRAFT and TO_DO
             $_SESSION['APPLICATION'] = $sAppUid;
-            $_SESSION['INDEX'] = $iDelIndex != "" ? $iDelIndex : $oCase->getCurrentDelegationCase( $_GET['APP_UID'] );
+            $_SESSION['INDEX'] = $oCase->getCurrentDelegationCase( $_GET['APP_UID'] );
             $_SESSION['PROCESS'] = $aFields['PRO_UID'];
             $_SESSION['TASK'] = - 1;
             $_SESSION['STEP_POSITION'] = 0;
+            $Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX']);
+            $_SESSION['CURRENT_TASK'] = $Fields['TAS_UID'];
 
             require_once (PATH_METHODS . 'cases' . PATH_SEP . 'cases_Resume.php');
     }
