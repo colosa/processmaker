@@ -76,6 +76,11 @@ Ext.onReady(function(){
     handler: DoSearch
   });
 
+  appUidSearch = new Ext.form.Checkbox ({
+	  id: 'appUidSearch',
+      boxLabel : 'Search also in the APP_UID field'
+  });
+
   contextMenu = new Ext.menu.Menu({
       items : [ editButton, deleteButton ]
   });
@@ -386,6 +391,7 @@ Ext.onReady(function(){
       importButton,
       exportButton,
       '->',
+      appUidSearch,
       searchText,
       clearTextButton,
       searchButton
@@ -394,6 +400,7 @@ Ext.onReady(function(){
   else
 	tbar = [genDataReportButton, 
        '->',
+       appUidSearch,
        searchText,
        clearTextButton,
        searchButton];
@@ -466,12 +473,13 @@ onMessageContextMenu = function (grid, rowIndex, e) {
 //Do Search Function
 DoSearch = function(){
    infoGrid.store.setBaseParam('textFilter', searchText.getValue());
-   infoGrid.store.load({params: {start : 0 , limit : pageSize }});
+   infoGrid.store.load({params: {start : 0 , limit : pageSize , appUid : appUidSearch.getValue() }});
 };
 
 //Load Grid By Default
 GridByDefault = function(){
   searchText.reset();
+  appUidSearch.reset();
   infoGrid.store.setBaseParam('textFilter', searchText.getValue());
   infoGrid.store.load();
 }; 

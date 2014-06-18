@@ -408,6 +408,7 @@ class pmTablesProxy extends HttpProxyController
      * @param string $httpData->id
      * @param string $httpData->start
      * @param string $httpData->limit
+     * @param string $httpData->appUid
      */
     public function dataView ($httpData)
     {
@@ -419,13 +420,13 @@ class pmTablesProxy extends HttpProxyController
         $limit_size = isset( $config['pageSize'] ) ? $config['pageSize'] : 20;
         $start = isset( $httpData->start ) ? $httpData->start : 0;
         $limit = isset( $httpData->limit ) ? $httpData->limit : $limit_size;
+        $appUid = isset( $httpData->appUid ) ? $httpData->appUid : false;
         $filter = isset( $httpData->textFilter ) ? $httpData->textFilter : '';
-
         $additionalTables = new AdditionalTables();
         $table = $additionalTables->load( $httpData->id, true );
 
         if ($filter != '') {
-            $result = $additionalTables->getAllData( $httpData->id, $start, $limit, true, $filter);
+            $result = $additionalTables->getAllData( $httpData->id, $start, $limit, true, $filter, $appUid);
         } else {
             $result = $additionalTables->getAllData( $httpData->id, $start, $limit );
         }

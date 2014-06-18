@@ -347,7 +347,7 @@ class AdditionalTables extends BaseAdditionalTables
         }
     }
 
-    public function getAllData($sUID, $start = null, $limit = null, $keyOrderUppercase = true, $filter = '')
+    public function getAllData($sUID, $start = null, $limit = null, $keyOrderUppercase = true, $filter = '', $appUid = false)
     {
         $addTab = new AdditionalTables();
         $aData = $addTab->load($sUID, true);
@@ -400,17 +400,17 @@ class AdditionalTables extends BaseAdditionalTables
             $closure = '';
             $types = array('INTEGER', 'BIGINT', 'SMALLINT', 'TINYINT', 'DECIMAL', 'DOUBLE', 'FLOAT', 'REAL');
             foreach ($aData['FIELDS'] as $aField) {
-                if ($aField['FLD_NAME'] != 'APP_UID') {
-                    if (in_array($aField['FLD_TYPE'], $types)) {
-                        if (is_numeric($filter)) {
-                            $stringOr = $stringOr . '$a = $oCriteria->getNewCriterion(' . $sClassPeerName . '::' . $aField['FLD_NAME'] . ', "' . $filter . '", Criteria::EQUAL)' . $closure . ';';
-                            $closure = '->addOr($a)';
-                        }
-                    } else {
-                        $stringOr = $stringOr . '$a = $oCriteria->getNewCriterion(' . $sClassPeerName . '::' . $aField['FLD_NAME'] . ', "%' . $filter . '%", Criteria::LIKE)' . $closure . ';';
-                        $closure = '->addOr($a)';
-                    }
-                }
+	            if (($appUid == "false" && $aField['FLD_NAME'] != 'APP_UID') || ($appUid == "true")) {
+	                if (in_array($aField['FLD_TYPE'], $types)) {
+	                    if (is_numeric($filter)) {
+	                        $stringOr = $stringOr . '$a = $oCriteria->getNewCriterion(' . $sClassPeerName . '::' . $aField['FLD_NAME'] . ', "' . $filter . '", Criteria::EQUAL)' . $closure . ';';
+	                        $closure = '->addOr($a)';
+	                    }
+	                } else {
+	                    $stringOr = $stringOr . '$a = $oCriteria->getNewCriterion(' . $sClassPeerName . '::' . $aField['FLD_NAME'] . ', "%' . $filter . '%", Criteria::LIKE)' . $closure . ';';
+	                    $closure = '->addOr($a)';
+	                }
+	            }
             }
             $stringOr = $stringOr . '$oCriteria->add($a);';
             eval($stringOr);
