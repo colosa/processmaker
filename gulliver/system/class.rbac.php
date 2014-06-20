@@ -1121,6 +1121,7 @@ class RBAC
                     G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
                     G::header( 'location: ../login/login' );
                     break;
+                case - 3:
                 case - 1:
                 default:
                     G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
