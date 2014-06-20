@@ -494,6 +494,28 @@ DeleteUserAction = function(){
   if (uid.data.USR_UID==user_admin){
     Ext.Msg.alert(_('ID_USERS'), _('ID_CANNOT_DELETE_ADMIN_USER'));
   }else{
+    var flagVerifyUserAssigSupervisor = 1;
+
+    Ext.Ajax.request({
+        url:    "users_Ajax",
+        method: "POST",
+        params: {
+            "function": "verifyIfUserAssignedAsSupervisor",
+            supervisorUserUid: uid.data.USR_UID
+        },
+
+        success: function (response, opts) {
+            var dataRespuesta = Ext.util.JSON.decode(response.responseText);
+
+            if (dataRespuesta.result == "OK") {
+                flagVerifyUserAssigSupervisor = 0;
+            }
+        },
+        failure: function (response, opts){
+            //
+        }
+    });
+
     viewport.getEl().mask(_('ID_PROCESSING'));
     Ext.Ajax.request({
     url: 'users_Ajax',
@@ -509,7 +531,9 @@ DeleteUserAction = function(){
         }
         );
       }else{
-        Ext.Msg.confirm(_('ID_CONFIRM'), _('ID_MSG_CONFIRM_DELETE_USER'),
+        var msgConfirm = (flagVerifyUserAssigSupervisor == 1)? _("ID_MSG_CONFIRM_DELETE_USER_ASSINGED_SUPERVISOR") : _("ID_MSG_CONFIRM_DELETE_USER");
+
+        Ext.Msg.confirm(_('ID_CONFIRM'), msgConfirm,
         function(btn){
           if (btn=='yes') DeleteUser(uid.data.USR_UID);
           }

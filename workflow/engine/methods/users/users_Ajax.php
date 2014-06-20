@@ -210,6 +210,14 @@ try {
             $criteria->add( DashletInstancePeer::DAS_INS_OWNER_UID, $UID );
             $criteria->add( DashletInstancePeer::DAS_INS_OWNER_TYPE , 'USER');
             DashletInstancePeer::doDelete( $criteria );
+
+            //Delete users as supervisor
+            $criteria = new Criteria("workflow");
+
+            $criteria->add(ProcessUserPeer::USR_UID, $UID, Criteria::EQUAL);
+            $criteria->add(ProcessUserPeer::PU_TYPE, "SUPERVISOR", Criteria::EQUAL);
+
+            ProcessUserPeer::doDelete($criteria);
             break;
         case 'changeUserStatus':
             $response = new stdclass();
@@ -390,9 +398,9 @@ try {
             $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
             $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
             $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
-            
+
             $oCriteria->addSelectColumn(UsersPeer::USR_ROLE);
-            
+
             $oCriteria->addSelectColumn(UsersPeer::USR_DUE_DATE);
             $oCriteria->addSelectColumn(UsersPeer::USR_STATUS);
             $oCriteria->addSelectColumn(UsersPeer::USR_UX);
@@ -440,7 +448,7 @@ try {
             $uRole = Array();
             while ($oDataset->next()) {
                 $row = $oDataset->getRow();
-                
+
                 try {
                     $uRole = $oRoles->loadByCode($row['USR_ROLE']);
                 } catch (exception $oError) {
@@ -456,7 +464,7 @@ try {
                 $row['DEP_TITLE'] = isset($aDepart[$row['USR_UID']]) ? $aDepart[$row['USR_UID']] : '';
                 $row['USR_UX'] = isset($uxList[$row['USR_UX']]) ? $uxList[$row['USR_UX']] : $uxList['NORMAL'];
                 $row['USR_AUTH_SOURCE'] = isset($aAuthSources[$row['USR_UID']]) ? $aAuthSources[$row['USR_UID']] : 'ProcessMaker (MYSQL)';
-                
+
                 $rows[] = $row;
             }
 
@@ -510,6 +518,29 @@ try {
             $misc['DEP_TITLE'] = $dep_name;
             $misc['REPLACED_NAME'] = $replaced_by;
             echo '{success: true, userdata: ' . G::json_encode($data) . ', cases: ' . G::json_encode($aCount) . ', misc: ' . G::json_encode($misc) . '}';
+            break;
+
+        case "verifyIfUserAssignedAsSupervisor":
+            $supervisorUserUid = $_POST["supervisorUserUid"];
+            $message = "OK";
+
+            $criteria = new Criteria("workflow");
+
+            $criteria->addSelectColumn(ProcessUserPeer::PU_UID);
+            $criteria->add(ProcessUserPeer::USR_UID, $supervisorUserUid, Criteria::EQUAL);
+            $criteria->add(ProcessUserPeer::PU_TYPE, "SUPERVISOR", Criteria::EQUAL);
+
+            $rsCriteria = ProcessUserPeer::doSelectRS($criteria);
+            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+            if($rsCriteria->next() != 0) {
+                $message = "ERROR";
+            }
+
+            $response = array();
+            $response["result"] = $message;
+
+            echo G::json_encode($response);
             break;
     }
 } catch (Exception $oException) {
