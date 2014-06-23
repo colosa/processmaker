@@ -2691,6 +2691,7 @@ tinymce.html.Styles = function(settings, schema) {
 		// Allow all elements and attributes if verify_html is set to false
 		if (settings.verify_html === false)
 			settings.valid_elements = '*[*]';
+		    settings.valid_children = '+body[style],+form[style],+td[style]';
 
 		// Build styles list
 		if (settings.valid_styles) {

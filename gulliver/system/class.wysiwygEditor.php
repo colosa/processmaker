@@ -183,6 +183,7 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
                     external_image_list_url : "js/image_list.js",
                     media_external_list_url : "js/media_list.js",
                     extended_valid_elements : "div[*],script[language|type|src]",
+                    valid_children : "+body[style],+form[style],+td[style]",
 //                    noneditable_regexp: /[^"|^:|^\']{(.*?)}/g,
                     template_replace_values : {
                         username : "Some User",
@@ -211,6 +212,7 @@ class XmlForm_Field_WYSIWYG_EDITOR extends XmlForm_Field
                         // General options
                         mode : "textareas",
                         theme : "advanced",
+                        valid_children : "+body[style],+form[style],+td[style]",
                         plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,imagemanager,filemanager",
 
                         // Theme options
