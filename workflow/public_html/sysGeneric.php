@@ -316,6 +316,8 @@ define( 'MEMCACHED_ENABLED', $config['memcached'] );
 define( 'MEMCACHED_SERVER', $config['memcached_server'] );
 define( 'TIME_ZONE', $config['time_zone'] );
 
+define ('ws_in_login', isset($config['ws_in_login']) ? $config['ws_in_login'] : 'serverconf');
+
 // IIS Compatibility, SERVER_ADDR doesn't exist on that env, so we need to define it.
 $_SERVER['SERVER_ADDR'] = isset( $_SERVER['SERVER_ADDR'] ) ? $_SERVER['SERVER_ADDR'] : $_SERVER['SERVER_NAME'];
 

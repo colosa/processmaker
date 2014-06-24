@@ -140,15 +140,31 @@ $_SESSION ['_DBArray'] = $_DBArray;
 $aField ['LOGIN_VERIFY_MSG'] = G::loadTranslation ('LOGIN_VERIFY_MSG');
 $aField['USER_LANG'] = SYS_LANG;
 
-//Get Server Configuration
-//G::LoadClass ('serverConfiguration'); //already called
-$oServerConf = & serverConf::getSingleton ();
-
 $G_PUBLISH = new Publisher ();
-if ($oServerConf->getProperty ('LOGIN_NO_WS')) {
-    $G_PUBLISH->AddContent ('xmlform', 'xmlform', 'login/sysLoginNoWS', '', $aField, 'sysLogin');
-} else {
-    $G_PUBLISH->AddContent ('xmlform', 'xmlform', 'login/sysLogin', '', $aField, 'sysLogin');
+if (!defined('ws_in_login')) {
+    define('ws_in_login', 'serverconf');
+}
+$fileLogin = 'login/sysLogin';
+switch (ws_in_login) {
+    case 'serverconf':
+        //Get Server Configuration
+        $oServerConf = & serverConf::getSingleton ();
+        if ($oServerConf->getProperty ('LOGIN_NO_WS')) {
+            $fileLogin = 'login/sysLoginNoWS';
+        } else {
+            $fileLogin = 'login/sysLogin';
+        }
+        break;
+    case 'no':
+        $fileLogin = 'login/sysLoginNoWS';
+        break;
+    case 'yes':
+        $fileLogin = 'login/sysLogin';
+        break;
+    default:
+        $fileLogin = 'login/sysLogin';
+        break;
 }
 
+$G_PUBLISH->AddContent ('xmlform', 'xmlform', $fileLogin, '', $aField, 'sysLogin');
 G::RenderPage ("publish");
