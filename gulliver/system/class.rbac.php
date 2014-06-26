@@ -266,14 +266,16 @@ class RBAC
      */
     public function VerifyWithOtherAuthenticationSource ($sAuthType, $aUserFields, $strPass)
     {
-        //check if the user is active
-        if ($aUserFields['USR_STATUS'] != 1) {
-            return - 3; //inactive user
-        }
+        if ($sAuthType != 'ldapadvanced') {
+            //check if the user is active
+            if ($aUserFields['USR_STATUS'] != 1) {
+                return - 3; //inactive user
+            }
 
-        //check if the user's due date is valid
-        if ($aUserFields['USR_DUE_DATE'] < date( 'Y-m-d' )) {
-            return - 4; //due date
+            //check if the user's due date is valid
+            if ($aUserFields['USR_DUE_DATE'] < date( 'Y-m-d' )) {
+                return - 4; //due date
+            }
         }
 
         foreach ($this->aRbacPlugins as $sClassName) {
