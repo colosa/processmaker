@@ -73,6 +73,13 @@ try {
     if ($_SESSION['TRIGGER_DEBUG']['NUM_TRIGGERS'] != 0) {
         $_SESSION['TRIGGER_DEBUG']['TRIGGERS_NAMES'] = $oCase->getTriggerNames( $triggers );
         $_SESSION['TRIGGER_DEBUG']['TRIGGERS_VALUES'] = $triggers;
+        $oProcess = new Process();
+        $oProcessFieds = $oProcess->Load( $_SESSION['PROCESS'] );
+
+        #trigger debug routines...
+        if (isset( $oProcessFieds['PRO_DEBUG'] ) && $oProcessFieds['PRO_DEBUG']) {
+            $trigger_debug_session = true;
+        }
     }
 
     if ($_SESSION['TRIGGER_DEBUG']['NUM_TRIGGERS'] != 0) {
