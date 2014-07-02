@@ -116,15 +116,64 @@ try {
 
     // Send notifications - Start
     $oUser = new Users();
+
     $aUser = $oUser->load( $_SESSION['USER_LOGGED'] );
     $sFromName = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'] . ($aUser['USR_EMAIL'] != '' ? ' <' . $aUser['USR_EMAIL'] . '>' : '');
+
+    $arrayUser = array();
+
+    $criteria = new Criteria("workflow");
+
+    $criteria->addSelectColumn(SubApplicationPeer::APP_PARENT);
+    $criteria->addSelectColumn(SubApplicationPeer::DEL_INDEX_PARENT);
+
+    $criteria->addJoin(SubApplicationPeer::APP_UID, ApplicationPeer::APP_UID, Criteria::LEFT_JOIN);
+
+    $criteria->add(SubApplicationPeer::APP_UID, $_SESSION["APPLICATION"], Criteria::EQUAL);
+    $criteria->add(ApplicationPeer::APP_STATUS, "COMPLETED", Criteria::EQUAL);
+
+    $rsCriteria = SubApplicationPeer::doSelectRS($criteria);
+    $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+    if ($rsCriteria->next()) {
+        $row = $rsCriteria->getRow();
+
+        $record = $row;
+
+        //Get Users
+        $criteria2 = new Criteria("workflow");
+
+        $criteria2->addSelectColumn(AppDelegationPeer::USR_UID);
+
+        $criteria2->add(AppDelegationPeer::APP_UID, $record["APP_PARENT"], Criteria::EQUAL);
+        $criteria2->add(AppDelegationPeer::DEL_PREVIOUS, $record["DEL_INDEX_PARENT"], Criteria::EQUAL);
+
+        $rsCriteria2 = AppDelegationPeer::doSelectRS($criteria2);
+        $rsCriteria2->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        while ($rsCriteria2->next()) {
+            $row2 = $rsCriteria2->getRow();
+
+            $record2 = $row2;
+
+            $arrayUser[] = array(
+                "TAS_ASSIGN_TYPE" => "",
+                "USR_UID"         => $record2["USR_UID"]
+            );
+        }
+    }
+
     try {
-        $oCase->sendNotifications( $_SESSION['TASK'], $_POST['form']['TASKS'], $appFields['APP_DATA'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $sFromName );
+        $oCase->sendNotifications( $_SESSION['TASK'],
+                                   (count($arrayUser) == 0)? $_POST["form"]["TASKS"] : $arrayUser,
+                                   $appFields['APP_DATA'],
+                                   $_SESSION['APPLICATION'],
+                                   $_SESSION['INDEX'],
+                                   $sFromName );
     } catch (Exception $e) {
         G::SendTemporalMessage( G::loadTranslation( 'ID_NOTIFICATION_ERROR' ) . ' - ' . $e->getMessage(), 'warning', 'string', null, '100%' );
     }
     // Send notifications - End
-
 
     // Events - Start
     $oEvent = new Event();
