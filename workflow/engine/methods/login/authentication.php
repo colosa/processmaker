@@ -131,6 +131,20 @@ try {
                 }
             }
 
+            //LOG Filed authentications
+            $filedTimes = (defined(PPP_FAILED_LOGINS)) ? PPP_FAILED_LOGINS : 3;
+
+            if($_SESSION['FAILED_LOGINS'] > $filedTimes){
+            	$ip = G::getIpAddress();
+            	$browser = $_SERVER['HTTP_USER_AGENT'];
+
+            	$path = PATH_DATA;
+            	$message = " | Many failed authentication attempts for USER: " . $usr . " | IP: " . $ip . " |  WS: " . SYS_SYS . " | BROWSER: " .$browser ." \n" ;
+            	$file = "loginFailed.log";
+
+            	G::log($message, $path, $file);
+            }
+
             G::header("location: $loginUrl");
             die;
         }

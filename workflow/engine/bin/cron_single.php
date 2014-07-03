@@ -912,7 +912,7 @@ function saveLog($sSource, $sType, $sDescription)
         }
 
         G::verifyPath(PATH_DATA . "log" . PATH_SEP, true);
-        G::log(date("Y-m-d H:i:s") . " | $sObject | " . $sSource . " | $sType | " . $sDescription . "\n", PATH_DATA);
+        G::log(" | $sObject | " . $sSource . " | $sType | " . $sDescription . "\n", PATH_DATA);
     } catch (Exception $e) {
         //CONTINUE
     }

@@ -103,6 +103,7 @@ class Logger
     {
         $this->renameFile();
         $file = fopen($this->filePath, "a+");
+        $message = date('Y-m-d H:i:s') . $message;
         fwrite($file, $message);
         fclose($file);
     }
