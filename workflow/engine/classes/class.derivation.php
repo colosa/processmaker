@@ -638,7 +638,7 @@ class Derivation
             //Close case
             $appFields["APP_STATUS"] = "COMPLETED";
             $appFields["APP_FINISH_DATE"] = "now";
-            $this->verifyIsCaseChild( $currentDelegation["APP_UID"] );
+            $this->verifyIsCaseChild($currentDelegation["APP_UID"], $currentDelegation["DEL_INDEX"]);
 
             $sw = 1;
         }
@@ -793,7 +793,7 @@ class Derivation
      * @param   string   $sApplicationUID
      * @return  void
      */
-    function verifyIsCaseChild ($sApplicationUID)
+    function verifyIsCaseChild ($sApplicationUID, $delIndex = 0)
     {
         //Obtain the related row in the table SUB_APPLICATION
         $oCriteria = new Criteria( 'workflow' );
@@ -814,7 +814,7 @@ class Derivation
             $oDataset->next();
             $aSP = $oDataset->getRow();
             if ($aSP['SP_SYNCHRONOUS'] == 1) {
-                $appFields = $oCase->loadCase( $sApplicationUID );
+                $appFields = $oCase->loadCase($sApplicationUID, $delIndex);
                 //Copy case variables to parent case
                 $aFields = unserialize( $aSP['SP_VARIABLES_IN'] );
                 $aNewFields = array ();
@@ -853,6 +853,25 @@ class Derivation
                         $currentDelegation2 = array ('APP_UID' => $aSA['APP_PARENT'],'DEL_INDEX' => $aSA['DEL_INDEX_PARENT'],'APP_STATUS' => 'TO_DO','TAS_UID' => $aParentCase['TAS_UID'],'ROU_TYPE' => $aDeriveTasks[1]['ROU_TYPE']
                         );
                         $this->derivate( $currentDelegation2, $nextDelegations2 );
+
+                        // Send notifications - Start
+                        $oUser = new Users();
+
+                        $aUser = $oUser->load($appFields["APP_DATA"]["USER_LOGGED"]);
+                        $sFromName = $aUser["USR_FIRSTNAME"] . " " . $aUser["USR_LASTNAME"] . ($aUser["USR_EMAIL"] != "" ? " <" . $aUser["USR_EMAIL"] . ">" : "");
+
+                        try {
+                            $oCase->sendNotifications($appFields["APP_DATA"]["TASK"],
+                                                      $nextDelegations2,
+                                                      $appFields["APP_DATA"],
+                                                      $sApplicationUID,
+                                                      $delIndex,
+                                                      $sFromName);
+
+                        } catch (Exception $e) {
+                            G::SendTemporalMessage(G::loadTranslation("ID_NOTIFICATION_ERROR") . " - " . $e->getMessage(), "warning", "string", null, "100%");
+                        }
+                        // Send notifications - End
                     }
                 }
             }
