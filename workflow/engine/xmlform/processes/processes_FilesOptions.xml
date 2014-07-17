@@ -152,25 +152,48 @@ function showCreateEmptyOptions(e, MAIN_DIRECTORY){
 }
 
 function saveEmptyFile(){
-	var fileName = getField('emptyfilename').value + ".html";
-	fileName = fileName.trim();
+     var fileName = getField("emptyfilename").value.trim();
 
-	var oRPC = new leimnud.module.rpc.xmlhttp({
-	  	url : 'processes_Ajax',
-	  	args: 'action=saveFile&filename='+fileName+'&pro_uid='+CURRENT_PRO_UID+'&MAIN_DIRECTORY='+CURRENT_MAIN_DIRECTORY+'&fcontent='
-  	});
+     if(fileName != "") {
+         fileName = fileName + ".html";
+         fileName = fileName.trim();
 
-  	oRPC.callback = function(rpc){
-		showCreateEmptyOptionsPanel.remove();
-		/// goToDirectory(CURRENT_PRO_UID, 'mailTemplates', '');
-    if(typeof(CURRENT_MAIN_DIRECTORY) != "undefined" ) {
-      goToDirectory(CURRENT_PRO_UID, CURRENT_MAIN_DIRECTORY, '');
-    } else {
-      goToDirectory(CURRENT_PRO_UID, 'mailTemplates', '');
-    }
-		editFile(CURRENT_PRO_UID, fileName)
-	}.extend(this);
-	oRPC.make();
+         var rpcAjax = new leimnud.module.rpc.xmlhttp({
+             url:    "processes_Ajax",
+             method: "POST",
+             args:   "action=verifyNameFile&filename=" + fileName + "&pro_uid=" + CURRENT_PRO_UID + "&MAIN_DIRECTORY=" + CURRENT_MAIN_DIRECTORY + "&fcontent="
+         });
+
+         rpcAjax.callback = function (rpc)
+         {
+             var response = rpc.xmlhttp.responseText.parseJSON();
+             var status = response.status;
+
+             if (status == "OK") {
+	               var oRPC = new leimnud.module.rpc.xmlhttp({
+	                   url : 'processes_Ajax',
+                    args: 'action=saveFile&filename='+fileName+'&pro_uid='+CURRENT_PRO_UID+'&MAIN_DIRECTORY='+CURRENT_MAIN_DIRECTORY+'&fcontent='
+                });
+
+                oRPC.callback = function(rpc){
+                    showCreateEmptyOptionsPanel.remove();
+                    /// goToDirectory(CURRENT_PRO_UID, 'mailTemplates', '');
+                    if(typeof(CURRENT_MAIN_DIRECTORY) != "undefined" ) {
+                        goToDirectory(CURRENT_PRO_UID, CURRENT_MAIN_DIRECTORY, '');
+                    } else {
+                        goToDirectory(CURRENT_PRO_UID, 'mailTemplates', '');
+                    }
+                    editFile(CURRENT_PRO_UID, fileName)
+                }.extend(this);
+	               oRPC.make();
+             } else {
+                 new leimnud.module.app.alert().make({label: "The file exists."});
+             }
+         }.extend(this);
+         rpcAjax.make();
+     } else {
+         new leimnud.module.app.alert().make({label: "File name required."});
+     }
 }
 
 function xReaload(){
