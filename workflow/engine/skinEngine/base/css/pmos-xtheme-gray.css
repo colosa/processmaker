@@ -1590,3 +1590,9 @@ td.x-cnotes-label {
   padding-left: 3px;
   padding-right: 3px;
 }
+
+.title-dashboard-text {
+  margin:5px  !important;
+  white-space:pre-wrap !important;
+  display:inline-block;
+}
