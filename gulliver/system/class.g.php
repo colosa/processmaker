@@ -5280,29 +5280,53 @@ class G
         }
         if ($from != '') {
             if (!preg_match('/(.+)@(.+)\.(.+)/', $from, $match)) {
-                if ($configuration['MESS_FROM_MAIL'] != '') {
-                    $from .= ' <' . $configuration['MESS_FROM_MAIL'] . '>';
-                } else if ($configuration['MESS_ENGINE'] == 'PHPMAILER' && preg_match('/(.+)@(.+)\.(.+)/', $configuration['MESS_ACCOUNT'], $match)) {
-                    $from .= ' <' . $configuration['MESS_ACCOUNT'] . '>';
+                if (preg_match("/(.+)@(.+)\.(.+)/", $configuration["MESS_ACCOUNT"])) {
+                    if ($configuration['MESS_FROM_MAIL'] != '') {
+                        $from = $from . " <". $configuration["MESS_FROM_MAIL"] . "> <" . $configuration["MESS_ACCOUNT"] . ">";
+                    } else if ($configuration['MESS_ENGINE'] == 'PHPMAILER' && preg_match('/(.+)@(.+)\.(.+)/', $configuration['MESS_ACCOUNT'], $match)) {
+                        $from .= ' <' . $configuration['MESS_ACCOUNT'] . '>';
+                    } else {
+                        $from .= ' <info@' . ((isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != '')? $_SERVER['HTTP_HOST'] : 'processmaker.com') . '>';
+                    }
+
                 } else {
-                    $from .= ' <info@' . ((isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != '')? $_SERVER['HTTP_HOST'] : 'processmaker.com') . '>';
+                    if ($configuration["MESS_FROM_MAIL"] != "") {
+                        $from = $from . " <". $configuration["MESS_FROM_MAIL"] . ">";
+                    } else if ($configuration["MESS_FROM_NAME"] != "") {
+                        $from = $from . " <info@" . ((isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"] != "")? $_SERVER["HTTP_HOST"] : "processmaker.com") . ">";
+                    } else {
+                        $from = $from . " <info@" . ((isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"] != "")? $_SERVER["HTTP_HOST"] : "processmaker.com") . ">";
+                    }
                 }
             }
         } else {
-            if ($configuration['MESS_FROM_NAME'] != '' && $configuration['MESS_FROM_MAIL'] != '') {
-                $from = $configuration['MESS_FROM_NAME'] . ' <' . $configuration['MESS_FROM_MAIL'] . '>';
-            } else if ($configuration['MESS_FROM_NAME'] != '' && $configuration['MESS_ENGINE'] == 'PHPMAILER' && preg_match('/(.+)@(.+)\.(.+)/', $configuration['MESS_ACCOUNT'], $match)) {
-                $from = $configuration['MESS_FROM_NAME'] . ' <' . $configuration['MESS_ACCOUNT'] . '>';
-            } else if ($configuration['MESS_FROM_NAME'] != '') {
-                $from = $configuration['MESS_FROM_NAME'] . ' <info@' . ((isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != '')? $_SERVER['HTTP_HOST'] : 'processmaker.com') . '>';
-            } else if ($configuration['MESS_FROM_MAIL'] != '') {
-                $from = $configuration['MESS_FROM_MAIL'];
-            } else if ($configuration['MESS_ENGINE'] == 'PHPMAILER' && preg_match('/(.+)@(.+)\.(.+)/', $configuration['MESS_ACCOUNT'], $match)) {
-                $from = $configuration['MESS_ACCOUNT'];
-            } else if ($configuration['MESS_ENGINE'] == 'PHPMAILER' && $configuration['MESS_ACCOUNT'] != '' && !preg_match('/(.+)@(.+)\.(.+)/', $configuration['MESS_ACCOUNT'], $match)) {
-                $from = $configuration['MESS_ACCOUNT'] . ' <info@' . ((isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != '')? $_SERVER['HTTP_HOST'] : 'processmaker.com') . '>';
+            if (preg_match("/(.+)@(.+)\.(.+)/", $configuration["MESS_ACCOUNT"])) {
+                if ($configuration['MESS_FROM_NAME'] != '' && $configuration['MESS_FROM_MAIL'] != '') {
+                    $from = $configuration["MESS_FROM_NAME"] . " <". $configuration["MESS_FROM_MAIL"] . "> <" . $configuration["MESS_ACCOUNT"] . ">";
+                } else if ($configuration['MESS_FROM_NAME'] != '' && $configuration['MESS_ENGINE'] == 'PHPMAILER' && preg_match('/(.+)@(.+)\.(.+)/', $configuration['MESS_ACCOUNT'], $match)) {
+                    $from = $configuration['MESS_FROM_NAME'] . ' <' . $configuration['MESS_ACCOUNT'] . '>';
+                } else if ($configuration['MESS_FROM_NAME'] != '') {
+                    $from = $configuration['MESS_FROM_NAME'] . ' <info@' . ((isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != '')? $_SERVER['HTTP_HOST'] : 'processmaker.com') . '>';
+                } else if ($configuration['MESS_FROM_MAIL'] != '') {
+                    $from = "ProcessMaker <" . $configuration["MESS_FROM_MAIL"] . "> <" . $configuration["MESS_ACCOUNT"] . ">";
+                } else if ($configuration['MESS_ENGINE'] == 'PHPMAILER' && preg_match('/(.+)@(.+)\.(.+)/', $configuration['MESS_ACCOUNT'], $match)) {
+                    $from = "ProcessMaker <" . $configuration["MESS_ACCOUNT"] . ">";
+                } else if ($configuration['MESS_ENGINE'] == 'PHPMAILER' && $configuration['MESS_ACCOUNT'] != '' && !preg_match('/(.+)@(.+)\.(.+)/', $configuration['MESS_ACCOUNT'], $match)) {
+                    $from = $configuration['MESS_ACCOUNT'] . ' <info@' . ((isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != '')? $_SERVER['HTTP_HOST'] : 'processmaker.com') . '>';
+                } else {
+                    $from = " <info@" . ((isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"] != "")? $_SERVER["HTTP_HOST"] : "processmaker.com") . ">";
+                }
+
             } else {
-                $from = 'info@' . ((isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != '')? $_SERVER['HTTP_HOST'] : 'processmaker.com');
+                if ($configuration["MESS_FROM_NAME"] != "" && $configuration["MESS_FROM_MAIL"] != "") {
+                    $from = $configuration["MESS_FROM_NAME"] . " <" . $configuration["MESS_FROM_MAIL"] . ">";
+                } else if ($configuration["MESS_FROM_MAIL"] != "") {
+                    $from = "ProcessMaker <" . $configuration["MESS_FROM_MAIL"] . "> <" . $configuration["MESS_ACCOUNT"] . ">";
+                } else if ($configuration["MESS_FROM_NAME"] != "") {
+                    $from = $configuration["MESS_FROM_NAME"] . " info@" . ((isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"] != "")? $_SERVER["HTTP_HOST"] : "processmaker.com");
+                } else {
+                    $from = "ProcessMaker <info@" . ((isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"] != "")? $_SERVER["HTTP_HOST"] : "processmaker.com") . ">";
+                }
             }
         }
         return $from;
