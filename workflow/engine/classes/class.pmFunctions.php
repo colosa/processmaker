@@ -810,6 +810,7 @@ function getEmailConfiguration ()
     return System::getEmailConfiguration();
 }
 
+
 /**
  *
  * @method

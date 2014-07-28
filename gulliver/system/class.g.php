@@ -5316,7 +5316,6 @@ class G
                 } else {
                     $from = " <info@" . ((isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"] != "")? $_SERVER["HTTP_HOST"] : "processmaker.com") . ">";
                 }
-
             } else {
                 if ($configuration["MESS_FROM_NAME"] != "" && $configuration["MESS_FROM_MAIL"] != "") {
                     $from = $configuration["MESS_FROM_NAME"] . " <" . $configuration["MESS_FROM_MAIL"] . ">";
