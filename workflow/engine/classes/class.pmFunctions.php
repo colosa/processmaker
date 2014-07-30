@@ -810,6 +810,7 @@ function getEmailConfiguration ()
     return System::getEmailConfiguration();
 }
 
+
 /**
  *
  * @method
@@ -821,7 +822,7 @@ function getEmailConfiguration ()
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFSendMessage.28.29
  *
  * @param string(32) | $caseId | UID for case | The UID (unique identification) for a case, which is a string of 32 hexadecimal characters to identify the case.
- * @param string(32) | $sFrom | Email addres | The email address of the person who sends out the email.
+ * @param string(32) | $sFrom = "" | Email addres | The email address of the person who sends out the email.
  * @param string(100) | $sTo | Email receptor | The email address(es) to whom the email is sent. If multiple recipients, separate each email address with a comma.
  * @param string(100) | $sCc = '' | Email addres for copies | The email address(es) of people who will receive carbon copies of the email.
  * @param string(100) | $sBcc = ''| Email addres for copies hidden | The email address(es) of people who will receive blind carbon copies of the email.
@@ -835,6 +836,7 @@ function getEmailConfiguration ()
  *
  */
 //@param array | $aFields=array() | An associative array optional | Optional parameter. An associative array where the keys are the variable name and the values are the variable's value.
+
 function PMFSendMessage(
     $caseId,
     $sFrom,
@@ -2845,7 +2847,7 @@ function PMFAddAttachmentToArray($arrayData, $index, $value, $suffix = " Copy({i
  *
  * @name PMFRemoveMask
  * @label PMF Remove Mask
- * 
+ *
  * @param string | $field | Value the field
  * @param string | $separator | Separator of thousands (, or .)
  * @param string | $currency | symbol of currency
