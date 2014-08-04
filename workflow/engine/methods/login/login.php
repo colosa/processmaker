@@ -147,11 +147,16 @@ $_DBArray ['langOptions'] = $availableLangArray;
 G::LoadClass('configuration');
 //BootStrap::LoadClass('configuration');
 
+$myUrl = explode("/", $_SERVER["REQUEST_URI"]);
+
 $oConf = new Configurations();
 $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
-$aFields['USER_LANG'] = isset($oConf->aConfig['login_defaultLanguage'])
-                        ? $oConf->aConfig['login_defaultLanguage']
-                        : 'en';
+
+if (isset($myUrl) && $myUrl != "") {
+    $aFields["USER_LANG"] = $myUrl[2];
+} else {
+    $aFields['USER_LANG'] = isset($oConf->aConfig["login_defaultLanguage"])? $oConf->aConfig["login_defaultLanguage"] : "en";
+}
 
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/login', '', $aFields, SYS_URI . 'login/authentication.php');
