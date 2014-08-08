@@ -119,7 +119,7 @@ class adminProxy extends HttpProxyController
 
         $this->success = true;
         $this->restart = $restart;
-        $this->url     = '/sys' .  SYS_SYS . '/' . $sysConf['default_lang'] . '/' . $sysConf['default_skin'] . $urlPart;
+        $this->url     = "/sys" .  SYS_SYS . "/" . (($sysConf["default_lang"] != "")? $sysConf["default_lang"] : "en") . "/" . $sysConf["default_skin"] . $urlPart;
         $this->message = 'Saved Successfully';
     }
 

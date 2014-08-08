@@ -30,6 +30,7 @@ class Admin extends Controller
         $timeZonesList = array_keys( $timeZonesList );
         $mainController = new Main();
         $languagesList = $mainController->getLanguagesList();
+        $languagesList[] = array ("", G::LoadTranslation("ID_USE_LANGUAGE_URL"));
         $sysConf = System::getSystemConfiguration( PATH_CONFIG . 'env.ini' );
 
         foreach ($skinsList['skins'] as $skin) {

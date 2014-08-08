@@ -226,7 +226,7 @@
   if (!file_exists(PATH_HTML . 'index.html')) { // if not, create it from template
     file_put_contents(
       PATH_HTML . 'index.html',
-      G::parseTemplate(PATH_TPL . 'index.html', array('lang' => SYS_LANG, 'skin' => SYS_SKIN))
+      G::parseTemplate(PATH_TPL . "index.html", array("lang" => ((SYS_LANG != "")? SYS_LANG : "en"), "skin" => SYS_SKIN))
     );
   }
 

@@ -1138,7 +1138,7 @@ class System
         @preg_match( $patt, $content, $match );
 
         if (is_array( $match ) && count( $match ) > 0 && isset( $match[1] )) {
-            $newUrl = 'sys/' . $conf['lang'] . '/' . $conf['skin'] . '/login/login';
+            $newUrl = "sys/" . (($conf["lang"] != "")? $conf["lang"] : "en") . "/" . $conf["skin"] . "/login/login";
 
             $newMetaStr = str_replace( $match[1], $newUrl, $match[0] );
             $newContent = str_replace( $match[0], $newMetaStr, $content );

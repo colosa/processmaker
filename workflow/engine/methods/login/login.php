@@ -149,9 +149,14 @@ G::LoadClass('configuration');
 
 $oConf = new Configurations();
 $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
-$aFields['USER_LANG'] = isset($oConf->aConfig['login_defaultLanguage'])
-                        ? $oConf->aConfig['login_defaultLanguage']
-                        : 'en';
+
+$myUrl = explode("/", $_SERVER["REQUEST_URI"]);
+
+if (isset($myUrl) && $myUrl != "") {
+    $aFields["USER_LANG"] = $myUrl[2];
+} else {
+    $aFields["USER_LANG"] = isset($oConf->aConfig["login_defaultLanguage"])? $oConf->aConfig["login_defaultLanguage"] : "en";
+}
 
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/login', '', $aFields, SYS_URI . 'login/authentication.php');

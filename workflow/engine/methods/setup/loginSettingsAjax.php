@@ -14,6 +14,8 @@ switch ($request) {
             );
         }
 
+        $result->rows[] = array ("LAN_ID" => "", "LAN_NAME" => G::LoadTranslation("ID_USE_LANGUAGE_URL"));
+
         print (G::json_encode( $result )) ;
         break;
     case 'saveSettings':
