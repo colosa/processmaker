@@ -49,6 +49,15 @@ class p11835 extends patch
         return patch::$isPathchable;
     }
     
+    public static function pmVersion($version)
+    {
+        if (preg_match("/^\D*([\d\.]+)\D*$/", $version, $matches)) {
+            $version = $matches[1];
+        }
+        
+        return $version;
+    }
+    
     /*
      * Note.- Use after DB was upgraded.
      * Set the patch, setting all the TAS_GROUP_VARIABLE to '' 
@@ -83,7 +92,36 @@ class p11835 extends patch
                 $aRow = $recordSet->getRow();
             }
         }
-        echo $count. " records where patched to use SELF_SERVICE feature.\n";
+        
+        //Fix BUG-15394
+        G::LoadClass("configuration");
+        
+        $conf = new Configurations();
+        
+        if (!$conf->exists("HOTFIX")) {
+            //HOTFIX, Create empty record
+            $conf->aConfig = array();
+            $conf->saveConfig("HOTFIX", "");
+        }
+        
+        $arrayHotfix = $conf->getConfiguration("HOTFIX", "");
+        $arrayHotfix = (is_array($arrayHotfix))? $arrayHotfix : array($arrayHotfix);
+        
+        $pmVersion = self::pmVersion(System::getVersion()) . "";
+        
+        if (($pmVersion == "2.5.2.4" || $pmVersion == "2.5.3") && !in_array("15394", $arrayHotfix)) {
+            $cnn = Propel::getConnection("workflow");
+            $stmt = $cnn->prepareStatement("UPDATE USERS_PROPERTIES SET USR_LOGGED_NEXT_TIME = 0");
+            $rs = $stmt->executeQuery();
+        
+            //HOTFIX, Update record (add 15394)
+            $arrayHotfix[] = "15394";
+        
+            $conf->aConfig = $arrayHotfix;
+            $conf->saveConfig("HOTFIX", "");
+        }
+        
+        echo $count . " records where patched to use SELF_SERVICE feature.\n";
     }
 }
 
