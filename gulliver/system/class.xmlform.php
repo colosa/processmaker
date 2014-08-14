@@ -320,6 +320,10 @@ class XmlForm_Field
             return 1;
         }
 
+        if(isset($this->mode) && $this->mode == "edit" && ($this->owner->values[$this->name] !== "")){
+        	return 1;
+        }
+
         if(isset($this->mode) && $this->mode == "view" && ($this->type == "text" || $this->type == "currency" || $this->type == "percentage" || $this->type == "textarea" || $this->type == "hidden" || $this->type == "suggest")){
         	return 1;
         }
