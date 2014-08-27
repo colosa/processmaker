@@ -53,25 +53,28 @@ $bCronIsRunning = false;
 $sLastExecution = null;
 $processcTimeProcess = 0;
 $processcTimeStart   = 0;
+
 if (file_exists(PATH_DATA . "cron")) {
-    $force = false;
-    for ($i = 1; $i <= count($argv) - 1; $i++) {
-        if (strpos($argv[$i], "+force") !== false) {
-            $force = true;
-            unset($argv[$i]);
-            break;
-        }
+    //Check owner of cron file
+    $arrayStat = stat(PATH_DATA . "cron");
+
+    if (strtoupper(substr(PHP_OS, 0, 3)) != "WIN" && $arrayStat["uid"] . "" != getmyuid() . "") {
+        //Linux
+        eprintln("The owner of \"cron\" file in \"" . PATH_DATA . "\" is not \"" . get_current_user() . "\", solve this problem");
+        eprintln("Otherwise, you can execute the next command:", "green");
+        eprintln("\$ chown " . get_current_user() . " " . PATH_DATA . "cron", "green");
+        exit(0);
     }
-    if (!$force) {
-        $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
-        $bCronIsRunning = (boolean)($arrayCron["bCronIsRunning"]);
-        $sLastExecution = $arrayCron["sLastExecution"];
-        $processcTimeProcess = (isset($arrayCron["processcTimeProcess"]))? intval($arrayCron["processcTimeProcess"]) : 10; //Minutes
-        $processcTimeStart   = (isset($arrayCron["processcTimeStart"]))? $arrayCron["processcTimeStart"] : 0;
-    } else {
-        G::rm_dir(PATH_DATA . "cron");
-    }
+
+    //Get data of cron file
+    $arrayCron = unserialize(trim(@file_get_contents(PATH_DATA . "cron")));
+
+    $bCronIsRunning = (boolean)($arrayCron["bCronIsRunning"]);
+    $sLastExecution = $arrayCron["sLastExecution"];
+    $processcTimeProcess = (isset($arrayCron["processcTimeProcess"]))? (int)($arrayCron["processcTimeProcess"]) : 10; //Minutes
+    $processcTimeStart   = (isset($arrayCron["processcTimeStart"]))? $arrayCron["processcTimeStart"] : 0;
 }
+
 if ($bCronIsRunning && $processcTimeStart != 0) {
     if ((time() - $processcTimeStart) > ($processcTimeProcess * 60)) {
         //Cron finished his execution for some reason
@@ -79,7 +82,17 @@ if ($bCronIsRunning && $processcTimeStart != 0) {
     }
 }
 
-if (!$bCronIsRunning) {
+$force = false;
+
+for ($i = 1; $i <= count($argv) - 1; $i++) {
+    if (strpos($argv[$i], "+force") !== false) {
+        $force = true;
+        unset($argv[$i]);
+        break;
+    }
+}
+
+if (!$bCronIsRunning || $force) {
     //Start cron
     $arrayCron = array("bCronIsRunning" => "1", "sLastExecution" => date("Y-m-d H:i:s"));
     @file_put_contents(PATH_DATA . "cron", serialize($arrayCron));
