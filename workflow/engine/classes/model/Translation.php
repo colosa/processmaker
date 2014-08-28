@@ -239,7 +239,12 @@ class Translation extends BaseTranslation
         }
 
         if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $languageId . '.po')) {
-            return;
+            if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.en.po')) {
+                return;
+            }
+            $languageFile = PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.en.po' ;
+        } else {
+            $languageFile = PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $languageId . '.po' ;
         }
         $translation = Array ();
         $translationJS = Array ();
@@ -255,7 +260,7 @@ class Translation extends BaseTranslation
         foreach ($translations as $key => $row) {
             $translation[$key] = $row;
         }
-        $languageFile = PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . $plugin . '.' . $languageId . '.po' ;
+        
         G::LoadSystem( 'i18n_po' );
         $POFile = new i18n_PO( $languageFile );
         $POFile->readInit();
