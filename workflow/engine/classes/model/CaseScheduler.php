@@ -320,11 +320,10 @@ class CaseScheduler extends BaseCaseScheduler
             }
 
             $sActualTime = $aRow['SCH_TIME_NEXT_RUN'];
-            $sActualDataHour = date( 'H', strtotime( $aRow['SCH_TIME_NEXT_RUN'] ) );
-            $sActualDataMinutes = date( 'i', strtotime( $aRow['SCH_TIME_NEXT_RUN'] ) );
-            $dActualSysHour = date( 'H', $nTime );
-            $dActualSysHour = ($dActualSysHour == '00') ? '24' : $dActualSysHour;
-            $dActualSysMinutes = date( 'i', $nTime );
+            $sActualDataHour    = (int)(date("H", strtotime($aRow["SCH_TIME_NEXT_RUN"])));
+            $sActualDataMinutes = (int)(date("i", strtotime($aRow["SCH_TIME_NEXT_RUN"])));
+            $dActualSysHour     = (int)(date("H", $nTime));
+            $dActualSysMinutes  = (int)(date("i", $nTime));
             $sActualDataTime = strtotime( $aRow['SCH_TIME_NEXT_RUN'] );
             $sActualSysTime = strtotime( $nTime );
 
