@@ -591,7 +591,7 @@
          try {
              $result = array ();
              $oCriteria = new Criteria( 'workflow' );
-             $oCriteria->add( UsersPeer::USR_STATUS, 'ACTIVE' );
+//             $oCriteria->add( UsersPeer::USR_STATUS, 'ACTIVE' ); // commented out to get all users ACTIVE and INACTIVE
              $oDataset = UsersPeer::doSelectRS( $oCriteria );
              $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
              $oDataset->next();
@@ -599,7 +599,9 @@
              while ($aRow = $oDataset->getRow()) {
                  //$oProcess = new User();
                  //$arrayProcess = $oUser->Load($aRow['PRO_UID']);
-                 $result[] = array ('guid' => $aRow['USR_UID'],'name' => $aRow['USR_USERNAME']
+				 // added USR_STATUS to be returned to ws client 
+				 // changed also pmos2.wsdl
+                 $result[] = array ('guid' => $aRow['USR_UID'],'name' => $aRow['USR_USERNAME'], 'status' => $aRow['USR_STATUS']
                  );
                  $oDataset->next();
              }
