@@ -271,7 +271,7 @@ class license_application extends padl
         }
 
         if (isset($this->_SERVER_VARS['SERVER_ADDR'])) {
-            $name = gethostbyaddr($this->_SERVER_VARS['SERVER_ADDR']);
+            $name = @gethostbyaddr($this->_SERVER_VARS['SERVER_ADDR']);
             $ip = gethostbyname($name);
             if (!isset($ips[$ip])) {
                 $ips[$ip] = $ip;
