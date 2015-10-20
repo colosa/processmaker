@@ -138,13 +138,15 @@ class wsBase
             $sessionId = G::generateUniqueID();
             $wsResponse = new wsResponse( '0', $sessionId );
 
+			$timelife = explode( ':', gmdate("H:i:s", ini_get('session.cookie_lifetime')));
+			
             $session = new Session();
             $session->setSesUid( $sessionId );
             $session->setSesStatus( 'ACTIVE' );
             $session->setUsrUid( $uid );
             $session->setSesRemoteIp( $_SERVER['REMOTE_ADDR'] );
             $session->setSesInitDate( date( 'Y-m-d H:i:s' ) );
-            $session->setSesDueDate( date( 'Y-m-d H:i:s', mktime( date( 'H' ), date( 'i' ) + 15, date( 's' ), date( 'm' ), date( 'd' ), date( 'Y' ) ) ) );
+            $session->setSesDueDate( date( 'Y-m-d H:i:s', mktime( date( 'H' ) + $timelife[0], date( 'i' ) + $timelife[1], date( 's' ) + $timelife[2], date( 'm' ), date( 'd' ), date( 'Y' ) ) ) );
             $session->setSesEndDate( '' );
             $session->Save();
 
