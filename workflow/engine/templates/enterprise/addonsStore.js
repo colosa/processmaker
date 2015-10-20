@@ -1506,6 +1506,7 @@ Ext.onReady(function() {
         },
         items:[{
                 title:  _('ID_ENTERPRISE_PLUGINS'),
+                autoScroll: false,
                 items : addonsGrid
             },{
                 title:  _('ID_ENTERPRISE_FEATURES'),

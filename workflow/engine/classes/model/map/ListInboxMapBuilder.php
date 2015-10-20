@@ -79,13 +79,13 @@ class ListInboxMapBuilder
 
         $tMap->addColumn('APP_STATUS', 'AppStatus', 'string', CreoleTypes::VARCHAR, false, 32);
 
-        $tMap->addColumn('APP_TITLE', 'AppTitle', 'string', CreoleTypes::VARCHAR, true, 255);
+        $tMap->addColumn('APP_TITLE', 'AppTitle', 'string', CreoleTypes::VARCHAR, false, 255);
 
-        $tMap->addColumn('APP_PRO_TITLE', 'AppProTitle', 'string', CreoleTypes::VARCHAR, true, 255);
+        $tMap->addColumn('APP_PRO_TITLE', 'AppProTitle', 'string', CreoleTypes::VARCHAR, false, 255);
 
-        $tMap->addColumn('APP_TAS_TITLE', 'AppTasTitle', 'string', CreoleTypes::VARCHAR, true, 255);
+        $tMap->addColumn('APP_TAS_TITLE', 'AppTasTitle', 'string', CreoleTypes::VARCHAR, false, 255);
 
-        $tMap->addColumn('APP_UPDATE_DATE', 'AppUpdateDate', 'int', CreoleTypes::TIMESTAMP, true, null);
+        $tMap->addColumn('APP_UPDATE_DATE', 'AppUpdateDate', 'int', CreoleTypes::TIMESTAMP, false, null);
 
         $tMap->addColumn('DEL_PREVIOUS_USR_UID', 'DelPreviousUsrUid', 'string', CreoleTypes::VARCHAR, false, 32);
 

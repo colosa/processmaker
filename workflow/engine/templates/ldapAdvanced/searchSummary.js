@@ -1,56 +1,56 @@
 var caseData = '';
 var appTitle = new Ext.form.Label({
-    fieldLabel: "Case Title",
+    fieldLabel: _('ID_CASE_TITLE'),
     labelStyle: 'font-weight:bold;padding-right:30px;'
 });
 
 var process = new Ext.form.Label({
-    fieldLabel: "Process Uid",
+    fieldLabel: _('ID_PROCESS_UID'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
 var processTitle = new Ext.form.Label({
-    fieldLabel: "Process",
+    fieldLabel: _('ID_PROCESS'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
 var appUid = new Ext.form.Label({
-    fieldLabel: "App Uid",
+    fieldLabel: _('ID_APP_UID'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
 var caseNumber = new Ext.form.Label({
-    fieldLabel: "Case number",
+    fieldLabel: _('ID_CASE_NUMBER'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
 var initUser = new Ext.form.Label({
-    fieldLabel: "Init user",
+    fieldLabel: _('ID_INIT_USER'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
 var finishUser = new Ext.form.Label({
-    fieldLabel: "Finish user",
+    fieldLabel: _('ID_FINISH_USER'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
 var createDate = new Ext.form.Label({
-    fieldLabel: "Create date",
+    fieldLabel: _('ID_CREATE_DATE'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
 var finishDate = new Ext.form.Label({
-    fieldLabel: "Finish date",
+    fieldLabel: _('ID_FINISH_DATE'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
 var fileName = new Ext.form.Label({
-    fieldLabel: "File Name",
+    fieldLabel: _('ID_FILE_NAME'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
 var statusCaseWin = new Ext.form.Label({
-    fieldLabel: "Status",
+    fieldLabel: _('ID_CASESLIST_APP_STATUS'),
     labelStyle: 'font-weight:bold;padding-right:35px;'
 });
 
@@ -82,8 +82,8 @@ var formCase = new Ext.FormPanel({
                         if (val == 'yes') {
                             dataCase = caseData;
                             Ext.MessageBox.show({
-                                msg: "Restoring case" + ' ' + dataCase.CASE_NUMBER + ' ...',
-                                progressText: 'Saving...',
+                                msg: _('ID_RESTORING_CASE') + ' ' + dataCase.CASE_NUMBER + ' ...',
+                                progressText: _('ID_SAVING'),
                                 width:300,
                                 wait:true,
                                 waitConfig: {interval:200},
@@ -102,15 +102,15 @@ var formCase = new Ext.FormPanel({
                                     var resp = Ext.decode(returnData.responseText);
                                     if (resp.success) {
                                         Ext.MessageBox.show({
-                                            title: 'Case Unarhive',
-                                            msg: "Case" + ' ' + dataCase.CASE_NUMBER + ' ' + "Restored sucessfully",
+                                            title: _('ID_CASE_UNARHIVE'),
+                                            msg: _('ID_CASE') + ' ' + dataCase.CASE_NUMBER + ' ' + _('ID_RESTORED_SUCESSFULLY'),
                                             buttons: Ext.MessageBox.OK,
                                             animEl: 'mb9',
                                             icon: Ext.MessageBox.INFO
                                         });
                                     } else {
                                         Ext.MessageBox.show({
-                                            title: "Error",
+                                            title: _('ID_ERROR'),
                                             msg: resp.message,
                                             buttons: Ext.MessageBox.OK,
                                             animEl: 'mb9',
@@ -121,7 +121,7 @@ var formCase = new Ext.FormPanel({
                                     storeGridSearch.load();
                                 },
                                 failure: function () {
-                                    Ext.MessageBox.alert("Error", "Error in server");
+                                    Ext.MessageBox.alert("Error", _('ID_ERROR_IN_SERVER'));
                                 }
                             });
                         }
@@ -140,7 +140,7 @@ var formCase = new Ext.FormPanel({
 });
 
 var summaryWindow = new Ext.Window({
-    title: "Detail Case",
+    title: _('ID_DETAIL_CASE'),
     layout: 'fit',
     width: 500,
     height: 320,

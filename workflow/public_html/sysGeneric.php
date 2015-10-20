@@ -277,6 +277,11 @@ define( 'PML_WSDL_URL', PML_SERVER . '/syspmLibrary/en/green/services/wsdl' );
 define( 'PML_UPLOAD_URL', PML_SERVER . '/syspmLibrary/en/green/services/uploadProcess' );
 define( 'PML_DOWNLOAD_URL', PML_SERVER . '/syspmLibrary/en/green/services/download' );
 
+//Call Gulliver Classes
+Bootstrap::LoadThirdParty("smarty/libs", "Smarty.class");
+
+//Loading the autoloader libraries feature
+Bootstrap::registerSystemClasses();
 
 $config = Bootstrap::getSystemConfiguration();
 
@@ -302,12 +307,6 @@ session_start();
 //$e_all = defined( 'E_STRICT' ) ? $e_all & ~ E_STRICT : $e_all;
 //$e_all = $config['debug'] ? $e_all : $e_all & ~ E_NOTICE;
 //$e_all = E_ALL & ~ E_DEPRECATED & ~ E_STRICT & ~ E_NOTICE  & ~E_WARNING;
-
-//Call Gulliver Classes
-Bootstrap::LoadThirdParty("smarty/libs", "Smarty.class");
-
-//Loading the autoloader libraries feature
-Bootstrap::registerSystemClasses();
 
 G::LoadSystem('inputfilter');
 $filter = new InputFilter();

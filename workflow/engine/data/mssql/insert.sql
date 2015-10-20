@@ -4426,7 +4426,7 @@ SELECT 'LABEL','ID_ROOT_FOLDER','en','Root Folder','2014-01-15'
   UNION ALL
 SELECT 'LABEL','ID_RELOAD','en','Reload','2014-01-15' 
   UNION ALL
-SELECT 'LABEL','ID_MOVE','en','Move','2014-01-15' 
+SELECT 'LABEL','ID_MOVE','en','Move','2015-09-17' 
   UNION ALL
 SELECT 'LABEL','ID_RENAME','en','Rename','2014-01-15' 
   UNION ALL
@@ -5526,7 +5526,7 @@ SELECT 'LABEL','ID_TOTAL_CASES_REASSIGNED','en','Total Cases Reassigned','2014-0
   UNION ALL
 SELECT 'LABEL','ID_STATUS_REASSIGNMENT','en','Status Reassignment','2014-01-15' 
   UNION ALL
-SELECT 'LABEL','ID_AUTHENTICATION_SOURCE_INFORMATION','en','Authentication Source Information','2014-01-15' 
+SELECT 'LABEL','ID_AUTHENTICATION_SOURCE_INFORMATION','en','Authentication Source Information','2015-09-15' 
   UNION ALL
 SELECT 'LABEL','ID_YOU_HAVE_ERROR','en','you have an error','2014-01-15' 
   UNION ALL
@@ -5730,7 +5730,7 @@ SELECT 'LABEL','ID_CONNECTION_ERROR_PRIVILEGE','en','Connection Error: User \"{0
   UNION ALL
 SELECT 'LABEL','ID_DATABASE_EXISTS_OVERWRITE','en','Database already exists, check "Delete Databases if exists" to overwrite the exiting databases.','2014-01-15' 
   UNION ALL
-SELECT 'LABEL','ID_USER_PROCESS_NOT_START','en','User can not start process','2014-01-15' 
+SELECT 'LABEL','ID_USER_PROCESS_NOT_START','en','You don''t have processes to start...','2015-09-08' 
   UNION ALL
 SELECT 'LABEL','ID_REQUEST_ACTION_NOT_EXIST','en','The requested action does not exist','2014-01-15' 
   UNION ALL
@@ -7816,1065 +7816,1065 @@ SELECT 'LABEL','ID_EVENT_EVENT_NOT_BELONG_TO_PROJECT','en','The event {0}: "{1}"
   UNION ALL
 SELECT 'LABEL','ID_ROUTE_TO_TASK_INTERMEDIATE_CATCH_TIMER_EVENT','en','The case will be stopped until it has reached the time setting.','2015-07-06' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8a8e57b1911b99b924191503017760d7','en','Full Screen','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8a8e57b1911b99b924191503017760d7','en','Full Screen','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_58ccfb0ba3c854b1c759469193bca86f','en','Exit full screen','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_58ccfb0ba3c854b1c759469193bca86f','en','Exit full screen','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_011306a5e88efff7332299ca7d8e4515','en','Invalid flow between elements. Please delete the flow and reconnect the elements.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_011306a5e88efff7332299ca7d8e4515','en','Invalid flow between elements. Please delete the flow and reconnect the elements.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9303c9bd4f8178680dc382adbfcd62af','en','This field is required.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9303c9bd4f8178680dc382adbfcd62af','en','This field is required.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_44314d568caee793c8d7753a816d6e02','en','An error occurred while retrieving the access token','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_44314d568caee793c8d7753a816d6e02','en','An error occurred while retrieving the access token','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2e9226a813ef94f99899581e55940955','en','Insert Variable','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2e9226a813ef94f99899581e55940955','en','Insert Variable','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_381ba83b537f3a99729bc7c181ee5d23','en','Text to Search','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_381ba83b537f3a99729bc7c181ee5d23','en','Text to Search','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_92a690d939a9dd0ba183db27ca8a3725','en','Process Variables','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_92a690d939a9dd0ba183db27ca8a3725','en','Process Variables','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_716de874a0d74f25c0aa8c444c3a7539','en','Prefix','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_716de874a0d74f25c0aa8c444c3a7539','en','Prefix','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d3b1c3e85ef97de4f7e7a327c1a0e803','en','@@ string, @# float, @% integer, @? URL, @$ SQL query, @= original type.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d3b1c3e85ef97de4f7e7a327c1a0e803','en','@@ string, @# float, @% integer, @? URL, @$ SQL query, @= original type.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ac080d8699580b3079575335cf61e9f5','en','Text to search','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ac080d8699580b3079575335cf61e9f5','en','Text to search','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_10ac3d04253ef7e1ddc73e6091c0cd55','en','Next','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_10ac3d04253ef7e1ddc73e6091c0cd55','en','Next','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dd1f775e443ff3b9a89270713580a51b','en','Previous','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dd1f775e443ff3b9a89270713580a51b','en','Previous','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_47c14840d8e15331fa420b9b2f757cd9','en','Variable','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_47c14840d8e15331fa420b9b2f757cd9','en','Variable','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a1fa27779242b4902f7ae3bdd5c6d508','en','Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a1fa27779242b4902f7ae3bdd5c6d508','en','Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a60852f204ed8028c1c58808b746d115','en','Ok','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a60852f204ed8028c1c58808b746d115','en','Ok','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_193cfc9be3b995831c6af2fea6650e60','en','Page','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_193cfc9be3b995831c6af2fea6650e60','en','Page','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8bf8854bebe108183caeb845c7676ae4','en','of','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8bf8854bebe108183caeb845c7676ae4','en','of','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_014bd6f385cb5aec29ec9714b8106ccb','en','Search ...','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_014bd6f385cb5aec29ec9714b8106ccb','en','Search ...','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_087fb8756d4add87f2d162304ccd486b','en','No records found','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_087fb8756d4add87f2d162304ccd486b','en','No records found','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9571a194f1c1b9adf3a4d10736eabfb2','en','Do you want to delete this Element?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9571a194f1c1b9adf3a4d10736eabfb2','en','Do you want to delete this Element?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bafd7322c6e97d25b6299b5d6fe8920b','en','No','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bafd7322c6e97d25b6299b5d6fe8920b','en','No','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_93cba07454f06a4a960172bbd6e2a435','en','Yes','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_93cba07454f06a4a960172bbd6e2a435','en','Yes','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_70d9be9b139893aa6c69b5e77e614311','en','Confirm','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_70d9be9b139893aa6c69b5e77e614311','en','Confirm','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5f972036fb924e92ecbe7e47a5f4d7a5','en','Are you sure you want to discard your changes?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5f972036fb924e92ecbe7e47a5f4d7a5','en','Are you sure you want to discard your changes?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_eaeb30f9f18e0c50b178676f3eaef45f','en','Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_eaeb30f9f18e0c50b178676f3eaef45f','en','Task','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_7869eef58448eb45b15a15ff1913887f','en','Sub-process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7869eef58448eb45b15a15ff1913887f','en','Sub-process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e5f8dbb32f8dead7935095ec1e38cc67','en','Start Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e5f8dbb32f8dead7935095ec1e38cc67','en','Start Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bbc0b13be5c0344b98b95223b813615d','en','Start Message Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bbc0b13be5c0344b98b95223b813615d','en','Start Message Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6aeef5fece4bc801c9892670bf02117d','en','Start Timer Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6aeef5fece4bc801c9892670bf02117d','en','Start Timer Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_62d98b10558da9a7676b92258717a7a1','en','End Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_62d98b10558da9a7676b92258717a7a1','en','End Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7c3c9ae5b8a82a715f5e606256560190','en','End Message Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7c3c9ae5b8a82a715f5e606256560190','en','End Message Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6ff9dd0d34f65181173c1e4bc39939de','en','Selection','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6ff9dd0d34f65181173c1e4bc39939de','en','Selection','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b74a43dbb36287ea86eb5b0c7b86e8e8','en','Evaluation','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b74a43dbb36287ea86eb5b0c7b86e8e8','en','Evaluation','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_06b1e0de70757f590a02c49ed6643dbd','en','Parallel Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_06b1e0de70757f590a02c49ed6643dbd','en','Parallel Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6b69ae94c0b0bb433fb14f52f2f623b2','en','Inclusive Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6b69ae94c0b0bb433fb14f52f2f623b2','en','Inclusive Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_920337d67a019f218e8ccc1cc90a7e04','en','Exclusive Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_920337d67a019f218e8ccc1cc90a7e04','en','Exclusive Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d40a430b5994378821419101cda69c58','en','Parallel by Evaluation','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d40a430b5994378821419101cda69c58','en','Parallel by Evaluation','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8f45539f90c1409482f8222018541bb7','en','Parallel Join','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8f45539f90c1409482f8222018541bb7','en','Parallel Join','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_55f6611cb342565cf0f5002400f53a95','en','Annotation','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_55f6611cb342565cf0f5002400f53a95','en','Annotation','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_06502cb888fb850e36367519eb1fc54c','en','Vertical line','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_06502cb888fb850e36367519eb1fc54c','en','Vertical line','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f0c8b2bc40856314cdc241d77f7eb12a','en','Horizontal line','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f0c8b2bc40856314cdc241d77f7eb12a','en','Horizontal line','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e93a4587303a40147959da9901f50e34','en','Horizontal Text','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e93a4587303a40147959da9901f50e34','en','Horizontal Text','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b52eb32fc15ea406ee6bb271983b5939','en','Vertical Text','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b52eb32fc15ea406ee6bb271983b5939','en','Vertical Text','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6cb85fb9933f1990eaa1dc7619c84233','en','Data Store','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6cb85fb9933f1990eaa1dc7619c84233','en','Data Store','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8a32f139d42c17d5ed5fe2c8ca02958f','en','Data Object','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8a32f139d42c17d5ed5fe2c8ca02958f','en','Data Object','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7a9e2a30e8e7b5f54f7590b1417a8573','en','Black Box Pool','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7a9e2a30e8e7b5f54f7590b1417a8573','en','Black Box Pool','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_def36b726efed529b13ba240dd331a12','en','Pool','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_def36b726efed529b13ba240dd331a12','en','Pool','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_413d93080f0537ab3a0022f80f2d77b5','en','Intermediate Send Message Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_413d93080f0537ab3a0022f80f2d77b5','en','Intermediate Send Message Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_320bc46e1be50f1379c6fd199c9d64c1','en','Intermediate Receive Message Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_320bc46e1be50f1379c6fd199c9d64c1','en','Intermediate Receive Message Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1a79a39f343f2224748ec987ccf8431f','en','Lane','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1a79a39f343f2224748ec987ccf8431f','en','Lane','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_03937134cedab9078be39a77ee3a48a0','en','Group','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_03937134cedab9078be39a77ee3a48a0','en','Group','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7215ee9c7d9dc229d2921a40e899ec5f','en','','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7215ee9c7d9dc229d2921a40e899ec5f','en','','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5308fcbb3c60d1cb24e45795bf9a0b7e','en','End Email Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5308fcbb3c60d1cb24e45795bf9a0b7e','en','End Email Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_813f078c7fbc03a222410f48f74a68c4','en','Intermediate Email Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_813f078c7fbc03a222410f48f74a68c4','en','Intermediate Email Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b718adec73e04ce3ec720dd11a06a308','en','ID','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b718adec73e04ce3ec720dd11a06a308','en','ID','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_11a5a6ab06a384ff9a00257a806f63c4','en','Gateway Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_11a5a6ab06a384ff9a00257a806f63c4','en','Gateway Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7c9eed3b37ce19ac4a965a1e20b27b7b','en','Exclusive (XOR) Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7c9eed3b37ce19ac4a965a1e20b27b7b','en','Exclusive (XOR) Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_11dccac44340779ce8196e81de2d7650','en','Parallel (AND) Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_11dccac44340779ce8196e81de2d7650','en','Parallel (AND) Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3cd66dde16d60e5dd9dd4a760417c0dc','en','Inclusive (OR) Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3cd66dde16d60e5dd9dd4a760417c0dc','en','Inclusive (OR) Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a3365da89800c556fc769d0b544c3f72','en','Default Flow','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a3365da89800c556fc769d0b544c3f72','en','Default Flow','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a5b72d5e03d21409fcd79bf3f8715f6d','en','setOrientation(): parameter is not valid','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a5b72d5e03d21409fcd79bf3f8715f6d','en','setOrientation(): parameter is not valid','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c6baf5d413034c4bbf37bdc231655e10','en','The lane can be dropped only over an empty pool. Please empty the pool before dropping a lane.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c6baf5d413034c4bbf37bdc231655e10','en','The lane can be dropped only over an empty pool. Please empty the pool before dropping a lane.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5d085d8447bc84ead2b9af188a8e4f0c','en','Before action','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5d085d8447bc84ead2b9af188a8e4f0c','en','Before action','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4965d0bc5e97784d1bb1c4b054523678','en','Handler','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4965d0bc5e97784d1bb1c4b054523678','en','Handler','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4038f53382d7ec3998b8afbdbba12a47','en','After action','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4038f53382d7ec3998b8afbdbba12a47','en','After action','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8c89757e46e215545fe3bdfe188436ac','en','Insert User','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8c89757e46e215545fe3bdfe188436ac','en','Insert User','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c13fa34b370a32d2936226f53ce86875','en','Process Users','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c13fa34b370a32d2936226f53ce86875','en','Process Users','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_92f1b1481fa6ff46c4a3caae78354dab','en','User Name','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_92f1b1481fa6ff46c4a3caae78354dab','en','User Name','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bbbabdbe1b262f75d99d62880b953be1','en','Role','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bbbabdbe1b262f75d99d62880b953be1','en','Role','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3edf8ca26a1ec14dd6e91dd277ae1de6','en','Origin','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3edf8ca26a1ec14dd6e91dd277ae1de6','en','Origin','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_868e45e7bc9c1b6c723724f85f00defc','en','Select Origin Process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_868e45e7bc9c1b6c723724f85f00defc','en','Select Origin Process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e2627d9094274c7bcdc01ce1dadbaaab','en','Select Target Process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e2627d9094274c7bcdc01ce1dadbaaab','en','Select Target Process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c41a31890959544c6523af684561abe5','en','Target','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c41a31890959544c6523af684561abe5','en','Target','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f2a6c498fb90ee345d997f888fce3b18','en','Delete','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f2a6c498fb90ee345d997f888fce3b18','en','Delete','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_50b5d3dcade1bb32254e0f8d54c493de','en','Please insert variable before adding to the list.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_50b5d3dcade1bb32254e0f8d54c493de','en','Please insert variable before adding to the list.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ec211f7c20af43e742bf2570c3cb84f9','en','Add','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ec211f7c20af43e742bf2570c3cb84f9','en','Add','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_171c9ea8629e74f980018c522d83bada','en','Variables Out','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_171c9ea8629e74f980018c522d83bada','en','Variables Out','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_192cf04847c3ffd92ceb9001f2f22458','en','Variables In','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_192cf04847c3ffd92ceb9001f2f22458','en','Variables In','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5eb46c99ff986b0fec53469a86420e28','en','- Select an activity initiated -','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5eb46c99ff986b0fec53469a86420e28','en','- Select an activity initiated -','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b84b068f1f3f6b66583314870e2818c4','en','There are problems getting the output documents, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b84b068f1f3f6b66583314870e2818c4','en','There are problems getting the output documents, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_690605a78c5b7459462f97e6915929d9','en','Sub-process Properties','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_690605a78c5b7459462f97e6915929d9','en','Sub-process Properties','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d3d2e617335f08df83599665eef8a418','en','Close','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d3d2e617335f08df83599665eef8a418','en','Close','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c9cc8cce247e49bae79f15173ce97354','en','Save','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c9cc8cce247e49bae79f15173ce97354','en','Save','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7cfa673ab5fa815bb71b9950b8085e7e','en','Sub-Process name','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7cfa673ab5fa815bb71b9950b8085e7e','en','Sub-Process name','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b6ec7abeb6ae29cc35a4b47475e12afe','en','Process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b6ec7abeb6ae29cc35a4b47475e12afe','en','Process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ea1dfeb79bcdfcc668bc8a09e101b7e9','en','- Select a process -','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ea1dfeb79bcdfcc668bc8a09e101b7e9','en','- Select a process -','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3d3e46d664c75453fcaf8bd79a515ae2','en','Starting task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3d3e46d664c75453fcaf8bd79a515ae2','en','Starting task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b1f38dfe86f39ccbd8ab1d89b266fe25','en','- Select a starting task -','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b1f38dfe86f39ccbd8ab1d89b266fe25','en','- Select a starting task -','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_288aae25bc408055f50c21c991903a44','en','Asynchronous','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_288aae25bc408055f50c21c991903a44','en','Asynchronous','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2fe4167817733fec8e6ba1afddf78f1b','en','Synchronous','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2fe4167817733fec8e6ba1afddf78f1b','en','Synchronous','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0f5ae6bbf3c2244f799acb687894378c','en','The value introduced doesn\''t have the correct format with a vallid prefix (@@, @#, @=)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0f5ae6bbf3c2244f799acb687894378c','en','The value introduced doesn\''t have the correct format with a vallid prefix (@@, @#, @=)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_686e697538050e4664636337cc3b834f','en','Create','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_686e697538050e4664636337cc3b834f','en','Create','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7dce122004969d56ae2e0245cb754d35','en','Edit','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7dce122004969d56ae2e0245cb754d35','en','Edit','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_49ee3087348e8d44e1feda1917443987','en','Name','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_49ee3087348e8d44e1feda1917443987','en','Name','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ea4788705e6873b424c65e91c2846b19','en','Cancel','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ea4788705e6873b424c65e91c2846b19','en','Cancel','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3f60b096843929b02e1a070f57e27584','en','Variable Name','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3f60b096843929b02e1a070f57e27584','en','Variable Name','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b021df6aac4654c454f46c77646e745f','en','Label','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b021df6aac4654c454f46c77646e745f','en','Label','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_24fa2fbfb2224c63fee87993306c0c95','en','Variable Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_24fa2fbfb2224c63fee87993306c0c95','en','Variable Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5da01bc260f45532692827ab75ae3076','en','Variable type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5da01bc260f45532692827ab75ae3076','en','Variable type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_03df896fc71cd516fdcf44aa699c4933','en','Variables','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_03df896fc71cd516fdcf44aa699c4933','en','Variables','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f4636507ca93332f92f92fb219a43b02','en','Database Connection','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f4636507ca93332f92f92fb219a43b02','en','Database Connection','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_db71d165eea16a6618d0aa8d9368c4ab','en','Define accepted variable values','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_db71d165eea16a6618d0aa8d9368c4ab','en','Define accepted variable values','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_897356954c2cd3d41b221e3f24f99bba','en','Key','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_897356954c2cd3d41b221e3f24f99bba','en','Key','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dae8ace18bdcbcc6ae5aece263e14fe8','en','Options','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dae8ace18bdcbcc6ae5aece263e14fe8','en','Options','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f827cf462f62848df37c5e1e94a4da74','en','True','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f827cf462f62848df37c5e1e94a4da74','en','True','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_f8320b26d30ab433c5a54546d21f414c','en','False','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f8320b26d30ab433c5a54546d21f414c','en','False','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7106cb2df5011f1eddfd5c67b3c84f0f','en','Variable saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7106cb2df5011f1eddfd5c67b3c84f0f','en','Variable saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_19a757ca6e86f84f6c7b968ca7ad49dd','en','Variable edited successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_19a757ca6e86f84f6c7b968ca7ad49dd','en','Variable edited successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c0723cf0be9c7e3b99fcce0d8e894987','en','working...','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c0723cf0be9c7e3b99fcce0d8e894987','en','working...','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8ebc5d5d6f945c2c7e6d8db6d339e6f0','en','Variable deleted successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8ebc5d5d6f945c2c7e6d8db6d339e6f0','en','Variable deleted successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_089fcbec3033fdeb0d653252c287545a','en','Do you want to delete this variable?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_089fcbec3033fdeb0d653252c287545a','en','Do you want to delete this variable?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7cdf4ad90037202e551d5bd8ffa7c64b','en','Create Variable','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7cdf4ad90037202e551d5bd8ffa7c64b','en','Create Variable','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e70d93ce81ad26fe9c3c5d904a955260','en','Edit Variable','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e70d93ce81ad26fe9c3c5d904a955260','en','Edit Variable','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d23b1ae2181127f01be369b1ca27fdf5','en','The key value already exists.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d23b1ae2181127f01be369b1ca27fdf5','en','The key value already exists.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_81a5579a3eb984a82f9071e2e98e5839','en','Do you want to delete this Key Value?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_81a5579a3eb984a82f9071e2e98e5839','en','Do you want to delete this Key Value?','2015-10-08' 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_4e3eabe9cf44535f238313a1cca79e43','en','Insert alphanumeric characters','2015-08-04' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8b419cf7127d60d5e8f5bf25de7b6b9c','en','A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8b419cf7127d60d5e8f5bf25de7b6b9c','en','A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c1dbca99810306ad4278271382056e6b','en','This action will delete all options. Do you want to continue?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c1dbca99810306ad4278271382056e6b','en','This action will delete all options. Do you want to continue?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d14bf4208a75f39a344f9b018eb084ae','en','Supported Controls: text, textarea, checkbox, dropdown, radio, suggest, hidden.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d14bf4208a75f39a344f9b018eb084ae','en','Supported Controls: text, textarea, checkbox, dropdown, radio, suggest, hidden.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bbfa3317376e4388c7e1ad3bb8582c61','en','Supported Controls: checkbox, dropdown, radio, hidden.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bbfa3317376e4388c7e1ad3bb8582c61','en','Supported Controls: checkbox, dropdown, radio, hidden.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b1f50aae73dc67880c705285bea33d01','en','Supported Controls: datetime.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b1f50aae73dc67880c705285bea33d01','en','Supported Controls: datetime.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8c74ecee5f291eab7aef6f98e5cda411','en','Supported Controls: grid.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8c74ecee5f291eab7aef6f98e5cda411','en','Supported Controls: grid.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1352bad10a077956b0e7ebd618c5198d','en','There are problems loading the Start Timer, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1352bad10a077956b0e7ebd618c5198d','en','There are problems loading the Start Timer, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6547600c780b3b6483c2d5d758666c3f','en','Start Timer updated successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6547600c780b3b6483c2d5d758666c3f','en','Start Timer updated successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b7f6fdbd84a1e6b7e2b8ef9400c93ff3','en','There are problems updating the Start Timer, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b7f6fdbd84a1e6b7e2b8ef9400c93ff3','en','There are problems updating the Start Timer, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4d34f1097f6c8b9cee28bca8b78bbee9','en','Start date','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4d34f1097f6c8b9cee28bca8b78bbee9','en','Start date','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b7de7e4247d4ab279ef031b7a44c201d','en','End date','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b7de7e4247d4ab279ef031b7a44c201d','en','End date','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_213d0c943b541604653a54b0961fd693','en','Execution time','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_213d0c943b541604653a54b0961fd693','en','Execution time','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_09ac9c2ebfa317b7baa510b9b93127bb','en','(HH:MM) Format 24 hrs.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_09ac9c2ebfa317b7baa510b9b93127bb','en','(HH:MM) Format 24 hrs.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2e0d4647851b478e8d64b0782bd9a918','en','Select the day(s) of the week below','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2e0d4647851b478e8d64b0782bd9a918','en','Select the day(s) of the week below','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6f8522e0610541f1ef215a22ffa66ff6','en','Monday','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6f8522e0610541f1ef215a22ffa66ff6','en','Monday','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5792315f09a5d54fb7e3d066672b507f','en','Tuesday','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5792315f09a5d54fb7e3d066672b507f','en','Tuesday','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_796c163589f295373e171842f37265d5','en','Wednesday','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_796c163589f295373e171842f37265d5','en','Wednesday','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_78ae6f0cd191d25147e252dc54768238','en','Thursday','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_78ae6f0cd191d25147e252dc54768238','en','Thursday','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c33b138a163847cdb6caeeb7c9a126b4','en','Friday','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c33b138a163847cdb6caeeb7c9a126b4','en','Friday','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8b7051187b9191cdcdae6ed5a10e5adc','en','Saturday','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8b7051187b9191cdcdae6ed5a10e5adc','en','Saturday','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9d1a0949c39e66a0cd65240bc0ac9177','en','Sunday','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9d1a0949c39e66a0cd65240bc0ac9177','en','Sunday','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_881fedcef7e0cc05ab238d2564401150','en','Day of month','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_881fedcef7e0cc05ab238d2564401150','en','Day of month','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e9baaa746b16c3c4b1c6668acba2a095','en','The day','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e9baaa746b16c3c4b1c6668acba2a095','en','The day','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b32493effa41a17220f8a0a7affaa8d9','en','Day of the month (example: 1)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b32493effa41a17220f8a0a7affaa8d9','en','Day of the month (example: 1)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7fb55ed0b7a30342ba6da306428cae04','en','First','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7fb55ed0b7a30342ba6da306428cae04','en','First','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c22cf8376b1893dcfcef0649fe1a7d87','en','Second','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c22cf8376b1893dcfcef0649fe1a7d87','en','Second','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_168909c0b6f1dfbd48f679d47059c1d6','en','Third','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_168909c0b6f1dfbd48f679d47059c1d6','en','Third','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6e599f7a2a9186d391be4537f105be98','en','Fourth','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6e599f7a2a9186d391be4537f105be98','en','Fourth','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d55b30607c2a9a2616347d6edb789f6b','en','Last','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d55b30607c2a9a2616347d6edb789f6b','en','Last','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e1c496f67d70286897d9813254b4c0b1','en','Of the month(s)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e1c496f67d70286897d9813254b4c0b1','en','Of the month(s)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e68564f23e0e939acea76dc3d2bc01bf','en','Jan','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e68564f23e0e939acea76dc3d2bc01bf','en','Jan','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ea171d540ccd5f0669171ef06d3cd848','en','Feb','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ea171d540ccd5f0669171ef06d3cd848','en','Feb','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7ce6b2286a5396e614b8484105d277e0','en','Mar','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7ce6b2286a5396e614b8484105d277e0','en','Mar','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6d7215c4b3bc4716d026ac46c6d9ae64','en','Apr','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6d7215c4b3bc4716d026ac46c6d9ae64','en','Apr','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_195fbb57ffe7449796d23466085ce6d8','en','May','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_195fbb57ffe7449796d23466085ce6d8','en','May','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_eb4b40c1221dad5b23fe7ef84d292be1','en','Jun','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_eb4b40c1221dad5b23fe7ef84d292be1','en','Jun','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a2866cd6efaa65c92278d4771a9eaec7','en','Jul','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a2866cd6efaa65c92278d4771a9eaec7','en','Jul','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_22f1a4667604b8557c9b209c201b4bc6','en','Aug','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_22f1a4667604b8557c9b209c201b4bc6','en','Aug','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f04aa7019c490474fa3ce16e93501b57','en','Sep','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f04aa7019c490474fa3ce16e93501b57','en','Sep','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_594be08882c8e9d5efb9eeb62f303744','en','Oct','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_594be08882c8e9d5efb9eeb62f303744','en','Oct','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_343e6957be77c6247aa2b8d0deb68bd6','en','Nov','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_343e6957be77c6247aa2b8d0deb68bd6','en','Nov','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d207b4e0bce42a8f1555ce3a05e287f6','en','Dec','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d207b4e0bce42a8f1555ce3a05e287f6','en','Dec','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3435b9bbc654ab606ab80f01ca9712a3','en','Execute every Hour(s)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3435b9bbc654ab606ab80f01ca9712a3','en','Execute every Hour(s)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9fc2d28c05ed9eb1d75ba4465abf15a9','en','Properties','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9fc2d28c05ed9eb1d75ba4465abf15a9','en','Properties','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ec53a8c4f07baed5d8825072c89799be','en','Status','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ec53a8c4f07baed5d8825072c89799be','en','Status','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4d3d769b812b6faa6b76e1a8abaece2d','en','Active','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4d3d769b812b6faa6b76e1a8abaece2d','en','Active','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3cab03c00dbd11bc3569afa0748013f0','en','Inactive','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3cab03c00dbd11bc3569afa0748013f0','en','Inactive','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8f9bfe9d1345237cb3b2b205864da075','en','User','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8f9bfe9d1345237cb3b2b205864da075','en','User','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b6240f93e977cf70300ffa6b5bff79f9','en','Perform this task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b6240f93e977cf70300ffa6b5bff79f9','en','Perform this task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_345ff9170ccdebc764d44f9639ff5587','en','- Select -','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_345ff9170ccdebc764d44f9639ff5587','en','- Select -','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c512b685438f41daa7386329a3b8f8d3','en','Daily','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c512b685438f41daa7386329a3b8f8d3','en','Daily','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6c25e6a6da95b3d583c6ec4c3f82ed4d','en','Weekly','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6c25e6a6da95b3d583c6ec4c3f82ed4d','en','Weekly','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9030e39f00132d583da4122532e509e9','en','Monthly','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9030e39f00132d583da4122532e509e9','en','Monthly','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e6fa96066374220d571ce0ed5f818ca2','en','One Time Only','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e6fa96066374220d571ce0ed5f818ca2','en','One Time Only','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ffcf70e892b8ac3facbac0f88602396b','en','Every','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ffcf70e892b8ac3facbac0f88602396b','en','Every','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_451f887bdbe0c83be42cbfffecedb2f0','en','Select the date and time for case(s) to be initiated.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_451f887bdbe0c83be42cbfffecedb2f0','en','Select the date and time for case(s) to be initiated.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ac48a7776ff0e8dc13b0a1300fc0a75f','en','Must connect to a Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ac48a7776ff0e8dc13b0a1300fc0a75f','en','Must connect to a Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_166a1105094f6efbcb4b3fabd27cfa40','en','The task doesn''t have assigned users','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_166a1105094f6efbcb4b3fabd27cfa40','en','The task doesn''t have assigned users','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_23faca394186e73f3446b5ff25802885','en','Process Files Manager','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_23faca394186e73f3446b5ff25802885','en','Process Files Manager','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2da6df2dfb6fe5c9542ee11118dce1fa','en','Do you want to delete this file?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2da6df2dfb6fe5c9542ee11118dce1fa','en','Do you want to delete this file?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_70225f5038f2c7cb69db4656162a6fbd','en','File deleted successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_70225f5038f2c7cb69db4656162a6fbd','en','File deleted successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f7a524eeeba4c19644a8492b922547ef','en','Main Folders','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f7a524eeeba4c19644a8492b922547ef','en','Main Folders','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4351cfebe4b61d8aa5efa1d020710005','en','View','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4351cfebe4b61d8aa5efa1d020710005','en','View','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_801ab24683a4a8c433c6eb40c48bcd9d','en','Download','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_801ab24683a4a8c433c6eb40c48bcd9d','en','Download','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0557fa923dcee4d0f86b1409f5c2167f','en','Back','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0557fa923dcee4d0f86b1409f5c2167f','en','Back','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_91412465ea9169dfd901dd5e7c96dd99','en','Upload','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_91412465ea9169dfd901dd5e7c96dd99','en','Upload','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fbb7d71920afdff488c3514f3f99fe7c','en','Upload File','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fbb7d71920afdff488c3514f3f99fe7c','en','Upload File','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0b27918290ff5323bea1e3b78a9cf04e','en','File','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0b27918290ff5323bea1e3b78a9cf04e','en','File','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1351017ac6423911223bc19a8cb7c653','en','Filename','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1351017ac6423911223bc19a8cb7c653','en','Filename','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_5571b942d21d51f7ee45424b811a2c03','en','Insert file name','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5571b942d21d51f7ee45424b811a2c03','en','Insert file name','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f15c1cae7882448b3fb0404682e17e61','en','Content','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f15c1cae7882448b3fb0404682e17e61','en','Content','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_408d314d5281398dcc19911f30e54573','en','File saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_408d314d5281398dcc19911f30e54573','en','File saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a49bfc71497c26acd31d67999e9767ee','en','File updated successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a49bfc71497c26acd31d67999e9767ee','en','File updated successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d2e8a6fdb73b61fc8bb63c75aa9921c8','en','Start file download successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d2e8a6fdb73b61fc8bb63c75aa9921c8','en','Start file download successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_004fa281c757ed0c2ed3ca2b19dc26f4','en','Please select a file to upload','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_004fa281c757ed0c2ed3ca2b19dc26f4','en','Please select a file to upload','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_40070e1f0867f97db0fa33039fae2063','en','File uploaded successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_40070e1f0867f97db0fa33039fae2063','en','File uploaded successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7df96b18c230f90ada0a9e2307226338','en','Templates','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7df96b18c230f90ada0a9e2307226338','en','Templates','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ed484439470b8e84346a8117d0adf0c2','en','Public Files','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ed484439470b8e84346a8117d0adf0c2','en','Public Files','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9e794f2c08707053dd2bb22a3b4d8888','en','Output Document deleted successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9e794f2c08707053dd2bb22a3b4d8888','en','Output Document deleted successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c312fca2f486deefd552a41ccc75bfab','en','Output Document edited successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c312fca2f486deefd552a41ccc75bfab','en','Output Document edited successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_823e3d309f271d17abda0806debebd13','en','Enable versioning','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_823e3d309f271d17abda0806debebd13','en','Enable versioning','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bbb13df048343bec1b7a2a92db9e861a','en','Show ID','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bbb13df048343bec1b7a2a92db9e861a','en','Show ID','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b78a3223503896721cca1303f776159b','en','Title','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b78a3223503896721cca1303f776159b','en','Title','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6a3f2778916c9a66a69d93ebbebd3345','en','Open Editor','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6a3f2778916c9a66a69d93ebbebd3345','en','Open Editor','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3dc0c79ab4ccf1ab2187b4261a4a43b4','en','Output Document saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3dc0c79ab4ccf1ab2187b4261a4a43b4','en','Output Document saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fc85b3878f914dbad84b82aa35d1c9b9','en','Output Documents','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fc85b3878f914dbad84b82aa35d1c9b9','en','Output Documents','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fc13e2d25ee4c9f4b2263aa7066790a9','en','Create Output Document','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fc13e2d25ee4c9f4b2263aa7066790a9','en','Create Output Document','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c97cca23ba8eebfbe951796f03915107','en','Edit Output Document','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c97cca23ba8eebfbe951796f03915107','en','Edit Output Document','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2421dc6680ce1aaf6cea69494a39df47','en','Do you want to delete this Output Document?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2421dc6680ce1aaf6cea69494a39df47','en','Do you want to delete this Output Document?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_102ddd51b0851772c38c022ff51d1ca3','en','There are problems deleting the OutputDocument, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_102ddd51b0851772c38c022ff51d1ca3','en','There are problems deleting the OutputDocument, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fcfa44a72c608ed9ba6a46ee1b77556b','en','There are problems updating the OutputDocument, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fcfa44a72c608ed9ba6a46ee1b77556b','en','There are problems updating the OutputDocument, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_98369609669478919c74c916440e9978','en','Margin','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_98369609669478919c74c916440e9978','en','Margin','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_945d5e233cf7d6240f6b783b36a374ff','en','Left','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_945d5e233cf7d6240f6b783b36a374ff','en','Left','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_92b09c7c48c520c3c55e497875da437c','en','Right','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_92b09c7c48c520c3c55e497875da437c','en','Right','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a4ffdcf0dc1f31b9acaf295d75b51d00','en','Top','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a4ffdcf0dc1f31b9acaf295d75b51d00','en','Top','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2ad9d63b69c4a10a5cc9cad923133bc4','en','Bottom','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2ad9d63b69c4a10a5cc9cad923133bc4','en','Bottom','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fcf4ce3ff760206c487c9b5a6677dc1c','en','Allowed Permissions','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fcf4ce3ff760206c487c9b5a6677dc1c','en','Allowed Permissions','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f7531e2d0ea27233ce00b5f01c5bf335','en','print','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f7531e2d0ea27233ce00b5f01c5bf335','en','print','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8f45a2644508b5282f57fe129f62d19a','en','modify','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8f45a2644508b5282f57fe129f62d19a','en','modify','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_12cba3ee81cf4a793796a51b6327c678','en','copy','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_12cba3ee81cf4a793796a51b6327c678','en','copy','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ac68b62abfd6a9fe26e8ac4236c8ce0c','en','forms','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ac68b62abfd6a9fe26e8ac4236c8ce0c','en','forms','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_08898cf72a0c0bab1fd5a011cb430875','en','Filename generated','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_08898cf72a0c0bab1fd5a011cb430875','en','Filename generated','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b5a7adde1af5c87d7fd797b6245c2a39','en','Description','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b5a7adde1af5c87d7fd797b6245c2a39','en','Description','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d6f50a79f146ae5544b50c2d9b100a0d','en','Report Generator','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d6f50a79f146ae5544b50c2d9b100a0d','en','Report Generator','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_79e6f4dd5b0c58b1357997d5f85b65bb','en','TCPDF','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_79e6f4dd5b0c58b1357997d5f85b65bb','en','TCPDF','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_482c1abf967563c57d67409476406038','en','HTML2PDF (Old Version)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_482c1abf967563c57d67409476406038','en','HTML2PDF (Old Version)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3b563524fdb17b4a86590470d40bef74','en','Media','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3b563524fdb17b4a86590470d40bef74','en','Media','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_17a53d1a012580ef609b70ef6a25d1f1','en','Letter','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_17a53d1a012580ef609b70ef6a25d1f1','en','Letter','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a10a9bcd450087de1ce1f80b35f44883','en','Legal','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a10a9bcd450087de1ce1f80b35f44883','en','Legal','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_671aa2e8cc2c2435cf509fa4a3baf26c','en','Executive','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_671aa2e8cc2c2435cf509fa4a3baf26c','en','Executive','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2a1ab298edf0162a3305e599b47cbeee','en','B5','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2a1ab298edf0162a3305e599b47cbeee','en','B5','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8292553558a75e672bc62e5a84244c82','en','Folio','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8292553558a75e672bc62e5a84244c82','en','Folio','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5651b7822a684ac4ae3b1b1690e147c0','en','A0Oversize','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5651b7822a684ac4ae3b1b1690e147c0','en','A0Oversize','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d88c146dfafdea37a837778a92415bc2','en','A0','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d88c146dfafdea37a837778a92415bc2','en','A0','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_27f237e6b7f96587b6202ff3607ad88a','en','A1','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_27f237e6b7f96587b6202ff3607ad88a','en','A1','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c6bdf6f65f3845da9085e9ae5790b494','en','A2','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c6bdf6f65f3845da9085e9ae5790b494','en','A2','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6593d7b12fd418cdb35bbf438de72f66','en','A3','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6593d7b12fd418cdb35bbf438de72f66','en','A3','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0c2f3adf2a48bab3adb470f4da57f3d0','en','A4','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0c2f3adf2a48bab3adb470f4da57f3d0','en','A4','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c6f2f93133905f75da4b02ccc19ab66a','en','A5','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c6f2f93133905f75da4b02ccc19ab66a','en','A5','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0b3d5609ee81e50809b7351e848e4698','en','A6','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0b3d5609ee81e50809b7351e848e4698','en','A6','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_be523bdcc111d8113eb54f747d89d4d7','en','A7','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_be523bdcc111d8113eb54f747d89d4d7','en','A7','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fd301d675be7b677ba979a430a80c010','en','A8','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fd301d675be7b677ba979a430a80c010','en','A8','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8650e375ee80b2277a84fc9b85375e36','en','A9','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8650e375ee80b2277a84fc9b85375e36','en','A9','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_992d1d47106d77216cd6c3a15415dbea','en','Screenshot640','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_992d1d47106d77216cd6c3a15415dbea','en','Screenshot640','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5ae16cbb41ab1e74b5d58a96fed59789','en','Screenshot800','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5ae16cbb41ab1e74b5d58a96fed59789','en','Screenshot800','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0fc962c43d228657cb0afd29eb815d15','en','Screenshot1024','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0fc962c43d228657cb0afd29eb815d15','en','Screenshot1024','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_abbd64f40c34c537d3a571af068fce29','en','Orientation','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_abbd64f40c34c537d3a571af068fce29','en','Orientation','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1c7444be9626d149ab598fb79b639f96','en','Portrait','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1c7444be9626d149ab598fb79b639f96','en','Portrait','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_815dff01257e5ef182b25d4c1ef0a7a0','en','Landscape','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_815dff01257e5ef182b25d4c1ef0a7a0','en','Landscape','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e54e3cf1f4745ffacdc539446402f9e4','en','Output Document to Generate','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e54e3cf1f4745ffacdc539446402f9e4','en','Output Document to Generate','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_130c5b3473c57faa76e2a1c54e26f88e','en','Both','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_130c5b3473c57faa76e2a1c54e26f88e','en','Both','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7a48ae1b7387f8a8159c488fbd850021','en','Doc','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7a48ae1b7387f8a8159c488fbd850021','en','Doc','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e4204641574e4827600356b4dcacd276','en','Pdf','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e4204641574e4827600356b4dcacd276','en','Pdf','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_86fd9a7abc9f357e7fa206b2d42ec5ba','en','Destination Path','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_86fd9a7abc9f357e7fa206b2d42ec5ba','en','Destination Path','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_189f63f277cd73395561651753563065','en','Tags','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_189f63f277cd73395561651753563065','en','Tags','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b9cf99bfe1ed82c4a117449ed85680db','en','There are problems saved the OutputDocument, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b9cf99bfe1ed82c4a117449ed85680db','en','There are problems saved the OutputDocument, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2da50ac492a35f56e1317546284fe77a','en','Timer Event saved correctly','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2da50ac492a35f56e1317546284fe77a','en','Timer Event saved correctly','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f49b52022300199128ed01380edda751','en','There are problems updating the Timer Event, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f49b52022300199128ed01380edda751','en','There are problems updating the Timer Event, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d350f9ff349e133f8d3f8f574dbe1918','en','Star date','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d350f9ff349e133f8d3f8f574dbe1918','en','Star date','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_cda829a5b60fd623ccd9c89377c1ba7f','en','Date time','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_cda829a5b60fd623ccd9c89377c1ba7f','en','Date time','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_86f5978d9b80124f509bdb71786e929e','en','January','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_86f5978d9b80124f509bdb71786e929e','en','January','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_659e59f062c75f81259d22786d6c44aa','en','February','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_659e59f062c75f81259d22786d6c44aa','en','February','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fa3e5edac607a88d8fd7ecb9d6d67424','en','March','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fa3e5edac607a88d8fd7ecb9d6d67424','en','March','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3fcf026bbfffb63fb24b8de9d0446949','en','April','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3fcf026bbfffb63fb24b8de9d0446949','en','April','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_688937ccaf2a2b0c45a1c9bbba09698d','en','June','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_688937ccaf2a2b0c45a1c9bbba09698d','en','June','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1b539f6f34e8503c97f6d3421346b63c','en','July','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1b539f6f34e8503c97f6d3421346b63c','en','July','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_41ba70891fb6f39327d8ccb9b1dafb84','en','August','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_41ba70891fb6f39327d8ccb9b1dafb84','en','August','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_cc5d90569e1c8313c2b1c2aab1401174','en','September','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_cc5d90569e1c8313c2b1c2aab1401174','en','September','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_eca60ae8611369fe28a02e2ab8c5d12e','en','October','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_eca60ae8611369fe28a02e2ab8c5d12e','en','October','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_7e823b37564da492ca1629b4732289a8','en','November','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7e823b37564da492ca1629b4732289a8','en','November','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_82331503174acbae012b2004f6431fa5','en','December','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_82331503174acbae012b2004f6431fa5','en','December','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_92bbb9d0da7eea5a80d2e05f152685a9','en','At least one of these fields must be filled (Day, Hour, Minute)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_92bbb9d0da7eea5a80d2e05f152685a9','en','At least one of these fields must be filled (Day, Hour, Minute)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_20c1cf6614ec6ffbda1e766353344b6f','en','Timer Event Properties','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_20c1cf6614ec6ffbda1e766353344b6f','en','Timer Event Properties','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dce10ef4bd90edf5b78ca88db34b18fd','en','Sript Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dce10ef4bd90edf5b78ca88db34b18fd','en','Sript Task','2015-08-18' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e807d3ccf8d24c8c1a3d86db5da78da8','en','Days','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e807d3ccf8d24c8c1a3d86db5da78da8','en','Days','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ef831a7b020689074c3df21c36dfc3c0','en','Months','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ef831a7b020689074c3df21c36dfc3c0','en','Months','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3120001274fa32a921770c1b41e6dc0a','en','DETAILS','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3120001274fa32a921770c1b41e6dc0a','en','DETAILS','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_823a38edcd60271ed5106469ce7de36a','en','End date:','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_823a38edcd60271ed5106469ce7de36a','en','End date:','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_03727ac48595a24daed975559c944a44','en','Day','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_03727ac48595a24daed975559c944a44','en','Day','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b55e509c697e4cca0e1d160a7806698f','en','Hour','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b55e509c697e4cca0e1d160a7806698f','en','Hour','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_62902641c38f3a4a8eb3212454360e24','en','Minute','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_62902641c38f3a4a8eb3212454360e24','en','Minute','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_136bf3131fc2868af07c733d969c7833','en','Routing Rule','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_136bf3131fc2868af07c733d969c7833','en','Routing Rule','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ed32b37d44409cdcca89b579bff51348','en','Do you want to delete this routing rule?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ed32b37d44409cdcca89b579bff51348','en','Do you want to delete this routing rule?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7916b6aa41d5ad862bfd15786f608ef9','en','Add Routing Rule','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7916b6aa41d5ad862bfd15786f608ef9','en','Add Routing Rule','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6421c440fabe27193fad6710c33cf7c7','en','There are no items.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6421c440fabe27193fad6710c33cf7c7','en','There are no items.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_545106eebc5cfec4095c8903a3e5bea9','en','Next Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_545106eebc5cfec4095c8903a3e5bea9','en','Next Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9e2941b3c81256fac10392aaca4ccfde','en','Condition','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9e2941b3c81256fac10392aaca4ccfde','en','Condition','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_67dab01827a619fdbcb137f18a83feb5','en','End of process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_67dab01827a619fdbcb137f18a83feb5','en','End of process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fe8096b87357ded238c39b72488da84b','en','Saved correctly','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fe8096b87357ded238c39b72488da84b','en','Saved correctly','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d40a0246031d05173d2fe23ef8b4f7a9','en','Routing rule removed correctly','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d40a0246031d05173d2fe23ef8b4f7a9','en','Routing rule removed correctly','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f724849ad2f7797436db0dbb5fc79a70','en','Do you want to delete all routing rules?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f724849ad2f7797436db0dbb5fc79a70','en','Do you want to delete all routing rules?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_692f9836dcf2a0314f415c873b58e8c4','en','The routing rule to "{0}" already exists','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_692f9836dcf2a0314f415c873b58e8c4','en','The routing rule to "{0}" already exists','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8087a52933ea0613d7a1030d77fe60d6','en','Default flow','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8087a52933ea0613d7a1030d77fe60d6','en','Default flow','2015-09-15' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_12ddb1802ad1aaed5cd7f41e77bab34a','en','Please configure cron to create cases.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_12ddb1802ad1aaed5cd7f41e77bab34a','en','Please configure cron to create cases.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8ac0a5f008a929a85fe29e738a9cce1b','en','Please configure cron to create cases in base to a condition.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8ac0a5f008a929a85fe29e738a9cce1b','en','Please configure cron to create cases in base to a condition.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0422899c4397e3d67ffc16045df065bd','en','Please configure cron to create cases in base to a signal.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0422899c4397e3d67ffc16045df065bd','en','Please configure cron to create cases in base to a signal.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_80896219739fe46ae6982d3ac855a5ad','en','Please configure cron to wait for time event.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_80896219739fe46ae6982d3ac855a5ad','en','Please configure cron to wait for time event.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6238fa95a408af9c5598d0f45d923b18','en','Please configure cron to wait for time condition.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6238fa95a408af9c5598d0f45d923b18','en','Please configure cron to wait for time condition.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e2a990c9958b0fd2ecb860335737c258','en','Please configure script to wait for a signal.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e2a990c9958b0fd2ecb860335737c258','en','Please configure script to wait for a signal.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0b71568d594e3c9e57fe1cfae1957819','en','Please configure a script to send a signal.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0b71568d594e3c9e57fe1cfae1957819','en','Please configure a script to send a signal.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5ac8eb48637bb804f135b488493ae065','en','Please configure script to end with error status.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5ac8eb48637bb804f135b488493ae065','en','Please configure script to end with error status.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8b6aa397ec2c1da9f4ac5444b35e45ae','en','Please configure script to send a signal.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8b6aa397ec2c1da9f4ac5444b35e45ae','en','Please configure script to send a signal.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6068a5925e0bfe4e66a6be47d4abbd06','en','Please configure script to terminate case.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6068a5925e0bfe4e66a6be47d4abbd06','en','Please configure script to terminate case.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_356e95f6532a53e47cda4b6322704948','en','Properties Receive Message','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_356e95f6532a53e47cda4b6322704948','en','Properties Receive Message','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a82be0f551b8708bc08eb33cd9ded0cf','en','Information','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a82be0f551b8708bc08eb33cd9ded0cf','en','Information','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5e7ea55b53a6a5785dcafa75ceac3106','en','Turn into divergent','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5e7ea55b53a6a5785dcafa75ceac3106','en','Turn into divergent','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_cacbda091428339497782e1a28f32017','en','Turn into convergent','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_cacbda091428339497782e1a28f32017','en','Turn into convergent','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_367f11f9dc549f941ad940ecff306043','en','Turn Into Divergent','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_367f11f9dc549f941ad940ecff306043','en','Turn Into Divergent','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_aeec895e38775fbe64708272d92dc32b','en','Turn Into Convergent','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_aeec895e38775fbe64708272d92dc32b','en','Turn Into Convergent','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_991cf8a01a4b946e2a2ded5745194147','en','Event-based Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_991cf8a01a4b946e2a2ded5745194147','en','Event-based Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f45c6a9d5ec3e45e245bc1a1ac9a274b','en','Complex Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f45c6a9d5ec3e45e245bc1a1ac9a274b','en','Complex Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3ef363b6580dd5718f2e99d67087d2b8','en','Exclusive Event-based Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3ef363b6580dd5718f2e99d67087d2b8','en','Exclusive Event-based Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d4fc5d872cc154e5840826e47ceb02f6','en','Parallel Event-based Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d4fc5d872cc154e5840826e47ceb02f6','en','Parallel Event-based Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9bef0fa08d3d079a5e1a6134b35fa3f0','en','End Event Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9bef0fa08d3d079a5e1a6134b35fa3f0','en','End Event Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ce2c8aed9c2fa0cfbed56cbda4d8bf07','en','Empty','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ce2c8aed9c2fa0cfbed56cbda4d8bf07','en','Empty','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_87b74ebf71923a7992adcc3bb0cad08e','en','Email Message','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_87b74ebf71923a7992adcc3bb0cad08e','en','Email Message','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4c2a8fe7eaf24721cc7a9f0175115bd4','en','Message','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4c2a8fe7eaf24721cc7a9f0175115bd4','en','Message','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_902b0d55fddef6f8d651fe1035b7d4bd','en','Error','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_902b0d55fddef6f8d651fe1035b7d4bd','en','Error','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7e93e40a762f4933458f677c495ac770','en','Compensation','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7e93e40a762f4933458f677c495ac770','en','Compensation','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_085fea7abdc5d904fe69a3081efd7398','en','Signal','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_085fea7abdc5d904fe69a3081efd7398','en','Signal','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_858500a28b08c1cd5cb00e035d95c339','en','Multiple Marker','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_858500a28b08c1cd5cb00e035d95c339','en','Multiple Marker','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_056fa3d840f48b7bfbbd68c19a4797b3','en','Terminate','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_056fa3d840f48b7bfbbd68c19a4797b3','en','Terminate','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_696e6fecf8df306ffce7d776b175e9b9','en','Intermediate Event Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_696e6fecf8df306ffce7d776b175e9b9','en','Intermediate Event Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_07052d86b58157929b39588cd04bf868','en','Receive Message','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_07052d86b58157929b39588cd04bf868','en','Receive Message','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_efb4777327e6f704fb1519c1882f93ec','en','Timer','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_efb4777327e6f704fb1519c1882f93ec','en','Timer','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9d3afea73e90192d96dda8d38c87a4fe','en','Conditional','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9d3afea73e90192d96dda8d38c87a4fe','en','Conditional','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_97e7c9a7d06eac006a28bf05467fcc8b','en','Link','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_97e7c9a7d06eac006a28bf05467fcc8b','en','Link','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a0bf169f2539e893e00d7b1296bc4d8e','en','Multiple','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a0bf169f2539e893e00d7b1296bc4d8e','en','Multiple','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_98402eecfbcefc336954458a01752131','en','Parallel','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_98402eecfbcefc336954458a01752131','en','Parallel','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_cbcee680697ae9b5cd066ec611895829','en','Boundary Event Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_cbcee680697ae9b5cd066ec611895829','en','Boundary Event Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1432f32780bbd9cde496343b060fd75d','en','Send Message','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1432f32780bbd9cde496343b060fd75d','en','Send Message','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_69bf4327261159c0bfd29ec31b47dff3','en','Start Event Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_69bf4327261159c0bfd29ec31b47dff3','en','Start Event Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_49b4172127e6e369ab6f4e304a7d743b','en','Edit Process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_49b4172127e6e369ab6f4e304a7d743b','en','Edit Process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e2dabf2318e58eec27521a480bbda205','en','Process Supervisors','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e2dabf2318e58eec27521a480bbda205','en','Process Supervisors','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7bf7a32fd5dfdd1bdbd08a2360b6c72f','en','Supervisors','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7bf7a32fd5dfdd1bdbd08a2360b6c72f','en','Supervisors','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f3a29486bed19a90f2da6d007818b427','en','Steps','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f3a29486bed19a90f2da6d007818b427','en','Steps','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3b44e8c1da430ff11f9ff3b38a67ac34','en','Enable Grid Lines','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3b44e8c1da430ff11f9ff3b38a67ac34','en','Enable Grid Lines','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fb7393c8bfd85b64a670cfd73a449a05','en','Disable Grid Lines','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fb7393c8bfd85b64a670cfd73a449a05','en','Disable Grid Lines','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9dd5fda31e43186448cb9b888b206abf','en','Task Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9dd5fda31e43186448cb9b888b206abf','en','Task Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d74c675d11eb7323f063948513b9a14d','en','Empty Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d74c675d11eb7323f063948513b9a14d','en','Empty Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ef2e2525cf10996e5e7e480cdb28ec7f','en','Send Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ef2e2525cf10996e5e7e480cdb28ec7f','en','Send Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_957903d24fd400242e5732414bcfe53a','en','Receive Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_957903d24fd400242e5732414bcfe53a','en','Receive Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0544ceae853cfdbfd84515d140e2c233','en','User Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0544ceae853cfdbfd84515d140e2c233','en','User Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_61e80a8ed0aff262daa5800330e133f3','en','Service Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_61e80a8ed0aff262daa5800330e133f3','en','Service Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4b1f36581927bba38500601a5bf3ede8','en','Script Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4b1f36581927bba38500601a5bf3ede8','en','Script Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d9a178c34608359bd5608813a08de096','en','Manual Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d9a178c34608359bd5608813a08de096','en','Manual Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_49bfe61a6dfb1b2eb694d2b5f2ebf34f','en','Business Rule Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_49bfe61a6dfb1b2eb694d2b5f2ebf34f','en','Business Rule Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2f5e2c60c890f5e7b9740fa8e71413c3','en','Marker Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2f5e2c60c890f5e7b9740fa8e71413c3','en','Marker Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6adf97f83acf6453d4a6a4b1070f3754','en','None','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6adf97f83acf6453d4a6a4b1070f3754','en','None','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_89d7b10cb4238977d2b523dfd9ea7745','en','Loop','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_89d7b10cb4238977d2b523dfd9ea7745','en','Loop','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a7e82daa7280af25afbaa076ac16eb1e','en','Sequential','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a7e82daa7280af25afbaa076ac16eb1e','en','Sequential','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6fff14365ddc2513ed26053e4b7161d0','en','Assignment Rules','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6fff14365ddc2513ed26053e4b7161d0','en','Assignment Rules','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ffc1dca70df11105d22d9f427a9e260b','en','Edit Label','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ffc1dca70df11105d22d9f427a9e260b','en','Edit Label','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6060f601471eb3f733ec222180fff382','en','Delete Routing Rule','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6060f601471eb3f733ec222180fff382','en','Delete Routing Rule','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9ae81aaafc349e789de0d60e08391442','en','Open Diagram','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9ae81aaafc349e789de0d60e08391442','en','Open Diagram','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5493fda247f138a0b3fc0d493b2906e5','en','Web Entry','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5493fda247f138a0b3fc0d493b2906e5','en','Web Entry','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fbb2a06f5e81e935d1359afc108e26a3','en','Delete Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fbb2a06f5e81e935d1359afc108e26a3','en','Delete Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3c8a58a423ed96c806664b1d4e803e2c','en','Data Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3c8a58a423ed96c806664b1d4e803e2c','en','Data Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4bcbe7caab53fdc2626018b5ad22bb4b','en','Data Empty','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4bcbe7caab53fdc2626018b5ad22bb4b','en','Data Empty','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ce554c674e9c02f5f9cf53d2ea2a70ed','en','Working on this feature...','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ce554c674e9c02f5f9cf53d2ea2a70ed','en','Working on this feature...','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b77bbd177ec1e4d71a0fe96d3d4e8b39','en','Data Input','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b77bbd177ec1e4d71a0fe96d3d4e8b39','en','Data Input','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_94c0e9b311d45b04fc37b41903c6debc','en','Data Output','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_94c0e9b311d45b04fc37b41903c6debc','en','Data Output','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4416936991b2db414309b13293402bd0','en','Add at least one variable.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4416936991b2db414309b13293402bd0','en','Add at least one variable.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9c8a77ee3bca206e3dfab19d94eb5127','en','Working...','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9c8a77ee3bca206e3dfab19d94eb5127','en','Working...','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e72f0ee21d7c9d52b358a3bda9133429','en','Message Type Deleted successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e72f0ee21d7c9d52b358a3bda9133429','en','Message Type Deleted successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e711a42279b23490048c2a4bbaeb1afc','en','Edit Message Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e711a42279b23490048c2a4bbaeb1afc','en','Edit Message Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_045ee0bdd04f6173c47edf74fd6d51b3','en','Message Field','2015-07-13' 
+SELECT 'LABEL','ID_MAFE_045ee0bdd04f6173c47edf74fd6d51b3','en','Message Field','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c360a6b5c3b1b36a8a5a13737cfda21c','en','Message Field Name','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c360a6b5c3b1b36a8a5a13737cfda21c','en','Message Field Name','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f93509db95228584504382f98aae0f52','en','Message Types','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f93509db95228584504382f98aae0f52','en','Message Types','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d7dea2ba9be1a9aac2a1d06691e50570','en','Message Type Saved successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d7dea2ba9be1a9aac2a1d06691e50570','en','Message Type Saved successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1954ab48f4de4fc4c5e53d7dad0618d0','en','Message Type edited successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1954ab48f4de4fc4c5e53d7dad0618d0','en','Message Type edited successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a3abcefb106274416cde9154cfed6a8c','en','Do you want to delete this Message Type?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a3abcefb106274416cde9154cfed6a8c','en','Do you want to delete this Message Type?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ac1b41823ac8a2ff1d66e2874557d268','en','Create Message Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ac1b41823ac8a2ff1d66e2874557d268','en','Create Message Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f4ee0932c0b3cdb0af6d4407fc915b28','en','The variable Name already exists.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f4ee0932c0b3cdb0af6d4407fc915b28','en','The variable Name already exists.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6e554a6c35c9b142ea806751d85818fa','en','Message Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6e554a6c35c9b142ea806751d85818fa','en','Message Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_40a8ab55460abd5723f028b6bf182071','en','a text here','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_40a8ab55460abd5723f028b6bf182071','en','a text here','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9ac255aa1787084131704557a026ffce','en','a cost here','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9ac255aa1787084131704557a026ffce','en','a cost here','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9c197a0cff0c1e0b4410227c537b87ca','en','a unit cost here','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9c197a0cff0c1e0b4410227c537b87ca','en','a unit cost here','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5dbf17e4c8ca8f1979b7b4b3abaffe32','en','Edit process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5dbf17e4c8ca8f1979b7b4b3abaffe32','en','Edit process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7208f9c293aca2d9a81fb9dc71229ee7','en','Properties saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7208f9c293aca2d9a81fb9dc71229ee7','en','Properties saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8ff922bbcd8ad41cdfc48d3c5163b2ab','en','Calendar','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8ff922bbcd8ad41cdfc48d3c5163b2ab','en','Calendar','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0dc345e011be6119663ae656cd0fc190','en','Process Category','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0dc345e011be6119663ae656cd0fc190','en','Process Category','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9137b642b56c7affcc215d1f027b11d0','en','Dynaform to show a case summary','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9137b642b56c7affcc215d1f027b11d0','en','Dynaform to show a case summary','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_95c44d967dca9312e445ee18f6e610c6','en','Routing Screen Template','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_95c44d967dca9312e445ee18f6e610c6','en','Routing Screen Template','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a603905470e2a5b8c13e96b579ef0dba','en','Debug','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a603905470e2a5b8c13e96b579ef0dba','en','Debug','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dc6efaeccf34d292ce91634e532d7b44','en','Hide the case number and the case title in the steps','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dc6efaeccf34d292ce91634e532d7b44','en','Hide the case number and the case title in the steps','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f870c761f7f6737381a821feb9a73890','en','This a sub-process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f870c761f7f6737381a821feb9a73890','en','This a sub-process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_65c3b5956adaf7365a8857abb7ddd26b','en','Execute a trigger when a case is deleted','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_65c3b5956adaf7365a8857abb7ddd26b','en','Execute a trigger when a case is deleted','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_172ac8a8053b32e15c602be955a2f098','en','Execute a trigger when a case is cancelled','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_172ac8a8053b32e15c602be955a2f098','en','Execute a trigger when a case is cancelled','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c88ad0157bfa285e16c222e651c6d482','en','Execute a trigger when a case is paused','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c88ad0157bfa285e16c222e651c6d482','en','Execute a trigger when a case is paused','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_26c8b24dce7a00ff4d00781dc2ee5d66','en','Execute a trigger when a case is reassigned','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_26c8b24dce7a00ff4d00781dc2ee5d66','en','Execute a trigger when a case is reassigned','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_53c54b843bcd76e000cda5b85d0f5f48','en','Process Design Access: Public / Private (Owner)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_53c54b843bcd76e000cda5b85d0f5f48','en','Process Design Access: Public / Private (Owner)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_20b4f77bd00b4f63a49ec8e08f3bf6a6','en','Cost','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_20b4f77bd00b4f63a49ec8e08f3bf6a6','en','Cost','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e5771a362d88a71a657bfcd21ca54b3f','en','Units','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e5771a362d88a71a657bfcd21ca54b3f','en','Units','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_32e5bfca7823c2dc9de9df3dfbb5a7d4','en','Process Information','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_32e5bfca7823c2dc9de9df3dfbb5a7d4','en','Process Information','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3d067bedfe2f4677470dd6ccf64d05ed','en','Public','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3d067bedfe2f4677470dd6ccf64d05ed','en','Public','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_47f9082fc380ca62d531096aa1d110f1','en','Private','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_47f9082fc380ca62d531096aa1d110f1','en','Private','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9639e32cab248434a17ab32237cb3b71','en','Apply','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9639e32cab248434a17ab32237cb3b71','en','Apply','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_333447ee7f49b1be2504d30e3313fe55','en','Add Variable','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_333447ee7f49b1be2504d30e3313fe55','en','Add Variable','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3e8f92eb64623f0ecd16d2efcd0acd7e','en','Report Tables','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3e8f92eb64623f0ecd16d2efcd0acd7e','en','Report Tables','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dca2d7da83c33cb7110af7c69de355fc','en','The property event was saved successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dca2d7da83c33cb7110af7c69de355fc','en','The property event was saved successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6e51ca3efb50c3fa4e7eb7fb75cba556','en','Message content','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6e51ca3efb50c3fa4e7eb7fb75cba556','en','Message content','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_11f7f103dc24a2d5ce711c080e1a3851','en','Case assignment method','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_11f7f103dc24a2d5ce711c080e1a3851','en','Case assignment method','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_83482d97257d0242d1f259eb5d34a9f9','en','Cyclical Assignment','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_83482d97257d0242d1f259eb5d34a9f9','en','Cyclical Assignment','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_174e4ee3d13ed11b4d96ac457dc86aa0','en','Manual Assignment','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_174e4ee3d13ed11b4d96ac457dc86aa0','en','Manual Assignment','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_59df5e8802a2330f385e440ebeba70d8','en','Value Based Assignment','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_59df5e8802a2330f385e440ebeba70d8','en','Value Based Assignment','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_58bde56db8d9372db8a2f2ed6e782c9b','en','Reports to','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_58bde56db8d9372db8a2f2ed6e782c9b','en','Reports to','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e76f82ba7eb19b9a6a22829ead887c7d','en','Self Service','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e76f82ba7eb19b9a6a22829ead887c7d','en','Self Service','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bfdc20040cc51551fadc0dabe517af06','en','Self Service Value Based Assignment','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bfdc20040cc51551fadc0dabe517af06','en','Self Service Value Based Assignment','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_39b5b27e239f7f9030b5f21d9dd5d7ed','en','Variable for Value Based Assignment','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_39b5b27e239f7f9030b5f21d9dd5d7ed','en','Variable for Value Based Assignment','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d4211e3744d9a86f562e76204530a2a5','en','Variable for Self Service Value Based Assignment','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d4211e3744d9a86f562e76204530a2a5','en','Variable for Self Service Value Based Assignment','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8fec38c19cc33a4d96868b2bfefbb933','en','Set a timeout','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8fec38c19cc33a4d96868b2bfefbb933','en','Set a timeout','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a76d4ef5f3f6a672bbfab2865563e530','en','Time','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a76d4ef5f3f6a672bbfab2865563e530','en','Time','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9de5dffddfd3a91bc11389e926801d35','en','Time unit','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9de5dffddfd3a91bc11389e926801d35','en','Time unit','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6a7e73161603d87b26a8eac49dab0a9c','en','Hours','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6a7e73161603d87b26a8eac49dab0a9c','en','Hours','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f670ea66cfb0e90bd6090472ad692694','en','Minutes','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f670ea66cfb0e90bd6090472ad692694','en','Minutes','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bec3c2ccfb01e007c2d5282b01766fe1','en','Trigger to execute','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bec3c2ccfb01e007c2d5282b01766fe1','en','Trigger to execute','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b55a7dbee5118fdf297492f8fb6e8d4a','en','Execute Trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b55a7dbee5118fdf297492f8fb6e8d4a','en','Execute Trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c44e15eb538fed543cc4b76599859b09','en','Every time scheduled by cron','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c44e15eb538fed543cc4b76599859b09','en','Every time scheduled by cron','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e1a9dc9f23534e63de9df0d540ac1611','en','Once','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e1a9dc9f23534e63de9df0d540ac1611','en','Once','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_01e314c524834917a79de8eb706d379a','en','Available users list','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_01e314c524834917a79de8eb706d379a','en','Available users list','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0b4db271fc4624853e634ef6882ea8be','en','View all','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0b4db271fc4624853e634ef6882ea8be','en','View all','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4bc7766d599f3ab0ce24ad6cb0df9539','en','View users','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4bc7766d599f3ab0ce24ad6cb0df9539','en','View users','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_714a04bc58e64a19344df22801f2f5b2','en','View groups','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_714a04bc58e64a19344df22801f2f5b2','en','View groups','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e9e8378dd79d6183c91dc32bb85e1363','en','Assigned users list','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e9e8378dd79d6183c91dc32bb85e1363','en','Assigned users list','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ad7bdeed2bf3d72e17abe1a8d0508958','en','Drag & Drop a User or a Group here','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ad7bdeed2bf3d72e17abe1a8d0508958','en','Drag & Drop a User or a Group here','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f9aae5fda8d810a29f12d1e61b4ab25f','en','Users','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f9aae5fda8d810a29f12d1e61b4ab25f','en','Users','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_93c3629ce90c4740f1674bd71f0b79cc','en','Ad Hoc Users','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_93c3629ce90c4740f1674bd71f0b79cc','en','Ad Hoc Users','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0c06d45a9f58aba5f4c4d50b03f65b04','en','- Select Trigger -','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0c06d45a9f58aba5f4c4d50b03f65b04','en','- Select Trigger -','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_912ce77b9eb2aa7567125d574283747c','en','Assignment Rules saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_912ce77b9eb2aa7567125d574283747c','en','Assignment Rules saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_898f54db33f64c0a7ecc7507b9cc5744','en','There are problems, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_898f54db33f64c0a7ecc7507b9cc5744','en','There are problems, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1825d84c97732e2ce3d43b28cee08b58','en','There are problems updating the trigger, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1825d84c97732e2ce3d43b28cee08b58','en','There are problems updating the trigger, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c336025d9ce830a12c4c3668febc2983','en','Trigger updated correctly','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c336025d9ce830a12c4c3668febc2983','en','Trigger updated correctly','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f698f67f5666aff10729d8a1cb1c14d2','en','Trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f698f67f5666aff10729d8a1cb1c14d2','en','Trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6384750fb02541d64a749b1a9296a43f','en','Condition Trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6384750fb02541d64a749b1a9296a43f','en','Condition Trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_650be61892bf690026089544abbd9d26','en','Mode','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_650be61892bf690026089544abbd9d26','en','Mode','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_685a0de987f44b7f5d08be4de212bab2','en','Insert a condition','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_685a0de987f44b7f5d08be4de212bab2','en','Insert a condition','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f54d8cf0ad33dc46d9452d4ea2462459','en','There are problems update the Step Trigger, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f54d8cf0ad33dc46d9452d4ea2462459','en','There are problems update the Step Trigger, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_925844a30a1dbbba5e086b96c9dda97b','en','Step Properties','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_925844a30a1dbbba5e086b96c9dda97b','en','Step Properties','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_23aa72823f3110b89a4791763ed6ca3f','en','Trigger (s)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_23aa72823f3110b89a4791763ed6ca3f','en','Trigger (s)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_382b0f5185773fa0f67a8ed8056c7759','en','N/A','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_382b0f5185773fa0f67a8ed8056c7759','en','N/A','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2a19110e3a66ff6cf760d100bcd046a5','en','An unexpected error while deleting the step, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2a19110e3a66ff6cf760d100bcd046a5','en','An unexpected error while deleting the step, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fbb3a99250a09f01c3e8193f6fe9e1c4','en','Step removed successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fbb3a99250a09f01c3e8193f6fe9e1c4','en','Step removed successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f3b92fc0f97f128818cfb44321376bca','en','Assignment','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f3b92fc0f97f128818cfb44321376bca','en','Assignment','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b084f3ee7e78435d25da98c2e46b022d','en','Before Assignment','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b084f3ee7e78435d25da98c2e46b022d','en','Before Assignment','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_786c4135070aa1910d2f4ac8b2253235','en','Routing','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_786c4135070aa1910d2f4ac8b2253235','en','Routing','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c8af90cf475204521b617a102e1df558','en','Before Routing','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c8af90cf475204521b617a102e1df558','en','Before Routing','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_875f57feddc1d7f1f0501e0e3095a06e','en','After Routing','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_875f57feddc1d7f1f0501e0e3095a06e','en','After Routing','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2a6f5ddb9d6d57e2d8bdf3f83bb7c0cd','en','There are problems getting the Steps, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2a6f5ddb9d6d57e2d8bdf3f83bb7c0cd','en','There are problems getting the Steps, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9060587edeb01a63e3d3edc959678d1e','en','Before','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9060587edeb01a63e3d3edc959678d1e','en','Before','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7bfcadb5535fe8aad5032762b7bfe159','en','After','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7bfcadb5535fe8aad5032762b7bfe159','en','After','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_48d4ff84aa02441adf2d88a294474f54','en','Dynaform','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_48d4ff84aa02441adf2d88a294474f54','en','Dynaform','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7351dffefed9ebab76b3bd34aa6f755e','en','Output Document','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7351dffefed9ebab76b3bd34aa6f755e','en','Output Document','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4c524bf462d270df1443cd80bf70e5de','en','Input Document','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4c524bf462d270df1443cd80bf70e5de','en','Input Document','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c64e8a6435d6cc631fc12b97c20fc341','en','An unexpected error while move up the step, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c64e8a6435d6cc631fc12b97c20fc341','en','An unexpected error while move up the step, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ac8b9fe889f2537263529652aa9b5d0a','en','Step move up successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ac8b9fe889f2537263529652aa9b5d0a','en','Step move up successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d9398cf2da4454e929864cac763d9285','en','An unexpected error while move down the step, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d9398cf2da4454e929864cac763d9285','en','An unexpected error while move down the step, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_106d147e70193e42dc3c722000f6b5c6','en','Step move down successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_106d147e70193e42dc3c722000f6b5c6','en','Step move down successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c669a07db307f61a0e1c8e8cc030da6a','en','An unexpected error while assigning the step, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c669a07db307f61a0e1c8e8cc030da6a','en','An unexpected error while assigning the step, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5d89fe1813446d4b6fb1586b0287f788','en','Step assigned successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5d89fe1813446d4b6fb1586b0287f788','en','Step assigned successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_97f09283ddeadda4e80f20d9608cd8dd','en','An unexpected error while editing the step, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_97f09283ddeadda4e80f20d9608cd8dd','en','An unexpected error while editing the step, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f1e505c1ac6b1e2409fd1dd6520da2ce','en','Step editing successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f1e505c1ac6b1e2409fd1dd6520da2ce','en','Step editing successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4b7c4e2a902673b967b1d63f9a4bed74','en','Condition *','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4b7c4e2a902673b967b1d63f9a4bed74','en','Condition *','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1063e38cb53d94d386f21227fcd84717','en','Remove','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1063e38cb53d94d386f21227fcd84717','en','Remove','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_eb77d1b05f6fe5bd65b610d89db0ad62','en','"?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_eb77d1b05f6fe5bd65b610d89db0ad62','en','"?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ecc40a7a6571d7e558482fbc1fa8bf7e','en','An unexpected error while deleting the trigger, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ecc40a7a6571d7e558482fbc1fa8bf7e','en','An unexpected error while deleting the trigger, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a95f0dd593f8e3eb09960c0fbfe9e133','en','Trigger removed successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a95f0dd593f8e3eb09960c0fbfe9e133','en','Trigger removed successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b4263bcd21beffde1fc98b3dd88f86bd','en','Trigger is assigned.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b4263bcd21beffde1fc98b3dd88f86bd','en','Trigger is assigned.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7308cd3156257f5139f5a76d3cace070','en','An unexpected error while assigning the trigger, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7308cd3156257f5139f5a76d3cace070','en','An unexpected error while assigning the trigger, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1ce7fd4a5bc68650a82e2b254c9137c7','en','Trigger assigned successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1ce7fd4a5bc68650a82e2b254c9137c7','en','Trigger assigned successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_91325d2839558dade6b5d7443822a536','en','Available Elements','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_91325d2839558dade6b5d7443822a536','en','Available Elements','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_aba9ccd2c1467c4108a6dc534dd2b355','en','Assigned Elements (Drop here)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_aba9ccd2c1467c4108a6dc534dd2b355','en','Assigned Elements (Drop here)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_88dfc0c323dbc10d20a543d9c71deee6','en','Steps for task:','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_88dfc0c323dbc10d20a543d9c71deee6','en','Steps for task:','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_94bc73829f4f9ca77fdbe4763394c60a','en','All changes are saved correctly.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_94bc73829f4f9ca77fdbe4763394c60a','en','All changes are saved correctly.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0610123bdd4ffc191a3ea05a847e1307','en','Press','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0610123bdd4ffc191a3ea05a847e1307','en','Press','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3cc6945413a5c64c7f31add6d5211b24','en','to get the function list','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3cc6945413a5c64c7f31add6d5211b24','en','to get the function list','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d4eaf061d0141da13fc44f17a1484f19','en','Step {0} ( {1} )','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d4eaf061d0141da13fc44f17a1484f19','en','Step {0} ( {1} )','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b4fab4396dba8d97b190eb5f4c5dc76f','en','Do you want to remove the step ''{0}''?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b4fab4396dba8d97b190eb5f4c5dc76f','en','Do you want to remove the step ''{0}''?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_53d22bb05078d53466b570517a7afcc8','en','Email Event saved correctly','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_53d22bb05078d53466b570517a7afcc8','en','Email Event saved correctly','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8691b6a6780d4bb3dd62a8376a54be64','en','There are problems updating the Email Event, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8691b6a6780d4bb3dd62a8376a54be64','en','There are problems updating the Email Event, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3cdd375252ada77430ba8a2ca01b7332','en','Email Event Edited correctly','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3cdd375252ada77430ba8a2ca01b7332','en','Email Event Edited correctly','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b292e070d38cedac7309b0635d1edbfe','en','There are problems Edited the Email Event, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b292e070d38cedac7309b0635d1edbfe','en','There are problems Edited the Email Event, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_29aa92edf7c883567893849116ff1add','en','Email Event Properties','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_29aa92edf7c883567893849116ff1add','en','Email Event Properties','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5da618e8e4b89c66fe86e32cdafde142','en','From','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5da618e8e4b89c66fe86e32cdafde142','en','From','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8f72759a8a4c1e446eed395d1adc3d1c','en','- Select an email account -','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8f72759a8a4c1e446eed395d1adc3d1c','en','- Select an email account -','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_60cf550c40960532dfd002fcfbc6725a','en','There are problems getting the Triggers list, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_60cf550c40960532dfd002fcfbc6725a','en','There are problems getting the Triggers list, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_57cf1e6eafb6fe55898b382184708db6','en','The email can be a string or a variable (@@myEmail), comma separated list of emails','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_57cf1e6eafb6fe55898b382184708db6','en','The email can be a string or a variable (@@myEmail), comma separated list of emails','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e12167aa0a7698e6ebc92b4ce3909b53','en','To','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e12167aa0a7698e6ebc92b4ce3909b53','en','To','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c7892ebbb139886662c6f2fc8c450710','en','Subject','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c7892ebbb139886662c6f2fc8c450710','en','Subject','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_197860b724bf2228df0b57ce97ef3c71','en','Exclusive (Manual)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_197860b724bf2228df0b57ce97ef3c71','en','Exclusive (Manual)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_926dec9494209cb088b4962509df1a91','en','Gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_926dec9494209cb088b4962509df1a91','en','Gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b57ed7a0b4f939d0c048882570336e3a','en','Intermediate','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b57ed7a0b4f939d0c048882570336e3a','en','Intermediate','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_87557f11575c0ad78e4e28abedc13b6e','en','End','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_87557f11575c0ad78e4e28abedc13b6e','en','End','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_49ab28040dfa07f53544970c6d147e1e','en','Connect','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_49ab28040dfa07f53544970c6d147e1e','en','Connect','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4453a47138234a650a8b3e45de95a6e7','en','The Web entry was removed successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4453a47138234a650a8b3e45de95a6e7','en','The Web entry was removed successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e28029ceaaf24276f19fd4b77fbc4406','en','Not exists Web entry','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e28029ceaaf24276f19fd4b77fbc4406','en','Not exists Web entry','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fd0bc8b73cd64f0e4c53e79c697c26ff','en','An unexpected error while editing the WebEntry, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fd0bc8b73cd64f0e4c53e79c697c26ff','en','An unexpected error while editing the WebEntry, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bd38e3b28b5d29960021495a1611ad7f','en','WebEntry sucessfully edited.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bd38e3b28b5d29960021495a1611ad7f','en','WebEntry sucessfully edited.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b16a0872aa62256967f8d95cd0855120','en','An unexpected error while created the WebEntry, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b16a0872aa62256967f8d95cd0855120','en','An unexpected error while created the WebEntry, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f0837bad6bfeb922f4b85ded062e7dc9','en','WebEntry created successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f0837bad6bfeb922f4b85ded062e7dc9','en','WebEntry created successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5caa3749019003c9b6b4c69f75186a0b','en','When the form is submitted a new case is created with this user account.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5caa3749019003c9b6b4c69f75186a0b','en','When the form is submitted a new case is created with this user account.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1f7dfcdbdab3af8c15b7b1924b81c7d9','en','Web Entry URL','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1f7dfcdbdab3af8c15b7b1924b81c7d9','en','Web Entry URL','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_853ae90f0351324bd73ea615e6487517','en',':','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_853ae90f0351324bd73ea615e6487517','en',':','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_50a9ec1685a51015e4509529cb939081','en','Generate Link','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_50a9ec1685a51015e4509529cb939081','en','Generate Link','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e0fea6217a6419f047a4364f9edc61c9','en','Select one DynaForm','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e0fea6217a6419f047a4364f9edc61c9','en','Select one DynaForm','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_208f156d4a803025c284bb595a7576b4','en','enable','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_208f156d4a803025c284bb595a7576b4','en','enable','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_075ae3d2fc31640504f814f60e5ef713','en','disabled','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_075ae3d2fc31640504f814f60e5ef713','en','disabled','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3b4d1088f57219635ceacdf6ede63624','en','This field is required. Please press the "Generate Link" button.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3b4d1088f57219635ceacdf6ede63624','en','This field is required. Please press the "Generate Link" button.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8b74de4ff3921872e9fa720a55220c6c','en','Script Task saved correctly','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8b74de4ff3921872e9fa720a55220c6c','en','Script Task saved correctly','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_531bc0580529d4698f8a6e44a6b3b8ff','en','There are problems updating the Script Task, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_531bc0580529d4698f8a6e44a6b3b8ff','en','There are problems updating the Script Task, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_04a7590947b0fb78f977e095bf71fdd0','en','Script Task Properties','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_04a7590947b0fb78f977e095bf71fdd0','en','Script Task Properties','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7c1f2a2d99328c41ac8c94a5871f2895','en','- Select a trigger -','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7c1f2a2d99328c41ac8c94a5871f2895','en','- Select a trigger -','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ca0dbad92a874b2f69b549293387925e','en','Code','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ca0dbad92a874b2f69b549293387925e','en','Code','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ef61fb324d729c341ea8ab9901e23566','en','Add new','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ef61fb324d729c341ea8ab9901e23566','en','Add new','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_630f6dc397fe74e52d5189e2c80f282b','en','Back to list','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_630f6dc397fe74e52d5189e2c80f282b','en','Back to list','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f70649197cbdd9cde4fa62f00355a144','en','The process was saved successfully.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f70649197cbdd9cde4fa62f00355a144','en','The process was saved successfully.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b595a13a031f4551ad8b5400ffb617b7','en','Error saving the process.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b595a13a031f4551ad8b5400ffb617b7','en','Error saving the process.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b86f4a68d98e2e1b9ed38ec3d850b02a','en','Save your changes and exit ?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b86f4a68d98e2e1b9ed38ec3d850b02a','en','Save your changes and exit ?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d14f18dc87737c53160abb29b9da643c','en','Saving Process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d14f18dc87737c53160abb29b9da643c','en','Saving Process','2015-10-08' 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_22c73be45d164d330050bef912c204a5','en','The designer bar display the process name and is used to control the process view (zoom, full screen view), the export, undo/redo and the save button.','2015-08-04' 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_63389bb5c40fea60511b4810d3bc5a23','en','Drag and Drop the process elements that you want include in the process designer.','2015-08-04' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_09da65de2d6b5d57f627cb10fc6b62ac','en','Task: Add to include action in your process.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_09da65de2d6b5d57f627cb10fc6b62ac','en','Task: Add to include action in your process.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_291bf23e90cb5205194ab5eb57c4d854','en','Gateway: Used to control the execution flow.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_291bf23e90cb5205194ab5eb57c4d854','en','Gateway: Used to control the execution flow.','2015-10-08' 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_32536557392f58cafc5303238c6db47d','en','Start Event: The process begins whit a start event.','2015-08-04' 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_0a913bff06889a302826489234dffe76','en','Intermediate Event: Used to define an event that could happend in the middle of the process.','2015-08-04' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_755c1cdb25ce0b28166932338fc860d8','en','End Event: End the execution of the process.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_755c1cdb25ce0b28166932338fc860d8','en','End Event: End the execution of the process.','2015-10-08' 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_28a4772427e81b9d10723db4ed563a5c','en','Pool & Lanes: Organize your process separating roles/pool','2015-08-04' 
   UNION ALL
@@ -8884,7 +8884,7 @@ SELECT 'LABEL','ID_MAFE_f7427faae2ad893c5a89f655253c2311','en','<br/>Variables: 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_585730be839d0835fbecdc1cbe93a525','en','<br/>Dynaforms: Create Dinamic forms.','2015-08-04' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a6527af0da63377b07a3effae750a485','en','<br/>Triggers: Create scripts.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a6527af0da63377b07a3effae750a485','en','<br/>Triggers: Create scripts.','2015-10-08' 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_81c936aa649219ba4f26fad8a0aecef0','en','<br/>Output Documents: Generate ducuments with process data.','2015-08-04' 
   UNION ALL
@@ -8892,499 +8892,499 @@ SELECT 'LABEL','ID_MAFE_a95f4ac8ed56b48369c26639451a3ff9','en','<br/>DB connecti
   UNION ALL
 SELECT 'LABEL','ID_MAFE_45ae1d7975b30cf7580da5e5e90a11a7','en','Select the elements in the designer to display the list of most used options available for each element.','2015-08-04' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b71c644de3981875ca5fc9fdfffd55bc','en','Is not possible create the element in that area','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b71c644de3981875ca5fc9fdfffd55bc','en','Is not possible create the element in that area','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0eaadb4fcb48a0a0ed7bc9868be9fbaa','en','Warning','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0eaadb4fcb48a0a0ed7bc9868be9fbaa','en','Warning','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5c2defa646a21de1595fe6d06c63067e','en','Task in Progress','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5c2defa646a21de1595fe6d06c63067e','en','Task in Progress','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_22e74b4a2ae3e237300f7a79f6e6dbc4','en','Completed Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_22e74b4a2ae3e237300f7a79f6e6dbc4','en','Completed Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d0cf959c7706a5c88e7b434c857f9ca8','en','Pending Task / Not Executed','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d0cf959c7706a5c88e7b434c857f9ca8','en','Pending Task / Not Executed','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_599bc72a2e8309cf0ac21c5076bea02b','en','Parallel Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_599bc72a2e8309cf0ac21c5076bea02b','en','Parallel Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c6589f5236c0c434d0c63dc5f9a856f2','en','Balanced','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c6589f5236c0c434d0c63dc5f9a856f2','en','Balanced','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e1ba155a9f2e8c3be94020eef32a0301','en','Manual','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e1ba155a9f2e8c3be94020eef32a0301','en','Manual','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e09646ce9f4b38cbf4816df15cee61d6','en','Report toO','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e09646ce9f4b38cbf4816df15cee61d6','en','Report toO','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b086843368d1c92d0a86cbee76b20b6f','en','Evaluate','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b086843368d1c92d0a86cbee76b20b6f','en','Evaluate','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dce333d9e7472c085cf0e12d13d52be7','en','self Service','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dce333d9e7472c085cf0e12d13d52be7','en','self Service','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b59516b2b00f4cd096cd07ee67653aeb','en','Self Service Evaluate','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b59516b2b00f4cd096cd07ee67653aeb','en','Self Service Evaluate','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_960b44c579bc2f6818d2daaf9e4c16f0','en','Normal','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_960b44c579bc2f6818d2daaf9e4c16f0','en','Normal','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f19e18aa38c0387bebad06c76c638e0a','en','Sub Process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f19e18aa38c0387bebad06c76c638e0a','en','Sub Process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_920a87dfc39e65161a1edb118e9c728c','en','Delegations','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_920a87dfc39e65161a1edb118e9c728c','en','Delegations','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9405c3aff9112c3c60d03b94792877dc','en','Route','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9405c3aff9112c3c60d03b94792877dc','en','Route','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9435c91d556796c1386cb4005aa9634b','en','It was not possible to establish a connection with the server','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9435c91d556796c1386cb4005aa9634b','en','It was not possible to establish a connection with the server','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ca66e7fe495e52dcf26d76a0e3fd3cd8','en','Event messages','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ca66e7fe495e52dcf26d76a0e3fd3cd8','en','Event messages','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_16688462a9859fc560412c2e1349437f','en','Dynaforms','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_16688462a9859fc560412c2e1349437f','en','Dynaforms','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9cd2a4862f826886105d87195ee6998c','en','Input Documents','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9cd2a4862f826886105d87195ee6998c','en','Input Documents','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_84ff23e034dfdf2b03ed32a46c01b3a1','en','Triggers','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_84ff23e034dfdf2b03ed32a46c01b3a1','en','Triggers','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5199decbb00b9a606e30f3ddfc951f3f','en','Database Connections','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5199decbb00b9a606e30f3ddfc951f3f','en','Database Connections','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d08ccf52b4cdd08e41cfb99ec42e0b29','en','Permissions','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d08ccf52b4cdd08e41cfb99ec42e0b29','en','Permissions','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_50913568f681474c32d3f1b4a9fafdf1','en','Case Tracker','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_50913568f681474c32d3f1b4a9fafdf1','en','Case Tracker','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_07603125709811efbdbcd69161b42527','en','Save process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_07603125709811efbdbcd69161b42527','en','Save process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_de340309f61afe838ad6b7666c38de22','en','Export process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_de340309f61afe838ad6b7666c38de22','en','Export process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_75f470a662481c10dda96968bbeb6d62','en','Export Process','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_75f470a662481c10dda96968bbeb6d62','en','Export Process','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ee458e0db2f22a6528caf5111e594df0','en','Export Diagram','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ee458e0db2f22a6528caf5111e594df0','en','Export Diagram','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5414141a124f3f7a55ae93ed61786092','en','Export Diagram','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5414141a124f3f7a55ae93ed61786092','en','Export Diagram','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_58e2bacbf6c2f5bb444da626206f53dd','en','Undo Action','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_58e2bacbf6c2f5bb444da626206f53dd','en','Undo Action','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_92703f330e823886bdf4891e0c1a3a0f','en','Redo Action','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_92703f330e823886bdf4891e0c1a3a0f','en','Redo Action','2015-10-08' 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_a4784f3ba191bc51c087907b84bf876b','en','In the design area you can drop the process elements and order or arrage them to design your process.','2015-08-04' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d27532d90ecd513e97ab811c0f34dbfd','en','Minimize','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d27532d90ecd513e97ab811c0f34dbfd','en','Minimize','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_86266ee937d97f812a8e57d22b62ee29','en','reset','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_86266ee937d97f812a8e57d22b62ee29','en','reset','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a3e91bd787d916fe4980f4e1892b05f9','en','Reset to original position','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a3e91bd787d916fe4980f4e1892b05f9','en','Reset to original position','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_66285b36f894a5439af5a98e3e1a36d2','en','Process Objects','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_66285b36f894a5439af5a98e3e1a36d2','en','Process Objects','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_128533b9a26b65e5732d15d8db0bc3cd','en','There are unsaved changes, if you leave the editor some changes won''t be saved.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_128533b9a26b65e5732d15d8db0bc3cd','en','There are unsaved changes, if you leave the editor some changes won''t be saved.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_473293d536577cd3fa417dab23b7543c','en','Assign Users and Groups as Supervisors','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_473293d536577cd3fa417dab23b7543c','en','Assign Users and Groups as Supervisors','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_912f459b875e7f5f2a16c29700adc28e','en','Available Users List','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_912f459b875e7f5f2a16c29700adc28e','en','Available Users List','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b1c94ca2fbc3e78fc30069c8d0f01680','en','All','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b1c94ca2fbc3e78fc30069c8d0f01680','en','All','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a37ede293936e29279ed543129451ec3','en','Groups','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a37ede293936e29279ed543129451ec3','en','Groups','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_185b7133db22230701a857c059360cc2','en','Assign','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_185b7133db22230701a857c059360cc2','en','Assign','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4051eb3c690cdbcd9ff5652d04b0ece3','en','Assigned Users List','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4051eb3c690cdbcd9ff5652d04b0ece3','en','Assigned Users List','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3d4cd7a0ec44a80d9784fd6e98529113','en','There are problems saving the assigned user, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3d4cd7a0ec44a80d9784fd6e98529113','en','There are problems saving the assigned user, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_611ebad77c16b1edc01a8e4962094900','en','All Tasks','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_611ebad77c16b1edc01a8e4962094900','en','All Tasks','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b1f802924e8ba557524f0298a65dc345','en','Permission saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b1f802924e8ba557524f0298a65dc345','en','Permission saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f217bd2ed27f82d5c856035f95801373','en','Permission edited successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f217bd2ed27f82d5c856035f95801373','en','Permission edited successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a32a9f28ab30c6d2592043e874163a63','en','Permission deleted successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a32a9f28ab30c6d2592043e874163a63','en','Permission deleted successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1c0b8f236cc7ad13254af9a32ea15be8','en','Resend','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1c0b8f236cc7ad13254af9a32ea15be8','en','Resend','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_336816fd752e17593553eda4894e8464','en','Create permission','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_336816fd752e17593553eda4894e8464','en','Create permission','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_245a41b3d20ec98d1e045e149f645911','en','Edit permission','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_245a41b3d20ec98d1e045e149f645911','en','Edit permission','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3901de5bd75f430a8ce0bed0f2f90056','en','Status Case','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3901de5bd75f430a8ce0bed0f2f90056','en','Status Case','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_521019040a0f4f7773357aa6bc22180b','en','DRAFT','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_521019040a0f4f7773357aa6bc22180b','en','DRAFT','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fa3c608c8fc755543f0d37afd6a42651','en','TO DO','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fa3c608c8fc755543f0d37afd6a42651','en','TO DO','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_99b2439e63f73ad515f7ab2447a80673','en','PAUSED','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_99b2439e63f73ad515f7ab2447a80673','en','PAUSED','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_8f7afecbc8fbc4cd0f50a57d1172482e','en','COMPLETED','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8f7afecbc8fbc4cd0f50a57d1172482e','en','COMPLETED','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_cdc02faa21aec923a6865eed7803cf76','en','Target Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_cdc02faa21aec923a6865eed7803cf76','en','Target Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f4ae7ce97eda9edfe1541b3fdea115b6','en','Group or User','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f4ae7ce97eda9edfe1541b3fdea115b6','en','Group or User','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_da899c7ecb82930d22fb8d1942581648','en','Origin Task','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_da899c7ecb82930d22fb8d1942581648','en','Origin Task','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_aeee5e5818e4bb3fea8fc30d163b0e93','en','Participation required?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_aeee5e5818e4bb3fea8fc30d163b0e93','en','Participation required?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_eba58323955caff5dc6ed8b89fd52ccf','en','Cases Notes','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_eba58323955caff5dc6ed8b89fd52ccf','en','Cases Notes','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b243a6cb94ba1c81a0caa579227ab48c','en','Messages History','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b243a6cb94ba1c81a0caa579227ab48c','en','Messages History','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_203d82526c3bf7c32f75cb083c61c4ff','en','Summary Form','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_203d82526c3bf7c32f75cb083c61c4ff','en','Summary Form','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_713aecbe2f5f5523ebccad6740dc1fc7','en','DynaForm','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_713aecbe2f5f5523ebccad6740dc1fc7','en','DynaForm','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ed5dea09095f671b801bee34ea28a319','en','Permission','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ed5dea09095f671b801bee34ea28a319','en','Permission','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e1e4c8c9ccd9fc39c391da4bcd093fb2','en','Block','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e1e4c8c9ccd9fc39c391da4bcd093fb2','en','Block','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ec36eecb212798bfc86076f1759b5824','en','Participation','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ec36eecb212798bfc86076f1759b5824','en','Participation','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_497031794414a552435f90151ac3b54b','en','Object','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_497031794414a552435f90151ac3b54b','en','Object','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a5a299eb1993f98a6b58401ee62b66a0','en','Do you want to delete this permission?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a5a299eb1993f98a6b58401ee62b66a0','en','Do you want to delete this permission?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e0aa021e21dddbd6d8cecec71e9cf564','en','OK','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e0aa021e21dddbd6d8cecec71e9cf564','en','OK','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_181a78592654ed602ed454e019302f51','en','Do you want to save the changes? This Trigger will be saved like a custom Trigger.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_181a78592654ed602ed454e019302f51','en','Do you want to save the changes? This Trigger will be saved like a custom Trigger.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_29d26bc75ff2e4d5ef3df8bdf6795ee3','en','This is an error message.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_29d26bc75ff2e4d5ef3df8bdf6795ee3','en','This is an error message.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5cdf3f8e0de1cb63a3cfb8bec5a5db9d','en','There are problems getting the triggers wizard list, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5cdf3f8e0de1cb63a3cfb8bec5a5db9d','en','There are problems getting the triggers wizard list, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d6d390d565e04f51d5d9e9b9d729927c','en','Do you want to delete this Trigger?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d6d390d565e04f51d5d9e9b9d729927c','en','Do you want to delete this Trigger?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3d8bb71f323428adfc2812695658672a','en','Trigger deleted successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3d8bb71f323428adfc2812695658672a','en','Trigger deleted successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5fb63579fc981698f97d55bfecb213ea','en','Copy','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5fb63579fc981698f97d55bfecb213ea','en','Copy','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5af874093e5efcbaeb4377b84c5f2ec5','en','Wizard','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5af874093e5efcbaeb4377b84c5f2ec5','en','Wizard','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ce4d4b319a571fda7b689cee71432d5d','en','Custom Trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ce4d4b319a571fda7b689cee71432d5d','en','Custom Trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_899607da7ac548d9a143b9a649d9da96','en','Copy Trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_899607da7ac548d9a143b9a649d9da96','en','Copy Trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_344a7f427fb765610ef96eb7bce95257','en','Editor','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_344a7f427fb765610ef96eb7bce95257','en','Editor','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d890b531c1bc187c2c2fad9da298cfc6','en','There are problems getting the list of projects.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d890b531c1bc187c2c2fad9da298cfc6','en','There are problems getting the list of projects.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_38c4f766faf4ef7214cf68aa1d59a2be','en','There are problems getting the list of triggers.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_38c4f766faf4ef7214cf68aa1d59a2be','en','There are problems getting the list of triggers.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3cfd943f7de9aa2480da0c30735bb031','en','Title of the new trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3cfd943f7de9aa2480da0c30735bb031','en','Title of the new trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0df44e2363fd51047d55635ae4130592','en','Insert the title of the new trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0df44e2363fd51047d55635ae4130592','en','Insert the title of the new trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_42728192eb543e8b035df3d040068d3d','en','Description of the new trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_42728192eb543e8b035df3d040068d3d','en','Description of the new trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_84ae11ae520a036da288ca8a0acc89b1','en','New Trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_84ae11ae520a036da288ca8a0acc89b1','en','New Trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b875db6ce4bf99e5abfb6d5488b1d80e','en','Webbot','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b875db6ce4bf99e5abfb6d5488b1d80e','en','Webbot','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_eb178264802ebbd52cccc8feadb72a6f','en','PARAMETERS','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_eb178264802ebbd52cccc8feadb72a6f','en','PARAMETERS','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2b9153e1f3c6ebd7bf7ac1ee168aa7ca','en','__PARAMETERS__','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2b9153e1f3c6ebd7bf7ac1ee168aa7ca','en','__PARAMETERS__','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4945d3af342647ff517043edb7b3ee92','en','RETURN VALUE','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4945d3af342647ff517043edb7b3ee92','en','RETURN VALUE','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_56a1bf7a363021c1d31dd8338428cc03','en','Custom Trigger','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_56a1bf7a363021c1d31dd8338428cc03','en','Custom Trigger','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0ecb335cc64ebaab517d0b3b2afa5c12','en','Trigger updated successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0ecb335cc64ebaab517d0b3b2afa5c12','en','Trigger updated successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_69f916b54b947775802a817788f74b52','en','New Trigger saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_69f916b54b947775802a817788f74b52','en','New Trigger saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1dccefa9aa4b700675ca17101bccd7d3','en','Edit Source Code','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1dccefa9aa4b700675ca17101bccd7d3','en','Edit Source Code','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7ee5b3669b4120f0b045c2d52a502fe6','en','Wizzard','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7ee5b3669b4120f0b045c2d52a502fe6','en','Wizzard','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_07501edbc1f9fd2f7d0f0d71712b11cf','en','Case Tracker updated successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_07501edbc1f9fd2f7d0f0d71712b11cf','en','Case Tracker updated successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_cae09bbf47d1edd91f595be3d58c3fbb','en','Processmap','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_cae09bbf47d1edd91f595be3d58c3fbb','en','Processmap','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_42184184a95464c63c790acc3a69e564','en','Routing History','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_42184184a95464c63c790acc3a69e564','en','Routing History','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_41de6d6cfb8953c021bbe4ba0701c8a1','en','Messages','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_41de6d6cfb8953c021bbe4ba0701c8a1','en','Messages','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2a5b8b5644c4187548c11f524fe09355','en','OutPut Document','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2a5b8b5644c4187548c11f524fe09355','en','OutPut Document','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_631aea77fcb10698585c8ae77aac3800','en','External Step','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_631aea77fcb10698585c8ae77aac3800','en','External Step','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_cec5d779d280ccc9c11ba492353a3a02','en','Remove Object','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_cec5d779d280ccc9c11ba492353a3a02','en','Remove Object','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0266e5e196c710628bce171dc00a8d4e','en','Available Objects','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0266e5e196c710628bce171dc00a8d4e','en','Available Objects','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d62abd4be004b04615bd652961d6834f','en','Assigned objects','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d62abd4be004b04615bd652961d6834f','en','Assigned objects','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8061e4236e0f5d816ccfb3684a1e279c','en','There are problems updating the Case Tracker, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8061e4236e0f5d816ccfb3684a1e279c','en','There are problems updating the Case Tracker, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ea307f4b2295ccbeec8e6ef77e0a3364','en','There are problems saved, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ea307f4b2295ccbeec8e6ef77e0a3364','en','There are problems saved, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_796932652e81946789e875a9998ac1fb','en','Case Tracker Properties','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_796932652e81946789e875a9998ac1fb','en','Case Tracker Properties','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c61dee25881b22ead46aca2bc70f0f9d','en','Assigned supervisors list','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c61dee25881b22ead46aca2bc70f0f9d','en','Assigned supervisors list','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d685251a3afff77558aaa0101fc941ab','en','There are problems getting the list of dynaforms, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d685251a3afff77558aaa0101fc941ab','en','There are problems getting the list of dynaforms, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_12516cf647fbd9162aca24107016356a','en','Create Blank Dynaform','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_12516cf647fbd9162aca24107016356a','en','Create Blank Dynaform','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7917f0a4bc9e0d07acf8cad570e5f68f','en','Dynaform Information','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7917f0a4bc9e0d07acf8cad570e5f68f','en','Dynaform Information','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5efb244c6b960624bc7180fe96b84d24','en','The Dynaform title','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5efb244c6b960624bc7180fe96b84d24','en','The Dynaform title','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a8dd8f3a191bf5bd3fa7b267b6eb0e3b','en','Save & Open','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a8dd8f3a191bf5bd3fa7b267b6eb0e3b','en','Save & Open','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_94db17a1397178b4a6f6757c2a4d0938','en','There are problems creating the dynaform, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_94db17a1397178b4a6f6757c2a4d0938','en','There are problems creating the dynaform, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_19cc79b708cfd5bf2410bc2767df6105','en','Dynaform saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_19cc79b708cfd5bf2410bc2767df6105','en','Dynaform saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ee86a7940c08cf3c74b87afe09ce964c','en','Do you want to delete this DynaForm?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ee86a7940c08cf3c74b87afe09ce964c','en','Do you want to delete this DynaForm?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0e0d7b681145ccfa803cd39c1b2e648f','en','There are problems deleting the dynaform, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0e0d7b681145ccfa803cd39c1b2e648f','en','There are problems deleting the dynaform, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_920f86f9d4a86d27b2776d84329a97ce','en','Dynaform deleted successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_920f86f9d4a86d27b2776d84329a97ce','en','Dynaform deleted successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0025301679e9722c3abd5914cfbc7dd7','en','Database connection edited successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0025301679e9722c3abd5914cfbc7dd7','en','Database connection edited successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8991f7d434ea8104741fe2c008c09f5a','en','Database connection deleted successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8991f7d434ea8104741fe2c008c09f5a','en','Database connection deleted successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_71707d31908dc87d64747c61247db5f3','en','An unexpected error while deleting the DB Connection, please try again later.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_71707d31908dc87d64747c61247db5f3','en','An unexpected error while deleting the DB Connection, please try again later.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_570b43e00e6db926c60b0eeee0a275b4','en','Database connection saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_570b43e00e6db926c60b0eeee0a275b4','en','Database connection saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ec8c00db917906278b80b96ded113351','en','Testing Server Connection','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ec8c00db917906278b80b96ded113351','en','Testing Server Connection','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7d693ac1022a2b1da7faa568a9273367','en','Create Database Connection','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7d693ac1022a2b1da7faa568a9273367','en','Create Database Connection','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3a3678eaaa8b058dc89a4c3aba8ff52e','en','Edit Database Connection','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3a3678eaaa8b058dc89a4c3aba8ff52e','en','Edit Database Connection','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e7d22294bdcb7133967c3548ece982e5','en','UID','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e7d22294bdcb7133967c3548ece982e5','en','UID','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7bfa30721c5e726ff17e3f972237a82c','en','Engine','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7bfa30721c5e726ff17e3f972237a82c','en','Engine','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a79a682f66f0f9b8aa2ca16816883717','en','Encode','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a79a682f66f0f9b8aa2ca16816883717','en','Encode','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_53fd42622e1c404f5bfced3a7dad0fe1','en','Select Connection Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_53fd42622e1c404f5bfced3a7dad0fe1','en','Select Connection Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9aa1b03934893d7134a660af4204f2a9','en','Server','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9aa1b03934893d7134a660af4204f2a9','en','Server','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_825689fed4e8cd85dbc5beedf98feec0','en','Database Name','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_825689fed4e8cd85dbc5beedf98feec0','en','Database Name','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f6039d44b29456b20f8f373155ae4973','en','Username','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f6039d44b29456b20f8f373155ae4973','en','Username','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dc647eb65e6711e155375218212b3964','en','Password','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dc647eb65e6711e155375218212b3964','en','Password','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_60aaf44d4b562252c04db7f98497e9aa','en','Port','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_60aaf44d4b562252c04db7f98497e9aa','en','Port','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_49ab5aaeb16e40d2787f6cc6532c99a3','en','Test Connection','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_49ab5aaeb16e40d2787f6cc6532c99a3','en','Test Connection','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_dc810b4cb74c8f016bceb38f35f14d34','en','Do you want to delete this DB Connection?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dc810b4cb74c8f016bceb38f35f14d34','en','Do you want to delete this DB Connection?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dfc40f0e59f5a510ccd9db550affc2a5','en','Parallel gateway','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dfc40f0e59f5a510ccd9db550affc2a5','en','Parallel gateway','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_10b4eb76294b70d7fd6df997ff06edb1','en','Complex','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_10b4eb76294b70d7fd6df997ff06edb1','en','Complex','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_216d2edf8bc66ca50d3d47aba34b991a','en','Start message event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_216d2edf8bc66ca50d3d47aba34b991a','en','Start message event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c6954d067d40daeddc3b214739168421','en','Start timer event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c6954d067d40daeddc3b214739168421','en','Start timer event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_683cac718eff3c9ef15204ec3b48cf37','en','Boundary Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_683cac718eff3c9ef15204ec3b48cf37','en','Boundary Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2c0cf0d0c01823f3bc212d4edd40da09','en','End Message Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2c0cf0d0c01823f3bc212d4edd40da09','en','End Message Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9dcfba52eee7cb299acdeb584bfc76bd','en','End Email Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9dcfba52eee7cb299acdeb584bfc76bd','en','End Email Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7b7a4cc675a7dec4f33f0554209f1be9','en','Black Box Pool','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7b7a4cc675a7dec4f33f0554209f1be9','en','Black Box Pool','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6de53c57fd9dc9682d21c1be3147bfcd','en','Vertical Line','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6de53c57fd9dc9682d21c1be3147bfcd','en','Vertical Line','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4fa118893d0527ca4050e8b48d3ec58f','en','Horizontal Line','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4fa118893d0527ca4050e8b48d3ec58f','en','Horizontal Line','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2d33b0db41ea7a05caec256b28887de2','en','Text Annotation','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2d33b0db41ea7a05caec256b28887de2','en','Text Annotation','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_57c9b9c47ca1d9e07f7a39184ce0173d','en','Lasso','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_57c9b9c47ca1d9e07f7a39184ce0173d','en','Lasso','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_97d8f56bf41502f60ca6fdd5d5da8edc','en','Definitions','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_97d8f56bf41502f60ca6fdd5d5da8edc','en','Definitions','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a959d712144264deebce99d1cb9183ed','en','Insert a title','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a959d712144264deebce99d1cb9183ed','en','Insert a title','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7fa67ad3c1eade92cef07ff53f6ed2f5','en','Insert a description','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7fa67ad3c1eade92cef07ff53f6ed2f5','en','Insert a description','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_df9d1858f32ca3b186ac018ca508a144','en','Variable for Case priority','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_df9d1858f32ca3b186ac018ca508a144','en','Variable for Case priority','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_640eaa8954e206c0dc9a4da71619537d','en','Case Labels','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_640eaa8954e206c0dc9a4da71619537d','en','Case Labels','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1f5a44e6621dc51b6daca35844ba8311','en','Timing Control','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1f5a44e6621dc51b6daca35844ba8311','en','Timing Control','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4989a483239b227710aa6f4501b5d3a1','en','Allow users to change the task duration in runtime','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4989a483239b227710aa6f4501b5d3a1','en','Allow users to change the task duration in runtime','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7fdb996b58affc6fdabafed35efec939','en','Task duration','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7fdb996b58affc6fdabafed35efec939','en','Task duration','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b1897515d548a960afe49ecf66a29021','en','Average','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b1897515d548a960afe49ecf66a29021','en','Average','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_725255d7ccc0cf426c1da6abe0afe7e4','en','SDV','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_725255d7ccc0cf426c1da6abe0afe7e4','en','SDV','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2470a67fad9f2e7fbb2f4c5e78fad6af','en','Count days by','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2470a67fad9f2e7fbb2f4c5e78fad6af','en','Count days by','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1ba532aebcefcfd5cc7a5c1dd99dbd8b','en','Work Days','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1ba532aebcefcfd5cc7a5c1dd99dbd8b','en','Work Days','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_327094c3c1dfa5775d9da557c57b3c8e','en','Calendar Days','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_327094c3c1dfa5775d9da557c57b3c8e','en','Calendar Days','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a274f4d4670213a9045ce258c6c56b80','en','Notifications','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a274f4d4670213a9045ce258c6c56b80','en','Notifications','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_10e94946bad8ebe2b449c477895574dc','en','After routing notify the next assigned user(s)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_10e94946bad8ebe2b449c477895574dc','en','After routing notify the next assigned user(s)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2effa58f13159d138a634233e246713d','en','Content Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2effa58f13159d138a634233e246713d','en','Content Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e44b145bd8b49b06e0ad2ced1ad56466','en','Plain Text','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e44b145bd8b49b06e0ad2ced1ad56466','en','Plain Text','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0a33cdf242201623275b9897d8b4d8c4','en','Html Template','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0a33cdf242201623275b9897d8b4d8c4','en','Html Template','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bf207aee24e634019ce40f4bc04b7262','en','Insert a message','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bf207aee24e634019ce40f4bc04b7262','en','Insert a message','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_278c491bdd8a53618c149c4ac790da34','en','Template','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_278c491bdd8a53618c149c4ac790da34','en','Template','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0d0a0333b928f95bbbe2a5468f9d4aff','en','Consolidated Case','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0d0a0333b928f95bbbe2a5468f9d4aff','en','Consolidated Case','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_89f7ce5690523e6fdb35f6117d9dc902','en','Enable consolidate for this task.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_89f7ce5690523e6fdb35f6117d9dc902','en','Enable consolidate for this task.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_94e411da9586524fc73e45bb22776378','en','Dynaform Template','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_94e411da9586524fc73e45bb22776378','en','Dynaform Template','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8fa7b05ab45935bf4833909578a3a3e5','en','Table Name','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8fa7b05ab45935bf4833909578a3a3e5','en','Table Name','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_788287625aa640447c5d9fff50644915','en','Insert a table name','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_788287625aa640447c5d9fff50644915','en','Insert a table name','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_13a44cb3c08c1c40a3c5b62152538ee8','en','Email template','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_13a44cb3c08c1c40a3c5b62152538ee8','en','Email template','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_27b3b5b817c0db6365fad09efc964f73','en','Subject by email','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_27b3b5b817c0db6365fad09efc964f73','en','Subject by email','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_80038ba1c7711ab8f120940b59e85dc2','en','Insert a subject variable','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_80038ba1c7711ab8f120940b59e85dc2','en','Insert a subject variable','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_47b5269b1f60dcd4d18f0cc5f17a7c21','en','Email variable','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_47b5269b1f60dcd4d18f0cc5f17a7c21','en','Email variable','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3d980d5c80cc742a1f68a11b0db188a1','en','Insert an email variable','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3d980d5c80cc742a1f68a11b0db188a1','en','Insert an email variable','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_99c293babcada00063dd86b4f53bccd7','en','Variable sent in email','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_99c293babcada00063dd86b4f53bccd7','en','Variable sent in email','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b6660bb18f1a418f7a7de6d82c5e96e4','en','Insert a variable with options','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b6660bb18f1a418f7a7de6d82c5e96e4','en','Insert a variable with options','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a359eaa62de4166c4de8c9699cd42870','en','Activity Properties','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a359eaa62de4166c4de8c9699cd42870','en','Activity Properties','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_239959e37b524db940db159c09984c0a','en','- None -','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_239959e37b524db940db159c09984c0a','en','- None -','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_58fdae208be066b01eab48307238b949','en','-- Default --','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_58fdae208be066b01eab48307238b949','en','-- Default --','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_16888e57558b35486dfc46f2a39fdac9','en','Task properties saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_16888e57558b35486dfc46f2a39fdac9','en','Task properties saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_391228d94106d11f9b4d36324423f0ac','en','Please enter a positive integer value','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_391228d94106d11f9b4d36324423f0ac','en','Please enter a positive integer value','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_214d99dbc0103c5a28039057362fc954','en','The table name can not contain spaces','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_214d99dbc0103c5a28039057362fc954','en','The table name can not contain spaces','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_75906a4caccffa8417f46280958ca103','en','Web Entry updated successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_75906a4caccffa8417f46280958ca103','en','Web Entry updated successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_11a55bdfc91b03465ae2861980f10173','en','The task doesn''t have assigned Dynaforms','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_11a55bdfc91b03465ae2861980f10173','en','The task doesn''t have assigned Dynaforms','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_56dbee09e1c297e9269b967d3f1e8af8','en','There are problems updating the Web Entry, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_56dbee09e1c297e9269b967d3f1e8af8','en','There are problems updating the Web Entry, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9b377ab6489b9495395f3fc4f4a03fb4','en','Initial Dynaform','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9b377ab6489b9495395f3fc4f4a03fb4','en','Initial Dynaform','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4c3880bb027f159e801041b1021e88e8','en','Method','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4c3880bb027f159e801041b1021e88e8','en','Method','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5a8dddb3b99ceb252ce638872cd2f506','en','PHP pages with Web Services','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5a8dddb3b99ceb252ce638872cd2f506','en','PHP pages with Web Services','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_656bd5e7964412e1954a5cb83cf0e31e','en','Single HTML','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_656bd5e7964412e1954a5cb83cf0e31e','en','Single HTML','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c0b06c68c75e0313cac38c4cc8a64d50','en','Generate Web Entry Page','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c0b06c68c75e0313cac38c4cc8a64d50','en','Generate Web Entry Page','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_718bf2c47ea34a12a3c4cb559ba0fbd3','en','Input Document edited correctly.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_718bf2c47ea34a12a3c4cb559ba0fbd3','en','Input Document edited correctly.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c5f93fd19468533ea5c9114801c2958d','en','Input Document updated successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c5f93fd19468533ea5c9114801c2958d','en','Input Document updated successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a6c0580005d36b8ad4194b3b31cdb9ee','en','Input Document deleted successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a6c0580005d36b8ad4194b3b31cdb9ee','en','Input Document deleted successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_35f251dbf805f6e532d579044aec1882','en','Input Document saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_35f251dbf805f6e532d579044aec1882','en','Input Document saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c84b883e444f5a6104a94e46190b1051','en','Edit Input Document','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c84b883e444f5a6104a94e46190b1051','en','Edit Input Document','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d2cd6300ffb46de2841ccf9c252ad9b8','en','Create Input Document','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d2cd6300ffb46de2841ccf9c252ad9b8','en','Create Input Document','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4f67fe16b274bf31a67539fbedb8f8d3','en','Document Type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4f67fe16b274bf31a67539fbedb8f8d3','en','Document Type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0bb8309239953b782fec18706fe60b4a','en','Digital','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0bb8309239953b782fec18706fe60b4a','en','Digital','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9b07c1269fe3afd3f2bbae338f93ce07','en','Printed','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9b07c1269fe3afd3f2bbae338f93ce07','en','Printed','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8a8cf97a6531f11d7e9adcf0f0d5ba12','en','Digital/Printed','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8a8cf97a6531f11d7e9adcf0f0d5ba12','en','Digital/Printed','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_520d0db389f362bf79ef56ca0af3dcab','en','Format','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_520d0db389f362bf79ef56ca0af3dcab','en','Format','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0a52da7a03a6de3beefe54f8c03ad80d','en','Original','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0a52da7a03a6de3beefe54f8c03ad80d','en','Original','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c72d6772f171179fe635af3b5e544434','en','Legal Copy','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c72d6772f171179fe635af3b5e544434','en','Legal Copy','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d1948d0992fcf56030d9f5b250736dad','en','Enable Versioning','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d1948d0992fcf56030d9f5b250736dad','en','Enable Versioning','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c2f3f489a00553e7a01d369c103c7251','en','NO','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c2f3f489a00553e7a01d369c103c7251','en','NO','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7469a286259799e5b37e5db9296f00b3','en','YES','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7469a286259799e5b37e5db9296f00b3','en','YES','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f97d2922ab3ce558f9943dd780d04ae7','en','Allowed file extensions (Use .* to allow any extension)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f97d2922ab3ce558f9943dd780d04ae7','en','Allowed file extensions (Use .* to allow any extension)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2a4bb90f555f2f4ce060a28924948fd1','en','Maximum file size (Use zero if unlimited)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2a4bb90f555f2f4ce060a28924948fd1','en','Maximum file size (Use zero if unlimited)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_19c562a36aeb455d09534f93b4f5236f','en','Unit','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_19c562a36aeb455d09534f93b4f5236f','en','Unit','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ab57fd0432e25d5b3013133a1c910d56','en','KB','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ab57fd0432e25d5b3013133a1c910d56','en','KB','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8d8fcc1abd550c5f25dbfaa57d59cb67','en','MB','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8d8fcc1abd550c5f25dbfaa57d59cb67','en','MB','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_0dd4741bcb3a94e7ec755907753669ff','en','Do you want to delete this Input Document?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0dd4741bcb3a94e7ec755907753669ff','en','Do you want to delete this Input Document?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2aa7a349a072dcb9402f203d0a6f898d','en','No elements found to connect.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2aa7a349a072dcb9402f203d0a6f898d','en','No elements found to connect.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e5ed5cdabb7553fe045ea7b47638fe48','en','There are problems getting tokens from the server...','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e5ed5cdabb7553fe045ea7b47638fe48','en','There are problems getting tokens from the server...','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_47cf1efb576e40705e0a45ab011f053d','en','Import Error:','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_47cf1efb576e40705e0a45ab011f053d','en','Import Error:','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_719430f5290466e7920b07175af870de','en','The process definition that you are trying to import contains BPMN elements that are not supported in ProcessMaker. Please try with other process.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_719430f5290466e7920b07175af870de','en','The process definition that you are trying to import contains BPMN elements that are not supported in ProcessMaker. Please try with other process.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5e4b419093a8f5df11422452a9219b07','en','Invalid Connections','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5e4b419093a8f5df11422452a9219b07','en','Invalid Connections','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_61b7a1b40316cf3cb4b88990501f692d','en','There is a connection between these elements','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_61b7a1b40316cf3cb4b88990501f692d','en','There is a connection between these elements','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8b2930b0ef56a344685dc79ff4aa5cb0','en','Start Event must not have any outgoing Message Flows','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8b2930b0ef56a344685dc79ff4aa5cb0','en','Start Event must not have any outgoing Message Flows','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f2be1ff12427fa36f8cf545935054fde','en','The source shape can not have more of one connections','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f2be1ff12427fa36f8cf545935054fde','en','The source shape can not have more of one connections','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4feabfb4aad7cf0cd9dc01ff29d01ea6','en','Invalid connection','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4feabfb4aad7cf0cd9dc01ff29d01ea6','en','Invalid connection','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2310408a63388fe57e3a4177168a8798','en','Desktop','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2310408a63388fe57e3a4177168a8798','en','Desktop','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_36384a9ea3ec791e6bd4ab6b36f2ff2a','en','Tablet','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_36384a9ea3ec791e6bd4ab6b36f2ff2a','en','Tablet','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_853ca16bda4f3d303e70e48db81c17c6','en','Smartphone','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_853ca16bda4f3d303e70e48db81c17c6','en','Smartphone','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_baf91b987e7003f016a96187c4aea54d','en','Please add option and click in cell for editing the cell value','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_baf91b987e7003f016a96187c4aea54d','en','Please add option and click in cell for editing the cell value','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_882e640f7952787473c72777f4e5fae7','en','up & down','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_882e640f7952787473c72777f4e5fae7','en','up & down','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d48c796fe10ae93243dd0202fbc5ed78','en','Duplicate value for key','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d48c796fe10ae93243dd0202fbc5ed78','en','Duplicate value for key','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_02c99274ed000da347819e732fe05bfa','en','Regular Expression','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_02c99274ed000da347819e732fe05bfa','en','Regular Expression','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_72f2471bb026ac8feabef20ba9d5eaf9','en','A regular expression is a sequence of characters that forms a search <span style=''font-weight:bold''>pattern</span>.<br>When you search for data in a text,','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_72f2471bb026ac8feabef20ba9d5eaf9','en','A regular expression is a sequence of characters that forms a search <span style=''font-weight:bold''>pattern</span>.<br>When you search for data in a text,','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6657af5a2325c3083854dd844c2c259f','en','you can use this search <span style=''font-weight:bold''>pattern</span> to describe what you are searching for.<br>A regular expression can be a single character,','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6657af5a2325c3083854dd844c2c259f','en','you can use this search <span style=''font-weight:bold''>pattern</span> to describe what you are searching for.<br>A regular expression can be a single character,','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6997da70446efa6c18fcd8bb544eef77','en','or a more complicated <span style=''font-weight:bold''>pattern</span>.<br>','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6997da70446efa6c18fcd8bb544eef77','en','or a more complicated <span style=''font-weight:bold''>pattern</span>.<br>','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_77acc1cca376d72017ad0923fdb365e9','en','Basic examples for type','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_77acc1cca376d72017ad0923fdb365e9','en','Basic examples for type','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_733fcbe1a9522b3e093bbd824319a455','en','select integers only','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_733fcbe1a9522b3e093bbd824319a455','en','select integers only','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_527c97fe424193614d7c977d016ec4a0','en','match ints and floats/decimals','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_527c97fe424193614d7c977d016ec4a0','en','match ints and floats/decimals','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0a0d3cae8f792fdf826f1b1ef5d1bcc4','en','match email address','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0a0d3cae8f792fdf826f1b1ef5d1bcc4','en','match email address','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_13348442cc6a27032d2b4aa28b75a5d3','en','Search','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_13348442cc6a27032d2b4aa28b75a5d3','en','Search','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_03b62516184fb6ef591f45bd4974b753','en','refresh','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_03b62516184fb6ef591f45bd4974b753','en','refresh','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b728212c8bd0b2dbfd34b9d18e62504f','en','Do you want to close? All your changes will be lost if you close it.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b728212c8bd0b2dbfd34b9d18e62504f','en','Do you want to close? All your changes will be lost if you close it.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_345d93cb9ade6e353e97750ce1579443','en','SQL Editor','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_345d93cb9ade6e353e97750ce1579443','en','SQL Editor','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8e30879d8055ec47caf714b934312110','en','to activate autocompletion','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8e30879d8055ec47caf714b934312110','en','to activate autocompletion','2015-10-08' 
   UNION ALL
 SELECT 'LABEL','ID_MAFE_5d5b78699e57104f2fa03bbdf7b9197b','en','Set','2015-08-04' 
   UNION ALL
@@ -9394,135 +9394,135 @@ SELECT 'LABEL','ID_MAFE_ca09604d668b0ec9de0fc2a1c9b6ffe6','en','<p>Please select
   UNION ALL
 SELECT 'LABEL','ID_MAFE_6cd5fe80c8bff7d229b38215580f7618','en','field.','2015-08-04' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5ad234cb2cde4266195252a23ca7d84e','en','Property','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5ad234cb2cde4266195252a23ca7d84e','en','Property','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_689202409e48743b914713f96d93947c','en','Value','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_689202409e48743b914713f96d93947c','en','Value','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a7f138aa0ee8e9b7d82f49ada1bd22bf','en','datepicker','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a7f138aa0ee8e9b7d82f49ada1bd22bf','en','datepicker','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_313a6a3d25aa041ee3dc3cbd65d4f22b','en','Formula','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_313a6a3d25aa041ee3dc3cbd65d4f22b','en','Formula','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e29d57981d438d31f08b968bb12ed568','en','Select a Control','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e29d57981d438d31f08b968bb12ed568','en','Select a Control','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_add097eaed8dfb3a5ca64ac7246ce50e','en','Please select the control you want to use with your variable.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_add097eaed8dfb3a5ca64ac7246ce50e','en','Please select the control you want to use with your variable.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fee203b36e6653c5cbe12bd1f3c6b119','en','textfield','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fee203b36e6653c5cbe12bd1f3c6b119','en','textfield','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6394d816bfb4220289a6f4b29cfb1834','en','textarea','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6394d816bfb4220289a6f4b29cfb1834','en','textarea','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ad973c252653a47144b79403cfb0668b','en','dropdown','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ad973c252653a47144b79403cfb0668b','en','dropdown','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9fced129522f128b2445a41fb0b6ef9f','en','checkbox','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9fced129522f128b2445a41fb0b6ef9f','en','checkbox','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a398fb77df76e6153df57cd65fd0a7c5','en','radio','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a398fb77df76e6153df57cd65fd0a7c5','en','radio','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4466476a945cb091a8f4252b96f140d7','en','suggest','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4466476a945cb091a8f4252b96f140d7','en','suggest','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_662f707d5491e9bce8238a6c0be92190','en','hidden','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_662f707d5491e9bce8238a6c0be92190','en','hidden','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_7f05a430b7c47d90cae34c9bef42060b','en','Do you want to clear? All your changes will be lost if you clear it.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_7f05a430b7c47d90cae34c9bef42060b','en','Do you want to clear? All your changes will be lost if you clear it.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8c38e95ae34b84df395afebaff1ffb21','en','Do you want to delete this option?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8c38e95ae34b84df395afebaff1ffb21','en','Do you want to delete this option?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0095a9fa74d1713e43e370a7d7846224','en','Export','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0095a9fa74d1713e43e370a7d7846224','en','Export','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_72d6d7a1885885bb55a565fd1070581a','en','Import','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_72d6d7a1885885bb55a565fd1070581a','en','Import','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_31fde7b05ac8952dacf4af8a704074ec','en','Preview','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_31fde7b05ac8952dacf4af8a704074ec','en','Preview','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dc30bc0c7914db5918da4263fce93ad2','en','Clear','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dc30bc0c7914db5918da4263fce93ad2','en','Clear','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_4994a8ffeba4ac3140beb89e8d41f174','en','Language','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_4994a8ffeba4ac3140beb89e8d41f174','en','Language','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e889b1ca9624a9fbe23c4f062d7e5f01','en','geomap','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e889b1ca9624a9fbe23c4f062d7e5f01','en','geomap','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0b9d04ab06dac3da0142bb369637bfa4','en','qr code','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0b9d04ab06dac3da0142bb369637bfa4','en','qr code','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ac201fd270c3b96beab24f2829780ab2','en','signature','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ac201fd270c3b96beab24f2829780ab2','en','signature','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_78805a221a988e79ef3f42d7c5bfd418','en','image','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_78805a221a988e79ef3f42d7c5bfd418','en','image','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_a5ca0b5894324f8bb54bb9fffad29d1e','en','audio','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_a5ca0b5894324f8bb54bb9fffad29d1e','en','audio','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_421b47ffd946ca083b65cd668c6b17e6','en','video','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_421b47ffd946ca083b65cd668c6b17e6','en','video','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e2b9d6eb9f3ec7d4e6089274a4481fab','en','There are problems getting the list of DynaForms, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e2b9d6eb9f3ec7d4e6089274a4481fab','en','There are problems getting the list of DynaForms, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c4379b8aabc3e9403dd1076f8a3864b0','en','<p>Please select the control you want to use with your variable.</p>','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c4379b8aabc3e9403dd1076f8a3864b0','en','<p>Please select the control you want to use with your variable.</p>','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b582209588fc582d8cd4ce26ad1d87ec','en','Do you want to import? All your changes will be lost if you import it.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b582209588fc582d8cd4ce26ad1d87ec','en','Do you want to import? All your changes will be lost if you import it.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5ef0c737746fae2ca90e66c39333f8f6','en','Errors','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5ef0c737746fae2ca90e66c39333f8f6','en','Errors','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5436bdb572535c577a1a0553ed1d05f9','en','Invalid file:','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5436bdb572535c577a1a0553ed1d05f9','en','Invalid file:','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_cc392b567536af3977d356f3c4f201c6','en','Please upload a file with a valid extension (.json)','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_cc392b567536af3977d356f3c4f201c6','en','Please upload a file with a valid extension (.json)','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_cc476d42149b7b1bf8a60ea941970116','en','Properties invalid elements:<br><br>','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_cc476d42149b7b1bf8a60ea941970116','en','Properties invalid elements:<br><br>','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_9e13b69d1d2da927102acaaaf7154a37','en','Javascript','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_9e13b69d1d2da927102acaaaf7154a37','en','Javascript','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_bb7476567f5e12e60b01436dad77a533','en','is invalid.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_bb7476567f5e12e60b01436dad77a533','en','is invalid.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ebc1c8328f25c6ccb2ff00dd27b56693','en','is required.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ebc1c8328f25c6ccb2ff00dd27b56693','en','is required.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_308a5146b0818a721c5081d2b1932398','en','is duplicated.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_308a5146b0818a721c5081d2b1932398','en','is duplicated.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5174307b9097d47b1a506bc8171c2bb3','en','textbox','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5174307b9097d47b1a506bc8171c2bb3','en','textbox','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_dfeaaeb4316477bd556ea5e8c3295887','en','datetime','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_dfeaaeb4316477bd556ea5e8c3295887','en','datetime','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d5d3db1765287eef77d7927cc956f50a','en','title','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d5d3db1765287eef77d7927cc956f50a','en','title','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0bf7c19f7eac3bfa5ad960a50ad602dc','en','subtitle','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0bf7c19f7eac3bfa5ad960a50ad602dc','en','subtitle','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d304ba20e96d87411588eeabac850e34','en','label','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d304ba20e96d87411588eeabac850e34','en','label','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2a304a1348456ccd2234cd71a81bd338','en','link','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2a304a1348456ccd2234cd71a81bd338','en','link','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8c7dd922ad47494fc02c388e12c00eac','en','file','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8c7dd922ad47494fc02c388e12c00eac','en','file','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c79bdf421714f5087fc34b7c538b6807','en','submit','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c79bdf421714f5087fc34b7c538b6807','en','submit','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ce50a09343724eb82df11390e2c1de18','en','button','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ce50a09343724eb82df11390e2c1de18','en','button','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ff4a008470319a22d9cf3d14af485977','en','grid','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ff4a008470319a22d9cf3d14af485977','en','grid','2015-10-08' 
  ;
 INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
 
-SELECT 'LABEL','ID_MAFE_f1e5d7a5fe13498abbdeb0f1f19136a8','en','panel','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f1e5d7a5fe13498abbdeb0f1f19136a8','en','panel','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_b5ceb80c90c6b834060fcd7e0d2c0c28','en','subform','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_b5ceb80c90c6b834060fcd7e0d2c0c28','en','subform','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_1d54bc57e09e7e7b52f85f0045a01474','en','Do you want to delete this lang?','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_1d54bc57e09e7e7b52f85f0045a01474','en','Do you want to delete this lang?','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f7d0c779f08738b7af7e7da3777548c2','en','Unsupported element.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f7d0c779f08738b7af7e7da3777548c2','en','Unsupported element.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_380c771a0d7fb5ccc706ce59e89b3f26','en','Panel:','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_380c771a0d7fb5ccc706ce59e89b3f26','en','Panel:','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ee89abf4f4c10ef961a90dd20e7979ed','en','There are problems creating the DynaForm, please try again.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ee89abf4f4c10ef961a90dd20e7979ed','en','There are problems creating the DynaForm, please try again.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_5b5ebb466ae75a2ca15dbd1c92d64830','en','DynaForm saved successfully','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_5b5ebb466ae75a2ca15dbd1c92d64830','en','DynaForm saved successfully','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_0459c698b4236e6e2bcdd7dfe0d5f58b','en','Web controls','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_0459c698b4236e6e2bcdd7dfe0d5f58b','en','Web controls','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6be8bfc7078373aa92b3a862b5253e7e','en','Mobile controls','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6be8bfc7078373aa92b3a862b5253e7e','en','Mobile controls','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_2bc2de57b27c665244bf4cb8d17f842f','en','Do you want to clear this variable? The following properties are reset: Variable, Data Type, DB Connection, SQL and Options.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_2bc2de57b27c665244bf4cb8d17f842f','en','Do you want to clear this variable? The following properties are reset: Variable, Data Type, DB Connection, SQL and Options.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3a08e2e340ab29fd9263af48193cbf8e','en','Languages','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3a08e2e340ab29fd9263af48193cbf8e','en','Languages','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_6059b81ef1094afb4e30f44457df5b28','en','The variable is being used.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_6059b81ef1094afb4e30f44457df5b28','en','The variable is being used.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_14bbeb9892cedf6ae9144137e550c3f7','en','Grid: drag & drop controls.<br>Supports: textbox, textarea, dropdown, checkbox, datetime, suggest, hidden, link, file.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_14bbeb9892cedf6ae9144137e550c3f7','en','Grid: drag & drop controls.<br>Supports: textbox, textarea, dropdown, checkbox, datetime, suggest, hidden, link, file.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_913c6f9865cee078b11965714becc5f8','en','Task and Sub-process must have a name, please try again','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_913c6f9865cee078b11965714becc5f8','en','Task and Sub-process must have a name, please try again','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_e8be55bf3a30501aef09d2e74de97976','en','This name already exists.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_e8be55bf3a30501aef09d2e74de97976','en','This name already exists.','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_d3548dd5f5b6667fdbd433a77288973c','en','Error, There are problems updating the element','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_d3548dd5f5b6667fdbd433a77288973c','en','Error, There are problems updating the element','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3cc152ca5e049720eb10e6bf1fa1fa02','en','Error, There are problems removing the element','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3cc152ca5e049720eb10e6bf1fa1fa02','en','Error, There are problems removing the element','2015-10-08' 
   UNION ALL
 SELECT 'LABEL','ID_PMGMAIL_SETTINGS','en','Settings for Processmaker Gmail','2015-07-27' 
   UNION ALL
@@ -9538,26 +9538,767 @@ SELECT 'LABEL','ID_PMG_SELECT_FILE','en','Please select a P12 file  to upload','
   UNION ALL
 SELECT 'LABEL','ID_PMGMAIL','en','PM Gmail','2015-07-27' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_14230d11143a03f4330c6433d5032a9d','en','Prev','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_14230d11143a03f4330c6433d5032a9d','en','Prev','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_f4bb39e6340915be908d4b0121d6a05a','en','Gateways','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_f4bb39e6340915be908d4b0121d6a05a','en','Gateways','2015-08-18' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_30c40215e6d00c574ca23451003db9b9','en','checkgroup','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_30c40215e6d00c574ca23451003db9b9','en','checkgroup','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fa53b9f14bee0d47d744863b871b4677','en','Intermediate Timer Event','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fa53b9f14bee0d47d744863b871b4677','en','Intermediate Timer Event','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_fde97430909127ec42c120ad523ef1a5','en','Type your name here','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_fde97430909127ec42c120ad523ef1a5','en','Type your name here','2015-08-18' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_81a7427163958378a4181ae66e8e2b0c','en','Save as','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_81a7427163958378a4181ae66e8e2b0c','en','Save as','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_3adbdb3ac060038aa0e6e6c138ef9873','en','Category','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_3adbdb3ac060038aa0e6e6c138ef9873','en','Category','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_c53385d51221bcb27c5f37de31043c24','en','No Category','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_c53385d51221bcb27c5f37de31043c24','en','No Category','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_ebb035d359e317060c652f54a18cfb1b','en','Copy of','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_ebb035d359e317060c652f54a18cfb1b','en','Copy of','2015-10-08' 
   UNION ALL
-SELECT 'LABEL','ID_MAFE_8159f4674357caa499b4047608bfa2a9','en','Supported Controls: array.','2015-08-04' 
+SELECT 'LABEL','ID_MAFE_8159f4674357caa499b4047608bfa2a9','en','Supported Controls: array.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_68be06f16b9b17f3741cd3846a2d9190','en','Display :','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_NOT_PAUSED','en','Case with "{0}" not paused.','2015-08-14' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_USER_INVALID_PAUSED_CASE','en','The user with "{0}" is invalid to pause the case.','2015-08-14' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_USER_INVALID_UNPAUSE_CASE','en','The user with "{0}" is invalid to Unpause the Case.','2015-08-14' 
+  UNION ALL
+SELECT 'LABEL','ID_UNSAVED_CHANGES_QUESTION','en','You are about to close a window and there may be some unsaved changes. Are you sure to continue?','2015-08-17' 
+  UNION ALL
+SELECT 'LABEL','ID_NEW_PROJECT','en','New Project','2015-08-18' 
+  UNION ALL
+SELECT 'LABEL','ID_NEW_BPMN_PROJECT','en','New BPMN Project','2015-08-18' 
+  UNION ALL
+SELECT 'LABEL','ID_ROUTE_TO_TASK_SCRIPT_TASK','en','The following case is a "Script-Task"','2015-08-18' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_0d82790b0612935992bd564a17ce37d6','en','Quit','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_16f49c0f891dce505db0ffe478aff96f','en','Next &#8594;','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_064626e308f7d6587778df2924ea847c','en','&#8592; Back','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f92965e2c8a7afb3c1b9a5c09a263636','en','Done','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4184f3327703ed13b197de132142cec0','en','The designer bar displays the process name and is used to control the process view (zoom, full screen view), the export, undo/redo and the save button.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_980e81ea83f33ba4852ff484c14d541b','en','Drag and Drop the process elements that you want include in the process design.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_02129aca17f1a65b686f3525b1b99ec8','en','Start Event: The process begins with a start event.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_bca2c894b970c9326aa69ae6cac3dee4','en','Intermediate Event: Used to define an event that could happen in the middle of the process.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_22403d2766eb4e45a3d9dd9bab8b710a','en','Pool & Lanes: Separate Multiple processes into different pools.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_728055b9c636bd86e1848c06f82be906','en','The process objects are used to add execution features to the current process design.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e693021f9ae34a3833f0036c52837cfd','en','<br/>Variables: Define the process data.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_7964c7a971166b4525713e1885ca4cc3','en','<br/>Dynaforms: Create dynamic forms.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_bb3c8227885fe5d13241a9f7e5f06397','en','<br/>Output documents: Generate documents with process data.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4c021e6782546f701d2c9a15f3be1013','en','<br/>DB connections: Connect to external databases.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4346c97778f456ed8a4eed32cff645f0','en','Select an element in the designer to display the quick toolbar with the list of the most used options available for that element.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_63401535ae5b2457b9c4471637ba8308','en','In the design area you can drop the process elements and order or arrange them to design your process.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_ACTIVITY_INVALID_ASSIGNMENT_METHOD_FOR_MULTIPLE_INSTANCE_ACTIVITY','en','The activity {0}: "{1}", has an invalid assignment method for a multi-instance activity','2015-08-19' 
+  UNION ALL
+SELECT 'LABEL','ID_ACTIVITY_INVALID_ASSIGNMENT_METHOD_FOR_ACTIVITY','en','The activity {0}: "{1}", has an invalid assignment method for an activity','2015-08-19' 
+  UNION ALL
+SELECT 'LABEL','ID_ACTIVITY_INVALID_USER_DATA_VARIABLE_FOR_MULTIPLE_INSTANCE_ACTIVITY','en','The activity {0}: "{1}", has an invalid user-data in "{2}" or this variable doesn''t exist for a multi-instance activity','2015-08-19' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_USER_INVALID_CANCEL_CASE','en','The user with "{0}" is invalid to cancel the Case.','2015-08-24' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_USER_NOT_HAVE_PERMISSION','en','The user with "{0}" did not have permission to perform this action.','2015-09-01' 
+  UNION ALL
+SELECT 'LABEL','ID_EMAIL_MORE_THAN_ONE_USER','en','This email is assigned to more than one user. Please contact your administrator.','2015-09-08' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_DOES_NOT_CORRESPOND','en','Wrong authentication. This user does not correspond with the email address.','2015-09-08' 
+  UNION ALL
+SELECT 'LABEL','ID_NO_LICENSE_FEATURE_ENABLED','en','Your license does not have the Gmail integration. Please contact your administrator.','2015-09-17' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_NOT_ACTIVE','en','The user is not active.','2015-09-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b776b96aded5145322e09111013ef8c5','en','Invalid connection type','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_89d626523f83c2d1f8a5549a845dd6aa','en','Start Event must have an outgoing sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d4bff85814308aca1cfde4b977872550','en','Start Event must not have an incommig sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_98611a4ed602dfc4087f66ce54c1e9a8','en','Activity must have an incoming sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e47eb6970857d9b170bb3691a0dad2f4','en','Activity must have an outgoing sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9925fd3c9d09e862da22c5d6912420d9','en','End event must have an incoming sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_5910b8ede1c0dbd5b10052355e3df260','en','End Event must have an outgoing sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a6b0e9c61c3697c11f9b170be6df20cb','en','Intermediate event must have an incoming sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_88ee153347bd5d42dcf24dec1f78080b','en','Intermediate event must have an outgoing sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_76d5c10546065f2b71f8d0bfd242ebf5','en','Diverging Gateway must have an incoming sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_157b53019e903b82b3b34209dbb26b21','en','Converging Gateway must have two or more incoming sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1586e418c08ebe156f39e9fa02504a7c','en','Diverging Gateway must have two or more outgoing sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a9ef06d9637b09f171953304372d9bd8','en','Converging Gateway must have a outgoing sequence flow','2015-10-08' 
  ;
+INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
+
+SELECT 'LABEL','ID_MAFE_1baadae520fd9733943b6ae58b198e3f','en','Black box pool must not have an incoming sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c7fb228a7d20de930f9d4ecfeac63cda','en','Black box pool must not have an outgoing sequence flow','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a4ecfc70574394990cf17bd83df499f7','en','Event','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9cd75a090ed78909e6b9f4311a31e46f','en','Intermediate Event','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_0015b7e51c1ca4293041c429985ca323','en','The specified subform could not be found in the process.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_599dcce2998a6b40b1e38e8c6006cb0a','en','type','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b80bb7740288fda1f201890375a60c8f','en','id','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b068931cc450442b63f5b3d276ea4297','en','name','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_67daf92c833c41c95db874e18fcb2786','en','description','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6a99c575ab87f8c7d1ed1e52e7e349ce','en','placeholder','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_75a7511c1d369ec0a4b82d76b1627a36','en','col-span','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_cbf3543f93135ddeb0fbe1b2f822799d','en','Colspan is used to define the size and number of columns of a selected row. Twelve columns can be defined as maximum.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c4cdd5e672b274b476f4760a304445ba','en','The column sizes are defined with integer numbers separated by spaces. Any combination of column sizes can be defined but all the columns sizes should add 12. <br>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a466673aa0487e479c2603e855eb431c','en','For a better design we recommend using values above 3.<br>If you need more info please visit <a target=''_blank'' href=''http://getbootstrap.com/css/''>Bootstrap grid system</a>.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e8fab833730f3a939d0b3812fe043b5d','en','href','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ee2faeed038501c1deab01c7b54f2fa9','en','hint','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_25d902c24283ab8cfbac54dfa101ad31','en','src','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8c73a98a300905900337f535531dfca6','en','shape','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_951d4dff3c22e9fcc4a2707009f45ea8','en','thumbnail','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_990fcd0ba3c5c9e322c930c83a93be48','en','rounded','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9b6ddeba5b33e577c07c35d8505c6072','en','circle','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_20835b49593bbf08bdbbfdc6203fc51d','en','alternate text','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_06d4cd63bde972fc66a0aed41d2f5c51','en','comment','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ac67ede5a84eb5a1add7ff4440e9a485','en','required','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_27d508156505dccd6d8df988982031f7','en','drag & drop','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1ce4fd7b116c43c936cc8ddbaa51ce99','en','file extensions','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f7bd60b75b29d79b660a2859395c1a24','en','size','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_5316b46ed7c677741a6bd60627a2a05c','en','size unity','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_54ca84a794888fe8d92834787dfa935a','en','columns','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8d777f385d3dfec8815d20f7496026dc','en','data','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1443a7220ce58bf7476b59728760e6f7','en','data type','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_2063c1608d6e0baf80249c42e2be5804','en','value','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_313af772d92d01300d5e89512cd93bd0','en','default value','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a6ce2340cef46384d71cb790606e9c67','en','text transform to','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_334c4a4c42fdb79d7ebc3e73b517e6f8','en','none','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f82413ecc07fb74bf40ccfe963a5c4b6','en','lowercase','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6e5f5bbf51336918feac69b89e96f6e7','en','UPPERCASE','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4ba21d7a3d8a97aa04e405f9caf3ab3b','en','Capitalize phrase','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_3b313f1e720672161bfa924e023cf015','en','Title Case','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f9ab05454998236921a6b0e281fae632','en','validate','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_657f8b8da628ef83cf69101b6817150a','en','help','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c5bbc13af6039ac4cf215911e482b5d4','en','error message','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4bf9bb3c160bb69f441724d81671fd72','en','max length','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_35be2c1cf2cc489bdb16b678cd73cd78','en','formula','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_916a154243f0a90150198e6fba099305','en','edit...','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_15d61712450a686a7f365adf4fef581f','en','mode','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d0e45878043844ffc41aac437e86b602','en','parent','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_de95b43bceeb4b998aed4aed5cef1ae7','en','edit','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1bda80f2be4d3658e0baa43fbe7ae8c1','en','view','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a22ab4f79904355ae25dfa5afff1dc3b','en','Select the mode of the control:<br>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9f1658da12738ea1b34318bd8258181b','en','<ul style=''margin:2px 2px 2px -25px;''>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4f92f36c19f0ad317fb71d493a18caac','en','<li>Parent: Inherit the mode from parent.</li>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_409c5f8fce900e142f39339ce9765dd6','en','<li>Edit: Allow user to change the control''s value.</li>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b8afa4e8d5bb1dca8379fcfcee2d6480','en','<li>View: Allow user to only view the control''s value.</li>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_fe14a40df4290a46f7c41621d56ae987','en','<li>Disabled: Control is greyed out, but still displays its value.</li>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e04aa5104d082e4a51d241391941ba26','en','variable','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_60a4ec92b73f76abf1b8f50973547478','en','title (mouseover)','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ce495ab8d79db0d37413d8e95b54e606','en','multiple','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_de9b9ed78d7e2e1dceeffee780e2f919','en','javascript','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c61404957758dfda283709e89376ab3e','en','layout','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_3e80ebd582f73299f249afba8ebe7e6b','en','responsive','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a81259cef8e959c624df1d456e5d3297','en','static','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_3fcdb73d36d54f2cc22d0f68e6b6e182','en','form','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1f9d9a4ccb5e099c457588964a61b8db','en','page size','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b1dfe4beb06060e1b96cdf51e446f762','en','add row','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9530d977022e1fce705fc0f93af0a9b7','en','delete row','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b0f069cf5ce65fef0eaf2967dff08867','en','column width','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c1c425268e68385d1ab5074c17a94f14','en','function','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1d623b89683f9ce4e074de1676d12416','en','sum','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6927a3a7218a3195858411433ec20a21','en','average','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_3afd78b28798273ac67a7b9f22619d98','en','DB Connection','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ac5c74b64b4b8352ef2f181affb5ac2a','en','sql','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_93da65a9fd0004d9477aeac024e08e15','en','options','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8512ae7d57b1396273f76fe6ed341a23','en','language','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_78463a384a5aa4fad5fa73e2f506ecfc','en','English','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9a0364b9e99bb480dd25e1f0284c8555','en','content','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_2de42fbb00305f8282310f1b3e10ce9a','en','border','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_7e696c3a9460470397eba473a2072210','en','external libs','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1ddcb92ade31c8fbd370001f9b29a7d9','en','format','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_63a3168661b8fec46d2e90c9e0569cad','en','Default: false','2015-10-08' 
+ ;
+INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
+
+SELECT 'LABEL','ID_MAFE_297b1df0a54c69676de34dc99824d08d','en','<p>See <a href=''http://momentjs.com/docs/#/displaying/format/'' target=''_blank''>http://momentjs.com/docs/#/displaying/format/</a>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_218e8708630164ca97f9f3de66a3339b','en','for valid datetime formats. If only the date is included in the format then the time picker will not be displayed.</p>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_fd05d7f6bfc90e815087880e8e915b43','en','Examples:','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_2fc027fad20982fe2918b8b7262fc3e5','en','<li>dddd, MMMM Do YYYY, h:mm:ss a >> "Sunday, February 14th 2010, 3:25:50 pm"</li>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_353710177fda5bb1b46e2a779482c52d','en','<li>ddd, hA >> "Sun, 3PM"</li>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_0598c093f5b72986e4742a2d307e835b','en','<li>YYYY MM DD >> "Valid date"</li>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_de04bbb13657e1df223071e8b2cfae41','en','<tr><th></th><th>Token</th><th>Output</th></tr><tr><td><b>Month</b></td><td>M</td><td>1 2 ... 11 12</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b1570e5689ffa6f3055426ba877cc4fa','en','<tr><td></td><td>Mo</td><td>1st 2nd ... 11th 12th</td></tr><tr><td></td><td>MM</td><td>01 02 ... 11 12</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_24b875ed575a2d388074a8f7b2d2c765','en','<tr><td></td><td>MMM</td><td>Jan Feb ... Nov Dec</td></tr><tr><td></td><td>MMMM</td><td>January February ... November December</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9f22a77c63bef412675c4fc45e3ea11b','en','<tr><td><b>Quarter</b></td><td>Q</td><td>1 2 3 4</td></tr><tr><td><b>Day of Month</b></td><td>D</td><td>1 2 ... 30 31</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a6f7bd5f5255325b9cf287402c6782dd','en','<tr><td></td><td>Do</td><td>1st 2nd ... 30th 31st</td></tr><tr><td></td><td>DD</td><td>01 02 ... 30 31</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_80582834244e4d1f06860c1a18062667','en','<tr><td><b>Day of Year</b></td><td>DDD</td><td>1 2 ... 364 365</td></tr><tr><td></td><td>DDDo</td><td>1st 2nd ... 364th 365th</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4b0786e5eb9e8b54529708004fd31b21','en','<tr><td></td><td>DDDD</td><td>001 002 ... 364 365</td></tr><tr><td><b>Day of Week</b></td><td>d</td><td>0 1 ... 5 6</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9b25c6480dd99fc5c1712cadefa756e7','en','<tr><td></td><td>do</td><td>0th 1st ... 5th 6th</td></tr><tr><td></td><td>dd</td><td>Su Mo ... Fr Sa</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_38f105ec27a415dcfb1905e038338b44','en','<tr><td></td><td>ddd</td><td>Sun Mon ... Fri Sat</td></tr><tr><td></td><td>dddd</td><td>Sunday Monday ... Friday Saturday</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_bb3775bdd3504d816fafe7daaa3643e0','en','<tr><td><b>Day of Week (Locale)</b></td><td>e</td><td>0 1 ... 5 6</td></tr><tr><td><b>Day of Week (ISO)</b></td><td>E</td><td>1 2 ... 6 7</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f945435ef7365a1e0ae2fa1b8230a17e','en','<tr><td><b>Week of Year</b></td><td>w</td><td>1 2 ... 52 53</td></tr><tr><td></td><td>wo</td><td>1st 2nd ... 52nd 53rd</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_98386bbf2a867253744d3c47171b99dc','en','<tr><td></td><td>ww</td><td>01 02 ... 52 53</td></tr><tr><td><b>Week of Year (ISO)</b></td><td>W</td><td>1 2 ... 52 53</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_06b98656cf4847f3e0479124bbbbd4d4','en','<tr><td></td><td>Wo</td><td>1st 2nd ... 52nd 53rd</td></tr><tr><td></td><td>WW</td><td>01 02 ... 52 53</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_5b776d9c69a7ccfe2b8565c94e21a853','en','<tr><td><b>Year</b></td><td>YY</td><td>70 71 ... 29 30</td></tr><tr><td></td><td>YYYY</td><td>1970 1971 ... 2029 2030</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_0df8347776dbb1c637387ec287c7966f','en','<tr><td><b>Week Year</b></td><td>gg</td><td>70 71 ... 29 30</td></tr><tr><td></td><td>gggg</td><td>1970 1971 ... 2029 2030</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_cab2f517f232fec132b37a4778df7139','en','<tr><td><b>Week Year (ISO)</b></td><td>GG</td><td>70 71 ... 29 30</td></tr><tr><td></td><td>GGGG</td><td>1970 1971 ... 2029 2030</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ced3ccc640e21085b1bf8a2389332f70','en','<tr><td><b>AM/PM</b></td><td>A</td><td>AM PM</td></tr><tr><td></td><td>a</td><td>am pm</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b59a471e6943b33e32cc2482ec24fb12','en','<tr><td><b>Hour</b></td><td>H</td><td>0 1 ... 22 23</td></tr><tr><td></td><td>HH</td><td>00 01 ... 22 23</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d426d6effc8a921775964c7873067700','en','<tr><td></td><td>h</td><td>1 2 ... 11 12</td></tr><tr><td></td><td>hh</td><td>01 02 ... 11 12</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_3f66ca8856f98cde86f7a78e287cd4ba','en','<tr><td><b>Minute</b></td><td>m</td><td>0 1 ... 58 59</td></tr><tr><td></td><td>mm</td><td>00 01 ... 58 59</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_bd16f59e931cb60f975d902d9a3b6cf0','en','<tr><td><b>Second</b></td><td>s</td><td>0 1 ... 58 59</td></tr><tr><td></td><td>ss</td><td>00 01 ... 58 59</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a85b67e3a588039d4954c17730b41ed4','en','<tr><td><b>Fractional Second</b></td><td>S</td><td>0 1 ... 8 9</td></tr><tr><td></td><td>SS</td><td>0 1 ... 98 99</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b9925a331df6b1464182bdd6cbb2807c','en','<tr><td></td><td>SSS</td><td>0 1 ... 998 999</td></tr><tr><td><b>Timezone</b></td><td>z or zz</td><td>EST CST ... MST PST<br><b>Note:</b> as of <b>1.6.0</b>, the z/zz format tokens have been deprecated.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_2ec3bb15c10969b54c46121a5164deb6','en','<a href="https://github.com/moment/moment/issues/162">Read more about it here.</a></td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a11e743927967a854e7f54cd9f621e9c','en','<tr><td></td><td>Z</td><td>-07:00 -06:00 ... +06:00 +07:00</td></tr><tr><td></td><td>ZZ</td><td>-0700 -0600 ... +0600 +0700</td></tr>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_73c146408e22128ca6a56f748ad0da66','en','<tr><td><b>Unix Timestamp</b></td><td>X</td><td>1360013296</td></tr><tr><td><b>Unix Millisecond Timestamp</b></td><td>x</td><td>1360013296123</td></tr></tbody></table>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f2dc40c4f8e4d156f519a6453f6b2a27','en','day view header format','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8e7cafd90aa2f61de2953d482bc2ed27','en','extra formats','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c50c7d354b9bcf097722ffbce38990a4','en','stepping','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_91c7645ad0ba98666ab1648102f986e7','en','min date','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_0af63899fb5342f6d1882ea16af864c1','en','Allows date selection after this date<br>(in YYYY-MM-DD HH:MM:SS format)','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_56b77519470d41f8b2da598f1021508e','en','max date','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6126329d245973d0025f07d8d4f3c3ba','en','Allows date selection before this date<br>(in YYYY-MM-DD HH:MM:SS format)','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_94903dcf1df90d40c7f24528350fb3cf','en','use current','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b326b5062b2f0e69046810717534cb09','en','true','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_84cdc76cabf41bd7c961f6ab12f117d8','en','year','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_7436f942d5ea836cb84f1bb2527d8286','en','month','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_628b7db04235f228d40adc671413a8c8','en','day','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_896c55cc5e46fab38ce9f51ebf7bfcd3','en','hour','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_0a7d55be9d12a369a6a8da0fb517fba4','en','minute','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_5d1f8e20846b4de50936ab3d1d41cb7b','en','Default: true<br>On show, will set the picker to:<br>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c428369e38afed052f74d0fd3fb4214f','en','true: current date<br>year: the first day of the current year<br>month: the first day of the month<br>day: the current day<br>hour: the current hour without minutes<br>minute: the current minute','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1a721faf2df53972bfd0831c64b6146d','en','collapse','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_fb216d9e8791e63c8d12bdc420956839','en','locale','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ec724ea84e93ee183d93f0ee67eb5d47','en','string, moment.local(''locale'')','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8ccde31b4c183541d3375ffba65f617d','en','default date','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_553115b041c527b43818daf51048f468','en','Set the date picker to this date by default<br>(in YYYY-MM-DD HH:MM:SS format)','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1776c5b429c7d2e9c493d8b1419c3a72','en','disabled dates','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_73cacd9554a835ad196092bf378f66c3','en','array of [date, moment, string]','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8df6976e000977e9757caa5d9ed7c1aa','en','enabled dates','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_bd21190449b7e88db48fa0f580a8f666','en','icons','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4e920535c6e1ecc93e20705ddaab8e55','en','object with all or some of the parameters above','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_07a61978b92831579bbbb72fdf2a3b58','en','useStrict','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_41159e627c3a65cf4a9aeba8b762e6d0','en','side by side','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_2d69cae8f3f13b440c51edced7338699','en','days of week disabled','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_5e57481a16f324775782453d7e4de54f','en','array of numbers from 0-6','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8203af436c88713cf6853998fb45e8df','en','calendar weeks','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_49e20b17b90c3d408131388f3e3c4185','en','pick date by','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_44fdec47036f482b68b748f9d786801b','en','days','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_da36cfaf48b9e19896e23e1207040d1e','en','months','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_75aeb98e5241592ad6a6c2c4c78a16ef','en','years','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ece7c5dcf104d858b2ea7b80d3c09dce','en','Select dates by days, months or years by default when the date picker is initially shown.<br>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1d1ded75bd737a314cd8e39f4a715ab9','en','Note: To remove days, months or years from the date picker, use a format which does not have those elements. For example a format of "MM/YYY" will not allow the user to select days.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_0998e1a350726e6469268a260a83a2dc','en','toolbar placement','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b5d909fa36b2d67d91e6607c7f23cd92','en','''default'', ''top'', ''bottom''','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_707914adb6ec5350ab99a6e8d5da050a','en','show today button','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_54808fe4acbda881078c684769c1def2','en','clear button','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a88f05b6c963e145a45b58c47cd42a41','en','hide','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a7dd12b1dab17d25467b0b0a4c8d4a92','en','show','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c942e2c249d4a7f9e2f4bddd02ef87e7','en','Default: false<br>Show the "Clear" button in the icon toolbar.<br>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9afde9da9d0df4286959bae99d3a7e4b','en','Clicking the "Clear" button will set the calendar to null.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8f0996dac68d535131ecd654a0345a75','en','widget positioning','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d287f7dbd26ba9650f495a91fd532191','en','object with the all or one of the parameters above; horizontal: ''auto'', ''left'', ''right'' or vertical: ''auto'', ''top'', ''bottom''','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_0dbeaf3f5e4f954c5d7c20cf222df405','en','widget parent','2015-10-08' 
+ ;
+INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
+
+SELECT 'LABEL','ID_MAFE_c86d6b2734026553fcc1826b1813e662','en','string or jQuery object','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_11b4f4a84a6eb08abcae398ed8ecbf37','en','keep open','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_88aa96c7e5cdcdd3f73efb61d77eda30','en','display text','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ae08a7f49bb2bf47eb119f7c7faf5728','en','default href value','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1cb251ec0d568de6a929b520c4aed8d1','en','text','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_88afc834597e983a83077522bb57d7a6','en','Validator','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6a26f548831e6a8c26bfbbd9f6ec61e0','en','Help','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_231afe47f3f37d3808096b36c28b4ded','en','Element','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_463ab1bc075f498d1aa03b9bc062efa3','en','Element Type','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e019dd49d439bb6d6765f7d2f6915333','en','Close Validator','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ebfdc7215934e8ea1ea4e5086fc4acd0','en','Gateway Direction','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_051be48d6f9cfc03da29d90bdfb51165','en','Diverging','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_08e8d925fbf9429065543b05a1a707ba','en','Converging','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_854f4a84f44dfa5ea4ad4b0bb953bc49','en','Validate Now','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_3a0c8958c0ae72f01636b760b3555ec9','en','Timer Event','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_5f95b0e71e6798b3213ccbcbbf5f4c72','en','Error value: Day: 1 - 31','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_adf9f7f231cca8f669de9ebec73920c8','en','Error value: Hour: 0 - 23','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d66bf84417d8bc392b891637f89e83eb','en','Error value: Minute: 0 - 59','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_63c0184d8c2398ceeaee276b9a140d09','en','Email Event','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_UPGRADE_ENTERPRISE','en','This feature is not available in ProcessMaker Community Edition. Please upgrade to ProcessMaker Enterprise Edition.','2015-09-11' 
+  UNION ALL
+SELECT 'LABEL','ID_PMGMAIL_VALID','en','The Gmail token is not valid.','2015-09-11' 
+  UNION ALL
+SELECT 'LABEL','ID_OU_FOR_RETIRED_EMPLOYEES_OU','en','OU for Retired Employees OU','2015-09-14' 
+  UNION ALL
+SELECT 'LABEL','ID_FILTER_TO_SEARCH_USERS','en','Filter to search users','2015-09-14' 
+  UNION ALL
+SELECT 'LABEL','ID_SERVER_ADDRESS','en','Server Address','2015-09-14' 
+  UNION ALL
+SELECT 'LABEL','ID_ENABLE_AUTOMATIC_REGISTER','en','Enable automatic register','2015-09-14' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_IDENTIFIER','en','User Identifier','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MATCH_ATTRIBUTES_TO_SYNC','en','Match attributes to sync','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MINIMUM_DATA_REQUIRED_TO_RUN_THE','en','Minimum data required to run the \"Test Connection\": \"Server Address, Port, Enabled TLS, Anonymous, Username, Password','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_DEFAULT_SET_TO','en','(Default set to (&(!(objectClass=organizationalUnit))))','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_LDAP_FIELD','en','LDAP Field','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_FIELD','en','User Field','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_DISTINGUISHED_NAME','en','Distinguished Name','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_APP_UID','en','App Uid','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_NUMBER','en','Case number','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_INIT_USER','en','Init user','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_FINISH_USER','en','Finish user','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_FILE_NAME','en','File Name','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_IMPORTING_USERS','en','Importing Users...','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_THERE_ARE_NO_LDAP_USERS','en','There are no LDAP Users','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_CONNECTING','en','Connecting...','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_SEARCH_FOR_USER','en','Search for user','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_IMPORTED_SUCCESSFULLY','en','Imported Successfully','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_UNARHIVE','en','Case Unarhive','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_RESTORED_SUCESSFULLY','en','Restored sucessfully','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_ERROR_IN_SERVER','en','Error in server','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_DETAIL_CASE','en','Detail Case','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_TESTING_CONNECTION','en','Testing connection...','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_SUCCESSFULLY_CONNECTED','en','Successfully connected','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_LDAP_USERS','en','LDAP Users','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_RESTORING_CASE','en','Restoring case','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_YOU_DO_NOT_SELECT_ANY_USER_TO_IMPORT','en','You do not select any user to import','2015-09-15' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4621590946adadc2f24119e194bd70a6','en','Parallel Marker Type','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a0bfb8e59e6c13fc8d990781f77694fe','en','Continue','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c028a05a817ab315a9784fa1f0d815dd','en','Parallel Assignment','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f6e23536e8d5c5f27f6f6d774eb81652','en','The configuring of multiple instances will be lost','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e148afc16b27021949123135f0cfb672','en','Array of users','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4252b72e6ebcd4d4b4c2e46a786f03d2','en','Zoom','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6068f02bcb9514fe40e67d04c7647d56','en','Please enter a valid hour.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f11f4e6128e29dff10ba00f8c1254a48','en','Dynaform (s)','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ef78da8db34b8af99c406b2bddea82b2','en','Input Document (s)','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c78a4a6f9ede9c76f26b0cebed36189b','en','OutPut Document (s)','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_2239b7b7383e821ff79ffbcd256a3f8f','en','External (s)','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_bfe379052f3914db06f3994651836d47','en','Edit Properties','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a0faef0851b4294c06f2b94bb1cb2044','en','Integer','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_27118326006d3829667a400ad23d5d98','en','String','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_22ae0e2b89e5e3d477f988cc36d3272b','en','Float','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_27226c864bac7454a8504f8edb15d95b','en','Boolean','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_44749712dbec183e983dcd78a7736c41','en','Date','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a1af5f0718bfae275ce162362d0e43c5','en','Datetime','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_70f71d44ddd89ba1b4912e63e890b05f','en','suggest users','2015-10-05' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d9b9a07c7b536fdc734d3b88b85aac82','en','Use a pattern (to be used in a search).','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e20cbb947afcf84cf58de1358ee1068d','en','Error message','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_01bc6f8efa4202821e95f4fdf6298b30','en','clear','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_451eab9de2917f743b2c3868a8d42253','en','Date/time picker widget based on twitter bootstrap <br><a href=''http://eonasdan.github.io/bootstrap-datetimepicker/'' target=''_blank''>http://eonasdan.github.io/bootstrap-datetimepicker/</a>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_716f6b30598ba30945d84485e61c1027','en','close','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e30f555e5a24f076a5d5be70a4625270','en','TNS','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_141ee7f0f96c6b0a087bd70630ab3719','en','Open Password','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6f7e4a2c4bf789e191bcd67e34aae75d','en','Owner Password','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d3f29913d052896a7de99dbc03691d93','en','PDF security','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b9f5c797ebbf55adccdd8539a65a0241','en','Disabled','2015-10-08' 
+ ;
+INSERT INTO [TRANSLATION] ([TRN_CATEGORY],[TRN_ID],[TRN_LANG],[TRN_VALUE],[TRN_UPDATE_DATE]) 
+
+SELECT 'LABEL','ID_MAFE_00d23a76e43b46dae9ec7aa9dcbebb32','en','Enabled','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6400a922c9482253339a1cfc2791c31b','en','By clicking on the generated file link','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8184d9b3e9184c68f8687e9a2adb764e','en','Open the file','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_48e3d5f66961b621c78f709afcd7d437','en','Download the file','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_3a17e95bfbc888f592433fb1bb5b5346','en','Create Predefined Trigger','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d359c6df99b25183d81f7d728b71de0e','en','Form','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_8f9204c55a59d787851fc3af81abc23c','en','Link to fill a form','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a3d9d08ecae92ab5b2aa76e761935405','en','Use a field to generate actions links','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9e064ba6ba566c8f1cf0c1b0bee46b1d','en','- Select a Template -','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_5380075c9a443c803097bc250428ed60','en','- Select a Dynaform -','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b4e7d2116bb1534c687d16bdc104ddfe','en','Register a Case Note when the recipient submits the Response','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_2689a6d6b3d3e54ccf8c9af27cf95d35','en','Actions by Email','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_257cb9ff74e0f915a115f902c91bc372','en','TEMPLATES','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_cd0c6092d6a6874f379fe4827ed1db8b','en','PUBLIC','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_fb8e567d9b10447761969e1e08eebc2b','en','Create','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_585db2c92dc89eef837f07b5791c5536','en','Edit','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b79a5b8ee43aa9dc939723becd94a8c0','en','Please enter a numeric value','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_42b5e40c0f14c557113865a3aa78b673','en','Insert a SQL query like: SELECT [Key field], [Label field] FROM [Table name]','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6b66a61fa66288a9a7ad6474d2e686ec','en','Default Value','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_57c095deeaf026f8022c485e054135c7','en','Are you sure you want to delete the "variable"?','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_308465ce385e7fe39ed79f3b9f2c4dee','en','Store value in','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_1ad9db0953957569c62d12728f2b0874','en','Get value from','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_eca71f5ca33e0810a5eba99c4e31693b','en','Name Value','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_cbfc6ad7fc06283ba1556ed2e4d30ff4','en','Correlation Value','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_769cb50c95fd3a43c659aa73aba99e5b','en','Hourly','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f4f33214dfca4a6aa8a15fff06c43ff5','en','One date/time','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_070acc9c521d0db8d0620a1435a36207','en','Wait for','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_275c7cb3669628b24afd0b6b85d496c8','en','Wait until specified date/time','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_CREATE_FOLDER_PATH_FOLDER','en','Path','2015-09-17' 
+  UNION ALL
+SELECT 'LABEL','ID_CREATE_FOLDER_NAME_FOLDER','en','Name','2015-09-17' 
+  UNION ALL
+SELECT 'LABEL','ID_OK','en','Ok','2015-09-17' 
+  UNION ALL
+SELECT 'LABEL','ID_ERROR_HOST_NAME_FAILED','en','Error Testing Connection: Resolving Host Name Failed','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_CHECK_PORT_FAILED','en','Error Testing Connection: Checking port failed','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_CONNECTING_TO_HOST','en','Connecting to host','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_CONNECTING_TO_HOST_FAILED','en','Error Testing Connection: Connecting to host failed','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_OPEN_DATABASE','en','Opening database','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_CONNECTING_TO_DATABASE_FAILED','en','Error Testing Connection: Opening database failed','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_TEST_DATABASE_ORACLE_TNS','en','Test TNS','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_TEST_ERROR_ORACLE_TNS','en','Error Testing Connection: Opening database type TNS failed','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_HOST_UNREACHABLE','en','Destination Host Unreachable','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_PORT_UNREACHABLE','en','Destination Port Unreachable','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_DESIGNER_PROCESS_DESIGNER_IS_DISABLED','en','The designer of this type of process is disabled','2015-09-18' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_IS_COMPLETED','en','The case "{0}" is completed.','2015-09-25' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_NOT_HAVE_PERMISSION','en','The user with "{0}" not have permissions to perform this action.','2015-09-25' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_NOT_HAVE_PERMISSION_DELETE_INPUT_DOCUMENT','en','The user with "{0}" not have permission to delete the input document.','2015-09-30' 
+  UNION ALL
+SELECT 'LABEL','ID_CASE_DEL_INDEX_DOES_NOT_EXIST','en','The case {0}: {1} with {2}: {3} does not exist.','2015-09-30' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_NOT_HAVE_PERMISSION_DELETE_OUTPUT_DOCUMENT','en','The user with "{0}" not have permission to delete the output document.','2015-09-30' 
+  UNION ALL
+SELECT 'LABEL','ID_USER_NOT_FOUND','en','User not found.','2015-10-02' 
+  UNION ALL
+SELECT 'LABEL','ID_EMAIL_MORE_USER','en','This email is assigned to more than one user. Please contact your administrator.','2015-10-02' 
+  UNION ALL
+SELECT 'LABEL','ID_EMAIL_NOT_CORRESPONDS_TOKEN','en','The email does not corresponds to the token gmail user.','2015-10-02' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d03efd1a07870ef79615cf0078ba7877','en','Select From Email','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e79f47181c74dbe13b691340050e32a9','en','From Email Server Configuration','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c3261ba2c0b4cb63463aa3237d97bcbe','en','From Current User','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_f45c3a0bb3687ed8e221253b3fd4a2ce','en','EXCLUSIVE','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_572d795e2d044f895cc511e5c05030e5','en','INCLUSIVE','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_36c311dcc594c5dfdc66b430a42367c2','en','There are problems updating the routing rule, please try again.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_139c4883eb01e5d23c9ff0e44ff29dda','en','Sql','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6887c495a8d963934af15a912151ac38','en','max file size','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_15a0bc8b5cabfd4950d74ec8806aaebd','en','variable data type','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_08e81084a29cd23cc305864758f6b006','en','validation error message','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_03b94d355b5045f081bd898e4d664900','en','display mode','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_4077e0cd2d3b172b040ce4b951aa6895','en','var_uid','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_9239185714c402746aa3a17ad583fdd4','en','grid store','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_df347a373b8f92aa0ae3dd920a5ec2f6','en','rows','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_b39dad036539dc7a45743536e3f8d8af','en','initial selection date','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_d2bd8c9509fc30a577287acb37ca93e1','en','datepicker view mode','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_a2609d846e9af22fcc3412a8c99510a5','en','show clear button','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_2f10f3aac0af954837b555bf8d7e64bd','en',''' to ''','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_955e25092908bb80c24b2975a3e494c9','en','The following variable(s) already exist in the process.<br>New variable(s) are going to be created with the following name(s):<br>','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_2c4429deb064b2431fb36a8b4f552713','en','It leaving this field in blank, the next user''s email will be used.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_eb0e94f426e2486a5af19633142d5ac7','en','No users','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_6bc9a39dbeaa2c99c7d5d81c58a9b5fb','en','Assignee saved successfully','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_431fc30c29fdcdc1980d898a2f65e4e7','en','The user/group was successfully removed','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_ee11cbb19052e40b07aac0ca060c23ee','en','user','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_db0f6f37ebeb6ea09489124345af2a45','en','group','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_78972d78128699c39ce214e712bd9b03','en','Related Input Document','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_c499a5f4b3762b6b464ede4a8055e121','en','Supported Controls: file.','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','ID_MAFE_e8308c9bdecef89676a80116e65d9210','en','- Select an input document -','2015-10-08' 
+  UNION ALL
+SELECT 'LABEL','CANT_CREATE_FOLDER_A_FOLDER_WITH_SAME_NAME_ALREADY_EXIST','en','Can''t create folder <br/> A folder with same name already exist.<br/>','2015-10-06' 
+  UNION ALL
+SELECT 'LABEL','CANT_CREATE_FOLDER_A','en','Can''t create folder A','2015-10-06' 
+ ;
+;
 
 INSERT INTO ISO_LOCATION ([IC_UID],[IL_UID],[IL_NAME],[IL_NORMAL_NAME],[IS_UID]) 
 SELECT 'AD','','','',''  UNION ALL

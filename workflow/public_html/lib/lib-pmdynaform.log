@@ -1,30 +1,30 @@
-[6 days ago] 4915300  (HEAD, origin/master, origin/HEAD, composer/master, master) PM-3128 <Roly Rudy Gutierrez Pinto>
-[7 days ago] 456dc43  update PM-2972 <richard yujra>
-[7 days ago] 39817cd  PM-3103 update <richard yujra>
-[7 days ago] ae19a93  PM-3128 <Roly Rudy Gutierrez Pinto>
-[8 days ago] a037625  PM-2949 <Roly Rudy Gutierrez Pinto>
-[8 days ago] fb71a9c  PM-2949 <Roly Rudy Gutierrez Pinto>
-[8 days ago] 770e222  PM-3170 <Roly Rudy Gutierrez Pinto>
-[8 days ago] d698db7  a <richard yujra>
-[8 days ago] d601311  PM-3128 RESOLVED <richard yujra>
-[8 days ago] f3c709e  PM-3128 resolved <richard yujra>
-[11 days ago] c57abab  PM-3066 resolved <richard yujra>
-[11 days ago] e4af5c7  improvement suggest field for mode view <richard yujra>
-[11 days ago] 4acd1f7  improvement checkbox control for grid <richard yujra>
-[12 days ago] b5e4a2e  PM-2947 improvement in field checkbox <richard yujra>
-[12 days ago] a1654bd  update handler options width field options <richard yujra>
-[13 days ago] 417e786  PM-3128 <Roly Rudy Gutierrez Pinto>
-[13 days ago] a38c4b1  PM-3128 <Roly Rudy Gutierrez Pinto>
-[13 days ago] 6f9c36b  PM-2972 resolved <richard yujra>
-[13 days ago] 902304b  PM-3112 <Roly Rudy Gutierrez Pinto>
-[13 days ago] 85f0211  PM-3112 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 6049bd0  PM-3112 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 16ffcc3  PM-3112 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] dfb3ace  PM-2775 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] b810771  IMPROVEMENT <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] 3111adc  add new paginator in grid field <richard yujra>
-[3 weeks ago] 72367b0  restar sample files <richard yujra>
-[3 weeks ago] 6686833  improvements view label <richard yujra>
-[3 weeks ago] b550a65  improvement grid function in layout static <richard yujra>
-[3 weeks ago] 6b38bf7  improvements grids width <richard yujra>
-[3 weeks ago] c4a6cfb  fix responsive width <richard yujra>
+[2 hours ago] dda12c5  update https <Jonathan Quispe>
+[4 hours ago] 12edb99  PM-3791 : No se puede visualizar en un siguiente task los elementos mobile (image, video, audio) <jonathan>
+[9 hours ago] e99a1c5  PM-3790:CheckGroup dentro de un subformulario no funcionan <Richard Yujra>
+[31 hours ago] 372a74b  improvements sql options backward compatibility <Richard Yujra>
+[4 days ago] 162c8e3  PM-3536-A <Roly Rudy Gutierrez Pinto>
+[4 days ago] 30083d9  PM-3736:0018663: Lentitud en querys external database connections <Richard Yujra>
+[5 days ago] 5666ede  PM-3742 : La información de campos dependientes no se recupera en las subsiguientes tareas <Jonathan Quispe>
+[5 days ago] bf7f13a  PM-3471:18692: Los campos dependientes no funcionan <Richard Yujra>
+[5 days ago] eec0983  PM-3725 : 0018606: En la version movil se queda cargando cuando se utiliza 'Checkbox' <Jonathan Quispe>
+[8 days ago] a609220  PM-3708 : Problema con grillas, al intentar adicionar un elemento todo el formulario se pone en blanco <Jonathan Quispe>
+[9 days ago] 8687c3a  PM-2905 <Roly Rudy Gutierrez Pinto>
+[11 days ago] 2113fdf  pm-3699:18605: Dynaforms permiten saltar required fields de un grid. <Richard Yujra>
+[11 days ago] 6424612  Ability to customize the rows in a textarea <Emerson Joel Rojas Soliz>
+[12 days ago] a93bfe2  PM-3688 : Include Accepted_language header in REST endpoint calls in MAFE <jonathan>
+[13 days ago] 8a95724  PM-69:14746 - 13954 En el campo Hidden de un Dynaform de tipo Grid no se refleja en el value el valor de la consulta. / Verify that works in new grid <Richard Yujra>
+[2 weeks ago] d7fb401  PM-3396 <Roly Rudy Gutierrez Pinto>
+[2 weeks ago] 39a17d7  PM-3478:Formulas y funciones en modo vista no muestran informacion usando IE9 <richard yujra>
+[2 weeks ago] 4d41cb3  0018208: Errores en el campo FILE <Emerson Joel Rojas Soliz>
+[2 weeks ago] 6b963e6  PM-3421 <Roly Rudy Gutierrez Pinto>
+[2 weeks ago] d818a72  PM-3442:0018282: Errores en el modo view del formulario <Richard Yujra>
+[3 weeks ago] b7529c9  PM-3474:improvements for change in the engine <Richard Yujra>
+[3 weeks ago] 90d3c92  update restclient for ajax jquery <jonathan>
+[3 weeks ago] 8980798  update <Jonathan Quispe>
+[3 weeks ago] 453af27  PM-3688 <Jonathan Quispe>
+[3 weeks ago] a4940c5  update checkscript <Jonathan Quispe>
+[3 weeks ago] df8a7be  PM-3676 : Problema con la ejecución del set data, se ejecuta luego del javascript que el arquitecto define en el dynaform <Jonathan Quispe>
+[3 weeks ago] f249a50  improvement pm-3666 <Jonathan Quispe>
+[3 weeks ago] 78ff7e4  PM-3666 : (PMdynaforms)Manage conditional steps from the mobile layer <Jonathan Quispe>
+[3 weeks ago] f7aa296  PM-3672:New Case: El branch 3.0.1 presenta un error al renderizar los Dynaforms <Richard Yujra>
+[3 weeks ago] 833c1dd  PM-3431:18149: Si una grilla tiene una columna oculta y una fórmula en otro campo, el total no se despliega debajo del campo correcto. <richard yujra>

@@ -174,6 +174,7 @@ try {
                 $oStep = new Step;
                 $oStep = $oStep->loadByProcessTaskPosition($_SESSION['PROCESS'], $_SESSION['TASK'], 1);
                 if($oStep) {
+                    $aFields['APP_DATA'] = array_merge( $aFields['APP_DATA'], G::getSystemConstants() );
                     $triggerFields["APP_DATA"] = $oCase->ExecuteTriggers( $_SESSION['TASK'], $oStep->getStepTypeObj(), $oStep->getStepUidObj(), 'BEFORE', $aFields['APP_DATA'] );
                     $oCase->updateCase( $_SESSION['APPLICATION'], $triggerFields );
                     $_SESSION['beforeTriggersExecuted'] = true;
@@ -206,6 +207,7 @@ try {
                 }
                 $_SESSION['PROCESS'] = $aFields['PRO_UID'];
                 $_SESSION['TASK'] = - 1;
+                $_SESSION['bNoShowSteps'] = 1;
                 //$Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'] );
                 if ($_action == 'jump') {
                     $Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'], 1);

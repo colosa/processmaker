@@ -232,6 +232,10 @@ class Designer extends Controller
 
         }
 
+        
+
+        $this->setVar('sys_skin', SYS_SKIN);
+
 
 
         $this->setView('designer/index');

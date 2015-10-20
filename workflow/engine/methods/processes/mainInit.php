@@ -29,18 +29,43 @@ $RBAC->requirePermissions( 'PM_FACTORY' );
 G::loadClass( 'configuration' );
 $conf = new Configurations();
 
-if (preg_match("/^([\d\.]+).*$/", System::getVersion(), $arrayMatch)) {
-    $pmVersion = $arrayMatch[1];
-} else {
-    $pmVersion = ""; //Branch master
-}
+$pmVersion = (preg_match("/^([\d\.]+).*$/", System::getVersion(), $arrayMatch))? $arrayMatch[1] : ""; //Otherwise: Branch master
 
-$arrayImportFileExtension = array("pm", "pmx", "bpmn");
-$arrayMenuNewOption       = array("pm" => true, "bpmn" => true);
+$arrayFlagImportFileExtension = array("pm", "pmx", "bpmn");
+$arrayFlagMenuNewOption       = array("pm" => true, "bpmn" => true);
 
 if ($pmVersion != "") {
-    $arrayImportFileExtension = (version_compare($pmVersion . "", "3", ">="))? $arrayImportFileExtension : array("pm");
-    $arrayMenuNewOption       = (version_compare($pmVersion . "", "3", ">="))? array("bpmn" => true) : array("pm" => true);
+    $arrayFlagImportFileExtension = (version_compare($pmVersion . "", "3", ">="))? $arrayFlagImportFileExtension : array("pm");
+    $arrayFlagMenuNewOption       = (version_compare($pmVersion . "", "3", ">="))? array("bpmn" => true) : array("pm" => true);
+}
+
+$pluginRegistry = &PMPluginRegistry::getSingleton();
+
+$arrayMenuNewOptionPlugin     = array();
+$arrayContextMenuOptionPlugin = array();
+
+foreach ($pluginRegistry->getDesignerMenu() as $value) {
+    if (file_exists($value->file)) {
+        require_once($value->file);
+
+        $className = "DesignerMenu" . $value->pluginName;
+
+        if (class_exists($className)) {
+            $obj = new $className();
+
+            if (method_exists($obj, "getDesignerMenu")) {
+                $arrayDesignerMenuData = $obj->getDesignerMenu();
+
+                if (isset($arrayDesignerMenuData["MENU_NEW_OPTION"]) && is_array($arrayDesignerMenuData["MENU_NEW_OPTION"])) {
+                    $arrayMenuNewOptionPlugin = array_merge($arrayMenuNewOptionPlugin, $arrayDesignerMenuData["MENU_NEW_OPTION"]);
+                }
+
+                if (isset($arrayDesignerMenuData["CONTEXT_MENU_OPTION"]) && is_array($arrayDesignerMenuData["CONTEXT_MENU_OPTION"])) {
+                    $arrayContextMenuOptionPlugin = array_merge($arrayContextMenuOptionPlugin, $arrayDesignerMenuData["CONTEXT_MENU_OPTION"]);
+                }
+            }
+        }
+    }
 }
 
 $oHeadPublisher->addExtJsScript( 'processes/main', true ); //adding a javascript file .js
@@ -49,7 +74,10 @@ $oHeadPublisher->addContent( 'processes/main' ); //adding a html file  .html.
 $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
 $oHeadPublisher->assign( 'PARTNER_FLAG', $partnerFlag );
 $oHeadPublisher->assign( 'pageSize', $conf->getEnvSetting( 'casesListRowNumber' ) );
-$oHeadPublisher->assign("arrayImportFileExtension", $arrayImportFileExtension);
-$oHeadPublisher->assign("arrayMenuNewOption", $arrayMenuNewOption);
+$oHeadPublisher->assign("arrayFlagImportFileExtension", $arrayFlagImportFileExtension);
+$oHeadPublisher->assign("arrayFlagMenuNewOption", $arrayFlagMenuNewOption);
+$oHeadPublisher->assign("arrayMenuNewOptionPlugin", $arrayMenuNewOptionPlugin);
+$oHeadPublisher->assign("arrayContextMenuOptionPlugin", $arrayContextMenuOptionPlugin);
 
 G::RenderPage( 'publish', 'extJs' );
+

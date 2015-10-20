@@ -22,6 +22,15 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 //validate the data post
+
+$dynaForm = DynaformPeer::retrieveByPK($_GET["UID"]);
+
+$flagDynaFormNewVersion = !is_null($dynaForm) && $dynaForm->getDynVersion() == 2;
+
+if ($flagDynaFormNewVersion) {
+    $dataForm = $_POST["form"];
+}
+
 $oForm = new Form( $_SESSION['PROCESS'] . '/' . $_GET['UID'], PATH_DYNAFORM );
 $oForm->validatePost();
 
@@ -31,6 +40,11 @@ G::LoadClass( 'case' );
 //load the variables
 $oCase = new Cases();
 $Fields = $oCase->loadCase( $_SESSION['APPLICATION'] );
+
+if ($flagDynaFormNewVersion) {
+    $Fields["APP_DATA"] = array_merge($Fields["APP_DATA"], $dataForm);
+}
+
 $Fields['APP_DATA'] = array_merge( $Fields['APP_DATA'], $_POST['form'] );
 
 //save data
@@ -194,6 +208,5 @@ if (isset( $_FILES["form"]["name"] ) && count( $_FILES["form"]["name"] ) > 0) {
 
 //go to the next step
 $aNextStep = $oCase->getNextSupervisorStep( $_SESSION['PROCESS'], $_SESSION['STEP_POSITION'] );
-$_SESSION['STEP_POSITION'] = $aNextStep['POSITION'];
 G::header( 'location: cases_StepToRevise?DYN_UID=' . $aNextStep['UID'] . '&APP_UID=' . $_SESSION['APPLICATION'] . '&DEL_INDEX=' . $_SESSION['INDEX'] );
 

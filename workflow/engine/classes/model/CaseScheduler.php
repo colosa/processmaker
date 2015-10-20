@@ -335,7 +335,16 @@ class CaseScheduler extends BaseCaseScheduler
                 }
             }
 
-            $wsdl = "http://" . SERVER_NAME . $port . "/sys" . SYS_SYS . "/" . SYS_LANG . "/classic/services/wsdl2";
+            $url = SERVER_NAME . $port . "/sys" . SYS_SYS . "/" . SYS_LANG . "/classic/services/wsdl2";
+            
+            $testConnection = true;
+            try {
+                @$client = new SoapClient("http://" . $url);
+            } catch (SoapFault $fault) {
+                $testConnection = false;
+            }
+ 
+            $wsdl = ($testConnection) ? "http://" . $url : "https://" . $url;
 
             $timeDate = strtotime($date);
 

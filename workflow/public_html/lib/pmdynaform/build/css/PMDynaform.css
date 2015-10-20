@@ -50,7 +50,30 @@
     display: inline-block; }
 
   .pmdynaform-container .pmdynaform-field-control {
-    float: right; } }
+    float: right; }
+
+  .pmdynaform-container .pmdynaform-field-file .link-container {
+    float: none; }
+
+  .pmdynaform-edit-grid.responsive .form-control {
+    width: 95%;
+    min-width: initial; }
+
+  .pmdynaform-control-file.form-control {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
+
+  .pmdynaform-field-control .link-container {
+    width: 100%; }
+    .pmdynaform-field-control .link-container a.pmdynaform-control-file {
+      width: 100%; }
+      .pmdynaform-field-control .link-container a.pmdynaform-control-file span {
+        width: 100%;
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap; } }
 @media all and (max-width: 980px) and (min-width: 550px) {
   .tpl-empty {
     display: none; }
@@ -107,7 +130,27 @@
     display: inline-block; }
 
   .pmdynaform-field .pmdynaform-checkbox-items {
-    width: 93%; } }
+    width: 93%; }
+
+  .pmdynaform-edit-grid.responsive .form-control {
+    width: 95%;
+    min-width: initial; }
+
+  .pmdynaform-control-file.form-control {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
+
+  .pmdynaform-field-control .link-container {
+    width: 100%; }
+    .pmdynaform-field-control .link-container a.pmdynaform-control-file {
+      width: 100%; }
+      .pmdynaform-field-control .link-container a.pmdynaform-control-file span {
+        width: 100%;
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap; } }
 @media all and (max-width: 550px) and (min-width: 300px) {
   .tpl-empty {
     display: none; }
@@ -163,7 +206,27 @@
     display: inline-block; }
 
   .pmdynaform-field .pmdynaform-checkbox-items {
-    width: 91%; } }
+    width: 91%; }
+
+  .pmdynaform-edit-grid.responsive .form-control {
+    width: 95%;
+    min-width: initial; }
+
+  .pmdynaform-control-file.form-control {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
+
+  .pmdynaform-field-control .link-container {
+    width: 100%; }
+    .pmdynaform-field-control .link-container a.pmdynaform-control-file {
+      width: 100%; }
+      .pmdynaform-field-control .link-container a.pmdynaform-control-file span {
+        width: 100%;
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap; } }
 @media all and (max-width: 300px) {
   .tpl-empty {
     display: none; }
@@ -219,7 +282,27 @@
     display: inline-block; }
 
   .pmdynaform-field .pmdynaform-checkbox-items {
-    width: 89%; } }
+    width: 89%; }
+
+  .pmdynaform-edit-grid.responsive .form-control {
+    width: 95%;
+    min-width: initial; }
+
+  .pmdynaform-control-file.form-control {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
+
+  .pmdynaform-field-control .link-container {
+    width: 100%; }
+    .pmdynaform-field-control .link-container a.pmdynaform-control-file {
+      width: 100%; }
+      .pmdynaform-field-control .link-container a.pmdynaform-control-file span {
+        width: 100%;
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap; } }
 .row {
   margin-left: 5px;
   margin-right: 5px; }
@@ -341,6 +424,10 @@ button[disabled], html input[disabled] {
   background-color: #eee;
   border: 1px solid white; }
 
+.pmdynaform-grid .checkbox {
+  min-height: initial;
+  padding-top: 0px; }
+
 /*# sourceMappingURL=bootstrapCss.css.map */
 
 textarea {
@@ -351,7 +438,7 @@ textarea {
   display: inline-block;
   /*background-color: #C73434;*/
   /*box-shadow: 0 0 2px #570808;
-  -webkit-box-shadow: 0 0 2px #570808; 
+  -webkit-box-shadow: 0 0 2px #570808;
   -moz-box-shadow: 0 0 2px #570808;*/
   position: relative;
   z-index: 10;
@@ -371,6 +458,12 @@ textarea {
   border: 1px solid #e14333;
   color: white;
   border-radius: 0px; }
+.pmdynaform-message-error .warning {
+  background: #ffc85c;
+  border: 1px solid #ffc85c;
+  padding: 2px;
+  color: #ffffff;
+  border-radius: 0; }
 
 .pmdynaform-field-required {
   color: #e84c3d;
@@ -380,9 +473,16 @@ textarea {
 
 .has-error .form-control {
   border-color: #e4655f; }
+  .has-error .form-control:focus {
+    border-color: #e4655f; }
 
 .has-error .control-label {
   border-color: #555151; }
+
+.has-warning .form-control {
+  border-color: #ffc85c; }
+  .has-warning .form-control:focus {
+    border-color: #ffc85c; }
 
 /*# sourceMappingURL=ValidationField.css.map */
 
@@ -776,9 +876,10 @@ textarea {
   width: 96%;*/ }
 
 .pmdynaform-grid-thead-static {
-  padding-left: 44px;
-  margin-right: 65px;
   overflow-x: hidden; }
+
+.pmdynaform-grid-thead.pmdynaform-grid-thead-static {
+  margin-left: 0px; }
 
 .pmdynaform-grid-tbody {
   background-color: white;
@@ -822,13 +923,14 @@ textarea {
   width: auto; }
 
 .pmdynaform-grid-removerow-static {
-  padding-left: 15px;
-  padding-right: 15px;
   box-sizing: border-box;
   display: table-cell; }
 
 .pmdynaform-grid-removerow-static.remove-row .btn-danger {
-  top: -7px; }
+  top: 5px;
+  margin-right: 8px;
+  right: 3px;
+  padding: 3px 4px 3px 4px; }
 
 .pmdynaform-grid-field-static {
   /*position: relative;*/
@@ -979,10 +1081,7 @@ textarea {
     margin-top: 4px; }
 
   .pmdynaform-field-grid.form .pmdynaform-form .rowIndex {
-    width: 30%; }
-
-  .pmdynaform-field-grid.responsive .remove-row {
-    right: 16px !important; } }
+    width: 30%; } }
 @media all and (max-width: 550px) and (min-width: 300px) {
   .pmdynaform-field-grid.form .pmdynaform-label-options {
     text-align: initial; }
@@ -1011,16 +1110,12 @@ textarea {
 .pmdynaform-field-grid .responsive .form-group {
   with: 100%; }
 
-.pmdynaform-field-grid.responsive .remove-row {
-  position: absolute;
-  right: 0;
-  margin-right: 2%;
-  display: initial; }
+.pmdynaform-field-grid.responsive .remove-row button {
+  padding: 3px;
+  top: 5px; }
 
 .pmdynaform-edit-grid .pmdynaform-field-required {
-  font-size: 19px;
-  position: absolute;
-  margin-left: 7%; }
+  font-size: 19px; }
 
 .pmdynaform-edit-view .pmdynaform-field-required {
   display: none; }
@@ -1049,6 +1144,25 @@ textarea {
   background-color: white;
   border-color: white;
   text-decoration: underline; }
+
+.pmdynaform-container .pmdynaform-label-options.form-control,
+.pmdynaform-container .pmdynaform-control-checkbox-list.form-control,
+.pmdynaform-container .pmdynaform-link.form-control {
+  border: initial; }
+
+.pmdynaform-grid-field-static {
+  box-sizing: border-box;
+  text-aling: center; }
+
+.pmdynaform-view-grid .pmdynaform-grid-tbody .pmdynaform-grid-field-static {
+  border-left: 1px solid #DADADA;
+  text-align: center; }
+
+.pmdynaform-grid .form-control {
+  height: 30px; }
+
+.pmdynaform-grid .pmdynaform-control-textarea.form-control {
+  height: 34px; }
 
 /*# sourceMappingURL=GridTable.css.map */
 
@@ -1696,8 +1810,7 @@ textarea {
   background-color: black;
   position: absolute;
   height: 100%;
-  width: 100%;
-  z-index: 10000; }
+  width: 100%; }
 
 .pm-form-grid-modal-menu {
   position: absolute;

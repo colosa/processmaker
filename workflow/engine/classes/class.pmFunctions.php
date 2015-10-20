@@ -1409,7 +1409,7 @@ function WSUnpauseCase ($caseUid, $delIndex, $userUid)
  *
  * Add a case note.
  *
- * @name WSAddACaseNote
+ * @name WSAddCaseNote
  * @label WS Add a case note
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#WSAddCaseNote.28.29
  *
@@ -1546,7 +1546,7 @@ function PMFUserList () //its test was successfull
  *
  * Add an Input Document.
  *
- * @name PMFAddAnInputDocument
+ * @name PMFAddInputDocument
  * @label PMF Add an input document
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFAddInputDocument.28.29
  *
@@ -2780,7 +2780,7 @@ function PMFUnpauseCase ($caseUid, $delIndex, $userUid)
  *
  * Add a case note.
  *
- * @name PMFAddACaseNote
+ * @name PMFAddCaseNote
  * @label PMF Add a case note
  * @link http://wiki.processmaker.com/index.php/ProcessMaker_Functions#PMFAddCaseNote.28.29
  *

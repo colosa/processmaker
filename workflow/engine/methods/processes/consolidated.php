@@ -597,6 +597,21 @@ class ajax_con extends WebResource
             $oCaseConsolidated->setTasUid($sTasUid);
         }
 
+        $criteria = new Criteria();
+        $criteria->addSelectColumn(CaseConsolidatedCorePeer::TAS_UID);
+        $criteria->add(CaseConsolidatedCorePeer::TAS_UID, $sTasUid);
+        $rsCriteria = CaseConsolidatedCorePeer::doSelectRS($criteria);
+        if ($rsCriteria->next()) {
+            $row = $rsCriteria->getRow();
+            $oCaseConsolidated->delete();
+            $oCaseConsolidated = CaseConsolidatedCorePeer::retrieveByPK($sTasUid);
+        }
+
+        if (!(is_object($oCaseConsolidated)) || get_class($oCaseConsolidated) != 'CaseConsolidatedCore') {
+            $oCaseConsolidated = new CaseConsolidatedCore();
+            $oCaseConsolidated->setTasUid($sTasUid);
+        }
+
         if ($sStatus == '1') {
             $oCaseConsolidated->setConStatus('ACTIVE');
         } else {

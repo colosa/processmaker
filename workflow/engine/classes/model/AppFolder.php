@@ -50,7 +50,7 @@ class AppFolder extends BaseAppFolder
         if ($aRow = $oDataset->getRow()) {
             //Folder exist, then return the ID
             $response['success'] = false;
-            $response['message'] = $response['error'] = "Can't create folder <br /> A folder with same name already exist. <br /> $folderName";
+            $response['message'] = $response['error'] = G::LoadTranslation( "CANT_CREATE_FOLDER_A_FOLDER_WITH_SAME_NAME_ALREADY_EXIST" ) . $folderName;
             $response['folderUID'] = $aRow['FOLDER_UID'];
             //return ($aRow ['FOLDER_UID']);
             return ($response);
@@ -79,7 +79,7 @@ class AppFolder extends BaseAppFolder
                     $msg .= $objValidationFailure->getMessage() . "<br/>";
                 }
                 $response['success'] = false;
-                $response['message'] = $response['error'] = "Can't create folder \n A  \n " . $msg;
+                $response['message'] = $response['error'] = G::LoadTranslation( "CANT_CREATE_FOLDER_A" ) . $msg;
                 return ($response);
             }
         }

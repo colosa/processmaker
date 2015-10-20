@@ -1,30 +1,30 @@
-[3 hours ago] 36d1cb7  disable apply task margins <rodrigo quelca>
-[4 hours ago] b53f472  revert changes <rodrigo quelca>
-[8 days ago] 30eb6d0  PM-3154 0017842: No aparecen varios usuarios para la asignacion <dheeyi>
-[11 days ago] 3c5e003  PM-2240 El arrow del flujo de secuencia no se dibuja de forma adecuada usando se usan pools <rodrigo quelca>
-[2 weeks ago] 8104956  PM-2878 Cambiar estandarizar el UX/diseñe las grillas <dheeyi>
-[4 weeks ago] 908e1bc  dateTime picker <marcelo.cuiza>
-[4 weeks ago] 1c86c56  fix dateTime picker <marcelo.cuiza>
-[6 weeks ago] 0c1184d  PM-2868 Estandarizar grillas de acuerdo a dise <dheeyi>
-[7 weeks ago] f7740c3  PM-2647 Designer > BPMN Designer > Porcess Supervisors > Steps: Estandarizar la ventana al nuevo diseñue se solicito para el diseñr BPMN <dheeyi>
-[7 weeks ago] 7ef4af8  PM-1664 changes to implement corona for all shapes <rodrigo quelca>
-[8 weeks ago] b5a9f73  PM-2815: some changes in styles <Paula V. Quispe>
-[8 weeks ago] 1fefdf3  PM-2815: I deleted the border in fields radioButtons and checkboxes <Paula V. Quispe>
-[8 weeks ago] 6e9f117  PM-2815: Change UX design of Assignment Rules <Paula V. Quispe>
-[9 weeks ago] b27910e  PM-2815: Change UX design of Assignment Rules <Paula V. Quispe>
-[9 weeks ago] faed5b9  PM-1402 TAB in modal window <Roly Rudy Gutierrez Pinto>
-[10 weeks ago] 3529c2f  PM-1550 Editing labels in swimlanes and pools <rodrigo quelca>
-[3 months ago] 1561554  PM-1535 <dheeyi>
-[3 months ago] ac6696b  PM-2220 Designer > Designer BPMN > Subprocess > Target Variable: La columna Label no muestra la informacióorrecta <dheeyi>
-[3 months ago] c28c319  PM-2623 Elementos del dise�ador, no se habilita el boton guardar si solo se mueve el elemento con el teclado <rodrigo quelca>
-[3 months ago] 8993dfb  fix IMPROVEMENT ONCHAGE FOR TEXTFIELD <Richard Yujra>
-[3 months ago] 1c66610  PM-2407 fix absolute position in meesage field <Richard Yujra>
-[3 months ago] ce989d9  add handler beforeclose in window object <richard yujra>
-[3 months ago] 70a469c  PM-2188 REDO action no tiene funcionalidad al crear objetos(Activity, Event, Gateway, Artifact, etc)(fixed) <rodrigo quelca>
-[3 months ago] 1842364  a <Richard Yujra>
-[3 months ago] 0e879b3  PM-2408 <marcelo.cuiza>
-[3 months ago] 941c420  (origin/3.0-RC4, composer/3.0-RC4) PM-2360 fixed styles and refactory method translate PMUI <Richard Yujra>
-[4 months ago] ab26b67  PM-1876 fixed <Richard Yujra>
-[4 months ago] 286d1d8  a <richard yujra>
-[4 months ago] f301859  a <richard yujra>
-[4 months ago] 4dbc8fe  change style in footer buttons for messagewindow <richard yujra>
+[5 days ago] 8336245  PM-3659:improvements, hiver <Richard Yujra>
+[7 days ago] 3c670b4  PM-3659:Uso de interface lenta (assignment rules) cuando se tienen varios usuarios (40000) <richard yujra>
+[3 weeks ago] 0f8acaf  PM-3389: Error de espacio de trabajo / posicion de flujos y elementos <rodrigo quelca>
+[4 weeks ago] 5b613ad  PM-3564 <Roly Rudy Gutierrez Pinto>
+[5 weeks ago] 7b6f2e2  PM-3368: Random loop in crossing lines(Mejorar el diseno de las conexiones cruzadas) <rodrigo quelca>
+[5 weeks ago] 450d960  PM-3456: Error en las opciones del componente de un evento <rodrigo quelca>
+[6 weeks ago] ea9a995  PM-3345: Mouse pointer doesn't work on process designer labels <rodrigo quelca>
+[7 weeks ago] 2210b6a  PM-3167 0017833: Boton de desplazamiento (scroll) no funciona en ProcessMaker 3.0.0.6 cuando se edita triggers con el modo editor <dheeyi>
+[2 months ago] 36d1cb7  disable apply task margins <rodrigo quelca>
+[2 months ago] b53f472  revert changes <rodrigo quelca>
+[3 months ago] 30eb6d0  PM-3154 0017842: No aparecen varios usuarios para la asignacion <dheeyi>
+[3 months ago] 3c5e003  PM-2240 El arrow del flujo de secuencia no se dibuja de forma adecuada usando se usan pools <rodrigo quelca>
+[3 months ago] 8104956  PM-2878 Cambiar estandarizar el UX/diseñe las grillas <dheeyi>
+[3 months ago] 908e1bc  dateTime picker <marcelo.cuiza>
+[3 months ago] 1c86c56  fix dateTime picker <marcelo.cuiza>
+[4 months ago] 0c1184d  PM-2868 Estandarizar grillas de acuerdo a dise <dheeyi>
+[4 months ago] f7740c3  PM-2647 Designer > BPMN Designer > Porcess Supervisors > Steps: Estandarizar la ventana al nuevo diseñue se solicito para el diseñr BPMN <dheeyi>
+[4 months ago] 7ef4af8  PM-1664 changes to implement corona for all shapes <rodrigo quelca>
+[4 months ago] b5a9f73  PM-2815: some changes in styles <Paula V. Quispe>
+[4 months ago] 1fefdf3  PM-2815: I deleted the border in fields radioButtons and checkboxes <Paula V. Quispe>
+[4 months ago] 6e9f117  PM-2815: Change UX design of Assignment Rules <Paula V. Quispe>
+[4 months ago] b27910e  PM-2815: Change UX design of Assignment Rules <Paula V. Quispe>
+[4 months ago] faed5b9  PM-1402 TAB in modal window <Roly Rudy Gutierrez Pinto>
+[5 months ago] 3529c2f  PM-1550 Editing labels in swimlanes and pools <rodrigo quelca>
+[5 months ago] 1561554  PM-1535 <dheeyi>
+[5 months ago] ac6696b  PM-2220 Designer > Designer BPMN > Subprocess > Target Variable: La columna Label no muestra la informacióorrecta <dheeyi>
+[5 months ago] c28c319  PM-2623 Elementos del dise�ador, no se habilita el boton guardar si solo se mueve el elemento con el teclado <rodrigo quelca>
+[6 months ago] 8993dfb  fix IMPROVEMENT ONCHAGE FOR TEXTFIELD <Richard Yujra>
+[6 months ago] 1c66610  PM-2407 fix absolute position in meesage field <Richard Yujra>
+[6 months ago] ce989d9  add handler beforeclose in window object <richard yujra>

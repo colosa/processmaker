@@ -663,6 +663,7 @@ class Process extends BaseProcess
         $oCriteria->addSelectColumn( ProcessPeer::PRO_UID );
         $oCriteria->addSelectColumn( ProcessPeer::PRO_PARENT );
         $oCriteria->addSelectColumn( ProcessPeer::PRO_STATUS );
+        $oCriteria->addSelectColumn(ProcessPeer::PRO_TYPE);
         $oCriteria->addSelectColumn( ProcessPeer::PRO_CATEGORY );
         $oCriteria->addSelectColumn( ProcessPeer::PRO_UPDATE_DATE );
         $oCriteria->addSelectColumn( ProcessPeer::PRO_CREATE_DATE );
@@ -732,7 +733,9 @@ class Process extends BaseProcess
         $uids = array ();
         while ($oDataset->next()) {
             $row = $oDataset->getRow();
-            $row['PROJECT_TYPE'] = in_array($row['PRO_UID'], $bpmnProjects) ? 'bpmn' : 'classic';
+
+            $row["PROJECT_TYPE"] = ($row["PRO_TYPE"] == "NORMAL")? ((in_array($row["PRO_UID"], $bpmnProjects))? "bpmn" : "classic") : $row["PRO_TYPE"];
+
             $processes[] = $row;
             $uids[] = $processes[sizeof( $processes ) - 1]['PRO_UID'];
         }
@@ -1020,7 +1023,7 @@ class Process extends BaseProcess
     public function isBpmnProcess($proUid){
       $c = new Criteria("workflow");
       $c->add(BpmnProcessPeer::PRJ_UID, $proUid);
-      $res = BpmnProcessPeer::doSelect($c);        
+      $res = BpmnProcessPeer::doSelect($c);
       if( sizeof($res) == 0 ){
         return 0;
       }else{

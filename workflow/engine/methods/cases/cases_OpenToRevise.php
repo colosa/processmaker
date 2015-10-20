@@ -70,14 +70,75 @@ $_SESSION['TASK'] = $aFields['TAS_UID'];
 $_SESSION['STEP_POSITION'] = 0;
 
 /* Redirect to next step */
-$aNextStep = $oCase->getNextSupervisorStep( $_SESSION['PROCESS'], 0 );
-if($aNextStep['UID'] != ''){
-    $sPage = "cases_StepToRevise?type=DYNAFORM&PRO_UID=" . $aFields['PRO_UID'] . "&DYN_UID=" . $aNextStep['UID'] . "&APP_UID=$sAppUid&DEL_INDEX=$iDelIndex&position=1"; //$aNextStep['PAGE'];
-    G::header( 'location: ' . $sPage );
-}else{
+
+$cases = new Cases();
+
+$arrayDynaFormUid = array();
+$arrayInputUid = array();
+
+$resultDynaForm = $cases->getAllDynaformsStepsToRevise($aFields["APP_UID"]);
+
+while ($resultDynaForm->next()) {
+    $row = $resultDynaForm->getRow();
+
+    $arrayDynaFormUid[$row["STEP_UID_OBJ"]] = $row["STEP_UID_OBJ"];
+}
+
+$resultInput = $cases->getAllInputsStepsToRevise($aFields["APP_UID"]);
+
+while ($resultInput->next()) {
+    $row = $resultInput->getRow();
+
+    $arrayInputUid[$row["STEP_UID_OBJ"]] = $row["STEP_UID_OBJ"];
+}
+
+$criteria = new Criteria();
+
+$criteria->addSelectColumn(StepPeer::STEP_TYPE_OBJ);
+$criteria->addSelectColumn(StepPeer::STEP_UID_OBJ);
+
+$criteria->add(StepPeer::PRO_UID, $aFields["PRO_UID"], Criteria::EQUAL);
+$criteria->add(StepPeer::TAS_UID, $aFields["APP_DATA"]["TASK"], Criteria::EQUAL);
+$criteria->addAscendingOrderByColumn(StepPeer::STEP_POSITION);
+
+$rsCriteria = StepPeer::doSelectRS($criteria);
+$rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+$url = "";
+$flag = false;
+
+while ($rsCriteria->next()) {
+    $row = $rsCriteria->getRow();
+
+    $stepTypeObj = $row["STEP_TYPE_OBJ"];
+    $stepUidObj = $row["STEP_UID_OBJ"];
+
+    switch ($stepTypeObj) {
+        case "DYNAFORM":
+            if (isset($arrayDynaFormUid[$stepUidObj])) {
+                $url = "cases_StepToRevise?type=DYNAFORM&PRO_UID=" . $aFields["PRO_UID"] . "&DYN_UID=" . $stepUidObj . "&APP_UID=" . $sAppUid . "&DEL_INDEX=" . $iDelIndex . "&position=1";
+                $flag = true;
+            }
+            break;
+        case "INPUT_DOCUMENT":
+            if (isset($arrayInputUid[$stepUidObj])) {
+                $url = "cases_StepToReviseInputs?type=INPUT_DOCUMENT&PRO_UID=" . $aFields["PRO_UID"] . "&INP_DOC_UID=" . $stepUidObj . "&APP_UID=" . $sAppUid . "&position=" . $step["STEP_POSITION"] . "&DEL_INDEX=" . $iDelIndex;
+                $flag = true;
+            }
+            break;
+    }
+
+    if ($flag) {
+        break;
+    }
+}
+
+if ($flag) {
+    G::header("Location: " . $url);
+} else {
     $aMessage = array ();
-    $aMessage['MESSAGE'] = G::LoadTranslation( 'ID_SUPERVISOR_DOES_NOT_HAVE_DYNAFORMS' );
+    $aMessage["MESSAGE"] = G::LoadTranslation("ID_SUPERVISOR_DOES_NOT_HAVE_DYNAFORMS");
     $G_PUBLISH = new Publisher();
-    $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', $aMessage );
-    G::RenderPage( 'publishBlank', 'blank' );
+    $G_PUBLISH->AddContent("xmlform", "xmlform", "login/showMessage", "", $aMessage);
+    G::RenderPage("publishBlank", "blank");
 }

@@ -103,7 +103,13 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
      * The value for the abe_subject_field field.
      * @var        string
      */
-    protected $abe_subject_field;
+    protected $abe_subject_field = '';
+
+    /**
+     * The value for the abe_mailserver_or_mailcurrent field.
+     * @var        int
+     */
+    protected $abe_mailserver_or_mailcurrent = 0;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -295,13 +301,24 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
 
     /**
      * Get the [abe_subject_field] column value.
-     *
+     * 
      * @return     string
      */
     public function getAbeSubjectField()
     {
 
         return $this->abe_subject_field;
+    }
+
+    /**
+     * Get the [abe_mailserver_or_mailcurrent] column value.
+     * 
+     * @return     int
+     */
+    public function getAbeMailserverOrMailcurrent()
+    {
+
+        return $this->abe_mailserver_or_mailcurrent;
     }
 
     /**
@@ -584,7 +601,7 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
 
     /**
      * Set the value of [abe_subject_field] column.
-     *
+     * 
      * @param      string $v new value
      * @return     void
      */
@@ -603,6 +620,28 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
         }
 
     } // setAbeSubjectField()
+
+    /**
+     * Set the value of [abe_mailserver_or_mailcurrent] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setAbeMailserverOrMailcurrent($v)
+    {
+
+        // Since the native PHP type for this column is integer,
+        // we will cast the input value to an int (if it is not).
+        if ($v !== null && !is_int($v) && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->abe_mailserver_or_mailcurrent !== $v || $v === 0) {
+            $this->abe_mailserver_or_mailcurrent = $v;
+            $this->modifiedColumns[] = AbeConfigurationPeer::ABE_MAILSERVER_OR_MAILCURRENT;
+        }
+
+    } // setAbeMailserverOrMailcurrent()
 
     /**
      * Hydrates (populates) the object variables with values from the database resultset.
@@ -645,14 +684,16 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
 
             $this->abe_update_date = $rs->getTimestamp($startcol + 11, null);
 
-            $this->abe_subject_field = $rs->getString($startcol + 12, null);
+            $this->abe_subject_field = $rs->getString($startcol + 12);
+
+            $this->abe_mailserver_or_mailcurrent = $rs->getInt($startcol + 13);
 
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 13; // 13 = AbeConfigurationPeer::NUM_COLUMNS - AbeConfigurationPeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 14; // 14 = AbeConfigurationPeer::NUM_COLUMNS - AbeConfigurationPeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating AbeConfiguration object", $e);
@@ -895,6 +936,9 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
             case 12:
                 return $this->getAbeSubjectField();
                 break;
+            case 13:
+                return $this->getAbeMailserverOrMailcurrent();
+                break;
             default:
                 return null;
                 break;
@@ -928,6 +972,7 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
             $keys[10] => $this->getAbeCreateDate(),
             $keys[11] => $this->getAbeUpdateDate(),
             $keys[12] => $this->getAbeSubjectField(),
+            $keys[13] => $this->getAbeMailserverOrMailcurrent(),
         );
         return $result;
     }
@@ -997,6 +1042,9 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
                 break;
             case 12:
                 $this->setAbeSubjectField($value);
+                break;
+            case 13:
+                $this->setAbeMailserverOrMailcurrent($value);
                 break;
         } // switch()
     }
@@ -1072,6 +1120,11 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
         if (array_key_exists($keys[12], $arr)) {
             $this->setAbeSubjectField($arr[$keys[12]]);
         }
+
+        if (array_key_exists($keys[13], $arr)) {
+            $this->setAbeMailserverOrMailcurrent($arr[$keys[13]]);
+        }
+
     }
 
     /**
@@ -1134,6 +1187,11 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
         if ($this->isColumnModified(AbeConfigurationPeer::ABE_SUBJECT_FIELD)) {
             $criteria->add(AbeConfigurationPeer::ABE_SUBJECT_FIELD, $this->abe_subject_field);
         }
+
+        if ($this->isColumnModified(AbeConfigurationPeer::ABE_MAILSERVER_OR_MAILCURRENT)) {
+            $criteria->add(AbeConfigurationPeer::ABE_MAILSERVER_OR_MAILCURRENT, $this->abe_mailserver_or_mailcurrent);
+        }
+
 
         return $criteria;
     }
@@ -1211,6 +1269,9 @@ abstract class BaseAbeConfiguration extends BaseObject implements Persistent
         $copyObj->setAbeUpdateDate($this->abe_update_date);
 
         $copyObj->setAbeSubjectField($this->abe_subject_field);
+
+        $copyObj->setAbeMailserverOrMailcurrent($this->abe_mailserver_or_mailcurrent);
+
 
         $copyObj->setNew(true);
 

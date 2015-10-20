@@ -1784,7 +1784,7 @@ abstract class BaseListParticipatedLast extends BaseObject implements Persistent
 
         $copyObj->setUsrUid(''); // this is a pkey column, so set to default value
 
-        $copyObj->setDelIndex('0'); // this is a pkey column, so set to default value
+        $copyObj->setDelIndex(''); // this is a pkey column, so set to default value
 
     }
 

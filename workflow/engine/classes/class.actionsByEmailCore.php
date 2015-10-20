@@ -58,13 +58,12 @@ class actionsByEmailCoreClass extends PMPlugin
                 }
 
                 if ($data->USR_UID == '') {
-                    throw new Exception('The parameter $data->USR_UID is empty.');
+                    error_log('The parameter $data->USR_UID is empty, the routed task may be a self-service type, actions by email does not work with self-service task types.', 0);
                 }
             } catch(Exception $e) {
                 echo $e->getMessage().' Please contact to your system administrator.';
                 die;
             }
-
             G::LoadClass('pmFunctions');
 
             $emailSetup = getEmailConfiguration();
@@ -86,6 +85,7 @@ class actionsByEmailCoreClass extends PMPlugin
                 $criteria->addSelectColumn(AbeConfigurationPeer::ABE_EMAIL_FIELD);
                 $criteria->addSelectColumn(AbeConfigurationPeer::ABE_ACTION_FIELD);
                 $criteria->addSelectColumn(AbeConfigurationPeer::ABE_SUBJECT_FIELD);
+                $criteria->addSelectColumn(AbeConfigurationPeer::ABE_MAILSERVER_OR_MAILCURRENT);
                 $criteria->addSelectColumn(DynaformPeer::DYN_CONTENT);
                 $criteria->addJoin( AbeConfigurationPeer::DYN_UID, DynaformPeer::DYN_UID, Criteria::LEFT_JOIN );
                 $criteria->add(AbeConfigurationPeer::PRO_UID, $caseFields['PRO_UID']);
@@ -233,8 +233,17 @@ class actionsByEmailCoreClass extends PMPlugin
 
                             $user = new Users();
                             $userDetails = $user->loadDetails($data->PREVIOUS_USR_UID);
-                            $emailFrom = $userDetails["USR_EMAIL"];
 
+                            if($configuration['ABE_MAILSERVER_OR_MAILCURRENT'] == 1 && $configuration['ABE_TYPE'] !== ''){
+                                $emailFrom = ($userDetails["USR_FULLNAME"] . ' <' . $userDetails["USR_EMAIL"] . '>');
+                            }else{                          
+                                if(isset($emailSetup["MESS_FROM_NAME"]) && isset($emailSetup["MESS_FROM_MAIL"] )){
+                                    $emailFrom = ($emailSetup["MESS_FROM_NAME"] . ' <' . $emailSetup["MESS_FROM_MAIL"] . '>');
+                                }else{
+                                    $emailFrom = ((isset($emailSetup["MESS_FROM_NAME"])) ? $emailSetup["MESS_FROM_NAME"] : $emailSetup["MESS_FROM_MAIL"]);
+                                }
+                            }
+                            
                             G::LoadClass('wsBase');
 
                             $wsBaseInstance = new wsBase();

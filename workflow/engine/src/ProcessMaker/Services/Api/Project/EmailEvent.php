@@ -28,14 +28,19 @@ class EmailEvent extends Api
     }
     
     /**
-     * @url GET /:prj_uid/email-event/accounts
+     * @url GET /:prj_uid/email-event/accounts/:from
      *
      * @param string $prj_uid {@min 1} {@max 32}
+     * @param string $from
      */
-    public function doGetEmailEventAccounts($prj_uid)
+    public function doGetEmailEventAccounts($prj_uid, $from = "emailUsers")
     {
         try {
-            $response = $this->EmailEvent->GetEmailEventAccounts();
+            if($from == "emailUsers") {
+                $response = $this->EmailEvent->GetEmailEventAccounts();
+            } else {
+                $response = $this->EmailEvent->getEmailEventServerAccounts();
+            }
             return $response;
         } catch (\Exception $e) {
             throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));

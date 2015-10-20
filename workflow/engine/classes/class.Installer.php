@@ -470,13 +470,11 @@ class Installer
 
 
 
-            /*----------------------------------********---------------------------------*/
+            $querySql = "INSERT INTO EMAIL_SERVER(MESS_UID, MESS_ENGINE) VALUES('" . \ProcessMaker\Util\Common::generateUID() . "', 'MAIL')";
 
-                $querySql = ("INSERT INTO EMAIL_SERVER(MESS_ENGINE) VALUES('MAIL')");
 
-                $this->run_query($querySql);
 
-            /*----------------------------------********---------------------------------*/
+            $this->run_query($querySql);
 
         }
 

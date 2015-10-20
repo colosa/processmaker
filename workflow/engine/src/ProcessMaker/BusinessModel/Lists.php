@@ -94,6 +94,12 @@ class Lists {
 
 
 
+        $filters['newestthan'] = isset( $dataList['newestthan'] ) ? $dataList['newestthan'] : '';
+
+        $filters['oldestthan'] = isset( $dataList['oldestthan'] ) ? $dataList['oldestthan'] : '';
+
+
+
         // Select list
 
         switch ($listName) {

@@ -4,6 +4,169 @@ namespace ProcessMaker\BusinessModel\Cases;
 class OutputDocument
 {
     /**
+     * Check if the user has permissions
+     *
+     * @param string $applicationUid Unique id of Case
+     * @param string $delIndex       Delegation index
+     * @param string $userUid        Unique id of User
+     * @param string $appDocumentUid
+     *
+     * return void Throw exception the user does not have permission to delete
+     */
+    public function throwExceptionIfHaventPermissionToDelete($applicationUid, $delIndex, $userUid, $appDocumentUid)
+    {
+        try {
+            //Verify data inbox
+            $case = new \ProcessMaker\BusinessModel\Cases();
+            $arrayResult = $case->getStatusInfo($applicationUid, $delIndex, $userUid);
+
+            $flagInbox = 1;
+
+            if (empty($arrayResult) || !preg_match("/^(?:TO_DO|DRAFT)$/", $arrayResult["APP_STATUS"])) {
+                $flagInbox = 0;
+            }
+
+            //Verify data permission
+            $flagPermission = 0;
+
+            $criteria = new \Criteria("workflow");
+
+            $criteria->addSelectColumn(\AppDocumentPeer::DOC_UID);
+
+            $criteria->add(\AppDocumentPeer::APP_DOC_UID, $appDocumentUid, \Criteria::EQUAL);
+            $criteria->add(\AppDocumentPeer::APP_UID, $applicationUid, \Criteria::EQUAL);
+            $criteria->add(\AppDocumentPeer::APP_DOC_TYPE, "OUTPUT", \Criteria::EQUAL);
+
+            $rsCriteria = \AppDocumentPeer::doSelectRS($criteria);
+            $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+            if ($rsCriteria->next()) {
+                $row = $rsCriteria->getRow();
+
+                $outputDocumentUid = $row["DOC_UID"];
+
+                $application = \ApplicationPeer::retrieveByPK($applicationUid);
+
+                //Criteria
+                $criteria2 = new \Criteria("workflow");
+
+                $criteria2->addSelectColumn(\ObjectPermissionPeer::OP_UID);
+
+                $criteria2->add(\ObjectPermissionPeer::PRO_UID, $application->getProUid(), \Criteria::EQUAL);
+                $criteria2->add(\ObjectPermissionPeer::OP_OBJ_TYPE, "OUTPUT", \Criteria::EQUAL);
+                $criteria2->add(
+                    $criteria2->getNewCriterion(\ObjectPermissionPeer::OP_OBJ_UID, $outputDocumentUid, \Criteria::EQUAL)->addOr(
+                    $criteria2->getNewCriterion(\ObjectPermissionPeer::OP_OBJ_UID, "0", \Criteria::EQUAL))->addOr(
+                    $criteria2->getNewCriterion(\ObjectPermissionPeer::OP_OBJ_UID, "", \Criteria::EQUAL))
+                );
+                $criteria2->add(\ObjectPermissionPeer::OP_ACTION, "DELETE", \Criteria::EQUAL);
+
+                //User
+                $criteriaU = clone $criteria2;
+
+                $criteriaU->add(\ObjectPermissionPeer::OP_USER_RELATION, 1, \Criteria::EQUAL);
+                $criteriaU->add(\ObjectPermissionPeer::USR_UID, $userUid, \Criteria::EQUAL);
+
+                $rsCriteriaU = \ObjectPermissionPeer::doSelectRS($criteriaU);
+                $rsCriteriaU->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+                if ($rsCriteriaU->next()) {
+                    $flagPermission = 1;
+                }
+
+                //Group
+                if ($flagPermission == 0) {
+                    $criteriaG = clone $criteria2;
+
+                    $criteriaG->add(\ObjectPermissionPeer::OP_USER_RELATION, 2, \Criteria::EQUAL);
+
+                    $criteriaG->addJoin(\ObjectPermissionPeer::USR_UID, \GroupUserPeer::GRP_UID, \Criteria::LEFT_JOIN);
+                    $criteriaG->add(\GroupUserPeer::USR_UID, $userUid, \Criteria::EQUAL);
+
+                    $rsCriteriaG = \ObjectPermissionPeer::doSelectRS($criteriaG);
+                    $rsCriteriaG->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+                    if ($rsCriteriaG->next()) {
+                        $flagPermission = 1;
+                    }
+                }
+            }
+
+            if ($flagInbox == 1) {
+                if ($flagPermission == 0) {
+                    throw new \Exception(\G::LoadTranslation("ID_USER_NOT_HAVE_PERMISSION_DELETE_OUTPUT_DOCUMENT", array($userUid)));
+                }
+            } else {
+                if ($flagPermission == 0) {
+                    throw new \Exception(\G::LoadTranslation("ID_USER_NOT_HAVE_PERMISSION_DELETE_OUTPUT_DOCUMENT", array($userUid)));
+                }
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Verify if does not exists the inbox
+     *
+     * @param string $applicationUid Unique id of Case
+     * @param string $delIndex       Delegation index
+     * @param string $userUid        Unique id of User
+     *
+     * return void Throw exception if not exists in inbox
+     */
+    public function throwExceptionIfCaseNotIsInInbox($applicationUid, $delIndex, $userUid)
+    {
+        try {
+            //Verify data
+            $case = new \ProcessMaker\BusinessModel\Cases();
+            $arrayResult = $case->getStatusInfo($applicationUid, $delIndex, $userUid);
+
+            if (empty($arrayResult) || !preg_match("/^(?:TO_DO|DRAFT)$/", $arrayResult["APP_STATUS"])) {
+                throw new \Exception(\G::LoadTranslation("ID_USER_NOT_HAVE_PERMISSION", array($userUid)));
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Verify if not exists OuputDocument in Steps
+     *
+     * @param string $applicationUid Unique id of Case
+     * @param string $delIndex       Delegation index
+     * @param string $outDocUuid
+     *
+     * return void Throw exception if not exists OuputDocument in Steps
+     */
+    public function throwExceptionIfOuputDocumentNotExistsInSteps($applicacionUid, $delIndex, $outputDocumentUid)
+    {
+        try {
+            //Verify data
+            $appDelegation = \AppDelegationPeer::retrieveByPK($applicacionUid, $delIndex);
+
+            $taskUid = $appDelegation->getTasUid();
+
+            $criteria = new \Criteria("workflow");
+
+            $criteria->addSelectColumn(\StepPeer::STEP_UID);
+
+            $criteria->add(\StepPeer::TAS_UID, $taskUid, \Criteria::EQUAL);
+            $criteria->add(\StepPeer::STEP_TYPE_OBJ, "OUTPUT_DOCUMENT", \Criteria::EQUAL);
+            $criteria->add(\StepPeer::STEP_UID_OBJ, $outputDocumentUid, \Criteria::EQUAL);
+
+            $rsCriteria = \StepPeer::doSelectRS($criteria);
+            $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+            if (!$rsCriteria->next()) {
+                throw new \Exception(\G::LoadTranslation("ID_CASES_OUTPUT_DOES_NOT_EXIST", array($outputDocumentUid)));
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
      * Get data of Cases OutputDocument
      *
      * @param string $applicationUid

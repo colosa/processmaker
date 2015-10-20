@@ -91,7 +91,7 @@ class NET
             if (! $this->hostname = @gethostbyaddr( $ipHost )) {
                 $this->errno = 2000;
                 $this->errstr = "NET::Host down";
-                $this->error = "Destination Host Unreachable";
+                $this->error = G::loadTranslation('ID_HOST_UNREACHABLE');
             }
         } else {
             $ip = @gethostbyname( $ipHost );
@@ -99,7 +99,7 @@ class NET
             if ($long == - 1 || $long === false) {
                 $this->errno = 2000;
                 $this->errstr = "NET::Host down";
-                $this->error = "Destination Host Unreachable";
+                $this->error = G::loadTranslation('ID_HOST_UNREACHABLE');
             } else {
                 $this->ip = @gethostbyname( $ipHost );
                 $this->hostname = $pHost;
@@ -124,7 +124,7 @@ class NET
         } else {
             $this->errno = 9999;
             $this->errstr = "NET::Port Host Unreachable";
-            $this->error = "Destination Port Unreachable";
+            $this->error = G::loadTranslation('ID_PORT_UNREACHABLE');
             return false;
         }
     }

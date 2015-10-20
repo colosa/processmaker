@@ -1656,7 +1656,7 @@ class pmTablesProxy extends HttpProxyController
             $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
             $oDataset->next();
 
-            $excludeFieldsList = array ('title','subtitle','link','file','button','reset','submit','listbox','checkgroup','grid','javascript', ''
+            $excludeFieldsList = array ('title','subtitle','link','file','button','reset','submit','listbox','checkgroup','grid','javascript','location','scannerCode','array'
             );
 
             $labelFieldsTypeList = array ('dropdown','radiogroup');
@@ -1709,32 +1709,27 @@ class pmTablesProxy extends HttpProxyController
             $oDataset->next();
             $row = $oDataset->getRow();
             if (isset($row["PRJ_UID"])) {
+                $sProcessUID = $row["PRJ_UID"];
+                $dynaformNotAllowedVariables = $this->getDynaformVariables($sProcessUID,$excludeFieldsList,false);
                 $oCriteria = new Criteria('workflow');
                 $oCriteria->addSelectColumn(ProcessVariablesPeer::VAR_UID);
                 $oCriteria->addSelectColumn(ProcessVariablesPeer::VAR_NAME);
                 $oCriteria->addSelectColumn(ProcessVariablesPeer::VAR_FIELD_TYPE);
-                $oCriteria->addSelectColumn(ProcessVariablesPeer::VAR_SQL);
-                $oCriteria->addSelectColumn(ProcessVariablesPeer::VAR_ACCEPTED_VALUES);
                 $oCriteria->add(ProcessVariablesPeer::PRJ_UID, $row["PRJ_UID"]);
                 $oDataset = ProcessVariablesPeer::doSelectRS($oCriteria);
                 $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
                 $index = 0;
                 while ($oDataset->next()) {
                     $row = $oDataset->getRow();
-                    $fieldType = isset($row["VAR_FIELD_TYPE"]) ? $row["VAR_FIELD_TYPE"]: '';
-                    $varSql = isset($row["VAR_SQL"]) ? $row["VAR_SQL"] : '';                    
-                    $varProcessVariable = isset($row["VAR_ACCEPTED_VALUES"]) ? $row["VAR_ACCEPTED_VALUES"] : '[]';
-                    if(! in_array( $fieldType, $excludeFieldsList )){
-                        if(strlen($varSql) == 0 && $varProcessVariable == '[]'){
-                            array_push($fields, array(
-                                "FIELD_UID" => $row["VAR_NAME"] . "-" . $row["VAR_FIELD_TYPE"],
-                                "FIELD_NAME" => $row["VAR_NAME"],
-                                "FIELD_VALIDATE" => "any",
-                                "_index" => $index ++,
-                                "_isset" => true
-                            ));
-                        }                       
-                    }
+                    if(!in_array($row["VAR_NAME"], $dynaformNotAllowedVariables) && !in_array($row["VAR_FIELD_TYPE"], $excludeFieldsList)) {
+                        array_push($fields, array(
+                            "FIELD_UID" => $row["VAR_NAME"] . "-" . $row["VAR_FIELD_TYPE"],
+                            "FIELD_NAME" => $row["VAR_NAME"],
+                            "FIELD_VALIDATE" => "any",
+                            "_index" => $index ++,
+                            "_isset" => true
+                        ));
+                    } 
                 }
             }
 
@@ -1872,6 +1867,51 @@ class pmTablesProxy extends HttpProxyController
             $oDataset->next();
         }
         return $aFields;
+    }
+    
+    /**
+     * Get all dynaform variables 
+     *
+     * @param $sProcessUID
+     */
+    public function getDynaformVariables($sProcessUID,$excludeFieldsList,$allowed = true)
+    {
+        $dynaformVariables = array();
+        $oC = new Criteria( 'workflow' );
+        $oC->addSelectColumn( DynaformPeer::DYN_CONTENT );
+        $oC->add( DynaformPeer::PRO_UID, $sProcessUID );
+        $oData = DynaformPeer::doSelectRS( $oC );
+        $oData->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $oData->next();
+        while ($aRowd = $oData->getRow()) {
+            $dynaform = G::json_decode($aRowd['DYN_CONTENT'],true);
+            if(is_array($dynaform) && sizeof($dynaform)) {
+                $items = $dynaform['items'][0]['items'];
+                foreach($items as $key => $val){
+                    foreach($val as $column) {
+                        if($allowed) {
+                            if(isset($column['type']) && !in_array( $column['type'], $excludeFieldsList )){
+                                if(array_key_exists('variable',$column)) {
+                                    if($column['variable'] != "") {
+                                        $dynaformVariables[] = $column['variable'];
+                                    }
+                                }
+                            }
+                        } else {
+                            if(isset($column['type']) && in_array( $column['type'], $excludeFieldsList )){
+                                if(array_key_exists('variable',$column)) {
+                                    if($column['variable'] != "") {
+                                        $dynaformVariables[] = $column['variable']; 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            $oData->next();
+        }
+        return array_unique($dynaformVariables);    
     }
 }
 

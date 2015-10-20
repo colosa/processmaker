@@ -12,19 +12,44 @@ use \Luracast\Restler\RestException;
 class User extends Api
 {
     /**
-     * @url GET
-     * @param string $filter
-     * @param int $start
-     * @param int $limit
+     * Constructor of the class
+     *
+     * return void
      */
-    public function doGetUsers($filter = '', $start = null, $limit = null)
+    public function __construct()
     {
         try {
             $user = new \ProcessMaker\BusinessModel\User();
-            $response = $user->getUsers($filter, $start, $limit);
-            return $response;
+
+            $usrUid = $this->getUserId();
+
+            if (!$user->checkPermission($usrUid, "PM_USERS")) {
+                throw new \Exception(\G::LoadTranslation("ID_USER_NOT_HAVE_PERMISSION", array($usrUid)));
+            }
         } catch (\Exception $e) {
-            throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
+        }
+    }
+
+    /**
+     * @url GET
+     */
+    public function index($filter = null, $lfilter = null, $rfilter = null, $start = null, $limit = null)
+    {
+        try {
+            $user = new \ProcessMaker\BusinessModel\User();
+            $user->setFormatFieldNameInUppercase(false);
+
+            $arrayFilterData = array(
+                "filter"       => (!is_null($filter))? $filter : ((!is_null($lfilter))? $lfilter : ((!is_null($rfilter))? $rfilter : null)),
+                "filterOption" => (!is_null($filter))? ""      : ((!is_null($lfilter))? "LEFT"   : ((!is_null($rfilter))? "RIGHT"  : ""))
+            );
+
+            $response = $user->getUsers($arrayFilterData, null, null, $start, $limit);
+
+            return $response["data"];
+        } catch (\Exception $e) {
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
     }
 
@@ -37,6 +62,8 @@ class User extends Api
     {
         try {
             $user = new \ProcessMaker\BusinessModel\User();
+            $user->setFormatFieldNameInUppercase(false);
+
             $response = $user->getUser($usr_uid);
             return $response;
         } catch (\Exception $e) {
@@ -111,3 +138,4 @@ class User extends Api
         }
     }
 }
+

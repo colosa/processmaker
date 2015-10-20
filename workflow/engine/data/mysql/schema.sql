@@ -2122,6 +2122,7 @@ CREATE TABLE `PROCESS_VARIABLES`
 	`VAR_NULL` TINYINT(32) default 0,
 	`VAR_DEFAULT` VARCHAR(32) default '',
 	`VAR_ACCEPTED_VALUES` MEDIUMTEXT,
+        `INP_DOC_UID` VARCHAR(32) default '',
 	PRIMARY KEY (`VAR_UID`)
 )ENGINE=InnoDB ;
 #-----------------------------------------------------------------------------
@@ -2217,7 +2218,7 @@ CREATE TABLE `APP_ASSIGN_SELF_SERVICE_VALUE`
 	`DEL_INDEX` INTEGER default 0 NOT NULL,
 	`PRO_UID` VARCHAR(32)  NOT NULL,
 	`TAS_UID` VARCHAR(32)  NOT NULL,
-	`GRP_UID` VARCHAR(32) default '' NOT NULL
+ `GRP_UID` MEDIUMTEXT default '' NOT NULL
 )ENGINE=InnoDB  DEFAULT CHARSET='utf8';
 #-----------------------------------------------------------------------------
 #-- LIST_INBOX
@@ -2235,10 +2236,10 @@ CREATE TABLE `LIST_INBOX`
 	`PRO_UID` VARCHAR(32) default '' NOT NULL,
 	`APP_NUMBER` INTEGER default 0 NOT NULL,
 	`APP_STATUS` VARCHAR(32) default '0',
-	`APP_TITLE` VARCHAR(255) default '' NOT NULL,
-	`APP_PRO_TITLE` VARCHAR(255) default '' NOT NULL,
-	`APP_TAS_TITLE` VARCHAR(255) default '' NOT NULL,
-	`APP_UPDATE_DATE` DATETIME  NOT NULL,
+	`APP_TITLE` VARCHAR(255) default '',
+	`APP_PRO_TITLE` VARCHAR(255) default '',
+	`APP_TAS_TITLE` VARCHAR(255) default '',
+	`APP_UPDATE_DATE` DATETIME,
 	`DEL_PREVIOUS_USR_UID` VARCHAR(32) default '',
 	`DEL_PREVIOUS_USR_USERNAME` VARCHAR(100) default '',
 	`DEL_PREVIOUS_USR_FIRSTNAME` VARCHAR(50) default '',
@@ -2249,7 +2250,8 @@ CREATE TABLE `LIST_INBOX`
  `DEL_RISK_DATE` DATETIME,
 	`DEL_PRIORITY` VARCHAR(32) default '3' NOT NULL,
 	PRIMARY KEY (`APP_UID`,`DEL_INDEX`),
-	KEY `indexInboxUser`(`USR_UID`, `DEL_DELEGATE_DATE`)
+	KEY `indexInboxUser`(`USR_UID`, `DEL_DELEGATE_DATE`),
+	KEY `indexInboxUserStatusUpdateDate`(`USR_UID`, `APP_STATUS`, `APP_UPDATE_DATE`)
 )ENGINE=InnoDB  DEFAULT CHARSET='utf8' COMMENT='Inbox list';
 #-----------------------------------------------------------------------------
 #-- LIST_PARTICIPATED_HISTORY
@@ -2314,7 +2316,8 @@ CREATE TABLE `LIST_PARTICIPATED_LAST`
 	`DEL_DUE_DATE` DATETIME,
 	`DEL_PRIORITY` VARCHAR(32) default '3' NOT NULL,
 	`DEL_THREAD_STATUS` VARCHAR(32) default 'OPEN' NOT NULL,
-	PRIMARY KEY (`APP_UID`,`USR_UID`,`DEL_INDEX`)
+	PRIMARY KEY (`APP_UID`,`USR_UID`,`DEL_INDEX`),
+	KEY `usrIndex`(`USR_UID`)
 )ENGINE=InnoDB  DEFAULT CHARSET='utf8' COMMENT='Participated last list';
 #-----------------------------------------------------------------------------
 #-- LIST_COMPLETED
@@ -2330,10 +2333,10 @@ CREATE TABLE `LIST_COMPLETED`
 	`TAS_UID` VARCHAR(32) default '' NOT NULL,
 	`PRO_UID` VARCHAR(32) default '' NOT NULL,
 	`APP_NUMBER` INTEGER default 0 NOT NULL,
-	`APP_TITLE` VARCHAR(255) default '' NOT NULL,
-	`APP_PRO_TITLE` VARCHAR(255) default '' NOT NULL,
-	`APP_TAS_TITLE` VARCHAR(255) default '' NOT NULL,
-	`APP_CREATE_DATE` DATETIME  NOT NULL,
+	`APP_TITLE` VARCHAR(255) default '',
+	`APP_PRO_TITLE` VARCHAR(255) default '',
+	`APP_TAS_TITLE` VARCHAR(255) default '',
+	`APP_CREATE_DATE` DATETIME,
 	`APP_FINISH_DATE` DATETIME  NOT NULL,
 	`DEL_INDEX` INTEGER default 0 NOT NULL,
 	`DEL_PREVIOUS_USR_UID` VARCHAR(32) default '',
@@ -2390,10 +2393,10 @@ CREATE TABLE `LIST_CANCELED`
 	`TAS_UID` VARCHAR(32) default '' NOT NULL,
 	`PRO_UID` VARCHAR(32) default '' NOT NULL,
 	`APP_NUMBER` INTEGER default 0 NOT NULL,
-	`APP_TITLE` VARCHAR(255) default '' NOT NULL,
-	`APP_PRO_TITLE` VARCHAR(255) default '' NOT NULL,
-	`APP_TAS_TITLE` VARCHAR(255) default '' NOT NULL,
-	`APP_CANCELED_DATE` DATETIME  NOT NULL,
+	`APP_TITLE` VARCHAR(255) default '',
+	`APP_PRO_TITLE` VARCHAR(255) default '',
+	`APP_TAS_TITLE` VARCHAR(255) default '',
+	`APP_CANCELED_DATE` DATETIME,
 	`DEL_INDEX` INTEGER default 0 NOT NULL,
 	`DEL_PREVIOUS_USR_UID` VARCHAR(32) default '',
 	`DEL_CURRENT_USR_USERNAME` VARCHAR(100) default '',
@@ -2649,6 +2652,7 @@ CREATE TABLE `ABE_CONFIGURATION`
 	`ABE_CREATE_DATE` DATETIME  NOT NULL,
 	`ABE_UPDATE_DATE` DATETIME,
 	`ABE_SUBJECT_FIELD` VARCHAR(100) default '' NOT NULL,
+	`ABE_MAILSERVER_OR_MAILCURRENT` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`ABE_UID`)
 )ENGINE=InnoDB  DEFAULT CHARSET='utf8' COMMENT='The plugin table for actionsByEmail';
 #-----------------------------------------------------------------------------
@@ -2894,3 +2898,22 @@ CREATE TABLE `EMAIL_EVENT`
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
 
+#-----------------------------------------------------------------------------
+#-- NOTIFICATION_DEVICE
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `NOTIFICATION_DEVICE`;
+
+CREATE TABLE `NOTIFICATION_DEVICE`
+(
+	`DEV_UID`           VARCHAR(32)  default '' NOT NULL,
+	`USR_UID`           VARCHAR(32)  default '' NOT NULL,
+	`SYS_LANG`          VARCHAR(10)  default '',
+	`DEV_REG_ID`        VARCHAR(150) default '' NOT NULL,
+	`DEV_TYPE`          VARCHAR(50)  default '',
+	`DEV_CREATE`        DATETIME  NOT NULL,
+	`DEV_UPDATE`        DATETIME  NOT NULL,
+	PRIMARY KEY (`DEV_UID`, `USR_UID`)
+)ENGINE=InnoDB  DEFAULT CHARSET='utf8' COMMENT='Definitions Notification device.';
+# This restores the fkey checks, after having unset them earlier
+# SET FOREIGN_KEY_CHECKS = 1;

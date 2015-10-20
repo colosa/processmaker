@@ -703,11 +703,11 @@ leimnud.Package.Public({
 			//tb.onmouseover	= this.styles.tabCSS.sover.args(tb);
 			//tb.onmouseout	= this.styles.tabCSS.sout.args(tb);
 			tb.onmouseover	= function(o,j){
-				o = window.event?o:j;
+				o = window.event?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?j:o):j;
 				o.a.className=o.b;
 			}.args({a:tb,b:"panel_tabOptionSelectedOver"+thm+"___"+this.getTheme("tabOptionSelectedOver")});
 			tb.onmouseout	= function(o,j){
-				o = window.event?o:j;
+				o = window.event?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?j:o):j;
 				o.a.className=o.b;
 			}.args({a:tb,b:"panel_tabOptionSelected"+thm+"___"+this.getTheme("tabOptionSelected")});
 			var tc = (typeof this.tab.options[this.tabSelected].content);
@@ -719,7 +719,7 @@ leimnud.Package.Public({
 				}));*/
 				if(this.tab.display==="vertical")
 				{
-					var hj = (parseInt(this.parent.dom.getStyle(tb,"width"),10)-((!this.parent.browser.isIE)?3:0));
+					var hj = (parseInt(this.parent.dom.getStyle(tb,"width"),10)-((!this.parent.browser.isIE)?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?0:3):0));
 					this.parent.dom.setStyle(tb,{
 						width		:hj,
 						borderLeftWidth	:4
@@ -741,17 +741,17 @@ leimnud.Package.Public({
 				tls.className="panel_tabOption"+thm+"___"+this.getTheme("tabOption");
 				//tls.onmouseover	= this.styles.tabCSS.over.args(tls);
 				tls.onmouseover	= function(o,j){
-					o = window.event?o:j;
+					o = window.event?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?j:o):j;
 					o.a.className=o.b;
 				}.args({a:tls,b:"panel_tabOptionOver"+thm+"___"+this.getTheme("tabOptionOver")});
 				//tls.onmouseout	= this.styles.tabCSS.out.args(tls);
 				tls.onmouseout	= function(o,j){
-					o = window.event?o:j;
+					o = window.event?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?j:o):j;
 					o.a.className=o.b;
 				}.args({a:tls,b:"panel_tabOption"+thm+"___"+this.getTheme("tabOption")});
 				tls.onmouseup=function(event,tabID){
 					if(this.tab.manualDisabled){return false;}
-					this.tabSelected=(this.parent.browser.isIE)?event:tabID;
+					this.tabSelected=(this.parent.browser.isIE)?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?tabID:event):tabID;
 					this.makeTab();
 					//this.resize();
 					return false;
@@ -765,7 +765,7 @@ leimnud.Package.Public({
 				if(this.tab.display==="vertical")
 				{
 					this.parent.dom.setStyle(tls,{
-						width		:parseInt(this.parent.dom.getStyle(tb,"width"),10)+((!this.parent.browser.isIE)?3:0),
+						width		:parseInt(this.parent.dom.getStyle(tb,"width"),10)+((!this.parent.browser.isIE)?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?0:3):0),
 						borderLeftWidth	:1
 					});
 				}
@@ -1232,7 +1232,7 @@ leimnud.Package.Public({
 			frontend:function()
 			{
 				this.parent.dom.setStyle(this.elements.frontend,{
-					width:(this.parent.browser.isIE)?"auto":"100%"
+					width:(this.parent.browser.isIE)?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?"100%":"auto"):"100%"
 					//height:"100%",
 					//position:"absolute",
 					//backgroundColor:"#FFFFFF",
@@ -1435,6 +1435,11 @@ leimnud.Package.Public({
 					position:"absolute",
 					zIndex	:this.zIndex-3
 				});
+				if(!!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) {
+				    this.parent.dom.setStyle(this.elements.modal,{
+    					opacity	:this.styles.fx.opacityShadow.Static/100
+    				});
+				}
 				/*}
 				else
 				{
@@ -1482,7 +1487,7 @@ leimnud.Package.Public({
 				if(this.tab.options)
 				{
 					this.parent.dom.setStyle(this.elements.tab,{
-						height	:((this.tab.display==="vertical")?heightContent:this.tab.optHeight+4+(this.parent.browser.isIE ? 14 : 0)),
+						height	:((this.tab.display==="vertical")?heightContent:this.tab.optHeight+4+(this.parent.browser.isIE ? ((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?0:14) : 0)),
 						//border	:"1px solid red",
 						width	:((this.tab.display==="vertical")?this.tab.width:this.options.size.w-8),
 						top	:beginTop,
@@ -1495,7 +1500,7 @@ leimnud.Package.Public({
 					this.tab.step	= (typeof this.tab.step=="number")?this.tab.step:5;
 					this.tab.optHeight	= this.tab.optHeight || 25;
 					this.tab.optWidth	= (this.tab.optWidth || (this.tab.width -4));*/
-					this.tab.diffWidthBugPadding = ((this.parent.browser.isIE)?0:20);
+					this.tab.diffWidthBugPadding = ((this.parent.browser.isIE)?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?20:0):20);
 					this.elements.tabOptions=[];
 					var lastBul = 0;
 					for(var i=0;i<this.tab.options.length;i++)
@@ -1513,7 +1518,7 @@ leimnud.Package.Public({
 							//height:this.tab.optHeight-((this.tab.display==="vertical")?((this.parent.browser.isIE)?0:10):0),
 							//height:this.tab.optHeight-((this.parent.browser.isIE)?0:10),
 							position:"absolute",
-							left:((this.tab.display==="vertical")?((this.tab.width-this.tab.optWidth)-((this.parent.browser.isIE)?-1:1)):opW),
+							left:((this.tab.display==="vertical")?((this.tab.width-this.tab.optWidth)-((this.parent.browser.isIE)?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?1:-1):1)):opW),
 							//left:0,
 							top:((this.tab.display==="vertical")?opH:0),//"auto"),
 							bottom:((this.tab.display==="vertical")?"auto":0)
@@ -1528,18 +1533,18 @@ leimnud.Package.Public({
 						{
 							tb.className="panel_tabOption"+thm+"___"+this.getTheme("tabOption");
 							tb.onmouseover	= function(o,j){
-								o = window.event?o:j;
+								o = window.event?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?j:o):j;
 								o.a.className=o.b;
 							}.args({a:tb,b:"panel_tabOptionOver"+thm+"___"+this.getTheme("tabOptionOver")});
 							tb.onmouseout	= function(o,j){
-								o = window.event?o:j;
+								o = window.event?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?j:o):j;
 								o.a.className=o.b;
 							}.args({a:tb,b:"panel_tabOption"+thm+"___"+this.getTheme("tabOption")});
 
 							this.parent.dom.setStyle(tb,this.setStyle.tabOption || {});
 							tb.onmouseup=function(event,tabID){
 								if(this.tab.manualDisabled){return false;}
-								this.tabSelected=(this.parent.browser.isIE)?event:tabID;
+								this.tabSelected=(this.parent.browser.isIE)?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?tabID:event):tabID;
 								this.makeTab();
 								return false;
 							}.extend(this,i);
@@ -1668,25 +1673,25 @@ leimnud.Package.Public({
 			},
 			tabCSS:{
 				over:function(event,obj){
-					obj = this.parent.browser.isIE?event:obj;
+					obj = this.parent.browser.isIE?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?obj:event):obj;
 					this.parent.dom.setStyle(obj,{
 						//backgroundColor:"white"
 					});
 				},
 				out:function(event,obj){
-					obj = this.parent.browser.isIE?event:obj;
+					obj = this.parent.browser.isIE?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?obj:event):obj;
 					this.parent.dom.setStyle(obj,{
 						//backgroundColor:"#EEE"
 					});
 				},
 				sover:function(event,obj){
-					obj = this.parent.browser.isIE?event:obj;
+					obj = this.parent.browser.isIE?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?obj:event):obj;
 					this.parent.dom.setStyle(obj,{
 						cursor:"default"
 					});
 				},
 				sout:function(event,obj){
-					obj = this.parent.browser.isIE?event:obj;
+					obj = this.parent.browser.isIE?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?obj:event):obj;
 					this.parent.dom.setStyle(obj,{
 					});
 				},

@@ -379,6 +379,23 @@ class PMPlugin
         $oPluginRegistry =& PMPluginRegistry::getSingleton();
         $oPluginRegistry->enableRestService($this->sNamespace, $enable);
     }
+
+    /**
+     * Register designer menu file
+     *
+     * @param string $file Designer menu file
+     *
+     * @return void
+     */
+    public function registerDesignerMenu($file)
+    {
+        try {
+            $pluginRegistry = &PMPluginRegistry::getSingleton();
+            $pluginRegistry->registerDesignerMenu($this->sNamespace, $file);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 }
 
 class menuDetail
@@ -718,3 +735,4 @@ class cronFile
         $this->cronFile  = $cronFile;
     }
 }
+

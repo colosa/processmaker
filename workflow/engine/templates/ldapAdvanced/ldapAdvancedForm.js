@@ -55,7 +55,7 @@ var ldapFormAutoRegister = new Ext.form.ComboBox({
     displayField: 'VALUE',
     value: '0',
 
-    fieldLabel: '<span style="color: red">*</span>' + "Enable automatic register",
+    fieldLabel: '<span style="color: red">*</span>' + _("ID_ENABLE_AUTOMATIC_REGISTER"),
     typeAhead: true,
     forceSelection: true,
     triggerAction: 'all',
@@ -68,7 +68,7 @@ var ldapFormAutoRegister = new Ext.form.ComboBox({
 });
 
 var ldapFormServerName = new Ext.form.TextField({
-    fieldLabel: '<span style="color: red">*</span>' + "Server Address",
+    fieldLabel: '<span style="color: red">*</span>' + _("ID_SERVER_ADDRESS"),
     name: 'AUTH_SOURCE_SERVER_NAME',
     id: 'AUTH_SOURCE_SERVER_NAME',
     autoCreate: {tag: 'input', type: 'text', maxlength: '50'},
@@ -158,7 +158,7 @@ var ldapFormPassword = new Ext.form.TextField({
 });
 
 var ldapFormIdentifier = new Ext.form.TextField({
-    fieldLabel: '<span style="color: red">*</span>' + "User Identifier",
+    fieldLabel: '<span style="color: red">*</span>' + _("ID_USER_IDENTIFIER"),
     name: 'AUTH_SOURCE_IDENTIFIER_FOR_USER',
     id: 'AUTH_SOURCE_IDENTIFIER_FOR_USER',
     autoCreate: {tag: 'input', type: 'text', maxlength: '20'},
@@ -168,7 +168,7 @@ var ldapFormIdentifier = new Ext.form.TextField({
 });
 
 var ldapFormUsersFilter = new Ext.form.TextField({
-    fieldLabel: "Filter to search users",
+    fieldLabel: _("ID_FILTER_TO_SEARCH_USERS"),
     name: 'AUTH_SOURCE_USERS_FILTER',
     id: 'AUTH_SOURCE_USERS_FILTER',
     autoCreate: {tag: 'input', type: 'text', maxlength: '200'},
@@ -177,7 +177,7 @@ var ldapFormUsersFilter = new Ext.form.TextField({
 });
 
 var ldapFormRetiredEmployees = new Ext.form.TextField({
-    fieldLabel: "OU for Retired Employees OU",
+    fieldLabel: _("ID_OU_FOR_RETIRED_EMPLOYEES_OU"),
     name: 'AUTH_SOURCE_RETIRED_OU',
     id: 'AUTH_SOURCE_RETIRED_OU',
     autoCreate: {tag: 'input', type: 'text', maxlength: '128'},
@@ -219,7 +219,7 @@ var ldapFormData = new Ext.form.FieldSet({
             id:'passwordReview',
             width: 300,
             style: 'font: 9px tahoma,arial,helvetica,sans-serif;',
-            text: "(Default set to (&(!(objectClass=organizationalUnit))))",
+            text: _("ID_DEFAULT_SET_TO"),
             labelSeparator: ''
         }, ldapFormAttrinuteIds, ldapFormShowGrid, ldapFormGridText
     ]

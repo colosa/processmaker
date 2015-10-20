@@ -112,8 +112,13 @@ class AppAssignSelfServiceValue extends BaseAppAssignSelfServiceValue
                 $applicationData = $case->unserializeData($row["APP_DATA"]);
                 $taskGroupVariable = trim($row["TAS_GROUP_VARIABLE"], " @#");
 
-                if ($taskGroupVariable != "" && isset($applicationData[$taskGroupVariable]) && trim($applicationData[$taskGroupVariable]) != "") {
-                    $this->create($row["APP_UID"], $row["DEL_INDEX"], array("PRO_UID" => $row["PRO_UID"], "TAS_UID" => $row["TAS_UID"], "GRP_UID" => trim($applicationData[$taskGroupVariable])));
+                if ($taskGroupVariable != "" && isset($applicationData[$taskGroupVariable])) {
+                    $dataVariable = $applicationData[$taskGroupVariable];
+                    $dataVariable = (is_array($dataVariable))? $dataVariable : trim($dataVariable);
+
+                    if (!empty($dataVariable)) {
+                        $this->create($row["APP_UID"], $row["DEL_INDEX"], array("PRO_UID" => $row["PRO_UID"], "TAS_UID" => $row["TAS_UID"], "GRP_UID" => serialize($dataVariable)));
+                    }
                 }
             }
         } catch (Exception $e) {

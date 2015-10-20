@@ -296,6 +296,10 @@ if (!defined('WS_IN_LOGIN')) {
 
 $fileLogin = 'login/sysLogin';
 
+$version = explode('.', trim(file_get_contents(PATH_GULLIVER . 'VERSION')));
+
+$version = isset($version[0]) ? intval($version[0]) : 0;
+
 switch (WS_IN_LOGIN) {
 
     case 'serverconf':
@@ -306,15 +310,7 @@ switch (WS_IN_LOGIN) {
 
         if ($oServerConf->getProperty ('LOGIN_NO_WS')) {
 
-            if(SYS_SKIN == 'neoclassic'){
-
-                $fileLogin = 'login/sysLoginNoWSpm3';
-
-            }else{
-
-                $fileLogin = 'login/sysLoginNoWS';
-
-            }            
+            $fileLogin = $version >= 3 ? 'login/sysLoginNoWSpm3' : 'login/sysLoginNoWS';
 
         } else {
 
@@ -326,15 +322,7 @@ switch (WS_IN_LOGIN) {
 
     case 'no':
 
-        if(SYS_SKIN == 'neoclassic'){
-
-            $fileLogin = 'login/sysLoginNoWSpm3';
-
-        }else{
-
-            $fileLogin = 'login/sysLoginNoWS';
-
-        }
+        $fileLogin = $version >= 3 ? 'login/sysLoginNoWSpm3' : 'login/sysLoginNoWS';
 
         break;
 
@@ -352,7 +340,7 @@ switch (WS_IN_LOGIN) {
 
 }
 
-
+error_log($fileLogin);
 
 $G_PUBLISH->AddContent ('xmlform', 'xmlform', $fileLogin, '', $aField, 'sysLogin');
 

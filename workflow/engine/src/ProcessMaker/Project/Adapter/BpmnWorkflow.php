@@ -1169,13 +1169,13 @@ class BpmnWorkflow extends Project\Bpmn
         if (\Process::existsByProTitle($projectData["prj_name"])) {
             throw new \Exception("Project with name: {$projectData["prj_name"]}, already exists.");
         }
-        $activities = $projectData['diagrams']['0']['activities'];
+        $activities = isset($projectData['diagrams']['0']['activities'])?$projectData['diagrams']['0']['activities']:array();
         foreach ($activities as $value) {
             if (empty($value['act_type'])) {
                 throw new \Exception("For activity: {$value['act_uid']} `act_type` is required but missing.");
             }
         }
-        $events = $projectData['diagrams']['0']['events'];
+        $events = isset($projectData['diagrams']['0']['events'])?$projectData['diagrams']['0']['events']:array();
         foreach ($events as $value) {
             if (empty($value['evn_type'])) {
                 throw new \Exception("For event: {$value['evn_uid']} `evn_type` is required but missing.");
@@ -1504,10 +1504,6 @@ class BpmnWorkflow extends Project\Bpmn
 
             $activity = $bwp->getActivity($activityData["ACT_UID"]);
 
-            if ($activity["BOU_CONTAINER"] != $activityData["BOU_CONTAINER"]) {
-                $activity = null;
-            }
-
             if ($forceInsert || is_null($activity)) {
                 if ($generateUid) {
                     //Generate and update UID
@@ -1553,10 +1549,6 @@ class BpmnWorkflow extends Project\Bpmn
             unset($artifactData["_EXTENDED"]);
 
             $artifact = $bwp->getArtifact($artifactData["ART_UID"]);
-
-            if ($artifact["BOU_CONTAINER"] != $artifactData["BOU_CONTAINER"]) {
-                $artifact = null;
-            }
 
             if ($forceInsert || is_null($artifact)) {
                 if ($generateUid) {
@@ -1608,10 +1600,6 @@ class BpmnWorkflow extends Project\Bpmn
             $flagAddOrUpdate = false;
 
             $gateway = $bwp->getGateway($gatewayData["GAT_UID"]);
-
-            if ($gateway["BOU_CONTAINER"] != $gatewayData["BOU_CONTAINER"]) {
-                $gateway = null;
-            }
 
             if ($forceInsert || is_null($gateway)) {
                 if ($generateUid) {
@@ -1687,10 +1675,6 @@ class BpmnWorkflow extends Project\Bpmn
 
             $event = $bwp->getEvent($eventData["EVN_UID"]);
 
-            if ($event["BOU_CONTAINER"] != $eventData["BOU_CONTAINER"]) {
-                $event = null;
-            }
-
             if ($forceInsert || is_null($event)) {
                 if ($generateUid) {
                     //Generate and update UID
@@ -1736,10 +1720,6 @@ class BpmnWorkflow extends Project\Bpmn
             unset($dataObjectData["_EXTENDED"]);
 
             $dataObject = $bwp->getData($dataObjectData["DAT_UID"]);
-
-            if ($dataObject["BOU_CONTAINER"] != $dataObjectData["BOU_CONTAINER"]) {
-                $dataObject = null;
-            }
 
             if ($forceInsert || is_null($dataObject)) {
                 if ($generateUid) {
@@ -1787,10 +1767,6 @@ class BpmnWorkflow extends Project\Bpmn
 
             $participant = $bwp->getParticipant($participantData["PAR_UID"]);
 
-            if ($participant["BOU_CONTAINER"] != $participantData["BOU_CONTAINER"]) {
-                $participant = null;
-            }
-
             if ($forceInsert || is_null($participant)) {
                 if ($generateUid) {
                     //Generate and update UID
@@ -1834,7 +1810,8 @@ class BpmnWorkflow extends Project\Bpmn
 
         $whiteList = array();
 
-        foreach ($diagram["flows"] as $i => $flowData) {
+        $diagramFlows = isset($diagram["flows"])?$diagram["flows"]:array();
+        foreach ($diagramFlows as $i => $flowData) {
             $flowData = array_change_key_case($flowData, CASE_UPPER);
 
             // if it is a new flow record
@@ -1886,7 +1863,8 @@ class BpmnWorkflow extends Project\Bpmn
             $whiteList[] = $flowData["FLO_UID"];
         }
 
-        foreach ($diagram["flows"] as $flowData) {
+        $diagramFlows = isset($diagram["flows"])?$diagram["flows"]:array();
+        foreach ($diagramFlows as $flowData) {
             $flow = $bwp->getFlow($flowData["FLO_UID"]);
             if ($forceInsert || is_null($flow)) {
                 $bwp->addFlow($flowData);

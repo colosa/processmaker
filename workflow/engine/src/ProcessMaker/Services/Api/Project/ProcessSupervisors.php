@@ -12,22 +12,27 @@ use \Luracast\Restler\RestException;
 class ProcessSupervisors extends Api
 {
     /**
-     * @param string $prjUid {@min 32} {@max 32}
+     * @url GET /:prj_uid/process-supervisors/paged
+     * @url GET /:prj_uid/process-supervisors
      *
-     * @url GET /:prjUid/process-supervisors
+     * @param string $prj_uid {@min 32}{@max 32}
      */
-    public function doGetProcessSupervisors($prjUid)
+    public function doGetProcessSupervisors($prj_uid, $filter = null, $lfilter = null, $rfilter = null, $start = null, $limit = null, $type = null)
     {
         try {
             $supervisor = new \ProcessMaker\BusinessModel\ProcessSupervisor();
-            $arrayData = $supervisor->getProcessSupervisors($prjUid);
-            //Response
-            $response = $arrayData;
+
+            $arrayFilterData = array(
+                "filter"       => (!is_null($filter))? $filter : ((!is_null($lfilter))? $lfilter : ((!is_null($rfilter))? $rfilter : null)),
+                "filterOption" => (!is_null($filter))? ""      : ((!is_null($lfilter))? "LEFT"   : ((!is_null($rfilter))? "RIGHT"  : ""))
+            );
+
+            $response = $supervisor->getProcessSupervisors($prj_uid, "ASSIGNED", $arrayFilterData, $start, $limit, $type);
+
+            return (preg_match("/^.*\/paged.*$/", $this->restler->url))? $response : $response["data"];
         } catch (\Exception $e) {
-            //response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
     }
 
     /**
@@ -51,25 +56,28 @@ class ProcessSupervisors extends Api
     }
 
     /**
-     * @param string $prjUid {@min 32} {@max 32}
-     * @param string $obj_type
+     * @url GET /:prj_uid/available-process-supervisors/paged
+     * @url GET /:prj_uid/available-process-supervisors
      *
-     * @url GET /:prjUid/available-process-supervisors
+     * @param string $prj_uid {@min 32}{@max 32}
      */
-    public function doGetAvailableSupervisors($prjUid, $obj_type = '')
+    public function doGetAvailableProcessSupervisors($prj_uid, $filter = null, $lfilter = null, $rfilter = null, $start = null, $limit = null, $type = null)
     {
         try {
             $supervisor = new \ProcessMaker\BusinessModel\ProcessSupervisor();
-            $arrayData = $supervisor->getAvailableProcessSupervisors($obj_type, $prjUid);
-            //Response
-            $response = $arrayData;
+
+            $arrayFilterData = array(
+                "filter"       => (!is_null($filter))? $filter : ((!is_null($lfilter))? $lfilter : ((!is_null($rfilter))? $rfilter : null)),
+                "filterOption" => (!is_null($filter))? ""      : ((!is_null($lfilter))? "LEFT"   : ((!is_null($rfilter))? "RIGHT"  : ""))
+            );
+
+            $response = $supervisor->getProcessSupervisors($prj_uid, "AVAILABLE", $arrayFilterData, $start, $limit, $type);
+
+            return (preg_match("/^.*\/paged.*$/", $this->restler->url))? $response : $response["data"];
         } catch (\Exception $e) {
-            //response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
     }
-
 
     /**
      * @param string $prjUid {@min 32} {@max 32}

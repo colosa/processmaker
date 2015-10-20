@@ -345,12 +345,11 @@ class FilesManager
                     $path = str_replace("/", DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR, $path);
             }
             $path = explode(DIRECTORY_SEPARATOR,$path);
-            $baseName = $path[count($path)-2].DIRECTORY_SEPARATOR.$path[count($path)-1];
+            $baseName = $path[count($path)-2]."\\\\".$path[count($path)-1];
             $baseName2 = $path[count($path)-2]."/".$path[count($path)-1];
             $criteria = new \Criteria("workflow");
             $criteria->addSelectColumn(\ProcessFilesPeer::PRF_UID);
-            $criteria->add(\ProcessFilesPeer::PRF_PATH, "%" . $baseName . "%", \Criteria::LIKE);
-            $criteria->add(\ProcessFilesPeer::PRF_PATH, "%" . $baseName2 . "%", \Criteria::LIKE);
+            $criteria->add( $criteria->getNewCriterion( \ProcessFilesPeer::PRF_PATH, '%' . $baseName . '%', \Criteria::LIKE )->addOr( $criteria->getNewCriterion( \ProcessFilesPeer::PRF_PATH, '%' . $baseName2 . '%', \Criteria::LIKE )));
             $rsCriteria = \ProcessFilesPeer::doSelectRS($criteria);
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
             $rsCriteria->next();
@@ -389,7 +388,7 @@ class FilesManager
             if ($path == '') {
                 throw new \Exception(\G::LoadTranslation("ID_INVALID_VALUE_FOR", array('prf_uid')));
             }
-            $sFile = end(explode("/",$path));
+            $sFile = end(explode(DIRECTORY_SEPARATOR,$path));
             $sPath = str_replace($sFile,'',$path);
             $sSubDirectory = substr(str_replace($sProcessUID,'',substr($sPath,(strpos($sPath, $sProcessUID)))),0,-1);
             $sMainDirectory = str_replace(substr($sPath, strpos($sPath, $sProcessUID)),'', $sPath);
@@ -463,12 +462,18 @@ class FilesManager
                 throw new \Exception(\G::LoadTranslation("ID_INVALID_VALUE_FOR", array('prf_uid')));
             }
 
-            $sFile = end(explode("/",$path));
+            $sFile = end(explode(DIRECTORY_SEPARATOR,$path));
             $path = PATH_DATA_MAILTEMPLATES.$sProcessUID.DIRECTORY_SEPARATOR.$sFile;
 
             if (file_exists($path) && !is_dir($path)) {
                 unlink($path);
-            }
+            } else {
+              $path = PATH_DATA_PUBLIC.$sProcessUID.DIRECTORY_SEPARATOR.$sFile;
+
+              if (file_exists($path) && !is_dir($path)) {
+                  unlink($path);
+              }
+            } 
 
             $rs = \ProcessFilesPeer::doDelete($criteria);
         } catch (Exception $e) {
@@ -576,7 +581,10 @@ class FilesManager
         try {
             $oProcessFiles = \ProcessFilesPeer::retrieveByPK($prfUid);
             $fcontent = file_get_contents($oProcessFiles->getPrfPath());
-            $sFile = end(explode("/",$oProcessFiles->getPrfPath()));
+            $pth = $oProcessFiles->getPrfPath();
+            $pth = str_replace("\\","/",$pth);
+            $prfPath = explode("/",$pth);
+            $sFile = end($prfPath);
             $path = $oProcessFiles->getPrfPath();
             $sPath = str_replace($sFile,'',$path);
             $sSubDirectory = substr(str_replace($sProcessUID,'',substr($sPath,(strpos($sPath, $sProcessUID)))),0,-1);
