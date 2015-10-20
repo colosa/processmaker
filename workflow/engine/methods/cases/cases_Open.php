@@ -207,6 +207,7 @@ try {
                 }
                 $_SESSION['PROCESS'] = $aFields['PRO_UID'];
                 $_SESSION['TASK'] = - 1;
+                $_SESSION['bNoShowSteps'] = 1;
                 //$Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'] );
                 if ($_action == 'jump') {
                     $Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'], 1);

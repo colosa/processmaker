@@ -347,5 +347,37 @@ class Project extends Api
             throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
         }
     }
+    
+    /**
+     * @url PUT /:prj_uid/update-route-order
+     *
+     * @param string $prj_uid {@min 32}{@max 32}
+     */
+    public function doPutUpdateRouteOrder($prj_uid, $request_data)
+    {
+        try {
+            $oRoute = new \Route();
+            $result = $oRoute->updateRouteOrder($request_data);
+            return $result;
+        } catch (\Exception $e) {
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
+        }
+    }
+    
+    /**
+     * @url PUT /:prj_uid/update-route-order-from-project
+     *
+     * @param string $prj_uid {@min 32}{@max 32}
+     */
+    public function doPutUpdateRouteOrderFromProject($prj_uid)
+    {
+        try {
+            $oRoute = new \Route();
+            $result = $oRoute->updateRouteOrderFromProject($prj_uid);
+            return $result;
+        } catch (\Exception $e) {
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
+        }
+    }
 }
 

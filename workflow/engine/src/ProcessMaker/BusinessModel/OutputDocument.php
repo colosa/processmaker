@@ -100,8 +100,6 @@ class OutputDocument
                                               'out_doc_destination_path' => $aRow['OUT_DOC_DESTINATION_PATH'],
                                               'out_doc_tags' => $aRow['OUT_DOC_TAGS'],
                                               'out_doc_pdf_security_enabled' => $aRow['OUT_DOC_PDF_SECURITY_ENABLED'],
-                                              'out_doc_pdf_security_open_password' => $aRow['OUT_DOC_PDF_SECURITY_OPEN_PASSWORD'],
-                                              'out_doc_pdf_security_owner_password' => $aRow['OUT_DOC_PDF_SECURITY_OWNER_PASSWORD'],
                                               'out_doc_pdf_security_permissions' => $aRow['OUT_DOC_PDF_SECURITY_PERMISSIONS'],
                                               "out_doc_open_type" => $aRow["OUT_DOC_OPEN_TYPE"]);
                 }
@@ -210,8 +208,6 @@ class OutputDocument
                                               'out_doc_destination_path' => $aRow['OUT_DOC_DESTINATION_PATH'],
                                               'out_doc_tags' => $aRow['OUT_DOC_TAGS'],
                                               'out_doc_pdf_security_enabled' => $aRow['OUT_DOC_PDF_SECURITY_ENABLED'],
-                                              'out_doc_pdf_security_open_password' => $aRow['OUT_DOC_PDF_SECURITY_OPEN_PASSWORD'],
-                                              'out_doc_pdf_security_owner_password' => $aRow['OUT_DOC_PDF_SECURITY_OWNER_PASSWORD'],
                                               'out_doc_pdf_security_permissions' => $aRow['OUT_DOC_PDF_SECURITY_PERMISSIONS'],
                                               "out_doc_open_type" => $aRow["OUT_DOC_OPEN_TYPE"]);
                 }
@@ -274,10 +270,6 @@ class OutputDocument
             }
             $outDocUid = $oOutputDocument->create($outputDocumentData);
             $outputDocumentData = array_change_key_case($outputDocumentData, CASE_LOWER);
-            if (isset( $outputDocumentData['out_doc_pdf_security_open_password'] ) && $outputDocumentData['out_doc_pdf_security_open_password'] != "") {
-                $outputDocumentData['out_doc_pdf_security_open_password'] = \G::encrypt( $outputDocumentData['out_doc_pdf_security_open_password'], $outDocUid );
-                $outputDocumentData['out_doc_pdf_security_owner_password'] = \G::encrypt( $outputDocumentData['out_doc_pdf_security_owner_password'], $outDocUid );
-            }
             $this->updateOutputDocument($sProcessUID, $outputDocumentData, 1, $outDocUid);
             //Return
             unset($outputDocumentData["PRO_UID"]);
@@ -311,9 +303,16 @@ class OutputDocument
             }
         }
         try {
-            $outputDocumentData = array_change_key_case($outputDocumentData, CASE_UPPER);
             $oOutputDocument = \OutputDocumentPeer::retrieveByPK($sOutputDocumentUID);
             if (!is_null($oOutputDocument)) {
+                if (isset( $outputDocumentData['out_doc_pdf_security_open_password'] ) && $outputDocumentData['out_doc_pdf_security_open_password'] != "") {
+                  $outputDocumentData['out_doc_pdf_security_open_password'] = \G::encrypt( $outputDocumentData['out_doc_pdf_security_open_password'], $sOutputDocumentUID);
+                  $outputDocumentData['out_doc_pdf_security_owner_password'] = \G::encrypt( $outputDocumentData['out_doc_pdf_security_owner_password'], $sOutputDocumentUID);
+                }else{
+                  unset($outputDocumentData['out_doc_pdf_security_open_password']);
+                  unset($outputDocumentData['out_doc_pdf_security_owner_password']);
+                }
+                $outputDocumentData = array_change_key_case($outputDocumentData, CASE_UPPER);
                 $oOutputDocument->fromArray($outputDocumentData, \BasePeer::TYPE_FIELDNAME);
                 if ($oOutputDocument->validate()) {
                     $oConnection->begin();

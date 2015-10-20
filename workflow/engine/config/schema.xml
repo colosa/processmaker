@@ -3860,6 +3860,7 @@
         <column name="VAR_NULL" type="TINYINT" size="32" default="0"/>
         <column name="VAR_DEFAULT" type="VARCHAR" size="32" default=""/>
         <column name="VAR_ACCEPTED_VALUES" type="LONGVARCHAR"/>
+        <column name="INP_DOC_UID" type="VARCHAR" size="32" default=""/>
     </table>
 
     <table name="APP_TIMEOUT_ACTION_EXECUTED">
@@ -4664,6 +4665,16 @@
         <parameter name="Extra" value=""/>
       </vendor>
     </column>
+    <column name="ABE_MAILSERVER_OR_MAILCURRENT" type="INTEGER" required="false" default="0">
+      <vendor type="mysql">
+        <parameter name="Field" value="ABE_MAILSERVER_OR_MAILCURRENT"/>
+        <parameter name="Type" value="int(1)"/>
+        <parameter name="Null" value="YES"/>
+        <parameter name="Key" value=""/>
+        <parameter name="Default" value="0"/>
+        <parameter name="Extra" value=""/>
+      </vendor>
+    </column>
   </table>
 
   <table name="ABE_REQUESTS">
@@ -5157,5 +5168,28 @@
         <column name="EMAIL_EVENT_SUBJECT" type="VARCHAR" size="150" required="false" default=""/>
         <column name="PRF_UID" type="VARCHAR" size="32" required="false" default="" />
     </table>
+
+  <table name="NOTIFICATION_DEVICE">
+    <vendor type="mysql">
+      <parameter name="Name" value="NOTIFICATION_DEVICE" />
+      <parameter name="Engine" value="InnoDB" />
+      <parameter name="Version" value="10" />
+      <parameter name="Row_format" value="Dynamic" />
+      <parameter name="Data_free" value="0" />
+      <parameter name="Auto_increment" value="" />
+      <parameter name="Check_time" value="" />
+      <parameter name="Collation" value="utf8_general_ci" />
+      <parameter name="Checksum" value="" />
+      <parameter name="Create_options" value="" />
+      <parameter name="Comment" value="Definitions Notification device."/>
+    </vendor>
+    <column name="DEV_UID"          type="VARCHAR" size="32"  required="true"  primaryKey="true" default=""/>
+    <column name="USR_UID"          type="VARCHAR" size="32"  required="true"  primaryKey="true" default=""/>
+    <column name="SYS_LANG"         type="VARCHAR" size="10"  required="false" default=""/>
+    <column name="DEV_REG_ID"       type="VARCHAR" size="150" required="true"  default=""/>
+    <column name="DEV_TYPE"         type="VARCHAR" size="50"  required="true"  default=""/>
+    <column name="DEV_CREATE"       type="TIMESTAMP"          required="true"  />
+    <column name="DEV_UPDATE"       type="TIMESTAMP"          required="true"  />
+  </table>
 </database>
 

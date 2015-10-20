@@ -255,7 +255,9 @@ class WebEntry
             }
 
             if (isset($arrayData["TAS_UID"])) {
-                $process->throwExceptionIfNotExistsTask($processUid, $arrayData["TAS_UID"], $this->arrayFieldNameForException["taskUid"]);
+                $task = new \ProcessMaker\BusinessModel\Task();
+
+                $task->throwExceptionIfNotExistsTask($processUid, $arrayData["TAS_UID"], $this->arrayFieldNameForException["taskUid"]);
             }
 
             if (isset($arrayData["DYN_UID"])) {

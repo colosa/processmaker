@@ -85,7 +85,7 @@ class Light extends Api
     public function doGetCasesListToDo(
         $start = 0,
         $limit = 10,
-        $sort = 'APP_UPDATE_DATE',
+        $sort = 'DEL_DELEGATE_DATE',
         $dir = 'DESC',
         $cat_uid = '',
         $pro_uid = '',
@@ -93,7 +93,9 @@ class Light extends Api
         $filter = '',
         $date_from = '',
         $date_to = '',
-        $action = ''
+        $action = '',
+        $newestthan = '',
+        $oldestthan =''
     ) {
         try {
             $dataList['userId'] = $this->getUserId();
@@ -102,7 +104,7 @@ class Light extends Api
             $dataList['start'] = $start;
             $dataList['limit'] = $limit;
             $dataList['sort']  = $sort;
-            $dataList['dir']   = $dir;
+            $dataList['dir']   = ($newestthan != '') ? 'ASC':$dir;
             $dataList['category'] = $cat_uid;
             $dataList['process']  = $pro_uid;
             $dataList['search']   = $search;
@@ -110,8 +112,14 @@ class Light extends Api
             $dataList['dateFrom'] = $date_from;
             $dataList['dateTo']   = $date_to;
             $dataList['action']   = $action;
+            $dataList['newestthan']  = $newestthan;
+            $dataList['oldestthan']  = $oldestthan;
+
             $lists = new \ProcessMaker\BusinessModel\Lists();
             $response = $lists->getList('inbox', $dataList);
+            if ($newestthan != '') {
+                $response['data'] = array_reverse($response['data']);
+            }
             $result   = $this->parserDataTodo($response['data']);
             return $result;
         } catch (\Exception $e) {
@@ -128,6 +136,7 @@ class Light extends Api
             'APP_UPDATE_DATE'   => 'date',
             'DEL_TASK_DUE_DATE' => 'dueDate',
             'DEL_INDEX'         => 'delIndex',
+            'DEL_DELEGATE_DATE' => 'delegateDate',
             'user' => array(
                 'USR_UID'       => 'userId'
             ),
@@ -161,11 +170,13 @@ class Light extends Api
     public function doGetCasesListDraft(
         $start = 0,
         $limit = 10,
-        $sort = 'APP_CACHE_VIEW.APP_NUMBER',
+        $sort = 'DEL_DELEGATE_DATE',
         $dir = 'DESC',
         $cat_uid = '',
         $pro_uid = '',
-        $search = ''
+        $search = '',
+        $newestthan = '',
+        $oldestthan =''
     ) {
         try {
             $dataList['userId'] = $this->getUserId();
@@ -175,13 +186,18 @@ class Light extends Api
             $dataList['start'] = $start;
             $dataList['limit'] = $limit;
             $dataList['sort'] = $sort;
-            $dataList['dir'] = $dir;
+            $dataList['dir'] = ($newestthan != '') ? 'ASC':$dir;
             $dataList['category'] = $cat_uid;
             $dataList['process'] = $pro_uid;
             $dataList['search'] = $search;
+            $dataList['newestthan']  = $newestthan;
+            $dataList['oldestthan']  = $oldestthan;
 
-            $oCases   = new \ProcessMaker\BusinessModel\Cases();
-            $response = $oCases->getList($dataList);
+            $oCases   = new \ProcessMaker\BusinessModel\Lists();
+            $response = $oCases->getList('inbox', $dataList);
+            if ($newestthan != '') {
+                $response['data'] = array_reverse($response['data']);
+            }
             $result   = $this->parserDataDraft($response['data']);
             return $result;
         } catch (\Exception $e) {
@@ -192,29 +208,30 @@ class Light extends Api
     public function parserDataDraft ($data)
     {
         $structure = array(
-            //'app_uid' => 'mongoId',
-            'app_uid'           => 'caseId',
-            'app_title'         => 'caseTitle',
-            'app_number'        => 'caseNumber',
-            'app_update_date'   => 'date',
-            'del_task_due_date' => 'dueDate',
-            'del_index'         => 'delIndex',
-            //'' => 'status'
+            'APP_UID'           => 'caseId',
+            'APP_TITLE'         => 'caseTitle',
+            'APP_NUMBER'        => 'caseNumber',
+            'APP_UPDATE_DATE'   => 'date',
+            'DEL_TASK_DUE_DATE' => 'dueDate',
+            'DEL_INDEX'         => 'delIndex',
+            'DEL_DELEGATE_DATE' => 'delegateDate',
             'user' => array(
-                'usrcr_usr_uid'       => 'userId',
-                'usrcr_usr_firstname' => 'firstName',
-                'usrcr_usr_lastname'  => 'lastName',
-                'usrcr_usr_username'  => 'fullName',
+                'USR_UID'       => 'userId'
+            ),
+            'prevUser' => array(
+                'PREVIOUS_USR_UID'       => 'userId',
+                'PREVIOUS_USR_FIRSTNAME' => 'firstName',
+                'PREVIOUS_USR_LASTNAME'  => 'lastName',
+                'PREVIOUS_USR_USERNAME'  => 'fullName',
             ),
             'process' => array(
-                'pro_uid'       => 'processId',
-                'app_pro_title' => 'name'
+                'PRO_UID'       => 'processId',
+                'APP_PRO_TITLE' => 'name'
             ),
             'task' => array(
-                'tas_uid'       => 'taskId',
-                'app_tas_title' => 'name'
-            ),
-            'inp_doc_uid' => 'documentUid' //Esta opcion es temporal
+                'TAS_UID'       => 'taskId',
+                'APP_TAS_TITLE' => 'name'
+            )
         );
 
         $response = $this->replaceFields($data, $structure);
@@ -229,33 +246,45 @@ class Light extends Api
      * @url GET /participated
      */
     public function doGetCasesListParticipated(
+        $count = true,
+        $paged = true,
         $start = 0,
         $limit = 10,
-        $sort = 'APP_UPDATE_DATE',
-        $dir = 'DESC',
-        $cat_uid = '',
-        $pro_uid = '',
+        $sort  = 'DEL_DELEGATE_DATE',
+        $dir   = 'DESC',
+        $category = '',
+        $process = '',
         $search = '',
         $filter = '',
         $date_from = '',
-        $date_to = ''
+        $date_to = '',
+        $newestthan = '',
+        $oldestthan =''
     ) {
         try {
             $dataList['userId'] = $this->getUserId();
-            $dataList['action'] = 'sent';
-            $dataList['paged']  = true;
+            $dataList['paged']  = $paged;
+            $dataList['count']  = $count;
+
             $dataList['start'] = $start;
             $dataList['limit'] = $limit;
             $dataList['sort']  = $sort;
-            $dataList['dir']   = $dir;
-            $dataList['category'] = $cat_uid;
-            $dataList['process']  = $pro_uid;
+            $dataList['dir']   = ($newestthan != '') ? 'ASC':$dir;
+
+            $dataList['category'] = $category;
+            $dataList['process']  = $process;
             $dataList['search']   = $search;
             $dataList['filter']   = $filter;
             $dataList['dateFrom'] = $date_from;
             $dataList['dateTo']   = $date_to;
+            $dataList['newestthan']  = $newestthan;
+            $dataList['oldestthan']  = $oldestthan;
+
             $oCases = new \ProcessMaker\BusinessModel\Lists();
             $response = $oCases->getList('participated_last', $dataList);
+            if ($newestthan != '') {
+                $response['data'] = array_reverse($response['data']);
+            }
             $result = $this->parserDataParticipated($response['data']);
             return $result;
         } catch (\Exception $e) {
@@ -266,13 +295,13 @@ class Light extends Api
     public function parserDataParticipated ($data)
     {
         $structure = array(
-            //'app_uid' => 'mongoId',
             'APP_UID'           => 'caseId',
             'APP_TITLE'         => 'caseTitle',
             'APP_NUMBER'        => 'caseNumber',
             'APP_UPDATE_DATE'   => 'date',
             'DEL_TASK_DUE_DATE' => 'dueDate',
             'DEL_INDEX'         => 'delIndex',
+            'DEL_DELEGATE_DATE' => 'delegateDate',
             'currentUser' => array(
                 'USR_UID'       => 'userId',
                 'USR_FIRSTNAME' => 'firstName',
@@ -351,6 +380,7 @@ class Light extends Api
             'APP_UPDATE_DATE'   => 'date',
             'DEL_TASK_DUE_DATE' => 'dueDate',
             'DEL_INDEX'         => 'delIndex',
+            'DEL_DELEGATE_DATE' => 'delegateDate',
             'currentUser' => array(
                 'USR_UID'       => 'userId',
                 'DEL_CURRENT_USR_FIRSTNAME' => 'firstName',
@@ -391,7 +421,9 @@ class Light extends Api
         $dir = 'DESC',
         $cat_uid = '',
         $pro_uid = '',
-        $search = ''
+        $search = '',
+        $newestthan = '',
+        $oldestthan =''
     ) {
         try {
             $dataList['userId'] = $this->getUserId();
@@ -401,10 +433,12 @@ class Light extends Api
             $dataList['start']    = $start;
             $dataList['limit']    = $limit;
             $dataList['sort']     = $sort;
-            $dataList['dir']      = $dir;
+            $dataList['dir']      = ($newestthan != '') ? 'ASC':$dir;
             $dataList['category'] = $cat_uid;
             $dataList['process']  = $pro_uid;
             $dataList['search']   = $search;
+            $dataList['newestthan']  = $newestthan;
+            $dataList['oldestthan']  = $oldestthan;
             $oCases   = new \ProcessMaker\BusinessModel\Cases();
             $response = $oCases->getList($dataList);
             $result   = $this->parserDataUnassigned($response);
@@ -417,13 +451,13 @@ class Light extends Api
     public function parserDataUnassigned ($data)
     {
         $structure = array(
-            //'app_uid' => 'mongoId',
             'app_uid'           => 'caseId',
             'app_title'         => 'caseTitle',
             'app_number'        => 'caseNumber',
             'app_update_date'   => 'date',
             'del_task_due_date' => 'dueDate',
             'del_index'         => 'delIndex',
+            'del_delegate_date' => 'delegateDate',
             'currentUser' => array(
                 'usrcr_usr_uid'       => 'userId',
                 'usrcr_usr_firstname' => 'firstName',

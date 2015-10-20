@@ -282,9 +282,13 @@ if($Fields['APP_STATUS'] != 'COMPLETED'){
 
       $FieldsPar['USR_UID'] = $row['USR_UID'];
 
-      $aUser = $objUser->loadDetails ($row['USR_UID']);
+      if(isset($row['USR_UID']) && !empty($row['USR_UID'])) {
 
-      $FieldsPar['CURRENT_USER'] = $aUser['USR_FULLNAME']; 
+        $aUser = $objUser->loadDetails ($row['USR_UID']);
+
+        $FieldsPar['CURRENT_USER'] = $aUser['USR_FULLNAME'];   
+
+      }
 
       $FieldsPar['DEL_DELEGATE_DATE'] = $row['DEL_DELEGATE_DATE'];
 

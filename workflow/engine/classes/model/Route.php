@@ -317,5 +317,46 @@ class Route extends BaseRoute
 
         return $routes;
     }
+    
+    public function updateRouteOrder($data)
+    {
+        foreach($data as $i => $r) {
+            $aData = array_change_key_case($r, CASE_UPPER);  
+            $route = Route::findOneBy(array(RoutePeer::PRO_UID => $aData['PRO_UID'], RoutePeer::ROU_NEXT_TASK => $aData['ROU_NEXT_TASK']));
+            if(!empty($route)) {
+                $aData['ROU_UID'] = $route->getRouUid();
+                $this->update($aData);
+                unset($aData);
+            }
+        }
+    }
+    
+    public function updateRouteOrderFromProject($prjUid)
+    {
+        $accountsArray = array();
+        $criteria = new \Criteria("workflow");
+        $criteria->clearSelectColumns();
+        $criteria->addSelectColumn(\BpmnFlowPeer::FLO_POSITION);
+        $criteria->addSelectColumn(\BpmnFlowPeer::FLO_ELEMENT_DEST);
+        $criteria->addSelectColumn(\BpmnFlowPeer::PRJ_UID);
+        $criteria->addSelectColumn(\BpmnFlowPeer::FLO_TYPE);
+        $criteria->add(\BpmnFlowPeer::FLO_ELEMENT_ORIGIN_TYPE, 'bpmnGateway');
+        $criteria->add(\BpmnFlowPeer::PRJ_UID, $prjUid);
+        $criteria->addAscendingOrderByColumn(BpmnFlowPeer::FLO_POSITION);
+        $result = \BpmnFlowPeer::doSelectRS($criteria);
+        $result->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+        $result->next();
+        $j=0;
+        $k=1;
+        while ($aRow = $result->getRow()) {
+            $accountsArray[$j]['PRO_UID'] = $aRow['PRJ_UID'];
+            $accountsArray[$j]['ROU_NEXT_TASK'] = $aRow['FLO_ELEMENT_DEST'];
+            $accountsArray[$j]['ROU_CASE'] = $k++;
+            $result->next();
+            $j++;
+        }
+        if(sizeof($accountsArray)) {
+            $this->updateRouteOrder($accountsArray);
+        }
+    }
 }
-

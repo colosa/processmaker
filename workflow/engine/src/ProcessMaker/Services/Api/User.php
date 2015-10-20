@@ -33,18 +33,23 @@ class User extends Api
 
     /**
      * @url GET
-     * @param string $filter
-     * @param int $start
-     * @param int $limit
      */
-    public function doGetUsers($filter = '', $start = null, $limit = null)
+    public function index($filter = null, $lfilter = null, $rfilter = null, $start = null, $limit = null)
     {
         try {
             $user = new \ProcessMaker\BusinessModel\User();
-            $response = $user->getUsers($filter, $start, $limit);
-            return $response;
+            $user->setFormatFieldNameInUppercase(false);
+
+            $arrayFilterData = array(
+                "filter"       => (!is_null($filter))? $filter : ((!is_null($lfilter))? $lfilter : ((!is_null($rfilter))? $rfilter : null)),
+                "filterOption" => (!is_null($filter))? ""      : ((!is_null($lfilter))? "LEFT"   : ((!is_null($rfilter))? "RIGHT"  : ""))
+            );
+
+            $response = $user->getUsers($arrayFilterData, null, null, $start, $limit);
+
+            return $response["data"];
         } catch (\Exception $e) {
-            throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
     }
 
@@ -57,6 +62,8 @@ class User extends Api
     {
         try {
             $user = new \ProcessMaker\BusinessModel\User();
+            $user->setFormatFieldNameInUppercase(false);
+
             $response = $user->getUser($usr_uid);
             return $response;
         } catch (\Exception $e) {
@@ -131,3 +138,4 @@ class User extends Api
         }
     }
 }
+

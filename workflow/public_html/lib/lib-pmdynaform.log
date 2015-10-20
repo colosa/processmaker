@@ -1,30 +1,30 @@
-[6 days ago] 3d1d5f2  PM-3447:0018261: Grid function getSummary doesn't work <Richard Yujra>
-[6 days ago] 53ccddc  PM-3607:18458: Los campos requeridos no funcionan <Richard Yujra>
-[6 days ago] aa69438  PM-3606:0018353: Grid functions onAddRow and onDeleteRow are not working properly <Richard Yujra>
-[6 days ago] 2f7646c  PM-3441:improvement-0018322: Functions removeRequiredById and enableRequiredById are missing in ProcessMaker 3 <Richard Yujra>
-[9 days ago] d7b32de  (origin/PM-3588) PM-3588 : Hide File control in mobile view <Jonathan Quispe>
-[9 days ago] c031f4a  PM-3613:0018473: Cuando se llena un dropdown con una conexion a SyBase se presenta un error <Richard Yujra>
-[9 days ago] 74719e7  PM-3441:0018322: Functions removeRequiredById and enableRequiredById are missing in ProcessMaker 3 <Richard Yujra>
-[13 days ago] d6c42f0  PM-3476:No se realizan los calculos correctos cuando se tiene configurado una formula dentro de un grid <Richard Yujra>
-[13 days ago] a495587  PM-3512:Design>New BPMN>Dynaform: No renderiza el dynaform si  tu grilla contiene un checkbox <Richard Yujra>
-[13 days ago] 5d8ad11  PM-3529:La función onAddRow devuelve la fila anterior, no la última fila agregada <Richard Yujra>
-[2 weeks ago] c68fc5a  PM-3527: No se puede ejecutar casos en IE cuando se tiene configurado formulas y funciones dentro de un grid} <jonathan>
-[2 weeks ago] 5db062d  PM-3338 : 0017918: No valida el checkbox en previous step (v3.0.0.7) <Richard Yujra>
-[3 weeks ago] f92e8cb  PM-3418 improvements code <Richard Yujra>
-[3 weeks ago] 94c3237  PM-3418:NO EXISTE CHECKGROUP <Richard Yujra>
-[3 weeks ago] 84b5cee  PM-3418 update checkbox and checkboxgroup <richard yujra>
-[3 weeks ago] 9599408  PM-3444: 0018263: Function setOnchange is not working properly for dynaforms. <Joel Rojas>
-[3 weeks ago] dd20cc7  PM-3447: 18261: Grid function getSummary doesn't work <Joel Rojas>
-[3 weeks ago] 17f1282  upadte new field checkbox yes/no <richard noel>
-[3 weeks ago] 78c4d2a  PM-3418: no existe checkbox group <richard yujra>
-[3 weeks ago] 0f9b41e  PM-3183: Don't execute validation of a field if the not required property is selected <Joel Rojas>
-[3 weeks ago] ef4255f  PM-3391: 0018144: The responsive display on subforms fails <Joel Rojas>
-[3 weeks ago] 0e0d847  PM-3405 <Richard Yujra>
-[3 weeks ago] 5e36afc  0018135: El Web Form 'Panel' no se despliega cuando se elije como subformulario <jonathan>
-[4 weeks ago] ece3e98  PM-3147 <Roly Rudy Gutierrez Pinto>
-[4 weeks ago] c15de63  PM-3244 <Roly Rudy Gutierrez Pinto>
-[4 weeks ago] 385ae6a  PM-3363 update <richard yujra>
-[4 weeks ago] b66ca3d  PM-3363 resolved <richard yujra>
-[5 weeks ago] fd4bb3f  PM-3140 fixed <richard yujra>
-[5 weeks ago] 9d1b44f  PM-3305 improvements for grids <richard yujra>
-[5 weeks ago] a8c1b42  a <richard yujra>
+[2 hours ago] dda12c5  update https <Jonathan Quispe>
+[4 hours ago] 12edb99  PM-3791 : No se puede visualizar en un siguiente task los elementos mobile (image, video, audio) <jonathan>
+[9 hours ago] e99a1c5  PM-3790:CheckGroup dentro de un subformulario no funcionan <Richard Yujra>
+[31 hours ago] 372a74b  improvements sql options backward compatibility <Richard Yujra>
+[4 days ago] 162c8e3  PM-3536-A <Roly Rudy Gutierrez Pinto>
+[4 days ago] 30083d9  PM-3736:0018663: Lentitud en querys external database connections <Richard Yujra>
+[5 days ago] 5666ede  PM-3742 : La informaciÃ³n de campos dependientes no se recupera en las subsiguientes tareas <Jonathan Quispe>
+[5 days ago] bf7f13a  PM-3471:18692: Los campos dependientes no funcionan <Richard Yujra>
+[5 days ago] eec0983  PM-3725 : 0018606: En la version movil se queda cargando cuando se utiliza 'Checkbox' <Jonathan Quispe>
+[8 days ago] a609220  PM-3708 : Problema con grillas, al intentar adicionar un elemento todo el formulario se pone en blanco <Jonathan Quispe>
+[9 days ago] 8687c3a  PM-2905 <Roly Rudy Gutierrez Pinto>
+[11 days ago] 2113fdf  pm-3699:18605: Dynaforms permiten saltar required fields de un grid. <Richard Yujra>
+[11 days ago] 6424612  Ability to customize the rows in a textarea <Emerson Joel Rojas Soliz>
+[12 days ago] a93bfe2  PM-3688 : Include Accepted_language header in REST endpoint calls in MAFE <jonathan>
+[13 days ago] 8a95724  PM-69:14746 - 13954 En el campo Hidden de un Dynaform de tipo Grid no se refleja en el value el valor de la consulta. / Verify that works in new grid <Richard Yujra>
+[2 weeks ago] d7fb401  PM-3396 <Roly Rudy Gutierrez Pinto>
+[2 weeks ago] 39a17d7  PM-3478:Formulas y funciones en modo vista no muestran informacion usando IE9 <richard yujra>
+[2 weeks ago] 4d41cb3  0018208: Errores en el campo FILE <Emerson Joel Rojas Soliz>
+[2 weeks ago] 6b963e6  PM-3421 <Roly Rudy Gutierrez Pinto>
+[2 weeks ago] d818a72  PM-3442:0018282: Errores en el modo view del formulario <Richard Yujra>
+[3 weeks ago] b7529c9  PM-3474:improvements for change in the engine <Richard Yujra>
+[3 weeks ago] 90d3c92  update restclient for ajax jquery <jonathan>
+[3 weeks ago] 8980798  update <Jonathan Quispe>
+[3 weeks ago] 453af27  PM-3688 <Jonathan Quispe>
+[3 weeks ago] a4940c5  update checkscript <Jonathan Quispe>
+[3 weeks ago] df8a7be  PM-3676 : Problema con la ejecuciÃ³n del set data, se ejecuta luego del javascript que el arquitecto define en el dynaform <Jonathan Quispe>
+[3 weeks ago] f249a50  improvement pm-3666 <Jonathan Quispe>
+[3 weeks ago] 78ff7e4  PM-3666 : (PMdynaforms)Manage conditional steps from the mobile layer <Jonathan Quispe>
+[3 weeks ago] f7aa296  PM-3672:New Case: El branch 3.0.1 presenta un error al renderizar los Dynaforms <Richard Yujra>
+[3 weeks ago] 833c1dd  PM-3431:18149: Si una grilla tiene una columna oculta y una fÃ³rmula en otro campo, el total no se despliega debajo del campo correcto. <richard yujra>

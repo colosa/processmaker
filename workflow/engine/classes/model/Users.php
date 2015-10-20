@@ -123,9 +123,11 @@ class Users extends BaseUsers
         $c = $this->loadByEmail( $sUsrEmail );
         $rs = UsersPeer::doSelectRS( $c, Propel::getDbConnection('workflow_ro') );
         $rs->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-        $rs->next();
-        $row = $rs->getRow();
-        return $row;
+        $rows = Array ();
+        while ($rs->next()) {
+            $rows[] = $rs->getRow();
+        }
+        return $rows;
     }
 
     public function loadDetails ($UsrUid)

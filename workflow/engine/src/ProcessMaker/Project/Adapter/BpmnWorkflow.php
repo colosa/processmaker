@@ -1169,13 +1169,13 @@ class BpmnWorkflow extends Project\Bpmn
         if (\Process::existsByProTitle($projectData["prj_name"])) {
             throw new \Exception("Project with name: {$projectData["prj_name"]}, already exists.");
         }
-        $activities = $projectData['diagrams']['0']['activities'];
+        $activities = isset($projectData['diagrams']['0']['activities'])?$projectData['diagrams']['0']['activities']:array();
         foreach ($activities as $value) {
             if (empty($value['act_type'])) {
                 throw new \Exception("For activity: {$value['act_uid']} `act_type` is required but missing.");
             }
         }
-        $events = $projectData['diagrams']['0']['events'];
+        $events = isset($projectData['diagrams']['0']['events'])?$projectData['diagrams']['0']['events']:array();
         foreach ($events as $value) {
             if (empty($value['evn_type'])) {
                 throw new \Exception("For event: {$value['evn_uid']} `evn_type` is required but missing.");
@@ -1810,7 +1810,8 @@ class BpmnWorkflow extends Project\Bpmn
 
         $whiteList = array();
 
-        foreach ($diagram["flows"] as $i => $flowData) {
+        $diagramFlows = isset($diagram["flows"])?$diagram["flows"]:array();
+        foreach ($diagramFlows as $i => $flowData) {
             $flowData = array_change_key_case($flowData, CASE_UPPER);
 
             // if it is a new flow record
@@ -1862,7 +1863,8 @@ class BpmnWorkflow extends Project\Bpmn
             $whiteList[] = $flowData["FLO_UID"];
         }
 
-        foreach ($diagram["flows"] as $flowData) {
+        $diagramFlows = isset($diagram["flows"])?$diagram["flows"]:array();
+        foreach ($diagramFlows as $flowData) {
             $flow = $bwp->getFlow($flowData["FLO_UID"]);
             if ($forceInsert || is_null($flow)) {
                 $bwp->addFlow($flowData);

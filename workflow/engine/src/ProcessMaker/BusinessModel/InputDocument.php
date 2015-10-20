@@ -372,6 +372,10 @@ class InputDocument
             $arrayData["INP_DOC_UID"] = $inputDocumentUid;
 
             $result = $inputDocument->update($arrayData);
+            
+            \G::LoadClass('pmDynaform');
+            $pmDynaform = new \pmDynaform();
+            $pmDynaform->synchronizeInputDocument($processUid, $arrayData);
 
             //Return
             unset($arrayData["INP_DOC_UID"]);

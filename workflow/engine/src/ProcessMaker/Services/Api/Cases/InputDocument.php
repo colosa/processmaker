@@ -21,7 +21,14 @@ class InputDocument extends Api
         try {
             $userUid = $this->getUserId();
             $inputDocument = new \ProcessMaker\BusinessModel\Cases\InputDocument();
+
             $response = $inputDocument->getCasesInputDocuments($app_uid, $userUid);
+
+            if (empty($response)) {
+                $response = $inputDocument->getCasesInputDocumentsBySupervisor($app_uid, $userUid);
+            }
+
+            //Return
             return $response;
         } catch (\Exception $e) {
             throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
@@ -47,20 +54,25 @@ class InputDocument extends Api
     }
 
     /**
-     * @url DELETE /:app_uid/input-document/:inp_doc_uid
+     * @url DELETE /:app_uid/:del_index/input-document/:app_doc_uid
      *
      * @param string $app_uid     {@min 32}{@max 32}
-     * @param string $inp_doc_uid     {@min 32}{@max 32}
+     * @param int    $del_index   {@min 1}
+     * @param string $app_doc_uid {@min 32}{@max 32}
      */
-    public function doDeleteInputDocument($app_uid, $inp_doc_uid)
+    public function doDeleteInputDocument($app_uid, $del_index, $app_doc_uid)
     {
         try {
             $inputDocument = new \ProcessMaker\BusinessModel\Cases\InputDocument();
-            $inputDocument->removeInputDocument($inp_doc_uid);
+
+            $inputDocument->throwExceptionIfHaventPermissionToDelete($app_uid, $del_index, $this->getUserId(), $app_doc_uid);
+            $inputDocument->throwExceptionIfInputDocumentNotExistsInSteps($app_uid, $del_index, $app_doc_uid);
+            $inputDocument->removeInputDocument($app_doc_uid);
         } catch (\Exception $e) {
-            throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
     }
+
     /**
      * @url POST /:app_uid/input-document
      *

@@ -96,7 +96,24 @@ if (! isset( $_GET['type'] )) {
     $_GET['type'] = 'DYNAFORM';
 }
 if (! isset( $_GET['position'] )) {
-    $_GET['position'] = 1;
+    $_GET['position'] = $_SESSION['STEP_POSITION'];
+}else{    
+    if($_GET['type'] == 'DYNAFORM'){        
+        $criteria = new Criteria();
+
+        $criteria->addSelectColumn(StepSupervisorPeer::STEP_POSITION);
+        $criteria->add(StepSupervisorPeer::PRO_UID, $_SESSION['PROCESS'], Criteria::EQUAL);
+        $criteria->add(StepSupervisorPeer::STEP_UID_OBJ, $_GET['DYN_UID'], Criteria::EQUAL);
+
+        $rsCriteria = StepSupervisorPeer::doSelectRS($criteria);
+        $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $rsCriteria->next();
+        $aRow = $rsCriteria->getRow();    
+
+        $_GET['position'] = $aRow['STEP_POSITION'];
+    }else{
+        $_GET['position'] = 1;
+    }
 }
 
 $_SESSION['STEP_POSITION'] = (int) $_GET['position'];

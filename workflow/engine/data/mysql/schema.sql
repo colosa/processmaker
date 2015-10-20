@@ -2122,6 +2122,7 @@ CREATE TABLE `PROCESS_VARIABLES`
 	`VAR_NULL` TINYINT(32) default 0,
 	`VAR_DEFAULT` VARCHAR(32) default '',
 	`VAR_ACCEPTED_VALUES` MEDIUMTEXT,
+        `INP_DOC_UID` VARCHAR(32) default '',
 	PRIMARY KEY (`VAR_UID`)
 )ENGINE=InnoDB ;
 #-----------------------------------------------------------------------------
@@ -2651,6 +2652,7 @@ CREATE TABLE `ABE_CONFIGURATION`
 	`ABE_CREATE_DATE` DATETIME  NOT NULL,
 	`ABE_UPDATE_DATE` DATETIME,
 	`ABE_SUBJECT_FIELD` VARCHAR(100) default '' NOT NULL,
+	`ABE_MAILSERVER_OR_MAILCURRENT` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`ABE_UID`)
 )ENGINE=InnoDB  DEFAULT CHARSET='utf8' COMMENT='The plugin table for actionsByEmail';
 #-----------------------------------------------------------------------------
@@ -2896,3 +2898,22 @@ CREATE TABLE `EMAIL_EVENT`
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
 
+#-----------------------------------------------------------------------------
+#-- NOTIFICATION_DEVICE
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `NOTIFICATION_DEVICE`;
+
+CREATE TABLE `NOTIFICATION_DEVICE`
+(
+	`DEV_UID`           VARCHAR(32)  default '' NOT NULL,
+	`USR_UID`           VARCHAR(32)  default '' NOT NULL,
+	`SYS_LANG`          VARCHAR(10)  default '',
+	`DEV_REG_ID`        VARCHAR(150) default '' NOT NULL,
+	`DEV_TYPE`          VARCHAR(50)  default '',
+	`DEV_CREATE`        DATETIME  NOT NULL,
+	`DEV_UPDATE`        DATETIME  NOT NULL,
+	PRIMARY KEY (`DEV_UID`, `USR_UID`)
+)ENGINE=InnoDB  DEFAULT CHARSET='utf8' COMMENT='Definitions Notification device.';
+# This restores the fkey checks, after having unset them earlier
+# SET FOREIGN_KEY_CHECKS = 1;

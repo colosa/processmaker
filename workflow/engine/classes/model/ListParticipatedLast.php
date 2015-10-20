@@ -203,6 +203,9 @@ class ListParticipatedLast extends BaseListParticipatedLast
         $category = isset($filters['category']) ? $filters['category'] : "";
         $dateFrom = isset($filters['dateFrom']) ? $filters['dateFrom'] : "";
         $dateTo = isset($filters['dateTo']) ? $filters['dateTo'] : "";
+        $filterStatus = isset($filters['filterStatus']) ? $filters['filterStatus'] : "";
+        $newestthan     = isset($filters['newestthan'] ) ? $filters['newestthan'] : '';
+        $oldestthan     = isset($filters['oldestthan'] ) ? $filters['oldestthan'] : '';
 
         if ($filter != '') {
             switch ($filter) {
@@ -215,11 +218,15 @@ class ListParticipatedLast extends BaseListParticipatedLast
             }
         }
 
-        if ($search != '') {
+        if ($search != '' ) {
             $criteria->add(
                 $criteria->getNewCriterion( ListParticipatedLastPeer::APP_TITLE, '%' . $search . '%', Criteria::LIKE )->
                     addOr( $criteria->getNewCriterion( ListParticipatedLastPeer::APP_TAS_TITLE, '%' . $search . '%', Criteria::LIKE )->
-                        addOr( $criteria->getNewCriterion( ListParticipatedLastPeer::APP_NUMBER, $search, Criteria::LIKE ) ) ) );
+                            addOr( $criteria->getNewCriterion( ListParticipatedLastPeer::APP_NUMBER, $search, Criteria::LIKE ) ) ) );
+        }
+
+        if($filterStatus != ''){
+            $criteria->add(ListParticipatedLastPeer::APP_STATUS, '%' . $filterStatus . '%', Criteria::LIKE );
         }
 
         if ($process != '') {
@@ -257,6 +264,14 @@ class ListParticipatedLast extends BaseListParticipatedLast
             $dateTo = $dateTo . " 23:59:59";
 
             $criteria->add( ListParticipatedLastPeer::DEL_DELEGATE_DATE, $dateTo, Criteria::LESS_EQUAL );
+        }
+
+        if ($newestthan != '') {
+            $criteria->add( $criteria->getNewCriterion( ListParticipatedLastPeer::DEL_DELEGATE_DATE, $newestthan, Criteria::GREATER_THAN ));
+        }
+
+        if ($oldestthan != '') {
+            $criteria->add( $criteria->getNewCriterion( ListParticipatedLastPeer::DEL_DELEGATE_DATE, $oldestthan, Criteria::LESS_THAN ));
         }
     }
 

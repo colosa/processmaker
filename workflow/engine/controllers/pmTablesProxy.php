@@ -1890,7 +1890,7 @@ class pmTablesProxy extends HttpProxyController
                 foreach($items as $key => $val){
                     foreach($val as $column) {
                         if($allowed) {
-                            if(!in_array( $column['type'], $excludeFieldsList )){
+                            if(isset($column['type']) && !in_array( $column['type'], $excludeFieldsList )){
                                 if(array_key_exists('variable',$column)) {
                                     if($column['variable'] != "") {
                                         $dynaformVariables[] = $column['variable'];
@@ -1898,7 +1898,7 @@ class pmTablesProxy extends HttpProxyController
                                 }
                             }
                         } else {
-                            if(in_array( $column['type'], $excludeFieldsList )){
+                            if(isset($column['type']) && in_array( $column['type'], $excludeFieldsList )){
                                 if(array_key_exists('variable',$column)) {
                                     if($column['variable'] != "") {
                                         $dynaformVariables[] = $column['variable']; 

@@ -34,15 +34,20 @@ class Group extends Api
     /**
      * @url GET
      */
-    public function index($filter = null, $start = null, $limit = null)
+    public function index($filter = null, $lfilter = null, $rfilter = null, $start = null, $limit = null)
     {
         try {
             $group = new \ProcessMaker\BusinessModel\Group();
             $group->setFormatFieldNameInUppercase(false);
 
-            $response = $group->getGroups(array("filter" => $filter), null, null, $start, $limit);
+            $arrayFilterData = array(
+                "filter"       => (!is_null($filter))? $filter : ((!is_null($lfilter))? $lfilter : ((!is_null($rfilter))? $rfilter : null)),
+                "filterOption" => (!is_null($filter))? ""      : ((!is_null($lfilter))? "LEFT"   : ((!is_null($rfilter))? "RIGHT"  : ""))
+            );
 
-            return $response;
+            $response = $group->getGroups($arrayFilterData, null, null, $start, $limit);
+
+            return $response["data"];
         } catch (\Exception $e) {
             throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
         }

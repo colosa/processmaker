@@ -1149,8 +1149,14 @@ class Bootstrap
         //Read Configuration File
         $xmlConfiguration = file_get_contents($configurationFile);
         $xmlConfigurationObj = Bootstrap::xmlParser($xmlConfiguration);
-
+        
+        if (!isset($xmlConfigurationObj->result['skinConfiguration']['__CONTENT__']['cssFiles']['__CONTENT__'][$skinVariant]['__CONTENT__'])) {
+            $xmlConfigurationObj->result['skinConfiguration']['__CONTENT__']['cssFiles']['__CONTENT__'][$skinVariant]['__CONTENT__'] = array('cssFile' => array());
+        }
         $skinFilesArray = $xmlConfigurationObj->result['skinConfiguration']['__CONTENT__']['cssFiles']['__CONTENT__'][$skinVariant]['__CONTENT__']['cssFile'];
+        if (isset($skinFilesArray['__ATTRIBUTES__'])) {
+            $skinFilesArray = array($skinFilesArray);
+        }
         foreach ($skinFilesArray as $keyFile => $cssFileInfo) {
             $enabledBrowsers = explode(",", $cssFileInfo['__ATTRIBUTES__']['enabledBrowsers']);
             $disabledBrowsers = explode(",", $cssFileInfo['__ATTRIBUTES__']['disabledBrowsers']);
@@ -2946,5 +2952,28 @@ class Bootstrap
     {
         return md5($string);
     }
+
+    /**
+     * Set Language
+     */
+    public static function setLanguage()
+    {
+        $acceptLanguage = isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])?$_SERVER['HTTP_ACCEPT_LANGUAGE']:'en';
+        if (!defined('SYS_LANG')) {
+            $Translations = new \Translation;
+            $translationsTable = $Translations->getTranslationEnvironments();
+            $inLang = false;
+            foreach ($translationsTable as $locale) {
+                if ($locale['LOCALE'] == $acceptLanguage){
+                    $inLang = true;
+                    break;
+                }
+            }
+            $lang = $inLang?$acceptLanguage:'en';
+            define("SYS_LANG", $lang);
+        }
+
+    }
+
 }
 

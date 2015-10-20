@@ -11,56 +11,66 @@ use \Luracast\Restler\RestException;
  */
 class Assignee extends Api
 {
+    private $task;
+
     /**
-     * @url GET /:prjUid/activity/:actUid/assignee
+     * Constructor of the class
      *
-     * @param string $prjUid {@min 32} {@max 32}
-     * @param string $actUid {@min 32} {@max 32}
-     * @param string $filter
-     * @param int    $start
-     * @param int    $limit
-     * @param string $type
-     *
+     * return void
      */
-    public function doGetActivityAssignees($prjUid, $actUid, $filter = '', $start = null, $limit = null, $type = '')
+    public function __construct()
     {
-        $response = array();
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $arrayData = $task->getTaskAssignees($prjUid, $actUid, $filter, $start, $limit, $type);
-            //Response
-            $response = $arrayData;
+            $this->task = new \ProcessMaker\BusinessModel\Task();
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
     }
 
     /**
-     * @url GET /:prjUid/activity/:actUid/available-assignee
+     * @url GET /:prj_uid/activity/:act_uid/assignee/paged
+     * @url GET /:prj_uid/activity/:act_uid/assignee
      *
-     * @param string $prjUid {@min 32} {@max 32}
-     * @param string $actUid {@min 32} {@max 32}
-     * @param string $filter
-     * @param int    $start
-     * @param int    $limit
-     * @param string $type
-     *
+     * @param string $prj_uid {@min 32}{@max 32}
+     * @param string $act_uid {@min 32}{@max 32}
      */
-    public function doGetActivityAvailableAssignee($prjUid, $actUid, $filter = '', $start = null, $limit = null, $type = '')
+    public function doGetActivityAssignees($prj_uid, $act_uid, $filter = null, $lfilter = null, $rfilter = null, $start = null, $limit = null, $type = null)
     {
-        $response = array();
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $arrayData = $task->getTaskAvailableAssignee($prjUid, $actUid, $filter, $start, $limit, $type);
-            //Response
-            $response = $arrayData;
+            $arrayFilterData = array(
+                "filter"       => (!is_null($filter))? $filter : ((!is_null($lfilter))? $lfilter : ((!is_null($rfilter))? $rfilter : null)),
+                "filterOption" => (!is_null($filter))? ""      : ((!is_null($lfilter))? "LEFT"   : ((!is_null($rfilter))? "RIGHT"  : ""))
+            );
+
+            $response = $this->task->getTaskAssignees($prj_uid, $act_uid, "ASSIGNEE", 1, $arrayFilterData, $start, $limit, $type);
+
+            return (preg_match("/^.*\/paged.*$/", $this->restler->url))? $response : $response["data"];
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
+    }
+
+    /**
+     * @url GET /:prj_uid/activity/:act_uid/available-assignee/paged
+     * @url GET /:prj_uid/activity/:act_uid/available-assignee
+     *
+     * @param string $prj_uid {@min 32}{@max 32}
+     * @param string $act_uid {@min 32}{@max 32}
+     */
+    public function doGetActivityAvailableAssignees($prj_uid, $act_uid, $filter = null, $lfilter = null, $rfilter = null, $start = null, $limit = null, $type = null)
+    {
+        try {
+            $arrayFilterData = array(
+                "filter"       => (!is_null($filter))? $filter : ((!is_null($lfilter))? $lfilter : ((!is_null($rfilter))? $rfilter : null)),
+                "filterOption" => (!is_null($filter))? ""      : ((!is_null($lfilter))? "LEFT"   : ((!is_null($rfilter))? "RIGHT"  : ""))
+            );
+
+            $response = $this->task->getTaskAssignees($prj_uid, $act_uid, "AVAILABLE", 1, $arrayFilterData, $start, $limit, $type);
+
+            return (preg_match("/^.*\/paged.*$/", $this->restler->url))? $response : $response["data"];
+        } catch (\Exception $e) {
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
+        }
     }
 
     /**
@@ -69,21 +79,16 @@ class Assignee extends Api
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $actUid {@min 32} {@max 32}
      * @param string $aasUid {@min 32} {@max 32}
-     *
      */
     public function doGetActivityAssignee($prjUid, $actUid, $aasUid)
     {
-        $response = array();
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $objectData = $task->getTaskAssignee($prjUid, $actUid, $aasUid);
-            //Response
-            $response = $objectData;
+            $response = $this->task->getTaskAssignee($prjUid, $actUid, $aasUid);
+
+            return $response;
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
     }
 
     /**
@@ -99,10 +104,8 @@ class Assignee extends Api
     public function doPostActivityAssignee($prjUid, $actUid, $aas_uid, $aas_type)
     {
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $task->addTaskAssignee($prjUid, $actUid, $aas_uid, $aas_type);
+            $this->task->addTaskAssignee($prjUid, $actUid, $aas_uid, $aas_type);
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
     }
@@ -113,69 +116,60 @@ class Assignee extends Api
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $actUid {@min 32} {@max 32}
      * @param string $aasUid {@min 32} {@max 32}
-     *
      */
     public function doDeleteActivityAssignee($prjUid, $actUid, $aasUid)
     {
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $task->removeTaskAssignee($prjUid, $actUid, $aasUid);
+            $this->task->removeTaskAssignee($prjUid, $actUid, $aasUid);
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
     }
 
     /**
-     * @url GET /:prjUid/activity/:actUid/adhoc-assignee
+     * @url GET /:prj_uid/activity/:act_uid/adhoc-assignee/paged
+     * @url GET /:prj_uid/activity/:act_uid/adhoc-assignee
      *
-     * @param string $prjUid {@min 32} {@max 32}
-     * @param string $actUid {@min 32} {@max 32}
-     * @param string $filter
-     * @param int    $start
-     * @param int    $limit
-     * @param string $type
-     *
+     * @param string $prj_uid {@min 32}{@max 32}
+     * @param string $act_uid {@min 32}{@max 32}
      */
-    public function doGetActivityAdhocAssignees($prjUid, $actUid, $filter = '', $start = null, $limit = null, $type = '')
+    public function doGetActivityAdhocAssignees($prj_uid, $act_uid, $filter = null, $lfilter = null, $rfilter = null, $start = null, $limit = null, $type = null)
     {
-        $response = array();
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $arrayData = $task->getTaskAdhocAssignees($prjUid, $actUid, $filter, $start, $limit, $type);
-            //Response
-            $response = $arrayData;
+            $arrayFilterData = array(
+                "filter"       => (!is_null($filter))? $filter : ((!is_null($lfilter))? $lfilter : ((!is_null($rfilter))? $rfilter : null)),
+                "filterOption" => (!is_null($filter))? ""      : ((!is_null($lfilter))? "LEFT"   : ((!is_null($rfilter))? "RIGHT"  : ""))
+            );
+
+            $response = $this->task->getTaskAssignees($prj_uid, $act_uid, "ASSIGNEE", 2, $arrayFilterData, $start, $limit, $type);
+
+            return (preg_match("/^.*\/paged.*$/", $this->restler->url))? $response : $response["data"];
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
     }
 
     /**
-     * @url GET /:prjUid/activity/:actUid/adhoc-available-assignee
+     * @url GET /:prj_uid/activity/:act_uid/adhoc-available-assignee/paged
+     * @url GET /:prj_uid/activity/:act_uid/adhoc-available-assignee
      *
-     * @param string $prjUid {@min 32} {@max 32}
-     * @param string $actUid {@min 32} {@max 32}
-     * @param string $filter
-     * @param int    $start
-     * @param int    $limit
-     * @param string $type
-     *
+     * @param string $prj_uid {@min 32}{@max 32}
+     * @param string $act_uid {@min 32}{@max 32}
      */
-    public function doGetActivityAvailableAdhocAssignee($prjUid, $actUid, $filter = '', $start = null, $limit = null, $type = '')
+    public function doGetActivityAdhocAvailableAssignees($prj_uid, $act_uid, $filter = null, $lfilter = null, $rfilter = null, $start = null, $limit = null, $type = null)
     {
-        $response = array();
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $arrayData = $task->getTaskAvailableAdhocAssignee($prjUid, $actUid, $filter, $start, $limit, $type);
-            //Response
-            $response = $arrayData;
+            $arrayFilterData = array(
+                "filter"       => (!is_null($filter))? $filter : ((!is_null($lfilter))? $lfilter : ((!is_null($rfilter))? $rfilter : null)),
+                "filterOption" => (!is_null($filter))? ""      : ((!is_null($lfilter))? "LEFT"   : ((!is_null($rfilter))? "RIGHT"  : ""))
+            );
+
+            $response = $this->task->getTaskAssignees($prj_uid, $act_uid, "AVAILABLE", 2, $arrayFilterData, $start, $limit, $type);
+
+            return (preg_match("/^.*\/paged.*$/", $this->restler->url))? $response : $response["data"];
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
     }
 
     /**
@@ -184,21 +178,16 @@ class Assignee extends Api
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $actUid {@min 32} {@max 32}
      * @param string $assUid {@min 32} {@max 32}
-     *
      */
     public function doGetActivityAdhocAssignee($prjUid, $actUid, $aasUid)
     {
-        $response = array();
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $objectData = $task->getTaskAdhocAssignee($prjUid, $actUid, $aasUid);
-            //Response
-            $response = $objectData;
+            $response = $this->task->getTaskAdhocAssignee($prjUid, $actUid, $aasUid);
+
+            return $response;
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
     }
 
     /**
@@ -214,10 +203,8 @@ class Assignee extends Api
     public function doPostActivityAdhocAssignee($prjUid, $actUid, $ada_uid, $ada_type)
     {
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $task->addTaskAdhocAssignee($prjUid, $actUid, $ada_uid, $ada_type);
+            $this->task->addTaskAdhocAssignee($prjUid, $actUid, $ada_uid, $ada_type);
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
     }
@@ -228,15 +215,12 @@ class Assignee extends Api
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $actUid {@min 32} {@max 32}
      * @param string $adaUid {@min 32} {@max 32}
-     *
      */
     public function doDeleteActivityAdhocAssignee($prjUid, $actUid, $adaUid)
     {
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $task->removeTaskAdhocAssignee($prjUid, $actUid, $adaUid);
+            $this->task->removeTaskAdhocAssignee($prjUid, $actUid, $adaUid);
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
     }
@@ -250,21 +234,16 @@ class Assignee extends Api
      * @param int    $start
      * @param int    $limit
      * @param string $type
-     *
      */
-    public function doGetActivityAssigneesAll($prjUid, $actUid, $filter = '', $start = null, $limit = null, $type = '')
+    public function doGetActivityAssigneesAll($prjUid, $actUid, $filter = null, $start = null, $limit = null, $type = null)
     {
-        $response = array();
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $arrayData = $task->getTaskAssigneesAll($prjUid, $actUid, $filter, $start, $limit, $type);
-            //Response
-            $response = $arrayData;
+            $arrayData = $this->task->getTaskAssigneesAll($prjUid, $actUid, $filter, $start, $limit, $type);
+
+            return $response;
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
     }
 
     /**
@@ -276,21 +255,17 @@ class Assignee extends Api
      * @param int    $start
      * @param int    $limit
      * @param string $type
-     *
      */
-    public function doGetActivityAdhocAssigneesAll($prjUid, $actUid, $filter = '', $start = null, $limit = null, $type = '')
+    public function doGetActivityAdhocAssigneesAll($prjUid, $actUid, $filter = null, $start = null, $limit = null, $type = null)
     {
         $response = array();
         try {
-            $task = new \ProcessMaker\BusinessModel\Task();
-            $arrayData = $task->getTaskAdhocAssigneesAll($prjUid, $actUid, $filter, $start, $limit, $type);
-            //Response
-            $response = $arrayData;
+            $response = $this->task->getTaskAdhocAssigneesAll($prjUid, $actUid, $filter, $start, $limit, $type);
+
+            return $response;
         } catch (\Exception $e) {
-            //Response
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
-        return $response;
     }
 }
 

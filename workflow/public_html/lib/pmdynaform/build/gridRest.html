@@ -200,8 +200,12 @@
 							id = "form[<%=id%>]"
 							name ="form[<%=name%>]"
 						<%}%>
-						class="<%=namespace%>-control-<%=type%> form-control" 
-						rows="<%= rows %>"
+						class="<%=namespace%>-control-<%=type%> form-control"
+                        <% if ((new RegExp('^[0-9]+$')).test(rows)) { %>
+                            rows="<%= rows %>"
+                        <% } else { %>
+                            rows= "2"
+                        <% } %>
 						placeholder= "<%= placeholder %>"
 				<% if(disabled === true){%>disabled<%}%>
 			><%= value %></textarea>
@@ -459,15 +463,6 @@
 				<%}%>
 						class="<%=namespace%>-control-<%=type%> form-control"
 				<% if(disabled === true){%>disabled<%}%>>
-				<% for(var i=0; i<options.length; i+=1) { %>
-			        <option value=<%= options[i].value %> 
-			        	<%if( options[i].value && options[i].value.toString() === value.toString() && (value.length)){%>
-
-			        		selected<%}%>
-			        >
-			        	<%= options[i].label %>
-			        </option>
-			    <% } %>
 		    </select>
 			<% if (group === "form") { %>
 				<%if (hint !== "" && hint !== null){%>
@@ -521,12 +516,14 @@
 		<%}%>
 		<div <%if(group === 'form'){ %> class="pmdynaform-file-control col-md-<%=colSpanControl%> col-lg-<%=colSpanControl%> pmdynaform-field-control" <%}%> >
 			<div class="pmdynaform-file-container col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<button type="button" class="<%=namespace%>-control-<%=type%> form-control"
-					<% if(disabled === true){%>disabled<%}%>
-					<% if(mode === "view"){%>style="display:none;"<%}%>
-				>
-					<%=labelButton%>
-				</button>
+                <div class="pmdynaform-file-btn-container">
+                    <button type="button" class="<%=namespace%>-control-<%=type%> form-control"
+                        <% if(disabled === true){%>disabled<%}%>
+                        <% if(mode === "view"){%>style="display:none;"<%}%>
+                    >
+                        <%=labelButton%>
+                    </button>
+                </div>
 				<%if (group === "form"){%>
 					<%if (hint !== "" && hint !== null){%>
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="<%=hint%>"></span>
@@ -580,7 +577,7 @@
 					<div class="pmdynaform-file-list" style="display:none"></div>
 				<% } %>
 				<%if(data['value'].length){%>
-					<div class= "col-md-<%=colSpanControl%> col-lg-<%=colSpanControl%> pmdynaform-field-control">
+					<div class= "col-md-<%=colSpanControl%> col-lg-<%=colSpanControl%> link-container pmdynaform-field-control">
 		    			<% for(var i = 0; i < data['label'].length; i+=1) { %>
 							<a style="float:left"
 								href = "<%=data['value'][i]%>" class="btn btn-link <%=namespace%>-control-<%=type%>">
@@ -695,7 +692,7 @@
 				<%if(originalType=="suggest"){%>
 				<%}%>
 				<%for(var k=0; k<fullOptions.length; k+=1){%>
-					<span title=<%=fullOptions[k]%>><%=fullOptions[k]%></span>
+					<span title=<%-fullOptions[k]%>><%-fullOptions[k]%></span>
 				<%}%>
 				<input type="hidden" value="<%= data['label']%>"
 					<% if  ( group === "grid") { %>
@@ -885,8 +882,13 @@
 				<div id="<%=id%>-body" <% if(pager) {%> class="carousel slide" data-ride="carousel" <%}%> >
 					<div class="<% if(pager) {%>carousel-inner <%}%> pmdynaform-grid-tbody pmdynaform-form"></div>
 					<%if (functions) {%>
-						<div class="pmdynaform-grid-functions">
-						</div>
+						<%if (layout === "static"){%>
+							<div class="containerStaticGrid" style="overflow:hidden">
+						<%}%>
+						<div class="pmdynaform-grid-functions"></div>
+						<%if (layout === "static"){%>
+							</div>
+						<%}%>
 					<%}%>
 					<%if (pager) {%>
 						<div class="pmdynaform-grid-pagination">

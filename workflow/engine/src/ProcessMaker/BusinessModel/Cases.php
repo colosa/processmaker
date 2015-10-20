@@ -49,16 +49,25 @@ class Cases
      * Verify if does not exist the Case in table APPLICATION
      *
      * @param string $applicationUid        Unique id of Case
+     * @param string $delIndex              Delegation index
      * @param string $fieldNameForException Field name for the exception
      *
      * return void Throw exception if does not exist the Case in table APPLICATION
      */
-    public function throwExceptionIfNotExistsCase($applicationUid, $fieldNameForException)
+    public function throwExceptionIfNotExistsCase($applicationUid, $delIndex, $fieldNameForException)
     {
         try {
             $obj = \ApplicationPeer::retrieveByPK($applicationUid);
 
-            if (is_null($obj)) {
+            $flag = is_null($obj);
+
+            if (!$flag && $delIndex > 0) {
+                $obj = \AppDelegationPeer::retrieveByPK($applicationUid, $delIndex);
+
+                $flag = is_null($obj);
+            }
+
+            if ($flag) {
                 throw new \Exception(\G::LoadTranslation("ID_CASE_DOES_NOT_EXIST2", array($fieldNameForException, $applicationUid)));
             }
         } catch (\Exception $e) {
@@ -440,7 +449,7 @@ class Cases
                 \G::LoadClass("wsBase");
 
                 //Verify data
-                $this->throwExceptionIfNotExistsCase($applicationUid, $this->getFieldNameByFormatFieldName("APP_UID"));
+                $this->throwExceptionIfNotExistsCase($applicationUid, 0, $this->getFieldNameByFormatFieldName("APP_UID"));
 
                 $criteria = new \Criteria("workflow");
 
@@ -536,7 +545,7 @@ class Cases
     {
         try {
             //Verify data
-            $this->throwExceptionIfNotExistsCase($applicationUid, $this->getFieldNameByFormatFieldName("APP_UID"));
+            $this->throwExceptionIfNotExistsCase($applicationUid, 0, $this->getFieldNameByFormatFieldName("APP_UID"));
 
             $criteria = new \Criteria("workflow");
 
@@ -932,7 +941,11 @@ class Cases
         }
 
         $case = new \wsBase();
-        $case->executeTrigger( $usr_uid, $app_uid, $tri_uid, $del_index );
+        $result = $case->executeTrigger($usr_uid, $app_uid, $tri_uid, $del_index);
+
+        if ($result->status_code != 0) {
+            throw new \Exception($result->message);
+        }
     }
 
     /**
@@ -1582,6 +1595,16 @@ class Cases
         Validator::isString($usr_uid, '$usr_uid');
         Validator::usrUid($usr_uid, '$usr_uid');
 
+        $arrayResult = $this->getStatusInfo($app_uid);
+
+        if ($arrayResult["APP_STATUS"] == "CANCELLED") {
+            throw new \Exception(\G::LoadTranslation("ID_CASE_CANCELLED", array($app_uid)));
+        }
+
+        if ($arrayResult["APP_STATUS"] == "COMPLETED") {
+            throw new \Exception(\G::LoadTranslation("ID_CASE_IS_COMPLETED", array($app_uid)));
+        }
+
         $appCacheView = new \AppCacheView();
         $isProcessSupervisor = $appCacheView->getProUidSupervisor($usr_uid);
         $criteria = new \Criteria("workflow");
@@ -1600,7 +1623,7 @@ class Cases
 
         $_SESSION['APPLICATION'] = $app_uid;
         $_SESSION['USER_LOGGED'] = $usr_uid;
-        
+
         $case = new \Cases();
         $fields = $case->loadCase($app_uid);
         $_POST['form'] = $app_data;
@@ -1801,7 +1824,7 @@ class Cases
             $arrayTask = array();
 
             //Verify data
-            $this->throwExceptionIfNotExistsCase($applicationUid, $this->getFieldNameByFormatFieldName("APP_UID"));
+            $this->throwExceptionIfNotExistsCase($applicationUid, 0, $this->getFieldNameByFormatFieldName("APP_UID"));
 
             //Set variables
             $process = new \Process();
@@ -2359,14 +2382,16 @@ class Cases
      * Get status info Case
      *
      * @param string $applicationUid Unique id of Case
+     * @param int    $del_index      {@min 1}
+     * @param string $userUid        Unique id of User
      *
      * return array Return an array with status info Case, array empty otherwise
      */
-    public function getStatusInfo($applicationUid)
+    public function getStatusInfo($applicationUid, $delIndex = 0, $userUid = "")
     {
         try {
             //Verify data
-            $this->throwExceptionIfNotExistsCase($applicationUid, $this->getFieldNameByFormatFieldName("APP_UID"));
+            $this->throwExceptionIfNotExistsCase($applicationUid, $delIndex, $this->getFieldNameByFormatFieldName("APP_UID"));
 
             //Get data
             //Status is PAUSED
@@ -2383,6 +2408,14 @@ class Cases
                 $criteria->getNewCriterion(\AppDelayPeer::APP_DISABLE_ACTION_USER, null, \Criteria::ISNULL)->addOr(
                 $criteria->getNewCriterion(\AppDelayPeer::APP_DISABLE_ACTION_USER, 0, \Criteria::EQUAL))
             );
+
+            if ($delIndex != 0) {
+                $criteria->add(\AppDelayPeer::APP_DEL_INDEX, $delIndex, \Criteria::EQUAL);
+            }
+
+            if ($userUid != "") {
+                $criteria->add(\AppDelayPeer::APP_DELEGATION_USER, $userUid, \Criteria::EQUAL);
+            }
 
             $rsCriteria = \AppDelayPeer::doSelectRS($criteria);
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
@@ -2417,6 +2450,14 @@ class Cases
                 $criteria->getNewCriterion(\AppThreadPeer::APP_THREAD_STATUS, "OPEN"))
             );
 
+            if ($delIndex != 0) {
+                $criteria->add(\AppDelegationPeer::DEL_INDEX, $delIndex, \Criteria::EQUAL);
+            }
+
+            if ($userUid != "") {
+                $criteria->add(\AppDelegationPeer::USR_UID, $userUid, \Criteria::EQUAL);
+            }
+
             $rsCriteria = \ApplicationPeer::doSelectRS($criteria);
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
 
@@ -2440,6 +2481,14 @@ class Cases
 
             $criteria->add(\ApplicationPeer::APP_STATUS, array("CANCELLED", "COMPLETED"), \Criteria::IN);
             $criteria->add(\AppDelegationPeer::DEL_LAST_INDEX, 1, \Criteria::EQUAL);
+
+            if ($delIndex != 0) {
+                $criteria->add(\AppDelegationPeer::DEL_INDEX, $delIndex, \Criteria::EQUAL);
+            }
+
+            if ($userUid != "") {
+                $criteria->add(\AppDelegationPeer::USR_UID, $userUid, \Criteria::EQUAL);
+            }
 
             $rsCriteria = \ApplicationPeer::doSelectRS($criteria);
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);

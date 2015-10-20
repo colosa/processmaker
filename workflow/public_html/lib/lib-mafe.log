@@ -1,30 +1,30 @@
-[9 days ago] 3fc5324  PM-3564 <Roly Rudy Gutierrez Pinto>
-[12 days ago] b9a57e0  PM-3148_PM-3121: mplement Multiple Instance Task/ Task Marker Parallel, Changes in assignment rules in multiple instance tasks <marcelo.cuiza>
-[2 weeks ago] a9e7941  PM-3341 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 5bdec1d  PM-3146 Add new variable type "array" <dheeyi>
-[3 weeks ago] 771004b  PM-3449 <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] 33049eb  PM-3436 New BPMN> Timer Event> Existen errores al momento de guardar una configuracion de daily, montly en timer event properties <dheeyi>
-[3 weeks ago] 256208e  PM-3309 Exclusive Gateway Properties: Cuando el flujo va a un end event luego de un gateway se muestra el ID <rodrigo quelca>
-[3 weeks ago] 0490562  PM-3404 <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] 0aeb10f  PM-3343 Se pueden establecer valores invalidos en campos de Timer Event <dheeyi>
-[3 weeks ago] 2142b1d  PM-3419: Error al cambiar el tipo de gateway. <rodrigo quelca>
-[3 weeks ago] 20d67b2  PM-3301: 0018030: Weird display of emails in email event properties from dropdown <marcelo.cuiza>
-[3 weeks ago] d57446a  PM-3345: Mouse pointer doesn't work on process designer labels <rodrigo quelca>
-[4 weeks ago] 5826a4d  PM-3387 <Roly Rudy Gutierrez Pinto>
-[4 weeks ago] e980ec0  PM-3385 <Roly Rudy Gutierrez Pinto>
-[4 weeks ago] 104a036  PM-3354-A "Error en pantalla de variables..." SOLVED <Luis Fernando Saisa Lopez>
-[4 weeks ago] 0309600  PM-3350 Process Edit screen: Unit field not set SOLVED <Marco A. Nina Mena>
-[4 weeks ago] 63cd1e3  PM-3298 <Roly Rudy Gutierrez Pinto>
-[4 weeks ago] 9bd2553  Remove task create autosave and change in the way to open the task properties form. <rodrigo quelca>
-[5 weeks ago] f4dddb5  disble validator feature <rodrigo quelca>
-[5 weeks ago] c3a74f6  fix bad merged files <rodrigo quelca>
-[5 weeks ago] c2f958a  PM-3267 SOLVED <Julio Cesar Laura>
-[5 weeks ago] f757f7d  PM-3241 "DesignerBPMN>Los estilos en las grillas..." SOLVED <Luis Fernando Saisa Lopez>
-[5 weeks ago] aaaa31d  Iniciar la creacion del validador de proceso, que permita detectar problemas en el disenador <rodrigo quelca>
-[5 weeks ago] 5fd3c3d  PM-3302 Two strange required fields in the 'Edit Process' IMPROVEMENT <Marco A. Nina Mena>
-[5 weeks ago] 8aa14c4  PM-3306 <marcelo.cuiza>
-[5 weeks ago] 73a48e7  PM-3300 Error al guardar el proceso cuando se elimina un Lane que contiene un gateway con dos o mas tareas <rodrigo quelca>
-[5 weeks ago] af8386f  PM-3302 Two strange required fields in the 'Edit Process' SOLVED <Marco A. Nina Mena>
-[6 weeks ago] 1668013  PM-3285 <marcelo.cuiza>
-[6 weeks ago] 1ab7e41  PM-3230 DesignerBPMN>Supervisors>No se puede ver los usuarios que tiene asignado el grupo <dheeyi>
-[6 weeks ago] 4ae0407  PM-3252 Correct texts in Helper tooltips <rodrigo quelca>
+[5 days ago] d2ec2b6  PM-3747:En todos los browsers el paginador en la ocion de supervisors se encuntra desfado y mas en IE <Richard Yujra>
+[5 days ago] ec53f75  PM-3659:improvements, show text <Richard Yujra>
+[7 days ago] e462605  PM-3659:Uso de interface lenta (supervisores) cuando se tienen varios usuarios (40000) <Richard Yujra>
+[7 days ago] bc6044f  PM-3718 <Roly Rudy Gutierrez Pinto>
+[8 days ago] d8d3ff4  PM-3533 <Roly Rudy Gutierrez Pinto>
+[8 days ago] f651258  PM-2905 <Roly Rudy Gutierrez Pinto>
+[8 days ago] 9a60f5b  PM-2905 <Roly Rudy Gutierrez Pinto>
+[9 days ago] b4e1d82  PM-2905 <Roly Rudy Gutierrez Pinto>
+[13 days ago] 3bcce9c  PM-3554 Documentos generados con seguridad no se pueden abrir <dheeyi>
+[13 days ago] 0f226ac  Error al asignar y desasignar los objetos en los "supervisors" <Emerson Joel Rojas Soliz>
+[13 days ago] adc46f5  PM-3544: No se puede acceder al menu contextual del dise�ador en FIREFOX <rodrigo quelca>
+[2 weeks ago] 4914b0d  PM-3547: La primera vez que ingresas a properties de time event sale un error sol la primera vez. <rodrigo quelca>
+[3 weeks ago] 3fc51ec  PM-3523: Design>New BPMN>Timer event: cuando colcoas la hora minutos, etc con la opcion de incremento con el mouse no respeta la perimwera vez campo requerido <marcelo.cuiza>
+[3 weeks ago] ee80591  PM-3508: 0018251: Error en Gateway <marcelo.cuiza>
+[3 weeks ago] 6994999  PM-3443 <Roly Rudy Gutierrez Pinto>
+[3 weeks ago] 87bdf00  PM-3678 Cuando se utiliza un gateway entre dos lanes no se puede asignar a las tareas siguientes. <rodrigo quelca>
+[3 weeks ago] 3702021  PM-3568 Se muestra un error al crear ciertos triggers que contienen variables del tipo array <dheeyi>
+[3 weeks ago] 7d8b92c  PM-3687: Include Accepted_language header in REST endpoint calls in ProcessDesigner <rodrigo quelca>
+[3 weeks ago] fa0d23c  PM-3522: Se borra la configuracion de one date/time en timer event al vovler a ingresar a la misma <marcelo.cuiza>
+[3 weeks ago] b86387c  PM-3589: Add Routing Rule>>En el mensaje de error muestra la palabra Undefined y el nombre del elemento <rodrigo quelca>
+[3 weeks ago] cc3088d  PM-2094 0017076: Variable creator in BPMN Designer should not allow variables which start with number, but should allow underscores "_" <dheeyi>
+[3 weeks ago] 755febc  PM-3648 No se guarda las propiedades de un "Step" con Internet Explorer <dheeyi>
+[3 weeks ago] ecb2abc  PM-3534: No te permite conectar un "Task" con un "End Email Event" <rodrigo quelca>
+[3 weeks ago] 2b29d8f  PM-3389: Error de espacio de trabajo / posicion de flujos y elementos <rodrigo quelca>
+[4 weeks ago] 47f342e  PM-3624 Completar traduccióe labels faltantes para la versió.0.1.5 <dheeyi>
+[4 weeks ago] 487e517  PM-3564 <Roly Rudy Gutierrez Pinto>
+[4 weeks ago] 9289d12  PM-3148_PM-3121: mplement Multiple Instance Task/ Task Marker Parallel, Changes in assignment rules in multiple instance tasks <marcelo.cuiza>
+[4 weeks ago] 7febe7f  PM-3341 <Roly Rudy Gutierrez Pinto>
+[4 weeks ago] 55ade5a  PM-3146 Add new variable type "array" <dheeyi>
+[4 weeks ago] ddcf30a  PM-3489 <Roly Rudy Gutierrez Pinto>

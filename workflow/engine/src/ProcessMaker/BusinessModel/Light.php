@@ -271,10 +271,22 @@ class Light
     {
         try {
             $oCase = new \Cases();
+            $oUser    = new \Users();
 
             $this->lookinginforContentProcess( $proUid );
 
             $aData = $oCase->startCase( $taskUid, $userId );
+
+            $aUserLog = $oUser->loadDetailed($userId);
+            $_SESSION['APPLICATION'] = $aData['APPLICATION'];
+            $_SESSION['INDEX'] = $aData['INDEX'];
+            $_SESSION['PROCESS'] = $aData['PROCESS'];
+            $_SESSION['TASK'] = $taskUid;
+            $_SESSION["USER_LOGGED"] = $userId;
+            $_SESSION["USR_USERNAME"] = $aUserLog['USR_USERNAME'];
+
+            $aFields = $oCase->loadCase( $aData['APPLICATION'], $aData['INDEX'] );
+            $oCase->updateCase( $aData['APPLICATION'], $aFields );
 
             $response = array();
             $response['caseId'] = $aData['APPLICATION'];
@@ -508,8 +520,8 @@ class Light
             \G::LoadClass('wsBase');
             $ws = new \wsBase();
             $fields = $ws->derivateCase($userUid, $applicationUid, $delIndex, $bExecuteTriggersBeforeAssignment = false, $tasks);
-            $fields['message'] = trim(strip_tags($fields['message']));
             $array = json_decode(json_encode($fields), true);
+            $array['message'] = trim(strip_tags($array['message']));
             if ($array ["status_code"] != 0) {
                 throw (new \Exception($array ["message"]));
             } else {
@@ -1232,6 +1244,16 @@ class Light
         $fields = \System::getSysInfo();
         $response['version'] = $fields['PM_VERSION'];
 
+        $conf = new \Configurations();
+        $confEnvironment = $conf->getFormats();
+
+        $response['environment'] = array();
+        if (is_array($confEnvironment)){
+            $response['environment']['format'] = isset($confEnvironment['format'])?$confEnvironment['format']:'';
+            $response['environment']['dateFormat'] = isset($confEnvironment['dateFormat'])?$confEnvironment['dateFormat']:'';
+            $response['environment']['casesListDateFormat'] = isset($confEnvironment['casesListDateFormat'])?$confEnvironment['casesListDateFormat']:'';
+        }
+
         $Translations = new \Translation;
         $translationsTable = $Translations->getTranslationEnvironments();
         $languagesList = array ();
@@ -1249,6 +1271,27 @@ class Light
         }
         $response['listLanguage'] = $languagesList;
         return $response;
+    }
+
+    public function getInformationDerivatedCase($app_uid, $del_index)
+    {
+        $oCriteria = new Criteria( 'workflow' );
+        $children = array ();
+        $oCriteria->clearSelectColumns();
+        $oCriteria->addSelectColumn( AppDelegationPeer::DEL_INDEX );
+        $oCriteria->addSelectColumn( AppDelegationPeer::PRO_UID );
+        $oCriteria->addSelectColumn( AppDelegationPeer::TAS_UID );
+        $oCriteria->addSelectColumn( AppDelegationPeer::USR_UID );
+        $oCriteria->add( AppDelegationPeer::APP_UID, $app_uid );
+        $oCriteria->add( AppDelegationPeer::DEL_PREVIOUS, $del_index );
+        $oDataset = AppDelegationPeer::doSelectRS( $oCriteria );
+        $oDataset->setFetchmode( \ResultSet::FETCHMODE_ASSOC );
+        $oDataset->next();
+        while ($row = $oDataset->getRow()) {
+            $children[] = $row;
+            $oDataset->next();
+        }
+        return $children;
     }
 
 }

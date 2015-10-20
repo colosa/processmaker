@@ -346,6 +346,14 @@ class AppDelegation extends BaseAppDelegation
 
         if (defined( 'PM_CREATE_NEW_DELEGATION' )) {
 
+            
+
+            $bpmn = new \ProcessMaker\Project\Bpmn();
+
+            $flagActionsByEmail = true;
+
+
+
             $data = new stdclass();
 
             $data->TAS_UID = $sTasUid;
@@ -358,13 +366,25 @@ class AppDelegation extends BaseAppDelegation
 
             $data->PREVIOUS_USR_UID = $delPreviusUsrUid;
 
-            $oPluginRegistry = &PMPluginRegistry::getSingleton();
-
-            $oPluginRegistry->executeTriggers(PM_CREATE_NEW_DELEGATION, $data);
 
 
+            if ($bpmn->exists($sProUid)) {
 
-            /*----------------------------------********---------------------------------*/
+                /*----------------------------------********---------------------------------*/
+
+
+
+            }
+
+
+
+            if ($flagActionsByEmail) {                
+
+                $oPluginRegistry = &PMPluginRegistry::getSingleton();
+
+                $oPluginRegistry->executeTriggers(PM_CREATE_NEW_DELEGATION, $data);
+
+            } 
 
         }
 

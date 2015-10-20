@@ -94,6 +94,12 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
     protected $var_accepted_values;
 
     /**
+     * The value for the inp_doc_uid field.
+     * @var        string
+     */
+    protected $inp_doc_uid = '';
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -226,6 +232,17 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
     {
 
         return $this->var_accepted_values;
+    }
+
+    /**
+     * Get the [inp_doc_uid] column value.
+     * 
+     * @return     string
+     */
+    public function getInpDocUid()
+    {
+
+        return $this->inp_doc_uid;
     }
 
     /**
@@ -471,6 +488,28 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
     } // setVarAcceptedValues()
 
     /**
+     * Set the value of [inp_doc_uid] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setInpDocUid($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->inp_doc_uid !== $v || $v === '') {
+            $this->inp_doc_uid = $v;
+            $this->modifiedColumns[] = ProcessVariablesPeer::INP_DOC_UID;
+        }
+
+    } // setInpDocUid()
+
+    /**
      * Hydrates (populates) the object variables with values from the database resultset.
      *
      * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -509,12 +548,14 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
 
             $this->var_accepted_values = $rs->getString($startcol + 10);
 
+            $this->inp_doc_uid = $rs->getString($startcol + 11);
+
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 11; // 11 = ProcessVariablesPeer::NUM_COLUMNS - ProcessVariablesPeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 12; // 12 = ProcessVariablesPeer::NUM_COLUMNS - ProcessVariablesPeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating ProcessVariables object", $e);
@@ -751,6 +792,9 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
             case 10:
                 return $this->getVarAcceptedValues();
                 break;
+            case 11:
+                return $this->getInpDocUid();
+                break;
             default:
                 return null;
                 break;
@@ -782,6 +826,7 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
             $keys[8] => $this->getVarNull(),
             $keys[9] => $this->getVarDefault(),
             $keys[10] => $this->getVarAcceptedValues(),
+            $keys[11] => $this->getInpDocUid(),
         );
         return $result;
     }
@@ -845,6 +890,9 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
                 break;
             case 10:
                 $this->setVarAcceptedValues($value);
+                break;
+            case 11:
+                $this->setInpDocUid($value);
                 break;
         } // switch()
     }
@@ -913,6 +961,10 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
             $this->setVarAcceptedValues($arr[$keys[10]]);
         }
 
+        if (array_key_exists($keys[11], $arr)) {
+            $this->setInpDocUid($arr[$keys[11]]);
+        }
+
     }
 
     /**
@@ -966,6 +1018,10 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
 
         if ($this->isColumnModified(ProcessVariablesPeer::VAR_ACCEPTED_VALUES)) {
             $criteria->add(ProcessVariablesPeer::VAR_ACCEPTED_VALUES, $this->var_accepted_values);
+        }
+
+        if ($this->isColumnModified(ProcessVariablesPeer::INP_DOC_UID)) {
+            $criteria->add(ProcessVariablesPeer::INP_DOC_UID, $this->inp_doc_uid);
         }
 
 
@@ -1041,6 +1097,8 @@ abstract class BaseProcessVariables extends BaseObject implements Persistent
         $copyObj->setVarDefault($this->var_default);
 
         $copyObj->setVarAcceptedValues($this->var_accepted_values);
+
+        $copyObj->setInpDocUid($this->inp_doc_uid);
 
 
         $copyObj->setNew(true);

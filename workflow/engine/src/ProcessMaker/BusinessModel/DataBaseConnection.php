@@ -253,56 +253,56 @@ class DataBaseConnection
 
             // STEP 1 : Resolving Host Name
             $respTest['0'] = array();
-            $respTest['0']['test'] = 'Resolving Host Name ' . $dataCon['DBS_SERVER'];
+            $respTest['0']['test'] = G::loadTranslation('RESOLVING_NAME') . ' ' .$dataCon['DBS_SERVER'];
             if ($Server->getErrno() != 0) {
                 if ($returnArray) {
-                    $respTest['0']['error'] = "Error Testing Connection: Resolving Host Name FAILED : " . $Server->error;
+                    $respTest['0']['error'] = G::loadTranslation('ID_ERROR_HOST_NAME_FAILED') . ' : ' . $Server->error;
                 } else {
-                    $resp['message'] = "Error Testing Connection: Resolving Host Name FAILED : " . $Server->error;
+                    $resp['message'] = G::loadTranslation('ID_ERROR_HOST_NAME_FAILED') . ' : ' . $Server->error;
                     return $resp;
                 }
             }
 
             // STEP 2 : Checking port
             $respTest['1'] = array();
-            $respTest['1']['test'] = 'Checking port ' . $dataCon['DBS_PORT'];
+            $respTest['1']['test'] = G::loadTranslation('ID_CHECK_PORT') . ' ' . $dataCon['DBS_PORT'];
             $Server->scannPort($dataCon['DBS_PORT']);
             if ($Server->getErrno() != 0) {
                 if ($returnArray) {
-                    $respTest['1']['error'] = "Error Testing Connection: Checking port FAILED : " . $Server->error;
+                    $respTest['1']['error'] = G::loadTranslation('ID_CHECK_PORT_FAILED') . ' : ' . $Server->error;
                 } else {
-                    $resp['message'] = "Error Testing Connection: Checking port FAILED : " . $Server->error;
+                    $resp['message'] = G::loadTranslation('ID_CHECK_PORT_FAILED') . ' : ' . $Server->error;
                     return $resp;
                 }
             }
 
             // STEP 3 : Trying to connect to host
             $respTest['2'] = array();
-            $respTest['2']['test'] = 'Connecting to host ' . $dataCon['DBS_SERVER'] . (($dataCon['DBS_PORT'] != '') ? ':'.$dataCon['DBS_PORT'] : '');
+            $respTest['2']['test'] = G::loadTranslation('ID_CONNECTING_TO_HOST') . ' ' . $dataCon['DBS_SERVER'] . (($dataCon['DBS_PORT'] != '') ? ':'.$dataCon['DBS_PORT'] : '');
             $Server->loginDbServer($dataCon['DBS_USERNAME'], $dataCon['DBS_PASSWORD']);
             $Server->setDataBase($dataCon['DBS_DATABASE_NAME'], $dataCon['DBS_PORT']);
             if ($Server->errno == 0) {
                 $response = $Server->tryConnectServer($dataCon['DBS_TYPE']);
                 if ($response->status != 'SUCCESS') {
                     if ($returnArray) {
-                        $respTest['2']['error'] = "Error Testing Connection: Connecting to host FAILED : " . $Server->error;
+                        $respTest['2']['error'] = G::loadTranslation('ID_CONNECTING_TO_HOST_FAILED') . ' : ' . $Server->error;
                     } else {
-                        $resp['message'] = "Error Testing Connection: Connecting to host FAILED : " . $Server->error;
+                        $resp['message'] = G::loadTranslation('ID_CONNECTING_TO_HOST_FAILED') . ' : ' . $Server->error;
                         return $resp;
                     }
                 }
             } else {
                 if ($returnArray) {
-                    $respTest['2']['error'] = "Error Testing Connection: Connecting to host FAILED : " . $Server->error;
+                    $respTest['2']['error'] = G::loadTranslation('ID_CONNECTING_TO_HOST_FAILED') . ' : ' . $Server->error;
                 } else {
-                    $resp['message'] = "Error Testing Connection: Connecting to host FAILED : " . $Server->error;
+                    $resp['message'] = G::loadTranslation('ID_CONNECTING_TO_HOST_FAILED') . ' : ' . $Server->error;
                     return $resp;
                 }
             }
 
             // STEP 4 : Trying to open database
             $respTest['3'] = array();
-            $respTest['3']['test'] = 'Opening database [' . $dataCon['DBS_DATABASE_NAME'] . ']';
+            $respTest['3']['test'] = G::loadTranslation('ID_OPEN_DATABASE') . ' [' . $dataCon['DBS_DATABASE_NAME'] . ']';
             $Server->loginDbServer($dataCon['DBS_USERNAME'], $dataCon['DBS_PASSWORD']);
             $Server->setDataBase($dataCon['DBS_DATABASE_NAME'], $dataCon['DBS_PORT']);
             if ($Server->errno == 0) {
@@ -311,25 +311,25 @@ class DataBaseConnection
                     $response = $Server->tryOpenDataBase($dataCon['DBS_TYPE']);
                     if ($response->status != 'SUCCESS') {
                         if ($returnArray) {
-                            $respTest['3']['error'] = "Error Testing Connection: Opening database FAILED : " . $Server->error;
+                            $respTest['3']['error'] = G::loadTranslation('ID_CONNECTING_TO_DATABASE_FAILED') . ' : ' . $Server->error;
                         } else {
-                            $resp['message'] = "Error Testing Connection: Opening database FAILED : " . $Server->error;
+                            $resp['message'] = G::loadTranslation('ID_CONNECTING_TO_DATABASE_FAILED') . ' : ' . $Server->error;
                             return $resp;
                         }
                     }
                 } else {
                     if ($returnArray) {
-                        $respTest['3']['error'] = "Error Testing Connection: Opening database FAILED : " . $Server->error;
+                        $respTest['3']['error'] = G::loadTranslation('ID_CONNECTING_TO_DATABASE_FAILED') . ' : ' . $Server->error;
                     } else {
-                        $resp['message'] = "Error Testing Connection: Opening database FAILED : " . $Server->error;
+                        $resp['message'] = G::loadTranslation('ID_CONNECTING_TO_DATABASE_FAILED') . ' : ' . $Server->error;
                         return $resp;
                     }
                 }
             } else {
                 if ($returnArray) {
-                    $respTest['3']['error'] = "Error Testing Connection: Opening database FAILED : " . $Server->error;
+                    $respTest['3']['error'] = G::loadTranslation('ID_CONNECTING_TO_DATABASE_FAILED') . ' : ' . $Server->error;
                 } else {
-                    $resp['message'] = "Error Testing Connection: Opening database FAILED : " . $Server->error;
+                    $resp['message'] = G::loadTranslation('ID_CONNECTING_TO_DATABASE_FAILED') . ' : ' . $Server->error;
                     return $resp;
                 }
             }
@@ -338,7 +338,7 @@ class DataBaseConnection
 
             //STEP 0: Trying to open database type TNS
             $respTest["0"] = array();
-            $respTest["0"]["test"] = "Test TNS: " . $dataCon["DBS_TNS"];
+            $respTest["0"]["test"] = G::loadTranslation('ID_TEST_DATABASE_ORACLE_TNS') . ' ' . $dataCon["DBS_TNS"];
 
             $net->loginDbServer($dataCon["DBS_USERNAME"], $dataCon["DBS_PASSWORD"]);
 
@@ -352,9 +352,9 @@ class DataBaseConnection
 
                     if ($response->status != "SUCCESS") {
                         if ($returnArray) {
-                            $respTest["0"]["error"] = "Error Testing Connection: Opening database type TNS FAILED, " . $net->error;
+                            $respTest["0"]["error"] = G::loadTranslation('ID_TEST_ERROR_ORACLE_TNS') . ', ' . $net->error;
                         } else {
-                            $resp["message"] = "Error Testing Connection: Opening database type TNS FAILED, " . $net->error;
+                            $resp["message"] = G::loadTranslation('ID_TEST_ERROR_ORACLE_TNS') . ', ' . $net->error;
 
                             //Return
                             return $resp;
@@ -362,9 +362,9 @@ class DataBaseConnection
                     }
                 } else {
                     if ($returnArray) {
-                        $respTest["0"]["error"] = "Error Testing Connection: Opening database type TNS FAILED, " . $net->error;
+                        $respTest["0"]["error"] = G::loadTranslation('ID_TEST_ERROR_ORACLE_TNS') . ', ' . $net->error;
                     } else {
-                        $resp["message"] = "Error Testing Connection: Opening database type TNS FAILED, " . $net->error;
+                        $resp["message"] = G::loadTranslation('ID_TEST_ERROR_ORACLE_TNS') . ', ' . $net->error;
 
                         //Return
                         return $resp;
@@ -372,9 +372,9 @@ class DataBaseConnection
                 }
             } else {
                 if ($returnArray) {
-                    $respTest["0"]["error"] = "Error Testing Connection: Opening database type TNS FAILED, " . $net->error;
+                    $respTest["0"]["error"] = G::loadTranslation('ID_TEST_ERROR_ORACLE_TNS') . ', ' . $net->error;
                 } else {
-                    $resp["message"] = "Error Testing Connection: Opening database type TNS FAILED, " . $net->error;
+                    $resp["message"] = G::loadTranslation('ID_TEST_ERROR_ORACLE_TNS') . ', ' . $net->error;
 
                     //Return
                     return $resp;

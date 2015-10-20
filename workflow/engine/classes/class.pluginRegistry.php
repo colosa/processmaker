@@ -101,7 +101,7 @@ class PMPluginRegistry
     private $_aTaskExtendedProperties = array ();
     private $_aDashboardPages = array ();
     private $_aCronFiles = array ();
-    private $_aDesignerMenuFiles = array ();
+    private $_arrayDesignerMenu = array();
 
     /**
      * Registry a plugin javascript to include with js core at same runtime
@@ -317,6 +317,11 @@ class PMPluginRegistry
                     if (method_exists( $detail, "disable" )) {
                         $detail->disable();
                     }
+                    //flag Only Plugin actionsByEmail
+                    if($detail->sNamespace == 'actionsByEmail'){
+                      $plugin = new $detail->sClassName( $detail->sNamespace, $detail->sFilename );
+                      $plugin->disable();
+                    } 
                 }
 
                 $sw = true;
@@ -392,9 +397,10 @@ class PMPluginRegistry
                 unset( $this->_aDashboardPages[$key] );
             }
         }
-        foreach ($this->_aDesignerMenuFiles as $key => $detail) {
-            if ($detail->namespace == $sNamespace) {
-                unset( $this->_aDesignerMenuFiles[$key] );
+
+        foreach ($this->_arrayDesignerMenu as $key => $detail) {
+            if ($detail->pluginName == $sNamespace) {
+                unset($this->_arrayDesignerMenu[$key]);
             }
         }
 
@@ -1607,35 +1613,51 @@ class PMPluginRegistry
             throw $e;
         }
     }
-    
+
     /**
-     * Register new options to designer menu
+     * Register designer menu file
      *
-     * @param unknown_type $namespace
-     * @param unknown_type $cronFile
+     * @param string $pluginName Plugin name
+     * @param string $file       Designer menu file
+     *
+     * @return void
      */
-    public function registerDesignerNewOption ($namespace, $menuOptionFile)
+    public function registerDesignerMenu($pluginName, $file)
     {
-        $found = false;
-        foreach ($this->_aDesignerMenuFiles as $row => $detail) {
-            if ($menuOptionFile == $detail->menuOptionFile && $namespace == $detail->namespace) {
-                $detail->menuOptionFile = $menuOptionFile;
-                $found = true;
+        try {
+            $flagFound = false;
+
+            foreach ($this->_arrayDesignerMenu as $value) {
+                if ($value->pluginName == $pluginName && $value->file == $file) {
+                    $flagFound = true;
+                    break;
+                }
             }
-        }
-        if (!$found) {
-            $menuOptionFile = new menuOptionFile( $namespace, $menuOptionFile );
-            $this->_aDesignerMenuFiles[] = $menuOptionFile;
+
+            if (!$flagFound) {
+                $obj = new stdClass();
+                $obj->pluginName = $pluginName;
+                $obj->file = $file;
+
+                $this->_arrayDesignerMenu[] = $obj;
+            }
+        } catch (Exception $e) {
+            throw $e;
         }
     }
-    
+
     /**
-     * Return all designer menu Option files registered
+     * Return all designer menu files registered
      *
      * @return array
      */
-    public function getDesignerNewOption()
+    public function getDesignerMenu()
     {
-        return $this->_aDesignerMenuFiles;
+        try {
+            return $this->_arrayDesignerMenu;
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }
+

@@ -106,6 +106,8 @@ try {
 
             $sClassName = substr( $filename, 0, strpos( $filename, '-' ) );
 
+            $sClassName = !empty($sClassName) ? $sClassName : $sFileName;
+
 
 
             $files = $tar->listContent();
@@ -251,6 +253,8 @@ try {
             $sFileName = substr( $filename, 0, strrpos( $filename, '.' ) );
 
             $sClassName = substr( $filename, 0, strpos( $filename, '-' ) );
+
+            $sClassName = !empty($sClassName) ? $sClassName : $sFileName;
 
 
 
@@ -399,6 +403,8 @@ try {
     $sFileName = substr( $filename, 0, strrpos( $filename, '.' ) );
 
     $sClassName = substr( $filename, 0, strpos( $filename, '-' ) );
+
+    $sClassName = !empty($sClassName) ? $sClassName : $sFileName;
 
 
 

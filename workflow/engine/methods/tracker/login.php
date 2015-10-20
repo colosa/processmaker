@@ -31,7 +31,9 @@
 
 $G_PUBLISH = new Publisher();
 //echo G::generateUniqueNumber();
-if(SYS_SKIN == 'neoclassic'){
+$version = explode('.', trim(file_get_contents(PATH_GULLIVER . 'VERSION')));
+$version = isset($version[0]) ? intval($version[0]) : 0;
+if ($version >= 3) {
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'tracker/loginpm3', '', '', SYS_URI . 'tracker/authentication.php' );
 }else{
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'tracker/login', '', '', SYS_URI . 'tracker/authentication.php' );

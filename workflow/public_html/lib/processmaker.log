@@ -1,30 +1,30 @@
-[6 days ago] ab8a93c  PM-3646 <Roly Rudy Gutierrez Pinto>
-[7 days ago] cb2d0b9  Cherry pick of PM-3193 to branch 3.0.1.4 <Julio Cesar Laura>
-[8 days ago] cf12bf7  Updating .po file with missing labels for version 3.0.1.4 <Julio Cesar Laura>
-[8 days ago] 3f85e50  PM-3564 <Roly Rudy Gutierrez Pinto>
-[8 days ago] 49bbd9c  PM-3597 "0018455: Cannot enable task Adhoc assignment" SOLVED <Victor Saisa Lopez>
-[9 days ago] 32696ad  PM-3380 campos checkbnox no renderiza en bachrouting <dheeyi>
-[9 days ago] ea9dc00  PM-3610 0017928: Customize PROCESSMAKER_OPERATOR... SOLVED <Marco A. Nina Mena>
-[9 days ago] fa26f8a  PM-3505 (BE) add support for conditional triggers <Ronald Quenta>
-[12 days ago] a64c19b  PM-3501 Move pmgmail authentication end point to the next branch 3.0.1.4 <Ronald Quenta>
-[12 days ago] 6a953b2  PM-3553 "0018427: Un usuario asignado como Process Supervisor no..." SOLVED <Victor Saisa Lopez>
-[12 days ago] 60587d1  PM-3559 "Process Supervisors can not access..." SOLVED <Luis Fernando Saisa Lopez>
-[12 days ago] 1611ec3  PM-3121 "Changes in assignment rules in multiple instance tasks" SOLVED <Victor Saisa Lopez>
-[13 days ago] 39cae54  PM-3571 Cambiar el endpoint que retorna lenguajes para que no requiera autorización <Ronald Quenta>
-[13 days ago] dfd61f7  Updating labels for version 3.0.1.4 <Julio Cesar Laura>
-[13 days ago] 9e4e903  PM-3520: Error con los objetos de los supervisors <marcelo.cuiza>
-[13 days ago] 4f711d4  PM-3531: Email message in end events and intermediate event is not working with variables. <marcelo.cuiza>
-[13 days ago] fc8ab99  PM-3551 0018426: Al crear triggers mediante el Wizzad las funciones no son las mismas <dheeyi>
-[2 weeks ago] 9ee3b14  PM-3504 (BE) add support to script task on endpoints <Ronald Quenta>
-[2 weeks ago] 81023da  PM-3528: Error al derivar en mobile <marcelo.cuiza>
-[3 weeks ago] d852d4f  PM-3370 "REST endpoint GET calendars, pmtable y..." SOLVED <Luis Fernando Saisa Lopez>
-[3 weeks ago] edbceb6  PM-3418 <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] 022ac37  PM-3459 "Se borra toda la configuracion de la tarea al sacarlo del pool" SOLVED <Victor Saisa Lopez>
-[3 weeks ago] 93c022c  PM-3376 "REST endpoint PUT  users, groups,..." SOLVED <Luis Fernando Saisa Lopez>
-[3 weeks ago] 326d9ac  PM-3425: 0018309: Los casos creados con subproceso no tienen due date <marcelo.cuiza>
-[3 weeks ago] cf33ad9  PM-3383 "0018219: No valida el src del campo image" SOLVED <Victor Saisa Lopez>
-[3 weeks ago] 2a35848  PM-3436 New BPMN> Timer Event> Existen errores al momento de guardar una configuracion de daily, montly en timer event properties <dheeyi>
-[3 weeks ago] d51d1ce  PM-3366: 0018169: Proxy settings(no se puede acceder a processmaker cuando se configura un proxy inexistente) <marcelo.cuiza>
-[3 weeks ago] 1de17e7  PM-3426 <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] b5993be  PM-3169: 0017857: No se puede abrir las opciones de las tareas en PM 3.0 using IE11 <marcelo.cuiza>
-[3 weeks ago] 96101a3  PM-3409: No se establece la prioridad de las tareas <marcelo.cuiza>
+[38 minutes ago] 7e22660  Fix notice when _label variable doesn't exists <Julio Cesar Laura>
+[4 hours ago] 014fbe3  validacion para los demas elementos del menu <marcelo.cuiza>
+[8 hours ago] a4c632f  PM-3790 <Roly Rudy Gutierrez Pinto>
+[34 hours ago] 6893ece  IMPROVEMENT <Roly Rudy Gutierrez Pinto>
+[35 hours ago] e757134  validate in pmdynaform <Ronald Quenta>
+[4 days ago] a3573f0  PM-3536-A <Roly Rudy Gutierrez Pinto>
+[4 days ago] 77ee946  PM-3741 <Roly Rudy Gutierrez Pinto>
+[4 days ago] 8c6aa71  PM-3755 Consume the oauth/token endpoint specifying an invalid workspace, <Ronald Quenta>
+[5 days ago] da3e457  Last update of .po and .sql files for version 3.0.1.5 <Julio Cesar Laura>
+[5 days ago] 2676d2c  PM-2907-A <Roly Rudy Gutierrez Pinto>
+[5 days ago] b5d5132  PM-3750: No se puede importar plugins personalizados <marcelo.cuiza>
+[5 days ago] 2e8b81f  PM-3714 <Roly Rudy Gutierrez Pinto>
+[5 days ago] 3fc12fd  PM-3740: 0018724: Menus change randomly when viewing Unassigned cases <marcelo.cuiza>
+[5 days ago] fa3a238  PM-3737 "0018694: Error when using 'Jump to' functionality..." SOLVED <Victor Saisa Lopez>
+[6 days ago] 4c05109  PM-3731 Los registros del equipo tienen que actualizarse con los tokens vigentes <Ronald Quenta>
+[6 days ago] 85cfb3b  EX-236: Error screen to save the template of an output document in IE <Paula V. Quispe>
+[7 days ago] 0776b6b  PM-3720 <Roly Rudy Gutierrez Pinto>
+[8 days ago] b89fd8c  Updating .po and .sql for release of ProcessMaker 3.0.1.5 <Julio Cesar Laura>
+[8 days ago] 9f996a0  Updating .po and .sql for release of ProcessMaker 3.0.1.5 <Julio Cesar Laura>
+[8 days ago] 5d42a26  PM-3705: 18640: Subdepartments sin supervisors no hacen report to al inmediato supervisor del department. <marcelo.cuiza>
+[8 days ago] a493a54  PM-2905 <Roly Rudy Gutierrez Pinto>
+[9 days ago] 8f1b122  PM-3701 <Roly Rudy Gutierrez Pinto>
+[11 days ago] 90ed130  PM-3709 No permitir loguearse con SSO si existen 2 cuentas de usuario con el mismo mail <Ronald Quenta>
+[11 days ago] 08ab6c8  PM-3690 "Unpause Time no funciona, el caso se queda en 'Paused'..." SOLVED <Victor Saisa Lopez>
+[12 days ago] 88ee67d  PM-3688 : Include Accepted_language header in REST endpoint calls in MAFE <jonathan>
+[13 days ago] c917eb2  PM-3632-A "REST endpoint GET /cases/{app_uid}/input-documents" SOLVED <Luis Fernando Saisa Lopez>
+[13 days ago] 4b4b755  PM-3554 Documentos generados con seguridad no se pueden abrir <dheeyi>
+[2 weeks ago] f1c0ca9  0018335: Scrollbar missing in ldap advanced department list <Emerson Joel Rojas Soliz>
+[2 weeks ago] c5ab924  PM-3693 devuelve el json con notice <Ronald Quenta>
+[2 weeks ago] d1dedcd  PM-3462 "REST endpoint DELETE /cases/{app_uid}/..." SOLVED <Luis Fernando Saisa Lopez>

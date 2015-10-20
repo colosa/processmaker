@@ -1770,6 +1770,39 @@ table.dataTable{width:100%;margin:0 auto;clear:both;border-collapse:separate;bor
 .pmui-gridpanel {
     padding: 10px 20px;
 }*/
+.pmui-gridpanel-pager .list-item-ajax a {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  line-height: 1.42857143;
+  text-decoration: none;
+  color: #428bca;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin: 0 0 0 -1px;
+  min-width: inherit;
+  font-size: 14px;
+  border-radius: 2px;
+}
+
+.pmui-gridpanel-pager .list-item-ajax {
+  margin: 0px;
+}
+
+.pmui-gridpanel-gotoPage {
+  padding: 6px 14px 6px 14px;
+  margin: 0px;
+  background-color: #f7f7f7;
+  text-align: left;
+  color: #555;
+  border-radius: 2px;
+}
+
+.pmui-gridpanel-pager .list-item-ajax a:hover {
+  color: #2a6496;
+  background-color: #eee;
+  border-color: #ddd;
+}
 
 /*@import "base";
 
@@ -5575,11 +5608,47 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .pmui-pmtooltipmessage {
-  background: #EEF1F6;
+  background: #FFFFFF;
   font-size: 10;
-  -webkit-box-shadow: 0px 0px 33px 5px #999;
-  -moz-box-shadow: 0px 0px 33px 5px #999;
+  border: 1px solid #e7e7e7;
+  -webkit-box-shadow: 2px 2px 5px 0px #999;
+  -moz-box-shadow: 2px 2px 5px 0px #999;
   filter: shadow(color=#999999, direction=135, strength=2);
+}
+
+#list-usersIngroup {
+  width: 175px;
+  max-height: 100px;
+  background: #eef1f6;
+}
+
+#list-usersIngroup #list-usersIngroup-iem {
+  font-size: 13px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
+  width: 175px;
+  color: #333333;
+}
+
+#tooltipmessagecustombody {
+  float: left;
+  padding: 10px;
+}
+
+#tooltipmessagecustom #header {
+  width: 100%;
+  padding: 2px;
+  height: 20px;
+  box-sizing: border-box;
+  background-color: #e7e7e7;
+}
+
+#tooltipmessagecustom #header a {
+  float: right;
+  margin-right: 4px;
+  cursor: pointer;
 }
 
 .pmui .mafe-button-img-properties .button-icon {

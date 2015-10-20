@@ -19,7 +19,8 @@ class Authentication extends Api
      *
      *
      */
-    public function doAuthenticationAccountGmail ($request_data) {
+    public function doAuthenticationAccountGmail ($request_data)
+    {
         try{
             $oGoogle = new \ProcessMaker\Services\Google\Authentication();
             $response = $oGoogle->postTokenAccountGmail($request_data);

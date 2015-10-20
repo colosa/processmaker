@@ -581,7 +581,10 @@ class FilesManager
         try {
             $oProcessFiles = \ProcessFilesPeer::retrieveByPK($prfUid);
             $fcontent = file_get_contents($oProcessFiles->getPrfPath());
-            $sFile = end(explode("/",$oProcessFiles->getPrfPath()));
+            $pth = $oProcessFiles->getPrfPath();
+            $pth = str_replace("\\","/",$pth);
+            $prfPath = explode("/",$pth);
+            $sFile = end($prfPath);
             $path = $oProcessFiles->getPrfPath();
             $sPath = str_replace($sFile,'',$path);
             $sSubDirectory = substr(str_replace($sProcessUID,'',substr($sPath,(strpos($sPath, $sProcessUID)))),0,-1);

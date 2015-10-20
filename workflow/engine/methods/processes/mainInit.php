@@ -29,102 +29,43 @@ $RBAC->requirePermissions( 'PM_FACTORY' );
 G::loadClass( 'configuration' );
 $conf = new Configurations();
 
-if (preg_match("/^([\d\.]+).*$/", System::getVersion(), $arrayMatch)) {
-    $pmVersion = $arrayMatch[1];
-} else {
-    $pmVersion = ""; //Branch master
+$pmVersion = (preg_match("/^([\d\.]+).*$/", System::getVersion(), $arrayMatch))? $arrayMatch[1] : ""; //Otherwise: Branch master
+
+$arrayFlagImportFileExtension = array("pm", "pmx", "bpmn");
+$arrayFlagMenuNewOption       = array("pm" => true, "bpmn" => true);
+
+if ($pmVersion != "") {
+    $arrayFlagImportFileExtension = (version_compare($pmVersion . "", "3", ">="))? $arrayFlagImportFileExtension : array("pm");
+    $arrayFlagMenuNewOption       = (version_compare($pmVersion . "", "3", ">="))? array("bpmn" => true) : array("pm" => true);
 }
 
-$arrayImportFileExtension = array("pm", "pmx", "bpmn");
-$arrayMenuNewOption       = array("pm" => true, "bpmn" => true);
+$pluginRegistry = &PMPluginRegistry::getSingleton();
 
-/*options menu*/
-$arrayMenuNew = array();
+$arrayMenuNewOptionPlugin     = array();
+$arrayContextMenuOptionPlugin = array();
 
-$mnuNewBpmnProject = new stdClass();
-$mnuNewBpmnProject->text = G::LoadTranslation("ID_NEW_BPMN_PROJECT");
-$mnuNewBpmnProject->iconCls = "silk-add";
-$mnuNewBpmnProject->icon = "";
-$mnuNewBpmnProject->newProcessType = 'newProcess({type:"bpmnProject",title:"'.$mnuNewBpmnProject->text.'"})';
+foreach ($pluginRegistry->getDesignerMenu() as $value) {
+    if (file_exists($value->file)) {
+        require_once($value->file);
 
-$mnuNewProject = new stdClass();
-$mnuNewProject->text = G::LoadTranslation("ID_NEW_PROJECT");
-$mnuNewProject->iconCls = "silk-add";
-$mnuNewProject->icon = "";
-$mnuNewProject->newProcessType = 'newProcess({type:"classicProject",title:"'.$mnuNewProject->text.'"})';
+        $className = "DesignerMenu" . $value->pluginName;
 
-$menuOption = array("pm" => $mnuNewProject, "bpmn" => $mnuNewBpmnProject);
+        if (class_exists($className)) {
+            $obj = new $className();
 
-foreach($arrayMenuNewOption as $type => $val) {
-    if($val) {
-        array_push($arrayMenuNew, $menuOption[$type]);
-    }    
-}
-/*right click menu*/
-$contexMenuRightClick = array(
-    (object)array(
-        "text" => G::LoadTranslation("ID_EDIT"),
-        "iconCls" => "button_menu_ext ss_sprite  ss_pencil",
-        "handler" => "editProcess()"
-    ),
-    (object)array(
-        "id" => "activator2",
-        "text" => "",
-        "icon" => "",
-        "handler" => "activeDeactive()"
-    ),
-    (object)array(
-        "id" => "debug",
-        "text" => "",
-        "handler" => "enableDisableDebug()"
-    ),
-    (object)array(
-        "text" => G::LoadTranslation("ID_DELETE"),
-        "iconCls" => "button_menu_ext ss_sprite ss_cross",
-        "handler" => "deleteProcess()"
-    ),
-    (object)array(
-        "text" => G::LoadTranslation("ID_EXPORT"),
-        "icon" => "/images/export.png",
-        "handler" => "exportProcess()"
-    ),
-    (object)array(
-        "id" => "mnuGenerateBpmn",
-        "text" => G::LoadTranslation("ID_GENERATE_BPMN_PROJECT"),
-        "iconCls" => "button_menu_ext ss_sprite ss_page_white_go",
-        "hidden" => true,
-        "handler" => "generateBpmn()"
-    )
-);
-/*end right click menu*/
-/*get registered options from plugin*/
-$oPluginRegistry =& PMPluginRegistry::getSingleton();
-$fromPlugin = $oPluginRegistry->getDesignerNewOption();
+            if (method_exists($obj, "getDesignerMenu")) {
+                $arrayDesignerMenuData = $obj->getDesignerMenu();
 
-$jsFromPlugin = false;
-foreach($fromPlugin as $menuOptionFile) {
-    $menuOptionsFromPlugin = include_once($menuOptionFile->menuOptionFile);
-    if(isset($menuOptionsFromPlugin)) {
-        if(is_array($menuOptionsFromPlugin) && sizeof($menuOptionsFromPlugin)) {
-            if(is_array($menuOptionsFromPlugin[0]) && sizeof($menuOptionsFromPlugin[0])) {
-                $arrayMenuNew = array_merge($arrayMenuNew,$menuOptionsFromPlugin[0]);
-            }
-            if(is_array($menuOptionsFromPlugin[1]) && sizeof($menuOptionsFromPlugin[1])) {
-                $contexMenuRightClick = array_merge($contexMenuRightClick,$menuOptionsFromPlugin[1]);
-            }
-            if(isset($menuOptionsFromPlugin[2])) {
-                if(file_exists(PATH_PLUGINS.implode("/",array_slice(explode("/",$menuOptionsFromPlugin[2]),2)))) {
-                    $jsFromPlugin = $menuOptionsFromPlugin[2];
+                if (isset($arrayDesignerMenuData["MENU_NEW_OPTION"]) && is_array($arrayDesignerMenuData["MENU_NEW_OPTION"])) {
+                    $arrayMenuNewOptionPlugin = array_merge($arrayMenuNewOptionPlugin, $arrayDesignerMenuData["MENU_NEW_OPTION"]);
+                }
+
+                if (isset($arrayDesignerMenuData["CONTEXT_MENU_OPTION"]) && is_array($arrayDesignerMenuData["CONTEXT_MENU_OPTION"])) {
+                    $arrayContextMenuOptionPlugin = array_merge($arrayContextMenuOptionPlugin, $arrayDesignerMenuData["CONTEXT_MENU_OPTION"]);
                 }
             }
-        }    
+        }
     }
-} 
-/*end get registered options from plugin*/
-/*end options menu*/
-if ($pmVersion != "") {
-    $arrayImportFileExtension = (version_compare($pmVersion . "", "3", ">="))? $arrayImportFileExtension : array("pm");
-    $arrayMenuNewOption       = (version_compare($pmVersion . "", "3", ">="))? array("bpmn" => true) : array("pm" => true);
 }
 
 $oHeadPublisher->addExtJsScript( 'processes/main', true ); //adding a javascript file .js
@@ -133,11 +74,10 @@ $oHeadPublisher->addContent( 'processes/main' ); //adding a html file  .html.
 $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
 $oHeadPublisher->assign( 'PARTNER_FLAG', $partnerFlag );
 $oHeadPublisher->assign( 'pageSize', $conf->getEnvSetting( 'casesListRowNumber' ) );
-$oHeadPublisher->assign("arrayImportFileExtension", $arrayImportFileExtension);
-$oHeadPublisher->assign("arrayMenuNewOption", $arrayMenuNewOption);
-
-$oHeadPublisher->assign("arrayMenuNew", $arrayMenuNew);
-$oHeadPublisher->assign("contexMenu", $contexMenuRightClick);
-$oHeadPublisher->assign("jsFromPlugin", $jsFromPlugin);
+$oHeadPublisher->assign("arrayFlagImportFileExtension", $arrayFlagImportFileExtension);
+$oHeadPublisher->assign("arrayFlagMenuNewOption", $arrayFlagMenuNewOption);
+$oHeadPublisher->assign("arrayMenuNewOptionPlugin", $arrayMenuNewOptionPlugin);
+$oHeadPublisher->assign("arrayContextMenuOptionPlugin", $arrayContextMenuOptionPlugin);
 
 G::RenderPage( 'publish', 'extJs' );
+

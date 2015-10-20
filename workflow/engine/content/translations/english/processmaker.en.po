@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ProcessMaker 3.0\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-09-15 15:08:19\n"
+"PO-Revision-Date: 2015-10-08 18:22:42\n"
 "Last-Translator: \n"
 "Language-Team: Colosa Developers Team <developers@colosa.com>\n"
 "MIME-Version: 1.0\n"
@@ -24398,8 +24398,8 @@ msgid "Wrong authentication. This user does not correspond with the email addres
 msgstr "Wrong authentication. This user does not correspond with the email address."
 
 # TRANSLATION
-# LABEL/ID_NO_LICESE_FEATURE_ENABLED
-#: LABEL/ID_NO_LICESE_FEATURE_ENABLED
+# LABEL/ID_NO_LICENSE_FEATURE_ENABLED
+#: LABEL/ID_NO_LICENSE_FEATURE_ENABLED
 msgid "Your license does not have the Gmail integration. Please contact your administrator."
 msgstr "Your license does not have the Gmail integration. Please contact your administrator."
 
@@ -26094,6 +26094,318 @@ msgstr "Wait for"
 #: LABEL/ID_MAFE_275c7cb3669628b24afd0b6b85d496c8
 msgid "Wait until specified date/time"
 msgstr "Wait until specified date/time"
+
+# TRANSLATION
+# LABEL/ID_CREATE_FOLDER_PATH_FOLDER
+#: LABEL/ID_CREATE_FOLDER_PATH_FOLDER
+msgid "[LABEL/ID_CREATE_FOLDER_PATH_FOLDER] Path"
+msgstr "Path"
+
+# TRANSLATION
+# LABEL/ID_CREATE_FOLDER_NAME_FOLDER
+#: LABEL/ID_CREATE_FOLDER_NAME_FOLDER
+msgid "[LABEL/ID_CREATE_FOLDER_NAME_FOLDER] Name"
+msgstr "Name"
+
+# TRANSLATION
+# LABEL/ID_OK
+#: LABEL/ID_OK
+msgid "[LABEL/ID_OK] Ok"
+msgstr "Ok"
+
+# TRANSLATION
+# LABEL/ID_ERROR_HOST_NAME_FAILED
+#: LABEL/ID_ERROR_HOST_NAME_FAILED
+msgid "Error Testing Connection: Resolving Host Name Failed"
+msgstr "Error Testing Connection: Resolving Host Name Failed"
+
+# TRANSLATION
+# LABEL/ID_CHECK_PORT_FAILED
+#: LABEL/ID_CHECK_PORT_FAILED
+msgid "Error Testing Connection: Checking port failed"
+msgstr "Error Testing Connection: Checking port failed"
+
+# TRANSLATION
+# LABEL/ID_CONNECTING_TO_HOST
+#: LABEL/ID_CONNECTING_TO_HOST
+msgid "Connecting to host"
+msgstr "Connecting to host"
+
+# TRANSLATION
+# LABEL/ID_CONNECTING_TO_HOST_FAILED
+#: LABEL/ID_CONNECTING_TO_HOST_FAILED
+msgid "Error Testing Connection: Connecting to host failed"
+msgstr "Error Testing Connection: Connecting to host failed"
+
+# TRANSLATION
+# LABEL/ID_OPEN_DATABASE
+#: LABEL/ID_OPEN_DATABASE
+msgid "Opening database"
+msgstr "Opening database"
+
+# TRANSLATION
+# LABEL/ID_CONNECTING_TO_DATABASE_FAILED
+#: LABEL/ID_CONNECTING_TO_DATABASE_FAILED
+msgid "Error Testing Connection: Opening database failed"
+msgstr "Error Testing Connection: Opening database failed"
+
+# TRANSLATION
+# LABEL/ID_TEST_DATABASE_ORACLE_TNS
+#: LABEL/ID_TEST_DATABASE_ORACLE_TNS
+msgid "Test TNS"
+msgstr "Test TNS"
+
+# TRANSLATION
+# LABEL/ID_TEST_ERROR_ORACLE_TNS
+#: LABEL/ID_TEST_ERROR_ORACLE_TNS
+msgid "Error Testing Connection: Opening database type TNS failed"
+msgstr "Error Testing Connection: Opening database type TNS failed"
+
+# TRANSLATION
+# LABEL/ID_HOST_UNREACHABLE
+#: LABEL/ID_HOST_UNREACHABLE
+msgid "Destination Host Unreachable"
+msgstr "Destination Host Unreachable"
+
+# TRANSLATION
+# LABEL/ID_PORT_UNREACHABLE
+#: LABEL/ID_PORT_UNREACHABLE
+msgid "Destination Port Unreachable"
+msgstr "Destination Port Unreachable"
+
+# TRANSLATION
+# LABEL/ID_DESIGNER_PROCESS_DESIGNER_IS_DISABLED
+#: LABEL/ID_DESIGNER_PROCESS_DESIGNER_IS_DISABLED
+msgid "The designer of this type of process is disabled"
+msgstr "The designer of this type of process is disabled"
+
+# TRANSLATION
+# LABEL/ID_CASE_IS_COMPLETED
+#: LABEL/ID_CASE_IS_COMPLETED
+msgid "The case \"{0}\" is completed."
+msgstr "The case \"{0}\" is completed."
+
+# TRANSLATION
+# LABEL/ID_USER_NOT_HAVE_PERMISSION
+#: LABEL/ID_USER_NOT_HAVE_PERMISSION
+msgid "The user with \"{0}\" not have permissions to perform this action."
+msgstr "The user with \"{0}\" not have permissions to perform this action."
+
+# TRANSLATION
+# LABEL/ID_USER_NOT_HAVE_PERMISSION_DELETE_INPUT_DOCUMENT
+#: LABEL/ID_USER_NOT_HAVE_PERMISSION_DELETE_INPUT_DOCUMENT
+msgid "The user with \"{0}\" not have permission to delete the input document."
+msgstr "The user with \"{0}\" not have permission to delete the input document."
+
+# TRANSLATION
+# LABEL/ID_CASE_DEL_INDEX_DOES_NOT_EXIST
+#: LABEL/ID_CASE_DEL_INDEX_DOES_NOT_EXIST
+msgid "The case {0}: {1} with {2}: {3} does not exist."
+msgstr "The case {0}: {1} with {2}: {3} does not exist."
+
+# TRANSLATION
+# LABEL/ID_USER_NOT_HAVE_PERMISSION_DELETE_OUTPUT_DOCUMENT
+#: LABEL/ID_USER_NOT_HAVE_PERMISSION_DELETE_OUTPUT_DOCUMENT
+msgid "The user with \"{0}\" not have permission to delete the output document."
+msgstr "The user with \"{0}\" not have permission to delete the output document."
+
+# TRANSLATION
+# LABEL/ID_USER_NOT_FOUND
+#: LABEL/ID_USER_NOT_FOUND
+msgid "User not found."
+msgstr "User not found."
+
+# TRANSLATION
+# LABEL/ID_EMAIL_MORE_USER
+#: LABEL/ID_EMAIL_MORE_USER
+msgid "[LABEL/ID_EMAIL_MORE_USER] This email is assigned to more than one user. Please contact your administrator."
+msgstr "This email is assigned to more than one user. Please contact your administrator."
+
+# TRANSLATION
+# LABEL/ID_EMAIL_NOT_CORRESPONDS_TOKEN
+#: LABEL/ID_EMAIL_NOT_CORRESPONDS_TOKEN
+msgid "The email does not corresponds to the token gmail user."
+msgstr "The email does not corresponds to the token gmail user."
+
+# TRANSLATION
+# LABEL/ID_MAFE_d03efd1a07870ef79615cf0078ba7877
+#: LABEL/ID_MAFE_d03efd1a07870ef79615cf0078ba7877
+msgid "Select From Email"
+msgstr "Select From Email"
+
+# TRANSLATION
+# LABEL/ID_MAFE_e79f47181c74dbe13b691340050e32a9
+#: LABEL/ID_MAFE_e79f47181c74dbe13b691340050e32a9
+msgid "From Email Server Configuration"
+msgstr "From Email Server Configuration"
+
+# TRANSLATION
+# LABEL/ID_MAFE_c3261ba2c0b4cb63463aa3237d97bcbe
+#: LABEL/ID_MAFE_c3261ba2c0b4cb63463aa3237d97bcbe
+msgid "From Current User"
+msgstr "From Current User"
+
+# TRANSLATION
+# LABEL/ID_MAFE_f45c3a0bb3687ed8e221253b3fd4a2ce
+#: LABEL/ID_MAFE_f45c3a0bb3687ed8e221253b3fd4a2ce
+msgid "EXCLUSIVE"
+msgstr "EXCLUSIVE"
+
+# TRANSLATION
+# LABEL/ID_MAFE_572d795e2d044f895cc511e5c05030e5
+#: LABEL/ID_MAFE_572d795e2d044f895cc511e5c05030e5
+msgid "INCLUSIVE"
+msgstr "INCLUSIVE"
+
+# TRANSLATION
+# LABEL/ID_MAFE_36c311dcc594c5dfdc66b430a42367c2
+#: LABEL/ID_MAFE_36c311dcc594c5dfdc66b430a42367c2
+msgid "There are problems updating the routing rule, please try again."
+msgstr "There are problems updating the routing rule, please try again."
+
+# TRANSLATION
+# LABEL/ID_MAFE_139c4883eb01e5d23c9ff0e44ff29dda
+#: LABEL/ID_MAFE_139c4883eb01e5d23c9ff0e44ff29dda
+msgid "Sql"
+msgstr "Sql"
+
+# TRANSLATION
+# LABEL/ID_MAFE_6887c495a8d963934af15a912151ac38
+#: LABEL/ID_MAFE_6887c495a8d963934af15a912151ac38
+msgid "max file size"
+msgstr "max file size"
+
+# TRANSLATION
+# LABEL/ID_MAFE_15a0bc8b5cabfd4950d74ec8806aaebd
+#: LABEL/ID_MAFE_15a0bc8b5cabfd4950d74ec8806aaebd
+msgid "variable data type"
+msgstr "variable data type"
+
+# TRANSLATION
+# LABEL/ID_MAFE_08e81084a29cd23cc305864758f6b006
+#: LABEL/ID_MAFE_08e81084a29cd23cc305864758f6b006
+msgid "validation error message"
+msgstr "validation error message"
+
+# TRANSLATION
+# LABEL/ID_MAFE_03b94d355b5045f081bd898e4d664900
+#: LABEL/ID_MAFE_03b94d355b5045f081bd898e4d664900
+msgid "display mode"
+msgstr "display mode"
+
+# TRANSLATION
+# LABEL/ID_MAFE_4077e0cd2d3b172b040ce4b951aa6895
+#: LABEL/ID_MAFE_4077e0cd2d3b172b040ce4b951aa6895
+msgid "var_uid"
+msgstr "var_uid"
+
+# TRANSLATION
+# LABEL/ID_MAFE_9239185714c402746aa3a17ad583fdd4
+#: LABEL/ID_MAFE_9239185714c402746aa3a17ad583fdd4
+msgid "grid store"
+msgstr "grid store"
+
+# TRANSLATION
+# LABEL/ID_MAFE_df347a373b8f92aa0ae3dd920a5ec2f6
+#: LABEL/ID_MAFE_df347a373b8f92aa0ae3dd920a5ec2f6
+msgid "rows"
+msgstr "rows"
+
+# TRANSLATION
+# LABEL/ID_MAFE_b39dad036539dc7a45743536e3f8d8af
+#: LABEL/ID_MAFE_b39dad036539dc7a45743536e3f8d8af
+msgid "initial selection date"
+msgstr "initial selection date"
+
+# TRANSLATION
+# LABEL/ID_MAFE_d2bd8c9509fc30a577287acb37ca93e1
+#: LABEL/ID_MAFE_d2bd8c9509fc30a577287acb37ca93e1
+msgid "datepicker view mode"
+msgstr "datepicker view mode"
+
+# TRANSLATION
+# LABEL/ID_MAFE_a2609d846e9af22fcc3412a8c99510a5
+#: LABEL/ID_MAFE_a2609d846e9af22fcc3412a8c99510a5
+msgid "show clear button"
+msgstr "show clear button"
+
+# TRANSLATION
+# LABEL/ID_MAFE_2f10f3aac0af954837b555bf8d7e64bd
+#: LABEL/ID_MAFE_2f10f3aac0af954837b555bf8d7e64bd
+msgid "' to '"
+msgstr "' to '"
+
+# TRANSLATION
+# LABEL/ID_MAFE_955e25092908bb80c24b2975a3e494c9
+#: LABEL/ID_MAFE_955e25092908bb80c24b2975a3e494c9
+msgid "The following variable(s) already exist in the process.<br>New variable(s) are going to be created with the following name(s):<br>"
+msgstr "The following variable(s) already exist in the process.<br>New variable(s) are going to be created with the following name(s):<br>"
+
+# TRANSLATION
+# LABEL/ID_MAFE_2c4429deb064b2431fb36a8b4f552713
+#: LABEL/ID_MAFE_2c4429deb064b2431fb36a8b4f552713
+msgid "It leaving this field in blank, the next user's email will be used."
+msgstr "It leaving this field in blank, the next user's email will be used."
+
+# TRANSLATION
+# LABEL/ID_MAFE_eb0e94f426e2486a5af19633142d5ac7
+#: LABEL/ID_MAFE_eb0e94f426e2486a5af19633142d5ac7
+msgid "No users"
+msgstr "No users"
+
+# TRANSLATION
+# LABEL/ID_MAFE_6bc9a39dbeaa2c99c7d5d81c58a9b5fb
+#: LABEL/ID_MAFE_6bc9a39dbeaa2c99c7d5d81c58a9b5fb
+msgid "Assignee saved successfully"
+msgstr "Assignee saved successfully"
+
+# TRANSLATION
+# LABEL/ID_MAFE_431fc30c29fdcdc1980d898a2f65e4e7
+#: LABEL/ID_MAFE_431fc30c29fdcdc1980d898a2f65e4e7
+msgid "The user/group was successfully removed"
+msgstr "The user/group was successfully removed"
+
+# TRANSLATION
+# LABEL/ID_MAFE_ee11cbb19052e40b07aac0ca060c23ee
+#: LABEL/ID_MAFE_ee11cbb19052e40b07aac0ca060c23ee
+msgid "user"
+msgstr "user"
+
+# TRANSLATION
+# LABEL/ID_MAFE_db0f6f37ebeb6ea09489124345af2a45
+#: LABEL/ID_MAFE_db0f6f37ebeb6ea09489124345af2a45
+msgid "group"
+msgstr "group"
+
+# TRANSLATION
+# LABEL/ID_MAFE_78972d78128699c39ce214e712bd9b03
+#: LABEL/ID_MAFE_78972d78128699c39ce214e712bd9b03
+msgid "Related Input Document"
+msgstr "Related Input Document"
+
+# TRANSLATION
+# LABEL/ID_MAFE_c499a5f4b3762b6b464ede4a8055e121
+#: LABEL/ID_MAFE_c499a5f4b3762b6b464ede4a8055e121
+msgid "Supported Controls: file."
+msgstr "Supported Controls: file."
+
+# TRANSLATION
+# LABEL/ID_MAFE_e8308c9bdecef89676a80116e65d9210
+#: LABEL/ID_MAFE_e8308c9bdecef89676a80116e65d9210
+msgid "- Select an input document -"
+msgstr "- Select an input document -"
+
+# TRANSLATION
+# LABEL/CANT_CREATE_FOLDER_A_FOLDER_WITH_SAME_NAME_ALREADY_EXIST
+#: LABEL/CANT_CREATE_FOLDER_A_FOLDER_WITH_SAME_NAME_ALREADY_EXIST
+msgid "Can't create folder <br/> A folder with same name already exist.<br/>"
+msgstr "Can't create folder <br/> A folder with same name already exist.<br/>"
+
+# TRANSLATION
+# LABEL/CANT_CREATE_FOLDER_A
+#: LABEL/CANT_CREATE_FOLDER_A
+msgid "Can't create folder A"
+msgstr "Can't create folder A"
 
 # additionalTables/additionalTablesData.xml?ADD_TAB_NAME
 # additionalTables/additionalTablesData.xml
@@ -43616,7 +43928,7 @@ msgstr "file"
 # tools/updateTranslation.xml?rows
 # tools/updateTranslation.xml
 #: text - rows
-msgid "rows"
+msgid "[tools/updateTranslation.xml?rows] rows"
 msgstr "rows"
 
 # tools/updateTranslation.xml?titles2
@@ -47078,7 +47390,7 @@ msgstr "(none)"
 # dynaforms/fields/checkgroup.xml?PME_XMLNODE_VALUE
 # dynaforms/fields/checkgroup.xml
 #: textarea - PME_XMLNODE_VALUE
-msgid "Sql"
+msgid "[dynaforms/fields/checkgroup.xml?PME_XMLNODE_VALUE] Sql"
 msgstr "Sql"
 
 # dynaforms/fields/checkgroup.xml?PME_SUBTITLE4

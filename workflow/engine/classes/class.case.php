@@ -988,21 +988,23 @@ class Cases
 
         if ($APP_UID != '') {
 
-            $taskInstance = new Task();
+            $task = new Task();
+
+            $arrayTaskData = $task->load($TAS_UID);
 
 
 
-            $taskData = $taskInstance->Load($TAS_UID);
-
-            $tasGroupVariable = str_replace(array('@', '#'), '', $taskData['TAS_GROUP_VARIABLE']);
-
-            $caseData = $this->LoadCase($APP_UID);
+            $taskGroupVariable = trim($arrayTaskData["TAS_GROUP_VARIABLE"], " @#");
 
 
 
-            if (isset($caseData['APP_DATA'][$tasGroupVariable])) {
+            $caseData = $this->loadCase($APP_UID);
 
-                $dataVariable = $caseData["APP_DATA"][$tasGroupVariable];
+
+
+            if (isset($caseData["APP_DATA"][$taskGroupVariable])) {
+
+                $dataVariable = $caseData["APP_DATA"][$taskGroupVariable];
 
 
 
@@ -1031,6 +1033,16 @@ class Cases
                     if (!empty($dataVariable) && in_array($dataVariable, $group->getActiveGroupsForAnUser($USR_UID))) {
 
                         return true;
+
+                    } else {
+
+                        //UID of User
+
+                        if (!empty($dataVariable) && $dataVariable == $USR_UID) {
+
+                            return true;
+
+                        }
 
                     }
 
@@ -1932,6 +1944,16 @@ class Cases
 
         try {
 
+            $dynContentHistory = "";
+
+            if (isset($Fields["APP_DATA"]) && isset($Fields["APP_DATA"]["DYN_CONTENT_HISTORY"])) {
+
+                $dynContentHistory = $Fields["APP_DATA"]["DYN_CONTENT_HISTORY"];
+
+                unset($Fields["APP_DATA"]["DYN_CONTENT_HISTORY"]);
+
+            }
+
             $oApplication = new Application;
 
             if (!$oApplication->exists($sAppUid)) {
@@ -2011,6 +2033,8 @@ class Cases
                     $appHistory = new AppHistory();
 
                     $aFieldsHistory = $Fields;
+
+                    $FieldsDifference['DYN_CONTENT_HISTORY'] = $dynContentHistory;
 
                     $aFieldsHistory['APP_DATA'] = serialize($FieldsDifference);
 
@@ -4642,8 +4666,6 @@ class Cases
 
     {
 
-        $iPosition += 1;
-
         $oCriteria = new Criteria();
 
         $oCriteria->add(StepSupervisorPeer::PRO_UID, $sProcessUID);
@@ -4668,7 +4690,7 @@ class Cases
 
             $oCriteria->add(StepSupervisorPeer::STEP_TYPE_OBJ, $sType);
 
-            $oCriteria->add(StepSupervisorPeer::STEP_POSITION, 1);
+            $oCriteria->add(StepSupervisorPeer::STEP_POSITION, ($iPosition+1));
 
             $oDataset = StepSupervisorPeer::doSelectRS($oCriteria);
 
@@ -6258,31 +6280,23 @@ class Cases
 
     {
 
-        $today = ($today == date('Y-m-d')) ? date('Y-m-d') : $today;
-
         $c = new Criteria('workflow');
 
         $c->clearSelectColumns();
 
         $c->add(
 
-                $c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_USER, null, Criteria::ISNULL)->
+            $c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_USER, 0, Criteria::EQUAL)->addOr(
 
-                        addOr($c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_USER, 0)
-
-                        )
+            $c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_USER, null, Criteria::ISNULL))
 
         );
 
         $c->add(
 
-                $c->getNewCriterion(
+            $c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_DATE, (count(explode(" ", $today)) > 1)? $today : $today . " 23:59:59", Criteria::LESS_EQUAL)->addAnd(
 
-                                AppDelayPeer::APP_DISABLE_ACTION_DATE, $today . ' 23:59:59', Criteria::LESS_EQUAL)->
-
-                        addAnd($c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_DATE, null, Criteria::ISNOTNULL)
-
-                        )
+            $c->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_DATE, null, Criteria::ISNOTNULL))
 
         );
 
@@ -7972,13 +7986,13 @@ class Cases
 
         $oCriteria->add(
 
-                $oCriteria->getNewCriterion(
+            $oCriteria->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_USER, 0, Criteria::EQUAL)->addOr(
 
-                                AppDelayPeer::APP_DISABLE_ACTION_USER, null, Criteria::ISNULL)->
-
-                        addOr($oCriteria->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_USER, 0))
+            $oCriteria->getNewCriterion(AppDelayPeer::APP_DISABLE_ACTION_USER, null, Criteria::ISNULL))
 
         );
+
+
 
         $oDataset = AppDelayPeer::doSelectRS($oCriteria);
 

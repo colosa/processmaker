@@ -481,10 +481,16 @@ jQuery.fn.extend({
 				cell = row[col-1];
 				if (cell.model.get("type") != "hide"){
 					cell.$el.hide();
-					if (cell.$el.parent().length){
+					if ( cell.$el.parent().length ) {
 						cell.$el.parent().hide();
 					}
+					if ( cell.model.get("operation") !== "" ) {
+						field.$el.find("."+"function-result-"+cell.model.get("columnName")).hide();
+					}
 				}
+			}
+			if (field.$el.find(".field-operation-result")){
+				field.$el.find(".field-operation-result").eq(col-1).hide();
 			}
 			for (var i= 0 ; i < field.domTitleHeader.length ; i +=1) {
 				if (field.domTitleHeader[i].find(".title-column").text() == cell.model.get("label")){
@@ -511,9 +517,17 @@ jQuery.fn.extend({
 					}
 				}
 			}
-			for (var i= 0 ; i < field.domTitleHeader.length ; i +=1) {
-				if (field.domTitleHeader[i].find(".title-column").text() == cell.model.get("label")){
-					field.domTitleHeader[i].show();
+			if (cell){
+				if ( cell.model.get("operation") !== "" ) {
+					field.$el.find("."+"function-result-"+cell.model.get("columnName")).show();
+				}
+				if (field.$el.find(".field-operation-result")){
+					field.$el.find(".field-operation-result").eq(col-1).show();
+				}
+				for (var i= 0 ; i < field.domTitleHeader.length ; i +=1) {
+					if (field.domTitleHeader[i].find(".title-column").text() == cell.model.get("label")){
+						field.domTitleHeader[i].show();
+					}
 				}
 			}
 		}
@@ -983,6 +997,7 @@ jQuery.fn.extend({
         this.dependentLibraries = null;
         this.submitRest = null;
         this.onSubmitForm = new Function();
+        this.language = options.language || null;
         Project.prototype.init.call(this, options);
     };
 
@@ -1051,12 +1066,14 @@ jQuery.fn.extend({
         this.setExternalLibreries(this.externalLibs, 0, function () {
             jQuery.extend(true, defaults, options);
             that.setData(defaults.data);
+            that.setLanguage();
             that.setUrlFormat(defaults.urlFormat);
             that.setUrlFormatMobile(defaults.urlFormatMobile);
             that.setKeys(defaults.keys);
             that.setToken(defaults.token);
             that.setRenderTo(defaults.renderTo);
             that.setEndPointsPath(defaults.endPointsPath);
+            that.createWebServiceManager();
             that.checkMobileData();
             that.submitRest = defaults.submitRest;
             if (!PMDynaform.core.ProjectMobile){
@@ -1071,6 +1088,12 @@ jQuery.fn.extend({
     Project.prototype.checkMobileData = function () {
         if (!PMDynaform.core.ProjectMobile){
             this.mobileDataControls = this.loadAllDataCase();
+        }
+        return this;
+    };
+    Project.prototype.setLanguage = function () {       
+        if(window.sysLang){
+            this.language = window.sysLang;            
         }
         return this;
     };
@@ -1134,13 +1157,17 @@ jQuery.fn.extend({
         var keysFixed = {},
                 key,
                 leftBracket;
-
+        if(!PMDynaform.core.ProjectMobile){
+            if(keys.server.indexOf("http://") == -1 || keys.server.indexOf("https://") == -1){
+                keys.server = location.protocol+"//"+keys.server;
+            }           
+        }
         if (typeof keys === "object") {
             for (key in keys) {
                 leftBracket = (keys[key][0] === "/") ? keys[key].substring(1) : keys[key];
                 keysFixed[key] = (leftBracket[leftBracket.length - 1] === "/") ? leftBracket.substring(0, leftBracket.length - 1) : leftBracket;
             }
-            keysFixed.server = keysFixed.server.replace(/\https:\/\//, "").replace(/\http:\/\//, "");
+            //keysFixed.server = keysFixed.server.replace(/\https:\/\//, "").replace(/\http:\/\//, "");
             this.keys = keysFixed;
         }
 
@@ -1255,7 +1282,7 @@ jQuery.fn.extend({
     };
     Project.prototype.loadProject = function (onload) {
         var that = this;
-
+        
         this.model = new PMDynaform.model.Panel(this.data);
         this.view = new PMDynaform.view.Panel({
             tagName: "div",
@@ -1408,29 +1435,9 @@ jQuery.fn.extend({
     Project.prototype.loadAllDataCase = function() {
         var restClient, endpoint, url, that=this, resp = {};
         if(window.app_uid){
-            if ( app_uid && !this.keys.caseID){
-                this.keys.caseID = app_uid;
-            }
-            endpoint = this.getFullEndPoint(this.endPointsPath.getAllDataCase);
-            url = this.getFullURLMobile(endpoint);        
-            restClient = new PMDynaform.core.Proxy ({
-                url: url,
-                method: 'GET',                    
-                keys: this.token,
-                successCallback: function (xhr, response) {
-                    resp = {
-                        "state":"success",
-                        "data":response
-                    };                          
-                },
-                failureCallback : function (xhr, response){
-                    resp = {
-                        "state":"internetFail"
-                    };  
-                }
-            });
+            return this.webServiceManager.loadAllDataCase();
         }
-        return resp; 
+        return resp;       
     };
 
     Project.prototype.getFullEndPoint= function (urlEndpoint) {
@@ -1488,8 +1495,484 @@ jQuery.fn.extend({
         urlFormat = window.location.protocol + "//" + urlFormat.replace(/{endPointPath}/, endpoint);
         return urlFormat;
     };
+    Project.prototype.createWebServiceManager = function () {
+        var keys1= {
+            server: this.keys.server,
+            processID: this.keys.projectId,
+            taskID:window.app_uid? window.app_uid:null,
+            caseID:window.app_uid? window.app_uid:null,
+            workspace: this.keys.workspace,
+            formID: null,
+            keyProject : "project",            
+            stepID : null,
+            delIndex: null
+        };
+
+        this.webServiceManager = new PMDynaform.implements.WebServiceManager({
+            keys : keys1,
+            token : this.token,
+            language : this.language        
+        });    
+    };
+
     PMDynaform.extendNamespace("PMDynaform.core.Project", Project);
 
+}());
+ (function(){
+	var WebServiceManager = function(options) {
+		/*
+			options.keys
+			options.endPoints
+			options.urlBase
+			options.token
+		 */
+		this.options = options || {};
+		this.options.endPoints ={			
+			dynaformDefinition : "light/project/{processID}/dynaform/{formID}",
+			jsonDynaforms : "light/project/{processID}/dynaforms",			
+			startCase :"light/process/{processID}/task/{taskID}/start-case",
+			newTokens :"oauth/token",
+			caseTypeList :"case/{caseID}/dynaform/{typeList}",
+			loadDynaform :"case/{caseID}/dynaform/{formID}/data",
+			getFormData :"case/{caseID}/dynaform/{formID}/data",
+			getAllDataCase :"case/{caseID}/variables",									
+			submitFormCase :"cases/{caseID}/variable", 
+			routeCase :"light/cases/{caseID}/route-case",
+			createVariable: "process-variable",
+			imageInfo: "light/case/{caseID}/download64",
+			fileDownload: "case/{caseID}/file/{fileID}",			
+			variableList: "process-variable",			
+			imageDownload: 'light/case/{caseID}/download64',			
+			generateImageGeo:"/light/case/{caseID}/input-document/location",
+			variableInfo: "process-variable/{var_uid}",
+			uploadFile: "",
+			refreshToken: "oauth/token",
+			fileStreaming : "en/neoclassic/cases/casesStreamingFile?actionAjax=streaming&a={caseID}&d={fileId}",
+			executeTrigger: "light/process/{processID}/task/{taskID}/case/{caseID}/step/{stepID}/execute-trigger/{triggerOption}",
+            conditionalSteps: "light/process/{processID}/case/{caseID}/{delIndex}/step/{stepPosition}",
+            executeQuery: "project/{processID}/process-variable/{var_name}/execute-query",  
+		};
+		this.options.urlBase = "{server}/api/1.0/{workspace}/{endPointPath}";
+		this.options.urlBaseStreaming = "{server}/sys{workspace}/{endPointPath}";
+
+	};
+
+	WebServiceManager.prototype.getFullEndPoint= function (keys, urlBase, endPoint) {
+        var k;
+		urlBase=urlBase.replace(/{endPointPath}/, endPoint);		
+		for (k in keys) {
+			if (keys.hasOwnProperty(k)) {
+				urlBase = urlBase.replace(new RegExp("{"+ k +"}" ,"g"), keys[k]);				
+			}
+		}
+		return urlBase;
+    };
+
+    WebServiceManager.prototype.setKey = function(name, value) {
+		if(this.options.keys)
+			this.options.keys[name] = value;		
+		return this;
+	};
+
+    WebServiceManager.prototype.getKey = function(name) {
+        var resp = false;
+        if(this.options.keys)
+            resp = this.options.keys[name];        
+        return resp;
+    };
+
+	WebServiceManager.prototype.deleteKey = function(name, value) {
+		if(this.options.keys)
+			delete this.options.keys[name];
+		return this;
+	};
+
+    WebServiceManager.prototype.getToken = function() {        
+        return this.options.token;
+    };
+    
+	WebServiceManager.prototype.startCase = function() {		
+    	var that =this,
+            resp,
+    		url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.startCase),
+    		method = "POST";
+
+		$.ajax({
+            url: url,
+            type: method,
+            async : false,            
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                resp = {
+            		"state":"success",
+            		"caseID":data.caseId,
+            		"caseTitle":data.caseNumber,
+            		"caseNumber":data.caseNumber	            		
+            	};
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                resp= {	            		
+            		"state":"internetFail"
+            	};
+            } 
+        });
+        return resp;       			
+	};
+
+	WebServiceManager.prototype.loadAllDataCase = function() {
+    	var that = this,        
+            method, url, resp;
+    		
+		url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.getAllDataCase);	
+		method = "GET";
+		
+		$.ajax({
+            url: url,
+            type: method,
+            async : false,                        
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                resp = {
+            		"state":"success",
+            		"data": data
+            	};
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                resp = {
+            		"state":"internetFail"
+            	};
+            } 
+        });
+        return resp;        
+	};
+
+	WebServiceManager.prototype.submitFormCase = function(data) {
+	    var that = this,        
+            url, method, resp;
+
+		url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.submitFormCase);	   	    
+		method = "PUT";
+
+	    $.ajax({
+            url: url,
+            type: method,
+            async : false,
+            data: JSON.stringify(data),            
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                resp = {
+            		"state":"success"
+            	};
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                if(xhr.status == 200){
+                    resp = {
+                        "state":"success"
+                    };
+                }else{
+                    resp = {
+                        "state":"internetFail"
+                    };    
+                }                
+            } 
+        });
+        return resp;        
+	};	
+
+	WebServiceManager.prototype.executeTrigger = function(stepID , triggerOption) {
+    	var that = this,        
+    	    method = "POST", url, resp;
+		
+		this.setKey('stepID', stepID);
+		this.setKey('triggerOption', triggerOption);
+		
+		url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.executeTrigger);	
+		
+		this.deleteKey('stepID');
+		this.deleteKey('triggerOption');
+
+		$.ajax({
+            url: url,
+            type: method,
+            async : false,                        
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                resp = {
+            		"state":"success"
+            	};
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                resp = {
+            		"state":"internetFail"
+            	};
+            } 
+        });
+        return resp;    
+	};
+
+    WebServiceManager.prototype.executeQuery = function(data,varName) {
+        var that = this,        
+            method = "POST", url, resp=[];
+        
+        this.setKey('var_name', varName);
+        
+        url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.executeQuery); 
+        
+        this.deleteKey('var_name');
+        
+        $.ajax({
+            url: url,
+            type: method,
+            data: JSON.stringify(data),
+            async : false,                        
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                resp = data;
+            }
+        });
+        return resp;    
+    };
+
+    WebServiceManager.prototype.conditionalStep = function(stepID , stepPosition) {
+        var that = this,        
+            method = "GET", url, resp;
+        
+        this.setKey('stepID', stepID);
+        this.setKey('stepPosition', stepPosition);
+        
+        url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.conditionalSteps); 
+        
+        this.deleteKey('stepID');
+        this.deleteKey('stepPosition');
+
+        $.ajax({
+            url: url,
+            type: method,
+            async : false,                        
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                resp = {
+                        "state":"success",
+                        "data":data
+                };
+            },
+            error: function (xhr, textStatus, errorThrown) {
+             resp = {                    
+                    "state":"internetFail"
+                }
+            } 
+        });
+        return resp;  
+    };
+
+	WebServiceManager.prototype.getJsonForm = function(formID) {
+    	var that = this,
+            method, url, sendData=[], resp;
+    		
+		sendData.push(formID);        
+        url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.jsonDynaforms);	
+
+		method = "POST";
+		$.ajax({
+            url: url,
+            type: method,
+            async : false,            
+            data: JSON.stringify({
+	            formId:sendData
+	        }),
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                var respData = null;
+            	if(data.length != 0){
+            		respData = data[0].formContent;
+            	}	            	
+            	resp = {
+            		"data":respData,
+            		"state":"success"
+            	};  
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                resp = {
+            		"state":"internetFail"
+            	};
+            } 
+        });
+        return resp;        
+	};
+
+	WebServiceManager.prototype.getFormDefinition = function() {
+    	var that = this,        
+            method, url, resp;
+		url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.dynaformDefinition);	
+		method =  "GET",
+		$.ajax({
+            url: url,
+            type: method,
+            async : false,                        
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                resp = {
+            		"data":data.data.formContent,
+            		"state":"success"
+            	}; 
+            },
+            error: function (xhr, textStatus, errorThrown) {               
+                resp = {
+            		"state":"internetFail"
+            	};
+            } 
+        });
+        return resp;        
+	};
+
+    WebServiceManager.prototype.imageInfo = function(id,width) {
+        var that = this,
+            method, url, resp;
+        url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.imageInfo); 
+        method = "POST",
+        $.ajax({
+            url: url,
+            type: method,
+            async : false,
+            data: JSON.stringify([{
+                fileId: id,
+                width : width,
+                version :1
+            }]),                        
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                resp = data; 
+            } 
+        });
+        if (resp){
+            return {
+                id: resp[0].fileId,
+                base64: resp[0].fileContent
+            };
+        }else{
+            return {
+                id: "",
+                base64: ""
+            };
+        }        
+    };
+
+    WebServiceManager.prototype.imagesInfo = function(data) {
+        var that = this,
+            method, url, resp;
+        url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.imageInfo); 
+        method = "POST",
+        $.ajax({
+            url: url,
+            type: method,
+            async : false,
+            data: JSON.stringify(data),                        
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (data, textStatus) {
+                resp = data; 
+            } 
+        });
+        return resp;                
+    };  
+
+    WebServiceManager.prototype.restClient = function() {
+        defaults = {
+            url: "/rest/v10",
+            method: "GET",
+            contentType: "application/json",
+            data: '',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + keys.access_token);
+                if(that.options.language!=null){
+                    xhr.setRequestHeader("Accept-Language", that.options.language);                        
+                }
+            },
+            success: function (){},
+            error: function () {}
+        };
+        _.extend(defaults,parems);
+
+        defaults.type = _methodsMap[defaults.method];
+        defaults.data = JSON.stringify(defaults.data);
+        $.ajax(defaults);
+    };
+
+    WebServiceManager.prototype.getFullURLStreaming = function (id) {
+        var k, 
+        keys  = this.options.keys,
+        urlFormat = this.options.urlBaseStreaming;
+        this.setKey('fileId', id);
+        urlFormat=urlFormat.replace(/{endPointPath}/, this.options.endPoints.fileStreaming);
+        for (k in keys) {
+            if (keys.hasOwnProperty(k)) {                           
+                    urlFormat = urlFormat.replace(new RegExp("{"+ k +"}" ,"g"), keys[k]);               
+            }
+        }
+        this.deleteKey("fileId");
+        return urlFormat;
+     };             	
+
+	PMDynaform.extendNamespace("PMDynaform.implements.WebServiceManager", WebServiceManager);
 }());
 (function () {
 	/**
@@ -2221,7 +2704,7 @@ jQuery.fn.extend({
         return ($.inArray(type, disabled) < 0) ? true : false;
     };
 	TransformJSON.prototype.reviewField = function (field) {
-		var jsonBuilt = field,
+		var jsonBuilt = field, total,
 		sigleControl = ["text","suggest","textarea","datetime"], data, i;
 
 		if (this.json[field.type] && this.discardViewField(field.type) ) {
@@ -2259,7 +2742,11 @@ jQuery.fn.extend({
 			} else {
 				if (jsonBuilt.originalType === "checkgroup" ){
 	                data = [];
-					var total = field["options"].concat(field["optionsSql"]);
+					if ($.isArray(field["optionsSql"])){
+						total = field["options"].concat(field["optionsSql"]);					
+					}else{
+						total = field["options"];
+					}
 	                for ( i = 0 ; i < total.length ; i+=1 ) {
 	                    if (field.data["value"].indexOf(total[i]["value"]) !==- 1){
 	                    	data.push(total[i]["label"]);
@@ -3919,8 +4406,12 @@ jQuery.fn.extend({
         setData2 : function(data){
             var i, cloneData, items, j, k, type, options, valueViewMode, mode,value, 
             singleControl, valor, richi,option, label_items, size, item;
-            singleControl = ["text","textarea","radio","link", "dropdown"]
-            items = this.items.asArray();
+            singleControl = ["text","textarea","radio","link", "dropdown", "hidden"]
+            if(this.project instanceof PMDynaform.core.ProjectMobile){
+                items = this.project.viewfields;                                       
+            }else{
+                items = this.items.asArray(); 
+            }
             label_items = {};
             if (data) {
                 for ( item in data) {
@@ -3964,7 +4455,6 @@ jQuery.fn.extend({
                                 items[i].render();
                             }
                         }
-                        if (type === "suggest" || type === "datetime") {
                             items[i].model.set("data",{
                                 value : data[items[i].model.get("name")],
                                 label : label_items[items[i].model.get("name").concat("_label")]
@@ -3977,26 +4467,28 @@ jQuery.fn.extend({
                                    items[i].model.set("keyLabel",data[items[i].model.get("name")]);
                                 }else{
                                     var l;
-                                    for (l = 0 ; l < items[i].model.get("options").length ; l+=1){
-                                        if (items[i].model.get("options")[l]["value"] == data[items[i].model.get("name")]){
-                                            items[i].model.set("keyLabel",items[i].model.get("options")[l]["label"]);
+                                    if(items[i].model.get("options") ){
+                                        for (l = 0 ; l < items[i].model.get("options").length ; l+=1){
+                                            if (items[i].model.get("options")[l]["value"] == data[items[i].model.get("name")]){
+                                                items[i].model.set("keyLabel",items[i].model.get("options")[l]["label"]);
+                                            }
                                         }
                                     }
                                 }
                             }
                             items[i].render();
                         }
-                        if(type=="scannerCode"){
-                            items[i].setScannerCode(data[items[i].model.get('name')]);
-                        }
+                        if(type=="imageMobile" || type=="audioMobile" || type=="videoMobile")
+                            items[i].setFilesRFC(data[items[i].model.get('name')]);                              
+                        
                         if(type=="signature"){
                             items[i].setSignature(data[items[i].model.get('name')]);
                         }
                         if(type=="location"){
                             items[i].setLocation(data[items[i].model.get('name')]);                        
                         }
-                        if(type=="imageMobile" || type=="audioMobile" || type=="videoMobile"){
-                            items[i].setFilesRFC(data[items[i].model.get('name')]);                        
+                        if(type=="grid"){
+                            items[i].setData2(data[items[i].model.get('name')]);                   
                         }
                         if (type === "checkbox") {
                             options = items[i].model.get("options");
@@ -4016,83 +4508,83 @@ jQuery.fn.extend({
                                         options[k].selected = true;
                                     }
                                 }                                
-                            }
-                            //items[i].model.set("options", options);
-                            //items[i].model.initControl();
+                            }                            
                             items[i].model.set("data",{
                                 value : data[items[i].model.get("name")],
                                 label : label_items[items[i].model.get("name").concat("_label")]
                             });
                             items[i].model.set("value",items[i].model.get("data")["value"]);
                             items[i].model.set("keyLabel",items[i].model.get("data")["label"]);
-                            //items[i].render();
-                            //items[i].model.attributes.value = [data[items[i].model.get("name")]];
+                            items[i].render();                            
                         }
-                        if (type === "grid") {
-                            items[i].setData2(data[items[i].model.get("name")]);
+                        if (type === "checkgroup") {
+                            items[i].model.setItemsChecked(JSON.parse(data[items[i].model.get("name")]));                            
                         }
                     }
                     if (mode === "view") {
-                        var value = [], jsondata = {};
-                        if (label_items[items[i].model.get("name").concat("_label")] === undefined &&
-                            items[i].model.get("type") !== "grid"){
-                            if (items[i].model.attributes.options || items[i].model.attributes.optionsSql){
-                                for (var k=0 ; k < items[i].model.attributes.options.length ; k+=1){
-                                    if (items[i].model.attributes.options[k].value === data[items[i].model.get("name")]){
-                                        data[items[i].model.attributes.id + "_label"] = items[i].model.attributes.options[k].label;
-                                        break;                            
+                        if(items[i].model.get("originalType") !== "checkgroup"){
+                            var value = [], jsondata = {};
+                            if (label_items[items[i].model.get("name").concat("_label")] === undefined &&
+                                items[i].model.get("type") !== "grid"){
+                                if (items[i].model.attributes.options || items[i].model.attributes.optionsSql){
+                                    for (var k=0 ; k < items[i].model.attributes.options.length ; k+=1){
+                                        if (items[i].model.attributes.options[k].value === data[items[i].model.get("name")]){
+                                            data[items[i].model.attributes.id + "_label"] = items[i].model.attributes.options[k].label;
+                                            break;                            
+                                        }
+                                    }
+                                    for (var k=0 ; k < items[i].model.attributes.optionsSql.length ; k+=1){
+                                        if (items[i].model.attributes.optionsSql[k].value === data[items[i].model.get("name")]){
+                                            data[items[i].model.attributes.id + "_label"] = items[i].model.attributes.optionsSql[k].label;
+                                            break;                            
+                                        }
                                     }
                                 }
-                                for (var k=0 ; k < items[i].model.attributes.optionsSql.length ; k+=1){
-                                    if (items[i].model.attributes.optionsSql[k].value === data[items[i].model.get("name")]){
-                                        data[items[i].model.attributes.id + "_label"] = items[i].model.attributes.optionsSql[k].label;
-                                        break;                            
+                                if (label_items[items[i].model.get("name").concat("_label")] === undefined){
+                                    data[items[i].model.attributes.id + "_label"] = data[items[i].model.get("name")];
+                                }
+                                label_items[items[i].model.attributes.id + "_label"] = data[items[i].model.get("name")];
+                            }
+                            if (label_items[items[i].model.get("name").concat("_label")] && 
+                            data[items[i].model.get("name")] ){
+                                jsondata = {
+                                    label : label_items[items[i].model.get("name").concat("_label")],
+                                    value : data[items[i].model.get("name")]                                    
+                                }
+                                value.push(label_items[items[i].model.get("name").concat("_label")]);
+                                if (items[i].model.get("originalType") === "checkbox"){
+                                    if (items[i].model.get("dataType") === "boolean"){
+                                        jsondata = {
+                                            label : JSON.stringify([label_items[items[i].model.get("name").concat("_label")]]),
+                                            value : data[items[i].model.get("name")]                                    
+                                        }
+                                    }else{
+                                        value = JSON.parse(label_items[items[i].model.get("name").concat("_label")]);
+                                        value.concat(JSON.parse(label_items[items[i].model.get("name").concat("_label")]));
+                                        jsondata = {
+                                            label : label_items[items[i].model.get("name").concat("_label")],
+                                            value : data[items[i].model.get("name")]
+                                        }
                                     }
                                 }
+                                items[i].model.attributes.data = jsondata;
+                                items[i].model.attributes.value = data[items[i].model.get("name")];
+                                items[i].model.attributes.keyLabel = label_items[items[i].model.get("name").concat("_label")];
+                                items[i].model.attributes.keyValue = data[items[i].model.get("name")];
+                                items[i].model.set("fullOptions", value);
                             }
-                            if (label_items[items[i].model.get("name").concat("_label")] === undefined){
-                                data[items[i].model.attributes.id + "_label"] = data[items[i].model.get("name")];
+                            if (items[i].model.get("type") === "grid"){
+                                items[i].setData2(data[items[i].model.get("name")]);
                             }
-                            label_items[items[i].model.attributes.id + "_label"] = data[items[i].model.get("name")];
-                        }
-                        if (label_items[items[i].model.get("name").concat("_label")] && 
-                        data[items[i].model.get("name")] ){
-                            jsondata = {
-                                label : label_items[items[i].model.get("name").concat("_label")],
-                                value : data[items[i].model.get("name")]                                    
-                            }
-                            value.push(label_items[items[i].model.get("name").concat("_label")]);
-                            if (items[i].model.get("originalType") === "checkbox"){
-                                if (items[i].model.get("dataType") === "boolean"){
-                                    jsondata = {
-                                        label : JSON.stringify([label_items[items[i].model.get("name").concat("_label")]]),
-                                        value : data[items[i].model.get("name")]                                    
-                                    }
-                                }else{
-                                    value = JSON.parse(label_items[items[i].model.get("name").concat("_label")]);
-                                    value.concat(JSON.parse(label_items[items[i].model.get("name").concat("_label")]));
-                                    jsondata = {
-                                        label : label_items[items[i].model.get("name").concat("_label")],
-                                        value : data[items[i].model.get("name")]
-                                    }
-                                }
-                            }
-                            items[i].model.attributes.data = jsondata;
-                            items[i].model.attributes.value = data[items[i].model.get("name")];
-                            items[i].model.attributes.keyLabel = label_items[items[i].model.get("name").concat("_label")];
-                            items[i].model.attributes.keyValue = data[items[i].model.get("name")];
-                            items[i].model.set("fullOptions", value);
-                        }
-                        if (items[i].model.get("type") === "grid"){
-                            items[i].setData2(data[items[i].model.get("name")]);
-                        }
+                        }else{
+                            items[i].model.attributes.keyLabel =data[items[i].model.get("name")+"_label"];
+                            items[i].model.attributes.keyValue =data[items[i].model.get("name")];
+                            items[i].model.set("fullOptions", JSON.parse(data[items[i].model.get("name")+"_label"]));
+                        }    
                     }
                 }
-                if ( items[i].model.get("data") && items[i].$el.find("input[type='hidden']").length === 1) {
-                    //console.log("\n");
-                }
             }
-        },
+        ,
         validateVariableField: function (field) {
             var isOk = false;
 
@@ -4110,6 +4602,7 @@ jQuery.fn.extend({
             var i,
             j,
             factory = this.factory, 
+			that = this,
             product, 
             variableEnabled,
             productBuilt, 
@@ -4136,8 +4629,15 @@ jQuery.fn.extend({
                             if(fields[i][j].type === "label"){
                                 fields[i][j].type = "annotation";
                             }
-							if ( fields[i][j].type === "checkbox"  && fields[i][j].dataType !== "boolean") {
-								fields[i][j].type = "checkgroup";
+                            if (fields[i][j].type === "checkbox" && fields[i][j].dataType !== "boolean" && fields[i][j].dataType !== "") {
+                                fields[i][j].type = "checkgroup";
+                            }
+                            if(fields[i][j].type === "file" && fields[i][j].hasOwnProperty("inputDocuments")){
+                                if ($.isArray(fields[i][j]["inputDocuments"])){
+                                    $(fields[i][j]["inputDocuments"]).each(function(){
+                                        that.model.attributes.inputDocuments[fields[i][j]["variable"]] = this;
+                                    });  
+                                }
                             }
                             jsonFixed  = new PMDynaform.core.TransformJSON({
                                 parentMode: this.model.get("mode"),
@@ -4166,7 +4666,9 @@ jQuery.fn.extend({
                             id : fields[i][j].id || PMDynaform.core.Utils.generateID(),
                             options : fields[i][j].options,
                             form : this,
-							optionsSql : fields[i][j].optionsSql
+							optionsSql : fields[i][j].optionsSql,
+							required : fields[i][j].required || false,
+							hint : fields[i][j].hint || ""
                         };
                         if (fields[i][j].type === "form" || fields[i][j].type === "grid") {
                             fieldModel.variables = this.model.get("variables") || [];
@@ -4222,39 +4724,39 @@ jQuery.fn.extend({
             return this;
         },
         createDependencies : function () {
-			var i, j, nameField, viewItems, sql, fields, itemField, index, indexWhere, where, varName;
-			fields  = this.sqlFields;
-			for ( i = 0 ; i < fields.length ; i+=1) {
-				fields[i].set("dependents", []);
-				if ( fields[i].get("variable") && fields[i].get("variable").trim().length ) {
-					nameField = fields[i].get("variable");
-				} else{
-					nameField = fields[i].get("id");
-				}
-				for ( j = 0  ; j < fields.length ; j+=1 ) {
-					if(i!==j){
-						indexWhere = fields[j].get("sql").toLowerCase().indexOf("where");
-						if (indexWhere !== -1) {
-							sql = fields[j].get("sql");
+            var i, j, nameField, viewItems, sql, fields, itemField, index, indexWhere, where, varName;
+            fields  = this.sqlFields;
+            for ( i = 0 ; i < fields.length ; i+=1) {
+                fields[i].set("dependents", []);
+                if ( fields[i].get("variable") && fields[i].get("variable").trim().length ) {
+                    nameField = fields[i].get("variable");
+                } else{
+                    nameField = fields[i].get("id");
+                }
+                for ( j = 0  ; j < fields.length ; j+=1 ) {
+                    if(i!==j){
+                        indexWhere = fields[j].get("sql").toLowerCase().indexOf("where");
+                        if (indexWhere !== -1) {
+                            sql = fields[j].get("sql");
                             sql = sql.replace(/\n/g, " ");
-							where = sql.substring(indexWhere, sql.length);
-							where = where.split(" ");
-							if (this._existVariableInSql(where, nameField)){
+                            where = sql.substring(indexWhere, sql.length);
+                            where = where.split(" ");
+                            if (this._existVariableInSql(where, nameField)){
                                 fields[j].attributes.parentDependents.push(fields[i]);
                                 fields[i].attributes.dependents.push(fields[j]);
-							}
-						}
-					}
-				}
-			}
+                            }
+                        }
+                    }
+                }
+            }
         },
         _existVariableInSql : function (where, nameField) {
-			if (where.indexOf("@#"+nameField)>-1 ||
-			where.indexOf("@%"+nameField)>-1 ||
-			where.indexOf("@@"+nameField)>-1 ||
-			where.indexOf("@?"+nameField)>-1 ||
-			where.indexOf("@$"+nameField)>-1 ||
-			where.indexOf("@="+nameField)>-1 ||
+            if (where.indexOf("@#"+nameField)>-1 ||
+            where.indexOf("@%"+nameField)>-1 ||
+            where.indexOf("@@"+nameField)>-1 ||
+            where.indexOf("@?"+nameField)>-1 ||
+            where.indexOf("@$"+nameField)>-1 ||
+            where.indexOf("@="+nameField)>-1 ||
             where.indexOf('\"'+"@#"+nameField+'\"')>-1 ||
             where.indexOf('\"'+"@%"+nameField+'\"')>-1 ||
             where.indexOf('\"'+"@@"+nameField+'\"')>-1 ||
@@ -4267,10 +4769,10 @@ jQuery.fn.extend({
             where.indexOf('\''+"@?"+nameField+'\'')>-1 ||
             where.indexOf('\''+"@$"+nameField+'\'')>-1 ||
             where.indexOf('\''+"@="+nameField+'\'')>-1){
-				return true;
-			}else{
-				return false;
-			}
+                return true;
+            }else{
+                return false;
+            }
         },
         createColspan : function  (colSpan, target) {
             var colspan;
@@ -4369,10 +4871,25 @@ jQuery.fn.extend({
                 for ( j = 0 ; j < items[i].length ; j+=1 ) {
                     field = items[i][j];
                     if ( field.model.get("type") === "form" ) {
-						if (field.runningFormulator){
-							field.runningFormulator();
-						}
-                    }else{
+                        if (field.runningFormulator){
+                            field.runningFormulator();
+                        }
+                    }
+                    if ( field.model.get("type") === "grid" ) {
+                        var rowsAll = field.gridtable;
+                        for (var row = 0, rowCurrent ; row < rowsAll.length ; row+=1 ) {
+                            rowCurrent = rowsAll[row];
+                            for (var col = 0; col < rowCurrent.length ; col+=1 ) {
+                                if (rowCurrent[col].model.get("formula") && rowCurrent[col].model.get("formula").trim().length){
+                                    fieldsAsocied = rowCurrent.filter(function(element){
+                                        if (rowCurrent[col].fieldValid.indexOf(element.model.get("id")) > -1) {
+                                            element.onFieldAssociatedHandler();
+                                        }                                        
+                                    });
+                                }                            
+                            }                            
+                        }
+                    } else {
                         if (field.model.get("formula") && field.model.get("formula").trim().length){
                             fieldsAsocied = items.filter(function(element){
                                 var k;
@@ -4502,7 +5019,7 @@ jQuery.fn.extend({
             return booResponse;
         },
         isValid: function(event) {
-            var i, formValid = true,
+            var i, formValid = true, itemField,
             itemsField = this.items.asArray();
 
             if (itemsField.length > 0) {
@@ -4511,33 +5028,43 @@ jQuery.fn.extend({
                         if (event){
                             itemsField[i].validate(event);
                             if (!itemsField[i].model.get("valid")) {
-                                formValid = itemsField[i].model.get("valid");   
+                                if(itemField === undefined){
+                                    itemField = itemsField[i];
+                                }
+                                formValid = itemsField[i].model.get("valid");
                             }
                         }else{
                             itemsField[i].validate();
                             formValid = itemsField[i].model.get("valid");
                             if (!formValid){
+                                if (itemsField[i].model.get("type")!=="grid" && itemsField[i].model.get("type")!=="form"){
+                                    itemsField[i].setFocus();
+                                }
                                 return false;
                             }   
                         }
                     }
                 }
             }
-			if (formValid){
-				for (i = 0; i < itemsField.length; i+=1) {
+            if (formValid){
+                for (i = 0; i < itemsField.length; i+=1) {
                     if( ( itemsField[i].model.get("var_name") !== undefined) && (itemsField[i].model.get("var_name").trim().length === 0 )) {
-						if (itemsField[i].model.get("type") === "radio") {
-							itemsField[i].$el.find("input").attr("name","");
-						}
+                        if (itemsField[i].model.get("type") === "radio") {
+                            itemsField[i].$el.find("input").attr("name","");
+                        }
                     }
                 }
-				if (!event) {				
-					this.$el.find(".form-control").prop('disabled', false);
+                if (!event) {               
+                    this.$el.find(".form-control").prop('disabled', false);
                     this.$el.find("input[type='hidden']").prop('disabled', false);
-					this.$el.find(".pmdynaform-control-checkbox").prop('disabled', false);
-					this.$el.find(".pmdynaform-control-radio").prop('disabled', false);
-				}
-			}
+                    this.$el.find(".pmdynaform-control-checkbox").prop('disabled', false);
+                    this.$el.find(".pmdynaform-control-radio").prop('disabled', false);
+                }
+            }else{
+                if (itemField && itemField.model.get("type")!=="grid" && itemField.model.get("type")!=="form"){
+                    itemField.setFocus();
+                }
+            }
             return formValid;
         },
         render : function (subForm){
@@ -4558,13 +5085,23 @@ jQuery.fn.extend({
             }
             this.$el.attr("role","form");
             this.$el.addClass("form-horizontal pmdynaform-form");
-			this.el.style.height = "99%";
+            this.el.style.height = "99%";
             this.setAction();
             this.setMethod();
             this.$el.attr("id",this.model.get("id"));
             if (this.model.get("target")) {
                 this.$el.attr("target", this.model.get("target"));
             }
+            
+            var ids = this.model.get("inputDocuments");
+            for (var id in ids) {
+                var hidenInputs = document.createElement("input");
+                hidenInputs.name = "INPUTS[" + id + "]";
+                hidenInputs.type = "hidden";
+                hidenInputs.value = ids[id];
+                this.el.appendChild(hidenInputs);
+            }
+                
             this.disableContextMenu();
           return this;
         },
@@ -4637,6 +5174,10 @@ jQuery.fn.extend({
         },
         applyStyleError: function () {
             this.$el.addClass("has-error has-feedback");
+            return this;
+        },
+        applyStyleWarning: function () {
+            this.$el.addClass('has-warning');
             return this;
         },
         applyStyleSuccess: function () {
@@ -4712,7 +5253,6 @@ jQuery.fn.extend({
 			return this;
 		},
         onclickField : function (){
-            console.log("click en field");
             return this;
         },
         setLabel : function (label, col) {
@@ -5204,7 +5744,7 @@ jQuery.fn.extend({
             return this;
         },
         getControl : function (row, col) {
-            var htmlControl = [];
+            var htmlControl = jQuery("");
             if (this.model.get("type") === "grid"){
                 if (row !== undefined && col !== undefined){
                     if((row>0 && col>0) && row <= this.gridtable.length && col <= this.columnsModel.length){
@@ -5227,6 +5767,9 @@ jQuery.fn.extend({
             if (this.model.get("type") === "checkbox"){
                 htmlControl = this.$el.find("input[type='checkbox']");
             }
+			if (this.model.get("type") === "checkgroup"){
+                htmlControl = this.$el.find("input[type='checkbox']");
+            }
             if (this.model.get("type") === "datetime"){
                 htmlControl = this.$el.find("input[type='text']");
             }
@@ -5235,6 +5778,9 @@ jQuery.fn.extend({
             }
             if (this.model.get("type") === "hidden"){
                 htmlControl = this.$el.find("input[type='hidden']").eq(0);
+            }
+			if (this.model.get("type") === "file"){
+				htmlControl = this.$el.find("button").eq(0);
             }
             return htmlControl;
         },
@@ -5269,7 +5815,10 @@ jQuery.fn.extend({
         },
         getHref : function () {
             return this.model.get("href");
-        }
+        },
+		setFocus : function(){
+			this.getControl().first().focus();
+		}
 	});	
 	PMDynaform.extendNamespace("PMDynaform.view.Field",FieldView);
 }());
@@ -5319,6 +5868,7 @@ jQuery.fn.extend({
         totalWidtRow : 0,
         colResponsiveTotalWidth : null,
         hiddenColumns : [],
+        totalWidthStatic : 0,
         onDeleteRowCallback: function(){},
         onAddRowCallback: function(){},
         onBeforeAddRowCallback : function (){},
@@ -5493,19 +6043,6 @@ jQuery.fn.extend({
 			
 			return itemRemoved;
 		},
-		/*validateVariableField: function (field) {
-            var isOk = false;
-
-            if ($.inArray(field.type, this.requireVariableByField) >= 0) {
-                if (field.var_uid) {
-                    isOk = true;
-                }
-            } else {
-                isOk = "NOT";
-            }
-
-            return isOk;
-        },*/
         makeColumnModels : function (){
 			var that = this,
 			columns = this.model.get("columns"),
@@ -5581,20 +6118,13 @@ jQuery.fn.extend({
 	                formula : mergeModel.formula || "",
 	                operation : mergeModel.operation || "",
 	                columnWidth : mergeModel.columnWidth || "",
-	                defaultValue : mergeModel.defaultValue || ""
+	                defaultValue : mergeModel.defaultValue || "",
+					required : mergeModel.required || false,
+	                hint : mergeModel.hint || ""
 	            };
             	jQuery.extend(true, columnModel, jsonFixed.getJSON());
             	columnModel.row = this.gridtable.length;
             	columnModel.col = i;
-				/*if (mergeModel.type == "dropdown" || mergeModel.type == "suggest") {
-					columnModel.options = mergeModel.options; 
-				}*/
-				/*if(mergeModel.options && mergeModel.options.length){
-					columnModel.options = mergeModel.options; 
-				}
-				if (mergeModel.optionsSql && mergeModel.optionsSql.length){
-					columnModel.optionsSql = mergeModel.optionsSql; 
-				}*/
 	        	if (this.model.get("layout") == "static"){
 					if (columnModel.columnWidth && jQuery.isNumeric(columnModel.columnWidth)){
 						var width = parseInt(columnModel.columnWidth);
@@ -5634,70 +6164,8 @@ jQuery.fn.extend({
         			}
         		}
         	}
-        	/*if (totalWith < 100){
-        		var restTotal = 100 - totalWith;
-        		if ( undefinedWidth.length ) {
-        			var widthCell = restTotal/undefinedWidth.length;
-        			for ( i = 0 ; i < undefinedWidth.length ; i +=1) {
-        				undefinedWidth[i].columnWidth = widthCell+"%"; 
-        			}
-        		}
-        	}*/
         	return this;
         },
-		/*makeRow: function (rowData) {
-			var i, j, cellModel, idColumn, product, sql, nameCell, fields, idCell, rowData = rowData || [], rowModel = [],
-			itemField, index, indexWhere, where, varName, columns, rowView = [], cellView;
-			this.sqlColumns = [];
-			for(i = 0 ; i < this.columnsModel.length ; i+=1){
-				product = this.columnsModel[i].product;
-				if ( rowData ) {
-					this.columnsModel[i]["data"] = rowData[i];
-				}
-				cellModel = new product.model(this.columnsModel[i]);
-				if (cellModel.sql !== undefined && this.validDependentColumns.indexOf( cellModel.get("type") ) >-1) {
-					cellModel.set("parentDependents", []);
-					cellModel.set("dependents", []);
-					this.sqlColumns.push(cellModel);
-				}
-				nameCell = this.changeNameField(this.model.get("name"), this.gridtable.length+1, cellModel.get("_extended").name);
-				idCell = this.changeIdField(this.model.get("name"), this.gridtable.length+1, cellModel.get("_extended").name);
-				cellModel.set("name",nameCell);
-				cellModel.set("id",idCell);
-				rowModel.push(cellModel);
-				cellView = new product.view({
-					model: cellModel,
-					project: this.project,
-					parent: this
-				});
-				cellModel.set("view", cellView);
-				rowView.push(cellView);
-				columns  = this.sqlColumns;
-			}
-			for ( i = 0 ; i < columns.length ; i+=1) {
-				columns[i].set("dependents", []);
-				idColumn = columns[i].get("columnName");
-				for ( j = 0  ; j < columns.length ; j+=1 ) {
-					if(i!==j){
-						indexWhere = columns[j].get("sql").toLowerCase().indexOf("where");
-						if (indexWhere !== -1) {
-							sql = columns[j].get("sql");
-							where = sql.substring(indexWhere, sql.length);
-							where = where.split(" ");
-							if (this._existVariableInSql(where, idColumn)){
-								columns[j].attributes.parentDependents.push(columns[i]);
-								columns[i].attributes.dependents.push(columns[j]);
-							}
-						}
-					}
-				}
-			}
-			return {
-				model: rowModel,
-				view: rowView,
-				data: rowData
-			};
-		},*/
 		setValuesGridFunctions: function (field) {
 
 			if (this.model.attributes.functions) {
@@ -5823,7 +6291,8 @@ jQuery.fn.extend({
 			fields,
 			row = [],
 			validGrid = true,
-			gridpanel = this.gridtable;
+			gridpanel = this.gridtable,
+			itemCell;
 
 			for (i=0; i<gridpanel.length; i+=1) {
 				row = [];
@@ -5832,6 +6301,9 @@ jQuery.fn.extend({
 						if (event){
 							gridpanel[i][k].validate(event);
 							if (!gridpanel[i][k].model.get("valid")) {
+								if(itemCell === undefined){
+									itemCell = gridpanel[i][k];
+								}
 								validGrid = gridpanel[i][k].model.get("valid");
 								this.model.set("valid",validGrid);
 								validGrid = false;
@@ -5840,12 +6312,16 @@ jQuery.fn.extend({
 							gridpanel[i][k].validate();
 							validGrid = gridpanel[i][k].model.get("valid");
 							if (!validGrid){
+								gridpanel[i][k].setFocus();
 								this.model.attributes.valid = false;
                                 return false;
                             }
 						}
                     }
 				}
+			}
+			if (itemCell){
+				itemCell.setFocus();
 			}
 			this.model.set("valid",validGrid);
 			return validGrid;
@@ -5854,7 +6330,7 @@ jQuery.fn.extend({
 			var rowNumber, itemRemoved;
 			if (event) {
 				rowNumber = $(event.target).data("row");
-				this.deleteRow(rowNumber);
+				this.deleteRow(rowNumber,event);
 			}
 
 			return this;
@@ -5866,9 +6342,15 @@ jQuery.fn.extend({
 			this.createHTMLTotal();
 			return this;
 		},
-		//xxxx
-		deleteRow : function (index){
+		deleteRow : function (index, event){
 			var itemRemoved, table, partyfloat, showSection = 1, showPage, removedSection, initPage;
+			if(this.gridtable.length === 1) {
+				if (event){
+					event.preventDefault();
+					event.stopPropagation();
+				}
+				return false;
+			}
 			showPage  = Math.ceil(index/this.pageSize);
 			jQuery(this.dom[index-1]).remove();
 			if (index > 0) {
@@ -5932,7 +6414,7 @@ jQuery.fn.extend({
 		},		
 		updatePropertiesCell : function (index) {
 			var i, j, cell, cells, row, rows, element, name, control, container, idContainer,
-			hiddenControls, type, nameHiddeControl, nameControl;
+			hiddenControls, type, nameHiddeControl, nameControl, idcontrol;
 			rows = this.gridtable;
 			for ( i = index ; i <  rows.length; i+=1) {
 				row = $(this.dom[i]);
@@ -5943,11 +6425,10 @@ jQuery.fn.extend({
 					for ( j = 0 ; j < cells.length ; j+=1 ) {
 						cell = cells[j];
 						cell.model.attributes.row = i;
-						idContainer =  this.changeIdField(this.model.get("name"), i+1 , cell.model.get("columnName"));
+						idContainer =  this.changeIdField(this.model.get("id"), i+1 , this.columnsModel[j].id);
 						element = cell.$el;
 						container = element.find(".pmdynaform-"+cell.model.get("mode")+"-"+cell.model.get("type"));
 						container.attr({
-							"name" : idContainer,
 							"id" : idContainer
 						});
 						type = cell.model.get("type");
@@ -5955,43 +6436,61 @@ jQuery.fn.extend({
 							case "suggest":
 								control = $(cell.$el.find(".form-control"));
 								hiddenControls = element.find("input[type='hidden']");
-								nameControl = "form" + this.changeIdField(this.model.get("name"), i+1 , cell.model.get("columnName"));
-								nameControl = nameControl.substring(0,nameControl.length-1).concat("_label]"); 
-								nameHiddeControl = "form" + this.changeIdField(this.model.get("name"), i+1 , cell.model.get("columnName"));
+								if (this.model.get("variable")){
+									nameControl = "form" + this.changeIdField(this.model.get("name"), i+1 , cell.model.get("columnName"));
+									nameControl = nameControl.substring(0,nameControl.length-1).concat("_label]"); 
+									nameHiddeControl = "form" + this.changeIdField(this.model.get("name"), i+1 , cell.model.get("columnName"));
+								} else {
+									nameControl = "";
+									nameHiddeControl = ""
+								}
+								idcontrol = "form" + this.changeIdField(this.model.get("id"), i+1 , this.columnsModel[j].id);
 								control.attr({
 									name : nameControl,
-									id : nameControl
+									id : idcontrol
 								});
 								hiddenControls.attr({
 									name : nameHiddeControl,
-									id : nameHiddeControl
+									id : idcontrol
 								});
 							break;
 							case "label":
 								hiddenControls = element.find("input[type='hidden']");
-								nameControl = "form" + this.changeIdField(this.model.get("name"), i+1 , cell.model.get("columnName"));
-								nameHiddeControl = nameControl.substring(0,nameControl.length-1).concat("_label]");
+								if (this.model.get("variable") !== ""){
+									nameControl = "form" + this.changeIdField(this.model.get("name"), i+1 , cell.model.get("columnName"));
+									nameHiddeControl = nameControl.substring(0,nameControl.length-1).concat("_label]");
+								}else{
+									nameControl = "";
+									nameHiddeControl = "";
+								}
+								idcontrol = "form" + this.changeIdField(this.model.get("id"), i+1 , this.columnsModel[j].id);
 								hiddenControls.eq(0).attr({
 									name : nameControl,
-									id : nameControl
+									id : idcontrol
 								});
 								hiddenControls.eq(1).attr({
 									name : nameHiddeControl,
-									id : nameHiddeControl
+									id : idcontrol
 								});
 							break;
 							default :
 								control = $(cell.$el.find(".form-control"));
 								hiddenControls = element.find("input[type='hidden']");
-								nameControl = "form" + this.changeIdField(this.model.get("name"), i+1 , cell.model.get("columnName"));
-								nameHiddeControl = nameControl.substring(0,nameControl.length-1).concat("_label]");
+								if(this.model.get("variable") !== ""){
+									nameControl = "form" + this.changeIdField(this.model.get("name"), i+1 , cell.model.get("columnName"));
+									nameHiddeControl = nameControl.substring(0,nameControl.length-1).concat("_label]");
+								}else{
+									nameControl = "";
+									nameHiddeControl = "";
+								}
+								idcontrol = "form" + this.changeIdField(this.model.get("id"), i+1 , this.columnsModel[j].id);
 								control.attr({
 									name : nameControl,
-									id : nameControl
+									id : idcontrol
 								});
 								hiddenControls.attr({
 									name : nameHiddeControl,
-									id : nameHiddeControl
+									id : idcontrol
 								});
 							break;
 						}
@@ -6234,9 +6733,13 @@ jQuery.fn.extend({
 			containerField = document.createElement("div"),
 			layout = this.model.get("layout"),
 			tdRemove;
-			if (layout !== "responsive") {
+			if (layout === "form") {
 				tdNumber.className = "col-xs-12 col-sm-1 col-md-1 col-lg-1"
 			}
+			if (layout === "static") {
+				tdNumber.className = "pmdynaform-grid-field-static index";
+				tdNumber.style.width = "33px";
+			}			
 			if (layout === "responsive") {
 				tdNumber.width = this.indexResponsive;
 				tdNumber.style.display = "inline-block";
@@ -6301,18 +6804,19 @@ jQuery.fn.extend({
 			colSpan,
 			label,
 			layout = this.model.get("layout"),
+			content,
 			hint;
 			this.domTitleHeader = [];
 
 			dom = this.$el.find(".pmdynaform-grid-thead");
 			td = document.createElement("div");
+			content = document.createElement("div");
 			label = document.createElement("span");
 			
 			if (layout === "static") {
 				dom.addClass("pmdynaform-grid-thead-static");
 				td.className = "pmdynaform-grid-field-static wildcard";
-				td.style.minWidth = "inherit";
-				td.style.position = "absolute";
+				td.style.minWidth = "33px";
 			}
 			if (layout === "form"){
 				td.className = "col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center wildcard";
@@ -6321,10 +6825,8 @@ jQuery.fn.extend({
 			if (layout === "responsive") {
 				//For the case: responsive and form
 				td.className = "text-center wildcard";
-				td.style.display = "inline-block";				
-			}
-			if (layout !== "form"){
-				td.style.width = this.indexResponsive;
+				td.style.display = "inline-block";
+				td.style.width = this.indexResponsive;		
 			}
 			//label.innerHTML = "Nro";
 			td.appendChild(label);
@@ -6338,9 +6840,7 @@ jQuery.fn.extend({
 					label.className = "title-column";
 					this.checkColSpanResponsive();
 					
-					if (layout === "responsive"){
-						td = document.createElement("div");
-					}else{
+					if (layout !== "responsive"){
 						colSpan = this.colSpanControlField(this.columnsModel, this.columnsModel[k].type, k);
 						td = this._createHtmlCell(this.columnsModel[k].type, colSpan, k);
 					}
@@ -6395,10 +6895,10 @@ jQuery.fn.extend({
 					label.title = title;
 					if(this.columnsModel[k].required){
 						if(parseInt(this.columnsModel[k].columnWidth) === 0){
-							td.appendChild($("<span class='pmdynaform-field-required'>*</span>")[0]);
-							td.style.display = "none";							
+							label.appendChild($("<span class='pmdynaform-field-required'>*</span>")[0]);
+							label.style.display = "none";					
 						}else{
-							td.appendChild($("<span class='pmdynaform-field-required'>*</span>")[0]);
+							label.appendChild($("<span class='pmdynaform-field-required'>*</span>")[0]);
 						}
 					}
 
@@ -6414,6 +6914,9 @@ jQuery.fn.extend({
 						hint.setAttribute("data-placement","bottom");
 						hint.setAttribute("data-original-title",this.columnsModel[k]["hint"]);
 						hint.style.float = "inherit";
+						$(hint).tooltip().click(function(e) {
+							$(this).tooltip('toggle');
+						});
 						if (this.model.get("columns").length < 6 && (layout== "responsive" || layout== "form")){
 							td.appendChild(hint);
 						}else{
@@ -6432,6 +6935,14 @@ jQuery.fn.extend({
 				}else{
 					this.domTitleHeader.push($("<span></span>"));
 				}
+			}
+			if (layout === "static") {
+				var spaceDelete = document.createElement("div");
+				spaceDelete.className = "pmdynaform-grid-removerow-static";
+				$(spaceDelete).css({
+					"min-width" : 38
+				});
+				dom.append(spaceDelete);
 			}
 			return this;
 		},
@@ -6517,37 +7028,6 @@ jQuery.fn.extend({
 				htmlPager.children('li:last').before('<li class="toNextItem"><a data-target="#'+this.model.get("id")+'" data-rotate="'+this.model.get("paginationRotate")+'" href="javascript:void(0)">&rsaquo;</a></li>');
 				pagerContainer.append(htmlPager);
 			}
-			/*if (Number(activeIndex.text().trim()) ) {
-				$(pager).children().removeClass("active");
-				if (Number(activeIndex.text().trim()) <= $(pager).children().not(":first").not(':last').not('.toPrevItem').not('.toNextItem').length){
-					htmlPager.children().not(":first").not(':last').not('.toPrevItem').not('.toNextItem').eq([Number(activeIndex.text().trim())-1]).addClass("active");
-				}else{
-					htmlPager.children().not(":first").not(':last').not('.toPrevItem').not('.toNextItem').eq([Number(activeIndex.text().trim())-2]).addClass("active");
-				}
-			}*/
-			    /*var sectionSize = 5;
-			    var items = $(pager).children().not(":first").not(':last').length;
-			    var itemsSections = Math.ceil(this.dom.length/this.pageSize);
-			    var thisItems = $(pager);*/
-		        /*if(items > sectionSize) {
-		            var pos = sectionSize+1;
-                    $(thisItems).find("li").eq(pos).before('<li class="toNext"><a data-target="#'+this.model.get("id")+'" data-rotate="'+this.model.get("paginationRotate")+'" href="javascript:void(0)">...</a></li>');
-        		}
-		        $(thisItems).find("li").eq(1).addClass("active");
-		        pager = $(thisItems);*/
-
-	        /*var pager2 = htmlPager;
-	        $(pager2).children('li:first').after('<li class="toPrevItem"><a data-target="#'+this.model.get("id")+'" data-rotate="'+this.model.get("paginationRotate")+'" href="javascript:void(0)">&lsaquo;</a></li>');
-	        $(pager2).children('li:last').before('<li class="toNextItem"><a data-target="#'+this.model.get("id")+'" data-rotate="'+this.model.get("paginationRotate")+'" href="javascript:void(0)">&rsaquo;</a></li>');
-			pager = pager2;
-			/*if (Number(activeIndex.text().trim()) ) {
-				$(pager).children().removeClass("active");
-				if (Number(activeIndex.text().trim()) <= $(pager).children().not(":first").not(':last').not('.toPrevItem').not('.toNextItem').length){
-					$(pager).children().not(":first").not(':last').not('.toPrevItem').not('.toNextItem').eq([Number(activeIndex.text().trim())-1]).addClass("active");
-				}else{
-					$(pager).children().not(":first").not(':last').not('.toPrevItem').not('.toNextItem').eq([Number(activeIndex.text().trim())-2]).addClass("active");
-				}
-			};*/
 
 			return this;
 		},
@@ -6562,6 +7042,7 @@ jQuery.fn.extend({
 			result,
 			icon,
 			hint,
+			containerStaticGrid,
 			totalrow = this.model.get("totalrow"),
 			layout = this.model.get("layout"),
 			iconTotal = {
@@ -6577,6 +7058,11 @@ jQuery.fn.extend({
 				
 				if (layout === "static") {
 					dom.addClass("pmdynaform-grid-thead-static");
+					if (this.$el.find(".pmdynaform-grid-static").length){
+						dom.css({
+							width : this.totalWidtRow + 77
+						});
+					}
 				} else {
 					//For the case: responsive and form
 					td.className = "col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center";
@@ -6592,6 +7078,9 @@ jQuery.fn.extend({
 						colSpan = this.gridtable[0][k].model.get("colSpan");
 						title = totalrow[k]? totalrow[k] : "";
 						td = document.createElement("div");
+						if (this.hiddenColumns.indexOf(k+1) > -1) {
+							td.style.display = "none";
+						}
 						label = document.createElement("span");
 						result = document.createElement("input");
 						result.style.width = "50%";
@@ -6604,10 +7093,12 @@ jQuery.fn.extend({
 							if (layout === "static"){
 								if (this.gridtable[0][k].model.get("columnWidth") && Number(this.gridtable[0][k].model.get("columnWidth")).toString() !== "NaN"){
 									$(td).css({
-										"min-width" : parseInt(this.gridtable[0][k].model.get("columnWidth"))
+										"width" : parseInt(this.gridtable[0][k].model.get("columnWidth")),
+										"display" : "inline-block"
 									});
 									this.gridtable[0][k].$el.css({
-										"width" : parseInt(this.gridtable[0][k].model.get("columnWidth"))
+										"width" : parseInt(this.gridtable[0][k].model.get("columnWidth")),
+										"display" : "inline-block"
 									});
 								}else{
 									$(td).css({
@@ -6617,7 +7108,7 @@ jQuery.fn.extend({
 										"width" : "200px"
 									});
 								}
-								td.className = "pmdynaform-grid-field-static";
+								td.className = "pmdynaform-grid-field-static field-operation-result";
 							}else{
 								if (parseInt(this.gridtable[0][k].model.get("columnWidth"))!==0){
 									$(td).css({
@@ -6640,6 +7131,7 @@ jQuery.fn.extend({
 							result.value =  title;
 							result.id = (operation +"-"+ this.model.get("name")+"-"+
 										this.gridtable[0][k].model.get("columnName"));
+							$(td).addClass("function-result-" + this.gridtable[0][k].model.get("columnName"));
 							td.appendChild(label);
 							td.appendChild(result);
 						} else {
@@ -6649,65 +7141,14 @@ jQuery.fn.extend({
 						dom.append(td);
 					}
 					if (this.model.get("layout") == "static"){
-						dom.css({
-							width : this.totalWidtRow
-						})
-						this.tableBody.append(dom);
+						this.tableBody.on("scroll",function(e){
+							$(".containerStaticGrid")[0].scrollLeft = e.target.scrollLeft;
+						});
 					}
-				}
-			}
-
-			return this;
-		},
-		/*createHTMLContainer: function () {
-			var k,
-			dom = this.$el.find(".pmdynaform-grid-tbody"),
-			pageSize = this.model.get("pageSize"),
-			domCarousel,
-			flagRow = 0,
-			section = 1;
-
-			this.verifyPageNumber();
-			dom.children().detach();
-
-			//Applying overflow:auto to container
-			if (this.model.get("layout") === "static") {
-				dom.addClass("pmdynaform-static");
-			}
-			for (k=0; k<this.dom.length; k+=1) {
-				flagRow+=1;	
-				if (this.model.get("pager")) {
-					if (this.block === true) {
-						domCarousel = document.createElement("div");
-						domCarousel.className = "pmdynaform-grid-section_"+section;
-						if (this.model.get("layout") === "static") {
-							domCarousel.className += " pmdynaform-static";
-						}
-						domCarousel = $(domCarousel);
-					} else {
-						domCarousel = this.$el.find(".pmdynaform-grid-section_"+section);
-					}
-					if (section === this.showPage) {
-						domCarousel.addClass("item active");
-					} else {
-						domCarousel.addClass("item");
-					}
-					if (flagRow === pageSize) {
-						this.block = true;
-						section+=1;
-						flagRow = 0;
-					} else {
-						this.block = false;
-					}
-					domCarousel.append(this.dom[k]);
-					dom.append(domCarousel);
-				} else {
-
-					dom.append(this.dom[k]);	
 				}
 			}
 			return this;
-		},*/
+		},
 		createHTMLRow: function (numberRow,dataRow, sectionAfected) {
 			var tr, td, k, tdRemove, tdNumber, element, colSpan, product, cellModel, nameCell,
 			idCell, cellView, row, that, rowModel, rowView, rowData;
@@ -6726,11 +7167,13 @@ jQuery.fn.extend({
 				cellModel = null;
 				product = this.columnsModel[k].product;
 				if ( dataRow && dataRow.length ) {
+					var aux = this.columnsModel[k]["data"];
 					this.columnsModel[k]["data"] = dataRow[k];
+					cellModel = new product.model(this.columnsModel[k]);
+					this.columnsModel[k]["data"] = aux;
 				}else{
-					this.columnsModel[k]["data"] = null;
+					cellModel = new product.model(this.columnsModel[k]);					
 				}
-				cellModel = new product.model(this.columnsModel[k]);
 				if ( cellModel.toJSON().originalType &&
 					 cellModel.toJSON().originalType !== "label" ) {
 					cellModel.set("fullOptions",this.transformJSON(cellModel.toJSON(), cellModel.get("originalType")));
@@ -6799,18 +7242,17 @@ jQuery.fn.extend({
 				if ( cellView.model.get("type") !== "hidden" && this.model.get("layout") === "static") {
 					if (cellView.model.get("columnWidth") && Number(cellView.model.get("columnWidth")).toString() !== "NaN"){
 						$(td).css({
-							"min-width" : parseInt(cellView.model.get("columnWidth"))
+							"min-width" : parseInt(cellView.model.get("columnWidth")),
+							"max-width" : parseInt(cellView.model.get("columnWidth"))							
 						});
 						cellView.$el.css({
 							"width" : parseInt(cellView.model.get("columnWidth"))
 						});
 					}else{
 						$(td).css({
-							"min-width" : "200px"
-						});
-						cellView.$el.css({
-							"width" : "200px"
-						});						
+							"min-width" : "200px",
+							"max-width" : "200px"
+						});				
 					}
 				}
 
@@ -6852,7 +7294,7 @@ jQuery.fn.extend({
 			}
 			this.updateNameFields(row);
 			for (var k = 0; k < row.length ;  k+=1) {
-				if (row[k].model.get("formula") && row[k].model.get("type") !== "label") {
+				if (row[k].model.get("formula")) {
 					row[k].model.attributes.formulaAssociatedObject = [];					
 					row[k].onFormula(row);
 					//row[k].onFieldAssociatedHandler();
@@ -7006,29 +7448,29 @@ jQuery.fn.extend({
             grid = this.gridtable;
 
             if (typeof data === "object") {
-                for (j in cloneData) {
-                    if(cloneData.hasOwnProperty(j)) {
-                    	for (col=0; col<grid[0].length; col+=1) {
-                    		if (!_.isEmpty(grid[0][col].model.attributes.variable)) {
-                    			if (grid[0][col].model.attributes.variable.var_name === j) {
-	                    			if (cloneData[j] instanceof Array) {
-	                    				for (i=0; i<grid.length;i+=1) {
+                if(cloneData.length){
+	                for (j in cloneData) {
+	                    if(cloneData.hasOwnProperty(j)) {
+	                    	for (col=0; col<grid[0].length; col+=1) {
+	                    		if (!_.isEmpty(grid[0][col].model.attributes.variable)) {
+	                    			if (grid[0][col].model.attributes.variable.var_name === j) {
+		                    			if (cloneData[j] instanceof Array) {
+		                    				for (i=0; i<grid.length;i+=1) {
 
-	                    					if (!this.gridtable[i][col].model.get("formulator")){
-	                    						grid[i][col].model.set("value", cloneData[j][i]);
-	                    						if (this.gridtable[i][col].onFieldAssociatedHandler){
-	                    							this.gridtable[i][col].onFieldAssociatedHandler()
-	                    						}
-	                    					}
-	                    				}
-	                    			}	
-	                    		}	
-                    		}
-                    		
-                    	}
-                    }
-                }
-                
+		                    					if (!this.gridtable[i][col].model.get("formulator")){
+		                    						grid[i][col].model.set("value", cloneData[j][i]);
+		                    						if (this.gridtable[i][col].onFieldAssociatedHandler){
+		                    							this.gridtable[i][col].onFieldAssociatedHandler()
+		                    						}
+		                    					}
+		                    				}
+		                    			}	
+		                    		}	
+	                    		}	                    		
+	                    	}
+	                    }
+	                }
+                }                
             } else {
                 //console.log("Error, The 'data' parameter is not valid. Must be an array.");
             }
@@ -7080,7 +7522,7 @@ jQuery.fn.extend({
 					if (row && row.data){
 		            	this.model.attributes.gridFunctions.push(row.data);
 			            for (i = 0 ; i < row.model.length ; i+=1){
-			            	if (row.model[i].get("type")!== "label"  && row.model[i].get("operation") && row.model[i].get("operation").trim().length){
+			            	if (row.model[i].get("operation") && row.model[i].get("operation").trim().length){
 								row.view[i].onChangeCallbackOperation();
 			            	}
 			            	if (row.model[i].get("type") == "label" && row.model[i].get("operation")){
@@ -7676,10 +8118,6 @@ jQuery.fn.extend({
             field.variable = field.id;//todo
             field.var_name = field.id;//todo
             field.colSpan = 12;
-            //todo
-            if (field.type === "checkbox") {
-                field["options"] = [{value: "1", label: " "}];
-            }
             items.push([field]);
         }
         items.push([{
@@ -7735,8 +8173,8 @@ jQuery.fn.extend({
                         dt[index][field.getInfo().id + "_label"] = field.getDataLabel().value;
                         //todo
                         if (field.getInfo().type === "checkbox") {
-                            dt[index][field.getInfo().id] = field.getData().value === "[]" ? "0" : "1";
-                            dt[index][field.getInfo().id + "_label"] = field.getData().value === "[]" ? "false" : "true";
+                            dt[index][field.getInfo().id] = field.getData().value === 0 || field.getData().value === "0" ? "0" : "1";
+                            dt[index][field.getInfo().id + "_label"] = field.model.getKeyLabel().value === "false" ? "false" : "true";
                         }
                     }
                 }
@@ -7886,11 +8324,11 @@ jQuery.fn.extend({
             return this;
         },
 		initialize: function () {
-			this.model.on("change", this.checkBinding, this, {chage:true});
+			this.model.on("change:value", this.checkBinding, this, {chage:true});
 		},
 		checkBinding: function (event) {
             var form = this.model.get("form"), 
-            	data = {}, 
+            	data = {},
             	option, 
             	opts = this.model.get("options"), 
             	that = this,i;
@@ -8048,22 +8486,25 @@ jQuery.fn.extend({
 			name,
 			containerOptions,
 			fullOptions = [],
-			option,
+			option = "",
 			thisValue,
-			valueOption;
+			valueOption,
+			fullOption;
 			this.$el.html(this.template(this.model.toJSON()));
 			this.$el.find("option").remove();
 			thisValue = this.model.get("value");
+			thisValue = thisValue.toString();
 			containerOptions = this.$el.find("select");
 			fullOptions = this.model.get("options");
-			for ( var i=0; i<fullOptions.length; i+=1 ){
-				option =  $("<option value="+ fullOptions[i].value+">"+fullOptions[i].label+"</option>");
-				valueOption = fullOptions[i].value;
-				if (valueOption.toString() && thisValue.toString() && valueOption.toString() === thisValue.toString()){
-					option.attr("selected",true);
-				}
-				containerOptions.append(option);
+			
+			for (var i = 0; i < fullOptions.length; i += 1) {
+				fullOption = fullOptions[i];
+				fullOption.value = fullOption.value || "";
+				option = option +
+				"<option value='" + fullOption.value + "' " + "  >" + fullOption.label + "</option>";
 			}
+			containerOptions.append(option);
+			
 			this._setDataOption();
 			this.$el.find("input[type='hidden']").val(this.model.get("data")["label"])
 			if (this.model.get("group") === "grid") {
@@ -8102,6 +8543,8 @@ jQuery.fn.extend({
 				this.$el.find("input[type='hidden']").attr("name","");
 			}
 			this.tagControl = this.$el.find("select");
+			this.tagControl.val(this.model.get("value")|| "");
+			this.tagControl.val(this.model.get("value").toString()|| "");
 			this.tagHiddenToLabel = this.$el.find("input[type='hidden']");
 			this.keyLabelControl = this.$el.find("input[type='hidden']");
 			return this;
@@ -8125,34 +8568,8 @@ jQuery.fn.extend({
 					data["dyn_uid"] = this.model.get("form").model.get("id");
 				} 
 			}
-			prj = this.model.get("project");
-			if (this.model.get("group") !== "grid") {
-				endpoint = this.model.getEndpointVariable({
-				                type: "executeQuery",
-				                keys: {
-				                    "{var_name}": this.model.get("var_name") || ""
-				                }
-				            });
-				url = prj.getFullURL(endpoint);
-			} else {
-				endpoint = this.model.getEndpointVariable({
-				                type: "executeQuery",
-				                keys: {
-				                    "{var_name}": this.model.get("var_name") || ""
-				                }
-				            });
-				url = prj.getFullURL(endpoint);
-			}	
-			resp = [];
-			restClient = new PMDynaform.core.Proxy ({
-			    url: url,
-			    method: "POST",
-			    data: data,
-			    keys: prj.token,
-			    successCallback: function (xhr, response) {
-			    	resp = response;
-			    }
-			});
+			prj = this.model.get("project");			
+			resp = prj.webServiceManager.executeQuery(data,this.model.get("var_name") || "");
 			return resp;
 		},
 		mergeOptions : function (remoteOptions, returnOptions){
@@ -8295,7 +8712,7 @@ jQuery.fn.extend({
 	        "keydown input": "preventEvents"
 	    },
 		initialize: function (){
-			this.model.on("change", this.checkBinding, this);
+			this.model.on("change:value", this.checkBinding, this);
 		},
 		preventEvents: function (event) {
             //Validation for the Submit event
@@ -8475,7 +8892,7 @@ jQuery.fn.extend({
         },
         initialize: function (){
             var that = this;
-            this.model.on("change", this.checkBinding, this);
+            this.model.on("change:value", this.checkBinding, this);
         },
         refreshBinding: function () {
             this.keyPressed = true;
@@ -8619,7 +9036,7 @@ var TextView = PMDynaform.view.Field.extend({
 		initialize: function () {
 			var that = this;
 			this.formulaFieldsAssociated = [];
-			this.model.on("change", this.checkBinding, this);
+			this.model.on("change:value", this.checkBinding, this);
 		},
 		on: function (e, fn) {
 			var that = this, 
@@ -8784,24 +9201,8 @@ var TextView = PMDynaform.view.Field.extend({
 					data["dyn_uid"] = this.model.get("form").model.get("id");
 				} 
 			}
-            prj = this.model.get("project");
-            endpoint = this.model.getEndpointVariable({
-                            type: "executeQuery",
-                            keys: {
-                                "{var_name}": this.model.get("var_name") || ""
-                            }
-                        });
-            url = prj.getFullURL(endpoint);         
-            resp = [];
-            restClient = new PMDynaform.core.Proxy ({
-                url: url,
-                method: "POST",
-                data: data,
-                keys: prj.token,
-                successCallback: function (xhr, response) {
-                    resp = response;
-                }
-            });
+            prj = this.model.get("project");            
+            resp = prj.webServiceManager.executeQuery(data,this.model.get("var_name") || "");            
             return resp;
         },
         mergeOptions : function (remoteOptions, click){
@@ -8933,10 +9334,10 @@ var TextView = PMDynaform.view.Field.extend({
 					return val;
 				},
 				capitalizePhrase : function (){
-					return val.capitalize();
+					return val.charAt(0).toUpperCase() + val.slice(1);
 				},
 				titleCase : function (){
-					return val.charAt(0).toUpperCase() + val.slice(1);
+					return val.capitalize();
 				}
 			};
 			if (transform) {
@@ -8973,7 +9374,7 @@ var TextView = PMDynaform.view.Field.extend({
 					idFields[allFieldsView[index].model.get("id")] = allFieldsView[index];
 				}
 				if (allFieldsView[index] instanceof PMDynaform.view.Label){
-					idFields[allFieldsView[index].model.get("name")] = allFieldsView[index];	
+					idFields[allFieldsView[index].model.get("id")] = allFieldsView[index];	
 				}
 			}
 
@@ -8983,7 +9384,7 @@ var TextView = PMDynaform.view.Field.extend({
 			fieldFormula = formulaField.split(/[\-(,|+*/\)]+/);
 			if (this.model.get("group") == "grid") {
 				for (var k = 0 ; k < rows.length ; k+=1){
-					if (fieldFormula.indexOf(rows[k].model.get("name")) > -1){
+					if (fieldFormula.indexOf(rows[k].model.get("id")) > -1){
 						rows[k].onFieldAssociatedHandler();
 					}
 				}
@@ -9601,21 +10002,28 @@ var TextView = PMDynaform.view.Field.extend({
 		},
 		render: function () {
 			var that = this,
-			fileContainer,
-			fileControl,
-			oprand,
-			hidden,
-			name,
-			fileButton,
-			fileControl;
+                fileContainer,
+                fileControl,
+                oprand,
+                hidden,
+                name,
+                fileButton,
+                fileControl;
+            var title = 'Allowed file extensions: ' + this.model.get('extensions');
+            var link;
+            var i;
+            var label = that.model.get("data")["label"];
 			
 			this.$el.html( this.template(this.model.toJSON()));
 			
 			fileControl = this.$el.find("input[type='file']");
 			fileButton = that.$el.find("button[type='button']");
-			if(PMDynaform.core.ProjectMobile){
-				fileButton.attr("disabled","disabled");
-			}	
+			if(PMDynaform.core.ProjectMobile) {
+                fileButton.attr("disabled", "disabled");
+            }
+            link = this.$el.find("a.pmdynaform-control-file");
+            fileButton.text(title);
+            fileButton[0].title = title;
 			hidden = this.$el.find("input[type='hidden']");
 			fileContainer = this.$el.find(".pmdynaform-file-control")[0];
 			
@@ -9623,30 +10031,23 @@ var TextView = PMDynaform.view.Field.extend({
 				this.enableTooltip();
 			}
 
+            if (link.length > 0 && label.length > 0) {
+                for (i = 0; i < label.length; i += 1) {
+                    link.children()[i].title = label[i];
+                }
+            }
+
 			if ((navigator.userAgent.indexOf("MSIE") != -1) || (navigator.userAgent.indexOf("Trident") != -1)) {
 				fileControl.css({visibility:"inherit", width : "100%"});
 				fileButton.css({display:"none"});
 				this.isIE = true;
 			}
-			
-			/*this.renderFiles();
-			this.toggleButtonsAll();
-			oprand = {
-				dragClass : "pmdynaform-file-active",
-				dnd: this.model.get("dnd"),
-				multiple: this.model.get("multiple"),
-				on: {
-					load: function (e, file) {
-						that.addNewItem(e, file);
-					}
-				}
-			};*/
-			
+
 			if (this.model.get("group") === "grid") {
 				name = this.model.get("name");
 				name = name.substring(0,name.length-1).concat("_label]");
 				hidden[0].name = hidden[0].id = "form" + name;
-			}else{
+			} else {
 				hidden[0].name = hidden[0].id = "form[" + this.model.get("name")+"_label]";
 			}
 			
@@ -9654,97 +10055,158 @@ var TextView = PMDynaform.view.Field.extend({
             			
 			fileControl.change(function(e, ui){
 				var file = e.target, nameFileLoad;
+                var fileButton;
 				if (file.value  && that.isValid(file)){
+                    fileButton = that.$el.find("button[type='button']");
 					if (file.files){
 						nameFileLoad = file.files[0].name;
 					} else {
 						nameFileLoad = file.value.split("\\")[2]
 					}
-					that.$el.find("button[type='button']").text(nameFileLoad);
-					if ( that.model.get("data")["label"].length) {
-						if ( that.model.get("data")["label"].indexOf(nameFileLoad) === -1  ) {
-							if (that.firstLoad){
-								that.model.get("data")["label"].push(nameFileLoad);
-							}else{
-								that.model.get("data")["label"].splice(that.model.get("data")["label"].length-1);
-								that.model.get("data")["label"].push(nameFileLoad);
-							}
-						}
-					} else {
-						that.model.get("data")["label"].push(nameFileLoad);
-					}
+                    fileButton.text(nameFileLoad);
+                    fileButton[0].title = nameFileLoad;
+                    if (that.model.get("data")) {
+                        if ( that.model.get("data")["label"].length) {
+                            if ( that.model.get("data")["label"].indexOf(nameFileLoad) === -1  ) {
+                                if (that.firstLoad){
+                                    that.model.get("data")["label"].push(nameFileLoad);
+                                }else{
+                                    that.model.get("data")["label"].splice(that.model.get("data")["label"].length-1);
+                                    that.model.get("data")["label"].push(nameFileLoad);
+                                }
+                            }
+                        } else {
+                            that.model.get("data")["label"].push(nameFileLoad);
+                        }
+                    }
 					hidden.val(JSON.stringify(that.model.get("data")["label"]));
 					that.firstLoad = false;
-				}
+				} else {
+                    file.value = "";
+                    file.files = null;
+                }
 			});
 			//PMDynaform.core.FileStream.setupInput(fileControl, oprand); 
 			return this;
 		},
+        getFileType: function (file) {
+            var type;
+            var fileTarget;
+            if (file.files){
+                if (file.files[0]){
+                    type = file.files[0].name.substring(file.files[0].name.lastIndexOf(".")+1);
+                    fileTarget = file.files[0].name;
+                }
+            } else {
+                if (file.value.trim().length){
+                    type = file.value.split("\\")[2].substring(file.value.split("\\")[2].lastIndexOf(".")+1);
+                    fileTarget = file.value;
+                }
+            }
+            return {
+                type: type,
+                fileTarget: fileTarget
+            }
+        },
 		isValid : function (file) {
 			var validated = false, extensions, maxSize, type, fileTarget;
-			extensions = this.model.get("extensions");
-			if (file.files){
-				if (file.files[0]){
-					type = file.files[0].name.substring(file.files[0].name.lastIndexOf(".")+1);
-					fileTarget = file.files[0].name;
-				}
-			} else {
-				if (file.value.trim().length){
-					type = file.value.split("\\")[2].substring(file.value.split("\\")[2].lastIndexOf(".")+1);
-					fileTarget = file.value;
-				}
-			}
+            var that = this;
+            var errorType = {};
+            extensions = this.model.get("extensions");
+            var getType = that.getFileType(file);
+            var validatorModel = this.model.get('validator');
+            var tagFile = this.$el.find("input[type='file']")[0];
+            var fileButton = that.$el.find("button[type='button']");
+            var title = 'Allowed file extensions: ' + extensions;
+            var maxSizeInt = parseInt(this.model.get("size"), 10);
+            var sizeUnity = this.model.get("sizeUnity");
 
 			if (this.model.get("sizeUnity").toLowerCase() !== "kb" ){
-				maxSize = parseInt(this.model.get("size"),10)*1024;
+				maxSize = maxSizeInt*1024;
 			} else {
-				maxSize = parseInt(this.model.get("size"),10);
+				maxSize = maxSizeInt;
 			}
-			if (extensions === "*"){
+			if (extensions === "*" || extensions === ".*"){
 				validated = true;
 			} else {
-				if (this.model.get("extensions").indexOf(type) > -1) {
+				if (this.model.get("extensions").indexOf(getType.type) > -1) {
 					validated = true;
 				}else{
-					alert("The extension of the file is not supported for the field...");
-					validated = false;
+                    errorType = {
+                        type: 'support',
+                        message: 'The file extension is not supported. Supported extension(s): '
+                        + extensions
+                    };
+                    validatorModel.set('fileOnly',  errorType);
+                    fileButton.text(title);
+                    fileButton[0].title = title;
+                    validated = false;
 				}
 			}
 			if (validated && file.files){
 				if ( file.files[0] && (file.files[0].size/1024 <= maxSize) ){
 					validated = true
 				}else{
-					alert("File \""+file.name+"\" is too big. \n Max allowed size is "+ maxSize +" Kb.");
-					validated = false;
+                    errorType = {
+                        type: 'size',
+                        message:  "The file size exceeds the limit. Max allowed limit is: " + maxSizeInt + sizeUnity
+                    };
+                    validatorModel.set('fileOnly',  errorType);
+                    fileButton.text(title);
+                    fileButton[0].title = title;
+                    validated = false;
 				}				
 			}
 			if (validated){
-				this.model.attributes.value = fileTarget || "";
+                validatorModel.set('fileOnly', null);
+				this.model.attributes.value = getType.fileTarget || "";
 				if (this.validator){
 					this.validator.$el.remove();
-					this.$el.removeClass('has-error has-feedback');					
+					this.$el.removeClass('has-error has-feedback');
+                    this.$el.removeClass('has-warning has-feedback');
 				}
-			}
+			} else {
+                if(this.validator) {
+                    this.validator.$el.remove();
+                    this.$el.removeClass('has-error has-feedback');
+                    this.$el.removeClass('has-warning has-feedback');
+                }
+                if (!this.model.isValid() && validatorModel.get('fileOnly') !== null) {
+                    this.validator = new PMDynaform.view.Validator({
+                        model: this.model.get("validator")
+                    });
+                    $(tagFile).prev().append(this.validator.el);
+                    if (this.model.get('validator').get('fileOnly')) {
+                        this.applyStyleWarning();
+                        this.validator.$el.children().removeClass('alert');
+                        this.validator.$el.children().addClass('warning');
+                    }
+                    validatorModel.set('fileOnly', null);
+                    this.model.attributes.value = "";
+                }
+            }
 			return validated;
 		},
 		validate: function(e) {
 			var tagFile = this.$el.find("input[type='file']")[0], validated = true;
+			if (this.model.get("mode")=="view" || this.model.get("mode")=="disabled"){
+				return true;
+			}
 			if (this.model.get("enableValidate")) {
 				if(this.validator){
 					this.validator.$el.remove();
 					this.$el.removeClass('has-error has-feedback');
+                    this.$el.removeClass('has-warning has-feedback');
 				}
 				if (!this.model.isValid()){
-					this.validator = new PMDynaform.view.Validator({
-						model: this.model.get("validator")
-					});
-					$(tagFile).parent().append(this.validator.el);
-					if (!this.isIE){
-						this.validator.el.style.top = "-23px";
-					}
-					this.applyStyleError();
-					validated = false;
-					this.model.attributes.valid = false;
+                    this.validator = new PMDynaform.view.Validator({
+                        model: this.model.get("validator")
+                    });
+                    $(tagFile).prev().append(this.validator.el);
+                    this.applyStyleError();
+                    this.model.get('validator').get('fileOnly', null);
+                    validated = false;
+                    this.model.attributes.valid = false;
 				}else{
 					validated = true;
 					this.model.attributes.valid = true;
@@ -9905,7 +10367,7 @@ var TextView = PMDynaform.view.Field.extend({
             return this;
         },
 		initialize: function (){
-			this.model.on("change", this.checkBinding, this);
+			this.model.on("change:value", this.checkBinding, this);
 		},
 		checkBinding: function () {
 			var form = this.model.get("form");
@@ -10065,7 +10527,8 @@ var TextView = PMDynaform.view.Field.extend({
         events: {
                 "click li": "continueDependentFields",
                 "keyup input": "validate",
-                "keydown input": "refreshBinding"
+                "keydown input": "refreshBinding",
+				"change input" : "onChange"
         },
         onChangeCallback: function (){},
         setOnChange : function (fn) {
@@ -10077,7 +10540,7 @@ var TextView = PMDynaform.view.Field.extend({
         initialize: function () {
             var that = this;
             //this.model.on("change:value", this.onChange, this);
-            this.model.on("change", this.checkBinding, this);
+            this.model.on("change:value", this.checkBinding, this);
             this.containerList = $(this.templateList());
             this.enableKeyUpEvent();
         },
@@ -10421,24 +10884,8 @@ var TextView = PMDynaform.view.Field.extend({
                     data["dyn_uid"] = this.model.get("form").model.get("id");
                 } 
             }
-            prj = this.model.get("project");
-            endpoint = this.model.getEndpointVariable({
-                            type: "executeQuery",
-                            keys: {
-                                "{var_name}": this.model.get("var_name") || ""
-                            }
-                        });
-            url = prj.getFullURL(endpoint);         
-            resp = [];
-            restClient = new PMDynaform.core.Proxy ({
-                url: url,
-                method: "POST",
-                data: data,
-                keys: prj.token,
-                successCallback: function (xhr, response) {
-                    resp = response;
-                }
-            });
+            prj = this.model.get("project");            
+            resp = prj.webServiceManager.executeQuery(data,this.model.get("var_name") || "");
             return resp;
         },
         mergeOptions : function (remoteOptions){
@@ -10640,7 +11087,8 @@ var TextView = PMDynaform.view.Field.extend({
         template: _.template($("#tpl-label").html()),
         validator: null,
         singleControl : [],
-		formulaFieldsAssociated: [],        
+        fieldValid : [],
+		formulaFieldsAssociated: [],
         initialize: function (){
             this.model.on("change", this.render, this);
             this.optionsControl = ["dropdown", "checkgroup","radio","suggest", "checkbox"]
@@ -10648,12 +11096,23 @@ var TextView = PMDynaform.view.Field.extend({
 		render: function() {
 			var hidden, name;
 			this.$el.html( this.template(this.model.toJSON()));
+			if (this.model.get("hint") !== "") {
+				this.enableTooltip();
+			}
             if (this.model.get("originalType") === "datetime"){
                 if (this.model.get("group") !== "grid") {
                 	if (this.model.get("keyLabel")){
-                		this.$el.find("span:eq(1)").text(this.model.get("keyLabel"));
+                		if(this.model.get("required")){
+                			this.$el.find("span:eq(2)").text(this.model.get("keyLabel"));                			
+                		}else{
+							this.$el.find("span:eq(1)").text(this.model.get("keyLabel"));
+                		}
                 	}else{
-                    	this.$el.find("span:eq(1)").text(this.model.get("data")["label"]);
+                		if(this.model.get("required")){
+							this.$el.find("span:eq(2)").text(this.model.get("data")["label"]);                			
+                		}else{
+							this.$el.find("span:eq(1)").text(this.model.get("data")["label"]);
+                		}
                 	}
                 }else{
                 	if (this.model.get("keyLabel")){
@@ -10713,6 +11172,96 @@ var TextView = PMDynaform.view.Field.extend({
 					if (fieldsAssoc[i].model.get("formulator") instanceof PMDynaform.core.Formula) {
 						this.model.addFormulaTokenAssociated(fieldsAssoc[i].model.get("formulator"));
 						this.model.updateFormulaValueAssociated(fieldsAssoc[i]);
+					}
+				}
+			}
+			return this;
+		},
+		setOnChangeCallbackOperation: function (fn) {
+			if (typeof fn === "function") {
+				this.onChangeCallbackOperation = fn;
+			}
+			return this;
+		},
+		on: function (e, fn) {
+			var that = this, 
+			control,
+			localEvents = {
+				"changeValues": "setOnChangeCallbackOperation"
+			};
+			if (localEvents[e]) {
+				this[localEvents[e]](fn);
+			} else {
+				control = this.$el.find("input");
+				if (control) {
+					control.on(e, function(event){
+						fn(event, that);
+						event.stopPropagation();
+					});
+				} else {
+					throw new Error ("Is not possible find the HTMLElement associated to field");
+				} 
+			}
+			return this;
+		},
+		onFormula: function(rows) {
+			var fieldsList,
+			that = this,
+			allFields,
+			allFieldsView,
+			index,
+			formulaField,
+			idFields = {},
+			fieldFormula,
+			fieldValid,
+			resultField,
+			fieldAdded = [],
+			fieldSelected,
+			obj,
+			i;
+			if (this.model.get("group") == "grid") {
+				fieldsList = rows;
+			} else {
+				fieldsList = this.parent.items;
+			}
+			//All Fields from the FORM
+			allFieldsView = (fieldsList instanceof Array)? fieldsList: fieldsList.asArray();
+
+			for (index = 0 ; index < allFieldsView.length ; index+=1 ) {
+				if (allFieldsView[index] instanceof PMDynaform.view.Text) {
+					idFields[allFieldsView[index].model.get("id")] = allFieldsView[index];
+				}
+				if (allFieldsView[index] instanceof PMDynaform.view.Label){
+					idFields[allFieldsView[index].model.get("id")] = allFieldsView[index];	
+				}
+			}
+
+			fieldSelected = {};
+			//Fields from the Formula PROPERTY
+			formulaField = this.model.get("formula");
+			fieldFormula = formulaField.split(/[\-(,|+*/\)]+/);
+			if (this.model.get("group") == "grid") {
+				for (var k = 0 ; k < rows.length ; k+=1){
+					if (fieldFormula.indexOf(rows[k].model.get("id")) > -1){
+						rows[k].onFieldAssociatedHandler();
+					}
+				}
+			}
+			this.fieldValid = fieldFormula.filter(function existElement(element) {
+				var result = false;
+				if ((idFields[element] !== undefined) && ($.inArray(element, fieldAdded) === -1)) {
+					fieldAdded.push(element);
+					result = true
+				}
+				return result;
+			});
+			//Insert the Formula object to fields selected
+			for (var obj = 0 ; obj < this.fieldValid.length ; obj+=1 ) {
+				this.model.addFormulaFieldName(this.fieldValid[obj]);
+				idFields[this.fieldValid[obj]].formulaFieldsAssociated.push(that);
+				if (this.model.get("group") == "grid" ){
+					if(idFields.hasOwnProperty(this.fieldValid[obj])){
+						this.model.attributes.formulaAssociatedObject.push(idFields[this.fieldValid[obj]]);
 					}
 				}
 			}
@@ -10849,6 +11398,7 @@ var TextView = PMDynaform.view.Field.extend({
                 "text",
                 "textarea",
                 "checkbox",
+				"checkgroup",
                 "radio",
                 "dropdown",
                 "button",
@@ -10921,7 +11471,7 @@ var TextView = PMDynaform.view.Field.extend({
         },
         isValid: function (event) {
             var i, formValid = true,
-            itemsField = this.formView.items.asArray();
+            itemsField = this.formView.items.asArray(), itemField;
 
             if (itemsField.length > 0) {
                 for (i = 0; i < itemsField.length; i+=1) {
@@ -10930,18 +11480,27 @@ var TextView = PMDynaform.view.Field.extend({
 							itemsField[i].validate(event);
 							if (!itemsField[i].model.get("valid")) {
 								formValid = itemsField[i].model.get("valid");
+								if(itemField === undefined){
+									itemField = itemsField[i];
+								}
 							}
 						}else{
 							itemsField[i].validate();
-                            formValid = itemsField[i].model.get("valid");
-                            if (!formValid){
+							formValid = itemsField[i].model.get("valid");
+							if (!formValid){
+								if (itemsField[i].model.get("type")!=="grid"){
+									itemsField[i].setFocus();
+								}
 								this.model.attributes.valid = false;
-                                return false;
-                            } 
+								return false;
+							} 
 						}
                     }
                 }
             }
+			if (itemField && itemField.model.get("type")!=="grid"){
+				itemField.setFocus();
+			}
             this.model.set("valid", formValid );
 
             return formValid;
@@ -11143,7 +11702,7 @@ var TextView = PMDynaform.view.Field.extend({
         outFocus : false,
 		initialize: function () {
             var that = this;
-            this.model.on("change", this.checkBinding, this);
+            this.model.on("change:value", this.checkBinding, this);
         },
         checkBinding: function () {
         	var form = this.model.get("form"), data = {};
@@ -11830,12 +12389,12 @@ var TextView = PMDynaform.view.Field.extend({
 	                if (this.project.mobileDataControls){
 	                    if ( this.project.mobileDataControls["data"]){
 	                        var files = this.project.mobileDataControls["data"][that.model.get("name")];
-	                        if (files) {
+	                        if (files && files.length > 0 ) {
 								switch (this.model.get("type")) {
 								    case "imageMobile":
 										files = this.model.remoteProxyData(files); 
 										for (var i = 0 ; i < files.length ; i+=1){
-											itemElement = $("<img src=\"data:image/png;base64,"+files[i].base64 + "\"class='img-thumbnail' alt='Thumbnail Image' style='width: 200px; height: 200px';>");
+											itemElement = $("<img src=\"data:image/png;base64,"+files[i].base64 + "\"class='img-thumbnail' alt='Thumbnail Image'>");
 											container.append(itemElement);
 										}
 								        break; 
@@ -12038,13 +12597,18 @@ var TextView = PMDynaform.view.Field.extend({
             }
 
             if(arrayRemoteData.length != 0){
-	            array = this.model.remoteProxyData(arrayRemoteData);
-		        if(array){
-		            for (var i=0 ;i< array.length ;i++){            	
-		            	this.validateFiles(array[i]);
-		            	this.model.attributes.files.push(array[i]);
-		            }
-	        	}
+	            for (var index = 0 ; index< arrayRemoteData.length;index++){
+	            	var arrayI = [];
+	            	arrayI.push(arrayRemoteData[index]);
+	            	array = this.model.remoteProxyData(arrayI);
+	            	//array = this.model.remoteProxyData(arrayRemoteData);			        			        
+			        if(array){
+			            for (var i=0 ;i< array.length ;i++){            	
+			            	this.validateFiles(array[i]);
+			            	this.model.attributes.files.push(array[i]);
+			            }
+		        	}	
+	            }	            
         	}
         },
 
@@ -13031,7 +13595,7 @@ var TextView = PMDynaform.view.Field.extend({
 				fileContainer = this.$el.find(".pmdynaform-geo-container").empty();
 				if (this.project.mobileDataControls){
 					signature = this.project.mobileDataControls;
-					if (signature.data && signature.data[this.model.get("name")]) {
+					if (signature.data && signature.data[this.model.get("name")] && signature.data[this.model.get("name")].length > 0) {
 						signature = signature.data[this.model.get("name")];		
 						signature = this.model.remoteProxyData(signature[0]); 
 						itemElement = $("<img src=\"data:image/png;base64,"+signature.base64 + "\"class='img-thumbnail' alt='Thumbnail Image'>");
@@ -13148,6 +13712,24 @@ var TextView = PMDynaform.view.Field.extend({
 
             this.set("valid", true);
             delete this.get("message")[validator];
+            if (this.get('type') == 'file') {
+                if (this.get('fileOnly') && this.get('fileOnly') !== null) {
+                    if(this.get('fileOnly')['type'] == 'support') {
+                        this.set('valid', false);
+                        this.set('message', {
+                            validator: this.get('fileOnly')['message']
+                        });
+                        return this;
+                    }
+                    if(this.get('fileOnly')['type'] == 'size') {
+                        this.set('valid', false);
+                        this.set('message',  {
+                            validator: this.get('fileOnly')['message']
+                        });
+                        return this;
+                    }
+                }
+            }
             if (this.get("required")) {
             	if (PMDynaform.core.Validators[validator].fn(value) === false) {
 	                this.set("valid", false);
@@ -13235,7 +13817,8 @@ var TextView = PMDynaform.view.Field.extend({
 			method: "get",
 			namespace: "pmdynaform",
 			target: null,
-			type: "panel"
+			type: "panel",
+			inputDocuments : {}
 		},
 		getData: function(){
 			return {
@@ -13709,7 +14292,8 @@ var TextView = PMDynaform.view.Field.extend({
             itemClicked : false,
             keyLabel : "",
             optionsSql : [],
-			enableValidate : true
+			enableValidate : true,
+			placeholder : ""
 		},
 		initialize: function(options) {
             var data;
@@ -13847,6 +14431,18 @@ var TextView = PMDynaform.view.Field.extend({
                 }
             }
             return this;
+        },
+        setLocalOptions: function () {
+            var item = {};
+            if (this.get("placeholder")!==""){
+                item["label"] = this.get("placeholder");
+                item["value"] = "";
+                this.attributes.options.splice(0,-1,item);
+            }
+            if (this.get("options")){
+                this.set("localOptions", this.get("options"));
+            }
+            return this;
         }
 	});
 	PMDynaform.extendNamespace("PMDynaform.model.Dropdown", DropdownModel);
@@ -13906,25 +14502,18 @@ var TextView = PMDynaform.view.Field.extend({
 			}));
 			this.set("dependenciesField",[]);
 			this.verifyControl();
-			this.initControl();
             this.setLocalOptions();
             this.setRemoteOptions();
             this.mergeOptionsSql();
-            data = this.get("data");
+			this.initControl();
+            data = attrs["data"] || this.model.get("data");
             if ( data && data["value"].toString() ) {
                 this.attributes.value = data["value"];
                 this.attributes.keyLabel = data["label"];
+				this.set("data",data);
             } else {
-                if (this.get("options").length){
-                    this.set("value",this.get("options")[0]["value"]);
-                    this.set("data",{
-                        value:this.get("options")[0]["value"],
-                        label : this.get("options")[0]["label"]
-                    });
-                } else {
                     this.set("data",{value:"", label:""});
                     this.set("value","");
-                }
             }
             if (this.get("group") === "form"){
 				if(this.get("variable").trim().length === 0){
@@ -14226,10 +14815,6 @@ var TextView = PMDynaform.view.Field.extend({
 			data : null,
 			localOptions: [],
 			options: [
-				{
-					label: "Empty",
-					value: "empty"
-				}
 			],
 			keyValue : null,
             keyLabel : "",
@@ -14415,6 +15000,8 @@ var TextView = PMDynaform.view.Field.extend({
             mode: "edit",
             multiple: false,
             name: PMDynaform.core.Utils.generateName("file"),
+            variable: null,
+            inputDocuments: null,
             preview: false,
             required: false,
             size: 1, //1 MB
@@ -14764,6 +15351,15 @@ var TextView = PMDynaform.view.Field.extend({
 			}
             return this;
 		},
+        setItemsChecked: function(items) {
+            for (var index = 0; index < items.length; index ++){
+                this.setItemChecked({
+                    value: items[index],
+                    checked: true
+                });
+            }
+            return this;
+        },
         updateItemSelected: function () {
             var i, data = {},
             selected = this.get("selected"), auxValue, opts = this.get("options");
@@ -14904,10 +15500,21 @@ var TextView = PMDynaform.view.Field.extend({
                     }
                 } else {
                     if (!data.hasOwnProperty("value") || data["value"] === "" || jQuery.isArray(data["value"])){
-                        for ( var i = 0 ; i < options.length ; i+=1 ) {
-                            if ( this.get("optionsToFalse").indexOf(options[i].value) > -1 ) {
-                                auxData["value"] = options[i].value;
-                                auxData["label"] = options[i].label;
+                        if ( defaultV ){
+                            if ( this.get("optionsToFalse").indexOf(defaultV) > -1){
+                                 auxData["label"] = options[1].label;
+                                 auxData["value"] = options[1].value
+                            } 
+                            if (this.get("optionsToTrue").indexOf(defaultV) > -1){
+                                 auxData["label"] = options[0].label;
+                                 auxData["value"] = options[0].value
+                            }
+                        }else{
+                            for ( var i = 0 ; i < options.length ; i+=1 ) {
+                                if ( this.get("optionsToFalse").indexOf(options[i].value) > -1 ) {
+                                    auxData["value"] = options[i].value;
+                                    auxData["label"] = options[i].label;
+                                }
                             }
                         }
                     }
@@ -14923,13 +15530,13 @@ var TextView = PMDynaform.view.Field.extend({
             }
             //defaultV 0, 1,"0", "1", true, false, "true", "false" 
             if ( defaultV && !existData ){
-                if ( this.get("optionsToFalse").indexOf(defaultV) > -1 || this.get("optionsToTrue").indexOf(defaultV) > -1) {
-                    auxData["value"] = defaultV;
-                    for ( var i = 0 ; i < options.length ; i+=1 ) {
-                        if ( options[i].value === data["value"] ) {
-                            auxData["label"] = options[i].label;
-                        }
-                    }
+                if ( this.get("optionsToFalse").indexOf(defaultV) >-1){
+                     auxData["label"] = options[1].label;
+                     auxData["value"] = options[1].value
+                } 
+                if (this.get("optionsToTrue").indexOf(defaultV) >-1){
+                     auxData["label"] = options[0].label;
+                     auxData["value"] = options[0].value
                 }
             }
             return auxData;
@@ -15559,8 +16166,17 @@ var TextView = PMDynaform.view.Field.extend({
             this.mergeOptionsSql();
 			data = this.get("data");
 			if ( data ) {
-				this.set("value", data["label"]);
+                this.set("value", data["label"]);
                 this.set("defaultValue",data["label"]);
+                if (options.originalType == "text"){
+                    if (jQuery.isArray(options.fullOptions) && options.fullOptions.length){
+                        if(this.get("value") === ""){
+							this.set("value",options.fullOptions[0]);
+						}
+                    }else{
+                        this.set("fullOptions",[data["label"]]);
+                    }
+                }
 			} else {
                 if (options.originalType == "checkbox"){
                     this.set("data",{"value":[],"label":"[]"});
@@ -15608,6 +16224,10 @@ var TextView = PMDynaform.view.Field.extend({
         updateFormulaValueAssociated: function(field) {
             var resultField = field.model.get("formulator").evaluate();
             field.model.set("value", resultField);
+            return this;
+        },
+        addFormulaFieldName: function(otherField) {
+            this.get("formulator").addField("field", otherField);
             return this;
         }
     });
@@ -16091,18 +16711,7 @@ var TextView = PMDynaform.view.Field.extend({
             valid: true,
             validator: null,
             value: "",
-            files:[]   
-            /**format a file in mobile
-                file :{
-                    id: ""
-                    filePath : ""
-                    base64 : ""
-                }
-                or                
-                file : ""
-                or mixed
-
-            */
+            files:[]               
         },
 
         initialize: function() {
@@ -16166,23 +16775,8 @@ var TextView = PMDynaform.view.Field.extend({
                 that= this,
                 respData,
                 data;
-                data = this.formatArrayImagesToSend(arrayImages);
-                if (PMDynaform.core.ProjectMobile){
-                    endpoint = prj.getFullEndPoint(prj.endPointsPath.imageInfo);
-                    url = prj.getFullURL(endpoint);    
-                }else{
-                    url = prj.getFullURLMobile(prj.endPointsPath.imageInfo);                    
-                }
-                restClient = new PMDynaform.core.Proxy ({
-                    url: url,
-                    method: 'POST',
-                    data: data,
-                    keys: prj.token,
-                    successCallback: function (xhr, response) {
-                        respData = response;
-                    }
-                });
-                respData = this.formatArrayImages(respData);                
+                data = this.formatArrayImagesToSend(arrayImages);                
+                respData = this.formatArrayImages(prj.webServiceManager.imagesInfo(data));                                  
                 return respData;            
         },
         formatArrayImagesToSend : function (arrayImages){
@@ -16192,11 +16786,18 @@ var TextView = PMDynaform.view.Field.extend({
 
             for (var i = 0; i< arrayImages.length ; i++){
                 imageId = arrayImages[i];
-                item = {
-                    fileId: imageId,
-                    width : "100",
-                    version :1
-                };
+                if(PMDynaform.core.ProjectMobile){
+                    item = {
+                        fileId: imageId,
+                        width : "100",
+                        version :1
+                    };
+                }else{
+                    item = {
+                        fileId: imageId,                        
+                        version :1
+                    };
+                }                
                 dataToSend.push(item);
             }
             return dataToSend;
@@ -16228,10 +16829,10 @@ var TextView = PMDynaform.view.Field.extend({
                     type: "fileStreaming",
                     keys: {
                         "{fileId}": id,
-                        "{caseID}": prj.keys.caseID                            
+                        "{caseID}": prj.webServiceManager.options.keys.caseID                           
                     }
                 });                
-                url = prj.getFullURL(endpoint);              
+                url = prj.webServiceManager.getFullURLStreaming(id);             
                 return url;            
         },
         urlFileStreaming : function (id){
@@ -16239,15 +16840,8 @@ var TextView = PMDynaform.view.Field.extend({
                 url,
                 that = this,
                 endpoint,                
-                dataToSend;                
-                endpoint = this.getEndpointVariables({
-                    type: "fileStreaming",
-                    keys: {
-                        "{fileId}": id,
-                        "{caseID}": prj.keys.caseID                            
-                    }
-                });                
-                url = prj.getFullURLStreaming(endpoint);
+                dataToSend;                                                
+                url = prj.webServiceManager.getFullURLStreaming(id);
                 dataToSend = {
                     id:id,
                     filePath: url
@@ -16348,7 +16942,8 @@ var TextView = PMDynaform.view.Field.extend({
             
         },        
         remoteProxyData : function (id){           
-            var prj = this.get("project"),
+            return this.get("project").webServiceManager.imageInfo(id,600);
+            /*var prj = this.get("project"),
             url,
             restClient,
             that = this,
@@ -16376,11 +16971,10 @@ var TextView = PMDynaform.view.Field.extend({
                     respData = response;
                 }
             });
-            //this.set("proxy", restClient);
             return {
                 id: respData[0].fileId,
                 base64: respData[0].fileContent
-            };
+            };*/
             
         },
         getImagesNetwork : function (location){           
@@ -16601,7 +17195,8 @@ var TextView = PMDynaform.view.Field.extend({
             
         },        
         remoteProxyData : function (id){           
-            var prj = this.get("project"),
+            return this.get("project").webServiceManager.imageInfo(id,300);
+            /*var prj = this.get("project"),
             url,
             restClient,
             that = this,
@@ -16643,7 +17238,7 @@ var TextView = PMDynaform.view.Field.extend({
                     id: "",
                     base64: ""
                 };
-            }
+            }*/
         },
         remoteGenerateID : function (location){           
             var prj = this.get("project"),
