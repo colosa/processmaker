@@ -163,7 +163,7 @@ if ($flagExecuteBeforeTriggers) {
             $Fields['APP_DATA'] = $oCase->ExecuteTriggers( $_SESSION['TASK'], $_GET['TYPE'], $_GET['UID'], 'BEFORE', $Fields['APP_DATA'] );
         } else {
             unset($_SESSION['beforeTriggersExecuted']);
-        } 
+        }
         //Execute before triggers - End
     } else {
         unset( $_SESSION['_NO_EXECUTE_TRIGGERS_'] );
@@ -763,7 +763,6 @@ try {
                     }
                 } //set priority value
 
-
                 //$sTask = $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_UID'];
                 //TAS_UID has a hidden field to store the TAS_UID
                 $hiddenName = "form[TASKS][" . $sKey . "][TAS_UID]";
@@ -890,6 +889,18 @@ try {
                         $aFields['TASK'][$sKey]['NEXT_TASK']['USR_UID'] = $userFields['USR_FULLNAME'];
                         $aFields['TASK'][$sKey]['NEXT_TASK']['ROU_FINISH_FLAG'] = true;
                         $aFields['PROCESS']['ROU_FINISH_FLAG'] = true;
+                        break;
+                    case "MULTIPLE_INSTANCE":
+                    case "MULTIPLE_INSTANCE_VALUE_BASED":
+                        $arrayAux = array();
+
+                        foreach ($aValues["NEXT_TASK"]["USER_ASSIGNED"] as $value) {
+                            $arrayAux[$value["USR_UID"]] = $value["USR_FULLNAME"];
+                        }
+
+                        asort($arrayAux);
+
+                        $aFields["TASK"][$sKey]["NEXT_TASK"]["USR_UID"] = "<div style=\"overflow: auto; max-height: 200px;\">" . implode("<br />", $arrayAux) . "</div>";
                         break;
                 }
 

@@ -120,7 +120,7 @@ class Activity extends Api
 
     }
 
-    
+
 
 
 
@@ -168,7 +168,7 @@ class Activity extends Api
 
 
 
-    
+
 
     /**
 
@@ -420,7 +420,7 @@ class ActivityPropertiesStructure
 
     /**
 
-     * @var string {@from body} {@choice BALANCED,MANUAL,EVALUATE,REPORT_TO,SELF_SERVICE,SELF_SERVICE_EVALUATE}
+     * @var string {@from body} {@choice BALANCED,MANUAL,EVALUATE,REPORT_TO,SELF_SERVICE,SELF_SERVICE_EVALUATE,MULTIPLE_INSTANCE,MULTIPLE_INSTANCE_VALUE_BASED}
 
      */
 

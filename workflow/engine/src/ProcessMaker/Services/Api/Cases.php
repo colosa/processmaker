@@ -830,8 +830,9 @@ class Cases extends Api
     public function doGetCaseVariables($app_uid)
     {
         try {
+            $usr_uid = $this->getUserId();
             $cases = new \ProcessMaker\BusinessModel\Cases();
-            $response = $cases->getCaseVariables($app_uid);
+            $response = $cases->getCaseVariables($app_uid, $usr_uid);
             return $response;
         } catch (\Exception $e) {
             throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
@@ -853,8 +854,9 @@ class Cases extends Api
     public function doPutCaseVariables($app_uid, $request_data, $dyn_uid = '')
     {
         try {
+            $usr_uid = $this->getUserId();
             $cases = new \ProcessMaker\BusinessModel\Cases();
-            $cases->setCaseVariables($app_uid, $request_data, $dyn_uid);
+            $cases->setCaseVariables($app_uid, $request_data, $dyn_uid, $usr_uid);
         } catch (\Exception $e) {
             throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
         }

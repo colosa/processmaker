@@ -103,6 +103,31 @@ class Users extends BaseUsers
         }
     }
 
+    public function loadByEmail ($sUsrEmail)
+    {
+        $c = new Criteria( 'workflow' );
+
+        $c->clearSelectColumns();
+        $c->addSelectColumn( UsersPeer::USR_UID );
+        $c->addSelectColumn( UsersPeer::USR_USERNAME );
+        $c->addSelectColumn( UsersPeer::USR_STATUS );
+        $c->addSelectColumn( UsersPeer::USR_FIRSTNAME );
+        $c->addSelectColumn( UsersPeer::USR_LASTNAME );
+
+        $c->add( UsersPeer::USR_EMAIL, $sUsrEmail );
+        return $c;
+    }
+
+    public function loadByUserEmailInArray ($sUsrEmail)
+    {
+        $c = $this->loadByEmail( $sUsrEmail );
+        $rs = UsersPeer::doSelectRS( $c, Propel::getDbConnection('workflow_ro') );
+        $rs->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+        $rs->next();
+        $row = $rs->getRow();
+        return $row;
+    }
+
     public function loadDetails ($UsrUid)
     {
         try {

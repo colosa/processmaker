@@ -379,6 +379,17 @@ class PMPlugin
         $oPluginRegistry =& PMPluginRegistry::getSingleton();
         $oPluginRegistry->enableRestService($this->sNamespace, $enable);
     }
+    
+    /**
+     * With this function we can register new options to designer menu
+     * param string $menuOptionsFile
+     * @return void
+     */
+    public function registerDesignerNewOption($menuOptionsFile)
+    {
+        $oPluginRegistry =& PMPluginRegistry::getSingleton();
+        $oPluginRegistry->registerDesignerNewOption($this->sNamespace, $menuOptionsFile);
+    }
 }
 
 class menuDetail
@@ -716,5 +727,23 @@ class cronFile
     {
         $this->namespace = $namespace;
         $this->cronFile  = $cronFile;
+    }
+}
+
+class menuOptionFile
+{
+    public $namespace;
+    public $menuOptionFile;
+
+    /**
+     * This function is the constructor of the cronFile class
+     * param string $namespace
+     * param string $menuOptionFile
+     * @return void
+     */
+    public function __construct($namespace, $menuOptionFile)
+    {
+        $this->namespace = $namespace;
+        $this->menuOptionFile  = $menuOptionFile;
     }
 }

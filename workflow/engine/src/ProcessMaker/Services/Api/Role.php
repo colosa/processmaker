@@ -21,6 +21,14 @@ class Role extends Api
     public function __construct()
     {
         try {
+            $user = new \ProcessMaker\BusinessModel\User();
+
+            $usrUid = $this->getUserId();
+
+            if (!$user->checkPermission($usrUid, "PM_USERS")) {
+                throw new \Exception(\G::LoadTranslation("ID_USER_NOT_HAVE_PERMISSION", array($usrUid)));
+            }
+
             $this->role = new \ProcessMaker\BusinessModel\Role();
 
             $this->role->setFormatFieldNameInUppercase(false);

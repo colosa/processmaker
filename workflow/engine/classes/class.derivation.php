@@ -114,7 +114,7 @@ class Derivation
 
      */
 
-    public function prepareInformationTask(array $arrayTaskData)
+    private function prepareInformationTask(array $arrayTaskData)
 
     {
 
@@ -226,7 +226,11 @@ class Derivation
 
 
 
-                $arrayTaskData["NEXT_TASK"]["USER_ASSIGNED"] = (!in_array($arrayTaskData["NEXT_TASK"]["TAS_TYPE"], array("GATEWAYTOGATEWAY", "END-MESSAGE-EVENT", "SCRIPT-TASK", "INTERMEDIATE-CATCH-TIMER-EVENT", "END-EMAIL-EVENT")))? $this->getNextAssignedUser($arrayTaskData) : array("USR_UID" => "", "USR_FULLNAME" => "");
+                $regexpTaskTypeToExclude = "GATEWAYTOGATEWAY|END-MESSAGE-EVENT|SCRIPT-TASK|INTERMEDIATE-CATCH-TIMER-EVENT|END-EMAIL-EVENT";
+
+
+
+                $arrayTaskData["NEXT_TASK"]["USER_ASSIGNED"] = (!preg_match("/^(?:" . $regexpTaskTypeToExclude . ")$/", $arrayTaskData["NEXT_TASK"]["TAS_TYPE"]))? $this->getNextAssignedUser($arrayTaskData) : array("USR_UID" => "", "USR_FULLNAME" => "");
 
             }
 
@@ -279,6 +283,10 @@ class Derivation
             $this->case = new Cases();
 
             $task = new Task();
+
+
+
+            $arrayApplicationData = $this->case->loadCase($arrayData["APP_UID"]);
 
 
 
@@ -354,7 +362,11 @@ class Derivation
 
             $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
+
+
             $flagDefault = false;
+
+
 
             while ($rsCriteria->next()) {
 
@@ -383,10 +395,6 @@ class Derivation
                 if (isset($arrayRouteData["ROU_CONDITION"]) && trim($arrayRouteData["ROU_CONDITION"]) != "" && ($arrayRouteData["ROU_TYPE"] != "SELECT" || $arrayRouteData["ROU_TYPE"] == "PARALLEL-BY-EVALUATION")) {
 
                     G::LoadClass("pmScript");
-
-
-
-                    $arrayApplicationData = $this->case->loadCase($arrayData["APP_UID"]);
 
 
 
@@ -431,6 +439,8 @@ class Derivation
                 }
 
             }
+
+
 
             if (count($arrayNextTask) == 0 && count($arrayNextTaskDefault) > 0) {
 
@@ -658,11 +668,13 @@ class Derivation
 
      * @param   string  $sTasUid  the task uidUser
 
+     * @param   bool    $flagIncludeAdHocUsers
+
      * @return  Array   $users an array with userID order by USR_UID
 
      */
 
-    function getAllUsersFromAnyTask ($sTasUid)
+    function getAllUsersFromAnyTask($sTasUid, $flagIncludeAdHocUsers = false)
 
     {
 
@@ -678,7 +690,25 @@ class Derivation
 
         $c->add( TaskUserPeer::TAS_UID, $sTasUid );
 
-        $c->add( TaskUserPeer::TU_TYPE, 1 );
+
+
+        if ($flagIncludeAdHocUsers) {
+
+            $c->add(
+
+                $c->getNewCriterion(TaskUserPeer::TU_TYPE, 1, Criteria::EQUAL)->addOr(
+
+                $c->getNewCriterion(TaskUserPeer::TU_TYPE, 2, Criteria::EQUAL))
+
+            );
+
+        } else {
+
+            $c->add(TaskUserPeer::TU_TYPE, 1);
+
+        }
+
+
 
         $rs = TaskUserPeer::DoSelectRs( $c );
 
@@ -912,13 +942,45 @@ class Derivation
 
 
 
-        $uidUser = '';
+        $taskNext = TaskPeer::retrieveByPK($nextAssignedTask["TAS_UID"]);
 
-        switch ($nextAssignedTask['TAS_ASSIGN_TYPE']) {
+        $bpmnActivityNext = BpmnActivityPeer::retrieveByPK($nextAssignedTask["TAS_UID"]);
+
+
+
+        $flagTaskNextIsMultipleInstance = false;
+
+        $flagTaskNextAssignTypeIsMultipleInstance = false;
+
+
+
+        if (!is_null($taskNext) && !is_null($bpmnActivityNext)) {
+
+            $flagTaskNextIsMultipleInstance = $bpmnActivityNext->getActType() == "TASK" && preg_match("/^(?:EMPTY|USERTASK|MANUALTASK)$/", $bpmnActivityNext->getActTaskType()) && $bpmnActivityNext->getActLoopType() == "PARALLEL";
+
+            $flagTaskNextAssignTypeIsMultipleInstance = preg_match("/^(?:MULTIPLE_INSTANCE|MULTIPLE_INSTANCE_VALUE_BASED)$/", $taskNext->getTasAssignType());
+
+        }
+
+
+
+        $taskNextAssignType = $taskNext->getTasAssignType();
+
+        $taskNextAssignType = ($flagTaskNextIsMultipleInstance && !$flagTaskNextAssignTypeIsMultipleInstance)? "" : $taskNextAssignType;
+
+        $taskNextAssignType = (!$flagTaskNextIsMultipleInstance && $flagTaskNextAssignTypeIsMultipleInstance)? "" : $taskNextAssignType;
+
+
+
+        switch ($taskNextAssignType) {
 
             case 'BALANCED':
 
                 $users = $this->getAllUsersFromAnyTask( $sTasUid );
+
+                $uidUser = "";
+
+
 
                 if (is_array( $users ) && count( $users ) > 0) {
 
@@ -1058,9 +1120,43 @@ class Derivation
 
                 break;
 
+            case "MULTIPLE_INSTANCE":
+
+                $userFields = $this->getUsersFullNameFromArray($this->getAllUsersFromAnyTask($nextAssignedTask["TAS_UID"]));
+
+                break;
+
+            case "MULTIPLE_INSTANCE_VALUE_BASED":
+
+                $arrayApplicationData = $this->case->loadCase($tasInfo["APP_UID"]);
+
+
+
+                $nextTaskAssignVariable = trim($nextAssignedTask["TAS_ASSIGN_VARIABLE"], " @#");
+
+
+
+                if ($nextTaskAssignVariable != "" &&
+
+                    isset($arrayApplicationData["APP_DATA"][$nextTaskAssignVariable]) && !empty($arrayApplicationData["APP_DATA"][$nextTaskAssignVariable]) && is_array($arrayApplicationData["APP_DATA"][$nextTaskAssignVariable])
+
+                ) {
+
+                    $userFields = $this->getUsersFullNameFromArray($arrayApplicationData["APP_DATA"][$nextTaskAssignVariable]);
+
+                } else {
+
+                    throw new Exception(G::LoadTranslation("ID_ACTIVITY_INVALID_USER_DATA_VARIABLE_FOR_MULTIPLE_INSTANCE_ACTIVITY", array(strtolower("ACT_UID"), $nextAssignedTask["TAS_UID"], $nextTaskAssignVariable)));
+
+                }
+
+                break;
+
             default:
 
                 throw (new Exception( 'Invalid Task Assignment method for Next Task ' ));
+
+                break;
 
         }
 
@@ -1142,6 +1238,42 @@ class Derivation
 
 
 
+    /**
+
+     * Update counters
+
+     *
+
+     * @param array $arrayCurrentDelegationData
+
+     * @param array $arrayNextDelegationData
+
+     * @param mixed $taskNextDelegation
+
+     * @param array $arrayApplicationData
+
+     * @param int   $delIndexNew
+
+     * @param mixed $aSp
+
+     * @param bool  $removeList
+
+     *
+
+     * return void
+
+     */
+
+    private function derivateUpdateCounters(array $arrayCurrentDelegationData, array $arrayNextDelegationData, $taskNextDelegation, array $arrayApplicationData, $delIndexNew, $aSp, $removeList)
+
+    {
+
+        /*----------------------------------********---------------------------------*/
+
+    }
+
+
+
     /* derivate
 
      *
@@ -1193,6 +1325,24 @@ class Derivation
         //Get data for current delegation (current Task)
 
         $task = TaskPeer::retrieveByPK($currentDelegation["TAS_UID"]);
+
+        $bpmnActivity = BpmnActivityPeer::retrieveByPK($currentDelegation["TAS_UID"]);
+
+
+
+        $flagTaskIsMultipleInstance = false;
+
+        $flagTaskAssignTypeIsMultipleInstance = false;
+
+
+
+        if (!is_null($task) && !is_null($bpmnActivity)) {
+
+            $flagTaskIsMultipleInstance = $bpmnActivity->getActType() == "TASK" && preg_match("/^(?:EMPTY|USERTASK|MANUALTASK)$/", $bpmnActivity->getActTaskType()) && $bpmnActivity->getActLoopType() == "PARALLEL";
+
+            $flagTaskAssignTypeIsMultipleInstance = preg_match("/^(?:MULTIPLE_INSTANCE|MULTIPLE_INSTANCE_VALUE_BASED)$/", $task->getTasAssignType());
+
+        }
 
 
 
@@ -1284,6 +1434,28 @@ class Derivation
 
             $taskNextDel = TaskPeer::retrieveByPK($nextDel["TAS_UID"]); //Get data for next delegation (next Task)
 
+            $bpmnActivityNextDel = BpmnActivityPeer::retrieveByPK($nextDel["TAS_UID"]);
+
+
+
+            $flagTaskNextDelIsMultipleInstance = false;
+
+            $flagTaskNextDelAssignTypeIsMultipleInstance = false;
+
+
+
+            if (!is_null($taskNextDel) && !is_null($bpmnActivityNextDel)) {
+
+                $flagTaskNextDelIsMultipleInstance = $bpmnActivityNextDel->getActType() == "TASK" && preg_match("/^(?:EMPTY|USERTASK|MANUALTASK)$/", $bpmnActivityNextDel->getActTaskType()) && $bpmnActivityNextDel->getActLoopType() == "PARALLEL";
+
+                $flagTaskNextDelAssignTypeIsMultipleInstance = preg_match("/^(?:MULTIPLE_INSTANCE|MULTIPLE_INSTANCE_VALUE_BASED)$/", $taskNextDel->getTasAssignType());
+
+            }
+
+
+
+            $flagUpdateCounters = true;
+
 
 
             switch ($nextDel['TAS_UID']) {
@@ -1350,9 +1522,11 @@ class Derivation
 
                 default:
 
-                    // get all siblingThreads
+                    //Get all siblingThreads
 
-                    //if($currentDelegation['TAS_ASSIGN_TYPE'] == 'STATIC_MI')
+                    $canDerivate = false;
+
+
 
                     switch ($currentDelegation['TAS_ASSIGN_TYPE']) {
 
@@ -1360,7 +1534,7 @@ class Derivation
 
                         case 'STATIC_MI':
 
-                            $siblingThreads = $this->case->GetAllOpenDelegation( $currentDelegation );
+                            $arrayOpenThread = $this->case->GetAllOpenDelegation($currentDelegation);
 
                             $aData = $this->case->loadCase( $currentDelegation['APP_UID'] );
 
@@ -1396,7 +1570,7 @@ class Derivation
 
                             // -1 because One App Delegation is closed by above Code
 
-                            if ($discriminateThread == count( $siblingThreads )) {
+                            if ($discriminateThread == count($arrayOpenThread)) {
 
                                 $canDerivate = true;
 
@@ -1410,21 +1584,37 @@ class Derivation
 
                         default:
 
-                            if ($currentDelegation["ROU_TYPE"] == "SEC-JOIN") {
+                            $routeType = $currentDelegation["ROU_TYPE"];
 
-                                $siblingThreads = $this->case->getOpenSiblingThreads($nextDel["TAS_UID"], $currentDelegation["APP_UID"], $currentDelegation["DEL_INDEX"], $currentDelegation["TAS_UID"]);
+                            $routeType = ($flagTaskIsMultipleInstance && $flagTaskAssignTypeIsMultipleInstance)? "SEC-JOIN" : $routeType;
 
 
 
-                                $canDerivate = empty($siblingThreads);
+                            switch ($routeType) {
 
-                            } else {
+                                case "SEC-JOIN":
 
-                                $canDerivate = true;
+                                    $arrayOpenThread = ($flagTaskIsMultipleInstance && $flagTaskAssignTypeIsMultipleInstance)? $this->case->searchOpenPreviousTasks($currentDelegation["TAS_UID"], $currentDelegation["APP_UID"]) : array();
+
+                                    $arrayOpenThread = array_merge($arrayOpenThread, $this->case->getOpenSiblingThreads($nextDel["TAS_UID"], $currentDelegation["APP_UID"], $currentDelegation["DEL_INDEX"], $currentDelegation["TAS_UID"]));
+
+
+
+                                    $canDerivate = empty($arrayOpenThread);
+
+                                    break;
+
+                                default:
+
+                                    $canDerivate = true;
+
+                                    break;
 
                             }
 
-                    } //end switch
+                            break;
+
+                    }
 
 
 
@@ -1452,11 +1642,63 @@ class Derivation
 
                         //Derivate
 
-                        $aSP = isset( $aSP ) ? $aSP : null;
+                        $aSP = (isset($aSP))? $aSP : null;
 
 
 
-                        $iNewDelIndex = $this->doDerivation( $currentDelegation, $nextDel, $appFields, $aSP );
+                        $taskNextDelAssignType = ($flagTaskNextDelIsMultipleInstance && $flagTaskNextDelAssignTypeIsMultipleInstance)? $taskNextDel->getTasAssignType() : "";
+
+
+
+                        switch ($taskNextDelAssignType) {
+
+                            case "MULTIPLE_INSTANCE":
+
+                            case "MULTIPLE_INSTANCE_VALUE_BASED":
+
+                                $arrayUser = $this->getNextAssignedUser(array("APP_UID" => $currentDelegation["APP_UID"], "NEXT_TASK" => $taskNextDel->toArray(BasePeer::TYPE_FIELDNAME)));
+
+
+
+                                if (empty($arrayUser)) {
+
+                                    throw new Exception(G::LoadTranslation("ID_NO_USERS"));
+
+                                }
+
+
+
+                                foreach ($arrayUser as $value2) {
+
+                                    $currentDelegationAux = array_merge($currentDelegation, array("ROU_TYPE" => "PARALLEL"));
+
+                                    $nextDelAux = array_merge($nextDel, array("USR_UID" => $value2["USR_UID"]));
+
+
+
+                                    $iNewDelIndex = $this->doDerivation($currentDelegationAux, $nextDelAux, $appFields, $aSP);
+
+
+
+                                    $this->derivateUpdateCounters($currentDelegationAux, $nextDelAux, $taskNextDel, $appFields, $iNewDelIndex, $aSP, $removeList);
+
+
+
+                                    $flagUpdateCounters = false;
+
+                                    $removeList = false;
+
+                                }
+
+                                break;
+
+                            default:
+
+                                $iNewDelIndex = $this->doDerivation($currentDelegation, $nextDel, $appFields, $aSP);
+
+                                break;
+
+                        }
 
 
 
@@ -1472,11 +1714,11 @@ class Derivation
 
                         //Create record in table APP_ASSIGN_SELF_SERVICE_VALUE
 
-                        $arrayTaskTypeToExclude = array("SCRIPT-TASK");
+                        $regexpTaskTypeToExclude = "SCRIPT-TASK";
 
 
 
-                        if (!in_array($taskNextDel->getTasType(), $arrayTaskTypeToExclude)) {
+                        if (!is_null($taskNextDel) && !preg_match("/^(?:" . $regexpTaskTypeToExclude . ")$/", $taskNextDel->getTasType())) {
 
                             if ($taskNextDel->getTasAssignType() == "SELF_SERVICE" && trim($taskNextDel->getTasGroupVariable()) != "") {
 
@@ -1484,13 +1726,23 @@ class Derivation
 
 
 
-                                if (isset($appFields["APP_DATA"][$nextTaskGroupVariable]) && trim($appFields["APP_DATA"][$nextTaskGroupVariable]) != "") {
+                                if (isset($appFields["APP_DATA"][$nextTaskGroupVariable])) {
 
-                                    $appAssignSelfServiceValue = new AppAssignSelfServiceValue();
+                                    $dataVariable = $appFields["APP_DATA"][$nextTaskGroupVariable];
+
+                                    $dataVariable = (is_array($dataVariable))? $dataVariable : trim($dataVariable);
 
 
 
-                                    $appAssignSelfServiceValue->create($appFields["APP_UID"], $iNewDelIndex, array("PRO_UID" => $appFields["PRO_UID"], "TAS_UID" => $nextDel["TAS_UID"], "GRP_UID" => trim($appFields["APP_DATA"][$nextTaskGroupVariable])));
+                                    if (!empty($dataVariable)) {
+
+                                        $appAssignSelfServiceValue = new AppAssignSelfServiceValue();
+
+
+
+                                        $appAssignSelfServiceValue->create($appFields["APP_UID"], $iNewDelIndex, array("PRO_UID" => $appFields["PRO_UID"], "TAS_UID" => $nextDel["TAS_UID"], "GRP_UID" => serialize($dataVariable)));
+
+                                    }
 
                                 }
 
@@ -1502,7 +1754,7 @@ class Derivation
 
                         //Check if $taskNextDel is Script-Task
 
-                        if ($taskNextDel->getTasType() == "SCRIPT-TASK") {
+                        if (!is_null($taskNextDel) && $taskNextDel->getTasType() == "SCRIPT-TASK") {
 
                             $this->case->CloseCurrentDelegation($currentDelegation["APP_UID"], $iNewDelIndex);
 
@@ -1556,7 +1808,15 @@ class Derivation
 
                         $iAppThreadIndex = $appFields['DEL_THREAD'];
 
-                        switch ($currentDelegation['ROU_TYPE']) {
+
+
+                        $routeType = $currentDelegation["ROU_TYPE"];
+
+                        $routeType = ($flagTaskIsMultipleInstance && $flagTaskAssignTypeIsMultipleInstance)? "SEC-JOIN" : $routeType;
+
+
+
+                        switch ($routeType) {
 
                             case 'SEC-JOIN':
 
@@ -1574,31 +1834,31 @@ class Derivation
 
                                 break;
 
-                        } //switch
+                        }
 
                     }
+
+                    break;
 
             }
 
 
 
-            //SETS THE APP_PROC_CODE
+            if ($flagUpdateCounters) {
 
-            //if (isset($nextDel['TAS_DEF_PROC_CODE']))
+                $this->derivateUpdateCounters($currentDelegation, $nextDel, $taskNextDel, $appFields, (isset($iNewDelIndex))? $iNewDelIndex : 0, (isset($aSP))? $aSP : null, $removeList);
 
-            //$appFields['APP_PROC_CODE'] = $nextDel['TAS_DEF_PROC_CODE'];
-
-            /*----------------------------------********---------------------------------*/
-
-
-
-            unset( $aSP );
+            }
 
 
 
             $removeList = false;
 
-        } //end foreach
+
+
+            unset($aSP);
+
+        }
 
 
 
@@ -1618,7 +1878,7 @@ class Derivation
 
         ///////
 
-        $sw = 0;
+        $flag = false;
 
 
 
@@ -1634,7 +1894,7 @@ class Derivation
 
 
 
-            $sw = 1;
+            $flag = true;
 
         }
 
@@ -1648,13 +1908,13 @@ class Derivation
 
 
 
-            $sw = 1;
+            $flag = true;
 
         }
 
 
 
-        if ($sw == 1) {
+        if ($flag) {
 
             //Start Block : UPDATES APPLICATION
 
@@ -1874,13 +2134,23 @@ class Derivation
 
 
 
-                if (isset($aOldFields["APP_DATA"][$nextTaskGroupVariable]) && trim($aOldFields["APP_DATA"][$nextTaskGroupVariable]) != "") {
+                if (isset($aOldFields["APP_DATA"][$nextTaskGroupVariable])) {
 
-                    $appAssignSelfServiceValue = new AppAssignSelfServiceValue();
+                    $dataVariable = $aOldFields["APP_DATA"][$nextTaskGroupVariable];
+
+                    $dataVariable = (is_array($dataVariable))? $dataVariable : trim($dataVariable);
 
 
 
-                    $appAssignSelfServiceValue->create($aNewCase["APPLICATION"], $aNewCase["INDEX"], array("PRO_UID" => $aNewCase["PROCESS"], "TAS_UID" => $aSP["TAS_UID"], "GRP_UID" => trim($aOldFields["APP_DATA"][$nextTaskGroupVariable])));
+                    if (!empty($dataVariable)) {
+
+                        $appAssignSelfServiceValue = new AppAssignSelfServiceValue();
+
+
+
+                        $appAssignSelfServiceValue->create($aNewCase["APPLICATION"], $aNewCase["INDEX"], array("PRO_UID" => $aNewCase["PROCESS"], "TAS_UID" => $aSP["TAS_UID"], "GRP_UID" => serialize($dataVariable)));
+
+                    }
 
                 }
 

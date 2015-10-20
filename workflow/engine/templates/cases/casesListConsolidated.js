@@ -406,22 +406,27 @@ Ext.onReady(function () {
     text: "Derivate",
     //iconCls: 'ICON_CASES_PAUSED',
     handler : function (){
-      htmlMessage = "";
-      var selectedRow = Ext.getCmp(gridId).getSelectionModel().getSelections();
-      var maxLenght = selectedRow.length;
-      for (var i in selectedRow) {
-        rowGrid = selectedRow[i].data
-        for (fieldGrid in rowGrid){
-          if(fieldGrid != 'APP_UID' && fieldGrid != 'APP_NUMBER' && fieldGrid != 'APP_TITLE' && fieldGrid != 'DEL_INDEX' ){
-               fieldGridGral = fieldGrid;
-               fieldGridGralVal = rowGrid[fieldGrid];
+      Ext.Msg.confirm('Confirm Routing', 'Route cases per batch?',
+        function(btn, text){
+          if (btn=='yes'){
+              htmlMessage = "";
+              var selectedRow = Ext.getCmp(gridId).getSelectionModel().getSelections();
+              var maxLenght = selectedRow.length;
+              for (var i in selectedRow) {
+                rowGrid = selectedRow[i].data
+                for (fieldGrid in rowGrid){
+                  if(fieldGrid != 'APP_UID' && fieldGrid != 'APP_NUMBER' && fieldGrid != 'APP_TITLE' && fieldGrid != 'DEL_INDEX' ){
+                       fieldGridGral = fieldGrid;
+                       fieldGridGralVal = rowGrid[fieldGrid];
+                  }
+                }
+                if (selectedRow[i].data) {
+                    ajaxDerivationRequest(selectedRow[i].data["APP_UID"], selectedRow[i].data["DEL_INDEX"], maxLenght, selectedRow[i].data["APP_NUMBER"],fieldGridGral, fieldGridGralVal);
+                }
+              }
           }
-        }
-        if (selectedRow[i].data) {
-          //alert (derivateRequestAjax(selectedRow[i].data["company"]));
-          ajaxDerivationRequest(selectedRow[i].data["APP_UID"], selectedRow[i].data["DEL_INDEX"], maxLenght, selectedRow[i].data["APP_NUMBER"],fieldGridGral, fieldGridGralVal);
-        }
-      }
+         }
+      );
     }
   });
   switch(action){
@@ -721,7 +726,6 @@ function generateGridClassic(proUid, tasUid, dynUid){
    Ext.Ajax.request({
      url: '../pmConsolidatedCL/proxyGenerateGrid',
      success: function(response) {
-       //Obtenemos el column model y los reader fields de proxyGenerateGrid
        var dataResponse = Ext.util.JSON.decode(response.responseText);
        var viewConfigObject;
        var textArea = dataResponse.hasTextArea;
@@ -747,7 +751,6 @@ function generateGridClassic(proUid, tasUid, dynUid){
       storeConsolidated = new Ext.data.Store({
         id: "storeConsolidatedGrid",
         remoteSort: true,
-        //definimos un proxy como un objeto de la clase HttpProxy
         proxy: new Ext.data.HttpProxy({
           url: "../pmConsolidatedCL/proxyConsolidated",
           api: {
@@ -757,7 +760,6 @@ function generateGridClassic(proUid, tasUid, dynUid){
           }
         }),
 
-        //el data reader obtiene los reader fields de la consulta en ajax
         reader: new Ext.data.JsonReader({
           fields: dataResponse.readerFields,
           totalProperty: "totalCount",
@@ -767,14 +769,12 @@ function generateGridClassic(proUid, tasUid, dynUid){
           messageProperty: "message"
         }),
 
-        //el data writer es un objeto generico pero q permitira a futuro el escribir los datos al servidor mediante el proxy
         writer: new Ext.data.JsonWriter({
           encode: true,
           writeAllFields: false
         }), //<-- plug a DataWriter into the store just as you would a Reader
         autoSave: true, //<-- false would delay executing create, update, destroy requests until specifically told to do so with some [save] buton.
 
-        //el ordenamiento para los campos posiblemente este tenga q ser el tercer dato obtenido del proxy dado q los listados son muy cambiantes de tarea en tarea
         //sortInfo:{
         //  field: 'APP_CACHE_VIEW.APP_NUMBER',
         //  direction: "DESC"
@@ -803,7 +803,6 @@ function generateGridClassic(proUid, tasUid, dynUid){
        cm.config[3].renderer = renderTitle; //Case Title
        cm.config[4].renderer = renderSummary;//Case Summary
 
-       //generacion del grid basados en los atributos definidos con anterioridad
        storeConsolidated.setBaseParam("limit", pager);
        storeConsolidated.setBaseParam("start", pagei);
        storeConsolidated.setBaseParam('tasUid', tasUid);
@@ -964,21 +963,18 @@ function generateGridClassic(proUid, tasUid, dynUid){
         })
        });
 
-      //remocion de todos los elementos del panel principal donde se carga el grid
       //Ext.ComponentMgr.get("myId").body.update("");
       //pnlMain.removeAll(false);
       pnlMain.removeAll();
       //adicion del grid definido con anterioridad
       pnlMain.add(consolidatedGrid);
-      //recarga de los elementos del grid, para su visualizacion.
       pnlMain.doLayout();
     },
 
-    //en caso de fallo ejecutar la siguiente funcion.
     failure: function(){
       alert("Failure...");
     },
-    // parametros que son enviados en la peticion al servidor.
+
     params: {
       xaction: 'read',
       tasUid: tasUid,
@@ -1001,8 +997,6 @@ function generateGrid(proUid, tasUid, dynUid)
         'Authorization': 'Bearer ' + credentials.access_token
       },
      success: function(response) {
-       //Obtenemos el column model y los reader fields de proxyGenerateGrid
-       //console.log(response.responseText);
        var dataResponse = Ext.util.JSON.decode(response.responseText);
        var viewConfigObject;
        var textArea = dataResponse.hasTextArea;
@@ -1027,7 +1021,6 @@ function generateGrid(proUid, tasUid, dynUid)
       storeConsolidated = new Ext.data.Store({
         id: "storeConsolidatedGrid",
         remoteSort: true,
-        //definimos un proxy como un objeto de la clase HttpProxy
         proxy: new Ext.data.HttpProxy({
           method: 'GET',
           url: urlProxy + 'cases/' + proUid + '/' + tasUid + '/' + dynUid,
@@ -1046,7 +1039,6 @@ function generateGrid(proUid, tasUid, dynUid)
             'Authorization': 'Bearer ' + credentials.access_token
           }
         }),
-        //el data reader obtiene los reader fields de la consulta en ajax
         reader: new Ext.data.JsonReader({
           fields: dataResponse.readerFields,
           totalProperty: "totalCount",
@@ -1056,20 +1048,12 @@ function generateGrid(proUid, tasUid, dynUid)
           messageProperty: "message"
         }),
 
-        //el data writer es un objeto generico pero q permitira a futuro el escribir los datos al servidor mediante el proxy
         writer: new Ext.data.JsonWriter({
           encode: false,
           writeAllFields: false
         }), //<-- plug a DataWriter into the store just as you would a Reader
         autoSave: true, //<-- false would delay executing create, update, destroy requests until specifically told to do so with some [save] buton.
 
-        //el ordenamiento para los campos posiblemente este tenga q ser el tercer dato obtenido del proxy dado q los listados son muy cambiantes de tarea en tarea
-        //sortInfo:{
-        //  field: 'APP_CACHE_VIEW.APP_NUMBER',
-        //  direction: "DESC"
-        //}
-
-        //,
         listeners: { //
           beforeload:function (store, options) { //
             grdNumRows = 0; //
@@ -1306,14 +1290,14 @@ function generateGrid(proUid, tasUid, dynUid)
   });
 }
 
-function ajaxDerivationRequest(appUid, delIndex, maxLenght, appNumber,fieldGridGral, fieldGridGralVal){
+function ajaxDerivationRequest(appUid, delIndex, maxLenght, appNumber, fieldGridGral, fieldGridGralVal){
   Ext.Ajax.request({
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + credentials.access_token
     },
-    url: urlProxy + 'derivate/' + appUid + '/' + appNumber + '/' + delIndex + '/' + fieldGridGral + '/' + fieldGridGralVal,
+    url: urlProxy + 'derivate/' + appUid + '/' + appNumber + '/' + delIndex + '/' + fieldGridGral + '/' + fieldGridGralVal + '/',
     success: function(response) {
       var dataResponse;
       var fullResponseText = response.responseText;
@@ -1333,10 +1317,8 @@ function ajaxDerivationRequest(appUid, delIndex, maxLenght, appNumber,fieldGridG
         Ext.MessageBox.show({
           title: "Derivation Result",
           msg: htmlMessage,
-          buttons: Ext.MessageBox.OK,
 
           fn: function (btn, text, opt) {
-            //if (btn == "ok") {}
             if (maxLenght == storeConsolidated.getCount()) {
               window.location.reload();
             }

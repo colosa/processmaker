@@ -12,6 +12,26 @@ use \Luracast\Restler\RestException;
 class Group extends Api
 {
     /**
+     * Constructor of the class
+     *
+     * return void
+     */
+    public function __construct()
+    {
+        try {
+            $user = new \ProcessMaker\BusinessModel\User();
+
+            $usrUid = $this->getUserId();
+
+            if (!$user->checkPermission($usrUid, "PM_USERS")) {
+                throw new \Exception(\G::LoadTranslation("ID_USER_NOT_HAVE_PERMISSION", array($usrUid)));
+            }
+        } catch (\Exception $e) {
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
+        }
+    }
+
+    /**
      * @url GET
      */
     public function index($filter = null, $start = null, $limit = null)
@@ -136,6 +156,25 @@ class Group extends Api
             $group->setFormatFieldNameInUppercase(false);
 
             $response = $group->getUsers("AVAILABLE-USERS", $grp_uid, array("filter" => $filter), null, null, $start, $limit);
+
+            return $response;
+        } catch (\Exception $e) {
+            throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
+        }
+    }
+
+    /**
+     * @url GET /:grp_uid/supervisor-users
+     *
+     * @param string $grp_uid {@min 32}{@max 32}
+     */
+    public function doGetSupervisorUsers($grp_uid, $filter = null, $start = null, $limit = null)
+    {
+        try {
+            $group = new \ProcessMaker\BusinessModel\Group();
+            $group->setFormatFieldNameInUppercase(false);
+
+            $response = $group->getUsers("SUPERVISOR", $grp_uid, array("filter" => $filter), null, null, $start, $limit);
 
             return $response;
         } catch (\Exception $e) {

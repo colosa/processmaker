@@ -5720,7 +5720,7 @@ class wsBase
 
             $derivation = new Derivation();
 
-            $userList = $derivation->getAllUsersFromAnyTask( $tasUid );
+            $userList = $derivation->getAllUsersFromAnyTask($tasUid, true);
 
 
 
@@ -6677,5 +6677,3 @@ class wsBase
     }
 
 }
-
-

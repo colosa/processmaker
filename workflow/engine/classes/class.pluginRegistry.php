@@ -101,6 +101,7 @@ class PMPluginRegistry
     private $_aTaskExtendedProperties = array ();
     private $_aDashboardPages = array ();
     private $_aCronFiles = array ();
+    private $_aDesignerMenuFiles = array ();
 
     /**
      * Registry a plugin javascript to include with js core at same runtime
@@ -389,6 +390,11 @@ class PMPluginRegistry
         foreach ($this->_aDashboardPages as $key => $detail) {
             if ($detail->sNamespace == $sNamespace) {
                 unset( $this->_aDashboardPages[$key] );
+            }
+        }
+        foreach ($this->_aDesignerMenuFiles as $key => $detail) {
+            if ($detail->namespace == $sNamespace) {
+                unset( $this->_aDesignerMenuFiles[$key] );
             }
         }
 
@@ -1600,5 +1606,36 @@ class PMPluginRegistry
         } catch (Exception $e) {
             throw $e;
         }
+    }
+    
+    /**
+     * Register new options to designer menu
+     *
+     * @param unknown_type $namespace
+     * @param unknown_type $cronFile
+     */
+    public function registerDesignerNewOption ($namespace, $menuOptionFile)
+    {
+        $found = false;
+        foreach ($this->_aDesignerMenuFiles as $row => $detail) {
+            if ($menuOptionFile == $detail->menuOptionFile && $namespace == $detail->namespace) {
+                $detail->menuOptionFile = $menuOptionFile;
+                $found = true;
+            }
+        }
+        if (!$found) {
+            $menuOptionFile = new menuOptionFile( $namespace, $menuOptionFile );
+            $this->_aDesignerMenuFiles[] = $menuOptionFile;
+        }
+    }
+    
+    /**
+     * Return all designer menu Option files registered
+     *
+     * @return array
+     */
+    public function getDesignerNewOption()
+    {
+        return $this->_aDesignerMenuFiles;
     }
 }

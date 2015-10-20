@@ -326,11 +326,9 @@ clientSetup.application = {
 
                             fieldLabel: "Web Site",                           
                             validator: function (value){ 
-                                var regexpUrl = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-                                var regexStringIp = new RegExp(regexpUrl);
-                                var regexpIpAdress = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/g;
-                                var regexNumberIp = new RegExp(regexpIpAdress);  
-                                var result = (value.match(regexStringIp) || value.match(regexNumberIp))? true : false;
+                                var regexStringIp = new RegExp(/^https?\:\/\/[^\/\s]+(\/.*)?$/);
+                                var regexNumberIp = new RegExp(/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/);  
+                                var result = (value.match(regexStringIp) || value.match(regexNumberIp)) ? true : false;
                                 return result;                                   
                             }
                         },

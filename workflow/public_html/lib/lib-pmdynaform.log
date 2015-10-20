@@ -1,30 +1,30 @@
-[6 days ago] 4915300  (HEAD, origin/master, origin/HEAD, composer/master, master) PM-3128 <Roly Rudy Gutierrez Pinto>
-[7 days ago] 456dc43  update PM-2972 <richard yujra>
-[7 days ago] 39817cd  PM-3103 update <richard yujra>
-[7 days ago] ae19a93  PM-3128 <Roly Rudy Gutierrez Pinto>
-[8 days ago] a037625  PM-2949 <Roly Rudy Gutierrez Pinto>
-[8 days ago] fb71a9c  PM-2949 <Roly Rudy Gutierrez Pinto>
-[8 days ago] 770e222  PM-3170 <Roly Rudy Gutierrez Pinto>
-[8 days ago] d698db7  a <richard yujra>
-[8 days ago] d601311  PM-3128 RESOLVED <richard yujra>
-[8 days ago] f3c709e  PM-3128 resolved <richard yujra>
-[11 days ago] c57abab  PM-3066 resolved <richard yujra>
-[11 days ago] e4af5c7  improvement suggest field for mode view <richard yujra>
-[11 days ago] 4acd1f7  improvement checkbox control for grid <richard yujra>
-[12 days ago] b5e4a2e  PM-2947 improvement in field checkbox <richard yujra>
-[12 days ago] a1654bd  update handler options width field options <richard yujra>
-[13 days ago] 417e786  PM-3128 <Roly Rudy Gutierrez Pinto>
-[13 days ago] a38c4b1  PM-3128 <Roly Rudy Gutierrez Pinto>
-[13 days ago] 6f9c36b  PM-2972 resolved <richard yujra>
-[13 days ago] 902304b  PM-3112 <Roly Rudy Gutierrez Pinto>
-[13 days ago] 85f0211  PM-3112 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 6049bd0  PM-3112 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 16ffcc3  PM-3112 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] dfb3ace  PM-2775 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] b810771  IMPROVEMENT <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] 3111adc  add new paginator in grid field <richard yujra>
-[3 weeks ago] 72367b0  restar sample files <richard yujra>
-[3 weeks ago] 6686833  improvements view label <richard yujra>
-[3 weeks ago] b550a65  improvement grid function in layout static <richard yujra>
-[3 weeks ago] 6b38bf7  improvements grids width <richard yujra>
-[3 weeks ago] c4a6cfb  fix responsive width <richard yujra>
+[6 days ago] 3d1d5f2  PM-3447:0018261: Grid function getSummary doesn't work <Richard Yujra>
+[6 days ago] 53ccddc  PM-3607:18458: Los campos requeridos no funcionan <Richard Yujra>
+[6 days ago] aa69438  PM-3606:0018353: Grid functions onAddRow and onDeleteRow are not working properly <Richard Yujra>
+[6 days ago] 2f7646c  PM-3441:improvement-0018322: Functions removeRequiredById and enableRequiredById are missing in ProcessMaker 3 <Richard Yujra>
+[9 days ago] d7b32de  (origin/PM-3588) PM-3588 : Hide File control in mobile view <Jonathan Quispe>
+[9 days ago] c031f4a  PM-3613:0018473: Cuando se llena un dropdown con una conexion a SyBase se presenta un error <Richard Yujra>
+[9 days ago] 74719e7  PM-3441:0018322: Functions removeRequiredById and enableRequiredById are missing in ProcessMaker 3 <Richard Yujra>
+[13 days ago] d6c42f0  PM-3476:No se realizan los calculos correctos cuando se tiene configurado una formula dentro de un grid <Richard Yujra>
+[13 days ago] a495587  PM-3512:Design>New BPMN>Dynaform: No renderiza el dynaform si  tu grilla contiene un checkbox <Richard Yujra>
+[13 days ago] 5d8ad11  PM-3529:La función onAddRow devuelve la fila anterior, no la última fila agregada <Richard Yujra>
+[2 weeks ago] c68fc5a  PM-3527: No se puede ejecutar casos en IE cuando se tiene configurado formulas y funciones dentro de un grid} <jonathan>
+[2 weeks ago] 5db062d  PM-3338 : 0017918: No valida el checkbox en previous step (v3.0.0.7) <Richard Yujra>
+[3 weeks ago] f92e8cb  PM-3418 improvements code <Richard Yujra>
+[3 weeks ago] 94c3237  PM-3418:NO EXISTE CHECKGROUP <Richard Yujra>
+[3 weeks ago] 84b5cee  PM-3418 update checkbox and checkboxgroup <richard yujra>
+[3 weeks ago] 9599408  PM-3444: 0018263: Function setOnchange is not working properly for dynaforms. <Joel Rojas>
+[3 weeks ago] dd20cc7  PM-3447: 18261: Grid function getSummary doesn't work <Joel Rojas>
+[3 weeks ago] 17f1282  upadte new field checkbox yes/no <richard noel>
+[3 weeks ago] 78c4d2a  PM-3418: no existe checkbox group <richard yujra>
+[3 weeks ago] 0f9b41e  PM-3183: Don't execute validation of a field if the not required property is selected <Joel Rojas>
+[3 weeks ago] ef4255f  PM-3391: 0018144: The responsive display on subforms fails <Joel Rojas>
+[3 weeks ago] 0e0d847  PM-3405 <Richard Yujra>
+[3 weeks ago] 5e36afc  0018135: El Web Form 'Panel' no se despliega cuando se elije como subformulario <jonathan>
+[4 weeks ago] ece3e98  PM-3147 <Roly Rudy Gutierrez Pinto>
+[4 weeks ago] c15de63  PM-3244 <Roly Rudy Gutierrez Pinto>
+[4 weeks ago] 385ae6a  PM-3363 update <richard yujra>
+[4 weeks ago] b66ca3d  PM-3363 resolved <richard yujra>
+[5 weeks ago] fd4bb3f  PM-3140 fixed <richard yujra>
+[5 weeks ago] 9d1b44f  PM-3305 improvements for grids <richard yujra>
+[5 weeks ago] a8c1b42  a <richard yujra>

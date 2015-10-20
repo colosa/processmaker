@@ -2104,6 +2104,14 @@ Ext.onReady ( function() {
 
 
 
+    if (typeof filterStatus == 'undefined') {
+
+        filterStatus = [];
+
+    }
+
+
+
     /*----------------------------------********---------------------------------*/
 
 

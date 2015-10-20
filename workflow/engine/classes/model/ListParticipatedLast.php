@@ -54,6 +54,10 @@ class ListParticipatedLast extends BaseListParticipatedLast
             $users->refreshTotal($data['USR_UID'], 'add', 'participated');
             }
         }
+        
+        if($this->primaryKeysExists($data)) {
+            return;
+        }
 
         $con = Propel::getConnection( ListParticipatedLastPeer::DATABASE_NAME );
         try {
@@ -151,22 +155,42 @@ class ListParticipatedLast extends BaseListParticipatedLast
      */
     public function remove ($app_uid, $usr_uid, $del_index)
     {
-        $existField = ListParticipatedLastPeer::retrieveByPK($app_uid, $usr_uid, $del_index);
-        if (! is_null( $existField )) {
-            $users = new Users();
-            $users->refreshTotal($usr_uid, 'removed', 'participated');
-        }
-        $con = Propel::getConnection( ListParticipatedLastPeer::DATABASE_NAME );
         try {
-            $this->setAppUid($app_uid);
-            $this->setUsrUid($usr_uid);
+            $flagDelete = false;
 
-            $con->begin();
-            $this->delete();
-            $con->commit();
+            if (!is_null(ListParticipatedLastPeer::retrieveByPK($app_uid, $usr_uid, $del_index))) {
+                $criteria = new Criteria("workflow");
+
+                $criteria->add(ListParticipatedLastPeer::APP_UID, $app_uid);
+                $criteria->add(ListParticipatedLastPeer::USR_UID, $usr_uid);
+                $criteria->add(ListParticipatedLastPeer::DEL_INDEX, $del_index);
+
+                $result = ListParticipatedLastPeer::doDelete($criteria);
+
+                $flagDelete = true;
+            } else {
+                $criteria = new Criteria("workflow");
+
+                $criteria->add(ListParticipatedLastPeer::APP_UID, $app_uid);
+                $criteria->add(ListParticipatedLastPeer::USR_UID, $usr_uid);
+
+                $rsCriteria = ListParticipatedLastPeer::doSelectRS($criteria);
+
+                if ($rsCriteria->next()) {
+                    $criteria2 = clone $criteria;
+
+                    $result = ListParticipatedLastPeer::doDelete($criteria2);
+
+                    $flagDelete = true;
+                }
+            }
+
+            if ($flagDelete) {
+                $user = new Users();
+                $user->refreshTotal($usr_uid, "removed", "participated");
+            }
         } catch (Exception $e) {
-            $con->rollback();
-            throw ($e);
+            throw $e;
         }
     }
 
@@ -303,6 +327,23 @@ class ListParticipatedLast extends BaseListParticipatedLast
         }
 
         return $data;
+    }
+    
+    public function primaryKeysExists($data) {
+        $criteria = new Criteria("workflow");
+        $criteria->add(ListParticipatedLastPeer::APP_UID, $data['APP_UID']);
+        $criteria->add(ListParticipatedLastPeer::USR_UID, $data['USR_UID']);
+        $criteria->add(ListParticipatedLastPeer::DEL_INDEX, $data['DEL_INDEX']);    
+        $dataset = UsersPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $dataset->next();
+        $aRow = $dataset->getRow();
+        if(is_array($aRow)) {
+            if(sizeof($aRow)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

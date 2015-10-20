@@ -1,30 +1,30 @@
-[3 hours ago] e57bfa1  Updating a new label for MAFE, release 3.0.1-GA <Julio Cesar Laura>
-[6 hours ago] 24df46f  fix more session <Ronald Quenta>
-[7 hours ago] cfbf5c7  fix add process uid in session process <Ronald Quenta>
-[7 hours ago] e3fbb21  fix <Ronald Quenta>
-[7 hours ago] 035c8b8  fix add process uid in session process <Ronald Quenta>
-[7 hours ago] 39a1128  fix in trigger assignment <Ronald Quenta>
-[19 hours ago] 38a8382  fix in execute triggers assigment <Ronald Quenta>
-[22 hours ago] 980cde4  PM-0000 "Error with debug-panel in Enterprise-Search list" SOLVED <Victor Saisa Lopez>
-[23 hours ago] 5115d4d  PM-1659 <Roly Rudy Gutierrez Pinto>
-[24 hours ago] b49fb69  PM-3188 0017892: Error al conectar al listar variables y conexiones a base de datos con contraseñlargas <dheeyi>
-[24 hours ago] bb5b3e0  PM-3188 0017892: Error al conectar al listar variables y conexiones a base de datos con contraseñlargas <dheeyi>
-[24 hours ago] f53f8ba  test <dheeyi>
-[24 hours ago] 9916756  PM-3188 0017892: Error al conectar al listar variables y conexiones a base de datos con contraseñlargas <dheeyi>
-[4 days ago] 88bbad7  PM-1659 <Roly Rudy Gutierrez Pinto>
-[4 days ago] 9662525  Add field APP_DISABLE_ACTION_DATE to criteria <Julio Cesar Laura>
-[4 days ago] 330bd45  PM-3163 <marcelo.cuiza>
-[4 days ago] 258e50e  Updating.po and .sql files for release 3.0.1-GA <Julio Cesar Laura>
-[5 days ago] 6c5bd55  add endpoint case delete and list draft, fix in tag <Ronald Quenta>
-[6 days ago] 638366c  14970 El Boton de acciones de un caso no es Standar, solo se puede abrir el menu si se hace click en la flecha. SOLVED como dice su titulo, la apariencia del boton y el boton estaba en modo split, por eso solo reaccionaba cuando se le daba click en la flecha se soluciono cambiando el formato del boton, de split a uno normal de forma que ahora tanto en inbox, draft y paused ya no presentan el problema <ricardo>
-[7 days ago] 5ac57de  PM-2907 <Roly Rudy Gutierrez Pinto>
-[7 days ago] 4bbfcf4  PM-2923 "0017509: El caso que se derivo a un grupo no..." SOLVED <Victor Saisa Lopez>
-[7 days ago] 021606e  Adding rows in insert.sql file <Julio Cesar Laura>
-[7 days ago] d257486  Fix little problem inserting check.data <Julio Cesar Laura>
-[8 days ago] 9f4bde8  PM-3065 improvement: debug panel for var_label update <Roly Rudy Gutierrez Pinto>
-[11 days ago] abde01e  PM-3165 SOLVED <Julio Cesar Laura>
-[12 days ago] 311cfce  test1 <dheeyi>
-[12 days ago] 4dc6b7d  pm1 <dheeyi>
-[12 days ago] f433ed8  ga update <Dante>
-[12 days ago] 59bea48  PM-3155 <Roly Rudy Gutierrez Pinto>
-[12 days ago] d8e683c  PM-3154 0017842: No aparecen varios usuarios para la asignacion <dheeyi>
+[6 days ago] ab8a93c  PM-3646 <Roly Rudy Gutierrez Pinto>
+[7 days ago] cb2d0b9  Cherry pick of PM-3193 to branch 3.0.1.4 <Julio Cesar Laura>
+[8 days ago] cf12bf7  Updating .po file with missing labels for version 3.0.1.4 <Julio Cesar Laura>
+[8 days ago] 3f85e50  PM-3564 <Roly Rudy Gutierrez Pinto>
+[8 days ago] 49bbd9c  PM-3597 "0018455: Cannot enable task Adhoc assignment" SOLVED <Victor Saisa Lopez>
+[9 days ago] 32696ad  PM-3380 campos checkbnox no renderiza en bachrouting <dheeyi>
+[9 days ago] ea9dc00  PM-3610 0017928: Customize PROCESSMAKER_OPERATOR... SOLVED <Marco A. Nina Mena>
+[9 days ago] fa26f8a  PM-3505 (BE) add support for conditional triggers <Ronald Quenta>
+[12 days ago] a64c19b  PM-3501 Move pmgmail authentication end point to the next branch 3.0.1.4 <Ronald Quenta>
+[12 days ago] 6a953b2  PM-3553 "0018427: Un usuario asignado como Process Supervisor no..." SOLVED <Victor Saisa Lopez>
+[12 days ago] 60587d1  PM-3559 "Process Supervisors can not access..." SOLVED <Luis Fernando Saisa Lopez>
+[12 days ago] 1611ec3  PM-3121 "Changes in assignment rules in multiple instance tasks" SOLVED <Victor Saisa Lopez>
+[13 days ago] 39cae54  PM-3571 Cambiar el endpoint que retorna lenguajes para que no requiera autorización <Ronald Quenta>
+[13 days ago] dfd61f7  Updating labels for version 3.0.1.4 <Julio Cesar Laura>
+[13 days ago] 9e4e903  PM-3520: Error con los objetos de los supervisors <marcelo.cuiza>
+[13 days ago] 4f711d4  PM-3531: Email message in end events and intermediate event is not working with variables. <marcelo.cuiza>
+[13 days ago] fc8ab99  PM-3551 0018426: Al crear triggers mediante el Wizzad las funciones no son las mismas <dheeyi>
+[2 weeks ago] 9ee3b14  PM-3504 (BE) add support to script task on endpoints <Ronald Quenta>
+[2 weeks ago] 81023da  PM-3528: Error al derivar en mobile <marcelo.cuiza>
+[3 weeks ago] d852d4f  PM-3370 "REST endpoint GET calendars, pmtable y..." SOLVED <Luis Fernando Saisa Lopez>
+[3 weeks ago] edbceb6  PM-3418 <Roly Rudy Gutierrez Pinto>
+[3 weeks ago] 022ac37  PM-3459 "Se borra toda la configuracion de la tarea al sacarlo del pool" SOLVED <Victor Saisa Lopez>
+[3 weeks ago] 93c022c  PM-3376 "REST endpoint PUT  users, groups,..." SOLVED <Luis Fernando Saisa Lopez>
+[3 weeks ago] 326d9ac  PM-3425: 0018309: Los casos creados con subproceso no tienen due date <marcelo.cuiza>
+[3 weeks ago] cf33ad9  PM-3383 "0018219: No valida el src del campo image" SOLVED <Victor Saisa Lopez>
+[3 weeks ago] 2a35848  PM-3436 New BPMN> Timer Event> Existen errores al momento de guardar una configuracion de daily, montly en timer event properties <dheeyi>
+[3 weeks ago] d51d1ce  PM-3366: 0018169: Proxy settings(no se puede acceder a processmaker cuando se configura un proxy inexistente) <marcelo.cuiza>
+[3 weeks ago] 1de17e7  PM-3426 <Roly Rudy Gutierrez Pinto>
+[3 weeks ago] b5993be  PM-3169: 0017857: No se puede abrir las opciones de las tareas en PM 3.0 using IE11 <marcelo.cuiza>
+[3 weeks ago] 96101a3  PM-3409: No se establece la prioridad de las tareas <marcelo.cuiza>

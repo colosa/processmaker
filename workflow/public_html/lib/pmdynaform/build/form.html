@@ -35,7 +35,7 @@
         </style>
     </head>
     <body style="padding-left:10px; display: block;">
-        
+        <h4>EXAMPLE OF EXECUTION PMDYNAFORM</h4>
         <script type="text/template" id="fieldset-template">
 	<fieldset>
 	    <legend>Options</legend>
@@ -210,7 +210,7 @@
 	</div>	
 </script>
 
- <script type="text/template" id="tpl-checkbox">
+ <script type="text/template" id="tpl-checkgroup">
 	<div id="<%=id%>" name="field-<%=name%>" class="<%=namespace%>-field-<%=type%> <%if (group === 'form'){%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%> <%}%> <%=namespace%>-<%=mode%>-<%=type%> pmdynaform-field">
     	<% if(group === "form") {%>
 	    	<label for="<%=name%>" class="col-md-<%=colSpanLabel%> col-lg-<%=colSpanLabel%> control-label pmdynaform-label">  
@@ -231,11 +231,11 @@
 		  		<%} else if (layout === "responsive") {%> 
 		  			class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 		  		<%}%>>
-    		<div class="pmdynaform-control-checkbox-list">
+    		<div class="pmdynaform-control-checkbox-list form-control">
     			<div class="pmdynaform-checkbox-items">
 	    			<% for(var i=0; i<options.length; i+=1) { %>
 						<div class="checkbox"
-							<%if(dataType === "boolean" && i > 0){%>
+							<%if(i === options.length-1){%>
 							style = "display:none"
 							<%}%>
 						>        
@@ -278,6 +278,73 @@
 		</div>
 	</div>    
  </script>
+
+
+<script type="text/template" id="tpl-checkbox_yes_no">
+<div id="<%=id%>" name="field-<%=name%>" class="<%=namespace%>-field-<%=type%> <%if (group === 'form'){%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%> <%}%> <%=namespace%>-<%=mode%>-<%=type%> pmdynaform-field">
+	<% if(group === "form") {%>
+    	<label for="<%=name%>" class="col-md-<%=colSpanLabel%> col-lg-<%=colSpanLabel%> control-label pmdynaform-label">  
+    		<span class="textlabel"><%= label %></span>
+    		<%if(required){%>
+	  			<span class="pmdynaform-field-required">*</span>
+	  		<%}%>
+    	</label>
+    <%} else if((group !== "form") && (layout === "form")){%>
+			<label for="<%=name%>" class="hidden-lg hidden-md hidden-sm visible-xs control-label pmdynaform-label col-xs-<%=colSpanLabel%>">  
+		  		<span class="textlabel"><%= label %></span>
+		  	</label>
+		<%}%>
+	<div <%if (group === 'form'){ %> 
+	  			class="col-md-<%=colSpanControl%> col-lg-<%=colSpanControl%> pmdynaform-field-control"
+	  		<%} else if (layout === "form"){ %>
+	  			class="col-xs-<%=colSpanControl%> col-sm-12 col-md-12 col-lg-12"
+	  		<%} else if (layout === "responsive") {%> 
+	  			class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+	  		<%}%>>
+		<div class="pmdynaform-control-checkbox-list form-control">
+			<div class="pmdynaform-checkbox-items">
+    			<% for(var i=0; i<options.length; i+=1) { %>
+					<div class="checkbox"
+						<%if( i > 0){%>
+						style = "display:none"
+						<%}%>
+					>
+			        	<label>
+			        		<input 
+								<% if  ( group === "grid") { %>
+									id = "form<%=id%>"
+									name ="form<%=name%>"
+								<%} else {%>
+									id = "form[<%=id%>][<%=options[i].value%>]"
+									name ="form[<%=name%>][]"
+								<%}%>
+			        			class="<%=namespace%>-control-<%=type%>"
+				        		value="<%=options[i].value%>" 
+				        		type="<%=type%>"
+				        		<% if(options[i].selected){%>checked<%}%>
+				        		<% if(disabled === true){%>disabled<%}%>>
+			        	</label>
+					</div>
+			    <% } %>	
+    		</div>
+			<% if (group === "form") { %>
+				<%if (hint !== "" && hint !== null){%>
+					<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="<%=hint%>"></span>
+				<%}%>						
+			<% } %>
+		</div>
+		<input type="hidden" 
+			<% if  ( group === "grid") { %>
+				id = "form<%=id%>_label"
+				name ="form<%=name%>_label"
+			<%} else{%>
+				id = "form[<%=id%>_label]"
+				name ="form[<%=name%>_label]"
+			<%}%>
+		>
+	</div>
+</div>    
+</script>
 
 
 <script type="text/template" id="tpl-radio">
@@ -549,6 +616,7 @@
 					id = "form[<%=id%>]"
 					name ="form[<%=name%>]"
 				<%}%>
+				class = "pmdynaform-link form-control"
 				href="<%=href%>" target="<%=target%>" class="btn btn-link <%=namespace%>-control-<%=type%>"
 				<% if(disabled === true){%>disabled<%}%>> 
 				<span> <%= value %> </span>
@@ -608,11 +676,11 @@
 		  		<%} else if (layout === "responsive") {%> 
 		  			class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 		  		<%}%>>
-			<div class="pmdynaform-label-options">
+			<div class="pmdynaform-label-options form-control">
 				<%if(originalType=="suggest"){%>
 				<%}%>
 				<%for(var k=0; k<fullOptions.length; k+=1){%>
-					<span><%=fullOptions[k]%></span>
+					<span title=<%=fullOptions[k]%>><%=fullOptions[k]%></span>
 				<%}%>
 				<input type="hidden" value="<%= data['label']%>"
 					<% if  ( group === "grid") { %>
@@ -946,7 +1014,7 @@
 	</div>
 </script>
 <script type="text/template" id="tpl-panelField">
-	<div class="panel panel-<%=typePanel%> <%=namespace%>-<%=type%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%>" style="border:<%=border%> solid #ccc;">
+	<div id=<%=id%> class="panel panel-<%=typePanel%> <%=namespace%>-<%=type%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%>" style="border:<%=border%> solid #ccc;">
 		<div class="panel-heading" style="<%if(!showHeader){%>display:none;<%}%>">
 			<h3 class="panel-title">
 				<div class="header-content">
@@ -1317,42 +1385,168 @@
 	</div>
 </script>
 
-        <script type="text/javascript">
-          var pm_run_outside_main_app = 'true';
-          var dyn_uid = '229723097555a11781ed309062592560';
-          var __DynaformName__ = '498574572555a0fa9474b40040026428_229723097555a11781ed309062592560';
-          var app_uid = '363233990558d7efa2d9435051120245';
-          var prj_uid = '498574572555a0fa9474b40040026428';
-          var step_mode = 'EDIT';
-          var workspace = 'testAdmin';
-          var credentials = {"accessToken":"8fe8e4d149983315f51a78afece80c1ee78b1ea6","expiresIn":86400,"tokenType":"bearer","scope":"view_processes edit_processes *","refreshToken":"4066c01724611406e26046e33acf7111b11426d5","clientId":"x-pm-local-client","clientSecret":"179ad45c6ce2cb97cf1029e212046e81"};
-          var filePost = null;
-          var fieldsRequired = null;
-          var triggerDebug = true;
-        </script>
         <script type="text/javascript" src="../libs/underscore/underscore-1.6.js"></script>
         <script type="text/javascript" src="../libs/html5/html5.js"></script>
         <script type="text/javascript" src="../libs/respondjs/respond.min.js"></script>
         <script type="text/javascript" src="js/PMDynaform.js"></script>
-         <input id="run_script" type="button" value="run script"/>
-        <script type="text/javascript" src="appBuild.js"></script>
+        <script type="text/javascript">
+             data = {
+              "name": "checkgroup",
+              "description": "",
+              "items": [
+                {
+                  "type": "form",
+                  "id": "79138539255e85cd59a3ba9001703360",
+                  "name": "checkgroup",
+                  "description": "",
+                  "mode": "edit",
+                  "script": "",
+                  "language": "en",
+                  "externalLibs": "",
+                  "items": [
+                    [
+                      {
+                        "type": "checkgroup",
+                        "variable": "checkgroup",
+                        "dataType": "string",
+                        "id": "checkgroup",
+                        "name": "checkgroup",
+                        "label": "checkgroup_1",
+                        "defaultValue": "",
+                        "hint": "",
+                        "required": false,
+                        "mode": "parent",
+                        "dbConnection": "workflow",
+                        "dbConnectionLabel": "PM Database",
+                        "sql": "SELECT IC_UID, IC_NAME FROM ISO_COUNTRY",
+                        "options": [
+                          {
+                            "value": "opt1",
+                            "label": "option1"
+                          },
+                          {
+                            "value": "opt2",
+                            "label": "option2"
+                          },
+                          {
+                            "value": "opt3",
+                            "label": "option3"
+                          },
+                          {
+                            "value": "opt4",
+                            "label": "option4"
+                          }
+                        ],
+                       "optionsSql": [
+                          {
+                            "label": "Andorra",
+                            "value": "AD"
+                          },
+                          {
+                            "label": "United Arab Emirates",
+                            "value": "AE"
+                          },
+                          {
+                            "label": "Afghanistan",
+                            "value": "AF"
+                          },
+                          {
+                            "label": "Antigua and Barbuda",
+                            "value": "AG"
+                          }
+                        ],
+                        "var_uid": "90890015855e74724bc0cb2005889100",
+                        "var_name": "checkgroup",
+                        "colSpan": 12,
+                        "data": {
+                          "value": [
+                            "opt1",
+                            "opt2",
+                            "opt3"
+                          ],
+                          "label": "[\"option1\",\"option2\",\"option3\"]"
+                        }
+                      }
+                    ],
+                    [
+						{
+                          "type": "checkbox",
+                          "variable": "yes_no",
+                          "dataType": "boolean",
+                          "id": "yes_no",
+                          "name": "yes_no",
+                          "label": "checkbox_1",
+                          "defaultValue": "",
+                          "hint": "",
+                          "required": false,
+                          "mode": "parent",
+                          "dbConnection": "workflow",
+                          "dbConnectionLabel": "PM Database",
+                          "sql": "",
+                          "options": [
+                            {
+                              "value": "1",
+                              "label": "verdad"
+                            },
+                            {
+                              "value": "0",
+                              "label": "falso"
+                            }
+                          ],
+                          "var_uid": "19632270955e7476028daa8068019506",
+                          "var_name": "yes_no",
+                          "colSpan": 12,
+                          "data": {
+                            "value": "0",
+                            "label": "falso"
+                          }
+                        }
+                    ]
+                    [
+                      {
+                        "type": "submit",
+                        "id": "submit0000000001",
+                        "name": "submit0000000001",
+                        "label": "submit_1",
+                        "colSpan": 12
+                      }
+                    ]
+                  ],
+                  "variables": [
+                    {
+                      "var_uid": "90890015855e74724bc0cb2005889100",
+                      "prj_uid": "25388802155e746b3607940092703604",
+                      "var_name": "checkgroup",
+                      "var_field_type": "string",
+                      "var_field_size": 10,
+                      "var_label": "string",
+                      "var_dbconnection": "workflow",
+                      "var_dbconnection_label": "PM Database",
+                      "var_sql": "SELECT IC_UID, IC_NAME FROM ISO_COUNTRY",
+                      "var_null": 0,
+                      "var_default": "",
+                      "var_accepted_values": "[]"
+                    }
+                  ]
+                }
+              ]
+            }
+            window.project = new PMDynaform.core.Project({
+                data: data, //JSON.parse(editor.getValue()),
+                renderTo: document.getElementById("container"),
+                submitRest: true,
+                keys: {
+                    server: "http://ronald3.pmos.colosa.net/", //"http://michelangelo.pmos3.colosa.net/",
+                    projectId: "498574572555a0fa9474b40040026428", //"25084755253f3a016907523058545566",
+                    workspace: "testAdmin" //"workflow3"
+                },
+                token: {
+                    accessToken: "4b3fd851be263b320f10731b0d2aa444c3fdf8e9" //"db0498b53483bb840e996a27d23ace1d49f1e35b"
+                },
+                renderTo : document.body
+            });
 
-        <h3 style="margin:10px 0px 0px 0px;">ProcessMaker - PMDynaform</h3>
-        <span style="font-size:13px;">Please enter a valid json. (This json can be obtained from the form editor ProcessMaker). More examples in pmDynaform/data</span><br>
-        <div style="display:inline-block;vertical-align:top; float : left;">
-            <input id="format" type="button" value="format"/>
-            <form style="display: inline-block;"><input id="file" type="file"/></form>
-            <form><textarea id="code" style="font-size: 10px; display:none;"></textarea></form>
-            <div style="font-size: 11px;">© Copyright 2000 - 2015 Colosa, Inc.  <a href="http://www.colosa.com">www.colosa.com</a></div>
-        </div>
-        <div style="display:inline-block;vertical-align:top;width:100%;">
-            <input id="test" type="button" value="run"/>
-            <input id="run_script" type="button" value="run script"/>
-            <input id="desktop" type="button" value="desktop"/>
-            <input id="tablet" type="button" value="tablet"/>
-            <input id="smartphone" type="button" value="smartphone"/><br>    
-            <div id="container" style="border: 1px solid #eee;height:100%; float:left;"></div>    
-        </div>
-        <ul id="lista"></ul>
+            var c = getFieldById("checkgroup");
+        </script>
     </body>
 </html>

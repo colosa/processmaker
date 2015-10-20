@@ -353,7 +353,7 @@ class Variable
             $criteria->addSelectColumn(\DbSourcePeer::DBS_TYPE);
 
             $criteria->add(\ProcessVariablesPeer::PRJ_UID, $processUid, \Criteria::EQUAL);
-            $criteria->addJoin(\ProcessVariablesPeer::VAR_DBCONNECTION, \DbSourcePeer::DBS_UID, \Criteria::LEFT_JOIN);
+            $criteria->addJoin(\ProcessVariablesPeer::VAR_DBCONNECTION, \DbSourcePeer::DBS_UID . " AND " . \DbSourcePeer::PRO_UID . " = '" . $processUid . "'", \Criteria::LEFT_JOIN);
 
             $rsCriteria = \ProcessVariablesPeer::doSelectRS($criteria);
 

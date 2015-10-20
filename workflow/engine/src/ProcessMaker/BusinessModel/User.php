@@ -668,13 +668,13 @@ class User
 
             $calendarInfo = $calendar->getCalendarFor( $record["USR_UID"], "", "" );
 
-            $aFields["USR_CALENDAR_UID"] = ($calendarInfo["CALENDAR_APPLIED"] != "DEFAULT") ? $calendarInfo["CALENDAR_UID"] : ""; 
+            $aFields["USR_CALENDAR_UID"] = ($calendarInfo["CALENDAR_APPLIED"] != "DEFAULT") ? $calendarInfo["CALENDAR_UID"] : "";
 
             $aFields["USR_CALENDAR"] = ($aFields["USR_CALENDAR_UID"] != "") ? $calendar->calendarName( $aFields["USR_CALENDAR_UID"] ) : $aFields["USR_CALENDAR_UID"];
 
 
 
-            //Get photo 
+            //Get photo
 
             $pathPhotoUser = PATH_IMAGES_ENVIRONMENT_USERS . $record["USR_UID"] . ".gif";
 
@@ -2207,6 +2207,64 @@ class User
                 throw (new \Exception($result));
 
             }
+
+        } catch (\Exception $e) {
+
+            throw $e;
+
+        }
+
+    }
+
+
+
+    /**
+
+     * Check permission
+
+     *
+
+     * @param string $userUid        Unique uid of User
+
+     * @param string $permissionCode Permission code
+
+     *
+
+     * return bool
+
+     */
+
+    public function checkPermission($userUid, $permissionCode)
+
+    {
+
+        try {
+
+            $flagPermission = false;
+
+
+
+            $arrayUserRolePermission = $this->loadUserRolePermission("PROCESSMAKER", $userUid);
+
+
+
+            foreach ($arrayUserRolePermission as $value) {
+
+                if ($value["PER_CODE"] == $permissionCode) {
+
+                    $flagPermission = true;
+
+                    break;
+
+                }
+
+            }
+
+
+
+            //Return
+
+            return $flagPermission;
 
         } catch (\Exception $e) {
 

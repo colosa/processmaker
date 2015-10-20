@@ -672,13 +672,13 @@ class Bootstrap
     {
         Bootstrap::LoadSystem('inputfilter');
         $filter = new InputFilter();
-        
+
         $path = PATH_GULLIVER . 'class.' . $strClass . '.php';
         $path = $filter->validateInput($path, "path");
-        
+
         $classfile = Bootstrap::ExpandPath("classes") . 'class.' . $strClass . '.php';
         $classfile = $filter->validateInput($classfile, "path");
-        
+
         if (!file_exists($classfile)) {
             if (file_exists($path)) {
                 return require_once ($path);
@@ -2130,14 +2130,19 @@ class Bootstrap
         array_shift($uriVars);
 
         $args = array();
-        $args['SYS_LANG'] = array_shift($uriVars);
-        $args['SYS_SKIN'] = array_shift($uriVars);
-        $args['SYS_COLLECTION'] = array_shift($uriVars);
-        $args['SYS_TARGET'] = array_shift($uriVars);
+
+        $element = array_shift($uriVars);
+        $args["SYS_LANG"] = (preg_match("/^[\w\-]+$/", $element))? $element : "";
+
+        $element = array_shift($uriVars);
+        $args["SYS_SKIN"] = (preg_match("/^[\w\-]+$/", $element))? $element : "";
+
+        $args["SYS_COLLECTION"] = array_shift($uriVars);
+        $args["SYS_TARGET"] = array_shift($uriVars);
 
         //to enable more than 2 directories...in the methods structure
-        while (count($uriVars) > 0) {
-            $args['SYS_TARGET'] .= '/' . array_shift($uriVars);
+        while (!empty($uriVars)) {
+            $args["SYS_TARGET"] = $args["SYS_TARGET"] . "/" . array_shift($uriVars);
         }
 
         /* Fix to prevent use uxs skin outside siplified interface,
@@ -2942,3 +2947,4 @@ class Bootstrap
         return md5($string);
     }
 }
+

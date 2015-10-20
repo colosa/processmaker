@@ -129,7 +129,7 @@ if ($_GET['DYN_UID'] != '') {
     $FieldsPmDynaform["CURRENT_DYNAFORM"] = $_GET['DYN_UID'];
     $a = new pmDynaform($FieldsPmDynaform);
     if ($a->isResponsive()) {
-        $a->printView();
+        $a->printEditSupervisor();
     }else{
         $G_PUBLISH->AddContent( 'dynaform', 'xmlform', $_SESSION['PROCESS'] . '/' . $_GET['DYN_UID'], '', $Fields['APP_DATA'], 'cases_SaveDataSupervisor?UID=' . $_GET['DYN_UID'] );
     }

@@ -12,6 +12,26 @@ use \Luracast\Restler\RestException;
 class User extends Api
 {
     /**
+     * Constructor of the class
+     *
+     * return void
+     */
+    public function __construct()
+    {
+        try {
+            $user = new \ProcessMaker\BusinessModel\User();
+
+            $usrUid = $this->getUserId();
+
+            if (!$user->checkPermission($usrUid, "PM_USERS")) {
+                throw new \Exception(\G::LoadTranslation("ID_USER_NOT_HAVE_PERMISSION", array($usrUid)));
+            }
+        } catch (\Exception $e) {
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
+        }
+    }
+
+    /**
      * @url GET
      * @param string $filter
      * @param int $start

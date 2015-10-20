@@ -269,7 +269,11 @@ class Roles extends BaseRoles {
                 $con->commit();
                 $this->setRolName($rol_name);
                 $status = $fields['ROL_STATUS'] = 1 ? 'ACTIVE' : 'INACTIVE';
-                G::auditLog("UpdateRole", "Role Name: ".$rol_name." - Role ID: (".$fields['ROL_UID'].") - Role Code: ".$fields['ROL_CODE']." - Role Status: ".$status);
+
+                $rolCode = (isset($fields["ROL_CODE"]))? "- Role Code: " . $fields["ROL_CODE"] : "";
+
+                G::auditLog("UpdateRole", "Role Name: " . $rol_name . " - Role ID: (".$fields['ROL_UID'].") " . $rolCode . " - Role Status: ".$status);
+
                 return $result;
             } else {
                 $con->rollback();

@@ -1,30 +1,30 @@
-[15 minutes ago] 2fb44d3  enable bad end event conect <rodrigo quelca>
-[48 minutes ago] a83bf4d  disable connect to end event <rodrigo quelca>
-[3 hours ago] 0db2a2a  PM-3230 DesignerBPMN>Supervisors>No se puede ver los usuarios que tiene asignado el grupo. <dheeyi>
-[4 hours ago] 9e51820  PM-2907 3.0.1-GA <Roly Rudy Gutierrez Pinto>
-[4 hours ago] 09d5e52  DesignerBPMN>Supervisors>No se puede ver los usuarios que tiene asignado el grupo. <dheeyi>
-[4 hours ago] 78abc76  DesignerBPMN>Supervisors>No se puede ver los usuarios que tiene asignado el grupo. <dheeyi>
-[5 hours ago] 73e0e3b  PM-3069 <rodrigo quelca>
-[5 hours ago] 6b2c1ae  PM-3036 and PM-3044 <rodrigo quelca>
-[24 hours ago] 38f5a55  PM-3218 Designer > Designer BPMN > Task Properties > Action By Email: No se puede guardar la configuracion de las propiedades. <dheeyi>
-[24 hours ago] 3b20354  test <dheeyi>
-[5 days ago] 3142b9e  New Project>Supervisor: La pantalla emergente de edicion de un supervisor dice variables SOLVED en la pantalla de asignacion de supervisores cuando se salia sin guardar manda una alerta que su titulo no estaba deacuerdo con la ventana anterior se soluciono cambiando el titulo de forma ahora ya hay continuidad <Ricardo Viscarra>
-[11 days ago] 4b8837c  PM-3004 "TNS: Si configuras una coneccion a BD..." SOLVED <Luis Fernando Saisa Lopez>
-[12 days ago] 74d66d3  Complete UX of message types screen <dheeyi>
-[13 days ago] 2e83864  PM-2978 Complete UX of message types screen <dheeyi>
-[13 days ago] 1dde773  PM-2978 Complete UX of message types screen <dheeyi>
-[2 weeks ago] 290fa2e  PM-3109 <marcelo.cuiza>
-[2 weeks ago] 0a28b3f  PM-3119 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 17e0f32  PM-2949 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 6451969  PM-3116 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 4e85c7d  PM-3116 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 1b8ae43  casesTracker colores invertidos de botones "yes", "no" <marcelo.cuiza>
-[2 weeks ago] 1308ca7  PM-2878 Cambiar estandarizar el UX/diseñe las grillas <dheeyi>
-[2 weeks ago] 6ec82ec  PM-3119 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 1c184a1  PM-3119 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] dc552c9  PM-2879, PM-2878 y PM-2868 <dheeyi>
-[2 weeks ago] 4570d3a  PM-3004 "TNS: Si configuras una coneccion a BD..." SOLVED <Luis Fernando Saisa Lopez>
-[2 weeks ago] 6c4529d  PM-3116 <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] 1ff523b  PM-3116 <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] 924a281  PM-3004 "TNS: Si configuras una coneccion a BD..." SOLVED <Luis Fernando Saisa Lopez>
-[3 weeks ago] 0ee14cc  IMPROVEMENT <Roly Rudy Gutierrez Pinto>
+[9 days ago] 3fc5324  PM-3564 <Roly Rudy Gutierrez Pinto>
+[12 days ago] b9a57e0  PM-3148_PM-3121: mplement Multiple Instance Task/ Task Marker Parallel, Changes in assignment rules in multiple instance tasks <marcelo.cuiza>
+[2 weeks ago] a9e7941  PM-3341 <Roly Rudy Gutierrez Pinto>
+[2 weeks ago] 5bdec1d  PM-3146 Add new variable type "array" <dheeyi>
+[3 weeks ago] 771004b  PM-3449 <Roly Rudy Gutierrez Pinto>
+[3 weeks ago] 33049eb  PM-3436 New BPMN> Timer Event> Existen errores al momento de guardar una configuracion de daily, montly en timer event properties <dheeyi>
+[3 weeks ago] 256208e  PM-3309 Exclusive Gateway Properties: Cuando el flujo va a un end event luego de un gateway se muestra el ID <rodrigo quelca>
+[3 weeks ago] 0490562  PM-3404 <Roly Rudy Gutierrez Pinto>
+[3 weeks ago] 0aeb10f  PM-3343 Se pueden establecer valores invalidos en campos de Timer Event <dheeyi>
+[3 weeks ago] 2142b1d  PM-3419: Error al cambiar el tipo de gateway. <rodrigo quelca>
+[3 weeks ago] 20d67b2  PM-3301: 0018030: Weird display of emails in email event properties from dropdown <marcelo.cuiza>
+[3 weeks ago] d57446a  PM-3345: Mouse pointer doesn't work on process designer labels <rodrigo quelca>
+[4 weeks ago] 5826a4d  PM-3387 <Roly Rudy Gutierrez Pinto>
+[4 weeks ago] e980ec0  PM-3385 <Roly Rudy Gutierrez Pinto>
+[4 weeks ago] 104a036  PM-3354-A "Error en pantalla de variables..." SOLVED <Luis Fernando Saisa Lopez>
+[4 weeks ago] 0309600  PM-3350 Process Edit screen: Unit field not set SOLVED <Marco A. Nina Mena>
+[4 weeks ago] 63cd1e3  PM-3298 <Roly Rudy Gutierrez Pinto>
+[4 weeks ago] 9bd2553  Remove task create autosave and change in the way to open the task properties form. <rodrigo quelca>
+[5 weeks ago] f4dddb5  disble validator feature <rodrigo quelca>
+[5 weeks ago] c3a74f6  fix bad merged files <rodrigo quelca>
+[5 weeks ago] c2f958a  PM-3267 SOLVED <Julio Cesar Laura>
+[5 weeks ago] f757f7d  PM-3241 "DesignerBPMN>Los estilos en las grillas..." SOLVED <Luis Fernando Saisa Lopez>
+[5 weeks ago] aaaa31d  Iniciar la creacion del validador de proceso, que permita detectar problemas en el disenador <rodrigo quelca>
+[5 weeks ago] 5fd3c3d  PM-3302 Two strange required fields in the 'Edit Process' IMPROVEMENT <Marco A. Nina Mena>
+[5 weeks ago] 8aa14c4  PM-3306 <marcelo.cuiza>
+[5 weeks ago] 73a48e7  PM-3300 Error al guardar el proceso cuando se elimina un Lane que contiene un gateway con dos o mas tareas <rodrigo quelca>
+[5 weeks ago] af8386f  PM-3302 Two strange required fields in the 'Edit Process' SOLVED <Marco A. Nina Mena>
+[6 weeks ago] 1668013  PM-3285 <marcelo.cuiza>
+[6 weeks ago] 1ab7e41  PM-3230 DesignerBPMN>Supervisors>No se puede ver los usuarios que tiene asignado el grupo <dheeyi>
+[6 weeks ago] 4ae0407  PM-3252 Correct texts in Helper tooltips <rodrigo quelca>

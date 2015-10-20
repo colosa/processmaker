@@ -21,6 +21,14 @@ class ProcessCategory extends Api
     public function __construct()
     {
         try {
+            $user = new \ProcessMaker\BusinessModel\User();
+
+            $usrUid = $this->getUserId();
+
+            if (!$user->checkPermission($usrUid, "PM_SETUP")) {
+                throw new \Exception(\G::LoadTranslation("ID_USER_NOT_HAVE_PERMISSION", array($usrUid)));
+            }
+
             $this->category = new \ProcessMaker\BusinessModel\ProcessCategory();
 
             $this->category->setFormatFieldNameInUppercase(false);

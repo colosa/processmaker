@@ -215,6 +215,7 @@ class Process
                             }
 
                             //type
+                            $fieldValue = (!is_array($fieldValue)) ? $fieldValue : '';
                             if ($arrayFieldDefinition[$fieldName]["empty"] && $fieldValue . "" == "") {
                                 //
                             } else {

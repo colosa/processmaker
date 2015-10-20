@@ -120,6 +120,11 @@ class ListInbox extends BaseListInbox
             $users = new Users();
             $users->refreshTotal($data['USR_UID'], 'add', 'participated');
         }
+        
+        if((array_key_exists('TAS_UID', $data) && isset($data['TAS_UID'])) && (array_key_exists('TAS_UID', $data) && isset($data['PRO_UID'])) && isset($data['APP_UID'])) {
+            $data['DEL_PRIORITY'] = $this->getTaskPriority($data['TAS_UID'], $data['PRO_UID'], $data["APP_UID"]);
+        }
+        
         $con = Propel::getConnection( ListInboxPeer::DATABASE_NAME );
         try {
             $con->begin();
@@ -201,6 +206,11 @@ class ListInbox extends BaseListInbox
         if (isset($data['DEL_TASK_DUE_DATE'])) {
             $data['DEL_DUE_DATE'] = $data['DEL_TASK_DUE_DATE'];
         }
+        
+        if(!isset($data['DEL_DUE_DATE'])) {
+            $filters = array("APP_UID" => $data["APP_UID"], "DEL_INDEX" => $data['DEL_INDEX']);
+            $data['DEL_DUE_DATE'] = $this->getAppDelegationInfo($filters,'DEL_TASK_DUE_DATE');
+        }
 
         $criteria = new Criteria();
         $criteria->addSelectColumn( ApplicationPeer::APP_NUMBER );
@@ -247,6 +257,9 @@ class ListInbox extends BaseListInbox
         $dataset->next();
         $aRow = $dataset->getRow();
         $data['APP_TAS_TITLE'] = $aRow['CON_VALUE'];
+        
+        
+        $data['DEL_PRIORITY'] = $this->getTaskPriority($data['TAS_UID'], $data['PRO_UID'], $data["APP_UID"]);
 
 
         $data['APP_PREVIOUS_USER'] = '';
@@ -473,6 +486,42 @@ class ListInbox extends BaseListInbox
             $data[] = $aRow;
         }
         return $data;
+    }
+    
+    public function getTaskPriority($taskUid, $proUid, $appUid)
+    {
+        $criteria = new Criteria();
+        $criteria->addSelectColumn(TaskPeer::TAS_PRIORITY_VARIABLE);
+        $criteria->add( TaskPeer::TAS_UID, $taskUid, Criteria::EQUAL );
+        $criteria->add( TaskPeer::PRO_UID, $proUid, Criteria::EQUAL );
+        $dataset = TaskPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $dataset->next();
+        $aRow = $dataset->getRow();
+        $priority = $aRow['TAS_PRIORITY_VARIABLE'];
+        if(strlen($priority)>2){
+            $oCase = new Cases();
+            $aData = $oCase->loadCase( $appUid );
+            $priorityLabel = substr($priority, 2,strlen($priority));
+            if (isset( $aData['APP_DATA'][$priorityLabel] )) {
+                $priority = $aData['APP_DATA'][$priorityLabel];
+            }
+        }
+        return $priority != "" ? $priority : 3;
+    }
+    
+    public function getAppDelegationInfo($filters, $fieldName)
+    {
+        $criteria = new Criteria();
+        eval('$criteria->addSelectColumn( AppDelegationPeer::'.$fieldName.');');
+        foreach($filters as $k => $v) {
+           eval('$criteria->add( AppDelegationPeer::'.$k.',$v, Criteria::EQUAL);');
+        }
+        $dataset = AppDelegationPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $dataset->next();
+        $aRow = $dataset->getRow();
+        return isset($aRow[$fieldName]) ? $aRow[$fieldName] : NULL;  
     }
 }
 

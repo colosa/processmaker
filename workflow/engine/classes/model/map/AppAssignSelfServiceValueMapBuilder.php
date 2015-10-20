@@ -73,7 +73,7 @@ class AppAssignSelfServiceValueMapBuilder
 
         $tMap->addColumn('TAS_UID', 'TasUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
-        $tMap->addColumn('GRP_UID', 'GrpUid', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addColumn('GRP_UID', 'GrpUid', 'string', CreoleTypes::LONGVARCHAR, true, null);
 
     } // doBuild()
 

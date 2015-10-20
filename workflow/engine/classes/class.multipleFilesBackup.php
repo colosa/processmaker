@@ -52,7 +52,7 @@ class multipleFilesBackup
         $metadata = $workspace->getMetadata();
         CLI::logging( "Creating temporary files on database...\n" );
         $metadata["databases"] = $workspace->exportDatabase( $tempDirectory );
-        $metadata["directories"] = array ("{$workspace->name}.files");
+        $metadata["directories"] = array ("{$workspace->name}");
         $metadata["version"] = 1;
         $metaFilename = "$tempDirectory/{$workspace->name}.meta";
         if (! file_put_contents( $metaFilename, str_replace( array (",","{","}"), array (",\n  ","{\n  ","\n}\n"), G::json_encode( $metadata ) ) )) {
@@ -110,6 +110,8 @@ class multipleFilesBackup
         $DecommpressCommand .= " | tar xzv";
 
         $tempDirectory = PATH_DATA . "upgrade/" . basename( tempnam( __FILE__, '' ) );
+        $tempDirectoryHelp = $tempDirectory;
+        
         $parentDirectory = PATH_DATA . "upgrade";
         if (is_writable( $parentDirectory )) {
             mkdir( $tempDirectory );
@@ -123,6 +125,9 @@ class multipleFilesBackup
         CLI::logging( "\nUncompressed into: " . $tempDirectory . "\n" );
 
         //Search for metafiles in the new standard (the old standard would contain meta files.
+        $decommpressedfile = scandir($tempDirectoryHelp.dirname($tempDirectoryHelp), 1);
+        $tempDirectory = $tempDirectoryHelp.dirname($tempDirectoryHelp)."/".$decommpressedfile[0];
+
         $metaFiles = glob( $tempDirectory . "/*.meta" );
         if (empty( $metaFiles )) {
             $metaFiles = glob( $tempDirectory . "/*.txt" );
@@ -173,9 +178,12 @@ class multipleFilesBackup
             if (file_exists( $workspace->path )) {
                 G::rm_dir( $workspace->path );
             }
+            
+            $tempDirectorySite = $tempDirectoryHelp.dirname($workspace->path);
+            
             foreach ($metadata->directories as $dir) {
                 CLI::logging( "+> Restoring directory '$dir'\n" );
-                if (! rename( "$tempDirectory/$dir", $workspace->path )) {
+                if (! rename( "$tempDirectorySite/$dir", $workspace->path )) {
                     throw new Exception( "There was an error copying the backup files ($tempDirectory/$dir) to the workspace directory {$workspace->path}." );
                 }
             }
@@ -197,13 +205,20 @@ class multipleFilesBackup
             if (! $link) {
                 throw new Exception( 'Could not connect to system database: ' . mysql_error() );
             }
+            
+            if (strpos($metadata->DB_RBAC_NAME, 'rb_') === false) {
+                $onedb = true;
+            } else {
+                $onedb = false;
+            }
 
-            $newDBNames = $workspace->resetDBInfo( $dbHost, $createWorkspace );
+            $newDBNames = $workspace->resetDBInfo( $dbHost, $createWorkspace, $onedb );
+            $aParameters = array('dbHost'=>$dbHost,'dbUser'=>$dbUser,'dbPass'=>$dbPass);
 
             foreach ($metadata->databases as $db) {
                 $dbName = $newDBNames[$db->name];
                 CLI::logging( "+> Restoring database {$db->name} to $dbName\n" );
-                $workspace->executeSQLScript( $dbName, "$tempDirectory/{$db->name}.sql" );
+                $workspace->executeSQLScript( $dbName, "$tempDirectory/{$db->name}.sql", $aParameters );
                 $workspace->createDBUser( $dbName, $db->pass, "localhost", $dbName );
                 $workspace->createDBUser( $dbName, $db->pass, "%", $dbName );
             }

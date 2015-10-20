@@ -85,6 +85,12 @@ class Cases
             Validator::usrUid($dataList["userId"], "userId");
         }
 
+        $user = new \ProcessMaker\BusinessModel\User();
+
+        if (!$user->checkPermission($dataList["userId"], "PM_ALLCASES")) {
+            throw new \Exception(\G::LoadTranslation("ID_CASE_USER_NOT_HAVE_PERMISSION", array($dataList["userId"])));
+        }
+
         G::LoadClass("applications");
         $solrEnabled = false;
         $userUid = $dataList["userId"];
@@ -749,6 +755,26 @@ class Cases
         if ($fields['APP_STATUS'] == 'CANCELLED') {
             throw (new \Exception(\G::LoadTranslation("ID_CASE_ALREADY_CANCELED", array($app_uid))));
         }
+
+        $appCacheView = new \AppCacheView();
+
+        $arrayProcess = $appCacheView->getProUidSupervisor($usr_uid);
+
+        $criteria = new \Criteria("workflow");
+
+        $criteria->addSelectColumn(\AppDelegationPeer::APP_UID);
+        $criteria->add(\AppDelegationPeer::APP_UID, $app_uid, \Criteria::EQUAL);
+        $criteria->add(\AppDelegationPeer::DEL_INDEX, $del_index, \Criteria::EQUAL);
+        $criteria->add(
+            $criteria->getNewCriterion(\AppDelegationPeer::USR_UID, $usr_uid, \Criteria::EQUAL)->addOr(
+            $criteria->getNewCriterion(\AppDelegationPeer::PRO_UID, $arrayProcess, \Criteria::IN))
+        );
+        $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
+
+        if (!$rsCriteria->next()) {
+            throw (new \Exception(\G::LoadTranslation("ID_CASE_USER_INVALID_CANCEL_CASE", array($usr_uid))));
+        }
+
         $case->cancelCase( $app_uid, $del_index, $usr_uid );
     }
 
@@ -773,17 +799,45 @@ class Cases
         Validator::appUid($app_uid, '$app_uid');
         Validator::usrUid($usr_uid, '$usr_uid');
 
+        if ($del_index === false) {
+            $del_index = \AppDelegation::getCurrentIndex($app_uid);
+        }
+
+        Validator::isInteger($del_index, '$del_index');
+
         $case = new \Cases();
         $fields = $case->loadCase($app_uid);
         if ($fields['APP_STATUS'] == 'CANCELLED') {
             throw (new \Exception(\G::LoadTranslation("ID_CASE_IS_CANCELED", array($app_uid))));
         }
 
-        if ($del_index === false) {
-            $del_index = \AppDelegation::getCurrentIndex($app_uid);
+        $oDelay = new \AppDelay();
+
+        if ($oDelay->isPaused($app_uid, $del_index)) {
+            throw (new \Exception(\G::LoadTranslation("ID_CASE_PAUSED", array($app_uid))));
         }
 
-        Validator::isInteger($del_index, '$del_index');
+        $appCacheView = new \AppCacheView();
+
+        $arrayProcess = $appCacheView->getProUidSupervisor($usr_uid);
+
+        $criteria = new \Criteria("workflow");
+
+        $criteria->addSelectColumn(\AppDelegationPeer::APP_UID);
+        $criteria->add(\AppDelegationPeer::APP_UID, $app_uid, \Criteria::EQUAL);
+        $criteria->add(\AppDelegationPeer::DEL_INDEX, $del_index, \Criteria::EQUAL);
+        $criteria->add(
+            $criteria->getNewCriterion(\AppDelegationPeer::USR_UID, $usr_uid, \Criteria::EQUAL)->addOr(
+            $criteria->getNewCriterion(\AppDelegationPeer::PRO_UID, $arrayProcess, \Criteria::IN))
+        );
+        $criteria->add(\AppDelegationPeer::DEL_THREAD_STATUS, "OPEN", \Criteria::EQUAL);
+        $criteria->add(\AppDelegationPeer::DEL_FINISH_DATE, null, \Criteria::ISNULL);
+
+        $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
+
+        if (!$rsCriteria->next()) {
+            throw (new \Exception(\G::LoadTranslation("ID_CASE_USER_INVALID_PAUSED_CASE", array($usr_uid))));
+        }
 
         if ($unpaused_date != null) {
             Validator::isDate($unpaused_date, 'Y-m-d', '$unpaused_date');
@@ -820,6 +874,25 @@ class Cases
 
         if (!$oDelay->isPaused($app_uid, $del_index)) {
             throw (new \Exception(\G::LoadTranslation("ID_CASE_NOT_PAUSED", array($app_uid))));
+        }
+
+        $appCacheView = new \AppCacheView();
+
+        $arrayProcess = $appCacheView->getProUidSupervisor($usr_uid);
+
+        $criteria = new \Criteria("workflow");
+        $criteria->addSelectColumn(\AppDelegationPeer::APP_UID);
+        $criteria->add(\AppDelegationPeer::APP_UID, $app_uid, \Criteria::EQUAL);
+        $criteria->add(\AppDelegationPeer::DEL_INDEX, $del_index, \Criteria::EQUAL);
+        $criteria->add(
+            $criteria->getNewCriterion(\AppDelegationPeer::USR_UID, $usr_uid, \Criteria::EQUAL)->addOr(
+            $criteria->getNewCriterion(\AppDelegationPeer::PRO_UID, $arrayProcess, \Criteria::IN))
+        );
+
+        $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
+
+        if (!$rsCriteria->next()) {
+            throw (new \Exception(\G::LoadTranslation("ID_CASE_USER_INVALID_UNPAUSE_CASE", array($usr_uid))));
         }
 
         $case = new \Cases();
@@ -1455,15 +1528,34 @@ class Cases
      *
      * @access public
      * @param string $app_uid, Uid for case
+     * @param string $usr_uid, Uid for user
      * @return array
      *
      * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
      * @copyright Colosa - Bolivia
      */
-    public function getCaseVariables($app_uid)
+    public function getCaseVariables($app_uid, $usr_uid)
     {
         Validator::isString($app_uid, '$app_uid');
         Validator::appUid($app_uid, '$app_uid');
+        Validator::isString($usr_uid, '$usr_uid');
+        Validator::usrUid($usr_uid, '$usr_uid');
+
+        $appCacheView = new \AppCacheView();
+        $isProcessSupervisor = $appCacheView->getProUidSupervisor($usr_uid);
+        $criteria = new \Criteria("workflow");
+        $criteria->addSelectColumn(\AppDelegationPeer::APP_UID);
+        $criteria->add(\AppDelegationPeer::APP_UID, $app_uid, \Criteria::EQUAL);
+        $criteria->add(\AppDelegationPeer::USR_UID, $usr_uid, \Criteria::EQUAL);
+        $criteria->add(
+            $criteria->getNewCriterion(\AppDelegationPeer::USR_UID, $usr_uid, \Criteria::EQUAL)->addOr(
+            $criteria->getNewCriterion(\AppDelegationPeer::PRO_UID, $isProcessSupervisor, \Criteria::IN))
+        );
+        $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
+
+        if (!$rsCriteria->next()) {
+            throw (new \Exception(\G::LoadTranslation("ID_NO_PERMISSION_NO_PARTICIPATED", array($usr_uid))));
+        }
 
         $case = new \Cases();
         $fields = $case->loadCase($app_uid);
@@ -1477,16 +1569,38 @@ class Cases
      * @param string $app_uid, Uid for case
      * @param array $app_data, Data for case variables
      * @param string $dyn_uid, Uid for dynaform
+     * @param string $usr_uid, Uid for user
      *
      * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
      * @copyright Colosa - Bolivia
      */
-    public function setCaseVariables($app_uid, $app_data, $dyn_uid = null)
+    public function setCaseVariables($app_uid, $app_data, $dyn_uid = null, $usr_uid)
     {
         Validator::isString($app_uid, '$app_uid');
         Validator::appUid($app_uid, '$app_uid');
         Validator::isArray($app_data, '$app_data');
+        Validator::isString($usr_uid, '$usr_uid');
+        Validator::usrUid($usr_uid, '$usr_uid');
 
+        $appCacheView = new \AppCacheView();
+        $isProcessSupervisor = $appCacheView->getProUidSupervisor($usr_uid);
+        $criteria = new \Criteria("workflow");
+        $criteria->addSelectColumn(\AppDelegationPeer::APP_UID);
+        $criteria->add(\AppDelegationPeer::APP_UID, $app_uid, \Criteria::EQUAL);
+        $criteria->add(\AppDelegationPeer::USR_UID, $usr_uid, \Criteria::EQUAL);
+        $criteria->add(
+            $criteria->getNewCriterion(\AppDelegationPeer::USR_UID, $usr_uid, \Criteria::EQUAL)->addOr(
+            $criteria->getNewCriterion(\AppDelegationPeer::PRO_UID, $isProcessSupervisor, \Criteria::IN))
+        );
+        $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
+
+        if (!$rsCriteria->next()) {
+            throw (new \Exception(\G::LoadTranslation("ID_NO_PERMISSION_NO_PARTICIPATED", array($usr_uid))));
+        }
+
+        $_SESSION['APPLICATION'] = $app_uid;
+        $_SESSION['USER_LOGGED'] = $usr_uid;
+        
         $case = new \Cases();
         $fields = $case->loadCase($app_uid);
         $_POST['form'] = $app_data;
@@ -2344,4 +2458,3 @@ class Cases
         }
     }
 }
-

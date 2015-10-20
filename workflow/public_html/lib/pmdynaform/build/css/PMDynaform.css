@@ -50,7 +50,11 @@
     display: inline-block; }
 
   .pmdynaform-container .pmdynaform-field-control {
-    float: right; } }
+    float: right; }
+
+  .pmdynaform-edit-grid.responsive .form-control {
+    width: 95%;
+    min-width: initial; } }
 @media all and (max-width: 980px) and (min-width: 550px) {
   .tpl-empty {
     display: none; }
@@ -107,7 +111,11 @@
     display: inline-block; }
 
   .pmdynaform-field .pmdynaform-checkbox-items {
-    width: 93%; } }
+    width: 93%; }
+
+  .pmdynaform-edit-grid.responsive .form-control {
+    width: 95%;
+    min-width: initial; } }
 @media all and (max-width: 550px) and (min-width: 300px) {
   .tpl-empty {
     display: none; }
@@ -163,7 +171,11 @@
     display: inline-block; }
 
   .pmdynaform-field .pmdynaform-checkbox-items {
-    width: 91%; } }
+    width: 91%; }
+
+  .pmdynaform-edit-grid.responsive .form-control {
+    width: 95%;
+    min-width: initial; } }
 @media all and (max-width: 300px) {
   .tpl-empty {
     display: none; }
@@ -219,7 +231,11 @@
     display: inline-block; }
 
   .pmdynaform-field .pmdynaform-checkbox-items {
-    width: 89%; } }
+    width: 89%; }
+
+  .pmdynaform-edit-grid.responsive .form-control {
+    width: 95%;
+    min-width: initial; } }
 .row {
   margin-left: 5px;
   margin-right: 5px; }
@@ -340,6 +356,10 @@ button[disabled], html input[disabled] {
   cursor: default;
   background-color: #eee;
   border: 1px solid white; }
+
+.pmdynaform-grid .checkbox {
+  min-height: initial;
+  padding-top: 0px; }
 
 /*# sourceMappingURL=bootstrapCss.css.map */
 
@@ -822,13 +842,14 @@ textarea {
   width: auto; }
 
 .pmdynaform-grid-removerow-static {
-  padding-left: 15px;
-  padding-right: 15px;
   box-sizing: border-box;
   display: table-cell; }
 
 .pmdynaform-grid-removerow-static.remove-row .btn-danger {
-  top: -7px; }
+  top: 5px;
+  margin-right: 8px;
+  right: 3px;
+  padding: 3px 4px 3px 4px; }
 
 .pmdynaform-grid-field-static {
   /*position: relative;*/
@@ -979,10 +1000,7 @@ textarea {
     margin-top: 4px; }
 
   .pmdynaform-field-grid.form .pmdynaform-form .rowIndex {
-    width: 30%; }
-
-  .pmdynaform-field-grid.responsive .remove-row {
-    right: 16px !important; } }
+    width: 30%; } }
 @media all and (max-width: 550px) and (min-width: 300px) {
   .pmdynaform-field-grid.form .pmdynaform-label-options {
     text-align: initial; }
@@ -1011,16 +1029,12 @@ textarea {
 .pmdynaform-field-grid .responsive .form-group {
   with: 100%; }
 
-.pmdynaform-field-grid.responsive .remove-row {
-  position: absolute;
-  right: 0;
-  margin-right: 2%;
-  display: initial; }
+.pmdynaform-field-grid.responsive .remove-row button {
+  padding: 3px;
+  top: 5px; }
 
 .pmdynaform-edit-grid .pmdynaform-field-required {
-  font-size: 19px;
-  position: absolute;
-  margin-left: 7%; }
+  font-size: 19px; }
 
 .pmdynaform-edit-view .pmdynaform-field-required {
   display: none; }
@@ -1049,6 +1063,20 @@ textarea {
   background-color: white;
   border-color: white;
   text-decoration: underline; }
+
+.pmdynaform-container .pmdynaform-label-options.form-control,
+.pmdynaform-container .pmdynaform-control-checkbox-list.form-control,
+.pmdynaform-container .pmdynaform-link.form-control {
+  border: initial; }
+
+.pmdynaform-grid-fields .pmdynaform-label-options.form-control span,
+.pmdynaform-container .pmdynaform-link.form-control span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  width: 70%;
+  text-align: center; }
 
 /*# sourceMappingURL=GridTable.css.map */
 
@@ -1696,8 +1724,7 @@ textarea {
   background-color: black;
   position: absolute;
   height: 100%;
-  width: 100%;
-  z-index: 10000; }
+  width: 100%; }
 
 .pm-form-grid-modal-menu {
   position: absolute;

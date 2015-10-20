@@ -207,7 +207,7 @@
 	</div>	
 </script>
 
- <script type="text/template" id="tpl-checkbox">
+ <script type="text/template" id="tpl-checkgroup">
 	<div id="<%=id%>" name="field-<%=name%>" class="<%=namespace%>-field-<%=type%> <%if (group === 'form'){%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%> <%}%> <%=namespace%>-<%=mode%>-<%=type%> pmdynaform-field">
     	<% if(group === "form") {%>
 	    	<label for="<%=name%>" class="col-md-<%=colSpanLabel%> col-lg-<%=colSpanLabel%> control-label pmdynaform-label">  
@@ -228,11 +228,11 @@
 		  		<%} else if (layout === "responsive") {%> 
 		  			class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 		  		<%}%>>
-    		<div class="pmdynaform-control-checkbox-list">
+    		<div class="pmdynaform-control-checkbox-list form-control">
     			<div class="pmdynaform-checkbox-items">
 	    			<% for(var i=0; i<options.length; i+=1) { %>
 						<div class="checkbox"
-							<%if(dataType === "boolean" && i > 0){%>
+							<%if(i === options.length-1){%>
 							style = "display:none"
 							<%}%>
 						>        
@@ -275,6 +275,73 @@
 		</div>
 	</div>    
  </script>
+
+
+<script type="text/template" id="tpl-checkbox_yes_no">
+<div id="<%=id%>" name="field-<%=name%>" class="<%=namespace%>-field-<%=type%> <%if (group === 'form'){%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%> <%}%> <%=namespace%>-<%=mode%>-<%=type%> pmdynaform-field">
+	<% if(group === "form") {%>
+    	<label for="<%=name%>" class="col-md-<%=colSpanLabel%> col-lg-<%=colSpanLabel%> control-label pmdynaform-label">  
+    		<span class="textlabel"><%= label %></span>
+    		<%if(required){%>
+	  			<span class="pmdynaform-field-required">*</span>
+	  		<%}%>
+    	</label>
+    <%} else if((group !== "form") && (layout === "form")){%>
+			<label for="<%=name%>" class="hidden-lg hidden-md hidden-sm visible-xs control-label pmdynaform-label col-xs-<%=colSpanLabel%>">  
+		  		<span class="textlabel"><%= label %></span>
+		  	</label>
+		<%}%>
+	<div <%if (group === 'form'){ %> 
+	  			class="col-md-<%=colSpanControl%> col-lg-<%=colSpanControl%> pmdynaform-field-control"
+	  		<%} else if (layout === "form"){ %>
+	  			class="col-xs-<%=colSpanControl%> col-sm-12 col-md-12 col-lg-12"
+	  		<%} else if (layout === "responsive") {%> 
+	  			class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+	  		<%}%>>
+		<div class="pmdynaform-control-checkbox-list form-control">
+			<div class="pmdynaform-checkbox-items">
+    			<% for(var i=0; i<options.length; i+=1) { %>
+					<div class="checkbox"
+						<%if( i > 0){%>
+						style = "display:none"
+						<%}%>
+					>
+			        	<label>
+			        		<input 
+								<% if  ( group === "grid") { %>
+									id = "form<%=id%>"
+									name ="form<%=name%>"
+								<%} else {%>
+									id = "form[<%=id%>][<%=options[i].value%>]"
+									name ="form[<%=name%>][]"
+								<%}%>
+			        			class="<%=namespace%>-control-<%=type%>"
+				        		value="<%=options[i].value%>" 
+				        		type="<%=type%>"
+				        		<% if(options[i].selected){%>checked<%}%>
+				        		<% if(disabled === true){%>disabled<%}%>>
+			        	</label>
+					</div>
+			    <% } %>	
+    		</div>
+			<% if (group === "form") { %>
+				<%if (hint !== "" && hint !== null){%>
+					<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="<%=hint%>"></span>
+				<%}%>						
+			<% } %>
+		</div>
+		<input type="hidden" 
+			<% if  ( group === "grid") { %>
+				id = "form<%=id%>_label"
+				name ="form<%=name%>_label"
+			<%} else{%>
+				id = "form[<%=id%>_label]"
+				name ="form[<%=name%>_label]"
+			<%}%>
+		>
+	</div>
+</div>    
+</script>
 
 
 <script type="text/template" id="tpl-radio">
@@ -546,6 +613,7 @@
 					id = "form[<%=id%>]"
 					name ="form[<%=name%>]"
 				<%}%>
+				class = "pmdynaform-link form-control"
 				href="<%=href%>" target="<%=target%>" class="btn btn-link <%=namespace%>-control-<%=type%>"
 				<% if(disabled === true){%>disabled<%}%>> 
 				<span> <%= value %> </span>
@@ -605,11 +673,11 @@
 		  		<%} else if (layout === "responsive") {%> 
 		  			class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 		  		<%}%>>
-			<div class="pmdynaform-label-options">
+			<div class="pmdynaform-label-options form-control">
 				<%if(originalType=="suggest"){%>
 				<%}%>
 				<%for(var k=0; k<fullOptions.length; k+=1){%>
-					<span><%=fullOptions[k]%></span>
+					<span title=<%=fullOptions[k]%>><%=fullOptions[k]%></span>
 				<%}%>
 				<input type="hidden" value="<%= data['label']%>"
 					<% if  ( group === "grid") { %>
@@ -943,7 +1011,7 @@
 	</div>
 </script>
 <script type="text/template" id="tpl-panelField">
-	<div class="panel panel-<%=typePanel%> <%=namespace%>-<%=type%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%>" style="border:<%=border%> solid #ccc;">
+	<div id=<%=id%> class="panel panel-<%=typePanel%> <%=namespace%>-<%=type%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%>" style="border:<%=border%> solid #ccc;">
 		<div class="panel-heading" style="<%if(!showHeader){%>display:none;<%}%>">
 			<h3 class="panel-title">
 				<div class="header-content">

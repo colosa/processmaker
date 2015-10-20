@@ -431,7 +431,7 @@ class InputFilter
                             if(!is_object(G::json_decode($val))) {
                                 $inputFiltered = $purifier->purify($val);
                                 if($type != "url" && !strpos(basename($val), "=")) {
-                                    $inputFiltered = addslashes(htmlspecialchars($inputFiltered, ENT_COMPAT, 'UTF-8'));   
+                                    $inputFiltered = htmlspecialchars($inputFiltered, ENT_NOQUOTES, 'UTF-8');   
                                 } else {
                                     $inputFiltered = str_replace('&amp;','&',$inputFiltered);
                                 }
