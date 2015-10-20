@@ -14,6 +14,26 @@ class Calendar extends Api
     private $formatFieldNameInUppercase = false;
 
     /**
+     * Constructor of the class
+     *
+     * return void
+     */
+    public function __construct()
+    {
+        try {
+            $user = new \ProcessMaker\BusinessModel\User();
+
+            $usrUid = $this->getUserId();
+
+            if (!$user->checkPermission($usrUid, "PM_SETUP")) {
+                throw new \Exception(\G::LoadTranslation("ID_USER_NOT_HAVE_PERMISSION", array($usrUid)));
+            }
+        } catch (\Exception $e) {
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
+        }
+    }
+
+    /**
      * @url GET
      */
     public function index($filter = null, $start = null, $limit = null)
@@ -21,7 +41,6 @@ class Calendar extends Api
         try {
             $calendar = new \ProcessMaker\BusinessModel\Calendar();
             $calendar->setFormatFieldNameInUppercase($this->formatFieldNameInUppercase);
-
             $response = $calendar->getCalendars(array("filter" => $filter), null, null, $start, $limit);
 
             return $response;
@@ -40,7 +59,6 @@ class Calendar extends Api
         try {
             $calendar = new \ProcessMaker\BusinessModel\Calendar();
             $calendar->setFormatFieldNameInUppercase($this->formatFieldNameInUppercase);
-
             $response = $calendar->getCalendar($cal_uid);
 
             return $response;

@@ -399,7 +399,9 @@ abstract class Importer
         unset($arrayWorkflowTables["process"]["PRO_CREATE_USER"]);
         unset($arrayWorkflowTables["process"]["PRO_CREATE_DATE"]);
         unset($arrayWorkflowTables["process"]["PRO_UPDATE_DATE"]);
-
+        unset($arrayWorkflowTables["process"]["PRO_CATEGORY"]);
+        unset($arrayWorkflowTables["process"]["PRO_CATEGORY_LABEL"]);
+        
         $workflow->update($arrayWorkflowTables["process"]);
 
         //Process-Files upgrade

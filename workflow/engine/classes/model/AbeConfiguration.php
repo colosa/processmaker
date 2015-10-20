@@ -18,7 +18,7 @@ class AbeConfiguration extends BaseAbeConfiguration
 
     private $filterThisFields = array('ABE_UID', 'PRO_UID', 'TAS_UID', 'ABE_TYPE',
                                       'ABE_TEMPLATE', 'ABE_DYN_TYPE', 'DYN_UID','ABE_EMAIL_FIELD',
-                                      'ABE_ACTION_FIELD', 'ABE_CASE_NOTE_IN_RESPONSE', 'ABE_CREATE_DATE','ABE_UPDATE_DATE', 'ABE_SUBJECT_FIELD');
+                                      'ABE_ACTION_FIELD', 'ABE_CASE_NOTE_IN_RESPONSE', 'ABE_CREATE_DATE','ABE_UPDATE_DATE','ABE_MAILSERVER_OR_MAILCURRENT','ABE_SUBJECT_FIELD');
 
     public function load($abeUid)
     {

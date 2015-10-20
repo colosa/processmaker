@@ -240,7 +240,7 @@ class ReportTables
                                         if (! isset( $aData[$aField['sFieldName']] )) {
                                             $aData[$aField['sFieldName']] = '';
                                         }
-                                        $sQuery .= ",'" . (isset( $aData[$aField['sFieldName']] ) ? mysql_real_escape_string( $aData[$aField['sFieldName']] ) : '') . "'";
+                                        $sQuery .= ",'" . (isset( $aData[$aField['sFieldName']] ) ? @mysql_real_escape_string( $aData[$aField['sFieldName']] ) : '') . "'";
                                         break;
                                     case 'date':
                                         $value = (isset( $aData[$aField['sFieldName']] ) && trim( $aData[$aField['sFieldName']] )) != '' ? "'" . $aData[$aField['sFieldName']] . "'" : 'NULL';
@@ -585,7 +585,7 @@ class ReportTables
 
                                     if(!isset($aFields[$aField['sFieldName']])){
                                        foreach($aFields as $row){
-                                         if(is_array($row)){
+                                         if(is_array($row) && isset($row[count($row)])){
                                            $aFields = $row[count($row)];
                                          }
                                        }
@@ -599,8 +599,16 @@ class ReportTables
                                         case 'text':
                                             if (! isset( $aFields[$aField['sFieldName']] )) {
                                                 $aFields[$aField['sFieldName']] = '';
+                                            }                                            
+                                            if(is_array($aFields[$aField['sFieldName']])){
+                                                $sQuery .= "'" . (isset( $aFields[$aField['sFieldName']] ) ? $aFields[$aField['sFieldName']][0] : '') . "',";
+                                            }else{
+                                                if($aFields[$aField['sFieldName']] == $aFields[$aField['sFieldName'].'_label']){
+                                                    $sQuery .= "'" . (isset( $aFields[$aField['sFieldName']] ) ? @mysql_real_escape_string( $aFields[$aField['sFieldName']] ) : '') . "',";
+                                                }else{
+                                                    $sQuery .= "'" . (isset( $aFields[$aField['sFieldName']] ) ? @mysql_real_escape_string( $aFields[$aField['sFieldName'].'_label'] ) : '') . "',";
+                                                }
                                             }
-                                            $sQuery .= "'" . (isset( $aFields[$aField['sFieldName']] ) ? @mysql_real_escape_string( $aFields[$aField['sFieldName']] ) : '') . "',";
                                             break;
                                         case 'date':
                                             $mysqlDate = (isset( $aFields[$aField['sFieldName']] ) ? $aFields[$aField['sFieldName']] : '');

@@ -4944,6 +4944,28 @@ class wsBase
 
 
 
+            // Send notifications Mobile - Start
+
+            try {
+
+                $oLight = new \ProcessMaker\BusinessModel\Light();
+
+                $nextIndex = $oLight->getInformationDerivatedCase($appFields['APP_UID'], $delIndex);
+
+                $notificationMobile = new \ProcessMaker\BusinessModel\Light\NotificationDevice();
+
+                $notificationMobile->routeCaseNotification($userId, $_SESSION["PROCESS"], $appdel['TAS_UID'], $appFields, $nextDelegations, $nextIndex);
+
+            } catch (Exception $e) {
+
+                \G::log(G::loadTranslation( 'ID_NOTIFICATION_ERROR' ) . '|' . $e->getMessage() , PATH_DATA, "mobile.log");
+
+            }
+
+            // Send notifications Mobile - End
+
+
+
             //Save data - Start
 
             //$appFields = $oCase->loadCase($caseId);
@@ -5311,6 +5333,14 @@ class wsBase
                 $oPMScript->setScript( $row['TRI_WEBBOT'] );
 
                 $oPMScript->execute();
+
+
+
+                if (isset($oPMScript->aFields["__ERROR__"]) && trim($oPMScript->aFields["__ERROR__"]) != "" && $oPMScript->aFields["__ERROR__"] != "none") {
+
+                    throw new Exception($oPMScript->aFields["__ERROR__"]);
+
+                }
 
 
 
@@ -5720,7 +5750,7 @@ class wsBase
 
             $derivation = new Derivation();
 
-            $userList = $derivation->getAllUsersFromAnyTask( $tasUid );
+            $userList = $derivation->getAllUsersFromAnyTask($tasUid, true);
 
 
 
@@ -6677,5 +6707,3 @@ class wsBase
     }
 
 }
-
-

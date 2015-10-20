@@ -46,14 +46,10 @@ try {
      * DYN_VERSION is 1: classic Dynaform,
      * DYN_VERSION is 2: responsive form, Pmdynaform.
      */
-    $a = new Criteria("workflow");
-    $a->addSelectColumn(DynaformPeer::DYN_VERSION);
-    $a->add(DynaformPeer::DYN_UID, $_GET['UID'], Criteria::EQUAL);
-    $a = ProcessPeer::doSelectRS($a);
-    $a->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-    $a->next();
-    $row = $a->getRow();
-    $swpmdynaform = isset($row) && $row["DYN_VERSION"] == 2;
+    $dynaForm = DynaformPeer::retrieveByPK($_GET["UID"]);
+
+    $swpmdynaform = !is_null($dynaForm) && $dynaForm->getDynVersion() == 2;
+
     if ($swpmdynaform) {
         $pmdynaform = $_POST["form"];
     }
@@ -149,7 +145,7 @@ try {
                             $aRow = false;
                         }
                     }
-                    
+
                     if ($aRow) {
                         foreach ($aValues as $sKey => $sValue) {
                             if ($sKey != $oForm->fields[$sField]->pmfield) {

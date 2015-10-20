@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style="height:97%">
+<html>
     <head>
         <title>PMDynaform</title>
         <meta charset="utf-8">
@@ -7,11 +7,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link rel="stylesheet" href="/lib/pmdynaform/libs/bootstrap-3.1.1/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/lib/pmdynaform/libs/datepicker/bootstrap-datetimepicker.css">
+        <link rel="stylesheet" href="/lib/pmdynaform/libs/datepicker/bootstrap-datetimepicker.css">
         <link rel="stylesheet" href="/lib/pmdynaform/build/css/PMDynaform.css">
+        <link rel="stylesheet" href="/css/{sys_skin}-pm3.css">
         <script type="text/javascript" src="/lib/pmdynaform/libs/jquery/jquery-1.11.js"></script>
         <script type="text/javascript" src="/lib/pmdynaform/libs/bootstrap-3.1.1/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="/lib/pmdynaform/libs/datepicker/bootstrap-datetimepicker.js"></script>
+        <script type="text/javascript" src="/lib/pmdynaform/libs/datepicker/bootstrap-datetimepicker.js"></script>
         <script type="text/javascript" src="/lib/pmdynaform/libs/underscore/underscore-1.6.js"></script>
         <script type="text/javascript" src="/lib/pmdynaform/libs/backbone/backbone-min.js"></script>
         <script type="text/javascript" src="/lib/pmdynaform/libs/restclient/restclient.js"></script>
@@ -19,7 +20,7 @@
         <script type="text/javascript" src="/lib/pmdynaform/libs/respondjs/respond.min.js"></script>
     </head>
     <body style="height:100%">
-        <div id="container" style="height:100% display:none"></div>
+        <div id="container" style="height:100%;display:none;"></div>
         <script type="text/template" id="fieldset-template">
 	<fieldset>
 	    <legend>Options</legend>
@@ -169,8 +170,12 @@
 							id = "form[<%=id%>]"
 							name ="form[<%=name%>]"
 						<%}%>
-						class="<%=namespace%>-control-<%=type%> form-control" 
-						rows="<%= rows %>"
+						class="<%=namespace%>-control-<%=type%> form-control"
+                        <% if ((new RegExp('^[0-9]+$')).test(rows)) { %>
+                            rows="<%= rows %>"
+                        <% } else { %>
+                            rows= "2"
+                        <% } %>
 						placeholder= "<%= placeholder %>"
 				<% if(disabled === true){%>disabled<%}%>
 			><%= value %></textarea>
@@ -194,7 +199,7 @@
 	</div>	
 </script>
 
- <script type="text/template" id="tpl-checkbox">
+ <script type="text/template" id="tpl-checkgroup">
 	<div id="<%=id%>" name="field-<%=name%>" class="<%=namespace%>-field-<%=type%> <%if (group === 'form'){%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%> <%}%> <%=namespace%>-<%=mode%>-<%=type%> pmdynaform-field">
     	<% if(group === "form") {%>
 	    	<label for="<%=name%>" class="col-md-<%=colSpanLabel%> col-lg-<%=colSpanLabel%> control-label pmdynaform-label">  
@@ -215,11 +220,11 @@
 		  		<%} else if (layout === "responsive") {%> 
 		  			class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 		  		<%}%>>
-    		<div class="pmdynaform-control-checkbox-list">
+    		<div class="pmdynaform-control-checkbox-list form-control">
     			<div class="pmdynaform-checkbox-items">
 	    			<% for(var i=0; i<options.length; i+=1) { %>
 						<div class="checkbox"
-							<%if(dataType === "boolean" && i > 0){%>
+							<%if(i === options.length-1){%>
 							style = "display:none"
 							<%}%>
 						>        
@@ -262,6 +267,73 @@
 		</div>
 	</div>    
  </script>
+
+
+<script type="text/template" id="tpl-checkbox_yes_no">
+<div id="<%=id%>" name="field-<%=name%>" class="<%=namespace%>-field-<%=type%> <%if (group === 'form'){%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%> <%}%> <%=namespace%>-<%=mode%>-<%=type%> pmdynaform-field">
+	<% if(group === "form") {%>
+    	<label for="<%=name%>" class="col-md-<%=colSpanLabel%> col-lg-<%=colSpanLabel%> control-label pmdynaform-label">  
+    		<span class="textlabel"><%= label %></span>
+    		<%if(required){%>
+	  			<span class="pmdynaform-field-required">*</span>
+	  		<%}%>
+    	</label>
+    <%} else if((group !== "form") && (layout === "form")){%>
+			<label for="<%=name%>" class="hidden-lg hidden-md hidden-sm visible-xs control-label pmdynaform-label col-xs-<%=colSpanLabel%>">  
+		  		<span class="textlabel"><%= label %></span>
+		  	</label>
+		<%}%>
+	<div <%if (group === 'form'){ %> 
+	  			class="col-md-<%=colSpanControl%> col-lg-<%=colSpanControl%> pmdynaform-field-control"
+	  		<%} else if (layout === "form"){ %>
+	  			class="col-xs-<%=colSpanControl%> col-sm-12 col-md-12 col-lg-12"
+	  		<%} else if (layout === "responsive") {%> 
+	  			class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+	  		<%}%>>
+		<div class="pmdynaform-control-checkbox-list form-control">
+			<div class="pmdynaform-checkbox-items">
+    			<% for(var i=0; i<options.length; i+=1) { %>
+					<div class="checkbox"
+						<%if( i > 0){%>
+						style = "display:none"
+						<%}%>
+					>
+			        	<label>
+			        		<input 
+								<% if  ( group === "grid") { %>
+									id = "form<%=id%>"
+									name ="form<%=name%>"
+								<%} else {%>
+									id = "form[<%=id%>][<%=options[i].value%>]"
+									name ="form[<%=name%>][]"
+								<%}%>
+			        			class="<%=namespace%>-control-<%=type%>"
+				        		value="<%=options[i].value%>" 
+				        		type="<%=type%>"
+				        		<% if(options[i].selected){%>checked<%}%>
+				        		<% if(disabled === true){%>disabled<%}%>>
+			        	</label>
+					</div>
+			    <% } %>	
+    		</div>
+			<% if (group === "form") { %>
+				<%if (hint !== "" && hint !== null){%>
+					<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="<%=hint%>"></span>
+				<%}%>						
+			<% } %>
+		</div>
+		<input type="hidden" 
+			<% if  ( group === "grid") { %>
+				id = "form<%=id%>_label"
+				name ="form<%=name%>_label"
+			<%} else{%>
+				id = "form[<%=id%>_label]"
+				name ="form[<%=name%>_label]"
+			<%}%>
+		>
+	</div>
+</div>    
+</script>
 
 
 <script type="text/template" id="tpl-radio">
@@ -361,15 +433,6 @@
 				<%}%>
 						class="<%=namespace%>-control-<%=type%> form-control"
 				<% if(disabled === true){%>disabled<%}%>>
-				<% for(var i=0; i<options.length; i+=1) { %>
-			        <option value=<%= options[i].value %> 
-			        	<%if( options[i].value && options[i].value.toString() === value.toString() && (value.length)){%>
-
-			        		selected<%}%>
-			        >
-			        	<%= options[i].label %>
-			        </option>
-			    <% } %>
 		    </select>
 			<% if (group === "form") { %>
 				<%if (hint !== "" && hint !== null){%>
@@ -423,12 +486,14 @@
 		<%}%>
 		<div <%if(group === 'form'){ %> class="pmdynaform-file-control col-md-<%=colSpanControl%> col-lg-<%=colSpanControl%> pmdynaform-field-control" <%}%> >
 			<div class="pmdynaform-file-container col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<button type="button" class="<%=namespace%>-control-<%=type%> form-control"
-					<% if(disabled === true){%>disabled<%}%>
-					<% if(mode === "view"){%>style="display:none;"<%}%>
-				>
-					<%=labelButton%>
-				</button>
+                <div class="pmdynaform-file-btn-container">
+                    <button type="button" class="<%=namespace%>-control-<%=type%> form-control"
+                        <% if(disabled === true){%>disabled<%}%>
+                        <% if(mode === "view"){%>style="display:none;"<%}%>
+                    >
+                        <%=labelButton%>
+                    </button>
+                </div>
 				<%if (group === "form"){%>
 					<%if (hint !== "" && hint !== null){%>
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="<%=hint%>"></span>
@@ -482,7 +547,7 @@
 					<div class="pmdynaform-file-list" style="display:none"></div>
 				<% } %>
 				<%if(data['value'].length){%>
-					<div class= "col-md-<%=colSpanControl%> col-lg-<%=colSpanControl%> pmdynaform-field-control">
+					<div class= "col-md-<%=colSpanControl%> col-lg-<%=colSpanControl%> link-container pmdynaform-field-control">
 		    			<% for(var i = 0; i < data['label'].length; i+=1) { %>
 							<a style="float:left"
 								href = "<%=data['value'][i]%>" class="btn btn-link <%=namespace%>-control-<%=type%>">
@@ -533,6 +598,7 @@
 					id = "form[<%=id%>]"
 					name ="form[<%=name%>]"
 				<%}%>
+				class = "pmdynaform-link form-control"
 				href="<%=href%>" target="<%=target%>" class="btn btn-link <%=namespace%>-control-<%=type%>"
 				<% if(disabled === true){%>disabled<%}%>> 
 				<span> <%= value %> </span>
@@ -592,11 +658,11 @@
 		  		<%} else if (layout === "responsive") {%> 
 		  			class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 		  		<%}%>>
-			<div class="pmdynaform-label-options">
+			<div class="pmdynaform-label-options form-control">
 				<%if(originalType=="suggest"){%>
 				<%}%>
 				<%for(var k=0; k<fullOptions.length; k+=1){%>
-					<span><%=fullOptions[k]%></span>
+					<span title=<%-fullOptions[k]%>><%-fullOptions[k]%></span>
 				<%}%>
 				<input type="hidden" value="<%= data['label']%>"
 					<% if  ( group === "grid") { %>
@@ -786,8 +852,13 @@
 				<div id="<%=id%>-body" <% if(pager) {%> class="carousel slide" data-ride="carousel" <%}%> >
 					<div class="<% if(pager) {%>carousel-inner <%}%> pmdynaform-grid-tbody pmdynaform-form"></div>
 					<%if (functions) {%>
-						<div class="pmdynaform-grid-functions">
-						</div>
+						<%if (layout === "static"){%>
+							<div class="containerStaticGrid" style="overflow:hidden">
+						<%}%>
+						<div class="pmdynaform-grid-functions"></div>
+						<%if (layout === "static"){%>
+							</div>
+						<%}%>
 					<%}%>
 					<%if (pager) {%>
 						<div class="pmdynaform-grid-pagination">
@@ -930,7 +1001,7 @@
 	</div>
 </script>
 <script type="text/template" id="tpl-panelField">
-	<div class="panel panel-<%=typePanel%> <%=namespace%>-<%=type%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%>" style="border:<%=border%> solid #ccc;">
+	<div id=<%=id%> class="panel panel-<%=typePanel%> <%=namespace%>-<%=type%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%>" style="border:<%=border%> solid #ccc;">
 		<div class="panel-heading" style="<%if(!showHeader){%>display:none;<%}%>">
 			<h3 class="panel-title">
 				<div class="header-content">

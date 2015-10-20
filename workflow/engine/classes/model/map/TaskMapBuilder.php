@@ -165,7 +165,7 @@ class TaskMapBuilder
 
         $tMap->addValidator('TAS_ALERT', 'validValues', 'propel.validator.ValidValuesValidator', 'TRUE|FALSE', 'Please select a valid value for TAS_ALERT.');
 
-        $tMap->addValidator('TAS_ASSIGN_TYPE', 'validValues', 'propel.validator.ValidValuesValidator', 'BALANCED|MANUAL|EVALUATE|REPORT_TO|SELF_SERVICE|STATIC_MI|CANCEL_MI', 'Please select a valid value for TAS_ASSIGN_TYPE.');
+        $tMap->addValidator('TAS_ASSIGN_TYPE', 'validValues', 'propel.validator.ValidValuesValidator', 'BALANCED|MANUAL|EVALUATE|REPORT_TO|SELF_SERVICE|STATIC_MI|CANCEL_MI|MULTIPLE_INSTANCE|MULTIPLE_INSTANCE_VALUE_BASED', 'Please set a valid value for TAS_ASSIGN_TYPE');
 
         $tMap->addValidator('TAS_ASSIGN_LOCATION', 'validValues', 'propel.validator.ValidValuesValidator', 'TRUE|FALSE', 'Please select a valid value for TAS_ASSIGN_LOCATION.');
 

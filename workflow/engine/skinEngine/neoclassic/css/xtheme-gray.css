@@ -1471,7 +1471,10 @@ a.x-menu-item {
 }
 .x-panel-body .x-panel-body {
   border: #dddddd 1px solid;
-  overflow: hidden !important;
+  overflow: hidden;
+}
+.x-panel-body .x-tree .x-panel-body{
+    overflow: auto;
 }
 .x-panel-bbar .x-toolbar,
 .x-panel-tbar .x-toolbar {

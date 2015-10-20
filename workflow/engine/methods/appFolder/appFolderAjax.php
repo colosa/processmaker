@@ -1201,9 +1201,9 @@ function copyMoveAction($type)
     $copyDialog["modal"]        = true;
     $copyDialog["url"]          = "URL_SCRIPT";
     if ($type=="copy") {
-        $copyDialog["dialogtitle"]= "Copy";
+        $copyDialog["dialogtitle"]= G::LoadTranslation('ID_COPY');
     } else {
-        $copyDialog["dialogtitle"]= "Move";
+        $copyDialog["dialogtitle"]= G::LoadTranslation('ID_MOVE');
     }
 
     $copyDialog["frame"]= true;
@@ -1241,9 +1241,9 @@ function copyMoveAction($type)
 
     $itemButton=array();
     if ($type == "copy") {
-        $itemButton["text"]= "Copy";
+        $itemButton["text"]= G::LoadTranslation('ID_COPY');
     } else {
-        $itemButton["text"]= "Move";
+        $itemButton["text"]= G::LoadTranslation('ID_MOVE');
     }
     $itemButton["handler"]="copyDialogCreateButtonFunction";
     $itemButton["id"]="buttonCopy";
@@ -1296,7 +1296,7 @@ function copyMoveAction($type)
     $copyDialog["buttons"][]=$itemButton;
 
     $itemButton=array();
-    $itemButton["text"]="Cancel";
+    $itemButton["text"]=G::LoadTranslation('ID_CANCEL');
     $itemButton["id"]="buttonCancel";
     $itemButton["handler"]= "copyDialogCancelButtonFunction";
     $functionsToReplace["copyDialogCancelButtonFunction"]="function() { Ext.getCmp('dialog').destroy(); }";
@@ -1724,7 +1724,7 @@ function newFolder()
 
     $field=array();
     $field["xtype"]= "label";
-    $field["fieldLabel"]= "Path";
+    $field["fieldLabel"]= G::LoadTranslation('ID_CREATE_FOLDER_PATH_FOLDER');
     $field["name"]= "form[FOLDER_PATH]";
     $field["id"]= "form[FOLDER_PATH]";
     $field["width"]=175;
@@ -1755,7 +1755,7 @@ function newFolder()
 
     $field=array();
     $field["xtype"]= "textfield";
-    $field["fieldLabel"]= "Name";
+    $field["fieldLabel"]= G::LoadTranslation('ID_CREATE_FOLDER_NAME_FOLDER');
     $field["name"]= "form[FOLDER_NAME]";
     $field["id"]= "form[FOLDER_NAME]";
     $field["width"]=175;
@@ -1765,12 +1765,12 @@ function newFolder()
     $formNewFolder["buttons"]= array();
 
     $button                     = array();
-    $button["text"]             = "Create";
+    $button["text"]             = G::LoadTranslation('ID_CREATE');
     $button["handler"]          = 'handlerCreate';
     $formNewFolder["buttons"][] = $button;
 
     $button=array();
-    $button["text"]= "Cancel";
+    $button["text"]= G::LoadTranslation('ID_CANCEL');
     $button["handler"]= 'handlerCancel';
     $formNewFolder["buttons"][]= $button;
 

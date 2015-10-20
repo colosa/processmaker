@@ -25,7 +25,7 @@ abstract class BaseAbeConfigurationPeer
     const CLASS_DEFAULT = 'classes.model.AbeConfiguration';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 13;
+    const NUM_COLUMNS = 14;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -70,6 +70,9 @@ abstract class BaseAbeConfigurationPeer
     /** the column name for the ABE_SUBJECT_FIELD field */
     const ABE_SUBJECT_FIELD = 'ABE_CONFIGURATION.ABE_SUBJECT_FIELD';
 
+    /** the column name for the ABE_MAILSERVER_OR_MAILCURRENT field */
+    const ABE_MAILSERVER_OR_MAILCURRENT = 'ABE_CONFIGURATION.ABE_MAILSERVER_OR_MAILCURRENT';
+
     /** The PHP to DB Name Mapping */
     private static $phpNameMap = null;
 
@@ -81,10 +84,10 @@ abstract class BaseAbeConfigurationPeer
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     private static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('AbeUid', 'ProUid', 'TasUid', 'AbeType', 'AbeTemplate', 'AbeDynType', 'DynUid', 'AbeEmailField', 'AbeActionField', 'AbeCaseNoteInResponse', 'AbeCreateDate', 'AbeUpdateDate', 'AbeSubjectField', ),
-        BasePeer::TYPE_COLNAME => array (AbeConfigurationPeer::ABE_UID, AbeConfigurationPeer::PRO_UID, AbeConfigurationPeer::TAS_UID, AbeConfigurationPeer::ABE_TYPE, AbeConfigurationPeer::ABE_TEMPLATE, AbeConfigurationPeer::ABE_DYN_TYPE, AbeConfigurationPeer::DYN_UID, AbeConfigurationPeer::ABE_EMAIL_FIELD, AbeConfigurationPeer::ABE_ACTION_FIELD, AbeConfigurationPeer::ABE_CASE_NOTE_IN_RESPONSE, AbeConfigurationPeer::ABE_CREATE_DATE, AbeConfigurationPeer::ABE_UPDATE_DATE, AbeConfigurationPeer::ABE_SUBJECT_FIELD, ),
-        BasePeer::TYPE_FIELDNAME => array ('ABE_UID', 'PRO_UID', 'TAS_UID', 'ABE_TYPE', 'ABE_TEMPLATE', 'ABE_DYN_TYPE', 'DYN_UID', 'ABE_EMAIL_FIELD', 'ABE_ACTION_FIELD', 'ABE_CASE_NOTE_IN_RESPONSE', 'ABE_CREATE_DATE', 'ABE_UPDATE_DATE', 'ABE_SUBJECT_FIELD', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('AbeUid', 'ProUid', 'TasUid', 'AbeType', 'AbeTemplate', 'AbeDynType', 'DynUid', 'AbeEmailField', 'AbeActionField', 'AbeCaseNoteInResponse', 'AbeCreateDate', 'AbeUpdateDate', 'AbeSubjectField', 'AbeMailserverOrMailcurrent', ),
+        BasePeer::TYPE_COLNAME => array (AbeConfigurationPeer::ABE_UID, AbeConfigurationPeer::PRO_UID, AbeConfigurationPeer::TAS_UID, AbeConfigurationPeer::ABE_TYPE, AbeConfigurationPeer::ABE_TEMPLATE, AbeConfigurationPeer::ABE_DYN_TYPE, AbeConfigurationPeer::DYN_UID, AbeConfigurationPeer::ABE_EMAIL_FIELD, AbeConfigurationPeer::ABE_ACTION_FIELD, AbeConfigurationPeer::ABE_CASE_NOTE_IN_RESPONSE, AbeConfigurationPeer::ABE_CREATE_DATE, AbeConfigurationPeer::ABE_UPDATE_DATE, AbeConfigurationPeer::ABE_SUBJECT_FIELD, AbeConfigurationPeer::ABE_MAILSERVER_OR_MAILCURRENT, ),
+        BasePeer::TYPE_FIELDNAME => array ('ABE_UID', 'PRO_UID', 'TAS_UID', 'ABE_TYPE', 'ABE_TEMPLATE', 'ABE_DYN_TYPE', 'DYN_UID', 'ABE_EMAIL_FIELD', 'ABE_ACTION_FIELD', 'ABE_CASE_NOTE_IN_RESPONSE', 'ABE_CREATE_DATE', 'ABE_UPDATE_DATE', 'ABE_SUBJECT_FIELD', 'ABE_MAILSERVER_OR_MAILCURRENT', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -94,10 +97,10 @@ abstract class BaseAbeConfigurationPeer
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     private static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('AbeUid' => 0, 'ProUid' => 1, 'TasUid' => 2, 'AbeType' => 3, 'AbeTemplate' => 4, 'AbeDynType' => 5, 'DynUid' => 6, 'AbeEmailField' => 7, 'AbeActionField' => 8, 'AbeCaseNoteInResponse' => 9, 'AbeCreateDate' => 10, 'AbeUpdateDate' => 11, 'AbeSubjectField' => 12, ),
-        BasePeer::TYPE_COLNAME => array (AbeConfigurationPeer::ABE_UID => 0, AbeConfigurationPeer::PRO_UID => 1, AbeConfigurationPeer::TAS_UID => 2, AbeConfigurationPeer::ABE_TYPE => 3, AbeConfigurationPeer::ABE_TEMPLATE => 4, AbeConfigurationPeer::ABE_DYN_TYPE => 5, AbeConfigurationPeer::DYN_UID => 6, AbeConfigurationPeer::ABE_EMAIL_FIELD => 7, AbeConfigurationPeer::ABE_ACTION_FIELD => 8, AbeConfigurationPeer::ABE_CASE_NOTE_IN_RESPONSE => 9, AbeConfigurationPeer::ABE_CREATE_DATE => 10, AbeConfigurationPeer::ABE_UPDATE_DATE => 11, AbeConfigurationPeer::ABE_SUBJECT_FIELD => 12, ),
-        BasePeer::TYPE_FIELDNAME => array ('ABE_UID' => 0, 'PRO_UID' => 1, 'TAS_UID' => 2, 'ABE_TYPE' => 3, 'ABE_TEMPLATE' => 4, 'ABE_DYN_TYPE' => 5, 'DYN_UID' => 6, 'ABE_EMAIL_FIELD' => 7, 'ABE_ACTION_FIELD' => 8, 'ABE_CASE_NOTE_IN_RESPONSE' => 9, 'ABE_CREATE_DATE' => 10, 'ABE_UPDATE_DATE' => 11, 'ABE_SUBJECT_FIELD' => 12, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('AbeUid' => 0, 'ProUid' => 1, 'TasUid' => 2, 'AbeType' => 3, 'AbeTemplate' => 4, 'AbeDynType' => 5, 'DynUid' => 6, 'AbeEmailField' => 7, 'AbeActionField' => 8, 'AbeCaseNoteInResponse' => 9, 'AbeCreateDate' => 10, 'AbeUpdateDate' => 11, 'AbeSubjectField' => 12, 'AbeMailserverOrMailcurrent' => 13, ),
+        BasePeer::TYPE_COLNAME => array (AbeConfigurationPeer::ABE_UID => 0, AbeConfigurationPeer::PRO_UID => 1, AbeConfigurationPeer::TAS_UID => 2, AbeConfigurationPeer::ABE_TYPE => 3, AbeConfigurationPeer::ABE_TEMPLATE => 4, AbeConfigurationPeer::ABE_DYN_TYPE => 5, AbeConfigurationPeer::DYN_UID => 6, AbeConfigurationPeer::ABE_EMAIL_FIELD => 7, AbeConfigurationPeer::ABE_ACTION_FIELD => 8, AbeConfigurationPeer::ABE_CASE_NOTE_IN_RESPONSE => 9, AbeConfigurationPeer::ABE_CREATE_DATE => 10, AbeConfigurationPeer::ABE_UPDATE_DATE => 11, AbeConfigurationPeer::ABE_SUBJECT_FIELD => 12, AbeConfigurationPeer::ABE_MAILSERVER_OR_MAILCURRENT => 13, ),
+        BasePeer::TYPE_FIELDNAME => array ('ABE_UID' => 0, 'PRO_UID' => 1, 'TAS_UID' => 2, 'ABE_TYPE' => 3, 'ABE_TEMPLATE' => 4, 'ABE_DYN_TYPE' => 5, 'DYN_UID' => 6, 'ABE_EMAIL_FIELD' => 7, 'ABE_ACTION_FIELD' => 8, 'ABE_CASE_NOTE_IN_RESPONSE' => 9, 'ABE_CREATE_DATE' => 10, 'ABE_UPDATE_DATE' => 11, 'ABE_SUBJECT_FIELD' => 12, 'ABE_MAILSERVER_OR_MAILCURRENT' => 13, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -223,6 +226,8 @@ abstract class BaseAbeConfigurationPeer
         $criteria->addSelectColumn(AbeConfigurationPeer::ABE_UPDATE_DATE);
 
         $criteria->addSelectColumn(AbeConfigurationPeer::ABE_SUBJECT_FIELD);
+
+        $criteria->addSelectColumn(AbeConfigurationPeer::ABE_MAILSERVER_OR_MAILCURRENT);
 
     }
 

@@ -449,16 +449,15 @@ class spoolRun
                                     $oPHPMailer->SMTPSecure = $this->config['SMTPSecure'];
                                 }
                                 break;
-                        }
-    
+                        }                        
                         $oPHPMailer->CharSet = "UTF-8";
                         $oPHPMailer->Encoding = "8bit";
                         $oPHPMailer->Host = $this->config['MESS_SERVER'];
                         $oPHPMailer->Port = $this->config['MESS_PORT'];
                         $oPHPMailer->Username = $this->config['MESS_ACCOUNT'];
                         $oPHPMailer->Password = $this->config['MESS_PASSWORD'];
-                        $oPHPMailer->From = $this->fileData['from_email'];
-                        $oPHPMailer->FromName = utf8_decode( $this->fileData['from_name'] );
+                        $oPHPMailer->SetFrom($this->fileData['from_email'], utf8_decode($this->fileData['from_name']));                      
+                        
                         if (isset($this->fileData['reply_to'])) {
                             if ($this->fileData['reply_to'] != '') {
                                 $oPHPMailer->AddReplyTo($this->fileData['reply_to'], $this->fileData['reply_to_name']);

@@ -209,7 +209,7 @@ class Ajax
                 break;
         }
 
-        if ($_SESSION['TASK'] != '-1') {
+        if ($_SESSION["TASK"] != "" && $_SESSION["TASK"] != "-1") {
             $oTask = new Task();
             $aTask = $oTask->load($_SESSION['TASK']);
             if ($aTask['TAS_TYPE'] == 'ADHOC') {
@@ -858,6 +858,7 @@ class Ajax
         $Fields["APP_DATA"]["__DYNAFORM_OPTIONS"]["NEXT_STEP"] = "#";
         $Fields["APP_DATA"]["__DYNAFORM_OPTIONS"]["NEXT_ACTION"] = "return false;";
         G::LoadClass('pmDynaform');
+        $FieldsPmDynaform = $Fields;
         $FieldsPmDynaform["PRO_UID"] = $_SESSION['PROCESS'];
         $FieldsPmDynaform["CURRENT_DYNAFORM"] = $_REQUEST['DYN_UID'];
         $a = new pmDynaform($FieldsPmDynaform);

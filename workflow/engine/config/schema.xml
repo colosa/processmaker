@@ -1265,7 +1265,7 @@
       <rule name="validValues" value="TRUE|FALSE" message="Please select a valid value for TAS_ALERT."/>
     </validator>
     <validator column="TAS_ASSIGN_TYPE">
-      <rule name="validValues" value="BALANCED|MANUAL|EVALUATE|REPORT_TO|SELF_SERVICE|STATIC_MI|CANCEL_MI" message="Please select a valid value for TAS_ASSIGN_TYPE."/>
+        <rule name="validValues" value="BALANCED|MANUAL|EVALUATE|REPORT_TO|SELF_SERVICE|STATIC_MI|CANCEL_MI|MULTIPLE_INSTANCE|MULTIPLE_INSTANCE_VALUE_BASED" message="Please set a valid value for TAS_ASSIGN_TYPE" />
     </validator>
     <validator column="TAS_ASSIGN_LOCATION">
       <rule name="validValues" value="TRUE|FALSE" message="Please select a valid value for TAS_ASSIGN_LOCATION."/>
@@ -3860,6 +3860,7 @@
         <column name="VAR_NULL" type="TINYINT" size="32" default="0"/>
         <column name="VAR_DEFAULT" type="VARCHAR" size="32" default=""/>
         <column name="VAR_ACCEPTED_VALUES" type="LONGVARCHAR"/>
+        <column name="INP_DOC_UID" type="VARCHAR" size="32" default=""/>
     </table>
 
     <table name="APP_TIMEOUT_ACTION_EXECUTED">
@@ -3927,8 +3928,9 @@
         <column name="DEL_INDEX" type="INTEGER" required="true" default="0" />
         <column name="PRO_UID"   type="VARCHAR" size="32" required="true" />
         <column name="TAS_UID"   type="VARCHAR" size="32" required="true" />
-        <column name="GRP_UID"   type="VARCHAR" size="32" required="true" default="" />
+        <column name="GRP_UID"   type="LONGVARCHAR" required="true" default="" />
     </table>
+
     <table name="LIST_INBOX">
         <vendor type="mysql">
             <parameter name="Name" value="LIST_INBOX"/>
@@ -3957,10 +3959,10 @@
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
         <column name="APP_STATUS" type="VARCHAR" size="32" required="false" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_UPDATE_DATE" type="TIMESTAMP" required="true"/>
+        <column name="APP_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_UPDATE_DATE" type="TIMESTAMP" required="false"/>
         <column name="DEL_PREVIOUS_USR_UID" type="VARCHAR" size="32" default=""/>
         <column name="DEL_PREVIOUS_USR_USERNAME" type="VARCHAR" size="100" default=""/>
         <column name="DEL_PREVIOUS_USR_FIRSTNAME" type="VARCHAR" size="50" default=""/>
@@ -3977,6 +3979,17 @@
                 <parameter name="Table" value="LIST_INBOX"/>
                 <parameter name="Non_unique" value="1"/>
                 <parameter name="Key_name" value="indexInboxUser"/>
+                <parameter name="Seq_in_index" value="1"/>
+            </vendor>
+        </index>
+        <index name="indexInboxUserStatusUpdateDate">
+            <index-column name="USR_UID"/>
+            <index-column name="APP_STATUS"/>
+            <index-column name="APP_UPDATE_DATE"/>
+            <vendor type="mysql">
+                <parameter name="Table" value="LIST_INBOX"/>
+                <parameter name="Non_unique" value="1"/>
+                <parameter name="Key_name" value="indexInboxUserStatusUpdateDate"/>
                 <parameter name="Seq_in_index" value="1"/>
             </vendor>
         </index>
@@ -4076,6 +4089,15 @@
         <column name="DEL_DUE_DATE" type="TIMESTAMP" required="false"/>
         <column name="DEL_PRIORITY" type="VARCHAR" size="32" required="true" default="3"/>
         <column name="DEL_THREAD_STATUS" type="VARCHAR" size="32" required="true" default="OPEN"/>
+        <index name="usrIndex">
+            <index-column name="USR_UID"/>
+            <vendor type="mysql">
+                <parameter name="Table" value="LIST_PARTICIPATED_LAST"/>
+                <parameter name="Non_unique" value="1"/>
+                <parameter name="Key_name" value="usrIndex"/>
+                <parameter name="Seq_in_index" value="1"/>
+            </vendor>
+        </index>
     </table>
     <table name="LIST_COMPLETED">
         <vendor type="mysql">
@@ -4103,10 +4125,10 @@
         <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_CREATE_DATE" type="TIMESTAMP" required="true"/>
+        <column name="APP_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_CREATE_DATE" type="TIMESTAMP" required="false"/>
         <column name="APP_FINISH_DATE" type="TIMESTAMP" required="true"/>
         <column name="DEL_INDEX" type="INTEGER" required="true" default="0"/>
         <column name="DEL_PREVIOUS_USR_UID" type="VARCHAR" size="32" default=""/>
@@ -4193,10 +4215,10 @@
         <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_CANCELED_DATE" type="TIMESTAMP" required="true"/>
+        <column name="APP_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_CANCELED_DATE" type="TIMESTAMP" required="false"/>
         <column name="DEL_INDEX" type="INTEGER" required="true" default="0"/>
         <column name="DEL_PREVIOUS_USR_UID" type="VARCHAR" size="32" default=""/>
         <column name="DEL_CURRENT_USR_USERNAME" type="VARCHAR" size="100" default=""/>
@@ -4640,6 +4662,16 @@
         <parameter name="Null" value="NO"/>
         <parameter name="Key" value=""/>
         <parameter name="Default" value=""/>
+        <parameter name="Extra" value=""/>
+      </vendor>
+    </column>
+    <column name="ABE_MAILSERVER_OR_MAILCURRENT" type="INTEGER" required="false" default="0">
+      <vendor type="mysql">
+        <parameter name="Field" value="ABE_MAILSERVER_OR_MAILCURRENT"/>
+        <parameter name="Type" value="int(1)"/>
+        <parameter name="Null" value="YES"/>
+        <parameter name="Key" value=""/>
+        <parameter name="Default" value="0"/>
         <parameter name="Extra" value=""/>
       </vendor>
     </column>
@@ -5136,5 +5168,28 @@
         <column name="EMAIL_EVENT_SUBJECT" type="VARCHAR" size="150" required="false" default=""/>
         <column name="PRF_UID" type="VARCHAR" size="32" required="false" default="" />
     </table>
+
+  <table name="NOTIFICATION_DEVICE">
+    <vendor type="mysql">
+      <parameter name="Name" value="NOTIFICATION_DEVICE" />
+      <parameter name="Engine" value="InnoDB" />
+      <parameter name="Version" value="10" />
+      <parameter name="Row_format" value="Dynamic" />
+      <parameter name="Data_free" value="0" />
+      <parameter name="Auto_increment" value="" />
+      <parameter name="Check_time" value="" />
+      <parameter name="Collation" value="utf8_general_ci" />
+      <parameter name="Checksum" value="" />
+      <parameter name="Create_options" value="" />
+      <parameter name="Comment" value="Definitions Notification device."/>
+    </vendor>
+    <column name="DEV_UID"          type="VARCHAR" size="32"  required="true"  primaryKey="true" default=""/>
+    <column name="USR_UID"          type="VARCHAR" size="32"  required="true"  primaryKey="true" default=""/>
+    <column name="SYS_LANG"         type="VARCHAR" size="10"  required="false" default=""/>
+    <column name="DEV_REG_ID"       type="VARCHAR" size="150" required="true"  default=""/>
+    <column name="DEV_TYPE"         type="VARCHAR" size="50"  required="true"  default=""/>
+    <column name="DEV_CREATE"       type="TIMESTAMP"          required="true"  />
+    <column name="DEV_UPDATE"       type="TIMESTAMP"          required="true"  />
+  </table>
 </database>
 

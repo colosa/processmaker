@@ -78,6 +78,9 @@ class Variable
                         $encodeAcceptedValues = \G::json_encode($arrayData["VAR_ACCEPTED_VALUES"]);
                         $variable->setVarAcceptedValues($encodeAcceptedValues);
                     }
+                    if (isset($arrayData["INP_DOC_UID"])) {
+                        $variable->setInpDocUid($arrayData["INP_DOC_UID"]);
+                    }
                     $variable->save();
                     $cnn->commit();
                 } else {
@@ -170,6 +173,9 @@ class Variable
                     if (isset($arrayData["VAR_ACCEPTED_VALUES"])) {
                         $encodeAcceptedValues = \G::json_encode($arrayData["VAR_ACCEPTED_VALUES"]);
                         $variable->setVarAcceptedValues($encodeAcceptedValues);
+                    }
+                    if (isset($arrayData["INP_DOC_UID"])) {
+                        $variable->setInpDocUid($arrayData["INP_DOC_UID"]);
                     }
                     $variable->save();
                     $cnn->commit();
@@ -272,6 +278,7 @@ class Variable
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_NULL);
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_DEFAULT);
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_ACCEPTED_VALUES);
+            $criteria->addSelectColumn(\ProcessVariablesPeer::INP_DOC_UID);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_SERVER);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_PORT);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_DATABASE_NAME);
@@ -308,7 +315,8 @@ class Variable
                     'var_sql' => $aRow['VAR_SQL'],
                     'var_null' => (int)$aRow['VAR_NULL'],
                     'var_default' => $aRow['VAR_DEFAULT'],
-                    'var_accepted_values' => $encodeAcceptedValues);
+                    'var_accepted_values' => $encodeAcceptedValues,
+                    'inp_doc_uid' => $aRow['INP_DOC_UID']);
                 $rsCriteria->next();
             }
             //Return
@@ -347,13 +355,14 @@ class Variable
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_NULL);
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_DEFAULT);
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_ACCEPTED_VALUES);
+            $criteria->addSelectColumn(\ProcessVariablesPeer::INP_DOC_UID);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_SERVER);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_PORT);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_DATABASE_NAME);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_TYPE);
 
             $criteria->add(\ProcessVariablesPeer::PRJ_UID, $processUid, \Criteria::EQUAL);
-            $criteria->addJoin(\ProcessVariablesPeer::VAR_DBCONNECTION, \DbSourcePeer::DBS_UID, \Criteria::LEFT_JOIN);
+            $criteria->addJoin(\ProcessVariablesPeer::VAR_DBCONNECTION, \DbSourcePeer::DBS_UID . " AND " . \DbSourcePeer::PRO_UID . " = '" . $processUid . "'", \Criteria::LEFT_JOIN);
 
             $rsCriteria = \ProcessVariablesPeer::doSelectRS($criteria);
 
@@ -382,7 +391,8 @@ class Variable
                     'var_sql' => $aRow['VAR_SQL'],
                     'var_null' => (int)$aRow['VAR_NULL'],
                     'var_default' => $aRow['VAR_DEFAULT'],
-                    'var_accepted_values' => $encodeAcceptedValues);
+                    'var_accepted_values' => $encodeAcceptedValues,
+                    'inp_doc_uid' => $aRow['INP_DOC_UID']);
                 $rsCriteria->next();
             }
             //Return

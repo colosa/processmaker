@@ -458,6 +458,9 @@ Ext.onReady(function(){
   Ext.getCmp('actionMenu').hide();
 
   hideCaseNavigatorPanel();
+  if(typeof appStatus !== "undefined") {
+      showCaseNavigatorPanel(appStatus);
+  }
 
   // Actions methods
 
@@ -1598,6 +1601,20 @@ Ext.onReady(function(){
      ]
     });
 
+    var smodel = new Ext.grid.RowSelectionModel({
+        singleSelect: true,
+        listeners: {
+            rowselect: function (sm)
+            {
+                Ext.getCmp("btnAssignAdHocUser").setDisabled(false);
+            },
+            rowdeselect: function (sm)
+            {
+                Ext.getCmp("btnAssignAdHocUser").setDisabled(true);
+            }
+        }
+    });
+
     pbark = new Ext.PagingToolbar({
      pageSize: 8,
      store: store,
@@ -1624,13 +1641,17 @@ Ext.onReady(function(){
       viewConfig: {
         forceFit:true
       },
-      cm: cmk,
       store: store,
+      colModel: cmk,
+      selModel: smodel,
       tbar:[
         {
+          id: "btnAssignAdHocUser",
+
           text:_('ID_ASSIGN'),
           iconCls: 'silk-add',
           icon: '/images/cases-selfservice.png',
+          disabled: true,
           handler: assignAdHocUser
         }
       ],
@@ -1653,32 +1674,44 @@ Ext.onReady(function(){
 
   function assignAdHocUser()
   {
-    rowSelected = adHocUserGrid.getSelectionModel().getSelected();
-    PMExt.confirm(_('ID_CONFIRM'), _('ID_CONFIRM_ADHOCUSER_CASE'), function(){
-      var loadMask = new Ext.LoadMask(document.body, {msg:_('ID_ASSIGNMENT_CASE')});
-      loadMask.show();
-      Ext.Ajax.request({
-        url : '../adhocUserProxy/reassignCase' ,
-        method: 'POST',
-        params : {USR_UID: rowSelected.data.USR_UID, THETYPE: 'ADHOC'},
-        success: function ( result, request ) {
-          loadMask.hide();
-          var data = Ext.util.JSON.decode(result.responseText);
-          if( data.success ) {
-            CloseWindow();
-            location.href = 'casesListExtJs';
-          }
-          else {
-            PMExt.error(_('ID_ERROR'), data.msg);
-          }
-        },
-        failure: function ( result, request) {
-          Ext.MessageBox.alert(_('ID_FAILED'), result.responseText);
-        }
-      });
-     });
-    }
+      var rowSelected = adHocUserGrid.getSelectionModel().getSelected();
+
+      if (typeof(rowSelected) != "undefined") {
+          PMExt.confirm(
+              _("ID_CONFIRM"),
+              _("ID_CONFIRM_ADHOCUSER_CASE"),
+              function ()
+              {
+                  var loadMask = new Ext.LoadMask(document.body, {msg: _("ID_ASSIGNMENT_CASE")});
+
+                  loadMask.show();
+
+                  Ext.Ajax.request({
+                      url: "../adhocUserProxy/reassignCase",
+                      method: "POST",
+                      params: {USR_UID: rowSelected.data.USR_UID, THETYPE: "ADHOC"},
+                      success: function (result, request)
+                      {
+                          loadMask.hide();
+                          var data = Ext.util.JSON.decode(result.responseText);
+
+                          if (data.success) {
+                              CloseWindow();
+                              location.href = "casesListExtJs";
+                          } else {
+                              PMExt.error(_("ID_ERROR"), data.msg);
+                          }
+                      },
+                      failure: function (result, request)
+                      {
+                          Ext.MessageBox.alert(_("ID_FAILED"), result.responseText);
+                      }
+                  });
+              }
+          );
+      }
   }
+}
 
   CloseWindow = function(){
     Ext.getCmp('w').hide();
@@ -1699,3 +1732,4 @@ Ext.onReady(function(){
 
     node.select();
   }
+

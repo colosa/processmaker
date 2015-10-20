@@ -391,6 +391,10 @@ class calendar extends CalendarDefinition
     	*/
     	$hoursDuration = (float)$duration;
     	$newDate = $iniDate;
+    	
+    	if ( G::toUpper($formatDuration) == 'MINUTES' ) {
+    		$hoursDuration = $duration / 60;
+    	}
 
     	while ($hoursDuration > 0) {
     		//$dataLog = array();

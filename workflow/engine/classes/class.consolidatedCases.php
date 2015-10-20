@@ -87,10 +87,16 @@ class ConsolidatedCases
         $dataDyna = $pmDyna->getDynaform();
         $json = G::json_decode($dataDyna["DYN_CONTENT"]);
         $fieldsDyna = $json->items[0]->items;
-        foreach ($fieldsDyna as $value) {
-            $_POST['form']['FIELDS'][] = $value[0]->name . '-' . $value[0]->type;
+        foreach ($fieldsDyna as $value) {            
+            foreach ($value as $val) {
+                if(isset($val->type)){
+                    if ($val->type == 'text' || $val->type == 'textarea' || $val->type == 'dropdown' || $val->type == 'checkbox' || $val->type == 'datetime' || $val->type == 'yesno' || $val->type == 'date' || $val->type == 'hidden' || $val->type == 'currency' || $val->type == 'percentage' || $val->type == 'link'){
+                        $_POST['form']['FIELDS'][] = $val->name . '-' . $val->type;
+                    }
+                }                
+            }
         }
-
+        
         $aFieldsClases = array();
         $i = 1;
         $aFieldsClases[$i]['FLD_NAME'] = 'APP_UID';
@@ -185,6 +191,11 @@ class ConsolidatedCases
             $oCaseConsolidated->delete();
             $oCaseConsolidated = CaseConsolidatedCorePeer::retrieveByPK($sTasUid);
         }
+
+        if (!(is_object($oCaseConsolidated)) || get_class($oCaseConsolidated) != 'CaseConsolidatedCore') {
+            $oCaseConsolidated = new CaseConsolidatedCore();
+            $oCaseConsolidated->setTasUid($sTasUid);
+         }
 
         $oCaseConsolidated->setConStatus('ACTIVE');
         $oCaseConsolidated->setDynUid($sDynUid);

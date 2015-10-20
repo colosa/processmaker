@@ -672,13 +672,13 @@ class Bootstrap
     {
         Bootstrap::LoadSystem('inputfilter');
         $filter = new InputFilter();
-        
+
         $path = PATH_GULLIVER . 'class.' . $strClass . '.php';
         $path = $filter->validateInput($path, "path");
-        
+
         $classfile = Bootstrap::ExpandPath("classes") . 'class.' . $strClass . '.php';
         $classfile = $filter->validateInput($classfile, "path");
-        
+
         if (!file_exists($classfile)) {
             if (file_exists($path)) {
                 return require_once ($path);
@@ -1149,8 +1149,14 @@ class Bootstrap
         //Read Configuration File
         $xmlConfiguration = file_get_contents($configurationFile);
         $xmlConfigurationObj = Bootstrap::xmlParser($xmlConfiguration);
-
+        
+        if (!isset($xmlConfigurationObj->result['skinConfiguration']['__CONTENT__']['cssFiles']['__CONTENT__'][$skinVariant]['__CONTENT__'])) {
+            $xmlConfigurationObj->result['skinConfiguration']['__CONTENT__']['cssFiles']['__CONTENT__'][$skinVariant]['__CONTENT__'] = array('cssFile' => array());
+        }
         $skinFilesArray = $xmlConfigurationObj->result['skinConfiguration']['__CONTENT__']['cssFiles']['__CONTENT__'][$skinVariant]['__CONTENT__']['cssFile'];
+        if (isset($skinFilesArray['__ATTRIBUTES__'])) {
+            $skinFilesArray = array($skinFilesArray);
+        }
         foreach ($skinFilesArray as $keyFile => $cssFileInfo) {
             $enabledBrowsers = explode(",", $cssFileInfo['__ATTRIBUTES__']['enabledBrowsers']);
             $disabledBrowsers = explode(",", $cssFileInfo['__ATTRIBUTES__']['disabledBrowsers']);
@@ -2130,14 +2136,19 @@ class Bootstrap
         array_shift($uriVars);
 
         $args = array();
-        $args['SYS_LANG'] = array_shift($uriVars);
-        $args['SYS_SKIN'] = array_shift($uriVars);
-        $args['SYS_COLLECTION'] = array_shift($uriVars);
-        $args['SYS_TARGET'] = array_shift($uriVars);
+
+        $element = array_shift($uriVars);
+        $args["SYS_LANG"] = (preg_match("/^[\w\-]+$/", $element))? $element : "";
+
+        $element = array_shift($uriVars);
+        $args["SYS_SKIN"] = (preg_match("/^[\w\-]+$/", $element))? $element : "";
+
+        $args["SYS_COLLECTION"] = array_shift($uriVars);
+        $args["SYS_TARGET"] = array_shift($uriVars);
 
         //to enable more than 2 directories...in the methods structure
-        while (count($uriVars) > 0) {
-            $args['SYS_TARGET'] .= '/' . array_shift($uriVars);
+        while (!empty($uriVars)) {
+            $args["SYS_TARGET"] = $args["SYS_TARGET"] . "/" . array_shift($uriVars);
         }
 
         /* Fix to prevent use uxs skin outside siplified interface,
@@ -2941,4 +2952,28 @@ class Bootstrap
     {
         return md5($string);
     }
+
+    /**
+     * Set Language
+     */
+    public static function setLanguage()
+    {
+        $acceptLanguage = isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])?$_SERVER['HTTP_ACCEPT_LANGUAGE']:'en';
+        if (!defined('SYS_LANG')) {
+            $Translations = new \Translation;
+            $translationsTable = $Translations->getTranslationEnvironments();
+            $inLang = false;
+            foreach ($translationsTable as $locale) {
+                if ($locale['LOCALE'] == $acceptLanguage){
+                    $inLang = true;
+                    break;
+                }
+            }
+            $lang = $inLang?$acceptLanguage:'en';
+            define("SYS_LANG", $lang);
+        }
+
+    }
+
 }
+

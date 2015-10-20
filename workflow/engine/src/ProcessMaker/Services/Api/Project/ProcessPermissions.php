@@ -17,7 +17,6 @@ class ProcessPermissions extends Api
     /**
      * @param string $prj_uid {@min 1} {@max 32}
      *
-     * @access public
      * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
      * @copyright Colosa - Bolivia
      *
@@ -40,7 +39,6 @@ class ProcessPermissions extends Api
      * @param string $prj_uid {@min 1} {@max 32}
      * @param string $ob_uid {@min 1} {@max 32}
      *
-     * @access public
      * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
      * @copyright Colosa - Bolivia
      *
@@ -75,7 +73,6 @@ class ProcessPermissions extends Api
      * @param string $inputs {@from body}
      * @param string $outputs {@from body}
      *
-     * @access public
      * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
      * @copyright Colosa - Bolivia
      *
@@ -134,7 +131,6 @@ class ProcessPermissions extends Api
      * @param string $inputs {@from body}
      * @param string $outputs {@from body}
      *
-     * @access public
      * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
      * @copyright Colosa - Bolivia
      *
@@ -172,7 +168,6 @@ class ProcessPermissions extends Api
      * @param string $prj_uid {@min 1} {@max 32}
      * @param string $ob_uid {@min 1} {@max 32}
      *
-     * @access public
      * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
      * @copyright Colosa - Bolivia
      *

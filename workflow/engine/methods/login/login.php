@@ -340,17 +340,17 @@ $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
 
 
 
-$myUrl = explode("/", $_SERVER["REQUEST_URI"]);
+if (isset($oConf->aConfig["login_defaultLanguage"]) && $oConf->aConfig["login_defaultLanguage"] != "") {
 
-
-
-if (isset($myUrl) && $myUrl != "") {
-
-    $aFields["USER_LANG"] = $myUrl[2];
+    $aFields["USER_LANG"] = $oConf->aConfig["login_defaultLanguage"];
 
 } else {
 
-    $aFields["USER_LANG"] = isset($oConf->aConfig["login_defaultLanguage"])? $oConf->aConfig["login_defaultLanguage"] : SYS_LANG;
+    $myUrl = explode("/", $_SERVER["REQUEST_URI"]);
+
+
+
+    $aFields["USER_LANG"] = (isset($myUrl[2]) && trim($myUrl[2]) != "")? trim($myUrl[2]) : SYS_LANG;
 
 }
 
@@ -358,7 +358,11 @@ if (isset($myUrl) && $myUrl != "") {
 
 $G_PUBLISH = new Publisher();
 
-if(SYS_SKIN == 'neoclassic'){
+$version = explode('.', trim(file_get_contents(PATH_GULLIVER . 'VERSION')));
+
+$version = isset($version[0]) ? intval($version[0]) : 0;
+
+if ($version >= 3) {
 
     $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/loginpm3', '', $aFields, SYS_URI . 'login/authentication.php');
 

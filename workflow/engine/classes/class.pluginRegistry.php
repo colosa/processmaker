@@ -101,6 +101,7 @@ class PMPluginRegistry
     private $_aTaskExtendedProperties = array ();
     private $_aDashboardPages = array ();
     private $_aCronFiles = array ();
+    private $_arrayDesignerMenu = array();
 
     /**
      * Registry a plugin javascript to include with js core at same runtime
@@ -316,6 +317,11 @@ class PMPluginRegistry
                     if (method_exists( $detail, "disable" )) {
                         $detail->disable();
                     }
+                    //flag Only Plugin actionsByEmail
+                    if($detail->sNamespace == 'actionsByEmail'){
+                      $plugin = new $detail->sClassName( $detail->sNamespace, $detail->sFilename );
+                      $plugin->disable();
+                    } 
                 }
 
                 $sw = true;
@@ -389,6 +395,12 @@ class PMPluginRegistry
         foreach ($this->_aDashboardPages as $key => $detail) {
             if ($detail->sNamespace == $sNamespace) {
                 unset( $this->_aDashboardPages[$key] );
+            }
+        }
+
+        foreach ($this->_arrayDesignerMenu as $key => $detail) {
+            if ($detail->pluginName == $sNamespace) {
+                unset($this->_arrayDesignerMenu[$key]);
             }
         }
 
@@ -1601,4 +1613,51 @@ class PMPluginRegistry
             throw $e;
         }
     }
+
+    /**
+     * Register designer menu file
+     *
+     * @param string $pluginName Plugin name
+     * @param string $file       Designer menu file
+     *
+     * @return void
+     */
+    public function registerDesignerMenu($pluginName, $file)
+    {
+        try {
+            $flagFound = false;
+
+            foreach ($this->_arrayDesignerMenu as $value) {
+                if ($value->pluginName == $pluginName && $value->file == $file) {
+                    $flagFound = true;
+                    break;
+                }
+            }
+
+            if (!$flagFound) {
+                $obj = new stdClass();
+                $obj->pluginName = $pluginName;
+                $obj->file = $file;
+
+                $this->_arrayDesignerMenu[] = $obj;
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Return all designer menu files registered
+     *
+     * @return array
+     */
+    public function getDesignerMenu()
+    {
+        try {
+            return $this->_arrayDesignerMenu;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 }
+

@@ -911,6 +911,11 @@ class Workflow extends Handler
                 $row = $rsCriteria->getRow();
                 $filesManager->deleteProcessFilesManager($sProcessUID, $row["PRF_UID"]);
             }
+            
+            //Delete the actions by email
+            $oCriteria = new Criteria('workflow');
+            $oCriteria->add(\AbeConfigurationPeer::PRO_UID, $sProcessUID);
+            \AbeConfigurationPeer::doDelete($oCriteria);
 
             //Delete the process
             try {
@@ -1258,7 +1263,8 @@ class Workflow extends Handler
                 "messageEventDefinition" => array("fieldname" => "EVN_UID", "oldFieldname" => "EVN_UID_OLD"), //Update MESSAGE_EVENT_DEFINITION.EVN_UID
                 "scriptTask"             => array("fieldname" => "ACT_UID", "oldFieldname" => "ACT_UID_OLD"), //Update SCRIPT_TASK.ACT_UID
                 "timerEvent"             => array("fieldname" => "EVN_UID", "oldFieldname" => "EVN_UID_OLD"), //Update TIMER_EVENT.EVN_UID
-                "emailEvent"             => array("fieldname" => "EVN_UID", "oldFieldname" => "EVN_UID_OLD")  //Update EMAIL_EVENT.EVN_UID
+                "emailEvent"             => array("fieldname" => "EVN_UID", "oldFieldname" => "EVN_UID_OLD"), //Update EMAIL_EVENT.EVN_UID
+                "abeConfiguration"       => array("fieldname" => "TAS_UID", "oldFieldname" => "TAS_UID_OLD")  //Update ABE_CONFIGURATION.TAS_UID
             );
 
             foreach ($arrayUpdateTableField as $key => $value) {

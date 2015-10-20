@@ -169,10 +169,10 @@ class Process
     public function throwExceptionIfDataNotMetFieldDefinition($arrayData, $arrayFieldDefinition, $arrayFieldNameForException, $flagValidateRequired = true)
     {
         try {
-            
+
             \G::LoadSystem('inputfilter');
             $filter = new \InputFilter();
-            
+
             if ($flagValidateRequired) {
                 foreach ($arrayFieldDefinition as $key => $value) {
                     $fieldName = $key;
@@ -191,7 +191,7 @@ class Process
             foreach ($arrayData as $key => $value) {
                 $fieldName = $key;
                 $fieldValue = $value;
-                
+
 
                 if (isset($arrayFieldDefinition[$fieldName])) {
                     $fieldNameAux = (isset($arrayFieldNameForException[$arrayFieldDefinition[$fieldName]["fieldNameAux"]]))? $arrayFieldNameForException[$arrayFieldDefinition[$fieldName]["fieldNameAux"]] : "";
@@ -215,6 +215,7 @@ class Process
                             }
 
                             //type
+                            $fieldValue = (!is_array($fieldValue)) ? $fieldValue : '';
                             if ($arrayFieldDefinition[$fieldName]["empty"] && $fieldValue . "" == "") {
                                 //
                             } else {
@@ -428,38 +429,6 @@ class Process
 
             if (!(is_object($obj) && get_class($obj) == "AdditionalTables")) {
                 throw new \Exception(\G::LoadTranslation("ID_PMTABLE_DOES_NOT_EXIST", array($fieldNameForException, $additionalTableUid)));
-            }
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
-    /**
-     * Verify if doesn't exists the Task in table TASK
-     *
-     * @param string $processUid            Unique id of Process
-     * @param string $taskUid               Unique id of Task
-     * @param string $fieldNameForException Field name for the exception
-     *
-     * return void Throw exception if doesn't exists the Task in table TASK
-     */
-    public function throwExceptionIfNotExistsTask($processUid, $taskUid, $fieldNameForException)
-    {
-        try {
-            $criteria = new \Criteria("workflow");
-
-            $criteria->addSelectColumn(\TaskPeer::TAS_UID);
-
-            if ($processUid != "") {
-                $criteria->add(\TaskPeer::PRO_UID, $processUid, \Criteria::EQUAL);
-            }
-
-            $criteria->add(\TaskPeer::TAS_UID, $taskUid, \Criteria::EQUAL);
-
-            $rsCriteria = \TaskPeer::doSelectRS($criteria);
-
-            if (!$rsCriteria->next()) {
-                throw new \Exception(\G::LoadTranslation("ID_ACTIVITY_DOES_NOT_EXIST", array($fieldNameForException, $taskUid)));
             }
         } catch (\Exception $e) {
             throw $e;

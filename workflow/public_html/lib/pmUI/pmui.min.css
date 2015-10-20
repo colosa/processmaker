@@ -93,11 +93,11 @@
 @include font-face("SourceSansProBold", font-files("SourceSansPro-Bold/SourceSansPro-Bold-webfont.ttf", "SourceSansPro-Bold/SourceSansPro-Bold-webfont.eot", "SourceSansPro-Bold/SourceSansPro-Bold-webfont.woff", "SourceSansPro-Bold/SourceSansPro-Bold-webfont.svg"),"SourceSansPro-Bold/SourceSansPro-Bold-webfont.eot");*/
 @font-face {
   font-family: "Chivo";
-  src: url('../fonts/Chivo/Chivo-Black.ttf?1434482662') format('truetype'), url('../fonts/Chivo/Chivo-BlackItalic.ttf?1434482662') format('truetype'), url('../fonts/Chivo/Chivo-Italic.ttf?1434482662') format('truetype'), url('../fonts/Chivo/Chivo-Regular.ttf?1434482662') format('truetype');
+  src: url('../fonts/Chivo/Chivo-Black.ttf?1440534832') format('truetype'), url('../fonts/Chivo/Chivo-BlackItalic.ttf?1440534832') format('truetype'), url('../fonts/Chivo/Chivo-Italic.ttf?1440534832') format('truetype'), url('../fonts/Chivo/Chivo-Regular.ttf?1440534832') format('truetype');
 }
 @font-face {
   font-family: "Montserrat";
-  src: url('../fonts/Montserrat/Montserrat-Bold.ttf?1434482662') format('truetype'), url('../fonts/Montserrat/Montserrat-Regular.ttf?1434482662') format('truetype');
+  src: url('../fonts/Montserrat/Montserrat-Bold.ttf?1440534832') format('truetype'), url('../fonts/Montserrat/Montserrat-Regular.ttf?1440534832') format('truetype');
 }
 .pmui-sprite-sprite, .pmui-sprite-arrow-down, .pmui-sprite-arrow-next, .pmui-sprite-arrow-previous, .pmui-sprite-arrow-right, .pmui-sprite-arrow-up, .pmui-sprite-delete-16, .pmui-sprite-error-64, .pmui-sprite-error, .pmui-sprite-grid-arrow-down, .pmui-sprite-grid-arrow-up, .pmui-sprite-help, .pmui-sprite-info-64, .pmui-sprite-information, .pmui-sprite-question-64, .pmui-sprite-success-64, .pmui-sprite-warning-64, .pmui-sprite-warning, .pmui-sprite-window-close, .pmui-accordion-item-closed, .pmui-accordion-item-expanded, .pmui-gridpanel-pagelink.pmui-gridpanel-nextbutton .pmui-icon, .pmui-gridpanel-pagelink.pmui-gridpanel-previousbutton .pmui-icon, .pmui-gridpanelcolumn.pmui-sortable.pmui-sort-asc .pmui-grid-sort-icon, .pmui-gridpanelcolumn.pmui-sortable.pmui-sort-desc .pmui-grid-sort-icon, .pmui-icon-help, .pmui-icon-info, .pmui-icon-error, .pmui-icon-warning, .pmui-messagewindow-icon-error, .pmui-messagewindow-icon-warning, .pmui-messagewindow-icon-info, .pmui-messagewindow-icon-success, .pmui-messagewindow-icon-confirm {
   background-image: url('../img/pmui-sprite-s947c1ade08.png');
@@ -210,28 +210,6 @@
   background-position: 0 -468px;
   height: 14px;
   width: 18px;
-}
-
-#buttonCriteriaField {
-  background: black;
-}
-
-.mafe-activity-task-red {
-  background-color: #ce0615;
-  border: 1px solid #9f0614;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-.list-suggest-item :hover {
-  background-color: #69727e;
-  color: white;
 }
 
 .mafe-activity-task {
@@ -353,6 +331,32 @@
   background: green;
 }
 
+#buttonCriteriaField {
+  background: black;
+}
+
+.mafe-activity-task-red {
+  background-color: #ce0615;
+  border: 1px solid #9f0614;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.list-suggest-item :hover {
+  background-color: #e0e0e0;
+}
+
+.list-suggest-item.single-label :hover {
+  background-color: initial;
+  color: white;
+}
+
 /* Title assignment */
 .mafe-designer-assigment-title {
   left: 15px !important;
@@ -433,44 +437,6 @@ a.mafe-button-edit-assign:hover {
   background-repeat: no-repeat;
   background-color: #e0e0e0;
   opacity: 1;
-}
-
-a.mafe-button-edit-message-type {
-  background-image: url(../img/_edit.png);
-  background-position: 1%;
-  background-repeat: no-repeat;
-  background-color: inherit;
-}
-
-a.mafe-button-delete-message-type {
-  background-image: url(../img/_remove.png);
-  background-position: 1%;
-  background-repeat: no-repeat;
-  background-color: inherit;
-}
-
-a.mafe-button-save-message-type {
-  background-image: url(../img/_save.png);
-  background-position: 1%;
-  background-repeat: no-repeat;
-  background-color: inherit;
-}
-
-a.mafe-button-close-message-type {
-  background-image: url(../img/_close.png);
-  background-position: 1%;
-  background-repeat: no-repeat;
-  background-color: inherit;
-}
-
-a.mafe-button-create-message-type {
-  background-image: url(../img/_add.png);
-  background-position: 50%;
-  background-repeat: no-repeat;
-  background-color: inherit;
-  background-color: #1fbc99;
-  border: 1px solid #1ba385;
-  height: 32px !important;
 }
 
 a.mafe-button-editstep {
@@ -659,10 +625,6 @@ a.mafe-button-create:hover{
 .mafe-designer-assigment-grid tr:hover .mafe-button-edit{
   background-color: #19bd9b;
 }*/
-.mafe-panel-assignment-smooth .mafe-designer-assigment-grid .pmui-gridpanel-footer {
-  background-color: #eaebed;
-}
-
 .mafe-panel-assignment-smooth .mafe-designer-assigment-grid {
   background-color: #eaebed;
 }
@@ -755,7 +717,7 @@ a.mafe-button-create:hover{
   background: url(../img/i_group_big.png) no-repeat center;
   height: none;
   text-align: center;
-  padding-top: 205px;
+  padding-top: 120px;
   box-sizing: border-box;
 }
 
@@ -871,25 +833,46 @@ a.mafe-button-create:hover{
   padding-top: 1px !important;
 }
 
-#gridUsers .pmui-gridpanel-footer {
-  position: absolute;
-  top: 0px;
-  left: -10px;
+#gridUsers .pmui-gridpanel-footer,
+#gridUserList .pmui-gridpanel-footer,
+#gridUsersAD .pmui-gridpanel-footer,
+#gridUserListAD .pmui-gridpanel-footer {
+  position: initial;
+  top: inherit;
+  left: initial;
   width: 95%;
-  margin-top: 370px;
+  margin-top: inherit;
   height: 13px;
   padding-top: 1px !important;
+  position: relative;
 }
 
-#gridUserList .pmui-gridpanel-footer {
-  background: white;
-  position: absolute;
-  top: 0px;
-  left: 5px;
-  width: 85%;
-  margin-top: 370px;
-  height: 13px;
-  padding-top: 1px !important;
+.pmui-gridpanel-footer {
+  padding: 10px 10px;
+}
+
+#gridUserList .pmui-gridpanel-tableContainer,
+#gridUsers .pmui-gridpanel-tableContainer,
+#gridUsersAD .pmui-gridpanel-tableContainer,
+#gridUserListAD .pmui-gridpanel-tableContainer {
+  height: 245px;
+}
+
+.pmui-gridpanel-total {
+  vertical-align: super;
+}
+
+.content_controls ul li {
+  padding: 1px 0 !important;
+}
+
+.pmui-gridpanel-footer-dinamic .pmui-gridpanel-pager {
+  padding: 0px;
+}
+
+#gridUsers .pmui-gridpanel-searchload.load {
+  left: 310px;
+  top: 15px;
 }
 
 .pmui-field-control-table td {
@@ -901,7 +884,7 @@ a.mafe-button-create:hover{
   top: 0px;
   left: 10px;
   width: 89%;
-  margin-top: 226px;
+  margin-top: 210px;
   height: 13px;
   padding-top: 1px !important;
 }
@@ -941,7 +924,7 @@ a.mafe-button-create:hover{
 
 .clearlooks2 .mceClose {
   background: url("../img/mafe-tools.png") no-repeat !important;
-  background-position: 0 -916px !important;
+  background-position: 0 -966px !important;
   width: 20px !important;
   height: 20px !important;
   margin-top: -1px !important;
@@ -951,12 +934,12 @@ a.mafe-button-create:hover{
 
 .clearlooks2 .mceClose:hover {
   background: url("../img/mafe-tools.png") no-repeat !important;
-  background-position: 0 -1086px !important;
+  background-position: 0 -1156px !important;
 }
 
 .clearlooks2 .mceFocus .mceMax {
   background: url(../img/mafe-tools.png) no-repeat !important;
-  background-position: 0 -916px !important;
+  background-position: 0 -966px !important;
   width: 27px !important;
   height: 20px !important;
   margin-top: -3px !important;
@@ -964,7 +947,7 @@ a.mafe-button-create:hover{
 
 .clearlooks2 .mceFocus .mceMed {
   background: url(../img/mafe-tools.png) no-repeat !important;
-  background-position: 0 -916px !important;
+  background-position: 0 -966px !important;
   width: 27px !important;
   height: 20px !important;
   margin-top: -3px !important;
@@ -977,7 +960,7 @@ a.mafe-button-create:hover{
 
 .pmui-window-close .button-icon {
   background: url("../img/mafe-tools.png") no-repeat !important;
-  background-position: 0 -916px !important;
+  background-position: 0 -966px !important;
   width: 20px !important;
   height: 20px !important;
   margin-top: 0px !important;
@@ -986,16 +969,15 @@ a.mafe-button-create:hover{
 
 .pmui-window-close .button-icon:hover {
   background: url("../img/mafe-tools.png") no-repeat !important;
-  background-position: 0 -1086px !important;
+  background-position: 0 -1156px !important;
 }
 
-.content_controls ul li {
-  padding: 1px 0 !important;
-}
-
-.pmui-gridpanel-footer-dinamic .pmui-gridpanel-pager {
-  width: 423px !important;
-  margin-left: -50px !important;
+.pmui-gridpanel-pagelink.disable,
+.pmui-gridpanel-pagelink.pmui-gridpanel-nextbutton.disable,
+.pmui-gridpanel-pagelink.pmui-gridpanel-previousbutton.disable {
+  background: #D6D2D2;
+  color: #ffffff;
+  cursor: default;
 }
 
 .pmui {
@@ -1697,6 +1679,20 @@ a.mafe-button-create:hover{
   margin: 0;
 }
 
+.pmui-gridpanel-gotoPage {
+  width: 40px;
+  margin: 0 2px 0 2px;
+  height: 20px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.pmui-gridpanel-footer.pmui-gridpanel-total {
+  vertical-align: super;
+  font-size: 13px;
+  padding: 2px;
+}
+
 .pmui-gridpanel-pager-current {
   text-decoration: none;
   float: left;
@@ -1925,6 +1921,14 @@ a.mafe-button-create:hover{
 .pmui-gridpanelrow-deleteButton a {
   display: inline-block;
   /*@include pmui-sprite-sprite(delete-16);*/
+}
+
+.pmui-gridpanel-searchload.load {
+  background: url(../img/loading.gif) no-repeat center;
+  background-size: contain;
+  height: 20px;
+  width: 20px;
+  position: absolute;
 }
 
 .pmui-tabpanel {

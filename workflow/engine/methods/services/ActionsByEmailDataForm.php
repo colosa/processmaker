@@ -39,7 +39,7 @@ if (PMLicensedFeatures
         $result->setFetchmode(ResultSet::FETCHMODE_ASSOC);
         $result->next();
         $configuration = $result->getRow();
-        $a = new pmDynaform(G::decrypt($_REQUEST['DYN_UID'], URL_KEY));
+        
         $action = 'ActionsByEmailDataFormPost.php?APP_UID=' . $_REQUEST['APP_UID'] . '&DEL_INDEX=' . $_REQUEST['DEL_INDEX'] . '&ABER=' . $_REQUEST['ABER'];
         $record['DYN_CONTENT'] = $configuration['DYN_CONTENT'];
         $record['PRO_UID']     = $configuration['PRO_UID'];
@@ -48,6 +48,7 @@ if (PMLicensedFeatures
         $record['DEL_INDEX'] = $_REQUEST['DEL_INDEX'];
         $record['ABER'] = $_REQUEST['ABER'];
         if (is_null($caseFields['DEL_FINISH_DATE'])) {
+            $a = new pmDynaform($record);
             $a->printABE($action,$record);
         } else {
             $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/showInfo', '', array('MESSAGE' => '<strong>The form has already been filled and sent.</strong>'));

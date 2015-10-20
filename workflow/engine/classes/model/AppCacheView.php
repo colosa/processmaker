@@ -678,69 +678,89 @@ class AppCacheView extends BaseAppCacheView
 
 
 
-            $arrayGroup = $group->getActiveGroupsForAnUser($userUid); //Get Groups of User
+            $arrayUid   = $group->getActiveGroupsForAnUser($userUid); //Set UIDs of Groups (Groups of User)
+
+            $arrayUid[] = $userUid;                                   //Set UID of User
 
 
 
-            if (count($arrayGroup) > 0) {
-
-                $criteria = new Criteria("workflow");
+            $criteria = new Criteria("workflow");
 
 
 
-                $criteria->setDistinct();
+            $criteria->setDistinct();
 
-                $criteria->addSelectColumn(AppAssignSelfServiceValuePeer::APP_UID);
+            $criteria->addSelectColumn(AppAssignSelfServiceValuePeer::APP_UID);
 
-                $criteria->addSelectColumn(AppAssignSelfServiceValuePeer::DEL_INDEX);
+            $criteria->addSelectColumn(AppAssignSelfServiceValuePeer::DEL_INDEX);
 
-                $criteria->addSelectColumn(AppAssignSelfServiceValuePeer::TAS_UID);
-
-
-
-                $arrayCondition = array();
-
-                $arrayCondition[] = array(AppAssignSelfServiceValuePeer::APP_UID, AppDelegationPeer::APP_UID, Criteria::EQUAL);
-
-                $arrayCondition[] = array(AppAssignSelfServiceValuePeer::DEL_INDEX, AppDelegationPeer::DEL_INDEX, Criteria::EQUAL);
-
-                $arrayCondition[] = array(AppAssignSelfServiceValuePeer::TAS_UID, AppDelegationPeer::TAS_UID, Criteria::EQUAL);
-
-                $criteria->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
+            $criteria->addSelectColumn(AppAssignSelfServiceValuePeer::TAS_UID);
 
 
 
-                $criteria->add(AppDelegationPeer::USR_UID, "", Criteria::EQUAL);
+            $arrayCondition = array();
 
-                $criteria->add(AppDelegationPeer::DEL_THREAD_STATUS, "OPEN", Criteria::EQUAL);
+            $arrayCondition[] = array(AppAssignSelfServiceValuePeer::APP_UID, AppDelegationPeer::APP_UID, Criteria::EQUAL);
 
-                $criteria->add(AppAssignSelfServiceValuePeer::GRP_UID, $arrayGroup, Criteria::IN);
+            $arrayCondition[] = array(AppAssignSelfServiceValuePeer::DEL_INDEX, AppDelegationPeer::DEL_INDEX, Criteria::EQUAL);
 
+            $arrayCondition[] = array(AppAssignSelfServiceValuePeer::TAS_UID, AppDelegationPeer::TAS_UID, Criteria::EQUAL);
 
-
-                $rsCriteria = AppAssignSelfServiceValuePeer::doSelectRS($criteria);
-
-                $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            $criteria->addJoinMC($arrayCondition, Criteria::LEFT_JOIN);
 
 
 
-                while ($rsCriteria->next()) {
+            $criteria->add(AppDelegationPeer::USR_UID, "", Criteria::EQUAL);
 
-                    $row = $rsCriteria->getRow();
+            $criteria->add(AppDelegationPeer::DEL_THREAD_STATUS, "OPEN", Criteria::EQUAL);
 
 
 
-                    $arrayAppAssignSelfServiceValueData[] = array(
+            $criterionAux = null;
 
-                        "APP_UID" => $row["APP_UID"],
 
-                        "DEL_INDEX" => $row["DEL_INDEX"],
 
-                        "TAS_UID" => $row["TAS_UID"]
+            foreach ($arrayUid as $value) {
 
-                    );
+                if (is_null($criterionAux)) {
+
+                    $criterionAux = $criteria->getNewCriterion(AppAssignSelfServiceValuePeer::GRP_UID, "%$value%", Criteria::LIKE);
+
+                } else {
+
+                    $criterionAux = $criteria->getNewCriterion(AppAssignSelfServiceValuePeer::GRP_UID, "%$value%", Criteria::LIKE)->addOr($criterionAux);
 
                 }
+
+            }
+
+
+
+            $criteria->add($criterionAux);
+
+
+
+            $rsCriteria = AppAssignSelfServiceValuePeer::doSelectRS($criteria);
+
+            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+
+
+            while ($rsCriteria->next()) {
+
+                $row = $rsCriteria->getRow();
+
+
+
+                $arrayAppAssignSelfServiceValueData[] = array(
+
+                    "APP_UID" => $row["APP_UID"],
+
+                    "DEL_INDEX" => $row["DEL_INDEX"],
+
+                    "TAS_UID" => $row["TAS_UID"]
+
+                );
 
             }
 
@@ -2836,7 +2856,7 @@ class AppCacheView extends BaseAppCacheView
 
         if (!$found) {
 
-            $filenameSql = $this->pathToAppCacheFiles . '/triggerAppDelegationUpdate.sql';
+            $filenameSql = $this->pathToAppCacheFiles . "triggerAppDelegationUpdate.sql";
 
 
 
@@ -2926,7 +2946,7 @@ class AppCacheView extends BaseAppCacheView
 
         if (!$found) {
 
-            $filenameSql = $this->pathToAppCacheFiles . '/triggerApplicationUpdate.sql';
+            $filenameSql = $this->pathToAppCacheFiles . "triggerApplicationUpdate.sql";
 
 
 
@@ -3016,7 +3036,7 @@ class AppCacheView extends BaseAppCacheView
 
         if (!$found) {
 
-            $filenameSql = $this->pathToAppCacheFiles . '/triggerApplicationDelete.sql';
+            $filenameSql = $this->pathToAppCacheFiles . "triggerApplicationDelete.sql";
 
 
 
@@ -3092,7 +3112,7 @@ class AppCacheView extends BaseAppCacheView
 
         if (!$found) {
 
-            $filenameSql = $this->pathToAppCacheFiles . PATH_SEP . "triggerContentUpdate.sql";
+            $filenameSql = $this->pathToAppCacheFiles . "triggerContentUpdate.sql";
 
 
 
@@ -3244,7 +3264,7 @@ class AppCacheView extends BaseAppCacheView
 
         foreach ($triggerFiles as $triggerFile) {
 
-            $trigger = file_get_contents("{$this->pathToAppCacheFiles}/$triggerFile");
+            $trigger = file_get_contents($this->pathToAppCacheFiles . $triggerFile);
 
 
 

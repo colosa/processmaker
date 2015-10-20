@@ -7,71 +7,414 @@ use Luracast\Restler\User;
 class ProcessSupervisor
 {
     /**
-     * Return supervisors
-     * @param string $sProcessUID
+     * Get Supervisors
+     *
+     * @param string $processUid
+     * @param string $option
+     * @param array  $arrayFilterData
+     * @param int    $start
+     * @param int    $limit
+     * @param string $type
      *
      * @return array
-     *
-     * @access public
      */
-    public function getProcessSupervisors($sProcessUID = '')
+    public function getProcessSupervisors($processUid, $option, $arrayFilterData = null, $start = null, $limit = null, $type = null)
     {
         try {
-            $aResp = array();
-            // Groups
-            $oCriteria = new \Criteria('workflow');
-            $oCriteria->addSelectColumn(\ProcessUserPeer::PU_UID);
-            $oCriteria->addSelectColumn(\ProcessUserPeer::USR_UID);
-            $oCriteria->addAsColumn('GRP_TITLE', \ContentPeer::CON_VALUE);
-            $aConditions [] = array(\ProcessUserPeer::USR_UID, \ContentPeer::CON_ID);
-            $aConditions [] = array(\ContentPeer::CON_CATEGORY, \DBAdapter::getStringDelimiter().'GRP_TITLE'.\DBAdapter::getStringDelimiter());
-            $aConditions [] = array(\ContentPeer::CON_LANG, \DBAdapter::getStringDelimiter().SYS_LANG.\DBAdapter::getStringDelimiter());
-            $oCriteria->addJoinMC($aConditions, \Criteria::LEFT_JOIN);
-            $oCriteria->add(\ProcessUserPeer::PU_TYPE, 'GROUP_SUPERVISOR');
-            $oCriteria->add(\ProcessUserPeer::PRO_UID, $sProcessUID);
-            $oCriteria->addAscendingOrderByColumn(\ContentPeer::CON_VALUE);
-            $oDataset = \ProcessUserPeer::doSelectRS($oCriteria);
-            $oDataset->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-            $oDataset->next();
-            while ($aRow = $oDataset->getRow()) {
-                $aResp[] = array('pu_uid' => $aRow['PU_UID'],
-                                 'pu_type' => "GROUP_SUPERVISOR",
-                                 'grp_uid' => $aRow['USR_UID'],
-                                 'grp_name' => $aRow['GRP_TITLE']);
-                $oDataset->next();
+            require_once(PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "UsersRoles.php");
+            require_once(PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "UsersRolesPeer.php");
+            require_once(PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Roles.php");
+            require_once(PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "RolesPeer.php");
+            require_once(PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "RolesPermissions.php");
+            require_once(PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "RolesPermissionsPeer.php");
+            require_once(PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Permissions.php");
+            require_once(PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "PermissionsPeer.php");
+
+            $arraySupervisor = array();
+
+            $numRecTotal = 0;
+            $startbk = $start;
+            $limitbk = $limit;
+
+            //Verify data
+            $process = new \ProcessMaker\BusinessModel\Process();
+
+            $process->throwExceptionIfDataNotMetPagerVarDefinition(array("start" => $start, "limit" => $limit), array("start" => "start", "limit" => "limit"));
+
+            //Set variables
+            $filterName = "filter";
+
+            if (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"])) {
+                $arrayAux = array(
+                    ""      => "filter",
+                    "LEFT"  => "lfilter",
+                    "RIGHT" => "rfilter"
+                );
+
+                $filterName = $arrayAux[(isset($arrayFilterData["filterOption"]))? $arrayFilterData["filterOption"] : ""];
             }
 
-            // Users
-            $oCriteria = new \Criteria('workflow');
-            $oCriteria->addSelectColumn(\ProcessUserPeer::USR_UID);
-            $oCriteria->addSelectColumn(\ProcessUserPeer::PU_UID);
-            $oCriteria->addSelectColumn(\UsersPeer::USR_FIRSTNAME);
-            $oCriteria->addSelectColumn(\UsersPeer::USR_LASTNAME);
-            $oCriteria->addSelectColumn(\UsersPeer::USR_USERNAME);
-            $oCriteria->addSelectColumn(\UsersPeer::USR_EMAIL);
-            $oCriteria->addJoin(\ProcessUserPeer::USR_UID, \UsersPeer::USR_UID, \Criteria::LEFT_JOIN);
-            $oCriteria->add(\ProcessUserPeer::PU_TYPE, 'SUPERVISOR');
-            $oCriteria->add(\ProcessUserPeer::PRO_UID, $sProcessUID);
-            $oCriteria->add(\UsersPeer::USR_STATUS, 'ACTIVE');
-            $oCriteria->addAscendingOrderByColumn(\UsersPeer::USR_FIRSTNAME);
-            $oDataset = \ProcessUserPeer::doSelectRS($oCriteria);
-            $oDataset->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-            $oDataset->next();
-            while ($aRow = $oDataset->getRow()) {
-                $aResp[] = array('pu_uid' => $aRow['PU_UID'],
-                                 'pu_type' => "SUPERVISOR",
-                                 'usr_uid' => $aRow['USR_UID'],
-                                 'usr_firstname' => $aRow['USR_FIRSTNAME'],
-                                 'usr_lastname' => $aRow['USR_LASTNAME'],
-                                 'usr_username' => $aRow['USR_USERNAME'],
-                                 'usr_email' => $aRow['USR_EMAIL']);
-                $oDataset->next();
+            //Get data
+            if (!is_null($limit) && $limit . "" == "0") {
+                //Return
+                return array(
+                    "total"     => $numRecTotal,
+                    "start"     => (int)((!is_null($startbk))? $startbk : 0),
+                    "limit"     => (int)((!is_null($limitbk))? $limitbk : 0),
+                    $filterName => (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"]))? $arrayFilterData["filter"] : "",
+                    "data"      => $arraySupervisor
+                );
             }
-            if ($aResp == null) {
-                $aResp = array();
+
+            //Verify data
+            $process->throwExceptionIfNotExistsProcess($processUid, "prj_uid");
+
+            //Set variables
+            $numRecTotalGroup = 0;
+            $numRecTotalUser  = 0;
+
+            $delimiter = \DBAdapter::getStringDelimiter();
+
+            switch ($option) {
+                case "ASSIGNED":
+                    break;
+                case "AVAILABLE":
+                    $arrayGroupUid = array();
+                    $arrayUserUid = array();
+
+                    $criteria = new \Criteria("workflow");
+
+                    $criteria->addSelectColumn(\ProcessUserPeer::USR_UID);
+                    $criteria->addSelectColumn(\ProcessUserPeer::PU_TYPE);
+                    $criteria->add(\ProcessUserPeer::PRO_UID, $processUid, \Criteria::EQUAL);
+                    $criteria->add(\ProcessUserPeer::PU_TYPE, "%SUPERVISOR%", \Criteria::LIKE);
+
+                    $rsCriteria = \ProcessUserPeer::doSelectRS($criteria);
+                    $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+                    while ($rsCriteria->next()) {
+                        $row = $rsCriteria->getRow();
+
+                        if ($row["PU_TYPE"] == "SUPERVISOR") {
+                            $arrayUserUid[] = $row["USR_UID"];
+                        } else {
+                            $arrayGroupUid[] = $row["USR_UID"];
+                        }
+                    }
+
+                    $arrayRbacSystemData = array("SYS_UID"  => "PROCESSMAKER", "SYS_CODE" => "00000000000000000000000000000002");
+                    break;
             }
-            return $aResp;
-        } catch (Exception $e) {
+
+            //Groups
+            //Query
+            if (empty($type) || $type == "group") {
+                $criteriaGroup = new \Criteria("workflow");
+
+                $criteriaGroup->addSelectColumn(\GroupwfPeer::GRP_UID);
+                $criteriaGroup->addAsColumn("GRP_TITLE", \ContentPeer::CON_VALUE);
+
+                switch ($option) {
+                    case "ASSIGNED":
+                        $criteriaGroup->addSelectColumn(\ProcessUserPeer::PU_UID);
+
+                        $arrayCondition = array();
+                        $arrayCondition[] = array(\ProcessUserPeer::USR_UID, \GroupwfPeer::GRP_UID, \Criteria::EQUAL);
+                        $arrayCondition[] = array(\GroupwfPeer::GRP_STATUS, $delimiter . "ACTIVE" . $delimiter, \Criteria::EQUAL);
+                        $criteriaGroup->addJoinMC($arrayCondition, \Criteria::LEFT_JOIN);
+
+                        $arrayCondition = array();
+                        $arrayCondition[] = array(\GroupwfPeer::GRP_UID, \ContentPeer::CON_ID, \Criteria::EQUAL);
+                        $arrayCondition[] = array(\ContentPeer::CON_CATEGORY, $delimiter . "GRP_TITLE" . $delimiter, \Criteria::EQUAL);
+                        $arrayCondition[] = array(\ContentPeer::CON_LANG, $delimiter . SYS_LANG . $delimiter, \Criteria::EQUAL);
+                        $criteriaGroup->addJoinMC($arrayCondition, \Criteria::LEFT_JOIN);
+
+                        $criteriaGroup->add(\ProcessUserPeer::PU_TYPE, "GROUP_SUPERVISOR", \Criteria::EQUAL);
+                        $criteriaGroup->add(\ProcessUserPeer::PRO_UID, $processUid, \Criteria::EQUAL);
+                        break;
+                    case "AVAILABLE":
+                        $sql = "
+                        SELECT DISTINCT " . \GroupUserPeer::GRP_UID . "
+                        FROM   " . \GroupUserPeer::TABLE_NAME . ", " . \UsersPeer::TABLE_NAME . ",
+                               " . \UsersRolesPeer::TABLE_NAME . ", " . \RolesPermissionsPeer::TABLE_NAME . ", " . \PermissionsPeer::TABLE_NAME . "
+                        WHERE  " . \GroupUserPeer::GRP_UID . " = " . \GroupwfPeer::GRP_UID . " AND
+                               " . \GroupUserPeer::USR_UID . " = " . \UsersPeer::USR_UID . " AND " . \UsersPeer::USR_STATUS . " = " . $delimiter . "ACTIVE" . $delimiter . " AND
+                               " . \UsersPeer::USR_UID . " = " . \UsersRolesPeer::USR_UID . " AND
+                               " . \UsersRolesPeer::ROL_UID . " = " . \RolesPermissionsPeer::ROL_UID . " AND
+                               " . \RolesPermissionsPeer::PER_UID . " = " . \PermissionsPeer::PER_UID . " AND
+                               " . \PermissionsPeer::PER_CODE . " = " . $delimiter . "PM_SUPERVISOR" . $delimiter . " AND
+                               " . \PermissionsPeer::PER_SYSTEM . " = " . $delimiter . $arrayRbacSystemData["SYS_CODE"] . $delimiter . "
+                        ";
+
+                        $arrayCondition = array();
+                        $arrayCondition[] = array(\GroupwfPeer::GRP_UID, \ContentPeer::CON_ID, \Criteria::EQUAL);
+                        $arrayCondition[] = array(\ContentPeer::CON_CATEGORY, $delimiter . "GRP_TITLE" . $delimiter, \Criteria::EQUAL);
+                        $arrayCondition[] = array(\ContentPeer::CON_LANG, $delimiter . SYS_LANG . $delimiter, \Criteria::EQUAL);
+                        $criteriaGroup->addJoinMC($arrayCondition, \Criteria::LEFT_JOIN);
+
+                        $criteriaGroup->add(
+                            $criteriaGroup->getNewCriterion(\GroupwfPeer::GRP_UID, $arrayGroupUid, \Criteria::NOT_IN)->addAnd(
+                            $criteriaGroup->getNewCriterion(\GroupwfPeer::GRP_STATUS, "ACTIVE", \Criteria::EQUAL))->addAnd(
+                            $criteriaGroup->getNewCriterion(\GroupwfPeer::GRP_UID, \GroupwfPeer::GRP_UID . " IN ($sql)", \Criteria::CUSTOM))
+                        );
+                        break;
+                }
+
+                if (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"]) && trim($arrayFilterData["filter"]) != "") {
+                    $arraySearch = array(
+                        ""      => "%" . $arrayFilterData["filter"] . "%",
+                        "LEFT"  => $arrayFilterData["filter"] . "%",
+                        "RIGHT" => "%" . $arrayFilterData["filter"]
+                    );
+
+                    $search = $arraySearch[(isset($arrayFilterData["filterOption"]))? $arrayFilterData["filterOption"] : ""];
+
+                    $criteriaGroup->add(\ContentPeer::CON_VALUE, $search, \Criteria::LIKE);
+                }
+
+                //Number records total
+                $criteriaCount = clone $criteriaGroup;
+
+                $criteriaCount->clearSelectColumns();
+                $criteriaCount->addSelectColumn("COUNT(" . \GroupwfPeer::GRP_UID . ") AS NUM_REC");
+
+                switch ($option) {
+                    case "ASSIGNED":
+                        $rsCriteriaCount = \ProcessUserPeer::doSelectRS($criteriaCount);
+                        break;
+                    case "AVAILABLE":
+                        $rsCriteriaCount = \GroupwfPeer::doSelectRS($criteriaCount);
+                        break;
+                }
+
+                $rsCriteriaCount->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+                $result = $rsCriteriaCount->next();
+                $row = $rsCriteriaCount->getRow();
+
+                $numRecTotalGroup = (int)($row["NUM_REC"]);
+                $numRecTotal      = $numRecTotal + $numRecTotalGroup;
+            }
+
+            //Users
+            //Query
+            if (empty($type) || $type == "user") {
+                $criteriaUser = new \Criteria("workflow");
+
+                $criteriaUser->addSelectColumn(\UsersPeer::USR_UID);
+                $criteriaUser->addSelectColumn(\UsersPeer::USR_USERNAME);
+                $criteriaUser->addSelectColumn(\UsersPeer::USR_FIRSTNAME);
+                $criteriaUser->addSelectColumn(\UsersPeer::USR_LASTNAME);
+                $criteriaUser->addSelectColumn(\UsersPeer::USR_EMAIL);
+
+                switch ($option) {
+                    case "ASSIGNED":
+                        $criteriaUser->addSelectColumn(\ProcessUserPeer::PU_UID);
+
+                        $arrayCondition = array();
+                        $arrayCondition[] = array(\ProcessUserPeer::USR_UID, \UsersPeer::USR_UID, \Criteria::EQUAL);
+                        $arrayCondition[] = array(\UsersPeer::USR_STATUS, $delimiter . "ACTIVE" . $delimiter, \Criteria::EQUAL);
+                        $criteriaUser->addJoinMC($arrayCondition, \Criteria::LEFT_JOIN);
+
+                        $criteriaUser->add(\ProcessUserPeer::PU_TYPE, "SUPERVISOR", \Criteria::EQUAL);
+                        $criteriaUser->add(\ProcessUserPeer::PRO_UID, $processUid, \Criteria::EQUAL);
+
+                        break;
+                    case "AVAILABLE":
+                        $sql = "
+                        SELECT DISTINCT " . \UsersRolesPeer::USR_UID . "
+                        FROM   " . \UsersRolesPeer::TABLE_NAME . ", " . \RolesPermissionsPeer::TABLE_NAME . ", " . \PermissionsPeer::TABLE_NAME . "
+                        WHERE  " . \UsersRolesPeer::USR_UID . " = " . \UsersPeer::USR_UID . " AND
+                               " . \UsersRolesPeer::ROL_UID . " = " . \RolesPermissionsPeer::ROL_UID . " AND
+                               " . \RolesPermissionsPeer::PER_UID . " = " . \PermissionsPeer::PER_UID . " AND
+                               " . \PermissionsPeer::PER_CODE . " = " . $delimiter . "PM_SUPERVISOR" . $delimiter . " AND
+                               " . \PermissionsPeer::PER_SYSTEM . " = " . $delimiter . $arrayRbacSystemData["SYS_CODE"] . $delimiter . "
+                        ";
+
+                        $criteriaUser->add(
+                            $criteriaUser->getNewCriterion(\UsersPeer::USR_UID, $arrayUserUid, \Criteria::NOT_IN)->addAnd(
+                            $criteriaUser->getNewCriterion(\UsersPeer::USR_STATUS, "ACTIVE", \Criteria::EQUAL))->addAnd(
+                            $criteriaUser->getNewCriterion(\UsersPeer::USR_UID, \UsersPeer::USR_UID . " IN ($sql)", \Criteria::CUSTOM))
+                        );
+                        break;
+                }
+
+                if (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"]) && trim($arrayFilterData["filter"]) != "") {
+                    $arraySearch = array(
+                        ""      => "%" . $arrayFilterData["filter"] . "%",
+                        "LEFT"  => $arrayFilterData["filter"] . "%",
+                        "RIGHT" => "%" . $arrayFilterData["filter"]
+                    );
+
+                    $search = $arraySearch[(isset($arrayFilterData["filterOption"]))? $arrayFilterData["filterOption"] : ""];
+
+                    $criteriaUser->add(
+                        $criteriaUser->getNewCriterion(\UsersPeer::USR_USERNAME,  $search, \Criteria::LIKE)->addOr(
+                        $criteriaUser->getNewCriterion(\UsersPeer::USR_FIRSTNAME, $search, \Criteria::LIKE))->addOr(
+                        $criteriaUser->getNewCriterion(\UsersPeer::USR_LASTNAME,  $search, \Criteria::LIKE))
+                    );
+                }
+
+                //Number records total
+                $criteriaCount = clone $criteriaUser;
+
+                $criteriaCount->clearSelectColumns();
+                $criteriaCount->addSelectColumn("COUNT(" . \UsersPeer::USR_UID . ") AS NUM_REC");
+
+                switch ($option) {
+                    case "ASSIGNED":
+                        $rsCriteriaCount = \ProcessUserPeer::doSelectRS($criteriaCount);
+                        break;
+                    case "AVAILABLE":
+                        $rsCriteriaCount = \UsersPeer::doSelectRS($criteriaCount);
+                        break;
+                }
+
+                $rsCriteriaCount->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+                $result = $rsCriteriaCount->next();
+                $row = $rsCriteriaCount->getRow();
+
+                $numRecTotalUser = (int)($row["NUM_REC"]);
+                $numRecTotal     = $numRecTotal + $numRecTotalUser;
+            }
+
+            //Groups
+            //Query
+            if (empty($type) || $type == "group") {
+                $criteriaGroup->addAscendingOrderByColumn("GRP_TITLE");
+
+                if (!is_null($start)) {
+                    $criteriaGroup->setOffset((int)($start));
+                }
+
+                if (!is_null($limit)) {
+                    $criteriaGroup->setLimit((int)($limit));
+                }
+
+                switch ($option) {
+                    case "ASSIGNED":
+                        $rsCriteriaGroup = \ProcessUserPeer::doSelectRS($criteriaGroup);
+                        break;
+                    case "AVAILABLE":
+                        $rsCriteriaGroup = \GroupwfPeer::doSelectRS($criteriaGroup);
+                        break;
+                }
+
+                $rsCriteriaGroup->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+                $numRecGroup = 0;
+
+                while ($rsCriteriaGroup->next()) {
+                    $row = $rsCriteriaGroup->getRow();
+
+                    switch ($option) {
+                        case "ASSIGNED":
+                            $arraySupervisor[] = array(
+                                "pu_uid"   => $row["PU_UID"],
+                                "pu_type"  => "GROUP_SUPERVISOR",
+                                "grp_uid"  => $row["GRP_UID"],
+                                "grp_name" => $row["GRP_TITLE"]
+                            );
+                            break;
+                        case "AVAILABLE":
+                            $arraySupervisor[] = array(
+                                "grp_uid"  => $row["GRP_UID"],
+                                "grp_name" => $row["GRP_TITLE"],
+                                "obj_type" => "group"
+                            );
+                            break;
+                    }
+
+                    $numRecGroup++;
+                }
+            }
+
+            //Users
+            //Query
+            if (empty($type) || $type == "user") {
+                $flagUser = true;
+
+                if ($numRecTotalGroup > 0) {
+                    if ($numRecGroup > 0) {
+                        if (!is_null($limit)) {
+                            if ($numRecGroup < (int)($limit)) {
+                                $start = 0;
+                                $limit = $limit - $numRecGroup;
+                            } else {
+                                $flagUser = false;
+                            }
+                        } else {
+                            $start = 0;
+                        }
+                    } else {
+                        $start = (int)($start) - $numRecTotalGroup;
+                    }
+                }
+
+                if ($flagUser) {
+                    //Users
+                    //Query
+                    $criteriaUser->addAscendingOrderByColumn(\UsersPeer::USR_FIRSTNAME);
+
+                    if (!is_null($start)) {
+                        $criteriaUser->setOffset((int)($start));
+                    }
+
+                    if (!is_null($limit)) {
+                        $criteriaUser->setLimit((int)($limit));
+                    }
+
+                    switch ($option) {
+                        case "ASSIGNED":
+                            $rsCriteriaUser = \ProcessUserPeer::doSelectRS($criteriaUser);
+                            break;
+                        case "AVAILABLE":
+                            $rsCriteriaUser = \UsersPeer::doSelectRS($criteriaUser);
+                            break;
+                    }
+
+                    $rsCriteriaUser->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+                    while ($rsCriteriaUser->next()) {
+                        $row = $rsCriteriaUser->getRow();
+
+                        switch ($option) {
+                            case "ASSIGNED":
+                                $arraySupervisor[] = array(
+                                    "pu_uid"        => $row["PU_UID"],
+                                    "pu_type"       => "SUPERVISOR",
+                                    "usr_uid"       => $row["USR_UID"],
+                                    "usr_firstname" => $row["USR_FIRSTNAME"],
+                                    "usr_lastname"  => $row["USR_LASTNAME"],
+                                    "usr_username"  => $row["USR_USERNAME"],
+                                    "usr_email"     => $row["USR_EMAIL"]
+                                );
+                                break;
+                            case "AVAILABLE":
+                                $arraySupervisor[] = array(
+                                    "usr_uid"       => $row["USR_UID"],
+                                    "usr_firstname" => $row["USR_FIRSTNAME"],
+                                    "usr_lastname"  => $row["USR_LASTNAME"],
+                                    "usr_username"  => $row["USR_USERNAME"],
+                                    "usr_email"     => $row["USR_EMAIL"],
+                                    "obj_type"      => "user"
+                                );
+                                break;
+                        }
+                    }
+                }
+            }
+
+            //Return
+            return array(
+                "total"     => $numRecTotal,
+                "start"     => (int)((!is_null($startbk))? $startbk : 0),
+                "limit"     => (int)((!is_null($limitbk))? $limitbk : 0),
+                $filterName => (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"]))? $arrayFilterData["filter"] : "",
+                "data"      => $arraySupervisor
+            );
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -143,124 +486,6 @@ class ProcessSupervisor
                 $oDataset->next();
             }
             return $aResp;
-        } catch (Exception $e) {
-            throw $e;
-        }
-    }
-
-    /**
-     * Return available supervisors
-     * @param string $obj_type
-     * @param string $sProcessUID
-     *
-     * @return array
-     *
-     * @access public
-     */
-    public function getAvailableProcessSupervisors($obj_type, $sProcessUID = '')
-    {
-        try {
-            require_once (PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Roles.php");
-            $aRespLi = array();
-            $aRespLiGroups = array();
-            $userRole = new \ProcessMaker\BusinessModel\User();
-            // Groups
-            $oCriteria = new \Criteria('workflow');
-            $oCriteria->addSelectColumn(\ProcessUserPeer::USR_UID);
-            $oCriteria->addSelectColumn(\ProcessUserPeer::PU_TYPE);
-            $oCriteria->add(\ProcessUserPeer::PRO_UID, $sProcessUID);
-            $oCriteria->add(\ProcessUserPeer::PU_TYPE, '%SUPERVISOR%', \Criteria::LIKE);
-            $oDataset = \ProcessUserPeer::doSelectRS($oCriteria);
-            $oDataset->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-            $oDataset->next();
-            $aUIDS = array();
-            $aGRUS = array();
-            while ($aRow = $oDataset->getRow()) {
-                if ($aRow['PU_TYPE'] == 'SUPERVISOR') {
-                    $aUIDS [] = $aRow ['USR_UID'];
-                } else {
-                    $aGRUS [] = $aRow ['USR_UID'];
-                }
-                $oDataset->next();
-            }
-            $oCriteria = new \Criteria('workflow');
-            $oCriteria->addSelectColumn(\GroupwfPeer::GRP_UID);
-            $oCriteria->addAsColumn('GRP_TITLE', \ContentPeer::CON_VALUE);
-            $aConditions [] = array(\GroupwfPeer::GRP_UID, \ContentPeer::CON_ID);
-            $aConditions [] = array(\ContentPeer::CON_CATEGORY, \DBAdapter::getStringDelimiter() . 'GRP_TITLE' . \DBAdapter::getStringDelimiter());
-            $aConditions [] = array(\ContentPeer::CON_LANG, \DBAdapter::getStringDelimiter() . SYS_LANG . \DBAdapter::getStringDelimiter());
-            $oCriteria->addJoinMC($aConditions, \Criteria::LEFT_JOIN);
-            $oCriteria->add(\GroupwfPeer::GRP_UID, $aGRUS, \Criteria::NOT_IN);
-            $oCriteria->addAscendingOrderByColumn(\ContentPeer::CON_VALUE);
-            $oDataset = \GroupwfPeer::doSelectRS($oCriteria);
-            $oDataset->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-            $oDataset->next();
-            if ($obj_type == 'group' || $obj_type == '') {
-                while ($aRow = $oDataset->getRow()) {
-                    $group = new \ProcessMaker\BusinessModel\Group();
-                    $userGroup = $group->getUsers('USERS', $aRow['GRP_UID']);
-                    foreach ($userGroup as $value) {
-                        $permission = $userRole->loadUserRolePermission('PROCESSMAKER', $value["USR_UID"]);
-                        foreach ($permission as $values) {
-                            if ($values["PER_CODE"] == 'PM_SUPERVISOR') {
-                                $aRespLiGroups[] = array('grp_uid' => $aRow['GRP_UID'],
-                                                   'grp_name' => $aRow['GRP_TITLE'],
-                                                   'obj_type' => "group");
-                            }
-                        }
-                    }
-                    $oDataset->next();
-                }
-            }
-            $exclude = array("");
-            for ($i = 0; $i<=count($aRespLiGroups)-1; $i++) {
-                if (!in_array(trim($aRespLiGroups[$i]["grp_uid"]) ,$exclude)) {
-                    $aRespLi[] = $aRespLiGroups[$i];
-                    $exclude[] = trim($aRespLiGroups[$i]["grp_uid"]);
-                }
-            }
-            $sDelimiter = \DBAdapter::getStringDelimiter();
-            $oCriteria = new \Criteria('workflow');
-            $oCriteria->addSelectColumn(\UsersPeer::USR_UID);
-            $oCriteria->addSelectColumn(\UsersPeer::USR_ROLE);
-            $oCriteria->add(\UsersPeer::USR_UID, $aUIDS, \Criteria::NOT_IN);
-            $oDataset = \UsersPeer::doSelectRS($oCriteria);
-            $oDataset->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-            $oDataset->next();
-            $aUIDS = array();
-            while ($aRow = $oDataset->getRow()) {
-                $permission = $userRole->loadUserRolePermission('PROCESSMAKER', $aRow['USR_UID']);
-                foreach ($permission as $key => $value) {
-                    if ($value["PER_CODE"] == 'PM_SUPERVISOR') {
-                        $aUIDS [] = $aRow ['USR_UID'];
-                    }
-                }
-                $oDataset->next();
-            }
-            $oCriteria = new \Criteria('workflow');
-            $oCriteria->addSelectColumn(\UsersPeer::USR_UID);
-            $oCriteria->addSelectColumn(\UsersPeer::USR_FIRSTNAME);
-            $oCriteria->addSelectColumn(\UsersPeer::USR_LASTNAME);
-            $oCriteria->addSelectColumn(\UsersPeer::USR_USERNAME);
-            $oCriteria->addSelectColumn(\UsersPeer::USR_EMAIL);
-            $oCriteria->add(\UsersPeer::USR_UID, $aUIDS, \Criteria::IN);
-            $oCriteria->addAscendingOrderByColumn(\UsersPeer::USR_FIRSTNAME);
-            $oCriteria->add(\UsersPeer::USR_STATUS, 'ACTIVE');
-            $oDataset = \UsersPeer::doSelectRS($oCriteria);
-            $oDataset->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-            $oDataset->next();
-            if ($obj_type == 'user' || $obj_type == '') {
-                while ($aRow = $oDataset->getRow()) {
-                    $aRespLi[] = array('usr_uid' => $aRow['USR_UID'],
-                                       'usr_firstname' => $aRow['USR_FIRSTNAME'],
-                                       'usr_lastname' => $aRow['USR_LASTNAME'],
-                                       'usr_username' => $aRow['USR_USERNAME'],
-                                       'usr_email' => $aRow['USR_EMAIL'],
-                                       "obj_type" => "user" );
-                    $oDataset->next();
-                }
-            }
-            return $aRespLi;
         } catch (Exception $e) {
             throw $e;
         }
@@ -1133,15 +1358,15 @@ class ProcessSupervisor
         $step_pos = $pu_pos;
         $step_uid = $pu_uid;
         foreach ($aSteps as $dataStep) {
-            if($dataStep['obj_type'] == 'DYNAFORM'){
+            if ($dataStep['obj_type'] == 'DYNAFORM') {
                 if ($dataStep['pud_uid'] == $step_uid) {
                     $prStepPos = (int)$dataStep['pud_position'];
                 }
-            }else{
+            } else {
                 if ($dataStep['pui_uid'] == $step_uid) {
                     $prStepPos = (int)$dataStep['pui_position'];
                 }
-            }            
+            }
         }
         $seStepPos = $step_pos;
         //Principal Step is up
@@ -1160,17 +1385,17 @@ class ProcessSupervisor
         }
         $range = range($iniPos, $finPos);
         foreach ($aSteps as $dataStep) {
-            if($dataStep['obj_type'] == 'DYNAFORM'){
+            if ($dataStep['obj_type'] == 'DYNAFORM') {
                 if ((in_array($dataStep['pud_position'], $range)) && ($dataStep['pud_uid'] != $step_uid)) {
                     $stepChangeIds[] = $dataStep['pud_uid'];
                     $stepChangePos[] = $dataStep['pud_position'];
                 }
-            }else{
+            } else {
                 if ((in_array($dataStep['pui_position'], $range)) && ($dataStep['pui_uid'] != $step_uid)) {
                     $stepChangeIds[] = $dataStep['pui_uid'];
                     $stepChangePos[] = $dataStep['pui_position'];
                 }
-            }            
+            }
         }
         foreach ($stepChangeIds as $key => $value) {
             if ($modPos == 'UP') {

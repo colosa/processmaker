@@ -413,9 +413,8 @@ try {
             $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
             $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
             $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
-
             $oCriteria->addSelectColumn(UsersPeer::USR_ROLE);
-
+            $oCriteria->addSelectColumn(UsersPeer::USR_TOTAL_PARTICIPATED);
             $oCriteria->addSelectColumn(UsersPeer::USR_DUE_DATE);
             $oCriteria->addSelectColumn(UsersPeer::USR_STATUS);
             $oCriteria->addSelectColumn(UsersPeer::USR_UX);
@@ -449,8 +448,6 @@ try {
 
             $Login = new LoginLog();
             $aLogin = $Login->getLastLoginAllUsers();
-            $Cases = new AppCacheView();
-            $aCases = $Cases->getTotalCasesByAllUsers();
             $Department = new Department();
             $aDepart = $Department->getAllDepartmentsByUser();
             $aAuthSources = $RBAC->getAllAuthSourcesByUser();
@@ -475,7 +472,7 @@ try {
 
                 $row['DUE_DATE_OK'] = (date('Y-m-d') > date('Y-m-d', strtotime($row['USR_DUE_DATE']))) ? 0 : 1;
                 $row['LAST_LOGIN'] = isset($aLogin[$row['USR_UID']]) ? $aLogin[$row['USR_UID']] : '';
-                $row['TOTAL_CASES'] = isset($aCases[$row['USR_UID']]) ? $aCases[$row['USR_UID']] : 0;
+                $row['TOTAL_CASES'] = isset($row['USR_TOTAL_PARTICIPATED']) ? $row['USR_TOTAL_PARTICIPATED'] : 0;
                 $row['DEP_TITLE'] = isset($aDepart[$row['USR_UID']]) ? $aDepart[$row['USR_UID']] : '';
                 $row['USR_UX'] = isset($uxList[$row['USR_UX']]) ? $uxList[$row['USR_UX']] : $uxList['NORMAL'];
                 $row['USR_AUTH_SOURCE'] = isset($aAuthSources[$row['USR_UID']]) ? $aAuthSources[$row['USR_UID']] : 'ProcessMaker (MYSQL)';

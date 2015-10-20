@@ -212,22 +212,6 @@ class Step
     }
 
     /**
-     * Verify if doesn't exist the Task in table TASK
-     *
-     * @param string $taskUid Unique id of Task
-     *
-     * return void Throw exception if doesn't exist the Task in table TASK
-     */
-    public function throwExceptionIfNotExistsTask($taskUid)
-    {
-        $task = new \Task();
-
-        if (!$task->taskExists($taskUid)) {
-            throw new \Exception(\G::LoadTranslation("ID_ACTIVITY_DOES_NOT_EXIST", array($this->arrayParamException["taskUid"], $taskUid)));
-        }
-    }
-
-    /**
      * Verify if doesn't exist the Process in table PROCESS
      *
      * @param string $processUid Unique id of Process
@@ -260,9 +244,11 @@ class Step
             unset($arrayData["STEP_UID"]);
 
             //Verify data
-            $this->throwExceptionIfNotExistsTask($taskUid);
+            $task = new \ProcessMaker\BusinessModel\Task();
 
             $this->throwExceptionIfNotExistsProcess($processUid);
+
+            $task->throwExceptionIfNotExistsTask($processUid, $taskUid, $this->arrayParamException["taskUid"]);
 
             if (!isset($arrayData["STEP_TYPE_OBJ"])) {
                 throw new \Exception(\G::LoadTranslation("ID_UNDEFINED_VALUE_IS_REQUIRED", array($this->arrayParamException["stepTypeObj"])));
@@ -495,7 +481,9 @@ class Step
             $step->setArrayParamException($this->arrayParamException);
 
             //Verify data
-            $this->throwExceptionIfNotExistsTask($taskUid);
+            $task = new \ProcessMaker\BusinessModel\Task();
+
+            $task->throwExceptionIfNotExistsTask("", $taskUid, $this->arrayParamException["taskUid"]);
 
             //Get data
             $criteria = new \Criteria("workflow");
@@ -638,7 +626,9 @@ class Step
             }
 
             if ($stepUid == "") {
-                $this->throwExceptionIfNotExistsTask($taskUid);
+                $task = new \ProcessMaker\BusinessModel\Task();
+
+                $task->throwExceptionIfNotExistsTask("", $taskUid, $this->arrayParamException["taskUid"]);
             }
 
             //Get data
@@ -753,7 +743,9 @@ class Step
             }
 
             if ($stepUid == "") {
-                $this->throwExceptionIfNotExistsTask($taskUid);
+                $task = new \ProcessMaker\BusinessModel\Task();
+
+                $task->throwExceptionIfNotExistsTask("", $taskUid, $this->arrayParamException["taskUid"]);
             }
 
             //Get data
@@ -937,9 +929,11 @@ class Step
             unset($arrayData["STEP_UID"]);
 
             //Verify data
-            $this->throwExceptionIfNotExistsTask($taskUid);
+            $task = new \ProcessMaker\BusinessModel\Task();
 
             $this->throwExceptionIfNotExistsProcess($processUid);
+
+            $task->throwExceptionIfNotExistsTask($processUid, $taskUid, $this->arrayParamException["taskUid"]);
 
             if (!isset($arrayData["STEP_TYPE_OBJ"])) {
                 throw new \Exception(\G::LoadTranslation("ID_UNDEFINED_VALUE_IS_REQUIRED", array($this->arrayParamException["stepTypeObj"])));

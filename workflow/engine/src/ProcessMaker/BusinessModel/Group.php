@@ -460,31 +460,76 @@ class Group
         try {
             $arrayGroup = array();
 
+            $numRecTotal = 0;
+
             //Verify data
             $process = new \ProcessMaker\BusinessModel\Process();
 
             $process->throwExceptionIfDataNotMetPagerVarDefinition(array("start" => $start, "limit" => $limit), $this->arrayFieldNameForException);
 
-            //Get data
-            if (!is_null($limit) && $limit . "" == "0") {
-                return $arrayGroup;
+            //Set variables
+            $filterName = "filter";
+
+            if (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"])) {
+                $arrayAux = array(
+                    ""      => "filter",
+                    "LEFT"  => "lfilter",
+                    "RIGHT" => "rfilter"
+                );
+
+                $filterName = $arrayAux[(isset($arrayFilterData["filterOption"]))? $arrayFilterData["filterOption"] : ""];
             }
 
+            //Get data
+            if (!is_null($limit) && $limit . "" == "0") {
+                //Return
+                return array(
+                    "total"     => $numRecTotal,
+                    "start"     => (int)((!is_null($start))? $start : 0),
+                    "limit"     => (int)((!is_null($limit))? $limit : 0),
+                    $filterName => (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"]))? $arrayFilterData["filter"] : "",
+                    "data"      => $arrayGroup
+                );
+            }
+
+            //Set variables
             $arrayTotalUsersByGroup = $this->getTotalUsersByGroup();
             $arrayTotalTasksByGroup = $this->getTotalTasksByGroup();
 
-            //SQL
+            //Query
             $criteria = $this->getGroupCriteria();
 
             if (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"]) && trim($arrayFilterData["filter"]) != "") {
-                $criteria->add(\ContentPeer::CON_VALUE, "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE);
+                $arraySearch = array(
+                    ""      => "%" . $arrayFilterData["filter"] . "%",
+                    "LEFT"  => $arrayFilterData["filter"] . "%",
+                    "RIGHT" => "%" . $arrayFilterData["filter"]
+                );
+
+                $search = $arraySearch[(isset($arrayFilterData["filterOption"]))? $arrayFilterData["filterOption"] : ""];
+
+                $criteria->add(\ContentPeer::CON_VALUE, $search, \Criteria::LIKE);
             }
 
-            //SQL
+            //Number records total
+            $criteriaCount = clone $criteria;
+
+            $criteriaCount->clearSelectColumns();
+            $criteriaCount->addSelectColumn("COUNT(" . \GroupwfPeer::GRP_UID . ") AS NUM_REC");
+
+            $rsCriteriaCount = \GroupwfPeer::doSelectRS($criteriaCount);
+            $rsCriteriaCount->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+
+            $result = $rsCriteriaCount->next();
+            $row = $rsCriteriaCount->getRow();
+
+            $numRecTotal = (int)($row["NUM_REC"]);
+
+            //Query
             if (!is_null($sortField) && trim($sortField) != "") {
                 $sortField = strtoupper($sortField);
 
-                if (in_array($sortField, array("GRP_UID", "GRP_STATUS", "GRP_LDAP_DN", "GRP_UX"))) {
+                if (in_array(\GroupwfPeer::TABLE_NAME . "." . $sortField, $criteria->getSelectColumns())) {
                     $sortField = \GroupwfPeer::TABLE_NAME . "." . $sortField;
                 } else {
                     $sortField = "GRP_TITLE";
@@ -520,7 +565,13 @@ class Group
             }
 
             //Return
-            return $arrayGroup;
+            return array(
+                "total"     => $numRecTotal,
+                "start"     => (int)((!is_null($start))? $start : 0),
+                "limit"     => (int)((!is_null($limit))? $limit : 0),
+                $filterName => (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"]))? $arrayFilterData["filter"] : "",
+                "data"      => $arrayGroup
+            );
         } catch (\Exception $e) {
             throw $e;
         }
@@ -635,6 +686,29 @@ class Group
     }
 
     /**
+     * return permissions of user
+     */
+    public function loadUserRolePermission ($sSystem, $sUser)
+    {
+        require_once (PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "UsersRoles.php");
+        require_once (PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Systems.php");
+        require_once (PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "RbacUsers.php");
+        require_once (PATH_RBAC_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "RolesPeer.php");
+        $this->sSystem = $sSystem;
+        $this->usersRolesObj = new \UsersRoles();
+        $this->systemObj = new \Systems();
+        $fieldsSystem = $this->systemObj->loadByCode( $sSystem );
+        $fieldsRoles = $this->usersRolesObj->getRolesBySystem( $fieldsSystem['SYS_UID'], $sUser );
+        $fieldsPermissions = $this->usersRolesObj->getAllPermissions( $fieldsRoles['ROL_UID'], $sUser );
+        $this->userObj = new \RbacUsers();
+        $this->aUserInfo['USER_INFO'] = $this->userObj->load( $sUser );
+        $this->aUserInfo[$sSystem]['SYS_UID'] = $fieldsSystem['SYS_UID'];
+        $this->aUserInfo[$sSystem]['ROLE'] = $fieldsRoles;
+        $this->aUserInfo[$sSystem]['PERMISSIONS'] = $fieldsPermissions;
+        return $fieldsPermissions;
+    }
+
+    /**
      * Get all Users of a Group
      *
      * @param string $option          Option (USERS, AVAILABLE-USERS)
@@ -666,6 +740,11 @@ class Group
 
             //SQL
             switch ($option) {
+                case "SUPERVISOR":
+                    $flagPermission = true;
+                    //Criteria for Supervisor
+                    $criteria = $this->getUserCriteria($groupUid, $arrayFilterData);
+                    break;
                 case "USERS":
                     //Criteria
                     $criteria = $this->getUserCriteria($groupUid, $arrayFilterData);
@@ -720,12 +799,30 @@ class Group
             $rsCriteria = \UsersPeer::doSelectRS($criteria);
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
 
-            while ($rsCriteria->next()) {
-                $row = $rsCriteria->getRow();
+            if (isset($flagPermission) && $flagPermission) {
+                \G::LoadSystem('rbac');
+                while ($rsCriteria->next()) {
+                    $row = $rsCriteria->getRow();
 
-                $arrayUser[] = $this->getUserDataFromRecord($row);
+                    $aPermissions =   $this->loadUserRolePermission("PROCESSMAKER", $row['USR_UID']);
+                    $bInclude = false;
+
+                    foreach ($aPermissions as $aPermission) {
+                        if ($aPermission['PER_CODE'] == 'PM_SUPERVISOR') {
+                            $bInclude = true;
+                        }
+                    }
+                    if ($bInclude) {
+                        $arrayUser[] = $this->getUserDataFromRecord($row);
+                    }
+                }
+            } else {
+                while ($rsCriteria->next()) {
+                    $row = $rsCriteria->getRow();
+
+                    $arrayUser[] = $this->getUserDataFromRecord($row);
+                }
             }
-
             //Return
             return $arrayUser;
         } catch (\Exception $e) {

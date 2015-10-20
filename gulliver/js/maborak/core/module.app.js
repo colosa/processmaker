@@ -363,7 +363,7 @@ leimnud.Package.Public({
 							//evt = window.event || evt;
 							//var dv=(this.parent.browser.isIE?evt:el);
 							//alert(evt.a)
-							dv=(this.parent.browser.isIE?evt:el);
+							dv=(this.parent.browser.isIE?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?el:evt):el);
 							var i=dv.i;
 							dv.a.className="app_menuRight_option_over___"+this.options.theme;
 							dv.b.className="app_menuRight_option_image_over___"+this.options.theme;
@@ -407,7 +407,7 @@ leimnud.Package.Public({
 						}.extend(this,{a:dv,b:spI,i:i});
 
 						dv.onmouseout=function(evt,el){
-							var dv=(this.parent.browser.isIE?evt:el);
+							var dv=(this.parent.browser.isIE?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?el:evt):el);
 							if(this.submenu)
 							{
 								return false;
@@ -447,7 +447,7 @@ leimnud.Package.Public({
 					//alert(this.submenu.options.parent_menu);
 				}
 				this.remove();
-				opt=this.parent.browser.isIE?evt:opt;
+				opt=this.parent.browser.isIE?((!!navigator.userAgent.match(/Trident.*rv[ :]*11\./))?opt:evt):opt;
 				var lch = this.options.menu[opt];
 				if(lch && typeof lch.launch=="function")
 				{

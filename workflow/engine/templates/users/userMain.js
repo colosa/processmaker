@@ -24,12 +24,6 @@ userMain.application = {
                         leaf: true,
                         url: "../users/usersInit"
 
-                    },
-                    {
-                        id: "nodeApplication",
-                        text: "Applications",
-                        leaf: true,
-                        url: "../oauth2/accessTokenSetup"
                     }
                 ]
             }),

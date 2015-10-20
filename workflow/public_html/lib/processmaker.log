@@ -1,30 +1,30 @@
-[3 hours ago] e57bfa1  Updating a new label for MAFE, release 3.0.1-GA <Julio Cesar Laura>
-[6 hours ago] 24df46f  fix more session <Ronald Quenta>
-[7 hours ago] cfbf5c7  fix add process uid in session process <Ronald Quenta>
-[7 hours ago] e3fbb21  fix <Ronald Quenta>
-[7 hours ago] 035c8b8  fix add process uid in session process <Ronald Quenta>
-[7 hours ago] 39a1128  fix in trigger assignment <Ronald Quenta>
-[19 hours ago] 38a8382  fix in execute triggers assigment <Ronald Quenta>
-[22 hours ago] 980cde4  PM-0000 "Error with debug-panel in Enterprise-Search list" SOLVED <Victor Saisa Lopez>
-[23 hours ago] 5115d4d  PM-1659 <Roly Rudy Gutierrez Pinto>
-[24 hours ago] b49fb69  PM-3188 0017892: Error al conectar al listar variables y conexiones a base de datos con contraseñlargas <dheeyi>
-[24 hours ago] bb5b3e0  PM-3188 0017892: Error al conectar al listar variables y conexiones a base de datos con contraseñlargas <dheeyi>
-[24 hours ago] f53f8ba  test <dheeyi>
-[24 hours ago] 9916756  PM-3188 0017892: Error al conectar al listar variables y conexiones a base de datos con contraseñlargas <dheeyi>
-[4 days ago] 88bbad7  PM-1659 <Roly Rudy Gutierrez Pinto>
-[4 days ago] 9662525  Add field APP_DISABLE_ACTION_DATE to criteria <Julio Cesar Laura>
-[4 days ago] 330bd45  PM-3163 <marcelo.cuiza>
-[4 days ago] 258e50e  Updating.po and .sql files for release 3.0.1-GA <Julio Cesar Laura>
-[5 days ago] 6c5bd55  add endpoint case delete and list draft, fix in tag <Ronald Quenta>
-[6 days ago] 638366c  14970 El Boton de acciones de un caso no es Standar, solo se puede abrir el menu si se hace click en la flecha. SOLVED como dice su titulo, la apariencia del boton y el boton estaba en modo split, por eso solo reaccionaba cuando se le daba click en la flecha se soluciono cambiando el formato del boton, de split a uno normal de forma que ahora tanto en inbox, draft y paused ya no presentan el problema <ricardo>
-[7 days ago] 5ac57de  PM-2907 <Roly Rudy Gutierrez Pinto>
-[7 days ago] 4bbfcf4  PM-2923 "0017509: El caso que se derivo a un grupo no..." SOLVED <Victor Saisa Lopez>
-[7 days ago] 021606e  Adding rows in insert.sql file <Julio Cesar Laura>
-[7 days ago] d257486  Fix little problem inserting check.data <Julio Cesar Laura>
-[8 days ago] 9f4bde8  PM-3065 improvement: debug panel for var_label update <Roly Rudy Gutierrez Pinto>
-[11 days ago] abde01e  PM-3165 SOLVED <Julio Cesar Laura>
-[12 days ago] 311cfce  test1 <dheeyi>
-[12 days ago] 4dc6b7d  pm1 <dheeyi>
-[12 days ago] f433ed8  ga update <Dante>
-[12 days ago] 59bea48  PM-3155 <Roly Rudy Gutierrez Pinto>
-[12 days ago] d8e683c  PM-3154 0017842: No aparecen varios usuarios para la asignacion <dheeyi>
+[38 minutes ago] 7e22660  Fix notice when _label variable doesn't exists <Julio Cesar Laura>
+[4 hours ago] 014fbe3  validacion para los demas elementos del menu <marcelo.cuiza>
+[8 hours ago] a4c632f  PM-3790 <Roly Rudy Gutierrez Pinto>
+[34 hours ago] 6893ece  IMPROVEMENT <Roly Rudy Gutierrez Pinto>
+[35 hours ago] e757134  validate in pmdynaform <Ronald Quenta>
+[4 days ago] a3573f0  PM-3536-A <Roly Rudy Gutierrez Pinto>
+[4 days ago] 77ee946  PM-3741 <Roly Rudy Gutierrez Pinto>
+[4 days ago] 8c6aa71  PM-3755 Consume the oauth/token endpoint specifying an invalid workspace, <Ronald Quenta>
+[5 days ago] da3e457  Last update of .po and .sql files for version 3.0.1.5 <Julio Cesar Laura>
+[5 days ago] 2676d2c  PM-2907-A <Roly Rudy Gutierrez Pinto>
+[5 days ago] b5d5132  PM-3750: No se puede importar plugins personalizados <marcelo.cuiza>
+[5 days ago] 2e8b81f  PM-3714 <Roly Rudy Gutierrez Pinto>
+[5 days ago] 3fc12fd  PM-3740: 0018724: Menus change randomly when viewing Unassigned cases <marcelo.cuiza>
+[5 days ago] fa3a238  PM-3737 "0018694: Error when using 'Jump to' functionality..." SOLVED <Victor Saisa Lopez>
+[6 days ago] 4c05109  PM-3731 Los registros del equipo tienen que actualizarse con los tokens vigentes <Ronald Quenta>
+[6 days ago] 85cfb3b  EX-236: Error screen to save the template of an output document in IE <Paula V. Quispe>
+[7 days ago] 0776b6b  PM-3720 <Roly Rudy Gutierrez Pinto>
+[8 days ago] b89fd8c  Updating .po and .sql for release of ProcessMaker 3.0.1.5 <Julio Cesar Laura>
+[8 days ago] 9f996a0  Updating .po and .sql for release of ProcessMaker 3.0.1.5 <Julio Cesar Laura>
+[8 days ago] 5d42a26  PM-3705: 18640: Subdepartments sin supervisors no hacen report to al inmediato supervisor del department. <marcelo.cuiza>
+[8 days ago] a493a54  PM-2905 <Roly Rudy Gutierrez Pinto>
+[9 days ago] 8f1b122  PM-3701 <Roly Rudy Gutierrez Pinto>
+[11 days ago] 90ed130  PM-3709 No permitir loguearse con SSO si existen 2 cuentas de usuario con el mismo mail <Ronald Quenta>
+[11 days ago] 08ab6c8  PM-3690 "Unpause Time no funciona, el caso se queda en 'Paused'..." SOLVED <Victor Saisa Lopez>
+[12 days ago] 88ee67d  PM-3688 : Include Accepted_language header in REST endpoint calls in MAFE <jonathan>
+[13 days ago] c917eb2  PM-3632-A "REST endpoint GET /cases/{app_uid}/input-documents" SOLVED <Luis Fernando Saisa Lopez>
+[13 days ago] 4b4b755  PM-3554 Documentos generados con seguridad no se pueden abrir <dheeyi>
+[2 weeks ago] f1c0ca9  0018335: Scrollbar missing in ldap advanced department list <Emerson Joel Rojas Soliz>
+[2 weeks ago] c5ab924  PM-3693 devuelve el json con notice <Ronald Quenta>
+[2 weeks ago] d1dedcd  PM-3462 "REST endpoint DELETE /cases/{app_uid}/..." SOLVED <Luis Fernando Saisa Lopez>

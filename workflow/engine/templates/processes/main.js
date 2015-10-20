@@ -14,8 +14,6 @@ var comboCategory;
 
 var winDesigner;
 
-var typeMnuNew;
-
 var newTypeProcess;
 
 
@@ -356,11 +354,13 @@ Ext.onReady(function(){
 
   var mnuNewBpmnProject = {
 
-      text: "New BPMN Project",
+      text: _("ID_NEW_BPMN_PROJECT"),
 
       iconCls: "silk-add",
 
       icon: "",
+
+      pmTypeProject: "bpmnProject",
 
       handler: function ()
 
@@ -376,11 +376,13 @@ Ext.onReady(function(){
 
   var mnuNewProject = {
 
-      text: "New Project",
+      text: _("ID_NEW_PROJECT"),
 
       iconCls: "silk-add",
 
       icon: "",
+
+      pmTypeProject: "classicProject",
 
       handler: function ()
 
@@ -394,69 +396,91 @@ Ext.onReady(function(){
 
 
 
-  var arrayMenuNew = [];
+  var arrayMenuNewOption = [];
 
 
 
-  if (typeof(arrayMenuNewOption["bpmn"]) != "undefined") {
+  if (typeof(arrayFlagMenuNewOption["bpmn"]) != "undefined") {
 
-      arrayMenuNew.push(mnuNewBpmnProject);
-
-      typeMnuNew = "bpmnProject";
+      arrayMenuNewOption.push(mnuNewBpmnProject);
 
   }
 
 
 
-  if (typeof(arrayMenuNewOption["pm"]) != "undefined") {
+  if (typeof(arrayFlagMenuNewOption["pm"]) != "undefined") {
 
-      arrayMenuNew.push(mnuNewProject);
-
-      typeMnuNew = "classicProject";
+      arrayMenuNewOption.push(mnuNewProject);
 
   }
 
 
 
-  if(typeof(arrayMenuNewOption["bpmn"]) != "undefined" && typeof(arrayMenuNewOption["pm"]) != "undefined"){
+  for (var i = 0; i <= arrayMenuNewOptionPlugin.length - 1; i++) {
 
-    newTypeProcess = {
+      try {
 
-                        xtype: 'tbsplit',
+          if (typeof(arrayMenuNewOptionPlugin[i].handler) != "undefined") {
 
-                        text: _('ID_NEW'),
+              eval("arrayMenuNewOptionPlugin[i].handler = " + arrayMenuNewOptionPlugin[i].handler + ";");
 
-                        iconCls: 'button_menu_ext ss_sprite ss_add',
+          }
 
-                        menu: arrayMenuNew,
 
-                        listeners: {
 
-                          "click": function (obj, e) {
+          arrayMenuNewOption.push(arrayMenuNewOptionPlugin[i]);
 
-                            obj.showMenu();
+      } catch (e) {
 
-                          }
+      }
 
-                        }
+  }
 
-                      };
+
+
+  if (arrayMenuNewOption.length > 1) {
+
+      newTypeProcess = {
+
+          xtype: "tbsplit",
+
+          text: _("ID_NEW"),
+
+          iconCls: "button_menu_ext ss_sprite ss_add",
+
+          menu: arrayMenuNewOption,
+
+          listeners: {
+
+              "click": function (obj, e)
+
+              {
+
+                  obj.showMenu();
+
+              }
+
+          }
+
+      };
 
   } else {
 
-    newTypeProcess = {
+      newTypeProcess = {
 
-                        text: _('ID_NEW'),
+          text: _("ID_NEW"),
 
-                        iconCls: 'button_menu_ext ss_sprite ss_add',
+          iconCls: "button_menu_ext ss_sprite ss_add",
 
-                        handler: function (){
+          handler: function ()
 
-                          newProcess({type: typeMnuNew});
+          {
 
-                        }
+              newProcess({type: arrayMenuNewOption[0].pmTypeProject});
 
-                      };
+          }
+
+      };
 
   }
 
@@ -910,55 +934,63 @@ Ext.onReady(function(){
 
 
 
-  var messageContextMenu = new Ext.menu.Menu({
+  var arrayContextMenuOption = [
 
-    id: 'messageContextMenu',
+      {
 
-    items: [{
+          text: _("ID_EDIT"),
 
-        text: _('ID_EDIT'),
+          iconCls: "button_menu_ext ss_sprite ss_pencil",
 
-        iconCls: 'button_menu_ext ss_sprite  ss_pencil',
+          handler: editProcess
 
-        handler: editProcess
+      },
 
-      }, {
+      {
 
-        id: 'activator2',
+          id: "activator2",
 
-        text: '',
+          text: "",
 
-        icon: '',
+          icon: "",
 
-        handler: activeDeactive
+          handler: activeDeactive
 
-      }, {
+      },
 
-        id: 'debug',
+      {
 
-        text: '',
+          id: "debug",
 
-        handler: enableDisableDebug
+          text: "",
 
-      }, {
+          handler: enableDisableDebug
 
-        text: _('ID_DELETE'),
+      },
 
-        iconCls: "button_menu_ext ss_sprite ss_cross",
+      {
 
-        handler: deleteProcess
+          text: _("ID_DELETE"),
 
-      }, {
+          iconCls: "button_menu_ext ss_sprite ss_cross",
 
-        text: _("ID_EXPORT"),
+          handler: deleteProcess
 
-        icon: "/images/export.png",
+      },
 
-        handler: function () {
+      {
 
-          exportProcess();
+          text: _("ID_EXPORT"),
 
-        }
+          icon: "/images/export.png",
+
+          handler: function ()
+
+          {
+
+              exportProcess();
+
+          }
 
       },
 
@@ -982,7 +1014,37 @@ Ext.onReady(function(){
 
       }
 
-    ]
+  ];
+
+
+
+  for (var i = 0; i <= arrayContextMenuOptionPlugin.length - 1; i++) {
+
+      try {
+
+          if (typeof(arrayContextMenuOptionPlugin[i].handler) != "undefined") {
+
+              eval("arrayContextMenuOptionPlugin[i].handler = " + arrayContextMenuOptionPlugin[i].handler + ";");
+
+          }
+
+
+
+          arrayContextMenuOption.push(arrayContextMenuOptionPlugin[i]);
+
+      } catch (e) {
+
+      }
+
+  }
+
+
+
+  var messageContextMenu = new Ext.menu.Menu({
+
+      id: "messageContextMenu",
+
+      items: arrayContextMenuOption
 
   });
 
@@ -1018,7 +1080,7 @@ function newProcess(params)
 
   // TODO this variable have hardcoded labels, it must be changed on the future
 
-  var formTitle = params.type == "classicProject" ? "New Project" : "New BPMN Project"
+  var formTitle = (params.type == "classicProject")? _("ID_NEW_PROJECT") : _("ID_NEW_BPMN_PROJECT");
 
 
 
@@ -1316,33 +1378,61 @@ editProcess = function(typeParam)
 
   }
 
-  var url, pro_uid = rowSelected.data.PRO_UID;
-
-  var type = rowSelected.data.PROJECT_TYPE;
 
 
+    switch (rowSelected.data.PROJECT_TYPE) {
 
-  if (typeParam == "bpmn" || typeParam == "classic") {
+        case "bpmn":
 
-      type = typeParam;
+            openWindowIfIE("../designer?prj_uid=" + rowSelected.data.PRO_UID);
 
-  }
+            break;
+
+        case "classic":
+
+            location.assign("processes_Map?PRO_UID=" + rowSelected.data.PRO_UID);
+
+            break;
+
+        default:
+
+            var fn = rowSelected.data.PROJECT_TYPE;
+
+            fn = fn.replace(/\s/g, "_");
+
+            fn = fn.replace(/\-/g, "_");
+
+            fn = fn + "DesignerGridRowDblClick";
 
 
 
-  if (type == "bpmn") {
+            eval("var flag = typeof(" + fn + ") == \"function\";");
 
-      url = '../designer?prj_uid=' + pro_uid;
 
-      openWindowIfIE(url);
 
-  } else {
+            if (flag) {
 
-      url = 'processes_Map?PRO_UID=' + pro_uid;
+                eval(fn + "(rowSelected.data);");
 
-      location.href = url;
+            } else {
 
-  }
+                Ext.MessageBox.show({
+
+                    title: _("ID_ERROR"),
+
+                    msg: _("ID_DESIGNER_PROCESS_DESIGNER_IS_DISABLED"),
+
+                    icon: Ext.MessageBox.ERROR,
+
+                    buttons: Ext.MessageBox.OK
+
+                });
+
+            }
+
+            break;
+
+    }
 
 }
 
@@ -2452,7 +2542,7 @@ importProcess = function()
 
 
 
-                  if ((arrayMatch = eval("/^.+\.(" + arrayImportFileExtension.join("|") + ")$/i").exec(Ext.getCmp("form-file").getValue()))) {
+                  if ((arrayMatch = eval("/^.+\.(" + arrayFlagImportFileExtension.join("|") + ")$/i").exec(Ext.getCmp("form-file").getValue()))) {
 
                       var fileExtension = arrayMatch[1];
 
@@ -3069,3 +3159,5 @@ function openWindowIfIE(pathDesigner) {
     location.href = pathDesigner;
 
 }
+
+

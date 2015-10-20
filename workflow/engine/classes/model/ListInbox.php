@@ -104,22 +104,45 @@ class ListInbox extends BaseListInbox
             $listParticipatedLast = new ListParticipatedLast();
             $listParticipatedLast->remove($data['APP_UID'], $data['USR_UID'], $data['DEL_INDEX']);
 
+            //Update
+            //Update - SET
+            $criteriaSet = new Criteria("workflow");
+            $criteriaSet->add(ListParticipatedLastPeer::USR_UID, $data["USR_UID"]);
+
             //Update - WHERE
             $criteriaWhere = new Criteria("workflow");
             $criteriaWhere->add(ListParticipatedLastPeer::APP_UID, $data["APP_UID"], Criteria::EQUAL);
-            $criteriaWhere->add(ListParticipatedLastPeer::USR_UID, 'SELF_SERVICES', Criteria::EQUAL);
+            $criteriaWhere->add(ListParticipatedLastPeer::USR_UID, "SELF_SERVICES", Criteria::EQUAL);
             $criteriaWhere->add(ListParticipatedLastPeer::DEL_INDEX, $data["DEL_INDEX"], Criteria::EQUAL);
 
-            //Update - SET
-            $criteriaSet = new Criteria("workflow");
-            $criteriaSet->add(ListParticipatedLastPeer::USR_UID, $data['USR_UID']);
             BasePeer::doUpdate($criteriaWhere, $criteriaSet, Propel::getConnection("workflow"));
 
+            //Update
             $listParticipatedLast = new ListParticipatedLast();
             $listParticipatedLast->refresh($data);
             $users = new Users();
             $users->refreshTotal($data['USR_UID'], 'add', 'participated');
+        } else {
+            if (isset($data["APP_UID"]) && isset($data["USER_UID"]) && isset($data["DEL_INDEX"]) && isset($data["APP_TITLE"])) {
+                //Update
+                //Update - SET
+                $criteriaSet = new Criteria("workflow");
+                $criteriaSet->add(ListParticipatedLastPeer::APP_TITLE, $data["APP_TITLE"]);
+
+                //Update - WHERE
+                $criteriaWhere = new Criteria("workflow");
+                $criteriaWhere->add(ListParticipatedLastPeer::APP_UID, $data["APP_UID"], Criteria::EQUAL);
+                $criteriaWhere->add(ListParticipatedLastPeer::USR_UID, $data["USER_UID"], Criteria::EQUAL);
+                $criteriaWhere->add(ListParticipatedLastPeer::DEL_INDEX, $data["DEL_INDEX"], Criteria::EQUAL);
+
+                $result = BasePeer::doUpdate($criteriaWhere, $criteriaSet, Propel::getConnection("workflow"));
+            }
         }
+
+        if((array_key_exists('TAS_UID', $data) && isset($data['TAS_UID'])) && (array_key_exists('TAS_UID', $data) && isset($data['PRO_UID'])) && isset($data['APP_UID'])) {
+            $data['DEL_PRIORITY'] = $this->getTaskPriority($data['TAS_UID'], $data['PRO_UID'], $data["APP_UID"]);
+        }
+
         $con = Propel::getConnection( ListInboxPeer::DATABASE_NAME );
         try {
             $con->begin();
@@ -202,6 +225,11 @@ class ListInbox extends BaseListInbox
             $data['DEL_DUE_DATE'] = $data['DEL_TASK_DUE_DATE'];
         }
 
+        if(!isset($data['DEL_DUE_DATE'])) {
+            $filters = array("APP_UID" => $data["APP_UID"], "DEL_INDEX" => $data['DEL_INDEX']);
+            $data['DEL_DUE_DATE'] = $this->getAppDelegationInfo($filters,'DEL_TASK_DUE_DATE');
+        }
+
         $criteria = new Criteria();
         $criteria->addSelectColumn( ApplicationPeer::APP_NUMBER );
         $criteria->addSelectColumn( ApplicationPeer::APP_UPDATE_DATE );
@@ -247,6 +275,9 @@ class ListInbox extends BaseListInbox
         $dataset->next();
         $aRow = $dataset->getRow();
         $data['APP_TAS_TITLE'] = $aRow['CON_VALUE'];
+
+
+        $data['DEL_PRIORITY'] = $this->getTaskPriority($data['TAS_UID'], $data['PRO_UID'], $data["APP_UID"]);
 
 
         $data['APP_PREVIOUS_USER'] = '';
@@ -327,6 +358,8 @@ class ListInbox extends BaseListInbox
         $dateFrom       = isset($filters['dateFrom']) ? $filters['dateFrom'] : "";
         $dateTo         = isset($filters['dateTo']) ? $filters['dateTo'] : "";
         $filterStatus   = isset($filters['filterStatus']) ? $filters['filterStatus'] : "";
+        $newestthan     = isset($filters['newestthan'] ) ? $filters['newestthan'] : '';
+        $oldestthan     = isset($filters['oldestthan'] ) ? $filters['oldestthan'] : '';
 
         if ($filter != '') {
             switch ($filter) {
@@ -381,6 +414,14 @@ class ListInbox extends BaseListInbox
             $dateTo = $dateTo . " 23:59:59";
 
             $criteria->add( ListInboxPeer::DEL_DELEGATE_DATE, $dateTo, Criteria::LESS_EQUAL );
+        }
+
+        if ($newestthan != '') {
+            $criteria->add( $criteria->getNewCriterion( ListInboxPeer::DEL_DELEGATE_DATE, $newestthan, Criteria::GREATER_THAN ));
+        }
+
+        if ($oldestthan != '') {
+            $criteria->add( $criteria->getNewCriterion( ListInboxPeer::DEL_DELEGATE_DATE, $oldestthan, Criteria::LESS_THAN ));
         }
 
         if ($filterStatus != '') {
@@ -473,6 +514,42 @@ class ListInbox extends BaseListInbox
             $data[] = $aRow;
         }
         return $data;
+    }
+
+    public function getTaskPriority($taskUid, $proUid, $appUid)
+    {
+        $criteria = new Criteria();
+        $criteria->addSelectColumn(TaskPeer::TAS_PRIORITY_VARIABLE);
+        $criteria->add( TaskPeer::TAS_UID, $taskUid, Criteria::EQUAL );
+        $criteria->add( TaskPeer::PRO_UID, $proUid, Criteria::EQUAL );
+        $dataset = TaskPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $dataset->next();
+        $aRow = $dataset->getRow();
+        $priority = $aRow['TAS_PRIORITY_VARIABLE'];
+        if(strlen($priority)>2){
+            $oCase = new Cases();
+            $aData = $oCase->loadCase( $appUid );
+            $priorityLabel = substr($priority, 2,strlen($priority));
+            if (isset( $aData['APP_DATA'][$priorityLabel] )) {
+                $priority = $aData['APP_DATA'][$priorityLabel];
+            }
+        }
+        return $priority != "" ? $priority : 3;
+    }
+
+    public function getAppDelegationInfo($filters, $fieldName)
+    {
+        $criteria = new Criteria();
+        eval('$criteria->addSelectColumn( AppDelegationPeer::'.$fieldName.');');
+        foreach($filters as $k => $v) {
+           eval('$criteria->add( AppDelegationPeer::'.$k.',$v, Criteria::EQUAL);');
+        }
+        $dataset = AppDelegationPeer::doSelectRS($criteria);
+        $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+        $dataset->next();
+        $aRow = $dataset->getRow();
+        return isset($aRow[$fieldName]) ? $aRow[$fieldName] : NULL;
     }
 }
 

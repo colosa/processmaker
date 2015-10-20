@@ -87,6 +87,8 @@ class ProcessVariablesMapBuilder
 
         $tMap->addColumn('VAR_ACCEPTED_VALUES', 'VarAcceptedValues', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
+        $tMap->addColumn('INP_DOC_UID', 'InpDocUid', 'string', CreoleTypes::VARCHAR, false, 32);
+
     } // doBuild()
 
 } // ProcessVariablesMapBuilder

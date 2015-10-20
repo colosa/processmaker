@@ -59,6 +59,7 @@ class ActionsByEmail
             $configuration['ABE_SUBJECT_FIELD'] = $configuration['ABE_SUBJECT_FIELD'];
             $configuration['ABE_EMAIL_FIELD'] = $configuration['ABE_EMAIL_FIELD'];
             $configuration['ABE_ACTION_FIELD'] = $configuration['ABE_ACTION_FIELD'];
+            $configuration['ABE_MAILSERVER_OR_MAILCURRENT'] = $configuration['ABE_MAILSERVER_OR_MAILCURRENT'];
             $configuration['ABE_CASE_NOTE_IN_RESPONSE'] = $configuration['ABE_CASE_NOTE_IN_RESPONSE'] ? '["1"]' : '[]';
         }
         $configuration['feature'] = 'ActionsByEmail';

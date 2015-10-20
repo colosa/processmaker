@@ -54,33 +54,43 @@ class Light
             $task = new \ProcessMaker\BusinessModel\Task();
             $task->setFormatFieldNameInUppercase(false);
             $task->setArrayParamException(array("taskUid" => "act_uid", "stepUid" => "step_uid"));
+
+            $webEntryEvent = new \ProcessMaker\BusinessModel\WebEntryEvent();
+            $webEntryEvent->setFormatFieldNameInUppercase(false);
+            $webEntryEvent->setArrayFieldNameForException(array("processUid" => "prj_uid"));
+
             $step = new \ProcessMaker\Services\Api\Project\Activity\Step();
             $response = array();
             foreach ($processList as $key => $processInfo) {
                 $tempTreeChildren = array ();
                 foreach ($processList[$key] as $keyChild => $processInfoChild) {
-                    $tempTreeChild['text']      = htmlentities($keyChild, ENT_QUOTES, 'UTF-8'); //ellipsis ( $keyChild, 50 );
-                    $tempTreeChild['processId'] = $processInfoChild['pro_uid'];
-                    $tempTreeChild['taskId']    = $processInfoChild['uid'];
-                    $forms = $task->getSteps($processInfoChild['uid']);
-                    $newForm = array();
-                    $c = 0;
-                    foreach ($forms as $k => $form) {
-                        if ($form['step_type_obj'] == "DYNAFORM") {
-                            $newForm[$c]['formId'] = $form['step_uid_obj'];
-                            $newForm[$c]['index'] = $c+1;
-                            $newForm[$c]['title'] = $form['obj_title'];
-                            $newForm[$c]['description'] = $form['obj_description'];
-                            $newForm[$c]['stepId']      = $form["step_uid"];
-                            $newForm[$c]['stepMode']    = $form['step_mode'];
-                            $trigger = $this->statusTriggers($step->doGetActivityStepTriggers($form["step_uid"], $tempTreeChild['taskId'], $tempTreeChild['processId']));
-                            $newForm[$c]["triggers"]    = $trigger;
-                            $c++;
+                    $webEntryEventStart = $webEntryEvent->getWebEntryEvents($processInfoChild['pro_uid']);
+                    if(empty($webEntryEventStart)){
+                        $tempTreeChild['text']      = htmlentities($keyChild, ENT_QUOTES, 'UTF-8'); //ellipsis ( $keyChild, 50 );
+                        $tempTreeChild['processId'] = $processInfoChild['pro_uid'];
+                        $tempTreeChild['taskId']    = $processInfoChild['uid'];
+                        $forms = $task->getSteps($processInfoChild['uid']);
+                        $newForm = array();
+                        $c = 0;
+                        foreach ($forms as $k => $form) {
+                            if ($form['step_type_obj'] == "DYNAFORM") {
+                                $newForm[$c]['formId'] = $form['step_uid_obj'];
+                                $newForm[$c]['index'] = $c+1;
+                                $newForm[$c]['title'] = $form['obj_title'];
+                                $newForm[$c]['description'] = $form['obj_description'];
+                                $newForm[$c]['stepId']      = $form["step_uid"];
+                                $newForm[$c]['stepUidObj']  = $form["step_uid_obj"];
+                                $newForm[$c]['stepMode']    = $form['step_mode'];
+                                $newForm[$c]['stepPosition'] = $form['step_position'];
+                                $trigger = $this->statusTriggers($step->doGetActivityStepTriggers($form["step_uid"], $tempTreeChild['taskId'], $tempTreeChild['processId']));
+                                $newForm[$c]["triggers"]    = $trigger;
+                                $c++;
+                            }
                         }
-                    }
-                    $tempTreeChild['forms'] = $newForm;
-                    if (isset( $proData[$processInfoChild['pro_uid']] )) {
-                        $tempTreeChildren[] = $tempTreeChild;
+                        $tempTreeChild['forms'] = $newForm;
+                        if (isset( $proData[$processInfoChild['pro_uid']] )) {
+                            $tempTreeChildren[] = $tempTreeChild;
+                        }
                     }
                 }
                 $response = array_merge($response, $tempTreeChildren);
@@ -261,10 +271,22 @@ class Light
     {
         try {
             $oCase = new \Cases();
+            $oUser    = new \Users();
 
             $this->lookinginforContentProcess( $proUid );
 
             $aData = $oCase->startCase( $taskUid, $userId );
+
+            $aUserLog = $oUser->loadDetailed($userId);
+            $_SESSION['APPLICATION'] = $aData['APPLICATION'];
+            $_SESSION['INDEX'] = $aData['INDEX'];
+            $_SESSION['PROCESS'] = $aData['PROCESS'];
+            $_SESSION['TASK'] = $taskUid;
+            $_SESSION["USER_LOGGED"] = $userId;
+            $_SESSION["USR_USERNAME"] = $aUserLog['USR_USERNAME'];
+
+            $aFields = $oCase->loadCase( $aData['APPLICATION'], $aData['INDEX'] );
+            $oCase->updateCase( $aData['APPLICATION'], $aFields );
 
             $response = array();
             $response['caseId'] = $aData['APPLICATION'];
@@ -329,6 +351,48 @@ class Light
     }
 
     /**
+     * Execute Trigger case
+     *
+     */
+    public function doExecuteTriggerCase($usr_uid, $prj_uid, $act_uid, $cas_uid, $step_uid, $type)
+    {
+        $userData = $this->getUserData($usr_uid);
+        $c = new \Criteria();
+        $c->clearSelectColumns();
+        $c->addSelectColumn(\StepPeer::STEP_UID);
+        $c->addSelectColumn(\StepPeer::STEP_UID_OBJ);
+        $c->add(\StepPeer::TAS_UID, $act_uid);
+        $c->add(\StepPeer::STEP_TYPE_OBJ, 'DYNAFORM');
+        $c->add(\StepPeer::STEP_UID, $step_uid);
+        $rs = \StepPeer::doSelectRS($c);
+        $rs->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+        $rs->next();
+        $row = $rs->getRow();
+        $step_uid_obj = $row['STEP_UID_OBJ'];
+
+        $oCase = new \Cases();
+        $Fields = $oCase->loadCase( $cas_uid );
+        $_SESSION["APPLICATION"] = $cas_uid;
+        $_SESSION["PROCESS"] = $prj_uid;
+        $_SESSION["TASK"] = $act_uid;
+        $_SESSION["USER_LOGGED"] = $usr_uid;
+        $_SESSION["USR_USERNAME"] = $userData['firstName'];
+        $_SESSION["INDEX"] = $Fields["DEL_INDEX"] = \AppDelegation::getCurrentIndex($cas_uid);
+        $Fields['APP_DATA'] = array_merge( $Fields['APP_DATA'], G::getSystemConstants() );
+        $triggers = $oCase->loadTriggers( $act_uid, 'DYNAFORM', $step_uid_obj, strtoupper($type) );
+        if($triggers){
+            $Fields['APP_DATA'] = $oCase->ExecuteTriggers( $act_uid, 'DYNAFORM', $step_uid_obj, strtoupper($type), $Fields['APP_DATA'] );
+        }
+        $Fields['TAS_UID'] = $act_uid;
+        $Fields['CURRENT_DYNAFORM'] = $step_uid_obj;
+        $Fields['USER_UID'] = $usr_uid;
+        $Fields['PRO_UID'] = $prj_uid;
+        $oCase->updateCase( $cas_uid, $Fields );
+        $response = array('status' => 'ok');
+        return $response;
+    }
+
+    /**
      * Return Informaction User for derivate
      * assignment Users
      *
@@ -362,6 +426,17 @@ class Light
                     }
                 } //set priority value
 
+                $taskType = (isset($aValues["NEXT_TASK"]["TAS_TYPE"]))? $aValues["NEXT_TASK"]["TAS_TYPE"] : false;
+                $taskMessage = "";
+                switch ($taskType) {
+                    case "SCRIPT-TASK":
+                        $taskMessage = G::LoadTranslation("ID_ROUTE_TO_TASK_SCRIPT_TASK");
+                        break;
+                    case "INTERMEDIATE-CATCH-TIMER-EVENT":
+                        $taskMessage = G::LoadTranslation("ID_ROUTE_TO_TASK_INTERMEDIATE_CATCH_TIMER_EVENT");
+                        break;
+                }
+
                 switch ($aValues['NEXT_TASK']['TAS_ASSIGN_TYPE']) {
                     case 'EVALUATE':
                     case 'REPORT_TO':
@@ -374,6 +449,7 @@ class Light
                         $taskAss['taskDefProcCode'] = $aValues['NEXT_TASK']['TAS_DEF_PROC_CODE'];
                         $taskAss['delPriority'] = isset($aValues['NEXT_TASK']['DEL_PRIORITY'])?$aValues['NEXT_TASK']['DEL_PRIORITY']:"";
                         $taskAss['taskParent'] = $aValues['NEXT_TASK']['TAS_PARENT'];
+                        $taskAss['taskMessage'] = $taskType?$taskMessage:"";
                         $users = array();
                         $users['userId'] = $derive[$sKey]['NEXT_TASK']['USER_ASSIGNED']['USR_UID'];
                         $users['userFullName'] = strip_tags($derive[$sKey]['NEXT_TASK']['USER_ASSIGNED']['USR_FULLNAME']);
@@ -388,6 +464,7 @@ class Light
                         $manual['taskDefProcCode'] = $aValues['NEXT_TASK']['TAS_DEF_PROC_CODE'];
                         $manual['delPriority'] = isset($aValues['NEXT_TASK']['DEL_PRIORITY'])?$aValues['NEXT_TASK']['DEL_PRIORITY']:"";
                         $manual['taskParent'] = $aValues['NEXT_TASK']['TAS_PARENT'];
+                        $manual['taskMessage'] = $taskType?$taskMessage:"";
                         $Aux = array ();
                         foreach ($aValues['NEXT_TASK']['USER_ASSIGNED'] as $aUser) {
                             $Aux[$aUser['USR_UID']] = $aUser['USR_FULLNAME'];
@@ -443,8 +520,8 @@ class Light
             \G::LoadClass('wsBase');
             $ws = new \wsBase();
             $fields = $ws->derivateCase($userUid, $applicationUid, $delIndex, $bExecuteTriggersBeforeAssignment = false, $tasks);
-            $fields['message'] = trim(strip_tags($fields['message']));
             $array = json_decode(json_encode($fields), true);
+            $array['message'] = trim(strip_tags($array['message']));
             if ($array ["status_code"] != 0) {
                 throw (new \Exception($array ["message"]));
             } else {
@@ -1167,6 +1244,16 @@ class Light
         $fields = \System::getSysInfo();
         $response['version'] = $fields['PM_VERSION'];
 
+        $conf = new \Configurations();
+        $confEnvironment = $conf->getFormats();
+
+        $response['environment'] = array();
+        if (is_array($confEnvironment)){
+            $response['environment']['format'] = isset($confEnvironment['format'])?$confEnvironment['format']:'';
+            $response['environment']['dateFormat'] = isset($confEnvironment['dateFormat'])?$confEnvironment['dateFormat']:'';
+            $response['environment']['casesListDateFormat'] = isset($confEnvironment['casesListDateFormat'])?$confEnvironment['casesListDateFormat']:'';
+        }
+
         $Translations = new \Translation;
         $translationsTable = $Translations->getTranslationEnvironments();
         $languagesList = array ();
@@ -1184,6 +1271,27 @@ class Light
         }
         $response['listLanguage'] = $languagesList;
         return $response;
+    }
+
+    public function getInformationDerivatedCase($app_uid, $del_index)
+    {
+        $oCriteria = new Criteria( 'workflow' );
+        $children = array ();
+        $oCriteria->clearSelectColumns();
+        $oCriteria->addSelectColumn( AppDelegationPeer::DEL_INDEX );
+        $oCriteria->addSelectColumn( AppDelegationPeer::PRO_UID );
+        $oCriteria->addSelectColumn( AppDelegationPeer::TAS_UID );
+        $oCriteria->addSelectColumn( AppDelegationPeer::USR_UID );
+        $oCriteria->add( AppDelegationPeer::APP_UID, $app_uid );
+        $oCriteria->add( AppDelegationPeer::DEL_PREVIOUS, $del_index );
+        $oDataset = AppDelegationPeer::doSelectRS( $oCriteria );
+        $oDataset->setFetchmode( \ResultSet::FETCHMODE_ASSOC );
+        $oDataset->next();
+        while ($row = $oDataset->getRow()) {
+            $children[] = $row;
+            $oDataset->next();
+        }
+        return $children;
     }
 
 }

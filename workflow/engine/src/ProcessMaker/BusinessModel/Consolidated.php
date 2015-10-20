@@ -394,7 +394,9 @@ class Consolidated
             foreach ($aTaskConsolidated as $key => $val) {
                 foreach ($val as $iKey => $iVal) {
                     if (self::checkValidDate($iVal)) {
-                        $val[$iKey] = str_replace("-", "/", $val[$iKey]);
+                        $iKeyView = str_replace("-", "/", $val[$iKey]);
+                        $iKeyView = str_replace("T", " ", $iKeyView);
+                        $val[$iKey] = $iKeyView;
                     }
                 }
                 $response["data"][] = $val;
@@ -461,32 +463,45 @@ class Consolidated
             $json = G::json_decode($dataTask["DYN_CONTENT"]);
             $pmDyna->jsonr($json);
             $fieldsDyna = $json->items[0]->items;
-
             $xmlfrm = new \stdclass();
             $xmlfrm->fields = array();
             foreach ($fieldsDyna as $key => $value) {
-                if ($value[0]->type == 'title' || $value[0]->type == 'submit') {
-                    continue;
-                }
-                $temp = new \stdclass();
-                $temp->type = $value[0]->type;
-                $temp->label = $value[0]->label;
-                $temp->name = $value[0]->name;
-                $temp->required = (isset($value[0]->required)) ? $value[0]->required : 0;
-                $temp->mode = (isset($value[0]->mode)) ? $value[0]->mode : 'edit';
-
-                if (!empty($value[0]->options)) {
-                    $temp->storeData = '[';
-                    foreach ($value[0]->options as $valueOption) {
-                        $temp->storeData .= '["' . $valueOption['value'] . '", "' . $valueOption['label'] . '"],';
+                foreach ($value as $val) {
+                    if ($val->type == 'title' || $val->type == 'submit' || $val->type == 'panel' || $val->type == 'image' || $val->type == 'button' || $val->type == 'grid' || $val->type == 'checkgroup' || $val->type == 'radiogroup' || $val->type == 'radio' || $val->type == 'hidden' || $val->type == 'link' || $val->type == 'file' || $val->type == 'subform' || $val->type == 'label') {
+                        continue;
                     }
-                    $temp->storeData = substr($temp->storeData,0,-1);
-                    $temp->storeData .= ']';
-                }
+                    $temp = new \stdclass();
+                    $temp->type = $val->type;
+                    $temp->label = $val->label;
+                    $temp->name = $val->name;
+                    $temp->required = (isset($val->required)) ? $val->required : 0;
+                    $temp->mode = (isset($val->mode)) ? $val->mode : 'edit';
 
-                $temp->readOnly = ($temp->mode == 'view') ? "1" : "0";
-                $temp->colWidth = 200;
-                $xmlfrm->fields[] = $temp;
+                    if (!empty($val->options) || !empty($val->optionsSql)) {
+                        $temp->storeData = '[';
+                        foreach ($val->options as $valueOption) {
+                            if(isset($valueOption->value)){
+                                $temp->storeData .= '["' . $valueOption->value . '", "' . $valueOption->label . '"],';
+                            }else{
+                                $temp->storeData .= '["' . $valueOption['value'] . '", "' . $valueOption['label'] . '"],';   
+                            }
+                        }
+
+                        foreach ($val->optionsSql as $valueOption) {
+                            if(isset($valueOption->value)){
+                                $temp->storeData .= '["' . $valueOption->value . '", "' . $valueOption->label . '"],';
+                            }else{
+                                $temp->storeData .= '["' . $valueOption['value'] . '", "' . $valueOption['label'] . '"],';   
+                            }
+                        }
+                        $temp->storeData = substr($temp->storeData,0,-1);
+                        $temp->storeData .= ']';
+                    }
+
+                    $temp->readOnly = ($temp->mode == 'view') ? "1" : "0";
+                    $temp->colWidth = 200;
+                    $xmlfrm->fields[] = $temp;
+                    }
             }
         } else {
             $filename = $pro_uid . PATH_SEP . $dyn_uid . ".xml";
@@ -528,12 +543,12 @@ class Consolidated
             $required = (isset($field->required))? $field->required : null;
             $validate = (isset($field->validate))? strtolower($field->validate) : null;
 
-            $fieldReadOnly = ($readOnly . "" == "1")? "readOnly: true," : null;
+            $fieldReadOnly = ($readOnly . "" == "1" || $field->readOnly == 'view')? "readOnly: true," : null;
             $fieldRequired = ($required . "" == "1")? "allowBlank: false," : null;
             $fieldValidate = ($validate == "alpha" || $validate == "alphanum" || $validate == "email" || $validate == "int" || $validate == "real")? "vtype: \"$validate\"," : null;
 
             $fieldLabel = (($fieldRequired != null)? "<span style='color: red;'>&#42;</span> ": null) . $field->label;
-            $fieldDisabled = ($field->mode != "edit")? "true" : "false";
+            $fieldDisabled = ($field->mode == "view")? "true" : "false";
 
             switch ($field->type) {
                 case "dropdown":
@@ -633,7 +648,7 @@ class Consolidated
                                      return Ext.isDate(value)? value.dateFormat('{$dateFormat}') : value;
                                    } *";
 
-                    if ($field->mode != "edit") {
+                    if ($field->mode == "view") {
                         $editor = null;
                     }
 
@@ -735,6 +750,33 @@ class Consolidated
 
                     $hasTextArea = true;
                     break;
+                case "datetime":
+                    $align = "center";
+                    $size = 100;
+
+                    if (isset($field->size)) {
+                        $size = $field->size * 10;
+                    }
+
+                    $width = $size;
+
+                    $editor = "* new Ext.form.DateField({
+                                     format: \"$dateFormat\",
+
+                                     $fieldReadOnly
+                                     $fieldRequired
+                                     $fieldValidate
+                                     cls: \"\"
+                                 }) *";
+
+                    //$renderer = "* formatDate *";
+                    $renderer = "* function (value){
+                                     return Ext.isDate(value)? value.dateFormat('{$dateFormat}') : value;
+                                   } *";
+
+                    $caseColumns[] = array("header" => $fieldLabel, "dataIndex" => $field->name, "width" => (int)($width), "editor" => $editor, "renderer" => $renderer, "frame" => true, "clicksToEdit" => 1, "sortable" => true);
+                    $caseReaderFields[] = array("name" => $field->name, "type" => "date");
+                    break;
                 case "link":
                     $align = 'center';
                     $size = 100;
@@ -834,6 +876,23 @@ class Consolidated
 
                     //$caseColumns[] = array('header' => $fieldLabel, 'dataIndex' => $field->name, 'width' => (int)$width, 'align' => $align, 'editor' => $editor, 'renderer' => $renderer, 'frame' => 'true', 'clicksToEdit' => '1');
                     $caseColumns[] = array("xtype" => "combocolumn", "gridId" => "gridId", "header" => $fieldLabel, "dataIndex" => $field->name, "width" => (int)($width), "align" => $align, "editor" => $editor, "frame" => "true", "clicksToEdit" => "1");
+                    $caseReaderFields[] = array("name" => $field->name);
+                    break;
+                case "checkbox":
+                    $align = "center";
+                    $size = 100;
+
+                    if (isset($field->size)) {
+                        $size = $field->size * 10;
+                    }
+
+                    $width = $size;
+                    $dropList[] = $field->name;
+                    $comboBoxYesNoList[] = $field->name;
+
+                    $editor="* new Ext.form.Checkbox({ $fieldReadOnly $fieldRequired $fieldValidate cls: \"\"}) *";
+
+                   $caseColumns[] = array("header" => $fieldLabel, "dataIndex" => $field->name, "width" => (int)($width), "align" => $align, "editor" => $editor, "frame" => true, "clicksToEdit" => 1, "sortable" => true);
                     $caseReaderFields[] = array("name" => $field->name);
                     break;
                 case "text":

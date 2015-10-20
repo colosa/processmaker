@@ -586,7 +586,7 @@ function pauseCase(date){
 
                     buttons: [{
 
-                        text: 'Ok',
+                        text: _('ID_OK'),
 
                         handler: function(){
 
@@ -668,7 +668,7 @@ function pauseCase(date){
 
                     },{
 
-                        text: 'Cancel', //COCHATRA
+                        text: _('ID_CANCEL'), //COCHATRA
 
                         handler: function(){
 
@@ -2104,6 +2104,14 @@ Ext.onReady ( function() {
 
 
 
+    if (typeof filterStatus == 'undefined') {
+
+        filterStatus = [];
+
+    }
+
+
+
     /*----------------------------------********---------------------------------*/
 
 
@@ -2294,7 +2302,7 @@ Ext.onReady ( function() {
 
                 filterStatus = comboStatus.value;
 
-                storeCases.setBaseParam( 'status', filterStatus);
+                storeCases.setBaseParam( 'filterStatus', filterStatus);
 
                 storeCases.setBaseParam( 'start', 0);
 

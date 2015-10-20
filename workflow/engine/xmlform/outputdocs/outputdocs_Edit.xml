@@ -17,7 +17,11 @@
         if (( _BROWSER.name == 'msie' ) && ( _BROWSER.version < '9' )) {
             window.close();
         } else {
-            outputdocsEditor.remove();
+            if(typeof outputdocsEditor  == 'undefined'){
+                window.close();
+            } else {
+                outputdocsEditor.remove();
+            }
         }
     }
 
@@ -29,7 +33,11 @@ if ( typeof outputdocsSave  == 'undefined'){
         if (( _BROWSER.name == 'msie' ) && ( _BROWSER.version < '9' )) {
           window.close();
         } else {
-          outputdocsEditor.remove();
+            if(typeof outputdocsEditor  == 'undefined'){
+                window.close();
+            } else {
+                outputdocsEditor.remove();
+            }
         }
     }
 }

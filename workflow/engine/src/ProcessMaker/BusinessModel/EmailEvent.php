@@ -26,6 +26,8 @@ class EmailEvent
             $criteria->clearSelectColumns();
             $criteria->addSelectColumn(\UsersPeer::USR_UID);
             $criteria->addSelectColumn(\UsersPeer::USR_EMAIL);
+            $criteria->addAsColumn('UID', 'USR_UID');
+            $criteria->addAsColumn('EMAIL', 'USR_EMAIL');
             $criteria->add(\UsersPeer::USR_STATUS, "ACTIVE");
             $result = \UsersPeer::doSelectRS($criteria);
             $result->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
@@ -33,6 +35,41 @@ class EmailEvent
             $accountsArray = array();
             while ($aRow = $result->getRow()) {
                 if (($aRow['USR_EMAIL'] != null) || ($aRow['USR_EMAIL'] != "")) {
+                    $accountsArray[] = array_change_key_case($aRow, CASE_LOWER);
+                } 
+                $result->next();
+            }
+            return $accountsArray;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+    
+    /**
+     * Get the email server accounts of the current workspace
+     *     
+     * return array
+     */
+    public function getEmailEventServerAccounts()
+    {
+        try {
+            $criteria = new \Criteria("workflow");
+            $criteria->clearSelectColumns();
+            $criteria->addSelectColumn(\EmailServerPeer::MESS_UID);
+            $criteria->addSelectColumn(\EmailServerPeer::MESS_FROM_MAIL);
+            $criteria->addSelectColumn(\EmailServerPeer::MESS_ACCOUNT);
+            $criteria->addAsColumn('UID', 'MESS_UID');
+            $result = \EmailServerPeer::doSelectRS($criteria);
+            $result->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+            $result->next();
+            $accountsArray = array();
+            while ($aRow = $result->getRow()) {
+                if ($aRow['MESS_UID'] != null) {
+                    if($aRow['MESS_FROM_MAIL'] == "") {
+                        $aRow['EMAIL'] = $aRow['MESS_ACCOUNT'];  
+                    } else {
+                        $aRow['EMAIL'] = $aRow['MESS_FROM_MAIL']; 
+                    }
                     $accountsArray[] = array_change_key_case($aRow, CASE_LOWER);
                 } 
                 $result->next();
@@ -436,12 +473,43 @@ class EmailEvent
             throw new \Exception(\G::LoadTranslation("ID_EMAIL_EVENT_DEFINITION_DOES_NOT_EXIST"));
         }
         $arrayData = $this->existsEvent($prj_uid, $eventUid);
-        
         if(sizeof($arrayData)) {
-             $prfUid = $arrayData[6];
-             $filesManager = new \ProcessMaker\BusinessModel\FilesManager();
-             $contentFile = $filesManager->getProcessFileManager($prj_uid, $prfUid);
-             \PMFSendMessage($appUID, $arrayData[3], $arrayData[4], '', '', $arrayData[5], $contentFile['prf_filename'], array());
+            $emailGroupTo = array();
+            $emailTo = "";
+            $prfUid = $arrayData[6];
+            $filesManager = new \ProcessMaker\BusinessModel\FilesManager();
+            $contentFile = $filesManager->getProcessFileManager($prj_uid, $prfUid);
+            if(strpos($arrayData[4],",")) {
+                $emailsArray = explode(",",$arrayData[4]);
+                foreach($emailsArray as $email) {
+                    if(substr($email,0,1) == "@") {
+                        $email = substr($email, 2,strlen($email));
+                        if(isset($arrayApplicationData['APP_DATA'])) {
+                            if(is_array($arrayApplicationData['APP_DATA']) && isset( $arrayApplicationData['APP_DATA'][$email])) {
+                                $emailGroupTo[] = $arrayApplicationData['APP_DATA'][$email];
+                            }   
+                        } 
+                    } else {
+                        $emailGroupTo[] = $email;
+                    }
+                }
+                $emailTo = implode(",",array_unique(array_filter($emailGroupTo)));
+            } else {
+                $email = $arrayData[4];
+                if(substr($email,0,1) == "@") {
+                    $email = substr($email, 2,strlen($email));
+                    if(isset($arrayApplicationData['APP_DATA'])) {
+                        if(is_array($arrayApplicationData['APP_DATA']) && isset( $arrayApplicationData['APP_DATA'][$email])) {
+                            $emailTo = $arrayApplicationData['APP_DATA'][$email];
+                        }  
+                    }  
+                } else {
+                    $emailTo = $email;
+                }   
+            }
+            if(!empty($emailTo)) {
+                \PMFSendMessage($appUID, $arrayData[3], $emailTo, '', '', $arrayData[5], $contentFile['prf_filename'], array());
+            }
         }
     }
     
