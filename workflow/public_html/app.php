@@ -19,6 +19,8 @@ if (isset($_SERVER['UNENCODED_URL'])) {
 try {
     $rootDir = realpath(__DIR__ . "/../../") . DIRECTORY_SEPARATOR;
 
+	session_name("pm_".md5($rootDir)) ;
+
     require $rootDir . "framework/src/Maveriks/Util/ClassLoader.php";
     $loader = Maveriks\Util\ClassLoader::getInstance();
     $loader->add($rootDir . 'framework/src/', "Maveriks");

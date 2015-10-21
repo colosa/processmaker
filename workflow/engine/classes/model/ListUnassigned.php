@@ -364,10 +364,14 @@ class ListUnassigned extends BaseListUnassigned
                     //Define all users assigned to Task
                     $task = new TaskUser();
                     $arrayUsers = $task->getAllUsersTask($row["TAS_UID"]);
+                    $arrayUniqueUsers = array( ) ;
                     foreach($arrayUsers as $urow){
-                       $newRow["USR_UID"] = $urow["USR_UID"];
-                       $listUnassignedGpr = new ListUnassignedGroup();
-                       $listUnassignedGpr->newRow($unaUid,$urow["USR_UID"],"USER","");
+                        if( !in_array( $urow["USR_UID"], $arrayUniqueUsers) ){
+                            $arrayUniqueUsers[]=$urow["USR_UID"] ;
+                            $newRow["USR_UID"] = $urow["USR_UID"];
+                            $listUnassignedGpr = new ListUnassignedGroup();
+                            $listUnassignedGpr->newRow($unaUid,$urow["USR_UID"],"USER","");
+                        }
                    }
                 }
             }
