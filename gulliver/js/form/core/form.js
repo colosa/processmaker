@@ -1213,11 +1213,14 @@ function G_Text(form, element, name)
     if (me.validate == 'Any' && me.mask == '') return true;
 
     var pressKey = (window.event)? window.event.keyCode : event.which;
+    if (pressKey == 107 || pressKey == 187) {
+      pressKey = 43;
+    }
 
     switch(pressKey){
       case 8: case 46:  //BACKSPACE OR DELETE
       case 35: case 36: //HOME OR END
-      case 37: case 38: case 39: case 40: // ARROW KEYS
+      case 37: case 38: case 39: case 40: case 43:// ARROW KEYS
         if ((pressKey == 8 || pressKey == 46) && me.validate == "NodeName") {
             return true;
         }
@@ -1541,7 +1544,8 @@ function G_Text(form, element, name)
       }
 
       if (this.validate == "Email") {
-        var pat = /^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,9}$/;
+        //var pat = /^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,9}$/;
+        var pat = /^([a-zA-Z0-9])+([a-zA-Z0-9\.\+_-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/;
 
         if(!pat.test(this.element.value))
         {
@@ -3136,7 +3140,8 @@ var validateForm = function(sRequiredFields) {
                                     //var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
                                     //var filter = /^[\w\_\-\.ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±]{2,255}@[\w\_\-]{2,255}\.[a-z]{1,3}\.?[a-z]{0,3}$/;
                                     // var filter = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-                                    var filter = /^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,9}$/;
+                                    //var filter = /^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*\.\w{2,9}$/;
+                                    var filter =/^([a-zA-Z0-9])+([a-zA-Z0-9\.\+_-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/;
 
                                     if (!filter.test(email.value.trim()) && email.value != "") {
                                         fielEmailInvalid.push(aRequiredFields[i].label);
