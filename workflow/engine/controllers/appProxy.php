@@ -305,4 +305,3 @@ class AppProxy extends HttpProxyController
         return $data;
     }
 }
-
