@@ -43,6 +43,7 @@ function inIframe () {
 };
 
 // enable/disable forgot password link
+var flagForgotPassword;
 if(flagForgotPassword == 'on' || flagForgotPassword == '1') {
   document.getElementById("form[FORGOT_PASWORD_LINK]").style.display = 'block';//hideRowById('FORGOT_PASWORD_LINK');
 }
