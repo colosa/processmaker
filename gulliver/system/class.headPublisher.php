@@ -479,6 +479,9 @@ class headPublisher
             $head = $head . "<script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl($this->translationsFile) . "\"></script>\n";
 
         }
+        if ( preg_match('/MSIE/i',$_SERVER['HTTP_USER_AGENT']) ) {
+            $head .= "<script type='text/javascript' src='/js/scriptIE.js'></script>\n";
+        }
 
 
 
