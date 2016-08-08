@@ -8,6 +8,7 @@
 		<version>1.0</version>
 		<createDate>2011-02-27</createDate>		
 		<modifiedDate>2011-02-28</modifiedDate>
+		<dropdonwMenu>true</dropdonwMenu>
 	</information>
 	<cssFiles>
 		<skin>
