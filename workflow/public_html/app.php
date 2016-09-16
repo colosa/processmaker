@@ -19,10 +19,8 @@ if (isset($_SERVER['UNENCODED_URL'])) {
 try {
     $rootDir = realpath(__DIR__ . "/../../") . DIRECTORY_SEPARATOR;
 
-    $addToSessionRegEx = "#^(http://[^/]+){0,1}/sys[^/]+/[^/]+/([^/]+)/#i" ;
-    if( isset( $_SERVER['HTTP_REFERER'] ) ) {
-       preg_match($addToSessionRegEx,  $_SERVER['HTTP_REFERER'], $matches) ;
-    } else {
+    $addToSessionRegEx = '@^(http://[^/]+){0,1}/sys[^/]*/[^/]+/([^/]+)/@i' ;
+    if( !isset( $_SERVER['HTTP_REFERER'] ) || preg_match($addToSessionRegEx,  $_SERVER['HTTP_REFERER'], $matches) == 0 ) {
        preg_match($addToSessionRegEx,  $_SERVER['REQUEST_URI'], $matches) ;
     }
     session_name("pm_".md5($rootDir)."_".array_pop($matches)) ;
