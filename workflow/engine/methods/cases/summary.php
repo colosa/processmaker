@@ -49,9 +49,9 @@ try {
     /*----------------------------------********---------------------------------*/
 
     //Check if the user has the Process Permissions - Summary Form
-    if ($viewSummaryForm == 0) {
-        throw new Exception( G::LoadTranslation( 'ID_SUMMARY_FORM_NO_PERMISSIONS' ) );
-    }
+    //if ($viewSummaryForm == 0) {
+    //    throw new Exception( G::LoadTranslation( 'ID_SUMMARY_FORM_NO_PERMISSIONS' ) );
+    //}
 
     $applicationFields['APP_DATA']['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = '';
     $applicationFields['APP_DATA']['__DYNAFORM_OPTIONS']['PREVIOUS_STEP'] = '#';
