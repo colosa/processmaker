@@ -1853,9 +1853,9 @@ class Cases
     }
 
     /*
-     * This function updates a row in APP_DELEGATION
+     * This function updates a row in appThread
      *
-     * @name closeAllDelegations
+     * @name closeAllThreads
      * @param string $sAppUid
      * @return void
      */
@@ -1931,6 +1931,7 @@ class Cases
             $rowObj = AppDelegationPeer::doSelect($c);
             foreach ($rowObj as $appDel) {
                 $appDel->setDelThreadStatus('CLOSED');
+		$appDel->setDelFinishDate('now');    
                 if ($appDel->Validate()) {
                     $appDel->Save();
                 } else {
