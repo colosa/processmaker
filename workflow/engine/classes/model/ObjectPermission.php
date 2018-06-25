@@ -322,6 +322,8 @@ class ObjectPermission extends BaseObjectPermission
     public function objectPermissionByDynaform ($appUid, $opTaskSource = 0, $opObjUid = '', $statusCase = '')
     {
         $oCriteria = new Criteria('workflow');
+        // khoailang add for distinct DYN_UID
+        $oCriteria->addSelectColumn(DynaformPeer::DYN_UID);
         $oCriteria->addJoin(ApplicationPeer::PRO_UID, StepPeer::PRO_UID);
         $oCriteria->addJoin(StepPeer::STEP_UID_OBJ, DynaformPeer::DYN_UID);
         $oCriteria->add(ApplicationPeer::APP_UID, $appUid);
