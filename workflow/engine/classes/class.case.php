@@ -5735,33 +5735,40 @@ class Cases
             //If user can be see the objects process
             //We will be prepare the data relate to the Type can be ANY, DYNAFORM, INPUT, OUTPUT, ...
             if (!$sw_participate) {
+                
                 switch ($opType) {
                     case 'ANY':
                         //For dynaforms
-                        $result['DYNAFORM'] = $oObjectPermission->objectPermissionByDynaform(
+                        // $result['DYNAFORM'] = $oObjectPermission->objectPermissionByDynaform(
+                        // khoailang fix
+                        $result['DYNAFORM'] = array_merge($result['DYNAFORM'], $oObjectPermission->objectPermissionByDynaform(
                             $appUid,
                             $opTaskSource,
                             $opObjUid,
                             $aCase['APP_STATUS']
-                        );
+                        ));
                         //For Ouputs
-                        $result['OUTPUT'] = $oObjectPermission->objectPermissionByOutputInput(
+                        // $result['OUTPUT'] = $oObjectPermission->objectPermissionByOutputInput(
+                        // khoailang fix
+                        $result['OUTPUT'] = array_merge($result['OUTPUT'], $oObjectPermission->objectPermissionByOutputInput(
                             $appUid,
                             $proUid,
                             $opTaskSource,
                             'OUTPUT',
                             $opObjUid,
                             $aCase['APP_STATUS']
-                        );
+                        ));
                         //For Inputs
-                        $result['INPUT'] = $oObjectPermission->objectPermissionByOutputInput(
+                        // $result['INPUT'] = $oObjectPermission->objectPermissionByOutputInput(
+                        // khoailang fix
+                        $result['INPUT'] = array_merge($result['INPUT'], $oObjectPermission->objectPermissionByOutputInput(
                             $appUid,
                             $proUid,
                             $opTaskSource,
                             'INPUT',
                             $opObjUid,
                             $aCase['APP_STATUS']
-                        );
+                        ));
 
                         $result['CASES_NOTES'] = 1;
                         /*----------------------------------********---------------------------------*/
@@ -5779,32 +5786,38 @@ class Cases
                         );
                         break;
                     case 'DYNAFORM':
-                        $result['DYNAFORM'] = $oObjectPermission->objectPermissionByDynaform(
+                        // $result['DYNAFORM'] = $oObjectPermission->objectPermissionByDynaform(
+                        // khoailang fix
+                        $result['DYNAFORM'] = array_merge($result['DYNAFORM'], $oObjectPermission->objectPermissionByDynaform(
                             $appUid,
                             $opTaskSource,
                             $opObjUid,
                             $aCase['APP_STATUS']
-                        );
+                        ));
                         break;
                     case 'INPUT':
-                        $result['INPUT'] = $oObjectPermission->objectPermissionByOutputInput(
+                        // $result['INPUT'] = $oObjectPermission->objectPermissionByOutputInput(
+                        // khoailang fix
+                        $result['INPUT'] = array_merge($result['INPUT'], $oObjectPermission->objectPermissionByOutputInput(
                             $appUid,
                             $proUid,
                             $opTaskSource,
                             'INPUT',
                             $opObjUid,
                             $aCase['APP_STATUS']
-                        );
+                        ));
                         break;
                     case 'OUTPUT':
-                        $result['OUTPUT'] = $oObjectPermission->objectPermissionByOutputInput(
+                        // $result['OUTPUT'] = $oObjectPermission->objectPermissionByOutputInput(
+                        // khoailang fix
+                        $result['OUTPUT'] = array_merge($result['OUTPUT'], $oObjectPermission->objectPermissionByOutputInput(
                             $appUid,
                             $proUid,
                             $opTaskSource,
                             'OUTPUT',
                             $opObjUid,
                             $aCase['APP_STATUS']
-                        );
+                        ));
                         break;
                     case 'CASES_NOTES':
                         $result['CASES_NOTES'] = 1;
@@ -5823,7 +5836,7 @@ class Cases
                         );
                         break;
                 }
-            }
+	    
         }
 
         return Array(
